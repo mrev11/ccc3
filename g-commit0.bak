@@ -3,4 +3,4 @@ export EDITOR=z.exe
 
 git-add .
 git-commit -a -m "x"
-git-push --all
+git-push

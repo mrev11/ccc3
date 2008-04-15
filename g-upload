@@ -7,10 +7,10 @@ set -x
 
 # egyszer kell futtatni
 
-git init
-git add .
-git commit -m "initial import"
-git remote add origin git@ccc.comfirm.hu:repositories/ccc3.git
-touch .git/git-daemon-export-ok
-scp -rp .git git@ccc.comfirm.hu:repositories/ccc3.git
-git push --all
+# git init
+# git add .
+# git commit -m "initial import"
+# git remote add origin git@ccc.comfirm.hu:repositories/ccc3.git
+# touch .git/git-daemon-export-ok
+# scp -rp .git git@ccc.comfirm.hu:repositories/ccc3.git
+# git push --all

@@ -1,0 +1,2 @@
+#!/bin/bash
+java -jar  jterminal.jar localhost 46001 ssl 

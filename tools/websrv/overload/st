@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+ps -A   | grep wget    | awk '{print $1}' | while read PID; do
+    kill -KILL $PID
+done

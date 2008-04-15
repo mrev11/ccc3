@@ -1,0 +1,360 @@
+
+#define VERSION "2.1.03"
+
+#ifndef VERSION  
+
+2007.10.06 -- 2.1.03
+  SIGHUP, SIGINT sighandler-ben elnyomva.
+  Érdemes így indítani:
+    nohup z.exe "$@"   1>>~/.z/nohup1.out  2>>~/.z/nohup2.out  &
+
+2007.05.03 -- 2.1.02
+  Ha ZSAVE egy scriptnevet tartalmaz (a curdir-ben),
+  akkor az automatikusan végrehajtódik a mentett filére.
+  Pl. F2 (save) után automatikusan futhat a LaTeX .
+
+2007.03.19 -- 2.1.01
+  F9-re megmutatja savedtext és gettext diffjét.
+  zedit classban új slotok:  diffblk, diff.
+  F9-re zedit:diff végrehajtja diffblk-ot, ha az nem NIL.
+
+2007.03.17 -- 2.1.00
+  Cut/Copy/Paste téglalapokra.
+  ALT-R átvált RECT módra, ALT-W visszavált CONT módra.
+  CTRL-Y (sortörlés) szintén átvált CONT módra.
+
+2007.02.27 -- 2.0.02
+  Directoryt nem próbál editálni.
+
+2007.01.25 -- 2.0.01
+  z-ben F2-re mentés.
+  zedit classban új slotok: savedtext, saveblk, save.
+  F2-re zedit:save végrehajtja saveblk-ot, ha az nem NIL.
+  A ZCOLOR_0 környezeti változó beállítja a text színét.
+
+2006.04.08 -- 2.0.00
+  Portolás unicode-ra.
+
+2005.01.14 -- 1.1.23
+  Replace hibája javítva.
+
+2004.06.25 -- 1.1.22
+  Változott a mentés. 
+
+  Korábban az eredeti filét átneveztük bak-ra,
+        az új tartalmat pedig kiírtuk egy új filébe.
+
+  Most az eredeti filét átmásoljuk egy újonnan létrejövő bak-ba,
+        utána az eredeti filé hosszát 0-ra csökkentjük,
+        és az új tartalmat beleírjuk az eredeti filébe.
+        
+  Kérdés, hogy ez jobb-e, mindenesetre megmarad a filé
+  tulajdonosa (viszont más tulajdonosa lesz a bak-nak),
+  maguktól megmaradnak a file permission flagek.
+
+  UNIX-on a historyban való keresés is case sensitive.
+
+2004.06.25 -- 1.1.21x
+  Paste javítva (nem rak felesleges space-t a sor végére).
+  Konkurrens history kezelés.
+
+2004.01.20 -- 1.1.20
+  Új bak névképzés.
+
+2003.07.10 -- 1.1.19
+  Tabpozíciók kezelése.
+
+2002.12.31 -- 1.1.18
+  Termináltípushoz alkalmazkodó, beállítható színek:
+
+  export ZCOLOR_1="w/b"   # header
+  export ZCOLOR_2="b/w"   # mark
+  export ZCOLOR_3="w/rb"  # alert button
+
+  Clipboard megtekintésekor alkalmazkodás a terminálhoz:
+
+        if( getenv("CCC_TERMINAL")=="term" )
+            screen:=savescreen(0,0,maxrow(),maxcol())
+            run ("z "+this:clipfile+" -r")
+            clear screen //inkompatibilitás miatt szükséges!
+            restscreen(0,0,maxrow(),maxcol(),screen)
+        else
+            run ("z "+this:clipfile+" -r &")
+        end
+
+  A "clear screen" parancs egy kompatibilitási hiba megkerüléséhez kell,
+  néha még ez sem elég, és mégsem állítódik vissza (teljesen) a képernyő
+  Ahol a restscreen üres sort ír ki, ott átlátszik az eredeti tartalom.
+  A screen-ben még nincs benne a szemét.  (Egyszer majd ki kell javítani, 
+  de lehet, hogy ncurses hiba.)
+ 
+ 
+2001.11.11 -- 1.1.17
+  case-insensitive keresés és helyettesítés.
+
+  F3 sensitive keresés, ALT_F3 insensitive keresés, SHIFT_F3 keresés újra,
+  F4 sensitive csere, ALT_F4 insensitive csere, SHIFT_F4 következő csere.
+  Hogy ez Linuxon működjön, a KDE ALT_F3 és ALT_F4-hez rendelt default 
+  funkcióit ki kell kapcsolni, pl. ALT_F4 becsukná az ablakot.
+  
+  A következő keresés, vagy csere mindig az utoljára beállítódott
+  sensitive/insensitive módban történik (a kurzor helyétől).
+  
+  A batch keresés (-s, -S) a kurzor helyétől történik (ami a -l és -c 
+  opciókkal állítható), de a kurzornál lévő searchstringet nem ugorja át.
+  
+  Új parancssori opciók: -S<search> -p<replace>
+  
+  -S case insensitive módban keres
+  -p beállítja a rePlace stringet (de nem helyettesít magától)
+  
+  A replace funkció beállítja: this:changed:=.t.
+  
+
+2001.11.10 -- 1.1.16
+  Új parancssori opciók: -l<line> -c<col> -s<search>
+
+2001.09.04 -- 1.1.15
+  zhome() bevezetve, itt keresi, ide teszi a dolgait.
+  ZHOME megadható a set/export paranccsal, ha ez nem definiált,
+  1) UNIX-on $HOME/.z/-t használja,
+  2) NT-n a z.exe directoryját használja.
+  
+  A zedit osztály clipfile attribútumának értékét a felhasználónak 
+  kell véglegesen beállítani, kezdeti értéke: "clipfile", amit z.exe 
+  (mint az osztály felhasználója) átállít zhome()+"clipbrd.z"-re.
+  
+  Az F7 gomb mindig z-t indítja a clipboard editálására, a korábbi
+  exename() nem jó, ui. más program is használja a zedit osztályt.
+  A clipboard editálása F7-tel readonly (-r opció).
+
+
+2001.08.04 -- 1.1.14
+  errorblock és signalblock teljesen szétválasztva.
+
+
+2001.08.02 -- 1.1.13
+  Az emergency backup nevének képzésébe betéve getpid(),
+  így ugyanannak a filének egyidejűleg editált példányai
+  elszálláskor nem írják egymást felül.
+
+
+2001.07.29 -- 1.1.12
+  Hiba esetén emergency backup készítés.
+  
+  Megjegyzés: a "hiba" nemszándékos kilépést (elszállást) jelent,
+  ami tipikusan véletlen CTRL-C lenyomás, vagy a parent processz 
+  kilépése miatt fordul elő. Ilyen esetek után akár folytatható
+  volna az editálás, biztosabb azonban a mentés után kilépni.
+ 
+
+2001.01.09 -- 1.1.11
+  Kis/nagybetű konverzió az ékezetes betűket is viszi.
+  F1-re helpet ad a legfontosabb billentyűk leírásával.
+  keymap.z átírva Latin2 kódokra (lényegében mindegy). 
+
+
+2000.10.01 -- 1.1.10
+  A replace funkcióval (hibásan) akkor is lehetett változtatni a filén, 
+  ha a modflg atribútum false-ra volt állítva. Ha modflg==.f., akkor 
+  menteni sem szabad.
+ 
+2000.09.28 -- 1.1.09
+
+  -r opció hatására a filé nem módosítható
+
+2000.08.02 -- 1.1.08
+ 
+  Új metódus :markedstring, az invertált rész szövegét adja,
+  most ezzel működik :search és :replace, így nem íródik felül
+  a clipboard tartalma.
+  
+  Korábban az invertált részt :search és :replace először
+  :copy-val a clipboardba másolták, majd onnan olvasták ki. 
+  Bizonyos kijelölések esetén azonban a clipboardba NIL kerül, 
+  ami elszállást okozott. 
+
+
+2000.06.25 -- 1.1.07
+
+  Portolás WINGUI-ra. 
+  
+  inkey : inkey(0) helyett inkeyex(0,1,.f.) kell
+  alert : az itteni zöld példány helyett a standard alert() kell 
+  
+  A változások inkább az alapkönyvtárban történtek: implementálva
+  lett savescreen, restscreen, scroll, támogatva van a caret
+  kezelése, stb. Az editálás egy display objektumban történik,
+  ami automatikusan jön létre.
+  
+  Továbbra is a karakteres z editor az "igazi", a GUI-s példány,
+  csak a "kompatibilitási tesztnek" tekintendő. A GUI-s display
+  továbbra sem támogatja a színeket.
+
+
+2000.06.21 -- 1.1.06
+ 
+  Ezek a javítások az editorban nem okoznak változást, viszont 
+  használhatóbbá teszik a zedit osztályt más programokban.
+
+  zeditNew(txt,t,l,b,r) minden argumentumának adunk default értéket,
+  korábban txt-nek nem volt, most "".
+  
+  A clipboard filé névképzése NT-n változott, korábban ez volt:
+
+  zedit:clipfile:=strtran(lower(exename()),"z.exe","clipbrd.z").
+
+  Zavar keletkezett azonban, ha a zedit osztályt nem a z.exe-ből
+  használtuk. Ezért a zeditIni() "clipfile"-ra inicializálja az
+  attribútumot, és csak z.prg állítja be a korábban használt nevet.
+  UNIX-on maradt a "$(HOME)/.z/clipbrd/z" név.
+  
+ 
+2000.04.13 -- 1.1.05
+
+  tolower/toupper műveletek bevezetve: F6, SH_F6
+  
+  Hiba: 
+
+  Az MSC-vel linkelve az alapkönyvtárbeli local_getkey
+  jut érvényre, nem pedig az srcw32-ben definiált példány,
+  ezért nem minden ékezetes betű működik, és csak az ALT-os
+  gombok használhatók kijelölésre.
+  
+  Javítás:
+  
+  1. Igy is lehet használni.
+  2. Borland, vagy Watcom C-t kell használni.
+  3. Közvetlenül az objectekből linkeljünk (z.lib nélkül).
+
+
+2000.01.13 -- 1.1.04
+  "\" kicserélve dirsep()-re
+
+1999.12.31 -- 1.1.03
+  Filé mód (chmod) mentése és visszaállítása Linuxon.
+  Az eljárás nem teljesen korrekt, mert egy filé editálása
+  megváltoztatja a filé tulajdonosát.
+
+  
+1999.12.30 -- 1.1.02
+  Átvéve az alapkönyvtár keyb32c-t érintő javítása.
+
+
+1999.12.16 -- 1.1.01
+  NT-n az kurzor egérrel is pozícionálható.
+  Egyelőre nem döntöttem el, hogy ez káros, vagy hasznos.
+
+
+1999.12.14 -- 1.1.00
+ 
+  Portolás Linux-ra:
+
+    a *.z munkafiléket $HOME/.z-ben tároljuk
+    a dos-os filénév konverziót letiltjuk
+    a filénevek kis/nagybetűit a headerben is megőrízzük
+    a könyvtári crlf() megszűnt, helyette endofline()
+    cuarrchr.prg idehozva, így nem kell a dbfctx-et linkelni
+    xvcopy.cpp megtartva, így nem kell a dbfctx-et linkelni 
+
+  
+  Hibák (a Linuxos CCC hibáiból adódnak):
+
+    nem működik a shift-nyíl kijelölés (csak az alt),
+    nem villog a kurzor, és a mérete sem állítható,
+    nem működik a konverzió, mert nincs működő _charconv(),
+    az X-es konzol nem jól jeleníti meg a kalapos o-t és i-t.
+
+
+  Fordítás:
+    a normál Linuxos (nem build) make rendszerrel fordul,
+    az srcw32 alkönyvtár tartalma nem kell,
+    xvcopy.cpp felkerült a közös forrásdirectoryba.
+    
+ 
+  Installáció:   
+
+    Létrehozzuk a z scriptet a következő tartalommal:
+       /fullpathofzexe/z.exe "$@" &
+    és azt betesszük valahová a path-ba.
+
+    keymap.z-t bemásoljuk ~/.z-be.
+
+    Az alábbi beállítások ~/.bashrc-be tehetők:
+       export CCC_XSIZE=80x43 (konzolméret), 
+       export CCC_XCOLORS=normal/inverse (konzolszín),
+       export EDITOR=z (az mc által használt külső editor).
+    
+
+  Az NT-s változatban nincs szándékos változás.
+  
+
+
+1999.05.31 -- 1.0.07
+  kurzorpozíció visszaállítása kilépéskor
+
+
+1999.05.18 -- 1.0.06
+ 
+  A headerben a verzió helyett percent.
+  A verzió csak F1-ben, de ott a pontos érték.
+
+
+1999.04.14 -- 1.0.05
+ 
+  Hibajavítás: egysoros szövegben K_ALT_UP elszállást okozott,
+  mert nem tudott feljebblépni, mégis frissíteni akarta az utolsó
+  alatti sort. Most _zedit_loop és _zedit_displine is védekezik a 
+  túlindexelés ellen.
+
+
+1999.04.13 -- 1.0.04
+
+  filé nevekben a kis/nagybetű megőrízve
+  zöld alertben a színek javítva
+  változatszám kiírva a headerben
+
+
+1999.04.06 -- 1.0.03
+ 
+  Ha újonnan kreálóik egy filé, ctrlpgup-ot hajtunk végre,
+  hogy a kurzor az üres filé első pozícióján álljon.
+
+
+1999.03.25 -- 1.0.02
+
+  ki lett véve az 1.0.01-es automatikus konverzió,
+  helyette mindig azt mutatjuk, mint ami a valóság,
+  viszont különböző kódkészletekkel lehet menteni
+ 
+  437 <==> 850 konverzió mentéskor:
+  K_F10-re konverzió nélkül ment (vegyes is lehet)
+  K_CTRL_F10-re 850-es formátumban ment
+  K_ALT-F10-re 437-es formátumban ment
+  
+  új attribútum: changed (nem ment, ha ez .f.), ezzel a végére
+  rakott crlf, kibontott tab-ok hatására nem kérdez rá kilépéskor
+
+
+1999.03.10 -- 1.0.01
+ 
+  WIN2CWI karakterkonverzió 
+
+  A Win32 API SetConsoleOutputCP() függvénye NEM működik
+  (erről az SDK dokumentáció is ír de nem ad workaround-ot),
+  ezért, ha a 850-es karakterekkel írott szövegnek jól kell kinéznie
+  a konzolon, azt az alkalmazásnak magának kell konvertálnia.
+  Az itteni konverzió ugyanaz, mint amit a könyvtári memoedit is 
+  alkalmaz. Így akármilyen kódkészletet is használunk a megjelenítés
+  előtt mindig 437-esre van konvertálva.
+  
+  Mentéskor választhatóvá lehetne tenni, hogy milyen kódkészlettel 
+  írjunk. Jelenleg az elmentett szöveg mindig CWI lesz.
+
+
+1999.03.10 -- 1.0.00
+ 
+  Első változat
+
+
+#endif

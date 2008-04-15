@@ -1,0 +1,525 @@
+
+1.1.10 (2008.03.27)
+  jttable cellákban változtatható fontok.
+
+1.1.09 (2008.03.15)
+  jttree kiválasztás anomáliája
+      A részfa becsukásával összekapcsolt változást
+      a Jáva két lépcsőben adja:
+      1) A becsukott részfában korábban kiválasztott node 
+         kiválasztottsága megszűnik: nincs kiválasztott node.
+      2) Kiválasztódik a becsukott részfa gyökere.
+      Ha viszont a változás nem jár részfa becsukásával,
+      akkor egyből az új kiválasztást adja.
+  elkerülve.
+
+  Akció közben a jtdialog ablak letiltva.
+  Ha az akcióküldés tiltása alatt az ablak nincs letiltva, annak is 
+  van előnye: Lehet panelt váltani, scrollozni, stb.. Hátránya, hogy 
+  állapotváltás történhet az akciójelentés nélkül, pl. változhat egy 
+  listbox vagy checkbox kiválasztás. Ilyenkor újabb akció kell, 
+  hogy az ilyen állapotváltás eljusson a szerverre.
+
+1.1.08 (2008.03.13)
+  jttable színezés.
+
+1.1.07 (2008.01.19)
+  jttree kontroll.
+
+1.1.06 (2008.01.14)
+  A jttabpane csak akkor próbál menüt állítani,
+  ha érvényes fül van kiválasztva benne.
+  A menü átállítása után packolja a dialogwindow-t,
+  másképp nem mindig látszik azonnal a menü változása
+  (néha csak az ablak átméretezése után).
+
+1.1.05 (2007.11.25)
+  Szerverindítás websrv-ből CGI-ként. Új paraméter: cgi=...
+
+    java jterminal localhost 80 cgi=/cgi-bin/cgienv/kepnezo.exe
+ 
+  Induláskor a terminál küld egy HTTP GET requestet a websrv-nek,
+  ami normál CGI protokoll szerint lefuttatja a CGI programot, plusz 
+  biztosítja neki, hogy a REMOTE_SOCKET változóból kiolvasható socketen 
+  kommunikálni tudjon a HTTP klienssel. A CGI program így kezdődik:
+
+    fclose(0)
+    fclose(1)
+    
+    // A pipe-ok lezáródása miatt a websrv azt gondolja, hogy 
+    // a CGI program befejezte a működését..., és akkor jövünk mi.
+    // Először be kell állítani az örökölt socketet,
+    // aminek az fd-jét bekészítette a websrv (REMOTE_SOCKET):
+    
+    jtsocket(jtsocketNew(getenv("REMOTE_SOCKET"))) 
+
+    //Innen kezdve normál jterminálos program ...
+
+1.1.04 (2007.08.29)
+  Megoldva a külön keypass-szal védett kulcsok problémája.
+  A keystore betöltése után törölni kell azokat a kulcsokat,
+  amikhez nem lehet hozzáférni a megadott (egyetlen) jelszóval.
+
+1.1.03 (2007.08.28)
+  SSL paraméterek:
+  
+  ssl           - bekapcsolja az SSL-t
+
+  aut[=<store>] - bekapcsolja az SSL-t
+                  plusz bekapcsolja a szerver hitelesítést
+                  <store>-ból veszi a certificate-eket
+                  ha <store> nincs megadva, akkor cacerts-ből veszi
+                  (aminek helye: /usr/lib/java/jre/lib/security/cacerts)
+
+  key=<store>   - bekapcsolja az SSL-t 
+                  plusz bekapcsolja a kliens hitelesítést
+                  <store>-ból veszi a kulcsot és certificate-et
+                  ha a key opció nincs megadva, akkor .keystore-ból veszi
+                  (aminek helye: $(HOME)/.keystore)
+
+  psw=<passw>   - bekapcsolja az SSL-t 
+                  plusz bekapcsolja a kliens hitelesítést
+                  megadja a kulcshoz való password-öt
+
+
+  Szerver hitelesítés:
+    A terminál az "aut" opció hatására hitelesíti a szervert.
+    Csak az a szerver lesz elfogadva, amelyiknek a certificate-je
+    importálva van cacerts-be. Linuxon a cacerts helye: 
+        /usr/lib/java/jre/lib/security/cacerts
+    ami egy szokásos módon, keytool-lal kezelhető keystore.
+    Az "aut=<store>" formával másik keystore-ra lehet áttérni.
+    
+  Kliens hitelesítés:  
+    A key/psw megadása kapcsolja be a kliens hitelesítést.
+
+    A Jáva keytool-lal generálni kell egy kulcspárt.
+    Abból exportálni kell egy certificate requestet.
+    Azt alá kell írni a szerverben használt kulccsal.
+    Az így kapott cerificatet visszaimportálni a keystore-ba.
+    Csak akkor megy a visszaimport, ha előzőleg a szerveren 
+    használt certificate-et is importáljuk.
+
+1.1.02 (2007.05.21)
+  jttoolbar:floatable állítható, a defaultja false.
+
+1.1.00 (2006.09.01)
+  Verziószám léptetés.
+
+1.0.09 (2006.08.31)
+  jterminal.autoscroll(JComponent) bescrollozza azokat 
+  a controlokat, amik nem láthatók, amikor fókuszt kapnak.
+  Ezekkel működik: check, combo, get, passw, push, radio, textarea.
+  A jtmessage üzenetek elemzése központosítva (jtchange).
+  A jtmessage üzenetek feldolgozása sorbaállítva (jtmutex).
+  jtpanel tartalmazhat jttabpane-t is.
+
+1.0.08 (2006.08.26)
+  A jdk1.4.2-ben a System.getenv(String) deprecated.
+  Lefordul, de runtime errorral elszáll, és azt ajánlja, 
+  hogy használjunk helyette -D opciót és getProperty-t.
+  A jdk1.5.0-ban megint nem deprecated, és működik.
+  A végeredmény, hogy nem használható, ui. nem ismert,
+  hogy a felhasználónál milyen JRE van. A kúrva anyjukat.
+  Ezért: getenv("JTRESOL") kivéve.
+
+  Megjegyzés:
+  A jdk1.5.0-val fordított jar nem fut jre1.4.2 környezetben,
+  akkor sem, ha a forrás 1.4.2-ben és 1.5.0-ban is fordul.
+  A j2sdk1.4.2-vel fordított jar fut jre1.5.0 környezetben.
+  Tehát egyelõre csak a j2sdk1.4.2-t lehet Jáva Webstart
+  alkalmazásokhoz (pl. e-Kontó) használni.
+
+  getScrollpane() metódus a jttextarea, jthtmlarea, jttable, 
+  jtpanel komponensekben. Ezeknél mindig a scrollpane kerül,
+  a parentbe, nem pedig a komponens maga.
+
+1.0.07 (2006.08.24)
+  Bevezetve a jtparam osztály a paraméterek gyűjtésére.
+  Scrollozó komponensek méretezésének felülvizsgálata.
+
+1.0.06 (2006.08.20)
+  picturedocument osztály külön fájlba téve.
+
+  pictnulldocument osztály a picture nélküli getek számára.
+  Ez annyiban tér el a síma PlainDocument-től
+  (és a JTextField-től, amit korábban használt a picture nélküli get),
+  hogy nem nyeli el a text-ben levő \n és \r karaktereket.
+  Sajnos a \r karakterek Linuxon átalakulnak \n-re az XML elemzőben.
+
+  jtpanel-ban szabályozva hexpand, vexpand.
+
+1.0.05 (2006.08.19)
+  picturefield-ben a "@C" alakú picture default templatet kap.
+  A jtget tágulását külön protected változó (expand) szabályozza,
+  ami akkor true, ha a getet méretek nélkül hozzák létre.
+
+1.0.04 (2006.08.16)
+  setrow: új message, egyetlen sort frissít a table-ban.
+
+  Az "AN" template csak ANGOL betűket enged be a getbe.
+  Korábban ékezetes és cirill betűket is beengedett, 
+  amivel jól el lehetett rontani a számlaszámokat.
+
+1.0.03 (2006.08.15)
+  Az összes pozícionálás, méretezés felülvizsgálva, pontosítva.
+  JTRESOL=high (envvar) beállítás esetén 14 pontos fontot használ.
+  JTRESOL=low (envvar) beállítás esetén 12 pontos fontot használ.
+  Egyébként akkor használ 14 pontos fontot, ha a képernyőméret>1024.
+  Új attribútum jtcheck/jtradio-ban: htextpos.
+  A logikai getekben a space toggle billentyűként működik. 
+
+1.0.02 (2006.08.10)
+  picturefield implementálja a Runnable interfészt,
+  hogy amikor billentyűvel megyünk bele egy table cellába,
+  rá lehessen adni a fókuszt. Korábban nagyon kellemetlen volt,
+  hogy ilyen szituációban a picturefield úgy editálódott, hogy
+  nem volt rajta a fókusz: Nem látszott a caret, és ami mégrosszabb,
+  a left/right billentyűk nem az editált pozíciót mozgatták, 
+  hanem átvittek a szomszédos cellába.
+
+  clickCountToStart 2-ről 1-re változott. 
+  A check mező állapota továbbra is csak dupla klikkre változik. 
+  Ezzel szimpla klikk aktivizálja a picturefield editorát
+  (de szimpla klikkre garantáltan nincs változás az adatokban),
+  majd billentyűvel lehet módosítani (check-et pl. a space-szel).
+
+1.0.01 (2006.03.11)
+  String.replace helyett String.replaceAll.
+  Újrafordítva 1.4.2-vel. Az 1.5.x változattal fordított
+  terminál nem futott az 1.4.2-es JRE-val, valszeg azért, 
+  mert String.replace(String, String) 1.5.x-ben új. 
+
+1.0.00 (2006.02.23)
+  UTF-8 support, jtencoding message
+
+0.9.11 (2004.02.11)
+  Összetett komponensekben itemlist, ezen keresztül be lehet járni 
+  az egész dialogboxot, legalábbis a névvel rendelkező komponenseket.
+  A dialog.varlist-hez való hozzáadás nem a dialogbox építése közben,
+  hanem utólag egy fabejárás során történik (minden nodenak meghívódik
+  a buildvarlist metódusa).
+  
+  A jtpanel komponens kezeli a "change" üzenetet, ennek hatására
+  teljesen kiüríti magát, a belsejét újraépíti az üzenet tartalma
+  alapján, a dialog.varlist-et újraépíti.
+
+0.9x.10 (2003.12.11)
+  (továbbosztott) jtsplitpane scrollozása javítva
+  splitpane-be tett panel kerete nincs nullázva
+  jtpanel-ben is lehet jtsplitpane (nem csak jtdialog-ban)
+
+0.9x.09 (2003.11.15)
+ 
+  Experimentális változat.
+  
+  Régi: jtdialog < JDialog < Dialog < Window
+        vagy
+        jtdialog < JFrame  < Frame  < Window 
+            
+  Most: jtdialog < jtwindow < Object,
+        ahol a jtwindow-ban van egy wnd member, 
+        aminek típusa jtf < JFrame, vagy jtd < JDialog
+  
+  Korábban jtdialog a JDialog-ból (egyúttal Window-ból) származott.
+  Most jtdialog őse a jtwindow (Object), aminek van egy Window tagja,
+  aminek a dinamikus típusa vagy jtf (JFrame), vagy jtd (JDialog).
+  A jtdialog azon metódusait, amit korábban a JDialogból örökölt
+  implementálni kellett jtwindow-ban úgy, hogy a metódushívásokat
+  továbbítjuk a beágyazott windownak. Ezzel a legtöbb helyen jtdialog
+  ugyanúgy használható, mint korábban, kivéve ott, ahol explicite 
+  Window-ként használtuk, pl. amikor cast-olva átadtuk jtremove-nak, 
+  ami Window-kat tud megszüntetni.
+  
+  (Szálanként) a legalsó jtdialog JFrame típusú, a többi JDialog típusú.
+  Az alsó (JFrame) window-knak van ikonizáló gombja és ikonja a taskbarban.
+  Minden window a megelőző window tulajdonában van, a legalsó (JFrame) 
+  window-knak nincs tulajdonosa. A tulajdonviszonyok miatt a window-k 
+  megtartják a rendezettségüket.
+  
+  Az ikonizálógomb csak akkor működik, ha az ablak enabled, ezért 
+  az egész átszervezésnek csak akkor van értelme, ha az alsó ablakok 
+  nincsenek letiltva. Korábban a nem fölül levő ablakok le voltak 
+  tiltva (setEnabled(false)), most minden ablak engedélyezve van. 
+  Ebből adódóan a nem fölül levő ablakok kontrolljai is MŰKÖDNEK.
+  A nem fölül levő ablakok azonban nem küldenek akciót.
+  
+  Példa: Egy nem fölül levő ablakban levő checkboxot korábban nem 
+  lehetett megnyomni, mert az ablak disabled volt. Most meg lehet 
+  nyomni a chekboxot, ami meg is változtatja az állapotát. Hiába van 
+  azonban a chekboxhoz akció van rendelve (valid==.t.), az akció jelentése 
+  elmarad. Amikor az ablak újra felülre kerül, és az ablak legközelebb
+  akciót jelent, akkor a checkbox új állapota szinkronizálódik, de a 
+  checkboxhoz rendelt akció végleg elmarad.  Végeredményként a kontrollok 
+  állapota úgy változtatható, hogy el lehet kerülni az állapotváltozáshoz 
+  rendelt ellenőrzést (actionblock-ot).
+  
+  Anomáliák keletkeznek, ha olyankor jön fel új ablak, amikor 
+  az alkalmazás éppen ikonizált állapotban van. Ha az új ablak alert
+  (ami disable-ezi a parentjét), akkor az alkalmazás végleg ikonná
+  válik (beragad). Ezért az új ablakok automatikusan deikonizálják 
+  az alkalmazást, ennek ellenére szerncsétlen időzítés esetén beragad.
+  A deikonizált ablakok kirajzolása gyakran elromlik.
+  
+
+  Változás Windowson:
+  
+      A jterminál alkalmazás (szálanként) ikonizálható. 
+      Az alul levő ablakok huzigálhatók (anélkül, hogy felülre jönnének). 
+      Az alul levő ablakok kontrolljai működnek, de akciót alul levő ablak 
+      nem küld. Az alul levő ablakok kontrolljai változtatni tudják az 
+      állapotukat az actionblock végrehajtása nélkül.
+  
+  
+  Változás Linuxon:
+
+      Linuxon eddig is működött az ikonizálás, az alsó ablakok huzogatása.
+      Az alul levő ablakok kontrolljai ugyanúgy működnek, mint Windowson.
+  
+
+  Egyéb változások:
+
+  A jtmemo osztály megszűnt.
+  A jtalert és jtfilechooser nem teszik magukat a dlglst-be.
+
+
+
+0.9.08 (2003.11.12)
+  Nagy üzenetek checksum-ja javítva.
+ 
+0.9.07 (2003.11.08)
+  Grid layout beállítása javítva jtdialogban.
+  jthtmlarea, jttextarea, jtpanel: egyforma getPreferredSize
+
+0.9.06 (2003.10.21)
+  Kiszűrve az XML elemző által el nem fogadott karakterek.
+  Latin2-ben a 32-nél kisebbek (kivéve 9,10,13) nem elfogadottak.
+
+0.9.05 (2003.10.19)
+  A méretezés/skálázás függ a képernyő méretétől.
+
+0.9.04 (2003.10.15)
+  jtpanel méretezése javítva.
+ 
+0.9.03 (2003.10.11)
+  A jtdialog ablakok pozícionálása javítva, hogy a caption
+  ne lógjon ki teljesen a képernyőről.
+
+0.9.02 (2003.10.06)
+  A jtdialog message átviszi jttable kiválasztott sorait.
+
+0.9.01 (2003.09.30)
+  jtpanel scrollozása javítva.
+
+0.9.00a (2003.08.23)
+  Több aktív ablak.
+  Új API: jtconnect, jtexec, jtgetenv, jtsetenv
+
+0.8.19 (2003.05.28)
+  jtfilechooser-ben is kikerülve a Windows fókuszkezelés hibája.
+
+0.8.18 (2003.05.08)
+  jtalert parentje Component helyett Window;
+  jtalert a parentjét letiltja;
+  jtalert megszüntetése jtremove.run-nal;
+  jtdialog a parentjét letiltja;
+  jtdialog megszüntetése jtremove.run-nal;
+  jterminal-ban visszavéve a 0.8.14-es javítás;
+  jterminal a window-kat jtremove.run-nal szünteti meg;
+  jtfilechooser a parentjét letiltja;
+  jtget.xmlset-ből kivéve a téves setBackground;
+  jtmemo a parentjét letiltja;
+  jtmemo megszüntetése jtremove.run-nal;
+  jtprogbar (külön ablak) megszüntetése jtremove.run-nal;
+
+  jtremove Object helyett Window-kat szüntet meg;
+  jtremove vacakol a megszüntetett ablak parentjével
+  a Windows hibájának elkerülésére (a 0.8.14-es javítás helyett);
+
+0.8.17 (2003.05.05)
+  Az őŐűŰ betűk kiírásának javítása a caption-ben.
+
+0.8.16 (2003.04.30)
+  jtdialog méretezése javítva (pack).
+  jtdialog megszűnt focuslistener lenni (nincs értelme).
+
+0.8.15 (2003.04.29)
+  Unicode -> Latin1/2 konverzió javítva (jterminal.char2byte).
+ 
+  A bedrótozott encoding paraméter Latin2-re változott,
+  header: <?xml version="1.0" encoding="ISO-8859-2"?>, így a CCC-től 
+  kapott Latin1/2 kódolású űŰőŐ betűk vesszőkkel jelennek meg.
+
+0.8.14 (2003.04.29)
+  Megszűnő ablak alatti ablak enable-ezése.
+  Ezzel Windows hibát kerülgetünk, 
+  ui. a Windows alulra teszi az alkalmazást,
+  ha nem marad enabled ablaka (elmegy a fókusz).
+  Ez viszont sérti azt az elvet, hogy a terminál 
+  csak a reakció érkezése után fogad új inputot,
+  és ezért veszélyes. Linuxon ez nem volt gond.
+
+0.8.13 (2003.04.25)
+  Felhasználó hitelesítés digitális aláírással.
+  jtcertificate üzenettel lekérhetők a certificate-ek keystore-ból.
+  A focusable attribútum dinamikusan változtatható néhány kontrollnál.
+ 
+0.8.12 (2003.04.23)
+  jttable kiválasztott sorait állítani lehet a reakcióban.
+  jtmenu-k közé jtmenusep-et lehet rakni (hglue lesz belőle).
+
+0.8.11 (2003.04.05)
+  A jtpanel bővült a mnemonic attribútúmmal,
+  ezzel vezérelhető a jtpanelekből felépülő jttabpane.
+  A mnemonicok kódja mindenhol nagybetűre konvertálódik.
+
+0.8.10 (2003.03.31)
+  Opcionális szerver autentikáció.
+
+0.8.09 (2003.03.27)
+  A fókusz elvesztésekor jelentett akció (F flag) visszavéve.
+
+0.8.08 (2003.03.25)
+  Új flagek a get function stringjében:
+
+    E - elfogadja a teljesen üres kitöltést (X flag ellenére is)
+    F - akciót jelent, ha valid==true esetén elveszti a fókuszt
+  
+  Fókusz elvesztésekor a getek mindig ellenőrződnek, és ezáltal
+  normalizálódnak (ez csak a szám geteket érinti). Felesleges
+  normalizálás kihagyva.
+  
+  A jtget csak akkor indít akciót, ha a saját ellenőrzésének
+  megfelel. Ha nem felel meg, és akciót kellene indítani,
+  akkor akció helyett saját hatáskörben felhoz egy alertet.
+  
+  A jtget-ek escape attribútuma mindig true. Az escape==true
+  jelentése, hogy az ilyen kontrollból induló akciót a dialogbox
+  akkor is jelenti, ha vannak pfexception-t dobó getek. 
+  Ez így logikus, ui. a get azért indít akciót, hogy a tartalmát
+  ellenőrizni lehessen. Ilyenkor bosszantó, ha a program nem jut el 
+  az ellenőrzésig, hanem fennakad egy MÁSIK get hibáján.
+  
+  A kontrollok értékének gyűjtése javítva, két eset lehetséges:  
+
+    1) az érvényesen kitöltött kontrollok értékeit elküldjük,  
+    2) vagy xmlreset-tel minden lékerdezést érvénytelenítünk.
+
+  Korábban volt olyan eset, hogy a lekérdezéseket érvénytelenítettük, 
+  de aztán mégis elküldtük (ettől még működött).
+
+
+0.8.07 (2003.03.07)
+  A jtpanel objektumba menüt lehet rakni. A jtpanel a menüket
+  az új menubar attribútumában tartogatja. Ha egy ilyen panelt 
+  jttabpane-be teszünk, és kiválasztjuk a hozzá tartozó tabot,
+  akkor a jtpanel menübárja automatikusan lecseréli a dialogbox 
+  korábbi menüjét.
+
+  A jttabpane-ben szabályozható a fülek helye (placement=t,b,l,r).
+
+0.8.06 (2003.03.05)
+  Átalakíva a dialog.varlist karbantartása:
+  Korábban az összetett objektumok adták hozzá az itemeiket
+  a varlisthoz, ehelyett most maguk a itemek adják magukat
+  varlisthoz. A varlist-be akkor kell betenni egy komponenst, 
+  ha név szerint el akarjuk érni, jelenlegi esetek:
+  
+    xmlget nem üres,
+    xmlset nem üres,
+    message nem üres,
+    fókuszt akarunk adni rá.
+
+  A jtdialog controllist-je megszűnt, mivel nem volt rá szükség. 
+  Az itemlist-ek megszűntek, mivel nem volt rájuk szükség.
+
+  A jtmenusep osztály megszűnt.
+ 
+  A picturefield-ben az end-re pozícionálás javítva.
+  
+  A pfexception után a getek  kieshettek a szinkronból, 
+  a javítás céljára bevezetve xnlreset().
+ 
+  Új funkció: a tabpane értékét a kiválasztott tab sorszámaként 
+  definiáljuk, ez programból lekérdezhető és beállítható.
+  
+  Új funkció: mnemonic és accelerator támogatás.
+  
+
+0.8.05 (2003.02.21)
+  Végleges átállás kisbetűs osztálynevekre.
+
+  Escape attribútum elterjesztése a kontrollok többségénél.
+  Korábban csak a jtpush és jtmenuitem kezelte.
+
+0.8.04 (2003.02.17)
+  Rosszul kitöltött get értéket nem küldünk (?).
+  Új komponens: jtsplitpane.
+
+0.8.03 (2003.01.20)
+  A labelek magassága is beállítható.
+
+  A jthtmlarea szövege közvetlenül is megadható, 
+  ehhez a szöveget "<html>" taggal kell kezdeni.
+
+0.8.02 (2002.12.03)
+  Javítgatás a PictureField és jtget akciókezelésében.
+
+  A tabpane-ekbe a panelek pane-jét kell berakni, 
+  másképp nem működik a scrollozás.
+  
+  GridLayout támogatás, így kell megadni: pnl:layout:="0,2".
+ 
+0.8.01 (2002.11.30)
+  Integer.parseInt kicserélve jterminal.parseInt-re,
+  hogy elkerüljük a number format exception-öket.
+
+0.8.00 (2002.11.26)
+ 
+  Új kontroll: jttextarea
+  Új kontroll: jthtmlarea
+ 
+  A flag típusú attribútumok átadása változott, pl: <valid>true</valid>.
+  Korábban a <valid/> alakot használtuk, amin nem  szimmetrikus. 
+  Érintett tagok: editable, enabled, escape, focusable, valid.
+
+0.7.03 (2002.11.15)
+  jttable.xmlget nem jól adta vissza az üres választást.
+  JPasswordField.getText deprecated, helyette getPassword.
+
+0.7.02 (2002.11.13)
+  xmlset() nem String-ben, hanem Node-ban kapja a paraméterét,
+  hogy összetett értéket is tovább lehessen adni;
+
+  Változott jtpassw  koncepciója:
+  Korábban a kódolt jelszót a terminál akciókor automatikusan küldte
+  a kontroll értékeként, és az a varget metódussal volt lekérdezhető.
+  Ez azonban nem adott alkalmat a salt beállítására, ami általában a
+  felhasználó kilététől függ, ezért most a jelszót a terminál egyáltalán
+  nem küldi akciónál, hanem csak a getpassword üzenetre válaszként,
+  így van alkalom előzőleg beállítani a salt-okat, és nem küldünk 
+  idejekorán félig rejtett jelszavakat
+ 
+0.7.00 (2002.11.12)
+  border kezelése a jtpanel, jtpush, jtprogbar kontrollokban;
+  jtdialog mérete korrigálva a menü magasságával;
+  jtcombo védve a kiválasztott index hibás megadása ellen.
+
+0.6.00 (2002.10.30)
+  jtpassw jelszómező objektum bevezetve.
+ 
+0.5.02 (2002.10.21)
+  Ikonkészletek felülvizsgálva.
+
+0.5.01 (2002.10.18)
+  Beálítja a letöltött filé dátum/idejét.
+  CDATA-ák egymásba skatulyázása darabolással.
+
+0.5.00 (2002.10.12)
+  SSL kommunikáció.
+
+0.4.01 (2002.10.09)
+  Hibajavítás: xmlset-ben lastsend-et törölni kell.
+  Logikai étékek egységesen true/false-ként mennek.
+
+ 

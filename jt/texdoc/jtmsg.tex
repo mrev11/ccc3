@@ -1,0 +1,359 @@
+
+\section{Üzenetek}
+
+Egyszer talán itt egy komplett referencia áll majd,
+most azonban meg kell elégednem az üzenetek egyszerű felsorolásával,
+ez legalább felhívja a figyelmet bizonyos funkciók létezésére.
+Emellett megpróbálok rávilágítani a legfontosabb összefüggésekre, 
+megkönnyítve ezzel a kódban való tájékozódást.  
+
+\subsection{Az üzenetrendszer alapjai}
+
+A szerver (CCC) és a terminál (Jáva) között SSL kapcsolat van,
+és a felek XML formátumú üzenetekkel kommunikálnak egymással.
+
+\begin{quote}\small
+    Megjegyzés. Az 1.4.1-es Jáva helyből tartalmazza a szükséges 
+    XML elemző csomagot és az SSL kiegészítést, az 1.3.x-es Jávához 
+    ezeket külön kell telepíteni.  Régebbi Jávával nem kísérleteztem.
+\end{quote}
+
+A szerver először egy \verb!<jtdialog>! üzenetet küld a terminálnak,
+ami egy dialogbox teljes leírását tartalmazza. A dialogboxot a terminál
+megjeleníti és működteti. 
+
+A terminál csak akkor üzen a szervernek, ha a felhasználó valamilyen
+{\em akciót} vált ki. Akció akkor keletkezik, ha kiválasztanak egy
+menüt, megnyomnak egy push buttont, entert ütnek egy get mezőben, stb.
+(Szabály: a menük és push buttonok mindig jelentik az akciót, a többi
+kontroll csak akkor, ha azt a programban előírtuk.)
+Az akciót a terminál egy \verb!<action>! üzenettel jelenti.
+Az üzenet tartalmazza az akciót kiváltó kontroll nevét (azonosítóját),
+és  a dialogboxban levő  összes változtatható értékű kontroll
+aktuális értékét. Az \verb!<action>! üzenet elküldése után
+a dialogbox \verb!setEnabled(false)! állapotba helyezi magát, 
+és vár a szerver válaszára (a reakcióra).
+
+A szerver eközben egy messageloop-ban várakozik a terminál
+üzeneteire. Amikor megérkezik az akció, azt a \verb!_dlgbase_getmessage!
+függvény feldolgozza, és az akcióban jelentett új tartalmakat
+betölti a dialogboxot reprezentáló szerver oldali objektumba.
+
+Az így frissített (szerver oldali) dialog objektummal a szerver azt csinál, 
+amit akar, pl. számításokat végez a kontrollok tartalmával, 
+vagy éppen új értéket ad egyes kontrolloknak, ez az üzleti logika. 
+
+Miután az üzleti logika elvégezte a dolgát,
+de még mielőtt a messageloop a következő körre fordulna,
+\verb!_dlgbase_getmessage! függvény egy \verb!<reaction>!
+üzenetet küld a terminálnak. A reaction üzenetben egyúttal
+elküldjük a (terminál oldali) dialogboxnak a megváltozott 
+kontrollok új értékét.
+
+A terminál a reaction üzenetben kapott új tartalmakat betölti
+a kontrollokba, majd \verb!setEnabled(true)! állapotba helyezi
+magát.
+
+Összefoglalva:
+
+\begin{enumerate}
+\item 
+   A szerver a \verb!<jtdialog>! üzenetet küld, ha meg akar jeleníteni
+   egy dialogboxot.
+\item
+   A terminál \verb!<action>! üzenetet küld, amikor valamilyen
+   akció történt. Az üzenet tartalmazza a kontrollok aktuális
+   tartalmát. Az üzenet után a terminál vár a \verb!<reaction>!
+   üzenetre.
+\item
+   Az akció feldolgozása után a szerver \verb!<reaction>! 
+   üzenetet küld a terminálnak, amiben küldi a megváltozott
+   kontrollok új tartalmát.
+\item 
+   A \verb!<reaction>!  üzenetre a terminál betölti a dialogboxba
+   az új értékeket, és folytatja az akciónál felfüggesztett működést.
+\end{enumerate}
+
+A fentieken kívül vannak más üzenetek is, de az egész rendszer
+vázát a fenti üzenetmechanizmus képezi, aminek megértése elengedhetetlen
+rendszer használatához.
+ 
+
+\subsection{A terminál üzenetei}
+
+
+\subsubsection{{\tt <action>} üzenet}
+Action üzenet akkor keletkezik, ha a felhasználó
+\begin{itemize}
+  \item 
+      kiválaszt egy menüt,
+  \item 
+      megnyom egy pushbuttont,
+  \item 
+      Jáva értelemben vett akciót hajt végre egy olyan kontrollban, 
+      aminek a valid attribútuma true, 
+      vagy  akcióblokkal rendelkezik.
+\end{itemize}
+A valid attribútum elnevezése a régi Clipperre utal, ahol a
+valid bővítményben lehetett megadni a get mezők postblockját.
+Most ilyen postblock nincs, csak annyit mondhatunk a terminálnak,
+hogyha az adott kontrollban akció történik, akkor arról azonnal
+értesülni akarunk. 
+
+\begin{verbatim}
+public void action(xmlcomponent source)
+{
+    if( !actionenabled )
+    {
+        return;
+    }
+
+    String x="<action dialogid=\""+dialogid+"\">";
+    x+="<source>"+source.getName()+"</source>";
+
+    for( int i=0; i<varlist.size(); i++ )
+    {
+        xmlcomponent c=(xmlcomponent)varlist.get(i); 
+        
+        try
+        {
+            x+=c.xmlget();
+        }
+        catch( pfexception e )
+        {
+            if( !source.isEscape() )
+            {
+                //szólni kell a kontrolloknak:
+                //amit küldeni akartak, nem ment el,
+                //erre való az xmlreset()
+ 
+                for( int k=0; k<i; k++  )
+                {
+                    ((xmlcomponent)varlist.get(k)).xmlreset();
+                }
+
+                jtalert a=new jtalert(jterm);
+                a.message="Hibás adatbevitel: "+c.getName();
+                a.parent=this.wnd;
+                a.send=false;
+                //a.beep=false;
+                a.type=JOptionPane.ERROR_MESSAGE;
+                a.run();
+                e.getField().requestFocus();
+                return;
+            }
+        }
+    }
+    x+="</action>";
+    actionenabled=false;
+    jterm.send(x);
+}
+\end{verbatim}
+
+Az action üzenetet a jtdialog objektum készíti (és küldi) miután értesült
+róla, hogy valamelyik kontrollban jelenteni való akció történt.
+Mint a kódban látjuk, csak enabled állapotban küldünk akciót.
+Mivel az akció eredményére várva a dialogbox disabled állapotban van,
+ez egyúttal azt jelenti, hogy az akciók nem skatulyázódnak egymásba.
+A \verb!<source>! tag tartalmazza az akciót kiváltó kontroll azonosítóját.
+A jtdialog objektum körbekérdezi a (változtatható értékű) kontrollokat,
+hogy adják meg az aktuális állapotukat (xmlget). Egyes kontrollok 
+erre kivétel dobásával reagálhatnak, ha a kitöltésük nem megfelelő.
+Ezt a kivételt nem vesszük figyelembe, ha az akció forrásának
+escape attribútuma true. Ennek az az értelme, hogy egy ,,Kilép''
+gombbal ki lehessen lépni akkor is, ha vannak érvénytelen
+állapotú kontrollok.
+
+
+
+\subsubsection{{\tt <destroy>} üzenet}
+Destroy üzenet keletkezik, ha a felhasználó becsukja
+a terminál valamelyik ablakát.
+ 
+\subsubsection{Egyéb üzenetek}
+Az itt felsorolt üzenetek az alkalmazás által kezdeményezett
+műveletre adott válaszként fordulnak elő:
+\verb!<jtversion>!,
+\verb!<alert>!, 
+\verb!<memoedit>!, 
+\verb!<dirlist>!, 
+\verb!<filechooser>!, 
+\verb!<uploadbegin>!, 
+\verb!<uploadend>!, 
+\verb!<uploaderror>!, 
+\verb!<download>!, 
+\verb!<makedir>!, 
+\verb!<makedirs>!, 
+\verb!<delete>!, 
+\verb!<exists>!, 
+\verb!<isfile>!, 
+\verb!<isdirectory>!, 
+\verb!<rename>!.
+
+
+
+\subsection{A szerveralkalmazás üzenetei}
+
+\subsubsection{{\tt<jtdialog>} üzenet}
+
+A szerver oldali jtdialog objektum xmlout metódusa készíti,
+és a show metódus küldi a {\tt<jtdialog>} üzenetet. Ebben a 
+szerver a dialogbox teljes leírását adja át a terminálnak.
+ 
+\begin{verbatim}
+static function _jtdialog_xmlout(this)
+
+local x,n,c,g:={},grp,i
+
+    x:="<jtdialog"
+    x+=ATTRI("top",this:top)
+    x+=ATTRI("left",this:left)
+    x+=ATTRI("bottom",this:bottom)
+    x+=ATTRI("right",this:right)
+    x+=ATTR("name",this:name)
+    x+=ATTR("dialogid",this:dialogid)
+    x+=ATTR("pid",this:pid)
+    x+=">"+EOL
+    x+="<caption>"+cdataif(this:text)+"</caption>"+EOL
+ 
+    if( this:layout!=NIL )
+        x+="<layout>"+this:layout+"</layout>"+EOL
+    end
+
+    for n:=1 to len(this:itemlist)
+        c:=this:itemlist[n] 
+        if( c:classname=="jtradio" .and. c:group!=NIL )
+        
+            grp:=eval(c:group)
+
+            for i:=1 to len(g)
+                if( grp==g[i] )
+                    exit
+                end
+            next
+
+            if( i>len(g) )
+                aadd(g,grp)
+                x+="<jtradiogroup>"+EOL
+                for i:=1 to len(grp)
+                    x+=grp[i]:xmlout+EOL
+                next
+                x+="</jtradiogroup>"+EOL
+            end
+
+        else
+            x+=c:xmlout+EOL
+        end
+    next
+
+    x+="</jtdialog>"
+
+    return x
+\end{verbatim}
+
+A metódus bejárja azt a fát, amibe a menük, kontrollok szerveződnek.
+Minden komponensnek meghívódik az xmlout metódusa, ezzel minden komponens 
+hozzáadja a saját járulékát a dialogboxot leíró XML dokumentumhoz.
+
+
+ 
+\subsubsection{{\tt<reaction>} üzenet}
+
+A szerver a reaction üzenettel jelzi a terminálnak,
+hogy annak újból enabled állapotba kell helyeznie magát,
+egyúttal elküldi a megváltozott kontrollok új állapotát.
+ 
+\begin{verbatim}
+static function _jtdialog_response(this)
+local n,v,x:=""
+    for n:=1 to len(this:varlist)
+        v:=this:varlist[n]
+        if( v:changed )
+            x+="<"+v:name+">"+v:xmlget+"</"+v:name+">" 
+            v:savestate
+        end
+    next
+    if( empty(x) )
+        x:='<reaction dialogid="'+this:dialogid+'"/>'
+    else
+        x:='<reaction dialogid="'+this:dialogid+'"><set>'+x+'</set></reaction>'
+    end
+    this:send(x)
+    this:mustreact:=.f.
+    return NIL
+\end{verbatim}
+ 
+Mint látjuk, a szerver oldali dialogbox objektum körbekérdezi
+a megváltozott állapotú kontrollokat (xmlget), amire azok 
+megadják az új értéküket.
+
+
+\subsubsection{{\tt<jtexit>} üzenet}
+Utasítja a terminált a kilépésre.
+ 
+
+\subsubsection{{\tt<jtclose>} üzenet}
+Utasítja a terminált a legfelső ablak bezárására.
+ 
+
+\subsubsection{{\tt<jtalert>} üzenet}
+A Clipperből ismert alertnek megfelelő üzenet.
+A Jáva lehetővé teszi, hogy a messagebox szövegét HTML
+jelöléseket használva különféle stílusokkal lássuk el.
+
+\subsubsection{{\tt<jtdirlist>} üzenet}
+A Clipperből ismert directory függvény kicsit okosabb
+(reguláris kifejezéseket támogató) megvalósítása.  
+Ezzel a szerver alkalmazás körül tud nézni a terminál gépen.
+
+
+\subsubsection{{\tt<jtupload>} üzenet}
+Filé másolás a terminálról a szerverre.
+
+\subsubsection{{\tt<jtdownload>} üzenet}
+Filé másolás a szerverről a terminálra.
+ 
+\subsubsection{{\tt<jtfilechooser>} üzenet}
+Filék és directoryk interaktív kiválasztása a terminálon.
+
+\subsubsection{{\tt<jtfileutil>} üzenetcsoport}
+Filé műveletek:
+\begin{description}
+\item[{\tt<makedir>}] directory létrehozása a terminálon,
+\item[{\tt<makedirs>}] többszörös mélységű directory létrehozása,
+\item[{\tt<delete>}] filé/directory törlése,
+\item[{\tt<exists>}] létezeik-e a megadott filé/directory,
+\item[{\tt<isfile>}] filé-e a megadott directory bejegyzés,
+\item[{\tt<isdirectory>}] directory-e a megadott directory bejegyzés, 
+\item[{\tt<rename>}] filé/directory átnevezése (mozgatása) a terminálon.
+\end{description}
+
+\subsubsection{{\tt<jtmessage>} üzenetcsoport}
+Az üzenetben meghatározott kontrollnak kell továbbítani 
+egy kontroll-specifikus üzenetet, pl. browse lapozás, progress bar léptetés,
+ikon, felirat, tooltip változtatás.
+ 
+\begin{verbatim}
+static function _jtelem_changeenabled(this,v)
+local x
+    if( v!=NIL )
+        this:enabled:=v
+    end
+    x:='<jtmessage'
+    x+=ATTR("pid",alltrim(str(getpid())))
+    x+=ATTR("dialogid",this:dialogid)
+    x+='>'
+    x+="<control>"+this:name+"</control>"
+    x+="<enabled>"
+    x+=if(this:enabled,"true","false")
+    x+="</enabled>"
+    x+="</jtmessage>"
+    this:send(x)
+    return NIL
+\end{verbatim}
+    
+A példa érzékelteti, hogy mire számíthatunk a jtmessage
+üzenetekben. Ez itt egy komponenes enabled attribútumát állítja át
+a dialogbox működése közben.
+    
+ 

@@ -1,0 +1,26 @@
+
+
+(define-function gtk_old_editable_get_type
+  (in-module "GtkOldEditable")
+  (c-name "gtk_old_editable_get_type")
+  (return-type "GtkType")
+)
+
+(define-method claim_selection
+  (of-object "GtkOldEditable")
+  (c-name "gtk_old_editable_claim_selection")
+  (return-type "none")
+  (parameters
+    '("gboolean" "claim")
+    '("guint32" "time" (default "GDK_CURRENT_TIME"))
+  )
+)
+
+(define-method changed
+  (of-object "GtkOldEditable")
+  (c-name "gtk_old_editable_changed")
+  (return-type "none")
+)
+
+
+

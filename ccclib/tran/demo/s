@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export CCC_LANG=hu
+#export CCC_LANG=en
+
+nlsdemo.exe

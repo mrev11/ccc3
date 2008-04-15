@@ -1,0 +1,14 @@
+
+
+(define-function gtk_cell_renderer_combo_get_type
+  (in-module GtkCellRendererCombo)
+  (c-name "gtk_cell_renderer_combo_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_cell_renderer_combo_new
+  (c-name "gtk_cell_renderer_combo_new")
+  (is-constructor-of GtkCellRendererCombo)
+  (return-type "GtkCellRenderer*")
+)
+

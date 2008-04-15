@@ -1,0 +1,16 @@
+create tablespace konto logging
+datafile '/opt/oracle/base/oradata/test/konto.dbf'
+size 8M reuse autoextend on next 4M
+maxsize unlimited
+extent management local autoallocate
+segment space management auto
+/
+create user konto
+identified by konto
+default tablespace konto
+quota 100000M on konto  -- 100G
+/
+grant connect to konto
+/
+quit
+/

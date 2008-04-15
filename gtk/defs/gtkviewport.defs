@@ -1,0 +1,65 @@
+
+
+(define-function gtk_viewport_get_type
+  (in-module GtkViewport)
+  (c-name "gtk_viewport_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_viewport_new
+  (c-name "gtk_viewport_new")
+  (is-constructor-of GtkViewport)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "hadjustment" (null-ok) (default "NULL"))
+    '("GtkAdjustment*" "vadjustment" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method get_hadjustment
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_get_hadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method get_vadjustment
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_get_vadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method set_hadjustment
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_set_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok))
+  )
+)
+
+(define-method set_vadjustment
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_set_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok))
+  )
+)
+
+(define-method set_shadow_type
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_set_shadow_type")
+  (return-type "none")
+  (parameters
+    '("GtkShadowType" "type")
+  )
+)
+
+(define-method get_shadow_type
+  (of-object "GtkViewport")
+  (c-name "gtk_viewport_get_shadow_type")
+  (return-type "GtkShadowType")
+)
+
+
+

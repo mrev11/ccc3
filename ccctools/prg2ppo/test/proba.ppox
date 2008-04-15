@@ -1,0 +1,57 @@
+
+#line 6 "proba.prg"
+    hoppsza<>hopp
+#line 13 "proba.prg"
+PROBA1 not defined
+#line 17 "proba.prg"
+PROBA1 not defined
+#line 23 "proba.prg"
+    QOut( a"asciistring" )
+    QOut( x"1100aabb" )
+    QOut( @"nlstext" )
+    QOut( 0B1010001 )
+    QOut( 0x0123abc )
+#line 1 "//home/vermes/cccutf/usr/include/table.ch"
+#line 19 "//home/vermes/cccutf/usr/include/table.ch"
+
+#line 1 "/opt/konto/devel/datadict/_napforg.ch"
+#line 33 "proba.prg"
+    tabOPEN(_napforg(),3)
+    napforg->ugyszam:="hopp"
+#line 41 "proba.prg"
+    QOut( "a","b","c","d" )
+    QOut( "a,b,c,d" )
+    a:=NIL;b:=NIL;c:=NIL;d:=NIL
+#line 48 "proba.prg"
+    a+b
+#line 52 "proba.prg"
+    QOut( "a+b+c",a+b+c )
+#line 56 "proba.prg"
+    (x )y z
+#line 59 "proba.prg"
+    ! x6
+    (x)6
+#line 63 "proba.prg"
+    ! x6
+    (x)6
+#line 67 "proba.prg"
+    ! x6
+    (x6)
+#line 71 "proba.prg"
+    ! x6
+    (x6)
+    ("x"+'y')
+#line 78 "proba.prg"
+    restricted("egy")
+    restricted("ketto")
+    restricted harom
+#line 85 "proba.prg"
+    AHEAD(a,b)
+    AHEAD(b)
+    LOOK1 1+2+3 :b
+    AHEAD(b)
+#line 93 "proba.prg"
+    HOPP
+    EMPTYPAR()
+    HOPP(a)
+#line 98 "proba.prg"

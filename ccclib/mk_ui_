@@ -1,0 +1,11 @@
+#!/bin/bash
+. $CCCDIR/usr/bin/$CCCUNAME/__unix.b
+export BUILD_OBJ="$BUILD_OBJ"_ui_
+
+build.exe @ui_.bld
+
+mkdir $CCCDIR/usr/lib/$CCCBIN 2>/dev/null
+cp -pf $BUILD_OBJ/*.lib    $CCCDIR/usr/lib/$CCCBIN
+cp -pf $BUILD_OBJ/*.so     $CCCDIR/usr/lib/$CCCBIN
+ 
+

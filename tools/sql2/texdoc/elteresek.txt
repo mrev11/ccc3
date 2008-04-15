@@ -1,0 +1,118 @@
+
+Eltérések az Oracle és a Postgres között
+========================================
+
+
+----------------------------------------------------------------------
+'' null értelmezése
+----------------------------------------------------------------------
+
+Oracle-ben egy karakteres mező értékének ''-t adva,
+a szerver null-ra állítja a mezőt. Ha a mező not null,
+akkor ez kibukik.
+
+Postgresben egy mezőnek ''-adva a mező értéke az üres 
+string lesz,  nem pedig null.
+
+
+----------------------------------------------------------------------
+Automatikus abort hiba esetén
+----------------------------------------------------------------------
+
+Ha egy SQL utasítás hibát eredményez, akkor a Postgres automatikusan 
+(és kikerülhetetlenül) abortálja az egész tranzakciót, továbbá a 
+tranzakciós blokk lezárásáig ignorál minden újabb utasítást.
+
+Az Oracle ilyenkor csak a hibás utasítást rollbackeli, a tranzakció 
+folytatódhat. Ez olyan, mintha minden utasítás előtt az Oracle csinálna 
+egy implicit savepointot, és hiba esetén eddig a savepointig rollbackelne.
+Az eltérés nyilván összefügg azzal, hogy a Postgresben nincs savepoint.
+
+Ez a viselkedés  megnehezíti import programok készítését,
+ui. ha nincsen minden importált rekord után commit, akkor
+egy hibás rekord abortálja az utolsó commit után bevitt jó 
+rekordokat is. Ha viszont minden rekord után commit van, 
+akkor a program fele sebességre lassul.
+
+----------------------------------------------------------------------
+Savepoint
+----------------------------------------------------------------------
+
+Postgresben nincs savepoint, ezért a rollback mindig a teljes 
+tranzakciót visszacsinálja.
+
+----------------------------------------------------------------------
+Lock timeout (select for update wait)
+----------------------------------------------------------------------
+
+Postgresben nem lehet a locknak timeoutot adni, ezért végtelenségig 
+vár (deadlock detektálás azért van).
+
+
+----------------------------------------------------------------------
+Bináris adatok
+----------------------------------------------------------------------
+
+Postgresben csak a memók tudnak bináris adatot tárolni, míg 
+Oracleben minden char/varchar  mező. Postgresben is megoldható volna, 
+de akkor teljesen le kell mondani a normál char/varchar típusokról, 
+és átállni a bytea típusra.
+
+
+----------------------------------------------------------------------
+Osztott adatbázisok
+----------------------------------------------------------------------
+
+A Postgres nem tud különböző adatbázisokból való táblákat joinolni, 
+nem tud elosztott tranzakciókat csinálni.
+
+
+----------------------------------------------------------------------
+Félbeszakadó select tranzakció
+----------------------------------------------------------------------
+
+    rowset:=tableentity:select
+    while( NIL!=(e1:=rowset:next) )
+        e1:nev:=alltrim(e1:nev)+"X" 
+        e1:update
+    end
+    //rowset automatikusan lezáródik
+    //cursor tranzakció lezárva + kiírás véglegesítve 
+    sqlcommit()                         
+
+Oracle-ben a commit állhat a cikluson belül, az update után.
+Postgresben ez elrontja (félbeszakítja) a select tranzakciót.
+
+Pontosítás:
+
+Nem a select tranzakciót szakítja félbe, hiszen a select
+elkészíti az egész eredménytáblát még az első fetch előtt,
+hanem a DECLARE crs CURSOR FOR SELECT ... utasítás, plusz a
+FETCH FORWARD utasítások azok, amik csak egy tranzakciós 
+blockon belül tudnak futni.
+
+Vissza lehet/kell térni az egyszerű selecthez, az Oracle is
+így működik, bár az Oracle-ben határozottan kínos, mikor egy
+nagy táblán kell végigmenni. (Postgresben kurzor nélkül még kínosabb.)
+
+----------------------------------------------------------------------
+Deadlock detektálás
+----------------------------------------------------------------------
+
+Ha a Postgres deadlockot detektál, akkor az egyik processz
+tranzakcióját abortálja, mire a másik azonnal továbbmegy,
+ebben az állapotban vár az abortált tranzakciót jelző alert.
+
+Az Oracle jelzi a deadlockot (vár az alertben) de a tranzakció
+még nincs abortálva, tehát a másik procsessz nem tud továbbmenni.
+Érdekes, hogy mégis csak az egyik processz jelzi a deadlockot.
+
+----------------------------------------------------------------------
+Implicit commit
+----------------------------------------------------------------------
+
+Az Oracle csinál egy implicit commit-ot minden DDL utasítás előtt 
+és után (tehát minden create, drop, alter, grant, revoke, stb. körül).
+A Postgres ezt nem csinálja,  a különbséget ki kell egyenlíteni.
+
+----------------------------------------------------------------------

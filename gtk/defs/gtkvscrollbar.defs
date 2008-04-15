@@ -1,0 +1,19 @@
+
+
+(define-function gtk_vscrollbar_get_type
+  (in-module GtkVScrollbar)
+  (c-name "gtk_vscrollbar_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vscrollbar_new
+  (c-name "gtk_vscrollbar_new")
+  (is-constructor-of GtkVScrollbar)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok) (default "NULL"))
+  )
+)
+
+
+

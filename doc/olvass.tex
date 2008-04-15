@@ -1,0 +1,99 @@
+\pagetitle{CCC3 installáció}{2008. január}{}
+
+(Akinek túlságosan tömör az alábbi leírás,  részletesebb 
+infót talál a \href{http://wiki.hup.hu/index.php/CCC}{HUPWikin}.)
+
+A preferált telepítési módszer forrásletöltés subversion (svn) klienssel,
+majd fordítás. Emellett lehet telepíteni a zip csomagokból is, ahogy
+azt a \href{webinst.b}{webinst.b} script teszi. 
+A \href{ccc-dependencies}{ccc-dependencies} script mutatja,
+hogy Ubuntu Linuxon milyen csomagok szükségesek a CCC lefordításához.
+
+\paragraph{Linux}
+
+\begin{enumerate}
+\item Installálni kell az svn kliens részét.
+
+\item Kell készíteni egy CCC3 directoryt.
+    A CCC3  szimbolikus név, a konkrét hely akárhol lehet,
+    pl. \verb!/opt/ccc3!, vagy \verb!$HOME/ccc3!.
+
+\item Kezdeti letöltés. CCC3-ból kiadjuk a parancsot:
+\begin{verbatim}
+    svn checkout svn://ccc.comfirm.hu/ccc3/trunk
+\end{verbatim}
+  amire CCC3/trunk-ban létrejön a CCC3 directory struktúra.
+  Ugyanide jutunk svn nélkül is, ha az összes
+  zip-et kibontjuk  CCC3/trunk-ban (kivéve,
+  hogy így később nem használhatjuk az svn update funkcióját).
+
+\item Az i.b script végzi el a fordítást 
+  a környezeti változók szokásos beállítása után:
+\begin{verbatim}
+    export CCCDIR=.../CCC3/trunk
+    export CCCBIN=lin
+    export CCCUNAME=linux
+    export CCCTERM_CONNECT=$CCCDIR/usr/bin/$CCCUNAME/terminal.exe
+    export PATH=.:$CCCDIR/usr/bin/$CCCUNAME:$PATH
+    export LD_LIBRARY_PATH=$CCCDIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+\end{verbatim}
+  A jt, gtk, sql2 modulok installálását az i.b script kihagyja,
+  ezeket utólag kell/lehet installálni.
+  Ennek oka, hogy olyan komponensektől függnek
+  (Jáva, GTK, Postgres), amik általában 
+  nincsenek benne az alapértelmezett módon telepített rendszerekben.
+
+  
+\item Frissítés. CCC3/trunk-ban kiadjuk a parancsot:
+\begin{verbatim}
+    svn up
+\end{verbatim}
+  Ez csak a különbségeket hozza le. Utána megint
+  az i.b scriptet kell futtatni a változások lefordítása céljából
+  (illetve a külön forduló részekkel most is külön kell bibelődni).
+\end{enumerate}
+
+\paragraph{Windows}
+
+Mindez Windowson is megy, bár az svn klienst nem próbáltam,
+és Windowson viszonylag ritkán tesztelünk. Ezeket kell beállítani:
+\begin{verbatim}
+    set CCCDIR=...\CCC3\trunk
+    set CCCBIN=mng
+    set CCCUNAME=windows
+    set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.exe
+    set PATH=%CCCDIR%\usr\bin\%CCCUNAME%;%PATH%
+\end{verbatim}
+A bor fordító támogatása megszűnt, 
+mert a freecommandlinetools.exe-nek 2000 óta nincs új kiadása, 
+a régi pedig rosszul fordítja a unicode-ot. 
+Az msc fordító rosszul fordítja a GTK-t, 
+ezért csak az mng (MinGW) felel meg. 
+CCCUNAME-ba a korábbi "nt" helyett "windows"-t kell írni.
+
+
+\paragraph{Segítség a CCC-vel ismerkedőknek}
+
+A CCC projektek directorykba vannak
+szervezve. A directorynevekből általában ki lehet találni,
+hogy miről van szó. A projektek többségében megtalálható \verb!m!
+(Windowson \verb!m.bat!) script szolgál az adott projekt
+lefordítására és installálására. Egyes helyeken ilyet találunk: 
+\verb!mkall.b!, \verb!install.b!, \verb!i.b!, 
+ezek olyan   scriptek, amik több directoryba is bemennek, 
+hogy végrehajtsák   az ottani \verb!m!-et. Kockázat nélkül 
+lehet az \verb!m! parancsokat próbálgatni. Persze a modulok 
+fordításának  sorrendje számít (mivel egymásra épülnek),
+de ezt hamar ki lehet ismerni.
+  
+A CCC fordítás nem ellenőrzi előre a külső függőségeket,
+hanem egyszerűen belefut a hibákba. Ilyenkor fel kell ismerni,
+hogy mi hiányzik neki, pótolni kell a hiányt, és újraindítani
+a fordítást. Aki végképp elakad, annak segítünk. 
+Néhány dolog, ami gyakran hiányozni szokott: 
+X, GTK, SSL, Postgres, Jáva fejlesztői környezetek.
+Ezzel szemben az Oraclehez (fordításhoz) semmi külső forrás nem kell.
+A Lemont és Flexet az CCC tartalmazza, és telepíti,
+a CCC-vel adott változatot kell használni.
+
+ 

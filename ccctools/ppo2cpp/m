@@ -1,0 +1,5 @@
+#!/bin/bash
+#rm objlin/ppo2cpp.obj
+#rm objlin/*.obj
+#rm $CCCDIR/linux/bin/ppo2cpp.exe
+bapp_unix0.b -mppo2cpp  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME"

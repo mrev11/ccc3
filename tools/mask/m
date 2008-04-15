@@ -1,0 +1,5 @@
+#!/bin/bash
+bapp_unixc.b -xmask     @parfile.bld
+bapp_unix_.b -xmsk2say  @parfile.bld
+
+

@@ -1,0 +1,395 @@
+
+#define JTLIBVERSION  "1.2.05-UTF8 (2008.03.13)" 
+
+#ifdef __HYSTORY__
+
+1.2.05 (2008.03.13)
+  jttable színezés.
+
+1.2.04 (2008.01.19)
+  jttree kontroll.
+
+1.2.03 (2008.01.14)
+  A jtelem:changeitem metódusban ctrl defaultja this.
+
+1.2.02 (2007.11.21)
+  jtrun hivása: jtrun(executable,arg1,arg2,...)
+  A jtrun korábban (1.2.00 előtt) run-nal ment, most spawn-nal,
+  tehát a korábbi parancs helyett argumentum listát kell megadni.
+  Hibásan csak az első paramétert (executable) vette át, javítva.
+
+1.2.01 (2007.08.28)
+  Új opciók:
+
+  -jtkey <key.pem>     - megadható a kulcsfilé (default: server.pem)
+  -jtca  <cacerts.pem> - kliens hitelesítés bekapcsol (default: üres)
+
+  SSL opciók összefoglalása  
+
+  -jtssl    bekapcsolja az SSL titkosítást
+            ha -jtkey nincs megadva, a kulcsot server.pem-ből veszi
+
+  -jtkey    bekapcsolja az SSL titkosítást
+            a kulcsot az itt megadott fájlból veszi
+
+  -jtca     bekapcsolja az SSL titkosítást
+            ha -jtkey nincs megadva, a kulcsot server.pem-ből veszi
+            plusz bekapcsolja a kliens hitelesítést
+            csak azokat a klienseket fogadja el,
+            akiknek olyan certificate-je van,
+            ami alá van írva egy cafile-beli certificate-tel
+            
+  Megjegyzés (Jáva kliens hitelesítés):
+
+    A Jáva keytool-lal generálni kell egy kulcspárt.
+    Abból exportálni kell egy certificate requestet.
+    Azt alá kell írni a szerverben használt kulccsal.
+    Az így kapott cerificatet importálni kell a keytool-lal.
+
+    Almegjegyzés-1:
+        Csak akkor lehet importálni, ha előzőleg a szerveren 
+        használt kulcspár certificate részét is importáljuk.
+
+    Almegjegyzés-2:
+        Csak olyan keystore-ral működik a hitelesítés,
+        amiben NINCS keypass-szal külön védett kulcspár.
+        (Ez a Jáva hibája, nem tudom, hogy lehet kikerülni.)
+            
+  Megjegyzés (szerver hitelesítés a terminálban):
+
+    A terminál az "aut" opció hatására hitelesíti a szervert.
+    Csak az a szerver lesz elfogadva, amelyiknek a certificate-je
+    importálva van cacerts-be. Linuxon a cacerts helye: 
+        /usr/lib/java/jre/lib/security/cacerts
+    ami egy szokásos módon, keytool-lal kezelhető keystore.
+    Az "aut=<store>" formával másik keystore-ra lehet áttérni.
+
+
+1.2.00 (2007.07.23)
+  SSL támogatás jtsocket-ban (-jtssl opció),
+  ezzel az sslforward nélkül is lehet titkosítani.
+  jtrun (Clipper) run helyett spawn-nal működik (inkompatibilitás).
+
+1.1.03 (2007.07.23
+  Nagy üzenetek crc-je javítva (0.9.03-as javítás még egy helyen).
+
+1.1.02 (2007.05.21)
+  jttoolbar:floatable állítható, a defaultja false.
+
+1.1.01 (2006.12.29)
+  Angol fordítás.
+
+1.1.00 (2006.09.01)
+  Verziószám léptetés.
+
+1.0.03 (2006.08.31)
+  Az osztályok átírva class szintaktikára.
+  Nincs jtdialogIni(), jtpanelIni(), ez inkompatibilitás,
+  msk2dlg alkalmazkodik jtdialogIni, jtpanelIni hiányához.
+  Hibakezelés mindenhol break-kel.
+
+1.0.02 (2006.08.30)
+  jtautostart korszerűsítve.
+
+1.0.01 (2006.08.24)
+  jtbrowseentity fejlesztve.
+  jttextarea changelinewrap művelet.
+
+1.0.00 (2006.02.23)
+  UTF-8 support, jtencoding message
+
+0.9.11 (2004.08.16)
+  A jtbrowsetable és jtbrowsearray osztályokban a kódblokkok
+  (skip, gotop, ... ) beállítása átkerült az initialize metódusba.
+  Új modul: jtbrowseentity.
+
+0.9.10 (2004.07.28)
+  jtdialog:varlist és jtdialog:blklist hash táblával működik:
+  A varlist-en, vagy blklist-en végigmenő eljárásoknak
+  a valódi kontrollok között levő NIL-eket ki kell kerülniük.
+  Kérdés, hogy az ascan helyetti hash keresés hoz-e annyit, 
+  mint amennyit elvisz a NIL-ek kerülgetése.
+
+  jtdialog:varlist-ből kihagyva az automatikus nevű kontrollok:
+  Korábban az automatikus nevű kontrollok a var objektumba is
+  bekerültek, és csak a véletlenen múlt, hogy nem okoztak hibát,
+  ui. az automatikus nevek mindig egyediek, ezért kétszer
+  létrehozva ugyanazt a dialogboxot más kontrollneveket kapunk,
+  tehát változott a var objektum struktúrája, miközben ugyanaz 
+  maradt az osztálydefiníció. A hiba azért nem derült ki, mert 
+  automatikus nevű attribútumokra a program nem tud hivatkozni.
+  A hash tábla alkalmazásával a hiba előjött, mivel a nevek
+  változása miatt az elemek mindig másképp rendeződtek el 
+  a hash táblában. Most sem a varlist-ben, sem a var objektumban
+  nincsenek automatikus (tehát változékony) nevek. Viszont a 
+  blklist-ben lehetnek változó nevek, ezért a blklist hashtábla 
+  elrendezése változhat.
+  
+  A könyvtár hivatkozik a hashcode() függvényre, ami csak a 2.1x
+  változattól része a CCC alapkönyvtárnak.
+
+0.9.08x (2004.02.10)
+  INKOMPATIBILIS VÁLTOZÁS:
+  jtcombo:itemlist átnevezve jtcombo:choicelist-re,
+  ui. ellentmondásos volt az itemlist név használata.
+  Az itemlist attribútum kizárólag a jtelem leszármazottak
+  tartalmazási relációjának leírására használatos.
+  Megszűnt a hasitem attribútum, viszont minden jtelemnek van 
+  itemlist attribútuma, és az itemlist==NIL-ből lehet arra
+  következtetni, hogy az adott komponens nem tartalmazhat
+  beágyazott komponenseket.
+
+  jtelem:changeitem(c), kicserél egy komponenst.
+  Példa: pnl1:changeitem(pnl2) kicseréli pnl1-et pnl2-re. 
+  A régi és új komponens osztályának egyeznie kell.
+  Egyelőre panelekre működik, más esetben hatástalan, kérdés, 
+  kell-e egyáltalán más, számításba jön: jtmenu, jtdialog. 
+  
+  Panelek esetében a régi panel megmarad, csak kiüríti a belsejét, 
+  és feltölti magát az új panel tartalmával. Más komponensek
+  esetleg másképp hajthatják végre a cserét,
+  
+  A csere után meg KELL hívni dlg:varinst-et olyan alias-szal, 
+  hogy ugyanahhoz a dialog struktúrához mindig ugyanaz az alias,
+  különböző dialog struktúrához mindig különböző alias tartozzon. 
+
+  Minden jtelem kap default nevet kivéve az alábbiak:
+  jtlabel, jtpanel, jtsplitpane, jttoolbar
+  
+  jttoolbar osztály újraírva (jtelemből származtatva),
+  Minden jtelem leszármazott örököl actionblockot.
+
+
+0.9.07 (2004.02.09)
+  Új attribútum: jttoolbar:actionblock.
+  Valójában a toolbar (önmagában) nem ad akciót, de minden
+  itemlist-ek bejárásával elérhető komponensnek kell legyen 
+  actionblock attribútuma, hogy dialog:blklist-et fel lehessen építeni.
+
+0.9.06 (2003.12.15)
+  A jtcolumn osztály külön modulba került.
+  A jtcolumn inicializáláskor a picture-ből azonnal meghatározza 
+  a típusát (C,N,D,L), és azt tárolja a type attribútumban. 
+
+  Koncepcióváltás: 
+  A browse cellák manipulálásakor nem az aktuális adat 
+  típusát nézzük, hanem a jtcolumn:type attribútumot. 
+  Más nyelvekben ui. bizonyos típusok (dátum, logikai) nem ismerhetők 
+  fel úgy, mint a CCC-ben. Ezért is fontos, hogy az adattípus
+  mindig kódolva legyen a picture function stringjében.
+
+  Az oszloppicture function stringjébe tett "E"-vel nem lehet
+  jelölni az oszlop editálhatóságát, ui. az ütközne a get által
+  értelmezett E (empty) flaggel. Ezért az editálhatóságot 
+  a jtcolumn:editable:=.t. attribútummal kell beállítani.
+
+
+0.9.05 (2003.12.11)
+  További szövegek védve cdataif-fel.
+  
+  Azokban a metódusokban, ahol bármely listához egy itemet adunk
+  a visszatérés mindig az item. Ez ilyen írásmódot tesz lehetővé:
+      but:=panel:additem(jtpushNew())
+      but:text:="pushbutton"
+      ...
+  Ez Pythonban és CCC-ben egyforma, tömör kódolást tesz lehetővé.
+  Ennek kapcsán változott: jtcombo:additem, jtfilefilter:addregex
+  jtfilefilter:addpattern. 
+  
+
+0.9.04 (2003.11.15)
+  A jtmemo osztály megszűnt.
+
+0.9.03 (2003.11.12)
+  Nagy üzenetek checksum-ja javítva.
+
+0.9.02 (2003.10.06)
+  A jtdialog message átviszi jttable kiválasztott sorait.
+ 
+0.9.00a (2003.08.23)
+  Új API: jtconnect, jtexec, jtgetenv, jtsetenv
+
+0.8.13 (2003.04.25)
+  Felhasználó hitelesítés digitális aláírással.
+  jtcertificate üzenettel lekérhetők a certificate-ek keystore-ból.
+
+  jtcombo:selectitem(txt), új metódus, szöveg alapján választ.
+  jtelem:changefocusable, új metódus.
+
+  A caption-t cdataif-fel kell küldeni (javítás több helyen).
+ 
+0.8.12 (2003.04.23)
+  A jttable kiválasztott sorait varput-tal lehet állítani
+  (korábban a Jáva oldal figyelmen kívül hagyta a beállítást).
+  A jttable:rowcount metódus megadja a row2pos tömb méretét.
+
+  jtmenu-k közé jtmenusep-et lehet rakni, amiből hglue lesz.
+
+0.8.10 (2003.04.06)
+  A jttable toolbarjában levő gombok mnemonicot kapnak.
+
+0.8.09 (2003.03.27)
+  A fókusz elvesztésekor jelentett akció (F flag) visszavéve.
+ 
+0.8.08 (2003.03.25)
+  A jtelem osztály bővült a setfocus metódussal.
+
+  Új flagek a get function stringjében:
+  E: elfogadja a teljesen üres kitöltést (az X flag ellenére is)
+  F: akciót jelent, ha valid==true esetén elveszti a fókuszt
+ 
+0.8.07 (2003.03.07)
+  A jtpanelbe menüt lehet rakni. A menü akkor jut szerephez, ha 
+  a panelt berakjuk egy jttabpane-be. Amikor a panelt kiválasztják,
+  akkor a panel menüje lecseréli a dialogbox korábbi menüjét. 
+  Így a jttabpane minden paneljéhez külön menü tartozhat, és azok 
+  a panelekkel szinkronban, automatikusan cserélődnek.  
+  Ha egy jtpanel-nek nincs menüje (a korábbi, szokásos eset),  
+  akkor az nem változtatja meg a menübárt. 
+  
+  Megjegyzés: A (szerver oldali) jtpanel objektumon semmit sem
+  kellett változtatni, a menüt egyszerűen be kell rakni az itemlistbe!
+  
+  Az előző megjegyzés tapasztalata, hogy felesleges a menüket külön
+  tárolni, ezért a jtdialog menu attribútuma is megszűnt. A jtdialog
+  control attribútumának neve itemlist-re változott, és hasitemlist
+  .t.-ra inicializálódik (a többi osztályban követett konvenció szerint).
+  
+  A jttabpane:placement attribútum (t,b,l,r) szabályozza a fülek helyét.
+ 
+
+0.8.06 (2003.03.04)
+  A jttabpane értéke akció/reakcióban beállítható/lekérdezhető,
+  az érték definíció szerint a kiválasztott tab sorszáma (1-től).
+  
+  D,L típusú getek kiolvasása javítva.
+  
+  jtget:varput a számok tizedesit pontosabban kezeli.
+  
+  A jtelem bővült a mnemonic és accelerator attribútumokkal.
+ 
+
+0.8.05 (2003.02.28)
+  jtprogbar:setbar a caption-t is beállítja.
+  Új metódus: jttable:pagerefresh.
+
+0.8.03 (2003.02.05)
+  Új komponens: jtsplitpane
+
+0.8.02 (2002.12.03)
+  Ha egy komponens akciót akar jelenteni, annak kell legyen neve,
+  Ha nincs, akkor az xmlout-ban hibát jelentünk, másképp később 
+  az XML elemzés akadna meg.
+ 
+0.8.01 (2002.11.30)
+  top, left, bottom, right-ot integerre kerekítve kell küldeni.
+
+0.8.00 (2002.11.26)
+ 
+  Új kontroll: jttextarea
+  Új kontroll: jthtmlarea
+ 
+  A flag típusú attribútumok átadása változott, pl: <valid>true</valid>.
+  Korábban a <valid/> alakot használtuk, amin nem  szimmetrikus. 
+  Érintett tagok: editable, enabled, escape, focusable, valid.
+
+0.7.03 (2002.11.15)
+  jttable:selectedrows átnevezve table:selectedindices-ra (==varget);
+  új: jtbrowsearray:selectredrows, a kiválasztott subarrayt adja;
+  új: jtbrowsearray:currentrow, a kiválasztott sort, vagy NIL-t ad;
+  ezeket majd jtbrowsetable-ban is implementálni kell.
+
+  jtcombo:getselecteditem átnevezve selecteditem-re;
+  és javítva, hogy kezelje az érvénytelen indexet, amire NIL-t ad;
+  jtcombo:changelist paraméterezése változott.
+ 
+0.7.02 (2002.11.13)
+  Változott jtpassw  koncepciója:
+  Korábban a kódolt jelszót a terminál akciókor automatikusan küldte
+  a kontroll értékeként, és az a varget metódussal volt lekérdezhető.
+  Ez azonban nem adott alkalmat a salt beállítására, ami általában a
+  felhasználó kilététől függ, ezért most a jelszót a terminál egyáltalán
+  nem küldi akciónál, hanem csak a getpassword üzenetre válaszként,
+  így van alkalom előzőleg beállítani a salt-okat, és nem küldünk 
+  idejekorán félig rejtett jelszavakat.
+  
+  A jtpassw objektum salt1, salt2 attribútumai megszűntek, helyette 
+  a getpassword(salt1,salt2) metódusben kell salt-ot küldeni.
+ 
+0.7.01 (2002.11.08)
+  jtrun javítva: csak a -jt opciókat adja tovább a childnak.
+
+0.7.00 (2002.11.03)
+  Új osztályok: jttable, jtbrowsetable, jtbrowsearray.
+  
+  jttable       : általános browse kódblokkok nélkül
+  jtbrowsetable : felkészítve egy táblaobjektum browseolására
+  jtbrowsearray : felkészítve egy array browseolására
+  
+  Ezek az osztályok nem a Clipper tbrowse leszármazottai,
+  ezért lokálisan nem ehet őket megjeleníteni. 
+  
+  A korábbi jtbrowse hátrasorolva comptibility státuszúvá,
+  és nincs befordítva a könyvtárba (azaz csak forrásban van meg,
+  így akinek éppen ez kell, előveheti).
+  
+  A terminálban az összes browse típusú komponenst ugyanaz a jttable
+  Jáva osztály jeleníti meg, csak a szerver oldalon van különbség a szerver
+  oldali objektum felszerelésének mikéntjében. Az üzenetek szintjén
+  már minden browse egyforma.
+
+
+0.6.01 (2002.10.31)
+  API változások:
+
+  jtbrowse:empty==.t., ha a terminálnak küldött utolsó lap üres volt;
+
+  jtdialog:getmessage(wtime), wtime ms-ig vár, és ""-vel tér vissza, 
+  ha nincs üzenet, wtime==NIL-nél örökké, wtime=0-nál egyáltalán nem vár,
+  továbbra is NIL-lel té vissza, ha megszakadt a kapcsolat;
+
+0.6.00 (2002.10.30)
+  jtpassw jelszómező objektum bevezetve.
+
+0.5.02 (2002.10.21)
+  _jtsocket_alert bevezetve. Korábban SIGSEGV-t okozott, 
+  ha a TCP kapcsolat szakadása miatt a send/recv hibát akart jelezni,
+  de a szokásos errorblock alert-je a vonalszakadás miatt szintén 
+  nem tudott átmenni, és így a hiba rekurzívvá vált.
+  Most socket hibánál a _jtsocket_alert-et tesszük az alertblockba.
+
+  Az alert ezt a message-et küldi: msg:="<html><p>"+strtran(msg,";","<p>")
+  Az első <p> nélkül a Jáva elmyeli a szöveget, ha az első karakter "/".
+  
+  Új osztály: jtarraybrowse
+  
+  A Jáva progress bárnak mindig inteket kell adni.
+ 
+0.5.01 (2002.10.18)
+  Beállítja a letöltött filé dátum/idejét.
+  CDATA-ák egymásba skatulyázása darabolással.
+ 
+0.4.01 (2002.10.09)
+  Hibajavítás: xmlset-ben lastsend-et törölni kell.
+  Logikai étékek egységesen true/false-ként mennek.
+
+0.4.00 (2002.10.07)
+  jtdirlist, jtmakedir, jtmakedirs, 
+  jtdelete, jtrename, isfile, isdirectory
+  
+0.3.00 (2002.10.01)
+ 
+  Dinamikusan változótatható ikon, enabledflag, text, tooltip.
+  Dinamikusan változtatható picture. 
+  Combo boxok listája dinamikusan változtatható.
+
+  Editálható browse.
+ 
+  Filé upload, download.
+ 
+
+0.2.00 (2002.09.26)
+  Induló verzió feltéve a webre.
+
+#endif
+

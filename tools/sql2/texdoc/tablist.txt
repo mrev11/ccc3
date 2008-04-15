@@ -1,0 +1,24 @@
+A tableentity objektumok táblafüggetlenek.
+Ez azt jelenti, hogy a tablist attribútum cseréjével
+ugyanaz a tableentity objektum (azaz struktúra) másik 
+adatbázistáblán fog dolgozni.
+
+A tablist használata:
+
+this:tablist:={"tabname"}
+
+    Ha a struktúra csak egy táblát használ,
+    akkor a tábla azonosításával sehol máshol nem kell foglalkozni.
+    Ha tablist-be egy másik (de ugyanolyan struktúrájú) táblát teszünk, 
+    akkor minden változatlanul működik (a másik táblára).
+
+    Működik az általánosabb this:tablist:={"tabname=alias"} alak is, 
+    de nincs jelentősége, mivel nem kell a táblára hivatkozni.
+
+this:tablist:={"tab1=alias1","tab2=alias2"}
+
+    Ha a tableentity több táblára is hivatkozik, akkor a táblákat
+    alias névvel kell megjelölni. Az oszlopdefiníciókban a tábla alias
+    nevével lehet megmondani, hogy melyik oszlop melyik táblából van.
+    A táblák konkrét azonosítóit (tab1,tab2...) a tablist-en kívül
+    sehol sem használjuk, ez biztosítja az invarianciát.

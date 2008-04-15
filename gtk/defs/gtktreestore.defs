@@ -1,0 +1,169 @@
+
+
+(define-function gtk_tree_store_get_type
+  (in-module GtkTreeStore)
+  (c-name "gtk_tree_store_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_tree_store_new
+  (c-name "gtk_tree_store_new")
+  (is-constructor-of GtkTreeStore)
+  (return-type "GtkTreeStore*")
+  (parameters
+    '("gint" "n_columns")
+  )
+  (CCC "REG,par")
+  (comment "
+    Eredetileg (varargs #t).
+  ")
+)
+
+(define-function gtk_tree_store_newv
+  (c-name "gtk_tree_store_newv")
+  (is-constructor-of GtkTreeStore)
+  (return-type "GtkTreeStore*")
+  (parameters
+    '("gint" "n_columns")
+    '("GType*" "types")
+  )
+  (CCC "skip")
+)
+
+(define-method set_column_types
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_set_column_types")
+  (return-type "none")
+  (parameters
+    '("gint" "n_columns")
+    '("GType*" "types")
+  )
+  (CCC "skip")
+)
+
+(define-method set_value
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_set_value")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "column")
+    '("GValue*" "value")
+  )
+  (CCC "REG,par")
+)
+
+(define-method set
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_set")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+  (CCC "REG,par,blk")
+  (codeblock "{|self,iter,values|gtk.tree_store.set(self:gobject,iter,values)}")
+  (comment "
+    Eredetileh (varargs #t).
+  ")
+)
+
+(define-method set_valist
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_set_valist")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("va_list" "var_args")
+  )
+  (CCC "skip")
+)
+
+(define-method remove
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_remove")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method insert
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_insert")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "parent")
+    '("gint" "position")
+  )
+)
+
+(define-method insert_before
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_insert_before")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "parent")
+    '("GtkTreeIter*" "sibling")
+  )
+)
+
+(define-method insert_after
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_insert_after")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "parent")
+    '("GtkTreeIter*" "sibling")
+  )
+)
+
+(define-method prepend
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_prepend")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "parent")
+  )
+)
+
+(define-method append
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_append")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "parent" (null-ok))
+  )
+)
+
+(define-method is_ancestor
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_is_ancestor")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "descendant")
+  )
+)
+
+(define-method iter_depth
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_iter_depth")
+  (return-type "gint")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method clear
+  (of-object "GtkTreeStore")
+  (c-name "gtk_tree_store_clear")
+  (return-type "none")
+)
+
+
+

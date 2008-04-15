@@ -1,0 +1,37 @@
+
+
+(define-function gtk_tree_drag_source_get_type
+  (in-module "GtkTreeDragSource")
+  (c-name "gtk_tree_drag_source_get_type")
+  (return-type "GType")
+)
+
+(define-method row_draggable
+  (of-object "GtkTreeDragSource")
+  (c-name "gtk_tree_drag_source_row_draggable")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method drag_data_delete
+  (of-object "GtkTreeDragSource")
+  (c-name "gtk_tree_drag_source_drag_data_delete")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method drag_data_get
+  (of-object "GtkTreeDragSource")
+  (c-name "gtk_tree_drag_source_drag_data_get")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+    '("GtkSelectionData*" "selection_data")
+  )
+)
+
+

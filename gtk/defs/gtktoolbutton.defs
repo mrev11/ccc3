@@ -1,0 +1,97 @@
+
+(define-function gtk_tool_button_get_type
+  (in-module GtkToolButton)
+  (c-name "gtk_tool_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_tool_button_new
+  (c-name "gtk_tool_button_new")
+  (is-constructor-of GtkToolButton)
+  (return-type "GtkToolItem*")
+  (parameters
+    '("GtkWidget*" icon (null-ok))
+    '("const-gchar*" label (null-ok))
+  )
+)
+
+(define-function gtk_tool_button_new_from_stock
+  (c-name "gtk_tool_button_new_from_stock")
+  (is-constructor-of GtkToolButton)
+  (return-type "GtkToolItem*")
+  (parameters
+    '("const-gchar*" stock_id)
+  )
+)
+
+(define-method "set_label"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_set_label)
+    (parameters
+        '("const-gchar*" label)
+    )
+)
+
+(define-method "get_label"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_get_label)
+    (return-type "const-gchar*")
+)
+
+
+(define-method "set_use_underline"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_set_use_underline)
+    (parameters
+        '("gboolean" use_underline)
+    )
+)
+
+(define-method "get_use_underline"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_get_use_underline)
+    (return-type "gboolean")
+)
+
+(define-method "set_stock_id"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_set_stock_id)
+    (parameters
+        '("const-gchar*" stock_id)
+    )
+)
+
+(define-method "get_stock_id"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_get_stock_id)
+    (return-type "const-gchar*")
+)
+
+(define-method "set_icon_widget"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_set_icon_widget)
+    (parameters
+        '("GtkWidget*" icon_widget)
+    )
+)
+
+(define-method "get_icon_widget"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_get_icon_widget)
+    (return-type "GtkWidget*")
+)
+
+(define-method "set_label_widget"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_set_label_widget)
+    (parameters
+        '("GtkWidget*" label_widget)
+    )
+)
+
+(define-method "get_label_widget"
+    (of-object GtkToolButton)
+    (c-name  gtk_tool_button_get_label_widget)
+    (return-type "GtkWidget*")
+)
+

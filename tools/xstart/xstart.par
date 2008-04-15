@@ -1,0 +1,10 @@
+<xstart>
+<item>
+    <name>Test Program</name>
+    <if>mkl</if>
+    <port>55000</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <env>CCCTERM__CONNECT=localhost:44965</env>
+    <command>test.exe</command>
+</item>
+</xstart>

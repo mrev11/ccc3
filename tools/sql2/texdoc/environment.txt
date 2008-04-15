@@ -1,0 +1,8 @@
+
+unset CLASSPATH
+
+export ORACLE_CONNECT=scott/tiger/ora1g
+export NLS_LANG=AMERICAN_AMERICA.WE8ISO8859P1
+export NLS_DATE_FORMAT="YYYY-MM-DD"
+
+

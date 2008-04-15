@@ -1,0 +1,30 @@
+//MSK2DLG 0.9.00
+
+class panel2(jtpanel)
+    method initialize
+    attrib  b1
+    attrib  kep
+    attrib  b2
+    attrib  b3
+    attrib  b4
+    attrib  b5
+    attrib  b6
+    attrib  b7
+    attrib  b8
+
+
+static function panel2.initialize(this)
+    this:(jtpanel)initialize(0,0,11,37)
+    this:name:='panel2'
+    this:layout:='fix'
+    this:b1:=jtcheckNew(1,2,1,17); this:b1:name:='b1'; this:b1:text:='Egy checkbox'; this:additem(this:b1)
+    this:kep:=jtpanelNew(1,19,9,34); this:kep:name:='kep'; this:additem(this:kep)
+    this:b2:=jtcheckNew(2,2,2,17); this:b2:name:='b2'; this:b2:text:='Egy checkbox'; this:additem(this:b2)
+    this:b3:=jtcheckNew(3,2,3,17); this:b3:name:='b3'; this:b3:text:='Egy checkbox'; this:additem(this:b3)
+    this:b4:=jtcheckNew(4,2,5,17); this:b4:name:='b4'; this:b4:text:='Egy checkbox'; this:additem(this:b4)
+    this:b5:=jtcheckNew(6,2,6,17); this:b5:name:='b5'; this:b5:text:='Egy checkbox'; this:additem(this:b5)
+    this:b6:=jtcheckNew(7,2,7,17); this:b6:name:='b6'; this:b6:text:='Egy checkbox'; this:additem(this:b6)
+    this:b7:=jtcheckNew(8,2,8,17); this:b7:name:='b7'; this:b7:text:='Egy checkbox'; this:additem(this:b7)
+    this:b8:=jtcheckNew(9,2,9,17); this:b8:name:='b8'; this:b8:text:='Egy checkbox'; this:additem(this:b8)
+    return this
+

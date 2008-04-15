@@ -1,0 +1,4 @@
+#!/bin/bash
+DBDRIVER=oracle
+#export ORACLE_CONNECT=konto@test/konto
+. import.b

@@ -1,0 +1,1 @@
+bapp_unix_.b  'BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)'

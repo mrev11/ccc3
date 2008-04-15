@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#paraméterezés nélkül
+#   minden interfészen figyel a 8080 porton
+#   a wd-ből gyökerező directory struktúrát mutatja
+#   nincs virtual hosting
+#   nincs hozzáférés ellenőrzés (-s,-x)
+#   nincs CGI
+#   nincs PHP
+#   nincs SSL
+
+websrv.exe    --rootdir `pwd`/htdocs  --virtualhost
+

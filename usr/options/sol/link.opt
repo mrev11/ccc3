@@ -1,0 +1,5 @@
+-lsocket
+-lnsl
+-lpthread
+-ldl
+-z rescan

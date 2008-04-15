@@ -1,0 +1,14 @@
+//MSK2DLG 0.9.00
+
+class demo(jtdialog)
+    method initialize
+    attrib  tpane
+
+
+static function demo.initialize(this)
+    this:(jtdialog)initialize(6,16,15,68)
+    this:name:='demo'
+    this:layout:='fix'
+    this:tpane:=jttabpaneNew(1,3,7,49); this:tpane:name:='tpane'; this:add(this:tpane)
+    return this
+

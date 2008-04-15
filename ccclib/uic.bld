@@ -1,0 +1,11 @@
+-sccc3_uic
+
+-duic
+-duic/unix
+-duic/termapi
+-iuic/screenbuf
+
+-iinclude
+ 
+BUILD_SRC=src
+ 

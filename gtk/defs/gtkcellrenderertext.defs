@@ -1,0 +1,25 @@
+
+
+(define-function gtk_cell_renderer_text_get_type
+  (in-module GtkCellRendererText)
+  (c-name "gtk_cell_renderer_text_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_cell_renderer_text_new
+  (c-name "gtk_cell_renderer_text_new")
+  (is-constructor-of GtkCellRendererText)
+  (return-type "GtkCellRenderer*")
+)
+
+(define-method set_fixed_height_from_font
+  (of-object "GtkCellRendererText")
+  (c-name "gtk_cell_renderer_text_set_fixed_height_from_font")
+  (return-type "none")
+  (parameters
+    '("gint" "number_of_rows")
+  )
+)
+
+
+

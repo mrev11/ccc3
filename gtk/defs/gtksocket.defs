@@ -1,0 +1,41 @@
+
+(define-function gtk_socket_get_type
+  (in-module "GtkSocket")
+  (c-name "gtk_socket_get_type")
+  (return-type "GtkType")
+)
+
+
+(define-function gtk_socket_new
+  (c-name "gtk_socket_new")
+  (is-constructor-of GtkSocket)
+  (return-type "GtkWidget*")
+)
+
+(define-method add_id
+  (of-object "GtkSocket")
+  (c-name "gtk_socket_add_id")
+  (return-type "none")
+  (parameters
+    '("GdkNativeWindow" "window_id")
+  )
+)
+
+(define-method get_id
+  (of-object "GtkSocket")
+  (c-name "gtk_socket_get_id")
+  (return-type "GdkNativeWindow")
+)
+
+(define-method steal
+  (of-object "GtkSocket")
+  (c-name "gtk_socket_steal")
+  (return-type "none")
+  (parameters
+    '("GdkNativeWindow" "wid")
+  )
+  (deprecated "")
+)
+
+
+

@@ -1,0 +1,27 @@
+Új (személyes) PG adatbázis létrehozása:
+
+1) Egy üres directoryban létrehozzuk a database cluster-t:
+
+    initdb --no-locale  -D `pwd`
+
+    
+2) Elindítjuk a szervert:    
+
+    pg_ctl start  -D `pwd`  -l PG_LOG
+
+3) Belépünk psql-be:
+
+    psql template1
+    
+4) Létrehozzuk az új adatbázist:    
+
+    create database vermes;
+
+5) Kilépünk psql-ből:
+
+    \q
+
+6) Újra belépve psql-be már az új adatbázisba jutunk:
+
+    psql
+    

@@ -1,0 +1,101 @@
+
+
+(define-function gtk_icon_factory_get_type
+  (in-module GtkIconFactory)
+  (c-name "gtk_icon_factory_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_icon_factory_new
+  (is-constructor-of GtkIconFactory)
+  (c-name "gtk_icon_factory_new")
+  (return-type "GtkIconFactory*")
+)
+
+(define-method add
+  (of-object "GtkIconFactory")
+  (c-name "gtk_icon_factory_add")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "stock_id")
+    '("GtkIconSet*" "icon_set")
+  )
+)
+
+(define-method lookup
+  (of-object "GtkIconFactory")
+  (c-name "gtk_icon_factory_lookup")
+  (return-type "GtkIconSet*")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-method add_default
+  (of-object "GtkIconFactory")
+  (c-name "gtk_icon_factory_add_default")
+  (return-type "none")
+)
+
+(define-method remove_default
+  (of-object "GtkIconFactory")
+  (c-name "gtk_icon_factory_remove_default")
+  (return-type "none")
+)
+
+(define-function lookup_default
+  (in-module "GtkIconFactory")
+  (c-name "gtk_icon_factory_lookup_default")
+  (return-type "GtkIconSet*")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-function icon_size_lookup
+  (c-name "gtk_icon_size_lookup")
+  (return-type "gboolean")
+  (parameters
+    '("GtkIconSize" "size")
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+  (CCC "byhand")
+)
+
+(define-function icon_size_register
+  (c-name "gtk_icon_size_register")
+  (return-type "GtkIconSize")
+  (parameters
+    '("const-gchar*" "name")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-function icon_size_register_alias
+  (c-name "gtk_icon_size_register_alias")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "alias")
+    '("GtkIconSize" "target")
+  )
+)
+
+(define-function icon_size_from_name
+  (c-name "gtk_icon_size_from_name")
+  (return-type "GtkIconSize")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-function icon_size_get_name
+  (c-name "gtk_icon_size_get_name")
+  (return-type "const-gchar*")
+  (comment "static buffer")
+  (parameters
+    '("GtkIconSize" "size")
+  )
+)
+

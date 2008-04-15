@@ -1,0 +1,1481 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+%include{
+
+#include <stdlib.h>
+#include <parsenode.h>
+#include <lexer.h>
+#include <codegen.h>
+#include <nodetab.h>
+
+extern ppo2cpp_lexer *lexer;
+
+int headerflag=1;
+int parsing_complete=1;
+static int blockflag=0;
+
+static void nested_block()
+{
+    fprintf(stderr,"Error: nested code block at #line %d %s.\n",
+            lexer->getinputlineno(),
+            lexer->getinputfspec());
+
+    exit(1);
+}
+
+static void double_defined_symbol(parsenode *p)
+{
+    fprintf(stderr,"Error: double defined symbol at #line %d %s (%s).\n",
+            p->lineno, //lexer->getinputlineno(),
+            lexer->getinputfspec(),
+            p->text);
+
+    exit(1);
+}
+
+
+static void add_static(parsenode *p)
+{
+    if( headerflag )
+    {
+        if( nodetab_globstat->search(p)>=0 )
+        {
+            double_defined_symbol(p);
+        }
+        nodetab_globstat->add(p);
+    }
+    else
+    {
+        if( nodetab_locstat->search(p)>=0 || nodetab_local->search(p)>=0 )
+        {
+            double_defined_symbol(p);
+        }
+        nodetab_locstat->add(p);
+    }
+}
+
+
+static void add_local(parsenode *p)
+{
+    if( nodetab_locstat->search(p)>=0 || nodetab_local->search(p)>=0 )
+    {
+        double_defined_symbol(p);
+    }
+    nodetab_local->add(p);
+}
+
+
+static void add_blkarg(parsenode *p)
+{
+    //Itt felmerült, hogy hibát jelezzek, ha a blockargumentum 
+    //korábbról definiálva van locstat-ként, vagy local-ként. 
+    //Ehelyett azt az elvet követem, hogy belső változók
+    //mindig felüldefiniálhatják a külső változókat.
+    //A régebbi változat is így működött.
+
+    if( nodetab_blkarg->search(p)>=0 )
+    {
+        double_defined_symbol(p);
+    }
+    nodetab_blkarg->add(p);
+}
+
+
+static void symbol_search(parsenode *p)
+{
+    int x;
+
+    if( blockflag && (x=nodetab_blkarg->search(p))>=0 )
+    {
+        p->cargo=(x+1)|SYM_BLKARG;
+    }
+    else if( (x=nodetab_local->search(p))>=0 )
+    {
+        p->cargo=x|(blockflag?SYM_BLKLOC:SYM_LOCAL);
+    }
+    else if( (x=nodetab_locstat->search(p))>=0 )
+    {
+        p->cargo=x|(blockflag?SYM_BLKSTAT:SYM_LOCSTAT);
+    }
+    else if( (x=nodetab_globstat->search(p))>=0 )
+    {
+        p->cargo=x|SYM_GLOBSTAT;
+    }
+    else
+    {
+        fprintf(stderr,"Error: undefined symbol at #line %d %s (%s).\n",
+                p->lineno, //lexer->getinputlineno(),
+                lexer->getinputfspec(),
+                p->text);
+        exit(1);
+    }
+
+    //p->print("search");
+    return;
+}
+
+static void write_strtab(FILE *strtab, parsenode *pnode)
+{
+    const char *p=pnode->text;
+    int len=strlen(p);
+    if( len>3 )
+    {
+        int i;
+        for(i=0; i<len; i++)
+        {
+            if( isalpha(p[i]) || ((int)p[i]>128) )
+            {
+                break;
+            }
+        }
+        if( i<len )
+        {
+            char inp[512];
+            sprintf(inp,"%s",lexer->getinputfspec());
+            unsigned int k;
+            for( k=0; k<sizeof(inp); k++ )
+            {
+                if( inp[k]==0 )
+                {
+                    break;
+                }
+                else if( inp[k]=='\"' )
+                {
+                    inp[k]=' ';
+                }
+            }
+            fprintf(strtab,"%s<<\"\" from %s (%d)\n",p,inp,pnode->lineno);
+        }
+    }
+}
+
+}//%include
+
+
+%syntax_error{
+    fprintf(stderr,"Error: syntax error at #line %d %s.\n",
+            lexer->getinputlineno(),
+            lexer->getinputfspec());
+
+    fflush(0);
+    
+    //Figyelem:
+    //itt a "hivatalos" Lemon interface alá nyúlunk,
+    //ami a teljes megértés hiányában könnyen segfault-hoz vezet.
+    
+    //Parser stack:
+    int i;
+    fprintf(stderr,"Stack:");
+    for(i=1; i<=yypParser->yyidx; i++)
+    {
+        fprintf(stderr," %s",yyTokenName[yypParser->yystack[i].major]);
+        //a parsenode text-je: yypParser->yystack[i].minor.yy0->text
+        fflush(0);
+    }
+    fprintf(stderr,".\n");
+    
+    //Last input token:
+    if( !lexer->geteofflag() )
+    {
+        fprintf(stderr,"Token: %s (%s).\n",yyTokenName[yymajor],yyminor.yy0->text);
+        fflush(0);
+    }
+    else
+    {
+        fprintf(stderr,"Token: EOF.\n");
+        fflush(0);
+    }
+
+    exit(1);
+} 
+
+%parse_accept{
+    if(parsing_complete)
+    {
+        printf("Parsing complete.\n");
+    }
+} 
+ 
+%token_type {parsenode*}  
+%token_destructor{delete $$;}  
+
+ 
+%start_symbol prg
+
+%nonassoc   LOWPRECEDENCE.
+%nonassoc   UNEXPECTEDCHAR.
+%nonassoc   INVALIDENCODING.
+%nonassoc   NL.
+%left       DOT.
+%left       DOTDOT.
+%left       COMMA.
+%right      ASSIGN ADDASS SUBASS MULASS DIVASS MODASS.
+%left       OR.
+%left       AND.
+%left       NOT.
+%left       EQ EQEQ GTEQ LTEQ EXEQ GT LT DOLLAR.
+%left       PLUS MINUS.
+%left       STAR SLASH MODULO.
+%right      DBSTAR.
+%left       DBPLUS DBMINUS.
+%nonassoc   LBRACKET.
+%left       COLON.
+%nonassoc   ARROW.
+%nonassoc   HIGHPRECEDENCE.
+
+ 
+prg(P) ::= header(H) lfunction(F).{
+    P=(new parsenode)->rule(2,H,F);
+    P->text="prg ::= header lfunction.";
+    P->codegen=codegen_prg_header_lfunction;
+
+    //!
+    //(P->codegen)(P,0); //EXEC
+    //Itt korábban takarítás volt, és a struktúrák teszt célú bejárása.
+    //A parser 4.4.xx óta rekurzív, azért itt nem lehet takarítani.
+}
+ 
+header(H) ::= lnewline0(N) namespace(S) lusing(U) lstatdefin(D).{
+    H=(new parsenode)->rule(4,N,S,U,D);
+    H->text="header ::= lnewline0 namespace lusing lstatdefin.";
+    H->codegen=codegen_header_lnewline0_namespace_lusing_lstatdefin;
+
+    if( headerflag )
+    {
+        //!
+        (H->codegen)(H,0); //EXEC
+        headerflag=0; //header kész
+    }
+}
+
+namespace(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="namespace ::= .";
+    L->codegen=codegen_namespace;
+}
+
+namespace(L) ::= NAMESPACE dotsymbol(S) nsalias(A) ldotsymbol(F) lnewline(N).{
+    L=(new parsenode)->rule(4,S,A,F,N);
+    L->text="namespace ::= NAMESPACE dotsymbol nsalias ldotsymbol lnewline.";
+    L->codegen=codegen_namespace_NAMESPACE_dotsymbol_nsalias_ldotsymbol_lnewline;
+
+    //!
+    (L->codegen)(L,0); //EXEC
+}
+
+lusing(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lusing ::= .";
+    L->codegen=codegen_lusing;
+}
+
+lusing(L) ::= lusing(R) using(U).{
+    L=(new parsenode)->rule(2,R,U);
+    L->text="lusing ::= lusing using.";
+    L->codegen=codegen_lusing_lusing_using;
+}
+
+using(U) ::= USING dotsymbol(S) nsalias(A) ldotsymbol(F) lnewline(N).{
+    U=(new parsenode)->rule(4,S,A,F,N);
+    U->text="using ::= USING dotsymbol nsalias ldotsymbol lnewline.";
+    U->codegen=codegen_using_USING_dotsymbol_nsalias_ldotsymbol_lnewline;
+
+    //!
+    (U->codegen)(U,0); //EXEC
+}
+
+nsalias(A) ::= .{
+    A=(new parsenode)->rule(0);
+    A->text="nsalias ::= .";
+    A->codegen=codegen_nsalias;
+}
+
+nsalias(A) ::= EQ SYMBOL(S).{
+    A=(new parsenode)->rule(1,S);
+    A->text="nsalias ::= EQ SYMBOL.";
+    A->codegen=codegen_nsalias_EQ_SYMBOL;
+}
+
+dotsymbol(L) ::= SYMBOL(S).{
+    L=(new parsenode)->rule(1,S);
+    L->text="dotsymbol ::= SYMBOL.";
+    L->codegen=codegen_dotsymbol_SYMBOL;
+}
+
+dotsymbol(L) ::= dotsymbol(R) DOT SYMBOL(S).{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="dotsymbol ::= dotsymbol DOT SYMBOL.";
+    L->codegen=codegen_dotsymbol_dotsymbol_DOT_SYMBOL;
+}
+
+ldotsymbol(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="ldotsymbol ::= .";
+    L->codegen=codegen_ldotsymbol;
+}
+
+ldotsymbol(L) ::= ldotsymbol(R) dotsymbol(S).{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="ldotsymbol ::= ldotsymbol dotsymbol.";
+    L->codegen=codegen_ldotsymbol_ldotsymbol_dotsymbol;
+}
+
+ddotsymbol(L) ::= dotsymbol(D).{
+    L=(new parsenode)->rule(1,D);
+    L->text="ddotsymbol ::= dotsymbol.";
+    L->codegen=codegen_ddotsymbol_dotsymbol;
+}
+
+ddotsymbol(L) ::= DOT dotsymbol(D).{
+    L=(new parsenode)->rule(1,D);
+    L->text="ddotsymbol ::= DOT dotsymbol.";
+    L->codegen=codegen_ddotsymbol_DOT_dotsymbol;
+}
+
+lstatdefin(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lstatdefin ::= .";
+    L->codegen=codegen_lstatdefin;
+}
+
+lstatdefin(L) ::= lstatdefin(R) STATIC statdefin(D) lnewline(N).{
+    L=(new parsenode)->rule(3,R,D,N);
+    L->text="lstatdefin ::= lstatdefin STATIC statdefin lnewline.";
+    L->codegen=codegen_lstatdefin_lstatdefin_STATIC_statdefin_lnewline; 
+}
+
+statdefin(S) ::= statdef(D).{
+    S=(new parsenode)->rule(1,D);
+    S->text="statdefin ::= statdef.";
+    S->codegen=codegen_statdefin_statdef; 
+}
+
+statdefin(L) ::= statdefin(R) COMMA statdef(D).{
+    L=(new parsenode)->rule(2,R,D);
+    L->text="statdefin ::= statdefin COMMA statdef.";
+    L->codegen=codegen_statdefin_statdefin_COMMA_statdef; 
+} 
+
+statdef(D) ::= SYMBOL(S).{
+    D=(new parsenode)->rule(1,S);
+    D->text="statdef ::= SYMBOL.";
+    D->codegen=codegen_statdef_SYMBOL; 
+
+    //!    
+    add_static(S);
+    S->cargo=headerflag?SYM_GLOBSTAT:SYM_LOCSTAT;
+}
+
+statdef(D) ::= SYMBOL(S) ASSIGN expr(X).{
+    D=(new parsenode)->rule(2,S,X);
+    D->text="statdef ::= SYMBOL ASSIGN expr.";
+    D->codegen=codegen_statdef_SYMBOL_ASSIGN_expr; 
+
+    //!
+    add_static(S);
+    S->cargo=headerflag?SYM_GLOBSTAT:SYM_LOCSTAT;
+}
+
+lfunction(L) ::= function(F).{
+    L=(new parsenode)->rule(1,F);
+    L->text="lfunction ::= function.";
+    L->codegen=codegen_lfunction_function;
+} 
+
+lfunction(L) ::= lfunction(R) function(F).{
+    L=(new parsenode)->rule(2,R,F);
+    L->text="lfunction ::= lfunction function.";
+    L->codegen=codegen_lfunction_lfunction_function;
+}
+
+function(F) ::= classid(I) LPAR ldsym(B) RPAR newspec(N) lnewline lslot(S).{
+    F=(new parsenode)->rule(4,I,B,N,S);
+    F->text="function ::= classid LPAR ldsym RPAR newspec lnewline lslot.";
+    F->codegen=codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot; 
+
+    //!
+    (F->codegen)(F,0); //EXEC
+} 
+
+classid(C) ::= CLASS dotsymbol(S).{
+    C=(new parsenode)->rule(1,S);
+    C->text="classid ::= CLASS dotsymbol.";
+    C->codegen=codegen_classid_CLASS_dotsymbol;
+}
+
+newspec(N) ::= .{
+    N=(new parsenode)->rule(0);
+    N->text="newspec ::= .";
+    N->codegen=codegen_newspec;
+}
+
+newspec(N) ::= NEW COLON.{
+    N=(new parsenode)->rule(0);
+    N->text="newspec ::= NEW COLON.";
+    N->codegen=codegen_newspec_NEW_COLON;
+}
+
+newspec(N) ::= NEW COLON SYMBOL(S).{
+    N=(new parsenode)->rule(1,S);
+    N->text="newspec ::= NEW COLON SYMBOL.";
+    N->codegen=codegen_newspec_NEW_COLON_SYMBOL;
+}
+
+lslot(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lslot ::= .";
+    L->cargo=0;
+    L->codegen=codegen_lslot; 
+}
+
+lslot(L) ::= lslot(R) slot(S) lnewline.{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="lslot ::= lslot slot lnewline.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_lslot_lslot_slot_lnewline; 
+}
+
+slot(S) ::= ATTRIB SYMBOL(A).{
+    S=(new parsenode)->rule(1,A);
+    S->text="slot ::= ATTRIB SYMBOL.";
+    S->codegen=codegen_slot_ATTRIB_SYMBOL; 
+}
+
+slot(S) ::= METHOD SYMBOL(M).{
+    S=(new parsenode)->rule(1,M);
+    S->text="slot ::= METHOD SYMBOL.";
+    S->codegen=codegen_slot_METHOD_SYMBOL; 
+}
+
+slot(S) ::= METHOD SYMBOL(M) expr(X).{
+    S=(new parsenode)->rule(2,M,X);
+    S->text="slot ::= METHOD SYMBOL expr.";
+    S->codegen=codegen_slot_METHOD_SYMBOL_expr; 
+}
+
+ldsym(L) ::= dotsymbol(S).{
+    L=(new parsenode)->rule(1,S);
+    L->text="ldsym ::= dotsymbol.";
+    L->cargo=1;
+    L->codegen=codegen_ldsym_dotsymbol;  
+}
+
+ldsym(L) ::= ldsym(R) COMMA dotsymbol(S).{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="ldsym ::= ldsym COMMA dotsymbol.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_ldsym_ldsym_COMMA_dotsymbol;  
+}
+
+function(F) ::= funcid(I) LPAR argument(A) RPAR newline(N) body(B).{
+    F=(new parsenode)->rule(4,I,A,N,B);
+    F->text="function ::= funcid LPAR argument RPAR newline body.";
+    F->codegen=codegen_function_funcid_LPAR_argument_RPAR_newline_body; 
+
+    //!
+    (F->codegen)(F,0); //EXEC
+} 
+
+funcid(F) ::= FUNCTION dotsymbol(S).{
+    F=(new parsenode)->rule(1,S);
+    F->text="funcid ::= FUNCTION dotsymbol.";
+    F->codegen=codegen_funcid_FUNCTION_dotsymbol;
+}
+
+funcid(F) ::= STFUNCTION dotsymbol(S).{
+    F=(new parsenode)->rule(1,S);
+    F->text="funcid ::= STFUNCTION dotsymbol.";
+    F->codegen=codegen_funcid_STFUNCTION_dotsymbol;
+}
+         
+argument(A) ::= .{
+    A=(new parsenode)->rule(0);
+    A->text="argument ::= .";
+    A->codegen=codegen_argument;  
+}
+
+argument(A) ::= STAR.{
+    A=(new parsenode)->rule(0);
+    A->text="argument ::= STAR.";
+    A->codegen=codegen_argument_STAR;  
+}
+
+argument(A) ::= larg(L).{
+    A=(new parsenode)->rule(1,L);
+    A->text="argument ::= larg.";
+    A->cargo=L->cargo;
+    A->codegen=codegen_argument_larg;  
+} 
+
+argument(A) ::= larg(L) COMMA STAR.{
+    A=(new parsenode)->rule(1,L);
+    A->text="argument ::= larg COMMA STAR.";
+    A->cargo=L->cargo;
+    A->codegen=codegen_argument_larg_COMMA_STAR;  
+} 
+           
+larg(L) ::= SYMBOL(S).{
+    L=(new parsenode)->rule(1,S);
+    L->text="larg ::= SYMBOL.";
+    L->cargo=1;
+    L->codegen=codegen_larg_SYMBOL;  
+    
+    //!
+    add_local(S);
+}
+
+larg(L) ::= larg(R) COMMA SYMBOL(S).{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="larg ::= larg COMMA SYMBOL.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_larg_larg_COMMA_SYMBOL;  
+
+    //!
+    add_local(S);
+}
+
+bargument(A) ::= .{
+    A=(new parsenode)->rule(0);
+    A->text="bargument ::= .";
+    A->codegen=codegen_bargument;
+    A->outsource=outsource_bargument;
+
+    //!
+    if( blockflag )
+    {
+        nested_block();
+    }
+    blockflag=1;
+}
+
+bargument(A) ::= lbarg(L).{
+    A=(new parsenode)->rule(1,L);
+    A->text="bargument ::= lbarg.";
+    A->cargo=L->cargo;
+    A->codegen=codegen_bargument_lbarg;
+    A->outsource=outsource_bargument_lbarg;
+
+    //!
+    if( blockflag )
+    {
+        nested_block();
+    }
+    blockflag=1;
+}
+
+bargument(A) ::= STAR.{
+    A=(new parsenode)->rule(0);
+    A->text="bargument ::= STAR.";
+    A->codegen=codegen_bargument_STAR;
+    A->outsource=outsource_bargument_STAR;
+
+    //!
+    if( blockflag )
+    {
+        nested_block();
+    }
+    blockflag=1;
+}
+
+bargument(A) ::= lbarg(L) COMMA STAR.{
+    A=(new parsenode)->rule(1,L);
+    A->text="bargument ::= lbarg COMMA STAR.";
+    A->cargo=L->cargo;
+    A->codegen=codegen_bargument_lbarg_COMMA_STAR;
+    A->outsource=outsource_bargument_lbarg_COMMA_STAR;
+
+    //!
+    if( blockflag )
+    {
+        nested_block();
+    }
+    blockflag=1;
+}
+           
+lbarg(L) ::= SYMBOL(S).{
+    L=(new parsenode)->rule(1,S);
+    L->text="lbarg ::= SYMBOL.";
+    L->cargo=1;
+    L->codegen=codegen_lbarg_SYMBOL;
+    L->outsource=outsource_lbarg_SYMBOL;
+    
+    //!
+    add_blkarg(S);
+} 
+
+lbarg(L) ::= lbarg(R) COMMA SYMBOL(S).{
+    L=(new parsenode)->rule(2,R,S);
+    L->text="lbarg ::= lbarg COMMA SYMBOL.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_lbarg_lbarg_COMMA_SYMBOL;
+    L->outsource=outsource_lbarg_lbarg_COMMA_SYMBOL;
+
+    //!
+    add_blkarg(S);
+} 
+
+body(B) ::= llocdefin(D) lstatement(S).{
+    B=(new parsenode)->rule(2,D,S);
+    B->text="body ::= llocdefin lstatement.";
+    B->codegen=codegen_body_llocdefin_lstatement;  
+}
+
+llocdefin(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="llocdefin ::= .";
+    L->codegen=codegen_llocdefin;
+}
+
+llocdefin(L) ::= llocdefin(R) newline(N).{
+    L=(new parsenode)->rule(2,R,N);
+    L->text="llocdefin ::= llocdefin newline.";
+    L->cargo=R->cargo;
+    L->codegen=codegen_llocdefin_llocdefin_newline;
+}
+
+llocdefin(L) ::= llocdefin(R) locdline(D) newline(N).{
+    L=(new parsenode)->rule(3,R,D,N);
+    L->text="llocdefin ::= llocdefin locdline newline.";
+    L->cargo=R->cargo+D->cargo;
+    L->codegen=codegen_llocdefin_llocdefin_locdline_newline;
+}
+ 
+locdline(L) ::= STATIC statdefin(S).{
+    L=(new parsenode)->rule(1,S);
+    L->text="locdline ::= STATIC statdefin.";
+    L->codegen=codegen_locdline_STATIC_statdefin;
+}
+
+locdline(L) ::= LOCAL locdefin(D).{
+    L=(new parsenode)->rule(1,D);
+    L->text="locdline ::= LOCAL locdefin.";
+    L->cargo=D->cargo;
+    L->codegen=codegen_locdline_LOCAL_locdefin; 
+}
+           
+locdefin(L) ::= locdef(D).{
+    L=(new parsenode)->rule(1,D);
+    L->text="locdefin ::= locdef.";
+    L->cargo=1;
+    L->codegen=codegen_locdefin_locdef; 
+}
+
+locdefin(L) ::= locdefin(R) COMMA locdef(D).{
+    L=(new parsenode)->rule(2,R,D);
+    L->text="locdefin ::= locdefin COMMA locdef.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_locdefin_locdefin_COMMA_locdef;  
+}
+           
+locdef(D) ::= SYMBOL(S).{
+    D=(new parsenode)->rule(1,S);
+    D->text="locdef ::= SYMBOL.";
+    D->codegen=codegen_locdef_SYMBOL;
+    
+    //!
+    add_local(S);
+}
+
+locdef(D) ::= SYMBOL(S) ASSIGN expr(X).{
+    D=(new parsenode)->rule(2,S,X);
+    D->text="locdef ::= SYMBOL ASSIGN expr.";
+    D->codegen=codegen_locdef_SYMBOL_ASSIGN_expr; 
+
+    //!
+    add_local(S);
+    symbol_search(S);
+} 
+
+lstatement(L) ::= . [LOWPRECEDENCE]{
+    L=(new parsenode)->rule(0);
+    L->text="lstatement ::= .";
+    L->codegen=codegen_lstatement;  
+}
+
+lstatement(L) ::= lstatement(R) newline(N).{
+    L=(new parsenode)->rule(2,R,N);
+    L->text="lstatement ::= lstatement newline.";
+    L->codegen=codegen_lstatement_lstatement_newline;  
+} 
+
+lstatement(L) ::= lstatement(R) statement(S) newline(N).{
+    L=(new parsenode)->rule(3,R,S,N);
+    L->text="lstatement ::= lstatement statement newline.";
+    L->codegen=codegen_lstatement_lstatement_statement_newline;  
+}  
+ 
+statement(S) ::= QUIT.{
+    S=(new parsenode)->rule(0);
+    S->text="statement ::= QUIT.";
+    S->codegen=codegen_statement_QUIT;  
+}
+
+statement(S) ::= RETURN expr(X).{
+    S=(new parsenode)->rule(1,X);
+    S->text="statement ::= RETURN expr.";
+    S->codegen=codegen_statement_RETURN_expr;  
+} 
+
+statement(S) ::= begseq(B) lrecov(R) finally(F) END.{
+    S=(new parsenode)->rule(3,B,R,F);
+    S->text="statement ::= begseq lrecov finally END.";
+    S->codegen=codegen_statement_begseq_lrecov_finally_END;
+}
+
+statement(S) ::= if(I) lelseif(L) else(E) endif(F).{
+    S=(new parsenode)->rule(4,I,L,E,F);
+    S->text="statement ::= if lelseif else endif.";
+    S->codegen=codegen_statement_if_lelseif_else_endif;
+} 
+
+statement(S) ::= WHILE expr(X) newline(N) lstatement(L) END.{
+    S=(new parsenode)->rule(3,X,N,L);
+    S->text="statement ::= WHILE expr newline lstatement END.";
+    S->codegen=codegen_statement_WHILE_expr_newline_lstatement_END;
+}
+
+statement(S) ::= FOR SYMBOL(V) ASSIGN expr(X1) TO expr(X2) forstep(T) newline(N) lstatement(L) END.{
+    S=(new parsenode)->rule(6,V,X1,X2,T,N,L);
+    S->text="statement ::= FOR SYMBOL ASSIGN expr TO expr forstep newline lstatement END.";
+    S->codegen=codegen_statement_FOR_SYMBOL_ASSIGN_expr_TO_expr_forstep_newline_lstatement_END; 
+
+    //!
+    symbol_search(V);
+}  
+
+statement(S) ::= LOOP(L).{
+    S=(new parsenode)->rule(1,L);
+    S->text="statement ::= LOOP.";
+    S->codegen=codegen_statement_LOOP; 
+} 
+
+statement(S) ::= EXIT(E).{
+    S=(new parsenode)->rule(1,E);
+    S->text="statement ::= EXIT.";
+    S->codegen=codegen_statement_EXIT; 
+}
+
+statement(S) ::= expr(X).{
+    S=(new parsenode)->rule(1,X);
+    S->text="statement ::= expr.";
+    S->codegen=codegen_statement_expr; 
+}
+
+begseq(B) ::= BEGSEQ newline(N) lstatement(L).{
+    B=(new parsenode)->rule(2,N,L);
+    B->text="begseq ::= BEGSEQ newline lstatement.";
+    B->codegen=codegen_begseq_BEGSEQ_newline_lstatement;  
+}
+
+lrecov(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lrecov ::= .";
+    L->codegen=codegen_lrecov;
+}
+
+lrecov(L) ::= lrecov(A) recov(R).{
+    L=(new parsenode)->rule(2,A,R);
+    L->text="lrecov ::= lrecov recov.";
+    L->codegen=codegen_lrecov_lrecov_recov;
+}
+
+recov(R) ::= RECOVER newline(N) lstatement(L).{
+    R=(new parsenode)->rule(2,N,L);
+    R->text="recov ::= RECOVER newline lstatement.";
+    R->codegen=codegen_recov_RECOVER_newline_lstatement; 
+}
+
+recov(R) ::= RECOVER SYMBOL(S) newline(N) lstatement(L).{
+    R=(new parsenode)->rule(3,S,N,L);
+    R->text="recov ::= RECOVER SYMBOL newline lstatement.";
+    R->codegen=codegen_recov_RECOVER_SYMBOL_newline_lstatement;
+    
+    //!
+    symbol_search(S);
+}
+
+recov(R) ::= RECOVER SYMBOL(S) expr(X) newline(N) lstatement(L).{
+    R=(new parsenode)->rule(4,S,X,N,L);
+    R->text="recov ::= RECOVER SYMBOL expr newline lstatement.";
+    R->codegen=codegen_recov_RECOVER_SYMBOL_expr_newline_lstatement;
+    
+    //!
+    symbol_search(S);
+}
+
+recov(R) ::= RECOVER SYMBOL(E) LT dotsymbol(T) GT newline(N) lstatement(L).{
+    R=(new parsenode)->rule(4,E,T,N,L);
+    R->text="recov ::= RECOVER SYMBOL LT dotsymbol GT newline lstatement.";
+    R->codegen=codegen_recov_RECOVER_SYMBOL_LT_dotsymbol_GT_newline_lstatement;
+    
+    //!
+    symbol_search(E);
+}
+
+
+finally(F) ::=.{
+    F=(new parsenode)->rule(0);
+    F->text="finally ::= .";
+    F->codegen=codegen_finally;
+}
+
+finally(F) ::= FINALLY newline(N) lstatement(L).{
+    F=(new parsenode)->rule(2,N,L);
+    F->text="finally ::= FINALLY newline lstatement.";
+    F->codegen=codegen_finally_FINALLY_newline_lstatement;
+}
+
+
+if(I) ::= IF expr(X) newline(N) lstatement(L).{
+    I=(new parsenode)->rule(3,X,N,L);
+    I->text="if ::= IF expr newline lstatement.";
+    I->codegen=codegen_if_IF_expr_newline_lstatement; 
+}
+
+if(I) ::= DOCASE lnewline(N1) CASE expr(X) newline(N2) lstatement(L).{
+    I=(new parsenode)->rule(4,N1,X,N2,L);
+    I->text="if ::= DOCASE newline CASE expr newline lstatement.";
+    I->codegen=codegen_if_DOCASE_newline_CASE_expr_newline_lstatement;  
+} 
+
+lelseif(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lelseif ::= .";
+    L->cargo=0;
+    L->codegen=codegen_lelseif;
+} 
+
+lelseif(L) ::= lelseif(R) elseif(E).{
+    L=(new parsenode)->rule(2,R,E);
+    L->text="lelseif ::= lelseif elseif.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_lelseif_lelseif_elseif;
+}  
+
+elseif(E) ::= ELSEIF expr(X) newline(N) lstatement(L).{
+    E=(new parsenode)->rule(3,X,N,L);
+    E->text="elseif ::= ELSEIF expr newline lstatement.";
+    E->codegen=codegen_elseif_ELSEIF_expr_newline_lstatement;
+}   
+
+elseif(E) ::= CASE expr(X) newline(N) lstatement(L).{
+    E=(new parsenode)->rule(3,X,N,L);
+    E->text="elseif ::= CASE expr newline lstatement.";
+    E->codegen=codegen_elseif_CASE_expr_newline_lstatement;
+}    
+
+else(E) ::= .{
+    E=(new parsenode)->rule(0);
+    E->text="else ::= .";
+    E->codegen=codegen_else;
+}
+
+else(E) ::= ELSE newline(N) lstatement(L).{
+    E=(new parsenode)->rule(2,N,L);
+    E->text="else ::= ELSE newline lstatement";
+    E->cargo=1;
+    E->codegen=codegen_else_ELSE_newline_lstatement; 
+} 
+
+else(E) ::= OTHERWISE newline(N) lstatement(L).{
+    E=(new parsenode)->rule(2,N,L);
+    E->text="else ::= OTHERWISE newline lstatement";
+    E->cargo=1;
+    E->codegen=codegen_else_OTHERWISE_newline_lstatement; 
+}  
+
+endif(E) ::= END.{
+    E=(new parsenode)->rule(0);
+    E->text="endif ::= END";
+    E->codegen=codegen_endif_END;
+} 
+
+forstep(S) ::= .{
+    S=(new parsenode)->rule(0);
+    S->text="forstep ::= .";
+    S->codegen=codegen_forstep;
+}
+
+forstep(S) ::= STEP expr(X).{
+    S=(new parsenode)->rule(1,X);
+    S->text="forstep ::= STEP expr.";
+    S->codegen=codegen_forstep_STEP_expr; 
+} 
+
+lfuncpar(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lfuncpar ::= .";
+    L->codegen=codegen_lfuncpar;
+    L->outsource=outsource_lfuncpar;
+    L->cargo=0;
+}
+
+lfuncpar(L) ::= parexpr(P).{
+    L=(new parsenode)->rule(1,P);
+    L->text="lfuncpar ::= parexpr.";
+    L->codegen=codegen_lfuncpar_parexpr;
+    L->outsource=outsource_lfuncpar_parexpr;
+    L->cargo=P->cargo+1;
+}
+
+lfuncpar(L) ::= lfuncpar0(L0) COMMA parexpr0(P0).{
+    L=(new parsenode)->rule(2,L0,P0);
+    L->text="lfuncpar ::= lfuncpar0 COMMA parexpr0.";
+    L->codegen=codegen_lfuncpar_lfuncpar0_COMMA_parexpr0;
+    L->outsource=outsource_lfuncpar_lfuncpar0_COMMA_parexpr0;
+    L->cargo=L0->cargo+P0->cargo+1;
+}
+
+lfuncpar0(L) ::= parexpr0(P).{
+    L=(new parsenode)->rule(1,P);
+    L->text="lfuncpar0 ::= parexpr0.";
+    L->codegen=codegen_lfuncpar0_parexpr0;
+    L->outsource=outsource_lfuncpar0_parexpr0;
+    L->cargo=P->cargo+1;
+}
+
+lfuncpar0(L) ::= lfuncpar0(R) COMMA parexpr0(P).{
+    L=(new parsenode)->rule(2,R,P);
+    L->text="lfuncpar0 ::= lfuncpar0 COMMA parexpr0.";
+    L->codegen=codegen_lfuncpar0_lfuncpar0_COMMA_parexpr0;
+    L->outsource=outsource_lfuncpar0_lfuncpar0_COMMA_parexpr0;
+    L->cargo=R->cargo+P->cargo+1;
+}
+
+parexpr0(P) ::= .{
+    P=(new parsenode)->rule(0);
+    P->text="parexpr0 ::= .";
+    P->codegen=codegen_parexpr0;
+    P->outsource=outsource_parexpr0;
+    P->cargo=0;
+}
+
+parexpr0(P) ::= parexpr(X).{
+    P=(new parsenode)->rule(1,X);
+    P->text="parexpr0 ::= parexpr.";
+    P->codegen=codegen_parexpr0_parexpr;
+    P->outsource=outsource_parexpr0_parexpr;
+    P->cargo=X->cargo;
+}
+
+parexpr(P) ::= expr(X).{
+    P=(new parsenode)->rule(1,X);
+    P->text="parexpr ::= expr.";
+    P->codegen=codegen_parexpr_expr;
+    P->outsource=outsource_parexpr_expr;
+    P->cargo=0;
+}
+
+parexpr(P) ::= STAR.{
+    P=(new parsenode)->rule(0);
+    P->text="parexpr ::= STAR.";
+    P->codegen=codegen_parexpr_STAR;
+    P->outsource=outsource_parexpr_STAR;
+    P->cargo=(1<<16);
+}
+
+parexpr(P) ::= AT SYMBOL(S).{  //@symbol
+    P=(new parsenode)->rule(1,S);
+    P->text="parexpr ::= AT SYMBOL.";
+    P->codegen=codegen_parexpr_AT_SYMBOL;
+    P->outsource=outsource_parexpr_AT_SYMBOL;
+    P->cargo=0;
+
+    //!
+    symbol_search(S);
+}
+
+lexpr(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lexpr ::= .";
+    L->codegen=codegen_lexpr;
+    L->outsource=outsource_lexpr;
+}
+
+lexpr(L) ::= expr(X).{
+    L=(new parsenode)->rule(1,X);
+    L->text="lexpr ::= expr.";
+    L->cargo=1;
+    L->codegen=codegen_lexpr_expr;
+    L->outsource=outsource_lexpr_expr;
+}
+
+lexpr(L) ::= lexpr0(R) COMMA expr0(X).{
+    L=(new parsenode)->rule(2,R,X);
+    L->text="lexpr ::= lexpr0 COMMA expr0.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_lexpr_lexpr0_COMMA_expr0;
+    L->outsource=outsource_lexpr_lexpr0_COMMA_expr0;
+}
+
+lexpr0(L) ::= expr0(X).{
+    L=(new parsenode)->rule(1,X);
+    L->text="lexpr0 ::= expr0.";
+    L->cargo=1;
+    L->codegen=codegen_lexpr0_expr0;
+    L->outsource=outsource_lexpr0_expr0;
+}
+
+lexpr0(L) ::= lexpr0(R) COMMA expr0(X).{
+    L=(new parsenode)->rule(2,R,X);
+    L->text="lexpr0 ::= lexpr0 COMMA expr0.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_lexpr0_lexpr0_COMMA_expr0;
+    L->outsource=outsource_lexpr0_lexpr0_COMMA_expr0;
+}
+
+expr0(X) ::= .{
+    X=(new parsenode)->rule(0);
+    X->text="expr0 ::= .";
+    X->codegen=codegen_expr0;
+    X->outsource=outsource_expr0;
+}
+
+expr0(X) ::= expr(X1). [LOWPRECEDENCE]{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr0 ::= expr.";
+    X->codegen=codegen_expr0_expr;
+    X->outsource=outsource_expr0_expr;
+}
+
+msgpar(P) ::= . [LOWPRECEDENCE]{
+    P=(new parsenode)->rule(0);
+    P->text="msgpar ::= .";
+    P->codegen=codegen_msgpar;
+    P->outsource=outsource_msgpar;
+}
+
+msgpar(P) ::= ASSIGN expr(X).{
+    P=(new parsenode)->rule(1,X);
+    P->text="msgpar ::= ASSIGN expr.";
+    P->cargo=1;
+    P->codegen=codegen_msgpar_ASSIGN_expr;
+    P->outsource=outsource_msgpar_ASSIGN_expr;
+}
+
+msgpar(P) ::= LPAR lfuncpar(L) RPAR. [LOWPRECEDENCE]{
+    P=(new parsenode)->rule(1,L);
+    P->text="msgpar ::= LPAR lfuncpar RPAR.";
+    P->cargo=L->cargo;
+    P->codegen=codegen_msgpar_LPAR_lfuncpar_RPAR;
+    P->outsource=outsource_msgpar_LPAR_lfuncpar_RPAR;
+}
+
+msgpar(P) ::= LPAR lfuncpar(L) RPAR ASSIGN expr(X).{
+    P=(new parsenode)->rule(2,L,X);
+    P->text="msgpar ::= LPAR lfuncpar RPAR ASSIGN expr.";
+    P->cargo=L->cargo+1;
+    P->codegen=codegen_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr;
+    P->outsource=outsource_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr;
+}
+
+lnewline(L) ::= newline(N).{
+    L=(new parsenode)->rule(1,N);
+    L->text="lnewline ::= newline.";
+    L->codegen=codegen_lnewline_newline;
+}
+
+lnewline(L) ::= lnewline(R) newline(N).{
+    L=(new parsenode)->rule(2,R,N);
+    L->text="lnewline ::= lnewline newline.";
+    L->codegen=codegen_lnewline_lnewline_newline;
+}
+
+lnewline0(L) ::= .{
+    L=(new parsenode)->rule(0);
+    L->text="lnewline0 ::= .";
+    L->codegen=codegen_lnewline0;
+}
+
+lnewline0(L) ::= lnewline0(R) newline(N).{
+    L=(new parsenode)->rule(2,R,N);
+    L->text="lnewline0 ::= lnewline0 newline.";
+    L->codegen=codegen_lnewline0_lnewline0_newline;
+}
+
+newline(L) ::= NL(N).{
+    L=(new parsenode)->rule(1,N);
+    L->text="newline ::= NL.";
+    L->codegen=codegen_newline_NL;
+}
+
+expr(X) ::= NUMBER(N).{
+    X=(new parsenode)->rule(1,N);
+    X->text="expr ::= NUMBER.";
+    X->codegen=codegen_expr_NUMBER;
+    X->outsource=outsource_expr_NUMBER;
+}
+
+expr(X) ::= STRING(S).{
+    X=(new parsenode)->rule(1,S);
+    X->text="expr ::= STRING.";
+    X->codegen=codegen_expr_STRING;
+    X->outsource=outsource_expr_STRING;
+    
+    static char *strtab_env=getenv("CCC_STRING_TAB");
+    static FILE *strtab_fil=(strtab_env&&*strtab_env)?fopen(strtab_env,"a"):0;
+    if( strtab_fil )
+    {
+        write_strtab(strtab_fil,S);
+    }
+} 
+
+expr(X) ::= NLSTEXT(S).{
+    X=(new parsenode)->rule(1,S);
+    X->text="expr ::= NLSTEXT.";
+    X->codegen=codegen_expr_NLSTEXT;
+    X->outsource=outsource_expr_NLSTEXT;
+    
+    static char *strtab_env=getenv("CCC_NLSTEXT_TAB");
+    static FILE *strtab_fil=(strtab_env&&*strtab_env)?fopen(strtab_env,"a"):0;
+    if( strtab_fil )
+    {
+        write_strtab(strtab_fil,S);
+    }
+} 
+
+expr(X) ::= BINARYX(S).{
+    X=(new parsenode)->rule(1,S);
+    X->text="expr ::= BINARYX.";
+    X->codegen=codegen_expr_BINARYX;
+    X->outsource=outsource_expr_BINARYX;
+} 
+
+expr(X) ::= BINARYA(S).{
+    X=(new parsenode)->rule(1,S);
+    X->text="expr ::= BINARYA.";
+    X->codegen=codegen_expr_BINARYA;
+    X->outsource=outsource_expr_BINARYA;
+} 
+
+expr(X) ::= TRUE(F).{
+    X=(new parsenode)->rule(1,F);
+    X->text="expr ::= TRUE.";
+    X->codegen=codegen_expr_TRUE;
+    X->outsource=outsource_expr_TRUE;
+}  
+
+expr(X) ::= FALSE(F).{
+    X=(new parsenode)->rule(1,F);
+    X->text="expr ::= FALSE.";
+    X->codegen=codegen_expr_FALSE;
+    X->outsource=outsource_expr_FALSE;
+}   
+
+expr(X) ::= NIL(U).{
+    X=(new parsenode)->rule(1,U);
+    X->text="expr ::= NIL.";
+    X->codegen=codegen_expr_NIL;
+    X->outsource=outsource_expr_NIL;
+}
+
+expr(X) ::= SYMBOL(S).{
+    X=(new parsenode)->rule(1,S);
+    X->text="expr ::= SYMBOL.";
+    X->codegen=codegen_expr_SYMBOL;
+    X->outsource=outsource_expr_SYMBOL;
+
+    //!
+    symbol_search(S);
+}
+
+expr(X) ::= SYMBOL(S1) ARROW SYMBOL(S2).{
+    X=(new parsenode)->rule(2,S1,S2);
+    X->text="expr ::= SYMBOL ARROW SYMBOL.";
+    X->codegen=codegen_expr_SYMBOL_ARROW_SYMBOL;
+    X->outsource=outsource_expr_SYMBOL_ARROW_SYMBOL;
+}
+
+expr(X) ::= expr(X1) COLON SYMBOL(M) msgpar(P).{
+    X=(new parsenode)->rule(3,X1,M,P);
+    X->text="expr ::= expr COLON SYMBOL msgpar.";
+    X->codegen=codegen_expr_expr_COLON_SYMBOL_msgpar;
+    X->outsource=outsource_expr_expr_COLON_SYMBOL_msgpar;
+}
+
+expr(X) ::= expr(X1) COLON LPAR dotsymbol(S) RPAR SYMBOL(M) msgpar(P).{
+    X=(new parsenode)->rule(4,X1,S,M,P);
+    X->text="expr ::= expr COLON LPAR dotsymbol RPAR SYMBOL msgpar.";
+    X->codegen=codegen_expr_expr_COLON_LPAR_dotsymbol_RPAR_SYMBOL_msgpar;
+    X->outsource=outsource_expr_expr_COLON_LPAR_dotsymbol_RPAR_SYMBOL_msgpar;
+}
+
+expr(X) ::= expr(X1) COLON LPAR dotsymbol(S1) AT dotsymbol(S) RPAR SYMBOL(M) msgpar(P).{
+    X=(new parsenode)->rule(5,X1,S1,S,M,P);
+    X->text="expr ::= expr COLON LPAR dotsymbol AT dotsymbol RPAR SYMBOL msgpar.";
+    X->codegen=codegen_expr_expr_COLON_LPAR_dotsymbol_AT_dotsymbol_RPAR_SYMBOL_msgpar;
+    X->outsource=outsource_expr_expr_COLON_LPAR_dotsymbol_AT_dotsymbol_RPAR_SYMBOL_msgpar;
+}
+
+expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
+    X=(new parsenode)->rule(2,S,L);
+    X->text="expr ::= ddotsymbol LPAR lfuncpar RPAR.";
+    X->codegen=codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
+    X->outsource=outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
+}
+
+expr(X) ::= LPAR(P) lexpr(L) RPAR.{
+    X=(new parsenode)->rule(2,L,P); //sorrend!
+    X->text="expr ::= LPAR lexpr RPAR.";
+    X->lineno=P->lineno;
+    X->codegen=codegen_expr_LPAR_lexpr_RPAR;
+    X->outsource=outsource_expr_LPAR_lexpr_RPAR;
+}
+
+expr(X) ::= LBRACE(B) PIPE bargument(A) PIPE lexpr(L) RBRACE.{
+    X=(new parsenode)->rule(3,A,L,B); //sorrend!
+    X->text="expr ::= LBRACE PIPE bargument PIPE lexpr RBRACE.";
+    X->lineno=B->lineno;
+    X->codegen=codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE;
+    X->outsource=outsource_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE;
+
+    //!
+    blockflag=0;
+    nodetab_blkarg->clean();
+}
+
+expr(X) ::= IF LPAR expr(X1) COMMA expr(X2) COMMA expr(X3) RPAR.{
+    X=(new parsenode)->rule(3,X1,X2,X3);
+    X->text="expr ::= IF LPAR expr COMMA expr COMMA expr RPAR.";
+    X->codegen=codegen_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR;
+    X->outsource=outsource_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR;
+}
+
+expr(X) ::= LBRACE lfuncpar(L) RBRACE.{
+    X=(new parsenode)->rule(1,L);
+    X->text="expr ::= LBRACE lfuncpar RBRACE.";
+    X->codegen=codegen_expr_LBRACE_lfuncpar_RBRACE;
+    X->outsource=outsource_expr_LBRACE_lfuncpar_RBRACE;
+}
+
+expr(X) ::= expr(ARR) LBRACKET expr(IDX) RBRACKET.{
+    X=(new parsenode)->rule(2,ARR,IDX);
+    X->text="expr ::= expr LBRACKET expr RBRACKET.";
+    X->codegen=codegen_expr_expr_LBRACKET_expr_RBRACKET;
+    X->outsource=outsource_expr_expr_LBRACKET_expr_RBRACKET;
+}
+
+
+expr(X) ::= expr(ARR) LBRACKET parexpr0(IDXL) DOTDOT parexpr0(IDXR) RBRACKET.{
+    X=(new parsenode)->rule(3,ARR,IDXL,IDXR);
+    X->text="expr ::= expr LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.";
+    X->codegen=codegen_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
+    X->outsource=outsource_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
+}
+
+
+expr(X) ::= expr(X1) ASSIGN expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr ASSIGN expr.";
+    X->codegen=codegen_expr_expr_ASSIGN_expr;
+    X->outsource=outsource_expr_expr_ASSIGN_expr;
+}
+
+expr(X) ::= expr(X1) ADDASS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr ADDASS expr.";
+    X->codegen=codegen_expr_expr_ADDASS_expr;
+    X->outsource=outsource_expr_expr_ADDASS_expr;
+} 
+
+expr(X) ::= expr(X1) SUBASS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr SUBASS expr.";
+    X->codegen=codegen_expr_expr_SUBASS_expr;
+    X->outsource=outsource_expr_expr_SUBASS_expr;
+}  
+
+expr(X) ::= expr(X1) MULASS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr MULASS expr.";
+    X->codegen=codegen_expr_expr_MULASS_expr;
+    X->outsource=outsource_expr_expr_MULASS_expr;
+}
+
+expr(X) ::= expr(X1) DIVASS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr DIVASS expr.";
+    X->codegen=codegen_expr_expr_DIVASS_expr;
+    X->outsource=outsource_expr_expr_DIVASS_expr;
+}
+ 
+expr(X) ::= expr(X1) MODASS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr MODASS expr.";
+    X->codegen=codegen_expr_expr_MODASS_expr;
+    X->outsource=outsource_expr_expr_MODASS_expr;
+}
+
+expr(X) ::= DBMINUS expr(X1).{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= DBMINUS expr.";
+    X->codegen=codegen_expr_DBMINUS_expr;
+    X->outsource=outsource_expr_DBMINUS_expr;
+} 
+
+expr(X) ::= DBPLUS expr(X1).{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= DBPLUS expr.";
+    X->codegen=codegen_expr_DBPLUS_expr;
+    X->outsource=outsource_expr_DBPLUS_expr;
+}
+
+expr(X) ::= expr(X1) DBMINUS.{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= expr DBMINUS.";
+    X->codegen=codegen_expr_expr_DBMINUS;
+    X->outsource=outsource_expr_expr_DBMINUS;
+}  
+
+expr(X) ::= expr(X1) DBPLUS.{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= expr DBPLUS.";
+    X->codegen=codegen_expr_expr_DBPLUS;
+    X->outsource=outsource_expr_expr_DBPLUS;
+}   
+
+expr(X) ::= expr(X1) PLUS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr PLUS expr.";
+    X->codegen=codegen_expr_expr_PLUS_expr;
+    X->outsource=outsource_expr_expr_PLUS_expr;
+}
+
+expr(X) ::= expr(X1) MINUS expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr MINUS expr.";
+    X->codegen=codegen_expr_expr_MINUS_expr;
+    X->outsource=outsource_expr_expr_MINUS_expr;
+}
+
+expr(X) ::= expr(X1) STAR expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr STAR expr.";
+    X->codegen=codegen_expr_expr_STAR_expr;
+    X->outsource=outsource_expr_expr_STAR_expr;
+}
+
+expr(X) ::= expr(X1) SLASH expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr SLASH expr.";
+    X->codegen=codegen_expr_expr_SLASH_expr;
+    X->outsource=outsource_expr_expr_SLASH_expr;
+}
+
+expr(X) ::= expr(X1) MODULO expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr MODULO expr.";
+    X->codegen=codegen_expr_expr_MODULO_expr;
+    X->outsource=outsource_expr_expr_MODULO_expr;
+}
+
+expr(X) ::= expr(X1) DBSTAR expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr DBSTAR expr.";
+    X->codegen=codegen_expr_expr_DBSTAR_expr;
+    X->outsource=outsource_expr_expr_DBSTAR_expr;
+}
+
+expr(X) ::= MINUS expr(X1). [DBMINUS]{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= MINUS expr.";
+    X->codegen=codegen_expr_MINUS_expr;
+    X->outsource=outsource_expr_MINUS_expr;
+}
+
+expr(X) ::= PLUS expr(X1). [DBPLUS]{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= PLUS expr.";
+    X->codegen=codegen_expr_PLUS_expr;
+    X->outsource=outsource_expr_PLUS_expr;
+}
+
+expr(X) ::= expr(X1) EQEQ expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr EQEQ expr.";
+    X->codegen=codegen_expr_expr_EQEQ_expr;
+    X->outsource=outsource_expr_expr_EQEQ_expr;
+}
+
+expr(X) ::= expr(X1) EXEQ expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr EXEQ expr.";
+    X->codegen=codegen_expr_expr_EXEQ_expr;
+    X->outsource=outsource_expr_expr_EXEQ_expr;
+}
+
+expr(X) ::= expr(X1) GTEQ expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr GTEQ expr.";
+    X->codegen=codegen_expr_expr_GTEQ_expr;
+    X->outsource=outsource_expr_expr_GTEQ_expr;
+}
+
+expr(X) ::= expr(X1) LTEQ expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr LTEQ expr.";
+    X->codegen=codegen_expr_expr_LTEQ_expr;
+    X->outsource=outsource_expr_expr_LTEQ_expr;
+}
+
+expr(X) ::= expr(X1) GT expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr GT expr.";
+    X->codegen=codegen_expr_expr_GT_expr;
+    X->outsource=outsource_expr_expr_GT_expr;
+}
+
+expr(X) ::= expr(X1) LT expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr LT expr.";
+    X->codegen=codegen_expr_expr_LT_expr;
+    X->outsource=outsource_expr_expr_LT_expr;
+}
+
+expr(X) ::= expr(X1) DOLLAR expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr DOLLAR expr.";
+    X->codegen=codegen_expr_expr_DOLLAR_expr;
+    X->outsource=outsource_expr_expr_DOLLAR_expr;
+}
+
+expr(X) ::= expr(X1) OR expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr OR expr.";
+    X->codegen=codegen_expr_expr_OR_expr;
+    X->outsource=outsource_expr_expr_OR_expr;
+}
+
+expr(X) ::= expr(X1) AND expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr AND expr.";
+    X->codegen=codegen_expr_expr_AND_expr;
+    X->outsource=outsource_expr_expr_AND_expr;
+}
+
+expr(X) ::= NOT expr(X1).{
+    X=(new parsenode)->rule(1,X1);
+    X->text="expr ::= NOT expr.";
+    X->codegen=codegen_expr_NOT_expr;
+    X->outsource=outsource_expr_NOT_expr;
+}
+
+

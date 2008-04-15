@@ -1,0 +1,38 @@
+
+#define g_s             getlist[ 1]
+#define g_n             getlist[ 2]
+#define g_d             getlist[ 3]
+#define g_l             getlist[ 4]
+
+static function DEMO(bLoad,bRead,bStore)
+local s           :=space(12)
+local n           :=space( 8)
+local d           :=space( 8)
+local l           :=space( 1)
+local msk:=mskCreate(  6, 25, 16, 52,bLoad,bRead,bStore)
+
+    mskSay(msk,  0,  0,"╔══════════════════════════╗")
+    mskSay(msk,  1,  0,"║                          ║")
+    mskSay(msk,  2,  0,"║ String   : ")
+    mskSay(msk,  2, 25,"  ║")
+    mskSay(msk,  3,  0,"║                          ║")
+    mskSay(msk,  4,  0,"║ Numeric  : ")
+    mskSay(msk,  4, 21,"      ║")
+    mskSay(msk,  5,  0,"║                          ║")
+    mskSay(msk,  6,  0,"║ Date     : ")
+    mskSay(msk,  6, 21,"      ║")
+    mskSay(msk,  7,  0,"║                          ║")
+    mskSay(msk,  8,  0,"║ Logical  : ")
+    mskSay(msk,  8, 14,"             ║")
+    mskSay(msk,  9,  0,"║                          ║")
+    mskSay(msk, 10,  0,"╚══════════════════════════╝")
+
+    mskGet   (msk,  2, 13,@s,"s")
+    mskGet   (msk,  4, 13,@n,"n")
+    mskGet   (msk,  6, 13,@d,"d")
+    mskGet   (msk,  8, 13,@l,"l")
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    return lastkey()

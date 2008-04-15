@@ -1,0 +1,89 @@
+
+
+(define-function gtk_cell_view_get_type
+  (c-name "gtk_cell_view_get_type")
+  (in-module GtkCellView)
+  (return-type "GtkType")
+)
+
+(define-function gtk_cell_view_new
+  (c-name "gtk_cell_view_new")
+  (is-constructor-of GtkCellView)
+  (return-type "GtkCellView*")
+)
+
+(define-function gtk_cell_view_new_with_text
+  (c-name "gtk_cell_view_new_with_text")
+  (is-constructor-of GtkCellView)
+  (return-type "GtkCellView*")
+  (parameters
+    '("const-gchar*" "text")
+  )
+)
+
+(define-function gtk_cell_view_new_with_markup
+  (c-name "gtk_cell_view_new_with_markup")
+  (is-constructor-of GtkCellView)
+  (return-type "GtkCellView*")
+  (parameters
+    '("const-gchar*" "markup")
+  )
+)
+
+(define-function gtk_cell_view_new_with_pixbuf
+  (c-name "gtk_cell_view_new_with_pixbuf")
+  (is-constructor-of GtkCellView)
+  (return-type "GtkCellView*")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-method set_model
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_set_model")
+  (return-type none)
+  (parameters
+    '("GtkTreeModel*" "model")
+  )
+)
+
+(define-method set_displayed_row
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_set_displayed_row")
+  (return-type none)
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method get_displayed_row
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_get_displayed_row")
+  (return-type "GtkTreePath*")
+)
+
+(define-method get_size_of_row
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_get_size_of_row")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+    '("GtkRequisition*" "requisition")
+  )
+)
+
+(define-method set_background_color
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_set_background_color")
+  (return-type "none")
+  (parameters
+    '("GdkColor*" "color")
+  )
+)
+
+(define-method get_cell_renderers
+  (of-object GtkCellView)
+  (c-name "gtk_cell_view_get_cell_renderers")
+  (return-type "GList*" ".parray.freelist.")
+)

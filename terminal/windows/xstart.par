@@ -1,0 +1,20 @@
+<xstart>
+<item>
+    <name>CCC Terminál</name>
+    <if>localhost</if>
+    <port>55000</port>
+
+    <env>CCCTERM_REDIR_CONSOLE=y</env>
+    <env>CCCTERM_REDIR_PRINTER=y</env>
+    <env>CCCTERM_REDIR_ALTERNATE=y</env>
+    <env>CCCTERM_REDIR_EXTRA=EXTRA</env>
+    <env>CCCTERM_REDIR_ERROR=y</env>
+
+
+    <env>CCCTERM_SIZE=80x30</env>
+    <env>CCCTERM_FONTSIZE=20</env>
+
+    <command>terminal.exe --socket $(SOCKET)</command>
+</item>
+
+</xstart>

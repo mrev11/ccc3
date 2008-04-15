@@ -1,0 +1,8 @@
+
+<html>
+<!--#include virtual="hello.txt"-->
+<p>
+<!--#include virtual="hello.txt"-->
+<p>
+ssi1 (htdocs)
+</html>

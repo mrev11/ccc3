@@ -1,0 +1,3 @@
+#!/bin/bash
+#export GARBAGE=dbg
+.  exe 2>&1  | tee log

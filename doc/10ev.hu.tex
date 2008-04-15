@@ -1,0 +1,72 @@
+%{\Large\bf 10 éves a CCC} 
+%1996.09-től számítva
+
+\pagetitle%
+{10 éves a CCC}%
+{Vermes M.}%
+{2006. Szeptember}
+
+\medskip
+
+A változáslisták  szerint 10 éves a CCC:
+Clipper leszármazott, a forráskódot C-re, 
+illetve egy  C-ben implementált veremgépre fordítja.
+Platformfüggetlen programnyelv és fejlesztőeszköz.
+
+\begin{itemize}
+\item   
+    A név jelentése {"}Clipper to C++ Compiler".
+\item 
+    \href{http://ccc.comfirm.hu/ccc3/ccc-clipper-elteresek.html#NAMESPACE}{Névterek}, 
+    \href{http://ccc.comfirm.hu/ccc3/ccc-clipper-elteresek.html#THREADS}{szálak}, 
+    \href{http://ccc.comfirm.hu/ccc3/exception.html}{kivételek},
+    \href{http://ccc.comfirm.hu/ccc3/objektum.html}{objektumok},
+    \href{http://ccc.comfirm.hu/ccc3/ccc3_ujdonsagok.html}{unicode}
+    \ldots
+\item 
+    \href{http://ccc.comfirm.hu/ccc3/xmlrpc-framework.html}{XMLRPC}, 
+    \href{http://ccc.comfirm.hu/ccc3/sql2.html}{SQL}, 
+    \href{http://ccc.comfirm.hu/ccc3/cccgtk.html}{GTK (Glade)},
+    \href{http://ccc.comfirm.hu/ccc3/jterminal.html}{Jáva terminál} \ldots
+\item
+    Éles banki alkalmazások működnek vele.
+\item   
+    Forrásban
+    \href{http://ccc.comfirm.hu/ccc3/download/olvass.html}{tölthető le} 
+    LGPL licensz alatt.
+\end{itemize}
+
+A jelenlegi állapot  az
+\href{http://ccc.comfirm.hu/ccc3/ccc-clipper-elteresek.html}%
+{Eltérések a CCC és Clipper között} dokumentumból mérhető fel legjobban.
+A CCC kiterjeszti a régi Clippert.
+Korszerű, kiállja az összehasonlítást olyan nyelvekkel, 
+mint a Python, Ruby, Pike.
+Különösen hasonló a CCC és a Python hangulata,
+mindkettő  {\em praktikus}, tömör, mégis 
+könnyen olvasható, kerülik a Jávára jellemző tudálékosságot.
+
+Hozzászoktam, hogy  a fórumokon ilyeneket kapok: 
+{"}Minek Clipperrel foglalkozni a .NET korában?" (sting),  
+{"}Időgép is kellene hozzá",
+{"}Mit ér egy nyelv önmagában, osztálykönyvtár nélkül?".
+Először is, van egy s más a CCC-ben.  Másodszor, a CCC-t
+könnyebb C betétekkel bővíteni, mint az említett nyelveket. 
+
+A Jáva bővítése C-vel ellenjavallt. 
+Elvész a hordozhatóság, túl bonyolult,  
+az átlagprogramozó nem is ért hozzá.
+Hasonló a helyzet a Pythonnál.
+Az {\em alkalmazáshoz} szükséges bővítéseket a 
+{\em futtatókörnyezet/interpreter} módosításával kell(ene)  
+megvalósítani. Ezekben a nyelvekben valóban nélkülözhetetlen 
+az egész informatikai univerzumot magábafoglaló osztálykönyvtár. 
+
+Ezzel szemben a CCC (C fordítás közbeiktatásával) natív  
+binárisokat készít, ezért bármikor alámerülhetünk C-be.
+A Clipperrel együtt automatikusan fordulnak a C modulok. 
+Kisebb jelentősége van így  az osztálykönyvtáraknak, 
+mert mindig rendelkezésre áll a C-ből elérhető infrastruktúra. 
+Ez a CCC filozófiája.
+
+

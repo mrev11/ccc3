@@ -1,0 +1,4 @@
+#!/bin/bash
+msk2dlg.exe --jtpanel  pdialog.msk  
+msk2dlg.exe --jtdialog pdialog.msk  
+ 

@@ -1,0 +1,2 @@
+#!/bin/bash
+make.b exe prg2ppo  setup.lib

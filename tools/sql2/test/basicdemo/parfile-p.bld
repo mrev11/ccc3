@@ -1,0 +1,9 @@
+-d.
+-dtds
+-dconnect-pg
+
+-b../$$(testdata_lib)
+-bccc3_sql2_postgres
+
+BUILD_EXE=exe-pg
+

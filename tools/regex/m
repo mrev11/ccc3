@@ -1,0 +1,6 @@
+#!/bin/bash
+bapp_unix_.b -sccc3_regex -bpcreposix
+
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN
+cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
+cp -pf *.ch  $CCCDIR/usr/include

@@ -1,0 +1,23 @@
+
+
+(define-function gtk_message_dialog_get_type
+  (c-name "gtk_message_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_message_dialog_new
+  (c-name "gtk_message_dialog_new")
+  (is-constructor-of GtkMessageDialog)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWindow*" "parent" (null-ok) (default "NULL"))
+    '("GtkDialogFlags" "flags" (default "0"))
+    '("GtkMessageType" "type" (default "GTK_MESSAGE_INFO"))
+    '("GtkButtonsType" "buttons" (default "GTK_BUTTONS_NONE"))
+    '("const-gchar*" "message_format" (null-ok) (default "NULL"))
+  )
+  (varargs #t)
+)
+
+
+

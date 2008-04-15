@@ -1,0 +1,8 @@
+#!/bin/bash
+for s in *.so; do
+   echo "--------------------"
+   echo $s
+   echo "--------------------"
+   ldd $s
+done
+   

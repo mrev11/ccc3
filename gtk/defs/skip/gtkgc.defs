@@ -1,0 +1,23 @@
+
+
+(define-function gc_get
+  (c-name "gtk_gc_get")
+  (return-type "GdkGC*")
+  (parameters
+    '("gint" "depth")
+    '("GdkColormap*" "colormap")
+    '("GdkGCValues*" "values")
+    '("GdkValuesMask" "values_mask")
+  )
+)
+
+(define-function gc_release
+  (c-name "gtk_gc_release")
+  (return-type "none")
+  (parameters
+    '("GdkGC*" "gc")
+  )
+)
+
+
+

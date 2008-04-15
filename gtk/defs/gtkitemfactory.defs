@@ -1,0 +1,298 @@
+
+
+(define-function gtk_item_factory_get_type
+  (c-name "gtk_item_factory_get_type")
+  (return-type "GtkType")
+  (in-module GtkItemFactory)
+)
+
+(define-function gtk_item_factory_new
+  (c-name "gtk_item_factory_new")
+  (is-constructor-of GtkItemFactory)
+  (return-type "GtkItemFactory*")
+  (parameters
+    '("GtkType" "container_type")
+    '("const-gchar*" "path")
+    '("GtkAccelGroup*" "accel_group" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method construct
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_construct")
+  (return-type "none")
+  (parameters
+    '("GtkType" "container_type")
+    '("const-gchar*" "path")
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-function item_factory_add_foreign
+  (c-name "gtk_item_factory_add_foreign")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "accel_widget")
+    '("const-gchar*" "full_path")
+    '("GtkAccelGroup*" "accel_group")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+  )
+)
+
+(define-function gtk_item_factory_from_widget
+  (in-module "GtkItemFactory")
+  (c-name "gtk_item_factory_from_widget")
+  (return-type "GtkItemFactory*")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-function gtk_item_factory_path_from_widget
+  (in-module "GtkItemFactory")
+  (c-name "gtk_item_factory_path_from_widget")
+  (return-type "const-gchar*")
+  (comment "do not free")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method get_item
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_get_item")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "path")
+  )
+)
+
+(define-method get_widget
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_get_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "path")
+  )
+)
+
+(define-method get_widget_by_action
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_get_widget_by_action")
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint" "action")
+  )
+)
+
+(define-method get_item_by_action
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_get_item_by_action")
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint" "action")
+  )
+)
+
+(define-method create_item
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_create_item")
+  (return-type "none")
+  (parameters
+    '("GtkItemFactoryEntry*" "entry")
+    '("gpointer" "callback_data")
+    '("guint" "callback_type")
+  )
+  (CCC "byhand")
+)
+
+(define-method create_items
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_create_items")
+  (return-type "none")
+  (parameters
+    '("guint" "n_entries")
+    '("GtkItemFactoryEntry*" "entries")
+    '("gpointer" "callback_data")
+  )
+  (CCC "REG,par,blk")
+  (codeblock "{|self,menu_items|gtk.item_factory.create_items(self:gobject,menu_items)}")
+  (comment "
+    gtk.item_factory.create_items(item_factory,menu_items)
+
+    menu_items az entry-ket tartalmazó array, aminek a hossza ismert, 
+    és azért nincs szükség n_entries-re. callback_data szükségtelen, 
+    mivel kódblokkokat használunk. 
+    
+    Az entryk felépítése:
+static menu_items:={;
+{ '/_File',         NIL,          NIL,                  '<Branch>' },;
+{ '/File/_New',     '<control>N', {||print_new()},      '<Item>' },;
+{ '/File/_Open',    '<control>O', {||print_open()},     '<Item>' },;
+{ '/File/_Save',    '<control>S', {||print_save()},     '<Item>' },;
+{ '/File/Save _As', NIL,          {||print_save_as()},  '<Item>' },;
+{ '/File/sep1',     NIL,          NIL,                  '<Separator>' },;
+{ '/File/Quit',     '<control>Q', {||gtk.main_quit()},  '<Item>' },;
+{ '/_Options',      NIL,          NIL,                  '<Branch>' },;
+{ '/Options/tear',  NIL,          NIL,                  '<Tearoff>' },;
+{ '/Options/Check', NIL,          {|w|print_toggle(w)}, '<CheckItem>' },;
+{ '/Options/sep1',  NIL,          NIL,                  '<Separator>' },;
+{ '/Options/Rad1',  NIL,          {|w|print_sel(w,1)},  '<RadioItem>' },;
+{ '/Options/Rad2',  NIL,          {|w|print_sel(w,2)},  '/Options/Rad1' },;
+{ '/Options/Rad3',  NIL,          {|w|print_sel(w,3)},  '/Options/Rad1' },;
+{ '/Options/sep1',  NIL,          NIL,                  '<Separator>' },;
+{ '/Options/Rad4',  NIL,          {|w|print_sel(w,4)},  '<RadioItem>' },;
+{ '/Options/Rad5',  NIL,          {|w|print_sel(w,5)},  '/Options/Rad4' },;
+{ '/Options/Rad6',  NIL,          {|w|print_sel(w,6)},  '/Options/Rad4' },;
+{ '/Options/Rad7',  NIL,          {|w|print_sel(w,7)},  '/Options/Rad4' },;
+{ '/_Help',         NIL,          NIL,                  '<LastBranch>' },;
+{ '/_Help/About',   NIL,          NIL,                  '<Item>' }}
+
+  /* possible type values:
+   * NIL                -> '<Item>'
+   * ''                 -> '<Item>'
+   * '<Title>'          -> create a title item
+   * '<Item>'           -> create a simple item
+   * '<ImageItem>'      -> create an item holding an image
+   * '<StockItem>'      -> create an item holding a stock image
+   * '<CheckItem>'      -> create a check item
+   * '<ToggleItem>'     -> create a toggle item
+   * '<RadioItem>'      -> create a radio item
+   * <path>             -> path of a radio item to link against
+   * '<Separator>'      -> create a separator
+   * '<Tearoff>'        -> create a tearoff separator
+   * '<Branch>'         -> create an item to hold sub items
+   * '<LastBranch>'     -> create a right justified item to hold sub items
+   */
+   
+  Az item_factory API újabban depracated. 
+  ")
+)
+
+(define-method delete_item
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_delete_item")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "path")
+  )
+)
+
+(define-method delete_entry
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_delete_entry")
+  (return-type "none")
+  (parameters
+    '("GtkItemFactoryEntry*" "entry")
+  )
+)
+
+(define-method delete_entries
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_delete_entries")
+  (return-type "none")
+  (parameters
+    '("guint" "n_entries")
+    '("GtkItemFactoryEntry*" "entries")
+  )
+)
+
+(define-method popup
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_popup")
+  (return-type "none")
+  (parameters
+    '("guint" "x")
+    '("guint" "y")
+    '("guint" "mouse_button")
+    '("guint32" "time" (default "GDK_CURRENT_TIME"))
+  )
+)
+
+(define-method popup_with_data
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_popup_with_data")
+  (return-type "none")
+  (parameters
+    '("gpointer" "popup_data")
+    '("GtkDestroyNotify" "destroy")
+    '("guint" "x")
+    '("guint" "y")
+    '("guint" "mouse_button")
+    '("guint32" "time" (default "GDK_CURRENT_TIME"))
+  )
+  (CCC "byhand")
+)
+
+(define-method popup_data
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_popup_data")
+  (return-type "gpointer")
+)
+
+(define-function item_factory_popup_data_from_widget
+  (c-name "gtk_item_factory_popup_data_from_widget")
+  (return-type "gpointer")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_translate_func
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_set_translate_func")
+  (return-type "none")
+  (parameters
+    '("GtkTranslateFunc" "func")
+    '("gpointer" "data")
+    '("GtkDestroyNotify" "notify")
+  )
+  (CCC "byhand")
+)
+
+(define-function item_factory_from_path
+  (c-name "gtk_item_factory_from_path")
+  (return-type "GtkItemFactory*")
+  (parameters
+    '("const-gchar*" "path")
+  )
+  (deprecated "")
+)
+
+(define-function item_factory_create_menu_entries
+  (c-name "gtk_item_factory_create_menu_entries")
+  (return-type "none")
+  (parameters
+    '("guint" "n_entries")
+    '("GtkMenuEntry*" "entries")
+  )
+  (deprecated "")
+)
+
+(define-function item_factories_path_delete
+  (c-name "gtk_item_factories_path_delete")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "ifactory_path")
+    '("const-gchar*" "path")
+  )
+  (deprecated "")
+)
+
+(define-method create_items_ac
+  (of-object "GtkItemFactory")
+  (c-name "gtk_item_factory_create_items_ac")
+  (return-type "none")
+  (parameters
+    '("guint" "n_entries")
+    '("GtkItemFactoryEntry*" "entries")
+    '("gpointer" "callback_data")
+    '("guint" "callback_type")
+  )
+  (deprecated "")
+)
+
+
+

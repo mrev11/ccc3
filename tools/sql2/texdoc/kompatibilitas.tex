@@ -1,0 +1,148 @@
+
+\section{Kompatibilitási kérdések}
+
+\subsection{Adatbázis objektum nevek}
+
+Az Oracle és a Postgres is támogatja az idézett azonosítókat.
+Ha Oracleben egy azonosító ilyen alakú
+\begin{verbatim}
+    "KONTO"."SZAMLASZAM"
+    "KONTO"."UPDATE"
+\end{verbatim}
+akkor azokat az Oracle nem tekinti kulcsszónak. Idézőjelek nélkül
+nem használhatnánk \verb!update! nevű mezőt, mert az ütközik az
+update kulcsszóval. Ha az idézett azonosítókat csupa nagybetűvel írjuk,
+akkor az azonosító case insensitive abban az értelemben, hogy 
+\begin{verbatim}
+    "KONTO"."SZAMLASZAM" <=> Konto.Szamlaszam
+\end{verbatim} 
+egyenértékű. Ha az idézett azonosítóban nagybetűn kívül más is van,
+akkor az azonosító case sensitive lesz.
+A Postgres ugyanígy nem tekinti kulcsszónak
+az idézett azonosítókat, az Oraclelel ellentétben azonban
+a csupa kisbetűs írásmód eredményez case insensitive azonosítókat,
+azaz 
+\begin{verbatim}
+    "konto"."szamlaszam" <=> Konto.Szamlaszam
+\end{verbatim} 
+Az SQL2 interfész alkalmazkodik ehhez. Mindig idézett azonosítókat
+használ, ezáltal nincs szükség az SQL kulcsszavak kerülgetésére.
+Oracle esetében az idézett azonosítók nagybetűsek, Postgresnél
+kisbetűsek. Ez azzal az előnnyel jár, hogy az általunk létrehozott
+adatbázisokban case insensitive azonosítók lesznek, így
+az sqlplus-ban vagy psql-ben érdektelen a kis/nagybetűk használata,
+azaz a szokott módon dolgozhatunk. Persze egy kulcsszóval egyező
+azonosító esetén interaktív módban is használnunk kell az
+idézőjeleket. Hátrány, hogy a mások által létrehozott case sensitive
+azonosítókat nem lehet elérni az SQL2 interfészen keresztül.
+
+
+\subsection{Autocommit, tranzakcióhatárok}
+
+Az Oracle automatikusan indítja a tranzakciókat.
+Egyáltalán nincs \verb!begin transaction! (vagy hasonló) utasítás,
+az Oracle mindig tranzakció közben van,
+a tranzakció a következő commit/rollback utasításig tart,
+ami után automatikusan indul a következő tranzakció.
+
+A Postgres is tudott így működni a 7.4 verzió előtt,
+ez volt az ún. autocommit off üzemmód. A 7.4-es verzióban azonban
+megszűnt az autocommit utasítás, ezért az SQL2 interfészben
+kénytelenek vagyunk minden commit/rollback után \verb!begin transaction!
+utasítást küldeni a szervernek, ezzel pótolva az autocommitot.
+
+Vannak esetek, amikor a szerver saját hatáskörben
+befejezettnek nyilvánít egy tranzakciót:
+
+Az Oracle a DDL utasítások (create table, drop table, \ldots) 
+előtt és után (belsőleg) automatikusan végrehajt egy commitot. 
+Az SQL2 interfész az egységes működés érdekében a Postgres 
+esetében is kiadja ezeket a commitokat.
+
+A Postgres bármilyen hiba esetén azonnal és elkerülhetetlenül
+abortálja a tranzakciót, és végrehajt (belsőleg) egy rollbacket.
+Mivel ilyenkor nincs módunkban automatikusan indítani a következő
+tranzakciót, előfordulhat (ha nem vesszük észre a hibát),
+hogy a következő utasításaink tranzakción kívülre kerülnek, 
+ezáltal mind hibásak lesznek. Tulajdonképpen ez előnyös,
+mert így legalább nem lehet elsiklani a hiba felett, 
+úgy gondolom, éppen ennek érdekében szűnt meg az autocommit.
+Az Oracle ezzel szemben úgy működik, mintha minden SQL utasítás
+előtt volna egy implicit savepoint, és hiba esetén eddig a savepointig
+rollbackelne. A Oracle tehát visszaáll a hibás utasítást megelőző állapotra,
+és az alkalmazási programra bízza, hogy rollbackeli-e a tranzakció
+egészét. Ezt a különbséget az SQL2 interfész nem egyenlíti ki.
+Az alkalmazási programokat a Postgres szigorúbb feltételeihez 
+alkalmazkodva kell megírni.
+
+\subsection{Tranzakcióhatáron átnyúló fetch}
+
+Az indexszekvenciális rekordkezelőkhöz szokott programozó
+hajlamos arra, hogy az SQL select-fetch utasításokat egy iterátor
+módján képzelje el: Az első fetch 1 millisec alatt behozza az első 
+rekordot, a következő fetch a másodikat, stb. Ez az, amiről szó sincs.
+
+Az SQL select még az első fetch előtt összeállítja, lerendezi
+a teljes (!) eredménytáblát még akkor is, ha az GB-os nagyságrendű.
+Emiatt lehet, hogy az első rekord megérkezéséig percek (órák) is eltelnek,
+míg a szerver egyre csak dolgozik az eredménytáblán. 
+Az alkalmazóknak tehát csínján kell bánni a nagy eredménytáblához vezető
+lekérdezésekkel, mivel azok igencsak megviselik a szervert. 
+
+Megfigyelésem szerint az Oracle az eredménytáblát a szerveren 
+tartja, és csak a fetchelt rekordokat küldi át a kliensre.
+
+A Postgres két módszert is kínál a select utasításra.
+A {\em közvetlen select\/} utasítás az egész eredménytáblát előre
+átküldi a kliensgépre, ebből a kliens sor- és oszlopindex alapján
+(mintha csak egy mátrixot címezne) éri el az adatokat. Mondani sem
+kell, milyen nehézségekkel jár egy nagy eredménytábla kezelése.
+Emellett a Posgresben kurzort is definiálhatunk:
+\begin{verbatim}
+    declare crs_id cursor for select ...
+    fetch forward 1 in crs_id
+    ...
+    fetch forward 1 in crs_id
+\end{verbatim}
+A {\em kurzoros select\/} csak a ténylegesen fetchelt rekordokat
+küldi át a kliensre, ezért hatékonyabban kezeli a nagy eredménytáblákat,
+viszont funkcionalitásában korlátozott, pl. nem működik vele
+a lockolás (\verb!select ... for update!). Az SQL2 interfész
+aszerint választ a közvetlen és kurzoros select között, hogy 
+az alkalmazás akar-e lockolni. Ha lock van előírva, akkor közvetlen,
+egyébként kurzoros lesz a select.
+
+Tovább bonyolódik a helyzet a tranzakcióhatárok miatt.
+Az Oracle képes a tranzakcióhatárokon átnyúló fetchelésre.
+Ez a tulajdonság használható a következő típusú programnál:
+\begin{verbatim}
+    select 100 ezer darab számla
+    while(ciklus 100 ezer darab számlára)
+        fetch
+        kamatszámítás egy számlán
+        if(sikeres)
+            commit
+        else
+            rollback
+        end
+    end
+\end{verbatim}
+A Postgres közvetlen select utasítása elvileg szintén tudná ezt,
+a gyakorlatban viszont nagyon megkottyan neki a 100 ezres eredménytábla 
+kliensen történő kezelése. A kurzoros select (új fejleményként)
+{\em félig\/} képes a tranzakcióhatáron átnyúló fetchelésre,
+nevezetesen a commiton átmegy, a rollback viszont
+menthetetlenül lezárja. Nem könnyű tehát összhangba hozni 
+az Oracle és a Postgres fetchelésre vonatkozó elképzeléseit.
+
+Nézetem szerint azonban egyáltalán nem kell belemenni
+ebbe a zsákutcába.  A tranzakcióhatárokon átnyúló fetchelés
+fogalmilag zagyva dolog, jobb elkerülni, az SQL2 interfész
+ezért egységesen megakadályozza.  Az előző programot egyszerűen
+implementálhatjuk {\em két adatbáziskapcsolattal}:
+Az egyiket használjuk a 100 ezer darab számla felsorolásához,
+a másikat a kamatszámításhoz. Így a kamatszámítás commit/rollback
+utasításai nincsenek hatással a számlák bejárására. Ez tiszta ügy.
+
+
+

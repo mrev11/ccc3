@@ -1,0 +1,25 @@
+#!/bin/bash
+rm *.zz
+
+NAME=$1
+
+prg2ppo.exe proba/$NAME.prg -iproba -i$CCCDIR/usr/include -ustd1.ch
+
+ppo2cppx.exe proba/$NAME.ppo -o$NAME.u.zz  2>ppo2cpp
+if [ -s ppo2cpp ]; then
+   cp ppo2cpp $NAME.u.zz
+fi
+
+
+ppo2cpp0.exe  proba/$NAME.ppo 2>ppo2cpp
+if [ -s ppo2cpp ]; then
+    cp ppo2cpp $NAME.r.zz
+else    
+    mv proba/$NAME.cpp $NAME.r.zz
+fi
+
+
+
+rm proba/*.ppo
+diff $NAME.u.zz  $NAME.r.zz | less
+ 

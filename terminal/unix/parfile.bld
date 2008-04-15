@@ -1,0 +1,12 @@
+-mterminal
+-d.
+-d../common
+-d$(CCCDIR)/ccclib/src/uic/screenbuf
+-i$(CCCDIR)/ccclib/src/uic/termapi
+-i/usr/X11R6/include
+-p/usr/X11R6/lib
+-bccc3.lib
+-bX11
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+

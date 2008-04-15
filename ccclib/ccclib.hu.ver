@@ -1,0 +1,2364 @@
+2008.03.13
+  slice.cpp korszerűsítve
+
+2008.03.05
+  stringek indexelhetők -> karakter
+  string szeletek
+
+2008.02.28
+  at() optimalizálva az 1-karakteres esetben.
+  xvmove() részstring mozgatása.
+
+2008.02.22
+  simplehash osztály -- asszociatív tömb
+
+2008.02.17
+  Windowson a file API-kban áttérés a unicodera:
+
+    chmod     ->    _wchmod  
+    getcwd    ->    _wgetcwd 
+    mkdir     ->    _wmkdir  
+    rmdir     ->    _wrmdir  
+    remove    ->    _wremove 
+    rename    ->    _wrename 
+    fopen     ->    _wfopen  
+    stat      ->    _wstat   
+    sopen     ->    _wsopen  
+
+    FindFirstFile -> FindFirstFileW
+    CopyFile -> CopyFileW
+    stb.
+      
+    nincs: _wexec, _wspawn 
+    rossz: _wsystem (elromlanak a nem-ASCII argumentumok)
+    
+  Példa:
+    #ifdef _UNIX_
+        _retni( chmod(_parb(1),_parni(2)) );
+    #else
+        bin2str(base);
+        _retni( _wchmod(_parc(1),_parni(2)) );
+    #endif
+
+  Kellemetlen, hogy sok helyen megjelent ez a kettősség.
+  Most a windowsos websrv kezeli a cirill betűs directorykat
+  és fájlokat, de nem tud végrehajtani nem-ASCII CGI-t.
+
+2008.02.05
+  Nem lehet definiálva az MSC fordítónak a _WINDOWS_ szimbólum, 
+  mert attól elromlik (ki kellett venni a compile.opt filékből).
+
+2008.01.31
+  Rossz volt Windows XP-n a socket.inherit implementáció.
+  Windows 2000-en a DuplicateHandle-es megoldás jól működött.
+  XP-től kezdődően viszont a DuplicateHandle nem alkalmazható socketekre,
+  hanem helyette a Set/GetHandleInformation-t kell használni.
+  Erre épül az új windows/closeonexec.cpp modul:
+
+    sethandleinheritflag   //használható socketre
+    gethandleinheritflag   //használható socketre
+    setcloexecflag         //nem használható socketre
+    getcloexecflag         //nem használható socketre
+
+  A set/gethandleinheritflag csak Windows HANDLE-ekre működik.
+  A set/getcloexecflag Windowson csak POSIX leírókra működik.
+
+  A set/getcloexecflag file- és pipe-leírókra UNIX-on és Windowson 
+  egyformán működik. UNIX-on ezenkívül a set/getcloexecflag socket 
+  leírókra is működik.
+
+2008.01.24
+  Küzdelem a const char * típusokkal.
+
+2008.01.19
+  FONTOS HIBAJAVÍTÁS
+  Attrib -> method felüldefiniálás:
+
+  Korábban ilyenkor az attribútumok tömbjében lyuk maradt. 
+  Az  object:attrvals metódus az attrnames és asarray
+  párhuzamosnak gondolt tömbök összepárosításával működik.
+  A felüldefiniálás után asarray lyukas maradt, de attrnames nem,
+  azaz a tömbök mégsem párhuzamosak, így az adatok elcsúsztak.
+  Ezért attrib -> method felüldefiniálás után a classMethod
+  újraszámolja az attribútumok indexét, és megszünteti a lyukat.
+ 
+  Új függvény class.prg-ben: classMethodCount.
+  classMethNames a hash-beli elhelyezkedés sorrendjében adja
+  a metódusneveket (a korábbi név sorrend helyett).
+  
+  A CCC3-beli class.prg átvive CCC2-be (backport).
+    
+
+2007.12.17
+  fileconv.cpp
+    Korábban a convertfspec2nativeformat 
+        először bin2str-t csinált,
+        a konverziókat wchar típusokon csinálta,
+        majd az eredményt str2bin-nel visszakonvertálta.
+    Most 
+        először str2bin konverziót csinál,
+        a konverziókat char típusokon csinálja,
+        az eredményt binaryban hagyja.
+    Ezzel a CCC2-es és CCC3-a konverzió nagyon hasonló.
+    Másképp konvertálódnak kis/nagyra a nem ascii karakterek.
+    
+  readdir.cpp
+    plusz függvény __readdirx 
+    ua. mint __readdir, csak binaryban adja a filéneveket
+    
+  findnext.cpp  
+    plusz függvények findfirstx, findnextx
+    binaryban adják a filéneveket
+    hiába az erőlködés, mert a nonascii filénevek rosszak
+    nyílt forrású programokban nem találtam megoldást
+    a windowsos dir valahonnan tudja az igazi fájlnevet
+
+  directory(mask,flags,binopt)
+    binopt==NIL/.f.  : stringben adja a filéneveket (default)
+    binopt==.t.      : binaryban adja a filéneveket
+
+  Az egész erőlködés célja, hogy a directory függvénnyel
+  hozzá lehessen férni a nonascii karaktereket tartalmazó
+  filénevekhez. Ez Linuxon most megvan, de Windowson nem.
+  A változások nem érintik a CCC2-t.
+
+2007.10.30 -- 3.0.11
+  direxist-ben kiegyenlítve a záró / okozta eltérés:
+  ha dir létezik, akkor dir/ is létezik (Windowson is).
+
+2007.09.10 -- 3.0.10
+  Windows dirname() javítva (a path D: részét ki kell hagyni).
+
+2007.07.30 -- 3.0.09
+  Új UNIX spawn implementáció prg-ben.
+
+2007.07.04 -- 3.0.08
+  A 2006.08.03-es javítás (még CCC2) a str(n) konverzió 
+  minimális 10 mezőszélességét 9-re rontotta. Visszaállítva 10-re.
+
+2007.03.06 -- 3.0.08
+  Új FO_APPEND/FC_APPEND nyitási mód fopen/fcreat-ban.
+
+2007.02.12 -- 3.0.07
+  Nem működött: directory("/*","D").
+
+2007.02.08 -- 3.0.06
+  nls_load_translation-ban a kifelejtett CCC_EPILOG pótolva.
+
+2006.10.17 -- 3.0.05
+  o_get.prg: pict_funcstr(get) javítva
+  strtran.prg: C/X típuskezelés javítva
+
+2006.09.22 -- 3.0.04
+  cccdef.h:190: error: extra qualification 'stvar::' on member 'stvar'
+  típusú (gcc 4.1.1) hibák javítva (további előfordulás: stvarloc, screenbuf).
+
+2006.08.01 -- 3.0.03
+  sckutil.cpp socket_read javítva az "50'timeout" hiba.
+
+2006.08.16 -- 3.0.02
+  Az "AN" template csak ANGOL betűket enged be a getbe.
+  Korábban ékezetes és cirill betűket is beengedett, 
+  amivel jól el lehetett rontani a számlaszámokat.
+
+  Név szerinti metódushívás objectClass-ban: evalmethod.
+
+2006.08.03 -- 3.0.01
+  str hibája (nagy számoknál) javítva.
+
+2006.07.31 -- 3.0.00
+  CCC3 unicode támogatás.
+
+2006.01.23 -- 2.3.02
+  qout.cpp-be visszatéve a karakterkonverzió.
+
+2005.11.04 -- 2.3.01
+  DOSCONV defaultja 0.
+  ppo2cpp-ben 'to' és 'step' nem lehet függvénynév.
+  Windowson piros X helyett zöld pipa.
+  xmethod2-ben üres virtuális destructor.
+  Null argument warningok elhárítva.
+
+2005.07.31 -- 2.3.00
+  Az új objectek nem linkelhetők a régiekkel, 
+  tehát átálláskor egyszerre mindent újra kell fordítani.
+
+  Kivételkezelés
+    Struktúrált kivételkezelés: több recover, amik típus alapján
+    válogatnak a kivételek között, új finally ág, mindez Jáva mintára.
+    A ppo2cpp a 4.3.00f változattól kezdve fordítja az új szintaktikát.
+    Recover nélküli break kilépés helyett kiértékeli az errorblockot.
+    A könyvtárakban eval(errorblock(),e) helyett break(e).
+    Különféle error leszármazottak syserror-ban.
+    Az object osztályban új metódus: isderivedfrom.
+    Prototype objectek.
+
+  Táblaobjektumok 
+    A hibakezelés a fentieknek megfelelően változott,
+    speciális hibaosztályok: tabStructError, tabIndexError.
+
+  Szignál kezelés
+    signal.ch-ban egységesen használt signum konstansok.
+    Mutex lockok alatt a szignálok tiltva (deadlock ellen).
+    Windows ctrlcblock megszűnt, setposixsignal átalakítva.
+    Szignálok blokkolása Linuxon és Windowson egységesítve.
+    signalblock paraméterezése változott: eval(signalblock(),signum).
+    Szálak indításakor védekezés a szignálok ellen.
+    siglocklev, sigcccmask öröklődik a szálak között.
+
+    Új szignál API: 
+        signal_description, signal_lock, signal_unlock,
+        signal_raise, signal_send, signal_pending, signal_clear, 
+        signal_setmask, signal_mask, signal_unmask.
+
+  Megjegyzés a szignálokhoz
+    A szálbiztonság és a korrekt szignálkezelés legfontosabb
+    kritériuma: Minden olyan pillanatban, amikor egy másik 
+    szálból szemétgyűjtés indulhat, vagy a szál szignált kaphat 
+    a vermeken kell legyen minden élő változó, de nem lehet 
+    ott semmi más (pl. megszűnőben levő változók). E kritérium
+    teljesítése csak a ccc2 és ccc2_ui_ könyvtáraknál kitűzött cél.
+    Ha egy nem szálbiztosan megírt program a szignálkezelőben 
+    szemetet gyűjt, akkor továbbra is előfordulhat elszállás.
+    A CCC alap futtatórendszere (ccc2 és ccc2_ui_) a szignálkezelés 
+    alatt is ép állapotban tartja a változóteret, és elkerüli 
+    a deadlockokat.  A reentráns programoknál szokásos általános
+    szabályokon kívül semmilyen tiltás nincs, elvileg  bármi
+    futhat a szignálkezelőben.
+
+    A signal_lock(), signal_unlock() API csak azt a szálat védi
+    a szignáltól, ami a signal_lock()-ot meghívta. Ettől még bármely
+    másik szál kaphat SIGINT-et, és az egész program kiléphet.
+    Windowson éppenséggel mindig ez a helyzet, ui. a SIGINT-et
+    mindig egy újonnan induló szál kapja. A signal_lock() ezért
+    csak arra való, hogy a mutexeket védje deadlock ellen.
+    Ha az egész programot kell védeni a SIGINT-től akkor ki kell
+    cserélni a minden szálra globális signalblock()-ot. Így
+    működik az új setposixsignal().
+
+  Castolások
+    Összes (char*) cast felülvizsgálva.
+    Összes (char *) cserélve (char*)-re, hogy könnyebb legyen keresni.
+    const char* deklarációk, ahol az lehetővé teszi a (char*) kihagyását,
+    pl. char *txt=(char*)YYText() helyett const char *txt=YYText().
+    strings(), stringn() char* helyett const char*-t vár.
+    
+  Megjegyzés a castoláshoz
+        char *buf="string literal";
+    régi értelmezése: inicializált karakterbuffer,
+    új értelmezése: karakterkonstans (readonly szegmensbe helyezve).
+    Korábban a -fwritable_strings opcióval választható volt
+    a régi értelmezés, most azonban ez az opció a GCC-ben megszűnt.
+    A string literál helybeni nagybetűre konvertálása SIGSEGV-t okoz.
+    Ha a C++ logikus akarna lenni, akkor a fenti sorra hibát kéne
+    jeleznie. Ehelyett a C++ tervezőjének két kötetes,  1000 oldalas 
+    könyvében azt olvasom: A sok régi programra való tekintettel (!) 
+    a fordítók a fenti sort warning nélkül fogadják el. Következmény:
+    Az inkompatibilis változás miatt, és amiatt, hogy az új C++ szabvány 
+    következetlenül használja a char* és const char*  típusokat, régi 
+    C programok warning-mentes fordítás után SIGSEGV-znek.
+    
+  Szemétgyűjtés, szálbiztonság
+    A szemétgyűjtés és a VALUE értékadás szinkronizálásában
+    a vitatott zsilipelés helyett szálanként privát mutexek lockolva.
+    A nem szálbiztos *stack++=NIL helyett mindenhol PUSHNIL().
+
+  Egyéb
+    Build, prg2ppo, z, zgrep statikusan linkel.
+    sread()-ből kivéve az 1 órás timeout.
+    Stack kezelési hiba javítva evalarr()-ban.
+    asort()-ban az összehasonlító block alatt gc engedélyezve.
+    Egyes include filék több példányban tárolása megszűnt.
+    Run és quit preprocesszálása megszűnt.
+    waitpid() WNOHANG módja javítva.
+
+
+2005.04.26 -- 2.2.02
+  push_call makró helyett függvény, ellenőrzi a stack overflow-t.
+
+2005.04.07 -- 2.2.01
+  Portolás (i386-os) FreeBSD 5.3-ra.
+  FreeBSD-n külön installálni kell /bin/bash-t.
+  FreeBSD-ben (GCC 3.4.2-ben?) nincs malloc.h, csinálni kell.
+  Nincs libdl.so könyvtár (link.opt-ból kihagyva).
+  Linkeléskor meg kell adni a -rpath-link opciót.
+
+  GCC 3.4.2-ben a -fwritable-strings opció deprecated lett,
+  ezért mindenhol be kellett írni: (char*)"".
+  
+2005.01.24 -- 2.2.00
+  Portolás 64-bitre (x86-64/amd64 kompatibilitás).
+  Új Clipper típus: P. Azokon a helyeken, ahol a C réteg 64-bites
+  mennyiséget adott át számváltozóban a Clipper rétegnek, a számváltozó
+  helyett áttértünk az új P típusra.
+  
+  A CCC alaprendszer és alkalmazások egyformán fordulnak és 
+  futnak 32 és 64-bites gépeken (nem kell foglalkozni a bitszámmal). 
+  A Ctree rekordkezelőnek azonban nincs 64-bites változata.
+
+2005.01.19 -- 2.1.03
+  Hibajavítás sat-ban.
+  A korábbi változat nem védekezett negatív kezdőindex ellen.
+  
+  Alkalmazkodás scrollozó Windows konzolokhoz. 
+  Most nem az egész képernyőbuffert vesszük teljes képernyőnek 
+  (ami igen nagy lehet), hanem alkalmazkodunk a látható méretekhez 
+  és pozícióhoz.
+  
+  Védekezés a begin és recover között levő exit/loop/return ellen.
+
+  Új string literál szintaktika: <<SYM>>raw string<<SYM>>
+
+
+2004.10.31 -- 2.1.02
+  uic_ könyvtárbeli inkey-ben paraméterátvétel _parnd-vel.
+
+  Szálbiztonság:
+  threadid paraméterek átvétele _parnu-val (a hibás _parni helyett).
+  Windowson a MUTEX_LOCK és MUTEX_UNLOCK makrók törzse fel volt 
+  cserélve, azért Windowson nem működtek a többszálú programok.
+  UNIX-on a thread indításnak mutex védelem alatt kell mennie.
+  array() veremkezelése javítva.
+
+2004.08.05 -- 2.1.01
+
+  stvar-ban a ststack-hoz való hozzáférés szinkronizálva.
+
+  Támogatva az alábbi inicializálás:
+    function hopp(a)
+    static x:=proba(a)
+  Az inicializátornak át kell adni VALUE*base-t.
+  
+  Ehhez az stvar osztálynak lett egy stvarloc nevű leszármazottja, 
+  ami a base-t is átveszi. A külső static változók továbbra is stvar 
+  osztályúak, ami nem változott. 
+  
+  Külső static változók szinkronizált létrehozása.
+  Az osztályregisztrációk átírása szinkronizáltra.
+  
+  Makrók: MUTEX_CREATE(x), MUTEX_LOCK(x), MUTEX_UNLOCK(x).
+
+
+2004.07.17 -- 2.1.00
+  Osztály<->metódus párosítás hash táblával:
+  
+  Az új hashcode.cpp modul hash kódot számol egy viszonylag 
+  rövid stringből, pl. egy metódus- vagy változónévből. 
+  
+  Az újraírt class.prg modul egyszerű tábla helyett hash táblában 
+  tárolja a metódusokat. A hash algoritmus (CCC-ben) pofonegyszerű,
+  kevés plusz helyet igényel, és már a hash tábla felépítése
+  is gyorsabb, mint a lineáris kereséssel működő egyszerű tábláé.
+  A hash tábla kitöltöttsége 1/3 és 2/3 között van, a nem kitöltött 
+  helyeken NIL van.
+
+  Az új ppo2cpp 4.0.01+ fordító _method_ helyett _method2_ osztályú 
+  metódusobjektumokat fordít, ezek tárolják a metódusnév hash kódját. 
+  A _method2_ osztályt az új xmethod2 modul definiálja.  A korábbi 
+  _method_ ostály is megmaradt a kompatibilitás érdekében.
+  
+  Átálláskor nem szükséges az alkalmazási programokat újrafordítani, 
+  ui. a korábbi xmethod modul az újra nem fordított (vagy kézzel kódolt) 
+  metódusokat a korábbi módon kezeli. A kézzel kódolt metódushívásoknál
+  mindenhol célszerű áttérni a DEFINE_METHOD makróra, ennek új változata 
+  már _method2_-t fordít.
+
+  A korábbi egy elemű osztály-cache változatlanul megmaradt, és továbbra 
+  is ennek köszönhető a legnagyobb gyorsulás. Egy egyszerű browse-olós 
+  program esetén ilyen futási eredmények  adódtak:
+  
+    optimailzálás   futásidő
+    semmi                118
+    csak hash             16
+    csak cache            11
+    cache és hash         11
+  
+  Látható, hogy a cache nagyon hatékony, ha egy modulban egy adott 
+  metódust mindig ugyanolyan objektumra alkalmazunk. Valójában ilyenkor 
+  a hash táblának kevés haszna van.  Abban az esetben azonban, amikor 
+  egy metódust hol ilyen, hol olyan osztályú objektumra alkalmazunk, 
+  a cache nem működik, és ezért a metódust újra meg újra elő kell keresni.
+  Ilyen eset pl., amikor különféle típusú tranzakció objektumok feldolgozó 
+  metódusát hívogatjuk egy ciklusban. Ezt kezeli jól a hash algoritmus.
+
+  Összefoglalva: a hash algoritmus kis mértékben gyorsítja a programok
+  elindulását, mert a metódustábla felépítése és a cache-ek első feltöltése
+  gyorsul. Megoldja továbbá a cache által kezelhetetlen (ritka) eseteket.
+  Van olyan program, amiben a hash optimalizálás 3-szoros gyorsulást ad.
+
+
+2004.03.30 -- 2.0.11
+  Memóriaszivárgás javítva asize-ban.
+  Max get template size 256 helyett 1024.
+
+2004.02.20 -- 2.0.10
+  Windowsos spawn-ban dinamikus helyfoglalás.
+  fcreate, fopen: FO_CREATE, FO_TRUNCATE, FC_NOTRUNC
+
+2004.01.20 -- 2.0.09
+  Új függvény: chsize(fd,length).
+
+2004.01.05 -- 2.0.08
+  thread_exit elfelejtette megszüntetni a local stacket.
+
+2003.12.31 -- 2.0.07
+  ui_ kiegészült az rconsole modullal, 
+    hogy le lehessen kérdezni az aktuális megjelenítőt.
+  ui_ kiegészült a wstatid modullal, 
+    mert a hiánya akadályozta a Kontó linkelését.
+  Az uid-ben használt symbols.h frissítve.
+  tbwrapper csak akkor tölti be az interaktív komponenseket, 
+    ha az aktuális megjelenítő driver nem ui_.
+
+2003.11.25 -- 2.0.06
+  A borlandos dup() hibásan áttér O_BINARY-ról O_TEXT módra,
+  ennek elkerülésére beállítva a default O_BINARY mód.
+
+2003.10.19 -- 2.0.05
+  Portolás GCC 3.3-ra (sorvégek)
+  Windows spawn-ban paraméterellenőrzés javítva.
+  UNIX spawn-ban a várakozás javítva.
+  fdup bővítve, új függvény hdup (DuplicateHandle).
+ 
+2003.10.03 -- 2.0.04
+  vmm.cpp áthozva a gyökérbe (általános hibakezelés)
+  exec Windowson is
+
+2003.09.22 -- 2.0.03
+  kombinált spawn, kombinált exec;
+  spawn implementáció UNIX-ra;
+
+  UNIX-on waitpid defaultja változott:
+    waitpid(pid,@status,1) //régi default (WNOHANG)
+    waitpid(pid,@status,0) //új default (várakozik)
+ 
+2003.09.16 -- 2.0.02
+  új API : fdup(fd,inherit) (UNIX, Windows)
+  új API : setcloexecflag(fd,flag), getcloexecflag(fd) (UNIX) 
+  Közös  : chmod.cpp, stat.cpp
+
+2003.09.02 -- 2.0.01
+  fclose elírása javítva.
+
+2003.09.02 -- 2.0.00
+  A webre kirakva. 
+
+2003.07.25 -- 1.6.09
+  Javított tempfile() implementáció.
+
+2003.07.20 -- 1.6.08
+  UNIX: fork, waitpid, exec, fdup, setcloseonexec, pipe.
+
+2003.03.07 -- 1.6.07
+  scanf hívása előtt a kimeneti változók mindenhol inicializálva.
+
+2003.03.05 -- 1.6.06
+  Javítás stod-ban: Solarison másképp működik a scanf.
+
+2003.02.09 -- 1.6.05
+  Windows savescreen hibakezelése javítva.
+
+  A Windows nagy ScreeBufferSize beállítása esetén nem tudja
+  végrehajtani a ReadConsoleOutput WIN32 API függvényt.
+  Most a SIGSEGV-t elkerüljük, és normál hibakezelés történik.
+  Korábban a hiba nem fordult elő, mert NT-n ScreenBufferSize 
+  defaultja 25x80 volt, Windows 2K-n viszont 300x80.
+
+  Az alábbi bekezdést át kell másolni egy console-size.reg
+  nevű filébe, és betölteni a registrybe:  
+  -------------------------------------------
+  REGEDIT4
+ 
+  [HKEY_CURRENT_USER\Console]
+  "ScreenBufferSize"=dword:00300050
+  "WindowSize"=dword:00300050
+  -------------------------------------------
+
+2003.01.11 -- 1.6.04
+  gcc 3.x kompatibilitás:
+
+    2.96-nál kisebb verziószámú gcc-k használata esetén a not() 
+    függvény visszakerült az alapkönyvtárba. A gcc a 2.96-tól
+    kezdve ezt nem fogadja el, mert a not-ot és még pár új dolgot
+    (or, and,...) kulcsszóként kezel. A not befordítását, vagy
+    kihagyását makróval szabályozzuk. A gcc verziószámát a gccver.b
+    script állapítja meg, és a megfelelő #define makrókat kiírja
+    a $CCCDIR/usr/options/lin/gccver.opt filébe. A build automatikusan
+    futtatja gccver.b-t, ha az opt filé még nem létezik, ha viszont
+    létezik, akkor használja a meglevőt. A gccver.opt filét ki kell 
+    hagyni a mentésből és az installációs csomagok készítéséből.
+
+  NL_TO_CRNL konverzió a konzol kimeneten.
+
+2002.12.19 -- 1.6.03
+  Új modul: fflush.cpp
+  clpfilio.cpp-ben determineUnixShareMode() javítva.
+
+2002.11.28 -- 1.6.02
+  flgui brwRestore javítva.
+
+2002.11.21 -- 1.6.01
+ 
+  Ezeket az opciókat a gcc 3.2 nem fogadja el:
+    -m486
+    -malign-jumps=4
+    -malign-functions=4
+  ezért kimaradtak.
+
+  A Large File Support (LFS) beállítása változott:
+
+  LFS bekapcsolva:
+    -D_LFS_
+    -D_FILE_OFFSET_BITS=64
+    -D_LARGEFILE_SOURCE
+
+  LFS kikapcsolva:
+    -DX_LFS_
+    -DX_FILE_OFFSET_BITS=64
+    -DX_LARGEFILE_SOURCE
+    
+  Az _LFS_ szimbólumot használja a CCC könyvtár az #ifdef-ekhez.
+  Az _FILE_OFFSET_BITS és _LARGEFILE_SOURCE a gcc beépített makrói.
+  Az eléírt X betű hatástalanítja a definíciókat.
+    
+ 
+2002.11.20 -- 1.6.00
+  Portolás gcc3-ra:
+  a megjelenítőkönyvtárak dinamikus betöltése átdolgozva;
+  not() helyett mindenhol topnot() (a kódgenerálásban is);
+  a korábbi gcc296.compat kihagyva;
+
+2002.09.10 -- 1.5.08
+  Egyenlőség (és egyenlőtlenség) vizsgálat kiterjesztve
+  az ARRAY, OBJECT, BLOCK típusokra. Egyenlőek, ha ugyanaz
+  az oref-jük.
+  
+  Korábban BLOCK-ok egyenlőségét egyáltalán nem lehetett vizsgálni,
+  ARRAY-re és OBJECT-re == értelmezve volt, de != nem (vajon miért?).
+
+2002.08.28 -- 1.5.07
+  brwCreate(t,l,b,r) argumentumok nélkül is hívható, 
+  ebben az esetben maximálisra inicializálja magát.
+  
+  brwArray olyan gotopblock/gobottomblockot tesz a browseba,
+  ami .f.-fel jelzi, ha a pozícionálás sikertelen, korábban
+  gotopblock/gobottomblock  visszatérési értéke NIL volt.
+
+2002.06.28 -- 1.5.06
+  variable.cpp korszerűsítve: egyedi oref_size adható meg.
+
+2002.06.26 -- 1.5.05
+  Hibás volt a statikus változók inicializálása clpstvar.cpp-ben:
+
+  stvar::stvar( void (*inicode)() )
+  {
+      vartab_ini();  //Inicializálja a változóteret, 
+      inicode();     //végrehajtja inicode-ot, eredmény a local stacken, 
+      ptr=ststack;   //beírja az stvar objektumba a static stack mutatóját, 
+      STPUSH(POP()); //átteszi a VALUE-t a local stackről a static stackre. 
+  }
+
+  Itt ptr-nek az inicode által készített értékre kell mutatni.
+  A korábbi "ptr=ststack;", "inicode();" sorrend hibát eredényez, 
+  ha inicode megváltoztatja a static stack pointerét (ststack-et).
+
+
+2002.05.31 -- 1.5.04
+  FO_NOLOCK fopen mód bevezetve UNIX-on (nincs protokoll lock),
+  set dosconv OFF  után FO_NOLOCK móban nyílnak a filék,
+  set dosconv FILESHARE  bekapcsolja a protokoll lock használatát,
+  egyúttal minden más DOSCONV flaget kikapcsol.
+
+  Az fopen(...,FO_EXCLUSIVE+FO_READ) UNIX-on problémát okoz,
+  ui. readonly access módban nyitott filére nem lehet felrakni
+  az exkluzivitást biztosító write lockot. 
+  Ezért az FO_READ access módot FO_READWRITE-ra cseréljük.
+  Ez azonban readonly filérendszeren okoz bajt, ahol nem lehet 
+  write módban megnyitni a filét, ezért readonly filérendszeren 
+  fopen(...,FO_NOLOCK+FO_READ) módra váltunk.
+
+  Az utóbbi váltás kifejezetten csak errno==EROFS esetén 
+  történik meg, tehát pl. r--r--r-- hozzáférésű filéknél nem.
+  Azt feltételezzük, hogy  readonly filérendszer esetén
+  az exkluzivitás felesleges, ui. a filé úgysem módosulhat.
+  (NFS particiót az egyik gép ro, a másik rw módban mountol?)
+
+2002.05.28 -- 1.5.03
+  o:(object)initialize return értéke tévesen NIL volt.
+
+2002.05.22 -- 1.5.02
+  object:(class)method, object:(parent@class)method,
+  object:(super@class)method alakok támogatása.
+
+2002.04.25 -- 1.5.01
+  flgui memoedit pozícionálása javítva.
+  Az flgui kurzornak legalább 2 pixel vastagnak kell lennie.
+  A villogást 0.5 sec-ről 0.3 sec-re gyorsítottam (külön kéne 
+  szabályozni a ki/bekapcsolás idejét).
+ 
+2002.03.28 -- 1.5.00
+  Large File Support. 
+  
+  2.4.x-es kernelen az egész CCC rendszer a
+
+      -D_FILE_OFFSET_BITS=64
+      -D_LARGEFILE_SOURCE
+
+  opciókkal fordítható. Az LFS 2.2.x+ReiserFS-en nem működik, 
+  ezért ilyen rendszereken a fenti opciókat ki kell kapcsolni.
+  Ha nincs LFS, de mégis LFS opciókkal fordítunk, akkor az fopen 
+  nem tudja felrakni a filékre a filémegosztásnak megfelelő lockot
+  (ami 1024 GB-hoz került), és ezért pl. a memoread mindig ""-t ad, 
+  így a build sem működik. A ténylegesen nagy filék kezelése csak 
+  ext2-n volt tesztelve (később teszteltem ext3-on is).
+  
+  A btbtx adatbázisformátum nagy (>2G) filékre is működik ext2-n,
+  és kezeli (automatikusan fordítja) az eltérő byte-sorrendet.
+  
+  Solaris port. Új bináris formátum: CCCBIN=sol (32 bit GCC). 
+  Ezentúl meg kell adni az OS nevét is: CCCUNAME=linux/solaris. 
+  CCCUNAME azonosítja az adott gépen végrehajtható binárisok fajtáját, 
+  amik azonban keletkezhetnek egymással nem keverhető objectekből.
+
+2002.03.16 -- 1.4.19
+  Javítások a Windows GUI megjelenítésben:
+
+  A brw:windows attribútumban tárolt HWND kiolvasása előtt (C szinten)
+  mindig ellenőrizni kell az attribútum típusát (új VALUE2HWND makró). 
+  Amikor egy browse-nak még nincs ablaka, akkor brw:windows==NIL, és 
+  ebből egy illegális double kiolvasása floating point errort okozhat.
+  
+  brwHide megszünteti a browse window-ját, korábban csak letakarta,
+  ezért előfordult, hogy megszűnt browse-ok letakart ablakai örökre
+  megmaradtak, ráadásul rajta maradván a windowstacken zavart okoztak a 
+  a legfelső browse keresésében, pl. a topbrowse() függvénynél.
+  
+  Javítás alert-ben minden platformon:
+
+  interactive_alert()-nek minden platformon törölnie kell a keyboard buffert,
+  máskülönben az alert azonnal értelmezi az esetleges keyboard-ban levő
+  leütéseket (Clipper kompatibilitás), 
+  
+
+2002.03.06 -- 1.4.18
+  Flgui ablakok pozícionálásának javítása, hogy érvényre jusson a 
+  KDE-ben beállított window placement policy.
+  
+  Az fltk dokumentáció szerint az önálló ablakokat Fl_Window(w,h,name),
+  a childokat Fl_Window(x,y,w,h,name) konstruktorral kell csinálni. 
+  Ehhez képest az flgui minden ablakot Fl_Window(0,0,0,0,name) hívással 
+  csinált, és ezért minden ablak a bal felső sarokban keletkezett. 
+  Az Fl_Window(w,h,name) alak univerzális használata szintén nem jó,
+  mert azzal elszállnak a get-cellák.
+  
+  CCCWin(name) mellé csináltam egy CCCWin(x,y,name) konstruktort
+  CCCWin(name) : Fl_Window(0,0,name) (korábban Fl_Window(0,0,0,0,name) volt)
+  CCCWin(0,0,name) : Fl_Window(0,0,0,0,name) (ez helyettesíti az eredetit)
+
+  CCCPanel(name) mellé csináltam egy CCCPanel(x,y,name) konstruktort
+  CCCPanel(name) : CCCWin(name) : Fl_Window(0,0,name)
+  CCCPanel(0,0,name) : CCCWin(0,0,name) : Fl_Window(0,0,0,0,name)
+ 
+  Most minden ablak CCCWin(name) hívással keletkezik, kivéve a getek, amik a
+
+  BrwCellPanel():CCCPanel(0,0,name):CCCWin(0,0,name):Fl_Window(0,0,0,0,name)
+  
+  konstruktorláncon keresztül jönnek létre. Azaz minden ablak konstruktora 
+  változott (x, y határozatlan lett), kivéve a get-cellákat, amik ezután is 
+  a régi módon pozícionálódnak.
+  
+
+2002.02.27 -- 1.4.17
+  strtran javítás
+  A korábbi változat nCount==NIL esetén max 1024 előfordulást cserélt,
+  és a kihagyott előfordulások esetén (<nStart) nem jól lépett előre.
+  Az új változat sat-tal keres, ami gyorsabb, mint at(.,substr(...)).
+  A javított változat ellenőrzötten Clipper 5.2e kompatibilis.
+
+  UNIX main tisztogatás
+  Még a main előtt bennmaradt a stacken egy local változó (pop).
+  Máshová került, kikommentezett részek végleges törlése.
+ 
+2002.02.27 -- 1.4.16
+  Az flgui megjelenítő könyvtár portolása Windowsra.
+
+  Kell hozzá az Fltk könyvtár windowsos változata, ami nincs a CCC
+  directory struktúra alatt, hanem külön kell fordítani (Build projekt),
+  és be kell másolni a C fordító include és lib directoryja alá.
+  Ez csak MSC-re és Borlandra van meg, a Watcom fordító nincs támogatva.
+
+  Az flgui forrásban az alábbi (csekély) módosítások történtek:
+
+  A platformfüggő modulok az flgui/unix és flgui/doswin könyvtár alá
+  kerültek (nem sok ilyen van, lényegében csak a main-ek).
+
+  Az alert és refreshscrn végtelen várakozó ciklusokat tartalmaztak
+  (azaz lefagytak), ezeket megszüntettem, a tapasztalat szerint Linuxon 
+  sem kellenek.
+  
+  Néhány többszörös inicializálást (a Borlandnál hibás) megszüntettem.
+  
+  A Linux-specifikusan megírt időméréseknél #ifdef-fel beírtam a
+  Windowson működő változatot is. A windowsos változat Linuxon is működne, 
+  mivel a GetTickCount függényen alapszik, ami a ccc könyvtárban is megvan.
+  
+  Linkelés:
+  
+  Jelenleg nincs előre elkészített script az flguis linkelésre.
+  Ehelyett a bapp_w320 scripttel kell fordítani, és explicite megadni
+  a ccclw32f és fltk könyvtárakat a -b kapcsolóban.
+ 
+
+2001.12.29 -- 1.4.15
+  psignal.cpp modul, SET POSIX SIGNAL BLOCK/ENABLE makró
+
+2001.12.06 -- 1.4.14
+  SET DOSCONV ON/OFF makrók (#xcommand) bevezetése.
+  rand() javítva (rövid volt a periódusa).
+
+2001.11.22 -- 1.4.13
+  GCC 2.96 támogatás. 
+
+  A not() függvényt meg kellett szüntetni, mert az új C++-ban
+  fenntartott szó lett, az új név: topnot(). A régi programok
+  számára a gcc296.compat (object filé!) be van linkelve
+  libccc.so-ba, ez tartalmazza az eredeti not() függvényt.
+  
+  Egy csomó helyen cast-ot kellett alkalmazni.
+  E csomó helyen warning jött, hogy nincs \n a filé végén.
+
+2001.11.11 -- 1.4.12
+  A karakteres browse rossz sorba rajzolta a sávkurzort,
+  ha a browse:headsep üres volt. A headskip-et ugyanúgy
+  kell kiszámítani, mint a többi helyen.
+
+2001.10.22 -- 1.4.11
+  Linuxos karakteres megjelenítés hibái javítva:
+  dummy módú programok (háttérben futva) ne lépjenek ki term_quit-tel;
+  X konzolos programokban ne jelenjen meg feleslegesen üres ablak;
+  cursoronoff defaultja on-ról off-ra változott;
+  X konzolos program csak akkor kap message-et, ha van ablaka;
+
+2001.10.05 -- 1.4.10
+  UNIX _clp___quit()-ben az utolsó képernyő frissítve (refreshscrn).
+  Flgui-s alert caption-jében a szöveg ismétlése helyett programnév.
+
+2001.09.20  -- 1.4.09
+  UNIX clpfilio.cpp-ben fopen() javítva. 
+  Az fopen(fname,FO_READ+FO_EXCLUSIVE) csak shared módot
+  eredményezett, mert a UNIX (POSIX) az exkluzivitást jelentő
+  writelockot az FO_READ opció miatt readlockra cserélte.
+  Ilyen esetben ezért az FO_READ módot belsőleg le kell cserélni
+  FO_READWRITE-ra, aminek sajnos az is a következménye, hogy csak
+  olyan filé nyitható meg exkluzívan, amire rw jogunk van.
+  Hasonló (fordított) a helyzet az FO_WRITE+FO_SHARED móddal.
+
+2001.09.04  -- 1.4.08
+  Signalblock bevezetve NT-n is, WIN32-es main-ek felújítva,
+  16-bites platformok és DOS4G támogatása végleg kivéve.
+
+2001.08.19
+  Új DEFINE_METHOD makró cccapi.h-ban. Ez egyszerűsíti az
+  objektumokhoz való hozzáférést C++ szintről. Kód nem változott.
+
+2001.08.05 -- 1.4.07
+  Új függvény:  classIdByName()
+
+2001.08.04 -- 1.4.06
+  errorblock és signalblock teljesen szétválasztva.
+
+2001.07.29 -- 1.4.05
+  win32 gui-s alert és achoice szétválasztva
+  a korábbi alert neve interactive_alert (chr, gui, flgui)
+  alert, alertblock a forrásfa gyökerébe került
+  alert, alertblock symgen.txt-ből kivéve, interactive_alert berakva
+  clperr.prg-ben: quitblock, ctrlcblock, signalblock (új), errorblock
+  a default errorhandler nem csinál alertet, ha subsystem=="SIGNAL"
+  (unix) signals.cpp nem errorblock-ot, hanem signalblock-ot értékeli ki
+ 
+
+2001.07.20 -- 1.4.04
+  Flgui inkey-ben kis javítás.
+
+2001.07.19 -- 1.4.03
+  Linuxos fclose-ban errno beállítva.
+
+2001.07.17 -- 1.4.02
+  Flgui achoice pozícionálása pontosabb.
+ 
+2001.07.07 -- 1.4.01
+  Új attribútum a browse-ban: flushright (default=.t.), ha ennek 
+  értéke .f., akkor a számmezőket nem igazítja jobbra.
+
+  Az NG szerint invalidate után a browse headingeket újra kell
+  rajzolni, az flgui-s browse ezt nem tette meg.
+
+
+2001.07.06 -- 1.4.00
+  Forráskód egységesítés.
+
+
+2001.06.24 -- 1.3.14.vm16
+  A UNIX-os filetime.cpp modul áthozva a savex programból.
+
+  getfiletime(fspec) --> {create_time, access_time, modif_time}
+
+  Ha a filé nem nyitható meg, akkor {NIL,NIL,NIL}-t ad.
+  Clipper szinten ezek szám/string (rendszerfüggő) típusúak, 
+  ezért más eszközök nélkül csak mentés visszaállításra alkalmasak.
+
+  setfiletime(fspec,create_time,access_time,modif_time) --> success
+
+  A getfiletime-ból kapott időket felteszi a filére. 
+  Ha valamelyik idő NIL, akkor azt nem módosítja.
+  Ez biztosítja, hogy getfiletime hibája esetén setfiletime
+  egyszerűen hatástalan, nem pedig elrontja a filé időket.
+
+  E két függvény a datidx adatbáziskezelőben a filé idő mentésére,
+  visszaállítására van használva, de korábban csak Win32-n működött
+  (UNIX-on ki volt #ifdef-elve). Mivel UNIX-on is szükséges a filéidők
+  ugyanolyan mentése, a modult be kell tenni az alapkönyvtárba.
+
+
+2001.06.17 -- 1.3.14.vm15
+  Az object típusok listázása attrvals-ként qqout-ban.
+ 
+2001.06.06 -- 1.3.14.vm14
+  xmethod.cpp bővítve az iniobjectfromarray() függvénnyel.
+
+2001.04.26 -- 1.3.14.vm13
+  Karakteres browse sávkurzorjának a pozícionálása rossz volt,
+  ha egy oszlopnak sem volt headingje.
+
+2001.04.09 -- 1.3.14.vm12
+  Javítás NT-n a karakteres billentyűzet olvasásban.
+
+2001.03.25 -- 1.3.14.vm11
+  A _method_ osztály a neveket a statikusan foglalt char slotname[24] 
+  bufferban tárolta, most csak a név pointerét tárolja, így a név
+  akármiyen hosszú lehet.
+
+2001.03.06 -- 1.3.14.vm10
+  A displaysunkenget függvény átnevezve _get_displaysunkenget-re
+  (általában a belső használatú függvényeket jobban el kell dugni). 
+
+2001.03.01 -- 1.3.14.vm9
+  mask.prg-ben getlistet a display metódussal kell megjeleníteni,
+  máskülönben a get leszármazottaiban nehéz felüldefiniálni display-t.
+
+  Flgui-s checkbox és radiobutton mutatják a fókuszt. Korábban csak
+  egy ideiglenes implementáció volt készen. A listboxok pozícionálása 
+  továbbra is rossz.
+
+2001.02.24 -- 1.3.14.vm8 
+  Dirsep függőség javítva doswin-es truename-ban és clpcpfil-ben.
+
+  A dosfname2unix helyett a convertfspec2nativeformat függvény használandó,
+  ami UNIX-on változatlan formában tartalmazza dosfname2unix-ot, viszont
+  szimmetrikusan NT-n is implementálva van. Kompatibilitási okokból UNIX-on
+  egyelőre megmaradt a függvény a régi néven is (de a CCC könyvtár
+  belsőleg már nem használja).
+  
+  NT-n convertfspec2nativeformat csak a "/"-t konvertálja "\"-ra, 
+  de erre sincs mindig szükség, ui. a C könyvtár sok esetben elfogadja
+  a UNIX-os szintaktikát is, pl. rename(), remove().
+  
+  Típushiba (1) 
+
+  Mivel a portolás iránya DOS->UNIX volt, a CCC általában jól kezeli 
+  (UNIX-on is) a DOS-os szintaktikájú filénevekkel megírt programokat.
+  A fejlesztési platform azonban átkerült UNIX-ra, így a programokban
+  elő fognak fordulni UNIX-os szintaktikájú filénevek, viszont ezeknek a
+  kezelését meg kell oldani NT-n is!
+  
+  Típushiba (2)
+  
+  A convertfspec2nativeformat függvény hatása nem szabad, 
+  hogy kilátszódjon a hívó függvényből, azaz nem szabad az argumentum
+  értékét megváltoztatni. Ennek néhány UNIX-os függvény jelenleg nem
+  felel meg.
+
+2001.02.20 -- 1.3.14.vm7
+  További belső használatú függvények prefixelve: _brwaux_.
+  A karakteres bowse-ban implementálva hilite, dehilite.
+  
+  Rossz volt a veremkezelés classid.cpp-ben. A verem teteje 
+  fölé nyúlt, ahol a mostani javítások előtt mindig az a változó 
+  volt, mint ami éppen kellett, ezért nem vettük észre.
+
+2001.02.13 -- 1.3.14.vm6
+ 
+  A get osztály metódus függvényeinek prefixe: _get_,
+  a tbrowse osztály metódus függvényeinek prefixe: _tbrowse_.
+  Ezt a konvenciót volna célszerű kövteni minden esetben,
+  amikor a metódusok implementációja nem static.
+  A cccui táblák újra lettek generálva a ccctools-ban lévő 
+  symgen programmal.
+
+  Minden osztályban betartva az alábbi névkonvenció:
+  
+         osztályClass, osztályNew, osztályIni
+         
+  Ez a névkonvenció illeszkedik a régi Clipperben használt
+  függvénynevekhez: errorNew, tbcolumnNew, tbrowseNew, getNew.
+ 
+
+2001.02.08 -- 1.3.14.vm5
+  Karakteres DispBox() kezeli a hatodik (szín) paraméterét.
+  
+  Karakteres browse kompatibilitás
+  --------------------------------
+
+  A browse néhány belső használatú attribútuma a kiterjesztett
+  browse cargo-jában volt tárolva, emiatt egyszerű (menü nélküli) 
+  browse nem volt önállóan létrehozható. Most ezek az attribútumok 
+  átkerültek a rendes helyükre (valódi attribútumok lettek). 
+  Például :cargo[BR_SHIFT] helyére mindenhol :_shift_ került.
+  
+  A column osztály width attribútuma metódus lett belső működéssel.
+  A korábbi, hasonló célú brwColumnWidth() függvény megszűnt.  
+  További új metódusok a tbcolumn osztályban: datawidth, color.
+
+  A karakteres browse most megfelelően rajzolja ki magát akkor is, 
+  amikor minden oszlop heading üres, vagy üres a headsep. Lehetséges 
+  volna achoice-ot implementálni browse-zal.
+
+  A vízszintes mozgások left(), right(), home(), end(), panleft(), 
+  panright(), panhome(), panend() NG kompatibilisen implementálva 
+  lettek, az _actcolpos_ attribútum megfelelően karban van tartva.
+  
+  Az autolite attribútum Clipper kompatibilisen inicializálódik,
+  és az aktuális cella a második browse színnel ki van emelve.
+  Implementálva lett a cellák színezése, kivéve a colorrect-et.
+
+  A számoszlopok jobbra igazításához szükséges korrekció bekerült 
+  a karakteres browse stabilizálásába. A brwEditCell függvényben
+  továbbra is szükség van a pozícionálás korrekciójára, ui. az
+  oszlopnak nincs mindig egyértelműen meghatározott típusa.
+  Pl. a KDIRDD-beli rekordmódosításkor bármilyen típusú adatok
+  lehetnek ugyanabban az oszlopban.
+  
+  A karakteres _scanlines() függvény helyére a windows-ból átvett
+  _scanlines (készítette Szabó Richárd) került, mert az jobban tűri 
+  a "while !b:stabilize; end" típusú stabilizálást. _scanlines nem 
+  fogyaszthat billentyűleütéseket, mégis a fenti ciklusból ki kell 
+  tudni jönnie akkor is, ha nextkey() leütést jelez, és emiatt a 
+  stabilizálás több lépésben történik (azaz inkrementális).
+  
+
+  Mindezek a javítások csak a kompatibilitás és a szépség kedvéért
+  történtek, ui. nincs rájuk szükség a gyakorlatban. A browse azonban 
+  még így sem teljesen kompatibilis:
+
+  0) A GUI-s browse (amellyel a jelenlegi javítások nem foglalkoztak) 
+     a természetéből adódóan inkompatibilis. A GUI-s esetben nincs 
+     szándékos változás, a browse továbbra sem működhet ablak, azaz
+     brwShow() nélkül.
+
+  1) A megjelenítés nem használja az oszlopra egyedi column:headsep,
+     column:footsep, column:colsep értékeket.
+  
+  2) A színezés nem veszi figyelembe a colorrect attribútum tartalmát.
+  
+  3) Az oszlopok szélességének automatikus maghatározásánál a régi
+     Clipper nem veszi figyelembe az oszlop picture-jét, ami hiba. 
+     A CCC beszámítja a picture-t is.
+
+  4) Nem működik hilite, dehilite.
+  
+
+2001.01.31 -- 1.3.14.vm4
+  message(NIL,NIL) elszállása kivédve a karakteres könyvtárban,
+  ez valójában nem követelmény, de a GUI-s könyvtár is lekezeli,
+  a javítást Cs.L. küldte.
+
+
+2001.01.11 -- 1.3.14.vm3
+  Upper/lower karakterkonverzió támogatása ékezetes betűkre.
+  Egyelőre csak új konverziós tábla készült, az upper(), lower() 
+  a régi módon működik. Az új konvrezió így használható:
+
+  #define UPPER(s) _charconv(s,CHARTAB_LOWER2UPPER)
+  #define LOWER(s) _charconv(s,CHARTAB_UPPER2LOWER) 
+  
+
+2000.12.25 -- 1.3.14.vm2
+  flgui színkezelés tovább javítva
+  flgui színek és fontok konfigurálása
+  cccapi.h-ban új makró: _retnd (azonos _retni-vel)
+  trigonometrikus függvények
+
+2000.11.24 -- 1.3.14.vm1
+  flgui színkezelés javítva
+  gettick.cpp betéve a közös forrásba (benne UNIX-os GetTickCount)
+  a message-ek lassítva vannak a hunyorgás csökkentése érdekében
+ 
+2000.11.08 -- 1.3.14
+  Forráskód egységesítés.
+
+2000.09.30 -- 1.3.13.vm13
+  A Cs.L. féle flgui-s brwEditCell kijavítva, most jól pozícionálja
+  a számmezőket is. A megváltozott API brwEditCell-ben visszacsinálva.
+  A hiányzó brwGetRow és brwGetCol üresen implementálva,  hogy legalább 
+  a linkelést ne akadályozza.
+
+
+2000.09.28 -- 1.3.13.vm12
+  Pótolva az flgui könyvtárból hiányzó beep().
+  DOS-os printernevek felismerése javítva UNIX-ban.
+
+  A ccctools/lpr-hphun nyomtató filter egyszerű nyomtatást tesz 
+  lehetővé Linuxon. Ez mindent tud, amire a Kontónak szüksége van,
+  feltéve, hogy HP Laserjet komaptibilis nyomtatónk van.
+
+
+2000.09.21 -- 1.3.13.vm11
+  Új modul a megjelenítő könyvtár statikus linkelését lehetővé 
+  tévő cccui_static.cpp. Ebből ugyanolyan (és ugyanúgy használandó) 
+  lib készül, mint a korábbi flgui.lib, chr.lib, auto.lib. 
+  Az új könyvtár neve static.lib. Most minden kombinációban alkalmazható 
+  a statikus és dinamikus linkelés.
+
+
+2000.09.20 -- 1.3.13.vm10
+  createwindow felvétele  cccui-ba
+ 
+
+2000.08.18 -- 1.3.13.vm9
+  A (2000.07.01 -- 1.3.13.vm4) változtatás a billentyűzet 
+  olvasásában elrontotta a CAPSLOCK konverziót, javítva.
+
+
+2000.08.03 -- 1.3.13.vm8
+
+  Kísérlet a BCC fordító korlátjának (max 50 megnyitható filé)
+  megszüntetésére. Végül az alábbi megoldás született:
+
+  1. A cw32mt.lib könyvtárból ki kell venni az alábbi modulokat:
+     _lock.obj, files.obj, files2.obj
+  2. A "wdisasm %1 -a" programmal assembly forrást állítunk elő belőlük.
+  3. A forrást a kommentek helyén a kívánt filészámnak megfelelően módosítjuk.
+  4. A módosított asm filéket a wasm programmal lefordítjuk.
+  5. A módosított objecteket linkeljük a lib-beli változat helyett.
+
+  Megjegyzés: wdisasm és wasm a Watcom 10.5-ből származik  
+ 
+
+2000.07.25 -- 1.3.13.vm7
+  set VREF_SIZE=99999 beállítja a VREF tömb méretét
+ 
+
+2000.07.24 -- 1.3.13.vm6
+  error_gen()-ben string() helyett stringn()
+  
+
+2000.07.09 -- 1.3.13.vm5
+  A karakteres és az flgui könyvtárban ki volt felejtve
+  a listbox osztály scan metódusa.
+
+
+2000.07.01 -- 1.3.13.vm4
+ 
+  Bővítések a Windows-os GUI kódban
+  
+  caret.cpp    : Clipperből hívható caret függvények
+  winposi.cpp  : a caret pozícionálása változott
+  scroll.cpp   : scroll() implementációja display ablakban (üres volt)
+  savescrn.cpp : savescreen/restscreen implementációja displayben (üres volt)
+  clpcons0.cpp : üresen implementált függvények különvéve
+
+  clpconsw.cpp : a billentyűzet olvasása lényegesen változott
+  
+  wm_syskeydown_translated(0/1) szabályozza, hogy a Windows 
+  dolgozza-e fel pl. az ALT-os menüvezérlő billentyűket, vagy a 
+  Clipper szokásos inkey kódjait adja.
+
+  winodsp.cpp  : automatikus display, caret kezelés
+   
+
+2000.06.04 -- 1.3.13.vm3
+  asize GPF-fel elszállt negatív méretre, pl. asize({},-1).
+  A Clipper kompatibilis eredmény: {} (nem jelez hibát).
+
+
+2000.05.30 -- 1.3.13.vm2
+ 
+  A unixos run-ból kivettem a káros refreshScrn()-t,
+  mert az olyan alkalmazásnak is display-t csinál,
+  amelyiknek nincs rá szüksége.
+  
+  Warningok javítva:
+
+  unix/signal.cpp
+  flgui/cccalert.cpp
+  flgui/cccbrw.cpp
+  flgui/cccpanel.cpp
+  flgui/cccwin.cpp
+  flgui/initgui.cpp
+  flgui/objgetc.cpp
+
+
+2000.05.29 -- 1.3.13.vm1
+ 
+  Számozás értelmezése
+  --------------------
+  
+  főverzió:  1
+  alverzió:  3
+  javítás : 13    (csak az egységesített javítások)
+  Csiszár : cslX  (Csiszár L. által végzett, még nem egységesített)
+  Vermes  : vmX   (Vermes M. által végzett, még nem egységesített) 
+  
+  Mivel a forráskod UNIX-on és Windows-on egységes, azért a javításokat
+  nem a platform szerint osztályozzuk, hanem, hogy ki csinálta.
+
+  A következő egységesített verzió 1.4.00 lesz, miután
+  1) az FLGUI-ba bevettük az új kontrolokat (msk2say),          OK
+  2) az cccui_api táblát megfelelően kibővítettük,
+  3) a warningokat kijavítottuk,                                OK
+  4) és a mostani egységesítés változtatásai leülepedtek.
+
+
+  Javítások
+  ---------  
+
+  Az új kontrolok egyszerű (kompatibilitást biztosító)
+  implementációja. A check és radio box lényegében működik a 
+  karakteres implementációval, a listboxra átvehető a WINGUI-s
+  implementáció.
+  
+  Hibák: 
+  
+  1) A check és radio boxokban a háttérszín nem mutatja a fókuszt.
+  2) A listboxoknál a getmenü nincs pontosan pozícionálva, és
+     a feljövő achoice-ban nem működnek a számoknál lévő nyílbillentyűk
+     (ez általános hiba).
+
+
+2000.05.26 -- 1.3.13
+  Forráskód egységesítés
+
+
+2000.05.22 -- 1.3.12
+  NT-n direxist a gyökér directorykat is felismeri.
+  
+  Hiba: semelyik C compiler sem jelez hibát, 
+  ha a chdir("../../..") alakú hívás a gyökérnél is feljebb lépne,
+  ezért a truename("../../..") sem jelzi a hibát várt módon
+  (nem könnyű kijavítani, egyelőre marad a hibás változat).
+  
+
+2000.05.10 -- 1.3.11
+  listbox támogatás
+  egyelőre hibás: gui-ban ismeretlen eredetű (nem kijavított) GPF 
+  keletkezett a listbox használata közben, sajnos nem reprodukálható
+
+
+2000.04.26 -- 1.3.10
+  alertblock() bevezetve, így alert() átdefiniálható
+  errorblock() mintájára
+
+
+2000.04.22 -- 1.3.09
+  Checkbox és radiobutton támogatás.
+
+  objgetw javítás:
+  Hasfocus-t attribútumként kell implementálni
+  setfocus .t.-re, killfocus .f.-re állítja.
+
+
+2000.04.20 -- 1.3.08
+  brwmenu.cpp (Win32 GUI) a menüszeparátor cseréje pótolva
+
+
+2000.03.17 -- 1.3.07
+ 
+  Javítások brwedit.prg-ben: 
+  1. a korábbi változat nem jól ment át az .f. preblockú geteken
+  2. most egységes a kód CCC console, CCC Windows-GUI és régi Clipper
+     platformokon (#ifdef-ekkel)
+     
+  (Ez a hiba régről ismert volt, pl. emiatt szállt el dstru/xstru.)
+
+2000.03.13 -- 1.3.06
+
+  UNIX-os putenv-be strdup.
+
+2000.03.04 -- 1.3.05
+ 
+  fclose-ban a VALID_HANDLE makró finomítva
+
+2000.02.20 -- 1.3.05
+ 
+  UNIX-os warningok kitisztítása
+
+  A C++ fordítási opciók közé betettem a -Wall flaget,
+  és a további warningokat kitisztogattam.
+  
+  clparit.cpp             unsigned/signed összehasonlítás javítva
+  chr/unix/clpcons.cpp    unsigned/signed összehasonlítás javítva 
+  clpdkonv.cpp            format int <--> arg long
+  unix/clpfilio.cpp       struktúra inicializálás
+  clptrans.cpp            értékadás értéke
+  unix/clpukieg.cpp       unsigned/signed összehasonlítás javítva  
+  include/global.h        struktúra inicializálás 
+  chr/objgetc.cpp         értékadás értéke 
+  chr/unix/signals.cpp    struktúra inicializálás  
+  unix/stat.cpp           visszatérési érték
+  chr/unix/terminal/termapi.cpp  visszatérési érték 
+  variable.cpp            unsigned/signed összehasonlítások javítva (!!!)
+
+  A C++ fordítási opciók közül kivettem a -w flaget,
+  és a warningokat kitisztogattam.
+
+  unix/sleep.cpp          nem kell a double és a floor
+  unix/include/vcbase.h   min, max redef javítva
+  clpbreak.cpp            típus nélküli deklaráció javítva
+  unix/clpfilio.cpp       string.h inkludálva 
+  unix/clpsys.cpp         string.h inkludálva
+  unix/clpukieg.cpp       típus nélküli deklaráció javítva 
+  unix/diskfree.cpp       unistd.h inkludálva 
+  variable.cpp            típus nélküli deklaráció javítva 
+ 
+
+2000.02.18 -- 1.3.04
+  direxist paramétere végződhet "\"-re is
+
+2000.02.15 -- 1.3.03
+  color.cpp helyett screenchr.cpp bővített tartalommal.
+
+2000.02.11 -- 1.3.02
+  w32c_keyb.cpp: javítva a char->short konverzió hibája
+  az ascii kód kiolvasásában
+
+2000.01.15 -- 1.3.01
+  Hibaüzenetek javítása clparr-ban.
+
+2000.01.13 -- 1.3.00
+  CCC kódrendszer bevezetése.
+
+2000.01.08 -- 1.2.05
+
+  NT-UNIX forráskód egységesítés.
+  clpbit.cpp-ben setbit() javítva.
+
+
+1999.12.29 -- 1.2.04.w17
+
+  A DOS, 4G extender, Win16 támogatása teljesen megszűnt,
+  az ezekhez a platformokhoz tartozó kód el lett távolítva.
+  
+  A remote-olással kapcsolatos programok modulárisabbak lettek.
+  A conapi_... változók egy függvénypointer táblát alkotnak,
+  amit a load_terminal() tölt fel a remote_... függvények
+  címeivel (terminal.dll-ből), vagy a local_... függvényekkel.
+  
+  A local_... függvények a w32c_...cpp modulokban vannak
+  definiálva: w32c_keyb, w32c_video, w32c_wsid, w32c_remio.
+  
+  Példa: a korábbi maxrow() függvény helyett a conapi_maxrow()
+  hívást kell végrehajtani, ami a load_terminal()-tól függően
+  a remote_maxrow()-t, vagy a local_maxrow()-t hívja meg.
+
+      #define maxrow  conapi_maxrow
+
+  típusú makrók biztosítják, hogy ne kelljen a programot 
+  átirkálni. A változások nem érintik a GUI-s könyvtárat.
+  
+  
+  új CA-tools függvények: ksetscroll, ksetnum, ksetcaps
+
+
+
+1999.12.14 -- 1.2.04.w16
+
+  Elavult UNIX-os források törölve.
+
+  Devout()-ban a használaton kívüli UNIX-os #ifdef-ek törölve.
+  
+  A crlf() függvény endofline()-ra cserélve qout-ban memoline-ban és
+  memoedit-ben.
+ 
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  SIKERTELEN MóDOSíTáSI KíSÉRLET
+  
+  A konzolos változatban charconv(WIN2CWI) átkerült volna puttext-be.
+  Sajnos ez módosítás jelenleg nem lehetséges, mert elromlanak a maszkok 
+  dobozrajzoló betűi. Ez már korábban is ismert volt, csak elfelejtettem. 
+
+  Megoldás lehetne, ha félreeső helyeken új dobozrajzoló karaktereket 
+  definiálnánk. Ekkor volna 4 diszjunkt karakter osztály:
+  
+     437   ékezetes betűk
+     850   ékezetes betűk
+     XBOX  egységes dobozrajzoló karakterek
+     ASCII minden egyéb (sosem kell konvertálni)
+     
+  A halmazok diszjunkt voltát XBOX megfelelő kijelölése biztosítja.
+  Jelenleg négyféle CCC/Clipper program létezik:
+  
+     Clipper (régi)
+     NT konzol
+     NT GUI
+     Linux 
+  
+  Az utóbbi három esetben a programok a 4 karakterosztály teszőleges 
+  keverékéből állhatnának:
+     
+     NT konzol :  437->OK,  850->437, XBOX->BOX437   
+     NT GUI    :  437->850, 850->OK,  XBOX->blank    
+     Linux     :  437->850, 850->OK,  XBOX->OK?       
+     
+  Vagyis ezekben az esetekben ugyanaz a program a megjelenítéskor
+  egyértelműen konvertálható a natív kódrendszerre. Sajnos azonban
+  a régi Clipper-ben nincs (?) lehetőség a megjelenítés előtti
+  konverzióra, ezért a magukat a Clipper programokat kell konvertálni.
+       
+ 
+
+  (Linuxon a konverzió még csak nem is a puttext-ben, hanem lejjebb,
+  a terminálban van. Ennek előnye, hogy a puttext és gettext egymás 
+  inverzei. Egy ilyen megoldáshoz NT/DOS-on 3 helyre kéne betenni 
+  konverziót: a közvetlen megjelenítésbe, az NT-s terminálba, és a 
+  DOS-os terminálba. A közvetlen megjelenítésnél azonban nincs közbülső 
+  képernyő buffer, ezért a gettext mindig a konvertált szöveget kapja meg.)
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+1999.09.11 -- 1.2.04.w15
+
+  Portolás Inprise CBuilder 4-re (5.4-es compiler)
+  
+  Fordítás
+  --------
+  
+  Az új compiler a windowsos handle típusokat szelektívebben vizsgálja, 
+  ezért a void*, HANDLE, HWND, HBRUSH, HDC, HPEN, HMENU típusokat nem 
+  lehet keverni, hanem castolni kell.
+
+  Fordítási opcióként definiálni kell a _MT szimbólumot, máskülönben
+  a cw32mt könyvtárral linkelve hiányozni fog az errno globális változó.
+  Nyilván lyuk volt a korábbi multithreaded könyvtárban, 
+  ui. több thread osztozott az egyetlen errno változón.
+  
+  A display window-k kiemelése BCB4-ben azonossá vált MSVC5-tel,
+  így most a Watcom változat tér el a többitől.
+   
+
+  Linkelés
+  -------- 
+  
+  TLINK32 helyett ILINK32-vel kell linkelni (nincs TLINK). A linker 
+  paraméterezését nem kell módosítani. Az exe mellé mindig lerak 
+  egy tds kiterjesztésű (external debug symbol table) filét, 
+  és több munkafilét, amiket le kell törölni.
+  
+  FONTOS, hogy nem szabad keverni a régi és új objecteket és libeket,
+  annál is inkább, mivel a hiba nem látszik minden programban, és
+  később aztán  nem lesz világos, hogy mi okozza a bajt.
+  
+  A bcb3-mal készített obj és lib filékben  "Borland C++ 5.3",
+  a bcb4-gyel készített obj és lib filékben "Borland C++ 5.4"
+  felirat található, ezt ELLENORIZNI kell az összes filére.
+ 
+
+
+  Módosult
+  --------
+
+  winposi.cpp, winohlp.cpp, winohdg.cpp, winoget.cpp, winofoo.cpp,
+  winoedi.cpp, winodsp.cpp, winocln.cpp, winocho.cpp, winobut.cpp,
+  winobrw.cpp, brwclp.cpp: handle típusok egyeztetve
+  
+  
+  bcc32.cgf: -D_MT
+  
+  
+  obj2exe.bat és lib2exe.bat:
+  
+      tlink32 @%RSPLNK%. >outlnk    
+      goto iferror
+       
+      helyett
+
+      ilink32 @%RSPLNK%. >outlnk    
+      del %BUILD_EXE%\%EXENAM%.ilc 2>nul
+      del %BUILD_EXE%\%EXENAM%.ild 2>nul
+      del %BUILD_EXE%\%EXENAM%.ilf 2>nul
+      del %BUILD_EXE%\%EXENAM%.ils 2>nul
+      del %BUILD_EXE%\%EXENAM%.tds 2>nul
+      goto iferror
+ 
+
+1999.09.01 -- 1.2.04.w14
+ 
+  objgetc.cpp és objgetw,cpp modulokban egy GPF javítása,
+  ami akkor keletkezett, ha egy "" kezdőértékű, template stringet 
+  nem tartalmazó picture-rel rendelkező getre került a fókusz.
+
+
+1999.07.29 -- 1.2.04.w13
+   
+  Az empty() függvény értelmezése változott "O" típusú
+  változókra: egy objektum empty, ha nincs egy adattagja sem.
+  A korábban is létező osztályoknál ez nem okoz változást.
+  Egy objektum így tehető emptyvé: asize(getobjectasarray(object),0).
+  Az emptyvé tett objektum attribútumai nem léteznek, a rájuk való
+  hivatkozás run time errort okoz.  A változtatás azért  szükséges,
+  hogy a táblaobjektum generáló függvényekben statikusan tárolt
+  objektum kívülről destruct-olható legyen. 
+
+ 
+1999.07.06 -- 1.2.04.w12
+
+  memóriafoglalás átdolgozása
+
+  a new operátor helyett MEMALLOC(size) makró,
+  a delete operátor helyett MEMFREE(ptr) makró,
+  a makrók a clp2cpp.h-ban vannak definiálva
+  
+  
+  érintett modulok
+
+      variable.cpp
+      clparr.cpp
+      winocho.cpp 
+      winocln.cpp 
+      winodsp.cpp 
+      winofoo.cpp 
+      winoget.cpp 
+      winohdg.cpp 
+      winohlp.cpp 
+      
+  Az MSC és Watcom jól működött a new/delete operátorokkal is,
+  azonban a Borland C olyan saját memóriagazdálkodást végez,
+  ami a CCC-hez nem a legjobb. Egyszerű programok (pl. KFOKONYV)
+  a Borland C-vel is prímán működtek, azonban a SAVEX, ami akár 
+  100 ezer objektumot is létrehozhat, a Borland C-vel pillanatok alatt
+  kifogy a memóriából (többszáz MB-ot igényel). Egy fokkal jobb
+  a helyzet a Borland malloc/free függvényekkel, de Win32-n legjobb
+  a nyers GlobalAlloc/GlobalFree rendszerfüggvényekkel dolgozni.
+  
+  Példa Borland C-s SAVEX-ra:
+  
+  GlobalAlloc/GlobalFree    4890 filé          4 MB
+  malloc/free               4890 filé         36 MB
+  new/delete                4890 filé         nem tud lefutni
+  
+
+  Az MSC és Watcom fordítókkal készült SAVEX a new/delete
+  operátorokkal sem fogyaszt 4-5MB-nél többet.
+
+  
+
+1999.06.30 -- 1.2.04.w11 
+ 
+  errno.cpp    : errorcode() (CA-tools)
+  dirname.prg  : dirname() (CA-tools)
+  ascpos.prg   : ascpos() (CA-tools) 
+  clpbit.cpp   : isbit, setbit, numand, numor, numxor, numnot (CA-tools)
+  fileseek.prg : fileseek, fileattr, filesize, filedate, filedelete (CA-tools)
+  month.prg    : addmonth, lastdayom (CA-tools)
+  doy.prg      : doy, eom, eoy, bom, boy (CA-tools)
+  clprand.prg  : rand(), random() teljesen kompatibilis
+  freadstr.prg : freadstr() (Clipper standard, kompatibilis)
+  expand.prg   : expand(), charspred() (CA-tools)
+  filetime.cpp : win32 függvények filéidők kezeléséhez
+  systime.cpp  : win32 függvények filéidők kezeléséhez
+  setfdati.prg : setfdati() (CA-tools)
+  like.prg     : like() (CA-tools, Csiszár L.)
+  time2sec.prg : timetosec(), sectotime() (CA-tools)
+
+  clpfpar.prg  : megszűnt, helyette fileseek.prg 
+  clpcpfil.prg : egyszerűsítve, deletefile() (CA-tools)
+  cccapi.h     : javítva(!), bővítve
+  winodsp.cpp  : display ablakok kiemelése MSVC-ben kihagyva
+
+
+1999.06.25 -- 1.2.04.w10
+
+  directory() Win32-API implementációja
+  findfirst/findnext betéve az alapkönyvtárba
+
+
+1999.06.17 -- 1.2.04.w9
+  diskfree() implementálva Win32-ben
+  ntdevice.cpp felülvizsgálva, áthelyezve doswin\win32-be
+  ntutil.prg megszűnt
+
+
+1999.06.12 -- 1.2.04.w8
+ 
+  portolás Borland C-re (CBuilder 3)
+  
+  mkdir,sopen,open compilerfüggő alakjai #ifdefelve,
+  néhány signed/unsigned összehasonlítás javítva (még maradt),
+  felesleges #include <iostream>-ek kivéve,
+  variable.cpp-ben heapcheck csak WATCOM-ban nem üres,
+  wherex/wherey Borlandban létezik, el kell kerülni,
+  cccapi.h-ban a NULL pointereket castolni kell
+  
+
+  Módosult források:
+  
+  chr\doswin\main.cpp            Borland open
+  clplock.cpp                    Borland locking
+  clppad.cpp                     signed/unsigned
+  clpstuff,cpp                   signed/unsigned 
+  doswin\clpdir.cpp              Borland findfirst,findnext
+  doswin\clpfile.cpp             Borland mkdir,chdrive,getdrive 
+  doswin\clpfilio.cpp            Borland sopen konstansok
+  gui\brwclp.cpp                 iostream kivéve
+  gui\brwfunc.cpp                iostream kivéve 
+  gui\brwmenu.cpp                iostream kivéve 
+  gui\clpdoutw.cpp               iostream kivéve 
+  gui\win32\mainw32.cpp          Borland open
+  gui\winobrw.cpp                iostream kivéve 
+  gui\winocho.cpp                iostream kivéve 
+  gui\winocln.cpp                iostream kivéve 
+  gui\winofoo.cpp                iostream kivéve 
+  gui\winohdg.cpp                iostream kivéve 
+  gui\winohlp.cpp                iostream kivéve 
+  include\cccapi.h               NULL pointerek castolva
+  include\video.h                wherex, wherey átnevezve
+  variable.cpp                   heapcheck csak WATCOM-ban
+ 
+
+
+
+1999.05.31 -- 1.2.04.w7
+  exename() javítása
+
+
+1999.05.29 -- 1.2.04.w6 
+ 
+  putenv() javítás
+  
+  A C könyvtári putenv() NEM készít másolatot a kapott stringből,
+  ezért nem hívható olyan nem fix string paraméterrel, amit a CCC 
+  szemétgyűjtése eltakarít. Két megoldás van: 
+
+  1) durván strdup()-pal másolatot csinálni, és beletörődni, 
+     hogy felesleges string bufferek maradnak, vagy
+
+  2) használni setenv()-et, ami másolatot csinál a stringből.
+  
+  Egyszerűbb és biztosabb az strdup()-os változat. A UNIX-os
+  kódban is kell javítani.
+
+
+  signed/unsigned warning javítása clpdoutw-ben
+  
+  minden filénév kisbetűre konvertálva
+  
+
+
+1999.05.20 -- 1.2.04.w5
+  #ifdef-ek és szimbólumok tisztogatása
+  clpqout Borland _InitEasyWin() kihagyva
+  winbrw.cpp-ben #ifdef __WINDOWS__ helyett #ifdef _16_
+  
+  Inkompatibilitás:
+  keyboard( chr(255) ); inkey()
+  Watcom-mal és Clipperben 255-öt ad, MSC-vel -1-et.
+  GUI-ban és karakteres módban is a keyboard bufferbe
+  másolt karaktereket 255-tel maszkolni kell.
+
+  Megjegyzés: a Clipper dokumentáció szerint csak 0-255
+  inkey kódok vihetők be a keyboard utasítással, ezért
+  a maszkolás biztosan jó.
+
+
+1999.05.11 -- 1.2.04.w4
+  Clipperben az ascan() függvény default keresési módja az '=' 
+  operátorral történő összehasonlítás. Korábban CCC-ben az '==' 
+  operátort használtuk. Az inkompatibilitás javítva: !(...!=...).
+
+ 
+============================================================================
+CD (2) 1999. március CCCLIB
+============================================================================
+ 
+1999.03.21 -- 1.2.04.w3
+  A Watcom C-s _grow_handles a ctccc.cpp modulból át lett hozva az 
+  alapkönyvtárba, minden platform main-je meghívja: _grow_handles(255)
+  karakteres memoedit kezdőpozícionálása javítva
+  
+  A tesztek szerint MSVC5.0 már nem tartalmazza a régi 20-as korlátot
+  a megnyitható filék számára.
+
+
+1999.03.15 -- 1.2.04.w2
+  MSVC-s könyvtárak neve és verziószámozása
+
+1999.03.13 -- 1.2.04.w1
+ 
+  Az alapkönyvtár fordítása MSVC5.0-val
+  
+  Az összes RegisterClass hívásban meg kell adni a hIcon paramétert,
+  ezt a Watcom C++ megfelelő default-tal pótolta.
+  
+  fsetlock/funlock hiányzó MSVC implementáció pótolva
+  
+  clpfileio: sopen konstansok WATCOM->MSVC leképezése javítva
+  
+  ntdevice: WNetGetUniversalName kihagyva
+  
+  A főprogramokban az esetleges invalid file handlerek elfogyasztására
+  használt open-t MSVC-ben _open-nel kell helyettesíteni.
+
+  Az MSVC programokat kétféle opcióval lehet linkelni
+
+  1. /subsystem:console
+  
+  Ezeknek van default konzolja, de nem tudnak ablakot csinálni,
+  mert kötelezően main()-nel kezdődnek, ezért nem ismert a hInstance,
+  amit a WinMain-ből lehetne kapni.
+     
+     
+  2. /subsystem:windows
+  
+  Ezek kötelezően WinMain-nel kezdődnek, és induláskor már nincs konzoljuk.
+  (A Watcom C++ programok system=nt esetén megtartják az örökölt konzolt,
+  system=nt_win esetén pedig leválasztják.) A set ALLOCCONSOLE=on opció
+  hatására a GUI-s program új konzol nyit magának. A Watcom C++-ban
+  automatikusan ebbe a konzolba irányítódik stdout/stderr, MSVC-ben
+  azonban ezt az átirányítást külön meg kell csinálni freopen-nel.
+  
+
+  A Szabó R.-től örökölt források TAB-jai elrontották az indentálást,
+  ezt esztétikai okokból javítottam.
+  
+ 
+
+1999.03.10 -- 1.2.04
+ 
+  visszakerült a swap() függvény
+
+  NT/Linux forráskód egységesítés, direktori struktúra az 
+  alábbiak szerint:
+
+TARTALOM
+
+----------------------------------------------------------------------
+/.
+  közös források
+
+/INCLUDE
+  közös include filék  
+
+/UNIX
+  UNIX/LINUX specifikus források  
+  
+/DOSWIN
+  DOS és Windows(16/32) specifikus források
+  
+----------------------------------------------------------------------
+/GUI
+  GUI-s megjelenítés Windows(16/32) forrásai (UNIX egyelőre nincs)
+  
+----------------------------------------------------------------------
+/CHR
+  karakteres megjelenítés DOS/Win/UNIX (közös)
+  
+/CHR/DOSWIN                            
+  karakteres megjelenítés DOS/Window specifikus  
+
+/CHR/UNIX                            
+  karakteres megjelenítés UNIX specifikus  
+
+----------------------------------------------------------------------
+
+
+1999.03.04 -- 1.2.02
+    kis javítás a win32c scroll() függvényben
+    DispBox javítva (a frame paraméter különféle defaultjai)
+    memoedit() javítva+optimalizálva, 1MB filékhez is alkalmas 
+    sat.cpp új modul, sat() a standard at()-hez hasonló
+
+
+============================================================================
+CD (1) 1999. február
+============================================================================
+ 
+1999.02.04
+    rfwrite, remote_fwrite
+    raw outputot jelző flagek qout-ban
+    computername lekérdezése a termináltól
+
+1999.01.30 
+    az új wmkgen-nel egyszerűsödött a make
+
+1999.01.24 -- 1.2.01
+    computername/workstatid
+
+1999.01.19 -- 1.2.00
+    többszörös öröklődés, osztálystruktúra újraírva
+
+
+1999.01.17 -- 1.1.01
+
+    Megszűntek a CLASS_osztálynév szimbólumok (mert nem fix
+    értékek), helyettük az getclass_id(),... függvények adják
+    CPP szinten az osztályazonosítókat.
+
+    az oref táblázat ezentúl nem látszik ki variable.cpp-ből,
+    OREFIDX(), OREFPTR() (és ezzel az oref-re való külső hivatkozás) 
+    megszűnt, index helyett a programok OREF* pointerrel tartják 
+    nyilván az objektumot (pl. egy browse window a hozzá tartozó CCC
+    browse objektumot), ezzel lehetővé válik az oref tábla dinamikus
+    bővítése.
+
+    64K feletti stringek támogatása, a stringek hossza egy 
+    unsigned int típusú változóban van, a megengedett maximális
+    string hossz MAXSTRLEN, ami platformfüggően van definiálva,
+    az olyan modulokat kell vizsgálni, amiben string.len található
+    és különösen azokat, amik a string hosszát növelhetik,
+
+    memoread,padr,padl,padc,replicate,space,stuff
+    
+    __maxstrlen() MAXSTRLEN értékét adja Clipper szinten
+
+    
+1999.01.15 -- 1.1.00
+    extended class system bevezetése
+    2.3.01-nél magasabb verziószámú ppo2cpp kell hozzá
+    bővítésre és öröklésre képes osztálystruktúra,
+    mindent újra kell fordítani
+
+----------------------------------------------------------------------------
+EXTENDED CLASS SYSTEM (egyelőre egyszeres öröklődésű)
+----------------------------------------------------------------------------
+
+1999.01.07 -- 1.0.08
+    képernyő és billentyű szétválasztva: video32c<-->keyb32c
+
+    remote_console() tölti be a terminal.dll-t,
+    load_remote_terminal_dll egyetlen hívása itt van,
+    korábban rfputs() a terminal betöltése nélkül elszállt
+    
+
+1998.12.27 -- 1.0.07
+    új függvények az optimalizálóhoz
+
+    flag_eqeqc, eqeqc
+    flag_eqeqn, eqeqn
+    assign_pop, assign_sym, assign_sym_pop
+
+
+1998.12.18 -- 1.0.06
+    A directory() findfirst, findnext ciklusa után hiányzott
+    a findclose, és így a rendszer által foglalt statikus 
+    adatok zárványként megmaradtak. Egyelőre csak az NT-s
+    változatok vannak kijavítva, később mindenhol javítani kell.
+
+
+1998.12.08 -- 1.0.05
+    SWAP makró megszűnt
+    getenv()-ben a környezeti stringet stringn()-nel kell
+    a veremre tenni, mert HP unixon nem fix a helye.
+    
+    karakteres achoice-ban WIN2CWI konverzió
+
+    Karakteres browse puldownmenüjének javítgatása
+    a szeparátor sort ("??") mindig mértre vágja
+    a szeparátoron entert ütve nem csinál semmit,
+    ezért a szeparátornak nem is kell kódblokkot adni
+    mint korábban, hanem ennyi is elég
+
+                aadd(menu,{"?"})  //chr(196)
+    
+    A pulldown menü blokkja által visszaadott érték értelmezése
+    megváltozott
+
+    1) nem szám      -> kilép a menüből
+    2) menüindex     -> odamegy
+    3) 0             -> helyben marad
+    4) egyéb szám    -> kilép
+    
+    Korábban csak az első két eset volt kezelve,
+    ezért a 3) és 4) esetben runtime error keletkezett.
+    Az egésznek nincs nagy jelentősége, mert GUI-ban
+    ezek nem működnek, mert ott hagyom a Windows eredeti
+    menükezelését érvényesülni.
+
+
+1998.12.06 -- 1.0.04
+    karakteres achoice-ban kezelve a 0 tételt tartalmazó eset
+    errorlevel() tévesen NIL-t adott a beállított érték helyett
+    memoedit() tévesen egy crlf-et rakott a szöveg elejére
+
+
+1998.11.27 -- 1.0.03
+    új make környezet, fordításkor a CCCLIB directoryt
+    rootra kell mapelni!
+
+
+1998.11.26 -- 1.0.02
+
+    korábban így vettem elő a konzol handlert:
+
+    HANDLE hConOut=GetStdHandle(STD_OUTPUT_HANDLE);
+
+    ez azonban nem működik, ha stdout át van irányítva,
+    helyette CreateFile-t kell használni, a standard inputnál 
+    maradt az eredeti kód
+
+    conhnd=CreateFile(
+       "CONOUT$",                        //address of name of the file
+       GENERIC_READ|GENERIC_WRITE,       //access (read-write) mode
+       FILE_SHARE_READ|FILE_SHARE_WRITE, //share mode
+       NULL,                             //address of security descriptor
+       OPEN_EXISTING,                    //how to create
+       0,                                //file attributes
+       NULL );                           //handle of file with attributes to copy
+
+
+1998.11.10 -- 1.0.01
+    Beep és Sleep paraméterellenőrzése javítva
+    endofline, pathsep, dirsep függvények
+    
+    verziószámozás bevezetve, az összes platform ugyanazt
+    a verziószámot kapja, a ver_ccclib() függvény meghívása
+    nem automatikus, azt be kell írni a main-ba
+
+
+1998.11.08
+    brwColumn kiegészült egy pos paraméterrel,
+    ha ez meg van adva, akkor nem addcolumn, 
+    hanem inscolumn metódussal bővül a browse
+
+1998.10.02
+    dow()-ban a napokat így kell sorszámozni:
+        empty-date   0
+        vasárnap     1
+        hétfő        2
+        ...
+        szombat      7
+    korábban tévesen a hétfő volt az 1-es, inkompatibilitás javítva.
+
+1998.09.14
+    javítások clp2cpp.h -ben:
+    SWAP javítva
+    OREFIDX makró megszűnt
+    dbfield konstruktora nem inline (kikommentezve)
+
+1998.09.08
+    Az optimalizáló fordítóhoz új könyvtári függvények:
+    addnum(val), mulnum(), addneg(val), idxr0(i), idxl0(i).
+
+1998.07.23
+    ctod() javítva, rugalmasabban alkalmazkodik az évszázadhoz
+
+1998.07.23
+
+    Javított cpp szintű főprogramok: a system=nt_win alkalmazások
+    stdout-jában lévő 1 filé handler érvénytelen, ha ezt egy később
+    megnyíló filé megkapja, akkor az stdoutra szánt kimenet elrontja
+    a filét (pl. ? a SZAMLA.DBF-be ír). Az új módszer ezt úgy kerüli
+    el, hogy egy
+    
+                  while( open("NUL",O_RDWR)<3 );
+    
+    ciklussal elhasználja az alkalmazás elől a szabad alacsony
+    sorszámú filé handlereket. A módszer azon alapszik, hogy az
+    open() növekvő sorrendben adja a handlereket, ha azonban ez
+    tejesül, akkor minden platformon alkalmazható óvintézkedés.
+    A korábbi freopen-en alapuló módszer instabil volt, ez okozta
+    pl. a 98.07.09-es programindítási hibát.
+
+
+1998.07.22
+    A karakteres browse brwShow-jában kell legyen configure,
+    hogy a footing beállítások érvényre jussanak az alkalmazásban
+    elhelyezett configure nélkül is (RedrawAll változott).
+    
+    A karakteres browse jobbra/balra panoláskor elvesztette
+    a pozícióját, ezért a BR_SHIFT-ben tárolt esetleges elmaradást
+    a brwScanlines-ban mindenképpen be kell hozni. Ha a stabilizáció
+    nem panolástól, hanem le/föl mozgástól függesztődik fel,
+    akkor a shiftet hozzáadjuk a következő mozgáshoz, ez korábban
+    is jó volt.
+
+
+1998.07.14
+    clpdoutw-ben előbb kell jönnie a BOX2BLANK konverziónak, 
+    utána pedig a CWI2WIN konverziónak, egyébként a keretrajzoló
+    karakterek és Windows ékezetes nagybetűk összekeverednek.
+
+1998.07.10
+    browse inkrementális stabilizálása a javítva
+    GUI/CHR-ben egyaránt _setsl_incremental(), _setsl_minrowcount()
+    új belső függvények (kivételesen az executiv is hasznlája)
+
+
+1998.07.09
+
+    új általánosabb karakterkonverziós függvények a charconv.cpp
+    modulban, egyéb érintett modulok:
+    
+    karakteres modulok
+    ------------------
+    
+    Korábban nem volt konverzió, ha azonban Windows-os programokkal
+    visznek be ékezetes betüket, akkor azok nem látszanak a karakteres
+    programban, ezért a megjelenítésnél vissza kell konvertálni CWI-re
+    
+    A UNIX-os változat a clpdout-ban mindent konvertál, ez nekem 
+    túl sok, mert a box karaktereket a maszkokon is elrontja.
+    Ezért csak speciális helyeken végzem el a visszakonvertálást,
+    ahol tipikusan adatbázis tartalom jelenhet meg.
+    
+    problémák:
+    
+    Nyilván sok lyuk marad, pl. adatbázis tartalom alapján
+    felépített menü, caption. Mi lesz az olyan nyomtatásokkal,
+    amik box karaktereket tartalmaznak és egyúttal azonos kódú
+    WIN ékezetes nagybetűt.
+
+    clpqout.cpp  : betéve charconv_top(CHARTAB_WIN2CWI)
+    brwdisp.prg  : browse-ban megjelenő adat konvertálva (win2cwi)
+    memoedit.prg : memoeditben megjelenő adat konvertálva (win2cwi)
+    objget.cpp   : display-ben megjelenítés előtt konverzió (win2cwi)
+    
+
+    GUI-s modulok
+    -------------
+    
+    A CWI-s ékezetes karaktereket WIN ékezetesre konvertálom.
+    A korábbi konverzió egyúttal a dobozrajzoló karakterek helyére
+    blank-et rakott. Ez nem volt jó, mert pl. a WIN-É egybeesik egy
+    CWI-box karakterrel, és ezért nem volt megjeleníthető.
+    
+    Most a box->blank konverzió csak a devout()-ban történik meg,
+    ezzel a maszkokról leveszi a meg nem jeleníthető doboz jeleket,
+    de a get-ekben browse-okban lehet Windows-os ékezetes karaktereket
+    csinálni.
+
+    brwclp.cpp   : inn2out cserélve charconv_string(CHARTAB_CWI2WIN,...)-re
+    brwmenu.cpp  : _clp__inn2out cserélve charconv_top(CHARTAB_CWI2WIN)-re 
+    clpdoutw.cpp : inn2out cserélve charconv_string(CHARTAB_CWI2WIN,...)-re
+                   plusz charconv_string(CHARTAB_BOX2BLANK,...)-re
+    objgetw.cpp  : inn2out cserélve charconv_string(CHARTAB_CWI2WIN,...)-re
+    winapi.cpp   : _clp__inn2out cserélve charconv_top(CHARTAB_CWI2WIN)-re 
+    winoedi.cpp  : _clp__inn2out cserélve charconv_top(CHARTAB_CWI2WIN)-re 
+
+
+1998.07.09
+    winmain32.cpp-ben set DebugArgs=on-ra a paraméterek listázása
+    
+    HIBA:
+    Magyar Windows-NT Workstation-on a GetModuleFileName()
+    lecsonkítva adja az exe nevét, és ezért az executiv nem
+    tudja indítani a hosszú nevű programokat (feltevés)
+       
+    k:\konto.xxx\kx32dcg\knapforg.exe már nem indult el,
+    k:\konto.xxx\kx32dcg\knapf0.exe (azonos) még jó volt
+    
+    a hiba determinisztikus, és a program indulásakor a
+    Dr.Watson feljövetelével jelentkezik. A dolgok rendben vannak,
+    ha nem magyar NT-t, hanem az itthoni NT szerveremet használom
+    kliensnek.
+    
+    TÉVEDÉS: a problémát a 98.07.23-as javítás oldotta meg.
+
+
+1998.07.08
+    új modul clplock.cpp:
+    vmm.cpp-ből áthoztam és egységesítettem a lock függvényeket
+
+1998.07.06
+    javítás brwedit.prg brwGetCol()-ban:
+    a karakteres browse editálásánál a számmezők fölé tett get-et
+    ugyanúgy jobbra kell igazítani, ahogy az a GUI-ban is volt
+
+1998.05.28
+    brw:freeze>0 esetén nem számolta ki a szélességeket
+
+1998.05.22
+    szignálok és GPF-ek kezelése
+    
+    1) CTRL-C kezelő blokk az errorblock-hoz hasonlóan clperr-ben
+    2) a SIGSEGV szignált elkapom és CCC-s runtime errort generálok
+
+    clpstuff.cpp-ben rat() GPF-et okozott,
+    a hiba determinisztikus volt, de nem minden gépen
+    jelentkezett (csak workstation-on indítva lépett fel)
+    compiler hibára utal, hogy a ciklusváltozó printelése
+    megszüntette a hibát, az új kód mindenesetre tisztább
+
+1998.05.17
+    a karakteres browse rosszul működött olyan oszlopokkal,
+    aminek a szélessége egymagában nagyobb volt, mint a browse
+
+1998.05.03
+    directory() nagybetűre konvertál (kompatibilitás!)
+    varprint OREFIDX helyett az oref pointert írja hex alakban
+    variable.cpp dinamikusan hozza létre oref,vref-et
+    karakteres browse támogatja az oszlop színeket és footingot
+    (az oszlop footingot és KONTO footingot nem lehet együtt használni)
+
+1998.05.01
+    dtos() az üres dátumra blanket kell adjon, nem pedig "00000000"-át
+    global.h új modul a globális CCC tömbök definíciójára
+    main.cpp átkerült a platformfüggő aldirektorykba
+    clperr.prg-ben új függvény: quitblock (errorblock-hoz hasonló)
+    quit végrehajtja a quitblock kódblokkot
+
+
+1998.04.16
+    clpcons.cpp: új függvény getkey() (karakteresen is)
+    clppad.cpp : 60K string támogatása (32K helyett)
+
+
+1998.04.08
+    áttérés pentiumra optimalizált fordításra
+    nyilas mezőhivatkozások  fordítása (clp2cpp.exe)
+    emiatt push_blkenv-ben új ellenőrzésre van szükség
+    clp2cpp.h bővült class dbfield-del
+
+
+1998.03.29
+
+    Az IO műveletek visszatérésekor errno mindenhol 0:-1-re állítva,
+    aszerint, hogy a művelet sikeres, vagy nem. Ez azoknál a függvényeknél
+    is szükséges, ahol a C könyvtár nem állítja errno-t (clpfile,clpfilio).
+
+1998.03.21
+
+    MSVC curdir, diskname clpsys.cpp-be
+    MSVC directory clpdir.cpp-be (WATCOM-os javítva)
+    MSVC dirmake, diskchange clpfile.cpp 
+    MSVC konstansok sopen-ben clpfilio.cpp
+
+    variable.cpp Watcom-os heapcheck helyettesítve
+    mainw32.cpp stdin,stdout,stderr-re freopen
+
+    egy eltérően kezelt signed/unsigned konverzió 
+    miatt MSVC savescreen-ben a háttérszín rossz volt
+
+
+    MSVC fordítás egyéb tapasztalatai
+
+    clparit.cpp    include mem.h javítva
+    clppad.cpp     include mem.h javítva, unsigned/signed warningok javítva
+    clparr.cpp     unsigned/signed warningok javítva
+    clpdkonv.cpp   unsigned/signed warningok javítva
+    clpstr.cpp     include mem.h javítva, warningok javítva
+    varprint.cpp   unsigned/signed warningok javítva
+    clpcons.cpp    bios.h kihagyva
+    objget.cpp     warningok: signed/unsigned, cast, deafult(!) javítva
+    objgetw.cpp    warningok: signed/unsigned, cast, deafult(!) javítva
+    clpdout.cpp    signed/unsigned javítva
+    clpdoutw.cpp   signed/unsigned javítva
+    winobrw.cpp    signed/unsigned, cast javítva
+    video32c.cpp   remote_error void
+
+    loadtrem.cpp   SHORT  __stdcall (*remote_... )(...) helyett
+                   SHORT (__stdcall  *remote_... )(...) 
+
+    video.h        mint loadterm.cpp
+    
+   
+
+1998.03.20
+    clp2cpp.h-ban a DUP makrók javítva
+    forráskód egységesítés
+
+
+1998.02.19
+    Inkey kódokat adó getkey függvény, ez negatív kódokat is adhat,
+    ezért getkey USHORT helyett short deklarációjú kell legyen,
+    remote_getkey nem jelezhet hibát negatív értékkel
+    
+    setcursor(0) javítva
+    
+
+1998.02.08
+    GetStockObject(SYSTEM_FIXED_FONT) helyett ccc_fixed_font()
+    a buttonokban és a helpben ccc_prop_font()
+    achoice elhelyezése duplán relatív a 1998.01.18-as javítás miatt
+    WM_MENUSELECT-ben a helpszöveg megjelenítése
+    Sleep(60) inkey-be és getkey-be
+
+1998.01.18
+    a browse és display objektumok a topwindow koordinátái szerint
+    vannak elheyezve (GUI-ban), hogy egy arrébb húzott alkalmazás ablakai
+    együtt maradjanak
+
+1997.12.20
+    ss ($ operátor) strstr-rel működött, nem jó 0-t tartalmazó stringre
+    errno nullázva a filé müveletek előtt
+    winapi.cpp-ben: getmenu -->wndgetmenu, setmenu -->wndsetmenu
+
+
+1997.12.04
+    clppad.cpp: visszavettem a padl buherálós NIL kezelését
+    clpbreak.cpp: quit-be Sleep(300)
+    main.cpp: síma exit helyett _clp___quit-tel lép ki
+
+
+1997.12.03
+    karakteres __keyboard javítva
+    karakteres brwLoop javítva (ONSTABLE)
+
+
+1997.11.22
+    setdatformat támogatás
+    "@K D" picture hibásan működött
+    "@K" picture dátumokkal GPF-et csinált
+    új függvény dtoc-ra és ctod-ra (a dátumformátumok támogatására)
+
+
+1997.09.21
+
+    brwOnstable kezelés.
+    
+    A GUI-s browse-ban a WM_TIMER-ekkel való spórolás céljából
+    csak akkor installálok timert, ha a brwOnstable() az első
+    brwShow() előtt már be volt állítva, ehhez szükséges, 
+
+    hogy a brwCreate, brwClear, dspCreate NIL-re inicializálja a 
+    slotot (a korábbi {||.f.} helyett), emellett brwOnstable(brw,0) 
+    (vagy bármilyen nem NIL empty) visszaállítja a blokkot NIL-re,
+    
+    onstable végrehajtása előtt ezért vizsgálni kell a blokk típusát.
+    
+    A NIL-re inicializálást a karakteres browseban is bevezettem.
+
+
+1997.09.18
+    Javítások a karakteres browse-ban
+    
+    :rowcount véglegesen javítva az előző megjegyzés szerint,
+    a heading és footing kirajzolása _brwwidth()-ből _Stabilize()-be
+    került, _brwwidth() csak az :invalidate-tel előírja újrarajzolásukat
+    a következő stabilizációban, alapelv, hogy minden tényleges képernyő 
+    outputnak a brw:stabilize()-ből kell történnie!
+
+    a brwFooting előtt beállított speciális :footsep most érvényre jut
+
+
+1997.09.17
+    Javítások a karakteres browse-ban
+
+    A :rowcount (sorok száma a browse-ban) len(:invalid)-ot adta,
+    de :invalid nincs elég korán inicializálva, ezért az első stabilizáció
+    előtti :gobottom (benne brw:rowpos:=brw:rowcount) elrontotta :rowpos-t,
+    amitől az stabilizáció elszállt.
+    
+    Jelenleg :rowcount a browse méreteiből kiszámolja a sorokat,
+    jobb volna helyette a :configure-val inicializálni :invalid-ot,
+    de az jelenleg elrontja az oszlop headereket, ezért valószínűleg
+    egy korai :stable vizsgálat is elrontja a browse-t.
+    
+    Meg kell javítani :configure()-t! 
+    (nem :configure rossz, hanem _brwwidth(), 1997.09.18)
+
+
+?1997.09.16
+?    winbrw-ben implementáltam a brwOnstable() működtetéséhez                  
+?    szükséges timert
+?    
+?    bizonyos szituációkban felgyűlnek a queue-ban 
+?    a WM_TIMER message-ek, pl. brwEditRow() közben,
+?    ennek hatása még nincs kitesztelve, annyi látszik csak, 
+?    hogy nem 'gyorsan' romlik el a rendszer
+    
+
+1997.09.10
+    chr() argumentumát nem D2INT-tel kell kerekíteni.
+
+    új fopen és fcreat, ami sopen()-nel nyit és kreál, 
+    feleslegessé téve az alábbi kísérletet
+
+    korábbi kísérlet: 
+      clpfilio.cpp-ben fopen és fcreat lock protocollal pótolja
+      az exclusive open hiányát
+
+
+1997.07.07
+    Remote console _32c_-ben.
+
+
+1997.06.18
+    Forásskód egységesítés.
+    asc-ban (unsigned char*) castot kell használni.
+    get3d.ch átkerült srcwin-be.
+
+
+1997.06.16
+
+    alert() a legfelső ablakhoz igazodva helyezi el magát,
+    ugyanígy message() is.
+
+1997.05.31
+
+    CLPSTUFF.CPP: bináris rész string keresésére 
+                  at,rat-ben strstr,strcmp helyett memcmp
+
+
+    CLPDIR.CPP  : új dos specifikus függvény: diskchange()
+                  máshova került diskname()
+
+1997.04.12
+    vmm.cpp-ben xvgetbyte, xvputbyte
+    defaultwindowcaption javítva (az előző beállítást adja vissza)
+    memoedit 1-gyel rövidebb stringet adott vissza, javítva
+
+
+1997.03.02
+
+    új függvények
+
+    CLPQOUT.CPP : outerr,outstd (standard könyvtári)
+    CLPDIR.CPP  : dirchange (CA-tools)
+    CLPCGI.CPP  : cgigetinput CONTENT_LENGTH hosszúságú stringet 
+                  olvas be stdin-ről
+    
+1996.12.12
+    Az NT hibája miatt ferase() és btrCreate() hatása nem 
+    látszik azonnal directory()-ban és file()-ben, ezért az
+    ferase(), :create, :open gyakran használt szekvencia nem
+    jól működik. Az open még nem érzékeli a create által frissen
+    létrehozott filét, és megkérdezi, hogy létrehozza-e.
+    A hiba eddig csak NT kliensen fordult elő, a szerveren (lokálisan)
+    futó CCC programok eddig is jól működtek.
+    
+    Javításképpen file() és btrCreate() most ciklusban megvárja,
+    amíg a változás megjelenik file()-ben.
+    
+    
+    run közben (WINDOWS-ban) a várakozó alkamazás ablakai takarva
+    vannak
+    
+
+1996.12.10
+    BRWFUNC.CPP: a client window az itt található 
+    wmsize, wmuser, wmbutton függvényekkel mozog a browseban. 
+    Nagyon fontos, hogy akkor, amikor az ablak nem felül van, 
+    vagy nincs engedélyezve, a browse semmiképp se mozogjon
+    az adatbázisban, Ezért a fenti függvények (a biztonság 
+    kedvéért) ellenőrzik, hogy szabad-e mozogni. Valójában a 
+    browse-ban ellenőrzött és módosított WM_WINDOWPOSCHANGING 
+    után nem szabad előfordulnia mozgásnak.
+    
+    WINAPI.CCC: paintloop WM_PAINT dispatch-e után kilép, új 
+    függvény Beep().
+    
+    Alert fütyül.
+    
+    WINMAIN.H: DEVOUT_WIDTH 128 helyett 192
+
+
+1996.12.08
+    Uj alert.
+    
+1996.12.07
+    A client, heading, footing, get ablakok HOLLOW_BRUSH-t kapnak,
+    ezzel egy csomó villódzás megszűnik. Másik lehetőség volna a
+    WM_ERASEBKGND feldolgozása, vagy InvalidateRect-ben gondosan
+    ügyelni a paraméterezésre. Sajnos 4.0-ban mindenképpen villodznak 
+    az ablakok.
+
+
+1996.12.05
+
+    WS_MAXIMIZEBOX stílus kikommentezve a browseok kreálásánál,
+    ui. a popwindowk becsukása, vagy ikonból előhozatala megszűnteti
+    a parent maximalizált állapotát (teljesen értehetetlen !!!),
+    ez a parent browse adatbázisában pozícionáláshoz vezet, 
+    ami pl. rekord módosításkor elrontja az adatbázist (VESZÉLY).
+    
+    További biztosíték a parent mozgatása ellen WM_WINDOWPOSCHANGING
+    feldolgozása, ebben az alul lévő ablak mozgatása előtt a WINDOWPOS
+    struktúrába mindig hozzáteszem a SWP_NOSIZE|SWP_NOMOVE flaget.
+    Ezzel a maximalizált ablak ugyan nem változtatja a helyét és méretét,
+    de a jobb felső sarok kettős nyila visszaváltozik, azaz az ablak 
+    maximális méretű, de normál állapotúvá válik (hülyeség).
+    
+    Client window (a tulajdonképpeni browse) brushja hollow, hogy
+    a paintnél ne látszódjon a háttér törlése, és ne hunyorítson
+    az ablak.
+  
+
+1996.12.04
+
+    Get object-ek sűlyesztése. A get3d.ch-ban a GET3D szimbólum
+    definiálásával szabályozható, hogy sűlyesztett, vagy síma
+    getek legyenek-e. A fő nehézség az, hogy a getek mérete
+    megnövekszik 2 sorral, ezért a display windowkban nagyobb
+    sorközt kell tartani. A puszta TextOut így nem elég az 
+    ablak teljes kifestésére, törölni kell a hátteret.
+    
+    Régi hiba volt, hogy egy popupwindow (browse, achoice, maszk,
+    alert) bezárása esetén mielőtt a parent megkapná véglegesen
+    a fókuszt, felvillan alatta egy másik programhoz tartozó ablak.
+    A jelenség oka az, hogy a láncba fűzött ablakok nem utolsó tagjai
+    disablezve vannak, és így a felső ablak destroyolásakor egy
+    pillanatig nincs az alkalmazásnak enabled ablaka. A felső 
+    ablak WM_DESTROY-ánál már késő enablezni a parentet.
+
+    Megoldás:
+
+    1. minden explicit DestroyWindow hívás (Clipper és CPP egyaránt)
+       előtt a parentet enablezni kell.
+
+    2. WM_SYSCOMMAND, SC_CLOSE-ban a parentet enablezni kell.
+    
+    3. azt hiszem más módon nem szűnik meg ablak.
+    
+
+1996.12.02
+    DefError()-nak a Clipperhez hasonlóan errorlevel(1),quit-tel
+    kell kilépnie, nem pedig break-kel
+
+1996.12.01
+
+    új modulok, függvények
+
+    clpcpfil: filecopy
+    clpfpar : filesize,filedate,fileattr,filetime
+    clpsys  : diskname
+    ntutil  : truename, diskfree
+
+1996.11.30
+    Nem lehet generális WM_PAINT kezelő thread-et csinálni,
+    mert egy thread csak a saját ablakainak küldött message-eket
+    kapja meg PeekMessage()-ből.
+    
+    DevOutPict()-et átvettem a DOS-os kódból, DevOut és DevOutPict
+    egyelőre továbbra is csak display window-ba tud írni, ezért nem 
+    lehet @ say utasításokkal printelni.
+
+1996.11.28
+    Windows-os browse-okba és display-ekbe minimizeboxot raktam.
+    A windows-os browse-ok is üres caption helyett mindig a
+    DefaultWindowCaption() értékét írják ki, hogy az ikonok ne
+    maradjanak felirat nélkül. Egyelőre mindenhol az IDI_APPLICATION
+    azonosítójú default ikon jelenik meg.
+    
+    VIGYáZAT: ikonizálás, visszaállítás, maximalizálás közben
+    biztosítani kell, hogy az alul lévő ablakok ne váltsanak ki
+    pozícionálást az adattáblákban.
+
+1996.11.26
+    DefError hibás volt.
+
+1996.11.14
+    eject kimenete chr(12)+chr(13), 
+    így kompatibilis a Clipperrel,
+    korábban csak chr(12) volt
+
+1996.11.13
+    winapi.cpp-ben új függvény: setfocus()
+
+1996.11.11
+    memoedit caption-jébe DefaultWindowCaption()
+    memoedit után lastkey() beállítása setlastkey() hívásával
+
+1996.08.29
+    SET CONFIRM kezelése
+    get:typeOut kezelése
+

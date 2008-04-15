@@ -1,0 +1,53 @@
+
+
+(define-function gtk_font_selection_get_type
+  (in-module GtkFontSelection)
+  (c-name "gtk_font_selection_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_font_selection_new
+  (c-name "gtk_font_selection_new")
+  (is-constructor-of GtkFontSelection)
+  (return-type "GtkWidget*")
+)
+
+(define-method get_font_name
+  (of-object "GtkFontSelection")
+  (c-name "gtk_font_selection_get_font_name")
+  (return-type "gchar*")
+  (comment "nem mondja, hogy fel kell-e szabadítani")
+)
+
+(define-method get_font
+  (of-object "GtkFontSelection")
+  (c-name "gtk_font_selection_get_font")
+  (return-type "GdkFont*")
+  (deprecated "use GtkFontSelection.get_font_name")
+)
+
+(define-method set_font_name
+  (of-object "GtkFontSelection")
+  (c-name "gtk_font_selection_set_font_name")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "fontname")
+  )
+)
+
+(define-method get_preview_text
+  (of-object "GtkFontSelection")
+  (c-name "gtk_font_selection_get_preview_text")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method set_preview_text
+  (of-object "GtkFontSelection")
+  (c-name "gtk_font_selection_set_preview_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+)
+

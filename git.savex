@@ -1,0 +1,9 @@
+-s/opt/ccc3
+@content.savex
+-lr*.nopack
+-lrcgi*
+-x.savex.zip.
+-lxg-*
+-ts
+-ms
+

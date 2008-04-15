@@ -1,0 +1,306 @@
+
+
+(define-function gtk_container_get_type
+  (in-module GtkContainer)
+  (c-name "gtk_container_get_type")
+  (return-type "GtkType")
+)
+
+(define-method set_border_width
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_border_width")
+  (return-type "none")
+  (parameters
+    '("guint" "border_width")
+  )
+)
+
+(define-method get_border_width
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_border_width")
+  (return-type "guint")
+)
+
+(define-method add
+  (of-object "GtkContainer")
+  (c-name "gtk_container_add")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method remove
+  (of-object "GtkContainer")
+  (c-name "gtk_container_remove")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method set_resize_mode
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_resize_mode")
+  (return-type "none")
+  (parameters
+    '("GtkResizeMode" "resize_mode")
+  )
+)
+
+(define-method get_resize_mode
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_resize_mode")
+  (return-type "GtkResizeMode")
+)
+
+(define-method check_resize
+  (of-object "GtkContainer")
+  (c-name "gtk_container_check_resize")
+  (return-type "none")
+)
+
+(define-method foreach
+  (of-object "GtkContainer")
+  (c-name "gtk_container_foreach")
+  (return-type "none")
+  (parameters
+    '("GtkCallback" "callback")
+    '("gpointer" "callback_data")
+  )
+  (CCC "byhand")
+)
+
+(define-method foreach_full
+  (of-object "GtkContainer")
+  (c-name "gtk_container_foreach_full")
+  (return-type "none")
+  (parameters
+    '("GtkCallback" "callback")
+    '("GtkCallbackMarshal" "marshal")
+    '("gpointer" "callback_data")
+    '("GtkDestroyNotify" "notify")
+  )
+  (deprecated "")
+)
+
+(define-method get_children
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_children")
+  (return-type "GList*" ".parray.freelist.")
+)
+
+
+(define-method propagate_expose
+  (of-object "GtkContainer")
+  (c-name "gtk_container_propagate_expose")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("GdkEventExpose*" "event")
+  )
+)
+
+(define-method set_focus_chain
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_focus_chain")
+  (return-type "none")
+  (parameters
+    '("GList*" "focusable_widgets")
+  )
+)
+
+(define-method get_focus_chain
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_focus_chain")
+  (return-type "gboolean")
+  (parameters
+    '("GList**" "focusable_widgets")
+  )
+)
+
+(define-method unset_focus_chain
+  (of-object "GtkContainer")
+  (c-name "gtk_container_unset_focus_chain")
+  (return-type "none")
+)
+
+(define-method set_reallocate_redraws
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_reallocate_redraws")
+  (return-type "none")
+  (parameters
+    '("gboolean" "needs_redraws")
+  )
+)
+
+(define-method set_focus_child
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_focus_child")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+  )
+)
+
+(define-method set_focus_vadjustment
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_focus_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+)
+
+(define-method get_focus_vadjustment
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_focus_vadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method set_focus_hadjustment
+  (of-object "GtkContainer")
+  (c-name "gtk_container_set_focus_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+)
+
+(define-method get_focus_hadjustment
+  (of-object "GtkContainer")
+  (c-name "gtk_container_get_focus_hadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method resize_children
+  (of-object "GtkContainer")
+  (c-name "gtk_container_resize_children")
+  (return-type "none")
+)
+
+(define-method child_type
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_type")
+  (return-type "GtkType")
+)
+
+(define-method install_child_property
+  (of-object "GtkContainerClass")
+  (c-name "gtk_container_class_install_child_property")
+  (return-type "none")
+  (parameters
+    '("guint" "property_id")
+    '("GParamSpec*" "pspec")
+  )
+)
+
+(define-function container_class_find_child_property
+  (c-name "gtk_container_class_find_child_property")
+  (return-type "GParamSpec*")
+  (parameters
+    '("GObjectClass*" "cclass")
+    '("const-gchar*" "property_name")
+  )
+)
+
+(define-function container_class_list_child_properties
+  (c-name "gtk_container_class_list_child_properties")
+  (return-type "GParamSpec**")
+  (parameters
+    '("GObjectClass*" "cclass")
+    '("guint*" "n_properties")
+  )
+  (CCC "byhand")
+)
+
+(define-method add_with_properties
+  (of-object "GtkContainer")
+  (c-name "gtk_container_add_with_properties")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("const-gchar*" "first_prop_name")
+  )
+  (varargs #t)
+)
+
+(define-method child_set
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_set")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "first_prop_name")
+  )
+  (varargs #t)
+)
+
+(define-method child_get
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_get")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "first_prop_name")
+  )
+  (varargs #t)
+)
+
+(define-method child_set_valist
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_set_valist")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "first_property_name")
+    '("va_list" "var_args")
+  )
+  (CCC "byhand")
+)
+
+(define-method child_get_valist
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_get_valist")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "first_property_name")
+    '("va_list" "var_args")
+  )
+  (CCC "byhand")
+)
+
+(define-method child_set_property
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_set_property")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method child_get_property
+  (of-object "GtkContainer")
+  (c-name "gtk_container_child_get_property")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("const-gchar*" "property_name")
+    '("GValue*" "value")
+  )
+)
+
+(define-method forall
+  (of-object "GtkContainer")
+  (c-name "gtk_container_forall")
+  (return-type "none")
+  (parameters
+    '("GtkCallback" "callback")
+    '("gpointer" "callback_data")
+  )
+  (CCC "byhand")
+)
+

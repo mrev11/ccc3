@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# dbaseiii.so behúzza a fullscreen könyvtárakat
+# ha az nem megfelelő, akkor dbaseiii.lib-et kell linkelni;
+# a memókezeléshez linkelni kell a btbtx táblaobjektumot
+
+bapp_unix0.b -sccc3_dbaseiii
+
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN 
+cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN 
+ 

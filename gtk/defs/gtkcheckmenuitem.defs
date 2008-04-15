@@ -1,0 +1,90 @@
+
+
+(define-function gtk_check_menu_item_get_type
+  (in-module GtkCheckMenuItem)
+  (c-name "gtk_check_menu_item_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_check_menu_item_new
+  (c-name "gtk_check_menu_item_new")
+  (is-constructor-of GtkCheckMenuItem)
+  (return-type "GtkWidget*")
+)
+
+(define-function gtk_check_menu_item_new_with_label
+  (c-name "gtk_check_menu_item_new_with_label")
+  (is-constructor-of GtkCheckMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_check_menu_item_new_with_mnemonic
+  (c-name "gtk_check_menu_item_new_with_mnemonic")
+  (is-constructor-of GtkCheckMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method set_active
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_set_active")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_active")
+  )
+)
+
+(define-method get_active
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_get_active")
+  (return-type "gboolean")
+)
+
+(define-method toggled
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_toggled")
+  (return-type "none")
+)
+
+(define-method set_inconsistent
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_set_inconsistent")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_inconsistent
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_get_inconsistent")
+  (return-type "gboolean")
+)
+
+(define-method set_show_toggle
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_set_show_toggle")
+  (return-type "none")
+  (parameters
+    '("gboolean" "always")
+  )
+  (deprecated "don't use this method")
+)
+
+(define-method set_state
+  (of-object "GtkCheckMenuItem")
+  (c-name "gtk_check_menu_item_set_state")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_active")
+  )
+  (deprecated "use GtkCheckMenuItem.set_active")
+)
+
+
+

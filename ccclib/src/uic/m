@@ -1,0 +1,6 @@
+#!/bin/bash
+pushd ../..
+mk_uic
+popd
+list.exe ../../error &
+

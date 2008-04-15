@@ -1,0 +1,3 @@
+#!/bin/bash
+demo-client.exe  localhost  45000 SSL
+

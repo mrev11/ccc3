@@ -1,0 +1,898 @@
+
+
+(define-function gtk_style_get_type
+  (in-module GtkStyle)
+  (c-name "gtk_style_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_style_new
+  (c-name "gtk_style_new")
+  (is-constructor-of GtkStyle)
+  (return-type "GtkStyle*")
+)
+
+(define-method copy
+  (of-object "GtkStyle")
+  (c-name "gtk_style_copy")
+  (return-type "GtkStyle*")
+  (caller-owns-return #t)
+)
+
+(define-method attach
+  (of-object "GtkStyle")
+  (c-name "gtk_style_attach")
+  (return-type "GtkStyle*")
+  (parameters
+    '("GdkWindow*" "window")
+  )
+)
+
+(define-method detach
+  (of-object "GtkStyle")
+  (c-name "gtk_style_detach")
+  (return-type "none")
+)
+
+(define-method ref
+  (of-object "GtkStyle")
+  (c-name "gtk_style_ref")
+  (return-type "GtkStyle*")
+  (deprecated "")
+)
+
+(define-method unref
+  (of-object "GtkStyle")
+  (c-name "gtk_style_unref")
+  (return-type "none")
+  (deprecated "")
+)
+
+(define-method get_font
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_font")
+  (return-type "GdkFont*")
+  (deprecated "")
+)
+
+(define-method set_font
+  (of-object "GtkStyle")
+  (c-name "gtk_style_set_font")
+  (return-type "none")
+  (parameters
+    '("GdkFont*" "font")
+  )
+  (deprecated "")
+)
+
+(define-method set_background
+  (of-object "GtkStyle")
+  (c-name "gtk_style_set_background")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+  )
+)
+
+(define-method apply_default_background
+  (of-object "GtkStyle")
+  (c-name "gtk_style_apply_default_background")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("gboolean" "set_bg")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method lookup_icon_set
+  (of-object "GtkStyle")
+  (c-name "gtk_style_lookup_icon_set")
+  (return-type "GtkIconSet*")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-method render_icon
+  (of-object "GtkStyle")
+  (c-name "gtk_style_render_icon")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-GtkIconSource*" "source")
+    '("GtkTextDirection" "direction")
+    '("GtkStateType" "state")
+    '("GtkIconSize" "size")
+    '("GtkWidget*" "widget" (null-ok) (default "NULL"))
+    '("const-gchar*" "detail" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method draw_hline
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_hline")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gint" "x1")
+    '("gint" "x2")
+    '("gint" "y")
+  )
+  (deprecated "")
+)
+
+(define-method draw_vline
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_vline")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gint" "y1")
+    '("gint" "y2")
+    '("gint" "x")
+  )
+  (deprecated "")
+)
+
+(define-method draw_shadow
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_shadow")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_polygon
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_polygon")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkPoint*" "points")
+    '("gint" "npoints")
+    '("gboolean" "fill")
+  )
+  (deprecated "")
+)
+
+(define-method draw_arrow
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_arrow")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GtkArrowType" "arrow_type")
+    '("gboolean" "fill")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_diamond
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_diamond")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_box
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_box")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_flat_box
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_flat_box")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_check
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_check")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method draw_option
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_option")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_tab
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_tab")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_shadow_gap
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_shadow_gap")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+    '("gint" "gap_x")
+    '("gint" "gap_width")
+  )
+  (deprecated "")
+)
+
+(define-method draw_box_gap
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_box_gap")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+    '("gint" "gap_x")
+    '("gint" "gap_width")
+  )
+  (deprecated "")
+)
+
+(define-method draw_extension
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_extension")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+  )
+  (deprecated "")
+)
+
+(define-method draw_focus
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_focus")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method draw_slider
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_slider")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkOrientation" "orientation")
+  )
+  (deprecated "")
+)
+
+(define-method draw_handle
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_handle")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkOrientation" "orientation")
+  )
+  (deprecated "")
+)
+
+(define-method draw_expander
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_expander")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("GtkExpanderStyle" "expander_style")
+  )
+  (deprecated "")
+)
+
+(define-method draw_layout
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_layout")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gboolean" "use_text")
+    '("gint" "x")
+    '("gint" "y")
+    '("PangoLayout*" "layout")
+  )
+  (deprecated "")
+)
+
+(define-method draw_resize_grip
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_resize_grip")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkWindowEdge" "edge")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "")
+)
+
+(define-method paint_hline
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_hline")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x1")
+    '("gint" "x2")
+    '("gint" "y")
+  )
+)
+
+(define-method paint_vline
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_vline")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "y1")
+    '("gint" "y2")
+    '("gint" "x")
+  )
+)
+
+(define-method paint_shadow
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_shadow")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_polygon
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_polygon")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("GdkPoint*" "points")
+    '("gint" "npoints")
+    '("gboolean" "fill")
+  )
+)
+
+(define-method paint_arrow
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_arrow")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("GtkArrowType" "arrow_type")
+    '("gboolean" "fill")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_diamond
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_diamond")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_box
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_box")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_flat_box
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_flat_box")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_check
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_check")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_option
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_option")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_tab
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_tab")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_shadow_gap
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_shadow_gap")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+    '("gint" "gap_x")
+    '("gint" "gap_width")
+  )
+)
+
+(define-method paint_box_gap
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_box_gap")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+    '("gint" "gap_x")
+    '("gint" "gap_width")
+  )
+)
+
+(define-method paint_extension
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_extension")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkPositionType" "gap_side")
+  )
+)
+
+(define-method paint_focus
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_focus")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method paint_slider
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_slider")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkOrientation" "orientation")
+  )
+)
+
+(define-method paint_handle
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_handle")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GtkShadowType" "shadow_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+    '("GtkOrientation" "orientation")
+  )
+)
+
+(define-method paint_expander
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_expander")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("GtkExpanderStyle" "expander_style")
+  )
+)
+
+(define-method paint_layout
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_layout")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gboolean" "use_text")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("PangoLayout*" "layout")
+  )
+)
+
+(define-method paint_resize_grip
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_resize_grip")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("GdkWindowEdge" "edge")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+
+(define-method _peek_property_value
+  (of-object "GtkStyle")
+  (c-name "_gtk_style_peek_property_value")
+  (return-type "const-GValue*")
+  (parameters
+    '("GType" "widget_type")
+    '("GParamSpec*" "pspec")
+    '("GtkRcPropertyParser" "parser")
+  )
+)
+
+(define-method apply_default_pixmap
+  (of-object "GtkStyle")
+  (c-name "gtk_style_apply_default_pixmap")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("gboolean" "set_bg")
+    '("GdkRectangle*" "area")
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "use GtkStyle.apply_default_background")
+)
+
+(define-method draw_string
+  (of-object "GtkStyle")
+  (c-name "gtk_draw_string")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("gint" "x")
+    '("gint" "y")
+    '("const-gchar*" "string")
+  )
+  (deprecated "")
+)
+
+(define-method paint_string
+  (of-object "GtkStyle")
+  (c-name "gtk_paint_string")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkStateType" "state_type")
+    '("GdkRectangle*" "area" (null-ok))
+    '("GtkWidget*" "widget" (null-ok))
+    '("const-gchar*" "detail" (null-ok))
+    '("gint" "x")
+    '("gint" "y")
+    '("const-gchar*" "string")
+  )
+  (deprecated "")
+)
+
+Bővítmények:
+
+(define-method get_fg_gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_fg_gc")
+  (return-type "GdkGC*")
+  (parameters
+    '("gint" "idx")
+  )
+  (CCC "REG,add")
+)
+
+(define-method get_bg_gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_bg_gc")
+  (return-type "GdkGC*")
+  (parameters
+    '("gint" "idx")
+  )
+  (CCC "REG,add")
+)
+
+(define-method get_black_gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_black_gc")
+  (return-type "GdkGC*")
+  (parameters
+    '("gint" "idx")
+  )
+  (CCC "REG,add")
+)
+
+(define-method get_white_gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_white_gc")
+  (return-type "GdkGC*")
+  (parameters
+    '("gint" "idx")
+  )
+  (CCC "REG,add")
+)

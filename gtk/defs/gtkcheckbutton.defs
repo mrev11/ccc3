@@ -1,0 +1,45 @@
+
+
+(define-function gtk_check_button_get_type
+  (in-module GtkCheckButton)
+  (c-name "gtk_check_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_check_button_new
+  (c-name "gtk_check_button_new")
+  (is-constructor-of GtkCheckButton)
+  (return-type "GtkWidget*")
+)
+
+(define-function gtk_check_button_new_with_label
+  (c-name "gtk_check_button_new_with_label")
+  (is-constructor-of GtkCheckButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_check_button_new_with_mnemonic
+  (c-name "gtk_check_button_new_with_mnemonic")
+  (is-constructor-of GtkCheckButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method _get_props
+  (of-object "GtkCheckButton")
+  (c-name "_gtk_check_button_get_props")
+  (return-type "none")
+  (parameters
+    '("gint*" "indicator_size")
+    '("gint*" "indicator_spacing")
+  )
+  (CCC "byhand")
+)
+
+
+

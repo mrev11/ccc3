@@ -1,0 +1,54 @@
+
+name: BETET
+version: "bt2tds 1.0.01"
+
+table: konto.betet
+
+column:  UGYSZAM          C12     
+column:  BETTIPUS         C4      
+column:  SZERZSZAM        C12     nn
+column:  SZAMLASZAM       C24     nn
+column:  LEKOTSZLA        C24     
+column:  LEJARSZLA        C24     
+column:  DEVNEM           C3      
+column:  OSSZEG           N17.2   
+column:  ERTEKNAP         D       
+column:  LEJARNAP         D       
+column:  FELMONDNAP       D       
+column:  MODKAMAT         N10.6   
+column:  LEHIVFLAG        L       
+column:  LEJARFLAG        L       
+column:  KAMSZTIPUS       C1      
+column:  AUTOPROL         C1      
+column:  TOKESFLAG        C1      
+column:  AKKRKAMAT        N17.2   
+column:  ELSZKAMAT        N17.2   
+column:  AKKRDATUM        D       
+column:  ELSZDATUM        D       
+column:  KAMATTIPUS       C4      
+column:  KAMATOZMOD       C1      
+column:  HFSZINT          N2      
+column:  LEKSZINT         N2      
+column:  USER             C8      
+column:  CSOPORT          C8      
+column:  KONYVKELT        D       
+column:  MODKELT          D       
+column:  LEJKAMELSZ       C1      
+column:  ZARTIPUS         C1      
+column:  FELMKOD          C1      
+column:  FELMKAMLAB       N10.6   
+column:  ERTORI           D       
+column:  NAPHO            C1      
+column:  HOSSZ            N4      
+column:  VEGSODAT         D       
+column:  ZAROLTFLAG       L       
+column:  ZAROLTMEGJ       C50     
+column:  ZAROLKOD         C4      
+column:  ZAROLAZON        C40     
+column:  MODKAMTIP        C4      
+column:  EPERIOD          N3      
+column:  EPERTIP          C1      
+
+primkey: SZERZSZAM
+
+index:  szamlaszam(SZAMLASZAM)

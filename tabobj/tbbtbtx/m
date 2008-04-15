@@ -1,0 +1,12 @@
+#!/bin/bash
+#export CCC_STRING_TAB=STRTAB
+bapp_unix0.b @par-unix.bld  
+bapp_unix0.b @par-unixui.bld  
+ 
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN 
+cp -pf obj$CCCBIN/*.so $CCCDIR/usr/lib/$CCCBIN 
+ 
+cd utility
+m
+cd ..
+ 

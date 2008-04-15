@@ -1,0 +1,238 @@
+
+\section{Szerver oldali objektumok} 
+
+Sajnos megint csak fő összefüggések leírására kell szorítkoznom,
+ez legalább megkönnyíti a kód olvasását.
+
+\subsection{A kontrollok értékéről}
+
+Az akció és reakció üzenetekben a kontrollok ,,értéke'' utazik
+a termináltól a szerverhez és vissza. Alább felsoroljuk, hogy az egyes
+kontrolloknál mit értünk érték alatt:
+
+\begin{description}
+\item[checkbox]      logikai érték, a gomb állapota, 
+\item[combo box]     a kiválasztott index (1-től számozódik),
+\item[get mező]      a getben editált változó, melynek típusát a picture-ből állapítja meg a rendszer,
+\item[rádió button]  logikai érték, a gomb állapota,
+\item[table]         a kiválasztott sorok indexéből képzett array,
+\item[tabpane]       a kiválasztott fül indexe (1-től számozódik).
+\end{description}
+
+Az értéket (a régi Clipper get objektumának mintájára) a varget metódussal
+lehet lekérdezni, és a varput metódussal lehet beállítani. 
+A varget nem tévesztendő össze a kontroll szövegével (text),
+vagy az érték XML formátumú alakjával (xmlget), bár egyes esetekben
+azok megegyezhetnek.  A felsorolásban nem szereplő kontrollok esetén a
+\verb!varget! metódus azonos a \verb!text! metódussal, ahogy az a jtelem 
+osztályból öröklődik.
+
+
+A kontrolloknak az értékükön kívül természetesen van egy sor
+egyéb jellemzője, ilyen pl.\ egy checkbox felirata, ikonja, tooltipje.
+Ezeknek az állítgatása lehetséges ugyan, de csak ritkán fordul elő
+a programban, tipikusan csak egyszer, a kontroll létrehozásakor.
+
+
+\subsection{A jtelem osztály}
+
+A szerver oldalon az osztályok többsége a jtelem absztrakt osztályból
+származik, legelőször tehát ezt kell tanulmányozni.
+
+\paragraph{Belső használatra}
+
+\begin{description}
+\item[setdialogid]
+    Összekapcsolja a kontrollt és a dialogboxot. 
+\item[dialogid] 
+    Ehhez a dialogboxhoz tartozik a kontroll.
+\item[itemlist] 
+    A beágyazott kontrollok listája. 
+    Jelenleg a jtmenu, jtpanel, jtsplitpane, jttabpane, 
+    jttoolbar kontrolloknak  van nem üres itemlist-je.
+\item[xmlout] 
+    A kontrollok ezzel adják meg saját XML leírásukat.
+\item[xmlname] 
+    A kontroll osztályának neve.  
+\item[xmladd] 
+    Egyes kontrollok xmlout metódusa úgy működik, hogy
+    meghagyják ugyan a jtelemtől örökölt xmlout-ot,
+    viszont felüldefiniálják xmladd-ot, amit a jtelem-beli 
+    xmlout mindig meghív. Ezzel a kontrollok speciális kiegészítéseket
+    fűzhetnek az általános jtelem-beli xmlout-hoz.
+\item[xmlput]    
+    Beállítja egy kontroll értékét. Az új értéket szövegesen, 
+    XML formátumban kell megadni.
+\item[xmlget]
+    Kiolvassa egy kontroll értékét. Az értéket szövegesen,
+    XML formátumban kapjuk.
+\item[savestate]    
+    Megjegyzi a kontroll aktuális értékét laststate-ben.
+\item[laststate]
+    A kontroll terminálnak elküldött utolsó értékét tartalmazza.
+\item[changed]
+    Az aktuális érték és laststate összehasonlításával megállapítja,
+    hogy változott-e a kontroll értéke az utolsó küldés óta. Csak a 
+    megváltozott értékeket kell küldeni a terminálnak.
+\end{description}
+ 
+
+
+
+\paragraph{Alkalmazási programoknak}
+
+\begin{description}
+\item[varget]
+    Kiolvassa a kontroll értékét. Az értéket Clipper típusú (C, N, D, L, A) 
+    változóként kapjuk.
+\item[varput]
+    Értéket ad egy kontrollnak. Az új értéket Clipper változóként kell átadni.
+\item[top]
+    A kontroll tetejének koordinátája.
+\item[left]  
+    A kontroll bal szélének koordinátája.
+\item[bottom]  
+    A kontroll aljának koordinátája.
+\item[right]  
+    A kontroll jobb szélének koordinátája.
+\item[halign]
+    Előírja, hogy a kontroll belsejében levő szöveg merre legyen
+    igazítva vízszintesen.
+\item[valign]
+    Előírja, hogy a kontroll belsejében levő szöveg merre legyen
+    igazítva függőlegesen.
+\item[alignx]
+    Előírja, hogy a kontroll az alatta/fölötte levő kontrollokhoz
+    melyik részével illeszkedjen víszintesen (jobb/bal szélével, közepével).
+\item[aligny]
+    Előírja, hogy a kontroll az mellette levő kontrollokhoz
+    melyik részével illeszkedjen függőlegesen (aljával, tetejével, közepével).
+\item[name]   
+    A kontroll azonosítója, egyedinek kell lennie.
+\item[text]  
+    A kontroll szövege. Egyes kontrolloknál ez egyben a kontroll 
+    értéke is.
+\item[tooltip]    
+    A kontroll tooltipjének a szövege.
+\item[icon] 
+    Egyes kontrollokhoz (label, button, menü) ikon rendelhető.
+    Az ikonnak a jterminal.jar-beli készletben létező jpeg, gif,
+    vagy png filének kell lennie.
+\item[image] 
+    Olyan kép, amit futás közben a szerverről küldünk át a terminálnak.
+\item[border] 
+    A defaulttól eltérő keret adható itt meg.
+\item[valid]
+    Egy flag, ami előírja, hogy a kontrollal történt Jáva akciót
+    jelenteni kell. A menük és push buttonok akcióit mindig jelenti
+    a terminál.
+\item[escape]  
+    Ezzel a flaggel jelölt kontrollok akciójánál nem kell vizsgálni,
+    hogy a kontrollok kitöltése megfelelő-e.
+\item[enabled]   
+    Ez a flag letiltja/engedélyezi a kontrollt.
+\item[focusable]  
+    Adható-e fókusz a kontrollra?
+\item[actionblock]
+    Ha egy kontrollnak van akcióblokkja,
+    akkor azt a getmessage automatikusan végrehajtja,
+    ha a kontrollból akció érkezik. Az ilyeneknek a
+    valid attribútumával sem kell foglalkozni.
+\item[changetext]
+    Menet közben megváltoztatja a kontroll szövegét, 
+    pl. egy checkbox feliratát, amit tipikus esetben csak
+    a dialogbox inicializálásakor szoktunk megadni.
+    (Azonnal küldi az üzenetet.)
+\item[changetooltip]
+    Menet közben megváltoztatja a kontroll tooltipjét. (Azonnal küldi az üzenetet.) 
+\item[changeicon]
+    Menet közben megváltoztatja a kontroll ikonját. (Azonnal küldi az üzenetet.) 
+\item[changeimage]
+    Menet közben új bináris képet küld egy kontrollnak. (Azonnal küldi az üzenetet.) 
+\item[changeenabled]
+    Menet közben negváltoztatja kontroll engedélyezettségét. (Azonnal küldi az üzenetet.) 
+\end{description}
+
+
+
+\subsection{Grafikus komponens osztályok jtlib-ben} 
+
+A felsorolás képet ad a Jáva Terminál lehetőségeiről.
+Az osztályok valójában a terminálon létrejövő Swing objektumok
+szerver oldali reprezentációi, és többségük az előbb tárgyalt jtelem 
+osztály leszármazottja.
+
+\begin{description}
+\item[jtalert]
+    Clipper messageboxok létrehozásához.
+\item[jtbrowse]
+    Funkcionálisan a Clipper TBrowse utóda 
+    (és éppenséggel a TBrowse osztály leszármazottja),
+    helyette a jttable, jtbrowsearray, jtbrowsetable
+    objektumok használata ajánlott.
+\item[jtbrowsearray]
+    A jttable osztály leszármazottja, ami fel van készítve
+    array-k browseolására.
+\item[jtbrowsetable]
+    A jttable osztály leszármazottja, ami fel van készítve
+    táblaobjektumok browseolására.
+\item[jtcheck]
+    Checkbox.
+\item[jtcombo]
+    Lista előre meghatározott elemekkel, az elemekből egyet lehet kiválasztani.
+\item[jtdialog]
+    Legfelső szintű grafikus elem, maga a dialogbox
+\item[jtfilechooser]
+    A szokásos filé kiválasztó dialogbox. A terminál filérendszerében
+    lehet választani.
+\item[jtget]
+    Szövegmező, ami a Jáva szövegmezőnél sokkal intelligensebb,
+    mivel Clipper-szerű picture-rel (formázó/szerkesztő sablonnal) van
+    ellátva.
+\item[jtglue]
+    Olyan grafikus elem, aminek akármilyen mérete lehet,
+    így alkalmas hézagok  kitöltésére.
+\item[jtlabel]
+    Statikus felirat.
+\item[jtmenu]
+    Legördülő menü. A menü többszintű lesz,
+    ha a menüelemek helyére újabb menüket teszünk.
+\item[jtmenuitem]
+    Egy menüelem (sor) a legördülő menüben.
+\item[jtmenusep]
+    Elválasztó vonal (szeparátor) a menüben.
+\item[jtmenucheck]
+    Checkboxként működő menüitem.
+\item[jtmenuradio]
+    Rádió buttonként működő menüitem.
+\item[jtpanel]
+    Összetett grafikus elem, ami további elemeket tartamazhat.
+\item[jtprogbar]
+    Progressz indikátor.
+\item[jtpush]
+    Push button (egyszerű nyomógomb).
+\item[jtradio]
+    Rádió button.
+\item[jttable]
+    A jtbrowse olyan változata, ami nem örököl a Clipperes
+    TBrowse-ból, így nem gyökerezik bele a régi könyvtárakba.
+    Az egyszerűség ára, hogy a browse nem jeleníthető meg lokálisan,
+    hanem csak a terminálban.
+\item[jttabpane]
+    Fülekkel ellátott panelek, amik egymást takarják, és
+    a füllel lehet kiválasztani, hogy melyik kerüljön felülre.
+\item[jttoolbar]
+    A panel egy olyan speciális formája, amire bizonyos 
+    egérműveleteket támogat a Jáva.
+\item[jtpassw]
+    Jelszavak bekérésére specializált szövegmező. Egyrészt
+    "*"-ként jeleníti meg a begépelt karaktereket, másrészt nem
+    a jelszót küldi vissza eredményként, hanem annak MD5 hash kódját.
+\end{description}
+ 
+Lesznek később más kontrollok is, pl. famegjelenítésre.
+Jelenleg nincs még megoldva nagy szövegállományok terminál oldali
+megjelenítése, ahol a ,,nagy'' akkorát jelent, amit már nem lehet
+egyben átküldeni a hálózaton.
+
+ 

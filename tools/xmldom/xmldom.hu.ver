@@ -1,0 +1,50 @@
+
+2007.10.24 -- 1.2.03
+  _xmldom_parser_parseinput javítva: bin2str helyett str2bin
+
+2006.11.16 -- 1.2.02
+  eval(errorblock(),e) helyett break(e), ezeket dobja: 
+  invalidoptionerror, fnferror, xmlsyntaxerror, xmltagerror
+
+2004.06.18 -- 1.2.01
+  <!DOCTYPE ...> ignored by the flex analyser.
+
+2004.04.28 -- 1.2.00
+  Unicode.
+
+2004.08.01 -- 1.1.01
+  A lex filében %option prefix="xmldom".
+  FlexLexer.h-t a lex filében nem szabad inkludálni.
+  Mindez a névütközések és többszörös definíciók elkerülésére,
+  hogy egy programban egyszerre több Flex elemző is lehessen.
+
+2004.07.12 -- 1.1.00
+  Az egész újraírva:
+  Áttérés Flex++/Lemon-ra, reentráns elemző, 2-szeres gyorsulás.
+  A parsefile() csak azt a filét zárja le, amit ő nyitott meg.
+  Megszűnt a yaccmaxidx() API.
+
+2004.03.22 -- 0.9.18
+  Az xmlrpc könyvtár DOM elemző része külön könyvtárba véve.
+  Korábban az xml elemzéshez mindig az xmlrpc könyvtárat
+  kellett linkelni (akkor is, ha az rpc rész nem kellett),
+  ami mindig maga után húzta a socket könyvtárat.
+  
+  A DOM elemzőben fontos javítások vannak előirányozva:
+  1) C++ Flex lexikai elemző lesz bevezetve.
+  2) Bison helyett Lemon nyelvtani elemző lesz bevezetve.
+  Ezekkel a javításokkal a domparser reentráns lesz.
+
+2004.03.17 -- 0.9.17
+  Kicsit optimalizálva a Flex/Bison nyelvtan.
+  A szemétgyűjtésen látszik, hogy hihetetlenül sok objektum készül, 
+  ezért a program nagyon lassú még az optimalizálással is (20%).
+
+2004.02.18 -- 0.9.16
+  yyparse_from_file(file) argumentuma nem csak filespec,
+  hanem file descriptor is lehet, ebben az esetben az fdopen-nel
+  kapott streamből történik az olvasás. Mindkét esetben
+  az elemzés befejeztével fclose-zal lezáródik a stream
+  (és mivel fdopen nem dup-ol, az eredeti descriptor is).
+  A filedescriptor pipe is lehet.
+ 

@@ -1,0 +1,5 @@
+#!/bin/bash
+export CCC_LANG=ru
+export LD_LIBRARY_PATH=./translation:$LD_LIBRARY_PATH
+nlstext.exe
+

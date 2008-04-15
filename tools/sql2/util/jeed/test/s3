@@ -1,0 +1,5 @@
+#!/bin/bash
+#export SQLDEBUG=on
+#export JTRESOL=low
+
+test3.exe  -jtdebug

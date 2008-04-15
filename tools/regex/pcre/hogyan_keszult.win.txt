@@ -1,0 +1,19 @@
+A pcre-6.7.tar.gz csomagól indulunk.
+Lefuttajuk configure-t msys környezetben.
+
+pcreposix.h
+    137 sor táján:
+    #undef  PCRE_DATA_SCOPE
+    #define PCRE_DATA_SCOPE
+
+pcreposix.c-t
+    át kell nevezni .cpp-re,
+    ki kell szedni belőle a szemetet,
+    hogy érvényes cpp program legyen.
+
+m.bat 
+    lefordítja a könyvtárat (pcreposix.lib)
+    átmásolja: pcreposix.h --> include
+    átmásolja: pcreposix.lib --> lib
+    
+    

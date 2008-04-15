@@ -1,0 +1,26 @@
+Az Oracle magától case insensitive-en rendezi a stringeket.
+Ezt valahogy kivédtem, de már nem emlékszem, hogy hogyan.
+
+Most az a helyzet, hogy a CCC program (az én környezetemben)
+case sensitive-en rendez, míg ugyanazt a táblát az "oemapp console"
+case insensitive-en rendezi.
+
+A CCC programban:
+
+    nev [ Van, aki 'forrón' szeretiX     ]
+    nev [ Van, aki 'forrón' szeretiX     ]
+    nev [ a próba szerencseX             ]
+    nev [ b próba szerencseX             ]
+    nev [ c próba szerencse ###X         ]
+    nev [ hoppX                          ]
+    nev [ x próba szerencseX             ]
+
+Az oemapp-ban:
+
+    nev [ a próba szerencseX             ]
+    nev [ b próba szerencseX             ]
+    nev [ c próba szerencse ###X         ]
+    nev [ hoppX                          ]
+    nev [ Van, aki 'forrón' szeretiX     ]
+    nev [ Van, aki 'forrón' szeretiX     ]
+    nev [ x próba szerencseX             ]

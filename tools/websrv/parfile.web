@@ -1,0 +1,30 @@
+
+--listener :8080:4433
+--reuseaddr
+--userid 1006
+#--log websrv.log
+
+--rootdir $(STARTDIR)/htdocs
+--virtualhost
+#--dircharset UTF-8
+--dircharset ISO-8859-2
+
+--cgipath $(STARTDIR)/cgi-bin
+--phppath /usr/bin/php-cgi
+--cgitime 10
+
+
+--keyfile   $(STARTDIR)/webcon/cert/localhost.pem
+#--capath    $(STARTDIR)/webcon/cert
+#--cafile    $(STARTDIR)/webcon/cert/localhost.pem
+
+
+--secure ssl
+--secure secure
+#--secure archiv
+--secure zene
+--secure x.html
+
+--excluded excluded
+
+

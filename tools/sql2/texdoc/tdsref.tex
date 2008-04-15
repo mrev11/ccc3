@@ -1,0 +1,272 @@
+\subsection{Tds referencia}
+
+%Előzetes megjegyzés: 
+%\begin{quote}\small
+%Az eredeti koncepció az volt, 
+%hogy a tableentityket XML leírásból készítjük, és ez most is működik.
+%A tds-ekkel teljesen azonos tartalmú, de XML szintaktikájú fájlokból
+%(ted kiterjesztéssel) a ted2prg utility ugyanazt a kódot generálja,
+%mint a tds2prg. Az XML azonban inkább gépi feldolgozásnál előnyös, 
+%míg a humán felhasználó könnyebben elboldogul a tds szintaktikával.
+%Ezért a tds2prg program (a ted2prg-hez képest) kiegészült egy előzetes 
+%elemzéssel, minek során ugyanazt a DOM-ot építi fel, amit a ted2prg XML-ből. 
+%Mindkét esetben a közös DOM-ból ugyanaz a modul generálja a kódot.
+%\end{quote}
+
+A Table Definition Script (tds) bekezdésekből áll.
+Minden bekezdés egy sor elején álló kulcsszóval kezdődik,
+amit szóköz nélkül  kettőspont követ.
+Az érvényes kulcsszavak:
+\verb!name!, 
+\verb!version!, 
+\verb!table!, 
+\verb!join!, 
+\verb!column!, 
+\verb!colref!, 
+\verb!primkey!, 
+\verb!index!, 
+\verb!select!, 
+\verb!include!, 
+\verb!type!, 
+\verb!comment!.
+A bekezdések a következő bekezdésig, vagy a filé végéig tartanak.
+A bekezdések sorrendje nem kötött. Az elemző a comment bekezdéseket 
+kihagyja.
+
+\subsubsection*{name:}
+
+    Névtér, amibe a tableentityNew() objektumgyártó függvény kerül.
+
+\begin{verbatim}
+    name:  multi.level.namespace
+\end{verbatim}
+
+A tds-ből generált tableentityt így tudjuk legyártani:
+\begin{verbatim}
+    tableentity:=multi.level.namespace.tableentityNew(con)
+\end{verbatim}
+    
+\subsubsection*{version:}
+    
+    A bekezdés tartalma egy tetszőleges tartalmú string (idézőjelekkel),
+    amiből a tableentity objektum version attribútumának értéke lesz.
+
+\begin{verbatim}
+    version:  "arbitrary text"
+\end{verbatim}
+    
+\subsubsection*{table:}
+    
+    Legalább egy table bekezdésnek kell lennie, ezek  alakja:
+\begin{verbatim}
+    table:  real.qualified.tablename=aliasname
+\end{verbatim}
+    A script más részeiben a táblára kizárólag az alias névvel
+    hivatkozunk. Ha nincs megadva join bekezdés, akkor a table
+    bekezdésekben magadott táblák Descartes-féle szorzata lesz 
+    a tableentity alaptáblája.
+    Ha csak egy table bekezdés van, akkor triviálisan az abban
+    megadott tábla lesz az alaptábla.
+    
+\subsubsection*{join:}
+    
+    Opcionális bekezdés. Ha nincs megadva, akkor a táblák
+    Descartes-féle szorzata lesz  az alaptábla. Ha meg van adva, 
+    akkor a join bekezdés tartalmából  készül a tableentity által 
+    generált SQL select utasítások  from záradéka (tehát lényegében 
+    egy from záradékot írunk a joinba).  A from záradék SQL-beli 
+    szintaktikájától annyiban térünk el, hogy a táblákra és oszlopokra 
+    kizárólag aliasokkal hivatkozunk. Példa:
+\begin{verbatim}
+    join: 
+        a
+        full join b on id_a=id_b
+        left join c on name_a=name_c
+\end{verbatim}
+
+\subsubsection*{column:}
+
+A legegyszerűbb példa:
+
+\begin{verbatim}
+    column: szamlaszam  C24
+\end{verbatim}
+
+    A kettőspont utáni {\em első\/} szóközökkel határolt szó egyszerre
+    \begin{itemize}
+    \item metódusnév a rowentity objektumokban,
+    \item alias név, amivel a tds más részeiben hivatkozunk az oszlopra. 
+    \end{itemize}
+    
+    A {\em második\/} szóközökkel határolt egység a típusleképezés.
+    Ebben azt a típust kell megadni, amiben a CCC program 
+    kéri/adja az oszlop adatait (függetlenül attól, hogy
+    mi az oszlop tényleges SQL adattípusa). Az érvényes típusok:
+
+    \begin{centering}    
+    \begin{tabular}{l@{:~~}l}
+    %\begin{tabular}{|l|l|}
+        Cw   &  w hoszúságú karakter string \\
+        Nw   &  w helyiértéken tárolt egész \\
+        Nw.d &  w helyiértéken tárolt, d tizedesjegyet tartalmazó szám \\
+        Nw,d &  w helyiértéken tárolt, d tizedesjegyet tartalmazó szám \\
+        D    &  dátum \\
+        L    &  logikai érték \\
+        M    &  memó \\
+    \end{tabular}
+    \end{centering}    
+
+    A karakter stringeket C (unicode) típusban, a memókat X (bináris)
+    típusban kapja a program.
+
+    Az oszlopnevet és típust kiegészítő adatok követhetik.    
+    A kiegészítő adatok opcionálisak, és a sorrendjük nem kötött.
+    
+
+\paragraph{\tt x=column\_expression}
+    
+Ezzel a formával adható meg az oszlopkifejezés. 
+Ha nincs megadva, akkor maga a név lesz a kifejezés:
+\begin{verbatim}
+    column: szamlaszam C24      ;ez a default: x=szamlaszam
+\end{verbatim}
+
+Amikor az oszlopnév nem egyértelmű, megadjuk a minősített nevét:
+\begin{verbatim}
+    column: szamlaszam C24      x=ugyfszl.szamlaszam
+\end{verbatim}
+
+Megadhatunk kifejezést:
+\begin{verbatim}
+    column: EGYENLEG   N17.2    (x=napinyito+napitartoz+napikovet)
+                                (l=Aktuális egyenleg)
+\end{verbatim}
+
+Használhatunk SQL kifejezéseket:
+\begin{verbatim}
+    column: devnem     C3       x=lower(devnem)
+\end{verbatim}
+
+\paragraph{\tt l=label}
+
+    Beállítja az oszlop label attribútumát.
+    A labelt táblafüggetlen megjelenítőprogramok kiírhatják 
+    oszlopfejlécbe, vagy az adatot megjelenítő text mező elé.
+
+\paragraph{\tt t=tooltip}
+
+    Beállítja az oszlop tooltip attribútumát
+    (táblafüggetlen megjelenítőprogramok számára).
+
+\paragraph{\tt p=picture}
+
+    Beállítja az oszlop picture attribútumát
+    (táblafüggetlen megjelenítőprogramok számára).
+
+\paragraph{\tt d=default}
+
+    Beállítja az oszlop default érték attribútumát.
+    A defaultot nem az interfész, hanem az adatbázisszerver használja,
+    ezért csak akkor van hatása, ha a tableentityvel kreáljuk
+    a táblát (tehát ugyanaz a helyzet, mint a not null-nál).
+
+\paragraph{\tt nn}
+
+    Jelentése not null. Az attribútum az adatbázisszervernek szól.
+    Az interfész nem tudja kikényszeríteni a not null-t, 
+    hiszen az adatbázist mások is használhatják, nem feltétlenül a mi 
+    SQL2 interfészünkön keresztül.
+    Ha viszont a táblát a tableenity create metódusával hozzuk létre, 
+    akkor az oszlop not null minősítéssel kreálódik, 
+    és a szerver biztosítja a not null feltétel teljesülését.
+ 
+
+Az oszlopdefiníció szóközökkel határolt egységekből áll.
+Ha valamelyik paraméterérték szóközt tartalmaz, akkor
+azt zárójelpárral lehet védeni. 
+ 
+\begin{verbatim}
+    column: DEVNEM  C3      l=Dev
+                            (t=A számla devizaneme)
+                            (x=upper( devnem ))
+                            (p=@! AAA)
+                            nn
+\end{verbatim}
+
+A védelemre alkalmazott zárójelpáron belül lehetnek kiegyensúlyozott
+zárójelek. Ha nem kiegyensúlyozott zárójelet tartalmazó szöveget
+akarunk védeni, használjunk másik zárójelfajtát: \verb![]! vagy \verb!{}!.
+
+
+
+\subsubsection*{colref:}
+    Lehetnek olyan oszlopok, amikre hivatkozni 
+    akarunk a tds-ben, de nem akarjuk lekérdezni az értéküket.  
+    Az ilyenek leírását helyezzük colref bekezdésbe, ami ugyanolyan, 
+    mint a column, kivéve, hogy nincs benne típus információ,
+    és az opciók közül csak az x (column expression) megengedett.
+
+    
+\subsubsection*{primkey:}
+
+    A primkey bekezdés kötelező. Benne vesszőkkel elválasztott
+    listában felsoroljuk azokat az oszlopokat (column bekezdésben
+    definiált alias neveket), amik egyértelműen azonosítják a 
+    rekordokat. Az alkalmazás felelőssége, hogy az azonosítás,
+    és ezáltal az adatbázis rekord<->rowentity objektum megfeleltetés
+    egyértelmű legyen.
+\begin{verbatim}    
+    primkey:  column_alias1,column_alias2,...
+\end{verbatim}    
+   
+    
+\subsubsection*{index:}
+
+    Az opcionális index bekezdések formája:
+\begin{verbatim}    
+    index:  index_name(column_alias1,column_alias2,...) [unique]
+\end{verbatim}    
+    Az  index bekezdésekben indexeket definiálhatunk
+    a táblára, ezzel bizonyos lekérdezéseket gyorsíthatunk,
+    illetve a unique indexekkel kikényszeríthetjük rekordok
+    egyediségét.
+
+\subsubsection*{select:}
+      
+    Az opcionális select bekezdések első szóközökkel határolt 
+    szavából a tableentity metódusneve lesz. 
+
+    A metódusnevet követheti a \verb!where! kulcsszó, 
+    majd tetszőleges SQL kifejezés, amit az SQL a where és
+    order by kulcsszavak között elfogad. Az oszlopokra
+    kizárólag az oszlop aliasokkal szabad hivatkozni.
+    A kifejezés \verb!:1!, \verb!:2!,\ldots alakú szimbólumokat
+    tartalmazhat, amik helyére az SQL select parancs generálásakor
+    paramétereket fogunk helyettesíteni.
+    
+    A where feltételt követheti az \verb!order! kulcsszó,
+    ami után zárójelek között fel kell sorolni azokat az oszlopokat, 
+    amik szerint rendezni akarjuk az eredménytáblát. 
+    A felsorolásban az oszlopnevek után opcionálisan megjelenhet 
+    az asc/desc  kiegészítés, ami előírja, hogy az adott oszlop 
+    szerint növekvő vagy csökkenő rendezettséget akarunk.
+    
+    A where és order záradék közül legalább az egyiknek léteznie kell.
+    
+    Példa:
+
+\begin{verbatim}    
+    select: select_a
+        where col_a_alias like :1
+        order(col_a_alias, col_b_alias desc)
+\end{verbatim}
+
+    Ezután a \verb!tableentity:select_a("a%")!
+    metódushívás kiválasztja az alaptábla azon sorait,
+    melyekben \verb!col_a! első karaktere {"}a", és a sorokat
+    rendezi \verb!col_a!, majd csökkenő sorrendben \verb!col_b!
+    szerint.
+
+    
+    
+    

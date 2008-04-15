@@ -1,0 +1,13 @@
+-mjtlisten
+-msslforward
+ 
+-d.
+-dunix
+#-dsckutil
+
+-p/usr/lib
+-bssl
+-bcrypto
+-bccc3.lib
+ 
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

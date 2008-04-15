@@ -1,0 +1,8 @@
+#!/bin/bash
+#export SQLDEBUG=on
+export JTRESOL=low
+
+#jtstart.exe  jeed.exe entity.konto.szla_kamjut.tds  -jtdebug  #>log
+#jtstart.exe  test2.exe -jtdebug
+
+test2.exe -jtdebug

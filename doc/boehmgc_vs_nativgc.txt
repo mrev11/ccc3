@@ -1,0 +1,82 @@
+                                            
+Leírok egy kísérletet, 
+amiben összehasonlítom a CCC kétféle szemétgyűjtését.
+
+A 'savex.exe .' parancsot futtatom egy olyan fájlrendszerben, amiben 
+kb. 180 ezer fájl van.  A natív szemétgyűjtésnél OREF_SIZE=2000000.
+A savex az összes fájlt (azok néhány adatát) beszedi egy browse-ba, 
+és egy 180 ezer soros, memóriában tárolt mátrixot scrolloz. 
+
+                                            Natív       Boehm
+A browse első megjelenéséig eltelt idő :    41 sec      27 sec
+Memóriafoglalás (top RES oszlopa)      :    270 MB      516 MB
+
+Eddig az látszik, hogy a Boehm-ös program kb. kétszer nagyobb
+helyet igényel, viszont kétszer gyorsabban fut.
+
+A mátrix aljától felfelé scrollozok lenyomva tartott PgUp-pal.
+Ekkor a programnak kb. 720 ezer (180x4 ezer) állandó memóriaobjektumot 
+kell felügyelnie, miközben milliószám keletkeznek ideiglenes objektumok,
+amik nem élnek túl egy szemétgyűjtést sem. Figyelem a szemétgyűjtéseket.
+A Boehm-ös program sokkal rövidebb időre akad meg szemétgyűjtéskor, 
+és a szemétgyűjtések között is feleannyi processzoridőt fogyaszt.  
+Ha részletesebben megnézzük a szemétgyűjtés időadatait, meglepő,
+sőt, látszólag ellentmondó dolgokat találunk:
+
+Teljes mark and sweep algoritmus futási idő (Boehm): 950 msec
+Teljes mark and sweep algoritmus futási idő (Natív):  41 msec
+    
+Nem tévedés: A natív szemétgyűjtés 20-szor gyorsabban lefut, 
+mint a Boehm-ös. 41 msec alatt kikeresi és bejelöli az élő objektumokat 
+(mark), és free-vel felszabadítja a maradékot (sweep). Ezután jön viszont 
+a fekete leves. A következő foglalásnál ui. az OS-nek/C-könyvtárnak 
+rendbe kell tennie a töredezett memóriát, emiatt a következő malloc 
+(aminek az ideje már nincs benne a 41 msec-ben) a szokásosnál sokkal 
+lassabban végez. Ezalatt a Boehm-ös program elhúz. Tehát a natív 
+szemétgyűjtés relatíve hosszabb elakadása nem magában a szemétgyűjtésben 
+van (ami valójában gyorsabb), hanem az azt követő malloc-okban.
+Másik oldalról, a Boehm GC gyorsaságának kulcsa a jobb memóriakezelő 
+rendszer.
+
+
+Szubjektív megjegyzések és tanulságok:
+
+A libgc (Boehm GC) rendkívül praktikus és könnyen használható.
+Számomra meglepetés volt, hogy a Mono-ban nincs saját szemétgyűjtés, 
+hanem az egész témát a libgc-vel intézik el. Könnyen munkára fogható 
+a libgc a CCC-ben is: egyetlen modul ki/becserélésével lehet váltani 
+a natív és Boehm-ös szemétgyűjtés között. Amint a kísérlet mutatja, 
+a Boehm GC-ben kifinomult, hatékony memóriakezelés van.
+Minden C programozónak ismernie kellene a Boehm-ös szemétgyűjtést.
+
+Brutális egyszerűsége ellenére a natív szemétgyűjtés
+mark/sweep+malloc/free algoritmusa is kiválóan használható.
+Az egyszerűség is érték. A libgc 100+ darab _forrásmoduljával_ 
+szemben a natív algoritmus kb. 500 teljesen hordozható C _sor_, 
+amivel a jég hátán is meg lehet élni. 
+
+A modern rendszereken (Linux/Windows) nem létfontosságú olyan 
+szofisztikált könyvtárakat használni, mint a libgc allokátora, 
+hanem akkor is elfogadható eredményt kapunk, ha a feladatot durván
+rálőcsöljük az OS-re. Vagy úgy is mondhatjuk, számíthatunk rá,
+hogy az OS-ben/C-könyvtárban levő default allokátor is megfelelő 
+lesz (és nyilván még fejlődhet is).
+
+Úgy gondolom, nincs  egyértelmű győztes. Ha a kísérlethez egy 
+400 ezres fájlrendszert választok, akkor a Boehm-ös program éppen
+kiszorul az 1GB-os memóriából, és a natív program előnybe kerül.
+
+A szakirodalomban úgy tartják, hogy a szemétgyűjtés egyszerűbb 
+és gazdaságosabb, mint a referenciaszámlálás. A CCC natív 
+szemétgyűjtése mutatja, hogy akár a legegyszerűbb megvalósítás
+esetén is ez a helyzet. A libgc hatékony szemétgyűjtést biztosít 
+lényegében akármilyen C program számára (tekinthetjük ezt akár OS
+szolgáltatásnak is).  A pythonosok bánhatják, hogy szemétgyűjtés 
+helyett belemásztak a referenciaszámlálásba.
+
+Végül megjegyezem, hogy a gyakorlatban csak ritkán lehet érezni 
+a szemétgyűjtés lassúságát. A kísérletben használt (savex) program
+kirívóan sok memóriaobjektumot használ, míg a programok többsége 
+a teljes ideje kis részében foglalkozik csak szemétgyűjtéssel. 
+
+

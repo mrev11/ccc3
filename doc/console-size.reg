@@ -1,0 +1,5 @@
+REGEDIT4
+ 
+[HKEY_CURRENT_USER\Console]
+"ScreenBufferSize"=dword:00250050
+"WindowSize"=dword:00250050

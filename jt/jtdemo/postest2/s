@@ -1,0 +1,4 @@
+#!/bin/bash
+#export JTERMINAL=$CCC3DIR/usr/bin/$CCCUNAME/jterminal.jar
+export JTRESOL=low
+postest.exe #>log

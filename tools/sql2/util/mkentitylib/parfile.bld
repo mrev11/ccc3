@@ -1,0 +1,5 @@
+-bccc3_xmldom
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+
+

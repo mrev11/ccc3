@@ -1,0 +1,4 @@
+#!/bin/bash
+bt2tds.exe /opt/konto/kdemo/napforg.bt -p ugyszam -0 osszeg -0 devnem -0 tartkov  -t konto.napforg
+bt2ted.exe /opt/konto/kdemo/napforg.bt -p ugyszam -0 osszeg -0 devnem -0 tartkov  -t konto.napforg
+

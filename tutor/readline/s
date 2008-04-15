@@ -1,0 +1,4 @@
+#!/bin/bash
+libcontent.exe $CCCDIR/usr/lib/lin/ccc3.lib >log
+libcontent.exe $CCCDIR/usr/lib/lin/ccc3_ui_.lib >log_ui_
+libcontent.exe $CCCDIR/usr/lib/lin/ccc3_uic.lib >log_uic

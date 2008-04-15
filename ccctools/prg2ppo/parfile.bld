@@ -1,0 +1,2 @@
+-d.
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

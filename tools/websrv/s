@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export STARTDIR=`pwd`
+
+websrv.exe  @parfile.web #&
+
+

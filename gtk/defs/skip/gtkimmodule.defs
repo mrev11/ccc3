@@ -1,0 +1,30 @@
+
+
+(define-function _gtk_im_module_list
+  (c-name "_gtk_im_module_list")
+  (return-type "none")
+  (parameters
+    '("const-GtkIMContextInfo***" "contexts")
+    '("guint*" "n_contexts")
+  )
+  (CCC "byhand")
+)
+
+(define-function _gtk_im_module_create
+  (c-name "_gtk_im_module_create")
+  (return-type "GtkIMContext*")
+  (parameters
+    '("const-gchar*" "context_id")
+  )
+)
+
+(define-function _gtk_im_module_get_default_context_id
+  (c-name "_gtk_im_module_get_default_context_id")
+  (return-type "const-gchar*")
+  (parameters
+    '("const-gchar*" "lang")
+  )
+)
+
+
+

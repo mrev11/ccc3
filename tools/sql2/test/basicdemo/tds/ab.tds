@@ -1,0 +1,189 @@
+name: localtds.ab
+version: "2"
+
+table: konto.a=a
+table: konto.b=b
+
+join: 
+    a full join b on id_a=id_b
+    
+column: id_a        N4      x=a.id
+column: name        C10
+column: datum       D
+column: flag        L
+column: val_a       N19.2   x=a.value
+column: id_b        N4      x=b.id
+column: val_b       N6      (x=b.value)
+
+select: selord  order by id_a
+
+
+comment:
+
+    A Table Definition Script (tds) bekezdésekből áll.
+    Minden bekezdés egy sor elején álló kulcsszóval kezdődik
+    (az érvényes kulcsszavak name:, version:, table:, join:, 
+    column:, colref:, primkey:, index:, select:, comment:),
+    és a következő bekezdésig, vagy a filé végéig tart.
+    Az elemző a comment bekezdéseket (pl. ezt) kihagyja.
+
+  name: 
+
+    A tableentity neve localtds.ab. Így kapunk új tableentity példányt: 
+
+        localtds.ab.tableEntityNew([qt])
+
+    ahol az opcionális qt paraméter minősített táblanevek listája lehet. 
+    Ha qt meg van adva, akkor az abban felsorolt táblák behelyettesítődnek 
+    konto.a és konto.b helyére. Ha qt==NIL, akkor nincs helyettesítés,
+    és a table bekezdésekben felsorolt táblákon fogunk dolgozni.
+    
+  version:
+    
+    A bekezdés tartalma egy tetszőleges tartalmú string (idézőjelekkel),
+    amiből a tableentity objektum version attribútumának értéke lesz.
+    
+  table:    
+    
+    Legalább egy table bekezdésnek kell lennie, ezek  alakja:
+        qualified.tablename=aliasname
+    A script hátralevő részében a táblára mindig az alias névvel
+    hivatkozunk. Ha nincs megadva join bekezdés, akkor az itt
+    felsorolt táblák Descartes-féle szorzata lesz az alaptábla.
+    Ha csak egy table bekezdés van, akkor triviálisan az abban
+    megadott tábla lesz az alaptábla.
+    
+  join:
+    
+    Opcionális join bekezdés. Ha nincs megadva, akkor a table 
+    bekezdésekben felsorolt táblák Descartes-féle szorzata lesz 
+    az alaptábla. Ha meg van adva, akkor a join tartalmából fog
+    generálódni a select utasítás from záradéka (a jelen példában 
+    egy full join). Az SQL szintaktikától annyiban kell eltérni, 
+    hogy ahol eredetileg ez állna: "q.t as alias_a left join ...", 
+    ott nálunk csak az alias nevet kell kiírni, azaz "alias_a left join ...", 
+    a valódi táblanevek beírását a megfelelő helyekre elvégzi az 
+    interfész. Hasonlóan, az on kulcsszó utáni feltételben szereplő
+    oszlopokra nem a minősített oszlopnevekkel hivatkozunk,
+    hanem a column és colref bekezdésekben megadott azonosítókkal.
+
+
+  column:    
+
+    A column bekezdések határozzák meg az oszlopleképezéseket. 
+    A beekezdés első szava (column: után space-ekkel határolva) 
+    az oszlop programbeli azonosítója, ilyen nevű metódusai lesznek 
+    a rowentity objektumoknak. A második szó az oszlop Clipper típusa. 
+    Általában nem tudjuk (nem érdekes), hogy mi az oszlop valódi SQL 
+    adattípusa, csak annak kell teljesülnie, hogy az SQL adattípus 
+    leképezhető legyen a megadott Clipper típusra. 
+    
+    A további adatok sorrendje nem kötött. 
+
+    x=column_expression
+    
+        Ezzen a formával adható meg az oszlopkifejezés. 
+        Ha nincs megadva, akkor az oszlopnév lesz a kifejezés:
+            column: szamlaszam C24  ;ez a default: x=szamlaszam
+
+        Amikor az oszlopnév nem egyértelmű, megadjuk a minősített nevét:
+            column: szamlaszam C24 x=ugyfszl.szamlaszam
+
+        Megadhatunk kifejezést:
+            column: egyenleg C24 x=egyenleg+napitartoz+napikovet
+
+        Használhatunk SQL kifejezéseket:
+            column: devnem C3 x=lower(devnem)
+
+    l=label
+
+        Beállítja az oszlop label attribútumát
+        (táblafüggetlen megjelenítőprogramok számára).
+
+    t=tooltip
+
+        Beállítja az oszlop tooltip attribútumát.
+        (táblafüggetlen megjelenítőprogramok számára).
+
+    p=picture
+
+        Beállítja az oszlop picture attribútumát.
+        (táblafüggetlen megjelenítőprogramok számára).
+
+    d=default
+    
+        Beállítja az oszlop default érték attribútumát.
+        Csak akkor van hatása, ha a tableentityvel kreáljuk
+        a táblát (a not null-hoz hasonlóan).
+
+    nn  
+        nn jelentése not null.
+        A kliens interfészprogram nem tudja kikényszeríteni 
+        a not null teljesülését, viszont, ha mi hozzuk létre 
+        a táblát a tableenity create metódusával, akkor az oszlop 
+        not null minősítéssel kreálódik, és a szerver biztosítja 
+        a not null feltétel teljesülését.
+ 
+
+    Az oszlopdefiníció szóközökkel határolt egységekből áll.
+    Ha valamelyik paraméterérték szóközt tartalmaz, akkor
+    azt zárójelpárral lehet védeni.
+    
+    Ez rossz, mert a szóközök miatt szétesik több tagra:
+        x=egyenleg + napitartoz + napikovet
+        
+    Ezek a jó megoldások:
+        (x=egyenleg + napitartoz + napikovet)
+        x=egyenleg+napitartoz+napikovet
+        
+    Ez rossz, mert a szóközök miatt szétesik több tagra:
+        l=próba szerencse
+
+    Ez jó, mert a zárójel védi a belső szóközt:
+        (l=próba szerencse)
+        
+    Ha a string kiegyensúlyozatlan zárójelet tartalmaz,
+    akkor használhatunk a védelemre egy másik zárójelfajtát:
+        [d=próba ) szerencse]
+
+    A script többi részében az oszlopra mindenhol 
+    (from, where, order záradékban) az oszlop programbeli 
+    azonosítójával hivatkozunk. Pl. jelen esetben a joinban azt 
+    írjuk id_a==id_b, nem pedig, hogy konto.a.id==konto.b.id.
+    A nevek helyettesítését az interfész végzi.
+    
+  colref:    
+  
+    Lehetnek olyan oszlopok, amikre hivatkozni akarunk a joinban,
+    vagy a selectekben, de nem akarjuk lekérdezni az értékét.
+    Az ilyenek leírását lehet megadni a colref bekezdésekben,
+    ami ugyanolyan, mint a column, kivéve, hogy nem adunk
+    meg hozzá Clipper típust.
+    
+  primkey:    
+    
+    A primkey bekezdésben felsoroljuk azokat az oszlopokat,
+    amik megadásával egyértelműen azonosítható egy sor (rowentity).
+    A primary key oszlopokat célszerű not null-nak minősítve
+    létrehozni, és az egyediséget egy unique index kreálásával
+    kikényszeríteni. Ha a mi programunk kreálja a táblát, akkor
+    az interfész ezt megteszi.
+    
+  index:  
+    
+    Az index bekezdésnek nincs közvetlen szerepe a tableenity működésében, 
+    hanem hatására a tábla kreálásakor létrejön a megadott szegmensekkel 
+    egy index (amit az SQL szerver használ, ha akar).
+
+  select:
+      
+    A select bekezdések első szavából a tableentity metódusneve lesz. 
+    Ez a metódus egy olyan rowsetet ad, ami a join bekezdésben  megadott 
+    alaptábla  where feltételt kielégítő sorait tartalmazza az order 
+    szerinti rendezettségben. Ha nincs egy select sem, a tableentity 
+    objektumnak akkor is van egy automatikus "select"  metódusa, ami 
+    az alaptábla minden sorát szolgáltatja, illetve  egy "find" metódusa, 
+    ami egyetlen sort keres ki a primary key  alapján.
+    
+    
+    

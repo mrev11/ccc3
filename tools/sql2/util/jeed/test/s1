@@ -1,0 +1,4 @@
+#!/bin/bash
+#jtlisten 46000 jeed.exe entity.konto.szla_kamjut.tds -jtdebug
+jtlisten 46001 test2.exe
+

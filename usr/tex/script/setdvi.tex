@@ -1,0 +1,92 @@
+
+\documentclass[12pt]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[magyar]{babel}
+\usepackage[dvips]{graphicx}
+\usepackage{paralist}
+ 
+\pagestyle{plain} % felül üres, alul oldalszám
+%\pagestyle{empty} % felül üres, alul üres
+
+\setcounter{secnumdepth}{3}  
+\setlength{\parindent}{0cm}
+\addtolength{\parskip}{1.2ex}
+
+\newif\iftth
+
+\def\beforeany{}
+\def\afterany{}
+ 
+%\def\pagetitle#1#2#3{%cím,szerző,dátum
+%\centerline{\LARGE\bf #1}
+%\bigskip
+%\centerline{\textit{#2}}
+%\medskip
+%\centerline{#3}
+%\medskip
+%\tableofcontents
+%}
+
+\def\pagetitle#1#2#3{%cím,szerző,dátum
+\begin{center}
+{\LARGE\bf #1}
+\end{center}
+\bigskip
+\centerline{\textit{#2}}
+\medskip
+\centerline{#3}
+\medskip
+%\tableofcontents
+}
+
+%\def\href#1#2{{\underline{#2}}}
+%\def\href#1#2{{\texttt{#2}}}
+%\def\href#1#2{{{\tt #2}}}
+\def\href#1#2{{#2}}
+\def\bslash{$\backslash$}
+\def\bs{$\backslash$}
+\def\TtH{T\kern-.1667em\lower.5ex\hbox{T}\kern-.125emH}
+
+\def\tilde{\lower.7ex\hbox{\~{}}}
+\def\xverb#1{\mbox{\tt #1}}
+
+%\def\ComFirm{ComFirm BT.}
+%\def\ComFirmWeb{\xverb{www.inext.hu/\tilde comfirm}}
+%\def\ComFirmEmail{\xverb{comfirm@mail.inext.hu}}
+%\def\VermesEmail{\xverb{vermes@mail.inext.hu}}
+%\def\BacsaEmail{\xverb{bacsa@mail.inext.hu}}
+
+\def\ComFirm{ComFirm BT.}
+\def\ComFirmWeb{\xverb{http://www.comfirm.hu}}
+\def\BacsaEmail{\xverb{bacsa.istvan@comfirm.hu}}
+\def\CsiszarEmail{\xverb{csiszar.levente@comfirm.hu}}
+\def\HugiEmail{\xverb{hornigne@comfirm.hu}}
+\def\AnikoEmail{\xverb{nagy.aniko@comfirm.hu}}
+\def\PiglerEmail{\xverb{pigler.janos@comfirm.hu}}
+\def\EditEmail{\xverb{szabo.edit@comfirm.hu}}
+\def\ThamoEmail{\xverb{thamo.laszlo@comfirm.hu}}
+\def\VermesEmail{\xverb{vermes.matyas@comfirm.hu}}
+ 
+
+\def\gotoindex{}
+
+%-----------------------------------------------------------------------
+% #1=filename(=label) #2=caption  #3=options 
+%-----------------------------------------------------------------------
+\newcommand{\xfigure}[3]{
+\begin{figure}[htbp] 
+\begin{center}
+  \includegraphics[#3]{#1.ps} \caption{#2\label{#1}} 
+\end{center}
+\end{figure}}
+%-----------------------------------------------------------------------
+
+\def\latex{\LaTeX}
+\def\tex{\TeX}
+\def\tth{\TtH}
+
+\newcommand{\fejezet}[2]{\section{#1}{Szerző: \textit{#2}\par\nopagebreak}}
+ 
+

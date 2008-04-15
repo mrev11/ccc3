@@ -1,0 +1,144 @@
+//msk2say-2.0.00-unicode
+
+#define g_a             getlist[ 1]
+#define g_b             getlist[ 2]
+#define g_c             getlist[ 3]
+#define g_d             getlist[ 4]
+#define g_e             getlist[ 5]
+#define g_f             getlist[ 6]
+#define g_g             getlist[ 7]
+#define g_h             getlist[ 8]
+#define g_i             getlist[ 9]
+#define g_j             getlist[10]
+#define g_k             getlist[11]
+#define g_l             getlist[12]
+#define g_m             getlist[13]
+#define g_n             getlist[14]
+#define g_aa            getlist[15]
+#define g_bb            getlist[16]
+#define g_cc            getlist[17]
+#define g_dd            getlist[18]
+#define g_ee            getlist[19]
+#define g_ff            getlist[20]
+#define g_gg            getlist[21]
+#define g_hh            getlist[22]
+#define g_ii            getlist[23]
+#define g_jj            getlist[24]
+#define g_kk            getlist[25]
+#define g_ll            getlist[26]
+#define g_mm            getlist[27]
+#define g_nn            getlist[28]
+
+static function RADIO(bLoad,bRead,bStore)
+local a           :=space( 3)
+local aa          :=space(10)
+local b           :=space( 3)
+local bb          :=space(10)
+local c           :=space( 3)
+local cc          :=space(10)
+local d           :=space( 3)
+local dd          :=space(10)
+local e           :=space( 3)
+local ee          :=space(10)
+local f           :=space( 3)
+local ff          :=space(10)
+local g           :=space( 3)
+local gg          :=space(10)
+local h           :=space( 3)
+local hh          :=space(10)
+local i           :=space( 3)
+local ii          :=space(10)
+local j           :=space( 3)
+local jj          :=space(10)
+local k           :=space( 3)
+local kk          :=space(10)
+local l           :=space( 3)
+local ll          :=space(10)
+local m           :=space( 3)
+local mm          :=space(10)
+local n           :=space( 3)
+local nn          :=space(10)
+local msk:=mskCreate(  1, 20, 20, 45,bLoad,bRead,bStore)
+
+    mskSay(msk,  0,  0,"╔════════════════════════╗")
+    mskSay(msk,  1,  0,"║                        ║")
+    mskSay(msk,  2,  0,"║  ")
+    mskSay(msk,  2,  6," box1  ")
+    mskSay(msk,  2, 23,"  ║")
+    mskSay(msk,  3,  0,"║  ")
+    mskSay(msk,  3,  6," box2  ")
+    mskSay(msk,  3, 23,"  ║")
+    mskSay(msk,  4,  0,"║  ")
+    mskSay(msk,  4,  6," box3  ")
+    mskSay(msk,  4, 23,"  ║")
+    mskSay(msk,  5,  0,"║  ")
+    mskSay(msk,  5,  6," box4  ")
+    mskSay(msk,  5, 23,"  ║")
+    mskSay(msk,  6,  0,"║                        ║")
+    mskSay(msk,  7,  0,"║  ")
+    mskSay(msk,  7,  6," box5  ")
+    mskSay(msk,  7, 23,"  ║")
+    mskSay(msk,  8,  0,"║  ")
+    mskSay(msk,  8,  6," box6  ")
+    mskSay(msk,  8, 23,"  ║")
+    mskSay(msk,  9,  0,"║  ")
+    mskSay(msk,  9,  6," box7  ")
+    mskSay(msk,  9, 23,"  ║")
+    mskSay(msk, 10,  0,"║  ")
+    mskSay(msk, 10,  6," box8  ")
+    mskSay(msk, 10, 23,"  ║")
+    mskSay(msk, 11,  0,"║                        ║")
+    mskSay(msk, 12,  0,"║  ")
+    mskSay(msk, 12,  6," box1  ")
+    mskSay(msk, 12, 23,"  ║")
+    mskSay(msk, 13,  0,"║  ")
+    mskSay(msk, 13,  6," box2  ")
+    mskSay(msk, 13, 23,"  ║")
+    mskSay(msk, 14,  0,"║  ")
+    mskSay(msk, 14,  6," box3  ")
+    mskSay(msk, 14, 23,"  ║")
+    mskSay(msk, 15,  0,"║  ")
+    mskSay(msk, 15,  6," box4  ")
+    mskSay(msk, 15, 23,"  ║")
+    mskSay(msk, 16,  0,"║  ")
+    mskSay(msk, 16,  6," box5  ")
+    mskSay(msk, 16, 23,"  ║")
+    mskSay(msk, 17,  0,"║  ")
+    mskSay(msk, 17,  6," box6  ")
+    mskSay(msk, 17, 23,"  ║")
+    mskSay(msk, 18,  0,"║                        ║")
+    mskSay(msk, 19,  0,"╚════════════════════════╝")
+
+    mskRadio (msk,  2,  3,@a,"a")
+    mskRadio (msk,  3,  3,@b,"b")
+    mskRadio (msk,  4,  3,@c,"c")
+    mskRadio (msk,  5,  3,@d,"d")
+    mskRadio (msk,  7,  3,@e,"e")
+    mskRadio (msk,  8,  3,@f,"f")
+    mskRadio (msk,  9,  3,@g,"g")
+    mskRadio (msk, 10,  3,@h,"h")
+    mskCheck (msk, 12,  3,@i,"i")
+    mskCheck (msk, 13,  3,@j,"j")
+    mskCheck (msk, 14,  3,@k,"k")
+    mskCheck (msk, 15,  3,@l,"l")
+    mskCheck (msk, 16,  3,@m,"m")
+    mskCheck (msk, 17,  3,@n,"n")
+    mskList  (msk,  2, 13,@aa,"aa")
+    mskList  (msk,  3, 13,@bb,"bb")
+    mskGet   (msk,  4, 13,@cc,"cc")
+    mskGet   (msk,  5, 13,@dd,"dd")
+    mskGet   (msk,  7, 13,@ee,"ee")
+    mskGet   (msk,  8, 13,@ff,"ff")
+    mskGet   (msk,  9, 13,@gg,"gg")
+    mskGet   (msk, 10, 13,@hh,"hh")
+    mskGet   (msk, 12, 13,@ii,"ii")
+    mskGet   (msk, 13, 13,@jj,"jj")
+    mskGet   (msk, 14, 13,@kk,"kk")
+    mskGet   (msk, 15, 13,@ll,"ll")
+    mskGet   (msk, 16, 13,@mm,"mm")
+    mskGet   (msk, 17, 13,@nn,"nn")
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    return lastkey()

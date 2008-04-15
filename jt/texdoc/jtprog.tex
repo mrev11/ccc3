@@ -1,0 +1,330 @@
+
+\section{Szerver oldali programozás} 
+ 
+A CCC szerverprogramokban a jtlib könyvtár osztályait használjuk 
+a megjelenítéshez. A könyvtár objektumai a szerver oldalon reprezentálják 
+a terminál által működtetett dialogboxot, egyúttal támogatják a két fél 
+közti adatcserét. A teljes könyvtár szisztematikus leírására nincs időm, 
+ezért csak néhány kiragadott kérdést tárgyalok.
+
+\subsection{Messageloop}
+
+Vizsgáljuk meg részletesen a main1.prg-ben található message loop-ot:
+
+\begin{verbatim}
+function msgloop(dlg)
+
+local msg
+
+    dlg:show  
+ 
+    while( NIL!=(msg:=dlg:getmessage) ) 
+    
+        //az alábbi funkciókat lehetne
+        //a kontrollok blockjába is rakni
+        
+        if( msg=="x"  ) //x button
+            quit
+ 
+        elseif( msg=="ok"  ) //ok button
+            dlg:close
+
+        elseif( msg=="menuitem1"  ) 
+            ? "alert:", alert("Van, aki forrón szereti!",;
+                             {"Válasz-1","Válasz-22","Válasz-333"})
+
+        elseif( msg=="menuitem3"  ) 
+            msgloop( makedlg(dlg:caption+"@") )
+
+        elseif( msg=="search"  ) 
+
+            //név szerint kikeresi a kontrollt,
+            //kiolvassa a tartalmát, azzal végrehajtja a seek-et,
+            //és a kapott pozíció alatti lapot megjeleníti
+            //tabSeek(table,dlg:getcontrol(msg):varget)
+            //dlg:getcontrol("szamla"):pagecurrent 
+            
+            tabSeek(table,dlg:var:search:varget)
+            dlg:var:szamla:pagecurrent
+ 
+        end
+    end
+    return NIL
+\end{verbatim}
+
+Először a show metódus meghívásával megjelenítjük a dialogboxot,
+mint tudjuk, ez küld egy \verb!<jtdialog>! üzenetet a terminálnak. 
+Ezt követően várunk a terminál \verb!<action>! üzenetére a 
+\verb!dlg:getmessage! hívásban.
+
+Ha a getmessage metódus NIL-t ad, az azt jelenti,
+hogy a dialogbox ablakát becsukták, ez esetben a ciklus
+befejeződik. Ha getmessage valódi akciót jelent, 
+akkor annak a kontrollnak az azonosítójával tér vissza,
+ami az akciót indította.
+
+Ha az ,,x'' (Kilép) gombot nyomták meg, akkor kilépünk a programból.
+Lehetne itt vacakolni egy előzőleg elküldött \verb!<jtexit>!
+üzenetettel, de ez nem igazán fontos. A terminál magától
+is észre fogja venni, hogy a socket kapcsolat lezáródott, 
+és meg fogja tenni a szükséges lépéseket. 
+Ezért az egyszerű quit is megfelelő.
+
+Az ,,ok'' gomb megnyomására nem az egész program lép ki,
+csak bezárjuk a terminál legfelső ablakát. Persze, ha éppen csak
+egy ablakunk volt, akkor mégiscsak befejeződik a program.
+
+
+Ha kiválasztják a ,,menuitem1''-et, elindítunk egy alertet,
+ha a ,,menuitem3''-at, akkor pedig létrehozunk egy új dialogbox ablakot
+a korábbihoz hasonló tartalommal. 
+
+Az utolsó ág a legtanulságosabb. A ,,search'' annak a getmezőnek
+a neve, ami az alsó toolbárban van, és célja, hogy számlaszám
+szerint kereső mintát lehessen benne megadni.
+Általánosságban, ha egy getben entert ütnek, 
+akkor Jáva értelemben vett akció keletkezik. 
+Mivel a mi ,,search'' getmezőnk valid attribútuma true-ra van állítva,
+az akciót a terminál jelenti, ezért kapjuk meg a messaget. 
+A getmessage metódus visszatérése után a getbe gépelt kereső 
+minta már beíródott a getmezőt a szerver oldalon 
+reprezenátáló jtget objektumba, ahonnan a varget metódussal
+lehet azt megkapni. Van azonban egy probléma: hogyan szerezzük 
+meg magát a jtget objektumot? Ez a probléma a moduláris programozás
+eredményeképpen lép fel, ui. az a kód, amiben a jtget objektumot
+létrehoztuk, nagy valószínűséggel nem a messageloop-ot tartalmazó
+forrásmodulban van, vagy csak egy másik függvényben, mindenesetre
+az a tipikus, hogy nem látszik azon a helyen, ahol hivatkoznunk 
+kellene rá. Három lehetséges megoldás van:
+
+\begin{enumerate} 
+\item
+   Ha a search get egy fix pozícionálású dialogboxban volna,
+   és azt dialogboxot az msk2dlg kódgenerátorral készítettük
+   volna, akkor a dialogboxnak volna search nevű attribútuma,
+   ezen keresztül a getre így hivatkozhatnánk: dlg:search.
+\item
+   A második lehetőség (kikommentezve) látható a példában:
+   a dialogbox név alapján meg tudja keresni a kontrolljait.
+\item
+   Végül, a dialogbox \verb!varinst! metódusával létre lehet hozni
+   a dialogboxban egy beágyazott objektumot, 
+   aminek éppen a dialogbox kontrolljai az attribútumai.
+   Ennek a beágyazott objektumnak, mint attribútumnak a neve \verb!var!.
+   Tehát a getet így lehet elővenni: \verb!dlg:var:search!.
+\end{enumerate} 
+ 
+Miután így sikerült megkapnunk a kereső mintát, 
+végrehajtunk vele egy seek-et a browse-olt adatbázisban. 
+Ezután a browse-t, melynek neve ,,szamla'', utasítjuk az 
+aktuális lap frissítésére.
+
+
+Remélem, idáig jutva az olvasóban már felvetődött a kérdés: 
+mi van a többi akciót kiváltó kontrollal, amit egyáltalán 
+nem  látunk a messageloop-ban? 
+A messageloop-on kívül más lehetőség is van az akciók kezelésére.
+Ha egy kontrollnak \verb!actionblock!-ot adunk, akkor azt a
+getmessage automatikusan végrehajtja. Azt is megtehetjük, hogy
+kizárólagosan ez utóbbi módszert alkalmazzuk, ez esetben
+a messageloop belseje üres lesz (magára a ciklusra persze
+akkor is szükség van).
+
+
+
+ 
+
+\subsection{Szerkesztő sablonok (picture)}
+ 
+A Jáva terminálnak minden adatot szövegesen küldünk, 
+ezért a terminál csak akkor tudja megállapítani egy adat típusát, 
+ha azt explicite megmondjuk neki.
+A getek esetében a picture-ben kell kódolni a getben editálandó
+adat típusát. Ha a picture function stringjében szerepel
+az N, D, L betűk valamelyike, akkor a get szám, dátum, logikai
+típusú adatot fog editálni. Ha az előbbi betűk egyike sem
+szerepel a function stringben, akkor az adat karakteres.
+
+A get mindig akkora, amekkorára méretezzük. Ha a méreténél
+hosszabb adatot editálunk benne, akkor az külön intézkedés 
+nélkül vízszintesen scrollozódik.
+A getben editálható adat mindig olyan hosszú, mint amilyen
+a picture template stringjének hossza. Ha a template string
+rövidebb a getnél, akkor a get végére nem lehet rámenni
+a kurzorral. Ha a template string hosszabb, akkor a get scrolloz.
+
+Ha egy karakteres getnek nincs template stringje, akkor abba
+akármilyen hosszú adatot be lehet gépelni, és a get scrolloz.
+A többi típus mindig kap egy default template stringet:
+\begin{itemize}
+\item a számok "999999999999"-et,
+\item a dátumok "9999-99-99"-et,
+\item a logikai változók {"}A"-t, 
+\end{itemize}
+bár ez utóbbiakat a check boxok miatt nem fogjuk gyakran használni.
+
+Még egy bővítmény a régi Clipperhez képest: Ha a picture function
+stringjébe beírjuk az X karaktert, akkor az akció küldése előtt
+a terminál ellenőrzi a get kitöltését, és saját hatáskörben
+hibát jelez, ha az nem megfelelő (hogy ne keringjenek triviális
+hibaüzenetek a hálózaton). 
+Egyes gombokat kilépésre (escape) akarunk használni, 
+kellemetlen volna, ha ezeknél a terminál nem hajtaná végre az akciót, 
+hanem az X flaggel ellátott getek rossz kitöltésére figyelmeztetne.
+Ezért, ha egy kontroll escape attribútuma .t., akkor az a getek
+ellenőrzése nélkül jelenti az akciót.
+
+Végül, amire programozás során feltétlenül emlékezni kell: 
+A geteket {\bf mindig szereljük fel picture-rel}, 
+annak a function stringjében mindig {\bf jelöljük meg az adat típusát}. 
+Olyan zagyva dolgok, mint a régi Clipperben, 
+ahol a get automatikusan alkalmazkodik az adat típusához, itt nincsenek.
+ 
+
+\subsection{Browse (jtbrowse osztály)}
+
+A jtbrowse osztály egyik őse a (Clipper) TBrowse. 
+Ez azt jelenti, hogy egy jtbrowse objektumhoz ugyanúgy lehet
+oszlopokat adni a brwColumn() függvénnyel, mint ahogy azt
+korábban csináltuk. Ugyanezért a jtbrowse objektumot a brwShow()
+és brwLoop() függvényekkel lokálisan is meg lehet jeleníteni.
+
+A másik módja a jtbrowse objektum létrehozásának,
+hogy a konstruktorának átadunk egy már felszerelt TBrowse objektumot, 
+amit a jtbrwose objektum magába épít.
+
+\begin{quote}\small
+   Megjegyzem, hogy időközben elkészült a jtbrowsenak egy olyan 
+   változata, ami nem épít a régi TBrowse osztályra, ez a jttable. 
+   A Jáva terminálos programnak ui.\ nincs szüksége a TBrowse-ban 
+   levő rengeteg kódra, hiszen nem kell ténylegesen megjelenítenie
+   a browset, hanem csak a megjelenítéshez szükséges adatok 
+   tárolása, és a terminálhoz való eljuttatása a feladat. 
+   
+   Az új jttable osztálynak van két közvetlen leszármazottja
+   a jtbrowsearray és jtbrowsetable, amik fel vannak készítve
+   array-k, illetve táblaobjektumok browseolására (a felkészítés azt 
+   jelenti, hogy megfelelő kódblokkokkal vannak ellátva).
+   Ezeket egyszerűbben és tisztábban lehet használni,
+   mint az itt tárgyalt, először elkészült jtbrowset.
+
+   A továbbiakban elmondottak (a TBrowse örökség kivételével) 
+   mindegyik browse fajtára érvényesek. Azt is érdemes megjegyezni,
+   hogy a terminál nem tesz különbséget a különféle szerver oldali
+   browse fajták között, mert azok üzenetszinten egyformák, 
+   így mindegyiket ugyanaz a jttable  Jáva komponenes jeleníti meg.
+\end{quote}
+
+A jtbrowse osztályban van két új kódblock, ami a browseolás
+lapozós technikája miatt vált szükségessé:
+
+\begin{description}
+\item[saveposblock]
+Amikor a terminálban a felhasználó le-fel mozog a browse
+sávkurzorával, akkor a szerver ezt a mozgást nem követi
+az adatforrás pozicionálásával. Azért, hogy később azonosíthassuk,
+hogy a felhasználó melyik adatrekordot választotta ki,
+a browseolandó lap átküldése előtt minden sorhoz meg kell jegyezni
+az adatforrás pozícióját. Pl. tömb browsolásakor
+minden browse-beli sorhoz fel kell jegyeznünk egy tömbindexet.
+Ezt végzi a saveposblock. A saveposblock tehát egy (browse) 
+sorindexhez olyan adatot rendel,
+ami azonosítja az adatforrás sorát. \par
+
+\item[restposblock]
+Amikor a terminál egy akciót jelent, a feldolgozás során
+rá kell pozícionálnunk az adatforrás azon rekordjára, 
+ami a browseban ki van választva. Ehhez a restposblock-ot használjuk,
+ami a kiválasztott sorindex és a saveposblock által elmentett
+adat alapján pozícionálja az adatforrást. \par
+\end{description}
+ 
+A jtbrowse osztály olyan default saveposblock-kal 
+és restposblock-kal  inicializálódik, ami egy minimális
+működést lehetővé tesz: az adatforrás elejére lehet
+pozícionálni, és onnan előrefelé lehet lapozni.
+A jtbrowse-ban az alábbi metódusokkal navigálunk:
+
+\begin{description}
+\item[pageprev] 
+    Betölti az előző lapot, 
+    feltéve, hogy a browse előzőleg már pozícionálva volt.
+\item[pagenext]
+    Betölti a következő lapot, 
+    feltéve, hogy a browse előzőleg már pozícionálva volt.
+\item[pagefirst]
+    Betölti a legelső lapot,  
+    ezzel a browse pozícionált állapotba kerül.
+\item[pagelast]
+    Betölti a legutolsó lapot, 
+    ezzel a browse pozícionált állapotba kerül.
+\item[pagereload]
+    Újratölti az aktuális lapot, 
+    feltéve, hogy a browse előzőleg már  pozícionálva volt.
+\item[pagecurrent]
+    Az adatforrás aktuális pozíciójától kezdve betölt egy lapot,
+    ezzel a browse pozícionált állapotba kerül.
+\end{description}
+
+
+A dolgok közti összefüggések szemléltetése kedvéért 
+nézzük a pagereload kódját: 
+
+\begin{verbatim}
+static function _jtbrowse_pagereload(this) 
+
+local page:="",n,ok
+ 
+    ok:=this:restpos(1)  
+    this:row2pos:=array(this:maxrow) 
+
+    for n:=1 to this:maxrow
+  
+        if( n>1 )
+            ok:=(1==eval(this:skipblock,1))
+        end
+
+        if( !ok )
+            asize(this:row2pos,n-1)
+            exit
+        end
+
+        this:savepos(n)
+        page+=_jtbrowse_row_xmlout(this)
+    next
+
+    this:xmlpage(page)
+    return NIL
+\end{verbatim}
+
+Először az adatforrást a browse első sorának megfelelő helyre
+pozícionáljuk. Létrehozzuk a row2pos tömböt, amibe a savepos
+metódus majd bejegyezi a \{browse tömbindex, adatpozícó\}
+párokat. Ezután megpróbálunk végiglépkedni maxrow darab 
+adatsoron, miközben a sorok pozícióit feljegyezzük,
+és page-ben gyűjtjük a lap XML leírását. A savepos metódus
+természetesen a saveposblock kiértékelésével állapítja meg
+az adatforrás pozícióját. Végül az xmlpage metódus készít
+egy \verb!<jtmessage>! üzenetet, amiben elküldi az új lapot
+a terminálnak. A \verb!<jtmessage>! küldése így történik:
+\begin{verbatim}
+static function _jtbrowse_xmlpage(this,page)
+local x:='<jtmessage'
+    x+=ATTR("pid",alltrim(str(getpid())))
+    x+=ATTR("dialogid",this:dialogid)
+    x+='>'
+    x+="<control>"+this:name+"</control>"+EOL
+    x+="<setpage>"+EOL
+    x+=page
+    x+="</setpage>"+EOL
+    x+="</jtmessage>"
+    this:send(x)
+    return NIL
+\end{verbatim}
+ 
+A browse használatára a main1.prg demóprogramban lehet példát
+találni. A lapozásra szolgáló toolbár kódja a mkbrowsebar.prg
+programban van.
+
+
+ 

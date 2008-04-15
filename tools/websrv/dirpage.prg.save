@@ -1,0 +1,142 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#include "directry.ch"
+#include "websrv.ch"
+
+*****************************************************************************
+function dirpage(wd,request)
+
+local xdspec:=request:url
+local dspec:=bin2str(xdspec)
+local xname,name
+local par:=request:par
+local dirlst,n
+local html,href,attr
+local sort:="name",reverse:=.f.
+local width:=48 //hely a neveknek
+local charset
+    
+    if( par!=NIL )
+        par:=bin2str(par)
+    end
+
+    par:=split(par,"&")
+    for n:=1 to len(par)
+        if(par[n]=="sort=name")
+            sort:="name"
+            reverse:=.f.
+        elseif(par[n]=="sort=revname")
+            sort:="name"
+            reverse:=.t.
+        elseif(par[n]=="sort=age")
+            sort:="age"
+            reverse:=.f.
+        elseif(par[n]=="sort=revage")
+            sort:="age"
+            reverse:=.t.
+        elseif(par[n]=="sort=size")
+            sort:="size"
+            reverse:=.f.
+        elseif(par[n]=="sort=revsize")
+            sort:="size"
+            reverse:=.t.
+        else
+            sort:="name"
+            reverse:=.f.
+        end
+    next
+
+    dirlst:=directory(wd+xdspec+str2bin(fullmask()),"D",.t.) //binopt==.t.
+    asort(dirlst,,,{|x,y|dircomp(x,y,sort,reverse)})
+    
+    html:="<html><hdr>"+chr(10)
+    if( (charset:=dircharset())!=NIL )
+        html+=strtran('<META http-equiv="Content-Type" content="text/html; charset=CS">',"CS",charset)+chr(10)
+    end
+    html+="</hdr><body>"+chr(10)
+    html+="<h2>Index of "+dspec+"</h2><hr><pre>"+chr(10)
+    html+='<A href='+bin2ref(xdspec)+'?sort=name>Name</A>/'
+    html+='<A href='+bin2ref(xdspec)+'?sort=revname>Rev</A>'+space(width-4)
+    html+='<A href='+bin2ref(xdspec)+'?sort=age>Age</A>/'
+    html+='<A href='+bin2ref(xdspec)+'?sort=revage>Rev</A>'+space(17)
+    html+='<A href='+bin2ref(xdspec)+'?sort=size>Size</A>/'
+    html+='<A href='+bin2ref(xdspec)+'?sort=revsize>Rev</A>'+chr(10)+chr(10)
+ 
+    for n:=1 to len(dirlst)
+        if( attr!=NIL .and. "D"$attr .and. !"D"$dirlst[n][F_ATTR] )
+            html+=chr(10)
+        end
+        attr:=dirlst[n][F_ATTR]
+        xname:=dirlst[n][F_NAME] //binary
+        name:=bin2str(xname) //character
+
+        if( name=="." )
+            loop
+        elseif(name=="..")
+            href:=bin2ref(left(xdspec,rat(a"/",left(xdspec,len(xdspec)-1))))
+        elseif( isurlinlist(name,excluded_url()) )
+            loop //meg sem jeleníti
+        elseif( !request:wcon:secure .and. isurlinlist(name,secure_url()) )
+            if( request:wcon:redirport==NIL )
+                loop //meg sem jeleníti
+            else
+                href:=bin2ref(request:redir+xdspec+xname)+if("D"$attr,"/","")
+            end
+        else
+            href:=bin2ref(xdspec+xname)+if("D"$attr,"/","")
+        end
+
+        href:=strtran(href,"/./","/")
+        html+='<A href="'+href+'">'+name+'</A>'+space(width-len(name))
+        html+=if("D"$dirlst[n][F_ATTR]," D  ","    " ) 
+        html+=dtoc(dirlst[n][F_DATE])+"  "+dirlst[n][F_TIME]
+        html+=transform(dirlst[n][F_SIZE],"@R 9999,999,999")
+        html+=chr(10)
+    next
+
+    html+="</pre><hr>"
+    html+="<ADDRESS>"+copyright()+"</ADDRESS>"
+    html+="</body></html>"
+
+    return str2bin(html) //binary
+
+*****************************************************************************
+static function dircomp(x,y,sort,reverse)
+local flag
+    if( ISDIR(x) .and. !ISDIR(y) )
+        return .t.
+    elseif( !ISDIR(x) .and. ISDIR(y) )
+        return .f.
+    elseif( sort=="age" )
+        flag:=DTIME(x)>DTIME(y) .or. DTIME(x)==DTIME(y) .and. DNAME(x)<DNAME(y)
+    elseif( sort=="size" )
+        flag:=DSIZE(x)<DSIZE(y) .or. DSIZE(x)==DSIZE(y) .and. DNAME(x)<DNAME(y)
+    else
+        flag:=DNAME(x)<DNAME(y)
+    end
+    return if(reverse,!flag,flag)
+ 
+*****************************************************************************
+static function bin2ref(x)
+    return bin2str(websrv.hexencode(x))
+
+*****************************************************************************
+

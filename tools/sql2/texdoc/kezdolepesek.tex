@@ -1,0 +1,193 @@
+
+\section{Kezdőlépések}
+
+Itt arról lesz szó,  hogyan vegyük birtokba az SQL2 szoftvert.
+
+\subsubsection*{Adatbázis szoftver telepítés}
+
+Először is kell legyen tesztelésre alkalmas adatbázisszerverünk.
+A függelékekben le van írva, hogyan tudunk Linuxon Oracle-t
+és/vagy Postgrest installálni. Aki Windowson akar dolgozni, sajnos
+magára van utalva. Az Oracle-lel Windowson sem lehet gond,
+és a Postgres 8.0 már Windowson is megy. 
+
+Akinek már eleve van adatbázisszervere, az is nézze meg
+a függelékeket, ott ui. az is le van írva, hogy milyen
+tablespace-t, user-t, schema-t kell létrehozni az adatbázisban,
+hogy a demó programok működhessenek. A demó programok
+számítanak a \verb!konto! sémára, és elszállnak, ha az nem létezik.
+
+A CCC programokat fordító/futtató gépen szükségünk lesz 
+az adatbáziskezelők fejlesztő/kliens környezetére is.
+
+\begin{itemize}
+\item 
+    Oracle esetén, ha ugyanazon a gépen tesztelünk, mint amin
+    az adatbázisszerver  fut, akkor ,,magától'' van kliens
+    környezetünk is. Egyébként letöltjük és installáljuk az 
+    instant-client  szoftvert az Oracle-től. Az SQL2 csomag tartalmazza
+    azokat az include filéket, amik az Oracle interfész lefordításához 
+    kellenek, tehát speciális fejlesztői készletre nincs szükség.
+\item    
+    Postgres esetében az SQL2 lefordításához előzőleg installálni
+    kell a developer csomagot (a pontos név Linuxonként más és más),
+    amivel általában a kliens könyvtárak is rákerülnek a gépünkre.
+\end{itemize}
+
+\subsubsection*{CCC környezet}
+
+Szükségünk lesz a legfrisebb CCC környezetre, ez letölthető a webről
+\href{http://ok.comfirm.hu/ccc3/download}{http://ok.comfirm.hu/ccc3/download}.
+Mivel a Flex és Lemon nem olyan régen tartozik csak bele a CCC környezetbe,
+külön  megemlítem, hogy a CCC-vel telepíteni kell 
+a \href{http://ok.comfirm.hu/ccc3/download}{Flexet}
+és a \href{http://ok.comfirm.hu/ccc3/download}{Lemont}.
+
+\subsubsection*{Fordítás}
+
+Le kell fordítani az egész SQL2 projektet. A fenti előkészületek
+után Linuxon ez nem lehet probléma, az sql2 directoryban elindítjuk
+
+\begin{verbatim}
+    mkall.b
+\end{verbatim}
+
+Ez mindenhova benéz, és elindítja a fordítást végző Build
+scripteket (Linuxon). Aki Windowson dolgozik, 
+mkall.b helyett az mkall.bat scriptet indítsa el.
+% megoldódott
+%
+%\begin{quote}\small
+%  Sajnos Windowson a Postgres interfész csak a MinGW (GCC)
+%  fordítóval működik. A CCC másik két támogatott fordítójával
+%  (Microsoft, Borland) készült programok elszállnak.
+%  Például a sequence léptetését végző demó program BCC-vel fordítva
+%  minden harmadik léptetés után determinisztikusan elszáll.
+%  Ugyanez a program MSC-vel fordítva minden hatodik (!)
+%  léptetés után elszáll.
+%  Ezekkel a hibákkal jelenleg nem tudok mit kezdeni.
+%\end{quote}
+Meggyőződünk arról, hogy a fordítás hibamentes. Csak a
+Postgres developer csomag installálásával lehet gond
+\begin{itemize}
+\item 
+    ha elfelejtettük installálni,
+\item 
+    ha az include filék egy postgresql könyvtárba kerülnek,
+    miközben az SQL2 szoftver egy pgsql alkönyvtárban keresi őket,
+\item 
+    ha az include filék egy pgsql könyvtárba kerülnek,
+    miközben az SQL2 szoftver egy postgresql alkönyvtárban keresi őket.
+\end{itemize}
+Az első esetben pótoljuk az installációt. A másik két esetben
+csinálunk egy symlinket, ami a másik néven is elérhetővé teszi
+az include-okat tartalmazó directoryt.
+
+\subsubsection*{Tesztadatok}
+
+Az \verb!sql2/test/testdata! directoryban van néhány bt tábla,
+amik tesztadatokat tartalmaznak. A tview programmal meg tudjuk
+nézni ezek tartalmát.
+
+Az \verb!sql2/test/testdata_import! directoryban megtaláljuk
+a btimport.exe programot. Ez az előbbi bt táblákat importálja
+az SQL adatbázis szerverbe:
+\begin{itemize}
+\item
+    Az \verb!so! script úgy indítja btimport-ot, 
+    hogy az egy Oracle adatbázisba tölti a bt táblákat.
+\item
+    Az \verb!sp! script úgy indítja btimport-ot, 
+    hogy az egy Postgres adatbázisba tölti a bt táblákat.
+\end{itemize}
+Ha esetleg valami nem működik első kipróbálásra,
+akkor szükségesnek mutatkozhat az so, sp, import.b scriptek 
+{\em elolvasása}. Az áttöltött adatokat szemügyre vesszük
+az sqlplus (Oracle), és psql (Postgres) kliens programokból is.
+
+
+\subsubsection*{Példaprogramok}
+
+Ha már vannak tesztadataink, akkor átfáradunk az
+\verb!sql2/test/basicdemo! directoryba. Itt azt fogjuk
+tapasztalni, hogy a demóprogramok már mind le vannak 
+fordulva, méghozzá két verzióban:
+\begin{itemize}
+\item 
+    Az \verb!exe-ora! directoryban az Oracle-lel működő
+    programok vannak.
+\item 
+    Az \verb!exe-pg! directoryban az Postgreszel működő
+    programok vannak.
+\end{itemize}
+Ez a párhuzamosság érzékeltetni próbálja, hogy ugyanabból
+a forrásból kétféle program készül, amik ugyanazt ugyanúgy 
+csinálják, csak az egyik Oracle-en, a másik Potgresen.\footnote{
+Azt is megtehetjük, hogy ugyanabba a programba egyszerre belinkeljük 
+az Oracle és Postgres interfészkönyvtárat. Ekkor csak egy programváltozatunk
+lesz, aminek parancssori paraméterrel, vagy környezeti változóval mondjuk
+meg, hogy melyik adatbázist használja. Az is lehet, hogy egy alkalmazás
+több adatbázist használ egyszerre, Oracle-t és Postgrest vegyesen.}  
+Vannak programok (programcsoportok), amikhez találunk
+\verb!s-*! alakú indítóscriptet, más programokat közvetlenül 
+indíthatunk.
+
+\begin{description}
+\item[binarydata.exe]
+    Teszteli, hogy a memó mezők képesek-e bináris adatok tárolására.
+\item[connect.exe]
+    Teszteli a bejelentkezést, kiírja a szerver változatszámát.
+\item[memleak.exe]
+    Teszteli, hogy a programból szivárog-e a memória. 
+    Az Oracle kliens bizonyos változatai ebből a szempontból hibásak.
+\item[s-deadlock-detect]
+    Demonstrálja a deadlock kezelést.
+\item[sequence0.exe]
+    Létrehoz egy sequence objektumot.
+\item[sequence.exe]
+    Növeli az előző sequence objektumot.
+\item[s-query-sqlquery]
+    Lekérdezés sqlquery objektummal.
+\item[s-query-tableentity]
+    Lekérdezés tableentity objektummal.
+\item[s-te-demo]
+    Különféle lekérdezések és adatmódosítások tableentity objektummal.
+\item[s-tran-autolock]
+    Demonstrálja a konkurrencia kezelést automatikus lockolással.
+\item[s-tran-manuallock]
+    Demonstrálja a konkurrencia kezelést explicit lockolással.
+\end{description}
+
+Hangsúlyozom, hogy {\em a példaprogramok a dokumentáció
+lényeges részét képezik}. Sok munkám van abban, hogy a példákból
+és a közéjük írt megjegyzésekből megfelelően domborodjon a mondanivaló. 
+A példaprogramokat tehát el kell olvasni, és ki kell próbálni, 
+miközben a kódot összevetjük az eredményekkel. Sajnos ez időt 
+és fáradságot igényel.
+
+Felhívom a figyelmet az SQLDEBUG környezeti változóra.
+Ha ez be van állítva,
+\begin{verbatim}
+    export SQLDEBUG=on
+\end{verbatim}
+akkor az SQL2 interfész listázza az adatbázisszervernek küldött
+SQL utasításokat. Ezek vizsgálata rendkívül sokat segít a program
+működésének megértésében, a hibák kijavításában.
+
+\subsubsection*{Jáva terminálos browse}
+
+A \verb!sql2/test/entitybrowse! directoryban egy olyan demó van,
+ami Jáva terminálban browse-ol egy tableentity objektumot.
+A program nem bonyolult, de csak akkor fog lefordulni,
+ha a CCC környezetben van Jáva terminál támogatás,
+ezért kezdetben kihagyjuk ennek a projektnek a fordítását.
+
+
+
+ 
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+find *.tex | while read NAME; do
+    ./t $NAME
+done
+    

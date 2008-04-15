@@ -1,0 +1,171 @@
+
+\section{Áttekintés}
+
+Az SQL2 könyvtár szabványosított adatbáziskezelő API-t nyújt  
+CCC programok számára. A ,,szabványosított'' jelző azt jelenti, 
+hogy ugyanaz a program ugyanazt a működést produkálja több 
+adatbáziskezelővel is. Jelenleg az Oracle és PostgreSQL 
+adatbáziskezelőket támogatjuk. 
+Koncepciónk szerint az Oracle-t azoknak az ügyfeleknek szánjuk, 
+akik nem engedhetnek meg maguknak  alacsony költségvetésű 
+projekteket, a Postgrest pedig azoknak, akik bíznak a szabad szoftverekben. 
+Természetesen ilyen típusú interfész készíthető volna más adatbáziskezelőkhöz 
+is (DB2, Interbase, stb.).
+
+A jelen dokumentáció programozóknak szól, számukra
+leggyorsabban példaprogramokkal lehet megvilágítani
+a lényeget. Lássuk tehát a lehetőségeket:
+Az alkalmazások egyidejűleg belinkelhetik az Oracle és Postgres
+könyvtárat. A két könyvtár párhuzamosan ugyanolyan függvényneveket 
+definiál, ámde különböző  névterekben, ezért a nevek nem ütköznek.
+
+\begin{verbatim}
+    con1:=sql2.oracle.sqlconnectionNew()  //sql2.oracle névtér
+    con2:=sql2.postgres.sqlconnectionNew() //sql2.postgres névtér
+\end{verbatim}
+
+
+Most van két adatbáziskapcsolatunk, egy Oracle és 
+egy  Postgres. Hogy az \verb!sqlconnectionNew()! függvény
+pontosan milyen felhasználóként, hova jelentkezik be,
+az pillanatnyilag nem lényeges.
+
+Tételezzük fel, 
+hogy van egy bankszámlákat tartalmazó táblánk,
+aminek van egy számlaszám és egy egyenleg oszlopa.
+Lekérdezzük ezeket az sqlquery objektummal:
+
+\begin{verbatim}
+    q1:=con1:sqlqueryNew("select * from szamla") // Oracle lekérdezés
+    ...
+    q1:close
+
+    q2:=con2:sqlqueryNew("select * from szamla") // Postgres lekérdezés
+    while( q2:next )
+        ? q2:getchar("szamlaszam"), q2:getnumber("egyenleg")
+    end
+    q2:close
+\end{verbatim}
+
+Ugyanaz a lekérdezés tableentity objektummal:
+
+\begin{verbatim}
+    t1:=szamla.tableEntityNew(con1) // Oracle tábla
+    ...
+    t2:=szamla.tableEntityNew(con2) // Postgres tábla
+    rowset:=t2:select
+    while( (rowentity:=rowset:next)!=NIL )
+        ? rowentity:szamlaszam, rowentity:egyenleg 
+    end
+\end{verbatim}
+    
+Új adatrekord létrehozása tableentity objektummal:
+
+\begin{verbatim}
+    rowentity:=t2:instance
+    rowentity:szamlaszam:="111111112222222233333333"
+    rowentity:egyenleg:=0
+    rowentity:insert
+\end{verbatim}
+
+Módosítás tableentity objektummal:
+
+\begin{verbatim}
+    rowentity:=t2:find("111111112222222233333333")
+    if( rowentity!=NIL )
+        rowentity:egyenleg+=100
+        rowentity:update
+    end
+\end{verbatim}
+
+A példában szereplő \verb!szamla.tableEntityNew()!
+függvény adatbázisfüggetlen, azaz ilyen objektumgyártó 
+függvényekből bináris könyvtárat lehet létrehozni, ami
+minden adatbáziskezelővel működik. Az objektumgyártó 
+függvények kódját programmal generáljuk a táblák
+adatbázisfüggetlen XML leírásából.
+
+Mint látjuk az SQL2 interfész két legfontosabb eleme az sqlquery és
+tableentity osztályok. Az sqlquery körülbelül azt tudja, mint ami 
+a JDBC 1.0 specifikációban van. A fejlettebb specifikációkkal 
+kapcsolatban a {\em J2EE Útikalauz Java Programozóknak\/}
+(szerk. Nyékyné Gaizler Judit, ELTE TTK Hallgatói Alapítvány, Budapest, 2002) 
+könyv 475. oldalán olvashatjuk: 
+\begin{quote}\it
+    ,,JDBC 2.1 alap API: Az előző verzióhoz képest már tetszőleges
+    sorrendben lehet feldolgozni az eredménytáblákat, melyeket
+    már nem csak olvasni, hanem módosítani is lehet \ldots''
+\end{quote}
+Ehhez képest az Oracle szilárdan kitart amellett, 
+hogy a fetch-ek pontosan egyszer és csakis 
+előre haladhatnak végig az eredménysorokon. 
+A realitáshoz alkalmazkodva az SQL2 interfészben
+csak a next metódust implementáltuk sqlquery-kben és rowset-ekben 
+való pozícionálásra.
+
+Az előbbi könyv 479. oldalán a JDBC továbbfejlesztési
+terveiről olvashatjuk:
+\begin{quote}\it
+    ,,Relációs adattáblák és Java osztályok direkt megfeleltetése:
+    Egy adattábla minden sora a táblához rendelt osztály egy
+    objektumpéldánya lesz, a tábla oszlopainak pedig a sorobjektumok
+    adatmezői felelnek meg. A sorobjektumokkal történő bármilyen manipuláció
+    esetén az azt megvalósító SQL utasítások a háttérben automatikusan
+    végrehajtódnak. Ilyen típusú API például a Java Data Objects  (JDO)
+    specifikáció.''
+\end{quote}
+A tableentity objektumok is éppen így működnek, csak Jáva helyett
+CCC osztályokkal. A connection objektumból kapjuk a tableentity-ket,
+ezek select metódusaival a rowset-eket, ezekből a next metódussal a 
+rowentity-ket (sorokat), amiknek minden oszlophoz van egy metódusuk,
+amivel kiolvasható, vagy átírható az oszlop értéke.
+Ezzel nagyjából pozícionálni tudjuk, hogy mit is nyújt az SQL2 interfész.
+
+Megemlítem még, hogy a CCC korszerű rétegeivel dolgozunk:
+névtereket használunk, a felépítés teljesen objektumorientált.
+
+
+%\subsubsection*{Fejlesztési tervek}
+%
+%Különbség van az adatbáziskezelők között abban,
+%hogy melyik, mikor abortálja a tranzakciókat, 
+%ennek a kiegyenlítése létfontosságú.
+%A kiegyenlítés csak az lehet, 
+%hogy az adatbáziskezelő alrendszer által jelzett hiba 
+%esetén automatikusan rollback-eljük az egész tranzakciót.
+%Ez a jövőben bele fog kerülni a kódba.
+%
+%Egyik adatbáziskezelő sem támogat egymásba skatulyázott
+%tranzakciókat. Egy valódi alkalmazás valódi tranzakciója
+%azonban meghív olyan résztranzakciókat, amikben
+%szintén lehet commit, vagy elkapott kivételt követő rollback,
+%méghozzá a külső hívó kód tudta nélkül.
+%Ugyancsak probléma, hogy a programok több adatbáziskapcsolatra
+%kiterjedő tranzakciókat végeznek (technikailag 
+%minden adatbáziskapcsolat külön tranzakció). 
+%Követelmény, hogy az alkalmazások átláthatóan biztosítani tudják
+%a tranzakciók összehangolt commit-ját, rollback-jét. 
+%Ehhez szükség lesz egy tranzakciós alrendszerre.
+
+
+\subsubsection*{Verzió}
+
+Az SQL2-1.1.x specifikáció a CCC3 környezetre épül.
+Az implementáció alkalmazkodik az UTF-8/unicode kódolás követelményeihez.  
+
+Változások történtek a tds-ben. Az oszlodefiníciókban 
+az oszlop valódi tábláját és nevét nem a \verb!t=tabid! és \verb!c=colid!
+opciókkal adjuk meg, hanem az új \verb!x=column_expression! opcióval.
+Ez szükség esetén az \verb!x=tab_alias.real_column_name! formával
+pótolja a korábbi \verb!tabid! és \verb!colid! opciókat, de sokkal
+használhatóbb, mivel általánosabb SQL kifejezést is tartalmazhat.
+
+Újabb attribútumok is megadhatók az oszlopdefiníciókban:
+\begin{itemize}
+    \item{\tt d=default\_value}
+    \item{\tt t=tooltip}
+    \item{\tt l=label}
+    \item{\tt p=picture}
+\end{itemize}
+
+utóbbi három a táblafüggetlen megjelenítőprogramok érdekében.

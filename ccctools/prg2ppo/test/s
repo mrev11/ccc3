@@ -1,0 +1,4 @@
+#!/bin/bash
+prg2ppo0.exe proba.prg -oproba.ppo0 @prg2ppo.opt -i/$CCCDIR/usr/include
+prg2ppo.exe  proba.prg -oproba.ppox @prg2ppo.opt -i/$CCCDIR/usr/include
+diff proba.ppo0 proba.ppox  | less

@@ -1,0 +1,2 @@
+#!/bin/bash
+draw-01-obj.exe >log

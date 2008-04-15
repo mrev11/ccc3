@@ -1,0 +1,120 @@
+
+#define VERZIO "3.0.03"
+
+#ifndef VERZIO
+
+2007.11.15 -- 3.0.03
+   Filé létezés vizsgálatoknál lower.
+
+2006.12.17 -- 3.0.02
+   Angolra fordítva.
+
+2006.10.18 -- 3.0.01
+   Figyelmeztetés (alert), ha oszlop átnevezés/törlés miatt 
+   egy sorrend definíció nemlétező oszlopra hivatkozik.
+   Korábban ilyenkor elszállt.
+
+2006.04.21 -- 3.0.00
+   Portolás unicode-ra.
+   Megjegyzés: A program nincs az elejétől a végéig átvizsgálva,
+   sem tesztelve (ahogy lennie kellene), hanem ahol a próbálgatás
+   kihozta a string<-->binary konfliktusokat, ott javítottam.
+   Egy csomó régi hiba kiderült, aminek oka hogy a table objektumok
+   (régebben) áttértek kisbetűs filéspecifikációkra.
+
+2000.08.11 -- 2.0.08
+   A chr(26)-os kiegészítés csak CCC-ben kell, ui. a CCC-s 
+   memowrit (inkompatibilis módon) nem tesz a filék végére
+   EOF-ot. Kérdés, hogy kell-e javítani memowrit-et, mert
+   más szempontokból kellemetlen a chr(26)-os kiegészítés.
+
+2000.07.15 -- 2.0.07
+   A super?? filék törlése javítva.
+   A dirsep() konverzió miatt csak a - kapcsolók működnek (-s-,...)
+
+2000.01.26 -- 2.0.06
+   Merge-elés javítva.
+
+
+2000.01.14 -- 2.0.05
+   Programkimenetek végére chr(26) (kompatibilitás).
+   Változatszámok kerekítése javítva (-0 helyett 0).
+
+   "\" helyett dirsep(), "\" és "/" egyformán kezelve,
+   (azonban tabPath(...+"\")-ben nem lehet dirsep()-et
+   írni, mert akkor az NT-s és Linux-os kimenet mindig 
+   eltérő lenne.
+
+1999.07.27 -- 2.0.04
+   minden kimeneti filé kisbetűs
+   make és response filéket nem kell készíteni (build)
+
+1999.02.09 -- 2.0.03
+   Az /s kapcsolóval szabályozható, hogy generálódjon-e
+   tabSuperList(), tabNameList(), tabByname(), ezek ui. a lokális 
+   datadictekben feleslegesek, viszont zavarhatják a linkelést.
+   
+   Lokális dd-library helyett: wmkgen -d.;dd
+
+1998.11.26 -- 2.0.02
+   $(rlsdir) helyett $(%cccdir)\usr\wmkrules
+
+1998.11.21 -- 2.0.01
+   Kisebb javítások
+
+1998.11.20 -- 2.0.00
+
+   2-es verzióra áttérés, az egész program újraírva, úgy,
+   hogy maga is tábla objektumos legyen, DBM formátumú memóval
+   
+   1. dd\ddict.dbf a saját maga leírását tartalmazza!
+   2. a program ki van színezve (fehér, kék, kékeszöld)
+   3. eddig cl-db, 32-dcc, 32-dcg változatokat teszteltem
+   4. megváltozott az index: TABLE+VERSION+INDFILE
+   5. az indexfilék kötelezően az adatfilé nevéből képződnek
+   6. az aláhúzásos objektumgeneráló függvény a default
+   7. a verziószámozás 1000-től csökkenő (a browse 0,1...-et mutat)
+   
+   
+   Az új DDICT CCC kompatibilis, DBM memókban tartja a struktúrákat.
+   A DDICT 1.x.xx-ről konverzióval lehet átállni DDICT 2.x.xx-re.
+   A konverzió két dolog miatt is szükséges: a) a DBT filéből DBM-et
+   kell csinálni, b) a VERSION mező-nek olyannak kell lennie, hogy
+   a legújabb verzió legyen legelől, ezért VERSION 1000-től indulva
+   csökken, a browse azonban ezt 0,1,... értékekre konvertálva
+   mutatja. Ez azért ilyen körülményes, mert a tábla objektum
+   nem ismeri a csökkenő indexeket.
+   
+   A konvertálás lépései:
+   
+   1. A konvertálandó datadict-re le kell futtatni ddload-ot
+      (a forrása mellékelve).
+      
+      ddload <régi_datadict_neve> 
+      
+   2. Erre elkészül DDX.DBF és DDX.DBM, amiben a version
+      számozás tartalmazza a szükséges transzformációt.
+
+   3. Az így kapott adatszótárt át lehet nevezni, 
+      vagy importálni lehet az új programmal létrehozott üres 
+      adatszótárba.
+      
+
+   Megjegyzések: 
+   
+   Névütközés miatt ddload nem tudja rögtön az új adatszótárt 
+   előállítani.
+      
+   Az konverzióval kapott DBF/DBM adatszótár nyilván 
+   automatikusan konvertálódna Btrieve-re vagy DATIDX-re, 
+   ha a megfelelő platformra linkelt DDICT-et elindítanánk, 
+   de eddig ezt nem próbáltam.
+      
+   A DDICT továbbra sem tartalmaz adatbázisépítő eszközöket,
+   de léteznek ilyenek DATIDX és Btrieve platformon (xstru, xview).
+         
+   Vigyázni kell, hogy DD-ben az eredmény filéket csak akkor
+   töröljük le, ha van működőképes DDICT-ünk, különben tyúk-tojás 
+   probléma keletkezik.
+      
+#endif

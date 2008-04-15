@@ -1,0 +1,3 @@
+-lpthread
+-ldl
+-rdynamic

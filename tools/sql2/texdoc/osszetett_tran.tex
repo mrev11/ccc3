@@ -1,0 +1,99 @@
+
+\section{Összetett tranzakciók}
+
+Nézzük ezt a (pszeudo)programot:
+
+\begin{verbatim}
+    function konyveles1()
+        begin
+            könyvelgetünk különféle számlákra
+            if( sikertelen ) 
+                break(konyverrorNew())
+            end
+            tovább könyvelgetünk különféle számlákra
+            if( sikertelen ) 
+                break(konyverrorNew())
+            end
+            //minden rendben
+            commit
+        recover e <konyverror>
+            //a hibát elkapjuk
+            rollback
+        end
+\end{verbatim}
+Minden príma, szépen lekezeltük a lehetséges hibákat.
+Tegyük fel, hogy van egy hasonló stílusban megírt 
+\verb!konyveles2()! függvényünk is, és a kétféle tranzakció
+kombinálásával létre akarunk hozni egy harmadik, összetett 
+(még összetettebb) tranzakciót.
+\begin{verbatim}
+    function osszetett_konyveles() //HIBÁS!
+        begin
+            konyveles1()
+            konyveles2()
+            commit
+        recover e <konyverror>
+            rollback
+        end
+\end{verbatim}
+Rá kell jönnünk, hogy az összetett tranzakció fenti implementációja
+rossz, méghozzá a résztranzakciókban levő commitok miatt.
+Át kell szerveznünk a programot. Először megírjuk az 
+\verb!alg_konyveles1()! függvényt, ami a könyvelés algoritmusát
+(az üzleti logikát) tartalmazza.
+\begin{verbatim}
+    function alg_konyveles1()
+        könyvelgetünk különféle számlákra
+        if( sikertelen ) 
+            break(konyverrorNew())
+        end
+        tovább könyvelgetünk különféle számlákra
+        if( sikertelen ) 
+            break(konyverrorNew())
+        end
+        //minden rendben (mégsem commitolunk)
+\end{verbatim}
+Azután az algoritmust tranzakciós keretek közé tesszük:
+\begin{verbatim}
+    function trn_konyveles1()
+        begin
+            alg_konyveles1()
+            commit
+        recover e <konyverror>
+            rollback
+        end
+\end{verbatim}
+Azaz szétválasztottuk az algoritmust és a tranzakciókezelést.
+Ha ezt a módszert alkalmazzuk az összetett könyvelésünk
+leprogramozására, a következő eredményhez jutunk.
+\begin{verbatim}
+    function alg_osszetett_konyveles()
+        alg_konyveles1()
+        alg_konyveles2()
+
+    function trn_osszetett_konyveles() 
+        begin
+            alg_osszetett_konyveles()
+            commit
+        recover e <konyverror>
+            rollback
+        end
+\end{verbatim}
+Tehát minden tranzakciónak külön meg kell írni az
+algoritmikus részét és a tranzakciókezelő keretét.
+A tranzakciókat végrehajtó programok nyilván a
+\verb!trn_*! függvényeket fogják hívni.
+Valaki talán azt gondolja, hogy ez plusz munkával jár,
+valójában ennek éppen az ellenkezője igaz, így ugyanis újra 
+felhasználható kódot kapunk.
+
+ 
+Azt is érdemes megfontolni, hogy az előző példákban
+a commit/rollback helyén nem feltétlenül csak egyetlen adatbáziskapcsolatra
+kiadott commit/rollback parancs áll. Az alkalmazás tudja, hogy
+az általa aktivizált tranzakció milyen adatbázisokat használ,
+és {\em minden\/} adatbáziskapcsolatra kiadja a commit/rollback parancsot.
+Ezzel a technikával áttekinthető módon lehet kezelni
+a több adatbázisra kiterjedő elosztott tranzakciókat.
+
+

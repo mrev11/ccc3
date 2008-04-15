@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PORT=46000
+APPL=test-changeitem.py
+
+# 1) egyszerû listener ssl nélkül
+# jtlisten.exe $PORT $APPL -jtdebug
+
+
+# 2) egyszerû listener ssl forwardinggal (kell hozzá a server.pem filé)
+# jtlisten.exe $PORT sslforward.exe $APPL -jtdebug
+
+
+# 3) önálló program indítás 
+ $APPL -jtauto -jtdebug
+
+
+# 4) sokszori indítás jtstart-tal
+# elôször jtstart.exe-t indítjuk,
+# ebben csak egy gomb van, ami indítja a paraméterként kapott programot,
+# ennek az az értelme, hogy nem kell várni a Jáva betöltôdésére,
+# miközben a tesztelt alkalmazást fordítgatjuk
+# jtstart.exe "$APPL"  &
+ 

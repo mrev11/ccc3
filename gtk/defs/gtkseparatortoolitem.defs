@@ -1,0 +1,28 @@
+
+
+(define-function gtk_separator_tool_item_get_type
+  (in-module GtkSeparatorToolItem)
+  (c-name "gtk_separator_tool_item_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_separator_tool_item_new
+  (c-name "gtk_separator_tool_item_new")
+  (is-constructor-of GtkSeparatorToolItem)
+  (return-type "GtkWidget*")
+)
+
+(define-method "set_draw"
+    (of-object GtkSeparatorToolItem)
+    (c-name  gtk_separator_tool_item_set_draw)
+    (parameters
+        '("gboolean" draw)
+    )
+)
+
+(define-method "get_draw"
+    (of-object GtkSeparatorToolItem)
+    (c-name  gtk_separator_tool_item_get_draw)
+    (return-type "gboolean")
+)
+

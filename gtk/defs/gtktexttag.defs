@@ -1,0 +1,43 @@
+
+(define-function gtk_text_tag_get_type
+  (in-module "GtkTextTag")
+  (c-name "gtk_text_tag_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_text_tag_new
+  (c-name "gtk_text_tag_new")
+  (is-constructor-of GtkTextTag)
+  (return-type "GtkTextTag*")
+  (parameters
+    '("const-gchar*" "name" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method get_priority
+  (of-object "GtkTextTag")
+  (c-name "gtk_text_tag_get_priority")
+  (return-type "gint")
+)
+
+(define-method set_priority
+  (of-object "GtkTextTag")
+  (c-name "gtk_text_tag_set_priority")
+  (return-type "none")
+  (parameters
+    '("gint" "priority")
+  )
+)
+
+(define-method event
+  (of-object "GtkTextTag")
+  (c-name "gtk_text_tag_event")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "event_object")
+    '("GdkEvent*" "event")
+    '("const-GtkTextIter*" "iter")
+  )
+)
+
+

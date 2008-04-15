@@ -1,0 +1,716 @@
+
+\section{Osztály referencia}
+
+\subsection{Sqlconnection osztály}
+
+Aszerint, hogy melyik névtérből hívjuk meg az sqlconnectionNew()
+objektumgyártó függvényt, Oracle vagy Postgres adatbáziskapcsolathoz
+jutunk:
+\begin{verbatim}
+    con_ora:=sql2.oracle.sqlconnectionNew(connect_string)
+    con_pg:=sql2.postgres.sqlconnectionNew(connect_string)
+\end{verbatim}
+A \verb!connect_string! paraméter opcionális. Oracle esetében
+a connect string tartalma a megszokott \verb!user@dbsid/password! alakú, 
+ahogy azt pl. az sqlplus is várja. Postgres esetén a connect string
+tartalma pontosan az lehet, mint amit a \verb!PQconnectdb! függvény
+(a libpq klienskönyvtárból) elfogad. Ha a connect string
+nincs egyáltalán megadva, akkor a program az \verb!ORACLE_CONNECT!, illetve
+\verb!POSTGRES_CONNECT! környezeti változók tartalmát használja
+bejelentkezéshez, például:
+\begin{verbatim}
+    export ORACLE_CONNECT=scott@database/tiger
+    export POSTGRES_CONNECT="host=HH dbname=DD user=UU password=PP"
+\end{verbatim}
+A sqlconnection objektum létrehozásakor azonnal megtörténik
+a bejelentkezés. Az attribútum/metódusok:
+
+\begin{description}
+\item[driver]
+    Osztályváltozó, ami a konstruktor névterét tartalmazza.
+\item[duplicate]
+    Létrehoz egy másik sqlconnection objektumot, 
+    amiben a connect infó ugyanaz, mint az elsőben, 
+    tehát ugyanoda is kapcsolódik.
+    Visszatérés: az új \verb!sqlconnection! objektum.
+\item[sqlcommit]
+    Végrehajt egy commit utasítást, egyúttal
+    automatikusan indítja a következő tranzakciót.
+    Visszatérés: NIL.
+\item[sqldisconnect]
+    Megszünteti az adatbáziskapcsolatot. 
+    Az alkalmazási programnak ügyelnie kell arra,
+    hogy a kapcsolatok ne halmozódjanak fel,
+    mert akkor elfogynak bizonyos erőforrások (handlerek).
+    Ezért minden feleslegessé váló kapcsolatot explicite
+    meg kell szüntetni.
+    Visszatérés: NIL.
+\item[sqlexec(stmt,bind)]
+    Végrehajt egy tetszőleges SQL utasítást.
+    Az \verb!stmt! utásítás \verb!:1!, \verb!:2!, \ldots
+    alakú formális paraméterei helyére behelyettesíti
+    az (opcionális) \verb!bind! arrayből vett megfelelő indexű értékeket.
+    Ha az utasítás nem hajtható végre, vagy hibás,
+    akkor \verb!sqlerror!-ból származtatott futási hiba keletkezik.
+    Visszatérés: az érintett (törölt/módosított) rekordok száma.
+\item[sqlexecx(stmt,bind)]
+    Végrehajt egy tetszőleges SQL utasítást.
+    Az \verb!stmt! utásítás \verb!:1!, \verb!:2!, \ldots
+    alakú formális paraméterei helyére behelyettesíti
+    az (opcionális) \verb!bind! arrayből vett megfelelő indexű értékeket.
+    Ha az utasítás nem hajtható végre, vagy hibás,
+    akkor visszaadja a hiba leírását tartalmazó error objektumot,
+    egyébként NIL-t ad.
+\item[sqlisolationlevel(level,flag)]
+    Beállítja a tranzakció izolációs szintet.
+    Az első paraméter helyén az \verb!ISOL_SERIALIZABLE!
+    vagy \verb!ISOL_READ_COMMITED! konstansokat lehet megadni. 
+    A második paraméter egy opcionális flag. 
+    Ha \verb!flag==.f.! (ez a default),  az izolációs szint csak ideiglenesen, 
+    az adott tranzakción belül lesz átállítva. 
+    Ha \verb!flag==.t.!, akkor a beállítás hatálya az egész session.
+    Visszatérés: NIL.
+\item[sqlquerynew(query,bind)]
+    A \verb!con:sqlquerynew(query,bind)! metódushívás
+    gyárt egy sqlquery objektumot (lásd alább). 
+    A \verb!query! select utasítás \verb!:1!, \verb!:2!, \ldots
+    alakú formális paraméterei helyére behelyettesíti
+    az (opcionális) \verb!bind! arrayből vett megfelelő indexű értékeket.
+    Ezzel tetszőleges  SQL lekérdezés végrehajtható.
+    Visszatérés: az új \verb!sqlquery! objektum.
+\item[sqlrollback]  %{|this|sqlrollback(this)})
+    Végrehajt egy rollback utasítást, egyúttal
+    automatikusan indítja a következő tranzakciót.
+    Visszatérés: NIL.
+\item[sqlsequencenew(name)]
+    A \verb!con:sqlsequencenew(name)! metódushívás
+    gyárt egy sqlsequence objektumot (lásd alább).
+    Visszatérés: az új  \verb!sqlsequence! objektum.
+\item[version]
+    Megadja az adatbázisszerver verzióját (szövegesen).
+\end{description}
+
+\subsection{Sqlquery osztály}
+
+Az sqlquery objektumok a \verb!con:sqlqueryNew(select_stmt)!
+objektumgyártó metódushívással keletkeznek. A metódusok:
+
+\begin{description}
+\item[close]
+    Lezárja az sqlquery objektumot.
+    Az alkalmazásoknak ügyelnie kell arra,
+    hogy a lezáratlan sqlquery objektumok ne halmozódjanak fel,
+    másképp elfogynak bizonyos erőforrások (handlerek).
+    Ezért minden feleslegessé váló sqlquery objektumot 
+    explicite le kell zárni. Visszatérés: NIL.
+\item[connection]
+    Tárolja magában az adatbáziskapcsolatot, 
+    amivel létrehozták.
+\item[fcount]
+    Megadja a select utasítással keletkező eredménytábla
+    oszlopainak számát.
+\item[findcolumn(name)]
+    Neve alapján megmondja az oszlop indexét az oszlopok listájában.
+    Ha a megadott nevű oszlop nem létezik, az eredmény 0.
+\item[fname(x)]
+    Indexe alapján megmondja az oszlop nevét.
+\item[isnull(x)]
+    A \verb!q:isnull(x)! metódushívás megmondja, hogy
+    az x-szel azonosított oszlop utoljára fetch-elt értéke
+    null volt-e, x az oszlop neve vagy indexe lehet.
+\item[getbinary(x)]
+    A \verb!q:getbinary(x)! metódushívás kiolvassa, 
+    és binary string (X) típusban visszaadja
+    az x-szel azonosított oszlop utoljára fetch-elt értékét,
+    x az oszlop neve vagy indexe lehet.
+\item[getchar(x)]
+    A \verb!q:getchar(x)! metódushívás kiolvassa, és
+    stringre (C típusra) konvertálva visszaadja
+    az x-szel azonosított oszlop utoljára fetch-elt értékét,
+    x az oszlop neve vagy indexe lehet.
+\item[getdate(x)]
+    A \verb!q:getdate(x)! metódushívás kiolvassa, és
+    dátumtípusra konvertálva visszaadja 
+    az x-szel azonosított oszlop utoljára fetch-elt értékét,
+    x az oszlop neve vagy indexe lehet.
+\item[getlogical(x)]
+    A \verb!q:getlogical(x)! metódushívás kiolvassa, és
+    logikai típusra konvertálva visszaadja
+    az x-szel azonosított oszlop utoljára fetch-elt értékét,
+    x az oszlop neve vagy indexe lehet.
+\item[getnumber(x)]
+    A \verb!q:getnumber(x)! metódushívás kiolvassa, és
+    számtípusra konvertálva visszaadja 
+    az x-szel azonosított oszlop utoljára fetch-elt értékét,
+    x az oszlop neve vagy indexe lehet.
+\item[next]
+    Beolvassa (fetch) a lekérdezés következő eredménysorát.
+    Visszatérése \verb!.t.!, ha volt még sor, egyébként (miután a 
+    sorok elfogytak) \verb!.f.!.\  Az eredménytáblán
+    egyszer, előrefelé lehet a \verb!next!-ekkel  végighaladni.
+\end{description}
+
+
+\subsection{Sqlsequence osztály}
+
+A connection osztály sqlsequencenew metódusával kapunk új
+sqlsequence objektumot: \verb!con:sqlsequenceNew(name)!,
+ahol \verb!name! az adatbázisbeli sequence objektum neve. 
+Ne feledjük, az objektumgyártó csak programobjektumot készít, 
+az adatbázisban van, vagy nincs hozzá tartozó sequence objektum.
+Az attribútum/metódusok:
+
+\begin{description}
+\item[cache]
+    A cache attribútum default értéke 1.
+    A \verb!seq:create! metódus hatására olyan adatbázisbeli 
+    sequence keletkezik, ami egyszerre cache darabszámú
+    értéket generál az alkalmazás számára. Ezzel a sequence
+    használata gyorsul, viszont kihasználatlanul maradhatnak
+    értékek.
+\item[connection]
+    Tárolja az adatbáziskapcsolatot.
+\item[create]
+    Létrehozza az adatbázisban a sequence objektumot.
+    A sequence összes jellemzőjének figyelembevételével
+    generál egy \verb!create sequence! utasítást és elküldi azt a
+    szervernek. Visszatérés: NIL.
+\item[cycle]
+    Ha a \verb!cycle! attrubútum értéke \verb!.t.!, 
+    akkor a olyan adatbázisbeli sequence keletkezik 
+    (a seq:create metódus hatására),
+    ami új kört kezd, ha eléri a minimális/maximális értékét.
+\item[drop]
+    Megszünteti a sequence-t az adatbázisban (küld egy
+    \verb!drop sequence! utasítást a szervernek).
+    Visszatérés: NIL.
+\item[increment]
+    A kreáláskor keletkező sequence növekménye.
+    Az attribútum értékével nő (csökken) a sequence 
+    a \verb!nextval! metódus végrehajtásakor, a default érték 1.
+\item[maxvalue]
+    A sequence maximális értéke.
+\item[minvalue]
+    A sequence minimális értéke.
+\item[name]
+    A sequence objektum adatbázisbeli neve. Megadhatjuk 
+    az objektumgyártó függvényben, vagy utólag egyszerű értékadással.
+    Az adatbázisban a sequence-ek egyedi névvel kell rendelkezzenek,
+    tehát nem lehet egy sequence-nek és pl. egy adattáblának azonos neve.
+    Ha a sequence már létezik az adatbázisban, akkor azt rögtön
+    használhatjuk (\verb!nextval!), vagy eldobhatjuk (\verb!drop!). 
+    Ha még nem létezik, akkor előbb létre kell hozni (\verb!create!).
+\item[nextval]
+    Lépteti a sequence-t, egyúttal szolgáltatja az új értéket.
+\item[start]
+    Beállítja a létrehozandó sequence kezdőértékét. 
+    Növekvő  sequence-eknél a default kezdőérték \verb!minvalue!.
+    Csökkenő sequence-eknél a default kezdőérték \verb!maxvalue!.
+\end{description}
+
+
+
+
+\subsection{Absztrakt tableentity osztály}
+
+Az absztrakt tableentity osztály a közös őse minden
+konkrét tableentitynek. Az alábbi felsorolás csak 
+az alkalmazási programok számára érdekes attribútumokat/metódusokat
+tartalmaza.
+
+\begin{description}
+\item[connection]
+    Az adatbáziskapcsolat objektumot tartalmazza.
+\item[create]
+    Kreál egy adatbázistáblát, aminek a struktúrája megegyezik
+    a tableentity struktúrájával. Ugyancsak kreálja a tableentityben
+    definiált indexeket.
+    Értelemszerűen csak akkor alkalmazható, 
+    ha a tableentityben nincs join, 
+    azaz a tablistnek csak egyetlen eleme van.
+    Visszatérés: NIL.
+\item[delete(rowentity)]
+    Csak akkor alkalmazható, ha a tableentityben nincs join, 
+    azaz a tablistnek egyetlen eleme van. Ha ez az egyetlen elem egy view, 
+    akkor annak jellegétől függően egyes esetekben működik, más esetekben nem.
+    A \verb!t:delete(r)! törli a tableentity által reprezentált
+    tábla mindazon sorait, melyekben a primary key oszlopok
+    az \verb!r! rowentity objektumból kiolvasható kulccsal egyeznek.
+    Persze a koncepció az, hogy pontosan egy sor törlődjön,
+    de ez csak akkor lesz így, ha a primary key valóban  egyedi. 
+    Nem volna jó, ha az ilyen hiba rejtve maradna, ezért, ha a törölt 
+    sorok száma nem pontosan 1, akkor metódus \verb!sqlrowcounterror! 
+    kivételt dob.  Látható, hogy milyen fontos a primary key
+    egyediségére ügyelni, máskülönben egy óvatlan update vagy delete
+    könnyen nem várt eredményre vezet. Az egyediséget úgy lehet
+    biztosítani, hogy kreálunk egy unique minősítésű indexet,
+    ami éppen a primary key oszlopaiból áll. Ekkor az adatbázisszerver
+    megakadályozza ismétlődő kulcsok bevitelét. 
+    Visszatérés: a törölt sorok száma. 
+\item[drop]
+    Megszünteti az adattáblát, 
+    amit a tableentity reprezentál. 
+    Csak akkor alkalmazható, ha a tablistnek egyetlen eleme van,
+    és az egy valódi tábla (nem pedig view).
+    Visszatérés: NIL.
+\item[getcolumn(name)]
+    Az oszloplistából kikeres egy oszlopdefiníciót a neve alapján.
+    Visszatérés: a \verb!columndef! objektum, vagy NIL.
+\item[getprimarykey(rowentity)]
+    A \verb!key:=t:getprimarykey(r)! hívás kiolvassa 
+    az \verb!r! rowentity objektumból az elsődleges kulcsot, 
+    és visszaad  egy arrayt, ami a klucsszegmenseket tartalmazza. 
+    Ezzel a kulccsal hívható a leszármazott tableentity objektumok 
+    \verb!find! metódusa.
+\item[insert(rowentity)]
+    A \verb!t:insert(r)! berak a tableentity által reprezentált
+    adattáblába egy új sort, melyet
+    az \verb!r! rowentity objektum adataival tölt fel.
+    Csak akkor alkalmazható, ha a tableentityben nincs join,
+    és a tablist egyetlen tagja egy elemi tábla (nem pedig view).
+    Csak azok az attribútumok (mezők) jelennek meg a szervernek küldött
+    insert utasításban, amiknek a null flagje \verb!.f.! 
+    (ezt általában az értékadások állítják be).
+    Visszatérés: a berakott sorok száma (ami normális esetben 1).
+\item[instance]
+    Ad egy üresre inicializált rowentity objektumot.
+    Az új objektum minden attribútuma \verb!.f.! dirty flaggel
+    és \verb!.t.! null flaggel rendelkezik.
+\item[setdirty(rowentity,flag)]
+    A \verb!rowentity! objektum összes attribútumának dirty flagjét 
+    beállítja \verb!flag!-ra.
+    A dirty flag jelentősége, hogy az \verb!update!
+    metódus csak azokat a mezőértékeket küldi a szervernek,
+    amiknek a dirty flagje \verb!.t.!-re van állítva. 
+    A dirty flag nyilvántartását általában az objektumra bízhatjuk, 
+    néha azonban értelme lehet kívülről belenyúlni a nyilvántartásba. 
+    Visszatérés: NIL.
+\item[setnull(rowentity,flag)]
+    A \verb!rowentity! objektum összes attribútumának null flagjét 
+    beállítja \verb!flag!-ra. A flag \verb!.t.! értéke jelenti,
+    hogy az attribútumok (mezők) null értéken vannak.
+    A null flag nyilvántartását általában rábízhatjuk az objektumra, 
+    néha azonban értelme lehet kívülről belenyúlni a nyilvántartásba. 
+    Visszatérés: NIL.
+\item[show(rowentity)]
+    A \verb!t:show(r)! hívás kilistázza az \verb!r! rowentity objektumot.
+    Visszatérés: NIL.
+\item[tablist]
+    Egy array, ami a táblák (vagy view-k) felsorolását
+    tartalmazza a következő alakban:
+\begin{verbatim}
+t:tablist:={"tab1=alias1","tab2=alias2",...}
+\end{verbatim}
+    ahol 
+    tab1,\ldots az adattáblák valódi (minősített) neve,
+    alias1,\ldots pedig a táblák hivatkozási neve.
+    A tableentity objektum többi részében, ahol az szükséges
+    (pl. amikor meg kell jelölnünk, hogy egy oszlop melyik táblából való)
+    mindig a tábla alias nevét használjuk. Ennek eredményeként
+    egy tableentity osztály invariáns a benne szereplő táblákra,
+    azaz a tablist attribútum átírásával ugyanaz az objektum
+    és adatstruktúra más fizikai táblákra is alkalmazható.
+    
+    Az alias nevek alkalmazása nem kötelező, nélkülük azonban
+    elvész az invariancia. Ha a tableentity csak egyetlen táblát
+    tartalmaz, akkor a tableentity definícióban sehol sincs
+    szükség táblahivatkozásra, hiszen mindig
+    a tablist egyetlen eleméről lehet csak szó, ilyenkor
+    sem szükséges alias nevet használni.
+\item[update(rowentity)]
+    Csak akkor alkalmazható, ha a tableentityben nincs join, 
+    azaz a tablistnek egyetlen eleme van. Ha ez az egyetlen elem egy view, 
+    akkor annak jellegétől függően egyes esetekben működik, más esetekben nem.
+    A \verb!t:update(r)! módosítja a tableentity által reprezentált
+    tábla mindazon sorait, melyekben a primary key oszlopok
+    az \verb!r! rowentity objektumból kiolvasható kulccsal egyeznek.
+    Persze a koncepció az, hogy csak egy sor módosuljon,
+    de ez csak akkor fog teljesülni, ha a primary key valóban egyedi.
+    Nem volna jó, ha az ilyen hiba rejtve maradna, ezért, ha a módosult
+    sorok száma nem pontosan 1, akkor a metódus \verb!sqlrowcounterror! 
+    kivételt dob.  Csak azok az attribútumok (mezők) jelennek meg
+    a szervernek küldött update utasításban,
+    amiknek a dirty flagje \verb!.t.! (ezt általában az értékadások állítják be).
+    Visszatérés: a módosult sorok száma. 
+\item[zap]
+    Törli a tableentity által reprezentált adattábla minden sorát.
+    Csak akkor alkalmazható, ha a tablistnek egyetlen eleme van,
+    és az egy valódi tábla (nem pedig view).
+\end{description}
+
+
+\subsection{Tableentity leszármazottak}
+
+Az absztrakt tableentity osztályt  oszlopokkal és 
+select metódusokkal bővítve kapjuk a konkrét tableentity
+osztályokat. Ezek kódját a gyakorlatban nem kézzel írjuk, 
+hanem XML leírásból, vagy tds scriptből  programmal generáljuk. 
+A generált kód a tableentityre jellemző névtérbe helyezi 
+az objektumgyártó függvényt, amit így hívhatunk meg:
+\begin{verbatim}
+    tableentity:=multi.level.namespace.tableentityNew(con)
+\end{verbatim}
+
+A \verb!__method__! alakú metódusokat
+az alkalmazási programok közvetlenül nem használják, 
+csak a tanulság kedvéért szerepelnek az ismertetésben.
+
+\begin{description}
+
+\item[\_\_primarykey\_\_]
+    Osztályváltozó, egy array, ami a primary key-t alkotó
+    oszlopokat sorolja fel. A koncepció fontos eleme, hogy a
+    primary key egyedileg azonosítja a rowentity objektumokat.
+    Ha valami miatt ez nem teljesül, akkor egy update, vagy
+    delete metódus egy helyett több objektumot is módosíthat,
+    vagy törölhet. A primary key egyediségét úgy lehet
+    biztosítani, hogy kreálunk egy unique minősítésű indexet,
+    ami éppen a primary key oszlopaiból áll. Ekkor az adatbázisszerver
+    megakadályozza ismétlődő kulcsok bevitelét. 
+
+
+\item[\_\_rowclassid\_\_]
+    Nem módosítható osztályváltozó, a tableentityhez tartozó 
+    rowentity osztály  egészszám azonosítóját tartalmazza.
+
+\item[\_\_rowclassname\_\_]
+    Nem módosítható osztályváltozó, a tableentityhez tartozó 
+    rowentity osztály nevét tartalmazza.
+
+\item[\_\_tabjoin\_\_]
+    Nem módosítható osztályváltozó. Ha a tableentity több táblát
+    tartalmaz, akkor ezeket általában össze kell valahogy kapcsolni.
+    A tabjoin attribútum tartalmazza az SQL from záradék szövegét, 
+    ami megadja az összekapcsolás módját. Például a p és q alias 
+    nevű  táblák összekapcsolása a számlaszám oszlopokkal így
+    nézhet ki:
+\begin{verbatim}
+p left join q on szamlaszam=qszamlaszam
+\end{verbatim}
+
+\item[columnlist]
+    Osztályváltozó, az oszlopok leírását tartalmazó array.
+    Minden oszlopot egy \verb!columndef! objektum képvisel  az arrayben.
+
+\item[find(keylist,lock)]
+    Az \verb!r:=t:find({keyseg1,keyseg2,...})! metódushívás
+    veszi az alaptábla azon sorát, ami a megadott kulcshoz illeszkedik,
+    és létrehoz vele egy új rowentity objektumot. Ha nincs sor
+    a megadott kulccsal, akkor az eredmény NIL.
+    A \verb!find! metódus használatának másik módja \verb!r1:=t:find(r0)!,
+    ahol a kulcsot a mintaként használt \verb!r0! objektumból vesszük. 
+    Itt r0 és r1 egymástól függetlenül létező objektumok, 
+    nem csak egymás referenciái.
+
+    A find és select metódusokkal lehet a tábla kiválasztott sorait 
+    lockolni.
+    \begin{itemize}
+    \item   \verb!r:=t:find(key)! nem lockol.
+    \item   \verb!r:=t:find(key,0)! várakozás nélkül lockol. 
+    \item   \verb!r:=t:find(key,sec)! sec másodpercnyi várakozással lockol. 
+    \item   \verb!r:=t:find(key,-1)! végtelen várakozással lockol. 
+    \end{itemize}
+    A lockolt sorokat más tranzakció nem lockolhatja, és nem
+    módosíthatja. A lockot csak a tranzakció vége (commit/rollback) 
+    oldja fel.  Ha a lock sikertelen, \verb!sqllockerror! vagy
+    \verb!sqldeadlockerror! kivétel keletkezik.
+    
+    Megjegyzés: Postgresben nincs timeout támogatás, ezért
+    minden lock végtelen ideig, vagy a deadlock detektálásáig vár.
+
+\item[select(,lock)]
+    A tableentityknek mindig van egy automatikus select metódusa,
+    ami az alaptábla minden sorát szolgáltatja szűrés és rendezés nélkül. 
+    Minden selectnek két opcionális paramétere van:
+    az első  a bind értékeket felsoroló array,
+    a második a lockolást módját előíró szám (mint a find-nál).
+    Speciálisan az automatikus selectnek sosincsenek bind változói, 
+    ezért az első paramétert sosem használjuk, és mivel ritkán célszerű 
+    egy egész táblát egyszerre lockolni, a másodikat is csak ritkán.
+
+\item[select*(bindlist,lock)]
+    A kulccsal meghatározott egyetlen sort szolgáltató find 
+    és az összes sort szolgáltató select metódus mindig létezik, 
+    mert a programgenerátor ezeket automatikusan elkészíti.
+    Emellett fel lehet szerelni a tableentityt ún.\
+    opcionális selectekkel. Az opcionális selecteket egy
+    where záradékkal, és egy order by záradékkal lehet megadni.
+    A where záradék sorszámozott paramétereket tartalmazhat, pl.
+\begin{verbatim}
+szamlaszam like :1
+\end{verbatim}
+    Legyen az opcionális selectünk neve \verb!select_like!, 
+    akkor a metódust így hívhatjuk:
+\begin{verbatim}
+rowset:=t:select_like({'1111111122222222%'})
+\end{verbatim}
+    Ez egy olyan rowsetet ad, amiben a számlaszám 1--16 jegyei
+    a megadott mintához illeszkednek.
+
+    A select* metódusok első paramétere egy array, amiben 
+    a where záradék sorszámozott  paraméterei helyére
+    helyettesítendő (bind) értékek vannak felsorolva (az automatikus
+    selectnél ezt a paramétert üresen kell hagyni).
+    
+    A select* metódusok második paraméterével a lockolás
+    szabályozható:
+    \begin{itemize}
+    \item   \verb!rowset:=t:select_x(bind)! nem lockol.
+    \item   \verb!rowset:=t:select_x(bind,0)! várakozás nélkül lockol. 
+    \item   \verb!rowset:=t:select_x(bind,sec)! sec másodpercnyi várakozással lockol. 
+    \item   \verb!rowset:=t:select_x(bind,-1)! végtelen várakozással lockol. 
+    \end{itemize}
+    Ha a lock sikertelen, \verb!sqllockerror! kivétel keletkezik.
+    Ha a szerver deadlockot észlel,  \verb!sqldeadlockerror! kivétel keletkezik.
+    A lockolás független a sorok beolvasásától, azaz  a rowset objektum 
+    létrejöttekor (még az első next előtt) az összes sor már lockolva van.
+    A lockolt sorokat más tranzakció nem lockolhatja és nem módosíthatja. 
+    A lockot csak a tranzakció vége (commit/rollback)  oldja fel, 
+    pl. nem oldja fel a lockot a rowset lezárása.
+
+    Megjegyzés: Postgresben nincs timeout támogatás, ezért
+    minden lock végtelen ideig, vagy a deadlock detektálásáig vár.
+
+\item[version]
+    Nem módosítható osztályváltozó, tetszőleges szöveget tartalmazhat,
+    általában a tableentity definíció változatszámát tároljuk benne.
+\end{description}
+
+
+\subsection{Rowset osztály}
+
+A rowset objektumokat az alkalmazás sosem közvetlenül hozza létre,
+hanem a tableentityk select metódusainak értékeként kapja.
+Egy rowset objektum egy feldolgozás alatt álló SQL select utasítást
+képvisel. A select utasítással (rowsettel) mindössze két dolgot lehet
+csinálni:
+\begin{description}
+\item[next]
+    A next metódus szolgáltatja az eredménytábla következő sorával feltöltött
+    rowentity objektumot. A nextekkel a select eredménytábla elejétől
+    a végéig egyesével lehet haladni, semmilyen más pozícionálás
+    nem lehetséges. Ha a sorok elfogynak, akkor a rowset automatikusan
+    lezáródik, és a next minden további hívása rowentity helyett NIL-t ad.
+\item[close]
+    Lezárja a rowsetet. A lezáratlanul hagyott rowsetek felhalmozódása
+    működésképtelenné teszi a programot, mert elfogynak a handlerek,
+    ezért az alkalmazásnak minden rowsetet le kell zárni.
+\end{description}
+
+\subsection{Rowentity osztályok}
+
+Az adatbázisrekord, vagy az SQL select eredménytábla egy sorának 
+programbeli képe a rowentity objektum. Háromféleképpen lehet rowentity
+objektumhoz jutni:
+\begin{itemize}
+    \item \verb!rowentity:=tableentity:instance!
+    \item \verb!rowentity:=tableentity:find(key)!
+    \item \verb!rowentity:=rowset:next!
+\end{itemize}
+Az első esetben üresre inicializált objektumot,
+a másik két esetben az adatbázisból betöltött (fetch) objektumot kapunk.
+Egy új rowentity összes attribútuma (mezeje) kezdetben false dirty flaggel
+rendelkezik. Az instance metódussal gyártott rowentityben minden 
+attribútum null értéken van, a másik két esetben csak azok a mezők
+maradnak null értéken, amiknek az adatbázisban is null értéke van.
+
+A tableentity minden oszlopához létezik a rowentity objektumnak
+egy azonos nevű metódusa, amivel az adott mező értéke lekérdezhető
+és módosítható. A rowentity objektumok mind saját adatbufferrel
+rendelkeznek, emiatt egyszerre több (akárhány) azonos típusú
+rowentity objektumunk lehet, amikkel egymástól függetlenül
+végezhetünk műveleteket.
+
+Minden rowentity rendelkezik az alábbi metódusokkal: 
+\begin{description}
+\item[insert]
+    Az \verb!r:insert! metódushívás új sort tesz a tableentity
+    által reprezentált táblába a rowentity objektum adataival feltöltve.
+    Csak azok az oszlopok jelennek meg a kapcsolódó SQL insert utasításban, 
+    amiknek a program értéket adott, a többi oszlop null értéken marad.
+    Ez a metódushívás csak alternatív formája a tableentitynél látott
+    \verb!t:insert(r)! alaknak, ahol t az r-hez tartozó tableentity.
+    Visszatérés: az inzertált rekordok száma (1).
+\item[update]
+    Az \verb!r:update! metódushívás módosítja a tableentity
+    által reprezentált tábla azon sorát, amit az r-ből kiolvasható
+    primary key azonosít. Csak azok az oszlopok jelennek meg az kapcsolódó
+    SQL update utasításban, amiket a program megváltoztatott.
+    Ez a metódushívás csak alternatív formája a tableentitynél látott
+    \verb!t:update(r)! alaknak, ahol t az r-hez tartozó tableentity.
+    Ha a módosított rekordok száma nem 1, akkor \verb!sqlrowcounterror! kivétel 
+    keletkezik. Visszatérés: a módosított rekordok száma.
+\item[delete]
+    Az \verb!r:delete! metódushívás törli a tableentity
+    által reprezentált tábla azon sorát, amit az r-ből kiolvasható
+    primary key azonosít.
+    Ez a metódushívás csak alternatív formája a tableentitynél látott
+    \verb!t:delete(r)! alaknak, ahol t az r-hez tartozó tableentity.
+    Ha a törölt sorok száma nem 1, akkor \verb!sqlrowcounterror! kivétel 
+    keletkezik. Visszatérés: a törölt sorok száma.
+\item[find]
+    Az \verb!r1:=r0:find! metódushívás behozza azt az objektumot,
+    amit a mintaként használt r0-ból kiolvasható primary key
+    azonosít. Ugyanaz, mint az \verb!r1:=t:find(r0)! alak.
+\item[show]
+    Az \verb!r:show! metódushívás kilistázza az objektumot, ugyanaz, 
+    mint a \verb!t:show(r)! alak, ahol t az r-hez tartozó tableentity.
+    Visszatérés: NIL.
+\end{description}
+
+E metódusok a tableentity azonos nevű metódusaihoz továbbítva (delegálva)
+hajtódnak végre, ezért a részletesebb leírást lásd a tableentity
+osztálynál.
+
+
+\subsection{Columnref osztály}
+
+A columnref objektumok nem kerülnek bele a tableentitybe,
+csak a tableentitykben levő SQL utasítások elkészítésekor
+kapnak segédszerepet azáltal, hogy tárolják egyes
+közvetlenül nem használt oszlopok adatbázisbeli azonosítóját.
+
+\begin{description}
+\item[name]        
+    A oszlop (mező) programbeli neve.
+\item[expr]
+    Oszlopkifejezés. 
+    Tetszőleges SQL kifejezés használható.
+    A columnrefek esetében ugyan nincs értelme számított mezőknek,
+    de a columndef osztály is örökli ezt az attribútumot.
+    Ha nincs megadva, akkor az oszlopkifejezés egyenlő lesz
+    az oszlop nevével. Tipikus eset, hogy az oszlop minősített 
+    nevét adjuk  meg itt.
+\item[columnid]
+    Az oszlop adatbázisbeli neve, 
+    az oszlopkifejezésből állapítja meg az inicializáló,
+    és az update utasítások generálásához használja a rendszer.
+\end{description}
+
+
+
+\subsection{Columndef osztály}
+
+Columndef objektumokkal az alkalmazási programokban ritkán találkozunk, 
+mert az oszlopok általában csak a tableentityk belső működéséhez kellenek.
+A tableentity columndef objektumokkal való feltöltését sem közvetlenül 
+végezzük, mert ezt az XML definíció alapján generált kód teszi.
+Ha azonban vizsgálni kell, hogy a szervertől kapott eredeti érték
+null, vagy nem null, mégiscsak a columndef objektumhoz kell fordulnunk.
+A columndef az előző columnref osztály leszármazottja,
+tehát rendelkezik az előbbi metódusokkal. A további metódusok:
+
+\begin{description}
+\item[type]
+    Az oszlop Clipper típusát azonosító string:  Cw, Nw[.d], D, L, M.
+    A memókat az új M típus jelöli. A típust, szélességet, decimálisok
+    számát egybe kell írni, pl. "N16.2".
+
+    Ha egy létező Oracle adatbázis egy oszlopát le akarjuk
+    képezni Clipper típusra, akkor választanunk kell a 
+    Cw, Nw[.d], D, L, M típusok közül. A konverziót az adatbázisszerver
+    fogja végezni, ha lehetséges, ha pedig nem lehetséges, 
+    akkor runtime errort kapunk. Az ,,értelmes'' konverziók általában 
+    lehetségesek.
+
+\item[notnull]
+    Egy flag, ami mutatja, hogy kötelező-e értéket adni az oszlopnak.
+    A feltételt az adatbázisszerver (nem az interfész!)
+    ellenőrzi az insert/update utasítások végrehajtásakor.
+\item[default]
+    A mező default értéke. Az értéket az adatbázisszerver 
+    (nem az interfész!)
+    adja a mezőnek az insert utasítások  végrehajtásakor.
+\item[offset]
+    A mező kezdete a rowentity adatbufferében.
+\item[size] 
+    A mező mérete a rowentity adatbufferében.
+\item[block] 
+    Kódblock, ami kiolvassa/beírja az adatot a bufferből/bufferbe.
+\item[sqltype]
+    Meghatározza a mező SQL típusát.
+    Ha nemlétező táblát kreálunk a tableentityvel, 
+    akkor (és csak akkor) kap szerepet az sqltype metódus, 
+    ami SQL típust rendel az oszlop Clipper típusához.
+
+    A típusleképezés szabályai Oracle esetében:
+
+\begin{verbatim}
+Cw     --> char(w)         ha w<=8
+Cw     --> varchar(w)      ha w>8
+M      --> blob
+Nw     --> number(w)
+Nw,d   --> number(w,d)  
+Nw.d   --> number(w,d)
+L      --> number(1)       a boolean-t nem ismeri
+D      --> date
+\end{verbatim}
+
+    A típusleképezés szabályai Postgres esetében:
+
+\begin{verbatim}
+Cw     --> char(w)         ha w<=8
+Cw     --> varchar(w)      ha w>8
+M      --> bytea
+Nw     --> numeric(w)
+Nw,d   --> numeric(w,d)  
+Nw.d   --> numeric(w,d)
+L      --> boolean
+D      --> date
+\end{verbatim}
+
+    Ez egyúttal behatárolja, hogy a tableentity interfésszel
+    milyen struktúrájú adattáblák hozhatók létre.
+
+\item[indvar]
+    Indikátor változó.
+\item[isnull(row)]
+    A \verb!column:isnull(row)! metódus mutatja, 
+    ha a beolvasott mező eredeti értéke null.
+    A rowentityk oszlopmetódusai a null értéket nem NIL-re
+    képezik, hanem egy egyező típusú empty értéket adnak.
+\item[setnull(row,flag)]
+    A \verb!column:setnull(row,flag)! metódus beállítja
+    a rowentity objektum egy mezőjénék null flagjét.
+    Visszatérés: NIL.
+\item[isdirty(row)]
+    A \verb!column:isdirty(row)! metódus mutatja
+    hogy a program módosította-e a mezőt.
+\item[setdirty(row,flag)]
+    A \verb!column:setdirty(row,flag)! metódus beállítja 
+    a rowentity objektum egy mezőjénék dirty flagjét.
+    Visszatérés: NIL.
+\item[eval]
+    A \verb!col:eval(rowentity[,x])! metódushívás kiolvassa az oszlop
+    értékét a rowentityből, vagy x-et értékül adja az oszlopnak. 
+    Alkalmazási programban inkább  ezzel a formával találkozunk: 
+    \verb!rowentity:colname[:=x]!.
+\item[label]
+    Szöveges attribútum, amit táblafüggetlen megjelenítőprogramok
+    használhatnak, pl. oszlopfejléc kiírására.
+\item[tooltip]
+    Szöveges attribútum, amit táblafüggetlen megjelenítőprogramok
+    használhatnak.
+\item[picture]
+    Szöveges attribútum, amit táblafüggetlen megjelenítőprogramok
+    használhatnak.
+\end{description}
+
+
+\subsection{Indexdef osztály}
+
+Index adatok tárolására használjuk az indexdef objektumokat.
+
+\begin{description}
+\item[name]     
+    Az Oracle-beli név kiegészítője.
+    A \verb!tableentity:create! metódus a tábla kreálásakor a tableentityben
+    tárolt indexeket is létrehozza. Az indexek adatbázisbeli neve 
+    \verb!tabname+'_'+i:name! lesz, ahol tabname a 
+    \verb!tableentity:tablist! első eleméből van.
+\item[seglist]  
+    Az indexet alkotó oszlopok columndef-jeinek listája.
+\item[unique]   
+    Logikai érték, mutatja, hogy egyedi-e  az index.
+\end{description}
+

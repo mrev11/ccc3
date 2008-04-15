@@ -1,0 +1,16 @@
+
+
+(define-function gtk_input_dialog_get_type
+  (in-module GtkInputDialog)
+  (c-name "gtk_input_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_input_dialog_new
+  (c-name "gtk_input_dialog_new")
+  (is-constructor-of GtkInputDialog)
+  (return-type "GtkWidget*")
+)
+
+
+

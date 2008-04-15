@@ -1,0 +1,32 @@
+
+
+(define-function gtk_object_get_type
+  (in-module "GtkObject")
+  (c-name "gtk_object_get_type")
+  (return-type "GtkType")
+)
+
+(define-function object_new
+  (c-name "gtk_object_new")
+  (return-type "GtkObject*")
+  (parameters
+    '("GtkType" "type")
+    '("const-gchar*" "first_property_name")
+  )
+  (varargs #t)
+)
+
+(define-method sink
+  (of-object "GtkObject")
+  (c-name "gtk_object_sink")
+  (return-type "none")
+)
+
+(define-method destroy
+  (of-object "GtkObject")
+  (c-name "gtk_object_destroy")
+  (return-type "none")
+)
+
+
+

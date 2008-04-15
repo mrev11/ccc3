@@ -1,0 +1,6 @@
+invalidstructerrorNew()         no registered class
+invalidstructerrorNew()         incompatible dbstruct
+fnferrorNew()                   open failed
+invalidformaterrorNew()         invalid dbf header
+invalidformaterrorNew()         read error in dbf header
+invalidformaterrorNew()         invalid dbf header length

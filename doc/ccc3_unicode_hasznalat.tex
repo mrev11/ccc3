@@ -1,0 +1,143 @@
+\pagetitle{Unicode használat a CCC3-ban}{Dr. Vermes Mátyás}{2006. május}
+
+Azt szeretném itt leírni, 
+miért úgy van a unicode string használat a CCC3-ban, ahogy van,
+és hogyan kell választani a karakter és bináris string között. 
+
+Először a Pythonról írok, nem biztos, hogy mindent
+jól értek, ha így volna, javítsatok ki.
+A 2.4.x Python támogatja a unicode/UTF-8 kódolást.
+Próbáljuk ki ezt a Python programot:
+\begin{verbatim}
+#! /usr/bin/env python
+# _*_ coding: UTF-8 _*_
+
+a="öt szép szűzlány őrült írót nyúz"   # bytesorozat
+u=u"öt szép szűzlány őrült írót nyúz"  # unicode string
+
+print 
+print a[0:1]
+print a
+print u[0:1]
+print u
+\end{verbatim}
+Ha lefuttatjuk a programot, ezt a kimenetet kapjuk: 
+\begin{verbatim}
+?
+ öt szép szűzlány őrült írót nyúz
+ö 
+öt szép szűzlány őrült írót nyúz
+\end{verbatim}
+Az első '?' valójában egy érvénytelen UTF-8 kód, egy fél 'ö' betű!
+Ebből következtetek az alábbiakra:
+Az \verb!a! változóban egy bytesorozat van, ami UTF-8 kódolással
+ábrázolja az "öt szép..." szöveget. Az \verb!u! változóban egy
+(unicode) karaktersorozat van, ami ugyanazt a szöveget ábrázolja.
+Amikor a stringek első elemét vesszük, akkor az első esetben
+az első {\em byteot\/} a második esetben az első {\em karaktert\/}
+kapjuk. Mivel az 'ö' betű UTF-8 kódolásban 2 byteon tárolódik,
+azért kapjuk a fél 'ö' betűt, ami érvénytelen kód lévén '?' formában
+jelenik meg. 
+Ugyanez a program CCC3-ban így néz ki:
+\begin{verbatim}
+function main()
+local a:=a"öt szép szűzlány őrült írót nyúz" //bytesorozat
+local u:="öt szép szűzlány őrült írót nyúz"  //unicode string
+    ? left(a,1)
+    ? a
+    ? left(u,1)
+    ? u
+\end{verbatim}
+Itt nem a unicode stringet jelöljük \verb!u"..."!-val,
+hanem fordítva, a bytesorozatot kell megkülönböztetni \verb!a"..."!-val.
+Az eredmény egyébként ugyanaz. A Python és a CCC3 unicode támogatása 
+közötti  eltérés:
+
+A Python a unicode-dal új területet nyit, de nem lép be erre
+az új területre. A programozóra bízza a unicode stringek bejelölését.
+A kompatibilitás szempontjából ez tökéletes megoldás, hiszen a
+régi programokat egyáltalán nem érinti. Szerintem azonban döntő
+hátrány, hogy nem segíti elő az UTF-8 kódolást. Ha pl. egy régi
+Python programot Latin-1-ről átkonvertálunk UTF-8-ra,
+szintaktikailag semmi sem változik, mégis elromlik a program,
+mert mint láttuk, megjelennek a félbevágott UTF-8 kódok.
+Az új programoknál a unicode stringek használatát kellene
+előnyben részesíteni, a Python megközelítésében mégis
+ezekhez kell többet írni, mindig jelölgetni kell az
+\verb!u"..."! stringeket.
+
+A CCC3-ban először én is hetekig a Python útján haladtam,
+de egyre kevésbé tetszett a dolog. Végül úgy döntöttem,
+hogy áttérek a radikálisabb megvalósításra: Nem csak létrehozom
+az új területet, hanem be is lépek rá, azaz a unicode string
+lesz a default. Ugyanez van a Jávában is. A string literálok
+unicode karaktersorozatot jelentenek, emellett használható a
+bytearray, amikor arra van szükség. Utólag biztos vagyok
+abban, hogy a Jáva/CCC3 megoldás a jobb, így vannak a helyükön
+a dolgok, bár elismerem, hogy ez csak egy szubjektív vélemény.
+
+Még egy fontos kérdés van: Legyen-e feltétlen és automatikus
+konverzió a karaktersorozat és a bytesorozat között?
+A Pythonban van. Azt írják, hogy a két típus találkozásánál
+a bytesorozat automatikusan a "pontosabb" unicode sorozatra
+konvertálódik. Úgy gondolják, hogy a unicode 32-bites lévén
+"pontosabb", mint a 8-bites byte. Ez azonban egy melléfogás.
+Az UTF-8 kódolással információveszteség nélkül tárolható
+bármely unicode string, fordítva azonban nem.
+Ha egy png formátumú képet tartalmazó bytesorozatot
+unicode stringre konvertálunk, akkor kép elromlik!
+Tehát a unicode sorozat egyáltalán nem "pontosabb", 
+mint a bytesorozat, hanem fordítva, de hasznosabb azt gondolni, 
+hogy más. Ezért a CCC3-ban nincs feltétlen típuskonverzió.
+
+A tapasztalat azt mutatja, hogy az a jó, ha a program 
+a lehető legszélesebb körben unicode stringeket használ,
+és csak akkor tér át bytesorozatra, amikor tényleg
+bináris adatokkal dolgozik. 
+
+Amikor olvasunk egy fájlból, azt kell feltételeznünk, hogy
+byteokat kapunk. Még ha tudjuk is, hogy a fájl mit tartalmaz,
+a POSIX API byteok olvasásához ad eszközöket. 
+Ezt a szituációt úgy jellemzem, hogy a kétféle típus találkozik,
+és az alkalmazásnak kell eldönteni, hogy legyen-e konverzió,
+vagy ne. Ilyen a CCC2-ben nem volt, tehát a CCC3 mindenképpen
+bonyolultabb lesz, sajnos.
+
+Emlékeztetek rá, hogy a szabány szerint az XML nem byteok
+sorozatából, hanem karakterek sorozatából áll. Amikor a programok
+XML dokumentumot cserélnek, akkor valahogy sorosítani kell
+a dokumentumot, azaz a karaktereket bytesorozatra kell
+konvertálni, ehhez valamilyen kódolás kell. Az XML szabvány 
+az UTF-8-at jelöli ki default kódolásnak. Ahogy a CCC3 használja 
+a unicode/UTF-8 kódolást, úgy minden magától a helyén van. 
+A \verb!ccc3_jt! könyvtár unicode string formájában dolgozik az XML 
+szöveggel, majd közvetlenül küldés előtt az \verb!str2bin!-nel 
+UTF-8-ra konvertálja. A Jáva XML elemzője a DOM felépítésekor
+az UTF-8 kódolású dokumentumot unicodera konvertálja, 
+a DOM-ból már unicode stringeket lehet kiolvasni.
+Hasonló a helyzet a fordított irányban.
+A \verb!ccc3_jt! portolásához ezért lényegében semmit sem 
+kellett csinálni.
+
+A GTK mindig is UTF-8 kódolással dolgozott, azaz egy editbox
+szövegét UTF-8 kódolással kell beállítani, és úgy lehet megkapni.
+A CCC-GTK csatolóba be van építve, hogy paraméter átadás/átvételkor
+automatikusan végezze a unicode<-->UTF-8 konverziót.
+A CCC3 program tehát kényelmesen dolgozhat a unicode
+stringekkel.
+
+Vannak függvények, amik természetüknél fogva bináris
+adatokkal dolgoznak, pl. 
+\verb!base64_encode!,
+\verb!base64_decode!, 
+\verb!crypto_md5!, 
+\verb!crypto_sha1!,
+\verb!crypto_rand_bytes!,
+\verb!savescreen!, stb..
+
+És nyilván vannak kérdéses esetek, és talán ellentmondások is,
+amiket eddig nem vettem észre.
+
+
+\begin{verbatim}
+\end{verbatim}

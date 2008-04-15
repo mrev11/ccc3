@@ -1,0 +1,67 @@
+
+
+(define-function gtk_tree_sortable_get_type
+  (in-module "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_get_type")
+  (return-type "GType")
+)
+
+(define-method sort_column_changed
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_sort_column_changed")
+  (return-type "none")
+)
+
+(define-method get_sort_column_id
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_get_sort_column_id")
+  (return-type "gboolean")
+  (parameters
+    '("gint*" "sort_column_id")
+    '("GtkSortType*" "order")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_sort_column_id
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_set_sort_column_id")
+  (return-type "none")
+  (parameters
+    '("gint" "sort_column_id")
+    '("GtkSortType" "order")
+  )
+)
+
+(define-method set_sort_func
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_set_sort_func")
+  (return-type "none")
+  (parameters
+    '("gint" "sort_column_id")
+    '("GtkTreeIterCompareFunc" "sort_func")
+    '("gpointer" "user_data")
+    '("GtkDestroyNotify" "destroy")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_default_sort_func
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_set_default_sort_func")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIterCompareFunc" "sort_func")
+    '("gpointer" "user_data")
+    '("GtkDestroyNotify" "destroy")
+  )
+  (CCC "byhand")
+)
+
+(define-method has_default_sort_func
+  (of-object "GtkTreeSortable")
+  (c-name "gtk_tree_sortable_has_default_sort_func")
+  (return-type "gboolean")
+)
+
+

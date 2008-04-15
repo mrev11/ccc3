@@ -1,0 +1,38 @@
+
+\documentclass[12pt]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[magyar]{babel}
+%\usepackage[russian]{babel}
+
+\begin{document}
+
+\tableofcontents
+
+\section{Próba szerencse}
+
+öt szép szűzlány őrült írót nyúz
+
+\begin{verbatim}
+    x:="öt szép szűzlány őrült írót nyúz"
+\end{verbatim}
+
+A fenti értékadásban az ékezetes betűt tartalmazó szövegnek
+kötelezően UTF-8 kódolásúnak kell lennie, másképp fordítási hiba
+keletkezik. Ebből adódóan UTF-8/unicode környezetre
+lesz szükségünk. A szövegeinket UTF-8 editorral kell írni (pl. a z-vel),
+a régi szövegeket át kell konvertálni. A CCC fordító maga nem konvertál,
+csak hibát jelez, ha rossz a kódolás. 
+
+\begin{verbatim}
+Копирование и распространение неизмененного текста 
+настоящей лицензии разрешается без ограничений. Внесение 
+изменений в настоящий текст не допускается.
+\end{verbatim}
+
+Копирование и распространение неизмененного текста 
+настоящей лицензии разрешается без ограничений. Внесение 
+изменений в настоящий текст не допускается.
+
+\end{document}

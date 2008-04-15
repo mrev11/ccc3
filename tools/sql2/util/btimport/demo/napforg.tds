@@ -1,0 +1,42 @@
+
+name: NAPFORG
+version: "bt2tds 1.0.01"
+
+table: konto.napforg
+
+column:  SZAMLASZAM       C24     nn
+column:  ELLENSZLA        C24     nn
+column:  OSSZEG           N15.2   
+column:  DEVNEM           C3      
+column:  TARTKOV          C1      
+column:  ELSZKOD          C1      
+column:  UGYSZAM          C12     nn
+column:  SORSZAM          C20     
+column:  KOTEGSZAM        C3      
+column:  TRANZKOD         C3      
+column:  JELOLOADAT       C5      
+column:  MEGJEGYZES       C50     
+column:  ERTEKNAP         D       
+column:  ELSZNAP          D       
+column:  VERIF            L       
+column:  SETTLED          L       
+column:  STORNO           C1      
+column:  TOBBSOR          C1      
+column:  BLOKKOLT         C1      
+column:  FIOKSZAM         C3      
+column:  STATUS           C1      
+column:  HFSZINT          N2      
+column:  LEKSZINT         N2      
+column:  USER             C8      
+column:  CSOPORT          C8      
+column:  KONYVKELT        D       
+column:  KOZLEMENY2       C32     
+column:  KOZLEMENY3       C32     
+column:  ALSZAMLA         C20     
+column:  SZLANEV          C32     
+column:  ESZLANEV         C32     
+
+primkey: UGYSZAM
+
+index:  szamlaszam(SZAMLASZAM)
+index:  ellenszla(ELLENSZLA)

@@ -1,0 +1,58 @@
+
+
+(define-function gtk_message_dialog_get_type
+  (in-module GtkMessageDialog)
+  (c-name "gtk_message_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_message_dialog_new
+  (c-name "gtk_message_dialog_new")
+  (is-constructor-of GtkMessageDialog)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWindow*" parent)
+    '("GtkDialogFlags" flags)
+    '("GtkMessageType" type)
+    '("GtkButtonsType" buttons)
+    '("const-gchar*" format)
+  )
+)
+
+(define-function gtk_message_dialog_new_with_markup
+  (c-name "gtk_message_dialog_new_with_markup")
+  (is-constructor-of GtkMessageDialog)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWindow*" parent)
+    '("GtkDialogFlags" flags)
+    '("GtkMessageType" type)
+    '("GtkButtonsType" buttons)
+    '("const-gchar*" format)
+  )
+)
+
+(define-method set_markup
+  (of-object "GtkMessageDialog")
+  (c-name "gtk_message_dialog_set_markup")
+  (parameters
+    '("const-gchar*" str)
+  )
+)
+
+(define-method format_secondary_text
+  (of-object "GtkMessageDialog")
+  (c-name "gtk_message_dialog_format_secondary_text")
+  (parameters
+    '("const-gchar*" format)
+  )
+)
+
+(define-method format_secondary_markup
+  (of-object "GtkMessageDialog")
+  (c-name "gtk_message_dialog_format_secondary_markup")
+  (parameters
+    '("const-gchar*" format)
+  )
+)
+

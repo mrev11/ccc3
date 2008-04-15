@@ -1,0 +1,418 @@
+
+\pagetitle{CCC API táblázat}%
+{Dr. Vermes Mátyás}{2003. augusztus}
+ 
+Az alábbi táblázat felsorolja a \verb!ccc2! és \verb!ccc2_ui_! 
+könyvtárakban definiált összes globális Clipper szimbólumot (függvényt). 
+A függvények részletes dokumentálására jelenleg nincs mód,
+de a táblázat legalább segít tájékozódni, hogy mi van, mi nincs
+a CCC-ben. Míg ez a felsorolás kb. 340 szimbólumot tartalmaz,
+addig a képernyőkezelést is magukba foglaló könyvtárak
+további 200--300 szimbólummal bővebbek.
+
+A táblázatban Clipper minősítést kaptak azok a függvények,
+amik az eredeti Clipper 5.2-ben megtalálhatók. Ezekben
+hiba csak kis valószínűséggel fordulhat elő, és implementációjuk
+messzemenően kompatibilis a Norton Guide-ban leírtakkal
+(eltekintve a DOS-specifikus, UNIX-on nem értelmezhető dolgoktól).
+
+A CA-Tools minősítésű függvények sokkal eklektikusabbak,
+itt valamivel nagyobb az inkompatibilitás és a hibák előfordulásának 
+valószínűsége, de ezek esetében is használható a Norton Guide.
+
+
+A CCC minősítésű függvények bővítik az eredeti Clippert.
+\begin{itemize}
+\item 
+  Némelyik függvény csak az implementáció segédfüggvénye,
+  ezeket az alkalmazási programokban célszerű elkerülni.
+  Példák: \verb!__alternate!, \verb!__readdir!, \verb!ostime!.
+  Ezek neve általában két aláhúzással kezdődik.
+  Mielőtt ilyeneket használnánk, legalábbis célszerű megnézni,
+  hogy implementálva vannak-e minden platformon.
+\item 
+  Egyes függvények a C könyvtár POSIX függvényhívásait vezetik
+  ki CCC szintre: 
+  \verb!chmod!,
+  \verb!chown!, 
+  \verb!fork!, 
+  \verb!exec!, 
+  \verb!stat!, stb., ezek nagyon hasznosak, de sajnos közülük
+  sok csak UNIX-on létezik.
+\item
+  Néhány esetben a WIN32 rendszerhívás  van kivezetve CCC szintre,
+  ezek némelyikének megvan a UNIX-os megfelelője: 
+  \verb!sleep!, \verb!gettickcount!.
+\item 
+  Természetesen bővítményt jelentenek az új dolgok, 
+  az objektum rendszerrel és 
+  a többszál támogatással kapcsolatos függvények.
+\item
+  Végül vannak nagyon hasznos, ezért gyakran használt  
+  apróságok, mint az 
+  \verb!_arr2chr!,
+  \verb!_chr2arr!,
+  \verb!wordlist!, stb.
+\end{itemize}
+
+A táblázat első oszlopa megbízható, mert programmal gyűjtöttem. 
+A további oszlopok tartalmát azonban jórészt emlékezetből írtam, 
+ezért azt nem szabad készpénznek venni. 
+A függvények pontos működése végső soron nem dokumentációkból, 
+hanem az implementáció tanulmányozásával tárható fel. Az NG-ben 
+szereplő függvények esetében hibának számít a leírtaktól való 
+indokolatlan éltérés. Az ilyen hibák jelentését szívesen fogadom.
+
+
+
+\begin{tabular}{|l|l|l|l|}
+\verb!__alternate!                 & CCC      &  {\tt UW} & Belső, megnyitja az alternate stream-et\\
+\verb!__closedir!                  & CCC      &  {\tt U~} & Belső, UNIX directory\\
+\verb!__clr2num!                   & CCC      &  {\tt UW} & Belső, színkódok\\
+\verb!__copyfile!                  & Clipper  &  {\tt ~W} & WIN32, copy file command\\
+\verb!__dat2num!                   & CCC      &  {\tt UW} & Belső, dátum-szám leképezés\\ 
+\verb!__dosdatetimetofiletime!     & CCC      &  {\tt ~W} & WIN32, filéidő konverzió\\
+\verb!__eject!                     & Clipper  &  {\tt UW} & Eject command\\
+\verb!__extra!                     & CCC      &  {\tt UW} & Belső, megnyitja az extra stream-et\\ 
+\verb!__filetimetodosdatetime!     & CCC      &  {\tt ~W} & WIN32, filéidő konverzió\\
+\verb!__filetimetosystemtime!      & CCC      &  {\tt ~W} & WIN32, filéidő konverzió\\ 
+\verb!__findinpath!                & CCC      &  {\tt U~} & Belső, keres a PATH-ban\\
+\verb!__findslot!                  & CCC      &  {\tt UW} & Belső, osztály-metódus párosítás\\
+\verb!__findslot_c!                & CCC      &  {\tt UW} & Belső, osztály-metódus párosítás\\
+\verb!__findslot_p!                & CCC      &  {\tt UW} & Belső, osztály-metódus párosítás\\ 
+\verb!__findslot_s!                & CCC      &  {\tt UW} & Belső, osztály-metódus párosítás\\ 
+\verb!__getsystemtime!             & CCC      &  {\tt ~W} & WIN32, rendszeridő\\
+\verb!__keyboard!                  & Clipper  &  {\tt UW} & Keyboard command\\
+\verb!__maxstrlen!                 & CCC      &  {\tt UW} & Maximális string méret\\
+\verb!__num2dat!                   & CCC      &  {\tt UW} & Belső, dátum-szám leképezés\\  
+\verb!__opendir!                   & CCC      &  {\tt U~} & Belső, UNIX directory\\ 
+\verb!__printer!                   & CCC      &  {\tt UW} & Belső, megnyitja a printer stream-et\\ 
+\verb!__quit!                      & Clipper  &  {\tt UW} & Quit command\\ 
+\verb!__readdir!                   & CCC      &  {\tt U~} & Belső, UNIX directory\\ 
+\verb!__run!                       & Clipper  &  {\tt UW} & Run command\\
+\verb!__setcentury!                & Clipper  &  {\tt UW} & Set century command\\
+\verb!__standardizepathname!       & CCC      &  {\tt U~} & Belső, truename segédfüggvénye\\
+\verb!__systemtimetofiletime!      & CCC      &  {\tt ~W} & WIN32, filéidő konverzió\\
+\verb!__varprint!                  & CCC      &  {\tt UW} & Belső, deferror-ban kiír egy változót\\
+\verb!_any2str!                    & CCC      &  {\tt UW} & Tetszőleges érték konverziója stringre\\
+\verb!_arr2chr!                    & CCC      &  {\tt UW} & Array sorosítás (tároláshoz)\\
+\verb!_arr2str!                    & CCC      &  {\tt UW} & Arrayből string (megjelenítéshez)\\
+\verb!_asort_ascendblock!          & CCC      &  {\tt UW} & Belső, asort default kódblokkja\\
+\verb!_charconv!                   & CCC      &  {\tt UW} & Karakterkonverzió\\
+\verb!_chr2arr!                    & CCC      &  {\tt UW} & A sorosítás (\verb!_arr2chr!) inverze\\
+\verb!_date_emptycharvalue!        & CCC      &  {\tt UW} & Belső\\
+\verb!_date_templatestring!        & CCC      &  {\tt UW} & Belső\\
+\verb!aadd!                        & Clipper  &  {\tt UW} & Új elemet ad az array végéhez\\
+\verb!abs!                         & Clipper  &  {\tt UW} & Abszolút érték\\
+\verb!aclone!                      & Clipper  &  {\tt UW} & Array ,,mély'' klónozása\\
+\verb!acopy!                       & Clipper  &  {\tt UW} & Array elemenkénti másolása\\
+\verb!acos!                        & CA-Tools &  {\tt UW} & Arkusz koszinusz\\
+\verb!addmonth!                    & CA-Tools &  {\tt UW} & Dátumhoz hónapokat ad (vagy levon)\\
+\verb!adel!                        & Clipper  &  {\tt UW} & Törli az array egy elemét\\
+\verb!aeval!                       & Clipper  &  {\tt UW} & Kiértékel egy kódblokkot minden array elemre\\
+\verb!afill!                       & Clipper  &  {\tt UW} & Megadott értékkel feltölt egy arrayt\\
+\verb!ains!                        & Clipper  &  {\tt UW} & Beszúr egy array elemet\\
+\verb!alert!                       & Clipper  &  {\tt UW} & Figyelmeztető dialogbox\\
+\verb!alertblock!                  & Clipper  &  {\tt UW} & Ez a block hajtódik végre az alertben\\
+\verb!alltrim!                     & Clipper  &  {\tt UW} & Szóközök eltávolítása mindkét oldalról\\
+\verb!argc!                        & CCC      &  {\tt UW} & Parancssori argumentunok száma\\
+\verb!argv!                        & CCC      &  {\tt UW} & Parancssori argumentumok\\
+\verb!array!                       & Clipper  &  {\tt UW} & NIL-ekkel feltöltött arrayt készít\\
+\verb!asc!                         & Clipper  &  {\tt UW} & Karakter változó ASCII értéke\\
+\verb!ascan!                       & Clipper  &  {\tt UW} & Arrayben keres\\
+\verb!ascpos!                      & CA-Tools &  {\tt UW} & Adott pozíciójú karakter ASCII értéke\\
+\verb!asin!                        & CA-Tools &  {\tt UW} & Arkusz szinusz\\
+\verb!asize!                       & Clipper  &  {\tt UW} & Array méretezés\\
+\verb!asort!                       & Clipper  &  {\tt UW} & Array rendezés\\
+\verb!at!                          & Clipper  &  {\tt UW} & Substring keresése stringben\\
+\verb!atail!                       & Clipper  &  {\tt UW} & Array utolsó eleme\\
+\verb!atan!                        & CA-Tools &  {\tt UW} & Arkusz tangens\\
+\verb!atn2!                        & CA-Tools &  {\tt UW} & Szög a szinusz és koszinusz értékéből\\
+\verb!beep!                        & CCC      &  {\tt UW} & Sípol\\
+\verb!bin2f!                       & CCC      &  {\tt UW} & Karakter reprezentációból lebegőpontos szám\\
+\verb!bin2i!                       & Clipper  &  {\tt UW} & Karakter reprezentációból 16 bites előjeles int\\
+\verb!bin2l!                       & Clipper  &  {\tt UW} & Karakter reprezentációból 32 bites előjeles long\\
+\verb!bin2w!                       & Clipper  &  {\tt UW} & Karakter reprezentációból 16 bites előjel nélküli int\\
+\verb!bom!                         & CA-Tools &  {\tt UW} & A hónap első napjának dátuma\\
+\verb!botmessage!                  & CCC      &  {\tt UW} & Üzenet a képernyő alján\\
+\verb!boy!                         & CA-Tools &  {\tt UW} & Az év első napjának dátuma\\
+\verb!break!                       & Clipper  &  {\tt UW} & Futás megszakítása\\
+\verb!callstack!                   & CCC      &  {\tt UW} & Függvényhívási verem kiírása\\
+\verb!cdow!                        & Clipper  &  {\tt UW} & Dátumból a hét napja\\
+\verb!cgigetinput!                 & CCC      &  {\tt UW} & CGI programok paraméter átvétele\\
+\verb!charspread!                  & CA-Tools &  {\tt UW} & String kiterjesztés tokenenként\\   
+\verb!chmod!                       & CCC      &  {\tt UW} & POSIX, filé engedélyek beállítása\\
+\verb!chown!                       & CCC      &  {\tt U~} & POSIX, filé tulajdonos beállítása\\
+\verb!chr!                         & Clipper  &  {\tt UW} & Karakterváltozó ASCII kódból\\
+\verb!chsize!                      & CCC      &  {\tt UW} & Filéméret beállítása\\
+\verb!classattrib!                 & CCC      &  {\tt UW} & Attribútumot ad egy osztályhoz\\
+\verb!classattrnames!              & CCC      &  {\tt UW} & Egy osztály összes attribútuma\\
+\verb!classbaseid!                 & CCC      &  {\tt UW} & Ősosztályok azonosítói\\
+\verb!classidbyname!               & CCC      &  {\tt UW} & Osztály azonosító név alapján\\
+\verb!classinheritstruct!          & CCC      &  {\tt UW} & Öröklődési struktúra\\
+\verb!classmethnames!              & CCC      &  {\tt UW} & Egy osztály összes metódusa\\
+\verb!classmethod!                 & CCC      &  {\tt UW} & Metódust ad az osztályhoz\\
+\verb!classname!                   & CCC      &  {\tt UW} & Azonosító alapján osztálynév\\
+\verb!classobjectlength!           & CCC      &  {\tt UW} & Attribútumok száma az osztályban\\
+\verb!classregister!               & CCC      &  {\tt UW} & Létrehozza az osztályazonosítót\\
+\verb!clearbit!                    & CA-Tools &  {\tt UW} & Törli a megadott bitet\\
+\verb!cmonth!                      & Clipper  &  {\tt UW} & Dátumból hónapnév\\
+\verb!convertfspec2nativeformat!   & CCC      &  {\tt UW} & Platformfüggő filéspecifikáció konverzió\\
+\verb!cos!                         & CA-Tools &  {\tt UW} & Koszinusz\\
+\verb!cot!                         & CA-Tools &  {\tt UW} & Kotangens\\
+\verb!crlf!                        & CCC      &  {\tt UW} & CR+LF karakter\\
+\verb!ctime!                       & CCC      &  {\tt UW} & POSIX ctime\\
+\verb!ctod!                        & Clipper  &  {\tt UW} & Karakterből dátum\\
+\verb!ctof!                        & CA-Tools &  {\tt UW} & Karakterből lebegőpontos szám (bin2f)\\
+\verb!ctrlcblock!                  & CCC      &  {\tt UW} & SIGINT-re végrehajtandó kódblokk\\
+\verb!curdir!                      & Clipper  &  {\tt UW} & Aktuális directory neve\\
+\verb!date!                        & Clipper  &  {\tt UW} & Aktuális dátum\\
+\verb!dati2ostime!                 & CCC      &  {\tt UW} & \{date,time\}-ból rendszeridő\\
+\verb!day!                         & Clipper  &  {\tt UW} & A hónap napja\\
+\verb!deletefile!                  & CA-Tools &  {\tt UW} & Filé törlés\\
+\verb!dirchange!                   & CA-Tools &  {\tt UW} & \verb!cd! parancs programból\\
+\verb!directory!                   & Clipper  &  {\tt UW} & directory lista\\
+\verb!direxist!                    & CCC      &  {\tt UW} & Létezik-e a megadott directory\\
+\verb!dirmake!                     & CA-Tools &  {\tt UW} & \verb!mkdir! parancs programból\\
+\verb!dirname!                     & CA-Tools &  {\tt UW} & Aktuális directory neve\\
+\verb!dirremove!                   & CA-Tools &  {\tt UW} & Törli a könyvtárat\\
+\verb!dirsep!                      & CCC      &  {\tt UW} & Szeparátor: \verb!/! vagy \verb!\!\\
+\verb!diskchange!                  & CA-Tools &  {\tt UW} & Aktuális meghajtó váltás\\
+\verb!diskfree!                    & CA-Tools &  {\tt UW} & Szabad hely a lemezen\\
+\verb!diskname!                    & CA-Tools &  {\tt UW} & Az aktuális meghajtó neve\\
+\verb!dow!                         & Clipper  &  {\tt UW} & Dátumból a hét napja\\
+\verb!doy!                         & CA-Tools &  {\tt UW} & Dátumból az év napja\\
+\verb!dtoc!                        & Clipper  &  {\tt UW} & Dátumból karakter\\
+\verb!dtor!                        & CA-Tools &  {\tt UW} & Fokból radián (szögek)\\
+\verb!dtos!                        & Clipper  &  {\tt UW} & Dátumból string\\
+\verb!empty!                       & Clipper  &  {\tt UW} & Üres-e az argumentum\\
+\verb!endofline!                   & CCC      &  {\tt UW} & Platformfüggő: LF vagy CR+LF\\
+\verb!environment!                 & CCC      &  {\tt UW} & Környezeti változók tömbje\\
+\verb!eom!                         & CA-Tools &  {\tt UW} & A hónap utolsó napja\\
+\verb!eoy!                         & CA-Tools &  {\tt UW} & Az év utolsó napja\\
+\verb!errorblock!                  & Clipper  &  {\tt UW} & Hibakezelő blokk lekérdezés/beállítás\\
+\verb!errorclass!                  & CCC      &  {\tt UW} & Az error osztály azonosítója\\
+\verb!errorcode!                   & CA-Tools &  {\tt UW} & A C szintű errno változó lekérdezése\\
+\verb!errorini!                    & CCC      &  {\tt UW} & Egy error objektumot inicializál\\
+\verb!errorlevel!                  & Clipper  &  {\tt UW} & Processz kilépési érték beállítás\\
+\verb!errornew!                    & Clipper  &  {\tt UW} & Új error objektum\\
+\verb!eval!                        & Clipper  &  {\tt UW} & Kódblokk kiértékelés (végrehajtás)\\
+\verb!exec!                        & CCC      &  {\tt UW} & POSIX, exec\\
+\verb!exename!                     & CA-Tools &  {\tt UW} & Az aktuális process neve (argv(0))\\
+\verb!exp!                         & Clipper  &  {\tt UW} & Exponenciális függvény\\
+\verb!expand!                      & CA-Tools &  {\tt UW} & String szélesítés\\
+\verb!f2bin!                       & CCC      &  {\tt UW} & Lebegőpontos szám karakter reprezentációja\\
+\verb!fchmod!                      & CCC      &  {\tt U~} & POSIX, filé engedély módosítás\\
+\verb!fchown!                      & CCC      &  {\tt U~} & POSIX, filé tulajdonos módosítás\\
+\verb!fclose!                      & Clipper  &  {\tt UW} & Filé lezárás\\
+\verb!fcreate!                     & Clipper  &  {\tt UW} & Filé létrehozás\\   
+\verb!fdup!                        & CCC      &  {\tt UW} & Filé descriptor duplikálás\\
+\verb!ferase!                      & Clipper  &  {\tt UW} & Filé törlés\\
+\verb!ferror!                      & Clipper  &  {\tt UW} & C errno lekérdezés/beállítás\\
+\verb!fflush!                      & CCC      &  {\tt UW} & Stream ürítés\\
+\verb!file!                        & Clipper  &  {\tt UW} & Létezik-e a megadott filé\\
+\verb!fileattr!                    & CA-Tools &  {\tt UW} & Filé attribútumok meghatározása\\
+\verb!filecopy!                    & CA-Tools &  {\tt UW} & Filé másolás\\
+\verb!filedate!                    & CA-Tools &  {\tt UW} & Filé dátum lekérdézés\\
+\verb!filedelete!                  & CA-Tools &  {\tt UW} & Filék törlése\\
+\verb!fileexist!                   & CCC      &  {\tt UW} & Létezik-e a megadott filé\\
+\verb!fileisexecutable!            & CCC      &  {\tt UW} & Végrehajtható-e a megadott filé\\
+\verb!filemove!                    & CA-Tools &  {\tt UW} & Filé áthelyezés\\
+\verb!fileseek!                    & CA-Tools &  {\tt UW} & Filé keresés\\
+\verb!filesize!                    & CA-Tools &  {\tt UW} & Filé méret lekérdezése\\
+\verb!filetime!                    & CA-Tools &  {\tt UW} & Filé idő lekérdezése\\
+\verb!filevalid!                   & CA-Tools &  {\tt UW} & Helyes-e szintaktikailag a filénév\\
+\verb!findclose!                   & CCC      &  {\tt UW} & Befejezi a findfirst/findnext iterációt\\
+\verb!findfirst!                   & CCC      &  {\tt UW} & Filék keresése\\
+\verb!findnext!                    & CCC      &  {\tt UW} & Filék keresése\\
+\verb!findrest!                    & CCC      &  {\tt UW} & Folytat egy félbehagyott findfirst/findnext-et\\
+\verb!findsave!                    & CCC      &  {\tt UW} & Elmenti a findfirst/findnext iteráció állapotát\\
+\verb!fopen!                       & Clipper  &  {\tt UW} & Megnyit egy filét\\
+\verb!fork!                        & CCC      &  {\tt U~} & POSIX, fork\\
+\verb!fread!                       & Clipper  &  {\tt UW} & Olvas egy filéből\\
+\verb!freadstr!                    & Clipper  &  {\tt UW} & Olvas egy filéből\\
+\verb!frename!                     & Clipper  &  {\tt UW} & Átnevez egy filét\\
+\verb!fseek!                       & Clipper  &  {\tt UW} & Filépointer mozgatás\\
+\verb!fsetlock!                    & CCC      &  {\tt UW} & Lockol egy tartományt egy filében\\
+\verb!fstat!                       & CCC      &  {\tt UW} & POSIX, fstat\\
+\verb!fstat_st_mode!               & CCC      &  {\tt UW} & POSIX, filé engedélyek lekérdezése\\
+\verb!ftoc!                        & CA-Tools &  {\tt UW} & Lebegőpontos számból karakter (f2bin)\\   
+\verb!fullmask!                    & CCC      &  {\tt UW} & Összes directory bejegyzés: *.* vagy *\\
+\verb!funlock!                     & CCC      &  {\tt UW} & Elengedi a filén levő lockot\\
+\verb!fwrite!                      & Clipper  &  {\tt UW} & Ír egy filébe\\
+\verb!get_dosconv!                 & CCC      &  {\tt UW} & DOS kompatibilitás szabályozása\\  
+\verb!getclassid!                  & CCC      &  {\tt UW} & Objektum osztály-azonosítója\\
+\verb!getcloexecflag!              & CCC      &  {\tt U~} & Filédescriptor öröklődés lekérdezése\\
+\verb!getdiskfreespace!            & CCC      &  {\tt ~W} & WIN32, szabad hely a lemezen\\
+\verb!getdrivetype!                & CCC      &  {\tt ~W} & WIN32, lemeztípus\\
+\verb!getenv!                      & Clipper  &  {\tt UW} & Környezeti változó lekérdezése\\   
+\verb!getfiletime!                 & CCC      &  {\tt UW} & Filéidők lekérdezése\\
+\verb!getlogicaldrives!            & CCC      &  {\tt ~W} & WIN32, meghajtók\\
+\verb!getmethod!                   & CCC      &  {\tt UW} & Metódus név szerinti kikeresése\\
+\verb!getobjectasarray!            & CCC      &  {\tt UW} & Objektum attribútumaiból array\\
+\verb!getpid!                      & CCC      &  {\tt UW} & Processz azonosító\\
+\verb!getshare!                    & CA-Tools &  {\tt UW} & Default filényitási mód\\
+\verb!gettickcount!                & CCC      &  {\tt UW} & Időmérés ezredmásodpercben\\
+\verb!getvolumeinformation!        & CCC      &  {\tt ~W} & WIN32, kötet infó\\
+\verb!hex2l!                       & CCC      &  {\tt UW} & Hexadecimális számból long\\
+\verb!i2bin!                       & Clipper  &  {\tt UW} & 16 bites előjeles int karakter reprezentációja\\   
+\verb!iniobjectfromarray!          & CCC      &  {\tt UW} & Objektum inicializálása arrayből\\   
+\verb!inkey!                       & Clipper  &  {\tt UW} & Billentyűleütés beolvasása\\   
+\verb!int!                         & Clipper  &  {\tt UW} & Csonkítás egészre\\   
+\verb!isalnum!                     & CCC      &  {\tt UW} & Alfanumerikus-e a string első karaktere\\
+\verb!isalpha!                     & Clipper  &  {\tt UW} & Alfabetikus-e a string első karektere\\
+\verb!isbinary!                    & CCC      &  {\tt UW} & Van-e kontroll karakter a stringben\\
+\verb!isbit!                       & CA-Tools &  {\tt UW} & Be van-e állítva egy adott bit\\
+\verb!iscntrl!                     & CCC      &  {\tt UW} & Cntrl karakter-e a string első karaktere\\
+\verb!isdigit!                     & Clipper  &  {\tt UW} & Számjegy-e a string első karaktere\\
+\verb!islower!                     & Clipper  &  {\tt UW} & Kisbetű-e a string első karaktere\\
+\verb!isprinter!                   & Clipper  &  {\tt UW} & Létezik-e a megadott printer\\
+\verb!isupper!                     & Clipper  &  {\tt UW} & Nagybetű-e a string első karaktere\\
+\verb!isxdigit!                    & CCC      &  {\tt UW} & Hexadecimális számjegy-e a string első karaktere\\
+\verb!l2bin!                       & Clipper  &  {\tt UW} & 32 bites long karakter reprezentációja\\
+\verb!l2hex!                       & CCC      &  {\tt UW} & 32 bites long hexa reprezentációja\\
+\verb!l2oct!                       & CCC      &  {\tt UW} & 32 bites long oktális reprezentációja\\
+\verb!lastdayom!                   & CA-Tools &  {\tt UW} & A hónap utolsó napja\\
+\verb!lchown!                      & CCC      &  {\tt U~} & POSIX, chown\\
+\verb!left!                        & Clipper  &  {\tt UW} & Karakterváltozó kezdőrésze\\
+\verb!len!                         & Clipper  &  {\tt UW} & String és array változók hossza\\
+\verb!like!                        & CA-Tools &  {\tt UW} & Minta illesztés\\
+\verb!localstack!                  & CCC      &  {\tt UW} & Lokális változók stack-je\\
+\verb!log!                         & Clipper  &  {\tt UW} & Logaritmus függvény\\
+\verb!lower!                       & Clipper  &  {\tt UW} & Konverzió kisbetűre\\
+\verb!lstat!                       & CCC      &  {\tt UW} & POSIX, lstat\\
+\verb!lstat_st_mode!               & CCC      &  {\tt UW} & POSIX, filé engedélyek\\
+\verb!ltrim!                       & Clipper  &  {\tt UW} & Szóköz eltávolítás balról\\
+\verb!max!                         & Clipper  &  {\tt UW} & Kiválasztja a nagyobbat\\
+\verb!memoline!                    & Clipper  &  {\tt UW} & Karakterváltozóból egy sor\\
+\verb!memoread!                    & Clipper  &  {\tt UW} & Beolvas egy filét egy karakterváltozóba\\
+\verb!memotran!                    & Clipper  &  {\tt UW} & Használaton kívül\\
+\verb!memowrit!                    & Clipper  &  {\tt UW} & Kiír filébe egy karakterváltozót\\
+\verb!message!                     & CCC      &  {\tt UW} & Üzenet a képernyő közepén\\   
+\verb!min!                         & Clipper  &  {\tt UW} & Kiválasztja a kisebbet\\
+\verb!mod!                         & Clipper  &  {\tt UW} & Maradékképzés\\   
+\verb!month!                       & Clipper  &  {\tt UW} & Dátumból hónap\\   
+\verb!numand!                      & CA-Tools &  {\tt UW} & Bitenkénti logikai és\\   
+\verb!numnot!                      & CA-Tools &  {\tt UW} & Bitenkénti tagadás\\
+\verb!numor!                       & CA-Tools &  {\tt UW} & Bitenkénti logikai vagy\\
+\verb!numprinter!                  & CCC      &  {\tt UW} & Printerek száma\\   
+\verb!numxor!                      & CA-Tools &  {\tt UW} & Bitenkénti logikai kizáró vagy\\
+\verb!objectclass!                 & CCC      &  {\tt UW} & Az object osztály azonosítója\\
+\verb!objectini!                   & CCC      &  {\tt UW} & Egy object osztályú objektumot inicializál\\
+\verb!objectnew!                   & CCC      &  {\tt UW} & Új object osztályú objektum\\
+\verb!oct2l!                       & CCC      &  {\tt UW} & Oktális számból 32 bites long\\
+\verb!ostime!                      & CCC      &  {\tt UW} & Renszderidő\\
+\verb!ostime2dati!                 & CCC      &  {\tt UW} & Rendszeridőből \{date,time\}\\
+\verb!outerr!                      & Clipper  &  {\tt UW} & Írás stderr-re\\
+\verb!outstd!                      & Clipper  &  {\tt UW} & Írás stdout-ra\\
+\verb!pad!                         & Clipper  &  {\tt UW} & (Szóköz) kiegészítés jobbra\\ 
+\verb!padc!                        & Clipper  &  {\tt UW} & (Szóköz) kiegészítés kétoldalt\\
+\verb!padl!                        & Clipper  &  {\tt UW} & (Szóköz) kiegészítés balra\\ 
+\verb!padr!                        & Clipper  &  {\tt UW} & (Szóköz) kiegészítés jobbra\\
+\verb!pathsep!                     & CCC      &  {\tt UW} & Szeparátor: \verb!;! vagy \verb!:!\\
+\verb!pi!                          & CA-Tools &  {\tt UW} & {\em Pi\/} értéke\\
+\verb!pipe!                        & CCC      &  {\tt UW} & POSIX, készít egy pipe-ot\\   
+\verb!printready!                  & CA-Tools &  {\tt UW} & Üzemkész-e a printer\\
+\verb!procline!                    & Clipper  &  {\tt UW} & Aktuális programsor\\
+\verb!procname!                    & Clipper  &  {\tt UW} & Aktuális függvénynév\\
+\verb!putenv!                      & CCC      &  {\tt UW} & Környezeti változó beállítás\\
+\verb!qout!                        & Clipper  &  {\tt UW} & \verb!?! operátor\\ 
+\verb!qqout!                       & Clipper  &  {\tt UW} & \verb!??! operátor\\
+\verb!quitblock!                   & CCC      &  {\tt UW} & Kilépéskor végrehajtódó kódblokk\\
+\verb!rand!                        & CA-Tools &  {\tt UW} & Pszeudo véletlen számok (0,1)\\ 
+\verb!random!                      & CA-Tools &  {\tt UW} & Pszeudo véletlen számok (0,65535)\\
+\verb!rat!                         & Clipper  &  {\tt UW} & Substring keresés hátulról\\
+\verb!replicate!                   & Clipper  &  {\tt UW} & String többszörözés\\
+\verb!reset_dosconv!               & CCC      &  {\tt UW} & DOS kompatibilitás szabályozása\\
+\verb!restfseek!                   & CA-Tools &  {\tt UW} & Visszaállítja a fileseek iteráció állapotát\\
+\verb!right!                       & Clipper  &  {\tt UW} & String befejező része\\
+\verb!round!                       & Clipper  &  {\tt UW} & Kerekítés\\
+\verb!rtod!                        & CA-Tools &  {\tt UW} & Radiánból fok (szögek)\\
+\verb!rtrim!                       & Clipper  &  {\tt UW} & Szóköz eltávolítás jobbról\\
+\verb!s_isblk!                     & CCC      &  {\tt UW} & POSIX, block eszköz-e a filé\\
+\verb!s_ischr!                     & CCC      &  {\tt UW} & POSIX, karakteres eszköz-e a filé\\
+\verb!s_isdir!                     & CCC      &  {\tt UW} & POSIX, directory-e a filé\\
+\verb!s_isfifo!                    & CCC      &  {\tt UW} & POSIX, FIFO-e a filé\\
+\verb!s_islnk!                     & CCC      &  {\tt UW} & POSIX, szimbolikus link-e a filé\\
+\verb!s_isreg!                     & CCC      &  {\tt UW} & POSIX, közönséges filé-e a filé\\
+\verb!s_issock!                    & CCC      &  {\tt UW} & POSIX, socket-e a filé\\
+\verb!sat!                         & CCC      &  {\tt UW} & Substring keresése megadott pozíciótól\\
+\verb!savefseek!                   & CA-Tools &  {\tt UW} & Menti a fileseek iteráció állapotát\\
+\verb!seconds!                     & Clipper  &  {\tt UW} & Rendszeridő másodpercekben\\
+\verb!sectotime!                   & CA-Tools &  {\tt UW} & Másodpercekből idő\\
+\verb!set!                         & Clipper  &  {\tt UW} & Set változók állítgatása\\
+\verb!set_dosconv!                 & CCC      &  {\tt UW} & DOS kompatibilitás szabályozása\\
+\verb!setalternate!                & Clipper  &  {\tt UW} & Alternate stream ki/bekapcsolás\\
+\verb!setaltfile!                  & Clipper  &  {\tt UW} & Alternate stream filébe irányítás\\
+\verb!setbit!                      & CA-Tools &  {\tt UW} & Egy bit beálítása\\
+\verb!setcancel!                   & Clipper  &  {\tt UW} & Használaton kívül\\
+\verb!setclassid!                  & CCC      &  {\tt UW} & Objektum típus beállítása\\
+\verb!setcloexecflag!              & CCC      &  {\tt U~} & Filédescriptor öröklődés beállítása\\
+\verb!setcolor!                    & Clipper  &  {\tt UW} & Színek beállítása\\
+\verb!setconfirm!                  & Clipper  &  {\tt UW} & Használaton kívül\\
+\verb!setconsole!                  & Clipper  &  {\tt UW} & Konzol stream ki/bekapcsolás\\ 
+\verb!setcursor!                   & Clipper  &  {\tt UW} & Kurzor méret állítás\\
+\verb!setdateformat!               & Clipper  &  {\tt UW} & Dátum formátum beállítás\\
+\verb!setdosconv!                  & CCC      &  {\tt UW} & DOS kompatibilitás szabályozása\\
+\verb!setextra!                    & Clipper  &  {\tt UW} & Extra stream ki/bekapcsolás\\
+\verb!setextrafile!                & Clipper  &  {\tt UW} & Extra stream filébe irányítás\\
+\verb!setfdati!                    & CA-Tools &  {\tt UW} & Filéidők beállítása\\
+\verb!setfiletime!                 & CCC      &  {\tt UW} & Filéidők beállítása\\
+\verb!setinsert!                   & Clipper  &  {\tt UW} & Szerkesztési mód\\
+\verb!setposixsignal!              & CCC      &  {\tt UW} & SIGINT blokkolás\\
+\verb!setprinter!                  & Clipper  &  {\tt UW} & Printer stream ki/bekapcsolás\\
+\verb!setprintfile!                & Clipper  &  {\tt UW} & Printer stream filébe irányítás\\
+\verb!setshare!                    & CA-Tools &  {\tt UW} & Default filémegosztási mód\\
+\verb!signalblock!                 & CCC      &  {\tt UW} & Szignál kezelő kódblock\\
+\verb!sin!                         & CA-Tools &  {\tt UW} & Szinusz\\
+\verb!sleep!                       & CCC      &  {\tt UW} & Megadott ideig vár\\
+\verb!sound!                       & CA-Tools &  {\tt UW} & Sípol\\
+\verb!space!                       & Clipper  &  {\tt UW} & Szőközök\\
+\verb!spawn!                       & CCC      &  {\tt UW} & Processz indítás\\
+\verb!sqrt!                        & Clipper  &  {\tt UW} & Négyzetgyök\\
+\verb!stat!                        & CCC      &  {\tt UW} & POSIX, stat\\
+\verb!stat_st_mode!                & CCC      &  {\tt UW} & POSIX, filé engedélyek\\
+\verb!stod!                        & CA-Tools &  {\tt UW} & Stringből dátum\\
+\verb!str!                         & Clipper  &  {\tt UW} & Karakterből szám\\
+\verb!strtran!                     & Clipeer  &  {\tt UW} & Substring helyettesítés\\ 
+\verb!stuff!                       & Clipeer  &  {\tt UW} & Substring helyettesítés\\
+\verb!substr!                      & Clipper  &  {\tt UW} & Substring képzés\\
+\verb!tan!                         & CA-Tools &  {\tt UW} & Tangens\\
+\verb!tempfile!                    & CA-Tools &  {\tt UW} & Ideiglenes filénév\\
+\verb!thread_cond_destroy!         & CCC      &  {\tt UW} & Feltétel megszüntetése\\
+\verb!thread_cond_init!            & CCC      &  {\tt UW} & Feltétel inicializálása\\
+\verb!thread_cond_signal!          & CCC      &  {\tt UW} & Jelzés a feltételre várakozó szálaknak\\
+\verb!thread_cond_wait!            & CCC      &  {\tt UW} & Várakozás a feltételre\\
+\verb!thread_create!               & CCC      &  {\tt UW} & Új szál indítása\\
+\verb!thread_detach!               & CCC      &  {\tt UW} & Szál függetlenítése (nem lehet rá várni)\\
+\verb!thread_exit!                 & CCC      &  {\tt UW} & Kilépés az aktuális szálból\\
+\verb!thread_join!                 & CCC      &  {\tt UW} & Megvárja egy szál befejeződését\\
+\verb!thread_mutex_destroy!        & CCC      &  {\tt UW} & Megszünteti a mutexet\\
+\verb!thread_mutex_init!           & CCC      &  {\tt UW} & Inicializálja a mutexet\\
+\verb!thread_mutex_lock!           & CCC      &  {\tt UW} & Megfogja a mutexet\\   
+\verb!thread_mutex_trylock!        & CCC      &  {\tt UW} & Megróbálja megfogni a mutexet\\   
+\verb!thread_mutex_unlock!         & CCC      &  {\tt UW} & Elengedi a mutexet\\
+\verb!thread_self!                 & CCC      &  {\tt UW} & Az aktuális szál azonosítója\\
+\verb!time!                        & Clipper  &  {\tt UW} & Az aktuális idő\\
+\verb!timetosec!                   & CA-Tools &  {\tt UW} & Az éjfél óta eltelt másodpercek száma\\
+\verb!timevalid!                   & CA-Tools &  {\tt UW} & Időspecifikáció ellenőrzése\\
+\verb!tone!                        & Clipper  &  {\tt UW} & Sípol\\   
+\verb!topmessage!                  & CCC      &  {\tt UW} & Üzenet a képernyő tetején\\
+\verb!touch!                       & CCC      &  {\tt UW} & Filéidő beállítása az aktuális időre\\   
+\verb!transform!                   & Clipper  &  {\tt UW} & Tetszőléges érték formázása\\
+\verb!trim!                        & Clipper  &  {\tt UW} & Szóköz eltávolítás\\
+\verb!truename!                    & CA-Tools &  {\tt UW} & Standard file/path specifikáció\\
+\verb!txt_ccclib!                  & CCC      &  {\tt UW} & A CCC runtime library neve\\
+\verb!upper!                       & Clipper  &  {\tt UW} & Nagybetűre konvertál\\
+\verb!utime!                       & CCC      &  {\tt UW} & POSIX, utime\\
+\verb!val!                         & Clipper  &  {\tt UW} & Stringet számra konvertál\\
+\verb!valtype!                     & Clipper  &  {\tt UW} & Megadja az argumentuma típusát\\
+\verb!varstack!                    & CCC      &  {\tt UW} & Kiírja a változó stacket\\
+\verb!vartab_rebuild!              & CCC      &  {\tt UW} & Elindítja a szemétgyűjtést\\
+\verb!ver_ccclib!                  & CCC      &  {\tt UW} & A CCC runtime library változatszáma\\
+\verb!wait!                        & CCC      &  {\tt UW} & UNIX-on wait, Windowson cwait\\
+\verb!waitpid!                     & CCC      &  {\tt UW} & UNIX-on waitpid, Windowson cwait\\
+\verb!wordlist!                    & CCC      &  {\tt UW} & String felvágása szavakra\\
+\verb!xtoc!                        & CA-Tools &  {\tt UW} & Bármilyen kifejezésből karakter\\
+\verb!year!                        & Clipper  &  {\tt UW} & Dátumból év\\   
+\end{tabular}

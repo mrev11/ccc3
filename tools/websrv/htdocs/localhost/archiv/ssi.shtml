@@ -1,0 +1,10 @@
+
+<html>
+<!--#include virtual="ssi1.shtml"-->
+<p>
+<!--#include virtual="ssi2.shtml"-->
+<p>
+<!--#include virtual="/hello.txt"-->
+<p>
+ssi (archiv)
+</html>

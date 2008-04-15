@@ -1,0 +1,77 @@
+
+---------------------------------------------------------------------------
+xtxyacc.y:
+
+  YACC program, ami az xtranslate illesztésekor megkeresi a bemenet
+  adott részén a maximális hosszúságú legális Clipper kifejezést.
+
+  xtxlegal(toklist,n) --> max kifejezés hossza
+    
+    toklist egy array, ami a tokeneket tartalmazza, ennek n-eik
+    elemétől keres a program egy legális kifejezést
+
+
+
+---------------------------------------------------------------------------
+prg2ppo.prg:
+
+  A preprocesszor főprogramja
+
+
+---------------------------------------------------------------------------
+xtlex.lex:
+
+  LEX program, ami egy bemeneti sort tokenizál, a tokenizált
+  sorokon csinálja a program az xtranslate-ek illesztését.
+  
+  tokenize(inputline) --> {tokenek}
+
+
+---------------------------------------------------------------------------
+trinp.lex:
+
+  LEX program az #xtranslate dirktívák elemzéséhez, a direktívákat
+  tokenekre bontja, ennek alapján történik a szabály adatbázis töltése.
+  
+  token_translate(inputline) --> {{left},{right}}
+  
+    A bemeneti sort tokenekre bontja, és felépíti a szabályt reprezentáló
+    kételemű arrayt. A visszaadott arrayben még a markerek egy közbülső
+    állapotban (arrayként) vannak ábrázolva.
+  
+
+
+---------------------------------------------------------------------------
+input.lex:
+
+  LEX program, ami az input olvasását vezérli:
+
+    végzi az inkludálást,
+    kihagyja az ifdef/else/endif kihagyandó részeit,
+    kihagyja a kommenteket,
+    kiegyenesíti a folyatósorokat,
+    szétválasztja az egy sorba írt utasításokat,
+    számolja a sorokat,
+    kikerüli a stringeket.
+    
+  #define és #xtranslate utasításoknál hívja szabály adatbázist 
+  töltő programot, egyéb soroknál hívja a szabályalkalmazó
+  (illesztés/helyettesítés) programot.
+    
+  processing(inputfile)  --> NIL
+
+    Ez a feldolgozás kiindulópontja.
+ 
+
+  Hívja az alábbi Clipper szintű függvényeket:
+  
+  nextline kiír egy #line direktívát
+  prepro    : elvégzi egy sor (nem definíció) preprocesszálását
+  define    : betesz egy #define utasítást a szabály adatbázisba
+  translate : betesz egy #xtranslate utasítást a szabály adatbázisba
+  
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+  
+      

@@ -1,0 +1,41 @@
+                              
+                               
+(define-function gtk_text_attributes_get_type
+  (in-module "GtkTextAttributes")
+  (c-name "gtk_text_attributes_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_text_attributes_new
+  (c-name "gtk_text_attributes_new")
+  (is-constructor-of GtkTextAttributes)
+  (return-type "GtkTextAttributes*")
+)
+
+(define-method copy
+  (of-object "GtkTextAttributes")
+  (c-name "gtk_text_attributes_copy")
+  (return-type "GtkTextAttributes*")
+  (caller-owns-return #t)
+)
+
+(define-method copy_values
+  (of-object "GtkTextAttributes")
+  (c-name "gtk_text_attributes_copy_values")
+  (return-type "none")
+  (parameters
+    '("GtkTextAttributes*" "dest")
+  )
+)
+
+(define-method unref
+  (of-object "GtkTextAttributes")
+  (c-name "gtk_text_attributes_unref")
+  (return-type "none")
+)
+
+(define-method ref
+  (of-object "GtkTextAttributes")
+  (c-name "gtk_text_attributes_ref")
+  (return-type "none")
+)

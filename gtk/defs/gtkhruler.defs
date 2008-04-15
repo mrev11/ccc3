@@ -1,0 +1,16 @@
+
+
+(define-function gtk_hruler_get_type
+  (in-module GtkHRuler)
+  (c-name "gtk_hruler_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_hruler_new
+  (c-name "gtk_hruler_new")
+  (is-constructor-of GtkHRuler)
+  (return-type "GtkWidget*")
+)
+
+
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+wget -m  --no-check-certificate  https://localhost:4433  #--delete-after
+#wget -m                          http://localhost:8080   --delete-after

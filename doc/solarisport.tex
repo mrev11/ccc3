@@ -1,0 +1,363 @@
+
+\iftth
+\def\pcenter#1{#1}
+\else
+\def\pcenter#1{\parbox{\hsize}{\center #1}}
+\fi
+
+\pagetitle%
+{\pcenter{A Kontó számlavezető rendszer portolása Solarisra}}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{2002.\ április 11.}
+
+\section{Áttekintés}
+
+A ComFirm Bt.\  2002.\ márciusában abban a szerencsés 
+és megtisztelő helyzetben volt, hogy fő termékét, a Kontó
+számlavezető rendszert portolhatta Solaris operációs
+rendszerre. Kizárólag saját erejére támaszkodva $-$ kis cég lévén $-$
+a ComFirm nem vállalkozhatott volna erre a munkára. 
+A projektet az tette lehetővé, hogy 
+a  \emph{Sun Microsystems Magyarország Kft.} és 
+az \emph{Assyst Rendszerház Kft.} 
+egy hónapra ingyenesen rendelkezésünkre
+bocsátott egy SunFire~880 típusú gépet. 
+A gép az alábbi főbb jellemzőkkel bírt:
+
+\begin{itemize}
+ \item 2 db 750MHz Ultrasparc III.\ processzor,
+ \item 4 GB memória,
+ \item Solaris 8 operációs  rendszer.
+\end{itemize}
+
+Jelen dokumentum röviden ismerteti a Kontó felépítését és
+a fejlesztésében használt eszközöket, majd tárgyalja a portolás 
+tapasztalatait és eredményeit.
+
+\section{A Kontó architektúrája}
+
+\subsection{DOS-Novell korszak}
+
+A Kontó egy multidevizás, önálló főkönyvvel, zsírókapcsolattal
+rendelkező, számos banki ügyletet (betét, hitel, 
+értékpapír, csoportos megbízások, állandó megbízások, faktoring, stb.) 
+támogató integrált banki számlavezető rendszer.  
+
+A program első változatát, ami kb.\ tíz éve készült, 
+több bank (Budapest Bank, Pogári Bank, Konzumbank) fiókrendszerként 
+használta. A földrajzilag távoleső bankfiókokban (melyek száma éveken át 100
+felett volt) mind egy-egy Kontó installáció működött. A bankfiókok
+és a központ közötti kommunikáció sokáig csak modemkapcsolattal volt 
+megoldható, így csak decentralizált rendszert lehetett működtetni. 
+A rendszer DOS-Novell hálózaton futott.
+
+A körülmények kényszere folytán a Kontó fejlesztéséhez a fent leírt
+környezet tipikus eszközét, a Clippert használtuk.\footnote{Ezt lényegében
+kötelezővé tették számunkra a BBRt-ben.} A Clipper használatbavételekor
+azonban nyitvahagytuk azokat az utakat, amik később lehetővé tették 
+a program korszerűsítését:
+\begin{itemize}
+\item 
+  Megtiltottuk a dBase-ből örökölt, programozáselméleti szempontból 
+  rossz nyelvi elemek használatát, pl.\ a public változókat.
+\item 
+  A dBase stílusú adatbáziskezelés helyett bevezettük a táblaobjektumokat
+  (ez a relációs adatbázis navigációs modelljének egy objektum alapú
+  implementációja).
+\item
+  Az adatbázis leírására bevezettünk egy adatszótárt.
+\item
+  Létrehoztunk egy sor kódgenerátort, amivel a programok mind belsőleg
+  mind külsőleg egységes képet kaptak a programozó személyétől függetlenül.
+\end{itemize}
+E módszerekkel elértük, hogy a programjaink meglehetősen stabilak lettek,
+amire szükség is volt, hiszen nagy mennyiségű programról van szó.
+A Kontó többszáz önálló, de ugyanazon az adathalmazon dolgozó modulból áll, 
+amiknek egymással és az adatbázissal összhangban kell működni. 
+A fiókrendszernek a programozók közvetlen segítsége nélkül kellett 
+életképesnek maradnia, miközben folyamatosan követni kellett a banki 
+ügyletekben bekövetkezett változásokat, amik mind a programokat, 
+mind az adatbázis struktúrákat érintették (és azóta is érintik).  
+Hogy mást ne említsek, 1996-ban egyszerre három bank fiókhálózatában 
+hajtottuk végre a számlaszámkonverziót 12-ről 24~jegyre.
+
+\subsection{Windows/UNIX platform}
+
+A korszerűsítésnek azt az érdekes útját választottuk, 
+hogy nem az alkalmazási programokat írtuk át új platformra,
+hanem a fejlesztő eszközt. Ez azt jelenti, hogy elkészítettünk
+egy olyan  fordítót és futtató környezetet (ez a CCC), 
+ami képes a Kontó futtatására Windows NT és UNIX operációs rendszereken.
+A CCC 1996-ban már alkalmas volt arra, hogy a BBRt-nek javasoljuk
+a bankkártya rendszer Windows NT-re való átállítását. 
+
+Az addig karakteres megjelenésű programokhoz grafikus interfészt
+készítettünk. Itt is megőriztük a kompatibilitást a korábbi alkalmazási 
+programokkal, azaz a karakteres és grafikus interfészű program
+azonos, csak a (UNIX-on dinamikusan betöltött) megjelenítő
+könyvtárban mutatkozik eltérés. A kompatibilitás megtartásának ára, 
+hogy a grafikus interfész szükségszerűen puritán. 
+
+A karakteres interfésznek ugyanakkor fontos szerepe maradt, ui.\
+ehhez egyszerű fullscreen terminál protokoll készíthető (CCC terminál), 
+amivel megoldottuk a Kontó terminálszervereken való futtatását mind Windowson,
+mind UNIX-on. A CCC terminál minden elképzelhető rendszeren fut
+(DOS, Windows, Linux, böngésző), a használatához elegendő egy 14 ezres
+modem, azaz a lehető legvékonyabb kliens.
+
+Jelenleg a Kontó mindenhol terminálszerveres üzemmódban fut:
+\begin{itemize}
+\item 
+   A Budapest Bankban a bankkártya-elszámolást végző Kontó
+   Windows~NT szerveren fut, míg a karakteres terminálok 
+   Windows~NT/2000 gépeken.
+\item 
+   Az Otthon Lakástakarék Pénztárban a Kontó Linux szerveren fut
+   grafikus módban. Itt a munkaállomások is Linuxot használnak, 
+   és a grafikus Kontó képernyőjét X szerver jeleníti meg.
+\item 
+   A Konzumbankban Linuxon fut a Kontó, az országos fiókhálózatban
+   karakteres terminál van használatban, amit Windows~2000 futtat.
+\end{itemize}
+ 
+
+\section{Solaris port}
+
+\subsection{CCC fejlesztői környezet}
+
+A CCC fejlesztői környezetről részletes információ kapható
+a \href{http://www.comfirm.hu/ccc2/ccc2.html}{CCC 2.x áttekintés} 
+dokumentumban, sőt innen a fejlesztőeszköz le is tölthető.
+Korábban a CCC-t csak Windows~NT/2000 és Linux rendszereken 
+lehetett installálni, de éppen a jelen projekt eredményeként
+a CCC már Solarison is elérhető.
+
+Dióhéjban annyit érdemes megjegyezni a CCC-ről, 
+hogy a  kódot C++-ra fordítja, amit továbbfordítunk
+az adott platform C++ fordítójával, és linkelünk a rendszerkönyvtárakkal,
+valamint a CCC futtató könyvtárral. Mivel a CCC-t \textit{nagyon könnyen}
+lehet C++ rutinokkal bővíteni,  az operációs rendszer 
+(és a rengeteg egyéb könyvtár) minden lehetősége ugyanúgy elérhető, 
+mint a C programokból, miközben a programozás zöme magasszintű, termelékeny
+és biztonságos nyelven történik.
+
+A CCC környezet fontos eleme egy projekt menedzser
+(lásd \href{http://www.comfirm.hu/ccc2/build.html}{Programkészítés a Build-del}), 
+ami arra van tervezve, hogy ugyanabból a forrásállományból minden támogatott 
+platformon automatikusan elkészítse a működő programot. A projekt menedzser 
+elvégzi az ismert make program feladatát, ügyel a megfelelő 
+karakterkészlet használatára, elkülönítve tárolja a különböző 
+platformokra fordított objecteket, stb., végeredményben lehetővé teszi,
+hogy a CCC projektek egyszerű másolással legyenek mozgathatók
+a platformok között, bármiféle konverzió nélkül.
+
+A fentiekből sejthető, hogy a Kontó Solarisra való portolása
+lényegében ugyanaz a feladat, mint a CCC Solarisos változatának
+előállítása. Valóban ez volt a helyzet. A portolás során kizárólag
+a CCC fordító és futtatókönyvtár (csekély mértékű) javítgatásával
+kellett foglalkozni. Amikor ez elkészült, az egész Kontó azonnal működőképes
+lett anélkül, hogy az alkalmazási programokban akár egy byte
+átírására is szükség lett volna. 
+
+A következőkben kitérünk a portolási munka egyes problémáira.
+
+\subsection{Különféle fordítók}
+
+Először is választani kellett a szóbajövő fordítók között.
+\begin{itemize}
+ \item 32 bites GCC 2.95 (GNU),
+ \item 64 bites GCC 3.01 (GNU), 
+ \item Forte, a Solaris natív 64-bites C fordítója.
+\end{itemize}
+
+A legkézenfekvőbb választás a 32~bites~GCC, hiszen a Linuxon eddig is
+ezt használtuk.\footnote{Windowson az Microsoft-C, Borland-C és Watcom-C is
+támogatott.}  A fordító hátránya, hogy nem használja ki teljes 
+mértékben a 64~bites processzor lehetőségeit. A 64~bitesség 
+a nagy filék kezelésében, és az ún.\ file mapping-ben jelent pluszt
+a 32~bithez képest. Megjegyzem, hogy a 64 bites programok általában
+nem gyorsabbak a 32~biteseknél. Végül emellett a fordító mellett
+maradtunk, és a nagy filék kérdését (LFS) a következő pontban ismertetett
+módon oldottuk meg.
+
+A 64~bites GCC az ismertetése szerint béta állapotban van, 
+ezért nem tettünk vele komoly kísérletet.
+
+Az \emph{Assyst Rendszerház Kft.} jóvoltából 40 napos licence-szel 
+kapott Forte fordítóval biztató kísérletünk volt, de végül elakadtunk.
+A C++ függvények névképzése a GCC-ben és a Fortéban eltérő. 
+Amikor egy megosztott könyvtárat dinamikusan betöltünk, akkor a  programban
+explicite meg kell nevezni a könyvtárban levő függvényeket, ezért az ilyen 
+program nem lehet hordozható. Mivel ez viszonylag sok kódot érintett, 
+le kellett mondanunk a Forte használatáról.\footnote{
+Hasonló problémával kerültem szembe a Windowsos CCC Alpha gépre történő
+portolásánál, ám ott csak néhány függvényről volt szó.}
+
+\subsection{Nagy filék támogatása}
+
+32 bites rendszereken azért nehéz a nagy filék kezelése, 
+mert 32 bites \verb!long!-okban csak 2~GB-ig lehet megadni a file offseteket
+az \verb!lseek! függvénynek és társainak. A szabványos LFS (Large File Support)
+azonban az ilyen rendszereken is lehetővé teszi a nagy filék kezelését.
+
+A CCC az 1.5.00 változattól LFS-sel fordítható, 
+ehhez az alábbi javításokra volt szükség:
+
+\begin{enumerate}
+\item 
+   Az egész rendszerben alkalmazni kell az alábbi fordítási opciókat:
+   \begin{verbatim}
+   -D_FILE_OFFSET_BITS=64
+   -D_LARGEFILE_SOURCE
+   \end{verbatim}
+\item
+   A \verb!fseek!, \verb!fsetlock!, \verb!funlock! függvényekben,
+   az \verb!offs_t! típust megfelelő gondossággal kell továbbadni.
+\item
+   Az \verb!fopen!-ben alkalmazott protokoll lockot hátrább kell tenni.
+\end{enumerate}
+
+A leírtak gond nélkül működnek Solarison és 2.4.x kernelű Linuxon.
+2.2.x kernelű Linuxon a CCC-t nem szabad LFS-sel fordítani, mert
+az fopen protokoll lockja (2~GB fölé kerülvén) mindig sikertelen lesz.
+
+
+\subsection{Adatbázis meghajtók}
+
+A CCC-ben léteznek különféle adatbázisszerverekhez készült interfészek
+(Oracle, MS-SQL Server, PostgreSQL, MySQL), most azonban nem ezekről
+lesz szó, hanem azokról az index szekvenciális filékezelőkről,
+amikkel a Kontót teszteltük a Solarison, ezek:
+
+\begin{itemize}
+ \item  BTBTX:   saját kulcskezelőre épülő adatbázis driver,
+ \item  DATIDX:  Ctree adatbázis driver (Konzumbank), 
+ \item  DBFCTX:  dbf adatfilé, Ctree index (BBRt, Otthon Lakástakarék).
+\end{itemize}
+
+A BTBTX driver az egyetlen, ami ,,mindent'' tud. Másolással 
+hordozhatók az filék Solaris, Linux és Windows között. A platformok
+eltérő bytesorrendjét az adatbázis driver automatikusan kezeli.
+Nincs akadálya a nagy filék létrehozásának. Egy 13 milliós számla
+állomány (mérete 7GB) packolása fél óráig tart. A BTBTX driver
+kifejezetten alkalmas óriási adatállományok tárolására.
+
+A DATIDX driver hibája, hogy a dat adatfilé nem hordozható másolással
+az eltérő bytesorrendű platformok között. Nem sikerült a Ctree-hez
+olyan fordítási opciót találni, ami ezt lehetővé tette volna,
+annak ellenére, hogy a dokumentáció szerint létezik ilyen.
+A Ctree könyvtár az LFS-t sem támogatja.
+
+A DBFCTX driver esetében a dbf adatfilék triviálisan platformfüggetlenek,
+és az LFS-is érvényesül. A ctx indexek nem hordozhatók, de ez nem okozhat
+gondot, mivel automatikusan újragenerálódnak. A ctx-ek nem növekedhetnek
+2~GB fölé.
+
+A Ctree könyvtárra épülő utóbbi két adatbázis driver bizonyos korlátokkal
+rendelkezik, ezek azonban messze felülmúlják a Kontóban jelenleg előre
+látható követelményeket. A FairCom honlapjáról származó információ
+szerint a Ctree újabb verzióiban ezek a határok már megszűntek, a tesztelésre
+rendelkezésre álló rövid idő azonban nem lett volna elég az újabb Ctree
+változat beszerzésére. Minhárom adatbázis driverrel a Kontó hibamentesen 
+működött.
+
+\subsection{Bus error}
+
+Az olyan kifejezések, mint  \verb!long l=*(long*)p;! hibásak,
+mert a processzor nem minden címről képes felszedni long típusú
+változót, hanem bizonyos (nem 4 byte-ra igazított) p értékeknél 
+,,bus error'' üzenet keletkezik. Ezekkel a hibákkal találkozik először 
+a RISC processzorok világában újonc programozó.
+
+
+\subsection{Byte sorrend}
+
+Intel platformokon az integer típusú számok legkisebb helyértékű
+byte-ja van a legkisebb memóriacímen, ez az ún. \emph{little endian}
+számábrázolás. A RISC típusú processzorok többségén (a Sparcon is)
+fordított a helyzet, a legkisebb memóriacímen a legnagyobb 
+helyiértékű byte van, ez a \emph{big endian} számábrázolás. 
+
+A CCC kódjában megbújt néhány olyan rész, ami a számábrázolás
+eltérése miatt nem volt hordozható az Intel és Sparc között.
+Ezeket a hibákat fel kellett kutatni, és ki kellett javítani. 
+Különös figyelmet kellett fordítani a hálózaton át továbbított integer
+mennyiségek byte sorrendjére.
+
+
+\section{Futási eredmények értékelése}
+
+A programok futási sebességéről tömören azt mondhatjuk, hogy
+az arányos a CPU órajelével függetlenül attól, hogy Intel vagy
+Sparc processzorról van-e szó. Ezt az alapján állítjuk, hogy a Kontó
+az 1.5~GHz-es AMD processzoron (Linuxon) kb.\ kétszer olyan gyors, 
+mint a 750~MHz-es Ultrasparcon. Ezért a futási idők részletesebb mérésének
+és elemzésének nem is láttuk értelmét.
+
+A processzorteljesítmény szerepét két tipikus szituációban
+érdemes vizsgálni:
+\begin{itemize}
+\item 
+  A batch jellegű feldolgozások (napi nyitás/zárás, időszaki zárlat, stb.)
+  szempontjából, ahol követelmény, hogy a feldolgozás ésszerű időn
+  belül elkészüljön.
+\item
+  Az egyszerre futtatott processzek számát illetően az a követelmény,
+  hogy a bank összes ügyintézője által egyidejűleg használt összes program
+  fennakadás nélkül fusson.
+\end{itemize}
+ 
+A batch feldolgozásokra jellemző, hogy ezek futási ideje a processzorok
+számának növelésével nem javítható lényegesen. A jelenlegi gyorsasági
+követelményeket azonban a Kontó kényelmesen teljesíti, néhány perces, 
+negyedórás futási időkről van szó, ezért a batch feldolgozások
+Sparcon ugyanúgy elvégezhetők, mint Intelen.\footnote{
+Nem volt azonban ez mindig így. A BBRt bankkártya fiókban 
+a DOS-Novell környezetben futó régi Kontót sok munkával kellett
+optimalizálni, amíg a félnapos futási időket pár órára leszorítottuk.
+Megjegyzem, hogy a futási idő egyben biztonsági kérdés, ui.\
+nem megengedhető, hogy egy gikszer miatt megismételt feldolgozás
+akadályozza a bank kinyitását.}
+
+Az egyszerre futó programok teljesítménye nyilvánvalóan arányos
+a processzorok számával és a memória méretével. 
+Ebben rejlik a Sun platform óriási előnye:
+a processzorok számának emelésével és a memória méretének
+növelésével\footnote{
+Intelen mindkét lehetőség korlátozott. A mai inteles architektúrák
+egyike sem támogat 4GB-nál nagyobb memóriát.}
+arányosan növekszik a párhuzamosan futtatható programok száma. 
+Ez alapján állítható (a gyakorlati ellenőrzés azért szükséges volna), 
+hogy Sun platformon a Kontó (magyar viszonylatban) bármekkora fiókhálózat 
+igényeit képes volna kielégíteni.
+
+
+\section{Összefoglalás}
+
+Az összességében sikeres projekt erdeményeit az alábbiakban 
+sorolom fel:
+
+\begin{itemize}
+\item 
+   Elkészült a CCC szabad forráskódú fejlesztő eszköz Solarisos
+   változata (32 bites GCC-vel), és ez napokon belül letölthető
+   lesz a webről.
+\item
+   Teszteltük a Kontó integrált banki számlavezető rendszert
+   Solarison három adatbáziskezeléssel is (BTBTX, DATIDX, DBFCTX),
+   és minden esetben megbízható, hibamentes működést tapasztaltunk.
+\item
+   A futásteljesítmény elemzése alapján valószínűsíthető,
+   hogy megfelelően kiépített Sun számítógépen a Kontó
+   magyar viszonylatban bármekkora fiókhálózat kiszolgálására képes.
+\end{itemize}
+ 
+Befejezésül köszönetet mondok 
+a  \emph{Sun Microsystems Magyarország Kft.}-nek és 
+az \emph{Assyst Rendszerház Kft.}-nak, 
+akik kölcsönözték részünkre a portoláshoz használt számítógépet, 
+és \emph{Csiszár Leventének}, aki a kódban  szükséges
+javítások nagyobb részét elvégezte.
+
+ 
+ 

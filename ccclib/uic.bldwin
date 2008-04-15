@@ -1,0 +1,13 @@
+-lccc3_uic
+
+-duic
+-duic/windows
+-duic/termapi
+
+-iuic/screenbuf
+-iinclude
+
+BUILD_SRC=src
+BUILD_BAT=$(CCCDIR)/usr/build/$(CCCUNAME)
+BUILD_INC=$(CCCDIR)/usr/include
+BUILD_OPT=compile.opt

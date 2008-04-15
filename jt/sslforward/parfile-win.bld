@@ -1,0 +1,12 @@
+-msslforward
+-mjtlisten
+ 
+-d.
+-dwin32
+#-dsckutil
+ 
+-blibeay32
+-bssleay32
+-bccc3.lib
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

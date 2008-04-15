@@ -1,0 +1,16 @@
+
+
+(define-function gtk_separator_menu_item_get_type
+  (in-module GtkSeparatorMenuItem)
+  (c-name "gtk_separator_menu_item_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_separator_menu_item_new
+  (c-name "gtk_separator_menu_item_new")
+  (is-constructor-of GtkSeparatorMenuItem)
+  (return-type "GtkWidget*")
+)
+
+
+

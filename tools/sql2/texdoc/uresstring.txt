@@ -1,0 +1,14 @@
+Ez a select
+
+select alias."SZAMLA","DEVNEM",alias."MEGNEVEZES","OSSZEG","TULMENFLAG","KONYVKELT","MEGJEGYZES" 
+from "PROBA"alias 
+where alias."SZAMLA">='' 
+order by alias."SZAMLA"
+
+nem ad egyetlen sort sem, azaz semmi sem nagyobb(egyenlő),
+mint az üres string (''), mintha '' játszaná a null szerepét.
+
+Működik viszont a {chr(0)} bindvar az alábbi where clause-zal:
+
+<where>szamlaszam>=:1</where>
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+# program indítás
+# először jtstart.exe-t indítjuk,
+# ebben csak egy gomb van, ami indítja a paraméterként kapott programot,
+# ennek az az értelme, hogy nem kell várni a Jáva betöltődésére,
+# miközben a tesztelt alkalmazást fordítgatjuk
+
+jtstart.exe "cccdown.exe ~/ccc2-zip ziplist.txt" &

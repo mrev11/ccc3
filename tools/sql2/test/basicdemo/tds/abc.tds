@@ -1,0 +1,23 @@
+name: localtds.abc
+version: "2"
+
+table: konto.a=a
+table: konto.b=b
+table: konto.c=c
+
+join: 
+    a
+    full join b on id_a=id_b
+    left join c on name_a=name_c
+
+column:  id_a       N4      x=a.id
+column:  name_a     C10     x=a.name
+column:  val_a      N19,2   x=a.value
+column:  id_b       N4      x=b.id
+column:  val_b      N6      x=b.value
+column:  attrib     C24     x=c.attrib
+
+colref:  name_c             x=c.name
+
+select: selord 
+    order by id_a

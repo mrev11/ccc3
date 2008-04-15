@@ -1,0 +1,78 @@
+
+Setup fordítási opciók
+======================
+
+A MULTITHREAD szimbólum aktivizálja a többszál támogatást: 
+    -DMULTITHREAD
+
+Ha ki akarjuk kapcsolni a többszálúságot, beleírunk egy x-et:
+    -DxMULTITHREAD
+
+A CCC eredeti szemétgyűjtését a GC_NATIVE szimbólum kapcsolja be.
+A Boehm-féle szemétgyűjtést a GC_BOEHM szimbólum kapcsolja be.
+A GC_NATIVE/GC_BOEHM közül egyszerre egyet kell bekapcsolni.
+
+Natív:
+    -DxGC_BOEHM
+    -DGC_NATIVE
+
+Boehm:
+    -DGC_BOEHM
+    -DxGC_NATIVE
+
+Ha GC_BOEHM-mel fordítunk, akkor linkelni kell a Boehm szemétgyűjtés
+könyvtárát, azaz link.opt-ba be kell írni:
+    -lgc
+
+MULTITHREAD:on/off, BOEHM:on/off egymástól függetlenül kapcsolható,
+összesen 4 változat. Ezeket a setup-kor kell beállítani. Később csak 
+úgy változtatható, ha _mindent_ újrafordítunk.
+
+A Boehm-öt használó CCC jelenleg egy kísérlet, kevés tapasztalat
+van vele (bár eddig kedvezőek). Nyúzni kell még mielőtt kritikus 
+alkalmazásokban használnánk. 
+
+
+libgc installáció
+=================
+
+A Boehm szemétgyűjtés (libgc) könyvtára nem része a CCC-nek, 
+külön kell megszerezni, esetleg lefordítani, installálni.
+A Boehm szemétgyűjtés nem működik minden platformon.
+
+Linux:
+    Ubuntu Dapperen a libgc 6.7-es verziója található. 
+    A fordításhoz installálni kell a libgc-dev csomagot is, 
+    amiben a header filék vannak.
+
+FreeBSD:
+    Nem próbáltam.
+    
+Solaris/Nevada:
+    A libgc forrásból lefordult, de a 'make check' hibákat jelzett.
+
+Windows: 
+    MSYS/MinGW-vel forrásból fordított libgc.a-val működött.
+
+
+Boehm-féle szemétgyűjtés
+========================
+
+A Boehm-féle kozervatív szemétgyűjtést elvileg akármilyen C/C++ 
+programban lehet használni. A "konzervatív" jelző azt jelenti,
+hogy nem igényel compiler támogatást. Mark-sweep algoritmust
+csinál (hasonlóan a CCC-hez), de ehhez nem kell megmondani neki,
+hogy hol vannak a program pointerei, hanem azt maga felderíti.
+Pontosabban minden pointer formátumú adatot pointernek vesz,
+és ha az egy memóriablokkra mutat, akkor a memóriablokkot élőnek 
+fogadja el. Így élő memóriablokkot sosem szüntet meg, legrosszabb 
+esetben olyan blokkot is megtart, amire csak véletlenül mutat
+egy (tévesen) pointernek vélt adat (ritka eset).
+
+A libgc saját allokátor (malloc/calloc/realloc/free helyettesítő) 
+alrendszert tartalmaz, ennek köszönhető a nagy sebessége.
+A CCC natív memóriakezelése ezzel szemben primitíven, malloc/free 
+hívásokkal dolgozik, ami a memória fragmentáció miatt terheli az OS-t.
+
+A libgc-vel működik a Mono és a GCJ (GNU Jáva) szemétgyűjtése.
+

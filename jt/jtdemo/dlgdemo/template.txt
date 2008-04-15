@@ -1,0 +1,27 @@
+ 
+****************************************************************************
+function templateClass() 
+static clid
+
+    if( clid==NIL )
+        clid:=classRegister("template",{objectClass()})
+
+        classMethod(clid,"initialize",{|this|templateIni(this)})
+        classAttrib(clid,"cargo")  
+    end
+    return clid
+
+
+****************************************************************************
+function templateNew() 
+local clid:=templateClass()
+    return objectNew(clid):initialize()
+
+
+****************************************************************************
+function templateIni(this) 
+    objectIni(this)
+    return this
+    
+
+****************************************************************************

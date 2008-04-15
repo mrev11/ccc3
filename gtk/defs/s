@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#grep -n  "return-type" *.defs  | grep "GSList*"  >s1
+grep -n  "return-type" *.defs  | grep "GList*"  >s1
+
+#grep -n  "caller-owns"  *.defs   >s1
+#grep -n  "{|"  *.defs   >s1
+
+zg.exe  s1 &

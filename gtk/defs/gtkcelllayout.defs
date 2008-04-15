@@ -1,0 +1,82 @@
+
+
+(define-function gtk_cell_layout_get_type
+  (c-name "gtk_cell_layout_get_type")
+  (in-module GtkCellLayout)
+  (return-type "GtkType")
+)
+
+
+(define-method pack_start
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_pack_start")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("gboolean" "expand")
+  )
+)
+
+(define-method pack_end
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_pack_end")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("gboolean" "expand")
+  )
+)
+
+(define-method clear
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_clear")
+)
+
+(define-method set_attributes
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_set_attributes")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+  )
+  (CCC byhand)
+)
+
+(define-method add_attribute
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_add_attribute")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("const-gchar*" "attribute")
+    '("gint" "column")
+  )
+)
+
+(define-method set_cell_data_func
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_set_cell_data_func")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("GtkCellLayoutDataFunc" "func")
+    '("gpointer" "func_data")
+    '("GDestroyNotify" "destroy")
+  )
+  (CCC "REG,par")
+  (codeblock "{|p_self,p_renderer,p_codeblock|gtk.cell_layout.set_cell_data_func(p_self:gobject,p_renderer:gobject,p_codeblock,p_self,p_renderer)}")
+)
+
+
+(define-method clear_attributes
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_clear_attributes")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+  )
+)
+
+(define-method reorder
+  (of-object GtkCellLayout)
+  (c-name "gtk_cell_layout_reorder")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("gint" "position")
+  )
+)
+

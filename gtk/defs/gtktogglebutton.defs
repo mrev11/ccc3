@@ -1,0 +1,102 @@
+
+
+(define-function gtk_toggle_button_get_type
+  (in-module GtkToggleButton)
+  (c-name "gtk_toggle_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_toggle_button_new
+  (c-name "gtk_toggle_button_new")
+  (is-constructor-of GtkToggleButton)
+  (return-type "GtkWidget*")
+  (CCC "API,alt")
+  (comment "
+    Alternatív hívási módok az objektum interfészben:
+
+    gtktogglebuttonNew() --> gtk.toggle_button.new()
+    gtktogglebuttonNew(label) --> gtk.toggle_button.new_with_mnemonic(label)
+    ")
+)
+
+(define-function gtk_toggle_button_new_with_label
+  (c-name "gtk_toggle_button_new_with_label")
+  (is-constructor-of GtkToggleButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_toggle_button_new_with_mnemonic
+  (c-name "gtk_toggle_button_new_with_mnemonic")
+  (is-constructor-of GtkToggleButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method set_mode
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_set_mode")
+  (return-type "none")
+  (parameters
+    '("gboolean" "draw_indicator")
+  )
+)
+
+(define-method get_mode
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_get_mode")
+  (return-type "gboolean")
+)
+
+(define-method set_active
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_set_active")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_active")
+  )
+)
+
+(define-method get_active
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_get_active")
+  (return-type "gboolean")
+)
+
+(define-method toggled
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_toggled")
+  (return-type "none")
+)
+
+(define-method set_inconsistent
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_set_inconsistent")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_inconsistent
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_get_inconsistent")
+  (return-type "gboolean")
+)
+
+(define-method set_state
+  (of-object "GtkToggleButton")
+  (c-name "gtk_toggle_button_set_state")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_active")
+  )
+  (deprecated "use GtkToggleButton.set_active")
+)
+
+
+

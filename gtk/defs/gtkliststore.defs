@@ -1,0 +1,194 @@
+
+
+(define-function gtk_list_store_get_type
+  (in-module GtkListStore)
+  (c-name "gtk_list_store_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_list_store_new
+  (c-name "gtk_list_store_new")
+  (is-constructor-of GtkListStore)
+  (return-type "GtkListStore*")
+  (parameters
+    '("gint" "columns")
+  )
+  (CCC "REG,par")
+  (comment "
+    Eredetileg (varargs #t). Példa C hívásra:
+    gtk_list_store_new(3,G_TYPE_INT,G_TYPE_STRING,G_TYPE_PIXBUF)
+    
+    CCC-ben (egyelőre) csak S(String), D(Double), I(Integer), B(Boolean)
+    típusú oszlopok lehetnek, amiket többféleképpen is megadhatunk:
+
+    gtk.list_store.new({'B','I','S','D',...})
+    gtk.list_store.new({'BISD...'})  //Boolean, Integer, String, Double
+
+    Probléma a list_store-ral kapcsolatban, hogy a program adatait
+    egy idegen struktúrában tároljuk (CCC array helyett), amiből csak 
+    baj származhat. Megtehető, hogy az adatokat  CCC arrayben hagyjuk, 
+    és a list_store-ba csak az array indexeit töltjük be (így bármi 
+    lehet a listában), ekkor azonban a list_store-ra épülő tree_view-ban 
+    nem fog működni az interaktív keresés (ui. az adatok helyett az 
+    indexre keres).
+  ")
+)
+
+(define-function gtk_list_store_newv
+  (c-name "gtk_list_store_newv")
+  (is-constructor-of GtkListStore)
+  (return-type "GtkListStore*")
+  (parameters
+    '("gint" "n_columns")
+    '("GType*" "value")
+  )
+  (CCC "skip")
+)
+
+(define-method set_column_types
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_set_column_types")
+  (return-type "none")
+  (parameters
+    '("gint" "n_columns")
+    '("GType*" "types")
+  )
+  (CCC "skip")
+  (comment "Ez belső használatra való.")
+)
+
+(define-method set_value
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_set_value")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "column")
+    '("GValue*" "value")
+  )
+  (CCC "REG,par")
+  (comment "
+    gtk.list_store.set_value(self,column,value)
+
+    Eltérő paraméterezés: GValue*, helyett CCC VALUE-t adunk neki.
+  ")
+)
+
+(define-method set
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_set")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+  (CCC "REG,par,blk")
+  (codeblock "{|self,iter,values|gtk.list_store.set(self:gobject,iter,values)}")
+  (comment "
+    Eredetileg (varargs #t). C-ből ilyen a hívása:
+        gtk_list_store_set(self,iter,idx1,val1,idx2,val2,...,-1})    
+    
+    CCC hívási formák:
+
+    1)  gtk.list_store.set(self,iter,{val1,val2,...})
+    
+        Ez a 0-ás oszlopindextől kezdve feltölti az oszlopokat,
+        annyit, ahány value meg van adva. Ha egy value értéke NIL,
+        akkor az az oszlop kimarad.
+
+    2)  gtk.list_store.set(self,iter,val1,val2,...)
+    
+        Ez ugyanaz mint az előző eset, vissza van rá vezetve.
+
+    3)  gtk.list_store.set(self,iter,{val1, {idx,val2}, ...})
+
+        Speciális esetként, ha (1)-ben valamelyik value {idx,val} alakú,
+        akkor az idx-edik oszlopba töltődik val (tehát nem kell minden
+        oszlopértéket felsorolni).
+
+    Megjegyzés:
+        Ha egy string oszlopot nem töltünk ki,
+        akkor a lista működik (az oszlop üresnek látszik),
+        de a program kilépésekor SIGSEGV keletkezik,
+        gondolom azért, mert a GTK fel akarja szabadítani
+        a lista adattagját, de a semmibe nyúl.
+        Ez a GTK hibája, nem lehet rajta másképp segíteni,
+        mint hogy mindig ki kell tölteni az oszlopokat.
+  ")
+)
+
+(define-method set_valist
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_set_valist")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("va_list" "var_args")
+  )
+  (CCC skip)
+)
+
+(define-method remove
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_remove")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method insert
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_insert")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "position")
+  )
+)
+
+(define-method insert_before
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_insert_before")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "sibling")
+  )
+)
+
+(define-method insert_after
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_insert_after")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeIter*" "sibling")
+  )
+)
+
+(define-method prepend
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_prepend")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method append
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_append")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method clear
+  (of-object "GtkListStore")
+  (c-name "gtk_list_store_clear")
+  (return-type "none")
+)
+
+
+

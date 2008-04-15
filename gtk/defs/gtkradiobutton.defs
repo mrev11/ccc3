@@ -1,0 +1,81 @@
+
+
+(define-function gtk_radio_button_get_type
+  (in-module GtkRadioButton)
+  (c-name "gtk_radio_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_radio_button_new
+  (c-name "gtk_radio_button_new")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+  )
+)
+
+(define-function gtk_radio_button_new_from_widget
+  (is-constructor-of GtkRadioButton)
+  (c-name "gtk_radio_button_new_from_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioButton*" "group")
+  )
+)
+
+(define-function gtk_radio_button_new_with_label
+  (c-name "gtk_radio_button_new_with_label")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_radio_button_new_with_label_from_widget
+  (is-constructor-of GtkRadioButton)
+  (c-name "gtk_radio_button_new_with_label_from_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioButton*" "group")
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_radio_button_new_with_mnemonic
+  (c-name "gtk_radio_button_new_with_mnemonic")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_radio_button_new_with_mnemonic_from_widget
+  (is-constructor-of GtkRadioButton)
+  (c-name "gtk_radio_button_new_with_mnemonic_from_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioButton*" "group")
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method get_group
+  (of-object "GtkRadioButton")
+  (c-name "gtk_radio_button_get_group")
+  (return-type "GSList*" ".do_not_convert.")
+)
+
+(define-method set_group
+  (of-object "GtkRadioButton")
+  (c-name "gtk_radio_button_set_group")
+  (return-type "none")
+  (parameters
+    '("GSList*" "group")
+  )
+)
+

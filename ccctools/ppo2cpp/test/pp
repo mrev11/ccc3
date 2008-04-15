@@ -1,0 +1,14 @@
+#!/bin/bash
+p a
+p blk
+p case
+p expr
+p for
+p func
+p if
+p lval
+p met
+p seq
+p static
+p while
+p z

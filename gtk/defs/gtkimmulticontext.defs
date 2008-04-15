@@ -1,0 +1,25 @@
+
+
+(define-function gtk_im_multicontext_get_type
+  (in-module GtkIMMulticontext)
+  (c-name "gtk_im_multicontext_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_im_multicontext_new
+  (c-name "gtk_im_multicontext_new")
+  (is-constructor-of GtkIMMulticontext)
+  (return-type "GtkIMContext*")
+)
+
+(define-method append_menuitems
+  (of-object "GtkIMMulticontext")
+  (c-name "gtk_im_multicontext_append_menuitems")
+  (return-type "none")
+  (parameters
+    '("GtkMenuShell*" "menushell")
+  )
+)
+
+
+

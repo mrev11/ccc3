@@ -1,0 +1,4 @@
+#!/bin/bash
+DBDRIVER=postgres
+#export POSTGRES_CONNECT=
+. import.b

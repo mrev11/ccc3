@@ -1,0 +1,15 @@
+// Reprint of input file "xmldom_parser.lem".
+// Symbols:
+//   0 $            3 SYMBOL       6 TEXT         9 STRING      12 node      
+//   1 LPAR         4 RPAR         7 CDATA       10 error       13 content   
+//   2 QM           5 SLASH        8 EQ          11 attrlist    14 xml       
+xml ::= content.
+content ::=.
+content ::= content node.
+node ::= LPAR QM SYMBOL attrlist QM RPAR.
+node ::= LPAR SYMBOL attrlist SLASH RPAR.
+node ::= LPAR SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR.
+node ::= TEXT.
+node ::= CDATA.
+attrlist ::=.
+attrlist ::= attrlist SYMBOL EQ STRING.

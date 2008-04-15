@@ -1,0 +1,2 @@
+#!/bin/bash
+terminal.exe localhost 55000

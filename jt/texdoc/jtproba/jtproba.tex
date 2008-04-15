@@ -1,0 +1,72 @@
+
+\section*{Jáva Webstart próba alkalmazás}
+
+Először telepíteni kell gépünkre a Jáva 1.4.2-et,
+ehhez legjobb, ha felkeressük a
+\href{http://java.sun.com/j2se/1.4.2/download.html}{Sun letöltő oldalát}.
+Ha nem akarunk Jávában programozni, akkor elég a JRE, 
+egyébként válasszuk az SDK-t.
+
+\begin{quote}\small
+A Jáva Terminál működik korábbi Jávával is,
+ekkor azonban pótlólag be kell szerezni, és külön installálni kell
+\begin{itemize}
+  \item az XML elemző csomagot,
+  \item az SSL csomagot és
+  \item a Jáva Webstartot,
+\end{itemize}
+amiket az újabb Jáva kiadás már az alapcsomagban tartalmaz.
+A régi Jávákkal azonban már nem fogok tesztelni, 
+ezért mindenképpen a legújabb  Jáva ajánlott. 
+\end{quote}
+
+Windowson  a Jáva Webstart a standard csomagból automatikusan 
+installálódik. Linuxon a csomagban benne van ugyan a Jáva Webstart, 
+de azt egy külön paranccsal kell installálni. 
+Így is megvan 5 percen belül.
+
+A böngészőt úgy kell konfigurálni, 
+hogy az \verb!application/x-java-jnlp-file! MIME type-ra, 
+indítsa el a jws-t. A jws telepítője az ismert böngészőkkel
+ezt automatikusan megteszi, ha mégsem sikerül neki, 
+akkor utólag kell elvégezni a beállításokat.
+
+A webszervert  úgy kell konfigurálni, hogy a jnlp kiterjesztésű 
+filéket \verb!application/x-java-jnlp-file! MIME type-pal küldje.
+A ComFirm webszerverén ez megtörtént. Ha egy idegen ISP 
+webszerverén akarunk Jáva Webstart alkalmazást telepíteni, 
+akkor meg kell egyezni az ottani rendszergazdával.
+
+
+
+Mindezek után próbáljuk ki az alábbi linkeket:
+\begin{itemize}
+\item
+  \href{http://ok.comfirm.hu/jnlp/jtproba.jnlp}{Jáva Webstart próba alkalmazás}\par
+\item
+  \href{http://ok.comfirm.hu/jnlp/cccdown.jnlp}{CCC csomagok letöltése}\par 
+\item
+  \href{http://ok.comfirm.hu/jnlp/browse.jnlp}{CCC böngésző}\par 
+\item
+  \href{http://ok.comfirm.hu/jnlp/ekonto.jnlp}{E-Kontó Demó}\par 
+\end{itemize}
+
+Az utóbbi demó programba \verb!vizmuvekrt! felhasználói névvel, 
+a \verb!Jelmondat-123! jelszóval lehet bejelentkezni.
+
+Ha minden rendben van, akkor  a böngésző
+letölt  egy  kicsi, jnlp kiterjesztésű, XML szintaktikájú paraméterfilét.
+A MIME type alapján megállapítja, hogy el kell indítania a jws-t.
+A jws a paraméterfiléből kitalálja, hogy mely Jáva programokat
+kell letölteni, letölti és elindítja azokat (esetünkben a jterminal.jar-t)
+a jnlp filében megadott módon. Ezután a jws cache-eli az alkalmazást,
+ami a jövőben letöltés nélkül is indítható. Emellett a jws
+figyeli, hogy van-e az alkalmazásnak frissítése, és ha szükséges,
+automatikusan elvégzi a frissítést. Szerintem ez egy jó dolog.
+
+A jws által letöltött alkalmazás nem appletként, 
+hanem teljes jogkörű, önálló programként fut. 
+Indítás előtt a jws ellenőrzi a letöltött jar filék 
+digitális aláírását, és első alkalommal óvatosságra int.
+
+

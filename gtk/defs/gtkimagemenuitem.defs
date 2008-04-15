@@ -1,0 +1,59 @@
+
+
+(define-function gtk_image_menu_item_get_type
+  (in-module GtkImageMenuItem)
+  (c-name "gtk_image_menu_item_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_image_menu_item_new
+  (c-name "gtk_image_menu_item_new")
+  (is-constructor-of GtkImageMenuItem)
+  (return-type "GtkWidget*")
+)
+
+(define-function gtk_image_menu_item_new_with_label
+  (c-name "gtk_image_menu_item_new_with_label")
+  (is-constructor-of GtkImageMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_image_menu_item_new_with_mnemonic
+  (c-name "gtk_image_menu_item_new_with_mnemonic")
+  (is-constructor-of GtkImageMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_image_menu_item_new_from_stock
+  (c-name "gtk_image_menu_item_new_from_stock")
+  (is-constructor-of GtkImageMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "stock_id")
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-method set_image
+  (of-object "GtkImageMenuItem")
+  (c-name "gtk_image_menu_item_set_image")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "image" (null-ok))
+  )
+)
+
+(define-method get_image
+  (of-object "GtkImageMenuItem")
+  (c-name "gtk_image_menu_item_get_image")
+  (return-type "GtkWidget*")
+)
+
+
+

@@ -1,0 +1,20 @@
+
+
+(define-function gtk_vbox_get_type
+  (in-module GtkVBox)
+  (c-name "gtk_vbox_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vbox_new
+  (c-name "gtk_vbox_new")
+  (is-constructor-of GtkVBox)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gboolean" "homogeneous" (default "FALSE"))
+    '("gint" "spacing" (default "0"))
+  )
+)
+
+
+

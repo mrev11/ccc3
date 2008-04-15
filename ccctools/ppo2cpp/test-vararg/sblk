@@ -1,0 +1,5 @@
+#!/bin/bash
+vararg-blk.exe aa bbb cccc ddddd >log-blk
+diff log-blk logblk.txt >log-blk-x
+z log-blk
+

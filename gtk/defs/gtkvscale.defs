@@ -1,0 +1,30 @@
+
+
+(define-function gtk_vscale_get_type
+  (in-module GtkVScale)
+  (c-name "gtk_vscale_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vscale_new
+  (c-name "gtk_vscale_new")
+  (is-constructor-of GtkVScale)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok) (default "NULL"))
+  )
+)
+
+(define-function gtk_vscale_new_with_range
+  (c-name "gtk_vscale_new_with_range")
+  (is-constructor-of GtkVScale)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gdouble" "min")
+    '("gdouble" "max")
+    '("gdouble" "step")    
+  )
+)
+
+
+

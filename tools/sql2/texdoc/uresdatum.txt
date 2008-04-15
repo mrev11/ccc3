@@ -1,0 +1,20 @@
+
+Az üres dátumok az Oracle-ben null-ként vannak tárolva.
+Ezért egy üres dátum (null) nem kisebb egy megadott dátumnál
+(a null SQL értelmezésével összhangban).
+
+Dátum szerinti rendezésnél az üres dátumok (null)
+az összes többi érték UTÁN jönnek.
+
+Hogy rendeződnek a null-ok a többi típusnál?
+    Az order by clause minden tagjában külöm megadható,
+    az "asc/desc" és a "nulls first/last" kiegészítés.
+    A default asc sorrendnél a default a "nulls last",
+    a desc sorrendnél a default a "nulls first".
+
+Az alkalmazások általában nem tudják közvetlenül null-ra
+állítani a mezőket, kivétel ez alól a date típus, 
+ui. mi másra lehetne állítani egy ctod("") értékű mezőt,
+mint null-ra?
+
+Az üres memó (blob) mezők is null-ra állítódnak.

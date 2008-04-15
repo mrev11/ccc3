@@ -1,0 +1,168 @@
+
+
+(define-function gtk_settings_get_type
+  (c-name "gtk_settings_get_type")
+  (return-type "GType")
+  (CCC "byhand")
+)
+
+(define-function settings_get_default
+  (c-name "gtk_settings_get_default")
+  (return-type "GtkSettings*")
+  (CCC "byhand")
+)
+
+(define-method install_property
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_install_property")
+  (return-type "none")
+  (parameters
+    '("GParamSpec*" "pspec")
+  )
+  (CCC "byhand")
+)
+
+(define-method install_property_parser
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_install_property_parser")
+  (return-type "none")
+  (parameters
+    '("GParamSpec*" "pspec")
+    '("GtkRcPropertyParser" "parser")
+  )
+  (CCC "byhand")
+)
+
+(define-function rc_property_parse_color
+  (c-name "gtk_rc_property_parse_color")
+  (return-type "gboolean")
+  (parameters
+    '("const-GParamSpec*" "pspec")
+    '("const-GString*" "gstring")
+    '("GValue*" "property_value")
+  )
+  (CCC "byhand")
+)
+
+(define-function rc_property_parse_enum
+  (c-name "gtk_rc_property_parse_enum")
+  (return-type "gboolean")
+  (parameters
+    '("const-GParamSpec*" "pspec")
+    '("const-GString*" "gstring")
+    '("GValue*" "property_value")
+  )
+  (CCC "byhand")
+)
+
+(define-function rc_property_parse_flags
+  (c-name "gtk_rc_property_parse_flags")
+  (return-type "gboolean")
+  (parameters
+    '("const-GParamSpec*" "pspec")
+    '("const-GString*" "gstring")
+    '("GValue*" "property_value")
+  )
+  (CCC "byhand")
+)
+
+(define-function rc_property_parse_requisition
+  (c-name "gtk_rc_property_parse_requisition")
+  (return-type "gboolean")
+  (parameters
+    '("const-GParamSpec*" "pspec")
+    '("const-GString*" "gstring")
+    '("GValue*" "property_value")
+  )
+  (CCC "byhand")
+)
+
+(define-function rc_property_parse_border
+  (c-name "gtk_rc_property_parse_border")
+  (return-type "gboolean")
+  (parameters
+    '("const-GParamSpec*" "pspec")
+    '("const-GString*" "gstring")
+    '("GValue*" "property_value")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_property_value
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_set_property_value")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-GtkSettingsValue*" "svalue")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_string_property
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_set_string_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "v_string")
+    '("const-gchar*" "origin")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_long_property
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_set_long_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+    '("glong" "v_long")
+    '("const-gchar*" "origin")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_double_property
+  (of-object "GtkSettings")
+  (c-name "gtk_settings_set_double_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+    '("gdouble" "v_double")
+    '("const-gchar*" "origin")
+  )
+  (CCC "byhand")
+)
+
+(define-function _gtk_settings_handle_event
+  (c-name "_gtk_settings_handle_event")
+  (return-type "none")
+  (parameters
+    '("GdkEventSetting*" "event")
+  )
+  (CCC "byhand")
+)
+
+(define-function _gtk_rc_property_parser_from_type
+  (c-name "_gtk_rc_property_parser_from_type")
+  (return-type "GtkRcPropertyParser")
+  (parameters
+    '("GType" "type")
+  )
+  (CCC "byhand")
+)
+
+(define-function _gtk_settings_parse_convert
+  (c-name "_gtk_settings_parse_convert")
+  (return-type "gboolean")
+  (parameters
+    '("GtkRcPropertyParser" "parser")
+    '("const-GValue*" "src_value")
+    '("GParamSpec*" "pspec")
+    '("GValue*" "dest_value")
+  )
+  (CCC "byhand")
+)
+
+

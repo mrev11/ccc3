@@ -1,0 +1,6 @@
+Az Oracle 9iR2-vel települő linuxos kliens rossz, eszi a memóriát!
+Ellenpróba: a 8.0.4 (Windows) és 10g változatok kliens könyvtárai jók.
+
+Mindenképpen érdemes a 10g változat mellől letölthető "instant-client" 
+könyvtárat telepíteni, ui. ez egy viszonylag kicsi, független könyvtár, 
+nem kell hozzá az összes Oracle szoftver.

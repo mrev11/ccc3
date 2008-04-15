@@ -1,0 +1,12 @@
+#!/bin/bash
+#példa a használatra
+
+#1. bt-ből tds
+bt2tds.exe  /opt/konto/kdemo/napforg.bt  -p ugyszam  -t konto.napforg
+
+#2. import a bt-ből a tds alapján
+btimport.exe  -d P  -e napforg.tds  -f /opt/konto/kdemo/napforg.bt
+
+#3. SQL tábla editálás ugyanazon tds alapján
+jeed napforg.tds
+

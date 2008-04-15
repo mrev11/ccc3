@@ -1,0 +1,62 @@
+
+2008.01.31 -- 1.3.04
+  Új socket.inherit implementáció.
+  Windows 2000-en a DuplicateHandle-es megoldás jól működött.
+  XP-től kezdődően viszont a DuplicateHandle nem alkalmazható socketekre,
+  hanem helyette a Set/GetHandleInformation-t kell használni.
+  A set/gethandleinheritflag csak Windows HANDLE-ekre működik.
+  A set/getcloexecflag Windowson csak POSIX leírókra működik.
+  A set/getcloexecflag file- és pipe-leírókra UNIX-on és Windowson 
+  egyformán működik. UNIX-on ezenkívül a set/getcloexecflag socket 
+  leírókra is működik.
+
+2007.12.17 -- 1.3.03
+  Az ssl_session_id-t rövidebbre kellett venni: SESSIONID+pid
+
+2007.11.25 -- 1.3.02
+  Új method: socket:inherit(flag)
+
+2007.11.16 -- 1.3.01
+  korábbi select -> select_sckdesc
+  select socket objektumokra -> select_sckobj
+  új select: választ az előbbi kető közül
+
+2007.07.20 -- 1.3.00
+  SSL támogatás.
+  Burkoló objektum a socketekhez: socketClass
+  Burkoló objektum az SSL contextekhez: sslctxClass
+  Burkoló objektum az SSL kapcsolatokhoz: sslconClass
+  A socket és sslcon közös interfésze (fd,recv,send,pending,close)
+  lehetővé teszi hogy ugyanaz a kód (az SSL bekapcsolását kivéve)
+  működjön SSL-lel vagy anélkül.
+
+2006.04.13 -- 1.2.00
+  Portolva unicodera.
+
+2005.07.08 -- 1.1.05
+  MSG_NOSIGNAL megjelent a FreeBSD 6.0-ban, korábban (5.3-ban) 
+  nem volt definiálva, többszörös definíció elkerülve.
+
+2004.01.10 -- 1.1.04
+  Az előző hiba javítása SIGPIPE ignorálásával.
+
+2003.12.22 -- 1.1.03
+  socket_write-ban a send ismétlése kihagyva.
+  A böngésző néha nem várja meg a kért lap átküldését,
+  hanem lezárja a socketet, és áttér egy másik lap letöltésére. 
+  Ha ilyenkor megpróbáljuk a maradékot újabb send-ben küldeni, 
+  akkor a program SIGPIPE-pal elszáll.
+ 
+2003.02.04 -- 1.1.02
+  listen() átkerült server_socket_accept()-ből server_socket_new()-ba. 
+
+2003.07.29 -- 1.1.01
+  sread() malloc hívás nélkül.
+
+2002.10.12 -- 1.1.00
+  Új réteg: sckutil.cpp, modulárisabb szervezés.
+
+2002.07.01 -- 1.0.01
+  Bind bővítve: megadható az ip cím.
+
+   

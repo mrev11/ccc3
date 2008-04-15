@@ -1,0 +1,443 @@
+
+2008.03.13 -- 5.0.06
+  Szeleteknél
+    kihagyott index helyett elfogadott a NIL
+    érvényes szelet: s[..], másolatot készít a stringről
+
+2008.03.05 -- 5.0.05
+  String szeletek: s[x..y], s[x..], s[..y].
+
+2008.02.17 -- 5.0.04
+  A flex elemző a hosszú stringeket soronként darabolja,
+  mert az MSC fordítónak gondja van a túl hosszú stringekkel.
+  Itt különbözik a CCC2 és CCC3: a CCC3-ban L stringek vannak!
+
+  Korábban:
+    "\n"   {raw_cat("\\n\\\n");/*egy nagy string*/}
+  A javítás:
+    "\n"   {raw_cat("\\n\"\nL\"");/*darabol*/}
+
+2008.01.24 -- 5.0.03
+  Küzdelem a char *p="stringconstant" forma ellen,
+  amire a gcc 4.2.1 warningot ad.
+  Helyette const char *p="stringconstant" kell.
+
+2007.10.20 -- 5.0.02
+  Implicit recover kódgenerálása javítva.
+
+2006.06.21 -- 5.0.01
+    class xx.error(error)
+  A fenti sorban a baseclassid-t adó függvényt a global névtérből 
+  kell venni (azaz: .errorClass), másképp a C fordító azt hiszi, 
+  hogy az xx névtérből van, emiatt rekurzió és deadlock keletkezik.
+
+2006.03.20 -- 5.0.00
+  Unicode támogatás, mindenhova wide stringet fordítunk.
+  Hiba, ha a string nem UTF-8 kódolású (INVALIDENCODING).
+  Ezek változtak:
+      CCC string literál -> string(L"..."),
+      static változók string konstruktora,
+      Ascii string: a"...".
+
+2006.03.01 -- 4.4.04
+  Hexadecimális számok, pl: 0xfff. 
+  Bináris számok, pl: 0B1101001.
+  Hexadecimális stringek, pl: x"e2a301".
+
+2006.02.15 -- 4.4.03
+  @"text" alakú stringek többnyelvű programokhoz.
+
+2006.01.31 -- 4.4.02
+  Nem lehet a start_symbol-ban takarítani, mert a parser rekurzív.
+
+2006.01.23 -- 4.4.01
+  C++ névtérnevek prefixelése: _nsp_.
+
+2005.12.20 -- 4.4.00
+  class szintaktika (class, attrib, method, new).
+  vararg API.
+  A {|*|funcname(*)} alakú kódblokkok optimalizálva fordulnak:
+  közvetlen hívás, minden paraméter továbbadva, refek megtartva.
+  Az elemzőfa expr node-jai ki tudják írni a forrásukat.
+  A table->field kifejezésben table és field szerepében kulcsszavak.
+
+2005.10.14 -- 4.3.04
+  Kulcsszavak szimbólumként való használata finomítva.
+
+2005.09.29 -- 4.3.03
+  A flex elemző a következő alakokat
+        ":"{symbol}
+        ":("{symbol}")"{symbol}
+        ":("{symbol}"@"{symbol}")"{symbol}
+        "."{symbol}
+  COMPOUND tokenként, egyben adja. Az összetett tokent a lexer objektum
+  getnext_compound metódusa bontja tovább elemi tokenekre.
+  Ha az alábbi kulcsszavakat 
+        or and not static function local quit end for to next loop
+        exit begin sequence recover using finally namespace do step
+  "." vagy "(" követi, akkor a közönséges SYMBOL értelmet kapnak.
+  E változások célja, hogy  kulcsszavakkal egyező szimbólumokat
+  lehessen használni osztály-, metódus-, névtér- és függvénynevekben.
+  Ilyen neveket nem a perverzió kedvéért használnuk, hanem automatikus
+  interfész generáláskor keletkeznek.
+  
+  Korlátok:
+    Nem lehet függvénynév a "while" ("if", "elseif", "return", ... ).
+    Nem lehet ezt írni: "namespace next", mert az önmagában álló
+    "next"-et END tokenként ismeri fel az lexer.
+
+2005.09.12 -- 4.3.02
+  -v opció: csak a verziószámot írja ki, azután kilép
+  -q opció: elnyomja a verziószám kiírását
+  -x opció: ugyanaz, mint -v -q
+
+2005.07.31 -- 4.3.01
+  A nem szálbiztos *stack++=NIL helyett PUSHNIL()-t fordít.
+
+2005.06.30 -- 4.3.00f (nem közreadott verzió)
+  Finally ág a begin utasításban (kilépőblokk helyett).
+  A gcc 3.3.5 fordító hibát jelez, ha egy címkét nem követ
+  utasítás, pl. {...; label:}, ami egy baromság.
+  Ezt elkerülendő az end és while utolsó címkéje után
+  egy ";"-t kell írni. (A for-ban már korábban is volt ilyen.)
+
+2005.06.26 -- 4.3.00x (nem közreadott verzió)
+  Kiugrás begin-recover közül return, loop, exit-tel.
+  Korábban ezt a Clipperhez hasonlóan tiltottuk.
+  Most kiugráskor visszaállítjuk a seqjmp stacket,
+  miközben végrehajtjuk az esetleges kilépő blokkokat. 
+
+2005.06.23 -- 4.3.00  (nem közreadott verzió)
+  Többszörös recover, struktúrált kivételkezelés.
+  Bevezetve a begin (kilépő) block, ami akkor hajtódik végre,
+  amikor a vezérlés elhagyja a begin-recover utasítást
+  (a Jáva finally utasításának megfelelője).
+  Minden objectet újra kell fordítani.
+
+2005.01.30 -- 4.2.01
+  Minősített függvényhívás kezdhető ponttal (.),
+  ami a globális névteret jelenti, pl: .ns1.ns2.fun().
+
+    expr ::= dotsymbol LPAR lfuncpar RPAR.
+    expr ::= DOT dotsymbol LPAR lfuncpar RPAR.
+
+2005.01.13 -- 4.2.00
+  Új funkció: raw stringek tánogatása.
+  <<SYMBOL>>raw string<<SYMBOL>>
+
+2005.01.10 -- 4.1.05
+  A begin és recover közül kiugró return/loop/exit utasításokat jelzi. 
+  Megjegyzés: A régi Clipper 5.2 is kimutatta az ilyen hibát.
+
+2004.11.02 -- 4.1.04
+  Külső static változók szinkronizálása javítva.
+
+2004.10.28 -- 4.1.03
+  A push_call() hívásokban teljesen minősített függvénynév.
+  A static inicializátorokban push_call() kipróbálva, kihagyva.
+
+  Jelzi a ciklus nélküli loop/exit utasításokat (korábban ezek 
+  csak a C fordításkor buktak ki).
+
+2004.10.13 -- 4.1.02
+  Függvénydefinícióban is megadható névtér. Az alábbi kód
+
+    namespace xx
+    function yy.zz.f()
+    return NIL
+  
+  az f() függvényt az xx.yy.zz névtérben hozza létre.
+  
+  Hiba:
+
+    function f()
+    static txt:="Hopp"
+    static x:=txt+"!"
+        return x
+        
+  Ez nem működik, mert x inicializátora nem tudja megkapni txt-t.
+  Ez mindig is így volt, csak most derült ki. Ha bármelyik  változó
+  static helyett local, akkor megy (a 2004.08.05-as javítás óta).
+  
+
+2004.10.05 -- 4.1.01
+  Többszintű névtér támogatás.
+
+    prg ::= header lfunction.
+    header ::= lnewline0 namespace lusing lstatdefin.
+    namespace ::=.
+    namespace ::= NAMESPACE dotsymbol nsalias ldotsymbol lnewline.
+    lusing ::=.
+    lusing ::= lusing using.
+    using ::= USING dotsymbol nsalias ldotsymbol lnewline.
+    nsalias ::=.
+    nsalias ::= EQ SYMBOL.
+    dotsymbol ::= SYMBOL.
+    dotsymbol ::= dotsymbol DOT SYMBOL.
+    ldotsymbol ::=.
+    ldotsymbol ::= ldotsymbol dotsymbol.
+    expr ::= dotsymbol LPAR lfuncpar RPAR.
+
+  A program elején lehet egy  NAMESPACE utasítás,
+  azt követhetik opcionális USING utasítások,
+  utána jöhetnek a külső static változók,
+  végül a függvények.
+
+  Ha egy prg modul elején a        namespace aa.bb.cc
+  utasítás áll, és benne egy       function f()
+  függvényt definiálunk,
+  akkor arra egy másik modulból
+  így hivatkozhatunk:              aa.bb.cc.f()
+  
+  namespace aa.bb.cc  leképezése C++-ra:
+    namespace aa{
+    namespace bb{
+    namespace cc{
+    ...
+    }}}
+
+  aa.bb.cc.f()  leképezése C++-ra:
+    aa::bb::cc::_clp_f(0)
+
+  Alternatív hivatkozási módokat tesz lehetővé a using utasítás:
+
+  0. példa /*using nélkül*/;        aa.bb.cc.fun()  
+  1. példa  using aa.bb.cc=alias;   alias.fun()
+  2. példa  using aa.bb=x;          x.cc.fun()
+  3. példa  using aa.bb.cc  fun;    fun()
+  4. példa  using aa.bb  cc.fun;    cc.fun()
+
+  Szabály-1: 
+    Ha a minősített függvénynév első tagja megegyezik 
+    valamelyik névtéralias-szal, akkor a fordító az első tagot 
+    helyettesíti a névtér teljes nevével (1-2).
+
+  Szabály-2: 
+    Ha egy függvényhívásban a függvény ((részben) minősített) neve 
+    megegyezik valamelyik using utasításban felsorolt függvénynévvel,
+    akkor a nevet a fordító balról kiegészíti a névtérrel (3-4).
+  
+  Hiba, ha egy (minősített) függvénynév több helyen is előfordul 
+  a namespace és using utasítások listáiban.
+
+2004.09.23 -- 4.1.00
+  Névterek (namespace, using).
+  A "begin sequence" utasításban a "sequence" szó opcionális.
+
+2004.08.23 -- 4.0.03
+  A külső static változók létrehozása szinkronizálva.
+
+2004.08.05 -- 4.0.02
+  Támogatva az alábbi inicializálás:
+    function hopp(a)
+    static x:=proba(a)
+  Az inicializátornak át kell adni VALUE*base-t.
+
+2004.07.17 -- 4.0.01
+  _method2_ osztályú metódusobjektumok fordítása.
+
+2004.07.12 -- 4.0.00
+  Az egész újraírva:
+  Áttérés Flex++/Lemon parser generátorokra.
+  A fordított kód kisebb hibák javításától eltekintve változatlan.
+
+2004.07.05 -- 3.1.02
+  Címkeképzés (a 4.0.00 verzió teszteléséhez) egységesítve.
+
+2003.08.10 -- 3.1.01
+  A CCC szinten külső változókat C++ szinten belsővé tesszük.
+  Ez azért kell, mert a Windowsos fordítók nem mindig hajtják
+  végre a külső static stvar objektumok konstruktorát.
+  Pontosabban: nem képesek rekurzívan végrehajtani.
+ 
+2003.07.04 -- 3.1.00
+  Többszál támogatás (a seqjmp struktúra tagjai változtak).
+
+2002.11.19 -- 3.0.10
+  not() helyett topnot()-ot fordítunk.
+
+2002.09.20 -- 3.0.09
+  Alkalmazkodás a Bison névképzés változásához: hpp filék.
+ 
+2002.05.22 -- 3.0.08
+  object:(class)method, object:(parent@class)method alakok támogatása.  
+  Deklarációs listák gyűjtése korszerűsítve. 
+ 
+2002.03.27 -- 3.0.07
+  Solarisos javítások átvétele.
+
+2002.03.25 -- 3.0.06
+  Számliterálok kódgenerálása változott:
+
+    új      : printf("number(%.16g);",v);
+    korábbi : printf("number(%g);",v);
+    régebbi : printf("number(%0.20g);",v); 
+
+  a korábbi változat csak a default (6) értékes jegyig fordított pontosan.
+  A mégrégebbi változat pontatlan jegyeket is kiírt, ráadásul a különféle
+  fordítókkal más más módon. Ez lesz talán az "igazi".
+
+2001.02.06 -- 3.0.05
+  Hibás volt a () kifejezés fordítása. A Clipper elemző szintaktikai
+  hibának jelzi, de logikusabb elfogadni a kifejezéslista speciális 
+  eseteként, ahol a listában egyetlen kifejezés sincs. Sajnos azonban
+  a kódgenerátor nem csinált vele semmit, ezért óvatlanul hivatkozni 
+  lehetett a stack tetejére, pl. functioncall(()), vagy a:=(). A ()-t 
+  a preprocesszor szokta csinálni egy üres kifejezés helyén, ezért elég 
+  nehezen vehető észre. 
+  
+  Továbbra is elfogadjuk ()-t érvényes kifejezésként (a yacc nyelvtan 
+  nem változott), de a kódgenerátor befordítja helyére a push(&NIL)-t, 
+  azaz a () kifejezés értéke azonosan NIL, ami logikus és kielégítő.  
+
+  codegen.cpp-ben a kiírt számok formázása "%0.20g"-ről "%g"-re 
+  változott, ui. a különféle C fordítókkal fordított fordítók kimenete
+  nem volt egységes, és az utóbbi tűnt jobbnak.
+
+2000.02.28 -- 3.0.04
+  UNIX-os warningok kiszűrése
+   
+1999.07.14 -- 3.0.03
+  (extended objects) felirat megszűnt
+
+1999.06.01 -- 3.0.02
+  input filé nevének képzése javítva
+
+1999.05.31 -- 3.0.01
+
+  Hiba esetén nem csak a Line/Col infót kell jelezni,
+  hanem azt is, hogy melyik filé soráról van szó,
+  ezért a #line direktíva filé részét is elemezni kell.
+  
+  Egy jó hibaelemző készítése messzire vezetne.
+  
+
+1999.05.25 -- 3.0.00
+
+  átdolgozva bison/flex-re, build-re
+  minden debug opció (-p, -c, -t) defaultja off
+  a debug kimenetek a _p, _c, _t filékbe mennek
+  stderr-re csak a valódi hiba kerül 
+  az input filét mindig meg kell adni (stdin nem elég)
+  az elemzésben és a kódgenerálásban nincs szándékos változás
+
+
+1999.04.21 -- 2.3.03
+    #line direktíva elfogadása a lokális definíciók között,
+    ez kell a prg2ppo használatához.
+
+1999.03.10 -- 2.3.02
+    
+    Az alábbi szintaktika támogatása:
+    
+    obj:attrib+=expr
+    obj:attrib-=expr
+    obj:attrib*=expr
+    obj:attrib/=expr
+    obj:attrib++
+    ++obj:attrib
+    obj:attrib--
+    --obj:attrib
+    
+    Ezek eddig egyik verzióban sem működtek. Valójában ezután sem
+    érdemes használni, mert az  obj:attrib:=obj:attrib+expr  formából
+    hatékonyabb kódot generál a fordító, mint az  obj:attrib+=expr
+    alakból. Ezért a javítás csak a szépség kedvéért van.
+    
+    Megjegyzés: a YACC nyelvtanban tobábbra sem kellett változtatni,
+    hanem csak kódgeneráláskor futó lvalue függvény bővült.
+ 
+ 
+1999.01.13 -- 2.3.01
+    extended class system bevezetése
+
+
+1998.11.30 -- 2.2.03
+    warningok kiirtása (-W a maximális szinten)
+    verziószám a kimeneten
+
+
+1998.09.08 -- 2.2.02
+    konstansokat tartalmazó szorzatok optimalizálása, 
+    kevésbé részletes, mint az összeadások/kivonások,
+    de lehetővé teszi a többdimenziós tömbkezelést 
+    egydimenziós tömb indexének makrózásával
+
+    új könyvtári függvény: mulnum
+    
+    portolás Watcom C/C++-ra
+    signed char-t kell beállítani, hogy az EOF-ot felismerje
+    ki kell makrózni az MSC specifikus huge kulcsszót
+    clip_l.lxi/pnode GPF javítva, MSC51-printf a NULL pointert kezelte
+    wcc386 nem tudja lefordítani codegen.c-t a -otexan opcióval
+    
+
+1998.09.08 -- 2.2.01
+    konstansokat tartalmazó additív számkifejezések és az
+    indexelés optimalizálása (fordítás közbeni kiszámítása)
+    
+    új könyvtári függvények: addnum, addneg, idxr0, idxl0
+    
+    új verziószámozás visszamenőleg:
+
+       2.2.01 optimalizált fordítás (additív számkifejezések)
+       2.1... nyilas mezőhivatkozások fordítása
+       2.0... számok a vermen (az első 100%-ig kompatibilis változat)
+       1..... veremgép, szemétgyűjtés, a számok is objektumok
+       0..... referencia számlálós változat
+
+1998.04.08
+    nyilas mezőhivatkozások fordítása
+
+1997.07.29
+    A (a):=1 típusú értékadások "Illegal lvalue" üzenetet eredményeztek
+    a zárójelezés miatt. Javítottam a kódgenerálást, a nyelvtanon nem 
+    kellett változtatni. 
+    
+    Megj: a nyelvtanban nincs lvalue := expr szabály, hanem csak egy 
+    általánosabb expr := expr. Ennek oka, hogy az elemző nehezen tudná 
+    előre(!) eldönteni, hogy lvalue jön-e, vagy síma expr, és rossz sínre
+    kerül. Ezért inkább az expr := expr szabály kódgeneráló részében
+    döntöm el, hogy a konkrét baloldalnak lehet-e értéket adni.
+
+1996.11.30
+    Nem volt jó a 127 feletti karakterek átbújtatása a LEX-en.
+    Egy 127 feletti karakter {1,127&c} formában került a LEX-be,
+    ami a következő bajt okozta:
+    
+    Nézzük a "menü" tokent. Mivel ü ascii kódja 0x81, ez "men11" 
+    formában kerül be a LEX-be. Ha belátható tavolságban egy újabb 
+    idézet kezdődik, akkor a helyzet: "men11" ... "...".
+    A LEX mindig a minél hosszabb token megtalálására törekszik, 
+    ezért az 11" hármast nem above127+"-nek, hanem 1+above127-nek 
+    csoportosítja, és a string tokent meghosszabbítja a következő 
+    idézőjelig, azaz elromlik.
+    
+    Megoldás: a  127 feletti karakterek {1,127&c,' '} formában 
+    kerülnek a LEX-be. Igy is lehetséges hibás csoportosítás
+    (pl. "...ü " felbontása nem egyértelmű), de a stringen
+    belül ennek nincs jelentősége. Az above127 definícióját nem
+    kell megváltoztatni.
+
+1996.11.27
+    A '0'-val kezdődő számok elajéről a nullát le kellett vágni,
+    hogy a Watcom C ne akarja oktális számnak értelmezni, 
+    pl:  number(08) hibás, number(014) pedig 12-t tett a stackre.
+
+1996.11.25
+    ** és ^ operátorok ki voltak felejtve
+    Clipper-C++ Compiler vY.MM.DD. 
+    Copyright (C) ComFirm BT. 1996. All rights reserved.
+
+1996.11.20
+    verziószám kiírása: ComFirm CCC Version yy.mm.dd
+    return fordítása: {*base=*(stack-1),stack=base+1;pop_call(),return;}
+
+1996.08.29
+    verziószám kiírása: ComFirm CCC Version mm/dd/yy
+
+1996.08.27
+    using helyett using_obj
+    
+1996.08.26
+    függvénydeklarációk buffere 8K helyett 16K

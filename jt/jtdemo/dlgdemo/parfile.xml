@@ -1,0 +1,68 @@
+<xstart>
+
+<item>
+    <name>Executive</name>
+    <host>localhost</host>
+    <port>46000</port>
+    <workdir></workdir>
+    <command>executive.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Demó: adatbázis browse</name>
+    <host>localhost</host>
+    <port>46001</port>
+    <workdir></workdir>
+    <command>sslforward main1.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Demó: array browse</name>
+    <host>localhost</host>
+    <port>46002</port>
+    <workdir></workdir>
+    <command>main2.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Demó: text megjelenítés</name>
+    <host>localhost</host>
+    <port>46003</port>
+    <workdir></workdir>
+    <command>main3.exe -jtsocket $(SOCKET)</command>
+</item>
+ 
+<item>
+    <name>Demó: HTML megjelenítés</name>
+    <host>localhost</host>
+    <port>46004</port>
+    <workdir></workdir>
+    <command>main3x.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Demó: kép átküldés</name>
+    <host>localhost</host>
+    <port>46005</port>
+    <workdir></workdir>
+    <command>main4.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Demó: vegyes</name>
+    <host>localhost</host>
+    <port>46006</port>
+    <workdir></workdir>
+    <command>main6.exe -jtsocket $(SOCKET) -jtkey server.pem</command>
+</item>
+
+<item>
+    <name>Demó: Alert</name>
+    <host>localhost</host>
+    <port>46007</port>
+    <workdir></workdir>
+    <command>alert.exe -jtsocket $(SOCKET) -jtssl </command>
+</item>
+
+</xstart>
+ 

@@ -1,0 +1,2 @@
+#!/bin/bash
+initdb --no-locale  -D `pwd`

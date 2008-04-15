@@ -1,0 +1,11 @@
+
+-b../../$$(rpcutil)
+ 
+-bccc3_xmlrpc
+-bccc3_xmldom
+-bccc3_socket
+-bccc3_sslsocket
+
+#BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=..
+

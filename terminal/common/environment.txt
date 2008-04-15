@@ -1,0 +1,14 @@
+
+CCCTERM_REDIR_CONSOLE       y: consol output channel redirected
+CCCTERM_REDIR_PRINTER       y: printer output channel redirected
+CCCTERM_REDIR_ALTERNATE     y: alternate output channel redirected
+CCCTERM_REDIR_EXTRA         y: extra output channel redirected
+
+CCCTERM_CAPTURE_LPT1        target file/device of lpt1
+CCCTERM_CAPTURE_LPT2        target file/device of lpt2
+CCCTERM_CAPTURE_LPT3        target file/device of lpt3
+CCCTERM_CAPTURE_PRN         target file/device of prn
+
+CCCTERM_FONTFACE            font type in terminal window
+CCCTERM_FONTSIZE            terminal window size
+

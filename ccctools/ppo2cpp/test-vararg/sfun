@@ -1,0 +1,5 @@
+#!/bin/bash
+vararg-fun.exe aa bbb cccc ddddd >log-fun
+diff log-fun logfun.txt >log-fun-x
+z log-fun
+

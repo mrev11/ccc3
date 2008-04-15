@@ -1,0 +1,19 @@
+
+name: BANK
+version: "bt2tds 1.0.01"
+
+table: konto.bank
+
+column:  BANKFIOK         C3      nn
+column:  BNEV             C20     
+column:  BBETU            C1      
+column:  RENDSZLA         C24     
+column:  TELJSZLA         C24     
+column:  USER             C8      
+column:  CSOPORT          C8      
+column:  HFSZINT          N2      
+column:  LEKSZINT         N2      
+column:  KONYVKELT        D       
+
+primkey: BANKFIOK
+

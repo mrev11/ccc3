@@ -1,0 +1,5 @@
+#!/bin/bash
+export CCC_NLSTEXT_TAB=$(pwd)/translate
+bapp_unixc.b -xdemo
+
+

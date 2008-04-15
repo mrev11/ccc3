@@ -1,0 +1,20 @@
+
+
+(define-function gtk_hbox_get_type
+  (in-module GtkHBox)
+  (c-name "gtk_hbox_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_hbox_new
+  (c-name "gtk_hbox_new")
+  (is-constructor-of GtkHBox)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gboolean" "homogeneous" (default "FALSE"))
+    '("gint" "spacing" (default "0"))
+  )
+)
+
+
+

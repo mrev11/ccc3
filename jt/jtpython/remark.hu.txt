@@ -1,0 +1,6 @@
+Egyelőre itt nincs UTF-8 támogatás!
+
+Indítás ugyanúgy, mint a CCC programoknál.
+A JTERMINAL változóban meg kell adni a jterminal.jar teljes 
+fájlspecifikációját, utána indítható a program (lokálisan).
+Bonyolultabb esetek az s scriptben.

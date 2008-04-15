@@ -1,0 +1,765 @@
+
+
+(define-function gtk_clist_get_type
+  (c-name "gtk_clist_get_type")
+  (return-type "GtkType")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-function gtk_clist_new
+  (c-name "gtk_clist_new")
+  (is-constructor-of GtkCList)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gint" "columns" (default "1"))
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-function gtk_clist_new_with_titles
+  (c-name "gtk_clist_new_with_titles")
+  (is-constructor-of GtkCList)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gint" "columns" (default "1"))
+    '("gchar*[]" "titles")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_hadjustment
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_vadjustment
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_hadjustment
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_hadjustment")
+  (return-type "GtkAdjustment*")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_vadjustment
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_vadjustment")
+  (return-type "GtkAdjustment*")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_shadow_type
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_shadow_type")
+  (return-type "none")
+  (parameters
+    '("GtkShadowType" "type")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_selection_mode
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_selection_mode")
+  (return-type "none")
+  (parameters
+    '("GtkSelectionMode" "mode")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_reorderable
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_reorderable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "reorderable")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_use_drag_icons
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_use_drag_icons")
+  (return-type "none")
+  (parameters
+    '("gboolean" "use_icons")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_button_actions
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_button_actions")
+  (return-type "none")
+  (parameters
+    '("guint" "button")
+    '("guint8" "button_actions")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method freeze
+  (of-object "GtkCList")
+  (c-name "gtk_clist_freeze")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method thaw
+  (of-object "GtkCList")
+  (c-name "gtk_clist_thaw")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_titles_show
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_titles_show")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_titles_hide
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_titles_hide")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_title_active
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_title_active")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_title_passive
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_title_passive")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_titles_active
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_titles_active")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method column_titles_passive
+  (of-object "GtkCList")
+  (c-name "gtk_clist_column_titles_passive")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_title
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_title")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("const-gchar*" "title")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_column_title
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_column_title")
+  (return-type "gchar*")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_widget
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_widget")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("GtkWidget*" "widget")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_column_widget
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_column_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_justification
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_justification")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("GtkJustification" "justification")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_visibility
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_visibility")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "visible")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_resizeable
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_resizeable")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "resizeable")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_auto_resize
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_auto_resize")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "auto_resize")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method columns_autosize
+  (of-object "GtkCList")
+  (c-name "gtk_clist_columns_autosize")
+  (return-type "gint")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method optimal_column_width
+  (of-object "GtkCList")
+  (c-name "gtk_clist_optimal_column_width")
+  (return-type "gint")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_width
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_width")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gint" "width")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_min_width
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_min_width")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gint" "min_width")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_column_max_width
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_column_max_width")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gint" "max_width")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_row_height
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_row_height")
+  (return-type "none")
+  (parameters
+    '("guint" "height")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method moveto
+  (of-object "GtkCList")
+  (c-name "gtk_clist_moveto")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("gfloat" "row_align")
+    '("gfloat" "col_align")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method row_is_visible
+  (of-object "GtkCList")
+  (c-name "gtk_clist_row_is_visible")
+  (return-type "GtkVisibility")
+  (parameters
+    '("gint" "row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_cell_type
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_cell_type")
+  (return-type "GtkCellType")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_text
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_text")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("const-gchar*" "text")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_text
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_text")
+  (return-type "gint")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("gchar**" "text")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_pixmap
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_pixmap")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("GdkPixmap*" "pixmap")
+    '("GdkBitmap*" "mask" (null-ok) (default "NULL"))
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_pixmap
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_pixmap")
+  (return-type "gint")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("GdkPixmap**" "pixmap")
+    '("GdkBitmap**" "mask")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_pixtext
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_pixtext")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("const-gchar*" "text")
+    '("guint8" "spacing")
+    '("GdkPixmap*" "pixmap")
+    '("GdkBitmap*" "mask")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_pixtext
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_pixtext")
+  (return-type "gint")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("gchar**" "text")
+    '("guint8*" "spacing")
+    '("GdkPixmap**" "pixmap")
+    '("GdkBitmap**" "mask")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_foreground
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_foreground")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("GdkColor*" "color")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_background
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_background")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("GdkColor*" "color")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_cell_style
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_cell_style")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("GtkStyle*" "style")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_cell_style
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_cell_style")
+  (return-type "GtkStyle*")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_row_style
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_row_style")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("GtkStyle*" "style")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_row_style
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_row_style")
+  (return-type "GtkStyle*")
+  (parameters
+    '("gint" "row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_shift
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_shift")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("gint" "vertical")
+    '("gint" "horizontal")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_selectable
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_selectable")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gboolean" "selectable")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_selectable
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_selectable")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method prepend
+  (of-object "GtkCList")
+  (c-name "gtk_clist_prepend")
+  (return-type "gint")
+  (parameters
+    '("gchar*[]" "text")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method append
+  (of-object "GtkCList")
+  (c-name "gtk_clist_append")
+  (return-type "gint")
+  (parameters
+    '("gchar*[]" "text")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method insert
+  (of-object "GtkCList")
+  (c-name "gtk_clist_insert")
+  (return-type "gint")
+  (parameters
+    '("gint" "row")
+    '("gchar*[]" "text")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method remove
+  (of-object "GtkCList")
+  (c-name "gtk_clist_remove")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_row_data
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_row_data")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gpointer" "data")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_row_data_full
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_row_data_full")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gpointer" "data")
+    '("GtkDestroyNotify" "destroy")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_row_data
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_row_data")
+  (return-type "gpointer")
+  (parameters
+    '("gint" "row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method find_row_from_data
+  (of-object "GtkCList")
+  (c-name "gtk_clist_find_row_from_data")
+  (return-type "gint")
+  (parameters
+    '("gpointer" "data")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method select_row
+  (of-object "GtkCList")
+  (c-name "gtk_clist_select_row")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method unselect_row
+  (of-object "GtkCList")
+  (c-name "gtk_clist_unselect_row")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method undo_selection
+  (of-object "GtkCList")
+  (c-name "gtk_clist_undo_selection")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method clear
+  (of-object "GtkCList")
+  (c-name "gtk_clist_clear")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method get_selection_info
+  (of-object "GtkCList")
+  (c-name "gtk_clist_get_selection_info")
+  (return-type "gint")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+    '("gint*" "row")
+    '("gint*" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method select_all
+  (of-object "GtkCList")
+  (c-name "gtk_clist_select_all")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method unselect_all
+  (of-object "GtkCList")
+  (c-name "gtk_clist_unselect_all")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method swap_rows
+  (of-object "GtkCList")
+  (c-name "gtk_clist_swap_rows")
+  (return-type "none")
+  (parameters
+    '("gint" "row1")
+    '("gint" "row2")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method row_move
+  (of-object "GtkCList")
+  (c-name "gtk_clist_row_move")
+  (return-type "none")
+  (parameters
+    '("gint" "source_row")
+    '("gint" "dest_row")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_compare_func
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_compare_func")
+  (return-type "none")
+  (parameters
+    '("GtkCListCompareFunc" "cmp_func")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_sort_column
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_sort_column")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_sort_type
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_sort_type")
+  (return-type "none")
+  (parameters
+    '("GtkSortType" "sort_type")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method sort
+  (of-object "GtkCList")
+  (c-name "gtk_clist_sort")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method set_auto_sort
+  (of-object "GtkCList")
+  (c-name "gtk_clist_set_auto_sort")
+  (return-type "none")
+  (parameters
+    '("gboolean" "auto_sort")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method _create_cell_layout
+  (of-object "GtkCList")
+  (c-name "_gtk_clist_create_cell_layout")
+  (return-type "PangoLayout*")
+  (parameters
+    '("GtkCListRow*" "clist_row")
+    '("gint" "column")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+
+

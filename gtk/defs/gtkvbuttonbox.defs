@@ -1,0 +1,44 @@
+
+
+(define-function gtk_vbutton_box_get_type
+  (in-module GtkVButtonBox)
+  (c-name "gtk_vbutton_box_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vbutton_box_new
+  (c-name "gtk_vbutton_box_new")
+  (is-constructor-of GtkVButtonBox)
+  (return-type "GtkWidget*")
+)
+
+(define-function vbutton_box_get_spacing_default
+  (c-name "gtk_vbutton_box_get_spacing_default")
+  (return-type "gint")
+  (deprecated "")
+)
+
+(define-function vbutton_box_set_spacing_default
+  (c-name "gtk_vbutton_box_set_spacing_default")
+  (return-type "none")
+  (parameters
+    '("gint" "spacing")
+  )
+  (deprecated "")
+)
+
+(define-function vbutton_box_get_layout_default
+  (c-name "gtk_vbutton_box_get_layout_default")
+  (return-type "GtkButtonBoxStyle")
+  (deprecated "")
+)
+
+(define-function vbutton_box_set_layout_default
+  (c-name "gtk_vbutton_box_set_layout_default")
+  (return-type "none")
+  (parameters
+    '("GtkButtonBoxStyle" "layout")
+  )
+  (deprecated "")
+)
+

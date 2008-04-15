@@ -1,0 +1,3 @@
+#!/bin/bash
+combo-02-obj.exe >log
+z log

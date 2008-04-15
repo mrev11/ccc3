@@ -1,0 +1,81 @@
+//MSK2DLG 0.9.00
+
+class tabdlg(jtdialog)
+    method initialize
+    attrib  f1
+    attrib  choice
+    attrib  f2
+    attrib  f3
+    attrib  tpane
+    attrib  r1
+    attrib  r2
+    attrib  r3
+    attrib  r4
+    attrib  c1
+    attrib  c2
+    attrib  c3
+    attrib  c4
+    attrib  datum
+    attrib  progressbar
+    attrib  ok
+    attrib  x
+    attrib  pnl
+
+
+static function tabdlg.initialize(this)
+    this:(jtdialog)initialize(2,6,21,75)
+    this:name:='tabdlg'
+    this:layout:='fix'
+    this:f1:=jtgetNew(1,27,1,43); this:f1:name:='f1'; this:add(this:f1)
+    this:choice:=jtcomboNew(1,46,1,64); this:choice:name:='choice'; this:add(this:choice)
+    this:f2:=jtgetNew(2,5,2,24); this:f2:name:='f2'; this:add(this:f2)
+    this:f3:=jtgetNew(2,27,2,43); this:f3:name:='f3'; this:add(this:f3)
+    this:tpane:=jttabpaneNew(3,5,14,43); this:tpane:name:='tpane'; this:add(this:tpane)
+    this:r1:=jtradioNew(3,46,3,64); this:r1:name:='r1'; this:r1:text:='Próba szerencse'; this:add(this:r1)
+    this:r2:=jtradioNew(4,46,4,64); this:r2:name:='r2'; this:r2:text:='Próba szerencse'; this:add(this:r2)
+    this:r3:=jtradioNew(5,46,5,64); this:r3:name:='r3'; this:r3:text:='Próba szerencse'; this:add(this:r3)
+    this:r4:=jtradioNew(6,46,6,64); this:r4:name:='r4'; this:r4:text:='Próba szerencse'; this:add(this:r4)
+    this:c1:=jtcheckNew(8,46,8,64); this:c1:name:='c1'; this:c1:text:='Progress bar'; this:add(this:c1)
+    this:c2:=jtcheckNew(9,46,9,64); this:c2:name:='c2'; this:c2:text:='Próba szerencse'; this:add(this:c2)
+    this:c3:=jtcheckNew(10,46,10,64); this:c3:name:='c3'; this:c3:text:='Próba szerencse'; this:add(this:c3)
+    this:c4:=jtcheckNew(11,46,11,64); this:c4:name:='c4'; this:c4:text:='Próba szerencse'; this:add(this:c4)
+    this:datum:=jtgetNew(13,53,13,62); this:datum:name:='datum'; this:add(this:datum)
+    this:progressbar:=jtprogbarNew(15,5,16,43); this:progressbar:name:='progressbar'; this:add(this:progressbar)
+    this:ok:=jtpushNew(15,46,16,54); this:ok:name:='ok'; this:ok:text:='OK'; this:add(this:ok)
+    this:x:=jtpushNew(15,56,16,64); this:x:name:='x'; this:x:text:='Exit'; this:add(this:x)
+    this:pnl:=jtpanelNew(17,3,17,66); this:pnl:name:='pnl'; this:pnl:text:='Próba szerencse'; this:add(this:pnl)
+    this:add(jtlabelNew(1,3,1,24,'1 Próba szerencse    :'))
+    this:add(jtlabelNew(1,66,1,66,'1'))
+    this:add(jtlabelNew(2,3,2,3,'2'))
+    this:add(jtlabelNew(2,66,2,66,'2'))
+    this:add(jtlabelNew(3,3,3,3,'3'))
+    this:add(jtlabelNew(3,66,3,66,'3'))
+    this:add(jtlabelNew(4,3,4,3,'4'))
+    this:add(jtlabelNew(4,66,4,66,'4'))
+    this:add(jtlabelNew(5,3,5,3,'5'))
+    this:add(jtlabelNew(5,66,5,66,'5'))
+    this:add(jtlabelNew(6,3,6,3,'6'))
+    this:add(jtlabelNew(6,66,6,66,'6'))
+    this:add(jtlabelNew(7,3,7,3,'7'))
+    this:add(jtlabelNew(7,66,7,66,'7'))
+    this:add(jtlabelNew(8,3,8,3,'8'))
+    this:add(jtlabelNew(8,66,8,66,'8'))
+    this:add(jtlabelNew(9,3,9,3,'9'))
+    this:add(jtlabelNew(9,66,9,66,'9'))
+    this:add(jtlabelNew(10,3,10,3,'0'))
+    this:add(jtlabelNew(10,66,10,66,'0'))
+    this:add(jtlabelNew(11,3,11,3,'1'))
+    this:add(jtlabelNew(11,66,11,66,'1'))
+    this:add(jtlabelNew(12,3,12,3,'2'))
+    this:add(jtlabelNew(12,66,12,66,'2'))
+    this:add(jtlabelNew(13,3,13,3,'3'))
+    this:add(jtlabelNew(13,46,13,51,'Dátum:'))
+    this:add(jtlabelNew(13,66,13,66,'3'))
+    this:add(jtlabelNew(14,3,14,3,'4'))
+    this:add(jtlabelNew(14,66,14,66,'4'))
+    this:add(jtlabelNew(15,3,15,3,'5'))
+    this:add(jtlabelNew(15,66,15,66,'5'))
+    this:add(jtlabelNew(16,3,16,3,'6'))
+    this:add(jtlabelNew(16,66,16,66,'6'))
+    return this
+

@@ -1,0 +1,30 @@
+
+
+(define-function gtk_arrow_get_type
+  (in-module GtkArrow)
+  (c-name "gtk_arrow_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_arrow_new
+  (c-name "gtk_arrow_new")
+  (is-constructor-of GtkArrow)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkArrowType" "arrow_type")
+    '("GtkShadowType" "shadow_type")
+  )
+)
+
+(define-method set
+  (of-object "GtkArrow")
+  (c-name "gtk_arrow_set")
+  (return-type "none")
+  (parameters
+    '("GtkArrowType" "arrow_type")
+    '("GtkShadowType" "shadow_type")
+  )
+)
+
+
+

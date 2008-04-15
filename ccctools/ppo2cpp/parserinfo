@@ -1,0 +1,4 @@
+#!/bin/bash
+lemon.exe  -g parser.lem  >parser.rul
+lemon.exe  -s parser.lem
+rm parser.c

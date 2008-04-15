@@ -1,0 +1,8 @@
+#!/bin/bash
+#Gtk Entity Editor
+export SQLDEBUG=on
+
+#geed.exe P ../../test/basicdemo/tds/abc.tds
+#geed.exe P ../../test/basicdemo/tds/probaszerencse.tds
+
+geed.exe P entity.konto.szla_kamjut.tds

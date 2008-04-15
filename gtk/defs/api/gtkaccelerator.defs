@@ -1,0 +1,49 @@
+
+
+(define-function gtk_accelerator_valid
+  (in-module GtkAccelerator )
+  (c-name "gtk_accelerator_valid")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+  )
+)
+
+(define-function gtk_accelerator_parse
+  (in-module GtkAccelerator )
+  (c-name "gtk_accelerator_parse")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "accelerator")
+    '("guint*" "accelerator_key")
+    '("GdkModifierType*" "accelerator_mods")
+  )
+  (CCC byhand)
+)
+
+(define-function gtk_accelerator_name
+  (in-module GtkAccelerator )
+  (c-name "gtk_accelerator_name")
+  (return-type "gchar*")
+  (parameters
+    '("guint" "accelerator_key")
+    '("GdkModifierType" "accelerator_mods")
+  )
+)
+
+(define-function gtk_accelerator_set_default_mod_mask
+  (in-module GtkAccelerator )
+  (c-name "gtk_accelerator_set_default_mod_mask")
+  (return-type "none")
+  (parameters
+    '("GdkModifierType" "default_mod_mask")
+  )
+)
+
+(define-function gtk_accelerator_get_default_mod_mask
+  (in-module GtkAccelerator )
+  (c-name "gtk_accelerator_get_default_mod_mask")
+  (return-type "guint")
+)
+

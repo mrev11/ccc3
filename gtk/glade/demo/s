@@ -1,0 +1,3 @@
+#!/bin/bash
+gui.exe project7.glade
+

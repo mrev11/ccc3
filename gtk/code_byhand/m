@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#BLD=gtk-suse9.bld
+#BLD=gtk-suse10.bld
+BLD=gtk-suse-kde-32.bld
+#BLD=gtk-freebsd.bld
+#BLD=gtk-hoary.bld
+#BLD=gtk-ubuntu.bld
+
+pushd ../codegen && m && run.exe
+popd
+
+bapp_unix_.b  @gtk.bld  @"$BLD" -sccc3_gtk
+
+if test -s error; then
+    list error &
+fi
+
+ln -s -f `pwd`/include/gtk.ch     $CCCDIR/usr/include/gtk.ch
+ln -s -f `pwd`/include/gdk.ch     $CCCDIR/usr/include/gdk.ch
+ln -s -f `pwd`/include/cccgtk.h   $CCCDIR/usr/include/cccgtk.h
+
+cp -pf obj$CCCBIN/*.lib   $CCCDIR/usr/lib/$CCCBIN
+cp -pf obj$CCCBIN/*.so    $CCCDIR/usr/lib/$CCCBIN

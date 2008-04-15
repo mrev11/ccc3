@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LEMON=$CCCDIR/usr/bin/$CCCUNAME/lemon.exe
+
+if [ ! -x $LEMON ]; then
+    gcc  -I .  lemon.c  -o $LEMON
+    cp -p lempar.c  $CCCDIR/usr/bin/$CCCUNAME
+
+    if [ -x $LEMON ]; then
+        echo 'lemon compiled successfully'
+    else
+        echo 'lemon failed to compile'
+    fi
+fi
+
+

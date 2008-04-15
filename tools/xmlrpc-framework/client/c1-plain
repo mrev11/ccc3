@@ -1,0 +1,33 @@
+#!/bin/bash
+#nyúzó
+rm log*
+
+touch sema  # ennek letörlésével lehet az öszeset leállítani
+
+HOST=localhost
+PORT=45000
+unset SSL
+
+
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+c-test1.exe $HOST $PORT $SSL  &
+

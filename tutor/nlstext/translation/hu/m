@@ -1,0 +1,7 @@
+#!/bin/bash
+tran2cpp.exe nlstext.hu.tran  nlstext.hu.cpp
+bapp_unix_.b -snlstext.hu
+
+#az LD_LIBRARY_PATH-ba kell tenni
+cp -pf obj$CCCBIN/*.so  ..
+

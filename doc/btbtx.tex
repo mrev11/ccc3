@@ -1,0 +1,466 @@
+
+\pagetitle%
+{Saját kulcskezelőre épülő táblaobjektum}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{2001. december}
+
+\section{Áttekintés}
+ 
+A dokumentum az új, BTBTX formátumú táblaobjektumot ismerteti.
+Ha csupán alkalmazni akarjuk az új könyvtárat, akkor erre az írásra
+nincs szükség, mivel (természetesen) a korábbi táblaobjektumokkal
+megmaradt a kompatibilitás, ezek leírása pedig a 
+\href{tabobj.html}{Tábla objektum referencia} dokumentumban található.
+Így a továbbiakat csak háttérinformációnak szánom.
+
+Az új formátum legfontosabb tulajdonsága, hogy {\it saját kulcskezelőn
+alapszik}, így végre függetlenedni tudunk bármiféle idegen
+forrástól (Btrieve, Ctree), és feltétel nélkül szabaddá (GPL)
+tehetjük a kódunkat. Személyes véleményem, hogy hosszabb távon
+a saját kulcskezelő megbízhatóbb is lesz, mint az említett
+szoftverek.
+
+Az alábbiakban áttekintem a BTBTX formátum fő jellegzetességeit
+a korábbi formátumokkal összeveteve.
+
+\paragraph{Btrieve}
+
+A Btrieve-hez hasonlóan a BTBTX formátumban sincs külön index filé.
+Az adatok és az indexek táblánként egy darab  bt kiterjesztésű filében 
+vannak. A memófilék kezelését ugyanaz a szoftver végzi, mint a 
+többi formátumban, kiterjesztésük btx. Az új formátum neve az adat- és 
+memófilék kiterjesztésének összevonásából keletkezett.
+A Btrieve és BTBTX formátumú táblaobjektum egyaránt tartalmazza
+a mezők és indexek leírását. Mindkét formátum képes változó
+hosszúságú rekordok tárolására, de ezt a képességüket
+(a resource-októl eltekintve) nem használjuk.
+A Btrieve rekordkezelőt tipikusan kliens/szerver üzemmódban
+használják, szemben a BTBTX-re jellemző standalone programszervezéssel.
+
+\paragraph{DATIDX}
+ 
+A BTBTX és DATIDX formátum hasonlít abban, hogy mindig rendelkezésre
+áll a tábla mezőinek és indexeinek leírása. A DATIDX formátumban
+az indexek frissítését a Ctree könyvtár automatikusan végzi.
+ 
+\paragraph{DBFCTX}
+
+Különösen nagy hasonlóság van a BTBTX és a DBFCTX formátum kódja között.
+Az indexek módosítását nem a rekordkezelő könyvtárra bízzuk (ahogy a Ctree-re
+a DATIDX esetében), hanem magasabb szinten, a táblaobjektumban oldjuk meg.
+Kulcs módosításakor először töröljük az indexből a régi kulcsértéket,
+módosítjuk az adatrekordot, végül beírjuk az indexbe az új kulcsot. 
+Talán meglepő, de mindez hatékonyan és megbízhatóan kódolható CCC-ben.
+Csakhogy, míg a DBFCTX esetében az elemi kulcskezelés függvényei
+a Ctree könyvtárból valók, a BTBTX saját kulcskezelőt használ.
+
+A bt filé a mezők és indexek leírását egyaránt tartalmazza.
+Az indexek leírása a kötött dbf formátumba nem volt betehető, 
+ezért DBFCTX-ben az index infót a ctx tárolja,
+ami azonban nem áll rendelkezésre, ha éppen letörölték.
+A BTBTX formátum mentes ettől a hibától.
+
+
+\section{Keletkezéstörténet}
+
+\subsection{Kell-e ISAM filékezelő?}
+
+Szükséges-e egyáltalán ISAM filékezeléssel bajlódni? 
+A fiatalabb programozó generáció már azt sem tudja mi az az ISAM, 
+SQL-en kívül mást el sem tudnak képzelni. Tekintsük azonban
+a következő SQL utasítást:
+
+\begin{verbatim}
+select szamlaszam,devnem,egyenleg 
+  from szamla 
+  where szamlaszam<'8830100440014832' 
+  order by szamlaszam desc
+\end{verbatim}
+ 
+A fenti parancsot az Oracle, Postgres és MySQL úgy hajtja végre,
+hogy először kikeresi a \verb!where! feltételnek megfelelő számlákat
+(a sorok száma akár többszázezer is lehet), majd {\it az így kapott táblát 
+ rendezi}, és negyedóra gondolkodás után megadja az első rekordot. 
+Ettől a nyilvánvalóan rossz  algoritmustól a fenti adatbáziskezelőket 
+nem lehet eltántorítani. Hiába létezik index a \verb!szamlaszam! oszlopra, 
+hiába adunk bámilyen hint-et az optimalizálásra vonatkozóan, 
+az Oracle kitartóan rendez.
+Ugyanez a lekérdezés egy ISAM filékezelővel, számlaszám szerinti
+indexszel, többszázezer eredménysorral fél percen belül elkészül úgy,
+hogy az első rekord egy ezredmásodpercen belül megvan. 
+
+Megmutattam ezt egy Oracle ,,szakértőnek'', aki azt mondta,
+hogy a feladat rossz, mert az Oracle-nek olyan kérdéseket kell
+feltenni, aminek eredményeként kis táblákat kapunk. Irígylem azokat
+a programozókat, akiknek csak jó feladatokkal kell foglalkozniuk.
+
+Általánosságban (finoman szólva) az mondható, hogy 
+az SQL lekérdezésű, tranzakciós adatbázisszervereket nem olyan feladatok 
+megoldására tervezték, amik egy nagy tábla sorainak többségét érintik. 
+Ilyen feladatok azonban nyilvánvalóan léteznek. Tegyük fel például, hogy 
+van egymillió számlánk, és ki akarjuk számolni mindegyiken a napi kamatot, 
+vagy ki akarjuk gyűjteni azokat, amikre kivonatot kell nyomtatni, 
+és éppen 900 ezer ilyen van.
+
+Említek még egy dolgot, amit gyakran még a tapasztalt informatikusok
+is elfelejtenek, nevezetesen, hogy nincsenek csodák: A legvonzóbb
+hirdetésekkel rendelkező SQL adatbáziskezelő sem tud nagyobb adatbázisokban
+gyorsabban keresni, mint az egyszerű ISAM, minthogy erre jelenleg nem 
+ismerünk jobb adatszerkezetet, mint a btree, 
+ahogy azt az ISAM-ban néhány évtizede kitalálták.
+
+No jó, legyen ISAM, akkor is mi értelme van  új kulcskezelő
+szoftvert írni, amikor az ilyenekkel Dunát lehet rekeszteni?
+Meglepő, de nincs is ezekből olyan sok: Btrieve, Ctree, C-ISAM,
+DISAM, Berkeley-DB (SleepyCat). Ezeknek azonban egyike sem ingyenes,
+és a Ctree és a Berkeley DB kivételével a forrásuk is titkos. 
+Emellett ezek legalább
+10-15 éves szoftverek, amik az idők során egymásra rakódott API-k
+miatt szövevényessé váltak, rengeteg vitatható fontosságú szolgáltatást
+nyújtanak, viszont nehéz belőlük kibányászni a kisszámú tényleg 
+szükséges funkciót. A programok fejlesztési irányával sem vagyok
+elégedett, pl.{} szerintem nincs szükség e termékekre épülő
+gyenge minőségű, SQL interfészű adatbázisszerverek fejlesztésére.
+
+Nekem éppenséggel olyan kulcs/indexkezelőre van szükségem,
+ami az általam fontosnak tartott szolgáltatásokkal rendelkezik,
+áttekinthetősége és egyszerűsége miatt kézbentartható és megbízható.
+Úgy gondolom, hogy a mai PC-k teljesítménye lehetővé teszi, hogy
+az algoritmusok egyszerű és közvetlen alkalmazásával megoldjunk
+olyan feladatokat, amit korábban csak agyonoptimalizált programokkal
+lehetett.  Méginkább így lesz ez a 64 bites rendszerek megjelenésével. 
+A BTBTX egyszerű kulcskezelőjét egy szép délután portolni fogom 64 bites 
+Linuxra, de mennyi ideig fog ez tartani a Ctree esetében?\footnote{
+Vagy a jelent illetően: egyszerűen bevezethető a ReiserFS 
+60 bites filé offseteket támogató API-ja, amivel már most
+megoldható a 2G-nál nagyobb filék kezelése.}
+
+\subsection{Fejlesztések (vagy egyszerűsítések?)}
+
+Ha megtekintjük a \verb!man 3 dbopen! parancs után elénk táruló
+információt, rájövünk, hogy a {\it Linuxon van ingyenes 
+ISAM adatbáziskezelő.} Installáltam az adatbáziskezelő forrását is, 
+aminek tanulmányozásával a következők derültek ki:
+
+A manban leírt adatbáziskezelőt eredetileg a BSD UNIX-on fejlesztették 
+ki, amint az a Makefile-ben lévő megjegyzésben olvasható:
+%Makefile
+\begin{verbatim}
+# Makefile for 4.4BSD db code in GNU C library.
+# This code is taken verbatim from the BSD db 1.85 package.  Only this
+# Makefile and compat.h were written for GNU libc, and the header files
+# moved up to this directory.
+\end{verbatim}
+
+Ugyanennek a szoftvernek van egy fejlettebb, a SleepyCat által
+fejlesztett változata, ami a SuSE Linuxokon szintén
+installálódik (és általában elfedi az előzőt). 
+E csomag README-jében az alábbi licence információ bújik meg:
+%README
+\begin{verbatim}
+As a special exception, when Berkeley DB is distributed along with the
+GNU C Library, in any program which uses the GNU C Library in accord
+with that library's distribution terms, it is also permitted for
+Berkeley DB to be loaded dynamically by the GNU C Library to implement
+standard ISO/IEC 9945 and Unix interface functionality.
+
+Sleepycat Software, Inc.
+\end{verbatim}
+
+E két adatbáziskezelő változat legfőbb jellegzetessége, 
+hogy szigorúan egyfelhasználósak. Ez leginkáb azon múlik, 
+hogy intenzíven cache-elnek, ezért nem is értesülhetnek más 
+processzek által végzett adatmódosításokról (ritkán olvasnak).
+
+Harmadszor, a Berkeley~DB-nek létezik egy többfelhasználós,
+bonyolult tranzakciókezelésre képes változata, 
+amit a SleepyCat forgalmaz, forrása letölthető a hálóról, 
+ám üzleti alkalmazásra nem ingyenes.\footnote{
+A MySQL legújabb, tranzakciókezelést is tartalmazó változata erre az 
+adatbázismotorra épül (így nyilván az sem lehet ingyenes).} 
+
+A saját kulcskezelő írásakor a legrégibb, legegyszerűbb változatból
+indultam ki. Az átalakítások folytán a szoftver egyrészt leegyszerűsödött,
+másrészt lehetővé vált a konkurrens használat. Az egyszerűsítés
+mértékére jellemző adatok: 
+\begin{itemize}
+\item
+  Az eredeti Berkeley~DB forrás btree kezelő része
+  130~Kbyte (ebből indultam ki). 
+\item
+  A SleepyCat által feldúsított változat mérete 250~Kbyte. 
+\item
+  Az általam módosított változat mérete konkurrencia 
+  kezeléssel együtt 90 Kbyte. 
+\end{itemize}  
+
+Nézzük, milyen egyszerűsítések történtek a szoftverben:
+
+\begin{description}
+\item[Adatbázis típusok.]
+  Az eredeti API háromféle (btree, hash és rekordsorszám) szervezésű
+  adatbázist támogatott. A hash alapján történő keresésre nincs
+  szükség, a rekordsorszámos adatbázisnak nincs önálló jelentősége,
+  így csak a btree-t hagytam meg. Megjegyzem, hogy az előbb
+  említett 130/250 Kbyte-os méretekbe nem számítottam be 
+  a hash és rekordsorszámos adatbázis kódját. 
+\item[Kulcs/adat párok.]
+  Az eredeti API kulcs/adat párok tárolását tette lehetővé.
+  A gyakorlatban azonban az adatok külön egységként tárolódnak,
+  ezért kulcsok mellé nincs értelme adatot helyezni. 
+  Ezért a mi indexeinkben kizárólag kulcsok vannak.
+\item[Duplikátumok.]
+  Az eredeti kód sokat vacakolt a kulcsok között előforduló
+  duplikátumokkal. A táblaobjektumban azonban az egyező kulcsok
+  közötti sorrend is definiált (kötelezően a rekordsorszám),
+  ezért a mi kulcsaink mindig ki vannak egészítve a rekordsorszámmal,
+  tehát duplikátum egyáltalán nem lehetséges. Így a duplikátumok
+  kezelése el lett hagyva.
+\item[Kurzorpozíció.]
+  Az eredeti egyfelhasználós kód rengeteget pátyolgatta a kurzorpozíciót.
+  Ha olyan műveletet végzett, ami a kurzort elrontotta, 
+  akkor addig nem nyugodott, amíg az ki nem javult.
+  Többfelhasználós esetben ez nem járható, ui. a kurzor
+  elsősorban a többi processz ténykedése miatt romlik el,
+  amit csak utólag lehet észrevenni. Ezért az új program
+  tárolja a kurzorpozíció mellett a kurzor helyén lévő
+  kulcsértéket is. A kurzor felhasználása előtt ellenőrzi, 
+  hogy ugyanarra a kulcsra mutat-e még, ha nem, 
+  akkor újrapozícionálja. Ez sokkal egyszerűbb és biztonságosabb,
+  mint az eredeti megoldás.
+\item[Mpool get/put interfész.]  
+  Az eredeti kód az mpool\_get/put interfésszel (lásd man)
+  lapozós technikával olvasta a lemezt. Ez a függvénykészlet
+  intenzív bufferelést végzett, ami megakadályozta a konkurrens
+  használatot. Az interfészt megtartottam, de a függvényeket
+  újraírtam a konkurrens használat igényeinek megfelelően.
+\end{description}
+ 
+A bővítések:
+
+\begin{description}
+\item[Több btree.]
+  Az eredeti szoftver egyetlen btree-t támogatott. Az új 
+  creord, delord, renord interfész függvényekkel új indexeket lehet
+  kreálni, törölni, átnevezni. A setord interfész függvénnyel választható
+  ki az aktuális index (amire a hagyományos műveletek vonatkoznak).
+  Az indexek leírását tartalmazó táblázatnak el kell férnie a 0-dik
+  lapon, ez korlátozza a számukat.
+\item[Adatlapok.]
+  Az új formátum lehetővé teszi adatrekordok tárolását.
+  Az adatok (lapon belül) ugyanúgy tárolódnak, mint a kulcsok, azzal a 
+  különbséggel,  hogy az adatlapok nem alkotnak fastruktúrát.
+  Az adatrekordok (a kulcsokhoz hasonlóan) változó hosszúságúak lehetnek,
+  de nem nyúlhatnak túl a lapon, ami tipikusan 4096 byte.
+  Megjegyzem, hogy a lapozós technika egyáltalán nem az i/o sebesség
+  növelését szolgálja, hanem ez teszi lehetővé a szabadlista
+  alkalmazását, és ezzel a törölt lapok újbóli felhasználását.
+\item[Lock protokoll.]
+  Egyszerű pagelock protokoll biztosítja, hogy a konkurrens felhasználók
+  tevékenysége ne ütközzön. 
+\end{description}
+ 
+Terveim szerint a formátum részét fogja képezni a bytesorrend,
+ennek konverzióját azonban csak legvégül célszerű beépíteni
+a szoftverbe, hogy a fejlesztés alatt ne zavarja a tiszta képet.
+
+
+
+\section{Kulcskezelő interfész}
+
+Az alább ömlesztve felsorolt interfész részletes leírásának 
+jelenleg nem volna sok értelme, így csak néhány észrevételt teszek.
+
+
+\subsection{Create/open}
+
+\begin{verbatim}
+  BTREE *__bt_open           (int fd, int psize);
+  int    __bt_close          (BTREE*t);
+  int    __bt_fd             (BTREE*t);
+  int    __bt_pagesize       (BTREE*t);
+  int    __bt_lastrec        (BTREE*t);
+\end{verbatim}
+
+Az \verb!open! paramétere nem filénév, hanem korábban 
+megnyitott filé descriptor, így a nyitási mód kompatibilisnak
+tartható a CCC fopen-nel, és a UNIX/Windows különbségek sem
+gyűrűznek tovább.
+Üres (nulla hosszúságú) filé esetén  meghatározható a pagesize, 
+ha ezt 0-nak adjuk meg, azt a rendszer a default pagesize-zal 
+helyettesíti, ez általában 4096 byte.
+A filébe írt adatrekordok számát adja meg \verb!lastrec!.
+ 
+
+\subsection{Navigáció, módosítás}
+
+\begin{verbatim}
+  int    __bt_delete         (BTREE*t, DBT*key);
+  int    __bt_put            (BTREE*t, DBT*key, int cursor);
+  int    __bt_seq            (BTREE*t, DBT*key, int flags);
+\end{verbatim}
+
+Ezek a hagyományos dbopen függvények kis módosítással.
+A \verb!delete! függvény csak konkrétan megadott kulcs
+törlését támogatja (kurzort nem töröl).
+A \verb!put! harmadik paraméterével az szabályozható, 
+hogy pozícionálódjon-e a kurzor.
+A \verb!seq! függvény haramadik paraméterének (flags) egy bitjében
+előírható, hogy a filé 0-dik lapjára a keresés alatt readlockot
+tegyen (konkurrencia). Az indexet módosító processzek ennek megfelelően
+writelockot tesznek a 0-dik lapra, de ez nincs beépítve
+egyik (alacsonyszintű) függvénybe sem, mivel egyszerre több
+elemi műveletet kell lefedni lockkal, ezért a táblaobjektumba való.
+ 
+\subsection{Sorrendek}
+
+\begin{verbatim}
+  int    __bt_creord         (BTREE*t, char*name);
+  int    __bt_setord         (BTREE*t, char*name);
+  int    __bt_delord         (BTREE*t, char*name);
+  int    __bt_renord         (BTREE*t, char*namold, char*namnew);
+\end{verbatim}
+
+E függvényekkel sorrendeket (btree struktúrákat) lehet a filében
+kreálni, aktuálisként kijelölni, törölni, átnevezni.
+Az interfészcsoport függvényei az indexet név alapján azonosítják. 
+A \verb!delord! által törölt egész btree egy mozdulattal a
+szabadlistába kerül. 
+ 
+
+\subsection{Adatlapok}
+
+\begin{verbatim}
+  RECPOS __bt_addresource    (BTREE*t, DBT*buf, indx_t x);
+  RECPOS __bt_append         (BTREE*t, DBT*buf, int*recno);
+  int    __bt_rewrite        (BTREE*t, DBT*buf, RECPOS*recpos);
+  int    __bt_read           (BTREE*t, DBT*buf, RECPOS*recpos);
+  int    __bt_read1          (BTREE*t, DBT*buf, pgno_t p, indx_t x);
+\end{verbatim}
+
+Az \verb!addresource! függvény az 1-es lapon helyez el meg nem 
+határozott célú metainfót. A táblaobjektum ezt a lapot a mezők
+és indexek struktúrájának leírására használja.
+Új adatrekordot ír a filébe az \verb!append!, és visszaad egy
+RECPOS struktúrát, amivel hivatkozni lehet a rekordra.
+Az adatrekord hossza nem kötött, de rá kell férjen egy lapra.
+A \verb!rewrite! függvény felülír egy létező adatrekordot.
+Az új rekord hosszának kötelezően egyeznie kell a régi hosszal.
+Az adatlapok módosítása automatikus lockolással védett.
+\verb!read! és \verb!read1! kiolvasnak egy adatrekordot.
+ 
+
+\subsection{Konkurrencia}
+
+\begin{verbatim}
+  void   __bt_pagelock       (BTREE*t, pgno_t p, int mode);
+  void   __bt_pageunlock     (BTREE*t, pgno_t p);
+  int    __bt_header_read    (BTREE*t, int lock);
+  int    __bt_header_write   (BTREE*t);
+  int    __bt_header_sync    (BTREE*t);
+  int    __bt_header_release (BTREE*t);
+\end{verbatim}
+
+A header író/olvasó függvények speciális gondossággal
+kezelik a konkurrenciát, többek között egy lock számlálót
+használnak az egymásba skatulyázott hívások nyilvántartására.
+ 
+
+\section{Táblaobjektum szint}
+
+Az eddigiek ismertették a nyersanyagot, most következne,
+hogy hogyan lehet ebből megfőzni a vacsorát, azaz a táblaobjektumot.
+Idő híján csak néhány megjegyzés:
+
+Az 1-es lap (adatlap) speciális célra, a mezők és indexek
+struktúrájának tárolására szolgál. Ez két rekordot jelent,
+mindkettő \_arr2chr formátumban van kiírva.  
+Más nincs az 1-es lapon.
+
+Az adatrekordokat alapvetően a RECPOS struktúra segítségével lehet
+előkeresni. Ez CCC szinten egy 6~byte-os string, aminek első 4~byte-jában
+a lapszám, utolsó 2~byte-jában a lapon belüli index van.
+
+A tabAppend művelet kiír egy (törölt) üres rekordot az utolsó adatlapra,
+vagy, ha ott nincs már elég hely, kezd egy új lapot. Visszaadja
+az új rekord RECPOS-át, amivel hivatkozni lehet a rekordra,
+és képezhetők a kulcsok. Az indexek csak az appendált rekord 
+commitjában módosulnak, ha az elmarad (pl.{} tranRollback miatt),
+akkor a rekordra később egyáltalán nem lehet rápozícionálni,
+még goto-val sem, azaz a recno-k sora lyukas lesz.
+
+Az 0-dik index neve mindig "recno". A recno indexben levő kulcsok 
+szerkezete: 4 byte-on (big endian) rekordsorszám plusz RECPOS.
+A tabGoto művelet megkeresi az adott rekordsorszámhoz tartozó
+kulcsot, majd az ebben talált RECPOS alapján beolvassa a rekordot.
+
+A többi kulcs szerkezete: szegmensek konkatenációja plusz az előbbi recno
+kulcs. Ez biztosítja, hogy az azonos kulcsok  mégiscsak különbözzenek,
+és recno szerint legyenek rendezve. A tabSeek művelet nagyobbegyenlőt
+keres a megadott kulccsal, a visszakapott kulcsból meg lehet
+határozni az eredményrekord recno-ját, és a RECPOS alapján be lehet
+olvasni a rekordot.
+
+A pack műveletben el akartam kerülni, hogy a pack sikere
+függjön a recno index épségétől, ezért a következőképpen megy:
+Sorban beolvassuk a filé összes lapját, miközben csak az adatlapokkal
+foglalkozunk. Ezekről az összes nem törölt rekordot átmásoljuk az
+új filébe (append, recbuf csere, commit). Az indexek menet közben
+újraépülnek. A szabadlista alkalmazása miatt a pack felcserélheti
+a rekordok eredeti sorrendjét.
+
+A CCC szintű rekordlock minden mástól független. Egy rekord lockja
+2GB-1MB-tól kezdve visszafele számolva egyetlen byte lockját jelenti.
+
+A btree filé mindig fopen-nel nyílik, ezért az fopen-ben alkalmazott
+lock protokoll érvényesül. Egy bt filé pontosan egy descriptort használ.
+
+Az indexeket olvasó processzek readlockot (lásd \verb!__bt_pagelock!),
+a módosító processzek writelockot tesznek a 0-dik lapra. A lock
+protokoll biztosítja minden processz számára a megfelelő védelmet.
+Emellett teljesül, hogy egy írni akaró program rövid időn belül 
+akkor is megkapja a kívánt writelockot, ha az olvasó programok readlockjai 
+hosszú ideig átfednék egymást (live lock).
+
+
+\section{Teljesítmény}
+ 
+Az alábbi tesztek egy 172 ezer rekordot tartalmazó Kontó számla 
+állománnyal készültek.
+
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|r|r|}  \hline 
+Formátum & Méret  & Skip  &  Pack  & Upgrade  & Goto+Seek  & Suppindex   \\ \hline  
+BTBTX    &  95 MB &   9 s &   59 s &    143 s &       44 s &       23 s  \\ \hline
+DBFCTX   &  80 MB &   5 s &   20 s &    113 s &       41 s &       25 s  \\ \hline
+DATIDX   &  60 MB &  13 s &   23 s &    148 s &       43 s &       29 s  \\ \hline
+\end{tabular}
+\end{center}
+ 
+A DATIDX takarékos mérete a számok lebegőpontos ábrázolásán (8 byte) 
+múlik. A BTBTX ugyanolyan formátumban tárolja a mezőket, mint a DBFCTX. 
+A méretnövekedés oka, hogy a rekordokat lapokra szétosztva tároljuk,
+ezért minden lapon lesz egy töredék kihasználatlan hely. Emellett
+a BTBTX formátum rugalmasabb: lehetővé teszi változó hosszúságú
+adat-{} és indexrekordok tárolását.
+
+A ,,Skip'' oszlop az egész adattábla számlaszám sorrendben történő
+végigolvasásának ideje. Meglepően jó időt produkál a DBFCTX formátum.
+
+A ,,Pack'' oszlop a tábla packolásának idejét mutatja. A BTBTX 
+formátum packolása félig optimalizált: a rekordokat egészben másolja,
+de az indexeket menet közben építi. A DBFCTX packolása nagyon gondosan van
+megírva, a DATIDX ,,magától'' jó.
+
+A tabUpgrade művelet a táblát rekordonként és mezőnként másolja,
+eközben az indexek folyamatosan épülnek. 
+
+A ,,Goto+Seek'' mérésnél minden rekordra rápozícionáltunk goto-val,
+majd az ott talált számlaszámra seek-eltünk.
+
+A ,,Suppindex'' oszlopban a számla állomány főkönyvi gyűjtéskor használt,
+meglehetősen összetett indexének előállítási ideje látszik.
+
+
+%\gotoindex
+ 

@@ -1,0 +1,71 @@
+
+
+(define-function gtk_tooltips_get_type
+  (in-module GtkTooltips)
+  (c-name "gtk_tooltips_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_tooltips_new
+  (c-name "gtk_tooltips_new")
+  (is-constructor-of GtkTooltips)
+  (return-type "GtkTooltips*")
+)
+
+(define-method enable
+  (of-object "GtkTooltips")
+  (c-name "gtk_tooltips_enable")
+  (return-type "none")
+)
+
+(define-method disable
+  (of-object "GtkTooltips")
+  (c-name "gtk_tooltips_disable")
+  (return-type "none")
+)
+
+(define-method set_delay
+  (of-object "GtkTooltips")
+  (c-name "gtk_tooltips_set_delay")
+  (return-type "none")
+  (parameters
+    '("guint" "delay")
+  )
+  (deprecated "")
+)
+
+(define-method set_tip
+  (of-object "GtkTooltips")
+  (c-name "gtk_tooltips_set_tip")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("const-gchar*" "tip_text")
+    '("const-gchar*" "tip_private" (null-ok) (default "NULL"))
+  )
+)
+
+(define-function gtk_tooltips_data_get
+  (c-name "gtk_tooltips_data_get")
+  (return-type "GtkTooltipsData*")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method force_window
+  (of-object "GtkTooltips")
+  (c-name "gtk_tooltips_force_window")
+  (return-type "none")
+)
+
+(define-function _gtk_tooltips_toggle_keyboard_mode
+  (c-name "_gtk_tooltips_toggle_keyboard_mode")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+
+

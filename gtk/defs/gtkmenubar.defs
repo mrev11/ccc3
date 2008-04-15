@@ -1,0 +1,16 @@
+
+
+(define-function gtk_menu_bar_get_type
+  (in-module GtkMenuBar)
+  (c-name "gtk_menu_bar_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_menu_bar_new
+  (c-name "gtk_menu_bar_new")
+  (is-constructor-of GtkMenuBar)
+  (return-type "GtkWidget*")
+)
+
+
+

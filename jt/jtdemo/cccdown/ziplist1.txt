@@ -1,0 +1,30 @@
+
+W | bin-btrieve-nt.zip         |     Btrieve requester
+L | bin-ctree-lin.zip          |     Ctree könyvtár interfész
+W | bin-ctree-nt.zip           |     Ctree könyvtár interfész 
+S | bin-ctree-sol.zip          |     Ctree könyvtár interfész  
+U | bin-linux-fonts.zip        |     X fontok
+W | bin-terminal-dos.zip       |     Terminál DOS-ra
+C | ccc-btbtx.zip              |     Btbtx adatbáziskezelés
+W | ccc-btrieve.zip            |     Btrieve adatbáziskezelés 
+C | ccc-datidx.zip             |     Datidx adatbáziskezelés 
+C | ccc-dbfctx.zip             |     Dbfctx adatbáziskezelés 
+C | ccc-doc.zip                |     Dokumentáció
+C | ccc-fltk.zip               |     Fltk könyvtár (Build projekt)
+C | ccc-lib.zip                |     CCC alapkönyvtár forrás
+W | ccc-setup-nt.zip           |     CCC setup
+U | ccc-setup-unix.zip         |     CCC setup 
+W | ccc-terminal-nt-alt.zip    |     Alternatív terminál Windowsra
+W | ccc-terminal-nt.zip        |     Terminál Windowsra 
+U | ccc-terminal-unix.zip      |     Terminál UNIX-ra
+C | ccc-tools.zip              |     Fordító eszközök
+C | ccc-tools2.zip             |     Eszközök, könyvtárak
+C | ccc-tutor.zip              |     Mintaprogramok
+U | install-all.b              |     Installációs script
+W | install-all.bat            |     Installációs script 
+C | jt.zip                     |     Jáva Terminál kiegészítés
+W | old-clipper.zip            |     Régi Clipper kiegészítés
+W | openssl-bor.zip            |     OpenSSL kiegészítés (Borland)
+W | openssl-msc.zip            |     OpenSSL kiegészítés (Microsoft)
+ 
+ 

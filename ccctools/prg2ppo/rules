@@ -1,0 +1,4 @@
+#!/bin/bash
+lemon.exe -g xtxlegal.lem  >parser.rul
+rm *.c
+

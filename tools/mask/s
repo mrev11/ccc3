@@ -1,0 +1,3 @@
+#!/bin/bash
+msk2say.exe maskdemo.msk
+z maskdemo.say

@@ -1,0 +1,8 @@
+-d.
+-dtds
+-dconnect-ora
+
+-b../$$(testdata_lib)
+-bccc3_sql2_oracle
+
+BUILD_EXE=exe-ora

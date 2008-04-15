@@ -1,0 +1,9 @@
+-I.
+-I/opt/konto/devel/kontolib
+-I/opt/konto/devel/datadict
+-I/opt/ccc/usr/include
+-dARROW
+-d_CCC_
+-d_UNIX_
+-d_LINUX_
+-ustd1.ch

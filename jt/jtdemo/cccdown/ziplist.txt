@@ -1,0 +1,13 @@
+W | bison.zip                  |     GNU Bison és Flex Windowsra
+C | ccc-fltk.zip               |     Fltk ablakkezelő (Build projekt)
+C | ccc2.zip                   |     CCC forráskód
+L | ctree-lin.zip              |     Ctree könyvtár Linuxra
+W | ctree-nt.zip               |     Ctree könyvtár Windowsra
+S | ctree-sol.zip              |     Ctree könyvtár Solarisra
+C | jt.zip                     |     Jáva terminál
+W | openssl-bor.zip            |     OpenSSL kiegészítés (Borland) 
+W | openssl-msc.zip            |     OpenSSL kiegészítés (Microsoft) 
+W | setup-nt.zip               |     Induló készlet Windowsra
+U | setup-unix.zip             |     Induló készlet UNIX-ra
+U | x-fonts.zip                |     CCC fontok UNIX-ra
+ 

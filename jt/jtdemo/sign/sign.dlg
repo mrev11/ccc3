@@ -1,0 +1,22 @@
+//MSK2DLG 0.9.00
+
+class sign(jtdialog)
+    method initialize
+    attrib  alias
+    attrib  passw
+    attrib  ok
+    attrib  esc
+
+
+static function sign.initialize(this)
+    this:(jtdialog)initialize(3,18,11,47)
+    this:name:='sign'
+    this:layout:='fix'
+    this:alias:=jtgetNew(1,10,1,26); this:alias:name:='alias'; this:add(this:alias)
+    this:passw:=jtpasswNew(3,10,3,26); this:passw:name:='passw'; this:add(this:passw)
+    this:ok:=jtpushNew(5,3,6,13); this:ok:name:='ok'; this:ok:text:='OK'; this:add(this:ok)
+    this:esc:=jtpushNew(5,16,6,26); this:esc:name:='esc'; this:esc:text:='Esc'; this:add(this:esc)
+    this:add(jtlabelNew(1,3,1,7,'Alias'))
+    this:add(jtlabelNew(3,3,3,7,'Passw'))
+    return this
+

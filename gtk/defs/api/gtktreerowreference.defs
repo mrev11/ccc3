@@ -1,0 +1,71 @@
+
+(define-function gtk_tree_row_reference_new
+  (c-name "gtk_tree_row_reference_new")
+  (is-constructor-of GtkTreeRowReference)
+  (return-type "GtkTreeRowReference*")
+  (parameters
+    '("GtkTreeModel*" "model")
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-function gtk_tree_row_reference_new_proxy
+  (c-name "gtk_tree_row_reference_new_proxy")
+  (is-constructor-of GtkTreeRowReference)
+  (return-type "GtkTreeRowReference*")
+  (parameters
+    '("GObject*" "proxy")
+    '("GtkTreeModel*" "model")
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method get_path
+  (of-object "GtkTreeRowReference")
+  (c-name "gtk_tree_row_reference_get_path")
+  (return-type "GtkTreePath*")
+  (caller-owns-return #t)
+)
+
+(define-method valid
+  (of-object "GtkTreeRowReference")
+  (c-name "gtk_tree_row_reference_valid")
+  (return-type "gboolean")
+)
+
+(define-method free
+  (of-object "GtkTreeRowReference")
+  (c-name "gtk_tree_row_reference_free")
+  (return-type "none")
+)
+
+(define-function tree_row_reference_inserted
+  (c-name "gtk_tree_row_reference_inserted")
+  (return-type "none")
+  (parameters
+    '("GObject*" "proxy")
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-function tree_row_reference_deleted
+  (c-name "gtk_tree_row_reference_deleted")
+  (return-type "none")
+  (parameters
+    '("GObject*" "proxy")
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-function gtk_tree_row_reference_reordered
+  (c-name "gtk_tree_row_reference_reordered")
+  (return-type "none")
+  (parameters
+    '("GObject*" "proxy")
+    '("GtkTreePath*" "path")
+    '("GtkTreeIter*" "iter")
+    '("gint*" "new_order")
+  )
+  (CCC "byhand")
+)
+

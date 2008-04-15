@@ -1,0 +1,352 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+%include{ 
+
+#include <ctype.h>
+#include <string.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <cccapi.h>
+
+#include <xtxlegal.h>
+
+struct POS 
+{
+    unsigned int left; 
+    unsigned int right;
+};
+
+static VALUE    *toklist;
+static char     *tokenvir;
+static unsigned  toklen;
+static unsigned  tokidx;
+static unsigned  tokstart;
+static unsigned  maxright;
+static unsigned  termflag;
+
+extern void* xtxlegalAlloc(void*(*)(size_t)); 
+extern void  xtxlegalFree(void*,void(*)(void*)); 
+extern void  xtxlegalTrace(FILE*,char*); 
+extern void  xtxlegal(void*,int,POS);  //3th arg: %token_type {POS} 
+
+//#define DEBUG
+
+//---------------------------------------------------------------------------
+static char *gettoken(int idx,int*len)
+{
+    *len=0;
+    char *p=NULL;
+    
+    if( toklist && (tokstart+idx<toklen) )
+    {
+        VALUE *token=&toklist[tokstart+idx];
+
+        if( token->type!=TYPE_BINARY )
+        {
+            //kihagy;
+        }
+        else if( !token->data.binary.len )
+        {
+            //kihagy;
+        }
+        else
+        {
+            *len=token->data.binary.len;
+            p=token->data.string.oref->ptr.binptr;
+        }
+    }
+    return p;
+} 
+
+//---------------------------------------------------------------------------
+static int lex(POS *pos)
+{
+    pos->left=tokidx;
+    pos->right=tokidx;
+
+    int toklen=0;
+    char *p=gettoken(tokidx++,&toklen);
+
+    if( p )
+    {
+        if( isalpha(*p) ||  //symbol
+            isdigit(*p) ||  //number
+            *p=='_'     ||  //symbol
+            *p=='\''    ||  //string
+            *p=='\"'       )
+        {
+            return EXPR;
+        }
+        else if( *p=='<' && toklen>5 )
+        {
+            return EXPR; //raw string
+        }
+        else if( *p=='.' )
+        {
+            //logikai értékek és operátorok
+            
+            if( toklen==1 )       // "."
+            {
+                return DOT;
+            }
+            else if( toklen==2 )  // ".."
+            {
+                return DOTDOT; 
+            }
+            else if( toklen==3 )  // ".f.", ".t."
+            {
+                return EXPR; 
+            }
+            else if( toklen==4 )  // ".or."
+            {
+                return PLUS;
+            }
+            else if( toklen==5 )  // ".and.", ".not."
+            {
+                return (toupper(*(p+1))=='A') ? STAR:EXCL;
+            }
+        }
+        else
+        {
+            switch (*p) {
+                //case '': return EXPR;
+                case ' ': return SPACE;
+                case '!': return EXCL;
+                case '-': return MINUS;
+                case '+': return PLUS;
+                case '@': return AT;
+                case '/': return SLASH;
+                case '\\': return BSLASH;
+                case '.': return DOT;
+                case '*': return STAR;
+                case '%': return MODULO;
+                case '^': return POWER;
+                case '$': return DOLLAR;
+                case '>': return GT;
+                case '<': return LT;
+                case ':': return COLON;
+                case '=': return EQUAL;
+                case '(': return LPAR;
+                case ')': return RPAR;
+                case '[': return LBRACKET;
+                case ']': return RBRACKET;
+                case '{': return LBRACE;
+                case '}': return RBRACE;
+                case '|': return PIPE;
+                case ',': return COMMA;
+            }
+        }
+    }
+    return 255;  //nemlétező tokenid
+}
+
+//---------------------------------------------------------------------------
+static POS pstore(POS pl, POS pr)
+{
+    POS p;
+    p.left=pl.left;
+    p.right=pr.right;
+
+    #ifdef DEBUG
+    unsigned i;
+    printf("\n>>>%10s>>> %d %d >>>",(tokenvir?tokenvir:""),p.left,p.right);
+    for( i=p.left; i<=p.right+1; i++)
+    {   
+        int len;
+        char *p=gettoken(i,&len);
+        printf("{%d %s}",i,p?p:"nil");
+    }
+    #endif
+
+    //p.left  = a kifejezés baloldali tokenjének indexe (0,1,...)
+    //p.right = a kifejezés jobboldali tokenjének indexe (0,1,...)
+    //gettoken(p.right+1) a kifejezést követő token, vagy NULL
+    
+    if( tokenvir )
+    {
+        //olyan legális kifejezést keresünk,
+        //amit a tokenvir-ben megadott token követ,
+        //csak a lista elején kezdődő kifejezések között keresünk, 
+        //azaz csak azok között, melyekre p.left==0.
+        
+        if( p.left==0 )
+        {
+            int len;
+            char *envir=gettoken(p.right+1,&len);
+            if( envir && (0==strcasecmp(envir,tokenvir)) )
+            {
+                //megtaláltuk a megfelelő kifejezést,
+                //itt abba kell hagyni az elemzést
+
+                termflag=1;
+                maxright=p.right+1;
+            }
+        }
+    }
+    else
+    {
+        //nincs megadva környezet (tokenvir),
+        //ezért a maximális hosszúságú kifejezést keressük,
+        //csak a lista elején kezdődő kifejezések hosszát nézzük, 
+        //azaz csak azokét, melyekre p.left==0.
+
+        if( (p.left==0) && (p.right+1>maxright) )
+        {
+            maxright=p.right+1;
+        }
+    }
+    
+    return p;
+}
+
+//---------------------------------------------------------------------------
+void _clp_xtxlegal(int argno)
+{
+    CCC_PROLOG("xtxlegal",3);
+
+    toklist  = _para(1);
+    toklen   = _paralen(1);
+    tokstart = _parni(2)-1;
+
+    if( ISBINARY(3) )
+    {
+        tokenvir=_parb(3);
+    }
+    else
+    {
+        tokenvir=NULL;
+    }
+
+    tokidx    = 0;
+    maxright  = 0;
+    termflag  = 0;
+
+    void *parser=xtxlegalAlloc(malloc);
+    //xtxlegalTrace(stdout,">> ");
+    int id;
+    POS token; token.left=0; token.right=0;
+    while( (termflag==0) && (0!=(id=lex(&token)))  )
+    {
+        #ifdef DEBUG
+        int len;
+        char *p=gettoken(token.left,&len);
+        printf("\ntoken (%d) \'%s\'",id,p?p:"nil");
+        #endif
+
+        xtxlegal(parser,id,token);
+    }
+    xtxlegal(parser,0,token);
+    xtxlegalFree(parser,free);
+
+    _retni(maxright);
+
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+}//%include
+
+
+%name xtxlegal
+
+%syntax_error{
+    //printf("Syntax error.\n");
+    termflag=1;
+}
+
+%parse_accept{
+    //printf("Parsing complete.\n");
+}
+
+//%extra_argument{}
+
+%token_type{POS}
+
+start ::= expr.
+
+expr(P) ::= EXPR(LR).{P=pstore(LR,LR);}  
+
+expr(P) ::= SPACE(L) expr(R).{P=pstore(L,R);} 
+expr(P) ::= expr(L) SPACE(R).{P=pstore(L,R);}
+ 
+expr(P) ::= EXCL(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= MINUS(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= PLUS(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= AT(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= SLASH(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= BSLASH(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= DOT(L) expr(R).{P=pstore(L,R);}
+ 
+expr(P) ::= expr(L) MINUS MINUS(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) PLUS PLUS(R).{P=pstore(L,R);}
+
+expr(P) ::= expr(L) PLUS expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) MINUS expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) STAR expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) SLASH expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) MODULO expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) POWER expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) DOLLAR expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) GT expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LT expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) COLON expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) DOT expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) BSLASH expr(R).{P=pstore(L,R);}
+ 
+expr(P) ::= expr(L) COLON EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) MINUS GT expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) EQUAL EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LT EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) GT EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) EXCL EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) PLUS EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) MINUS EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) STAR EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) SLASH EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) MODULO EQUAL expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) STAR STAR expr(R).{P=pstore(L,R);}
+//expr(P) ::= expr(L) COLON BSLASH expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LT GT expr(R).{P=pstore(L,R);}
+ 
+expr(P) ::= LPAR(L) xlst RPAR(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LPAR xlst RPAR(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LBRACKET expr RBRACKET(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LBRACKET expr DOTDOT expr RBRACKET(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LBRACKET expr DOTDOT RBRACKET(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LBRACKET DOTDOT expr RBRACKET(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) LBRACKET DOTDOT RBRACKET(R).{P=pstore(L,R);}
+expr(P) ::= LBRACE(L) xlst RBRACE(R).{P=pstore(L,R);}
+expr(P) ::= LBRACE(L) PIPE xlst PIPE xlst RBRACE(R).{P=pstore(L,R);}
+
+expr(P) ::= expr(L) COLON cast expr(R).{P=pstore(L,R);}
+
+xlst ::= .
+xlst ::= expr.
+xlst ::= STAR.
+xlst ::= xlst COMMA.
+xlst ::= xlst COMMA expr.
+xlst ::= xlst COMMA STAR.
+
+cast ::= LPAR expr RPAR.
+cast ::= LPAR expr AT expr RPAR.
+cast ::= SPACE cast.
+
+

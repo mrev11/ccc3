@@ -1,0 +1,97 @@
+
+
+(define-method set_with_data
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_set_with_data")
+  (return-type "gboolean")
+  (parameters
+    '("const-GtkTargetEntry*" "targets")
+    '("guint" "n_targets")
+    '("GtkClipboardGetFunc" "get_func")
+    '("GtkClipboardClearFunc" "clear_func")
+    '("gpointer" "user_data")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_with_owner
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_set_with_owner")
+  (return-type "gboolean")
+  (parameters
+    '("const-GtkTargetEntry*" "targets")
+    '("guint" "n_targets")
+    '("GtkClipboardGetFunc" "get_func")
+    '("GtkClipboardClearFunc" "clear_func")
+    '("GObject*" "owner")
+  )
+)
+
+(define-method get_owner
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_get_owner")
+  (return-type "GObject*")
+)
+
+(define-method clear
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_clear")
+  (return-type "none")
+)
+
+(define-method set_text
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_set_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+    '("gint" "len")
+  )
+)
+
+(define-method request_contents
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_request_contents")
+  (return-type "none")
+  (parameters
+    '("GdkAtom" "target")
+    '("GtkClipboardReceivedFunc" "callback")
+    '("gpointer" "user_data")
+  )
+  (CCC "byhand")
+)
+
+(define-method request_text
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_request_text")
+  (return-type "none")
+  (parameters
+    '("GtkClipboardTextReceivedFunc" "callback")
+    '("gpointer" "user_data")
+  )
+  (CCC "byhand")
+)
+
+(define-method wait_for_contents
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_wait_for_contents")
+  (return-type "GtkSelectionData*")
+  (parameters
+    '("GdkAtom" "target")
+  )
+)
+
+(define-method wait_for_text
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_wait_for_text")
+  (return-type "gchar*")
+)
+
+(define-method wait_is_text_available
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_wait_is_text_available")
+  (return-type "gboolean")
+)
+
+
+

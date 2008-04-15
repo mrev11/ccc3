@@ -1,0 +1,176 @@
+
+#define ID_SERVER  "CCC XMLRPC Server 1.1.01"
+#define ID_CLIENT  "CCC XMLRPC Client 1.1.01"
+ 
+ 
+#ifdef _VERSION_HYSTORY_
+
+2007.12.12 -- 1.1.01
+  xmlrpcclient/xmlrpcserver-ben új attrubútum: sslcontext
+  ha sslcontext nem NIL, akkor bekapcsolja az SSL-t
+
+2007.11.01 -- 1.1.00
+  A szervernek megadható az interfész, amin figyel:
+
+    xmlrpcserverNew("iface:port")  //csak iface-n figyel
+    xmlrpcserverNew(":port")       //minden interfészen figyel
+    xmlrpcserverNew(port)          //minden interfészen figyel (régi eset)
+    xmlrpcserverNew("port")        //minden interfészen figyel (régi eset)
+
+  Ha nincs megadva port, akkor nem választ automatikusan portot 
+  (ez megszűnt, mert értelmetlen), és magától sehol sem figyel, 
+  hanem ilyenkor másképp kell megoldani a csatlakozást.
+  Pl. értéket lehet adni az scklisten attribútumnak, 
+  vagy socketeket lehet tenni az scklist attribútumba.
+  
+  A kliensben megszűntek a host:port paraméterek defaultjai,
+  helyette ezek NIL-en maradnak, és utólag lehet őket beállítani,
+  vagy közvetlenül a client:socket-nek lehet értéket adni.
+  
+  Áttérés class szintaktikára.
+
+  Compatibility hibakezelés:
+    Az olyan régebbi XMLRPC kliensek kedvéért, 
+    amik a hibákra eval(errorblock(),e) hívással reagálnak
+    lecseréljük az errorblock-ot {|e|break(e)}-re.
+  
+  A CCC3 adat -> XMLRPC konverzióból hiányzott az X típus kezelése.
+
+  CCC2 backport.
+
+
+2006.11.16 -- 1.0.00
+  Hibakezelés: eval(errorblock,e) helyett break(e).
+  XMLRPC fejlécekben encoding="UTF-8".
+
+2006.01.08 -- 0.9.20
+  evalarray() áttéve az alapkönyvtárba.
+
+2005.07.10 -- 0.9.19
+  Szálbiztos evalarray().
+
+2004.03.22 -- 0.9.18
+  A DOM elemző rész külön könyvtárba (xmldom) téve.
+
+2004.03.17 -- 0.9.17
+  Kicsit optimalizálva a Flex/Bison nyelvtan.
+  A szemétgyűjtésen látszik, hogy hihetetlenül sok objektum készül, 
+  ezért a program nagyon lassú még az optimalizálással is (20%).
+
+2004.02.18 -- 0.9.16
+  yyparse_from_file(file) argumentuma nem csak filespec,
+  hanem file descriptor is lehet, ebben az esetben az fdopen-nel
+  kapott streamből történik az olvasás. Mindkét esetben
+  az elemzés befejeztével fclose-zal lezáródik a stream
+  (és mivel fdopen nem dup-ol, az eredeti descriptor is).
+  A filedescriptor pipe is lehet.
+
+2004.01.02 -- 0.9.15
+  Az előző (2003.08.07-as) javítás rossz, visszavéve.
+  Az írás eredményéből ui. nem lehet következtetni a 
+  socket lezáródására.
+ 
+2003.10.15 -- 0.9.14
+  Portolás GCC 3.3-ra.
+
+2003.10.06 -- 0.9.13
+  yyparse_from_file lezárja maga után a filét.
+ 
+2003.08.07 -- 0.9.12
+  A socket szerver általi lezárását nem selecttel
+  vizsgáljuk, hanem rögtön írni próbálunk, és ha nem
+  sikerül, akkor megpróbálunk újra konnektálni.
+
+2003.04.28 -- 0.9.11
+  & és < kódolása rossz volt, a helyes kódolás: &amp; és &lt;.
+
+2002.09.20 -- 0.9.10
+  Alkalmazkodás a Bison névképzés változásához: hpp filék.
+
+2002.08.16 -- 0.9.09
+  A node osztály bővítve a getattrib és gettext metódusokkal.
+
+2002.04.29 -- 0.9.08
+  Változás a lex szabályokban:
+
+  [^<]*            {if(trim()) return store(T_TEXT);} 
+   
+  helyett
+
+  [^<]/"<"         {textcat();if(texttrim()) return text(T_TEXT);} 
+  [^<]             {textcat();}   
+   
+  ui. az előbbi esetben egy <tag>...tartalom...</tag> alakú
+  tag a flex egy belső bufferének korlátja miatt túlcsordul,
+  ha tartalom hosszabb 16K-nál. Változott trim(), ami most nem
+  yytext-et trimeli, hanem textbuf-ot (amibe textcat gyűjt).
+
+
+2002.04.07 -- 0.9.07
+  A lex elemző bemenetének megadása a Flex dokumentáció 
+  "Multiple input buffers" fejezetében leírtakra épülő
+
+  extern void xmlpars_lexinput_file(FILE *f);
+  extern void xmlpars_lexinput_string(char *str, int size);
+  extern void xmlpars_lexinput_delete();
+ 
+  interfészen keresztül történik. Korábban az YY_INPUT makró
+  volt használatban (hiányos ismeretek miatt), ez azonban nem
+  elegáns, és főleg hiányzik az input buffer törlésének lehetősége.
+
+2002.04.05 -- 0.9.06
+  xmlrpcserverResponse recover ágában a hibakezelés hibás volt.
+
+2001.10.05 -- 0.9.05
+  A Content-Type header nem text/html, hanem text/xml.
+
+2001.09.05 -- 0.9.04
+  Portolás NT-re:
+
+  Filénevek kötőjel (-) helyett aláhúzásosak (_), mert a Borland
+  könyvtárkezelő (tlib) nem jól kezeli a kötőjelet.
+  
+  MSVC gyatraságai kikerülve: for(int i=0; ...)-t rosszul kezeli.
+
+
+2001.07.04 -- 0.9.03
+  Az xmlpblock osztály megszűnt. 
+
+  Az xmlparser osztály bővült a process (method) és processblock 
+  (attrib) tagokkal, amiket korábban az xmlpblock-ból örökölt. 
+
+  Az xmlnode osztály xmlpblock helyett object-ből származik.
+
+  Ezzel a node objektumoknak megszűnt a process metódusa, helyette 
+  a parser objektum process-ét kell meghívni egy node paraméterrel.
+  Így elkerülhető, hogy a processblock az egész programra globális
+  legyen, ehelyett minden parser objektumnak saját blockja van.
+  A yaccstack tovabbra is az egész programra globális.
+  
+  Az xmlrpcserver és xmlrpcclient osztály egy sor funkcióval bővült.
+
+
+2001.07.01 -- 0.9.02
+  http_body javítva
+
+
+2001.06.19 -- 0.9.01
+  új attribútum az xmlrpcserver osztályban: recover
+
+
+2001.06.15 -- 0.6.00
+  base64 támogatás
+  a '<' és '&' karakterek védelme a stringekben
+  methodResponse pontosan egy param tagot ad vissza
+  ui. a params nem lehet 0, vagy többtagú, mint a methodCall-ban
+  a <value></value> elem értelmezése ""
+  a CCC NIL-t <value></value>-ra (azaz ""-re) konvertáljuk
+  a php a 'semmit' <value></value>-nak (azaz ""-nak) értelmezi
+  az üres array: <value><array><data></data></array></value> 
+  az üres struct: <value><struct></struct></value>
+
+ 
+2001.06.12 -- 0.5.00
+  XML-RPC module for CCC in alpha state.
+
+#endif

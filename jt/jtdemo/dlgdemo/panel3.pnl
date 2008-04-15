@@ -1,0 +1,16 @@
+//MSK2DLG 0.9.00
+
+class panel3(jtpanel)
+    method initialize
+    attrib  table
+    attrib  navig
+
+
+static function panel3.initialize(this)
+    this:(jtpanel)initialize(0,0,12,39)
+    this:name:='panel3'
+    this:layout:='fix'
+    this:table:=jtbrowsetableNew(0,1,8,36); this:table:name:='table'; this:additem(this:table)
+    this:navig:=jtpanelNew(9,1,10,36); this:navig:name:='navig'; this:additem(this:navig)
+    return this
+

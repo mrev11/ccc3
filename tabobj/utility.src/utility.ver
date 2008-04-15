@@ -1,0 +1,72 @@
+
+
+#define VERZIO "1.0.10"
+
+#ifdef _HISTORY_
+
+2006.08.17 -- 1.0.10"
+   kdirseek-ben a széles mezők picture-je javítva.
+
+2006.02.20 -- 1.0.09
+  Tview indításakor beállítható az index (-c opció).
+
+2001.10.15 -- 1.0.08
+  xstru/dstru elszállt, ha mező appendből esc-pel kiléptek.
+
+2001.08.29 -- 1.0.07
+  xstru elszállt, ha index appendből esc-pel kiléptek.
+
+2001.07.07 -- 1.0.06
+  tabModRecord helyett tabEditRecord a könyvtárból.
+
+
+2000.07.15 -- 1.0.05
+ 
+  Zap, exclusive open és rekord lock funkcióval bővítve.
+  A z editor billentyűkezelője átvéve.
+
+2000.05.11 -- 1.0.04
+
+  kdirseek gyorskeresője inicializálva van az aktuális értékekkel
+
+2000.03.18 -- 1.0.03
+  
+  A széles picture-ök transzformációja javítva.
+
+  brwedit.prg (alapkönyvtár) javítva, ezzel a bstru és
+  társai elszállása megszűnt.
+
+
+1999.06.15 -- 1.0.02
+
+  implementáció DBFCTX-re is (indexek nélkül)
+  további javítgatások
+
+
+1999.06.13 -- 1.0.01
+ 
+  A struktúra módosítás algoritmusa a következő volt:
+  
+  1. az oszlopok tömbjét {}-re átírtuk,
+  2. az indexek tömbjét {}-re átírtuk,
+  3. tabAddColumn() hívásokkal betettük az új oszlokoat,
+  4. tabAddIndex() hívásokkal betettük az új indexeket,
+  5. az így manipulált objektummal tabUpgrade-et csináltunk.
+  
+  Ez azonban ROSSZ, mert a rekordbuffer hossza nem inicializálódik,
+  az újonnan betett mezők offsetei rossz értékek, ami mindenféle
+  GPF-re vezet, és a módosított filé teljesen elromlik. 
+  
+  Helyette ez a javított algoritmus kell:
+  
+  1. tabNew0()-val vadonat új objektumot csinálunk
+  2. tabAddColumn() hívásokkal betesszük az új oszlokoat
+  3. tabAddIndex() hívásokkal betesszük az új indexeket
+  4. az objektummal tabUpgrade-et csinálunk
+ 
+
+  Oszlopnevek, típusok, hosszak, index oszlopok ellenőrzése.
+ 
+  Rengeteg kisebb nagyobb egyéb javítás.
+
+#endif

@@ -1,0 +1,274 @@
+
+
+(define-function gtk_label_get_type
+  (in-module GtkLabel)
+  (c-name "gtk_label_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_label_new
+  (c-name "gtk_label_new")
+  (is-constructor-of GtkLabel)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-char*" "str" (null-ok) (default "NULL"))
+  )
+)
+
+(define-function gtk_label_new_with_mnemonic
+  (c-name "gtk_label_new_with_mnemonic")
+  (is-constructor-of GtkLabel)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-char*" "str" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method set_text
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_text")
+  (return-type "none")
+  (parameters
+    '("const-char*" "str")
+  )
+)
+
+(define-method get_text
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_text")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method set_attributes
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_attributes")
+  (return-type "none")
+  (parameters
+    '("PangoAttrList*" "attrs")
+  )
+)
+
+(define-method get_attributes
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_attributes")
+  (return-type "PangoAttrList*")
+)
+
+(define-method set_label
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_label")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "str")
+  )
+)
+
+(define-method get_label
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_label")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method set_markup
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_markup")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "str")
+  )
+)
+
+(define-method set_use_markup
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_use_markup")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_use_markup
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_use_markup")
+  (return-type "gboolean")
+)
+
+(define-method set_use_underline
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_use_underline")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_use_underline
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_use_underline")
+  (return-type "gboolean")
+)
+
+(define-method set_markup_with_mnemonic
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_markup_with_mnemonic")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "str")
+  )
+)
+
+(define-method get_mnemonic_keyval
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_mnemonic_keyval")
+  (return-type "guint")
+)
+
+(define-method set_mnemonic_widget
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_mnemonic_widget")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method get_mnemonic_widget
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_mnemonic_widget")
+  (return-type "GtkWidget*")
+)
+
+(define-method set_text_with_mnemonic
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_text_with_mnemonic")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "str")
+  )
+)
+
+(define-method set_justify
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_justify")
+  (return-type "none")
+  (parameters
+    '("GtkJustification" "jtype")
+  )
+)
+
+(define-method get_justify
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_justify")
+  (return-type "GtkJustification")
+)
+
+(define-method set_pattern
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_pattern")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "pattern")
+  )
+)
+
+(define-method set_line_wrap
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_line_wrap")
+  (return-type "none")
+  (parameters
+    '("gboolean" "wrap")
+  )
+)
+
+(define-method get_line_wrap
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_line_wrap")
+  (return-type "gboolean")
+)
+
+(define-method set_selectable
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set_selectable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_selectable
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_selectable")
+  (return-type "gboolean")
+)
+
+(define-method select_region
+  (of-object "GtkLabel")
+  (c-name "gtk_label_select_region")
+  (return-type "none")
+  (parameters
+    '("gint" "start_offset")
+    '("gint" "end_offset")
+  )
+)
+
+(define-method get_selection_bounds
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_selection_bounds")
+  (return-type "gboolean")
+  (parameters
+    '("gint*" "start")
+    '("gint*" "end")
+  )
+  (CCC "byhand")
+)
+
+(define-method get_layout
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_layout")
+  (return-type "PangoLayout*")
+)
+
+(define-method get_layout_offsets
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get_layout_offsets")
+  (return-type "none")
+  (parameters
+    '("gint*" "x")
+    '("gint*" "y")
+  )
+  (CCC "byhand")
+)
+
+(define-method set
+  (of-object "GtkLabel")
+  (c-name "gtk_label_set")
+  (return-type "none")
+  (parameters
+    '("const-char*" "str")
+  )
+  (deprecated "use GtkLabel.set_text")
+)
+
+(define-method get
+  (of-object "GtkLabel")
+  (c-name "gtk_label_get")
+  (return-type "none")
+  (parameters
+    '("char**" "str")
+  )
+  (deprecated "use GtkLabel.get_text")
+)
+
+(define-method parse_uline
+  (of-object "GtkLabel")
+  (c-name "gtk_label_parse_uline")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "string")
+  )
+  (deprecated "")
+)
+
+

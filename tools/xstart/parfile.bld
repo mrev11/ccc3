@@ -1,0 +1,5 @@
+-bccc3_socket 
+-bccc3_xmldom
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_SHR=static

@@ -1,0 +1,33 @@
+
+
+(define-function gtk_color_selection_dialog_get_type
+  (in-module GtkColorSelectionDialog)
+  (c-name "gtk_color_selection_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_color_selection_dialog_new
+  (c-name "gtk_color_selection_dialog_new")
+  (is-constructor-of GtkColorSelectionDialog)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "title")
+  )
+)
+
+
+(define-method get_colorsel
+  (c-name "gtk_color_selection_dialog_get_colorsel")
+  (of-object GtkColorSelectionDialog)
+  (return-type "GtkColorSelection*")
+  (CCC "REG,tag")
+  (comment "
+    gtk.color_selection_dialog.get_colorsel(self) --> colorsel
+
+    Eredetileg nincs ilyen API függvény,
+    a CCC külön függvényt definiál a struktúra-tag kiolvasására.
+  ")
+)
+
+
+

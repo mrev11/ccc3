@@ -1,0 +1,25 @@
+
+name: probaszerencse
+version: "2,2006-07-18"
+
+include: konto.type
+
+
+table: konto.proba=p
+table: konto.szerencse=q
+
+join: p left join q on szamlaszam=qszamlaszam
+
+column: szamlaszam      SZLA_FUA    x=p.szamla
+column: devnem          DEVNEM
+column: nev             C30         x=megnevezes
+column: egyenleg        EGYENLEG    x=osszeg
+column: tulmenflag      L
+column: konyvkelt       D
+column: megjegyzes      M
+column: kiegdata        C20
+
+colref: qszamlaszam                 x=q.szamla
+
+primkey: szamlaszam,devnem
+

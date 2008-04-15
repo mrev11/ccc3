@@ -1,0 +1,22 @@
+#!/bin/bash
+
+find . -type d | while read NAME; do
+    rm -f $NAME/*.class $NAME/*.bak  $NAME/*.log
+done
+
+#if javac -deprecation jterminal.java 2>log-jterminal; then
+if javac jterminal.java 2>log-jterminal; then
+    mkjar
+    cat log-jterminal
+else
+    list.exe log-jterminal &
+fi
+
+java -version 
+
+# Megjegyzés:
+# A jdk1.5.0-val fordított jar nem fut jre1.4.2 környezetben,
+# akkor sem, ha a forrás 1.4.2-ben és 1.5.0-ban is fordul.
+# A j2sdk1.4.2-vel fordított jar fut jre1.5.0 környezetben.
+# Tehát egyelõre csak a j2sdk1.4.2-t lehet Jáva Webstart
+# alkalmazásokhoz (mint pl. az e-konto) használni.

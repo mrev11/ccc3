@@ -1,0 +1,16 @@
+
+
+(define-function gtk_invisible_get_type
+  (in-module GtkInvisible)
+  (c-name "gtk_invisible_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_invisible_new
+  (c-name "gtk_invisible_new")
+  (is-constructor-of GtkInvisible)
+  (return-type "GtkWidget*")
+)
+
+
+

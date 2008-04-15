@@ -1,0 +1,5 @@
+#!/bin/bash
+vararg-ref.exe aa bbb cccc ddddd >log-ref
+diff log-ref logref.txt >log-ref-x
+z log-ref
+

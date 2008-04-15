@@ -1,0 +1,182 @@
+
+
+
+(define-method drag_check_threshold
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_check_threshold")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "start_x")
+    '("gint" "start_y")
+    '("gint" "current_x")
+    '("gint" "current_y")
+  )
+)
+
+(define-method drag_get_data
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_get_data")
+  (return-type "none")
+  (parameters
+    '("GdkDragContext*" "context")
+    '("GdkAtom" "target")
+    '("guint32" "time" (default "GDK_CURRENT_TIME"))
+  )
+)
+
+(define-method drag_highlight
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_highlight")
+  (return-type "none")
+)
+
+(define-method drag_unhighlight
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_unhighlight")
+  (return-type "none")
+)
+
+(define-method drag_dest_set
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_set")
+  (return-type "none")
+  (parameters
+    '("GtkDestDefaults" "flags")
+    '("const-GtkTargetEntry*" "targets")
+    '("gint" "n_targets")
+    '("GdkDragAction" "actions")
+  )
+)
+
+(define-method drag_dest_set_proxy
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_set_proxy")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "proxy_window")
+    '("GdkDragProtocol" "protocol")
+    '("gboolean" "use_coordinates")
+  )
+)
+
+(define-method drag_dest_unset
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_unset")
+  (return-type "none")
+)
+
+(define-method drag_dest_find_target
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_find_target")
+  (return-type "GdkAtom")
+  (parameters
+    '("GdkDragContext*" "context")
+    '("GtkTargetList*" "target_list")
+  )
+)
+
+(define-method drag_dest_get_target_list
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_get_target_list")
+  (return-type "GtkTargetList*")
+)
+
+(define-method drag_dest_set_target_list
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_dest_set_target_list")
+  (return-type "none")
+  (parameters
+    '("GtkTargetList*" "target_list")
+  )
+)
+
+(define-method drag_source_set
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_source_set")
+  (return-type "none")
+  (parameters
+    '("GdkModifierType" "start_button_mask")
+    '("const-GtkTargetEntry*" "targets")
+    '("gint" "n_targets")
+    '("GdkDragAction" "actions")
+  )
+)
+
+(define-method drag_source_unset
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_source_unset")
+  (return-type "none")
+)
+
+(define-method drag_source_set_icon
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_source_set_icon")
+  (return-type "none")
+  (parameters
+    '("GdkColormap*" "colormap")
+    '("GdkPixmap*" "pixmap")
+    '("GdkBitmap*" "mask" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method drag_source_set_icon_pixbuf
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_source_set_icon_pixbuf")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-method drag_source_set_icon_stock
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_source_set_icon_stock")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-method drag_begin
+  (of-object "GtkWidget")
+  (c-name "gtk_drag_begin")
+  (return-type "GdkDragContext*")
+  (parameters
+    '("GtkTargetList*" "targets")
+    '("GdkDragAction" "actions")
+    '("gint" "button")
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-method _drag_source_handle_event
+  (of-object "GtkWidget")
+  (c-name "_gtk_drag_source_handle_event")
+  (return-type "none")
+  (parameters
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-method _drag_dest_handle_event
+  (of-object "GtkWidget")
+  (c-name "_gtk_drag_dest_handle_event")
+  (return-type "none")
+  (parameters
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-function drag_set_default_icon
+  (c-name "gtk_drag_set_default_icon")
+  (return-type "none")
+  (parameters
+    '("GdkColormap*" "colormap")
+    '("GdkPixmap*" "pixmap")
+    '("GdkBitmap*" "mask")
+    '("gint" "hot_x")
+    '("gint" "hot_y")
+  )
+  (deprecated "change the stock pixbuf for GTK_STOCK_DND")
+)
+

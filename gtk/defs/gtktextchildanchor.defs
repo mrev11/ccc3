@@ -1,0 +1,28 @@
+
+
+(define-function gtk_text_child_anchor_get_type
+  (in-module GtkTextChildAnchor)
+  (c-name "gtk_text_child_anchor_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_text_child_anchor_new
+  (c-name "gtk_text_child_anchor_new")
+  (is-constructor-of GtkTextChildAnchor)
+  (return-type "GtkTextChildAnchor*")
+)
+
+(define-method get_widgets
+  (of-object "GtkTextChildAnchor")
+  (c-name "gtk_text_child_anchor_get_widgets")
+  (return-type "GList*" ".parray.freelist.")
+)
+
+(define-method get_deleted
+  (of-object "GtkTextChildAnchor")
+  (c-name "gtk_text_child_anchor_get_deleted")
+  (return-type "gboolean")
+)
+
+
+

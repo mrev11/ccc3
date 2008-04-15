@@ -1,0 +1,53 @@
+
+
+(define-function gtk_scale_get_type
+  (in-module "GtkScale")
+  (c-name "gtk_scale_get_type")
+  (return-type "GtkType")
+)
+
+(define-method set_digits
+  (of-object "GtkScale")
+  (c-name "gtk_scale_set_digits")
+  (return-type "none")
+  (parameters
+    '("gint" "digits")
+  )
+)
+
+(define-method get_digits
+  (of-object "GtkScale")
+  (c-name "gtk_scale_get_digits")
+  (return-type "gint")
+)
+
+(define-method set_draw_value
+  (of-object "GtkScale")
+  (c-name "gtk_scale_set_draw_value")
+  (return-type "none")
+  (parameters
+    '("gboolean" "draw_value")
+  )
+)
+
+(define-method get_draw_value
+  (of-object "GtkScale")
+  (c-name "gtk_scale_get_draw_value")
+  (return-type "gboolean")
+)
+
+(define-method set_value_pos
+  (of-object "GtkScale")
+  (c-name "gtk_scale_set_value_pos")
+  (return-type "none")
+  (parameters
+    '("GtkPositionType" "pos")
+  )
+)
+
+(define-method get_value_pos
+  (of-object "GtkScale")
+  (c-name "gtk_scale_get_value_pos")
+  (return-type "GtkPositionType")
+)
+

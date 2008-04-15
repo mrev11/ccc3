@@ -1,0 +1,636 @@
+
+\pagetitle%
+{Eltérések a CCC és a Clipper  között}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{első változat: 2005. augusztus, utolsó módosítás: 2006 július}
+
+\section{Áttekintés}
+
+Ebben a kis pamfletben összegyűjtöttem a CCC és a Clipper közötti 
+eltéréseket. Elsősorban a {\em nyelvi\/} különbségekre koncentráltam. 
+Kevés szó esik a rendelkezésre álló könyvtárakról és ezzel kapcsolatban 
+a nyelv {\em lehetőségeiről}. E tekintetben a UNIX-on és Windowson 
+futó CCC nyilván óriási előnyben van.
+
+Kezdem a rossz hírrel: A CCC nem alkalmas  
+régi DOS-os Clipper programok változtatás nélküli lefordítására. 
+A CCC  általános célú programnyelv. Az eredeti Clipperből
+csak a jó részeket tartja meg, azokban viszont közel teljes 
+a kompatibilitás. 
+A CCC több területen kiterjeszti a Clippert 
+(objektumok, szálak, névterek, kivételek). A kiterjesztés minden esetben
+úgy valósul meg, hogy a CCC speciális esetként tartalmazza
+a Clippper 5.x-et, miközben minimális mennyiségű szintaktikai 
+újítást vezet be. 
+
+Manapság egyre kevesebben emlékeznek a Clipperre,
+érdemes ezért a CCC-t a Pythonhoz képest is pozícionálni.
+A CCC a Pythonhoz hasonlóan platformfüggetlen  nyelv.
+A programozás hangulata, a leírandó kód mennyisége
+(saját tapasztalat alapján állítom ezt) nagyon hasonló. 
+Mindkettővel pillanatok alatt meg lehet írni az egyszerű
+programokat. Nagy Python projektekről nincs közvetlen élményem,
+a CCC-ről azonban elmondhatom, hogy nagy és kritikus fontosságú
+projektekben is bevált.\footnote{Hogy mi a kritikus szoftver?
+Ha pl. a szoftver  működésképtelensége miatt a bank 
+nem tudja kiszolgálni az ügyfeleit, az kritikus.}
+A Python bytekódra, a CCC (C++-on keresztül) natív kódra fordít. 
+A Python nagy elterjedtsége folytán több kész modullal rendelkezik, 
+viszont a CCC nyitottabb a C++ irányába, ezért könnyebb 
+pótolni a hiányzó komponenseket. 
+
+
+\section{Mi az, ami nincs a CCC-ben?}
+
+\subsection{Adatbáziskezelés}
+
+A régi Clipperben a {\em nyelv részének\/} tekintették 
+a dBase  adatbáziskezeléssel kapcsolatos utasításokat. 
+A CCC ezzel szemben általános célú  programnyelv,
+amiben tetszés szerint írhatunk adatbáziskezelő szoftvert,
+ám ezeket nem a nyelv részének, hanem {\em  alkalmazásnak\/} 
+tekintjük. Az alap CCC nem tartalmaz  hagyományos DBFNTX 
+formátumú adatbáziskezelésre szolgáló eszközt, és nem is akarunk 
+ilyen anakronisztikus  dolgokkal vesződni. 
+%Indexszekvenciális fájlkezeléshez a 
+%\href{tabobj.html}{táblaobjektumok} 
+%adnak keretet, amihez létezik egy saját fejlesztésű 
+%\href{btbtx.html}{adatbázismotorunk}.
+Az új fejlesztések középpontjában az 
+\href{sql2.html}{SQL2  adatbázisinterfész}
+áll, ami  Oracle és Postgres adatbázisokhoz ad objektumorientált 
+hozzáférést.
+
+
+\subsection{Public és private változók}
+
+Amikor megismerkedtem a Clipperrel, 
+az 5.01-es verzió volt éppen  használatban.
+Ennek dokumentációjában azt találtam, hogy a \verb!public! és
+\verb!private! minősítésű változók elavult dBase örökség, használatuk 
+nem javasolt, mivel ellentmondanak a korszerű programozási elveknek.
+Azóta sem tudok többet a public és private változókról,
+értelemszerűen nem kerültek be a CCC-be.
+
+
+
+
+\subsection{Makrók (futásidejű fordítás)}
+
+A régi Clipperben makrónak nevezték a forráskódot tartalmazó
+string változókat.  Az ilyen forráskódot a Clipper röptében 
+lefordította és végrehajtotta.  A clipperes guruk kiterjedten használták
+a technikát  menük megvalósítására, futás közben beolvasott
+lekérdezések végrehajtására. A makró azonban mindig a Clipper 
+mocsarasabb  területei közé tartozott. Sosem tudták egyértelműen 
+szabványosítani, mi az,  amire a makrófordító képes, és mi az, amire nem.
+A CCC-ben körülményes volna megvalósítani a makrókat, ezért jobbnak láttam 
+az egészet elhagyni.\footnote{A bytekódra fordító programoknál
+(mint a Python, Jáva, régi Clipper) egyszerűbb a helyzet, a CCC
+azonban C++-ra, arról pedig natív kódra fordít.}
+
+%\subsection{Preprocesszor}
+%A  Clippernek rendkívüli képességekkel bíró preprocesszora volt.
+%A CCC fordító megírásakor ennek pótlása nem kis nehézséget okozott. 
+%Az eredeti  preprocesszor elfogad olyan makródefiníciókat, amiknek 
+%a jobboldalán (vagyis a kimenetén) egy másik makródefiníció jelenik meg. 
+%Ezzel aztán hihetetlenül bonyolult szövegfeldolgozási feladatokat is meg 
+%lehetett oldani. Most két nagyjából ekvivalens preprocesszorunk is van 
+%(az egyik CCC-ben a másik C++-ban írva), mindkettő egyszerűbb az eredetinél.
+
+
+
+
+\section{Kis eltérések és javítgatások}
+
+
+\subsection{Kötelező deklarációk}
+
+CCC-ben a változókat kötelezően deklarálni kell (local vagy static).
+A régi Clipperben ez fordítási opció volt.
+
+
+\subsection{Procedure helyett function}
+
+A Clipper ismerte a \verb!procedure! utasítást, 
+ami azonban semmiféle önálló jelentőséggel nem bírt.
+A CCC-be nem vettük át, helyette NIL-t visszaadó
+\verb!function!-t kell írni.
+Hasonlóképp, nem megengedett az üres \verb!return!, 
+hanem a \verb!return!-nel mindig meg kell adni egy visszatérési 
+értéket, ami alkalmasint lehet NIL. Egy \verb!function!-t nem kötelező
+\verb!return!-nel befejezni, ha hiányzik, az a  NIL visszatéréssel
+egyenértékű.
+
+
+\subsection{Kötelező main függvény}
+
+A régi Clipper a linkernek elsőként megadott object modul
+első függvényében kezdte a program végrehajtását. A CCC
+programban mindig kell legyen \verb!main! függvény, a modulok
+sorrendjétől függetlenül mindig ott indul a végrehajtás.
+
+
+\subsection{Nincsenek rövidítések}
+
+A CCC-ben a kulcsszavakat mindig teljes hosszukban kell kiírni, 
+pl. nem írhatunk  \verb!function! helyett \verb!func!-ot.
+
+
+
+\subsection{Értékadás és egyenlőség vizsgálat}
+
+A régi Clipperben kétféle értékadás létezett:
+\begin{itemize}
+\item \verb!x=y!, 
+    ez egy {\em utasítás}, ami csak önmagában állhat, nincs értéke.
+\item \verb!x:=y!, 
+    ez egy {\em kifejezés}, értéke a jobboldal, mellékhatásként x megkapja
+    y értékét, bárhol állhat, ahol pl. az \verb!x+y! kifejezés is állhat.
+\end{itemize}
+Emellett a régi Clipper az '='-t logikai egyenlőség operátornak is használta.
+Nincs jó véleményem az ilyesmiről.
+Hogy véletlenül se lehessen keveredés, a CCC-ből teljesen száműztük 
+az '=' operátort. Helyette az  \verb|x:=y|, \verb|x==y| vagy \verb|!(x!=y)| 
+formákat kell használni (a régi Clipperrel megegyező jelentéssel).
+
+
+\subsection{Egymásba ágyazott kódblokkok}
+
+A régi Clipper megengedte a kódblokkok egymásba ágyazását,
+hogy azután az esetek egy részében hibás kódot fordítson.
+Az egymásba skatulyázott  kódblokkok kellemetlenül bonyolítanák
+a fordítót, emellett feleslegesek is: A belső kódblokk helyére egy 
+változót írunk, aminek értéke  a kérdéses kódblokk.
+
+
+\subsection{Logikai kifejezések vágása}
+
+A logikai kifejezések kiszámításakor, amint ismertté válik a végeredmény, 
+a CCC abbahagyja a további tagok kiértékelését. Ez a Clipperben fordítási 
+opció volt.
+
+
+\subsection{NIL-t nem lehet pad-olni}
+
+A CCC pad (padl, padr) függvényei nem fogadják el (blankekkel kiegészítendő) 
+argumentumként a NIL értéket. A régi Clipper ilyen esetben üres stringet adott, 
+ami véleményem szerint megtévesztő, azaz hibás.
+
+
+\subsection{Index anomáliák}
+
+A régi Clipperben a \verb!local a[10]! deklaráció
+egy tízelemű arrayt (tömböt) hozott létre. 
+A CCC-ben ehelyett azt írjuk: \verb!local a:=array(10)!,
+ami a Clipperben is ismert volt,  CCC-ben és Clipperben ugyanazt 
+jelenti, ráadásul még logikus is.
+
+A régi Clipper elfogadta az \verb!a[1,2]! kifejezést
+a kétdimenziós array egy elemének címzéseként.
+A CCC-ben helyette ezt kell írni: \verb!a[1][2]!, 
+ami megintcsak ugyanazt jelenti a CCC-ben és Clipperben, 
+ráadásul logikus. A dolog logikája:  \verb![]! egy operátor,
+amit a tömbökre jobbról alkalmazunk, eredménye pedig a tömbelem.
+
+
+\section{Kiterjesztések}
+
+
+
+
+\label{NAMESPACE}
+\subsection{Névterek}
+
+Korszerű programnyelv nem nélkülözheti a névtereket.
+A forrásmodulok legelején állhat az opcionális 
+\verb!namespace! utasítás, például:
+\begin{verbatim}
+namespace aa.bb.cc
+\end{verbatim}
+aminek hatására a modulban definiált összes függvény
+az \verb!aa.bb.cc! (többszintű) névtérbe kerül.
+A \verb!namespace! utasítás nélkül, egyedileg is névtérbe 
+helyezhetünk függvénydefiníciókat a következő módon:
+\begin{verbatim}
+function  aa.bb.cc.f()
+    ...
+\end{verbatim}
+A kétféle (globális és egyedi) minősítés (névtérbe helyezés) 
+egyszerre is jelen lehet, ebben az esetben a hatásuk összegződik.
+A modulon belül definiált függvények meghívásakor
+nincs szükség teljes minősítésre.
+
+A modul függvényeire (pl. \verb!f!-re) kívülről a mínősített névvel,
+esetünkban az \verb!aa.bb.cc.f()! formával hivatkozhatunk.
+A külső hivatkozások megkönnyítésére szolgál a \verb!using! utasítás.
+A \verb!using! utasítások a modul elején, közvetlenül az
+esetleges \verb!namespace! után állhatnak. A \verb!using! olyan 
+rövidítést vezet be, amivel elkerülhető a teljesen minősített 
+függvénynevek túl sokszori kiírása.
+
+\begin{center}
+\begin{tabular}{|l|l|}\hline
+alternatív {\tt using} utasítások   &  hivatkozás {\tt f}-re \\ \hline \hline
+\tt  using aa.bb.cc=alias           &  \tt  alias.f() \\ \hline
+\tt  using aa.bb=x                  &  \tt  x.cc.f() \\ \hline
+\tt  using aa.bb.cc  f g            &  \tt  f(), g() \\ \hline
+\tt  using aa.bb  cc.f              &  \tt  cc.f() \\ \hline
+\end{tabular}
+\end{center}
+
+A globális (gyökér) névteret (kezdő) pont jelöli. 
+Ha pl. a \verb!using aa.bb.cc  f! utasítás után 
+\verb!aa.bb.cc.f! helyett a globális névtérben definiált 
+\verb!f!-et akarjuk meghívni, akkor ezt írjuk: \verb!.f()!.
+
+\label{VARARG}
+\subsection{Vararg API}
+
+CCC/Clipperben a hagyományos függvénydefiníció
+\verb!function fname(a,b,c,d)! alakú. 
+A függvényt akárhány paraméterrel meg lehet hívni.
+Ha a függvény hívása (a példában szereplő) négynél több paraméterrel 
+történik,  akkor a négy felettieket a rendszer kipucolja (elvesznek), 
+ha négynél kevesebbel, akkor azok az argumentum változók,
+amikre nem jutott érték, NIL-re lesznek beállítva.
+
+Előre nem ismert számú paraméter átvételére valók a
+\begin{verbatim}
+function fname(*)
+function fname(a,b,c,*)
+\end{verbatim}
+formák. A '*' az utolsó helyen állhat, és jelzi, hogy a függvény
+akárhány paramétert átvesz. A második példában az argumentumok
+száma legalább három, ezekre név szerint is lehet hivatkozni,
+és NIL-re inicializálódnak, ha a függvényhíváskor nincs  megadva
+elég paraméter.
+
+Az alábbi kifejezésekben:
+\begin{verbatim}
+    funcall(*)
+    obj:method(*)
+    {*}
+\end{verbatim}
+a '*' karakter helyére behelyettesítődik a függvény összes
+argumentum változója. Nézzük az alábbi kódot:
+\begin{verbatim}
+function fname(a,b,*)
+    ? {*}       //kiírja az összes argumentumot tartalmazó arrayt
+    ? {*}[1]    //kiírja a-t
+    ? len({*})  //ennyi argumentum van (a-t és b-t is beleértve)
+    ? ff(*)     //továbbadja az összes paramétert (a-t és b-t is)
+    ? o:meth(*) //továbbadja az összes paramétert (a-t és b-t is)
+\end{verbatim}
+A *-helyettesítés komplikáltabb formái is megengedettek, például
+\verb!{1,2,*,*}! legális kifejezés, tehát '*' minden pozícióban
+és többször is  használható. 
+Függvény- és metódushívásban a *-helyettesítés megőrzi
+a refeket, azaz refes paraméterek refesen adódnak tovább.
+
+Ugyanez a logika működik kódblokkban is azzal a különbséggel,
+hogy blokkon belül '*' a blokkargumentumokat helyettesíti.
+A \verb!{|*|fname(*)}! blokk pl. minden paraméter továbbaddásával
+meghívja fname-et. Megengedett minden komplikáltabb eset is, pl.
+\verb!{|p1,p2,*|fname(*),p1+p2}! minden paraméterrel meghívja
+fname-et, és visszaadja az első két paraméter összegét.
+
+Külön szólni kell arról az esetről,
+amikor a blokkban egyetlen függvényhívás van, és a blokk
+minden paraméterét változtatás nélkül tovább akarjuk adni a függvénynek.
+\begin{verbatim}
+    {|*|fname(*)}
+\end{verbatim}
+Az ilyen blokkok nem hoznak létre külön függvényhívási szintet a CCC stacken
+(nincs paraméter átpakkolás), legfontosabb alkalmazásuk az optimalizált 
+metódushívás. Néhány további alkalmazás.
+
+Konstruktor, ami minden paramétert átad az inicializálónak:
+\begin{verbatim}
+function clnameNew(*)
+    return objectNew(clnameClass()):initialize(*)
+\end{verbatim}
+
+Függvény meghívása arrayben megadott paraméterekkel:
+\begin{verbatim}
+    evalarray({|*|fname(*)},{p1,p2,p3,...})
+\end{verbatim}
+
+
+\subsection{Objektumok}
+
+A Clipper 5.x-ben négy előre bedrótozott osztály volt, 
+újak létrehozására nem volt lehetőség. A CCC-ben természetesen 
+megvan a négy régi osztály, ám ami fontosabb, az alkalmazások 
+tetszés szerint definiálhatnak új osztályokat. 
+A CCC-ben nem szívesen vezetünk be új szintaktikát, 
+ezért sokáig osztályok készítéséhez sem volt speciális szintaktika, 
+hanem  függvényhívási API szolgált a célra. 
+%Megjegyzem, hogy a Pythonban és a Jávában is van ilyen runtime 
+%osztálydefiniálási API, legfeljebb a kezdők nem azzal találkoznak először. 
+Újabban az osztályokat a class utasítással definiáljuk, 
+amihez kicsit kevesebbet kell írni. 
+%A két módszer felhasználói szempontból egyenértékű. 
+%A régebbi függvényhívási API nem vesztette el a jelentőségét, 
+%ui. lehetővé teszi osztályok futásidőben történő létrehozását.
+
+\subsubsection{Függvényhívási API}
+
+\begin{verbatim}
+static clid_template:=templateRegister()
+
+static function templateRegister()
+local clid:=classRegister("template",{objectClass()})
+    classMethod(clid,"initialize",{|this|templateIni(this)})
+    classAttrib(clid,"cargo")
+    return clid
+
+function templateClass()
+    return clid_template
+
+function templateNew()
+local clid:=templateClass()
+    return objectNew(clid):initialize()
+
+function templateIni(this)
+    objectIni(this)
+    return this
+\end{verbatim}
+
+A  fenti példában
+a \verb!template! osztály az \verb!object! osztályból örököl,
+egy új metódusa (\verb!initialize!) és egy új attribútuma (\verb!cargo!) van.
+A metódusokat kódblokkal adjuk meg.
+%\footnote{Egy másik Clipper klón a {\em Clip\/}
+% szintén kiterjesztette a Clippert szabadon definiálható objektumokkal.
+% Ők új szintaktikát használnak a metódusok jelölésére. A C-ből kölcsönzött
+% módon a zárójelpár nélküli függvénynév valamiféle függvénypointert jelent, 
+% véleményem szerint  azonban ez  idegen a Clippertől.
+% Megjegyzem, hogy a Clipben az objektum orientáltság egyszerűbb
+% fajtája valósul meg, amit gyakran objektum alapúnak mondanak.}
+Nincs new operátor, hanem az 
+\begin{verbatim}
+    o:=templateNew()
+\end{verbatim}
+függvényhívással jutunk új objektumpéldányhoz. Az egyszerű
+API-ból ,,magától'' adódik egy sor olyan tulajdonság,
+amit a C++-ban, Jávában speciális kulcsszavakkal fejeznek ki. 
+Például, ha nem definiáljuk a templateNew függvényt,
+akkor az osztály absztrakt lesz, azaz nem lehet példányosítani.
+Ha a templateClass függvényt static-nak definiáljuk, 
+akkor az osztályból nem lehet örökölni, 
+azaz Jáva terminológiával \verb!final!.
+
+
+Az objektumokat használó programnak nem kell számontartania,
+hogy az objektumműveletek belsőleg attribútumként vagy metódusként
+vannak-e implementálva. Ez annak következménye, hogy a fordító 
+ugyanazt a kódot fordítja az \verb!o:initialize! vagy \verb!o:initialize()!
+bemenetre. Tehát az üres zárójelpár léte/nemléte nem utal arra,
+hogy attribútumról vagy metódusról van-e szó.
+Hasonlóképpen, ugyanaz a kód keletkezik az \verb!o:initialize:=x! 
+vagy \verb!o:initialize(x)! bemenetből. Ez biztosítja,
+hogy az osztály implementációjában szabadon lehessen attribútumot metódusra,
+vagy metódust attribútumra cserélni. A Jávában
+elterjedt ún. set-get metódusoknak ezért kevesebb jelentősége van.
+
+Az osztályok többszörös öröklődéssel örökölnek. 
+A Pythonhoz hasonlóan minden objektum tag nyilvános.
+Mindig az objektum dinamikus típusa szerinti metódusok hívódnak meg,
+kivéve, ha az alábbi (kivételesen új) szintaktikával mást írunk elő:
+\begin{verbatim}
+    o:(object)initialize
+\end{verbatim}
+A fenti explicit típuskényszerítés (metódus-cast) eredményeképpen 
+az \verb!o! objektum típusától  függetlenül az \verb!object! osztály 
+\verb!initialize! metódusa fog meghívódni.
+
+\subsubsection{Class utasítás}
+
+Néhány új kulcsszó (\verb!class!, \verb!attrib!, \verb!method!)
+árán kicsit csökkenthető az osztályok készítéséhez szükséges kód
+terjedelme. Az alábbi szintaktikát a fordító visszavezeti
+a függvényhívási API-ra, tehát az ott elmondottak most is érvényesek.
+
+\begin{verbatim}
+class derived(base1,base2,...)
+    attrib a1
+    attrib a2
+    method m1 codeblock
+    method m2 
+    method m3
+    ...
+\end{verbatim}
+A class definíció  függvények helyén állhat.
+A class a következő \verb!class!-ig vagy \verb!function!-ig tart.
+A  baseclass-okat zárójelek között felsorolva kell megadni.
+Mindig van legalább egy baseclass.
+Az osztálydefiníció  névtérbe helyezhető.
+A class definícióból automatikusan keletkezik a
+\verb!derivedClass! és \verb!derivedNew! függvény. 
+A class függvény a szokásos módon az osztályazonosítót adja.
+A new (konstruktor) függvény létrehozza a megfelelő osztályú objektumot, 
+és meghívja rá az \verb!initialize! metódust.
+A konstruktor minden paramétert továbbad az inicializálónak.
+
+A \verb!class! törzsében csak attribútum és metódus deklarációk
+állhatnak. Megengedett, hogy a class törzse üres legyen.
+
+Az \verb!attrib! teljesen egyszerű: Lesz egy új (vagy
+felüldefiniált) attribútum az osztályban a megadott névvel.
+
+A \verb!method! kulcsszó és metódusnév után egy tetszőleges kódblokk írható,
+ebben az esetben a metódus implementációja maga a kódblokk.
+A metódus deklarációnak van egy  alternatív formája:
+Ha a deklaráció csak a nevet tartalmazza,
+az olyan, mintha kiírtuk volna a következő
+(optimalizáltan forduló) kódblokkot: \verb!{|*|derived.m2(*)}!. 
+Tehát ilyenkor a metódust úgy kell implementálni, 
+hogy megírjuk a \verb!derived.m2! (közönséges) függvényt. 
+Mint látjuk,  a metódusok az osztálynévből származó 
+névtérbe kerülnek (automatikus prefixelés).
+
+A CCC objektumrendszer  speciális esetként tartalmazza
+a Clipper 5.x lehetőségeit. Ha a régebbi függvényhívási
+API-t használjuk és nem alkalmazunk metódus-castot, 
+akkor a régi fordító nem talál szintaktikaliag ismeretlen
+elemet a programunkban. Így szintaktikai újítások nélkül is
+teljes értékű, általánosan használható objektumrendszerünk van.
+Sajnos bizonyos hátrányok is közösek: Mivel a Clipperben, Pythonban, CCC-ben
+csak futásidőben kapnak típust a változók, azért csak futásidőben
+derülhet ki, ha elírás folytán nemlétező metódusnévre hivatkozunk.%
+\footnote{Pythonban még rosszabb a helyzet, ui. az eltévesztett nevű 
+attribútum automatikusan létrejön, tehát még később derül fény a hibára.}
+Az objektumokról szóló leírás teljes változata itt olvasható:
+\href{objektum.html}{Objektumok használata a CCC-ben}.
+
+\label{THREADS}
+\subsection{Szálak}
+
+A POSIX thread API-t (pthread könyvtárat) használjuk szálak kezelésére. 
+Minden szál saját lokális stackkel rendelkezik a függvényargumentumok
+és local változók számára. A program statikus objektumai  közösek.
+A futtatórendszer gondoskodik a belsőleg definiált statikus objektumok
+konkurrens használatának szinkronizálásáról. Az alkalmazások a saját
+statikus változóikat saját hatáskörben kell szinkronizálják.
+Bármelyik szálban beindulhat a szemétgyűjtés. Tudni kell, hogy 
+nem minden CCC könyvtár szálbiztos.%
+\footnote{Csak a ccc2 és ccc2\_ui\_  könyvtárakban kitűzött cél
+a szálbiztonság. A szálbiztonság legnehezebben
+teljesíthető kritériuma: Minden olyan pillanatban, amikor egy másik 
+szálból szemétgyűjtés indulhat, a vermeken kell legyen minden 
+élő változó, de nem lehet ott semmi más, pl. keletkezőben vagy megszűnőben 
+levő változók. Ugyanez szükséges a korrekt szignálkezeléshez is.
+Persze ez nem az alkalmazások, hanem a futtatórendszer 
+felelőssége.}
+
+A DOS-os Clipper esetében nem lehetett szó többszálúságról. 
+Tudomásom szerint a Python és Ruby úgy valósítja meg a többszálúságot, 
+hogy a valójában egyszálú interpreter váltogatja az interpretált kódrészt. 
+A CCC fordítás végeredménye natív kód, tehát a CCC-ben natív többszálúság van.
+
+
+
+\subsection{Kivételkezelés}
+
+A kivételkezelést Jáva mintára kiterjesztettük:
+
+\begin{verbatim}
+function ff(x)
+local e
+    begin /*sequence*/
+        ? "HOPP-1"
+        break(x) //kivételt dob
+        ? "HOPP-2"
+    recover  e  <specerror>  //elkapja specerror leszármazottait
+        ? "rec1", e:classname
+    recover  e  <error> //elkapja error leszármazottait
+        ? "rec2", e:classname
+    recover  e <c> //elkapja a stringeket
+        ? "rec3", upper(e)
+    recover /*using*/ e  //bármit elkap (régi szintaktika)
+        ? "rec4", e
+    recover //ez is bármit elkapna (felesleges) 
+        ? "ide nem jöhet"
+    finally
+        ? "lefut a begin-recover elhagyásakor"
+    end  /*sequence*/
+\end{verbatim}
+
+Az újdonságok Clipper egyszintű kivételkezeléséhez képest:
+\begin{itemize}
+\item a sequence és using kulcsszó elhagyható (zajszó),
+\item több recover lehet lineárisan felsorolva,
+\item a recover változó után megadható egy típuskifejezés,
+\item opcionális finally záradék.
+\end{itemize}
+
+A típuskifejezéssel bővített recover akkor kapja el a kivételt,
+ha a kivétel típusa megfelel a típuskifejezésnek. Az \verb!<error>! 
+típusú recover az error osztály leszármazottait kapja el.
+Könnyen látható, hogy az új begin-recover speciális esetként
+tartalmazza a régit: ha kiírjuk a sequence és using zajszavakat,
+ha csak egy típuskifejezés nélküli (régi módon mindent elkapó) recover-t 
+használunk, és nem írunk finally záradékot.
+
+A CCC kivételkezelése mindent tud, amit a Jáva, sőt, 
+a kivétel tetszőleges  CCC típus lehet. A példában
+külön recover ág kapja el a \verb!<c>! (string) típusú 
+kivételeket. A kivételekről szóló leírás teljes változata
+megtalálható itt: \href{exception.html}{Struktúrált kivételek a CCC-ben}.
+
+
+\subsection{Hosszú stringek}
+
+Példa hosszú stringre:
+\begin{verbatim}
+local query_ab:=<<query>>
+select
+    konto.a.id as id_a,
+    name,
+    datum,
+    flag,
+    konto.a.value as val_a,
+    konto.b.id as id_b,
+    konto.b.value as val_b
+from
+    konto.a full join konto.b on konto.a.id=konto.b.id
+order by
+    konto.a.id -- nulls first -- csak Oracle
+<<query>>
+\end{verbatim}
+A \verb!query_ab! változó egy SQL parancs szövegét tartalmazza.
+A szövegben {\em bármi\/} előfordulhat, kivéve a \verb!<<query>>!
+részstringet, mert az a szöveg végét jelzi. Persze a \verb!query! helyett
+más szimbólumot is használhatunk, a lényeg, hogy a
+\verb!<<symbol>>! részstring ne szerepeljen a közrefogott szövegben.
+
+
+\subsection{Pointer típus}
+
+A 64-bites rendszerek megjelenésével szükségessé vált
+egy olyan adattípus, ami 64-bites mennyiségek tárolására képes.
+Egy P típusú változóval CCC (Clipper) szinten nem sokat tudunk kezdeni,
+lényegében csak az értékadás és egyenlőségvizsgálat működik vele.
+A típus értelme, hogy a C kiterjesztésekben előadódó handlereket,
+pointereket tárolni tudjuk a CCC programban. Korábban (32-biten)
+gyakran az N típust használtuk ugyanerre a célra.
+
+
+\subsection{Megjelenítés}
+
+Szigorúan véve a megjelenítés nem része a 
+{\em nyelvnek}, mégis érdemes pár mondatot írni róla:
+
+A karakteres megjelenítés ugyanazt tudja, mint a Clipper, megtoldva 
+egy spéci terminál protokollal. A terminálos üzemmód lehetővé teszi, 
+hogy a CCC program futtatása és megjelenítése különböző (akár földrajzilag 
+távoleső) gépeken történjen. Természetesen a UNIX-on futó program szót 
+ért a Windowson futó terminállal, és fordítva.
+
+Az új programjainkban a megjelenítést a 
+\href{jterminal.html}{Jáva terminálra}
+bízzuk, teljesen szétválasztva az alkalmazási logikát  és a megjelenítést.  
+A Jáva terminál egy 300K-s jar fájl, ami bárhol fut, ahol a JRE installálva 
+van. Működési elve leginkább egy szerver oldali widgetekkel dolgozó 
+X szerverre hasonlít. A Jáva terminállal igényes GUI-t lehet készíteni 
+ügyviteli programokhoz. Rendkívüli előnye, hogy ugyanaz a program 
+használható lokálisan, intranetes és internetes környezetben.
+
+A \href{cccgtk.html}{CCC-GTK csatoló} könyvtár szintén alkalmas 
+a legigényesebb GUI-k készítésére. A \verb!ccc3_glade! modul lehetővé teszi, 
+hogy a népszerű glade-del készített GUI-kat működtessük CCC-ből.
+Ezzel egy grafikus GUI szerkesztő is helyet kapott CCC fegyvertárában.
+
+
+\subsection{Unicode, internacionalizálás}
+
+A Clipperben és a CCC2-ben nincs unicode támogatás.
+A CCC2 bedrótozottan Latin/CWI karakterkészlettel működik, 
+a stringeket és a (tetszőleges tartalmú) bytesorozatokat nem 
+különbözteti meg. Ezért koreai, arab, héber, orosz, stb.\ nyelvű 
+programok készítésére nem alkalmas. 
+
+A CCC3-ban viszont megjelent a unicode támogatás.
+A Jávához hasonlóan külön típus szolgál a bináris
+adatok (bytesorozat) és a karakter stringek tárolására.
+Az új binary string típus átveszi a régi stringek szerepét,
+amikor azokat bináris adatok tárolására használtuk.
+A karakter string értelmezése változott: 
+az új (CCC3) rendszerben unicode karakterek sorozatát tartalmazza.
+A CCC3 programokban a karakterliterálokat UTF-8 kódolással kell beírni.
+Az új/megváltozott típusok miatt nincs teljes kompatibilitás,
+de viszonylag kis munkával lehet portolni a programokat CCC3-ra, 
+ami ímmár támogatja az internacionalizált programok készítését,
+legalábbis, ami a karakterállandók különböző nyelvi változatainak 
+csereberéjét illeti. 
+A függvény- és változónevekben továbbra sem lehet ékezetes 
+(vagy cirill) betűket használni.
+További infó a témáról az
+\href{ccc3_ujdonsagok.html}{Újdonságok a CCC3-ban} és
+\href{ccc3_unicode_hasznalat.html}{Unicode használat a CCC3-ban}
+dokumentumokban.
+
+
+
+

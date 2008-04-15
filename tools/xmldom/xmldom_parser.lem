@@ -1,0 +1,219 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+%include{
+
+#include <stdlib.h>
+#include <xmldom_lexer.h>
+
+extern void _clp_xmlattribnew(int argno);
+extern void _clp_xmlnodenew(int argno);
+
+DEFINE_METHOD(attrib);
+DEFINE_METHOD(getattrib);
+DEFINE_METHOD(content);
+
+
+void print(char *prompt)
+{
+    VALUE *LST=TOP();
+    binary(prompt);
+    push_symbol(LST);
+    binary("\n");
+    _clp_qqout(3);
+    pop();
+}
+
+
+}//%include
+
+%name xmldom_parser
+%start_symbol xml
+
+%stack_size 1000
+
+%stack_overflow{
+    fprintf(stderr,"Parser stack overflow\n");
+}
+
+%syntax_error{
+    char desc[256];  
+    sprintf(desc,"syntax error near #line %d",lexer->lineno());
+
+    _clp_xmlsyntaxerrornew(0);
+    dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
+    dup();stringnb("xmldom_parser");_o_method_operation.eval(2);pop();
+    dup();stringnb(desc);_o_method_description.eval(2);pop();
+    if( lexer->inputfspec )
+    {
+        dup();stringnb(lexer->inputfspec);_o_method_filename.eval(2);pop();
+    }
+    _clp_break(1);
+    pop();
+} 
+
+//%parse_accept{
+//    printf("Parsing complete.\n");
+//} 
+
+%extra_argument {xmldom_lexer *lexer} 
+
+%token_type {wchar_t *}  
+//%token_destructor{ if($$) free($$); }  
+%type attrlist {int}
+%type node {int}
+%type content {int}
+%type xml {int}
+
+
+xml(X) ::= content(C).{
+    //print(">>XML");
+    //VALUE *LST=TOP();
+    //string("#ROOT");_clp_xmlnodenew(1);
+    //dup();push_symbol(LST);idxr0(C);_o_method_content.eval(2);pop();
+    //push_symbol(LST);number(C-1);_clp_asize(2);pop();
+    //push_symbol(LST);swap();_clp_aadd(2);pop();
+    X=C;
+    //print("<<XML");
+}
+
+content(C) ::= .{
+    //print(">>CONT0");
+    VALUE *LST=TOP();
+    push_symbol(LST);array(0);_clp_aadd(2);pop();
+    push_symbol(LST);_clp_len(1);C=D2INT((TOP()->data.number));pop();
+    //print("<<CONT0");
+}
+
+content(L) ::= content(R) node(N).{
+    //print(">>CONT1");
+    VALUE *PRS=TOP2();
+    VALUE *LST=TOP();
+    push_symbol(PRS);push_symbol(LST);idxr0(N);_o_method_process.eval(2);_clp_empty(1);
+    if(flag())
+    {
+        push_symbol(LST);idxr0(R);push_symbol(LST);idxr0(N);_clp_aadd(2);pop();
+    }
+    push_symbol(LST);number(R);_clp_asize(2);pop();
+    L=R;
+    //print("<<CONT1");
+}
+
+node(N) ::= LPAR QM SYMBOL(S) attrlist(A) QM RPAR.{
+    //print(">>NODE?");
+    VALUE *LST=TOP();
+    string(L"?");stringn(S);free(S);add();_clp_xmlnodenew(1);
+    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
+
+    dup();string(L"encoding");_o_method_getattrib.eval(2);
+    if( TOP()->type==TYPE_STRING )
+    {
+        str2bin(TOP());
+        lexer->setencoding(BINARYPTR(TOP()));   
+    }
+    pop();
+
+    push_symbol(LST);number(A-1);_clp_asize(2);pop();
+    push_symbol(LST);swap();_clp_aadd(2);pop();
+    N=A;
+    //print("<<NODE?");
+}
+
+node(N) ::= LPAR SYMBOL(S) attrlist(A) SLASH RPAR.{
+    //print(">>NODE1");
+    VALUE *LST=TOP();
+    stringn(S);free(S);_clp_xmlnodenew(1);
+    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
+    push_symbol(LST);number(A-1);_clp_asize(2);pop();
+    push_symbol(LST);swap();_clp_aadd(2);pop();
+    N=A;
+    //print("<<NODE1");
+}
+
+node(N) ::= LPAR SYMBOL(S1) attrlist(A) RPAR content(C) LPAR SLASH SYMBOL(S2) RPAR.{
+    //print(">>NODE2");
+    if( wcscmp(S1,S2) )
+    {
+        char desc[256];
+        char *sym=wchar_to_utf8(S2,wcslen(S2),0);
+        sprintf(desc,"tag mismatch (%s) near #line %d",sym,lexer->lineno());
+        free(sym);
+        _clp_xmltagerrornew(0);
+        dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
+        dup();stringnb("xmldom_parser");_o_method_operation.eval(2);pop();
+        dup();stringnb(desc);_o_method_description.eval(2);pop();
+        dup();stringn(S1);stringn(S2);array(2);_o_method_args.eval(2);pop();
+        if( lexer->inputfspec )
+        {
+            dup();stringnb(lexer->inputfspec);_o_method_filename.eval(2);pop();
+        }
+        _clp_break(1);
+        pop();
+    }
+    VALUE *LST=TOP();
+    stringn(S1);free(S1);free(S2);_clp_xmlnodenew(1);
+    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
+    dup();push_symbol(LST);idxr0(C);_o_method_content.eval(2);pop();
+    push_symbol(LST);number(A-1);_clp_asize(2);pop();
+    push_symbol(LST);swap();_clp_aadd(2);pop();
+    N=A;
+    //print("<<NODE2");
+}
+
+node(N) ::= TEXT(T).{
+    //print(">>TEXT");
+    VALUE *LST=TOP();
+    push_symbol(LST);
+    string(L"#TEXT");_clp_xmlnodenew(1);
+    dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
+    _clp_aadd(2);pop();
+    push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();
+    //print("<<TEXT");
+}
+
+node(N) ::= CDATA(T).{
+    //print(">>CDATA");
+    VALUE *LST=TOP();
+    push_symbol(LST);
+    string(L"#CDATA");_clp_xmlnodenew(1);
+    dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
+    _clp_aadd(2);pop();
+    push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();
+    //print("<<CDATA");
+}
+
+attrlist(L) ::= .{
+    //print(">>ATTR0");
+    VALUE *LST=TOP();
+    push_symbol(LST);array(0);_clp_aadd(2);pop();
+    push_symbol(LST);_clp_len(1);L=D2INT((TOP()->data.number));pop();
+    //print("<<ATTR0");
+}
+
+attrlist(L) ::= attrlist(R) SYMBOL(N) EQ STRING(V).{
+    //print(">>ATTR1");
+    VALUE *LST=TOP();
+    push_symbol(LST);idxr0(R);
+    stringn(N);free(N);stringn(V);free(V);_clp_xmlattribnew(2);
+    _clp_aadd(2);pop();
+    L=R;
+    //print("<<ATTR1");
+}
+

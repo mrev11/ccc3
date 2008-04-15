@@ -1,0 +1,93 @@
+
+\subsection{Fogalmak}
+
+\subsubsection*{tableentity}
+
+Egy {\em tableentity\/} objektum SQL select utasításokkal készített,
+azonos struktúrájú, de különféleképpen szűrt és rendezett eredménytábla
+halmazt képvisel. (Másképp: SQL select utasítások, amikben ugyanazt a joint,
+különféle where és order by záradékokkal kombináljuk.)
+Az SQL select tartalmazhat egy vagy több elemi táblát, vagy nézetet (view-t).
+
+A tableentity objektumnak vannak {\em select\/} metódusai, 
+ezek egy-egy {\em rowset\/} objektumot adnak. A különféle
+select metódusok különféle szűréseket végeznek, ennek megfelelően
+a rowsetek ugyanannak az (esetleg összetett) alaptáblának különféle 
+részhalmazait tartalmazzák. A rowset objektum next metódusával lehet 
+megkapni az eredménysorokat, a sorokat rowentity objektum formájában kapjuk.
+
+A tableentity objektumnak van egy {\em find\/} metódusa, ami egy 
+kulcsokkal maghatározott sort betölt egy {\em rowentity\/} objektumba. 
+(A select speciális eseteként egyelemű rowsetet állít elő, 
+és az egyetlen elemből rögtön rowentityt készít.)
+
+
+\subsubsection*{rowentity}
+
+Az adatbázisrekord, vagy select eredménytábla sorának 
+programbeli leképezése a {\em rowentity\/} objektum. 
+A rowentity objektum a kulcsmezők értékével (primary key) kapcsolódik
+a neki megfelelő adatbázis rekordokhoz.
+A tableentity minden oszlopához tartozik
+a rowentitynek egy azonos nevű metódusa, amivel az oszlop
+(mező) értéke lekérdezhető, módosítható. 
+A rowentity nem egy rekordpointer vagy kurzor, hanem önállóan 
+létező objektum. A program ugyananabból a táblából
+egyszerre több rowentityt is készíthet, azokat egymástól
+függetlenül módosíthatja, tárolhatja, törölheti.
+
+
+\subsubsection*{rowset}
+
+A {\em rowset\/} objektumokat a tableentity select metódusaival kapjuk.
+Ugyanabból a tableentity objektumból származó rowsetekben közös, 
+hogy  ugyanazokat az elemi táblákat tartalmazzák,
+és a táblák ugyanúgy vannak összekapcsolva.
+A közös alaptáblából a különféle select metódusok különféle 
+filterezettségű (where) és rendezettségű (order by) rowseteket adnak, 
+amikből viszont egyforma struktúrájú rowentityket kapunk. 
+A \verb!rowset:next! metódushívással lehet megkapni a sorokat. 
+A next a tábla elejétől a végéig haladva egyesével
+adogatja a sorokat (rowentityket), ha a sorok elfogytak, akkor NIL-t.
+Visszafelé haladni, vagy bármi egyéb módon pozícionálni nem lehet.
+
+
+\subsubsection*{primary key}
+
+A tableenitynek rendelkeznie kell elsődleges kulccsal (primary key).
+Ez azon oszlopok felsorolásából áll, amely oszlopok értékének
+megadásával egyértelműen azonosítani lehet a sort, azaz a rowentity objektumot.
+A primary key-ben felsorolt oszlopoknak nem szabad null értéket megengedni,
+ezenkívül az egyediséget unique indexszel ki kell kényszeríteni.
+
+
+\subsubsection*{columndef}
+
+A tableentity oszlopainak megadására  columndef objektumokat használunk.
+
+\subsubsection*{columnref}
+
+A columnref objektumokat olyan oszlopok leírására használjuk,
+amik nem szerepelnek a tableentity oszlopai között, viszont
+a tableentity valamilyen módon hivatkozik rájuk egy from, where, 
+vagy  order by záradékban.
+
+
+\subsubsection*{indexdef}
+
+Az indexdef objektumokkal indexek leírását közöljük a tableentityvel.
+A \verb!tableentity:create! metódus (a tábla kreálása után) létrehozza 
+a megadott indexeket is. Ha az indexünk unique minősítésű, akkor azzal 
+kikényszeríthetjük sorok egyediségét, mint ahogy azt a primary key esetében 
+is megtesszük.
+
+Az SQL-ben az indexek léte, nemléte, nem befolyásolja a select 
+utasítások eredményét, legfeljebb a végrehajtás hatékonyságát.
+Az adatbázisszerver mindig saját hatáskörben dönt egy index használatáról,
+mellőzéséről, sőt létrehozásáról. 
+%Az indexeléssel tehát csak
+%ötletet adhatunk az SQL optimalizáló moduljának.
+
+
+
+

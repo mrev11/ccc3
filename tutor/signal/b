@@ -1,0 +1,38 @@
+#!/bin/bash
+rm res
+echo .
+
+gdb `cat exe` `cat pid` >res <<EOF  
+thr 1
+bt
+thr 2
+bt
+thr 3
+bt
+thr 4
+bt
+thr 5
+bt
+thr 6
+bt
+thr 7
+bt
+thr 8
+bt
+thr 9
+bt
+thr 10
+bt
+thr 11
+bt
+thr 12
+bt
+thr 13
+bt
+thr 14
+bt
+thr 15
+bt
+EOF
+
+z res

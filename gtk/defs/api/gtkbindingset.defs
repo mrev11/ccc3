@@ -1,0 +1,114 @@
+
+
+(define-function gtk_binding_set_new
+  (c-name "gtk_binding_set_new")
+  (return-type "GtkBindingSet*")
+  (parameters
+    '("const-gchar*" "set_name")
+  )
+)
+
+(define-function gtk_binding_set_by_class
+  (c-name "gtk_binding_set_by_class")
+  (return-type "GtkBindingSet*")
+  (parameters
+    '("gpointer" "object_class")
+  )
+  (CCC "byhand")
+)
+
+(define-function gtk_binding_set_find
+  (c-name "gtk_binding_set_find")
+  (return-type "GtkBindingSet*")
+  (parameters
+    '("const-gchar*" "set_name")
+  )
+)
+
+(define-function bindings_activate
+  (c-name "gtk_bindings_activate")
+  (return-type "gboolean")
+  (parameters
+    '("GtkObject*" "object")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+  )
+)
+
+(define-method activate
+  (of-object "GtkBindingSet")
+  (c-name "gtk_binding_set_activate")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+    '("GtkObject*" "object")
+  )
+)
+
+(define-function binding_entry_clear
+  (c-name "gtk_binding_entry_clear")
+  (return-type "none")
+  (parameters
+    '("GtkBindingSet*" "binding_set")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+  )
+)
+
+(define-function binding_entry_add_signal
+  (c-name "gtk_binding_entry_add_signal")
+  (return-type "none")
+  (parameters
+    '("GtkBindingSet*" "binding_set")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+    '("const-gchar*" "signal_name")
+    '("guint" "n_args")
+  )
+  (varargs #t)
+)
+
+(define-method add_path
+  (of-object "GtkBindingSet")
+  (c-name "gtk_binding_set_add_path")
+  (return-type "none")
+  (parameters
+    '("GtkPathType" "path_type")
+    '("const-gchar*" "path_pattern")
+    '("GtkPathPriorityType" "priority")
+  )
+)
+
+(define-function gtk_binding_entry_remove
+  (c-name "gtk_binding_entry_remove")
+  (return-type "none")
+  (parameters
+    '("GtkBindingSet*" "binding_set")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+  )
+)
+
+(define-function gtk_binding_entry_add_signall
+  (c-name "gtk_binding_entry_add_signall")
+  (return-type "none")
+  (parameters
+    '("GtkBindingSet*" "binding_set")
+    '("guint" "keyval")
+    '("GdkModifierType" "modifiers")
+    '("const-gchar*" "signal_name")
+    '("GSList*" "binding_args")
+  )
+)
+
+(define-function gtk_binding_parse_binding
+  (c-name "gtk_binding_parse_binding")
+  (return-type "guint")
+  (parameters
+    '("GScanner*" "scanner")
+  )
+)
+
+
+

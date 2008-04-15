@@ -1,0 +1,9 @@
+#define LPAR                            1
+#define QM                              2
+#define SYMBOL                          3
+#define RPAR                            4
+#define SLASH                           5
+#define TEXT                            6
+#define CDATA                           7
+#define EQ                              8
+#define STRING                          9

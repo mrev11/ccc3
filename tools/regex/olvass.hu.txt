@@ -1,0 +1,12 @@
+Reguláris kifejezések.
+
+Előzőleg installálni kell a libpcre3 csomagot,
+Linuxon a fejlesztő (libpcre3-dev) csomagot is.
+
+Windows-ra forrásból lehet installálni pcre-t,
+az eljárás a pcre directoryban van leírva.
+
+Csak a POSIX interfész van támogatva.
+
+Nincs UTF-8 támogatás, és csak X stringre működik.
+

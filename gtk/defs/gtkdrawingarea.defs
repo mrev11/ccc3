@@ -1,0 +1,27 @@
+
+
+(define-function gtk_drawing_area_get_type
+  (in-module GtkDrawingArea)
+  (c-name "gtk_drawing_area_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_drawing_area_new
+  (c-name "gtk_drawing_area_new")
+  (is-constructor-of GtkDrawingArea)
+  (return-type "GtkWidget*")
+)
+
+(define-method size
+  (of-object "GtkDrawingArea")
+  (c-name "gtk_drawing_area_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+  (deprecated "use GtkWidget.set_size_request")
+)
+
+
+

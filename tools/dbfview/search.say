@@ -1,0 +1,40 @@
+//msk2say-2.0.00-unicode
+
+#define g_search        getlist[ 1]
+#define g_field         getlist[ 2]
+#define g_r             getlist[ 3]
+#define g_c             getlist[ 4]
+#define g_d             getlist[ 5]
+
+static function SEARCH(bLoad,bRead,bStore)
+local search      :=space(20)
+local field       :=space(10)
+local r           :=space( 3)
+local c           :=space( 3)
+local d           :=space( 3)
+local msk:=mskCreate(  2, 51,  9, 74,bLoad,bRead,bStore)
+
+    mskSay(msk,  0,  0,"╔══════════════════════╗")
+    mskSay(msk,  1,  0,"║ ")
+    mskSay(msk,  1, 22," ║")
+    mskSay(msk,  2,  0,"║                      ║")
+    mskSay(msk,  3,  0,"║ In field: ")
+    mskSay(msk,  3, 22," ║")
+    mskSay(msk,  4,  0,"║ ")
+    mskSay(msk,  4,  5," reverse direct   ║")
+    mskSay(msk,  5,  0,"║ ")
+    mskSay(msk,  5,  5," case sensitive   ║")
+    mskSay(msk,  6,  0,"║ ")
+    mskSay(msk,  6,  5," include deleted  ║")
+    mskSay(msk,  7,  0,"╚══════════════════════╝")
+
+    mskGet   (msk,  1,  2,@search,"search")
+    mskList  (msk,  3, 12,@field,"field")
+    mskCheck (msk,  4,  2,@r,"r")
+    mskCheck (msk,  5,  2,@c,"c")
+    mskCheck (msk,  6,  2,@d,"d")
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    return lastkey()

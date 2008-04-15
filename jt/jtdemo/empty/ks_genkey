@@ -1,0 +1,9 @@
+#!/bin/bash
+
+keytool -genkey \
+    -keystore keys -storepass changeit \
+    -alias test \
+    -dname "CN=Test Client, O=ComFirm Bt, L=Budapest, S=Hungary, C=HU"\
+    -keyalg RSA\
+    -keysize 2048\
+    -validity 730

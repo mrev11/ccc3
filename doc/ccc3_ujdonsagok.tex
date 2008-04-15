@@ -1,0 +1,640 @@
+
+\pagetitle{Újdonságok a CCC3-ban}{Dr. Vermes Mátyás}{2006. május}
+
+
+\section{Unicode támogatás}
+
+A régi Clipperben és a CCC1-CCC2-ben nem volt megkülönböztetve
+a tetszőleges (akár bináris) adatokat tartalmazó bytesorozat
+és a karaktersorozatot tartalmazó string. Az ilyen típust egységesen 
+karakternek (stringnek) neveztük, a típus kódja  "C" volt.
+Hasonló volt a helyzet a 2.3 előtti Pythonban is.
+
+Az idők azonban változnak, igény támadt az egyidejűleg
+többféle nyelven is értő programokra. Világossá vált, hogy
+a többnyelvűség igényeit legjobban a unicode elégíti ki,
+továbbá, hogy a unicode problémáit (az operációs
+rendszerrel való kompatibilitást illetően) legjobban
+az UTF-8 kódolás oldja meg. A unicode/UTF-8 kódolás
+ezért kezd univerzálisan elfogadottá válni, 
+az operációs rendszerek sorra térnek át a használatára.
+A változást a CCC-vel is követnünk kellett.
+A CCC3 fő újdonsága a unicode támogatás.
+
+Az XMLRPC esete mutatja, mennyire elkerülhetetlen a változás követése. 
+Egy 1999-es XMLRPC leírás azt mondja, hogy a \verb!string!
+adattípusban bámilyen adatot küldhetünk (binárisat is),
+csak arra kell ügyelnünk, hogy az XML formázásban szerepet
+játszó karakterek/byteok (\verb!<!, \verb!&!) megfelelően védve legyenek. 
+A pár évvel ezelőtti XML tankönyvekben fel sem vetődik a kérdés:
+Miből áll az XML dokumentum?
+\begin{itemize}
+\item Byteok sorozatából,
+\item vagy karakterek sorozatából?
+\end{itemize}
+A mai XML szabvány szerint karakterek sorozatából.
+Az XMLRPC string tehát nem tartalmazhat bináris adatot, 
+mert akkor elbukik az XML elemzésen. Hogy mik a karakterek,
+az sem triviális, pl. a 0x00--0x20 intervallumban csak a
+TAB, CR, LF számít karakternek, és máshol is vannak érvénytelen
+(nem karakter) kódok, amikre a mai XML elemzők kivételt dobnak.
+
+A unicode támogatás megvalósítására két út kínálkozott.
+A Pythonban úgy jártak el, hogy bevezettek (mint új dimenziót) 
+egy új típust, a unicodeot, ami minden mást érintetlenül hagyott.
+A kompatibilitás szempontjából ez tökéletes megoldás,
+azonban semmivel nem visz közelebb a régebbi programok
+unicodeosításához.
+
+A CCC-ben a Jáva mintáját követve radikálisabb utat választottunk.
+Bevezettünk egy új típust a bytesorozatok számára. Ezt bytearraynek,
+bytesorozatnak, vagy bináris stringnek nevezzük, a típuskódja "X"
+(sajnos a B betű már foglalt a kódblokkok számára). Ez a legalapvetőbb
+típus, tetszőleges értékű byteokat tartalmazhat, a többi típus 
+többsége tárolható benne. A binary string (X) átveszi a régi
+(C) stringek szerepét, amikor azok bináris adatot tárolnának.
+A bináris stringekre működnek a szokásos string kezelő függvények
+és operátorok: 
+\verb!at!, 
+\verb!rat!, 
+\verb!strtran!, 
+\verb!left!, 
+\verb!right!, 
+\verb!padr!, 
+\verb!padl!, 
+\verb!substr!, 
+\verb!+!, 
+\verb!==!, 
+\verb!$!, 
+stb.
+
+A korábbi (C) stringek értelmezése megváltozott,
+a CCC3-ban unicode karaktersorozatot jelentenek.
+Természetesen az ismert string függvények ezekre is működnek.
+A két string fajtát azonban nem lehet keverni, azaz nincs
+feltétlen, automatikus konverzió.
+Érdemes tudni, hogy az egyes karakterek C szinten \verb!wchar_t!
+típusban tárolódnak, ami a mai C fordítókban 32 bites mennyiség.
+
+Nagyon fontos megérteni a karakter string és a binary string
+közötti kapcsolatot. A karakter string (unicode vagy UCS kódok
+sorozata) szöveget tud tárolni. Ha a szöveget binary stringbe 
+akarom átírni, akkor előállítom a unicode karakterek UTF-8
+kódját (karakterenként a karaktertől függő hosszúságú bytesorozat),
+ezeket konkatenálom, az eredmény egy bytesorozat, amit a 
+szöveg UTF-8 kódolású bináris reprezentációjának nevezek.
+Bármely szöveg (karakter string) ezen a módon infóveszteség
+nélkül bináris stringre konvertálható, és a bináris reprezentációból
+maradék nélkül visszanyerhető. Általában a szöveg UTF-8 reprezentációja
+több byte, mint ahány karakter van az eredeti szövegben.
+Ennek oka, hogy pl. a magyar ékezetes betűk vagy a cirill
+betűk UTF-8 kódja két byte. Más karakterek még hosszabbak
+lehetnek, a létező leghosszabb UTF-8 kód hat byteos.
+
+Ha a karakter string memóriabeli tárolását vizsgáljuk,
+azt tapasztaljuk, hogy sok 0 értékű byte van benne.
+Nyilván, ui. az ASCII kódok a 0--127 intervallumba esnek,
+azaz egy byteot foglalnak el, a string azonban 32-bitet 
+használ minden karakterhez. A unicode karakter stringekre ezért
+nem működnek a C könyvtár hagyományos string kezelő függvényei,
+amik a 0 byteot a string végének tekintik. Ugyanezért nem
+célszerű egy unicode stringet byteonként kiírni egy fájlba,
+vagy egy socketba. Ezzel szemben a string UTF-8 reprezentációja
+rendelkezik azzal a tulajdonsággal, hogy csakis a 0 unicodenak
+felel meg benne 0 byte. Az UTF-8 bináris string így alkalmas
+arra, hogy a program ezzel a típussal adjon meg egy fájlspecifikációt
+az OS számára, amire a unicode string nem felelne meg.
+
+
+E megfontolásokból adódik, hogy mikor melyik string 
+fajtát érdemes/kell használni a programokban.
+Alapszabály, hogy a program szövegeit karakter stringben
+tároljuk, és ebben a formában manipuláljuk. 
+Vannak persze esetek, amikor ettől el kell térnünk.
+\begin{itemize}
+\item 
+    A fájlokból, socketekből általában byteokat lehet olvasni.
+\item
+    Az operációs rendszer számára UTF-8 kódolással 
+    (tehát bináris string formájában) kell megadni a 
+    fájlspecifikációkat.
+\end{itemize}
+A koncepció, hogy az alkalmazási programokban minél
+kevesebbet kelljen váltogatni a bináris és karakter
+reprezentáció között, ehelyett a CCC könyvtár függvényei
+alkalmas helyen automatikusan elvégzik a konverziót.
+A \verb!memoread!-et pl. általában arra használjuk,
+hogy egy szövegfájlt egy mozdulattal beemeljünk  egy karakterváltozóba.
+Ezért a \verb!memoread! automatikusan karakter stringre
+konvertálja, amit olvas. Néha azonban más kell, pl. amikor
+egy png képfájlt olvasunk be, ezért a \verb!memoread!
+kiegészült egy opcionális paraméterrel, amivel kikapcsolható
+ez a konverzió. Ilyenkor a \verb!memoread! eredménye nem 
+karakter, hanem binary string.
+Az \verb!fopen! a filénevet UTF-8-ra konvertálva adja 
+lejjebb a C szintnek. Jelenleg még nincs kikristályosodva,
+hogy hova célszerű ezeket az automatikus konverziókat tenni.
+Azokon a helyeken, ahol a stringtípusok találkoznak,
+az alkalmazásnak mindenképpen explicite kell konvertálnia, 
+ezért a programok elkerülhetetlenül bonyolultabbak lesznek, 
+mint a CCC2-ben voltak.
+
+Megemlítendő, hogy a unicode/UTF-8 kódolás a CCC3-ban kizárólagos.
+Ezen azt értem, hogy nincs támogatás semmilyen más kódolásra,
+pl. Latin-1-re. Ezek a (hagyományos) kódolások elavultak,
+és rendkívül megbonyolódik az élet, ha különféle kódolásokat
+kell egyszerre kezelni. Mindez azt jelenti, hogy a CCC3 használata 
+során az ember szövegfájljai szépen átkonvertálódnak UTF-8-ra.
+A jelen sorokat a CCC3-mal fordított (tehát unicodeos) z editorral írom,
+és a saját terminálomban az angol, magyar és orosz szöveget
+egyformán helyesen látom (és tudom gépelni), mint ahogy helyesen
+látszik a \TeX\  kimentetén és a böngészőben is. Mindehhez
+nincs szükség bütykölt fontokra és billentyű driverekre.
+Vannak tehát előnyök, amik kárpótolnak a bonyodalmakért. 
+Bízzunk benne, hogy az UTF-8 kódolás hosszabb nyugvópont lesz 
+a gyorsan változó informatikában.
+
+
+\section{String (és egyéb) literálok}
+
+\paragraph{Karakter string}
+\begin{verbatim}
+    x1:="Kázmér füstölgő fűnyírót húz."
+    x2:="Копирование и распространение"
+\end{verbatim}
+A fenti értékadások  szövegének
+kötelezően UTF-8 kódolásúnak kell lennie, másképp fordítási hiba
+keletkezik: \verb!INVALIDENCODING!. Ebből adódóan nem nélkülözhető
+az UTF-8/unicode környezet.
+A programokat UTF-8 editorral kell írni (pl. a z-vel),
+a régi szövegeket át kell konvertálni. A fordító maga nem konvertál,
+csak hibát jelez, ha rossz a kódolás. A fordító az UTF-8 kódolású
+szövegből előállítja a unicode karakterek sorozatát, és ez a sorozat 
+(vagyis a C típusú string) lesz a változók új értéke.
+C++ szinten a unicode (UCS) karakterek \verb!wchar_t! 
+típusban tárolódnak, ami általában 32 bites. 
+
+
+\paragraph{Binary string}
+\begin{verbatim}
+    x:=a"öt szép szűzlány őrült írót nyúz"
+\end{verbatim}
+A fenti értékadás eredményeképpen \verb!x! típusa binary string (X),
+tartalma pedig a szöveget UTF-8 kódolással reprezentáló byte sorozat.
+
+
+\paragraph{Hexadecimálisan megadott binary string}
+\begin{verbatim}
+    crlf:=x"0d0a"
+\end{verbatim}
+A fenti értékadás után \verb!crlf! egy két byte hosszú 
+bináris string (X), ami a \verb!0d! és \verb!0a! byteokat tartalmazza.
+Az \verb!x"..."! stringeknél minden byteot kétjegyű hexadecimális kóddal
+adunk meg. Fordítási hibát okoz, ha a string páratlan számú betűt,
+vagy nem hexa számot tartalmaz. A kis/nagybetű érdektelen.
+
+\paragraph{Hexadecimálisan megadott számok}
+\begin{verbatim}
+    number255:=0xff
+\end{verbatim}
+A C-hez hasonlóan használhatunk hexadecimális egészszámokat.
+
+\paragraph{Kettes számrendszerben megadott számok}
+\begin{verbatim}
+    number255:=0b11111111
+\end{verbatim}
+A számokat megadhatjuk bitenként is, azaz kettes számrendszerben.
+
+\section{Bővített függvény API}
+
+Nem tudok most komplett referenciát adni az újdonságokról,
+mert nem emlékszem mindenre fejből. Ideiglenesen csak annyit akarok 
+leírni, ami már megfelelően érzékelteti a dolgok hangulatát és logikáját.
+A pontos infóhoz állandóan nézni kell a forrásokat, magam is ezt teszem.
+
+Új függvények:
+\begin{description}
+\item[{\tt bin(code)}]
+    A \verb!chr(code)! bináris párja. Egy 0--255 közé eső
+    kódból egy byte hosszú bináris stringet készít.
+\item[{\tt arr2bin(a)}]
+    A korábbi \verb!_arr2chr!-t pótolja. Most nyilván a karakter
+    stringeket is sorosítani kell, az eredmény egy bináris string
+    (bytesorozat).
+\item[{\tt bin2arr(x)}]
+    \verb!arr2bin(a)! inverze.
+\item[{\tt str2bin(c)}]
+    Előállítja a \verb!c! karakter string UTF-8 kódolású bináris
+    reprezentációját. Ebből információveszteség nélkül visszanyerhető
+    az eredeti string. A bináris reprezentáció sok helyen helyettesítheti
+    is \verb!c!-t.
+\item[{\tt bin2str(x)}]
+    \verb!str2bin(c)! inverze. Tudni kell azonban,  ha \verb!x!
+    nem érvényes UTF-8 kódolású szöveget tartalmaz, akkor információ
+    vész el, pl. egy png képfájl elromlik.
+\item[{\tt split(v,sep)}]
+    Helyettesíti a megszűnt \verb!wordlist!-et.
+    Karakteres és bináris stringekre is működik.
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+\end{description}
+
+Módusult függvények.
+
+\begin{description}
+\item[{\tt chr(code)}]
+    Egy 32 bites UCS kódból egy egy karakter hosszú stringet készít.
+\item[{\tt asc(v)}]
+    Ha \verb!v! karakter string, akkor az első karakter UCS kódját adja.
+    Ha \verb!v! bináris string, akkor az első byte értékét adja.
+\item[{\tt left(v,n)}]
+    Ha \verb!v! karakter string, akkor \verb!v! első \verb!n!
+    karakteréből álló részstringet adja.
+    Ha \verb!v! bináris string, akkor \verb!v! első \verb!n!
+    bytejából álló bináris részstringet adja.
+    Utóbbi esetben, ha \verb!v! egy szöveg UTF-8 kódolású bináris 
+    reprezentációja, akkor ez a tulajdonság elromolhat, amennyiben 
+    a \verb!left! elvág egy több byteos UTF-8 kódot.
+\item[{\tt len(v)}]
+    Ha \verb!v! karakter string, akkor a \verb!v!-ben levő karakterek
+    számát adja.
+    Ha \verb!v! bináris string, akkor a \verb!v!-ben levő byteok
+    számát adja. 
+\item[{\tt replicate(v,n)}]
+    A \verb!v! változó karakter és bináris string is lehet,
+    az eredmény ennek függvényében C vagy X típusú. A rekordbuffereket
+    régen a \verb!space! függvénnyel hoztuk létre. Mivel ennek
+    az eredménye C típus, ez most általában nem jó, helyette
+    ilyesmit írunk: \verb!replicate(x"20",n)!.
+\item[{\tt fread(fd,@buf,n)}]
+    Az \verb!fread! nem karaktereket, hanem byteokat olvas,
+    ezért \verb!buf!-ot X típusúra {\it kell\/} inicializálni.
+\item[{\tt fwrite(fd,buf,n)}]
+    Az \verb!fwrite! nem karaktereket, hanem byteokat ír,
+    ezért, ha C típusú \verb!buf!-ot adunk meg neki, azt automatikusan
+    átkonvertálja X típusra \verb!str2bin!-nel.
+\item[{\tt convertfspec2nativeformat(f)}]
+    Az eredményét mindig átkonvertálja binárisra, ui.
+    az operációs rendszernek UTF-8 kódolású fájlspecifikációkat
+    lehet megadni.
+\item[{\tt hashcode(v)}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt isalpha(v)}]
+    Karakteres és bináris stringekre is működik.
+    C szinten az \verb!iswalpha!, illetve az \verb!isalpha!
+    hívódik meg. Karakter string esetén az ékezetes és cirill 
+    betűkre is jó eredményt ad.
+\item[{\tt qout(c,...)}]
+    A karakter stringek kinyomtatás előtt automatikusan
+    átkonvertálódnak UTF-8-ra (vagyis  binárisra), 
+    ui. az operációs rendszerek ezt értik.
+\item[{\tt savescreen()}]
+    A képernyő bináris stringként mentődik, egy screen
+    cella a korábbiaktól eltérően most 4 byte, mert UCS
+    kódokat kell tárolni. A függvénycsalád összes tagja
+    ehhez alkalmazkodik.
+\item[{\tt upper(v)}]
+    Karakteres és bináris stringekre is működik.
+    C szinten a \verb!towupper!, illetve a \verb!toupper!
+    hívódik meg. Karakter string esetén az ékezetes és cirill 
+    betűkre is jó eredményt ad.
+\item[{\tt val(x)}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt valtype(v)}]
+    Bináris stringre "X"-et ad.
+\item[{\tt like()}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt memoread(fspec [,binopt])}]
+    Ha a \verb!binopt! empty, akkor \verb!bin2str!-rel
+    karakterre konvertálja a beolvasott fájl tartalmát.
+    Ez csak akkor jó, ha a fájl UTF-8 kódolású szöveget tartalmaz.
+    Ha egy png képfájlt akarunk beolvasni, akkor azt 
+    \verb!binopt:=.t.!-vel tesszük, az eredmény ilyenkor
+    egy bináris string.
+\item[{\tt memowrit(fspec,v)}]
+    Ha \verb!v! egy karakteres string, akkor azt kiírás
+    előtt átkonvertálja binárisra.
+\item[{\tt inkey() }]
+    Az inkey kódok megváltoztak, lásd az \verb!inkey.ch!-t.
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+\end{description}
+
+\section{Internacionalizálás}
+
+Internacionalizálásnak sok összetevője van, 
+mi itt csak egy dologgal foglalkozunk: 
+Hogyan lehet többnyelvű CCC programot írni, 
+amiben a string konstansok egyszerűen cserélhetők különféle 
+nyelvi változatokra. 
+Egy működő példa található a \$CCCDIR/tutor/nlstext directoryban, 
+ezt a példát magyarázom el részletesen az alábbiakban.
+
+Az nlstext.prg program:
+\begin{verbatim}
+static x:=@"Some like hot"
+
+function main()
+    nls_load_translation("nlstext")
+    fun()
+    ?
+
+static function fun()
+static y:=@'Gentlemen prefer blondes'
+local z:=@"Star war"
+    ? x
+    ? y
+    ? z
+    ? @"Matrix"
+    ?
+\end{verbatim}
+Először is azokat a stringeket, amiket a program különböző 
+nyelvű verzióiban fordításban akarunk látni, meg kell jelölnünk.
+Erre szolgál a speciális \verb!@"..."! szintaktika.
+A programfordítás idejére beállítjuk az alábbi 
+környezeti változót:
+\begin{verbatim}
+export CCC_NLSTEXT_TAB=$(pwd)/nlstext.tran
+\end{verbatim}
+Ennek hatására a \verb!ppo2cpp! fordító kigyűjti nekünk a 
+kukaccal megjelölt stringeket egy szövegfájlba, 
+esetünkben nlstext.tran-ba:
+\begin{verbatim}
+"Some like hot"<<"" from  ./nlstext.prg  (21)
+"Gentlemen prefer blondes"<<"" from  ./nlstext.prg  (33)
+"Star war"<<"" from  ./nlstext.prg  (34)
+"Matrix"<<"" from  ./nlstext.prg  (39)
+\end{verbatim}
+Itt soronként egy stringet találunk. A sor a lefordítandó
+stringgel kezdődik, utána jön egy \verb!<<! jel, majd egy 
+üres idézet, ahová a fordítást kell majd beírni.
+Az eddigiek azt jelölik, hogy a bal oldali stringet 
+helyettesíteni fogja a jobb oldalra írt fordítás.
+A sor végén fel van tüntetve, hogy az adott string melyik
+forrásfájl melyik sorából származik.  Természetesen,
+ha a project sok forrásfájlból áll, akkor az egyes fájlokból
+jövő járulék halmozódik, ezért egy nagyobb program esetén
+ezres nagyságrendű sor lehet az eredmény.
+
+Minden nyelvhez készítünk egy-egy directoryt, esetünkben 
+\begin{verbatim}
+    translation/hu
+    translation/ru
+\end{verbatim}
+ezekbe átmásoljuk az nlstext.tran egy-egy példányát, 
+ezeken fognak dolgozni a fordítók. A fordító munkájának
+eredménye egy ilyen fájl:
+\begin{verbatim}
+"Some like hot"<<"Несколько мужчин любят горячо" from  ./proba.prg  (21)
+"Gentlemen prefer blondes"<<"Господа любят лучше блондинок" from  ./proba.prg  (33)
+"Star war"<<"Война эвёэд" from  ./proba.prg  (34)
+\end{verbatim}
+Ebből a fájlból a \verb!tran2cpp! utility  C++ forrást generál,
+amit lefordítunk, és  dinamikus könyvtárat linkelünk belőle.
+Elvégezzük ugyanezeket a műveleteket a magyar változatra is.
+A dinamikus könyvtárak neve:
+\begin{verbatim}
+    translation/libnlstext.hu.so
+    translation/libnlstext.ru.so
+\end{verbatim}
+Természetesen ugyanez megy Windowson is, csak ott dll-eket kapunk.
+
+Namost, ha az nlstext.exe programot egy ilyen scripttel indítjuk:
+\begin{verbatim}
+#!/bin/bash
+export CCC_LANG=ru
+export LD_LIBRARY_PATH=./translation:$LD_LIBRARY_PATH
+nlstext.exe
+\end{verbatim}
+akkor a program elején található
+\begin{verbatim}
+    nls_load_translation("nlstext")
+\end{verbatim}
+függvényhívás (amiről eddig nem szóltunk) a \verb!CCC_LANG!
+változó értékéből és a paraméterként kapott "nlstext" szövegből
+összerak egy könyvtárnevet, és a könyvtárat megpróbálja betölteni. 
+Ha ez a betöltés sikeres, akkor a program a \verb!@"..."! stringek
+helyett azok fordításait fogja megjeleníteni. Ha a fordításkönyvtár
+dinamikus betöltése nem sikeres, vagy a könyvtár nem tartalmaz fordítást
+egyik vagy másik stringre, attól még  működni fog a program,
+csak ekkor a fordítással nem rendelkező stringek eredeti szövege 
+jelenik meg.
+
+\section{Megjelenítő könyvtárak}
+
+A megjelenítő modulok átfogó profiltisztításon estek át.
+A CCC3-ból kimaradtak az \verb!uiw!, \verb!uif!, \verb!uid! könyvtárak. 
+Ha egy alkalmazás ezekre épül, akkor azt továbbra is a CCC2-vel kell 
+fordítani (aminek a karbantartása folytatódik), vagy alkalmazássszinten 
+kell megoldani a könyvtárak portolását (a CCC2-beli állapotukban ezek nem
+támogatják az UTF-8-at). 
+A CCC3 háromféle megjelenítőkönyvtárat tartalmaz:
+\begin{description} 
+\item[{\tt ccc3\_uic}]
+    Ez a hagyományos karakteres megjelenítés,
+    ami messzemenően kompatibilis az eredeti Clipperrel, 
+    ám a CCC3-beli megvalósítás támogatja a unicodeot.
+\item[{\tt ccc3\_gtk}]
+    Interfész a GTK-hoz. A GTK egy platformfüggetlen 
+    grafikus könyvtár, amihez számos nyelv tartalmaz 
+    csatolót. A GTK mindig is UTF-8 kódolással dolgozott,
+    most ehhez jól illeszkedik a CCC3.
+    Lásd: \href{cccgtk.html}{CCC-GTK csatoló}.
+\item[{\tt ccc3\_jt}]
+    Saját találmány a Jáva megjelenítő modul (Jáva terminál).
+    A Jáva szintén a kezdetektől támogatta a unicodeot,
+    most ezt a tulajdonságát kihasználja a CCC3.
+    Lásd: \href{jterminal.html}{Jáva Terminál}.
+\end{description} 
+
+Egyszerűsítések történtek az \verb!uic! könyvtáron belül is.
+A CCC2-ben (UNIX-on) a karakteres megjelenítés történhetett
+X-szel, az ncurses könyvtárral, illetve távoli terminálon.
+A CCC3 csak az utóbbit (a távoli terminált) tartja meg.
+Ha egy alkalmazást a lokális munkaállomáson futtatunk,
+és ugyanitt akarjuk megjeleníteni, akkor is a terminált
+kell használnunk. A terminál konfigurálásával a következő
+fejezet foglalkozik.  A (távoli) terminál előnye, 
+hogy az \verb!uic! könyvtárnak nincs külön UNIX-os
+és windowsos változata, ui. az \verb!uic! feladatai a terminállal
+való kommunikációnál véget érnek.
+A tényleges megjelenítéshez persze kell egy terminál program 
+UNIX-ra és egy másik Windowsra, ezek foglalják magukba a
+megjelenítés platform specifikus részleteit.
+
+\section{Karakteres terminál}
+
+\subsection{Konnektálás}
+
+A szerverprogram és a terminál többféle módon kapcsolódhat.
+Sorravesszük a lehetőségeket:
+
+\subsubsection{Lokális szerver és terminál}
+\begin{verbatim}
+    export CCCTERM_CONNECT="a_terminál_teljes_fájlspecifikációja"
+\end{verbatim}
+Ez a legegyszerűbb módja, hogy egy gépen CCC3 környezetben 
+dolgozzunk. A környezeti változó tudatja a programokkal,
+hogy el kell indítaniuk maguk számára a terminált, ezt meg is teszik,
+a program és a terminál automatikusan konnektálnak.
+
+
+\subsubsection{Listener a szerveren}
+
+Elindítjuk az \verb!xstart!-ot (CCC listener) a szerveren,
+az xstartnak az alábbi paraméterfájlt adjuk meg:
+\begin{verbatim}
+<xstart>
+<item>
+    <name>Test Program</name>
+    <port>55000</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <command>proba1.exe</command>
+</item>
+</xstart>
+\end{verbatim}
+Ha most elindítjuk a terminált egy másik gépen
+\begin{verbatim}
+    terminal.exe host 55000
+\end{verbatim}
+ahol \verb!host! az xstartot futtató gép, akkor a lokálisan
+futó terminálban megjelenik a \verb!host!-on automatikusan elinduló 
+\verb!proba1.exe! program képernyője. Figyeljük meg, 
+hogy a \verb!CCCTERM_CONNECT! környezeti változó (most egy másik 
+szintaktikával) a listenertől örökölt  socket leíróját tudatja
+a szerver programmal.
+
+
+\subsubsection{Listener a munkaállomáson}
+ 
+Elindítjuk az \verb!xstart!-ot lokális munkaállomáson
+az alábbi paraméterfájllal:
+\begin{verbatim}
+<xstart>
+<item>
+    <name>terminal</name>
+    <port>55000</port>
+    <env>CCCTERM_SIZE=80x43</env>
+    <command>terminal.exe --socket $(SOCKET)</command>
+</item>
+</xstart>
+\end{verbatim}
+
+A (távoli) szerveren beállítjuk:
+\begin{verbatim}
+    export CCCTERM_CONNECT=host:55000
+\end{verbatim}
+Ahol \verb!host! a munkaállomásunk neve (vagy IP címe), 
+ahogy azt a távoli szerver ismeri. Ha ezután a szerveren
+elindítunk egy tetszőleges karakteres CCC3 programot, akkor 
+a lokális munkaállomáson automatikusan elindul a terminál,
+és abban megjelenik a távoli gépen futó program képernyője.
+Figyeljük meg, hogy a \verb!CCCTERM_CONNECT! környezeti
+változó (most egy harmadik szintaktikával) azt tudatja 
+a szerver programmal, hogy hova kell konnektálni a
+megjelenítés érdekében.
+
+Természetesen lehetséges, 
+hogy az előző esetek akármelyikében,
+a szerver és a munkaállomás ugyanaz a gép legyen.
+
+
+\subsubsection{Összegzés}
+
+A szerver program (\verb!uic! könyvtár) és a terminál 
+alapvetően kétféle módon juthatnak hozzá a kommunikációs sockethez,
+konnektálnak, vagy öröklik a socketet:
+
+Ha a szerveren beállítjuk:
+\begin{verbatim}
+    export CCCTERM_CONNECT=host:port
+\end{verbatim} akkor a program a \verb!host:port! címre próbál konnektálni,
+ahol egy listenernek kell várnia a konnektálásokat, és indítania a terminált.
+Ha a terminált így indítjuk:
+\begin{verbatim}
+    terminal.exe host port
+\end{verbatim} akkor a terminál a \verb!host:port! címre próbál konnektálni,
+ahol egy listenernek kell várnia a konnektálásokat, és indítania a 
+szerver alkalmazásokat.
+
+A másik oldalon, a listener úgy indítja a szerver alkalmazást,
+hogy beállítja számára a 
+\begin{verbatim}
+    export CCCTERM_CONNECT=SOCKET:sck
+\end{verbatim} környezeti változót, amiből a szerver program 
+(\verb!uic! könyvtár)  értesül az örökölt socket leírójáról (\verb!sck!).
+Ha a listener így indítja a terminált,
+\begin{verbatim}
+    terminal.exe  --socket sck
+\end{verbatim} akkor a terminál tudja, hogy \verb!sck!-ban az örökölt 
+socket leíróját kapta meg. 
+
+Speciálisan kezelhető a legegyszerűbb eset, amikor az
+\begin{verbatim}
+    export CCCTERM_CONNECT="a_terminál_teljes_fájlspecifikációja"
+\end{verbatim} beállítás hatására a szerver program automatikusan 
+indítja maga számára a terminált.
+
+\subsection{A terminál paraméterei}
+
+A terminál egy sor további környezeti változóval paraméterezhető:
+\begin{description}
+\item[{\tt CCCTERM\_SIZE}]
+\item[{\tt CCCTERM\_REDIR\_CONSOLE}]
+\item[{\tt CCCTERM\_REDIR\_PRINTER}]
+\item[{\tt CCCTERM\_REDIR\_ALTERNATE}]
+\item[{\tt CCCTERM\_REDIR\_EXTRA}]
+\item[{\tt CCCTERM\_REDIR\_ERROR}]
+\item[{\tt CCCTERM\_CAPTURE\_PRN}]
+\item[{\tt CCCTERM\_CAPTURE\_LPT1}]
+\item[{\tt CCCTERM\_CAPTURE\_LPT2}]
+\item[{\tt CCCTERM\_CAPTURE\_LPT3}]
+\item[{\tt CCCTERM\_FONTSPEC}] %UNIX-on.
+\item[{\tt CCCTERM\_FONTFACE}] %Windowson.
+\item[{\tt CCCTERM\_FONTSIZE}] %Windowson.
+\end{description}
+
+
+
+
+
+
+
+
+

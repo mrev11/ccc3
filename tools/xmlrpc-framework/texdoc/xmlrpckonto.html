@@ -1,0 +1,1110 @@
+<html>
+<head>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
+<META NAME="Keywords" CONTENT="Clipper,compiler,object,oriented,multi,threaded,computer,network,program,develop,script,Java,terminal,database">
+<META NAME="Description" CONTENT="Clipper to C++ Compiler (CCC) for UNIX and Windows, object oriented, multi threaded">
+<META NAME="Author" CONTENT="Matyas Vermes">
+<META NAME="Language" CONTENT="Hungarian">
+
+<STYLE>
+    body {
+        font-family: Arial, Helvetica, sans-serif ;
+        background:white
+        color:black; 
+    }
+</STYLE>                     
+
+</head>
+<body>
+
+
+
+ 
+ 
+
+            
+
+
+<p>
+<h1>XMLRPC Kontó</h1>
+<p>
+<i>Dr. Vermes Mátyás<a href="#tthFtNtAAB" name="tthFrefAAB"><sup>1</sup></a></i>
+<p>
+ 2001. július
+<p>
+ 
+<h1> </h1>
+<a href="#tth_sEc1."
+>1.&nbsp; Áttekintés</a><br>
+<a href="#tth_sEc2."
+>2.&nbsp; Elosztó szerver (wrapper)</a><br>
+<a href="#tth_sEc3."
+>3.&nbsp; Jogosultság kezelés</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1."
+>3.1.&nbsp; RPCUSER</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.2."
+>3.2.&nbsp; RPCAUTH</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.3."
+>3.3.&nbsp; Engedélyezés</a><br>
+<a href="#tth_sEc4."
+>4.&nbsp; Session manager</a><br>
+<a href="#tth_sEc5."
+>5.&nbsp; Indítóscriptek</a><br>
+<a href="#tth_sEc6."
+>6.&nbsp; Szerverek programozása</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc6.1."
+>6.1.&nbsp; xmlrpcServer osztály</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc6.2."
+>6.2.&nbsp; Példa</a><br>
+<a href="#tth_sEc7."
+>7.&nbsp; CCC kliensek programozása</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc7.1."
+>7.1.&nbsp; xmlrpcClient osztály</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc7.2."
+>7.2.&nbsp; Példa</a><br>
+<a href="#tth_sEc8."
+>8.&nbsp; CORBA vs. XMLRPC</a><br>
+<a href="#tth_sEc9."
+>9.&nbsp; XMLRPC és CCC típusok megfeleltetése</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.1."
+>9.1.&nbsp; NIL</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.2."
+>9.2.&nbsp; String</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.3."
+>9.3.&nbsp; Szám</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.4."
+>9.4.&nbsp; Logikai érték</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.5."
+>9.5.&nbsp; Dátum</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.6."
+>9.6.&nbsp; Block</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.7."
+>9.7.&nbsp; Base64</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.8."
+>9.8.&nbsp; Array</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc9.9."
+>9.9.&nbsp; Objektum</a><br>
+
+
+<p>
+ <h2><a name="tth_sEc1.">
+1</a>.&nbsp;&nbsp;Áttekintés</h2>
+
+<p>
+Szeretnénk felállítani egy olyan Kontó kiszolgálót, 
+ami XMLRPC protokollon keresztül szolgáltat adatokat a Kontóból, 
+illetve  segítségével műveleteket végezhetünk a Kontóban,
+pl.&nbsp;lekérhetjük egy ügyfél forgalmát, kivonatát, felvihetünk 
+egy ügyfelet, nyithatunk számlát, rögzíthetünk egy könyvelési tételt. 
+Egy ilyen kiszolgáló  rögzíti az üzleti logikát, és elrejti 
+az adattárolás módját. A kliensekbe csak a megjelenítés kerül, 
+ami a bankok igényei szerint többféle lehet anélkül, hogy a Kontó üzleti 
+logikáját meg kellene változtatni, vagy többször implementálni.
+A megoldás arra is lehetőséget ad, hogy külső programok, mondjuk egy
+home banking rendszer dokumentált és ellenőrzött módon kapcsolódjon
+a Kontóhoz.
+
+<p>
+Az alábbi rétegek egymásra épülését tételezem fel:
+
+<p>
+
+<center>
+<table border="1">
+<tr><td>1 </td><td>Jáva Terminál              </td></tr>
+<tr><td>2 </td><td>SSL                        </td></tr>
+<tr><td>3 </td><td>CCC frontend programok     </td></tr>
+<tr><td>4 </td><td>XMLPRC (HTTP)              </td></tr>
+<tr><td>5 </td><td>Wrapper (elosztó)          </td></tr>
+<tr><td>6 </td><td>Speciális CCC szerverek    </td></tr>
+<tr><td>7 </td><td>Adatbázis                  </td></tr></table>
+
+</center>
+
+<p>
+Ez a táblázat interaktív kliens esetét mutatja. 
+Nem interaktív kliensek-pl.&nbsp;a szerveren batch feldolgozást végző 
+programok-a 3.&nbsp;szinten kapcsolódnak a rendszerbe.
+A 6.&nbsp;szinten működő szerverek egymás szolgáltatásait 
+(a wrapperen keresztül) korlátozás nélkül igénybe vehetik. 
+
+<p>
+Az XMLRPC protokoll részleteivel nem foglalkozunk, 
+a ccc_socket és a ccc_xmlrpc könyvtár szolgáltatásai minden
+feladatra elegendőnek látszanak (mindig a legfrissebb változatra
+van szükség).
+
+<p>
+ <h2><a name="tth_sEc2.">
+2</a>.&nbsp;&nbsp;Elosztó szerver (wrapper)</h2>
+
+<p>
+A wrapper <em>nem </em> xmlrpc szerver, hanem socket szinten dolgozik,
+és az üzeneteket mechanikusan közvetíti a felek között.
+A program egyszerűsíti a szervezést, ui.&nbsp;a résztvevőknek elég 
+csak a wrapper hálózati címét ismerni. 
+
+<ul>
+<li>   A wrapper egy select-ben várja, hogy a nyitvatartott socketek
+   egy részhalmaza olvasható legyen.<p></li>
+
+<li>
+   Csak annyit olvas, amennyi a socketből blokkolás nélkül
+   olvasható. Ha nem olvasható be egyszerre egy teljes HTTP üzenet, 
+   akkor azt később összerakja a részeiből, miközben más ügyfelek üzeneteit
+   is kezeli.<p></li>
+
+<li>
+   Ha összejött a teljes request, akkor azt (részleges) xml elemzésnek
+   veti alá, és megállapítja, hogy melyik szervernek kell továbbküldeni.<p></li>
+
+<li> 
+   Ha a címzett szerver nem foglalt, akkor a requestet azonnal továbbküldi,
+   ha foglalt, akkor sorbaállítja. A sorbanálló requesteket a szerver
+   később fogja megkapni, ahogy szabaddá válik.<p></li>
+
+<li> 
+   Amíg a szerver a request megválaszolásával foglalkozik,
+   a wrapper kiszolgálja a többi ügyfelet.<p></li>
+
+<li>
+   Ha összejött egy válaszüzenet, azt azonnal továbbítja a kérdező
+   kliensnek.<p></li>
+</ul>
+
+<p>
+A fentiekből adódóan a program az üzenetközvetítést 
+elég hatékonyan csinálja.
+Bizonyos xmlrpc requestekre a wrapper közvetlenül válaszol:
+
+<ul>
+<li>  A system.register hívást a többi szerver arra használja, hogy
+  regisztrálja magát a wrappernél.<p></li>
+
+<li>
+  A system.printstate hívásra a wrapper listát ír ki a log filéjébe
+  az aktuális állapotáról.<p></li>
+</ul>
+
+<p>
+A wrapper a system hívásokat sosem adja tovább, és a fenti két
+metódustól különböző hívások esetén "service not available" kivétel
+keletkezik. Ugyanezért a wrapperen keresztül nem érhetők el a
+szerverek által esetlegesen implementált szabványos "system"
+metódusok.
+
+<p>
+ <h2><a name="tth_sEc3.">
+3</a>.&nbsp;&nbsp;Jogosultság kezelés</h2> 
+
+<p>
+     <h3><a name="tth_sEc3.1.">
+3.1</a>.&nbsp;&nbsp;RPCUSER</h3>
+
+<p>
+Az xmlrpc-s Kontó felhasználókat külön adatbázisban fogjuk 
+nyilvántartani, így véletlenül sem keveredik össze a kétféle 
+felhasználási mód.A felhasználók az rpcuser állományban vannak 
+felsorolva, ennek szerkezete:
+
+<p>
+
+<pre>
+rekordszám   :          4
+fejléc hossz :        258
+rekord hossz :        193
+mezők száma  :          7
+UID        C         16          0          2
+TID        C         16          0         18
+GID        C         64          0         34
+NAME       C         64          0         98
+PASSWORD   C         16          0        162
+STARTDATE  D          8          0        178
+ENDDATE    D          8          0        186
+
+</pre>
+
+<p>
+A mezők jelentése: 
+<tt>UID</tt> felhasználói név,
+<tt>TID</tt> felhasználó típus,
+<tt>GID</tt> csoport azonosító,
+<tt>NAME</tt> teljes felhasználói név,
+<tt>PASSWORD</tt> jelszó,
+<tt>STARTDATE</tt> érvényesség kezdete,
+<tt>ENDDATE</tt> érvényesség vége.
+
+<p>
+A korábbi rendszerhez képest a tid és gid megkülönböztetése a
+leglényegesebb újdonság. A tid értékei ilyenek lehetnek:
+
+<ul>
+<li> master (rendszergazda),<p></li>
+
+<li> poweruser (megemelt jogú ügyintéző),<p></li>
+
+<li> user (ügyintéző),<p></li>
+
+<li> customer (internetes ügyfél),<p></li>
+
+<li> program (batch feldolgozó program).<p></li>
+</ul>
+
+<p>
+     <h3><a name="tth_sEc3.2.">
+3.2</a>.&nbsp;&nbsp;RPCAUTH</h3>
+
+<p>
+A egyes felhasználói típusok (tid) számára engedélyezett
+metódusokat (plusz az engedély módját) tartalmazza rpcauth.
+
+<p>
+
+<pre>
+rekordszám   :          8
+fejléc hossz :        130
+rekord hossz :         50
+mezők száma  :          3
+TID        C         16          0          2
+METHOD     C         32          0         18
+PERMISSION C          1          0         50
+
+</pre>
+
+<p>
+Itt egy rekord jelentése a következő:
+A <tt>TID</tt> típusú felhasználónak a <tt>METHOD</tt> funkcióhoz 
+<tt>PERMISSION</tt> engedélye van. A <tt>PERMISSION</tt> mező értékei
+lehetnek:
+
+<ul>
+<li> <tt>u</tt>, hozzáférés csak a saját adathoz (lakosság),<p></li>
+
+<li> <tt>g</tt>, hozzáférés a csoport adathoz (ügyintéző),<p></li>
+
+<li> <tt>o</tt>, hozzáférés minden adathoz (power ügyintéző).<p></li>
+</ul>
+
+<p>
+     <h3><a name="tth_sEc3.3.">
+3.3</a>.&nbsp;&nbsp;Engedélyezés</h3>
+
+<p>
+A csoport azonosító (gid) alapján döntik el a szerverek,
+hogy az adatbázis egy eleméhez van-e hozzáférése a kliensnek.
+A csoport azonosító tartalma szerverenként más és más lehet.
+Az LTP szerver példáján mutatjuk be a gid használatát.
+
+<p>
+
+<dl compact="compact">
+ <dt><b>Internetes (lakossági) LTP ügyfél</b></dt>
+	<dd>
+    Az ügyfél csak a saját szerződéséhez férhet hozzá, 
+    ezért a customer típusba soroljuk, és gid-nek választjuk a 
+    szerződésazonosítót.
+    
+<p>
+</dd>
+ <dt><b>LTP ügyintéző (ügynök)</b></dt>
+	<dd>
+    Az ügynök az általa hozott szerződésekhez férhet hozzá,
+    a user típusba soroljuk, és az ügynök azonosítót írjuk a gid-be.
+    
+<p>
+</dd>
+ <dt><b>Emelt jogú ügyintéző</b></dt>
+	<dd>
+    Minden adathoz hozzáférhet, ezért a poweruser típusba
+    soroljuk, a gid-et üresen hagyjuk.
+    
+<p>
+</dd>
+</dl> Megjegyzem, hogy a <tt>METHOD</tt> mező nem feltétlenül egy
+ténylegesen létező megírt metódus neve, hanem egy olyan
+azonosító, amire a szerverek hivatkozhatnak. Pl.
+valójában nincs "ltp.read" nevű metódus, az rpcltp szerver
+mégis ezt ellenőrzi, mielőtt adatot szolgáltatna ki a kliensnek.
+
+<p>
+ <h2><a name="tth_sEc4.">
+4</a>.&nbsp;&nbsp;Session manager</h2>
+
+<p>
+A Kontó felhasználók beléptetésével, az engedélyek
+nyilvántartasával foglalkozik az rpcsession szerver.
+
+<p>
+
+<pre>
+function main(port)
+local server
+    set printer to log-rpcsession additive
+    set printer on
+    set console off
+    alertblock({|t,a|xmlrpc_alert(t,a)})
+    server:=xmlrpcserverNew(port) 
+    server:keepalive:=.t.
+    //server:debug:=.t. 
+    //server:recover:=.f.
+ 
+    server:addmethod("session.getversion",{|sid|getversion(sid)})
+    server:addmethod("session.login",{|u,p|login(u,p)})
+    server:addmethod("session.logout",{|sid|logout(sid)})
+    server:addmethod("session.validate",{|sid,prolong|validate(sid,prolong)})
+    server:addmethod("session.validatex",{|sid,prolong|validatex(sid,prolong)})
+    server:addmethod("session.who",{|sid|who(sid)})
+    server:addmethod("session.permission",{|sid,module|permission(sid,module)})
+    server:addmethod("session.groupid",{|sid|groupid(sid)})
+    server:addmethod("session.userid",{|sid|userid(sid)})
+    server:addmethod("session.username",{|sid|username(sid)})
+    server:addmethod("session.usertype",{|sid|usertype(sid)})
+    server:loopfreq:=5000
+    server:loopblock:={||fflush()}
+    server:closeblock:={|s,r|xmlrpc_verifyconnection(s,r)}
+    xmlrpc_register(server,"session",VERSION)
+    server:loop
+    return NIL
+
+</pre>
+
+<p>
+ A session szerver jelenleg elég egyszerű, az alábbi néhány
+funkcióval rendelkezik:
+
+<p>
+
+<dl compact="compact">
+ <dt><b>session.login(string user,string passw) string sid </b></dt>
+	<dd>
+  Bejelentkezik a Kontóba. Ha a bejelentkezés sikeres, akkor visszaad
+  egy string (nem base64!) típusú értéket, a sid-et, amivel a 
+  kliens a továbbiakban igazolja magát. A sid base64 kódolású,
+  ezért a HTTP üzenetek fejlécében könnyen átküldhető, cookie-ként tárolható. 
+  Ha a kliens szünetelteti a tevékenységét, a sid <tt>XMLRPC_TIMEOUT</tt>
+  idő alatt elévül. Ha a bejelentkezés sikertelen xmlrpc kivétel keletkezik.<a href="#tthFtNtAAC" name="tthFrefAAC"><sup>2</sup></a>
+  
+<p>
+</dd>
+ <dt><b>session.logout(string sid) void </b></dt>
+	<dd>
+  A szerver törli a nyilvántartásából a sid-et. 
+  
+<p>
+</dd>
+ <dt><b>session.getversion(string sid) string version<a href="#tthFtNtAAD" name="tthFrefAAD"><sup>3</sup></a></b></dt>
+	<dd> 
+   Visszaadja a szerver verziószámát.
+   
+<p>
+</dd>
+ <dt><b>session.validate(string sid, boolean prolong) boolean success </b></dt>
+	<dd>
+  Megmondja, hogy érvényes-e a sid. Ha prolong true, akkor az érvényes 
+  sid timeout mérése újraindul.
+    
+<p>
+</dd>
+ <dt><b>session.validatex(string sid, boolean prolong) rpckontosession s</b></dt>
+	<dd>
+  Ellenőrzi, hogy érvényes-e a sid, ha nem, akkor xmlrpc kivétel keletkezik.
+  Ha a sid érvényes, akkor visszaad egy rpckontosession objektumot.
+  Ha prolong true, akkor a timeout mérése újraindul.
+    
+<p>
+</dd>
+ <dt><b>session.who(string sid) array list_of_sessions </b></dt>
+	<dd>
+  Ad egy listát a bejelentkezett felhasználókról.
+    
+<p>
+</dd>
+ <dt><b>session.permission(string sid, string module) permissions </b></dt>
+	<dd>
+  Ha module egy xmlrpc szervert azonosító string pont nélkül
+  (pl. "ltp"), akkor az eredmény egy array, ami a sid-del meghatározott
+  felhasználó jogait tartalmazza a megadott szerver összes metódusára: 
+  {{ltp.method<sub>1</sub>,p<sub>1</sub>}, ... }, ahol p<sub>i</sub>="u", "g", vagy "o".
+  Ha module egy komplett metódusnév ponttal (pl. "ltp.write"),
+  akkor az eredmény egy string: "u", "g", vagy "o". 
+    
+<p>
+</dd>
+ <dt><b>session.groupid(string sid) string groupid </b></dt>
+	<dd>
+  A visszakapott groupid alapján az alkalmazási program eldöntheti,
+  hogy az aktuális felhasználó jogosult-e az adatbázis egy bizonyos
+  eleméhez hozzáférni. Tartalma éppen ezért alkalmazásfüggő. 
+  Például egy interneten át jövő lakossági felhasználó (customer) groupid-je 
+  lehet a saját szerződésazonosítója, ami alapján a rendszer ellenőrzi, 
+  hogy a customer csak a saját adataihoz férhessen hozzá.
+    
+<p>
+</dd>
+ <dt><b>session.userid(string sid) string userid </b></dt>
+	<dd>
+  A felhasználó bejelentkezési nevét adja.
+    
+<p>
+</dd>
+ <dt><b>session.username(string sid) string username </b></dt>
+	<dd>
+  A felhasználó teljes nevét adja.
+    
+<p>
+</dd>
+ <dt><b>session.usertype(string sid) string usertype </b></dt>
+	<dd>
+  A felhasználó típusát adja, a támogatott típusok: 
+  master, poweruser, user, program, customer.
+    
+<p>
+</dd>
+</dl>A szerver kiszórja azokat a session-okat, amik az <tt>XMLRPC_TIMEOUT</tt>
+környezeti változóban megadott időn keresztül nem mutatnak aktivitást
+(default 300 sec).
+
+<p>
+A session szerver egyszerre legfeljebb <tt>XMLRPC_MAXSESSION</tt> darabszámú
+session-t engedélyez (default 128). 
+
+<p>
+A session szerver egy felhasználótól maximum <tt>XMLRPC_MAXSAMEUID</tt> egyidejű 
+bejelentkezést fogad el (default 4). 
+
+<p>
+ <h2><a name="tth_sEc5.">
+5</a>.&nbsp;&nbsp;Indítóscriptek</h2>
+
+<p>
+A szervereket az alábbihoz hasonló scripttel indíthatjuk:
+
+<pre>
+#!/bin/bash
+export XMLRPC_WRAPPER=foton,45000
+rpcwrapper.exe  45000  &amp;
+rpcsession.exe  45001  &amp;
+rpcteszt.exe    45002  &amp;
+
+</pre>
+
+<p>
+Az <tt>XMLRPC_WRAPPER</tt> változóban minden szerverrel tudatjuk,
+hogy hol van a wrapper. Először a wrappert indítjuk el természetesen
+azon a gépen és porton, amit az előbbi változóban megadtunk.
+
+<p>
+Ezután elindítjuk a többi szervert. Ha a szervereknek nem adnánk
+meg explicit portszámot, akkor azok automatikusan választanának
+maguknak egy szabad portot, ekkor azonban ugyanaz a szerver egyidejűleg 
+több porton is futhat, ami esetleg nem kívánatos. A port explicit
+megadása esetén, a szerver kilép, ha a megadott port nem szabad.
+
+<p>
+A szervereknek nem kell ugyanazon a gépen lenniük.
+A szerverek bármikor utólag is elindíthatók, ez alól csak a wrapper
+kivétel. Ha ez kilép, akkor a többi szerver is automatikusan kilép
+(így vannak megírva), és az egész rendszert újra kell indítani.
+
+<p>
+A klienseket az alábbi módon indítjuk:
+
+<p>
+
+<pre>
+#!/bin/bash
+export CCC_TERMINAL=dummy
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+client1.exe  &amp;
+
+</pre>
+
+<p>
+A CCC klienseknek általában két paramétert fogunk megadni,
+a wrapper  címét (host nevét) és portszámát. Ha ezek
+hiányoznak (mint a jelen esetben), akkor a {localhost,45000}
+default címen próbálkozik. A script a szerver nyúzása céljából
+egyszerre elindít 10 nem interaktív klienst. Az egész
+rendszer 50-60 folyamatosan kérdező klienssel még símán működik. 
+Nyilván bír többet is, különösen, ha a klienseket nem kell 
+lokálisan futtatni.
+
+<p>
+ <h2><a name="tth_sEc6.">
+6</a>.&nbsp;&nbsp;Szerverek programozása</h2>
+
+     <h3><a name="tth_sEc6.1.">
+6.1</a>.&nbsp;&nbsp;xmlrpcServer osztály</h3>
+
+<p>
+A ccc_xmlrpc könyvtárban van definiálva az alábbi xmlrpcServer 
+osztály. Az ccc_xmlrpc könyvtárat a jelen alkalmazás igényei szerint
+állandóan frissítem, ezért fontos, hogy mindig a legutolsó
+változattal linkeljünk. Ugyanez áll a ccc_socket könyvtárra is.
+
+<p>
+
+<pre>
+function xmlrpcserverClass() 
+static clid
+
+    if( clid==NIL )
+        clid:=classRegister("xmlrpcserver",{objectClass()})
+        classMethod(clid,"initialize",{|this,p|xmlrpcserverIni(this,p)})
+        classMethod(clid,"response",{|this,s|xmlrpcserverResponse(this,s)})
+        classMethod(clid,"addmethod",{|this,m,b,h,s|xmlrpcserverAddmethod(this,m,b,h,s)})
+        classMethod(clid,"loop",{|this|xmlrpcserverLoop(this)})
+ 
+        classMethod(clid,"methodidx",{|this,m|xmlrpcserverMethodIdx(this,m)})
+        classMethod(clid,"methodblk",{|this,m|xmlrpcserverMethodBlock(this,m)})
+        classMethod(clid,"methodhlp",{|this,m|xmlrpcserverMethodHelp(this,m)})
+        classMethod(clid,"methodsig",{|this,m|xmlrpcserverMethodSignature(this,m)})
+        classMethod(clid,"methodlst",{|this|xmlrpcserverListMethods(this)})
+ 
+        classAttrib(clid,"port")        //ezen a porton hallgatózik
+        classAttrib(clid,"methods")     //metódusok: {{m,b,h,s},...} 
+        classAttrib(clid,"keepalive")   //tartja-e a kapcsolatot
+        classAttrib(clid,"debug")       //printeli-e a debug infót
+        classAttrib(clid,"recover")     //elkapja-e a hibákat
+        classAttrib(clid,"server")      //szerver név (HTTP header)
+        classAttrib(clid,"evalarray")   //kibontva adja-e át a &lt;params&#62; tagot
+        classAttrib(clid,"loopfreq")    //a select timeout-ja (ezred sec-ben)
+        classAttrib(clid,"loopblock")   //a select lejártakor végrehajtódik 
+        classAttrib(clid,"closeblock")  //minden socket lezárásakor végrehajtódik 
+        classAttrib(clid,"socketlist")  //az összes élő socket
+        classAttrib(clid,"scklisten")   //ezen a socketen hallgatózik
+    end
+    return clid
+
+</pre>
+
+<p>
+     <h3><a name="tth_sEc6.2.">
+6.2</a>.&nbsp;&nbsp;Példa</h3>
+
+<p>
+
+<pre>
+//XMLRPC teszt szerver
+
+static wrapper
+ 
+*****************************************************************************
+function main(port)
+
+local server
+
+    set printer to log-rpcteszt additive
+    set printer on
+    alertblock({|t,a|xmlrpc_alert(t,a)})
+
+
+</pre>
+Megnyitjuk a logfilét, kikapcsoljuk az alertet.
+
+<pre>
+    
+    server:=xmlrpcserverNew(port)
+    server:keepalive:=.t.
+    //server:debug:=.t.
+    //server:recover:=.f.
+
+
+</pre>
+Létrehozzuk a szerver objektumot, beállítjuk néhány jellemzőjét: a kliensekkel
+tartjuk a kapcsolatot, debug infót nem nyomtatunk, a hibákat elkapjuk,
+így hiba esetén automatikusan xmlrpc exception-t kap a kliens.
+
+<pre>
+ 
+    server:addmethod("teszt.hello",{|sid|hello(sid)})
+    server:addmethod("teszt.gettime",{|sid|gettime(sid)})
+    server:addmethod("teszt.echo",{|sid,p1,p2,p3,p4,p5,p6|echo(sid,p1,p2,p3,p4,p5,p6)})
+
+
+</pre>
+Feltöltjük a szervert a metódusokkal. Minden metódushoz tartozik egy kódblokk,
+ami  végre fog hajtódni, ha a kliens meghívja. A szerver automatikusan
+csinál magának "system.listMethods", "system.methodHelp", "system.methodSignature"
+metódusokat (xmlrpc ajánlás), bár ezeket a wrapperen keresztül jelenleg 
+nem lehet elérni.
+
+<pre>
+ 
+    xmlrpc_register(server,"teszt")
+    wrapper:=xmlrpc_client()
+    server:closeblock:={|s,r|verify_connection(s,r)}
+
+
+</pre>
+A szerver regisztrálja magát a wrappernél. Létrehoz egy xmlrpcclient
+objektumot, amit akkor használ, ha kliensként igénybe akarja venni a
+többi rpc szerver szolgáltatását.  Beállítja a szerver closeblock-ját,
+ez automatikusan végre fog hajtódni, amikor egy socket lezáródik.
+Ez alkalmat ad a szervernek arra, hogy észrevegye, ha a wrapper
+kilépett, ilyenkor a program befejeződik.
+
+<pre>
+
+    server:loop
+
+
+</pre>
+Elindítjuk a szerver főciklusát, amiben a requestek kiszolgálása
+történik. A program kilépéséig a loop-ban marad a vezérlés.
+
+<pre>
+ 
+    return NIL
+
+*****************************************************************************
+static function verify_connection(server,r)
+local e
+    if( server:socketlist[1]==r )
+        e:=errorNew()
+        e:operation:="verify_connection"
+        e:description:="wrapper died"
+        eval(errorblock(),e)
+    end
+    return NIL
+
+
+</pre>
+A wrapper kilépésének észlelése azon alapszik, hogy a socketlist
+első eleme mindig a wrapperhez kapcsolódik (xmlrpc_register teszi oda).
+Alább a metódusok implementációja következik.
+
+<pre>
+ 
+*****************************************************************************
+static function hello(sid)
+local uid
+    validate_session_id(sid)
+    sid:=_chr2arr(base64_decode(sid))
+    uid:=sid[1][2]
+    return "Hello '"+upper(uid)+"'!"
+
+
+*****************************************************************************
+static function gettime(sid)
+    validate_session_id(sid)
+    return time()
+
+
+*****************************************************************************
+static function echo(sid,p1,p2,p3,p4,p5,p6)
+    validate_session_id(sid)
+    return {p1,p2,p3,p4,p5,p6}
+ 
+
+*****************************************************************************
+static function  validate_session_id(sid)
+local e
+    if( !wrapper:call("session.validate",sid) )
+        e:=errorNew()
+        e:description:="invalid sid"
+        eval(errorblock(),e)
+    end
+    return NIL
+
+*****************************************************************************
+
+</pre>
+
+<p>
+Figyeljük meg, hogy bármi gond van (pl.&nbsp;érvénytelen a sid), 
+egyszerűen el kell szállítani a programot, ezt a szerver loop 
+metódusa el fogja kapni (ha recover==.t.), és automatikusan
+xmlrpc kivétellé transzformálja, amit elküld a kliensnek. 
+Az egyszerű programhibák miatti elszállásokkal is ez történik,
+ami megnehezíti a tesztelést, ezért tesztelés céljára a normál
+hibakezelés visszaállítható (recover==.f.).
+
+<p>
+  <h2><a name="tth_sEc7.">
+7</a>.&nbsp;&nbsp;CCC kliensek programozása</h2>
+
+<p>
+     <h3><a name="tth_sEc7.1.">
+7.1</a>.&nbsp;&nbsp;xmlrpcClient osztály</h3>
+
+<p>
+A ccc_xmlrpc könyvtárban van definiálva az alábbi xmlrpcClient
+osztály. Az ccc_xmlrpc könyvtárat a jelen alkalmazás igényei szerint
+állandóan frissítem, ezért fontos, hogy mindig a legutolsó
+változattal linkeljünk. Ugyanez áll a ccc_socket könyvtárra is.
+
+<p>
+
+<pre>
+function xmlrpcclientClass() 
+static clid
+
+    if( clid==NIL )
+        clid:=classRegister("xmlrpcclient",{objectClass()})
+        classMethod(clid,"initialize",{|this,host,port|xmlrpcclientIni(this,host,port)})
+
+        classMethod(clid,"call",{|this,method,params|xmlrpcclientCall(this,method,params)})
+        classMethod(clid,"close",{|this|xmlrpcclientClose(this)})
+        classMethod(clid,"connect",{|this|xmlrpcclientConnect(this)})
+        classMethod(clid,"write",{|this,r|xmlrpcclientWrite(this,r)})
+        classMethod(clid,"read",{|this|xmlrpcclientRead(this)})
+ 
+        classAttrib(clid,"useragent")  //kliens id (HTTP header)
+        classAttrib(clid,"hostname")   //szerver neve/ip címe
+        classAttrib(clid,"host")       //szerver ip címe
+        classAttrib(clid,"port")       //szerver portszám
+        classAttrib(clid,"socket")     //socket (file descriptor)
+        classAttrib(clid,"keepalive")  //tartja-e a kapcsolatot
+        classAttrib(clid,"debug")      //printeli-e a debug infót
+        classAttrib(clid,"URI")        //HTTP header (általában /RPC2)
+        classAttrib(clid,"timeout")    //ennyit vár a válaszra (ezred sec)
+    end
+    return clid
+
+</pre>
+
+<p>
+     <h3><a name="tth_sEc7.2.">
+7.2</a>.&nbsp;&nbsp;Példa</h3>
+
+<p>
+Az alábbi program célja a szerverek nyúzása, nem kell
+benne különösebb értelmet keresni.
+
+<p>
+
+<pre>
+function main(ipaddr,port)
+
+local client, sid, n, cnt:=0
+
+    set printer to ("log-client"+alltrim(str(getpid())))
+    set printer on
+
+    if(ipaddr==NIL)
+        ipaddr:="localhost"
+    end
+
+    if(port==NIL)
+        port:=45000
+    end
+    
+    client:=xmlrpcclientNew(ipaddr,port)
+    client:keepalive:=.t.
+    //client:debug:=.t.
+
+
+</pre>
+Megvan az új kliens objektum,  néhány tulajdonság beállítva.
+
+<pre>
+ 
+    while( .t. )
+
+        client:call("system.printstate")     
+ 
+        ?? sid:=client:call("session.login",{"vermes","hopp"}); fflush()
+        
+        for n:=1 to 1024
+            cnt++; client:call("session.validate",sid)     
+            cnt++; client:call("session.who",sid)     
+            cnt++; client:call("teszt.hello",sid)     
+            cnt++; client:call("teszt.gettime",sid)     
+            cnt++; client:call("teszt.echo",{ sid,1,"A",.t.,{}, date() })     
+
+            ?? cnt; fflush()
+        next
+
+        client:call("session.logout",sid)     
+        sleep(1000)
+    end
+    
+    return NIL
+
+</pre>
+
+<p>
+Az xmlrpc hívás egyszerűen név szerinti függvényhívásnak tekinthető,
+ahol
+
+<pre>
+    funcname(par1,par2,...)
+
+</pre>
+helyett ezt írjuk:
+
+<pre>
+    client:call("funcname",{par1,par2,...})
+
+</pre>
+Egyetlen  paraméter esetén az array-be csomagolás nem
+kötelező, azt az interfész program automatikusan megteszi.
+Ha a szerver xmlrpc kivételt ad, akkor a call metódus nem tér
+vissza, hanem elszáll a program (kiértékelődik az errorblock),
+ami a normál eszközökkel kezelendő.
+
+<p>
+ <h2><a name="tth_sEc8.">
+8</a>.&nbsp;&nbsp;CORBA vs. XMLRPC</h2>
+
+<p>
+
+<h3>Szebb a CORBA</h3>
+
+<p>
+A CCC-CORBA objektumos megvalósítása elegánsabb, mint az xmlrpc.
+A szerver oldalon implementálni kell egy olyan osztályt, 
+ami az IDL-ben megadott minden metódust tartalmaz. Ez a megszokott
+programozási módszerrel történik. A kliens oldalon használt 
+metódushívás szintaktika egyszerűbb és szebb, mint a név szerinti
+függvényhívás, ráadásul a kliens oldali (proxy) objektumot
+előállító kód teljes egészében automatikusan generálódik az IDL-ből.
+
+<p>
+
+<h3>Praktikusabb az XMLRPC</h3>
+
+<p>
+Az xmlrpc egyszerű komponensekből 
+(HTTP üzenetek plusz szövegfeldolgozást jelentő XML) épül fel, 
+ezért könnyen implementálható mindenféle nyelveken.
+A  körítés (pl. a kapcsolatfelvétel) sincs úgy misztifikálva,
+mint a  CORBA-nál, ezért a külső kliensprogram írók könnyebben 
+elboldogulnak vele. Az is fontos szempont, hogy
+a saját rendszerünket nem terheljük olyan nehézsúlyú
+idegen komponenssel, mint egy CORBA könyvtár.
+
+<p>
+ <h2><a name="tth_sEc9.">
+9</a>.&nbsp;&nbsp;XMLRPC és CCC típusok megfeleltetése</h2>
+
+<p>
+     <h3><a name="tth_sEc9.1.">
+9.1</a>.&nbsp;&nbsp;NIL</h3>
+A CCC a NIL értéket az alábbi formában küldi:
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+Ha közvetlenül az xmlrpc üzenet törzsét vizsgálnánk, 
+akkor megállapítható volna,
+hogy a CCC program NIL-t, vagy üres stringet 
+(<tt>&lt;value&gt;&lt;string&gt;&lt;/string&gt;&lt;/value&gt;</tt>) küldött-e.
+Mivel azonban a szabvány szerint explicit típusmegjelölés hiányában
+az adat típusa string, azt mondhatjuk, hogy a NIL érték
+az xmlrpc üres stringjére képződik.
+
+<p>
+     <h3><a name="tth_sEc9.2.">
+9.2</a>.&nbsp;&nbsp;String</h3>
+Példa string adatra:
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;string&#62;ez egy string  &lt;/string&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+A szabvány szerint a stringek tetszőleges (akár bináris) adatokat 
+is tartalmazhatnak, kivéve a <tt>&lt;</tt> és <tt>&amp;</tt> karaktereket, 
+amiket <tt>&amp;lt</tt> és <tt>&amp;amp</tt> formában kell küldeni. 
+Ezért a CCC is csak az előbbi transzformációt végzi a stringeken,
+de nem trimel, nem végez ékezetes karakter konverziót, stb. 
+Érthetetlen és bosszantó, hogy a PHP xmlrpc interfész okosabb
+akar lenni a szabványnál, és további  karaktereket is kódol,
+nevezetesen a <tt>&gt;</tt> karaktert <tt>&amp;gt</tt>-re 
+és a <tt>"</tt> karaktert <tt>&amp;quot</tt>-ra,
+amivel óhatatlanul zavarokat fog előidézni.
+
+<p>
+     <h3><a name="tth_sEc9.3.">
+9.3</a>.&nbsp;&nbsp;Szám</h3>
+A CCC xmlrpc interfész minden számtípust (i4, int, double)
+az egyetlen CCC számtípusra konvertál, és küldeni mindig
+double típust küld, például:
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;double&#62;100&lt;/double&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+     <h3><a name="tth_sEc9.4.">
+9.4</a>.&nbsp;&nbsp;Logikai érték</h3>
+A CCC logikai típus egyértelműen leképezhető xmlrpc-re, 
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;boolean&#62;1&lt;/boolean&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+jelenti a logikai true értéket,
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;boolean&#62;0&lt;/boolean&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+pedig a logikai false értéket. Megjegyzem, hogy a szabvány szerint
+az 1 és 0 érték nem helyettesíthető mással, pl. 1 helyett nem
+felel meg egy nemnulla szám, vagy a <tt>true</tt> string. 
+A PHP xmlrpc interfész itt is bosszantóan eltér a szabványtól.
+
+<p>
+     <h3><a name="tth_sEc9.5.">
+9.5</a>.&nbsp;&nbsp;Dátum</h3>
+Mivel a Clipperben csak egyszerű date típus van, nem pedig összetett
+date-time, ezért az xmlrpc dateTime.iso8601 típusának idő részét
+nem használjuk. Példa:
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;dateTime.iso8601&#62;20011005T00:00:00&lt;/dateTime.iso8601&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+     <h3><a name="tth_sEc9.6.">
+9.6</a>.&nbsp;&nbsp;Block</h3>
+
+<p>
+A CCC kódblokk típust az xmlrpc interfész a következő módon küldi:
+Először a block kiértékelődik, a kiértékelésnek egy
+szintaktikailag helyes <tt>&lt;value&gt;</tt> tagot tartalmazó
+stringet kell eredményeznie. Az interfész ezt a <tt>&lt;value&gt;</tt>-t
+fogja küldeni.
+
+<p>
+     <h3><a name="tth_sEc9.7.">
+9.7</a>.&nbsp;&nbsp;Base64</h3>
+
+<p>
+A base64 típusról: Három byte-ban összesen 24 bit van. Ha ezt a
+24 bitet szétosztjuk négy byte-ra, akkor mindegyikre csak 6 bit jut.
+A base64 kódolás tehát minden 3 (tetszőleges adatot tartalmazó)
+byte-ból 4 db 6 bites byte-ot készít, ahol a kimenet csak betű
+és számkaraktereket tartalmaz, és ezért biztonságosan továbbítható
+a hálózaton.
+
+<p>
+A CCC xmlrpc interfész a fogadott base64 típust automatikusan
+stringre konvertálja (dekódolja). A base64 típus küldéséhez a blockok 
+küldésekor történő automatikus kiértékelést használjuk.
+
+<p>
+
+<pre>
+function xmlrpcbase64(x)
+    return {||"&lt;base64&#62;"+base64_encode(x)+"&lt;/base64&#62;"}
+
+</pre>
+
+<p>
+A fenti segédfüggvénnyel tudunk CCC-ből <tt>&lt;base64&gt;</tt> 
+típust küldeni. A <tt>base64_encode(x)</tt> és <tt>base64_decode(x)</tt>  
+segédfüggvények végzik egy string base64 kódolását és visszaalakítását.
+
+<p>
+      <h3><a name="tth_sEc9.8.">
+9.8</a>.&nbsp;&nbsp;Array</h3>
+A CCC array és az xmlrpc array típusok egyértelműen megfeleltethetők 
+egymásnak. Az array tartalmazhatja az előbbi skalár típusokat, ezenkívül
+tartalmazhat array-t és objektumot, amik tetszőleges mélységben egymásba
+ágyazhatók. Az üres array (Clipperben <tt>{}</tt>) így néz ki:
+
+<p>
+
+<pre>
+&lt;value&#62;&lt;array&#62;&lt;data&#62;&lt;/data&#62;&lt;/array&#62;&lt;/value&#62;
+
+</pre>
+
+<p>
+     <h3><a name="tth_sEc9.9.">
+9.9</a>.&nbsp;&nbsp;Objektum</h3>
+Amikor a CCC egy objektumot küld át paraméterként, vagy visszatérési
+értékként, akkor az objektum xmlrpc struktúrára konvertálódik.
+A konverzió az attrvals metódussal veszi elő az objektum név-érték
+párjait, és minden attribútumból egy xmlrpc membert készít, 
+a member name tagja az attribútum nevét, a value tagja az attribútum 
+értékét fogja tartalmazni. Az alábbi segédosztályban a standard attrvals 
+metódust (trükkösen) felüldefiniáljuk közvetlenül megadható attribútumra, 
+így külön osztálydefiníció nélkül (röptében) is küldhetó struct típus.
+
+<p>
+
+<pre> 
+function xmlrpcstructClass() 
+static clid
+    if( clid==NIL )
+        clid:=classRegister("xmlrpcstruct",{objectClass()})
+        classMethod(clid,"initialize",{|this,av|xmlrpcstructIni(this,av)})
+        classAttrib(clid,"attrvals") //felüldefiniálás: method -&#62; attr
+    end
+    return clid
+
+function xmlrpcstructNew(av) 
+local clid:=xmlrpcstructClass()
+    return objectNew(clid):initialize(av)
+
+function xmlrpcstructIni(this,av) 
+    objectIni(this)
+    this:attrvals:=av
+    return this
+
+</pre> 
+
+<p>
+Amikor a CCC átvesz egy struktúrát, akkor azt array-re konvertálja
+{{name<sub>1</sub>,value<sub>1</sub>},{name<sub>2</sub>,value<sub>2</sub>}, ... }
+formában, ahol a külső array minden eleme az eredeti struktúra egy
+member-ének felel meg. 
+         
+<hr><h3>Jegyzetek:</h3>
+
+<p>
+<a name="tthFtNtAAB"></a><a href="#tthFrefAAB"><sup>1</sup></a>ComFirm BT.
+<p>
+<a name="tthFtNtAAC"></a><a href="#tthFrefAAC"><sup>2</sup></a>  
+  A timeout-ot nem célszerű egy-két percnél hosszabbra állítani.
+  A hosszú timeout eredményeképpen a szerverekben felhalmozódnak
+  a magukra hagyott sessionok arra várva, hogy egyszer talán
+  majd újra jelentkezik a kliens, és folytatja a munkát. 
+  Csakhogy az illető kliensprogram esetleg hibás, minek folytán 
+  gyakran elszáll, és már sokadszorra indítják újra.  
+  Ezért a kliensprogram  írók állandó sirámai ellenére rövid 
+  timeout-ot kell beállítani, a kliensprogramokat pedig úgy kell megírni,
+  hogy a timeout lejártával képesek legyenek automatikusan újra
+  bejelentkezni.
+<p>
+<a name="tthFtNtAAD"></a><a href="#tthFrefAAD"><sup>3</sup></a>
+   A továbbiakban a <tt>sid</tt> paraméter egységesen mindenhol a session id-t jelöli.
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+
+(define-function gtk_list_item_get_type
+  (c-name "gtk_list_item_get_type")
+  (return-type "GtkType")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-function gtk_list_item_new
+  (c-name "gtk_list_item_new")
+  (is-constructor-of GtkListItem)
+  (return-type "GtkWidget*")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-function gtk_list_item_new_with_label
+  (c-name "gtk_list_item_new_with_label")
+  (is-constructor-of GtkListItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method select
+  (of-object "GtkListItem")
+  (c-name "gtk_list_item_select")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+(define-method deselect
+  (of-object "GtkListItem")
+  (c-name "gtk_list_item_deselect")
+  (return-type "none")
+  (deprecated "use GtkListStore/GtkTreeView")
+)
+
+
+

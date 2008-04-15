@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo 'Main-Class: jterminal' >manifest
+ 
+jar cvfm jterminal.jar  manifest
+
+jar uvf  jterminal.jar  *.class
+jar uvf  jterminal.jar  getutil/*.class
+
+jar uvf  jterminal.jar  images
+jar uvf  jterminal.jar  icons/16
+jar uvf  jterminal.jar  icons/22
+jar uvf  jterminal.jar  icons/32
+ 
+
+rm manifest
+#jar tf jterminal.jar | less
+
+if [ "$1" == "-s" ]; then
+    #default keystore: ~/.keystore
+    jarsigner jterminal.jar vermes1
+fi
+
+cp jterminal.jar $CCCDIR/usr/bin/$CCCUNAME  #/jterminal1.jar

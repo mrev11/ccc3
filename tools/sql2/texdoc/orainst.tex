@@ -1,0 +1,388 @@
+
+\section{Oracle 10g installálása Linuxra}
+
+\subsection{Szerver installálás}
+
+Az itt leírt eljárással 
+Debian Sarge, 
+Ubuntu 4.10, 
+SuSE 9.0,
+SuSE 10.0
+32-bites Linuxokra tudtam Oracle-t installálni.
+
+\subsubsection*{Kezdeti állapot}
+
+Ellenőrizzük, hogy az alábbi csomagok installálva
+legyenek a rendszerünkön:
+
+gcc, make, binutils, motif, lesstif, rpm
+
+A hiányzó csomagokat installáljuk.
+A libmotif3 csomag Ubuntun a multiverse-ből installálható.
+SuSE-n csak libmotif2 van, lesstif pedig csak forrásból volna beszerezhető.
+Mindenesetre nem értem, hogy minek lesstif, ha van motif, és minek
+egyáltalán akármelyik, amikor a GUI megjelenítését Jáva végzi.
+SuSE 9.0 esetében a linker jelezni fogja a motif hiányát, 
+de attól a rendszer még használható lesz.
+SuSE 10.0-án a telepítő hiányolni fogja a gcc 2.96-ot,
+de az installáció a gcc 4.x-szel is működni fog.
+Kezdetben (a runInstaller elindításáig) root-ként dolgozunk.
+
+
+\subsubsection*{Csoportok, felhasználók}
+
+Létrehozzuk az alábbi csoportokat és felhasználókat:
+
+\begin{verbatim}
+    id nobody  # léteznie kell
+    groupadd oinstall
+    groupadd dba
+    useradd -g oinstall -G dba  -d /opt/oracle oracle
+    passwd oracle #jelszót adunk az oracle usernek
+\end{verbatim}
+
+A továbbiakban az installációt az oracle felhasználó
+nevében csináljuk.
+
+
+\subsubsection*{Oracle letöltés}
+
+Elhozzuk az Oracle-től a \verb!ship.db.cpio.gz! csomagot
+és alkalmas helyen kibontjuk.
+
+\begin{verbatim}
+    gunzip ship.db.cpio.gz
+    cpio -idmv < ship.db.cpio
+\end{verbatim}
+
+\subsubsection*{Base directory}
+
+Létrehozzuk az Oracle base directoryt:
+
+\begin{verbatim}
+    mkdir /opt/oracle/base
+\end{verbatim}
+
+
+
+\subsubsection*{/etc/profile}
+
+Beírjuk /etc/profile-ba:
+
+
+\begin{verbatim}
+    export ORACLE_BASE=/opt/oracle/base
+    export ORACLE_HOME=$ORACLE_BASE/product/10g
+    export TNS_ADMIN=$ORACLE_HOME/network/admin
+    export ORA_NLS33=$ORACLE_HOME/nls/data
+    export NLS_LANG=AMERICAN_AMERICA.WE8ISO8859P1
+    export NLS_DATE_FORMAT="YYYY-MM-DD"
+
+    export ORACLE_SID=test
+
+    PATH=$PATH:$ORACLE_HOME/bin
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
+
+    export PATH
+    export LD_LIBRARY_PATH
+\end{verbatim}
+
+
+\subsubsection*{/etc/sysctl.conf}
+
+Beírjuk /etc/sysctl.conf-ba:
+
+\begin{verbatim}
+    kernel.shmall = 2097152
+    kernel.shmmax = 2147483648
+    kernel.shmmni = 4096
+    kernel.sem = 250 32000 100 128
+    fs.file-max = 65536
+    net.ipv4.ip_local_port_range = 1024 65000
+\end{verbatim}
+
+Utána futtatjuk: \verb!/sbin/sysctl -p!
+
+
+\subsubsection*{/etc/security/limits.conf}
+
+Beírjuk /etc/security/limits.conf-ba:
+
+\begin{verbatim}
+    *               soft    nproc   2047
+    *               hard    nproc   16384
+    *               soft    nofile  1024
+    *               hard    nofile  65536
+\end{verbatim}
+
+
+\subsubsection*{/etc/pam.d/login}
+
+Beírjuk /etc/pam.d/login-ba:
+
+\begin{verbatim}
+    session    required     /lib/security/pam_limits.so
+\end{verbatim}
+
+
+\subsubsection*{Symlinks}
+
+Megcsináljuk a következő symlinkeket:
+
+\begin{verbatim}
+    ln -s /usr/bin/awk /bin/awk
+    ln -s /usr/bin/rpm /bin/rpm
+    ln -s /usr/bin/basename /bin/basename
+    ln -s /etc /etc/rc.d
+\end{verbatim}
+
+
+\subsubsection*{RedHat-et emuláció}
+
+Létrehozzuk a \verb!/etc/redhat-release!
+filét a következő tartalommal:
+
+\begin{verbatim}
+    Red Hat Linux release 2.1 (drupal)
+\end{verbatim}
+
+
+\subsubsection*{runInstaller}
+
+Eddig root-ként dolgoztunk, most váltunk oracle-re,
+és oracle-ként elindítjuk  a runInstaller-t:
+
+\begin{verbatim}
+    cd .../Disk1
+    ./runInstaller
+\end{verbatim}
+
+Itt hosszú ideig dolgozik, fordítgat,
+eközben adódhatnak hibák, ezek némelyike figyelmen
+kívül hagyható.
+
+Az installer felszólít a \verb!root.sh! script
+futtatására, megtesszük neki. Ezután vár 10 percet
+a cssd démon elindulására. Vagy várunk 10 percet,
+vagy küldünk egy HUP-ot az init-nek, amire az újraolvassa
+a konfigurációs filéit. 
+
+A root.sh script beír a /etc/inittab végére egy ilyen sort:
+
+\begin{verbatim}
+    h2:35:respawn:/etc/init.d/init.cssd run >/dev/null 2>&1 </dev/null
+\end{verbatim}
+
+A cssd démon az ASM (Automatic Storage Manager) modullal
+tart fenn valamilyen kommunikációt. Nálunk nincs ASM,
+tehát az inittab-ba írt sort kiszedhetjük, ha az installer
+túljutott rajta (többet nem kell).
+
+
+\subsubsection*{/etc/oratab}
+
+
+Beírjuk /etc/oratab-ba:
+
+\begin{verbatim}
+    test:/opt/oracle/base/product/10g:Y
+\end{verbatim}
+
+
+\subsubsection*{/etc/init.d/oracle}
+
+Csinálunk egy \verb!/etc/init.d/oracle! filét
+a következő tartalommal:
+
+
+\begin{verbatim}
+#!/bin/bash
+#
+# Run-level Startup script for the Oracle Instance and Listener
+
+ORA_HOME="/opt/oracle/base/product/10g"
+ORA_OWNR="oracle"
+
+# if the executables do not exist -- display error
+
+if [ ! -f $ORA_HOME/bin/dbstart -o ! -d $ORA_HOME ]
+then
+        echo "Oracle startup: cannot start"
+        exit 1
+fi
+
+# depending on parameter -- startup, shutdown, restart 
+# of the instance and listener or usage display 
+
+case "$1" in
+    start)
+        # Oracle listener and instance startup
+        echo -n "Starting Oracle: "
+        /sbin/sysctl -p
+        su - $ORA_OWNR -c "$ORA_HOME/bin/lsnrctl start"
+        su - $ORA_OWNR -c $ORA_HOME/bin/dbstart
+        touch /var/lock/subsys/oracle
+        echo "OK"
+        ;;
+    stop)
+        # Oracle listener and instance shutdown
+        echo -n "Shutdown Oracle: "
+        su - $ORA_OWNR -c "$ORA_HOME/bin/lsnrctl stop"
+        su - $ORA_OWNR -c $ORA_HOME/bin/dbshut
+        rm -f /var/lock/subsys/oracle
+        echo "OK"
+        ;;
+    reload|restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 start|stop|restart|reload"
+        exit 1
+esac
+exit 0
+\end{verbatim}
+
+
+Ezután a szokásos módon vezérelhető a szerver:
+
+\begin{verbatim}
+    /etc/init.d/oracle start|stop|restart
+\end{verbatim}
+
+
+\subsubsection*{Hálózat}
+
+A szerveren az \verb!$ORACLE_HOME/network/admin/listener.ora!
+filében van leírva a listenerek paraméterezése. Az installáció
+után ez általában ,,magától'' jó.
+
+A kliens programok számára az \verb!$ORACLE_HOME/network/admin/sqlnet.ora!
+filében fel vannak sorolva a protokollok, amikkel hálózati szolgáltatásokat
+tudnak keresni. Nálam ez így néz ki:
+\begin{verbatim}
+# SQLNET.ORA Network Configuration File
+NAMES.DEFAULT_DOMAIN = comfirm.x
+NAMES.DIRECTORY_PATH= (TNSNAMES, ONAMES, HOSTNAME)
+\end{verbatim}
+Tehát elsősorban a tnsnames filét nézzük,
+ha egy adatbázist keresünk a hálózaton.
+A  \verb!$ORACLE_HOME/network/admin/tnsnames.ora!
+filé egy kis adatbázist tartalmaz a hálózaton található Oracle
+szolgáltatásokról. Ahhoz, hogy az Oracle hálózati kliens megtalálja
+a ,,test''  adatbázis szolgáltatást (ez volna a SID?), el kell helyezni 
+a tnsnames.ora filébe egy ilyen bekezdést:
+\begin{verbatim}
+test.COMFIRM.X =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 1g.comfirm.x)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = test)
+    )
+  )
+\end{verbatim}
+A domain, host és service neveket a konkrét esetnek
+megfelelően kell beírni.
+
+
+\subsubsection*{Tablespace, konto schema}
+
+A jelen demóban az adatbázis objektumok
+a konto schema-ban jönnek létre. Legjobb ezt a
+schema-t mindjárt a telepítés után létrehozni.
+
+Elindítjuk  (system-ként) az sqlplus-t, és
+végrehajtjuk benne a következőket:
+
+\begin{verbatim}
+create tablespace konto logging
+    datafile '/opt/oracle/base/oradata/test/konto.dbf'
+    size 8M reuse autoextend on next 4M
+    maxsize unlimited
+    extent management local autoallocate
+    segment space management auto;
+
+create user konto
+    identified by konto
+    default tablespace konto
+    quota 100000M on konto;
+
+grant connect to konto;
+
+quit;
+\end{verbatim}
+
+Ezután az Oracle adatbázis alkalmas a demó programok kiszolgálására.
+
+\subsection{Kliens installálás}
+
+Ha egy gépre Oracle szervert installálunk, azon 
+lesz  Oracle kliens is. Ha azonban csak a kliensre van szükségünk,
+akkor nem érdemes 100-szoros munkával szervert telepíteni.
+
+Letöltjük az Oracle-től az {\em Oracle Instant Client\/} csomagokat.
+A szoftver 4 darab zip filéből áll (egyes platformokra rpm is van).
+A 4 közül a CCC-hez csak két összetevőre van szükség, a basic-re 
+és az sqlplus-ra. A zip-eket kibontjuk, és a tartalmukat betesszük
+a \verb!/opt/oracle/instantclient! (vagy egy tetszés szerint választott) 
+directoryba.
+
+Megcsináljuk a \verb!/opt/oracle/instantclient/network/admin!
+directoryt, és abban elhelyezzük az alábbi két filét:
+
+A \verb!sqlnet.ora! filé tartalma:
+\begin{verbatim}
+# SQLNET.ORA Network Configuration File
+NAMES.DEFAULT_DOMAIN = comfirm.x
+NAMES.DIRECTORY_PATH= (TNSNAMES)
+\end{verbatim}
+
+A \verb!tnsnames.ora! ilyen bekezdésekből áll:
+\begin{verbatim}
+test.COMFIRM.X =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 1g.comfirm.x)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = test)
+    )
+  )
+\end{verbatim}
+Természetesen a domain, host, service neveket a saját adatainkkal
+helyettesítjük.
+
+A \verb!/etc/profile!-ba beírjuk:
+\begin{verbatim}
+export ORACLE_HOME=/opt/oracle/instantclient
+export PATH=$PATH:$ORACLE_HOME
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
+export TNS_ADMIN=$ORACLE_HOME/network/admin
+export NLS_LANG=AMERICAN_AMERICA.WE8ISO8859P1
+#export NLS_LANG=HUNGARIAN_HUNGARY.EE8ISO8859P2
+export NLS_DATE_FORMAT="YYYY-MM-DD"
+\end{verbatim}
+Ezután újonnan bejelentkezve fut az sqlplus, és futnak a CCC programok.
+
+Ha az sqlnet.ora és tnsnames.ora filék elhelyezkedése
+az \verb!ORACLE_HOME!-hoz képest olyan, mint a fenti példában,
+akkor a \verb!TNS_ADMIN! változó megadása felesleges (de nem árt).
+
+Az adatbázisok általában Latin-1 (WE8ISO8859P1) kódkészlettel 
+jönnek létre, mert ez a default. Ha egy ilyen adatbázissal állunk
+kapcsolatban, de a kliensen Latin-2 (EE8ISO8859P2) kódkészlet van beállítva,
+akkor a szövegmezőkben elromlanak a 128 feletti byteok.
+(Ha kiírunk egy 128 feletti betűkből álló stringet, 
+akkor a  visszaolvasás a legtöbb helyen kérdőjelet ad.)
+Ezért a kliensen kötelezően ugyanazt a kódkészletet
+kell beállítani, mint ami a szerveren van, akkor is, ha így
+a szerver üzeneteit magyar helyett esetleg angolul kapjuk.
+
+
+
+
+

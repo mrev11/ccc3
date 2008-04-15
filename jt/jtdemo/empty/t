@@ -1,0 +1,8 @@
+#!/bin/bash
+
+java -jar  $JTERMINAL localhost  46000
+java -jar  $JTERMINAL localhost  46001 ssl
+java -jar  $JTERMINAL localhost  46002 ssl
+java -jar  $JTERMINAL localhost  46002 aut=keys
+java -jar  $JTERMINAL localhost  46003 key=keys psw=changeit
+java -jar  $JTERMINAL localhost  46003 aut=keys key=keys psw=changeit

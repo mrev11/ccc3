@@ -1,0 +1,4 @@
+#!/bin/bash
+logview.exe webcon.log
+
+ 

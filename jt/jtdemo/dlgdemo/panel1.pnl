@@ -1,0 +1,29 @@
+//MSK2DLG 0.9.00
+
+class panel1(jtpanel)
+    method initialize
+    attrib  gszla
+    attrib  gsum
+    attrib  gdate
+    attrib  f
+    attrib  flag
+    attrib  list
+
+
+static function panel1.initialize(this)
+    this:(jtpanel)initialize(6,0,16,38)
+    this:name:='panel1'
+    this:layout:='fix'
+    this:gszla:=jtgetNew(2,19,2,35); this:gszla:name:='gszla'; this:additem(this:gszla)
+    this:gsum:=jtgetNew(3,19,3,35); this:gsum:name:='gsum'; this:additem(this:gsum)
+    this:gdate:=jtgetNew(4,19,4,28); this:gdate:name:='gdate'; this:additem(this:gdate)
+    this:f:=jtgetNew(5,19,5,19); this:f:name:='f'; this:additem(this:f)
+    this:flag:=jtlabelNew(5,21,5,35); this:flag:name:='flag'; this:additem(this:flag)
+    this:list:=jtpushNew(7,3,8,35); this:list:name:='list'; this:list:text:='List'; this:additem(this:list)
+    this:additem(jtlabelNew(1,19,1,35,'12345678-12345678'))
+    this:additem(jtlabelNew(2,3,2,17,'Adat          :'))
+    this:additem(jtlabelNew(3,3,3,17,'Másik adat    :'))
+    this:additem(jtlabelNew(4,3,4,17,'Harmadik adat :'))
+    this:additem(jtlabelNew(5,3,5,17,'Negyedik adat :'))
+    return this
+

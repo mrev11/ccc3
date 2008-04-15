@@ -1,0 +1,140 @@
+
+<?xml
+   version="1.0"
+   encoding="iso-8859-1"?>
+<konzumbankkivonat
+  valtozat="0.9.01"
+  azonosito="1"
+  tipus="HELYI"
+  targyidoszak="2001. január hónap"
+  eloallitasdatuma="20010123"
+  eloallitasideje="11:07:32">
+<kivonat
+  sorszam="123"
+  datum="20010131"
+  kivonathelye="H">
+<ugyfel
+  nev="Kapjuk Elemér"
+  varos="Zebegény"
+  utca="Deák Ferenc u. 12."
+  irszam="2626"
+  honosfiok="081">Próba szerencse <![CDATA[!@#$%^&]]> </ugyfel>
+<szamla
+  szamlaszam="11300081-00111090-00000000"
+  devizanem="HUF"
+  megnevezes="Családi betétszámla"
+  nyitoegyenleg="94409"
+  zaroegyenleg="0"
+  zaroltosszeg="40000"
+  hitelkeret="100000"
+  felhasznaltkeret="0"
+  felhasznalhatokeret="100000"
+  szabadkeret="60000"
+  terhelesosszesen="294409"
+  jovairasosszesen="200000">
+<forgalom
+  konyvelesinap="20010122"
+  erteknap="20010123"
+  megnevezes="a 'QWERTY' számla kiegyenlítése"
+  terheles="94409"
+  ellenszamla="11300081-XXXXXXXX-00000000"
+  ellszlatulajdonos="Kései István"/>
+<forgalom
+  konyvelesinap="20010125"
+  erteknap="20010125"
+  megnevezes="pénztári befizetés"
+  jovairas="200000"/>
+<forgalom
+  konyvelesinap="20010125"
+  erteknap="20010125"
+  megnevezes="betét lekötés"
+  terheles="2000000"/>
+</szamla>
+<szlaegyenleg
+  szamlaszam="11300081-00111090-11111111"
+  devizanem="HUF"
+  megnevezes="Családi betétszámla alszámlája"
+  nyitoegyenleg="10000"
+  zaroegyenleg="10000"
+  zaroltosszeg="10000"
+  elojegyzettkamat="890"/>
+<szlaegyenleg
+  szamlaszam="11300081-00111090-33333333"
+  devizanem="DEM"
+  megnevezes="Családi betétszámla alszámlája"
+  nyitoegyenleg="10000"
+  zaroegyenleg="10000"
+  zaroltosszeg="10000"
+  elojegyzettkamat="890"/>
+<szlaegyenleg
+  szamlaszam="11300081-00111090-22222222"
+  devizanem="USD"
+  megnevezes="Családi betétszámla alszámlája"
+  nyitoegyenleg="10000"
+  zaroegyenleg="10000"
+  zaroltosszeg="10000"
+  elojegyzettkamat="890"/>
+<betet
+  devizanem="HUF"
+  megnevezes="Arany mogyoró (3 hónap)"
+  lekotesnapja="20010101"
+  lejaratnapja="20010301"
+  minkamatlab="11.5"
+  maxkamatlab="13"
+  aktualiskamatlab="12.5"
+  osszeg="300000"
+  elojegyzettkamat="7895"/>
+<hitel
+  devizanem="USD"
+  szamlaszam="xxxxxxxx-yyyyyyyy-zzzzzzzz"
+  megnevezes="PHARE hitel"
+  osszeg="10000"
+  veglejarat="20100101"/>
+<tartozas
+  devizanem="HUF"
+  fedezetlensegihitel="0.01"
+  hiteltartozas="0.1"
+  kamat="1"
+  kesedelmikamatok="10"
+  forgalmijutalek="100"
+  egyebjutalek="1000"
+  osszesen="1111.11"/>
+<tartozas
+  devizanem="DEM"
+  fedezetlensegihitel="0.01"
+  hiteltartozas="0.1"
+  kamat="1"
+  kesedelmikamatok="10"
+  forgalmijutalek="100"
+  egyebjutalek="1000"
+  osszesen="1111.11"/>
+<tartozas
+  devizanem="USD"
+  fedezetlensegihitel="0.01"
+  hiteltartozas="0.1"
+  kamat="1"
+  kesedelmikamatok="10"
+  forgalmijutalek="100"
+  egyebjutalek="1000"
+  osszesen="1111.11"/>
+</kivonat>
+<kivonat
+  sorszam="99"
+  datum="20010131"
+  kivonathelye="H">
+<ugyfel
+  nev="Kovács Gizella"
+  varos="Budapest"
+  utca="Kossuth Lajos u.10., 5. emelet 3."
+  irszam="1052"
+  honosfiok="082"/>
+<szlaegyenleg
+  szamlaszam="11300082-XXXXXXXX-00000000"
+  devizanem="HUF"
+  megnevezes="Családi betétszámla"
+  nyitoegyenleg="0"
+  zaroegyenleg="0"
+  zaroltosszeg="0"/>
+</kivonat>
+</konzumbankkivonat>
+ 

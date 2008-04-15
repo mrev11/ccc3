@@ -1,0 +1,50 @@
+
+
+(define-function stock_add
+  (c-name "gtk_stock_add")
+  (return-type "none")
+  (parameters
+    '("const-GtkStockItem*" "items")
+    '("guint" "n_items")
+  )
+)
+
+(define-function stock_add_static
+  (c-name "gtk_stock_add_static")
+  (return-type "none")
+  (parameters
+    '("const-GtkStockItem*" "items")
+    '("guint" "n_items")
+  )
+)
+
+(define-function stock_lookup
+  (c-name "gtk_stock_lookup")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "stock_id")
+    '("GtkStockItem*" "item")
+  )
+)
+
+(define-function stock_list_ids
+  (c-name "gtk_stock_list_ids")
+  (return-type "GSList*")
+)
+
+(define-method copy
+  (of-object "GtkStockItem")
+  (c-name "gtk_stock_item_copy")
+  (return-type "GtkStockItem*")
+  (caller-owns-return #t)
+)
+
+(define-method free
+  (of-object "GtkStockItem")
+  (c-name "gtk_stock_item_free")
+  (return-type "none")
+  (CCC "skip")
+)
+
+
+

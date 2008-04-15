@@ -1,0 +1,217 @@
+
+\pagetitle%
+{CCC dolgok állása}%
+{}%
+{2006.\ március 25.}
+
+\section{Függvényhívás operátor}
+
+Mit szólnátok ehhez?
+
+\begin{verbatim}
+    x@str  definíció szerint --> str(x)
+    x@str()  definíció szerint --> str(x)
+    x@str(10,2)  definíció szerint --> str(x,10,2)
+\end{verbatim}
+
+Ezzel az ilyen kifejezéseket, mint
+
+\begin{verbatim}
+    len(upper(alltrim(str(x,10,2))))
+\end{verbatim}
+
+úgy lehetne írni, hogy
+
+\begin{verbatim}
+    x@str(10,2)@alltrim@upper@len
+\end{verbatim}
+    
+A '@' operátor precedenciája egyenlő volna a ':' metódushívás
+precedenciájával.
+
+Ez új tudást nem hoz, egyszerűen csak egy új írásmód volna,
+bármely nyelvben meg lehetne csinálni. Kár, hogy nem lehet a
+'@'-nál jobb karaktert találni a szerepre, mert a '.' és ':'
+már foglalt.
+
+
+\section{Karakterkódolások}
+
+Az a véleményem, hogy a unicode/UTF-8 kódolásra
+egyetlen ugrással kell áttérni. Ha az alkalmazásban 
+egyszerre van Latin-1 és UTF-8 kódolás, attól rendkívüli
+módon megnehezül az élet. Ezért az új CCC3 nem is támogat mást,
+csak a unicode/UTF-8 kódolást.
+
+A CCC3-ban a bin2str és str2bin függvényekkel fogunk
+konvertálni a unicode string és a stringet reprezentáló
+UTF-8 kódolású bytearray között. 
+A bin2str függvény Python megfelelője így néz ki, pl.:
+\begin{verbatim}
+    unicode(barray,"UTF-8")
+    unicode(barray,"ISO-8859-1")
+\end{verbatim}
+ahol barray egy régi ételemben vett Python string (valójában
+byte-array), ami a megadott kódolással egy szöveget tartalmaz.
+A CCC-ben a bin2str-nek nincs második paramétere, tehát nincs 
+\verb!bin2str(barray,encoding)!, mert nem akarok mást beengedni 
+a rendszerbe, csak UTF-8-at. Az alábbi
+\begin{verbatim}
+    unicode => UTF-8 =>  unicode
+\end{verbatim}
+konverzió egyértelmű, és nem veszít infót, más kódolásokra
+(pl. UTF-8 helyett Latin-1) azonban ez nem teljesül.
+
+Tudni kell, hogy nem minden bytesorozat reprezentál 
+érvényes unicode stringet. Ebből adódóan egy string literál
+szintaktikusan hibás lehet. Pl., ha a \verb!"próba szerencse"!
+string literál Latin-1 kódolással van írva,
+akkor az "ó" miatt a program szintaktikusan hibás.
+A programozáshoz UTF-8 kódolást kell ezentúl használni,
+a meglevő programokat pedig ilyen kódoásra átkonvertálni
+(vagy még inkább internacionalizálni, ami egy másik téma).
+
+Ezek keserves dolgok. Látok programozókat, akik szívnak
+a Pythonban bevezetett unicode támogatás miatt. Nem olyan
+egyszerű már, mint a régi szép napokban.
+A nem angol programozóknak többet kell szenvedni.
+Legjobb, ha elfogadjuk és próbáljuk megérteni a dolgokat:
+\href{http://www.cl.cam.ac.uk/~mgk25/unicode.html}%
+{http://www.cl.cam.ac.uk/~mgk25/unicode.html}
+
+    
+
+\section{Unicode-os CCC}
+
+
+Két út kínálkozott:
+
+\begin{enumerate}
+\item Bevezetni egy új string típust (W), 
+
+    ami wchar\_t elemek tömbjeként tartalmazza a stringeket,
+    és változatlanul hagyni az eddigi (C) string típust.
+
+
+\item Bevezetni az új binary típust (X),
+
+    amit bináris adatok (bytearray) tárolására használunk 
+    (e tekintetben átveszi a korábbi stringek szerepét),
+    és átalakítani a (C) string típust, hogy a korábbitól eltérően 
+    ne char-ok tömbjét, hanem wchar\_t-ok tömbjét jelentse.
+\end{enumerate}
+    
+
+Az (1) megoldást választották a Pythonban (2.3-tól kezdve). 
+A megoldás előnye, hogy a meglevő programok (cpp primitívek is) 
+formailag érvényesek maradnak (feltételezve, hogy a string literálok 
+mind UTF-8 kódolásúak).
+Hátránya, hogy (átírás nélkül) rosszul fognak működni: A régi 
+stringben tárolt szövegek rosszul darabolódnak, nem annyi betűt 
+tartalmaznak, mint amennyi a hosszuk, az \verb!upper()! tönkreteszi őket, stb. 
+Az új unicode típus bevezetése 
+tehát önmagában nem elég, az alkalmazásokat is át kell írni, hogy 
+a szükséges helyeken áttérjenek az új típusra. Ebből a célból nem elég a string 
+literálokat az új értelmezéssel fordítani, hanem a kétféle típus 
+találkozásánál explicite konvertálni kell. Pl. egy szövegfájl beolvasásakor 
+bytearrayt (régi stringet) kapunk, amit át kell konvertálni unicodera. 
+Ezek a konverziók azután továbbgyűrűznek. Az (1) megoldásban az alkalmazás 
+logikájába beépül a régi string (bytearray) <==> unicode string konverzió.
+
+A (2) megoldás van a Jávában (kezdettől fogva).
+A megoldás előnye, hogy tisztább, azaz helyükön vannak a dolgok:
+A bytearray bináris adatokat tartalmaz (ami lehet éppenséggel
+unicode string UTF-8 reprezentációja is), a string pedig \verb!wchar_t! 
+karaktereket. A  prg programok általában nem változnak,
+kivéve a két típus találkozását, mint a szövegfájl olvasása,
+ahol (1)-hez hasonlóan most is elkerülhetetlen a konverzió.
+Hátrány, hogy a cpp primitíveket jelentősen át kell írni.
+
+Az előnyöket-hátrányokat nettósítva úgy látom, hogy a (2) megoldással
+kapott tisztább helyzet előnye áll szemben a cpp primitívekre fordított 
+több munkával. Alkalmazásszinten sem az (1), sem a (2) megoldás 
+nem nyújt 100\% kompatibilitást. 
+
+Először az (1) megoldást kezdtem el kidolgozni, egy hét munka
+után azonban azt kezdtem érezni, hogy nem jó, amit csinálok. 
+Újragondoltam a dolgot, belefogtam a (2)-es megoldásba, és idővel 
+megerősödött az az érzésem, hogy jobb a (2)-es változat. Ez azonban
+csak egy érzés/vélemény, nem tudom bizonyítani. 
+Jelenleg ott tartok a (2)-es változat megvalósításában, 
+hogy a ccc3 és ccc3\_ui\_ könyvtárak fordulnak, a fordításhoz szükséges 
+eszközök működnek, azaz a rendszer le tudja magát fordítani.
+
+
+\section{Tervek}
+
+\subsection{Tisztogatás}
+
+Mivel alkalmazásszinten úgysem biztosítható a kompatibilitás,
+rászántam magam a tisztogatásra. 
+\begin{itemize}
+\item 
+    Kiszórom azokat a függvényeket, 
+    amiknek nincs valódi implementációja (pl. memoline),
+    vagy nincs pontos definiciója (pl. workstatid).
+\item 
+    Nem fogom átvinni az új rendszerbe az uif, uiw könyvtárakat.
+\item 
+    Az uic könyvtárat egyszerűsítem (lásd alább).
+\item
+    A táblaobjektumok közül csak a btbtx-et viszem tovább.
+\item
+    Az sql könyvtárak közül csak az sql2-t viszem tovább.
+\end{itemize}
+Persze semmi akadálya nincs, hogy a kihagyott részeket
+valaki felkarolja, és az alkalmazása részévé tegye,
+de a core CCC-ből kimaradnak.
+    
+
+\subsection{Megjelenítés}
+
+\begin{enumerate}
+\item 
+    A Jáva terminál (egyáltalán a Jáva) belül mindig is
+    unicode stringekkel dolgozott. Most ki van véve a terminálból
+    az erőszakos UTF-8<==>Latin-1 konverzió, így a CCC szerver
+    és a terminál UTF-8 kódolású XML üzenetekkel kommunikál.
+    A jtlib-be be fogom tenni, hogy az UTF-8 kódolású szövegeket
+    unicode stringként lehessen kiolvasni a getekből és társaikból. 
+\item 
+    A GTK interfésszel hasonló a helyzet. Kivettem az interfészből
+    az erőszakos UTF-8<==>Latin-1 konverziót, a helyére 
+    UTF-8 bytearray <==> unicode string konverzió fog kerülni.
+\item
+    Megtartom a fullscreen karakteres képernyőkezelést,
+    de átalakítom  unicode/UTF-8-ra, egyúttal lényegesen
+    leegyszerűsítem. 
+\end{enumerate}
+
+A karakteres (fullscreen) képernyőkezelésnek (UNIX-on) jelenleg
+négy válfaja van: dummy, X, term, remote. Ezek közül csak a 
+remote-ot tartom meg. A lokális megjelenítéshez is terminált
+fogunk használni, a protokoll és az eszközök olyanok lesznek,
+hogy ez ne okozzon problémát.
+(Megjegyzem, hogy Windowson már
+évek óta így használom a karakteres programokat.) 
+Az uic könyvtár implementációja UNIX-on és Windowson sokkal kevésbé
+fog eltérni, mint jelenleg. 
+Szükség lesz a dummy képernyőkezelés pótlására. 
+Ez a remote üzemmód egy olyan változata lesz, 
+amikor a programhoz nem kapcsolódik terminál.
+
+
+\section{Ütemezés}
+
+\begin{itemize}
+\item Jáva terminál interfész módosítás, pár nap.
+\item GTK interfész módosítás, pár nap.
+\item SQL2 könyvtár módosítás, pár nap.
+\item BTBTX könyvtár módosítás, pár hét.
+\item Új karakteres képernyő kezelés, pár hét.
+\end{itemize}
+
+Ebből az látszik, hogy pár hét alatt már egyes feladatokra
+alkalmas lehet a rendszer (pl. ha csak Jáva és SQL2 kell),
+de egészében csak nyárra, vagy őszre leszek kész.
+

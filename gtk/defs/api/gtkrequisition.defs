@@ -1,0 +1,19 @@
+
+(define-function gtk_requisition_get_type
+  (in-module "GtkRequisition")
+  (c-name "gtk_requisition_get_type")
+  (return-type "GType")
+)
+
+(define-method copy
+  (of-object "GtkRequisition")
+  (c-name "gtk_requisition_copy")
+  (return-type "GtkRequisition*")
+  (caller-owns-return #t)
+)
+
+(define-method free
+  (of-object "GtkRequisition")
+  (c-name "gtk_requisition_free")
+  (return-type "none")
+)

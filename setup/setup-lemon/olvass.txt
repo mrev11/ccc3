@@ -1,0 +1,17 @@
+
+Lemon
+=====
+
+A CCC 2.1.x kiadásában a Bison/YACC-ot felváltotta a Lemon. 
+A Lemon a Bisonhoz képest egyszerűbben terjeszthető/telepíthető,
+mivel egyetlen C forrásfájlból, plusz egy C template fájlból áll.
+A Lemon által generált kód a Bisonnal szemben reentráns és szálbiztos. 
+
+A lemon.zip csomag az általam patchelt forrásváltozatot tartalmazza. 
+A változások fel vannak sorolva a lemon.c fájl elején. Az eredeti
+forrás megtalálható itt: http://www.hwaci.com/sw/lemon.
+
+Telepítés (Windowson és Linuxon egyformán): A lemon.c programot 
+le kell fordítani, a lemon.exe-t és a lempar.c-t át kell másolni 
+a compiler bin directoryjába.
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+bapp_unix_.b -sccc3_tds @parfile.bld
+
+if [ -s error ]; then
+    list error &
+else
+    cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+    cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
+fi
+

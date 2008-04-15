@@ -1,0 +1,16 @@
+
+
+(define-function gtk_accessible_get_type
+  (in-module GtkAccessible)
+  (c-name "gtk_accessible_get_type")
+  (return-type "GtkType")
+)
+
+(define-method connect_widget_destroyed
+  (of-object "GtkAccessible")
+  (c-name "gtk_accessible_connect_widget_destroyed")
+  (return-type "none")
+)
+
+
+

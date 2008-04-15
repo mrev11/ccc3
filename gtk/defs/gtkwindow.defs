@@ -1,0 +1,616 @@
+
+
+(define-function gtk_window_get_type
+  (c-name "gtk_window_get_type")
+  (in-module GtkWindow)
+  (return-type "GtkType")
+)
+
+(define-function gtk_window_new
+  (c-name "gtk_window_new")
+  (is-constructor-of GtkWindow)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWindowType" "type" (default "GTK_WINDOW_TOPLEVEL"))
+  )
+)
+
+(define-method set_title
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_title")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method get_title
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_title")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method set_wmclass
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_wmclass")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "wmclass_name")
+    '("const-gchar*" "wmclass_class")
+  )
+)
+
+(define-method set_role
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_role")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "role")
+  )
+)
+
+(define-method get_role
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_role")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method add_accel_group
+  (of-object "GtkWindow")
+  (c-name "gtk_window_add_accel_group")
+  (return-type "none")
+  (parameters
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-method remove_accel_group
+  (of-object "GtkWindow")
+  (c-name "gtk_window_remove_accel_group")
+  (return-type "none")
+  (parameters
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-method set_position
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_position")
+  (return-type "none")
+  (parameters
+    '("GtkWindowPosition" "position")
+  )
+)
+
+(define-method activate_focus
+  (of-object "GtkWindow")
+  (c-name "gtk_window_activate_focus")
+  (return-type "gboolean")
+)
+
+(define-method set_focus
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_focus")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "focus" (null-ok))
+  )
+)
+
+(define-method get_focus
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_focus")
+  (return-type "GtkWidget*")
+)
+
+(define-method set_default
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_default")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "default_widget" (null-ok))
+  )
+)
+
+(define-method activate_default
+  (of-object "GtkWindow")
+  (c-name "gtk_window_activate_default")
+  (return-type "gboolean")
+)
+
+(define-method set_transient_for
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_transient_for")
+  (return-type "none")
+  (parameters
+    '("GtkWindow*" "parent" (null-ok))
+  )
+)
+
+(define-method get_transient_for
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_transient_for")
+  (return-type "GtkWindow*")
+)
+
+(define-method set_type_hint
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_type_hint")
+  (return-type "none")
+  (parameters
+    '("GdkWindowTypeHint" "hint")
+  )
+)
+
+(define-method get_type_hint
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_type_hint")
+  (return-type "GdkWindowTypeHint")
+)
+
+(define-method set_destroy_with_parent
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_destroy_with_parent")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_destroy_with_parent
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_destroy_with_parent")
+  (return-type "gboolean")
+)
+
+(define-method set_resizable
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_resizable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "resizable")
+  )
+)
+
+(define-method get_resizable
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_resizable")
+  (return-type "gboolean")
+)
+
+(define-method set_gravity
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_gravity")
+  (return-type "none")
+  (parameters
+    '("GdkGravity" "gravity")
+  )
+)
+
+(define-method get_gravity
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_gravity")
+  (return-type "GdkGravity")
+)
+
+(define-method set_geometry_hints
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_geometry_hints")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "geometry_widget")
+    '("GdkGeometry*" "geometry")
+    '("GdkWindowHints" "geom_mask")
+  )
+)
+
+(define-method set_has_frame
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_has_frame")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_has_frame
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_has_frame")
+  (return-type "gboolean")
+)
+
+(define-method set_frame_dimensions
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_frame_dimensions")
+  (return-type "none")
+  (parameters
+    '("gint" "left")
+    '("gint" "top")
+    '("gint" "right")
+    '("gint" "bottom")
+  )
+)
+
+(define-method get_frame_dimensions
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_frame_dimensions")
+  (return-type "none")
+  (parameters
+    '("gint*" "left")
+    '("gint*" "top")
+    '("gint*" "right")
+    '("gint*" "bottom")
+  )
+  (CCC "byhand")
+)
+
+(define-method set_decorated
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_decorated")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_decorated
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_decorated")
+  (return-type "gboolean")
+)
+
+(define-method set_icon_list
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_icon_list")
+  (return-type "none")
+  (parameters
+    '("GList*" "list")
+  )
+)
+
+(define-method get_icon_list
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_icon_list")
+  (return-type "GList*" ".parray.freelist.")
+)
+
+(define-method set_icon
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_icon")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "icon" (null-ok))
+  )
+)
+
+(define-method get_icon
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_icon")
+  (return-type "GdkPixbuf*")
+)
+
+(define-function window_set_default_icon_list
+  (c-name "gtk_window_set_default_icon_list")
+  (return-type "none")
+  (parameters
+    '("GList*" "list")
+  )
+)
+
+(define-function window_get_default_icon_list
+  (c-name "gtk_window_get_default_icon_list")
+  (return-type "GList*" ".parray.freelist.")
+)
+
+(define-method set_modal
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_modal")
+  (return-type "none")
+  (parameters
+    '("gboolean" "modal")
+  )
+)
+
+(define-method get_modal
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_modal")
+  (return-type "gboolean")
+)
+
+(define-function gtk_window_list_toplevels
+  (in-module "GtkWindow")
+  (c-name "gtk_window_list_toplevels")
+  (return-type "GList*" ".parray.")
+)
+
+(define-method add_mnemonic
+  (of-object "GtkWindow")
+  (c-name "gtk_window_add_mnemonic")
+  (return-type "none")
+  (parameters
+    '("guint" "keyval")
+    '("GtkWidget*" "target")
+  )
+)
+
+(define-method remove_mnemonic
+  (of-object "GtkWindow")
+  (c-name "gtk_window_remove_mnemonic")
+  (return-type "none")
+  (parameters
+    '("guint" "keyval")
+    '("GtkWidget*" "target")
+  )
+)
+
+(define-method mnemonic_activate
+  (of-object "GtkWindow")
+  (c-name "gtk_window_mnemonic_activate")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "keyval")
+    '("GdkModifierType" "modifier")
+  )
+)
+
+(define-method set_mnemonic_modifier
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_mnemonic_modifier")
+  (return-type "none")
+  (parameters
+    '("GdkModifierType" "modifier")
+  )
+)
+
+(define-method get_mnemonic_modifier
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_mnemonic_modifier")
+  (return-type "GdkModifierType")
+)
+
+(define-method present
+  (of-object "GtkWindow")
+  (c-name "gtk_window_present")
+  (return-type "none")
+)
+
+(define-method iconify
+  (of-object "GtkWindow")
+  (c-name "gtk_window_iconify")
+  (return-type "none")
+)
+
+(define-method deiconify
+  (of-object "GtkWindow")
+  (c-name "gtk_window_deiconify")
+  (return-type "none")
+)
+
+(define-method stick
+  (of-object "GtkWindow")
+  (c-name "gtk_window_stick")
+  (return-type "none")
+)
+
+(define-method unstick
+  (of-object "GtkWindow")
+  (c-name "gtk_window_unstick")
+  (return-type "none")
+)
+
+(define-method maximize
+  (of-object "GtkWindow")
+  (c-name "gtk_window_maximize")
+  (return-type "none")
+)
+
+(define-method unmaximize
+  (of-object "GtkWindow")
+  (c-name "gtk_window_unmaximize")
+  (return-type "none")
+)
+
+(define-method begin_resize_drag
+  (of-object "GtkWindow")
+  (c-name "gtk_window_begin_resize_drag")
+  (return-type "none")
+  (parameters
+    '("GdkWindowEdge" "edge")
+    '("gint" "button")
+    '("gint" "root_x")
+    '("gint" "root_y")
+    '("guint32" "timestamp")
+  )
+)
+
+(define-method begin_move_drag
+  (of-object "GtkWindow")
+  (c-name "gtk_window_begin_move_drag")
+  (return-type "none")
+  (parameters
+    '("gint" "button")
+    '("gint" "root_x")
+    '("gint" "root_y")
+    '("guint32" "timestamp")
+  )
+)
+
+(define-method set_policy
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_policy")
+  (return-type "none")
+  (parameters
+    '("gint" "allow_shrink")
+    '("gint" "allow_grow")
+    '("gint" "auto_shrink")
+  )
+  (deprecated "use GtkWindow.set_resizable")
+)
+
+(define-method set_default_size
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_default_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method get_default_size
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_default_size")
+  (return-type "none")
+  (parameters
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+  (CCC "byhand")
+)
+
+(define-method resize
+  (of-object "GtkWindow")
+  (c-name "gtk_window_resize")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method get_size
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_size")
+  (return-type "none")
+  (parameters
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+  (CCC "byhand")
+)
+
+(define-method move
+  (of-object "GtkWindow")
+  (c-name "gtk_window_move")
+  (return-type "none")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method get_position
+  (of-object "GtkWindow")
+  (c-name "gtk_window_get_position")
+  (return-type "none")
+  (parameters
+    '("gint*" "root_x")
+    '("gint*" "root_y")
+  )
+  (CCC "byhand")
+)
+
+(define-method parse_geometry
+  (of-object "GtkWindow")
+  (c-name "gtk_window_parse_geometry")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "geometry")
+  )
+)
+
+(define-method reshow_with_initial_size
+  (of-object "GtkWindow")
+  (c-name "gtk_window_reshow_with_initial_size")
+  (return-type "none")
+)
+
+
+(define-method _internal_set_focus
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_internal_set_focus")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "focus")
+  )
+)
+
+(define-method remove_embedded_xid
+  (of-object "GtkWindow")
+  (c-name "gtk_window_remove_embedded_xid")
+  (return-type "none")
+  (parameters
+    '("guint" "xid")
+  )
+)
+
+(define-method add_embedded_xid
+  (of-object "GtkWindow")
+  (c-name "gtk_window_add_embedded_xid")
+  (return-type "none")
+  (parameters
+    '("guint" "xid")
+  )
+)
+
+(define-method _reposition
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_reposition")
+  (return-type "none")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method _constrain_size
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_constrain_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+    '("gint*" "new_width")
+    '("gint*" "new_height")
+  )
+  (CCC "byhand")
+)
+
+(define-method _get_group
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_get_group")
+  (return-type "GtkWindowGroup*")
+)
+
+(define-method _activate_key
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_activate_key")
+  (return-type "gboolean")
+  (parameters
+    '("GdkEventKey*" "event")
+  )
+)
+
+(define-method _keys_foreach
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_keys_foreach")
+  (return-type "none")
+  (parameters
+    '("GtkWindowKeysForeachFunc" "func")
+    '("gpointer" "func_data")
+  )
+  (CCC "byhand")
+)
+
+(define-method _query_nonaccels
+  (of-object "GtkWindow")
+  (c-name "_gtk_window_query_nonaccels")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "accel_key")
+    '("GdkModifierType" "accel_mods")
+  )
+)
+

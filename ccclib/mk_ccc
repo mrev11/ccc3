@@ -1,0 +1,9 @@
+#!/bin/bash
+. $CCCDIR/usr/bin/$CCCUNAME/__unix.b
+build.exe @ccc.bld #'BUILD_DBG=on'
+
+mkdir $CCCDIR/usr/lib/$CCCBIN 2>/dev/null
+cp -pf obj"$CCCBIN"/*.lib    $CCCDIR/usr/lib/$CCCBIN
+cp -pf obj"$CCCBIN"/*.so     $CCCDIR/usr/lib/$CCCBIN
+ 
+

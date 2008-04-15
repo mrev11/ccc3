@@ -1,0 +1,26 @@
+
+Az insert/update azokat a mezőket módosítja (küldi), 
+amik dirty flagje .t.. A dirty és null flagek jelenleg csak 
+a rowentity inicializálásakor (új buffer foglalás) inicializálódnak.
+
+Ha ugyanarra az rowentityre többször kiadjuk az update utasítást,  
+akkor ugyanaz a mező többször is kiíródik, pl.
+
+    e1:attr1:="A"
+    e1:update         //attr1 kiíródik
+    e1:attr2:="B"
+    e1:update         //attr1 (!) és attr2 kiíródik 
+
+Ha egy insert után egy rowenityben néhány mezőt kicserélünk,
+majd újra insertáljuk, akkor a változatlanul hagyott mezők is
+kiíródnak, pl.
+
+    e1:primkey:="A"
+    e1:attr:="A"
+    e1:insert
+
+    e1:primkey:="B"
+    e1:insert         // e1:attr=="A" is kiíródik (egy másik sorba)
+ 
+Ezért kérdés nem volna-e szerencsés, ha az update (insert)
+.f.-re állítaná az egyszer már kiírt mezők dirty flagjét. NEM!    

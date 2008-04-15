@@ -1,0 +1,5 @@
+#!/bin/bash
+cd tds; mkentitylib.exe; cd ..
+
+bapp_unix_.b @parfile.bld
+

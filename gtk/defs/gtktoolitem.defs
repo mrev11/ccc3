@@ -1,0 +1,164 @@
+
+(define-function gtk_tool_item_get_type
+  (in-module GtkToolItem)
+  (c-name "gtk_tool_item_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_tool_item_new
+  (c-name "gtk_tool_item_new")
+  (is-constructor-of GtkToolItem)
+  (return-type "GtkToolItem*")
+)
+
+(define-method "set_homogeneous"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_homogeneous)
+    (parameters
+        '("gboolean" homogeneous)
+    )
+)
+
+(define-method "get_homogeneous"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_homogeneous)
+    (return-type "gboolean")
+)
+
+(define-method "set_expand"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_expand)
+    (parameters
+        '("gboolean" expand)
+    )
+)
+
+(define-method "get_expand"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_expand)
+    (return-type "gboolean")
+)
+
+(define-method "set_tooltip"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_tooltip)
+    (parameters
+        '("GtkTooltips*" tooltips)
+        '("const-gchar*" tip_text)
+        '("const-gchar*" tip_private (null-ok))
+    )
+)
+
+(define-method "set_use_drag_window"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_use_drag_window)
+    (parameters
+        '("gboolean" use_drag_window)
+    )
+)
+
+(define-method "get_use_drag_window"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_use_drag_window)
+    (return-type "gboolean")
+)
+
+
+(define-method "set_visible_horizontal"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_visible_horizontal)
+    (parameters
+        '("gboolean" visible_horizontal)
+    )
+)
+
+(define-method "get_visible_horizontal"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_visible_horizontal)
+    (return-type "gboolean")
+)
+
+(define-method "set_visible_vertical"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_visible_vertical)
+    (parameters
+        '("gboolean" visible_vertical)
+    )
+)
+
+(define-method "get_visible_vertical"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_visible_vertical)
+    (return-type "gboolean")
+)
+
+(define-method "set_is_important"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_is_important)
+    (parameters
+        '("gboolean" is_important)
+    )
+)
+
+(define-method "get_is_important"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_is_important)
+    (return-type "gboolean")
+)
+
+(define-method "get_icon_size"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_icon_size)
+    (return-type "GtkIconSize")
+)
+
+(define-method "get_orientation"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_orientation)
+    (return-type "GtkOrientation")
+)
+
+(define-method "get_toolbar_style"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_toolbar_style)
+    (return-type "GtkToolbarStyle")
+)
+
+(define-method "retrieve_proxy_menu_item"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_retrieve_proxy_menu_item)
+    (return-type "GtkWidget*")
+)
+
+(define-method "get_proxy_menu_item"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_get_proxy_menu_item)
+    (return-type "GtkWidget*")
+    (parameters
+        '("const-gchar*" menu_item_id)
+    )
+)
+
+(define-method "set_proxy_menu_item"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_set_proxy_menu_item)
+    (parameters
+        '("const-gchar*" menu_item_id)
+        '("GtkWidget*" menu_item)
+    )
+)
+
+(define-method "rebuild_menu"
+    (of-object GtkToolItem)
+    (c-name  gtk_tool_item_rebuild_menu)
+)
+
+
+
+
+
+
+
+
+
+

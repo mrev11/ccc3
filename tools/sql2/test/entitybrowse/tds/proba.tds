@@ -1,0 +1,16 @@
+
+name: proba
+version: "1,2005-02-21"
+
+table: konto.proba=p
+
+column: szamlaszam      C24     nn x=p.szamla
+column: devnem          C3
+column: nev             C30     x=megnevezes
+column: egyenleg        N20.2   x=osszeg
+column: tulmenflag      L
+column: konyvkelt       D
+column: megjegyzes      M
+
+primkey: szamlaszam,devnem
+

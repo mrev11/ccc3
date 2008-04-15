@@ -1,0 +1,673 @@
+
+\pagetitle{CCC2 telepítés}{Dr. Vermes Mátyás}{2004. október}
+
+
+
+\section{Újabb infó}
+
+Ez a dokumentáció a régebbi CCC2-ről szól.
+Az új CCC3 telepítéséről rövid dokumentáció található 
+\href{http://ccc.comfirm.hu/ccc3/download/olvass.html}{itt}.
+Néhány részletkérdés miatt azonban érdemes lehet ezt a régebbi
+dokumentációt is nézegetni.
+
+\section{CCC installáció gyorsan}
+
+Feltételezzük, hogy Linux/UNIX-on, vagy Windows-2K-n vagyunk,
+és telepítve van gépünkön egy alkalmas C fordító. 
+UNIX-on telepíteni kell a bash parancsértelmezőt,
+ennek kell lennie a default shellnek, és a \verb!/bin/bash!
+paranccsal kell tudni indítani.
+Elkészítjük a CCCDIR directoryt, és beállítjuk az alábbi
+környezeti változókat (ez itt UNIX, Windowson természetesen
+windowsos szintaktikát használunk):
+\begin{verbatim}
+export CCCDIR=/opt/ccc2 # bárhol lehet (ahol írási jogunk van)
+export CCCUNAME=linux   # lehetséges: linux,solaris,freebsd,nt
+export CCCBIN=lin       # lehetséges: lin,sol,fre,mng,bor,msc
+export PATH=$PATH:$CCCDIR/usr/bin/$CCCUNAME
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CCCDIR/usr/lib/$CCCBIN
+\end{verbatim}
+
+A CCCUNAME változó tartalmazza az OS nevét (a Windowst a régi NT 
+név alapján nt jelöli). A CCCBIN változó tartalmazza a tárgykód típusát:
+\begin{center}
+\begin{tabular}{|l|l|}
+     lin & Linux/GCC \\
+     sol & Solaris/GCC \\
+     fre & FreeBSD/GCC \\
+     mng & Windows/MinGW (GCC) \\
+     msc & Windows/Microsoft C \\
+     bor & Windows/Borland C \\
+\end{tabular}
+\end{center}
+
+
+\href{http://www.comfirm.hu/ccc2/download}{Letöltjük} az alábbi csomagokat:
+\begin{center}
+\begin{tabular}{|l|l|}
+     Linux/UNIX                     & Windows\\
+     \tt ccc2-yyyymmdd.zip          & \tt ccc2-yyyymmdd.zip \\
+     \tt setup-flex-yyyymmdd.zip    & \tt setup-flex-yyyymmdd.zip \\
+     \tt setup-lemon-yyyymmdd.zip   & \tt setup-lemon-yyyymmdd.zip \\
+     \tt setup-unix-yyyymmdd.zip    & \tt setup-windows-yyyymmdd.zip \\
+\end{tabular}
+\end{center}
+
+Azaz a négy csomagból csak a setup-unix/setup-windows különbözik.
+Kibontjuk a csomagokat CCCDIR-ben.
+Linux/UNIX-on elindítjuk \verb!install.b!-t, Windowson
+\verb!install.bat!-ot.
+
+
+
+\section{CCC csomagok beszerzése}
+ 
+A CCC csomagokhoz kétféleképpen lehet hozzájutni:
+\begin{itemize}
+\item 
+  A \href{http://www.comfirm.hu/ccc2/download}{http://www.comfirm.hu/ccc2/download}
+  URL-ről a böngészővel egyenként letölthetők a csomagok.
+\item 
+  Ha installálva van gépünkön a Jáva Webstart, akkor használhatjuk a
+  \href{http://www.comfirm.hu/jnlp/cccdown.jnlp}{CCC Letöltő}-t,
+  ami letölti és/vagy frissíti a csomagokat.
+  Érdekesség, hogy ez a program maga is CCC-ben készült.
+\end{itemize}
+
+
+A CCC installációja közel sem automatikus. 
+Feltételezzük, hogy a kedves felhasználó eligazodik
+a shell scriptek és C fordítók világában. 
+
+A C fordításban törekedni kell a warning-mentességre.
+E sorok írásakor ez teljesül: az összes C program, az összes
+C fordítóval warning-mentesen fordul. Újabb változatú
+fordítók esetén a szigorúbb ellenőrzés felszínre szokott hozni
+újabb warningokat, ha azonban túl sok ilyen van, akkor
+valószínűleg a fordító nincs rendesen telepítve.
+
+ 
+Tisztában kell lenni bizonyos függőségi viszonyokkal:
+\begin{enumerate}
+\item 
+  A fordító eszközök (prg2ppo, ppo2cpp) és az XML elemző
+  igénylik a Flex és Lemon programokat. Az újabb CCC kiadásokban
+  a CCC-vel együtt automatikusan települ a Flex és a Lemon. 
+\item 
+  Az Fltk megjelenítéshez előzőleg installálni kell az Fltk
+  grafikus könyvtárat.
+\item
+  Az OpenSSL interfésznek szüksége van az openssl könyvtárra.  
+\end{enumerate}
+Ezek az eszközök általában nincsenek meg maguktól, 
+hanem be kell őket szerezni, installálni kell őket, 
+és némi gyakorlatot kell szerezni a használatukban.
+ 
+
+\section{CCC környezet kialakítása}
+
+\subsection{Windows}
+
+Mindenképpen legalább Windows NT-re van szükség, Windows 2000 ajánlott, 
+Windows 9x biztosan nem felel meg.
+Szükségünk van egy C fordítóra, a támogatott fordítók:
+\begin{itemize}
+\item 
+    MinGW, utolsó tesztelt változat MinGW320rc, 
+    amiben GCC 3.4.2-es fordító van,
+    letölthető a \href{http://www.mingw.org}{http://www.mingw.org}-ról.
+    Ez az előnyben részesített fordító.
+\item 
+    Microsoft C, az utolsó tesztelt fordító változatszáma 13.10.3077.
+    Letölthető a \href{http://www.microsoft.com}{http://www.microsoft.com}-ról.
+    Két csomagot kell letölteni. A {\em Visual C++ Toolkit} csomagban (32~MB)
+    van a fordító, a linker, a C és C++ könyvtárak, 
+    a {\em Windows Server 2003 SP1 SDK} csomagban (400+~MB CD~image) pedig 
+    a Windows könyvtárak, a windows.h filé, Windows API dokumentáció, stb.. 
+    A két csomagot úgy installáljuk, hogy közös directoryba kerüljenek, 
+    így közös bin, lib, include  directorykba kerülnek  az alkatrészeik.
+\item 
+    Borland C, utolsó tesztelt változat BCC-5.5.1. 
+    A freecommandlinetools.exe csomagot kell keresni a
+    \href{http://www.borland.com}{http://www.borland.com}-on.
+    Kicsit shareware íze van a dolognak, pl. a BCC-vel fordított 
+    programok nem tudnak egyszerre 50-nél több file descriptort megnyitni.
+\end{itemize}
+
+
+Hozzunk létre egy shell scriptet dirmap.bat néven az alábbihoz
+hasonló tartalommal:
+\begin{verbatim}
+@echo off
+set CCCDIR=d:\ccc2
+set MSCDIR=d:\msc2003
+set BORDIR=d:\borland\bcc55
+set GNUDIR=c:\mingw320
+set JAVDIR=d:\j2sdk1.4.2
+\end{verbatim}
+Ez a script mutatja, hogy hol vannak a dolgok a filérendszerünkben. 
+Persze gépenként változó, hogy hol vannak a dolgok.
+Az én scriptemben három fordító helye is meg van adva (MSC, Borland, MinGW),
+de a CCC használatához egy is elég. 
+
+A következő példa a MinGW környezet kialakítását mutatja,
+hasonlóan kell eljárni a többi fordító esetén is.
+Hozzunk létre egy másik shell scriptet ccc\_mng.bat 
+(vagy ccc\_msc.bat, vagy ccc\_bor.bat) néven az alábbihoz
+hasonló tartalommal:
+\begin{verbatim}
+@echo off
+call dirmap
+set CCCBIN=mng
+set CCCUNAME=nt
+set PATH=%WINDIR%;%WINDIR%\system32
+set PATH=%JAVDIR%\bin;%PATH%
+set PATH=%GNUDIR%\bin;%PATH%
+set PATH=%CCCDIR%\usr\bin\nt;%PATH%
+set INCLUDE=%GNUDIR%\include;
+set LIB=%GNUDIR%\lib;
+start "CCC-MinGW environment"
+\end{verbatim}
+
+A CCCBIN környezeti változó mutatja, hogy mivel fordítunk (msc, bor, mng).
+A CCCUNAME változó mutatja, hogy milyen rendszeren futó programok készülnek (nt).
+Ha a ccc\_xxx.bat scriptet elindítjuk, akkor feljön egy shell,
+amiben éppen a nekünk szükséges beállítások lesznek érvényben.
+A továbbiakban mindig ebben a shellben dolgozunk.
+Hozzuk létre ténylegesen a CCC directoryt (CCCDIR) a dirmap.bat-ban 
+megadott helyen. Töltsük le a 
+\begin{itemize}
+\item \tt ccc2-yyyymmdd.zip
+\item \tt setup-flex-yyyymmdd.zip
+\item \tt setup-lemon-yyyymmdd.zip
+\item \tt setup-windows-yyyymmdd.zip
+\end{itemize}
+csomagokat, másoljuk be CCCDIR-be, és bontsuk ki. (A windowsosoknak 
+nincs unzip programjuk, meg kell tehát szerezni a webről az Infozip 
+csomagot, ez mindent tud, ami kell, és ingyenes.) 
+
+A CCCDIR-ben találunk egy install.bat scriptet, ami lefordítja
+az egész CCC-t. Ne indítsuk azonban el vakon, hanem némi áttekintés
+megszerzése céljából nyissuk meg egy editorral, és nézzük meg, 
+hogy mit fog csinálni:
+ 
+\begin{enumerate}
+\item
+A setup-windows directoryból installálja a  fordítás
+elkezdéséhez szükséges négy exe filét (build, prg2ppo, ppo2cpp, ccomp).
+
+\item
+A setup-flex directoryból installálja a flex-et (szintaktikai elemző
+generátor).
+
+\item
+A setup-lemon directoryból installálja a lemon-t (nyelvtani
+elemző generátor).
+
+\item
+Bemegy a ccclib directoryba, és lefordítja a CCC alapkönyvtárait.
+Az Fltk megjelenítő könyvtár fordítása csak akkor lehet sikeres,
+ha  gépünkön installálva van az Fltk, ezért
+kezdetben a ccc2\_uif könyvtár fordítása ki van kommentezve.
+
+\item
+Utána bemegy a ccctools directoryba, és lefordítja a CCC fordításban
+szerepet játszó programokat.  A (setup-windows.zip-ben letöltött)
+build, prg2ppo, ppo2cpp programok most lefordítják saját magukat.
+
+\item
+A ccctab directoryban lefordulnak a táblaobjektum könyvtárak.
+A tbdatidx és tbdbfctx könyvtárak installálásához előzőleg a ctree-nt.zip
+csomagot is le kell tölteni (és CCCDIR-ben kibontani). Ha nincs
+szükség CTREE adatbáziskezelésre, akkor a megfelelő sorokat 
+kommentezzük ki.
+
+\item
+A terminal directorykban lefordulnak a távoli karakteres megjelenítéshez
+szükséges eszközök.
+
+\item
+A tools-ban fordul néhány hasznos könyvtár és eszköz:
+\begin{tabular}{ll}
+\tt  crypto   & openssl interfész (előzőleg installálni kell az openssl-t) \\
+\tt  dbaseiii & osztály dbf állományok olvasásához \\ 
+\tt  socket   & socket könyvtár \\ 
+\tt  xmldom   & XML elemző osztály \\ 
+\tt  xmlrpc   & XMLRPC szerver és kliens osztály \\ 
+\tt  ddict2   & adatszótár karbantartó \\ 
+\tt  mask     & dialogbox editor \\ 
+\tt  savex    & eszköz directory struktúrák szinkronizálásra \\ 
+\tt  sql2     & interfész Oracle és Postgres adatbáziskezelőhöz \\ 
+\tt  z        & text editor \\ 
+\end{tabular}
+\end{enumerate}
+
+
+\subsection{Linux}
+
+Installáljuk az x-fonts.zip csomagban lévő fontokat.
+A pcf.gz  font filéket az /usr/lib/X11/fonts/misc directoryba 
+kell bemásolni, majd ugyaninnen rootként kiadjuk a \verb!mkfontdir!  
+parancsot. Az X-et újraindítjuk.
+Létrehozunk egy \verb!ccc! nevű csoportot, és ezt a csoportot
+állítjuk be a saját csoportunknak. A továbbiakban mindig
+ebben a csoportban dolgozunk.
+A saját home-unkban a .bashrc filébe írjuk be az alábbiakat
+\begin{verbatim}
+export CCCDIR=/opt/ccc2
+export CCCBIN=lin
+export CCCUNAME=linux
+export CCC_XSIZE=80x36
+export CCC_XFONT=ccc8x16
+export OREF_SIZE=20000
+export PATH=$CCCDIR/usr/bin/$CCCUNAME:$PATH
+export LD_LIBRARY_PATH=$CCCDIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+\end{verbatim}
+ 
+Hozzuk létre ténylegesen a CCC directoryt  a .bashrc-ban 
+megadott helyen, a csoportja legyen ccc,
+a permission flageket állítsuk be 2775-re.
+Töltsük le a 
+\begin{itemize}
+\item \tt ccc2-yyyymmdd.zip
+\item \tt setup-flex-yyyymmdd.zip
+\item \tt setup-lemon-yyyymmdd.zip
+\item \tt setup-unix-yyyymmdd.zip
+\end{itemize}
+csomagokat, másoljuk be CCCDIR-be, és bontsuk ki.
+A CCCDIR-ben találunk egy install.b scriptet, ami lefordítja
+az egész CCC-t. Ne indítsuk azonban el vakon, hanem némi áttekintés
+megszerzése céljából nyissuk meg egy editorral, és nézzük meg, 
+hogy mit fog csinálni:
+ 
+\begin{enumerate}
+\item
+Ellenőrzi, hogy jól van-e beállítva a CCCDIR környezeti
+változó.
+
+\item
+A setup-unix directoryban lefordítja és installálja a fordítás
+elkezdéséhez szükséges programokat (build, prg2ppo, ppo2cpp).
+
+\item
+A setup-flex directoryból installálja a flex-et (szintaktikai elemző
+generátor).
+
+\item
+A setup-lemon directoryból installálja a lemon-t (nyelvtani
+elemző generátor).
+
+\item
+A terminal-unix direcotryban lefordulnak a fullscreen karakteres 
+(lokális és távoli) megjelenítéshez  szükséges eszközök.
+
+\item
+Bemegy a ccclib directoryba, és lefordítja a CCC alapkönyvtárait.
+Az Fltk megjelenítő könyvtár fordítása csak akkor fog lefutni,
+ha  gépünkön installálva van az Fltk, ezért
+kezdetben a ccc2\_uif könyvtár fordítása ki van kommentezve.
+
+\item
+Utána bemegy a ccctools directoryba, és lefordítja a CCC fordításban
+szerepet játszó programokat. A (setup-unix.zip-ben letöltött)
+build, prg2ppo, ppo2cpp programok most lefordítják saját magukat.
+
+\item
+A ccctab directoryban lefordulnak a táblaobjektum könyvtárak.
+A tbdatidx és tbdbfctx könyvtárak installálásához előzőleg a ctree-lin.zip
+csomagot is le kell tölteni (és CCCDIR-ben kibontani). Ha nincs
+szükség CTREE adatbáziskezelésre, akkor a megfelelő sorokat 
+kommentezzük ki.
+
+\item
+A tools-ban fordul néhány hasznos könyvtár és eszköz:
+\begin{tabular}{ll}
+\tt  crypto   & openssl interfész (előzőleg installálni kell az openssl-t) \\
+\tt  dbaseiii & osztály dbf állományok olvasásához \\ 
+\tt  socket   & socket könyvtár \\ 
+\tt  xmldom   & XML elemző osztály \\
+\tt  xmlrpc   & XMLRPC szerver és kliens osztály \\ 
+\tt  ddict2   & adatszótár karbantartó \\ 
+\tt  mask     & dialogbox editor \\ 
+\tt  savex    & eszköz directory struktúrák szinkronizálásra \\ 
+\tt  sql2     & interfész Oracle és Postgres adatbáziskezelőhöz \\ 
+\tt  z        & text editor \\ 
+\end{tabular}
+\end{enumerate}
+
+Ha nincs installálva gépünkön az OpenSSL, vagy a PostgreSQL
+fejlesztő környezet, akkor pótoljuk, vagy az install.b script
+a megfelelő sorait kommentezzük ki (máskülönben fordításkor
+egy csomó hibát kapunk).
+                    
+
+\subsection{FreeBSD}
+
+FreeBSD-n ugyanúgy alakítunk ki  CCC környezetet, 
+mint Linuxon, tehát a Linuxnál leírtak érvényesek,
+itt csak az eltéréseket ismertetem.
+
+\begin{description}
+\item[Környezeti változók]
+FreeBSD-n az alábbi környezeti változókat kell beállítani:
+\begin{verbatim}
+export CCCBIN=fre
+export CCCUNAME=freebsd
+\end{verbatim}
+\item[bash]
+Installálni kell a bash2 shell-t (magától nem települ), 
+és kell csinálni egy \verb!/bin/bash! linket (magától
+/usr/local/bin-be teszi). A CCC fordító scriptek
+mind így kezdődnek: \verb|#!/bin/bash|, úgyhogy enélkül 
+egy lépést sem lehet tenni.
+
+\item[malloc.h]
+A CCC programok számos helyen inkludálják malloc.h-t.
+A FreeBSD 5.3-ban a GCC erre azt a hibaüzenetet adja, 
+hogy az új C szabványban  malloc.h megszűnt, és helyette 
+stdlib.h-t kell használni. Természetesen ez nem elfogadható,
+tehát csinálni kell egy malloc.h-t, ami csendben inkludálja
+stdlib.h-t.
+\end{description}
+
+Ezektől az apróságoktól eltekintve a Linux és FreeBSD
+CCC programozói szempontból nézve meglehetősen egyforma.
+
+
+\subsection{Solaris}
+Solarison a GNU környezet kialakításával kezdjük.
+A CCC installáció lényegében azonos a Linuxnál leírtakkal,
+csak CCCBIN=sol, CCCUNAME=solaris beállításokat alkalmazunk.
+Az alábbiakban egy Sun Blade 100 (SPARC 64 bit, Solaris 8, GCC 2.95.3)
+rendszeren szerzett tapasztalataimat írom le:
+
+\begin{enumerate}
+\item 
+    A gépen előre installálva van a Solaris,
+    rákötjük a hálózatra.
+    Megcsináljuk a ccc csoportot, a CCC felhasználókat,
+    a felhasználók \verb!.profile! filéjét, ami majd
+    beállítja a 
+    \verb!CCCDIR!, 
+    \verb!CCCBIN!, 
+    \verb!CCCUNAME!,
+    \verb!PATH!, 
+    \verb!LD_LIBRARY_PATH!, 
+    umask(=002) változókat.
+\item
+    Letöltjük a Sun-tól a  
+    \href{http://wwws.sun.com/software/solaris/freeware/download.html}{GNU Companion CD-t}, 
+    és  installáljuk.
+    Sajnos ezt a CD-t nem frissítik, jelenleg is a GCC 2.95.3 van rajta, 
+    noha Linuxon már egy ideje a 3.3.1-es változatot használjuk.
+    A GNU szoftver a \verb!/opt/sfw! directoryba kerül. 
+    Egyes programok neve elé raktak egy g betűt, 
+    pl. make helyett gmake, 
+    ld helyett gld,
+    nm helyett gnm, 
+    stb.
+    A passwd filében beállítjuk, hogy minden felhasználó 
+    shellje a bash legyen (a rooté is).
+\item
+    Nincs a Companion CD-n mc, ezért
+    szerzünk a webről egy mc-t (régit, mert az újhoz GTK kell),
+    lefordítjuk és installáljuk.
+\item 
+    Ugyancsak beszerezzük a webről, lefordítjuk és installáljuk 
+    a legújabb     openssl-t és openssh-t (ezek sincsenek a Companion CD-n). 
+    Beállítjuk, hogy az sshd automatikusan induljon a 3.\ futási szinten, 
+    elindítjuk az sshd-t, és átülünk egy Linuxhoz. A továbbiakban
+    ssh-val dolgozunk, mert a Solaris CDE desktop olyan, 
+    amilyennek a windowsosok mondják.
+\item
+    Innen kezdve úgy mennek a dolgok, mint Linuxon,
+    kivéve a linkelést. A fentiek szerint előkészített rendszeren
+    a GNU fordító (c++) meglepetésemre a solarisos link editorral 
+    akar linkelni.   Erőltettem egy darabig a GNU linkert (gld), 
+    de azt tapasztaltam, hogy a gld-vel linkelt programok 
+    SIGSEGV-znek. Nemcsak a CCC programok, hanem az egysoros
+    "Hello World" C program is.
+    Mivel ezt nem tudtam megjavítani, vissza kellett
+    térnem az eredeti állapothoz, vagyis a \verb!/usr/ccs/bin/ld! 
+    (solarisos) link editorhoz, ehhez viszont néhány scriptet 
+    át kellett írni.
+    
+    A \verb!-Wl,--start-group! és \verb!-Wl,--end-group! 
+    opciókat ki kellett hagyni, ez lehet hogy hiányozni fog,
+    de nem találtam meg, mivel helyettesíthető.
+    
+    A \verb!-shared! opció helyett \verb!-G! kell.
+    
+    A \verb!-soname=LIBNAME!  helyett \verb!-hLIBNAME! kell.
+\end{enumerate}
+Tudom, hogy a kezdők nem ebből a leírásból fognak UNIX
+gyakorlatot szerezni, de minek a részletes leírás, 
+ha a részletek úgyis mindig változnak.
+A fő nehézség, hogy a Solaris viszonylag ismeretlen terep,
+nem adja könnyen magát.  Ha már megvan az mc,
+és egy kézreálló Linuxról ssh-zunk, fellélegezhetünk.
+
+Időközben teszteltem a CCC-t az ingyenesen letölthető
+(inteles) Solaris-10  rendszeren is.  A helyzet kicsit javult:
+\begin{itemize}
+\item 
+    A telepítőkészlet helyből tartalmazza a GNU szoftvereket.
+\item 
+    Egyből lesz OpenSSH.
+\item 
+    Könnyen feléleszthető az NFS szerver.
+\item 
+    Használható a Java Desktop (ami lényegében egy GNOME).
+\end{itemize}
+Mindezek miatt a CCC installálásával (ami egyébként nem változott) 
+könnyebben el lehet boldogulni.
+
+
+\section{A csomagok tartalma}
+
+Az alcímek mellett zárójelben jelezzük, hogy az adott
+csomag mely platformokon kap szerepet:
+\begin{tabular}{ll}
+\bf ~~W~~   & Windows \\
+\bf ~~L~~   & Linux   \\
+\bf ~~F~~   & FreeBSD \\
+\bf ~~S~~   & Solaris \\
+\end{tabular}
+
+\subsection{ccc2.zip (WLFS)}
+A CCC teljes forráskódja. 
+
+\subsection{setup-flex.zip (WLFS)}
+
+Az új CCC kiadásban a Flex programok C++ elemző objektumokat
+készítenek (\verb!%option c++!). Ennek előnye, hogy az elemző reentráns
+és szálbiztos, több Flex elemzőt tartalmazó rutin lehet ugyanabban
+a CCC programban névütközés nélkül. 
+Sajnos ez komplikációkat is okoz, ui. a különféle Linux 
+disztribúciókból származó Flexek különféleképpen hibásak.
+Ráadásul a Flex új fejlesztési iránya sem valami megnyugtató.
+A setup-flex.zip csomagból települő flex
+minden CCC-vel használt fordítóval működik, 
+nem tartalmaz olyan ismert hibát, ami a használatot akadályozná.
+További részletek magában a csomagban.
+
+
+\subsection{setup-lemon.zip (WLFS)}
+
+A CCC 2.1.x kiadásában a Bison/YACC-ot felváltotta a Lemon. 
+A Lemon a Bisonhoz képest egyszerűbben terjeszthető és telepíthető,
+mivel egyetlen C forrásfájlból, plusz egy C template fájlból áll.
+A Lemon által generált kód a Bisonnal szemben reentráns és szálbiztos. 
+A setup-lemon.zip csomag az általam patchelt forrásváltozatot tartalmazza. 
+A változások fel vannak sorolva a lemon.c fájl elején. Az eredeti
+forrás megtalálható itt: 
+\href{http://www.hwaci.com/sw/lemon}{http://www.hwaci.com/sw/lemon}.
+
+\subsection{setup-unix.zip (LFS)}
+A CCC-t nehéz a semmiből kiindulva lefordítani, ui.\ a fordításhoz
+CCC-ben készült eszközökre is szükség van. Ez a csomag tisztán C-ből
+előállítja a build, prg2ppo, ppo2cpp programokat, amik minimálisan
+szükségesek a CCC saját programkészítő rendszerének a felélesztéséhez.
+
+\subsection{setup-windows.zip (W)}
+A CCC-t nehéz a semmiből kiindulva lefordítani, ui.\ a fordításhoz
+CCC-ben készült eszközökre is szükség van. Ez a csomag tartalmazza
+a build, prg2ppo, ppo2cpp, ccomp programokat, amik minimálisan
+szükségesek a CCC saját programkészítő rendszerének a felélesztéséhez.
+A ccomp program csak a MinGW fordító esetén kell.
+
+\subsection{ccc-fltk.zip (WLFS)}
+Az Fltk könyvtár forrása Build projekt kiszerelésben.
+Korábban Linuxon a telepítő csomagból származó Fltk használatát
+ajánlottam, azonban belefáradtam az API változásainak követésébe,
+ezért újabban Linuxon is a (befagyasztott) ccc-fltk.zip csomagot 
+használjuk.
+
+A csalódások megelőzése érdekében megjegyzem:
+A CCC-ben nincs olyan általános CCC-Fltk csatoló, 
+amivel tetszőleges grafikus programokat készíthetnénk.
+Az Fltk-t arra használtuk, hogy {\em meglevő karakteres
+programokat\/} jelenítsünk meg grafikus felületen {\em átírás nélkül}.
+Ezek ablakokkal, menükkel, táblázatokkal, 
+adatbeviteli mezőkkel rendelkeznek, de semmi több, 
+pl. nem tudnak rajzolni. Készülni fog viszont egy
+általánosan használható GTK csatoló.
+
+\subsection{jt.zip (WLFS)}
+Érdekes új eszköz a Jáva terminál.
+Ez egy {\em alkalmazásfüggetlen} grafikus megjelenítő,
+ami a felhasználó gépén megjeleníti a távoli gépen futó 
+szerveralkalmazást. Természetesen annak sincs akadálya, hogy a terminál 
+és a szerver ugyanazon a gépen fusson, ám a Jáva terminál fő erőssége 
+a távoli programfuttatás, ezzel a webes programozás egy alternatíváját 
+jelenti. 
+A Jáva terminál elsősorban centralizálandó ügyviteli alkalmazásoknál
+előnyös, mint pl. egy bolthálózat  nyilvántartása. A terminál és a 
+szerver között TCP kapcsolat van (nem HTTP), és XML szintaktikájú 
+üzenetekkel kommunikálnak. A kommunikáció SSL-lel titkosítható.
+A terminálról bővebb infó található a 
+\href{http://ok.comfirm.hu/ccc2/jterminal.html}{Jáva Terminál}
+oldalon. 
+
+\subsection{jtpython.zip (WLFS)}
+Python nyelvű szerver oldali interfész könyvtár a Jáva terminálhoz.
+ 
+\subsection{openssl-xxx.zip (W)}
+Az openssl könyvtár MSC-vel fordított változata.
+Legcélszerűbben akkor járunk el, ha a windowsos C fordítónkba
+,,integráljuk'' az openssl-t: az include-okat bemásoljuk az include alá,
+a lib-eket a lib alá, az exe-ket, dll-eket pedig betesszük a 
+Windows könyvtárba. 
+
+Megjegyzés: Az openssl-ben le van írva, hogy hogyan kell őt
+lefordítani MSC-vel, Borland C-vel, és MinGW-vel, nekem azonban
+csak az első (MSC) működött. Az MSC-vel kapott dll-ek és lib-ek
+a MinGW-hez egy az egyben jók, a Borland C-nek pedig van eszköze hozzá,
+hogy egy dll-ből import lib-et csináljon.
+ 
+
+ 
+\subsection{x-fonts.zip (LFS)}
+X-hez való fix (bitmap) fontok, amik a Latin-2 kódolású magyar 
+ékezetes karakterek mellett tartalmazzák a Clipper dobozrajzoló karaktereit.
+A fontfiléket rootként a /usr/lib/X11/fonts/misc-be kell másolni,
+majd misc-ben végrehajtjuk: 
+\begin{verbatim}
+/usr/bin/X11/mkfontdir
+\end{verbatim}
+Utána az X-et újraindítjuk.    
+ 
+
+\section{Telepítési problémák}
+
+\subsection{Hiányzik az unistd.h} 
+Előfordulhat, hogy NT-s C fordítónk nem talál egy unistd.h nevű filét.
+Ennek oka, hogy a Bison és Flex kódgenerátora (elsősorban) UNIX-ra 
+készíti a kimenetét, ahol az említett filé megtalálható valahol az
+include pathban, NT-n viszont nincs ilyen. A hiba legegyszerűbben 
+úgy hárítható el, ha létrehozunk a C fordító include directoryjában 
+egy üres unistd.h-t, ezzel a fordító meg fog elégedni.
+
+\subsection{Hiányzik malloc.h}
+A CCC programok számos helyen inkludálják malloc.h-t.
+Az újabb GCC-k erre azt a hibaüzenetet adják, 
+hogy a C szabványban  malloc.h megszűnt, és helyette 
+stdlib.h-t kell használni. Csináljunk ilyenkor egy malloc.h-t, 
+ami csendben inkludálja stdlib.h-t.
+
+
+\subsection{Fltk installáció} 
+
+Kezdetben Fltk nélkül installáljuk a CCC-t.
+Ha már van üzemképes CCC környezetünk, akkor le tudjuk 
+fordítani a ccc-fltk.zip csomagban letölthető Build projektet. 
+A jelenlegi változat az összes támogatott C fordítóval fordul 
+(Windowson, Linuxon, Solarison egyaránt).
+
+Az installáció mindössze annyit jelent, hogy a csomag
+include filéit, és a lefordított lib-eket a C fordító
+rendelkezésére bocsátjuk. A legegyszerűbben akkor járunk el, 
+ha a  C fordítónkba ,,integráljuk'' az Fltk-t: az include-okat 
+bemásoljuk az include alá, a lib-eket a lib alá, ezzel
+Windowson készen is vagyunk.
+
+UNIX/Linuxon korábban a telepítőkészletből származó Fltk könyvtárat használtuk. 
+Az Fltk fejlesztői azonban állandóan változtatgatják az API-t, ezért az újabb
+változatok átvételekor mindig a CCC interfész módosítására kényszerültem. 
+Ezt megunván, áttértem a saját, befagyasztott ccc-fltk csomagból fordított 
+Fltk-ra. Hogy a többféle csomag ne keveredjen, a korábban esetlegesen 
+installált Fltk csomagot távolítsuk el.
+
+Az eredeti Fltk függ a GL könyvtártól.
+A CCC-hez azonban nincs szükség a GL-re,
+ezért a külső függőségek csökkentése érdekében
+a mi Fltk könyvtárunkból ki vannak operálva a GL-es hivatkozások. 
+A GL könyvtár helyett egyszerűen az X11-et kell linkelni.
+
+
+\subsection{Borland cfg filék} 
+A Borland C használata esetén vegyük ki a ccc2 csomagból a
+   \verb'usr\options\bor\bcc32.cfg' és
+   \verb'usr\options\bor\ilink32.cfg' filéket,
+   tartalmukat a konkrét include és lib directoryknak megfelelően 
+   aktualizáljuk, és másoljuk be a Borland bin directoryba 
+   (oda, ahol bcc32.exe is található). 
+
+\subsection{Directory nevek} 
+
+A CCC directory nevének megválasztásakor figyelembe kell venni,
+hogy a C fordító egyes alkatrészei nem támogatnak minden nevet, 
+amit egyébként az operációs rendszer megengedne. Így pl.\ a Borland
+és a Watcom könyvtárkezelő működésképtelen, ha a library teljes
+specifikációjában kötőjelet is tartalmazó directory van. 
+
+\subsection{Nagy fájlok (Large File Support)} 
+
+UNIX-on a CCC az 1.5.00 változattól kezdve nagy filé támogatással
+fordítható. Solaris 8-on és 2.4.x kernelű ext2 filérendszerű Linuxon
+az LFS gond nélkül működik. Nem működik azonban az LFS 2.2.x kernelen,
+vagy 3.6-nál kisebb verziószámú ReiserFS-en. Ezért a biztonság
+kedvéért a setup során Linuxon LFS nélküli CCC keletkezik.
+Az LFS úgy kapcsolható be, hogy az opt filékben beélesítjük a
+
+\begin{verbatim}
+   -D_FILE_OFFSET_BITS=64
+   -D_LARGEFILE_SOURCE
+\end{verbatim}
+
+fordítási opciókat, majd az egész CCC-t forrásból újrafordítjuk.
+ 
+
+\subsection{GCC verziók}
+
+Jelentős változások történtek a C++ szabványban
+a GCC 2.95 és 3.x változatainak megjelenése között.
+A CCC a különbségekhez a \verb!$CCCDIR/usr/options/lin/gccver.opt! 
+filében definiált makrók segítségével alkalmazkodik.
+Amikor a CCC-t először installáljuk (vagy egy másik C fordítóval
+teljesen újrafordítjuk), akkor előzőleg le kell törölni a
+gccver.opt filét. A CCC installáló scriptje észre fogja venni
+gccver.opt hiányát, és automatikusan elkészíti az aktuális
+fordítónak megfelelő opt filét. 
+

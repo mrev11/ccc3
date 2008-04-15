@@ -1,0 +1,124 @@
+
+\documentclass[12pt]{article}
+
+\newif\iftth
+ 
+\iftth\else
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[magyar]{babel}
+\fi
+ 
+\setcounter{secnumdepth}{3}  
+
+\def\beforeany{}
+\def\afterany{}
+ 
+\def\pagetitle#1#2#3{%cím,szerző,dátum
+{\special{html:<h1>}#1\special{html:</h1>}}\par
+{{\it #2}}\par 
+{{#3}}\par 
+\tableofcontents
+}
+
+\def\gotoindex{\href{cccindex.html}{\large\bf Vissza a tartalomjegyzékhez}}
+
+\def\bslash{$\backslash$}
+\def\bs{$\backslash$}
+\def\hyp{}
+\def\nohyp{}
+\def\tilde{\lower.7ex\hbox{\~{}}}
+ 
+\iftth
+\def\space{}
+\fi 
+
+\iftth\else
+\def\href#1#2{{\underline{#2}}}
+\fi
+
+ 
+%\iftth
+%\def\ComFirm{\begin{html}<A HREF="mailto:comfirm@mail.inext.hu">ComFirm BT.</A>\end{html}}
+%\def\ComFirmWeb{\begin{html}<A HREF="http://www.inext.hu/~comfirm">http://www.inext.hu/~comfirm</A>\end{html}}
+%\def\ComFirmEmail{\begin{html}<A HREF="mailto:comfirm@mail.inext.hu">comfirm@mail.inext.hu</A>\end{html}}
+%\def\VermesEmail{\begin{html}<A HREF="mailto:vermes@mail.inext.hu">vermes@mail.inext.hu</A>\end{html}}
+%\def\BacsaEmail{\begin{html}<A HREF="mailto:bacsa@mail.inext.hu">bacsa@mail.inext.hu</A>\end{html}}
+%\else
+%\def\ComFirm{ComFirm BT.}
+%\def\ComFirmWeb{http://www.inext.hu/~comfirm}
+%\def\ComFirmEmail{comfirm@mail.inext.hu}
+%\def\VermesEmail{vermes@mail.inext.hu}
+%\def\BacsaEmail{bacsa@mail.inext.hu}
+%\fi
+
+\iftth
+\def\ComFirm{ComFirm BT.}
+\def\ComFirmWeb{\begin{html}<A HREF="http://www.comfirm.hu">http://www.comfirm.hu</A>\end{html}}
+\def\BacsaEmail{\begin{html}<A HREF="mailto:bacsa.istvan@comfirm.hu">bacsa.istvan@comfirm.hu</A>\end{html}}
+\def\CsiszarEmail{\begin{html}<A HREF="mailto:csiszar.levente@comfirm.hu">csiszar.levente@comfirm.hu</A>\end{html}}
+\def\HugiEmail{\begin{html}<A HREF="mailto:hornigne@comfirm.hu">hornigne@comfirm.hu</A>\end{html}}
+\def\AnikoEmail{\begin{html}<A HREF="mailto:nagy.aniko@comfirm.hu">nagy.aniko@comfirm.hu</A>\end{html}}
+\def\PiglerEmail{\begin{html}<A HREF="mailto:pigler.janos@comfirm.hu">pigler.janos@comfirm.hu</A>\end{html}}
+\def\EditEmail{\begin{html}<A HREF="mailto:szabo.edit@comfirm.hu">szabo.edit@comfirm.hu</A>\end{html}}
+\def\ThamoEmail{\begin{html}<A HREF="mailto:thamo.laszlo@comfirm.hu">thamo.laszlo@comfirm.hu</A>\end{html}}
+\def\VermesEmail{\begin{html}<A HREF="mailto:vermes.matyas@comfirm.hu">vermes.matyas@comfirm.hu</A>\end{html}}
+\else
+\def\ComFirm{ComFirm BT.}
+\def\ComFirmWeb{http://www.comfirm.hu}
+\def\BacsaEmail{bacsa.istvan@comfirm.hu}
+\def\CsiszarEmail{csiszar.levente@comfirm.hu}
+\def\HugiEmail{hornigne@comfirm.hu}
+\def\AnikoEmail{nagy.aniko@comfirm.hu}
+\def\PiglerEmail{pigler.janos@comfirm.hu}
+\def\EditEmail{szabo.edit@comfirm.hu}
+\def\ThamoEmail{thamo.laszlo@comfirm.hu}
+\def\VermesEmail{vermes.matyas@comfirm.hu}
+\fi
+ 
+\iftth
+\def\TtH{\begin{html}T<sub><font size="-1">T</font></sub>H\end{html}}
+\else
+\def\TtH{T\kern-.1667em\lower.5ex\hbox{T}\kern-.125emH}
+\fi
+
+
+%-----------------------------------------------------------------------
+% #1=filename(=label) #2=caption  #3=options 
+%-----------------------------------------------------------------------
+\iftth
+\newcommand{\xfigure}[3]{\par
+\begin{center}
+\if\htmlfigext\gif
+\begin{html}<img src="#1.gif" alt="#1">\end{html}
+\fi
+\if\htmlfigext\png
+\begin{html}<img src="#1.png" alt="#1">\end{html}
+\fi
+\begin{figure}[htbp]\caption{#2\label{#1}}\end{figure}
+\end{center}
+\par}
+\else
+\newcommand{\xfigure}[3]{\begin{figure}[htbp]\caption{#2\label{#1}}\end{figure}}
+\fi
+
+\def\png{p}
+\def\gif{g}
+\def\htmlfigext{\gif}
+
+%-----------------------------------------------------------------------
+ 
+
+\def\latex{LaTeX}
+\def\tex{TeX}
+\def\tth{TtH}
+
+\newcommand{\fejezet}[2]{\section{#1}{Szerző: \textit{#2}\par\nopagebreak}}
+ 
+\def\today{\number\year. 
+ \ifcase\month\or
+    január\or február\or március\or április\or május\or június\or 
+    július\or augusztus\or szeptember\or  október\or november\or december\fi
+ \space\number\day.}
+ 

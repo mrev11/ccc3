@@ -1,0 +1,5 @@
+#!/bin/bash
+bapp_unix_.b -bccc3_socket
+cp -pf listener.exe  $CCCDIR/usr/bin/$CCCUNAME
+cp -pf remstart.exe  $CCCDIR/usr/bin/$CCCUNAME
+ 

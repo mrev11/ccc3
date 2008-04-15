@@ -1,0 +1,46 @@
+
+
+(define-function gtk_alignment_get_type
+  (in-module GtkAlignment)
+  (c-name "gtk_alignment_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_alignment_new
+  (c-name "gtk_alignment_new")
+  (is-constructor-of GtkAlignment)
+  (return-type "GtkWidget*")
+  (parameters
+    '("gfloat" "xalign" (default "0.0"))
+    '("gfloat" "yalign" (default "0.0"))
+    '("gfloat" "xscale" (default "0.0"))
+    '("gfloat" "yscale" (default "0.0"))
+  )
+)
+
+(define-method set
+  (of-object "GtkAlignment")
+  (c-name "gtk_alignment_set")
+  (return-type "none")
+  (parameters
+    '("gfloat" "xalign" (default "0.0"))
+    '("gfloat" "yalign" (default "0.0"))
+    '("gfloat" "xscale" (default "0.0"))
+    '("gfloat" "yscale" (default "0.0"))
+  )
+)
+
+(define-method set_padding
+  (of-object "GtkAlignment")
+  (c-name "gtk_alignment_set_padding")
+  (return-type "none")
+  (parameters
+    '("guint" "padding_top"     (default "0"))
+    '("guint" "padding_bottom"  (default "0"))
+    '("guint" "padding_left"    (default "0"))
+    '("guint" "padding_right"   (default "0"))
+  )
+)
+
+
+

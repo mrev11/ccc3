@@ -1,0 +1,143 @@
+
+Flex szintaktikai elemző generátor CCC-hez
+==========================================
+
+Jelen csomag a Flex-2.5.4 általam javított, és Build projektként kiszerelt 
+változatát tartalmazza. CCC-hez ennek a változatnak a használata javasolt. 
+A 2.5.4-es változat egy régóta (1997) nem módosított, igen stabil program. 
+A SuSE 9.0, 9.1, 9.2 kiadásokból lehet megszerezni az eredetinek tekintett 
+forrásokat:
+
+  284328  2002-06-26  flex-2.5.4a.tar.bz2
+    4784  2003-09-15  flex-2.5.4a.diff
+
+A diff fájl nem hibajavításokat tartalmaz, hanem a C++ szabványban 
+időközben bekövetkezett változásokat követi.  A patch nélküli változat
+olyan C++ kódot generál, ami a régi <iostream.h> include filét használja.
+A patch utáni változat viszont az új szabvány szerinti <iostream>
+include filét használja, és az std névtérre hivatkozik.
+
+A jelenleg használatban levő C fordítók egy része még a régi,
+más részük az új szabványt támogatja:
+
+    GCC-3.3         :  iostream-new
+    Borland-C 5.5   :  iostream-new
+    Microsoft-C 6.0 :  iostream-old
+
+A Build projekt mindkét esethez tartalmazza a szükséges programokat. 
+A Build indító scriptjében a kommentek átállításával lehet elérni,
+hogy a C fordítónkhoz passzoló változat készüljön.
+
+
+
+Hogyan rekonstruálható a projekt?
+---------------------------------
+
+Mivel a Flex fejlesztése rossz irányt vett, fontos,
+hogy rekonstruálható módon rögzítsük a jelenlegi állapotot.
+Ezt szolgálja a jelen pont.
+
+
+A tar.bz2-t kibontjuk, és bemegyünk a tar.bz2 kibontása 
+után keletkező flex-2.5.4 directoryba.
+
+Alkalmazzuk (a) illetve kihagyjuk (b) a diff-ben levő javításokat.
+
+    A javításokat így lehet alkalmazni: 
+    Elindítjuk: patch < path/flex-2.5.4a.diff
+    
+Elindítjuk: configure
+
+Elindítjuk: make
+
+    Ebben az a poén, hogy a make csinál nekünk egy csomó előzetes 
+    kódgenerálást, többek közt a Bisonnal. A kódgenerálás eredménye 
+    függ attól, hogy milyen változatú Bison van installálva a gépünkön.
+    A jelen esetben 1.35-ös Bisont használtam, de vigyázni kell ezzel is, 
+    mert a Bison is rossz irányba halad, elromolhat.
+    
+A make után megnézzük, hogy milyen objectek keletkeztek,
+és az o-khoz tartozó c-ket kell kigyűjteni a Build számára.
+
+    A továbbiakban már tisztán csak c forásokkal lesz dolgunk. 
+    Összesen 13 db c filénk lesz, ui. a libwrap.c és libmain.c nem kell. 
+
+Összegyűjtjük a Build-nek a header (h) filéket.
+
+Ezután a Build le tudja fordítani a projektet a patchelt (a) és
+a patch nélküli (b) változatban egyaránt.
+
+
+Javítások Flex-2.5.4 CCC-Build-ben
+----------------------------------
+
+A skel.c-ben, az yyFlexLexer destruktorába be kell szúrni 
+az alábbi két sort:
+  "     yy_flex_free( yy_start_stack );",
+  "     yy_start_stack=0;",
+Máskülönben a flex által generált elemző eszi a memóriát.
+Korábban ezt a hibát az alkalmazási programokban kerültem el.
+
+config.h:
+    kikommentezni #define HAVE_ALLOCA_H 1  
+
+parse.c:
+    kikommentezni a 75-100 sorok közötti alloca-s mizériákat     
+
+dfa.c:
+    Warningot megszüntetni 399. sor
+
+scan.c:
+    kikommentezni az isatty-ra vonatkozó sorokat
+
+skel.c:
+    kikommentezni az isatty-ra vonatkozó sorokat
+
+
+
+Más Flex változatok (hibái)
+---------------------------
+
+A Flex változatok kérdése azzal vált kényessé, hogy a CCC-ben
+elkezdtünk C++ elemző objektumokat használni. A C++ fordítók
+nyűgösebbek, mint a C. A C++ standard könyvtára nemrég (pár éve)
+változott, de még használatban vannak a változás előtti állapotban
+levő fordítók is. A C++ nehézségeivel szembeállítható előnyök:
+A C++ elemző objektumok tartalmazzák az elemző teljes állapotát,
+ezért reentránsak és szálbiztosak, egy programban lehet egyidejűleg 
+több elemző is.
+
+
+SuSE 9.2-ig bezárólag
+
+    Természetesen a SuSE minden változatában a Flex passzol 
+    az aktuális C++ fordítóhoz. Hiba, hogy a generált C++ elemző
+    fogyasztja a memóriát (lásd az első javítást). Mivel ezzel 
+    a hibával hosszabb ideje együtt élünk, az alkalmazási programok 
+    CCC környezetben úgy vannak megírva, hogy a hibát saját hatáskörben 
+    elhárítják. Ezért egyelőre SuSE-n jó a rendszerrel települő Flex.
+
+
+Ubuntu 4.10-en kétféle Flex-et is telepíthetünk:
+
+    A Flex 2.5.31 első látásra kisebb verziószámúnak tűnik,
+    mint a 2.5.4, de aztán rájövünk: 4<31. Ez a változat kijavítja
+    a memóriaszivárgás említett esetét, viszont belekerült más, 
+    ismeretlen okú memóriavesztés. A programban nyelvi támogatás 
+    van (10 nyelven tudja közölni a hibaüzeneteit), forkol, linkeli
+    a regexp könyvtárat, tehát nem portolható egyszerűen Windowsra.
+    Qt támogatás szerencsére még nincs benne :). 
+    
+    Jó elgondolás, hogy tud generálni reentráns, szálbiztos 
+    elemzőket, amik mégsem C++-ban, hanem C-ben vannak, és így 
+    hordozhatóbbak, biztonságosabbak volnának, azonban az egyéb
+    hátrányok miatt nem hiszem, hogy ez a fejlesztési ág használható
+    lesz a közeljövőben.
+
+    Érezhették az ubuntusok, hogy a 2.5.31-es Flex nem teljesen ok,
+    azért telepíthető flex-old néven a 2.5.4 is. Ehhez azonban nem 
+    adnak olyan patchet, ami képessé tenné a kódot az új iostream-ek
+    használatára, úgyhogy Ubuntun a flex-old-ot egyáltalán nem 
+    lehet használni.
+
+

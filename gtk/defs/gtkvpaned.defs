@@ -1,0 +1,16 @@
+
+
+(define-function gtk_vpaned_get_type
+  (in-module GtkVPaned)
+  (c-name "gtk_vpaned_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vpaned_new
+  (c-name "gtk_vpaned_new")
+  (is-constructor-of GtkVPaned)
+  (return-type "GtkWidget*")
+)
+
+
+

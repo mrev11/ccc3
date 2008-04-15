@@ -1,0 +1,2 @@
+#!/bin/bash
+proto/proto.exe codegen.cpp >codegen.h

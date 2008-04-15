@@ -1,0 +1,17 @@
+geed -- Gtk Entity EDitor
+
+Félig utility, félig demó státuszú SQL editor.
+A GTK UI dinamikusan épül fel a glade filéből.
+A tableentity objektum dinamikusan épül fel a tds filéből.
+Az editor objektumot programból is lehet használni.
+
+Az editor nincs kész.
+Nem tud sort törölni, új sort berakni, táblát kreálni.
+Az alsó textview-t egyelőre nem használja semmire.
+Nem védekezik a hibák ellen, pl. ha számított mezőt akarnak update-elni.
+Nincs picture renderer, ezért körülményes az cellák editálása.
+
+Egyelőre nem folytatom, mert a cellaeditálást a jelenlegi
+eszközökkel nem lehet rendesen megcsinálni.
+
+A jeed-hez hasonló (de nem ugyanaz a) program.

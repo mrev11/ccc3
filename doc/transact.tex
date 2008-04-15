@@ -1,0 +1,452 @@
+
+\pagetitle%
+{Táblaobjektum tranzakció kezeléssel}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{2000.\ június 1.}
+
+
+\section{Példa a használatra}
+ 
+\begin{verbatim}
+     begin sequence
+         tx:=tranBegin()
+         ...
+         1-könyvelés
+         ...
+         2-könyvelés
+         ...
+         tranCommit(tx)
+     recover
+         tranRollback(tx)
+     end sequence
+\end{verbatim}
+ 
+Ha a könyvelések során valamilyen hiba keletkezik (pl.\ nem lockolható
+egy rekord, nincs fedezet, nincs árfolyam, nem található egy számla, stb.),
+akkor csak egy break-et kell végrehajtani, és a félig sikerült 
+könyveléseknek nyoma sincs az adatbázisban. Akkor is ez a helyzet,
+ha CTRL-C-t nyomnak, vagy, ha elszáll a program. 
+A fenti tranzakció elvileg csak úgy vezethet inkonzisztens 
+adatbázistartalomhoz, ha a lefagyás a könyvtári tranCommit végrehajtása 
+alatt következik be. 
+
+Az összes módosítás a memóriában tárolódik mindaddig, amíg végül tranCommit
+ki nem írja az adatbázisba.  Mivel commit előtt a módosítások nem íródnak a lemezre,
+azok csak a tranzakciót végző processz számára láthatók, idegen processzek
+számára nem. A processz a saját tranzakciójának részeredményeit látja,
+ezért a tranzakció többször is érintheti ugyanazt a rekordot, pl.{}
+az egymás utáni könyvelések összegei megfelelően fognak
+halmozódni a számlán.
+
+
+%A dokumentum korábbi változata hibás példát tartalmazott.
+%Ügyelni kell rá, hogy tranCommit nem állhat az  end sequence után, 
+%mert akkor korábban rollback-elt tranzakciókra is meghívódhat,
+%ami hibát eredményez.
+ 
+ 
+\section{Új függvények} 
+
+
+\subsection{tranBegin()}
+
+tranBegin() egy számot ad, ami a tranzakció indexe a tranzakciókat
+tároló stackben (array). A továbbiakban tranBegin() és tranCommit() között:
+
+\begin{itemize}
+\item
+  A módosított rekordok visszaírása elhalasztódik. A kiírásra váró 
+  rekordbuffereket a program memóriában tárolja. 
+
+\item  
+  A tranzakcióban végrehajtott változások csak a tranzakciót végző
+  processz számára láthatók.
+
+\item  
+  Az unlock jellegű műveletek hatástalanok, minden egyszer már 
+  megfogott lockot a rendszer megtart a tranzakció végéig 
+  (teljes tranCommit, vagy tranRollback).
+  
+\item
+  Azok a műveletek, amik a lockok megtartását és a rekordok
+  azonosítását meggátolnák runtime errort okoznak, ha olyan
+  táblán akarjuk végrehajtani, ami a tranzakció során változott.
+  Ilyenek: close, suppindex, dropindex, pack, zap, \ldots.
+  
+\end{itemize}
+   
+
+\subsection{tranRollback(tx)}
+ 
+tranRollback(tx) 
+eldobja azokat a változásokat, amik a tx azonosítójú
+tranzakció kezdete óta történtek. 
+Ha nem marad aktív tranzakció, akkor elengedi a lockokat, 
+egyébként minden lockot megtart. Ha tx==NIL, akkor a legutolsó
+tranzakciót dobja el, ha tx==1, akkor minden tranzakciót eldob.
+A tranzakció után pontosan azok a lockok maradnak meg,
+amik a tranzakció előtt is megvoltak.
+ 
+ 
+\subsection{tranCommit(tx)}
+Befejezi (leveszi a stackről) a tx tranzakciót, és a tx után indított 
+tranzakciókat. Ha tx==NIL, akkor a legutolsó tranzakciót fejezi be.
+Ha nem marad aktív tranzakció, akkor kiírja
+a függőben lévő módosításokat, és minden lockot elenged.
+A tranzakció után pontosan azok a lockok maradnak meg,
+amik a tranzakció előtt is megvoltak.
+
+\subsection{tranSynchronizeRecord(table,lockflag)}
+
+Tranzakció közben lemezre írja a table aktuális rekordját.
+Olyankor használjuk, amikor egy közös számláló tartalmát, pl.{} ugyszam(),
+vagy egy új egyedi kulcsot, pl.{} tabInsert(), láhatóvá akarunk tenni
+a többi program számára. Ha a lockflag értéke \verb!.t.!, akkor
+elengedi a szinkronizált rekord lockját (minden más lockot megtart). 
+Az ügyszámot tartalmazó rekordot célszerű rögtön elengedni, máskülönben 
+a tranzakció teljesen sorbaállítaná a konkurrens programokat.
+
+
+\section{Navigálás, láthatóság} 
+
+A tranzakcióban keletkezett változások tranCommit előtt még nincsenek
+kiírva az adatbázisba, ezért az új adatok csak a
+tranzakciót végző processz számára láthatók. Mivel az indexek sincsenek
+módosítva, azért {\bf a tranzakció közbeni navigálás, mindig a 
+tábla tranzakció előtti állapotának megfelelő} eredménnyel jár. 
+Ennek következményeként bizonyos algoritmusok, 
+amik a kiírt adat visszakeresésén alapulnak nem működnek tranzakcióban. 
+A klibraryban lévő ugyszam() és a tabInsert() függvények
+azonnal láthatóvá teszik az új rekordot egy tranSynchronizeRecord()
+hívással.
+
+{\small
+A  tranzakciós navigálás plusz feladata, hogy fel kell ismerni
+a tranzakcióban módosított rekordokat, és a legfrissebb verzióval 
+helyettesíteni kell a lemezen található adatokat. Eközben
+el kell igazodni az eredetileg is törölt állapotú,
+a tranzakció közben törlődött és a kifilterezett rekordok között.
+A navigálás algoritmusa tranzakcióban a következő:
+
+\begin{enumerate}
+\item A tranzakció kezdete előtt érvényes indexállapot szerint keres,
+\item ha a talált rekord törölt, továbblép, ameddig nem törölt rekordra ér,
+\item ha a rekordnak van tranzakcióban módosult verziója, azt behelyettesíti,
+\item ha a (helyettesített) rekord törölt, vagy kifilterezett, akkor továbblép.
+\end{enumerate}
+} 
+ 
+ 
+\section{Módosítások, törlés}
+A rendszer rekordmódosításkor tranzakcióban, vagy azon kívül
+egyformán megköveteli a rekordlockot. Ha az elmaradna, runtime
+error keletkezik. Az rlock metódus tranzakcióban nem törli a
+többi rekordlockot.
+
+A törlés megegyezik egy olyan módosítással, ami a deleted mezőt true-ra
+állítja, és (kompatibilitási okból) eggyel előrelép. A törölt rekord
+lockja is megmarad.
+
+ 
+
+\section{Append} 
+Az append kiír a lemezre egy törölt(!) rekordot, az aktuális rekordbufferbe
+pedig betesz egy normál állapotú (nem törölt) üres rekordot.
+Ha ezután kitöltjük a rekordot, és később végrehajtjuk a tranCommit()-ot, 
+akkor a rekord kiíródik. Ha a tranzakciót eldobjuk, akkor az adatbázisban
+megmarad a törölt állapotú rekord. Az új rekord lockolva lesz, 
+az esetleges többi lock megmarad.
+
+A táblaobjektum gotop, gobottom, seek, skip metódusai számára 
+a tranzakcióban appendált (és ezért törölt) rekordok láthatatlanok. 
+Az új rekordokra ezért csak a goto metódussal lehet visszapozícionálni.
+
+
+{\small
+A legtöbb bonyodalmat az append megvalósítása okozza, 
+néhány szó a részletekről: A tranzakcióban appendált rekordoknak 
+láthatatlannak kell lennie a többi processz számára, valamit viszont 
+mégis csak ki kell írni, hogy az új rekord recno-t kaphasson. 
+A láthatatlanság két módon érhető el: 
+
+\begin{itemize}
+\item az adatrekordra nem mutat index,
+\item a rekordot törölt flaggel írjuk lemezre.
+\end{itemize}
+ 
+A tranzakcióban appendált rekordokat a gotop, gobottom, seek, skip 
+utasítások nem látják, az ilyen rekordokra csak a goto-val lehet 
+rápozícionálni. Az egyes adatbáziskezelőkben a következő a helyzet.
+
+\begin{description}
+\item[DBFCTX]
+A tranzakciós append kiír a dbf-be egy rekordot, a dbf header-ben 
+a rekordszám eggyel nő. Az indexek egyáltalán nem módosulnak, ezért, 
+ha az append után közvetlenül egy rollback jönne, akkor a rekordot 
+többé egyáltalán nem lehetne elérni, még goto-val sem, mert a recno 
+index sem mutat rá.
+
+Ha a tranzakción belül goto-t hajtunk végre az új rekordra, 
+akkor a goto megtalálja az új rekord memóriabeli változatát, 
+és azt behelyettesíti.  A commit-ban ki fognak íródni az indexek,
+ami után a rekord a normál navigáció számára is látható lesz.
+
+A tranzakció közben a többi processz számára az új rekord teljesen
+láthatatlan, azaz még goto-val sem tudnak rápozícionálni.
+
+\item[DATIDX]
+A tranzakciós append kiír a dat-ba egy törölt állapotú rekordot,
+aminek csak recno indexe íródik ki.  A többi index kiírása szándékosan
+le van tiltva azáltal, hogy a rekordot nullkey byteokkal töltjük fel.
+(A Ctree-nek definiálni lehet egy nullkey byteot, ha a kulcsok helyén
+ezt találja, akkor az indexet nem módosítja.) A recno index kiírását
+viszont nem lehet elkerülni, mert ezzel kap recno-t az új rekord.
+
+A recno sorrend szerinti navigálás számára azért lesz láthatatlan
+a rekord, mert a lemezre törölt flaggel írjuk ki. Amikor goto-val
+rápozícionálunk, akkor  behelyettesítődik a memóriában tárolt
+normál (nem törölt) állapotú rekord. A commit a nem törölt
+állapotot fogja lemezre írni, a commit elmaradása, 
+vagy rollback esetén a rekord végleg törölt marad.
+
+A recno kiírása miatt az idegen processzek számára az új rekord
+nem teljesen láthatatlan, ui. goto-val be tudják olvasni a lemezen
+törölt, kitöltetlen állapotban levő rekordot, ennek azonban
+nincs nagy gyakorlati jelentősége.
+
+
+%\item[Btrieve]
+%A helyzet hasonló a DATIDX-hez azzal a különbséggel, hogy a törölt
+%állapotú új rekord kiírásakor a Btrieve minden indexet aktualizál.
+%Az üres rekordban levő üres kulcsok kiírása azonban nem hatékony, 
+%mert a kitöltött rekord lemezre írásakor úgyis törölni kell őket.
+%A Btrieve-ben nincs (?) módszer ennek elkerülésére.
+
+\end{description}
+} 
+
+ 
+
+\section{Korlátok}
+
+A rendszer a tranzakció közbeni változásokat a memóriában gyűjti
+egészen a végső tranCommit-ig, ebből adódóan nem képes akármilyen nagy 
+tranzakciót végrehajtani. Kerülendők az olyan tranzakciók, amik egy 
+tábla minden rekordját módosítják, és gyakran 
+OREF overflow\footnote{A CCC az  OREF\_SIZE
+környezeti változóban megadott darabszámú objektumot (stringet,
+arrayt, kódblokkot) tud tárolni, ha a program ezt túllépi,
+akkor keletkezik az ismert  OREF overflow hiba.
+ OREF\_SIZE deafult értéke 8192, ami kis és közepes
+programokhoz elegendő, de általában legalább 20000-re van beállítva.} 
+hibához vezetnek. Ugyanezért  a tranzakciókezelésből ki kellett
+zárni a tömeges módosítást tartalmazó metódusokat.
+Ha tranzakció közben próbáljuk meg végrehajtani az alábbi műveleteket, 
+runtime errort kapunk:
+\begin{itemize}
+\item tabAppendFrom(),
+\item tabLoadDBF(),
+\item tabPack(),
+\item tabZap(),
+\item tabUpgrade().
+\end{itemize}
+ 
+A tranzakcióban módosult táblára tiltottak az alábbi műveletek:
+\begin{itemize}
+\item tabSuppindex(),
+\item tabDropindex(),
+\item tabOpen(),
+\item tabClose().
+\end{itemize}
+Egy újonnan nyíló tábla nyilván még nem módosult, 
+tehát nincs akadálya annak, hogy egy könyvelési tranzakció közben 
+megnyissuk pl.{} a zárlati forgalmak tábláját. Ha viszont ebbe beírtunk 
+egy forgalmi tételt, akkor azt a tranCommit előtt tilos lezárni 
+(vagy újranyitni), mert az megakadályozna egy esetleges későbbi 
+tranRollbacket. 
+ 
+
+\section{Debug funkció} 
+
+A tranzakciók különösen megkönnyítik a debugolást.
+Állítsuk be a TRANCOMMIT=debug környezeti változót,
+ilyenkor a rendszer minden változást listáz, így azonnal látszik,
+hogy mit művel a program az adatbázisban.
+ 
+
+
+
+\section{Gyakorlat}
+
+Az itt közölt példaprogram megtalálható a ccctutor/tran directoryban.
+Fordítsuk le a próba projektet (m script), majd a ccctutor/tran/test
+directoryban indítsuk el s-et.
+
+\begin{verbatim}
+#include "table.ch"
+#include "_proba.ch"
+
+*****************************************************************************
+function main()
+
+local dd
+
+    PROBA:create
+    PROBA:open(OPEN_EXCLUSIVE)
+    PROBA:zap
+    
+    //teszt adatbázis
+
+    app("a","Van, aki forrón szereti.")
+    app("b","Van, aki forrón szereti.")
+    app("c","Van, aki forrón szereti.")
+    app("d","Van, aki forrón szereti.")
+    
+    view("INDULÓ")
+ 
+    tranBegin()
+    begin sequence
+
+      PROBA:goto(2); PROBA_TEXT:="Próba szerencse." 
+      view("módos1")
+      //break(NIL) 
+\end{verbatim}
+
+      Navigáció közben látjuk a 2-es rekord változását,
+      ha azonban itt kilépnénk (break), akkor az adatbázis 
+      eredeti (INDULÓ) állapota maradna meg.
+
+\begin{verbatim}
+      app("bb","Van, aki forrón szereti.")
+      view("app1")
+      rec()
+\end{verbatim}
+
+      Betettünk egy új rekordot, ám az a navigáció közben 
+      nem látszik. Csak goto-val lehet rápozícionálni, ahogy
+      az pl. a view() végén lévő PROBA:restore-ral történik.
+      A rec() kiírás mutatja, hogy azért megvan a rekord.
+
+\begin{verbatim}
+      PROBA:control("field")  //korlátozás feloldva
+ 
+      PROBA:goto(3);  PROBA_TEXT:="Próba szerencse." 
+      PROBA:goto(4);  PROBA:delete
+      app("cc","Van, aki forrón szereti.")
+      tranSynchronizeRecord(PROBA:table)
+      app("dd","Van, aki forrón szereti.")
+      dd:=PROBA:position
+      view("módos2")
+\end{verbatim}
+
+      Mindenféle módosítás.      
+      A törölt rekord kikerül a navigáció látóköréből.
+      A navigáció most sem mutatja az új rekordokat,
+      kivéve, ha azt külön utasítással szinkronizáljuk.
+      A dd kulcsú rekord pozícióját megjegyeztük későbbi
+      használatra.
+
+\begin{verbatim}
+      PROBA:seek("c")
+      PROBA_FIELD:="aaa" 
+      view("seek")
+\end{verbatim}
+
+      A "c" kulcsot átírtuk {"}aaa"-ra. A navigáció az új kulcsot
+      mutatja, de a régi kulcsnak megfelelő helyen, ui. először
+      megtörténik a pozícionálás a még nem módosult indexekkel,
+      majd az eredményre rátöltődnek a tranzakció közben készült
+      (és a memóriában tárolt) változások.
+
+\begin{verbatim}
+      PROBA:seek("c"); rec()
+      PROBA:seek("aa"); rec()
+      PROBA:gobottom(); rec()
+\end{verbatim}
+
+      Ezek eredménye szintén mutatja, hogy a navigálás az index
+      tranzakció előtti állapotának megfelelő eredményt ad.
+
+\begin{verbatim}
+      PROBA:goto(dd);  PROBA_TEXT:=upper(PROBA_TEXT)
+      //break()
+\end{verbatim}
+
+      A tranzakcióban létrejött rekordokra goto-val lehet
+      visszapozícionálni és a tartalmukat újra felhasználni.
+      Ha itt break-et csinálnánk, az induló állapothoz képest
+      csak a külön szinkronizált cc rekord volna az eltérés.
+
+\begin{verbatim}
+      tranCommit()
+    recover
+      tranRollback()
+    end sequence
+       
+    view("VÉGSŐ")
+\end{verbatim}
+
+    Kiíródnak a módosítások, aktualizálódnak az indexek,
+    így a navigáció mutatja az eddig rejtett rekordokat is.
+
+\begin{verbatim}
+    return NIL
+    
+*****************************************************************************
+static function app(fld,txt)    
+    PROBA:append
+    PROBA_TEXT:=txt 
+    PROBA_FIELD:=fld 
+    return NIL
+
+*****************************************************************************
+static function rec()
+    ? PROBA:position, PROBA_FIELD, PROBA_TEXT
+    ?
+    return NIL
+
+*****************************************************************************
+static function view(txt)
+local state:=PROBA:save
+    ? padr(txt,6),">", PROBA:position 
+    PROBA:gotop
+    while( !PROBA:eof )
+        ? padr(txt,6),">", PROBA:position, PROBA_FIELD, PROBA_TEXT
+        PROBA:skip
+    end
+    ?
+    PROBA:restore:=state
+    return NIL
+
+
+*****************************************************************************
+static function view0(txt)
+local state:=PROBA:save, n
+    ? padr(txt,6),">", PROBA:position 
+    for n:=1 to PROBA:lastrec
+        PROBA:goto(n)
+        ? padr(txt,6),">", PROBA:position, PROBA_FIELD, PROBA_TEXT
+    next
+    ?
+    PROBA:restore:=state
+    return NIL
+ 
+*****************************************************************************
+\end{verbatim}
+
+
+\section{Megjegyzések}
+ 
+Ez a tranzakciókezelő rendszer az általunk használt táblaobjektumokkal
+megvalósítható. %Jelenleg a datidx, dbfctx és Btrieve verziókban próbáltam ki.
+Hangsúlyozom, hogy a program {\em kifejezetten egyszerű}
+(kevés, az eredeti kódtól jól elkülönülő kiegészítésről van csak szó),
+ezért bízni lehet abban, hogy sikerül stabilra megcsinálni.
+Ez az egyszerű tranzakciókezelés a máshol 
+(pl.\ Oracle) elérhető funkcionalitásnak
+legalább 90\%-át biztosítja, ugyanakkor a hatékonyságban szinte
+semmi csökkenést nem okoz.
+ 
+
+%\gotoindex
+ 

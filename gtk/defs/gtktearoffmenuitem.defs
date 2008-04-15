@@ -1,0 +1,16 @@
+
+
+(define-function gtk_tearoff_menu_item_get_type
+  (in-module GtkTearoffMenuItem)
+  (c-name "gtk_tearoff_menu_item_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_tearoff_menu_item_new
+  (c-name "gtk_tearoff_menu_item_new")
+  (is-constructor-of GtkTearoffMenuItem)
+  (return-type "GtkWidget*")
+)
+
+
+

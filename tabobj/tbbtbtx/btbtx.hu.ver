@@ -1,0 +1,167 @@
+
+#ifdef _HISTORY_
+
+2006.04.20 -- 2.0.00"
+   Portolás unicode-ra.
+   Új mezőtípus: X.
+   A C mezők str2bin-nel tárolódnak, és bin2str-rel olvasódnak ki.
+   Az X mezők str2bin-nel tárolódnak, és binary-ként olvasódnak.
+   A memó mezők str2bin-nel tárolódnak, és binary-ként olvasódnak.
+
+   Megjegyzés: A program nincs az elejétől a végéig átvizsgálva,
+   sem tesztelve (ahogy lennie kellene), hanem ahol a próbálgatás
+   kihozta a string<-->binary konfliktusokat, ott javítottam.
+
+2005.08.08 -- 1.1.14"
+   A quitblock-ban csak akkor szabad további adatbázisműveleteket
+   (pl. tabCloseAll) végrehajtani, ha errorlevel()==0.
+
+
+2005.04.26 -- 1.1.13"
+   A filéhozzáférésekben a specifikáció mindenhol kisbetűs. 
+   Ezekre kell figyelni: tabPathName, tabIndexName, tabMemoName.
+   Korábban csak az esetek felében volt beírva a lower,
+   ami azt eredményezte, hogy a btbtx könyvtár nem működött
+   a "set dosconv off" beállítással. Most a dosconv beállítástól
+   függetlenül a táblaobjektum (a programban) case insensitive,
+   a fájlrendszerben pedig szigorúan kisbetűs nevekkel tárolódik.
+   Sajnos nem lehet elérni nagybetűs directoryban levő táblát.
+   
+   Windowson a változás érdektelen. Unixon mint eddig, ezután is 
+   csak kisbetűs táblaobjektumok létezhetnek, viszont a könyvtár 
+   használható "set dosconv off"-os programmal, így más filék 
+   (nem táblaobjektum) lehetnek case sensitivek.
+   
+   set dosconv off       : névkonverzió és file-lock protokoll kikapcsolva
+   set dosconv fileshare : file-lock protokoll be-, névkonverzió kikapcsolva
+
+
+2004.07.16 -- 1.1.12" 
+   Hibajelzés memók indexelésére.
+
+2004.04.18 -- 1.1.11" 
+    Új megoldás a rekordsorrend megtartására packban:
+    A módosított tabAppend nem használja a szabadlistát
+    (tabAppend->_db_append->__bt_append->__bt_new/__bt_new0)
+    A rekordok másolásakor így haladhatunk a lapok sorrendjében.
+
+    Megjegyzés:
+
+    Eredetileg a pack a lapokon végigfutva gyűjtötte a nem törölt 
+    rekordokat. Ez akkor is működőképes, ha a recno index sérült.
+    Mivel a tabAppend a szabadlistából is használt lapokat az új 
+    rekordok kiírására, a pack után megváltozhatott a rekordok 
+    recno szerinti rendezettsége. Ez akadályozta pack replikálását.
+    A replikálhatóság érdekében a 2004.03.10-es javítás úgy módosította
+    a packot, hogy az recno szerinti sorrendben gyűjtse a rekordokat.
+    A mostani módosítás egyesíti a két módszer előnyeit.
+
+2004.03.10 -- 1.1.10" 
+    tabPosition()==0-nál lockCurrent nem lockolhat.
+    Rekordsorrendet megtartó packolás (a replikáció érdekében).
+    tabCreate naplózása.
+
+2004.01.14 -- 1.1.09" 
+   Packolásnál nyitva maradt a memófilé.
+   Az előző javítás elrontotta a lock protokollt.
+
+2003.11.20 -- 1.1.08" 
+   Nem öröklődő filédescriptorok.
+ 
+2003.10.17 -- 1.1.07" 
+   Portolás GCC 3.3-ra.
+   Maximális picture hossz a karakteres oszlopokban: 64.
+
+2003.05.13 -- 1.1.06" 
+   Az EOF írásának ellenőrzése elrontotta a memók packolását.
+   Javítás: a memók packolásakor az EOF flaget törölni kell.
+
+2003.03.21 -- 1.1.05" 
+  tranRecordLockedInTransaction(table)
+    A tranzakció végén (commit/rollback) pontosan azok a lockok
+    szűnnek meg, amik a tranzakció közben jöttek létre.
+  
+  function tranDeleteOnRollback(table,pos)
+    A rollback törli azokat a rekordokat, amik a táblák TAB_TRANDEL
+    listájában vannak felsorolva. Jelenleg csak a tabInsert használja.
+ 
+2003.03.04 -- 1.1.04
+  Az előző javítás (tabKeyLength) elrontotta a packot, javítva.
+
+2003.02.22 -- 1.1.03
+  EOF írásának ellenőrzése (inkompatibilis?).
+
+  Új  függvény: tabKeyLength(). Korábban a len(tabKeyCompose())
+  kifejezéssel számítottuk a kulcsok hosszát, ezzel azonban többször 
+  baj volt, amikor a táblában nem volt egyetlen rekord sem, vagy
+  nem volt pozícionálva.
+  
+  Elakadt 0 rekordot tartalmazó filék indexelésében, a kritikus
+  ágakat át kell ugrani.
+  
+  tabVerify() újraépíti az egész oszlopstruktúrát, így a programba
+  legvégül mindig a filével összhangban levő objektum kerül, még 
+  ha nem is tud a program minden oszlopról.
+ 
+2003.02.13 -- 1.1.02
+  A seek nem kalkulálta újra a talált kulcsot a getnext ág után,
+  ezért találatot jelzett olyankor, amikor egyező kulcsú, de törölt
+  (kiszűrt) rekordot talált.
+
+2003.02.10 -- 1.1.01
+  Nem jó helyen volt tabOpen-ben a tabSunlock.
+  A hiba csak Windowson jelentkezett (mert UNIX-on ugyanaz
+  a processz kétszer is meg tud nyitni egy filét exkluzívan?).
+
+2002.12.20 -- 1.1.00
+  Naplózás, az alábbi környezeti változókkal szabályozható:
+
+  CCC_TRANSACTION_FILE_LOG    fspec, amibe írja a naplót (lehet NFS-en)
+  CCC_TRANSACTION_FILE_MUTEX  fspec, amit lockoláshoz használ (lokális)
+  CCC_TRANSACTION_FILE_ALIAS  fspec, ami a naplózandó aliasokat tartalmazza
+  
+  A naplózást a nem üres CCC_TRANSACTION_FILE_LOG kapcsolja be.
+  Ha CCC_TRANSACTION_FILE_ALIAS üres, akkor mindent naplóz.
+ 
+2002.12.17 -- 1.0.00
+  Memók packolása (a többi driver még nem packolja a memókat).
+
+2002.12.16 -- 0.9.02
+  A mezőértékadás kifejezés értéke (szabványosan) a jobboldal.
+
+2002.11.13 -- 0.9.01
+  Hibás volt a nulla rekordot tartalmazó filék packolása.
+
+2002.03.26 -- 0.8.30
+  Optimalizált indexelés (build_bt_index) kulcsrendezéssel.
+  tabOpen-ben az inkompatibilis indexek konverzióját 
+  tabUpgrade helyett build_bt_index végzi.
+
+2002.03.25 -- 0.8.20
+  Large file support Linuxon.
+
+2002.03.22 -- 0.8.10
+  Automatikus little/big endian swap.
+
+2002.01.21 -- 0.8.00
+  Optimalizált pack rekordmásolással, kulcsrendezéssel. 
+
+2001.12.25 -- 0.7.00
+
+  OK számmezők kulcsképzése
+  OK tabVerify az indexekre
+  OK suppindex/dropindex implementációt feléleszteni
+  OK törölt indexet egyben a szabadlistába fűzni
+  OK konkurrencia kezelés a header lapok módosításakor
+  OK konkurrencia kezelés az adatlapok módosításakor
+  OK konkurrencia kezelés az index műveletekre
+  OK tranzakcióssá tenni az indexelést
+  OK optimalizált loaddbf (rekordmásolással) 
+  OK nyúzó teszt
+     OPEN_APPEND mód támogatás
+     keresés százalékra
+#endif
+
+
+
+

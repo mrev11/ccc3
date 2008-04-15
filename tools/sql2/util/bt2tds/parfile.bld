@@ -1,0 +1,4 @@
+-bccc3_btbtx
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+
+

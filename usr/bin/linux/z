@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#default
+#fekete alapon fehér
+#export ZCOLOR_0=w/n             #text
+#export ZCOLOR_1=w/bg,n/w        #header, alert, get
+#export ZCOLOR_2=bg/w            #mark
+#export ZCOLOR_3=w/b,b/w         #alertbutton
+
+#fehér alapon kék
+#export ZCOLOR_0=b/w             #text
+#export ZCOLOR_2=w/b             #mark
+
+#fehér alapon fekete
+#export ZCOLOR_0=n/w             #text
+#export ZCOLOR_1=w/b,n/w         #header, alert, get
+#export ZCOLOR_2=w/n             #mark
+#export ZCOLOR_3=n/w,w/n         #alertbutton
+
+
+#export CCCTERM_FONTSPEC=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
+#export CCCTERM_FONTSPEC=-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+
+export CCCTERM_SIZE=80x50
+
+export ZSAVE=t
+
+#z.exe "$@" &
+nohup z.exe "$@"   1>>~/.z/nohup1.out  2>>~/.z/nohup2.out  &

@@ -1,0 +1,528 @@
+
+\begin{description}
+
+\item[2008.02.17]
+  A ppo2cpp-ben a flex elemző a hosszú stringeket soronként darabolja,
+  mert az MSC fordítónak gondja van a túl hosszú stringekkel.
+
+\begin{verbatim}
+  "\n"   {raw_cat("\\n\\\n");/*egy nagy string*/}
+\end{verbatim}
+  
+  helyett
+
+\begin{verbatim}
+  "\n"   {raw_cat("\\n\"\nL\"");/*darabol*/}
+\end{verbatim}
+
+\item[2008.02.17]
+  Windowson a file API-kban áttérés a unicodera:
+\begin{verbatim}
+    chmod     ->    _wchmod  
+    getcwd    ->    _wgetcwd 
+    mkdir     ->    _wmkdir  
+    rmdir     ->    _wrmdir  
+    remove    ->    _wremove 
+    rename    ->    _wrename 
+    fopen     ->    _wfopen  
+    stat      ->    _wstat   
+    sopen     ->    _wsopen  
+
+    FindFirstFile -> FindFirstFileW
+    CopyFile -> CopyFileW
+    stb.
+      
+    nincs: _wexec, _wspawn 
+    rossz: _wsystem (elromlanak a nem-ASCII argumentumok)
+\end{verbatim}
+    
+  Példa:
+
+\begin{verbatim}
+    #ifdef _UNIX_
+        _retni( chmod(_parb(1),_parni(2)) );
+    #else
+        bin2str(base);
+        _retni( _wchmod(_parc(1),_parni(2)) );
+    #endif
+\end{verbatim}
+
+  Kellemetlen, hogy sok helyen megjelent ez a kettősség.
+  Most a windowsos websrv kezeli a cirill betűs directorykat
+  és fájlokat, de nem tud végrehajtani nem-ASCII CGI-t.
+
+\item[2008.02.05]
+  Nem lehet definiálva az MSC fordítónak a \verb!_WINDOWS_! szimbólum, 
+  mert attól elromlik (ki kellett venni a compile.opt filékből).
+
+\item[2008.01.31]
+  Rossz volt Windows XP-n a socket.inherit implementáció.
+  Windows 2000-en a DuplicateHandle-es megoldás jól működött.
+  XP-től kezdődően viszont a DuplicateHandle nem alkalmazható socketekre,
+  hanem helyette a Set/GetHandleInformation-t kell használni.
+
+\item[2008.01.24]
+  Küzdelem a \verb!char *p="stringconstant"! forma ellen,
+  amire a gcc 4.2.1 warningot ad.
+  Helyette \verb!const char *p="stringconstant"!-t kell írni,
+  ezért egy csomó helyen meg kellett változtatni az interfészeket.
+
+\item[2008.01.19]
+  {\bf Fontos hibajavítás} az attrib -> method felüldefiniálásban:
+
+  Korábban ilyenkor az attribútumok tömbjében lyuk maradt. 
+  Az  object:attrvals metódus az attrnames és asarray
+  párhuzamosnak gondolt tömbök összepárosításával működik.
+  A felüldefiniálás után asarray lyukas maradt, de attrnames nem,
+  azaz a tömbök mégsem párhuzamosak, így az adatok elcsúsztak.
+  Ezért attrib -> method felüldefiniálás után a classMethod
+  újraszámolja az attribútumok indexét, és megszünteti a lyukat.
+ 
+  Új függvény class.prg-ben: classMethodCount.
+  classMethNames a hash-beli elhelyezkedés sorrendjében adja
+  a metódusneveket (a korábbi név sorrend helyett).
+  
+  A CCC3-beli class.prg átvive CCC2-be (backport).
+
+\item[2007.12.17]
+  A directory és findfirst függvényekben binopt opció,
+  hogy hozzá lehessen férni a nonascii karaktereket tartalmazó
+  filénevekhez.
+
+\item[2007.10.30]
+  direxist-ben kiegyenlítve a záró / okozta eltérés:
+  ha dir létezik, akkor dir/ is létezik (Windowson is).
+
+\item[2007.10.20]
+  ppo2cpp-ben az implicit recover kódgenerálása javítva.
+
+\item[2007.09.10]
+  Windows dirname() javítva (a path D: részét ki kell hagyni).
+
+\label{20070730}
+\item[2007.07.30]
+  SSL támogatás a \verb!ccc3_sslsocket! könyvtárban.
+  Új osztályok: socket, sslcon, sslctx.
+  A socket fd-k kaptak egy burkoló osztályt. 
+  Az SSL kapcsolatok is kaptak egy burkoló osztályt.
+  Az osztályok  egyforma interfésze lehetővé teszi, 
+  hogy ugyanaz a program (az SSL bekapcsolásától eltekintve) 
+  egyformán működjön plain és secure socketekkel.
+  A websrv program át van írva az új osztályok használatára,
+  tehát saját erőből (sslforwarding nélkül is) tud titkosítani és azonosítani.
+  A jtlib könyvtárba is bekerült az SSL támogatás. 
+  Az alkalmazásokban a kliens (jterminal) és szerver is 
+  tudja hitelesíteni a másik felet.
+  
+  A CCC2 olyan compatibility réteget kapott, ami lehetővé teszi,
+  hogy a CCC3 alá fejlesztett könyvtárak (egy része) változtatás
+  nélkül leforduljon CCC2 alatt. Így fordulnak CCC2-ben 
+  a socket, sql2, jtlib  könyvtárak, 
+  tehát nem kell ezeket két változatban is karban tartani.
+
+  Új UNIX spawn implementáció prg-ben.
+
+\label{20070513}
+\item[2007.05.13]
+  CCC Boehm-féle szemétgyűjtéssel:  \href{boehm_gc.hu.txt}{boehm\_gc.hu.txt}.
+
+\label{20061024}
+\item[2006.10.24]
+  Reguláris kifejezések: Csatoló a \verb!pcreposix! 
+  könyvtárhoz \verb!$CCCDIR/tools/regex!-ben.
+  Installálni kell hozzá a libpcre3 csomagot,
+  Linuxon a fejlesztő (libpcre3-dev) csomagot is.
+  Windowsra forrásból lehet installálni pcreposix-ot,
+  az eljárás a pcre directoryban van leírva.
+  Csak a POSIX interfész támogatott,
+  nincs UTF-8 támogatás, 
+  csak bináris stringre működik.
+
+\label{20060918}
+\item[2006.09.18]
+  Elkészült a CCC3. 
+
+  Lényegesen fejlődött a GTK interfész, van Glade modul,
+  amivel CCC-ben is lehet egérhúzogatással GUI-t szerkeszteni.
+  Fejlődött a Jáva terminál interfész (komaptibilis javítások).
+  Utoljára készült el, egyben lényegesen fejlődött az SQL2 interfész,
+  a specifikáció verziószáma 1.0-ról 1.1-re változott,   a 
+  \href{sql2.html}{dokumentáció} átvizsgálva, kibővítve.
+  Dinamikus tableentity objektum generálás tds-ből.
+  Jeed: Jáva terminálos tableEntity EDitor.
+  
+  A CCC3 telepítéséről rövid dokumentáció olvasható 
+  \href{http://ccc.comfirm.hu./ccc3/download/olvass.html}{itt}.
+  A preferált terjesztési módszer: forrás letöltés subversion 
+  (svn) klienssel.
+  
+  A GTK-t, Jáva terminált, SQL2-t érintő javítások/változások
+  nincsenek backportolva a CCC2-be, ezért az új projekteket 
+  mindenképpen CCC3 környezetben érdemes fejleszteni.
+
+\label{20060520}
+\item[2006.05.20]
+  Útjára indult a CCC3.
+  A fő újdonság a karakter stringek 
+  és a bináris stringek megkülönböztetése,
+  más szóval az unicode/UTF-8 támogatás.
+  A változások részleteiről az
+  \href{ccc3_ujdonsagok.html}{Újdonságok a CCC3-ban}
+  dokumentumban találunk információt.
+  A csomagok a 
+  \href{http://www.comfirm.hu/ccc3/download}{http://www.comfirm.hu/ccc3/download}
+  directoryból tölthetők le. A készültség jelenleg kb.~80\%.
+  Egyelőre csak azok használják, akik teszteléssel és hibajelentéssel
+  akarják segíteni a fejlesztést.
+
+
+\label{20060512}
+\item[2006.05.12]
+
+  Befejeződött a CCC2 fejlesztése.
+  Az új/megváltozott típusok miatt a CCC3 nem teljesen 
+  kompatibilis a CCC2-vel, ezért a CCC2 nem vált feleslegessé,
+  mindazontáltal a továbbiakban csak hibajavítások lesznek hozzá
+  a nem portolandó programok fenntartása érdekében.
+
+  A mostani új CCC2 csomagok tartalmazzák a korábbi delta csomagokat
+  és az azóta keletkezett kisebb javításokat. A csomagnevek
+  kissé változtak, hogy a CCC2 és CCC3  csomagok egymás mellett
+  keveredés nélkül kezelhetők legyenek.
+
+  Megjegyzés a GTK-hoz: A windowsos fordítók közül a Borland
+  (FreeCommandLineTools, 2000-ből származik, nincs újabb) nem képes 
+  lefordítani a GTK-t. Az MSC lefordítja ugyan, de egyes programok 
+  (pl. appwindow) SIGSEGV-vel elszállnak. Ezért egyedül a MinGW 
+  látszik alkalmasnak windowsos GTK programok készítésére.
+
+\label{20060124}
+\item[2006.01.24]
+  Class utasítás, 
+  vararg API, 
+  qout-ba visszatéve a karakterkonverzió,
+  windowos terminálok korszerűsítve, 
+  CCC névtérnevek C++-beli prefixelése,
+  DOSCONV alapértelmezése 0.
+
+\label{20051001}
+\item[2005.10.01]
+  A futtatórendszer kisebb változásai miatt 
+  az új objectek nem linkelhetők össze a régiekkel, 
+  ezért átálláskor egyszerre mindent újra kell fordítani.
+
+  \paragraph{LGPL license:}\label{LGPL}
+    Az egész CCC projektet LGPL license alá helyeztük.
+    Ebből adódóan el kellett hagynunk azokat a nem szabad 
+    komponenseket,  amik license-elése ellentmond az LGPL-nek,
+    nevezetesen a Ctree alapú táblaobjektumokat. Megjegyzés:
+    a Ctree teljes mértékben helyettesíthető a BTBTX táblaobjektummal.
+  
+  \paragraph{Flex és Lemon telepítés:}\label{FLEX}
+    A CCC telepítője automatikusan installálja a flex-et és lemon-t
+    (\$CCCDIR/usr alá), ezért nem kell a telepítésükkel külön  foglalkozni.
+
+  \paragraph{Kivételkezelés:}\label{EXCEPTION}
+    Több recover, amik típus alapján
+    válogatnak a kivételek között, új finally ág, mindez Jáva mintára.
+    A ppo2cpp a 4.3.xx változattól kezdve fordítja az új szintaktikát.
+    Recover nélküli break kilépés helyett kiértékeli az errorblockot.
+    A könyvtárakban eval(errorblock(),e) helyett break(e).
+    Különféle error leszármazottak syserror-ban.
+    Az object osztályban új metódus: isderivedfrom.
+    Prototype objectek.
+
+    \paragraph{Táblaobjektumok:}
+    A hibakezelés a fentieknek megfelelően változott,
+    speciális hibaosztályok: tabStructError, tabIndexError.
+    A Ctree alapú táblaobjektumok kikerültek a csomagokból.
+
+  \paragraph{Szignál kezelés:}\label{SIGNAL}
+    signal.ch-ban egységesen használt signum konstansok.
+    Mutex lockok alatt a szignálok tiltva (deadlock ellen).
+    Windows ctrlcblock megszűnt, setposixsignal átalakítva.
+    Szignálok blokkolása Linuxon és Windowson egységesítve.
+    Signalblock paraméterezése változott: eval(signalblock(),signum).
+    Szálak indításakor védekezés a szignálok ellen.
+    siglocklev, sigcccmask öröklődik a szálak között.
+
+    Új szignál API: 
+        signal\_description, signal\_lock, signal\_unlock,
+        signal\_raise, signal\_send, signal\_pending, signal\_clear, 
+        signal\_setmask, signal\_mask, signal\_unmask.
+
+  \paragraph{Megjegyzés a szignálokhoz:}
+    A szálbiztonság és a korrekt szignálkezelés legfontosabb
+    kritériuma: Minden olyan pillanatban, amikor egy másik 
+    szálból szemétgyűjtés indulhat, vagy a szál szignált kaphat 
+    a vermeken kell legyen minden élő változó, de nem lehet 
+    ott semmi más (pl. keletkezőben vagy megszűnőben levő változók). 
+    E kritérium  teljesítése csak a ccc2 és ccc2\_ui\_ könyvtáraknál 
+    kitűzött cél. Ha egy nem szálbiztosan megírt program 
+    a szignálkezelőben  szemetet gyűjt, elszállhat.
+    A CCC alap futtatórendszere (ccc2 és ccc2\_ui\_) a szignálkezelés 
+    alatt is ép állapotban tartja a változóteret, és elkerüli 
+    a deadlockokat.  A reentráns programoknál szokásos általános
+    szabályokon kívül semmilyen tiltás nincs, elvileg  bármi
+    futhat a szignálkezelőben.
+
+    A signal\_lock(), signal\_unlock() API csak azt a szálat védi
+    a szignáltól, ami a signal\_lock()-ot meghívta. Ettől még bármely
+    másik szál kaphat SIGINT-et, és az egész program kiléphet.
+    Windowson éppenséggel mindig ez a helyzet, ui. a SIGINT-et
+    mindig egy újonnan induló szál kapja. A signal\_lock() ezért
+    csak arra való, hogy a mutexeket védje deadlock ellen.
+    Ha az egész programot kell védeni a SIGINT-től akkor ki kell
+    cserélni a minden szálra globális signalblock()-ot. Így
+    működik az új setposixsignal().
+
+  \paragraph{Castolások:}
+    Az összes (char*) cast felülvizsgálva.
+    Áttérés \verb!const char*! deklarációkra, ahol az lehetővé teszi 
+    a  (char*) cast elhagyását, pl. \verb!char *txt=(char*)YYText()! 
+    helyett   \verb!const char *txt=YYText()!.
+    A strings(), stringn() függvények char* helyett const char*-t 
+    várnak, szintén a castok kerülése érdekében.
+    
+  \paragraph{Megjegyzés a castoláshoz:}
+        \verb!char *buf="string literal";!
+    régi értelmezése: inicializált karakterbuffer,
+    új értelmezése: karakterkonstans (readonly szegmensbe helyezve).
+    Korábban a -fwritable\_strings opcióval választható volt
+    a régi értelmezés, most azonban ez az opció a GCC-ben megszűnt.
+    A string literál helybeni nagybetűre konvertálása SIGSEGV-t okoz.
+    Ha a C++ logikus akarna lenni, akkor a fenti sorra hibát kéne
+    jeleznie. Ehelyett a C++ tervezőjének két kötetes,  1000 oldalas 
+    könyvében azt olvasom: A sok régi programra való tekintettel (!) 
+    a fordítók a fenti sort warning nélkül fogadják el. Következmény:
+    Az inkompatibilis változás miatt, és amiatt, hogy az új C++ szabvány 
+    következetlenül használja a char* és const char*  típusokat, régi 
+    C programok warning-mentes fordítás után SIGSEGV-znek.
+    
+  \paragraph{Szemétgyűjtés, szálbiztonság:}
+    A szemétgyűjtés és a VALUE értékadás szinkronizálásában
+    a vitatott zsilipelés helyett szálanként privát mutexek lockolva.
+    A nem szálbiztos *stack++=NIL helyett mindenhol PUSHNIL().
+    
+  \paragraph{Kulcsszavak:}  
+    Egyes kulcsszavak (pl. \verb!next!) használhatók függvénynévként.
+    A lexikai elemző a szimbólum előtt/mögött levő "." 
+    (névtér határoló), illetve a szimbólumot követő "("
+    karakter alapján állapítja meg, hogy nem kulcsszóról,
+    hanem közönséges szimbólumról van szó. Továbbra sem
+    lehet függvénynévként használni olyan kulcsszavakat,
+    amiket a normál használatban zárójeles kifejezés
+    követhet, ilyen pl. az \verb!if! és \verb!while!.
+    Megjegyzések: 1) Metódus és osztálynév szerepben mindig is
+    megengedett volt kulcsszavakat használni. 2) Változónév
+    szerepben ezután sem megengedettek a kulcsszavak.
+
+  \paragraph{Egyéb:}
+    Build, prg2ppo, z, zgrep statikusan linkel.
+    sread()-ből kivéve az 1 órás timeout.
+    Stack kezelési hiba javítva evalarr()-ban.
+    asort()-ban az összehasonlító block alatt gc engedélyezve.
+    Egyes include filék több példányban tárolása megszűnt.
+    Run és quit preprocesszálása megszűnt.
+    Solarison javítva a waitpid() WNOHANG módja.
+    A cccapi.h Windowson inkludálja windows.h-t, 
+    azért felesleges azt máshol is inkludálni.
+    A prg2ppo preprocesszorban áttértünk case sensitive
+    filéspecifikációk használatára, ez régi programokban 
+    hibákat hozhat ki.
+
+\label{20050508}
+\item[2005.05.08]
+    Solaris port karbantartása. 
+    Védelem veremtúlcsordulás ellen.
+    
+    A GCC-ben megszűnt a \verb!-fwritable-strings! opció.
+    Ez az inkompatibilis változtatás bármely eddig jónak számító
+    és a \verb!-fwritable-strings! nélkül is warning mentesen forduló 
+    programba segfaultot vihet. Például, ha a program egy stringet 
+    helyben akar nagybetűre konvertálni. A \verb!ccc-fltk-config!-ban 
+    előfordult ilyen eset.
+
+\label{FREEBSD}
+\item[2005.04.11]
+    Portolás FreeBSD-re. 
+    A ccc2 csomag nevébe bekerült a dátum: \verb!ccc2-20050411.zip!.
+
+\label{SQL2}
+\item[2005.02.28]
+    Korszerűsödött az SQL2 interfész. Az új változat 
+    ideiglenesen a CCC2 csomagtól függetlenül, külön tölthető le.
+    Az új változattal helyettesíteni kell a CCC2 csomag tools 
+    directoryjában levő régi változatot. Egységes, új dokumentáció 
+    is készült a csomaghoz: 
+    \href{http://ok.comfirm.hu/ccc2/sql2.html}{SQL2 1.0 interfész}.
+
+\label{64BIT}
+\item[2005.01.24]
+    Portolás 64-bites (x86-64) rendszerre.
+    
+    A mostani változások az Opteron, vagy Athlon-64 
+    processzoron 64-bites Linuxot futtató felhasználókat érintik. 
+    Egyéb 64-bites (Itanium, Sparc) rendszereken nem történt próbálkozás.  
+    A régi rendszereken remélhetőleg nem romlik el semmi.
+    Az új könyvtár általában futtatja a régi programokat, tehát nem kell
+    feltétlenül mindent újrafordítani.
+    
+    32-bites rendszeren a C szintű int/long számok és pointerek 
+    mindig tárolhatók egy double-ban, azaz egy Clipper számváltozóban.
+    64-biten azonban már más a helyzet. Létrehoztunk ezért egy új Clipper 
+    típust (jele P=pointer), amit olyan adatok tárolására lehet használni,
+    mint pl. egy Windows handle, OCI handle,  thread azonosító, stb..
+    
+    Clipper szinten a P változókkal a tároláson, értékadáson
+    kívül kevés  értelmes dolgot lehet csinálni:
+    \verb!p1:=p2!,
+    \verb!p1==p2!, \verb|p1!=p2|, 
+    \verb|p==NIL|, \verb|p!=NIL|, 
+    \verb!l2hex(p)!, 
+    \verb!valtype(p)!, 
+    \verb!empty(p)!, 
+    \verb!xtoc(p)!, 
+    \verb!qout(p)!.
+    
+    C szinten a \verb!pointer(void*)! függvény a veremre teszi a változót,
+    a \verb!_parp(i)! makró átveszi a P tipúsú paramétert, 
+    a \verb!_retp(p)! makró létrehozza a vermen a P típusú visszatérési értéket.
+    
+    A 64-bites port nem tartalmazza a CTREE adatbáziskezelőt. 
+    Pontosabban a csomagban továbbra is benne vannak a 32-bites
+    bináris könyvtárak, ezek azonban nem használhatók 64-biten.
+    A BTBTX adatbáziskezelő kiválóan fordul 64-biten is. 
+    
+    Technikai megjegyzések: 
+    
+    A 64-bit érdekében nem kellett változtatni a fordítón. 
+    A generált C kód 32-biten és 64-biten ugyanaz. A futtatókönyvtár 
+    forrása is ugyanaz 32 és 64-biten, még \verb!#ifdef! makrókra sincs 
+    szükség.  A bináris kód attól függően lesz 32 vagy 64-bites, 
+    hogy a rendszeren  mi a \verb!void*! típus mérete.
+    
+    32-biten:
+    \begin{verbatim}
+    sizeof(short)==2
+    sizeof(int)==4
+    sizeof(long)==4
+    sizeof(void*)==4
+    \end{verbatim}
+
+    64-biten:
+    \begin{verbatim}
+    sizeof(short)==2
+    sizeof(int)==4
+    sizeof(long)==8
+    sizeof(void*)==8
+    \end{verbatim}
+    
+    A mostani változtatások lényege: 
+    Azokon a helyeken, ahol a C réteg 64-bites mennyiséget adott
+    volna át a Clipper rétegnek számváltozóban, ott a számváltozó (N)
+    helyett az új pointer (P) típusra tértünk át.
+\item[2005.01.19]
+    A ppo2cpp fordító hibát jelez, 
+    ha a \verb!begin sequence! és \verb!recover! közül kiugrani
+    akaró \verb!return/loop/exit! utasítást talál.
+    
+    Új szintaktika hosszú string literálok írására: 
+    A \verb!<<SYM>>raw string<<SYM>>! kifejezésben SYM egy tetszőleges
+    szimbólum. A raw string akármilyen hosszú lehet, bármi
+    lehet benne, kivéve \verb!<<SYM>>!, mert az lezárja a stringet.
+
+    Scrollozó Windows konzolok támogatása. Korábban a programok
+    az egész képernyő buffert vették képernyőnek, most alkalmazkodnak
+    a látható méretekhez.
+\item[2004.10.30]
+    Javítások a többszálúságban: Windowson a \verb!MUTEX_LOCK! és
+    \verb!MUTEX_UNLOCK! makrók definíciója fel volt cserélve, 
+    ezért fordítva működtek. Emiatt többszálú programokhoz (Windowson) 
+    {\em minden objectet és minden könyvtárat\/} újra kell fordítani.
+    A névtereket támogató fordító és az sql2 könyvtár 
+    bekerült a ccc2.zip főcsomagba, egyúttal önálló csomagként megszűnt.
+\item[2004.10.09]
+    Fejlődött a  sql2 könyvtár.
+    A ppo2cpp\_4\_1\_01  fordító támogatja a többszintű névtereket, 
+    ez szükséges az új sql2 csomaghoz, 
+    ami most az sql2.oracle és sql2.postgres névtereket használja.
+
+\item[2004.09.28]
+    A pgsql2.zip és oci2.zip csomagok megszűntek, 
+    helyettük letölthető az  sql2.zip csomag,  dokumentáció az 
+    \href{http://ok.comfirm.hu/ccc2/sql2.html}{SQL2 könyvtár} oldalon.
+
+\label{NAMESPACE}
+\item[2004.09.23]
+    Névtér támogatás.
+    A CCC névterek közvetlenül C++ névterekre képződnek le.
+    Az új fordító kísérleti változata egyelőre külön csomagban tölthető le:
+    ppo2cpp\_4\_1\_00.zip.
+    A namespace.zip csomagban egyszerű példák vannak a névtér használatára.
+
+\item[2004.09.05]
+    A táblaobjektumban új hibaüzenet jelzi, hogy memót nem lehet indexelni.
+    Áttérés (Bison helyett) Lemonra, Flexben áttérés C++ elemzőre.
+    A Flex és Lemon  telepítésével külön foglalkozunk,
+    egyelőre a bisonos változatok is benne vannak a csomagban.
+    Új 4.0.x verziószámú (lemonos) ppo2cpp fordító. 
+    Az osztály-metódus párosításban hash tábla optimalizálás.
+    Az xmldom könyvtár újraírva, most reentráns és kétszer gyorsabb.
+    Új Oracle és PostgreSQL interfész (külön csomagokban).
+    Külső static változók szinkronizált létrehozása,
+    osztályregisztrációk szinkronizálása.
+    Kompatibilitás: Az új (2.1.x) CCC környezet képes
+    futtatni a 2.0.x környezetben fordított programokat,
+    fordítva azonban nem megy.
+
+\item[2004.04.05]
+    BTBTX pack a replikálhatóság érdekében megtartja a rekordsorrendet.
+    Táblaobjektum naplózás és replikálás bővült.
+    Gyorsított XML elemzés a replikációban.
+    Build támogatja a Lemon fordítást.
+    Az XMLRPC könyvtár DOM elemző része külön könyvtárba került (ccc2\_xmldom).
+    Memóriaszivárgás javítása asize-ban.
+\item[2004.03.05]
+    Új fopen opciók: \verb!FO_CREATE!, \verb!FO_TRUNCATE!.
+    Új fcreate opció: \verb!FC_NOTRUNCATE!.
+    Táblaobjektum replikálása MySQL adatbázisba.
+    Félkész MS-SQL tábla objektum.
+\item[2004.02.05]
+    Solaris port felfrissítve, apróbb javítások.
+\item[2004.01.14]
+    Hibajavítások a táblaobjektumokban:
+    A 2003.11.20-as javítás elrontotta a táblaobjektumok
+    file-lock protokollját. A DBFCTX táblaobjektum nem tudott
+    új indexet csinálni.
+\item[2004.01.10]
+    SIGPIPE kezelése SIGTERM-hez hasonlóan, 
+    socket\_write()-ban SIGPIPE ignorálva.
+\item[2004.01.05]
+    Javítás az XMLRPC kliens osztályban.
+    Javítás \verb!thread_exit()!-ben.
+\item[2003.12.31]
+    ui\_ kiegészült az rconsole és wstatid modullal.
+    Az uid-beli symbols.h frissítve.
+    tbwrapper csak akkor tölti be az interaktív komponenseket, 
+    ha az aktuális megjelenítő driver nem ui\_.
+\item[2003.12.22]
+    A socket\_write()-ban a send ismétlése kihagyva.
+\item[2003.11.25]
+    A borlandos dup() hibásan áttér \verb!O_BINARY!-ról \verb!O_TEXT! módra,
+    ennek elkerülésére beállítva a default \verb!O_BINARY! mód.
+\item[2003.11.20]
+    Nem öröklődő filédescriptorok bevezetése az összes
+    táblaobjektumban.
+\item[2003.10.19]
+    CCC alapkönyvtár portolása GCC 3.3-ra (sorvégek).
+    Windows spawn-ban paraméterellenőrzés javítva.
+    UNIX spawn-ban a várakozás javítva.
+    fdup() bővítve, új függvény hdup (DuplicateHandle).
+\item[2003.10.15]
+    Az xmlrpc könyvtár portolása GCC 3.3-ra.
+\item[2003.10.03]
+    Null értékek kezelése az OCI könyvtárban.
+\end{description}
+
+

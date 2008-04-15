@@ -1,0 +1,13 @@
+
+include: konto.type
+
+name: szerencse
+version: "2,2006-07-18"
+
+table: konto.szerencse=q
+
+column: szamlaszam      SZLA_FUA    x=szamla
+column: kiegdata        C32
+
+primkey: szamlaszam
+

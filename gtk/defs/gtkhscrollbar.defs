@@ -1,0 +1,19 @@
+
+
+(define-function gtk_hscrollbar_get_type
+  (in-module GtkHScrollbar)
+  (c-name "gtk_hscrollbar_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_hscrollbar_new
+  (c-name "gtk_hscrollbar_new")
+  (is-constructor-of GtkHScrollbar)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok) (default "NULL"))
+  )
+)
+
+
+

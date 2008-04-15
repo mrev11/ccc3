@@ -1,0 +1,3 @@
+#!/bin/bash
+gtklist.exe | grep -v CCC >list.bak
+z list.bak

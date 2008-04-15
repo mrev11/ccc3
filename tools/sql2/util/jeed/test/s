@@ -1,0 +1,3 @@
+#!/bin/bash
+export SQLDEBUG=on
+jeed.exe  entity.konto.szla_kamjut.tds #-jtdebug #>log

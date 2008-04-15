@@ -1,0 +1,9 @@
+<xstart>
+<item>
+    <name>Test Program</name>
+    <port>55000</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <interface>127.0.0.1</interface>
+    <command>proba1.exe</command>
+</item>
+</xstart>

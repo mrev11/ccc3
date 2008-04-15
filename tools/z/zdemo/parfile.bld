@@ -1,0 +1,1 @@
+-b$(CCCDIR)/tools/$$(z)

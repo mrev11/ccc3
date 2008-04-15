@@ -1,0 +1,615 @@
+\setcounter{secnumdepth}{1}  
+
+\pagetitle%
+{Objektumok használata a CCC-ben}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{első változat: 2001.\ február \\ utolsó átdolgozás: 2006. január}
+
+\section{Áttekintés}
+
+A CCC olyan új\footnote{A Clipperhez képest új, de valójában
+már évek óta használjuk, csak korábban nem volt időm elkészíteni
+ezt a leírást.}
+objektum rendszert kapott, ami felülről 100\%-ban kompatibilis
+a Clipper 5.x-beli objektumokkal. A Clipper négy fixen beépített 
+osztállyal rendelkezett: error, get, tbcolumn, tbrowse. 
+Természetesen a CCC-ben is megvannak ezek a régi osztályok,
+ám ami fontosabb, a CCC-ben a programozó tetszés szerint definiálhat 
+új osztályokat, és ezek többszörös öröklődéssel örökölhetnek egymástól. 
+A CCC az objektumorientált nyelvek minden fontos jellemzőjével
+rendelkezik, mégis az objektumok használatának módja azonos
+a régi Clippernél megszokottal. Ha egy program a négy régi
+objektum használatára szorítkozik, 
+akkor az a régi Clipperrel is működni fog.\footnote{
+Feltéve, hogy osztálydefiniálásra a 
+\href{#funapi}{függvényhívási API-t} használjuk, kerüljük a 
+\href{#metcast}{metódus castot} és ügyelünk a 
+\href{#zarojel}{zárójelezésre}.}
+
+A CCC-ben nem szívesen vezetünk be új szintaktikát, 
+ezért sokáig osztályok készítéséhez sem volt speciális szintaktika, 
+hanem  függvényhívási API szolgált a célra. 
+Megjegyzem, hogy a Pythonban és a Jávában is van ilyen runtime 
+osztálydefiniálási API, legfeljebb a kezdők nem azzal találkoznak először. 
+Újabban az osztályokat a class utasítással definiáljuk, 
+amihez kicsit kevesebbet kell írni. 
+A két módszer felhasználói szempontból egyenértékű. 
+A régebbi függvényhívási API sem vesztette el a jelentőségét, 
+ui. lehetővé teszi olyan osztályok létrehozását, amik  felépítése
+csak futásidőben válik ismertté.
+Az összefüggések könnyebb megértése érdekében a függvényhívási API-val
+kezdem az ismertetést.
+
+\label{funapi}
+\section{Függvényhívási API}
+
+Egy új osztály programozásának elkezdésekor viszonylag sokat
+kellene írni. Hogy ettől mentesüljünk, célszerű elhozni a 
+\verb!$CCCDIR/ccctutor/xclass! directoryból a \verb!template.prg! 
+filét, aminek tartalma:
+\begin{verbatim}
+static clid_template:=templateRegister()
+
+static function templateRegister()
+local clid:=classRegister("template",{objectClass()})
+    classMethod(clid,"initialize",{|this|templateIni(this)})
+    classAttrib(clid,"cargo")
+    return clid
+
+function templateClass()
+    return clid_template
+
+function templateNew()
+local clid:=templateClass()
+    return objectNew(clid):initialize()
+
+function templateIni(this)
+    objectIni(this)
+    return this
+\end{verbatim}
+A kódot olvasva megállapíthatjuk, hogy 
+a \verb!templateClass!  vagy \verb!templateNew! függvény első
+hívásakor megtörténik az osztály regisztrálása. A későbbi hívások
+alkalmával pedig \verb!templateClass! mindig visszaadja a 
+statikusan tárolt osztályazonosítót.
+
+A \verb!classRegister! függvény első argumentuma tartalmazza az új
+osztály nevét, a második argumentum egy array, amiben az új osztály
+szülő osztályait kell felsorolni. A legegyszerűbb esetben az új
+osztály az objectClass-tól (minden osztály közös ősétől) származik.
+
+A \verb!classMethod! függvény egy metódust ad a clid-vel azonosított
+osztályhoz. A metódus nevét a második paraméterben adjuk át, jelen 
+esetben a név ,,initialize''. A metódus végrehajtása a harmadik argumentumban 
+átadott kódblokk kiértékelésével történik. A metódusblokkok első 
+paramétere mindig maga az objektum, amit általában ,,this'' névvel
+illetünk, de itt ez nem kulcsszó, mint a C++-ban, vagy a Jávában.
+
+A \verb!classAttrib! függvény egy attribútumot ad a clid-vel azonosított
+osztályhoz. Az attribútumok egyszerűbbek a metódusoknál, nem tartozik
+hozzájuk kódblokk, csak egy adat tárolására alkalmasak.
+
+
+Természetesen előfordulhat, hogy a \verb!classAttrib!, vagy 
+\verb!classMethod! olyan attribútumot, vagy metódust ad az osztályhoz,
+amit az egyébként örökölne valamelyik ősétől. Ez nem hiba, hanem
+éppenséggel ez az objektumorientált programozás egyik kulcsa:
+az ősosztályban lévő elemeket a leszármazott felüldefiniálhatja.
+A leszármazottban újra definiált metódus eltakarja és helyettesíti
+az ősosztály azonos nevű metódusát.
+
+
+Egy text editorral könnyen ki tudjuk cserélni a ,,template''
+szót az új osztály nevére. Mindjárt rögzítsük az első névkonvenciót,
+ahogy egy új osztályhoz tartozó három alapfüggvényt elnevezni illik:
+\begin{description}
+\item[osztálynévClass]
+    Minden osztályhoz tartoznia kell egy osztálynévClass függvénynek,
+    ami regisztrálja az osztályt, és tárolja az osztály azonosítóját.
+\item[osztálynévNew]
+    A new függvény feladata, hogy létrehozzon egy új objektum példányt,
+    és azt az initialize metódus végrehajtásával inicializálja. 
+    Ehhez meg kell hívni a könyvtári \verb!objectNew! függvényt,
+    ami létrehozza a megfelelő osztályba tartozó objektumot.\footnote{%
+Ez a konvenció megfelel a régi Clipperből ismert errorNew, getNew,
+tbcolumnNew, tbrowseNew függvényneveknek.}
+\item[osztálynévIni]
+    A ini függvény feladata használat előtt inicializálni az objektumot.
+    Bár jelen esetben nincs sok inicializálni való, észben kell tartsuk,
+    hogy {\em kötelesek} vagyunk meghívni minden ősosztály ini függvényét.
+    Az ini függvény visszatérése kötelezően a this objektum.
+\end{description}
+
+Ez volt az eredeti koncepció,
+az újabb programokban ettől már gyakran eltérünk:
+Nyilván nincs elvi akadálya, hogy az osztálynévNew helyett
+valami más függvény állítsa elő az objektumot. A GTK-ban pl.
+sok olyan osztályt találunk, aminek különféle paraméterezéssel
+több konstruktor függvénye is van. A CCCGTK csatolóban célszerű
+szigorúan követni a GTK-beli neveket. A metódus-cast bevezetése óta
+az ősosztályokat azok initialize metódusával is tudjuk inicializálni,
+ezért az osztálynévIni függvény elhagyható.
+
+
+\label{CLASS}
+\section{Class utasítás}
+
+Néhány új kulcsszó 
+(\verb!class!, \verb!attrib!, \verb!method!, \verb!new!)
+árán  mérsékelhető az osztályok kódolásához szükséges írásmunka.
+A class utasítást a fordító visszavezeti a függvényhívási API-ra, 
+tehát az előbb elmondottak jó része most is érvényes.
+
+\begin{verbatim}
+class derived(base1,base2,...) new:symbol
+    attrib a1
+    attrib a2
+    method m1 codeblock
+    method m2 
+    method m3
+    ...
+\end{verbatim}
+A class definíció függvények helyén állhat.
+A class a következő \verb!class!-ig vagy \verb!function!-ig tart,
+nincs külön lezáró \verb!endclass!.
+A  baseclass-okat zárójelek között felsorolva kell megadni.
+Mindig van legalább egy baseclass.
+Az osztálydefiníció  névtérbe helyezhető:
+A class definíciót tartalmazó modulban lehet \verb!namespace!
+utasítás, a \verb!derived!, \verb!base1!,\ldots 
+nevek minősítve lehetnek. 
+A class definícióból automatikusan keletkezik a
+\verb!derivedClass! függvény, 
+ami a szokásos módon az osztályazonosítót adja.
+
+A \verb!new:symbol! toldalék opcionális. 
+Ha hiányzik, akkor a default \verb!derivedNew! 
+nevű konstruktor készül, amivel így jutunk új objektum példányhoz:
+\begin{verbatim}
+    obj:=derivedNew(p1,p1,...)
+\end{verbatim}
+Ha van new toldalék, de a symbol tagja üres 
+(tehát ilyen alakú \verb!new:!), 
+akkor egyáltalán nem keletkezik konstruktor függvény. 
+Teljes new toldalék esetén a \verb!symbol!-ban megadott 
+névvel képzett \verb!derivedSymbol! konstruktort kapjuk.
+A konstruktor létrehozza a megfelelő osztályú objektumot, 
+és meghívja rá az \verb!initialize! metódust.
+Ha a class definícióban nincs initialize metódus, 
+akkor egy öröklött initialize hívódik meg, ilyen mindig van, 
+mert a gyökér object osztálynak van inicializálója.
+A konstruktor minden paramétert továbbad az inicializálónak.
+
+
+A \verb!class! törzsében csak attribútum és metódus deklarációk
+állhatnak. Megengedett, hogy a class törzse üres legyen.
+
+Az \verb!attrib! teljesen egyszerű: Lesz egy új (vagy
+felüldefiniált) attribútum az osztályban a megadott névvel.
+
+A \verb!method! kulcsszó és metódusnév után egy tetszőleges kódblokk írható,
+ebben az esetben a metódus implementációja maga a kódblokk.
+%A kódblokk csak annyiban speciális, hogy a benne levő
+%kifejezéslista nem tartalmazhat belső (local/static) változókat,
+%hiszen a class-ban egyáltalán nem lehetnek belső változók.
+%A blokk paraméterei és a modul külső static változói 
+%természetesen szerepelhetnek a kifejezésekben.
+A metódus deklarációnak van egy  alternatív, egyszerűsített formája:
+Ha a deklaráció csak a nevet tartalmazza,
+az olyan, mintha kiírtuk volna a következő
+(optimalizáltan forduló) kódblokkot: \verb!{|*|derived.m2(*)}!. 
+Tehát ilyenkor a metódust úgy kell implementálni, 
+hogy megírjuk a \verb!derived.m2! közönséges függvényt. 
+Mint látjuk, alapesetben a metódusok az osztálynévből származó 
+névtérbe kerülnek (automatikus prefixelés).
+
+
+Visszatérve az előző template osztályra, így lehet azt definiálni
+class utasítással:
+\begin{verbatim}
+class template(object)
+    method initialize
+    attrib cargo
+
+function template.initialize(this)
+    this:(object)initialize
+    return this
+\end{verbatim}
+
+A \verb!this:(object)initialize! kifejezésben új szintaktikai
+elemet látunk, az ún. metódus castot.
+Hatására a this objektum dinamikus típusától függetlenül
+az object osztály initialize metódusa hívódik meg. Ezzel elkerülhető,
+hogy az ősosztály inicializáló függvényét közvetlenül meg kelljen nevezni.
+A korábbi konvenciónak megfelelő ini függvény tehát felesleges. 
+Az \verb!initialize! metódusok kötelező visszatérési értéke a this.
+
+
+\label{metcast}
+\section{Metódus cast}
+
+Alapesetben az \verb!obj:method! kifejezésben mindig az objektum valódi
+osztályának (Jáva terminológiával dinamikus típusának) megfelelő
+metódus hívódik meg. Néha azonban másra van szükség, ilyenkor
+alkalmazható a metódus cast, aminek három esete van:
+\begin{verbatim}
+  obj:(otherclass)method
+\end{verbatim}
+Az \verb!otherclass!-beli metódus hívódik meg. 
+Tipikus esetben \verb!otherclass! \verb!obj! osztályának az őse.
+\begin{verbatim}
+  obj:(parent@class)method
+\end{verbatim}
+A \verb!parent! osztály metódusa hívódik meg, feltéve, 
+hogy \verb!parent! közvetlen szülője \verb!class!-nak,
+ellenkező esetben runtime error keletkezik. Az előző esethez
+hasonlóan használható, de még biztonsági ellenőrzést is tartalmaz,
+amivel nehezen felderíthető híbák előzhetők meg.
+\begin{verbatim}
+  obj:(super@class)method
+\end{verbatim}
+A \verb!class! osztály ősosztályának metódusa hívódik meg
+(jelen esetben super egy kulcsszó). 
+Ez a forma lehetővé teszi, hogy az ősosztály megnevezése nélkül
+hivatkozhassunk az ottani metódusra.
+
+Ne alkalmazzunk metódus-castot attribútumokra!
+Bár formailag jónak látszik a program, 
+általában értelmetlen eredményt kapunk.
+
+
+\section{Object, a gyökér osztáy}
+
+Az objektumorientált programozás erejét mutatja, 
+hogy már  az előző egyszerű (template) osztály
+is említésre méltó tudással rendelkezik, ugyanis egy csomó dolgot
+örököl az object-től. Így elsősorban ki tudja listázni,
+hogy milyen metódusai és attribútumai vannak, ki tudja listázni
+az attribútumainak az értékét, meg tudja mondani az osztályának
+és a szülő osztályainak a nevét, és ezzel a képességgel
+{\em minden\/} osztály rendelkezik.  
+Ezen általános metódusokat vesszük most sorra.
+\begin{description}
+\item[ancestors]
+  Ad egy listát az ősosztályok nevével.
+
+\item[asarray]
+  Egy tömbben visszaadja az összes attribútumot.
+
+\item[attrnames]
+  Ad egy listát az attribútumok nevével.
+
+\item[attrvals] 
+  Visszad egy array-t, melynek elemei kételemű tömbök,
+  az összes attribútum nevéből és értékéből képzett pár.
+
+\item[baseid]
+  Ad agy arrayt, ami a közvetlen ősosztályok azonosítóit tartalmazza.
+
+\item[classname] 
+  Visszaadja az objektum osztályának nevét.
+
+\item[initialize]
+  Inicializálja az objektumot.
+  Valójában egy object osztályú objektumon nincs mit inicializálni,
+  mert az osztályban nincs egyetlen attribútum sem, csak metódusok.
+
+\item[isderivedfrom(clid/obj)]
+  Megmondja, hogy this (osztálya) leszármazottja-e az
+  osztályazonosítóval/objektumpéldánnyal megadott másik osztálynak.
+
+\item[length]
+  Megmondja az attribútumok számát.
+
+\item[list]
+  Kilistázza magát (az attribútumait) a konzolra. 
+
+\item[liststruct]
+  Kilistázza, hogy milyen attribútumai, metódusai vannak,
+  és melyiket honnan örökölte.
+
+\item[methnames]
+  Ad egy listát a metódusok nevével.
+
+\item[struct]
+  Ad egy tömböt, ami azt a struktúrát tartalmazza, amit liststruct
+  kilistáz.
+\end{description}
+
+Felsorolunk néhány további objektumokkal kapcsolatos
+függvényt, amik azonban nem metódusai az object osztálynak:
+\begin{description}
+\item[classListAll()]
+    Listázza a program összes osztályát.
+\item[classIdByName(classname)]
+    Név alapján kikeresi és visszaadja az osztályazonosító számot.
+    Ha a megadott névvel nincs osztály, akkor 0-t ad.
+\item[getClassId(obj)]
+    Az objektumpéldányból megadja annak (szám) azonosítóját.
+\item[getObjectAsArray(obj)]
+    Egy tömbben visszaadja az összes attribútumot.
+    Ezen a függvényen alapul az asarray metódus.
+\item[iniObjectFromArray(obj,arr)]
+    Inicializálja az objektumot egy olyan arrayből,
+    amit korábban a getobjectasarray (vagy asarray metódussal) 
+    kaptunk, enélkül a getobjectasarray nem is volna értelmesen 
+    használható. 
+\item[objectNew(clid)]
+    A függvény paramétere az osztályazonosító (szám).
+    Visszaad egy megadott osztályú, új, inicializálatlan 
+    objektumpéldányt. Ezen alapul minden konstruktor.
+\end{description}
+
+
+Gyakorlásképpen fordítsuk le tamplate.prg-t, 
+és linkeljük az alábbi főprogrammal:
+\begin{verbatim}
+function main()
+    templateNew():liststruct
+    return NIL
+\end{verbatim}
+Ha a kész programot lefuttatjuk, akkor a következő eredményt kapjuk:
+\begin{verbatim}
+         1 ancestors                M object
+         2 asarray                  M object
+         3 attrnames                M object
+         4 attrvals                 M object
+         5 baseid                   M object
+         6 classname                M object
+         7 isderivedfrom            M object
+         8 length                   M object
+         9 list                     M object
+        10 liststruct               M object
+        11 methnames                M object
+        12 struct                   M object
+        13 cargo                    A template
+        14 initialize               M template
+\end{verbatim}
+
+\section{Egy példa: checkbox osztály}
+
+Az alábbi példa a  CCC könyvtárból származik, egy karakteres 
+chekbox osztályt implementál. A checkbox nagyon hasonló
+egy get objektumhoz, csak éppen nem írni lehet bele, hanem a szóköz
+billentyű nyomogatásával bejelölhetjük (X), vagy törölhetjük.
+A checkbox osztály egyetlen új metódust definiál, \verb!toggle!-t,
+ami az állapotváltást végzi, néhány  metódust felüldefiniál,
+minden mást örököl a get osztálytól.  
+\begin{verbatim}
+static clid_checkbox:=checkboxRegister()
+
+static function checkboxRegister() 
+local clid:=classRegister("checkbox",{getClass()})
+    classMethod(clid,"initialize",{|this,r,c,b,v|checkboxIni(this,r,c,b,v)})
+    classMethod(clid,"toggle",{|this|toggle(this)})
+    classMethod(clid,"insert",{|this|toggle(this)})
+    classMethod(clid,"overstrike",{|this|toggle(this)})
+    classMethod(clid,"delete",{|this|setfalse(this)})
+    classMethod(clid,"backspace",{|this|setfalse(this)})
+    classMethod(clid,"display",{|this|display(this,"[X]")})
+    return clid
+
+function checkboxClass() 
+    return clid_checkbox
+
+function checkboxNew(r,c,b,v) 
+local clid:=checkboxClass()
+    return objectNew(clid):initialize(r,c,b,v)
+
+function checkboxIni(this,r,c,b,v) 
+    getIni(this,r,c,b,v)
+    this:colorspec:=setcolor()
+    this:varput(.f.)
+    return this
+
+static function display(this,c)
+
+local l:=left(c,1)
+local r:=right(c,1)
+local flg:=if(this:varget,substr(c,2,1)," ")
+local clr:=if(this:hasfocus,logcolor(this:colorspec,2),logcolor(this:colorspec,1))
+    
+    @ this:row,this:col   say l
+    @ this:row,this:col+1 say flg color clr
+    @ this:row,this:col+2 say r 
+
+    setpos(this:row,this:col+1)
+
+    return NIL
+
+static function toggle(this)
+    if( this:varget )
+        setfalse(this)
+    else
+        settrue(this)
+    end
+    return NIL
+
+static function setfalse(this)
+    this:varput( .f. )
+    this:display
+    return NIL
+
+static function settrue(this)
+    this:varput( .t. )
+    this:display
+    return NIL
+\end{verbatim}
+Említést érdemel, hogy a fenti program szintaktikailag tiszta Clipper. 
+A megértés ellenőrzése kedvéért nézzünk meg egy tipikus sort
+a  checkboxIni függvényből:
+\begin{verbatim}
+    this:varput(.f.)
+\end{verbatim}
+Itt this azt a checkbox objektumot jelenti, amit éppen inicializálunk.
+A this nem kulcsszó, választhattunk volna helyette akármi más változónevet is.
+A varput metóduson keresztül beállítjuk a checkbox kezdeti értékét .f.-re.
+Honnan van azonban a checkboxnak varput metódusa, ha egyszer a class
+függvényben nem definiáltunk ilyet? A válasz természetesen, hogy
+örökli a get osztálytól.
+ 
+
+Jegyezzük meg a második névválasztási konvenciót.
+Ha egy metódust lokálisan implementálunk,
+akkor azt célszerű static függvénnyel tenni. Ezzel
+elérhető, hogy az objektum interfész ne legyen
+megkerülhető közvetlen függvényhívással.
+Ha a metódusfüggvény nem helyben van implementálva,
+vagy más okból nem lehet static, akkor az osztálynévből
+képzett prefix alkalmazása javasolt. Például a toggle
+függvény definíciója lehetne ilyen is:
+\begin{verbatim}
+function _checkbox_toggle(this)
+\end{verbatim}
+A névkonvenciók betartása nincs kikényszerítve, a programunk
+működni fog más névválasztással is. A konvenció mindössze
+segít elkerülni a zavaros helyzeteket. A névterek bevezetése óta
+a prefixelésre alkalmazható névtér is.
+
+ 
+Érdemes meggondolni a következőt: Tudjuk, hogy a getek
+editálása Clipperben (és így CCC-ben is) a
+\begin{verbatim}
+    readmodal(getlist)
+\end{verbatim}
+függvényhívásban történik. A getlist array a régi Clipperben
+az editálandó getek listáját tartalmazta. Csakhogy a CCC-ben
+a getek között checkboxok is lehetnek, fog-e ez így működni?
+Fog, ugyanis a checkbox örökli a get osztályból mindazokat a metódusokat,
+amik ahhoz szükségesek, hogy őt a readmodal működtesse,
+ezért readmodal nem fogja észrevenni, hogy a getek között 
+speciális példányok (checkboxok) is vannak. 
+Az objektumorientált programozásban gyakran alkalmazzák ezt a fogást.
+
+Ha az iménti checkbox osztályt az újabb class szintaktika
+felhasználásával definiálnánk, akkor (rövidítésekkel) a következő 
+eredményre jutnánk:
+
+\begin{verbatim}
+class checkbox(get)
+    method initialize 
+    method toggle       {|*|toggle(*)})
+    method insert       {|*|toggle(*)})
+    method overstrike   {|*|toggle(*)})
+    method delete       {|*|setfalse(*)})
+    method backspace    {|*|setfalse(*)})
+    method display      {|this|display(this,"[X]")})
+
+static function checkbox.initialize(this,r,c,b,v) 
+    this:(get)initialize(r,c,b,v)
+    this:colorspec:=setcolor()
+    this:varput(.f.)
+    return this
+
+static function display(this,c)
+    ...
+static function toggle(this)
+    ...
+static function setfalse(this)
+    ...
+static function settrue(this)
+    ...
+\end{verbatim}
+Az initialize metódust kódblokk nélkül deklaráltuk,
+ezért a fordító fog hozzá automatikus kódblokkot rendelni.
+Ennek megfelelően az initialize-t implementáló függvényt 
+a checkbox névtérbe kell helyezni.
+Az ősosztály (get) inicializálásához metódus-castot használtunk,
+ezért nincs szükség a getIni függvény közvetlen megnevezésére.
+A toggle kódblokkjában a \verb!*! minden paraméter 
+automatikus továbbadását jelenti. Itt bizony már eltértünk
+a Clipper szintaktikától, cserébe rövidebb kódot kaptunk.
+Egyébként a két megvalósítás egyenértékű.
+
+
+\section{Implementációs kérdések}
+Ha valaki használta már a CCC/Clippert, és járatos valamennyire
+az objektumorientált programozásban, akkor az eddigiek ismeretében
+már képes önálló programozásra.  A továbbiak így inkább csak 
+háttérinfóként, szórakoztató olvasmányul szolgálnak.
+
+\label{zarojel}
+\subsection{Zárójelezés}
+
+Az objektumokat használó programnak nem kell számontartania,
+hogy az objektumműveletek belsőleg attribútumként vagy metódusként
+vannak-e implementálva. Ez annak következménye, hogy a fordító 
+ugyanazt a kódot fordítja az \verb!o:initialize! vagy \verb!o:initialize()!
+bemenetre. Tehát az üres zárójelpár léte/nemléte nem utal arra,
+hogy attribútumról vagy metódusról van-e szó.
+Hasonlóképpen, ugyanaz a kód keletkezik az \verb!o:initialize:=x! 
+vagy \verb!o:initialize(x)! bemenetből. 
+A CCC-ben érvényes az alábbi szabály:
+\begin{quote}\em
+   Az objektumok használatakor az attribútum kiértékelés és értékadás,
+   valamint a metódus hívás szintaktikája egyenértékű, és minden
+   esetben felcserélhető.
+\end{quote}
+Néhány példa egyenértékű attribútum/metódus kiértékelésre:
+\begin{verbatim}
+    obj:attr()      <==>  obj:attr
+    obj:meth()      <==>  obj:meth
+    obj:attr(x)     <==>  obj:attr:=x
+    obj:meth(x)     <==>  obj:meth():=x
+    obj:meth(a,b,x) <==>  obj:meth(a,b):=x
+\end{verbatim}
+Ez biztosítja,
+hogy az osztály implementációjában szabadon lehessen attribútumot metódusra,
+vagy metódust attribútumra cserélni. A Jávában elterjedt ún. set-get 
+metódusoknak ezért kevesebb jelentősége van.
+
+
+\subsection{Objektum--metódus párosítás}
+Az objektumrendszer érdekes kérdése az objektum-metódus párosítás. 
+Az \verb!obj:method! alakú kifejezésekben fordításkor általában nem ismert 
+\verb!obj! osztálya, tehát nem tudjuk előre, hogy melyik osztályból kell 
+venni a metódust. Ez még az olyan nyelvekben is így van, mint a C++ és Jáva, 
+pedig ezek mindent megtesznek a típusok legszigorúbb ellenőrzése érdekében.
+Nemsokkal előbb már láttunk ilyen esetet: Amikor a \verb!readmodal(getlist)! 
+megjeleníti a geteket (\verb!getlist[i]:display!), akkor a getek között
+checkbox, radiobutton vagy listbox is előfordulhat. 
+A programnak tehát minden alkalommal meg kell határoznia az 
+objektum tényleges típusát (Jáva terminológia szerint
+a dinamikus típusát), hogy eldönthető legyen, milyen metódusra
+van szükség valójában. Ez az objektum--metódus párosítás.
+
+Az interpretált objektum alapú nyelvekben az objektum-metódus 
+párosítás gyakran az asszociatív tömbökön alapul. Az objektum belsőleg
+egy asszociatív tömb, ami viszont lényegében egy hash tábla. 
+Az objektum-tömb elemeit név szerint lehet elérni. 
+Ha a tömbelem adatot tartalmaz, akkor attribútumról van szó. 
+Ha a hivatkozott tömbelem kódot tartalmaz 
+(pl. Python esetében lambda függvényt), akkor az egy metódus,
+amit a futtatórendszer automatikusan kiértékel.
+
+A CCC-ben az objektumok az attribútumaikat tartalmazó egyszerű tömbként 
+vannak implementálva.  Létezik viszont minden osztályhoz egy hashtábla,
+amiből név alapján kikereshető
+\begin{itemize}
+\item attribútum esetében az az objektum-tömb index, 
+      ahol a kérdéses adat tárolódik, illetve 
+\item metódusok esetében az a kódblokk, 
+      amit ki kell értékelni a metódus végrehajtásakor.
+\end{itemize}
+
+Az attribútum/metódusok hashtáblából való név szerinti keresése 
+meglehetősen hatékony, ám az igazi gyorsulást egy  egyelemű
+cache  hozza a konyhára:
+Minden \verb!obj:method! alakú kifejezés
+első kiértékelésekor meghatározzuk \verb!obj! tényleges típusát, 
+kikeressük az ehhez tartozó metódust (vagy attribútum indexet), 
+és mind a két adatot {\em megjegyezzük}.
+Ha a vezérlés újra ugyanerre a programrészre kerül, akkor először
+megnézzük, hogy \verb!obj! típusa {\em változott-e} az előző alkalom óta.
+Tipikus esetben nincs változás, ilyenkor azonnal kéznél
+van a végrehajtandó metódus. Ha a típus mégis változott,
+akkor újra keresünk.
+
+Végül megemlítem, hogy a CCC-ben nincsenek asszociatív tömbök,
+helyette mindig használható a \$CCCDIR/ccctutor/hash directoryban
+implementált hashtable osztály. A CCC objektumrendszere is ezzel működik.
+Maga az algoritmus mindössze 20-30 Clipper sor (kommentek nélkül).
+
+
+%\gotoindex
+

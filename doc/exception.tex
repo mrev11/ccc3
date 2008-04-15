@@ -1,0 +1,447 @@
+
+\setcounter{secnumdepth}{1}  
+
+\def\megj{{\bf Megjegyzés:~}}
+\def\szab{{\bf Szabály:~}}
+\def\tipus#1{\item {\tt #1~}}
+
+\pagetitle{Struktúrált kivételek a CCC-ben}%
+{Dr. Vermes Mátyás}%
+{2005. június}
+
+\section{Hibakezelés a régi Clipperben}
+
+Ha fatális hibát észleltünk, végrehajtottuk az error\-blokkot.
+A default error\-blokk általában értesít a hiba körülményeiről
+(kiírja a stacket) majd kilépteti a programot.
+
+Ha nem akartuk, hogy egy bizonyos hibára a program kilépjen,
+kicseréltük az errorblokkot \verb!{|x|break(x)}!-re, az esetleges 
+breaket pedig elkaptuk egy recoverrel. Ezzel a technikával 
+az a baj, hogy  ilyenkor a recover más  hibákat is elkap, 
+amivel megnehezül a program tesztelése, mivel a recover után 
+már nincs meg a hiba környezete.
+
+\megj
+A (régi) break semmi mást nem csinált, mint visszaállította 
+a stacket, és a legbelső recover ágnak átadta a vezérlést.
+Ha a break körül nem volt begin-recover utasítás, akkor  a program 
+csendben kilépett. Nem túl szerencsés ez a csendbeni kilépés, 
+de ilyen volt a Clipper.
+
+Megtehettük, hogy a hibakezelés gyanánt \verb!eval(errorblock(),x)! 
+helyett rögtön \verb!break(x)!-et írtunk. Így a korábbi eszközökkel is
+lehetett programozni az errorblokk cserélgetése nélkül:
+
+\begin{verbatim}
+function tranzakcio()
+local e
+    begin
+        tranzakcio1()  //break lehet benne
+    recover using e
+        //hibakezelés
+    end
+\end{verbatim}
+
+A probléma az, hogy a hiba keletkezésének helyén el kell dönteni, 
+hogy \verb!eval(errorblock(),x)!, vagy \verb!break(x)! legyen-e a reakció. 
+
+\subsubsection{\tt eval(errorblock(),x)}
+
+Ha a tranzakciót hívó program nem cseréli ki az errorblokkot,
+akkor a hiba környezetéről részletes jelentés készül, majd
+a program kilép. Ha a tranzakciót hívó program kicseréli az 
+errorblokkot, akkor átveheti a hibakezelést, de ilyenkor bajlódnia
+kell a bezavaró  hibákkal is, amiknek már nincs is meg a környezete.
+
+\subsubsection{\tt break(x)}
+
+Csak akkor célszerű alkalmazni, ha ismeretes, hogy a tranzakciót 
+hívó program recoverrel készült fel a hiba elkapására (máskülönben 
+a program csendben kilép). Nehéz a nagy programokat összehangolni.
+
+A fatális hibákat (különösen a programozási hibákat)  jobb 
+a default error\-blokkal elintézni. A magasabb szintű tranzakciós 
+hibákat gyakran jobb breakkel visszaadni a hívónak. A nagy 
+rendszerek egyes részeinek egyet kell érteniük abban, hogy 
+mikor melyik eset áll fenn.
+
+
+\section{Strukturált kivételkezelés}
+
+A struktúrált kivételkezelés eszközöket ad ahhoz, hogy a hibakezelést
+az egyszerűbb, breakes módszerre alapozzuk.
+Az első intézkedés:~
+Az el nem kapott kivétel nem csendben kilép,
+hanem  kiértékeli az errorblokkot (enyhe inkompatibilitás).
+Így a recover nélküli break is teljes hibajelentést ad.
+
+Az új break nem egyszerűen a legbelső recovert keresi meg,
+hanem az egymásba skatulyázott (vagy ilyennek tekinthető)
+begin-recover utasítások között belülről kifelé haladva addig keres, 
+amíg megfelelő típusú recovert talál, és arra adja a vezérlést. 
+Ez lehetővé teszi, hogy egy recover elkapjon egy bizonyos típusú hibát, 
+miközben nem semmisíti meg más olyan hibák környezetét, amit nem tud,
+vagy nem akar kezelni.
+
+
+\begin{verbatim}
+function ff(x)
+
+local e
+
+    begin /*sequence*/
+        ? "HOPP-1"
+        break(x)
+        ? "HOPP-2"
+
+    recover  e  <specerror>  //elkapja specerror leszármazottait
+        ? "rec1", e:classname
+
+    recover  e  <error> //elkapja error leszármazottait
+        ? "rec2", e:classname
+
+    recover  e <c> //elkapja a stringeket
+        ? "rec3", upper(e)
+
+    recover /*using*/ e  //bármit elkap (régi szintaktika)
+        ? "rec4", e
+
+    recover //ez is bármit elkapna (felesleges) 
+        ? "ide nem jöhet"
+
+    finally
+        ? "lefut a begin-recover elhagyásakor"
+
+    end 
+\end{verbatim}
+
+Új szintaktika: a sequence kulcsszó elhagyható (zajszó)!\\
+Új szintaktika: a using kulcsszó elhagyható (zajszó)!\\
+Új szintaktika: több recover lehet lineárisan felsorolva!\\
+Új szintaktika: a recover változó után megadható egy kifejezés!\\
+Új szintaktika: opcionális finally klóz!\\
+
+A {\bf lineárisan felsorolt recovereknek} ugyanaz a hatása, mintha 
+a begin-recover utasítások  egymásba volnának skatulyázva
+(feltéve, hogy a recover ágakból nem indul újabb break):
+
+\begin{verbatim}
+function ff(x)
+
+local e
+
+    begin
+        begin
+            begin
+                begin
+                    begin
+                        ? "HOPP-1"
+                        break(x)
+                        ? "HOPP-2"
+                    recover  e specerrNew() 
+                        ? "rec1", e:classname
+                    end
+                recover  e errorNew()
+                    ? "rec2", e:classname
+                end
+            recover  e ""
+                ? "rec3", upper(e)
+            end
+        recover using e
+            ? "rec4", e
+        end
+    recover
+        ? "ide nem jöhet"
+    finally
+        ? "lefut a begin-recover elhagyásakor"
+    end
+\end{verbatim}
+
+
+A recover utasításban az újdonság a végére írt 
+{\bf típuskifejezés}. A típuskifejezés formái a következők:
+\begin{itemize}
+\tipus{expr}
+    Tetszőleges CCC kifejezés, mint  ami pl. a return után állhat. 
+    A kifejezés még a begin előtt kiértékelődik 
+    (mellékhatásai lehetnek, elszállhat).
+    A végeredménynek csak a típusa érdekes, 
+    ez a típus határozza meg a recover típusát.
+\tipus{ <c>} A recover típusa string.
+\tipus{ <d>} A recover típusa dátum.
+\tipus{ <l>} A recover típusa logikai.
+\tipus{ <n>} A recover típusa szám.
+\tipus{ <a>} A recover típusa array.
+\tipus{ <b>} A recover típusa kódblokk.
+\tipus{ <other>} 
+    A recover típusa az \verb!other! osztály, melynek 
+    osztályazonosítóját konvenció szerint az \verb!otherClass()! 
+    függvény szolgáltatja.
+\end{itemize}
+
+
+Tehát a recover változó után írt kifejezéssel lehet 
+beállítani a recover típusát és ezáltal szűrni, hogy
+milyen típusú hibákat kapjon el az adott recover.
+{\bf A kivétel elkapásának szabályai}:
+
+\begin{itemize}
+\item
+Ha a recover változó után egyáltalán nincs kifejezés,
+vagy a kifejezés értéke NIL, 
+akkor a recover utasítás minden kivételt elkap 
+(ez a Clipperből ismert, régi eset).
+
+\item
+Ha a dobott kivétel és a recover típusa megegyezik,
+és a típus nem object, akkor a recover elkapja a kivételt.
+
+\item
+Ha a dobott kivétel és a recover típusa is object,
+a recover akkor kapja el a kivételt, ha a kivétel osztálya
+leszármazottja a recover osztályának.
+
+\item
+Ha a begin-end között egyáltalán nincs (kiírt) recover, 
+sem finally (lásd később), az olyan, mintha közvetlenül az end előtt 
+volna  egy  mindent elkapó üres recover.
+
+\item
+Ha a begin-end között egyáltalán nincs recover,
+de van benne finally ág,
+akkor a begin-end semmilyen kivételt nem kap el. 
+Ennek a formának az értelme a finally ág végrehajtatása
+a begin utasítás elhagyásakor.
+
+\item
+A kivételt elkapó recovert a break() keresi meg. 
+A break() az egymásba skatulyázott (vagy ilyennek tekinthető)
+begin-recover utasításokat belülről kifelé haladva vizsgálja, 
+eközben átlépi a függvényhívási határokat is.
+
+\item
+Ha nincs olyan recover, ami alkalmas a hiba elkapására
+(kezeletlen kivétel), akkor a dobott kivétellel kiértékelődik
+az errorblokk. Ilyenkor a vezérlés nem ugrik ki a begin
+utasításból, ezért nem is hajtódnak végre az esetleges
+finally ágak.
+\end{itemize}
+
+
+
+\megj Az új kivételkezelés a régi Clipper természetes kiterjesztése,
+abban az értelemben, hogy  speciális esetként tartalmazza a régi Clipperből
+ismert formákat. Megmarad a (majdnem teljes) kompatibilitás 
+a korábbi forrásokkal, ui. az új működés új szintaktikához kapcsolódik.
+
+\megj  A kivétel típustól függő elkapásához típusinfót
+kell rendelnünk a recoverekhez, ezt szolgálják a recover változók
+után írt kifejezések. Az összes ilyen kifejezés a begin utasítás előtt
+hajtódik végre. Ha van mellékhatásuk, azzal a programban 
+számolni kell. A kifejezések kiértékelésének sorrendje implementációfüggő,
+azaz nem szabad számítani egy meghatározott sorrendre.
+Alapesetben a kifejezések értéke CCC szintű változókon keresztül 
+nem érhető el, éppen ezért az értékhez tartozó memóriaobjektumokat
+a szemétgyűjtés bármikor (akár azonnal) megszüntetheti, de ez nem 
+okoz gondot, mivel a kifejezéseknek csak a típusára van szükség,
+a tényleges értékére nem. A \verb!<symbol>! alakú típuskifejezések eleve létre
+sem hozzák a kérdéses memóriaobjektumokat, ezért hatékonyabbak.
+
+Amikor a vezérlés elhagyja a begin-recover utasítást, 
+végrehajtódik  a {\bf finally ág\/}. A finally ág lefut,
+\begin{itemize}
+\item ha a begin-recover közötti kód  return, loop, exit, break nélkül lefut,
+\item ha a begin-recover utasításból a return, loop, exit
+      utasítások valamelyikével kiugrunk,
+\item ha a futást megszakítja egy kivétel (break),
+      és azt elkapja egy recover,
+      vagyis a begin-recover egy recover ággal ér véget,
+\item ha a futást megszakítja egy kivétel,
+      amit  ugyan az adott begin-recover utasítás egyik recovere
+      sem kap el, de elkapja valamely kijjebb levő recover.
+\end{itemize}
+
+Ha a kivételt egyáltalán semmi sem kapja el, 
+akkor a break eredeti környezetében kiértékelődik az  errorblock.
+Ilyenkor a finally ág nem hajtódik végre, hiszen a vezérlés nem hagyta
+el a begin-recover utasítást. Ha például a hibát a default errorblokk
+kezeli, és az error objektumban \verb!candefault==.t.!, akkor
+a break még vissza is térhet.
+
+A régi Clipper tiltotta a 
+{\bf begin-recover közül történő kiugrást} 
+return, loop, exit utasításokkal.
+A CCC új kivételkezelése (a Jávához hasonlóan) ezt lehetővé teszi,
+és az elhagyott begin-recover utasítások finally ágait
+(belülről kifelé) végrehajtja.
+
+
+\section{Átállás az új kivételkezelésre}
+
+
+\subsubsection{Mi van a régi programokkal?}
+
+A régi programokat nem kötelező átalakítani. 
+Például a Kontó minden változtatás nélkül is kiválóan fut.
+Érdemes azonban tudni a régi és új kivételkezelés eltéréseiről
+Az eltérések az alábbiakban foglalhatók össze:
+
+\begin{enumerate}
+\item Az el nem kapott break kiértékeli az errorblokkot.
+Általában nincsenek a programokban ilyen breakek,
+ha mégis vannak, az hiba, és ez most legalább ki fog derülni.
+
+\item Az új CCC könyvtárak ezentúl error-on kívül más
+error-ból leszármazó hibákat is dobhatnak. 
+Az alkalmazási programoknak nem létfontosságú, 
+hogy erről tudjanak, kezelhetik a hibákat egyszerű
+error-ként is.
+
+\item A régi stílusú hibakezelésre felkészült programok
+továbbra is cserélgetik az errorblokkot (feleslegesen),
+ez azonban nem fog hibát okozni.
+\end{enumerate}
+
+A következőkben megvizsgáljuk a részleteket, 
+miközben eljárást dolgozunk ki arra,
+hogyan lehet viszonylag mechanikusan átállni
+az új kivételkezelésre.
+
+
+\subsubsection{Recover nélküli break}
+
+A recover nélküli break az eddigiektől eltérően nem csendben
+kilép, hanem végrehajtja az errorblokkot. Emiatt egy el nem kapott
+\verb!break(x)! hatása megegyezik \verb!eval(errorblock(),x)! hatásával.
+A break még vissza is térhet, ha pl.\ a default errorblokk kezeli le, 
+és a dobott errorban \verb!candefault==.t.! vagy \verb!canretry==.t.!.
+
+\szab \verb!break(x)! majdnem ugyanaz, mint 
+\verb!eval(errorblokk(),x)!, kivéve, hogy a break begin-recoverrel 
+eltéríthető. Speciálisan, ha nincs recover, akkor 
+\verb!break(x)! ugyanaz, mint \verb!eval(errorblock(),x)!.
+
+\megj
+Tudni kell, ha az errorblokk \verb!{|x|break(x)}!-re van cserélve,
+akkor a recover nélküli break végtelen rekurziót okoz.
+
+\megj
+Ezt a működést a régi Clipperben és a vele kompatibilis (korábbi)
+CCC-ben nem lehetett megvalósítani. Ha ui. a main-eket átírjuk a 
+következő módon
+\begin{verbatim}
+function main()
+local e
+    begin
+        main1()
+    recover using e
+        eval(errorblock(),e)
+    end
+\end{verbatim}
+akkor ugyan elkaphatunk minden (eredetileg) recover nélküli breaket, 
+viszont elveszítjük a hibák eredeti környezetét, azaz nem lesznek 
+használható hibaüzeneteink.
+
+
+\subsubsection{{ eval(errorblock(),x)} cseréje { break(x)}-re}
+
+Szinte minden  \verb!eval(errorblock(),x)!-t \verb!break(x)!-re kell cserélni,
+az alapkönyvtárban is, és az alkalmazásokban is. Ez a változtatás 
+elvileg mindenhol végrehajtható a működés változása nélkül. 
+
+Kivételesen ott változhat a működés, ahol az  errorblokk le van 
+cserélve, de nem a szokásos \verb!{|x|break(x)}!-re, hanem valami másra. 
+Az ilyen eseteket külön meg kell vizsgálni.
+
+Ott is vátozhat a működés, ahol nincs lecserélve errorblokk,
+viszont a prog\-ramban egy korábban semmit el nem kapó recover van.
+A csere aktivizálhat egy ilyen alvó recovert.
+
+
+\subsubsection{Errorblokk cserebere megszüntetése}
+
+Azokban az esetekben, amikor az errorblokk egy tranzakció erejéig 
+\verb!{|x|break(x)}!-re van cserélve, majd visszaállítva, a cserebere 
+megszüntethető.  
+Az egész programra kiterjedő errorblokk cseréket meg kell őrizni.
+Például a Kontó a hibákat az errorblokkban naplózza. A z editor bármilyen 
+hiba esetén kilépés előtt az editált szöveget menti. 
+
+Ha a feleslegessé vált errorblokk cserét bennefelejtjük a programban,
+az nem okoz hibát.
+
+
+\subsubsection{A hibák minősítése}
+
+A CCC belső hibáira és a programozási hibákra (pl. argument error)
+error objektumot dobunk (most is így van). Az ilyeneket általában
+nem fogjuk elkapni, kivéve, ha mindenképpen meg kell akadályozni
+a program elszállását.
+
+Azokra a hibákra, amiket esetleg el akarunk kapni error leszármazottat 
+dobunk. Nem errort, azért, hogy  az alkalmazási hibák elkülönüljenek 
+a programozási hibáktól.
+
+Azoknál a hibáknál jó error-t dobni, ahol a hibát nem a kivétel
+elkapásával, hanem a program kijavításával kell kezelni.
+
+
+\subsubsection{Kivétel osztályok}
+
+Ilyesmi lehetne:
+
+\begin{verbatim}
+error -> apperror
+
+error -> apperror -> invalidoptionerror
+
+error -> apperror -> invalidformaterror
+error -> apperror -> invalidformaterror -> invalidstructerror
+error -> apperror -> invalidformaterror -> xmlsyntaxerror
+error -> apperror -> invalidformaterror -> xmlsyntaxerror -> xmltagerror
+
+error -> apperror -> tabobjerror
+error -> apperror -> tabobjerror -> tabindexerror
+error -> apperror -> tabobjerror -> tabstructerror
+error -> apperror -> tabobjerror -> memoerror
+error -> apperror -> tabobjerror -> tranlogerror
+
+error -> apperror -> ioerror
+error -> apperror -> ioerror -> eoferror
+error -> apperror -> ioerror -> fnferror
+error -> apperror -> ioerror -> readerror
+error -> apperror -> ioerror -> writeerror
+error -> apperror -> ioerror -> socketerror
+\end{verbatim}
+
+Nagyon lényeges kérdés, hogy a kivételosztály hierarchia jól 
+el legyen  találva.  
+
+A Jávától eltérően az az alapállás, hogy {\em a hibákat nem kapjuk el},
+hanem hagyjuk, hogy a program elszálljon, és magától kiíródjon a hiba 
+környezete. Csak akkor kapunk el egy hibát, ha érdemben ki is tudjuk 
+javítani, vagy mindenképpen meg kell akadályozni a program elszállását. 
+A kivétel osztályokat ennek megfelelően kell megtervezni.
+
+A könyvtárakat ki kell egészíteni olyan modulokkal, amik definiálják 
+az adott könyvtár által használt kivétel osztályokat, és dokumentálni kell, 
+hogy honnan, milyen kivétel jöhet, mint ahogy az a Jávában is van.
+
+
+\subsubsection{A begin-recover utasítások felülvizsgálata}
+
+Ha az eddigieket végrehajtjuk
+\begin{itemize}
+\item eval(errorblock(),x) --> break(x),
+\item errorblokk cserebere megszüntetése,
+\item hibák minősítése,
+\end{itemize}
+és eközben vigyázunk, hogy a csekély számú kivételes esetet 
+ne rontsuk el, akkor a programok működésében nem lesz változás,
+viszont még nem is használtuk ki az előnyöket.
+Ezután van értelme áttérni az új begin-recover utasítás használatára, 
+ami lehetővé teszi, hogy a recoverekkel válogassunk az eddig ömlesztve 
+kapott hibák között, a finally ágakkal pedig kényelmesen 
+takarítsunk magunk után.
+

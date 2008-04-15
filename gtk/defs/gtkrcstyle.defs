@@ -1,0 +1,220 @@
+
+
+(define-function add_default_file
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_add_default_file")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "filename")
+  )
+)
+
+(define-function set_default_files
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_set_default_files")
+  (return-type "none")
+  (parameters
+    '("gchar**" "filenames")
+  )
+  (CCC "byhand")
+)
+
+(define-function get_default_files
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_default_files")
+  (return-type "gchar**")
+  (CCC "byhand")
+)
+
+
+(define-function get_style_by_paths
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_style_by_paths")
+  (return-type "GtkStyle*")
+  (parameters
+    '("GtkSettings*" "settings")
+    '("const-char*" "widget_path")
+    '("const-char*" "class_path")
+    '("GType" "type")
+  )
+)
+
+(define-function reparse_all_for_settings
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_reparse_all_for_settings")
+  (return-type "gboolean")
+  (parameters
+    '("GtkSettings*" "settings")
+    '("gboolean" "force_load")
+  )
+)
+
+(define-function find_pixmap_in_path
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_find_pixmap_in_path")
+  (return-type "gchar*")
+  (comment "nem mondja, fel kell-e szabadítani")
+  (parameters
+    '("GtkSettings*" "settings")
+    '("GScanner*" "scanner")
+    '("const-gchar*" "pixmap_file")
+  )
+)
+
+(define-function parse
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_parse")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "filename")
+  )
+)
+
+(define-function parse_string
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_parse_string")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "rc_string")
+  )
+)
+
+(define-function reparse_all
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_reparse_all")
+  (return-type "gboolean")
+)
+
+(define-method add_widget_name_style
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_add_widget_name_style")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "pattern")
+  )
+  (deprecated "")
+)
+
+(define-method add_widget_class_style
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_add_widget_class_style")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "pattern")
+  )
+  (deprecated "")
+)
+
+(define-method add_class_style
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_add_class_style")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "pattern")
+  )
+  (deprecated "")
+)
+
+
+(define-function gtk_rc_style_get_type
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_style_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_rc_style_new
+  (c-name "gtk_rc_style_new")
+  (is-constructor-of GtkRcStyle)
+  (return-type "GtkRcStyle*")
+)
+
+(define-method copy
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_style_copy")
+  (return-type "GtkRcStyle*")
+  (caller-owns-return #t)
+)
+
+(define-method ref
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_style_ref")
+  (return-type "none")
+)
+
+(define-method unref
+  (of-object "GtkRcStyle")
+  (c-name "gtk_rc_style_unref")
+  (return-type "none")
+)
+
+(define-function find_module_in_path
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_find_module_in_path")
+  (return-type "gchar*" ".free.")
+  (comment "newly allocated string")
+  (parameters
+    '("const-gchar*" "module_file")
+  )
+)
+
+(define-function get_theme_dir
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_theme_dir")
+  (return-type "gchar*" ".free.")
+)
+
+(define-function get_module_dir
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_module_dir")
+  (return-type "gchar*" ".free.")
+)
+
+(define-function get_im_module_path
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_im_module_path")
+  (return-type "gchar*" ".free.")
+  (comment "newly allocated string")
+)
+
+(define-function get_im_module_file
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_get_im_module_file")
+  (return-type "gchar*")
+)
+
+(define-function scanner_new
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_scanner_new")
+  (return-type "GScanner*")
+)
+
+(define-function parse_color
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_parse_color")
+  (return-type "guint")
+  (parameters
+    '("GScanner*" "scanner")
+    '("GdkColor*" "color")
+  )
+)
+
+(define-function parse_state
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_parse_state")
+  (return-type "guint")
+  (parameters
+    '("GScanner*" "scanner")
+    '("GtkStateType*" "state")
+  )
+)
+
+(define-function parse_priority
+  (in-module "GtkRcStyle")
+  (c-name "gtk_rc_parse_priority")
+  (return-type "guint")
+  (parameters
+    '("GScanner*" "scanner")
+    '("GtkPathPriorityType*" "priority")
+  )
+)
+

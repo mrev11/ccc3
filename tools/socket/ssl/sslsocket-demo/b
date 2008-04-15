@@ -1,0 +1,4 @@
+#!/bin/bash
+gdb `cat exe` `cat pid` <<EOF
+bt
+EOF

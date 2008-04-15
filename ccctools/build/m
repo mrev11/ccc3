@@ -1,0 +1,12 @@
+#!/bin/bash
+# FreeBSD-n build.exe nem tudja megát felülírni,
+# ezért idehozunk belõle egy példányt.
+
+EXE=$CCCDIR/usr/bin/$CCCUNAME
+cp -p $EXE/build.exe .
+export PATH=.:$PATH
+
+bapp_unix_.b  "BUILD_EXE=$EXE" "BUILD_SHR=static"
+
+rm build.exe
+ldd `which build.exe`

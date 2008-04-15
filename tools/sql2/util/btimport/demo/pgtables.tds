@@ -1,0 +1,20 @@
+
+name: pg_tables
+table: pg_tables
+
+
+column: schemaname      C24
+column: tablename       C24
+column: tableowner      C24
+column: tablespace      C24
+
+primkey: schemaname,tablename
+
+select: select_schema
+    where schemaname=:1 
+    order by tablename
+
+select: select_konto
+    where schemaname='konto' 
+    order by tablename
+    

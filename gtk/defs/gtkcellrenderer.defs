@@ -1,0 +1,88 @@
+
+
+(define-function gtk_cell_renderer_get_type
+  (in-module "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_get_type")
+  (return-type "GType")
+)
+
+(define-method get_size
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_get_size")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("GdkRectangle*" "cell_area")
+    '("gint*" "x_offset")
+    '("gint*" "y_offset")
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+  (CCC "byhand")
+)
+
+(define-method render
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_render")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "window")
+    '("GtkWidget*" "widget")
+    '("GdkRectangle*" "background_area")
+    '("GdkRectangle*" "cell_area")
+    '("GdkRectangle*" "expose_area")
+    '("GtkCellRendererState" "flags")
+  )
+)
+
+(define-method activate
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_activate")
+  (return-type "gboolean")
+  (parameters
+    '("GdkEvent*" "event")
+    '("GtkWidget*" "widget")
+    '("const-gchar*" "path")
+    '("GdkRectangle*" "background_area")
+    '("GdkRectangle*" "cell_area")
+    '("GtkCellRendererState" "flags")
+  )
+)
+
+(define-method start_editing
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_start_editing")
+  (return-type "GtkCellEditable*")
+  (parameters
+    '("GdkEvent*" "event")
+    '("GtkWidget*" "widget")
+    '("const-gchar*" "path")
+    '("GdkRectangle*" "background_area")
+    '("GdkRectangle*" "cell_area")
+    '("GtkCellRendererState" "flags")
+  )
+)
+
+(define-method set_fixed_size
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_set_fixed_size")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method get_fixed_size
+  (of-object "GtkCellRenderer")
+  (c-name "gtk_cell_renderer_get_fixed_size")
+  (return-type "none")
+  (parameters
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+  (CCC "byhand")
+)
+
+
+

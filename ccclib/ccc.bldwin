@@ -1,0 +1,12 @@
+-lccc3
+
+-d.
+-dwindows
+-duic/screenbuf
+-iinclude
+
+BUILD_SRC=src
+BUILD_BAT=$(CCCDIR)/usr/build/$(CCCUNAME)
+BUILD_INC=$(CCCDIR)/usr/include
+BUILD_OPT=compile.opt
+ 

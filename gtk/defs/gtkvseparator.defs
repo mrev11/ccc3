@@ -1,0 +1,16 @@
+
+
+(define-function gtk_vseparator_get_type
+  (in-module GtkVSeparator)
+  (c-name "gtk_vseparator_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_vseparator_new
+  (c-name "gtk_vseparator_new")
+  (is-constructor-of GtkVSeparator)
+  (return-type "GtkWidget*")
+)
+
+
+

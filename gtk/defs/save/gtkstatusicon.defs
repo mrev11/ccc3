@@ -1,0 +1,196 @@
+
+
+(define-function gtk_status_icon_get_type
+  (in-module GtkStatusIcon)
+  (c-name "gtk_status_icon_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_status_icon_new
+  (is-constructor-of GtkStatusIcon)
+  (c-name "gtk_status_icon_new")
+  (return-type "GtkStatusIcon*")
+)
+
+(define-function gtk_status_icon_new_from_pixbuf
+  (is-constructor-of GtkStatusIcon)
+  (c-name "gtk_status_icon_new_from_pixbuf")
+  (return-type "GtkStatusIcon*")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-function gtk_status_icon_new_from_file
+  (is-constructor-of GtkStatusIcon)
+  (c-name "gtk_status_icon_new_from_file")
+  (return-type "GtkStatusIcon*")
+  (parameters
+    '("const-gchar*" "file")
+  )
+)
+
+(define-function gtk_status_icon_new_from_stock
+  (is-constructor-of GtkStatusIcon)
+  (c-name "gtk_status_icon_new_from_stock")
+  (return-type "GtkStatusIcon*")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-function gtk_status_icon_new_from_icon_name
+  (is-constructor-of GtkStatusIcon)
+  (c-name "gtk_status_icon_new_from_icon_name")
+  (return-type "GtkStatusIcon*")
+  (parameters
+    '("const-gchar*" "icon_name")
+  )
+)
+
+
+(define-method set_from_pixbuf
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_set_from_pixbuf")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-method  set_from_file
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_set_from_file")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "file_name")
+  )
+)
+
+(define-method set_from_stock
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_set_from_stock")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "stock_id")
+  )
+)
+
+(define-method set_from_icon_name
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_set_from_icon_name")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "icon_name")
+  )
+)
+
+
+(define-method get_storage_type
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_storage_type")
+  (return-type "GtkImageType")
+)
+
+
+(define-method get_pixbuf
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_pixbuf")
+  (return-type "GdkPixbuf*")
+)
+
+
+(define-method get_stock
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_stock")
+  (return-type "const-gchar*")
+)
+
+(define-method get_icon_name
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_icon_name")
+  (return-type "const-gchar*")
+)
+
+(define-method get_size
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_size")
+  (return-type "gint")
+)
+
+
+(define-method set_screen
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_set_screen")
+  (return-type "none")
+  (parameters
+    '("GdkScreen*" "screen")
+  )
+  (CCC "kihagy")
+)
+
+(define-method get_screen
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_screen")
+  (return-type "GdkScreen*")
+  (CCC "kihagy")
+)
+
+
+(define-method "set_tooltip"
+    (of-object GtkStatusIcon)
+    (c-name  gtk_status_icon_set_tooltip)
+    (parameters
+        '("const-gchar*" tooltip_text)
+    )
+)
+
+
+(define-method set_visible
+  (of-object "GtkStatusIcon")
+  (c-name "gtk_status_icon_set_visible")
+  (return-type "none")
+  (parameters
+    '("gboolean" "visible")
+  )
+)
+
+(define-method get_visible
+  (of-object "GtkStatusIcon")
+  (c-name "gtk_status_icon_get_visible")
+  (return-type "gboolean")
+)
+
+
+(define-method set_blinking
+  (of-object "GtkStatusIcon")
+  (c-name "gtk_status_icon_set_blinking")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_blinking
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_get_blinking")
+  (return-type "gboolean")
+)
+
+(define-method is_embedded
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_is_embedded")
+  (return-type "gboolean")
+)
+
+(define-method popup
+  (of-object GtkStatusIcon)
+  (c-name "gtk_status_icon_popup")
+  (return-type "none")
+  (parameters
+    '("GtkMenu*" "menu")
+  )
+  (CCC "REG")
+  (comment "kiegészítés")
+)
+

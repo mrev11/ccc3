@@ -1,0 +1,80 @@
+
+\section{Postgres adatbázis készítése}
+
+
+\subsubsection*{Postgres változatok}
+
+A 7.4.x változatban megszűnt a szerver oldali autocommit. 
+Korábban a \verb!set autocommit off! utasítás hatására egy 
+commit/rollback után automatikusan indult a következő tranzakció,
+ami megint csak a következő commit/rollback-ig tartott. 
+Ehelyett az interfész minden commit/rollback után
+küld a szervernek egy \verb!begin transaction! utasítást.
+A 8.0.8 változat körül megjelentek a \verb!savepoint!-ok.
+A 8.1.4-ben megjelent a kétfázisú commit (2PC) és az osztott
+rekordzár (\verb!select ... for share!).
+
+\subsubsection*{Új adatbázis cluster készítése}
+
+Adatbázis clusternek nevezzük az adatbázisok egy olyan
+halmazát, amik ugyanabban a PGDATA könyvtárban vannak, 
+és ugyanaz a Postmaster folyamat kezeli őket.
+Csinálunk egy üres directoryt:
+\begin{verbatim}
+    mkdir pgdata
+\end{verbatim}
+
+
+Ebben végrehajtjuk:
+\begin{verbatim}
+    initdb --no-locale -D `pwd` 
+\end{verbatim}
+
+\subsubsection*{Indító/leállító scriptek}
+
+Létrehozzuk pgdata-ban az alábbi scripteket. 
+A \verb!pg-start! script indítja az adatbázist:
+\begin{verbatim}
+    #!/bin/bash
+    pg_ctl start  -D `pwd`  -l PG_LOG
+\end{verbatim}
+
+A \verb!pg-stop! script leállítja az adatbázist:
+\begin{verbatim}
+    #!/bin/bash
+    pg_ctl stop  -D `pwd`  -l PG_LOG
+\end{verbatim}
+
+
+\subsubsection*{Új adatbázis készítése}
+
+Elindítjuk a Postgres-t (az előbbi indítóscripttel),
+utána elindítjuk psql-t.
+\begin{verbatim}
+    psql template1
+\end{verbatim}
+
+A psql-ben végrehajtjuk:
+\begin{verbatim}
+    create database vermes;
+\end{verbatim}
+
+Ezzel a saját home-omban csináltam egy privát
+adatbázis clustert (adatbázisok olyan halmazát,
+amit ugyanaz a Postmaster kezel), ebben a clusterben
+jelenleg egy adatbázis van (vermes), amibe azonosítás
+nélkül (mint lokális UNIX user) bármikor beléphetek,
+és amiben bármit csinálhatok.
+
+\subsubsection*{Konto schema}
+
+Mivel a jelen demó minden adatbázisobjektumot
+a konto schema-ban hoz létre, legjobb ezt a schema-t mindjárt
+megcsinálni. A psql-ben végrehajtjuk:
+\begin{verbatim}
+    create schema konto;
+\end{verbatim}
+
+Ezután a Postgres adatbázis alkalmas a demó programok kiszolgálására.
+
+

@@ -1,0 +1,16 @@
+
+
+(define-function gtk_bin_get_type
+  (in-module GtkBin)
+  (c-name "gtk_bin_get_type")
+  (return-type "GtkType")
+)
+
+(define-method get_child
+  (of-object "GtkBin")
+  (c-name "gtk_bin_get_child")
+  (return-type "GtkWidget*")
+)
+
+
+

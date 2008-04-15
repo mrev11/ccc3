@@ -1,0 +1,4 @@
+#!/bin/bash
+lemon.exe  -g xmldom_parser.lem  >xmldom_parser.rul
+lemon.exe  -s xmldom_parser.lem
+rm xmldom_parser.c

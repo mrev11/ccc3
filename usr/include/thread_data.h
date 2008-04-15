@@ -1,0 +1,144 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#ifndef _THREAD_DATA_H_
+#define _THREAD_DATA_H_
+
+#include <stdio.h>
+
+#ifdef GC_BOEHM
+#   define GC_THREADS
+//#   define GC_DEBUG
+#   include <gc/gc.h> 
+#   undef dlopen
+#   undef CreateThread
+#   define CreateThread GC_CreateThread
+
+    //A thread_data-nak a kollektor által ellenőrzött memóriában 
+    //kell lennie, a new operátor emiatt önmagában nem használható.
+    //Linuxon a GC_add_roots/GC_remove_roots működik (new után/delete előtt),
+    //de Windowson sajnos hiányzik a GC_remove_roots.
+
+#   define NEWTHRDATA()  (((thread_data*)GC_MALLOC(sizeof(thread_data)))->init())
+#   define DELTHRDATA(d) (((thread_data*)(d))->cleanup())
+#else
+#   define NEWTHRDATA()  (new thread_data())
+#   define DELTHRDATA(d) (delete (thread_data*)(d))
+#endif
+ 
+class thread_data
+{
+  public:
+
+    static int tdata_count;
+    static thread_data *tdata_first;
+    static thread_data *tdata_last;
+ 
+    thread_data *prev; 
+    thread_data *next; 
+ 
+    TRACE   _tracebuf[TRACE_SIZE];          // stack a trace infónak
+    VALUE   _stackbuf[STACK_SIZE];          // stack a local változóknak
+    SEQJMP  _seqjmpbuf[SEQJMP_SIZE];        // stack a longjump-oknak
+    VALUE   _usingstkbuf[USINGSTK_SIZE];    // stack a using typeinfo-nak
+
+    TRACE  *_trace;
+    VALUE  *_stack;
+    SEQJMP *_seqjmp;
+    VALUE  *_usingstk;
+    int     _siglocklev;
+    int     _signumpend;
+    int     _sigcccmask;
+ 
+    MUTEX_DECLARE(mutex);
+    void lock(){ MUTEX_LOCK(mutex); }
+    void unlock(){ MUTEX_UNLOCK(mutex); }
+    
+    thread_data *init()
+    {
+        ++tdata_count;
+
+        if( 1==tdata_count )
+        {
+            prev=0;
+            next=0;
+            tdata_first=this;
+            tdata_last=this;
+        }
+        else
+        {
+            prev=tdata_last;
+            next=0;
+            tdata_last->next=this;
+            tdata_last=this;
+        }
+    
+        _trace=_tracebuf;
+        _stack=_stackbuf;
+        _seqjmp=_seqjmpbuf;
+        _usingstk=_usingstkbuf;
+        _siglocklev=1;  //kezdetben lockolva
+        _signumpend=0;
+        _sigcccmask=0;
+        
+        MUTEX_INIT(mutex);
+        return this;
+    }
+
+    thread_data()
+    {
+        init();
+    }
+    
+    thread_data *cleanup()
+    {
+        --tdata_count;
+        
+        if( prev!=0 )
+        {
+            prev->next=next;
+        }
+        if( next!=0 )
+        {
+            next->prev=prev;
+        }
+        
+        if( this==tdata_first )
+        {
+            tdata_first=next;
+        }
+        if( this==tdata_last )
+        {
+            tdata_last=prev;
+        }
+
+        MUTEX_DESTROY(mutex);
+        return this;
+    }
+
+    ~thread_data()
+    {
+        cleanup();
+    }
+};
+
+ 
+#endif
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+stock-03-obj.exe >log
+z log

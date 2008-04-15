@@ -1,0 +1,7 @@
+#!/bin/bash
+keytool -certreq \
+    -keystore keys -storepass changeit \
+    -alias test \
+    -file test-req.pem
+ 
+ 

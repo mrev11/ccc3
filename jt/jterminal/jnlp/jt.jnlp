@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp  spec="1.0+"  
+       codebase="http://1g.comfirm.ve/jterminal/" 
+       href="jt.jnlp"> 
+
+  <information> 
+    <title>Jáva Terminál Demó</title> 
+    <vendor>ComFirm Bt</vendor> 
+    <homepage href="html/jterminal.html"/> 
+    <description>CCC Download</description> 
+    <offline-allowed/> 
+  </information> 
+
+  <security> 
+      <all-permissions/> 
+  </security> 
+
+  <resources> 
+    <j2se version="1.4.0+"/> 
+    <jar href="jterminal.jar"/> 
+  </resources> 
+
+  <application-desc main-class="jterminal"> 
+    <argument>1g.comfirm.ve</argument> 
+    <argument>46000</argument> 
+    <argument>ssl</argument> 
+  </application-desc> 
+</jnlp> 

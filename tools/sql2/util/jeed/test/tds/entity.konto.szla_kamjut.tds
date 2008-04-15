@@ -1,0 +1,81 @@
+
+name: konto.szla_kamjut
+version: "demo 1.0.00"
+
+table: konto.szamla=szamla
+table: konto.ugyfszl=ugyfszl
+
+join:  szamla left join ugyfszl on szamlaszam=uszamlaszam
+
+colref: USZAMLASZAM             x=ugyfszl.szamlaszam 
+
+
+column: TOROLTFLAG      L       x=szamla.toroltflag
+                                (l=Törölve) 
+                                (t=Inaktivált számlát jelző flag)
+
+column: SZAMLASZAM      C24     x=szamla.szamLAszam 
+                                l=Számlaszám  
+                                (p=@R! 99999999-NNNNNNNN-99999999)
+
+column: KIVDATUM        D       (l=Kivdat)
+                                (t=Utolsó kivonat dátuma)
+
+
+column: SZAMLAKOD       C1      (l=Számlakód)
+                                (t=L=ügyfelszámla, B=belsőszámla, F=főkönyvi számla)
+                                (p=@RXEC! A)
+                                nn
+
+column: KIVONAT         N3      (l=Kivszám) 
+                                (t=Kivonatok száma) 
+
+column: DEVNEM          C3      l=Dev
+                                t=Devizanem
+                                (p=@! AAA)
+                                nn
+                                
+column: NEV             C30     (l=Számlanév)
+
+column: EGYENLEG        N17.2   (x=egyenleg+napitartoz+napikovet)
+                                (l=Aktuális egyenleg)
+
+column: BLOKKEGYNL      N17.2   (l=Blokkolt egyenleg)
+
+column: SORBEGYNL       N17.2   (l=Sorbanálló egyenleg)
+column: ZAROLTFLAG      L       (l=Zárolt)
+column: TULMENFLAG      L       (l=Túlmeneszthető)
+
+column: SZLAKAT         C4      
+column: FOKSZAM         C10     
+column: SZLATIPUS       C3      
+column: KAMJUTKOD       C3
+column: ZARTIPUS        C2
+
+
+primkey: SZAMLASZAM
+
+index: proba(kivdatum,zartipus)
+
+select:  select_szamla 
+    where szamlaszam like :1
+          and toroltflag='0'
+    order by szamlaszam
+
+
+select:  select_egyenleg
+    where szamlaszam like :1 and egyenleg >:2
+          and toroltflag='0'
+    order by szamlaszam 
+
+
+select:  select_kivdatum
+    where szamlaszam like :1 and kivdatum >:2   
+        and toroltflag='0'
+    order by szamlaszam
+
+select:  select_tulmenflag
+    where szamlaszam like :1 and tulmenflag=:2   
+        and toroltflag='0'
+    order by szamlaszam
+        

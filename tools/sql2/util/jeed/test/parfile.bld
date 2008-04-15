@@ -1,0 +1,12 @@
+-d.
+-dtds
+
+-bccc3_jeed
+-bccc3_tds
+-bccc3_sql2_oracle
+-bccc3_sql2_postgres
+-bccc3_jt
+-bccc3_socket
+-bccc3_sslsocket
+-bccc3_btbtx
+

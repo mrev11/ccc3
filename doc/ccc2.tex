@@ -1,0 +1,870 @@
+\raggedright
+
+\pagetitle{CCC 2.x áttekintés}{Dr. Vermes Mátyás}{2003. augusztus}
+
+\section{Áttekintés} 
+
+\subsection{A CCC-ről röviden}
+
+A 90-es évek elejének egyik legnépszerűbb fejlesztő eszköze
+a Clipper volt, ennek örököse a CCC.
+A CCC a \href{http://www.comfirm.hu}{ComFirm} munkájának melléktermékeként
+jött létre. A ComFirm több mint 10 éve fejleszti és üzemelteti
+lényegében egyetlen termékét, egy banki számlavezető rendszert.
+A körülmények kényszere folytán kezdetben Clipperben kellett
+dolgoznunk (előírta a megrendelő), de már az induláskor kerestük 
+a váltás lehetőségét. Az akkori Clipperből ezért csak a jónak gondolt 
+részeket vettük birtokba, ezekből a ,,jó'' részekből alakult ki a CCC.
+
+A CCC név a {\em Clipper to C Compiler\/} szavak kezdőbetűiből származik.
+Nevéhez méltóan a CCC a Clipper kódot C++-ra fordítja,
+és az így kapott C++ forrásból az adott oprendszer eszközeivel 
+csinál (fordít, szerkeszt) végrehajtható programot.
+Mivel a mai operációs rendszerek alapja a C/C++ nyelv, 
+nem meglepő, hogy a CCC  több operációs rendszeren is fut:
+
+\begin{itemize}
+\item Windows (NT-től kezdve),
+\item Linux,
+\item FreeBSD,
+\item Solaris,
+\item HP-UNIX.
+\end{itemize}
+
+Windowson az MSC, Borland C és MinGW  fordítókkal lehet
+CCC környezetet kialakítani. UNIX-on mindenhol a GNU C-t használjuk.
+Általánosságban elmondható, hogy a CCC-t tetszőleges UNIX rendszerre 
+pár napos munkával portolni tudjuk. Ez egyúttal azt is jelenti,
+hogy a CCC-ben készült programok a CCC-vel együtt hordozhatók 
+a felsorolt platformok között. Egy ilyen esettanulmányt ismertet a
+\href{solarisport.html}{A Kontó számlavezető rendszer portolása Solarisra} 
+dokumentum.
+ 
+Téved, aki azt gondolja, hogy a CCC valami ásatag dolog,
+ami csak régi Clipper alkalmazások portolására való.
+Jelenleg XMLRPC szervereket írunk, SQL alapú adatbázisprogramozást
+végzünk, digitális aláírásokat vizsgálunk CCC-ben. 
+A Jáva terminál technológiával  új, egyedülálló lehetőségek nyíltak  
+a CCC előtt az internetes programozásban.
+
+A CCC lényegében keletkezésétől fogva szabadon letölthető, 
+és tetszőlges célra ingyenesen használható volt, 2005. őszén
+azonban a helyzet végleges tisztázása érdekében a CCC-t LGPL 
+license hatálya alá helyeztük.
+
+
+\subsection{Van létjogosultsága?} 
+
+E sorok írója hallott olyan véleményt, 
+miszerint a Clipper óriási kárt okozott a magyar
+informatikában, mivel rossz programozási stílusra
+nevelte a programozókat.
+Egy internetes fórumon, ahol a CCC-ről folyt a társalgás felvetették:
+Mi értelme van  Clipperrel foglalkozni a .NET és Delphi korában?
+Van-e a Pythonnak, Perlnek, Pikenak, Rubynak létjogosultsága?
+%Ha van, akkor van a CCC-nek is. 
+%És most következzen a jelen alfejezet legfontosabb gondolata:
+
+\begin{quote}\em
+  A CCC-t a régi Clippertől eltérően nem dBase adatbáziskezelésre
+  szakosodott alkalmazásfejlesztő eszköznek tekintjük, 
+  hanem általános célú programnyelvnek.  Éppúgy, ahogy az előbb felsorolt   
+  nyelvekre,   pl.\ a Pythonra gondolunk.
+\end{quote}  
+
+Valóban a CCC leginkább a Pythonra hasonlít. Nem belső
+felépítését, hanem hangulatát, használhatóságát illetően.
+A Python jobban készen van (több csomag van hozzá),
+a CCC viszont nyíltabb (könnyebb hozzá C részeket írni),
+ezáltal könnyebb megírni a hiányzó interfészeket, komponenseket.
+Persze mindenki mondhatja magáról, hogy hozzá könnyebb C betéteket írni, 
+de vajon a Pythonos olvasóim közül hányan bővítették már a Python-t C-vel? 
+Ugyanakkor a CCC programkészítő környezet a C/C++ modulokat szó nélkül, 
+automatikusan fordítja és linkeli a többi modullal együtt.
+
+A Clipper/CCC programozási nyelv rendkívül praktikus. 
+Egyáltalán nem nevel rossz programozási stílusra (persze
+a dilettánsok sok mindenre képesek). 
+Felhasználási területe igencsak széles:
+
+\begin{itemize}
+\item 
+  Alkalmas gyorsan összeütött kis programok készítésére, 
+  amivel a rendszer háztartási feladatait lehet megoldani,
+  vagy más programokat lehet összeragasztani. 
+\item  
+  Lehet vele óriási programrendszereket csinálni,
+  mint amilyen a mi 10 éve használatban lévő,
+  állandóan fejlesztett banki rendszerünk. 
+\item
+  Lehet vele kiszolgálókat csinálni, pl.\ XMLRPC szervereket.
+\item
+  Lehet vele internetes programokat készíteni, mint amilyen a     
+  \href{http://www.comfirm.hu}{ComFirm honlapjáról} 
+  indítható E-Kontó alkalmazás.
+\end{itemize}
+
+Másrészt minek újabb és újabb nyelveket kitalálni, ha jó a régi is. 
+Persze változatlan állapotában a régi Clipper ma szegényesen hatna, 
+ám a CCC sokmindennel kiegészült: 
+objektum rendszerrel, 
+többszál támogatással, 
+névterekkel,
+könnyű hozzáféréssel a rendszer erőforrásaihoz, 
+pl.\ az SQL adatbázisokhoz, openssl könyvtárhoz stb..
+
+A CCC-ben végrehajtott bővítések közben nyelvi szempontból
+kompatibilisek maradtunk a régi Clipperrel. A mostani programjaink még 
+mindig szintaktikailag helyes Clipper programok. Ez mutatja, hogy a 
+Clipper valóban rugalmas (meglepően rugalmas) nyelv, 
+amit érdemes életben tartani.
+
+\subsection{Hogyan használjuk a CCC-t?}
+
+Informatív lehet tudni, hogyan és mire használják a CCC-t azok
+akik a legjobban ismerik, vagyis a készítői. Mint már írtam,
+a CCC egy banki rendszer portolására készült, és
+egy banki számlavezető rendszer nem engedheti meg magának,
+hogy hibázzon. A CCC tehát bizonyítottan használható és stabil.
+
+A számlavezető alkalmazás kb.~100+ végrehajtható programból áll, 
+amik egy közös adatbázison dolgoznak. Kb.~100--200 felhasználónk van, 
+akik a bank országos fiókhálózatában hol ezt, hol azt a végrehajtható 
+modult indítják el. Az egész alkalmazás centralizálva működik:
+\begin{itemize}
+\item
+    Az összes felhasználó összes programja egyetlen központi 
+    szerveren fut. 
+\item
+    Ugyanezen a szerveren van az adatbázis.
+    Az alkalmazások a (számukra) lokális fájlrendszeren
+    levő adatbázisfájlokat hatékonyan és biztonságosan
+    írják, olvassák.
+\item
+    A felhasználók (banki ügyintézők az országos fiókhálózatból) 
+    egy speciálisan a CCC-hez készült karakteres terminálból kezelik 
+    a programokat.  A terminál alkalmazásfüggetlen, kicsike és  
+    minden létező  platformon (DOS, Windows, Linux, böngésző) fut.
+    A terminál TCP kapcsolaton át kommunikál a szerverprogramokkal.
+    Az ügyintézők nem jelentkeznek be UNIX felhasználóként a szerverre,
+    és nem látják az adatbázist tartalmazó fájlrendszert.
+\end{itemize}
+Megjegyzem, hogy a praxisunkban Linux, Solaris és Windows is
+előfordult, mint éles szerverplatform, miközben a programjainknak
+egyetlen forrásváltozata van.
+
+Vannak olyan alkalmazásaink, amik nem interaktívak,
+pl.\  az XMLRPC szerverek, amik  tranzakciós 
+API-t biztosítanak más rendszerek számára.
+
+Vannak esetek, amikor a karakteres felület nem megfelelő, 
+ilyen pl.\ az a program, ami az otthonról internetező banki ügyfél 
+számára megmutatja a számlaegyenlegét. A GUI-t igénylő programok
+készítésére való a Jáva terminál. A Jáva terminálos alkalmazás két
+részből áll:
+\begin{itemize}
+\item
+    A szerveren futó részt CCC-ben írjuk. 
+    Ez tartalmazza az  üzleti logikát. A szerver TCP kapcsolatot 
+    tart fenn a terminállal,  amit XML szintaktikájú üzenetekkel vezérel.
+\item
+    A grafikus megjelenítést végző rész (a terminál) Jávában készült. 
+    A terminál alkalmazásfüggetlen. Hasonlítható egy szerver oldali 
+    widget-ekkel működő X szerverhez, de sokkal  egyszerűbb, 
+    és sokkal magasabb szintű funkciókészlete van.
+    A funkciókészlet ügyviteli programok céljára lett kialakítva,
+    a megjelenítés Swing eszközkészlettel történik.
+    A terminál a Jáva Webstart segítségével automatikusan
+    települ és frissül az internetes ügyfél gépén.
+\end{itemize}
+A Jáva terminál saját, új ötlet.
+Természetesen a CCC-vel kiváló CGI programokat, sőt webszervert is, 
+lehet készíteni, ha valaki a kitaposott utat szereti.
+
+Az eddig felsorolt esetekben az a közös, hogy a CCC program
+mindig a szerveren fut. A CCC-t tehát döntően {\em szerver oldali\/} 
+programozásra  használjuk. Még az interaktív programjaink is 
+a szerveren futnak.
+
+A CCC régebbi rétegeiben vannak grafikus csatoló könyvtárak
+Windowshoz és az Fltk ablakkezelőhöz. Amikor ezek készültek,
+az volt a célunk, hogy a meglevő karakteres Clipper  programok
+átírás nélkül fussanak grafikus környezetben. Ezt el is értük,
+de csak azon az áron, hogy  a grafikus megjelenítés primitív.
+A primitívség nem a CCC/Clipper nyelv hibája, hanem a koncepció 
+következménye. 
+A közvetlen grafikus csatolók azért vannak elhanyagolva,
+mert nem támogatják kellőképpen a szerver oldali programozást.%
+\footnote{
+Időközben belekezdtem egy GTK csatoló írásába, ez lesz a CCCGTK. 
+Terveim szerint ez a csatoló annyira lesz teljes, mint a PyGTK. 
+Egyelőre  kb.~10\%-os állapotban van: az ablakok, menük, gombok, 
+adatbeviteli mezők, feliratok, keretek, \ldots már működnek.}
+ 
+
+\section{A CCC felépítése}
+
+\subsection{Clipper-CCC összehasonlítás}
+
+Nem célunk a régi DOS-os Clipper alkalmazások változtatás 
+nélküli lefordítása. A CCC általános célú programnyelv. 
+Lehet benne adatbáziskezelő szoftvert írni, ám az ilyen szoftver 
+nem a nyelv része, hanem alkalmazás. Konkrétan, a régi Clipper 
+dBase alapú adatbáziskezelése nem része a CCC-nek.
+Az eredeti Clipperből csak a jó részeket tartottuk meg, 
+azokban viszont közel teljes  a kompatibilitás. 
+A CCC több területen kiterjeszti a Clippert:
+objektumok, szálak, névterek, kivételkezelés. 
+A kiterjesztés minden esetben úgy valósul meg, 
+hogy a CCC speciális esetként tartalmazza a Clippper 5.x-et, 
+miközben minimális mennyiségű szintaktikai újítást vezet be. 
+Bővebb információ található a témáról az
+\href{ccc-clipper-elteresek.html}{Eltérések a CCC és a Clipper  között} 
+dokumentumban.
+
+
+\subsection{CCC mint veremgép}
+
+A CCC egy C++-ban implementált veremgépre fordít. 
+Nézzük, mit csinál a klasszikus Hello World programmal:
+\begin{verbatim}
+function main()
+    ? "Hello World!"
+    return NIL
+\end{verbatim}
+
+amiből (a szokásos preprocesszálás után) 
+a CCC a következő C++ kódot generálja:
+
+\begin{verbatim}
+//input: proba.ppo (3.1.01)
+
+#include <clp2cpp.h>
+
+extern void _clp_main(int argno);
+extern void _clp_qout(int argno);
+
+void _clp_main(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,0);
+while(stack<base+0)*stack++=NIL;
+push_call("main",base);
+//
+    line(3);
+    string("Hello World!");
+    _clp_qout(1);
+    pop();
+    line(4);
+    push(&NIL);
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+\end{verbatim}
+ 
+Amit érdemes megérteni a fenti kódban (a kevésbé fontos dolgok mellőzésével):
+\begin{enumerate}
+\item 
+   Először is megjegyezzük, hogy  \verb!void _clp_xxx(int argno)!
+   alakja van (C-ből nézve) azoknak a függvényeknek, amik a Clipper
+   szintről hívhatók. Az \verb!argno! argumentum tartalmazza 
+   a vermen kapott  paraméterek számát. A függvények leveszik 
+   a veremről a megadott számú paramétert, és visszatérés előtt
+   a veremre teszik a saját return értéküket.
+\item 
+   A program először rendbeteszi a vermet. 
+   Clipperben a függvényhívás 
+   bármilyen paraméterezéssel történhet, ezért futásidőben
+   kell a paraméterek számát, típusát ellenőrizni.
+   A jelen esetben a program egyetlen paramétert sem vár, 
+   ezért akárhányat is adunk neki, azt mind eldobja.
+\item 
+   A \verb!string()! függvény a veremgép egy primitívje,
+   a paraméterét felteszi a veremre.
+\item 
+   A \verb!_clp_qout()! leveszi a veremről az előbbi stringet,
+   és kiírja a konzolra, a veremre egy NIL-t tesz.
+\item   
+   A \verb!pop()! eldobja az előző NIL-t.
+\item   
+   A \verb!push()! a main visszatérési értékeként újra egy NIL-t
+   tesz a veremre. 
+\item   
+   A program rendbeteszi a vermet (elintézi,
+   hogy a visszatérési érték legyen felül), és visszatér.
+   %A hívott rutin mindig tudja, hogy hány paramétert
+   %kapott a vermen (\verb!argno!), visszatérés előtt ezeket köteles 
+   %eltávolítani, és helyükre a saját visszatérési értékét rakni.
+\end{enumerate}
+
+A haladóbbaknak.
+Nyilvánvalónak látszik, hogy \verb!stack! mutató a verem tetejére.
+Ez így is van, a többszálúság miatt azonban a helyzet kicsit
+bonyolultabb: \verb!stack! egy makró, amiből olyan kifejezés lesz,
+ami az aktuális szál privát vermének tetejére mutat.
+
+Nem kell megijedni, a  példa csak a veremgép
+bemutatásrára szolgál. A gyakorlatban  a CCC programsorok millióit 
+fordítja le anélkül, hogy bárki nézegetné a kapott C++ kódot.
+
+\subsection{Szemétgyűjtés}
+
+A  Python, Pike referenciaszámlálós szemétgyűjtést használ.
+Ennek lényege, hogy a rendszer nyilvántartja, hogy melyik objektumra
+hány változó hivatkozik.
+\begin{quote}
+  A kezdőbbeknek. Vegyünk egy stringet, erről azt mondjuk,
+  hogy a program egy objektuma. Ha az \verb!a! változó értéke a string, 
+  akkor a változó erre a string objektumra hivatkozik.
+  Ha a program végrehajt egy \verb!b:=a! utasítást, akkor a
+  stringre való hivatkozások száma nő, mert most már \verb!b! is
+  a stringre hivatkozik. Az \verb!a:=NIL! utasítás viszont
+  csökkenti a hivatkozások számát.
+\end{quote}
+Ha egy objektum referenciaszáma 0-ra csökken, az megszüntethető.
+Ennek a módszernek gyengéje, hogy hibázik azokban az esetekben,
+amikor az objektumok hivatkozási gráfjában kör van.
+Például, ha egy array elemként tartalmazza önmagát, 
+akkor annak az arraynek (mint memóriaobjektumnak) a referenciaszáma
+sosem csökken 0-ra. A pythonosok erre azt mondják: ne csináljunk köröket.
+
+A CCC szemétgyűjtése Cs.L. javaslata alapján a következőképpen megy:
+A rendszer időről időre a vermeken tárolt változókból kiindulva
+bejárja az objektumhivatkozások gráfját, eközben megjegyzi, hogy
+mely  objektumokhoz jutott el. Azok az objektumok,
+amikhez a gráf bejárása nem vezet el, feleslegesek, és ezért
+meg lehet őket szüntetni. 
+
+Az utóbbi algoritmus jellemzője, hogy átlagosan gyorsabb
+a referenciaszámlálásnál, mert kevesebb adminisztrációt igényel,
+hátránya viszont, hogy időről időre megállítja a program futását.
+A tapasztalat szerint azonban az akadozás csak egészen 
+nagy programoknál feltűnő. Egymillió objektumot kezelő,
+100 MB memóriát foglaló CCC programok még kiválóan futnak.
+
+Érdekességként említem, hogy a többszálú CCC tervezésekor 
+eltűnődtem, nem volna-e mégis jobb a referenciaszámlálás.
+Ui. a referenciaszámlálást minden szál maga intézi, 
+nincs szükség szemétgyűjtés alkalmából az összes többi szál 
+leállítására. Ugyanakkor pedig azt látom, hogy a pythonosok 
+,,valódi'' szemétgyűjtésre vágynak. Hiába, a szomszéd kertje mindig
+zöldebb.
+
+\subsection{Megjelenítő könyvtárak}
+
+A CCC programozásban előtérbe kerültek azok a programok,
+amik egyáltalán nem igénylik a Clipper hagyományos képernyőkezelését:
+\begin{itemize}
+\item 
+  Parancssoros programok, mint a \verb!build!, \verb!prg2ppo!.
+  Az új könyvtárszerkezet lehetővé teszi, hogy az ilyenek X nélkül 
+  fussanak. Mellékhatásként egyszerűsödik a CCC installáció.
+\item
+  Az XMLRPC szerverek a háttérben futnak.
+  Ha egy ilyen szerverben feljönne egy várakozó dialogbox, 
+  az a program végét jelentené.
+\item 
+  A Jáva terminálos programoknak nincs szükségük
+  lokális megjelenítésre.  A technológia (a karakteres
+  terminálhoz hasonlóan) transzparensen támogatja a távoli 
+  programfuttatást. A Jáva terminált vezérlő szerver oldali könyvtár
+  {\em sokkal egyszerűbb}, mint akármelyik fullscreen képernyőkezelő.
+\end{itemize}
+Ezeknél a programtípusoknál előnyös, ha nem kell cipelniük
+a bonyolult megjelenítő könyvtárakat, ezért a megjelenítést 
+végző kód külön könyvtárakba került:
+
+\begin{tabular}{ll}
+\tt ccc2       &  alapkönyvtár \\
+\tt ccc2\_ui\_ &  képernyőkezelés nélküli interfész\\
+\tt ccc2\_uic  &  karakteres képernyő, lokális és távoli\\
+\tt ccc2\_uif  &  Fltk képernyőkezelés (UNIX-on)\\
+\tt ccc2\_uiw  &  Windows GUI képernyőkezelés\\
+\tt ccc2\_uid  &  dinamikusan választ uic és uif között (UNIX-on)\\
+\end{tabular}
+
+A \verb!ccc2! és \verb!ccc2_ui_! könyvtárak adják a CCC magját, amivel 
+már megírhatók a parancssoros programok, a háttérben futó szerverek.
+A jövőbeli fejlesztések erre a két alapkönyvtárra koncentrálódnak. 
+E könyvtáraknál célkitűzés a szálbiztosság elérése.
+
+A \verb!ccc2_uic!, \verb!ccc2_uif!, \verb!ccc2_uiw! könyvtárak 
+a korábbi (CCC 1.x) képernyőkezelő kódot tartalmazzák. Az uic
+könyvtárban kompatibilis módon implementálva van a hagyományos Clipper 
+karakteres képernyőkezelés. Fontos alváltozatai a lokális és
+távoli megjelenítés, utóbbi Windowson is lehetővé teszi a 
+távoli programhasználatot.
+
+Az uif (Fltk) és uiw (Windows) könyvtárak 
+grafikus megjelenítést biztosítanak. A dolog természetéből
+adódóan ezek  nem lehetnek teljesen kompatibilisek a Clipperrel,
+viszont tartalmaznak olyan magasabb szintű objektumokat
+(menüvel felszerelt, adatrekordok között navigáló ablakot, dialogboxot), 
+amik grafikus és karakteres módban egyformán programozhatók, és egyformán 
+is működnek. Éveken át ezekből az objektumokból építettük az interaktív
+programjainkat. Használatuk a 
+\href{cccapix.html}{CCC programozási példák} dokumentumban
+van leírva.
+
+
+A  \verb!ccc2_uid! könyvtár az  uic és  uif könyvtárakban 
+definiált globális  Clipper szimbólumok metszetét tartalmazza.
+Az uid-vel linkelt programok karakteres és grafikus módban is 
+működőképesek, környezeti változó beállításával lehet 
+szabályozni, hogy ugyanaz a program melyik módban jelenjen meg.
+
+Az utóbbi négy megjelenítő könyvtár (uic, uif, uiw, uid) nem szálbiztos. 
+Ezek fejlesztése a jövőben nem folytatódik, mivel interaktív
+programok készítéséhez jobb és egyszerűbb a Jáva terminál. 
+
+
+\subsection{C kiegészítés}
+
+A CCC könnyen bővíthető C/C++ primitívekkel,
+ezáltal könnyen el lehet érni a rendszer szolgáltatásait.
+Vegyünk két példát:
+
+
+Az első, bár rövid, szándékosan nem triviális,
+UNIX-on és Windowson eltér, van benne paraméterátadás.
+A sleep függvény vár, a várakozási időt
+ a függvény argumentumaként ezredmásodpercben kell megadni. 
+\begin{verbatim}
+#ifdef _UNIX_
+#include <sys/time.h>
+#include <sys/types.h>
+#endif
+
+#include <cccapi.h>
+
+void _clp_sleep(int argno)  //nincs NG-ben
+{
+    CCC_PROLOG("sleep",1);
+    unsigned long ms=_parnu(1); 
+    if( ms )
+    {
+      #ifdef _UNIX_
+        struct timeval t;
+        t.tv_sec=ms/1000;
+        t.tv_usec=(ms%1000)*1000;
+        select(0,NULL,NULL,NULL,&t);
+      #else
+        Sleep( ms );
+      #endif
+    }
+    _ret();
+    CCC_EPILOG();
+}
+
+\end{verbatim}
+
+A második példa a UNIX fork hívást vezeti ki CCC szintre.
+Gondoljuk el, hogy a komplikált CCC program, az egész változóterével
+mindenestül megduplázódik, és két példányban fut tovább \ldots 
+
+\begin{verbatim}
+#include <cccapi.h>
+
+void _clp_fork(int argno) 
+{
+    CCC_PROLOG("fork",0);
+    _retni( fork() );
+    CCC_EPILOG();
+}
+\end{verbatim}
+
+A C kiegészítés szabályairól nincs dokumentáció, de nem is volna
+sok haszna. A komoly érdeklődő hamar eligazodik a bőségesen
+rendelkezésre álló példák alapján. Annyit azért megjegyzek,
+hogy a CCC (és általában minden veremgép) stabilitása 
+a primitívek állandóságán alapul. Ha ugyanazokból a
+lego elemekből sok dolgot kirakunk, akkor a hibás darabok hamar 
+kiselejteződnek. A CCC is annál stabilabb minél több programot
+írunk rajta.
+
+
+\section{Bővítmények}
+
+
+\subsection{Indexszekvenciális adatbáziskezelés}
+
+A Clipper adatbáziskezelő eljárásait sosem használtuk eredeti 
+formájukban, mert az akadályozta volna a programok  portolását.
+A CCC-ben az indexszekvenciális filékezelésnek az ún.
+táblaobjektum ad keretet. A táblaobjektumok használatára
+a \href{cccapix.html}{CCC programozási példák} dokumentumban
+találunk bevezető jellegű információt. A táblaobjektum
+referencia szintű leírása található a 
+\href{tabobj.html}{Táblaobjektum referencia} dokumentumban.
+
+Az évek során többféle adatbáziskezelő könyvtárral
+implementáltuk a táblaobjektumot. 
+\begin{itemize} 
+\item 
+   Az idők hajnalán a Clipper ősi DBFNTX adatbáziskezelőjére
+   építettünk.
+\item
+   A Btrieve Novell-DOS hálózaton kliens-szerver adatbáziskezelést
+   tett lehetővé.
+\item 
+   A forrásban terjesztett Ctree könyvtárból több táblaobjektum
+   implementáció is készült, amik jelenleg is használatban vannak.
+\item
+   Végül csináltunk egy teljesen saját kézben levő
+   kulcskezelő könyvtárat és egy erre épülő táblaobjektumot,
+   erről a \href{btbtx.html}{Saját kulcskezelőre épülő táblaobjektum} 
+   dokumentumban található bővebb infó.
+\end{itemize} 
+
+A táblaobjektum fel van szerelve  egyszerű tranzakciókezeléssel, lásd a 
+\href{transact.html}{Táb\-la\-ob\-jek\-tum tranzakció kezeléssel} 
+dokumentumot, és naplózással: 
+\href{tabnaplo.html}{Mó\-do\-sítá\-sok naplózása a táblaobjektumokban}.
+
+Megemlítem még, hogy az adatbáziskezelés biztonsága nagy mértékben
+a CCC használatának módjából következik. Az adatkezelő programok
+nem a felhasználó gépén, hanem a (távoli) szerveren futnak. A szerveren
+levő filérendszerhez a felhasználóknak nincs közvetlen hozzáférése. 
+   
+
+\subsection{Objektum kiegészítés}
+
+A CCC olyan új objektum rendszert kapott, ami felülről 
+100\%-ban kompatibilis a régi Clipper objektumaival. 
+A régi Clipper négy fixen beépített osztállyal rendelkezett 
+(error, get, tbcolumn, tbrowse), ezeket nem lehetett módosítani, 
+és új osztályok létrehozására sem volt lehetőség. 
+
+A CCC az objektumorientált nyelvek minden fontos jellemzőjével 
+rendelkezik. A programozó új osztályokat definiálhat, melyek 
+többszörös öröklődéssel származnak egymásból. 
+Az ún.\ {\em objektum alapú\/} nyelvektől eltérően a CCC valódi 
+osztályokkal dolgozik. Egy osztályban nyilvántartás található arról, 
+hogy mik az ősosztályok,
+milyen attribútumokkal,
+milyen metódusokkal rendelkezik. 
+Az osztályok megírásához nem vezettünk be új szintaktikát, 
+minden közönséges függvény API-val történik. 
+Részletesen foglalkozik a témával az
+\href{objektum.html}{Objektumok használata a CCC-ben}
+dokumentum.
+
+
+\subsection{Többszál támogatás}
+
+A többszálúság a 2.x változat újdonsága.
+Az alább felsorolt API áll rendelkezésre
+szálak indítására és szinkronizálására:
+
+\begin{verbatim}
+thread_create(codeblock,arg1,...) --> threadid
+thread_self() --> threadid 
+thread_detach(threadid) --> status
+thread_exit() --> NIL
+thread_join(threadid) --> status
+thread_mutex_init() --> cMutex
+thread_mutex_lock(cMutex) --> status
+thread_mutex_trylock(cMutex) --> status 
+thread_mutex_unlock(cMutex) --> status 
+thread_mutex_destroy(cMutex) --> status 
+thread_cond_init() --> cCond
+thread_cond_signal(cCond) --> status
+thread_cond_wait(cCond,cMutex[,nMillis]) --> status 
+thread_cond_destroy(cCond) --> status
+\end{verbatim}
+
+A \verb!thread_create()!-ot pontosan úgy kell meghívni, 
+mint az \verb!eval()!-t, a különbség,
+hogy \verb!thread_create()! azonnal visszatér,
+miközben az új szál futásnak indul.
+A CCC szintre kivezetett POSIX thread API CCC-ből ugyanúgy működik, 
+mint C-ből. A POSIX szálak használatáról útmutató található a man-ban 
+a pthread  címszavaknál. Windowson ugyanez az API Win32 rendszerhívásokkal
+valósul meg.
+
+Az alábbi demonstrációs program {\it pi\/} közelítő értékét 
+számítja ki $4/(1+x^2)$ numerikus integrálásával :
+
+\begin{verbatim}
+static pi:=0
+static pi_lock:=thread_mutex_init()
+
+static intervals:=1000000
+static thcount:=10
+
+
+function main()
+
+local blk:={|ip|process(ip)}
+local th:={},n
+ 
+    for n:=1 to thcount
+        aadd(th,thread_create(blk,n))
+    next
+
+    for n:=1 to len(th)
+        thread_join( th[n] )
+    next
+
+    ? "Estimation of pi is:", str(pi)
+    
+    return NIL
+ 
+
+function process(iproc)  //iproc==1,2,...
+
+local localsum:=0
+local width:=1/intervals 
+local i, x
+
+    for i:=iproc to intervals step thcount
+        x:=(i-0.5)*width
+        localsum+=4/(1+x*x)
+    next
+    localsum*=width
+
+    thread_mutex_lock(pi_lock)
+    pi+=localsum
+    thread_mutex_unlock(pi_lock)
+
+    return NIL
+
+\end{verbatim}
+
+Életszerűbb példa a \$CCCDIR/ccctutor/websrv-ben  található
+többszálú HTTP szerver. Minden újonnan kapcsolódó klienst új
+szál szolgál ki, egy szál akkor szűnik meg, ha a kliens
+bontja a kapcsolatot, vagy 10 másodpercnél hosszabb ideig 
+inaktív. Újabban a ComFirm weboldalait is ez a program
+szolgáltatja.
+
+Hangsúlyozom, hogy a CCC-ben valódi, operációs rendszer szintű 
+többszálúság valósul meg. Másképp nem is nagyon lehet, hiszen
+a CCC programkészítés végeredménye egy fordított/linkelt C program,
+szó sincs interpretálásról. Ezzel szemben a Python és Ruby 
+interpreterek valójában egy szálon futnak, csak éppen váltogatják
+az aktuálisan interpretált  kódrészletet.
+
+ 
+\subsection{Jáva terminál}
+ 
+A Jáva Terminál egy {\em alkalmazásfüggetlen} megjelenítő program,
+ami más programok részére biztosít GUI-t.
+Egy böngészőhöz lehetne hasonlítani, csakhogy ez nem HTML lapok,
+hanem dialogboxok megjelenítésére szakosodott.
+A dialogboxok Swing elemekből építkeznek:
+menü, 
+push button, 
+rádió button, 
+check box, 
+get (szerkesztő sablonnal felszerelt szövegmező),
+list box, 
+táblázat (browse), 
+ikonok, statikus szövegek, képek stb..
+A terminál egy mindössze 300K-s, digitálisan aláírt jar filéből áll,
+ami a Jáva Web Start technológia alkalmazásával  automatikusan 
+installálódik az internetes felhasználó gépén.
+ 
+A terminál és a CCC alkalmazás XML üzenetekkel kommunikál.
+Első lépében az alkalmazás elküldi a terminálnak
+a dialogbox XML leírását a  megjelenítendő komponensek paraméterezésével, 
+az adatok  kezdőértékével. A későbbiek során ugyancsak XML üzenetekkel 
+történik a dialogbox szerver oldali és a terminál oldali reprezentációjának
+szinkronban tartása. A kommunikáció SSL-lel titkosítható, 
+így a használat nyilvános hálózaton is biztonságos.
+Ez a funkcionalitás az ügyviteli alkalmazások széles 
+körének megfelelő felhasználói felületet nyújt, ugyanakkor
+a szerver oldali megvalósítása meglepően egyszerű.
+Az egyszerűség abból adódik, hogy a szerver a terminálra
+bízza a megjelenítés bonyolult feladatát, és maga
+csak a dialogboxok állapotának tárolásával, illetve az
+üzenetkezeléssel foglalkozik.
+
+A CCC-nek mindig is erőssége volt a szerver oldali programozás
+és a távoli programfuttatás, a Jáva Terminál most ehhez igényes 
+grafikus felületet is biztosít.
+F.Gy., a Raiffeissen fejlesztési vezetője így nyilatkozott: 
+,,maga a programozói álom''. Felhatalmazott rá, hogy ezt terjesszem.
+További információ található a témáról a 
+\href{jterminal.html}{Jáva Terminál} oldalon.
+
+\subsection{Egyéb könyvtárak}
+
+\begin{description}
+\item[ccc2\_crypto:]
+    Az OpenSSL-re épülő könyvtár, ami elérhetővé tesz CCC-ből
+    néhány fontos műveletet: 
+    véletlenszám generálás,
+    MD5 és SHA1 hash kód számítás,
+    RSA titkosítás,
+    digitális aláírás.
+\item[ccc2\_socket:]
+    Könyvtár TCP kommunikációhoz.\footnote{
+    Érdekességként említem, hogy a socket könyvtárra
+    alapozva mindössze 256 ($=2^8$) CCC sor elegendő volt 
+    egy olyan web szerver megírásához, ami már alkalmas 
+    a ComFirm honlapjának működtetésére. A szerver adogatja a 
+    filéket a böngészőnek, elég intelligens ahhoz, hogy szót értsen
+    a Jáva Webstarttal, és többszálú lévén egyszerre több klienssel
+    is foglalkozni tud. A program forrása a \$CCCDIR/ccctutor/websrv-ben 
+    található.}
+\item[ccc2\_xmldom:]
+    XML elemző.
+\item[ccc2\_xmlrpc:]
+    Objektumkönyvtár XMLRPC szerverek és kliensek írásához. 
+\item[dbaseiii:]
+    Egyszerű objektumkönyvtár dbase adatbázisok olvasására.
+\item[sql2\_oracle:]
+    Objektumkönyvtár, ami Oracle adatbázisok elérését teszi lehetővé.
+\item[sql2\_postgres:]
+    Objektumkönyvtár, ami Postgres adatbázisok elérését teszi lehetővé.
+\end{description}
+
+A két utolsó könyvtár egységes objektumorientált interfészt
+ad Oracle és Postgres adatbázisokhoz. A koncepció szerint ugyanaz
+az alkalmazás a kód változtatása nélkül fut Oracle és Postgres
+szerverekkel. A téma bővebb kifejtése az
+\href{sql2.html}{SQL2 1.0 interfész} 
+dokumentumban található.
+
+
+ 
+\section{Használat}
+
+\subsection{Csomagok letöltése, telepítés}
+
+A CCC csomagokat kétféleképpen lehet beszerezni:
+\begin{itemize}
+\item 
+  A \href{http://www.comfirm.hu/ccc2/download}{http://www.comfirm.hu/ccc2/download}
+  URL-ről a böngészővel egyenként letölthetők a csomagok.
+\item 
+  Ha installálva van gépünkön a Jáva Webstart, akkor használhatjuk a
+  \href{http://www.comfirm.hu/jnlp/cccdown.jnlp}{CCC Letöltő}-t,
+  ami letölti és/vagy frissíti a csomagokat.
+  Érdekesség, hogy ez a program maga is CCC-ben készült.
+\end{itemize}
+ 
+A  \href{install.html}{CCC telepítése} dokumentum leírja,
+hogyan lehet a CCC-t a semmiből indulva lefordítani.
+
+
+\subsection{Programkészítés}
+
+Szó volt róla, hogy a CCC alkalmas kis ragasztóprogramok 
+gyors  készítésére, ezáltal scriptek helyettesítésére.
+Mivel a CCC nem interpreter, hanem fordítani, szerkeszteni kell,
+ez csak úgy lehetséges, ha jó eszközök vannak a fordítás
+támogatására. Ilyen eszköz a Build, ami maga is egy CCC (ragasztó) program.
+
+A Build összegyűjti és kielemzi a projekthez tartozó forrásmodulokat,
+megkeresi bennük az include utasításokat, ezáltal megállapítja
+a függőségi viszonyokat. Megnézi, hogy az objectek és források
+közül melyik az újabb, szükséges-e az újrafordítás.
+Végül mindent lefordít, elkészíti a kért közönséges, 
+vagy megosztott könyvtárat, végrehajtható állományokat. 
+Mindehhez nem kell komplikált makefilét szerkeszteni, 
+hanem csak egy ilyen parancsot adunk ki:
+\begin{verbatim}
+bapp_unix.b
+\end{verbatim}
+és minden automatikusan, másodperceken belül elkészül. 
+A szokásos makefile helyett a forrásmodulok könyvtárakba 
+szervezésével kell szabályozni a projekt tartalmát.
+
+A Build nem csak kicsi, és nem csak Clipper nyelvű programok 
+fordítására  képes.  Az egész CCC rendszer fordítását a Build végzi.
+Clippert egyáltalán nem tartalmazó C++ projektek fordítására
+is a Build-et használom. Mióta elkészült (3--4 éve) a make-t elő sem vettem.
+%Ne gondoljuk azonban, hogy a Build valami borzasztó bonyolult 
+%program volna. Egy darab 1000 soros  forrásmodulról van szó.
+%Ha a pályafutásom során készített programok hasznosság/ráfordított munka
+%mutatóját összevetem, akkor valószínűleg a Build a csúcstartó.
+További infó a \href{build.html}{Programkészítés a Build-del} dokmentumban.
+
+
+\subsection{Dokumentáció}
+
+Sajnos a CCC-nek nincs olyan szép, konzisztens dokumentációja, 
+mint a korábban említett nyelvek akármelyikének. Mivel aligha
+lesz időm ilyet készíteni, a jövőben sem lesz. 
+Vannak viszont dokumentációk egyes részterületekről
+(lásd a jelen dokumentum hivatkozásait), és van egy összefoglaló
+táblázat az alap CCC függvényeiről: 
+\href{cccapi.html}{CCC API}.
+Szerencsére
+a CCC {\em tényleg} kompatibilis a Clipperrel, ezért használható 
+hozzá az eredeti Clipper dokumentáció, illetve annak közkézen
+forgó HTML formátumú változata. 
+
+
+\section{Lomtalanítás} 
+
+\subsubsection*{DOS támogatás megszűnt}
+A CCC make (build) rendszere képes volt DOS-os Clipper
+programok készítésére. Erre nincs már igény.
+
+\subsubsection*{Btrieve támogatás megszűnt}
+A Btrieve alapú táblaobjektumot senki sem használta,
+ezért nem akarok vele tovább bajlódni (nem mintha bármi
+baj volna vele).
+
+\subsubsection*{CORBA támogatás megszűnt}
+Megszüntetem a CORBA  támogatást. A nyílt forráskódú Orbacust
+használtuk, ez azonban eltűnt a netről. Úgy látom, mintha egy 
+konkurrense vásárolta volna fel a céget csak azért, hogy ne legyenek. 
+
+Másrészt az XMLRPC sokkal praktikusabb, mint a CORBA. 
+Egy CORBA könyvtár nehézsúlyú dolog, amit magunk aligha fogunk megírni, 
+ezért használatával hozzákötnénk magunkat egy külső  szoftvercéghez,
+akit  mindenféle baleset érhet, mint érte az Orbacust is.
+Az XMLRPC ellenben egyszerű: HTTP protokoll feletti XML 
+szintaktikájú üzenetváltás, a szabvány leírása elfér 2~db A4-es oldalon. 
+
+%Jellemző, ahogy az MS által kézbevett dolgok elromlanak.
+%A gyakorlati feladatokra kiválóan megfelelő XMLRPC olyan egyszerű, 
+%hogy a leírása elfér 2~db A4-es oldalon.  Ellenben a SOAP, az XMLRPC 
+%MS által továbbfejlesztett változata  egy kuszaság.
+
+
+\subsubsection*{Watcom támogatás megszűnt}
+Nem akarok többet bajlódni a Watcommal. Nem hiszem,
+hogy valaha is Netware-re, vagy OS/2-re akarnánk CCC-t portolni.
+Így Windowson marad az MSC, Borland C és MinGW, 
+mint támogatott fordítók. 
+
+\section{A CCC alkotói}
+ 
+A CCC-t {\em Vermes Mátyás} (e sorok írója) 
+készítette még 1996-ban, Windows NT-n, Watcom fordítóval.
+A munka során tervezési kérdésekben mindig meghallgattam
+{\em Csiszár Levente\/} véleményét, akinek javaslata alapján készült
+többek között a CCC gráfbejárásos szemétgyűjtése. 
+A UNIX/Linux-ra való portolás döntően Cs.L. munkája, 
+amiben részt vett még {\em Szanka Gábor\/} és {\em Tanos Áron}. 
+Az Fltk-ra épülő grafikus megjelenítő könyvtárat teljes egészében Cs.L. 
+készítette. A karakteres és windowsos megjelenítő könyvtárak 
+megírásában segítségemre volt {\em Szabó Richárd}.
+
+\bigskip
+\hrule\nopagebreak 
+{\bf Hivatkozások}\par\nopagebreak
+\href{solarisport.html}{A Kontó számlavezető rendszer portolása Solarisra}\\
+\href{ccc-clipper-elteresek.html}{Eltérések a CCC és a Clipper  között}\\
+\href{cccapix.html}{CCC programozási példák}\\
+\href{tabobj.html}{Táblaobjektum referencia}\\
+\href{btbtx.html}{Saját kulcskezelőre épülő táblaobjektum}\\
+\href{transact.html}{Táb\-la\-ob\-jek\-tum tranzakció kezeléssel} \\
+\href{tabnaplo.html}{Mó\-do\-sítá\-sok naplózása a táblaobjektumokban}\\
+\href{objektum.html}{Objektumok használata a CCC-ben}\\
+\href{jterminal.html}{Jáva Terminál}\\
+\href{sql2.html}{SQL2 1.0 interfész}\\
+\href{install.html}{CCC telepítése}\\
+\href{build.html}{Programkészítés a Build-del}\\
+\href{cccapi.html}{CCC API}\\
+%\hrule
+ 
+ 

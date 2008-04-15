@@ -1,0 +1,31 @@
+#define VERSION "1.2.00"
+
+#ifdef __HISTORY__
+
+2007.11.18 -- 1.2.00
+  CCC3 port
+  CCC2 backport
+
+2003.06.30 -- 1.1.00
+  Multiprocess version
+
+2003.06.26 -- 1.0.03
+  RPCUSER és RPCAUTH megnyitása a program elején
+  session-ok tárolása párhuzamos array-ben.
+
+  XMLRPC_MAXSAMEUID=0 esetén nincs korlát, új default: 0
+  XMLRPC_MAXSESSION=0 esetén nincs korlát, default: 128
+
+2003.06.17 -- 1.0.02
+  md5 hash kódolás a sid-ekben.
+
+2003.02.28 -- 1.0.01
+  session.gettimeout lekérdezi a timeoutot.
+
+2002.07.23 -- 1.0.00
+  Összes (egyidejű) sessionok száma limitálva.
+  Egy felhasználó egyidejű bejelentkezéseinek száma limitálva.
+  set console off, a log additív
+  Új funkció: "session.getversion"
+ 
+#endif  

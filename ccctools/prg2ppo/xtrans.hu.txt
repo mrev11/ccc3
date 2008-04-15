@@ -1,0 +1,86 @@
+
+xtranslate belső ábrázolása
+===========================
+
+szabály:
+{
+  baloldal
+  jobboldal
+  sorszam
+}
+
+
+baloldal:
+{ 
+  literál,             // karakter, a baloldal mindig literállal kezdődik
+  ...
+  matchmarker          // szám, a matchmarker típusa (1000,2000,3000,4000)
+  ...
+  .t.                  // optional clause bal [-jele 
+  ...
+  .f.                  // optional clause jobb ]-jele 
+  ...
+}  
+  
+
+jobboldal:
+{
+  literálok, resultmarkerek, opcionális részek
+}
+
+sorszám:
+  a bevitel sorrendje, arra kell, hogy az azonos első szimbólumú
+  definíciók beviteli sorrendjét az abc szerinti rendezés közben 
+  megbízhatóan meg lehessen tartani.
+
+
+Megjegyzések:
+
+
+A baloldalt reprezentáló lista elemi háromfélék
+
+
+  1. Karakter, aminek illeszkednie kell a bemenethez.
+
+  2. Szám, ami az adott pozíción egy markert jelöl.
+     A szám a marker típusát adja meg 
+     (regular, list, restricted, extended, wild).
+     A markereket nem kell név szerint azonosítani, mert ugyanaz
+     a marker nem szerepelhet (a baloldalon) többször is, ezért
+     a markereket előfordulásuk helye azonosítja.
+
+  3. Logikai értékek, amik az opcionális szakaszok szögletes
+     zárójeleit reprezentálják: .t.=="[", és .f.=="]".
+     Az opcionális clause-ok tetszőleges mélységig egymásba
+     lehetnek skatulyázva
+
+
+A jobboldalt reprezentáló lista elemi szintén háromfélék
+     
+  1. Karakter, amit kiírunk a kimenetre.
+  
+  2. Szám, ami a bemeneten talált matchmarker indexe, 
+     és aminek helyén (megfelelő transzformáció után)
+     kiírjuk a bemenet illeszkedő részét. Pl. az n szám
+     azt a markert jelöli, aminek a bal[n] szám adja 
+     meg a típusát.
+     
+  3. Logikai értékek, amik az opcionális szakaszok szögletes
+     zárójeleit reprezentálják: .t.=="[", és .f.=="]".
+     Egy opcionális szakaszból csak akkor keletkezik
+     kimenet, ha tartalmaz legalább egy illeszkedő markert. 
+     A jobboldalon az opcionális clause-ok nem lehetnek 
+     egymásba skatulyázva.
+     
+     
+Kiegészítés: a markerekhez kiegészítő információt is kell csatolni.
+
+A baloldalon a restricted markerhez pl. meg kell adni az elfogadott
+szavak halmazát. A jobboldalon meg kell adni marker típusát, ami 
+meghatározza, hogy a kimenetre milyen transzformáció után kerül át
+a bemenet illeszkedő része.
+
+Baloldal  :  type*1000 + extrainfo
+Jobboldal :  type*1000 + markerposition
+
+

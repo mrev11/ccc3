@@ -1,0 +1,81 @@
+
+
+(define-function gtk_progress_bar_get_type
+  (in-module GtkProgressBar)
+  (c-name "gtk_progress_bar_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_progress_bar_new
+  (c-name "gtk_progress_bar_new")
+  (is-constructor-of GtkProgressBar)
+  (return-type "GtkWidget*")
+)
+
+(define-method pulse
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_pulse")
+  (return-type "none")
+)
+
+(define-method set_text
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_set_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method set_fraction
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_set_fraction")
+  (return-type "none")
+  (parameters
+    '("gdouble" "fraction")
+  )
+)
+
+(define-method set_pulse_step
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_set_pulse_step")
+  (return-type "none")
+  (parameters
+    '("gdouble" "fraction")
+  )
+)
+
+(define-method set_orientation
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_set_orientation")
+  (return-type "none")
+  (parameters
+    '("GtkProgressBarOrientation" "orientation")
+  )
+)
+
+(define-method get_text
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_get_text")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method get_fraction
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_get_fraction")
+  (return-type "gdouble")
+)
+
+(define-method get_pulse_step
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_get_pulse_step")
+  (return-type "gdouble")
+)
+
+(define-method get_orientation
+  (of-object "GtkProgressBar")
+  (c-name "gtk_progress_bar_get_orientation")
+  (return-type "GtkProgressBarOrientation")
+)
+

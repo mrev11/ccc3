@@ -1,0 +1,109 @@
+
+
+(define-function gtk_scrolled_window_get_type
+  (in-module GtkScrolledWindow)
+  (c-name "gtk_scrolled_window_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_scrolled_window_new
+  (c-name "gtk_scrolled_window_new")
+  (is-constructor-of GtkScrolledWindow)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "hadjustment" (null-ok) (default "NULL"))
+    '("GtkAdjustment*" "vadjustment" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method set_hadjustment
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_set_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "hadjustment")
+  )
+)
+
+(define-method set_vadjustment
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_set_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "hadjustment")
+  )
+)
+
+(define-method get_hadjustment
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_get_hadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method get_vadjustment
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_get_vadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method set_policy
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_set_policy")
+  (return-type "none")
+  (parameters
+    '("GtkPolicyType" "hscrollbar_policy")
+    '("GtkPolicyType" "vscrollbar_policy")
+  )
+)
+
+(define-method get_policy
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_get_policy")
+  (return-type "none")
+  (parameters
+    '("GtkPolicyType*" "hscrollbar_policy")
+    '("GtkPolicyType*" "vscrollbar_policy")
+  )
+)
+
+(define-method set_placement
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_set_placement")
+  (return-type "none")
+  (parameters
+    '("GtkCornerType" "window_placement")
+  )
+)
+
+(define-method get_placement
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_get_placement")
+  (return-type "GtkCornerType")
+)
+
+(define-method set_shadow_type
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_set_shadow_type")
+  (return-type "none")
+  (parameters
+    '("GtkShadowType" "type")
+  )
+)
+
+(define-method get_shadow_type
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_get_shadow_type")
+  (return-type "GtkShadowType")
+)
+
+(define-method add_with_viewport
+  (of-object "GtkScrolledWindow")
+  (c-name "gtk_scrolled_window_add_with_viewport")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+  )
+)
+
+
+

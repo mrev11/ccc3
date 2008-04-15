@@ -1,0 +1,10 @@
+#!/bin/bash
+bapp_unix0.b -sccc3_crypto -bcrypto
+
+
+if test -s error; then
+    list error &
+fi
+
+cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN

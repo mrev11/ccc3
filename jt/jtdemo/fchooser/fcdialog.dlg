@@ -1,0 +1,22 @@
+//MSK2DLG 0.9.00
+
+class fcdialog(jtdialog)
+    method initialize
+    attrib  list
+    attrib  ok
+    attrib  chdir
+    attrib  cancel
+    attrib  pattern
+
+
+static function fcdialog.initialize(this)
+    this:(jtdialog)initialize(5,20,17,69)
+    this:name:='fcdialog'
+    this:layout:='fix'
+    this:list:=jttableNew(1,3,9,30); this:list:name:='list'; this:add(this:list)
+    this:ok:=jtpushNew(1,34,2,46); this:ok:name:='ok'; this:ok:text:=''; this:add(this:ok)
+    this:chdir:=jtpushNew(3,34,4,46); this:chdir:name:='chdir'; this:chdir:text:=''; this:add(this:chdir)
+    this:cancel:=jtpushNew(5,34,6,46); this:cancel:name:='cancel'; this:cancel:text:=''; this:add(this:cancel)
+    this:pattern:=jtgetNew(10,3,10,46); this:pattern:name:='pattern'; this:add(this:pattern)
+    return this
+

@@ -1,0 +1,372 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#include "fileio.ch"
+#include "tabobj.ch"
+
+//rekord lock: (2GB-1MB-recno) pozíción 1 byte
+static OFFSET:=2*(1024*1024*1024)-(1024*1024)
+
+******************************************************************************
+//Public interface
+
+//function tabLock(table,userblock)           //fájl lock
+//function tabALock(table,recarr,userblock)   //array lock
+//function tabMLock(table,rec,userblock)      //többszörös rekord lock
+//function tabRLock(table,userblock)          //egyszeres rekord lock
+//function tabRecLock(table,record,userblock) //rekord lock
+//function tabUnlockAll(table)                //összes table objektumra
+//function tabUnlock(table,record)            //fájl és single/multiple unlock
+//function tabIsLocked(table)                 //keresés locklist-ben
+//function tabLocklist(table)                 //lockolt rekordok listája  
+
+
+******************************************************************************
+function tabLock(table,userblock) //fájl lock
+
+local mode:=tabIsOpen(table)
+local state:=tabSave(table)
+
+    if( mode>=OPEN_EXCLUSIVE )
+        return .t.
+    end
+
+    while( .t. )
+        if( tabOpen(table,OPEN_EXCLUSIVE,{||.f.}) )
+            //tabOpen() tartalmazza a szükséges várakozást
+            table[TAB_LOCKFIL]:=.t.
+            table[TAB_LOCKLST]:={}
+            tabRestore(table,state)
+            return .t.
+        end
+
+        tabOpen(table,mode)
+        table[TAB_LOCKFIL]:=.f.
+        table[TAB_LOCKLST]:={}
+        tabRestore(table,state)
+
+        taberrOperation("tabLock")
+        tabErrDescription(@"file lock failed")
+
+        if( valtype(userblock)=="B" )
+            taberrUserBlock(userblock)
+            return tabError(table)
+        else
+            taberrUserBlock("PUK")
+            tabError(table)
+        end
+    end
+    return .f.
+
+
+******************************************************************************
+function tabALock(table,recarr,userblock) //array lock
+// elengedi a korábbi rekordlockokat, lockolja recarr elemeit,
+// ha valamelyik lock sikertelen, elengedi az addigi lockokat
+
+    return tabRecLock(table,recarr,userblock)
+
+
+******************************************************************************
+function tabMLock(table,rec,userblock) //többszörös rekord lock
+// lockol egy rekordot, a meglevő lockok megmaradnak
+// rec defaultja az aktuális rekord
+
+    return tabRecLock(table,if(rec==NIL,tabPosition(table),rec),userblock)
+
+
+*****************************************************************************
+function tabRLock(table,userblock) //egyszeres rekord lock
+// lockolja az aktuális rekordot, előzőleg a többi lockot feloldja
+
+    return tabRecLock(table,,userblock)
+
+
+*****************************************************************************
+static function _sleep()
+    Sleep(100)
+    return NIL
+
+
+*****************************************************************************
+function tabRecLock(table,record,userblock)  //rekord lock
+
+local n,s
+   
+    tabCommit(table)
+
+    while( .t. )
+
+        if( tabIsOpen(table)==OPEN_EXCLUSIVE )
+            return .t.
+
+        elseif( record==NIL )
+            for n:=1 to 10
+                if( 0==(s:=lockCurrent(table)) )
+                    return .t.
+                end
+                _sleep()
+            next
+
+        elseif( valtype(record)=="N" )
+            for n:=1 to 10
+                if( 0==(s:=lockPosition(table,record)) )
+                    return .t.
+                end
+                _sleep()
+            next
+
+        elseif( valtype(record)=="A" )
+            for n:=1 to 10
+                if( 0==(s:=lockArray(table,record)) )
+                    return .t.
+                end
+                _sleep()
+            next
+        end
+       
+        taberrOperation("tabRecLock")
+        taberrDescription(@"record lock failed")
+       
+        if( valtype(userblock)=="B" )
+            taberrUserblock(userblock)
+            return tabError(table)
+        else
+            taberrUserblock("PUK")
+            tabError(table)
+        end
+    end
+    
+    return .f.
+
+
+*****************************************************************************
+static function lockCurrent(table)  //Lock Current Record
+local status, pos:=tabPosition(table)
+
+    if( pos<=0 )
+        status:=-1
+
+    elseif( tranIsActiveTransaction() )
+        return lockPosition(table,pos) 
+    
+    else
+        dbunlocklist(table)
+        status:=dblock(table,pos)
+
+        if( status==0 )
+            tabReRead(table,pos)
+            table[TAB_LOCKLST]:={pos}
+        end
+    end
+    return status  //szám, 0==OK
+
+
+*****************************************************************************
+static function lockPosition(table,pos)  //Lock Record by Position
+local status
+
+    if( pos<0 )  //pos==0==EOF-ot még lehet lockolni, de negatívot nem
+        status:=-1 
+
+    elseif( ascan(table[TAB_LOCKLST],pos)!=0 )  //már lockolva volt, OK
+        status:=0
+
+    else  //most lockoljuk       
+
+        if( (status:=dblock(table,pos) )==0 )
+            aadd(table[TAB_LOCKLST],pos)
+            if( tranIsActiveTransaction() )
+                tranRecordLockedInTransaction(table)
+            end
+            
+            if( 0<pos .and. pos==tabPosition(table) )
+                tabReRead(table,pos)
+            end
+        end
+    end
+    return status  //szám, 0==OK
+
+
+*****************************************************************************
+static function lockArray(table,arr)  //Lock Record Array
+
+local status:=0,n,i
+local pos,larr:=len(arr)
+local curr:=tabPosition(table)
+
+    if( tranIsActiveTransaction() )
+        for n:=1 to larr
+            status:=lockPosition(table,arr[n])
+            if( status!=0 )
+                return status
+            end
+        next
+        return status
+    end
+ 
+
+    dbunlocklist(table)
+
+    for n:=1 to larr
+
+        if( (pos:=arr[n])<=0 )
+            status:=-1
+        else
+            status:=dblock(table,pos)
+        end
+
+        if( status==0 )
+            aadd(table[TAB_LOCKLST],pos)
+        else
+            dbunlocklist(table)
+            exit
+        end
+    next
+
+    if( 0!=ascan(table[TAB_LOCKLST],curr) )
+        tabReRead(table,curr) 
+    end
+    return status
+
+
+*****************************************************************************
+static function dblock(table,pos) //low level lock
+    if( pos==NIL )
+        pos:=tabPosition(table)
+    end
+    #ifdef _UNIX_
+      return fsetlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB
+    #else
+      return fsetlock(table[TAB_FHANDLE],OFFSET-pos,1)
+    #endif
+
+*****************************************************************************
+static function dbunlock(table,pos) //low level unlock
+    if( pos==NIL )
+        pos:=tabPosition(table)
+    end
+    #ifdef _UNIX_
+      return funlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB 
+    #else
+      return funlock(table[TAB_FHANDLE],OFFSET-pos,1)
+    #endif
+ 
+
+*****************************************************************************
+static function dbunlocklist(table) //unlock records in locklist
+local apos:=table[TAB_LOCKLST],n
+    for n:=1 to len(apos)
+        dbunlock(table,apos[n])
+    next
+    table[TAB_LOCKLST]:={}
+    return NIL
+
+
+*****************************************************************************
+static function tabReRead(table) //rekord újraolvasás
+local len:=_db_read(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS])
+    if( len!=table[TAB_RECLEN] )
+        taberrOperation("tabReRead")
+        taberrDescription(@"failed rereading record")
+        tabError(table)
+    end
+    return NIL
+
+
+*****************************************************************************
+function tabUnlockAll(table)  //összes table objektumra
+local n, tlist:=tabObjectList()
+
+    for n:=1 to len(tlist)
+        table:=tlist[n]
+        if( table[TAB_OPEN]>0 )
+            tabUnlock(table)
+        end
+    next
+    return NIL
+
+
+*****************************************************************************
+function tabUnlock(table,pos) //filé és single/multiple rekord
+local state
+
+    tabCommit(table) 
+
+    if( tranIsActiveTransaction() )
+        //megtartjuk a lockokat
+ 
+    elseif( pos==NIL ) // összes rekordlock vagy fájllock 
+
+        if( table[TAB_LOCKFIL] )
+            //Az alábbi utasítás kell, hogy tabUnlock() 
+            //és tabClose()  ne válhassanak rekurzívvá.
+            table[TAB_LOCKFIL]:=.f.
+
+            state:=tabSave(table)
+            tabOpen(table)  
+            tabRestore(table,state)
+        else
+            dbunlocklist(table)            
+        end
+
+    elseif( 0==dbunlock(table,pos) ) // egy rekordlock 
+
+        lockDelete(table,pos)
+    end
+    return NIL
+
+
+*****************************************************************************
+static function lockDelete(table,record) //lock kivétele locklist-ből
+local n:=ascan(table[TAB_LOCKLST],record)
+    if( n!=0 )
+        adel(table[TAB_LOCKLST],n)
+        asize(table[TAB_LOCKLST],len(table[TAB_LOCKLST])-1)
+    end
+    return NIL
+
+
+*****************************************************************************
+function tabIsLocked(table) //keresés locklist-ben
+    return table[TAB_OPEN]==OPEN_EXCLUSIVE .or.;
+           ascan(table[TAB_LOCKLST],tabPosition(table))>0
+   
+
+******************************************************************************
+function tabLocklist(table)
+   return table[TAB_LOCKLST]
+
+
+******************************************************************************
+function tabUnlockEOF(table,pos) 
+
+//A minden más unlock funkció tranzakció közben hatástalan,
+//azonban EOF-ot tranzakció alatt is el kell tudni engedni.
+
+    if( 0==dbunlock(table,0) ) 
+        lockDelete(table,0)
+    end
+    return NIL
+
+ 
+*****************************************************************************
+ 
+

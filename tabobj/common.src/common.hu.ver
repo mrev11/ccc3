@@ -1,0 +1,274 @@
+
+2004.03.10
+  Naplózás bővült: tabWriteChangeLogDrop, Create, Upgrade.
+  Napózandó filék kiválasztása tabPath+tabFile alapján.
+  tabPack, tabZap, tabUpgrade kikapcsolja a belső műveletek naplózását.
+ 
+2004.02.20
+  A changelogba a mezők típusát is kiírjuk.
+  A changelogba a zapot és packot is kiírjuk. 
+  Új API: tabIsTableLogged(table)
+  Új API: tabWriteChangeLogPack(table)
+  Új API: tabWriteChangeLogZap(table)
+  
+  A naplózott táblákra a pack hatástalanítva lett, ui. 
+  btbtx-ben a pack megváltoztathatja a rekordok sorrendjét,
+  ezért a replikációban a packot nem lehet implementálni
+  (mert nem ismertek a pack utáni recno-k).
+  
+  A tabChangeLogLock, tabChangeLogUnlock függvények
+  fdmutex helyett tévesen fdlog-ot lockolták (javítva).
+  
+  Ha a log CCC_TRANSACTION_FILE_SIZE-nál nagyobbra nő, 
+  akkor a programok automatikusan új logot kezdenek.
+  A méretet MB-ban lehet megadni, a legkisebb 1MB, a default 1GB.
+  Megváltozott emiatt CCC_TRANSACTION_FILE_LOG jelentése.
+  Ha pl. CCC_TRANSACTION_FILE_LOG=xxx, akkor ilyen logfilék
+  lesznek: xxx000001, xxx000002, ... Mielőtt 1000000-t elérné,
+  az egész naplózást újra kell kezdeni.  Azok a régi logok, 
+  amiket már egy processz sem tart nyitva törölhetők.
+  
+  A logba kiterjesztés nélkül írjuk be a filéspecifikációt.
+ 
+2004.01.11
+  Nem öröklődő filédescriptorok (protokoll lock megtartva).
+
+2003.03.21
+  tranRecordLockedInTransaction(table)
+    A tranzakció végén (commit/rollback) pontosan azok a lockok
+    szűnnek meg, amik a tranzakció közben jöttek létre.
+  
+  function tranDeleteOnRollback(table,pos)
+    A rollback törli azokat a rekordokat, amik a táblák TAB_TRANDEL
+    listájában vannak felsorolva. Jelenleg csak a tabInsert használja.
+ 
+2003.02.28
+  tabAutoUpgrade-ben a force flag továbbadva.
+
+2003.01.13
+  Idekerült dbfclass és dbfedrec (nehéz nekik jó helyet találni).
+
+2003.01.07
+  CCC_TRANSACTION_FILE_LOG     logilé specifikációja
+  CCC_TRANSACTION_FILE_CREATE  =auto esetén automatikusan létrehozza
+  CCC_TRANSACTION_FILE_MUTEX   lockfilé specifikációja (nfs használatakor szükséges)
+  CCC_TRANSACTION_FILE_ALIAS   naplózandó táblák aliasait tartalmazó filé specifikációja 
+
+2002.12.19
+  Naplózás, új modulok: tabchlog.prg, mutex.cpp.
+  flushall(), fflush() átkrült az alapkönyvtárba.
+  Memók törlése, beírása (szabadlista) signal védelem alatt.
+  tranCommit-ban az egymást követő tabCommit-ok signal védelem alatt.
+ 
+2002.12.16
+  vmm.cpp átírva a standard cccapi.h makrókészletre:
+   - argumentumok ellenőrzése
+   - bytehatárra illesztés egységes, platformfüggetlen módon
+   - xvgetlit16, ... függvényekben bytehatárra illesztés 
+
+2002.07.10
+  transact.prg-ben print_debug_info() nem jól állította vissza
+  a tábla eredeti állapotát.
+
+2002.02.16
+  transact.prg kiegészítve tranSynchronizeRecord lockflag
+  paraméterével (a szinkronizált rekordot el lehet engedni).
+
+2002.01.19
+  Szemaforlock timeoutja: 5 sec (ezalatt 50-szer próbálkozik).
+
+2001.12.27
+  tranLastRecordUpdate(table,@info) a teljes infót visszaadja,
+  ha van függőben lévő módosítás, ui. BTBTX-ben ez szükséges.
+
+2001.12.25
+  Optimalizált pack bt filékre rekordonkénti másolással.
+ 
+2001.12.14
+  transact.prg-ben egy sor finomítás.
+
+2001.11.05
+  tranRollback után a rekordot újra kell olvasni,
+  hogy az eredeti mezőértékek visszaálljanak.
+
+  A pendingupdate array helyett tranindex kiürülését kell vizsgálni,
+  hogy megtudjuk tranRollback-kel véget ért-e a tranzakció.
+
+2001.10.12
+  tranSynchronizeRecord nevében helyesírási hiba kijavítva.
+
+2001.09.04
+  Kompatibilitás a régi Clipperrel.
+
+2001.08.07
+  Tranzakció commit-jánál a print_debug_info nem értékeli ki
+  törölt rekord mezőit, mert az SIGSEGV-t okozhat. Ez olyankor
+  fordult elő, amikor datidx append kiírt egy nullkey-ekkel feltöltött
+  törölt rekordot (hogy az recno-t kapjon), és egy ilyen rekordból
+  olvastunk be (lebegőpontos) számmezőt. (Valójában az elszállás csak
+  az ilyen szám kiírásakor következett be.) 
+  
+  A print_debug_info() append-nél és delete-nél csak a nem empty 
+  értékű mezőket listázza.
+
+2001.07.13
+  tabpack.prg bővült a datidx optimalizált packolásával.
+
+2001.07.08
+  Új modul: tabedrec.prg (kdirdd stílusú rekord editálás).
+
+2000.09.29
+  tabPath() dirsep konverzió javítva
+
+2000.07.16
+  Tranzakció kezelés javítás: trantables
+
+
+2000.06.06
+  Tranzakció kezelés
+
+
+2000.02.22
+  "\" helyettesítve a dirsep() hívással
+  a UNIX-os warningok kitisztítva
+
+
+1999.06.04
+
+  cucpydbf újraírva
+  
+  Egy byte-os eltolódás keletkezett (részben determinisztikusan) 
+  a packolás kimenetében. A probléma oka az fseek/fwrite/xvwrite
+  közötti inkozisztencia. Különösen a Clipper fseek veszélyes.
+  
+  NG szerint fseek nem pozícionálhat EOF mögé, példák mutatják
+  azonban, hogy azt mégis megteszi, és a C lseek módjára működik. 
+  Sajnos azonban ez alól vannak kivételek, ilyen kivétel okozta a 
+  rossz packolást. 
+  
+  Lehet, hogy Leventének igaza volt abban, hogy a vegyes 
+  függvényhasználat volt rossz: pl. mindent megmagyarázna 
+  fseek és fwrite olyan együttműködése, hogy fseek vagy azonnal 
+  pozíciónál, vagy csak beállítja frwrite-nak az új pozíciót, 
+  amiről viszont xvwrite nem tudhat.
+  
+  Mellesleg a régi program a C256-nál hosszabb mezőt tartalmazó
+  filé packolására sem volt felkészítve (pl. KTRNAPLO).
+
+
+
+1999.06.01
+
+  tabError visszatérése körüli anomáliák rendezése,
+  mit kell csinálni tabError visszatérésekor?
+
+  Ha nincs beállítva err:canretry, vagy err:candefault,
+  akkor az eval(erroblock(),err) köteles break-et csinálni,
+  és ezért tabError nem térhet vissza.
+    
+  A helyzet bonyolódik a userblock, vagy a "PUK" megadásával, 
+  ekkor tabError nem értékeli ki errorblock()-ot.
+  tabError tehát csak akkor térhet vissza, ha az alábbi
+  számozott esetek valamelyike fennáll, és akkor a zárójelben
+  megadott tevékenységet kell csinálni:
+
+    1) canretry==.t.                 ( retry     )
+    2) candefault==.t.               ( continue  )
+    3) valtype(userblock)="B"        ( return    )
+    4) userblock=="PUK"              ( retry     )
+  
+
+  tabSlock visszatérése a szemfor lockok száma, ezért a 
+  tabSlock-nak csak olyan usrblk adható, aminek a kiértékelése
+  számot ad, pl. {||.f.} hibás, míg {||0} helyes.
+ 
+
+  Ebben a szellemben lett ellenőrízve és javítva "tabSlock" és 
+  "PUK" minden előfordulását keresve: 
+
+    taberror.prg
+    tabslock.prg 
+    tabupgrd.prg
+
+
+ 
+1999.05.11
+  #ifdef-ek ritkítása
+  kiterjesztés nevek átkerültek ???names.prg-be 
+  új függvény tabSubsystemName()
+ 
+
+1999.03.21
+  Kísérlet történt a tabGetRecordBuffer/tabSetRecordBuffer funkciók
+  bevezetésére, azonban kiderült, hogy DBFCTX-ben nem lehet megkerülni
+  a mező kódblokkok használatát, mert mert nemcsak a TAB_MODIF-ot,
+  hanem a TAB_MODIFKEY és TAB_MODIFAPP flageket is  kezelni kell.
+
+
+1999.03.15
+  xvgetbyte()-ban (unsigned char*) pointerrel kell olvasni,
+  Watcom C-vel korábban is jó volt, de MSVC-ben kiütközik a hiba.
+
+
+1999.01.26
+  OPEN_APPEND openmód bevezetve, ennek definíciója:
+
+  exkluzívnál erősebb nyitást jelent, 
+  az indexfilék törlődnek,
+  az objektumban az indexdefiníciók megmaradnak,
+  az indexek nem lesznek karbantartva,
+  csak az append, commit, close műveletek engedélyezettek,
+  mivel nincs indexfilé a következő (normál) open indexelni fog
+
+  Megjegyzések:
+  nincs ellenőrízve a műveletek engedélyezettsége,
+  egyes táblaobjektum implementációk értelmezhetik OPEN_APPEND-et
+  OPEN_EXCLUSIVE-ként, azaz a tényleges implementáció nem kötelező,
+  egyelőre csak a DBFCTX motor tartalmaz tényleges implementációt
+  
+  az OPEN_APPEND mód belső haszálata tabUpgrade-ben
+  
+  cucpydbf.prg utility dbf-ek packolására,
+  ezzel működik DBFNTX és DBFCTX
+
+
+1999.01.25
+  _rename javítva, a korábbi példányt mindenképpen törli,
+  pl. f1-->f2 esetén, ha f1 nem létezik, akkor f2-t törölni kell,
+  és a visszatérési érték .t. 
+  
+
+1998.11.30
+  A DBFNTX-es _upgrade-ben az indexek törlése javítva.
+
+
+1998.11.21
+  tabDelIndex tabAlias -> tabFile helyettesítés
+
+
+1998.11.19
+  tabPath, tabAlias, tabFile-be upper(alltrim())
+
+
+1998.11.18
+  Korábban a sema_open és sema_close utility függvényeket
+  használtuk a table szemaforozásához, a szemafor directoryt
+  azonban jobb mindenhol külön létrehozni, ezért itt saját
+  static függvényeket használok, míg az eredeti függvények
+  meg vannak tartva általános célra. A szemafor filé nevét
+  nem tabAlias()-ból, hanem tabFile()-ből kell képezni.
+
+1998.11.11
+  
+  cucompat : ifdef finomítva
+  tabbrowse: ifdef finomítva
+  tabnames : bővült
+  tabsave  : ifdef finomítva, idekerült tabFilter()
+
+Egy modul státusz lehet
+
+  közös tábla metódus      tab...
+  egyedi tábla metódus     dnx... dix... dcx.. ora...
+  közös utility            cu...
+  lokál utility            lu...
+

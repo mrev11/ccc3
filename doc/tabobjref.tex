@@ -1,0 +1,838 @@
+
+\newcommand{\function}[1]{\section{#1}}
+ 
+\function{tabAddColumn(table,column)}
+Csak belső használatra. A tábla definiciójához egy oszlopot ad.
+Column szerkezete: \{name,type,width,dec,pict,block,offset\}.
+Az első négy elem megadása kötelező. A block tag utáni elemek
+függnek az adatbázisformátumtól. Ezt a függvényt csakis
+az objektumgeneráló függvényből szabad hívni.
+
+ 
+Visszatérés: column
+ 
+\function{tabAddIndex(table,index)}
+Csak belső használatra. A tábla definiciójához egy állandó indexet ad.
+A tábla megnyitása előtt kell hívni, csakis az objektumgeneráló
+függvényben. A betett indexek állandóak, nem változtathatók,
+és meg kell egyezniük a lemezfilében nyilvántartott indexeléssel.
+ 
+Visszatérés: index
+ 
+\function{tabAlias(table,symbol) }
+A tábla objektumot azonosító név lekérdezése (symbol==NIL), 
+vagy beállítása (symbol!=NIL).
+
+Visszatérés: symbol
+ 
+
+\function{tabALock(table,recarr,userblock)}
+Lelockolja mindazokat a rekordokat, amiknek recno-i
+a recarr tömbben vannak felsorolva. A tábla többi
+lockját elengedi. A művelet akkor sikeres, ha minden lockot
+meg tud szerezni, ellenkező esetben az addigi lockok is megszűnnek.
+
+Ha userblock==NIL, és a művelet sikertelen, 
+akkor a szokásos ,,A filé foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor a művelet sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény. 
+ 
+Visszatérés: .t./.f.
+ 
+\function{tabAppend(table,userblock,flag)}
+Berak egy üres rekordot a táblába, és a rekordot lelockolja.
+Ha userblock==NIL, és a művelet sikertelen, 
+akkor a szokásos ,,A filé foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor a művelet sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény. 
+
+Ha a flag paraméter NIL, vagy .t., akkor a táblán lévő többi lockot elengedi.
+Ha a flag értéke .f., akkor a táblán lévő többi lockot megtartja.
+
+Visszatérés: .t./.f.
+
+
+\function{tabAppendFrom(table,fileName,fieldList)}
+Az olyan típusú export filék visszaolvasására alkalmas,
+mint amit tabCopyTo készít. Az importfilé neve fileName.
+A importálandó mezőnevek felsorolását a fieldList array
+tartalmazza. Ha fieldList==NIL, akkor a függvény felteszi,
+hogy az importfilé minden mezőt tartalmaz. A struktúrákat
+(mezőszámot) egyezteti és ellenőrzi. 
+Tranzakcióban nem engedélyezett.
+
+Visszatérés: a beolvasott rekordok száma
+
+
+\function{tabAppendRecord(table,tabfrom,usrblk,flag)}
+A  tabfrom tábla aktuális rekordját átemeli table-ba.
+A két tábla struktúrájának azonosnak kell lenni. 
+A usrblk és flag paramétert továbbadja tabAppend-nek
+
+Visszatérés: .t./.f.
+ 
+\function{tabAutoUpgrade(table)}
+Ha a táblaobjektum nem nyitható meg struktúra eltérés miatt,
+akkor a tab\-Upgrade hívással konvertálja annak struktúráját.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha OK 
+\item .f., ha a szabályok nem engedik a konverziót 
+\item NIL, ha a filé foglalt.
+\end{itemize}
+ 
+
+
+\function{tabBackup(table)}
+Belső használatra. Másolatot készít a táblaobjektumról
+tabPack, tabUpgrade, stb. idejére.
+
+Visszatérés: .t./.f.
+
+
+\function{tabBlock(table,col,block)}
+Lekérdezi (block==NIL), illetve beállítja (block!=NIL)
+a col paraméterben számmal vagy névvel azonosított oszlop
+(mező) kódblokkját. Mivel a táblaobjektum megfelelően
+inicializálja a blokkokat, felhasználói program 
+ezen ritkán változtat.  A lekérdezésnek lehet értelme, 
+pl. ha a blokkot be akarjuk tenni egy browse-ba.
+
+Visszatérés: oszlop blokk
+
+
+\function{tabBrowse(table,top,left,bottom,right,def)}
+Létrehoz egy kiterjesztett (menüző) browse objektumot,
+amelynek navigáló blockjait úgy állítja be, hogy az
+a táblában scrollozzon. A top, left, bottom, right
+paraméterek a browse méretét határozzák meg a 
+szokásos módon. Ha def==.t., akkor a browse rögtön
+fel is töltődik a tábla mezőit megjelenítő oszlopokkal.
+Ha def==NIL, akkor az új browse-nak nem lesz egy oszlopa sem.
+
+Visszatérés: browse objektum
+
+
+\function{tabClose(table)}
+Lezárja a tábla objektumot.
+
+Visszatérés: NIL
+ 
+\function{tabCloseAll()}
+Lezárja a program összes tábla objektumát.
+
+Visszatérés: NIL
+
+
+\function{tabColNumber(table,colName)}
+Belső használatra. Az oszlop neve alapján kikeresi az
+oszlopot a tábla objektumban. Ha a név ismeretlen, akkor
+runtime error keletkezik.
+
+Visszatérés: az oszlop objektumbeli indexe
+
+
+\function{tabColumn(table)}
+Belső használatra. Visszaadja a tábla oszlopainak listáját
+
+Visszatérés: egy array, ami az oszlopok struktúráit tartalmazza
+ 
+
+\function{tabCommit(table)}
+Ha az aktuális rekord valamelyik mezője korábban megváltozott,
+akkor tabCommit kiírja a változásokat.
+
+Visszatérés: NIL
+ 
+\function{tabCommitAll(table)}
+Minden tábla objektumra végrehajtja tabCommit-ot.
+
+Visszatérés: NIL
+ 
+
+\function{tabControl(tab,ord)}
+Lekérdezi (ord==NIL), vagy beállítja (ord!=NIL) a tábla aktuális 
+sorrendjét.  A sorrendet névvel, vagy számmal is beállíthatjuk. 
+Ha a természtes sorrendet akarjuk beállítani, akkor ezt a 0 sorszámú 
+index előírásával tehetjük.
+
+Visszatérés: a korábbi sorrend sorszáma
+
+
+\function{tabControlIndex(table,ord)}
+Azonos az előző tabControl függvénnyel. A kétféle elnevezésre
+azért van (volt) szükség, mert a régi Clipper 10 karakter
+hosszúra levágta a függvények nevét.
+
+
+\function{tabCopyTo(table,fileName,fieldList)}
+Teljes táblák exportálásához alkalmas függvény. A fileName-ben
+megadott (újonnan kreált) filébe kiírja a fieldList listában
+felsorolt mezőket. Ha fieldList==NIL, akkor minden mezőt kiír.
+Az adatok konverziója a következő szabályok szerint történik:
+\begin{enumerate}
+\item A sztring mezők trimelődnek, és dupla idézőjelek közé
+      kerülnek. Kérdés, hogy az export filé olvasója mit fog
+      kezdeni az olyan idézetekkel, amik a belsejükben is tartalmaznak
+      idézőjelet.
+\item A számok sztringre konvertálódnak, a konverzióban figyelembe
+      van véve a mezőszélesség és a decimális jegyek száma.
+\item A dátumok dtos alakban kerülnek kiírásra.
+\item A logikai értékek T/F alakban kerülnek kiírásra.
+\end{enumerate}
+A mezőket vessző, a rekordokat CR/LF határolja.
+A tábla megtartja a tabSave/tabRestore-ral menthető állapotát.
+  
+Visszatérés: a kiírt rekordok száma
+
+ 
+
+\function{tabCreate(table,userblock)}
+Létrehozza a táblaobjektumot a filérendszerben, feltéve, hogy
+korábban nem létezett (azaz létező filét nem töröl). 
+Ha userblock egy kódblock, akkor a művelet sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény. Ha userblock nincs megadva, és a filé
+létrehozása nem sikerül, akkor runtime error keletkezik.
+
+Visszatérés: .t./.f.
+ 
+
+\function{tabDataExt(table)}
+Belső használatra. 
+Az adatfilék kiterjesztésének default értéke.
+A kiterjesztést ponttal együtt, nagybetűsen kapjuk.
+
+Visszatérés: kiterjesztés
+ 
+
+\function{tabDelete(table)}
+Törli a tábla aktuális rekordját, és az érvényes sorrend szerinti
+irányban egyet előre lép. Megköveteli, hogy a rekord lockolva
+legyen. A törléssel a rekord lockja megszűnik. Az előrelépés azért
+szükséges, mert egyes adatbázisformátumokban a törölt rekord 
+teljesen megszűnik (azaz töröltként sem létezik tovább), 
+viszont a tábla pozícionáltságát célszerű ilyenkor is fenntartani.
+
+Visszatérés: NIL
+
+
+\function{tabDeleted(table)}
+Megmondja, hogy a tábla aktuális rekordja törölt állapotú-e.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha a rekord törölt
+\item .f., ha a rekord nem törölt 
+\end{itemize}
+
+
+\function{tabDelIndex(table)}
+Belső használatra. Törli a tábla objektum indexeit a filérendszerből.
+
+Visszatérés: .t./.f.
+ 
+
+\function{tabDelTable(table)}
+Belső használatra. Törli a tábla objektumot a filérendszerből
+minden alkatrészével együtt.
+
+Visszatérés: .t./.f.
+
+
+\function{tabDestruct(table)}
+Megszünteti a tábla objektumot. Először lezárja a táblát,
+majd az objektumra mutató statikus hivatkozásokat emptyvé teszi, 
+és a tabObjectList-ből is törli. Ezzel az objektumot
+a szemétgyűjtés el fogja tudni takarítani.
+
+Visszatérés: NIL 
+
+
+\function{tabDropIndex(table)}
+Eldobja a korábbi tabSuppIndex hívásokkal létrehozott ideiglenes
+indexeket (mindet). Csak exkluzív nyitásnál megengedett.
+Tranzakció közben nem engedélyezett.
+
+Visszatérés: NIL
+
+
+\function{tabEof(table)}
+Az utolsó táblabeli mozgás által beállított EOF értéket adja.
+ 
+Visszatérés:
+\begin{itemize}
+\item .f., ha az utolsó pozícionálás sikeres volt
+\item .t., ha az utolsó pozícionálás sikertelen volt 
+\end{itemize}
+ 
+\function{tabEvalColumn(table,col,exp)}
+A col paraméterben sorszámmal, vagy névvel azonosított mező (oszlop)
+blockját kiértékeli. Ha exp==NIL, akkor ez az oszlop aktuális értékének
+lekérdezését jelenti, ha exp!=NIL, akkor az oszlopnak új értéket
+adunk (az exp-et).
+
+Visszatérés: az oszlop értéke
+
+
+
+\function{tabExt(table,par) }
+Megadja az adatfilé tényleges kiterjesztését. A kiterjesztést
+ponttal együtt, nagybetűsen kapjuk.
+
+Visszatérés: kiterjesztés
+
+
+\function{tabFcount(table)}
+Megadja a táblában lévő mezők (oszlopok) számát.
+
+Visszatérés: mezők száma
+ 
+
+ 
+\function{tabFile(table,fname)}
+Lekédezi (fname==NIL), illetve beállítja (fname!=NIL) 
+a tábla adatfiléjének nevét.
+
+Visszatérés: fname
+ 
+
+\function{tabFilter(table,filter) }
+Lekédezi (filter==NIL), illetve beállítja (filter!=NIL) 
+az aktuláis szűrő blokkkot. Ha a szűrést törölni akarjuk, 
+akkor valamilyen empty de nem NIL értékre kell beállítanunk.
+
+Visszatérés: a korábbi szűrő blokk
+
+
+\function{tabFound(table)}
+Visszaadja FOUND értékét, ahogy azt az utolsó tabSeek
+művelet beállította.
+
+Visszatérés: .t./.f.
+
+
+\function{tabGetColumn(table,col)}
+Belső használatra. Visszadja az col-ban sorszámmal, vagy
+névvel azonosított oszlop struktúráját. Ha az oszlopnév ismeretlen,
+vagy a sorszám a  határokon kívül esik, akkor runtime error keletkezik.
+
+Visszatérés: oszlop struktúra
+ 
+\function{tabGetIndex(table,ind)}
+Belső használatra. Visszadja az ind-ben névvel azonosított
+index sorszámát. Ha ind egy sorszám, akkor csak azt ellenőrzi,
+hogy ind 1 és a létező indexek száma közé essen, és ind-et adja
+vissza. Ha az index nem létezik (ismeretlen név, vagy a határokon
+kívül eső index), akkor NIL ad.
+
+Visszatérés: index sorszám, vagy NIL
+
+
+\function{tabGoBottom(table)}
+Az aktuláis sorrend szerinti utolsó rekordra (bottomra) pozícionál.
+A törölt és kiszűrt rekordokat átugorja.
+Ha sikertelen, beállítja EOF-ot.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha a pozícionálás sikeres
+\item .f., ha sikertelen (ha egy rekord sincs a táblában)
+\end{itemize}
+
+
+\function{tabGoto(table,recno)}
+A recno-ban megadott sorszámú  rekordra pozícionál.
+Ha ez a rekord nem létezik, akkor recno==0-ra
+pozícionál, és beállítja EOF-ot. A tabGoto függvénnyel
+rá lehet pozícionálni a törölt és kiszűrt rekordokra is.
+
+\begin{itemize}
+\item .t., ha a pozícionálás sikeres
+\item .f., ha sikertelen (ha nem létezik a megadott rekord)
+\end{itemize}
+
+
+\function{tabGoTop(table)}
+Az aktuláis sorrend szerinti első rekordra (topra) pozícionál.
+A törölt és kiszűrt rekordokat átugorja. 
+Ha sikertelen, beállítja EOF-ot.
+
+\begin{itemize}
+\item .t., ha a pozícionálás sikeres
+\item .f., ha sikertelen (ha egy rekord sincs a táblában)
+\end{itemize}
+ 
+ 
+\function{tabIndex(table,index)}
+Csak belső használatra. Lekérdezi (index==NIL), 
+illetve beállítja (index!=NIL) az indexek struktúráját.
+
+Visszatérés: index
+
+
+\function{tabIndexExt()}
+Belső használatra. 
+Az index filék kiterjesztésének értéke.
+A kiterjesztést ponttal együtt, nagybetűsen kapjuk.
+
+Visszatérés: kiterjesztés
+
+ 
+\function{tabIndexName(table)}
+Belső használatra. 
+Lekérdezi a tábla indexfiléjének teljes specifikációját.
+Erősen adatbázis formátum függő.
+
+Visszatérés: index filé specifikáció
+
+
+
+\function{tabInsert(table,key,userblock,flag)}
+Megnézi, hogy van-e a key klucshoz illeszkedő rekord a táblában.
+Ha van, akkor erre pozícionál és visszatér (a rekord nem lockolódik).
+Ha nincs, akkor berak a táblába egy új rekordot, és egyúttal 
+beírja az új rekordba a key-ben kapott kulcsot (a rekord lockolva marad). 
+
+A userblock és flag paramétereket szükség esetén továbbadja tabAppend-nek.
+A flag==.t. esetben a korábbi lockok megszűnnek, 
+  flag==.f. esetben a korábbi lockok megmaradnak, 
+
+Visszatérés:
+\begin{itemize}
+\item NIL, ha már volt a táblában megfelelő kulcsú rekord
+\item .t., ha sikeresen berakta az új rekordot
+\item .f., ha az új rekord létrehozása sikertelen volt
+\end{itemize}
+ 
+
+
+
+
+\function{tabIsLocked(table)}
+Megmondja, hogy a tábla aktuális rekordja lockolva van-e.
+Ha a tábla exkluzívan meg van nyitva, akkor definíció
+szerint  minden rekordja lockoltnak számít.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha az aktuális rekord lockolva van
+\item .f., ha az aktuális rekord nincs lockolva 
+\end{itemize}
+ 
+\function{tabIsOpen(table)}
+Megmondja, hogy nyitva van-e a tábla.
+
+Visszatérés:
+\begin{itemize}
+\item 0, ha a tábla nincs nyitva
+\item nyitási mód (pozitív szám), ha a tábla nyitva van
+\end{itemize}
+ 
+
+\function{tabLastRec(table)}
+Visszaadja a legnagyobb recno-t. Ez hozzávetőleges
+tájékozódást ad a táblában levő rekordok számáról, de nem
+feltétenül egyezik meg azzal.
+
+Visszatérés: maximális recno
+ 
+
+\function{tabLoadDBF(table,dbf)}
+Betölti a táblába a dbf-ben megadott specifikációjú, dbf formátumú
+adatbázist az esetleges memó filékkel együtt. A dbf törölt rekordjait
+kihagyja.
+Csak exkluzív nyitási módban lehetséges. Tranzakcióban nem megengedett. 
+Csak azok a dbf-beli mezők töltődnek át, amiknek van a tábla objektumban 
+megfelelő párjuk. Hibát okoz, ha a dbf-ben és a táblaobjektumban azonos 
+nevű mezők típusa eltérő.
+
+Visszatérés: a dbf rekordjainak száma
+
+
+\function{tabLock(table,userblock)}
+Lockolja a táblát (egyes adatbázis formátumokban áttér exkluzív nyitásra).
+Ha userblock==NIL, és a művelet sikertelen, 
+akkor a szokásos ,,A filé foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor a művelet sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény.
+
+Visszatérés: .t./.f.
+ 
+
+\function{tabLockList(table)}
+Visszaadja a tábla lockolt rekordjainak listáját.
+
+Visszatérés: array a lockolt rekordok recno-ival
+
+
+\function{tabMAppend(table,userblock)}
+Berak egy üres rekordot a táblába, és azt lockolja, a tábla többi 
+lockját nem engedi el. A tábla aktuális rekordja az új rekord lesz.
+Ha userblock==NIL, és az append sikertelen, 
+akkor a szokásos ,,A filé foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor az append sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény.
+
+Visszatérés: .t./.f.
+ 
+
+\function{tabMemoExt()}
+Belső használatra. 
+A memó filék kiterjesztésének default értéke.
+A kiterjesztést ponttal együtt, nagybetűsen kapjuk.
+
+Visszatérés: kiterjesztés
+
+ 
+\function{tabMemoName(table)  }
+Belső használatra. 
+Lekérdezi a tábla memó filéjének teljes specifikációját.
+
+Visszatérés: memó filé specifikáció
+
+
+\function{tabMLock(table,recno,userblock)}
+Lockolja a tábla recno-val azonosított rekordját, a többi lockot
+nem engedi el. Ha userblock==NIL, és a lock sikertelen, akkor a
+szokásos ,,A rekord foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor a lock sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény.
+
+Visszatérés: .t./.f.
+ 
+
+\function{tabNameExt(table)}
+Belső használatra. 
+Az adatfilé specifikációja path nélkül.
+
+Visszatérés: path nélküli filéspecifikáció 
+
+ 
+\function{tabObjectList()}
+Belső használatra. 
+Nyilvántartás a program táblaobjektumairól.
+
+Visszatérés: egy array, ami statikusan tárolja a program tábla objektumait
+
+
+
+\function{tabOpen(table,mode,userblock)}
+Megnyitja a táblát a mode paraméterben megadott nyitási móddal.
+A nyitási mód értéke lehet:
+\begin{enumerate}
+\item \verb!OPEN_READONLY!
+\item \verb!OPEN_SHARED! (default)
+\item \verb!OPEN_EXCLUSIVE!
+\item \verb!OPEN_APPEND!
+\end{enumerate}
+Ha a filé fizikailag nem létezik, akkor felajánlja, hogy
+létrehozza üresen az adatszótárral megegyező struktúrával.
+Ha a filé létezik, akkor a tabVerify meghívásával ellenőrzi,
+hogy a struktúrája (és az indexei) megfelelőek-e.
+
+Ha a tábla már eleve nyitva volt, akkor először lezárja, 
+majd megnyitja az új nyitási móddal. Ez tranzakcióban
+résztvevő tábla esetén nem megengedett.
+
+Ha userblock nincs megadva (userblock==NIL) és a filé foglalt,
+akkor a szokásos ,,A filé foglalt!'' hibakezelésbe kerülünk.
+Ha userblock egy kódblokk, és a filé foglalt, akkor kiértékelődik
+userblock és ennek az értékével (kötelezően .t./.f.) tér vissza
+a függvény.
+
+A frissen nyitott táblában a természetes sorrend lesz
+beállítva, és az e sorrend szerinti top lesz az aktuális
+rekord.
+
+Visszatérés: .t./.f.
+
+
+
+\function{tabPack(table)}
+A tábla összes törölt rekordját purgálja. A packolás
+a tábla törölt rekordok nélküli átmásolásával történik.
+Exkluzív megnyitás szükséges, tranzakcióban nem megengedett.
+A packolás után a tábla megtartja a tabSave/tabRestore-ben
+menthető állapotát.
+
+Visszatérés: .t./.f.
+
+
+\function{tabPath(table,path)}
+Belső használatra. 
+Lekérdezi (path==NIL), illetve beállítja (path!=NIL) 
+a tábla adatfiléjéhez vezető path-t. A path mindig 
+automatikusan kiegészül a dirsep karakterrel.
+
+Visszatérés: path
+ 
+
+\function{tabPathName(table)}
+Belső használatra. 
+Lekérdezi a tábla adatfiléjének teljes specifikációját.
+
+Visszatérés: filé specifikáció
+
+\function{tabPercent(table,percent)}
+Lekérdezi (ha percent==NIL), illetve beállítja (precent!=NIL)
+a tábla pozícióját százalékban. Csak belsőleg használjuk 
+a scrollbarok kezelésekor.
+
+Visszatérés: percent
+ 
+
+\function{tabPicture(table,col,pict)}
+A tábla col-ban megadott oszlopához tartozó default
+picture beállítása (ha pict!=NIL), 
+illetve lekérdezése (ha pict==NIL). 
+Az oszlopot sorszámmal, vagy névvel is azonosíthatjuk.
+Mivel a táblaobjektum megfelelően inicializálja az oszlop
+picture-t, utólagos beállítására általában nincs szükség.
+
+Visszatérés: picture
+
+
+\function{tabPosition(table)}
+Lekérdezi a tábla aktuális rekord pozícióját (recno).
+A visszakapott szám csak arra használható,
+hogy az aktuális pozíciót mentsük, majd visszaállítsuk.
+Nem szabad pl.\ olyasmit feltételezni, hogy a rekordszámok
+egyesével növekednének.
+
+Visszatérés:
+\begin{itemize}
+\item 0, ha a tábla nincs pozícionálva, pl. nincs benne rekord,
+         vagy előzőleg tabGoto egy nemlétező rekordra akart pozícionálni
+\item pozitív szám (recno), ha a tábla pozícionálva van
+\end{itemize}
+
+
+\function{tabRename(table,name)}
+A tábla filé alkatrészeinek átnevezése, kizárólag belső
+használatra.
+
+Visszatérés: .t./.f.
+
+
+
+\function{tabRestore(table,state) }
+Visszaállítja a tábla tabSave-ben elmentett
+állapotát, ami tartalmazza a tábla
+\begin{enumerate}
+\item aktuális sorrendjét,
+\item aktuális szűrő blokkját,
+\item aktuális pozícióját.
+\end{enumerate}
+
+Visszatérés: state
+
+
+\function{tabRLock(table,userblock)}
+Lockolja a tábla aktuális rekordját, előzőleg a többi lockot
+feloldja. Ha userblock==NIL, és a lock sikertelen, akkor a
+szokásos ,,A rekord foglalt!'' hibakezelésbe jutunk.
+Ha userblock egy kódblock, akkor a lock sikertelensége esetén
+ez kiértékelődik, és ennek értékével (kötelezően .t./.f.) tér 
+vissza a függvény.
+
+Visszatérés: .t./.f.
+
+
+\function{tabSave(table) }
+Elmenti a tábla 
+\begin{enumerate}
+\item aktuális sorrendjét,
+\item aktuális szűrő blokkját,
+\item aktuális pozícióját.
+\end{enumerate}
+Később a tabRestore függvénnyel az elmentett állapot visszaállítható.
+
+Visszatérés: a fenti három értékből képzett array
+
+
+\function{tabSBrowse(table)}
+Teszteléshez való függvény, ami megjeleníti a tábla aktuális állapotát.
+A visszatérés után a tábla állapota változatlan marad, így a program
+futására nincs hatással.
+
+Visszatérés: NIL
+ 
+
+%\function{tabScanIndex(table,index) }
+
+\function{tabSeek(table,exp)}
+A táblában megkeresi azt a rekordot, ami az aktuális control szerinti
+lexikografikus rendezettségben a legelső azok közül, amik nem kisebbek,
+mint az exp-ben megadott minta (vagyis exp-nél nagyobbegyenlőt keres).
+A törölt és kiszűrt rekordokat átugorja.
+Követelmény, hogy be legyen állítva egy természetes sorrendtől 
+különböző sorrend (control).
+
+Az exp kifejezés általános esetben egy array, 
+amely az aktuális sorrendet meghatározó oszlopokra vonatkozó 
+részkulcsokat tartalmaz. Az array lehet rövidebb is, mint a sorrendet 
+alkotó oszlopok száma. Ha a megadott részkulcsok száma egy, 
+akkor az array helyettesíthető a részkulcsot tartalmazó 
+egyszerű adattal.
+
+A keresés előtt minden (megadott) részkulcs konvertálódik a hozzá tartozó
+oszlopnak megfelelő formátumra (pl.\  a stringek padolódnak a megfelelő
+hosszúságra), majd a részkulcsok konkatenálódnak, így előáll a kereső kulcs.
+Ha az így előkészített kulcshoz illeszkedő rekordot sikerül találni,
+akkor a FOUND be lesz állítva .t.-re. 
+
+{\em Megjegyzendő, hogy a keresés és a találat jelzése mindig 
+a ténylegesen megadott részkulcsokból képzett kereső kulcsra történik.}
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha sikerült illeszkedő rekordot találni (FOUND true)  
+\item .f., ha nem sikerült illeszkedő rekordot találni (FOUND false)   
+\end{itemize}
+ 
+
+\function{tabSeekGE(table,exp)}
+Keresés nagyobbegyenlőre, vagy utolsóra. 
+Végrehajt egy tabSeek-et a megadott exp mintával.
+Ha a tabSeek recno==0-ra vinne, akkor átpozícionál bottomra.
+ 
+Visszatérés:
+\begin{itemize}
+\item .t., ha sikerült illeszkedő rekordot találni (FOUND true)  
+\item .f., ha nem sikerült illeszkedő rekordot találni (FOUND false)   
+\end{itemize}
+ 
+
+\function{tabSeekLE(table,exp)}
+Keresés kisebbegyenlőre, vagy utolsóra. 
+Végrehajt egy tabSeek-et a megadott exp mintával, majd egyet hátralép.
+Ha a tabSeek recno==0-ra vinne, akkor átpozícionál bottomra.
+ 
+Visszatérés:
+\begin{itemize}
+\item .t., ha sikerült illeszkedő rekordot találni (FOUND true)  
+\item .f., ha nem sikerült illeszkedő rekordot találni (FOUND false)   
+\end{itemize}
+ 
+
+\function{tabSkip(table,stp)}
+Lép a beállított sorrend (control) szerinti irányban.
+A törölt vagy kiszűrt rekordokat átugorja.
+A stp paraméter a lépések száma. Pozitív, nulla, és negatív is lehet,
+stp==0 esetén újra olvassa az aktuális rekordot, stp==NIL esetén 
+egyet lép előre. 
+
+Ha előrelépés közben nekimegy a filé végének, 
+akkor recno==0-ra pozícionál, és beállítja EOF-ot.
+A recno==0-ról előrefelé nem ehet elmozdulni, 
+ilyenkor recno==0-án marad, és újra beállítja EOF-ot.
+ 
+Ha hátralépés közben nekimegy a filé elejének, 
+akkor a top-ra pozícionál, és beállítja EOF-ot. 
+Ha recno==0-ról hátrafelé lép, 
+akkor az első lépésben bottom-ra pozicionál.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha sikerült stp számú lépést végrehajtani  
+\item .f., ha nem lehetett stp lépést végrehajtani (EOF beállítva)
+\end{itemize}
+ 
+
+\function{tabSuppIndex(table,index)}
+Ideiglenes indexet ad az objektumhoz
+(azaz leindexeli a filét egy új sorrend szerint). 
+Csak exkluzív módban használható.
+Az ideiglenes indexet a filé lezárása előtt el kell dobni (tabDropIndex).
+Az index paraméter egy array, ami az új index struktúráját tartalmazza,
+ennek elemei:
+\begin{enumerate}
+\item sorrend név,
+\item index filé neve,
+\item array az oszlopok nevének listájával
+\end{enumerate}
+
+Tranzakcióban nem engedélyezett.
+ 
+Visszatérés: index
+
+\function{tabTBrowse(table)}
+Ad egy browset, 
+amiben a program összes tábla objektuma látszik.
+Teszteléshez való. A table paramétert nem használja.
+
+Visszatérés: NIL
+
+\function{tabUnlock(table,record)}
+Elengedi a filé lockot és a filé összes rekord lockját.
+Ha record meg van adva (egy recno), akkor csak ennek 
+a rekordnak a lockját engedi el.
+
+Visszatérés: NIL
+ 
+\function{tabUnlockAll(table)}
+Minden tábla minden lockját elengedi. 
+A táblákat a tabObjectList függvénnyel szedi össze.
+A table paramétert nem használja.
+
+Visszatérés: NIL
+ 
+\function{tabUpgrade(table,force)} 
+Konvertálja a tényleges filét az objektumnak megfelelően
+(a konverzió után a filé struktúrája meg fog egyezni
+az adatszótárbeli struktúrával).
+Ha a híváskor a filé nyitva van, akkor nem csinál semmit,
+hiszen megnyitható filénél nincs szükség konverzióra.
+A konverzió után a filé lezárva marad, azaz :isopen nem változik.
+
+Konverziós szabályok:
+\begin{enumerate}
+\item nem enged mezőt kihagyni,
+\item mező típusa nem lehet eltérő,
+\item mezőhosszt hajlandó megváltoztatni (csökkent/növel)
+\end{enumerate}
+Ha force==.t., akkor mindenképpen elvégzi a konverziót.
+
+Visszatérés:
+\begin{itemize}
+\item .t., ha OK 
+\item .f., ha a szabályok nem engedik a konverziót 
+\item NIL, ha a filé foglalt.
+\end{itemize}
+ 
+
+\function{tabVerify(table)}
+Ellenőrzi, hogy a tábla tényleges struktúrája
+megfelel-e az adatszótárbeli struktúrának.
+A tényleges struktúrának tartalmaznia kell 
+minden adatszótárbeli mezőt, és ezeknek
+a típusa sem térhet el, ellenkező esetben
+,,DBSTRUCT eltérés'' hiba keletkezik.
+Megengedett, hogy a tényleges struktúra
+bővebb legyen.
+
+Ha információ kapható az indexekről,
+akkor azokat is ellenőrzi, de ez adatformátum függő.
+           
+Visszatérés:
+\begin{itemize}
+\item .t., ha OK 
+\item .f., ha a filé és a program inkonzisztens 
+\end{itemize}
+        
+\function{tabZap(table)}
+Törli a tábla összes rekordját. 
+Exkluzív open mód szükséges.
+Tranzakcióban nem megengedett.
+
+Visszatérés: .t./.f.
+ 
+
+

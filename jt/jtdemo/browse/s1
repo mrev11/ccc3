@@ -1,0 +1,3 @@
+#!/bin/bash
+
+browse.exe http://localhost:8080

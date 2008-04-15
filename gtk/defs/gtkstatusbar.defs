@@ -1,0 +1,69 @@
+
+
+(define-function gtk_statusbar_get_type
+  (in-module GtkStatusbar)
+  (c-name "gtk_statusbar_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_statusbar_new
+  (c-name "gtk_statusbar_new")
+  (is-constructor-of GtkStatusbar)
+  (return-type "GtkWidget*")
+)
+
+(define-method get_context_id
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_get_context_id")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "context_description")
+  )
+)
+
+(define-method push
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_push")
+  (return-type "guint")
+  (parameters
+    '("guint" "context_id")
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method pop
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_pop")
+  (return-type "none")
+  (parameters
+    '("guint" "context_id")
+  )
+)
+
+(define-method remove
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_remove")
+  (return-type "none")
+  (parameters
+    '("guint" "context_id")
+    '("guint" "message_id")
+  )
+)
+
+(define-method set_has_resize_grip
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_set_has_resize_grip")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_has_resize_grip
+  (of-object "GtkStatusbar")
+  (c-name "gtk_statusbar_get_has_resize_grip")
+  (return-type "gboolean")
+)
+
+
+

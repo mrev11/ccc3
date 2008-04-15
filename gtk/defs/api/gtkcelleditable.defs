@@ -1,0 +1,31 @@
+
+
+(define-function gtk_cell_editable_get_type
+  (in-module "GtkCellEditable")
+  (c-name "gtk_cell_editable_get_type")
+  (return-type "GType")
+)
+
+(define-method start_editing
+  (of-object "GtkCellEditable")
+  (c-name "gtk_cell_editable_start_editing")
+  (return-type "none")
+  (parameters
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-method editing_done
+  (of-object "GtkCellEditable")
+  (c-name "gtk_cell_editable_editing_done")
+  (return-type "none")
+)
+
+(define-method remove_widget
+  (of-object "GtkCellEditable")
+  (c-name "gtk_cell_editable_remove_widget")
+  (return-type "none")
+)
+
+
+

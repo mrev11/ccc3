@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp  spec="1.0+"  
+       codebase="http://193.188.140.123/" 
+       href="jnlp/jtproba.jnlp"> 
+
+  <information> 
+    <title>Jáva Terminál Teszt</title> 
+    <vendor>ComFirm Bt</vendor> 
+    <homepage href="jtproba.html"/> 
+    <description>Jáva Terminál Teszt</description> 
+    <offline-allowed/> 
+  </information> 
+
+  <security> 
+      <all-permissions/> 
+  </security> 
+
+  <resources> 
+    <j2se version="1.4.0+"/> 
+    <jar href="jnlp/jterminal.jar"/> 
+  </resources> 
+
+  <application-desc main-class="jterminal"> 
+    <argument>193.188.140.123</argument> 
+    <argument>45678</argument> 
+    <argument>ssl</argument> 
+  </application-desc> 
+</jnlp> 

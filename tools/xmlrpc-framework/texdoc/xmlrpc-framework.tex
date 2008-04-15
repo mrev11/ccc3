@@ -1,0 +1,155 @@
+
+\pagetitle{XMLRPC framework}{Dr. Vermes Mátyás}{2007. november}
+
+\section{Előzmények}
+
+E szoftver régebbi változata évek óta élesben működik különféle 
+home-banking rendszerek részeként. A jelen csomag annyiban tér el
+az éles változattól, hogy
+az alkalmazásfüggetlen rész külön lett véve a számlavezetéstől,
+ez a leválasztott rész van itt közreadva {\tt xmlrpc-framework} néven.
+Emellett különféle korszerűsítések történtek:
+
+\begin{itemize}
+ \item Belekerült a CCC fejlettebb hibakezelése.
+ \item Az osztálydefiníciók a class szintaktikára vannak átírva.
+ \item A socket descriptorok helyett socket objektumokat használ.
+ \item SSL támogatás került a rendszerbe.
+ \item Portolva lett CCC3-ra.
+\end{itemize}
+  
+%A változások által okozott esetleges hibák miatt jelenleg a
+%szoftvert óvatosan szabad csak használni.
+
+
+\section{Ez miez?}
+
+XMLRPC szervereket írni nem túl nehéz. 
+Ha belejön az ember, hamar abban a helyzetben találja magát,
+hogy sok XMLRPC szervere van, amik  igénybe akarják venni 
+egymás szolgáltatásait. Kiderül, hogy nem könnyű menedzselni
+egy ilyen elosztott rendszert, ui.\ minden komponensnek ismernie
+kell a rendszerben levő többi komponens elérhetőségéhez
+szükséges paramétereket. 
+
+E problémára ad viszonylag egyszerű megoldást az {\tt rpcwrapper}
+nevű program. Ez egy forgalomirányító, ami a csillag topológia
+központjában van, és közvetíti az XMLRPC lekérdezéseket és válaszokat
+a kliensek és szerverek között, beleértve azt az esetet is, amikor
+az egyik szerver kliense a másiknak. A forgalomirányító révén
+a komponensek könnyen paraméterezhetők, mert mindenkinek csak
+a központtal (vagyis a forgalomirányító wrapperral) kell 
+közvetlen kapcsolatban lennie.
+
+A rendszer része az {\tt rpcmonitor} kliens program, 
+amivel figyelni lehet, hogy milyen szerverek/kliensek
+vannak a rendszerben, és le lehet vele állítani egyes szervereket,
+illetve a wrapper leállításával az egész rendszert.
+
+A rendszer része az {\tt rpcsession} szerver, 
+ami a kliensek hitelesítését végzi. Ez tipikusan egy olyan
+szerver, aminek a szolgáltatását a többi szerver is igénybe
+fogja venni.
+
+
+\section{Session állapot kezelés}
+
+A HTTP-re épülő technikáknál mindig téma a session állapot kezelés.
+Pl. egy elemi tranzakció állhat abból, hogy a vásárló kiválaszt egy árucikket,
+és azt berakja a kosarába. Ilyen elemi tranzakciók sorozatából
+áll össze egy komplett vásárlás. Ámde  a HTTP protokoll olyan, 
+hogy minden alkalommal felépíti majd megszakítja a hálózati kapcsolatot.
+A rendszernek fel kell ismernie, ha az új hálózati kapcsolaton
+egy korábbi kliens jelentkezik, és tudnia kell, hogy mit gyűjtött
+össze korábban a kosarába.
+
+Az XMLRPC framework tartalmaz egy egyszerű session állapot kezelést.
+A session adatait adatbázisban tároljuk, az adatokat  kulcs
+(sid) alapján keressük elő. A kliensnél csak az azonosításhoz
+szükséges kulcs van. Az alkalmazás(fejlesztő) feladata 
+összeállítani az adatoknak azt a körét, ami alkalmas a session
+állapot teljes megőrzésére és visszaállítására.
+
+
+\section{Párhuzamos kiszolgálás}
+
+A szolgáltatásokat úgy kell megszervezni, 
+hogy lehetőség legyen több kliens egyidejű kiszolgálására.
+Tegyük fel pl., hogy van egy szerverünk, ami számlatörténet adatokat
+ad a kliensnek. Ha az adatokat csak lassan lehet előkaparni
+az archívumból, és amiatt az összes többi kliensnek várni kell,
+az nem volna elfogadható.
+
+A párhuzamos kiszolgálást úgy oldja meg az  XMLRPC framework,
+hogy a várhatóan népszerű szolgáltatásokhoz (előre) több szerverpéldányt 
+is elindít. A forgalomirányító ({\tt rpcwrapper}) fog választani az azonos
+szolgáltatást nyújtó szerverek példányai közül. Ha talál olyan
+szervert, aminek éppen nincs egy kliense sem, akkor annak továbbítja
+a lekérdezést. Ha éppen minden szerver foglalt, akkor a lekérdezést
+beleteszi annak a szervernek a sorába, amelyiknek a sora a legrövidebb.
+
+Rendben, de mi van, ha egy kliens összetett tranzakciója, 
+hol az egyik, hol a másik szerverhez kerül?
+Erre is a session állapot kezelés ad választ. A session állapotot
+leíró adatokat úgy kell meghatározni, illetve a szervereket úgy kell
+megírni, hogy ne okozzon gondot, ha az összetett tranzakció menet
+közben átkerül egyik szerverről másikra.
+Az {\tt rpcsession} szerver például megfelel az előbbi feltételnek.
+
+
+\section{Fordítás, a demók kipróbálása}
+
+A {\tt clean.b} script minden binárist és logfilét letöröl.
+
+A {\tt mkall.b} script mindent lefordít.
+
+
+Az {\tt rpcstart.sh} script elindítja a demót. 
+Elindul a wrapper, kettő darab session szerver és egy teszt szerver.
+
+A {\tt monitor.sh} script elindítja az {\tt rpcmonitor} kliens programot,
+amivel nézegetni lehet, hogy mik futnak.     
+Az első sorban látszó {\tt system} a wrappert jelenti.
+Ha ezt leállítjuk, akkor az összes többi szerver is kilép 
+(így vannak megírva), azaz az egész rendszer leáll.
+    
+{\em Figyelmeztetés}: 
+    A legtöbb hiba abból adódik, hogy a rendszer különböző 
+    komponensei nem egyszerre indulnak és lépnek ki, ezért: 
+\begin{itemize}
+\item Indítás előtt ellenőrizni kell,
+       hogy nincs-e korábbról beragadt szerverprocessz,
+       az ilyeneket ki kell lőni. 
+\item Indítás után ellenőrizni kell, hogy minden szerver elindult-e.
+\item Leállítás után ellenőrizni kell,  hogy minden szerver leállt-e.
+\end{itemize}
+
+A teszteléshez átfáradunk a {\tt client} directoryba, és próbálgatjuk 
+az ott található programokat.
+
+
+
+\section{A dokumentációkról}
+
+XMLRPC specifikációnak itt volna ez a régi írás:
+\href{xmlrpc-spec.htm}{XML-RPC Specification},
+ami elismerésre méltóan tömör, csak sajnos elavult.
+A fő baj, hogy ezt még azzal a feltételezéssel írták, 
+hogy egy XML dokumentum byte-okból áll. Ezesetben
+az XMLRPC string típus valóban tartalmazhatna tetszőleges
+bináris adatot. Később azonban az okosok kitalálták,
+hogy az XML {\em karakterekből\/} áll, amivel a lehetőségek
+valamelyest csökkentek. Az alkalmazásfejlesztőket ez annyiban
+érinti, hogy a bináris adatokat nem lehet nyersen átküldeni
+XMLRPC lekérdezésben vagy válaszban, hanem base-64 kódba
+kell csomagolni.
+
+
+Változtatás nélkül iderakom a rendszer első, 
+\href{xmlrpckonto.html}{2001-es dokumentációját},
+ami néhány részletében elavult ugyan, 
+de a lényeget illetően még mindig informatív.
+
+
+
+    

@@ -1,0 +1,27 @@
+//msk2say-2.0.00-unicode
+
+#define g_name_from     getlist[ 1]
+#define g_name_to       getlist[ 2]
+
+static function RNM(bLoad,bRead,bStore)
+local name_from   :=space(63)
+local name_to     :=space(63)
+local msk:=mskCreate(  5,  3, 11, 78,bLoad,bRead,bStore)
+
+    mskSay(msk,  0,  0,"╔══════════════════════════════════════════════════════════════════════════╗")
+    mskSay(msk,  1,  0,"║                                                                          ║")
+    mskSay(msk,  2,  0,"║  from : ")
+    mskSay(msk,  2, 73,"  ║")
+    mskSay(msk,  3,  0,"║                                                                          ║")
+    mskSay(msk,  4,  0,"║  to   : ")
+    mskSay(msk,  4, 73,"  ║")
+    mskSay(msk,  5,  0,"║                                                                          ║")
+    mskSay(msk,  6,  0,"╚══════════════════════════════════════════════════════════════════════════╝")
+
+    mskGet   (msk,  2, 10,@name_from,"name_from")
+    mskGet   (msk,  4, 10,@name_to,"name_to")
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    return lastkey()

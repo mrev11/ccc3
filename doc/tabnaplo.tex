@@ -1,0 +1,150 @@
+
+%#define LOG_FILE   "CCC_TRANSACTION_LOG_FILE"      //logilé neve
+%#define LOG_MUTEX  "CCC_TRANSACTION_LOG_MUTEX"     //lockfilé neve
+%#define LOG_CREATE "CCC_TRANSACTION_LOG_CREATE"    //=auto esetén létrehozza
+%#define LOG_TABLES "CCC_TRANSACTION_LOG_TABLES"    //naplózandó táblák
+%#define LOG_SIZE   "CCC_TRANSACTION_LOG_SIZE"      //logilé max mérete
+ 
+\pagetitle%
+{Módosítások naplózása a táblaobjektumokban}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{2003.\ április 10.}
+
+\section{Áttekintés}
+
+A táblaobjektumos adatbáziskezelő naplózással egészült ki.
+A naplózás érdekében az alkalmazási programokon semmit sem kell változtatni:
+mindazok a programok képesek a naplózásra, amik  naplózást
+ támogató dinamikus táblaobjektum könyvtárral futnak.
+A táblaobjektum könyvtárak a \verb!$CCCDIR/ccctab/common.src!-beli  
+2003.01.07-es javítás óta  támogatják a naplózást.
+
+A napló egy XML szintaktikájú szövegfilé,
+amibe minden adatbázismódosításkor beíródik egy rekord,
+ami tartalmazza 
+\begin{itemize}
+\item
+   a módosított tábla filé specifikációját,
+\item
+   a módosítás jellegét (hozzáadás, módosítás, törlés),
+\item
+   a módosított mezők régi és új értékét,
+\item
+   a módosítást végző UNIX/Windows felhasználót,
+\item
+   a módosítás idejét,
+\item
+   tetszőleges program specifikus extra információt.
+\end{itemize}
+
+A naplózás bekapcsolása és paraméterezése környezeti
+változókkal és konfigurációs filékkel lehetséges.
+ 
+
+\section{Környezeti változók}
+
+\begin{description}
+  \item[CCC\_TRANSACTION\_LOG\_FILE]       
+    Ez a környezeti változó kapcsolja be a naplózást (ha nem üres),
+    egyúttal megadja azt a filéspecifikációt, amibe a napló kerül.
+    A filé nem csak a lokális filérendszerben lehet, hanem pl. 
+    NFS-en is.
+    \par
+
+  \item[CCC\_TRANSACTION\_LOG\_CREATE]  
+    Ha ennek a környezeti változónak az értéke \verb!auto!, akkor
+    a naplófilé automatikusan létrejön, ha korábban nem létezett volna.
+    Ellenkező esetben az adatbázis módosítás kísérlete runtime
+    errorhoz vezet.
+    \par
+
+
+\item[CCC\_TRANSACTION\_LOG\_MUTEX]   
+    Ez egy olyan filé specifikációja, amit a naplózó rendszer mutexnek
+    használ, azaz lockolva tart azalatt, amíg valamelyik program éppen
+    írja a naplót. Ha nincs megadva, akkor a
+    \verb!CCC_TRANSACTION_LOG_FILE!-ban megadott filé lesz a mutex.
+    Külön mutex megadása akkor szükséges, ha a naplót olyan
+    filérendszeren vezetjük, ami nem támogatja a lockot.
+    \par
+
+\item[CCC\_TRANSACTION\_LOG\_TABLES]   
+    Egy szövegfilé specifikációja, ami a naplózandó filék
+    aliasait tartalmazza (egyszerű felsorolás). Ha nincs megadva,
+    akkor a naplózás hatálya minden filére kiterjed.
+    \par
+\end{description}
+ 
+\section{Teljesítmény}
+
+A totális (minden filére kiterjedő) naplózás által okozott lassulás 
+kb.\ 30--100\%, attól függően, hogy a napló írásához szükséges sorbaállítás 
+mennyire akadályozza a munkát. A felhasználók növekvő száma
+nyilván növeli a sorbaállításkor fellépő várakozási időt.
+Ugyanakkor a sok egyidejű írási művelet eleve (naplózás nélkül is) 
+lassú, ezért nem kell nagyobb {\em relatív lassulásra} számítani.
+
+
+\section{A naplózás korlátai}
+
+Minden módosítás naplózásra kerül, ami a tabCommit() függvényen 
+keresztül íródik ki. Így a különféle importok is benne lesznek 
+a naplóban.
+
+Nincs benne a naplóban a tabZap() és tabPack() által
+végzett módosítás.
+
+Külön kiemelendő, hogy a filék törlésével, bemásolásával, átnevezésével
+okozott változások nincsenek (nem is lehetnek)
+benne a naplóban.
+
+
+\section{A napló hasznosítása}
+
+Jelenleg a naplót csak arra lehet használni, hogy text editorral
+keresgéljünk benne.
+
+Viszonylag kevés munkával írható volna olyan program, ami egyes 
+adattáblák mentett állapotából kiindulva, a naplóban rögzített változások
+újbóli végrehajtásával rekonstruálni tudná a tábla aktuális állapotát.
+Ez az eljárás alkalmas sérült táblák helyreállítására.
+
+Ugyanez a technika alkalmazható volna egyes fontos adattáblák
+realtime replikálására egy másik számítógépen.
+
+\section{Példa}
+
+Az alábbi rövid naplórészlet rögzítí a Kontóba való belépés,
+a KDIRDD elindítása, majd kilépés mozzanatait.
+
+\begin{verbatim}
+<update><prg>setpass</prg><pid>3001</pid>
+<time>2003041013:04:47</time>
+<table><alias>USER</alias><path>USER.DAT</path><rec>415</rec></table>
+<f><n>CHANGED</n><b>20030408</b><a>20030410</a></f>
+</update>
+<append><prg>executiv.exe</prg><pid>3004</pid>
+<time>2003041013:04:53</time>
+<table><alias>NAPLO</alias><path>NAPLO.DAT</path><rec>195014</rec></table>
+<f><n>MODULE</n><v>KDIRDD.EXE</v></f>
+<f><n>USER</n><v>m</v></f>
+<f><n>START</n><v>13:04:53</v></f>
+<f><n>DATUM</n><v>20030410</v></f>
+</append>
+<update><prg>kdirdd.exe</prg><pid>3009</pid>
+<time>2003041013:04:56</time>
+<table><alias>NAPLO</alias><path>NAPLO.DAT</path><rec>195014</rec></table>
+<f><n>STOP</n><b></b><a>13:04:56</a></f>
+</update>
+\end{verbatim}
+
+A naplózás odafigyelést igényel a rendszer üzemeltetőjétől, 
+ui.\  a napló hamar GB-os méretekre duzzadhat, ügyelni kell tehát az 
+archiválásra, nehogy a lemez beteljen.
+ 
+
+%\gotoindex
+
+
+
+ 

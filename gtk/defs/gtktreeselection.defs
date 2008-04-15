@@ -1,0 +1,210 @@
+
+
+(define-function gtk_tree_selection_get_type
+  (in-module "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_type")
+  (return-type "GtkType")
+)
+
+(define-method set_mode
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_set_mode")
+  (return-type "none")
+  (parameters
+    '("GtkSelectionMode" "type")
+  )
+)
+
+(define-method get_mode
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_mode")
+  (return-type "GtkSelectionMode")
+)
+
+(define-method set_select_function
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_set_select_function")
+  (return-type "none")
+  (parameters
+    '("GtkTreeSelectionFunc" "func")
+    '("gpointer" "data")
+    '("GtkDestroyNotify" "destroy")
+  )
+  (CCC "byhand")
+)
+
+(define-method get_user_data
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_user_data")
+  (return-type "gpointer")
+  (CCC "byhand")
+)
+
+(define-method get_tree_view
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_tree_view")
+  (return-type "GtkTreeView*")
+)
+
+(define-method get_selected
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_selected")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("GtkTreeModel**" "model")
+  )
+  (CCC "REG,par")
+  (comment "
+    gtk.tree_selection.get_selected(self,iter,@model) --> success
+
+    Betölti a pozíciót az iter objektumba (ha sikeres).
+    A success-t vizsgálni kell, ui. hibás pozícionálás SIGSEGV-t okoz.
+    Az opcionális model (ref) paraméterben meg lehet kapni a modelt.
+    Az iter és model paraméterek sorrendje fel van cserélve a C-hez képest.
+  ")
+)
+
+(define-method get_selected_data
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_selected_data")
+  (return-type "CCC-array")
+  (CCC "REG,app")
+  (comment "
+    gtk.tree_selection.get_selected_data(self) --> {datarow}
+
+    CCC bővítmény, az előzőhöz képest rögtön az adatokat adja.
+  ")
+)
+
+(define-method get_selected_rows
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_selected_rows")
+  (return-type "GList*", ".parray.")
+  (parameters
+    '("GtkTreeModel**" "model")
+  )
+  (CCC "REG,par")
+  (comment "
+    gtk.tree_selection.get_selected_rows(self,@model) --> {path,...}
+
+    Az opcionális model (ref) paraméterben meg lehet kapni a modelt.
+    Az erdemény array-t így lehet feldolgozni:
+
+    local model //:=gtk.tree_view.get_model(treeview)
+    local selection:=gtk.tree_view.get_selection(treeview)
+    local path:=gtk.tree_selection.get_selected_rows(selection,@model)
+    local iter:=gtk.tree_iter.new()
+    local rows:={},n
+
+        for n:=1 to len(path)
+            gtk.tree_model.get_iter(model,iter,path[n])
+            gtk.tree_path.free(path[n])
+            aadd(rows,gtk.tree_model.get(model,iter))
+        next
+        gtk.tree_iter.free(iter)
+        ? rows
+  ")
+)
+
+(define-method get_selected_rows_data
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_get_selected_rows_data")
+  (return-type "CCC-array")
+  (CCC "REG,app")
+  (comment "
+    gtk.tree_selection.get_selected_rows_data(self) --> {{row1},{row2},...}
+
+    CCC bővítmény, az előzőhöz képest rögtön az adatokat adja.
+  ")
+)
+
+(define-method selected_foreach
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_selected_foreach")
+  (return-type "none")
+  (parameters
+    '("GtkTreeSelectionForeachFunc" "func")
+    '("gpointer" "data")
+  )
+  (CCC "byhand")
+)
+
+(define-method select_path
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_select_path")
+  (return-type "none")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method unselect_path
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_unselect_path")
+  (return-type "none")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method select_iter
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_select_iter")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method unselect_iter
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_unselect_iter")
+  (return-type "none")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method path_is_selected
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_path_is_selected")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method iter_is_selected
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_iter_is_selected")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTreeIter*" "iter")
+  )
+)
+
+(define-method select_all
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_select_all")
+  (return-type "none")
+)
+
+(define-method unselect_all
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_unselect_all")
+  (return-type "none")
+)
+
+(define-method select_range
+  (of-object "GtkTreeSelection")
+  (c-name "gtk_tree_selection_select_range")
+  (return-type "none")
+  (parameters
+    '("GtkTreePath*" "start_path")
+    '("GtkTreePath*" "end_path")
+  )
+)
+
+
+

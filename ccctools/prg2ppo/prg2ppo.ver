@@ -1,0 +1,487 @@
+
+#define VERSION  "1.3.05"
+
+#ifdef _VERZIO_TORTENET_
+
+2008.03.13 -- 1.3.05
+  expr[..] is kifejezés.
+
+2008.03.05 -- 1.3.04
+  expr[expr..expr], expr[..expr], expr[expr..] is kifejezés.
+
+2008.01.24 -- 1.3.03
+  Küzdelem a char *p="constant" alakokkal.
+
+2007.05.15 -- 1.3.02
+  Unicode port hiba: "C" -> "X" rule.prg-ben kimaradt.
+
+2006.05.31 -- 1.3.01
+  Plusz szabály input.lex-ben.
+    ;  {outtrim();outchar(';');} //szétválasztó
+  Az xtxlegal elemző hibázik, ha ';' előtt space-t kap:
+    ? d:attrib-- ; x => QOut( d ):attrib-- ; x
+  A helyes eredmény:
+    ? d:attrib-- ; x => QOut( d:attrib-- ) ; x
+
+2006.03.20 -- 1.3.00
+  Portolás unicode-os CCC-re.
+
+2006.03.01 -- 1.2.05
+  Hexadecimális számok, pl: 0xfff. 
+  Bináris számok, pl: 0B1101001.
+  Hexadecimális stringek, pl: x"e2a301".
+
+2005.10.06 -- 1.2.04
+  vararg (*) támogatás az xtxlegal nyelvtanban.
+
+2005.09.30 -- 1.2.03
+  set dosconv off
+
+2005.09.12 -- 1.2.02
+  -v opció: csak a verziószámot írja ki, azután kilép
+  -q opció: elnyomja a verziószám kiírását
+  -x opció: ugyanaz, mint -v -q
+
+2005.09.06 -- 1.2.01
+  input.lex-ben az állapotnevek 'name'-ről 'st_name'-re változtak.
+  A Flex az állapotnevekből '#define name x' alakú makrót készít.
+  A 'comment' névvel készített ilyen makró elrontotta a windows.h-t.
+
+2005.01.13 -- 1.2.00
+  Új funkció: raw stringek támogatása.
+  <<SYMBOL>>raw string<<SYMBOL>>
+
+2004.09.22 -- 1.1.01
+  A terminate változónév belső hibát okoz a GCC 2.95.4-ben.
+
+2004.07.14 -- 1.1.00
+  Alternatív Lemon-os (Bison nélküli) változat:
+  A parfile.bld-ben beállítható, hogy a leghosszabb legális 
+  extended expression-t Lemon, vagy Bison elemzővel keressük.
+  A nyelvtanból kivéve az x::=x:\x szabály (mindkét esetben).
+
+2002.11.20 -- 1.0.08
+  Signed/unsigned warning javítva.
+
+2002.09.20 -- 1.0.07
+  Alkalmazkodás a Bison névképzés változásához: hpp filék.
+ 
+2002.05.22 -- 1.0.06
+  obj:(class)method, obj:(parent@class)method  szintaktikák 
+  támogatása a kifejezésekben.
+
+2001.11.07 -- 1.0.05
+ 
+  Felvéve a nyelvtanba a <> operátor.
+
+
+2001.05.07 -- 1.0.04
+ 
+  Minden #define makró, aminek a kezdőszimbólum utáni második tokene 
+  nem a "(" karakter, nemparamétres makró. Sajnos egy hibalavinába került 
+  a program  a space-ek megtartásával, amit javítani kellett a {}-ek körüli 
+  space-ek  elnyelésével, és amit most újra javítani kellett, másként a
+  #define ARRAY  {...}  alakú makró hibásnak bizonyul.
+
+
+2001.04.26 -- 1.0.03
+ 
+  Az  ,|:{}[]  karakterek körüli space-eket a szintaktikai elemző
+  elnyeli. Enélkül az alábbi makró
+  
+     #xtranslate  ! <x>  => hopp(<x>)
+  
+  eltérő eredményt ad a következő két esetben:
+  
+     ! {}    //helyettesít
+     ! { }   //nem helyettesít
+
+  Általában a space-ek hozzáragadnak (yacc) ahhoz a kifejezéshez,
+  amit körülvesznek, a fenti példában azonban a { } közötti space
+  nincs mihez ragadjon. Az alfanumerikus szimbólumok körül lévő
+  space-eket viszont meg kell tartani, hogy azok ne ragadjanak össze.
+  A zárójelek () körüli space szintén kell, másképp nem állapítható
+  meg a #define-ok paraméteres volta.
+
+2001.03.24 -- 1.0.02
+
+  A szabályok (define és xtranslate) jobboldalán elhelyezett ## valódi (!)
+  tokenragasztást végez (C kompatbilis funkció). Ha a tokenek valamelyike
+  string, akkor konkatenáció helyett összead, pl. "x"+'y'.
+
+  Az x/**/y vagy <x><y> alakok a korábbi módon egymás mellé írják x-et 
+  és y-t anélkül, hogy azok összeragadnának egyetlen tokenné. A régi Clipper 
+  csak ennyit tudott. 
+
+2001.03.22 -- 1.0.01
+ 
+  A normál szövegben és a szabályok jobboldalán meg vannak
+  tartva a blankek, így természetes módon működik a tokenek
+  egymás mellé írása az xtranslate direktívákban.
+  
+  A define direktívákban is működik a tokenek ragasztása (csak
+  egymás mellé írás), pl. 
+
+  #define CONCAT(x,y)  x/**/y
+  #define CONCAT(x,y)  x##y
+
+  az utóbbi forma a C preprocesszorokból ismeretes.
+  
+  A define jobboldalán használható a # (stringify) operátor
+  a C preprocesszorokból ismert módon:
+  
+  #define PRINT(x) ? #x, x
+  
+  Ezt a régi Clipper is tudja, bár a dokumentáció nem említi.
+  
+  A #line direktívák kiírása javítva.
+
+  Javítás az illesztésben, továbbra is hiba, hogy az illesztés 
+  legfeljebb egy alternatíván át tud előrenézni (ritkán kell messzebb).
+  
+
+2001.03.02 -- 1.0.00
+
+  Javítások:
+ 
+  Csak akkor fog hozzá az #xtranslate-ek helyettesítéséhez, ha már 
+  az egész sorban minden #define-nal elkészült. Korábban tokenenként 
+  próbálkozott először a #define-okkal utána a #translate-ekkel,
+  ennek eredményeként az alábbi szövegből
+
+  #define LIST a,b,c,d
+  #xtranslate STRINGIFY( <list,...> ) => #<list>
+  STRINGIFY( LIST )  //output: "a,b,c,d"
+
+  a helyes "a,b,c,d" kimenet helyett "LIST"-et adott. 
+  
+  Bővítések:
+ 
+  #xtranslate-ben az idézőjel és az aposztróf védhető \-vel 
+  (csak idézeten kívül, hasonlóan [- és ]-hez).  Olyankor hasznos, 
+  amikor az idézendő szöveg nem illeszthető semmilyen markerhez,
+  vagy az idézet belsejében van szükség helyettesítésre.
+  
+
+2001.02.26 -- 0.9.25
+  convertfspec2nativeformat bevezetve
+  
+  Az extended expression kibővítve a
+      expr  :=  '/' expr    
+      expr  :=  '\\' expr         
+      expr  :=  '.' expr         
+  szabályokkal.
+ 
+
+2000.09.18 -- 0.9.24
+  input.lex-ben fcloseall() kikommentezve, 
+  ui. a potato-ban (Debian) ez megszűnt!?
+
+2000.01.14 -- 0.9.23
+  UNIX portolás.
+  Bemeneten a CR és chr(26) (eof) karakterek eldobva.
+
+1999.11.09 -- 0.9.22
+  kimaradt a nyelvtanból: expr := @ expr  
+
+1999.09.01 -- 0.9.21
+  A #define makrók paraméterességének felismerése javítva.
+
+  Meg kell állapítani, hogy a makró paraméteres, vagy nem.
+  Erre nem alkalmas a második token vizsgálata, mert a tokenizálás 
+  eldobja a space-eket, ezért "DEFSYM(" előfordulását keressük az 
+  eredeti line-ban.
+  
+  Korábban ez a 'defsym+"("$line' feltétel vizsgálatával történt, 
+  ami rossz, pl. paraméteresnek látja a '#define HOPP QQHOPP()' makrót.
+ 
+
+1999.06.18 -- 0.9.20
+  Input és output objektum méretének növelése,
+  (paraméterezhetővé kéne tenni).
+
+
+1999.05.31 -- 0.9.19
+  kimaradt a nyelvtanból: expr := expr * * expr  
+
+
+1999.05.31 -- 0.9.18
+  fopen()-ben dosfname2unix
+  
+
+1999.05.31 -- 0.9.17
+  komment javítása
+ 
+
+1999.05.19 -- 0.9.16
+  #undef nem inicializálta megfelelően az adatbázist
+  std1.ch: end while javítva
+
+
+1999.05.18 -- 0.9.15
+ 
+  * komment komplett támogatása
+
+
+1999.05.17 -- 0.9.14
+ 
+  Extended match marker egyszerűsítve.
+
+  Az exp\exp és exp:\exp is felvéve a kifejezések közé, 
+  hogy az extended kifejezés elfogadja a pathokat is. 
+  A : és . operátor már korábban is benne volt a nyelvtanban.
+  
+  A result_stringify()-ban az idézőjelt tartalmazó szöveg
+  a külső idézőjele '"'-ról "'"-ra, vagy vissza változhat.
+
+  A smart stringify-ban nem szabad stringesíteni a stringeket.
+  
+
+1999.05.17 -- 0.9.13
+  Leventétől átvéve az strcmpi --> strcasecmp makró (POSIX).
+
+
+1999.05.17 -- 0.9.12
+  KOMOLY HIBA MSVC 5.0-ban!
+  flushall() MSC-ben elrontja az inputot (kihagyva).
+  Napokig küzdöttem azzal, hogy Watcom-mal fordítva jó volt
+  a program, MSC-vel fordítva viszont rossz: úgy látszik MSC-ben  
+  a flushall() függvény az input buffert is kiüríti.
+ 
+
+1999.05.13 -- 0.9.11
+  A kifejezések nyelvtanából ki volt felejtve a '<' és '>' művelet.
+
+
+1999.05.12 -- 0.9.10
+  A paraméterfilék olvasásának módosítása. Korábban soronként 
+  egy paramétert vett, most az egész filét a blankeknél felvágja,
+  és minden darabot külön paraméternek értelmez. Ezzel egy sorban
+  több paraméter is megadható, viszont a paraméterek nem 
+  tartalmazhatnak szóközt. 
+  
+  Ha soronkénti paramétermegadás szükséges, akkor a paraméter
+  filét a '@' helyett '!'-vel kell megadni. (Valamiért így sem
+  működnek a szóközök.) 
+  
+
+1999.05.03 -- 0.9.09
+  Optimalizált keresés finomítva.
+  Sajnos a keresés optimalizálásával nem sokat lehet nyerni.
+
+
+1999.05.01 -- 0.9.08
+  A szabály adatbázisban való bináris keresés optimalázálása.
+
+
+1999.04.30 -- 0.9.07
+  Programgenerálás BISON-nal (is).
+  A programon nem kellett változtatni, csak a Cygwin
+  konfigurációban kell gondoskodni a root (/) megfelelő
+  mountolásáról, és elkészíteni a makefilét a BISON-hoz.
+ 
+
+1999.04.26 -- 0.9.06
+ 
+  #include-ok beírása (#line 1) a ppo-ba.
+  Ellenőrízve: KLTP,KFOKONY,KSZLA
+
+
+1999.04.25 -- 0.9.05
+ 
+  A QOUT kiírás WIN2CWI konverziót tartalmaz, ez elrontja
+  a stringek kiírását, pl: "Í". Ezért a kimenetet az EXTRA-ba
+  kell irányítani 'raw' módosítással.
+  
+  Ezzel a javítással a KLTP program ppo filéi PRG2PPO-val és
+  Clipper-rel előállítva megegyeznek (nem számítva az üres sorokat,
+  a #line direktívákat és a szóközöket). Megjegyzés: a Levente
+  féle objektum rendszer a SET OREF_SIZE=50000 beállítást igényelte.
+
+
+1999.04.25 -- 0.9.04
+ 
+  A Clipper a markerekhez illeszthető "legális kifejezést" igen tágan
+  értelmezi, pl. elfogadja kifejezésnek a class.obj:method alakot,
+  holott az nyilván nem szabályos kifejezés. Sajnos a Levente-féle
+  objektumrendszer preprocesszálása függ az ilyen nem dokumentált
+  tulajdonságoktól. 
+  
+  A konkrét eset megoldására bevezetem az exp : exp '.' exp szabályt
+  xtxyacc.y-ban. Kimaradt az exp : exp ':' '=' exp szabály, pótolva.
+  
+  Ezekkel a javításokkal már fordul KLTP is. A fordítás megy a SORREND1
+  nevű algoritmussal is, ami kevésbé kompatibilis ám lényegesen gyorsabb.
+  Lehet, hogy saját céljainkra az is elég volna.
+  
+  A markerekhez illeszkedő "szabályos kifejezések" keresése közel 
+  sem kompatibilis. A Clipper által alkalmazott módszer ismeretlen, 
+  prg2ppo az xtxyacc.y által definiált nyelvtan szerint fogadja el 
+  a kifejezéseket (ez általában szigorúbb a Clippernél).
+
+
+1999.04.25 -- 0.9.03
+ 
+  Legalább kétféleképpen lehet értelmezni az 
+  "először a #define-ok, utána az #xtranslate-ek" sorrendet. 
+
+  SORREND1-ben a bemenet minden tokenjétől megpróbáljuk illeszteni 
+  előbb a #define utána az #xtranslate szabályokat, ha illesztés nem
+  lehetséges, akkor az adott tokent véglegesen áttesszük a kimenetre.
+
+  SORREND2-ben minden sort kétszer preprocesszálunk,
+  először csak a #define-okat használjuk,
+  ezután az eredményt visszatesszük a bemenetre,
+  és elvégezzük a preprocesszálást csak az #xtranslate-okkal.
+
+
+  SORREND1 nem kompatibilis a Clipperrel, pl:
+
+  #define PROBA SZERENCSE
+  #xtranslate TRANS SZERENCSE  =>  jobboldal
+
+  input          : TRANS PROBA
+  output/Prg2ppo : TRANS SZERENCSE 
+  output/Clipper : jobboldal
+
+
+  SORREND2 nem kompatibilis a Clipperrel, pl:
+
+  #define PROBA SZERENCSE
+  #xtranslate TRANS  =>   PROBA
+
+  input          :  TRANS  
+  output/Prg2ppo :  PROBA
+  output/Clipper :  SZERENCSE 
+ 
+
+  A kompatibilitás úgy fokozható, hogy a teljes sort 
+  újrafeldolgozásnak vetjük alá mindaddig, amíg alkalmazható 
+  bármilyen helyettesítés: SORREND3.
+
+
+1999.04.24 -- 0.9.02
+ 
+  nem illeszkedő opcionális clause-ok esetén a korábban 
+  illesztett markerek törlése javítva (bevéve a stack-be)
+  üres sorok ügyesebb kezelése
+
+
+1999.04.23 -- 0.9.01
+ 
+  saját rule.wmk
+  saját std1.ch
+  
+  Ez már egy intenzív tesztelésre alklamaz változat,
+  KFOKONYV már fordul vele.
+  
+  Ismert inkompatibilitások:
+  
+  1) prg2ppo jelenleg nem tud szabályt kiírni a jobboldalra
+  2) prg2ppo-ban létezik #ifeq/#ifneq
+  3) nincs külön #translate/#command/#xcommand
+  4) több esetben nincs világos definíció, pl. nem világos,
+     hogy mi az <(mark)> extended match marker leírásában
+     említett extended kifejezés
+  5) több esetben a Clipper rosszul működik, pl. p8.prg.
+  
+
+1999.04.23 -- 0.8.04
+ 
+  input/output objektumok bevezetése
+  illesztés felülvizsgálata (voltak tervezési hibák is)
+  #line direktívák számának csökkentése
+  indentálás megőrzése a ppo-ban
+
+  std.ch helyett std1.ch
+
+    1) Az eredeti std.ch rengeteg olyan #command direktívát tartalmaz, 
+      aminek a jobboldalán nemlétező függvény hívása van. Ezek nyilván
+      feleslegesek.
+
+    2) Sok olyan #command van (pl. TEXT => text QOut, QQOut), 
+      ami szerencsétlen esetben helyettesítődik egy azonos nevű 
+      változó helyére érthetetlen hibát okozva. Általában azokkal
+      a definíciókkal van baj, amiben csak egy literál van.
+      Ilyenek: quit, cls. Ezeket kulcsszónak kell tekinteni,
+      és nem szabad változónévnek használni.
+      
+
+    3) Az ilyen #command-ok #xtranslate-ként értelmezése végtelen
+      rekurziót okoz: 
+      #command return => return nil
+
+    4) A CCC nem olyan irányba fejlődik, hogy az #xcommand
+       definíciók szaprodására lehetne számítani, a meglévő
+       #command-ok negy része felesleges, ezért nem érdemes
+       a prg2ppo-t megtanítani #xcommand-ra.
+
+    5) Szerzői jog.
+
+    Ezért célszerű lecserélni std.ch-t.
+  
+
+  Folytatósor és a comment együttes előfordulása (3 eset)
+
+    1)  proba;  //comment
+        szerencse
+
+    2)  proba;  /* comment */
+        szerencse
+
+    3)  proba;  /* comment 
+        comment */  szerencse
+        
+    Itt a megfelelő kimenet: "proba szerencse". A Clipper csak az 
+    első esetet kezeli jól, prg2ppo az elsőt és a másodikat, a 
+    harmadikat mindkét program (különféleképpen) elhibázza.
+
+
+
+1999.04.21 -- 0.8.03
+  minden marker megírva (némelyik definíciója homályos)
+  a program teszteletlen
+
+1999.04.21 -- 0.8.02
+  case insensitivitás javítva
+  restricted match marker kész
+  normal és smart stringify result marker kész
+
+1999.04.21 -- 0.8.01
+ 
+  Első hiányos verzió, de pl. a konyvel.prg fordítása már jó.
+  Legalább 2.3.03-as ppo2cpp fordító szükséges hozzá,
+  mert a korábbi fordítók nem engedik meg mindenhol a #line
+  direktíva használatát.
+
+  csak a reguláris és a lista markerek vannak kész
+  nem dolgozza fel a jobboldalra kiírt # direktívákat  
+  nem figyelmeztet a #define-k ütközésére
+  nem figyelmeztet az eltérő paraméterszámú makrókra (nem illeszt)
+  gyorsításra van szükség
+
+
+
+ISMERT INKOMPATIBILITáSOK
+  
+  1) Nincs #xcommand, #translate és #command direktíva (mindezek 
+     #xtranslate-ként működnek).
+
+  2) A prg2ppo kifejezésként nem fogad el olyan zagyva dolgokat,
+     mint a Clipper, vagy a cccpp, ezért kevesebbszer illeszt.
+     Míg a Clipper dokumentáció nem ad világos definíciót az extended 
+     kifejezésre, addig a prg2ppo extended kifejezését egy YACC nyelvtan 
+     definiálja (lásd xtxyacc.y-ban).
+
+  3) A prg2ppo nem fogad el szóközt a markerek belsejében, pl. <var>,
+     a védett karakterek belsejében, pl. \[.
+
+  4) A prg2ppo szabályok jobboldalán nem fogad el szabályt,
+     azaz nem lehet szabályokat generálni.   
+     
+  5) A Clippernek rengeteg olyan sajátossága van,  amit inkább 
+     hibának kell tartani, semmint utánozni.
+
+  
+#endif //_VERZIO_TORTENET_ 
+  

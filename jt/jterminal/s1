@@ -1,0 +1,12 @@
+#!/bin/bash
+#export LANG=en_US.ISO8859-1
+#export LANG=hu_HU.ISO8859-2
+#export LANG=ru_RU.UTF-8
+export LANG=en_US.UTF-8
+
+#java -jar jterminal.jar localhost 46003
+#java jterminal localhost 46003
+#java -jar jterminal.jar ok 45678 ssl #jtproba
+#java -jar jterminal.jar ok 45690 ssl #ekonto
+
+java -jar jterminal.jar ok 45678 ssl

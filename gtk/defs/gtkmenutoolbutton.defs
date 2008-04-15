@@ -1,0 +1,49 @@
+
+(define-function gtk_menu_tool_button_get_type
+  (in-module GtkMenuToolButton)
+  (c-name "gtk_menu_tool_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_menu_tool_button_new
+  (c-name "gtk_menu_tool_button_new")
+  (is-constructor-of GtkMenuToolButton)
+  (return-type "GtkToolItem*")
+  (parameters
+    '("GtkWidget*" icon (null-ok))
+    '("const-gchar*" label (null-ok))
+  )
+)
+
+(define-function gtk_menu_tool_button_new_from_stock
+  (c-name "gtk_menu_tool_button_new_from_stock")
+  (is-constructor-of GtkMenuToolButton)
+  (return-type "GtkToolItem*")
+  (parameters
+    '("const-gchar*" stock_id)
+  )
+)
+
+(define-method "set_menu"
+    (of-object GtkMenuToolButton)
+    (c-name  gtk_menu_tool_button_set_menu)
+    (parameters
+        '("GtkWidget*" menu)
+    )
+)
+
+(define-method "get_menu"
+    (of-object GtkMenuToolButton)
+    (c-name  gtk_menu_tool_button_get_menu)
+    (return-type "GtkWidget*")
+)
+
+(define-method "set_arrow_tooltip"
+    (of-object GtkMenuToolButton)
+    (c-name  gtk_menu_tool_button_set_arrow_tooltip)
+    (parameters
+        '("GtkTooltips*" tooltips)
+        '("const-gchar*" tip_text)
+        '("const-gchar*" tip_private)
+    )
+)

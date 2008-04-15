@@ -1,0 +1,107 @@
+
+
+(define-function gtk_layout_get_type
+  (in-module GtkLayout)
+  (c-name "gtk_layout_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_layout_new
+  (c-name "gtk_layout_new")
+  (is-constructor-of GtkLayout)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkAdjustment*" "hadjustment" (null-ok) (default "NULL"))
+    '("GtkAdjustment*" "vadjustment" (null-ok) (default "NULL"))
+  )
+)
+
+(define-method put
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_put")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child_widget")
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method move
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_move")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child_widget")
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method set_size
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_set_size")
+  (return-type "none")
+  (parameters
+    '("guint" "width")
+    '("guint" "height")
+  )
+)
+
+(define-method get_size
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_get_size")
+  (return-type "none")
+  (parameters
+    '("guint*" "width")
+    '("guint*" "height")
+  )
+  (CCC "byhand")
+)
+
+(define-method get_hadjustment
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_get_hadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method get_vadjustment
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_get_vadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method set_hadjustment
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_set_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok))
+  )
+)
+
+(define-method set_vadjustment
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_set_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment" (null-ok))
+  )
+)
+
+(define-method freeze
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_freeze")
+  (return-type "none")
+  (deprecated "")
+)
+
+(define-method thaw
+  (of-object "GtkLayout")
+  (c-name "gtk_layout_thaw")
+  (return-type "none")
+  (deprecated "")
+)
+
+
+

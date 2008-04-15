@@ -1,0 +1,483 @@
+
+\pagetitle%
+{CCC programozási példák}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{1999. február 13.}
+
+%\raggedright
+
+\section{Adatbáziskezelés táblaobjektum interfésszel}
+
+A ddict2 program és a táblaobjektumok részletes ismertetésével másik 
+dokumentum foglalkozik, pillanatnyi célunk csak annyi, hogy a kezdő 
+minél hamarabb példát lásson CCC-beli adatbázis kezelésre. Hangsúlyozzuk,
+hogy a bemutatott programok színtiszta Clipperben vannak\footnote{
+Ez alól csak a kibővített objektumrendszer demója kivétel, ami nem
+vihető vissza Clipperre.}, amit egyszerűen
+bizonyít, hogy Clipperrel fordítva is működnek. A Clipper nyelv ismeretében,
+a preprocesszált és generált kódok (esetleg a könyvtárak forrásának) 
+tanulmányozásával teljes mélységben megérthetők a programok.
+
+
+\subsection{Adatszótár készítés}
+A ccctutor\bslash xddict könyvtárban van a tesztdb.dbf
+adatbázis prototípusa, amit demonstrációs célra fogunk használni. 
+Az adatbázisok prototípusát legegyszerűbben DBU-val hozhatjuk létre. 
+\begin{quote}
+A DATIDX és Btrieve formátumokhoz létezik saját adatbázis struktúra
+editor, ami  megtalálható (forrásban is) a ccctab könyvtárban.
+DBF formátumhoz sem volna nehéz ilyen programot készíteni,
+de felesleges, mert bővében vagyunk a megfelelő eszközöknek.
+Mellesleg a célalkalmazásban használt adatbázisformátumtól függetlenül
+az adatbázisok prototípusa és az adatszótár mindig lehet DBF-ben.\footnote{
+Azóta az XSTRU (datidx) és BSTRU (Btrieve)
+mintájára elkészült a DSTRU (dbf) struktúra editor.}
+\end{quote} 
+
+Az adatbáziskezelés CCC-ben az ún. táblaobjektum interfésszel
+történik. A táblaobjektumok kódját a ddict2 programmal generáljuk,
+amit a d.bat filével indítunk el. A {\em Karbantartás:Tábla definíció bevitele}
+menüpontban előjövő maszkban az alábbi adatokat vittük be:
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|} \hline
+Adatbázis   & Logikai név & Index filé & Oszlopok   \\ \hline \hline
+tesztdb     & name        & tesztdb1   & name       \\ \hline
+tesztdb     & size        & tesztdb2   & size       \\ \hline
+tesztdb     & time        & tesztdb3   & date,time  \\ \hline
+\end{tabular}
+\end{center}
+
+A program megkérdezi az adatbázis módosítójának nevét, amire megfelel
+a guest válasz. Az azonosítás célja, hogy a programozó közösség tagjai
+tájékozódni tudjanak egymás munkájában. Jelenleg a ddict2 program
+a ComFirm programozóinak nevét és a guest nevet fogadja el. Ha más
+közösség akar dolgozni ddict2-vel, akkor legegyszerűbb a megengedett
+nevek halmazát átírni ddict2 forrásában (ccctools\bslash ddict2). 
+A név megadása után az adatszótárba bekerül a TESZTDB adatbázis három indexszel. 
+
+\begin{enumerate}
+\item  Az első index a TESZTDB1.NTX filében lesz, és a NAME mező (oszlop)
+       szerinti rendezettséget fogja jelenteni. E sorrendre a programban a 
+       {\em name} logikai névvel fogunk hivatkozni. 
+\item  A második index fizikailag a TESZTDB2.NTX filében lesz, és a SIZE mező 
+       szerinti rendezettséget fogja jelenteni, a sorrendre a programban 
+       a {\em size} logikai névvel fogunk hivatkozni.       
+\item  A harmadik indexet a DATE és a TIME mező konkatenációjával képezzük
+       (a rendszer gondoskodik az indexkifejezés előállításáról), a sorrendre
+       a {\em time} néven fogunk hivatkozni.
+\end{enumerate}
+Jegyezzük meg, hogy az indexfilék neve az alkalmazási programban nem 
+szerepelhet, az indexek közvetlen manipulációja ugyanis az objektum magánügye. 
+Nem is minden adatformátumban léteznek a megadott nevű filék, pl. Btrieve 
+formátumban egyáltalán nincsenek különálló indexfilék.
+
+Mielőtt a ddict2 programból kilépnénk, a {\em Program:\#ifdef ARROW\ldots} 
+menüponttal legeneráljuk az objektumok kódját, jelen esetben a \_tesztdb.ch 
+és \_tesztdb.prg filéket (amikre később érdemes egy pillantást vetni). 
+
+A ddict2 programból kilépve folytatódik a d.bat script futása, 
+és létrejön xddict.lib. Ezt a lib-et a demonstrációs programok be fogják 
+linkelni. Az adatszótár linkelésével CCC-ben a programok mindig apriori 
+információval rendelkeznek az adatbázisok struktúrájáról.
+
+
+\subsection{A tesztprogramok make rendszere}
+
+ 
+A teszt adatbázison dolgozó programok a ccctutor\bslash xtesztdb 
+directoryban találhatók. A programokat mint általában, most is egy m.bat 
+nevű scripttel fordítjuk le, jelenleg ennek tartalma:
+
+\begin{verbatim}
+bapp_w32c_datidx -bxddict -i..\xddict -p..\xddict\$(build_obj)
+\end{verbatim}
+
+A script minden \verb'main'-t tartalmazó PRG-ből EXE-t készít,
+úgy hogy lefordítja és linkeli az összes \verb'main'-t nem
+tartalmazó modult is (most éppen egy ilyen sincs). 
+
+Az include filéket az aktuális directoryn kívül
+  keresi \verb'..\xddict'-ben is ({\tt -i} kapcsoló).
+Az EXE-khez hozzálinkeli az xddict.lib-et ({\tt -b} kapcsoló),
+amit az \verb'..\xddict\$(build_obj)' könyvtárban is keres ({\tt -p} kapcsoló).
+
+A program Win32 konzolos lesz és DATIDX adatbáziskezeléssel fog működni.
+Ha a \verb'bapp_w32c_datidx' script helyett a  
+\verb'bapp_w32g_dbfctx' scripttel fordítanánk, akkor GUI-s, DBFCTX
+adatbáziskezelésű programot kapnánk.
+Mindkét script a BUILD program megfelelő felparaméterezésével és 
+futtatásával működik. A BUILD-re épülő make rendszer
+használatát a \href{build.html}{Programkészítés BUILD-del}
+dokumentum ismerteti részletesen.
+
+
+\subsection{A teszt adatbázis feltöltése}
+
+Az xtesztdb példaprogram a tesztdb adatbázist feltölti az aktuális directory
+filébejegyzéseinek adataival.
+
+%\hrulefill
+\begin{verbatim}
+#include "directry.ch"
+
+#include "table.ch"
+#include "_tesztdb.ch"
+
+function main()
+local dir:=directory("*.*"), n
+
+    TESZTDB:open
+    
+    for n:=1 to len(dir)
+        TESZTDB:append
+        TESZTDB_NAME:=dir[n][F_NAME]
+        TESZTDB_SIZE:=dir[n][F_SIZE]
+        TESZTDB_DATE:=dir[n][F_DATE]
+        TESZTDB_TIME:=dir[n][F_TIME]
+        TESZTDB_ATTR:=dir[n][F_ATTR]
+    next
+    TESZTDB:close
+    return NIL
+\end{verbatim}
+%\hrulefill
+
+A program elején inkludáljuk table.ch-t, ami a táblaobjektumok 
+metódushívásainak preprocesszálására tartalmaz direktívákat.
+A \_tesztdb.ch filéből veszi a program a \verb'TESZTDB_NAME',\ldots
+mezőhivatkozások fordításához szükséges makrókat. A \verb'TESZTDB:open'
+utasítás megnyitja az adatbázist, sőt, ha az nem létezik még azt is felajánlja,
+hogy üresen létrehozza. Ezt megteheti, mert a program ismeri az adatbázis
+struktúráját, hiszen a belinkelt \_tesztdb.prg tartalmazza annak leírását. 
+Minden bejegyzéshez egy új rekordot teszünk az adatbázisba, amit kitöltünk,
+végül lezárjuk az adatbázist.
+
+A fenti xtesztdb program minden platformon linkelhető. 
+\begin{center}
+\begin{tabular}{|l|l|l|l|} \hline
+ Script              & Op. rendszer  & Adatformátum & Megjelenítési mód \\ \hline \hline
+ bapp\_clp\_dbfntx   & DOS           & DBFNTX       & karakteres        \\ \hline 
+ bapp\_w32c\_dbfctx  & Win32         & DBFCTX       & karakteres        \\ \hline 
+ bapp\_w32g\_dbfctx  & Win32         & DBFCTX       & GUI               \\ \hline 
+ bapp\_w32c\_btrieve & Win32         & Btrieve      & karakteres        \\ \hline 
+ bapp\_w32g\_btrieve & Win32         & Btrieve      & GUI               \\ \hline 
+ bapp\_w32c\_datidx  & Win32         & DATIDX       & karakteres        \\ \hline 
+ bapp\_w32g\_datidx  & Win32         & DATIDX       & GUI               \\ \hline 
+\end{tabular}
+\end{center}
+Ha dbf-től különböző atadformátumra térünk át, a program a megtalált
+dbf tartalmát automatikusan konvertálja az új formátumba. 
+
+
+\subsection{Navigálás a teszt adatbázisban}
+
+Az alábbi program kilistázza tesztdb tartalmát dátum/idő szerinti sorrendben. 
+A program forrása a ccctutor\bslash xtesztdb\bslash xnavig.prg-ben található.
+
+%\hrulefill
+\begin{verbatim}
+#include "table.ch"
+#include "_tesztdb.ch"
+
+function main()
+
+    TESZTDB:open
+    TESZTDB:control:="time"
+
+    TESZTDB:gotop
+    while( !TESZTDB:eof )
+        ? TESZTDB_NAME,TESZTDB_SIZE,TESZTDB_DATE,TESZTDB_TIME
+        TESZTDB:skip
+    end
+
+    TESZTDB:close
+    return NIL
+\end{verbatim}
+%\hrulefill
+
+
+\section{Menüző browse}
+
+\subsection{Adatbázis browseolása}
+
+Az alábbi program (melynek forrása a ccctutor\bslash xtesztdb könyvtárban
+taláható) az előző pontokban elkészült tesztdb adatbázist browseolja.
+A program nagyon hasonlít az array-t browseoló példához. A sorrend 
+beállítása itt nem a tömb rendezésével, hanem a vezérlő index cseréjével
+történik. 
+
+%\hrulefill
+\begin{verbatim}
+
+#include "table.ch"
+#include "_tesztdb.ch"
+
+function main()
+
+local brw, smenu:={}
+
+    setcursor(0)
+    set date format to "yyyy.mm.dd"
+    
+    TESZTDB:open
+    TESZTDB:control:="name"
+    
+    brw:=TESZTDB:browse(10,10,maxrow()-2,maxcol()-10)
+
+    brwColumn(brw,"Name",{||TESZTDB_NAME},"XXXXXXXXXXXXX")
+    brwColumn(brw,"Size",{||TESZTDB_SIZE},"99999999")
+    brwColumn(brw,"Date",{||TESZTDB_DATE})
+    brwColumn(brw,"Time",{||TESZTDB_TIME})
+    brwColumn(brw,"Attr",{||TESZTDB_ATTR},1)
+
+    aadd(smenu,{"By name",{|b|sortbyname(b)}})
+    aadd(smenu,{"By time",{|b|sortbytime(b)}})
+    aadd(smenu,{"By size",{|b|sortbysize(b)}})
+    
+    brwMenu(brw,"Sort","Sort by name/time/size",smenu)
+    brwMenu(brw,"Alert","Make an alert",;
+                 {||2!=alert("Are you sure?",{"Continue","Quit"})})
+    
+    brwMenuName(brw,"[Directory]")
+    
+    brwCaption(brw,"Database Browse Example")
+    brwSetFocus(brw)
+
+    brwShow(brw)
+    brwLoop(brw)
+    brwHide(brw)
+    return NIL
+
+static function sortbyname(b)    
+    TESZTDB:control:="name"
+    b:refreshall()
+    return NIL
+    
+static function sortbytime(b)    
+    TESZTDB:control:="time"
+    b:refreshall()
+    return NIL
+
+static function sortbysize(b)    
+    TESZTDB:control:="size"
+    b:refreshall()
+    return NIL
+\end{verbatim}
+%\hrulefill
+
+A browse objektum a brwShow() függvényhívásnál jelenik meg a képernyőn.
+Az interaktív programhasználat közben a vezérlés végig a brwLoop()
+eseménykezelő függvényben van. Világos, hogy brwShow(), brwLoop(), \ldots 
+függvények implementációja karakteres és GUI-s környezetben nem lehet egyforma,
+ezért a programok platformfüggetlensége csak akkor tartható fenn,
+ha megelégszünk a példában bemutatott magas szintű interfész nyújtotta
+lehetőségekkel.
+
+
+\subsection{Array browseolása}
+
+Az aktuális directory bejegyzéseinek példáján mutatjuk be
+egy kétdimenziós array browseolását. A program a 
+ccctutor\bslash xbrwarr directoryban található.
+A browse objektum felszerelésének több (bár közel sem összes)
+lehetőségét is bemutatjuk. Érdemes a programot karakteres és GUI-s
+módban is kipróbálni.
+
+%\hrulefill
+\begin{verbatim}
+#include "directry.ch"
+
+function main()
+
+local dir:=directory("*.*","D")
+local brw:=brwCreate(10,10,maxrow()-2,maxcol()-10)
+local smenu:={}
+
+    setcursor(0)
+    set date format to "yyyy.mm.dd"
+
+    brwArray(brw,dir)
+
+    brwColumn(brw,"Name",brwABlock(brw,F_NAME),"XXXXXXXXXXXXX")
+    brwColumn(brw,"Size",brwABlock(brw,F_SIZE),"99999999")
+    brwColumn(brw,"Date",brwABlock(brw,F_DATE))
+    brwColumn(brw,"Time",brwABlock(brw,F_TIME))
+    brwColumn(brw,"Attr",brwABlock(brw,F_ATTR),1)
+
+    aadd(smenu,{"By name",{|b|sortbyname(b)}})
+    aadd(smenu,{"By time",{|b|sortbytime(b)}})
+    aadd(smenu,{"By size",{|b|sortbysize(b)}})
+    
+    brwMenu(brw,"Sort","Sort by name/time/size",smenu)
+    brwMenu(brw,"Alert","Make an alert",;
+                 {||2!=alert("Are you sure?",{"Continue","Quit"})})
+    
+    brwMenuName(brw,"[Directory]")
+    
+    brwCaption(brw,"Array Browse Example")
+
+    brwShow(brw)
+    brwLoop(brw)
+    brwHide(brw)
+    return NIL
+
+static function sortbyname(b)    
+local a:=brwArray(b)
+    asort(a,,,{|x,y| x[F_NAME]<=y[F_NAME]})
+    b:refreshall()
+    return NIL
+    
+static function sortbytime(b)    
+local a:=brwArray(b)
+    asort(a,,,{|x,y| dtos(x[F_DATE])+x[F_TIME]<=dtos(y[F_DATE])+y[F_TIME]})
+    b:refreshall()
+    return NIL
+
+static function sortbysize(b)    
+local a:=brwArray(b)
+    asort(a,,,{|x,y| x[F_SIZE]<=y[F_SIZE]})
+    b:refreshall()
+    return NIL
+\end{verbatim}
+%\hrulefill
+
+
+A browse objektum a brwShow() függvényhívásnál jelenik meg a képernyőn.
+Az interaktív programhasználat közben a vezérlés végig a brwLoop()
+eseménykezelő függvényben van. Világos, hogy brwShow(), brwLoop(), \ldots
+függvények implementációja karakteres és GUI-s környezetben nem lehet egyforma,
+ezért a programok platformfüggetlensége csak akkor tartható fenn,
+ha megelégszünk a példában bemutatott magas szintű interfész nyújtotta
+lehetőségekkel.
+
+
+
+\section{Objektumok}
+
+Egy új osztályhoz mindig meg kell írni a Class, New és Ini függvényeket. 
+Az alábbi mintában \verb'_classname_' helyére mindenhol az osztály tényleges 
+nevét kell írni. Teljes példa található a ccctutor\bslash xclass könyvtárban.
+Érdemes tanulmányozni a runtime library beépített osztályainak forrását.
+
+%\hrulefill
+\begin{verbatim}
+function _classname_Class() 
+static clid
+
+    if( clid==NIL )
+        clid:=classRegister("_classname_",{objectClass()})
+        classMethod(clid,"initialize",{|this|_classname_Ini(this)})
+        classAttrib(clid,"cargo")
+    end
+    return clid
+
+function _classname_New() 
+local clid:=_classname_Class()
+    return objectNew(clid):initialize()
+
+function _classname_Ini(this) 
+    objectIni(this)
+    return this
+
+\end{verbatim}
+%\hrulefill
+
+
+\section{Adatbeviteli képernyők tervezése}
+
+A ccctutor\bslash xmask könyvtárban található az alábbi példaprogram.
+A program karakteres és GUI-s módban is működik.
+Clipper program készíthető az \verb'bapp_clp' paranccsal, 
+Win32 karakteres program készül az \verb'bapp_w32c' utasítás, 
+GUI-s az \verb'bapp_w32g' utasítás hatására.
+
+
+%\hrulefill
+\begin{verbatim}
+function main()
+    cls
+    set date format to "yyyy/mm/dd"
+    demo( {|g|load(g)},{|g|readmodal(g)},{|g|store(g)})
+    return NIL
+     
+
+#include "demo.say"
+
+static function load(getlist)     
+
+    //string demo
+    g_s:picture:=replicate("X",len(g_s:varget()) )
+    g_s:varput("QWERTY")
+    g_s:postblock:={|g| 1==alert("Ezt akartad: "+;
+                        alltrim(g:varget())+"?",{"Igen","Nem"})}
+
+    //numeric demo
+    g_n:picture:="@R 99.9999"
+    g_n:varput(3.1415)
+
+    //date demo
+    g_d:varput(date())
+
+    //logical demo
+    g_l:picture:="L"
+    g_l:varput(.t.)
+
+    aeval(getlist,{|g|g:display()})                          
+    return NIL
+    
+static function store(getlist)    
+local result:=.f.
+    if( 1==alert("Minden rendben?",{"Igen","Nem"}) )
+        ? "String  :", g_s:varget()
+        ? "Numeric :", g_n:varget()
+        ? "Date    :", g_d:varget()
+        ? "Logical :", g_l:varget()
+        result:=.t.
+    end
+    return result
+
+\end{verbatim}
+%\hrulefill
+
+A demo() függvényt a mask.exe programgenerátorral csináltuk.
+A mask programmal lerajzoljuk a képernyőt, és a rajzot elmentjük
+(demo.msk). A rajzból a make rendszer előállítja a demo.say
+programot, amit a program inkludál (kivételesen nem a forrásprogam
+elején, azért, hogy a main legyen az első függvény). A mask által 
+generált függvényeket mindig három kódblokk paraméterrel hívjuk meg.
+
+\begin{enumerate}
+\item Az első kódblokk végzi a get objektumok feltöltését 
+      kezdeti értékekkel, a picture-ök, postblockok, egyebek
+      inicializálását.
+\item A második kódblokk tartalmazza az eseménykezelő függvényt,
+      ami legtöbbször a szabványos, könyvtári readmodal().
+\item A harmadik kódblokk egy végső ellenőrzés után letárolja
+      (vagy valamilyen más módon hasznosítja) az adatokat.
+\end{enumerate}
+
+A példában szereplő demo.msk-t úgy lehet módosítani, hogy elindítjuk
+a mask programot, majd F3-at ütve választunk a felsorolt msk filékből.
+A program F1-re ad helpet.
+
+A mask kétféle kód generálására képes. Alapállapotban egy magasabb 
+szintű interfészre készít kódot, ami karakteres és GUI-s környezetben
+egyformán működik. A generált kód működésének megértéséhez azonban
+hasznos a csak karakteres képernyővel működő hagyományos kód tanulmányozása. 
+Ezt így lehet előállítani: \verb'mask demo -gTRAD'.
+
+
+
+%\section{Nyomtatás, page}
+%\section{Reportok}
+%\section{Message box}
+
+
+%\gotoindex
+
+
+%\hrulefill
+%\begin{verbatim}
+%\end{verbatim}
+%\hrulefill
+

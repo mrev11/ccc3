@@ -1,0 +1,123 @@
+
+
+(define-function accel_map_lookup_entry
+  (c-name "gtk_accel_map_lookup_entry")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "accel_path")
+    '("GtkAccelKey*" "key")
+  )
+)
+
+(define-function accel_map_change_entry
+  (c-name "gtk_accel_map_change_entry")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "accel_path")
+    '("guint" "accel_key")
+    '("GdkModifierType" "accel_mods")
+    '("gboolean" "replace")
+  )
+)
+
+(define-function accel_map_load
+  (c-name "gtk_accel_map_load")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "file_name")
+  )
+)
+
+(define-function accel_map_save
+  (c-name "gtk_accel_map_save")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "file_name")
+  )
+)
+
+(define-function accel_map_foreach
+  (c-name "gtk_accel_map_foreach")
+  (return-type "none")
+  (parameters
+    '("gpointer" "data")
+    '("GtkAccelMapForeach" "foreach_func")
+  )
+  (CCC "byhand")
+)
+
+(define-function accel_map_load_fd
+  (c-name "gtk_accel_map_load_fd")
+  (return-type "none")
+  (parameters
+    '("gint" "fd")
+  )
+)
+
+(define-function accel_map_load_scanner
+  (c-name "gtk_accel_map_load_scanner")
+  (return-type "none")
+  (parameters
+    '("GScanner*" "scanner")
+  )
+)
+
+(define-function accel_map_save_fd
+  (c-name "gtk_accel_map_save_fd")
+  (return-type "none")
+  (parameters
+    '("gint" "fd")
+  )
+)
+
+(define-function accel_map_add_filter
+  (c-name "gtk_accel_map_add_filter")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "filter_pattern")
+  )
+)
+
+(define-function accel_map_foreach_unfiltered
+  (c-name "gtk_accel_map_foreach_unfiltered")
+  (return-type "none")
+  (parameters
+    '("gpointer" "data")
+    '("GtkAccelMapForeach" "foreach_func")
+  )
+  (CCC "byhand")
+)
+
+(define-function _gtk_accel_map_init
+  (c-name "_gtk_accel_map_init")
+  (return-type "none")
+)
+
+(define-function _gtk_accel_map_add_group
+  (c-name "_gtk_accel_map_add_group")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "accel_path")
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-function _gtk_accel_map_remove_group
+  (c-name "_gtk_accel_map_remove_group")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "accel_path")
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-function _gtk_accel_path_is_valid
+  (c-name "_gtk_accel_path_is_valid")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "accel_path")
+  )
+)
+
+
+

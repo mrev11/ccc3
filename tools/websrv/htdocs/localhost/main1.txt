@@ -1,0 +1,20 @@
+
+
+//vbox layout
+//toolbar lapozó gombokkal
+//jtbrowse (szamla.bt) 
+//search get a státusz sorban
+//progressbar teszt
+ 
+#include "table.ch"
+#include "icons.ch"
+ 
+static table
+
+****************************************************************************
+function main()
+
+local dbfile:="szamla.bt" 
+
+****************************************************************************
+ 

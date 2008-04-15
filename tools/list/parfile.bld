@@ -1,0 +1,14 @@
+-mlist
+-d.
+-d$(CCCDIR)/ccclib/src/uic/termapi
+-d$(CCCDIR)/ccclib/src/uic/screenbuf
+
+-bccc3.lib
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+
+# Demó program, ami azt mutatja, hogy a terminál API-t
+# a CCC-től függetlenül is lehet használni. A befordított
+# vagy belinkelt részek egyszerűen áthozhatók, pl. ccc3.lib 
+# linkelése helyett át lehet hozni az sckutil.cpp és 
+# utf8conv.cpp modulokat.

@@ -1,0 +1,70 @@
+
+
+(define-function gtk_file_chooser_button_get_type
+  (in-module GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_file_chooser_button_new
+  (is-constructor-of GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_new")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" title)
+    '("GtkFileChooserAction" action)
+  )
+)
+
+(define-function gtk_file_chooser_button_new_with_backend
+  (is-constructor-of GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_new_with_backend")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" title)
+    '("GtkFileChooserAction" action)
+    '("const-gchar*" backend)
+  )
+)
+
+(define-function gtk_file_chooser_button_new_with_dialog
+  (is-constructor-of GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_new_with_dialog")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWidget*" dialog)
+  )
+)
+
+
+(define-method set_title
+  (of-object GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_set_title")
+  (parameters
+    '("const-gchar*" title)
+  )
+)
+
+(define-method get_title
+  (of-object GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_get_title")
+  (return-type "const-gchar*")
+  (comment "do not free")
+)
+
+
+(define-method set_width_chars
+  (of-object GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_set_width_chars")
+  (parameters
+    '("gint" n_chars)
+  )
+)
+
+(define-method get_width_chars
+  (of-object GtkFileChooserButton)
+  (c-name "gtk_file_chooser_button_get_width_chars")
+  (return-type "gint")
+)
+
+

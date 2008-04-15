@@ -1,0 +1,24 @@
+CCC setup
+=========
+
+A CCC fordításhoz (részben) CCC-ben írt eszközök szükségesek, 
+ezek azonban nem állnak rendelkezésre, amikor először csinálunk 
+CCC futtatórendszert.  A setup-unix directoryban olyan források vannak, 
+amik a standard CCC fordítás közben (prg->ppo->cpp->obj->exe) jöttek 
+létre, és alkalmasak az induláshoz szükséges programok előállítására 
+pusztán egy C fordítóval. A kérdéses programok:
+
+    build.exe
+    prg2ppo.exe
+    ppo2cpp.exe
+    removecr.exe
+
+Általában a CCC javító kiadásaihoz nincs szükség új setup készletre.
+Így viszont a setup során forduló programok nem mindig a legfrissebbek, 
+ezért csak a CCC fordítás beindításához használjuk őket. A teljes
+rendszer fordítása közben elkészül a programok aktuális, teljes 
+funkcionalitású változata, és ezek felülírják az induláshoz használt 
+példányokat. A későbbiekben mindig az új programokat kell használni, 
+azaz nem szabad a setup-beli fordítást megismételni. A CCC felélesztése 
+után legjobb a setup-unix directoryt törölni.
+

@@ -1,0 +1,164 @@
+
+2006.09.26 -- 1.2.24
+  A @parfile.bld-ek keresése a BUILD_BAT directoryban.
+
+2006.04.22 -- 1.2.23
+  Ha meg van(nak) adva a -m/-x opció(k), 
+  akkor csak azokból csinál exe-t, a többi prg-ből nem.
+  Így explicite fel lehet sorolni, hogy milyen exe-k készüljenek,
+  ami akkor jó, ha különböző paraméterezésű linkelésekre van szükség.
+  Ezzel a -m és -x opció felcserélhető, mindkettő additív.
+
+2006.03.21 -- 1.2.22
+  Portolas unicode-ra.
+
+2006.01.26 -- 1.2.21
+  Windows hiba kerülgetése:
+  Listafájl (objects) beiktatása a hosszú parancssorok 
+  kerülése érdekében könyvtárkészítéskor és linkeléskor,
+  ui. a Windows csak rövid parancssorok kezelésére képes.
+  Egyúttal változnak az obj2lib.bat és obj2exe.bat scriptek.
+
+2005.12.01 -- 1.2.20
+  htm2ctm támogatás
+
+2005.09.12 -- 1.2.19
+  -v opció: csak a verziószámot írja ki, azután kilép
+  -q opció: elnyomja a verziószám kiírását
+
+2005.08.21 -- 1.2.18
+  Könyvtárak keresésekor fname helyett fnameext.
+
+2005.04.07 -- 1.2.17
+  A BUILD_SRC directoryt csak olyan pathok elé illesztjük be, 
+  amik nem /-vel kezdődnek, vagyis az abszolút specifikációkat 
+  nem módosítjuk.
+
+2004.03.18 -- 1.2.16
+  Lemon (.lem) források támogatása.
+
+2003.08.19 -- 1.2.15
+  Minden platformon  abszolút lib specifikációk.
+
+2003.02.20 -- 1.2.14
+  A komment jobb kezelése.
+
+2001.02.16 -- 1.2.13
+  A sor elején levő # komment támogatása a paraméterfilékben.
+  Főprogram keresése "function main" helyett "function main(".
+
+2000.09.21 -- 1.2.12
+  Könyvtár kereséskor a .lib, .a, .so kiterjesztéssel megadott
+  neveknél nem a BUILD_SHR-ben előírt static/shared választást
+  csinálja, hanem a megadott nevű könytárat választja.
+
+  Háromféle névképzés van:
+  
+    1)    name.lib      (DOS névkonvenció, statikus lib)
+    2) libname.a        (UNIX névkonvenció, statikus lib) 
+    3) libname.so       (UNIX névkonvenció, shared lib)  
+      
+
+  Ha a Buildnek a nevet "name" alakban adjuk meg, 
+  akkor a fenti három néven keresi a könyvtárat a libpath-ban,
+  a shared libeket preferálva (a BUILD_SHR=static paraméterrel
+  lehet elérni a static libek preferálását).
+
+  Ha a nevet kiterjesztéssel (és az esetleges lib előtaggal) 
+  együtt adjuk meg, akkor Build mindig csak a megadott nevű libet 
+  keresi, így tetszőleges kombinációban lehet shared és static 
+  libraryket linkelni.
+
+
+2000.03.14 -- 1.2.11
+  set_dosconv(0) berakva
+  setpos teljesen kivéve
+  soremelések
+ 
+2000.03.12 -- 1.2.10
+  Setpos ifdefelése kilépés előtt, hogy UNIX-on feleslegesen
+  ne villanjon fel az üres ablak.
+
+2000.02.22 -- 1.2.09
+  Ha többféle típusú library létezik, akkor eddig a default 
+  választás a statikus lib volt, ezután a default a shared lib. 
+  Ha mégis a statikus változat kell, azt a BUILD_SHR=static
+  kapcsolóval lehet beállítani.
+
+2000.01.30 -- 1.2.08
+  Shared libraryk készítése Linuxon.
+
+2000.01.14 -- 1.2.07
+  Nem található libek diagnosztizálása javítva.
+
+2000.01.13 -- 1.2.06
+  Include-ok keresése nem szabad függjön CR-től.
+
+2000.01.03 -- 1.2.05
+  Portolás UNIX-ra: "\" helyett dirsep() 
+
+  Keresi a  librarykat libpathban. 
+  Ezzel lehetséges, hogy a linkernek ne külön adjuk meg a libpath és
+  libfile opciókat, hanem a megtalált libek teljes specifikációját.
+
+1999.10.29 -- 1.2.04
+  A main modulok közötti keresésben ki kell írni ascan kódblokkját, 
+  mert alapértelmezésben az '=' operátorral keres (== kell).
+
+1999.07.27 -- 1.2.03
+  $$(x) --> x/$(build_obj)/x makró támogatása
+
+1999.07.14 -- 1.2.02
+  BUILD_SRC hatása a -i kapcsoló tartalmára is kiterjed.
+
+1999.07.09 -- 1.2.01
+  Copyright, kiterjesztések
+
+1999.06.30 -- 1.2.00
+  Ha sem -x sem -l nincs megadva, akkor az összes main modulból
+  exe-t csinál, minden egyéb object hozzálinkelésével, és nem készít
+  könyvtárat, ez az új default. 
+
+  usage() csak az explicit -h opcióra, vagy rossz kapcsolóra
+
+1999.05.31 -- 1.1.01
+  a makródefiníció paramétereket nem kell kisbetűre konvertálni
+
+1999.05.25 -- 1.1.00
+  makródefiníciók build paraméterezésében
+
+  1. A "name=value" paraméter hatására build beállítja
+     a name nevű környezeti változót value-ra, amit azután
+     az implicit szabályokhoz tartozó batch-ek használhatnak.
+
+  2. A $(name) szimbólum értéke egyenlő getenv(name) értékével
+     (build futása közben). Ezzel megkapható a csomagspecifikus
+     batch-ekben beállított változók értéke.
+
+
+1999.05.25 -- 1.0.07
+  -d és -i opciók nélkül is keres include-okat .-ban,
+  azaz -i-nek ugyanúgy defaultja ., mint -d-nak
+ 
+1999.05.25 -- 1.0.06
+  szabályalkalmazás sorrendje azonos s_rules sorrendjével
+
+1999.05.25 -- 1.0.05
+  lxi kiterjesztés (megszűnt)
+  
+1999.05.23 -- 1.0.04
+  -m opció (main modulok explicit megadása)
+ 
+1999.05.19 -- 1.0.03
+  BUILD_SRC-re relatív path.
+ 
+1999.05.19 -- 1.0.02
+  A szeparátor mindenhol egységesen ",;".
+ 
+1999.05.19 -- 1.0.01
+  A többszöröződés megszüntetve todo-ban.
+
+1999.05.13 -- 1.0.00
+  Első verzió.
+
+    

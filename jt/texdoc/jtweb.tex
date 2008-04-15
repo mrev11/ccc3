@@ -1,0 +1,166 @@
+
+\section{Web alkalmazás készítése Jáva Terminállal}
+
+
+\subsection{Mi kell hozzá?}
+ 
+Megírjuk a kívánt alkalmazást (CCC-ben) a jtlib könyvtárban 
+levő megjelenítő interfészre. 
+A CCC alkalmazásnak nincs szüksége web szerverre,
+nem töltődik le a webes kliens gépére, 
+hanem egyszerű programként fut a szolgáltatónál akár a webszerveren, 
+akár a szolgáltató egy  erre kijelölt másik gépén.
+Az alkalmazások a szokásos TCP (SSL) protokollt használják:
+minden alkalmazáshoz elindítunk egy listenert, 
+ami egy megadott porton figyeli  a kliensek konnektálását,
+és minden új kliensnek elindítja az alkalmazás egy példányát.
+Ahány alkalmazást akarunk közreadni, annyi listenert indítunk,
+amik az alkalmazásokhoz rendelt (különböző) portokon hallgatóznak.
+
+A webes kliensnél az alkalmazásokat a {\em Jáva Terminál\/} 
+program fogja megjeleníteni. Ez egy {\em alkalmazásfüggetlen\/} 
+Jáva program (nem applet), ami teljes jogkörrel (nem sandboxban)
+fut a kliens gépén.  A szolgáltató által közreadott alkalmazások
+futtatásához tehát a kliensnek szüksége van 
+\begin{itemize}
+\item  
+   az 1.4.1+ Jáva környezetre,
+\item  
+   a jterminal.jar programra,
+\item 
+   folyamatos internet kapcsolatra,   
+\end{itemize}
+de semmi másra, pl. nincs szükség böngészőre.
+
+\begin{quote}\small
+A jterminal a Jáva régebbi (1.3.x) változatával is működik, 
+ekkor azonban külön kell gondoskodni az XML csomag,
+az SSL kiegészítés és a Jáva Web Start csomag letöltéséről és installálásáról. 
+Az újabb Jávák előnye, hogy ezeket az alkatrészeket már 
+alapértelmezésben tartalmazzák. 
+\end{quote}
+
+Olyasmivel itt nem foglalkozom, mint a Jáva környezet 
+automatikus installálása. A jterminal.jar program letöltését
+megkönnyíti a Jáva Web Start technológia, amiről
+írok pár sort a következő pontban.
+
+
+\subsection{Jáva Web Start}
+
+A webszerveren elhelyezzük a \verb!jt.jnlp! 
+filét az alábbihoz hasonló tartalommal:
+\begin{verbatim}
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp  spec="1.0+"  
+       codebase="http://1g.comfirm.ve/jterminal/" 
+       href="jt.jnlp"> 
+
+  <information> 
+    <title>Jáva Terminál Demó</title> 
+    <vendor>ComFirm Bt</vendor> 
+    <homepage href="html/jterminal.html"/> 
+    <description>CCC Download</description> 
+    <offline-allowed/> 
+  </information> 
+
+  <security> 
+      <all-permissions/> 
+  </security> 
+
+  <resources> 
+    <j2se version="1.4.0+"/> 
+    <jar href="jterminal.jar"/> 
+  </resources> 
+
+  <application-desc main-class="jterminal"> 
+    <argument>1g.comfirm.ve</argument> 
+    <argument>46000</argument> 
+    <argument>ssl</argument> 
+  </application-desc> 
+</jnlp> 
+\end{verbatim}
+
+Szintén feltesszük a webszerverre a paraméterfilé által 
+hivatkozott objektumokat: jar és html filéket, azok további 
+alkatrészeit, stb.
+Ha most a kliens a windowsos gépén kiadja az alábbi parancsot:
+
+\begin{verbatim}
+path_to_javaws\javaws "http://1g.comfirm.ve/jterminal/jt.jnlp"
+\end{verbatim}
+
+akkor a javaws program letölti, a paraméterfilében talált 
+Jáva alkalmazást, jelen esetben jterminal.jar-t, és elindítja azt a 
+megadott  paraméterrel, esetünkben az ip, port, ssl értékekkel,
+amire viszont a szerveren automatikusan elindul a
+46000-es porthoz rendelt CCC alkalmazás.
+
+A javaws program a letöltött Jáva alkalmazásokat tárolja, 
+képes azok futtatására offline módban is (a Jáva Terminál esetében
+persze ennek nincs értelme), illetve ha megvan a 
+hálózati kapcsolat, akkor automatikusan frissíti az alkalmazásokat.
+A kliens  továbbiakban a javaws ablakában keletkező ikonokkal indíthatja 
+az egyszer már letöltött és tárolt Jáva alkalmazásokat.
+
+Ha a szolgáltató Jáva Terminálon át elérhető CCC alkalmazásokat
+ad közre, akkor minden alkalmazáshoz önálló jnlp filét kell
+csinálni. Ezek mind a jterminal.jar-t tartalmazzák letöltendő
+Jáva programként, különbözni fognak viszont az ip:port paraméterben,
+illetve az alkalmazás leírásában.
+
+A fent leírt módszernél automatikusabb installálásra is van mód:
+\begin{itemize}
+\item
+    A webszervert úgy konfiguráljuk, hogy a jnlp filéket
+    egy speciális MIME típussal 
+    (\verb!application/x-java-jnlp-file!) küldje.
+\item
+    A böngészőt úgy konfiguráljuk, hogy ezt a speciális 
+    MIME típust felismerje, és észlelésekor indítsa el
+    javaws-t az előbb leírt módon.
+\end{itemize}
+
+Az utóbbi eljárás lehetővé teszi, hogy a Jáva alkalmazás
+letöltését a böngészőből indítsuk egy jnlp-re mutató linkre
+kattintva.
+
+\subsubsection*{MIME type beállítás Apache-on}
+A \verb!/etc/httpd/mime.types! filébe beírjuk az alábbi sort:
+\begin{verbatim}
+application/x-java-jnlp-file    jnlp
+\end{verbatim}
+ 
+\subsubsection*{MIME type beállítás Netscape 4.x-ben}
+Az Edit/Preferences/Navigator/Applications menüben  felvesszük 
+a következő adatokat:
+
+\begin{tabular}{l@{~:~~~}l}
+Description  & Java Web Start                           \\
+MIME type    & \verb!application/x-java-jnlp-file!      \\
+Suffixes     & \verb!jnlp!                              \\
+Application  & \verb!.../javaws %s!                     \\
+\end{tabular}
+
+Tapasztalatom szerint Linuxon a Jáva Web Start installálásakor
+ez magától megtörténik. Ha viszont később máshova rakjuk
+a javaws programot, akkor itt utánállításra van szükség. 
+
+\subsubsection*{MIME type beállítás Konqueror 3.x-ban}
+
+A Settings/Configure Konqueror/File Associations menüben 
+beviszünk egy új típust:
+
+\begin{tabular}{l@{~:~~~}l}      
+Group         & \verb!application!           \\
+Type name     & \verb!x-java-jnlp-file!      \\
+\end{tabular}
+
+Az új típus adatait a következőképpen adjuk meg:
+
+\begin{tabular}{l@{~:~~~}l}
+File Patterns & \verb!*.jnlp!                     \\
+Description   & Java Web Start                    \\
+Application   & megkeressük a javaws-t            \\
+\end{tabular}
+ 

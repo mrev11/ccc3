@@ -1,0 +1,453 @@
+
+\section{Tableentityk használata}
+
+\include{fogalmak.tex}
+\include{tdsref.tex}
+%\include{segedprog.tex}
+
+\subsection{Példa egy táblával}
+
+Nézzük az alábbi példát az sql2/test/basicdemo/tds/proba.tds-ből:
+
+\begin{verbatim}
+name: proba
+version: "2,2006-07-18"
+
+table: konto.proba=p
+
+column: szamlaszam      C24             nn x=szamla
+column: devnem          C3
+column: nev             C30             x=megnevezes
+column: egyenleg        N17.2           x=osszeg
+column: tulmenflag      L
+column: konyvkelt       D
+column: megjegyzes      M
+
+primkey: szamlaszam,devnem
+
+index: nev(nev,szamlaszam)
+
+select: select_kk  
+    where konyvkelt<:1 or konyvkelt is null 
+    order(szamlaszam)
+
+select: select_ge  
+    where szamlaszam>=:1 
+    order(nev desc,szamlaszam)
+
+select: select_tf
+    where tulmenflag=:1
+    order(szamlaszam)
+
+select: select_bl
+    where egyenleg<:1 
+    order(szamlaszam)
+\end{verbatim}
+
+Ebből a scriptből a tds2prg kódgenerátorral programot készítünk:
+\begin{verbatim}
+    tds2prg.exe proba.tds
+\end{verbatim}
+Kapunk egy prg-t, amit a szokásos módon befordítunk a programunkba.
+A prg-ben van definiálva a \verb!proba.tableEntityNew()!
+objektumgyártó függvény. Nézzünk egy-két programozási mintát, 
+mire használható.
+
+Az objektumgyártó egy tableentity objektumot ad, 
+amivel a con adatbáziskapcsolaton át elérhető konto.proba 
+táblát manipulálhatjuk. A konto.proba név a tds script table 
+bekezdéséből jön. Valójában nem tudjuk, 
+hogy a név mögött tábla van-e, vagy view, mert a két eset formailag 
+nem különbözik.
+A tábla (view) neve lehet minősített. A jelen esetben a séma neve 
+(ami a táblát tartalmazza) ,,konto'', a tábla vagy view neve ,,proba''.
+A tds script name bekezdésében egy névtér van megadva, esetünkben ,,proba''. 
+Az itt megadott névtérbe (ami lehetne többszintű is) kerül az objektumgyártó
+tableEntityNew() függvény, amit tehát így kell meghívni:
+\begin{verbatim}
+    tableentity:=proba.tableEntityNew(con)
+\end{verbatim}
+
+A tableEntityNew()-nak van egy második, opcionális paramétere is.
+Ha ezt megadjuk, akkor a konto.proba helyett a paraméterként
+megadott masik.tabla-hoz kapunk hozzáférést. Tételezzük fel,
+hogy ennek a másik táblának hasonló szerkezete van, mint a konto.proba-nak:
+\begin{verbatim}
+    tableentity:=proba.tableEntityNew(con,{"masik.tabla"})
+\end{verbatim}
+A táblanév egy lista (array) elemeként van megadva. Mint később
+látni fogjuk egy tds script több táblára is hivatkozhat,
+tehát több tábla paraméternek is értelme lehet, ezért a
+táblákat egy arrayben felsorolva kell megadni.
+
+Ezen a ponton nem tudjuk, hogy az adatbázisban van-e egyáltalán
+ilyen tábla, egyelőre csak egy programbeli objektumunk van.
+Ha emögött még nincs tábla, akkor most létre tudjuk hozni:
+\begin{verbatim}
+    tableentity:create
+\end{verbatim}
+Ez persze csak akkor értelmes, ha valóban tábláról van szó,
+nem pedig view-ról, ui. az interfész mindenképpen egy
+create table utasítást fog küldeni az adatbázisszervernek,
+view-król mit sem tud. Természetesen a konto.proba,
+vagy masik.tabla tábla fog kreálódni, ahogy a tableentity
+gyártásakor paraméterként megadtuk. 
+
+Itt egy kicsit érdemes elidőzni,
+megtárgyalni, milyen lesz az új tábla. Általában olyan nevű
+oszlopok lesznek benne, mint a tds scriptben az oszlopok neve,
+de vannak kivételek. A  példában van egy ,,nev'' nevű oszlop,
+amiből a tableentity sorobjektumainak lesz egy ,,nev'' nevű metódusa. 
+A táblában azonban az \verb!x=megnevezes! előírás
+alapján ennek az oszlopnak az adatbázisbeli neve ,,megnevezes''.
+Nem tudjuk pontosan, hogy mi az oszlopok SQL adattípusa,
+de bízhatunk benne, hogy az interfész olyan
+adattípust választ, ami kompatibilis a tds scriptben
+előírt Clipper típussal. A nev esetében sejthető a varchar(30),
+de pl. boolean típus egyes adatbáziskezelőkben van, másokban
+nincs, ezért nem egyértelmű, mi a Clipper L típus SQL megfelelője.
+Az nn-nel jelölt oszlopok not null minősítést kapnak.
+Az interfész a tábla elkészítésekor egyúttal indexeket kreál
+a primkey és index bekezdések szerint. A unique indexeknek 
+szerepük lehet sorok egyediségének kikényszerítésében.
+
+Kissé más a helyzet, ha az adatbázistáblát nem a tableentity 
+interfésszel csináljuk, hanem készen kapjuk. A megrendelő bank 
+alapadatait tartalmazó táblát pl. biztosan nem mi fogjuk kreálni. 
+Ilyenkor egyáltalán nem tudjuk befolyásolni az oszlopok típusát, 
+azonban az interfész oda-vissza elvégzi az SQL típus és a Clipper 
+típus közötti konrverziót, ha egyáltalán lehetséges. Sajnos ilyenkor
+az egyediséget nem tudjuk indexekkel biztosítani, sem a not null
+feltételeket betartatni, ha az eleve nincs benne az adatdefiníciókban.
+
+Ha a táblát meg akarjuk szüntetni, megtehetjük a
+\begin{verbatim}
+    tableentity:drop
+\end{verbatim}
+metódushívással. Ez egy drop table utasítást küld a szervernek,
+(view-ra nyilván nem működik).
+
+Térjünk rá az adatok lekérdezésére. A tableentity objektumnak
+mindig van egy select metódusa, ami az alaptábla összes sorát
+tartalmazó rowset objektumot ad.
+\begin{verbatim}
+    rowset:=tableentity:select
+\end{verbatim}
+
+A rowset objektum legfontosabb metódusa a next, ezzel egyesével,
+előrefelé haladva lekérhetjük a sorokat:
+\begin{verbatim}
+    while( (rowentity:=rowset:next)!=NIL )
+        ...
+    end
+    rowset:close
+\end{verbatim}
+Amíg van újabb sor, addig rowset:next egy rowentity objektumot ad,
+ha már nincs több sor, akkor NIL-t. Ügyelni kell a rowset-ek lezárásra, 
+máskülönben  elfogynak bizonyos erőforrások (handlerek). 
+
+Most már soraink is vannak, nézzük a mezőértékeket:
+\begin{verbatim}
+    r:=rowentity
+    ? r:szamlaszam, r:devnem, r:nev, r:egyenleg
+\end{verbatim}
+Pontosan mit is írtunk ki? A 
+konto.proba.szamla,
+konto.proba.devnem,
+konto.proba.megnevezes,
+konto.proba.osszeg nevű adatbázismezőket.
+A rowentity objektumok tehát olyan attribútumokkal rendelkeznek,
+mint amilyen oszlopnevek vannak a tds scriptben. Ha nem intézkedünk
+másképp, akkor ezek az adattábla azonos nevű oszlopát jelentik,
+de ezt felülbírálhatjuk az \verb!x=valid_sql_expression! előírással.
+
+A CCC programból nézve a rowentity attribútumoknak
+olyan típusuk van, mint amit a tds scriptben előírtunk. Pl. az alábbi
+programrészlet végrehajtása után
+\begin{verbatim}
+    rowentity:nev:=""
+    ? valtype(rowentity:nev), strtran(rowentity:nev," ","x")
+\end{verbatim}
+ezt látjuk kiírva: \verb!C xxx...xxx! (30 darab x).
+Az adatbázisból kaphatunk SQL null értékeket is. E tekintetben
+a Clipper hagyományokat követjük, és az interfésztől
+a nullok helyén nem NIL-t kapunk, hanem egy megfelelő típusú empty értéket.
+Ha mindenképpen szükség van a nullok vizsgálatára, arra is van mód,
+lásd a osztály referenciát és a példaprogramokat.
+
+
+
+Tegyük fel, hogy van egy '111111112222222233333333' 
+számlaszámú, 'HUF' devizanemű sorunk a táblában, ezt a
+\begin{verbatim}
+    rowentity:=tableentity:find({'111111112222222233333333','HUF'})
+\end{verbatim}
+metódushívással tudjuk beolvasni. Ha mégsincs sor a megadott
+számlaszámmal, akkor tableentity:find NIL-t ad.
+
+A tds scripttől függetlenül a tableentitynek mindig van
+egy általános select metódusa, ami az alaptábla összes
+sorát tartalmazó rowsetet ad, és egy find metódusa, ami
+a primary key alapján kiválaszt egyetlen sort. Lehetnek
+azonban más select metódusok is, ha definiálunk ilyeneket
+a tds-ben. A jelen példában a
+\begin{verbatim}
+    rowset:=tableentity:select_kk({stod("20000101")})
+\end{verbatim}
+metódushívás kigyűjti azokat a sorokat, amikben a könyvelés
+dátuma régebbi, mint 2000-01-01, vagy egyáltalán nem volt rajta
+könyvelés, és ezért a dátum null. Az interfész a tds-ben megadott
+where záradékból SQL where záradékot készít úgy, hogy a select metódus
+array paraméterében felsorolt értékeket behelyettesíti az
+\verb!:1!, \verb!:2!,\ldots\  szimbólumok helyére. A tds-ben 
+bármit megadhatunk a where záradék helyén, amit az SQL elfogad
+a ,,where'' és az ,,order by'' kulcsszavak között.
+A tds-beli order záradékból  SQL order by záradék lesz.
+Az interfész az order zárójelei közötti szöveget egyszerűen a
+generált SQL parancs  ,,order by'' kulcsszava után írja. 
+A gyakorlatban általában a zárójelek között felsoroljuk
+az oszlopokat, amik szerint rendezni akarunk, esetleg az
+asc/desc módosítással kiegészítve.
+
+
+Rátérve a módosítások tárgyalására mégegyszer megjegyezzük,
+hogy nem minden tábla módosítható. Ha az alaptábla egy view,
+vagy több táblából képzett join, akkor a módosítási kísérlet
+valószínűleg hibát eredményez. 
+Rakjunk most be egy új sort a táblába:
+\begin{verbatim}
+    rowentity:=tableentity:instance
+    rowentity:szamlaszam:="XXXXXXXXYYYYYYYYZZZZZZZZ"
+    rowentity:devnem:="EUR"
+    rowentity:egyenleg:=100000
+    rowentity:insert
+    con:sqlcommit
+\end{verbatim}
+A tableentity objektum instance metódusa gyárt nekünk egy
+üres rowentityt, amit feltöltünk adatokkal. A rowentity insert
+metódusa generál egy insert into utasítást, amivel kiírja a rekordot.
+A kiírást a commit véglegesíti. Tegyük fel, hogy ugyanezt 
+a rekordot módosítani kell:
+\begin{verbatim}
+    rowentity:=tableentity:find({'XXXXXXXXYYYYYYYYZZZZZZZZ','EUR'})
+    rowentity:egyenleg+=1000
+    rowentity:update
+    con:sqlcommit
+\end{verbatim}
+Most az interfész generálni fog egy ilyen utasítást
+\begin{verbatim}
+    update "KONTO"."PROBA" set "OSSZEG"=101000 
+    where "SZAMLA"='XXXXXXXXYYYYYYYYZZZZZZZZ' and "DEVNEM"='EUR'
+\end{verbatim}
+amivel módosul a rekord. Rendkívül fontos észrevétel, hogy
+a rowentity objektum, a primary key oszlopok egyezése alapján
+találja meg a hozzá tartozó rekordot. Mi történik akkor
+a következők után?
+\begin{verbatim}
+    rowentity:szamlaszam:="valami más érték" //ROSSZ!
+    rowentity:update //ROSSZ!
+\end{verbatim}
+Így nem az eredeti rekord módosul, hanem a szerver minden olyan
+rekordot módosít, aminek a számlaszáma a "valami más érték".
+Lehet, hogy semmi sem módosul, lehet, hogy egy olyan rekord,
+amire nem számítottunk. A tanulság, hogy a primary key-t alkotó
+ oszlopokat nem módosíthatjuk közvetlenül.
+Szerencsére a gyakorlatban erre ritkán van szükség. Ha mégis,
+akkor ezt csináljuk:
+\begin{verbatim}
+    rowentity:=tableentity:find({'XXXXXXXXYYYYYYYYZZZZZZZZ','EUR'})
+    rowentity:delete
+    rowentity:szamlaszam:="valami más érték"
+    rowentity:insert
+    con:sqlcommit
+\end{verbatim}
+Mivel a két művelet egy tranzakcióban van, nem fenyeget,
+hogy csak az egyik hajtódik végre, a másik pedig nem.
+A példa alapján világos: az alkalmazásnak létfontosságú,
+hogy a primary key egyedisége megmaradjon, így az adatbázisrekordok 
+és a program rowentity objektumai közötti megfeleltetés ne sérüljön.
+
+A rowentity lényeges tulajdonsága, hogy igazi objektum,
+nem pedig csak holmi rekordpointer vagy kurzor.
+Az objektum az adatait  saját memóriabufferben tárolja, ami nem
+szűnik meg attól, hogy végrehajtunk egy újabb rowset:next-et,
+rowset:close-t, vagy akár con:rollback-et. A program változóiban
+tárolhatunk egyidejűleg akárhány rowentity objektumot.
+
+
+
+
+
+
+
+
+
+
+\subsection{Példa több táblával}
+
+Ebben az alfejezetben egy olyan példát elemzünk,
+amiben a tableentity alaptáblája több elemi tábla
+összekapcsolásával keletkező join. Az ilyen tableentity
+objektumoknak is vannak módosító metódusai
+(create, drop, zap, insert, delete, update), 
+ám ezek meghívása nagy valószínűséggel hibát okoz,
+erre többet nem is térünk ki. 
+A példa az sql2/test/basicdemo/tds/probaszerencse.tds-ből való.
+
+\begin{verbatim}
+name: probaszerencse
+version: "2,2006-07-18"
+
+table: konto.proba=p
+table: konto.szerencse=q
+
+join: p left join q on szamlaszam=qszamlaszam
+
+column: szamlaszam      C24         x=p.szamla
+column: devnem          C3
+column: nev             C30         x=megnevezes
+column: egyenleg        N17.2       x=osszeg
+column: tulmenflag      L
+column: konyvkelt       D
+column: megjegyzes      M
+column: kiegdata        C20
+
+colref: qszamlaszam                 x=q.szamla
+
+primkey: szamlaszam,devnem
+\end{verbatim}
+
+Előzőleg a konto.proba nevű táblával dolgoztunk, most ezt kiegészítjük
+a konto.szerencse táblával. A két tábla a \verb!szamla! nevű oszlopon
+keresztül kapcsolódik.  A szerencse nevű táblából a \verb!kiegdata! oszlopot
+akarjuk hozzávenni a tableentityhez (nem túl sok, de most nem az a lényeg,
+hanem maga az összekapcsolás). 
+
+Először is megfigyeljük, hogy a tableentity objektum gyártó
+függvény most a \verb!probaszerencse! névtérbe van helyezve, 
+tehát így lehet meghívni:
+\begin{verbatim}
+    tableentity:=probaszerencse.tableEntityNew(con)
+\end{verbatim}
+Látjuk, hogy a tds-ben két table bekezdés is van.
+Ezek megadják az alapesetben használt táblákat, és azok
+alias neveit (p és q). A script más részeiben a táblákra
+kizárólag az alias nevekkel hivatkozunk.
+
+Tudjuk, hogy szükség esetén a tds-ben meghatározott táblákat
+helyettesíthetjük más táblákkal, például:
+\begin{verbatim}
+    tablist:={"masik.proba","masik.szerencse"}
+    tableentity:=probaszerencse.tableEntityNew(con,tablist)
+\end{verbatim}
+A helyettesítendő táblákat utólag is megadhatjuk:
+\begin{verbatim}
+    tableentity:=probaszerencse.tableEntityNew(con)
+    tableentity:tablist:={"masik.proba","masik.szerencse"}
+\end{verbatim}
+A két módszer ugyanarra az eredményre vezet.  
+
+A table definition script (tds) join bekezdésében határozzuk meg,
+hogyan legyen a két tábla összekapcsolva. Ha ugyanezt a joint
+közönséges SQL-ben akarnánk megcsinálni, pl. az sqlplus-ban,
+akkor valami ilyesmit írnánk (rövidítésekkel):
+\begin{verbatim}
+    select 
+        p.szamla,
+        devnem,
+        ...
+        kiegdata 
+    from 
+        konto.proba p 
+        left join konto.szerencse q 
+        on p.szamla=q.szamla 
+    order by   
+        p.szamla,devnem
+\end{verbatim}
+Koncentráljunk a from záradékra. A tds-beli join bekezdés úgy 
+vezethető le az SQL from záradékból, hogy a redundáns információt
+kihagyjuk. A \verb!konto.proba p! helyett a tds joinban csak annyit 
+írunk: \verb!p!, hiszen a table bekezdésből már tudjuk, hogy a p alias 
+név a konto.proba táblát jelenti. 
+A \verb!p.szamla! helyett azt írjuk \verb!szamlaszam!,
+a \verb!q.szamla! helyett pedig \verb!qszamlaszam!,
+mert a column és colref bekezdések meghatározzák, 
+hogy ezek a nevek pontosan melyik oszlopot jelentik.
+Látható a column bekezdések kettős szerepe.
+Egyrészt metódusneveket jelentenek, másrészt oszlop alias
+neveket hoznak létre, amiket a tds scriptben használunk.
+A colref bekezdéseknek csak oszlop alias szerepe van.
+Foglaljuk össze a table és join bekezdésekkel kapcsolatos
+tudnivalókat:
+
+1) A table bekezdések sorolják fel a tableentityben szereplő
+elemi táblákat. Minden táblához rendelünk egy alias nevet. 
+
+2) A join bekezdés opcionális (ha csak egy tábla van, akkor a joinnak
+nem is volna értelme). Ha nincs join, akkor a tableentity alaptáblája 
+az elemi táblák Descartes-féle szorzata, vagyis ilyenkor az interfész olyan
+SQL select parancsot generál, aminek a from záradékában egyszerűen fel 
+vannak sorolva a táblák.
+
+3) Ha van join bekezdés, akkor oda egy SQL select from záradékot
+írunk azzal az eltéréssel, hogy a táblanevek helyett tábla aliast, 
+az oszlopnevek helyett pedig mindenhol oszlop aliast írunk.
+
+Az a fajta from záradék, amit itt használunk az SQL92 szabvánnyal
+került be az SQL-be. Korábban csak az ún. inner join volt ismert
+(a where záradékban). Az újabb szabvány kiegészült az outer joinnal,
+és a különféle joinok összes variációinak egységes értelmezésével,
+de ezeket a from záradékba kell írni. Sajnos ebben a dokumentációban
+nincs hely az SQL mélyebb ismertetésére.
+
+Folytassuk az oszlopokkal. Az első column bekezdésben ezt látjuk:
+\begin{verbatim}
+    column: szamlaszam      C24     x=p.szamla
+\end{verbatim}
+
+Szó volt már a \verb!szamlaszam! név szerepéről.  
+A tableentityből származó rowentity (sor)objektumoknak lesz
+egy ilyen nevű attribútuma, egyúttal bevezet egy oszlop aliast,
+amivel a tds-ben bárhol (join, where, order) hivatkozni tudunk
+az oszlopra. 
+
+A \verb!C24! típus értelmezése: Nem érdekel minket, hogy az
+adott oszlop SQL adattípusa pontosan micsoda. Akármi is az
+SQL adattípus, a mi programunk C24-re konvertálva kéri az adatot
+a szervertől. Mármost a tényleges típus és a szerver tudása
+dönti el, hogy ez az esetleges konverzió értelmes-e, lehetséges-e
+egyáltalán. Ha nem értelmes, vagy nem lehetséges, akkor az az
+alkalmazás logikai, vagy közvetlen futási hibáját fogja okozni.
+
+A \verb!x=p.szamla! kiegészítő adat azt mondja: A \verb!szamlaszam!
+metódusnévhez és oszlop aliashoz a \verb!p!  alias névvel
+azonosított tábla \verb!szamla! oszlopa tartozik. Ha ez nem volna megadva, 
+akkor az interfész és az adatbázis szerver \verb!szamlaszam! nevű oszlopot 
+keresne, és hibához vezetne, ha az adott oszlop nem pontosan egy 
+táblában volna megtalálható (esetünkben két táblában is van ilyen). 
+
+A column adatok sorrendjéről tudni kell, hogy a kettőspont
+utáni első szóközökkel határolt szó kötelezően az alias név,
+a második szó kötelezően a típus, a további adatok opcionálisak,
+és sorrendjük tetszőleges.
+
+A colref bekezdésekkel olyan oszlopokhoz készítünk oszlop
+aliast, amiket nem akarunk bevenni a tableentity alaptáblájába,
+de hivatkoznunk kell rá a join-ban, where-ben, vagy order-ben.
+A colref szintaktikája lényegében ugyanaz, mint a columné,
+csak kimarad belőle a típusmeghatározás.
+
+A további összetevőket, mint a  primkey, különféle selectek,
+már ismerjük. Indexdefiníciókat helyezni egy többtáblás tds-be
+értelmetlen, mivel soha nem fogjuk a táblát kreálni.
+A lekérdezések ugyanúgy működnek, mint az egytáblás esetben,
+például:
+\begin{verbatim}
+    tableentity:=probaszerencse.tableEntityNew(con)
+    rowset:=tableentity:select
+    while( (r:=rowset:next)!=NIL )
+        ? r:szamlaszam,r:kiegdata
+    end
+    rowset:close
+\end{verbatim}
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bapp_unix0.b -mppo2cpp-diff "BUILD_EXE=/home/vermes/bin"

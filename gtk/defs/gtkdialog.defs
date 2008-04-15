@@ -1,0 +1,134 @@
+
+
+(define-function gtk_dialog_get_type
+  (in-module GtkDialog)
+  (c-name "gtk_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_dialog_new
+  (c-name "gtk_dialog_new")
+  (is-constructor-of GtkDialog)
+  (return-type "GtkWidget*")
+)
+
+(define-function gtk_dialog_new_with_buttons
+  (c-name "gtk_dialog_new_with_buttons")
+  (is-constructor-of GtkDialog)
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "title" (null-ok) (default "NULL"))
+    '("GtkWindow*" "parent" (null-ok) (default "NULL"))
+    '("GtkDialogFlags" "flags" (default "0"))
+    '("const-gchar*" "first_button_text" (null-ok) (default "NULL"))
+  )
+  (varargs #t)
+)
+
+(define-method add_action_widget
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_add_action_widget")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "child")
+    '("gint" "response_id")
+  )
+)
+
+(define-method add_button
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_add_button")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "button_text")
+    '("gint" "response_id")
+  )
+)
+
+(define-method add_buttons
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_add_buttons")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "first_button_text")
+  )
+  (varargs #t)
+)
+
+(define-method set_response_sensitive
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_set_response_sensitive")
+  (return-type "none")
+  (parameters
+    '("gint" "response_id")
+    '("gboolean" "setting")
+  )
+)
+
+(define-method set_default_response
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_set_default_response")
+  (return-type "none")
+  (parameters
+    '("gint" "response_id")
+  )
+)
+
+(define-method set_has_separator
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_set_has_separator")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_has_separator
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_get_has_separator")
+  (return-type "gboolean")
+)
+
+(define-method response
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_response")
+  (return-type "none")
+  (parameters
+    '("gint" "response_id")
+  )
+)
+
+(define-method run
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_run")
+  (return-type "gint")
+)
+
+(define-method get_vbox
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_get_vbox")
+  (return-type "GtkVBox*")
+  (CCC "REG,tag")
+  (comment "
+    gtk.dialog.get_vbox(self) --> vbox
+
+    Eredetileg nincs ilyen API függvény,
+    a CCC külön függvényt definiál a struktúra-tag kiolvasására.
+  ")
+)
+
+(define-method get_action_area
+  (of-object "GtkDialog")
+  (c-name "gtk_dialog_get_action_area")
+  (return-type "GtkHButtonBox*")
+  (CCC "REG,tag")
+  (comment "
+    gtk.dialog.get_action_area(self) --> action_area
+
+    Eredetileg nincs ilyen API függvény,
+    a CCC külön függvényt definiál a struktúra-tag kiolvasására.
+  ")
+)
+
+
+

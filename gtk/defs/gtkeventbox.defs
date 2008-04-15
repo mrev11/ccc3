@@ -1,0 +1,16 @@
+
+
+(define-function gtk_event_box_get_type
+  (in-module GtkEventBox)
+  (c-name "gtk_event_box_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_event_box_new
+  (c-name "gtk_event_box_new")
+  (is-constructor-of GtkEventBox)
+  (return-type "GtkWidget*")
+)
+
+
+

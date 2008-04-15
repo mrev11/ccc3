@@ -1,0 +1,16 @@
+
+
+(define-function gtk_cell_renderer_pixbuf_get_type
+  (in-module GtkCellRendererPixbuf)
+  (c-name "gtk_cell_renderer_pixbuf_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_cell_renderer_pixbuf_new
+  (c-name "gtk_cell_renderer_pixbuf_new")
+  (is-constructor-of GtkCellRendererPixbuf)
+  (return-type "GtkCellRenderer*")
+)
+
+
+

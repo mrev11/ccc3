@@ -1,0 +1,82 @@
+
+
+(define-function gtk_radio_menu_item_get_type
+  (in-module GtkRadioMenuItem)
+  (c-name "gtk_radio_menu_item_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_radio_menu_item_new
+  (c-name "gtk_radio_menu_item_new")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+  )
+)
+
+(define-function gtk_radio_menu_item_new_with_label
+  (c-name "gtk_radio_menu_item_new_with_label")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_radio_menu_item_new_with_mnemonic
+  (c-name "gtk_radio_menu_item_new_with_mnemonic")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GSList*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+
+(define-function gtk_radio_menu_item_new_from_widget
+  (c-name "gtk_radio_menu_item_new_from_widget")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioMenuItem*" "group" (null-ok))
+  )
+)
+
+(define-function gtk_radio_menu_item_new_with_label_from_widget
+  (c-name "gtk_radio_menu_item_new_with_label_from_widget")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioMenuItem*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+(define-function gtk_radio_menu_item_new_with_mnemonic_from_widget
+  (c-name "gtk_radio_menu_item_new_with_mnemonic_from_widget")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioMenuItem*" "group" (null-ok))
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method get_group
+  (of-object "GtkRadioMenuItem")
+  (c-name "gtk_radio_menu_item_get_group")
+  (return-type "GSList*" ".do_not_convert.")
+)
+
+(define-method set_group
+  (of-object "GtkRadioMenuItem")
+  (c-name "gtk_radio_menu_item_set_group")
+  (return-type "none")
+  (parameters
+    '("GSList*" "group")
+  )
+)
+

@@ -1,0 +1,250 @@
+
+\def\htmlfigext{\png}
+ 
+\section{Áttekintés}
+
+\subsection{Mi a Jáva Terminál?}
+ 
+A Jáva Terminál egy {\em alkalmazásfüggetlen} megjelenítő program,
+ami más programok részére biztosít GUI-t.
+A terminál alapvető feladata dialogboxok  megjelenítése.
+A Jáva Terminál dialogboxai Swing elemekből építkeznek:
+\begin{itemize}
+\item menü, 
+\item push button, 
+\item rádió button, 
+\item check box, 
+\item get (szerkesztő sablonnal felszerelt szövegmező),
+\item list box, 
+\item táblázat (browse), 
+\item progress indikátor, 
+\item ikonok, statikus szövegek.
+\end{itemize}
+A Jáva Swing használata meglehetősen szép külsőt eredményez,
+ami ráadásul a Jáva L\&F bevetésével tovább alakítható.
+
+
+\subsection{Hogyan működik?}
+ 
+A Jáva terminál és a CCC alkalmazás XML üzenetekkel kommunikál.
+A kommunikáció kezdetekor az alkalmazás elküldi a terminálnak
+a dialogbox XML leírását. Ez tartalmazza a dialogboxban megjelenítendő
+komponensek paraméterezését, a bennük levő adatok kezdőértékét.
+A terminál megjeleníti és működteti a dialogboxot.
+
+A felhasználó tevékenysége közben a terminált magára hagyjuk. 
+A felhasználó azt ír a szövegmezőkbe, amit akar
+(és amit a szerkesztő sablonok megengednek), 
+kedvére választhat a listboxokban, 
+klikkelhet a check boxokban, 
+választhat a browse-ban, stb.
+  
+Üzenetváltás csak akkor történik, amikor a felhasználó valamilyen
+akciót kezdeményez: választ egy menüpontot, vagy megnyom egy pushbuttont.
+Ilyenkor a terminál elküldi a szervernek az akciót azonosító adatokat 
+és a dialogbox teljes aktuális adattartalmát. 
+Az akció hatására a szerver végrehajtja az üzleti logikát, 
+és válaszként további adatokat és utasításokat küld a terminálnak,
+például:
+\begin{itemize}
+  \item 
+    új értéket ad egyes mezőknek,
+  \item
+    küld egy lapnyi új adatot a browse-nak,
+  \item
+    utasítja a dialogboxot a kilépésre, stb.
+\end{itemize}
+Ez az egyszerű funkcionalitás az ügyviteli alkalmazások széles 
+körének megfelelő felhasználói felületet nyújt. 
+
+Bár a Jáva Terminált eddig csak CCC szerverek megjelenítő
+moduljaként használtuk, a terminál  más nyelvekből is igénybe vehető. 
+A legtöbb ma használt programnyelvben, pl.\ C++-ban, Pythonban, Jávában (!) 
+könnyen megvalósítható a szerver oldali API. Az API implementálhatóságának 
+demonstrálása céljából készült a 
+\href{http://ok.comfirm.hu/ccc2/download/jtpython.zip}{Python interfész}.
+A felsorolásban a Jáva említése nem elírás, van értelme Jáva programok 
+Jáva Terminálban történő megjelenítésének, ez  ugyanis lehetővé teszi, 
+hogy a szerver és a terminál egymástól  földrajzilag távoli gépeken fusson. 
+
+
+Az  API  egyszerűsége abból adódik,
+hogy lényegében {\em nincs belső működése}. Az alkalmazás egyszerűen
+megüzeni a terminálnak, hogy mit akar, és az utasításokat a terminál
+végrehajtja. Az üzenetek XML-ben (azaz szövegesen)
+jönnek-mennek, mindig el lehet olvasni őket,  semmi sem marad
+titokban az alkalmazásfejlesztő előtt, az esetleges hibákat ezért
+hamar meg lehet találni.
+Persze  nem mindenki számára tesszük lehetővé az üzenetek olvasását. 
+A Jáva Terminál és a CCC szerverek képesek SSL kommunikációra, 
+így a használat nyilvános hálózaton is biztonságos.
+
+ 
+\subsection{Hogy néz ki?}
+
+\subsubsection{Fix pozícionálás}
+ 
+Alapvetően kétféle GUI-t tudunk csinálni.
+A fix pozícionálású ablak a
+régi Clipper readmodallal működtetett
+dialogbox utóda, a lehetőségek azonban tágabbak.
+Szövegmezőkön (get) kívül az új jtdialog ablak tartalmazhat browset, 
+list boxot, buttonokat, progress bart stb. 
+A \ref{fixpos}.~ábrán látható GUI-t a jólbevált mask
+programmal rajzoltam (pdialog.msk), ebből az msk2dlg programmal
+generáltam kódot (pdialog.dlg), amit végül a main.prg demonstrációs
+programban használtam fel.\footnote{
+  Ismerem Cs.L. véleményét  arról, hogy a maskot
+  fejlettebb eszközzel kellene helyettesíteni, azonban
+  szükségem volt valamire, amivel gyorsan el lehet indulni,
+  az msk2dlg-ben pedig nincs több, mint félnapos munka.
+  A Glade-et kipróbáltam, de egyáltalán nem tetszett. 
+  Szerintem a mask+msk2dlg-vel is messzire lehet jutni, 
+  és később még mindig módunk lesz a GUI tervezőt kicserélni, 
+  feltéve, hogy az XML interfészen  nem változtatunk.
+}
+ 
+
+\xfigure{fixpos}{Fix pozícionálás}{clip,height=8cm}
+
+
+Az ablak mérete változtatható, de az a kontrollok pozíciójára
+nincs hatással. A statikus labelek fix (kék) fontokkal vannak
+kiírva. Minden komponens ezen fix font mérete által meghatározott
+rácsra illeszkedik.
+A get mezők Clipper-szerű szerkesztő sablonokkal (picture) vannak felszerelve.
+A getek belsejében ugyanaz a fix font van, mint a statikus 
+labelekben (amik azért mégsem annyira statikusak, mert
+dinamikusan lehet változtatni a szövegüket, ikonjukat).
+A buttonokhoz, rádió és check boxokhoz egyedi ikon adható meg.
+Minden kontrollhoz tooltipet lehet rendelni.
+ 
+\xfigure{fixposbrw}{Fix pozícionálás browse-zal}{clip,height=8cm} 
+ 
+A \ref{fixposbrw}.~ábra mutatja, hogy a fix pozícionálású
+dialogboxba browset is rakhatunk.
+A browse lapozós, ez azt jelenti, hogy  az alkalmazás a tartalmat 
+laponként adja a browsenak. A lapozásra szolgálnak a nyíl ikonos buttonok.
+A szokásos navigációs eszközök (Pgdn, Pgup, scrollbár)  csak
+a már megkapott lapon belül mozognak.
+ 
+
+\subsubsection{Rugalmas pozícionálás}
+
+Ezzel a típussal készül a menüző browse utóda. 
+A menüben sok új lehetőség van, 
+rakhatunk bele ikonokat, check boxokat, rádió buttonokat.
+A browse fölé/alá tehetünk toolbart, amiben lehet
+push, check, rádió button, list box, get, progressbar, label (bármi).
+A Swingben a komponensek (pl. egy label) szövege HTML
+formátumú is lehet, amivel különböző tördelést, fontokat, 
+színezést lehet megvalósítani.
+
+\xfigure{rugpos}{Rugalmas pozícionálás (box layout) }{clip,height=8cm} 
+
+Középen egy JTable komponens van, ez kb. megfelel a Clipper
+TBrowsenak.  A JTable cellái Clipper
+kompatibilis szerkesztő sablonnal vannak formázva, és editálhatók.
+A logikai értékek check boxként editálódnak.
+Egyszerre több sort is ki lehet választani.
+Az oszlopok sorrendje egérhúzogatással felcserélhető.
+ 
+Az alsó státusz sor szintén egy toolbar,  ebben van egy getmező,
+amibe számlaszám szerint kereső  stringet lehet beírni.
+A toolbárok és a JTable függőleges sorrendjét az ablakhoz való
+hozzáadásuk sorrendje határozza meg.
+A toolbárok egérrel áthelyezhetők.
+
+Megjegyzem, hogy a terminál támogatja (függőleges helyett) a vízszintes
+pakkolást, és más komponenseket is lehetne egymás alá (mellé)
+helyezni. A toolbárok által tartalmazott komponensek például
+vízszintesen vannak egymás mellé rakva.
+Az ablak CCC-beli leprogramozása nem igényel GUI tervező eszközt,
+nincs szükség méretek megadására. 
+A fenti GUI-t a main1.prg program hozta létre.
+
+
+\subsection{Hogyan indítjuk a programokat?}
+
+\subsubsection{A szerverek indítása SSL nélkül}
+
+A \verb!jtlisten! program feladata  szerver programok indítása.
+\begin{verbatim}
+  jtlisten.exe [if:]port <command>
+\end{verbatim}
+A program figyel az opcionálisan megadott interfészen és a megadott 
+porton. Ha a portra kapcsolódnak, akkor elindítja \verb!<command>!-ot úgy, 
+hogy kiegészíti azt a  \verb!-jtsocket <sck>! opcióval,
+ahol \verb!<sck>! az accept-ben létrejött socket.
+A Jáva terminálos programok szokás szerint a \verb!-jtsocket <sck>! opcióban 
+kapják meg azt az örökölt socketet, amin a terminállal kommunikálni lehet.
+A \verb!<command>!-nak spawnvp-vel (UNIX-on fork plusz execvp-vel) 
+indítható  filéspecifikációval kell kezdődnie.
+ 
+
+
+\subsubsection{A szerverek indítása SSL-lel}
+ 
+A CCC szerver programok semmit sem tudnak 
+az SSL-ről. A plain socketen kommunikáló szerver 
+és az SSL-en kommunikáló terminál között egy  ,,fordító''
+réteg van, hasonlóan az ssh port forwardinghoz.
+Tegyük fel, hogy \verb!<command>! olyan programindító parancs,
+amit \verb!jtlisten! el tud indítani az előző pontban
+tárgyalt módon. Akkor a 
+\begin{verbatim}
+  jtlisten.exe [if:]port sslforward.exe <command>
+\end{verbatim}
+parancs ugyanúgy elindítja  \verb!<command>!-ot, de még
+egy SSL fordító réteget is közbeiktat.
+
+
+\subsubsection{Több szerver indítása xstart-tal}
+
+Az xstart a CCC 2.x rendszer tools könyvtárában található segédprogram, 
+amit a UNIX-on ismert inetd-hez hasonló módon lehet használni.
+Az xstart-ot egy XML szintaktikájú szövegfilével konfiguráljuk.
+
+\begin{verbatim}
+<xstart>
+<item>
+    <name>Program SSL nélkül</name>
+    <host>localhost</host>
+    <port>46000</port>
+    <workdir></workdir>
+    <command>program.exe -jtsocket $(SOCKET)</command>
+</item>
+<item>
+    <name>Program SSL-lel</name>
+    <host>localhost</host>
+    <port>46001</port>
+    <workdir></workdir>
+    <command>sslforward.exe program.exe -jtsocket $(SOCKET)</command>
+</item>
+</xstart>
+\end{verbatim}
+ 
+A konfigurációs filében host:port címekhez rendelünk szolgáltatásokat.
+A program figyel a megadott portokon, és ha valamelyik portra
+kapcsolódnak, akkor átvált a \verb!<workdir>! tagban megadott directoryba, 
+és ott elindítja a \verb!<command>! tagban megadott szolgáltatást.
+A \verb!<command>!-nak most is spawnvp-vel vagy execvp-vel
+indítható filéspecifikációval kell kezdődnie.
+A parancshoz xstart nem fűzi hozzá a -jtsocket opciót,
+viszont helyettesíti a \verb!$(SOCKET)! makrót az accept-ben
+kapott sockettel. Mint a példában látszik az sslforward program
+most is használható SSL fordító réteg közbeiktatására.
+
+
+\subsubsection{A terminál indítása}
+
+\begin{verbatim}
+  java -jar jterminal.jar <host> <port> [ssl]
+\end{verbatim}
+
+A terminál kapcsolódni fog a \verb!<host>!-ban  megadott gép
+\verb!<port>!-jára. Ha az opcionális \verb!ssl!  paraméter
+is meg van adva, akkor a terminál SSL-en fog kommunikálni.
+Az \verb!ssl! paramétert a szerverrel összhangban kell használni,
+azaz akkor és csak akkor kapcsoljuk be a terminálban az SSL-t,
+ha a szerver is SSL-en kommunikál.

@@ -1,0 +1,185 @@
+
+
+(define-function gtk_entry_get_type
+  (in-module GtkEntry)
+  (c-name "gtk_entry_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_entry_new
+  (c-name "gtk_entry_new")
+  (is-constructor-of GtkEntry)
+  (return-type "GtkWidget*")
+)
+
+(define-method get_text_length
+  (c-name "gtk_entry_get_text_length")
+  (of-object GtkEntry)
+  (return-type "guint")
+  (CCC "REG,tag")
+  (comment "
+    gtk.entry.get_text_length(self) --> length
+
+    Eredetileg nincs ilyen API függvény,
+    a CCC külön függvényt definiál a struktúra-tag kiolvasására.
+  ")
+)
+
+
+(define-function gtk_entry_new_with_max_length
+  (c-name "gtk_entry_new_with_max_length")
+  (is-constructor-of GtkEntry)
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint16" "max" (default "0"))
+  )
+  (deprecated "DEPRECATED, but we use it for a constructor for convenience")
+)
+
+(define-method set_visibility
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gboolean" "visible")
+  )
+)
+
+(define-method get_visibility
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_visibility")
+  (return-type "gboolean")
+)
+
+(define-method set_invisible_char
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_invisible_char")
+  (return-type "none")
+  (parameters
+    '("gunichar" "ch")
+  )
+  (CCC "byhand")
+)
+
+(define-method get_invisible_char
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_invisible_char")
+  (return-type "gunichar")
+  (CCC "byhand")
+)
+
+(define-method set_has_frame
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_has_frame")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_has_frame
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_has_frame")
+  (return-type "gboolean")
+)
+
+(define-method set_max_length
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_max_length")
+  (return-type "none")
+  (parameters
+    '("gint" "max")
+  )
+)
+
+(define-method get_max_length
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_max_length")
+  (return-type "gint")
+)
+
+(define-method set_activates_default
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_activates_default")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_activates_default
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_activates_default")
+  (return-type "gboolean")
+)
+
+(define-method set_width_chars
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_width_chars")
+  (return-type "none")
+  (parameters
+    '("gint" "n_chars")
+  )
+)
+
+(define-method get_width_chars
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_width_chars")
+  (return-type "gint")
+)
+
+(define-method set_text
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_set_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method get_text
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_text")
+  (return-type "const-gchar*")
+  (comment "must not free")
+)
+
+(define-method get_layout
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_layout")
+  (return-type "PangoLayout*")
+)
+
+(define-method get_layout_offsets
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_get_layout_offsets")
+  (return-type "none")
+  (parameters
+    '("gint*" "x")
+    '("gint*" "y")
+  )
+  (CCC "byhand")
+)
+
+(define-method append_text
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_append_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+  (deprecated "use GtkEditable.insert_text")
+)
+
+(define-method prepend_text
+  (of-object "GtkEntry")
+  (c-name "gtk_entry_prepend_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+  (deprecated "use GtkEditable.insert_text")
+)
+
+
+

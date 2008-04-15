@@ -1,0 +1,3 @@
+#!/bin/bash
+nlstran.b en ccclib
+nlstran.b hu ccclib

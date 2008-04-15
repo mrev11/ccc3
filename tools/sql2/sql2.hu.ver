@@ -1,0 +1,92 @@
+2008.03.31
+  Koncepció váltás: Az insert azokat a mezőket küldi a szervernek,
+  amikre az isnull .f.-et ad. Korábban azokat küldte, amikre isdirty
+  .t. volt.
+
+2007.10.29
+  dereferencing type-punned pointer will break strict-aliasing rules
+  E warningok kitisztítása: (void**)&var -> (void**)(void*)&var.
+
+2007.07.05
+  Az insert-nél a null értékű mezőket kihagyjuk.
+  Korábban a nem dirty mezőket írtuk ki, azonban egy
+  column:='' értékadás után a mező null, de nem dirty.
+
+  Visszavéve a módosítás, ami a primary key mezőket automatikusan 
+  not null-ra állította.
+  
+  sqlbind-ben TRANSFORM_NULL_EQUALS
+  Ha az ilyen kifejezésekben mint "expr=:1", a placeholder helyére 
+  null kerül, akkor az "expr=null"-t cseréli "expr is null"-ra.
+  Tipikusan akkor lesz null a placeholder, amikor egy üres stringet,
+  vagy üres dátumot az sqlliteral null-ra cserél.
+
+2007.06.01
+  A Postgres driverben saját escape függvény, ami
+  E'proba \\ooo \\ooo szerencse'0 alakra hozza a bytea típust.
+  Hosszú ideje nem tudnak megállapodni a formátumban.
+  A régebbi szerverek nem fogadják el az E prefixet (8.0.x-ig).
+  Az újabb szerverek E prefixszel szeretik a stringet (8.1.x-től).
+  Állítólag az is szerverfüggő, hogy \ vagy \\ kell-e.
+
+  Az Oracle driverben a tab:instance nem jól inicializálta 
+  az új rowentity bufferét.
+
+  A tds primkey-ben felsorolt oszlopok notnull attribútuma 
+  automatikusan .t.-re van állítva.
+
+  A mkblk_c null-ra állítja a mezőt, ha annak új értéke empty
+  (hasonlóan  az empty dátum értékekhez).  Ha ez nem így volna, 
+  akkor az sqlvalue-ban a trimelésekor szembesülnénk azzal, 
+  hogy az Oracleben nem létezik üres string, pl. '' vagy trim(' ')
+  egyaránt a null-t jelentik. Ha a trimelést hagyjuk el (sqlvalue-ban), 
+  akkor az oszlopleképezéstől függ az érték, pl. nem lesznek egyenlők 
+  különböző hosszú mezőből kiírt értékek (nem lehet rá keresni).
+  Lehetne még a ''-t ' '-vel helyettesíteni kiíráskor (zagyvaság).
+
+  A nem használt mkblk_x törölve.
+  Megjegyzés: A mkblk_x csak abban különbözött mkblk_c-től, hogy nem 
+  csinált str2bin/bin2str transzformációt a binárisan tárolt adatra.
+  Postgresben azonban a char/varchar mezők nem tudnak bináris adatot
+  tartalmazni (csak a bytea). A bytea mezőkkel viszont nem lehet
+  normálisan dolgozni a psql-ben. Ezért az X típusú leképezés ejtve.
+
+2006.09.15
+  Áttérés a class szintaktikára.
+
+  sql2.*.slqvalue() kiegészült a null értékek vizsgálatával,
+  ezzel insert/update rávehető, hogy null-okat küldjön a szervernek,
+  ha egy mezőre be van állítva c:setdirty(row,.t.) és c:setnull(row,.t.).
+  Megjegyzés, null érték lekérdezése: c:isnull(row).
+  
+  con:sqlexec("select ... for update") 
+  támogatása, korábban ez Oracleben nem működött, 
+  noha van értelme, mert így lockolni lehet a rekordokat 
+  (amiket nem kérdezünk le, legalábbis nem ezzel a selecttel).
+
+  Dokumentáció felülvizsgálva.
+
+2005.08.17
+  dirtyflag manipuláció 
+        col:isdirty(row)
+        col:setdirty(row,flag) //egy oszlop
+        row:setdirty(flag)     //összes oszlop
+        tab:setdirty(row,flag) //összes oszlop
+
+  nullflag manipuláció  
+        col:isnull(row)
+        col:setnull(row,flag)  //egy oszlop
+        row:setnull(flag)      //összes oszlop
+        tab:setnull(row,flag)  //összes oszlop
+
+  rowcount 
+        con:sqlexec return értéke insert/update/delete 
+        utasítások esetén az érintett rekordok száma 
+        (más utasításoknál 0, korábban NIL volt).
+    
+  sqlrowcounterror
+        Új kivétel, row:update és row:delete dobja,
+        ha rowcount!=1, ui. ez azt mutatja, hogy baj van a
+        primary key egyediségével, amin az egész rendszer alapszik.
+
+

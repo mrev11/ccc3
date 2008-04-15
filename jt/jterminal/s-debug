@@ -1,0 +1,3 @@
+#!/bin/bash
+java -Djavax.net.debug=all jterminal ok 45678 ssl aut  >log
+ 

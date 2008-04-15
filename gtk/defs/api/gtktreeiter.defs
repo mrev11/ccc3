@@ -1,0 +1,20 @@
+
+(define-function gtk_tree_iter_get_type
+  (in-module "GtkTreeIter")
+  (c-name "gtk_tree_iter_get_type")
+  (return-type "GType")
+)
+
+(define-method copy
+  (of-object "GtkTreeIter")
+  (c-name "gtk_tree_iter_copy")
+  (return-type "GtkTreeIter*")
+  (caller-owns-return #t)
+)
+
+(define-method free
+  (of-object "GtkTreeIter")
+  (c-name "gtk_tree_iter_free")
+  (return-type "none")
+)
+

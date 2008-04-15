@@ -1,0 +1,163 @@
+//MSK2DLG 0.9.00
+
+class postest(jtpanel)
+    method initialize
+    attrib  get1
+    attrib  p1
+    attrib  r1
+    attrib  c1
+    attrib  l1
+    attrib  w1
+    attrib  get2
+    attrib  p2
+    attrib  r2
+    attrib  c2
+    attrib  l2
+    attrib  w2
+    attrib  get3
+    attrib  p3
+    attrib  r3
+    attrib  c3
+    attrib  l3
+    attrib  w3
+    attrib  get4
+    attrib  p4
+    attrib  r4
+    attrib  c4
+    attrib  l4
+    attrib  w4
+    attrib  pnl
+    attrib  tbl
+    attrib  p5
+    attrib  tpn
+    attrib  htm
+    attrib  txt
+
+
+static function postest.initialize(this)
+    this:(jtpanel)initialize(0,0,26,83)
+    this:name:='postest'
+    this:layout:='fix'
+    this:get1:=jtgetNew(1,5,1,15); this:get1:name:='get1'; this:additem(this:get1)
+    this:p1:=jtpushNew(1,17,1,26); this:p1:name:='p1'; this:p1:text:='Push'; this:additem(this:p1)
+    this:r1:=jtradioNew(1,28,1,37); this:r1:name:='r1'; this:r1:text:='Rádió'; this:additem(this:r1)
+    this:c1:=jtcheckNew(1,39,1,48); this:c1:name:='c1'; this:c1:text:='Check'; this:additem(this:c1)
+    this:l1:=jtcomboNew(1,50,1,61); this:l1:name:='l1'; this:additem(this:l1)
+    this:w1:=jtpasswNew(1,63,1,73); this:w1:name:='w1'; this:additem(this:w1)
+    this:get2:=jtgetNew(3,5,3,15); this:get2:name:='get2'; this:additem(this:get2)
+    this:p2:=jtpushNew(3,17,3,26); this:p2:name:='p2'; this:p2:text:='Push'; this:additem(this:p2)
+    this:r2:=jtradioNew(3,28,3,37); this:r2:name:='r2'; this:r2:text:='Rádió'; this:additem(this:r2)
+    this:c2:=jtcheckNew(3,39,3,48); this:c2:name:='c2'; this:c2:text:='Check'; this:additem(this:c2)
+    this:l2:=jtcomboNew(3,50,3,61); this:l2:name:='l2'; this:additem(this:l2)
+    this:w2:=jtprogbarNew(3,63,3,73); this:w2:name:='w2'; this:additem(this:w2)
+    this:get3:=jtgetNew(4,5,4,15); this:get3:name:='get3'; this:additem(this:get3)
+    this:p3:=jtpushNew(4,17,4,26); this:p3:name:='p3'; this:p3:text:='Push'; this:additem(this:p3)
+    this:r3:=jtradioNew(4,28,4,37); this:r3:name:='r3'; this:r3:text:='Rádió'; this:additem(this:r3)
+    this:c3:=jtcheckNew(4,39,4,48); this:c3:name:='c3'; this:c3:text:='Check'; this:additem(this:c3)
+    this:l3:=jtcomboNew(4,50,4,61); this:l3:name:='l3'; this:additem(this:l3)
+    this:w3:=jtprogbarNew(4,63,4,73); this:w3:name:='w3'; this:additem(this:w3)
+    this:get4:=jtgetNew(6,5,7,15); this:get4:name:='get4'; this:additem(this:get4)
+    this:p4:=jtpushNew(6,17,7,26); this:p4:name:='p4'; this:p4:text:='Push'; this:additem(this:p4)
+    this:r4:=jtradioNew(6,28,7,37); this:r4:name:='r4'; this:r4:text:='Rádió'; this:additem(this:r4)
+    this:c4:=jtcheckNew(6,39,7,48); this:c4:name:='c4'; this:c4:text:='Check'; this:additem(this:c4)
+    this:l4:=jtcomboNew(6,50,7,61); this:l4:name:='l4'; this:additem(this:l4)
+    this:w4:=jtprogbarNew(6,63,7,73); this:w4:name:='w4'; this:additem(this:w4)
+    this:pnl:=jtpanelNew(9,2,14,12); this:pnl:name:='pnl'; this:pnl:text:='Panel'; this:additem(this:pnl)
+    this:tbl:=jtbrowsetableNew(9,14,14,25); this:tbl:name:='tbl'; this:additem(this:tbl)
+    this:p5:=jtpushNew(9,27,14,36); this:p5:name:='p5'; this:p5:text:='Push'; this:additem(this:p5)
+    this:tpn:=jttabpaneNew(9,38,14,49); this:tpn:name:='tpn'; this:additem(this:tpn)
+    this:htm:=jthtmlareaNew(9,51,14,62); this:htm:name:='htm'; this:additem(this:htm)
+    this:txt:=jttextareaNew(9,64,14,79); this:txt:name:='txt'; this:additem(this:txt)
+    this:additem(jtlabelNew(0,1,0,80,'11111111111111111111111111111111111111111111111111111111111111111111111111111111'))
+    this:additem(jtlabelNew(1,1,1,4,'2222'))
+    this:additem(jtlabelNew(1,16,1,16,'2'))
+    this:additem(jtlabelNew(1,27,1,27,'2'))
+    this:additem(jtlabelNew(1,38,1,38,'2'))
+    this:additem(jtlabelNew(1,49,1,49,'2'))
+    this:additem(jtlabelNew(1,62,1,62,'2'))
+    this:additem(jtlabelNew(1,74,1,80,'2222222'))
+    this:additem(jtlabelNew(2,1,2,80,'33333333333333333333333333333333333333333333333333333333333333333333333333333333'))
+    this:additem(jtlabelNew(3,1,3,4,'2222'))
+    this:additem(jtlabelNew(3,16,3,16,'2'))
+    this:additem(jtlabelNew(3,27,3,27,'2'))
+    this:additem(jtlabelNew(3,38,3,38,'2'))
+    this:additem(jtlabelNew(3,49,3,49,'2'))
+    this:additem(jtlabelNew(3,62,3,62,'2'))
+    this:additem(jtlabelNew(3,74,3,80,'2222222'))
+    this:additem(jtlabelNew(4,1,4,4,'2222'))
+    this:additem(jtlabelNew(4,16,4,16,'2'))
+    this:additem(jtlabelNew(4,27,4,27,'2'))
+    this:additem(jtlabelNew(4,38,4,38,'2'))
+    this:additem(jtlabelNew(4,49,4,49,'2'))
+    this:additem(jtlabelNew(4,62,4,62,'2'))
+    this:additem(jtlabelNew(4,74,4,80,'2222222'))
+    this:additem(jtlabelNew(5,1,5,80,'66666666666666666666666666666666666666666666666666666666666666666666666666666666'))
+    this:additem(jtlabelNew(6,1,6,4,'2222'))
+    this:additem(jtlabelNew(6,16,6,16,'2'))
+    this:additem(jtlabelNew(6,27,6,27,'2'))
+    this:additem(jtlabelNew(6,38,6,38,'2'))
+    this:additem(jtlabelNew(6,49,6,49,'2'))
+    this:additem(jtlabelNew(6,62,6,62,'2'))
+    this:additem(jtlabelNew(6,74,6,80,'2222222'))
+    this:additem(jtlabelNew(7,1,7,4,'2222'))
+    this:additem(jtlabelNew(7,16,7,16,'2'))
+    this:additem(jtlabelNew(7,27,7,27,'2'))
+    this:additem(jtlabelNew(7,38,7,38,'2'))
+    this:additem(jtlabelNew(7,49,7,49,'2'))
+    this:additem(jtlabelNew(7,62,7,62,'2'))
+    this:additem(jtlabelNew(7,74,7,80,'2222222'))
+    this:additem(jtlabelNew(8,1,8,80,'99999999999999999999999999999999999999999999999999999999999999999999999999999999'))
+    this:additem(jtlabelNew(9,1,9,1,'0'))
+    this:additem(jtlabelNew(9,13,9,13,'0'))
+    this:additem(jtlabelNew(9,26,9,26,'0'))
+    this:additem(jtlabelNew(9,37,9,37,'0'))
+    this:additem(jtlabelNew(9,50,9,50,'0'))
+    this:additem(jtlabelNew(9,63,9,63,'0'))
+    this:additem(jtlabelNew(9,80,9,80,'0'))
+    this:additem(jtlabelNew(10,1,10,1,'A'))
+    this:additem(jtlabelNew(10,13,10,13,'A'))
+    this:additem(jtlabelNew(10,26,10,26,'A'))
+    this:additem(jtlabelNew(10,37,10,37,'A'))
+    this:additem(jtlabelNew(10,50,10,50,'A'))
+    this:additem(jtlabelNew(10,63,10,63,'A'))
+    this:additem(jtlabelNew(10,80,10,80,'A'))
+    this:additem(jtlabelNew(11,1,11,1,'B'))
+    this:additem(jtlabelNew(11,13,11,13,'B'))
+    this:additem(jtlabelNew(11,26,11,26,'B'))
+    this:additem(jtlabelNew(11,37,11,37,'B'))
+    this:additem(jtlabelNew(11,50,11,50,'B'))
+    this:additem(jtlabelNew(11,63,11,63,'B'))
+    this:additem(jtlabelNew(11,80,11,80,'B'))
+    this:additem(jtlabelNew(12,1,12,1,'C'))
+    this:additem(jtlabelNew(12,13,12,13,'C'))
+    this:additem(jtlabelNew(12,26,12,26,'C'))
+    this:additem(jtlabelNew(12,37,12,37,'C'))
+    this:additem(jtlabelNew(12,50,12,50,'C'))
+    this:additem(jtlabelNew(12,63,12,63,'C'))
+    this:additem(jtlabelNew(12,80,12,80,'C'))
+    this:additem(jtlabelNew(13,1,13,1,'D'))
+    this:additem(jtlabelNew(13,13,13,13,'D'))
+    this:additem(jtlabelNew(13,26,13,26,'D'))
+    this:additem(jtlabelNew(13,37,13,37,'D'))
+    this:additem(jtlabelNew(13,50,13,50,'D'))
+    this:additem(jtlabelNew(13,63,13,63,'D'))
+    this:additem(jtlabelNew(13,80,13,80,'D'))
+    this:additem(jtlabelNew(14,1,14,1,'E'))
+    this:additem(jtlabelNew(14,13,14,13,'E'))
+    this:additem(jtlabelNew(14,26,14,26,'E'))
+    this:additem(jtlabelNew(14,37,14,37,'E'))
+    this:additem(jtlabelNew(14,50,14,50,'E'))
+    this:additem(jtlabelNew(14,63,14,63,'E'))
+    this:additem(jtlabelNew(14,80,14,80,'E'))
+    this:additem(jtlabelNew(15,1,15,80,'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'))
+    this:additem(jtlabelNew(16,1,16,80,'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'))
+    this:additem(jtlabelNew(17,1,17,80,'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'))
+    this:additem(jtlabelNew(18,1,18,80,'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'))
+    this:additem(jtlabelNew(19,1,19,80,'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'))
+    this:additem(jtlabelNew(20,1,20,80,'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'))
+    this:additem(jtlabelNew(21,1,21,80,'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE'))
+    this:additem(jtlabelNew(22,1,22,80,'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'))
+    this:additem(jtlabelNew(23,1,23,80,'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'))
+    this:additem(jtlabelNew(24,1,24,80,'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'))
+    return this
+

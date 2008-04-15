@@ -1,0 +1,462 @@
+
+\pagetitle%
+{Programkészítés a Build-del}%
+{Dr. Vermes Mátyás\footnote{\ComFirm}}%
+{1999. július -- 2003. szeptember}
+
+\section{Áttekintés}
+
+A CCC prog\-ramok a Build projekt-generátorral készülnek.
+Build kielemzi a forráskönyvtárakban talált programokat, megállapítja, 
+hogy azokból milyen lib-eket és exe-ket lehet csinálni.
+Összeveti a források, objectek, lib-ek, exe-k dátum/idejét, 
+és elvégzi a szükséges fordítást, linkelést. Build ismeri és kezeli
+az összes olyan forrástípust, ami a CCC környezetben eddig előfordult:
+mnt, cls, msk, pge,  asm, c, cpp, y, lex, prg,
+így nemcsak Clipper programok fordítására képes, 
+hanem pl.\ yacc és lex programokhoz is megfelel. 
+Valójában a Build olyankor is jó szolgálatot tesz, 
+amikor egyáltalán nincs a projektben Clipper nyelvű program.
+Az egész CCC futtatórendszer, könyvtárak, utilityk (köztük maga a Build) 
+fordítását is a Build vezérli.
+
+Kiemelem, hogy a támogatott platformokon (DOS, Windows, Linux, Solaris) 
+ugyanazt a makerendszert használjuk, ráadásul platformváltáskor
+nincs szükség a források konverziójára, hanem egyszerűen átmásoljuk 
+a projektet tartalmazó directory struktúrát egyik gépről a másikra. 
+A Build nem keveri össze különböző fordítókkal készített,
+különböző platformra szánt binárisokat.
+
+
+A Build jelenleg az alábbi fordítókkal képes programot csinálni:
+
+\begin{center}
+\begin{tabular}{|l|l|} \hline
+%Clipper 5.2e             & DOS              \\ \hline
+%Watcom  C                & Windows NT/2000  \\ \hline 
+Microsoft C (Visual C)   & Windows NT/2000  \\ \hline 
+Borland C (C Builder)    & Windows NT/2000  \\ \hline 
+MinGW                    & Windows NT/2000  \\ \hline 
+GCC                      & Linux, Solaris   \\ \hline  
+\end{tabular}
+\end{center}
+
+Maga a Build a DOS korlátai miatt csak UNIX-on és NT-n futtatható.
+Lehetséges azonban DOS-os fejlesztés is, ha NT-s környezetből
+fordítjuk az elavult rendszerre szánt programunkat.\footnote{
+A CCC 2.x-ben megszűnt a DOS-os Clipper és a Watcom fordítási
+környezet karbantartása, újdonság viszont a MinGW.}
+
+
+\section{Implicit fordítási szabályok}
+
+Build a forrásprogramok elemzésével megállapítja, hogy azok
+milyen összefüggésben vannak egymással (melyikből lesz object,
+melyik inkludálja valamelyik másikat, stb.), és a filéidők alapján
+eldönti, hogy milyen fordítási műveleteket kell végrehajtani.
+Ha Build úgy látja, hogy egy msk filéből elő kell állítani a
+say-t, akkor végrehajtja az msk2say.bat 
+scriptet. Általában is minden filétípust a filé kiterjesztése
+alapján azonosítunk, és minden fordítási művelethez tartozik
+egy batch filé, aminek a nevét az előbbi példa mintájára képezzük:
+prg2obj.bat, cpp2obj.bat, obj2lib.bat, stb.\footnote{
+A DOS világban meghonosodott kiterjesztéseket használjuk
+Linuxon is (bat, obj, lib, exe), ez azonban, hála a Linux
+rugalmasságának, semmilyen problémát nem okoz.}
+Ezáltal Build működése éppen olyan, mint ahogy a make utility
+alkalmazza az implicit fordítási szabályokat. A szabályokhoz
+tartozó tevékenységet azonban nem a makefilében adjuk meg, 
+hanem az iménti batch scriptekben.
+
+A Build programnak paraméterként kell megadni, hogy hol keresse 
+az adott platform xxx2yyy.bat alakú scriptjeit. A különböző
+platformokhoz különböző script készleteket csinálunk, és ezzel
+elfedjük a platformok közti eltéréseket.
+
+
+\section{Build programtípusok}
+
+A Build-et általában nem indítjuk közvetlenül, hanem olyan
+scripteken keresztül, amik megfelelő paraméterezéssel előkészítik
+Build-et egy-egy programtípus fordítására. Ezek a scriptek
+a {\tt \$CCCDIR/usr/bin/\$CCCUNAME} könyvtárban találhatók.
+A Windowson használható scriptek:
+
+\begin{tabular}{ll} 
+\verb'bapp_w320.bat          ' & Win32, CCC könyvtár nélkül             \\                           \\ 
+\verb'bapp_w32_.bat          ' & Win32 konzol, képernyőkezelés nélkül   \\ 
+\verb'bapp_w32c.bat          ' & Win32 konzol, fullscreen képernyő      \\ 
+\verb'bapp_w32c_btbtx.bat    ' & Win32 konzol, BTBTX adatbázis          \\ 
+\verb'bapp_w32c_datidx.bat   ' & Win32 konzol, DATIDX adatbázis         \\ 
+\verb'bapp_w32c_dbfctx.bat   ' & Win32 konzol, DBFCTX adatbázis         \\ 
+\verb'bapp_w32g.bat          ' & Win32 GUI                              \\ 
+\verb'bapp_w32g_btbtx.bat    ' & Win32 GUI, BTBTX adatbázis             \\ 
+\verb'bapp_w32g_datidx.bat   ' & Win32 GUI, DATIDX adatbázis            \\ 
+\verb'bapp_w32g_dbfctx.bat   ' & Win32 GUI, DBFCTX adatbázis            \\ 
+\end{tabular}
+ 
+A Linux, Solaris platformon használható scriptek:
+
+\begin{tabular}{ll} 
+\verb'bapp_unix0.b          ' & UNIX, CCC könyvtár nélkül              \\ 
+\verb'bapp_unix_.b          ' & UNIX, képernyőkezelés nélkül           \\  
+\verb'bapp_unixc.b          ' & UNIX, karakteres (fullscreen) képernyő \\   
+\verb'bapp_unixc_btbtx.b    ' & UNIX, karakteres képernyő, BTBTX adatbázis  \\ 
+\verb'bapp_unixc_datidx.b   ' & UNIX, karakteres képernyő, DATIDX adatbázis \\ 
+\verb'bapp_unixc_dbfctx.b   ' & UNIX, karakteres képernyő, DBFCTX adatbázis \\ 
+\verb'bapp_unixg.b          ' & UNIX, Fltk (X) képernyőkezelés         \\
+\verb'bapp_unix.b           ' & Dinamikus megjelenítő választás        \\ 
+\end{tabular}
+
+A dinamikus megjelenítés választás azt jelenti, hogy a program
+elinduláskor felderíti (tipikusan környezeti változók alapján),
+hogy milyen megjelenítéssel (grafikus vagy karakteres) kell működnie.
+
+A felsorolás közel sem teljes. A minták alapján könnyen lehet 
+készíteni további variációkat, emellett a Build egy adott
+programtípuson belül, alkalmazás szinten is rugalmasan paraméterezhető,
+ahogy azt a következőkben látni fogjuk.
+
+
+\section{Alapvető üzemmódok}
+
+
+Build legegyszerűbb használata esetén az aktuális directoryban található 
+forrásprogramokból készít exe, lib és so filéket. A programnak négy üzemmódja
+van, amit az {\tt -x}, {\tt -l} és {\tt -s} kapcsolókkal, illetve
+ezek elhagyásával lehet beállítani.
+
+\subsection{Egyetlen exe ({\tt -x}) üzemmód\label{switchx}}
+
+Példa: {\tt bapp\_unix.b -xpelda}
+
+Ez a parancs arra utasítja Build-et, hogy a pelda.prg forrásprogramból
+hozza létre pelda.exe-t úgy, hogy az aktuális directoryban lévő többi 
+forrást szintén fordítsa le, és az objecteket linkelje az exe-hez.
+Részletesebben a következők történnek.
+
+\begin{itemize}  
+\item 
+  Build  megvizsgálja, hogy van-e az aktuális directoryban
+  pelda.prg, és hogy az tartalmaz-e  function main-t, ha nem,
+  akkor hibát jelez, ha igen, akkor beveszi a projektbe.
+\item
+  Build az aktuális directory összes többi prg filéjét megvizsgálja,
+  és azokat, amik nem tartalmaznak main-t hozzáveszi a projekthez.
+  Ezek szintén le lesznek fordítva, és hozzá fognak linkelődni 
+  pelda.exe-hez.
+\item
+  A projektbe bevett prg-ket Build megvizsgálja abból a szempontból is, 
+  hogy milyen \#include direktívákat tartalmaznak. Ha az inkludált filé 
+  megtalálható, vagy az implict fordítási szabályok alkalmazásával valamely 
+  más filéből előállítható, akkor azt is beveszi a projektbe, és
+  hozzáveszi a modul függőségi listájához. 
+\item
+  Végül a projekthez hozzáveszi az összes c, cpp, asm, y, lex programot is.
+  A nem prg típusú források \#include-jait Build nem vizsgálja.
+\end{itemize} 
+Mint látjuk Build az aktuális directory minden szóbajövő programját
+felhasználja pelda.exe elkészítéséhez. 
+
+
+\subsection{Könyvtár ({\tt -l}) üzemmód\label{switchl}}
+
+Példa: {\tt bapp\_unix.b -lpelda}
+
+Ez a parancs arra utasítja Build-et, hogy készítse el pelda.lib-et,
+amibe be kell venni az aktuális directory minden olyan forrásprogramját,
+ami nem tartalmaz function main-t, ezenkívül az összes olyan prg-ből,
+ami main-t tartalmaz készítsen exe programot az előbbi lib hozzálinkelésével.
+A prg-k \#include-jait most is vizsgálja Build, és lehetőség szerint
+beveszi őket a projekt függőségi listáiba.
+A {-l} üzemmód még az {-x}-nél is mohóbb, az összes forrást így vagy úgy
+felhasználja, hogy programot készítsen belőle. 
+
+\subsection{Osztott könyvtár ({\tt -s}) üzemmód\label{switchs}}
+
+Példa: {\tt bapp\_unix.b -spelda}
+
+Ez az üzemmód UNIX-on alkalmazható, annyival több a \verb!-l!
+módnál, hogy elkészül a könyvtár osztott változata (so) is.
+
+\subsection{Minden main-ből exe (alapértelmezett) üzemmód }
+
+Példa: {\tt bapp\_unix.b}
+
+Ha az előbbi {\tt -x}, {\tt -l}, {\tt -s} kapcsolók egyikét sem 
+alkalmazzuk, akkor Build az aktuális directory minden main-t tartalmazó
+programjából exe-t készít, amihez hozzálinkeli az összes
+többi programból készített objectet anélkül, hogy azokból
+könyvtárat készítene.
+
+A projektek (könyvtárak, végrehajtható programok) tartalmát a 
+források megfelelő csoportosításával kell szabályozni. 
+Például, ha nem akarjuk letörölni egy forrás elavult változatát, 
+de az sem jó, ha jelenlétével zavarja Build működését, 
+akkor egyszerűen félre kell rakni egy alkönyvtárba.
+A fent ismertetett négy üzemmód az alkalmazási programok 90\%-ában 
+elegendő. A bonyolultabb esetekben segítenek az alább ismertetett
+kapcsolók.
+
+
+\section{Paraméter referencia}
+
+\subsection{Kapcsolók}
+\begin{description}
+\item[{\tt -xExeName}] 
+  ExeName az elkészítendő program neve (\href{#switchx}{lásd fenn}).
+
+\item[{\tt -lLibName}] 
+  LibName az elkészítendő könyvtár neve (\href{#switchl}{lásd fenn}).
+
+\item[{\tt -sLibName}] 
+  LibName az elkészítendő osztott könyvtár neve (\href{#switchs}{lásd fenn}).
+ 
+
+\item[{\tt -dSrcDir}] 
+  SrcDir azon directoryk listája, amikben Build a lefordítandó
+  forrásmodulokat keresi.   
+  A lista a {\tt,; } karakterekkel lehet elválasztva.
+  A parancssorban több {\tt -d} paraméter is meg lehet adva, ekkor ezek
+  tartalma összeadódik (additív). Ha {\tt -d} meg van adva, az aktuális 
+  directoryban csak akkor keres a program, ha az explicite fel van sorolva, 
+  pl. \verb'-d.;srcprg;srccpp'.
+  Ha {\tt -d} nincs megadva, akkor a program csak az aktuális directoryban
+  keres, ami a \verb'-d.' paraméterezéssel egyenértékű.
+  A {\tt -d}-ben felsorolt directorykban Build automatikusan
+  keresi az inkludálandó filéket is, ezért ezeket nem kell a {\tt -i}-ben 
+  is megadni.
+
+
+\item[{\tt -mMain}] 
+  Az {\tt -m} kapcsolóval lehet felsorolni a főprogramot
+  tartalmazó forrásmodulokat. A main modulok listája a {\tt,;} 
+  karakterekkel lehet elválasztva. A kapcsoló additív.
+  Az {\tt -m} kapcsolót akkor használjuk, ha a main függvény nem 
+  prg  típusú forrásban van. Ezzel Build nem Clipper nyelvű programok
+  fordítására is használható. A ppo2cpp program pl.\  cpp, y és lex 
+  típusú forrásokból készül, azaz egyáltalán nincs is a projektben prg. 
+
+
+\item[{\tt -iIncDir}] 
+  Az include directoryk listája adható meg az {\tt -i} kapcsolóval.
+  A C fordító saját könyvtárait nem itt szoktuk megadni, hanem 
+  a fordító konfigurálásánal, ami rendszerfüggő, pl.\ DOS-on az 
+  include környezeti változót szokták erre használni.  
+  A lista {\tt ,;} karakterekkel szeparálható, a kapcsoló additív. 
+  Nem kell olyan directoryt megadni, ami {\tt -d}-ben már szerepelt.
+
+
+\item[{\tt -pLibPath}] 
+  Azon directoryk listája adható meg a {\tt -p} kapcsolóval,
+  ahol a linker a CCC könyvtárakat keresi. A C fordító saját
+  könyvtárainak helyét nem itt szoktuk megadni, hanem a lib 
+  környezeti változóban. A lista {\tt ,;} karakterekkel
+  szeparálható, a kapcsoló additív.
+
+
+\item[{\tt -bLibFile}] 
+  A linkelendő könyvtárak nevét tartalmazó lista. 
+  A lista {\tt ,;} karakterekkel szeparálható, a kapcsoló additív. 
+
+
+\item[{\tt -hHelp}] 
+  Listát ad az érvényes kapcsolókról.
+  
+  
+\item[{\tt name=value}]  
+  A {\tt name=value} paraméter hatására a Build futása alatt
+  a name környezeti változó értéke be lesz állítva value-ra.
+  Build-et egy sereg {\tt BUILD\_XXX} alakú környezeti változóval
+  is paraméterezhetjük. A Build a fordítást végző xxx2yyy.bat  
+  scriptekkel szintén ilyen alakú környezeti változókon 
+  (és paramétereken) keresztül kommunikál. Ez a paraméter megadási 
+  forma lehetővé teszi, hogy Build környezeti változóit az operációs
+  rendszertől független szintaktikával állítsuk be.
+
+\item[{\tt \$(name)}]  
+  Ha Build a parancssorában \verb'$(name)' alakú kifejezést
+  talál, azt helyettesíti a \verb'getenv(name)' értékkel.
+  Ez lehetővé teszi, hogy a környezeti változó értékét
+  az operációs rendszertől független szintaktikával kapjuk meg.  
+ 
+
+
+\item[{\tt @parfile}] 
+  Parfile egy tetszőleges paraméterfilé, amiben a fent leírt 
+  paramétereket helyezhetjük el. A paramétereket a filében újsor 
+  karakterrel választjuk el. A parancssor és a paraméterfilé olvasása
+  folytatólagos, pl. lehet több paraméterfilé is a parancssorban.
+\end{description}
+
+
+\subsection{Build környezeti változók}
+
+\begin{description}
+\item[{\tt BUILD\_BAT}]  
+  Implicit szabályokhoz rendelt batch scriptek directoryja.
+
+
+\item[{\tt BUILD\_BSN}]  
+  A Bison-nak átadott kapcsolók.
+
+
+\item[{\tt BUILD\_CLS}]  
+  Az objccc paraméterei, pl. \verb'build_cls=-iclassdef'.
+
+
+\item[{\tt BUILD\_CPP}]  
+  Egy directory, ahol a rendszer a C++ kódot gyűjti abból a célból,
+  hogy letölthető installáló készletet lehessen előállítani belőle.
+ 
+
+\item[{\tt BUILD\_DBG}]  
+  Ha e változó értéke {\tt on}, akkor Build kiírja a projekt
+  függőségi listáit, és megmutatja a filék időbeli viszonyait.
+
+
+\item[{\tt BUILD\_EXE}]  
+  Az exe directory specifikációja, ide teszi Build az elkészült 
+  exe-ket, defaultja az aktuális directory.
+
+\item[{\tt BUILD\_INC}]  
+  A statndard include directoryk listája.
+
+\item[{\tt BUILD\_LEX}]  
+  A Flex-nek átadott kapcsolók.
+
+\item[{\tt BUILD\_LIB}]  
+  A standard libraryk listája.
+
+\item[{\tt BUILD\_LPT}]  
+  A standard library path.
+
+\item[{\tt BUILD\_OBJ}]  
+  Az aktuális object directory neve 
+  (a különböző platformú binárisokat ui.\  szét kell választani).
+  Főleg könyvtár specifikációban használjuk "átnyúlkálós" linkeléskor.
+  Például a KLTPINFO program így linkeli a KLTP projekt könyvtárát:
+   \verb'-b../kltp/$(BUILD_OBJ)/kltp'.
+
+\item[{\tt BUILD\_OPT}]  
+  A \verb!$CCCDIR/usr/options/$CCCBIN! directoryban
+  található, standard C++ fordítás opcióit tartalmazó filé neve.
+
+\item[{\tt BUILD\_PRE}]  
+  A prg2ppo preprocesszornak (vagy a Clippernek) átdott paraméterek.
+
+
+\item[{\tt BUILD\_SRC}]  
+  Ha ebben a változóban megadunk egy directoryt, akkor Build
+  a forrásdirectory paramétereket ({\tt -d}) erre a directoryra
+  relatívan értelmezi.
+
+
+\item[{\tt BUILD\_SYS}]  
+  Subsystem azonostó. Tartalma platformfüggő, pl. MSC-vel windows/console, 
+  Watcom-mal nt\_win/nt.
+\end{description}
+ 
+
+\subsection{Könyvtár és include környezeti változók}
+
+
+Külön kell szólni a 
+{\tt BUILD\_INC}, {\tt BUILD\_LIB}, {\tt BUILD\_LPT} változókról. 
+
+Build összegyűjti az include és library paramétereket, 
+és elhelyezi egy-egy környezeti változóban úgy (blank elválasztó),
+hogy később batch filéből shiftekkel könnyen fel lehessen dolgozni.
+A használt környezeti változók:
+\begin{description}
+\item[{\tt BUILD\_INC}] {\tt -d} + {\tt -i} kapcsolók tartalma + \verb'$(BUILD_INC)' + \verb'$(INCLUDE)' 
+\item[{\tt BUILD\_LPT}] {\tt -p} kapcsoló tartalma + \verb'$(BUILD_LPT)' + \verb'$(LIB)'  
+\item[{\tt BUILD\_LIB}] {\tt -b} kapcsoló tartalma + \verb'$(BUILD_LIB)' 
+\end{description}
+Ebből megállapítható a különböző szinten előírt paraméterek
+közötti összefüggés.
+
+\begin{enumerate}
+\item 
+  A kapcsolók szintjén adjuk meg a projekt specifikus 
+  paramétereket. Ha pl. a KLTPINFO átnyúl a KLTP projekt
+  OCH (include) filéiért, azt így írjuk elő: \verb'-i../kltp/classdef'.
+\item 
+  A \verb'BUILD_XXX' változók szintjén adjuk meg a standard 
+  paramétereket. Pl. a CCC könyvtárak, a Kontó könyvtárak is
+  így vannak megadva. Ezeket a paramétereket projekt szinten
+  nem tanácsos piszkálni. Ugyancsak ezen a szinten állítunk
+  be olyan paramétereket, amiknek a használata nem gyakori,
+  pl. \verb'BUILD_EXE', 
+      \verb'BUILD_DBG', 
+      \verb'BUILD_LEX', 
+      \verb'BUILD_BSN', 
+      \verb'BUILD_PRE'.
+\item 
+  Végül az általános környezeti változók szintjén kell magadni 
+  az aktuális fordító (Clipper, Watcom C, stb.) normál működéséhez
+  szükséges include és lib directorykat.
+\end{enumerate}
+
+
+\section{Példa}
+
+A \verb!CCCDIR/tools/mask/m! script tartalma a következő:
+\begin{verbatim}
+#!/bin/bash
+bapp_unixc.b -lmask "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME" 
+\end{verbatim}
+
+\begin{enumerate}
+\item 
+   UNIX-os, karakteres képernyőkezelésű programok készülnek.
+\item 
+   Minden main-t nem tartalmazó program lefordul, és készül belőlük
+   egy \verb!mask! nevű könyvtár.
+\item 
+   Minden main-t tartalmazó programból lesz egy azonos nevű exe,
+   amihez hozzálinkelődik az előbbi könyvtár. A konkrét példában
+   öt darab exe fog készülni (ez a scriptből nem látszik,
+   a Build fogja megkeresni őket).
+\item
+   A \verb!BUILD_EXE! változó beállításával megadjuk azt a directoryt,
+   ahová a Build a friss exe-ket tenni fogja. Enélkül az aktuális
+   directoryban jönnének létre az exe-k.
+\end{enumerate}
+
+Ha az \verb!m! script tartalma csak ennyi volna:
+\begin{verbatim}
+#!/bin/bash
+bapp_unixc.b
+\end{verbatim}
+akkor is lefordulna az összes program, létrejönne az öt exe
+(az aktuális directoryban), de nem készülne külön könyvtár.
+
+Az előbbi script windowsos megfelelője \verb!m.bat!:
+
+\begin{verbatim}
+@echo off
+bapp_w32c -lmask  "BUILD_EXE=$(CCCDIR)/usr/bin/nt"
+\end{verbatim}
+
+Nagyon hasonló a UNIX-os változathoz, azonban a UNIX
+és Windows shell eltérései miatt a paraméterekben 
+előforduló speciális karaktereket másképp kell védeni.
+A \verb!$(CCCDIR)! makrót a Build fogja értelmezni.
+A Build egyformán megérti a \verb!\!  és \verb!/! 
+elválasztó karakterrel leírt útvonalakat.
+
+Végeredményben két nagyon rövid, egymáshoz nagyon hasonló scriptet 
+kell csak megírni, ezután bármely platformon  az egybetűs \verb!m! 
+parancs hatására elkészül az adott direktoriban fellelhető 
+összes program. Így működik a Build.
+
+További példák sokasága található a CCC directory struktúrában,
+ahol  minden projekt, beleértve a runtime libraryk fordítását, 
+a prg forrást egyáltalán nem tartalmazó programok fordítását,
+a Build-del készül. 
+ 
+%\gotoindex
+
+ 
+ 

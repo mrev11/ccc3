@@ -1,0 +1,195 @@
+
+#define VERSION "2.4.04" 
+
+#ifdef HISTORY
+2.4.04 -- 2008.03.18
+    index.shtml
+
+2.4.03 -- 2007.12.17
+    dirpage átírva binary-ra.
+    Szabálytalan kódolású filéspecek kezelése.
+    Szükséges hozzá a directory fv binopt paramétere:
+    directory(mask,flag,binopt)
+    Windowson ezután sem működnek a nonascii filénevek.
+    
+2.4.02 -- 2007.12.13
+    Opció --dircharset a dirpage-ekben deklarált charset, 
+    a default CCC2-ben ISO-8859-2, CCC3-ban UTF-8.
+
+2.4.01 -- 2007.12.13
+    Az url-ekben becserélve a %hh alakú kódok.
+
+2.4.00 -- 2007.12.01
+    Több listener kezelése.
+    Eltérő paraméterezés (--listener, --rootdir).
+    Bevezetve a listener, webcon, httprequest segédosztályok.
+    Szétszedve több kisebb forrásmodulra.
+
+2.3.11 -- 2007.11.30
+    --virtualhost kapcsoló
+    Bekapcsol egy primitív name based virtual host kezelést.
+    Bekapcsolva: (rootdir+http_host)+url filéspecifikációkat vesz.
+    Kikapcsolva: rootdir+url filéspecifikációkat vesz (default).
+
+    Az sck:inherit megváltoztatja az sck:fd-t, amihez egy már meglevő 
+    SSL nem tud alkalmazkodni, ezért sslcon-ok fd-jét a konnektálás 
+    után már nem lehet az inherit metódussal változtatni. Általában 
+    nincs értelme egy sslcon:fd-t örököltetni, mert a child az sslctx 
+    híján úgy sem tud rajta kommunikálni. Eddig csak véletlenül volt jó,
+    mert az sck:inherit(.t.), sck:inherit(.f.) után a második fdup
+    éppen az eredeti értékre változtatta vissza az fd-t.
+    Tehát: sslcon:fd-t nem örököltetünk.
+
+    Az ssipage-ben megváltozott a feldolgozás sorrendje.
+    Először az inkludált filében végez el minden inkludálást,
+    utána illeszti a szöveget az eggyel felsőbb szintű filébe.
+    Azaz rekurzív, ami lehetővé teszi, hogy kövesse az inkludált 
+    filék directoryját:
+
+    1)  Ha az include specifikáció perrel (/) kezdődik, 
+        akkor azt csak a workdirre relatívan keresi.
+
+    2)  Ha az include specifikáció nem perrel (/) kezdődik,
+        akkor azt először az aktuális filé directoryjára relatívan,
+        utána a workdirre relatívan keresi.
+        
+    --inheritmode defaultja 0-ra változott (minimális környezet)
+
+2.3.10 -- 2007.11.25
+    A CGI programok által örökölt fd-k szabályozva.
+    
+    Jáva terminálos programok indítása.
+    A Jáva terminálos programok CGI-ként futnak,
+    ennek érdekében a websrv a következőket teszi
+    a szabványos CGI protokollon túl:
+
+    1) Bekészíti a socket fd-t a REMOTE_SOCKET változóba.
+
+    2) Örökölteti a socketet a CGI programmal.
+
+    3) Ha a CGI program nem ad semmilyen kimenetet,
+       akkor a websrv semmit sem  küld a kliensnek,
+       hanem befejezi a kiszolgáló szálat, 
+       és magára hagyja a CGI programot.
+
+2.3.09 -- 2007.11.04
+    Opció a CGI-k környezetének szabályozására:
+    --inheritmode 0     minimális környezet továbbadva
+    --inheritmode 1     teljes környezet továbbadva (default)
+
+2.3.08 -- 2007.10.29
+    SYSTEMROOT környezet továbbadva a CGI programoknak.
+
+2.3.07 -- 2007.09.10
+    Windows compatibility:
+      dirchange() használat javítva a PHP indításkor. 
+      xdirexist() kiszűri a Windowsos és UNIX-os stat eltérését.
+    A program mindenhol / szeparátorral van megírva,
+    a windowsos C könyvtár végzi az '/' -> '\' konverziót.
+    
+    curdir() helyett dirname()
+    A szabványos curdir() kezdő / nélkül adja a directoryt.
+    A CCC2/UNIX-os curdir nem szabványos (/-vel kezd), 
+    és nem is lehet kijavítani a meglevő programok miatt.
+    Az CA-Tools-beli dirname() eredménye /teljes/path alakú.
+
+2.3.06 -- 2007.09.08
+    Áttérés abszolút path-okra, ez lehetővé teszi, 
+    hogy a spawn előtt átváltsunk a CGI program directoryjába,
+    ami így az aktuális directory lesz a CGI futása alatt.
+    Megjegyzés: A PHP maga is csinál ilyen directory váltást,
+    ezért PHP script esetén érdektelen, hogy a websrv hova vált.
+    
+    A cgipath paraméter jelentése megváltozott:
+    Most azt a directoryt jelenti, ahol a CGI programok vannak.
+    Pl. ha a kért url a "/cgi-bin/dir/cgi.exe", akkor a szerver 
+    a "<cgipath>/dir/cgi.exe" programot fogja keresni
+    (és a "<cgipath>/dir" lesz az aktuális directory).
+    A cgipath akárhol lehet, a directory neve akármi lehet.
+    (Korábban a "<chipath>/cgi-bin"-ben voltak a CGI-k.)
+    
+2.3.05 -- 2007.08.14
+    Hibaüzenetek egységesítve.
+
+2.3.04 -- 2007.08.11
+    .direntry formájú bejegyzésekre mutató linkek javítva.
+
+2.3.03 -- 2007.08.11
+    SSL session cache.
+
+2.3.02 -- 2007.08.09
+    SSL session cache paraméterek állítgatása.
+
+2.3.01 -- 2007.08.01
+    A CGI programok headerjében LF->CRLF.
+    A CGI-k után beállítja a Content-Length headert.
+    Addig működik csak keepalive módban,
+    amíg az egyszerre futó szálak száma < maxthread/2,
+    ilyenkor 5 sec-ig vár a kliens újabb requestjére.
+    A log formátuma változott.
+
+2.3.00 -- 2007.07.24
+    Beépített SSL támogatás (webcon helyett/mellett).
+    Áttérés socket/sslcon objektumokra (socket fd helyett).
+    Átdolgozott indítóscriptek.
+
+    Új opciók:
+    User ID beállítás bind után: --userid <uid>
+    Beépített SSL (HTTPS) bekapcsolás: --keyfile <pem>
+    Kliens hitelesítés bekapcsolás: --capath <dspec>
+    Kliens hitelesítés bekapcsolás: --cafile <fspec>
+    Working threadek limitálása: --maxthread
+    CGI végrehajtási idő limitálása: --cgitime
+
+    Hibajavítások:
+    Paraméterolvasásban $(ENVVAR) feldolgozása általánosabb.
+    Átirányítás http://.../dir --> https://.../dir/ egy lépésben.
+    Elmaradt a pipe read végének lezárása a CGI futtatáskor.
+    Kiírások és fd örököltetés szinkronizálása.
+    Workaround fork-ra (másik szálban a malloc lockolva marad).
+
+2.2.03 -- 2007.02.26
+    A végükön "/" nélküli dirscpeceket a "http://host/dirspec/" 
+    alakú URL-re kell irányítani (301-es státusszal). A "/" nélküli 
+    dirscpeceket nem szabad kiegészíteni /dirspec/index.html-re,
+    mert elromlanának az index.html-ben levő relatív linkek.
+    Ilyen esetben eddig (az átirányítás és kiegészítés helyett) 
+    dirpage-et adtunk.  Az átirányítást csinálja az Apache is. 
+
+    A felesleges átirányítások kerülése édekében a directorykra
+    mutató linkeket jobb eleve "/"-val írni (pl. a dirpage-ben).
+
+2.2.02 -- 2007.02.25
+    Figyelni kell a CGI által visszaadott Status headert.
+
+2.2.01 -- 2007.02.22
+    CGI-ként futó PHP támogatás.
+
+2.1.00 -- 2006.11.28
+    SSL támogatás a webcon-nal.
+    
+    --excluded  : Az itt felsorolt url-eket elfedi.
+    --secure    : Az itt felsorolt url-eket elfedi,
+                  a dirpage() https linket csinál rájuk.
+    --httpshost : Az itt megadott hostot használja a https linkekhez.
+    
+    A paremétereket @param alakú fájlból is olvassa.
+    Hosszú opciónevek.
+
+2.0.01
+    Nagy filé támogatás
+
+2.0.00  
+    CGI támogatás.
+    A -c cgipath opció engedélyezi a CGI-ket.
+    Áttérés binary feldolgozásra.
+
+1.1.02  
+    reuseaddr, subdir/index.html
+
+1.1.01  
+    directory listák rendezhetők
+
+1.1.00  
+    server side include implementálva
+#endif 

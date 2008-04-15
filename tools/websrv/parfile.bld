@@ -1,0 +1,21 @@
+-bccc3_sslsocket
+-bccc3_socket
+
+# Célszerű statikusra linkelni,
+# hogy a CCC so-k újralinkelése ne rontsa el a futó szervert.
+# Akkor viszont meg kell adni az openssl könyvtárat,
+# méghozzá libssl.so alakban, mert statikus linkelésnél
+# egyébként a libssl.a-t találná meg, ami utám még egy nagy
+# rakás undefined reference marad.
+
+BUILD_SHR=static
+
+
+# Ha nincs kéznél az openssl könyvtár, 
+# akkor is le lehet fordítani a programot HTTPS támogatás nélkül,
+# ehhez ki kell kommentezni az első sorban -bccc3_sslsocket-et,
+# és ki kell kommentezni az alábbi sort:
+
+BUILD_PRE=-dHTTPS_SUPPORT
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

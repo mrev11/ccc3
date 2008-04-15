@@ -1,0 +1,62 @@
+
+
+(define-function gtk_misc_get_type
+  (in-module "GtkMisc")
+  (c-name "gtk_misc_get_type")
+  (return-type "GtkType")
+)
+
+(define-method set_alignment
+  (of-object "GtkMisc")
+  (c-name "gtk_misc_set_alignment")
+  (return-type "none")
+  (parameters
+    '("gfloat" "xalign")
+    '("gfloat" "yalign")
+  )
+)
+
+(define-method get_alignment
+  (of-object "GtkMisc")
+  (c-name "gtk_misc_get_alignment")
+  (return-type "none")
+  (parameters
+    '("gfloat*" "xalign")
+    '("gfloat*" "yalign")
+  )
+  (CCC "REG,par,ret")
+  (comment "
+    gtk.misc.get_alignment(self,@x,@y) --> {x,y}
+
+    Az eredményt (opcionálisan) ref vátozókban is és arrayben is adja.
+  ")
+)
+
+(define-method set_padding
+  (of-object "GtkMisc")
+  (c-name "gtk_misc_set_padding")
+  (return-type "none")
+  (parameters
+    '("gint" "xpad")
+    '("gint" "ypad")
+  )
+)
+
+(define-method get_padding
+  (of-object "GtkMisc")
+  (c-name "gtk_misc_get_padding")
+  (return-type "none")
+  (parameters
+    '("gint*" "xpad")
+    '("gint*" "ypad")
+  )
+  (CCC "REG,par,ret")
+  (comment "
+    gtk.misc.get_padding(self,@x,@y) --> {x,y}
+
+    Az eredményt (opcionálisan) ref vátozókban is és arrayben is adja.
+  ")
+)
+
+
+

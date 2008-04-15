@@ -1,0 +1,3 @@
+#!/bin/bash
+export CCC_NLSTEXT_TAB=$(pwd)/nlstext.tran
+bapp_unix_.b

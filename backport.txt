@@ -1,0 +1,45 @@
+
+Az alábbi (CCC3 környezetben fejlesztett) programokra
+CCC2 környezetben is szükség van:
+
+    jt
+    tools/socket
+    tools/sql2
+    tools/websrv
+    tools/xmlrpc
+    tools/xmlrpc-framework
+    
+    class.prg
+
+Képtelenség a programokat két változatban is karban tartani,
+ezért a fenti programok CCC2-beli karbantartása megszűnt,
+ehelyett a CCC3-as változat fordul CCC2 alatt is.
+
+A ccc2-backport.savex filék másolják át a forrást CCC3-ból CCC2-be.
+Ezek mindent szinkronizálnak, kivéve az m, m.bat, *.bld filéket
+és az esetenként megadott compatibility directorykat (vagyis a CCC2
+projectek speciális build paraméterezése külön megmarad).
+
+
+Ahhoz hogy CCC2 alatt le lehessen fordítani a CCC3 programokat,
+a CCC2-ben kis bővítések kellettek:
+
+  wchar_t és WCHAR átdefiniálva char-ra
+  a _parb makró és társai átdefiniálva _parc-re és társaira
+  a binary függvény és társai átdefiniálva string-re és társaira
+  az a"..." binary stringek közönséges stringként fordulnak
+  compatibility függvények: bin, str2bin, bin2str, split, gc
+
+Néhol az eredeti (CCC3) programban is módosítani kell:
+
+  C-ben az L"..." stringeket így kell beírni: CHRLIT("...")
+
+
+A CCC2-es környezetben fordított programok csak Latin1/CWI kódolású
+adatokkal futnak jól. A programok futnak ugyan UTF-8 kódolású adatokon is,
+azonban kisebb  hibák adódnak:
+
+  a QOut-ban levő CCC2LAT karakter konverzió elrontja az UTF-8 kódot
+  a padr, left, ... rosszul számolja a stringek hosszát
+  az upper, lower elrontja az UTF-8 kódolást
+

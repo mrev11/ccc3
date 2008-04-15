@@ -1,0 +1,3 @@
+#!/bin/bash
+bapp_unix0.b @parfile.bld
+#list.exe error &

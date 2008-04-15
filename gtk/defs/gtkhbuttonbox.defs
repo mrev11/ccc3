@@ -1,0 +1,44 @@
+
+
+(define-function gtk_hbutton_box_get_type
+  (in-module GtkHButtonBox)
+  (c-name "gtk_hbutton_box_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_hbutton_box_new
+  (c-name "gtk_hbutton_box_new")
+  (is-constructor-of GtkHButtonBox)
+  (return-type "GtkWidget*")
+)
+
+(define-function hbutton_box_get_spacing_default
+  (c-name "gtk_hbutton_box_get_spacing_default")
+  (return-type "gint")
+  (deprecated "")
+)
+
+(define-function hbutton_box_get_layout_default
+  (c-name "gtk_hbutton_box_get_layout_default")
+  (return-type "GtkButtonBoxStyle")
+  (deprecated "")
+)
+
+(define-function hbutton_box_set_spacing_default
+  (c-name "gtk_hbutton_box_set_spacing_default")
+  (return-type "none")
+  (parameters
+    '("gint" "spacing")
+  )
+  (deprecated "")
+)
+
+(define-function hbutton_box_set_layout_default
+  (c-name "gtk_hbutton_box_set_layout_default")
+  (return-type "none")
+  (parameters
+    '("GtkButtonBoxStyle" "layout")
+  )
+  (deprecated "")
+)
+

@@ -1,0 +1,60 @@
+
+name: konto.szamla
+version: "bt2tds 1.0.01"
+
+table: konto.szamla
+
+column:  SZAMLASZAM       C24     nn  (p=@RC 99999999-NNNNNNNN-99999999)
+column:  SZAMLAKOD        C1      
+column:  DEVNEM           C3      
+column:  NEV              C30
+column:  EGYENLEG         N17.2   
+column:  NYHITKERET       N17.2   
+column:  FHITKERET        N17.2   
+column:  NAPITARTOZ       N17.2   
+column:  NAPIKOVET        N17.2   
+column:  NYITDATUM        D       
+column:  EVNYITEGY        N17.2   
+column:  YTMTART          N17.2   
+column:  YTMKOV           N17.2   
+column:  MTDTART          N17.2   
+column:  MTDKOV           N17.2   
+column:  FORWTART         N17.2   
+column:  FORWKOV          N17.2   
+column:  BLOKKEGYNL       N17.2   
+column:  SORBEGYNL        N17.2   
+column:  EVITETEL         N6      
+column:  HAVITETEL        N5      
+column:  TOROLTFLAG       L       
+column:  ZAROLTFLAG       L       
+column:  TULMENFLAG       L       
+column:  TULMENDAT        D       
+column:  ESZLAKAT         C4      
+column:  SZLAKAT          C4      
+column:  EFOKSZAM         C10     
+column:  FOKSZAM          C10     
+column:  SZLATIPUS        C3      
+column:  KIVONAT          N3      
+column:  BIZNYELV         C1      
+column:  KIVGYAK          C1      
+column:  KIVNAP           N2      
+column:  KIVDATUM         D       
+column:  HFSZINT          N2      
+column:  LEKSZINT         N2      
+column:  USER             C8      
+column:  CSOPORT          C8      
+column:  KONYVKELT        D       
+column:  UPDATE           C1      
+column:  ALCIM            C4      
+
+primkey: SZAMLASZAM
+
+select: select_szamla
+    where szamlaszam like :1
+    order by szamlaszam
+
+select: select_egyenleg
+    where szamlaszam like :1 and egyenleg >:2
+          and toroltflag='0'
+    -- order(szamlaszam)  
+    order by szamlaszam -- az újabb szintaktika

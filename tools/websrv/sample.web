@@ -1,0 +1,115 @@
+
+--listener localhost:8080:4433
+# a localhost interfészen figyel a 8080 (plain) és 4433 (SSL) porton
+# több --listener opciót is meg lehet adni
+# példa  --listener :8080:4433 minden interfészen figyel
+# példa  --listener :8080: minden interfészen, de csak a 8080-on figyel
+# példa  --listener ::4433 minden interfészen, de csak a 4433-on figyel
+# default (:8080:)
+
+
+--reuseaddr
+# bekapcsolja a reuseaddrees opciót
+# enélkül néha várni kell, amíg az OS újra ráenged a portra
+# Windowson tilos használni
+# default (off)
+
+
+--log logfile
+# ebbe megy a logolás
+# ha nincs megadva, akkor a 2-es fd-be  megy a log
+# default (stderr)
+
+
+--rootdir dirspec
+# ez alatt a directory alatt dolgozik
+# ha nincs megadva, akkor a current working directory alatt
+# linkekkel ki tud jönni alóla
+# default (pwd)
+
+
+--virtualhost
+# bekapcsolja a name based virtual hostingot
+# ha be van kapcsolva, és a lekért filé http://localhost:8080/file.html
+# akkor az odaadott filé rootdir/localhost/file.html
+# azaz a rootdir-t megtoldja a http_host port nélküli részével
+# ha nincs bekapcsolva, és a lekért filé http://localhost:8080/file.html
+# akkor az odaadott filé rootdir/file.html
+# default (off)
+
+
+--userid 1000
+# a védett portokra csak rootként lehet bindelni
+# a munkához viszont célszerű egy közönséges uid-t használni
+# ezt lehet itt megadni
+# default (none)
+
+
+--cgipath $(STARTDIR)/cgi-bin
+# itt keresi a CGI programokat
+# bekapcsolja a szolgáltatást (enélkül nincs CGI)
+# a környezeti változókat helyettesíti (máshol is)
+# default (none)
+
+
+--phppath /usr/bin/php-cgi
+# a CGI-ként működő PHP interpreter specifikációja
+# bekapcsolja a szolgáltatást (enélkül nincs PHP)
+# default (none)
+
+
+--cgitime 10
+# korlát a CGI/PHP programok végrehajtási idejére
+# default (60 másodperc)
+
+
+--inheritmode 1
+# meghatározza, hogy a CGI/PHP mennyi környezeti változót örököljön
+# --inheritmode 0 esetén csak a legszükségesebbeket
+# --inheritmode 1 esetén minden változót örököltet
+# default (0 minimális)
+
+
+--excluded pathelement
+# azokat az url-eket, amiknek a specifikációjában előfordul a pathelement
+# nemlétezőnek veszi, több ilyen opciót is meg lehet adni
+# pl: "--excluded eztne" esetén nem adja /path/to/eztne/url.html-t
+# default (none)
+
+--secure pathelement
+# azokat az url-eket, amiknek a specifikációjában előfordul a pathelement
+# csak SSL kapcsolaton keresztül adja, több ilyen opciót is meg lehet adni
+# default (none)
+
+
+--keyfile pemfile
+# egy certificate és privatekey szekciót tartalmazó PEM filé
+# ezt használja az SLL kapcsolathoz (ezzel hitelesíti magát a szerver)
+# nem kell, ha nincs SSL
+# default (none)
+
+
+--capath  $(STARTDIR)/webcon/cert
+--cafile  $(STARTDIR)/webcon/cert/localhost.pem
+# bekapcsolják a kliens hitelesítést
+# a szerver azokat a klienseket fogadja el,
+# akik olyan certificate-et küldenek,
+# ami alá van írva egy cafile- vagy capath-beli 
+# certificate-hez tartozó kulccsal
+#
+# vagy egy directoryba tesszük a certificateket (capath, rehash)
+# vagy a certificateket összemásolgatjuk egy filébe (cafile)
+#
+# a szerver a cafile-ban felsorolt ca-kat elküldi a kliensnek,
+# ez alapján a firefox csak olyan certificate-et küld,
+# amiről tudható, hogy a szerver el fogja fogadni
+#
+# capath-ban és cafile-ban abszolút path-okat kell megadni
+# másképp a workdir-be történő váltás miatt az SSL nem működik
+# ilyenkor a hibaüzenet rossz
+# a szerver azt mondja: a kliens nem küld certificate-et
+# a kliens (firefox) azt mondja: 12195
+#
+# nem kell, ha nincs SSL vagy nincs kliens hitelesítés
+# default (none)
+

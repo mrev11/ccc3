@@ -1,6 +1,0 @@
-#!/bin/bash
-export EDITOR=z.exe
-
-git-add .
-git-commit -a
-git-push -all

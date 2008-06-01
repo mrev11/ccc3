@@ -2,5 +2,5 @@
 export EDITOR=z.exe
 
 git-add .
-git-commit
+git-commit -a
 git-push -all

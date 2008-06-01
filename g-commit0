@@ -1,6 +1,8 @@
 #!/bin/bash
 export EDITOR=z.exe
 
+rm *.bak
+
 git-add .
-git-commit -a -m "x"
+git-commit --all -m "x"
 git-push --all

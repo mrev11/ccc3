@@ -36,24 +36,24 @@ local z:=zeditnew(memoread("zdemo.prg"),top,lef,bot,rig)
         @ i,0 say replicate( chr(asc("a")+ i%26 ), maxcol()+1 ) 
     next 
     
-    z:modflg:=.t.               // módosítható-e
-    alert("HOPP-1")             // editálás indul
-    exitcode:=z:loop            // editál
+    z:modflg:=.t.               // modosithato-e
+    alert("HOPP-1")             // editalas indul
+    exitcode:=z:loop            // edital
     alert("HOPP-2;")            // nincs benne restscreen
-    ? "exit", exitcode          // inkey code, amivel kiléptek
-    ? "changed", z:changed      // változott-e
-    result:=z:gettext           // az editált szöveg
-    memowrit(resfil,result)     // kimenet tárolva
+    ? "exit", exitcode          // inkey code, amivel kileptek
+    ? "changed", z:changed      // valtozott-e
+    result:=z:gettext           // az editalt szoveg
+    memowrit(resfil,result)     // kimenet tarolva
     
-    // még egy csomó paraméter beállítható,
-    // ezeknek a használatát a z.prg-ből lehet kinézni, 
+    // meg egy csomo parameter beallithato,
+    // ezeknek a hasznalatat a z.prg-bol lehet kinezni, 
     // ilyenek:
     //
-    // kezdeti poziciók
+    // kezdeti poziciok
     // kezdeti searchstring
     // kezdeti replacestring
     // clipboardfile
-    // billentyű kombinációk (keymapblk)
+    // billentyu kombinaciok (keymapblk)
     // custom header (headerblk)
 
     ?

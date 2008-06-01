@@ -31,7 +31,7 @@ local dsp:=.f.
         this:winrow:=r-this:sftrow-1
         this:wincol:=c-this:sftcol-1
 
-        //függőleges korrekció
+        //fuggoleges korrekcio
 
         if( this:winrow<0 )
             this:sftrow:=this:sftrow+this:winrow
@@ -49,7 +49,7 @@ local dsp:=.f.
             dsp:=.t.
         end
 
-        //vízszintes korrekció
+        //vizszintes korrekcio
 
         if( this:wincol<0 )
             this:sftcol:=this:sftcol+this:wincol

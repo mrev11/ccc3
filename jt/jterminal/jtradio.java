@@ -62,7 +62,7 @@ jtradio(jtdialog parent, Node node)
 //---------------------------------------------------------------------------
 public void actionPerformed(ActionEvent e)
 {
-    if( param.valid )
+    if( param.valid() )
     {
         dialog.action(this);
     }
@@ -102,7 +102,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------

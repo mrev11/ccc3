@@ -131,8 +131,7 @@ private void build(Node node)
 
         else if( name.equals("caption") ) 
         {
-            param.text=jterminal.getTextContent(child);
-            setTitle( param.text );
+            setTitle( param.text(jterminal.getTextContent(child)) );
         }
 
         else if( name.equals("jtmenu") ) 
@@ -261,6 +260,13 @@ private void build(Node node)
             itemlist.add(c);
         }
  
+        else if( name.equals("jtslider") ) 
+        {
+            jtslider c=new jtslider(this,child);
+            getContentPane().add(c); 
+            itemlist.add(c);
+        }
+
         else if( name.equals("jtpush") ) 
         {
             jtpush c=new jtpush(this,child);
@@ -317,19 +323,18 @@ private void build(Node node)
         py+=(int)p.getY() - getutil.getposition.ypos(dlgparent.param.top); 
     }
     
-    int menuheight=0;
-
+    int plusheight=getutil.getposition.getPlusHeight();
     if( getJMenuBar()!=null )
     {
-        menuheight=(getutil.getposition.ypos(1)*2)/3; 
+        plusheight+=(getutil.getposition.ypos(1)*2)/3; 
     }
     else
     {
-        menuheight=-getutil.getposition.ypos(1)/3; 
+        plusheight-=getutil.getposition.ypos(1)/3; 
     }
 
     prefw=getutil.getposition.xpos(1+param.right-param.left);
-    prefh=getutil.getposition.ypos(1+param.bottom-param.top)+menuheight;  
+    prefh=getutil.getposition.ypos(1+param.bottom-param.top)+plusheight;  
   
     //Modositjuk az ablak pozicionalasat, 
     //hogy a caption ne logjon le teljesen a kepernyorol:

@@ -23,6 +23,13 @@
 #include <cccapi.h>
 
 static const int EXTSIZ=4; //plusz elemek száma
+
+DEFINE_METHOD(get);
+DEFINE_METHOD(hashitem);
+
+// A simplehash osztály hashitem, get metódusit
+// és a hashitemek {key,value} alakját használja ki
+// az asszociatív tömbindexelés: hash["key"]:=value.
  
 //------------------------------------------------------------------------
 VALUE *idxl() // indexkifejezés a baloldalon
@@ -33,25 +40,40 @@ VALUE *idxl() // indexkifejezés a baloldalon
     VALUE *i=TOP();
     VALUE *a=TOP2();
 
-    if( a->type!=TYPE_ARRAY || i->type!=TYPE_NUMBER ) 
+    if( a->type==TYPE_ARRAY && i->type==TYPE_NUMBER ) 
     {
-        error_arr("idxl",a,2);
+        unsigned int len=a->data.array.oref->length;
+        unsigned int idx=D2INT(i->data.number);
+
+        if( (idx<1) || (len<idx) )
+        {
+            error_idx("idxl",a,2);
+        }
+        
+        VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+        POP();
+        POP();
+        return x;
+
+        //MEGJEGYZÉS: array(1)[1]:=x nem thread safe
+        //(nem javítható, de szerencsére nincs értelme)
     }
 
-    unsigned int len=a->data.array.oref->length;
-    unsigned int idx=D2INT(i->data.number);
-    
-    if( (idx<1) || (len<idx) )
+    else if( a->type==TYPE_OBJECT && (i->type==TYPE_STRING || i->type==TYPE_BINARY ) )
     {
-        error_idx("idxl",a,2);
+        _o_method_hashitem.eval(2); //stack: item={key,value/NIL}
+
+        VALUE *item=TOP(); //item[2] címét kell adni
+        VALUE *x=item->data.array.oref->ptr.valptr+1;
+        POP();
+        return x;
+
+        //MEGJEGYZÉS: simplehashNew()[key]:=x nem thread safe
+        //(nem javítható, de szerencsére nincs értelme)
     }
-    
-    POP();
-    POP();
-    return a->data.array.oref->ptr.valptr+idx-1;
-    
-    //MEGJEGYZÉS: array(1)[1]:=x nem thread safe
-    //(nem javítható, de szerencsére nincs értelme)
+
+    error_arr("idxl",a,2);
+    return 0;
 }
 
 //------------------------------------------------------------------------
@@ -77,8 +99,9 @@ VALUE *idxl0(double i) // indexkifejezés a baloldalon (konstans index)
         POP();
     }
     
+    VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
     POP();
-    return a->data.array.oref->ptr.valptr+idx-1;
+    return x;
 
     //MEGJEGYZÉS: array(1)[1]:=x nem thread safe
     //(nem javítható, de szerencsére nincs értelme)
@@ -92,21 +115,62 @@ void idxr() // indexkifejezés a jobboldalon
     VALUE *i=TOP();
     VALUE *a=TOP2();
     
-    if( a->type!=TYPE_ARRAY  || i->type!=TYPE_NUMBER )
+    if( i->type==TYPE_NUMBER )
+    {
+        if( a->type==TYPE_ARRAY )
+        {
+            unsigned len=a->data.array.oref->length;
+            unsigned idx=D2UINT(i->data.number);
+            if( idx<1 || len<idx )
+            {
+                error_idx("idxr",a,2);
+            }
+            POP();    
+            *TOP()=*(a->data.array.oref->ptr.valptr+idx-1);
+        }
+
+        else if( a->type==TYPE_STRING )
+        {
+            unsigned len=a->data.string.len;
+            unsigned idx=D2UINT(i->data.number);
+            if( idx<1 || len<idx )
+            {
+                error_idx("idxr",a,2);
+            }
+            CHAR c=a->data.string.oref->ptr.chrptr[idx-1];
+            POP();
+            POP();
+            *stringl(1)=c;
+        }
+
+        else if( a->type==TYPE_BINARY)
+        {
+            unsigned len=a->data.binary.len;
+            unsigned idx=D2UINT(i->data.number);
+            if( idx<1 || len<idx )
+            {
+                error_idx("idxr",a,2);
+            }
+            BYTE c=a->data.binary.oref->ptr.binptr[idx-1];
+            POP();
+            POP();
+            *binaryl(1)=c;
+        }
+        else
+        {
+            error_arr("idxr",a,2);
+        }
+    }
+
+    else if( a->type==TYPE_OBJECT && (i->type==TYPE_STRING || i->type==TYPE_BINARY ) )
+    {
+        _o_method_get.eval(2);
+    }
+
+    else
     {
         error_arr("idxr",a,2);
     }
-
-    unsigned int len=a->data.array.oref->length;
-    unsigned int idx=D2INT(i->data.number);
-
-    if( (idx<1) || (len<idx) )
-    {
-        error_idx("idxr",a,2);
-    }
-
-    POP();    
-    *TOP()=*(a->data.array.oref->ptr.valptr+idx-1);
 }
 
 //------------------------------------------------------------------------
@@ -116,22 +180,51 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
 
     VALUE *a=TOP();
     
-    if( a->type!=TYPE_ARRAY )
+    if( a->type==TYPE_ARRAY )
+    {
+        unsigned len=a->data.array.oref->length;
+        unsigned idx=D2UINT(i);
+        if( idx<1 || len<idx )
+        {
+            number(idx);
+            error_idx("idxr0",a,2);
+        }
+        *TOP()=*( a->data.array.oref->ptr.valptr+idx-1 );
+    }
+
+    else if( a->type==TYPE_STRING )
+    {
+        unsigned len=a->data.string.len;
+        unsigned idx=D2UINT(i);
+
+        if( idx<1 || len<idx )
+        {
+            number(idx);
+            error_idx("idxr0",a,2);
+        }
+        CHAR c=a->data.string.oref->ptr.chrptr[idx-1];
+        POP();
+        *stringl(1)=c;
+    }
+
+    else if( a->type==TYPE_BINARY )
+    {
+        unsigned len=a->data.binary.len;
+        unsigned idx=D2UINT(i);
+        if( idx<1 || len<idx )
+        {
+            number(idx);
+            error_idx("idxr0",a,2);
+        }
+        BYTE c=a->data.binary.oref->ptr.binptr[idx-1];
+        POP();
+        *binaryl(1)=c;
+    }
+
+    else
     {
         error_arr("idxr0",a,1);
     }
-
-    unsigned int len=a->data.array.oref->length;
-    unsigned int idx=D2INT(i);
-
-    if( (idx<1) || (len<idx) )
-    {
-        number(idx);
-        error_idx("idxr0",a,2);
-        POP();
-    }
-
-    *TOP()=*( a->data.array.oref->ptr.valptr+idx-1 );
 }
 
 //------------------------------------------------------------------------

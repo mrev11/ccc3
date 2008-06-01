@@ -86,6 +86,9 @@ local screen
         elseif( key==K_SH_F3 )    
             this:searchagain()
 
+        elseif( key==K_CTRL_F3 )    
+            this:searchagain("p")
+
         elseif( key==K_F7 )    
             #ifndef _UNIX_
                 run ("start z "+this:clipfile+" -r")
@@ -208,6 +211,9 @@ local screen
  
             elseif( key==K_SH_F4 )    
                 this:replaceagain()
+
+            elseif( key==K_CTRL_F4 )    
+                this:replaceagain("p")
  
             elseif( 32<=key )
                 this:inschar(key)

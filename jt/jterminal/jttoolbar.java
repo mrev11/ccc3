@@ -111,6 +111,13 @@ jttoolbar(jtdialog parent, Node node)
             add(c); 
         }
  
+        else if( itype.equals("jtslider") )
+        {
+            jtslider c=new jtslider(dialog,child);
+            itemlist.add(c); 
+            add(c);
+        }
+
         else if( itype.equals("jtpush") )
         {
             jtpush c=new jtpush(dialog,child);

@@ -21,11 +21,11 @@
 ***************************************************************************
 function _zedit_gettext(this)
 
-//először kiszámítjuk az eredmény hosszát,
-//utána belerakosgatjuk a sorokat xvcopy()-val,
-//az eredmény összeadogatással való képzése
+//eloszor kiszamitjuk az eredmeny hosszat,
+//utana belerakosgatjuk a sorokat xvcopy()-val,
+//az eredmeny osszeadogatassal valo kepzese
 //100K felett nagyon lelassul,
-//1MB-nál már 10 percig tart
+//1MB-nal mar 10 percig tart
 
 local len1, txt, n
 

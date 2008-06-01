@@ -58,13 +58,13 @@ jtprogbar(jtdialog parent, Node node)
     param.setToolTip(this);
     param.setBorder(this);
 
-    if( param.text.equals("percent") )
+    if( param.text().equals("percent") )
     {
         setString(null);
     }
     else
     {
-        setString(param.text);
+        setString(param.text());
     }
 
     for( Node child=node.getFirstChild(); child!=null; child=child.getNextSibling() )

@@ -89,10 +89,15 @@ void _clp_stat(int argno) // stat array (see stat.ch), or NIL
 {
     CCC_PROLOG("stat",1);
     _clp_convertfspec2nativeformat(1); 
-
     struct stat buf;
+#ifdef _UNIX_    
     char *fspec=_parb(1);
     if( 0!=stat(fspec,&buf) )
+#else
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+#endif
     {
         _ret();
     }
@@ -113,8 +118,14 @@ void _clp_stat_st_mode(int argno) // leggyakrabban csak ez kell
     _clp_convertfspec2nativeformat(1); 
 
     struct stat buf;
+#ifdef _UNIX_    
     char *fspec=_parb(1);
     if( 0!=stat(fspec,&buf) )
+#else
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+#endif
     {
         _ret();
     }
@@ -133,11 +144,13 @@ void _clp_lstat(int argno)
     _clp_convertfspec2nativeformat(1);
 
     struct stat buf;
-    char *fspec=_parb(1);
 #ifdef UNIX
+    char *fspec=_parb(1);
     if( 0!=lstat(fspec, &buf) )
 #else
-    if( 0!=stat(fspec, &buf) ) //Windowson nincs link
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //Windowson nincs link
 #endif    
     {
         _ret();
@@ -158,11 +171,13 @@ void _clp_lstat_st_mode(int argno)
     _clp_convertfspec2nativeformat(1);
 
     struct stat buf;
-    char *fspec=_parb(1);
 #ifdef UNIX
+    char *fspec=_parb(1);
     if( 0!=lstat(fspec, &buf) )
 #else    
-    if( 0!=stat(fspec, &buf) ) //Windowson nincs link 
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //Windowson nincs link 
 #endif    
     {
         _ret();

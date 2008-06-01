@@ -19,7 +19,8 @@
 #define RPAR                           19
 #define LBRACKET                       20
 #define RBRACKET                       21
-#define LBRACE                         22
-#define RBRACE                         23
-#define PIPE                           24
-#define COMMA                          25
+#define DOTDOT                         22
+#define LBRACE                         23
+#define RBRACE                         24
+#define PIPE                           25
+#define COMMA                          26

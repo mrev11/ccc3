@@ -27,6 +27,7 @@
 //akkor a jelen forrásból lokálisan másolatot kell csinálni, és a
 //kikommentezett sorokat visszatéve beállíthatók a kívánt értékek.
 
+#include <cccapi.h>
 
 //-------------------------------------------------------------------
 void vartab_setsize( struct VARTAB_SETSIZE *vss )

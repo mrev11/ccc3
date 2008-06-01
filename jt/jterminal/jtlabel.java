@@ -84,7 +84,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
  
  

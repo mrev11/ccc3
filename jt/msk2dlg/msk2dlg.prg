@@ -20,7 +20,9 @@
 
 //#include "box.ch"
 
-#define VERSION "0.9.00"    //2006.08.31 áttérés a class szintaktikára
+#define VERSION "1.0.00"    //nem lesz ez már jobb
+//#define VERSION "0.9.01"  jtslider
+//#define VERSION "0.9.00"  2006.08.31 áttérés a class szintaktikára
 //#define VERSION "0.3.00"  unicode port
 //#define VERSION "0.2.00"  2006.01.07 kulcsszavak kikerülve (class,new,method,attrib)
 //#define VERSION "0.1.05"  2003.10.02 sorok vége javítva
@@ -55,6 +57,7 @@
 // @label (named)
 // &html area
 // +text area
+// %slider
 
 static baseclass:="jtdialog"
 static addmethod:="add"
@@ -358,6 +361,10 @@ local t,p
         type:="textarea"
         name:=substr(s,2)
 
+    elseif( t=="%" )
+        type:="slider"
+        name:=substr(s,2)
+
     elseif( t=="&" )
         type:="htmlarea"
         name:=substr(s,2)
@@ -526,6 +533,12 @@ local n,t,l,b,r,nm,tx,cl
 
         elseif( list[n]:type=="textarea" )
             inicode+="    this:"+nm+":=jttextareaNew("+RECT+")"
+            inicode+="; this:"+nm+":name:='"+nm+"'"
+            inicode+="; this:"+addmethod+"(this:"+nm+")"
+            inicode+=EOL
+
+        elseif( list[n]:type=="slider" )
+            inicode+="    this:"+nm+":=jtsliderNew("+RECT+")"
             inicode+="; this:"+nm+":name:='"+nm+"'"
             inicode+="; this:"+addmethod+"(this:"+nm+")"
             inicode+=EOL

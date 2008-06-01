@@ -30,7 +30,7 @@ extern void   ponttab_print(XPATTERN a);
 extern int    ponttab(XPATTERN a, char fig);
  
 
-static char *egy[]={
+static char const *egy[]={
 "    XXXX",
 "   XXXX ",
 "  XXXX  ",
@@ -38,7 +38,7 @@ static char *egy[]={
 "XXXX    ",
 0};
 
-static char *ket2[]={
+static char const *ket2[]={
 "_XXX_   ", 
 " _XXX_  ", 
 "  _XXX_ ", 
@@ -52,7 +52,7 @@ static char *ket2[]={
 0};
 
 
-static char *ket1[]={
+static char const *ket1[]={
 "    _XXX",
 "    X_XX",
 "    XX_X",
@@ -76,7 +76,7 @@ static char *ket1[]={
 0};
 
 
-static char *harom2[]={
+static char const *harom2[]={
 "__XX_   ", 
 "_X_X_   ", 
 "_XX__   ", 
@@ -100,7 +100,7 @@ static char *harom2[]={
 0};
 
 
-static char *harom1[]={
+static char const *harom1[]={
 "    __XX",
 "    _X_X",
 "    _XX_",
@@ -134,7 +134,7 @@ static char *harom1[]={
 0};
  
 
-static char *negy2[]={
+static char const *negy2[]={
 "___X_   ", 
 "__X__   ", 
 "_X___   ", 
@@ -193,7 +193,7 @@ static int str2x(XPATTERN a, char figure)
 }
 
 //--------------------------------------------------------------------------
-static int str2i(char *x, int base, int len)
+static int str2i(char const *x, int base, int len)
 {
     int result=0;
     while( len-->0 )
@@ -219,7 +219,7 @@ static void i2str(int i, char *x, int base, int len)
 static int table[TABSIZE]; 
 
 //--------------------------------------------------------------------------
-static void ponttab_feltolt( char *XPATTERN[], int ertek )
+static void ponttab_feltolt( char const *XPATTERN[], int ertek )
 {
     for(int n=0; XPATTERN[n]!=0; n++ )
     {

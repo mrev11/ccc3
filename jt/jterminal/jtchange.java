@@ -32,19 +32,20 @@ public class jtchange
 {
 //===========================================================================
 
-public String  text=null;
-public String  tooltip=null;
-public String  picture=null;
-public String  icon=null;
-public String  image=null;
+private Hashtable hash=null;
 
-public String  escape=null;
-public String  enabled=null;
-public String  editable=null;
-public String  focusable=null;
-public String  setfocus=null;
-public String  linewrap=null;
-
+//minden atkerult a hash-be
+//private String  text=null;       //   "changetext"
+//private String  tooltip=null;    //   "changetooltip"
+//private String  picture=null;    //   "changepicture"
+//private String  icon=null;       //   "changeicon"
+//private String  image=null;      //   "changeimage"
+//private String  escape=null;     //   "escape"
+//private String  focusable=null;  //   "focusable"
+//private String  setfocus=null;   //   "setfocus"
+//private String  enabled=null;    //   "enabled"
+//private String  editable=null;   //   "editable"
+//private String  linewrap=null;   //   "linewrap"
 
 //--------------------------------------------------------------------------- 
 public jtchange(Node msg)
@@ -53,82 +54,136 @@ public jtchange(Node msg)
 }
 
 //--------------------------------------------------------------------------- 
-public void build (Node msg)
+private void build (Node msg)
 {
+    hash=new Hashtable();
+
     for( Node child=msg.getFirstChild(); child!=null; child=child.getNextSibling() )
     {
         String name=child.getNodeName();
+        
+        if( name.startsWith("jt") )
+            ;//kihagy
+        else if( name.startsWith("#") )
+            ;//kihagy
+        else
+        {
+            hash.put(name,jterminal.getTextContent(child));
+        }
 
-             if( name.equals("control") )       {}
-        else if( name.equals("changetext") )    text=jterminal.getTextContent(child);
-        else if( name.equals("changetooltip") ) tooltip=jterminal.getTextContent(child);
-        else if( name.equals("changepicture") ) picture=jterminal.getTextContent(child);
-        else if( name.equals("changeicon") )    icon=jterminal.getTextContent(child);
-        else if( name.equals("changeimage") )   image=jterminal.getTextContent(child);
-        else if( name.equals("escape") )        escape=jterminal.getTextContent(child);
-        else if( name.equals("enabled") )       enabled=jterminal.getTextContent(child);
-        else if( name.equals("editable") )      editable=jterminal.getTextContent(child);
-        else if( name.equals("focusable") )     focusable=jterminal.getTextContent(child);
-        else if( name.equals("setfocus") )      setfocus=jterminal.getTextContent(child);
-        else if( name.equals("linewrap") )      linewrap=jterminal.getTextContent(child);
+        //minden atkerult a hash-be
+        //     if( name.equals("control") )       {}
+        //else if( name.equals("changetext") )    text=jterminal.getTextContent(child);
+        //else if( name.equals("changetooltip") ) tooltip=jterminal.getTextContent(child);
+        //else if( name.equals("changepicture") ) picture=jterminal.getTextContent(child);
+        //else if( name.equals("changeicon") )    icon=jterminal.getTextContent(child);
+        //else if( name.equals("changeimage") )   image=jterminal.getTextContent(child);
+        //else if( name.equals("escape") )        escape=jterminal.getTextContent(child);
+        //else if( name.equals("enabled") )       enabled=jterminal.getTextContent(child);
+        //else if( name.equals("editable") )      editable=jterminal.getTextContent(child);
+        //else if( name.equals("focusable") )     focusable=jterminal.getTextContent(child);
+        //else if( name.equals("setfocus") )      setfocus=jterminal.getTextContent(child);
+        //else if( name.equals("linewrap") )      linewrap=jterminal.getTextContent(child);
     }
+    
+    //list();
+}
 
+//--------------------------------------------------------------------------- 
+public String get(String key)
+{
+    return (String)hash.get(key);
+}
+
+//--------------------------------------------------------------------------- 
+public void set(String key, String value)
+{
+    hash.put(key,value);
+}
+
+//--------------------------------------------------------------------------- 
+public void list()
+{
+    System.out.println("--------------------------");
+    for(Enumeration e=hash.keys(); e.hasMoreElements();) 
+    {
+        String key=(String)e.nextElement();
+        System.out.print(key);
+        System.out.print(" => ");
+        System.out.println(hash.get(key));
+    }    
 }
 
 //--------------------------------------------------------------------------- 
 public void setText(AbstractButton ab, jtparam param)
 {
-    if( text!=null ) ab.setText(param.text=text); 
+    String text=(String)hash.get("changetext");
+    if( text!=null ) ab.setText(param.text(text)); 
 }
 
 public void setText(JLabel lab, jtparam param)
 {
-    if( text!=null ) lab.setText(param.text=text);}
+    String text=(String)hash.get("changetext");
+    if( text!=null ) lab.setText(param.text(text));}
 
 public void setText(JPasswordField pw, jtparam param)
 {
-    if( text!=null ) pw.setText(param.text=text); 
+    String text=(String)hash.get("changetext");
+    if( text!=null ) pw.setText(param.text(text)); 
 }
 
 public void setText(JTextArea ta, jtparam param)
 {
-    if( text!=null ) ta.setText(param.text=text); 
+    String text=(String)hash.get("changetext");
+    if( text!=null ) ta.setText(param.text(text)); 
+}
+
+public void setText(jtget jt, jtparam param)
+{
+    String text=(String)hash.get("changetext");
+    if( text!=null ) jt.setText(param.text(text)); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setToolTip(JComponent jc, jtparam param)
 {
-    if( tooltip!=null ) jc.setToolTipText(param.tooltip=tooltip); 
+    String tooltip=(String)hash.get("changetooltip");
+    if( tooltip!=null ) jc.setToolTipText(param.tooltip(tooltip)); 
 }
 
 public void setToolTip(AbstractButton ab, jtparam param)
 {
-    if( tooltip!=null ) ab.setToolTipText(param.tooltip=tooltip); 
+    String tooltip=(String)hash.get("changetooltip");
+    if( tooltip!=null ) ab.setToolTipText(param.tooltip(tooltip)); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setPicture(jtget g, jtparam param)
 {
-    if( picture!=null ) g.setPicture(param.picture=picture);
+    String picture=(String)hash.get("changepicture");
+    if( picture!=null ) g.setPicture(param.picture(picture));
 }
 
 //--------------------------------------------------------------------------- 
 public void setIcon(AbstractButton ab, jtparam param)
 {
-    if( icon!=null ) ab.setIcon(jterminal.loadIcon(param.icon=icon)); 
+    String icon=(String)hash.get("changeicon");
+    if( icon!=null ) ab.setIcon(jterminal.loadIcon(param.icon(icon))); 
 }
 
 public void setIcon(JLabel lab, jtparam param)
 {
-    if( icon!=null ) lab.setIcon(jterminal.loadIcon(param.icon=icon)); 
+    String icon=(String)hash.get("changeicon");
+    if( icon!=null ) lab.setIcon(jterminal.loadIcon(param.icon(icon))); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setImage(JLabel lab, jtparam param)
 {
+    String image=(String)hash.get("changeimage");
     if( image!=null )
     {
-        param.image=image;
+        param.image(image);
         byte[] b64=image.getBytes();
         byte[] img=base64.decode(b64);
         lab.setIcon(new ImageIcon(img)); 
@@ -138,38 +193,62 @@ public void setImage(JLabel lab, jtparam param)
 //--------------------------------------------------------------------------- 
 public void setEscape(jtparam param)
 {
-    if( escape!=null ) param.escape=escape.equals("true"); 
-}
-
-//--------------------------------------------------------------------------- 
-public void setEnabled(JComponent jc, jtparam param)
-{
-    if( enabled!=null ) jc.setEnabled(param.enabled=enabled.equals("true")); 
-}
-
-//--------------------------------------------------------------------------- 
-public void setEditable(JTextComponent jt, jtparam param)
-{
-    if( editable!=null) jt.setEditable(param.editable=editable.equals("true")); 
+    String escape=(String)hash.get("escape");
+    if( escape!=null ) param.escape(escape.equals("true")); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setFocusable(jtparam param)
 {
-    if( focusable!=null ) param.focusable=focusable.equals("true"); 
+    String focusable=(String)hash.get("focusable");
+    if( focusable!=null ) param.focusable(focusable.equals("true")); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setFocus(JComponent jc)
 {
+    String setfocus=(String)hash.get("setfocus");
     if( setfocus!=null ) jc.requestFocus(); 
+}
+
+//--------------------------------------------------------------------------- 
+public void setEnabled(JComponent jc, jtparam param)
+{
+    String enabled=(String)hash.get("enabled");
+    if( enabled!=null ) jc.setEnabled(param.enabled(enabled.equals("true"))); 
+}
+
+//--------------------------------------------------------------------------- 
+public void setEditable(JTextComponent jt, jtparam param)
+{
+    String editable=(String)hash.get("editable");
+    if( editable!=null) jt.setEditable(param.editable(editable.equals("true"))); 
 }
 
 //--------------------------------------------------------------------------- 
 public void setLineWrap(JTextArea jt, jtparam param)
 {
-    if( linewrap!=null ) jt.setLineWrap(param.linewrap=linewrap.equals("true")); 
+    String linewrap=(String)hash.get("linewrap");
+    if( linewrap!=null ) jt.setLineWrap(param.linewrap(linewrap.equals("true"))); 
 }
 
 //--------------------------------------------------------------------------- 
+public boolean setPage(jthtmlarea jt, jtparam param)
+{
+    String url=(String)hash.get("changeurl");
+    if( url!=null ) jt.setPage(param.text(url));
+    return url!=null;
+}
+
+//--------------------------------------------------------------------------- 
+public boolean setValue(jtslider jt)
+{
+    String value=(String)hash.get("changevalue");
+    if( value!=null ) jt.setValue(jterminal.parseInt(value));
+    return value!=null;
+}
+
+//--------------------------------------------------------------------------- 
+
+
 }

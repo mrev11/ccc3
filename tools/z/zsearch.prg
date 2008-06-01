@@ -23,8 +23,7 @@
 ****************************************************************************
 function _zedit_search(this,mode)
 
-local pos:=array(2)
-local color
+local color,pos
     
     if( this:markflg )
         this:searchstring:=this:markedstring
@@ -36,27 +35,21 @@ local color
     this:casesensitive:=(mode==NIL.or.!"i"$mode)
     
     color:=setcolor(zcolor_1()) 
-    zsearch({|g|load(g,this)},{|g|readmodal(g)},{|g|store(g,this,pos)})
+    zsearch({|g|load(g,this)},{|g|readmodal(g)},{|g|store(g,this,mode,@pos)})
     setcolor(color)
 
-    if( pos[1]!=NIL )
+    if(pos!=NIL)
         this:setpos(pos[1],pos[2])
     end
-    return NIL
-
 
 ****************************************************************************
 function _zedit_sagain(this,mode)
+local pos
+    store(,this,mode,@pos)
 
-local pos:=array(2)
-
-    store(,this,pos,mode)
-
-    if( pos[1]!=NIL )
+    if(pos!=NIL)
         this:setpos(pos[1],pos[2])
     end
-    return NIL
-
 
 ****************************************************************************
 static function load(getlist,this)
@@ -69,11 +62,9 @@ local spict:="@S"+glen+"K "+replicate(template,48)
     g_search:varput(this:searchstring)
     g_search:postblock:={|g|!empty(g:varget())}
 
-    return NIL
-    
 
 ****************************************************************************
-static function store(getlist,this,pos,mode)
+static function store(getlist,this,mode,pos)
 
 #define UPPER(x) if(this:casesensitive,x,upper(x))
 
@@ -91,29 +82,44 @@ local f, ss, rs
 
     ss:=UPPER(this:searchstring)
     rs:=this:replacestring
- 
-    //a search/replace stringet átugorjuk
-    // "b"$mode batch módot jelent, 
-    // ha b meg van adva, akkor nem ugorjuk át 
-    // a searchstring kurzornál lévő előfordulását
-
-    if( !empty(rs) .and. c==at(rs,this:atxt[r],c) )
-        c+=len(rs) 
-    elseif( (mode==NIL.or.!"b"$mode) .and.;
-            !empty(ss) .and. c==at(ss,UPPER(this:atxt[r]),c) )
-        c+=len(ss) 
+    
+    if( mode==NIL )
+        mode:=""
     end
     
-    f:=at(ss,UPPER(this:atxt[r]),c)
+    pos:=NIL
+    
+    if( !"p"$mode ) 
+        //forward
+        if( !"b"$mode ) //nem batch 
+            //a searchstring kurzornal levo elofordulasat atugorjuk
+            //kiveve batch modban ("b"$mode), amikor nem ugorjuk at 
+            if( !empty(ss) .and. c==at(ss,UPPER(this:atxt[r]),c) )
+                c+=len(ss) 
+            end
+        end
+    
+        f:=at(ss,UPPER(this:atxt[r]),c)
+        while( f==0 .and. r<len(this:atxt) )
+            r++
+            f:=at(ss,UPPER(this:atxt[r]),1)
+        end
 
-    while( f==0 .and. r<len(this:atxt) )
-        r++
-        f:=at(ss,UPPER(this:atxt[r]),1)
+    else 
+        //backward
+        f:=rat(ss,left(UPPER(this:atxt[r]),c-1))
+        while( f==0 .and. r>1 )
+            r--
+            f:=rat(ss,UPPER(this:atxt[r]))
+        end
     end
     
     if( f>0 )
-        pos[1]:=r
-        pos[2]:=f
+        pos:={r,f}
+
+        //itt nem lehet this:setpos-t hivni,
+        //mert meg fenn van a search dialog, es at van allitva a szin,
+        //ezert csak jelezzuk a talalt poziciot
     end
 
     return .t.

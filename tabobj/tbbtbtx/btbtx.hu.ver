@@ -1,6 +1,23 @@
 
 #ifdef _HISTORY_
 
+2008.04.21 -- 1.1.15"
+   Sun/Solarison nem működött a filemapping a file-share protokoll miatt,
+   ezért a kulcsok rendezésére szolgáló ideiglenes filé létrehozása
+    fcreate(KEYFILE(table,o),FO_READWRITE+FO_SHARED) helyett
+    fopen(KEYFILE(table,o),FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK)-kal.
+   Két helyen is javítva: 1) a packolásnál 2) a suppindexeknél.
+ 
+   Az eredeti fcreate-os változatnak más hibái is vannak:
+   FO_READWRITE felesleges, mivel fcreate-nál az a default.
+   FO_SHARED hatástalan, mivel az fcreate nem veszi figyelembe.
+   (Megj: Clipper örökség, hogy az fcreate nem állítja be a share módot. 
+   A CA-Tools setshare() függvénnyel globálisan állítható az fcreate 
+   által használt share mode.)
+ 
+   Az indexinfót tabCreate-ban 3 helyett 4 hosszan kell a resourceba írni, 
+   máskülönben a packolás átváltoztatja a suppindexeket permanens indexszé.
+
 2006.04.20 -- 2.0.00"
    Portolás unicode-ra.
    Új mezőtípus: X.

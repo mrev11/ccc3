@@ -53,7 +53,8 @@ local fd,o,n
         end
 
         ferase(KEYFILE(table,o))
-        if( 0>(fd:=fcreate(KEYFILE(table,o),FO_READWRITE+FO_SHARED)) )
+        //if( 0>(fd:=fcreate(KEYFILE(table,o),FO_READWRITE+FO_SHARED)) )
+        if( 0>(fd:=fopen(KEYFILE(table,o),FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK)) )
             taberrOperation(OPERATION)
             taberrDescription(@"failed creating file (fd<0)")
             tabError(table) 

@@ -190,7 +190,8 @@ local column,memblk,mx,mv
  
     for ord:=0 to len(tabIndex(table)) 
         ferase(kfilnam:=KEYNAME(table,ord))
-        aadd(fdkey,fcreate(kfilnam,FO_READWRITE+FO_SHARED))
+        //aadd(fdkey,fcreate(kfilnam,FO_READWRITE+FO_SHARED))
+        aadd(fdkey,fopen(kfilnam,FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK))
         if( atail(fdkey)<0 )
             taberrOperation("tabCopybt")
             taberrDescription(@"failed creating file (fdkey)")

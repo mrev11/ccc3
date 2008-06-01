@@ -28,15 +28,15 @@ function zeditClass()
 
 ****************************************************************************
 static function zeditRegister() 
-local clid:=classRegister("zedit",objectClass())//osztálynév,parentID
+local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     
     classMethod(clid,"initialize",{|this,txt,t,l,b,r|zeditIni(this,txt,t,l,b,r)})
 
     classMethod(clid,"actrow",{|t|1+t:sftrow+t:winrow})  //kurzor sor    : 1, ..
     classMethod(clid,"actcol",{|t|1+t:sftcol+t:wincol})  //kurzor oszlop : 1, ...
 
-    classMethod(clid,"height",{|t|t:bottom-t:top+1})     //ablak magasság
-    classMethod(clid,"width",{|t|t:right-t:left+1})      //ablak szélesség
+    classMethod(clid,"height",{|t|t:bottom-t:top+1})     //ablak magassag
+    classMethod(clid,"width",{|t|t:right-t:left+1})      //ablak szelesseg
 
     classMethod(clid,"scroll",{|t,n|scroll(t:top,t:left,t:bottom,t:right,n)})  
 
@@ -89,27 +89,27 @@ local clid:=classRegister("zedit",objectClass())//osztálynév,parentID
  
     classMethod(clid,"setpos",{|t,r,c|_zedit_setpos(t,r,c)}) 
 
-    classAttrib(clid,"atxt")     //sorokra bontott szöveg
+    classAttrib(clid,"atxt")     //sorokra bontott szoveg
 
     classAttrib(clid,"top")      //0,...
     classAttrib(clid,"left")     //0,...
     classAttrib(clid,"bottom")   //,,,.maxrow()
     classAttrib(clid,"right")    //,,,.maxcol()
-    classAttrib(clid,"modflg")   //.t. lehet módosítani
-    classAttrib(clid,"changed")  //módosítás történt
+    classAttrib(clid,"modflg")   //.t. lehet modositani
+    classAttrib(clid,"changed")  //modositas tortent
     classAttrib(clid,"usrfnc")
     classAttrib(clid,"tabsiz")   //4
     classAttrib(clid,"winrow")   //window sor        : 0, ...
     classAttrib(clid,"wincol")   //window oszlop     : 0, ...
-    classAttrib(clid,"sftrow")   //ablaktolás sor    : 0, ...
-    classAttrib(clid,"sftcol")   //ablaktolás oszlop : 0, ...
+    classAttrib(clid,"sftrow")   //ablaktolas sor    : 0, ...
+    classAttrib(clid,"sftcol")   //ablaktolas oszlop : 0, ...
 
-    classAttrib(clid,"markflg")  //.f. kijelölés nem aktív
+    classAttrib(clid,"markflg")  //.f. kijeloles nem aktiv
     classAttrib(clid,"markmode") //CONT/RECT
-    classAttrib(clid,"markrow")  //kijelölés kezdete : 1, ...
-    classAttrib(clid,"markcol")  //kijelölés kezdete : 1, ...
+    classAttrib(clid,"markrow")  //kijeloles kezdete : 1, ...
+    classAttrib(clid,"markcol")  //kijeloles kezdete : 1, ...
                                      
-    classAttrib(clid,"clipfile") //clipboard filé
+    classAttrib(clid,"clipfile") //clipboard file
                 
     classAttrib(clid,"searchstring")
     classAttrib(clid,"replacestring")
@@ -140,12 +140,12 @@ local n
 
     objectIni(this)
 
-    //minden adattagot inicializálni kell!
+    //minden adattagot inicializalni kell!
     
     if( txt==NIL )  //2000.06.21
         txt:=""
     end
-    
+
     this:savedtext:=txt
 
     this:top     := if(t==NIL,0,t)
@@ -171,7 +171,7 @@ local n
     this:searchstring:=""
     this:casesensitive:=.t.
  
-    this:clipfile:="clipfile" //felhasználó beállítja
+    this:clipfile:="clipfile" //felhasznalo beallitja
 
     this:usrfnc:=NIL //?
     this:headerblk:={|this|NIL}

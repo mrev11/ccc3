@@ -129,6 +129,8 @@ local tindex:=tabIndex(table)  // table index struktúra
 local tcol, tname, n, c
 local iseg, tseg
 
+    iname:=upper(alltrim(iname))
+
     // a ciklust visszafelé kell járatni, hogy
     // először az ideiglenes indexeket találja meg,
     // ugyanis ezek keresése a tipikus

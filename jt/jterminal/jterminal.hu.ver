@@ -1,4 +1,14 @@
 
+1.1.11 (2008.05.20)
+  jtslider kontroll.
+  jtdialog magassága+=8 pixel 12 pontos font használatakor.
+  getenv("JTRESOL") figyelés visszarakva.
+
+  A jtparam/jtchange objektumok a patamétereket (kivételekkel) 
+  átrámolják egy hashtableba. Így előre nem ismert paramétereket
+  is tudnak kezelni, ezért az egyes kontrolloknál kevesebbszer 
+  kell XML elemzést csinálni.
+
 1.1.10 (2008.03.27)
   jttable cellákban változtatható fontok.
 

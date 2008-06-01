@@ -156,6 +156,7 @@ extern int codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,voi
 extern int codegen_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v);
 extern int codegen_expr_LBRACE_lfuncpar_RBRACE(parsenode *p,void *v);
 extern int codegen_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v);
+extern int codegen_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v);
 extern int codegen_expr_expr_ASSIGN_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_ADDASS_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_SUBASS_expr(parsenode *p,void *v);
@@ -230,6 +231,7 @@ extern int outsource_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,v
 extern int outsource_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v);
 extern int outsource_expr_LBRACE_lfuncpar_RBRACE(parsenode *p,void *v);
 extern int outsource_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v);
+extern int outsource_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v);
 extern int outsource_expr_expr_ASSIGN_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_ADDASS_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_SUBASS_expr(parsenode *p,void *v);

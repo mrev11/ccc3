@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export CCCDIR=/opt/ccc3
+export CCCUNAME=linux
+export CCCBIN=lin
+
+export PATH=$CCCDIR/usr/bin/$CCCUNAME:$PATH
+export LD_LIBRARY_PATH=$CCCDIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+export JTERMINAL=$CCCDIR/usr/bin/$CCCUNAME/jterminal.jar
+export JTRESOL=low
+
+nohup oggplay.exe "$@" 2>&1 >/dev/null &

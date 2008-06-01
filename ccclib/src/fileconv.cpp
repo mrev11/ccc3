@@ -64,7 +64,7 @@ static char *convert(char *fspec, char *convbuf) //reentráns változat
     for( i=len-1; i>=0; i-- )
     { 
         c=fspec[i];
-        if( (c==DIRSEP) || flag_bs2slash && (c==DIRSEPREV) )
+        if( (c==DIRSEP) || (flag_bs2slash && (c==DIRSEPREV)) )
         {
             break;
         }

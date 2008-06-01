@@ -43,13 +43,26 @@ void _clp_at(int argno)
         {
             CHAR *sp=_parc(1); //ezt keressuk
             CHAR *tp=_parc(2); //ebben keresunk
-            long i;
-            for(i=strt; i+slen<tlen+1; i++)
+            unsigned i;
+            if( slen==1 ) //spec eset
             {
-                 if( 0==wmemcmp(tp+i,sp,slen) )
-                 {
-                     break;
-                 }
+                for(i=strt; i<tlen; i++)
+                {
+                     if( tp[i]==*sp )
+                     {
+                         break;
+                     }
+                }
+            }
+            else
+            {
+                for(i=strt; i+slen<tlen+1; i++)
+                {
+                     if( 0==wmemcmp(tp+i,sp,slen) )
+                     {
+                         break;
+                     }
+                }
             }
             _retni(i+slen<tlen+1?i+1:0);
         }
@@ -70,13 +83,27 @@ void _clp_at(int argno)
         {
             char *sp=_parb(1); //ezt keressuk
             char *tp=_parb(2); //ebben keresunk
-            long i;
-            for(i=strt; i+slen<tlen+1; i++)
+            unsigned i;
+
+            if( slen==1 ) //spec eset
             {
-                 if( 0==memcmp(tp+i,sp,slen) )
-                 {
-                     break;
-                 }
+                for(i=strt; i<tlen; i++)
+                {
+                     if( tp[i]==*sp )
+                     {
+                         break;
+                     }
+                }
+            }
+            else
+            {
+                for(i=strt; i+slen<tlen+1; i++)
+                {
+                     if( 0==memcmp(tp+i,sp,slen) )
+                     {
+                         break;
+                     }
+                }
             }
             _retni(i+slen<tlen+1?i+1:0);
         }

@@ -23,8 +23,7 @@
 ****************************************************************************
 function _zedit_replace(this,mode)
 
-local pos:=array(2)
-local color,line
+local color,pos
 
     if( this:markflg )
         this:searchstring:=this:markedstring
@@ -36,42 +35,27 @@ local color,line
     this:casesensitive:=(mode==NIL.or.!"i"$mode)
  
     color:=setcolor(zcolor_1()) 
-    zreplace({|g|load(g,this)},{|g|readmodal(g)},{|g|store(g,this,pos)})
+    zreplace({|g|load(g,this)},{|g|readmodal(g)},{|g|store(g,this,mode,@pos)})
     setcolor(color)
-
-    if( pos[1]!=NIL )
-        this:setpos(pos[1],pos[2])
-    
-        line:=this:atxt[pos[1]]
-        line:=stuff(line,pos[2],len(this:searchstring),this:replacestring)
-        this:atxt[pos[1]]:=line
-        this:changed:=.t.
-        this:displine()
-    end
-    
-    return NIL
-
+    doreplace(this,pos)
 
 ****************************************************************************
-function _zedit_ragain(this)
+function _zedit_ragain(this,mode)
+local pos
+    store(,this,mode,@pos)
+    doreplace(this,pos)
 
-local pos:=array(2)
-local line
-    
-    store(,this,pos)
-
-    if( pos[1]!=NIL )
-        this:setpos(pos[1],pos[2])
-    
-        line:=this:atxt[pos[1]]
-        line:=stuff(line,pos[2],len(this:searchstring),this:replacestring)
-        this:atxt[pos[1]]:=line
+****************************************************************************
+static function doreplace(this,pos)
+local r,c
+    if( pos!=NIL )
+        r:=pos[1]
+        c:=pos[2]
+        this:atxt[r]:=stuff(this:atxt[r],c,len(this:searchstring),this:replacestring)
+        this:setpos(r,c+len(this:replacestring))
         this:changed:=.t.
         this:displine()
     end
-
-    return NIL
-
 
 ****************************************************************************
 static function load(getlist,this)
@@ -90,11 +74,8 @@ local rpict:="@S"+glen+"K "+replicate("X",48)
     g_replace:varput(this:replacestring)
     g_replace:display()
 
-    return NIL
-    
-
 ****************************************************************************
-static function store(getlist,this,pos)
+static function store(getlist,this,mode,pos)
 
 #define UPPER(x) if(this:casesensitive,x,upper(x))
  
@@ -113,25 +94,43 @@ local f,ss,rs
 
     ss:=UPPER(this:searchstring)
     rs:=this:replacestring
-
-    if( !empty(rs) .and. c==at(rs,this:atxt[r],c) )
-        c+=len(rs)
+    
+    if( mode==NIL )
+        mode:=""
     end
     
-    f:=at(ss,UPPER(this:atxt[r]),c)
+    pos:=NIL
 
-    while( f==0 .and. r<len(this:atxt) )
-        r++
-        f:=at(ss,UPPER(this:atxt[r]),1)
+    //mindket iranyban:
+    //  a kurzornal kezdodo searchstringet csereli
+    //  a kurzor a replacestring utani poziciora kerul
+    
+    if( !"p"$mode ) 
+        //forward
+        f:=at(ss,UPPER(this:atxt[r]),c)
+        while( f==0 .and. r<len(this:atxt) )
+            r++
+            f:=at(ss,UPPER(this:atxt[r]),1)
+        end
+
+    else 
+        //backward
+        f:=rat(ss,left(UPPER(this:atxt[r]),c+len(ss)-1))
+        while( f==0 .and. r>1 )
+            r--
+            f:=rat(ss,UPPER(this:atxt[r]))
+        end
     end
       
     if( f>0 )
-        pos[1]:=r
-        pos[2]:=f
+        pos:={r,f}
+        
+        //itt nem lehet this:setpos-t vagy this:displine-t hivni,
+        //mert meg fenn van a replace dialog, es at van allitva a szin,
+        //ezert csak jelezzuk a talalt poziciot
     end
  
     return .t.
-
 
 ****************************************************************************
 

@@ -114,6 +114,13 @@ private void build (Node node)
             itemlist.add(c);
             add(c);
         }
+
+        else if( itype.equals("jtslider") )
+        {
+            jtslider c=new jtslider(dialog,child);
+            itemlist.add(c);
+            add(c);
+        }
  
         else if( itype.equals("jtpush") )
         {
@@ -275,7 +282,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------
@@ -340,13 +347,13 @@ public int getScrollableBlockIncrement(Rectangle r, int o, int d)
 //----------------------------------------------------------------------------
 public boolean getScrollableTracksViewportWidth() 
 {
-    return !param.hscroll;
+    return !param.hscroll();
 }
 
 //----------------------------------------------------------------------------
 public boolean getScrollableTracksViewportHeight() 
 {
-    return !param.vscroll;
+    return !param.vscroll();
 }
 
 //--------------------------------------------------------------------------- 

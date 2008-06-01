@@ -198,7 +198,7 @@ jttree(jtdialog parent, Node node)
     dialog=parent;
 
     param=new jtparam();
-    param.editable=false; //!
+    param.editable(false); //!
     param.build(node,"jttree");
     //param.list();
 
@@ -303,7 +303,7 @@ public void valueChanged(TreeSelectionEvent e)
         return;
     }
 
-    if( param.valid ) 
+    if( param.valid() ) 
     {
         dialog.action(this);
     }
@@ -351,7 +351,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------
@@ -364,7 +364,7 @@ public String getName()
 //--------------------------------------------------------------------------- 
 public boolean isFocusable()
 {
-    return param.focusable;
+    return param.focusable();
 }
 
 //--------------------------------------------------------------------------- 

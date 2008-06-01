@@ -49,7 +49,7 @@ jtget(jtdialog parent, Node node)
     jterm=dialog.jterm;
 
     param=new jtparam();
-    param.escape=true; //!
+    param.escape(true); //!
     param.build(node,"jtget");
     //param.list();
 
@@ -61,10 +61,11 @@ jtget(jtdialog parent, Node node)
     //param.setSelectedIcon(this);
     //param.setSelected(this);
     param.setEnabled(this);
+    //param.setFocusable(this); //nem kell --> isFocusable
     //param.setMnemonic(this);
 
-    setPicture(param.picture);
-    setText(param.text);
+    setPicture(param.picture());
+    setText(param.text());
     
     resize(param.left,param.top,param.right-param.left+1);
     
@@ -95,7 +96,7 @@ public void actionPerformed(ActionEvent e)
 
     super.actionPerformed(e);
 
-    if( param.valid )
+    if( param.valid() )
     {
         if( !verify() )
         {
@@ -157,7 +158,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------
@@ -170,7 +171,7 @@ public String getName()
 //--------------------------------------------------------------------------- 
 public boolean isFocusable()
 {
-    return param.focusable;
+    return param.focusable();
 }
  
 
@@ -228,6 +229,7 @@ public void message(Node msg)
     change.setToolTip(this,param);
     change.setPicture(this,param);
     change.setEnabled(this,param);
+    change.setText(this,param);
 }
 
 //--------------------------------------------------------------------------- 

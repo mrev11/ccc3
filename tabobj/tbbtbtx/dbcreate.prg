@@ -120,7 +120,8 @@ local n,rcol,rind,db
 
         rind:=aclone(tabIndex(table))
         for n:=1 to len(rind)
-            asize(rind[n],3)
+            //asize(rind[n],3)
+            asize(rind[n],4) //3 helyett 4 (suppindex infó)
         next
         
         _db_addresource(db,arr2bin(rcol),0) //fix:pgno=1,indx=0

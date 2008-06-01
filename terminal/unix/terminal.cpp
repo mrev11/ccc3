@@ -406,6 +406,8 @@ int main(int argc, char *argv[])
 
     screen_buffer=new screenbuf(wwidth,wheight);
 
+    XInitThreads();  //libxcb hiba
+
     display=XOpenDisplay(NULL);
     if(display==NULL) 
     {

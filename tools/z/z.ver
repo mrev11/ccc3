@@ -1,7 +1,17 @@
 
-#define VERSION "2.1.03"
+#define VERSION "2.1.05"
 
 #ifndef VERSION  
+
+2008.04.29 -- 2.1.05
+  K_CTRL_F3 search again previous
+  K_CTRL_F4 replace again previous
+
+2008.04.28 -- 2.1.04
+  Replace (K_F4 és K_SH_F4) után a kurzor a replacestring utánra
+  pozícionálódik (hogy az abc->abcd típusú sorozatos cseréknél
+  könnyebb legyen továbblépni). Search előtt nem kell átugrani 
+  a replacestringet.
 
 2007.10.06 -- 2.1.03
   SIGHUP, SIGINT sighandler-ben elnyomva.

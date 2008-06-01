@@ -28,6 +28,7 @@ function _zedit_mright(this)
     end
 
     this:moveright()
+
     if( this:markmode=="RECT" )
         this:display()
     else
@@ -36,7 +37,8 @@ function _zedit_mright(this)
 
 ***************************************************************************
 function _zedit_mleft(this)
-    this:moveleft()
+    this:moveleft() 
+
     if( this:markmode=="RECT" )
         this:display()
     else
@@ -53,6 +55,7 @@ function _zedit_mend(this)
     end
 
     this:end()
+
     if( this:markmode=="RECT" )
         this:display()
     else
@@ -61,7 +64,8 @@ function _zedit_mend(this)
 
 ***************************************************************************
 function _zedit_mhome(this)
-    this:home()
+    this:home() 
+
     if( this:markmode=="RECT" )
         this:display()
     else
@@ -85,11 +89,11 @@ function _zedit_mdown(this)
 
 ***************************************************************************
 function _zedit_mup(this)
-     this:up() 
-     if( this:actrow<len(this:atxt) )
-         this:displine(this:actrow+1)
-     end
-     this:displine()
+    this:up() 
+    if( this:actrow<len(this:atxt) )
+        this:displine(this:actrow+1)
+    end
+    this:displine()
 
 ***************************************************************************
 function _zedit_mpagedn(this)
@@ -105,7 +109,7 @@ function _zedit_mpagedn(this)
 
 ***************************************************************************
 function _zedit_mpageup(this)
-    this:pageup
+    this:pageup()
     this:display()
 
 ***************************************************************************

@@ -22,7 +22,7 @@
 function _zedit_display(this)
 
 local n,idx,ltxt:=len(this:atxt)
-//local crs:=setcursor(0) //hogy ne villogjon
+local crs:=setcursor(0) //hogy ne villogjon
 
     for n:=this:top to this:bottom
         idx:=n-this:top+this:sftrow+1
@@ -33,9 +33,6 @@ local n,idx,ltxt:=len(this:atxt)
         end
     next 
     
-    //setcursor(crs)
-
-    return NIL
-
+    setcursor(crs)
 
 ***************************************************************************   

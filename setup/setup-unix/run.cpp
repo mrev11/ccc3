@@ -21,21 +21,31 @@
 #include <cccapi.h>
 
 //------------------------------------------------------------------------
-void _clp___run(int argno)  //Clipper
+void _clp_run(int argno)  //Clipper
 {
-    CCC_PROLOG("__run",1);
+    CCC_PROLOG("run",1);
+//#ifdef _UNIX_    
     str2bin(base);
     _retni( system(_parb(1)) );
+
+//#else
+//    bin2str(base);
+//    _retni( _wsystem(_parc(1)) );
+//
+//Windowson ez sehogy sem jó:
+//  system nem találja meg a nem ASCII filéket,
+//  _wsystem elrontja a nem ASCII argumentumokat,
+//  azért inkább hagyom az eredeti változatot.
+//  Megj. _wspawn és _wexec sincs, azaz nem tudunk 
+//  végrehajtani nem ASCII filét.
+//#endif    
     CCC_EPILOG();
 }
 
 //------------------------------------------------------------------------
-void _clp_run(int argno)  //Clipper
+void _clp___run(int argno)  //Clipper
 {
-    CCC_PROLOG("run",1);
-    str2bin(base);
-    _retni( system(_parb(1)) );
-    CCC_EPILOG();
+    _clp_run(argno);
 }
 
 //------------------------------------------------------------------------

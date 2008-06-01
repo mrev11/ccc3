@@ -1,4 +1,4 @@
-//MSK2DLG 0.9.00
+//MSK2DLG 1.0.00
 
 class postest(jtpanel)
     method initialize
@@ -55,7 +55,7 @@ static function postest.initialize(this)
     this:r3:=jtradioNew(4,28,4,37); this:r3:name:='r3'; this:r3:text:='Rádió'; this:additem(this:r3)
     this:c3:=jtcheckNew(4,39,4,48); this:c3:name:='c3'; this:c3:text:='Check'; this:additem(this:c3)
     this:l3:=jtcomboNew(4,50,4,61); this:l3:name:='l3'; this:additem(this:l3)
-    this:w3:=jtprogbarNew(4,63,4,73); this:w3:name:='w3'; this:additem(this:w3)
+    this:w3:=jtsliderNew(4,63,4,73); this:w3:name:='w3'; this:additem(this:w3)
     this:get4:=jtgetNew(6,5,7,15); this:get4:name:='get4'; this:additem(this:get4)
     this:p4:=jtpushNew(6,17,7,26); this:p4:name:='p4'; this:p4:text:='Push'; this:additem(this:p4)
     this:r4:=jtradioNew(6,28,7,37); this:r4:name:='r4'; this:r4:text:='Rádió'; this:additem(this:r4)

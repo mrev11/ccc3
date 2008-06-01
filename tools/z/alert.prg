@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//saját alert
+//sajat alert
 
 #include "inkey.ch"
 
@@ -36,7 +36,7 @@ local color,cursor
 local key,choice,keyexit
 
 
-    //txt méretezése
+    //txt meretezese
     
     if( empty(argtxt) )
         return 0
@@ -75,11 +75,11 @@ local key,choice,keyexit
     end
     
     //most txt-nek legfeljebb MAXH-sora van,
-    //és egyik sora sem hosszabb MAXW-nél
+    //es egyik sora sem hosszabb MAXW-nel
 
 
 
-    //alt méretezése
+    //alt meretezese
     
     if( argalt!=NIL )
         for n:=1 to len(argalt)   
@@ -101,12 +101,12 @@ local key,choice,keyexit
         walt:=8
     end     
 
-    //most alt-nak van legalább 1 alternatívája,
-    //a megmaradt alternatívák összhossza nem több MAXW-nél
+    //most alt-nak van legalabb 1 alternativaja,
+    //a megmaradt alternativak osszhossza nem tobb MAXW-nel
     
 
     
-    //doboz pozícionálás
+    //doboz pozicionalas
     
     top:=int((maxrow()-len(txt)-3)/2)
     bot:=top+len(txt)+3

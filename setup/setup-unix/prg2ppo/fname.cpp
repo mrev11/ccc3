@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: fname.ppo (5.0.03x)
+//input: fname.ppo (5.0.06)
 
 #include <cccdef.h>
 

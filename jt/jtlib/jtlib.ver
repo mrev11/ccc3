@@ -1,7 +1,22 @@
 
-#define JTLIBVERSION  "1.2.05-UTF8 (2008.03.13)" 
+#define JTLIBVERSION  "1.2.06x-UTF8 (2008.05.20)" 
 
 #ifdef __HYSTORY__
+
+1.2.06 (2008.05.20)
+  jtslider kontroll.
+
+  A kontroll nevekről:
+  Minden kontroll kap automatikus nevet: "_ctrl_*".
+  Ez elég a pushbuttonok, menük működéséhez (az akcióblokkhoz).
+  A kontrollok név szerinti eléréséhez azonban nem jó,
+  mert az automatikus név a program írásakor nem ismert.
+  A jtdialogok varlist-jébe azok a kontrollok kerülnek,
+  amik explicit nevet kaptak. Az ilyenek értékeit az akció-reakció
+  üzenetek automatikusan közvetítik. Figyelmeztetés íródik ki,
+  ha pl. egy get-nek nincs neve. A labeleknek, pushbuttonoknak
+  általában nincs szükségük névre. Mindig felvetődik a kérdés:
+  Nem jobb-e egyszerűen minden kontrollt felvenni a varlistbe?
 
 1.2.05 (2008.03.13)
   jttable színezés.

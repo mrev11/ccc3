@@ -20,7 +20,6 @@
 
 *****************************************************************************
 function _zedit_delline(this)
-
     this:markmode:="CONT"
     this:clipboard:={this:atxt[this:actrow],""}
     adel(this:atxt,this:actrow)
@@ -29,8 +28,5 @@ function _zedit_delline(this)
         aadd(this:atxt,"")
     end
     this:display()
-    return NIL
-
-
 
 *****************************************************************************

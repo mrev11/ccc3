@@ -22,8 +22,9 @@
 #include "inkey.ch"
 #include "box.ch"
 
-#define VERZIO  "3.0.04"    //2008.03.06 összehasonlítás előtti transzformáció
+#define VERZIO  "3.0.05"    //2008.04.17 datetime korrekció WORK-ben is (csak hátrafelé módosít)
 
+//#define VERZIO  "3.0.04"  //2008.03.06 összehasonlítás előtti transzformáció
 //#define VERZIO  "3.0.03"  //2008.02.18 F4-re editál
 //#define VERZIO  "3.0.02"  //2006.12.27 angolra fordítva
 //#define VERZIO  "3.0.01"  //2006.05.31 utolsó sor kihagyásakor elszállás javítva
@@ -375,7 +376,7 @@ function savebrowse()
 
 local dbrw,colFile,colWork,colSave
 local brw:=brwCreate(0,0,maxrow(),maxcol())
-local olvas:={},rendez:={}
+local olvas:={},rendez:={},timecorr:={}
 local repeat:=.f.
     
     dbrw:=makearr()
@@ -420,7 +421,9 @@ local repeat:=.f.
         brwMenu(brw,"Save",formDir(s_save,35)+" <-- "+formDir(s_work,35),{||repeat:=.t.,copyMent(brw)},"S")
         brwMenu(brw,"Freshen",formDir(s_save,35)+" --> "+formDir(s_work,35),{||repeat:=.t.,copyFrissit(brw)},"F")
  
-        brwMenu(brw,"Time","Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyIdo(brw)},"T")
+        aadd(timecorr,{"Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyIdo(brw,.f.),break(NIL)}})
+        aadd(timecorr,{"Reset datetime in WORK if file contents are the same",{||repeat:=.t.,copyIdo(brw,.t.),break(NIL)}})
+        brwMenu(brw,"Time","Reset datetime if file contents are the same",timecorr)
 
         brwMenu(brw,"DelSav","Delete newer files in SAVE",{||repeat:=.t.,delSave(brw)})
         brwMenu(brw,"DelWrk","Delete newer files in WORK",{||repeat:=.t.,delWork(brw)})
@@ -686,7 +689,7 @@ local screen:=savescreen(0,0,maxrow(),maxcol())
         run (fc+" "+s+" "+w+" >"+temp+"fc_diff"+" 2>"+temp+"fc_err")
     else
         //összehasonlítás előtt a filékből ki kell
-        //vanni a CR-eket, és egységes kódrendszerre 
+        //venni a CR-eket, és egységes kódrendszerre 
         //kell transzformálni
 
         removecr(w,temp+"work")
@@ -704,7 +707,7 @@ local screen:=savescreen(0,0,maxrow(),maxcol())
     elseif( !empty(memoread(temp+"fc_diff")) )
         run (list+" "+temp+"fc_diff")
     else
-        alert("fc_diff and fc_err empty")
+        alert("Files match.") //no output from diff
     end
     
     clear screen //2003.01.01
@@ -845,7 +848,7 @@ local msg, cvsflg, fname
 
 
 ******************************************************************************    
-static function copyIdo(brw)
+static function copyIdo(brw,save_or_work)
 
 local arr:=brwArray(brw), n
 local msg, fw, fs, fname, ftime
@@ -853,13 +856,23 @@ local msg, fw, fs, fname, ftime
 local prediffs:=getenv("PREDIFFS")
 local prediffw:=getenv("PREDIFFW")
 local temp:=tempdir()
+local alert_text
 
-    if( 2==alert("Datetime correction in SAVE start?",{"Cancel","Start"}) )
+    if( empty(save_or_work) )
+        alert_text:="Datetime correction in SAVE start?"
+    else
+        alert_text:="Datetime correction in WORK start?"
+    end
+
+    if( 2==alert(alert_text,{"Cancel","Start"}) )
 
         msg:=message(msg,"Datetime")
 
         for n:=1 to len(arr)
-            if( !arr[n][IDX_WORK] == arr[n][IDX_SAVE] )
+
+            if( empty(save_or_work) .and. arr[n][IDX_WORK] < arr[n][IDX_SAVE] .or.;
+               !empty(save_or_work) .and. arr[n][IDX_WORK] > arr[n][IDX_SAVE] ) //hátrafelé
+
                 fname:=arr[n][IDX_FILE]
                 msg:=message(msg,fname)
                 
@@ -878,8 +891,14 @@ local temp:=tempdir()
                 end
 
                 if( !empty(fs) .and. !empty(fw) .and. txt(fs)==txt(fw) )
-                    ftime:=getfiletime(s_work+fname)
-                    setfiletime(s_save+fname,,,ftime[3])
+
+                    if( empty(save_or_work) )
+                        ftime:=getfiletime(s_work+fname)
+                        setfiletime(s_save+fname,,,ftime[3])
+                    else
+                        ftime:=getfiletime(s_save+fname)
+                        setfiletime(s_work+fname,,,ftime[3])
+                    end
                 end
             end
         next

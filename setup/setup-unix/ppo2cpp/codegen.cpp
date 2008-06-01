@@ -2756,6 +2756,16 @@ int codegen_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
+int codegen_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    cgen(p,0);
+    cgen(p,1);
+    cgen(p,2);
+    nltab();fprintf(code,"slice();");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
 int codegen_expr_expr_ASSIGN_expr(parsenode *p,void *v)//PROTO
 {
     cgen(p,1);
@@ -3744,6 +3754,18 @@ int outsource_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v)//PROTO
     outsrc(p,0);
     fprintf(src,"[");
     outsrc(p,1);
+    fprintf(src,"]");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_expr_expr_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    outsrc(p,0);
+    fprintf(src,"[");
+    outsrc(p,1);
+    fprintf(src,"..");
+    outsrc(p,2);
     fprintf(src,"]");
     return 0;
 }

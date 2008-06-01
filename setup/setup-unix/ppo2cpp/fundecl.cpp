@@ -370,7 +370,7 @@ char *fundecl_clpcall(const char *fun)
     }
 
     if( (elem->nsinfo==0) ||
-        (current_namespace!=0) && (0==strcmp(elem->nsinfo,current_namespace)) )
+        ((current_namespace!=0) && (0==strcmp(elem->nsinfo,current_namespace))) )
     {
         sprintf(buf1,"%s",elem->text);
     }

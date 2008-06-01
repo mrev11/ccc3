@@ -108,7 +108,10 @@ static int locopen(int x, char *fname, int additive)
                 file=fdopen(fd,additive?"ab":"wb");
             }
         #else
-            file=fopen(fname,additive?"ab":"wb");
+            //file=fopen(fname,additive?"ab":"wb");
+            CHAR*wfn=utf8_to_wchar(fname,strlen(fname),0);
+            file=_wfopen(wfn,additive?L"ab":L"wb");
+            free(wfn);
         #endif
 
         outfile[x].fp=file;

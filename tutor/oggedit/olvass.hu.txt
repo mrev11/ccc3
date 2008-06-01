@@ -1,0 +1,9 @@
+
+oggedit frontend a vorbiscomment programhoz
+oggplay frontend az ogg123 programhoz
+
+Ezek az egyszerű programok nem akarják pótolni (vagy pláne felülmúlni) 
+az olyan nagyszerű és elterjedt lejátszóprogramokat, mint a Winamp, xmms,
+Rhythmbox stb. Gyakorlóprogramok, amik szemléltetik a Jáva terminál 
+használatát és a frontend programozást.
+

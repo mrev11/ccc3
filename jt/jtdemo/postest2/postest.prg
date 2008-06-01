@@ -56,7 +56,9 @@ local text:=<<TEXT>>Próba szerencse
     bar:additem(jtradioNew("Próba"))
     bar:additem(jtcheckNew("Próba"))
     bar:additem(jtgetNew(0,1,0,10))
-    bar:additem(jtprogbarNew()):name:="pb1"
+    //bar:additem(jtgetNew())
+    //bar:additem(jtprogbarNew()):name:="pb1"
+    bar:additem(jtsliderNew(0,1,0,1)):name:="pb1"
 
     bar:=dlg:add(jttoolbarNew())
     bar:additem(  jtlabelNew(0,1,0,10)):text:="Szerencse:"
@@ -107,6 +109,8 @@ local text:=<<TEXT>>Próba szerencse
     pnl:tbl:addcolumn("Column1",{||"xxxx"},"@RC XXXX")
     pnl:tbl:addcolumn("Column2",{||"xxxx"},"@RC XXXX")
 
+    //pnl:w3:painttick:=.t.
+    //pnl:w3:paintlabel:=.t.
 
     //h/vexpand true
     pnl:top:=0

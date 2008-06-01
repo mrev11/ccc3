@@ -87,14 +87,14 @@ jttabpane(jtdialog parent, Node node)
 
             c.setBorder(null);
 
-            addTab( c.param.text,
-                    jterminal.loadIcon(c.param.icon),
+            addTab( c.param.text(),
+                    jterminal.loadIcon(c.param.icon()),
                     c.getScrollPane(),
-                    c.param.tooltip);
+                    c.param.tooltip());
             
-            if( c.param.mnemonic!=null )
+            if( c.param.mnemonic()!=0 )
             {
-                setMnemonicAt(itemlist.size(),c.param.mnemonic.getKeyCode());
+                setMnemonicAt(itemlist.size(),c.param.mnemonic());
 
                 //a JPanel-nek eredetileg nincs mnemonicja,
                 //viszont a jttabpanek jtpanelekbol epulnek fel,
@@ -111,7 +111,7 @@ jttabpane(jtdialog parent, Node node)
 public void stateChanged(ChangeEvent e)
 {
     setmenu();
-    if( param.valid )
+    if( param.valid() )
     {
         dialog.action(this);
     }
@@ -175,7 +175,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------

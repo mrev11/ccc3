@@ -1,0 +1,22 @@
+//MSK2DLG 0.9.00
+
+class config(jtdialog)
+    method initialize
+    attrib  nick
+    attrib  color
+    attrib  ok
+    attrib  esc
+
+
+static function config.initialize(this)
+    this:(jtdialog)initialize(6,27,12,66)
+    this:name:='config'
+    this:layout:='fix'
+    this:nick:=jtgetNew(1,11,1,36); this:nick:name:='nick'; this:add(this:nick)
+    this:color:=jtgetNew(2,11,2,36); this:color:name:='color'; this:add(this:color)
+    this:ok:=jtpushNew(3,11,4,22); this:ok:name:='ok'; this:ok:text:='Ok'; this:add(this:ok)
+    this:esc:=jtpushNew(3,25,4,36); this:esc:name:='esc'; this:esc:text:='Escape'; this:add(this:esc)
+    this:add(jtlabelNew(1,3,1,9,'Nick  :'))
+    this:add(jtlabelNew(2,3,2,9,'Color :'))
+    return this
+

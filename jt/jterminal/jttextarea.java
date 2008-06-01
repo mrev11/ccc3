@@ -82,7 +82,7 @@ public JComponent getScrollPane()
 //--------------------------------------------------------------------------- 
 public void actionPerformed(ActionEvent e)
 {
-    if( param.valid )
+    if( param.valid() )
     {
         dialog.action(this);
     }
@@ -91,7 +91,7 @@ public void actionPerformed(ActionEvent e)
 //--------------------------------------------------------------------------- 
 public String xmlget() throws pfexception
 {
-    if( !param.editable )
+    if( !param.editable() )
     {
         return "";
     }
@@ -129,7 +129,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------
@@ -142,14 +142,14 @@ public String getName()
 //--------------------------------------------------------------------------- 
 public boolean isFocusable()
 {
-    return param.focusable;
+    return param.focusable();
 }
  
 
 //--------------------------------------------------------------------------- 
 public void focusGained(FocusEvent e)
 {
-    setBackground( bground=(param.editable ? Color.white : bground_normal) );
+    setBackground( bground=(param.editable() ? Color.white : bground_normal) );
     jterminal.autoscroll(this);
 }
  

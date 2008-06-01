@@ -40,10 +40,17 @@ void _clp_replicate(int argno)
         CHAR *p=stringl(slen*rlen);
         CHAR *sp=_parc(1);
 
-        while( 0<rlen-- )
+        if( slen==1 )
         {
-            wmemcpy(p,sp,slen);
-            p+=slen;            
+            wmemset(p,*sp,rlen);
+        }
+        else
+        {
+            while( 0<rlen-- )
+            {
+                wmemcpy(p,sp,slen);
+                p+=slen;            
+            }
         }
     }
 
@@ -60,10 +67,17 @@ void _clp_replicate(int argno)
         BYTE *p=binaryl(slen*rlen);
         BYTE *sp=_parb(1);
 
-        while( 0<rlen-- )
+        if( slen==1 )
         {
-            memcpy(p,sp,slen);
-            p+=slen;            
+            memset(p,*sp,rlen);
+        }
+        else
+        {
+            while( 0<rlen-- )
+            {
+                memcpy(p,sp,slen);
+                p+=slen;            
+            }
         }
     }
     else

@@ -49,7 +49,7 @@ jthtmlarea(jtdialog parent, Node node)
     dialog=parent;
 
     param=new jtparam();
-    param.editable=false; //!
+    param.editable(false); //!
     param.build(node,"jthtmlarea");
     //param.list();
 
@@ -58,9 +58,9 @@ jthtmlarea(jtdialog parent, Node node)
     param.setEnabled(this);
     param.setEditable(this);
 
-    if( !param.text.equals("") )
+    if( !param.text().equals("") )
     {
-        setPage(param.text);
+        setPage(param.text());
     }
 
     addHyperlinkListener(this);
@@ -87,13 +87,13 @@ public void setPage(String url)
             setContentType("text/html");
             setText(url);
             lastsend="";
-            param.text="";
+            param.text("");
         }
         else
         {
             URL x=new URL(url);
             super.setPage(x);
-            param.text=url;
+            param.text(url);
             //scrollToReference(x.getRef());
             //jterminal.out.println(" OK");
         }
@@ -103,7 +103,7 @@ public void setPage(String url)
         setContentType("text/plain");  //!
         setText( e.toString() );
         lastsend=null;
-        param.text="";
+        param.text("");
         //jterminal.out.println(" failed");
     }
 }
@@ -115,14 +115,14 @@ public void setPage(URL url)
     {
         super.setPage(url);
         //scrollToReference(url.getRef());
-        param.text=url.toString(); 
+        param.text(url.toString()); 
     }
     catch( Exception e )
     {
         setContentType("text/plain");  //!
         setText( e.toString() );
         lastsend=null;
-        param.text=""; 
+        param.text(""); 
     }
 }
  
@@ -142,16 +142,16 @@ public void hyperlinkUpdate(HyperlinkEvent e)
         //System.out.println( "file >"+e.getURL().getFile() );
         //System.out.println( "ref  >"+e.getURL().getRef() );
         
-        if( param.followlink )
+        if( param.followlink() )
         {
             setPage( e.getURL() );
         }
         else
         {
-            param.text=e.getURL().toString(); 
+            param.text(e.getURL().toString()); 
         }
 
-        if( param.valid )
+        if( param.valid() )
         {
             dialog.action(this);
         }
@@ -161,7 +161,7 @@ public void hyperlinkUpdate(HyperlinkEvent e)
 //--------------------------------------------------------------------------- 
 public void actionPerformed(ActionEvent e)
 {
-    if( param.valid )
+    if( param.valid() )
     {
         dialog.action(this);
     }
@@ -170,7 +170,7 @@ public void actionPerformed(ActionEvent e)
 //--------------------------------------------------------------------------- 
 public String xmlget() throws pfexception
 {
-    String x="<"+param.name+">"+jterminal.cdataif(param.text)+"</"+param.name+">"; 
+    String x="<"+param.name+">"+jterminal.cdataif(param.text())+"</"+param.name+">"; 
 
     if( (lastsend!=null) && lastsend.equals(x) )
     {
@@ -199,7 +199,7 @@ public void xmlreset()
 //---------------------------------------------------------------------------
 public boolean isEscape()
 {
-    return param.escape;
+    return param.escape();
 }
 
 //---------------------------------------------------------------------------
@@ -212,7 +212,7 @@ public String getName()
 //--------------------------------------------------------------------------- 
 public boolean isFocusable()
 {
-    return param.focusable;
+    return param.focusable();
 }
 
 //--------------------------------------------------------------------------- 
@@ -224,16 +224,7 @@ public void message(Node msg)
     change.setEscape(param);
     change.setToolTip(this,param);
     change.setEnabled(this,param);
-
-    for( Node child=msg.getFirstChild(); child!=null; child=child.getNextSibling() )
-    {
-        String name=child.getNodeName();
-        if( name.equals("changeurl") )
-        {
-            param.text=jterminal.getTextContent(child); 
-            setPage(param.text);
-        }
-    }
+    change.setPage(this,param);
 }
 
 //--------------------------------------------------------------------------- 

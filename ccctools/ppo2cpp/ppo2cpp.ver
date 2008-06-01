@@ -1,4 +1,7 @@
 
+2008.05.23
+  gcc 4.3.0 warning megszüntetve
+
 2008.03.13 -- 5.0.06
   Szeleteknél
     kihagyott index helyett elfogadott a NIL

@@ -32,7 +32,7 @@ local markcol:=this:markcol
         return NIL
     end
 
-    //csak előrefelé lehet kijelölni
+    //csak elorefele lehet kijelolni
 
     if( !this:markflg .or. x<markrow .or. actrow<x )
         disp(this,x,1)

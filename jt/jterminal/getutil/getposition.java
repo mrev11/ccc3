@@ -41,6 +41,7 @@ private static final int STY_ITALIC      =  3;
 
 static private int fontsize=0;
 static private int fontwidth=0;
+static private int plusheight=0;
 
 static private Font defaultmonofont;
 static private Font smallmonofont; 
@@ -50,15 +51,21 @@ static private Font smallboldfont;
 static
 {
     boolean highres=false;
-    String jtresol=null;//System.getenv("JTRESOL"); //1.4.2-ben nem megy!
+    String jtresol=null;
     
-    //Az 1.4.2-ben a System.getenv(String) deprecated.
-    //Lefordul, de runtime errorral elszáll, és azt ajánlja, 
-    //hogy használjunk helyette -D opciót és getProperty-t.
-    //Az 1.5.0-ban megint nem deprecated, és működik.
-    //A végeredmény, hogy nem használható, ui. nem ismert,
-    //hogy a felhasználónál milyen JRE van.
-    //A kúrva anyjukat.
+    try
+    {
+        jtresol=System.getenv("JTRESOL");
+    }
+    catch( Error e )
+    {
+        jtresol=null;
+
+        //1.4.2-ben a System.getenv(String) deprecated.
+        //Lefordul, de runtime errorral elszáll, és azt ajánlja, 
+        //hogy használjunk helyette -D opciót és getProperty-t.
+        //1.5.0-tól újra használható (és nem is depracted).
+    }
     
     if( jtresol==null )
     {
@@ -89,6 +96,7 @@ static
     if( highres )
     {
         fontsize=14;
+        plusheight=0;
 
         defaultmonofont = new Font("Monospaced",Font.PLAIN,fontsize);
         smallmonofont   = new Font("Monospaced",Font.PLAIN,fontsize-2);
@@ -98,6 +106,7 @@ static
     else
     {
         fontsize=12;
+        plusheight=8;
 
         defaultmonofont = new Font("Monospaced",Font.PLAIN,fontsize);
         smallmonofont   = new Font("Monospaced",Font.PLAIN,fontsize-1);
@@ -145,6 +154,12 @@ static public int getFontSize()
 static public int getFontSize(Font f)
 {
     return f.getSize();
+}
+
+//----------------------------------------------------------------------------
+static public int getPlusHeight()
+{
+    return plusheight;
 }
  
 //----------------------------------------------------------------------------

@@ -1,7 +1,20 @@
 
-#define VERZIO "3.0.03"
+#define VERZIO "3.0.06"
 
 #ifndef VERZIO
+
+2008.07.04 -- 3.0.06
+   "A DBF létrehozása a tárolt struktúrával" funkció nem törölte
+   a meglevő táblát, akkor sem, ha az alert-ben a törlést választották.
+   Most backup-olja és törli.
+
+2008.06.25 -- 3.0.05
+   Hosszú mezőnevek (további javítgatás).
+
+2008.06.02 -- 3.0.04
+   Hosszú (max 32) mezőnevek.
+   Hibajavítás:  Nemlétező tábla struktúrájának importja 
+   tévesen törölte a tárolt struktúrát.
 
 2007.11.15 -- 3.0.03
    Filé létezés vizsgálatoknál lower.

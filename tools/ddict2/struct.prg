@@ -96,6 +96,11 @@ local ver:=DDICT_VERSION
         return NIL
     end
     struct:=structColumn() //egyúttal feltölti DUMMY-t
+    if( empty(struct) )
+        alert("Table not available!")
+        return NIL
+    end
+    
     dbfname:=DUMMY:pathname
     
     if( dbstruct()==(cstruct:=atoc(struct)) ) 
@@ -214,12 +219,14 @@ local str:=dbstruct(), n
         
             if( !empty(str) )
                 str:=ctoa(str)
-                
                 asize(DUMMY:column,0)
                 for n:=1 to len(str)
                     tabAddcolumn(DUMMY:table,str[n])
                 next
                 loadIndex()
+
+                tabBackup(DUMMY:table) //2008.07.04
+                tabDelTable(DUMMY:table) //2008.07.04
                 DUMMY:create
                 DUMMY:destruct
             end

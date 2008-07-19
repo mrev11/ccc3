@@ -1,4 +1,8 @@
 
+2008.06.20 -- 1.2.25
+  A --debug opció bekapcsolja a debugolást.
+  Jelzi, ha nem találja a parfilét (vagy üres).
+
 2006.09.26 -- 1.2.24
   A @parfile.bld-ek keresése a BUILD_BAT directoryban.
 

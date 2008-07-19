@@ -189,7 +189,8 @@ local memofield:={}, dbmname
     end
 
     for n:=1 to len(struct)
-        name :=padr('"'+struct[n][1]+'"',12)
+        name:=struct[n][1]
+        name :=padr('"'+name+'"',max(10,len(name))+2)
         type :='"'+struct[n][2]+'"'
         width:=str(struct[n][3],3)
         dec  :=str(struct[n][4],2)
@@ -290,14 +291,16 @@ local memofield:={}, dbmname
     if(mode=="->")
         //alias->field-re preprocesszál
         for n:=1 to len(struct)
-            name:=padr(struct[n][1],12)
+            name:=struct[n][1]
+            name:=padr(name,max(10,len(name))+2)
             prg+=crlf0+"#define "+ualias+"_"+name+lalias+"->"+lower(name)
         next
 
     elseif(mode=="::")
         //(FIELD:alias:count)-ra preprocesszál
         for n:=1 to len(struct)
-            name:=padr(struct[n][1],12)
+            name:=struct[n][1]
+            name:=padr(name,max(10,len(name))+2)
             fldnum:=alltrim(str(n,2))
             prg+=crlf0+"#define "+ualias+"_"+name+"(FIELD:"+UNDERSCORE+lalias+":"+fldnum+")"
         next
@@ -307,14 +310,16 @@ local memofield:={}, dbmname
         prg+=crlf0+crlf0+"#ifdef ARROW"
         //alias->field-re preprocesszál
         for n:=1 to len(struct)
-            name:=padr(struct[n][1],12)
+            name:=struct[n][1]
+            name:=padr(name,max(10,len(name))+2)
             prg+=crlf0+"#define "+ualias+"_"+name+lalias+"->"+lower(name)
         next
 
         prg+=crlf0+"#else"
         //(FIELD:alias:count)-ra preprocesszál
         for n:=1 to len(struct)
-            name:=padr(struct[n][1],12)
+            name:=struct[n][1]
+            name:=padr(name,max(10,len(name))+2)
             fldnum:=alltrim(str(n,2))
             prg+=crlf0+"#define "+ualias+"_"+name+"(FIELD:"+UNDERSCORE+lalias+":"+fldnum+")"
         next
@@ -329,7 +334,7 @@ local memofield:={}, dbmname
         prg+=crlf0+"#ifdef _cl_"
         for n:=1 to len(memofield)
             name:=memofield[n]
-            dbmname:=padr(name,12)
+            dbmname:=padr(name,max(10,len(name))+2)
             if( left(name,3)=="DBM" )
                 name:=substr(name,4)
             end

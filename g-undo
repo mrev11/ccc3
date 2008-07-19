@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#visszaáll a repobeli állapotra
+#   letörölt fájlokat újra lehozza
+#   módosított fájlokat visszacsinálja
+#   de nem törli az új fájlokat
+
+git-checkout .

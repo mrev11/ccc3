@@ -30,7 +30,7 @@
 ****************************************************************************
 function browseDiff(prevBrw) // browse struktúrák összehasonlításához
 
-local browse:=brwCreate(5,44,maxrow()-1,maxcol()-2)
+local browse:=brwCreate(5,30,maxrow()-1,maxcol()-2)
 local dbfname, str1, str2, m, n, col
 
     if( empty(dbstruct()) )
@@ -84,7 +84,7 @@ local dbfname, str1, str2, m, n, col
     asort(str1,,,{|x,y|x[1]<y[1]})
     brwArray(browse,str1)
     brwColumn(browse,"",brwABlock(browse,5),3)
-    brwColumn(browse,"Field",brwABlock(browse,1),10)
+    brwColumn(browse,"Field",brwABlock(browse,1),24)
     brwColumn(browse,"Typ",brwABlock(browse,2),3)
     brwColumn(browse,"Len",brwABlock(browse,3),"999")
     brwColumn(browse,"Dec",brwABlock(browse,4),"999")
@@ -177,7 +177,7 @@ function browseStruct(str,name,rect) // dbStruct browse-olása
 local crs:=setcursor(0), browse
 
     if( empty(rect) )
-        rect:={3,52,23,77}
+        rect:={3,38,23,78}
     end
 
     browse:=brwCreate(rect[1],rect[2],rect[3],rect[4])
@@ -186,7 +186,7 @@ local crs:=setcursor(0), browse
     browse:colSep:="  "
 
     brwArray(browse,str)
-    brwColumn(browse,"Field",brwABlock(browse,1),10)
+    brwColumn(browse,"Field",brwABlock(browse,1),24)
     brwColumn(browse,"T",brwABlock(browse,2),1)
     brwColumn(browse,"  H",brwABlock(browse,3),"999")
     brwColumn(browse,"D",brwABlock(browse,4),"9")

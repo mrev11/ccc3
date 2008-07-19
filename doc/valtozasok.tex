@@ -1,6 +1,39 @@
 
 \begin{description}
 
+\item[2008.05.23]
+  gcc 4.3.0 warningok megszüntetve.\par
+
+\label{20080313}
+\item[2008.03.13]
+  Indexelhető stringek. String szeletek.
+\begin{verbatim}
+    x:="Próba szerencse"
+    ? x[1] // 'P'
+    ? x[..4] // 'Prób'
+    ? x[4..8] // 'ba sz'
+    ? x[8..] // 'zerencse'
+    ? x[..] // 'Próba szerencse'  (másolat)
+\end{verbatim}
+  A közönséges indexelésnél az index túlnyúlása runtime errort okoz. 
+  A szeletek túlnyúló indexei módosulnak a substr-hez hasonlóan
+  (de nem trükköz, pl. negatív indexet nem számít hátulról).\par
+   
+
+\label{20080222}
+\item[2008.02.22]
+  A könyvtárbeli simplehash osztályon alapuló asszociatív tömbök.
+\begin{verbatim}
+    hash:=simplehashNew()
+    hash['próba']:='szerencse' // hash:set('próba','szerencse')
+    ? hash['ilyennincs']  // hash:get('ilyennincs') --> NIL
+    ? hash['próba']  // hash:get('próba') --> szerencse
+\end{verbatim}
+  A simplehash objektumokat stringekkel lehet indexeleni.
+  Belsőleg a simplehash osztály set(key,value) és get(key) metódusait
+  használja.  A key szerepben bináris és karakter string állhat, 
+  a value akármi lehet. \par
+
 \item[2008.02.17]
   A ppo2cpp-ben a flex elemző a hosszú stringeket soronként darabolja,
   mert az MSC fordítónak gondja van a túl hosszú stringekkel.

@@ -133,7 +133,7 @@ static function appkey(brw,key,tab)
 
 ************************************************************************
 static function struktura(dbfbrw,tab)
-local brw:=brwCreate(1,48,maxrow()-1,maxcol()-1)
+local brw:=brwCreate(1,32,maxrow()-1,maxcol()-1)
 local str:=tabColumn(tab), n, total:=0
    
     brwKillFocus(dbfbrw)
@@ -141,14 +141,14 @@ local str:=tabColumn(tab), n, total:=0
     for n:=1 to len(str)
          total+=str[n][3]
     next
-    brwFooting(brw,{@"Record length: "+alltrim(str(total,3))+" byte","",""})
+    brwFooting(brw,{@"Record length: "+alltrim(str(total,4))+" byte","",""})
     brw:headSep:=B_HD
     brw:colSep:="  "
     brw:footSep:=B_HD
     brw:colorSpec:="n/w,w/n,,,n/w"
     brwArray(brw,str)
 
-    brwColumn(brw,@"Name",brwABlock(brw,1),10)
+    brwColumn(brw,@"Name",brwABlock(brw,1),32)
     brwColumn(brw,@"Typ",brwABlock(brw,2),3)
     brwColumn(brw,@"Len",brwABlock(brw,3),"@Z 999")
     brwColumn(brw,@"Dec",brwABlock(brw,4),"@Z 999")

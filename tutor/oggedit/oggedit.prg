@@ -12,6 +12,8 @@
 
 #include "spawn.ch"
 
+#define FNAME(x) strtran(atail(split(x,dirsep())),".ogg","")
+
 *****************************************************************************
 function main(oggfile)
 
@@ -41,7 +43,7 @@ static function mkdialog(oggfile)
 local dlg,pnl,txt,but
 
     dlg:=jtdialogNew(10,10,30,90)
-    dlg:caption(oggfile)
+    dlg:caption("oggedit: "+FNAME(oggfile))
     dlg:layout:="vbox"
 
     pnl:=dlg:add(jtpanelNew("Title"))

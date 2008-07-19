@@ -150,13 +150,13 @@ local upgrade:=.f.
         aadd(str,BLANKROW)
     end
 
-    brwFooting(brw,{@"Record length: "+alltrim(str(total,3))+" byte","",""})
+    brwFooting(brw,{@"Record length: "+alltrim(str(total,4))+" byte","",""})
     brw:headSep:=B_HS+B_HS+B_HS 
     brw:colSep:="   "
     brw:footSep:=B_HS+B_HS+B_HS
     brwArray(brw,str)
 
-    brwColumn(brw,@"Name",brwABlock(brw,1),"@! NNNNNNNNNN")
+    brwColumn(brw,@"Name",brwABlock(brw,1),"@!S16 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
     brwColumn(brw,@"Typ" ,brwABlock(brw,2),"@! A")
     brwColumn(brw,@"Len" ,brwABlock(brw,3),"@Z 999")
     brwColumn(brw,@"Dec" ,brwABlock(brw,4),"@Z 99")

@@ -57,7 +57,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.2.24"
+#define VERSION "1.2.25"
  
 ****************************************************************************
 function main()
@@ -67,7 +67,10 @@ local opt:=aclone(argv()),n
 #define OPTION(x)  x==left(opt[n],2) 
 #define VALUE()    substr(opt[n],3)
 
-    set dosconv off
+    if( !s_quiet )
+        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
+        ?
+    end
 
 
     for n:=1 to len(opt)
@@ -133,14 +136,19 @@ local opt:=aclone(argv()),n
         elseif( OPTION("-v") )
             s_version:=.t.
 
+        elseif( "--debug"==opt[n] )
+            s_debug:=.t.
 
         elseif( "@"==left(opt[n],1) )
             readpar(substr(opt[n],2),opt)
 
-
         elseif( "="$opt[n] )
             putenv(opt[n])
 
+            //compatibility
+            if( "on"$lower(getenv("BUILD_DBG")) )
+                s_debug:=.t.
+            end
  
         else
             ? @"Invalid switch: ", opt[n]
@@ -150,29 +158,16 @@ local opt:=aclone(argv()),n
         end
     next
     
-    if( !s_quiet )
-        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
-        ?
-    end
     
     if( s_version )
         quit
     end
 
-
-    if( "on"$lower(getenv("BUILD_DBG")) )
-        s_debug:=.t.
-        set alternate to debug
-        set alternate on
-    end
-    
     root()
     params()
     build()
     
     ?
-
-    return NIL
 
 
 ****************************************************************************
@@ -181,9 +176,17 @@ local par:=memoread(parfil),n,p,i
 
     if(empty(par))
         //2006.09.26
-        //Először az aktuális directoryban keres,
+        //Először a megadott directoryban keres,
         //ha ott nincs, akkor megnézi a build directoryban.
         par:=memoread(getenv("BUILD_BAT")+dirsep()+parfil)
+    end
+
+    if(s_debug)
+        if( empty(par) )
+            ?? "Build parfile empty:", parfil;?
+        else
+            ?? "Build parfile:", parfil;?
+        end
     end
 
     par:=strtran(par,chr(13),"")

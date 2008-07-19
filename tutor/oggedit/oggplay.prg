@@ -19,6 +19,8 @@ static pid
 #define ICONPLAY "images/red.gif"
 #define ICONPID  "images/green.gif"
 
+#define FNAME(x) strtran(atail(split(x,dirsep())),".ogg","")
+
 *****************************************************************************
 function main(oggfile)
 local dlg,msg,lab,cnt:=0
@@ -98,10 +100,10 @@ local n,min,sec
 local tick:={1,2,5,10,20,30,60,120,300,600,1200,1800,3600}
 
     dlg:=jtdialogNew(10,10,15,80)
-    dlg:caption("oggplay")
+    dlg:caption("oggplay: "+FNAME(oggfile))
     dlg:layout:="vbox"
     
-    pnl:=dlg:add(jtpanelNew(oggfile))
+    pnl:=dlg:add(jtpanelNew(FNAME(oggfile)))
     pnl:layout:="vbox"
     
     slider:=pnl:additem(jtsliderNew())

@@ -47,7 +47,8 @@ local pos:=DDICT:position
 
 ****************************************************************************
 static function loadBev(getlist)
-    aeval(getlist,{|g|g:picture:="@!"})
+    //aeval(getlist,{|g|g:picture:="@!"})
+    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S10! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
 
     g_tab:postBlock:={||valTabName(getlist)}
     g_ord:postBlock:={||valOrdName(getlist)}
@@ -295,7 +296,8 @@ static function loadMod(getlist)
 
 local indcol:=split(DDICT_INDFIELD)
 
-    aeval(getlist,{|g|g:picture:="@!"})
+    //aeval(getlist,{|g|g:picture:="@!"})
+    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S10! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
     
     g_tab:cargo:=ctoa(dbstruct())
     g_tab:preBlock:={||.f.}
@@ -320,28 +322,28 @@ local indcol:=split(DDICT_INDFIELD)
     g_ind:varPut(DDICT_INDFILE)
 
     if( len(indcol)>=1 )
-        g_col1:varPut(padr(indcol[1],10))
+        g_col1:varPut(indcol[1])
     end
     if( len(indcol)>=2 )
-        g_col2:varPut(padr(indcol[2],10))
+        g_col2:varPut(indcol[2])
     end
     if( len(indcol)>=3 )
-        g_col3:varPut(padr(indcol[3],10))
+        g_col3:varPut(indcol[3])
     end
     if( len(indcol)>=4 )
-        g_col4:varPut(padr(indcol[4],10))
+        g_col4:varPut(indcol[4])
     end
     if( len(indcol)>=5 )
-        g_col5:varPut(padr(indcol[5],10))
+        g_col5:varPut(indcol[5])
     end
     if( len(indcol)>=6 )
-        g_col6:varPut(padr(indcol[6],10))
+        g_col6:varPut(indcol[6])
     end
     if( len(indcol)>=7 )
-        g_col7:varPut(padr(indcol[7],10))
+        g_col7:varPut(indcol[7])
     end
     if( len(indcol)>=8 )
-        g_col8:varPut(padr(indcol[8],10))
+        g_col8:varPut(indcol[8])
     end
 
     g_dir:varPut(tabDirectory())
@@ -453,8 +455,8 @@ local struct:=g_tab:cargo
 local choice
     if( empty(name) .or. 0<ascan(struct,{|c|c[1]==alltrim(name)}) )
         return .t.
-    elseif( (choice:=browseStruct(struct,DDICT_TABLE,{3,13,23,38}))>0 )
-        get:varPut( padr(struct[choice][1],10) )
+    elseif( (choice:=browseStruct(struct,DDICT_TABLE,{3,10,23,50}))>0 )
+        get:varPut(struct[choice][1])
         get:display()
         return .t.
     end

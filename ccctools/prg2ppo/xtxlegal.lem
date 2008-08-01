@@ -308,6 +308,7 @@ expr(P) ::= expr(L) DOLLAR expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) GT expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LT expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) COLON expr(R).{P=pstore(L,R);}
+expr(P) ::= expr(L) COLON COLON expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) DOT expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) BSLASH expr(R).{P=pstore(L,R);}
  

@@ -1,0 +1,57 @@
+
+#define VERZIO  "3.0.06"    
+
+#ifdef NOT_DEFINED
+
+2008.07.25 -- 3.0.06
+
+  Új applykey fv.: 
+    F3(list)-ra F4(edit)-re kiterjesztéstől függő műveletek.
+
+  új opció --list, pl: --list:ogg=op %f 
+  új opció --edit, pl: --edit:ogg=oe:*=less:
+  
+  A kapcsolók additívak. %f helyére behelyettesíti a filénevet.
+  Ha nincs a paraméterben %, akkor a végére rak egy %f-et.
+
+  CVS-es szemetek kivéve
+  
+  Paraméterfilék olvasásakor nem szóközöknél, hanem sorvégeknél darabol, 
+  azaz (egy sor)==(egy paraméter). Nem lehet egy sorba több paramétert írni, 
+  viszont nincs gond a paraméterek belsejében levő szóközökkel.
+ 
+
+//#define VERZIO  "3.0.05"  //2008.04.17 datetime korrekció WORK-ben is (csak hátrafelé módosít)
+//#define VERZIO  "3.0.04"  //2008.03.06 összehasonlítás előtti transzformáció
+//#define VERZIO  "3.0.03"  //2008.02.18 F4-re editál
+//#define VERZIO  "3.0.02"  //2006.12.27 angolra fordítva
+//#define VERZIO  "3.0.01"  //2006.05.31 utolsó sor kihagyásakor elszállás javítva
+//#define VERZIO  "3.0.00"  //2006.04.13 unicode port
+//#define VERZIO  "2.2.01"  //2006.01.30 mindate stod formában is megadható
+//#define VERZIO  "2.2.00"  //2005.12.01 cvs support
+//#define VERZIO  "2.1.19"  //2005.11.30 file/dir symlinkek külön
+//#define VERZIO  "2.1.18"  //2004.07.29 inkludált paraméterek beszúrva
+//#define VERZIO  "2.1.17"  //2003.07.27 linkek elkerülése az új directory()-val
+//#define VERZIO  "2.1.16"  //2003.07.24 optimalizálás
+//#define VERZIO  "2.1.15"  //2003.02.10 diff sorrendje idő szerint
+//#define VERZIO  "2.1.14"  //2003.01.01 terminál inkompatibilitás
+//#define VERZIO  "2.1.13"  //2002.10.14 $(ENVIRONMENT) helyettesítése
+//#define VERZIO  "2.1.12"  //2001.07.29 új menü: list
+//#define VERZIO  "2.1.11"  //2001.07.21 symlinkek kihagyva (-y)
+//#define VERZIO  "2.1.10"  //2001.06.27 paraméterek argv()-vel
+//#define VERZIO  "2.1.09"  //2000.10.02 felesleges ferase kivéve
+//#define VERZIO  "2.1.08"  //2000.05.30 idők másolásakor egységesétés
+//#define VERZIO  "2.1.07"  //2000.04.10 TAB->space(4) összehasonlításkor
+//#define VERZIO  "2.1.06"  //2000.03.10 symbolic link
+//#define VERZIO  "2.1.05"  //2000.03.02
+//#define VERZIO  "2.1.04"  //2000.03.01 dirdirmake javítva
+//#define VERZIO  "2.1.03"  //2000.02.28 -f (find) opció
+//#define VERZIO  "2.1.02"  //2000.02.26 -lr (like) opció
+//#define VERZIO  "2.1.01"  //2000.02.22 -lx -li (like) opciók
+//#define VERZIO  "2.1.00"  //2000.02.17 portolás Linuxra
+//#define VERZIO  "2.0.03"  //2000.01.26 ext keresése javítva
+//#define VERZIO  "2.0.02"  //1999.05.11 . opció
+//#define VERZIO  "2.0.01"  //1999.05.11 -cText, -r* opciók
+
+
+#endif

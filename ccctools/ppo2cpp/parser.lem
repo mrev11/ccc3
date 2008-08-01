@@ -1232,6 +1232,21 @@ expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
     X->outsource=outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
 }
 
+expr(X) ::= expr(X1) COLON COLON  ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
+    X=(new parsenode)->rule(3,X1,S,L);
+    X->text="expr ::= expr COLON COLON ddotsymbol LPAR lfuncpar RPAR.";
+    X->codegen=codegen_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR;
+    X->outsource=outsource_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR;
+}
+
+expr(X) ::= expr(X1) COLON COLON  ddotsymbol(S).{
+    X=(new parsenode)->rule(2,X1,S);
+    X->text="expr ::= expr COLON COLON ddotsymbol.";
+    X->codegen=codegen_expr_expr_COLON_COLON_ddotsymbol;
+    X->outsource=outsource_expr_expr_COLON_COLON_ddotsymbol;
+}
+
+
 expr(X) ::= LPAR(P) lexpr(L) RPAR.{
     X=(new parsenode)->rule(2,L,P); //sorrend!
     X->text="expr ::= LPAR lexpr RPAR.";

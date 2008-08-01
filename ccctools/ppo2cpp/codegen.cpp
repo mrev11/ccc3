@@ -2628,6 +2628,51 @@ int codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
+int codegen_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
+//               0                1               2
+{
+    cgen(p,0);
+    cgenv(p,2,(void*)codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR); //lfuncpar
+
+    char *fname=dotsymboltext(p->right[1]);
+    char *fcall=fundecl_clpcall(fname);
+
+    parsenode *lfuncpar=p->right[2];
+    int parcount=(0xffff&lfuncpar->cargo);
+    int starcount=(lfuncpar->cargo>>16);
+
+    if( starcount==0 )
+    {
+        nltab();fprintf(code,"%s(%d);",fcall,1+parcount);
+    }
+    else if( blkflag )
+    {
+        nltab();fprintf(code,"%s(%d*(argno-2)+%d);",fcall,starcount,1+parcount);
+    }
+    else
+    {
+        nltab();fprintf(code,"%s(%d*(argno-1)+%d);",fcall,starcount,1+parcount);
+    }
+
+    free(fname);
+    free(fcall);
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_expr_expr_COLON_COLON_ddotsymbol(parsenode *p,void *v)//PROTO
+//               0                1
+{
+    cgen(p,0);
+    char *fname=dotsymboltext(p->right[1]);
+    char *fcall=fundecl_clpcall(fname);
+    nltab();fprintf(code,"%s(%d);",fcall,1);
+    free(fname);
+    free(fcall);
+    return 0;
+}
+
+//---------------------------------------------------------------------------
 int codegen_expr_LPAR_lexpr_RPAR(parsenode *p,void *v)//PROTO
 {
     double x;
@@ -3703,6 +3748,29 @@ int outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
     fprintf(src,"(");
     outsrc(p,1);
     fprintf(src,")");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
+{
+    char *t;
+    outsrc(p,0);
+    fprintf(src,"::");
+    fprintf(src,"%s",t=dotsymboltext(p->right[1]));free(t);
+    fprintf(src,"(");
+    outsrc(p,2);
+    fprintf(src,")");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_expr_expr_COLON_COLON_ddotsymbol(parsenode *p,void *v)//PROTO
+{
+    char *t;
+    outsrc(p,0);
+    fprintf(src,"::");
+    fprintf(src,"%s",t=dotsymboltext(p->right[1]));free(t);
     return 0;
 }
 

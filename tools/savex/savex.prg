@@ -22,44 +22,14 @@
 #include "inkey.ch"
 #include "box.ch"
 
-#define VERZIO  "3.0.05"    //2008.04.17 datetime korrekció WORK-ben is (csak hátrafelé módosít)
-
-//#define VERZIO  "3.0.04"  //2008.03.06 összehasonlítás előtti transzformáció
-//#define VERZIO  "3.0.03"  //2008.02.18 F4-re editál
-//#define VERZIO  "3.0.02"  //2006.12.27 angolra fordítva
-//#define VERZIO  "3.0.01"  //2006.05.31 utolsó sor kihagyásakor elszállás javítva
-//#define VERZIO  "3.0.00"  //2006.04.13 unicode port
-//#define VERZIO  "2.2.01"  //2006.01.30 mindate stod formában is megadható
-//#define VERZIO  "2.2.00"  //2005.12.01 cvs support
-//#define VERZIO  "2.1.19"  //2005.11.30 file/dir symlinkek külön
-//#define VERZIO  "2.1.18"  //2004.07.29 inkludált paraméterek beszúrva
-//#define VERZIO  "2.1.17"  //2003.07.27 linkek elkerülése az új directory()-val
-//#define VERZIO  "2.1.16"  //2003.07.24 optimalizálás
-//#define VERZIO  "2.1.15"  //2003.02.10 diff sorrendje idő szerint
-//#define VERZIO  "2.1.14"  //2003.01.01 terminál inkompatibilitás
-//#define VERZIO  "2.1.13"  //2002.10.14 $(ENVIRONMENT) helyettesítése
-//#define VERZIO  "2.1.12"  //2001.07.29 új menü: list
-//#define VERZIO  "2.1.11"  //2001.07.21 symlinkek kihagyva (-y)
-//#define VERZIO  "2.1.10"  //2001.06.27 paraméterek argv()-vel
-//#define VERZIO  "2.1.09"  //2000.10.02 felesleges ferase kivéve
-//#define VERZIO  "2.1.08"  //2000.05.30 idők másolásakor egységesétés
-//#define VERZIO  "2.1.07"  //2000.04.10 TAB->space(4) összehasonlításkor
-//#define VERZIO  "2.1.06"  //2000.03.10 symbolic link
-//#define VERZIO  "2.1.05"  //2000.03.02
-//#define VERZIO  "2.1.04"  //2000.03.01 dirdirmake javítva
-//#define VERZIO  "2.1.03"  //2000.02.28 -f (find) opció
-//#define VERZIO  "2.1.02"  //2000.02.26 -lr (like) opció
-//#define VERZIO  "2.1.01"  //2000.02.22 -lx -li (like) opciók
-//#define VERZIO  "2.1.00"  //2000.02.17 portolás Linuxra
-//#define VERZIO  "2.0.03"  //2000.01.26 ext keresése javítva
-//#define VERZIO  "2.0.02"  //1999.05.11 . opció
-//#define VERZIO  "2.0.01"  //1999.05.11 -cText, -r* opciók
+#include "savex.ver"
 
 
 #ifdef _UNIX_
 #define DEFAULT_CMPTXT    "diff"
 #define DEFAULT_CMPBIN    "cmp"
-#define DEFAULT_LIST      "less"
+#define DEFAULT_LIST      'list.exe "%f"'
+#define DEFAULT_EDIT      'list.exe "%f"'
 #define DEFAULT_TEMP      getenv("HOME")+"/.temp"
 #define UPPER(x)          x
 #define LOWER(x)          x
@@ -69,7 +39,8 @@
 #else
 #define DEFAULT_CMPTXT    "fc"
 #define DEFAULT_CMPBIN    "fc /b"
-#define DEFAULT_LIST      "list"
+#define DEFAULT_LIST      'list "%f"'
+#define DEFAULT_EDIT      'list "%f"'
 #define DEFAULT_TEMP      "/temp"
 #define UPPER(x)          upper(x)
 #define LOWER(x)          lower(x)
@@ -104,7 +75,9 @@ static s_likei            // like include
 static s_liker            // like excluded dirs
 static s_find             // browse helyett listáz (mint a UNIX-os find)
 static s_symlink          // symlinkek bevétele
-static s_cvs              // cvs add/remove
+
+static s_edit:=""
+static s_list:=""
 
 ****************************************************************************
 function main()
@@ -133,7 +106,6 @@ local pfile,ptext,p,q
     s_direxc:=NIL
     s_seconds:=.f.
     s_symlink:=""
-    s_cvs:=.f.
  
     //argumentumok átvétele
 
@@ -249,25 +221,21 @@ local pfile,ptext,p,q
                 end
             end
             
-            if( OPT(n,"-CVS") )
-                s_cvs:=.t.
+            if( OPT(n,"--list:") )
+                s_list+=opt[n][7..]
+            end
+
+            if( OPT(n,"--edit:") )
+                s_edit+=opt[n][7..]
             end
  
             if( "@"$opt[n] .and. file(pfile:=substr(opt[n],2)) )
                 ptext:=memoread(pfile)
                 ptext:=strtran(ptext,chr(13),"")
-                ptext:=strtran(ptext,chr(10)," ")
-                ptext:=split(ptext," ")
-
-                // A végére rakja, jobb beszúrni (2004.07.29).
-                // for p:=1 to len(ptext)
-                //     if( !empty(ptext[p]) )
-                //         //? p, "["+ptext[p]+"]"
-                //         aadd(opt,alltrim(ptext[p]))
-                //     end
-                // next
+                ptext:=split(ptext,chr(10))
 
                 for p:=len(ptext) to 1 step -1
+                    ptext[p]:=alltrim(ptext[p])
                     if( !empty(ptext[p]) )
                         asize(opt,1+len(opt))
                         ains(opt,n+1)
@@ -277,6 +245,14 @@ local pfile,ptext,p,q
             end
         end
     next
+
+    if( empty(s_list) )
+        s_list:=getenv("LIST")
+    end
+
+    if( empty(s_edit) )
+        s_edit:=getenv("EDIT")
+    end
     
     if( empty(s_save) )
         usage()
@@ -454,16 +430,18 @@ local repeat:=.f.
 
 ******************************************************************************    
 static function applykey(brw,key)
-local f,list:=getenv("LIST")
-    if( empty(list) )
-        list:=DEFAULT_LIST
-    end
-    if( key==K_F4 )
-        f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
-        run(list+' "'+f+'"')
+
+local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
+
+    if( key==K_F3 )
+        dolist(f,s_list,DEFAULT_LIST)
+        return .t.
+
+    elseif( key==K_F4 )
+        dolist(f,s_edit,DEFAULT_EDIT)
         return .t.
     end
-    return NIL
+
 
 ******************************************************************************    
 static function fiBlock(brw,idx)
@@ -673,16 +651,11 @@ local timework:=brwArray(brw)[brwArrayPos(brw)][IDX_WORK]
 local w:=s_work+f
 local s:=s_save+f
 local fc:=if(opt==.t.,getenv("CMP"),getenv("DIFF"))
-local list:=getenv("LIST")
 local temp:=tempdir()
 local screen:=savescreen(0,0,maxrow(),maxcol())
 
     if( empty(fc) )
         fc:=if(opt==.t.,DEFAULT_CMPBIN,DEFAULT_CMPTXT)
-    end
-
-    if( empty(list) )
-        list:=DEFAULT_LIST
     end
 
     if( opt==.t. )    
@@ -703,9 +676,9 @@ local screen:=savescreen(0,0,maxrow(),maxcol())
     end
     
     if( !empty(memoread(temp+"fc_err")) )
-        run (list+" "+temp+"fc_err")
+        dolist(temp+"fc_err",s_list,DEFAULT_LIST)
     elseif( !empty(memoread(temp+"fc_diff")) )
-        run (list+" "+temp+"fc_diff")
+        dolist(temp+"fc_diff",s_list,DEFAULT_LIST)
     else
         alert("Files match.") //no output from diff
     end
@@ -817,12 +790,8 @@ local msg, fname
             fname:=arr[n][IDX_FILE]
             msg:=message(msg,"Delete: "+s_work+fname)
             ferase(s_work+fname)
-            if( s_cvs )
-                cvs("rm",s_work+fname)
-            end
         end
     next
-    cvs()
     message(msg)
     return .f.
 
@@ -830,7 +799,7 @@ local msg, fname
 ******************************************************************************    
 static function copyFrissit(brw)
 local arr:=brwArray(brw), n
-local msg, cvsflg, fname
+local msg, fname
 
     msg:=message(msg,"Freshen")
 
@@ -838,11 +807,9 @@ local msg, cvsflg, fname
         if( arr[n][IDX_WORK] < arr[n][IDX_SAVE] )
             fname:=arr[n][IDX_FILE]
             msg:=message(msg,s_save+fname+" --> "+s_work+fname)
-            cvsflg:=s_cvs.and.empty(arr[n][IDX_WORK])
-            xfilecopy(s_save+fname,s_work+fname,cvsflg)
+            xfilecopy(s_save+fname,s_work+fname)
         end
     next
-    cvs()
     message(msg)
     return .f.
 
@@ -1041,7 +1008,7 @@ local n
 
 
 ******************************************************************************
-function xfilecopy(source,destin,cvsflg)
+function xfilecopy(source,destin)
 local subdir,bslash
 
     ferase(destin)  //Linux NetWare emuláció hiba elkerülésére
@@ -1049,16 +1016,13 @@ local subdir,bslash
     bslash:=rat(dirsep(),destin)
     if( bslash>1 )
         subdir:=left(destin,bslash-1)
-        dirdirmake(subdir,cvsflg)
+        dirdirmake(subdir)
     end
 
     filecopy(source,LOWER(destin))
-    if( cvsflg==.t. )
-        cvs("add",LOWER(destin))
-    end
 
 ******************************************************************************
-function dirdirmake(path,cvsflg)
+function dirdirmake(path)
 local dir:="",tok,bslash
 
     while( !empty(path) )
@@ -1075,9 +1039,6 @@ local dir:="",tok,bslash
         
             if( !empty(directory(LOWER(dir),"D")) )
                 //alert("Létezik:"+LOWER(dir))
-            elseif( cvsflg==.t. )
-                dirmake( LOWER(dir) ) 
-                cvs("add",LOWER(dir))
             else
                 dirmake( LOWER(dir) ) 
             end
@@ -1146,31 +1107,6 @@ static function _array_resize(this)
    return asize(this:array,this:ecount)
  
 ****************************************************************************
-static function cvs(op,fspec)
-
-static prev_op
-static files:={}
-local x,n
-
-    if( prev_op!=NIL .and. prev_op!=op )
-        //flush
-        x:="cvs "+prev_op
-        for n:=1 to len(files)
-            x+=" "+files[n]
-        next
-
-        //alert(x)
-        run(x)
-        prev_op:=NIL
-        files:={}
-    end
-    
-    if( op!=NIL )
-        prev_op:=op
-        aadd(files,fspec)
-    end
-
-****************************************************************************
 static function tempdir()
 static temp
     if( temp==NIL )
@@ -1190,5 +1126,30 @@ static temp
     end
     return temp
 
+
 ****************************************************************************
+static function dolist(fil,opt,def)
+local ext,pos,exe
+
+    ext:=fext(fil)[2..]+"=" //   xxx=
+    opt:=split(opt,":")     // { xxx=less %f, *=list %f, ... }
+
+    if( 0<(pos:=ascan(opt,{|x|at(ext,x)==1})) )
+        exe:=opt[pos][len(ext)+1..]
+
+    elseif( 0<(pos:=ascan(opt,{|x|at("*=",x)==1})) )
+        exe:=opt[pos][3..]
+    else
+        exe:=def //bedrótozott default
+    end
+
+    if( !"%"$exe )
+        exe+=' "%f" ' //idézőjelekkel védve
+    end
+
+    //alert( strtran(exe,"%f",fil) )
+    run( strtran(exe,"%f",fil) )
+
+****************************************************************************
+
  

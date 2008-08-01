@@ -1,0 +1,6 @@
+#!/bin/bash
+export EDITOR=z.exe
+#set -x
+
+git-add .
+git-commit --all -m "commit"

@@ -8,4 +8,9 @@ outcpp
 outlnk
 outpre
 *.bak
+*.savex
 *.exe
+*.class
+*.jar
+*.nopack
+html

@@ -1,5 +1,8 @@
 
-2008.05.23
+2008.07.25 -- 5.0.08
+  postfix függvényhívás, pl: x::str::alltrim:padl(10,"0")
+
+2008.05.23 -- 5.0.07
   gcc 4.3.0 warning megszüntetve
 
 2008.03.13 -- 5.0.06

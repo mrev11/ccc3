@@ -1,0 +1,2 @@
+#!/bin/bash
+postfix_funcall.exe  q  w  e >log

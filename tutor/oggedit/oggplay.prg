@@ -20,6 +20,7 @@ static pid
 #define ICONPID  "images/green.gif"
 
 #define FNAME(x) strtran(atail(split(x,dirsep())),".ogg","")
+//#define   FNAME(x) (x)::split(dirsep())::atail::strtran(".ogg","")
 
 *****************************************************************************
 function main(oggfile)
@@ -99,7 +100,7 @@ local bar,button,label
 local n,min,sec
 local tick:={1,2,5,10,20,30,60,120,300,600,1200,1800,3600}
 
-    dlg:=jtdialogNew(10,10,15,80)
+    dlg:=jtdialogNew(10,10,15,64)
     dlg:caption("oggplay: "+FNAME(oggfile))
     dlg:layout:="vbox"
     
@@ -129,7 +130,7 @@ local tick:={1,2,5,10,20,30,60,120,300,600,1200,1800,3600}
     next
 
     for n:=len(tick) to 1 step -1
-        if( total/tick[n]>100 )
+        if( total/tick[n]>200 )
             move:=tick[n]
             exit
         end
@@ -170,6 +171,9 @@ static function format(x)
 local pos:=at("Output Buffer",x)
     if( pos>0 )
         x:=x[..pos-1]
+    end
+    while( 0<(pos:=at(".",x)) )
+        x:=stuff(x,pos,3,"")
     end
     return '<html><font face="courier" color="black"><b>'+x
 

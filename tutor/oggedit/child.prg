@@ -53,6 +53,7 @@
   szerepben futó infozip-et.
   
   A child pid-jét refes argumentumként meg lehet kapni.
+  Darabolás javítva.
 #endif
 
 *****************************************************************************
@@ -61,17 +62,13 @@ function child(cmd,pid)
 local p1,p2
 local fd0,fd1,fd2
 local pr,pw
-local i
  
     if( valtype(cmd)=="C" )
         //darabolás
+        while("  "$cmd)
+            cmd:=strtran(cmd,"  "," ")
+        end
         cmd:=split(cmd," ")
-        for i:=1 to len(cmd)
-            if( empty(cmd[i]) )
-                adel(cmd,i)
-                asize(cmd,len(cmd)-1)
-            end
-        next
     end
 
     p1:=pipe() // p1[1] <---< p1[2] 

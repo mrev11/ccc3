@@ -19,8 +19,8 @@ static pid
 #define ICONPLAY "images/red.gif"
 #define ICONPID  "images/green.gif"
 
-#define FNAME(x) strtran(atail(split(x,dirsep())),".ogg","")
-//#define   FNAME(x) (x)::split(dirsep())::atail::strtran(".ogg","")
+//#define FNAME(x) strtran(atail(split(x,dirsep())),".ogg","")
+#define   FNAME(x) (x)::split(dirsep())::atail::strtran(".ogg","")
 
 *****************************************************************************
 function main(oggfile)

@@ -1,2 +1,3 @@
 #!/bin/bash
-postfix_funcall.exe  q  w  e >log
+postfix_funcall.exe qw we er
+postfix_assign.exe

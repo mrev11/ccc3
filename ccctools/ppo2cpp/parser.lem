@@ -227,7 +227,7 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
 %left       DOT.
 %left       DOTDOT.
 %left       COMMA.
-%right      ASSIGN ADDASS SUBASS MULASS DIVASS MODASS.
+%right      ASSIGN ADDASS SUBASS MULASS DIVASS MODASS COLCOLASS.
 %left       OR.
 %left       AND.
 %left       NOT.
@@ -237,7 +237,7 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
 %right      DBSTAR.
 %left       DBPLUS DBMINUS.
 %nonassoc   LBRACKET.
-%left       COLON.
+%left       COLON COLCOL.
 %nonassoc   ARROW.
 %nonassoc   HIGHPRECEDENCE.
 
@@ -1102,6 +1102,34 @@ msgpar(P) ::= LPAR lfuncpar(L) RPAR ASSIGN expr(X).{
     P->outsource=outsource_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr;
 }
 
+lpostfun(L) ::= postfun(P).{
+    L=(new parsenode)->rule(1,P);
+    L->text="lpostfun ::= postfun.";
+    L->codegen=codegen_lpostfun_postfun;
+    L->outsource=outsource_lpostfun_postfun;
+}
+
+lpostfun(L) ::= lpostfun(L1) COLCOL postfun(P).{
+    L=(new parsenode)->rule(2,L1,P);
+    L->text="lpostfun ::= lpostfun COLCOL postfun.";
+    L->codegen=codegen_lpostfun_lpostfun_COLCOL_postfun;
+    L->outsource=outsource_lpostfun_lpostfun_COLCOL_postfun;
+}
+
+postfun(P) ::= ddotsymbol(S).{
+    P=(new parsenode)->rule(1,S);
+    P->text="postfun ::= ddotsymbol.";
+    P->codegen=codegen_postfun_ddotsymbol;
+    P->outsource=outsource_postfun_ddotsymbol;
+}
+
+postfun(P) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
+    P=(new parsenode)->rule(2,S,L);
+    P->text="postfun ::= ddotsymbol LPAR lfuncpar RPAR.";
+    P->codegen=codegen_postfun_ddotsymbol_LPAR_lfuncpar_RPAR;
+    P->outsource=outsource_postfun_ddotsymbol_LPAR_lfuncpar_RPAR;
+}
+
 lnewline(L) ::= newline(N).{
     L=(new parsenode)->rule(1,N);
     L->text="lnewline ::= newline.";
@@ -1247,20 +1275,20 @@ expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
     X->outsource=outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
 }
 
-expr(X) ::= expr(X1) COLON COLON  ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
-    X=(new parsenode)->rule(3,X1,S,L);
-    X->text="expr ::= expr COLON COLON ddotsymbol LPAR lfuncpar RPAR.";
-    X->codegen=codegen_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR;
-    X->outsource=outsource_expr_expr_COLON_COLON_ddotsymbol_LPAR_lfuncpar_RPAR;
+
+expr(X) ::= expr(X1) COLCOL lpostfun(L).{
+    X=(new parsenode)->rule(2,X1,L);
+    X->text="expr ::= expr COLCOL lpostfun.";
+    X->codegen=codegen_expr_expr_COLCOL_lpostfun;
+    X->outsource=outsource_expr_expr_COLCOL_lpostfun;
 }
 
-expr(X) ::= expr(X1) COLON COLON  ddotsymbol(S).{
-    X=(new parsenode)->rule(2,X1,S);
-    X->text="expr ::= expr COLON COLON ddotsymbol.";
-    X->codegen=codegen_expr_expr_COLON_COLON_ddotsymbol;
-    X->outsource=outsource_expr_expr_COLON_COLON_ddotsymbol;
+expr(X) ::= expr(X1) COLCOLASS lpostfun(L).{
+    X=(new parsenode)->rule(2,X1,L);
+    X->text="expr ::= expr COLCOLASS lpostfun.";
+    X->codegen=codegen_expr_expr_COLCOLASS_lpostfun;
+    X->outsource=outsource_expr_expr_COLCOLASS_lpostfun;
 }
-
 
 expr(X) ::= LPAR(P) lexpr(L) RPAR.{
     X=(new parsenode)->rule(2,L,P); //sorrend!

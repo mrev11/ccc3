@@ -1,5 +1,9 @@
 #!/bin/bash
-#rm objlin/ppo2cpp.obj
-#rm objlin/*.obj
-#rm $CCCDIR/linux/bin/ppo2cpp.exe
+
+#cd proto && m && cd ..
+#rm -f objlin/ppo2cpp.obj
+#rm -f objlin/*.obj
+#proto-codegen
+#parserinfo
+
 bapp_unix0.b -mppo2cpp  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME"

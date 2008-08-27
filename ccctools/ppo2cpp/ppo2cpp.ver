@@ -1,4 +1,30 @@
 
+2008.08.27 -- 5.0.10
+
+  postfix függvényhívás általánosítva
+    x::str::alltrim::padl(10,"0")   //x nem vátozik
+    x::=str::alltrim::padl(10,"0")  //x egyúttal megkapja az eredményt
+  
+  E minta/analógia szerint:
+    x:=x+y  <=> x+=y     
+    x:=x*y  <=> x*=y     
+    ...      
+    x:=x::y <=> x::=y  <=>  x:=y(x)
+   
+  Külön dolgozni kellett a kiértékelés és értékadás sorrendjéért:
+    x::=f::g::h  <=>  x:=h(g(f(x)))
+    
+  Megjegyzés:
+    Az eredeti (postfix függvényhívás nélküli) állapothoz 
+    képest 6 új szabály van, miközben más nem változik.
+
+    expr ::= expr COLCOL lpostfun.
+    expr ::= expr COLCOLASS lpostfun.
+    lpostfun ::= postfun.
+    lpostfun ::= lpostfun COLCOL postfun.
+    postfun ::= ddotsymbol.
+    postfun ::= ddotsymbol LPAR lfuncpar RPAR.
+
 2008.08.20 -- 5.0.09
   Függvénydefiníciókban az argumentumoknak default értéket
   lehet adni, pl:

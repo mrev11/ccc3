@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#git log
+git log --stat --summary >log

@@ -123,12 +123,14 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 ".."                                {return DOTDOT;} 
 ","                                 {return COMMA;} 
 ":"                                 {return COLON;} 
+"::"                                {return COLCOL;} 
 ":="                                {return ASSIGN;} 
 "+="                                {return ADDASS;} 
 "-="                                {return SUBASS;} 
 "*="                                {return MULASS;} 
 "/="                                {return DIVASS;} 
 "%="                                {return MODASS;} 
+"::="                               {return COLCOLASS;} 
 "="                                 {return EQ;} 
 "=="                                {return EQEQ;} 
 ">="                                {return GTEQ;} 
@@ -228,6 +230,8 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 
 "."{symbol}                         {return COMPOUND;} 
 ":"{symbol}                         {return COMPOUND;}
+"::"{symbol}                        {return COMPOUND;}
+"::="{symbol}                       {return COMPOUND;}
 ":("{dsym}")"{symbol}               {return COMPOUND;}
 ":("{dsym}"@"{dsym}")"{symbol}      {return COMPOUND;}
 {symbol}"->"{symbol}                {return COMPOUND;}

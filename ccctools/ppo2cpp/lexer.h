@@ -141,6 +141,19 @@ class ppo2cpp_lexer : public yyFlexLexer
             token=(new parsenode)->token(tt,strdup("->"),inputlineno);
             compound_idx+=2;
         }
+        else if( tt==COLON && compound[compound_idx+1]==':' )
+        {
+            if( compound[compound_idx+2]=='='  )
+            {
+                token=(new parsenode)->token(COLCOLASS,strdup("::="),inputlineno);
+                compound_idx+=3;
+            }
+            else
+            {
+                token=(new parsenode)->token(COLCOL,strdup("::"),inputlineno);
+                compound_idx+=2;
+            }
+        }
         else if( tt )
         {
             char buf[2];buf[0]=c;buf[1]=0;

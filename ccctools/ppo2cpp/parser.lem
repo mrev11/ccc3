@@ -532,25 +532,40 @@ argument(A) ::= larg(L) COMMA STAR.{
     A->codegen=codegen_argument_larg_COMMA_STAR;  
 } 
            
-larg(L) ::= SYMBOL(S).{
-    L=(new parsenode)->rule(1,S);
-    L->text="larg ::= SYMBOL.";
+
+larg(L) ::= arg(A).{
+    L=(new parsenode)->rule(1,A);
+    L->text="larg ::= arg.";
     L->cargo=1;
-    L->codegen=codegen_larg_SYMBOL;  
+    L->codegen=codegen_larg_arg;  
+}
+
+larg(L) ::= larg(R) COMMA arg(A).{
+    L=(new parsenode)->rule(2,R,A);
+    L->text="larg ::= larg COMMA arg.";
+    L->cargo=R->cargo+1;
+    L->codegen=codegen_larg_larg_COMMA_arg;  
+}
+
+arg(A) ::= SYMBOL(S).{
+    A=(new parsenode)->rule(1,S);
+    A->text="arg ::= SYMBOL.";
+    A->codegen=codegen_arg_SYMBOL;  
     
     //!
     add_local(S);
 }
 
-larg(L) ::= larg(R) COMMA SYMBOL(S).{
-    L=(new parsenode)->rule(2,R,S);
-    L->text="larg ::= larg COMMA SYMBOL.";
-    L->cargo=R->cargo+1;
-    L->codegen=codegen_larg_larg_COMMA_SYMBOL;  
-
+arg(A) ::= SYMBOL(S) ASSIGN expr(D).{
+    A=(new parsenode)->rule(2,S,D);
+    A->text="arg ::= SYMBOL ASSIGN expr.";
+    A->codegen=codegen_arg_SYMBOL_ASSIGN_expr;  
+    
     //!
     add_local(S);
+    symbol_search(S);
 }
+
 
 bargument(A) ::= .{
     A=(new parsenode)->rule(0);

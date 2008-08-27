@@ -1,4 +1,23 @@
 
+2008.08.20 -- 5.0.09
+  Függvénydefiníciókban az argumentumoknak default értéket
+  lehet adni, pl:
+
+    function hopp(a:=exp)
+
+  ugyanaz, mint  
+  
+    function hopp(a)
+        if(a==NIL)
+            a:=exp
+        end
+
+  A default érték akármilyen kifejezés lehet, amit az adott
+  helyen ki lehet értékelni (azaz minden eleme ismert), 
+  pl. exp-ben lehet konstans, függvényhívás, static változó,
+  de nem lehet benne local változó, mert a local változók még
+  nincsnek definiálva.
+
 2008.07.25 -- 5.0.08
   postfix függvényhívás, pl.  x::str::alltrim::padl(10,"0")
 

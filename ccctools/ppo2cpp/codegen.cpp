@@ -1450,6 +1450,7 @@ int codegen_function_funcid_LPAR_argument_RPAR_newline_body(parsenode *p,void *v
     fprintf(code,"\npush_call(\"%s%s\",base);\n//",ns,funcname);
 
     tabdepth=1; //code
+    cgen(p,1); //argument
     cgen(p,3); //body
 
     fprintf(code,"\n//\nstack=base;\npush(&NIL);\npop_call();\n}");
@@ -1521,24 +1522,52 @@ int codegen_argument_STAR(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_argument_larg(parsenode *p,void *v)//PROTO   
 {
+    cgen(p,0); //larg
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_argument_larg_COMMA_STAR(parsenode *p,void *v)//PROTO   
 {
+    cgen(p,0); //larg
     return 0;
 }
 
 //---------------------------------------------------------------------------
-int codegen_larg_SYMBOL(parsenode *p,void *v)//PROTO   
+int codegen_larg_arg(parsenode *p,void *v)//PROTO   
+{
+    cgen(p,0); //arg
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_larg_larg_COMMA_arg(parsenode *p,void *v)//PROTO
+{
+    cgen(p,0); //larg
+    cgen(p,1); //arg
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_arg_SYMBOL(parsenode *p,void *v)//PROTO
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-int codegen_larg_larg_COMMA_SYMBOL(parsenode *p,void *v)//PROTO
+int codegen_arg_SYMBOL_ASSIGN_expr(parsenode *p,void *v)//PROTO
 {
+    parsenode *sym=p->right[0]; //SYMBOL
+    int idx=sym->cargo&0xffff;
+    int line=sym->lineno;
+    nltab();fprintf(code,"if(((base+%d)->type==TYPE_NIL)||",idx);
+    nltab();fprintf(code,"   ((base+%d)->type==TYPE_REF)&&",idx);
+    nltab();fprintf(code,"   ((base+%d)->data.vref->value.type==TYPE_NIL)){",idx);
+    nltab();fprintf(code,"line(%d);",line);
+    cgen(p,1); //expr
+    sym_assign(sym);
+    nltab();fprintf(code,"pop();");
+    nltab();fprintf(code,"}");
     return 0;
 }
 

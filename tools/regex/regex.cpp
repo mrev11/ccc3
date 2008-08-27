@@ -58,9 +58,9 @@ void _clp_regcomp(int argno) //regex.regcomp(regex,flags) -> rx
         regfree(preg);
         free(preg);
         _clp_invalidformaterrornew(0);
-        dup(); string(L"regex.regcomp");_o_method_operation.eval(2);pop(); 
+        dup(); string(CHRLIT("regex.regcomp"));_o_method_operation.eval(2);pop(); 
         dup(); stringsb(errbuf,len);_o_method_description.eval(2);pop();
-        dup(); string(L"regex");_o_method_subsystem.eval(2);pop(); 
+        dup(); string(CHRLIT("regex"));_o_method_subsystem.eval(2);pop(); 
         dup(); number(errcode);_o_method_subcode.eval(2);pop();
         _clp_break(1);
     }
@@ -80,23 +80,23 @@ void _clp_regexec(int argno) //regex.regexec(rx,text,offs,nmatch,flags)
     CCC_PROLOG("regex.regexec",5);
     regex_t *preg=(regex_t*)_parp(1);
     const char *text=_parb(2);
-    int offs=ISNIL(3)?1:min(max(1,_parni(3)),(int)_parblen(2));
+    unsigned offs=ISNIL(3)?0:min(_parnu(3)-1,_parblen(2));//0 based offset
     size_t nmatch=ISNIL(4)?1:min(max(1,_parni(4)),128);
     int flags=ISNIL(5)?0:_parni(5); 
-
+    
     int eflags=0; 
     if( flags & REGEX_NOTBOL ) eflags|=REG_NOTBOL;
     if( flags & REGEX_NOTEOL ) eflags|=REG_NOTEOL;
     
     regmatch_t *pmatch=(regmatch_t*)malloc(sizeof(regmatch_t)*nmatch);
     pmatch[0].rm_so=(regoff_t)-1;
-    int errcode=regexec(preg,text+offs-1,nmatch,pmatch,eflags);
+    int errcode=regexec(preg,text+offs,nmatch,pmatch,eflags);
     if( errcode==0 )
     {
         size_t n=0;
         while( n<nmatch && pmatch[n].rm_so!=(regoff_t)-1 )
         {
-            number(offs+pmatch[n].rm_so); //1 based offset
+            number(1+offs+pmatch[n].rm_so); //1 based offset
             number(pmatch[n].rm_eo-pmatch[n].rm_so); //length
             array(2);
             n++;
@@ -115,9 +115,9 @@ void _clp_regexec(int argno) //regex.regexec(rx,text,offs,nmatch,flags)
         char errbuf[1024];
         size_t len=regerror(errcode,preg,errbuf,sizeof(errbuf));
         _clp_invalidformaterrornew(0);
-        dup(); string(L"regex.regexec");_o_method_operation.eval(2);pop(); 
+        dup(); string(CHRLIT("regex.regexec"));_o_method_operation.eval(2);pop(); 
         dup(); stringsb(errbuf,len);_o_method_description.eval(2);pop();
-        dup(); string(L"regex");_o_method_subsystem.eval(2);pop(); 
+        dup(); string(CHRLIT("regex"));_o_method_subsystem.eval(2);pop(); 
         dup(); number(errcode);_o_method_subcode.eval(2);pop();
         _clp_break(1);
     }

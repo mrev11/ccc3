@@ -3,6 +3,7 @@ Az alábbi (CCC3 környezetben fejlesztett) programokra
 CCC2 környezetben is szükség van:
 
     jt
+    tools/regex
     tools/socket
     tools/sql2
     tools/websrv

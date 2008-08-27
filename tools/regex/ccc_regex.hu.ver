@@ -1,0 +1,7 @@
+
+2008.08.19
+  CCC2 backport.
+
+2008.08.18
+  függvények: regex.like, regex.at, regex.strtran, regex.split
+    

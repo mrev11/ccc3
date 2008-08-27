@@ -1,3 +1,6 @@
+2008.08.19
+  at()-ben SIGSEGV hiba javítva.
+
 2008.05.23 
   gcc 4.3.0 warning megszüntetve
 

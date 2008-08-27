@@ -18,48 +18,79 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "inkey.ch"
+#include "directry.ch"
 #include "rnm.say"
 
 *****************************************************************************
 function main(fspec)
-    rnm({|g|load(g,fspec)},{|g|readmodal(g)},{|g|store(g)})
-    return NIL
-    
+    set date format to "yyyy-mm-dd"
+    rnm({|g|load(g,fspec)},{|g|readmodal(g,6)},{|g|store(g)})
 
 *****************************************************************************
 static function load(getlist,fs)
 
-local l:=len(g_name_from:varget)
-local p:="@RS"+alltrim(str(l))+" "+replicate("X",256) 
+local l:=len(g_name1:varget)
+local p:="@S"+alltrim(str(l))+" "+replicate("X",256) 
+local d:=directory(fs,"D")
 
-    g_name_from:picture:=p
-    g_name_to:picture:=p
-    g_name_from:varput(fs)
-    g_name_to:varput(fs)
-    g_name_from:preblock:={||.f.}
+    if( len(d)!=1 )
+        ? "File or directory not found:", fs
+        quit
+    end
 
-    return NIL
+    g_name1:preblock:={||.f.}
+    g_date1:preblock:={||.f.}
+    g_time1:preblock:={||.f.}
 
+    g_name1:picture:=p
+    g_name2:picture:=p
+    g_time1:picture:="@R 99:99:99"
+    g_time2:picture:="@R 99:99:99"
 
+    g_name1:varput(fs)
+    g_name2:varput(fs)
+    g_date1:varput(d[1][F_DATE])
+    g_date2:varput(d[1][F_DATE])
+    g_time1:varput(d[1][F_TIME]::strtran(":",""))
+    g_time2:varput(d[1][F_TIME]::strtran(":",""))
+
+    g_date2:postblock:={|g|g:varget>=stod("19000101")}
+    g_time2:postblock:={|g|timevalid(g:buffer)}
+
+    g_name1:display
+    g_name2:display
+    g_date1:display
+    g_date2:display
+    g_time1:display
+    g_time2:display
 
 *****************************************************************************
 static function store(getlist,fs)
 
-local name_from:=alltrim(g_name_from:varget())
-local name_to:=alltrim(g_name_to:varget())
-local result
+local name1:=alltrim(g_name1:varget)
+local name2:=alltrim(g_name2:varget)
+local date1:=g_date1:varget
+local date2:=g_date2:varget
+local time1:=g_time1:varget
+local time2:=g_time2:varget
 
-    if( name_from==name_to )
+    if( name1==name2 )
     elseif( !empty(getenv("WiNdIr")) )
-        if( fileexist(name_to) )
-            run( 'del "'+name_to+'"' )
+        if( fileexist(name2) )
+            run( 'del "'+name2+'"' )
         end
-        result:=run( 'ren "'+name_from+'" "'+name_to+'"' )
+        run( 'ren "'+name1+'" "'+name2+'"' )
     else
-        result:=run( 'mv  "'+name_from+'" "'+name_to+'"' )
+        run( 'mv  "'+name1+'" "'+name2+'"' )
     end
     
-    return result==0
+    if( date1==date2 .and. time1==time2 )
+    else
+        setfdati(name2,date2,transform(time2,"99:99:99")) //CA-Tools
+    end
+   
+    return .t.
  
 *****************************************************************************
  

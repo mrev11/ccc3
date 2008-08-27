@@ -1,25 +1,41 @@
-//msk2say-2.0.00-unicode
+//msk2say-2.0.01-unicode
 
-#define g_name_from     getlist[ 1]
-#define g_name_to       getlist[ 2]
+#define g_date1         getlist[ 1]
+#define g_time1         getlist[ 2]
+#define g_name1         getlist[ 3]
+#define g_date2         getlist[ 4]
+#define g_time2         getlist[ 5]
+#define g_name2         getlist[ 6]
 
 static function RNM(bLoad,bRead,bStore)
-local name_from   :=space(63)
-local name_to     :=space(63)
-local msk:=mskCreate(  5,  3, 11, 78,bLoad,bRead,bStore)
+local date1       :=space(10)
+local time1       :=space( 8)
+local name1       :=space(46)
+local date2       :=space(10)
+local time2       :=space( 8)
+local name2       :=space(46)
+local msk:=mskCreate(  5,  7, 11, 76,bLoad,bRead,bStore)
 
-    mskSay(msk,  0,  0,"╔══════════════════════════════════════════════════════════════════════════╗")
-    mskSay(msk,  1,  0,"║                                                                          ║")
-    mskSay(msk,  2,  0,"║  from : ")
-    mskSay(msk,  2, 73,"  ║")
-    mskSay(msk,  3,  0,"║                                                                          ║")
-    mskSay(msk,  4,  0,"║  to   : ")
-    mskSay(msk,  4, 73,"  ║")
-    mskSay(msk,  5,  0,"║                                                                          ║")
-    mskSay(msk,  6,  0,"╚══════════════════════════════════════════════════════════════════════════╝")
+    mskSay(msk,  0,  0,"╔════════════════════════════════════════════════════════════════════╗")
+    mskSay(msk,  1,  0,"║                                                                    ║")
+    mskSay(msk,  2,  0,"║ ")
+    mskSay(msk,  2, 12," ")
+    mskSay(msk,  2, 21," ")
+    mskSay(msk,  2, 68,@" ║")
+    mskSay(msk,  3,  0,"║                                                                    ║")
+    mskSay(msk,  4,  0,"║ ")
+    mskSay(msk,  4, 12," ")
+    mskSay(msk,  4, 21," ")
+    mskSay(msk,  4, 68,@" ║")
+    mskSay(msk,  5,  0,"║                                                                    ║")
+    mskSay(msk,  6,  0,"╚════════════════════════════════════════════════════════════════════╝")
 
-    mskGet   (msk,  2, 10,@name_from,"name_from")
-    mskGet   (msk,  4, 10,@name_to,"name_to")
+    mskGet   (msk,  2,  2,@date1,"date1")
+    mskGet   (msk,  2, 13,@time1,"time1")
+    mskGet   (msk,  2, 22,@name1,"name1")
+    mskGet   (msk,  4,  2,@date2,"date2")
+    mskGet   (msk,  4, 13,@time2,"time2")
+    mskGet   (msk,  4, 22,@name2,"name2")
 
     mskShow(msk)
     mskLoop(msk)

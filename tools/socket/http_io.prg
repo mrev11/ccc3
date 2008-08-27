@@ -85,6 +85,18 @@ local x,y,pos
 
 
 *****************************************************************************
+function http_removeheader(msg,hdr)
+local pos1,pos2
+    hdr:=crlf+str2bin(hdr)+a":"
+    pos1:=at(lower(hdr),lower(msg))
+    if( pos1>0 .and. pos1<at(crlf+crlf,msg) )
+        pos2:=at(crlf,msg,pos1+2)
+        msg:=stuff(msg,pos1,pos2-pos1,a"")
+    end
+    return msg
+
+
+*****************************************************************************
 function http_getvalue(msg,hdrnam,parnam) 
 
 local header,pos,value,t

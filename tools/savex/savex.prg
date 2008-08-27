@@ -1048,7 +1048,7 @@ local dir:="",tok,bslash
     end
 
 
-******************************************************************************
+****************************************************************************
 function fext(name) // .ext
 local extpos:=rat(".",name)
 local bslpos:=rat(dirsep(),name)
@@ -1057,6 +1057,20 @@ local bslpos:=rat(dirsep(),name)
     end
     return "."
 
+****************************************************************************
+static function fnameext(name)   // name.ext
+local bslpos:=rat(dirsep(),name)
+    name:=substr(name,bslpos+1)
+    return alltrim(name)
+
+
+****************************************************************************
+function fpath0(name) // path
+local bslpos:=rat(dirsep(),name)
+    if( 0<bslpos )
+        return left(name,bslpos-1)
+    end
+    return ""
 
 ****************************************************************************
 static function listbrw(brw)
@@ -1146,9 +1160,13 @@ local ext,pos,exe
     if( !"%"$exe )
         exe+=' "%f" ' //idézőjelekkel védve
     end
+    
+    exe:=strtran(exe,"%f",fil)
+    exe:=strtran(exe,"%p",fpath0(fil))
+    exe:=strtran(exe,"%b",fnameext(fil))
 
-    //alert( strtran(exe,"%f",fil) )
-    run( strtran(exe,"%f",fil) )
+    //alert(exe)
+    run(exe)
 
 ****************************************************************************
 

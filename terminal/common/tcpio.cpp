@@ -83,13 +83,10 @@ static void error(const char *txt)  //általános hibakezelő rutin
 //--------------------------------------------------------------------------
 static int dataready(SOCKET s)
 {
-    struct timeval wait_time;
-    wait_time.tv_sec=3600; //sec
-    wait_time.tv_usec=0; //mikrosec 
     fd_set set;
     FD_ZERO(&set);
     FD_SET(s,&set);
-    return select(s+1,&set,NULL,NULL,&wait_time);
+    return select(s+1,&set,NULL,NULL,NULL); //akármeddig vár
 }
 
 //--------------------------------------------------------------------------
@@ -195,8 +192,12 @@ void *tcpio_thread(void*arg)
     unsigned param_size=sizeof(network_uint32_t);
     unsigned header_size=2*param_size;
 
-    while( dataready(sck) )    
+    while( 1 )    
     {     
+        //dataready egy select-ben vár, 
+        //dataready nélkül recv-ben várna (úgy is jó)
+        dataready(sck); 
+        
         memset(iobuffer,0,MAXBUFLEN);
 
         if( !xrecv(sck,iobuffer,header_size) )

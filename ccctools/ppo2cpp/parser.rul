@@ -1,0 +1,219 @@
+// Reprint of input file "parser.lem".
+// Symbols:
+//   0 $                46 NEW              92 nsalias        
+//   1 LOWPRECEDENCE    47 ATTRIB           93 ldotsymbol     
+//   2 UNEXPECTEDCHAR   48 METHOD           94 lnewline       
+//   3 INVALIDENCODING  49 FUNCTION         95 using          
+//   4 NL               50 STFUNCTION       96 ddotsymbol     
+//   5 DOT              51 LOCAL            97 statdefin      
+//   6 DOTDOT           52 QUIT             98 statdef        
+//   7 COMMA            53 RETURN           99 expr           
+//   8 ASSIGN           54 END             100 function       
+//   9 ADDASS           55 WHILE           101 classid        
+//  10 SUBASS           56 FOR             102 ldsym          
+//  11 MULASS           57 TO              103 newspec        
+//  12 DIVASS           58 LOOP            104 lslot          
+//  13 MODASS           59 EXIT            105 slot           
+//  14 COLCOLASS        60 BEGSEQ          106 funcid         
+//  15 OR               61 RECOVER         107 argument       
+//  16 AND              62 FINALLY         108 newline        
+//  17 NOT              63 IF              109 body           
+//  18 EQ               64 DOCASE          110 larg           
+//  19 EQEQ             65 CASE            111 arg            
+//  20 GTEQ             66 ELSEIF          112 bargument      
+//  21 LTEQ             67 ELSE            113 lbarg          
+//  22 EXEQ             68 OTHERWISE       114 llocdefin      
+//  23 GT               69 STEP            115 lstatement     
+//  24 LT               70 AT              116 locdline       
+//  25 DOLLAR           71 NUMBER          117 locdefin       
+//  26 PLUS             72 STRING          118 locdef         
+//  27 MINUS            73 NLSTEXT         119 statement      
+//  28 STAR             74 BINARYX         120 begseq         
+//  29 SLASH            75 BINARYA         121 lrecov         
+//  30 MODULO           76 TRUE            122 finally        
+//  31 DBSTAR           77 FALSE           123 if             
+//  32 DBPLUS           78 NIL             124 lelseif        
+//  33 DBMINUS          79 LBRACE          125 else           
+//  34 LBRACKET         80 PIPE            126 endif          
+//  35 COLON            81 RBRACE          127 forstep        
+//  36 COLCOL           82 RBRACKET        128 recov          
+//  37 ARROW            83 error           129 elseif         
+//  38 HIGHPRECEDENCE   84 prg             130 lfuncpar       
+//  39 NAMESPACE        85 header          131 parexpr        
+//  40 USING            86 lfunction       132 lfuncpar0      
+//  41 SYMBOL           87 lnewline0       133 parexpr0       
+//  42 STATIC           88 namespace       134 lexpr          
+//  43 LPAR             89 lusing          135 lexpr0         
+//  44 RPAR             90 lstatdefin      136 expr0          
+//  45 CLASS            91 dotsymbol       137 msgpar         
+prg ::= header lfunction.
+header ::= lnewline0 namespace lusing lstatdefin.
+namespace ::=.
+namespace ::= NAMESPACE dotsymbol nsalias ldotsymbol lnewline.
+lusing ::=.
+lusing ::= lusing using.
+using ::= USING dotsymbol nsalias ldotsymbol lnewline.
+nsalias ::=.
+nsalias ::= EQ SYMBOL.
+dotsymbol ::= SYMBOL.
+dotsymbol ::= dotsymbol DOT SYMBOL.
+ldotsymbol ::=.
+ldotsymbol ::= ldotsymbol dotsymbol.
+ddotsymbol ::= dotsymbol.
+ddotsymbol ::= DOT dotsymbol.
+lstatdefin ::=.
+lstatdefin ::= lstatdefin STATIC statdefin lnewline.
+statdefin ::= statdef.
+statdefin ::= statdefin COMMA statdef.
+statdef ::= SYMBOL.
+statdef ::= SYMBOL ASSIGN expr.
+lfunction ::= function.
+lfunction ::= lfunction function.
+function ::= classid LPAR ldsym RPAR newspec lnewline lslot.
+classid ::= CLASS dotsymbol.
+newspec ::=.
+newspec ::= NEW COLON.
+newspec ::= NEW COLON SYMBOL.
+lslot ::=.
+lslot ::= lslot slot lnewline.
+slot ::= ATTRIB SYMBOL.
+slot ::= METHOD SYMBOL.
+slot ::= METHOD SYMBOL expr.
+ldsym ::= dotsymbol.
+ldsym ::= ldsym COMMA dotsymbol.
+function ::= funcid LPAR argument RPAR newline body.
+funcid ::= FUNCTION dotsymbol.
+funcid ::= STFUNCTION dotsymbol.
+argument ::=.
+argument ::= STAR.
+argument ::= larg.
+argument ::= larg COMMA STAR.
+larg ::= arg.
+larg ::= larg COMMA arg.
+arg ::= SYMBOL.
+arg ::= SYMBOL ASSIGN expr.
+bargument ::=.
+bargument ::= lbarg.
+bargument ::= STAR.
+bargument ::= lbarg COMMA STAR.
+lbarg ::= SYMBOL.
+lbarg ::= lbarg COMMA SYMBOL.
+body ::= llocdefin lstatement.
+llocdefin ::=.
+llocdefin ::= llocdefin newline.
+llocdefin ::= llocdefin locdline newline.
+locdline ::= STATIC statdefin.
+locdline ::= LOCAL locdefin.
+locdefin ::= locdef.
+locdefin ::= locdefin COMMA locdef.
+locdef ::= SYMBOL.
+locdef ::= SYMBOL ASSIGN expr.
+lstatement ::=. [LOWPRECEDENCE]
+lstatement ::= lstatement newline.
+lstatement ::= lstatement statement newline.
+statement ::= QUIT.
+statement ::= RETURN expr.
+statement ::= begseq lrecov finally END.
+statement ::= if lelseif else endif.
+statement ::= WHILE expr newline lstatement END.
+statement ::= FOR SYMBOL ASSIGN expr TO expr forstep newline lstatement END.
+statement ::= LOOP.
+statement ::= EXIT.
+statement ::= expr.
+begseq ::= BEGSEQ newline lstatement.
+lrecov ::=.
+lrecov ::= lrecov recov.
+recov ::= RECOVER newline lstatement.
+recov ::= RECOVER SYMBOL newline lstatement.
+recov ::= RECOVER SYMBOL expr newline lstatement.
+recov ::= RECOVER SYMBOL LT dotsymbol GT newline lstatement.
+finally ::=.
+finally ::= FINALLY newline lstatement.
+if ::= IF expr newline lstatement.
+if ::= DOCASE lnewline CASE expr newline lstatement.
+lelseif ::=.
+lelseif ::= lelseif elseif.
+elseif ::= ELSEIF expr newline lstatement.
+elseif ::= CASE expr newline lstatement.
+else ::=.
+else ::= ELSE newline lstatement.
+else ::= OTHERWISE newline lstatement.
+endif ::= END.
+forstep ::=.
+forstep ::= STEP expr.
+lfuncpar ::=.
+lfuncpar ::= parexpr.
+lfuncpar ::= lfuncpar0 COMMA parexpr0.
+lfuncpar0 ::= parexpr0.
+lfuncpar0 ::= lfuncpar0 COMMA parexpr0.
+parexpr0 ::=.
+parexpr0 ::= parexpr.
+parexpr ::= expr.
+parexpr ::= STAR.
+parexpr ::= AT SYMBOL.
+lexpr ::=.
+lexpr ::= expr.
+lexpr ::= lexpr0 COMMA expr0.
+lexpr0 ::= expr0.
+lexpr0 ::= lexpr0 COMMA expr0.
+expr0 ::=.
+expr0 ::= expr. [LOWPRECEDENCE]
+msgpar ::=. [LOWPRECEDENCE]
+msgpar ::= ASSIGN expr.
+msgpar ::= LPAR lfuncpar RPAR. [LOWPRECEDENCE]
+msgpar ::= LPAR lfuncpar RPAR ASSIGN expr.
+lnewline ::= newline.
+lnewline ::= lnewline newline.
+lnewline0 ::=.
+lnewline0 ::= lnewline0 newline.
+newline ::= NL.
+expr ::= NUMBER.
+expr ::= STRING.
+expr ::= NLSTEXT.
+expr ::= BINARYX.
+expr ::= BINARYA.
+expr ::= TRUE.
+expr ::= FALSE.
+expr ::= NIL.
+expr ::= SYMBOL.
+expr ::= SYMBOL ARROW SYMBOL.
+expr ::= expr COLON SYMBOL msgpar.
+expr ::= expr COLON LPAR dotsymbol RPAR SYMBOL msgpar.
+expr ::= expr COLON LPAR dotsymbol AT dotsymbol RPAR SYMBOL msgpar.
+expr ::= ddotsymbol LPAR lfuncpar RPAR.
+expr ::= expr COLCOL expr.
+expr ::= expr COLCOLASS expr.
+expr ::= LPAR lexpr RPAR.
+expr ::= LBRACE PIPE bargument PIPE lexpr RBRACE.
+expr ::= IF LPAR expr COMMA expr COMMA expr RPAR.
+expr ::= LBRACE lfuncpar RBRACE.
+expr ::= expr LBRACKET expr RBRACKET.
+expr ::= expr LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.
+expr ::= expr ASSIGN expr.
+expr ::= expr ADDASS expr.
+expr ::= expr SUBASS expr.
+expr ::= expr MULASS expr.
+expr ::= expr DIVASS expr.
+expr ::= expr MODASS expr.
+expr ::= DBMINUS expr.
+expr ::= DBPLUS expr.
+expr ::= expr DBMINUS.
+expr ::= expr DBPLUS.
+expr ::= expr PLUS expr.
+expr ::= expr MINUS expr.
+expr ::= expr STAR expr.
+expr ::= expr SLASH expr.
+expr ::= expr MODULO expr.
+expr ::= expr DBSTAR expr.
+expr ::= MINUS expr. [DBMINUS]
+expr ::= PLUS expr. [DBPLUS]
+expr ::= expr EQEQ expr.
+expr ::= expr EXEQ expr.
+expr ::= expr GTEQ expr.
+expr ::= expr LTEQ expr.
+expr ::= expr GT expr.
+expr ::= expr LT expr.
+expr ::= expr DOLLAR expr.
+expr ::= expr OR expr.
+expr ::= expr AND expr.
+expr ::= NOT expr.

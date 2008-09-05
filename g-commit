@@ -3,4 +3,4 @@ export EDITOR=z.exe
 #set -x
 
 git-add .
-git-commit --all -m "commit"
+git-commit --all -m "ppo2cpp 5.0.10p"

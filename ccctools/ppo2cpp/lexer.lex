@@ -39,15 +39,16 @@
 
 
 wspace          [ \t\r]*
+w               {wspace}
 hex             [0-9a-fA-F]
-symtrail        {wspace}"("|"."
+symtrail        {wspace}("("|".")
 symtraildot     {wspace}"."
 symtrailpar     {wspace}"("
 number          [0-9]+("."[0-9]+|"")
 numberb         [0][bB][01]+
 numberx         [0][xX]{hex}+
 symbol          [_a-zA-Z][_a-zA-Z0-9]*
-dsym            {symbol}(.{symbol})*
+dsym            "."?{w}{symbol}({w}("."|"@"){w}{symbol})*
 string          "\""[^\"]*"\""|"\'"[^\']*"\'"
 binarya         a{string}
 binaryx         [xX]("\""({hex}{hex})*"\""|"\'"({hex}{hex})*"\'")
@@ -228,13 +229,13 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 {numberb}                           {return NUMBER;} 
 {symbol}                            {return SYMBOL;} 
 
-"."{symbol}                         {return COMPOUND;} 
-":"{symbol}                         {return COMPOUND;}
-"::"{symbol}                        {return COMPOUND;}
-"::="{symbol}                       {return COMPOUND;}
-":("{dsym}")"{symbol}               {return COMPOUND;}
-":("{dsym}"@"{dsym}")"{symbol}      {return COMPOUND;}
-{symbol}"->"{symbol}                {return COMPOUND;}
+"."{w}{symbol}                      {return COMPOUND;} 
+":"{w}{symbol}                      {return COMPOUND;}
+":"{w}"("{w}{dsym}{w}")"{w}{symbol} {return COMPOUND;}
+{symbol}{w}"->"{w}{symbol}          {return COMPOUND;}
+
+"::"{w}{dsym}{w}"("?                {return COMPOUND;/*ures zarojelpar kieg*/}
+"::="{w}{dsym}{w}"("?               {return COMPOUND;/*ures zarojelpar kieg*/}
 
 {function}/{symtrail}               {return SYMBOL;}
 {procedure}/{symtrail}              {return SYMBOL;}

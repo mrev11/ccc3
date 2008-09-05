@@ -17,10 +17,10 @@ local x,y,z
     ? default5("default-5"), default5()
     ? default6("default-6"), default6()
     ? default7("default-7"), default7()
-    ? default8({||"hopp"}), default8()
-    ? default9("HOPP","default9"), default9("HOPP")
-    ? default10({"HOPP","KOPP"},"default10"), default10({"HOPP","KOPP"})
-    ? default11(err,"default11"), default11(err)
+    ? default8({||"default-8"}), default8()
+    ? default9("HOPP","default-9"), default9("HOPP")
+    ? default10({"HOPP","KOPP"},"default-10"), default10({"HOPP","KOPP"})
+    ? default11(err,"default-11"), default11(err)
 
     ? var
     ?
@@ -47,7 +47,7 @@ function default6(a:=if(flg,"T","F"))
 function default7(a:=eval(blk,var))
     return a
 
-function default8(blk:={||"default"})
+function default8(blk:={||"HOPP"})
     return eval(blk)
 
 function default9(x,y:=eval(blk,x))

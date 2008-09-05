@@ -1,29 +1,36 @@
 
-2008.08.27 -- 5.0.10
-
-  postfix függvényhívás általánosítva
-    x::str::alltrim::padl(10,"0")   //x nem vátozik
-    x::=str::alltrim::padl(10,"0")  //x egyúttal megkapja az eredményt
+2008.09.04 -- 5.0.10p
+  Postfix fuggvenyhivas ujrairva:
   
-  E minta/analógia szerint:
-    x:=x+y  <=> x+=y     
-    x:=x*y  <=> x*=y     
-    ...      
-    x:=x::y <=> x::=y  <=>  x:=y(x)
-   
-  Külön dolgozni kellett a kiértékelés és értékadás sorrendjéért:
-    x::=f::g::h  <=>  x:=h(g(f(x)))
-    
-  Megjegyzés:
-    Az eredeti (postfix függvényhívás nélküli) állapothoz 
-    képest 6 új szabály van, miközben más nem változik.
+    expr ::= expr COLCOL expr.
+    expr ::= expr COLCOLASS expr.
 
-    expr ::= expr COLCOL lpostfun.
-    expr ::= expr COLCOLASS lpostfun.
-    lpostfun ::= postfun.
-    lpostfun ::= lpostfun COLCOL postfun.
-    postfun ::= ddotsymbol.
-    postfun ::= ddotsymbol LPAR lfuncpar RPAR.
+  A COLCOL és COLCOLASS operatorok jobboldalan levo kifejezesnek
+  fuggvenyhivassal kell kezdodnie, de ezt csak a kodgenerator ellenorzi. 
+  Azert, hogy a nyelvtan el ne bonyolodjon, kulonos tekintettel 
+  a COLCOLASS kivant alacsony precedenciajara:
+  
+  x ::= strtran(a,b)+c <=> x := x :: strtran(a,b)+c <=> x:=strtran(x,a,b)+c
+    vo.  a szorzassal
+  x *=  a+b+c          <=> x := x *  (a+b+c)
+  
+  vagyis eloszor kiszamitjuk az egesz kifejezest, es a vegeredmenyt 
+  adjuk a baloldal ertekeul (nem pedig csak a fuggvenyhivas erteket).
+  
+  A kozonseges fuggvenyhivasnak es a postfix fuggvenyhivasnak
+  ugyanaz a kodgeneratora. A postfixflag mutatja, hogy a postfix
+  fuggvenyhivasban eggyel tobb parametert kell felszedni a stackrol.
+  
+  Az ures zarojelpart (parameterlistat) tovabbra sem kell kiirni.
+  A nyelvtan egyszerusege erdekeben a lexer berakja a hianyzo
+  zarojelpart (a COMPOUND tokeneknel).
+  
+  A lexerben dsym definicioja valtozott:
+    (old)        {symbol}(  .      {symbol})*
+    (new)    "."?{symbol}(("."|"@"){symbol})*
+  az old-ban a . (hibasan) mindenhez illeszkedett. 
+
+  A COMPOUND feldolgozas kiszuri a wspace-eket.
 
 2008.08.20 -- 5.0.09
   Függvénydefiníciókban az argumentumoknak default értéket

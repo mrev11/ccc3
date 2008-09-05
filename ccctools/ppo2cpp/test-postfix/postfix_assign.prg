@@ -19,8 +19,8 @@ local num:=100
     
     //x::padr(20,"X")::=lower //illegal lvalue
 
-    ? x::=padr(20,"X")::lower //-> próba szerencsexxxxx
-    ? x                       //-> próba szerencsexxxxx  //!
+    ? x::=padr(20,"X")::lower+"!" //-> próba szerencsexxxxx!
+    ? x                           //-> próba szerencsexxxxx!
     ?
     
     ? hohoNew("HoHo"):padr(10,"x"):upper:cdata //metódushívások!

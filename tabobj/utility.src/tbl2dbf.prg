@@ -28,11 +28,22 @@
 #include "fileio.ch"
  
 ******************************************************************************
-function table2dbf(fname)
+function table2dbf(*)
 
 local table
 local dext:=lower(tabDataExt())
 local appname:=substr(dext,2)+"2dbf"
+local args:={*},n,ctrl,fname
+
+    for n:=1 to len(args)
+        if( args[n]=="-c"  )
+            ctrl:=args[++n]
+        elseif( args[n]=="-f" )
+            fname:=args[++n]
+        elseif( n==len(args) )
+            fname:=args[n]
+        end
+    next
 
     if( fname==NIL )
         ? appname+" "+VERSION+" (C) ComFirm 2001"
@@ -53,7 +64,7 @@ local appname:=substr(dext,2)+"2dbf"
         quit
     end
     
-    table:=open(fname)
+    table:=open(fname,ctrl)
     
     if( table==NIL )
         ? fname, @"not available"
@@ -68,7 +79,7 @@ local appname:=substr(dext,2)+"2dbf"
 
 
 ******************************************************************************
-static function open(fname)
+static function open(fname,ctrl:=0)
 local tab:=tabResource(fname)
 
     if( valtype(tab)!="A" .or.  empty(tab) )
@@ -77,6 +88,7 @@ local tab:=tabResource(fname)
         tabOpen(tab,OPEN_EXCLUSIVE)
         //tabOpen(tab)
     end
+    tabControl(tab,ctrl)
     return tab
 
 

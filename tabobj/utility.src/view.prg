@@ -24,7 +24,7 @@
 
 #include "utility.ver"
  
-#define APPVER APPNAME+" "+VERZIO 
+#define APPVER APPNAME+" "+VERSION
 
 static APPNAME
  

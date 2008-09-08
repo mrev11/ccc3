@@ -1,8 +1,11 @@
 
 
-#define VERZIO "1.0.11"
+#define VERSION "CCC3-1.0.12"
 
 #ifdef _HISTORY_
+
+2008.09.08 -- 1.0.12
+   bt2dbf/bt2txt [-c ctrl] [-f] fname
 
 2008.06.02 -- 1.0.11"
    10-nél hosszabb (max 32) mezőnevek.

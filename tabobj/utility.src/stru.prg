@@ -23,7 +23,7 @@
 #include "table.ch"
 #include "utility.ver"
 
-#define APPVER    APPNAME+" "+VERZIO 
+#define APPVER    APPNAME+" "+VERSION
 #define BLANKROW  {space(10),"C",0,0}
 #define FIELDROW  {"FIELD","C",24,0} 
 

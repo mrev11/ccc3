@@ -18,7 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define VERSION "1.0.00"
+
+#include "utility.ver"
 
 #include "table.ch"
 #include "fileio.ch"
@@ -43,7 +44,8 @@ local args:={*},n,ctrl,fname
 
     if( fname==NIL )
         ? appname+" "+VERSION+" (C) ComFirm 2002"
-        ? @"Usage: "+appname+@" filename"
+        ? @"Usage: "+appname+" [-c ctrl] [-f] fname"
+
         ?
         errorlevel(1)
         quit

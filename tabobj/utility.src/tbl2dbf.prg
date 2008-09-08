@@ -18,12 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define VERSION "1.1.00"
+#include "utility.ver"
 
-//2001.12.31 -- 1.1.00  dat,bt,btr formátumok támogatása
-//2001.08.06 -- 1.0.02  üres memók kikerülése (memoAddValue)
-//2001.08.06 -- 1.0.01  fejléc után chr(13)+chr(0), végére chr(26)
- 
 #include "table.ch"
 #include "fileio.ch"
  
@@ -47,7 +43,7 @@ local args:={*},n,ctrl,fname
 
     if( fname==NIL )
         ? appname+" "+VERSION+" (C) ComFirm 2001"
-        ? @"Usage: "+appname+" filename"
+        ? @"Usage: "+appname+" [-c ctrl] [-f] fname"
         ?
         errorlevel(1)
         quit

@@ -5,25 +5,28 @@
     expr ::= expr COLCOL expr.
     expr ::= expr COLCOLASS expr.
 
-  A COLCOL és COLCOLASS operatorok jobboldalan levo kifejezesnek
-  fuggvenyhivassal kell kezdodnie, de ezt csak a kodgenerator ellenorzi. 
-  Azert, hogy a nyelvtan el ne bonyolodjon, kulonos tekintettel 
-  a COLCOLASS kivant alacsony precedenciajara:
+  A COLCOL és COLCOLASS operatorok jobboldalan levo kifejezes (fa)
+  bal szelen valahol fuggvenyhivasnak kell lennie  (a kodgenerator 
+  ellenorzi).  Pelda:
+
+    ? x:="1"                          //1 (C)
+    ? x::=(val()+1)::str::alltrim     //2 (C)
+    ? x::=(val()+1)::str::alltrim     //3 (C)
+    ? x::=val+1                       //4 (N)
+
+  Ha a fuggvenynev kozvetlenul a :: vagy ::= operator utan all,
+  akkor az ures zarojelpart (parameterlistat) nem kotelezo kiirni,
+  (ilyenkor a lexer berakja a zarojelpart a COMPOUND tokeneknel).
+  Ha a fuggvenynev nem kozvetlenul a :: vagy ::= operator utan all,
+  mert pl. kozben van egy zarojel (2-3 sor), akkor kell a ().
   
-  x ::= strtran(a,b)+c <=> x := x :: strtran(a,b)+c <=> x:=strtran(x,a,b)+c
-    vo.  a szorzassal
-  x *=  a+b+c          <=> x := x *  (a+b+c)
-  
-  vagyis eloszor kiszamitjuk az egesz kifejezest, es a vegeredmenyt 
-  adjuk a baloldal ertekeul (nem pedig csak a fuggvenyhivas erteket).
+  '::'-nak ugyanaz a precedenciaja, mint ':'-nak (magas).
+  '::='-nak ugyanaz a precedenciaja, mint '+='-nak (alacsony).
   
   A kozonseges fuggvenyhivasnak es a postfix fuggvenyhivasnak
   ugyanaz a kodgeneratora. A postfixflag mutatja, hogy a postfix
   fuggvenyhivasban eggyel tobb parametert kell felszedni a stackrol.
   
-  Az ures zarojelpart (parameterlistat) tovabbra sem kell kiirni.
-  A nyelvtan egyszerusege erdekeben a lexer berakja a hianyzo
-  zarojelpart (a COMPOUND tokeneknel).
   
   A lexerben dsym definicioja valtozott:
     (old)        {symbol}(  .      {symbol})*

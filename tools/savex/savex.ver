@@ -1,7 +1,13 @@
 
-#define VERZIO  "3.0.06"    
+#define VERZIO  "3.0.07x"    
 
 #ifdef NOT_DEFINED
+
+2008.09.17 -- 3.0.07x
+  Időkorrekciónál szétválasztja a bináris és textfilék esetét.
+ 
+  A browse újraolvasását a break("X") váltja ki.
+  Minden más kivételt meghagyunk a default hibakezelőnek.
 
 2008.07.25 -- 3.0.06
 

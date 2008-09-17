@@ -90,6 +90,9 @@ local pfile,ptext,p,q
     #ifndef _UNIX_
     set dosconv on
     #endif
+    
+    //set alternate to savex.log
+    //set alternate on
 
     set date format "yyyy.mm.dd"
     set cursor off
@@ -353,7 +356,7 @@ function savebrowse()
 local dbrw,colFile,colWork,colSave
 local brw:=brwCreate(0,0,maxrow(),maxcol())
 local olvas:={},rendez:={},timecorr:={}
-local repeat:=.f.
+local x,repeat:=.f.
     
     dbrw:=makearr()
     if( len(dbrw)<1 )
@@ -388,17 +391,17 @@ local repeat:=.f.
 
     if( !"."==s_save )
 
-        aadd(olvas,{"-m0: exist here and there, differ",{||s_compmode:="0",repeat:=.t.,break(NIL)}})
-        aadd(olvas,{"-m1: exist here and there",{||s_compmode:="1",repeat:=.t.,break(NIL)}})
-        aadd(olvas,{"-mW: newer in WORK or missed in SAVE",{||s_compmode:="W",repeat:=.t.,break(NIL)}})
-        aadd(olvas,{"-mS: newer in SAVE or missed in WORK",{||s_compmode:="S",repeat:=.t.,break(NIL)}})
+        aadd(olvas,{"-m0: exist here and there, differ",{||s_compmode:="0",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m1: exist here and there",{||s_compmode:="1",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-mW: newer in WORK or missed in SAVE",{||s_compmode:="W",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-mS: newer in SAVE or missed in WORK",{||s_compmode:="S",repeat:=.t.,break("X")}})
         brwMenu(brw,"Reread","Read disks and compare files",olvas,"R")
 
         brwMenu(brw,"Save",formDir(s_save,35)+" <-- "+formDir(s_work,35),{||repeat:=.t.,copyMent(brw)},"S")
         brwMenu(brw,"Freshen",formDir(s_save,35)+" --> "+formDir(s_work,35),{||repeat:=.t.,copyFrissit(brw)},"F")
  
-        aadd(timecorr,{"Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyIdo(brw,.f.),break(NIL)}})
-        aadd(timecorr,{"Reset datetime in WORK if file contents are the same",{||repeat:=.t.,copyIdo(brw,.t.),break(NIL)}})
+        aadd(timecorr,{"Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyIdo(brw,.f.),break("X")}})
+        aadd(timecorr,{"Reset datetime in WORK if file contents are the same",{||repeat:=.t.,copyIdo(brw,.t.),break("X")}})
         brwMenu(brw,"Time","Reset datetime if file contents are the same",timecorr)
 
         brwMenu(brw,"DelSav","Delete newer files in SAVE",{||repeat:=.t.,delSave(brw)})
@@ -421,9 +424,16 @@ local repeat:=.f.
     brwCaption(brw,"SAVEX "+VERZIO)
     brwSetFocus(brw)    
     brwShow(brw)
-    begin sequence
-    brwLoop(brw)
-    end sequence
+
+    begin
+        brwLoop(brw)
+    recover x <C>
+        //alert("újraolvas")
+    //recover x
+    //  minden más kivétel hiba,
+    //  amit a default hibakezelő kap el
+    end
+
     brwHide(brw)
 
     return repeat
@@ -691,7 +701,7 @@ local screen:=savescreen(0,0,maxrow(),maxcol())
 
 ******************************************************************************    
 static function removecr(f,f1)
-local x:=memoread(f)
+local x:=memoread(f,.t.)
     x:=txt(x)
     memowrit(f1,x)
     return NIL
@@ -699,9 +709,7 @@ local x:=memoread(f)
 
 ******************************************************************************    
 static function txt(x)
-    x:=strtran(x,chr(9),space(4))
-    x:=strtran(x,chr(13),"")
-    //x:=_charconv(x,CHARTAB_CCC2WIN)
+    x:=strtran(x,bin(13))
     return x
 
 
@@ -818,12 +826,13 @@ local msg, fname
 static function copyIdo(brw,save_or_work)
 
 local arr:=brwArray(brw), n
-local msg, fw, fs, fname, ftime
+local msg, fw, fs, fname, ftime, fsize
 
 local prediffs:=getenv("PREDIFFS")
 local prediffw:=getenv("PREDIFFW")
 local temp:=tempdir()
 local alert_text
+local binflag
 
     if( empty(save_or_work) )
         alert_text:="Datetime correction in SAVE start?"
@@ -841,23 +850,27 @@ local alert_text
                !empty(save_or_work) .and. arr[n][IDX_WORK] > arr[n][IDX_SAVE] ) //hátrafelé
 
                 fname:=arr[n][IDX_FILE]
+                fsize:=arr[n][IDX_SIZE]
                 msg:=message(msg,fname)
                 
-                if( empty(prediffs) )
-                    fs:=memoread(s_save+fname)
+                binflag:=isbinfile(s_work+fname,fsize)
+                
+                if( empty(prediffs) .or. binflag )
+                    fs:=memoread(s_save+fname,.t.)
                 else
                     run( prediffs+' <"'+s_save+fname+'" >'+temp+"S" )
-                    fs:=memoread(temp+"S")
+                    fs:=memoread(temp+"S",.t.)
                 end
 
-                if( empty(prediffw) )
-                    fw:=memoread(s_work+fname)
+                if( empty(prediffw) .or. binflag )
+                    fw:=memoread(s_work+fname,.t.)
                 else
                     run( prediffw+' <"'+s_work+fname+'" >'+temp+"W" )
-                    fw:=memoread(temp+"W")
+                    fw:=memoread(temp+"W",.t.)
                 end
 
-                if( !empty(fs) .and. !empty(fw) .and. txt(fs)==txt(fw) )
+                if( !empty(fs) .and. !empty(fw) .and.;
+                    if(binflag,fs,txt(fs))==if(binflag,fw,txt(fw)) )
 
                     if( empty(save_or_work) )
                         ftime:=getfiletime(s_work+fname)
@@ -873,6 +886,33 @@ local alert_text
     end
     return .f.
 
+
+******************************************************************************    
+static function isbinfile(fname,fsize)
+
+static txt:=".prg.cpp.ch.h.ppo.c.java.tex.txt.lst.bat.aux.toc.log."
+static bin:=".exe.obj.lib.dll.so.a.jar.zip.class.gz.tar.msk.pge.dat.idx.dbm.dbf.ctx.ntx.bt.btx.dvi.lj.pdf.ps.xls.ogg.mp3.jpg.jpeg.flac.png."
+
+local ext:=fname::fext::lower()+"."
+local x,n,binflag:=.f.
+
+    if( fsize>256*1024 )
+        binflag:=.t.
+    elseif( ext $ txt )
+        binflag:=.f.
+    elseif( ext $ bin )
+        binflag:=.t.
+    else
+        x:=memoread(fname,.t.) //binopt==.t.
+        for n:=1 to len(x)
+            if( x[n]<x"20" .and. !x[n]$x"090a0c0d" )
+                binflag:=.t.
+                exit
+            end
+        next
+    end
+    //? binflag, fname
+    return binflag
 
 ******************************************************************************    
 static function formFile(file,maxlen)

@@ -5,7 +5,7 @@
     expr ::= expr COLCOL expr.
     expr ::= expr COLCOLASS expr.
 
-  A COLCOL és COLCOLASS operatorok jobboldalan levo kifejezes (fa)
+  A COLCOL es COLCOLASS operatorok jobboldalan levo kifejezes (fa)
   bal szelen valahol fuggvenyhivasnak kell lennie  (a kodgenerator 
   ellenorzi).  Pelda:
 

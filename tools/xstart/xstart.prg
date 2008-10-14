@@ -66,7 +66,7 @@ local p,s,n,i,c,arg,env,res,cmd,var
     set printer on
  
     if( parfile==NIL .or. !file(parfile) )
-        ? "Usage: xtstart <parfile>"
+        ? "Usage: xstart.exe <parfile>"
         ?
         quit
     end

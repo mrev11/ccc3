@@ -3,6 +3,8 @@ export EDITOR=z.exe
 #set -x
 
 git-add .
-git-commit --all -m "savex time korrekcio" #2008.09.17
+git-commit --all -m "x" #2008.20.21
 
+#git-commit --all -m "terminal expose event" #2008.20.21
+#git-commit --all -m "savex time korrekcio" #2008.09.17
 #git-commit --all -m "postfix comment"

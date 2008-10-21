@@ -36,7 +36,7 @@
 screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
-static int invtop=0,invlef=0,invbot=0,invrig=0;
+static int invtop=9999,invlef=9999,invbot=0,invrig=0;
 static int dirty_buffer=0;
 static int fontwidth,fontheight,fontascent;
 
@@ -118,6 +118,7 @@ void setcaption(char *cap)
 //----------------------------------------------------------------------------
 void invalidate(int t, int l, int b, int r)
 {
+    //printf("dirty (%d,%d,%d,%d)\n",t,l,b,r);
     if(t<invtop) invtop=t;
     if(l<invlef) invlef=l;
     if(b>invbot) invbot=b;
@@ -140,7 +141,8 @@ static void paintline(int cx, int cy, XChar2b *txt, int txtlen, int attr)
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
 {
-    //printf("(%d,%d,%d,%d)",top,lef,bot,rig);fflush(0);
+    //static int cnt=0;
+    //printf("%d (%d,%d,%d,%d)\n",++cnt,top,lef,bot,rig);fflush(0);
 
     int x,y;
     for( y=top; y<=bot; y++ )
@@ -174,6 +176,7 @@ static void paint(int top, int lef, int bot, int rig)
             paintline(x0,y,(XChar2b*)buf,buflen,attr);
         }
     }
+    XFlush(display);
 }
 
 //----------------------------------------------------------------------------
@@ -249,6 +252,7 @@ static void blink(int flag)
         int y=cursor_y*fontheight+fontheight-dy;
         XSetForeground(display,gc,rgb_color[15]);
         XFillRectangle(display,window,gc,x,y,dx,dy);
+        XFlush(display);
 
         cursor_state=1;
         prevx=cursor_x;
@@ -318,9 +322,40 @@ static int eventproc(XEvent event)
 {
     if( event.type==Expose ) 
     {
-        //printf("E");fflush(0);
-        paint(0,0,wheight-1,wwidth-1);
-        dirty_buffer=0;
+        //xevent->count jelentése:
+        //legalább ennyi expose message van még a queue-ban,
+        //megvárjuk az utolsót (count==0), és csak akkor rajzolunk,
+        //addig gyűjtjük az invalid területet.
+
+        XExposeEvent *xevent=(XExposeEvent*)&event;
+
+        int c=xevent->count;
+        int x=xevent->x;
+        int y=xevent->y;
+        int w=xevent->width;
+        int h=xevent->height;
+
+        //printf("E %d (%d %d %d %d)\n",c,x,y,w,h );fflush(0);
+
+        static int top=9999;
+        static int lef=9999;
+        static int bot=0;
+        static int rig=0;
+
+        if( top > y/fontheight     ) top=y/fontheight;     //max
+        if( lef > x/fontwidth      ) lef=x/fontwidth;      //max
+        if( bot < (y+h)/fontheight ) bot=(y+h)/fontheight; //min
+        if( rig < (x+w)/fontwidth  ) rig=(x+w)/fontwidth;  //min
+        
+        if( xevent->count==0 )
+        {   
+            //printf("EXPOSE (%d,%d,%d,%d)\n",top,lef,bot,rig);fflush(0);
+            paint(top,lef,bot,rig);
+            top=9999;
+            lef=9999;
+            bot=0;
+            rig=0;
+        }
     }
     else if( event.type==KeyPress )
     {
@@ -365,9 +400,15 @@ static void eventloop()
 
         if( dirty_buffer )
         {
+            //printf("clear (%d,%d,%d,%d)\n",invtop,invlef,invbot,invrig);fflush(0);
+
             paint(invtop,invlef,invbot,invrig);
-            //printf("p");fflush(0);
+            invtop=9999;
+            invlef=9999;
+            invbot=0;
+            invrig=0;
             dirty_buffer=0;
+
             if( cursor_state )
             {
                 blink(1);

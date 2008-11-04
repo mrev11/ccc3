@@ -14,6 +14,8 @@ find . -type f \
        -name outlemon -o \
        -name outflex -o \
        -name gccver.opt -o \
+       -name compopt -o \
+       -name rsplink -o \
        -name error | xargs rm -f
 
 find . -type l | xargs rm -f

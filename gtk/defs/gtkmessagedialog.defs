@@ -16,6 +16,7 @@
     '("GtkMessageType" type)
     '("GtkButtonsType" buttons)
     '("const-gchar*" format)
+    '("const-gchar*" "varg" (null-ok) (default "NULL"))
   )
 )
 
@@ -29,6 +30,7 @@
     '("GtkMessageType" type)
     '("GtkButtonsType" buttons)
     '("const-gchar*" format)
+    '("const-gchar*" "varg" (null-ok) (default "NULL"))
   )
 )
 
@@ -45,6 +47,7 @@
   (c-name "gtk_message_dialog_format_secondary_text")
   (parameters
     '("const-gchar*" format)
+    '("const-gchar*" "varg" (null-ok) (default "NULL"))
   )
 )
 
@@ -53,6 +56,7 @@
   (c-name "gtk_message_dialog_format_secondary_markup")
   (parameters
     '("const-gchar*" format)
+    '("const-gchar*" "varg" (null-ok) (default "NULL"))
   )
 )
 

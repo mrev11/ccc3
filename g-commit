@@ -4,9 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "qsort demó" #2008.11.04
+git-commit --all -m "gcc 4.3.2 warningok elnyomva" #2008.11.04
 
-
+#git-commit --all -m "qsort demó" #2008.11.04
 #git-commit --all -m "terminal expose event" #2008.10.21
 #git-commit --all -m "savex time korrekcio" #2008.09.17
 #git-commit --all -m "postfix comment"

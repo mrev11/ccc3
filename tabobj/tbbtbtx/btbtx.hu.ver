@@ -1,6 +1,9 @@
 
 #ifdef _HISTORY_
 
+2009.10.02 -- 1.1.16"
+   gcc 4.3.2 warningok javitva.
+
 2008.04.21 -- 1.1.15"
    Sun/Solarison nem működött a filemapping a file-share protokoll miatt,
    ezért a kulcsok rendezésére szolgáló ideiglenes filé létrehozása

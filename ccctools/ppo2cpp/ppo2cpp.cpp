@@ -33,7 +33,7 @@ extern void  ParseFree(void*,void(*)(void*));
 extern void  ParseTrace(FILE*,const char*); 
 extern void  Parse(void*,int,parsenode*);  //3th arg: %token_type {parsenode*} 
 
-static const char *version_number="5.0.10p";
+static const char *version_number="5.0.11";
 
 ppo2cpp_lexer *lexer;
 
@@ -168,7 +168,7 @@ int main(int argc, char**argv)
 
     if( *output )
     {
-        freopen(output,"w+",stdout);
+        0==freopen(output,"w+",stdout); //warning: ignoring return value
     }
 
 

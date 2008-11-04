@@ -46,7 +46,6 @@ static int pin_count();
 static void pin_store(void*p,pgno_t x);
 static void pin_drop(void*p,pgno_t x);
  
- 
 //---------------------------------------------------------------------------
 static void pin_ini()
 {
@@ -194,7 +193,7 @@ void *mpool_new(MPOOL *mp, pgno_t *pgnoaddr)
     *pgnoaddr=lseek(mp->fd,0,SEEK_END)/mp->pagesize;
     *(pgno_t*)buf=*pgnoaddr;
 
-    write(mp->fd,buf,mp->pagesize);
+    0==write(mp->fd,buf,mp->pagesize);
 
     pin_store(buf,*pgnoaddr);
     mp->count++;
@@ -254,7 +253,7 @@ int mpool_put(MPOOL *mp, void *page, int dirty)
         {
             (*mp->pgout)(page);
         }
-        write(mp->fd,page,mp->pagesize);
+        0==write(mp->fd,page,mp->pagesize);
         memset(page,'#',mp->pagesize);
     }
     else

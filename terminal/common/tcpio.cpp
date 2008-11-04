@@ -56,7 +56,7 @@ extern void invalidate(int,int,int,int);
 #define CMDCODE         IOBUFFER(0)
 #define DATALEN         IOBUFFER(1)
 #define PARAM(x)        IOBUFFER(2+x)
- 
+
 //--------------------------------------------------------------------------
 static void sleep(int ms)
 {
@@ -363,7 +363,7 @@ void *tcpio_thread(void*arg)
                 int len=DATALEN.get()-param_size;
                 if( (0<=fp) && (fp<SIZEQOUT) && (qout[fp]!=NULL) )
                 {
-                    fwrite(data,1,len,qout[fp]);
+                    0==fwrite(data,1,len,qout[fp]);
                     fflush(qout[fp]);
                 }
                 //printf("\nTERMCMD_WRITE %d %d\n",fp,len);fflush(0);

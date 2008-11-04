@@ -1,8 +1,18 @@
+2009.10.02
+  gcc 4.3.2 warningok javitva.
+  
+  1) warning: ignoring return value
+
+    eredeti:
+        fwrite(BINARYPTR(TOP()),1,len,outfile[x].fp);
+    javitas:
+        0==fwrite(BINARYPTR(TOP()),1,len,outfile[x].fp);
+
 2008.08.19
   at()-ben SIGSEGV hiba javítva.
 
 2008.05.23 
-  gcc 4.3.0 warning megszüntetve
+  gcc 4.3.0 warningok javitva.
 
 2008.03.13
   slice.cpp korszerűsítve

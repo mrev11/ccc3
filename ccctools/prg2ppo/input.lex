@@ -40,7 +40,11 @@
 
 #include <string.h>
 #include <cccapi.h>
- 
+
+//a generalt kodban:
+//#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
+//gcc 4.3.2 warning: ignoring return value
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 //Bizonyos esetekben (folytatósor, sorelválasztó ;)
 //a generált kimeneten CR jelenhet meg, ami a további

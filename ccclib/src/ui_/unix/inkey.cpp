@@ -61,7 +61,7 @@ static int readkey(int wait)  //wait: millisec
     if( 0<select(1,&fs,NULL,NULL,&t) )
     {
         char c;
-        read(fd,&c,1);
+        0==read(fd,&c,1);
         key=0xff&(int)c;
     }
  

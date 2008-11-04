@@ -1577,9 +1577,9 @@ int codegen_arg_SYMBOL_ASSIGN_expr(parsenode *p,void *v)//PROTO
     parsenode *sym=p->right[0]; //SYMBOL
     int idx=sym->cargo&0xffff;
     int line=sym->lineno;
-    nltab();fprintf(code,"if(((base+%d)->type==TYPE_NIL)||",idx);
-    nltab();fprintf(code,"   ((base+%d)->type==TYPE_REF)&&",idx);
-    nltab();fprintf(code,"   ((base+%d)->data.vref->value.type==TYPE_NIL)){",idx);
+    nltab();fprintf(code,"if( ((base+%d)->type==TYPE_NIL)||",idx);
+    nltab();fprintf(code,"   (((base+%d)->type==TYPE_REF)&&",idx);
+    nltab();fprintf(code,"    ((base+%d)->data.vref->value.type==TYPE_NIL))){",idx);  //-Wparentheses
     nltab();fprintf(code,"line(%d);",line);
     cgen(p,1); //expr
     sym_assign(sym);
@@ -3453,7 +3453,7 @@ int outsource_bargument_lbarg_COMMA_STAR(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int outsource_lbarg_SYMBOL(parsenode *p,void *v)//PROTO
 {
-    fprintf(src,p->right[0]->text);
+    fprintf(src,"%s",p->right[0]->text);
     return 0;
 }
 
@@ -3462,7 +3462,7 @@ int outsource_lbarg_lbarg_COMMA_SYMBOL(parsenode *p,void *v)//PROTO
 {
     outsrc(p,0);
     fprintf(src,",");
-    fprintf(src,p->right[1]->text);
+    fprintf(src,"%s",p->right[1]->text);
     return 0;
 }
  
@@ -3535,7 +3535,7 @@ int outsource_parexpr_STAR(parsenode *p,void *v)//PROTO
 int outsource_parexpr_AT_SYMBOL(parsenode *p,void *v)//PROTO
 {
     fprintf(src,"@");
-    fprintf(src,p->right[0]->text);
+    fprintf(src,"%s",p->right[0]->text);
     return 0;
 }
 
@@ -3630,7 +3630,7 @@ int outsource_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int outsource_expr_NUMBER(parsenode *p,void *v)//PROTO
 {
-    fprintf(src,p->right[0]->text);
+    fprintf(src,"%s",p->right[0]->text);
     return 0;
 }
 
@@ -3664,7 +3664,7 @@ int outsource_expr_STRING(parsenode *p,void *v)//PROTO
         buf[0]='\'';
         *(p1-1)='\'';
     }
-    fprintf(src,buf);
+    fprintf(src,"%s",buf);
     free(buf);
     return 0;
 }
@@ -3716,16 +3716,16 @@ int outsource_expr_NIL(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int outsource_expr_SYMBOL(parsenode *p,void *v)//PROTO
 {
-    fprintf(src,p->right[0]->text);
+    fprintf(src,"%s",p->right[0]->text);
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int outsource_expr_SYMBOL_ARROW_SYMBOL(parsenode *p,void *v)//PROTO
 {
-    fprintf(src,p->right[0]->text);
+    fprintf(src,"%s",p->right[0]->text);
     fprintf(src,"->");
-    fprintf(src,p->right[1]->text);
+    fprintf(src,"%s",p->right[1]->text);
     return 0;
 }
 
@@ -3734,7 +3734,7 @@ int outsource_expr_expr_COLON_SYMBOL_msgpar(parsenode *p,void *v)//PROTO
 {
     outsrc(p,0);
     fprintf(src,":");
-    fprintf(src,p->right[1]->text);
+    fprintf(src,"%s",p->right[1]->text);
     outsrc(p,2);
     return 0;
 }
@@ -3748,7 +3748,7 @@ int outsource_expr_expr_COLON_LPAR_dotsymbol_RPAR_SYMBOL_msgpar(parsenode *p,voi
     fprintf(src,":(");
     fprintf(src,"%s",t=dotsymboltext(p->right[1]));free(t);
     fprintf(src,")");
-    fprintf(src,p->right[2]->text);
+    fprintf(src,"%s",p->right[2]->text);
     outsrc(p,3);
     return 0;
 }
@@ -3764,7 +3764,7 @@ int outsource_expr_expr_COLON_LPAR_dotsymbol_AT_dotsymbol_RPAR_SYMBOL_msgpar(par
     fprintf(src,"@");
     fprintf(src,"%s",t=dotsymboltext(p->right[2]));free(t);
     fprintf(src,")");
-    fprintf(src,p->right[3]->text);
+    fprintf(src,"%s",p->right[3]->text);
     outsrc(p,4);
     return 0;
 }

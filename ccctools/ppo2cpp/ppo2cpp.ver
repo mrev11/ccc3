@@ -1,4 +1,29 @@
 
+2008.10.02 -- 5.0.11
+  gcc 4.3.2 warningok javitva
+  
+  1) wraning: ignoring return value
+
+    eredeti:
+        freopen(output,"w+",stdout);
+    
+    javitas:
+        0==freopen(output,"w+",stdout);
+
+
+  2) warning: format not a string literal and no format arguments
+
+    eredeti:
+        fprintf(src,p->right[1]->text);
+        
+    javitas:
+        fprintf(src,"%s",p->right[1]->text);
+        
+  3) warning: suggest parentheses around && within ||      
+  
+    kodgenerator javitva
+
+
 2008.09.04 -- 5.0.10p
   Postfix fuggvenyhivas ujrairva:
   

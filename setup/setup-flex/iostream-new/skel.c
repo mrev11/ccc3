@@ -386,7 +386,7 @@ const char *skel[] = {
   "/* This used to be an fputs(), but since the string might contain NUL's,",
   " * we now use fwrite().",
   " */",
-  "#define ECHO (void) fwrite( yytext, yyleng, 1, yyout )",
+  "#define ECHO (0==fwrite(yytext,yyleng,1,yyout))",
   "%+ C++ definition",
   "#define ECHO LexerOutput( yytext, yyleng )",
   "%*",

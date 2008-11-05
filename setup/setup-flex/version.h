@@ -18,5 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define FLEX_VERSION "2.5.4 CCC-Build-2"
+//2008.11.05 gcc 4.3.2 warningok elnyomva
+#define FLEX_VERSION "2.5.4 CCC-Build-3" 
 

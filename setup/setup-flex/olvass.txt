@@ -93,6 +93,9 @@ scan.c:
 skel.c:
     kikommentezni az isatty-ra vonatkozó sorokat
 
+skel.c:
+    #define ECHO-ban 0==fwrite(... 
+    mert a gcc 4.3.2 figyelmeztet a nem használt return értékre.
 
 
 Más Flex változatok (hibái)

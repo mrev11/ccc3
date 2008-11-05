@@ -41,7 +41,7 @@
  
 static int ccc_defsharemode=0;  //nem kell szinkronizálni
 static int unix_defsharemode=UNIX_FO_SHARED;  //nem kell szinkronizálni 
- 
+
 //----------------------------------------------------------------------------
 void _clp_getshare(int argno) //CA-tools fopen és fcreate default nyitási módja
 {
@@ -157,7 +157,7 @@ static int startlpr(char *str)
         }
         snprintf(buf,sizeof(buf),"%s %s",lprccc,str);
         buf[sizeof(buf)-1]='\0';
-        system(buf);
+        0==system(buf);
         exit(3);     
     }
 

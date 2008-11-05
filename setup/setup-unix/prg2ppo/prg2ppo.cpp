@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: prg2ppo.ppo (5.0.06)
+//input: prg2ppo.ppo (5.0.11)
 
 #include <cccdef.h>
 
@@ -785,7 +785,7 @@ push_call("logo",base);
 //
     line(209);
     string(nls_text(L"CCC Preprocessor "));
-    string(L"1.3.05");
+    string(L"1.3.08");
     add();
     string(L" Copyright (C) ComFirm Bt.");
     add();

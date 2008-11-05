@@ -1,3 +1,4 @@
+
 /*
  *  CCC - The Clipper to C++ Compiler
  *  Copyright (C) 2005 ComFirm BT.

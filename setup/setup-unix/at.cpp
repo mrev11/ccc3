@@ -35,7 +35,8 @@ void _clp_at(int argno)
         unsigned tlen=_parclen(2); //ebben keresunk
         unsigned strt=ISNIL(3)?0:_parni(3)-1; //innen kezdve keresunk
 
-        if( slen==0 || tlen==0 || strt+slen>tlen )
+        //if( slen==0 || tlen==0 || strt+slen>tlen ) //overflow -> SIGSEGV!
+        if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen ) //2008.08.19
         {
             _retni(0);
         }
@@ -75,7 +76,8 @@ void _clp_at(int argno)
         unsigned tlen=_parblen(2); //ebben keresunk
         unsigned strt=ISNIL(3)?0:_parni(3)-1; //innen kezdve keresunk
 
-        if( slen==0 || tlen==0 || strt+slen>tlen )
+        //if( slen==0 || tlen==0 || strt+slen>tlen ) //overflow -> SIGSEGV!
+        if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen )
         {
             _retni(0);
         }

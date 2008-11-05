@@ -338,8 +338,8 @@ typedef union {
 #define xtxlegalARG_PDECL
 #define xtxlegalARG_FETCH
 #define xtxlegalARG_STORE
-#define YYNSTATE 114
-#define YYNRULE 57
+#define YYNSTATE 118
+#define YYNRULE 59
 #define YYERRORSYMBOL 27
 #define YYERRSYMDT yy65
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
@@ -395,10 +395,10 @@ typedef union {
 */
 static YYACTIONTYPE yy_action[] = {
  /*     0 */     2,   34,    3,    7,   82,   11,   29,   27,    9,   13,
- /*    10 */    15,   17,   19,   21,   23,   31,   37,   81,   39,  108,
- /*    20 */     2,   34,    3,    7,  163,   11,   29,   27,    9,   13,
+ /*    10 */    15,   17,   19,   21,   23,   31,   37,   81,   39,  112,
+ /*    20 */     2,   34,    3,    7,  169,   11,   29,   27,    9,   13,
  /*    30 */    15,   17,   19,   21,   23,   31,   37,    6,   39,   41,
- /*    40 */    42,  114,    8,    2,   34,    3,    7,   32,   11,   29,
+ /*    40 */    42,  118,    8,    2,   34,    3,    7,   32,   11,   29,
  /*    50 */    27,    9,   13,   15,   17,   19,   21,   23,   31,   37,
  /*    60 */    10,   39,    2,   34,    3,    7,   12,   11,   29,   27,
  /*    70 */     9,   13,   15,   17,   19,   21,   23,   31,   37,   14,
@@ -408,45 +408,48 @@ static YYACTIONTYPE yy_action[] = {
  /*   110 */    29,   27,    9,   13,   15,   17,   19,   21,   23,   31,
  /*   120 */    37,   84,   39,    2,   34,    3,    7,   28,   11,   29,
  /*   130 */    27,    9,   13,   15,   17,   19,   21,   23,   31,   37,
- /*   140 */    86,   39,   89,    4,    5,   25,  109,   47,   49,   51,
- /*   150 */    53,   55,  172,    1,   30,    6,  110,   85,   33,  112,
+ /*   140 */    86,   39,   93,    4,    5,   25,  113,   47,   49,   51,
+ /*   150 */    53,   55,  178,    1,   30,    6,  114,   85,   33,  116,
  /*   160 */    57,   38,   77,   38,   58,   62,   35,    4,    5,   25,
- /*   170 */    45,   47,   49,   51,   53,   55,  103,   38,   63,   59,
- /*   180 */    64,   36,   60,  101,   57,   91,   60,   38,   66,   62,
+ /*   170 */    45,   47,   49,   51,   53,   55,  107,   38,   63,   59,
+ /*   180 */    64,   36,   60,  105,   57,   93,   60,   38,   66,   62,
  /*   190 */    40,    4,    5,   25,   45,   47,   49,   51,   53,   55,
- /*   200 */    67,   60,   38,   68,   93,   80,   58,   91,   57,   69,
- /*   210 */    43,   60,   46,   62,   91,    4,    5,   25,   45,   47,
- /*   220 */    49,   51,   53,   55,   70,   48,   50,   78,   52,   54,
- /*   230 */    56,   61,   57,   74,   60,   83,   88,   62,   90,   65,
- /*   240 */    92,    4,    5,   25,   45,  105,   49,   51,   53,   55,
- /*   250 */    94,   96,   98,  100,  102,  104,  107,  106,   57,  111,
- /*   260 */   113,   91,   91,   62,   91,    4,    5,   25,   45,   47,
- /*   270 */    49,   51,   53,   55,   91,   91,   91,   91,   91,   91,
- /*   280 */    91,   99,   57,   91,   91,   91,   91,   62,   91,    4,
- /*   290 */     5,   25,   45,   47,   49,   51,   53,   55,   91,   91,
- /*   300 */    91,   91,   91,   91,   91,   97,   57,   91,   91,   91,
- /*   310 */    91,   62,   91,    4,    5,   25,   45,   47,   49,   51,
- /*   320 */    53,   55,   91,   91,   91,   91,   91,   91,   91,   95,
- /*   330 */    57,   91,   91,   91,   91,   62,   91,    4,   24,   25,
- /*   340 */    45,   47,   49,   51,   53,   55,   91,   91,   91,   91,
- /*   350 */    91,   91,   91,   87,   79,   91,   91,   91,   91,   62,
- /*   360 */    91,    4,    5,   25,   45,   47,   49,   51,   53,   55,
- /*   370 */    70,   91,   91,   91,   91,   91,   91,   91,   57,   91,
- /*   380 */    91,   91,   91,   62,   91,    4,    5,   25,   45,   47,
- /*   390 */    49,   51,   53,   55,   91,   91,   91,   91,   91,   91,
- /*   400 */    91,   91,   57,   91,   91,   91,   73,   62,    4,    5,
- /*   410 */    25,   45,   47,   49,   51,   53,   55,   91,   91,   91,
- /*   420 */    91,   91,   91,   91,   91,   57,   91,   91,   72,   91,
- /*   430 */    62,   91,    4,    5,   25,   45,   47,   49,   51,   53,
- /*   440 */    55,   71,   91,   91,   91,   91,   91,   91,   91,   57,
- /*   450 */    91,   91,   91,   91,   62,   91,    4,    5,   25,   45,
- /*   460 */    47,   49,   51,   53,   55,   91,   91,   91,   91,   91,
- /*   470 */    91,   91,   91,   57,   91,   91,   76,   91,   62,   91,
- /*   480 */     4,    5,   25,   45,   47,   49,   51,   53,   55,   91,
- /*   490 */    91,   91,   91,   91,   91,   91,   91,   57,   91,   91,
- /*   500 */    91,   91,   62,   91,    4,   24,   25,   45,   47,   49,
- /*   510 */    51,   53,   55,   91,   91,   91,   91,   91,   91,   91,
- /*   520 */    91,   79,   91,   91,   91,   91,   62,
+ /*   200 */    67,   60,   38,   68,   97,   80,   58,   95,   57,   69,
+ /*   210 */    43,   60,   46,   62,   93,    4,   24,   25,   45,   47,
+ /*   220 */    49,   51,   53,   55,   48,   50,   52,   78,   54,   56,
+ /*   230 */    87,   91,   79,   61,   60,   74,   83,   62,   88,    4,
+ /*   240 */     5,   25,   45,   47,   49,   51,   53,   55,   70,   90,
+ /*   250 */    92,   94,   96,   98,  100,  102,   57,  104,  106,  108,
+ /*   260 */   111,   62,  115,   65,  117,    4,    5,   25,   45,  109,
+ /*   270 */    49,   51,   53,   55,   93,   93,   93,   93,   93,   93,
+ /*   280 */    93,  110,   57,   93,   93,   93,   93,   62,   93,    4,
+ /*   290 */     5,   25,   45,   47,   49,   51,   53,   55,   93,   93,
+ /*   300 */    93,   93,   93,   93,   93,  103,   57,   93,   93,   93,
+ /*   310 */    93,   62,   93,    4,    5,   25,   45,   47,   49,   51,
+ /*   320 */    53,   55,   93,   93,   93,   93,   93,   93,   93,  101,
+ /*   330 */    57,   93,   93,   93,   93,   62,   93,    4,    5,   25,
+ /*   340 */    45,   47,   49,   51,   53,   55,   93,   93,   93,   93,
+ /*   350 */    93,   93,   93,   99,   57,   93,   93,   93,   93,   62,
+ /*   360 */    93,    4,    5,   25,   45,   47,   49,   51,   53,   55,
+ /*   370 */    70,   93,   93,   93,   93,   93,   93,   93,   57,   93,
+ /*   380 */    93,   93,   93,   62,   93,    4,    5,   25,   45,   47,
+ /*   390 */    49,   51,   53,   55,   93,   93,   93,   93,   93,   93,
+ /*   400 */    93,   93,   57,   93,   93,   93,   73,   62,    4,    5,
+ /*   410 */    25,   45,   47,   49,   51,   53,   55,   93,   93,   93,
+ /*   420 */    93,   93,   93,   93,   93,   57,   93,   93,   72,   93,
+ /*   430 */    62,   93,    4,    5,   25,   45,   47,   49,   51,   53,
+ /*   440 */    55,   71,   93,   93,   93,   93,   93,   93,   93,   57,
+ /*   450 */    93,   93,   93,   93,   62,   93,    4,    5,   25,   45,
+ /*   460 */    47,   49,   51,   53,   55,   93,   93,   93,   93,   93,
+ /*   470 */    93,   93,   93,   57,   93,   93,   76,   93,   62,   93,
+ /*   480 */     4,    5,   25,   45,   47,   49,   51,   53,   55,   93,
+ /*   490 */    93,   93,   93,   93,   93,   93,   89,   57,   93,   93,
+ /*   500 */    93,   93,   62,   93,    4,    5,   25,   45,   47,   49,
+ /*   510 */    51,   53,   55,   93,   93,   93,   93,   93,   93,   93,
+ /*   520 */    93,   57,   93,   93,   93,   93,   62,   93,    4,   24,
+ /*   530 */    25,   45,   47,   49,   51,   53,   55,   93,   93,   93,
+ /*   540 */    93,   93,   93,   93,   93,   79,   93,   93,   93,   93,
+ /*   550 */    62,
 };
 static YYCODETYPE yy_lookahead[] = {
  /*     0 */     2,    3,    4,    5,    6,    7,    8,    9,   10,   11,
@@ -471,11 +474,11 @@ static YYCODETYPE yy_lookahead[] = {
  /*   190 */    29,    1,    2,    3,    4,    5,    6,    7,    8,    9,
  /*   200 */    25,   26,   29,   30,   14,   29,   30,   17,   18,   24,
  /*   210 */    29,   26,   29,   23,   32,    1,    2,    3,    4,    5,
- /*   220 */     6,    7,    8,    9,   10,   29,   29,   19,   29,   29,
- /*   230 */    29,   29,   18,   29,   26,   29,   29,   23,   29,   25,
- /*   240 */    29,    1,    2,    3,    4,    5,    6,    7,    8,    9,
- /*   250 */    29,   29,   29,   29,   29,   29,   29,   17,   18,   29,
- /*   260 */    29,   32,   32,   23,   32,    1,    2,    3,    4,    5,
+ /*   220 */     6,    7,    8,    9,   29,   29,   29,   19,   29,   29,
+ /*   230 */    16,   17,   18,   29,   26,   29,   29,   23,   29,    1,
+ /*   240 */     2,    3,    4,    5,    6,    7,    8,    9,   10,   29,
+ /*   250 */    29,   29,   29,   29,   29,   29,   18,   29,   29,   29,
+ /*   260 */    29,   23,   29,   25,   29,    1,    2,    3,    4,    5,
  /*   270 */     6,    7,    8,    9,   32,   32,   32,   32,   32,   32,
  /*   280 */    32,   17,   18,   32,   32,   32,   32,   23,   32,    1,
  /*   290 */     2,    3,    4,    5,    6,    7,    8,    9,   32,   32,
@@ -498,25 +501,28 @@ static YYCODETYPE yy_lookahead[] = {
  /*   460 */     5,    6,    7,    8,    9,   32,   32,   32,   32,   32,
  /*   470 */    32,   32,   32,   18,   32,   32,   21,   32,   23,   32,
  /*   480 */     1,    2,    3,    4,    5,    6,    7,    8,    9,   32,
- /*   490 */    32,   32,   32,   32,   32,   32,   32,   18,   32,   32,
+ /*   490 */    32,   32,   32,   32,   32,   32,   17,   18,   32,   32,
  /*   500 */    32,   32,   23,   32,    1,    2,    3,    4,    5,    6,
  /*   510 */     7,    8,    9,   32,   32,   32,   32,   32,   32,   32,
- /*   520 */    32,   18,   32,   32,   32,   32,   23,
+ /*   520 */    32,   18,   32,   32,   32,   32,   23,   32,    1,    2,
+ /*   530 */     3,    4,    5,    6,    7,    8,    9,   32,   32,   32,
+ /*   540 */    32,   32,   32,   32,   32,   18,   32,   32,   32,   32,
+ /*   550 */    23,
 };
 #define YY_SHIFT_USE_DFLT (-3)
 static short yy_shift_ofst[] = {
- /*     0 */   479,   41,   -3,  142,   -3,  479,  121,  240,  121,  166,
- /*    10 */   121,  264,  121,  288,  121,  479,  121,  479,  121,  312,
- /*    20 */   121,  190,  121,  336,  503,  479,  121,  479,  121,  479,
- /*    30 */   121,   30,  479,  121,  149,  479,  121,  360,  121,  384,
- /*    40 */    18,   -3,  407,   60,   -3,  479,  121,  479,  121,  479,
- /*    50 */   121,  479,  121,  479,  121,  479,  121,  360,  160,   -3,
- /*    60 */   431,  121,  214,  156,   -3,  360,  175,  360,  185,   -3,
+ /*     0 */   503,   41,   -3,  142,   -3,  503,  121,  264,  121,  166,
+ /*    10 */   121,  288,  121,  312,  121,  503,  121,  503,  121,  336,
+ /*    20 */   121,  190,  121,  214,  527,  503,  121,  503,  121,  503,
+ /*    30 */   121,   30,  503,  121,  149,  503,  121,  360,  121,  384,
+ /*    40 */    18,   -3,  407,   60,   -3,  503,  121,  503,  121,  503,
+ /*    50 */   121,  503,  121,  503,  121,  503,  121,  360,  160,   -3,
+ /*    60 */   431,  121,  238,  156,   -3,  360,  175,  360,  185,   -3,
  /*    70 */    -3,   -3,   -3,  455,   81,   -3,   -3,  208,   -3,  360,
- /*    80 */    -2,   -3,  479,  102,   -3,   -3,  121,  479,  121,  479,
- /*    90 */   121,  479,  121,  479,  121,  479,  121,  479,  121,  479,
- /*   100 */   121,  479,  121,  479,  121,  479,  479,  121,  121,  479,
- /*   110 */   479,  121,  479,  121,
+ /*    80 */    -2,   -3,  503,  102,   -3,   -3,  121,  479,  121,  503,
+ /*    90 */   121,  503,  121,  503,  121,  503,  121,  503,  121,  503,
+ /*   100 */   121,  503,  121,  503,  121,  503,  121,  503,  121,  503,
+ /*   110 */   503,  121,  121,  503,  503,  121,  503,  121,
 };
 #define YY_REDUCE_USE_DFLT (-11)
 static short yy_reduce_ofst[] = {
@@ -524,28 +530,28 @@ static short yy_reduce_ofst[] = {
  /*    10 */   -11,   37,  -11,   50,  -11,   53,  -11,   58,  -11,   71,
  /*    20 */   -11,   74,  -11,  111,  126,   79,  -11,   98,  -11,  125,
  /*    30 */   -11,  -11,  129,  -11,  -11,  152,  -11,  132,  -11,  161,
- /*    40 */   -11,  -11,  181,  -11,  -11,  183,  -11,  196,  -11,  197,
- /*    50 */   -11,  199,  -11,  200,  -11,  201,  -11,  134,  -11,  -11,
- /*    60 */   202,  -11,  148,  -11,  -11,  158,  -11,  173,  -11,  -11,
- /*    70 */   -11,  -11,  -11,  204,  -11,  -11,  -11,  -11,  -11,  176,
- /*    80 */   -11,  -11,  206,  -11,  -11,  -11,  -11,  207,  -11,  209,
- /*    90 */   -11,  211,  -11,  221,  -11,  222,  -11,  223,  -11,  224,
- /*   100 */   -11,  225,  -11,  226,  -11,  196,  227,  -11,  -11,  183,
- /*   110 */   230,  -11,  231,  -11,
+ /*    40 */   -11,  -11,  181,  -11,  -11,  183,  -11,  195,  -11,  196,
+ /*    50 */   -11,  197,  -11,  199,  -11,  200,  -11,  134,  -11,  -11,
+ /*    60 */   204,  -11,  148,  -11,  -11,  158,  -11,  173,  -11,  -11,
+ /*    70 */   -11,  -11,  -11,  206,  -11,  -11,  -11,  -11,  -11,  176,
+ /*    80 */   -11,  -11,  207,  -11,  -11,  -11,  -11,  209,  -11,  220,
+ /*    90 */   -11,  221,  -11,  222,  -11,  223,  -11,  224,  -11,  225,
+ /*   100 */   -11,  226,  -11,  228,  -11,  229,  -11,  230,  -11,  195,
+ /*   110 */   231,  -11,  -11,  183,  233,  -11,  235,  -11,
 };
 static YYACTIONTYPE yy_default[] = {
- /*     0 */   171,  171,  117,  171,  115,  171,  116,  171,  127,  171,
- /*    10 */   129,  171,  130,  171,  131,  171,  132,  171,  133,  171,
- /*    20 */   134,  171,  135,  171,  171,  171,  118,  171,  137,  171,
- /*    30 */   138,  171,  171,  141,  171,  171,  144,  162,  163,  171,
- /*    40 */   171,  154,  171,  171,  155,  171,  119,  171,  120,  171,
- /*    50 */   121,  171,  122,  171,  123,  171,  124,  162,  171,  152,
- /*    60 */   165,  166,  162,  171,  159,  162,  171,  162,  171,  160,
- /*    70 */   164,  167,  156,  171,  171,  157,  158,  171,  153,  162,
- /*    80 */   171,  168,  171,  171,  169,  170,  136,  171,  139,  171,
- /*    90 */   161,  171,  142,  171,  151,  171,  143,  171,  149,  171,
- /*   100 */   148,  171,  147,  171,  150,  126,  171,  145,  128,  125,
- /*   110 */   171,  140,  171,  146,
+ /*     0 */   177,  177,  121,  177,  119,  177,  120,  177,  131,  177,
+ /*    10 */   133,  177,  134,  177,  135,  177,  136,  177,  137,  177,
+ /*    20 */   138,  177,  139,  177,  177,  177,  122,  177,  143,  177,
+ /*    30 */   144,  177,  177,  147,  177,  177,  150,  168,  169,  177,
+ /*    40 */   177,  160,  177,  177,  161,  177,  123,  177,  124,  177,
+ /*    50 */   125,  177,  126,  177,  127,  177,  128,  168,  177,  158,
+ /*    60 */   171,  172,  168,  177,  165,  168,  177,  168,  177,  166,
+ /*    70 */   170,  173,  162,  177,  177,  163,  164,  177,  159,  168,
+ /*    80 */   177,  174,  177,  177,  175,  176,  140,  177,  141,  177,
+ /*    90 */   142,  177,  145,  177,  167,  177,  148,  177,  157,  177,
+ /*   100 */   149,  177,  155,  177,  154,  177,  153,  177,  156,  130,
+ /*   110 */   177,  151,  132,  129,  177,  146,  177,  152,
 };
 #define YY_SZ_ACTTAB (sizeof(yy_action)/sizeof(yy_action[0]))
 
@@ -672,40 +678,42 @@ static const char *yyRuleName[] = {
  /*  20 */ "expr ::= expr GT expr",
  /*  21 */ "expr ::= expr LT expr",
  /*  22 */ "expr ::= expr COLON expr",
- /*  23 */ "expr ::= expr DOT expr",
- /*  24 */ "expr ::= expr BSLASH expr",
- /*  25 */ "expr ::= expr COLON EQUAL expr",
- /*  26 */ "expr ::= expr MINUS GT expr",
- /*  27 */ "expr ::= expr EQUAL EQUAL expr",
- /*  28 */ "expr ::= expr LT EQUAL expr",
- /*  29 */ "expr ::= expr GT EQUAL expr",
- /*  30 */ "expr ::= expr EXCL EQUAL expr",
- /*  31 */ "expr ::= expr PLUS EQUAL expr",
- /*  32 */ "expr ::= expr MINUS EQUAL expr",
- /*  33 */ "expr ::= expr STAR EQUAL expr",
- /*  34 */ "expr ::= expr SLASH EQUAL expr",
- /*  35 */ "expr ::= expr MODULO EQUAL expr",
- /*  36 */ "expr ::= expr STAR STAR expr",
- /*  37 */ "expr ::= expr LT GT expr",
- /*  38 */ "expr ::= LPAR xlst RPAR",
- /*  39 */ "expr ::= expr LPAR xlst RPAR",
- /*  40 */ "expr ::= expr LBRACKET expr RBRACKET",
- /*  41 */ "expr ::= expr LBRACKET expr DOTDOT expr RBRACKET",
- /*  42 */ "expr ::= expr LBRACKET expr DOTDOT RBRACKET",
- /*  43 */ "expr ::= expr LBRACKET DOTDOT expr RBRACKET",
- /*  44 */ "expr ::= expr LBRACKET DOTDOT RBRACKET",
- /*  45 */ "expr ::= LBRACE xlst RBRACE",
- /*  46 */ "expr ::= LBRACE PIPE xlst PIPE xlst RBRACE",
- /*  47 */ "expr ::= expr COLON cast expr",
- /*  48 */ "xlst ::=",
- /*  49 */ "xlst ::= expr",
- /*  50 */ "xlst ::= STAR",
- /*  51 */ "xlst ::= xlst COMMA",
- /*  52 */ "xlst ::= xlst COMMA expr",
- /*  53 */ "xlst ::= xlst COMMA STAR",
- /*  54 */ "cast ::= LPAR expr RPAR",
- /*  55 */ "cast ::= LPAR expr AT expr RPAR",
- /*  56 */ "cast ::= SPACE cast",
+ /*  23 */ "expr ::= expr COLON COLON expr",
+ /*  24 */ "expr ::= expr COLON COLON EQUAL expr",
+ /*  25 */ "expr ::= expr DOT expr",
+ /*  26 */ "expr ::= expr BSLASH expr",
+ /*  27 */ "expr ::= expr COLON EQUAL expr",
+ /*  28 */ "expr ::= expr MINUS GT expr",
+ /*  29 */ "expr ::= expr EQUAL EQUAL expr",
+ /*  30 */ "expr ::= expr LT EQUAL expr",
+ /*  31 */ "expr ::= expr GT EQUAL expr",
+ /*  32 */ "expr ::= expr EXCL EQUAL expr",
+ /*  33 */ "expr ::= expr PLUS EQUAL expr",
+ /*  34 */ "expr ::= expr MINUS EQUAL expr",
+ /*  35 */ "expr ::= expr STAR EQUAL expr",
+ /*  36 */ "expr ::= expr SLASH EQUAL expr",
+ /*  37 */ "expr ::= expr MODULO EQUAL expr",
+ /*  38 */ "expr ::= expr STAR STAR expr",
+ /*  39 */ "expr ::= expr LT GT expr",
+ /*  40 */ "expr ::= LPAR xlst RPAR",
+ /*  41 */ "expr ::= expr LPAR xlst RPAR",
+ /*  42 */ "expr ::= expr LBRACKET expr RBRACKET",
+ /*  43 */ "expr ::= expr LBRACKET expr DOTDOT expr RBRACKET",
+ /*  44 */ "expr ::= expr LBRACKET expr DOTDOT RBRACKET",
+ /*  45 */ "expr ::= expr LBRACKET DOTDOT expr RBRACKET",
+ /*  46 */ "expr ::= expr LBRACKET DOTDOT RBRACKET",
+ /*  47 */ "expr ::= LBRACE xlst RBRACE",
+ /*  48 */ "expr ::= LBRACE PIPE xlst PIPE xlst RBRACE",
+ /*  49 */ "expr ::= expr COLON cast expr",
+ /*  50 */ "xlst ::=",
+ /*  51 */ "xlst ::= expr",
+ /*  52 */ "xlst ::= STAR",
+ /*  53 */ "xlst ::= xlst COMMA",
+ /*  54 */ "xlst ::= xlst COMMA expr",
+ /*  55 */ "xlst ::= xlst COMMA STAR",
+ /*  56 */ "cast ::= LPAR expr RPAR",
+ /*  57 */ "cast ::= LPAR expr AT expr RPAR",
+ /*  58 */ "cast ::= SPACE cast",
 };
 #endif /* NDEBUG */
 
@@ -960,6 +968,8 @@ static struct {
   { 29, 3 },
   { 29, 3 },
   { 29, 3 },
+  { 29, 4 },
+  { 29, 5 },
   { 29, 3 },
   { 29, 3 },
   { 29, 4 },
@@ -1036,337 +1046,352 @@ static void yy_reduce(
       case 1:
 #line 285 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[0].minor.yy0,yymsp[0].minor.yy0);}
-#line 1020 "./xtxlegal.c"
+#line 1030 "./xtxlegal.c"
         break;
       case 2:
 #line 287 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1025 "./xtxlegal.c"
+#line 1035 "./xtxlegal.c"
         break;
       case 3:
 #line 288 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1030 "./xtxlegal.c"
+#line 1040 "./xtxlegal.c"
         break;
       case 4:
 #line 290 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1035 "./xtxlegal.c"
+#line 1045 "./xtxlegal.c"
         break;
       case 5:
 #line 291 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1040 "./xtxlegal.c"
+#line 1050 "./xtxlegal.c"
         break;
       case 6:
 #line 292 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1045 "./xtxlegal.c"
+#line 1055 "./xtxlegal.c"
         break;
       case 7:
 #line 293 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1050 "./xtxlegal.c"
+#line 1060 "./xtxlegal.c"
         break;
       case 8:
 #line 294 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1055 "./xtxlegal.c"
+#line 1065 "./xtxlegal.c"
         break;
       case 9:
 #line 295 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1060 "./xtxlegal.c"
+#line 1070 "./xtxlegal.c"
         break;
       case 10:
 #line 296 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1065 "./xtxlegal.c"
+#line 1075 "./xtxlegal.c"
         break;
       case 11:
 #line 298 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1070 "./xtxlegal.c"
+#line 1080 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         break;
       case 12:
 #line 299 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1076 "./xtxlegal.c"
+#line 1086 "./xtxlegal.c"
         /* No destructor defined for PLUS */
         break;
       case 13:
 #line 301 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1082 "./xtxlegal.c"
+#line 1092 "./xtxlegal.c"
         /* No destructor defined for PLUS */
         break;
       case 14:
 #line 302 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1088 "./xtxlegal.c"
+#line 1098 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         break;
       case 15:
 #line 303 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1094 "./xtxlegal.c"
+#line 1104 "./xtxlegal.c"
         /* No destructor defined for STAR */
         break;
       case 16:
 #line 304 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1100 "./xtxlegal.c"
+#line 1110 "./xtxlegal.c"
         /* No destructor defined for SLASH */
         break;
       case 17:
 #line 305 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1106 "./xtxlegal.c"
+#line 1116 "./xtxlegal.c"
         /* No destructor defined for MODULO */
         break;
       case 18:
 #line 306 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1112 "./xtxlegal.c"
+#line 1122 "./xtxlegal.c"
         /* No destructor defined for POWER */
         break;
       case 19:
 #line 307 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1118 "./xtxlegal.c"
+#line 1128 "./xtxlegal.c"
         /* No destructor defined for DOLLAR */
         break;
       case 20:
 #line 308 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1124 "./xtxlegal.c"
+#line 1134 "./xtxlegal.c"
         /* No destructor defined for GT */
         break;
       case 21:
 #line 309 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1130 "./xtxlegal.c"
+#line 1140 "./xtxlegal.c"
         /* No destructor defined for LT */
         break;
       case 22:
 #line 310 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1136 "./xtxlegal.c"
+#line 1146 "./xtxlegal.c"
         /* No destructor defined for COLON */
         break;
       case 23:
 #line 311 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1142 "./xtxlegal.c"
-        /* No destructor defined for DOT */
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1152 "./xtxlegal.c"
+        /* No destructor defined for COLON */
+        /* No destructor defined for COLON */
         break;
       case 24:
 #line 312 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1148 "./xtxlegal.c"
-        /* No destructor defined for BSLASH */
-        break;
-      case 25:
-#line 314 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1154 "./xtxlegal.c"
+{yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
+#line 1159 "./xtxlegal.c"
+        /* No destructor defined for COLON */
         /* No destructor defined for COLON */
         /* No destructor defined for EQUAL */
         break;
+      case 25:
+#line 313 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
+#line 1167 "./xtxlegal.c"
+        /* No destructor defined for DOT */
+        break;
       case 26:
-#line 315 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1161 "./xtxlegal.c"
-        /* No destructor defined for MINUS */
-        /* No destructor defined for GT */
+#line 314 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
+#line 1173 "./xtxlegal.c"
+        /* No destructor defined for BSLASH */
         break;
       case 27:
 #line 316 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1168 "./xtxlegal.c"
-        /* No destructor defined for EQUAL */
+#line 1179 "./xtxlegal.c"
+        /* No destructor defined for COLON */
         /* No destructor defined for EQUAL */
         break;
       case 28:
 #line 317 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1175 "./xtxlegal.c"
-        /* No destructor defined for LT */
-        /* No destructor defined for EQUAL */
+#line 1186 "./xtxlegal.c"
+        /* No destructor defined for MINUS */
+        /* No destructor defined for GT */
         break;
       case 29:
 #line 318 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1182 "./xtxlegal.c"
-        /* No destructor defined for GT */
+#line 1193 "./xtxlegal.c"
+        /* No destructor defined for EQUAL */
         /* No destructor defined for EQUAL */
         break;
       case 30:
 #line 319 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1189 "./xtxlegal.c"
-        /* No destructor defined for EXCL */
+#line 1200 "./xtxlegal.c"
+        /* No destructor defined for LT */
         /* No destructor defined for EQUAL */
         break;
       case 31:
 #line 320 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1196 "./xtxlegal.c"
-        /* No destructor defined for PLUS */
+#line 1207 "./xtxlegal.c"
+        /* No destructor defined for GT */
         /* No destructor defined for EQUAL */
         break;
       case 32:
 #line 321 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1203 "./xtxlegal.c"
-        /* No destructor defined for MINUS */
+#line 1214 "./xtxlegal.c"
+        /* No destructor defined for EXCL */
         /* No destructor defined for EQUAL */
         break;
       case 33:
 #line 322 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1210 "./xtxlegal.c"
-        /* No destructor defined for STAR */
+#line 1221 "./xtxlegal.c"
+        /* No destructor defined for PLUS */
         /* No destructor defined for EQUAL */
         break;
       case 34:
 #line 323 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1217 "./xtxlegal.c"
-        /* No destructor defined for SLASH */
+#line 1228 "./xtxlegal.c"
+        /* No destructor defined for MINUS */
         /* No destructor defined for EQUAL */
         break;
       case 35:
 #line 324 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1224 "./xtxlegal.c"
-        /* No destructor defined for MODULO */
+#line 1235 "./xtxlegal.c"
+        /* No destructor defined for STAR */
         /* No destructor defined for EQUAL */
         break;
       case 36:
 #line 325 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1231 "./xtxlegal.c"
+#line 1242 "./xtxlegal.c"
+        /* No destructor defined for SLASH */
+        /* No destructor defined for EQUAL */
+        break;
+      case 37:
+#line 326 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1249 "./xtxlegal.c"
+        /* No destructor defined for MODULO */
+        /* No destructor defined for EQUAL */
+        break;
+      case 38:
+#line 327 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1256 "./xtxlegal.c"
         /* No destructor defined for STAR */
         /* No destructor defined for STAR */
         break;
-      case 37:
-#line 327 "./xtxlegal.lem"
+      case 39:
+#line 329 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1238 "./xtxlegal.c"
+#line 1263 "./xtxlegal.c"
         /* No destructor defined for LT */
         /* No destructor defined for GT */
         break;
-      case 38:
-#line 329 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1245 "./xtxlegal.c"
-        /* No destructor defined for xlst */
-        break;
-      case 39:
-#line 330 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1251 "./xtxlegal.c"
-        /* No destructor defined for LPAR */
-        /* No destructor defined for xlst */
-        break;
       case 40:
 #line 331 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1258 "./xtxlegal.c"
-        /* No destructor defined for LBRACKET */
-        /* No destructor defined for expr */
+{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
+#line 1270 "./xtxlegal.c"
+        /* No destructor defined for xlst */
         break;
       case 41:
 #line 332 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-5].minor.yy0,yymsp[0].minor.yy0);}
-#line 1265 "./xtxlegal.c"
-        /* No destructor defined for LBRACKET */
-        /* No destructor defined for expr */
-        /* No destructor defined for DOTDOT */
-        /* No destructor defined for expr */
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1276 "./xtxlegal.c"
+        /* No destructor defined for LPAR */
+        /* No destructor defined for xlst */
         break;
       case 42:
 #line 333 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
-#line 1274 "./xtxlegal.c"
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1283 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for expr */
-        /* No destructor defined for DOTDOT */
         break;
       case 43:
 #line 334 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
-#line 1282 "./xtxlegal.c"
+{yygotominor.yy0=pstore(yymsp[-5].minor.yy0,yymsp[0].minor.yy0);}
+#line 1290 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
+        /* No destructor defined for expr */
         /* No destructor defined for DOTDOT */
         /* No destructor defined for expr */
         break;
       case 44:
 #line 335 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1290 "./xtxlegal.c"
+{yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
+#line 1299 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
+        /* No destructor defined for expr */
         /* No destructor defined for DOTDOT */
         break;
       case 45:
 #line 336 "./xtxlegal.lem"
-{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1297 "./xtxlegal.c"
-        /* No destructor defined for xlst */
+{yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
+#line 1307 "./xtxlegal.c"
+        /* No destructor defined for LBRACKET */
+        /* No destructor defined for DOTDOT */
+        /* No destructor defined for expr */
         break;
       case 46:
 #line 337 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
+#line 1315 "./xtxlegal.c"
+        /* No destructor defined for LBRACKET */
+        /* No destructor defined for DOTDOT */
+        break;
+      case 47:
+#line 338 "./xtxlegal.lem"
+{yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
+#line 1322 "./xtxlegal.c"
+        /* No destructor defined for xlst */
+        break;
+      case 48:
+#line 339 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-5].minor.yy0,yymsp[0].minor.yy0);}
-#line 1303 "./xtxlegal.c"
+#line 1328 "./xtxlegal.c"
         /* No destructor defined for PIPE */
         /* No destructor defined for xlst */
         /* No destructor defined for PIPE */
         /* No destructor defined for xlst */
         break;
-      case 47:
-#line 339 "./xtxlegal.lem"
+      case 49:
+#line 341 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1312 "./xtxlegal.c"
+#line 1337 "./xtxlegal.c"
         /* No destructor defined for COLON */
         /* No destructor defined for cast */
         break;
-      case 48:
-        break;
-      case 49:
-        /* No destructor defined for expr */
-        break;
       case 50:
-        /* No destructor defined for STAR */
         break;
       case 51:
-        /* No destructor defined for xlst */
-        /* No destructor defined for COMMA */
+        /* No destructor defined for expr */
         break;
       case 52:
-        /* No destructor defined for xlst */
-        /* No destructor defined for COMMA */
-        /* No destructor defined for expr */
+        /* No destructor defined for STAR */
         break;
       case 53:
         /* No destructor defined for xlst */
         /* No destructor defined for COMMA */
-        /* No destructor defined for STAR */
         break;
       case 54:
+        /* No destructor defined for xlst */
+        /* No destructor defined for COMMA */
+        /* No destructor defined for expr */
+        break;
+      case 55:
+        /* No destructor defined for xlst */
+        /* No destructor defined for COMMA */
+        /* No destructor defined for STAR */
+        break;
+      case 56:
         /* No destructor defined for LPAR */
         /* No destructor defined for expr */
         /* No destructor defined for RPAR */
         break;
-      case 55:
+      case 57:
         /* No destructor defined for LPAR */
         /* No destructor defined for expr */
         /* No destructor defined for AT */
         /* No destructor defined for expr */
         /* No destructor defined for RPAR */
         break;
-      case 56:
+      case 58:
         /* No destructor defined for SPACE */
         /* No destructor defined for cast */
         break;
@@ -1415,7 +1440,7 @@ static void yy_syntax_error(
     //printf("Syntax error.\n");
     termflag=1;
 
-#line 1399 "./xtxlegal.c"
+#line 1424 "./xtxlegal.c"
   xtxlegalARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -1438,7 +1463,7 @@ static void yy_accept(
 
     //printf("Parsing complete.\n");
 
-#line 1422 "./xtxlegal.c"
+#line 1447 "./xtxlegal.c"
   xtxlegalARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

@@ -519,6 +519,11 @@ char *yytext;
 #include <stdio.h>
 #include <cccapi.h>
 #include "xtrans.ch"
+
+//a generalt kodban:
+//#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
+//gcc 4.3.2 warning: ignoring return value
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
  
 #define YY_NEVER_INTERACTIVE  1
 
@@ -550,7 +555,7 @@ static char      *buffer;
 static unsigned  buflen;
 static unsigned  bufidx;
 
-#line 554 "ppo/trinp.cpp"
+#line 559 "ppo/trinp.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -630,7 +635,7 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (void) fwrite( yytext, yyleng, 1, yyout )
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -701,11 +706,11 @@ YY_DECL
      register char *yy_cp, *yy_bp;
      register int yy_act;
 
-#line 89 "./trinp.lex"
+#line 94 "./trinp.lex"
 
 
 
-#line 709 "ppo/trinp.cpp"
+#line 714 "ppo/trinp.cpp"
 
      if ( yy_init )
              {
@@ -790,140 +795,140 @@ do_action:   /* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 92 "./trinp.lex"
+#line 97 "./trinp.lex"
 markreg();
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 93 "./trinp.lex"
+#line 98 "./trinp.lex"
 marklst();
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 94 "./trinp.lex"
+#line 99 "./trinp.lex"
 markrst();
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 95 "./trinp.lex"
+#line 100 "./trinp.lex"
 markwld();
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 96 "./trinp.lex"
+#line 101 "./trinp.lex"
 markext();
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 98 "./trinp.lex"
+#line 103 "./trinp.lex"
 markdmb();
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 99 "./trinp.lex"
+#line 104 "./trinp.lex"
 markstr();
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 100 "./trinp.lex"
+#line 105 "./trinp.lex"
 markblk();
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 101 "./trinp.lex"
+#line 106 "./trinp.lex"
 marklog();
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 103 "./trinp.lex"
+#line 108 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 104 "./trinp.lex"
+#line 109 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 105 "./trinp.lex"
+#line 110 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 106 "./trinp.lex"
+#line 111 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 107 "./trinp.lex"
+#line 112 "./trinp.lex"
 store_text(yytext); 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 108 "./trinp.lex"
+#line 113 "./trinp.lex"
 store_text(yytext); 
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 109 "./trinp.lex"
+#line 114 "./trinp.lex"
 store_text(yytext); 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 110 "./trinp.lex"
+#line 115 "./trinp.lex"
 store_text(yytext); 
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 111 "./trinp.lex"
+#line 116 "./trinp.lex"
 store_text(yytext+1);  
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 112 "./trinp.lex"
+#line 117 "./trinp.lex"
 if(arrow) store_text(" ");
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 113 "./trinp.lex"
+#line 118 "./trinp.lex"
 store_flag(1);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 114 "./trinp.lex"
+#line 119 "./trinp.lex"
 store_flag(0);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 115 "./trinp.lex"
+#line 120 "./trinp.lex"
 array(item_count);item_count=0;arrow=1;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 116 "./trinp.lex"
+#line 121 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 117 "./trinp.lex"
+#line 122 "./trinp.lex"
 store_text("##"); 
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 118 "./trinp.lex"
+#line 123 "./trinp.lex"
 store_text("##"); 
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 119 "./trinp.lex"
+#line 124 "./trinp.lex"
 store_text(yytext);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 121 "./trinp.lex"
+#line 126 "./trinp.lex"
 ECHO;
 	YY_BREAK
-#line 927 "ppo/trinp.cpp"
+#line 932 "ppo/trinp.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1809,7 +1814,7 @@ int main()
      return 0;
      }
 #endif
-#line 121 "./trinp.lex"
+#line 126 "./trinp.lex"
 
 
 

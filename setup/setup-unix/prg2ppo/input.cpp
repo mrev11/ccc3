@@ -675,7 +675,11 @@ char *yytext;
 
 #include <string.h>
 #include <cccapi.h>
- 
+
+//a generalt kodban:
+//#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
+//gcc 4.3.2 warning: ignoring return value
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 //Bizonyos esetekben (folytatósor, sorelválasztó ;)
 //a generált kimeneten CR jelenhet meg, ami a további
@@ -799,7 +803,7 @@ static void raw_end()
     }
 }
 
-#line 803 "ppo/input.cpp"
+#line 807 "ppo/input.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -879,7 +883,7 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (void) fwrite( yytext, yyleng, 1, yyout )
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -953,10 +957,10 @@ YY_DECL
      register char *yy_cp, *yy_bp;
      register int yy_act;
 
-#line 177 "./input.lex"
+#line 181 "./input.lex"
 
 
-#line 960 "ppo/input.cpp"
+#line 964 "ppo/input.cpp"
 
      if ( yy_init )
              {
@@ -1050,299 +1054,299 @@ do_action:   /* This label is used only to access EOF actions. */
      { /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 179 "./input.lex"
+#line 183 "./input.lex"
 raw_beg(st_raw);
 	YY_BREAK
 
 case 2:
 YY_RULE_SETUP
-#line 181 "./input.lex"
+#line 185 "./input.lex"
 raw_end();
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 182 "./input.lex"
+#line 186 "./input.lex"
 outchar(*yytext);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 183 "./input.lex"
+#line 187 "./input.lex"
 outchar(*yytext);
 	YY_BREAK
 
 case 5:
 YY_RULE_SETUP
-#line 186 "./input.lex"
+#line 190 "./input.lex"
 statepush(st_incl);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 187 "./input.lex"
+#line 191 "./input.lex"
 statepush(st_ifdef);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 188 "./input.lex"
+#line 192 "./input.lex"
 statepush(st_ifndef);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 189 "./input.lex"
+#line 193 "./input.lex"
 statepush(st_ifeq);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 190 "./input.lex"
+#line 194 "./input.lex"
 statepush(st_ifneq);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 191 "./input.lex"
+#line 195 "./input.lex"
 statepush(st_waitendif);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 192 "./input.lex"
+#line 196 "./input.lex"
 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 193 "./input.lex"
+#line 197 "./input.lex"
 outtype=1;    
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 194 "./input.lex"
+#line 198 "./input.lex"
 outtype=2;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 195 "./input.lex"
+#line 199 "./input.lex"
 outtype=2;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 196 "./input.lex"
+#line 200 "./input.lex"
 outtype=3;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 197 "./input.lex"
+#line 201 "./input.lex"
 outtype=3;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 198 "./input.lex"
+#line 202 "./input.lex"
 outtype=4;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 201 "./input.lex"
+#line 205 "./input.lex"
 //comment
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 202 "./input.lex"
+#line 206 "./input.lex"
 //folytató
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 203 "./input.lex"
+#line 207 "./input.lex"
 //folytató //comment
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 204 "./input.lex"
+#line 208 "./input.lex"
 //folytató /*comment*/
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 205 "./input.lex"
+#line 209 "./input.lex"
 {outtrim();outchar(';');} //szétválasztó
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 206 "./input.lex"
+#line 210 "./input.lex"
 printbuf(); //egysoros 
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 207 "./input.lex"
+#line 211 "./input.lex"
 statepush(st_comment); //többsoros 
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 208 "./input.lex"
+#line 212 "./input.lex"
 outstr(yytext);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 209 "./input.lex"
+#line 213 "./input.lex"
 printbuf();
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 210 "./input.lex"
+#line 214 "./input.lex"
 outchar(*yytext);
 	YY_BREAK
 
 case 28:
 YY_RULE_SETUP
-#line 214 "./input.lex"
+#line 218 "./input.lex"
 
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 215 "./input.lex"
+#line 219 "./input.lex"
 
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 216 "./input.lex"
+#line 220 "./input.lex"
 outstr("/**/");statepop(); 
 	YY_BREAK
 
 
 case 31:
 YY_RULE_SETUP
-#line 221 "./input.lex"
+#line 225 "./input.lex"
 procinclude();
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 222 "./input.lex"
+#line 226 "./input.lex"
 error("No filespec for #include"); 
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 223 "./input.lex"
+#line 227 "./input.lex"
 
 	YY_BREAK
 
 
 case 34:
 YY_RULE_SETUP
-#line 228 "./input.lex"
+#line 232 "./input.lex"
 procifdef(0); 
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 229 "./input.lex"
+#line 233 "./input.lex"
 error("No symbol for #ifdef");
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 230 "./input.lex"
+#line 234 "./input.lex"
 
 	YY_BREAK
 
 
 case 37:
 YY_RULE_SETUP
-#line 235 "./input.lex"
+#line 239 "./input.lex"
 procifdef(1); 
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 236 "./input.lex"
+#line 240 "./input.lex"
 error("No symbol for #ifndef");
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 237 "./input.lex"
+#line 241 "./input.lex"
 
 	YY_BREAK
 
 
 case 40:
 YY_RULE_SETUP
-#line 241 "./input.lex"
+#line 245 "./input.lex"
 procifdef(2); 
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 242 "./input.lex"
+#line 246 "./input.lex"
 error("No symbols for #ifeq");
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 243 "./input.lex"
+#line 247 "./input.lex"
 
 	YY_BREAK
 
 
 case 43:
 YY_RULE_SETUP
-#line 248 "./input.lex"
+#line 252 "./input.lex"
 procifdef(3); 
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 249 "./input.lex"
+#line 253 "./input.lex"
 error("No symbols for #ifneq");
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 250 "./input.lex"
+#line 254 "./input.lex"
 
 	YY_BREAK
 
 
 case 46:
 YY_RULE_SETUP
-#line 255 "./input.lex"
+#line 259 "./input.lex"
 statepop();
 	YY_BREAK
 
 
 case 47:
 YY_RULE_SETUP
-#line 260 "./input.lex"
+#line 264 "./input.lex"
 statepop();
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 261 "./input.lex"
+#line 265 "./input.lex"
 statepush(st_waitendif);
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 262 "./input.lex"
+#line 266 "./input.lex"
 statepush(st_waitendif);
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 263 "./input.lex"
+#line 267 "./input.lex"
 statepush(st_waitendif);
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 264 "./input.lex"
+#line 268 "./input.lex"
 statepush(st_waitendif);
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 265 "./input.lex"
+#line 269 "./input.lex"
 
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 266 "./input.lex"
+#line 270 "./input.lex"
 
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 267 "./input.lex"
+#line 271 "./input.lex"
 statepush(st_comment); //többsoros   
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 268 "./input.lex"
+#line 272 "./input.lex"
 
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 269 "./input.lex"
+#line 273 "./input.lex"
 
 	YY_BREAK
 
@@ -1356,7 +1360,7 @@ case YY_STATE_EOF(st_waitelse):
 case YY_STATE_EOF(st_waitendif):
 case YY_STATE_EOF(st_comment):
 case YY_STATE_EOF(st_raw):
-#line 273 "./input.lex"
+#line 277 "./input.lex"
 {
 
     if( YYSTATE==st_raw )
@@ -1390,10 +1394,10 @@ case YY_STATE_EOF(st_raw):
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 304 "./input.lex"
+#line 308 "./input.lex"
 ECHO;
 	YY_BREAK
-#line 1397 "ppo/input.cpp"
+#line 1401 "ppo/input.cpp"
 
      case YY_END_OF_BUFFER:
              {
@@ -2277,7 +2281,7 @@ int main()
      return 0;
      }
 #endif
-#line 304 "./input.lex"
+#line 308 "./input.lex"
 
 
 //---------------------------------------------------------------------------

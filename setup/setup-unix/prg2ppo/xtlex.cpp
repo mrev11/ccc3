@@ -499,6 +499,11 @@ static char     *buffer;
 static unsigned buflen;
 static unsigned bufidx;
 
+//a generalt kodban:
+//#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
+//gcc 4.3.2 warning: ignoring return value
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+
 #define YY_NEVER_INTERACTIVE  1
  
 #define YY_INPUT(buf,result,max_size)\
@@ -542,7 +547,7 @@ static void raw_end()
     }
 }
  
-#line 546 "ppo/xtlex.cpp"
+#line 551 "ppo/xtlex.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -622,7 +627,7 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (void) fwrite( yytext, yyleng, 1, yyout )
+#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -693,10 +698,10 @@ YY_DECL
      register char *yy_cp, *yy_bp;
      register int yy_act;
 
-#line 100 "./xtlex.lex"
+#line 105 "./xtlex.lex"
 
 
-#line 700 "ppo/xtlex.cpp"
+#line 705 "ppo/xtlex.cpp"
 
      if ( yy_init )
              {
@@ -781,102 +786,102 @@ do_action:   /* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 102 "./xtlex.lex"
+#line 107 "./xtlex.lex"
 raw_beg(raw);
 	YY_BREAK
 
 case 2:
 YY_RULE_SETUP
-#line 104 "./xtlex.lex"
+#line 109 "./xtlex.lex"
 raw_end();
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 105 "./xtlex.lex"
+#line 110 "./xtlex.lex"
 raw_cat(yytext);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 106 "./xtlex.lex"
+#line 111 "./xtlex.lex"
 raw_cat(yytext);
 	YY_BREAK
 
 case 5:
 YY_RULE_SETUP
-#line 109 "./xtlex.lex"
+#line 114 "./xtlex.lex"
 xtlexstore(yytext);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 110 "./xtlex.lex"
+#line 115 "./xtlex.lex"
 xtlexstore(yytext);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 111 "./xtlex.lex"
+#line 116 "./xtlex.lex"
 xtlexstore(yytext);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 112 "./xtlex.lex"
+#line 117 "./xtlex.lex"
 xtlexstore(yytext);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 113 "./xtlex.lex"
+#line 118 "./xtlex.lex"
 xtlexstore(yytext); 
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 114 "./xtlex.lex"
+#line 119 "./xtlex.lex"
 xtlexstore(yytext); 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 115 "./xtlex.lex"
+#line 120 "./xtlex.lex"
 xtlexstore(yytext); 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 116 "./xtlex.lex"
+#line 121 "./xtlex.lex"
 xtlexstore(yytext); 
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 117 "./xtlex.lex"
+#line 122 "./xtlex.lex"
 xtlexstore(yytext); 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 118 "./xtlex.lex"
+#line 123 "./xtlex.lex"
 if(item_count) xtlexstore(" ");  
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 119 "./xtlex.lex"
+#line 124 "./xtlex.lex"
 xtlexstore("##");   
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 120 "./xtlex.lex"
+#line 125 "./xtlex.lex"
 xtlextrim(yytext);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 121 "./xtlex.lex"
+#line 126 "./xtlex.lex"
 
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 122 "./xtlex.lex"
+#line 127 "./xtlex.lex"
 xtlexstore(yytext);  
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 124 "./xtlex.lex"
+#line 129 "./xtlex.lex"
 ECHO;
 	YY_BREAK
-#line 880 "ppo/xtlex.cpp"
+#line 885 "ppo/xtlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(raw):
 	yyterminate();
@@ -1763,7 +1768,7 @@ int main()
      return 0;
      }
 #endif
-#line 124 "./xtlex.lex"
+#line 129 "./xtlex.lex"
 
 
 

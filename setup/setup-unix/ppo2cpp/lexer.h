@@ -141,6 +141,19 @@ class ppo2cpp_lexer : public yyFlexLexer
             token=(new parsenode)->token(tt,strdup("->"),inputlineno);
             compound_idx+=2;
         }
+        else if( tt==COLON && compound[compound_idx+1]==':' )
+        {
+            if( compound[compound_idx+2]=='='  )
+            {
+                token=(new parsenode)->token(COLCOLASS,strdup("::="),inputlineno);
+                compound_idx+=3;
+            }
+            else
+            {
+                token=(new parsenode)->token(COLCOL,strdup("::"),inputlineno);
+                compound_idx+=2;
+            }
+        }
         else if( tt )
         {
             char buf[2];buf[0]=c;buf[1]=0;
@@ -283,6 +296,36 @@ class ppo2cpp_lexer : public yyFlexLexer
 
         if( id==COMPOUND )
         {
+            //wspace szures
+            {   
+                char *p=(char*)malloc(len+1);
+                int i,j;
+                for( i=0,j=0; i<len; i++ )
+                {
+                    if( txt[i]!=' ' && txt[i]!='\t' )
+                    {
+                        p[j++]=txt[i];
+                    }
+                }
+                p[j]=0;
+                free(txt);
+                txt=p;
+                len=j;
+            }
+        
+            //ures zarojelpar kieg
+            if( txt[0]==':' && txt[1]==':' && txt[len-1]!='(' )
+            {   
+                char *p=(char*)malloc(len+3);
+                memcpy(p,txt,len);
+                p[len+0]='(';
+                p[len+1]=')';
+                p[len+2]=0;
+                free(txt);
+                txt=p;
+                len+=2;
+            }
+
             compound=txt;
             compound_idx=0;
             return getnext_compound();

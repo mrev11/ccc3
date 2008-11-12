@@ -1,0 +1,10 @@
+-mncterm
+-d.
+-d../common
+-d$(CCCDIR)/ccclib/src/uic/screenbuf
+-i$(CCCDIR)/ccclib/src/uic/termapi
+-bccc3.lib
+-bncursesw
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+

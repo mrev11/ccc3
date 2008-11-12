@@ -31,7 +31,7 @@
 #endif
 
 
-#define MAXBUFLEN      32768
+#define MAXBUFLEN      400000
 
 #define FP_CONSOLE     0  
 #define FP_PRINTER     1

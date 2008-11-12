@@ -3,9 +3,10 @@ export EDITOR=z.exe
 #set -x
 
 git-add .
-git-commit --all -m "telepitokeszlet frissites" #2008.11.05
+git-commit --all -m "unix-ncurses terminál" #2008.11.12
 
 
+#git-commit --all -m "telepitokeszlet frissites" #2008.11.05
 #git-commit --all -m "tovabbi gcc 4.3.2 warningok (flex)" #2008.11.05
 #git-commit --all -m "clean-all.b javitva" #2008.11.04
 #git-commit --all -m "gcc 4.3.2 warningok elnyomva" #2008.11.04

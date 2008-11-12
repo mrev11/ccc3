@@ -65,6 +65,19 @@ static void sleep(int ms)
 }
 
 //----------------------------------------------------------------------------
+static void atexit_bye()
+{
+    close(termsck); // jelzés a terminálnak
+    sleep(100);     // (0.1sec) a terminál kilép
+    
+    //A terminál a socket lezáródásából értesül arról, hogy 
+    //a szerverprogram kilépett. Így a terminálnak (child)
+    //van ideje előbb kilépni, mint ahogy a szerverprogram 
+    //(parent) kilépne. Ez akkor fontos, amikor a szerver és 
+    //az ncurses terminál ugyanabban az ablakban fut.
+}
+
+//----------------------------------------------------------------------------
 void connect_to_terminal()
 {
     //CCCTERM_CONNECT nincs megadva    -> connect 127.0.0.1:55000
@@ -136,6 +149,7 @@ void connect_to_terminal()
         {
             error("accept failed");
         }
+        atexit(atexit_bye);
     }
 
     else

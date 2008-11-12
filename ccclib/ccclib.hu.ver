@@ -1,4 +1,9 @@
-2009.10.02
+2008.11.11
+  src/uic/termapi/termio.cpp: atexit_bye() 
+  Alkalmat ad a terminálnak, hogy előbb kilépjen, mint a szerver.
+  Akkor hasznos, ha a szerver és ncterm ugyanabban az ablakban fut.
+
+2008.10.02
   gcc 4.3.2 warningok javitva.
   
   1) warning: ignoring return value

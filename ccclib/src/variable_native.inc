@@ -166,7 +166,8 @@ VALUE VALUE::operator=(VALUE v)
     {
         //OK
     }
-    else if( (thread_data::tdata_count==1) || (v.type<TYPE_SCALAR) )
+    //else if( (thread_data::tdata_count==1) || (v.type<TYPE_SCALAR) ) //rossz
+    else if( (thread_data::tdata_count==1) || (v.type<TYPE_GARBAGE) ) //2008.12.10
     {
         //fontos optimalizálás;
         //másik szálon futó szemétgyűjtés alatt is megengedett

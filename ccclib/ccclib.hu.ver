@@ -1,3 +1,13 @@
+2008.12.10
+  szalkezeles javitva 
+    VALUE::operator=(VALUE v)-ban es add()-ban.
+
+2008.12.10
+  delete -> DELTHRDATA
+  closeonexec/sethandleinheritflag egysegesites
+  SIGABRT kezeles
+  Solaris es FreeBSD javitasok
+
 2008.11.11
   src/uic/termapi/termio.cpp: atexit_bye() 
   Alkalmat ad a terminálnak, hogy előbb kilépjen, mint a szerver.

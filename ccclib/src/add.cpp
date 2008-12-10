@@ -136,8 +136,9 @@ void add()
                 }
                 else if( la==0 )
                 {
-                    a->data.string.oref=b->data.string.oref;
-                    a->data.string.len=b->data.string.len;
+                    //a->data.string.oref=b->data.string.oref;
+                    //a->data.string.len=b->data.string.len; //rossz
+                    *a=*b; //2008.12.10
                 }
                 else
                 {
@@ -151,8 +152,9 @@ void add()
                     CHAR *sum=stringl(la+lb); 
                     memcpy(sum,STRINGPTR(a),la*sizeof(CHAR));
                     memcpy(sum+la,STRINGPTR(b),lb*sizeof(CHAR));
-                    a->data.string.oref=TOP()->data.string.oref;
-                    a->data.string.len=TOP()->data.string.len;
+                    //a->data.string.oref=TOP()->data.string.oref;
+                    //a->data.string.len=TOP()->data.string.len; //rossz
+                    *a=*TOP(); //2008.12.10
                 }
 
                 stack=b;
@@ -173,8 +175,9 @@ void add()
                 }
                 else if( la==0 )
                 {
-                    a->data.binary.oref=b->data.binary.oref;
-                    a->data.binary.len=b->data.binary.len;
+                    //a->data.binary.oref=b->data.binary.oref;
+                    //a->data.binary.len=b->data.binary.len; //rossz
+                    *a=*b;
                 }
                 else
                 {
@@ -188,8 +191,9 @@ void add()
                     BYTE *sum=binaryl(la+lb); 
                     memcpy(sum,BINARYPTR(a),la*sizeof(BYTE));
                     memcpy(sum+la,BINARYPTR(b),lb*sizeof(BYTE));
-                    a->data.binary.oref=TOP()->data.binary.oref;
-                    a->data.binary.len=TOP()->data.binary.len;
+                    //a->data.binary.oref=TOP()->data.binary.oref;
+                    //a->data.binary.len=TOP()->data.binary.len; //rossz
+                    *a=*TOP(); //2008.12.10
                 }
 
                 stack=b;

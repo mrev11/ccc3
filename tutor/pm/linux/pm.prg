@@ -40,6 +40,7 @@ local b, sig:={}
     aadd(sig,{"SIGTERM",{||send(b,"TERM")}})
     aadd(sig,{"SIGHUP",{||send(b,"HUP")}})
     aadd(sig,{"SIGINT",{||send(b,"INT")}})
+    aadd(sig,{"SIGABRT",{||send(b,"ABRT")}})
     aadd(sig,{"SIGSTOP",{||send(b,"STOP")}})
     aadd(sig,{"SIGCONT",{||send(b,"CONT")}})
     aadd(sig,{"SIGKILL",{||send(b,"KILL")}})

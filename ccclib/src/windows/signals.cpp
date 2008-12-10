@@ -128,6 +128,10 @@ static BOOL ctrlc_handler(DWORD event)
     //Mivel a CTRL_C külön szálat indít, nem lehet ellene siglocklev-vel 
     //védekezni (mint UNIX-on), hiszen a szálnak még nincs thread_data-ja.
     //Ugyanezért viszont nincs is szükség a védelemre.
+
+    //A SIGINT kezelőben meghívott callstack()/varstack() sajnos nem 
+    //informatív, mert az új szál vermeit mutatja. Ugyanezért a síma
+    //CTRL_C kilépés sem mutat(hat)ja, honnan lépett ki a program.
     
     //Egyszálúra fordított CCC-ben ez nem működhet, ui. a szálaknak
     //nincs külön vermük, azaz a stack, siglocklev, stb. globálisak.
@@ -195,6 +199,14 @@ void setup_signal_handlers()
     //keletkezik. Ahhoz, hogy a stack makrónak értelme legyen
     //csinálni kell egy külön thread_data objektumot.
     
+    //2009.11.13
+    SetConsoleCtrlHandler(0,0); 
+    //If the HandlerRoutine parameter is NULL, 
+    //a TRUE value causes the calling process to ignore CTRL+C input, 
+    //and a FALSE value restores normal processing of CTRL+C input. 
+    //This attribute of ignoring or processing CTRL+C is inherited 
+    //by child processes. (Visszaállítjuk a _normál_ állapotot.)
+
     SetConsoleCtrlHandler((PHANDLER_ROUTINE)ctrlc_handler,1); 
 }
  

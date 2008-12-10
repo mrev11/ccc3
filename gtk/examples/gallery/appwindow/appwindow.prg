@@ -48,13 +48,13 @@ local menu_items:={;
 {'/Help/_About',,{|i|cb_menu(i,window)},''};
 }
     //gdb info
-    set alternate on
-    set alternate to pid
-    ?? getpid()
-    set alternate to exe
-    ?? exename()
-    set alternate to
-    set alternate off
+    //set alternate on
+    //set alternate to pid
+    //?? getpid()
+    //set alternate to exe
+    //?? exename()
+    //set alternate to
+    //set alternate off
 
     gtk.init()
     

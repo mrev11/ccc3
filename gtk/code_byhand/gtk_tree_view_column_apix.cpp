@@ -34,7 +34,7 @@ void _clp_new_with_attributes(int argno)
     CCC_PROLOG("gtk.tree_view_column.new_with_attributes",2);
     const gchar *title=_parc_utf8(1);
     gpointer cell=_parp(2);
-    gpointer ret=gtk_tree_view_column_new_with_attributes(title,GTK_CELL_RENDERER(cell),NULL);
+    gpointer ret=gtk_tree_view_column_new_with_attributes(title,GTK_CELL_RENDERER(cell),(void*)0);
     _retp(ret);
     CCC_EPILOG();
     

@@ -95,27 +95,27 @@ void _clp_set_property(int argno)
     if( strstr(type_i,ptype) ) //int
     {
         gint value=_parni(3);
-        g_object_set(o,prop,value,NULL);
+        g_object_set(o,prop,value,(void*)0);
     }
     else if( strstr(type_d,ptype) ) //double
     {
         double value=_parnd(3);
-        g_object_set(o,prop,value,NULL);
+        g_object_set(o,prop,value,(void*)0);
     }
     else if( strstr(type_s,ptype) ) //string
     {
         gchar *value=_parc_utf8(3);
-        g_object_set(o,prop,value,NULL);
+        g_object_set(o,prop,value,(void*)0);
     }
     else if( strstr(type_b,ptype) ) //boolean
     {
         gint value=_parl(3)?1:0;
-        g_object_set(o,prop,value,NULL);
+        g_object_set(o,prop,value,(void*)0);
     }
     else if( strstr(type_p,ptype) ) //pointer
     {
         gpointer value=_parp(3);
-        g_object_set(o,prop,value,NULL);
+        g_object_set(o,prop,value,(void*)0);
     }
     else
     {
@@ -143,32 +143,32 @@ void _clp_get_property(int argno)
     if( strstr(type_i,ptype) ) //int
     {
         gint value;
-        g_object_get(o,prop,&value,NULL);
+        g_object_get(o,prop,&value,(void*)0);
         _retni(value);
     }
     else if( strstr(type_d,ptype) ) //double
     {
         double value;
-        g_object_get(o,prop,&value,NULL);
+        g_object_get(o,prop,&value,(void*)0);
         _retnd(value);
     }
     else if( strstr(type_s,ptype) ) //string
     {
         gchar *value;
-        g_object_get(o,prop,&value,NULL);
+        g_object_get(o,prop,&value,(void*)0);
         stringn0(value);
         _rettop();
     }
     else if( strstr(type_b,ptype) ) //boolean
     {
         gint value;
-        g_object_get(o,prop,&value,NULL);
+        g_object_get(o,prop,&value,(void*)0);
         _retl(value);
     }
     else if( strstr(type_p,ptype) ) //pointer
     {
         GObject *value;
-        g_object_get(o,prop,&value,NULL);
+        g_object_get(o,prop,&value,(void*)0);
         pointer(value);
         _rettop();
     }

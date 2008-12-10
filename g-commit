@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "delete -> DELTHRDATA" #2008.12.10
+git-commit --all -m "GTK warnings" #2008.12.10
 
+#git-commit --all -m "delete -> DELTHRDATA" #2008.12.10
 #git-commit --all -m "closeonexec/sethandleinheritflag egysegesites" #2008.12.10
 #git-commit --all -m "SIGABRT kezeles" #2008.12.10
 #git-commit --all -m "ccc portok frissites" #2008.12.10

@@ -402,7 +402,7 @@ HWND create_main_window(HINSTANCE hInstance)
     NULL                  // address of window-creation data
    );
 }
- 
+
 //---------------------------------------------------------------------------
 int WINAPI WinMain(
     HINSTANCE  hInstance,       // handle of current instance
@@ -411,6 +411,8 @@ int WINAPI WinMain(
     int        nCmdShow         // show state of window
     )   
 {
+    FreeConsole(); //ne zavarjon be CTRL_C (2008.11.13)
+
     //Ez allit valamit a rendszerparameterekben,
     //maskepp Win2K-n hatastalan a SetForegroundWindow.
     //Az info az MS knowledgebase-bol szarmazik.

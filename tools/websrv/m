@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b @parfile.bld  -blibssl.so
+bapp_unix_.b @parfile.bld  -blibssl.so -blibcrypto.so

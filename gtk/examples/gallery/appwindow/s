@@ -1,4 +1,0 @@
-#!/bin/bash
-appwindow.exe >log
-z log
-

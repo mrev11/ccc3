@@ -16,11 +16,13 @@ for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 # ezeken a rendszereken a --start-group opciót ki kell kommentezni. 
 # A NexentaOS a GNU linkerrel linkel: --start-group-ot benn kell hagyni. 
 
-echo -Wl,--start-group >>$RSPLNK
+#echo -Wl,--start-group >>$RSPLNK
+
 echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK 
 echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
-echo -Wl,--end-group >>$RSPLNK
+
+#echo -Wl,--end-group >>$RSPLNK
  
 echo `cat $CCCDIR/usr/options/$CCCBIN/link.opt` >>$RSPLNK
 

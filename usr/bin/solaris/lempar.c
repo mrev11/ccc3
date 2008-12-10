@@ -2,6 +2,7 @@
 //Vermes M.
 //signed/unsigned comparison warning elkerülése,
 //hogy cpp-ként is warning mentesen forduljon.
+//void ParseTrace(FILE *TraceFILE, const char *zTracePrompt);
 
 /* Driver template for the LEMON parser generator.
 ** The author disclaims copyright to this source code.
@@ -164,7 +165,7 @@ typedef struct yyParser yyParser;
 #ifndef NDEBUG
 #include <stdio.h>
 static FILE *yyTraceFILE = 0;
-static char *yyTracePrompt = 0;
+static const char *yyTracePrompt = 0;
 #endif /* NDEBUG */
 
 #ifndef NDEBUG
@@ -185,11 +186,14 @@ static char *yyTracePrompt = 0;
 ** Outputs:
 ** None.
 */
-void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
+void ParseTrace(FILE *TraceFILE, const char *zTracePrompt){
   yyTraceFILE = TraceFILE;
   yyTracePrompt = zTracePrompt;
   if( yyTraceFILE==0 ) yyTracePrompt = 0;
   else if( yyTracePrompt==0 ) yyTraceFILE = 0;
+}
+void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
+  ParseTrace(TraceFILE, (const char*) zTracePrompt);
 }
 #endif /* NDEBUG */
 

@@ -114,6 +114,9 @@ pushd tools/zgrep; m; popd
 # other
 #-------------------
 
+pushd jt/jtlib; m; popd
+pushd tutor/oggedit; m; popd
+
 pushd tutor/dtree; m; popd
 pushd tutor/pm/$CCCUNAME; m; popd
 pushd tutor/readline; m; popd

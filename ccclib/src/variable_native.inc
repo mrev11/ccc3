@@ -557,7 +557,7 @@ static void vartab_sweep()
         {
             if( oref[n].length )
             {
-                *oref[n].ptr.chrptr='@'; // szándékos rongálás
+                //*oref[n].ptr.binptr='@'; // szándékos rongálás
                 MEMFREE(oref[n].ptr.valptr);
             }
             oref[n].ptr.valptr=NULL;

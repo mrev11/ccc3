@@ -1,0 +1,206 @@
+2008.11.25
+
+Évente ki szoktam próbálni, hogyan muzsikál a CCC Linuxtól különböző 
+rendszereken. Az idei tapasztalatokat írom itt le. Bár nem vagyok szakértője 
+a témának, külön kitérek a Solarisszal kapcsolatos benyomásaimra.
+
+I. Windows
+
+Csak Win-2000 áll a rendelkezésemre, azon nincs probléma, vagy legalábbis
+nem tudok ilyenről. Nem tervezem a mozgolódást korszerűbb Windowsokon. 
+Ha más nem veszi át, akkor ez a port lassacskán ki fog halni.
+
+II. Solaris
+
+Az OpenSolaris-11/08-RC2 (Indiana) és a NexentaCP-2.0-alfa2 rendszereket 
+próbáltam. Olyan lassan fejlődnek, hogy a CCC szempontjából nem volt 
+érzékelhető változás, azaz mindkét esetben símán fordult a CCC (kivéve az 
+ncurses-es részeket).
+
+(Itt közbevetőleg megjegyzem, hogy a "síma" fordulás nem annyira triviális, 
+hiszen a CCC2 projektben 3600, a CCC3-ban 3300 fájl van. Összehasonlításképpen 
+a PostgreSQL 8.3 tarballban is 3300 fájl van, tehát közepesnek mondható 
+a projekt mérete, ennek megfelelően sok korábbi munka áll a síma fordulás 
+mögött.)
+
+(Másik megjegyzés, hogy az ncurses/ncursesw nem lényeges kelléke a CCC-nek, 
+ui. a karakteres fullscreen programok általában a CCC terminálban jelennek 
+meg, aminek saját protokollja van, és amihez a szerveren sem X, sem curses 
+nem kell, elég a TCP kapcsolat. Hasonló a helyzet a Jáva terminállal.)
+
+Az Indiana egy komplett desktop rendszer akarna lenni. Van egy saját, 
+új csomagkezelője, ami kissé szokatlan, és (valószínűleg csak a repók miatt) 
+meglehetősen lassú. Van benne komplett Jáva környezet, Firefox Jáva plugin, 
+Flash plugin. Vannak GNU fejlesztőeszközök. ZFS-re telepít.
+
+A Nexenta eredeti koncepciója az volt, hogy a Solaris kernelből és 
+a Debian csomagokból építenek fel komplett szervert és desktopot. 
+Ennek megfelelően GNU/OpenSolaris-nak nevezik a rendszerüket, és abban 
+reménykednek, hogy egyszer részévé válnak a Debian projektnek. Több év 
+kínlódás után eljutottak egy alfa7 verzióig, utána azonban belátták, 
+hogy reménytelen a vállalkozás (feladták), és áttértek egy szerényebb 
+célkitűzésre: ez volna a NexentaCP (Nexenta Core Platform). Ebben nincs 
+semmi, csak egy alap, amire az apt-get csomagkezelővel installálni lehet 
+a felépítményt. A NexentaCP is ZFS-re telepít.
+
+A NexentaCP 1.01 az Ubuntu Dapper-ből portolt csomagkészlettel dolgozik.
+A NexentaCP 2.0 az Ubuntu Hardy-ból portolt csomagkészlettel dolgozik.
+
+Mindkét Solarist könnyű installálni. A NexentaCP-t különösen könnyű. 
+Régi Debian-típusú karakteres dialogboxokkal kéri be a root jelszót, időzóna, 
+IP-cím adatokat. Negyedórán belül fenn van a rendszer, eleve rajta vannak 
+a fejlesztő eszközök, rögtön be lehet rá ssh-zni. Apt-get-tel felteszek 
+még rá ezt-azt. Forrásből lehet mc-t installálni. Egy óra múlva már fut 
+a CCC-vel fordított számlavezetés.
+
+#apt-get update
+#ez hibákat ad
+#apt-get upgrade
+
+# Egy szokásos Ubuntu-Gutsy telepítés után
+# ezeket a csomagokat kell felrakni,
+# hogy a CCC2/CCC3 leforduljon.
+# + a jt-hez kell a Sun Java.
+# + az SQL2-höz kell a PostgreSQL.
+#apt-get install  g++ libncurses5-dev libncursesw5-dev \
+#  manpages-dev libx11-dev libssl-dev libgtk2.0-dev libreadline5-dev 
+#ezutan lehet installalni forrasbol az mc-t
+#src/subshell.c 728. sor:
+#<            if (isalpha ((unsigned char) *s)) {
+#>            if (isalpha ((unsigned char) *s) || ('_'==*s)  ) {
+#másképp nem lehet belépni a nevükben '_' karaktert tartalmazó directorykba
+
+Az OpenSolaris Live-CD-ről grafikus telepítővel települ. Nem ismerte 
+fel ugyanazt az (integrált) ethernet kártyát, amit a Nexenta felismert, 
+beraktam neki egy másikat. Lesz neki egy gyönyörű GNOME desktopja, viszont 
+az xterm-ben és a gnome-terminálban ugyanúgy nem működik a DEL billentyű, 
+mint 10 évvel ezelőtt (lol). Az ilyen próba-installációkhoz egy hulladék 
+15-ös CRT monitort használok, a gdm képernyő ezen 1600-as felbontásban 
+jelenik meg. Bejelentkezés után át lehet állítani, de különben sem ezen 
+akarok dolgozni, hanem átmegyek a szokásos Linuxomra (19'LCD), onnan 
+jelentkezek fel "X :1 -query solaris" paranccsal. Na ebben nincs sok köszönet. 
+A képernyőfrissítés egy nagyságrenddel lassabb, mintha a Solaris helyén 
+egy Linux állna. Például a jobb felső sarokban levő x-re tízszer tudok 
+ráklikkelni, mielőtt az ablak eltűnne, és akkor még nem is siettem. Az a 
+feltételezésem, hogy a Solaris a kis hálózati csomagok küldésével vár, 
+próbál belőlük többet összegyűjteni. Egyébként nagy fájlok küldésekor 
+megvan az elvárható 10MB/sec sebesség. 
+
+(Mielőtt letöröltem volna, gondoltam kipróbálom, milyen élményt ad 
+a Solaris desktop egy közvetlenül rádugott normális monitorral, a már 
+említett 19'LCD-vel. Az "élmény" az, hogy a gdm képernyő nem tud feljönni. 
+Másik gépről be-ssh-zva látszik, hogy fut a gdm, csak nem jelenik meg.)
+
+Az OpenSolarison nincsenek fenn alapból a fejlesztőeszközök, meg kell hozzá 
+tanulni a pkg programot, vagy a synapticot helyettesítő packagemanagert. 
+Van viszont csomagból telepíthetó mc. 
+
+Programozási szempontból az a különbség, hogy a Nexenta a GNU linkerrel 
+linkel, az OpenSolrais viszont a Solarisos linkerrel. Mindkét rendszer 
+a bootoláskor azt írja ki, hogy 64-bites, valójában mindekettő hibrid 
+32-64-bites. Ami különösen szomorú, hogy a gcc mindkettőn 32-bites kódot 
+fordít.
+
+Egyik rendszeren sem működnek a locale-k. Az OpenSolarison nincsenek 
+(vagy csak nem találtam) olyan ncurses könyvtárakat, amikkel működőképes 
+programot lehetett volna linkelni. A Nexentán futnak az ncurses-zel és 
+ncursesw-vel (unicode-os ncurses) linkelt programok, viszont a unicode-os 
+programok nem-ascii karakterei nem jól látszanak. A unicode-os programokban 
+a towupper/towlower függvény OpenSolarison jól működik, Nexentán viszont 
+a nem-ascii karaktereket (pl. cirill betűket) nem transzformálják.
+
+Összegzés. Csak annyit mondok, ha a Nexentában kijavítanák az ncursesw, 
+towupper és társaik hibáit, beletennék a locale-kat (talán ezek össze is 
+függenek), akkor az én szempontomból a Nexenta praktikusabb volna. 
+Szerintem a 64-bites gcc hiánya növekvő lemaradást jelez. Egyébként mindkét 
+Solaris származékon jól működik a CCC.
+
+
+III. FreeBSD
+
+Az alábbiak le vannak írva még a CCC2-vel kapcsolatban, de most
+újra előkerültek:
+
+A CCC scriptek első sora '#!/bin/bash'. Tehát installálni kell a bash-t,
+és át kell symlinkelni a /bin-be.
+
+A PATH-ban benne kell legyen '.'.
+
+A CCC források inkludálják malloc.h-t. FreeBSD-n az eredeti malloc.h 
+inkludálása hibát ad, mert szerinte az stdlib.h-t kellene használni. 
+Ez azonban egy baromság. Át kell írni a malloc.h-t, hogy minden körülmények
+között csendben inkludálja az stdlib.h-t.
+
+
+6.3-RELEASE i386 és amd64:  ok
+7.0-RELEASE i386 és amd64:  CCC2 ok, CCC3 javítva
+7.1-BETA2   i386 és amd64:  CCC2 ok, CCC3 javítva
+
+A CCC3 fordításakor (CCC3 programokból) ilyen hibákat kaptam:
+
+malloc 0-t ad,
+realloc 0-t ad,
+malloc olyan pointer ad, ami egy másik létező memóriablokk címe,
+free sigsegv-zik olyan pointerrel, amit pár sorral előbb adott a malloc.
+
+Látom a relnotesban, hogy 6.x és 7.x között változott a malloc:
+
+  A new malloc(3) implementation has been introduced. This implementation, 
+  sometimes referred to as jemalloc, was designed to improve the performance 
+  of multi-threaded programs, particularly on SMP systems, while preserving 
+  the performance of single-threaded programs. Due to the use of different 
+  algorithms and data structures, jemalloc may expose some previously-unknown 
+  bugs in userland code, although most of the FreeBSD base system and common 
+  ports have been tested and/or fixed. Note that jemalloc uses mmap(2) to 
+  obtain memory and only uses sbrk(2) under limited circumstances (and then 
+  only for 32-bit architectures). As a result, the datasize resource limit 
+  has little practical effect for typical applications. The vmemoryuse 
+  resource limit, however, can be used to bound the total virtual memory used 
+  by a process, as described in limits(1). 
+
+A "http://ccc.comfirm.hu/pub/freebsd-malloc"-ban egy olyan ktrace.out filé 
+van, amiben a malloc egy élő memóriablokk címét adja. Ez csak úgy lehet, ha 
+
+  1) rossz a malloc,
+  2) rossz a ktrace,
+  3) a CCC program (build.exe) elrontja a futtatási környezetet.
+
+Egy hetet töltöttem a hibakereséssel. Szerencsére nem a malloc rossz,
+hanem egy egyszerű buffer túlcímzés okozott 3. típusú hibát.
+
+A variable-native.inc 560. sora:
+
+      *oref[n].ptr.chrptr='@';   // rossz
+    //*oref[n].ptr.binptr='@';   // helyesen (felesleges)
+
+Ez a bufferek nulladik bytejába akart beírni egy '@' karaktert, hogy 
+könnyebben kiderüljön, ha a programban véletlenül egy felszabadított buffer 
+kerül elő. Ez 10+ éve így van, csakhogy a CCC3-ban az oref[n].ptr.chrptr
+típusa char*-ről wchar_t*-re változott, emiatt 1 helyett 4 byteot érint 
+az értékadás. Tehát a 2-3 hosszú bufferek (rövidebb nincs) felszabadításakor
+sérül a buffert követő 2-1 darab byte.
+
+A FreeBSD 7.x-től különböző rendszerek ezen a két byteon nem tartanak 
+értékes adatot, és SIGSEGV sem keletkezik, mert a memóriablokk-kvantum 
+nagyobb 4-nél. Tehát a programokban nem kell tartani a kétségtelenül meglevő 
+hiba véletlenszerű felbukkanásától.
+
+A FreeBSD 7.x viszont (feltételezésem szerint) a memóriakezelés adatait
+tárolja közvetlenül a buffer után, ezért a túlcímzés a malloc/realloc/free
+későbbi hibás működését okozza. Nem értek ehhez, esetleg egy szakértő
+megerősíthetné, vagy cáfolhatná a feltételezéseimet. Ha ez tényleg így
+van, azt bénaságnak tartom. 
+
+Ha a túlcímzés közvetlenül SIGSEGV-t okozna, az korrekt volna, és könnyű 
+volna felderíteni. Ehelyett a malloc/realloc/free kezd a fent leírt módon 
+hibásan működni, amit a levlistákban ajánlott debug módszerekkel (pl. ktrace) 
+nem lehet felderíteni.
+
+Felderítés: Lecseréltem a programban az összes malloc/realloc/free hívást. 
+Az allokálásnál a kért bufferméretet megnöveltem 8-cal. A program működni 
+kezdett, ami mutatta, hogy jó helyen kapirgálok. Ezt a 8 byteot kipreparáltam 
+úgy, hogy később a free meg tudja találni, és fel tudja ismerni, ha valaki 
+beleírt. Így meglettek az elrontott bufferek. Az elrontott bufferek tartalma 
+alapján ki lehetett találni, hogy hol a hiba.
+
+A javítás után FreeBSD-7.x-en is jól fut a CCC.

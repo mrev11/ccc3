@@ -179,7 +179,8 @@ void _clp_thread_exit(int argno)
 {
     CCC_PROLOG("thread_exit",0);
     vartab_lock();
-    delete (thread_data*)TlsGetValue(thread_key);
+    //delete (thread_data*)TlsGetValue(thread_key); //Boehm-gc
+    DELTHRDATA(TlsGetValue(thread_key));
     vartab_unlock0();
     ExitThread(0);
     _ret();

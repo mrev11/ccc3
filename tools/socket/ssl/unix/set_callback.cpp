@@ -20,6 +20,7 @@
 
 //lásd: man 3 threads
 
+#include <stdlib.h>
 #include <pthread.h>
 #include <openssl/crypto.h>
 

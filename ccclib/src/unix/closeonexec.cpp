@@ -28,6 +28,35 @@
 // CloseOnExecFlag==.f.  -- a filédescriptor öröklődik
 
 //--------------------------------------------------------------------------
+void _clp_sethandleinheritflag(int argno)  //Windows compatibility
+{
+    CCC_PROLOG("sethandleinheritflag",2);
+    int fd=_parni(1);
+    int fl=!_parl(2);
+    _retl( 0==fcntl(fd,F_SETFD,fl?FD_CLOEXEC:0) );
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_gethandleinheritflag(int argno)   //Windows compatibility
+{
+    CCC_PROLOG("gethandleinheritflag",1);
+    int fd=_parni(1);
+    int fl=fcntl(fd,F_GETFD);
+
+    if( fl==-1 ) 
+    {
+        _ret();
+    }
+    else
+    {
+        _retl( !(fl&FD_CLOEXEC) );
+    }
+
+    CCC_EPILOG();
+}
+ 
+//--------------------------------------------------------------------------
 void _clp_setcloexecflag(int argno) 
 {
     //beállítja a CloseOnExecFlag-et

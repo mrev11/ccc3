@@ -39,8 +39,14 @@ void _clp_gethandleinheritflag(int argno)
     CCC_PROLOG("gethandleinheritflag",1);
     HANDLE handle=(HANDLE)_parnu(1);
     unsigned long flag=0;
-    GetHandleInformation(handle,&flag);
-    _retl(flag&HANDLE_FLAG_INHERIT);
+    if( GetHandleInformation(handle,&flag) )
+    {
+        _retl(flag&HANDLE_FLAG_INHERIT);
+    }
+    else
+    {
+        _ret();
+    }
     CCC_EPILOG();
 }
 
@@ -62,8 +68,14 @@ void _clp_getcloexecflag(int argno) //nem használható socketre!
     int fd=_parni(1);
     long handle=_get_osfhandle(fd);
     unsigned long flag=0;
-    GetHandleInformation((HANDLE)handle,&flag);
-    _retl(!(flag&HANDLE_FLAG_INHERIT)); //fordítani!
+    if( GetHandleInformation((HANDLE)handle,&flag) )
+    {
+        _retl(!(flag&HANDLE_FLAG_INHERIT)); //fordítani!
+    }
+    else
+    {
+        _ret();
+    }
     CCC_EPILOG();
 }
  

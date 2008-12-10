@@ -100,41 +100,19 @@ static function socket.initialize(this,fd)
 ******************************************************************************
 static function socket.inherit(this,inheritflag)
 
-local prev,success,e
+local e,prev,success
 
-#ifdef NOT_DEFINED
-    //Ennek hibái vannak:
-    //XP-n socketre nem működik a hdup,
-    //nincs lekérdezés,
-    //kicserélődik a socket az objektumban.
-
-    #ifdef _UNIX_
-        this:fd:=fdup(this:fd,inheritflag,.t.)
-    #else
-        this:fd:=hdup(this:fd,inheritflag,.t.)
-    #endif
-    if( this:fd<0 )
+    prev:=gethandleinheritflag(this:fd)
+    if( prev==NIL ) 
         e:=socketerrorNew("socket.inherit")
-        e:description("duplicate socket failed")
+        e:description("invalid descriptor")
+        e:args:={this:fd}
         break(e)
     end
 
-#else
-
-    #ifdef _UNIX_
-        prev:=!getcloexecflag(this:fd) //fordítani!
-    #else //_WINDOWS_
-        prev:=gethandleinheritflag(this:fd)
-    #endif
-
     if( inheritflag!=NIL ) 
         //beállítás
-        #ifdef _UNIX_
-            success:=setcloexecflag(this:fd,!inheritflag) //fordítani!
-        #else //_WINDOWS_
-            success:=sethandleinheritflag(this:fd,inheritflag)
-        #endif
-
+        success:=sethandleinheritflag(this:fd,inheritflag)
         if( !success )
             e:=socketerrorNew("socket.inherit")
             e:description("failed")
@@ -143,7 +121,6 @@ local prev,success,e
     end
 
     return prev
-#endif
 
 ******************************************************************************
 static function socket.reuseaddress(this,flag) 

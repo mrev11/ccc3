@@ -151,6 +151,10 @@ pushd tutor\rename
 call m.bat
 popd
 
+pushd jt\jtlib
+call m.bat
+popd
+
 
 :stop
  

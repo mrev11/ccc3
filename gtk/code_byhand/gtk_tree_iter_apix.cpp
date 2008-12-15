@@ -37,7 +37,7 @@ namespace _nsp_tree_iter{
 void _clp_new(int argno)
 {
     CCC_PROLOG("gtk.tree_iter.new",0);
-    _retp(new GtkTreeIter);
+    _retp( g_slice_new(GtkTreeIter) ); //2008.12.14
     CCC_EPILOG();
 }
 

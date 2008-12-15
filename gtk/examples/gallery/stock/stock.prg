@@ -20,16 +20,14 @@
 
 function main()
 
-local stock_list,n
+local stock_list,n,i
 local item,icon_set,sizes
 local id,label,modif,keyval,domain
-
 
     gtk.init()
 
     item:=gtk.stock_item.new()
     stock_list:=gtk.stock.list_ids()
-
 
     asort(stock_list)
 
@@ -40,18 +38,29 @@ local id,label,modif,keyval,domain
             modif   :=gtk.stock_item.get_modifier(item)
             keyval  :=gtk.stock_item.get_keyval(item)
             domain  :=gtk.stock_item.get_translation_domain(item)
-               
+            
+            ? id::pad(32),label::pad(16),modif::str(4),keyval::str(4),domain
+                           
             icon_set:=gtk.icon_factory.lookup_default(id)
             sizes:=gtk.icon_set.get_sizes(icon_set)
-            //? stock_list[n]
+
+            ?? " {"
+            for i:=1 to len(sizes)
+                if(i>1)
+                    ??","
+                end
+                ?? sizes[i]::str::alltrim
+            next
+            ?? "}"
+
         else
-            ? stock_list[n]
+            ? stock_list[n]+"!"
         end
     next
+    
     ?
 
     gtk.stock_item.free(item)
-    quit
     
 
     

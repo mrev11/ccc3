@@ -37,7 +37,7 @@ namespace _nsp_text_iter{
 void _clp_new(int argno)
 {
     CCC_PROLOG("gtk.text_iter.new",0);
-    _retp(new GtkTextIter);
+    _retp( g_slice_new(GtkTextIter) ); //2008.12.14
     CCC_EPILOG();
 }
 

@@ -38,7 +38,7 @@ void _clp_new(int argno)
 {
     CCC_PROLOG("gdk.color.new",1);
     const gchar *spec=ISSTRING(1)?_parc_utf8(1):0;
-    GdkColor *color=new GdkColor;
+    GdkColor *color=g_slice_new(GdkColor);
     if(spec)
     {
         gdk_color_parse(spec,color);
@@ -52,7 +52,7 @@ void _clp_new_from_string(int argno)
 {
     CCC_PROLOG("gdk.color.new_from_string",1);
     const gchar *spec=_parc_utf8(1);
-    GdkColor *color=new GdkColor;
+    GdkColor *color=g_slice_new(GdkColor);
     gdk_color_parse(spec,color);
     _retp(color);
     CCC_EPILOG();
@@ -63,7 +63,7 @@ void _clp_free(int argno)
 {
     CCC_PROLOG("gdk.color.free",1);
     GdkColor *color=(GdkColor*)_parp(1);
-    delete color;
+    gdk_color_free(color);
     _ret();
     CCC_EPILOG();
 }

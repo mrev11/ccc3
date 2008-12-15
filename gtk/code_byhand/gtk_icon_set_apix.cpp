@@ -30,14 +30,20 @@ void _clp_get_sizes(int argno)
 {
     CCC_PROLOG("gtk.icon_set.get_sizes",1);
     GtkIconSet *self=(GtkIconSet*)_parp(1);
-    GtkIconSize *sizes;
-    gint n_sizes;
-    gtk_icon_set_get_sizes(self,&sizes,&n_sizes);
+    GtkIconSize *sizes=0;
+    gint n_sizes=0;
+    if( self!=0 )
+    {
+        gtk_icon_set_get_sizes(self,&sizes,&n_sizes);
+    }
     for(int i=0; i<n_sizes; i++)
     {
         number( (int)sizes[i] );
     }
-    g_free(sizes);
+    if( sizes!=0 )
+    {
+        g_free(sizes);
+    }
     array(n_sizes);
     _rettop();
     CCC_EPILOG();

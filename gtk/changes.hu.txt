@@ -1,0 +1,50 @@
+
+2008.12.14
+
+  A GtkTreeIter és GtkTextIter struktúrákat kompatibilis
+  módon kell létrehozni és megszüntetni:
+    
+    kreálás -  g_slice_new
+    törlés  -  g_slice_free
+ 
+  Hibás g_slice_new helyett "new GtkTextIter"-t használni,
+  ettől volt elszállós az appwindow példa.
+  
+  A gtk_tree_iter_free-hez automatikusan készül interfész,
+  viszont NINCS a GTK-ban gtk_tree_iter_new, mivel ezt általában
+  stack változóként használják. A legközelebbi rokonából,
+  a gtk_tree_iter_copy-ból lehet kinézni a kreálás helyes módját.
+
+/**
+ * gtk_tree_iter_copy:
+ * @iter: A #GtkTreeIter.
+ *
+ * Creates a dynamically allocated tree iterator as a copy of @iter.  
+ * This function is not intended for use in applications, because you 
+ * can just copy the structs by value 
+ * (<literal>GtkTreeIter new_iter = iter;</literal>).
+ * You must free this iter with gtk_tree_iter_free().
+ *
+ * Return value: a newly-allocated copy of @iter.
+ **/
+GtkTreeIter * gtk_tree_iter_copy (GtkTreeIter *iter)
+{
+  GtkTreeIter *retval;
+  g_return_val_if_fail (iter != NULL, NULL);
+  retval = g_slice_new (GtkTreeIter);
+  *retval = *iter;
+  return retval;
+}
+
+/**
+ * gtk_tree_iter_free:
+ * @iter: A dynamically allocated tree iterator.
+ *
+ * Frees an iterator that has been allocated by gtk_tree_iter_copy().
+ * This function is mainly used for language bindings.
+ **/
+void gtk_tree_iter_free (GtkTreeIter *iter)
+{
+  g_return_if_fail (iter != NULL);
+  g_slice_free (GtkTreeIter, iter);
+}

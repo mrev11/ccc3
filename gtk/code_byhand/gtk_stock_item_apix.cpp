@@ -30,7 +30,7 @@ namespace _nsp_stock_item {
 void _clp_new(int argno)
 {
     CCC_PROLOG("gtk.stock_item.new",0);
-    _retp( new GtkStockItem );
+    _retp(g_new(GtkStockItem,1));
     CCC_EPILOG();
 }
 
@@ -38,7 +38,7 @@ void _clp_new(int argno)
 void _clp_free(int argno)
 {
     CCC_PROLOG("gtk.stock_item.free",1);
-    delete( (GtkStockItem*)_parp(1) );
+    g_free((GtkStockItem*)_parp(1));
     _ret();
     CCC_EPILOG();
 }

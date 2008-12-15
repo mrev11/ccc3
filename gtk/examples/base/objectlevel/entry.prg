@@ -63,7 +63,7 @@ local entry, button, check, pos
     hbox:=gtkhboxNew(FALSE, 0)
     vbox:add(hbox)
                                   
-    check:=gtkcheckbuttonNew("Editable")
+    check:=gtkcheckbuttonNew_with_label("Editable")
     hbox:pack_start(check,TRUE,TRUE,0)
     check:signal_connect("toggled",{|w|cb_toggle_editable(w,entry)})
     check:set_active(TRUE)

@@ -4,21 +4,22 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "gtk javitgatas" #2008.12.15
+git-commit --all -m "tutor qsort" #2008.12.23
 
-#git-commit --all -m "szalkezeles javitva" #2008.12.10
-#git-commit --all -m "Windows terminal FreeConsole" #2008.12.10
-#git-commit --all -m "GTK warnings" #2008.12.10
-#git-commit --all -m "delete -> DELTHRDATA" #2008.12.10
-#git-commit --all -m "closeonexec/sethandleinheritflag egysegesites" #2008.12.10
-#git-commit --all -m "SIGABRT kezeles" #2008.12.10
-#git-commit --all -m "ccc portok frissites" #2008.12.10
-#git-commit --all -m "unix-ncurses terminál" #2008.11.12
-#git-commit --all -m "telepitokeszlet frissites" #2008.11.05
-#git-commit --all -m "tovabbi gcc 4.3.2 warningok (flex)" #2008.11.05
-#git-commit --all -m "clean-all.b javitva" #2008.11.04
-#git-commit --all -m "gcc 4.3.2 warningok elnyomva" #2008.11.04
-#git-commit --all -m "qsort demó" #2008.11.04
-#git-commit --all -m "terminal expose event" #2008.10.21
-#git-commit --all -m "savex time korrekcio" #2008.09.17
-#git-commit --all -m "postfix comment"
+# "gtk javitgatas" #2008.12.15
+# "szalkezeles javitva" #2008.12.10
+# "Windows terminal FreeConsole" #2008.12.10
+# "GTK warnings" #2008.12.10
+# "delete -> DELTHRDATA" #2008.12.10
+# "closeonexec/sethandleinheritflag egysegesites" #2008.12.10
+# "SIGABRT kezeles" #2008.12.10
+# "ccc portok frissites" #2008.12.10
+# "unix-ncurses terminál" #2008.11.12
+# "telepitokeszlet frissites" #2008.11.05
+# "tovabbi gcc 4.3.2 warningok (flex)" #2008.11.05
+# "clean-all.b javitva" #2008.11.04
+# "gcc 4.3.2 warningok elnyomva" #2008.11.04
+# "qsort demó" #2008.11.04
+# "terminal expose event" #2008.10.21
+# "savex time korrekcio" #2008.09.17
+# "postfix comment"

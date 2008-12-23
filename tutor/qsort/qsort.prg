@@ -19,22 +19,21 @@
  */
 
 //quicksort algoritmus
-//kb. 2x lassabb, mint a könyvtári asort
 
 ****************************************************************************
 function main()
 
-local a:=array(100000),n
-
-    set printer to qsort
-    set printer on
-    set console off
+local a:=array(1000),n
 
     for n:=1 to len(a)
         a[n]:=random()
     next
 
     qsort(a) //növekvő
+
+    set printer to sorted
+    set printer on
+    set console off
 
     for n:=1 to len(a)
         ? a[n]
@@ -55,15 +54,7 @@ static function qsplit(a,p,r,blk)
 
 local i:=p-1,j,k,x,tmp
 
-//#define RANDOMIZE
-#ifdef  RANDOMIZE
-    k:=p+random()%(r-p+1)  //véletlenszám p..r között
-    x:=a[k]
-    a[k]:=a[r]
-    a[r]:=x
-#else
     x:=a[r]  //őrszem
-#endif
 
     for j:=p to r-1
         if( blk::eval(a[j],x) )

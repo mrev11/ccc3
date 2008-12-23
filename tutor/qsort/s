@@ -1,3 +1,3 @@
 #!/bin/bash
 time xqsort.exe $1
-#diff qsort qsort1 | tail
+#diff sorted sorted1 | tail

@@ -19,33 +19,67 @@
  */
 
 //optimalizált quicksort algoritmus
-//tapasztalat szerint nem gyorsabb az elvi implementációnál,
-//viszont mindenképpen előny, hogy nincs benne rekurzió
+//
+//1) rekurzió helyett stack
+//   a stackre először a nagyobbik, utána a kisebbik rész kerül,
+//   így mindig először a kisebbik rész lesz rendezve,
+//   ami biztosítja, hogy a stack nem nő log(n)-nél nagyobbra
+//
+//2) a rövid részhalmazokat isort rendezi
+//
+//3) az őrszem 
+//      egy 3 elemű részhalmaz mediánja
+//      véletlenszerűen választott elem
+//
+//4) az összehasonlitás váltakozó irányban történik
+//   az egyező elemek okozta lassulás elkerülésére
+
+
+//megjegyzések:
+//
+// a könyvtári asort a libc-beli qsort-on alapul
+//  mindig oda-vissza kiértékeli az összehasonlító blokkot
+//  ennek ellenére gyorsabb az itteni implementációknál 
+//  különösen gyorsabb eleve rendezett halmazokon
+//
+// a könyvtári asort-tal nem működik a libgc
+//  mert az objektum-referenciák swapját byteonként végzi(!)
+//  mert a referenciákat a kollektor által nem kezelt memóriába teszi
+//  viszont az itteni xqsort gc friendly
 
 ****************************************************************************
 function main(arg)
 
 local a:=array(5000),n
-
-    set printer to qsort
-    set printer on
-    set console off
+local cmpcnt:=0
+local blk:={|x,y|++cmpcnt,x>y}
 
     for n:=1 to len(a)
-        a[n]:=random()
+        a[n]:=random()%20 //-> sok egyenlő elem
     next
 
     if( arg=="q" )
-        qsort(a,,,{|x,y|x>=y})  //csökkenő
-    end
+        qsort(a,,,blk) //simple qsort
+    end 
     
     if( arg=="x" )
-        xqsort(a,,,{|x,y|x>=y})  //csökkenő
+        xqsort(a,,,blk) //optimized qsort
     end
 
     if( arg=="i" )
-        isort(a,1,len(a),{|x,y|x>=y}) //csökkenő
+        isort(a,1,len(a),blk) //insertion
     end
+
+    if( arg=="a" )
+        asort(a,1,len(a),blk) // könyvtári
+    end
+
+    ? arg, cmpcnt
+    ?
+
+    set printer to sorted
+    set printer on
+    set console off
 
     for n:=1 to len(a)
         ? a[n]
@@ -53,13 +87,26 @@ local a:=array(5000),n
     ?
 
 ****************************************************************************
-function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //elvi implementáció
+//function asort(a,sta:=1,cnt:=len(a)-sta+1,blk) //Clipper asort
+//    xqsort(a,sta,sta+cnt-1,blk)
+//    return a
+
+//ez lehet a könyvtári asort függvény helyettesítése
+
+****************************************************************************
+static function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //elvi implementáció
+
 local q
+
     if( p<r )
         q:=qsplit(a,p,r,blk)
         qsort(a,p,q-1,blk)
         qsort(a,q+1,r,blk)
     end
+    
+    //itt szerencsétlen esetben stack overflow lehet
+    //pl. sok egyenlő elem esetén, ha nem alkalmazunk
+    //váltakozó irányt az összehasonlításban
     
 ****************************************************************************
 #define POP(x1,x2)        (--stkptr,x1:=stack1[stkptr],x2:=stack2[stkptr])
@@ -67,7 +114,7 @@ local q
 #define PUSH(a,x1,x2,b)   if(x1+3<x2,(stack1[stkptr]:=x1,stack2[stkptr]:=x2,++stkptr),isort(a,x1,x2,b))
 
 ****************************************************************************
-function xqsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //optimalizált implementáció
+static function xqsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //optimalizált implementáció
 
 local pow2:=1,log2:=0
 local stack1,stack2,stkptr:=1
@@ -85,7 +132,7 @@ local x1,x2,q,n
         POP(x1,x2)
 
         q:=qsplit(a,x1,x2,blk)
-        
+
         if( q-x1<x2-q )
             PUSH(a,q+1,x2,blk) //larger
             PUSH(a,x1,q-1,blk)
@@ -95,27 +142,83 @@ local x1,x2,q,n
         end
     end
 
+    //itt nem lehet stack overflow
+
 ****************************************************************************
 static function qsplit(a,p,r,blk)
 
-local i:=p-1,j,k,x,tmp
+local i:=p-1,j,x,tmp,flg:=.t.
 
 //#define RANDOMIZE
-#ifdef  RANDOMIZE
-    k:=p+random()%(r-p+1)  //véletlenszám p..r között
+#define MEDIAN
+
+
+#ifdef RANDOMIZE
+local k:=p+random()%(r-p+1)  //véletlenszám p..r között
     x:=a[k]
     a[k]:=a[r]
-    a[r]:=x
-#else
-    x:=a[r]  //őrszem
-#endif
+    a[r]:=x //őrszem
+#endif //RANDOMIZE 
+
+
+#ifdef MEDIAN
+local q,xp,xq,xr
+
+#define SWAP(k)  x:=a[k];a[k]:=a[r];a[r]:=x //őrszem
+
+    q:=int((p+r)/2)
+    xp:=a[p]
+    xq:=a[q]
+    xr:=a[r]
+    if( eval(blk,xp,xr) )
+        if( eval(blk,xq,xp) )
+            SWAP(p)
+        elseif( eval(blk,xr,xq) )
+            //SWAP(r)
+            x:=a[r]  //őrszem
+        else
+            SWAP(q)
+        end
+    else
+        if( eval(blk,xq,xr) )
+            //SWAP(r)
+            x:=a[r]  //őrszem
+        elseif( eval(blk,xp,xq) )
+            SWAP(p)
+        else
+            SWAP(q)
+        end
+    end
+#endif //MEDIAN
+
+
+#ifndef RANDOMIZE
+#ifndef MEDIAN
+    x:=a[r]  //őrszem (alapeset)
+#endif 
+#endif 
 
     for j:=p to r-1
-        if( blk::eval(a[j],x) )
-            i++
-            tmp:=a[i]
-            a[i]:=a[j]
-            a[j]:=tmp
+
+        if(flg)
+            //váltakozó irányú összehasonlítás
+            //az egyenlő elemek okozta lassulás ellen
+        
+            if( blk::eval(a[j],x) )
+                i++
+                tmp:=a[i]
+                a[i]:=a[j]
+                a[j]:=tmp
+            end
+            flg:=.f.
+        else
+            if( !blk::eval(x,a[j]) )
+                i++
+                tmp:=a[i]
+                a[i]:=a[j]
+                a[j]:=tmp
+            end
+            flg:=.t.
         end
 
         // tfh <=-re rendezünk, akkor        

@@ -353,10 +353,12 @@ local listener,wcon,fdlog
             wcon:=webconNew(listener[n])
             thread_mutex_unlock(mutspw)
 
-            thread_mutex_lock(mutex)
-            ++threadcount
-            thread_mutex_unlock(mutex)
-            thread_create_detach(srvblk,wcon) 
+            if( wcon!=NIL ) //FreeBSD-n néha NIL
+                thread_mutex_lock(mutex)
+                ++threadcount
+                thread_mutex_unlock(mutex)
+                thread_create_detach(srvblk,wcon) 
+            end
         next
     end
 

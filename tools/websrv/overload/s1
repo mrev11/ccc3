@@ -1,4 +1,21 @@
 #!/bin/bash
 
-wget -m  --no-check-certificate  https://localhost:4433  #--delete-after
-#wget -m                          http://localhost:8080   --delete-after
+
+wget -m  \
+    --no-check-certificate \
+    http://mkl:8080
+
+
+
+
+#   http://mkl:8080
+
+
+
+
+
+
+    #--private-key=demo-key.pem \
+    #--certificate=demo-cert.pem \
+    #--delete-after \
+

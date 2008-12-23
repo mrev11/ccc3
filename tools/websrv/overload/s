@@ -1,3 +1,4 @@
 #!/bin/bash
-#overload.exe 'http://localhost:8080' 8
-overload.exe 'https://localhost:4433' 8
+
+
+overload.exe  https://mkl:4433  8    | tee log

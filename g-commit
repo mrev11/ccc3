@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "tutor qsort" #2008.12.23
+git-commit --all -m "websrv 2.4.05" #2008.12.23
 
+# "tutor qsort" #2008.12.23
 # "gtk javitgatas" #2008.12.15
 # "szalkezeles javitva" #2008.12.10
 # "Windows terminal FreeConsole" #2008.12.10

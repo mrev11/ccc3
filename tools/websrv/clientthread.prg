@@ -25,31 +25,55 @@
 *****************************************************************************
 function client_thread(wcon)
 
-local err,thrcnt:=0
+local err
+
+    begin
+
+#ifdef HTTPS_SUPPORT
+        if( wcon:secure )
+            wcon:socket:=sslconAccept(sslcontext(),wcon:socket)
+        end
+#endif //HTTPS_SUPPORT
+
+        do_client_thread(wcon)
+
+#ifdef HTTPS_SUPPORT
+    recover err <sslerror>
+        #ifdef DEBUG1
+            ? "SSLERROR:", err:description, date(), time(), wcon:peer
+        #endif
+#endif //HTTPS_SUPPORT
+
+/*
+    recover err
+        set alternate to websrv-error additive
+        set alternate on
+        ? "-------------------------------"
+        ? date(),time()
+        ? "-------------------------------"
+        ? err
+        set alternate off
+        set alternate to
+*/
+    finally
+        client_close(wcon)
+    end
+
+*****************************************************************************
+static function do_client_thread(wcon)
+
+local thrcnt:=0
 local request,workdir
 local dirlst,page,repl,env,wd
 local fd,size,buffer,nbyte
 
-    #ifdef HTTPS_SUPPORT
-    if( wcon:secure )
-        begin
-            wcon:socket:=sslconAccept(sslcontext(),wcon:socket)
-        recover err <sslerror>
-            #ifdef DEBUG1
-                ? "SSLERROR:", err:description, date(), time(), wcon:peer
-            #endif
-            client_close(wcon)
-        end
-    end
-    #endif //HTTPS_SUPPORT
-    
     while( thrcnt<=maxthread()/2 .and. NIL!=(request:=httprequestNew(wcon)) )
 
         thread_mutex_lock(mutex_mutex())
         thrcnt:=threadcount()
         thread_mutex_unlock(mutex_mutex())
         #ifdef DEBUG1
-            ? "REQ:",str(thrcnt,2),date(),time(),wcon:peer,request:hostport,request:line1
+            ? "REQ*",str(thrcnt,2),date(),time(),wcon:peer,request:hostport,request:line1
         #endif
 
         if( virtualhost() )
@@ -145,12 +169,6 @@ local fd,size,buffer,nbyte
         end
     end
 
-    #ifdef _UNIX_
-        while(0<waitpid(,,1));end //zombiek, 1==WNOHANG
-    #endif
-
-    client_close(wcon)
-
 *****************************************************************************
 static function client_close(wcon)
     wcon:close
@@ -161,6 +179,11 @@ static function client_close(wcon)
     #ifdef DEBUG1
         ?? "!"
     #endif
+
+    #ifdef _UNIX_
+        while(0<waitpid(,,1));end //zombiek, 1==WNOHANG
+    #endif
+
     thread_exit()
 
 *****************************************************************************

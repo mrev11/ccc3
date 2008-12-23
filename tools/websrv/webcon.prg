@@ -55,12 +55,17 @@ class webcon(object)
 
 ******************************************************************************
 static function webcon.initialize(this,listener)
+local e
     this:(object)initialize
     this:listener:=listener
     this:secure:=listener:secure
-    this:socket:=listener:accept
-    this:inherit(.f.)
-    return this
+    begin
+        this:socket:=listener:accept
+        this:inherit(.f.)
+        return this
+    recover e <socketerror>
+    end
+    return NIL
 
 ******************************************************************************
 static function webcon.fd(this)

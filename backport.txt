@@ -2,6 +2,8 @@
 Az alábbi (CCC3 környezetben fejlesztett) programokra
 CCC2 környezetben is szükség van:
 
+    ccctools/prg2ppo
+
     jt
     tools/regex
     tools/socket

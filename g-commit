@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "websrv 2.4.05" #2008.12.23
+git-commit --all -m "tex" #2009.01.12
 
 # "tutor qsort" #2008.12.23
 # "gtk javitgatas" #2008.12.15

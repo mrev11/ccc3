@@ -22,38 +22,131 @@
 // és a hashitemek {key,value} alakját használja ki
 // az asszociatív tömbindexelés: hash["key"]:=value.
 
+//2009.01.19 
+//  plusz metódusok, bejárók
+//  rugalmasan kezeli a törléseket
 
-#define  HASHTAB_INITSIZE        256
-#define  HASHTAB_INCREMENT(x)    len(x)*2
-#define  HASHTAB_MAXFILL(x)      len(x)*0.66
+#define  HASHTAB_INITSIZE       256
+#define  HASHTAB_INCFACTOR      2
+#define  HASHTAB_MAXFILL        0.66666
 
 ****************************************************************************
 class simplehash(object)
-    method initialize
-    attrib itemcount
-    attrib hasharray
-    method hashitem
-    method set
-    method get
+
+    attrib  hasharray     //  elemei: NIL/{key,value}, törölt <-> value==NIL
+    attrib  initsize      //  kezdeti méret
+    attrib  itemcount     //  elemek száma töröltekkel együtt
+    attrib  iteridx       //  bejáró index (kezdetben NIL)
+
+    method  initialize
+    method  hashitem      //  helyet keres/csinál egy elemnek
+    method  rehash        //  átméretez, kihagyja a value==NIL-eket
+    method  valuecount    //  elemek száma töröltek nélkül (value!=NIL-ek)
+    method  clone         //  shallow copy, kihagyja a value==NIL elemeket
+    method  clear         //  kiürít
+
+    method  set           //  h:set(k,v)  <=>  h[k]:=v
+    method  get           //  h:get(k)    <=>  h[k]
+    method  remove        //  h:remove(k) <=>  h[k]:=NIL
+
+    method  first         //  bejárja a value!=NIL elemeket
+    method  firstkey
+    method  firstvalue
+    method  next          //  -> {key,value}
+    method  nextkey       //  -> key
+    method  nextvalue     //  -> value
+
 
 ****************************************************************************
-static function simplehash.initialize(this,size) 
+static function simplehash.initialize(this,data) 
+local item
+
     this:(object)initialize
+
     this:itemcount:=0
-    this:hasharray:=array(if(size==NIL,HASHTAB_INITSIZE,size))
+
+    if( valtype(data)=="U" )
+        this:initsize:=HASHTAB_INITSIZE 
+        this:hasharray:=array(this:initsize)
+
+    elseif( valtype(data)=="N" )
+        this:initsize:=max(data,4)
+        this:hasharray:=array(this:initsize)
+
+    else //copy constructor
+        this:initsize:=data:initsize
+        this:hasharray:=array(this:initsize)
+
+        item:=data:first
+        while( NIL!=item )
+            this:set(item[1],item[2])
+            item:=data:next
+        end
+    end
     return this
 
 ****************************************************************************
 static function simplehash.hashitem(this,key)
 local x:=hash_index(this:hasharray,key)
     if( this:hasharray[x]==NIL )
-        if( ++this:itemcount>HASHTAB_MAXFILL(this:hasharray) )
-            this:hasharray:=hash_rebuild(this:hasharray,HASHTAB_INCREMENT(this:hasharray))
+        if( this:itemcount>=HASHTAB_MAXFILL*len(this:hasharray) )
+            this:rehash
             x:=hash_index(this:hasharray,key)
         end
         this:hasharray[x]:={key,NIL}
+        this:itemcount++
     end
     return this:hasharray[x]
+
+****************************************************************************
+static function simplehash.rehash(this)
+
+local ha:=this:hasharray,len:=len(ha),n
+local ha1,len1:=len,vc:=this:valuecount,x
+
+    if( len1<HASHTAB_INCFACTOR*vc )
+        len1*=HASHTAB_INCFACTOR
+    else
+        while( len1/HASHTAB_INCFACTOR>=this:initsize .and.;
+               len1/HASHTAB_INCFACTOR>=HASHTAB_INCFACTOR*vc )
+            len1/=HASHTAB_INCFACTOR
+        end
+    end
+
+    ha1:=array(len1)
+    for n:=1 to len
+        if( ha[n]!=NIL .and. ha[n][2]!=NIL ) //nem törölt
+            x:=hash_index(ha1,ha[n][1])
+            ha1[x]:=ha[n]
+        end
+    next
+
+    //? ">>", str(this:itemcount/len,8,3), this:itemcount, vc, len, len1
+
+    this:itemcount:=vc
+    this:hasharray:=ha1
+    this:iteridx:=NIL
+    
+
+****************************************************************************
+static function simplehash.valuecount(this)
+local ha:=this:hasharray,len:=len(ha),n,vc:=0
+    for n:=1 to len
+        if( ha[n]!=NIL .and. ha[n][2]!=NIL ) //nem törölt
+            vc++ 
+        end
+    next
+    return vc
+
+****************************************************************************
+static function simplehash.clone(this)
+    return simplehashNew(this)
+
+****************************************************************************
+static function simplehash.clear(this)
+    this:iteridx:=NIL
+    this:itemcount:=0
+    this:hasharray:=array(this:initsize)
 
 ****************************************************************************
 static function simplehash.set(this,key,value)
@@ -70,21 +163,51 @@ local value //NIL
     return value
 
 ****************************************************************************
-//hash algoritmus
+static function simplehash.remove(this,key)
+local x:=hash_index(this:hasharray,key)
+local value //NIL
+    if( this:hasharray[x]!=NIL )
+        value:=this:hasharray[x][2]
+        this:hasharray[x][2]:=NIL
+    end
+    return value
+
 ****************************************************************************
-static function hash_rebuild(hash,len)
-local hash1:=array(len),n,x
-    for n:=1 to len(hash)
-        if( hash[n]!=NIL .and. hash[n][2]!=NIL )  //kihagyja a törölteket
-            x:=hash_index(hash1,hash[n][1])
-            hash1[x]:=hash[n]
+static function simplehash.first(this)
+    this:iteridx:=0
+    return this:next
+
+****************************************************************************
+static function simplehash.firstkey(this)
+    this:iteridx:=0
+    return this:nextkey
+
+****************************************************************************
+static function simplehash.firstvalue(this)
+    this:iteridx:=0
+    return this:nextvalue
+
+****************************************************************************
+static function simplehash.next(this)
+local i
+    while( (i:=++this:iteridx)<=len(this:hasharray) )
+        if( this:hasharray[i]!=NIL .and. this:hasharray[i][2]!=NIL )
+            return this:hasharray[i]  // {key,value}
         end
-    next
-    return hash1
+    end
 
-// A hash tábla egy array: {item1,item2,...},
-// ahol item==NIL, vagy item=={key,value} alakú.
+****************************************************************************
+static function simplehash.nextkey(this)
+local x:=this:next
+    return if(x==NIL,NIL,x[1])
 
+****************************************************************************
+static function simplehash.nextvalue(this)
+local x:=this:next
+    return if(x==NIL,NIL,x[2])
+
+****************************************************************************
+//hash algoritmus
 ****************************************************************************
 static function hash_index(hash,key)
 
@@ -101,8 +224,9 @@ local hidx:=hcode%hlen
             hidx:=0
         end
     end
-    return NIL
 
+// A hash tábla egy array: {item1,item2,...},
+// ahol item==NIL, vagy item=={key,value} alakú.
 
 // Keresés a hash táblában:
 //    

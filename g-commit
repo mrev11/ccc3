@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "prg2ppo 1.4.0.rc1" #2009.01.20
+git-commit --all -m "bovitett simplehash osztaly" #2009.01.20
 
+# "bovitett simplehash osztaly" #2009.01.20
 # "prg2ppo 1.4.0.rc1" #2009.01.12
 # "tex" #2009.01.12
 # "tutor qsort" #2008.12.23

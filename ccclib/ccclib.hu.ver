@@ -1,3 +1,6 @@
+2009.01.20
+  bovitett simplehash osztaly
+
 2008.12.10
   szalkezeles javitva 
     VALUE::operator=(VALUE v)-ban es add()-ban.

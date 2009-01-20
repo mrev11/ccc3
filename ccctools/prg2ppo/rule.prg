@@ -36,7 +36,7 @@ local n
 
     //szabályok baloldala case insensitive
     for n:=1 to len(r[1])
-        if( valtype(r[1][n])=="X" )
+        if( valtype(r[1][n])$"CX" )
             r[1][n]:=upper(r[1][n])
         end
     next

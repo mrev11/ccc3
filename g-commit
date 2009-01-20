@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "tex" #2009.01.12
+git-commit --all -m "prg2ppo 1.4.0.rc1" #2009.01.20
 
+# "prg2ppo 1.4.0.rc1" #2009.01.12
+# "tex" #2009.01.12
 # "tutor qsort" #2008.12.23
 # "gtk javitgatas" #2008.12.15
 # "szalkezeles javitva" #2008.12.10

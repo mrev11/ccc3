@@ -63,7 +63,7 @@ static unsigned  bufidx;
 %}
 
 %option noyywrap
-%option prefix="tri"
+%option prefix="trinp"
 
 
 hex        [0-9a-fA-F]
@@ -117,7 +117,7 @@ marklog    "<."{symbol}".>"
 {wspace}        if(arrow) store_text(" ");
 "["             store_flag(1);
 "]"             store_flag(0);
-{arrow}         array(item_count);item_count=0;arrow=1;
+{arrow}         {if(arrow){store_text(yytext);}else{array(item_count);item_count=0;arrow=1;}}
 \n              store_text(yytext);
 {glue}          store_text("##"); 
 {sep}           store_text("##"); 

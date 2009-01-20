@@ -1,2 +1,3 @@
 -d.
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+#BUILD_EXE=/home/vermes/temp/prepro

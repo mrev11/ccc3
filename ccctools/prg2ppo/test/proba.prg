@@ -63,31 +63,31 @@ PROBA1 defined
     SETNIL(LISTA)
 
 //----------------------------------------------------------------------
-#define ADD(a,b)   a+b     //t?bbsz?r?s define
+#define ADD(a,b)   a+b     //tobbszoros define
 #define XX(a,b)    a,b
     ADD(XX(a,b))
 
 //----------------------------------------------------------------------
-#define TRACE(x)  ? #x, x  //a r?gi Clipper is tudja!
+#define TRACE(x)  ? #x, x  //a regi Clipper is tudja!
     TRACE(a+b+c)
  
 //----------------------------------------------------------------------
 #translate EXCL ! <x> => (<x>)
     EXCL ! x y z
 
-#define CONCAT1(x,y) ! x/**/y               //egym?s mell? ?r?s 
+#define CONCAT1(x,y) ! x/**/y               //egymas melle iras 
     CONCAT1(x,6)                            //! x6
     EXCL CONCAT1(x,6)                       //(x)6
  
-#translate CONCAT2(<x>,<y>) => ! <x><y>     //egym?s mell? ?r?s  
+#translate CONCAT2(<x>,<y>) => ! <x><y>     //egymas melle iras  
     CONCAT2(x,6)                            //! x6 
     EXCL CONCAT2(x,6)                       //(x)6
  
-#define GLUE1(x,y) ! x ## y                 //val?di ragaszt?s
+#define GLUE1(x,y) ! x ## y                 //valodi ragasztas
     GLUE1(x,6)                              //! x6  
     EXCL GLUE1(x,6)                         //(x6) 
 
-#translate GLUE2(<x>,<y>) => ! <x> ## <y>   //val?di ragaszt?s
+#translate GLUE2(<x>,<y>) => ! <x> ## <y>   //valodi ragasztas
     GLUE2(x,6)                              //! x6  
     EXCL GLUE2(x,6)                         //(x6) 
     EXCL GLUE2("x",'y')                     //("x"+'y')

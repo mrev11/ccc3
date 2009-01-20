@@ -1,2 +1,2 @@
 #!/bin/bash
-cp $CCCDIR/usr/bin/linux/save/prg2ppo.exe $CCCDIR/usr/bin/linux/prg2ppo.exe
+cp $CCCDIR/usr/bin/linux/prg2ppo0.exe $CCCDIR/usr/bin/linux/prg2ppo.exe

@@ -18,7 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-%x st_incl st_ifdef st_ifndef st_ifeq st_ifneq st_waitelse st_waitendif st_comment st_raw
+%x st_incl st_ifdef st_ifndef st_ifeq st_ifneq 
+%x st_waitelse st_waitendif st_comment 
+%x st_raw st_waitraw
 
 %{
 
@@ -53,31 +55,43 @@
 //Ugyancsak el kell dobni a filék végén lévő esetleges 
 //eof (chr(26)) karaktert, amit a UNIX nem fogad el.
 
-#define ALTERNATIVE_INPUT2
- 
-
-#ifdef ALTERNATIVE_INPUT1
-#define YY_INPUT(buf,result,max_size) \
-{\
-    int c=getc(yyin);\
-    if( c!=EOF )\
-    {\
-        result=1;\
-        buf[0]=c;\
-    }\
-    else\
-    {\
-        result=YY_NULL;\
-    }\
-}
-#endif
 
 
-#ifdef ALTERNATIVE_INPUT2
 #define YY_INPUT(buf,result,max_size)  yy_input(buf,&result,max_size)
+
+static char *reproctxt=0;
+static int   reproclen=0;
+static int   reprocidx=0;
  
 int yy_input(char *buf, int *result, int max_size)
 {
+    if( reproctxt!=0 )
+    {
+        int c=26;
+
+        while( (reprocidx<reproclen) && ((c=='\r') || (c==26))  )
+        {
+            c=reproctxt[reprocidx++];
+        }
+        if( reprocidx>=reproclen )
+        {
+            free(reproctxt);
+            reproctxt=0;
+            reproclen=0;
+            reprocidx=0;
+        }
+        if( c=='\n' )
+        {
+            --yylineno;
+        }
+        if( (c!='\r') && (c!=26) )
+        {
+            buf[0]=c;
+            *result=1;
+            return *result;
+        }
+    }
+
     int c=getc(yyin);
     
     while( (c=='\r') || (c==26) )
@@ -98,12 +112,10 @@ int yy_input(char *buf, int *result, int max_size)
     //printf("%c",c);
     return *result;
 }
-#endif
  
 
  
 #define YY_NEVER_INTERACTIVE     1
-//#define YY_ALWAYS_INTERACTIVE    1 
 
 #define MAX_INCLUDE_DEPTH       10
 #define MAX_LINE_SIZE         8192
@@ -149,18 +161,45 @@ extern void _clp_searchdefine(int argno);
 extern void _clp_searchinclude(int argno);
 
 
+static int ifdef_level=0;
+static void assert_else()
+{
+    if( ifdef_level<=0 )
+        error("#else directive without #if");
+}
+static void assert_endif()
+{
+    if( ifdef_level<0 )
+        error("#endif directive without #if");
+}
+static void assert_closed()
+{
+    if( ifdef_level!=0 )
+        error("Unclosed #if directive at EOF");
+}
+
+static void ifdef_push()
+{
+    ++ifdef_level;
+}
+static void ifdef_pop()
+{
+    --ifdef_level;
+    assert_endif();
+}
+
+
+
 static char *raw_symbol=0;
 
 static void raw_beg(int state)
 {
     raw_symbol=strdup(yytext);
-    outstr(yytext);
     statepush(state);
 }
 
 static void raw_end()
 {
-    outstr(yytext);
     if( 0==strcmp(raw_symbol,yytext) )
     {
         free(raw_symbol);
@@ -177,36 +216,47 @@ SYMBOL         [_a-zA-Z][_a-zA-Z0-9]*
 STRING         (\"[^"\n]*\"|\'[^'\n]*\')
 COMMENT1       "//".*\n 
 COMMENTML      "/*" 
+
+COM            "/*"([^*\n]|"*"[^/\n])*"*/"
+COMX           "/*"([^*\n]|"*"[^/\n])*(\n|"*"\n)
+EOL            ([ \t]|{COM})*(\n|{COMMENT1})
+EOLX           ([ \t]|{COM})*{COMX}
+
  
 %%
 
-"<<"{SYMBOL}">>"             raw_beg(st_raw);
+"<<"{SYMBOL}">>"             {outstr(yytext);raw_beg(st_raw);}
 <st_raw>{
-"<<"{SYMBOL}">>"             raw_end();
+"<<"{SYMBOL}">>"             {outstr(yytext);raw_end();}
 "\n"                         outchar(*yytext);
 .                            outchar(*yytext);
 }
+<st_waitraw>{
+"<<"{SYMBOL}">>"             {raw_end();}
+"\n"
+.
+}
+
 
 ^[ \t]*#include              statepush(st_incl);
-^[ \t]*#ifdef                statepush(st_ifdef);
-^[ \t]*#ifndef               statepush(st_ifndef);
-^[ \t]*#ifeq                 statepush(st_ifeq);
-^[ \t]*#ifneq                statepush(st_ifneq);
-^[ \t]*#else                 statepush(st_waitendif);
-^[ \t]*#endif   
-^[ \t]*#define               outtype=1;    
-^[ \t]*#xtranslate           outtype=2;
-^[ \t]*#translate            outtype=2;
-^[ \t]*#xcommand             outtype=3;
-^[ \t]*#command              outtype=3;
-^[ \t]*#undef                outtype=4;
+^[ \t]*#ifdef                {ifdef_push();statepush(st_ifdef);}
+^[ \t]*#ifndef               {ifdef_push();statepush(st_ifndef);}
+^[ \t]*#ifeq                 {ifdef_push();statepush(st_ifeq);}
+^[ \t]*#ifneq                {ifdef_push();statepush(st_ifneq);}
+^[ \t]*#else                 {assert_else();statepush(st_waitendif);}
+^[ \t]*#endif                {ifdef_pop();}
+
+^[ \t]*#define               {if(outtype==0){outtype=1;}else{outstr(yytext);}}
+^[ \t]*#xtranslate           {if(outtype==0){outtype=2;}else{outstr(yytext);}}
+^[ \t]*#translate            {if(outtype==0){outtype=2;}else{outstr(yytext);}}
+^[ \t]*#xcommand             {if(outtype==0){outtype=3;}else{outstr(yytext);}}
+^[ \t]*#command              {if(outtype==0){outtype=3;}else{outstr(yytext);}}
+^[ \t]*#undef                {if(outtype==0){outtype=4;}else{outstr(yytext);}}
  
 
 ^[ \t]*"*".*\n               //comment
-;[ \t]*\n                    //folytató
-;[ \t]*"//".*\n              //folytató //comment
-;[ \t]*"/*".*"*/".*\n        //folytató /*comment*/
-;                            {outtrim();outchar(';');} //szétválasztó
+;{EOL}                       //folytató //comment
+;                            {outtrim();if(reproctxt==0){outchar(';');}else{printbuf();}} //szétválasztó
 {COMMENT1}                   printbuf(); //egysoros 
 {COMMENTML}                  statepush(st_comment); //többsoros 
 {STRING}                     outstr(yytext);
@@ -222,64 +272,68 @@ COMMENTML      "/*"
  
  
 <st_incl>{
-{STRING}.*\n                 procinclude();
-\n                           error("No filespec for #include"); 
-.                       
+[ \t]
+{STRING}{EOL}                {procinclude();}
+{STRING}{EOLX}               {procinclude();statepush(st_comment);}
+(.|\n)                       error("Syntax ERROR in #include directive"); 
 }        
 
-
 <st_ifdef>{
-{SYMBOL}.*\n                 procifdef(0); 
-\n                           error("No symbol for #ifdef");
-.                       
+[ \t]
+{SYMBOL}{EOL}                {procifdef(0);}
+{SYMBOL}{EOLX}               {procifdef(0);statepush(st_comment);}
+(.|\n)                       error("Syntax ERROR in #ifdef directive");
 }
 
-
 <st_ifndef>{
-{SYMBOL}.*\n                 procifdef(1); 
-\n                           error("No symbol for #ifndef");
-.                       
+[ \t]
+{SYMBOL}{EOL}                {procifdef(1);}
+{SYMBOL}{EOLX}               {procifdef(1);statepush(st_comment);}
+(.|\n)                       error("Syntax ERROR in #ifndef directive");
 }
 
 <st_ifeq>{
-{SYMBOL}[ \t]+{SYMBOL}.*\n   procifdef(2); 
-\n                           error("No symbols for #ifeq");
-.                       
+[ \t]
+{SYMBOL}[ \t]+{SYMBOL}{EOL}  {procifdef(2);}
+{SYMBOL}[ \t]+{SYMBOL}{EOLX} {procifdef(2);statepush(st_comment);}
+(.|\n)                       error("Syntax ERROR in #ifeq directive");
 }
 
 
 <st_ifneq>{
-{SYMBOL}[ \t]+{SYMBOL}.*\n   procifdef(3); 
-\n                           error("No symbols for #ifneq");
-.                       
+[ \t]
+{SYMBOL}[ \t]+{SYMBOL}{EOL}  {procifdef(3);}
+{SYMBOL}[ \t]+{SYMBOL}{EOLX} {procifdef(3);statepush(st_comment);}
+(.|\n)                       error("Syntax ERROR in #ifneq directive");
 }
  
  
 <st_waitelse>{
-^[ \t]*#else                 statepop();
+^[ \t]*#else                 {assert_else();statepop();}
 }
 
 
 <st_waitelse,st_waitendif>{
-^[ \t]*#endif                statepop();
-^[ \t]*#ifdef.*\n            statepush(st_waitendif);
-^[ \t]*#ifndef.*\n           statepush(st_waitendif);
-^[ \t]*#ifeq.*\n             statepush(st_waitendif);
-^[ \t]*#ifneq.*\n            statepush(st_waitendif);
+^[ \t]*#endif                {ifdef_pop();statepop();}
+^[ \t]*#ifdef                {ifdef_push();statepush(st_waitendif);}
+^[ \t]*#ifndef               {ifdef_push();statepush(st_waitendif);}
+^[ \t]*#ifeq                 {ifdef_push();statepush(st_waitendif);}
+^[ \t]*#ifneq                {ifdef_push();statepush(st_waitendif);}
 {STRING}
 {COMMENT1}
 {COMMENTML}                  statepush(st_comment); //többsoros   
+"<<"{SYMBOL}">>"             {raw_beg(st_waitraw);}
 \n
 .
 }
- 
+
 
 <<EOF>> {
 
     if( YYSTATE==st_raw )
     {
         char buf[256];
-        sprintf(buf,"Open raw string %s at EOF",raw_symbol);
+        sprintf(buf,"Unclosed long string %s at EOF",raw_symbol);
         error(buf);
     }
 
@@ -289,6 +343,7 @@ COMMENTML      "/*"
      
     if( --include_stack_ptr<0 )
     {
+        assert_closed();
         outtype=0;
         outchar('\n');
         printbuf();
@@ -355,7 +410,7 @@ static void outbuf_resize(int x)
 //---------------------------------------------------------------------------
 static void outchar(int c)
 {
-    if( outbuf_idx==0 )
+    if( outbuf_idx==0 && reproctxt==0 )
     {
         outlineno=yylineno;
     }
@@ -378,7 +433,7 @@ static void outtrim()
 //---------------------------------------------------------------------------
 static void outstr(const char *s)
 {
-    if( outbuf_idx==0 )
+    if( outbuf_idx==0 && reproctxt==0 )
     {
         outlineno=yylineno;
     }
@@ -432,11 +487,13 @@ static void printbuf()
         }
         else if( outtype==2 ) //#xtranslate direktíva 
         {
-            _clp_translate(1);
+            logical(0);
+            _clp_translate(2);
         }
         else if( outtype==3 ) //#xcommand direktíva 
         {
-            _clp_translate(1);
+            logical(1);
+            _clp_translate(2);
         }
         else if( outtype==4 ) //#undef direktíva 
         {
@@ -512,6 +569,16 @@ static void statepop()
 }
 
 //---------------------------------------------------------------------------
+void _clp_reproctxt(int argno)
+{
+    CCC_PROLOG("reproctxt",1);
+    int cursize=reproclen;
+    reproctxt=(char*)realloc(reproctxt,reproclen=cursize+_parblen(1));
+    memmove(reproctxt+cursize,_parb(1),_parblen(1));
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
 static void procinclude()
 {
     if( include_stack_ptr>=MAX_INCLUDE_DEPTH )
@@ -520,7 +587,7 @@ static void procinclude()
     }
 
     int i=1;while( yytext[i]!='"')i++;yytext[i]=0;
-    stringnb(yytext+1); //CCC-STACK++
+    stringnb(yytext+1);                                     //CCC-STACK++
     _clp_searchinclude(1);
     _clp_convertfspec2nativeformat(1);
     char *fspec=BINARYPTR(TOP());
@@ -542,7 +609,7 @@ static void procinclude()
     yy_switch_to_buffer(yy_create_buffer(yyin,YY_BUF_SIZE));
 
     statepop();
-    pop();                                                    //CCC-STACK--
+    pop();                                                  //CCC-STACK--
 
     number(1);
     stringnb(getfilename());

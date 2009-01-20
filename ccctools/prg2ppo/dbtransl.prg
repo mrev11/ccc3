@@ -19,13 +19,13 @@
  */
 
 *****************************************************************************
-function translate(line)
+function translate(line,cmdflg)
 
 local rule:=token_translate(alltrim(line)) 
 local ls:=rule[1], rs:=rule[2]
 local n,i,name,info
 
-    //? line
+    //? line, cmdflg
     //? ls
     //? rs
 
@@ -64,6 +64,10 @@ local n,i,name,info
     next
 
     rule_tr_add(rule)
+    
+    if(cmdflg)
+        aadd(rule[1],NIL) //NIL jelzi a #command-okat
+    end
  
     //? "left :",rule[1]
     //? "right:",rule[2]

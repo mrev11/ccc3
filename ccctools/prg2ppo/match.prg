@@ -40,7 +40,7 @@ local cxdef:=cx_df_get()
 local cxtrn:=cx_tr_get()
 local lendef:=len(rdef),repdef
 local lentrn:=len(rtrn),reptrn
-local token, n, reprocess:=.t.
+local token, n, reprocess:=.t., beglin
 
     //a #define és #xtranslate szabályok külön tárolódnak
     //a #define-okat előlről, a #xtranslate-okat hátulról kezdjük
@@ -90,6 +90,8 @@ local token, n, reprocess:=.t.
 
         //2. xtranslate  (case insensitive)
  
+        beglin:=.t. //soreleje
+
         while( (token:=inp:next)!=NIL )
         
             token:=upper(token)
@@ -98,7 +100,8 @@ local token, n, reprocess:=.t.
 
             if( 0<(n:=rule_search(rtrn,token,cxtrn)) )
                 while( n<=lentrn .and. token==rtrn[n][1][1] ) 
-                    if( match1(rtrn[n],inp,.f.) )
+                    if( (beglin .or. atail(rtrn[n][1])!=NIL) .and.; //soreleje vagy nem #command
+                        match1(rtrn[n],inp,.f.) )
                         reptrn:=.t.  //#xtranslate helyettesítés történt 
                         reprocess:=.t.
                         exit 
@@ -112,7 +115,16 @@ local token, n, reprocess:=.t.
             //inp soronkövetkező elemét átrakjuk out-ba
 
             if( !reptrn )
-                out:add:=inp:get
+                token:=inp:get
+                out:add:=token
+
+                if( empty(token) )
+                    //nem változtat
+                elseif( token==a";" )
+                    beglin:=.t.
+                else
+                    beglin:=.f.
+                end
             end
         end
         
@@ -139,22 +151,10 @@ static function match1(rule,inp,casesensitive)
 
 local match_level:=0                    //opcionális clause-ok mélysége 
 
-
-#ifdef PRG2PPO_ONLY
-//a Clipper ezt az inicializálást nem tudja lefordítani 
-
 static match_count:=array(32)           //mcount az illesztés kezdetekor 
 static match_state:=array(32)           //.t./.f. illeszkedik-e az aktuális clause
 static match_leftb:=array(32)           //[ pozíciója 
 
-#else
-
-local  match_count:=array(32)           //mcount az illesztés kezdetekor 
-local  match_state:=array(32)           //.t./.f. illeszkedik-e az aktuális clause
-local  match_leftb:=array(32)           //[ pozíciója 
-
-#endif
- 
 local n,mcount:=0                       //szabály indexe, illesztett tokenek száma
 local leftside:=rule[1]                 //szabály baloldala
 local rightside:=rule[2]                //szabály jobboldala 
@@ -213,7 +213,7 @@ local result,rlist
         end
         
 
-        if( type=="X" ) //literal
+        if( type$"CX" ) //literal
         
             //az itteni összehasonlítás
             //#define-ok esetén case sensitive,
@@ -269,6 +269,15 @@ local result,rlist
                 next
                 mcount+=k
                 matchlist[n]:=x
+            end
+
+        elseif( type=="U" ) //#command vége
+            if( token_input==NIL )
+                //sorvég, OK
+            elseif( token_input==a";" )
+                //sorvég, OK
+            else
+                MATCHFAILED 
             end
         end
 
@@ -334,7 +343,7 @@ local glue:=.f.
             loop
         end
 
-        if( valtype(x)=="X" )
+        if( valtype(x)$"CX" )
             aadd(rlist,x)
 
             if( x==a"##" )
@@ -405,26 +414,75 @@ local n,gl:=a"##",qq:=a'"'+a"'"
 
 *****************************************************************************
 function match_regular(toklist,n,nexttok)
+//
+//local lentok:=len(toklist)
+//local j
+//    ? "-REG--------------------------------"+chr(10)
+//    for j:=n to lentok
+//        ?? a"["+toklist[j]+a"] "
+//    next 
+//    ?? "<",nexttok,">"
+//    ? "------------------------------------"
+//
     return xtxlegal(toklist,n,nexttok)
 
 
 *****************************************************************************
-function match_list(toklist,n)
+function match_list(toklist,n,nexttok)
 
-local k:=0, lentok:=len(toklist)
+local k:=0,i,lentok:=len(toklist)
 
-    while( n+k<=lentok )
+//local j
+//    ? "-LST--------------------------------"+chr(10)
+//    for j:=n to lentok
+//        ?? a"["+toklist[j]+a"] "
+//    next 
+//    ?? "<",nexttok,">"
+//    ? "------------------------------------"
 
-        k+=xtxlegal(toklist,n+k) 
- 
-        if( n+k>lentok .or. !toklist[n+k]==a',' )
-            exit
-        else
-            k++
+
+    if( !valtype(nexttok)$"CX" )
+
+        while( n+k<=lentok )
+            if( toklist[n+k]==a"," )
+                //? "INC-1",1
+                k+=1
+            elseif( 0<(i:=xtxlegal(toklist,n+k,a",")) )
+                //? "INC-2",i+1
+                k+=i+1
+            elseif( 0<(i:=xtxlegal(toklist,n+k)) )
+                //? "RET-3",k+i
+                return k+i
+            else
+                //? "RET-4",k
+                return k
+            end
         end
-    end
-    return k
+        //? "RET-5",k
+        return k
 
+    else
+        while( n+k<=lentok )
+            if( toklist[n+k]==nexttok )
+                //? "RET-1",k
+                return k
+            elseif( toklist[n+k]==a"," )
+                //? "INC-2",1
+                k+=1
+            elseif( 0<(i:=xtxlegal(toklist,n+k,nexttok)) )
+                //? "RET-3",k+i
+                return k+i
+            elseif( 0<(i:=xtxlegal(toklist,n+k,a",")) )
+                //? "INC-4",i+1 
+                k+=i+1
+            else
+                //? "RET-5",0
+                return 0
+            end
+        end
+        //? "RET-6",0
+        return 0
+    end
 
 *****************************************************************************
 function match_restricted(tokinp,tokrul)
@@ -472,7 +530,8 @@ local i
 *****************************************************************************
 function result_dumbstr(rlist,match)
 local x:=if(match==NIL,a"",outline(match))
-    aadd(rlist,a'"'+x+a'"')
+local q:=if(a'"'$x,a"'",a'"')
+    aadd(rlist,q+x+q)
     return NIL
 
 

@@ -26,6 +26,12 @@
 #include <malloc.h>
 #include <cccapi.h>
 
+#ifdef _CCC2_
+#define TYPE_BINARY     TYPE_STRING
+#define binptr          chrptr
+#define ISBINARY        ISSTRING
+#endif
+
 #include <xtxlegal.h>
 
 struct POS 

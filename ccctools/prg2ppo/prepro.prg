@@ -25,25 +25,29 @@ function nextline(lineno,fname)
     else
         ?? endofline()
     end
-    return NIL    
-
 
 *****************************************************************************
 function prepro(line)
 
 local indent:=leftspace(line)
-local toklist:=tokenize(alltrim(line))
+local toklst:=tokenize(alltrim(line))
+local result:=match(toklst)
+local output:=outline(result)
+local trnpos:=find_translate(output)
 
-    if( indent>0 )
-        ?? endofline()+space(indent)
-    else
-        ?? endofline()
-    end 
+    if( 0<trnpos )
 
-    ?? outline(match(toklist))
-
-    return NIL    
-
+        if(1<trnpos)
+            ?? endofline()+space(indent)
+            ?? left(output,trnpos-1) //#xtranslate előtti rész
+        end
     
+        reproctxt( substr(output,trnpos)+bin(10) ) //visszadugni
+
+    else
+
+        ?? endofline()+space(indent)
+        ?? output
+    end
+
 *****************************************************************************
- 

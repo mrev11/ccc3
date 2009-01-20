@@ -1,7 +1,138 @@
 
-#define VERSION  "1.3.08"
+#define VERSION  "1.4.0.rc1"
 
 #ifdef _VERZIO_TORTENET_
+
+2009.01.10 -- 1.4.0.rc1
+  backportolva CCC2-re
+  A különbségek megtalálhatók az #if... _CCC2_ helyeken,
+  plusz valtype(.)=="X" helyén valtype(.)$"CX"
+
+
+2009.01.11 -- 1.3.11x
+  #command és #translate megkülönböztetése
+  
+  A Clipperben 4 különböző eset van:
+  #command    : csak egész utasításra illeszkedik, 4 karakterre csonkít 
+  #xcommand   : csak egész utasításra illeszkedik, nem csonkít 
+  #translate  : utasításon belül is illeszkedik, 4 karakterre csonkít 
+  #xtranslate : utasításon belül is illeszkedik, nem csonkít 
+
+  A prg2ppo korábban mind a négy esetet #xtranslate-ként kezelte.
+
+  Most a #command/#xcommand csak egész utasításra illeszkedik
+  (értelmezés: utasítás == ';' és '\n' karakterekkel tagolt sor),
+  Továbbra is #command==#xcommand és #translate==#xtranslate,
+  azaz sosem csonkítjuk a neveket 4 betűre.
+
+  Példa:
+    ? x,y,z ; ? a,b,c ;
+         ? ; ?
+  Eredmény:
+    QOut( x,y,z ); ? a,b,c ?; QOut(  )
+
+  A 2. és 3. '?' nem illeszkedik, mert a folytatósor miatt
+  (logikailag) azonos sorban vannak, a #command pedig csak
+  teljes sorra illeszkedne. Az 1. és 4. '?' illeszkedik, mert 
+  a szétválasztó ';' miatt logikailag külön sorban vannak. 
+  
+  A #command szabályok baloldalának végére egy plusz NIL-t teszünk, 
+  ami csakis a bemeneti sor végéhez illeszkedik. A #command-okat
+  erről a NIL-ről lehet felismerni. Az ilyen szabályokat csak a sorok 
+  elejétől próbáljuk illeszteni.
+
+  A baloldal végére rakott NIL kikommentezésével (dbtranls.prg 69)
+  vissza lehet állítani a korábbi állapotot.
+
+
+2009.01.10 -- 1.3.10x
+  #xtranslate szabály a szabályok jobboldalán
+
+  #xtranslate ...  => ... \#xtranslate ... => ...
+  Mindig az _első_ '=>' nyílig tart a baloldal.
+  A Clippertől eltérően nem kötelező a \#translate-et escapelni.
+  Korlát: egyszeres lehet az egymásba ágyazás (a korábbi 0 helyett).
+  
+  Példa:
+  
+    #command OBJECT <o> =>;
+        LOCAL <o>;;
+        \#xtranslate  <o>:\<m> => methcall(<o>,\<"m">)
+  
+    OBJECT obj
+
+    obj:hopp
+  
+  Eredmény (CCC-vel és Clipperrel ugyanaz):
+  
+    LOCAL obj;
+    
+    methcall(obj,"hopp")
+
+
+2009.01.07 -- 1.3.09x
+
+  Hibajavítások:
+
+  1) #if-#endif kikerüli a <<SYM>>...<<SYM>> stringeket
+
+    Korábban
+        #ifdef DEFINED
+        x:=<<SYM>>
+        ...
+        #else
+        ...
+        <<SYM>>
+        #endif
+    tévesen megtalálta az #else-t, pedig az a string része.
+  
+  2) #include,#ifdef,... sorokban szigorúbb szintaktikai ellenőrzés
+
+    Korábban szemetek lehettek a sorban, pl.
+        #if ,,, DEFINED ,,,
+    a vesszőket (szemét) csendben kihagyta, most hibát jelez.
+
+  3) Az #include/#ifdef sorok végén csak komment lehet.
+
+    Korábban elfogyasztotta az egész sort, pl.
+        #ifdef  DEFINED  /* nem látszott a komment kezdete,
+        ezért ez itt komment helyett szintaktikai hiba
+        */
+        #endif
+    Most a kommentet elfogadja, minden más hibát okoz.    
+
+  4) Ellenőrizve az #ifdef,#else,#endif-ek zártsága
+
+    Korábban pl. egy lógó #endif-en szó nélkül átment,
+    most hibát jelez. 
+
+  5) match_list() átírva (illeszkedés javítva)
+
+    #xtranslate LISTX   <x,...>  TO ARRAY     =>    {<x>}
+    Bemenet
+        LISTX   a,b , , ,            TO ARRAY
+        LISTX   ,                    TO ARRAY
+    Eredmény korábban
+        LISTX a,b,,,TO ARRAY        //hibás
+        LISTX,TO ARRAY              //hibás
+    Eredmény most
+        {a,b,,,}                    //helyes
+        {,}                         //helyes
+
+    #xtranslate LISTOX [<x,...>] TO ARRAY     =>    {<x>}
+    Bemenet
+        LISTOX  a,b , , ,            TO ARRAY
+        LISTOX  ,                    TO ARRAY
+        LISTOX                       TO ARRAY
+    Eredmény korábban
+        LISTOX a,b,,,TO ARRAY       //hibás
+        LISTOX,TO ARRAY             //hibás
+        LISTOX TO ARRAY             //hibás
+    Eredmény most
+        {a,b,,,}                    //helyes
+        {,}                         //helyes
+        {}                          //helyes
+
 
 2008.10.27 -- 1.3.08
   gcc 4.3.2 warningok javitva

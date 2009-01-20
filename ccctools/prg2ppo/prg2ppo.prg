@@ -37,7 +37,6 @@ static s_line:=.t.
 function main()
 
 local opt:=aclone(argv()),o,n
-local inctxt, inctmp
     
     for n:=1 to len(opt)
     
@@ -130,24 +129,21 @@ local inctxt, inctmp
     set console off
 
     inidefine()
-    inctxt:=iniinclude()
+    iniinclude()
     
     //iniinclude elindít(hat)ja processing-et,
     //ami kilépéskor minden filét lezár,
     //ezért a set printer to utasításnak
     //iniinclude után kell lennie
 
+#ifdef _CCC2_
+    set extra to (s_output) raw
+#else    
     set extra to (s_output)
+#endif
     set extra on
     
-    if( inctxt!=NIL )
-        inctmp:=fpath(s_input)+fbase(s_input)+".tmp"
-        memowrit(inctmp,inctxt)
-        processing(inctmp) 
-        ferase(inctmp) 
-    else
-        processing(s_input) 
-    end
+    processing(s_input) 
     
     set extra to
     set extra off
@@ -158,9 +154,10 @@ local inctxt, inctmp
     ?
 
     //? rule_df_get()
-    //? rule_tr_get()
-    
-    return NIL
+    //opt:=rule_tr_get()
+    //for n:=1 to len(opt)
+    //    ? opt[n]
+    //next
  
 
 *****************************************************************************   
@@ -181,8 +178,6 @@ local par:=memoread(parfil),n,p
             aadd(opt,p)
         end 
     next
-    return NIL
-
 
 *****************************************************************************   
 static function readpar_l(parfil,opt)
@@ -201,16 +196,12 @@ local par:=memoread(parfil),n,p
             aadd(opt,p)
         end 
     next
-    return NIL
- 
  
 ****************************************************************************
 static function logo()
 local x:=@"CCC Preprocessor "+VERSION+" Copyright (C) ComFirm Bt."
     outstd(x+endofline())
     //outerr(x+endofline())
-    return NIL
-
  
 ****************************************************************************
 function linepragma()
@@ -223,7 +214,6 @@ function includepath()
 ****************************************************************************
 function sourcepath()
     return fpath(s_input)
- 
 
 ****************************************************************************
 static function inidefine()
@@ -235,32 +225,9 @@ local deflist,n
     for n:=1 to len(deflist)
         define(str2bin(strtran(deflist[n],"="," ")))
     next
-    return NIL
-
 
 ****************************************************************************
-//#define INCLUDE_TMP 
-
-#ifdef INCLUDE_TMP
-
-//ez egy workaround arra a hibára,
-//ami nem tette lehetővé processing többszöri hívását
-//most már nincs rá szükség (de működik)
-//úgy tűnik ezzel kevesebb baj van,
-//a lex program gyakran összezavarodik olyankor
-//amikor többször meg kell nyitni a filéket
-
 static function iniinclude(t)
-local includes:=split(s_files,";"),n
-local inctxt:=""
-
-    for n:=1 to len(includes)
-        inctxt+="#include "+'"'+searchinclude(includes[n])+'"'+endofline()
-    next
-    inctxt+="#include "+'"'+s_input+'"'+endofline()
-    return inctxt 
-
-#else
 
 //a processing-et tartalmazó lex program
 //számos static változót tartalmaz, 
@@ -269,18 +236,12 @@ local inctxt:=""
 //megfelelően inicializálódnak,
 //korábban ezzel baj volt
 
-static function iniinclude(t)
-
 local includes:=split(s_files,";"),n,incfil
 
     for n:=1 to len(includes)
         incfil:=searchinclude(includes[n]) 
         processing( incfil )
     next
-    return NIL
-
-#endif    
- 
  
 ****************************************************************************
 function searchinclude(incfil)
@@ -304,7 +265,6 @@ local incdir:=split(includepath()+getenv("INCLUDE"),";"),n
         next
     end
     return incfil //notfound
-    
 
 ****************************************************************************
 

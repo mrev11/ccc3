@@ -2,6 +2,10 @@
 Az alábbi (CCC3 környezetben fejlesztett) programokra
 CCC2 környezetben is szükség van:
 
+    ccclib-ből    
+        class.prg
+        simplehash.prg
+
     ccctools/prg2ppo
 
     jt
@@ -11,8 +15,6 @@ CCC2 környezetben is szükség van:
     tools/websrv
     tools/xmlrpc
     tools/xmlrpc-framework
-    
-    class.prg
 
 Képtelenség a programokat két változatban is karban tartani,
 ezért a fenti programok CCC2-beli karbantartása megszűnt,

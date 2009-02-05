@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.04.05
+git-commit --all -m "x" #2009.04.05
 
 # "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.04.05
 # "sslcon_accept-ben timeout (default: 10 sec)" #2009.04.05

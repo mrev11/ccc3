@@ -1,4 +1,7 @@
 
+1.1.12 (2009.01.25)
+  Kezelve a jtconnect (new jterminal) hibaágai.
+
 1.1.11 (2008.05.20)
   jtslider kontroll.
   jtdialog magassága+=8 pixel 12 pontos font használatakor.

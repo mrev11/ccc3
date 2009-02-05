@@ -36,7 +36,7 @@ import java.net.*;
 public class jterminal extends Thread { 
 //===========================================================================
 
-public static final String JTVERSION = "1.1.11-UTF8 (2008.05.20)";
+public static final String JTVERSION = "1.1.12-UTF8 (2009.01.25)";
 public static final String JTCOPYRIGHT = JTVERSION+" ComFirm";
  
 public static final String AUTOCRE_LOWER = "created_automatically";
@@ -133,7 +133,22 @@ jterminal(String[] args) throws Exception
 //---------------------------------------------------------------------------
 jterminal(String host, int port, boolean ssl, String aut, String key, String psw) throws Exception  
 {
-    sck=new jtsocket(this,host,port,ssl,aut,key,psw);
+    try
+    {
+        sck=new jtsocket(this,host,port,ssl,aut,key,psw);
+        System.out.print(sck.toString());
+    }
+    catch( Exception e )
+    {
+        System.out.print(e.toString());
+    }
+
+    System.out.print(" {");
+    System.out.print(host);
+    System.out.print(":");
+    System.out.print(port);
+    System.out.print(ssl?":ssl":":plain");
+    System.out.println("}");
 }
  
 //---------------------------------------------------------------------------
@@ -147,10 +162,14 @@ public void run()
 
     try
     {
-        run1();
+        if( sck!=null )
+        {
+            run1();
+        }
     }
     catch( Exception e )
     {
+        System.out.println(e.toString());
     }
 
     synchronized( termlst )
@@ -173,7 +192,9 @@ public void run()
             }
         }
     }
-    return;
+
+    System.out.print("  end of thread ");
+    System.out.println(sck!=null?sck.toString():"null");
 }    
  
 //---------------------------------------------------------------------------

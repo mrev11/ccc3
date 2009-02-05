@@ -1,0 +1,28 @@
+<xstart>
+
+<item>
+    <name>Empty Demó 1</name>
+    <host>localhost</host>
+    <port>46001</port>
+    <workdir></workdir>
+    <command>empty.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Empty Demó 2</name>
+    <host>localhost</host>
+    <port>46002</port>
+    <workdir></workdir>
+    <command>empty.exe -jtsocket $(SOCKET) -jtssl</command>
+</item>
+
+<item>
+    <name>Empty Demó 3</name>
+    <host>localhost</host>
+    <port>46003</port>
+    <workdir></workdir>
+    <command>xempty.exe -jtsocket $(SOCKET)</command>
+</item>
+
+</xstart>
+ 

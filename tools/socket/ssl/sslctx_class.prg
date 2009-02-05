@@ -21,6 +21,8 @@
 ******************************************************************************
 class sslctx(object)
     attrib  handle
+    attrib  handshake_timeout
+
     method  initialize  
     method  free  
     method  use_certificate_file
@@ -55,6 +57,8 @@ local err
     //vagy meg kell adni a session_id_context-et
     //vagy ki kell kapcsolni a session cache-t
     this:set_session_id_context("SESSIONID"+alltrim(str(getpid())))
+
+    this:handshake_timeout:=10000  //10 sec
    
     return this
 

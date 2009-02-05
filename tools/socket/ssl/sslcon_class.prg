@@ -78,10 +78,14 @@
 function sslconAccept(ctx,sck) //objektumgyártó: plain socket -> ssl socket
 local scon,code,err
     scon:=sslconNew(ctx,sck)
-    code:=sslcon_accept(scon:ssl)
+    code:=sslcon_accept(scon:ssl,ctx:handshake_timeout)
     if( code!=1 )
-        scon:close
         err:=sslerrorNew("sslconAccept")
+        scon:close
+        if(code==-1000) //saját hibakód
+            err:description:="SSL_accept timeout"
+            err:subcode:=0
+        end
         break(err)
     end
     return scon
@@ -92,8 +96,8 @@ local scon,code,err
     scon:=sslconNew(ctx,sck)
     code:=sslcon_connect(scon:ssl)
     if( code!=1 )
-        scon:close
         err:=sslerrorNew("sslconConnect")
+        scon:close
         break(err)
     end
     return scon
@@ -149,10 +153,14 @@ local scon,fd,code,err
         break(err)
     end
     scon:=sslconNew(this:ctx,fd)
-    code:=sslcon_accept(scon:ssl)
+    code:=sslcon_accept(scon:ssl,this:ctx:handshake_timeout)
     if( code!=1 )
-        scon:close
         err:=sslerrorNew("sslcon.accept")
+        scon:close
+        if(code==-1000)//saját hibakód
+            err:description:="SSL_accept timeout"
+            err:subcode:=0
+        end
         break(err)
     end
     return scon //sslcon objektum
@@ -171,8 +179,8 @@ local code,err
     sslcon_set_fd(this:ssl,this:fd)
     code:=sslcon_connect(this:ssl)
     if( code!=1 )
-        this:close
         err:=sslerrorNew("sslcon.connect")
+        this:close
         break(err)
     end
     return code

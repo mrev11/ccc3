@@ -26,6 +26,31 @@
 #include <openssl/ssl.h>
 
 #include <cccapi.h>
+#include <sckcompat.h>
+#include <sckutil.h>
+
+//---------------------------------------------------------------------------
+static unsigned long milliseconds(void)
+{
+  #ifdef _UNIX_
+    struct tms buf;
+    return (unsigned long)times(&buf)*10;
+  #else
+    return GetTickCount();
+  #endif
+}
+
+static void sleep(int ms)
+{
+#ifdef UNIX
+    struct timeval t;
+    t.tv_sec=ms/1000;
+    t.tv_usec=(ms%1000)*1000;
+    select(0,0,0,0,&t);
+#else
+    Sleep(ms);
+#endif
+}
 
 //--------------------------------------------------------------------------
 void _clp_sslcon_new(int argno)
@@ -78,9 +103,118 @@ void _clp_sslcon_get_fd(int argno)
 //--------------------------------------------------------------------------
 void _clp_sslcon_accept(int argno)
 {
-    CCC_PROLOG("sslcon_accept",1);
+    CCC_PROLOG("sslcon_accept",2);
+
     SSL *ssl=(SSL*)_parp(1);
-    _retni(SSL_accept(ssl)); //retcode==1, ha rendben
+    int timeout=ISNIL(2)?1000000:_parni(2); //msec
+    
+    //A timeout a handshake-re vonatkozik,
+    //azaz a connect után ennyi idő van az SSL kapcsolat felépítésére.
+    //Ha az SSL_accept-et blokkoló socketre hívjuk meg, és a konnektáló 
+    //fél egyszerűen nem mond semmit, akkor a kommunikáció örökre beragad.
+   
+    int sckfd=SSL_get_fd(ssl);
+
+    //CCC-ben a socketek blokkolók
+    //most átállítjuk nonblockingra
+    socket_setoption(sckfd,SOCKOPT_NONBLOCKING,1);
+
+    unsigned long time0=milliseconds();
+        
+    while(1)
+    {
+        int retcode=SSL_accept(ssl);
+        
+        //printf("\nSSL_accept retcode=%d",retcode);fflush(0);
+
+        if( retcode!=-1 )
+        {
+            _retni(retcode);
+            break;
+        }
+        else
+        {
+            int errcode=SSL_get_error(ssl,retcode);
+
+            if( errcode==SSL_ERROR_WANT_READ )
+            {
+                //printf("\nSSL_ERROR_WANT_READ %d",timeout);fflush(0);
+
+                if( SSL_pending(ssl) )
+                {
+                    //van mit olvasni
+                }
+                else if( 0>=timeout )
+                {
+                    _retni(-1000); //saját hibakód: timeout
+                    break;
+                }
+                else
+                {
+                    fd_set fd_read;
+                    FD_ZERO(&fd_read);
+                    FD_SET(sckfd,&fd_read);
+
+                    fd_set fd_err;
+                    FD_ZERO(&fd_err);
+                    FD_SET(sckfd,&fd_err);
+ 
+                    struct timeval tv;
+                    tv.tv_sec=timeout/1000;
+                    tv.tv_usec=(timeout%1000)*1000;
+
+                    select(sckfd+1,&fd_read,NULL,&fd_err,&tv);
+                }
+            }
+            else if( errcode==SSL_ERROR_WANT_WRITE  )
+            {
+                //printf("\nSSL_ERROR_WANT_WRITE %d",timeout);fflush(0);
+
+                if( 0>=timeout )
+                {
+                    _retni(-1000); //saját hibakód: timeout
+                    break;
+                }
+                else
+                {
+                    fd_set fd_writ;
+                    FD_ZERO(&fd_writ);
+                    FD_SET(sckfd,&fd_writ);
+
+                    fd_set fd_err;
+                    FD_ZERO(&fd_err);
+                    FD_SET(sckfd,&fd_err);
+ 
+                    struct timeval tv;
+                    tv.tv_sec=timeout/1000;
+                    tv.tv_usec=(timeout%1000)*1000;
+
+                    select(sckfd+1,NULL,&fd_writ,&fd_err,&tv);
+                }
+            }
+            else
+            {
+                //char buf[128];
+                //ERR_error_string(ERR_peek_error(),buf);
+                //printf("\n%s",buf);
+
+                _retni(retcode);
+                break;
+            }
+        }
+
+        unsigned long time1=milliseconds();  
+        if( time1<time0 ) //túlcsordulás?
+        {
+            time0=time1; 
+        }
+        timeout-=(time1-time0);
+        time0=time1;
+    }
+
+    //visszaállítjuk blockingra
+    socket_setoption(sckfd,SOCKOPT_NONBLOCKING,0);
+
     CCC_EPILOG();
 }
 
@@ -100,17 +234,6 @@ void _clp_sslcon_clear(int argno)
     SSL *ssl=(SSL*)_parp(1);
     _retni(SSL_clear(ssl)); //retcode==1, ha rendben
     CCC_EPILOG();
-}
-
-//---------------------------------------------------------------------------
-static unsigned long milliseconds(void)
-{
-  #ifdef _UNIX_
-    struct tms buf;
-    return (unsigned long)times(&buf)*10;
-  #else
-    return GetTickCount();
-  #endif
 }
 
 //----------------------------------------------------------------------------
@@ -211,7 +334,12 @@ static int ssl_read(SSL *s, void*dest, int dlen, int wtime)
         firstread=0;
         if( wtime>=0 )
         {
-            wtimerest=wtime-(milliseconds()-time0);
+            unsigned long time1=milliseconds();
+            if( time1<time0 ) //túlcsordulás?
+            {
+                time0=time1;
+            }
+            wtimerest=wtime-(time1-time0);
         }
     }
 
@@ -312,3 +440,4 @@ void _clp_sslcon_shutdown(int argno)
 }
 
 //--------------------------------------------------------------------------
+

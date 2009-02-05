@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "bovitett simplehash osztaly" #2009.01.20
+git-commit --all -m "sslcon_accept-ben timeout (default: 10 sec)" #2009.04.05
 
+
+# "sslcon_accept-ben timeout (default: 10 sec)" #2009.04.05
 # "bovitett simplehash osztaly" #2009.01.20
 # "prg2ppo 1.4.0.rc1" #2009.01.12
 # "tex" #2009.01.12

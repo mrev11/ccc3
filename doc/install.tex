@@ -5,11 +5,32 @@
 
 \section{Újabb infó}
 
-Ez a dokumentáció a régebbi CCC2-ről szól.
-Az új CCC3 telepítéséről rövid dokumentáció található 
-\href{http://ccc.comfirm.hu/ccc3/download/olvass.html}{itt}.
-Néhány részletkérdés miatt azonban érdemes lehet ezt a régebbi
-dokumentációt is nézegetni.
+Ez a dokumentáció a régebbi CCC2-ről, 
+annak is egy régebbi állapotáról szól, azaz mára meglehetősen elavult.
+Néhány részletkérdés miatt azonban érdemes lehet a régi dokumentációt 
+is nézegetni, ezért van mégis megtartva.
+
+A gyakorlatban a CCC2-t úgyanúgy telepítjük, mint a 
+\href{http://ccc.comfirm.hu/ccc3/download/olvass.html}{CCC3-at},
+kivéve, hogy a leírtakat értelemszerűen CCC2-re alkalmazzuk:
+a directory és környezeti változó nevekben a 3-at 2-re cseréljük.
+
+Érdemes pár szóban összefoglalni a CCC2 és CCC3 viszonyát.
+A CCC2 fixen Latin-2 kódkészlettel működik. A CCC3 fő újdonsága
+ezzel szemben a Unicode/UTF-8 kódolás, valamint a (Unicode kódolású) 
+karakter stringek és tetszőleges tartalmú byte stringek megkülönböztetése.
+Mára a Unicode/UTF-8 kódolás általánossá vált, ezért új programot
+feltétlenül CCC3-ban érdemes elkezdeni. 
+
+A régi programok fenntartása érdekében azonban a CCC2 is fejlődik.
+Került bele egy kompatibilitási réteg, ami lehetővé teszi néhány
+CCC3-ban fejlesztett alkalmazás lefordítását. Ilyenek a jt, regex, 
+socket, sql2, websrv, xmlrpc. Így nem kell ezeket külön CCC2-ben is 
+karban tartani. A nyelv újabb elemei, mint a postfix függvényhívás, 
+string indexelés, asszociatív tömbök, stb.  gyorsan megszokhatók. 
+Rendkívül bosszantó volna, ha ezeket  nélkülözni kellene, 
+tehát backportolva vannak CCC2-re. 
+
 
 \section{CCC installáció gyorsan}
 

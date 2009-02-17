@@ -157,7 +157,8 @@ local err
         else
             err:=tdserrorNew("tds2dom")
             err:description:="invalid column option"
-            err:args:={entry}
+            err:args:={entry[n]}
+            //? entry
             break(err)
         end
     next
@@ -207,7 +208,7 @@ local err
         else
             err:=tdserrorNew("tds2dom")
             err:description:="invalid colref option"
-            err:args:={entry}
+            err:args:={entry[n]}
             break(err)
         end
     next

@@ -78,7 +78,9 @@ local p,s,n,i,c,arg,env,res,cmd,var
     
     for n:=1 to len(proctab)
         p:=proctab[n]
-        p:socket:=hdup(socket(),.f.,.t.)
+        //p:socket:=hdup(socket(),.f.,.t.) //nem öröklődik (XP-n rossz)
+        p:socket:=socket()
+        sethandleinheritflag(p:socket,.f.) //nem öröklődik (2009.02.17)
 
         #ifdef _UNIX_
             setsockopt(p:socket,"REUSEADDR",.t.)
@@ -296,3 +298,4 @@ static function xstartitem.initialize(this)
     return this
 
 ******************************************************************************
+

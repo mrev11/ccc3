@@ -4,10 +4,10 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "x" #2009.04.05
+git-commit --all -m "xstart: hdup -> sethandleinhertflag" #2009.02.17
 
-# "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.04.05
-# "sslcon_accept-ben timeout (default: 10 sec)" #2009.04.05
+# "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.02.05
+# "sslcon_accept-ben timeout (default: 10 sec)" #2009.02.05
 # "bovitett simplehash osztaly" #2009.01.20
 # "prg2ppo 1.4.0.rc1" #2009.01.12
 # "tex" #2009.01.12

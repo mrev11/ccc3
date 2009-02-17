@@ -15,6 +15,7 @@ CCC2 környezetben is szükség van:
     tools/websrv
     tools/xmlrpc
     tools/xmlrpc-framework
+    tools/xstart
 
 Képtelenség a programokat két változatban is karban tartani,
 ezért a fenti programok CCC2-beli karbantartása megszűnt,

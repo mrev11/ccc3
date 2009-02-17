@@ -1,6 +1,46 @@
 
 \begin{description}
 
+\item[2009.01.20]
+  Bővített simplehash osztály.\par
+
+\item[2009.01.10]
+  prg2ppo 1.4.0 
+    hibajavítások,
+    \verb!#command! és \verb!#translate! direktívák megkülönböztetése,
+    \verb!#xtranslate! szabály a szabályok jobb oldalán.\par
+%\begin{verbatim}
+%\end{verbatim}
+
+\item[2008.10.02]
+  gcc 4.3.2 warningok megszüntetve.\par
+
+\item[2008.09.04]
+   Postfix függvényhívás.
+\begin{verbatim}
+    ? x:="1"                          //1 (C)
+    ? x::=(val()+1)::str::alltrim     //2 (C)
+    ? x::=(val()+1)::str::alltrim     //3 (C)
+    ? x::=val+1                       //4 (N)
+\end{verbatim}
+
+\item[2008.08.20]
+  Argumentum változók default értéket kaphatnak.
+
+\begin{verbatim}
+    function hopp(a:=exp)
+\end{verbatim}
+
+  ugyanaz, mint  
+  
+\begin{verbatim}
+    function hopp(a)
+        if(a==NIL)
+            a:=exp
+        end
+\end{verbatim}
+
+
 \item[2008.05.23]
   gcc 4.3.0 warningok megszüntetve.\par
 

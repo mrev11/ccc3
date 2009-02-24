@@ -260,23 +260,8 @@ local e
 *******************************************************************************
 static function action_insert(this)
 local e,get,col,n
-    getdata(this) //data from gets to row
+    getdata(this,.t.) //data from gets to row
 
-/* 2008.03.31
-#ifdef NOT_DEFINED
-    //ez a nullokat is kiírja (ez is jó)
-    this:table:setdirty(this:row,.t.)
-#else
-    //ez csak a nemnull értékeket írja ki
-    for n:=1 to len(this:getlist)
-        col:=this:table:columnlist[n]
-        get:=this:getlist[n]
-        if( !empty(get:varget) )
-            col:setdirty(this:row,.t.)
-        end
-    next
-#endif    
-*/
     begin
         this:uncommitted+=this:table:insert(this:row)
     recover e <sqlerror>
@@ -360,7 +345,7 @@ static function action_ok(this)
     this:close
 
 *******************************************************************************
-static function getdata(this) //data from getlist to row
+static function getdata(this,insert) //data from getlist to row
 
 local col,colval,getval,n
 
@@ -379,7 +364,7 @@ local col,colval,getval,n
             getval:=alltrim(getval)
         end
 
-        if( !colval==getval )
+        if( insert==.t. .or. !colval==getval )
             this:rowchanged:=.t.
             if( col:type=="M" )
                 eval(col:block,this:row,str2bin(getval))

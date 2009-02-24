@@ -55,7 +55,7 @@ local xx,n
     set printer to log-binarydata
     set printer on
 
-    xx:=str2bin(dtoc(date()))
+    xx:=str2bin(dtoc(date1()))
     for n:=0 to 255
         xx+=bin(n)
     next

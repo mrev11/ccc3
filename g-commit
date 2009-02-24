@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "xstart: hdup -> sethandleinhertflag" #2009.02.17
+git-commit --all -m "sql2: where x in :1" #2009.02.24
 
+# "xstart: hdup -> sethandleinhertflag" #2009.02.17
 # "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.02.05
 # "sslcon_accept-ben timeout (default: 10 sec)" #2009.02.05
 # "bovitett simplehash osztaly" #2009.01.20

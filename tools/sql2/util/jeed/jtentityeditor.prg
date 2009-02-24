@@ -231,7 +231,7 @@ local bar,split,pnl,brw,but,sel,lab,n
 ******************************************************************************
 static function action_top(this)
 
-local brw:=this:var:brw    //jtbrowseentity objektum
+local brw:=this:var:brw   //jtbrowseentity objektum
 local table:=this:table   //tableentity objektum
 local select:=this:select //az aktuális select metódus neve
 local bv,n,e
@@ -242,7 +242,13 @@ local bv,n,e
         for n:=1 to len(this:bindget)
             if( this:bindget[n]!=NIL )
                 bv:=this:var:evalmethod(this:bindget[n]):varget
-                this:bindval[n]:=alltrim(bv)
+                bv:=alltrim(bv)
+                //q/d megoldás (a,b,c) alakú bind változókra
+                //sqlliteral ilyen alakra hozza az array-ket
+                if( left(bv,1)=="(" .and. right(bv,1)==")" )
+                    bv:=bv[2..len(bv)-1]::split
+                end
+                this:bindval[n]:=bv
             end
         next
 

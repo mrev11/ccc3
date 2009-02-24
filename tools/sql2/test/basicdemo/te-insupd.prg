@@ -33,7 +33,7 @@ local rowset,e1,e2
     tableentity:=proba.tableEntityNew(con)
 
     e1:=tableentity:instance                //új entity objektum (csak a programban)
-    e1:szamlaszam:="AAAABBBB-"+dtoc(date())
+    e1:szamlaszam:="AAAABBBB-"+dtoc(date1())
     e1:devnem:="USD"
     e1:nev:="Van, aki 'forrón' szereti"
     e1:egyenleg:=1000000.00
@@ -42,12 +42,12 @@ local rowset,e1,e2
     e1:megjegyzes:=a"öt szép szűzlány őrült írót nyúz"
 
     e2:=tableentity:instance
-    e2:szamlaszam:="CCCCDDDD-"+dtoc(date())
+    e2:szamlaszam:="CCCCDDDD-"+dtoc(date1())
     e2:devnem:="HUF"
     e2:nev:="hopp"
     e2:egyenleg:=1234567.89
     e2:tulmenflag:=.t.
-    e2:konyvkelt:=date()
+    e2:konyvkelt:=date1()
 
     e1:show                                 //kilistázza magát
     e2:show                                 //kilistázza magát

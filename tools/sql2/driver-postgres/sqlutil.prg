@@ -87,6 +87,8 @@ local t:=valtype(x)
         return sqlliteral_d(x)
     elseif( t=="L" )
         return sqlliteral_l(x)
+    elseif( t=="A" )
+        return sqlliteral_a(x)
     end
     return NIL
  
@@ -129,6 +131,16 @@ static function sqlliteral_l(x)
     Postgresben van boolean, melynek értékét a TRUE/FALSE literál jelöli.
 #endif
 
+static function sqlliteral_a(x)
+local a:="(",n
+    for n:=1 to len(x)
+        if(n>1)
+            a+=","
+        end
+        a+=sqlliteral(x[n])
+    next
+    a+=")"
+    return a
 
 ******************************************************************************
 function quotedname(x)

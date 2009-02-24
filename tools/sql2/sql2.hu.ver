@@ -1,3 +1,11 @@
+2009.02.19
+  sqlliteral kibővítve az array típusra:
+    {a,b,c} -> (a,b,c)
+  ahol a tömbelemek az elemi típusok konverziós szabályai szerint
+  konvertálódnak. Pl. az 
+    'x' in :1
+  feltételnél az :1 helyére behelyettesíthető egy array {'x','y','z'}.
+
 2008.03.31
   Koncepció váltás: Az insert azokat a mezőket küldi a szervernek,
   amikre az isnull .f.-et ad. Korábban azokat küldte, amikre isdirty

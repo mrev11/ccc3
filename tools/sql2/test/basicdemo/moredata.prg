@@ -33,9 +33,9 @@ local con:=sqlconnect()
     set printer on
     
 
-    con:sqlexec(moredata,{11,"a11",date()+1,.t.,1001})
-    con:sqlexec(moredata,{12,"a12",date()+2,.t.,1002})
-    con:sqlexec(moredata,{13,"a13",date()+3,.t.,1003})
+    con:sqlexec(moredata,{11,"a11",date1()+1,.t.,1001})
+    con:sqlexec(moredata,{12,"a12",date1()+2,.t.,1002})
+    con:sqlexec(moredata,{13,"a13",date1()+3,.t.,1003})
    
     con:sqlcommit
     con:sqldisconnect

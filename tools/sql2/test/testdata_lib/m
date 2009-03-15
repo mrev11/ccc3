@@ -1,14 +1,14 @@
 #!/bin/bash
 
-GENSCRIPT=bt2tds.exe
+#GENSCRIPT=bt2tds.exe
 #GENSCRIPT=bt2ted.exe
-#GENSCRIPT=echo
+GENSCRIPT=echo
 
 $GENSCRIPT ../testdata/a.bt  -n testdata.a  -t konto.a  -p id
 $GENSCRIPT ../testdata/b.bt  -n testdata.b  -t konto.b  -p id
 $GENSCRIPT ../testdata/c.bt  -n testdata.c  -t konto.c  -p name
 
-mkentitylib.exe testdata
+mkentitylib.exe --prgdir code_generated  testdata
 
-bapp_unix_.b -ltestdata_lib
+bapp_unix_.b  -dcode_generated  -ltestdata_lib
 

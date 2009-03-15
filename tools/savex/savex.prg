@@ -510,6 +510,7 @@ local lwork:=len(d)
 local dirWork:=rdir(d)
 local n,file,date,time,size
 local dbrw:=arrayNew()
+static x:="x"
 
     for n:=1 to len(dirWork)
 
@@ -518,7 +519,7 @@ local dbrw:=arrayNew()
         time:=dirWork[n][F_TIME]
         size:=dirWork[n][F_SIZE]
         
-        dbrw:add({file,"x",formDate(date,time),size})
+        dbrw:add({file,x,formDate(date,time),size})
     next
 
     return dbrw:resize

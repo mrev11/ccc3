@@ -61,23 +61,40 @@ local b, sig:={}
 
 *********************************************************************************************
 static function reload(b)
-local t, n
+local t, n, ps, line1, args:=argv()
 
     //run( "ps  >"+pmtemp() ); PIDPOS:=1
-    run( "ps -A  >"+pmtemp() ); PIDPOS:=1
+    //run( "ps -A  >"+pmtemp() ); PIDPOS:=1
     //run( "ps -jA >"+pmtemp() ); PIDPOS:=2
     //run( "ps -uA >"+pmtemp() ); PIDPOS:=2
+
+    if( empty(args) )
+        args:={"-A"}
+    end
+    ps:="ps "
+    for n:=1 to len(args)
+        ps+=args[n]+" "
+    next
+    run( ps+">"+pmtemp() )
 
     t:=memoread( pmtemp() )
     ferase( pmtemp() )
     t:=split(t,chr(10))
+        
+    line1:=t[1]
+    while("  "$line1)
+        line1::=strtran("  "," ")
+    end
+    line1::=split(" ")
+    PIDPOS:=ascan(line1,{|x|x=="PID"}) //signal küldéshez kell
+
 
     b:column[1]:heading:=t[1]
     for n:=2 to len(t)
         t[n-1]:={t[n]}
     next
     asize(t,len(t)-1)
-    asort(t,,,{|x,y|x[1]<y[1]})
+    asort(t,,,{|x,y| x[1]<y[1] })
 
     brwArray(b,t)     
     if( brwArrayPos(b)>len(t) )

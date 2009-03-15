@@ -18,85 +18,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef NOT_DEFINED //Változások
-
-2009.03.14
-  A generált prg-ket a --prgdir opcióban  megadott directoryba teszi.
-  Default az aktuális working directory.
-
-  Egyszerű array helyett hashtable-t használ a libdata-hoz. 
-#endif
-
-
 #include "directry.ch"
 
-static prgdir
-static prgmove
-static libname
-static genforced
-
 ******************************************************************************
-function main(*)
+function main( entitylib )
 
 local src,prg,n,p
 local srcname,prgname
-local move:=if(dirsep()=="/","mv","move")
-local args:={*}
+local force:=!empty(getenv("MKENTITYLIB_FORCE"))
 
-    genforced:=!empty(getenv("MKENTITYLIB_FORCE"))
-
-    for n:=1 to len(args)
-        if( args[n]=="--prgdir" )
-            prgdir:=args[++n]
-
-        elseif( args[n]=="--libname" )
-            libname:=args[++n]
-
-        elseif( args[n]=="--force" )
-            genforced:=.t.
-
-        elseif( args[n][1..2]=="--" )
-            ? "invalid option:",args[n]
-            ?
-            errorlevel(1)
-            quit
-
-        else
-            //compatibility
-            libname:=args[n]
-        end
-    next
     
-    if( prgdir==NIL )
-        prgdir:="."+dirsep()
-        prgmove:=.f.
-    elseif( !right(prgdir,1)$"/\"  )
-        prgdir+=dirsep()
-        dirmake(prgdir)
-        prgmove:=.t.
-    end
-
-   
     //1. lépés: tds
     
     src:=directory("*.tds")
-    prg:=directory(prgdir+"*.prg")
+    prg:=directory("*.prg")
  
     for n:=1 to len(src)
         srcname:=src[n][F_NAME] 
         prgname:=left(srcname,len(srcname)-4)+".prg"
         p:=ascan(prg,{|x|x[F_NAME]==prgname})
 
-        if( genforced .or. p<1 .or.;
+        if( force .or. p<1 .or.;
             dtos(src[n][F_DATE])+src[n][F_TIME] >;
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
             if( 0!=run("tds2prg.exe "+srcname) )
                 errorlevel(1)
                 quit
-            end
-            if( prgmove )
-                run(move+" "+prgname+" "+prgdir)
             end
         end
     next
@@ -105,14 +53,14 @@ local args:={*}
     //2. lépés: ted
     
     src:=directory("*.ted")
-    prg:=directory(prgdir+"*.prg")
+    prg:=directory("*.prg")
  
     for n:=1 to len(src)
         srcname:=src[n][F_NAME] 
         prgname:=left(srcname,len(srcname)-4)+".prg"
         p:=ascan(prg,{|x|x[F_NAME]==prgname})
 
-        if( genforced .or. p<1 .or.;
+        if( force .or. p<1 .or.;
             dtos(src[n][F_DATE])+src[n][F_TIME] >;
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
@@ -120,50 +68,49 @@ local args:={*}
                 errorlevel(1)
                 quit
             end
-            if( prgmove )
-                run(move+" "+prgname+" "+prgdir)
-            end
         end
     next
     
-    //Ha a libname argumentum meg van adva,
+    //Ha az entitylib argumentum meg van adva,
     //csinálunk egy listát, amiből név szerint 
     //kikereshetők az objektumok
 
-    if( libname!=NIL )
-        mkentitylib(libname)
+    if( entitylib!=NIL )
+        mkentitylib(entitylib)
     end
+    
+    return NIL
     
 
 ******************************************************************************
-static function mkentitylib(libname) 
+static function mkentitylib(entitylib) 
 
 local skel:=<<SKELETON>>
-static function entitylib._LIBNAME_.init()
-local libdata:=simplehashNew()_ENTITIES_
-    return libdata
-
-function entitylib._LIBNAME_(name,conn)
-static libdata:=entitylib._LIBNAME_.init(),blk
+function entitylib._NAME_(name,conn)
+static libdata:={_ENTITIES_}
+local x
     if( name==NIL )
-        return libdata //hashtable
+        return libdata
     elseif( conn==NIL )
-        return libdata[name] //codeblk
+        x:=ascan(libdata,{|e|e[1]==name})
+        if( x>0 )
+            return libdata[x][2]
+        end
     else
-        blk:=libdata[name]
-        if( blk!=NIL )
-            return eval(blk,conn) //tableentity
+        x:=ascan(libdata,{|e|e[1]==name})
+        if( x>0 )
+            return eval(libdata[x][2],conn)
         end
     end
+    return NIL
 <<SKELETON>>
 
 local src,n
 local srcname
 local entname
 local prgname 
-local entities:=""
 
-    src:=directory(prgdir+"*.prg")
+    src:=directory("*.prg")
     
     for n:=1 to len(src)
 
@@ -171,26 +118,28 @@ local entities:=""
         
         if( file(srcname+".ted") )
             entname:=readtedname(srcname+".ted")
+            skel:=strtran(skel,"_ENTITIES_",";"+crlf()+'{"'+entname+'",{|c|.'+entname+'.tableEntityNew(c)}},_ENTITIES_')
+
         elseif( file(srcname+".tds") )
             entname:=readtdsname(srcname+".tds")
+            skel:=strtran(skel,"_ENTITIES_",";"+crlf()+'{"'+entname+'",{|c|.'+entname+'.tableEntityNew(c)}},_ENTITIES_')
+
         else
-            entname:=NIL  //nem script
-        end
-        
-        if( entname!=NIL )
-            entities+=endofline()+"    libdata['"+entname+"']:="+'{|c|.'+entname+'.tableEntityNew(c)}'
+            //nem script
         end
     next
 
-    skel:=strtran(skel,"_LIBNAME_",libname)
-    skel:=strtran(skel,"_ENTITIES_",entities)
+    skel:=strtran(skel,"_NAME_",entitylib)
+    skel:=strtran(skel,",_ENTITIES_","")
     
-    prgname:="entitylib."+libname+".prg" 
+    prgname:="entitylib."+entitylib+".prg" 
     
-    if( !skel==memoread(prgdir+prgname) )
-        memowrit(prgdir+prgname,skel)
+    if( !skel==memoread(prgname) )
+        memowrit(prgname,skel)
     end
     
+    return NIL
+ 
 
 ******************************************************************************
 static function readtedname(fspec)

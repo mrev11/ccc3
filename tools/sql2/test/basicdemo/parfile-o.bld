@@ -1,5 +1,5 @@
 -d.
--dtds
+-dtds/code_generated
 -dconnect-ora
 
 -b../$$(testdata_lib)

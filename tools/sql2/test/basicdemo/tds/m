@@ -1,4 +1,3 @@
 #!/bin/bash
-rm *.prg
-mkentitylib.exe
+mkentitylib.exe --prgdir code_generated 
 

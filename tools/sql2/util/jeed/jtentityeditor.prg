@@ -246,7 +246,7 @@ local bv,n,e
                 //q/d megoldás (a,b,c) alakú bind változókra
                 //sqlliteral ilyen alakra hozza az array-ket
                 if( left(bv,1)=="(" .and. right(bv,1)==")" )
-                    bv:=bv[2..len(bv)-1]::split
+                    bv:=bv[2..len(bv)-1]::strtran(" ","")::split
                 end
                 this:bindval[n]:=bv
             end

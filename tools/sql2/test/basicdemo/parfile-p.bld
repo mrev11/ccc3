@@ -1,5 +1,5 @@
 -d.
--dtds
+-dtds/code_generated
 -dconnect-pg
 
 -b../$$(testdata_lib)

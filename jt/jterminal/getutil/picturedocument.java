@@ -41,7 +41,7 @@ private int wwhole=0;   // egeszek szama
 private int wfract=0;   // tizedesek szama
 private int decpos=0;   // tizedespont helye
  
-private boolean flagR=false;  //@R
+private boolean flagR=true;   //@R valtozott: mindig beallitva (2009.03.15)
 private boolean flagU=false;  //@!
 private boolean flagD=false;  //@D
 private boolean flagL=false;  //@L
@@ -80,7 +80,7 @@ public picturedocument(JTextField tf, String p)
 
     if( functionStr!=null )
     {
-        flagR=functionStr.indexOf('R')>=0; 
+      //flagR=functionStr.indexOf('R')>=0; //mindig beallitva (2009.03.15)
         flagU=functionStr.indexOf('!')>=0;
         flagD=functionStr.indexOf('D')>=0;
         flagL=functionStr.indexOf('L')>=0;

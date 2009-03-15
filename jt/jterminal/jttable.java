@@ -532,10 +532,19 @@ public void setValueAt(Object value, int row, int col)
     //Az uj erteket csak akkor taroljuk, 
     //ha az tartalmilag is valtozott,
     //es formailag megfelel a picture-nek.
+    
+    String type=((jtcolumn)header.elementAt(col)).type;
+    String vold=getValueAt(row,col).toString().trim();
+    String vnew=value.toString().trim();
 
-    if( getValueAt(row,col).toString().trim().equals(value.toString().trim()) )
+    if( vold.equals(vnew) )
     {
         //jterminal.out.println("nem valtozott a tartalom");
+    }
+    else if( type.equals("N") &&  
+             (Double.parseDouble(vold)==Double.parseDouble(vnew)) )
+    {
+        //jterminal.out.println("nem valtozott (type==N)");
     }
     else if( (getEditorComponent() instanceof picturefield) &&
                  !((picturefield)getEditorComponent()).verify() )
@@ -544,9 +553,9 @@ public void setValueAt(Object value, int row, int col)
     }
     else
     {
-        //jterminal.out.print("["+getValueAt(row,col).toString()+"]");
+        //jterminal.out.print("["+vold+"]");
         //jterminal.out.print("-->");
-        //jterminal.out.println("["+ value.toString() +"]");
+        //jterminal.out.println("["+vnew+"]");
 
         int i=0; 
         for( ; i<changelist.size(); i++ )
@@ -568,7 +577,7 @@ public void setValueAt(Object value, int row, int col)
         fireTableCellUpdated(row, col);
     }
 }
- 
+
 //--------------------------------------------------------------------------- 
 public String getColumnName(int col)
 { 

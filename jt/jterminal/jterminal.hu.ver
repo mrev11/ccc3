@@ -1,4 +1,15 @@
 
+1.1.13 (2009.03.15)
+  A picturedocumnet-ben mindig be van állítva az R flag.
+  Nincs értelme ui. az editált tartalmat template karakterekkel
+  kiegészítve visszaadni, ez mindig csak hibákat okozott,
+  amikor a pictureből ki volt felejtve az "@R ...".
+  
+  A cellaeditálásnál külön kell vizsgálni a számmezők változását,
+  ui. lehet, hogy a picture formázása miatt a string alak változik,
+  míg a számérték ugyanaz. Csak azt tekintjük változásnak,
+  ha a számérték is más (double-ra konvertálva).
+
 1.1.12 (2009.01.25)
   Kezelve a jtconnect (new jterminal) hibaágai.
 

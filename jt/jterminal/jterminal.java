@@ -36,7 +36,7 @@ import java.net.*;
 public class jterminal extends Thread { 
 //===========================================================================
 
-public static final String JTVERSION = "1.1.12-UTF8 (2009.01.25)";
+public static final String JTVERSION = "1.1.13-UTF8 (2009.03.15)";
 public static final String JTCOPYRIGHT = JTVERSION+" ComFirm";
  
 public static final String AUTOCRE_LOWER = "created_automatically";

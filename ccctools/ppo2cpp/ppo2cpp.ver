@@ -1,4 +1,79 @@
 
+2009.04.22 -- 5.0.12
+
+  (1) Forwardoló kódblokk
+  
+  Bevezetünk egy rövidített jelölést:
+
+  hagyományos jelölés                   rövidített jelölés 
+  {|x,p1,p2...|x:a:b:c(p1,p2...)}  <=>  {|forward|forward:a:b:c} 
+  
+  A jelölésben 'forward' kulcsszó, a blokkban szereplő kifejezés
+  egyetlen metódushívás lánc. Más szituációban a forward szónak nincs
+  kitüntetett szerepe. A {|forward|forward:a:b:c} egyébként mindig is
+  szintaktikailag helyes kifejezés volt (még a Clipper 5.2-ben is).
+  
+    eval( {|x|x:a:b:c},             p0,p1,p2)  //p1,p2 elvész
+    eval( {|forward|forward:a:b:c}, p0,p1,p1)  //p1,p2-t megkapja c
+  
+  A két blokk között az a különbség, hogy a második automatikusan
+  továbbadja a paramétereket az utolsó metódusnak (a forward kulcsszó 
+  használata miatt). Ha történetesen c-nek nincsenek paraméterei, 
+  akkor a két blokk egyenértékű.
+  
+  (2) Forwardolás class definíciókban
+
+  Eddig kétféle metódusdefiníció lehetett a class-ban, ez most kiegészült
+  egy harmadikkal
+
+    methdef = METHOD SYMBOL
+    methdef = METHOD SYMBOL expr
+    methdef = METHOD SYMBOL forw  // új
+ 
+  ahol
+
+    forw = : SYMBOL   
+    forw = forw : SYMBOL   
+
+  Példa:
+  
+    class adapter(object)  //ezt bővítjük
+      method  hopp
+    
+    class derived(object)  //bővítés beágyazással
+      attrib  adapter
+    //method  hopp    {|x,a,b,c...|x:adapter:hopp(a,b,c...)} //hagyományos
+    //method  hopp    {|forward|forward:adapter:hopp}  //rövidebb forma
+      method  hopp    :adapter:hopp //még rövidebb, erre megy ki a játék!
+
+      attrib  __data__  
+      method  datman:__data__  //data manipulátor (set-get) metódus
+
+  Tehát a hopp metódusnév után áll az  :adapter:hopp  alak, 
+  ami a metódushívás továbbítását jelenti a beágyazott objektumnak.
+  Valójában mindegy, hogy adapter attribútum vagy metódus,
+  a lényeg, hogy olyan objektumot adjon, aminek van hopp metódusa. 
+  A metódusnevet és a forwardolást akár egybe is írhatjuk:
+     
+      method  hopp:adapter:hopp //hopp forwardolva
+      
+  Ha a metódushívási lánc egyszeres, akkor a forwardolás lényegében
+  egy aliast hoz létre, ez használható pl. set-get metódusokhoz.
+
+  Az új metódus-forwardolás előnye, hogy nem kell tudni, 
+  hány  paramétert használ a kérdéses metódus.  A forwardolás 
+  optimalizálva van, a kódblokkoknak nincs külön függvényhívási 
+  szintje, nincs paraméter pakkolgatás.
+
+  (3) Korábban a
+
+    methdef = METHOD SYMBOL expr
+ 
+  metódusdefinícióban expr kötelezően kódblokk volt. Most minden 
+  kifejezés megengedett. Ha a kifejezés nem kódblokk, akkor (belsőleg) 
+  kiegészül az {||expr} kódblokkra.
+
+
 2008.10.02 -- 5.0.11
   gcc 4.3.2 warningok javitva
   

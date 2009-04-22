@@ -97,15 +97,24 @@ local dlg,pnl,txt,but
 
     pnl:additem(jtlabelNew(" "))
 
-    but:=pnl:additem(jtpushNew(1,1,2,12,"Escape"))
-    but:icon:="images/exit.gif"
-    but:actionblock:={||dlg:close}
+    but:=pnl:additem(jtpushNew(1,1,2,12,"Clear"))
+    but:icon:="icons/22/editdelete.png"
+    but:mnemonic:="C"
+    but:actionblock:={||clear(dlg)}
 
     pnl:additem(jtlabelNew(" "))
 
     but:=pnl:additem(jtpushNew(1,1,2,12,"Save"))
-    but:icon:="images/middle.gif"
+    but:icon:="icons/22/filesave.png"
+    but:mnemonic:="S"
     but:actionblock:={||save(dlg,oggfile)}
+
+    pnl:additem(jtlabelNew(" "))
+
+    but:=pnl:additem(jtpushNew(1,1,2,12,"Exit"))
+    but:icon:="icons/22/exit.png"
+    but:mnemonic:="X"
+    but:actionblock:={||dlg:close}
 
     pnl:additem(jtlabelNew(" "))
     
@@ -144,6 +153,21 @@ local tagnames:={"TITLE=","ARTIST=","ALBUM=","COMMENT=","DATE=",;
         next
     end
     return tag
+
+*****************************************************************************
+static function clear(dlg)
+local cmd,cho:=alert("Clear all entries",{"Cancel","Do clear"})
+    if( cho<=1 )
+        //cancel
+    elseif( cho==2 )
+        dlg:var:title:varput("")
+        dlg:var:artist:varput("")
+        dlg:var:album:varput("")
+        dlg:var:date:varput("")
+        dlg:var:comment:varput("")
+        dlg:var:title:setfocus
+    end
+
 
 *****************************************************************************
 static function save(dlg,oggfile)

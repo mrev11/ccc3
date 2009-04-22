@@ -393,7 +393,9 @@ static void blkcode(nodetab *t,int x)
     
     int blkarg=bargument->cargo; //blk és '*' nincs benne
     int blkoptim=0; //jelzi a {|*|funcall(*)} alakot
-    int blkstar=0; //jelzi a típust, 0=|a|, 1=|*|, 2=|a,*|
+    int blkstar=0;  //jelzi a típust, 0=|a|, 1=|*|, 2=|a,*|
+    int blkforw=0;  //jelzi a {|forward|forward:a:b:c...} alakot
+    int blkforwe=0; //jelzi a {|forward|forward:a:b(p):c...} alakot
 
     if( bargument->codegen==codegen_bargument_STAR )
     {
@@ -402,6 +404,43 @@ static void blkcode(nodetab *t,int x)
     else if( bargument->codegen==codegen_bargument_lbarg_COMMA_STAR )
     {
         blkstar=2; 
+    }
+    else if( bargument->codegen==codegen_bargument_lbarg )
+    {
+        parsenode *p=bargument;
+        p=p->right[0];
+        if( p->codegen==codegen_lbarg_SYMBOL )
+        {
+            p=p->right[0];
+            if( 0==strcmp(p->text,"forward") )
+            {
+                p=lexpr;
+                if( p->codegen==codegen_lexpr_expr  )
+                {
+                    int forw=0;
+                    p=p->right[0];
+                    while( p->codegen==codegen_expr_expr_COLON_SYMBOL_msgpar )
+                    {
+                        if( p->right[2]->codegen!=codegen_msgpar )
+                        {
+                            blkforwe++;
+                        }
+                        forw++;
+                        p=p->right[0];
+                    }
+                    if( p->codegen==codegen_expr_SYMBOL )
+                    {
+                        p=p->right[0];
+                        if( 0==strcmp(p->text,"forward") )
+                        {
+                            blkforw=forw; 
+                            //{|forward|forward:a:b:c} alakú blokk detektálva
+                            //fprintf(code,"\n//blkforw %d",blkforw);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     if( lexpr->codegen==codegen_lexpr_expr )
@@ -435,7 +474,7 @@ static void blkcode(nodetab *t,int x)
         // alakú kódblokk,
         // speciálisan fordítjuk,
         // közvetlen függvényhívás,
-        // minden paraméter automatikusdan továbbadva,
+        // minden paraméter automatikusan továbbadva,
         // a paraméterek nincsenek átpakkolva,
         // a refek megmaradnak.
 
@@ -449,6 +488,48 @@ static void blkcode(nodetab *t,int x)
         tabdepth=0;
         free(fname);
         free(fcall);
+        fprintf(code,"\n//\n*(stack-2)=*(stack-1);pop();\n}");
+    }
+    else if( blkforw )
+    {
+        // {|forward|forward:a:b:c} tipus
+
+        fprintf(code,"\n\nstatic void _blk_%s_%d(int argno)\n{\n",funcname,x);
+        if( (blkforw>1) || blkforwe )
+        {
+            fprintf(code,"VALUE *base=stack-argno;\n");
+        }
+        if( blkforwe )
+        {
+            fprintf(code,"VALUE *env=blkenv(base);\n");
+        }
+        fprintf(code,"//");
+
+        //p->tprint();                 fprintf(code,"\n//%s",p->text);
+        parsenode *p1=p->right[1];   //fprintf(code,"\n//%s",p1->text);  //lexpr ::= expr.
+        parsenode *p2=p1->right[0];  //fprintf(code,"\n//%s",p2->text);  //expr ::= expr COLON SYMBOL msgpar.
+        parsenode *p3=p2->right[0];  //fprintf(code,"\n//%s",p3->text);  //expr ::= expr COLON SYMBOL msgpar.
+
+        tabdepth=1;
+
+        if( blkforw>1 )
+        {
+            // 'forward:a:...:c' eset 
+            p1->right[0]=p3;    
+            cgen(p,1); //kiértékelve 'forward:a:...' (:c kihagyva)
+            nltab();fprintf(code,"*(base+1)=*TOP();//forward");
+            nltab();fprintf(code,"pop();");
+        }
+        //else
+        //{
+        //   'forward:a' speciális eset 
+        //}
+
+        const char *meth=p2->right[1]->text;
+        metdecl_insert(meth,0,0);
+        nltab();fprintf(code,"_o_method_%s.eval(argno-1);",meth);
+
+        tabdepth=0;
         fprintf(code,"\n//\n*(stack-2)=*(stack-1);pop();\n}");
     }
     else  //általános eset
@@ -1155,19 +1236,49 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
                 const char *meth=slot[i]->right[0]->text;
                 fprintf(cls,"classMethod(clid,\"%s\",{|*|%s%s.%s(*)})\n",meth,curnsp,classid,meth);
             }
+            if( slot[i]->codegen==codegen_slot_METHOD_SYMBOL_forw )
+            {
+                const char *meth=slot[i]->right[0]->text;
+                const char *buf[64]; int bx=0;
+                parsenode *p=slot[i]->right[1];
+                while( p->codegen==codegen_forw_forw_COLON_SYMBOL  )
+                {
+                    buf[bx++]=p->right[1]->text;
+                    p=p->right[0];
+                }
+                if( p->codegen==codegen_forw_COLON_SYMBOL  )
+                {
+                    buf[bx++]=p->right[0]->text;
+                }
+                fprintf(cls,"classMethod(clid,\"%s\",",meth);
+                fprintf(cls,"{|forward|forward");
+                for(bx--; bx>=0; bx--)
+                {
+                    fprintf(cls,":%s",buf[bx]);
+                }
+                fprintf(cls,"})\n");fflush(0);
+            }
             if( slot[i]->codegen==codegen_slot_METHOD_SYMBOL_expr )
             {
                 if( slot[i]->right[1]->codegen!=codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE )
                 {
-                    codeblock_requiered(slot[i]->right[1]);
+                    const char *meth=slot[i]->right[0]->text;
+                    fprintf(cls,"classMethod(clid,\"%s\",",meth);
+                    src=cls;
+                    fprintf(cls,"{||");
+                    outsrc(slot[i],1);
+                    src=0;
+                    fprintf(cls,"})\n");
                 }
-
-                const char *meth=slot[i]->right[0]->text;
-                fprintf(cls,"classMethod(clid,\"%s\",",meth);
-                src=cls;
-                outsrc(slot[i],1);
-                src=0;
-                fprintf(cls,")\n");
+                else
+                {
+                    const char *meth=slot[i]->right[0]->text;
+                    fprintf(cls,"classMethod(clid,\"%s\",",meth);
+                    src=cls;
+                    outsrc(slot[i],1);
+                    src=0;
+                    fprintf(cls,")\n");
+                }
             }
         }
         free(slot);
@@ -1363,6 +1474,24 @@ int codegen_slot_METHOD_SYMBOL(parsenode *p,void *v)//PROTO
 
 //---------------------------------------------------------------------------
 int codegen_slot_METHOD_SYMBOL_expr(parsenode *p,void *v)//PROTO
+{
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_slot_METHOD_SYMBOL_forw(parsenode *p,void *v)//PROTO
+{
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_forw_COLON_SYMBOL(parsenode *p,void *v)//PROTO
+{
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_forw_forw_COLON_SYMBOL(parsenode *p,void *v)//PROTO
 {
     return 0;
 }

@@ -471,6 +471,24 @@ slot(S) ::= METHOD SYMBOL(M) expr(X).{
     S->codegen=codegen_slot_METHOD_SYMBOL_expr; 
 }
 
+slot(S) ::= METHOD SYMBOL(M) forw(F).{
+    S=(new parsenode)->rule(2,M,F);
+    S->text="slot ::= METHOD SYMBOL forw.";
+    S->codegen=codegen_slot_METHOD_SYMBOL_forw; 
+}
+
+forw(F) ::= COLON SYMBOL(S).{
+    F=(new parsenode)->rule(1,S);
+    F->text="forw ::= COLON SYMBOL.";
+    F->codegen=codegen_forw_COLON_SYMBOL; 
+}
+
+forw(F) ::= forw(X) COLON SYMBOL(S).{
+    F=(new parsenode)->rule(2,X,S);
+    F->text="forw ::= forw COLON SYMBOL.";
+    F->codegen=codegen_forw_forw_COLON_SYMBOL; 
+}
+
 ldsym(L) ::= dotsymbol(S).{
     L=(new parsenode)->rule(1,S);
     L->text="ldsym ::= dotsymbol.";

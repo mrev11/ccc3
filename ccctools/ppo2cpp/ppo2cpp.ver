@@ -1,4 +1,75 @@
 
+2009.04.28 -- 5.0.13
+  Vararg API kibővítve.
+  Az előző (2009.04.22) módosítás (1) része visszavéve.
+  A forwardoló blokk újraírva az új vararg API-ra alapozva.
+  
+  Emlékeztető
+  
+  A * a stackre rakja a függvény argumentumokat, a fontosabb esetek:
+    1)  {*}           - az összes függvény/blokkargumentum egy arrayben
+    2)  fun(*)        - függvény/blokkargumentumok továbbadása függvényhívásban
+    3)  obj:method(*) - függvény/blokkargumentumok továbbadása metódushívásban
+ 
+  Ezt most bővítjük:
+    *[x1..x2]  -  argumentumok x1-től x2-ig
+    *[x1..]    -  argumentumok x1-től (ameddig van)
+    *[..x2]    -  argumentumok x2-ig (1-től)
+    *[..]      -  összes argumentum (*)
+
+  Ezek nem kifejezések, hanem utasítások az argumentumok veremre rakására.
+  Hogy hány argumentum kerül a veremre, az az x1 és x2 kifejezésektől,
+  és az argumentumok számától függ. Pl. x1>x2 esetén egy sem (0 darab).
+  
+  Ez a block
+
+     {|this,*|this:a:b:c(*[2..])}
+
+  pont azt csinálja, ami a forwardoláshoz kell, azaz 
+    1) minden paramétert átvesz
+    2) az első paraméterből kiindulva csinál egy metódushívás láncot
+    3) az utolsó metódusnak továbbadja a 2,3,... paramétereket
+    
+  Az új vararg API-ra alapozott forwardoló blokkokat használja a class  
+  definíció  (ahogy az az előző javítás (2)-es részében le van írva).
+
+
+  Összegzés (ha már ennyit pepecseltem vele)
+  ==========================================
+  
+  class adapter_ora    //egy Oracle alapú osztály
+    method  select
+
+  class adapter_pg     //egy Postgres alapú osztály hasonló interfésszel
+    method  select
+  
+  class unified
+    attrib  adapter    //adapter_ora vagy adapter_pg osztályú objektum
+    method  select     :adapter:select  //továbbítja a metódushívást
+
+  Ez a cél, azaz, hogy könnyen lehessen metódushívást továbbítani
+  egy beágyazott objektumhoz. A könnyű alatt azt értem, hogy
+    1) keveset kell írni
+    2) keveset kell tudni (a forwardolt metódus paraméterezéséről)
+
+  Megjegyzés: Eddig is lehetett forwardolni, csak körülményes volt   
+    method  select    {|this,p1,p2...|this:adapter:select(p1,p2...)}
+
+  Miért kell egyáltalán forwardoló blokk, ha úgyis a class definíciót
+  használjuk?  A class definíciók fordítása két lépcsős.  Először lefordul 
+  (belsőleg) CCC függvényinterfészre (classRegister, classMethod, classAttrib)
+  és kódblokkokra, ami aztán továbbfordul a szokásos módon.  Ahhoz, hogy ez 
+  működhessen kell egy olyan kódblokk, amire a ':adapter:select' kódrész 
+  fordul, azaz kell egy közbülső lépés.  Ez a közbülső lépés most a 
+
+    {|this,*|this:adapter:select(*[2..])}
+   
+  alakú forwardoló blokk, aminek lényege, hogy nem kell ismerni hozzá a 
+  forwardolt metódus paraméterezését.  Ez a fajta forwardoló blokk sokkal
+  jobb, mint az 5.0.12-es változat.  Nem változtatja meg régi kódok működését,
+  a vararg API kiterjesztése önmagában is hasznos.
+
+
 2009.04.22 -- 5.0.12
 
   (1) Forwardoló kódblokk
@@ -43,7 +114,7 @@
     class derived(object)  //bővítés beágyazással
       attrib  adapter
     //method  hopp    {|x,a,b,c...|x:adapter:hopp(a,b,c...)} //hagyományos
-    //method  hopp    {|forward|forward:adapter:hopp}  //rövidebb forma
+    //method  hopp    {|forward|forward:adapter:hopp}  //rövidebb forma (visszavonva!)
       method  hopp    :adapter:hopp //még rövidebb, erre megy ki a játék!
 
       attrib  __data__  

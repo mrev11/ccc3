@@ -8,16 +8,16 @@ class proba(object)
     method b
     method c
 
-static function proba.a(this,p)
-    this:x+=if(p==NIL,"a",p)
+static function proba.a(this,p:="a")
+    this:x+=p
     return this
 
-static function proba.b(this,p)
-    this:x+=if(p==NIL,"b",p)
+static function proba.b(this,p:="b")
+    this:x+=p
     return this
 
-static function proba.c(this,p,*)
-    this:x+=if(p==NIL,"c",p)
+static function proba.c(this,p:="c",*)
+    this:x+=p
     varstack()
     return this
 
@@ -25,11 +25,10 @@ static function proba.c(this,p,*)
 *******************************************************************************
 function main()
 
-local env:="e"
 local p:=probaNew()
-local blk:={|forward|forward:a:b(env):c}
-local blx:={|o,x,y,z|o:a:b(env):c(x,y,z)}
-local bl0:={|forward|forward:c}
+local blk:={|o,*|o:a:b:c(*[2..])}
+local blx:={|o,x,y,z|o:a:b:c(x,y,z)}
+local bl0:={|o,*|o:c(*[2..])}
 
     p:x:=""
     ? "blk"
@@ -44,10 +43,6 @@ local bl0:={|forward|forward:c}
     ? eval(bl0,p,"X","Y","Z")
 
     ?
-
-//megjegyzés: 
-//  blk-ban és bl0-ban hiába adnánk argumentumokat c-nek,
-//  mert c mindenképpen a továbbított blokkargumentumokat kapja
 
 *******************************************************************************
     

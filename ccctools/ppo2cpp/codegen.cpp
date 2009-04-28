@@ -394,8 +394,7 @@ static void blkcode(nodetab *t,int x)
     int blkarg=bargument->cargo; //blk és '*' nincs benne
     int blkoptim=0; //jelzi a {|*|funcall(*)} alakot
     int blkstar=0;  //jelzi a típust, 0=|a|, 1=|*|, 2=|a,*|
-    int blkforw=0;  //jelzi a {|forward|forward:a:b:c...} alakot
-    int blkforwe=0; //jelzi a {|forward|forward:a:b(p):c...} alakot
+    int blkforw=0;  //jelzi a {|this,*|this:a:b:c(*[2..])} alakot
 
     if( bargument->codegen==codegen_bargument_STAR )
     {
@@ -404,45 +403,100 @@ static void blkcode(nodetab *t,int x)
     else if( bargument->codegen==codegen_bargument_lbarg_COMMA_STAR )
     {
         blkstar=2; 
-    }
-    else if( bargument->codegen==codegen_bargument_lbarg )
-    {
+
+        //{|this,*|this:a:b:c(*[2..])} alak keresése
+        const char *sym;
         parsenode *p=bargument;
-        p=p->right[0];
+        p=p->right[0]; //lbarg
         if( p->codegen==codegen_lbarg_SYMBOL )
         {
-            p=p->right[0];
-            if( 0==strcmp(p->text,"forward") )
+            //fprintf(code,"\n//%s",p->text);
+            p=p->right[0]; //SYMBOL
+            //fprintf(code,"\n//%s",p->text);
+            sym=p->text;
+            
+            p=lexpr;
+            if( p->codegen==codegen_lexpr_expr  )
             {
-                p=lexpr;
-                if( p->codegen==codegen_lexpr_expr  )
+                int forw=0;
+                int mpar=0;
+                p=p->right[0];
+
+                if( p->codegen==codegen_expr_expr_COLON_SYMBOL_msgpar )
                 {
-                    int forw=0;
-                    p=p->right[0];
-                    while( p->codegen==codegen_expr_expr_COLON_SYMBOL_msgpar )
+                    parsenode *p1=p->right[2];
+                    //fprintf(code,"\n///%s",p1->text);
+                    if( p1->codegen==codegen_msgpar_LPAR_lfuncpar_RPAR  )
                     {
-                        if( p->right[2]->codegen!=codegen_msgpar )
+                        p1=p1->right[0];
+                        //fprintf(code,"\n///%s",p1->text);
+                        if( p1->codegen==codegen_lfuncpar_parexpr )
                         {
-                            blkforwe++;
+                            p1=p1->right[0];
+                            //fprintf(code,"\n///%s",p1->text);
+                            if( p1->codegen==codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET )
+                            {
+                                //fprintf(code,"\n//%s",p1->right[0]->text);
+                                //fprintf(code,"\n//%s",p1->right[1]->text);
+
+                                if( p1->right[0]->codegen==codegen_parexpr0_parexpr &&
+                                    p1->right[1]->codegen==codegen_parexpr0 )
+                                {
+                                    p1=p1->right[0]->right[0];
+                                    //fprintf(code,"\n///%s",p1->text);
+                                    
+                                    if( p1->codegen==codegen_parexpr_expr )
+                                    {
+                                        p1=p1->right[0];
+                                        //fprintf(code,"\n///%s",p1->text);
+                                        if( p1->codegen==codegen_expr_NUMBER )
+                                        {
+                                            p1=p1->right[0];
+                                            //fprintf(code,"\n///%s",p1->text);
+                                            if( 0==strcmp(p1->text,"2") )
+                                            {
+                                                //fprintf(code,"\n//*[2..] msgpar detected");
+                                                mpar=1;
+                                                forw=1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        forw++;
-                        p=p->right[0];
                     }
-                    if( p->codegen==codegen_expr_SYMBOL )
+                }
+
+                p=p->right[0];
+                //fprintf(code,"\n//%s",p->text);
+
+                while( mpar &&  p->codegen==codegen_expr_expr_COLON_SYMBOL_msgpar )
+                {
+                    if( p->right[2]->codegen!=codegen_msgpar )
                     {
-                        p=p->right[0];
-                        if( 0==strcmp(p->text,"forward") )
-                        {
-                            blkforw=forw; 
-                            //{|forward|forward:a:b:c} alakú blokk detektálva
-                            //fprintf(code,"\n//blkforw %d",blkforw);
-                        }
+                        mpar=0;
+                    }
+                    forw++;
+                    p=p->right[0];
+                    //fprintf(code,"\n//%s",p->text);
+                }
+
+                if( mpar && p->codegen==codegen_expr_SYMBOL )
+                {
+                    p=p->right[0];
+                    if( 0==strcmp(p->text,sym) )
+                    {
+                        blkforw=forw; 
+                        //{|this,*|this:a:b:c(*[2..])} alak detektálva
+                        //fprintf(code,"\n//blkforw %d",blkforw);
                     }
                 }
             }
         }
+        //{|this,*|this:a:b:c(*[2..])} alak <==> blkforw>0
     }
-    
+
+
     if( lexpr->codegen==codegen_lexpr_expr )
     {
         parsenode *expr=lexpr->right[0];
@@ -492,16 +546,12 @@ static void blkcode(nodetab *t,int x)
     }
     else if( blkforw )
     {
-        // {|forward|forward:a:b:c} tipus
+        // {|this,*|this:a:b:c(*[2..])} tipus
 
         fprintf(code,"\n\nstatic void _blk_%s_%d(int argno)\n{\n",funcname,x);
-        if( (blkforw>1) || blkforwe )
+        if( blkforw>1 )
         {
             fprintf(code,"VALUE *base=stack-argno;\n");
-        }
-        if( blkforwe )
-        {
-            fprintf(code,"VALUE *env=blkenv(base);\n");
         }
         fprintf(code,"//");
 
@@ -514,16 +564,16 @@ static void blkcode(nodetab *t,int x)
 
         if( blkforw>1 )
         {
-            // 'forward:a:...:c' eset 
+            //this:a:...:c(*[2..]) eset 
             p1->right[0]=p3;    
-            cgen(p,1); //kiértékelve 'forward:a:...' (:c kihagyva)
-            nltab();fprintf(code,"*(base+1)=*TOP();//forward");
+            cgen(p,1); //kiértékelve 'this:a:...' (de :c kihagyva)
+            nltab();fprintf(code,"*(base+1)=*TOP();");
             nltab();fprintf(code,"pop();");
         }
-        //else
-        //{
-        //   'forward:a' speciális eset 
-        //}
+        else
+        {
+            //this:a(*[2..]) eset, ok
+        }
 
         const char *meth=p2->right[1]->text;
         metdecl_insert(meth,0,0);
@@ -624,26 +674,6 @@ static void statcodeloc(nodetab*t,int x)
     //fprintf(code,"\n//\npop_call();");
     fprintf(code,"\n}");
 }    
-
-//---------------------------------------------------------------------------
-static void method_eval(parsenode *msgpar)
-{
-    int parcount=(0xffff&msgpar->cargo)+1;
-    int starcount=(msgpar->cargo>>16);
-
-    if( starcount==0 )
-    {
-        fprintf(code,".eval(%d);",parcount);
-    }
-    else if( blkflag ) 
-    {
-        fprintf(code,".eval(%d*(argno-2)+%d);",starcount,parcount);
-    }
-    else
-    {
-        fprintf(code,".eval(%d*(argno-1)+%d);",starcount,parcount);
-    }
-}
 
 //---------------------------------------------------------------------------
 static int labelnext()
@@ -1251,12 +1281,12 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
                     buf[bx++]=p->right[0]->text;
                 }
                 fprintf(cls,"classMethod(clid,\"%s\",",meth);
-                fprintf(cls,"{|forward|forward");
+                fprintf(cls,"{|this,*|this");
                 for(bx--; bx>=0; bx--)
                 {
                     fprintf(cls,":%s",buf[bx]);
                 }
-                fprintf(cls,"})\n");fflush(0);
+                fprintf(cls,"(*[2..])})\n");fflush(0);
             }
             if( slot[i]->codegen==codegen_slot_METHOD_SYMBOL_expr )
             {
@@ -2448,12 +2478,47 @@ int codegen_parexpr_STAR(parsenode *p,void *v)//PROTO
         v==codegen_msgpar_LPAR_lfuncpar_RPAR ||
         v==codegen_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr )
     {
-        fprintf(code,"{int i;for(i=%d;i<argno;i++){push(base+i);}}",blkflag);
+        fprintf(code,"{int i;for(i=%d;i<argno;i++){argc++;push(base+i);}}",blkflag);
     }
     else
     {
-        fprintf(code,"{int i;for(i=%d;i<argno;i++){push_symbol(base+i);}}",blkflag);
+        fprintf(code,"{int i;for(i=%d;i<argno;i++){argc++;push_symbol(base+i);}}",blkflag);
     }
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    //A hívó függvény paramétereinek egy szeletét a stackre teszi.
+    //Ha blokkban vagyunk, a 0-dik paramétert ki kell hagyni.
+    //Kérdéses, hogy kell-e a paramétereket derefelni.
+    //A v mutatja, hogy lfuncpar honnan származik:
+    //függvényhívásból, metódushívásból, vagy array-ből. 
+
+
+    nltab();fprintf(code,"{");
+    cgen(p,0);
+    nltab();fprintf(code,"if(TOP()->type==TYPE_NIL){pop();number(1);} else");
+    nltab();fprintf(code,"if(TOP()->type!=TYPE_NUMBER) error_arg(\"*[x..]\",TOP(),1);");
+    nltab();fprintf(code,"int xl=D2INT(TOP()->data.number);pop();xl=max(xl,1)-1+%d;",blkflag);
+
+    cgen(p,1);
+    nltab();fprintf(code,"if(TOP()->type==TYPE_NIL){pop();number(argno);} else");
+    nltab();fprintf(code,"if(TOP()->type!=TYPE_NUMBER) error_arg(\"*[..x]\",TOP(),1);");
+    nltab();fprintf(code,"int xh=D2INT(TOP()->data.number)+%d;pop();xh=min(xh,argno);",blkflag);
+    
+    if( v==codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR ||
+        v==codegen_msgpar_LPAR_lfuncpar_RPAR ||
+        v==codegen_msgpar_LPAR_lfuncpar_RPAR_ASSIGN_expr )
+    {
+        nltab();fprintf(code,"int i;for(i=xl;i<xh;i++){argc++;push(base+i);}");
+    }
+    else
+    {
+        nltab();fprintf(code,"int i;for(i=xl;i<xh;i++){argc++;push_symbol(base+i);}");
+    }
+    nltab();fprintf(code,"}");
     return 0;
 }
 
@@ -2728,10 +2793,26 @@ int codegen_expr_expr_COLON_SYMBOL_msgpar(parsenode *p,void *v)//PROTO
 //               0          1      2
 {
     cgen(p,0); //expr (object)
-    cgen(p,2); //msgpar
+
     const char *meth=p->right[1]->text;
     metdecl_insert(meth,0,0);
-    nltab();fprintf(code,"_o_method_%s",meth);method_eval(p->right[2]);
+
+    parsenode *msgpar=p->right[2];
+    int parcount=(0xffff&msgpar->cargo)+1;
+    int starcount=(msgpar->cargo>>16);
+    
+    if( starcount==0 )
+    {
+        cgen(p,2); //msgpar
+        nltab();fprintf(code,"_o_method_%s.eval(%d);",meth,parcount);
+    }
+    else
+    {
+        nltab();fprintf(code,"{int argc=%d-%d;",parcount,starcount);
+        cgen(p,2); //msgpar
+        nltab();fprintf(code,"_o_method_%s.eval(argc);",meth);
+        nltab();fprintf(code,"};");
+    }
     return 0;
 }
 
@@ -2740,11 +2821,27 @@ int codegen_expr_expr_COLON_LPAR_dotsymbol_RPAR_SYMBOL_msgpar(parsenode *p,void 
 //               0               1              2      3
 {
     cgen(p,0); //expr (object)
-    cgen(p,3); //msgpar
-    char *cls=dotsymboltext(p->right[1]); //p->right[1]->text;
+
+    char *cls=dotsymboltext(p->right[1]);
     const char *meth=p->right[2]->text;
     metdecl_insert(meth,0,cls);
-    nltab();fprintf(code,"_o_method_%s_C_%s",meth,dot2uln(cls));method_eval(p->right[3]);
+
+    parsenode *msgpar=p->right[3];
+    int parcount=(0xffff&msgpar->cargo)+1;
+    int starcount=(msgpar->cargo>>16);
+
+    if( starcount==0 )
+    {
+        cgen(p,3); //msgpar
+        nltab();fprintf(code,"_o_method_%s_C_%s.eval(%d);",meth,dot2uln(cls),parcount);
+    }
+    else
+    {
+        nltab();fprintf(code,"{int argc=%d-%d;",parcount,starcount);
+        cgen(p,3); //msgpar
+        nltab();fprintf(code,"_o_method_%s_C_%s.eval(argc);",meth,dot2uln(cls));
+        nltab();fprintf(code,"};");
+    }
     free(cls);
     return 0;
 }
@@ -2754,19 +2851,43 @@ int codegen_expr_expr_COLON_LPAR_dotsymbol_AT_dotsymbol_RPAR_SYMBOL_msgpar(parse
 //               0               1            2              3      4
 {
     cgen(p,0); //expr (object)
-    cgen(p,4); //msgpar
+
     char *parent=dotsymboltext(p->right[1]); //p->right[1]->text;
     char *cls=dotsymboltext(p->right[2]); //p->right[2]->text;
     const char *meth=p->right[3]->text;
     metdecl_insert(meth,parent,cls);
-    if( 0==strcmp(parent,"super") )
+
+    parsenode *msgpar=p->right[4];
+    int parcount=(0xffff&msgpar->cargo)+1;
+    int starcount=(msgpar->cargo>>16);
+    
+    if( starcount==0 )
     {
-        nltab();fprintf(code,"_o_method_%s_S_%s",meth,dot2uln(cls));method_eval(p->right[4]);
+        cgen(p,4); //msgpar
+        if( 0==strcmp(parent,"super") )
+        {
+            nltab();fprintf(code,"_o_method_%s_S_%s.eval(%d);",meth,dot2uln(cls),parcount);
+        }
+        else
+        {
+            nltab();fprintf(code,"_o_method_%s_P_%s_C_%s.eval(%d);",meth,dot2uln(parent),dot2uln(cls),parcount);
+        }
     }
     else
     {
-        nltab();fprintf(code,"_o_method_%s_P_%s_C_%s",meth,dot2uln(parent),dot2uln(cls));method_eval(p->right[4]);
+        nltab();fprintf(code,"{int argc=%d-%d;",parcount,starcount);
+        cgen(p,4); //msgpar
+        if( 0==strcmp(parent,"super") )
+        {
+            nltab();fprintf(code,"_o_method_%s_S_%s.eval(argc);",meth,dot2uln(cls));
+        }
+        else
+        {
+            nltab();fprintf(code,"_o_method_%s_P_%s_C_%s.eval(argc);",meth,dot2uln(parent),dot2uln(cls));
+        }
+        nltab();fprintf(code,"};");
     }
+
     free(parent);
     free(cls);
     return 0;
@@ -2778,28 +2899,25 @@ int codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
     int postfix=postfixflag;
     postfixflag=0;
 
-    cgenv(p,1,(void*)codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR); //lfuncpar
-
-    char *fname=dotsymboltext(p->right[0]);
-    char *fcall=fundecl_clpcall(fname);
-
     parsenode *lfuncpar=p->right[1];
     int parcount=(0xffff&lfuncpar->cargo);
     int starcount=(lfuncpar->cargo>>16);
 
+    char *fname=dotsymboltext(p->right[0]);
+    char *fcall=fundecl_clpcall(fname);
+
     if( starcount==0 )
     {
+        cgenv(p,1,(void*)codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR); //lfuncpar
         nltab();fprintf(code,"%s(%d);",fcall,postfix+parcount);
-    }
-    else if( blkflag )
-    {
-        nltab();fprintf(code,"%s(%d*(argno-2)+%d);",fcall,starcount,postfix+parcount);
     }
     else
     {
-        nltab();fprintf(code,"%s(%d*(argno-1)+%d);",fcall,starcount,postfix+parcount);
+        nltab();fprintf(code,"{int argc=%d+%d-%d;",postfix,parcount,starcount);
+        cgenv(p,1,(void*)codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR); //lfuncpar
+        nltab();fprintf(code,"%s(argc);",fcall);
+        nltab();fprintf(code,"};");
     }
-
     free(fname);
     free(fcall);
     return 0;
@@ -2913,25 +3031,22 @@ int codegen_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v)//
 //---------------------------------------------------------------------------
 int codegen_expr_LBRACE_lfuncpar_RBRACE(parsenode *p,void *v)//PROTO
 {
-    cgenv(p,0,(void*)codegen_expr_LBRACE_lfuncpar_RBRACE);
-
     parsenode *lfuncpar=p->right[0];
     int parcount=(0xffff&lfuncpar->cargo);
     int starcount=(lfuncpar->cargo>>16);
 
     if( starcount==0 )
     {
+        cgenv(p,0,(void*)codegen_expr_LBRACE_lfuncpar_RBRACE);
         nltab();fprintf(code,"array(%d);",parcount);
-    }
-    else if( blkflag )
-    {
-        nltab();fprintf(code,"array(%d*(argno-2)+%d);",starcount,parcount);
     }
     else
     {
-        nltab();fprintf(code,"array(%d*(argno-1)+%d);",starcount,parcount);
+        nltab();fprintf(code,"{int argc=%d-%d;",parcount,starcount);
+        cgenv(p,0,(void*)codegen_expr_LBRACE_lfuncpar_RBRACE); //lfuncpar
+        nltab();fprintf(code,"array(argc);");
+        nltab();fprintf(code,"};");
     }
-   
     return 0;
 }
 
@@ -3657,6 +3772,17 @@ int outsource_parexpr_expr(parsenode *p,void *v)//PROTO
 int outsource_parexpr_STAR(parsenode *p,void *v)//PROTO
 {
     fprintf(src,"*");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    fprintf(src,"*[");
+    outsrc(p,0);
+    fprintf(src,"..");
+    outsrc(p,1);
+    fprintf(src,"]");
     return 0;
 }
 

@@ -23,19 +23,19 @@
 //  20 GTEQ             67 ELSE            114 lbarg          
 //  21 LTEQ             68 OTHERWISE       115 llocdefin      
 //  22 EXEQ             69 STEP            116 lstatement     
-//  23 GT               70 AT              117 locdline       
-//  24 LT               71 NUMBER          118 locdefin       
-//  25 DOLLAR           72 STRING          119 locdef         
-//  26 PLUS             73 NLSTEXT         120 statement      
-//  27 MINUS            74 BINARYX         121 begseq         
-//  28 STAR             75 BINARYA         122 lrecov         
-//  29 SLASH            76 TRUE            123 finally        
-//  30 MODULO           77 FALSE           124 if             
-//  31 DBSTAR           78 NIL             125 lelseif        
-//  32 DBPLUS           79 LBRACE          126 else           
-//  33 DBMINUS          80 PIPE            127 endif          
-//  34 LBRACKET         81 RBRACE          128 forstep        
-//  35 COLON            82 RBRACKET        129 recov          
+//  23 GT               70 RBRACKET        117 locdline       
+//  24 LT               71 AT              118 locdefin       
+//  25 DOLLAR           72 NUMBER          119 locdef         
+//  26 PLUS             73 STRING          120 statement      
+//  27 MINUS            74 NLSTEXT         121 begseq         
+//  28 STAR             75 BINARYX         122 lrecov         
+//  29 SLASH            76 BINARYA         123 finally        
+//  30 MODULO           77 TRUE            124 if             
+//  31 DBSTAR           78 FALSE           125 lelseif        
+//  32 DBPLUS           79 NIL             126 else           
+//  33 DBMINUS          80 LBRACE          127 endif          
+//  34 LBRACKET         81 PIPE            128 forstep        
+//  35 COLON            82 RBRACE          129 recov          
 //  36 COLCOL           83 error           130 elseif         
 //  37 ARROW            84 prg             131 lfuncpar       
 //  38 HIGHPRECEDENCE   85 header          132 parexpr        
@@ -154,6 +154,7 @@ parexpr0 ::=.
 parexpr0 ::= parexpr.
 parexpr ::= expr.
 parexpr ::= STAR.
+parexpr ::= STAR LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.
 parexpr ::= AT SYMBOL.
 lexpr ::=.
 lexpr ::= expr.

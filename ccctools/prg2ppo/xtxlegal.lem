@@ -349,9 +349,18 @@ expr(P) ::= expr(L) COLON cast expr(R).{P=pstore(L,R);}
 xlst ::= .
 xlst ::= expr.
 xlst ::= STAR.
+xlst ::= STAR LBRACKET DOTDOT RBRACKET.
+xlst ::= STAR LBRACKET expr DOTDOT RBRACKET.
+xlst ::= STAR LBRACKET DOTDOT expr RBRACKET.
+xlst ::= STAR LBRACKET expr DOTDOT expr RBRACKET.
+
 xlst ::= xlst COMMA.
 xlst ::= xlst COMMA expr.
 xlst ::= xlst COMMA STAR.
+xlst ::= xlst COMMA STAR LBRACKET DOTDOT RBRACKET.
+xlst ::= xlst COMMA STAR LBRACKET expr DOTDOT RBRACKET.
+xlst ::= xlst COMMA STAR LBRACKET DOTDOT expr RBRACKET.
+xlst ::= xlst COMMA STAR LBRACKET expr DOTDOT expr RBRACKET.
 
 cast ::= LPAR expr RPAR.
 cast ::= LPAR expr AT expr RPAR.

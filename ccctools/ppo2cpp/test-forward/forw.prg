@@ -1,85 +1,80 @@
 
-static globvar:="globvar"
+#define PARLST  *[1..3]
+//#define PARLST  *[x..x+x]
+//#define PARLST  *[3..]
+//#define PARLST  *[..4]
+//#define PARLST  *[..40]
+//#define PARLST  *[5..4]
+//#define PARLST  *[..]
+//#define PARLST  a,*[2..1],b,*,c
 
-*******************************************************************************
-class adapter(object)
-    method  initialize
-    method  hopp
-    attrib  error
-    attrib  x
-
-static function adapter.initialize(this)
-    this:error:=errorNew()
-    this:x:="adapter.x"
-    return this
-
-static function adapter.hopp(*)
-    //? {"hopp",*}
-    varstack()
-    return "HOPP"
+//#define PARLST  *
+//#define PARLST  a,b,c
+//#define PARLST
 
 
-*******************************************************************************
-class derived(object)
-    method  initialize
+*****************************************************************************
+class base(object)
+    method  proba
 
-    attrib  adapter
-    attrib  x
-    method  masik
-    method  ugv         upper(globvar)   //=> {||upper(globvar)}
+function base.proba(*)
+    ? "base.proba    ",  .proba(*[2..])
 
 
-#ifndef NOT_DEFINED
-    method  hopp        {|forward|forward:adapter:hopp}
-    method  desc        {|forward|forward:adapter:error:description}
-    method  ax          {|forward|forward:adapter:x}
-    method  dx          {|forward|forward:x}
-    method  egyik       {|forward|forward:masik}
-#else
-    method  hopp        :adapter:hopp
-    method  desc        :adapter:error:description
-    method  ax          :adapter:x
-    method  dx          :x
-    method  egyik       :masik
-#endif
+*****************************************************************************
+class derived(base)
+    method  proba
+    method  forw        :proba                         //rövidített írásmód
+    method  forw1       {|this,*|this:proba(*[2..])}   //teljesen kiírva
+
+function derived.proba(*)
+    ? "derived.proba ", .proba(*[2..])
 
 
-static function derived.initialize(this,adapter)
-    this:(object)initialize
-    this:adapter:=adapter
-    this:x:="derived.x"
-    return this
+*****************************************************************************
+function main(*)
 
-static function derived.masik(this,*)
-    //? {"masik",*}
-    varstack()
-    return "MASIK"
+local x:=2
+local a:="a"
+local b:="b"
+local c:="c"
+local d:=derivedNew()
+local e:="env"
+
+local blk0:={|*| {PARLST}}
+local blk1:={|*| proba(PARLST)}
+local blk2:={|*| d:proba(PARLST)}
+local blk3:={|*| d:(derived)proba(PARLST)}
+local blk4:={|*| d:(base)proba(PARLST)}
+local blk5:={|*| d:(base@derived)proba(PARLST)}
+local blk6:={|*| d:(super@derived)proba(PARLST)}
+local blk7:={|*| d:forw(PARLST)}
 
 
-*******************************************************************************
-function main()
-
-local a:=adapterNew()
-local d:=derivedNew(a)
-
-    ? d:hopp("a","bb","ccc","dddd","eeeee")
-    ? d:egyik(11,22,33,44)
-
-    ? d:ax
-    ? d:dx
-    d:ax:=upper(d:ax)
-    d:dx:=upper(d:dx)
-    ? d:ax
-    ? d:dx
-    
-    a:error:description:="vanaki forrón"
-    ? d:desc
-    d:desc:=upper(d:desc)
-    ? a:error:description
-    
-    ? d:ugv
-
+    ? "array         ", {PARLST}
+    ? "funcall       ", proba(PARLST)
+    d:proba(PARLST)
+    d:(derived)proba(PARLST)
+    d:(base)proba(PARLST)
+    d:(base@derived)proba(PARLST)
+    d:(super@derived)proba(PARLST)
+    d:forw(PARLST)
     ?
 
-*******************************************************************************
-    
+    ? "array         ", eval(blk0,*)
+    ? "funcall       ", eval(blk1,*)
+    eval(blk2,*)
+    eval(blk3,*)
+    eval(blk4,*)
+    eval(blk5,*)
+    eval(blk6,*)
+    eval(blk7,*)
+    ?
+    ?
+
+
+*****************************************************************************
+function proba(*)
+    return {*}
+
+*****************************************************************************

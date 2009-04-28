@@ -1025,6 +1025,14 @@ parexpr(P) ::= STAR.{
     P->cargo=(1<<16);
 }
 
+parexpr(P) ::= STAR LBRACKET parexpr0(IDXL) DOTDOT parexpr0(IDXR) RBRACKET.{
+    P=(new parsenode)->rule(2,IDXL,IDXR);
+    P->text="parexpr ::= STAR LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.";
+    P->codegen=codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
+    P->outsource=outsource_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
+    P->cargo=(1<<16);
+}
+
 parexpr(P) ::= AT SYMBOL(S).{  //@symbol
     P=(new parsenode)->rule(1,S);
     P->text="parexpr ::= AT SYMBOL.";

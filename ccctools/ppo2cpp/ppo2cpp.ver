@@ -72,25 +72,27 @@
 
 2009.04.22 -- 5.0.12
 
-  (1) Forwardoló kódblokk
-  
-  Bevezetünk egy rövidített jelölést:
-
-  hagyományos jelölés                   rövidített jelölés 
-  {|x,p1,p2...|x:a:b:c(p1,p2...)}  <=>  {|forward|forward:a:b:c} 
-  
-  A jelölésben 'forward' kulcsszó, a blokkban szereplő kifejezés
-  egyetlen metódushívás lánc. Más szituációban a forward szónak nincs
-  kitüntetett szerepe. A {|forward|forward:a:b:c} egyébként mindig is
-  szintaktikailag helyes kifejezés volt (még a Clipper 5.2-ben is).
-  
-    eval( {|x|x:a:b:c},             p0,p1,p2)  //p1,p2 elvész
-    eval( {|forward|forward:a:b:c}, p0,p1,p1)  //p1,p2-t megkapja c
-  
-  A két blokk között az a különbség, hogy a második automatikusan
-  továbbadja a paramétereket az utolsó metódusnak (a forward kulcsszó 
-  használata miatt). Ha történetesen c-nek nincsenek paraméterei, 
-  akkor a két blokk egyenértékű.
+##  A ## részek visszavonva, 5.0.13-ban átdolgozva.
+##
+##  (1) Forwardoló kódblokk
+##  
+##  Bevezetünk egy rövidített jelölést:
+##
+##  hagyományos jelölés                   rövidített jelölés 
+##  {|x,p1,p2...|x:a:b:c(p1,p2...)}  <=>  {|forward|forward:a:b:c} 
+##  
+##  A jelölésben 'forward' kulcsszó, a blokkban szereplő kifejezés
+##  egyetlen metódushívás lánc. Más szituációban a forward szónak nincs
+##  kitüntetett szerepe. A {|forward|forward:a:b:c} egyébként mindig is
+##  szintaktikailag helyes kifejezés volt (még a Clipper 5.2-ben is).
+##  
+##    eval( {|x|x:a:b:c},             p0,p1,p2)  //p1,p2 elvész
+##    eval( {|forward|forward:a:b:c}, p0,p1,p1)  //p1,p2-t megkapja c
+##  
+##  A két blokk között az a különbség, hogy a második automatikusan
+##  továbbadja a paramétereket az utolsó metódusnak (a forward kulcsszó 
+##  használata miatt). Ha történetesen c-nek nincsenek paraméterei, 
+##  akkor a két blokk egyenértékű.
   
   (2) Forwardolás class definíciókban
 
@@ -114,7 +116,7 @@
     class derived(object)  //bővítés beágyazással
       attrib  adapter
     //method  hopp    {|x,a,b,c...|x:adapter:hopp(a,b,c...)} //hagyományos
-    //method  hopp    {|forward|forward:adapter:hopp}  //rövidebb forma (visszavonva!)
+##  //method  hopp    {|forward|forward:adapter:hopp}  //rövidebb forma
       method  hopp    :adapter:hopp //még rövidebb, erre megy ki a játék!
 
       attrib  __data__  

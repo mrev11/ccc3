@@ -4,9 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "ppo2cpp 5.0.13 vararg API bővítve, method forwarding átdolgozva" #2009.04.28
+git-commit --all -m "terminal invalidate szinkronizálva"
 
-
+# "ppo2cpp 5.0.13 vararg API bővítve, method forwarding átdolgozva" #2009.04.28
 # "ppo2cpp 5.0.12: method forwarding" #2009.04.22
 # "jt: cellaeditor számok változása, picturedocument R flag" #2009.03.15
 # "sql2: mkentitylib code_generated" #2009.03.15

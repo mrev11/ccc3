@@ -33,6 +33,10 @@
 #include <screenbuf.h>
 #include <inkey.ch>
 
+static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
+static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
+static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
+
 screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
@@ -119,11 +123,13 @@ void setcaption(char *cap)
 void invalidate(int t, int l, int b, int r)
 {
     //printf("dirty (%d,%d,%d,%d)\n",t,l,b,r);
+    invalidate_lock();
     if(t<invtop) invtop=t;
     if(l<invlef) invlef=l;
     if(b>invbot) invbot=b;
     if(r>invrig) invrig=r;
     dirty_buffer=1;
+    invalidate_unlock();
 }
 
 //----------------------------------------------------------------------------
@@ -284,11 +290,15 @@ void setwsize(int x, int y)
 
     screen_buffer=new screenbuf(wwidth,wheight);
 
+
+    invalidate_lock();
     invtop=0;
     invlef=0;
     invbot=wheight-1;
     invrig=wwidth-1;
     dirty_buffer=1;
+    invalidate_unlock();
+
 
     cursor_x=0;
     cursor_y=0;
@@ -400,6 +410,7 @@ static void eventloop()
 
         if( dirty_buffer )
         {
+            invalidate_lock();
             //printf("clear (%d,%d,%d,%d)\n",invtop,invlef,invbot,invrig);fflush(0);
 
             paint(invtop,invlef,invbot,invrig);
@@ -408,6 +419,7 @@ static void eventloop()
             invbot=0;
             invrig=0;
             dirty_buffer=0;
+            invalidate_unlock();
 
             if( cursor_state )
             {

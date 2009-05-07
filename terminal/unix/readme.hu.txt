@@ -1,4 +1,7 @@
 
+2009.05.01
+    invalidate és paint szinkronizálva.
+
 2008.10.15
     Javítva a képrnyőfrissítés (kisebb területeket rajzol újra). 
     Hardver-gyorsításos Xorg-gal a kurzor mozgatásakor hunyorgott 

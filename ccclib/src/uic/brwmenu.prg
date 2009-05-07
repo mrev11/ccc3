@@ -47,7 +47,7 @@
 
 #define FOOT         if(empty(browse:cargo[BR_FOOTING]),0,1) //miért volna 2?
 #define BROWSERECT   browse:nTop-5,browse:nLeft-1,browse:nBottom+FOOT+1,browse:nRight+1
-#define STEPBYSTEP   //a browse lassítására
+#define STEPBYSTEP   while(inkey()!=0);end //a browse lassítására
 
 
 ************************************************************************

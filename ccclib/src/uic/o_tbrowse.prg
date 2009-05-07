@@ -18,7 +18,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#include "box.ch"
+/*
+2009.05.03
+   Függőleges mozgás és stabilizálás átdolgozva.
+*/
+
 
 ****************************************************************************
 class tbrowse(object) 
@@ -212,55 +216,49 @@ static function tbrowse.stable(brw)   //stabil-e a browse
 //a lefelé mozgásokba tett brw:forcestable() rosszak,
 //végtelen ciklusba kerül tőlük a program, és egyébként sem 
 //szimpatikus ilyen durván beavatkozni a browse stabilizálódásába,
-//érdemes inkább a következőt próbálni: amíg lenyomva tart bármilyen 
-//billentyűt, nem csinálunk semmit: while( 0!=inkey(0.1) );end
-//ugyanezt a várakozást érdemes a sikertelen felfelé mozgásokba is 
-//betenni, különösen szűrt adatforrásnál lesz előnye
+
+//Ez nem jó:
+//  érdemes inkább a következőt próbálni: amíg lenyomva tart bármilyen 
+//  billentyűt, nem csinálunk semmit: while( 0!=inkey(0.1) );end
+//  ugyanezt a várakozást érdemes a sikertelen felfelé mozgásokba is 
+//  betenni, különösen szűrt adatforrásnál lesz előnye
+//Nem jó,
+//mert miért legyen egy brw:up-ban inkey()? Logikailag nem való oda,
+//ui. brw:up nem feltétlenül interaktív művelet. Ezért ki van innen véve
+//minden billentyűfogyasztás, viszont az applykey() minden _interaktívan_ 
+//(billentyűről) kiváltott mozgás után elfogyasztja a további leütéseket.
 
 
 ****************************************************************************
 static function tbrowse.down(brw) //kurzor egy sorral le
-    if( !_brwaux_skippos(brw,1) )
-        wait_release() //engedd el a billentyűt
-    end
+    _brwaux_skippos(brw,1)
     return brw
     
 ****************************************************************************
 static function tbrowse.up(brw) //kurzor egy sort fel
-    if( !_brwaux_skippos(brw,-1) )
-        wait_release() //engedd el a billentyűt
-    end
+    _brwaux_skippos(brw,-1)
     return brw
  
 ****************************************************************************
 static function tbrowse.gobottom(brw) //a legutolsó sorra áll
-local i
     eval(brw:goBottomBlock)
-    _brwaux_skippos(brw,1024) //rowpos kiszámításához (+refreshall)
-    wait_release()     //engedd el a billentyűt
+    _brwaux_skippos(brw,1) //rowpos kiszámításához
     return brw
 
 ****************************************************************************
 static function tbrowse.gotop(brw) //a legelső sorra áll
-local i
     eval(brw:gotopblock)
-    brw:rowpos:=1
-    wait_release() //engedd el a billentyűt
-    brw:refreshall()
+    _brwaux_skippos(brw,-1) //rowpos kiszámításához
     return brw
 
 ****************************************************************************
 static function tbrowse.pagedown(brw) //kurzor egy képernyővel lejjebb
-    if( !_brwaux_skippos(brw,len(brw:_invalid_)) )
-        wait_release() //engedd el a billentyűt
-    end
+    _brwaux_skippos(brw,brw:rowcount)
     return brw
 
 ****************************************************************************
 static function tbrowse.pageup(brw) //kurzor egy képernyővel feljebb 
-    if( !_brwaux_skippos(brw,-len(brw:_invalid_)) )
-        wait_release() //engedd el a billentyűt
-    end
+    _brwaux_skippos(brw,-brw:rowcount) 
     return brw
 
 
@@ -421,6 +419,9 @@ static function tbrowse.refreshcurrent(brw)
 static function tbrowse.stabilize(brw)
     
     if( brw:changed==.t. )
+        if( empty(brw:_invalid_) )
+            brw:configure
+        end
         _brwaux_heading(brw) //heading újraírása
         _brwaux_footing(brw) //footing újraírása
         brw:changed:=.f.
@@ -487,11 +488,6 @@ local o,r,c,w,cx,s
 static function tbrowse.colorrect(brw)  
     return brw
 
-****************************************************************************
-static function wait_release() //vár a billentyű elengedésére
-    while( 0!=inkey(0.1) ); end
-    return NIL
-
 
 ****************************************************************************
 static function poscursor(brw)  //kurzor pozícionálás
@@ -552,6 +548,18 @@ local prev:=sl_incremental
 
 
 ****************************************************************************
+static function _brwaux_unshift(brw)
+local s
+    if( brw:_shift_!=0 )
+        s:=eval(brw:skipBlock,brw:_shift_)
+        //? "unshift",brw:rowpos,brw:_shift_,s
+        brw:rowpos+=(s-brw:_shift_)
+        brw:rowpos:=min(brw:rowpos,brw:rowcount)
+        brw:rowpos:=max(brw:rowpos,1)
+        brw:_shift_:=0
+    end
+
+****************************************************************************
 static function _brwaux_scanlines(brw)
 
 // frissíti az invalid sorokat,
@@ -559,107 +567,102 @@ static function _brwaux_scanlines(brw)
 // de legalább SL_MIN db invalid sort ilyenkor is frissít,
 // visszaadja a frissített sorok számát
 
-local i,j
-local top,bottom
-local act:=brw:rowpos
-local count:=0 //a frissített sorok száma
-local mehet
+local top,bot,act
+local i,count:=0
+    
+    _brwaux_unshift(brw) //itt felesleges?
+    act:=brw:rowpos
 
-    //ha van eltolódás (még nem feldolgozott mozgás)
-    if( brw:_shift_!=0 )
-        eval(brw:skipBlock,brw:_shift_)
-        brw:_shift_:=0
-    end
-
-    //az első invalid sor keresése
-    i:=1
-    while( i<=len(brw:_invalid_) .and. brw:_invalid_[i]!=1 )
-        ++i
-    end
-    top:=i
+    top:=999
+    bot:=0
+    for i:=1 to brw:rowcount
+        if( brw:_invalid_[i]==1 )
+            top:=min(top,i)
+            bot:=max(bot,i)
+        end
+    next
+    //? "stabilize",top,bot
 
     //ha nincs invalid sor, akkor vissza
-    if( top>len(brw:_invalid_) )
-        return count
+    if( top>bot )
+        return NIL
     end
-
-    //az utolsó invalid sor keresése
-    i:=len(brw:_invalid_)
-    while( i>=1 .and. brw:_invalid_[i]!=1 )
-        --i
-    end
-    bottom:=i
 
     //frissítés 1. aktuális sor
     if( brw:_invalid_[act]==1 )
         _brwaux_display(brw,act)
-        count++
         brw:_invalid_[act]:=0
+        //?? str(act,3)
+        ++count
     end
 
     if( count>=SL_MIN .and. SL_INC .and. nextkey()!=0 )
-        return count
+        return NIL
     end
 
     //frissítés 2. felfelé top-ig
-    mehet:=.t.
-    while( mehet )
-
-        mehet:=(act>top .and. !(brw:hittop:=(eval(brw:skipBlock,-1)!=-1)))
-
-        if( mehet .and. brw:_invalid_[--act]==1)
-            _brwaux_display(brw,act)
-            count++
-            brw:_invalid_[act]:=0
+    while( act>top )
+        if( -1==eval(brw:skipBlock,-1) )
+            brw:hittop:=.f.
+            ++brw:_shift_
+            --act
+            if(brw:_invalid_[act]==1)
+                _brwaux_display(brw,act)
+                brw:_invalid_[act]:=0
+                //?? str(act,3)
+                ++count
+            end
+        else
+            brw:hittop:=.t.
+            exit
         end
 
         //ha közben billentyűleütés érkezett
         if( count>=SL_MIN .and. SL_INC .and. nextkey()!=0 )
-            brw:_shift_:=brw:rowpos-act
-            return count
+            //? "<",brw:rowpos,brw:_shift_
+            return NIL
         end
     end
-
-    //ha nem érte el a browse tetejét
+    
+    //ha nem érte el top-ot
     if( act>top )
+        brw:refreshall
+        brw:rowpos-=act-1  //_shift_ változatlan
         act:=1
         _brwaux_display(brw,act)
-        count++
-        brw:_invalid_[1]:=0
-        for i:=2 to bottom
-            brw:_invalid_[i]:=1
-        next
+        brw:_invalid_[act]:=0
+        //?? str(act,3)
+        count:=1
     end
 
     //frissítés 3. lefelé bottom-ig
-    mehet:=.t.
-    while( mehet )
-
-        mehet:=(act<bottom .and. !(brw:hitbottom:=(eval(brw:skipBlock,1)!=1)) )
-
-        if( mehet .and. brw:_invalid_[++act]==1 )
-            _brwaux_display(brw,act)
-            count++
-            brw:_invalid_[act]:=0
+    while( act<bot )
+        if( 1==eval(brw:skipBlock,1) )
+            brw:hitbottom:=.f.
+            --brw:_shift_
+            ++act
+            if(brw:_invalid_[act]==1)
+                _brwaux_display(brw,act)
+                brw:_invalid_[act]:=0
+                //?? str(act,3)
+                ++count
+            end
+        else
+            brw:hitbottom:=.t.
+            exit
         end
 
         //ha közben billentyűleütés érkezett
         if( count>=SL_MIN .and. SL_INC .and. nextkey()!=0 )
-            brw:_shift_:=brw:rowpos-act
-            return count
+            //? ">",brw:rowpos,brw:_shift_
+            return NIL
         end
     end
-
-    //ha a végén az aktuális sor lejjebb van, mint az adatok vége
-    if(act<bottom .and. act<brw:rowpos)
-        brw:rowpos:=act
-    end
-
-    //visszaugrás az eredeti helyre
-    eval(brw:skipBlock,brw:rowpos-act)
+    
+    _brwaux_unshift(brw) //vissza az eredeti helyre
 
     //nem elérhető sorok feltöltése üressel
-    for i:=1 to len(brw:_invalid_)
+    for i:=1 to brw:rowcount
         if(brw:_invalid_[i]==1)
             _brwaux_display(brw,i,.t.)
             brw:_invalid_[i]:=0
@@ -669,33 +672,33 @@ local mehet
     return count
 
 ****************************************************************************
-static function _brwaux_skippos(brw,n)  //n darab skip, előjeles irányba
+static function _brwaux_skippos(brw,s)  //s darab skip, előjeles irányba
 
-local shift
-local height,above
+local s1,s2,above
 
-    shift:=n+brw:_shift_
-    n:=eval(brw:skipBlock,shift)
+    s1:=s+brw:_shift_
+    s2:=eval(brw:skipBlock,s1)
     brw:_shift_:=0
     
-    if( 0<shift .and. n<shift )
-        //PGDN beleütközik a bottomba
-        //nem tudott eleget menni lefelé
-        //most az adatforrás alján áll
-        //ha ezt az ágat kiveszem, akkor 
-        //is elfogadhatóan működik
-        
-        height:=len(brw:_invalid_)             //ennyi sora van a browsenak
-        above:=-eval(brw:skipBlock,-height+1)  //hány sor van felette?
-        eval(brw:goBottomBlock)                //vissza az aljára (skip?)
-        brw:rowpos:=above+1
-        brw:refreshall()
+    if( s1!=s2 )
 
-    elseif( 1<=brw:rowpos+n .and. brw:rowpos+n<=len(brw:_invalid_) ) 
+        if( s1>0 )
+            //adatforrás vége
+            above:=-eval(brw:skipBlock,-brw:rowcount+1)  //hány adatsor van?
+            eval(brw:goBottomBlock)                      //vissza az aljára
+            brw:rowpos:=above+1
+            brw:refreshall()
+        else
+            //adatforrás eleje
+            brw:rowpos:=1
+            brw:refreshall()
+        end
+
+    elseif( 1<=brw:rowpos+s .and. brw:rowpos+s<=brw:rowcount ) 
 
         brw:_invalid_[brw:rowpos]:=1    //eredeti sor
-        brw:_invalid_[brw:rowpos+n]:=1  //új sor
-        brw:rowpos:=brw:rowpos+n
+        brw:_invalid_[brw:rowpos+s]:=1  //új sor
+        brw:rowpos:=brw:rowpos+s
 
     else
         //ha a sávkurzor kimegy a képernyőről,
@@ -703,10 +706,8 @@ local height,above
         //brw:_invalid_ állítása és a képernyő
         //görgetése a scrollban van
 
-        _brwaux_scrollbuff(brw,n)
+        _brwaux_scrollbuff(brw,s)
     end
-
-    return n==shift 
 
 
 ****************************************************************************

@@ -1,3 +1,2 @@
 -lpthread
 -rdynamic
--rpath-link $CCCDIR/usr/lib/$CCCBIN

@@ -17,7 +17,9 @@ for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLNK; done
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 echo -Wl,--end-group >>$RSPLNK
  
-cat $CCCDIR/usr/options/$CCCBIN/link.opt | envsubst >>$RSPLNK
+#cat $CCCDIR/usr/options/$CCCBIN/link.opt | envsubst >>$RSPLNK
+cat $CCCDIR/usr/options/$CCCBIN/link.opt  >>$RSPLNK
+echo -R$CCCDIR/usr/lib/$CCCBIN  >>$RSPLNK
 
 if ! c++ `cat $RSPLNK` 2>outlnk;  then
     cp outlnk error;

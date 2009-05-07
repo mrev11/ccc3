@@ -81,7 +81,7 @@ local t, n, ps, line1, args:=argv()
     ferase( pmtemp() )
     t:=split(t,chr(10))
         
-    line1:=t[1]
+    line1:=alltrim(t[1])
     while("  "$line1)
         line1::=strtran("  "," ")
     end

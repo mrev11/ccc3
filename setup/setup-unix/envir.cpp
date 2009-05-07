@@ -94,6 +94,11 @@ void _clp_putenv(int argno) //nincs NG-ben,  putenv("ID=value")
           str2bin(TOP());
           unsetenv( BINARYPTR(TOP()) ); //void!
           _retl( 1 );
+
+        #else //#elif defined _NETBSD_
+          str2bin(TOP());
+          unsetenv( BINARYPTR(TOP()) ); //void!
+          _retl( 1 );
         #endif
     }
  

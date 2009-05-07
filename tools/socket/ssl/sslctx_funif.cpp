@@ -70,7 +70,7 @@ void _clp_openssl_error_string(int argno)
 void _clp_sslctx_new(int argno)
 {
     CCC_PROLOG("sslctx_new",1);
-    SSL_METHOD *method=0;
+    const SSL_METHOD *method=0;
     if( ISNIL(1) )
     {
         method=SSLv23_method(); //kérdéses mi legyen a default
@@ -92,7 +92,7 @@ void _clp_sslctx_new(int argno)
         else if( 0==strcmp(_parb(1),"TLSv1_client") )  method=TLSv1_client_method();
     }
 
-    SSL_CTX *ctx=SSL_CTX_new( method );
+    SSL_CTX *ctx=SSL_CTX_new( (SSL_METHOD*) method );
     if( ctx )
     {
         _retp(ctx);    

@@ -2,8 +2,9 @@
 
 #BLD=gtk-suse9.bld
 #BLD=gtk-suse10.bld
-BLD=gtk-suse-kde-32.bld
+#BLD=gtk-suse-kde-32.bld
 #BLD=gtk-freebsd.bld
+BLD=gtk-netbsd.bld
 #BLD=gtk-hoary.bld
 #BLD=gtk-ubuntu.bld
 

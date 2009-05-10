@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "netbsd (5.0) port" #2009.05.07
+git-commit --all -m  "netbsd gtk" 2009.05.10
 
+
+# "netbsd (5.0) port" #2009.05.07
 # "netbsd compatibility"
 # "tbrowse stabilize javítva"
 # "terminal invalidate szinkronizálva"

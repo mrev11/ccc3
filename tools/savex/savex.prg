@@ -870,8 +870,7 @@ local binflag
                     fw:=memoread(temp+"W",.t.)
                 end
 
-                if( !empty(fs) .and. !empty(fw) .and.;
-                    if(binflag,fs,txt(fs))==if(binflag,fw,txt(fw)) )
+                if( if(binflag,fs,txt(fs))==if(binflag,fw,txt(fw)) )
 
                     if( empty(save_or_work) )
                         ftime:=getfiletime(s_work+fname)
@@ -898,6 +897,8 @@ local ext:=fname::fext::lower()+"."
 local x,n,binflag:=.f.
 
     if( fsize>256*1024 )
+        binflag:=.t.
+    elseif( fsize==0 )
         binflag:=.t.
     elseif( ext $ txt )
         binflag:=.f.

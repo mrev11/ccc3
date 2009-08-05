@@ -1,4 +1,7 @@
 
+1.1.14 (2009.07.19)
+  Figyel az érvénytelen mnemonic-okra (jtparam.setMenmonic-ban).
+
 1.1.13 (2009.03.15)
   A picturedocumnet-ben mindig be van állítva az R flag.
   Nincs értelme ui. az editált tartalmat template karakterekkel

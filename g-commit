@@ -4,9 +4,10 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "delempty" #2009.05.28
+git-commit --all -m "jterminal unknown mnemonic"  #2009.08.05
 
 
+# "delempty" #2009.05.28
 # "netbsd gtk" #2009.05.10
 # "netbsd (5.0) port" #2009.05.07
 # "netbsd compatibility"

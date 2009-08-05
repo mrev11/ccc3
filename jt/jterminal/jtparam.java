@@ -457,7 +457,16 @@ public int mnemonic()
     String mnemonic=(String)hash.get("mnemonic"); //default:0
     if( mnemonic!=null )
     {
-        return KeyStroke.getKeyStroke(mnemonic.toUpperCase()).getKeyCode();
+        KeyStroke ks=KeyStroke.getKeyStroke(mnemonic.toUpperCase());
+    
+        if( ks!=null )
+        {
+            return ks.getKeyCode();
+        }
+        else
+        {
+            System.out.println("unknown mnemonic: "+mnemonic);
+        }
     }
     return 0;
 }

@@ -150,6 +150,8 @@ local dlist:={}, n
                 end
             next
             exit
+        else
+            jtsocket():enqueue(rsp)
         end
     end
     

@@ -26,18 +26,27 @@ function jtlibversion()
     return JTLIBVERSION
 
 ******************************************************************************
-function jtversion()
+function jtversion(timeout)
 local rsp,dom,node
     jtsocket():send("<jtversion/>")
-    while( (rsp:=jtsocket():recv)!=NIL  )
+    while( !empty(rsp:=jtsocket():recv(timeout)) )
         dom:=xmlparserNew():parsestring(rsp)  
         node:=dom:content[1]
         if( node:type=="jtversion" )
-            return node:gettext
+            rsp:=node:gettext
+            exit
+        else
+            jtsocket():enqueue(rsp)
         end
     end
-    return ""
-
+    return rsp
+    
+// alkalmassá téve a ping funkcióra:
+//
+// rsp=="version"   OK
+// rsp==NIL         megszakadt a kapcsolat
+// rsp==""          timeout
+// kivétel          ha nem megfelelő a válasz formátuma
 
 ******************************************************************************
 function jtencoding(enc)
@@ -52,6 +61,8 @@ local rsp,dom,node
         node:=dom:content[1]
         if( node:type=="jtencoding" )
             return node:gettext //previous setting
+        else
+            jtsocket():enqueue(rsp)
         end
     end
     return ""

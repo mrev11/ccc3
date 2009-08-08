@@ -79,6 +79,8 @@ local rsp,dom,node
                 err:filename:=remfile 
                 break(err)
             end 
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 

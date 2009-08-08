@@ -398,21 +398,15 @@ public void buildvarlist()
 }
  
 //---------------------------------------------------------------------------
-private boolean close()
+private void close() //az event dispath thread-ben fut
 {
-    //jterminal.out.println("Closing:"+name); 
-
     if( isActionEnabled() )
     {
         jterm.removedlg(this); 
-        (new jtremove(this.wnd)).run(); //megszunteti az ablakot
         jterm.send("<destroy dialogid=\""+param.dialogid+"\"/>");
-        return true;
+        this.wnd.dispose();
     }
-
-    return false; //nincs megszuntetve
 }
-
  
 //---------------------------------------------------------------------------
 public void action(xmlcomponent source)

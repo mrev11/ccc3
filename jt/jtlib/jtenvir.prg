@@ -31,7 +31,7 @@ local rsp,dom,node,i,n,v
     //    <value>v</value>
     //  </jtenv>
 
-    if( (rsp:=jtsocket():recv)!=NIL )
+    while( (rsp:=jtsocket():recv)!=NIL )
 
         dom:=xmlparserNew():parsestring(rsp)  
         node:=dom:content[1]
@@ -45,10 +45,12 @@ local rsp,dom,node,i,n,v
                     v:=node:content[i]:gettext 
                 end
             next
+            return if(n==name,v,NIL)
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
-    return if(n==name,v,NIL)
 
 
 *****************************************************************************

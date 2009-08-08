@@ -1,7 +1,77 @@
 
-#define JTLIBVERSION  "1.2.06x-UTF8 (2008.05.20)" 
+#define JTLIBVERSION  "1.2.07-UTF8 (2009.08.08)" 
 
 #ifdef __HYSTORY__
+
+1.2.07 (2009.08.08)
+
+  jtdialog, jtsocket kiegészült egy queue-val.
+  A közvetlen válaszra váró jtsocket():recv helyek kezelik a queue-t.
+
+  Új paraméter: jtversion(timeout_msec). A szerver a jtversion hivással
+  észlelni tudja, ha a TCP kapcsolat másik oldalán nem a terminál van,
+  hanem csak egy némán várakozó proxy.
+
+    while(.t.)
+        msg:=dlg:getmessage(timeout1)
+
+        if( msg==NIL )
+            //a kapcsolat megszakadt,
+            //feltehetően a terminál kilépett
+            quit
+
+        elseif( msg=="" ) 
+            //getmessage timeout
+            //nem dolgoznak a terminállal
+
+            if( empty(jtversion(timeout2)) )
+                //nem válaszol, lehet, 
+                //hogy nem a terminál van a másik oldalon,
+                //csak egy némán várakozó proxy
+                quit
+            end
+        end
+    end
+
+  Üzenetek küldése a getmessage timeout-jában
+  ===========================================
+
+  A jterminal->jtlib message-ek 
+
+    1) jöhetnek az event dispatch threadből (action,destroy)
+    2) vagy lehetnek válasz egy szerver message-re (jtenv,jtversion,...)
+      
+  Az edt message-ek bármikor indulhatnak, ha a dialog nincs letiltva. 
+  A dialog action és reaction között le van tiltva, ezért egy action 
+  feldolgozása közben nem jöhet másik action vagy destroy.
+  Az edt message-eket a jtdialog.getmessage olvassa.
+
+  A válasz üzenetek csak kérdésre jönnek, ezeket a szerver a kérdés 
+  helyén megvárja (ezért nem jutnak be a getmessage-be), viszont várás 
+  közben véletlenszerűen beeshet egy action vagy destroy, amit a mostani
+  javítástól kezdve berakunk a getmessage sorába.
+
+  MEGJEGYZÉS: "véletlenszerű beesés" nem következhet be action feldolgozása 
+  közben, hanem csakis akkor, ha a getmessage timeoutjában (soronkívül) 
+  küldött message-re várjuk a választ (mint a példában jtversion).
+  
+  SZABÁLY: A getmessage timeoutjában csak olyan (jtlib->jterminal) message-et 
+  szabad küldeni, amire vagy egyáltalán nem jön válasz, vagy a válaszra várás 
+  kezeli a getmessage sorát. 
+
+  Pl:
+    jtelem.changetext       nem vár választ
+    jtgetenv                kezeli a sort
+    jtversion               kezeli a sort
+    jtencoding              kezeli a sort
+    jtdirlist               kezeli a sort
+    ...
+
+  A változtatás másodrendű fontosságú, ui. válasz nélküli message-eket
+  eddig is lehetett küdeni. A jtdirlist típusú üzeneteket viszont tipikusan 
+  akcióra adott válaszban használunk, nem pedig a timeoutban. De azért hátha.
+  Pl. így a jtversion-t lehet ping-nek használni.
+  
 
 1.2.06 (2008.05.20)
   jtslider kontroll.

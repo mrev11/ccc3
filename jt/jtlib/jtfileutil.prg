@@ -36,6 +36,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="makedir" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -57,6 +59,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="makedirs" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -78,6 +82,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="delete" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -99,6 +105,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="exists" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -120,6 +128,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="isfile" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -141,6 +151,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="isdirectory" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -163,6 +175,8 @@ local x,rsp,dom,node
         node:=dom:content[1]
         if( node:type=="rename" )
             return node:gettext=="true"
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 

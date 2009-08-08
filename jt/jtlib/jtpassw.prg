@@ -126,6 +126,8 @@ local rsp,dom,node,x
         node:=dom:content[1]
         if( node:type=="password" )
             return node:gettext
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 
@@ -191,6 +193,8 @@ local rsp,dom,node,x
         node:=dom:content[1]
         if( node:type=="signature" )
             return node:gettext
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 

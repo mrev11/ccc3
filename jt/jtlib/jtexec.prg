@@ -44,6 +44,8 @@ local rsp,dom,node,err,value
         elseif( node:type=="exitvalue" )
             value:=val(node:gettext)
             exit
+        else
+            jtsocket():enqueue(rsp)
         end
     end
     return value

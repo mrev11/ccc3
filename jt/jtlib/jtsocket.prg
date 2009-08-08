@@ -165,6 +165,10 @@ class jtsocket(object)
     attrib  connection
     method  socket          {|this|this:connection:fd} //compatibility
 
+    attrib  queue
+    method  enqueue
+    method  dequeue
+
 ****************************************************************************
 static function jtsocket.initialize(this,s) 
 local ss, ip, port, ctx
@@ -198,6 +202,8 @@ local ss, ip, port, ctx
     end
     #endif //SSL_SUPPORT
     
+    this:queue:={}
+    
     return this
 
 ****************************************************************************
@@ -214,7 +220,8 @@ local err, nbyte
         err:=socketerrorNew()
         err:operation:="jtsocket.send"
         err:description:="send failed"
-        err:subcode:=ferror()
+        err:subcode:=nbyte
+        err:args:={xx}
         break(err)
     end
     
@@ -266,6 +273,30 @@ local x, err
 
     return x
 
+****************************************************************************
+static function jtsocket.enqueue(this,x)
+local err
+    //? "ENQUEUE"
+    if( len(this:queue)>32 ) 
+        //támadás?
+        err:=apperrorNew()
+        err:operation:="jtsocket.enqueue"
+        err:description:="queue overflow"
+        err:args:=this:queue
+        break(err)
+    end
+    aadd(this:queue,x)
+
+****************************************************************************
+static function jtsocket.dequeue(this)
+local x
+    if( !empty(this:queue) )
+        //? "DEQUEUE"
+        x:=this:queue[1]
+        adel(this:queue,1)
+        asize(this:queue,len(this:queue)-1)
+    end
+    return x
 
 ****************************************************************************
 static function crc(x)

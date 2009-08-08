@@ -44,13 +44,13 @@ class jtdialog(jtelem)
     method  add
     method  xmlout
     method  send                {|this,x|jtsocket():send(x)}
-    method  recv                {|this,wtime|jtsocket():recv(wtime)}
+    method  recv
     method  show
     method  exit
     method  close
     method  getmessage
     method  response 
-    method  alert
+    method  alert               {|this,msg,opt|jtalert(msg,opt)}
 
     method  blklist
     method  varlist
@@ -77,6 +77,8 @@ static dialogid:=0
 
 function jtdialogIni(this,t,l,b,r)//compatibility
     return this:(jtdialog)initialize(t,l,b,r)
+
+
 
 ****************************************************************************
 static function jtdialog.add(this,item)
@@ -177,6 +179,13 @@ static function jtdialog.close(this)
     this:send('<close dialogid="'+this:dialogid+'"/>') 
     return NIL
 
+****************************************************************************
+static function jtdialog.recv(this,wtime)
+local msg:=jtsocket():dequeue
+    if( msg==NIL )
+        msg:=jtsocket():recv(wtime)
+    end
+    return msg
 
 ****************************************************************************
 static function jtdialog.getmessage(this,wtime)
@@ -369,20 +378,6 @@ local n,a:={}
     next
     return NIL
  
-
-****************************************************************************
-static function jtdialog.alert(this,msg,opt)
-local rsp,dom,node
-    this:send(jtalertNew(msg,opt):xmlout)
-    while( (rsp:=this:recv)!=NIL  )
-        dom:=this:parser:parsestring(rsp)  
-        node:=dom:content[1]
-        if( node:type=="alert" )
-            return val(node:gettext) 
-        end
-    end
-    return 0 
-    
 
 ****************************************************************************
 static function jtdialog.varinst(this,alias) 

@@ -50,6 +50,8 @@ local x,rsp,node,cert
             end
             cert+="-----END CERTIFICATE-----"+NL
             return cert
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 

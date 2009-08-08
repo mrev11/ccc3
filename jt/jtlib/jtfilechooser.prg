@@ -135,6 +135,8 @@ local choice:={},n
                 aadd(choice,node:content[n]:gettext )
             next
             exit
+        else
+            jtsocket():enqueue(rsp)
         end
     end
 

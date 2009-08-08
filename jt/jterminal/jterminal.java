@@ -36,7 +36,7 @@ import java.net.*;
 public class jterminal extends Thread { 
 //===========================================================================
 
-public static final String JTVERSION = "1.1.14 (2009.07.19)";
+public static final String JTVERSION = "1.1.15 (2009.08.08)";
 public static final String JTCOPYRIGHT = JTVERSION+" ComFirm";
  
 public static final String AUTOCRE_LOWER = "created_automatically";
@@ -56,7 +56,6 @@ private static ArrayList termlst=new ArrayList();
 private ArrayList dlglst=new ArrayList(); 
 
 public jtsocket sck;
-public jtmutex mutex=new jtmutex(); 
  
 //---------------------------------------------------------------------------
 public static void main(String[] args) throws Exception 
@@ -346,13 +345,6 @@ private void run1() throws Exception
 //---------------------------------------------------------------------------
 private void dispatch_message(Node command) throws Exception  
 {
-    mutex.lock();
-
-    //A message feldolgozás sorba van állítva,
-    //figyelni kell rá, hogy a mutex el legyen engedve,
-    //a mutexet vagy a message feldolgozás engedi el,
-    //vagy explicite itt kell elengedni.
-
     //A stack lebontas minden messagere vonatkozik,
     //akkor fut, ha a message megadott ablaknak szol.
 
@@ -370,7 +362,7 @@ private void dispatch_message(Node command) throws Exception
 
             if( ((jtdialog)o).param.dialogid.equals(dialogid) )
             {
-                jtdlgmsg r=new jtdlgmsg((jtdialog)o,command,mutex); //unlock
+                jtdlgmsg r=new jtdlgmsg((jtdialog)o,command);
                 SwingUtilities.invokeLater(r);
                 return;
             }
@@ -389,7 +381,6 @@ private void dispatch_message(Node command) throws Exception
                 SwingUtilities.invokeLater(r);
             }
         }
-        mutex.unlock();
         return;
     }
     
@@ -406,7 +397,6 @@ private void dispatch_message(Node command) throws Exception
 
     if( !mname.equals("jtmessage") || cname==null || pid==null )
     {
-        mutex.unlock();
         return;
     }
 
@@ -447,12 +437,11 @@ private void dispatch_message(Node command) throws Exception
 
     if( topdlg!=null )
     {
-        jtdlgmsg r=new jtdlgmsg(topdlg,command,mutex); //unlock
+        jtdlgmsg r=new jtdlgmsg(topdlg,command);
         SwingUtilities.invokeLater(r);
         return;
     }
 
-    mutex.unlock();
     return;
 }
 

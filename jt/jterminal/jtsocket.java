@@ -167,8 +167,10 @@ public void send(byte[] x, int length) throws Exception
         sckout.write(x,0,length);
     }
      
-    //jterminal.out.print(">>>>send:");
-    //jterminal.out.println( jterm.byte2char_ex(x) );
+    //jterminal.out.println();
+    //jterminal.out.print("!!!send: ");
+    //jterminal.out.print( jterm.byte2char_ex(x) );
+    //jterminal.out.flush();
 }
 
 //---------------------------------------------------------------------------
@@ -202,8 +204,10 @@ public byte[] recv() throws Exception
         return null;
     }
 
-    //jterminal.out.print(">>>>recv:");
-    //jterminal.out.println( jterm.byte2char_ex(x) );
+    //jterminal.out.println();
+    //jterminal.out.print("!!!recv: ");
+    //jterminal.out.print( jterm.byte2char_ex(x) );
+    //jterminal.out.flush();
  
     if( checksum(x)!=str2int(hdr2) )
     {

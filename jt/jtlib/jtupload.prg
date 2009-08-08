@@ -61,6 +61,8 @@ local fd,clen,rlen,wlen,nbyte,r
         elseif( node:type=="uploadbegin" )
             clen:=val(node:gettext)
             exit
+        else
+            jtsocket():enqueue(rsp)
         end
     end
     

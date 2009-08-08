@@ -29,24 +29,18 @@ implements Runnable
 
 private jtdialog dlg;
 private Node msg;
-private jtmutex mtx;
 
 //--------------------------------------------------------------------------- 
-jtdlgmsg(jtdialog d, Node m, jtmutex x)
+jtdlgmsg(jtdialog d, Node m)
 {
     dlg=d;
     msg=m;
-    mtx=x;
 }
 
 //--------------------------------------------------------------------------- 
 public void run()
 {
     dlg.message(msg);
-    if( mtx!=null )
-    {
-        mtx.unlock();
-    }
 }
 
 //--------------------------------------------------------------------------- 

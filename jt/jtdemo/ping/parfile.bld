@@ -1,0 +1,13 @@
+#-bccc2_jt
+#-bccc2_socket 
+#-bccc2_sslsocket 
+#-bccc2_xmldom
+#-bccc2_btbtx
+
+-bccc3_jt
+-bccc3_socket 
+-bccc3_sslsocket 
+-bccc3_xmldom
+-bccc3_btbtx
+
+#BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

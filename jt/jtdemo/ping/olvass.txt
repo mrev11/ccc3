@@ -1,0 +1,12 @@
+
+Símán elindítva a ping programot, kiírja a jterminal verzióját.
+
+Ha a listenerből indítjuk a ping-et, és a connect programmal
+kapcsolódunk rá, akkor:
+
+1)  A timeout letelése után jelzi, hogy nem a terminállal áll
+    kapcsolatban.
+
+2)  Ha a connect program action üzenetek ömlesztésével akarja
+    megfullasztani a szervert, akkor kivételt dob.
+        

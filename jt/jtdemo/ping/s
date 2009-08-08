@@ -1,0 +1,3 @@
+#!/bin/bash
+jtlisten.exe  8080 ping.exe -jtdebug
+

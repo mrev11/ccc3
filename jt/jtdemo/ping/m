@@ -1,0 +1,3 @@
+#!/bin/bash
+rm qed.exe
+bapp_unix_.b @parfile.bld

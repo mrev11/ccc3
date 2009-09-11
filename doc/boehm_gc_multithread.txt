@@ -1,0 +1,14 @@
+A websrv egy kicsi (kevesebb mint ezer sor) többszálú demó HTTP szerver. Minden új klienst új szál szolgál ki. Egy szál mindaddig fut, míg a kliens tartja a TCP kapcsolatot és 10 másodpercen belül újra kérdez.
+
+A websrv nagyon alkalmas a többszálú futtatókörnyezet stabilitásának tesztelésére. Egy tesztprogrammal folyamatosan wget klienseket indítok, egyszerre 8-10-et tartok életben, mindegyik tükröz egy websiteot, amiben PHP és CGI oldalak is vannak. A websrv így órákon keresztül folyamatosan ~6 szálon dolgozik, miközben többmillió requestet szolgál ki.
+
+A natív szemétgyűjtéssel már évek óta nem adódik hiba. Baj van viszont az (alternatív) Boehm-féle szemétgyűjtéssel.
+ 
+A boehmös websrv hibázik a CCC könyvtári asort függvényben. A CCC asort a C könyvtári qsort-on alapszik. A qsort-nak az a baja, hogy a rendezendő tömb elemeit _byteonként_ cseréli fel. Namost, ha a   tömb pointereket tartalmaz, és a gc olyan pillanatban néz egy ilyen pointert, amikor az éppen el van felezve, akkor a mark&sweep algoritmus mark része nem tud jól lefutni.
+ 
+Ha a qsortot saját implementációval helyettesítem, ami CCC valuekat nem pedig byteokat cserélget, akkor a hiba megszűnik. Részletesebben: Linuxon és FreeBSD 7.1-en Boehm-gc-vel, C könyvtári qsorttal hamar kijön a hiba. Saját qsorttal akármilyen hosszú teszteléssel sem jött ki hiba (eddig). Windowson a helyzet rosszabb, a többszálú Boehm gc sehogy sem stabil.
+
+A qsort hibáját könnyen ki lehet kerülni, de feltehető, hogy a mostani  irdatlan nagy könyvtárakban máshol is vannak ilyen lyukak. A végeredmény tehát, hogy a Boehm-gc nem alkalmazható többszálú programokban.  Kár érte. Talán úgy lehetne javítani a helyzeten, ha a libgc jobban integrálódna a compilerrel. 
+
+A CCC-ben alkalmazott Boehm gc csak egy kísérlet. Mondhatnám, hogy érdektelen, mert az éles alkalmazásokban úgyis a natív gc fut. Vannak viszont olyan projektek, amik a Boehm gc-re (libgc) alapoznak, mint a Mono és GCJ. Ezeknek saját szemétgyűjtésre kell áttérniük. 
+

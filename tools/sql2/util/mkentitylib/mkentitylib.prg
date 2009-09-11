@@ -92,6 +92,7 @@ local args:={*}
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
             if( 0!=run("tds2prg.exe "+srcname) )
+                ?? "ERROR: tds2prg.exe "+srcname, "failed"; ?
                 errorlevel(1)
                 quit
             end
@@ -117,6 +118,7 @@ local args:={*}
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
             if( 0!=run("ted2prg.exe "+srcname) )
+                ?? "ERROR: ted2prg.exe "+srcname, "failed"; ?
                 errorlevel(1)
                 quit
             end

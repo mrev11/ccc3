@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m " jtsocket:queue, jtversion(timeout)" #2009.08.08
+git-commit --all -m "mkentitylib errormessage" #2009.09.11
 
+# "jtsocket:queue, jtversion(timeout)" #2009.08.08
 # "jterminal unknown mnemonic"  #2009.08.05
 # "delempty" #2009.05.28
 # "netbsd gtk" #2009.05.10

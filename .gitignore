@@ -9,8 +9,8 @@ objbor*
 *.tmp
 *.nopack
 code_generated
-exe-ora
-exe-pg
+#exe-ora
+#exe-pg
 html
 dvi
 jpg

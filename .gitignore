@@ -74,6 +74,7 @@ usr/bin/linux/bti
 usr/bin/linux/build
 usr/bin/linux/dbfview
 usr/bin/linux/ddict2
+usr/bin/linux/delempty
 usr/bin/linux/delobj
 usr/bin/linux/delppo
 usr/bin/linux/dtree
@@ -85,6 +86,8 @@ usr/bin/linux/lower
 usr/bin/linux/mask
 usr/bin/linux/mklink
 usr/bin/linux/msk2say
+usr/bin/linux/oggedit
+usr/bin/linux/oggplay
 usr/bin/linux/pm
 usr/bin/linux/ppo2cpp
 usr/bin/linux/prg2ppo

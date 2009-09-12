@@ -11,6 +11,7 @@ objbor*
 code_generated
 #exe-ora
 #exe-pg
+regression
 html
 dvi
 jpg
@@ -111,6 +112,7 @@ usr/bin/freebsd/bti
 usr/bin/freebsd/build
 usr/bin/freebsd/dbfview
 usr/bin/freebsd/ddict2
+usr/bin/freebsd/delempty
 usr/bin/freebsd/delobj
 usr/bin/freebsd/delppo
 usr/bin/freebsd/dtree
@@ -122,6 +124,8 @@ usr/bin/freebsd/lower
 usr/bin/freebsd/mask
 usr/bin/freebsd/mklink
 usr/bin/freebsd/msk2say
+usr/bin/freebsd/oggedit
+usr/bin/freebsd/oggplay
 usr/bin/freebsd/pm
 usr/bin/freebsd/ppo2cpp
 usr/bin/freebsd/prg2ppo
@@ -140,11 +144,11 @@ usr/bin/freebsd/zg
 usr/bin/freebsd/zgrep
 
 #testdata
-tools/sql2/test/testdata_lib/a.prg
 #tools/sql2/test/testdata_lib/a.tds
-tools/sql2/test/testdata_lib/b.prg
 #tools/sql2/test/testdata_lib/b.tds
-tools/sql2/test/testdata_lib/c.prg
 #tools/sql2/test/testdata_lib/c.tds
+tools/sql2/test/testdata_lib/a.prg
+tools/sql2/test/testdata_lib/b.prg
+tools/sql2/test/testdata_lib/c.prg
 tools/sql2/test/testdata_lib/entitylib.testdata.prg
 

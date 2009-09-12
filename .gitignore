@@ -51,7 +51,7 @@ gccver.opt
 *.lj
 *.log
 
-*.gz
+#*.gz
 *.bz2
 *.zip
 
@@ -138,10 +138,10 @@ usr/bin/freebsd/zgrep
 
 #testdata
 tools/sql2/test/testdata_lib/a.prg
-tools/sql2/test/testdata_lib/a.tds
+#tools/sql2/test/testdata_lib/a.tds
 tools/sql2/test/testdata_lib/b.prg
-tools/sql2/test/testdata_lib/b.tds
+#tools/sql2/test/testdata_lib/b.tds
 tools/sql2/test/testdata_lib/c.prg
-tools/sql2/test/testdata_lib/c.tds
+#tools/sql2/test/testdata_lib/c.tds
 tools/sql2/test/testdata_lib/entitylib.testdata.prg
 

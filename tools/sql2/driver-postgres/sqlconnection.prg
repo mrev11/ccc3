@@ -29,6 +29,7 @@ class sqlconnection(object)
     attrib  __conhandle__
     attrib  __coninfo__
     attrib  __transactionid__
+    attrib  __isolationlevel__
     method  driver              {||"sql2.postgres"}
     method  version
     method  duplicate
@@ -55,6 +56,7 @@ static function sqlconnection.initialize(this,coninfo)
     //sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"set autocommit to off"))
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__:=0
+    this:__isolationlevel__:=ISOL_READ_COMMITTED
 
 #ifdef EMLEKEZTETO  //a Postgres autocommitról
     A Postgres 7.4-ben megszűnt a szerver oldali autocommit,
@@ -140,27 +142,33 @@ local err
     return err
 
 ******************************************************************************
-static function sqlconnection.sqlisolationlevel(this,level,flag)
-local stmt
+static function sqlconnection.sqlisolationlevel(this,numlevel,flag)
 
-    if( level==ISOL_READ_COMMITTED )
-        level:="READ COMMITTED"
+local stmt,txtlevel
+local previous_level:=this:__isolationlevel__
 
-    elseif( level==ISOL_SERIALIZABLE )
-        level:="SERIALIZABLE"
+    if( numlevel==NIL )
+        //csak lekérdezés
+        return previous_level
+
+    elseif( numlevel==ISOL_READ_COMMITTED )
+        txtlevel:="READ COMMITTED"
+
+    elseif( numlevel==ISOL_SERIALIZABLE )
+        txtlevel:="SERIALIZABLE"
 
     else
-        level:="UNSUPPORTED ISOLATION LEVEL"
+        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
     
     if( empty(flag) )
         //egy tranzakcióra
-        stmt:="set transaction isolation level "+level
+        stmt:="set transaction isolation level "+txtlevel
         this:sqlexec(stmt)
     else
         //a session-re
         this:sqlexec("rollback")
-        stmt:="set session characteristics as transaction isolation level "+level
+        stmt:="set session characteristics as transaction isolation level "+txtlevel
         this:sqlexec(stmt)
         sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
         this:__transactionid__++
@@ -172,7 +180,11 @@ local stmt
         #endif
     end
 
-    return NIL
+    if( !empty(flag) )
+        this:__isolationlevel__:=numlevel
+    end
+
+    return previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)

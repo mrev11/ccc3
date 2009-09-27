@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m ".gitignore"
+git-commit --all -m "Oracle SERIALIZABLE workaorund, handlerek nyilvántartása szinkronizálva" #2009.09.27
 
 # "mkentitylib errormessage" #2009.09.11
 # "jtsocket:queue, jtversion(timeout)" #2009.08.08

@@ -1,0 +1,62 @@
+
+BLOB-ot tartalmazó rekordokat teszek (insert) egy Oracle táblába.
+
+Módszer: 
+
+1)  Az insert utasításban a BLOB-ba az empty_blob() SQL függvény 
+    visszatérési értéke íródik.
+
+2)  Egy selecttel beolvasom az előbb kiírt sort,
+    ebből megkapom az előző üres blob handlerét,
+    azon keresztül be lehet írni a tényleges tartalmat. 
+    
+Ha az isolation level READ_COMMITTED, akkor prímán működik.
+Értsd: meg tudja ismételni a tranzakciót hiba nélkül 1000-szer.
+
+Jelenség:
+
+Ha az isolation level SERIALIZABLE, akkor a 258. tranzakcióban elszáll.
+Értsd: ugyanazt a tranzakciót ismételgeti, 257-szer sikeres, 258-szorra elszáll.
+
+Tüzetes vizsgálódás után az látszik, hogy a 2-beli select nem ad egy sort sem 
+(ORA-01403: no data found). Tehát formailag nincs hiba, csak a select eredménye 
+üres. Ez persze nyilvánvalóan rossz, hiszen éppen előzőleg volt berakva a sor.
+
+Próbálkozások:
+
+Az 1-beli insert után beteszek egy commit-ot, hogy még biztosabban ott
+legyen az a rohadt sor (ez persze csak egy kísérlet, ami az alkalmazás logikáját 
+elrontaná). Ilyen plusz commit-tal az a hiba jön a memowrite-ból, hogy a sor nincs 
+lockolva. (Szerintem ez is rendellenes, ui. miért volna kötelező lockolni?)
+Ha még a 2-beli selectet kiegészítem for update-tel (lock), akkor működik.
+Értsd meg tudja ismételni 1000-szer a tranzakciót.
+
+Megoldás(?):
+
+A memowrite-ban a "ORA-01403: no data found" hibát kicserélem
+"ORA-08177: can't serialize access for this transaction"-ra.
+A tranzakció ismétlésére felkészített program másodszorra sikeresen lefut.
+Legalábbis az eddigi tapasztalatok szerint. Kérdés, hogy lesznek-e további 
+hasonló esetek.
+
+
+
+Egyéb jelenségek a SERIALIZABLE témakörben
+==========================================
+
+A create table utasítás egyáltalán nem működik SERIALIZABLE módban.
+Emiatt az interfész átvált READ_COMMITTED-re, majd a create table 
+után visszavált. Ez a hibaüzenet:
+
+  Operation: _oci_executestatement
+  Description: ORA-00604: error occurred at recursive SQL level 1
+ORA-08177: can't serialize access for this transaction
+
+Említendő, hogy egyedül futó kliensprogramról van szó, tehát csak 
+az Oracle belső folyamatai között lehet szó versenyhelyzetről.
+
+Hasonlóan, néha egyszerű DML tranazkciók is elakadnak így,
+annak ellenére, hogy egyedül futnak. A hiba kezelését nehezíti, hogy 
+604-es hibakód jön, nem pedig 8177, amiről felismerhető a serial error.
+
+

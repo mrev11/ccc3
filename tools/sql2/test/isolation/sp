@@ -1,0 +1,11 @@
+#!/bin/bash
+m
+
+export ISOLATION_DB=P
+
+isol--del.exe
+isol--ins.exe
+
+#export SQLDEBUG=on
+test-"$1".exe  $2
+echo

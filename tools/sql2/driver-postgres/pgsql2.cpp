@@ -92,27 +92,41 @@ static struct{
     int       active;
     PGconn    *conhnd;
 } postgres_connection[MAX_CONNECTION];
-
+MUTEX_CREATE(mutex_con);
 
 static struct{
     int        conidx;
     PGresult  *result;
 } postgres_result[MAX_STATEMENT];
+MUTEX_CREATE(mutex_stm);
 
 
 //----------------------------------------------------------------------------
 static int postgres_init()
 {
-    int i;
-    for( i=0; i<MAX_CONNECTION; i++ )
+    MUTEX_LOCK(mutex_con);
+    MUTEX_LOCK(mutex_stm);
+    
+    static int initialized=0;
+    
+    if( !initialized  )
     {
-        postgres_connection[i].active=0;
+        int i;
+        for( i=0; i<MAX_CONNECTION; i++ )
+        {
+            postgres_connection[i].active=0;
+        }
+
+        for( i=0; i<MAX_STATEMENT; i++ )
+        {
+            postgres_result[i].conidx=-1;
+        }
+
+        initialized=1;
     }
 
-    for( i=0; i<MAX_STATEMENT; i++ )
-    {
-        postgres_result[i].conidx=-1;
-    }
+    MUTEX_UNLOCK(mutex_con);
+    MUTEX_UNLOCK(mutex_stm);
     return 1;
 }
 
@@ -169,15 +183,18 @@ static int verify_stmidx(int x)
 //----------------------------------------------------------------------------
 static int get_statement_handle(int conidx)  // üres stmidx, vagy error
 {
+    MUTEX_LOCK(mutex_stm);
     int i;
     for( i=0; i<MAX_STATEMENT; i++ )
     {
         if( postgres_result[i].conidx==-1 )
         {
             postgres_result[i].conidx=conidx; 
+            MUTEX_UNLOCK(mutex_stm);
             return i;
         }
     }
+    MUTEX_UNLOCK(mutex_stm);
 
     //ERROR
    
@@ -191,25 +208,30 @@ static int get_statement_handle(int conidx)  // üres stmidx, vagy error
 //----------------------------------------------------------------------------
 static void drop_statement_handle(int stmidx)
 {
+    MUTEX_LOCK(mutex_stm);
     if( postgres_result[stmidx].conidx!=-1 )
     {
         PQclear(postgres_result[stmidx].result);
         postgres_result[stmidx].conidx=-1;
     }
+    MUTEX_UNLOCK(mutex_stm);
 }
 
 //----------------------------------------------------------------------------
 static int get_connection_handle() // üres conidx, vagy error
 {
+    MUTEX_LOCK(mutex_con);
     int i;
     for( i=0; i<MAX_CONNECTION; i++ )
     {
         if( 0==postgres_connection[i].active )
         {
             postgres_connection[i].active=1;
+            MUTEX_UNLOCK(mutex_con);
             return i;
         }
     }
+    MUTEX_UNLOCK(mutex_con);
 
     //ERROR
     pusherror();
@@ -222,6 +244,7 @@ static int get_connection_handle() // üres conidx, vagy error
 //----------------------------------------------------------------------------
 static void drop_connection_handle(int conidx)
 {
+    MUTEX_LOCK(mutex_con);
     if( postgres_connection[conidx].active )
     {
         int i;
@@ -236,6 +259,7 @@ static void drop_connection_handle(int conidx)
         PQfinish(postgres_connection[conidx].conhnd);
         postgres_connection[conidx].active=0;
     }
+    MUTEX_UNLOCK(mutex_con);
 }
 
 

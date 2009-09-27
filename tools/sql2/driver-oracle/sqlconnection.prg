@@ -29,6 +29,7 @@ class sqlconnection(object)
     attrib  __conhandle__
     attrib  __coninfo__
     attrib  __transactionid__
+    attrib  __isolationlevel__
     method  driver              {||"sql2.oracle"}
     method  version
     method  duplicate
@@ -65,6 +66,7 @@ local pos,usr,psw,dbs
     usr:=coninfo
 
     this:__conhandle__:=sql2.oracle._oci_logon(usr,psw,dbs)
+    this:__isolationlevel__:=ISOL_READ_COMMITTED
     this:sqlexec("alter session set isolation_level=read committed")
     this:__transactionid__:=0
     return this
@@ -134,31 +136,40 @@ local err
     return err
 
 ******************************************************************************
-static function sqlconnection.sqlisolationlevel(this,level,flag)
-local stmt
+static function sqlconnection.sqlisolationlevel(this,numlevel,flag)
 
-    if( level==ISOL_READ_COMMITTED )
-        level:="READ COMMITTED"
+local stmt,txtlevel
+local previous_level:=this:__isolationlevel__
 
-    elseif( level==ISOL_SERIALIZABLE )
-        level:="SERIALIZABLE"
+    if( numlevel==NIL )
+        //csak lekérdezés
+        return previous_level
+
+    elseif( numlevel==ISOL_READ_COMMITTED )
+        txtlevel:="READ COMMITTED"
+
+    elseif( numlevel==ISOL_SERIALIZABLE )
+        txtlevel:="SERIALIZABLE"
 
     else
-        level:="UNSUPPORTED ISOLATION LEVEL"
+        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
 
     if( empty(flag) )
         //egy tranzakcióra
-        stmt:="set transaction isolation level "+level
+        stmt:="set transaction isolation level "+txtlevel
     else
         //a session-re
-        stmt:="alter session set isolation_level="+level
+        stmt:="alter session set isolation_level="+txtlevel
     end
 
     this:sqlexec(stmt)
     this:__transactionid__++
+    if( !empty(flag) )
+        this:__isolationlevel__:=numlevel
+    end
 
-    return NIL
+    return previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)

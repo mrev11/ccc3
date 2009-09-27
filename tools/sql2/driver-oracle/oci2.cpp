@@ -72,6 +72,7 @@ static struct {
     OCIServer  *srvhp;
     OCISession *usrhp;
 } ora_connection[MAX_CONNECTION];
+MUTEX_CREATE(mutex_con);
 
 
 static struct {
@@ -84,33 +85,39 @@ static struct {
     OCIDefine  **defnhpp;
     int        defncnt;
 } ora_statement[MAX_STATEMENT];
+MUTEX_CREATE(mutex_stm);
 
 
 //----------------------------------------------------------------------------
 static int ora_init()
 {
+    MUTEX_LOCK(mutex_con);
+    MUTEX_LOCK(mutex_stm);
+
     static int initialized=0;
     
-    if( initialized )
+    if( !initialized )
     {
-        return 0;
-    }
-    initialized=1;
-
-    //OCIInitialize(OCI_DEFAULT,0,0,0,0); 
-    OCIInitialize(OCI_THREADED,0,0,0,0); 
-    OCIEnvInit(&ora_envhp,OCI_DEFAULT,0,0);
+        //OCIInitialize(OCI_DEFAULT,0,0,0,0); 
+        OCIInitialize(OCI_THREADED,0,0,0,0); 
+        OCIEnvInit(&ora_envhp,OCI_DEFAULT,0,0);
  
-    int i;
-    for( i=0; i<MAX_CONNECTION; i++ )
-    {
-        ora_connection[i].active=0;
+        int i;
+        for( i=0; i<MAX_CONNECTION; i++ )
+        {
+            ora_connection[i].active=0;
+        }
+
+        for( i=0; i<MAX_STATEMENT; i++ )
+        {
+            ora_statement[i].conidx=-1;
+        }
+
+        initialized=1;
     }
 
-    for( i=0; i<MAX_STATEMENT; i++ )
-    {
-        ora_statement[i].conidx=-1;
-    }
+    MUTEX_UNLOCK(mutex_con);
+    MUTEX_UNLOCK(mutex_stm);
     return 1;
 }
 
@@ -187,53 +194,80 @@ static void ocierror(OCIError *errhp, int ociresult)
     char errbuf[1024];
     sb4  errcode=0;
     int  errseverity=0;
+
+    errbuf[0]=0;
+    OCIErrorGet(errhp,1,0,(sb4*)&errcode,(ub1*)errbuf,sizeof(errbuf),OCI_HTYPE_ERROR);
+    //printf("\n!!%s<<%d",errbuf,errcode);fflush(0);
+    
+    if( errcode==604 )
+    {
+        //ORA-00604: error occurred at recursive SQL level 1
+        //Ilyenkor a hibaüzenet kétsoros,
+        //és a második sor tartalmazza a tényleges hibát.
+        //Elő lehet-e azt szedni máshonnan, mint a szövegből?
+        //Van-e 2-nél is több soros hiba?
+
+        unsigned i;
+        for(i=0; i<sizeof(errbuf); i++ )
+        {
+            if( errbuf[i]=='\n' )
+            {
+                strcpy(errbuf,errbuf+i+1);
+                strcat(errbuf,"(604)");
+                errcode=atoi(errbuf+4);
+                //printf("\n!!!!%s<<%d\n",errbuf,errcode);
+                break;
+            }
+        }
+    }
+
+    for(unsigned i=0; i<sizeof(errbuf); i++)
+    {
+        if( errbuf[i]==0 || errbuf[i]=='\n' || errbuf[i]=='\r' )
+        {
+            errbuf[i]=0;
+            break;
+        }
+    }
  
     if( ociresult==OCI_SUCCESS )
     {
-        strcpy(errbuf,"Success");
         errseverity=0;
     }
     else if( (ociresult==OCI_ERROR) && (errhp!=0) )
     {
-        OCIErrorGet(errhp,1,0,(sb4*)&errcode,(ub1*)errbuf,sizeof(errbuf),OCI_HTYPE_ERROR);
         errseverity=ES_ERROR;
     }
     else if( ociresult==OCI_INVALID_HANDLE )
     {
-        strcpy(errbuf,"Invalid handle");
         errseverity=ES_ERROR;
     }
     else if( ociresult==OCI_SUCCESS_WITH_INFO )
     {
-        strcpy(errbuf,"Success with info");
         errseverity=ES_WARNING; 
     }
     else if( ociresult==OCI_NEED_DATA )
     {
-        strcpy(errbuf,"Need data");
         errseverity=ES_WARNING;
     }
     else if( ociresult==OCI_NO_DATA )
     {
-        strcpy(errbuf,"No data");
         errseverity=ES_WARNING;
     }
     else if( ociresult==OCI_STILL_EXECUTING )
     {
-        strcpy(errbuf,"Still executing");
         errseverity=ES_WARNING;
     }
     else if( ociresult==OCI_CONTINUE )
     {
-        strcpy(errbuf,"Continue");
         errseverity=ES_WARNING;
     }
     else
     {
-        strcpy(errbuf,"Unknown status");
         errseverity=ES_ERROR;
     }
     
+
     if( errcode==60 )
     {
         pushdeadlockerror();
@@ -329,6 +363,8 @@ static int verify_defn(int x, int defn)
 //----------------------------------------------------------------------------
 static int get_statement_handle(int conidx, char *stmt, int stmtlen)
 {
+    MUTEX_LOCK(mutex_stm);
+
     verify_conidx(conidx);
 
     int result=OCI_SUCCESS,i;
@@ -390,11 +426,14 @@ static int get_statement_handle(int conidx, char *stmt, int stmtlen)
                     }
                 }
 
+                MUTEX_UNLOCK(mutex_stm);
                 return i;
             }
             break;
         }
     }
+
+    MUTEX_UNLOCK(mutex_stm);
 
     //ERROR
     
@@ -415,6 +454,7 @@ static int get_statement_handle(int conidx, char *stmt, int stmtlen)
 //----------------------------------------------------------------------------
 static void drop_statement_handle(int stmidx)
 {
+    MUTEX_LOCK(mutex_stm);
     if( ora_statement[stmidx].conidx!=-1 )
     {
         if( ora_statement[stmidx].bindhpp )
@@ -440,12 +480,15 @@ static void drop_statement_handle(int stmidx)
  
         ora_statement[stmidx].conidx=-1;
     }
+    MUTEX_UNLOCK(mutex_stm);
 }
 
 
 //----------------------------------------------------------------------------
 static int get_connection_handle()
 {
+    MUTEX_LOCK(mutex_con);
+
     int result=OCI_SUCCESS, i;
 
     for( i=0; i<MAX_CONNECTION; i++ )
@@ -496,11 +539,13 @@ static int get_connection_handle()
     
             if( result==OCI_SUCCESS )
             {
+                MUTEX_UNLOCK(mutex_con);
                 return i;
             }
             break;
         }
     }
+    MUTEX_UNLOCK(mutex_con);
 
     //ERROR
     if( i>=MAX_CONNECTION  )
@@ -520,6 +565,7 @@ static int get_connection_handle()
 //----------------------------------------------------------------------------
 static void drop_connection_handle(int conidx)
 {
+    MUTEX_LOCK(mutex_con);
     if( ora_connection[conidx].active )
     {
         int i;
@@ -547,6 +593,7 @@ static void drop_connection_handle(int conidx)
 
         ora_connection[conidx].active=0;
     }
+    MUTEX_UNLOCK(mutex_con);
 }
  
 //----------------------------------------------------------------------------
@@ -1331,16 +1378,17 @@ void _clp__oci_memowrite(int argno) // (CONIDX,select,memodata) --> length
     {
         //ERROR 
         ocierror(ora_statement[stmtidx].errhp,result);
+        OCIDescriptorFree(lobloc,OCI_DTYPE_LOB);
+        drop_statement_handle(stmtidx);
         _clp_break(1);pop();
         _ret();
     }
     else
     {
+        OCIDescriptorFree(lobloc,OCI_DTYPE_LOB);
+        drop_statement_handle(stmtidx);
         _retni(length);
     }
-
-    OCIDescriptorFree(lobloc,OCI_DTYPE_LOB);
-    drop_statement_handle(stmtidx);
 
     CCC_EPILOG();
 }

@@ -1,3 +1,55 @@
+2009.09.27
+
+  Az sqlconnection objektum az (új) __isolationlevel__ attribútumban 
+  tárolja az utoljára beállított (session) levelt, amit most le lehet 
+  kérdezni az sqlisolationlevel metódussal.
+
+  oracle.tableentity:create-ban:
+    A table create előtt átvált READ_COMMITTED isolation levelre,
+    mert az Oracle table create nem működik SERIALIZABLE módban.
+    A table create után visszavált az eredeti isolation levelre.
+
+  tableentity:create-ban:
+    Oraclenél előbb a default utána a not null,
+    Postgresnél nem számít a sorrend.
+
+  ocierror-ban:
+    A hibakód és a hibaszöveg minden esetben kiolvasva,
+    a description attribútumba mindig a kiolvasott szöveg kerül.
+
+    Kezelve az "ORA-00604: error occurred at recursive SQL level 1" eset.
+    Ilyenkor a hibaüzenet kétsoros,
+    és a második sor tartalmazza a tényleges hibát.
+    Elő lehet-e azt szedni máshonnan, mint a szövegből?
+    Van-e 2-nél is több soros hiba?
+    Az eddig látott esetekben a 604-es hibát egy
+    "ORA-08177: can't serialize access for this transaction" hiba követi,
+    ezt kell előszedni a második sorból, hogy kezelhető legyen.
+
+  A blobok (memók) beírásakor a visszaolvasó select SERIALIZABLE módban néha 
+  "ORA-01403: no data found" hibát ad. Ilyenkor is segít az egész tranzakció 
+  ismétlése. Ezért a memowrite kicseréli a 1403-as hibát 8177-re.
+
+  Megj: 
+    Az Oracle serializable módban akkor is képes serial errort adni, 
+    ha egyedül fut egy program, azaz biztosan nincs konkurrencia.
+    Tapasztalat szerint ilyenkor a megismételt tranzakció lefut.
+    
+  sqlerror objektumok:  
+    Változott az sqldeadlockerror leszármazása, most két baseclass-a van,
+    sqllockerror, sqlserialerror. Tehát "recover e <sqlserialerror>" most 
+    a deadlockokat is elkapja.
+
+    A sqllockerror, sqlserialerror, sqldeadlockerror objektumok
+    canrerty mezeje .t.-re inicializálódik.
+
+
+  Mindkét könyvtárban a connection/statement handlerek nyilvántartása
+  szinkronizálva lett. Ugyanazon a connection-on keresztül egyszerre csak 
+  egy szál dolgozhat (így értelmes), de külön connection-okon keresztül
+  a szálak egyszerre is dolgozhatnak.
+
+
 2009.02.19
   sqlliteral kibővítve az array típusra:
     {a,b,c} -> (a,b,c)

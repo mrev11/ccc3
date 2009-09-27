@@ -20,6 +20,8 @@
 
 namespace sql2.oracle
 
+#include "sql.ch"
+
 #ifdef EMLEKEZTETO //indvar,hotflg,fldval
 
 indvar  : buffer+offs+0
@@ -309,19 +311,26 @@ static function tableentity.create(this)
 
 //Kérdés: dblinkeken a DDL utasítások nem megengedettek?
 
-local stmt,c,i,n,s,sep
+local stmt,c,i,n,s,sep,isol
+
+  begin
+    this:connection:sqlcommit
+    isol:=this:connection:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)
 
     stmt:="create table "+tabname_q(this)+"("
     for n:=1 to len(this:columnlist)
         c:=this:columnlist[n]
         sep:=if(n==1,"  "," ,")
         stmt+=crlf()+sep+c:expr+" "+c:sqltype
-        if( c:notnull==.t. )
-            stmt+=" not null "
-        end
         if( c:default!=NIL )
             stmt+=" default "+c:default
         end
+        if( c:notnull==.t. )
+            stmt+=" not null "
+        end
+        //Megj:
+        //Oraclenél előbb a default utána a not null.
+        //Postgresnél nem számít a sorrend.
     next
     stmt+=crlf()+")"
     this:connection:sqlexec(stmt)
@@ -342,7 +351,17 @@ local stmt,c,i,n,s,sep
         this:connection:sqlexec(stmt)
     next
     this:connection:__transactionid__++
-    return NIL
+
+  finally
+    this:connection:sqlcommit
+    this:connection:sqlisolationlevel(isol,.t.)
+  end
+
+#ifdef EMLEKEZTETO // create table in SERIALIZABLE mode
+Oracle-ben nem működik a create table, ha isolation level=SERIALIZABLE
+van beállítva. Ezért ideiglenesen át kell váltani ISOL_READ_COMMITTED-ra.
+'alter session' kell, 'set transaction' nem elég.
+#endif 
 
 #ifdef EMLEKEZTETO //implicit commit
 Az Oracle csinál egy implicit commit-ot minden DDL utasítás előtt 
@@ -760,16 +779,39 @@ static function memowrite(o,pos)
 local t:=o:__tableentity__
 local c:=t:columnlist[pos]
 local x:=c:eval(o)
-local lobini:="select "+c:expr+" from "+fromclause_0(t)+where_primarykey(t,o,.t.)
+local lobini:="select "+c:expr+" from "+fromclause_0(t)+where_primarykey(t,o)
+local err,err1
     sql2.oracle.sqldebug(lobini)
-    sql2.oracle._oci_memowrite(t:connection:__conhandle__,lobini,x)  //kiírt hossz
+    begin
+        sql2.oracle._oci_memowrite(t:connection:__conhandle__,lobini,x)  //kiírt hossz
+    recover err <sqlerror>
+        if(err:subcode==1403) //no data
+
+            //workaround:
+            //Itt elvileg nem lehetne "no data" hiba, mert tudható, hogy 
+            //benn van a selectált rekord, de SERIALIZABLE módban hibázik 
+            //az Oracle. Az sqlserialerror-nál szokásos ismétlés segíthet,
+            //ezért a hibát sqlerror-ról sqlserialerror-ra cseréljük.
+
+            err1:=sqlserialerrorNew()
+            err1:operation   := err:operation
+            err1:description := err:description
+            err1:gencode     := err:gencode 
+            err1:subcode     := err:subcode 
+            err1:severity    := err:severity
+            err1:canretry    := err:canretry
+            break(err1)
+        else
+            break(err) //eredeti hiba
+        end
+    end
     return x
 
 ****************************************************************************
 static function memoread(o,pos)
 local t:=o:__tableentity__
 local c:=t:columnlist[pos]
-local lobini:="select "+c:expr+" from "+fromclause_0(t)+where_primarykey(t,o,.t.)
+local lobini:="select "+c:expr+" from "+fromclause_0(t)+where_primarykey(t,o)
     sql2.oracle.sqldebug(lobini)
     return sql2.oracle._oci_memoread(t:connection:__conhandle__,lobini)
 

@@ -34,15 +34,7 @@ class sqllockerror(sqlerror)
 static function sqllockerror.initialize(this)
     this:(sqlerror)initialize
     this:description:="SQL2 lock error"
-    return this
-
-****************************************************************************
-class sqldeadlockerror(sqllockerror)
-    method initialize
-
-static function sqldeadlockerror.initialize(this)
-    this:(sqllockerror)initialize
-    this:description:="SQL2 deadlock error"
+    this:canretry:=.t.
     return this
 
 ****************************************************************************
@@ -52,6 +44,18 @@ class sqlserialerror(sqlerror)
 static function sqlserialerror.initialize(this)
     this:(sqlerror)initialize
     this:description:="SQL2 transaction serialization error"
+    this:canretry:=.t.
+    return this
+
+****************************************************************************
+class sqldeadlockerror(sqllockerror,sqlserialerror) //!
+    method initialize
+
+static function sqldeadlockerror.initialize(this)
+    this:(sqllockerror)initialize
+    this:(sqlserialerror)initialize
+    this:description:="SQL2 deadlock error"
+    this:canretry:=.t.
     return this
 
 ****************************************************************************

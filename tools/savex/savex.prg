@@ -415,7 +415,7 @@ local x,repeat:=.f.
     end
 
     aadd(rendez,{"By date-time",{||sortIdo(brw)}})
-    aadd(rendez,{"Bay name (default)",{||sortNev(brw)}})
+    aadd(rendez,{"By name (default)",{||sortNev(brw)}})
     aadd(rendez,{"By size",{||sortMeret(brw)}})
     brwMenu(brw,"Sort","Set order by name, time, size",rendez,"S")
 

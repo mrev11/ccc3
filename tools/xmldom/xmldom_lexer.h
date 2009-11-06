@@ -38,6 +38,10 @@
 
 #include <xmldom_parser.h>
 
+#ifdef _CCC3_
+#include <latin2.h>
+#endif
+
 DEFINE_METHOD(subsystem);
 DEFINE_METHOD(operation);
 DEFINE_METHOD(description);
@@ -80,7 +84,7 @@ class xmldom_lexer : public yyFlexLexer
     int eofflag;
     int debugflag;
 
-    int encoding; //0==UTF-8, 1==ISO-8859-1, más nincs támogatva
+    int encoding; //0==UTF-8, 1==ISO-8859-1, 2==ISO-8859-2, -1=ismeretlen
     char *text;
     int textsize;
     int buffersize;
@@ -155,30 +159,43 @@ class xmldom_lexer : public yyFlexLexer
         
         if( *text )
         {
-            //*token=strdup(text); //ez volt régen
+        #ifdef _CCC2_
+            *token=strdup(text);
+        #else  
+
             //printf("encoding=%d\n",encoding);
 
             if( encoding==0 ) //UTF-8 (default)
             {
                 *token=utf8_to_wchar(text,textsize,0);
             }
-            else if( encoding==1 ) //Latin-1
+
+            else if( encoding==2 ) //Latin-2
             {
                 *token=(wchar_t*)malloc((textsize+1)*sizeof(wchar_t));
                 int i;
                 for(i=0; i<textsize; i++)
                 {
-                   *(*token+i)=(wchar_t)*(text+i);
+                   *(*token+i)=(wchar_t)latin2[(unsigned)*(text+i)];
                 }
                 *(*token+i)=(wchar_t)0;
             }
 
-            //Az UTF-8-on kívül csak a Latin-1 van támogatva,
-            //mert azt egyszerűen át lehet alakítani. A Latin-2
-            //már bonyolultabb volna. A Latin-1 átalakítás is csak 
-            //nulladik közelítésben jó, pl. a szabvány szerint nincs 
-            //karakter 0x80 és 0x9f között, és az ilyeneket a szabvány 
-            //szerint ki kellene dobni. Ezzel itt nem foglalkozom.
+            else //if( encoding==1 ) //Latin-1 (és minden más)
+            {
+                *token=(wchar_t*)malloc((textsize+1)*sizeof(wchar_t));
+                int i;
+                for(i=0; i<textsize; i++)
+                {
+                   *(*token+i)=(wchar_t)*(text+i); //triviális 8bit -> 32bit
+                }
+                *(*token+i)=(wchar_t)0;
+            }
+
+            //Csak UTF-8, Latin-1 és Latin-2 támogatás van. 
+            //Minden más kódolás úgy konvertálódik, mint a Latin-1.
+            //Nem foglalkozunk a szabvány szerint érvénytelen kódokkal.
+        #endif
         }
         return id;
     }
@@ -209,9 +226,16 @@ class xmldom_lexer : public yyFlexLexer
         {
             encoding=1;
         }
+        else if( strcasecmp("ISO-8859-2",enc)==0 )
+        {
+            encoding=2;
+        }
         else
         {
+        #ifdef _CCC3_
             printf("Encoding not supported: %s\n",enc);
+        #endif
+            encoding=-1;
         }
     }
     

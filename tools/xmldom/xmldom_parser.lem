@@ -119,10 +119,10 @@ content(L) ::= content(R) node(N).{
 node(N) ::= LPAR QM SYMBOL(S) attrlist(A) QM RPAR.{
     //print(">>NODE?");
     VALUE *LST=TOP();
-    string(L"?");stringn(S);free(S);add();_clp_xmlnodenew(1);
+    string(CHRLIT("?"));stringn(S);free(S);add();_clp_xmlnodenew(1);
     dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
 
-    dup();string(L"encoding");_o_method_getattrib.eval(2);
+    dup();string(CHRLIT("encoding"));_o_method_getattrib.eval(2);
     if( TOP()->type==TYPE_STRING )
     {
         str2bin(TOP());
@@ -149,10 +149,19 @@ node(N) ::= LPAR SYMBOL(S) attrlist(A) SLASH RPAR.{
 
 node(N) ::= LPAR SYMBOL(S1) attrlist(A) RPAR content(C) LPAR SLASH SYMBOL(S2) RPAR.{
     //print(">>NODE2");
+
+  #ifdef _CCC2_
+    if( strcmp(S1,S2) )
+  #else
     if( wcscmp(S1,S2) )
+  #endif
     {
         char desc[256];
+      #ifdef _CCC2_
+        char *sym=strdup(S2);
+      #else
         char *sym=wchar_to_utf8(S2,wcslen(S2),0);
+      #endif
         sprintf(desc,"tag mismatch (%s) near #line %d",sym,lexer->lineno());
         free(sym);
         _clp_xmltagerrornew(0);
@@ -181,7 +190,7 @@ node(N) ::= TEXT(T).{
     //print(">>TEXT");
     VALUE *LST=TOP();
     push_symbol(LST);
-    string(L"#TEXT");_clp_xmlnodenew(1);
+    string(CHRLIT("#TEXT"));_clp_xmlnodenew(1);
     dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
     _clp_aadd(2);pop();
     push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();
@@ -192,7 +201,7 @@ node(N) ::= CDATA(T).{
     //print(">>CDATA");
     VALUE *LST=TOP();
     push_symbol(LST);
-    string(L"#CDATA");_clp_xmlnodenew(1);
+    string(CHRLIT("#CDATA"));_clp_xmlnodenew(1);
     dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
     _clp_aadd(2);pop();
     push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();

@@ -1,4 +1,35 @@
 
+2009.11.05 -- 1.3.01
+  ISO-8859-2 (Latin-2) támogatás.
+  
+  CCC2
+    Byte-ok és karakterek között nem teszünk különbséget, 
+    ezért nincs semmiféle konverzió.
+    
+  CCC3 
+    Az elemzés eredményeként keletkező DOM mindig Unicode stringeket 
+    tartalmaz (mivel a CCC3 kizárólag Unicode stringekkel dolgozik). 
+    Az alábbiak szerint konvertál Unicodera:
+
+      UTF-8      : ez default, ha az XML-ben nincs más előírva
+      ISO-8859-1 : (Latin-1) triviális 8-bit -> 32-bit konverzió
+      ISO-8859-2 : (Latin-2) befordított kódtábla alapján
+      Egyéb      : minden egyéb úgy konvertálódik, mint a Latin-1
+      
+  Megjegyzés:
+    Az XML elemző (csakúgy, mint a CCC elemző) bytesorozaton működik, 
+    és csak a Flex elemzés után kerül sor (kizárólag) a szövegtartalmakban
+    a byte->karakter konverzióra. Ezért az XML tag- és attribútumnevek
+    (csakúgy, mint a CCC azonosítók) csak ASCII kódokat tartalmazhatnak 
+    (eltérően pl. a Jávától).
+
+2009.11.05 -- 1.3.00
+  CCC2 és CCC3 kód egységesítve.
+    A CCC2 base64.cpp átkerült az alapkönyvtárba.
+    compat_ccc3.h további makrókkal bővült.
+  Osztálydefiníciók class utasítással.
+  Nincs szándékos változtatás működésben és az API-ban.
+
 2007.10.24 -- 1.2.03
   _xmldom_parser_parseinput javítva: bin2str helyett str2bin
 

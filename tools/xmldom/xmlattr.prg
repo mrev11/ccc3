@@ -18,31 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static clid_xmlattrib:=xmlattribRegister()
+******************************************************************************
+class xmlattrib(object)
+    method  initialize
+    attrib  name
+    attrib  value
 
-****************************************************************************
-function xmlattribClass() 
-    return clid_xmlattrib
-
-****************************************************************************
-static function xmlattribRegister() 
-local clid:=classRegister("xmlattrib",{objectClass()})
-    classMethod(clid,"initialize",{|this,n,v|xmlattribIni(this,n,v)})
-    classAttrib(clid,"name")  
-    classAttrib(clid,"value")  
-    return clid
-
-****************************************************************************
-function xmlattribNew(name,value) 
-local clid:=xmlattribClass()
-    return objectNew(clid):initialize(name,value)
-
-****************************************************************************
-function xmlattribIni(this,name,value) 
-    objectIni(this)
+******************************************************************************
+static function xmlattrib.initialize(this,name,value)
+    this:(object)initialize(this)
     this:name:=name
     this:value:=value
     return this
-    
 
-****************************************************************************
+******************************************************************************

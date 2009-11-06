@@ -13,6 +13,7 @@ CCC2 környezetben is szükség van:
     tools/socket
     tools/sql2
     tools/websrv
+    tools/xmldom
     tools/xmlrpc
     tools/xmlrpc-framework
     tools/xstart

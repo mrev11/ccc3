@@ -18,36 +18,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static clid_xmlnode:=xmlnodeRegister()
- 
 ****************************************************************************
-function xmlnodeClass() 
-    return clid_xmlnode
+class xmlnode(object)
 
-****************************************************************************
-static function xmlnodeRegister() 
-local clid:=classRegister("xmlnode",{objectClass()})
-    classMethod(clid,"initialize",{|this,type|xmlnodeIni(this,type)})
-    classMethod(clid,"addattrib",{|this,x|aadd(this:attrib,x)})
-    classMethod(clid,"addcontent",{|this,x|aadd(this:content,x)})
-    classMethod(clid,"getattrib",{|this,a|getattrib(this,a)})
-    classMethod(clid,"gettext",{|this|gettext(this)})
-    classMethod(clid,"xmlout",{|this|xmlout(this)})
-    classAttrib(clid,"type")  
-    classAttrib(clid,"attrib")  
-    classAttrib(clid,"content")  
-    return clid
-
+    method  initialize
+    method  addattrib       {|this,x|aadd(this:attrib,x)}
+    method  addcontent      {|this,x|aadd(this:content,x)}
+    method  getattrib
+    method  gettext
+    method  xmlout
+    attrib  type
+    attrib  attrib
+    attrib  content
 
 ****************************************************************************
-function xmlnodeNew(type) 
-local clid:=xmlnodeClass()
-    return objectNew(clid):initialize(type)
+static function xmlnode.initialize(this,type) 
 
-****************************************************************************
-function xmlnodeIni(this,type) 
-
-    objectIni(this)
+    this:(object)initialize(this)
 
     this:type:=type
     this:attrib:={}
@@ -55,9 +42,8 @@ function xmlnodeIni(this,type)
 
     return this
 
-
 ****************************************************************************
-static function getattrib(this,attrname)
+static function xmlnode.getattrib(this,attrname)
 local attrval
 local x:=ascan(this:attrib,{|a|a:name==attrname})
     if( x>0 )
@@ -66,9 +52,8 @@ local x:=ascan(this:attrib,{|a|a:name==attrname})
     end
     return attrval
 
-
 ****************************************************************************
-static function gettext(this)
+static function xmlnode.gettext(this)
 local i, c, x:=""
     for i:=1 to len(this:content)
         c:=this:content[i] 
@@ -78,9 +63,8 @@ local i, c, x:=""
     next
     return x
 
-
 ****************************************************************************
-static function xmlout(this) 
+static function xmlnode.xmlout(this) 
 local n
 
     if( this:type=="#ROOT" )
@@ -122,7 +106,5 @@ local n
             ? "</"+this:type+">"
         end
     end
-    return NIL
-
 
 ****************************************************************************

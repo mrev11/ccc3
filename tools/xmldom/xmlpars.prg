@@ -18,36 +18,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static clid_xmlparser:=xmlparserRegister() 
+
 
 ****************************************************************************
-function xmlparserClass() 
-    return clid_xmlparser
+class xmlparser(object)
+
+    method  initialize
+    method  parsestring
+    method  parsefile
+    method  parse           {|t|t:parsefile(t:file)}
+    attrib  file
+    attrib  entityconv
+    attrib  debug
+    attrib  processblock
+    method  process         {|this,node|eval(this:processblock,node)}
 
 ****************************************************************************
-static function xmlparserRegister() 
-local clid:=classRegister("xmlparser",{objectClass()})
-    classMethod(clid,"initialize",{|this,f|xmlparserIni(this,f)})
-    classMethod(clid,"parsestring",{|t,s|parsestring(t,s)})  
-    classMethod(clid,"parsefile",{|t,f|parsefile(t,f)})  
-    classMethod(clid,"parse",{|t|parsefile(t,t:file)})  
-    classAttrib(clid,"file")  
-    classAttrib(clid,"entityconv")  
-    classAttrib(clid,"debug")  
-    classAttrib(clid,"processblock")  
-    classMethod(clid,"process",{|this,node|eval(this:processblock,node)})  
-    return clid
-
-****************************************************************************
-function xmlparserNew(f) 
-local clid:=xmlparserClass()
-    return objectNew(clid):initialize(f)
-
-****************************************************************************
-function xmlparserIni(this,f) 
+static function xmlparser.initialize(this,f) 
 local n,name,value,e
 
-    objectIni(this)
+    this:(object)initialize(this)
 
     this:file:=f
     this:entityconv:=.f.
@@ -92,7 +82,7 @@ local n,name,value,e
 
 
 ****************************************************************************
-static function parsefile(this,f)
+static function xmlparser.parsefile(this,f)
 local xml,lst,fd,e
 
     if( valtype(f)$"CX" )
@@ -122,7 +112,7 @@ local xml,lst,fd,e
     return xml
 
 ****************************************************************************
-static function parsestring(this,s)
+static function xmlparser.parsestring(this,s)
 local inp,xml,lst
 
     if( valtype(s)=="C" )

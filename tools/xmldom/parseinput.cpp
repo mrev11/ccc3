@@ -38,12 +38,12 @@ void _clp__xmldom_parser_parseinput(int argno)
     xmldom_lexer *lexer=0;
     if( ISBINARY(2) )
     {
-        lexer=new xmldom_lexer(_parb(2)); //string-ből olvas
+        lexer=new xmldom_lexer(_parb(2),_parblen(2)); //string-ből olvas
     }
     else if( ISSTRING(2) )
     {
         str2bin(base+1); //2007.10.24 -- 1.2.03
-        lexer=new xmldom_lexer(_parb(2)); //string-ből olvas
+        lexer=new xmldom_lexer(_parb(2),_parblen(2)); //string-ből olvas
     }
     else if( ISNUMBER(2) )
     {

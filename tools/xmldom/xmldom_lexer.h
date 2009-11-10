@@ -52,7 +52,7 @@ DEFINE_METHOD(args);
 DEFINE_METHOD(process);
 
 #define BUFINC  1024
-
+#define ZEROCH  '@'  //ezt rakja be 0 helyett
 
 class xmldom_lexer : public yyFlexLexer
 {
@@ -62,7 +62,15 @@ class xmldom_lexer : public yyFlexLexer
     {
         if( inputfd>=0 )
         {
-            return read(inputfd,buf,maxsiz);
+            int nbyte=read(inputfd,buf,maxsiz);
+            for(int i=0; i<nbyte; i++)
+            {
+                if( buf[i]==0 )
+                {
+                    buf[i]=ZEROCH;
+                }
+            }
+            return nbyte;
         }
         else if( inputptr!=0 && *inputptr!=0 )
         {
@@ -78,6 +86,7 @@ class xmldom_lexer : public yyFlexLexer
   public:
 
     int inputfd;
+    char *inputbuf;
     char *inputptr;
     char *inputfspec;
     int entityconversionflag;
@@ -203,6 +212,7 @@ class xmldom_lexer : public yyFlexLexer
     void init()
     {
         inputfd=-1;
+        inputbuf=0;
         inputptr=0;
         inputfspec=0;
         entityconversionflag=0;
@@ -245,21 +255,29 @@ class xmldom_lexer : public yyFlexLexer
         inputfd=fd;
     }
 
-    xmldom_lexer(char *ptr)
+    xmldom_lexer(char *ptr, int size)
     {
         init();
-        inputptr=ptr;
+
+        inputbuf=(char*)malloc(size+1);
+        for(int i=0; i<size; i++)
+        {
+            inputbuf[i]=ptr[i]?ptr[i]:ZEROCH;
+        }
+        inputbuf[size]=0;
+        inputptr=inputbuf;
     }
 
     ~xmldom_lexer()
     {
         free(text);
-        
+        free(inputbuf);
+
         //Flex hiba javítása.
         //A Flex nem szabadítja fel az alábbi buffert:
         //yy_start_stack protected member az yyFlexLexer osztályban,
         //és elfedi a static yy_start_stack külső változót (zavaros).
-        
+
         if( yy_start_stack )
         {
             free(yy_start_stack);

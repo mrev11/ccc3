@@ -25,6 +25,12 @@ local dir:=directory(path+dirsep()+fullmask(),"DL")
         elseif( ".."==name )
             //kihagy
 
+        elseif( ".git"==name )
+            //kihagy
+
+        elseif( ".svn"==name )
+            //kihagy
+
         elseif( !"D"$attr )
             cnt++ //file
 

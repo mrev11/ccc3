@@ -1,7 +1,7 @@
 
 2009.11.10 -- 1.3.03
   Védekezés az inputon előforduló 0 byte ellen.
-  Az xmldom_lexer.h-ban definiált ZEROCH (jelenleg '@') byteot 
+  Az xmldom_lexer.h-ban definiált ZEROCH (jelenleg '?') byteot 
   helyettesíti be filé és string inputnál egyaránt.
 
 2009.11.05 -- 1.3.01

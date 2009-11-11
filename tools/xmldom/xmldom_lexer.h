@@ -52,7 +52,7 @@ DEFINE_METHOD(args);
 DEFINE_METHOD(process);
 
 #define BUFINC  1024
-#define ZEROCH  '@'  //ezt rakja be 0 helyett
+#define ZEROCH  '?'  //ezt rakja be 0 helyett
 
 class xmldom_lexer : public yyFlexLexer
 {

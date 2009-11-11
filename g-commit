@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git-add .
 
-git-commit --all -m "xmldom: vedekezes az inputon elofordulo 0 byte ellen" #2009.11.10
+git-commit --all -m "xmldom_lexer->getnext üres tokenekre javítva" #2009.11.11
 
+# "xmldom: vedekezes az inputon elofordulo 0 byte ellen" #2009.11.10
 # "xmldom egységesítés, latin-2 támogatás" #2009.11.07
 # "Oracle SERIALIZABLE workaorund, handlerek nyilvántartása szinkronizálva" #2009.09.27
 # "mkentitylib errormessage" #2009.09.11

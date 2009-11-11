@@ -82,21 +82,21 @@ local n,name,value,e
 
 
 ****************************************************************************
-static function xmlparser.parsefile(this,f)
+static function xmlparser.parsefile(this,file)
 local xml,lst,fd,e
 
-    if( valtype(f)$"CX" )
-        fd:=fopen(this:file)
+    if( valtype(file)$"CX" )
+        fd:=fopen(file)
         if( fd<0 )
             e:=fnferrorNew()
             e:operation:="xmlpars:parsefile"
             e:description:="open failed"
-            e:filename:=f
+            e:filename:=file
             e:oscode:=ferror()
             break(e)
         end
     else
-        fd:=f
+        fd:=file
     end
 
     lst:=_xmldom_parser_parseinput(this,fd)
@@ -105,7 +105,7 @@ local xml,lst,fd,e
         xml:content:=lst[1]
     end
 
-    if( valtype(f)=="C" )
+    if( valtype(file)=="C" )
         fclose(fd)
     end
 

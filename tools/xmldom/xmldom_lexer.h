@@ -52,7 +52,10 @@ DEFINE_METHOD(args);
 DEFINE_METHOD(process);
 
 #define BUFINC  1024
+
 #define ZEROCH  '?'  //ezt rakja be 0 helyett
+//#define ZEROCH   0   //eredeti állapot
+
 
 class xmldom_lexer : public yyFlexLexer
 {
@@ -97,6 +100,7 @@ class xmldom_lexer : public yyFlexLexer
     char *text;
     int textsize;
     int buffersize;
+    int textcat;
 
 
     int yylex(); //Flex definiálja, de nem deklarálja.
@@ -112,6 +116,7 @@ class xmldom_lexer : public yyFlexLexer
         }
         memcpy(text+textsize,txt,len+1);
         textsize+=len;
+        textcat=1;
     }
 
     void cat(const char *txt)
@@ -123,6 +128,7 @@ class xmldom_lexer : public yyFlexLexer
         }
         memcpy(text+textsize,txt,len+1);
         textsize+=len;
+        textcat=1;
     }
 
 
@@ -150,6 +156,7 @@ class xmldom_lexer : public yyFlexLexer
             text=(char*)realloc(text,buffersize=BUFINC);
         }
         textsize=0;
+        textcat=0;
         *text=0;
 
 
@@ -166,7 +173,12 @@ class xmldom_lexer : public yyFlexLexer
             printf("LEX %2d [%s]\n",id,text);
         }
         
-        if( *text )
+        //ahol elvileg text is tartozik/tartozhat a tokenhez,
+        //ott nem szabad null pointert adni a token helyett,
+        //akkor sem, ha a text üres (üres stringet kell adni)
+
+        //if( *text ) //rossz
+        if( textcat ) //2009.11.11
         {
         #ifdef _CCC2_
             *token=strdup(text);
@@ -221,6 +233,7 @@ class xmldom_lexer : public yyFlexLexer
         encoding=0;
         text=(char*)malloc(buffersize=BUFINC);
         textsize=0;
+        textcat=0;
         *text=0;
     }
     

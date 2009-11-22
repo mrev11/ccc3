@@ -5,4 +5,4 @@
 #   módosított fájlokat visszacsinálja
 #   de nem törli az új fájlokat
 
-git-checkout .
+git checkout .

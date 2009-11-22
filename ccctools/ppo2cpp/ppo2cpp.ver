@@ -1,4 +1,7 @@
 
+2009.11.18 -- 5.0.14
+  UTF-8 ellenőrzés az <<X>>...<<X>> stringekben.
+
 2009.04.28 -- 5.0.13
   Vararg API kibővítve.
   Az előző (2009.04.22) módosítás (1) része visszavéve.

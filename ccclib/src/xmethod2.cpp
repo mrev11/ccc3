@@ -23,7 +23,7 @@
 #include <string.h>
 #include <cccapi.h>
 
-//A classid<->slot cache kezelést szinkroniálni kell.
+//A classid<->slot cache kezelést szinkronizálni kell.
 //
 //Az xmethod modulban a különböző típusú metódus osztályokat
 //egymástól függetlenül definiáltuk (kompatibilitási okokból),

@@ -125,7 +125,7 @@ extern VALUE ststackbuf[];
 //Több szál esetén a pop()-> felhasználása tilos,
 //ezért pop() visszatérése VALUE*-ról void-ra változott.
 //Hogy a compiler kiszűrhesse a rossz POP()-> használatot,
-//ideiglebesen POP-ot pop-ra preprocesszáljuk.
+//ideiglenesen POP-ot pop-ra preprocesszáljuk.
 
 #define POP()      (pop())
 //#define POP()      (--stack)

@@ -1,3 +1,7 @@
+2009.11.30
+  class.prg   : runtime error, ha a metódus cast attribútumra vonatkozik
+  valtype.cpp : valtype(@x) értéke "U" (a korábbi "" helyett) 
+
 2009.01.20
   bovitett simplehash osztaly
 

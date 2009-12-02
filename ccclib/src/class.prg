@@ -342,21 +342,31 @@ local item:=hash[hashidx], err
 
 ******************************************************************************
 function __findslot_c(clid,slotname,classname,hashcode)
-local clid1, err
+local clid1,blk,err
     if( 0==(clid1:=classIDByName(classname)) )
         err:=errorNew()
         err:description:="'"+bin2str(classname)+"' "+@"not a valid classname"
         err:operation:=className(clid)+":("+bin2str(classname)+")"+bin2str(slotname)
         break(err)
     end
-    return __findslot(clid1,slotname,hashcode)
+
+    blk:=__findslot(clid1,slotname,hashcode)
+
+    if( !valtype(blk)=="B" )
+        err:=errorNew()
+        err:description:=@"no exported method"
+        err:operation:=className(clid)+":("+bin2str(classname)+")"+bin2str(slotname)
+        break(err)
+    end
+
+    return blk
 
  
 ******************************************************************************
 function __findslot_s(clid,slotname,classname,hashcode)
 
 local clid1,baseid,i
-local hash,hashidx,err
+local hash,hashidx,blk,err
  
     if( 0==(clid1:=classIDByName(classname)) )
         err:=errorNew()
@@ -371,7 +381,14 @@ local hash,hashidx,err
         hash:=getclsdef(baseid[i])[CLASS_HASHTAB]
         hashidx:=hash_index(hash,slotname,hashcode)
         if( hash[hashidx]!=NIL )
-            return hash[hashidx][2] //methblk/attridx
+            blk:=hash[hashidx][2] //methblk/attridx
+            if( !valtype(blk)=="B" )
+                err:=errorNew()
+                err:description:=@"no exported method"
+                err:operation:=className(clid)+":(super@"+bin2str(classname)+")"+bin2str(slotname)
+                break(err)
+            end
+            return blk
         end
     next
 
@@ -386,7 +403,7 @@ local hash,hashidx,err
 ******************************************************************************
 function __findslot_p(clid,slotname,prntname,classname,hashcode)
 
-local clid0,clid1,err
+local clid0,clid1,blk,err
  
     if( 0==(clid0:=classIDByName(classname)) )
         err:=errorNew()
@@ -408,8 +425,17 @@ local clid0,clid1,err
         err:operation:=className(clid)+":("+bin2str(prntname)+"@"+bin2str(classname)+")"+bin2str(slotname)
         break(err)
     end
+    
+    blk:=__findslot(clid1,slotname,hashcode)
+    
+    if( !valtype(blk)=="B" )
+        err:=errorNew()
+        err:description:=@"no exported method"
+        err:operation:=className(clid)+":("+bin2str(prntname)+"@"+bin2str(classname)+")"+bin2str(slotname)
+        break(err)
+    end
 
-    return __findslot(clid1,slotname,hashcode)
+    return blk
  
 
 ******************************************************************************

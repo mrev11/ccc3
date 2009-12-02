@@ -41,7 +41,7 @@
     a deadlockokat is elkapja.
 
     A sqllockerror, sqlserialerror, sqldeadlockerror objektumok
-    canrerty mezeje .t.-re inicializálódik.
+    canretry mezeje .t.-re inicializálódik.
 
 
   Mindkét könyvtárban a connection/statement handlerek nyilvántartása

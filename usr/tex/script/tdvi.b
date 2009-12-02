@@ -16,6 +16,7 @@ if test -f $FNAME.tex; then
     
     if test -f $FNAME.dvi; then
         mv $FNAME.* dvi
+        mv *.aux dvi
         mv dvi/$FNAME.tex .  #vissza
         
         

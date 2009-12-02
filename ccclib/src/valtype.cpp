@@ -30,7 +30,7 @@ void _clp_valtype(int argno)
         PUSHNIL();
     }
     
-    const CHAR *vtype=L"";
+    const CHAR *vtype=L"U";
 
     switch( base->type )
     {

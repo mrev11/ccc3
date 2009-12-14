@@ -1,4 +1,59 @@
 
+2009.12.14 -- 5.0.15
+
+1)
+    recover err <cls>
+    class derived(cls)
+    o:(cls)method  
+
+  Ezekben cls elején nem lehet '.' (mindig a gyökér névtérből indul).
+  A recover-ben ez javítás, a többi eset korábban is így volt.
+
+  Vagy meg kell engedni, hogy '.' jelölhesse a gyökeret,
+  vagy mindig eleve a gyökérből kell indulni, máskülönben vannak esetek,
+  amikor nem lehet kiszabadulni a névtérből. Most mindenhol a gyökérből 
+  indulunk, kivéve a függvényhívást, ahol '.' jelölheti a gyökeret.
+  Függvényhívásban a C++ névtér-szabályai érvényesülnek.
+
+2)
+  obj:(base)method
+  obj:(super@base)method
+  obj:(parent@base)method
+
+  A base és parent osztályt nem a nevük alapján keresi classidbyname(),
+  hanem befordítódik a kódba a _clp_baseclass pointer. Tehát a linker keres,
+  miáltal érvényesülnek a függvényekre vonatkozó láthatósági szabályok.
+  Ez az új xmethod3.cpp programmal történik. A régi xmethod2.cpp is benn van 
+  hagyva a könyvtárban, hogy a régi programok újrafordítás nélkül fussanak.
+
+3)
+  Új ellenőrzések és hibaüzenetek:
+
+  "prohibited method cast"  
+        ha az o:(base)method  kifejezésben o nem base leszármazottja
+
+  "prohibited attribute cast"  
+        ha az o:(base)method  kifejezésben kiderül, 
+        hogy method base-ben mégsem metódus, hanem attribútum
+
+4)
+  static class clsname(parent) - static fuggvenyeket general
+
+    static function clsnameClass
+    static function clsnameNew
+
+  Korabban class-oknal nem volt ertelmezve a static modosito.
+  Korabban is lehetett static osztalyt csinalni fuggvenyinterfesszel.
+  A static osztalyok ugyanugy benne vannak az osztalynyilvantartasban.
+  Kulon modulban definialt osztalyok neve utkozhet.
+  A fuggvenyinterfesszel korabban is lehetett utkozo nevu osztalyokat csinalni.
+  A futtatorendszer nem hasznalja az osztalyneveket.
+  
+  o:classname      ugyanazt adhatja kulonbozo osztalyokra
+  classListAll()   a listaban kulonbozo osztalyok lehetnek ugyanazon a neven
+  classIdByName()  az egyezo nevuek kozul az elsot adja 
+  
+
 2009.11.18 -- 5.0.14
   UTF-8 ellenőrzés az <<X>>...<<X>> stringekben.
 

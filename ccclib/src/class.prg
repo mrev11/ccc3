@@ -444,5 +444,118 @@ function getmethod(clid,name) //nem objektumfüggvény
 
 
 ******************************************************************************
+// xmethod3 metódusok
+******************************************************************************
+static function isderivedfrom(cld,clb)
+local baseid,n
+    if( clb==cld )
+        return .t.
+    else
+        baseid:=classBaseID(cld)
+        for n:=1 to len(baseid)
+            if( isderivedfrom(baseid[n],clb) )
+                return .t.
+            end
+        next
+    end
+    return .f.
+
+******************************************************************************
+function __findslot3_c(clid,slotname,clid1,hashcode)
+
+local blk,err
+
+    //? "__findslot3_c",clid,slotname,clid1,hashcode
+
+    if( !isderivedfrom(clid,clid1) )
+        err:=errorNew()
+        err:description:=@"prohibited method cast"
+        err:operation:=className(clid)+":("+className(clid1)+")"+bin2str(slotname)
+        break(err)
+    end
+
+    blk:=__findslot(clid1,slotname,hashcode)
+
+    if( !valtype(blk)=="B" )
+        err:=errorNew()
+        err:description:=@"prohibited attribute cast"
+        err:operation:=className(clid)+":("+className(clid1)+")"+bin2str(slotname)
+        break(err)
+    end
+
+    return blk
+ 
+******************************************************************************
+function __findslot3_s(clid,slotname,clid1,hashcode)
+
+local baseid,i
+local hash,hashidx,blk,err
+
+    //? "__findslot3_s",clid,slotname,clid1,hashcode
+
+    if( !isderivedfrom(clid,clid1) )
+        err:=errorNew()
+        err:description:=@"prohibited method cast"
+        err:operation:=className(clid)+":(super@"+className(clid1)+")"+bin2str(slotname)
+        break(err)
+    end
+ 
+    baseid:=getclsdef(clid1)[CLASS_BASEID] 
+ 
+    for i:=1 to len(baseid)
+        hash:=getclsdef(baseid[i])[CLASS_HASHTAB]
+        hashidx:=hash_index(hash,slotname,hashcode)
+        if( hash[hashidx]!=NIL )
+            blk:=hash[hashidx][2] //methblk/attridx
+            if( !valtype(blk)=="B" )
+                err:=errorNew()
+                err:description:=@"prohibited attribute cast"
+                err:operation:=className(clid)+":(super@"+className(clid1)+")"+bin2str(slotname)
+                break(err)
+            end
+            return blk
+        end
+    next
+
+    err:=errorNew()
+    err:description:=@"no exported method"
+    err:operation:=className(clid)+":(super@"+className(clid1)+")"+bin2str(slotname)
+    break(err)
+ 
+
+******************************************************************************
+function __findslot3_p(clid,slotname,clid1,clid0,hashcode)
+//                                   prnt  chld
+local blk,err
+
+    //? "__findslot3_p",clid,slotname,clid1,clid0,hashcode
+
+    if( !isderivedfrom(clid,clid0) )
+        err:=errorNew()
+        err:description:=@"prohibited method cast"
+        err:operation:=className(clid)+":("+className(clid1)+"@"+className(clid0)+")"+bin2str(slotname)
+        break(err)
+    end
+ 
+    if( 0==ascan(getclsdef(clid0)[CLASS_BASEID],clid1)  )
+        err:=errorNew()
+        err:description:="'"+className(clid1)+"' "+@"is not parent of"+" '"+className(clid0)+"'"
+        err:operation:=className(clid)+":("+className(clid1)+"@"+className(clid0)+")"+bin2str(slotname)
+        break(err)
+    end
+    
+    blk:=__findslot(clid1,slotname,hashcode)
+    
+    if( !valtype(blk)=="B" )
+        err:=errorNew()
+        err:description:=@"prohibited attribute cast"
+        err:operation:=className(clid)+":("+className(clid1)+"@"+className(clid0)+")"+bin2str(slotname)
+        break(err)
+    end
+
+    return blk
+
+
+******************************************************************************
 
     

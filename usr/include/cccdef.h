@@ -349,6 +349,7 @@ extern int pthread_mutex_unlock_wrapper(pthread_mutex_t *m);
 
 //----------------------------------------------------------------------------
 #include <xmethod2.h>
+#include <xmethod3.h>
 #include <cccext1.h>
 #include <cccext2.h>
 

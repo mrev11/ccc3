@@ -5,6 +5,7 @@ CCC2 környezetben is szükség van:
     ccclib-ből    
         class.prg
         simplehash.prg
+        xmethod3.cpp
 
     ccctools/prg2ppo
 

@@ -1,23 +1,3 @@
-
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 //input: class.ppo (5.0.11)
 
 #include <cccdef.h>
@@ -25,6 +5,9 @@
 static void _blk_classidbyname_0(int argno);
 static void _blk_classinheritstruct_0(int argno);
 extern void _clp___findslot(int argno);
+extern void _clp___findslot3_c(int argno);
+extern void _clp___findslot3_p(int argno);
+extern void _clp___findslot3_s(int argno);
 extern void _clp___findslot_c(int argno);
 extern void _clp___findslot_p(int argno);
 extern void _clp___findslot_s(int argno);
@@ -53,6 +36,7 @@ extern void _clp_getmethod(int argno);
 static void _clp_hash_index(int argno);
 static void _clp_hash_rebuild(int argno);
 extern void _clp_hashcode(int argno);
+static void _clp_isderivedfrom(int argno);
 extern void _clp_len(int argno);
 extern void _clp_lower(int argno);
 extern void _clp_padr(int argno);
@@ -1429,7 +1413,7 @@ void _clp___findslot_c(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,4);
-while(stack<base+6)PUSHNIL();
+while(stack<base+7)PUSHNIL();
 argno=4;
 push_call("__findslot_c",base);
 //
@@ -1444,10 +1428,10 @@ push_call("__findslot_c",base);
     if(!flag()) goto if_28_1;
         line(347);
         _clp_errornew(0);
-        assign(base+5);//err
+        assign(base+6);//err
         pop();
         line(348);
-        push_symbol(base+5);//err
+        push_symbol(base+6);//err
         string(L"'");
         push_symbol(base+2);//classname
         _clp_bin2str(1);
@@ -1459,7 +1443,7 @@ push_call("__findslot_c",base);
         _o_method_description.eval(2);
         pop();
         line(349);
-        push_symbol(base+5);//err
+        push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
         string(L":(");
@@ -1475,16 +1459,59 @@ push_call("__findslot_c",base);
         _o_method_operation.eval(2);
         pop();
         line(350);
-        push_symbol(base+5);//err
+        push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_28_1:
     if_28_0:;
-    line(352);
+    line(353);
     push_symbol(base+4);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+3);//hashcode
     _clp___findslot(3);
+    assign(base+5);//blk
+    pop();
+    line(360);
+    line(355);
+    push_symbol(base+5);//blk
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    topnot();
+    if(!flag()) goto if_29_1;
+        line(356);
+        _clp_errornew(0);
+        assign(base+6);//err
+        pop();
+        line(357);
+        push_symbol(base+6);//err
+        string(nls_text(L"no exported method"));
+        _o_method_description.eval(2);
+        pop();
+        line(358);
+        push_symbol(base+6);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//classname
+        _clp_bin2str(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(359);
+        push_symbol(base+6);//err
+        _clp_break(1);
+        pop();
+    if_29_1:
+    if_29_0:;
+    line(362);
+    push_symbol(base+5);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -1496,26 +1523,26 @@ void _clp___findslot_s(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,4);
-while(stack<base+10)PUSHNIL();
+while(stack<base+11)PUSHNIL();
 argno=4;
 push_call("__findslot_s",base);
 //
-    line(358);
-    line(359);
-    line(366);
-    line(361);
+    line(368);
+    line(369);
+    line(376);
+    line(371);
     push(&ZERO);
     push_symbol(base+2);//classname
     _clp_classidbyname(1);
     assign(base+4);//clid1
     eqeq();
-    if(!flag()) goto if_29_1;
-        line(362);
+    if(!flag()) goto if_30_1;
+        line(372);
         _clp_errornew(0);
-        assign(base+9);//err
+        assign(base+10);//err
         pop();
-        line(363);
-        push_symbol(base+9);//err
+        line(373);
+        push_symbol(base+10);//err
         string(L"'");
         push_symbol(base+2);//classname
         _clp_bin2str(1);
@@ -1526,8 +1553,8 @@ push_call("__findslot_s",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(364);
-        push_symbol(base+9);//err
+        line(374);
+        push_symbol(base+10);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
         string(L":(super@");
@@ -1542,30 +1569,30 @@ push_call("__findslot_s",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(365);
-        push_symbol(base+9);//err
+        line(375);
+        push_symbol(base+10);//err
         _clp_break(1);
         pop();
-    if_29_1:
-    if_29_0:;
-    line(368);
+    if_30_1:
+    if_30_0:;
+    line(378);
     push_symbol(base+4);//clid1
     _clp_getclsdef(1);
     idxr0(2);
     assign(base+5);//baseid
     pop();
-    line(376);
+    line(393);
     {
-    line(370);
+    line(380);
     push(&ONE);
     int sg=sign();
     push(&ONE);
     assign(base+6);//i
-    lab_30_0:
+    lab_31_0:
     push_symbol(base+5);//baseid
     _clp_len(1);
-    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_30_2;
-        line(371);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_31_2;
+        line(381);
         push_symbol(base+5);//baseid
         push_symbol(base+6);//i
         idxr();
@@ -1573,50 +1600,93 @@ push_call("__findslot_s",base);
         idxr0(5);
         assign(base+7);//hash
         pop();
-        line(372);
+        line(382);
         push_symbol(base+7);//hash
         push_symbol(base+1);//slotname
         push_symbol(base+3);//hashcode
         _clp_hash_index(3);
         assign(base+8);//hashidx
         pop();
-        line(375);
-        line(373);
+        line(392);
+        line(383);
         push_symbol(base+7);//hash
         push_symbol(base+8);//hashidx
         idxr();
         push(&NIL);
         neeq();
-        if(!flag()) goto if_31_1;
-            line(374);
+        if(!flag()) goto if_32_1;
+            line(384);
             push_symbol(base+7);//hash
             push_symbol(base+8);//hashidx
             idxr();
             idxr0(2);
+            assign(base+9);//blk
+            pop();
+            line(390);
+            line(385);
+            push_symbol(base+9);//blk
+            _clp_valtype(1);
+            string(L"B");
+            eqeq();
+            topnot();
+            if(!flag()) goto if_33_1;
+                line(386);
+                _clp_errornew(0);
+                assign(base+10);//err
+                pop();
+                line(387);
+                push_symbol(base+10);//err
+                string(nls_text(L"no exported method"));
+                _o_method_description.eval(2);
+                pop();
+                line(388);
+                push_symbol(base+10);//err
+                push_symbol(base+0);//clid
+                _clp_classname(1);
+                string(L":(super@");
+                add();
+                push_symbol(base+2);//classname
+                _clp_bin2str(1);
+                add();
+                string(L")");
+                add();
+                push_symbol(base+1);//slotname
+                _clp_bin2str(1);
+                add();
+                _o_method_operation.eval(2);
+                pop();
+                line(389);
+                push_symbol(base+10);//err
+                _clp_break(1);
+                pop();
+            if_33_1:
+            if_33_0:;
+            line(391);
+            push_symbol(base+9);//blk
             {*base=*(stack-1);stack=base+1;pop_call();return;}
-        if_31_1:
-        if_31_0:;
-    lab_30_1:
+        if_32_1:
+        if_32_0:;
+    lab_31_1:
     push(&ONE);
     dup();
     sg=sign();
     push_symbol(base+6);//i
     add();
     assign(base+6);//i
-    goto lab_30_0;
-    lab_30_2:;
+    goto lab_31_0;
+    lab_31_2:;
     }
-    line(378);
+    line(395);
     _clp_errornew(0);
-    assign(base+9);//err
+    assign(base+10);//err
     pop();
-    line(379);
-    push_symbol(base+9);//err
+    line(396);
+    push_symbol(base+10);//err
     string(nls_text(L"no exported method"));
     _o_method_description.eval(2);
     pop();
-    line(380);
-    push_symbol(base+9);//err
+    line(397);
+    push_symbol(base+10);//err
     push_symbol(base+0);//clid
     _clp_classname(1);
     string(L":(super@");
@@ -1631,11 +1701,11 @@ push_call("__findslot_s",base);
     add();
     _o_method_operation.eval(2);
     pop();
-    line(381);
-    push_symbol(base+9);//err
+    line(398);
+    push_symbol(base+10);//err
     _clp_break(1);
     pop();
-    line(383);
+    line(400);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1648,25 +1718,25 @@ void _clp___findslot_p(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,5);
-while(stack<base+8)PUSHNIL();
+while(stack<base+9)PUSHNIL();
 argno=5;
 push_call("__findslot_p",base);
 //
-    line(389);
-    line(396);
-    line(391);
+    line(406);
+    line(413);
+    line(408);
     push(&ZERO);
     push_symbol(base+3);//classname
     _clp_classidbyname(1);
     assign(base+5);//clid0
     eqeq();
-    if(!flag()) goto if_32_1;
-        line(392);
+    if(!flag()) goto if_34_1;
+        line(409);
         _clp_errornew(0);
-        assign(base+7);//err
+        assign(base+8);//err
         pop();
-        line(393);
-        push_symbol(base+7);//err
+        line(410);
+        push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+3);//classname
         _clp_bin2str(1);
@@ -1677,8 +1747,8 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(394);
-        push_symbol(base+7);//err
+        line(411);
+        push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
         string(L":(");
@@ -1698,26 +1768,26 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(395);
-        push_symbol(base+7);//err
+        line(412);
+        push_symbol(base+8);//err
         _clp_break(1);
         pop();
-    if_32_1:
-    if_32_0:;
-    line(403);
-    line(398);
+    if_34_1:
+    if_34_0:;
+    line(420);
+    line(415);
     push(&ZERO);
     push_symbol(base+2);//prntname
     _clp_classidbyname(1);
     assign(base+6);//clid1
     eqeq();
-    if(!flag()) goto if_33_1;
-        line(399);
+    if(!flag()) goto if_35_1;
+        line(416);
         _clp_errornew(0);
-        assign(base+7);//err
+        assign(base+8);//err
         pop();
-        line(400);
-        push_symbol(base+7);//err
+        line(417);
+        push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+2);//prntname
         _clp_bin2str(1);
@@ -1728,8 +1798,8 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(401);
-        push_symbol(base+7);//err
+        line(418);
+        push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
         string(L":(");
@@ -1749,14 +1819,14 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(402);
-        push_symbol(base+7);//err
+        line(419);
+        push_symbol(base+8);//err
         _clp_break(1);
         pop();
-    if_33_1:
-    if_33_0:;
-    line(410);
-    line(405);
+    if_35_1:
+    if_35_0:;
+    line(427);
+    line(422);
     push(&ZERO);
     push_symbol(base+5);//clid0
     _clp_getclsdef(1);
@@ -1764,13 +1834,13 @@ push_call("__findslot_p",base);
     push_symbol(base+6);//clid1
     _clp_ascan(2);
     eqeq();
-    if(!flag()) goto if_34_1;
-        line(406);
+    if(!flag()) goto if_36_1;
+        line(423);
         _clp_errornew(0);
-        assign(base+7);//err
+        assign(base+8);//err
         pop();
-        line(407);
-        push_symbol(base+7);//err
+        line(424);
+        push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+2);//prntname
         _clp_bin2str(1);
@@ -1788,8 +1858,8 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(408);
-        push_symbol(base+7);//err
+        line(425);
+        push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
         string(L":(");
@@ -1809,17 +1879,65 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(409);
-        push_symbol(base+7);//err
+        line(426);
+        push_symbol(base+8);//err
         _clp_break(1);
         pop();
-    if_34_1:
-    if_34_0:;
-    line(412);
+    if_36_1:
+    if_36_0:;
+    line(429);
     push_symbol(base+6);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+4);//hashcode
     _clp___findslot(3);
+    assign(base+7);//blk
+    pop();
+    line(436);
+    line(431);
+    push_symbol(base+7);//blk
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    topnot();
+    if(!flag()) goto if_37_1;
+        line(432);
+        _clp_errornew(0);
+        assign(base+8);//err
+        pop();
+        line(433);
+        push_symbol(base+8);//err
+        string(nls_text(L"no exported method"));
+        _o_method_description.eval(2);
+        pop();
+        line(434);
+        push_symbol(base+8);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//prntname
+        _clp_bin2str(1);
+        add();
+        string(L"@");
+        add();
+        push_symbol(base+3);//classname
+        _clp_bin2str(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(435);
+        push_symbol(base+8);//err
+        _clp_break(1);
+        pop();
+    if_37_1:
+    if_37_0:;
+    line(438);
+    push_symbol(base+7);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -1835,12 +1953,541 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("getmethod",base);
 //
-    line(417);
+    line(443);
     push_symbol(base+0);//clid
     push_symbol(base+1);//name
     _clp_lower(1);
     _clp_str2bin(1);
     _clp___findslot(2);
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+static void _clp_isderivedfrom(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+4)PUSHNIL();
+argno=2;
+push_call("isderivedfrom",base);
+//
+    line(450);
+    line(460);
+    line(451);
+    push_symbol(base+1);//clb
+    push_symbol(base+0);//cld
+    eqeq();
+    if(!flag()) goto if_38_1;
+        line(452);
+        push(&TRUE);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    goto if_38_0;
+    if_38_1:
+    line(453);
+        line(454);
+        push_symbol(base+0);//cld
+        _clp_classbaseid(1);
+        assign(base+2);//baseid
+        pop();
+        line(459);
+        {
+        line(455);
+        push(&ONE);
+        int sg=sign();
+        push(&ONE);
+        assign(base+3);//n
+        lab_39_0:
+        push_symbol(base+2);//baseid
+        _clp_len(1);
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_39_2;
+            line(458);
+            line(456);
+            push_symbol(base+2);//baseid
+            push_symbol(base+3);//n
+            idxr();
+            push_symbol(base+1);//clb
+            _clp_isderivedfrom(2);
+            if(!flag()) goto if_40_1;
+                line(457);
+                push(&TRUE);
+                {*base=*(stack-1);stack=base+1;pop_call();return;}
+            if_40_1:
+            if_40_0:;
+        lab_39_1:
+        push(&ONE);
+        dup();
+        sg=sign();
+        push_symbol(base+3);//n
+        add();
+        assign(base+3);//n
+        goto lab_39_0;
+        lab_39_2:;
+        }
+    if_38_2:
+    if_38_0:;
+    line(461);
+    push(&FALSE);
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp___findslot3_c(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,4);
+while(stack<base+6)PUSHNIL();
+argno=4;
+push_call("__findslot3_c",base);
+//
+    line(466);
+    line(475);
+    line(470);
+    push_symbol(base+0);//clid
+    push_symbol(base+2);//clid1
+    _clp_isderivedfrom(2);
+    topnot();
+    if(!flag()) goto if_41_1;
+        line(471);
+        _clp_errornew(0);
+        assign(base+5);//err
+        pop();
+        line(472);
+        push_symbol(base+5);//err
+        string(nls_text(L"prohibited method cast"));
+        _o_method_description.eval(2);
+        pop();
+        line(473);
+        push_symbol(base+5);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(474);
+        push_symbol(base+5);//err
+        _clp_break(1);
+        pop();
+    if_41_1:
+    if_41_0:;
+    line(477);
+    push_symbol(base+2);//clid1
+    push_symbol(base+1);//slotname
+    push_symbol(base+3);//hashcode
+    _clp___findslot(3);
+    assign(base+4);//blk
+    pop();
+    line(484);
+    line(479);
+    push_symbol(base+4);//blk
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    topnot();
+    if(!flag()) goto if_42_1;
+        line(480);
+        _clp_errornew(0);
+        assign(base+5);//err
+        pop();
+        line(481);
+        push_symbol(base+5);//err
+        string(nls_text(L"prohibited attribute cast"));
+        _o_method_description.eval(2);
+        pop();
+        line(482);
+        push_symbol(base+5);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(483);
+        push_symbol(base+5);//err
+        _clp_break(1);
+        pop();
+    if_42_1:
+    if_42_0:;
+    line(486);
+    push_symbol(base+4);//blk
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp___findslot3_s(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,4);
+while(stack<base+10)PUSHNIL();
+argno=4;
+push_call("__findslot3_s",base);
+//
+    line(491);
+    line(492);
+    line(501);
+    line(496);
+    push_symbol(base+0);//clid
+    push_symbol(base+2);//clid1
+    _clp_isderivedfrom(2);
+    topnot();
+    if(!flag()) goto if_43_1;
+        line(497);
+        _clp_errornew(0);
+        assign(base+9);//err
+        pop();
+        line(498);
+        push_symbol(base+9);//err
+        string(nls_text(L"prohibited method cast"));
+        _o_method_description.eval(2);
+        pop();
+        line(499);
+        push_symbol(base+9);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(super@");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(500);
+        push_symbol(base+9);//err
+        _clp_break(1);
+        pop();
+    if_43_1:
+    if_43_0:;
+    line(503);
+    push_symbol(base+2);//clid1
+    _clp_getclsdef(1);
+    idxr0(2);
+    assign(base+4);//baseid
+    pop();
+    line(518);
+    {
+    line(505);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+5);//i
+    lab_44_0:
+    push_symbol(base+4);//baseid
+    _clp_len(1);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_44_2;
+        line(506);
+        push_symbol(base+4);//baseid
+        push_symbol(base+5);//i
+        idxr();
+        _clp_getclsdef(1);
+        idxr0(5);
+        assign(base+6);//hash
+        pop();
+        line(507);
+        push_symbol(base+6);//hash
+        push_symbol(base+1);//slotname
+        push_symbol(base+3);//hashcode
+        _clp_hash_index(3);
+        assign(base+7);//hashidx
+        pop();
+        line(517);
+        line(508);
+        push_symbol(base+6);//hash
+        push_symbol(base+7);//hashidx
+        idxr();
+        push(&NIL);
+        neeq();
+        if(!flag()) goto if_45_1;
+            line(509);
+            push_symbol(base+6);//hash
+            push_symbol(base+7);//hashidx
+            idxr();
+            idxr0(2);
+            assign(base+8);//blk
+            pop();
+            line(515);
+            line(510);
+            push_symbol(base+8);//blk
+            _clp_valtype(1);
+            string(L"B");
+            eqeq();
+            topnot();
+            if(!flag()) goto if_46_1;
+                line(511);
+                _clp_errornew(0);
+                assign(base+9);//err
+                pop();
+                line(512);
+                push_symbol(base+9);//err
+                string(nls_text(L"prohibited attribute cast"));
+                _o_method_description.eval(2);
+                pop();
+                line(513);
+                push_symbol(base+9);//err
+                push_symbol(base+0);//clid
+                _clp_classname(1);
+                string(L":(super@");
+                add();
+                push_symbol(base+2);//clid1
+                _clp_classname(1);
+                add();
+                string(L")");
+                add();
+                push_symbol(base+1);//slotname
+                _clp_bin2str(1);
+                add();
+                _o_method_operation.eval(2);
+                pop();
+                line(514);
+                push_symbol(base+9);//err
+                _clp_break(1);
+                pop();
+            if_46_1:
+            if_46_0:;
+            line(516);
+            push_symbol(base+8);//blk
+            {*base=*(stack-1);stack=base+1;pop_call();return;}
+        if_45_1:
+        if_45_0:;
+    lab_44_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+5);//i
+    add();
+    assign(base+5);//i
+    goto lab_44_0;
+    lab_44_2:;
+    }
+    line(520);
+    _clp_errornew(0);
+    assign(base+9);//err
+    pop();
+    line(521);
+    push_symbol(base+9);//err
+    string(nls_text(L"no exported method"));
+    _o_method_description.eval(2);
+    pop();
+    line(522);
+    push_symbol(base+9);//err
+    push_symbol(base+0);//clid
+    _clp_classname(1);
+    string(L":(super@");
+    add();
+    push_symbol(base+2);//clid1
+    _clp_classname(1);
+    add();
+    string(L")");
+    add();
+    push_symbol(base+1);//slotname
+    _clp_bin2str(1);
+    add();
+    _o_method_operation.eval(2);
+    pop();
+    line(523);
+    push_symbol(base+9);//err
+    _clp_break(1);
+    pop();
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp___findslot3_p(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,5);
+while(stack<base+7)PUSHNIL();
+argno=5;
+push_call("__findslot3_p",base);
+//
+    line(529);
+    line(538);
+    line(533);
+    push_symbol(base+0);//clid
+    push_symbol(base+3);//clid0
+    _clp_isderivedfrom(2);
+    topnot();
+    if(!flag()) goto if_47_1;
+        line(534);
+        _clp_errornew(0);
+        assign(base+6);//err
+        pop();
+        line(535);
+        push_symbol(base+6);//err
+        string(nls_text(L"prohibited method cast"));
+        _o_method_description.eval(2);
+        pop();
+        line(536);
+        push_symbol(base+6);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L"@");
+        add();
+        push_symbol(base+3);//clid0
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(537);
+        push_symbol(base+6);//err
+        _clp_break(1);
+        pop();
+    if_47_1:
+    if_47_0:;
+    line(545);
+    line(540);
+    push(&ZERO);
+    push_symbol(base+3);//clid0
+    _clp_getclsdef(1);
+    idxr0(2);
+    push_symbol(base+2);//clid1
+    _clp_ascan(2);
+    eqeq();
+    if(!flag()) goto if_48_1;
+        line(541);
+        _clp_errornew(0);
+        assign(base+6);//err
+        pop();
+        line(542);
+        push_symbol(base+6);//err
+        string(L"'");
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L"' ");
+        add();
+        string(nls_text(L"is not parent of"));
+        add();
+        string(L" '");
+        add();
+        push_symbol(base+3);//clid0
+        _clp_classname(1);
+        add();
+        string(L"'");
+        add();
+        _o_method_description.eval(2);
+        pop();
+        line(543);
+        push_symbol(base+6);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L"@");
+        add();
+        push_symbol(base+3);//clid0
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(544);
+        push_symbol(base+6);//err
+        _clp_break(1);
+        pop();
+    if_48_1:
+    if_48_0:;
+    line(547);
+    push_symbol(base+2);//clid1
+    push_symbol(base+1);//slotname
+    push_symbol(base+4);//hashcode
+    _clp___findslot(3);
+    assign(base+5);//blk
+    pop();
+    line(554);
+    line(549);
+    push_symbol(base+5);//blk
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    topnot();
+    if(!flag()) goto if_49_1;
+        line(550);
+        _clp_errornew(0);
+        assign(base+6);//err
+        pop();
+        line(551);
+        push_symbol(base+6);//err
+        string(nls_text(L"prohibited attribute cast"));
+        _o_method_description.eval(2);
+        pop();
+        line(552);
+        push_symbol(base+6);//err
+        push_symbol(base+0);//clid
+        _clp_classname(1);
+        string(L":(");
+        add();
+        push_symbol(base+2);//clid1
+        _clp_classname(1);
+        add();
+        string(L"@");
+        add();
+        push_symbol(base+3);//clid0
+        _clp_classname(1);
+        add();
+        string(L")");
+        add();
+        push_symbol(base+1);//slotname
+        _clp_bin2str(1);
+        add();
+        _o_method_operation.eval(2);
+        pop();
+        line(553);
+        push_symbol(base+6);//err
+        _clp_break(1);
+        pop();
+    if_49_1:
+    if_49_0:;
+    line(556);
+    push_symbol(base+5);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;

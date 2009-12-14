@@ -33,7 +33,7 @@ extern void  ParseFree(void*,void(*)(void*));
 extern void  ParseTrace(FILE*,const char*); 
 extern void  Parse(void*,int,parsenode*);  //3th arg: %token_type {parsenode*} 
 
-static const char *version_number="5.0.14";
+static const char *version_number="5.0.15";
 
 ppo2cpp_lexer *lexer;
 
@@ -166,11 +166,18 @@ int main(int argc, char**argv)
     fclose(diag);
     fclose(code);
 
+    // 2009.12.10
+    // először kell kiírni fundecl_list-et
+    // azután  kell kiírni metdecl_list-et
+    // csakhogy metdecl_list-nek járuléka van fundecl_list-ben
+    // ezért kétszer kell futtatni (az első kimenet ppo2cpp.meth-be)
+    0==freopen("ppo2cpp.meth","w+",stdout); //warning: ignoring return value
+    metdecl_list();
+
     if( *output )
     {
         0==freopen(output,"w+",stdout); //warning: ignoring return value
     }
-
 
     printf("//input: %s (%s)\n\n",input,version_number);
     printf("#include <cccdef.h>\n");
@@ -195,6 +202,7 @@ int main(int argc, char**argv)
     {
         remove("ppo2cpp.code");
         remove("ppo2cpp.diag");
+        remove("ppo2cpp.meth");
     }
 
     return 0;

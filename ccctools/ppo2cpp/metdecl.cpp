@@ -22,6 +22,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <decllist.h>
+
+#define BUFSIZE 1024
 
 //---------------------------------------------------------------------------
 typedef struct elem
@@ -148,31 +151,60 @@ static void walk(ELEM *elem)
 
     if( bname==0  ) // object:method
     {
-        printf("\nclass _method_%s: public _method2_",sname);
-        printf("{public: _method_%s():_method2_(\"%s\"){};};",sname,sname);
-        printf(" static _method_%s _o_method_%s;",sname,sname);
+        printf("\nclass _method3_%s: public _method3_",sname);
+        printf("{public: _method3_%s():_method3_(\"%s\"){};};",sname,sname);
+        printf(" static _method3_%s _o_method_%s;",sname,sname);
     }
     else if( pname==0  ) // object:(class)method 
     {
-        printf("\nclass _method_%s_C_%s: public _methodc2_",sname,bname);
-        printf("{public: _method_%s_C_%s():_methodc2_(\"%s\",\"%s\"){};};",sname,bname,sname,bname_d);
-        printf(" static _method_%s_C_%s _o_method_%s_C_%s;",sname,bname,sname,bname);
+        char clsfun[BUFSIZE];
+        sprintf(clsfun,"%sclass",bname_d);
+        char *bcall=fundecl_clpcall(clsfun);
+        printf("\nclass _method3_%s_C_%s: public _method3c_",sname,bname);
+        printf("{public: _method3_%s_C_%s():_method3c_(\"%s\",%s){};};",sname,bname,sname,bcall);
+        printf(" static _method3_%s_C_%s _o_method_%s_C_%s;",sname,bname,sname,bname);
+        free(bcall);
     }
     else if( 0==strcmp(pname,"super") ) // object:(super:class)method  
     {
-        printf("\nclass _method_%s_S_%s: public _methods2_",sname,bname);
-        printf("{public: _method_%s_S_%s():_methods2_(\"%s\",\"%s\"){};};",sname,bname,sname,bname_d);
-        printf(" static _method_%s_S_%s _o_method_%s_S_%s;",sname,bname,sname,bname);
+        char clsfun[BUFSIZE];
+        sprintf(clsfun,"%sclass",bname_d);
+        char *bcall=fundecl_clpcall(clsfun);
+        printf("\nclass _method3_%s_S_%s: public _method3s_",sname,bname);
+        printf("{public: _method3_%s_S_%s():_method3s_(\"%s\",%s){};};",sname,bname,sname,bcall);
+        printf(" static _method3_%s_S_%s _o_method_%s_S_%s;",sname,bname,sname,bname);
+        free(bcall);
     }
     else  // object:(parent:class)method   
     {
-        printf("\nclass _method_%s_P_%s_C_%s: public _methodp2_",sname,pname,bname);
-        printf("{public: _method_%s_P_%s_C_%s():_methodp2_(\"%s\",\"%s\",\"%s\"){};};",sname,pname,bname,sname,pname_d,bname_d);
-        printf(" static _method_%s_P_%s_C_%s _o_method_%s_P_%s_C_%s;",sname,pname,bname,sname,pname,bname);
+        char clsfun[BUFSIZE];
+        sprintf(clsfun,"%sclass",bname_d);
+        char *bcall=fundecl_clpcall(clsfun);
+
+        char prnfun[BUFSIZE];
+        sprintf(prnfun,"%sclass",pname_d);
+        char *pcall=fundecl_clpcall(prnfun);
+
+        printf("\nclass _method3_%s_P_%s_C_%s: public _method3p_",sname,pname,bname);
+        printf("{public: _method3_%s_P_%s_C_%s():_method3p_(\"%s\",%s,%s){};};",sname,pname,bname,sname,pcall,bcall);
+        printf(" static _method3_%s_P_%s_C_%s _o_method_%s_P_%s_C_%s;",sname,pname,bname,sname,pname,bname);
+
+        free(bcall);
+        free(pcall);
     }
     
     if(bname)free(bname);
     if(pname)free(pname);
+
+    if( bname_d )
+    {
+        *(--bname_d)='!';//visszaállít
+    }
+
+    if( pname_d )
+    {
+        *(--pname_d)='?';//visszaállít
+    }
  
     if( elem->right )
     {

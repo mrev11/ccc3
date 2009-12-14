@@ -32,7 +32,9 @@
 
 #define CCC_EPILOG() pop_call()
 
-#define DEFINE_METHOD(x) class _method_##x: public _method2_{public: _method_##x():_method2_(#x){};}; static _method_##x _o_method_##x
+#define DEFINE_METHOD(x)  class _method3_##x: public _method3_{public: _method3_##x():_method3_(#x){};}; static _method3_##x _o_method_##x
+//elavult (xmethod2):
+//#define DEFINE_METHOD(x) class _method_##x: public _method2_{public: _method_##x():_method2_(#x){};}; static _method_##x _o_method_##x
 
 //----------------------------------------------------------------------
 #define ARGERROR()     (error_arg(trace->func,trace->base,argno))

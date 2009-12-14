@@ -24,6 +24,7 @@ extern int codegen_lfunction_function(parsenode *p,void *v);
 extern int codegen_lfunction_lfunction_function(parsenode *p,void *v);
 extern int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p,void *v);
 extern int codegen_classid_CLASS_dotsymbol(parsenode *p,void *v);
+extern int codegen_classid_STCLASS_dotsymbol(parsenode *p,void *v);
 extern int codegen_newspec(parsenode *p,void *v);
 extern int codegen_newspec_NEW_COLON(parsenode *p,void *v);
 extern int codegen_newspec_NEW_COLON_SYMBOL(parsenode *p,void *v);

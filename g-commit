@@ -4,9 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "class.prg: runtime error, ha a metodus cast attributumot erint" #2009.12.02
+git commit --all -m "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14
 
-
+# "class.prg: runtime error, ha a metodus cast attributumot erint" #2009.12.02
 # "UTF-8 ellenőrzés az <<X>>...<<X>> stringekben." #2009.11.22
 # "xmldom_lexer->getnext üres tokenekre javítva" #2009.11.11
 # "xmldom: vedekezes az inputon elofordulo 0 byte ellen" #2009.11.10

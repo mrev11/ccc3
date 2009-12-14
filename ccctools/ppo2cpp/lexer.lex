@@ -174,6 +174,7 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 {return}                            {return RETURN;} 
 
 {class}                             {return CLASS;}
+{static}{wspace}{class}             {return STCLASS;}
 {new}                               {return NEW;}
 {attrib}                            {yy_push_state(sym); return ATTRIB;}
 {method}                            {yy_push_state(sym); return METHOD;}

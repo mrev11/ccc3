@@ -421,6 +421,12 @@ classid(C) ::= CLASS dotsymbol(S).{
     C->codegen=codegen_classid_CLASS_dotsymbol;
 }
 
+classid(C) ::= STCLASS dotsymbol(S).{
+    C=(new parsenode)->rule(1,S);
+    C->text="classid ::= STCLASS dotsymbol.";
+    C->codegen=codegen_classid_STCLASS_dotsymbol;
+}
+
 newspec(N) ::= .{
     N=(new parsenode)->rule(0);
     N->text="newspec ::= .";

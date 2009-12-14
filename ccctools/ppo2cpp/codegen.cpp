@@ -1171,6 +1171,12 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
     char *classid=dotsymboltext(p->right[0]->right[0]);
     char *classidid=dot2uln(strdup(classid));
 
+    const char *static_modifier="";
+    if( p->right[0]->codegen==codegen_classid_STCLASS_dotsymbol )
+    {
+        static_modifier="static ";
+    }
+
     const char *newspec=0;
     parsenode *newnode=p->right[2];
     if( newnode->codegen==codegen_newspec )
@@ -1192,23 +1198,23 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
 
 #ifdef   CLID_EXTERNAL
     fprintf(cls,"static clid_%s:=%sRegister()\n\n",classidid,classid);
-    fprintf(cls,"function %sClass()\n",classid);
+    fprintf(cls,"%sfunction %sClass()\n",static_modifier,classid);
     fprintf(cls,"return clid_%s\n\n",classidid);
     #ifndef  NEW_CPPLEVEL    
     if( newspec )
     {
-        fprintf(cls,"function %s%s(*)\n",classid,newspec);
+        fprintf(cls,"%sfunction %s%s(*)\n",static_modifier,classid,newspec);
         fprintf(cls,"return objectNew(clid_%s):initialize(*)\n\n",classidid);
     }
     #endif //NEW_CPPLEVEL
 #else  //CLID_EXTERNAL
-    fprintf(cls,"function %sClass()\n",classid);
+    fprintf(cls,"%sfunction %sClass()\n",static_modifier,classid);
     fprintf(cls,"static clid_%s:=%sRegister()\n",classidid,classid);
     fprintf(cls,"return clid_%s\n\n",classidid);
     #ifndef  NEW_CPPLEVEL    
     if( newspec )
     {
-        fprintf(cls,"function %s%s(*)\n",classid,newspec);
+        fprintf(cls,"%sfunction %s%s(*)\n",static_modifier,classid,newspec);
         fprintf(cls,"return objectNew(%sClass()):initialize(*)\n\n",classidid);
     }
     #endif //NEW_CPPLEVEL
@@ -1351,6 +1357,13 @@ if( newspec ){
     //A new meghívja az initialize metódust,
     //és minden paramétert továbbad neki.
 
+    //deklaráció
+    { 
+        char classidnew[BUFSIZE];
+        sprintf(classidnew,"%s%s",classid,newspec);
+        fundecl_clpdef(classidnew,*static_modifier?1:0);
+    }
+
     char *clsname;
     int dlast=dotlast(classid);
     if( dlast==0 )
@@ -1382,7 +1395,7 @@ if( newspec ){
     //namespace-ek megnyitva
 
         
-    fprintf(code,"void _clp_%s%s(int argno)\n{",clsname,newspec);
+    fprintf(code,"%svoid _clp_%s%s(int argno)\n{",static_modifier,clsname,newspec);
     
     //fprintf(code,"\n    push_call(\"");
     //if(current_namespace) fprintf(code,"%s.",current_namespace);
@@ -1456,6 +1469,12 @@ if( newspec ){
 
 //---------------------------------------------------------------------------
 int codegen_classid_CLASS_dotsymbol(parsenode *p,void *v)//PROTO
+{
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_classid_STCLASS_dotsymbol(parsenode *p,void *v)//PROTO
 {
     return 0;
 }
@@ -1988,7 +2007,7 @@ int codegen_statement_begseq_lrecov_finally_END(parsenode *p,void *v)//PROTO
             else
             {
                 char buf[BUFSIZE];
-                sprintf(buf,"%sclass",type);
+                sprintf(buf,".%sclass",type);
                 char *fcall=fundecl_clpcall(buf);
                 nltab();fprintf(code,"%s(0);",fcall);
                 nltab();fprintf(code,"*(usingstk+%d)=prototype_object();",recov++);

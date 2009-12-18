@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: o_object.ppo (5.0.11)
+//input: o_object.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -67,10 +67,10 @@ extern void _clp_qout(int argno);
 extern void _clp_valtype(int argno);
 static void _ini__clid_object();
 
-class _method_asarray: public _method2_{public: _method_asarray():_method2_("asarray"){};}; static _method_asarray _o_method_asarray;
-class _method_attrnames: public _method2_{public: _method_attrnames():_method2_("attrnames"){};}; static _method_attrnames _o_method_attrnames;
-class _method_attrvals: public _method2_{public: _method_attrvals():_method2_("attrvals"){};}; static _method_attrvals _o_method_attrvals;
-class _method_struct: public _method2_{public: _method_struct():_method2_("struct"){};}; static _method_struct _o_method_struct;
+class _method3_asarray: public _method3_{public: _method3_asarray():_method3_("asarray"){};}; static _method3_asarray _o_method_asarray;
+class _method3_attrnames: public _method3_{public: _method3_attrnames():_method3_("attrnames"){};}; static _method3_attrnames _o_method_attrnames;
+class _method3_attrvals: public _method3_{public: _method3_attrvals():_method3_("attrvals"){};}; static _method3_attrvals _o_method_attrvals;
+class _method3_struct: public _method3_{public: _method3_struct():_method3_("struct"){};}; static _method3_struct _o_method_struct;
 
 MUTEX_CREATE(_mutex_clid_object);
 static VALUE* _st_clid_object_ptr()
@@ -482,7 +482,7 @@ push_call("attrvals",base);
         array(2);
         push_symbol(base+4);//anamevalue
         push_symbol(base+5);//i
-        assign(idxl());
+        assign2(idxxl());
         pop();
     lab_1_1:
     push(&ONE);
@@ -748,7 +748,7 @@ push_call("ancestors",base);
         _clp_classname(1);
         push_symbol(base+4);//a
         push_symbol(base+5);//i
-        assign(idxl());
+        assign2(idxxl());
         pop();
     lab_8_1:
     push(&ONE);
@@ -924,7 +924,7 @@ push_call("evalmethod",base);
             push_symbol(base+0);//this
             _o_method_asarray.eval(1);
             push_symbol(base+6);//blk
-            assign(idxl());
+            assign2(idxxl());
             assign(base+3);//ret
             pop();
         if_13_2:

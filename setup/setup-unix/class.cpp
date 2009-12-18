@@ -1,4 +1,24 @@
-//input: class.ppo (5.0.11)
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+//input: class.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -52,8 +72,8 @@ extern void _clp_valtype(int argno);
 static void _ini__aclass();
 static void _ini__mutex();
 
-class _method_description: public _method2_{public: _method_description():_method2_("description"){};}; static _method_description _o_method_description;
-class _method_operation: public _method2_{public: _method_operation():_method2_("operation"){};}; static _method_operation _o_method_operation;
+class _method3_description: public _method3_{public: _method3_description():_method3_("description"){};}; static _method3_description _o_method_description;
+class _method3_operation: public _method3_{public: _method3_operation():_method3_("operation"){};}; static _method3_operation _o_method_operation;
 
 MUTEX_CREATE(_mutex_aclass);
 static VALUE* _st_aclass_ptr()
@@ -133,7 +153,7 @@ push_call("hash_rebuild",base);
             idxr();
             push_symbol(base+2);//hash1
             push_symbol(base+4);//x
-            assign(idxl());
+            assign2(idxxl());
             pop();
         if_2_1:
         if_2_0:;
@@ -508,7 +528,7 @@ push_call("classregister",base);
                         array(3);
                         push_symbol(base+5);//hash
                         push_symbol(base+12);//hashidx
-                        assign(idxl());
+                        assign2(idxxl());
                         pop();
                     goto if_11_0;
                     if_11_1:
@@ -523,7 +543,7 @@ push_call("classregister",base);
                         array(3);
                         push_symbol(base+5);//hash
                         push_symbol(base+12);//hashidx
-                        assign(idxl());
+                        assign2(idxxl());
                         pop();
                     if_11_2:
                     if_11_0:;
@@ -655,12 +675,12 @@ push_call("classattrib",base);
         push(&ONE);
         add();
         push_symbol(base+2);//clsdef
-        assign(idxl0(3));
+        assign2(idxxl0(3));
         push_symbol(base+0);//clid
         array(3);
         push_symbol(base+4);//hash
         push_symbol(base+5);//hashidx
-        assign(idxl());
+        assign2(idxxl());
         pop();
         line(205);
         line(203);
@@ -669,7 +689,7 @@ push_call("classattrib",base);
         push(&ONE);
         add();
         push_symbol(base+2);//clsdef
-        assign(idxl0(4));
+        assign2(idxxl0(4));
         push_symbol(base+4);//hash
         _clp_len(1);
         mulnum(0.66);
@@ -682,7 +702,7 @@ push_call("classattrib",base);
             mulnum(2);
             _clp_hash_rebuild(2);
             push_symbol(base+2);//clsdef
-            assign(idxl0(5));
+            assign2(idxxl0(5));
             pop();
         if_14_1:
         if_14_0:;
@@ -705,18 +725,18 @@ push_call("classattrib",base);
             push(&ONE);
             add();
             push_symbol(base+2);//clsdef
-            assign(idxl0(3));
+            assign2(idxxl0(3));
             push_symbol(base+4);//hash
             push_symbol(base+5);//hashidx
             idxr();
-            assign(idxl0(2));
+            assign2(idxxl0(2));
             pop();
             line(214);
             push_symbol(base+0);//clid
             push_symbol(base+4);//hash
             push_symbol(base+5);//hashidx
             idxr();
-            assign(idxl0(3));
+            assign2(idxxl0(3));
             pop();
         if_15_1:
         if_15_0:;
@@ -777,7 +797,7 @@ push_call("classmethod",base);
         array(3);
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
-        assign(idxl());
+        assign2(idxxl());
         pop();
         line(236);
         line(234);
@@ -786,7 +806,7 @@ push_call("classmethod",base);
         push(&ONE);
         add();
         push_symbol(base+3);//clsdef
-        assign(idxl0(4));
+        assign2(idxxl0(4));
         push_symbol(base+5);//hash
         _clp_len(1);
         mulnum(0.66);
@@ -799,7 +819,7 @@ push_call("classmethod",base);
             mulnum(2);
             _clp_hash_rebuild(2);
             push_symbol(base+3);//clsdef
-            assign(idxl0(5));
+            assign2(idxxl0(5));
             pop();
         if_17_1:
         if_17_0:;
@@ -821,14 +841,14 @@ push_call("classmethod",base);
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
         idxr();
-        assign(idxl0(2));
+        assign2(idxxl0(2));
         pop();
         line(246);
         push_symbol(base+0);//clid
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
         idxr();
-        assign(idxl0(3));
+        assign2(idxxl0(3));
         pop();
         line(256);
         line(248);
@@ -876,7 +896,7 @@ push_call("classmethod",base);
                     push_symbol(base+5);//hash
                     push_symbol(base+9);//n
                     idxr();
-                    assign(idxl0(2));
+                    assign2(idxxl0(2));
                     pop();
                 if_20_1:
                 if_20_0:;
@@ -893,7 +913,7 @@ push_call("classmethod",base);
             line(255);
             push_symbol(base+8);//cnt
             push_symbol(base+3);//clsdef
-            assign(idxl0(3));
+            assign2(idxxl0(3));
             pop();
         if_18_1:
         if_18_0:;
@@ -1105,7 +1125,7 @@ push_call("classattrnames",base);
             idxr0(1);
             push_symbol(base+3);//attr
             push_symbol(base+4);//x
-            assign(idxl());
+            assign2(idxxl());
             pop();
         if_22_1:
         if_22_0:;
@@ -1192,7 +1212,7 @@ push_call("classmethnames",base);
             push(&ONE);
             add();
             assign(base+4);//x
-            assign(idxl());
+            assign2(idxxl());
             pop();
         if_24_1:
         if_24_0:;

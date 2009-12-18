@@ -24,7 +24,6 @@
 #include <signal.ch>
 #include <cccapi.h>
 
-//#define SIGSEGV_TRAP
 
 //--------------------------------------------------------------------------
 static int cccsig2signum(int cccsig)
@@ -72,21 +71,8 @@ static int signum2cccsig(int signum)
 
 
 //--------------------------------------------------------------------------
-static void sigsegv_trap()
-{
-    printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    //printf("\nSIGSEGV pid=%d thread=%x",(int)getpid(),(unsigned)pthread_self());
-    printf("\nSIGSEGV pid=%d",(int)getpid());
-    printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    printf("\n");fflush(0);
-    //exit(1);
-    //kill(getpid(),SIGSTOP); //2.4-es kernelen a többi szál tovább fut
-    kill(0,SIGSTOP); //így viszont összegabajodnak a jobok
-} 
-
-//--------------------------------------------------------------------------
 static void signal_handler(int signum)
-{           
+{   
     #ifdef EMLEKEZTETO
     //signal(signum,signal_handler);
     Nincs szükség a signal handler újbóli beállítására, ui.
@@ -97,18 +83,32 @@ static void signal_handler(int signum)
     #endif
 
     int cccsig=signum2cccsig(signum);
+
     //printf("\nSignal received: cccsig=%d pid=%d\n",cccsig,getpid());fflush(0);
+    //printf("\nSignal received: signal=%d pid=%d\n",signum,getpid());fflush(0);
+    //abort();
+
+    #ifdef EMLEKEZTETO //2008.11.27
+
+        Korábban SIGSTOP-pal megállítottam az elszálló programot,
+        és a "gdb exename pid" paranccsal debugoltam. 
+        Ehelyett egyszerűbb abortálni, amiből keletkezik egy core filé,
+        és a "gdb exename corefile" adja ugyanazt az infót. 
+        
+        Linuxon az "ulimit -c 100000" paranccsal előzőleg 0-ról
+        fel kell emelni a minimális core filé méretet, másképp
+        nem keletkezik core filé.
+        
+        FreeBSD-n és Solarison defaultból készül core.
+        
+        A SIGABRT szignált nem célszerű elkapni. Ha itt abort-ot
+        hívok, és a SIGABRT-ot elkapom, az végtelen rekurzió.
+    #endif
 
     if( cccsig==0 )
     {
         return;
     }
-#ifdef SIGSEGV_TRAP
-    else if( cccsig==SIG_SEGV )
-    {
-        sigsegv_trap();
-    }
-#endif    
 #ifdef MULTITHREAD
     else if( 0==thread_data_ptr )
     {
@@ -147,7 +147,7 @@ void setup_signal_handlers()
         sigset(SIGINT  ,signal_handler);
         sigset(SIGQUIT ,signal_handler);
         sigset(SIGILL  ,signal_handler);
-        sigset(SIGABRT ,signal_handler);
+        //sigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
         sigset(SIGFPE  ,signal_handler);
         sigset(SIGSEGV ,signal_handler);
         sigset(SIGPIPE ,signal_handler);
@@ -157,7 +157,7 @@ void setup_signal_handlers()
         signal(SIGINT  ,signal_handler);
         signal(SIGQUIT ,signal_handler);
         signal(SIGILL  ,signal_handler);
-        signal(SIGABRT ,signal_handler);
+        //signal(SIGABRT ,signal_handler); //kivéve 2008.11.27
         signal(SIGFPE  ,signal_handler);
         signal(SIGSEGV ,signal_handler);
         signal(SIGPIPE ,signal_handler);

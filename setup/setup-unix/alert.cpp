@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: alert.ppo (5.0.11)
+//input: alert.ppo (5.0.15x)
 
 #include <cccdef.h>
 

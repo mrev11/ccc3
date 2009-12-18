@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: clinput.ppo (5.0.11)
+//input: clinput.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -54,12 +54,12 @@ extern void _clp_qout(int argno);
 extern void _clp_valtype(int argno);
 static void _ini__clid_input();
 
-class _method_buffer: public _method2_{public: _method_buffer():_method2_("buffer"){};}; static _method_buffer _o_method_buffer;
-class _method_bufidx: public _method2_{public: _method_bufidx():_method2_("bufidx"){};}; static _method_bufidx _o_method_bufidx;
-class _method_initialize: public _method2_{public: _method_initialize():_method2_("initialize"){};}; static _method_initialize _o_method_initialize;
-class _method_len: public _method2_{public: _method_len():_method2_("len"){};}; static _method_len _o_method_len;
-class _method_next: public _method2_{public: _method_next():_method2_("next"){};}; static _method_next _o_method_next;
-class _method_unget: public _method2_{public: _method_unget():_method2_("unget"){};}; static _method_unget _o_method_unget;
+class _method3_buffer: public _method3_{public: _method3_buffer():_method3_("buffer"){};}; static _method3_buffer _o_method_buffer;
+class _method3_bufidx: public _method3_{public: _method3_bufidx():_method3_("bufidx"){};}; static _method3_bufidx _o_method_bufidx;
+class _method3_initialize: public _method3_{public: _method3_initialize():_method3_("initialize"){};}; static _method3_initialize _o_method_initialize;
+class _method3_len: public _method3_{public: _method3_len():_method3_("len"){};}; static _method3_len _o_method_len;
+class _method3_next: public _method3_{public: _method3_next():_method3_("next"){};}; static _method3_next _o_method_next;
+class _method3_unget: public _method3_{public: _method3_unget():_method3_("unget"){};}; static _method3_unget _o_method_unget;
 
 MUTEX_CREATE(_mutex_clid_input);
 static VALUE* _st_clid_input_ptr()
@@ -587,7 +587,7 @@ push_call("inputunget",base);
             _o_method_buffer.eval(1);
             push_symbol(base+0);//this
             _o_method_bufidx.eval(1);
-            assign(idxl());
+            assign2(idxxl());
             pop();
             line(122);
             push_symbol(base+0);//this
@@ -619,7 +619,7 @@ push_call("inputunget",base);
         _o_method_buffer.eval(1);
         push_symbol(base+0);//this
         _o_method_bufidx.eval(1);
-        assign(idxl());
+        assign2(idxxl());
         pop();
         line(126);
         push_symbol(base+0);//this
@@ -696,7 +696,7 @@ push_call("inputcont",base);
         _o_method_next.eval(2);
         push_symbol(base+1);//a
         push_symbol(base+2);//n
-        assign(idxl());
+        assign2(idxxl());
         pop();
     lab_10_1:
     push(&ONE);

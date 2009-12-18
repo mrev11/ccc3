@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: directory.ppo (5.0.11)
+//input: directory.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -388,7 +388,7 @@ push_call("directory",base);
                     push(&ONE);
                     add();
                     assign(base+4);//dlist_size
-                    assign(idxl());
+                    assign2(idxxl());
                     pop();
                 if_8_4:
                 if_8_0:;

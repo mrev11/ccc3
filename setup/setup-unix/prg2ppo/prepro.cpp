@@ -18,12 +18,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: prepro.ppo (5.0.11)
+//input: prepro.ppo (5.0.15x)
 
 #include <cccdef.h>
 
 extern void _clp_alltrim(int argno);
+extern void _clp_bin(int argno);
 extern void _clp_endofline(int argno);
+extern void _clp_find_translate(int argno);
+extern void _clp_left(int argno);
 extern void _clp_leftspace(int argno);
 extern void _clp_linepragma(int argno);
 extern void _clp_match(int argno);
@@ -31,8 +34,10 @@ extern void _clp_nextline(int argno);
 extern void _clp_outline(int argno);
 extern void _clp_prepro(int argno);
 extern void _clp_qqout(int argno);
+extern void _clp_reproctxt(int argno);
 extern void _clp_space(int argno);
 extern void _clp_str(int argno);
+extern void _clp_substr(int argno);
 extern void _clp_tokenize(int argno);
 
 //=======================================================================
@@ -71,9 +76,6 @@ push_call("nextline",base);
         pop();
     if_1_2:
     if_1_0:;
-    line(28);
-    push(&NIL);
-    {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
 push(&NIL);
@@ -84,52 +86,89 @@ void _clp_prepro(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+3)PUSHNIL();
+while(stack<base+6)PUSHNIL();
 argno=1;
 push_call("prepro",base);
 //
-    line(34);
+    line(32);
     push_symbol(base+0);//line
     _clp_leftspace(1);
     assign(base+1);//indent
     pop();
-    line(35);
+    line(33);
     push_symbol(base+0);//line
     _clp_alltrim(1);
     _clp_tokenize(1);
-    assign(base+2);//toklist
+    assign(base+2);//toklst
     pop();
-    line(41);
-    line(37);
-    push_symbol(base+1);//indent
+    line(34);
+    push_symbol(base+2);//toklst
+    _clp_match(1);
+    assign(base+3);//result
+    pop();
+    line(35);
+    push_symbol(base+3);//result
+    _clp_outline(1);
+    assign(base+4);//output
+    pop();
+    line(36);
+    push_symbol(base+4);//output
+    _clp_find_translate(1);
+    assign(base+5);//trnpos
+    pop();
+    line(51);
+    line(38);
     push(&ZERO);
-    gt();
+    push_symbol(base+5);//trnpos
+    lt();
     if(!flag()) goto if_2_1;
-        line(38);
+        line(43);
+        line(40);
+        push(&ONE);
+        push_symbol(base+5);//trnpos
+        lt();
+        if(!flag()) goto if_3_1;
+            line(41);
+            _clp_endofline(0);
+            push_symbol(base+1);//indent
+            _clp_space(1);
+            add();
+            _clp_qqout(1);
+            pop();
+            line(42);
+            push_symbol(base+4);//output
+            push_symbol(base+5);//trnpos
+            addnum(-1);
+            _clp_left(2);
+            _clp_qqout(1);
+            pop();
+        if_3_1:
+        if_3_0:;
+        line(45);
+        push_symbol(base+4);//output
+        push_symbol(base+5);//trnpos
+        _clp_substr(2);
+        number(10);
+        _clp_bin(1);
+        add();
+        _clp_reproctxt(1);
+        pop();
+    goto if_2_0;
+    if_2_1:
+    line(47);
+        line(49);
         _clp_endofline(0);
         push_symbol(base+1);//indent
         _clp_space(1);
         add();
         _clp_qqout(1);
         pop();
-    goto if_2_0;
-    if_2_1:
-    line(39);
-        line(40);
-        _clp_endofline(0);
+        line(50);
+        push_symbol(base+4);//output
         _clp_qqout(1);
         pop();
     if_2_2:
     if_2_0:;
-    line(43);
-    push_symbol(base+2);//toklist
-    _clp_match(1);
-    _clp_outline(1);
-    _clp_qqout(1);
-    pop();
-    line(45);
-    push(&NIL);
-    {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
 push(&NIL);

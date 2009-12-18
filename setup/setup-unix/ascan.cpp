@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: ascan.ppo (5.0.11)
+//input: ascan.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -357,7 +357,7 @@ push_call("afill",base);
         push_symbol(base+1);//x
         push_symbol(base+0);//arr
         push_symbol(base+4);//i
-        assign(idxl());
+        assign2(idxxl());
         pop();
     lab_13_1:
     push(&ONE);
@@ -465,7 +465,7 @@ push_call("acopy",base);
         push_symbol(base+4);//sttrg
         push_symbol(base+5);//i
         add();
-        assign(idxl());
+        assign2(idxxl());
         pop();
     lab_17_1:
     push(&ONE);

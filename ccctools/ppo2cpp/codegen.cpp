@@ -230,16 +230,16 @@ static void lvalue(parsenode *p)
         
         if( TOTAL(f) )
         {
-            nltab();fprintf(code,"assign(idxl0(%.16g));",x);
+            nltab();fprintf(code,"assign2(idxxl0(%.16g));",x);
         }
         else if( PARTIAL(f) )
         {
             paddnum(x);
-            nltab();fprintf(code,"assign(idxl());");
+            nltab();fprintf(code,"assign2(idxxl());");
         }
         if( WRITTEN(f) )
         {
-            nltab();fprintf(code,"assign(idxl());");
+            nltab();fprintf(code,"assign2(idxxl());");
         }
     }
 

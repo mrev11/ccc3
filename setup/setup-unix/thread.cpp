@@ -215,7 +215,7 @@ void _clp_thread_exit(int argno)
     CCC_PROLOG("thread_exit",0);
     sigprocmask(SIG_BLOCK,&sigmask,0);
     vartab_lock();
-    delete (thread_data*)pthread_getspecific(thread_key);
+    DELTHRDATA(pthread_getspecific(thread_key));
     vartab_unlock0();
     pthread_exit(0);
     _ret();

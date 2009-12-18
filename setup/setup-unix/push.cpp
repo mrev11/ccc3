@@ -90,6 +90,20 @@ void assign(VALUE *lside)
 }
 
 //------------------------------------------------------------------------
+void assign2(VALUE *lside) //tömbindexeléshez
+{
+    if( lside->type!=TYPE_REF )
+    {
+        *lside=*TOP2();
+    }
+    else
+    {
+        lside->data.vref->value=*TOP2();
+    }
+    POP();
+}
+
+//------------------------------------------------------------------------
 void block(void (*code)(int), int len)
 {
     if( 0<len )

@@ -32,7 +32,7 @@ DEFINE_METHOD(hashitem);
 // az asszociatív tömbindexelés: hash["key"]:=value.
  
 //------------------------------------------------------------------------
-VALUE *idxl() // indexkifejezés a baloldalon
+VALUE *idxl() // (obsolete) indexkifejezés a baloldalon
 {
 // stack: a,i ---
 // return: a[i] címe
@@ -77,7 +77,7 @@ VALUE *idxl() // indexkifejezés a baloldalon
 }
 
 //------------------------------------------------------------------------
-VALUE *idxl0(double i) // indexkifejezés a baloldalon (konstans index)
+VALUE *idxl0(double i) // (obsolete) indexkifejezés a baloldalon (konstans index)
 {
 // stack: a ---
 // return: a[i] címe
@@ -105,6 +105,70 @@ VALUE *idxl0(double i) // indexkifejezés a baloldalon (konstans index)
 
     //MEGJEGYZÉS: array(1)[1]:=x nem thread safe
     //(nem javítható, de szerencsére nincs értelme)
+}
+
+//------------------------------------------------------------------------
+VALUE *idxxl() // indexkifejezés a baloldalon
+{
+// stack: a,i --- a
+// return: a[i] címe
+
+    VALUE *i=TOP();
+    VALUE *a=TOP2();
+
+    if( a->type==TYPE_ARRAY && i->type==TYPE_NUMBER ) 
+    {
+        unsigned int len=a->data.array.oref->length;
+        unsigned int idx=D2INT(i->data.number);
+
+        if( (idx<1) || (len<idx) )
+        {
+            error_idx("idxxl",a,2);
+        }
+        
+        VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+        POP();
+        return x;
+    }
+
+    else if( a->type==TYPE_OBJECT && (i->type==TYPE_STRING || i->type==TYPE_BINARY ) )
+    {
+        _o_method_hashitem.eval(2); //stack: item={key,value/NIL}
+
+        VALUE *item=TOP(); //item[2] címét kell adni
+        VALUE *x=item->data.array.oref->ptr.valptr+1;
+        return x;
+    }
+
+    error_arr("idxxl",a,2);
+    return 0;
+}
+
+//------------------------------------------------------------------------
+VALUE *idxxl0(double i) // indexkifejezés a baloldalon (konstans index)
+{
+// stack: a --- a
+// return: a[i] címe
+
+    VALUE *a=TOP();
+
+    if( a->type!=TYPE_ARRAY ) 
+    {
+        error_arr("idxxl0",a,1);
+    }
+
+    unsigned int len=a->data.array.oref->length;
+    unsigned int idx=D2INT(i);
+    
+    if( (idx<1) || (len<idx) )
+    {
+        number(i);
+        error_idx("idxxl0",a,2);
+        POP();
+    }
+    
+    VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+    return x;
 }
 
 //------------------------------------------------------------------------

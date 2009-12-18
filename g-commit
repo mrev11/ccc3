@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14
+git commit --all -m "ppo2cpp 5.0.16; setup-unix frissítve" #2009.12.18
 
+
+# "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14
 # "class.prg: runtime error, ha a metodus cast attributumot erint" #2009.12.02
 # "UTF-8 ellenőrzés az <<X>>...<<X>> stringekben." #2009.11.22
 # "xmldom_lexer->getnext üres tokenekre javítva" #2009.11.11

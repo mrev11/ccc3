@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: dbdefine.ppo (5.0.11)
+//input: dbdefine.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -222,7 +222,7 @@ push_call("define",base);
             push_symbol(base+4);//i
             push_symbol(base+3);//n
             sub();
-            assign(idxl());
+            assign2(idxxl());
             pop();
         lab_6_1:
         push(&ONE);
@@ -305,7 +305,7 @@ push_call("define",base);
                             push_symbol(base+6);//right
                             push_symbol(base+3);//n
                             addnum(-1);
-                            assign(idxl());
+                            assign2(idxxl());
                             pop();
                             line(83);
                             number(3);
@@ -313,7 +313,7 @@ push_call("define",base);
                             _clp_markervalue(2);
                             push_symbol(base+6);//right
                             push_symbol(base+3);//n
-                            assign(idxl());
+                            assign2(idxxl());
                             pop();
                         goto if_11_0;
                         if_11_1:
@@ -324,7 +324,7 @@ push_call("define",base);
                             _clp_markervalue(2);
                             push_symbol(base+6);//right
                             push_symbol(base+3);//n
-                            assign(idxl());
+                            assign2(idxxl());
                             pop();
                         if_11_2:
                         if_11_0:;
@@ -377,7 +377,7 @@ push_call("define",base);
             _clp_markervalue(2);
             push_symbol(base+5);//left
             push_symbol(base+3);//n
-            assign(idxl());
+            assign2(idxxl());
             pop();
         lab_12_1:
         number(2);
@@ -438,7 +438,7 @@ push_call("define",base);
             push_symbol(base+3);//n
             sub();
             addnum(1);
-            assign(idxl());
+            assign2(idxxl());
             pop();
         lab_13_1:
         push(&ONE);

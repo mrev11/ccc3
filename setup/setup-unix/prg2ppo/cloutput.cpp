@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: cloutput.ppo (5.0.11)
+//input: cloutput.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -47,10 +47,10 @@ static void _clp_outputregister(int argno);
 extern void _clp_valtype(int argno);
 static void _ini__clid_output();
 
-class _method_buffer: public _method2_{public: _method_buffer():_method2_("buffer"){};}; static _method_buffer _o_method_buffer;
-class _method_bufidx: public _method2_{public: _method_bufidx():_method2_("bufidx"){};}; static _method_bufidx _o_method_bufidx;
-class _method_bufinc: public _method2_{public: _method_bufinc():_method2_("bufinc"){};}; static _method_bufinc _o_method_bufinc;
-class _method_initialize: public _method2_{public: _method_initialize():_method2_("initialize"){};}; static _method_initialize _o_method_initialize;
+class _method3_buffer: public _method3_{public: _method3_buffer():_method3_("buffer"){};}; static _method3_buffer _o_method_buffer;
+class _method3_bufidx: public _method3_{public: _method3_bufidx():_method3_("bufidx"){};}; static _method3_bufidx _o_method_bufidx;
+class _method3_bufinc: public _method3_{public: _method3_bufinc():_method3_("bufinc"){};}; static _method3_bufinc _o_method_bufinc;
+class _method3_initialize: public _method3_{public: _method3_initialize():_method3_("initialize"){};}; static _method3_initialize _o_method_initialize;
 
 MUTEX_CREATE(_mutex_clid_output);
 static VALUE* _st_clid_output_ptr()
@@ -382,7 +382,7 @@ push_call("outputadd",base);
             _o_method_buffer.eval(1);
             push_symbol(base+0);//this
             _o_method_bufidx.eval(1);
-            assign(idxl());
+            assign2(idxxl());
             pop();
             line(92);
             push_symbol(base+0);//this
@@ -414,7 +414,7 @@ push_call("outputadd",base);
         _o_method_buffer.eval(1);
         push_symbol(base+0);//this
         _o_method_bufidx.eval(1);
-        assign(idxl());
+        assign2(idxxl());
         pop();
         line(96);
         push_symbol(base+0);//this

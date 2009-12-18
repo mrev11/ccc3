@@ -82,6 +82,7 @@ extern void pop(void);
 extern void block(void(*)(int),int);
 extern VALUE *blkenv(VALUE*);
 extern void assign(VALUE*);
+extern void assign2(VALUE*);
 extern void number(double);
 extern void date(long);
 extern void logical(int);
@@ -144,10 +145,12 @@ extern char* wchar_to_utf8(const wchar_t*,unsigned,unsigned*);
 
 //array.obj:
 extern int valuecompare(const void*,const void*);
-extern VALUE* idxl(void);
+extern VALUE* idxl(void); //obsolete
+extern VALUE* idxxl(void);
 extern void idxr(void);
 extern void array(int);
-extern VALUE* idxl0(double);
+extern VALUE* idxl0(double); //obsolete
+extern VALUE* idxxl0(double);
 extern void idxr0(double);
 extern VALUE* array0(int);
 

@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: rule.ppo (5.0.11)
+//input: rule.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -154,8 +154,8 @@ push_call("rule_tr_add",base);
         push_symbol(base+1);//n
         idxr();
         _clp_valtype(1);
-        string(L"X");
-        eqeq();
+        string(L"CX");
+        ss();
         if(!flag()) goto if_2_1;
             line(40);
             push_symbol(base+0);//r
@@ -166,7 +166,7 @@ push_call("rule_tr_add",base);
             push_symbol(base+0);//r
             idxr0(1);
             push_symbol(base+1);//n
-            assign(idxl());
+            assign2(idxxl());
             pop();
         if_2_1:
         if_2_0:;
@@ -185,7 +185,7 @@ push_call("rule_tr_add",base);
     _clp_len(1);
     addnum(1);
     push_symbol(base+0);//r
-    assign(idxl0(3));
+    assign2(idxxl0(3));
     pop();
     line(45);
     push_symbol(_st_rule_tr_ptr());//global
@@ -296,7 +296,7 @@ push_call("rule_df_add",base);
     _clp_len(1);
     addnum(1);
     push_symbol(base+0);//r
-    assign(idxl0(3));
+    assign2(idxxl0(3));
     pop();
     line(71);
     push_symbol(_st_rule_df_ptr());//global
@@ -760,7 +760,7 @@ push_call("cx_set",base);
             push_symbol(base+4);//n
             push_symbol(base+1);//cx
             push_symbol(base+3);//c
-            assign(idxl());
+            assign2(idxxl());
             pop();
         if_14_1:
         if_14_0:;
@@ -801,7 +801,7 @@ push_call("cx_set",base);
             push_symbol(base+5);//p
             push_symbol(base+1);//cx
             push_symbol(base+4);//n
-            assign(idxl());
+            assign2(idxxl());
             pop();
         goto if_16_0;
         if_16_1:

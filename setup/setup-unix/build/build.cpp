@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: build.ppo (5.0.11)
+//input: build.ppo (5.0.15x)
 
 #include <cccdef.h>
 
@@ -286,7 +286,7 @@ push_call("main",base);
         _clp_procpar(1);
         push_symbol(base+0);//opt
         push_symbol(base+1);//n
-        assign(idxl());
+        assign2(idxxl());
         pop();
         line(158);
         line(79);

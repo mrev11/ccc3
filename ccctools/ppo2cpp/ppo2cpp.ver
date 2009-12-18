@@ -1,4 +1,17 @@
 
+2009.12.18 -- 5.0.16
+  helyett         : assign(idxl());     
+  ezt fordítja    : assign2(idxxl());   
+
+  Egy pop át lett téve idxl-ből assign-ba (azaz későbbre lett 
+  halasztva), ami javítja a régről ismert hibát:
+
+    array(100)[1]:=1  
+
+  korábban nem vot szálbiztos. 
+  A régi idxl is megmaradt, a vegyes programok is futnak.
+
+
 2009.12.14 -- 5.0.15
 
 1)

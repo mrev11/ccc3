@@ -274,6 +274,18 @@ class ppo2cpp_lexer : public yyFlexLexer
                 token->print();
                 fflush(0);
             }
+
+            //UTF-8 ellenőrzés
+            unsigned len=0;
+            wchar_t *wc=utf8_to_wchar(raw_text,strlen(raw_text),&len);
+            char *uc=wchar_to_utf8(wc,len,0);
+            if( strcmp(uc,raw_text) )
+            {
+                token->tokenid=INVALIDENCODING;
+            }
+            free(wc);
+            free(uc);
+
             return token;
         }
 

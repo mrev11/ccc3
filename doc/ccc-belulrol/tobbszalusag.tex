@@ -1,0 +1,399 @@
+\section{Többszálúság}
+
+\subsection{Pthread API}
+
+A CCC2-től kezdve van multithread támogatás.
+Az alább felsorolt API áll rendelkezésre
+szálak indítására és szinkronizálására:
+\begin{verbatim}
+thread_create(codeblock,p1,...) --> threadid
+thread_self() --> threadid 
+thread_detach(threadid) --> status
+thread_exit() --> NIL
+thread_join(threadid) --> status
+thread_mutex_init() --> xMutex
+thread_mutex_lock(xMutex) --> status
+thread_mutex_trylock(xMutex) --> status 
+thread_mutex_unlock(xMutex) --> status 
+thread_mutex_destroy(xMutex) --> status 
+thread_cond_init() --> xCond
+thread_cond_signal(xCond) --> status
+thread_cond_wait(xCond,xMutex[,nMillis]) --> status 
+thread_cond_destroy(xCond) --> status
+\end{verbatim}
+
+A CCC szintre kivezetett egyszerűsített pthread API CCC-ből ugyanúgy működik, 
+mint C-ből. Nincs értelme most referenciaszerű leírást adni róla, mert több
+ilyen található az interneten. 
+\href{http://cs.pub.ro/~apc/2003/resources/pthreads/uguide/document.htm}%
+{Itt van pl. egy a számos közül}.
+A  man is használható a {\em pthread\/}  címszavaknál. 
+Magam is a man oldalak alapján dolgozom, pl.
+\begin{verbatim}
+man 3 pthread_cond_signal
+\end{verbatim}
+Linuxon nyilvánvaló megfelelés van a pthread könyvtár és a CCC között.
+Windowson ugyanez az interfész vissza van vezetve Windows API-ra, 
+nem különösebben bonyolult.
+
+
+Új szálakat  kódblokk végrehajtással indítunk.
+A \verb!thread_create(blk,p1,...)! függvényt pontosan úgy kell meghívni, 
+mint az \verb!eval()!-t, a különbség, hogy \verb!thread_create()! azonnal visszatér,
+miközben az új szál futásnak indul.
+
+A szálak ugyanabban a változótérben dolgoznak. A static változók (külsők és belsők) 
+közösek, egy példányban léteznek. Minden szál külön local stackkel rendelkezik.
+Bármelyik szálból kiindulhat a szemétgyűjtés.
+
+
+\subsection{Egyszerű példa - mutex}
+
+Az alábbi példa elindít 5 darab szálat.
+Minden szál ugyanazt csinálja: 100,000-szer hozzáad 1-et a \verb!sum! változóhoz,
+a helyes végösszeg tehát 500,000 volna. A program azonban szándékosan el van rontva,
+ki van kommentezve a \verb!sum++! sort védő mutex lock. 
+\begin{verbatim}
+static mutex:=thread_mutex_init()
+static sum:=0
+
+function main()
+local blk:={||addtosum()}
+local tid:={},i
+
+    aadd(tid,thread_create(blk))    //új szál, az azonosítót megőrzi
+    aadd(tid,thread_create(blk))
+    aadd(tid,thread_create(blk))
+    aadd(tid,thread_create(blk))
+    aadd(tid,thread_create(blk))
+    
+    for i:=1 to len(tid)
+        ? i, tid[i]
+        thread_join(tid[i])         //megvárja, hogy befejeződjön
+    next
+    ? "végösszeg",sum               //a helyes eredmény 500000
+    ?
+    
+function addtosum()
+local i
+    for i:=1 to 100000
+        //thread_mutex_lock(mutex)  //kellene!
+        sum++
+        //thread_mutex_unlock(mutex)
+    next
+\end{verbatim}
+
+A mutex ({\em mut}ually {\em ex}clusive) olyan dolog, 
+amit lockolni (zárolni, megfogni) és unlockolni (elengedni) lehet.
+A lényeg, hogy egyszerre legfeljebb egy szál foghatja a mutexet.
+Amíg egy szál fogva tartja, 
+addig a többi szálból meghívott \verb!thread_mutex_lock! vár
+a mutex felszabadulására.  A mutex mechanizmussal tehát biztosítani lehet,
+hogy egy kódrész végrehajtásával egyszerre legfeljebb egy szál foglalkozzon.
+
+Fontos észrevétel, hogy a \verb!sum++! művelet végrehajtása nem atomi.
+Atomi nagyjából azt jelenti, hogy felbonthatatlan egység. 32-bites processzoron
+egy 32-bites mennyiség memóriából történő kiolvasása atomi. 2 darab
+32-bites mennyiség kiolvasása már nem atomi. Lehet, hogy
+közben a processzor más tevékenységre vált, pl. folytatja egy másik szál
+végrehajtását. \verb!sum++! ehhez képest a static változó értékét 
+(eleve több mint 64 bit) átrakja a local stackre, hozzáad 1-et, 
+majd az eredményt visszamásolja az eredeti helyre. Sokszorosan nem atomi.
+
+A saját gépemen 250 ezer körüli véletlenszerű eredményt kapok.
+Kikommentezett mutex lock/unlockkal a példaprogram azért működik rosszul, 
+mert egyszerre több szál is kiolvashatja \verb!sum!-ból {\em ugyanazt\/} 
+a pillanatnyi értéket, és ilyenkor valamelyik szál növekménye elvész.
+
+
+Vigyázzunk, hogy a mutexet ne lockoljuk ugyanabból a szálból
+többszörösen, ui.
+\begin{verbatim}
+    thread_mutex_lock(mutex)
+    thread_mutex_lock(mutex)  //deadlock
+\end{verbatim}
+deadlockot eredményez.
+
+Egy további észrevétel. 
+A példa a mutexet külső static változóként deklarálja. 
+Az világos, hogy static-nak kell lennie. Ha local volna, akkor minden szálnak 
+külön példánya volna belőle, nem tudná kifejteni a működését. De lehetne-e
+belső static \verb!addtosum!-ban? Az a nehézség, hogy static változók 
+(elvileg csak egyszer futó) inicializálását is szinkronizálni kell.
+Szinkronizáció híján előfordul, hogy az inicializátor néha mégis többször fut.
+Éppen ezért a CCC a külső static változók inicializátorát mindig 
+szinkronizálja, hogy legyen biztos kiindulópont. A belső static változók 
+inicializátora nincs automatikus mutex védelem alatt (ritkán kell, viszont költséges).
+
+
+
+
+
+
+
+
+\subsection{Egyszerű példa - cond}
+
+
+A következő program sok szálat hoz létre.
+A szálak véletlen hosszú ideig, átlagosan 1 másodpercig élnek,
+az egyszerre életben levő szálak száma \verb!level<=MAXTHREAD!.
+A program folyamatosan listázza a létrejövő és megszűnő szálakat,
+mindaddig, amíg ESC-et nem ütünk neki.
+Végül megvárja az összes thread kilépését.
+
+\begin{verbatim}
+#include "inkey.ch"
+
+#define MAXTHREAD  16
+
+static mutex:=thread_mutex_init()
+static cond:=thread_cond_init()
+static level:=0
+static count:=0
+
+function main()
+local th
+
+    while( inkey(0.05)!=K_ESC  )
+        th:=thread_create({|x,r|dothread(x,r)},count,rand())
+        thread_detach(th)
+        
+        //A threadeket vagy el kell engedni (thread_detach)
+        //vagy meg kell várni (thread_join), máskülönben
+        //elfogynak a létrehozható threadek (Linuxon kb. 90).
+
+        thread_mutex_lock(mutex)
+        //A level változót a threadek módosítgatják,
+        //ezért csak mutex védelem alatt biztonságos a kiolvasása.
+        ? padl(l2hex(th),8), count, level
+        ++level
+        ++count
+        while( level>MAXTHREAD )
+            thread_cond_wait(cond,mutex)
+        end
+        thread_mutex_unlock(mutex)
+    end
+
+    thread_mutex_lock(mutex)
+    while( level>0 )
+        thread_cond_wait(cond,mutex)
+        ? "wait",level
+    end
+    thread_mutex_unlock(mutex)
+
+static function dothread(x,r)
+    sleep(r*2000)  //átlagosan 1 másodpercet vár
+    thread_mutex_lock(mutex)
+    --level
+    ? "quit",x,r
+    thread_cond_signal(cond)
+    thread_mutex_unlock(mutex)
+\end{verbatim}
+
+
+A példa fő tanulsága, 
+hogyan várunk arra \verb!main!-ben, hogy a \verb!level! változó 
+(a többi szál tevékenységének következtében)
+lecsökkenjen egy kívánt értékre.
+A program elején egy mutex és egy cond objektumot hoztunk létre.
+Általában egy cond ({\em cond}ition) objektumot mindig egy mutexszel együtt használunk.
+
+
+Az alábbi kódrészletben a \verb!thread_cond_wait(cond,mutex)!
+híváskor \verb!mutex!-nek lockolva kell lennie. A \verb!thread_cond_wait!
+automatikusan elengedi a mutexet, és vár, amíg valamelyik másik száltól szignált
+nem kap. A várakozás alatt a szál futása fel van függesztve, semennyi CPU időt 
+nem fogyaszt. Miután megjött a szignál
+\verb!thread_cond_wait! újra megfogja \verb!mutex!-et, majd visszatér.
+\begin{verbatim}
+    thread_mutex_lock(mutex)
+    while( level>0 )
+        thread_cond_wait(cond,mutex)
+    end
+    thread_mutex_unlock(mutex)
+\end{verbatim}
+
+Eközben a többi szál minden alkalommal, 
+amikor a \verb!level! változó csökken, szignált küld,
+hogy a várakozó szál értesüljön az eseményről.
+\begin{verbatim}
+    thread_mutex_lock(mutex)
+    --level
+    thread_cond_signal(cond)
+    thread_mutex_unlock(mutex)
+\end{verbatim}
+A \verb!thread_cond_signal(cond)! hívás ,,szignált küld'' a \verb!cond!
+objektumnak. Ha egyetlen szál sincs, amelyik éppen  \verb!cond!-ban várakozna,
+akkor a szignál hatástalan. Ha több szál is várakozik \verb!cond!-ban,
+akkor ezek közül az egyik továbbindul, de hogy melyik, az nincs meghatározva.
+
+
+
+
+
+\subsection{Thread-local storage}
+
+Tudjuk, 
+hogy a program static változói csak egy példányban léteznek,
+és az az egy példány minden szálra közös. 
+Ezzel szemben minden szálnak saját local stackje van, 
+a stack változók ezért szálanként elkülönülnek.
+De nem csupán szálanként.
+A local változók csak egy-egy függvényen belül léteznek,
+és minden függvényhívásban külön létrejönnek.
+Hol tudunk akkor olyan adatot tárolni, ami szálanként egyedi,
+de egy szálon belül közös.  Az ilyen adatok kezelésére szolgáló 
+mechanizmust nevezik ,,thread-local storage''-nak.
+
+CCC-ben a \verb!localstack! függvénnyel lehet egyszerű TLS-t csinálni.
+Nézzük az alábbi programot:
+\begin{verbatim}
+function main(a,b,c)
+local x:="x", y:="y"
+    ? localstack(1)
+    ? localstack(2)
+    ? localstack(3)
+    ? localstack(4)
+    ? localstack(5)
+\end{verbatim}
+Ha a programot így indítjuk
+\begin{verbatim}
+proba.exe q w
+\end{verbatim}
+akkor ezt a kimenetet kapjuk:
+\begin{verbatim}
+q
+w
+NIL
+x
+y
+\end{verbatim}
+Világos, hogy \verb!localstack(x)! előveszi (akár egy tömbből) 
+a local stack \verb!x!-edik elemét. Kicsit vigyázni kell vele,
+de általában tudható, van-e elég érték a stacken, a példaprogramban
+biztosan megvan legalább 5 darab.
+
+Egyszerű ötlet: A thread közösnek szánt adatait tegyük be
+a local stack aljára. Tulajdonképpen egyetlen érték is elég,
+hiszen lehet az egy  hashtábla (vagy array, vagy objektum), 
+amiben aztán annyi további adatot tárolhatunk, amennyi kell, 
+és akár név szerint is hivatkozhatunk rájuk.
+
+
+\begin{verbatim}
+local blk:={|p1,p2|dothread(p1,p2)} 
+local a,b,c
+    ...
+    thread_create(blk,a:=simplehashNew(),b,c)
+    ...
+\end{verbatim}
+A szálban hívott \verb!localstack()! értékei:
+\begin{verbatim}
+    localstack(1)  // -->  blk
+    localstack(2)  // -->  a
+    localstack(3)  // -->  b
+    localstack(4)  // -->  nem definiált (dothread-től függ)
+    localstack(5)  // -->  nem definiált, stb.
+\end{verbatim}
+A kódblokkot és a blokknak átadott paramétereket lehet megkapni
+a szálból bárhonnan, legfeljebb olyan számban,
+ahány \verb!p1!, \verb!p2!\ldots paramétere van a blokknak.
+A példában \verb!localstack(2)! egy szálanként egyedi, 
+de szálon belül közös hashtáblát ad.
+
+
+\subsection{Szálbiztonság}
+
+A szálbiztonság első kritériuma: biztonság a szemétgyűjtéssel szemben. 
+Minden olyan pillanatban, amikor egy másik szálból szemétgyűjtés indulhat, 
+a vermeken kell legyen minden élő változó, de nem lehet ott semmi más,
+pl. keletkezőben vagy megszűnőben levő változók. Ha egy változó nincs
+rajta a stacken, akkor a hozzá tartozó memóriaobjektumot kitakaríthatja
+a szemétgyűjtés. A keletkezőben vagy megszűnőben levő változók érvénytelen
+pointereket jelentenek, amik elrontják a szemétgyűjtésben levő gráfbejárást.
+Ha nem használnak saját C kódot, akkor az alkalmazásoknak ezzel nem kell 
+törődniük, mert ilyen hibát  akármilyen rossz alkalmazáslogika sem okozhat. 
+
+A szálbiztonság második kritériuma: a static-ok szinkronizálása.
+A szálak által közösen használt static változókat szinkronizálni 
+kell akár C++, akár CCC szinten. A CCC alapkönyvtárakben levő néhány 
+static változó szinkronizálva van, a saját static-jaikat viszont
+az alkalmazásoknak maguknak kell szinkronizálni.
+
+E kritériumok teljesítése csak a ccc3 és ccc3\_ui\_ könyvtáraknál kitűzött cél. 
+Árnyaltan fogalmazva ,,kitűzött'', nem pedig elért célról beszélünk.
+
+Szálbiztos a karakteres fullscreen megjelenítő könyvtár (ccc3\_uic),
+ha csak egy szál foglalkozik a képernyővel.
+
+Szálbiztos a Jáva terminál könyvtár, 
+ha csak egy szál használja a terminált, a többi szál mással foglalkozik.
+
+Szálbiztos az sql2 könyvtár, 
+ha minden szál külön adatbáziskapcsolaton keresztül dolgozik.
+
+A különféle interfészek szálbiztonsága attól függ,
+hogy az adott könyvtár (amit az interfész közzétesz) szálbiztos-e.
+
+A szálbiztonság ellenőrzésére nincs általános módszer.
+Egy lehetőség a hibahalászat. Véletlenszerűen mindenfélét csináló programokat
+hagyunk futni napokig, hetekig. Ha a program hibázik, akkor megpróbáljuk
+behatárolni a hibát, ami egyáltalán nem könnyű feladat.
+Képzeljünk el egy olyan hibát, ami egy folyamatosan futó tesztprogramot
+átlagosan  hetente akaszt meg\ldots Szerencsére ilyen eset már évek óta
+nem volt. Mérget azonban nem lehet rá venni. 
+
+
+\begin{comment}
+Ez nem aktuális, ki lett javítva.
+
+
+A hibahalászós módszerrel találtam a következő érdekes (nem könnyen kijavítható) 
+hibát, amivel mégiscsak el lehet rontani a szemétgyűjtést alkalmazásszinten is.
+Az alábbi program az én rendszeremen pár másodpercen belül SIGSEGV-vel elszáll.
+\begin{verbatim}
+function main()
+    thread_create({||dothread()})
+    while(.t.)
+        array(100)[1]:=1
+    end
+
+function dothread()
+    while(.t.)
+        gc()      // szemetet gyűjt
+        sleep(1)  // 1 ezredmásodpercet alszik
+    end
+\end{verbatim}
+A program elindít egy szálat, ami lényegében folyamatosan gyűjti a szemetet 
+\verb!gc()!-vel. Általában nincs értelme indítgatni a szemétgyűjtést,
+elindul az magától, amikor kell, most azonban a hiba kimutatása a cél.
+Az eredeti szál közben ezt ismételgeti:
+\begin{verbatim}
+    array(100)[1]:=1
+\end{verbatim}
+És itt a baj. Ui. az \verb!array()!-ből kapott tömb
+nem értéke egyetlen programváltozónak sem,
+és a függvény visszatérése után rögtön lekerül a stackről.
+Csak ezután próbál a program értéket adni a tömbelemnek.
+Az időzítéstől függően azonban egyes esetekben a tömböt már eltakarította
+a szemétgyűjtés, a program a semmibe nyúl\ldots
+Az a szerencse, hogy értelmetlen. Miért akarnánk
+értéket adni egy nemlétező tömb akármelyik elemének?
+Ha a programnak értelmet adunk, pl.
+\begin{verbatim}
+    a:=array(100)
+    a[1]:=1
+\end{verbatim}
+akkor viszont a hiba is rögtön megszűnik.
+Csak játék, de mutatja, milyen könnyű elrontani a szálbiztonságot,
+és milyen rejtvényszerű hibákat kell néha felderíteni.
+
+\end{comment}
+
+
+
+
+
+
+

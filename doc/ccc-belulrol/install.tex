@@ -1,0 +1,122 @@
+
+\section{Telepítés}\label{INSTALL}
+
+A CCC többféle rendszeren fut. 
+32-bites Windowson MinGW vagy Microsoft-C fordítóval.
+Különféle 32 és 64 bites Linuxokon, BSD-ken, Solarison GCC fordítóval.
+Mi most az Ubuntu (Debian) Linuxon történő telepítést vesszük át.
+Más platformokon (Windowson is) analóg módon kell eljárni.
+
+Először  installáljuk a CCC-hez szükséges infrastruktúrát
+az alábbi scripttel:
+
+\begin{verbatim}
+#!/bin/bash
+
+# Egy szokásos Ubuntu telepítés után
+# ezeket a csomagokat kell felrakni,
+# hogy a CCC2/CCC3 leforduljon.
+# + a jt-hez kell a Sun Java.
+# + az SQL2-höz kell a PostgreSQL.
+
+sudo apt-get install \
+    g++ \
+    libncurses5-dev \
+    libncursesw5-dev \
+    manpages-dev \
+    glibc-doc \
+    libx11-dev \
+    libssl-dev \
+    libgtk2.0-dev \
+    libpcre3-dev \
+    libreadline5-dev \
+    git-core
+\end{verbatim}
+
+Végrehajtjuk az alábbi parancsot:
+\begin{verbatim}
+git clone  git://ccc.comfirm.hu/ccc3.git
+\end{verbatim}
+Ehhez internet kapcsolat kell. Ha a parancsot a home-unkban adtuk ki, 
+akkor létrejön a \verb!$HOME/ccc3! directory, benne a CCC forrással.
+
+A \verb!.bashrc! fájlunkba beírjuk az alábbiakat:
+
+\begin{verbatim}
+export CCCDIR=$HOME/ccc3
+export CCCBIN=lin
+export CCCUNAME=linux
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+export CCCTERM_SIZE=80x40
+export OREF_SIZE=50000
+
+PATH=$CCCDIR/usr/bin/$CCCUNAME:$PATH
+PATH=.:$PATH  #fontos
+LD_LIBRARY_PATH=$CCCDIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+export PATH 
+export LD_LIBRARY_PATH
+export LANG=en_GB.UTF-8  #valamilyen UTF-8-as locale!
+\end{verbatim}
+
+Egyéb lehetséges variációk:
+
+FreeBSD
+\begin{verbatim}
+...
+export CCCBIN=fre
+export CCCUNAME=freebsd
+...
+\end{verbatim}
+
+NetBSD
+\begin{verbatim}
+...
+export CCCBIN=net
+export CCCUNAME=netbsd
+...
+\end{verbatim}
+
+BSD-ken telepíteni kell a bash-t, és átlinkelni \verb!/bin/bash!-be (hogy a
+\verb@#!/bin/bash@ kezdetű scriptek fussanak). FreeBSD-n gondoskodni kell róla,
+hogy legyen használható \verb!malloc.h!.
+
+
+Windows, MinGW
+\begin{verbatim}
+...
+set CCCBIN=mng
+set CCCUNAME=windows
+...
+\end{verbatim}
+
+Windows, Microsoft-C
+\begin{verbatim}
+...
+set CCCBIN=msc
+set CCCUNAME=windows
+...
+\end{verbatim}
+
+A Debiantól különböző rendszereken természetesen másképp kell megszerezni
+a CCC függőségeit (nincs apt-get), de aki ilyeneket használ, 
+az legyen tájékozott a kérdésben.
+
+Ha most elindítunk egy terminált, abban a fent beállított környezet lesz érvényben
+(ellenőrizzük). Bemegyünk a CCCDIR-be, és elindítjuk az \verb!i.b! scriptet. 
+Ez lefordítja az egész CCC-t (kivéve a Jáva terminált, amihez Jáva kell, 
+és az SQL2 könyvtárat, amihez Postgres kell.) 
+A CCC fordításának minden platformon warning mentesen kell futnia.
+
+Ha a fordítás alapjaiban nem megy, akkor ellenőrizzük a környezet beállítását.
+
+Ha egyes komponensek nem fordulnak, annak oka lehet, hogy hiányzik valami
+függőség. Ilyenkor meg kell keresni, hogy konkrétan mi hiányzik, pótlólag telepíteni,
+majd újraindítani az \verb!i.b! scriptet.
+
+Időről időre mégis megjelennek warningok, ez amiatt van, hogy a C++ fordító 
+ellenőrzéseit szigorítják. A CCC karbantartása során ezek rendszeresen javításra 
+kerülnek.
+
+
+
+

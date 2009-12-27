@@ -1,0 +1,435 @@
+
+\section{Kivételkezelés}
+
+\subsection{Mikor kapunk el  kivételt?}
+
+Képzeljünk el egy tranzakció végrehajtó programot. 
+Tegyük fel, hogy a tranzakció viszonylag bonyolult, 
+sok külső feltételtől függ, végrehajtható-e.
+Például egy betétlekötésnél, kell legyen leköthető pénz,
+kell legyen kamatláb, stb..
+A program elkezdi a végrehajtást, ám egyszercsak kiderül,
+hogy egy feltétel nem teljesül. Hiába minden erőlködés, 
+nem lehet továbbmenni.
+
+Mit csináljon a program? 
+
+Egy lehetőség, hogy a függvény, ami észleli a hibát kiírja 
+(csak a példa kedvéért) ,,nincs pénz'', és kilép. 
+\begin{verbatim}
+    if( nincs_penz )
+        ? "nincs pénz"
+        quit
+    end
+\end{verbatim}
+A legrosszabb. Tegyük fel, hogy egy ilyen programot kell javítanunk. 
+Tudni akarjuk, hol nincs pénz, rákeresünk tehát a hiba szövegére,
+és azt találjuk, a programozó következetes volt, a szöveg 10 helyen fordul 
+elő a kódban. Rémálom.
+
+Másik lehetőség, hogy a hibát észlelő függvény hibakóddal tér vissza. 
+Ezzel sajnos nincs elintézve a dolog, mert bonyolult tranzakcióról lévén szó,
+a kérdéses függvény akár 10-20 függvényhívási szint mélységben lehet. Tehát
+a programot úgy kell megírni, hogy a hívó mindenhol felkészül a
+hibakód ,,feljebb adására''. Az ilyen program zavarossá válik,
+eluralkodik benne a hibakezelés, megnehezül a karbantartás.
+
+A kényes szituáció kezelésére szolgál (egy harmadik lehetőség) a kivétel dobás. 
+A CCC-ben a
+\begin{verbatim}
+    break(x)
+\end{verbatim}
+utasítással dobunk kivételt. Az \verb!x! változó típusa bármi lehet.
+
+
+Más nyelveknél (pl. Jáva) ezen a helyen a kivétel elkapásával folytatódna a leírás,
+én szándékosan más sorrendet választok. Azt szeretném ezzel hangsúlyozni, hogy
+\begin{itemize}
+ \item a kivételnek nem az a célja és értelme, hogy elkapjuk, hanem
+ \item a kivétel egyszerűen azt fejezi ki, hogy a program nem futhat tovább.
+\end{itemize}
+
+Mire számíthatunk, ha nem kapunk el egy kivételt? Nézzünk egy példaprogramot:
+\begin{verbatim}
+function main()
+    proba1()
+
+function proba1()    
+local v:="x"
+    proba2()
+
+function proba2()    
+local v:="y"
+    proba3()
+
+function proba3()    
+local v:="z"
+    break("HOPP")
+\end{verbatim}
+
+A \verb!break("HOPP")! hatására a program ,,elszáll'' a következő hibaüzenettel:
+\begin{verbatim}
+default error block evaluated
+errorclass: C HOPP
+  called from deferror(215)
+  called from _blk__2(0)
+  called from proba3(14)
+  called from proba2(10)
+  called from proba1(6)
+  called from main(2)
+-----------------------------------------------------------
+ Variable Stack
+-----------------------------------------------------------
+0: BINARY length=24 oref=b7949048 "^^^^^^^^^^^^^^^^^^^^^^^^"
+1: BLOCK oref=NULL
+***** function main
+***** function proba1
+0: STRING length=1 oref=b7949008 "x"
+***** function proba2
+1: STRING length=1 oref=b7949018 "y"
+***** function proba3
+2: STRING length=1 oref=b7949028 "z"
+3: STRING length=4 oref=b7949038 "HOPP"
+***** function _blk__2
+4: BLOCK oref=NULL
+5: STRING length=4 oref=b7949038 "HOPP"
+***** function deferror
+6: STRING length=4 oref=b7949038 "HOPP"
+7: FLAG .T.
+8: NIL
+9: STRING length=0 oref=b7949078 ""
+10: ARRAY length=0 oref=b7949088
+11: NIL
+-----------------------------------------------------------
+\end{verbatim}
+%A hibakezelés hasonló a Pythonhoz. 
+Kiíródik a callstack, minden függvényhívási szinten feltüntetve 
+az aktuális programsor száma.
+Kiíródik az összes static változó (main fölött), 
+majd a függvényhívási szintek megjelölésével az egész local stack.
+A gyakorlott programozó számára ez az infó az esetek többségében elegendő
+egy hiba azonosítására.
+
+Térjünk vissza a tranzakcióhoz, próbálkozzunk ilyen hibakezeléssel:
+\begin{verbatim}
+    if( nincs_penz )
+        break("nincs pénz") //quit helyett
+    end
+\end{verbatim}
+Máris beljebb vagyunk.
+Még mindig nem foglalkozunk a hiba elkapásával.
+Azért vagyunk lényegesen beljebb, mert bár a program most sem fut tovább,
+nem veszítjük el a hibára vonatkozó infót, mint a \verb!quit! után.
+A programozó a hibalista elemzéséből debugolás nélkül is látja, hol
+nem volt pénz.
+
+Tegyük fel, hogy a tranzakció a 4. függvényhívási szinten indul,
+a \verb!break("nincs pénz")! kivétel dobása a 10. függvényhívási szintről jön,
+mi pedig éppen egy 7. szinten levő függvény kódjában kotorászunk.
+Meghívni készülünk egy függvényt, amiről tudjuk, hogy 
+\verb!break("nincs pénz")! kivételt dobhat. Mit tegyünk, kapjuk-e el a kivételt?
+
+A legnagyobb baklövés:
+\begin{verbatim}
+    begin
+        ...
+        fuggveny8()    // break("nincs pénz") jöhet belőle
+        ...
+    recover hiba <C>   // elkapja
+        //elkaptam a kivételt,
+        //mert lelkiismeretes munkaerő vagyok,
+        //és úgy tanították, hogy a hibákat le kell kezelni,
+        //csak azt tudnám, most mi a fenét kezdjek vele?
+        //ez a legrosszabb        
+        ? hiba //kiírja: nincs pénz
+        quit
+    end
+\end{verbatim}
+A program idejekorán elkap egy kivételt, 
+amivel nem tud mit kezdeni, és ezzel megsemmisíti a hiba eredeti környezetét.
+Sajnos a Jáva nyelv erőteljesen tereli a programozót ebbe az irányba,
+ráadásul a Jáva tankönyvek szinte kivétel nélkül a fenti értelemben
+káros hibakezelést tanítják.
+
+A helyes hozzáállás:
+\begin{itemize}
+ \item 
+    Észlelésekor nem a hiba elnyomására kell törekedni, 
+    hanem kivételt kell dobni (a program nem folytatódhat).
+ \item
+    Csak olyan kivételt szabad elkapni, 
+        amivel direkt kezdeni akarunk valamit.
+    Kevés olyan hely van a programban, 
+        ahol a hiba orvosolható, következésképp 
+            az esetek többségében az a jó, ha a kivételt nem kapjuk el.
+    Ha a hibát idejekorán elkapjuk, azzal megakadályozzuk, 
+        hogy a kivétel eljusson a hibakezelésre ténylegesen felkészített kódhoz.
+    Mindezek miatt az alapállás, 
+        hogy nem kapkodunk kivételek után,
+          hanem engedjük a hibát eljutni a felsőbb szintekre.
+ \item
+   A {\em tranzakció logikájának megfelelő helyen\/} (ha egyáltalán)
+   felkészülünk a kivétel kezelésére.
+\end{itemize}
+Ha egy kivétel sehol sincs elkapva, az nem feltétlenül baj. 
+A program kilép és pontos infót ad a kilépés okáról. 
+Az esetek többségében éppen erre van szükség.
+Mindez azonban nem szabály, inkább {\em szempont}.
+
+
+
+
+
+
+A tranzakció logikája mellett még egy gyakorlati szempontot
+tudok ajánlani kivétel elkapás (elkapjam-nekapjam) kérdésében. 
+Ne kapjunk el {\em programhibát}, vagyis olyan kivételt, 
+amit inkább a program kijavításával kell megszüntetni.
+
+A CCC kivételkezelése nagyon hasonlít a Jávához. CCC-ben azonban nincs
+külön throwable osztály, bármit lehet dobni, és bármit el is lehet kapni.
+Logikus, hogy így van, hiszen \verb!break()! közönséges függvény, akármilyen
+paraméterezéssel meg lehet hívni. Az meg végképp nem volna szép,
+ha valamit dobni lehet, de elkapni nem.
+
+Kialakult az a konvenció, hogy a programozási 
+hibákból \verb!error! osztályú kivétel objektum keletkezik, amiket nem kapunk el. 
+Ahol felmerülhet, hogy hasznos a kivétel elkapása, ott az \verb!apperror! osztályt
+vagy annak leszármazottait dobjuk. 
+Tehát valahogy így készül a kivétel:
+\begin{verbatim}
+    if( nincs_penz )
+        error:=apperrorNew()
+        error:description:="nincs pénz"
+        break(error)
+    end
+\end{verbatim}
+Ha differenciáltabb hibakezelésre van szükség,
+akkor az alkalmazás definiál magának speciális \verb!apperror! 
+leszármazottakat.
+
+
+Az alábbi vázlat mutatja, 
+hogyan gondolom a kivételkezelést összehangolni a tranzakció logikájával:
+\begin{verbatim}
+    while( van_meg )
+        begin               
+            tranzakcio()
+            //sikerült
+            commit()
+        recover error <apperror>
+            //nem sikerült
+            error:list
+            rollback()
+        end
+    end
+\end{verbatim}
+
+\subsection{A begin...recover utasítás}
+
+A következő példán tanulmányozzuk a \verb!begin...recover! utasítás
+technikai részleteit. Tanulságos a program lefordítása és próbálgatása 
+különféle variációkban.
+\begin{verbatim}
+function main(x)
+local e
+    if( x==NIL )
+        //NIL
+    elseif( isdigit(x) )
+        x:=val(x)
+    elseif( x=='e'  )
+        x:=errorNew()
+        x:description:="próba"
+    elseif( x=='a'  )
+        x:=apperrorNew()
+        x:description:="szerencse"
+    else
+        //karakter
+    end
+        
+    begin    
+        fuggveny1(x)
+    recover e <N>
+        ? "szám",e
+    recover e <error>
+        ? "error",e:description
+    finally
+        ? "finally-main"
+    end
+    ? "OK"
+    ?
+
+function fuggveny1(x)    
+local e
+    begin
+        fuggveny2(x)    
+    recover e <apperror>
+        ? "apperror",e:description
+    finally
+        ? "finally-fuggveny1"
+    end
+
+function fuggveny2(x)    
+    //errorblock({||qout("ERROR")}) //kikapcsolja a hibakezelést
+    break(x)
+    ? "break után"
+\end{verbatim}
+
+A program az \verb!x! argumentumtól függően különféle típusú kivételt dob. 
+A \verb!break(x)!-ben \verb!x! típusa bármi lehet, mi most csak néhány variációt 
+nézünk a példa kedvéért (NIL, szám, error, apperror, karakter).
+
+A \verb!break(x)! megszakítja a végrehajtás normál sorrendjét,
+a rendszer elkezdi keresni a kivételt elkapó \verb!recover! utasítást.
+\begin{verbatim}
+    recover e [type_expr]
+\end{verbatim}
+A \verb!recover! kulcsszót egy változó majd egy opcionális típuskifejezés követi.
+A \verb!recover! akkor kapja el a \verb!break!-kel dobott kivételt, ha a 
+\verb!break! paraméterének típusa megfelel a \verb!recover!-beli típuskifejezésnek.
+Mi állhat a típuskifejezés helyén?
+\begin{itemize}
+\item 
+    Üres. Az ilyen \verb!recover! mindent elkap.
+\item 
+    Tetszőleges kifejezés, ami az adott helyen kiértékelhető.
+    A kifejezésnek csak a típusa számít, az értéke
+    nem hozzáférhető (de mellékhatásai lehetnek).
+    A kifejezés már a \verb!begin...recover! elején kiértékelődik.
+    A különböző \verb!recover! kifejezések kiértékelésénék sorrendje
+    nincs meghatározva. A \verb!recover! akkor kapja el a kivételt,
+    ha a típusok megegyeznek.
+\item
+    \verb!<U>!, 
+    \verb!<L>!,
+    \verb!<N>!,
+    \verb!<D>!,
+    \verb!<P>!,
+    \verb!<C>!,
+    \verb!<X>!,
+    \verb!<A>!,
+    \verb!<B>!,
+    \verb!<O>!, azaz a különféle típusok kódja hegyes zárójelek között.
+    Például: \verb!<C>! jelöli a karakter típust,  
+    a \verb!<C>! típusú \verb!recover! elkapja a karakter kivételeket.
+\item
+    \verb!<osztaly>!, vagyis osztálynév hegyes zárójelek között. 
+    Az ilyen \verb!recover! azokat az objektum típusú kivételeket kapja el, 
+    amiknek az osztálya megegyezik a \verb!recover! osztályával, vagy 
+    annak leszármazottja.
+\end{itemize}
+
+A \verb!recover! ,,elkapja'' a kivételt: Azt jelenti, 
+hogy visszaállítódik a stack,
+a kivétel (\verb!break! paramétere) behelyettesítődik a \verb!recover!
+változóba (a példában \verb!e!-be), és a végrehajtás a \verb!recover! utáni
+sorral folytatódik. Végrehajtódik a \verb!recover! ág, ami a következő 
+\verb!recover!-ig, vagy az opcionális \verb!finally!-ig, 
+vagy a \verb!begin...recover!-t lezáró \verb!end!-ig tart.
+Ha van \verb!finally! ág, akkor az is végrehajtódik.
+A végrehajtás ezután az \verb!end!-et követő soron folytatódik.
+
+
+Hol és milyen sorrendben keresi a rendszer a kivételt elkapó
+\verb!recovert!? Először is teszünk egy észrevételt: 
+A \verb!begin...recover! utasítások egymásba lehetnek ágyazva. 
+A keresés a \verb!break!-et tartalmazó legbelső \verb!begin...recover! 
+utasításban kezdődik. (A példában a \verb!fuggveny1!-beli a legbelső.)
+Itt a rendszer felülről lefelé haladva keres a \verb!recover!-ek között.
+Az első illeszkedő típus nyer.
+
+Ha nem talál, akkor -- mint héjakon -- belülről kifelé haladva keres a
+többi \verb!begin...recover!-ben. Például a szám típusú kivételt 
+a \verb!main!-beli első \verb!recover! fogja elkapni.
+
+Miután megvan a kivételt elkapó \verb!recover!,
+a rendszer megnézi, hogy mely \verb!begin...recover! utasításokon (héjakon)
+kellett átvágnia magát, és végrehajtja ezek esetleges \verb!finally! ágait. 
+A sorrend természetesen belülről kifelé. Ezután a végrehajtás a nyertes 
+\verb!recover! ágra kerül, a többit már ismerjük.
+
+A \verb!begin...recover! specialitása a többi vezérlési struktúrához képest,
+hogy átlépi a függvényhatárokat. Éppen ez kell a tranzakció-orientált hibakezeléshez.
+
+De miért mondtuk, hogy csak miután megvan a \verb!recover!, azután hajtódnak 
+végre az átlépett/elhagyott \verb!begin...recover!-ek \verb!finally! ágai?
+Miért nem a keresés közben? Mert nem tudható előre, lesz-e egyáltalán megfelelő
+\verb!recover!. Ha semmi sem kapja el a kivételt, akkor a \verb!begin...recover!-ek
+mintha ott sem lennének, az eset a magában álló \verb!break!-hez hasonlít.
+Ilyenkor sehova sem tevődik át a vezérlés (következésképp a \verb!finally! ágak
+sem játszanak), hanem a hiba {\em eredeti környezetében\/} kiértékelődik
+az \verb!errorblock!. Az eredményt már láttuk.
+
+Hátra van még néhány speciális eset:
+
+Ha a \verb!begin...recover!-t nem szakítja meg \verb!break!,
+akkor a végrehajtás átugorja a \verb!recover! ágakat,
+belemegy az esetleges \verb!finally!-ba,
+majd az \verb!end! után folytatódik.
+
+Lehetséges, hogy nincs egy \verb!recover! ág sem:
+\begin{verbatim}
+    begin
+        ...
+    finally
+        ...
+    end
+\end{verbatim}
+Az ilyen struktúra nem kap el semmit,
+de végrehajtódik a \verb!finally! ág, ha nincs kivétel, 
+vagy ha van, de azt elkapja egy külső \verb!begin...recover!.
+
+Lehetséges, hogy nincs \verb!finally! sem:
+\begin{verbatim}
+    begin
+        ...
+    end
+\end{verbatim}
+Ez viszont egyenértékű azzal, mintha az \verb!end! előtt állna
+egy mindent elkapó (üres) \verb!recover! ág.
+
+A  \verb!begin...recover!-ből szabad kiugrani 
+\verb!return!, \verb!loop!, \verb!exit! utasításokkal.
+Ilyenkor végrehajtódnak az elhagyott \verb!begin...recover!-ek \verb!finally! ágai.
+
+
+Kezdetleges formában már a régi Clippernek is volt \verb!begin...recover! 
+utasítása. A CCC ezt kiterjesztette és teljessé tette.
+
+
+\subsection{Az errorblock}
+
+Még egy eszköz áll a hibakezelés szolgálatában, 
+ami  a régi Clipperben is megvolt, az errorblock.  
+Volt ilyen mondásunk: Az el nem kapott kivétel hatására a program ,,elszáll''.
+Mit jelent ez részleteiben?
+
+A \verb!break()! próbál olyan \verb!recover!-t keresni, 
+ami elkapja a kivételt, ám lehet, hogy nincs ilyen. 
+Mi mást tehetne ilyenkor, valahogy be kell fejezni a programot,
+kiértékeli hát az errorblockot. Az erroblock egy kódblokk,
+ami direkt arra szolgál, hogy ez hajtódjon végre kezeletlen hiba esetén.
+
+Már láttuk hogyan működik a beépített hibakezelő:
+Kiírja a callstacket, varstacket, majd kilépteti a programot.
+A hibakezeleő blokkot azonban az alkalmazás a saját igényei szerint 
+lecserélheti, láncba fűzheti.
+\begin{verbatim}
+local defblk:=errorblock()
+    errorblock({|x|naplo(x),eval(defblk,x)})
+    ...
+\end{verbatim}
+Ez a program először lekérdezi a default hibakezelőt
+az \verb!errorblock()! függvény paraméter nélküli hívásával,
+majd ugyanezzel  beállít egy új hibakezelő kódblokkot,
+amiben először naplózza a hibát, majd végrehajtja az eredeti hibakezelést.
+Csak a példa kedvéért.
+
+A \verb!begin...recover! és \verb!break! működését tanulmányozhatjuk
+kikapcsolt hibakezelés mellett, ha a \verb!fuggveny2!-ben megszüntetjük
+az \verb!errorblock()! hívás kikommentezését.
+
+
+
+
+

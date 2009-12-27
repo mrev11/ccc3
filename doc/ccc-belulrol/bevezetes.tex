@@ -1,0 +1,64 @@
+
+
+\section{Bevezetés}
+
+
+A Clipper praktikus, egyszerű, általános célra használható eszköz volt. 
+Nem véletlen a rendkívüli népszerűség, amire a maga idejében szert tett. 
+A DOS-szal együtt azonban a Clipper kihalt,  az utána keletkezett űr 
+betöltetlen maradt. A Clipper utódok, mint a Clip, FlagShip, Harbour nem 
+terjedtek el széles körben, nálam egyik sem ,,nyerő'', mint ahogy az új nyelvek sem.
+A Jáva termelékenység helyett tudálékos, a Python túlságosan script \ldots
+
+A CCC-t a banki programjainkkal párhuzamosan, saját célra fejlesztettük,
+azzal az elgondolással, hogy a DOS korszak után a programokat ezzel fogjuk 
+életben tartani.
+Volt idő, amikor egyszerre DOS-on, Windowson és UNIX-(ok)on  
+futottunk. Minden platformra ugyanabból a forrásból fordítottunk,
+DOS-on Clipperrel, máshol CCC-vel. Ugyanabból a forrásból,
+ez nem egy verziókezelő rendszerből elővett különféle változatokat jelent, 
+hanem ténylegesen ugyanazokat a forrásfájlokat.
+
+A CCC nem tud akármilyen Clipper kódot lefordítani. A programjainkat 
+eleve egy szűkített Clipperre írtuk. A legfontosabb szűkítés, 
+hogy a CCC-nek (mint nyelvnek) nem része az adatbáziskezelés. 
+Mindenesetre a Clipper és a CCC közös része elég volt egy komplex 
+számlavezető rendszer elkészítéséhez.
+Amúgy a nyelv alkalmas akármilyen adatbáziskelő szoftver 
+(manapság leginkább SQL interfész) megírására. 
+
+
+Az eredeti Clipper a mostani igényeknek már nem felelne meg.
+Idők során a Clipperen túllépő fejlesztések kerültek a CCC-be: 
+objektumok,
+kivételkezelés,
+névterek, 
+Unicode támogatás, SSL interfész, effélék.
+A CCC-t  elég modernnek és jónak tartjuk ahhoz, 
+hogy az új projektjeinkhez se keressünk más nyelvet.
+
+A CCC történetének fő állomásai:
+\begin{itemize}
+\item 1996 -- Már működik a CCC1. 
+\item 1999 -- Először a BB-ben használják éles számlavezetésre.
+\item 2002 -- Többszál támogatás (CCC2=CCC1+multithreading).
+\item 2004 -- 64-bit támogatás.
+\item 2005 -- \href{http://www.fsf.org/licensing/licenses/lgpl.txt}{LGPL} 
+              hatálya alá kerül.
+\item 2006 -- Unicode/UTF-8 támogatás (CCC3=CCC2+Unicode).
+\end{itemize}
+
+A jelen dokumentáció a CCC3-mal foglalkozik.
+A dokumentációt olyan programozóknak szánom, akik szeretnek beszélgetni
+programokról, programozásról. Nem kezdőknek. A dokumentum nem ,,egyenszilárd''.
+Van benne Hello World, de nem szól fejezet a for ciklusról és társairól.
+A Clippert meghaladó, új részekre fókuszálok,
+ezen belül is elsősorban magára a nyelvre, 
+és nem a nyelven megírt könyvtárakra vagy interfészekre.
+A dokumentum végére belinkeltem néhány régi doksit.
+A Clipper eredeti HTML leírása egyes részeiben még mindig használható.
+
+
+
+
+

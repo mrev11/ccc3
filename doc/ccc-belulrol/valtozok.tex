@@ -1,0 +1,1035 @@
+
+
+\section{Változók}
+
+
+\subsection{Deklaráció}
+
+Minden változót deklarálni kell.
+A deklaráció végrehajtható utasítás, helyet csinál a változónak, 
+és végrehajtja a változó inicializátorát.
+Az inicializátor tetszőleges kifejezés lehet,
+ha nincs megadva explicit inicializátor, akkor a változó NIL-re inicializálódik.
+
+
+Kétféle deklaráció lehetséges, \verb!local! és \verb!static!.
+
+\begin{verbatim}
+/*
+namespace  ...          // itt állhatna
+using      ...          // itt állhatna
+*/
+
+static k1               // külső, NIL-re inicilizálódik
+static k2:=init_k2()    // a visszatérési értékkel inicializálódik
+
+function f1()
+local a, b:=1           // egyszerre több, némelyik inicializálva
+static c, d             // belső 
+    ? a,b,c,d,k1,k2     // kiírja az értéküket
+    ...
+
+function f2(a1,a2,a3)
+    //? a,b,c,d         // ezek nem láthatók
+    ? a1,a2,a3          // nem kell őket külön deklarálni (local)
+    ? k1,k1             // ok, ezek láthatók
+    ...
+\end{verbatim}
+A \verb!static! deklarációk  is kétfélék:
+\begin{description}
+\item[külsők] a forrásmodul elején, 
+        az esetleges \verb!namespace! és \verb!using! után,
+        de az első \verb!function! vagy \verb!class! utasítás előtt állhatnak,
+\item[belsők] 
+        függvények belsejében vannak, 
+        közvetlenül a \verb!function! utasítás után, 
+        esetleg keveredve a \verb!local! deklarációkkal,
+        de megelőzve az összes nem deklarációs utasítást.
+\end{description}
+
+A külső static változók csak a forrásmodulon belül, de ott minden függvényből láthatók. 
+A belső static változók csak az adott függvényen belül láthatók. 
+Egyáltalán nincsenek az egész programra kiterjedő globális láthatóságú változók.
+A static változók inicializátora a program futása során egyszer hajtódik végre.
+A static változók a program futása alatt nem vesztik el értéküket
+(vagyis mindig őrzik az utolsó értékadással kapott értéket).
+A belső static változók a függvény első hívásakor a leírt sorrendben inicializálódnak.
+A külső static változók akkor inicializálódnak, amikor a program először hivatkozik 
+az értékükre. A külső static változók inicializálása szinkronizált. A szinkronizáció 
+biztosítja, hogy a külső static-ok többszálú programban se inicializálódjanak többször.
+A belső static-oknál a szinkronizáció az alkalmazásra van bízva.
+
+Egy local deklaráció mindig belső. 
+A local deklarációk a belső static deklarációk helyén 
+(azokkal esetleg keveredve) fordulhatnak elő. 
+A local változók csak az adott függvényen belül láthatók. 
+A local változók a függvény minden hívásakor inicializálódnak, ha másra nem, hát NIL-re.
+Egyszerűen szólva, a \verb!local! utasítás közönséges stack változókat deklarál.
+
+Ha egy változót deklaráció nélkül próbálnánk használni, 
+a fordító hibát jelez.
+
+A függvények argumentum változóit nem kell (nem is lehet) külön deklaráni, 
+ugyanúgy viselkednek mint a local változók.
+
+Névegyezés esetén a local és a belső static változók eltakarják
+a külső static változókat.
+
+A változónevekben a kis- és nagybetűk egyformának számítanak.
+Valójában az egész nyelv case insensitive, ami Clipper örökség,
+és a kompatibilitás kényszere folytán nem változtatható.
+A CCC-ben  megszokott, hogy túlnyomóan kisbetűket használunk.
+
+A változó- és függvényneveket ugyanúgy képezzük, mint C-ben.
+Néhány fenntartott kulcsszót 
+(\verb!if!, \verb!while!, \verb!for!, \ldots) 
+kerülni kell.
+A változó- és függvénynevek nem zavarják egymást (nem tudnak ütközni).
+
+
+
+
+
+\subsection{Értékek}
+
+
+A Clipper/CCC-ben nem a változóknak, hanem elsősorban az {\em értékeknek\/} 
+van típusa. Ez alapján persze utólag mondhatjuk, hogy egy változónak az a típusa, 
+ami a benne tárolt értéknek. Az így értelmezett típus azonban minden
+értékadáskor megváltozhat. A változók uniformok: Akármelyik változó képes tartalmazni 
+akármilyen értéket. Ennek megfelelően a fordító nem foglalkozik a változók 
+típusának ellenőrzésével. 
+
+Nézzük, mi van egy értékben
+(teljes infó a variable.h-ban):
+
+\begin{itemize}
+\item Tartalmazza az érték típusát.
+\item Fix méretű adatoknál (mint szám, dátum, logikai) 
+      tartalmazza magát az adatot.
+\item Változó méretű adatoknál (mint string, array)
+      egy memóriaobjektum referenciát (OREF).
+\item Referencia változóknál egy VALUE referenciát (VREF).
+\end{itemize}
+
+
+Úgy kell elképzelni, hogy egy változó a számára fenntartott memóriában
+tartalmazza az előbb leírt struktúrájú {\em értéket}. Amikor a program
+végrehajtja az 
+
+\begin{verbatim}
+    a:=b
+\end{verbatim}
+{\em értékadást}, akkor a \verb!b!-hez tartozó memóriaterületen tárolt {\em érték\/}
+átmásolódik az \verb!a!-hoz tartozó memóriaterületre. Vagyis \verb!a! átveszi 
+\verb!b! típusát és minden adatát.  Különösen érdekes, amikor az adat egy referencia.
+Ilyenkor a két változó közösködik ugyanazon a tartalmon.
+
+
+\subsection{Típusok}
+
+Akármi is van a változóban,
+a \verb!valtype()! függvénnyel lekérdezhető az aktuális típusa. 
+\verb!valtype()! visszatérési értéke karakter típusú. 
+A következő típusok vannak: 
+NIL, logikai, szám, dátum, pointer, karakter (Unicode string),
+binary (bájt string), array (érték tömb), kódblokk, objektum, referencia. 
+Ezeket vesszük sorra az alábbiakban.
+
+
+\subsubsection{NIL}
+\begin{verbatim}
+    valtype(NIL)    // --> "U"
+    len(NIL)        // --> 0
+    empty(NIL)      // --> .t.
+    NIL==NIL        // --> .t.
+\end{verbatim}
+
+Az explicite nem inicializált változók értéke NIL, típusjele U.
+A \verb!return! utasítás nélkül befejeződő függvények visszatérési
+értéke NIL. A NIL hossza 0, a NIL üres, a NIL bármivel (bármilyen típussal)  
+összehasonlítható, de csak saját magával egyenlő. (Általában
+csak azonos típusú változók hasonlíthatók össze, a NIL ebben kivételes.)
+A NIL-t már a típusa azonosítja, nem tartalmaz semmilyen adatot.
+
+
+\subsubsection{Logikai}
+\begin{verbatim}
+    valtype(.t.)    // --> "L"   logikai true literál
+    valtype(.f.)    // --> "L"   logikai false literál
+    empty(.t.)      // --> .f.
+    empty(.f.)      // --> .t.
+\end{verbatim}
+
+Logikai értéket adnak az összehasonlító operátorokkal képzett kifejezések.
+A logikai értékekkel használható operátorok:
+\begin{verbatim}
+    x .and. y    // --> .t., ha x==.t. és y==.t.
+                 // ha x==.f., akkor y nem értékelődik ki
+
+    x .or.  y    // --> .t., ha x==.t. vagy y==.t.
+                 // ha x==.t., akkor y nem értékelődik ki
+                 
+    ! x          // --> .t., ha x==.f.
+    .not. x      // --> .t., ha x==.f. (ugyanaz bőbeszédűen)
+\end{verbatim}
+
+A logikai műveletek precedenciája a szokásos, lehet zárójelezni.
+
+
+\subsubsection{Szám}
+
+\begin{verbatim}
+    valtype(3.141592)   // --> "N"   szám literál
+    empty(0)            // --> .t.
+    empty(-1)           // --> .f.
+\end{verbatim}
+
+A számok 64 bites lebegőpontos formában (double) tárolódnak. 
+Többféleképpen is be lehet írni a programba szám literálokat, 
+de a megadás módjától függetlenül a tárolás mindig double.
+
+\begin{verbatim}
+    0xffff              // hexadecimális (mint C-ben)
+    0b11111111          // bináris (255)
+\end{verbatim}
+
+A számokra működnek a szokásos összehasonlító műveletek.
+\begin{verbatim}
+    x == y              // --> .t., ha egyenlőek
+    x != y              // --> .t., ha eltérnek
+    x <  y              // kisebb
+    x <= y              // kisebbegyenlő
+    x >  y              // nagyobb
+    x >= y              // nagyobbegyenlő
+\end{verbatim}
+
+Megvannak a szokásos aritmetikai operátorok.
+\begin{verbatim}
+    x +  y              // összeadás
+    x -  y              // kivonás
+    x *  y              // szorzás
+    x /  y              // osztás
+    x %  y              // moduló
+    x ** y              // hatványozás
+    ++x                 // növelés (mint C-ben)
+    --x                 // csökkentés (mint C-ben)
+    x++                 // növelés utólag (mint C-ben)
+    x--                 // csökkentés utólag (mint C-ben)
+\end{verbatim}
+A műveletek precedenciája ugyanaz, mint C-ben, és természetesen ugyanúgy
+alkalmazható a zárójelezés.
+
+A C-hez hasonlóan az aritmetikai operátoroknak van  értékadással
+kombinált változata:
+\begin{verbatim}
+    x += y              // x:=x+y (hozzáad)
+    x -= y              // x:=x-y (levon)
+    x *= y              // x:=x*y
+    x /= y              // x:=x/y
+    x %= y              // x:=x%y
+\end{verbatim}
+
+Vannak számokon működő matematikai függvények:
+\verb!power()!,
+\verb!exp()!,
+\verb!log()!,
+\verb!sqrt()!,
+trigonometrikus függvények,
+\verb!round()!,
+\verb!random()!.
+
+Van néhány függvény bitek manipulálására:
+\verb!isbit()!,
+\verb!setbit()!,
+\verb!clearbit()!,
+\verb!numand()!,
+\verb!numor()!,
+\verb!numxor()!,
+\verb!numnot()!.
+
+Az \verb!str()! és \verb!transform()! 
+függvények számot karakter stringre konvertálnak.
+A \verb!val()! függvény  a string elején álló decimális
+számból kiolvassa a számértéket.
+
+
+
+\subsubsection{Dátum}
+
+\begin{verbatim}
+    set date format "yyyy-mm-dd"
+    valtype(ctod("2009-11-20"))     // --> "D" nincs dátum literál
+    valtype(stod("20091120"))       // --> "D"
+    empty(ctod(""))                 // --> .t.
+\end{verbatim}
+
+Dátumokat nem tudunk közvetlenül (literálként) beírni a programba,
+hanem a \verb!ctod()! vagy \verb!stod()! konverziós függvénnyel állítjuk
+elő a string alakból. (E függvényeknek az inverze is létezik: 
+\verb!dtoc()!, \verb!dtos()!.)
+
+A dátumkezelés 1900-tól 2100-ig működik jól. Ebben az időszakban
+helyesen kezeli a szökőéveket.
+
+
+A dátumokra értelemszerűen működnek az összehasonlító operátorok.
+
+A dátumokon korlátozottan lehet aritmetikai műveleteket végezni.
+Az alábbi példában \verb!n! szám típusú, \verb!d1! és \verb!d2!
+dátum típusú:
+\begin{verbatim}
+    n  := d2 - d1   // --> a két dátum különbsége napokban
+    d2 := d1 + n    // --> d1 dátum plusz n nap
+    d2 := d1 - n    // --> d1 dátum minusz n nap
+\end{verbatim}
+
+Van egy rakás dátumokon működő függvény:
+\verb!doy()!,
+\verb!eom()!,
+\verb!eoy()!,
+\verb!bom()!,
+\verb!boy()!,
+\verb!day()!,
+\verb!dow()!,
+\verb!cdow()!,
+\verb!month()!,
+\verb!addmonth()!,
+\verb!cmonth()!,
+\verb!year()!.
+
+
+\subsubsection{Pointer}
+
+\begin{verbatim}
+    valtype(p)      // --> "P" (nincs pointer literál)
+    empty(p)        // --> .t., null pointer esetén
+\end{verbatim}
+
+A pointereket interfészekben használjuk. Arra való, hogy C könyvtárak
+adatait (tipikusan egy struktúrára mutató pointert) tároljunk benne Clipper szinten.
+Példa: Az Oracle minden SQL utasításhoz rendel egy ún. statement handle-t (pointer).
+A program erre a statement handle-re kell hivatkozzon, amikor műveleteket
+akar végezni az SQL utasítással, pl.  le akarja kérdezni egy select
+eredménysorait. Egy ilyen statement handle tárolása oldható meg a P típusú
+változóval.
+
+
+\subsubsection{Karakter (Unicode string)}
+\begin{verbatim}
+    valtype("Van, aki forrón szereti")  // --> "C"
+    empty("")                           // --> .t.
+    empty("  ")                         // --> .t.
+    len("  ")                           // --> 2
+\end{verbatim}
+
+Példák:
+\begin{verbatim}
+local x:='ТЕРМИНЫ И УСЛОВИЯ КОПИРОВАНИЯ'
+local y:=@"Some like it hot"  //nlstext
+
+local text:=<<tetszoleges_symbol>>
+    Itt tetszőleges (UTF-8 kódolású) szöveg lehet,
+    idézőjelek, tab, soremelés, akármi,
+    kivéve a kezdő <<tetsz...>> (nem írhatom oda) jelet,
+    mert az lezárja a string literált.
+<<tetszoleges_symbol>> //lezárva
+\end{verbatim}
+
+
+A karakterváltozók (stringek) Unicode karakterek sorozatát tartalmazzák.
+A karakterváltozók tudják a saját hosszukat. Nincs lezáró 0, nincs vizsgálva 
+a karakterek érvényessége, ezért a karakterek között akármilyen kódérték 
+előfordulhat. A karakterváltozók hossza csak azért van korlátozva, hogy az 
+elszabadult programok ne fektessék ki a rendszert. Jelenleg egy karakterstring 
+maximális mérete 64MB. 
+
+A karakterliterálokat UTF-8 kódolással kell beírni. 
+A fordító végzi el a konverziót UTF-8-ról Unicode (\verb!wchar_t!) tömbre.
+Ha az  UTF-8 kódolás hibás, a fordító INVALIDENCODING hibát ad.
+
+A stringeket aposztróf vagy macskaköröm határolja.
+Aposztróffal határolt string tartalmazhat macskakörmöt, és fordítva.
+A stringben nem lehet escape szekvenciákkal trükközni.
+
+Alapesetben a stringek egysorosak. 
+Hosszabb stringeket részeiből összeadással és folytatósorokkal lehet képezni.
+
+A hosszabb (többsoros) stringek egyszerű beírását teszi lehetővé 
+a \verb!<<SYMBOL>>! típusú határoló.
+
+A \verb!@"..."! alakú stringekből (nlstext) a fordító készít egy hash táblát, 
+amiben a string értéke a kulcs. A kulcsokhoz különféle nyelvű szövegeket
+(fordításokat) lehet kapcsolni, amiket a program futás közben felszed,
+és automatikusan behelyettesít, így ugyanaz a program különféle nyelveken 
+jelenhet meg.
+
+Bárhogy is hoztuk létre a stringet,  ugyanazokat a dolgokat lehet
+csinálni vele.
+
+
+Összehasonlítás:
+\begin{verbatim}
+    x == y      // egyenlő-e (ez az egy normális)
+    x != y      // a jobboldal hosszában eltér-e
+    x <= y      // a jobboldal hosszában! 
+    x <  y      // a jobboldal hosszában! 
+    x >= y      // a jobboldal hosszában! 
+    x >  y      // a jobboldal hosszában! 
+\end{verbatim}
+
+A stringek rendezése a Unicode kódértékek szerint lexikografikusan történik.
+A \verb!==! kivételével a többi összehasonlító operátor úgy működik,
+hogy először a baloldalt levágja a jobboldal hosszára, és az így kapott
+x-szel végzi az összehasonlítást, tehát:
+
+\begin{verbatim}
+    "abc" != "ab"   // --> .f.
+    "ab"  != "abc"  // --> .t.
+    "abc" >  "ab"   // --> .f.
+    "abc" <= "ab"   // --> .t.
+\end{verbatim}
+Sajnos ezek elég zavaró dolgok, de Clipper örökség,
+és a kompatibilitás kényszere miatt nem lehet rajta változtatni.
+
+
+Összeadás:
+\begin{verbatim}
+    y:="Some like "+"it hot"
+    x:="Some like "
+    x+="it hot"
+    x==y  // --> .t.
+\end{verbatim}
+
+Indexelés, szeletek:
+\begin{verbatim}
+    "Some like it hot"[1]       // --> "S", indexelhető, 1-től indul
+    "Some like it hot"[2..4]    // --> "ome", szelet
+    "Some like it hot"[11..]    // --> "it hot"
+    "Some like it hot"[..11]    // --> "Some like i"
+    "Some like it hot"[..]      // --> másolat az egészről
+\end{verbatim}
+A túlindexelés runtime errort okoz. 
+A szeletek túllógó indexei módosulnak a tényleges méretekhez alkalmazkodva. 
+Nincs trükközés, hátulról számolás, meg effélék.
+
+Részstring tartalmazás:
+\begin{verbatim}
+    "like" $ "Some like it hot" // --> .t.
+\end{verbatim}
+
+
+A stringeken működő fontosabb függvények: 
+\verb!strtran()!, 
+\verb!stuff()!, 
+\verb!substr()!, 
+\verb!left()!, 
+\verb!right()!, 
+\verb!padr()!,
+\verb!padl()!, 
+\verb!ltrim()!, 
+\verb!rtrim()!, 
+\verb!alltrim()!, 
+\verb!at()!, 
+\verb!rat()!, 
+\verb!len()!, 
+\verb!replicate()!,
+\verb!upper()!,
+\verb!lower()!,
+\verb!isalpha()!,
+\verb!isdigit()!,
+\verb!isalnum()!,
+\verb!isupper()!,
+\verb!islower()!.
+
+\verb!upper()!, \verb!isupper()! és társaik értik a Unicodeot, 
+ezért cirill betűs stringre is jól működnek.
+
+A \verb!chr(code)! függvény visszaad egy egy hosszúságú stringet,
+ami a megadott kódértékű (Unicode) karaktert tartalmazza.
+Az \verb!asc(str)! függvény visszaadja a bemeneti string első karakterének
+kódértékét.
+
+
+A karakterstring értékekben közvetlenül tárolódó adat 
+(ahogy korábban már szó esett róla) egy OREF. Az \verb!a:=b!
+értékadás után az \verb!a! és \verb!b! és változó közösködik
+az objektumreferencián. Ugyanaz az értékük, ráadásul a string csak egy 
+példányban létezik a memóriában. Mi történik, ha az egyik változót módosítjuk?
+\begin{verbatim}
+    b+="próba szerencse"
+\end{verbatim}
+Változik-e \verb!b!-vel együtt az \verb!a!-is? Nem, a változók útja szétválik.
+Lesz egy külön memóriaobjektuma \verb!a!-nak és egy másik a \verb!b!-nek.
+Ez az értelme annak a más nyelvek dokumentációiban olvasható, kissé rejtélyes
+kijelentésnek, hogy a ,,karakterstring (érték) nem módosítható''. 
+
+
+\subsubsection{Binary (bájt string)}
+\begin{verbatim}
+    valtype(a"Próba szerencse")     // --> "X"
+    valtype(x"0d0a")                // --> "X" (CR/LF)
+    empty(a"  ")                    // --> .t.
+    len(a"  ")                      // --> 2
+\end{verbatim}
+
+A binary változók (bájt stringek) bájtok sorozatát tartalmazzák.
+Tudják a saját hosszukat. Nincs lezáró 0, ezért a bájtok között akármilyen érték 
+előfordulhat. A binary változók hossza csak azért van korlátozva, hogy az 
+elszabadult programok ne fektessék ki a rendszert. Jelenleg egy binary string
+maximális mérete 64MB. 
+
+Legegyszerűbben az \verb!a"..."! alakban írhatók be egy programba:
+\begin{verbatim}
+    x:=a"Van, aki 'forrón' szereti"
+    y:=a'Van, aki "forrón" szereti'
+\end{verbatim}
+
+A karakterliterálokhoz képest az a különbség,
+hogy most nincs UTF-8 --> Unicode konverzió, 
+a tartalom nem karaktertömb, hanem bájttömb.
+
+A stringeket aposztróf vagy macskaköröm határolja.
+Aposztróffal határolt string tartalmazhat macskakörmöt, és fordítva.
+Nem értelmezünk semmilyen escape szekvenciát.
+
+Hexadecimális kódokkal is megadhatjuk a bájtsorozatot a \verb!x"..."!
+formában. Ennek kötelezően páros számú betűt kell tartalmaznia 
+(minden bájt egy kétjegyű hexa szám: 00-ff), a kis-nagybetű nem számít.
+
+A binary változókra ugyanazok az operátorok és függvények működnek,
+mint a karakterváltozókra, csak értelemszerűen karakterek helyett bájtokkal.
+Pl. \verb!asc()! most nem az első karakter, hanem az első bájt kódértékét adja.
+A \verb!bin(code)! függvény ad egy egyelemű bájtsorozatot, melyben az egyetlen
+elem értéke a \verb!code!.
+
+\begin{verbatim}
+    binvar:=str2bin(chrvar)
+    chrvar:=bin2str(binvar)  //visszaadja az eredetit
+\end{verbatim}
+
+Az \verb!str2bin()! függvény a bemeneti karaktersorozatból
+előállít egy bájtsorozatot, ami a stringet UTF-8 kódolásban ábrázolja.
+
+A \verb!bin2str()! függvény {\em feltételezi}, hogy a bemenete egy UTF-8 
+kódolású szöveg, és UTF-8 --> Unicode konverzióval előállítja a bájtsorozatnak
+megfelelő karaktersorozatot. Ha a bemenet mégsem kifogástalan UTF-8 kódolású,
+akkor a hibák helyén ? karakterek jelennek meg a kimeneten.  Emiatt az 
+str2bin és bin2str nem egymás inverzei. Pl. egy png képet tartalmazó 
+binary változót nem lehet oda-vissza karakterre konvertálni, mert elromlik a kép.
+
+A bájtsorozatok és karakterek között nincs automatikus konverzió, 
+ezért pl. nem lehet őket összeadni vagy összehasonlítani.
+
+A karakterekhez hasonlóan a bájt string értékekben is a közvetlenül tárolódó 
+adat egy OREF. Ugyanolyan értelemben most is mondhatjuk, hogy (első közelítésben)
+a bájt stringek nem módosíthatók.  Igazából természetesen minden módosítható.
+Van rá API, hogy a programok dogozhassanak a bufferen belül.
+
+
+\subsubsection{Array}
+
+\begin{verbatim}
+    valtype({1,"2",.f.,{}})     // --> "A"
+    empty({})                   // --> .t.
+    len({})                     // --> 0
+    empty(array(1000))          // --> .f.
+    len(array(1000))            // --> 1000
+\end{verbatim}
+
+Az array (tömb) típus Clipper értékek sorozatát tartalmazza.
+A tömbelemek típusa bármi lehet, bármilyen értéket tartalmazhat
+elemként, akár saját magát is (ami persze végtelen rekurziót okoz
+a tömb kiprintelésekor).
+
+\begin{verbatim}
+    a:={}               // üres array
+    {1,2,3,4}[3]        // --> 3, az indexek 1-től indulnak
+    len({1,2,3,4})      // --> 4, tudja a saját hosszát
+    array(10)           // NIL-ekkel inicializált, 10 elemű
+    a[i]:=x             // értékadás egy tömbelemnek
+    a[i][j]             // a i-edik elemének j-edik eleme
+    aadd(a,x)           // a végéhez ad egy új elemet
+    asize(a,len(a)+1)   // hossz növelése
+\end{verbatim}
+
+A futtatórendszer minden indexelést ellenőriz, 
+túlindexelés esetén runtime error keletkezik. 
+
+Az inicializálatlan tömbelemek értéke NIL.
+
+A tömbökön használható fontosabb függvények:
+\verb!array()!,
+\verb!asize()!,
+\verb!adel()!,
+\verb!aadd()!,
+\verb!atail()!,
+\verb!ascan()!,
+\verb!asort()!.
+
+Az array típusú értékekben a közvetlenül tárolt adat egy OREF.
+Az OREF-hez tartozó memóriaobjektumban a tömbelemek szépen, 
+katonásan egymás után sorakoznak.
+A stringekre azt mondtuk, hogy nem változtathatók.
+A tömbök ezzel szemben igen, a különbséget az alábbi példa
+szemlélteti.
+
+\begin{verbatim}
+    a:=array(10)
+    b:=a
+    b[5]:="HOPP"
+    ? a[5]              // kiírja: HOPP
+\end{verbatim}
+
+
+Láttuk, hogy a tömbök mérete változhat. 
+Emiatt a futtatórendszer időnként az egész tömböt 
+kénytelen áthelyezni új memóriacímre.
+
+\subsubsection{Kódblokk}
+
+\begin{verbatim}
+    valtype({||NIL})    // --> "B"
+\end{verbatim}
+
+Amit más nyelvekben (Lisp, Python, Smalltalk,\ldots) úgy hívnak, hogy closure vagy
+lambda-függvény, az a Clipperben a kódblokk. Általános alakja: 
+\begin{verbatim}
+    blk:={|p1,p2,...|expr1,expr2,...}
+\end{verbatim}
+A \verb!||! jelek között vannak felsorolva a kódblokk paraméterei (lehet üres).
+Ezután kifejezések vesszővel elválasztott listája következik. A kifejezésekben 
+a kódblokk paraméterei, plusz a kódblokk definiálásának helyéről látható, érvényes
+programelemek (literálok, változók, függvények) szerepelhetnek. 
+
+A kódblokk értelme, hogy ki lehet őt értékelni. Az előbbi \verb!blk!
+változót átadjuk az \verb!eval! függvénynek:
+\begin{verbatim}
+    eval(blk,a1,a2,...)  // --> az utolsó kifejezés értéke
+\end{verbatim}
+Az a1, a2, \ldots értékek behelyettesítődnek, a p1, p2, \ldots változókba,
+majd kiértékelődnek az expr1,expr2,\ldots kifejezések. Az utolsó kifejezés
+értéke lesz az eval függvény visszatérési értéke.
+
+A Clipper/CCC-ben nincs olyan, hogy függvénypointer. Ha a programban leírunk 
+egy függvénynevet  zárójelpár (azaz függvényhívás operátor) nélkül, 
+akkor az szándékainkkal ellentétben nem a függvényt jelenti, hanem egy változónevet, 
+és hibát kapunk, ha az adott néven nincs változó deklarálva. 
+
+A kódblokkok legegyszerűbb alkalmazása függvények paraméterként való átadása.
+Nézzünk egy összeadó függvényt:
+\begin{verbatim}
+function osszead(a,b)
+    return a+b
+\end{verbatim}
+Ebből készítünk egy kódblokkot:
+\begin{verbatim}
+    blk:={|p1,p2|osszead(p1,p2)}
+\end{verbatim}
+A blk változó értéke átkerül a program egy másik helyére, 
+pl. visszatérési értékként, vagy függvény\-paraméterként. 
+Ezen a másik helyen így értékelhető ki:
+\begin{verbatim}
+    eval(blk,1,2) // --> 3
+\end{verbatim}
+
+Rendkívül érdekes tulajdonsága a kódblokkoknak, hogy a blokk kifejezéslistájában
+szerepelhetnek változók abból a láthatósági körből, ahol a kódblokkot
+definiáltuk. A kódblokk révén ezek a változók láthatóvá válnak olyan helyen,
+ahol egyébként normálisan nem volnának láthatók: Külső static változó egy másik 
+modulban, vagy belső változó egy másik függvényben. Úgy szoktuk mondani,
+hogy a kódblokkba ,,belerefesednek'' a változók (lásd a referencia változókat).
+
+\begin{verbatim}
+function main()
+local x,blk:={|p|x+=p}
+
+    x:="a"
+    ? proba1(blk)   //kiírja: a-proba1
+    ? x             //kiírja: a-proba1
+
+    x:="b"
+    ? proba1(blk)   //kiírja: b-proba1
+    ? x             //kiírja: b-proba1
+    ?
+    
+function proba1(blk)    
+    return eval(blk,"-proba1")
+\end{verbatim}
+Most van min tűnődni:
+Kétszer (ugyanúgy?) meghívtuk a \verb!proba1! függvényt,
+ám a két alkalommal más-más eredményt kaptunk. 
+Ráadásul, hogyan változhat meg az \verb!x! értéke,
+ami a \verb!main!-en belül lokális, és így máshol nem látható?
+
+
+A kódblokk egy másik tulajdonságára világít rá a következő példa:
+\begin{verbatim}
+function main()
+local blk:=proba1()
+    ? eval(blk,"HOPP")  // kiírja "Próba szerencse:HOPP"
+    ?
+
+function proba1()    
+local x:="Próba szerencse:"
+    return {|p|x+p}
+\end{verbatim}
+A nagy kérdés itt, hol tárolódik a "Próba szerencse:" érték?
+A kódblokk kiértékelésekor (\verb!main!-ben) a \verb!proba1! már visszatért,
+tehát az \verb!x! változó már nem létezik. A válasz: az érték a kódblokkban tárolódik.
+
+
+A kódblokkban közvetlenül tárolódó adatok:
+\begin{itemize}
+ \item kódpointer a kifejezéslistára (erre adja a vezérlést az \verb!eval()!),
+ \item OREF a kifejezéslistában szereplő változókból képzett tömbre.
+\end{itemize}
+A kódblokkba kerülő változók referenciák. Ez azt jelenti, hogy az eredeti
+és a kódblokkban tárolt példányok együtt változnak (ez a ,,belerefesedés'').
+
+A kódblokk a Clipper nagyon sokoldalúan használható eszköze.
+Többek között a kódblokkokon alapul az objektum-metódusok implementációja.
+
+
+
+
+\subsubsection{Objektum}
+
+Vannak ún. {\em  objektum alapú\/} nyelvek.
+Ezekben egy objektumot úgy képzelhetünk el, mint egy hashtáblát.
+Az objektum-hashtáblában az attribútumok/metódusok neve a kulcs.
+A hash a kulcs mellé az attribútum értékét, illetve a metódus
+implementációját képviselő kódblokkot rendeli. A metódushívás
+a kódblokk automatikus kiértékelésével történhet. Minden objektum
+egyedi, bármikor bővíthető új attribútum/metódussal.
+
+Ezzel az egyszerű megközelítéssel szemben a CCC-ben {\em osztályok\/} vannak.
+Objektumok helyett  az osztályok leírására használunk hashtáblát.
+A hashben most is az attribútumok/metódusok neve a kulcs,
+az attribútum kulcsokhoz azonban most egy indexet rendelünk.
+Ennél az indexnél található meg az érték az objektum attribútumai között.
+Maga az objektum csak az attribútumaiból áll. 
+A lényeg, hogy {\em megkülönböztetjük}, és elkülönítve tároljuk {\em az osztály- 
+és objektum-információt}.
+
+
+\begin{verbatim}
+    valtype(o:=errorNew())  // --> "O"
+    o:classname             // --> "error"
+\end{verbatim}
+
+Objektumokat nem operátorral gyártunk
+(nincs new operátor), hanem objektumgyártó függvénnyel.
+Ezek nevét az osztály nevéből (a példában \verb!error!) 
+és a \verb!New! szóból rakjuk össze. 
+Az xNew függvény visszatérési értéke az x osztályú
+objektum. A régi Clipperben is ez volt a helyzet, az error objektumokat 
+az \verb!errorNew()! függvény adta. A kompatibilitás érdekében megtartottuk
+a sémát. Az objektumgyartó függvényt a fordító generálja az osztálydefinícióból.
+
+Az objektumok \verb!valtype()! szerinti típusa osztályuktól 
+függetlenül mindig O. 
+
+Minden osztály az \verb!object! osztály leszármazottja, ezért mindnek
+van \verb!classname! metódusa, amivel lekérdezhető az osztály neve.
+
+
+A futtatórendszer statikusan tárolja az osztályokra vonatkozó infót:
+\begin{itemize}
+  \item a leszármazási viszonyokat (többszörös öröklődés),
+  \item az osztályok szerkezetét
+        (milyen metódusai, attribútumai vannak egy osztálynak, 
+        mit honnan örökölt),
+  \item az attribútum indexeket (melyik attribútum, hanyadik az attribútumok tömbjében),
+  \item a metódusok kódját (a kód kódblokk formájában adatként tárolható).
+\end{itemize}
+A fentiek tehát osztályadatok. 
+
+Az objektumokban tárolódó adatok:
+\begin{itemize}
+  \item osztály azonosító,
+  \item OREF az objektum attribútumait tartalmazó tömbre.
+\end{itemize}
+
+Ha a fordítóprogram az \verb!obj:slot! kifejezéssel találkozik,
+akkor felismeri, hogy attribútum kiértékelésről vagy metódushívásról van szó.
+Elkészíti a megfelelő kódot, de nem vizsgálja \verb!obj! típusát/osztályát,
+sem a \verb!slot! attribútum/metódus létezését.
+
+Futásidőben a kifejezés kiértékelése többféle eredményre vezethet. 
+Ha \verb!obj! típusa nem objektum, akkor azonnal runtime error keletkezik. 
+A rendszer megkeresi \verb!obj! osztályában a \verb!slot! kulcsot.
+Ha nem találja, akkor megintcsak runtime error keletkezik. 
+Ha a kulcsnál attribútum indexet talál, akkor előveszi az attribútum értékét.
+Ha kódblokkot talál, akkor azt automatikusan kiértékeli.
+
+Talán már nem is kéne külön említeni, hogy a stringekkel szemben
+az objektumok változékonyak (teljesen ugyanaz a helyzet, mint az array típusnál):
+\begin{verbatim}
+    e1:=errorNew()          // minden tag üres
+    e2:=e1
+    e2:description:="Próba szerencse"
+    ? e1:description        // kiírja: "Próba szerencse"
+\end{verbatim}
+
+Az osztálydefiníciókkal külön fejezetben fogunk részletesen foglalkozni.
+
+
+
+
+
+
+
+\subsubsection{Referencia változók}
+
+Nézzük az alábbi példát:
+\begin{verbatim}
+function main()
+local a:="A"
+local b:="B"
+    felkialt(@a,b)
+    ? a,b               // kiírja: A! B
+    
+function felkialt(x,y)
+    x+="!"
+    y+="!"
+    varstack()          // kiírja a stacket
+    ? valtype(x)        // kiírja: C (x típusa)
+    return NIL
+\end{verbatim}
+
+
+Közönséges esetben a függvényhívás értékek átadásával történik.
+A hívó kód a veremre rakja a paramétereket (a-t, aztán b-t) és meghívja
+a függvényt (esetünkben felkialt-ot). A hívott függvény csinál, amit csinál,
+majd rendbeteszi maga után a stacket. Az összes local változóját és paraméterét
+leszedi a stackről. Ekkor a stacken az első üres hely ott van, 
+ahol a függvény első paramétere volt (esetünkben az x). Ezután ráteszi a stackre 
+a visszatérési értékét (esetünkben NIL-t), és visszatér.
+
+Nade, akkor mitől változik meg az \verb!a! változó értéke?
+A magyarázat, hogy a tárgyalt eset nem ,,közönséges''. 
+Figyeljük meg a \verb!felkialt(@a,b)! függvényhívásban az \verb!a! előtti
+\verb!@! karaktert. Ennek hatására az \verb!a! változó {\em referenciává\/} alakul.
+
+A referencia változók az értéküket nem közvetlenül tartalmazzák.
+Amit közvetlenül tartalmaznak, az egy VREF (VALUE referencia).
+Ez direkt azt a célt szolgálja, hogy több változó közösködni
+tudjon egy értéken, és ennek az értéknek a változásával
+a változók együtt változzanak.
+
+Nézzük az előbbi példaprogram tényleges kiírásait:
+\begin{verbatim}
+-----------------------------------------------------------
+ Variable Stack
+-----------------------------------------------------------
+***** function main
+0: REFSTRING length=2 oref=7fd95b61b058 "A!"
+1: STRING length=1 oref=7fd95b61b028 "B"
+***** function felkialt
+2: REFSTRING length=2 oref=7fd95b61b058 "A!"
+3: STRING length=2 oref=7fd95b61b088 "B!"
+-----------------------------------------------------------
+C
+A! B
+\end{verbatim}
+Gyönyörűen látszik, hogy \verb!a! és \verb!x! együtt változnak,
+míg \verb!b! és \verb!y! külön életet élnek.
+(Honnan? \verb!a! és \verb!x! oref-je azonos, és a \verb!main!-beli
+\verb!a! már a \verb!felkialt! visszatérése előtt tartalmazza a ! jelet.
+\verb!b! és \verb!y! viszont külön oref-fel rendelkeznek.)
+
+Még egy kérdés: A \verb!varstack! kiírása szerint \verb!x! típusa 
+REFSTRING, a \verb!valtype()! szerint viszont a típus C (közönséges karakter). 
+Hogy is van ez? Éppen ebben nyilvánul meg, hogy a futtatórendszer 
+támogatja a referencia változókat. Amikor úgy látja, hogy a változó
+(aminek az értékét elő kell venni) referencia típusú, akkor nem a
+közvetlenül tárolt referenciát adja, hanem ,,derefeli'', azaz eggyel tovább 
+nyúl, és a valódi értéket veszi elő. Ezért a \verb!valtype()!  a ,,derefelt''
+értékkel hívódik meg. 
+
+Automatikusan kezeli a rendszer
+a referenciákat az értékadások mindkét oldalán.
+\begin{verbatim}
+    refvar:=x
+\end{verbatim}
+Az \verb!x! változó (az értéket tartalmazó memóriaterület) nem
+\verb!refvar! memóriaterületére másolódik, hanem oda, ahová \verb!refvar!
+hivatkozik. Ezért \verb!refvar! referencia típusa megmarad.
+
+\begin{verbatim}
+    x:=refvar
+\end{verbatim}
+Hasonlóképp, \verb!refvar! derefelt értéke íródik \verb!x!-be,
+ezért az \verb!x! változó nem válik referenciává.
+
+
+\subsection{Változótér}
+
+A következőkben egy gráfot fogunk vizsgálni.
+
+Vegyük fel a csúcsok közé a program statikus változóinak tömbjét.
+A programban nem találkozunk ilyen tömbbel, mégsem értelmetlen beszélni
+róla, ui. a statikus változók szakasztott ugyanúgy tárolódnak, mint egy array:
+az értékek szépen, katonásan egymás után sorakoznak a memóriában.
+
+Vegyük fel a csúcsok közé a program stackjeit (vermeit). 
+Hogyhogy több? Igen, minden szál külön stackkel rendelkezik.
+Ezen tárolódnak a local változók, a függvény\-paraméterek, 
+a kifejezések részeredményei. Egy stacket is tekinthetünk tömbnek, 
+csak éppen a hossza változik, ahogy a stackpointer szuszog.
+(A félreértések elkerülése végett: 
+Nem a C program stackjéről van szó.
+A futtatórendszernek saját stackje van,
+amire CCC értéket tesz a push, és CCC értéket vesz le róla a pop.)
+
+
+Vegyük fel a csúcsok közé mindazon memóriaobjektumokat,
+amiket a program valaha létrehozott, és még nem szabadított fel:
+tömbök, objektumok, kódblokkok, referencia változók, stringek.
+
+A stringek kivételével az összes eset a tömbök mintájára tárgyalható.
+Az objektumok esetében az attribútumok tömbjéről van szó.
+Kódblokkoknál a blokkba refesedett változók alkotnak tömbszerű
+képződményt. A referencia változók kicsit speciálisak,
+de ezeket is tekinhetjük egyelemű tömböknek, amiket a futtatórendszer
+automatikusan indexel. Ezek a csúcsok tehát minden esetben értéktömbök. 
+Memóriaterület, amiben a korábban tárgyalt típusú {\em értékek\/} helyezkednek 
+el egymás után.
+
+A string memóriaobjektumok viszont biztosan nem tartalmaznak 
+{\em értékeket}, hiszen tudjuk róluk, hogy csak bájtokat vagy Unicode
+karaktereket tartalmaznak.
+
+Látjuk tehát, hogy a csúcsaink egy részében értékek vannak, és ezek
+között lehetnek referencia típusúak, amikben a közvetlenül tárolt adat egy
+OREF vagy VREF.  
+Vegyünk fel a gráfban irányított éleket, amik a referenciát tartalmazó csúcsokból 
+(memóriaobjektumokból) a hivatkozott memóriaobjektumokba (csúcsokba) mutatnak.
+ 
+
+Összefoglalva: 
+A gráf csúcsai a program memóriaobjektumai, beleértve
+a statikus változók tömbjét, a stackeket, a tömböket, objektumokat,
+kódblokkokat, referencia változókat és stringeket. Az irányított élek
+megfelelnek a hivatkozásoknak. Hivatkozik, értsd: olyan elemet tartalmaz,
+ami nem közvetlenül tartalmazza az értékét, hanem egy memóriaobjektumban.
+A stringek olyan csúcsok, amikből nem indul él. Az egyszerű típusok
+(szám, dátum, logikai, pointer, NIL) a gráf szempontjából érdektelenek.
+
+
+\subsection{Szemétgyűjtés}
+
+Sokadszor, újra nézzük meg az értékadást.
+\begin{verbatim}
+local x:="Próba"+" "+"szerencse"
+
+    //most van egy "Próba szerencse" tartalmú memóriaobjektum,
+    //amire az x változó hivatkozik, következésképp a stackből 
+    //(mint csúcsból) él mutat erre a memóriaobjektumra
+
+    x:=NIL
+
+    //az előbbi él törölve, mi lesz a memóriaobjektummal?
+\end{verbatim}
+
+A fenti példa mutatja a ,,szemét'' képződésének legegyszerűbb esetét.
+A programból a továbbiakban már sehol sem látszik a \verb!"Próba szerencse"! érték,
+nincs mód hozzáférni, ha megint ugyanez az érték kell, akkor újra le kell gyártani.
+Az ilyen elérhetetlenné (és így feleslegessé) vált memóriaobjektumok megszüntetését
+nevezik szemétgyűjtésnek.
+
+
+\subsubsection{Referencia számlálás}
+
+Az idők hajnalán a CCC-nek is volt referencia számlálással működő kísérleti változata.
+Nem véletlenül. A referencia számlálás egyszerűnek látszik, ez az, ami először eszébe 
+jut a dilettáns programozónak.
+
+A változótér  minden csúcsában
+nyilvántartjuk a befutó élek számát. Az előbb láttuk, hogy az éleket
+a legegyszerűbben az értékadó utasítások módosítják. Egyes élek törlődnek,
+mások létrejönnek. Vannak más esetek is, amikor az élek módosulnak. Akárhogy is,
+megtehetjük, hogy minden módosuláskor a befutó
+élek számát (referenciaszám) aktualizáljuk. Amikor ez a szám nullára csökken, 
+akkor az adott memóriaobjektum törölhető. (Persze a stackeket sosem töröljük.)
+
+Ezen az elven működik a Python szemétgyűjtése.
+
+A referencia számlálás sajnos több sebből vérzik. 
+Gondot okoznak a körök. 
+A változótérben lehetnek körök, nagyon egyszerű ilyet csinálni, pl.
+\begin{verbatim}
+local a:={NIL}
+    a[1]:=a         // ez itt egy hurok
+\end{verbatim}
+A körben résztvevő csúcsok referenciaszáma sosem csökken nullára. 
+Ez egy elvi probléma.
+
+Gyakorlati probléma, hogy nehézkes a referencia számlálós rendszerekben
+a programozás. A referenciaszám karbantartása ui. az API részévé válik,
+és sok esetben nem világos, hogy kinek a feladata a  referenciaszámot módosítani,
+és milyen időzítéssel kell azt végrehajtani.
+
+Bár előnyei is lehetnek, 
+a szakemberek körében a referenciaszámlálás presztízse nem áll valami magasan,
+inkább más módszereket preferálnak. Sokan a referenciaszámlálást nem is tekintik
+,,igazi'' szemétgyűjtésnek.
+
+
+\subsubsection{Mark and sweep}
+
+Az igazi szemétgyűjtő algoritmusok legegyszerűbb változata a
+{\em mark and sweep\/} algoritmus. A program időről időre (amikor fogytán van
+a memória, amikor éppen ráér, amikor úgy gondolja, hogy már régen
+nem csinálta) beindítja a szemétgyűjtést.
+
+\begin{itemize}
+\item A {\em mark\/} (=bejelöl) szakaszban a kezdő csúcsokból
+    (esetünkben a static változókból és a stackekből) kiindulva bejárja
+    a gráfot és útközben bejelöli, hogy mely csúcsokba (memóriaobjektumokba)
+    jutott el. Ezek a program élő adatai.
+\item A {\em sweep\/} (=kisöpör) szakaszban végigmegy az összes csúcson
+    (memóriaobjektumon), és kitörli azokat, amiket a mark szakasz nem jelölt
+    be élőnek.
+\end{itemize}
+
+
+Ez van a CCC-ben, ennek is a legegyszerűbb magvalósítása. 
+A szemétgyűjtés bele van építve a futtatórendszerbe, 
+ezért tudja, hogyan kell bejárni a gráfot,
+és hogyan kell végigmenni az összes memóriaobjektumon.
+A memóriafoglalás és felszabadítás a \verb!malloc! és 
+\verb!free! (Windowson \verb!GlobalAlloc! és \verb!GlobalFree!)
+függvényhívásokkal történik. Vagyis a memóriakezelés egyszerűen 
+rá van lőcsölve az operációs rendszerre.
+
+Igen, mielőtt először kipróbáltam, én is aggódtam, nem fogja-e a primitív
+memóriakezelés túlterhelni az operációs rendszert. Nem terheli túl.
+A pentiumos korszaktól kezdve a CCC gyorsan és vidáman fut.
+
+Egy átlagos CCC program memóriafoglalása nem kirívóan nagy. 
+Miközben ezt a szöveget írom, megnéztem a top-ban, mennyi a \verb!z.exe!
+(CCC-ben írt editor) memóriafoglalása. A legtöbb memóriát a \verb!firefox-bin!
+foglalja (55M), a \verb!z.exe! (8M) a tizedik helyen áll, 
+az \verb!xfce4-menu-plugin! után és az \verb!xterm! előtt.
+Ugyanakkor van CCC program, amelyik egyszerre többmillió memóriaobjektummal
+rendelkezik, és gigabájtnyi helyet foglal. Mindezt nem dicsekvésnek szánom,
+csak annyit mondok, hogy a modern operációs rendszerek
+elég jól kezelik a memóriát, nem érdemes azt alkalmazásszinten újraírni.
+
+
+A mark and sweep algoritmusnak is vannak hátrányai.
+A szemétgyűjtés kampányszerűen történik, ilyenkor a program minden 
+más tevékenységet felfüggeszt. Átlagos méretű programoknál a szünet 
+tizedmásodpercekben mérhető, amit interaktív használatban nem lehet észrevenni.
+A legnagyobb (többmillió objektumos) programokban a szünet 2-3 másodperc.
+Mindenesetre lehetnek olyan feladatok, robotvezérlés, effélék, ahol semmilyen
+szünet nem megengedhető, ilyesmire a CCC nem alkalmas. (Egyébként a Jáva
+licencében is leírják, hogy atomerőművek és repülőgépek vezérlésére nem jó.)
+
+
+
+
+
+

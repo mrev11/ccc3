@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27
+git commit --all -m "dokumentáció: ccc-belulrol"
 
+# "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27
 # "ppo2cpp 5.0.16; setup-unix frissítve" #2009.12.18
 # "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14
 # "class.prg: runtime error, ha a metodus cast attributumot erint" #2009.12.02

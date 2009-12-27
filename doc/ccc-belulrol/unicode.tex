@@ -1,0 +1,611 @@
+
+\section{Unicode}
+
+%A CCC3-tól kezdve van Unicode támogatás.
+%\tableofcontents
+
+
+
+\subsection{Unicode támogatás}
+
+A régi Clipperben és a CCC1-CCC2-ben nem volt megkülönböztetve
+a tetszőleges (akár bináris) adatokat tartalmazó bájtsorozat
+és a karaktersorozatot tartalmazó string. Az ilyen típust egységesen 
+karakternek (stringnek) neveztük, a típus kódja  "C" volt.
+Hasonló volt a helyzet a 2.3 előtti Pythonban is.
+
+Az idők azonban változnak, igény támadt az egyidejűleg
+többféle nyelven is értő programokra. Világossá vált, hogy
+a többnyelvűség igényeit legjobban a Unicode elégíti ki,
+továbbá, hogy a Unicode problémáit (az operációs
+rendszerrel való kompatibilitást illetően) legjobban
+az UTF-8 kódolás oldja meg. A Unicode/UTF-8 kódolás univerzálisan 
+elfogadottá vált, az operációs rendszerek sorra áttértek a használatára.
+A változást a CCC-vel is követnünk kellett.
+A CCC3 fő újdonsága a Unicode támogatás.
+
+Az XMLRPC esete mutatja, mennyire elkerülhetetlen a változás követése. 
+Egy 1999-es XMLRPC leírás azt mondja, hogy a \verb!string!
+adattípusban bámilyen adatot küldhetünk (binárisat is),
+csak arra kell ügyelnünk, hogy az XML formázásban szerepet
+játszó karakterek/bájtok (\verb!<!, \verb!&!) megfelelően védve legyenek. 
+A pár évvel ezelőtti XML tankönyvekben fel sem vetődik a kérdés:
+Miből áll az XML dokumentum?
+\begin{itemize}
+\item Bájtok sorozatából,
+\item vagy karakterek sorozatából?
+\end{itemize}
+A mai XML szabvány szerint karakterekből.
+Az XMLRPC string tehát nem tartalmazhat bináris adatot, 
+mert akkor elbukik az XML elemzésen. Hogy mik a karakterek,
+az sem triviális, pl. a 0x00--0x20 intervallumban csak a
+TAB, CR, LF számít karakternek, és máshol is vannak érvénytelen
+(nem karakter) kódok, amikre a mai XML elemzők kivételt dobnak.
+
+A Unicode támogatás megvalósítására két út kínálkozott.
+A Pythonban úgy jártak el, hogy bevezettek (mint új dimenziót) 
+egy új típust, a Unicodeot, ami minden mást érintetlenül hagyott.
+A kompatibilitás szempontjából ez tökéletes megoldás,
+azonban semmivel nem visz közelebb a régebbi programok
+Unicodeosításához.
+
+A CCC-ben a Jáva mintáját követve radikálisabb utat választottunk.
+Bevezettünk egy új típust a bájtsorozatok számára. Ezt bájtarraynek,
+bájtsorozatnak, vagy bináris stringnek nevezzük, a típuskódja "X"
+(sajnos a B betű már foglalt a kódblokkok számára). 
+A binary string (X) átveszi a régi
+(C) stringek szerepét, amikor azok bináris adatot tárolnának.
+A bináris stringekre működnek a szokásos string kezelő függvények
+és operátorok: 
+\verb!at!, 
+\verb!rat!, 
+\verb!strtran!, 
+\verb!left!, 
+\verb!right!, 
+\verb!padr!, 
+\verb!padl!, 
+\verb!substr!, 
+\verb!+!, 
+\verb!==!, 
+\verb!$!, 
+stb.
+
+A korábbi (C) stringek értelmezése megváltozott,
+a CCC3-ban Unicode karaktersorozatot jelentenek.
+Természetesen az ismert string függvények ezekre is működnek.
+A két string fajtát azonban nem lehet keverni, azaz nincs
+feltétlen, automatikus konverzió.
+Érdemes tudni, hogy az egyes karakterek C szinten \verb!wchar_t!
+típusban tárolódnak, ami a mai C fordítókban 32 bites mennyiség.
+
+Nagyon fontos megérteni a karakter string és a binary string
+közötti kapcsolatot. A karakter string (Unicode vagy UCS kódok
+sorozata) szöveget tud tárolni. Ha a szöveget binary stringbe 
+akarom átírni, akkor előállítom a Unicode karakterek UTF-8
+kódját (karakterenként a karaktertől függő hosszúságú bájtsorozat),
+ezeket konkatenálom, az eredmény egy bájtsorozat, amit a 
+szöveg UTF-8 kódolású bináris reprezentációjának nevezek.
+Bármely szöveg (karakter string) ezen a módon infóveszteség
+nélkül bináris stringre konvertálható, és a bináris reprezentációból
+maradék nélkül visszanyerhető. Általában a szöveg UTF-8 reprezentációja
+több bájt, mint ahány karakter van az eredeti szövegben.
+Ennek oka, hogy pl. a magyar ékezetes betűk vagy a cirill
+betűk UTF-8 kódja két bájt. Más karakterek még hosszabbak
+lehetnek, a létező leghosszabb UTF-8 kód hat bájtos.
+
+Ha a karakter string memóriabeli tárolását vizsgáljuk,
+azt tapasztaljuk, hogy sok 0 értékű bájt van benne.
+Nyilván, ui. az ASCII kódok a 0--127 intervallumba esnek,
+azaz egy bájtot foglalnak el, a string azonban 32-bitet 
+használ minden karakterhez. A Unicode karakter stringekre ezért
+nem működnek a C könyvtár hagyományos string kezelő függvényei,
+amik a 0 bájtot a string végének tekintik. Ugyanezért nem
+célszerű egy Unicode stringet bájtonként kiírni egy fájlba,
+vagy egy socketba. Ezzel szemben a string UTF-8 reprezentációja
+rendelkezik azzal a tulajdonsággal, hogy csakis a 0 Unicodenak
+felel meg benne 0 bájt. Az UTF-8 bináris string így alkalmas
+arra, hogy a program ezzel a típussal adjon meg egy fájlspecifikációt
+az OS számára, amire a Unicode string nem felelne meg.
+
+
+E megfontolásokból adódik, hogy mikor melyik string 
+fajtát érdemes/kell használni a programokban.
+Alapszabály, hogy a program szövegeit karakter stringben
+tároljuk, és ebben a formában manipuláljuk. 
+Vannak persze esetek, amikor ettől el kell térnünk.
+\begin{itemize}
+\item 
+    A fájlokból, socketekből általában bájtokat lehet olvasni.
+\item
+    Az operációs rendszer számára UTF-8 kódolással 
+    (tehát bináris string formájában) kell megadni a 
+    fájlspecifikációkat.
+\end{itemize}
+A koncepció, hogy az alkalmazási programokban minél
+kevesebbet kelljen váltogatni a bináris és karakter
+reprezentáció között, ehelyett a CCC könyvtár függvényei
+alkalmas helyen automatikusan elvégzik a konverziót.
+A \verb!memoread!-et pl. általában arra használjuk,
+hogy egy szövegfájlt egy mozdulattal beemeljünk  egy karakterváltozóba.
+Ezért a \verb!memoread! automatikusan karakter stringre
+konvertálja, amit olvas. Néha azonban más kell, pl. amikor
+egy png képfájlt olvasunk be, ezért a \verb!memoread!
+kiegészült egy opcionális paraméterrel, amivel kikapcsolható
+ez a konverzió. Ilyenkor a \verb!memoread! eredménye nem 
+karakter, hanem binary string.
+Az \verb!fopen! a filénevet UTF-8-ra konvertálva adja 
+lejjebb a C szintnek. 
+Azokon a helyeken, ahol a stringtípusok találkoznak,
+az alkalmazásnak mindenképpen explicite kell konvertálnia, 
+ezért a programok elkerülhetetlenül bonyolultabbak lesznek, 
+mint a CCC2-ben voltak.
+
+Megemlítendő, hogy a Unicode/UTF-8 kódolás a CCC3-ban kizárólagos.
+Ezen azt értem, hogy nincs támogatás semmilyen más kódolásra,
+pl. Latin-1-re. Ezek a (hagyományos) kódolások elavultak,
+és rendkívül megbonyolódik az élet, ha különféle kódolásokat
+kell egyszerre kezelni. Mindez azt jelenti, hogy a CCC3 használata 
+során az ember szövegfájljai szépen átkonvertálódnak UTF-8-ra.
+A jelen sorokat a CCC3-mal fordított (tehát Unicode-os) z editorral írom,
+és a saját terminálomban az angol, magyar és orosz szöveget
+egyformán helyesen látom (és tudom gépelni), mint ahogy helyesen
+látszik a \TeX\  kimentetén és a böngészőben is. Mindehhez
+nincs szükség bütykölt fontokra és billentyű driverekre.
+Vannak tehát előnyök, amik kárpótolnak a bonyodalmakért. 
+Bízzunk benne, hogy az UTF-8 kódolás hosszabb nyugvópont lesz 
+a gyorsan változó informatikában.
+
+
+
+
+
+
+
+\subsection{További megfontolások, kompatibilitás}
+
+Azt szeretném itt leírni, 
+miért úgy van a Unicode string használat a CCC3-ban, ahogy van,
+és hogyan kell választani a karakter és bináris string között. 
+
+A 2.4.x Python támogatja a Unicode/UTF-8 kódolást.
+Próbáljuk ki ezt a Python programot:
+\begin{verbatim}
+#! /usr/bin/env python
+# _*_ coding: UTF-8 _*_
+
+a="öt szép szűzlány őrült írót nyúz"   # bájtsorozat
+u=u"öt szép szűzlány őrült írót nyúz"  # Unicode string
+
+print 
+print a[0:1]
+print a
+print u[0:1]
+print u
+\end{verbatim}
+Ha lefuttatjuk a programot, ezt a kimenetet kapjuk: 
+\begin{verbatim}
+?
+ öt szép szűzlány őrült írót nyúz
+ö 
+öt szép szűzlány őrült írót nyúz
+\end{verbatim}
+Az első '?' valójában egy érvénytelen UTF-8 kód, egy fél 'ö' betű!
+Ebből következtetek az alábbiakra:
+Az \verb!a! változóban egy bájtsorozat van, ami UTF-8 kódolással
+ábrázolja az "öt szép..." szöveget. Az \verb!u! változóban egy
+(Unicode) karaktersorozat van, ami ugyanazt a szöveget ábrázolja.
+Amikor a stringek első elemét vesszük, akkor az első esetben
+az első {\em bájtot\/} a második esetben az első {\em karaktert\/}
+kapjuk. Mivel az 'ö' betű UTF-8 kódolásban 2 bájton tárolódik,
+azért kapjuk a fél 'ö' betűt, ami érvénytelen kód lévén '?' formában
+jelenik meg. 
+Ugyanez a program CCC3-ban így néz ki:
+\begin{verbatim}
+function main()
+local a:=a"öt szép szűzlány őrült írót nyúz" //bájtsorozat
+local u:="öt szép szűzlány őrült írót nyúz"  //Unicode string
+    ? left(a,1)
+    ? a
+    ? left(u,1)
+    ? u
+\end{verbatim}
+Itt nem a Unicode stringet jelöljük \verb!u"..."!-val,
+hanem fordítva, a bájtsorozatot kell megkülönböztetni \verb!a"..."!-val.
+Az eredmény egyébként ugyanaz. A Python és a CCC3 Unicode támogatása 
+közötti  eltérés:
+
+A Python a Unicode-dal új területet nyit, de nem lép be erre
+az új területre. A programozóra bízza a Unicode stringek bejelölését.
+A kompatibilitás szempontjából ez tökéletes megoldás, hiszen a
+régi programokat egyáltalán nem érinti. Szerintem azonban döntő
+hátrány, hogy nem segíti elő az UTF-8 kódolást. Ha pl. egy régi
+Python programot Latin-1-ről átkonvertálunk UTF-8-ra,
+szintaktikailag semmi sem változik, mégis elromlik a program,
+mert mint láttuk, megjelennek a félbevágott UTF-8 kódok.
+Az új programoknál a Unicode stringek használatát kellene
+előnyben részesíteni, a Python megközelítésében mégis
+ezekhez kell többet írni, mindig jelölgetni kell az
+\verb!u"..."! stringeket.
+
+A CCC3 készítésekor először én is hetekig a Python útján haladtam,
+de egyre kevésbé tetszett a dolog. Végül úgy döntöttem,
+hogy áttérek a radikálisabb megvalósításra: Nem csak létrehozom
+az új területet, hanem be is lépek rá, azaz a Unicode string
+lesz a default. Ugyanez van a Jávában is. A string literálok
+Unicode karaktersorozatot jelentenek, emellett használható a
+bájtarray, amikor arra van szükség. Utólag biztos vagyok
+abban, hogy a Jáva/CCC3 megoldás a jobb, így vannak a helyükön
+a dolgok, bár elismerem, hogy ez csak egy szubjektív vélemény.
+
+Még egy fontos kérdés van: Legyen-e feltétlen és automatikus
+konverzió a karaktersorozat és a bájtsorozat között?
+A Pythonban van. Azt írják, hogy a két típus találkozásánál
+a bájtsorozat automatikusan a ,,pontosabb'' Unicode sorozatra
+konvertálódik. Úgy gondolják, hogy a Unicode 32-bites lévén
+pontosabb, mint a 8-bites bájt. Ez azonban egy melléfogás.
+Az UTF-8 kódolással információveszteség nélkül tárolható
+bármely Unicode string, fordítva azonban nem.
+Ha egy png formátumú képet tartalmazó bájtsorozatot
+Unicode stringre konvertálunk, akkor kép elromlik!
+Tehát a Unicode sorozat egyáltalán nem ,,pontosabb'', 
+mint a bájtsorozat, hanem fordítva, de hasznosabb azt gondolni, 
+hogy más. Ezért a CCC3-ban nincs feltétlen típuskonverzió.
+
+A tapasztalat azt mutatja, hogy az a jó, ha a program 
+a lehető legszélesebb körben Unicode stringeket használ,
+és csak akkor tér át bájtsorozatra, amikor tényleg
+bináris adatokkal dolgozik. 
+
+Amikor olvasunk egy fájlból, azt kell feltételeznünk, hogy
+bájtokat kapunk. Még ha tudjuk is, hogy a fájl mit tartalmaz,
+a POSIX API bájtok olvasásához ad eszközöket. 
+Ezt a szituációt úgy jellemzem, hogy a kétféle típus találkozik,
+és az alkalmazásnak kell eldönteni, hogy legyen-e konverzió,
+vagy ne. Ilyen a CCC2-ben nem volt, tehát a CCC3 mindenképpen
+bonyolultabb lesz, sajnos.
+
+Emlékeztetek rá, hogy a szabány szerint az XML nem bájtok
+sorozatából, hanem karakterek sorozatából áll. Amikor a programok
+XML dokumentumot cserélnek, akkor valahogy sorosítani kell
+a dokumentumot, azaz a karaktereket bájtsorozatra kell
+konvertálni, ehhez valamilyen kódolás kell. Az XML szabvány 
+az UTF-8-at jelöli ki default kódolásnak. Ahogy a CCC3 használja 
+a Unicode/UTF-8 kódolást, úgy minden magától a helyén van. 
+A \verb!ccc3_jt! könyvtár Unicode string formájában dolgozik az XML 
+szöveggel, majd közvetlenül küldés előtt az \verb!str2bin!-nel 
+UTF-8-ra konvertálja. A Jáva XML elemzője a DOM felépítésekor
+az UTF-8 kódolású dokumentumot Unicodera konvertálja, 
+a DOM-ból már Unicode stringeket lehet kiolvasni.
+Hasonló a helyzet a fordított irányban.
+A \verb!ccc3_jt! portolásához ezért lényegében semmit sem 
+kellett csinálni.
+
+A GTK mindig is UTF-8 kódolással dolgozott, azaz egy editbox
+szövegét UTF-8 kódolással kell beállítani, és úgy lehet megkapni.
+A CCC-GTK csatolóba be van építve, hogy paraméter átadás/átvételkor
+automatikusan végezze a Unicode<-->UTF-8 konverziót.
+A CCC3 program tehát kényelmesen dolgozhat a Unicode
+stringekkel.
+
+Vannak függvények, amik természetüknél fogva bináris
+adatokkal dolgoznak, pl. 
+\verb!base64_encode!,
+\verb!base64_decode!, 
+\verb!crypto_md5!, 
+\verb!crypto_sha1!,
+\verb!crypto_rand_bytes!,
+\verb!savescreen!, stb..
+
+%És nyilván vannak kérdéses esetek, és talán ellentmondások is,
+%amiket eddig nem vettem észre.
+
+A fentiek alapján világos, 
+hogy a CCC3 nem tud kompatibilis lenni a korábbi verziókkal,
+ezért a CCC3 nem tudja egyszerűen leváltani a CCC2-t. 
+Képtelenség minden régi programot egyszerre ,,felhozni'' az új verzióra, 
+egyúttal mindent újratesztelni. Mégha ez lehetséges  volna,
+az sem volna elegendő, ui. a  CCC3  kizárólag  Unicode/UTF-8
+kódolással dolgozik. Ha egy bank adatai Latin-2 kódolásúak, nem valószínű, 
+hogy a kedvünkért hajlandók mindent átkonvertálni UTF-8-ra.
+
+Érdemes-e esetleg a CCC3-ba beépíteni más kódrendszerek támogatását?
+A véleményem határozott nem. Az Unicode/UTF-8 ui. nem arra lett kitalálva,
+hogy még eggyel több kódrendszer legyen, amik között ide-oda lehet
+konvertálgatni. (Hogy ezzel is több legyen a különböző kódrendszerek
+miatti szenvedés.) Az UTF-8 az az univerzális sín, aminek mindent el kell vinnie.
+
+
+Az ellentmondó szempontok feloldása, hogy a CCC2-t és a CCC3-at
+is fenn kell tartani, előreláthatóan még hosszú ideig. A kezelendő
+adatok kódolása alapján kell választani egyiket vagy a másikat.
+Természetesen új projektekhez UTF-8 kódolást és CCC3-at választunk.
+
+
+
+
+\subsection{Karakter/binary string literálok}
+
+\subsubsection{Karakter string}
+\begin{verbatim}
+    x1:="Kázmér füstölgő fűnyírót húz."
+    x2:="Копирование и распространение"
+\end{verbatim}
+A fenti értékadások  szövegének
+kötelezően UTF-8 kódolásúnak kell lennie, másképp fordítási hiba
+keletkezik: \verb!INVALIDENCODING!. Ebből adódóan nem nélkülözhető
+az UTF-8/Unicode környezet.
+A programokat UTF-8 editorral kell írni (pl. a z-vel),
+a régi szövegeket át kell konvertálni. A fordító maga nem konvertál,
+csak hibát jelez, ha rossz a kódolás. A fordító az UTF-8 kódolású
+szövegből előállítja a Unicode karakterek sorozatát, és ez a sorozat 
+(vagyis a C típusú string) lesz a változók új értéke.
+C++ szinten a Unicode (UCS) karakterek \verb!wchar_t! 
+típusban tárolódnak, ami általában 32 bites. 
+
+
+\subsubsection{Binary string}
+\begin{verbatim}
+    x:=a"öt szép szűzlány őrült írót nyúz"
+\end{verbatim}
+A fenti értékadás eredményeképpen \verb!x! típusa binary string (X),
+tartalma pedig a szöveget UTF-8 kódolással reprezentáló bájtsorozat.
+
+
+
+
+\subsection{Karakter/binary string függvények}
+
+%Nem tudok most komplett referenciát adni az újdonságokról,
+%mert nem emlékszem mindenre fejből. Ideiglenesen csak annyit akarok 
+%leírni, ami már megfelelően érzékelteti a dolgok hangulatát és logikáját.
+%A pontos infóhoz állandóan nézni kell a forrásokat, magam is ezt teszem.
+
+Új függvények:
+\begin{description}
+\item[{\tt bin(code)}]
+    A \verb!chr(code)! bináris párja. Egy 0--255 közé eső
+    kódból egy bájt hosszú bináris stringet készít.
+\item[{\tt arr2bin(a)}]
+    A korábbi \verb!_arr2chr!-t pótolja. Most nyilván a karakter
+    stringeket is sorosítani kell, az eredmény egy bináris string
+    (bájtsorozat).
+\item[{\tt bin2arr(x)}]
+    \verb!arr2bin(a)! inverze.
+\item[{\tt str2bin(c)}]
+    Előállítja a \verb!c! karakter string UTF-8 kódolású bináris
+    reprezentációját. Ebből információveszteség nélkül visszanyerhető
+    az eredeti string. A bináris reprezentáció sok helyen helyettesítheti
+    is \verb!c!-t.
+\item[{\tt bin2str(x)}]
+    \verb!str2bin(c)! inverze. Tudni kell azonban,  ha \verb!x!
+    nem érvényes UTF-8 kódolású szöveget tartalmaz, akkor információ
+    vész el, pl. egy png képfájl elromlik.
+\item[{\tt split(v,sep)}]
+    Helyettesíti a megszűnt \verb!wordlist!-et.
+    Karakteres és bináris stringekre is működik.
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+\end{description}
+
+Módusult függvények.
+
+\begin{description}
+\item[{\tt chr(code)}]
+    Egy 32 bites UCS kódból egy egy karakter hosszú stringet készít.
+\item[{\tt asc(v)}]
+    Ha \verb!v! karakter string, akkor az első karakter UCS kódját adja.
+    Ha \verb!v! bináris string, akkor az első bájt értékét adja.
+\item[{\tt left(v,n)}]
+    Ha \verb!v! karakter string, akkor \verb!v! első \verb!n!
+    karakteréből álló részstringet adja.
+    Ha \verb!v! bináris string, akkor \verb!v! első \verb!n!
+    bájtjából álló bináris részstringet adja.
+    Utóbbi esetben, ha \verb!v! egy szöveg UTF-8 kódolású bináris 
+    reprezentációja, akkor ez a tulajdonság elromolhat, amennyiben 
+    a \verb!left! elvág egy több bájtos UTF-8 kódot.
+\item[{\tt len(v)}]
+    Ha \verb!v! karakter string, akkor a \verb!v!-ben levő karakterek
+    számát adja.
+    Ha \verb!v! bináris string, akkor a \verb!v!-ben levő bájtok
+    számát adja. 
+\item[{\tt replicate(v,n)}]
+    A \verb!v! változó karakter és bináris string is lehet,
+    az eredmény ennek függvényében C vagy X típusú. A rekordbuffereket
+    régen a \verb!space! függvénnyel hoztuk létre. Mivel ennek
+    az eredménye C típus, ez most általában nem jó, helyette
+    ilyesmit írunk: \verb!replicate(x"20",n)!.
+\item[{\tt fread(fd,@buf,n)}]
+    Az \verb!fread! nem karaktereket, hanem bájtokat olvas,
+    ezért \verb!buf!-ot X típusúra {\it kell\/} inicializálni.
+\item[{\tt fwrite(fd,buf,n)}]
+    Az \verb!fwrite! nem karaktereket, hanem bájtokat ír,
+    ezért, ha C típusú \verb!buf!-ot adunk meg neki, azt automatikusan
+    átkonvertálja X típusra \verb!str2bin!-nel.
+\item[{\tt convertfspec2nativeformat(f)}]
+    Az eredményét mindig átkonvertálja binárisra, ui.
+    az operációs rendszernek UTF-8 kódolású fájlspecifikációkat
+    lehet megadni.
+\item[{\tt hashcode(v)}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt isalpha(v)}]
+    Karakteres és bináris stringekre is működik.
+    C szinten az \verb!iswalpha!, illetve az \verb!isalpha!
+    hívódik meg. Karakter string esetén az ékezetes és cirill 
+    betűkre is jó eredményt ad.
+\item[{\tt qout(c,...)}]
+    A karakter stringek kinyomtatás előtt automatikusan
+    átkonvertálódnak UTF-8-ra (vagyis  binárisra), 
+    ui. az operációs rendszerek ezt értik.
+\item[{\tt savescreen()}]
+    A képernyő bináris stringként mentődik, egy screen
+    cella a korábbiaktól eltérően most 4 bájt, mert UCS
+    kódokat kell tárolni. A függvénycsalád összes tagja
+    ehhez alkalmazkodik.
+\item[{\tt upper(v)}]
+    Karakteres és bináris stringekre is működik.
+    C szinten a \verb!towupper!, illetve a \verb!toupper!
+    hívódik meg. Karakter string esetén az ékezetes és cirill 
+    betűkre is jó eredményt ad.
+\item[{\tt val(x)}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt valtype(v)}]
+    Bináris stringre "X"-et ad.
+\item[{\tt like()}]
+    Karakteres és bináris stringekre is működik.
+\item[{\tt memoread(fspec [,binopt])}]
+    Ha a \verb!binopt! empty, akkor \verb!bin2str!-rel
+    karakterre konvertálja a beolvasott fájl tartalmát.
+    Ez csak akkor jó, ha a fájl UTF-8 kódolású szöveget tartalmaz.
+    Ha egy png képfájlt akarunk beolvasni, akkor azt 
+    \verb!binopt:=.t.!-vel tesszük, az eredmény ilyenkor
+    egy bináris string.
+\item[{\tt memowrit(fspec,v)}]
+    Ha \verb!v! egy karakteres string, akkor azt kiírás
+    előtt átkonvertálja binárisra.
+\item[{\tt inkey() }]
+    Az inkey kódok megváltoztak, lásd az \verb!inkey.ch!-t.
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+%\item[{\tt }]
+\end{description}
+
+
+
+
+
+
+\subsection{Internacionalizálás}
+
+Internacionalizálásnak sok összetevője van, 
+mi itt csak egy dologgal foglalkozunk: 
+Hogyan lehet többnyelvű CCC programot írni, 
+amiben a string konstansok egyszerűen cserélhetők különféle 
+nyelvi változatokra. 
+Egy működő példa található a \$CCCDIR/tutor/nlstext directoryban, 
+ezt a példát magyarázom el részletesen az alábbiakban.
+
+Az nlstext.prg program:
+\begin{verbatim}
+static x:=@"Some like it hot"
+
+function main()
+    nls_load_translation("nlstext")
+    fun()
+    ?
+
+static function fun()
+static y:=@'Gentlemen prefer blondes'
+local z:=@"Star war"
+    ? x
+    ? y
+    ? z
+    ? @"Matrix"
+    ?
+\end{verbatim}
+Először is azokat a stringeket, amiket a program különböző 
+nyelvű verzióiban fordításban akarunk látni, meg kell jelölnünk.
+Erre szolgál a speciális \verb!@"..."! szintaktika.
+A programfordítás idejére beállítjuk az alábbi 
+környezeti változót:
+\begin{verbatim}
+export CCC_NLSTEXT_TAB=$(pwd)/nlstext.tran
+\end{verbatim}
+Ennek hatására a \verb!ppo2cpp! fordító kigyűjti nekünk a 
+kukaccal megjelölt stringeket egy szövegfájlba, 
+esetünkben nlstext.tran-ba:
+\begin{verbatim}
+"Some like it hot"<<"" from  ./nlstext.prg  (21)
+"Gentlemen prefer blondes"<<"" from  ./nlstext.prg  (33)
+"Star war"<<"" from  ./nlstext.prg  (34)
+"Matrix"<<"" from  ./nlstext.prg  (39)
+\end{verbatim}
+Itt soronként egy stringet találunk. A sor a lefordítandó
+stringgel kezdődik, utána jön egy \verb!<<! jel, majd egy 
+üres idézet, ahová a fordítást kell majd beírni.
+Az eddigiek azt jelölik, hogy a bal oldali stringet 
+helyettesíteni fogja a jobb oldalra írt fordítás.
+A sor végén fel van tüntetve, hogy az adott string melyik
+forrásfájl melyik sorából származik.  Természetesen,
+ha a project sok forrásfájlból áll, akkor az egyes fájlokból
+jövő járulék halmozódik, ezért egy nagyobb program esetén
+ezres nagyságrendű sor lehet az eredmény.
+
+Minden nyelvhez készítünk egy-egy directoryt, esetünkben 
+\begin{verbatim}
+    translation/hu
+    translation/ru
+\end{verbatim}
+ezekbe átmásoljuk az nlstext.tran egy-egy példányát, 
+ezeken fognak dolgozni a fordítók. A fordító munkájának
+eredménye egy ilyen fájl:
+\begin{verbatim}
+"Some like it hot"<<"Несколько мужчин любят горячо" from  ./proba.prg  (21)
+"Gentlemen prefer blondes"<<"Господа любят лучше блондинок" from ./proba.prg (33)
+"Star war"<<"Война эвёэд" from  ./proba.prg  (34)
+\end{verbatim}
+Ebből a fájlból a \verb!tran2cpp! utility  C++ forrást generál,
+amit lefordítunk, és  dinamikus könyvtárat linkelünk belőle.
+Elvégezzük ugyanezeket a műveleteket a magyar változatra is.
+A dinamikus könyvtárak neve:
+\begin{verbatim}
+    translation/libnlstext.hu.so
+    translation/libnlstext.ru.so
+\end{verbatim}
+Természetesen ugyanez megy Windowson is, csak ott dll-eket kapunk.
+
+Namost, ha az nlstext.exe programot egy ilyen scripttel indítjuk:
+\begin{verbatim}
+#!/bin/bash
+export CCC_LANG=ru
+export LD_LIBRARY_PATH=./translation:$LD_LIBRARY_PATH
+nlstext.exe
+\end{verbatim}
+akkor a program elején található
+\begin{verbatim}
+    nls_load_translation("nlstext")
+\end{verbatim}
+függvényhívás (amiről eddig nem szóltunk) a \verb!CCC_LANG!
+változó értékéből és a paraméterként kapott "nlstext" szövegből
+összerak egy könyvtárnevet, és a könyvtárat megpróbálja betölteni. 
+Ha ez a betöltés sikeres, akkor a program a \verb!@"..."! stringek
+helyett azok fordításait fogja megjeleníteni. Ha a fordításkönyvtár
+dinamikus betöltése nem sikeres, vagy a könyvtár nem tartalmaz fordítást
+egyik vagy másik stringre, attól még  működni fog a program,
+csak ekkor a fordítással nem rendelkező stringek eredeti szövege 
+jelenik meg.
+

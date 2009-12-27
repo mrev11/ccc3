@@ -1,0 +1,97 @@
+
+
+\section{Hello World}
+
+Készítünk egy directoryt, mondjuk \verb!$HOME/temp/hello!, és abban egy 
+\verb!hello.prg! nevű fájlt.
+
+\begin{verbatim}
+function main()
+    ? "Hello World"
+\end{verbatim}
+
+Kiadjuk az alábbi parancsot:
+
+\begin{verbatim}
+bapp_unix_.b
+\end{verbatim}
+
+amire létrejön (egyebek mellett) a \verb!hello.exe! végrehajtható fájl. 
+Ha ezt elindítjuk, a terminálban megjelenik a "Hello World" szöveg.
+
+Nagyszerű!
+
+
+De ne elégedjünk meg ennyivel, nézzünk szét a fájlok között.
+Lett egy új directory, a \verb!ppo!. Ide került a \verb!hello.ppo! (PreProcessed Output)
+fájl, amit a \verb!prg2ppo.exe! makróprocesszor készített. Minden prg fájl átmegy
+az előfeldolgozáson. A prg2ppo a C-ből ismerthez hasonló, de annál
+bonyolultabb és nagyobb tudású előfeldolgozó. Az eredeti Clipperben szintén megvan
+ez az előfeldolgozás. A mi előfeldolgozónk - amennyire csak lehetséges - kompatibilis
+az eredetivel.
+
+A \verb!ppo! directoryban találjuk még a \verb!hello.cpp! fájlt. Ezt a ppo-ból 
+készíti a \verb!ppo2cpp.exe! program, a tulajdonképpeni Clipper -> C++ 
+fordító. Később tanulmányozni fogjuk a generált cpp kódot.
+
+A szintén újonnan létrejött \verb!objlin! directoryba került a C fordítás eredménye,
+a \verb!hello.obj! fájl. Ha a projektben könyvtárak (lib, so) készülnének, azok is
+itt, az \verb!objlin! directoryban jönnének létre.
+
+Próbáljuk ki a következőt. Újra kiadjuk a \verb!bapp_unix_.b!
+parancsot. Megjelenik a ,,CCC Program Builder 1.2.25 Copyright (C) ComFirm Bt.''
+felirat, de egyébként nem történik semmi. Módosítsuk a \verb!hello.prg! fájlt,
+és próbálkozzunk újra. Látjuk, hogy a program most újra lefordul. Akkor is 
+beindul a fordítás, ha letöröljük az \verb!objlin! directoryt, vagy csak egyik-másik
+obj fájlt. Ha az exe-t töröljük le, akkor viszont beindul a linkelés.
+
+Amire ki akarok lyukadni: A programkészítés elég komplex művelet.
+A prg fájlokat át kell hajtani az előfeldolgozáson, a C fordításon, végül össze kell
+őket linkelni más objectekkel és különféle statikus és dinamikus könyvtárakkal.
+A CCC fejlesztő környezet ehhez igyekszik segítséget adni. A programozónak nem
+kell leírnia, hogy melyik forrásfájlon milyen műveleteket akar végrehajtani.
+Nincsenek make fájlok.
+
+Projektben gondolkodunk. Egy directoryba beömlesztjük a projekthez tartozó
+forrásfájlokat. A \verb!build.exe! program átvizsgálja a forrásokat.
+A kiterjesztésekből eleve tudja, hogy melyikkel milyen fordítási
+műveletet lehet végezni. A fájlidőkből megállapítja, hogy mely fordítási
+műveletek időszerűek. És ha már ilyen okos, akkor el is végzi a szükséges
+műveleteket. 
+
+A \verb!bapp_unix_.b! script a \verb!build.exe!-t indítja olyan 
+paraméterezéssel, hogy az összes forrás lefordításával konzolos 
+programot készítsen. A build széleskörűen paraméterezhető.
+Meg lehet mondani neki, hogy a working directory helyett honnan vegye a forrásokat,
+honnan vegye az include-okat, honnan vegye a statikus és dinamikus libeket,
+ha van statikus és dinamikus lib is, akkor melyiket preferálja. Csináljon-e az 
+objectekből libeket, ha készül exe, azt hova tegye. 
+
+Akárhogy is, a build specialitása, 
+hogy a forrásokat nem fájlonként, hanem directorynként
+kell megadni neki. Ebből persze az következik, hogy a munkadirectory(k)ban nem
+lehetnek más forrásfájlok, csak amik ténylegesen részei a projektnek. De ez nem
+baj. A nem odavaló fájlokat egyszerűen félretesszük pl. egy \verb!nemkell! nevű
+subdirectoryba, így legalább tiszta marad a kép. Az is jó, hogy a fordítás során
+keletkező rengeteg részeredmény subdirectorykba kerül, így a sok szemét nem
+borítja el a fájlokat, amikkel ténylegesen dolgozunk.
+
+További lényeges sajátossága a build (CCC projekt manager) programnak,
+hogy nem csak prg, hanem cpp (sőt Lemon és Flex) forrásokat is automatikusan
+áthajt a fordítási műveleteken. Tehát, ha egy directoryba összegyűjtünk egy rakás
+Clipper, C++, Lemon, Flex forrást, azokból egy mozdulattal tudunk libeket,
+exeket fordítani/linkelni. Ennek filozófiai jelentősége van. Mutatja ugyanis,
+hogy a CCC nem szakadt el a C/C++ gyökerektől, hanem a Clipper és a C 
+projektszinten keverhető.
+
+Végül, szokássá vált, hogy a build-et indító parancsot (script nevet) beírjuk 
+egy \verb!m! nevű fájlba (scriptbe). A CCC programkészítés így az egybetűs 
+\verb!m! (make) parancsra indul.
+
+
+
+
+
+
+
+

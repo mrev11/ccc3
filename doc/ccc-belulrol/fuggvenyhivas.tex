@@ -1,0 +1,596 @@
+
+
+\section{Függvényhívás}
+
+
+\subsection{Független modulok}
+
+Függvény és függvényhívás a Clipper/CCC legfontosabb építőkövei. 
+Mielőtt azonban a kövek részleteit vizsgálnánk, nézzünk az épület egészére.
+
+Egy projekt általában sok forrásmodulból áll. A modulok neve legyen mondjuk
+\begin{verbatim} 
+    code1.prg
+    code2.prg
+    ...
+    code100.prg
+\end{verbatim}
+A fordító ezeket egyesével lefordítja, és kapjuk a
+\begin{verbatim} 
+    code1.obj
+    code2.obj
+    ...
+    code100.obj
+\end{verbatim}
+object (gépi kód) fájlokat. Lehet, hogy a prg források egy részével nem találkozunk 
+közvetlenül, mert egy másik projektben készülnek, és mi már csak a lefordított 
+objecteket kapjuk. Utóbbi  esetben az a tipikus, hogy az objectek nem külön-külön, 
+hanem könyvtárakba (statikus lib, vagy dinamikus so) összecsomagolva állnak 
+rendelkezésre. Ez a helyzet a futtatórendszer alapkönyvtáraival is,
+amit minden program használ. Akárhogy is, a lényeg, hogy rendelkezésünk áll 
+egy rakás object fájl. Ezekből lesz a program.
+
+A {\em linker\/} (link editor) feladata, hogy az egymástól függetlenül 
+létrehozott, egymásról mit sem tudó nagy rakás object fájlból futtatható 
+programot szerkesszen (linkeljen).
+
+Tegyük fel, hogy a projektünk végterméke egy közvetlenül elindítható program
+(nem pedig könyvtár). Akkor a modulok valamelyikében kell legyen \verb!main!
+függvény, ahol elindul a program. Mondjuk a \verb!code1.prg!-ben.
+\begin{verbatim} 
+function main()
+local x,a,b,c
+    ...
+    x:=fuggveny1(a,b,c)
+    ...
+\end{verbatim}
+Program nem létezhet függvényhívás nélkül.
+Már a \verb!main!-re is függvényhívással kerül a vezérlés 
+a futtatórendszer alapkönyvtárából. A main aztán meghívhat további
+függvényeket, mint a példában \verb!fuggveny1!-et, aminek a belsejében 
+további függvényhívás lehet, és így tovább. 
+\begin{verbatim} 
+function fuggveny1(a,b,c,d)
+    ...
+    fuggveny2()
+    ...
+\end{verbatim}
+A körnek végül záródnia kell, az összes meghívott függvény
+kódja meg kell legyen valahol az összeszerkesztett modulokban: 
+az alapkönyvtárakban, plusz a \verb!code1.obj!... modulokban.
+
+Az előbb ,,egymásról mit sem tudó'' modulokról beszéltünk.
+Ez azt jelenti, hogy a fordítóprogram semmit (a nevükön kívül semmi egyedit)
+nem tud a függvényekről. A fordítóprogram a \verb!fuggveny1! fordításakor
+látja, hogy kódot kell generálnia a \verb!fuggveny2! meghívására. Miközben
+ezt megteszi nem tudja, hogy a \verb!fuggveny2! hol van definiálva,
+definiálva van-e egyáltalán, milyen paraméterezéssel kell meghívni,
+milyen visszatérési értéket ad.
+
+Persze nem tudnánk értelmes programot írni, 
+ha nem volnánk tisztában a függvények paraméterezésével, 
+visszatérési értékével, de ezt nem a fordító tudja, hanem a programozó. 
+A dokumentációból vagy a forrásprogram  elolvasásából. 
+A fordítóprogram szempontjából minden függvényhívás ugyanolyan,
+mindegyik ugyanarra a kaptafára húzható.
+
+C-ből nézve minden Clipper függvény 
+\begin{verbatim}
+extern void _clp_fuggveny1(int argno); //C++ kód
+\end{verbatim}
+deklarációval rendelkezik, azaz C szinten nincs visszatérési értéke (void), 
+és egyetlen int paramétere van, ami megmondja,  hány paramétert 
+kapott Clipper szinten. Clipper szinten minden függvénynek van visszatérési
+értéke, ha más nincs megadva, akkor NIL. 
+
+Ha a Clipper/CCC programozó kap egy bináris object fájlt 
+(vagy lib/so könyvtárat) és tudja, hogy mi a fájl tartalma, 
+akkor minden további nélkül belinkelheti a programjába, használhatja.
+A C programozók számára ez merőben szokatlan. 
+C/C++-ban egy könyvtár használatához múlhatatlan szükség van az ún. header 
+fájlokra (forrás típusú fájlok), amik segítik a fordítót a kódgenerálásban és 
+a függvényhívások ellenőrzésében.
+
+
+A gyakorlatban a változók, függvények, objectek, könyvtárak
+(egymásra épülő, egymást feltételező) uniform mivolta azt eredményezi, 
+hogy egymástól függetlenül fordított modulok, könyvtárak összelapátolásával 
+rendkívüli termelékenységgel hozhatunk létre óriási programokat.
+
+
+
+\subsection{Láthatóság}
+
+Eddig csak globális láthatóságú függvényekről beszéltünk.
+Természetesen nem szerencsés, ha egy belső használatra szánt
+függvény mindenhonnan látszik, és ki van téve a tervezettől eltérő használatnak
+vagy akár csak véletlen névütközésnek.
+A függvényeinket forrásmodulon belül eldughatjuk \verb!static! definícióval:
+\begin{verbatim}
+static function fuggveny1()
+    ...
+\end{verbatim}
+Egy static függvény csak abban a forrásmodulban látható, amiben definiálták. 
+Clipper/CCC-ben és C-ben a \verb!static! szó ugyanazt jelenti,
+változó deklarációban és függvény definícióban egyaránt.
+A static függvények C-ben is static-ok:
+\begin{verbatim}
+static void _clp_fuggveny1(int argno); //C++ kód
+\end{verbatim}
+
+
+\subsection{Függvényhívás a veremgépen}
+
+Most megnézzük a részleteket,
+hogyan valósul meg a ,,uniform'' függvényhívás a CCC veremgépén.
+
+\begin{verbatim}
+local x,a,b,c,d
+    ...
+    x:=fuggveny1(a,b,c)
+    fuggveny1()
+    fuggveny1(,,c,d)       //ua. mint fuggveny1(NIL,NIL,c,d)
+    ...
+\end{verbatim}
+A függvényeket akárhány darab és akármilyen típusú paraméterrel 
+meg lehet hívni. A függvény mindig ad visszatérési értéket, amit viszont
+nem kötelező felhasználni. A fenti programrészlet talán furcsának látszik,
+de formailag hibátlan. Hogy jó-e, az csak futáskor dől el. 
+Lehetséges, hogy \verb!fuggveny1! úgy van megírva, hogy megvizsgálja
+a paramétereit, és a konkrét esettől függően csinál ezt vagy azt.
+
+Nézzük a dolgokat a hívott függvényből.
+\begin{verbatim}
+function fuggveny1(a,b,c)
+local x:=0
+    x+=if(a==NIL,0,a)       //NIL helyett 0
+    x+=if(b==NIL,0,b)
+    x+=if(c==NIL,0,c)
+    return x
+\end{verbatim}
+Itt egy példa \verb!fuggveny1! viszonylag értelmes implementációjára.
+Akkor működik jól, ha NIL vagy szám típusú paramétereket kap. Összeadja
+a paraméterek számértékét (a NIL-ek helyett nullát vesz), és visszaadja az összeget.
+
+Ha egy paraméter nincs megadva, annak a futtatórendszer 
+NIL értéket ad. Nincs megadva: a paraméterlista rövid vagy hézagos.
+A NIL értékeket a példaprogram nullával helyettesíti.
+
+Ha a paraméterlista hosszabb 3-nál, akkor a fölös paramétereket 
+a futtatórendszer eldobja. Az előző példában \verb!d! mintha ott se lenne.
+
+Ha a paraméterek között valamilyen más típus van, pl. logikai, 
+az valamelyik összeadásban fog kiderülni. A program ,,elszáll'',
+és egyúttal kiírja, hogy melyik sorban milyen értékeket nem lehetett összeadni, 
+valamint kiírja az egész stacket. Ilyen a CCC hibakezelése.
+
+Ha már a stacknél tartunk, egészítsük ki a példaprogramot, 
+és nézzük meg a stacket:
+
+\begin{verbatim}
+function main()
+local x,a:=1,b:=2,c:=10,d:="d"
+    x:=fuggveny1(a,b+b)
+
+function fuggveny1(a,b,c)
+local x:=0
+    x+=if(a==NIL,0,a)
+    x+=if(b==NIL,0,b)
+    x+=if(c==NIL,0,c)
+    varstack()
+    return x
+\end{verbatim}
+
+A \verb!varstack()! a futtatórendszer beépített függvénye,
+kiírja a program összes static (most egy sincs) és local változóját.
+
+\begin{verbatim}
+-----------------------------------------------------------
+ Variable Stack
+-----------------------------------------------------------
+***** function main
+0: NIL
+1: NUMBER 1
+2: NUMBER 2
+3: NUMBER 10
+4: STRING length=1 oref=b79b6008 "d"
+***** function fuggveny1
+5: NUMBER 1
+6: NUMBER 4
+7: NIL
+8: NUMBER 5
+-----------------------------------------------------------
+\end{verbatim}
+A rendszer tudja, hogy a stacken hol vannak a függvényhívási határok.
+Azt remélem, az olvasó bonyolult magyarázat nélkül is azonnal érti, amit lát.
+A \verb!fuggveny1! szintjét nézve vegyük át, hogyan zajlik le a függvényhívás,
+végrehajtás, visszatérés.
+
+    A hívó program sorban egymás után a stackre rakja a 
+      paramétereket. Egy paraméter akármilyen bonyolult kifejezés lehet,
+      szépen kiszámolódik, a végeredmény (a kifejezés értéke) a stack 
+      tetején marad.  Az 5-ös és 6-os stack elemek a paraméterek.
+
+    Meghívódik \verb!fuggveny1!. Meg van mondva neki, 
+      hogy 2 darab paramétert kapott. A stack állásából és 
+      a kapott paraméterek számából tudja, hogy a saját szintje
+      az 5-ös elemtől kezdődik, egyúttal megvan a paraméterek értéke.
+      Azokat az argumentum változókat, amikre nem jutott paraméter, 
+      NIL-re inicializálja. Így kerül \verb!c! értekeként NIL a 7-es stack elembe.
+      Az esetleges fölös paramétereket (most nincs ilyen) kipucolja.
+
+    A \verb!fuggveny1! további helyeket foglal magának a stacken
+      a local változók számára (amiket inicializál is, bár ez most nem látszik).
+      A 8-as stack elemben tárolódik az \verb!x! változó.
+
+    A hívott függvény elvégzi, amit kell. 
+      Eközben a stack ,,szuszog''. Részeredmények tárolódnak
+      rajta, mélyül majd visszacsökken a függvényhívások szintje. 
+
+    Elérkezik a visszatérés ideje. \verb!fuggveny1! 
+      az 5-ös elem helyére beírja a visszatérési értékét,
+      majd beállítja a stackpointert, hogy a stack első szabad helyeként
+      a 6-os elemet mutassa. Visszatér.    
+
+    A hívó program szempontjából a függvényhívás egy {\em kifejezés\/} volt.
+      Minden kifejezés úgy működik, hogy ,,kiszámolja magát'', 
+      és az értékét a stack tetején hagyja. Esetünkben a kifejezés értéke
+      a visszatérési érték. Ezzel azt csinál a hívó program, amit akar.
+      Ha semmit sem csinál, akkor az érték automatikusan lekerül a stackről,
+      és elvész.
+      
+
+\subsection{Referencia paraméterek}
+
+Más nyelvekről szóló dokumentációkban találhatunk ilyen kijelentést:
+,,A paraméterátadás érték szerint történik''. Ez van a Clipper/CCC-ben is.
+
+Írjuk át az előző példaprogramot.
+\begin{verbatim}
+function fuggveny1(a,b,c)
+    if( a==NIL )
+        a:=0
+    end
+    ...
+    return a+b+c
+\end{verbatim}
+Így \verb!fuggveny1! működése ugyanaz marad.
+Felvetődik viszont a kérdés: Az \verb!a:=0! értékadás miatt nem fordul-e elő,
+hogy az \verb!a! változó értéke a hívó programban is megváltozik? Nem. 
+Aki figyelmesen olvasta az előző pontot, és követte, mi történik a vermen,
+annak ez nyilvánvaló.
+
+Bonyolultabb a referenciát tartalmazó típusok esete. 
+String, array, objektum, kódblokk esetén is érték szerint történik a paraméterátadás, 
+csakhogy ilyenkor az értékben közvetlenül tárolt adat egy OREF 
+(memóriaobjektum referencia). Emiatt a hívó és hívott program ,,közösködik''
+ugyanazon a tartalmon. 
+
+Stringek esetében ez a közösködés readonly,  csak addig tart,
+amíg a hívott program nem akar változtatni a stringen. Amikor változtat,
+a hívó és hívott program változóinak tartalma szétválik.
+
+Array, objektum, kódblokk esetén a hívott program megváltoztathatja
+a memóriaobjektum {\em belsejét\/} (array esetén az array hosszát is).
+
+Az eddigi ,,normál'', és magától értetődő eseteken túl előfordul, 
+hogy kifejezetten arra van szükség, 
+hogy a hívott függvényben végrehajtott változtatás
+a hívó program változójára is hasson. 
+Ezt szolgálja a referencia szerinti paraméterátadás.
+
+\begin{verbatim}
+function main()
+local x,a,b:=2,c:=10,d:="d"     // a==NIL
+    x:=fuggveny1(@a,b+b)        // @a referencia
+    ? a                         // kiírja: 0
+
+function fuggveny1(a,b,c)
+    if( a==NIL )
+        a:=0
+    end
+    ? valtype(a)                // kiírja: N
+    ...
+    return a+b+c
+\end{verbatim}
+
+Most az \verb!a! változók \verb!main!-ben és \verb!fuggveny1!-ben együtt változnak.
+A \verb!@a! paraméterátadás hatására az eredetileg NIL típusú változó referenciává
+alakul, és ez a referencia adódik át a hívott függvénynek. 
+A referencia típusú változók kiolvasását/értékadását a futtatórendszer
+speciálisan támogatja: Automatikusan eggyel ,,tovább nyúl'' a tényleges
+értékért anélkül, hogy ezt a programban jelölni kellene. Úgy képzelhetjük el, 
+mint egy egy hosszúságú tömböt, aminek az indexelését a rendszer automatikusan
+elvégzi.
+
+Külön említendő, hogy a hívott program {\em nem tudja}, hogy az argumentumai
+referenciák-e vagy sem. Nem tudja? Mit mond róla a \verb!valtype()!?
+Amikor \verb!valtype(a)! meghívódik, akkor is működik a referencia típusok
+speciális támogatása, azaz a rendszer eggyel tovább nyúlva előveszi  \verb!a!
+tényleges tartalmát, ezért \verb!valtype()! úgy látja, hogy a kérdéses típus szám.
+
+Eddig tartott a régi Clipper tudománya. 
+Az eddig tárgyalt dolgokban CCC és Clipper között tökéletesnek mondható a kompatibilitás. 
+A következők már a CCC újításai.
+
+\subsection{Default értékek}
+
+A kényelmesebb programírás érdekében a függvénydefinícióban
+default értéket adhatunk az argumentum változóknak. Még mindig
+az előző példánál maradva, ezt is írhatjuk:
+
+\begin{verbatim}
+function fuggveny1(a:=0,b:=0,c:=0)
+    return a+b+c
+\end{verbatim}
+
+Általánosságban
+\begin{verbatim}
+function fuggveny(...,a:=expr,...)
+    ...
+\end{verbatim}
+pontosan ugyanazt jelenti, mint
+\begin{verbatim}
+function fuggveny(...,a,...)
+    if( a==NIL )
+        a:=expr
+    end
+    ...
+\end{verbatim}
+ahol \verb!expr! tetszőleges olyan kifejezés, amit az adott helyen ki lehet
+értékelni.
+
+
+
+\subsection{Változó számú paraméter}
+
+\begin{verbatim}
+function fuggveny1(a,b,c)
+    ...
+\end{verbatim}
+Ez a függvény legfeljebb 3 darab paramétert tud átvenni. 
+Ha kevesebbet kap, 
+akkor NIL-re inicializálja a paraméter nélkül maradt argumentum változókat, 
+ha többet kap, 
+akkor a fölös paramétereket (esetünkben a 3 felettieket) kipucolja 
+(mintha nem is lettek volna).
+
+Olyan függvényre is szükség van, ami előre nem ismert számú paramétert vesz át.
+
+\begin{verbatim}
+function fuggveny1(a,b,c,*)
+    ...
+\end{verbatim}
+Az {\em utolsó\/} argumentum változó helyén szereplő \verb!*! azt jelöli,
+hogy a függvény akárhány (további) paramétert átvesz. 
+
+Minden korábbi szabály érvényes, kivéve, hogy nincsenek ,,kipucolódó''
+paraméterek.  Nem tudjuk, hogy a hívó küldött-e akár csak 1 darab paramétert.
+Ha igen, akkor az első, második, harmadik paraméter behelyettesítődik az
+\verb!a!,\verb!b!,\verb!c! argumentum változókba. Ha nem, akkor a rendszer
+NIL-re inicializálja a paraméter nélkül maradtakat. 
+A hívott program a kapott paraméterek számát 3-nál nagyobbegyenlőnek fogja látni.
+
+Nem szükséges, hogy legyenek névvel ellátott argumentum változók.
+\begin{verbatim}
+function fuggveny1(*)
+    ...
+\end{verbatim}
+Ez a változat egyszerűen minden paramétert átvesz.
+
+No jó, ez a dolog egyik oldala, de hogyan férünk hozzá az ,,átvett'', 
+de változóhoz esetleg nem rendelt értékekhez? Az alábbi kifejezésekben
+\begin{verbatim}
+    {*}                 // array az összes paraméterből
+    fuggveny2(*)        // függvényhívás
+    object:method(*)    // metódushívás
+\end{verbatim}
+a \verb!*! helyére behelyettesítődik a függvény összes paramétere. Elsőre 
+talán furcsa, de a helyzet világos lesz a következő összehasonlítás után. 
+\begin{verbatim}
+function fuggveny1(a,b,c)
+local array1:={a,b,c}
+local array2:={*}
+local array3:={*,1,*}   // {a,b,c,1,a,b,c}
+    ...
+    fuggveny2(a,b,c)
+    fuggveny2(*)        // ugyanaz
+\end{verbatim}
+Hogyan készül az \verb!array1! tömb? A rendszer a stackre rakja az 
+\verb!a!, \verb!b!, \verb!c! változók értékét, majd meghívja a veremgép
+egy primitívjét, hogy a stack tetején levő három elemből készítsen tömböt.
+Ez a primitív leveszi a három elemet, elkészíti a tömböt, és az eredményt
+a stack tetején hagyja. Na, pontosan ugyanígy készül \verb!array2! is,
+az egyetlen különbség, hogy az elemek konkrét felsorolása helyett
+csak annyit mondtunk: az összes paraméter. Ezzel meg is vagyunk.
+\verb!len({*})! megadja az összes paraméter számát (jelen esetben fix 3), 
+\verb!{*}[n]! megadja az \verb!n!-edik paraméter értékét (a túlindexelés hiba).
+
+Külön szólni kell a kódblokkokról.
+\begin{verbatim}
+local blk1:={|p1,*|...}
+local blk2:={|*|fuggvény(*)}
+\end{verbatim}
+A \verb!||! jeleken belüli \verb!*! a függvényekhez hasonlóan azt jelenti, 
+hogy a kérdéses kódblokk minden paramétert átvesz. Itt is rendelhetünk
+argumentumváltozót az elől álló paraméterekhez. A kódblokk kifejezéslistájában
+szereplő (tehát a \verb!||! jeleken kívüli) \verb!*! az összes kódblokk paraméter
+felsorolását jelenti.
+
+
+A \verb!*! (nem kifejezés, csak) jelölés
+minden olyan kifejezésben működik, ahol értelme van a paraméterek
+felsorolásának. Nézzünk néhány fontosabb esetet.
+\begin{verbatim}
+function fuggveny1(*)
+    return fuggveny2(*)
+\end{verbatim}
+Itt \verb!fuggveny1! továbbítja a hívást \verb!fuggveny2!-nek, 
+anélkül, hogy bármit tudna annak paraméterezéséről.
+A \verb!*! felsorolás függvény- és metódushívásban a referencia változók
+referencia tulajdonságát megtartja, ezzel szemben a \verb!{*}! kifejezésben 
+a referenciák derefelődnek.
+
+\begin{verbatim}
+    {|*|fuggveny(*)}
+\end{verbatim}
+A fenti kódblokk meghív egy függvényt továbbítva neki a blokk összes paraméterét.
+
+
+
+A paraméterek felsorolásának vannak további esetei:
+\begin{verbatim}
+    *[x1..x2]  // paraméterek x1-től x2-ig
+    *[x1..]    // paraméterek x1-től (ameddig van)
+    *[..x2]    // paraméterek x2-ig (1-től)
+    *[..]      // összes paraméter (*)
+\end{verbatim}
+A szintaktika a string szeletekhez hasonló. 
+A túllógó indexek módosulnak a tényleges méretekhez alkalmazkodva.
+Magyarázat helyett néhány példa:
+\begin{verbatim}
+function fuggveny1(a,b,c)
+local array1:={a,b,c}
+local array2:={*[..]}    // ua. mint array1 vagy {*}
+local array3:={b,c}
+local array4:={*[2..3]}  // ua. mint array3
+\end{verbatim}
+A függvényhívás továbbítás (esetleg kódblokkon keresztül) fontos szerepet
+kap a metódushívások implementációjában.
+
+
+
+\subsection{Névterek}
+
+Korszerű programnyelv nem nélkülözheti a névtereket.
+A forrásmodulok legelején állhat az opcionális 
+\verb!namespace! utasítás, például:
+\begin{verbatim}
+namespace aa.bb.cc
+\end{verbatim}
+aminek hatására a modulban definiált összes függvény
+az \verb!aa.bb.cc! (többszintű) névtérbe kerül.
+A \verb!namespace! utasítás nélkül, egyedileg is névtérbe 
+helyezhetünk függvénydefiníciókat a következő módon:
+\begin{verbatim}
+function  aa.bb.cc.f()
+    ...
+\end{verbatim}
+A kétféle (globális és egyedi) minősítés (névtérbe helyezés) 
+egyszerre is jelen lehet, ebben az esetben a hatásuk összegződik.
+A modulon belül definiált függvények meghívásakor
+nincs szükség teljes minősítésre.
+
+A modul függvényeire (pl. \verb!f!-re) kívülről a {\em minősített\/} névvel,
+esetünkben az \verb!aa.bb.cc.f()! formával hivatkozhatunk.
+A kívülről történő hivatkozások megkönnyítésére szolgál a \verb!using! utasítás.
+A \verb!using! utasítások a modul elején, közvetlenül az
+esetleges \verb!namespace! után állhatnak. A \verb!using! olyan 
+rövidítést vezet be, amivel elkerülhető a teljesen minősített 
+függvénynevek túl sokszori kiírása.
+
+\begin{verbatim}
+// alternatív using-ok               így hívjuk meg f-et
+
+   using aa.bb.cc=alias           // alias.f()
+   using aa.bb=x                  // x.cc.f()
+   using aa.bb.cc  f g            // f(), g()
+   using aa.bb  cc.f              // cc.f()
+\end{verbatim}
+
+A globális (gyökér) névteret (kezdő) pont jelöli. 
+Ha pl. a \verb!using aa.bb.cc  f! utasítás után 
+\verb!aa.bb.cc.f! helyett a globális névtérben definiált 
+\verb!f!-et akarjuk meghívni, akkor ezt kell irni: \verb!.f()!.
+
+A CCC névterek közvetlenül C++ névterekre vannak leképezve.
+
+
+\subsection{Postfix függvényhívás}
+
+Nézzük ezt a kifejezést:
+\begin{verbatim}
+    padl(alltrim(str(round(x,2))),10,"0")
+\end{verbatim}
+\begin{itemize}
+\item
+    Az \verb!x! változóban egy szám van,
+\item
+    azt kerekítjük 2 tizedes jegyre,
+\item
+    a számértéket karakter stringre konvertáljuk,
+\item
+    levágjuk az elől/hátul esetleg  rajta levő szóközöket,
+\item 
+    balról kiegészítjük "0" karakterekkel 10 szélességűre.            
+\end{itemize}
+Rengetegszer kell hasonló kifejezésekkel küszködni. 
+Az a baj, hogy a sorozatosan egymásba ágyazott függvényhívásokat 
+középről (az \verb!x! változóból) kifelé haladva, hol balról, hol jobbról kell írni.
+Egy ilyet visszafejteni végképp fárasztó.
+
+Adódik a postfix függvényhívás ötlete. Értelmezzük a \verb!::! (dupla kettőspont)
+operátort a következőképp:
+\begin{verbatim}
+    x::fuggveny1()  // ua. mint fuggveny1(x) 
+\end{verbatim}
+A postfix jelző arra utal, hogy a függvénynevet nem előre, hanem hátra, 
+az első argumentum után írjuk. 
+
+Nyilvánvaló, hogy a nyelv ,,tudása'' nem változik a postfix függvényhívás
+bevezetésével, csak a programírás kényelme növekszik. A hagyományos (prefix)
+és a postfix függvényhívásból pontosan ugyanaz a kód generálódik.
+
+Hogy igazán használható legyen, még egy-két általánosított formára szükség van.
+\begin{verbatim}
+    x::fuggveny1        // üres zárójelpár elhagyva
+    (x+y)::fuggveny1    // ua. mint fuggveny1(x+y)  
+    x::fuggveny1(y,z)   // ua. mint fuggveny1(x,y,z) 
+\end{verbatim}
+Megállapodunk abban, hogy a \verb!::! oprátor precedenciája magas, 
+ugyanolyan, mint a metódushívás operátoré.
+
+Az előző kifejezésünket most így írhatjuk.
+\begin{verbatim}
+    x::round(2)::str::alltrim::padl(10,"0")
+\end{verbatim}
+
+Itt akár meg is állhatnánk, ha nem ismernénk a \verb!+=!, \verb!-=! 
+(hozzáadó, stb.) típusú operátorokat. Ezek mintájára kézenfekvő
+bevezetni a \verb!::=! operátort a következő értelmezéssel:
+\begin{verbatim}
+    x::=fuggveny1()     // ua. mint x:=fuggveny1(x) 
+\end{verbatim}
+az összes variációjával együtt. Megállapodunk abban, hogy a \verb!::=!
+operátor precedenciája alacsony, ugyanolyan, mint a \verb!:=!, \verb!+=! 
+(értékadás, stb.) operátoroké.
+ 
+Ha egyszer van egy alacsony precedenciájú értékadó operátorunk,
+felvetődik a kérdés,  van-e értelme zárójelezni a jobboldalon álló kifejezést.
+Itt egy példa, ami mutatja, hogy van:
+
+\begin{verbatim}
+    ? x:="1"                        // kiírja: 1 (karakter)
+    ? x::=(val()+1)::str::alltrim   // kiírja: 2 (karakter)
+    ? x::=(val()+1)::str::alltrim   // kiírja: 3 (karakter)
+    ? x::=val+1                     // kiírja: 4 (szám)
+\end{verbatim}
+
+Amikor a függvényhívás operátort (\verb!::=! vagy \verb!::!) 
+nem egy egyszerű függvénynév követi, hanem egy zárójeles kifejezés,
+azt még mindig értelmezhetjük függvényhívásnak, ha a zárójeles kifejezés
+nyelvtani elemzőfájának bal szélén függvényhívás van. A gyakorlatban
+nincs ennek jelentősége, a lényeg, hogy ne maradjon elvarratlan szál 
+a nyelvtanban.
+
+A nyelvtani elemző onnan ismer fel egy függvényhívást, hogy
+\begin{itemize}
+ \item egy szimbólumot zárójelpár között felsorolt kifejezéslista követ 
+        (ez a hagyományos eset), vagy
+ \item
+      függvényhívás operátort egy szimbólum követ (postfix eset).
+\end{itemize}
+Amikor a függvényhívás operátort nem közvetlenül követi a függvénynév
+(mint ahogy a példában egy balzárójel ékelődik \verb!::=! és \verb!val! közé),
+akkor az üres zárójelpárt nem lehet elhagyni.
+

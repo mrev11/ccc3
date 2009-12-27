@@ -1,0 +1,777 @@
+
+
+\section{Objektumok}
+
+%\tableofcontents
+
+\subsection{Alapok}
+
+Az alábbi példában majdnem minden együtt van.
+\begin{verbatim}
+class derived(base1,base2)
+
+    attrib  a1
+    attrib  a2
+
+    method  m1              {|this,p1,p2|expr(this,p1,p2)}
+    method  m2              {|*|derived.m2(*)}
+    method  m3
+    method  m4              {|this,*|this:a2:m(*[2..])}
+    method  m5              :a2:m
+
+    method  initialize
+
+static function derived.m2(this)
+    ...
+
+static function derived.m3(this,a,b,c)
+    ...
+
+static function derived.initialize(this,a,b,c)
+    this:(base1)initialize(a,b,c)
+    this:(base2)initialize(a,b,c)
+    ...
+    return this  //kötelező visszaadni a this-t
+\end{verbatim}
+
+A \verb!class! kulcsszóval induló osztálydefiníciók a forrásban ugyanott állhatnak,
+ahol a függvények. Az osztálydefiníció a következő \verb!class!-ig, 
+\verb!function!-ig vagy a fájl végéig tart.
+
+A példa egy \verb!derived! nevű osztályt definiál, 
+ami a \verb!base1! és \verb!base2! osztályokból van származtatva.
+Mindig meg kell adni legalább egy alaposztályt, amiből az új osztály
+örököl, ha mást nem, akkor a mindig létező \verb!object! osztályt.
+
+
+Az osztálydefiníció eredménye két függvény:
+\verb!derivedClass()! és \verb!derivedNew()!,
+általában az x nevű osztály esetén xClass és xNew.
+A programban e két függvény képviseli az osztályt.
+
+\begin{verbatim}
+    classid:=derivedClass()
+\end{verbatim}
+\verb!derivedClass()! visszatérési értéke az osztályazonosító.
+Maga az osztály a \verb!derivedClass()! függvény első hívásakor jön létre.
+A \verb!base1! és \verb!base2! osztályoknak is megvan a maguk class 
+függvénye, amik \verb!derivedClass()!-ból meghívódnak, és amik
+szintén meghívják az ősosztályuk class függvényét, stb..
+
+A \verb!derivedNew()! függvénnyel példányosítjuk az osztályt. 
+\begin{verbatim}
+    object:=derivedNew(p1,p2,p3)  //derived osztályú objektum
+\end{verbatim}
+A \verb!derivedNew()! előállít egy \verb!derived! osztályú objektumot, 
+amihez szüksége van a \verb!classid!-re, meghívja tehát \verb!derivedClass()!-t.
+Ha még nem létezett, akkor ennek hatására minden szükséges osztály létrejön 
+az \verb!object! osztályig bezárólag.
+A new függvény automatikusan végrehajtja az új objektum \verb!initialize! 
+metódusát, továbbadva neki minden paraméterét.
+
+
+
+A \verb!derived! osztály rendelkezik a
+\verb!base1! és \verb!base2!-ből örökölt minden attribútummal és metódussal, 
+plusz a \verb!derived! osztályban definiált \verb!a1!\ldots,\verb!m1!\ldots  
+attribútumokkal és metódusokkal.
+
+A objektum felhasználója így hivatkozhat az attribútumokra és metódusokra:
+\begin{verbatim}
+    object:a1           // attribútum kiolvasás
+    object:a1:=x        // attribútum értékadás
+    object:a1++         // értékadás minden variációban
+    object:a1+=1
+    object:m1(x,y)      // metódushívás
+\end{verbatim}
+
+%Visszatérve a \verb!class! utasításra. 
+A \verb!class!-ban kizárólag attribútum és metódus definíciók állhatnak.
+A sorrendjük lényegtelen.
+
+Az attribútumoknak egyszerűen megadjuk a nevét az \verb!attrib! kulcsszó után. 
+
+A \verb!method! utasítások ennél bonyolultabbak.
+Alapesetben a metódus neve után egy kódblokk van,
+ez a kódblokk jelenti a metódus implementációját.
+A metódushívás a kódblokk kiértékelésével történik.
+Nézzük részleteiben. 
+A rendszer megállapítja, hogy \verb!object! osztálya \verb!derived!.
+Az osztályok nyilvántartásából
+előszedi a \verb!derived! osztály \verb!m1! metódusához rendelt
+kódblokkot. Ezt kiértékeli úgy, hogy a blokk első (\verb!this!) paraméterébe
+helyettesítődik maga az objektum, a \verb!p1!-be \verb!x!, \verb!p2!-be \verb!y!.
+A metódus visszatérési értéke a kódblokk utolsó kifejezésének --
+esetünkben \verb!expr(this,p1,p2)! -- értéke. 
+
+A példában szereplő
+\verb!this! nem kulcsszó, csak konvenció, akármilyen szimbólum megfelelne.
+Szabály viszont, hogy mindig a kódblokk első paraméterébe kerül az 
+objektum (this, self, ki hogyan szereti).
+
+
+Aha, ezek szerint az \verb!m2! metódus implementációja a \verb!derived.m2! függvény.
+A metódus kódblokkja minden paramétert továbbít a benne meghívott függvénynek,
+és mint tudjuk, az első paraméter a \verb!this!.
+
+Az \verb!m3! metódus sorában a kódblokk helyén semmi sincs. 
+Ilyenkor a fordító úgy jár el, mint az előző esetben, odateszi (odaérti) az
+\begin{verbatim}
+    {|*|osztalyneve.metodusneve(*)}
+\end{verbatim}
+default kódblokkot, ami minden paraméter továbbadásával meghívja
+az osztály nevével minősített, a metódus nevével egyező nevű függvényt.
+
+Ezt a függvényt valahol implementálnunk kell. 
+Ha a függvényt \verb!static!-nak definiáljuk, akkor az a modulon kívülről 
+függvényhívással nem érhető el, csak az objektumon keresztül metódushívással. 
+Ha a metódus implementációt (kényszerűségből) más modulba tesszük, akkor nem lehet 
+\verb!static!, de legalább a névtér csökkenti a véletlen névütközés lehetőségét.
+
+A függvénynek mindig van legalább egy paramétere, hiszen az első helyen megkapja 
+a \verb!this!-t. Ezt ugyanúgy ki kell írni, mint minden más normális paramétert.
+(Nincs olyan bosszantó kétértelműség, mint amit C++-ban a ki nem írt this okoz). 
+
+Az \verb!m4! metódus kódblokkja kicsit bonyolultabb.
+Feltételezzük, hogy az objektum \verb!a2! attribútuma egy beágyazott
+objektumot tartalmaz, méghozzá olyat, aminek van \verb!m! nevű metódusa.
+A kódblokk az \verb!m4! metódushívást (minden paraméter továbbadásával) 
+továbbítja a beágyazott objektum \verb!m! metódusának.
+Ha nem érthető, akkor az olvasónak újra át kell néznie 
+a változó számú paraméterrel történő függvényhívást.
+
+Az \verb!m5! megint új eset? Nem egészen. Ez csak az \verb!m4! kódblokk 
+rövidített írásmódja. A metódushívás-továbbítás olvashatóbb formája.
+
+Az objektumokat általában inicializáljuk.
+Egy tipikus lehetőséget mutat be a példában szereplő \verb!initialize! metódus.
+Mindez azonban nem szabály. Az alkalmazás konkrét körülményeiből adódik, 
+hogy mikor milyen inicializálásra van szükség. A
+\begin{verbatim}
+    this:(base1)initialize(a,b,c)
+\end{verbatim}
+sor a (\verb!derived! osztályú) \verb!this! objektumra meghívja
+a \verb!base1! osztályban definiált \verb!initialize! metódust.
+Ez általában lehetséges, hiszen a leszármazás miatt \verb!this!
+egyúttal \verb!base1! osztályú is. A speciális jelölést nevezzük 
+metódus cast-nak.
+
+Az inicializátornak kötelezően vissza kell adnia az objektumot (a \verb!this!-t).
+
+Megjegyzendő, hogy minden objektumnak van \verb!initialize! metódusa.
+Ha a saját osztályában nincs definiálva, akkor örökli valamelyik
+felmenőjétől, ha máshonnan nem, akkor az \verb!object! osztálytól.
+Az \verb!object! osztály inicializátora egyébként nem csinál semmit,
+minthogy az \verb!object!-ben nincs definiálva egyetlen attribútum sem.
+
+
+Álljunk meg ezen a ponton egy kis összegzésre. 
+Azt szeretném hangsúlyozni, hogy az eddigiek nagyon egyszerűek,
+mivel kevés szabály logikus alkalmazásából adódnak.
+Hogyan definiálunk egy osztályt?
+\begin{itemize}
+\item 
+    Megadjuk az osztály nevét a \verb!class! utasításban.
+\item 
+    Ugyanitt felsoroljuk az ősosztályok nevét.
+\item 
+    A \verb!attrib! utasításokkal felsoroljuk az attribútumokat.
+\item 
+    A \verb!method! utasításokkal felsoroljuk a metódusokat.
+\item 
+    Tipikus esetben a metódushoz nem mellékelünk kódblokkot,
+    hanem a metódus implementációját egy \verb!osztalyneve.metodusneve()!
+    függvénybe helyezzük.
+\item
+    A beágyazott objektumokat és a metódushívás-továbbítást
+    a fordító egyszerűen és szemléletesen támogatja.
+\item
+    Néha tényleg annyira egyszerű a metódus, 
+    hogy az egész implementáció belefér egy kódblokkba.
+    Ilyenkor valósul meg az alapeset.
+\end{itemize}
+Nem ritka, hogy egy osztálydefiníció
+az attribútumok és metódusok  puszta  felsorolásából áll.
+Egyszerűbb már nem lehetne. 
+Vannak azonban részletek, amik fölött eddig átsiklottunk,
+ezeket vesszük sorra a következő pontokban.
+
+\subsection{Öröklődési szabályok}
+
+Az öröklődés többszörös, C++ terminológiát használva: public, virtual.
+Ez azt jelenti, hogy az öröklés elől nem lehet eldugni az 
+attribútum/metódusokat, azaz mindig minden öröklődik (public).
+A metódusok közül mindig az objektum tényleges osztályának megfelelő hívódik 
+meg (virtual). Nincsenek olyan nyakatekert szabályok, mint a C++-ban vagy Jávában.
+
+A rendszer minden osztály részére létrehoz egy hashtáblát,
+amiben az attribútum/metódus név a kulcs, az érték pedig
+\begin{itemize}
+ \item attribútum esetén egy tömbindex
+       (ezen a helyen található az attribútum értéke az objektum 
+       tartalmát hordozó tömbszerű memóriaobjektumban),
+ \item metódus esetén egy kódblokk.
+\end{itemize}
+A rendszer a névhez (kulcshoz) rendelt érték típusából tudja,
+hogy attribútumról vagy metódusról van-e szó.
+
+A rendszer a kezdetben üres hashtáblát feltölti. 
+Először balról jobbra haladva végigmegy az ősosztályokon,
+és összegyűjti az ezekből örökölhető tagokat. Ha olyan névvel találkozik,
+ami már korábban bekerült a hashbe, akkor azt kihagyja. Ebből adódnak
+a következő szabályok:
+
+Ha a \verb!derived! osztály \verb!base1!-ből és \verb!base2!-ből is
+örökölhetne egy tagot, akkor \verb!base1!-ből örököl.
+
+Ha \verb!base1!-ben és \verb!base2!-ben is van attribútum
+ugyanazon a néven, akkor ezeknek egyetlen közös attribútum felel
+meg \verb!derived!-ben.
+
+Ezután a rendszer berakja a hashbe a \verb!derived!-ben definiált
+attribútumokat/metódusokat, azaz a származtatott osztály új attribútumokkal
+és metódusokkal bővül az ősosztályhoz képest.
+
+Eközben is előfordul névegyezés, 
+most azonban a rendszer mindig a felülírja a korábbi értéket. 
+Ez megfelel annak az objektumorientált programozási eljárásnak,
+miszerint a származtatott osztály felüldefiniálja az ősosztályoktól
+örökölt metódusok egyikét-másikát.
+
+Előfordulnak azonban olyan esetek is, amikor
+\begin{itemize}
+ \item 
+    attribútum definiál felül attribútumot,
+    hatástalan, az attribútum nem többszöröződik meg,
+ \item
+    attribútum definiál felül metódust,
+    a metódus megszűnik, helyette új attribútum,
+ \item
+    metódus definiál felül attribútumot,
+    attribútum megszűnik, helyette új metódus
+    (az attribútumindexek újraszámolódnak).
+\end{itemize}
+
+Ezeknek az öröklődési szabályoknak az az előnyük, hogy egyszerűek.
+Vannak nyelvek, amik bonyolult szabályrendszerrel lekezelik a többszörös 
+öröklődés minden konfliktusát. Ezekkel rejtvényszerűen bonyolult
+programokat lehet írni. Más nyelvek -- ettől visszariadva -- 
+inkább egyszeres öröklődésre szorítkoznak.
+Vannak szerzők, akik szerint már az egyszeres öröklődés is túl bonyolult,
+amit nem tanácsos programozók kezébe adni (Trey Nash, C\# 2008).
+
+A mi hozzáállásunk praktikus. Megmaradunk a többszörös öröklődésnél,
+de nem bonyolítjuk túl a dolgokat. Ha a fenti szabályok nem megfelelőek
+egy feladatban, akkor valószínűleg nem érdemes az öröklődéses
+programozási modellt erőltetni. Ilyenkor célszerű lehet
+beágyazott objektumokhoz és metódushívás-továbbításhoz folyamodni.
+
+Végül mutatunk egy példát virtuális metódusvégrehajtásra.
+
+\begin{verbatim}
+************************************************************
+function main()
+    baseNew(12345):print        //kiírja: 12345
+    derivedNew(12345):print     //kiírja: 12,345.00
+
+************************************************************
+class base(object)
+    attrib  number
+    method  initialize
+    method  print
+    method  format
+
+static function base.initialize(this,x)
+    this:number:=x
+    return this                 //kötelező
+
+static function base.print(this)
+    ? this:format               //hogyan formattál?
+
+static function base.format(this)
+    return str(this:number)
+
+************************************************************
+class derived(base)
+    method  initialize
+    method  format              //felüldefiniálja
+
+static function derived.initialize(this,x)
+    this:(base)initialize(x)
+    return this                 //kötelező
+
+static function derived.format(this)
+    return transform(this:number,"999,999,999.99")
+
+************************************************************
+\end{verbatim}
+A példában mindkét kiírás a \verb!base!-ben definiált \verb!print!
+metódussal történik. A nagy kérdés, hogyan történik a formattálás.
+A \verb!base! osztályú objektum a \verb!base!-beli metódussal, 
+a \verb!derived! osztályú objektum viszont a \verb!derived!-ben 
+definiált metódussal formázódik. Ha a \verb!base! osztályt nem akarjuk
+példányosítani, akkor a \verb!base.format! metódusra egyáltalán nincs szükség.
+
+
+
+
+
+\subsection{Attribútum/metódus invariancia}
+
+A fordító és a futtatórendszer szándékosan úgy van megírva,
+hogy egy objektum felhasználójának ne kelljen feltétlenül tudni róla,
+hogy metódushívással, attribútum kiolvasással, netán attribútum értékadással
+van-e dolga.
+
+Először is rögzítsük: Metódushíváskor ugyanolyan szabadságunk van 
+a paraméterezésben (a paraméterek darabszámát és típusát illetően), mint 
+a függvényhívásban. A hívó akárhány darab, akármilyen típusú paramétert küldhet. 
+A hívott kód saját hatáskörben dönti el, hogy egy konkrét paraméteregyüttesre 
+mit felel.
+
+
+Metódushíváskor az üres zárójelpárt nem kell kiírni.
+%Az előző példákban már láttunk ilyet.
+\begin{verbatim}
+    obj:meth            //nem kell kiírni a zárójelpárt
+    obj:meth()          //ugyanaz
+\end{verbatim}
+Ha nincs zárójelpár, akkor formailag nincs különbség
+a metódushívás és az attribútum kiértékelés között. A ,,rendszer''
+belül azért tudja, miről van szó. Honnan? Onnan, hogy attrubútum esetén
+egy index (szám), metódus esetén viszont egy kódblokk kerül elő az
+osztály hashtáblájából.
+
+A dolog meg is fordítható.
+\begin{verbatim}
+    obj:attr()          //odaírható a zárójelpár (érdektelen)
+    obj:attr            //ugyanaz
+\end{verbatim}
+Tehát attribútumokat is elláthatunk üres zárójelpárral, mintha ott sem lenne.
+Természetesen a háttérben az áll, hogy
+a paraméter nélküli metódushívásnak 
+és az attribútum kiolvasásnak
+ugyanaz a kódja  a CCC veremgépén.
+
+Célszerű az invarianciát teljessé tenni, kiterjeszteni
+az attribútum értékadásra.
+\begin{verbatim}
+    obj:attr:=x
+    obj:attr(x)         //ugyanaz
+
+    obj:meth(x)
+    obj:meth:=x         //ugyanaz
+\end{verbatim}
+Azért előnyös ez, mert így az objektum belső implementációjában
+váltani lehet attribútum és metódus között anélkül, hogy a kliens kódban
+mindenhol cserélgetni kellene a zárójeles paraméterlistákat és értékadásokat.
+
+Az invarianciát kifejező legáltalánosabb forma:
+\begin{verbatim}
+    obj:meth(x,y,...):=z 
+    obj:meth(x,y,...,z) //ugyanaz
+\end{verbatim}
+
+
+
+\subsection{Metódus cast}
+
+A virtuális metódushívást bemutató példában láttuk, 
+hogy alapesetben mindig az objektum tényleges osztályában definiált metódus
+hívódik meg. Néha ehelyett valamelyik ősosztály metódusára volna szükség,
+amit azonban ,,eltakar'' a származtatott osztályban definiált azonos nevű
+metódus. Ilyen esetben folyamodunk a metódus-cast-hoz.
+A leggyakoribb példa, amikor az inicializátor végrehajtja
+az ősosztály inicializátorát.
+\begin{verbatim}
+static function derived.initialize(this,p1...)
+    this:(base)initialize(p1...)    //a base osztály inicializátora
+    ...
+    return this
+\end{verbatim}
+A \verb!(base)initialize! jelölés mutatja, hogy a \verb!base!-ből
+kell venni a metódust, nem pedig az aktuális osztályból. 
+Ha a \verb!(base)! hiányozna, akkor végtelen rekurzió volna az eredmény.
+
+További két formája van a metódus-cast-nak:
+\begin{verbatim}
+    obj:(super@clsname)method
+\end{verbatim}
+Ez a \verb!clsname! nevű osztály (valamelyik) közvetlen ősosztályában
+definiált metódust hívja meg. A \verb!super! ebben a formában kulcsszó.
+
+\begin{verbatim}
+    obj:(parent@child)method
+\end{verbatim}
+Ez a \verb!parent! nevű osztályban definiált metódust hívja meg,
+feltéve, hogy a \verb!child! nevű osztály közvetlenül \verb!parent!-ből
+származik. Ha nem, akkor runtime error keletkezik.
+
+
+A metódus-cast koncepciója: Az adott objektumra meghívjuk valamelyik 
+{\em ősosztály metódusát}. Az ettől eltérő használat hibákhoz vezet:
+
+ A metódus-cast-ban ne adjuk meg olyan osztályt, 
+ aminek nincs köze az objektumhoz. Ha a rendszer úgy találja, hogy
+ az \verb!obj:(base)method! kifejezésben \verb!base! nem felmenője
+ \verb!obj! osztályának, akkor runtime errort generál: 
+ \verb!"prohibited method cast"!.
+
+ Ne alkalmazzunk metódus-cast-ot attribútumokra. 
+ Sok tekintetben a metódusok és attribútumok
+ egyformán viselkednek, ez azonban egy kivétel.
+ Ha az \verb!obj:(base)method! kifejezés kiértékelésekor kiderül, 
+ hogy \verb!base!-ben \verb!method! mégsem metódus, hanem attribútum, 
+ akkor runtime errort kapunk: \verb!"prohibited attribute cast"!.
+ (Legalább nem engedi tovább. Ha a rendszer továbbengedné, akkor 
+ a program a \verb!derived!  osztályú objektum attribútumainak tömbjében 
+ a \verb!base!-beli indexszel akarná megcímezni a keresett elemet.
+ Ez mutatja, hogy a logikánk nem terjeszthető ki attribútumokra,
+ legalábbis nem egyszerűen.)
+
+
+
+
+
+
+
+\subsection{Láthatóság}
+
+\subsubsection{Static osztályok}
+A függvényekhez hasonlóan az osztályokat is definiálhatjuk \verb!static!-nak.
+\begin{verbatim}
+static class derived(base)
+\end{verbatim}
+A nem \verb!static! esethez képest az a különbség, hogy a definícióból
+(belsőleg) generálódó két függvény most \verb!static! lesz,
+\begin{verbatim}
+static function derivedClass()
+    ...
+static function derivedNew()
+    ...
+\end{verbatim}
+így ezekre nem lehet kívülről (másik modulból) hivatkozni. 
+
+A static osztályok azonban mégsincsenek teljesen eltemetve.
+A \verb!classidbyname()! függvény neve alapján előkeresi az osztályazonosítót:
+\begin{verbatim}
+    classid:=classidbyname("derived")
+\end{verbatim}
+A ,,rendszer'' semmire sem használja az osztályok nyilvántartásában
+tárolt nevet. Az objektumrendszer működését ezért nem érinti, ha a nyilvántartásban
+két különböző osztály esetleg azonos névvel szerepel. ,,Alkalmazások'' azonban 
+alapozhatnak a \verb!classidbyname()! függvényre. Az ilyen alkalmazásoknál
+ügyelni kell rá, hogy az osztálynevek ne ütközzenek. Különösen static
+osztályoknál, ahol a linker nem figyelmeztet az ütközésre.
+
+
+\subsubsection{Névterek és osztályok}
+Hogyan kombinálódnak a névterek és az osztálydefiníciók?
+Az alábbi példa választ ad a kérdésre.
+\begin{verbatim}
+namespace nsp
+
+static class base(object)
+
+class proba.szerencse.derived(nsp.base)
+    method hopp
+
+static function proba.szerencse.derived.hopp(this)
+    ? "HOPP"
+\end{verbatim}
+A \verb!namespace! utasítás az egész modult az \verb!nsp! névtérbe teszi.
+A \verb!derived! osztályban ez még tovább mélyül a \verb!proba.szerencse! 
+többszintű névtérrel.
+Az ősosztály megadásakor ki kell írni a minősített osztálynevet: \verb!nsp.base!.
+
+Próbáljuk ki a programot az alábbi főprogrammal. A  \verb!namespace! 
+utasítás miatt ez most szükségszerűen külön modulban kell legyen, mert a \verb!main!
+nem lehet minősítve.
+\begin{verbatim}
+function main()
+local o
+    ? "1. lista"
+    classListAll()
+    o:=nsp.proba.szerencse.derivedNew()
+    ? "2. lista"
+    classListAll()
+    o:hopp
+    ? classidbyname("nsp.base")
+\end{verbatim}
+A program ezeket írja ki:
+\begin{verbatim}
+1. lista
+
+2. lista
+   1 object                         0   14   64
+   2 nsp.base                       0   14   64
+   3 nsp.proba.szerencse.derived    0   15   64
+
+HOPP
+         2
+\end{verbatim}
+Az osztályok akkor jönnek létre, amikor a program hivatkozik rájuk.
+Az 1. lista azért üres, mert a program nem csinált még egy objektumot sem.
+%Az objektumgyartó függvényt teljes minősítéssel hívtuk meg.
+A 2. lista tartalma:
+\begin{enumerate}
+\item oszlop: osztályazonosító index (\verb!classidbyname("object")==1!)
+\item oszlop: az osztály minősített neve
+\item oszlop: attribútumok száma
+\item oszlop: attribútumok+metódusok száma
+\item oszlop: hashtábla mérete
+\end{enumerate}
+A \verb!base! osztályt hiába definiáltuk \verb!static!-nak, 
+mégis megjelenik a listában, és az azonosítója is megkapható (2).
+
+
+\subsubsection{Hivatkozás a class függvényre}
+
+Mint látjuk, az xClass és xNew függvényekkel minden megeshet, 
+ami a függvényekkel általában megesik. Névtérbe kerülhetnek, 
+\verb!static!-ok lehetnek.
+Az xNew (objektumgyártó) függvénynél ennek következményei
+nyilvánvalók, mert érvényesek rá a függvényekre vonatkozó 
+általános szabályok.
+
+Az xClass függvényt a programok általában nem használják közvetlenül. 
+Az alábbi három szituációban azonban rejtve mégis a \verb!baseClass()!
+függvényre történik hivatkozás:
+\begin{verbatim}
+    1) class derived(base)
+    2) this:(base)initialize
+    3) recover err <base>
+\end{verbatim}
+Ha viszont így van, 
+akkor itt is felvetődik a láthatóság és a névtér kérdése:
+
+Ha a \verb!base! osztály \verb!static!-nak van definiálva,
+akkor más modulból nem tudunk rá hivatkozni. Linkeléskor 
+bukik ki az ilyen hiba, a linker nem találja a \verb!baseClass()! függvényt.
+
+Ha az alaposztály névtérből van, 
+akkor azt teljes útvonallal jelölni kell:
+\begin{verbatim}
+    1) class derived(multi.level.namespace.base)
+    2) this:(multi.level.namespace.base)initialize
+    3) recover err <multi.level.namespace.base>
+\end{verbatim}
+
+
+
+
+\subsection{Defaulttól eltérő new függvény}
+
+\begin{verbatim}
+class derived(base) new:symbol
+    ...
+\end{verbatim}
+
+A \verb!new:symbol! toldalék opcionális. 
+Ha hiányzik, akkor a default \verb!derivedNew! 
+nevű konstruktor készül.
+Ha van new toldalék, de a symbol tagja üres 
+(tehát ilyen alakú \verb!new:!), akkor egyáltalán nem keletkezik 
+konstruktor függvény. Teljes new toldalék esetén a 
+\verb!symbol!-ban megadott névvel képzett \verb!derivedSymbol! 
+konstruktort kapjuk.
+
+
+
+\subsection{Metódushívás-továbbítás}
+
+\begin{verbatim}
+class proba(object)
+    attrib  a1
+    attrib  a2
+    method  m1      :a1
+    method  m2      :a2:b:c:m
+
+function main()
+local p:=probaNew()
+    p:a1:="Próba szerencse"
+    ? p:m1      //kiírja: "Próba szerencse"
+\end{verbatim}
+
+A példában \verb!m1! lényegében egy alias az \verb!a1! attribútumra,
+set-get metódusokat lehet így implementálni.
+
+Az \verb!m2! metódus feltételezi, hogy az \verb!a2! (beágyazott objektum) 
+attribútumnak, van egy \verb!b! attribútuma, annak egy \verb!c! attribútuma 
+és annak egy \verb!m! metódusa. Ennek a metódusnak továbbítódik a metódushívás.
+Nem kell ismernünk \verb!m! implementációját, automatikusan
+minden paraméter továbbításra kerül. Ráadásul a fordító ügyesen
+rendezgeti a stacket, nem jönnek létre felesleges függvényhívási szintek.
+
+
+
+
+\subsection{A könyvtári object osztály}
+
+\begin{verbatim}
+class template(object)
+    attrib cargo        //teljesen üres is lehetne
+
+function main()
+    templateNew():liststruct
+\end{verbatim}
+
+Az objektumorientált programozás erejét mutatja, 
+hogy már az egyszerű \verb!template! osztály is említésre 
+méltó tudással rendelkezik, ugyanis egy csomó dolgot
+örököl az \verb!object!-től. Ki tudja listázni,
+hogy milyen metódusai és attribútumai vannak, ki tudja listázni
+az attribútumainak az értékét, meg tudja mondani az osztályának
+és a szülő osztályainak a nevét. Ezzel a képességgel
+{\em minden\/} osztály rendelkezik.  
+Az \verb!object!-ből öröklődő metódusokat vesszük most sorra.
+\begin{description}
+\item[ancestors]
+  Ad egy listát az ősosztályok nevével.
+
+\item[asarray]
+  Egy tömbben visszaadja az összes attribútumot.
+
+\item[attrnames]
+  Ad egy listát az attribútumok nevével.
+
+\item[attrvals] 
+  Visszad egy array-t, melynek elemei kételemű tömbök,
+  az összes attribútum nevéből és értékéből képzett pár.
+
+\item[baseid]
+  Ad agy arrayt, ami a közvetlen ősosztályok azonosítóit tartalmazza.
+
+\item[classname] 
+  Visszaadja az objektum osztályának nevét.
+
+\item[evalmethod] 
+  Név szerinti metódushívás (\verb!o:evalmethod("methname",{a,b,c})!)
+
+\item[initialize]
+  Inicializálja az objektumot.
+  Valójában egy object osztályú objektumon nincs mit inicializálni,
+  mert az osztályban nincs egyetlen attribútum sem, csak metódusok.
+
+\item[isderivedfrom(clid/obj)]
+  Megmondja, hogy this (osztálya) leszármazottja-e az
+  osztályazonosítóval/objektumpéldánnyal megadott másik osztálynak.
+
+\item[length]
+  Megmondja az attribútumok számát.
+
+\item[list]
+  Kilistázza magát (az attribútumait) a konzolra. 
+
+\item[liststruct]
+  Kilistázza, hogy milyen attribútumai, metódusai vannak,
+  és melyiket honnan örökölte.
+
+\item[methnames]
+  Ad egy listát a metódusok nevével.
+
+\item[struct]
+  Ad egy tömböt, ami azt a struktúrát tartalmazza, amit liststruct
+  kilistáz.
+\end{description}
+
+Felsorolunk néhány további objektumokkal kapcsolatos
+függvényt, amik azonban nem metódusai az object osztálynak:
+\begin{description}
+\item[classListAll()]
+    Listázza a program összes osztályát.
+\item[classIdByName(classname)]
+    Név alapján kikeresi és visszaadja az osztályazonosító számot.
+    Ha a megadott névvel nincs osztály, akkor 0-t ad.
+\item[getClassId(obj)]
+    Az objektumpéldányból megadja annak (szám) osztályazonosítóját.
+\item[getObjectAsArray(obj)]
+    Egy tömbben visszaadja az összes attribútumot.
+    Ezen a függvényen alapul az asarray metódus.
+\item[iniObjectFromArray(obj,arr)]
+    Inicializálja az objektumot egy olyan arrayből,
+    amit korábban a getobjectasarray (vagy asarray metódussal) 
+    kaptunk, enélkül a getobjectasarray nem is volna értelmesen 
+    használható. 
+\item[objectNew(clid)]
+    A függvény paramétere az osztályazonosító (szám).
+    Visszaad egy megadott osztályú, új, inicializálatlan 
+    objektumpéldányt. Ezen alapul minden konstruktor.
+\end{description}
+
+A példaprogram a következőket írja ki:
+\begin{verbatim}
+         1 ancestors                M object
+         2 asarray                  M object
+         3 attrnames                M object
+         4 attrvals                 M object
+         5 baseid                   M object
+         6 classname                M object
+         7 evalmethod               M object
+         8 initialize               M object
+         9 isderivedfrom            M object
+        10 length                   M object
+        11 list                     M object
+        12 liststruct               M object
+        13 methnames                M object
+        14 struct                   M object
+        15 cargo                    A template
+\end{verbatim}
+
+\subsection{Függvény interfész}
+
+Többször volt már említve, hogy az osztálydefiníció eredménye
+az xClass és xNew függvények. A programban ez a két függvény
+képviseli az osztályt. Általában a fordítóprogram generálja ezeket
+az osztálydefinícióból.
+
+Talán nem meglepő, hogy ,,kézzel'' is írhatunk xClass és xNew függvényeket.
+Az alábbi példa létrehozza a \verb!template! osztályt (kibővítve egy
+\verb!initialize! metódussal).
+
+\begin{verbatim}
+static clid_template:=templateRegister()
+
+static function templateRegister()
+local clid:=classRegister("template",{objectClass()})
+    classMethod(clid,"initialize",{|this|template.initialize(this)})
+    classAttrib(clid,"cargo")
+    return clid
+
+static function template.initialize(this)
+    ...
+    return this
+
+function templateClass()
+    return clid_template
+
+function templateNew()
+local clid:=templateClass()
+    return objectNew(clid):initialize
+\end{verbatim}
+
+A \verb!classRegister! függvény első argumentuma tartalmazza az új
+osztály nevét, a második argumentum egy array, amiben az új osztály
+szülő osztályait kell felsorolni. A legegyszerűbb esetben az új
+osztály az objectClass-tól (minden osztály közös ősétől) származik.
+
+A \verb!classMethod! függvény egy metódust ad a clid-vel azonosított
+osztályhoz. A metódus nevét a második paraméterben adjuk át, jelen 
+esetben a név ,,initialize''. A metódus végrehajtása a harmadik argumentumban 
+átadott kódblokk kiértékelésével történik. A metódusblokkok első 
+paramétere mindig maga az objektum, amit általában ,,this'' névvel
+illetünk, de itt ez nem kulcsszó, mint a C++-ban, vagy a Jávában.
+
+A \verb!classAttrib! függvény egy attribútumot ad a clid-vel azonosított
+osztályhoz. 
+
+Nyilvánvaló a megfelelés a \verb!class! osztálydefiníció és a
+függvényinterfész között. A fordítóprogram egyébként úgy működik,
+hogy a \verb!class! definícióból belsőleg előállítja a függvényinterfész 
+kódot, és azt a szokásos módon lefordítja.
+
+
+
+
+
+

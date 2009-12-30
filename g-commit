@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "dokumentáció: ccc-belulrol"
+git commit --all -m "ccclib:empty,len" #2009.12.30
 
 # "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27
 # "ppo2cpp 5.0.16; setup-unix frissítve" #2009.12.18

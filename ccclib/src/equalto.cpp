@@ -215,21 +215,29 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
                 result=((0==a->data.flag)==(0==b->data.flag));
                 stack-=2;
                 return result;
-            
-            case TYPE_OBJECT:
-                result=((a->data.object.oref)==(b->data.object.oref));
-                stack-=2;
-                return result;
  
             case TYPE_ARRAY:
                 result=((a->data.array.oref)==(b->data.array.oref));
                 stack-=2;
                 return result;
- 
-            case TYPE_BLOCK:
-                result=((a->data.block.oref)==(b->data.block.oref));
+            
+            case TYPE_OBJECT:
+            {
+                int r1=((a->data.object.oref)==(b->data.object.oref));
+                int r2=((a->data.object.subtype)==(b->data.object.subtype));
+                result=r1&&r2;
                 stack-=2;
                 return result;
+            }
+ 
+            case TYPE_BLOCK:
+            {
+                int r1=((a->data.block.oref)==(b->data.block.oref));
+                int r2=((a->data.block.code)==(b->data.block.code));
+                result=r1&&r2;
+                stack-=2;
+                return result;
+            }
                 
             //default:    
             // más típusra nincs értelmezve, 
@@ -360,20 +368,28 @@ int notequal()
                 stack-=2;
                 return result;
  
-            case TYPE_OBJECT:
-                result=((a->data.object.oref)!=(b->data.object.oref));
-                stack-=2;
-                return result;
- 
             case TYPE_ARRAY:
                 result=((a->data.array.oref)!=(b->data.array.oref));
                 stack-=2;
                 return result;
  
-            case TYPE_BLOCK:
-                result=((a->data.block.oref)!=(b->data.block.oref));
+            case TYPE_OBJECT:
+            {
+                int r1=((a->data.object.oref)!=(b->data.object.oref));
+                int r2=((a->data.object.subtype)!=(b->data.object.subtype));
+                result=r1||r2;
                 stack-=2;
                 return result;
+            }
+ 
+            case TYPE_BLOCK:
+            {
+                int r1=((a->data.block.oref)!=(b->data.block.oref));
+                int r2=((a->data.block.code)!=(b->data.block.code));
+                result=r1||r2;
+                stack-=2;
+                return result;
+            }
             
             // más típusokra nincs értelmezve, 
             // ezért nincs default érték

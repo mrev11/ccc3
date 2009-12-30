@@ -98,8 +98,15 @@ while(stack<base+1)PUSHNIL();
         }
 
         case TYPE_ARRAY:
-        case TYPE_OBJECT:
             flag=(base->data.array.oref->length==0);
+            break;
+
+        case TYPE_OBJECT:
+            flag=(base->data.object.oref->length==0);
+            break;
+
+        case TYPE_BLOCK:
+            flag=(base->data.block.oref==0);
             break;
     }
 
@@ -129,6 +136,17 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_ARRAY:
             len=base->data.array.oref->length;
+            break;
+
+        case TYPE_OBJECT:
+            len=base->data.object.oref->length;
+            break;
+
+        case TYPE_BLOCK:
+            if(base->data.block.oref)
+            {
+                len=base->data.block.oref->length;
+            }
             break;
     }
     stack=base;

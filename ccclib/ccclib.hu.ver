@@ -1,3 +1,31 @@
+2009.12.29
+  len() és empty() kiterjesztve:
+
+  len(object)   <-> attribútumok száma
+  len(block)    <-> blockváltozók száma
+  empty(object) <-> attribútumok száma nulla
+  empty(block)  <-> blockváltozók száma nulla
+
+  Mindig probléma, hogy a különböző típusok üres példányaihoz készül-e oref, 
+  és az oref-hez tartozik-e buffer. Az alábbi táblázat mutatja az eseteket. 
+  YES=mindig, ?=ha nem üres, (YES)=ha van oref.
+
+           |   oref  buffer
+    -----------------------
+    string |   YES    YES 
+    binary |   YES    YES
+    array  |   YES     ?
+    object |   YES     ?
+    block  |    ?    (YES)
+
+  Javítva == és != objektumokra és blockokra:
+
+    obj1==obj2 <-> ha oref1==oref2 és subtype1==subtype2
+    blk1==blk2 <-> ha oref1==oref2 és code1==code2
+
+  Korábban a subtype-ok és code-ok egyezőségét nem nézte.
+
+
 2009.11.30
   class.prg   : runtime error, ha a metódus cast attribútumra vonatkozik
   valtype.cpp : valtype(@x) értéke "U" (a korábbi "" helyett) 

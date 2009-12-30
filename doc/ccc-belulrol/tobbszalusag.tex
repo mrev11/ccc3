@@ -118,7 +118,7 @@ Egy további észrevétel.
 A példa a mutexet külső static változóként deklarálja. 
 Az világos, hogy static-nak kell lennie. Ha local volna, akkor minden szálnak 
 külön példánya volna belőle, nem tudná kifejteni a működését. De lehetne-e
-belső static \verb!addtosum!-ban? Az a nehézség, hogy static változók 
+belső static \verb!addtosum!-ban? Az a nehézség, hogy a static változók 
 (elvileg csak egyszer futó) inicializálását is szinkronizálni kell.
 Szinkronizáció híján előfordul, hogy az inicializátor néha mégis többször fut.
 Éppen ezért a CCC a külső static változók inicializátorát mindig 

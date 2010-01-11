@@ -104,10 +104,6 @@ while(stack<base+1)PUSHNIL();
         case TYPE_OBJECT:
             flag=(base->data.object.oref->length==0);
             break;
-
-        case TYPE_BLOCK:
-            flag=(base->data.block.oref==0);
-            break;
     }
 
     stack=base;

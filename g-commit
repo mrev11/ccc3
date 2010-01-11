@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "ccclib:empty,len" #2009.12.30
+git commit --all -m "empty(block) visszaállítva a korábbi (==.f.) á;lapot" #2010.01.11
 
+# "ccclib:empty,len" #2009.12.30
 # "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27
 # "ppo2cpp 5.0.16; setup-unix frissítve" #2009.12.18
 # "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14

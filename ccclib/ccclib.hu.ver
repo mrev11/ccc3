@@ -1,10 +1,15 @@
+2010.01.11
+  Rossz az előző módosítás, 
+    empty(block) visszaállítva a korábbi állapot: mindig .f.
+    len(block) megtartva az új értelmezés (refes változók száma)
+
 2009.12.29
   len() és empty() kiterjesztve:
 
   len(object)   <-> attribútumok száma
-  len(block)    <-> blockváltozók száma
   empty(object) <-> attribútumok száma nulla
-  empty(block)  <-> blockváltozók száma nulla
+  len(block)    <-> blockváltozók száma         (2010.01.11 megtartva)
+  empty(block)  <-> blockváltozók száma nulla   (2010.01.11 ROSSZ!, visszavéve)
 
   Mindig probléma, hogy a különböző típusok üres példányaihoz készül-e oref, 
   és az oref-hez tartozik-e buffer. Az alábbi táblázat mutatja az eseteket. 

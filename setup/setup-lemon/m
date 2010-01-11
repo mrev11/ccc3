@@ -1,12 +1,14 @@
 #!/bin/bash
 
-LEMON=$CCCDIR/usr/bin/$CCCUNAME/lemon.exe
+LEMON_PATH=$CCCDIR/usr/bin/$CCCUNAME
+LEMON_EXE=$LEMON_PATH/lemon.exe
 
-if [ ! -x $LEMON ]; then
-    gcc  -I .  lemon.c  -o $LEMON
-    cp -p lempar.c  $CCCDIR/usr/bin/$CCCUNAME
 
-    if [ -x $LEMON ]; then
+if [ ! -x $LEMON_EXE ]; then
+    gcc  -I .  lemon.c  -o $LEMON_EXE
+    cp -p lempar.c  $LEMON_PATH/
+
+    if [ -x $LEMON_EXE ]; then
         echo 'lemon compiled successfully'
     else
         echo 'lemon failed to compile'

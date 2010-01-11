@@ -1,18 +1,12 @@
+/*
+** This file contains all sources (including headers) to the LEMON
+** LALR(1) parser generator.  The sources have been combined into a
+** single file to make it easy to include LEMON in the source tree
+** and Makefile of another program.
+**
+** The author of this program disclaims copyright.
+*/
 
-//Vermes M.
-//Javítások:
-//
-//A shift/reduce és reduce/reduce konfliktusok
-//külön külön is számlálva, és számuk kijelezve.
-//Az sr/rr konfliktusok nem számítanak hibának.
-//Soha nem redukálható szabályok nem számítanak hibának.
-//
-//A #line direktívában kiírt filenevek 
-//Windowson nem tartalmazhatnak '\' karaktert,
-//mert azt a C compiler escape-nek értelmezi.
-//Ezért inkább a basename-et írjuk ki.
-//
-//Pathsearch Windowson nem jól keresett.
 
 static char *basename(char *p)  
 {
@@ -41,14 +35,7 @@ static char *basename(char *p)
 
 typedef int COMPARE_T(const void*,const void*);
 
-/*
-** This file contains all sources (including headers) to the LEMON
-** LALR(1) parser generator.  The sources have been combined into a
-** single file to make it easy to include LEMON in the source tree
-** and Makefile of another program.
-**
-** The author of this program disclaims copyright.
-*/
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -1393,7 +1380,7 @@ char **argv;
 
   OptInit(argv,options,stderr);
   if( version ){
-     printf("Lemon 1.0 CCC-Build-2\n");
+     printf("Lemon 1.0 CCC-Build-3\n");
      exit(0); 
   }
   if( OptNArgs()!=1 ){
@@ -1436,11 +1423,7 @@ char **argv;
   Symbol_new("{default}");
   lem.symbols = Symbol_arrayof();
   for(i=0; i<=lem.nsymbol; i++) lem.symbols[i]->index = i;
-
-//  qsort(lem.symbols,lem.nsymbol+1,sizeof(struct symbol*),
-//        (int(*)())Symbolcmpp);
   qsort(lem.symbols,lem.nsymbol+1,sizeof(struct symbol*),(COMPARE_T*)Symbolcmpp);
-
   for(i=0; i<=lem.nsymbol; i++) lem.symbols[i]->index = i;
   for(i=1; isupper(lem.symbols[i]->name[0]); i++);
   lem.nterminal = i;
@@ -2916,31 +2899,6 @@ char *str;
 int strln;
 int *lineno;
 {
-  //Javítás:
-  //lemp->filename Windowson '\' karaktereket tartalmazhat,
-  //amit a C compiler escape-nek értelmez, ezt ki kell hagyni.
-  
-  int i=0;
-  char *fname=0;
-  while(1)
-  {
-    char c=*(lemp->filename+i);
-    if( c==0 )
-    {
-        if( fname==0 )
-        {
-            fname=lemp->filename;
-        }
-        break;
-    }
-    else if( c=='\\' )
-    {
-        fname=lemp->filename+i+1;
-    }
-    i++;
-  }
-
-
   if( str==0 ) return;
   fprintf(out,"#line %d \"%s\"\n",strln,basename(lemp->filename)); (*lineno)++;
   while( *str ){
@@ -4472,3 +4430,4 @@ int(*f)(/* struct config * */);
   x4a->count = 0;
   return;
 }
+

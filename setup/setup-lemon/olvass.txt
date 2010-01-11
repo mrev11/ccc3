@@ -1,15 +1,171 @@
+-----------------------------------------------------------------------------
+CCC-Build-3 - 2010.01.09
+-----------------------------------------------------------------------------
 
-Lemon
-=====
+Utolsó token memóriavesztés
+    
+Ilyen az elemzés folyamata:
+
+    lexer=...
+    parser=xmldom_parserAlloc(malloc);
+    ...
+    int id;
+    TOKENTYPE *token;
+    while( 0!=(id=lexer->getnext(&token)) )
+    {
+        xmldom_parser(parser,id,token);
+    }
+    xmldom_parser(parser,0,0);
+    xmldom_parserFree(parser,free);
+    delete lexer;
+    
+Ha az elemzés normál módon végigfut, 
+akkor minden lefoglalt memória felszabadul.
+
+Csakhogy az elemzés megszakad:
+  1) A lexer hibát észlel -> kivételt dob
+  2) A parser hibát észlel -> kivételt dob
+  3) Egy reduce kód hibát észlel -> kivételt dob
+Mindezen esetekben a program longjump-pal máshová ugrik,
+felszabadítatlan marad a parser és a lexer -> fogy a memória.
+Az elemzés hibáját elkapó begin-recover finally ágában fel kell 
+szabadítani a parsert és lexert..., de még mindig fogy a memória.
+
+Ugyanis a parserFree nem szabadít fel mindent. Felszabadítja azokat 
+a tokeneket (ha meg van adva %token_destructor), amik rajta vannak 
+a lemon stackjén. Az utolsónak kapott token azonban egy darab ideig
+még nincs rajta a stacken, és mielőtt rákerül, a parser végezhet egy-két 
+reduce műveletetet. Ezalatt break keletkezhet. Az utolsó tokent a parser
+függvény egy stackváltozóban tárolja, ez a változó nem létezik már,
+mire a finallyból utólag felszabadítjuk a parsert (parser objektumot), 
+azaz elvész a token -> fogy a memória. 
+
+A javítás:
+
+Felveszünk egy plusz tagot (valójában kettőt: xxmajor, xxminor)
+a parser objektumban, amibe mindig beírjuk az utolsó token adatait.
+Ha a parserFree a parser objektumban megtalálja ezt a bejegyzést, 
+akkor felszabadítja a tokent (ez volna a másképp elvesző memória).
+
+A nehézség, hogy a tokent nem szabad többször felszabadítani. 
+Amennyire értem, a parser az
+
+      yy_shift(yypParser,yyact,yymajor,&yyminorunion);
+
+hívással teszi a tokent a stackre. A stackre tett tokent a parser
+később odaadja az alkalmazásnak (egy reduce-ban), vagy felszabadítja, 
+amikor parserFree minden maradékot lepucol a stackről. Ha tehát a token 
+rákerült a stackre, akkor már nem szabad külön is felszabadítani.
+
+Hiba esetén a parser az yy_destruct hívással felszabadítja a tokent.
+Ilyenkor sem szabad utólag még egyszer felszabadítani.
+
+Tehát,
+    1) ha a token rákerül a lemon stackre, vagy
+    2) ha hiba miatt a parser felszabadítja a tokent,
+akkor a token bejegyzést töröljük a parserből. 
+
+
+Megjegyzendő, hogy az az eset, amikor a parserFree utólag szabadítja fel 
+a tokent, az csak olyamkor fordulhat elő, amikor program breakkel kiugrik 
+az elemzőből, és a parserFree a finally ágból hívódik meg. Ugyanis, ha az 
+elemző ciklusa végigfut, akkor az
+
+    xmldom_parser(parser,0,0);
+
+hívás törli a token bejegyzést a parserFree előtt. Sőt, ha feltesszük, hogy
+az eredeti parser jó, akkor a parser eleve csak úgy tud normálisan visszatérni, 
+hogy a token bejegyzés törölve van. Ugyanis minden híváskor kap egy tokent, 
+ha ezt nem shiftelné rá a stackre visszatérés előtt, akkor a token elveszne, 
+vagyis az eredeti parser is rossz volna. Ha viszont ráshifteli, akkor a token 
+bejegyzés törlődik.
+
+Látható, hogy a Lemon tervező nem gondolt arra, hogy az elemzés break-kel
+szakad meg. A break azonban nélkülözhetetlen, nem letiltható. A parser
+a saját hatáskörében nem tudja megakadályozni a breaket, mert az jöhet
+a lexerből és jöhet a reduce kódból. Ha a lexerből jön, akkor legalább
+nem a parser függvényből ugrik ki, csak a parsert hívogató ciklusból.
+Ha a break a reduce-ból jön, akkor viszont a parser függvényből is kiugrik,
+ráadásul a break akármilyen mélyről jöhet (pl. egy CCC könyvtárból). 
+
+
+A token felszabadítás és stack kipucolás.
+
+Nézzük az alábbi szabályt:
+
+attrlist(L) ::= attrlist(R) SYMBOL(N) EQ STRING(V).{
+    TBASE;
+    push(parservp);//parser objektum
+    number(R);
+    TPUSH(N);
+    TPUSH(V);
+
+    _nsp_xmldom::_nsp_lemon::_clp_attrlist__attrlist_symbol_eq_string(4);
+    L=D2INT((TOP()->data.number));
+    pop();
+}
+
+Ebből a következő C kód generálódik:
+
+      case 15:
+#line 257 "./xmldom_parser.lem"
+{
+    TBASE;
+    push(parservp);//parser objektum
+    number(yymsp[-3].minor.yy20);
+    TPUSH(yymsp[-2].minor.yy0);
+    TPUSH(yymsp[0].minor.yy0);
+
+    _nsp_xmldom::_nsp_lemon::_clp_attrlist__attrlist_symbol_eq_string(4);
+    yygotominor.yy20=D2INT((TOP()->data.number));
+    pop();
+}
+#line 816 "./xmldom_parser.c"
+  yy_destructor(10,&yymsp[-1].minor);
+        break;
+  };
+
+Ebből az látszik, hogy azokat az elemeket, amiket odaad az alkalmazásnak
+(eseteünkben R, N, V) nem szabadítja fel. Amiket viszont nem ad oda (EQ),
+azt felszabadítja. Persze csak akkor, ha meg van adva destruktor.
+A terminálisoknak egyetlen közös destruktora lehet, a nemterminálisoknak
+fajtánként különböző.
+
+Amikor hiba miatt kipucolja a stacket (vagy parserFree), akkor minden 
+destruktorral rendelkező elemre meghívja a destruktort.
+
+
+-----------------------------------------------------------------------------
+CCC-Build-2 - 2008.01.24
+-----------------------------------------------------------------------------
+
+lempar.c
+    signed/unsigned comparison warning elkerülése,
+    hogy cpp-ként is warning mentesen forduljon.
+    void ParseTrace(FILE *TraceFILE, const char *zTracePrompt);
+
+lemon.c
+    A shift/reduce és reduce/reduce konfliktusok
+    külön külön is számlálva, és számuk kijelezve.
+    Az sr/rr konfliktusok nem számítanak hibának.
+    Soha nem redukálható szabályok nem számítanak hibának.
+
+    A #line direktívában kiírt filenevek 
+    Windowson nem tartalmazhatnak '\' karaktert,
+    mert azt a C compiler escape-nek értelmezi.
+    Ezért inkább a basename-et írjuk ki.
+
+    Pathsearch Windowson nem jól keresett.
+
+
+-----------------------------------------------------------------------------
+CCC-Build-1 - 2006.05.29
+-----------------------------------------------------------------------------
 
 A CCC 2.1.x kiadásában a Bison/YACC-ot felváltotta a Lemon. 
 A Lemon a Bisonhoz képest egyszerűbben terjeszthető/telepíthető,
 mivel egyetlen C forrásfájlból, plusz egy C template fájlból áll.
 A Lemon által generált kód a Bisonnal szemben reentráns és szálbiztos. 
-
-A lemon.zip csomag az általam patchelt forrásváltozatot tartalmazza. 
-A változások fel vannak sorolva a lemon.c fájl elején. Az eredeti
-forrás megtalálható itt: http://www.hwaci.com/sw/lemon.
 
 Telepítés (Windowson és Linuxon egyformán): A lemon.c programot 
 le kell fordítani, a lemon.exe-t és a lempar.c-t át kell másolni 

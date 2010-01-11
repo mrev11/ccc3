@@ -1,0 +1,28 @@
+
+<?xml
+   version="1.0"
+   encoding="UTF-8"?>
+
+
+<x1 A="1">
+    <x2 A='2'>
+        <x3 A="3">
+            <x4 A="4">
+                <x5 A="5">
+                    próba szerencse
+                    <x6 A="6">
+                        Van, aki forrón szereti
+                    </x6>
+                </x5>
+            </x4>
+            <x4 A="7">
+                <x5 A="8">
+                    PRÓBA SZERENCSE
+                    <x6 A="9">
+                        VAN, AKI FORRÓN SZERETI
+                    </x6>
+                </x5>
+            </x4>
+        </x3>
+    </x2>
+</x1>

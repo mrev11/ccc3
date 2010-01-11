@@ -49,7 +49,6 @@ DEFINE_METHOD(filename);
 DEFINE_METHOD(oscode);
 DEFINE_METHOD(subcode);
 DEFINE_METHOD(args);
-DEFINE_METHOD(process);
 
 #define BUFINC  1024
 
@@ -63,7 +62,43 @@ class xmldom_lexer : public yyFlexLexer
 
     int LexerInput(char *buf, int maxsiz)
     {
-        if( inputfd>=0 )
+        if( inputblk && inputsize<16 )
+        {
+            //ha ez a kódblokk nem NULL
+            //akkor minden alkalommal kiértékeljük
+            //töltögetve a benemetet az inputbuf-ba
+        
+            push(inputblk);
+            push(parservp);
+            _clp_eval(2);
+
+            VALUE *base=TOP();
+            int argno=1;
+            push_call("xmldom_lexer:lexerinput",base);
+            if( !ISNIL(1) )
+            {
+                str2bin(base);
+                char *input=_parb(1);
+                int size=_parblen(1);
+                enqueue(input,size);
+            }
+            pop();
+            pop_call();
+        }
+
+        if( 0<inputsize )
+        {
+            int i=0;
+            while( i<maxsiz && 0<inputsize )
+            {
+                buf[i]=*inputptr++;
+                inputsize--;
+                i++;
+            }
+            return i;
+        }
+
+        else if( inputfd>=0 )
         {
             int nbyte=read(inputfd,buf,maxsiz);
             for(int i=0; i<nbyte; i++)
@@ -75,11 +110,6 @@ class xmldom_lexer : public yyFlexLexer
             }
             return nbyte;
         }
-        else if( inputptr!=0 && *inputptr!=0 )
-        {
-            *buf=*inputptr++;
-            return 1;
-        }
         else
         {
             return 0;
@@ -88,14 +118,16 @@ class xmldom_lexer : public yyFlexLexer
 
   public:
 
-    int inputfd;
+    VALUE *parservp;
+    VALUE *inputblk;
     char *inputbuf;
     char *inputptr;
+    int inputsize;
+    int inputfd;
     char *inputfspec;
     int entityconversionflag;
     int eofflag;
     int debugflag;
-
     int encoding; //0==UTF-8, 1==ISO-8859-1, 2==ISO-8859-2, -1=ismeretlen
     char *text;
     int textsize;
@@ -103,6 +135,28 @@ class xmldom_lexer : public yyFlexLexer
 
 
     int yylex(); //Flex definiálja, de nem deklarálja.
+
+
+    void enqueue(char *buf, int size)
+    {
+        if( size )
+        {
+            int i;
+            for(i=0; i<inputsize; i++)
+            {
+                inputbuf[i]=inputptr[i];
+            }
+            inputbuf=(char*)realloc(inputbuf,inputsize+size+1);
+            for(i=0; i<size; i++)
+            {
+                inputbuf[inputsize+i]=buf[i]?buf[i]:ZEROCH;
+            }
+            inputbuf[inputsize+size]=0;
+            inputptr=inputbuf; //innen kell olvasni
+            inputsize+=size;
+        }
+    }
+
 
     void cat()
     {
@@ -139,7 +193,7 @@ class xmldom_lexer : public yyFlexLexer
         return textsize>0;
     }
 
-    int getnext(wchar_t **token)
+    int getnext(CHAR **token)
     {
         *token=0;
         
@@ -184,24 +238,24 @@ class xmldom_lexer : public yyFlexLexer
 
             else if( encoding==2 ) //Latin-2
             {
-                *token=(wchar_t*)malloc((textsize+1)*sizeof(wchar_t));
+                *token=(CHAR*)malloc((textsize+1)*sizeof(CHAR));
                 int i;
                 for(i=0; i<textsize; i++)
                 {
-                   *(*token+i)=(wchar_t)latin2[(unsigned)*(text+i)];
+                   *(*token+i)=(CHAR)latin2[(unsigned)*(text+i)];
                 }
-                *(*token+i)=(wchar_t)0;
+                *(*token+i)=(CHAR)0;
             }
 
             else //if( encoding==1 ) //Latin-1 (és minden más)
             {
-                *token=(wchar_t*)malloc((textsize+1)*sizeof(wchar_t));
+                *token=(CHAR*)malloc((textsize+1)*sizeof(CHAR));
                 int i;
                 for(i=0; i<textsize; i++)
                 {
-                   *(*token+i)=(wchar_t)*(text+i); //triviális 8bit -> 32bit
+                   *(*token+i)=(CHAR)*(text+i); //triviális 8bit -> 32bit
                 }
-                *(*token+i)=(wchar_t)0;
+                *(*token+i)=(CHAR)0;
             }
 
             //Csak UTF-8, Latin-1 és Latin-2 támogatás van. 
@@ -214,9 +268,12 @@ class xmldom_lexer : public yyFlexLexer
     
     void init()
     {
+        parservp=0;
+        inputblk=0;
+        inputbuf=0;  //buffer eleje
+        inputptr=0;  //innen kell olvasni
+        inputsize=0; //ennyi van még benn
         inputfd=-1;
-        inputbuf=0;
-        inputptr=0;
         inputfspec=0;
         entityconversionflag=0;
         eofflag=0;
@@ -252,40 +309,20 @@ class xmldom_lexer : public yyFlexLexer
         }
     }
     
-    xmldom_lexer(int fd)
+    xmldom_lexer(VALUE *pv, char *buf, int size, VALUE *ib, int fd)
     {
         init();
+        enqueue(buf,size);
+        parservp=pv;
+        inputblk=ib;
         inputfd=fd;
-    }
-
-    xmldom_lexer(char *ptr, int size)
-    {
-        init();
-
-        inputbuf=(char*)malloc(size+1);
-        for(int i=0; i<size; i++)
-        {
-            inputbuf[i]=ptr[i]?ptr[i]:ZEROCH;
-        }
-        inputbuf[size]=0;
-        inputptr=inputbuf;
     }
 
     ~xmldom_lexer()
     {
         free(text);
         free(inputbuf);
-
-        //Flex hiba javítása.
-        //A Flex nem szabadítja fel az alábbi buffert:
-        //yy_start_stack protected member az yyFlexLexer osztályban,
-        //és elfedi a static yy_start_stack külső változót (zavaros).
-
-        if( yy_start_stack )
-        {
-            free(yy_start_stack);
-            yy_start_stack=0;
-        }
+        free(inputfspec);
     } 
 };
 

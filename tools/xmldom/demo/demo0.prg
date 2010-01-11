@@ -20,14 +20,7 @@
 
 ****************************************************************************
 function main(fname)
-local p,dom
-
-    p:=xmlparserNew()
-    p:debug:=.t.
-    dom:=p:parsefile("nullabyte.xml")
-    ? dom
-    dom:xmlout
-    ?
+    xmlparserNew(fname):parse:xmlout
 
 ****************************************************************************
  

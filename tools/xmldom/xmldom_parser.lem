@@ -23,24 +23,31 @@
 #include <stdlib.h>
 #include <xmldom_lexer.h>
 
-extern void _clp_xmlattribnew(int argno);
-extern void _clp_xmlnodenew(int argno);
 
-DEFINE_METHOD(attrib);
-DEFINE_METHOD(getattrib);
-DEFINE_METHOD(content);
+namespace _nsp_xmldom{
+namespace _nsp_lemon{
+extern void _clp_attrlist__(int argno);
+extern void _clp_attrlist__attrlist_symbol_eq_string(int argno);
+extern void _clp_content__(int argno);
+extern void _clp_content__content_node(int argno);
+extern void _clp_content__content_tnode(int argno);
+static void _clp_lemstk(int argno);
+extern void _clp_node__lpar_symbol_attrlist_rpar_content_lpar_slash_symbol_rpar(int argno);
+extern void _clp_node__lpar_symbol_attrlist_slash_rpar(int argno);
+extern void _clp_qsymbol__symbol(int argno);
+extern void _clp_symbol__symbol(int argno);
+extern void _clp_tnode__cdata(int argno);
+extern void _clp_tnode__text(int argno);
+extern void _clp_xmldecl__lparqm_qsymbol_attrlist_qmrpar(int argno);
+extern void _clp_xmlv__root_xmldecl_content(int argno);
+extern void _clp_xmlv__xmldecl_node(int argno);
+}}//namespace xmldom.lemon
 
+DEFINE_METHOD(lexer);
 
-void print(char *prompt)
-{
-    VALUE *LST=TOP();
-    binary(prompt);
-    push_symbol(LST);
-    binary("\n");
-    _clp_qqout(3);
-    pop();
-}
-
+#define TBASE       VALUE*tokenbase=stack-1
+//#define TPUSH(x)    push(tokenbase-x)
+#define TPUSH(x)    stringn(x);free(x);x=0  //%token_type {CHAR *} eset
 
 }//%include
 
@@ -55,6 +62,11 @@ void print(char *prompt)
 
 %syntax_error{
     char desc[256];  
+    push(parservp);
+    _o_method_lexer.eval(1);
+    xmldom_lexer *lexer=(xmldom_lexer*)(TOP()->data.pointer);
+    pop();
+    
     sprintf(desc,"syntax error near #line %d",lexer->lineno());
 
     _clp_xmlsyntaxerrornew(0);
@@ -65,6 +77,11 @@ void print(char *prompt)
     {
         dup();stringnb(lexer->inputfspec);_o_method_filename.eval(2);pop();
     }
+    //if( TOKEN )
+    //{
+    //    dup();stringn(TOKEN);array(1);_o_method_args.eval(2);pop();
+    //}
+
     _clp_break(1);
     pop();
 } 
@@ -73,156 +90,183 @@ void print(char *prompt)
 //    printf("Parsing complete.\n");
 //} 
 
-%extra_argument {xmldom_lexer *lexer} 
+%extra_argument {VALUE *parservp} 
 
-%token_type {wchar_t *}  
-//%token_destructor{ if($$) free($$); }  
+%token_type {CHAR *}
+%token_destructor{ free($$); }
+//%token_type {int}  
+%type symbol {int}
+%type qsymbol {int}
 %type attrlist {int}
 %type node {int}
+%type tnode {int}
 %type content {int}
 %type xml {int}
+%type xmldecl {int}
 
 
-xml(X) ::= content(C).{
-    //print(">>XML");
-    //VALUE *LST=TOP();
-    //string("#ROOT");_clp_xmlnodenew(1);
-    //dup();push_symbol(LST);idxr0(C);_o_method_content.eval(2);pop();
-    //push_symbol(LST);number(C-1);_clp_asize(2);pop();
-    //push_symbol(LST);swap();_clp_aadd(2);pop();
-    X=C;
-    //print("<<XML");
+//minden szabály meghív egy Clipper függvényt,
+//aminek a neve a szabályból van származtatva,
+//ezek xmldom_lemon.prg-ben vannak
+
+xml ::= xmlv.
+
+
+xmlv ::= ROOT xmldecl content(C).{
+    push(parservp);//parser objektum
+    number(C);
+
+    _nsp_xmldom::_nsp_lemon::_clp_xmlv__root_xmldecl_content(2); 
+
+    // megvan a végeredmény
+    // parseinput a mostani TOP-ot adja vissza 
+    // a _rettop() makróval
 }
+
+
+xmlv ::= xmldecl node(N).{
+    push(parservp);//parser objektum
+    number(N);
+
+    _nsp_xmldom::_nsp_lemon::_clp_xmlv__xmldecl_node(2); 
+
+    // megvan a végeredmény
+    // parseinput a mostani TOP-ot adja vissza 
+    // a _rettop() makróval
+}
+
+
+xmldecl ::=.
+
+
+xmldecl ::= LPARQM qsymbol(S) attrlist(A) QMRPAR.{
+    push(parservp);//parser objektum
+    number(S);
+    number(A);
+    
+    _nsp_xmldom::_nsp_lemon::_clp_xmldecl__lparqm_qsymbol_attrlist_qmrpar(3);
+    pop();
+}
+
+
+node(N) ::= LPAR symbol(S) attrlist(A) SLASH RPAR.{
+    push(parservp);//parser objektum
+    number(S);
+    number(A);
+
+    _nsp_xmldom::_nsp_lemon::_clp_node__lpar_symbol_attrlist_slash_rpar(3);
+    N=D2INT((TOP()->data.number));
+    pop();
+}
+
+
+node(N) ::= LPAR symbol(S1) attrlist(A) RPAR content(C) LPAR SLASH SYMBOL(S2) RPAR.{
+    TBASE;
+    push(parservp);//parser objektum
+    number(S1);
+    number(A);
+    number(C);
+    TPUSH(S2);
+
+    _nsp_xmldom::_nsp_lemon::_clp_node__lpar_symbol_attrlist_rpar_content_lpar_slash_symbol_rpar(5);
+    N=D2INT((TOP()->data.number));
+    pop();
+}
+
+tnode(N) ::= TEXT(T).{
+    TBASE;
+    push(parservp);//parser objektum
+    TPUSH(T);
+
+    _nsp_xmldom::_nsp_lemon::_clp_tnode__text(2);
+    N=D2INT((TOP()->data.number));
+    pop();
+}
+
+
+tnode(N) ::= CDATA(T).{
+    TBASE;
+    push(parservp);//parser objektum
+    TPUSH(T);
+
+    _nsp_xmldom::_nsp_lemon::_clp_tnode__cdata(2);
+    N=D2INT((TOP()->data.number));
+    pop();
+}
+
 
 content(C) ::= .{
-    //print(">>CONT0");
-    VALUE *LST=TOP();
-    push_symbol(LST);array(0);_clp_aadd(2);pop();
-    push_symbol(LST);_clp_len(1);C=D2INT((TOP()->data.number));pop();
-    //print("<<CONT0");
+    push(parservp);//parser objektum
+    
+    _nsp_xmldom::_nsp_lemon::_clp_content__(1);
+    C=D2INT((TOP()->data.number));
+    pop();
 }
+
+
+content(L) ::= content(R) tnode(N).{
+    push(parservp);//parser objektum
+    number(R);
+    number(N);
+    
+    _nsp_xmldom::_nsp_lemon::_clp_content__content_tnode(3);
+    L=D2INT((TOP()->data.number));
+    pop();
+}
+
 
 content(L) ::= content(R) node(N).{
-    //print(">>CONT1");
-    VALUE *PRS=TOP2();
-    VALUE *LST=TOP();
-    push_symbol(PRS);push_symbol(LST);idxr0(N);_o_method_process.eval(2);_clp_empty(1);
-    if(flag())
-    {
-        push_symbol(LST);idxr0(R);push_symbol(LST);idxr0(N);_clp_aadd(2);pop();
-    }
-    push_symbol(LST);number(R);_clp_asize(2);pop();
-    L=R;
-    //print("<<CONT1");
-}
-
-node(N) ::= LPAR QM SYMBOL(S) attrlist(A) QM RPAR.{
-    //print(">>NODE?");
-    VALUE *LST=TOP();
-    string(CHRLIT("?"));stringn(S);free(S);add();_clp_xmlnodenew(1);
-    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
-
-    dup();string(CHRLIT("encoding"));_o_method_getattrib.eval(2);
-    if( TOP()->type==TYPE_STRING )
-    {
-        str2bin(TOP());
-        lexer->setencoding(BINARYPTR(TOP()));   
-    }
+    push(parservp);//parser objektum
+    number(R);
+    number(N);
+    
+    _nsp_xmldom::_nsp_lemon::_clp_content__content_node(3);
+    L=D2INT((TOP()->data.number));
     pop();
-
-    push_symbol(LST);number(A-1);_clp_asize(2);pop();
-    push_symbol(LST);swap();_clp_aadd(2);pop();
-    N=A;
-    //print("<<NODE?");
 }
 
-node(N) ::= LPAR SYMBOL(S) attrlist(A) SLASH RPAR.{
-    //print(">>NODE1");
-    VALUE *LST=TOP();
-    stringn(S);free(S);_clp_xmlnodenew(1);
-    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
-    push_symbol(LST);number(A-1);_clp_asize(2);pop();
-    push_symbol(LST);swap();_clp_aadd(2);pop();
-    N=A;
-    //print("<<NODE1");
+
+symbol(S1) ::= SYMBOL(S).{
+    TBASE;
+    push(parservp);//parser objektum
+    TPUSH(S);
+
+    _nsp_xmldom::_nsp_lemon::_clp_symbol__symbol(2);
+    S1=D2INT((TOP()->data.number));
+    pop();
 }
 
-node(N) ::= LPAR SYMBOL(S1) attrlist(A) RPAR content(C) LPAR SLASH SYMBOL(S2) RPAR.{
-    //print(">>NODE2");
 
-  #ifdef _CCC2_
-    if( strcmp(S1,S2) )
-  #else
-    if( wcscmp(S1,S2) )
-  #endif
-    {
-        char desc[256];
-      #ifdef _CCC2_
-        char *sym=strdup(S2);
-      #else
-        char *sym=wchar_to_utf8(S2,wcslen(S2),0);
-      #endif
-        sprintf(desc,"tag mismatch (%s) near #line %d",sym,lexer->lineno());
-        free(sym);
-        _clp_xmltagerrornew(0);
-        dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
-        dup();stringnb("xmldom_parser");_o_method_operation.eval(2);pop();
-        dup();stringnb(desc);_o_method_description.eval(2);pop();
-        dup();stringn(S1);stringn(S2);array(2);_o_method_args.eval(2);pop();
-        if( lexer->inputfspec )
-        {
-            dup();stringnb(lexer->inputfspec);_o_method_filename.eval(2);pop();
-        }
-        _clp_break(1);
-        pop();
-    }
-    VALUE *LST=TOP();
-    stringn(S1);free(S1);free(S2);_clp_xmlnodenew(1);
-    dup();push_symbol(LST);idxr0(A);_o_method_attrib.eval(2);pop();
-    dup();push_symbol(LST);idxr0(C);_o_method_content.eval(2);pop();
-    push_symbol(LST);number(A-1);_clp_asize(2);pop();
-    push_symbol(LST);swap();_clp_aadd(2);pop();
-    N=A;
-    //print("<<NODE2");
+qsymbol(S1) ::= SYMBOL(S).{
+    TBASE;
+    push(parservp);//parser objektum
+    TPUSH(S);
+
+    _nsp_xmldom::_nsp_lemon::_clp_qsymbol__symbol(2);
+    S1=D2INT((TOP()->data.number));
+    pop();
 }
 
-node(N) ::= TEXT(T).{
-    //print(">>TEXT");
-    VALUE *LST=TOP();
-    push_symbol(LST);
-    string(CHRLIT("#TEXT"));_clp_xmlnodenew(1);
-    dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
-    _clp_aadd(2);pop();
-    push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();
-    //print("<<TEXT");
-}
-
-node(N) ::= CDATA(T).{
-    //print(">>CDATA");
-    VALUE *LST=TOP();
-    push_symbol(LST);
-    string(CHRLIT("#CDATA"));_clp_xmlnodenew(1);
-    dup();stringn(T);free(T);array(1);_o_method_content.eval(2);pop();
-    _clp_aadd(2);pop();
-    push_symbol(LST);_clp_len(1);N=D2INT((TOP()->data.number));pop();
-    //print("<<CDATA");
-}
 
 attrlist(L) ::= .{
-    //print(">>ATTR0");
-    VALUE *LST=TOP();
-    push_symbol(LST);array(0);_clp_aadd(2);pop();
-    push_symbol(LST);_clp_len(1);L=D2INT((TOP()->data.number));pop();
-    //print("<<ATTR0");
+    push(parservp);//parser objektum
+
+    _nsp_xmldom::_nsp_lemon::_clp_attrlist__(1);
+    L=D2INT((TOP()->data.number));
+    pop();
 }
 
+
 attrlist(L) ::= attrlist(R) SYMBOL(N) EQ STRING(V).{
-    //print(">>ATTR1");
-    VALUE *LST=TOP();
-    push_symbol(LST);idxr0(R);
-    stringn(N);free(N);stringn(V);free(V);_clp_xmlattribnew(2);
-    _clp_aadd(2);pop();
-    L=R;
-    //print("<<ATTR1");
+    TBASE;
+    push(parservp);//parser objektum
+    number(R);
+    TPUSH(N);
+    TPUSH(V);
+
+    _nsp_xmldom::_nsp_lemon::_clp_attrlist__attrlist_symbol_eq_string(4);
+    L=D2INT((TOP()->data.number));
+    pop();
 }
+
 

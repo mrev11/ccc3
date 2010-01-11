@@ -1,0 +1,6 @@
+#!/bin/bash
+#export GARBAGE=on
+#export OREF_SIZE=100000
+
+nyuzo-1.exe $1
+

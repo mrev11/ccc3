@@ -1,0 +1,14 @@
+
+<?xml
+   version="1.0"
+   encoding="ISO-8859-2"?>
+
+<y1 B="1">
+    öt szép szûzlány õrült írót nyúz (latin2)
+    <y2 B="2">
+        <y3 B="3">
+            ÖT SZÉP SZÛZLÁNY ÕRÜLT ÍRÓT NYÚZ (LATIN2)
+            <include file="x.xml"/>
+        </y3>
+    </y2>
+</y1>

@@ -1,0 +1,12 @@
+
+<?xml
+   version="1.0"
+   encoding="UTF-8"?>
+
+<z1 C="1">
+    Kázmér füstölgő fűnyírót húz.
+    <z2 C="2">
+        <include file="y.xml"/>
+    </z2>
+</z1>
+

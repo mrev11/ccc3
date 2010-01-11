@@ -1,167 +1,223 @@
  State 0:
-          xml ::= * content
-      (1) content ::= *
-          content ::= * content node
+          xml ::= * xmlv
+          xmlv ::= * ROOT xmldecl content
+          xmlv ::= * xmldecl node
+      (3) xmldecl ::= *
+          xmldecl ::= * LPARQM qsymbol attrlist QMRPAR
 
-                       content shift  1
+                          ROOT shift  2
+                        LPARQM shift  24
+                          LPAR reduce 3
                            xml accept
-                     {default} reduce 1
+                       xmldecl shift  29
+                          xmlv shift  1
 
 State 1:
-      (0) xml ::= content *
-          content ::= content * node
-          node ::= * LPAR QM SYMBOL attrlist QM RPAR
-          node ::= * LPAR SYMBOL attrlist SLASH RPAR
-          node ::= * LPAR SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR
-          node ::= * TEXT
-          node ::= * CDATA
+      (0) xml ::= xmlv *
 
                              $ reduce 0
-                          LPAR shift  3
-                          TEXT shift  22
-                         CDATA shift  23
-                          node shift  2
 
 State 2:
-      (2) content ::= content node *
+          xmlv ::= ROOT * xmldecl content
+      (3) xmldecl ::= *
+          xmldecl ::= * LPARQM qsymbol attrlist QMRPAR
 
-                     {default} reduce 2
-
-State 3:
-          node ::= LPAR * QM SYMBOL attrlist QM RPAR
-          node ::= LPAR * SYMBOL attrlist SLASH RPAR
-          node ::= LPAR * SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR
-
-                            QM shift  4
-                        SYMBOL shift  12
-
-State 4:
-          node ::= LPAR QM * SYMBOL attrlist QM RPAR
-
-                        SYMBOL shift  5
-
-State 5:
-          node ::= LPAR QM SYMBOL * attrlist QM RPAR
-      (8) attrlist ::= *
-          attrlist ::= * attrlist SYMBOL EQ STRING
-
-                      attrlist shift  6
-                     {default} reduce 8
-
-State 6:
-          node ::= LPAR QM SYMBOL attrlist * QM RPAR
-          attrlist ::= attrlist * SYMBOL EQ STRING
-
-                            QM shift  7
-                        SYMBOL shift  9
-
-State 7:
-          node ::= LPAR QM SYMBOL attrlist QM * RPAR
-
-                          RPAR shift  8
-
-State 8:
-      (3) node ::= LPAR QM SYMBOL attrlist QM RPAR *
-
+                        LPARQM shift  24
+                       xmldecl shift  3
                      {default} reduce 3
 
-State 9:
-          attrlist ::= attrlist SYMBOL * EQ STRING
+State 3:
+          xmlv ::= ROOT xmldecl * content
+      (9) content ::= *
+          content ::= * content tnode
+          content ::= * content node
 
-                            EQ shift  10
-
-State 10:
-          attrlist ::= attrlist SYMBOL EQ * STRING
-
-                        STRING shift  11
-
-State 11:
-      (9) attrlist ::= attrlist SYMBOL EQ STRING *
-
+                       content shift  4
                      {default} reduce 9
 
-State 12:
-          node ::= LPAR SYMBOL * attrlist SLASH RPAR
-          node ::= LPAR SYMBOL * attrlist RPAR content LPAR SLASH SYMBOL RPAR
-      (8) attrlist ::= *
+State 4:
+      (1) xmlv ::= ROOT xmldecl content *
+          node ::= * LPAR symbol attrlist SLASH RPAR
+          node ::= * LPAR symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR
+          tnode ::= * TEXT
+          tnode ::= * CDATA
+          content ::= content * tnode
+          content ::= content * node
+
+                             $ reduce 1
+                          LPAR shift  5
+                          TEXT shift  17
+                         CDATA shift  18
+                          node shift  20
+                         tnode shift  19
+
+State 5:
+          node ::= LPAR * symbol attrlist SLASH RPAR
+          node ::= LPAR * symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR
+          symbol ::= * SYMBOL
+
+                        SYMBOL shift  16
+                        symbol shift  6
+
+State 6:
+          node ::= LPAR symbol * attrlist SLASH RPAR
+          node ::= LPAR symbol * attrlist RPAR content LPAR SLASH SYMBOL RPAR
+     (14) attrlist ::= *
           attrlist ::= * attrlist SYMBOL EQ STRING
 
-                      attrlist shift  13
-                     {default} reduce 8
+                      attrlist shift  7
+                     {default} reduce 14
 
-State 13:
-          node ::= LPAR SYMBOL attrlist * SLASH RPAR
-          node ::= LPAR SYMBOL attrlist * RPAR content LPAR SLASH SYMBOL RPAR
+State 7:
+          node ::= LPAR symbol attrlist * SLASH RPAR
+          node ::= LPAR symbol attrlist * RPAR content LPAR SLASH SYMBOL RPAR
           attrlist ::= attrlist * SYMBOL EQ STRING
 
-                        SYMBOL shift  9
-                          RPAR shift  16
-                         SLASH shift  14
+                         SLASH shift  8
+                          RPAR shift  10
+                        SYMBOL shift  21
+
+State 8:
+          node ::= LPAR symbol attrlist SLASH * RPAR
+
+                          RPAR shift  9
+
+State 9:
+      (5) node ::= LPAR symbol attrlist SLASH RPAR *
+
+                     {default} reduce 5
+
+State 10:
+          node ::= LPAR symbol attrlist RPAR * content LPAR SLASH SYMBOL RPAR
+      (9) content ::= *
+          content ::= * content tnode
+          content ::= * content node
+
+                       content shift  11
+                     {default} reduce 9
+
+State 11:
+          node ::= * LPAR symbol attrlist SLASH RPAR
+          node ::= * LPAR symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR
+          node ::= LPAR symbol attrlist RPAR content * LPAR SLASH SYMBOL RPAR
+          tnode ::= * TEXT
+          tnode ::= * CDATA
+          content ::= content * tnode
+          content ::= content * node
+
+                          LPAR shift  12
+                          TEXT shift  17
+                         CDATA shift  18
+                          node shift  20
+                         tnode shift  19
+
+State 12:
+          node ::= LPAR * symbol attrlist SLASH RPAR
+          node ::= LPAR * symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR
+          node ::= LPAR symbol attrlist RPAR content LPAR * SLASH SYMBOL RPAR
+          symbol ::= * SYMBOL
+
+                         SLASH shift  13
+                        SYMBOL shift  16
+                        symbol shift  6
+
+State 13:
+          node ::= LPAR symbol attrlist RPAR content LPAR SLASH * SYMBOL RPAR
+
+                        SYMBOL shift  14
 
 State 14:
-          node ::= LPAR SYMBOL attrlist SLASH * RPAR
+          node ::= LPAR symbol attrlist RPAR content LPAR SLASH SYMBOL * RPAR
 
                           RPAR shift  15
 
 State 15:
-      (4) node ::= LPAR SYMBOL attrlist SLASH RPAR *
-
-                     {default} reduce 4
-
-State 16:
-      (1) content ::= *
-          content ::= * content node
-          node ::= LPAR SYMBOL attrlist RPAR * content LPAR SLASH SYMBOL RPAR
-
-                       content shift  17
-                     {default} reduce 1
-
-State 17:
-          content ::= content * node
-          node ::= * LPAR QM SYMBOL attrlist QM RPAR
-          node ::= * LPAR SYMBOL attrlist SLASH RPAR
-          node ::= * LPAR SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR
-          node ::= LPAR SYMBOL attrlist RPAR content * LPAR SLASH SYMBOL RPAR
-          node ::= * TEXT
-          node ::= * CDATA
-
-                          LPAR shift  18
-                          TEXT shift  22
-                         CDATA shift  23
-                          node shift  2
-
-State 18:
-          node ::= LPAR * QM SYMBOL attrlist QM RPAR
-          node ::= LPAR * SYMBOL attrlist SLASH RPAR
-          node ::= LPAR * SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR
-          node ::= LPAR SYMBOL attrlist RPAR content LPAR * SLASH SYMBOL RPAR
-
-                            QM shift  4
-                        SYMBOL shift  12
-                         SLASH shift  19
-
-State 19:
-          node ::= LPAR SYMBOL attrlist RPAR content LPAR SLASH * SYMBOL RPAR
-
-                        SYMBOL shift  20
-
-State 20:
-          node ::= LPAR SYMBOL attrlist RPAR content LPAR SLASH SYMBOL * RPAR
-
-                          RPAR shift  21
-
-State 21:
-      (5) node ::= LPAR SYMBOL attrlist RPAR content LPAR SLASH SYMBOL RPAR *
-
-                     {default} reduce 5
-
-State 22:
-      (6) node ::= TEXT *
+      (6) node ::= LPAR symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR *
 
                      {default} reduce 6
 
-State 23:
-      (7) node ::= CDATA *
+State 16:
+     (12) symbol ::= SYMBOL *
+
+                     {default} reduce 12
+
+State 17:
+      (7) tnode ::= TEXT *
 
                      {default} reduce 7
+
+State 18:
+      (8) tnode ::= CDATA *
+
+                     {default} reduce 8
+
+State 19:
+     (10) content ::= content tnode *
+
+                     {default} reduce 10
+
+State 20:
+     (11) content ::= content node *
+
+                     {default} reduce 11
+
+State 21:
+          attrlist ::= attrlist SYMBOL * EQ STRING
+
+                            EQ shift  22
+
+State 22:
+          attrlist ::= attrlist SYMBOL EQ * STRING
+
+                        STRING shift  23
+
+State 23:
+     (15) attrlist ::= attrlist SYMBOL EQ STRING *
+
+                     {default} reduce 15
+
+State 24:
+          xmldecl ::= LPARQM * qsymbol attrlist QMRPAR
+          qsymbol ::= * SYMBOL
+
+                        SYMBOL shift  28
+                       qsymbol shift  25
+
+State 25:
+          xmldecl ::= LPARQM qsymbol * attrlist QMRPAR
+     (14) attrlist ::= *
+          attrlist ::= * attrlist SYMBOL EQ STRING
+
+                      attrlist shift  26
+                     {default} reduce 14
+
+State 26:
+          xmldecl ::= LPARQM qsymbol attrlist * QMRPAR
+          attrlist ::= attrlist * SYMBOL EQ STRING
+
+                        QMRPAR shift  27
+                        SYMBOL shift  21
+
+State 27:
+      (4) xmldecl ::= LPARQM qsymbol attrlist QMRPAR *
+
+                     {default} reduce 4
+
+State 28:
+     (13) qsymbol ::= SYMBOL *
+
+                     {default} reduce 13
+
+State 29:
+          xmlv ::= xmldecl * node
+          node ::= * LPAR symbol attrlist SLASH RPAR
+          node ::= * LPAR symbol attrlist RPAR content LPAR SLASH SYMBOL RPAR
+
+                          LPAR shift  5
+                          node shift  30
+
+State 30:
+      (2) xmlv ::= xmldecl node *
+
+                             $ reduce 2
 

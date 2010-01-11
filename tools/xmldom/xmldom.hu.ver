@@ -1,3 +1,167 @@
+2009.12.28 -- 1.4.00
+
+  A Lemon nyelvtan újraírva, változások:
+
+    Korábban az xml-ben elfogadtuk tagok sorozatát, amiket 
+    betettünk egy mesterséges #ROOT típusú node content-jébe.
+    Ez ellentétes a szabvánnyal, ami kimondja, hogy az xml pontosan 
+    egy tagból áll, és ez a dom objektum gyökere.
+    
+    Most a parser:rootflag-gel lehet szabályozni, hogy készüljön-e
+    #ROOT node. A régi programok nem működnének #ROOT nélkül, ezért
+    parser:rootflag defaultja .t..  Az új elemző csak akkor fogad el 
+    többgyökerű xml-t, ha a rootflag==.t. be van állítva.
+    
+    Korábban az <?xml ... ?> alakú deklarációkból node-ot építettünk,
+    és betettük őket a dom-ba. Ez ellentétes a szabvánnyal. A szabvány
+    szerint 0 vagy 1 darab <?xml ... ?>  deklaráció lehet az xml fájl 
+    elején, ami nem node, és nincs értelme betenni a dom-ba.  
+    
+    Most az új elemző akkor kezeli node-ként a <?xml ... ?> deklarációt,
+    ha a rootflag==.t. be van állítva.
+
+    A CCC3 elemző automatikusan kezeli az <?xml ... ?> deklaráció 
+    encoding attribútumát és beállítja a lexerben a megfelelő konverziót. 
+    Akármi a bemenet kódolása, belül Unicode karakterek lesznek. 
+    A default az UTF-8=>Unicode konverzió. Támogatott az ISO-8859-1=>Unicode 
+    és az ISO-8859-2=>Unicode konverzió. Minden más úgy konvertálódik, 
+    mint az ISO-8859-1 (azaz triviális  8bit->32bit konverzióval).  
+    Az UTF-16 kódolás nincs támogatva, noha a szabvány megkövetelné.
+    
+    A CCC2 elemző nem csinál semmiféle konverziót, és abszolúte nem 
+    szabványos, mert belül is csak Latin-1 kódolással működik.
+    Megjegyzés: A CCC2 és CCC3 elemző forrása ugyanaz.
+    
+    Külön (nyelvtani) szabály teszi lehetővé a több fát tartalmazó 
+    xml-ek elfogadását. Ezt a szabályt a <#ROOT#> token aktivizálja, 
+    amit az elemző maga tesz be az input elejére az elemzés indulása 
+    előtt a rootflag==.t. hatására.
+    
+    Az új xmlparser objektum rootflag==.t. beállítással kompatibilis 
+    a régivel. Az xmlparser2 jobban követi a szabványt. Az xmlparser
+    és xmlparser2 között az az egyetlen különbség, hogy xmlparser2 
+    inicializátora rootflag==.f.-et állít be.
+
+  
+  A Lemon szabályokhoz rendelt kód most egységesen mindenhol
+  egyetlen Clipper függvényhívás (az xmldom_lemon modulban),
+  így minden tevékenység magas szinten (Clipperben) van kódolva.
+  
+  method  initialize
+    Inkompatibilis, csak az elemzendő fname/fdesc adható meg,
+    korábban egy csomó paramétert meg lehetett adni név/érték párokban.
+
+  method  copy
+    Új metódus, csinál egy másik parsert, amivel _másik_ bemenetből lehet 
+    építeni folytatólagosan _ugyanazt_ a dom-ot. Inkludáláshoz használható.
+
+  method  parse 
+    Stringet, inputblock-ot, fájlt (név/leíró) elemez.
+    Először a stringet elemzi, ha az elfogy, és van inputblock,
+    akkor annak az eredményét elemzi. Az inputblock eredménye mindig
+    hosszabbítja a bemeneti stringet. Ha ha nincs inputblock de van fájl,
+    akkor a kezdő string után a fájl elemzi. 
+    
+  method  parsefile
+    A korábbihoz képest most hiba esetén is lezárja a fájlt egy finally 
+    ágban (ha ő nyitotta).
+
+  method  parsestring
+    Stringet elemez.
+    
+  attrib  file
+    Fájlnév, vagy fájlleíró.  
+    
+  attrib  inputblock
+    Kódblokk, amit a lexer hív meg, amikor rövid az inputstring.
+    Ha az inputstring teljesen elfogy, és az inputblock is NIL-t vagy 
+    ""-t ad  vissza, akkor az elemzés befejeződik.
+
+  attrib  cargo
+    Új attribútum tetszőleges adat tárolására.
+
+  attrib  rootflag        
+    Új attribútum, készüljön-e mesterséges #ROOT node.
+  
+  attrib  lemon
+    Új attribútum, a lemon stackkel párhuzamosan mozogó array (belső).
+    A Lemon szimbólumokhoz rendelt érték egy index ebben a tömbben. 
+
+  attrib  lexer       
+    Új attribútum, pointer a lexerre (belső).
+    Ezen keresztül elérhető a lexer (inputfspec, lineno, encoding).
+
+  attrib  infodepth       // index, stackpointer
+  attrib  infostack       // array, stack a nodeinfónak
+    Új attribútumok, stack, ami tárolja a gyökértől az aktuális node-ig
+    a node-okhoz rendelt kiegészítő infót. Az arraynek fix mérete van,
+    és előre fel van töltve nodeinfo objektumokkal (belső).
+
+  method  info
+    Új metódus, az előző stack topját adja.
+    A parser:info:buildflag bármikor ki/bekapcsolható. Ha ki van kapcsolva, 
+    akkor csak rohan a fán, szintaktikailag ellenőriz, de nem készít node 
+    objektumokat. Bármikor bekapcsolható, akkor elkezdi építeni a fát.
+    A parser:info:buildflag automatikusan öröklődik a fában.
+
+  method  infopush
+  method  infopop
+    Új metódusok, kezelik az előző stacket (belső).
+
+  method  infosize
+    Új metódus, a defaulttól eltérő stack méret állítható be.
+
+  attrib  nodebeginblock
+    Akkor hajtódik végre, amikor az elemző egy új taghoz ér.
+    Ilyenkor nincs még elkészítve a node, csak a neve ismert.
+    pl: {|parser,nodeinfo|nodebegin(*)}
+
+  attrib  nodeendblock
+    Akkor hajtódik végre, amikor az elemző egy tag végére ér.
+    Lehetséges, hogy a node objektum el van készítve, lehet, hogy nem,
+    attól függ, ki volt-e kapcsolva a node építés.
+    pl: {|parser,nodeinfo,node|nodeend(*)}
+
+  attrib  attribblock
+    Akkor hajtódik végre, amikor az elemző egy attribútumot elemez.
+    Ilyenkor a node objektum még nincs kész. Hogy melyik node attribútumáról
+    van szó, azt a parser:info-ból lehet tudni.
+    pl: {|parser,aname,avalue|attrib(*)}  
+
+    A három új blokkal ki lehet választani egy XML részfát anélkül, 
+    hogy a fa más (érdektelen) részeiből objektumot kellene építeni.
+    Ehhez ügyesen kell a blokkokban ki/bekapcsolgatni a buildflag-et.
+
+  attrib  contentblock
+    Azelőtt hajtódik végre, mielőtt az elemző betenné a kész node-ot 
+    a parent content-jébe. 
+    pl: {|parser,node|content(*)}
+
+        ha a contentblock .t.-t ad, beteszi
+        ha a contentblock .f.-t ad, nem teszi be
+
+    A contentblock  és a processblock közötti különbségek: 
+
+        contentblock defaultja NIL,
+        visszatérése kötelezően .t./.f., a NIL hiba,
+        .t.-re kerül be a node a content-be (fordítva, mint a processblocknál)
+        .f.-re lesz eldobva a node (fordítva, mint a processblocknál)
+
+    A contentblock-kal meg lehet oldani az inkludálást,
+    ami a processblock-kal nem megy a hiányos paraméterezés miatt.
+
+    Akkor is használható, amikor egy nagy xml-t elemzünk ciklusban. 
+    Pl. a gyökérnek van akárhány fia, a fiúkon megy a feldolgozás egy ciklusban, 
+    miután egy fiú fel lett dolgozva el lehet/kell dobni. Ha nem dobnánk el, 
+    akkor a futtatórendszernek  elfogynának az oref-jei. 
+  
+  attrib  processblock    // deprecated
+  method  process         // deprecated
+    Deprecated block.  Az a baja, hogy a block nem veszi át a parsert. 
+    Bele lehet ugyan refesíteni, de az ilyen blokkot nem jól másolja a copy. 
+    Új programokban a contentblock-ot kell használni.
+
+
 2009.12.22 -- 1.3.04
   Az előző javítás (xmldom_lexer->getnext-ben) visszavéve,
   mert memóriaszivárgást okozott.

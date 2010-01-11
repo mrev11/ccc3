@@ -22,18 +22,35 @@
 
 ****************************************************************************
 function rpcdataCall(xml)
-local o, name, params, n
+local p, o, name, params, n
 
-    o:=xmlparserNew():parsestring(xml)
-    
-    if( !lower(o:content[1]:type)=="?xml" )
-        invalidformat("Not an XML document") 
-    end
-    if( !o:content[2]:type=="methodCall" )
-        expected("methodCall",o:content[2]:type) 
+    //xmldom 1.4.00 előtt
+    //
+    //o:=xmlparserNew():parsestring(xml)
+    //if( !lower(o:content[1]:type)=="?xml" )
+    //    invalidformat("Not an XML document") 
+    //end
+    //if( !o:content[2]:type=="methodCall" )
+    //    expected("methodCall",o:content[2]:type) 
+    //end
+    //o:=o:content[2]
+
+    //Megj:
+    //A fentebbi régi megoldás (fix indexekkel) a lehető legrosszabb.
+    //Helyette jobb lett volna egy olyan processblock, ami kiszedi 
+    //a methodCall node-ot, minden mást elereszt. Akkor most nem volna
+    //inkompatibilitás az új xmldom könyvtárral.
+
+
+    //xmldom 1.4.00 után
+    p:=xmlparserNew()
+    p:rootflag:=.f.
+    o:=p:parsestring(xml)
+    if( !o:type=="methodCall" )
+        expected("methodCall",o:type) 
     end
 
-    o:=o:content[2]
+    //innen ugyanaz, mint a régi
 
     if( !o:content[1]:type=="methodName" )
         expected("methodName",o:content[1]:type) 
@@ -56,18 +73,31 @@ local o, name, params, n
 
 ****************************************************************************
 function rpcdataResponse(xml)
-local o, params, fault, n
+local p, o, params, fault, n
 
-    o:=xmlparserNew():parsestring(xml)
-    
-    if( !lower(o:content[1]:type)=="?xml" )
-        invalidformat("Not an XML document") 
-    end
-    if( !o:content[2]:type=="methodResponse" )
-        expected("methodResponse",o:content[2]:type) 
+    //xmldom 1.4.00 előtt
+    //
+    //o:=xmlparserNew():parsestring(xml)
+    //if( !lower(o:content[1]:type)=="?xml" )
+    //    invalidformat("Not an XML document") 
+    //end
+    //if( !o:content[2]:type=="methodResponse" )
+    //    expected("methodResponse",o:content[2]:type) 
+    //end
+    //o:=o:content[2]
+
+
+    //xmldom 1.4.00 után
+
+    p:=xmlparserNew()
+    p:rootflag:=.f.
+    o:=p:parsestring(xml)
+    if( !o:type=="methodResponse" )
+        expected("methodResponse",o:type) 
     end
 
-    o:=o:content[2]
+    //innen ugyanaz, mint a régi
+
     o:=o:content[1]
  
     if( o:type=="params" )

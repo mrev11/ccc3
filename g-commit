@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "Lemon CCC-Build-3" #2010.01.11
+git commit --all -m "xmldom 1.4.00" #2010.01.11
 
+# "Lemon CCC-Build-3" #2010.01.11
 # "empty(block) visszaállítva a korábbi (==.f.) állapot" #2010.01.11
 # "ccclib:empty,len" #2009.12.30
 # "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27

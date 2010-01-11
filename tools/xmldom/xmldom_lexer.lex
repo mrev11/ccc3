@@ -39,6 +39,7 @@ wspace     [ \t\r\n]*
 
 %%
 
+"<#ROOT#>"       {return ROOT;} 
 [^<]             {cat();}
 "&amp;"          {entityconversionflag ? cat("&")  : cat("&amp;");}
 "&lt;"           {entityconversionflag ? cat("<")  : cat("&lt;");}
@@ -76,14 +77,13 @@ wspace     [ \t\r\n]*
  
 
 "<"              {yy_push_state(tag); return LPAR;}
+"<?"             {yy_push_state(tag); return LPARQM;}
 <tag>{
 ">"{wspace}      {yy_pop_state(); return RPAR;} 
+"?>"{wspace}     {yy_pop_state(); return QMRPAR;} 
 {symbol}         {cat(); return SYMBOL;}  
 {string}         {cat(); return STRING;}  
 {wspace}         {}
-"<"              {return LPAR;}
-">"              {return RPAR;}
-"?"              {return QM;}
 "/"              {return SLASH;}
 "="              {return EQ;}
 

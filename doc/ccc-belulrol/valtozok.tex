@@ -155,8 +155,8 @@ A NIL-t már a típusa azonosítja, nem tartalmaz semmilyen adatot.
 
 \subsubsection{Logikai}
 \begin{verbatim}
-    valtype(.t.)    // --> "L"   logikai true literál
-    valtype(.f.)    // --> "L"   logikai false literál
+    valtype(.t.)    // --> "L"  (logikai true literál)
+    valtype(.f.)    // --> "L"  (logikai false literál)
     empty(.t.)      // --> .f.
     empty(.f.)      // --> .t.
 \end{verbatim}
@@ -180,9 +180,9 @@ A logikai műveletek precedenciája a szokásos, lehet zárójelezni.
 \subsubsection{Szám}
 
 \begin{verbatim}
-    valtype(3.141592)   // --> "N"   szám literál
-    empty(0)            // --> .t.
-    empty(-1)           // --> .f.
+    valtype(3.141592)   // --> "N"  (szám literál)
+    empty(0)            // --> .t.  (csak a 0 üres)
+    empty(1)            // --> .f.
 \end{verbatim}
 
 A számok 64 bites lebegőpontos formában (double) tárolódnak. 
@@ -259,9 +259,10 @@ számból kiolvassa a számértéket.
 
 \begin{verbatim}
     set date format "yyyy-mm-dd"
-    valtype(ctod("2009-11-20"))     // --> "D" nincs dátum literál
+    valtype(ctod("2009-11-20"))     // --> "D"  (nincs dátum literál)
     valtype(stod("20091120"))       // --> "D"
     empty(ctod(""))                 // --> .t.
+    empty(date())                   // --> .f.
 \end{verbatim}
 
 Dátumokat nem tudunk közvetlenül (literálként) beírni a programba,
@@ -302,8 +303,8 @@ Van egy rakás dátumokon működő függvény:
 \subsubsection{Pointer}
 
 \begin{verbatim}
-    valtype(p)      // --> "P" (nincs pointer literál)
-    empty(p)        // --> .t., null pointer esetén
+    valtype(p)      // --> "P"  (nincs pointer literál)
+    empty(p)        // --> .t.  (csak a null pointer üres)
 \end{verbatim}
 
 A pointereket interfészekben használjuk. Arra való, hogy C könyvtárak
@@ -318,9 +319,11 @@ változóval.
 \subsubsection{Karakter (Unicode string)}
 \begin{verbatim}
     valtype("Van, aki forrón szereti")  // --> "C"
+    len("")                             // --> 0
+    len("123")                          // --> 3
     empty("")                           // --> .t.
-    empty("  ")                         // --> .t.
-    len("  ")                           // --> 2
+    empty("  ")                         // --> .t. (csak blank)
+    empty("x")                          // --> .f.
 \end{verbatim}
 
 Példák:
@@ -469,8 +472,11 @@ kijelentésnek, hogy a ,,karakterstring (érték) nem módosítható''.
 \begin{verbatim}
     valtype(a"Próba szerencse")     // --> "X"
     valtype(x"0d0a")                // --> "X" (CR/LF)
-    empty(a"  ")                    // --> .t.
-    len(a"  ")                      // --> 2
+    len(a"")                        // --> 0
+    len(a"123")                     // --> 3
+    empty(a"")                      // --> .t.
+    empty(a"  ")                    // --> .t. (csak blank)
+    empty(a"x")                     // --> .f.
 \end{verbatim}
 
 A binary változók (bájt stringek) bájtok sorozatát tartalmazzák.
@@ -531,10 +537,10 @@ Van rá API, hogy a programok dogozhassanak a bufferen belül.
 
 \begin{verbatim}
     valtype({1,"2",.f.,{}})     // --> "A"
-    empty({})                   // --> .t.
     len({})                     // --> 0
-    empty(array(1000))          // --> .f.
     len(array(1000))            // --> 1000
+    empty({})                   // --> .t.
+    empty(array(1000))          // --> .f.
 \end{verbatim}
 
 Az array (tömb) típus Clipper értékek sorozatát tartalmazza.
@@ -590,6 +596,8 @@ kénytelen áthelyezni új memóriacímre.
 
 \begin{verbatim}
     valtype({||NIL})    // --> "B"
+    len({||x})          // --> 1    (ref változók száma)
+    empty({||NIL})      // --> .f.  (sosem üres)
 \end{verbatim}
 
 Amit más nyelvekben (Lisp, Python, Smalltalk,\ldots) úgy hívnak, hogy closure vagy
@@ -715,6 +723,8 @@ A lényeg, hogy {\em megkülönböztetjük}, és elkülönítve tároljuk {\em a
 
 \begin{verbatim}
     valtype(o:=errorNew())  // --> "O"
+    len(o)                  // --> 14   (attribútumok száma)
+    empty(o)                // --> .f.  (len(o)==0)
     o:classname             // --> "error"
 \end{verbatim}
 
@@ -725,7 +735,7 @@ Ezek nevét az osztály nevéből (a példában \verb!error!)
 Az xNew függvény visszatérési értéke az x osztályú
 objektum. A régi Clipperben is ez volt a helyzet, az error objektumokat 
 az \verb!errorNew()! függvény adta. A kompatibilitás érdekében megtartottuk
-a sémát. Az objektumgyartó függvényt a fordító generálja az osztálydefinícióból.
+a sémát. Az objektumgyártó függvényt a fordító generálja az osztálydefinícióból.
 
 Az objektumok \verb!valtype()! szerinti típusa osztályuktól 
 függetlenül mindig O. 

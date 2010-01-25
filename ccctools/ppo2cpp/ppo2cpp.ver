@@ -1,4 +1,17 @@
 
+2010.01.21 -- 5.0.17
+  Számliterálok kiírása alapvetően "%.16g" formázással történik.
+  Ez most meg van toldva ".0"-val, ha az eredeti kiírás 8-nál hosszabb, 
+  és nincs benne '.'.
+  
+    number(9999999999);    // túl nagy long literál
+    number(9999999999.0);  // double literál, ok
+ 
+  Megj: A kitevővel kiírt számban 
+    vagy van '.', 
+    vagy max 6 hosszú, pl. 1e+100.
+    
+
 2009.12.18 -- 5.0.16
   helyett         : assign(idxl());     
   ezt fordítja    : assign2(idxxl());   

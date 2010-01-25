@@ -78,25 +78,37 @@ extern char *inner_namespace;
 #define BUFSIZE 1024
 
 //---------------------------------------------------------------------------
+static char* dblform(double v)
+{
+    static char buf[32];
+    buf[0]=0;
+    if( 8<sprintf(buf,"%.16g",v) &&  0==strchr(buf,'.') )
+    {
+        strcat(buf,".0");
+    }
+    return buf;
+}
+
+//---------------------------------------------------------------------------
 static void paddnum(double v)
 {
     //nem kell kiírni, ha v==0
     if( v )
     {
-        nltab();fprintf(code,"addnum(%.16g);",v);
+        nltab();fprintf(code,"addnum(%s);",dblform(v));
     }
 }
 
 //---------------------------------------------------------------------------
 static void pnumber(double v)
 {
-    nltab();fprintf(code,"number(%.16g);",v);
+    nltab();fprintf(code,"number(%s);",dblform(v));
 }
 
 //---------------------------------------------------------------------------
 static void paddneg(double v)
 {
-    nltab();fprintf(code,"addneg(%.16g);",v);
+    nltab();fprintf(code,"addneg(%s);",dblform(v));
 }
 
 //---------------------------------------------------------------------------
@@ -104,7 +116,7 @@ static void pmulnum(double v)
 {
     if( v!=1.0 )
     {
-        nltab();fprintf(code,"mulnum(%.16g);",v);
+        nltab();fprintf(code,"mulnum(%s);",dblform(v));
     }
 }
 

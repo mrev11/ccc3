@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "ppo2cpp 5.0.17 számliterál"
+git commit --all -m "ppo2cpp 5.0.17 számliterál" #2010.01.25
 
 # "xmldom 1.4.00" #2010.01.11
 # "Lemon CCC-Build-3" #2010.01.11

@@ -60,7 +60,7 @@
     Először a stringet elemzi, ha az elfogy, és van inputblock,
     akkor annak az eredményét elemzi. Az inputblock eredménye mindig
     hosszabbítja a bemeneti stringet. Ha ha nincs inputblock de van fájl,
-    akkor a kezdő string után a fájl elemzi. 
+    akkor a kezdő string után a fájlt elemzi. 
     
   method  parsefile
     A korábbihoz képest most hiba esetén is lezárja a fájlt egy finally 

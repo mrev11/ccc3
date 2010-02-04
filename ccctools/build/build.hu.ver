@@ -1,4 +1,9 @@
 
+2010.02.04 -- 1.2.26
+  A @parfile-ból olvasott paraméterek nem a lista végére kerülnek
+  (mint eddig), hanem az inkludálás helyére. Így egy parfile után 
+  megadott paraméter felül tud írni egy parfileban megadottat.
+
 2008.06.20 -- 1.2.25
   A --debug opció bekapcsolja a debugolást.
   Jelzi, ha nem találja a parfilét (vagy üres).

@@ -57,7 +57,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.2.25"
+#define VERSION "1.2.26"
  
 ****************************************************************************
 function main()
@@ -140,7 +140,7 @@ local opt:=aclone(argv()),n
             s_debug:=.t.
 
         elseif( "@"==left(opt[n],1) )
-            readpar(substr(opt[n],2),opt)
+            readpar(substr(opt[n],2),opt,n)
 
         elseif( "="$opt[n] )
             putenv(opt[n])
@@ -171,7 +171,7 @@ local opt:=aclone(argv()),n
 
 
 ****************************************************************************
-static function readpar(parfil,opt)
+static function readpar(parfil,opt,optx)
 local par:=memoread(parfil),n,p,i
 
     if(empty(par))
@@ -201,7 +201,9 @@ local par:=memoread(parfil),n,p,i
         p:=split(p," ") //szavakra bontva
         for i:=1 to len(p)
             if( !empty(p[i]) )
-                aadd(opt,p[i])
+                aadd(opt,NIL)
+                ains(opt,++optx)
+                opt[optx]:=p[i]
             end
         next
     next

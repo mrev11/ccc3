@@ -96,6 +96,9 @@ local info:=this:lemon[s1],node,err
 ***************************************************************************************
 function tnode__text(this,t)
 local node
+    if( this:textnodeblock!=NIL )
+        eval(this:textnodeblock,this,t)
+    end
     if( this:info:buildflag )
         node:=xmlnodeNew("#TEXT")
         node:content:={t}
@@ -107,6 +110,9 @@ local node
 ***************************************************************************************
 function tnode__cdata(this,t)
 local node
+    if( this:textnodeblock!=NIL )
+        eval(this:textnodeblock,this,t)
+    end
     if( this:info:buildflag )
         node:=xmlnodeNew("#CDATA")
         node:content:={t}

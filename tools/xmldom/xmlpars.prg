@@ -61,6 +61,7 @@ class xmlparser(object)
     attrib  nodeendblock
     attrib  attribblock
     attrib  contentblock
+    attrib  textnodeblock
 
     attrib  processblock
     method  process         {|this,node|eval(this:processblock,node)}
@@ -214,6 +215,7 @@ local info2:=this:infostack[this:infodepth]
     info2:type:=s
     info2:fullpath:=info1:fullpath+"/"+s    // kumulálja
     info2:buildflag:=info1:buildflag        // örökli
+    info2:userdata:=info1:userdata          // örökli
     return info2
 
 ****************************************************************************
@@ -238,11 +240,13 @@ static class nodeinfo(object)
     attrib  type
     attrib  fullpath
     attrib  buildflag
+    attrib  userdata
     method  clean
 
 static function nodeinfo.clean(this)
     this:type:=NIL
     this:fullpath:=NIL
     this:buildflag:=NIL
+    this:userdata:=NIL
 
 ****************************************************************************

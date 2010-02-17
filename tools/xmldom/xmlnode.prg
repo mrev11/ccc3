@@ -54,13 +54,21 @@ local x:=ascan(this:attrib,{|a|a:name==attrname})
 
 ****************************************************************************
 static function xmlnode.gettext(this)
-local i, c, x:=""
-    for i:=1 to len(this:content)
-        c:=this:content[i] 
-        if( c:type=="#TEXT" .or. c:type=="#CDATA" )
-            x+=c:content[1]
+local i, c, x:="", n
+    if( this:type=="#TEXT" .or. this:type=="#CDATA" )
+        for n:=1 to len(this:content)
+            x+=this:content[n]
         end
-    next
+    else
+        for i:=1 to len(this:content)
+            c:=this:content[i] 
+            if( c:type=="#TEXT" .or. c:type=="#CDATA" )
+                for n:=1 to len(c:content)
+                    x+=c:content[n]
+                end
+            end
+        next
+    end
     return x
 
 ****************************************************************************

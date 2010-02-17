@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "xmldom textnodeblock" #2010.02.12
+git commit --all -m "xmldom: #TEXT node-ra gettext"  #2010.02.17
 
+# "xmldom textnodeblock" #2010.02.12
 # "build 1.2.26 parfile include" #2010.02.04
 # "ppo2cpp 5.0.17 számliterál" #2010.01.25
 # "xmldom 1.4.00" #2010.01.11

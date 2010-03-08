@@ -37,6 +37,10 @@ static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
 static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
 static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
 
+static pthread_mutex_t mutex_blink=PTHREAD_MUTEX_INITIALIZER;
+static void blink_lock(){pthread_mutex_lock(&mutex_blink);}
+static void blink_unlock(){pthread_mutex_unlock(&mutex_blink);}
+
 screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
@@ -244,6 +248,8 @@ static void blink(int flag)
     static int prevx=0;
     static int prevy=0;
 
+    blink_lock();
+
     if( cursor_state )
     {
         paint(prevy,prevx,prevy,prevx);
@@ -265,6 +271,7 @@ static void blink(int flag)
         prevy=cursor_y;
     }
     cursor_tick=gettickcount();
+    blink_unlock();
 }
 
 //----------------------------------------------------------------------------
@@ -307,8 +314,11 @@ void setwsize(int x, int y)
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
+    blink_lock();
     cursor_x=x;
     cursor_y=y;
+    blink_unlock();
+
     if( cursor_onoff )
     {
         blink(1);

@@ -1,4 +1,7 @@
 
+2010.03.08
+    setcursor és blink szinkronizálva.
+
 2009.05.01
     invalidate és paint szinkronizálva.
 

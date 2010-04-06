@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Egy szokásos Ubuntu-Gutsy telepítés után
+# ezeket a csomagokat kell felrakni,
+# hogy a CCC2/CCC3 leforduljon.
+# + a jt-hez kell a Sun Java.
+# + az SQL2-höz kell a PostgreSQL.
+
+sudo apt-get install \
+    g++ \
+    libncurses5-dev \
+    libncursesw5-dev \
+    manpages-dev \
+    glibc-doc \
+    libx11-dev \
+    libssl-dev \
+    libgtk2.0-dev \
+    libpcre3-dev \
+    libreadline5-dev \
+    git-core

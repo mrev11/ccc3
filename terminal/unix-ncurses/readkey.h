@@ -60,7 +60,7 @@ static int __readkey()
     if( 0<select(1,&fs,NULL,NULL,&t) )
     {
         char c=0;
-        0==read(fd,&c,1); 
+        int retcode=read(fd,&c,1); 
         key=0xff&(int)c;
 
         if( ISESCAPE(key) )

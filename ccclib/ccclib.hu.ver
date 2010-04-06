@@ -1,3 +1,24 @@
+2010.04.06
+  ignored return value (2008.10.02) javítás javítása
+    0==fwrite() helyett int retcode=fwrite() 
+    ui. az MSVC nem fogadta el az előző változatot.
+    Ez sok filét érint, a lex filéket is, a flexbeli skel.c-t is.
+    Most Windowson újra használható az MSVC.
+
+  gcc 4.4.1 warningok kijavítva.  
+      
+  A main modulok setbinary részében:
+    if( oldhandle==(long)INVALID_HANDLE_VALUE )
+    {
+        return; //nincs nyitva?
+    }
+    ui. ha nincs nyitva, akkor érdektelen a tex/binary mode.
+    
+  install.b sorrend ésszerűsítve  
+    Rögtön a végleges ppo2cpp-t fordítja,
+    így a setup-unix/ppo2cpp kihagyható.
+
+
 2010.01.11
   Rossz az előző módosítás, 
     empty(block) visszaállítva a korábbi állapot: mindig .f.

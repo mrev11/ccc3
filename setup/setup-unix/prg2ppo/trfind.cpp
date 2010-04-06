@@ -453,7 +453,7 @@ char *yytext;
 //a generalt kodban:
 //#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
 //gcc 4.3.2 warning: ignoring return value
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+//#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 
 static char      *buffer=0;
@@ -565,7 +565,8 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+static int yy_ignored_retcode;
+#define ECHO (yy_ignored_retcode=fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -639,7 +640,7 @@ YY_DECL
 #line 76 "./trfind.lex"
 
 
-#line 643 "ppo/trfind.cpp"
+#line 644 "ppo/trfind.cpp"
 
      if ( yy_init )
              {
@@ -784,7 +785,7 @@ YY_RULE_SETUP
 #line 93 "./trfind.lex"
 ECHO;
 	YY_BREAK
-#line 788 "ppo/trfind.cpp"
+#line 789 "ppo/trfind.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(st_raw):
 	yyterminate();

@@ -21,11 +21,15 @@ pushd setup\setup-lemon
 call m.bat
 popd
 
-build.exe -v 
-prg2ppo.exe -v
-ppo2cpp.exe -v
+pushd ccctools\ppo2cpp
+call m.bat
+popd
+
 flex -V
 lemon -x
+prg2ppo.exe -v
+ppo2cpp.exe -v
+:build.exe -v 
 
 
 :-------------------
@@ -37,11 +41,9 @@ call m.bat
 popd
 
 
-
 :-------------------
 : ccctools
 :-------------------
-
  
 pushd ccctools\removecr
 call m.bat
@@ -52,10 +54,6 @@ call m.bat
 popd
  
 pushd ccctools\build
-call m.bat
-popd
- 
-pushd ccctools\ppo2cpp
 call m.bat
 popd
 

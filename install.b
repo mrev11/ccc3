@@ -28,37 +28,44 @@ fi
 # initial setup
 #-------------------
 
-pushd setup/setup-unix >/dev/null; m; popd >/dev/null
-if ! build.exe -v; then
-    echo "initial setup failed"
-    exit 1
-fi    
-if ! prg2ppo.exe -v; then
-    echo "initial setup failed"
-    exit 1
-fi    
-if ! ppo2cpp.exe -v; then
-    echo "initial setup failed"
-    exit 1
-fi    
-if ! removecr.exe -x; then
-    echo "initial setup failed"
-    exit 1
-fi    
-
-pushd setup/setup-flex >/dev/null; m; popd >/dev/null
+pushd setup/setup-flex  >/dev/null; m; popd >/dev/null
 if ! flex.exe -V; then
-    echo "flex not installed"
+    echo "flex.exe not installed"
     echo "install flex then run install.b again"
     exit 1
 fi    
 
 pushd setup/setup-lemon >/dev/null; m; popd >/dev/null
 if ! lemon.exe -x; then
-    echo "lemon not installed"
+    echo "lemon.exe not installed"
     echo "install lemon then run install.b again"
     exit 1
 fi    
+
+pushd setup/setup-unix  >/dev/null; m; popd >/dev/null
+if ! build.exe -v; then
+    echo "build.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! prg2ppo.exe -v; then
+    echo "prg2ppo.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! removecr.exe -x; then
+    echo "removecr.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+pushd ccctools/ppo2cpp  >/dev/null; m; popd >/dev/null
+if ! ppo2cpp.exe -v; then
+    echo "ppo2cpp.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
 
 #-------------------
 # ccclib
@@ -71,7 +78,6 @@ pushd ccclib; m; popd
 #-------------------
  
 pushd ccctools/build; m; popd
-pushd ccctools/ppo2cpp; m; popd
 pushd ccctools/prg2ppo; m; popd
 pushd ccctools/removecr; m; popd
 pushd ccctools/mklink; m; popd

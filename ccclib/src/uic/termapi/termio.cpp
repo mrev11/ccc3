@@ -67,7 +67,7 @@ static void sleep(int ms)
 //----------------------------------------------------------------------------
 static void atexit_bye()
 {
-    close(termsck); // jelzés a terminálnak
+    socket_close(termsck); // jelzés a terminálnak
     sleep(100);     // (0.1sec) a terminál kilép
     
     //A terminál a socket lezáródásából értesül arról, hogy 

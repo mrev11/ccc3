@@ -1,0 +1,71 @@
+
+#########################################################################
+# CCC environment
+#########################################################################
+
+export CCC2DIR=/opt/ccc2
+export CCC3DIR=/opt/ccc3
+export CCCDIR=$CCC3DIR
+
+export CCCBIN=lin
+export CCCUNAME=linux
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+export CCCTERM_SIZE=80x40
+export CCC_LPR=/home/vermes/bin/lpr-utf8
+export CCC_STRING_TAB=/home/vermes/temp/STRTAB
+export CCCVER=3
+export OREF_SIZE=50000
+
+#CCC2
+export CCC_TERMINAL=X
+export CCC_XSIZE=80x43
+export CCC_XFONT=ccc8x16
+export CCC_XCOLORS=normal
+#export CCC_LPR=$CCCDIR/usr/bin/$CCCUNAME/lpr-hphun.exe
+
+export CCC_LANG=hu
+
+#########################################################################
+# Path
+#########################################################################
+
+PATH=$CCCDIR/usr/bin/$CCCUNAME:$PATH
+PATH=.:~/bin:$PATH
+
+LD_LIBRARY_PATH=$CCC2DIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$CCC3DIR/usr/lib/$CCCBIN:$LD_LIBRARY_PATH
+
+export PATH 
+export LD_LIBRARY_PATH
+
+#########################################################################
+# Other
+#########################################################################
+ 
+export GLADEPATH=$HOME/bin
+export PAGER=less
+export EDITOR=z
+export VISUAL=mcedit
+export JTERMINAL="$CCCDIR/usr/bin/$CCCUNAME/jterminal.jar"
+export LANG=en_GB.UTF-8
+
+umask 002
+xmodmap ~/.Xmodmap
+ulimit -c 9999999
+
+
+#########################################################################
+
+show()
+{
+    for ENV in "$@"; do
+        set | grep "^$ENV="
+    done
+    echo 
+}
+
+show CCCDIR CCCVER
+
+
+

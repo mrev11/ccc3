@@ -266,7 +266,7 @@ static void print_bin(int x)
         }
         if( outfile[x].fp )
         {
-            0==fwrite(BINARYPTR(TOP()),1,len,outfile[x].fp);
+            int retcode=fwrite(BINARYPTR(TOP()),1,len,outfile[x].fp);
             fflush(outfile[x].fp);
         }
     }

@@ -32,7 +32,7 @@
 //a generalt kodban:
 //#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
 //gcc 4.3.2 warning: ignoring return value
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+//#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 
 static char      *buffer=0;

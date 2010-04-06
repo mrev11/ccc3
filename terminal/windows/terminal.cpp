@@ -411,7 +411,13 @@ int WINAPI WinMain(
     int        nCmdShow         // show state of window
     )   
 {
-    FreeConsole(); //ne zavarjon be CTRL_C (2008.11.13)
+    //FreeConsole(); //ne zavarjon be CTRL_C (2008.11.13)
+    //FreeConsole() kivéve:
+    //Konzol nélkül nem látszanak az esetleges hibaüzenetek. 
+    //Nem világos, hogy egyáltalán miért van konzol, amikor a doksik
+    //azt állítják, attól függ, hogy WinMain vagy main a főprogram.
+    //Mindenképpen megjelenik a konzol, mielőtt FreeConsole leszedné.
+   
 
     //Ez allit valamit a rendszerparameterekben,
     //maskepp Win2K-n hatastalan a SetForegroundWindow.

@@ -47,7 +47,7 @@ void inkeymap_init()
     fstat(fd,&buf);
     //printf("size %d\n",(int)buf.st_size);fflush(0);
     keymap=(char*)malloc(buf.st_size+1);
-    0==read(fd,keymap,buf.st_size);
+    int retcode=read(fd,keymap,buf.st_size);
     keymap[buf.st_size]=0;
     close(fd);
 }

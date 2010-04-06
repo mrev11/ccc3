@@ -157,7 +157,7 @@ static int startlpr(char *str)
         }
         snprintf(buf,sizeof(buf),"%s %s",lprccc,str);
         buf[sizeof(buf)-1]='\0';
-        0==system(buf);
+        int retcode=system(buf);
         exit(3);     
     }
 

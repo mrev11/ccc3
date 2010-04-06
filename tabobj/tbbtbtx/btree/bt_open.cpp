@@ -187,7 +187,7 @@ static void header(BTREE *t)  //create header
     p=(char*)malloc(t->bt_psize);
     memset(p,0,t->bt_psize);
     lseek(t->bt_fd,0,SEEK_SET);
-    0==write(t->bt_fd,p,t->bt_psize);
+    int retcode=write(t->bt_fd,p,t->bt_psize);
     __bt_header_write(t);
 }
  

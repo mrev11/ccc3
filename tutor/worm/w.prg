@@ -18,23 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-extern void  fundecl_ini(void);
-extern void  fundecl_setalias(char*name, const char*alias);
-extern int   fundecl_using(char *fun, char*nsp);
-extern void  fundecl_clpdef(char *fun,int stflag);
-extern char *fundecl_clpcall(const char *fun);
-extern void  fundecl_codeblock(const char *fun,int cnt);
-extern void  fundecl_statini(const char *fun,const char*var);
-extern void  fundecl_locstatini(const char *fun,const char*var);
-extern void  fundecl_list(void);
-extern void  namespace_begin(char*);
-extern void  namespace_end(char*);
-
-extern void flddecl_ini(void);
-extern void flddecl_insert(char *text);
-extern void flddecl_list(void);
-
-extern void metdecl_ini(void);
-extern void metdecl_insert(const char *slot, const char *prnt, const char*base);
-extern void metdecl_list(void);
-
+function main()
+    //setcolor("w/b")
+    screen_worm(1,"KONTO")
+    return NIL

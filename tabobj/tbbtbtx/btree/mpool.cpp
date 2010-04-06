@@ -193,7 +193,7 @@ void *mpool_new(MPOOL *mp, pgno_t *pgnoaddr)
     *pgnoaddr=lseek(mp->fd,0,SEEK_END)/mp->pagesize;
     *(pgno_t*)buf=*pgnoaddr;
 
-    0==write(mp->fd,buf,mp->pagesize);
+    int retcode=write(mp->fd,buf,mp->pagesize);
 
     pin_store(buf,*pgnoaddr);
     mp->count++;
@@ -253,7 +253,7 @@ int mpool_put(MPOOL *mp, void *page, int dirty)
         {
             (*mp->pgout)(page);
         }
-        0==write(mp->fd,page,mp->pagesize);
+        int retcode=write(mp->fd,page,mp->pagesize);
         memset(page,'#',mp->pagesize);
     }
     else

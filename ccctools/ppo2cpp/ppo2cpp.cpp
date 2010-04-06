@@ -171,12 +171,12 @@ int main(int argc, char**argv)
     // azután  kell kiírni metdecl_list-et
     // csakhogy metdecl_list-nek járuléka van fundecl_list-ben
     // ezért kétszer kell futtatni (az első kimenet ppo2cpp.meth-be)
-    0==freopen("ppo2cpp.meth","w+",stdout); //warning: ignoring return value
+    void *retcode=freopen("ppo2cpp.meth","w+",stdout); //warning: ignoring return value
     metdecl_list();
 
     if( *output )
     {
-        0==freopen(output,"w+",stdout); //warning: ignoring return value
+        void *retcode=freopen(output,"w+",stdout); //warning: ignoring return value
     }
 
     printf("//input: %s (%s)\n\n",input,version_number);

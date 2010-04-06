@@ -31,6 +31,11 @@
 static void setbinary(int fd)
 {
     long oldhandle=_get_osfhandle(fd);
+    if( oldhandle==(long)INVALID_HANDLE_VALUE )
+    {
+        return; //nincs nyitva?
+    }
+
     long newhandle;
     DuplicateHandle( GetCurrentProcess(), 
                      (HANDLE)oldhandle, 

@@ -704,7 +704,7 @@ char *yytext;
 //a generalt kodban:
 //#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
 //gcc 4.3.2 warning: ignoring return value
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+//#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 //Bizonyos esetekben (folytatósor, sorelválasztó ;)
 //a generált kimeneten CR jelenhet meg, ami a további
@@ -945,7 +945,8 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+static int yy_ignored_retcode;
+#define ECHO (yy_ignored_retcode=fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -1022,7 +1023,7 @@ YY_DECL
 #line 226 "./input.lex"
 
 
-#line 1026 "ppo/input.cpp"
+#line 1027 "ppo/input.cpp"
 
      if ( yy_init )
              {
@@ -1498,7 +1499,7 @@ YY_RULE_SETUP
 #line 363 "./input.lex"
 ECHO;
 	YY_BREAK
-#line 1502 "ppo/input.cpp"
+#line 1503 "ppo/input.cpp"
 
      case YY_END_OF_BUFFER:
              {

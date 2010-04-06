@@ -1,24 +1,4 @@
-
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-//input: build.ppo (5.0.15x)
+//input: build.ppo (5.0.17)
 
 #include <cccdef.h>
 
@@ -29,6 +9,7 @@ static void _blk_byrules_0(int argno);
 extern void _clp___quit(int argno);
 extern void _clp_aadd(int argno);
 extern void _clp_aclone(int argno);
+extern void _clp_ains(int argno);
 extern void _clp_argv(int argno);
 extern void _clp_ascan(int argno);
 extern void _clp_asort(int argno);
@@ -257,7 +238,7 @@ push_call("main",base);
     if(!flag()) goto if_1_1;
         line(71);
         string(nls_text(L"CCC Program Builder "));
-        string(L"1.2.25");
+        string(L"1.2.26");
         add();
         string(L" Copyright (C) ComFirm Bt.");
         add();
@@ -632,7 +613,8 @@ push_call("main",base);
             number(2);
             _clp_substr(2);
             push_symbol(base+0);//opt
-            _clp_readpar(2);
+            push_symbol(base+1);//n
+            _clp_readpar(3);
             pop();
         goto if_3_0;
         if_3_12:
@@ -725,19 +707,19 @@ pop_call();
 static void _clp_readpar(int argno)
 {
 VALUE *base=stack-argno;
-stack=base+min(argno,2);
-while(stack<base+6)PUSHNIL();
-argno=2;
+stack=base+min(argno,3);
+while(stack<base+7)PUSHNIL();
+argno=3;
 push_call("readpar",base);
 //
     line(175);
     push_symbol(base+0);//parfil
     _clp_memoread(1);
-    assign(base+2);//par
+    assign(base+3);//par
     pop();
     line(182);
     line(177);
-    push_symbol(base+2);//par
+    push_symbol(base+3);//par
     _clp_empty(1);
     if(!flag()) goto if_11_1;
         line(181);
@@ -748,7 +730,7 @@ push_call("readpar",base);
         push_symbol(base+0);//parfil
         add();
         _clp_memoread(1);
-        assign(base+2);//par
+        assign(base+3);//par
         pop();
     if_11_1:
     if_11_0:;
@@ -758,7 +740,7 @@ push_call("readpar",base);
     if(!flag()) goto if_12_1;
         line(189);
         line(185);
-        push_symbol(base+2);//par
+        push_symbol(base+3);//par
         _clp_empty(1);
         if(!flag()) goto if_13_1;
             line(186);
@@ -783,85 +765,99 @@ push_call("readpar",base);
     if_12_1:
     if_12_0:;
     line(192);
-    push_symbol(base+2);//par
+    push_symbol(base+3);//par
     number(13);
     _clp_chr(1);
     string(L"");
     _clp_strtran(3);
-    assign(base+2);//par
+    assign(base+3);//par
     pop();
     line(193);
-    push_symbol(base+2);//par
+    push_symbol(base+3);//par
     number(10);
     _clp_chr(1);
     _clp_split(2);
-    assign(base+2);//par
+    assign(base+3);//par
     pop();
-    line(207);
+    line(209);
     {
     line(195);
     push(&ONE);
     int sg=sign();
     push(&ONE);
-    assign(base+3);//n
+    assign(base+4);//n
     lab_14_0:
-    push_symbol(base+2);//par
+    push_symbol(base+3);//par
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_14_2;
         line(196);
-        push_symbol(base+2);//par
-        push_symbol(base+3);//n
+        push_symbol(base+3);//par
+        push_symbol(base+4);//n
         idxr();
-        assign(base+4);//p
+        assign(base+5);//p
         pop();
         line(199);
         line(197);
         string(L"#");
-        push_symbol(base+4);//p
+        push_symbol(base+5);//p
         ss();
         if(!flag()) goto if_15_1;
             line(198);
-            push_symbol(base+4);//p
+            push_symbol(base+5);//p
             string(L"#");
-            push_symbol(base+4);//p
+            push_symbol(base+5);//p
             _clp_at(2);
             addnum(-1);
             _clp_left(2);
-            assign(base+4);//p
+            assign(base+5);//p
             pop();
         if_15_1:
         if_15_0:;
         line(201);
-        push_symbol(base+4);//p
+        push_symbol(base+5);//p
         string(L" ");
         _clp_split(2);
-        assign(base+4);//p
+        assign(base+5);//p
         pop();
-        line(206);
+        line(208);
         {
         line(202);
         push(&ONE);
         int sg=sign();
         push(&ONE);
-        assign(base+5);//i
+        assign(base+6);//i
         lab_16_0:
-        push_symbol(base+4);//p
+        push_symbol(base+5);//p
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_16_2;
-            line(205);
+            line(207);
             line(203);
-            push_symbol(base+4);//p
-            push_symbol(base+5);//i
+            push_symbol(base+5);//p
+            push_symbol(base+6);//i
             idxr();
             _clp_empty(1);
             topnot();
             if(!flag()) goto if_17_1;
                 line(204);
                 push_symbol(base+1);//opt
-                push_symbol(base+4);//p
-                push_symbol(base+5);//i
-                idxr();
+                push(&NIL);
                 _clp_aadd(2);
+                pop();
+                line(205);
+                push_symbol(base+1);//opt
+                push_symbol(base+2);//optx
+                push(&ONE);
+                add();
+                assign(base+2);//optx
+                _clp_ains(2);
+                pop();
+                line(206);
+                push_symbol(base+5);//p
+                push_symbol(base+6);//i
+                idxr();
+                push_symbol(base+1);//opt
+                push_symbol(base+2);//optx
+                assign2(idxxl());
                 pop();
             if_17_1:
             if_17_0:;
@@ -869,9 +865,9 @@ push_call("readpar",base);
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+5);//i
+        push_symbol(base+6);//i
         add();
-        assign(base+5);//i
+        assign(base+6);//i
         goto lab_16_0;
         lab_16_2:;
         }
@@ -879,13 +875,13 @@ push_call("readpar",base);
     push(&ONE);
     dup();
     sg=sign();
-    push_symbol(base+3);//n
+    push_symbol(base+4);//n
     add();
-    assign(base+3);//n
+    assign(base+4);//n
     goto lab_14_0;
     lab_14_2:;
     }
-    line(208);
+    line(210);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -902,10 +898,10 @@ while(stack<base+3)PUSHNIL();
 argno=1;
 push_call("procpar",base);
 //
-    line(212);
-    line(221);
-    lab_18_1:
     line(214);
+    line(223);
+    lab_18_1:
+    line(216);
     push(&ZERO);
     string(L"$$(");
     push_symbol(base+0);//par
@@ -913,27 +909,27 @@ push_call("procpar",base);
     assign(base+1);//n
     lt();
     if(!flag()) goto lab_18_2;
-        line(215);
+        line(217);
         push_symbol(base+0);//par
         push_symbol(base+1);//n
         addnum(-1);
         _clp_left(2);
         assign(base+2);//p
         pop();
-        line(216);
+        line(218);
         push_symbol(base+0);//par
         push_symbol(base+1);//n
         addnum(3);
         _clp_substr(2);
         assign(base+0);//par
         pop();
-        line(217);
+        line(219);
         string(L")");
         push_symbol(base+0);//par
         _clp_at(2);
         assign(base+1);//n
         pop();
-        line(218);
+        line(220);
         push_symbol(base+2);//p
         push_symbol(base+0);//par
         push_symbol(base+1);//n
@@ -949,7 +945,7 @@ push_call("procpar",base);
         add();
         assign(base+2);//p
         pop();
-        line(219);
+        line(221);
         push_symbol(base+2);//p
         push_symbol(base+0);//par
         push_symbol(base+1);//n
@@ -958,15 +954,15 @@ push_call("procpar",base);
         add();
         assign(base+2);//p
         pop();
-        line(220);
+        line(222);
         push_symbol(base+2);//p
         assign(base+0);//par
         pop();
     goto lab_18_1;
     lab_18_2:;
-    line(230);
+    line(232);
     lab_19_1:
-    line(223);
+    line(225);
     push(&ZERO);
     string(L"$(");
     push_symbol(base+0);//par
@@ -974,27 +970,27 @@ push_call("procpar",base);
     assign(base+1);//n
     lt();
     if(!flag()) goto lab_19_2;
-        line(224);
+        line(226);
         push_symbol(base+0);//par
         push_symbol(base+1);//n
         addnum(-1);
         _clp_left(2);
         assign(base+2);//p
         pop();
-        line(225);
+        line(227);
         push_symbol(base+0);//par
         push_symbol(base+1);//n
         addnum(2);
         _clp_substr(2);
         assign(base+0);//par
         pop();
-        line(226);
+        line(228);
         string(L")");
         push_symbol(base+0);//par
         _clp_at(2);
         assign(base+1);//n
         pop();
-        line(227);
+        line(229);
         push_symbol(base+2);//p
         push_symbol(base+0);//par
         push_symbol(base+1);//n
@@ -1004,7 +1000,7 @@ push_call("procpar",base);
         add();
         assign(base+2);//p
         pop();
-        line(228);
+        line(230);
         push_symbol(base+2);//p
         push_symbol(base+0);//par
         push_symbol(base+1);//n
@@ -1013,27 +1009,27 @@ push_call("procpar",base);
         add();
         assign(base+2);//p
         pop();
-        line(229);
+        line(231);
         push_symbol(base+2);//p
         assign(base+0);//par
         pop();
     goto lab_19_1;
     lab_19_2:;
-    line(232);
+    line(234);
     push_symbol(base+0);//par
     string(L"\\");
     _clp_dirsep(0);
     _clp_strtran(3);
     assign(base+0);//par
     pop();
-    line(233);
+    line(235);
     push_symbol(base+0);//par
     string(L"/");
     _clp_dirsep(0);
     _clp_strtran(3);
     assign(base+0);//par
     pop();
-    line(235);
+    line(237);
     push_symbol(base+0);//par
     push(&ONE);
     _clp_left(2);
@@ -1060,14 +1056,14 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("usage",base);
 //
-    line(240);
+    line(242);
     string(nls_text(L"BUILD -xExeNam|-lLibNam -dSrcDir -iIncDir -pLibDir -bLibFil -mMain"));
     _clp_qout(1);
     pop();
-    line(241);
+    line(243);
     _clp_qout(0);
     pop();
-    line(242);
+    line(244);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1084,17 +1080,17 @@ while(stack<base+3)PUSHNIL();
 argno=0;
 push_call("root",base);
 //
-    line(248);
-    line(285);
     line(250);
+    line(287);
+    line(252);
     string(L"BUILD_SRC");
     _clp_getenv(1);
     assign(base+0);//srcroot
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_20_1;
+        line(256);
         line(254);
-        line(252);
         push_symbol(base+0);//srcroot
         push(&ONE);
         _clp_right(2);
@@ -1102,7 +1098,7 @@ push_call("root",base);
         ss();
         topnot();
         if(!flag()) goto if_21_1;
-            line(253);
+            line(255);
             push_symbol(base+0);//srcroot
             _clp_dirsep(0);
             add();
@@ -1110,31 +1106,31 @@ push_call("root",base);
             pop();
         if_21_1:
         if_21_0:;
+        line(260);
         line(258);
-        line(256);
         push_symbol(_st_s_srcdir_ptr());//global
         push(&NIL);
         eqeq();
         if(!flag()) goto if_22_1;
-            line(257);
+            line(259);
             string(L".");
             assign(_st_s_srcdir_ptr());//global
             pop();
         if_22_1:
         if_22_0:;
-        line(260);
+        line(262);
         push_symbol(_st_s_srcdir_ptr());//global
         string(L",;");
         _clp_xsplit(2);
         assign(base+1);//d
         pop();
-        line(262);
+        line(264);
         string(L"");
         assign(_st_s_srcdir_ptr());//global
         pop();
-        line(269);
+        line(271);
         {
-        line(263);
+        line(265);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -1143,8 +1139,8 @@ push_call("root",base);
         push_symbol(base+1);//d
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_23_2;
-            line(268);
-            line(264);
+            line(270);
+            line(266);
             push_symbol(base+1);//d
             push_symbol(base+2);//n
             idxr();
@@ -1153,7 +1149,7 @@ push_call("root",base);
             string(L"/\\");
             ss();
             if(!flag()) goto if_24_1;
-                line(265);
+                line(267);
                 push_symbol(_st_s_srcdir_ptr());//global
                 push_symbol(base+1);//d
                 push_symbol(base+2);//n
@@ -1165,8 +1161,8 @@ push_call("root",base);
                 pop();
             goto if_24_0;
             if_24_1:
-            line(266);
-                line(267);
+            line(268);
+                line(269);
                 push_symbol(_st_s_srcdir_ptr());//global
                 push_symbol(base+0);//srcroot
                 push_symbol(base+1);//d
@@ -1190,25 +1186,25 @@ push_call("root",base);
         goto lab_23_0;
         lab_23_2:;
         }
-        line(284);
-        line(272);
+        line(286);
+        line(274);
         push_symbol(_st_s_incdir_ptr());//global
         push(&NIL);
         neeq();
         if(!flag()) goto if_25_1;
-            line(274);
+            line(276);
             push_symbol(_st_s_incdir_ptr());//global
             string(L",;");
             _clp_xsplit(2);
             assign(base+1);//d
             pop();
-            line(276);
+            line(278);
             string(L"");
             assign(_st_s_incdir_ptr());//global
             pop();
-            line(283);
+            line(285);
             {
-            line(277);
+            line(279);
             push(&ONE);
             int sg=sign();
             push(&ONE);
@@ -1217,8 +1213,8 @@ push_call("root",base);
             push_symbol(base+1);//d
             _clp_len(1);
             if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_26_2;
-                line(282);
-                line(278);
+                line(284);
+                line(280);
                 push_symbol(base+1);//d
                 push_symbol(base+2);//n
                 idxr();
@@ -1227,7 +1223,7 @@ push_call("root",base);
                 string(L"/\\");
                 ss();
                 if(!flag()) goto if_27_1;
-                    line(279);
+                    line(281);
                     push_symbol(_st_s_incdir_ptr());//global
                     push_symbol(base+1);//d
                     push_symbol(base+2);//n
@@ -1239,8 +1235,8 @@ push_call("root",base);
                     pop();
                 goto if_27_0;
                 if_27_1:
-                line(280);
-                    line(281);
+                line(282);
+                    line(283);
                     push_symbol(_st_s_incdir_ptr());//global
                     push_symbol(base+0);//srcroot
                     push_symbol(base+1);//d
@@ -1268,7 +1264,7 @@ push_call("root",base);
         if_25_0:;
     if_20_1:
     if_20_0:;
-    line(287);
+    line(289);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1285,12 +1281,12 @@ while(stack<base+4)PUSHNIL();
 argno=0;
 push_call("params",base);
 //
-    line(293);
-    line(306);
+    line(295);
+    line(308);
     string(L"");
     assign(base+0);//txt
     pop();
-    line(307);
+    line(309);
     push_symbol(base+0);//txt
     push_symbol(_st_s_srcdir_ptr());//global
     push(&NIL);
@@ -1305,7 +1301,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(308);
+    line(310);
     push_symbol(base+0);//txt
     push_symbol(_st_s_incdir_ptr());//global
     push(&NIL);
@@ -1320,7 +1316,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(309);
+    line(311);
     push_symbol(base+0);//txt
     string(L"BUILD_INC");
     _clp_getenv(1);
@@ -1329,7 +1325,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(310);
+    line(312);
     push_symbol(base+0);//txt
     string(L"include");
     _clp_getenv(1);
@@ -1338,38 +1334,38 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(311);
+    line(313);
     push_symbol(base+0);//txt
     string(L",");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(312);
+    line(314);
     push_symbol(base+0);//txt
     string(L";");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(314);
+    line(316);
     push_symbol(base+0);//txt
     string(L":");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(316);
+    line(318);
     string(L"BUILD_INC=");
     push_symbol(base+0);//txt
     add();
     _clp_putenv(1);
     pop();
-    line(322);
+    line(324);
     string(L"");
     assign(base+0);//txt
     pop();
-    line(323);
+    line(325);
     push_symbol(base+0);//txt
     push_symbol(_st_s_libdir_ptr());//global
     push(&NIL);
@@ -1384,7 +1380,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(324);
+    line(326);
     push_symbol(base+0);//txt
     string(L"BUILD_LPT");
     _clp_getenv(1);
@@ -1393,7 +1389,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(325);
+    line(327);
     push_symbol(base+0);//txt
     string(L"lib");
     _clp_getenv(1);
@@ -1402,38 +1398,38 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(326);
+    line(328);
     push_symbol(base+0);//txt
     string(L",");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(327);
+    line(329);
     push_symbol(base+0);//txt
     string(L";");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(329);
+    line(331);
     push_symbol(base+0);//txt
     string(L":");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(331);
+    line(333);
     string(L"BUILD_LPT=");
     push_symbol(base+0);//txt
     add();
     _clp_putenv(1);
     pop();
-    line(337);
+    line(339);
     string(L"");
     assign(base+0);//txt
     pop();
-    line(338);
+    line(340);
     push_symbol(base+0);//txt
     push_symbol(_st_s_libfil_ptr());//global
     push(&NIL);
@@ -1448,7 +1444,7 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(339);
+    line(341);
     push_symbol(base+0);//txt
     string(L"BUILD_LIB");
     _clp_getenv(1);
@@ -1457,31 +1453,31 @@ push_call("params",base);
     add();
     assign(base+0);//txt
     pop();
-    line(340);
+    line(342);
     push_symbol(base+0);//txt
     string(L",");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(341);
+    line(343);
     push_symbol(base+0);//txt
     string(L";");
     string(L" ");
     _clp_strtran(3);
     assign(base+0);//txt
     pop();
-    line(342);
+    line(344);
     string(L"BUILD_LIB=");
     push_symbol(base+0);//txt
     add();
     _clp_putenv(1);
     pop();
+    line(347);
     line(345);
-    line(343);
     push_symbol(_st_s_libabs_ptr());//global
     if(!flag()) goto if_28_1;
-        line(344);
+        line(346);
         string(L"BUILD_LIB=");
         _clp_search_library(0);
         add();
@@ -1489,7 +1485,7 @@ push_call("params",base);
         pop();
     if_28_1:
     if_28_0:;
-    line(348);
+    line(350);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1506,34 +1502,34 @@ while(stack<base+12)PUSHNIL();
 argno=0;
 push_call("build",base);
 //
-    line(354);
+    line(356);
     array(0);
     assign(base+0);//dir
     pop();
-    line(355);
+    line(357);
     array(0);
     assign(base+1);//obj
     pop();
-    line(356);
+    line(358);
     array(0);
     assign(base+2);//lib
     pop();
-    line(357);
+    line(359);
     array(0);
     assign(base+3);//mmd
     pop();
-    line(358);
+    line(360);
     array(0);
     assign(base+4);//todo
     pop();
-    line(360);
+    line(362);
+    line(367);
     line(365);
-    line(363);
     push_symbol(_st_s_main_ptr());//global
     push(&NIL);
     neeq();
     if(!flag()) goto if_29_1;
-        line(364);
+        line(366);
         push_symbol(_st_s_main_ptr());//global
         _clp_lower(1);
         string(L",;");
@@ -1542,13 +1538,13 @@ push_call("build",base);
         pop();
     if_29_1:
     if_29_0:;
-    line(372);
-    line(368);
+    line(374);
+    line(370);
     push_symbol(_st_s_srcdir_ptr());//global
     push(&NIL);
     neeq();
     if(!flag()) goto if_30_1;
-        line(369);
+        line(371);
         push_symbol(_st_s_srcdir_ptr());//global
         string(L",;");
         _clp_xsplit(2);
@@ -1556,17 +1552,17 @@ push_call("build",base);
         pop();
     goto if_30_0;
     if_30_1:
-    line(370);
-        line(371);
+    line(372);
+        line(373);
         string(L".");
         array(1);
         assign(base+0);//dir
         pop();
     if_30_2:
     if_30_0:;
-    line(388);
+    line(390);
     {
-    line(374);
+    line(376);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1575,14 +1571,14 @@ push_call("build",base);
     push_symbol(base+0);//dir
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_31_2;
-        line(376);
+        line(378);
         string(L"");
         push_symbol(base+0);//dir
         push_symbol(base+8);//n
         idxr();
         _clp_qqout(2);
         pop();
-        line(378);
+        line(380);
         push_symbol(base+0);//dir
         push_symbol(base+8);//n
         idxr();
@@ -1593,9 +1589,9 @@ push_call("build",base);
         _clp_directory(1);
         assign(base+5);//d1
         pop();
-        line(387);
+        line(389);
         {
-        line(380);
+        line(382);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -1604,7 +1600,7 @@ push_call("build",base);
         push_symbol(base+5);//d1
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_32_2;
-            line(382);
+            line(384);
             push_symbol(base+5);//d1
             push_symbol(base+9);//i
             idxr();
@@ -1612,8 +1608,8 @@ push_call("build",base);
             _clp_lower(1);
             assign(base+6);//f
             pop();
+            line(388);
             line(386);
-            line(384);
             push_symbol(base+6);//f
             _clp_fext(1);
             string(L".");
@@ -1621,7 +1617,7 @@ push_call("build",base);
             push_symbol(_st_s_primary_ptr());//global
             ss();
             if(!flag()) goto if_33_1;
-                line(385);
+                line(387);
                 push_symbol(base+1);//obj
                 push_symbol(base+0);//dir
                 push_symbol(base+8);//n
@@ -1654,12 +1650,12 @@ push_call("build",base);
     goto lab_31_0;
     lab_31_2:;
     }
-    line(389);
+    line(391);
     _clp_qout(0);
     pop();
-    line(421);
+    line(423);
     {
-    line(394);
+    line(396);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1668,18 +1664,18 @@ push_call("build",base);
     push_symbol(base+1);//obj
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_34_2;
-        line(396);
+        line(398);
         push_symbol(base+1);//obj
         push_symbol(base+8);//n
         idxr();
         assign(base+6);//f
         pop();
-        line(397);
+        line(399);
         push_symbol(base+6);//f
         _clp_fname(1);
         assign(base+7);//o
         pop();
-        line(399);
+        line(401);
         push_symbol(base+7);//o
         string(L".obj");
         add();
@@ -1687,20 +1683,20 @@ push_call("build",base);
         array(2);
         assign(base+11);//dep
         pop();
-        line(418);
-        line(401);
+        line(420);
+        line(403);
         push_symbol(base+6);//f
         _clp_fext(1);
         string(L".prg");
         eqeq();
         if(!flag()) goto if_35_1;
-            line(402);
+            line(404);
             push_symbol(base+6);//f
             _clp_memoread(1);
             assign(base+10);//txt
             pop();
-            line(412);
-            line(404);
+            line(414);
+            line(406);
             push(&ZERO);
             push_symbol(base+3);//mmd
             push_symbol_ref(base+7);//o
@@ -1710,18 +1706,18 @@ push_call("build",base);
             if(!flag()) goto if_36_1;
             goto if_36_0;
             if_36_1:
-            line(406);
+            line(408);
             string(L"function main(");
             push_symbol(base+10);//txt
             ss();
             if(!flag()) goto if_36_2;
+                line(411);
                 line(409);
-                line(407);
                 push_symbol(_st_s_main_ptr());//global
                 push(&NIL);
                 eqeq();
                 if(!flag()) goto if_37_1;
-                    line(408);
+                    line(410);
                     push_symbol(base+3);//mmd
                     push_symbol(base+7);//o
                     _clp_aadd(2);
@@ -1730,15 +1726,15 @@ push_call("build",base);
                 if_37_0:;
             goto if_36_0;
             if_36_2:
-            line(410);
-                line(411);
+            line(412);
+                line(413);
                 push_symbol(base+2);//lib
                 push_symbol(base+7);//o
                 _clp_aadd(2);
                 pop();
             if_36_3:
             if_36_0:;
-            line(414);
+            line(416);
             push_symbol(base+10);//txt
             push_symbol(base+11);//dep
             push_symbol(base+0);//dir
@@ -1747,7 +1743,7 @@ push_call("build",base);
             pop();
         goto if_35_0;
         if_35_1:
-        line(416);
+        line(418);
         push(&ZERO);
         push_symbol(base+3);//mmd
         push_symbol_ref(base+7);//o
@@ -1755,14 +1751,14 @@ push_call("build",base);
         _clp_ascan(2);
         eqeq();
         if(!flag()) goto if_35_2;
-            line(417);
+            line(419);
             push_symbol(base+2);//lib
             push_symbol(base+7);//o
             _clp_aadd(2);
             pop();
         if_35_2:
         if_35_0:;
-        line(420);
+        line(422);
         push_symbol(base+4);//todo
         push_symbol(base+11);//dep
         _clp_aadd(2);
@@ -1777,33 +1773,33 @@ push_call("build",base);
     goto lab_34_0;
     lab_34_2:;
     }
-    line(423);
+    line(425);
     push_symbol(base+4);//todo
     push(&NIL);
     push(&NIL);
     block(_blk_build_2,0);
     _clp_asort(4);
     pop();
-    line(435);
-    line(427);
+    line(437);
+    line(429);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_38_1;
-        line(428);
+        line(430);
         string(L"main:");
         push_symbol(base+3);//mmd
         _clp_qout(2);
         pop();
-        line(429);
+        line(431);
         string(L"lib :");
         push_symbol(base+2);//lib
         _clp_qout(2);
         pop();
-        line(430);
+        line(432);
         _clp_qout(0);
         pop();
-        line(433);
+        line(435);
         {
-        line(431);
+        line(433);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -1812,7 +1808,7 @@ push_call("build",base);
         push_symbol(base+4);//todo
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_39_2;
-            line(432);
+            line(434);
             push_symbol(base+4);//todo
             push_symbol(base+8);//n
             idxr();
@@ -1828,14 +1824,14 @@ push_call("build",base);
         goto lab_39_0;
         lab_39_2:;
         }
-        line(434);
+        line(436);
         _clp_qout(0);
         pop();
     if_38_1:
     if_38_0:;
-    line(439);
+    line(441);
     {
-    line(437);
+    line(439);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1844,7 +1840,7 @@ push_call("build",base);
     push_symbol(base+4);//todo
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_40_2;
-        line(438);
+        line(440);
         push_symbol(base+4);//todo
         push_symbol(base+8);//n
         idxr();
@@ -1860,33 +1856,33 @@ push_call("build",base);
     goto lab_40_0;
     lab_40_2:;
     }
-    line(458);
-    line(443);
+    line(460);
+    line(445);
     push_symbol(_st_s_libnam_ptr());//global
     push(&NIL);
     neeq();
     if(!flag()) goto if_41_1;
-        line(444);
+        line(446);
         push_symbol(_st_s_libnam_ptr());//global
         push_symbol(base+2);//lib
         _clp_makelib(2);
         pop();
+        line(450);
         line(448);
-        line(446);
         push_symbol(_st_s_shared_ptr());//global
         push(&TRUE);
         eqeq();
         if(!flag()) goto if_42_1;
-            line(447);
+            line(449);
             push_symbol(_st_s_libnam_ptr());//global
             push_symbol(base+2);//lib
             _clp_makeso(2);
             pop();
         if_42_1:
         if_42_0:;
-        line(452);
+        line(454);
         {
-        line(450);
+        line(452);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -1895,7 +1891,7 @@ push_call("build",base);
         push_symbol(base+3);//mmd
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_43_2;
-            line(451);
+            line(453);
             push_symbol(base+3);//mmd
             push_symbol(base+8);//n
             idxr();
@@ -1914,10 +1910,10 @@ push_call("build",base);
         }
     goto if_41_0;
     if_41_1:
-    line(454);
-        line(457);
+    line(456);
+        line(459);
         {
-        line(455);
+        line(457);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -1926,7 +1922,7 @@ push_call("build",base);
         push_symbol(base+3);//mmd
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_44_2;
-            line(456);
+            line(458);
             push_symbol(base+3);//mmd
             push_symbol(base+8);//n
             idxr();
@@ -1945,7 +1941,7 @@ push_call("build",base);
         }
     if_41_2:
     if_41_0:;
-    line(460);
+    line(462);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2011,7 +2007,7 @@ while(stack<base+10)PUSHNIL();
 argno=2;
 push_call("makeso",base);
 //
-    line(467);
+    line(469);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2024,11 +2020,11 @@ push_call("makeso",base);
     add();
     assign(base+2);//target
     pop();
-    line(468);
+    line(470);
     push(&FALSE);
     assign(base+6);//update
     pop();
-    line(469);
+    line(471);
     string(L"BUILD_BAT");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2037,18 +2033,18 @@ push_call("makeso",base);
     add();
     assign(base+7);//torun
     pop();
-    line(470);
+    line(472);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     assign(base+8);//objdir
     pop();
-    line(477);
-    line(472);
+    line(479);
+    line(474);
     push_symbol(base+7);//torun
     _clp_file(1);
     topnot();
     if(!flag()) goto if_45_1;
-        line(473);
+        line(475);
         string(L"[");
         push_symbol(base+7);//torun
         add();
@@ -2057,19 +2053,19 @@ push_call("makeso",base);
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(474);
+        line(476);
         _clp_qout(0);
         pop();
-        line(475);
+        line(477);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(476);
+        line(478);
         _clp___quit(0);
         pop();
     if_45_1:
     if_45_0:;
-    line(479);
+    line(481);
     push_symbol(base+7);//torun
     string(L" lib");
     push_symbol(base+0);//libnam
@@ -2077,28 +2073,28 @@ push_call("makeso",base);
     add();
     assign(base+7);//torun
     pop();
-    line(481);
+    line(483);
     push_symbol(base+2);//target
     _clp_ftime(1);
     assign(base+3);//ttarget
     pop();
+    line(486);
     line(484);
-    line(482);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
     if(!flag()) goto if_46_1;
-        line(483);
+        line(485);
         string(L"");
         assign(base+3);//ttarget
         pop();
     if_46_1:
     if_46_0:;
+    line(490);
     line(488);
-    line(486);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_47_1;
-        line(487);
+        line(489);
         push_symbol(base+2);//target
         string(L"[");
         push_symbol(base+3);//ttarget
@@ -2109,9 +2105,9 @@ push_call("makeso",base);
         pop();
     if_47_1:
     if_47_0:;
-    line(511);
+    line(513);
     {
-    line(490);
+    line(492);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -2120,13 +2116,13 @@ push_call("makeso",base);
     push_symbol(base+1);//object
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_48_2;
-        line(492);
+        line(494);
         push_symbol(base+1);//object
         push_symbol(base+9);//n
         idxr();
         assign(base+4);//depend
         pop();
-        line(493);
+        line(495);
         push_symbol(base+7);//torun
         string(L" ");
         push_symbol(base+4);//depend
@@ -2134,7 +2130,7 @@ push_call("makeso",base);
         add();
         assign(base+7);//torun
         pop();
-        line(494);
+        line(496);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -2144,50 +2140,50 @@ push_call("makeso",base);
         add();
         assign(base+4);//depend
         pop();
-        line(495);
+        line(497);
         push_symbol(base+4);//depend
         _clp_ftime(1);
         assign(base+5);//tdepend
         pop();
-        line(506);
-        line(497);
+        line(508);
+        line(499);
         push_symbol(base+5);//tdepend
         push(&NIL);
         eqeq();
         if(!flag()) goto if_49_1;
-            line(498);
+            line(500);
             push_symbol(base+4);//depend
             string(nls_text(L"does not exist"));
             _clp_qout(2);
             pop();
-            line(499);
+            line(501);
             _clp_qout(0);
             pop();
-            line(500);
+            line(502);
             push(&ONE);
             _clp_errorlevel(1);
             pop();
-            line(501);
+            line(503);
             _clp___quit(0);
             pop();
         goto if_49_0;
         if_49_1:
-        line(503);
+        line(505);
         push_symbol(base+3);//ttarget
         push_symbol(base+5);//tdepend
         lt();
         if(!flag()) goto if_49_2;
-            line(505);
+            line(507);
             push(&TRUE);
             assign(base+6);//update
             pop();
         if_49_2:
         if_49_0:;
+        line(512);
         line(510);
-        line(508);
         push_symbol(_st_s_debug_ptr());//global
         if(!flag()) goto if_50_1;
-            line(509);
+            line(511);
             string(L"  ");
             push_symbol(base+4);//depend
             string(L"[");
@@ -2217,26 +2213,26 @@ push_call("makeso",base);
     goto lab_48_0;
     lab_48_2:;
     }
+    line(517);
     line(515);
-    line(513);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_51_1;
-        line(514);
+        line(516);
         _clp_qout(0);
         pop();
     if_51_1:
     if_51_0:;
+    line(521);
     line(519);
-    line(517);
     push_symbol(base+6);//update
     if(!flag()) goto if_52_1;
-        line(518);
+        line(520);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
     if_52_1:
     if_52_0:;
-    line(521);
+    line(523);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2253,7 +2249,7 @@ while(stack<base+11)PUSHNIL();
 argno=2;
 push_call("makelib",base);
 //
-    line(527);
+    line(529);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2264,11 +2260,11 @@ push_call("makelib",base);
     add();
     assign(base+2);//target
     pop();
-    line(528);
+    line(530);
     push(&FALSE);
     assign(base+6);//update
     pop();
-    line(529);
+    line(531);
     string(L"BUILD_BAT");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2277,20 +2273,20 @@ push_call("makelib",base);
     add();
     assign(base+7);//torun
     pop();
-    line(530);
+    line(532);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     _clp_lower(1);
     assign(base+8);//objdir
     pop();
-    line(531);
-    line(538);
     line(533);
+    line(540);
+    line(535);
     push_symbol(base+7);//torun
     _clp_file(1);
     topnot();
     if(!flag()) goto if_53_1;
-        line(534);
+        line(536);
         string(L"[");
         push_symbol(base+7);//torun
         add();
@@ -2299,19 +2295,19 @@ push_call("makelib",base);
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(535);
+        line(537);
         _clp_qout(0);
         pop();
-        line(536);
+        line(538);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(537);
+        line(539);
         _clp___quit(0);
         pop();
     if_53_1:
     if_53_0:;
-    line(540);
+    line(542);
     push_symbol(base+7);//torun
     string(L" ");
     push_symbol(base+0);//libnam
@@ -2319,28 +2315,28 @@ push_call("makelib",base);
     add();
     assign(base+7);//torun
     pop();
-    line(542);
+    line(544);
     push_symbol(base+2);//target
     _clp_ftime(1);
     assign(base+3);//ttarget
     pop();
+    line(547);
     line(545);
-    line(543);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
     if(!flag()) goto if_54_1;
-        line(544);
+        line(546);
         string(L"");
         assign(base+3);//ttarget
         pop();
     if_54_1:
     if_54_0:;
+    line(551);
     line(549);
-    line(547);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_55_1;
-        line(548);
+        line(550);
         push_symbol(base+2);//target
         string(L"[");
         push_symbol(base+3);//ttarget
@@ -2351,9 +2347,9 @@ push_call("makelib",base);
         pop();
     if_55_1:
     if_55_0:;
-    line(571);
+    line(573);
     {
-    line(551);
+    line(553);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -2362,13 +2358,13 @@ push_call("makelib",base);
     push_symbol(base+1);//object
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_56_2;
-        line(553);
+        line(555);
         push_symbol(base+1);//object
         push_symbol(base+9);//n
         idxr();
         assign(base+4);//depend
         pop();
-        line(554);
+        line(556);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -2378,50 +2374,50 @@ push_call("makelib",base);
         add();
         assign(base+4);//depend
         pop();
-        line(555);
+        line(557);
         push_symbol(base+4);//depend
         _clp_ftime(1);
         assign(base+5);//tdepend
         pop();
-        line(566);
-        line(557);
+        line(568);
+        line(559);
         push_symbol(base+5);//tdepend
         push(&NIL);
         eqeq();
         if(!flag()) goto if_57_1;
-            line(558);
+            line(560);
             push_symbol(base+4);//depend
             string(nls_text(L"does not exist"));
             _clp_qout(2);
             pop();
-            line(559);
+            line(561);
             _clp_qout(0);
             pop();
-            line(560);
+            line(562);
             push(&ONE);
             _clp_errorlevel(1);
             pop();
-            line(561);
+            line(563);
             _clp___quit(0);
             pop();
         goto if_57_0;
         if_57_1:
-        line(563);
+        line(565);
         push_symbol(base+3);//ttarget
         push_symbol(base+5);//tdepend
         lt();
         if(!flag()) goto if_57_2;
-            line(565);
+            line(567);
             push(&TRUE);
             assign(base+6);//update
             pop();
         if_57_2:
         if_57_0:;
+        line(572);
         line(570);
-        line(568);
         push_symbol(_st_s_debug_ptr());//global
         if(!flag()) goto if_58_1;
-            line(569);
+            line(571);
             string(L"  ");
             push_symbol(base+4);//depend
             string(L"[");
@@ -2451,22 +2447,22 @@ push_call("makelib",base);
     goto lab_56_0;
     lab_56_2:;
     }
+    line(577);
     line(575);
-    line(573);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_59_1;
-        line(574);
+        line(576);
         _clp_qout(0);
         pop();
     if_59_1:
     if_59_0:;
-    line(602);
-    line(577);
+    line(604);
+    line(579);
     push_symbol(base+6);//update
     if(!flag()) goto if_60_1;
-        line(582);
+        line(584);
         {
-        line(580);
+        line(582);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -2475,7 +2471,7 @@ push_call("makelib",base);
         push_symbol(base+1);//object
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_61_2;
-            line(581);
+            line(583);
             push_symbol(base+7);//torun
             string(L" ");
             push_symbol(base+1);//object
@@ -2495,13 +2491,13 @@ push_call("makelib",base);
         goto lab_61_0;
         lab_61_2:;
         }
-        line(601);
+        line(603);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
     if_60_1:
     if_60_0:;
-    line(604);
+    line(606);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2518,7 +2514,7 @@ while(stack<base+12)PUSHNIL();
 argno=2;
 push_call("makeexe",base);
 //
-    line(610);
+    line(612);
     string(L"BUILD_EXE");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2529,11 +2525,11 @@ push_call("makeexe",base);
     add();
     assign(base+2);//target
     pop();
-    line(611);
+    line(613);
     push(&FALSE);
     assign(base+6);//update
     pop();
-    line(612);
+    line(614);
     string(L"BUILD_BAT");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2542,20 +2538,20 @@ push_call("makeexe",base);
     add();
     assign(base+7);//torun
     pop();
-    line(613);
+    line(615);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     _clp_lower(1);
     assign(base+8);//objdir
     pop();
-    line(614);
-    line(621);
     line(616);
+    line(623);
+    line(618);
     push_symbol(base+7);//torun
     _clp_file(1);
     topnot();
     if(!flag()) goto if_62_1;
-        line(617);
+        line(619);
         string(L"[");
         push_symbol(base+7);//torun
         add();
@@ -2564,40 +2560,40 @@ push_call("makeexe",base);
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(618);
+        line(620);
         _clp_qout(0);
         pop();
-        line(619);
+        line(621);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(620);
+        line(622);
         _clp___quit(0);
         pop();
     if_62_1:
     if_62_0:;
-    line(623);
+    line(625);
     push_symbol(base+2);//target
     _clp_ftime(1);
     assign(base+3);//ttarget
     pop();
+    line(628);
     line(626);
-    line(624);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
     if(!flag()) goto if_63_1;
-        line(625);
+        line(627);
         string(L"");
         assign(base+3);//ttarget
         pop();
     if_63_1:
     if_63_0:;
+    line(632);
     line(630);
-    line(628);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_64_1;
-        line(629);
+        line(631);
         push_symbol(base+2);//target
         string(L"[");
         push_symbol(base+3);//ttarget
@@ -2608,9 +2604,9 @@ push_call("makeexe",base);
         pop();
     if_64_1:
     if_64_0:;
-    line(657);
+    line(659);
     {
-    line(632);
+    line(634);
     push(&ONE);
     int sg=sign();
     push(&ZERO);
@@ -2619,20 +2615,20 @@ push_call("makeexe",base);
     push_symbol(base+1);//object
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_65_2;
-        line(638);
-        line(634);
+        line(640);
+        line(636);
         push_symbol(base+9);//n
         push(&ZERO);
         eqeq();
         if(!flag()) goto if_66_1;
-            line(635);
+            line(637);
             push_symbol(base+0);//exenam
             assign(base+4);//depend
             pop();
         goto if_66_0;
         if_66_1:
-        line(636);
-            line(637);
+        line(638);
+            line(639);
             push_symbol(base+1);//object
             push_symbol(base+9);//n
             idxr();
@@ -2640,7 +2636,7 @@ push_call("makeexe",base);
             pop();
         if_66_2:
         if_66_0:;
-        line(640);
+        line(642);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -2650,50 +2646,50 @@ push_call("makeexe",base);
         add();
         assign(base+4);//depend
         pop();
-        line(641);
+        line(643);
         push_symbol(base+4);//depend
         _clp_ftime(1);
         assign(base+5);//tdepend
         pop();
-        line(652);
-        line(643);
+        line(654);
+        line(645);
         push_symbol(base+5);//tdepend
         push(&NIL);
         eqeq();
         if(!flag()) goto if_67_1;
-            line(644);
+            line(646);
             push_symbol(base+4);//depend
             string(nls_text(L"does not exist"));
             _clp_qout(2);
             pop();
-            line(645);
+            line(647);
             _clp_qout(0);
             pop();
-            line(646);
+            line(648);
             push(&ONE);
             _clp_errorlevel(1);
             pop();
-            line(647);
+            line(649);
             _clp___quit(0);
             pop();
         goto if_67_0;
         if_67_1:
-        line(649);
+        line(651);
         push_symbol(base+3);//ttarget
         push_symbol(base+5);//tdepend
         lt();
         if(!flag()) goto if_67_2;
-            line(651);
+            line(653);
             push(&TRUE);
             assign(base+6);//update
             pop();
         if_67_2:
         if_67_0:;
+        line(658);
         line(656);
-        line(654);
         push_symbol(_st_s_debug_ptr());//global
         if(!flag()) goto if_68_1;
-            line(655);
+            line(657);
             string(L"  ");
             push_symbol(base+4);//depend
             string(L"[");
@@ -2723,20 +2719,20 @@ push_call("makeexe",base);
     goto lab_65_0;
     lab_65_2:;
     }
+    line(663);
     line(661);
-    line(659);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_69_1;
-        line(660);
+        line(662);
         _clp_qout(0);
         pop();
     if_69_1:
     if_69_0:;
-    line(694);
-    line(663);
+    line(696);
+    line(665);
     push_symbol(base+6);//update
     if(!flag()) goto if_70_1;
-        line(664);
+        line(666);
         push_symbol(base+7);//torun
         string(L" ");
         push_symbol(base+0);//exenam
@@ -2744,9 +2740,9 @@ push_call("makeexe",base);
         add();
         assign(base+7);//torun
         pop();
-        line(669);
+        line(671);
         {
-        line(667);
+        line(669);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -2755,7 +2751,7 @@ push_call("makeexe",base);
         push_symbol(base+1);//object
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_71_2;
-            line(668);
+            line(670);
             push_symbol(base+7);//torun
             string(L" ");
             push_symbol(base+1);//object
@@ -2775,13 +2771,13 @@ push_call("makeexe",base);
         goto lab_71_0;
         lab_71_2:;
         }
-        line(693);
+        line(695);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
     if_70_1:
     if_70_0:;
-    line(696);
+    line(698);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2798,7 +2794,7 @@ while(stack<base+10)PUSHNIL();
 argno=2;
 push_call("makeexe1",base);
 //
-    line(702);
+    line(704);
     string(L"BUILD_EXE");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2809,11 +2805,11 @@ push_call("makeexe1",base);
     add();
     assign(base+2);//target
     pop();
-    line(703);
+    line(705);
     push(&FALSE);
     assign(base+6);//update
     pop();
-    line(704);
+    line(706);
     string(L"BUILD_BAT");
     _clp_getenv(1);
     _clp_dirsep(0);
@@ -2822,18 +2818,18 @@ push_call("makeexe1",base);
     add();
     assign(base+7);//torun
     pop();
-    line(705);
+    line(707);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     assign(base+8);//objdir
     pop();
-    line(712);
-    line(707);
+    line(714);
+    line(709);
     push_symbol(base+7);//torun
     _clp_file(1);
     topnot();
     if(!flag()) goto if_72_1;
-        line(708);
+        line(710);
         string(L"[");
         push_symbol(base+7);//torun
         add();
@@ -2842,40 +2838,40 @@ push_call("makeexe1",base);
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(709);
+        line(711);
         _clp_qout(0);
         pop();
-        line(710);
+        line(712);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(711);
+        line(713);
         _clp___quit(0);
         pop();
     if_72_1:
     if_72_0:;
-    line(714);
+    line(716);
     push_symbol(base+2);//target
     _clp_ftime(1);
     assign(base+3);//ttarget
     pop();
+    line(719);
     line(717);
-    line(715);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
     if(!flag()) goto if_73_1;
-        line(716);
+        line(718);
         string(L"");
         assign(base+3);//ttarget
         pop();
     if_73_1:
     if_73_0:;
+    line(723);
     line(721);
-    line(719);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_74_1;
-        line(720);
+        line(722);
         push_symbol(base+2);//target
         string(L"[");
         push_symbol(base+3);//ttarget
@@ -2886,11 +2882,11 @@ push_call("makeexe1",base);
         pop();
     if_74_1:
     if_74_0:;
-    line(724);
+    line(726);
     push_symbol(base+0);//mmod
     assign(base+4);//depend
     pop();
-    line(725);
+    line(727);
     push_symbol(base+7);//torun
     string(L" ");
     push_symbol(base+4);//depend
@@ -2898,7 +2894,7 @@ push_call("makeexe1",base);
     add();
     assign(base+7);//torun
     pop();
-    line(726);
+    line(728);
     push_symbol(base+8);//objdir
     _clp_dirsep(0);
     add();
@@ -2908,50 +2904,50 @@ push_call("makeexe1",base);
     add();
     assign(base+4);//depend
     pop();
-    line(727);
+    line(729);
     push_symbol(base+4);//depend
     _clp_ftime(1);
     assign(base+5);//tdepend
     pop();
-    line(736);
-    line(729);
+    line(738);
+    line(731);
     push_symbol(base+5);//tdepend
     push(&NIL);
     eqeq();
     if(!flag()) goto if_75_1;
-        line(730);
+        line(732);
         push_symbol(base+4);//depend
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(731);
+        line(733);
         _clp_qout(0);
         pop();
-        line(732);
+        line(734);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(733);
+        line(735);
         _clp___quit(0);
         pop();
     goto if_75_0;
     if_75_1:
-    line(734);
+    line(736);
     push_symbol(base+3);//ttarget
     push_symbol(base+5);//tdepend
     lt();
     if(!flag()) goto if_75_2;
-        line(735);
+        line(737);
         push(&TRUE);
         assign(base+6);//update
         pop();
     if_75_2:
     if_75_0:;
+    line(741);
     line(739);
-    line(737);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_76_1;
-        line(738);
+        line(740);
         string(L"  ");
         push_symbol(base+4);//depend
         string(L"[");
@@ -2971,11 +2967,11 @@ push_call("makeexe1",base);
         pop();
     if_76_1:
     if_76_0:;
-    line(742);
+    line(744);
     push_symbol(base+1);//libnam
     assign(base+4);//depend
     pop();
-    line(743);
+    line(745);
     push_symbol(base+7);//torun
     string(L" ");
     push_symbol(base+4);//depend
@@ -2983,7 +2979,7 @@ push_call("makeexe1",base);
     add();
     assign(base+7);//torun
     pop();
-    line(744);
+    line(746);
     push_symbol(base+8);//objdir
     _clp_dirsep(0);
     add();
@@ -2993,50 +2989,50 @@ push_call("makeexe1",base);
     add();
     assign(base+4);//depend
     pop();
-    line(745);
+    line(747);
     push_symbol(base+4);//depend
     _clp_ftime(1);
     assign(base+5);//tdepend
     pop();
-    line(754);
-    line(747);
+    line(756);
+    line(749);
     push_symbol(base+5);//tdepend
     push(&NIL);
     eqeq();
     if(!flag()) goto if_77_1;
-        line(748);
+        line(750);
         push_symbol(base+4);//depend
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(749);
+        line(751);
         _clp_qout(0);
         pop();
-        line(750);
+        line(752);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(751);
+        line(753);
         _clp___quit(0);
         pop();
     goto if_77_0;
     if_77_1:
-    line(752);
+    line(754);
     push_symbol(base+3);//ttarget
     push_symbol(base+5);//tdepend
     lt();
     if(!flag()) goto if_77_2;
-        line(753);
+        line(755);
         push(&TRUE);
         assign(base+6);//update
         pop();
     if_77_2:
     if_77_0:;
+    line(759);
     line(757);
-    line(755);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_78_1;
-        line(756);
+        line(758);
         string(L"  ");
         push_symbol(base+4);//depend
         string(L"[");
@@ -3056,26 +3052,26 @@ push_call("makeexe1",base);
         pop();
     if_78_1:
     if_78_0:;
+    line(764);
     line(762);
-    line(760);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_79_1;
-        line(761);
+        line(763);
         _clp_qout(0);
         pop();
     if_79_1:
     if_79_0:;
+    line(768);
     line(766);
-    line(764);
     push_symbol(base+6);//update
     if(!flag()) goto if_80_1;
-        line(765);
+        line(767);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
     if_80_1:
     if_80_0:;
-    line(768);
+    line(770);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3092,35 +3088,35 @@ while(stack<base+11)PUSHNIL();
 argno=1;
 push_call("makeobj",base);
 //
-    line(774);
+    line(776);
     push_symbol(base+0);//deplist
     idxr0(1);
     assign(base+1);//target
     pop();
-    line(775);
+    line(777);
     push_symbol(base+0);//deplist
     idxr0(2);
     assign(base+2);//depend
     pop();
-    line(776);
+    line(778);
     string(L"BUILD_OBJ");
     _clp_getenv(1);
     assign(base+3);//objdir
     pop();
-    line(777);
-    line(778);
+    line(779);
+    line(780);
     push(&FALSE);
     assign(base+6);//update
     pop();
-    line(779);
-    line(783);
     line(781);
+    line(785);
+    line(783);
     push_symbol(base+1);//target
     _clp_fext(1);
     string(L".obj");
     eqeq();
     if(!flag()) goto if_81_1;
-        line(782);
+        line(784);
         push_symbol(base+3);//objdir
         _clp_dirsep(0);
         add();
@@ -3134,28 +3130,28 @@ push_call("makeobj",base);
         pop();
     if_81_1:
     if_81_0:;
-    line(785);
+    line(787);
     push_symbol(base+1);//target
     _clp_ftime(1);
     assign(base+4);//ttarget
     pop();
+    line(790);
     line(788);
-    line(786);
     push_symbol(base+4);//ttarget
     push(&NIL);
     eqeq();
     if(!flag()) goto if_82_1;
-        line(787);
+        line(789);
         string(L"");
         assign(base+4);//ttarget
         pop();
     if_82_1:
     if_82_0:;
+    line(794);
     line(792);
-    line(790);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_83_1;
-        line(791);
+        line(793);
         push_symbol(base+1);//target
         string(L"[");
         push_symbol(base+4);//ttarget
@@ -3166,9 +3162,9 @@ push_call("makeobj",base);
         pop();
     if_83_1:
     if_83_0:;
-    line(812);
+    line(814);
     {
-    line(794);
+    line(796);
     push(&ONE);
     int sg=sign();
     number(2);
@@ -3177,58 +3173,58 @@ push_call("makeobj",base);
     push_symbol(base+0);//deplist
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_84_2;
-        line(795);
+        line(797);
         push_symbol(base+0);//deplist
         push_symbol(base+8);//n
         idxr();
         assign(base+2);//depend
         pop();
-        line(796);
+        line(798);
         push_symbol(base+2);//depend
         _clp_ftime(1);
         assign(base+5);//tdepend
         pop();
-        line(807);
-        line(798);
+        line(809);
+        line(800);
         push_symbol(base+5);//tdepend
         push(&NIL);
         eqeq();
         if(!flag()) goto if_85_1;
-            line(799);
+            line(801);
             push_symbol(base+0);//deplist
             push_symbol(base+8);//n
             idxr();
             string(nls_text(L"does not exist"));
             _clp_qout(2);
             pop();
-            line(800);
+            line(802);
             _clp_qout(0);
             pop();
-            line(801);
+            line(803);
             push(&ONE);
             _clp_errorlevel(1);
             pop();
-            line(802);
+            line(804);
             _clp___quit(0);
             pop();
         goto if_85_0;
         if_85_1:
-        line(804);
+        line(806);
         push_symbol(base+4);//ttarget
         push_symbol(base+5);//tdepend
         lt();
         if(!flag()) goto if_85_2;
-            line(806);
+            line(808);
             push(&TRUE);
             assign(base+6);//update
             pop();
         if_85_2:
         if_85_0:;
+        line(813);
         line(811);
-        line(809);
         push_symbol(_st_s_debug_ptr());//global
         if(!flag()) goto if_86_1;
-            line(810);
+            line(812);
             string(L"  ");
             push_symbol(base+2);//depend
             string(L"[");
@@ -3258,27 +3254,27 @@ push_call("makeobj",base);
     goto lab_84_0;
     lab_84_2:;
     }
+    line(819);
     line(817);
-    line(815);
     push_symbol(_st_s_debug_ptr());//global
     if(!flag()) goto if_87_1;
-        line(816);
+        line(818);
         _clp_qout(0);
         pop();
     if_87_1:
     if_87_0:;
-    line(837);
-    line(820);
+    line(839);
+    line(822);
     push_symbol(base+6);//update
     if(!flag()) goto if_88_1;
-        line(822);
+        line(824);
         string(L"BUILD_BAT");
         _clp_getenv(1);
         _clp_dirsep(0);
         add();
         assign(base+7);//torun
         pop();
-        line(823);
+        line(825);
         push_symbol(base+7);//torun
         push_symbol(base+0);//deplist
         idxr0(2);
@@ -3295,19 +3291,19 @@ push_call("makeobj",base);
         add();
         assign(base+7);//torun
         pop();
-        line(824);
+        line(826);
         push_symbol(base+7);//torun
         string(L".bat");
         add();
         assign(base+7);//torun
         pop();
-        line(831);
-        line(826);
+        line(833);
+        line(828);
         push_symbol(base+7);//torun
         _clp_file(1);
         topnot();
         if(!flag()) goto if_89_1;
-            line(827);
+            line(829);
             string(L"[");
             push_symbol(base+7);//torun
             add();
@@ -3316,25 +3312,25 @@ push_call("makeobj",base);
             string(nls_text(L"does not exist"));
             _clp_qout(2);
             pop();
-            line(828);
+            line(830);
             _clp_qout(0);
             pop();
-            line(829);
+            line(831);
             push(&ONE);
             _clp_errorlevel(1);
             pop();
-            line(830);
+            line(832);
             _clp___quit(0);
             pop();
         if_89_1:
         if_89_0:;
-        line(833);
+        line(835);
         push_symbol(base+0);//deplist
         idxr0(1);
         _clp_fname(1);
         assign(base+9);//p1
         pop();
-        line(834);
+        line(836);
         push_symbol(base+0);//deplist
         idxr0(2);
         _clp_fpath0(1);
@@ -3349,7 +3345,7 @@ push_call("makeobj",base);
         }
         assign(base+10);//p2
         pop();
-        line(836);
+        line(838);
         push_symbol(base+7);//torun
         string(L" ");
         add();
@@ -3363,7 +3359,7 @@ push_call("makeobj",base);
         pop();
     if_88_1:
     if_88_0:;
-    line(839);
+    line(841);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3380,28 +3376,28 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("run1",base);
 //
-    line(846);
+    line(848);
     push_symbol(base+0);//cmd
     _clp_run(1);
     pop();
-    line(856);
-    line(848);
+    line(858);
+    line(850);
     string(L"error");
     _clp_file(1);
     if(!flag()) goto if_90_1;
-        line(850);
+        line(852);
         string(L"cat error");
         _clp_run(1);
         pop();
-        line(854);
+        line(856);
         _clp_qout(0);
         pop();
-        line(855);
+        line(857);
         _clp___quit(0);
         pop();
     if_90_1:
     if_90_0:;
-    line(858);
+    line(860);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3418,19 +3414,19 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("ftime",base);
 //
-    line(863);
+    line(865);
     push_symbol(base+0);//fspec
     _clp_directory(1);
     assign(base+1);//d
     pop();
+    line(868);
     line(866);
-    line(864);
     push_symbol(base+1);//d
     _clp_len(1);
     push(&ONE);
     eqeq();
     if(!flag()) goto if_91_1;
-        line(865);
+        line(867);
         push_symbol(base+1);//d
         idxr0(1);
         idxr0(3);
@@ -3444,7 +3440,7 @@ push_call("ftime",base);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_91_1:
     if_91_0:;
-    line(867);
+    line(869);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3461,32 +3457,32 @@ while(stack<base+12)PUSHNIL();
 argno=4;
 push_call("search_include",base);
 //
-    line(873);
+    line(875);
     number(10);
     _clp_chr(1);
     assign(base+4);//nl
     pop();
-    line(874);
+    line(876);
     push_symbol(base+4);//nl
     string(L"#include");
     add();
     assign(base+5);//include
     pop();
-    line(875);
+    line(877);
     push_symbol(base+5);//include
     _clp_len(1);
     assign(base+6);//lenincl
     pop();
-    line(876);
     line(878);
+    line(880);
     push_symbol(base+4);//nl
     push_symbol(base+0);//txt
     add();
     assign(base+0);//txt
     pop();
-    line(901);
+    line(903);
     lab_92_1:
-    line(880);
+    line(882);
     push_symbol(base+5);//include
     push_symbol(base+0);//txt
     _clp_at(2);
@@ -3494,7 +3490,7 @@ push_call("search_include",base);
     push(&ZERO);
     gt();
     if(!flag()) goto lab_92_2;
-        line(882);
+        line(884);
         string(L"\"");
         push_symbol(base+0);//txt
         push_symbol(base+7);//n
@@ -3503,7 +3499,7 @@ push_call("search_include",base);
         _clp_at(3);
         assign(base+8);//n1
         pop();
-        line(883);
+        line(885);
         string(L"\"");
         push_symbol(base+0);//txt
         push_symbol(base+8);//n1
@@ -3511,7 +3507,7 @@ push_call("search_include",base);
         _clp_at(3);
         assign(base+9);//n2
         pop();
-        line(884);
+        line(886);
         push_symbol(base+4);//nl
         push_symbol(base+0);//txt
         push_symbol(base+7);//n
@@ -3520,8 +3516,8 @@ push_call("search_include",base);
         _clp_at(3);
         assign(base+10);//n3
         pop();
-        line(898);
-        line(886);
+        line(900);
+        line(888);
         push_symbol(base+8);//n1
         push_symbol(base+9);//n2
         lt();
@@ -3533,7 +3529,7 @@ push_call("search_include",base);
         lt();
         }
         if(!flag()) goto if_93_1;
-            line(887);
+            line(889);
             push_symbol(base+0);//txt
             push_symbol(base+8);//n1
             addnum(1);
@@ -3544,8 +3540,8 @@ push_call("search_include",base);
             _clp_substr(3);
             assign(base+11);//f
             pop();
-            line(897);
-            line(889);
+            line(899);
+            line(891);
             push_symbol(base+11);//f
             push_symbol(base+1);//dep
             push_symbol(base+2);//dir
@@ -3554,7 +3550,7 @@ push_call("search_include",base);
             if(!flag()) goto if_94_1;
             goto if_94_0;
             if_94_1:
-            line(892);
+            line(894);
             push_symbol(base+11);//f
             push_symbol(base+1);//dep
             push_symbol(base+2);//dir
@@ -3563,12 +3559,12 @@ push_call("search_include",base);
             if(!flag()) goto if_94_2;
             goto if_94_0;
             if_94_2:
-            line(895);
+            line(897);
             if_94_3:
             if_94_0:;
         if_93_1:
         if_93_0:;
-        line(900);
+        line(902);
         push_symbol(base+0);//txt
         push_symbol(base+10);//n3
         _clp_substr(2);
@@ -3576,7 +3572,7 @@ push_call("search_include",base);
         pop();
     goto lab_92_1;
     lab_92_2:;
-    line(902);
+    line(904);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3593,34 +3589,34 @@ while(stack<base+13)PUSHNIL();
 argno=0;
 push_call("search_library",base);
 //
-    line(910);
+    line(912);
     string(L"BUILD_LPT");
     _clp_getenv(1);
     string(L" ");
     _clp_split(2);
     assign(base+0);//dirlist
     pop();
-    line(911);
+    line(913);
     string(L"BUILD_LIB");
     _clp_getenv(1);
     string(L" ");
     _clp_split(2);
     assign(base+1);//liblist
     pop();
-    line(912);
+    line(914);
     string(L"BUILD_SHR");
     _clp_getenv(1);
     _clp_lower(1);
     assign(base+2);//sharing
     pop();
-    line(914);
+    line(916);
     string(L"");
     assign(base+5);//txt
     pop();
-    line(915);
-    line(991);
+    line(917);
+    line(993);
     {
-    line(918);
+    line(920);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -3629,20 +3625,20 @@ push_call("search_library",base);
     push_symbol(base+1);//liblist
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_95_2;
+        line(924);
         line(922);
-        line(920);
         push_symbol(base+1);//liblist
         push_symbol(base+3);//n
         idxr();
         assign(base+6);//f0
         _clp_empty(1);
         if(!flag()) goto if_96_1;
-            line(921);
+            line(923);
             goto lab_95_1;//loop
         if_96_1:
         if_96_0:;
-        line(934);
-        line(924);
+        line(936);
+        line(926);
         string(L".lib");
         push_symbol(base+6);//f0
         ss();
@@ -3661,28 +3657,28 @@ push_call("search_library",base);
         ss();
         }
         if(!flag()) goto if_97_1;
-            line(925);
+            line(927);
             push_symbol(base+6);//f0
             assign(base+7);//f1
             pop();
-            line(926);
+            line(928);
             push_symbol(base+6);//f0
             assign(base+8);//f2
             pop();
-            line(927);
+            line(929);
             push_symbol(base+6);//f0
             assign(base+9);//f3
             pop();
         goto if_97_0;
         if_97_1:
-        line(928);
-            line(929);
+        line(930);
+            line(931);
             push_symbol(base+6);//f0
             string(L".lib");
             add();
             assign(base+7);//f1
             pop();
-            line(932);
+            line(934);
             push_symbol(base+6);//f0
             _clp_fpath(1);
             string(L"lib");
@@ -3694,7 +3690,7 @@ push_call("search_library",base);
             add();
             assign(base+8);//f2
             pop();
-            line(933);
+            line(935);
             push_symbol(base+6);//f0
             _clp_fpath(1);
             string(L"lib");
@@ -3708,9 +3704,9 @@ push_call("search_library",base);
             pop();
         if_97_2:
         if_97_0:;
-        line(986);
+        line(988);
         {
-        line(936);
+        line(938);
         push(&ONE);
         int sg=sign();
         push(&ZERO);
@@ -3719,39 +3715,39 @@ push_call("search_library",base);
         push_symbol(base+0);//dirlist
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_98_2;
-            line(950);
-            line(938);
+            line(952);
+            line(940);
             push_symbol(base+4);//i
             push(&ZERO);
             lteq();
             if(!flag()) goto if_99_1;
-                line(939);
+                line(941);
                 push_symbol(base+7);//f1
                 assign(base+10);//pf1
                 pop();
-                line(940);
+                line(942);
                 push_symbol(base+8);//f2
                 assign(base+11);//pf2
                 pop();
-                line(941);
+                line(943);
                 push_symbol(base+9);//f3
                 assign(base+12);//pf3
                 pop();
             goto if_99_0;
             if_99_1:
-            line(942);
+            line(944);
+                line(947);
                 line(945);
-                line(943);
                 push_symbol(base+0);//dirlist
                 push_symbol(base+4);//i
                 idxr();
                 _clp_empty(1);
                 if(!flag()) goto if_100_1;
-                    line(944);
+                    line(946);
                     goto lab_98_1;//loop
                 if_100_1:
                 if_100_0:;
-                line(947);
+                line(949);
                 push_symbol(base+0);//dirlist
                 push_symbol(base+4);//i
                 idxr();
@@ -3761,7 +3757,7 @@ push_call("search_library",base);
                 add();
                 assign(base+10);//pf1
                 pop();
-                line(948);
+                line(950);
                 push_symbol(base+0);//dirlist
                 push_symbol(base+4);//i
                 idxr();
@@ -3771,7 +3767,7 @@ push_call("search_library",base);
                 add();
                 assign(base+11);//pf2
                 pop();
-                line(949);
+                line(951);
                 push_symbol(base+0);//dirlist
                 push_symbol(base+4);//i
                 idxr();
@@ -3783,18 +3779,18 @@ push_call("search_library",base);
                 pop();
             if_99_2:
             if_99_0:;
-            line(985);
-            line(956);
+            line(987);
+            line(958);
             string(L"static");
             push_symbol(base+2);//sharing
             ss();
             if(!flag()) goto if_101_1;
-                line(969);
-                line(960);
+                line(971);
+                line(962);
                 push_symbol(base+10);//pf1
                 _clp_file(1);
                 if(!flag()) goto if_102_1;
-                    line(961);
+                    line(963);
                     push_symbol(base+5);//txt
                     push_symbol(base+10);//pf1
                     string(L" ");
@@ -3802,15 +3798,15 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(962);
+                    line(964);
                     goto lab_98_2;//exit
                 goto if_102_0;
                 if_102_1:
-                line(963);
+                line(965);
                 push_symbol(base+11);//pf2
                 _clp_file(1);
                 if(!flag()) goto if_102_2;
-                    line(964);
+                    line(966);
                     push_symbol(base+5);//txt
                     push_symbol(base+11);//pf2
                     string(L" ");
@@ -3818,15 +3814,15 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(965);
+                    line(967);
                     goto lab_98_2;//exit
                 goto if_102_0;
                 if_102_2:
-                line(966);
+                line(968);
                 push_symbol(base+12);//pf3
                 _clp_file(1);
                 if(!flag()) goto if_102_3;
-                    line(967);
+                    line(969);
                     push_symbol(base+5);//txt
                     push_symbol(base+12);//pf3
                     string(L" ");
@@ -3834,19 +3830,19 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(968);
+                    line(970);
                     goto lab_98_2;//exit
                 if_102_3:
                 if_102_0:;
             goto if_101_0;
             if_101_1:
-            line(971);
-                line(984);
-                line(975);
+            line(973);
+                line(986);
+                line(977);
                 push_symbol(base+12);//pf3
                 _clp_file(1);
                 if(!flag()) goto if_103_1;
-                    line(976);
+                    line(978);
                     push_symbol(base+5);//txt
                     push_symbol(base+12);//pf3
                     string(L" ");
@@ -3854,15 +3850,15 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(977);
+                    line(979);
                     goto lab_98_2;//exit
                 goto if_103_0;
                 if_103_1:
-                line(978);
+                line(980);
                 push_symbol(base+10);//pf1
                 _clp_file(1);
                 if(!flag()) goto if_103_2;
-                    line(979);
+                    line(981);
                     push_symbol(base+5);//txt
                     push_symbol(base+10);//pf1
                     string(L" ");
@@ -3870,15 +3866,15 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(980);
+                    line(982);
                     goto lab_98_2;//exit
                 goto if_103_0;
                 if_103_2:
-                line(981);
+                line(983);
                 push_symbol(base+11);//pf2
                 _clp_file(1);
                 if(!flag()) goto if_103_3;
-                    line(982);
+                    line(984);
                     push_symbol(base+5);//txt
                     push_symbol(base+11);//pf2
                     string(L" ");
@@ -3886,7 +3882,7 @@ push_call("search_library",base);
                     add();
                     assign(base+5);//txt
                     pop();
-                    line(983);
+                    line(985);
                     goto lab_98_2;//exit
                 if_103_3:
                 if_103_0:;
@@ -3902,14 +3898,14 @@ push_call("search_library",base);
         goto lab_98_0;
         lab_98_2:;
         }
+        line(992);
         line(990);
-        line(988);
         push_symbol(base+4);//i
         push_symbol(base+0);//dirlist
         _clp_len(1);
         gt();
         if(!flag()) goto if_104_1;
-            line(989);
+            line(991);
             push_symbol(base+5);//txt
             push_symbol(base+6);//f0
             string(L" ");
@@ -3929,7 +3925,7 @@ push_call("search_library",base);
     goto lab_95_0;
     lab_95_2:;
     }
-    line(993);
+    line(995);
     push_symbol(base+5);//txt
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -3946,10 +3942,10 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("search_file",base);
 //
-    line(998);
-    line(1005);
-    {
     line(1000);
+    line(1007);
+    {
+    line(1002);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -3958,7 +3954,7 @@ push_call("search_file",base);
     push_symbol(base+0);//dirlist
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_105_2;
-        line(1001);
+        line(1003);
         push_symbol(base+0);//dirlist
         push_symbol(base+2);//n
         idxr();
@@ -3968,12 +3964,12 @@ push_call("search_file",base);
         add();
         assign(base+3);//pathname
         pop();
+        line(1006);
         line(1004);
-        line(1002);
         push_symbol(base+3);//pathname
         _clp_file(1);
         if(!flag()) goto if_106_1;
-            line(1003);
+            line(1005);
             push_symbol(base+3);//pathname
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         if_106_1:
@@ -3988,7 +3984,7 @@ push_call("search_file",base);
     goto lab_105_0;
     lab_105_2:;
     }
-    line(1006);
+    line(1008);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -4005,22 +4001,22 @@ while(stack<base+10)PUSHNIL();
 argno=4;
 push_call("byrules",base);
 //
-    line(1017);
+    line(1019);
     push_symbol(base+0);//fil
     _clp_fname(1);
     assign(base+4);//f
     pop();
-    line(1018);
+    line(1020);
     push_symbol(base+0);//fil
     _clp_fext(1);
     assign(base+5);//e
     pop();
-    line(1019);
-    line(1020);
     line(1021);
-    line(1040);
-    {
+    line(1022);
     line(1023);
+    line(1042);
+    {
+    line(1025);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -4029,8 +4025,8 @@ push_call("byrules",base);
     push_symbol(_st_s_rules_ptr());//global
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_107_2;
-        line(1039);
-        line(1025);
+        line(1041);
+        line(1027);
         push_symbol(_st_s_rules_ptr());//global
         push_symbol(base+9);//i
         idxr();
@@ -4038,15 +4034,15 @@ push_call("byrules",base);
         push_symbol(base+5);//e
         eqeq();
         if(!flag()) goto if_108_1;
-            line(1027);
+            line(1029);
             push_symbol(_st_s_rules_ptr());//global
             push_symbol(base+9);//i
             idxr();
             idxr0(1);
             assign(base+8);//e0
             pop();
-            line(1038);
-            line(1031);
+            line(1040);
+            line(1033);
             push(&NIL);
             push_symbol(base+2);//dir
             push_symbol(base+4);//f
@@ -4056,12 +4052,12 @@ push_call("byrules",base);
             assign(base+7);//r
             neeq();
             if(!flag()) goto if_109_1;
-                line(1032);
+                line(1034);
                 push_symbol(base+7);//r
                 _clp_fpath(1);
                 assign(base+6);//p
                 pop();
-                line(1033);
+                line(1035);
                 push_symbol(base+1);//dep
                 push_symbol(base+6);//p
                 push_symbol(base+4);//f
@@ -4070,8 +4066,8 @@ push_call("byrules",base);
                 add();
                 _clp_aadd(2);
                 pop();
+                line(1038);
                 line(1036);
-                line(1034);
                 push(&ZERO);
                 push_symbol(base+3);//todo
                 push_symbol_ref(base+6);//p
@@ -4081,7 +4077,7 @@ push_call("byrules",base);
                 _clp_ascan(2);
                 eqeq();
                 if(!flag()) goto if_110_1;
-                    line(1035);
+                    line(1037);
                     push_symbol(base+3);//todo
                     push_symbol(base+6);//p
                     push_symbol(base+4);//f
@@ -4098,7 +4094,7 @@ push_call("byrules",base);
                     pop();
                 if_110_1:
                 if_110_0:;
-                line(1037);
+                line(1039);
                 push(&TRUE);
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             if_109_1:
@@ -4115,7 +4111,7 @@ push_call("byrules",base);
     goto lab_107_0;
     lab_107_2:;
     }
-    line(1041);
+    line(1043);
     push(&FALSE);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -4153,29 +4149,29 @@ while(stack<base+5)PUSHNIL();
 argno=4;
 push_call("byhand",base);
 //
-    line(1052);
+    line(1054);
     push_symbol(base+2);//dir
     push_symbol(base+0);//f
     _clp_search_file(2);
     assign(base+4);//pn
     pop();
-    line(1057);
-    line(1054);
+    line(1059);
+    line(1056);
     push_symbol(base+4);//pn
     push(&NIL);
     neeq();
     if(!flag()) goto if_111_1;
-        line(1055);
+        line(1057);
         push_symbol(base+1);//dep
         push_symbol(base+4);//pn
         _clp_aadd(2);
         pop();
-        line(1056);
+        line(1058);
         push(&TRUE);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_111_1:
     if_111_0:;
-    line(1058);
+    line(1060);
     push(&FALSE);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -4192,7 +4188,7 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("psort",base);
 //
-    line(1063);
+    line(1065);
     push_symbol(base+0);//x
     idxr0(2);
     _clp_fext(1);
@@ -4202,7 +4198,7 @@ push_call("psort",base);
     _clp_ruleidx(2);
     assign(base+2);//ix
     pop();
-    line(1064);
+    line(1066);
     push_symbol(base+1);//y
     idxr0(2);
     _clp_fext(1);
@@ -4212,7 +4208,7 @@ push_call("psort",base);
     _clp_ruleidx(2);
     assign(base+3);//iy
     pop();
-    line(1065);
+    line(1067);
     push_symbol(base+2);//ix
     push_symbol(base+3);//iy
     eqeq();
@@ -4242,10 +4238,10 @@ while(stack<base+3)PUSHNIL();
 argno=2;
 push_call("ruleidx",base);
 //
-    line(1070);
-    line(1075);
+    line(1072);
+    line(1077);
     {
-    line(1071);
+    line(1073);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -4254,8 +4250,8 @@ push_call("ruleidx",base);
     push_symbol(_st_s_rules_ptr());//global
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_112_2;
+        line(1076);
         line(1074);
-        line(1072);
         push_symbol(base+0);//e1
         push_symbol(_st_s_rules_ptr());//global
         push_symbol(base+2);//n
@@ -4273,7 +4269,7 @@ push_call("ruleidx",base);
         eqeq();
         }
         if(!flag()) goto if_113_1;
-            line(1073);
+            line(1075);
             push_symbol(base+2);//n
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         if_113_1:
@@ -4288,7 +4284,7 @@ push_call("ruleidx",base);
     goto lab_112_0;
     lab_112_2:;
     }
-    line(1076);
+    line(1078);
     push(&ZERO);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -4305,10 +4301,10 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("xsplit",base);
 //
-    line(1081);
-    line(1091);
+    line(1083);
+    line(1093);
     {
-    line(1082);
+    line(1084);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -4317,27 +4313,27 @@ push_call("xsplit",base);
     push_symbol(base+1);//sep
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_114_2;
-        line(1084);
+        line(1086);
         push_symbol(base+1);//sep
         push_symbol(base+2);//n
         push(&ONE);
         _clp_substr(3);
         assign(base+3);//s
         pop();
-        line(1090);
-        line(1086);
+        line(1092);
+        line(1088);
         push(&ZERO);
         push_symbol(base+3);//s
         push_symbol(base+0);//txt
         _clp_at(2);
         lt();
         if(!flag()) goto if_115_1;
-            line(1087);
+            line(1089);
             goto lab_114_2;//exit
         goto if_115_0;
         if_115_1:
-        line(1088);
-            line(1089);
+        line(1090);
+            line(1091);
             push(&NIL);
             assign(base+3);//s
             pop();
@@ -4353,7 +4349,7 @@ push_call("xsplit",base);
     goto lab_114_0;
     lab_114_2:;
     }
-    line(1092);
+    line(1094);
     push_symbol(base+0);//txt
     push_symbol(base+3);//s
     _clp_split(2);

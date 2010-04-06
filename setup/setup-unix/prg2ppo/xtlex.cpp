@@ -502,7 +502,7 @@ static unsigned bufidx;
 //a generalt kodban:
 //#define ECHO (void) fwrite( yytext, yyleng, 1, yyout ) 
 //gcc 4.3.2 warning: ignoring return value
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+//#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
 
 #define YY_NEVER_INTERACTIVE  1
  
@@ -627,7 +627,8 @@ YY_MALLOC_DECL
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (0==fwrite(yytext,yyleng,1,yyout))
+static int yy_ignored_retcode;
+#define ECHO (yy_ignored_retcode=fwrite(yytext,yyleng,1,yyout))
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -701,7 +702,7 @@ YY_DECL
 #line 105 "./xtlex.lex"
 
 
-#line 705 "ppo/xtlex.cpp"
+#line 706 "ppo/xtlex.cpp"
 
      if ( yy_init )
              {
@@ -881,7 +882,7 @@ YY_RULE_SETUP
 #line 129 "./xtlex.lex"
 ECHO;
 	YY_BREAK
-#line 885 "ppo/xtlex.cpp"
+#line 886 "ppo/xtlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(raw):
 	yyterminate();

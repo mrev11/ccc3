@@ -31,7 +31,8 @@
 #endif
 
 
-#define MAXBUFLEN      400000
+#define BUFLEN32       100000
+#define MAXBUFLEN      (BUFLEN32*sizeof(network_uint32_t))
 
 #define FP_CONSOLE     0  
 #define FP_PRINTER     1
@@ -41,7 +42,8 @@
 #define SIZEQOUT       5
 
 static SOCKET sck;
-static char  iobuffer[MAXBUFLEN];
+static network_uint32_t iobuf32[BUFLEN32];
+static char *iobuffer=(char*)iobuf32;
 static FILE *qout[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
 static char *localname(int fp,char *fname);
 
@@ -52,7 +54,7 @@ extern void setcursoron(void);
 extern void setcaption(char *cap);
 extern void invalidate(int,int,int,int);
 
-#define IOBUFFER(x)     (((network_uint32_t*)iobuffer)[x])
+#define IOBUFFER(x)     (iobuf32[x])
 #define CMDCODE         IOBUFFER(0)
 #define DATALEN         IOBUFFER(1)
 #define PARAM(x)        IOBUFFER(2+x)
@@ -167,6 +169,10 @@ void tcpio_ini(const char *host, int port)
     {
         //terminal hostname port
         sck=client_socket(host,port);
+        if( (int)sck<0 )
+        {
+            error("connection failed");
+        }
     }
     else
     {
@@ -363,7 +369,7 @@ void *tcpio_thread(void*arg)
                 int len=DATALEN.get()-param_size;
                 if( (0<=fp) && (fp<SIZEQOUT) && (qout[fp]!=NULL) )
                 {
-                    0==fwrite(data,1,len,qout[fp]);
+                    int retcode=fwrite(data,1,len,qout[fp]);
                     fflush(qout[fp]);
                 }
                 //printf("\nTERMCMD_WRITE %d %d\n",fp,len);fflush(0);

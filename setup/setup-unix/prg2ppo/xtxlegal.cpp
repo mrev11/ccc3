@@ -1,28 +1,3 @@
-
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-//Vermes M.
-//signed/unsigned comparison warning elkerülése,
-//hogy cpp-ként is warning mentesen forduljon.
-//void xtxlegalTrace(FILE *TraceFILE, const char *zTracePrompt);
-
 /* Driver template for the LEMON parser generator.
 ** The author disclaims copyright to this source code.
 */
@@ -281,7 +256,7 @@ void _clp_xtxlegal(int argno)
 
 //---------------------------------------------------------------------------
 
-#line 266 "./xtxlegal.c"
+#line 260 "./xtxlegal.c"
 /* Next is all token values, in a form suitable for use by makeheaders.
 ** This section will be null unless lemon is run with the -m switch.
 */
@@ -662,6 +637,8 @@ struct yyParser {
   int yyerrcnt;                 /* Shifts left before out of the error */
   xtxlegalARG_SDECL                /* A place to hold %extra_argument */
   yyStackEntry yystack[YYSTACKDEPTH];  /* The parser's stack */
+  int xxmajor;                  /* The symbol code for the token */
+  YYMINORTYPE xxminor;          /* The value for the token */
 };
 typedef struct yyParser yyParser;
 
@@ -694,9 +671,6 @@ void xtxlegalTrace(FILE *TraceFILE, const char *zTracePrompt){
   yyTracePrompt = zTracePrompt;
   if( yyTraceFILE==0 ) yyTracePrompt = 0;
   else if( yyTracePrompt==0 ) yyTraceFILE = 0;
-}
-void xtxlegalTrace(FILE *TraceFILE, char *zTracePrompt){
-  xtxlegalTrace(TraceFILE, (const char*) zTracePrompt);
 }
 #endif /* NDEBUG */
 
@@ -892,6 +866,10 @@ void xtxlegalFree(
   yyParser *pParser = (yyParser*)p;
   if( pParser==0 ) return;
   while( pParser->yyidx>=0 ) yy_pop_parser_stack(pParser);
+  if(pParser->xxmajor)
+  {
+      yy_destructor(pParser->xxmajor,&pParser->xxminor);
+  }
   (*freeProc)((void*)pParser);
 }
 
@@ -1126,136 +1104,136 @@ static void yy_reduce(
       case 1:
 #line 291 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[0].minor.yy0,yymsp[0].minor.yy0);}
-#line 1110 "./xtxlegal.c"
+#line 1107 "./xtxlegal.c"
         break;
       case 2:
 #line 293 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1115 "./xtxlegal.c"
+#line 1112 "./xtxlegal.c"
         break;
       case 3:
 #line 294 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1120 "./xtxlegal.c"
+#line 1117 "./xtxlegal.c"
         break;
       case 4:
 #line 296 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1125 "./xtxlegal.c"
+#line 1122 "./xtxlegal.c"
         break;
       case 5:
 #line 297 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1130 "./xtxlegal.c"
+#line 1127 "./xtxlegal.c"
         break;
       case 6:
 #line 298 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1135 "./xtxlegal.c"
+#line 1132 "./xtxlegal.c"
         break;
       case 7:
 #line 299 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1140 "./xtxlegal.c"
+#line 1137 "./xtxlegal.c"
         break;
       case 8:
 #line 300 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1145 "./xtxlegal.c"
+#line 1142 "./xtxlegal.c"
         break;
       case 9:
 #line 301 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1150 "./xtxlegal.c"
+#line 1147 "./xtxlegal.c"
         break;
       case 10:
 #line 302 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-1].minor.yy0,yymsp[0].minor.yy0);}
-#line 1155 "./xtxlegal.c"
+#line 1152 "./xtxlegal.c"
         break;
       case 11:
 #line 304 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1160 "./xtxlegal.c"
+#line 1157 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         break;
       case 12:
 #line 305 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1166 "./xtxlegal.c"
+#line 1163 "./xtxlegal.c"
         /* No destructor defined for PLUS */
         break;
       case 13:
 #line 307 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1172 "./xtxlegal.c"
+#line 1169 "./xtxlegal.c"
         /* No destructor defined for PLUS */
         break;
       case 14:
 #line 308 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1178 "./xtxlegal.c"
+#line 1175 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         break;
       case 15:
 #line 309 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1184 "./xtxlegal.c"
+#line 1181 "./xtxlegal.c"
         /* No destructor defined for STAR */
         break;
       case 16:
 #line 310 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1190 "./xtxlegal.c"
+#line 1187 "./xtxlegal.c"
         /* No destructor defined for SLASH */
         break;
       case 17:
 #line 311 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1196 "./xtxlegal.c"
+#line 1193 "./xtxlegal.c"
         /* No destructor defined for MODULO */
         break;
       case 18:
 #line 312 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1202 "./xtxlegal.c"
+#line 1199 "./xtxlegal.c"
         /* No destructor defined for POWER */
         break;
       case 19:
 #line 313 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1208 "./xtxlegal.c"
+#line 1205 "./xtxlegal.c"
         /* No destructor defined for DOLLAR */
         break;
       case 20:
 #line 314 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1214 "./xtxlegal.c"
+#line 1211 "./xtxlegal.c"
         /* No destructor defined for GT */
         break;
       case 21:
 #line 315 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1220 "./xtxlegal.c"
+#line 1217 "./xtxlegal.c"
         /* No destructor defined for LT */
         break;
       case 22:
 #line 316 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1226 "./xtxlegal.c"
+#line 1223 "./xtxlegal.c"
         /* No destructor defined for COLON */
         break;
       case 23:
 #line 317 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1232 "./xtxlegal.c"
+#line 1229 "./xtxlegal.c"
         /* No destructor defined for COLON */
         /* No destructor defined for COLON */
         break;
       case 24:
 #line 318 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
-#line 1239 "./xtxlegal.c"
+#line 1236 "./xtxlegal.c"
         /* No destructor defined for COLON */
         /* No destructor defined for COLON */
         /* No destructor defined for EQUAL */
@@ -1263,130 +1241,130 @@ static void yy_reduce(
       case 25:
 #line 319 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1247 "./xtxlegal.c"
+#line 1244 "./xtxlegal.c"
         /* No destructor defined for DOT */
         break;
       case 26:
 #line 320 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1253 "./xtxlegal.c"
+#line 1250 "./xtxlegal.c"
         /* No destructor defined for BSLASH */
         break;
       case 27:
 #line 322 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1259 "./xtxlegal.c"
+#line 1256 "./xtxlegal.c"
         /* No destructor defined for COLON */
         /* No destructor defined for EQUAL */
         break;
       case 28:
 #line 323 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1266 "./xtxlegal.c"
+#line 1263 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         /* No destructor defined for GT */
         break;
       case 29:
 #line 324 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1273 "./xtxlegal.c"
+#line 1270 "./xtxlegal.c"
         /* No destructor defined for EQUAL */
         /* No destructor defined for EQUAL */
         break;
       case 30:
 #line 325 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1280 "./xtxlegal.c"
+#line 1277 "./xtxlegal.c"
         /* No destructor defined for LT */
         /* No destructor defined for EQUAL */
         break;
       case 31:
 #line 326 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1287 "./xtxlegal.c"
+#line 1284 "./xtxlegal.c"
         /* No destructor defined for GT */
         /* No destructor defined for EQUAL */
         break;
       case 32:
 #line 327 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1294 "./xtxlegal.c"
+#line 1291 "./xtxlegal.c"
         /* No destructor defined for EXCL */
         /* No destructor defined for EQUAL */
         break;
       case 33:
 #line 328 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1301 "./xtxlegal.c"
+#line 1298 "./xtxlegal.c"
         /* No destructor defined for PLUS */
         /* No destructor defined for EQUAL */
         break;
       case 34:
 #line 329 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1308 "./xtxlegal.c"
+#line 1305 "./xtxlegal.c"
         /* No destructor defined for MINUS */
         /* No destructor defined for EQUAL */
         break;
       case 35:
 #line 330 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1315 "./xtxlegal.c"
+#line 1312 "./xtxlegal.c"
         /* No destructor defined for STAR */
         /* No destructor defined for EQUAL */
         break;
       case 36:
 #line 331 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1322 "./xtxlegal.c"
+#line 1319 "./xtxlegal.c"
         /* No destructor defined for SLASH */
         /* No destructor defined for EQUAL */
         break;
       case 37:
 #line 332 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1329 "./xtxlegal.c"
+#line 1326 "./xtxlegal.c"
         /* No destructor defined for MODULO */
         /* No destructor defined for EQUAL */
         break;
       case 38:
 #line 333 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1336 "./xtxlegal.c"
+#line 1333 "./xtxlegal.c"
         /* No destructor defined for STAR */
         /* No destructor defined for STAR */
         break;
       case 39:
 #line 335 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1343 "./xtxlegal.c"
+#line 1340 "./xtxlegal.c"
         /* No destructor defined for LT */
         /* No destructor defined for GT */
         break;
       case 40:
 #line 337 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1350 "./xtxlegal.c"
+#line 1347 "./xtxlegal.c"
         /* No destructor defined for xlst */
         break;
       case 41:
 #line 338 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1356 "./xtxlegal.c"
+#line 1353 "./xtxlegal.c"
         /* No destructor defined for LPAR */
         /* No destructor defined for xlst */
         break;
       case 42:
 #line 339 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1363 "./xtxlegal.c"
+#line 1360 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for expr */
         break;
       case 43:
 #line 340 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-5].minor.yy0,yymsp[0].minor.yy0);}
-#line 1370 "./xtxlegal.c"
+#line 1367 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for expr */
         /* No destructor defined for DOTDOT */
@@ -1395,7 +1373,7 @@ static void yy_reduce(
       case 44:
 #line 341 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
-#line 1379 "./xtxlegal.c"
+#line 1376 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for expr */
         /* No destructor defined for DOTDOT */
@@ -1403,7 +1381,7 @@ static void yy_reduce(
       case 45:
 #line 342 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-4].minor.yy0,yymsp[0].minor.yy0);}
-#line 1387 "./xtxlegal.c"
+#line 1384 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for DOTDOT */
         /* No destructor defined for expr */
@@ -1411,20 +1389,20 @@ static void yy_reduce(
       case 46:
 #line 343 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1395 "./xtxlegal.c"
+#line 1392 "./xtxlegal.c"
         /* No destructor defined for LBRACKET */
         /* No destructor defined for DOTDOT */
         break;
       case 47:
 #line 344 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-2].minor.yy0,yymsp[0].minor.yy0);}
-#line 1402 "./xtxlegal.c"
+#line 1399 "./xtxlegal.c"
         /* No destructor defined for xlst */
         break;
       case 48:
 #line 345 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-5].minor.yy0,yymsp[0].minor.yy0);}
-#line 1408 "./xtxlegal.c"
+#line 1405 "./xtxlegal.c"
         /* No destructor defined for PIPE */
         /* No destructor defined for xlst */
         /* No destructor defined for PIPE */
@@ -1433,7 +1411,7 @@ static void yy_reduce(
       case 49:
 #line 347 "./xtxlegal.lem"
 {yygotominor.yy0=pstore(yymsp[-3].minor.yy0,yymsp[0].minor.yy0);}
-#line 1417 "./xtxlegal.c"
+#line 1414 "./xtxlegal.c"
         /* No destructor defined for COLON */
         /* No destructor defined for cast */
         break;
@@ -1584,7 +1562,7 @@ static void yy_syntax_error(
     //printf("Syntax error.\n");
     termflag=1;
 
-#line 1568 "./xtxlegal.c"
+#line 1565 "./xtxlegal.c"
   xtxlegalARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -1607,7 +1585,7 @@ static void yy_accept(
 
     //printf("Parsing complete.\n");
 
-#line 1591 "./xtxlegal.c"
+#line 1588 "./xtxlegal.c"
   xtxlegalARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -1644,6 +1622,8 @@ void xtxlegal(
 
   /* (re)initialize the parser, if necessary */
   yypParser = (yyParser*)yyp;
+  yypParser->xxmajor=yymajor;
+  yypParser->xxminor.yy0=yyminor;
   if( yypParser->yyidx<0 ){
     if( yymajor==0 ) return;
     yypParser->yyidx = 0;
@@ -1664,7 +1644,10 @@ void xtxlegal(
   do{
     yyact = yy_find_shift_action(yypParser,yymajor);
     if( yyact<YYNSTATE ){
+
+      yypParser->xxmajor=0;
       yy_shift(yypParser,yyact,yymajor,&yyminorunion);
+
       yypParser->yyerrcnt--;
       if( yyendofinput && yypParser->yyidx>=0 ){
         yymajor = 0;
@@ -1712,6 +1695,8 @@ void xtxlegal(
         }
 #endif
         yy_destructor(yymajor,&yyminorunion);
+        yypParser->xxmajor=0;
+
         yymajor = YYNOCODE;
       }else{
          while(
@@ -1722,7 +1707,10 @@ void xtxlegal(
           yy_pop_parser_stack(yypParser);
         }
         if( yypParser->yyidx < 0 || yymajor==0 ){
+
           yy_destructor(yymajor,&yyminorunion);
+          yypParser->xxmajor=0;
+
           yy_parse_failed(yypParser);
           yymajor = YYNOCODE;
         }else if( yymx!=YYERRORSYMBOL ){
@@ -1747,7 +1735,10 @@ void xtxlegal(
         yy_syntax_error(yypParser,yymajor,yyminorunion);
       }
       yypParser->yyerrcnt = 3;
+
       yy_destructor(yymajor,&yyminorunion);
+      yypParser->xxmajor=0;
+
       if( yyendofinput ){
         yy_parse_failed(yypParser);
       }

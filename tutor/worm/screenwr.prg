@@ -19,16 +19,13 @@
  */
 
 *****************************************************************************
-function screen_worm(wait_time,text)
+function screen_worm(wait_time:=120,text)
 local key
-    if( wait_time==NIL )
-        wait_time:=120
-    end
+    rand(seconds())
     if( (key:=inkey(wait_time))==0 )
         key:=screen(text)
     end
     keyboard (chr(key))
-    return NIL
 
 *****************************************************************************
 static function screen(text)

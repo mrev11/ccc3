@@ -16,3 +16,4 @@
 -Wall
 -Wno-unused
 -I/usr/local/include
+-I/usr/pkg/include

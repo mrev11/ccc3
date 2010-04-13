@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "windows-os main-ekben _setmode(fd,O_BINARY)" #2010.04.09
+git commit --all -m  "keymap_uc.z" #2010.04.13
 
+# "windows-os main-ekben _setmode(fd,O_BINARY)" #2010.04.09
 # "ignored retval javitas javitasa; install egybol vegleges ppo2cpp-t fordit" #2010.04.06
 # "terminál szinkronizáció" #2010.03.08
 # "xmldom: TEXT node-ra gettext"  #2010.02.17

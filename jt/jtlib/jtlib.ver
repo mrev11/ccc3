@@ -1,7 +1,10 @@
 
-#define JTLIBVERSION  "1.2.07-UTF8 (2009.08.08)" 
+#define JTLIBVERSION  "1.2.08-UTF8 (2010.04.15)" 
 
 #ifdef __HYSTORY__
+
+1.2.08 (2010.04.15)
+  changeitem átörökíti a dialogid-t
 
 1.2.07 (2009.08.08)
 

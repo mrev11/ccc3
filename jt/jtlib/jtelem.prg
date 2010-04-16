@@ -370,6 +370,8 @@ local e,x,a1,a2,i
         break(e)
 
     else
+        ctrl:setdialogid(this:dialogid) //2010.04.15
+
         a1:=this:asarray 
         a2:=ctrl:asarray 
         for i:=1 to len(a1)

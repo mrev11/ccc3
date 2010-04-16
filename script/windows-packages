@@ -1,69 +1,31 @@
-Windows 2000 English
-W2KSP4_EN.EXE
+W2KSP4 (English)
+    W2KSP4_EN.EXE
+    ie6setup.exe
 
+.NET
+    dotnetfx-1.1.exe
+    dotnet-sdk-setup-1.1.exe
 
 C fordító (MinGW):
-    MinGW-5.1.3.exe (komplett csomag)
-
-    Külön csomagok (nem kell, ha van komplett csomag)
-    binutils-2.17.50-20060824-1.tar.gz
-    gcc-core-3.4.5-20060117-1.tar.gz
-    gcc-g++-3.4.5-20060117-1.tar.gz
-    mingw-runtime-3.13.tar.gz
-    mingw32-make-3.81-2.tar.gz
-    w32api-3.10.tar.gz
-
+    MinGW-5.1.3.exe
+    MSYS-1.0.10.exe
 
 C fordító (MSC):
     VCToolkitSetup.exe
+    Kell hozzá a .NET framework 1.1.
+    A .NET nem telepíthető ie6 nélkül.
 
-    Ebből a jön a Platform SDK is. A helpet a dexplore.exe-vel
-    (MS Document Explorer) lehet nézegetni. Nem emlékszem miből 
-    installálódik a dexplorer.exe. Talán az is ebből.
-
+Platform SDK
+    Külön CD.
 
 SSL könyvtár:
     Win32OpenSSL-0_9_8g.exe
-    
-
+  
 GTK könyvtár:
     mono-2.0.1-gtksharp-2.10.4-win32-1.exe
     mono-2.6.3-gtksharp-2.12.10-win32-4.exe
-    
-    A Monoban levő GTK könyvtárat kell használni.
-    Nem emlékszem, mire kell a .NET framework és SDK,
-    lehet, hogy a Mono függ tőle. Az 1.1 verzió kell.
-    A .NET nem telepíthető ie6 nélkül.
-    
-    dotnet/WindowsInstaller-KB884016-v2-x86.exe
-    dotnet/dotnet-sdk-setup-1.1.exe
-    dotnet/dotnet-sdk-setup-2.0.exe
-    dotnet/dotnetfx-1.1.exe
-    dotnet/dotnetfx-2.0.exe
-    dotnet/gtksharp-2.7.1-win32-0.1.exe (ehelyett jobb a Mono)
-    dotnet/ie6setup.exe
-
 
 Java:
     jdk-1_5_0_03-windows-i586-p.exe
 
 
-Cygwin (a CCC-hez nem kell):
-    cygwin-setup.exe
-    cygwin-ug-net-nochunks.html
-    Ebből lehet X-et és ssh-t telepíteni.
-
-
-Egyebek:
-    oggcodecs_0.71.0946.exe
-    php-5.2.5-win32-installer.msi
-    python-2.5.1.msi
-    fpc-2.4.0.i386-win32.exe  (FreePascal)
-    audacity-win-1.2.6.exe
-    93.81_forceware_winxp2k_english.zip
-    ActivePerl-5.6.1.638-MSWin32-x86.msi
-    AdbeRdr930_en_US.exe
-    Firefox Setup 2.0.0.11.exe
-    Git-1.5.5-preview20080413.exe
-    LiveDrvUni-Pack(ENG).exe
-    MSYS-1.0.10.exe

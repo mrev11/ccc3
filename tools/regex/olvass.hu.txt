@@ -1,12 +1,33 @@
 Reguláris kifejezések.
-
-Előzőleg installálni kell a libpcre3 csomagot,
-Linuxon a fejlesztő (libpcre3-dev) csomagot is.
-
-Windows-ra forrásból lehet installálni pcre-t,
-az eljárás a pcre directoryban van leírva.
-
 Csak a POSIX interfész van támogatva.
-
 Nincs UTF-8 támogatás, és csak X stringre működik.
+
+LINUX
+
+    Installálni kell a libpcre3 csomagot,
+    és a fejlesztő (libpcre3-dev) csomagot is.
+
+
+WINDOWS
+
+    Forrásból lehet installálni pcre-t:
+    El kell hozni a pcre-8.02 csomagot.
+    MSYS környezetben le kell fordítani (configure --disable-shared)
+
+    A keletkező
+        pcreposix.h
+        libpcre.a
+        libpcreposix.a
+    filéket át kell másolni a MinGW directoryba.
+    Linkeléskor megadni: -bpcreposix -bpcre
+    
+    VAGY (inkább) ezeket:
+        libpcreposix.a
+        libpcre.a
+        _chkstk.o (libgcc.a-ból, __alloca-t definiálja, msc-ből hiányzik)
+    összeadjuk egy pcreposix.lib-be, akkor elég -bpcreposix, mint korábban,
+    és az msc-vel sincs gond.
+    
+    ar x archname (mindent kiszed az archívumból)
+    ar q archname *.o (az objecteket berakja az új archívumba)
 

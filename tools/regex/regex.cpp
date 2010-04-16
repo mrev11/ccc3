@@ -19,7 +19,12 @@
  */
 
 #include <sys/types.h>
+
+#ifdef WINDOWS
+#define PCRE_STATIC
+#endif
 #include <pcreposix.h>
+
 #include <regex.ch>
 #include <cccapi.h>
 

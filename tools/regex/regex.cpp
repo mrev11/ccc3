@@ -50,6 +50,7 @@ void _clp_regcomp(int argno) //regex.regcomp(regex,flags) -> rx
     if( flags & REGEX_NEWLINE  ) cflags|=REG_NEWLINE;
     if( flags & REGEX_NOSUB    ) cflags|=REG_NOSUB;
     if( flags & REGEX_ICASE    ) cflags|=REG_ICASE;
+    if( flags & REGEX_UTF8     ) cflags|=REG_UTF8;
 
     int errcode=regcomp(preg,regex,cflags);
     if( errcode==0 )

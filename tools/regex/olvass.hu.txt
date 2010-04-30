@@ -1,6 +1,8 @@
 Reguláris kifejezések.
 Csak a POSIX interfész van támogatva.
-Nincs UTF-8 támogatás, és csak X stringre működik.
+Csak X stringre működik.
+REGEX_UTF8 bekapcsolja az UTF8 támogatást (nem POSIX).
+A kapott pozíciók mindig byteindexet jelentenek.
 
 LINUX
 

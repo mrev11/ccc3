@@ -25,6 +25,7 @@
 #define  REGEX_ICASE            2
 #define  REGEX_NEWLINE          4
 #define  REGEX_NOSUB            8
+#define  REGEX_UTF8            16
 
 #define  REGEX_NOTBOL           1
 #define  REGEX_NOTEOL           2

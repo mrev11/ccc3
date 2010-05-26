@@ -4,7 +4,8 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "mask save" #2010.05.26
+git commit --all -m  "time.cpp bovitve" #2010.05.26
+#"mask save" #2010.05.26
 
 #"REGEX_UTF8" #2010.04.30
 # "jtlib: changeitem atorokiti a dialogid-t fpath" #2010.04.15

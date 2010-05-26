@@ -1,8 +1,29 @@
 
 \begin{description}
 
+\item[2009.12.28]
+  XMLDOM  1.4.00\par
+
 \item[2009.05.10]
   NetBSD port.\par
+
+\item[2009.04.28]
+  Metódushívás továbbítás.\par
+
+\begin{verbatim}
+class proba(object)
+    attrib  a1
+    attrib  a2
+    method  m1      :a1
+    method  m2      :a2:b:c:m
+\end{verbatim}
+
+A példában \verb!m1! lényegében egy alias az \verb!a1! attribútumra.
+
+Az \verb!m2! metódus feltételezi, hogy az \verb!a2! (beágyazott objektum) 
+attribútumnak, van egy \verb!b! attribútuma, annak egy \verb!c! attribútuma 
+és annak egy \verb!m! metódusa. Ennek a metódusnak továbbítódik a metódushívás.
+
 
 \item[2009.01.20]
   Bővített simplehash osztály.\par

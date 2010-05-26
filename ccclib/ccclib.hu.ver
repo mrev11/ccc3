@@ -1,3 +1,6 @@
+2010.05.25
+  Újraírt time.cpp modul, ctime.cpp megszűnt.
+
 2010.04.06
   ignored return value (2008.10.02) javítás javítása
     0==fwrite() helyett int retcode=fwrite() 

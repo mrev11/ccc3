@@ -1,7 +1,10 @@
 
-#define VERSION "2.4.05" 
+#define VERSION "2.4.06"
 
 #ifdef HISTORY
+2.4.06 -- 2010.05.25
+    if-modified-since header kezelése.
+
 2.4.05 -- 2008.12.12
     Hibakezelés módosítva.
     Intenzíven tesztelve Linuxon, FreeBSD 7.1-en.

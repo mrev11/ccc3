@@ -133,6 +133,9 @@ local fd,size,buffer,nbyte
                 phpenv(env,request,workdir) //továbbiak
                 wd:=fpath0(workdir+request:url)
                 repl:=cgipage(phpscript(request:url),env,request,wd)
+                
+            elseif( !modified(request,dirlst[1]) )
+                repl:=mkerror(a"304 Not Modified")
 
             elseif( dirlst[1][F_SIZE]>1024*1024 ) //nagy filé
                 repl:=mkheader(a"200 OK",dirlst[1])
@@ -192,6 +195,10 @@ local head:=strtran(a"HTTP/1.1 xxx"+CRLF,a"xxx",code)
 
     head+=a"Content-Type: text/plain"+CRLF
     head+=a"Content-Length: "+str2bin(alltrim(str(len(code))))+CRLF
+
+    #ifdef DEBUG1
+        ?? "",code
+    #endif
  
     #ifdef DEBUG0
       ? ">>>>> send >>>>>>>>>>>>>>>"
@@ -215,6 +222,10 @@ local absurl:=url
     head+=a"Location: "+absurl+CRLF
     head+=a"Content-Length: "+str2bin(alltrim(str(len(absurl))))+CRLF
 
+    #ifdef DEBUG1
+        ?? "",code
+    #endif
+
     #ifdef DEBUG0
       ? ">>>>> send >>>>>>>>>>>>>>>"
       ? head
@@ -228,13 +239,18 @@ local head:=strtran(a"HTTP/1.1 xxx"+CRLF,"xxx",code)
     if( valtype(dirent)=="A" )
         head+=a"Content-Type: "+contenttype(dirent[F_NAME])+CRLF
         head+=a"Content-Length: "+str2bin(alltrim(str(dirent[F_SIZE])))+CRLF 
-        head+=a"Last-Modified: "+str2bin(ctime(dati2ostime(dirent[F_DATE],dirent[F_TIME])))
+        //head+=a"Last-Modified: "+str2bin(ctime(dati2ostime(dirent[F_DATE],dirent[F_TIME])))
+        head+=a"Last-Modified: "+str2bin(gmtime2httpdate(dati2ostime(dirent[F_DATE],dirent[F_TIME])))
         head+=a"Connection: Keep-Alive"+CRLF
     else
         head+=a"Content-Type: text/html"+CRLF
         head+=a"Content-Length: "+str2bin(alltrim(str(len(dirent))))+CRLF 
         head+=a"Connection: Keep-Alive"+CRLF
     end
+
+    #ifdef DEBUG1
+        ?? "",code
+    #endif
         
     #ifdef DEBUG0
       ? ">>>>> send >>>>>>>>>>>>>>>"
@@ -242,5 +258,15 @@ local head:=strtran(a"HTTP/1.1 xxx"+CRLF,"xxx",code)
     #endif
     return head+CRLF //binary
 
+
+*****************************************************************************
+static function modified(request,dirent)
+local since:=http_getheader(request:req,"if-modified-since"),da,ti
+    if( empty(since) )
+        return .t.
+    end
+    da:=dirent[F_DATE]
+    ti:=dirent[F_TIME]
+    return httpdate_value(since) < dati2ostime(da,ti)::gmtime2httpdate::httpdate_value
 
 *****************************************************************************

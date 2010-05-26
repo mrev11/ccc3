@@ -45,20 +45,17 @@
 
 #define MASKEXT        ".msk"
 
+static maskfile:=""
+static origscrn:=NIL
+
 *************************************************************************
 function main()
 
-//local screen,currow,curcol
 local n:=0, a
-local maskfile:=""
 
     settermsize(25,80)
-
-    //screen:=savescreen(0,0,maxrow(),maxcol())
-    //currow:=row()
-    //curcol:=col()
-
     setcursor(1)
+
 
     while( !empty(a:=argv(++n)) )
 
@@ -89,17 +86,13 @@ local maskfile:=""
             errorlevel(1)
             quit
         end
-        restscreen(0,0,MAXROW,MAXCOL,ReadMask(maskfile))
+        restscreen(0,0,MAXROW,MAXCOL,origscrn:=ReadMask(maskfile))
     else
         clear screen
+        origscrn:=savescreen(0,0,MAXROW,MAXCOL)
     end
 
-    screenedit(maskfile)
-
-    //restscreen(0,0,maxrow(),maxcol(),screen)
-    //setpos(currow,curcol)
-
-    return NIL
+    screenedit()
 
 
 *************************************************************************
@@ -110,7 +103,7 @@ function usage()
 
 
 *************************************************************************
-function screenedit(maskfile)
+function screenedit()
 local key, choice:=1
 local posr, posc, screen
 local menukey:={K_F1,K_F2,K_F3,K_F4,K_F5,K_F6,K_F7,K_F8}
@@ -123,10 +116,6 @@ local ins:=.f.
       keymap(memoread(strtran(lower(exename()),"mask.exe","keymap_uc.z")))
     #endif
     
-    if( maskfile==NIL )
-        maskfile:=""
-    end
-    
     setpos(0,0)
     
     while( .t. )
@@ -138,7 +127,9 @@ local ins:=.f.
         end
 
         if( key==K_ESC )
-            if(2==alert("Exit from the program, continue?", {"Cancel", "Exit"}) )     
+            if( origscrn==savescreen(0,0,MAXROW,MAXCOL)  )
+                exit
+            elseif(2==alert("Maskfile not saved!",{"Continue editing","Exit without save"}))
                 exit
             end
 
@@ -186,7 +177,7 @@ local ins:=.f.
             posc:=min(col(), MAXCOL-18)
             choice:=ChoiceBox(posr,posc,posr+9,posc+18,{;
                  "F1  - Help",;
-                 "F2  - Save",;
+                 "F2  - Save as",;
                  "F3  - Load",;
                  "F4  - Mark rect",;
                  "F5  - Copy rect",;
@@ -201,14 +192,23 @@ local ins:=.f.
             CopyRect(key)
 
         elseif( key==KEY_SAVE )
-            SaveMask(ExtractName(maskfile))
+            SaveMask()
 
         elseif( key==KEY_LOAD )
+
+            if( origscrn==savescreen(0,0,MAXROW,MAXCOL)  )
+                //unchanged
+            elseif(2==alert("Maskfile not saved!",{"Continue editing","Overwrite without save"}))
+                //overwrite without save
+            else
+                loop //continue editing
+            end
+
             aFile:=SelectFile("*.msk",,4,23,18,57)
             if(!empty(aFile))
                 maskfile:=aFile[1]
-                screen:=ReadMask(maskfile) //1a-t levágja
-                restscreen(0,0,MAXROW,MAXCOL,screen)
+                origscrn:=ReadMask(maskfile) //1a-t levágja
+                restscreen(0,0,MAXROW,MAXCOL,origscrn)
             end
 
         else 
@@ -362,21 +362,30 @@ static prev:=""
 
 
 *************************************************************************
-function SaveMask(filnam)
+function SaveMask()
+
+local filnam
+
+    if( origscrn==savescreen(0,0,MAXROW,MAXCOL)  )
+        if(  2!=alert("Unchanged",{"Cancel","Continue saving"}) )
+            return NIL
+        end
+    end
+    
+    filnam:=ExtractName(maskfile)
 
     if( !empty(filnam:=GetText("Enter filename:", filnam, 32)) )
 
         if( !("." $ filnam) )
-             filnam+=MASKEXT
+            filnam+=MASKEXT
         end
 
         if( empty( directory(filnam) ) .or.;
             2==alert("File exists, overwrite?", {"Cancel","Overwrite"} ) )
 
-            return(memowrit(lower(filnam),savescreen(0,0,MAXROW,MAXCOL)))
+            memowrit(lower(maskfile:=filnam),origscrn:=savescreen(0,0,MAXROW,MAXCOL))
         end
     end
-    return NIL
 
 
 *************************************************************************

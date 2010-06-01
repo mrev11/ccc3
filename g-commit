@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git add .
 
-#git commit --all -m  "websrw: if-modified-since header" #2010.05.26
+#git commit --all -m  "xmlrpc: Content-Length javitva" 2010.06.01
 
+
+#"websrw: if-modified-since header" #2010.05.26
 #"ctime.cpp megszunt" #2010.05.26
 #"time.cpp bovitve" #2010.05.26
 #"mask save" #2010.05.26

@@ -254,7 +254,7 @@ local eb:=errorblock() //compatibility
     end
 
     hdr:="HTTP/1.1 200 OK"+crlf()
-    hdr+="Content-Length: "+alltrim(str(len(rsp)))+crlf()
+    hdr+="Content-Length: "+alltrim(str(len(str2bin(rsp))))+crlf()
     hdr+="Content-Type: text/xml"+crlf()
     hdr+="Server: "+this:server+crlf()
     

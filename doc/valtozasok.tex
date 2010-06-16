@@ -25,6 +25,20 @@ attribútumnak, van egy \verb!b! attribútuma, annak egy \verb!c! attribútuma
 és annak egy \verb!m! metódusa. Ennek a metódusnak továbbítódik a metódushívás.
 
 
+\item[2009.04.27]
+  Kiterjesztett vararg API.\par
+
+\begin{verbatim}
+    *[x1..x2]  // paraméterek felsorolása x1-től x2-ig
+    *[x1..]    // paraméterek felsorolása x1-től (ameddig van)
+    *[..x2]    // paraméterek felsorolása x2-ig (1-től)
+    *[..]      // összes paraméter (mint *)
+\end{verbatim}
+A szintaktika a string szeletekhez hasonló. 
+A túllógó indexek módosulnak a tényleges méretekhez alkalmazkodva.
+
+
+
 \item[2009.01.20]
   Bővített simplehash osztály.\par
 

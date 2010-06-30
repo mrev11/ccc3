@@ -93,6 +93,26 @@ void slice()
         *a=*TOP();
         stack=a+1;
     }
+
+    else if( a->type==TYPE_ARRAY )
+    {
+        int len=a->data.array.oref->length;
+        idx=max(1,idx);
+        jdx=min(len,jdx);
+        if( idx>jdx )
+        {
+            array0(0);
+        }
+        else
+        {
+            int slen=jdx-idx+1; //>=1
+            VALUE *v=array0(slen);
+            valuemove(v,VALUEPTR(a)+idx-1,slen);
+        }
+        *a=*TOP();
+        stack=a+1;
+    }
+
     else
     {
         error_arg("slice",a,3);

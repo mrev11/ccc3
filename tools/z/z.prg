@@ -174,9 +174,9 @@ local ferror:=zhome()+"error.z"
     
     emergency:=zhome()+fname(fspec)+"."+alltrim(str(getpid()))
 
-    signalblock({|s|sighandler(s,zedit,emergency)} )
-    //signalblock({|s|ebackup(zedit,emergency),eval(sblk,s)} )
     errorblock({|e|ebackup(zedit,emergency),eval(eblk,e)} )
+    signalblock({|s|sighandler(s)}) //->errorblock
+    alertblock({|*|green_alert(*)})
  
     while( .t. )
 
@@ -450,7 +450,6 @@ local ppos:=rat(".",fspec)
 static function ebackup(zedit,emergency)
     memowrit(emergency,zedit:gettext)
     alert("SAVED: "+emergency)
-    return NIL
     
 
 **********************************************************************   
@@ -478,19 +477,29 @@ static home
     
 
 **********************************************************************   
-static function sighandler(signum,zedit,emergency)
-local err, block:=SIG_HUP+SIG_INT //ezeket elnyomja
-    //alert(signal_description(signum))
-    if( numand(signum,block)!=0 ) 
-        //elnyomva
+static function sighandler(signum)
+
+local err
+
+    if( numand(signum,SIG_HUP+SIG_INT)!=0 )
+        //ezek elnyomva
     else
-        ebackup(zedit,emergency)
-        err:=errorNew() 
+        //ne keletkezzen hiba a hibakezelésben,
+        //ha leszakadt a terminál --> kikapcsol:
+        alertblock({|txt,alt|qout(txt,alt),1})
+    
+        err:=errorNew()
         err:description:=signal_description(signum)
         err:subcode:=signum
         err:subsystem:="SIGNAL"
         break(err)
+        
+        //errorblock végrehajtja ebackup-ot
     end
+
+    //Emlékeztető: A CCC futtatórendszer nem engedi,
+    //hogy a signal handler rekurzívan meghívódjon,
+    //azért itt nem kell rekurzió ellen védekezni.
 
 **********************************************************************   
 

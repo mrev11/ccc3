@@ -22,7 +22,9 @@
 function _zedit_display(this)
 
 local n,idx,ltxt:=len(this:atxt)
-local crs:=setcursor(0) //hogy ne villogjon
+//local crs:=setcursor(0) //ne villogjon (inkább dispbegin/dispend)
+
+    dispbegin()
 
     for n:=this:top to this:bottom
         idx:=n-this:top+this:sftrow+1
@@ -32,7 +34,8 @@ local crs:=setcursor(0) //hogy ne villogjon
             @ n,this:left say space(this:width)
         end
     next 
-    
-    setcursor(crs)
+
+    dispend()
+//  setcursor(crs)
 
 ***************************************************************************   

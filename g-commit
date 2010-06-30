@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "savex: dispbegin/dispend"
+git commit --all -m "z: dispbegin/dispend, hibakezelés finomítva" 2010.06.30
 
+# "savex: dispbegin/dispend" 2010.06.30
 # "többszálú terminál könyvtár, remote io letiltva lokális terminál esetén" 2010.06.30
 # "xmlrpc: Content-Length javitva" 2010.06.01
 # "websrw: if-modified-since header" #2010.05.26

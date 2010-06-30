@@ -1,7 +1,11 @@
 
-#define VERSION "2.1.05"
+#define VERSION "2.1.06"
 
 #ifndef VERSION  
+
+2010.06.26 -- 2.1.06
+  Lapozáskor a kiírás dispbegin/dispend-del összefogva.
+  Hibakezelés finomítva leszakadó terminálra (alert kikapcsolva).
 
 2008.04.29 -- 2.1.05
   K_CTRL_F3 search again previous

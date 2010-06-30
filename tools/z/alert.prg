@@ -26,7 +26,7 @@
 #define MAXH  (maxrow()-8)
 
 *****************************************************************************    
-function alert(argtxt,argalt)     
+function green_alert(argtxt,argalt)     
 
 local txt, alt:={}
 local wtxt:=0,walt:=0

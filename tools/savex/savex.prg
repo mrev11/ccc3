@@ -79,6 +79,7 @@ static s_symlink          // symlinkek bevétele
 static s_edit:=""
 static s_list:=""
 
+
 ****************************************************************************
 function main()
 
@@ -947,15 +948,18 @@ static function formDate(date,time)
 ******************************************************************************    
 function rdir(path)
 local dirlist:=arrayNew(),msg
+    dispbegin()
     msg:=message(msg,path)
     rdir0(path,dirlist,msg)
     msg:=message(msg)
+    dispend()
     asort(dirlist:resize,,,{|x,y|x[F_NAME]<y[F_NAME]}) //rendezve!
     return dirlist:array
 
 
 static function rdir0(path,dirlist,msg)
 local n1,d1,name,mode,fspec,fcont
+static dispcount:=0
 
     d1:=directory(path+fullmask(),"DSH")
  
@@ -971,6 +975,11 @@ local n1,d1,name,mode,fspec,fcont
                 if( !"L"$d1[n1][F_ATTR] .or. "d"$s_symlink )
                     if( includedir(name) )
                         message(msg,padr(path+name,56))
+                        if( ++dispcount>10 )
+                            dispcount:=0
+                            dispend()
+                            dispbegin()
+                        end                        
                         rdir0(path+name+dirsep(),dirlist,msg)
                     end
                 end

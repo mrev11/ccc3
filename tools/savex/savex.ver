@@ -1,7 +1,11 @@
 
-#define VERZIO  "3.0.07x"    
+#define VERZIO  "3.0.08"    
 
 #ifdef NOT_DEFINED
+
+2010.06.28 -- 3.0.08
+  Directory bejáráskor a message üzeneteket dispbegin/dispend-del
+  10-esével összefogja.
 
 2008.09.17 -- 3.0.07x
   Időkorrekciónál szétválasztja a bináris és textfilék esetét.

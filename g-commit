@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "többszálú terminál könyvtár, remote io letiltva lokális terminál esetén"
+git commit --all -m "savex: dispbegin/dispend"
 
+# "többszálú terminál könyvtár, remote io letiltva lokális terminál esetén" 2010.06.30
 # "xmlrpc: Content-Length javitva" 2010.06.01
 # "websrw: if-modified-since header" #2010.05.26
 # "ctime.cpp megszunt" #2010.05.26

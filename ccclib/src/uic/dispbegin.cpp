@@ -39,7 +39,10 @@ void _clp_dispbegin(int argno)
 //----------------------------------------------------------------------------
 void _clp_dispend(int argno)
 {
-    dispcount--;
+    if( dispcount>0 )
+    {
+        dispcount--;
+    }
     if( dispcount==0 )
     {
         dispend();

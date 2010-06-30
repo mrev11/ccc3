@@ -43,12 +43,19 @@
 
 static int termsck=-1;
 
+MUTEX_CREATE(mutex_send);
+
 //----------------------------------------------------------------------------
 static void error(const char *msg)
 {
     fprintf(stderr,"%s error=%d\n",msg,socket_error());
     signal_raise(SIG_TERM);
     exit(1);
+
+    //A signal_raise közvetlenül meghívja a CCC signal kezelőt.
+    //Értelme, hogy a hibakezelés így egyszerűen átadható CCC szintre.
+    //Ha a terminált nem CCC környezetben használjuk, akkor kell mellékelni
+    //egy signal_raise függvényt.
 }
 
 //----------------------------------------------------------------------------
@@ -150,6 +157,16 @@ void connect_to_terminal()
             error("accept failed");
         }
         atexit(atexit_bye);
+        
+        extern int remoteio_enabled;
+        remoteio_enabled=0;
+
+        //Amikor a terminál lokális (ráadásul a CCC program gyereke),
+        //akkor jobb, ha nincs remote io. Nincs is értelme, de főleg azért,
+        //mert nehezítené a hibakezelést. Pl., ha a CCC program SIGINT-et kap,
+        //azt azonnal megkapja a terminál (gyerek) is. Ilyenkor a program
+        //a már kilépett terminálnak próbálja küldeni a hibaüzenetet,
+        //amiből újabb signal keletkezik (hiba a hibakezelésben).
     }
 
     else
@@ -197,7 +214,10 @@ void connect_to_terminal()
 //--------------------------------------------------------------------------
 int termio_send(void* source, int size) //adatküldés
 { 
+    MUTEX_LOCK(mutex_send);
+
     //printf("termio_send: %d\n",size);fflush(0);
+    //printf(".");fflush(0);
 
     char *buffer=(char*)source;
     int result, nbyte=0;
@@ -211,6 +231,8 @@ int termio_send(void* source, int size) //adatküldés
         }
         nbyte+=result;
     }
+
+    MUTEX_UNLOCK(mutex_send);
     return nbyte;
 }
 

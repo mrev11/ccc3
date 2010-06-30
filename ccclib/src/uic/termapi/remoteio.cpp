@@ -29,9 +29,17 @@
 #include <signal.ch>
 #include <cccapi.h>
 
+
+int remoteio_enabled=1;
+
 //-----------------------------------------------------------------------------
 int remopen(int fp, char *fname, int additive)
 {
+    if( remoteio_enabled==0 )
+    {
+        return 0;
+    }
+    
     int len=strlen(fname);
     network_uint32_t request[4];
     request[0].set(TERMCMD_OPEN);

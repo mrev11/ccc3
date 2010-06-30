@@ -54,6 +54,14 @@ int main(int argc, char **argv)
     vartab_ini();
  
     setup_signal_handlers();
+    
+    stringnb("");_clp_qqout(1);pop();
+    //Ez küld egy remopen-t a terminálnak,
+    //amivel előre eldől, hogy remote-olni kell-e a console kimenetet.
+    //Ha a terminál később leszakad (-> kivétel -> hiba keletkezik), 
+    //akkor már nem kell próbálkozni a hibaüzenet remote-olásával,
+    //amiből csak újabb hiba keletkezne (immár a hibakezelésben).
+    
 
     for(int i=1; i<argc; i++)
     {

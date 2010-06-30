@@ -1,0 +1,10 @@
+
+teramapi.cpp-save
+    Régebbi változat: putrect azonnal küldi a változást.
+
+teramapi.cpp
+    Újabb változat: putrect csak a screenbufferbe írja a változást, 
+    és beállítja a dirty flaget. Egy külön szál rendszeres időközönként
+    küldi az összegyűlt változásokat.
+
+    

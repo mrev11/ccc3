@@ -6,15 +6,15 @@ git add .
 
 git commit --all -m "z: dispbegin/dispend, hibakezelés finomítva" #2010.06.30
 
-# "savex: dispbegin/dispend" 2010.06.30
+# "savex: dispbegin/dispend" #2010.06.30
 # "többszálú terminál könyvtár, remote io letiltva lokális terminál esetén" #2010.06.30
-# "xmlrpc: Content-Length javitva" 2010.06.01
+# "xmlrpc: Content-Length javitva" #2010.06.01
 # "websrw: if-modified-since header" #2010.05.26
 # "ctime.cpp megszunt" #2010.05.26
 # "time.cpp bovitve" #2010.05.26
 # "mask save" #2010.05.26
 
-#"REGEX_UTF8" #2010.04.30
+# "REGEX_UTF8" #2010.04.30
 # "jtlib: changeitem atorokiti a dialogid-t fpath" #2010.04.15
 # "tutor: fpath" #2010.04.15
 # "regex modernizalas (windows)" #2010.04.15

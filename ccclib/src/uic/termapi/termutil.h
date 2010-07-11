@@ -18,10 +18,42 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "termutil.h"
+#undef ASYNC
+#define ASYNC
 
-#ifdef ASYNC
-    #include "termapi.cpp_async"
-#else
-    #include "termapi.cpp_sync"
+
+#undef   min
+#undef   max
+#define  min(x,y)   ((x)<(y)?(x):(y))
+#define  max(x,y)   ((x)>(y)?(x):(y))
+
+
+#undef MUTEX_CREATE
+#undef MUTEX_LOCK
+#undef MUTEX_UNLOCK
+
+#if ! defined ASYNC     // SYNC-UNIX-WINDOWS
+
+#define MUTEX_CREATE(x)
+#define MUTEX_LOCK(x)
+#define MUTEX_UNLOCK(x)
+
+#elif defined UNIX      // ASYNC-UNIX
+
+#include <pthread.h>
+
+#define MUTEX_CREATE(x)    static pthread_mutex_t x=PTHREAD_MUTEX_INITIALIZER
+#define MUTEX_LOCK(x)      pthread_mutex_lock(&x)
+#define MUTEX_UNLOCK(x)    pthread_mutex_unlock(&x)
+
+#else                   // ASYNC-WINDOWS
+
+#define MUTEX_CREATE(x)    static HANDLE x=CreateMutex(0,0,0)
+#define MUTEX_LOCK(x)      WaitForSingleObject(x,INFINITE)
+#define MUTEX_UNLOCK(x)    ReleaseMutex(x)
+
 #endif
+
+
+extern int signal_raise(int);
+

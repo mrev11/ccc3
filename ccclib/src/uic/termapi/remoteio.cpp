@@ -22,12 +22,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <netint.h>
-#include <termio.h>
-#include <termcmd.h>
+#include "netint.h"
+#include "termio.h"
+#include "termcmd.h"
+#include "termutil.h"
 
 #include <signal.ch>
-#include <cccapi.h>
 
 
 int remoteio_enabled=1;

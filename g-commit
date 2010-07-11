@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "build cpp include-ok"  #2010.07.11
+git commit --all -m "termapi sync/async"  #2010.07.11
 
+# "build cpp include-ok"  #2010.07.11
 # "hiányzó copyright-ok"  #2010.07.11
 # "slice array típusra" #2010.06.30
 # "z: dispbegin/dispend, hibakezelés finomítva" #2010.06.30

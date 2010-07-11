@@ -33,12 +33,12 @@
 #include <sckcompat.h>
 #include <sckutil.h>
 #include <inttypes.h>
-#include <termcmd.h>
-#include <termio.h>
-#include <termapi.h>
+#include "termcmd.h"
+#include "termio.h"
+#include "termapi.h"
+#include "termutil.h"
 
 #include <signal.ch>
-#include <cccapi.h>
 
 
 static int termsck=-1;

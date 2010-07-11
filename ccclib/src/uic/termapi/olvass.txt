@@ -1,8 +1,20 @@
 
-teramapi.cpp-save
+
+termutil.h
+    Itt kell beállítani az ASYNC vagy SYNC üzemmódot.
+
+    Makrók, amik korábban a cccapi.h-ból jöttek.
+    Jobb kerülni a cccapi.h-t, mert a terminál-üzemmód a CCC-től 
+    függetlenül lehet többszálú (ASYNC) vagy egyszálú (SYNC). 
+    Megj: Itt nincsenek CCC függvények, nincs CCC stack, meg effélék.
+
+termapi.cpp
+    Választ a szinkron és aszinkron implementáció között.
+
+termapi.cpp_sync
     Régebbi változat: putrect azonnal küldi a változást.
 
-teramapi.cpp
+termapi.cpp_async
     Újabb változat: putrect csak a screenbufferbe írja a változást, 
     és beállítja a dirty flaget. Egy külön szál rendszeres időközönként
     küldi az összegyűlt változásokat.

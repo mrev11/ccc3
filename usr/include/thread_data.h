@@ -21,7 +21,6 @@
 #ifndef _THREAD_DATA_H_
 #define _THREAD_DATA_H_
 
-#include <stdio.h>
 
 #ifdef GC_BOEHM
 #   define GC_THREADS

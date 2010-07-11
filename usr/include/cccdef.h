@@ -48,6 +48,7 @@
 #include <signal.h>
 #include <setjmp.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #ifdef MULTITHREAD
 

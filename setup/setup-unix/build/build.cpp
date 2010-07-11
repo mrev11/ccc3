@@ -1,3 +1,23 @@
+
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 //input: build.ppo (5.0.17)
 
 #include <cccdef.h>
@@ -238,7 +258,7 @@ push_call("main",base);
     if(!flag()) goto if_1_1;
         line(71);
         string(nls_text(L"CCC Program Builder "));
-        string(L"1.2.26");
+        string(L"1.2.27");
         add();
         string(L" Copyright (C) ComFirm Bt.");
         add();
@@ -1685,10 +1705,7 @@ push_call("build",base);
         pop();
         line(420);
         line(403);
-        push_symbol(base+6);//f
-        _clp_fext(1);
-        string(L".prg");
-        eqeq();
+        push(&TRUE);
         if(!flag()) goto if_35_1;
             line(404);
             push_symbol(base+6);//f
@@ -1707,9 +1724,17 @@ push_call("build",base);
             goto if_36_0;
             if_36_1:
             line(408);
+            push_symbol(base+6);//f
+            _clp_fext(1);
+            string(L".prg");
+            eqeq();
+            if(!flag()){
+            push(&FALSE);
+            }else{
             string(L"function main(");
             push_symbol(base+10);//txt
             ss();
+            }
             if(!flag()) goto if_36_2;
                 line(411);
                 line(409);

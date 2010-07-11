@@ -57,7 +57,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.2.26"
+#define VERSION "1.2.27"
  
 ****************************************************************************
 function main()
@@ -400,12 +400,12 @@ local d1,f,o,n,i,txt,dep
 
         dep:={o+".obj",f} 
 
-        if( fext(f)==".prg" )
+        if( .t. /*fext(f)==".prg"*/ ) //2010.07.11
             txt:=memoread(f)
             
             if( 0!=ascan(mmd,{|m|m==lower(o)}) ) //99.10.29
                 //már benn van
-            elseif( "function main("$txt )
+            elseif( fext(f)==".prg" .and. "function main("$txt )
                 if( s_main==NIL )
                     aadd(mmd,o)
                 end

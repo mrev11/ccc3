@@ -1,4 +1,15 @@
 
+2010.07.11 -- 1.2.27
+  Korábban csak a prg-k include-jait vizsgálta.
+  Most minden elsődleges forrásban (amiből obj készül) vizsgálja az
+
+    #include "fpsec"
+  
+  előfordulásokat, és ha megtalálja fspec-et a -d és -i opciókkal megadott 
+  helyeken, akkor beveszi azt a függőségek közé. Az #include <fpsec> alakot 
+  továbbra sem vizsgálja, tehát a cpp forrásokban <> vagy "" alkalmazásával 
+  szabályozható a viselkedés. Továbbra sem nézi az include-ok include-jait.
+
 2010.02.04 -- 1.2.26
   A @parfile-ból olvasott paraméterek nem a lista végére kerülnek
   (mint eddig), hanem az inkludálás helyére. Így egy parfile után 

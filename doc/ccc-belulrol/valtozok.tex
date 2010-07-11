@@ -551,6 +551,7 @@ a tömb kiprintelésekor).
 \begin{verbatim}
     a:={}               // üres array
     {1,2,3,4}[3]        // --> 3, az indexek 1-től indulnak
+    {1,2,3,4}[2..3]     // --> {2,3}, array szelet
     len({1,2,3,4})      // --> 4, tudja a saját hosszát
     array(10)           // NIL-ekkel inicializált, 10 elemű
     a[i]:=x             // értékadás egy tömbelemnek
@@ -561,6 +562,10 @@ a tömb kiprintelésekor).
 
 A futtatórendszer minden indexelést ellenőriz, 
 túlindexelés esetén runtime error keletkezik. 
+
+A stringekhez hasonlóan alkalmazható a szeletelés, ami a tömb megadott részéről
+sekély másolatot készít. A szeletekben túllógó indexek nem okoznak runtime errort,
+hanem automatikusan alkalmazkodnak a tényleges méretekhez.
 
 Az inicializálatlan tömbelemek értéke NIL.
 

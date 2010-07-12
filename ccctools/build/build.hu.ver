@@ -1,4 +1,18 @@
 
+2010.07.12 -- 1.3.00
+  CCC2 backport.
+
+2010.07.12 -- 1.2.28
+  Az include-ok include-jait is vizsgálja.
+  Az indentált (nem sor eleji) #include-okat is nézi.
+  Az <fspec> alakú include filéket is nézi (nem csak az "fspec" alakúakat).
+
+  Korlátok:
+    csak az egybeírt #include-okat nézi (pl. #  include-ot nem)
+    csak a projekt szinten megadott (-d és -i opciók) helyeken keres
+    nem kerüli ki az #ifdef-eket, stringeket, kommenteket
+    függőségek száma < 100 (így védi ki a végtelen rekurziót)
+
 2010.07.11 -- 1.2.27
   Korábban csak a prg-k include-jait vizsgálta.
   Most minden elsődleges forrásban (amiből obj készül) vizsgálja az
@@ -8,7 +22,7 @@
   előfordulásokat, és ha megtalálja fspec-et a -d és -i opciókkal megadott 
   helyeken, akkor beveszi azt a függőségek közé. Az #include <fpsec> alakot 
   továbbra sem vizsgálja, tehát a cpp forrásokban <> vagy "" alkalmazásával 
-  szabályozható a viselkedés. Továbbra sem nézi az include-ok include-jait.
+  szabályozható a viselkedés.  Az include-ok include-jait továbbra sem nézi.
 
 2010.02.04 -- 1.2.26
   A @parfile-ból olvasott paraméterek nem a lista végére kerülnek

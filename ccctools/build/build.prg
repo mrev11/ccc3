@@ -57,7 +57,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.2.27"
+#define VERSION "1.3.00"
  
 ****************************************************************************
 function main()
@@ -397,26 +397,30 @@ local d1,f,o,n,i,txt,dep
     
         f:=obj[n]
         o:=fname(f)
+        txt:=memoread(f)
 
-        dep:={o+".obj",f} 
-
-        if( .t. /*fext(f)==".prg"*/ ) //2010.07.11
-            txt:=memoread(f)
-            
-            if( 0!=ascan(mmd,{|m|m==lower(o)}) ) //99.10.29
-                //már benn van
-            elseif( fext(f)==".prg" .and. "function main("$txt )
-                if( s_main==NIL )
-                    aadd(mmd,o)
-                end
-            else
-                aadd(lib,o)
+        if( 0!=ascan(mmd,{|m|m==lower(o)}) )
+            //már benn van
+        elseif( fext(f)==".prg" .and. "function main("$txt )
+            if( s_main==NIL )
+                aadd(mmd,o)
             end
-            
-            search_include(txt,dep,dir,todo)
-
-        elseif( 0==ascan(mmd,{|m|m==lower(o)}) ) //99.10.29 
+        else
             aadd(lib,o)
+        end
+ 
+        dep:={o+".obj",f} 
+        for i:=2 to len(dep)
+            if( i==2 )
+                //txt: már beolvasta
+            elseif(i>128)
+                ? "recursive dependencies:",dep
+                ?
+                quit
+            else
+                txt:=memoread(dep[i])
+            end
+            search_include(txt,dep,dir,todo) //hosszabíthatja dep-et
         end
         
         aadd(todo,dep)
@@ -873,35 +877,45 @@ local d:=directory(fspec)
 static function search_include(txt,dep,dir,todo) 
 
 local nl:=chr(10)
-local include:=nl+"#include" 
+local include:="#include" 
 local lenincl:=len(include)
-local n,n1,n2,n3,f
+local n1,n2:=0,line,delim,dpos,f
 
-    txt:=nl+txt
+    while( (n1:=at(include,txt,n2+1))>0 )
+        
+        if( 0==(n2:=at(nl,txt,n1+lenincl)) )
+            n2:=len(txt)+1
+        end
 
-    while( (n:=at(include,txt))>0 )
-    
-        n1:=at('"',txt,n+lenincl)
-        n2:=at('"',txt,n1+1)
-        n3:=at(nl,txt,n+lenincl)
- 
-        if( n1<n2 .and. n2<n3 )
-            f:=substr(txt,n1+1,n2-n1-1)
-            
-            if( byrules(f,dep,dir,todo) )
-                //a fordítási szabályok alapján előállítható
-            
-            elseif( byhand(f,dep,dir,todo) )
-                //eredeti forrásállomány
-
-            else
-                //az include path-ból vett rendszerfilé
-            end
+        line:=substr(txt,n1+lenincl,n2-n1-lenincl)
+        line:=strtran(line,chr(9),"")
+        line:=alltrim(line)
+        
+        if(left(line,1)=='"')
+            delim:='"'
+        elseif(left(line,1)=='<')
+            delim:='>'
+        else
+            loop
         end
         
-        txt:=substr(txt,n3)
+        if( 0==(dpos:=at(delim,line,2)) )
+            loop
+        end
+
+        f:=substr(line,2,dpos-2)
+            
+        if( byrules(f,dep,dir,todo) )
+            //a fordítási szabályok alapján előállítható
+            
+        elseif( byhand(f,dep,dir,todo) )
+            //eredeti forrásállomány
+
+        else
+            //az include path-ból vett rendszerfilé
+        end
     end
-    return NIL
+
 
 ****************************************************************************
 static function search_library()
@@ -1032,7 +1046,7 @@ local i
 
             if( NIL!=(r:=search_file(dir,f+e0))  )
                 p:=fpath(r)
-                aadd(dep,p+f+e)
+                adddep(dep,p+f+e)
                 if( 0==ascan(todo,{|x|x[1]==p+f+e}) )
                     aadd(todo,{p+f+e,p+f+e0})
                 end
@@ -1054,10 +1068,17 @@ static function byhand(f,dep,dir,todo)
 local pn:=search_file(dir,f)
 
     if( pn!=NIL )
-        aadd(dep,pn)
+        adddep(dep,pn)
         return .t.
     end
     return .f.
+
+
+****************************************************************************
+static function adddep(dep,x)
+    if( 0==ascan(dep,{|d|d==x}))
+        aadd(dep,x)
+    end
 
 
 ****************************************************************************

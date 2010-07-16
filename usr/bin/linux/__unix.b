@@ -8,7 +8,7 @@ if [ $CCCBIN == "lin" ]; then
     export BUILD_LPT=$BUILD_LPT:/usr/lib64:/usr/lib:/usr/local/lib:/usr/X11/lib
     export BUILD_OBJ=obj$CCCBIN
     export BUILD_EXE=.
-    export BUILD_DBG=off
+    #export BUILD_DBG=off
     export BUILD_SYS=LINUX
 else
     echo CCCBIN environment variable not set!

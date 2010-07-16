@@ -57,7 +57,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.00"
+#define VERSION "1.3.01"
  
 ****************************************************************************
 function main()
@@ -144,11 +144,6 @@ local opt:=aclone(argv()),n
 
         elseif( "="$opt[n] )
             putenv(opt[n])
-
-            //compatibility
-            if( "on"$lower(getenv("BUILD_DBG")) )
-                s_debug:=.t.
-            end
  
         else
             ? @"Invalid switch: ", opt[n]
@@ -158,6 +153,10 @@ local opt:=aclone(argv()),n
         end
     next
     
+    //compatibility
+    if( "on"$lower(getenv("BUILD_DBG")) )
+        s_debug:=.t.
+    end
     
     if( s_version )
         quit

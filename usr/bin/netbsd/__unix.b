@@ -8,7 +8,7 @@ if [ $CCCBIN == "net" ]; then
     export BUILD_LPT=$BUILD_LPT:/usr/lib:/usr/local/lib:/usr/X11/lib:/usr/pkg/lib
     export BUILD_OBJ=obj$CCCBIN
     export BUILD_EXE=.
-    export BUILD_DBG=off
+    #export BUILD_DBG=off
     export BUILD_SYS=NETBSD
 else
     echo CCCBIN environment variable not set!

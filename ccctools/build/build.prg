@@ -32,6 +32,7 @@ static s_quiet   := .f.
 static s_version := .f.
  
 static s_debug:=.f.
+static s_dry:=.f.
 static s_primary:=".y.lem.lex.prg.cpp.c.asm."
 
 static s_libabs:=.t. //minden platformon abszolút lib specifikációk
@@ -57,8 +58,8 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.01"
- 
+#define VERSION "1.3.02"
+
 ****************************************************************************
 function main()
 
@@ -139,6 +140,10 @@ local opt:=aclone(argv()),n
         elseif( "--debug"==opt[n] )
             s_debug:=.t.
 
+        elseif( "--dry"==opt[n] )
+            s_debug:=.t.
+            s_dry:=.t.
+
         elseif( "@"==left(opt[n],1) )
             readpar(substr(opt[n],2),opt,n)
 
@@ -156,6 +161,13 @@ local opt:=aclone(argv()),n
     //compatibility
     if( "on"$lower(getenv("BUILD_DBG")) )
         s_debug:=.t.
+    end
+    if( "debug"$lower(getenv("BUILD_DBG")) )
+        s_debug:=.t.
+    end
+    if( "dry"$lower(getenv("BUILD_DBG")) )
+        s_debug:=.t.
+        s_dry:=.t.
     end
     
     if( s_version )
@@ -425,6 +437,8 @@ local d1,f,o,n,i,txt,dep
         aadd(todo,dep)
     next
     
+    normalize(todo)
+    
     asort(todo,,,{|x,y|psort(x,y)})
     //most megvan, hogy mit kell csinálni
 
@@ -470,7 +484,7 @@ local d1,f,o,n,i,txt,dep
 static function makeso(libnam,object)  //so-t az objectekből (UNIX)
 
 local target:=getenv("BUILD_OBJ")+dirsep()+"lib"+libnam+".so",ttarget 
-local depend,tdepend,update:=.f. 
+local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so.bat"
 local objdir:=getenv("BUILD_OBJ"), n 
 
@@ -500,13 +514,16 @@ local objdir:=getenv("BUILD_OBJ"), n
         tdepend:=ftime(depend)
 
         if( tdepend==NIL )
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
+            if( s_dry )
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
 
         elseif( ttarget<tdepend )
-
             update:=.t.
         end
 
@@ -530,7 +547,7 @@ local objdir:=getenv("BUILD_OBJ"), n
 static function makelib(libnam,object)  //lib-et az objectekből
 
 local target:=getenv("BUILD_OBJ")+dirsep()+libnam+".lib",ttarget 
-local depend,tdepend,update:=.f. 
+local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib.bat"
 local objdir:=lower(getenv("BUILD_OBJ")), n 
 local objlist
@@ -560,13 +577,16 @@ local objlist
         tdepend:=ftime(depend)
 
         if( tdepend==NIL )
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
+            if(s_dry)
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
 
         elseif( ttarget<tdepend )
-
             update:=.t.
         end
 
@@ -613,7 +633,7 @@ local objlist
 static function makeexe(exenam,object) //exe-t az objectekből
 
 local target:=getenv("BUILD_EXE")+dirsep()+exenam+".exe",ttarget 
-local depend,tdepend,update:=.f. 
+local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe.bat"
 local objdir:=lower(getenv("BUILD_OBJ")), n 
 local objlist, xobj
@@ -646,13 +666,15 @@ local objlist, xobj
         tdepend:=ftime(depend)
 
         if( tdepend==NIL )
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
-
+            if( s_dry )
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
         elseif( ttarget<tdepend )
-
             update:=.t.
         end
 
@@ -705,7 +727,7 @@ local objlist, xobj
 static function makeexe1(mmod,libnam) //exe-t a main modulból + lib-ből
 
 local target:=getenv("BUILD_EXE")+dirsep()+mmod+".exe",ttarget 
-local depend,tdepend,update:=.f. 
+local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe.bat"
 local objdir:=getenv("BUILD_OBJ"), n 
 
@@ -732,13 +754,18 @@ local objdir:=getenv("BUILD_OBJ"), n
     tdepend:=ftime(depend)
 
     if( tdepend==NIL )
-        ? depend, @"does not exist"
-        ?
-        errorlevel(1)
-        quit
+        if( s_dry )
+            tdepend:=""
+        else
+            ? depend, @"does not exist"
+            ?
+            errorlevel(1)
+            quit
+        end
     elseif( ttarget<tdepend )
         update:=.t.
     end
+
     if( s_debug )
         ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
     end
@@ -750,13 +777,18 @@ local objdir:=getenv("BUILD_OBJ"), n
     tdepend:=ftime(depend)
     
     if( tdepend==NIL )
-        ? depend, @"does not exist"
-        ?
-        errorlevel(1)
-        quit
+        if( s_dry )
+            tdepend:=""
+        else
+            ? depend, @"does not exist"
+            ?
+            errorlevel(1)
+            quit
+        end
     elseif( ttarget<tdepend )
         update:=.t.
     end
+
     if( s_debug )
         ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
     end
@@ -801,26 +833,27 @@ local n,p1,p2
         tdepend:=ftime(depend)
         
         if( tdepend==NIL )
-            ? deplist[n], @"does not exist"
-            ?
-            errorlevel(1)
-            quit
+            if( s_dry )
+                tdepend:=""
+            else
+                ? deplist[n], @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
 
         elseif( ttarget<tdepend )
-
             update:=.t.
         end
 
-    if( s_debug )
-        ? "  ",depend,"["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-    end
+        if( s_debug )
+            ? "  ",depend,"["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+        end
     next
-
 
     if( s_debug )
         ? 
     end
-
     
     if( update )
         
@@ -848,19 +881,20 @@ local n,p1,p2
 ****************************************************************************
 static function run1(cmd)
 
-    run(cmd)
+    if( !s_dry )
 
-    if( file("error") )
-        #ifdef _UNIX_
-          run ("cat error")
-        #else
-          run ("type error")
-        #endif
-        ?
-        quit
+        run(cmd)
+
+        if( file("error") )
+            #ifdef _UNIX_
+              run ("cat error")
+            #else
+              run ("type error")
+            #endif
+            ?
+            quit
+        end
     end
-
-    return NIL
  
 
 ****************************************************************************
@@ -1115,5 +1149,23 @@ local n,s
 
 
 ****************************************************************************
+static function normalize(todo)
 
- 
+// kiszedi a path-okból a felesleges "./" részeket
+// a működéshez nem kell, csak a függőségi listákat teszi olvashatóbbá
+
+local i,n,x
+
+    for n:=1 to len(todo)
+        for i:=1 to len(todo[n])
+            x:=todo[n][i]
+            x:=strtran(x,dirsep()+"."+dirsep(),dirsep())
+            if( left(x,2)=="."+dirsep() )
+                x:=substr(x,3)
+            end
+            todo[n][i]:=x
+        next
+    next
+
+
+****************************************************************************

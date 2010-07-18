@@ -10,4 +10,4 @@
 
 # 3
 # work <--> last commit (what would be committed on "git -a commit")
-git diff HEAD | less
+git diff HEAD | less -S

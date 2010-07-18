@@ -8,7 +8,7 @@ if [ $CCCBIN == "fre" ]; then
     export BUILD_LPT=$BUILD_LPT:/usr/lib:/usr/local/lib:/usr/X11/lib
     export BUILD_OBJ=obj$CCCBIN
     export BUILD_EXE=.
-    export BUILD_DBG=off
+    #export BUILD_DBG=off
     export BUILD_SYS=FREEBSD
 else
     echo CCCBIN environment variable not set!

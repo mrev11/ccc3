@@ -1,5 +1,5 @@
 #!/bin/bash
 
 ( git add .                      # mod new
-  git commit -a -m "commit"      # mod del
+  git commit -a -m "push"        # mod del
   git push --all) | less -S

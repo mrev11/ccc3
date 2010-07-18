@@ -15,5 +15,5 @@ set BUILD_INC=%cccdir%\usr\include
 set BUILD_LPT=%cccdir%\usr\lib\%cccbin%
 set BUILD_OBJ=obj%cccbin%
 set BUILD_EXE=.
-set BUILD_DBG=off
+:set BUILD_DBG=off
  

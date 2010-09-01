@@ -110,7 +110,7 @@ static XFontStruct *loadfont()
     XFontStruct *font=XLoadQueryFont(display,fontname);
     if( font==0 )
     {
-        fprintf(stderr,"Cannot load font\n");
+        fprintf(stderr,"Cannot load font: %s\n",fontname);
         exit(1);
     }
     return font;

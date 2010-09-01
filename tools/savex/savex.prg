@@ -380,7 +380,7 @@ local x,repeat:=.f.
         brw:footSep:=B_HS+B_SS2+B_HS
     end
 
-    brwColumn(brw,"Size",brwABlock(brw,IDX_SIZE),"999999,999")
+    brwColumn(brw,"Size",brwABlock(brw,IDX_SIZE),"9999,999,999")
     
     brw:freeze:=1
     if( !"."==s_save )

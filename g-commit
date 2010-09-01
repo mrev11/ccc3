@@ -4,8 +4,10 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "build 1.3.02 --dry" #2010.07.18
+git commit --all -m  "font-config" #2010.09.01
 
+
+# "build 1.3.02 --dry" #2010.07.18
 # "build 1.3.01" #2010.07.16
 # "build 1.3.00" #2010.07.12
 # "termapi sync/async"  #2010.07.11

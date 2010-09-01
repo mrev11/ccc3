@@ -1,4 +1,5 @@
 #!/bin/bash
+#set -x
 echo OBJ2LIB.BAT $1
 
 TARGET=$BUILD_OBJ/$1.lib
@@ -14,7 +15,7 @@ rm error 2>/dev/null
 shift
 for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLIB; done 
  
-ar q $TARGET `cat $RSPLIB`
+ar -c -q $TARGET `cat $RSPLIB`
 ln -s $SYMSRC $SYMDST
 
 echo ----------------------------------------------------------------

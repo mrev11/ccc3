@@ -23,6 +23,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef _UNIX_
+#include <sys/time.h>
+#include <sys/types.h>
+#endif
+
 #include <inttypes.h>
 #include <netint.h>
 #include <termio.h>

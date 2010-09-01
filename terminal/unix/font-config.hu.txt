@@ -1,0 +1,20 @@
+A fullscreen (terminálos) programoknak szüksége 
+van egy fix szélességű, Unicode kódkiosztású fontra.
+A terminálprogram a CCCTERM_FONTSPEC környezeti változóban 
+megadott fontot tölti be. Példák CCCTERM_FONTSPEC beállítására:
+
+  export CCCTERM_FONTSPEC=-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+  export CCCTERM_FONTSPEC=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
+
+Ha CCCTERM_FONTSPEC nincs megadva, akkor a terminál a
+
+  -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+
+specifikációjú default fontot használja. 
+Ha nincs megfelelő font, a terminál kilép, minek következtében 
+a terminálos program is futásképtelen, ilyenkor a hibaüzenet: Cannot load font.
+
+A mellékelt console8x16.pcf.gz fájl tartalmazza a default fontot. Telepítése:
+1. A console8x16.pcf.gz fájlt bemásoljuk /usr/share/fonts/X11/misc-be.
+2. Ugyanitt lefuttatjuk a mkfontdir programot.
+3. Újraindítjuk az X-et.

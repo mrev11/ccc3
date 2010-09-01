@@ -74,15 +74,15 @@ local y,m,d,mm
     y:=round((mm-m+1)/12,0)
     d:=day(date)
 
-    while( d>28 .and. empty(ymntod(y,m,d)) )
+    while( d>28 .and. empty(ymdtod(y,m,d)) )
         d--
     end
 
-    return ymntod(y,m,d)
+    return ymdtod(y,m,d)
 
 
 ****************************************************************************
-static function ymntod(y,m,d)
+static function ymdtod(y,m,d)
 local w
     w:=padl(y,4,'0')+padl(m,2,'0')+padl(d,2,'0')
     return stod(w)

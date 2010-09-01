@@ -1,9 +1,3 @@
-
-//Vermes M.
-//signed/unsigned comparison warning elkerülése,
-//hogy cpp-ként is warning mentesen forduljon.
-//void ParseTrace(FILE *TraceFILE, const char *zTracePrompt);
-
 /* Driver template for the LEMON parser generator.
 ** The author disclaims copyright to this source code.
 */
@@ -159,6 +153,8 @@ struct yyParser {
   int yyerrcnt;                 /* Shifts left before out of the error */
   ParseARG_SDECL                /* A place to hold %extra_argument */
   yyStackEntry yystack[YYSTACKDEPTH];  /* The parser's stack */
+  int xxmajor;                  /* The symbol code for the token */
+  YYMINORTYPE xxminor;          /* The value for the token */
 };
 typedef struct yyParser yyParser;
 
@@ -191,9 +187,6 @@ void ParseTrace(FILE *TraceFILE, const char *zTracePrompt){
   yyTracePrompt = zTracePrompt;
   if( yyTraceFILE==0 ) yyTracePrompt = 0;
   else if( yyTracePrompt==0 ) yyTraceFILE = 0;
-}
-void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
-  ParseTrace(TraceFILE, (const char*) zTracePrompt);
 }
 #endif /* NDEBUG */
 
@@ -317,6 +310,10 @@ void ParseFree(
   yyParser *pParser = (yyParser*)p;
   if( pParser==0 ) return;
   while( pParser->yyidx>=0 ) yy_pop_parser_stack(pParser);
+  if(pParser->xxmajor)
+  {
+      yy_destructor(pParser->xxmajor,&pParser->xxminor);
+  }
   (*freeProc)((void*)pParser);
 }
 
@@ -578,6 +575,8 @@ void Parse(
 
   /* (re)initialize the parser, if necessary */
   yypParser = (yyParser*)yyp;
+  yypParser->xxmajor=yymajor;
+  yypParser->xxminor.yy0=yyminor;
   if( yypParser->yyidx<0 ){
     if( yymajor==0 ) return;
     yypParser->yyidx = 0;
@@ -598,7 +597,10 @@ void Parse(
   do{
     yyact = yy_find_shift_action(yypParser,yymajor);
     if( yyact<YYNSTATE ){
+
+      yypParser->xxmajor=0;
       yy_shift(yypParser,yyact,yymajor,&yyminorunion);
+
       yypParser->yyerrcnt--;
       if( yyendofinput && yypParser->yyidx>=0 ){
         yymajor = 0;
@@ -646,6 +648,8 @@ void Parse(
         }
 #endif
         yy_destructor(yymajor,&yyminorunion);
+        yypParser->xxmajor=0;
+
         yymajor = YYNOCODE;
       }else{
          while(
@@ -656,7 +660,10 @@ void Parse(
           yy_pop_parser_stack(yypParser);
         }
         if( yypParser->yyidx < 0 || yymajor==0 ){
+
           yy_destructor(yymajor,&yyminorunion);
+          yypParser->xxmajor=0;
+
           yy_parse_failed(yypParser);
           yymajor = YYNOCODE;
         }else if( yymx!=YYERRORSYMBOL ){
@@ -681,7 +688,10 @@ void Parse(
         yy_syntax_error(yypParser,yymajor,yyminorunion);
       }
       yypParser->yyerrcnt = 3;
+
       yy_destructor(yymajor,&yyminorunion);
+      yypParser->xxmajor=0;
+
       if( yyendofinput ){
         yy_parse_failed(yypParser);
       }

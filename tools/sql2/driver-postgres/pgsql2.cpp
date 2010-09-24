@@ -81,8 +81,6 @@ extern void _clp_sqldeadlockerrornew(int);
 extern void _clp_sqlserialerrornew(int);
 extern void _clp_sqlconnecterrornew(int);
 
-static unsigned char *escape(const unsigned char *from, size_t from_length, size_t *to_length);
-static unsigned char *unescape(const unsigned char *from, size_t *to_length);
 
 namespace _nsp_sql2{
 namespace _nsp_postgres{
@@ -644,6 +642,13 @@ void _clp__pq_getvalue0(int argno) // stmidx,row,col --> "value"/NIL
     else
     {
         binaryn( PQgetvalue(result,row-1,col-1) );
+        //printf("\ngetvalue:");
+        //char *p=PQgetvalue(result,row-1,col-1);
+        //while( *p )
+        //{
+        //    printf("%02x ",(unsigned)*p);
+        //    p++;
+        //}
     }
     _rettop();
     CCC_EPILOG();
@@ -692,76 +697,10 @@ void _clp__pq_getvalue(int argno)  // stmidx,row,col --> {"value"}
 
 
 //--------------------------------------------------------------------------
-void _clp__pq_escapebytea(int argno)
-{
-    CCC_PROLOG("_pq_escapebytea",1);
-    char *from=_parb(1);
-    int fleng=_parblen(1);
-    size_t tleng;
-
-    #define ESCAPE
-    #ifdef ESCAPE  //saját változat
-      char *to=(char*)escape((unsigned char*)from,fleng,&tleng);
-      _retblen(to,(tleng?tleng-1:0)); //záró 0 byte elhagyva
-      free(to); //az alloc-hoz passzoló free kell!
-    #else
-      char *to=(char*)PQescapeBytea((unsigned char*)from,fleng,&tleng);
-      _retblen(to,(tleng?tleng-1:0)); //záró 0 byte elhagyva
-      PQfreemem(to); //az alloc-hoz passzoló free kell!
-    #endif
-
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp__pq_unescapebytea(int argno)
-{
-    CCC_PROLOG("_pq_unescapebytea",1);
-    char *from=_parb(1);
-    size_t tleng;
-    #define UNESCAPE
-    #ifdef UNESCAPE  //saját változat
-      char *to=(char*)unescape((unsigned char*)from,&tleng);
-      _retblen(to,tleng); //itt nincs záró 0 byte 
-      free(to); //az alloc-hoz passzoló free kell!
-    #else
-      char *to=(char*)PQunescapeBytea((unsigned char*)from,&tleng);
-      _retblen(to,tleng); //itt nincs záró 0 byte 
-      PQfreemem(to); //az alloc-hoz passzoló free kell!
-    #endif
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp__pq_escapestring(int argno) //az "'" és "\" karaktereket duplázza
-{
-    CCC_PROLOG("_pq_escapestring",1);
-    char *from=_parcb(1);
-    int fleng=_parblen(1);
-    char *to=binaryl(2*fleng+1);
-    int tleng=PQescapeString(to,from,fleng);
-    _retcblen(to,tleng);
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-
-}} //namespace
-
-
-
-//--------------------------------------------------------------------------
 static unsigned char *escape(const unsigned char *from, size_t from_length, size_t *to_length)
 {
     //format: E'proba \\ooo \\ooo szerencse'
     
-    //Hosszú ideje nem tudnak megállapodni a formátumban.
-    //A régebbi szerverek nem fogadják el az E prefixet (8.0.x-ig).
-    //Az újabb szerverek E prefixszel szeretik a stringet (8.1.x-től).
-    //Állítólag az is szerverfüggő, hogy \ vagy \\ kell-e.
-    //A PQescapeByteaConn ezeket megkérdezi a szervertől.
-    //Ritka nagy f@szság.
-
     const unsigned char *vp;
     unsigned char *rp;
     unsigned char *result;
@@ -804,60 +743,124 @@ static unsigned char *escape(const unsigned char *from, size_t from_length, size
 }
 
 //--------------------------------------------------------------------------
-static unsigned char *unescape(const unsigned char *from, size_t *to_length)
+void _clp__pq_escapebytea(int argno)
 {
-    char *p,*r;
-    int len=0; //itt nincs záró 0 byte 
-    
-    for( p=(char*)from; *p!=0; p++ )
-    {
-        if( *p!='\\' )
-        {
-            //simple
-        }
-        else if( *(p+1)=='\\' ) 
-        {
-            p++;
-        }
-        else if( *(p+1)=='\'' ) 
-        {
-            p++;
-        }
-        else
-        {
-            p+=3; //e.g. \303
-        }
-        len++;
-    }
-
-    unsigned char *result=(unsigned char*)malloc(len+1);
-
-    for(p=(char*)from,r=(char*)result; *p!=0; p++,r++ )
-    {
-        if( *p!='\\' )
-        {
-            *r=*p;
-        }
-        else if( *(p+1)=='\\' ) 
-        {
-            p++;
-            *r=*p;
-        }
-        else if( *(p+1)=='\'' ) 
-        {
-            p++;
-            *r=*p;
-        }
-        else
-        {
-            unsigned long b=strtoul(p+1,0,8);
-            *r=(char)(0xff&b);
-            p+=3;
-        }
-    }
-    *r=0;
-    *to_length=len;
-    return result;
+    CCC_PROLOG("_pq_escapebytea",1);
+    char *from=_parb(1);
+    int fleng=_parblen(1);
+    size_t tleng;
+    char *to=(char*)escape((unsigned char*)from,fleng,&tleng); //PQescapeByteaConn nem jó!
+    _retblen(to,(tleng?tleng-1:0)); //záró 0 byte elhagyva
+    free(to);
+    CCC_EPILOG();
 }
+
+//--------------------------------------------------------------------------
+void _clp__pq_unescapebytea(int argno)
+{
+    CCC_PROLOG("_pq_unescapebytea",1);
+    char *from=_parb(1);
+    size_t tleng;
+    char *to=(char*)PQunescapeBytea((unsigned char*)from,&tleng);
+    _retblen(to,tleng); //itt nincs záró 0 byte 
+    PQfreemem(to);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp__pq_escapestring(int argno) //az "'" és "\" karaktereket duplázza
+{
+    CCC_PROLOG("_pq_escapestring",1);
+    char *from=_parcb(1);
+    int fleng=_parblen(1);
+    char *to=binaryl(2*fleng+1);
+
+    int tleng=0;
+    for(int i=0; i<fleng; i++)  //PQescapeStringConn nem jó!
+    {
+        int c=from[i];
+        if( c=='\\' || c=='\'')
+        {
+            to[tleng++]=c;
+        }
+        to[tleng++]=c;
+    }
+    
+    _retcblen(to,tleng);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+
+}} //namespace
+
+
+
+//--------------------------------------------------------------------------
+#ifdef EMLEKEZTETO //az "escapelésről"
+
+  Régen a Postgres stringek C-szerűen escapeltek voltak, vagyis
+      a '\n' karakter-literál egy soremelést jelentett,
+      a '\\' karakter-literál jelentette a backslasht, stb.
+  Az SQL standard azonban nem ismeri az ilyen escape szekvenciákat,
+  és a backslasheket sem kell duplázni. 
+  
+  A standard közelítése érdekében a Postgres 8.x-ben bevezettek egy 
+  szerver-paramétert: standard_conforming_strings.  Ez a paraméter 
+  a postgresql.conf-ban állítható, azt határozza meg, hogy a szerver 
+  értelmezze-e az escape szekvenciáat. Jelenleg 
+
+    standard_conforming_strings = off  # értelmezi (nem standard)
+  
+  a default beállítás, de a dokumentációban figyelmeztetnek, hogy 
+  a default a jövőben változni fog. A lényeg, hogy a különböző szerverek 
+  különféleképpen escapelnek, sőt ugyanaz a szerver is escapelhet
+  a változó konfigurációtól függően egyszer így, másszor úgy.
+
+  A standard_conforming_strings paraméterrel egyidőben megjelent az 
+  E'...' alakú, azaz escapelt string. Ez a Postgres speciális szintaktikája, 
+  olyan stringet jelöl, aminek a belsejében a \-t mindig escape szekvencia 
+  bevezetőjeként kell értelmezni (standard_conforming_strings értékétől
+  függetlenül).
+  
+  Hogyan függetlenítjük magunkat standard_conforming_strings-től?
+  Az SQL2 interfész a saját maga által generált parancsokban mindig E'...' 
+  stringet küld a szervernek, ennek értelmezése független a konfigurációtól.
+  A stringben levő backslasheket viszont mindig megduplázza (hatástalanítja).
+  Az "\n" érték tehát E'\\n'-ként lesz elküldve a szervernek, így az nem 
+  újsor karaktert, hanem 1 darab \-t és egy darab n-t eredményez. Újsor 
+  karakter akkor kerül az adatbázisba, ha az SQL parancs chr(10) értéket 
+  tartalmaz, de ezt nem kell külön escapelni.
+  
+  Hibás volna  E'...' stringek belsejének escapelésre a könyvtári 
+  PQescapeBytea, PQescapeByteaConn, PQescapeString függvényeket használni, 
+  mert ezek figyelik a szerveren beállított standard_conforming_strings-t,
+  holott az E'...' értelme éppen az, hogy ettől független az escapelés.
+  
+  Az PQunescapeBytea függvénnyel baj lehet, ha a 9.x szerver olyan
+  (hex) escapelt stringet küld, amit a 8.x kliens nem tud értelmezni. 
+  Egy unescape függvény azonban trükkös, ezért maradunk a könyvtári 
+  verziónál.
+
+  Az sqlexec metódus a parancs-stringet úgy küldi a szervernek, ahogy 
+  azt a program(ozó) elkészítette, probléma lehet a hordozhatósággal
+  Postgres és Oracle között. Ha a parancs E'...' alakú string literált
+  tartalmaz, azt az Oracle hibásnak jelzi. Az '...\n...' literálban
+  (síma string) az Oracle \n-t nem értelmezi újsornak, a Postgres
+  viszont standard_conforming_strings-től függően értelmezi újsornak
+  (vagy warningnak vagy errornak).
+  
+  Megj: Viszont sqlexec-ben az sqlbind-dal behelyettesített értékek
+  automatikusan escapelődnek, tehát ebben az esetben is az interfész
+  kiegyenlíti az Oracle és Postgres különbségét.
+  
+  A bytea (memó) típusokban így escapelünk: E'...\\ooo...', tehát 
+  5 hosszú szekvenciák vannak: \\ plusz 3-jegyű oktális szám.
+  Miért kell duplázni a \\-t? Nem éppen így oltja ki a hatását?
+  Válasz, _két_ elemzésen megy át a szekvencia:
+    1) string syntax elemző :  \\ooo  ->  \ooo
+    2) bytea  input  elemző :   \ooo  ->   ooo értékű byte
+
+#endif
 
 //--------------------------------------------------------------------------

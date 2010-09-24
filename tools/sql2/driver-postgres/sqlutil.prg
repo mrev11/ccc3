@@ -81,6 +81,8 @@ function sqlliteral(x) //x-et SQL utasításba írható literállá alakítja
 local t:=valtype(x)
     if( t=="C" )
         return sqlliteral_c(x)
+    elseif( t=="X" )
+        return sqlliteral_x(x)
     elseif( t=="N" )
         return sqlliteral_n(x)
     elseif( t=="D" )
@@ -104,6 +106,14 @@ static function sqlliteral_c(x)
     Az Oracle a '' karakter literált null-nak értelmezi,
     a Postgres üres stringnek. A különbséget ki kell egyenlíteni.
 #endif
+
+static function sqlliteral_x(x)
+    if( x==a"" )
+        x:="null"
+    else
+        x:="E'"+bin2str(sql2.postgres._pq_escapebytea(x))+"'"
+    end
+    return x
 
 
 static function sqlliteral_n(x)

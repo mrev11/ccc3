@@ -1,3 +1,22 @@
+2010.09.23
+  
+  Postgres escapelés felülvizsgálva, leírás pgsql2.cpp végén.
+  
+  Mindkét adatbáziskezelőben sqlliteral kiegészítve binary típus ággal.
+  Ez az ág kezeli azt az esetet, amikor az sqlbind helyettesít be egy
+  memó értéket az SQL parancs szövegébe. 
+  
+    Eddig helyettesített memókra nem volt megfelelő automatikus escapelés. 
+    Ha a helyettesítendő érték a logikus X típus volt, akkor az sqlbind
+    mindkét driverben elszállt.  Ha a helyettesítendő érték X helyett C 
+    típus volt, akkor a Postgres program sok esetben lefutott, de az Oracle 
+    általában 'invalid hexa value'-t mondott (mert hexában kérné a blobokat).  
+    
+  Ez a javítás nem működik (lefordul, de nem fejti ki a hatását) CCC2-ben, 
+  mert a CCC2 nem tesz különbséget az X és C típusok között, emiatt nem 
+  tud a típusnak megfelelő escapelő eljárást választani. Tehát nem jók az 
+  olyan CCC2 programok, amik memó értéket akarnak sqlbind-dal helyettesíteni.
+  
 2009.09.27
 
   Az sqlconnection objektum az (új) __isolationlevel__ attribútumban 

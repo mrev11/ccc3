@@ -69,6 +69,8 @@ function sqlliteral(x) //x-et SQL utasításba írható literállá alakítja
 local t:=valtype(x)
     if( t=="C" )
         return sqlliteral_c(x)
+    elseif( t=="X" )
+        return sqlliteral_x(x)
     elseif( t=="N" )
         return sqlliteral_n(x)
     elseif( t=="D" )
@@ -86,6 +88,9 @@ static function sqlliteral_c(x)
         x:=strtran(x,"'","''")
     end
     return "'"+x+"'"
+
+static function sqlliteral_x(x)
+    return "'"+sql2.oracle.bin2hex_c(x)+"'"
 
 static function sqlliteral_n(x)
     return ltrim(str(x))

@@ -117,6 +117,33 @@ Időről időre mégis megjelennek warningok, ez amiatt van, hogy a C++ fordít�
 ellenőrzéseit szigorítják. A CCC karbantartása során ezek rendszeresen javításra 
 kerülnek.
 
+A karakteres fullscreen programoknak szüksége 
+van egy fix szélességű, Unicode kódkiosztású fontra.
+A terminálprogram a \verb!CCCTERM_FONTSPEC! környezeti változóban 
+megadott fontot használja. Példák ennek beállítására:
+
+\begin{verbatim}
+  export CCCTERM_FONTSPEC=-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+  export CCCTERM_FONTSPEC=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
+\end{verbatim}
+
+Alapesetben (ha \verb!CCCTERM_FONTSPEC! nincs megadva) a terminál a
+
+\begin{verbatim}
+  -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+\end{verbatim}
+
+specifikációjú fontot tölti be. 
+Ha nincs megfelelő font, a terminál kilép, minek következtében 
+a terminálos program is futásképtelen, ilyenkor a hibaüzenet: \verb!Cannot load font!.
+
+A mellékelt \verb!console8x16.pcf.gz! fájl tartalmazza a default fontot. Telepítése:
+\begin{itemize}
+\item A \verb!console8x16.pcf.gz! fájlt bemásoljuk \verb!/usr/share/fonts/X11/misc!-be,
+\item ugyanitt rootként lefuttatjuk a \verb!mkfontdir! programot,
+\item majd újraindítjuk az X-et.
+\end{itemize}
+
 
 
 

@@ -20,10 +20,11 @@
 
 #include "sql.ch"
 
+******************************************************************************
 function main()
 
-******************************************************************************
-local con:=sqlconnect()
+local con
+local qb:=quitblock()
 local tds
 local dom
 local table
@@ -48,7 +49,10 @@ local n
         ? "Usage: jeed <tdsspec>"
         ?
         quit
-    end
+    end  
+
+    con:=sqlconnect()
+    quitblock({||con:sqldisconnect(),eval(qb)})
 
     dom:=tdsutil.tds2dom(tds)
     table:=tdsutil.dom2tabent(con,dom)    

@@ -134,7 +134,7 @@ string2     "\""[^\"\n]*"\""
                 _nsp_tdsutil::_clp_replacename_cb(2);
                 //STACK: whereclause,collst,SYMBOL
                 str2bin(TOP());
-                cat(BINARYPTR(TOP()),TOP()->data.binary.len);
+                cat(BINARYPTR(TOP()),BINARYLEN(TOP()));
                 pop();
                 //STACK: whereclause,collst
            }

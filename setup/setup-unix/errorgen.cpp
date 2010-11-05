@@ -113,6 +113,18 @@ void error_cln(const char *operation, VALUE *base, int argno)
 }
 
 //------------------------------------------------------------------------
+void error_bln(const char *operation, VALUE *base, int argno)
+{
+    error_gen(L"binary variable too long",operation,base,argno);
+}
+
+//------------------------------------------------------------------------
+void error_nul(const char *operation, VALUE *base, int argno)
+{
+    error_gen(L"null pointer",operation,base,argno);
+}
+
+//------------------------------------------------------------------------
 void error_wcr(const char *operation, VALUE *base, int argno)
 {
     error_gen(L"invalid window handle",operation,base,argno);

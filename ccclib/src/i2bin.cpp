@@ -42,7 +42,7 @@ void _clp_i2bin(int argno) //signed 16-bit
 void _clp_bin2i(int argno)  //signed 16-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_int16_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_int16_t)) )
     {
         error_arg("bin2i",base,argno);
     }
@@ -55,7 +55,7 @@ void _clp_bin2i(int argno)  //signed 16-bit
 void _clp_bin2w(int argno)  //unsigned 16-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_uint16_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_uint16_t)) )
     {
         error_arg("bin2w",base,argno);
     }
@@ -81,7 +81,7 @@ void _clp_l2bin(int argno) //signed 32-bit
 void _clp_bin2l(int argno) //signed 32-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_int32_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_int32_t)) )
     {
         error_arg("bin2l",base,argno);
     }
@@ -107,7 +107,7 @@ void _clp_f2bin(int argno)
 void _clp_bin2f(int argno)
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(double)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(double)) )
     {
         error_arg("bin2f",base,argno);
     }
@@ -127,7 +127,7 @@ void _clp_l2hex(int argno)
     }
     else if( base->type==TYPE_NUMBER )
     {
-        x=D2UINT(base->data.number);
+        x=D2ULONG(base->data.number);
     }
     else if( base->type==TYPE_POINTER )
     {

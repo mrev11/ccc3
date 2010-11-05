@@ -53,8 +53,8 @@ typedef c_int32_t  vmm_s32;
 typedef c_uint16_t vmm_u16;
 typedef c_uint32_t vmm_u32;
 
-#define BUFFER(hnd) (hnd->data.string.oref->ptr.chrptr)
-#define BUFLEN(hnd) (hnd->data.string.len) 
+#define BUFFER(hnd) (STRINGPTR(hnd))
+#define BUFLEN(hnd) (STRINGLEN(hnd)) 
 
 DEFINE_METHOD(operation);
 DEFINE_METHOD(description);

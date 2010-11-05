@@ -42,7 +42,7 @@ void string(CHAR const *ptr) //új példány rámutatással (new nélkül)
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=wcslen(ptr);
+    STRINGLEN(v)=wcslen(ptr);
     v->type=TYPE_STRING;
  
     VARTAB_UNLOCK();
@@ -65,7 +65,7 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
 
     VARTAB_UNLOCK();
@@ -96,7 +96,7 @@ void strings(CHAR const *ptr, unsigned int len) //substring kimásolása new-val
   
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
 
     VARTAB_UNLOCK();
@@ -126,7 +126,7 @@ CHAR *stringl(unsigned int len) //inicializálatlan string new-val
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
  
     VARTAB_UNLOCK();

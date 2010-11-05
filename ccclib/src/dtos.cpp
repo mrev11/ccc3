@@ -166,11 +166,11 @@ void _clp_stod(int argno)  //CA-Tools
     {
         error_arg("stod",base,1);
     }
-    else if( (base->type==TYPE_STRING) && (base->data.string.len==8) )
+    else if( (base->type==TYPE_STRING) && (STRINGLEN(base)==8) )
     {
         n=stod(STRINGPTR(base));     
     }
-    else if( (base->type==TYPE_BINARY) && (base->data.binary.len==8) )
+    else if( (base->type==TYPE_BINARY) && (BINARYLEN(base)==8) )
     {
         n=stod(BINARYPTR(base));     
     }

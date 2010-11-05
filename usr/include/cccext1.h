@@ -33,6 +33,8 @@ extern void error_arg(const char*,VALUE*,int);
 extern void error_arr(const char*,VALUE*,int);
 extern void error_blk(const char*,VALUE*,int);
 extern void error_cln(const char*,VALUE*,int);
+extern void error_bln(const char*,VALUE*,int);
+extern void error_nul(const char*,VALUE*,int);
 extern void error_div(const char*,VALUE*,int);
 extern void error_idx(const char*,VALUE*,int);
 extern void error_met(const char*,VALUE*,int);
@@ -65,10 +67,10 @@ extern void begseqpop_exit(void);
 extern void begseqpop_loop(void);
 
 //binary.obj:
-extern char *binaryl(unsigned);
+extern char *binaryl(unsigned long);
 extern void binary(const char*);
 extern void binaryn(const char*);
-extern void binarys(const char*,unsigned);
+extern void binarys(const char*,unsigned long);
 extern void binaryx(const char*);
 
 //push.obj:

@@ -29,7 +29,7 @@ void _clp_chsize(int argno)
 
     if( argno==2 ) 
     {
-        length = (off_t)(_parnd(2)+0.5); 
+        length = _parnu(2); 
     }
     else if( argno==3 ) //large file support 
     {

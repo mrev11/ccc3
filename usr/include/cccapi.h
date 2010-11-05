@@ -38,6 +38,7 @@
 
 //----------------------------------------------------------------------
 #define ARGERROR()     (error_arg(trace->func,trace->base,argno))
+#define PTRERROR(v)    (push(v),error_nul(trace->func,stack-1,1))
 
 #define PARPTR(i)      (base+(i)-1)
 #define PARTYPE(i)     (PARPTR(i)->type)
@@ -53,14 +54,31 @@
 #define ISBLOCK(i)     (PARTYPE(i)==TYPE_BLOCK)
 #define ISOBJECT(i)    (PARTYPE(i)==TYPE_OBJECT)
  
-#define BINARYPTR(v)   ((v)->data.binary.oref->ptr.binptr)
+#define BINARYPTR0(v)  ((v)->data.binary.oref->ptr.binptr)
+#define BINARYPTR(v)   (BINARYPTR0(v)?BINARYPTR0(v):(PTRERROR(v),(BYTE*)0))
 #define STRINGPTR(v)   ((v)->data.string.oref->ptr.chrptr)
 #define ARRAYPTR(v)    ((v)->data.array.oref->ptr.valptr)
+#define OBJECTPTR(v)   ((v)->data.object.oref->ptr.valptr)
+#define BLOCKPTR(v)    ((v)->data.block.oref->ptr.valptr)
 #define VALUEPTR(v)    ((v)->data.array.oref->ptr.valptr)
 
-#define BINPTR(i)      (PARPTR(i)->data.string.oref->ptr.binptr)
+#define BINARYLEN(v)   ((v)->data.binary.len)
+#define STRINGLEN(v)   ((v)->data.string.len)
+#define ARRAYLEN(v)    ((v)->data.array.oref->length)
+#define OBJECTLEN(v)   ((v)->data.object.oref->length)
+#define BLOCKLEN(v)    ((v)->data.block.oref->length)
+
+#define BINPTR0(i)     (PARPTR(i)->data.binary.oref->ptr.binptr)
+#define BINPTR(i)      (BINPTR0(i)?BINPTR0(i):(PTRERROR(PARPTR(i)),(BYTE*)0))
 #define CHRPTR(i)      (PARPTR(i)->data.string.oref->ptr.chrptr)
 #define ARRPTR(i)      (PARPTR(i)->data.array.oref->ptr.valptr)
+
+#define BINLEN(i)      (PARPTR(i)->data.binary.len)
+#define CHRLEN(i)      (PARPTR(i)->data.string.len)
+#define ARRLEN(i)      (PARPTR(i)->data.array.oref->length)
+#define OBJLEN(i)      (PARPTR(i)->data.object.oref->length)
+#define BLKLEN(i)      (PARPTR(i)->data.block.oref->length)
+
 
 #define ISREF(i)       (PARTYPE(i)==TYPE_REF)
 #define ISREFSTR(i)    (ISREF(i) && PARPTR(i)->data.vref->value.type==TYPE_STRING)
@@ -79,11 +97,11 @@
 #define PARD(i)        (PARPTR(i)->data.date) 
 #define PARP(i)        (PARPTR(i)->data.pointer) 
 #define PARC(i)        CHRPTR(i)
-#define PARCLEN(i)     (PARPTR(i)->data.string.len) 
+#define PARCLEN(i)     CHRLEN(i)
 #define PARB(i)        BINPTR(i)
-#define PARBLEN(i)     (PARPTR(i)->data.binary.len) 
+#define PARBLEN(i)     BINLEN(i)
 #define PARAX(i,x)     (ARRPTR(i)+(x))
-#define PARALEN(i)     (PARPTR(i)->data.array.oref->length)
+#define PARALEN(i)     ARRLEN(i)
 
 #define _par(i)        PARPTR(i)
 #define _parni(i)      (ISNUMBER(i)?PARNI(i):(ARGERROR(),0))

@@ -26,7 +26,7 @@ void _clp_chsize(int argno)
 {
     CCC_PROLOG("chsize",2);
     int fd=_parni(1);
-    long length=_parnl(2);
+    unsigned long length=_parnu(2);
     _retni( chsize(fd,length) );
     CCC_EPILOG();
 }

@@ -76,7 +76,7 @@ void _clp_devout(int argno)
         _clp_transform(1); 
     }
     CHAR *text=STRINGPTR(TOP());
-    int textlen=min((int)TOP()->data.string.len,maxcol()-scol+1);
+    int textlen=min((int)STRINGLEN(TOP()),maxcol()-scol+1);
 
     if( textlen>0 )
     {
@@ -130,7 +130,7 @@ void _clp_devoutvertical(int argno) //fuggoleges iras DispBox gyorsitasara
         _clp_transform(1); 
     }
     CHAR *text=STRINGPTR(TOP());
-    int textlen=min((int)TOP()->data.string.len,maxrow()-srow+1);
+    int textlen=min((int)STRINGLEN(TOP()),maxrow()-srow+1);
 
     if( textlen>0 )
     {
@@ -188,7 +188,7 @@ void _clp_devoutbuffer(int argno)
         _clp_transform(1); 
     }
     CHAR *text=STRINGPTR(TOP());
-    int textlen=TOP()->data.string.len;
+    int textlen=STRINGLEN(TOP());
 
     screencell *sc=(screencell*)binaryl(sizeof(screencell)*textlen);
     int attr=gettextattr();

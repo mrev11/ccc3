@@ -86,7 +86,7 @@ void _clp_sqlbind(int argno)
             #ifdef TRANSFORM_NULL_EQUALS
             {
                 CHAR *pp;
-                if( TOP()->data.string.len==4 && 
+                if( STRINGLEN(TOP())==4 && 
                     0!=(pp=STRINGPTR(TOP())) &&
                     pp[0]=='n' && pp[1]=='u' && pp[2]=='l' && pp[3]=='l' )
                 {
@@ -97,7 +97,7 @@ void _clp_sqlbind(int argno)
                     //  "clause"
 
                     CHAR *op=STRINGPTR(TOP2());
-                    for(int i=TOP2()->data.string.len-1; i>=0; i--)
+                    for(int i=STRINGLEN(TOP2())-1; i>=0; i--)
                     {
                         if( op[i]==' ' )
                         {
@@ -110,14 +110,14 @@ void _clp_sqlbind(int argno)
                         else if( i>0 && op[i-1]=='!' )
                         {
                             pop();
-                            TOP()->data.string.len=i-1;
+                            STRINGLEN(TOP())=i-1;
                             string(CHRLIT(" is not null"));
                             break;
                         }
                         else
                         {
                             pop();
-                            TOP()->data.string.len=i;
+                            STRINGLEN(TOP())=i;
                             string(CHRLIT(" is null"));
                             break;
                         }

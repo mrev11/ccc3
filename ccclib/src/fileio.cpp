@@ -76,8 +76,8 @@ void _clp_fwrite(int argno) //Clipper
             //majd a hosszt atallitjuk NIL-re.
         
             unsigned len=_parnu(3);
-            len=min(len,(base+1)->data.string.len);
-            (base+1)->data.string.len=len;
+            len=min(len,STRINGLEN(base+1));
+            STRINGLEN(base+1)=len;
             (base+2)->type=TYPE_NIL;
         }
         str2bin(base+1);

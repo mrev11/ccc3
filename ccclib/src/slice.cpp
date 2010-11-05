@@ -60,7 +60,7 @@ void slice()
    
     if( a->type==TYPE_STRING )
     {
-        int len=a->data.string.len;
+        int len=STRINGLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )
@@ -69,7 +69,7 @@ void slice()
         }
         else
         {
-            CHAR *s=a->data.string.oref->ptr.chrptr;
+            CHAR *s=STRINGPTR(a);
             strings(s+idx-1,jdx-idx+1);
         }
         *a=*TOP();
@@ -78,7 +78,7 @@ void slice()
 
     else if( a->type==TYPE_BINARY )
     {
-        int len=a->data.binary.len;
+        int len=BINARYLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )
@@ -87,7 +87,7 @@ void slice()
         }
         else
         {
-            BYTE *s=a->data.binary.oref->ptr.binptr;
+            BYTE *s=BINARYPTR(a);
             binarys(s+idx-1,jdx-idx+1);
         }
         *a=*TOP();
@@ -96,7 +96,7 @@ void slice()
 
     else if( a->type==TYPE_ARRAY )
     {
-        int len=a->data.array.oref->length;
+        int len=ARRAYLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )

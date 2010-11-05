@@ -33,8 +33,8 @@
 
 namespace _nsp_bignum{
 
-#define LEN(v)      ((v)->data.binary.len)
-#define DIG(v,i)    ((v)->data.binary.oref->ptr.binptr[i])
+#define LEN(v)      (BINARYLEN(v))
+#define DIG(v,i)    (BINARYPTR(v)[i])
 
 //---------------------------------------------------------------------------
 static void normalize(VALUE *v)

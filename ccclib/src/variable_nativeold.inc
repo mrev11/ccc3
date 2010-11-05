@@ -915,7 +915,7 @@ static void print(VALUE *v, int len, int tab)
             }
             else
             {
-                char *p=wchar_to_utf8(STRINGPTR(v),v->data.string.len,0);
+                char *p=wchar_to_utf8(STRINGPTR(v),STRINGLEN(v),0);
                 printf(" \'%s\'\n",p);fflush(0);
                 free(p);
             }

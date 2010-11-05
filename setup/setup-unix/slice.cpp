@@ -107,7 +107,7 @@ void slice()
         {
             int slen=jdx-idx+1; //>=1
             VALUE *v=array0(slen);
-            valuemove(v,VALUEPTR(a)+idx-1,slen);
+            valuemove(v,ARRAYPTR(a)+idx-1,slen);
         }
         *a=*TOP();
         stack=a+1;

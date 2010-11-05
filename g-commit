@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "jeed-ben sqldisconnect" #2010.10.24
+git commit --all -m "inverz makro, errorgen_nul(), binaryl(unsigned long len)"
 
+# "jeed-ben sqldisconnect" #2010.10.24
 # "ccc2 backport" #2010.09.25
 # "SQl2 escape" #2010.09.23
 # "font-config" #2010.09.01

@@ -172,7 +172,7 @@ while(stack<base+2)PUSHNIL();
         outfile[x].remstat=0;
     }
 
-    if( (f->type==TYPE_BINARY) && (f->data.string.len>0) )
+    if( (f->type==TYPE_BINARY) && (STRINGLEN(f)>0) )
     {
         fname=BINARYPTR(f);
     }
@@ -257,7 +257,7 @@ void _clp_setextra(int argno){setonoff(argno,FP_EXTRA);}
 //------------------------------------------------------------------------
 static void print_bin(int x)
 {
-    unsigned len=TOP()->data.binary.len;
+    unsigned len=BINARYLEN(TOP());
     if( len )
     {
         if( outfile[x].remstat>0  )
@@ -334,7 +334,7 @@ static void out1(int x, VALUE *v)
             break;
 
         case TYPE_BINARY:
-            if( v->data.string.len>0 )
+            if( STRINGLEN(v)>0 )
             {
                 PUSH(v);
                 print_bin(x);
@@ -342,7 +342,7 @@ static void out1(int x, VALUE *v)
             break;
 
         case TYPE_STRING:
-            if( v->data.string.len>0 )
+            if( STRINGLEN(v)>0 )
             {
                 PUSH(v);
                 print_str(x);
@@ -360,14 +360,14 @@ static void out1(int x, VALUE *v)
             print_str(x);
             
 
-            for(int i=0;i<v->data.array.oref->length;i++)
+            for(int i=0;i<ARRAYLEN(v);i++)
             {
                 if(i)
                 {
                    string(L",");
                    print_str(x);
                 }
-                push(v->data.array.oref->ptr.valptr+i);
+                push(ARRAYPTR(v)+i);
                 out1(x,TOP());
                 pop();
             }

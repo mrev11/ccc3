@@ -65,7 +65,7 @@ void _clp_create_items(int argno) //eltérő paraméterezés!
 
         char *x=0;
         push(_par(2));IDX(i+1);
-        if( 5<=(TOP()->data.array.oref->length) )
+        if( 5<=ARRAYLEN(TOP()) )
         {
             IDX(5);str2bin(TOP());
             if( TOP()->type==TYPE_BINARY ) 

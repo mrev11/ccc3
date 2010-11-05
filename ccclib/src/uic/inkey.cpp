@@ -123,7 +123,7 @@ push_call("__keyboard",base);
 
     if( base->type==TYPE_STRING )
     {
-        kbmax=min(TYPEAHEAD,base->data.string.len);
+        kbmax=min(TYPEAHEAD,STRINGLEN(base));
         wmemcpy(keyboard_buffer,STRINGPTR(base),kbmax);
     }
 //

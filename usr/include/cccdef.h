@@ -237,6 +237,14 @@ extern VALUE PROTOTYPE_OBJECT;
 #define D2UINT(x)  ((unsigned)ROUND(x))
 #define D2LONG(x)  ((long)ROUND(x))
 #define D2ULONG(x) ((unsigned long)ROUND(x))
+
+//unsigned >  signed
+//unsigned >= signed
+#define GTUS(u,s)  ((s)<0 || (u) >  (unsigned)(s))
+#define GEUS(u,s)  ((s)<0 || (u) >= (unsigned)(s))
+#define minUS(u,s) ((s)<0 ? (s) : min(u,(unsigned)s))
+#define maxUS(u,s) ((s)<0 ? (u) : max(u,(unsigned)s))
+
  
 //----------------------------------------------------------------------------
 

@@ -56,7 +56,7 @@ push_call("__clr2num",base);
 //
     VALUE *colorstring=base;
     
-    if( (colorstring->type!=TYPE_STRING) || (colorstring->data.string.len==0) )
+    if( (colorstring->type!=TYPE_STRING) || (STRINGLEN(colorstring)==0) )
     {
         error_arg("__clr2num",base,1);
     }

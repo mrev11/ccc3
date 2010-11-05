@@ -170,7 +170,7 @@ void _method3_::eval(int argno)
     {
         //attribútum kiolvasás/felülírás
     
-        unsigned int len=base->data.object.oref->length;
+        unsigned int len=OBJECTLEN(base);
         unsigned int idx=(int)TOP()->data.number;
 
         if( (idx<1) || (len<idx) )
@@ -178,7 +178,7 @@ void _method3_::eval(int argno)
             error_siz("_method_::eval",base,argno);
         }
     
-        VALUE *v=base->data.object.oref->ptr.valptr+idx-1;
+        VALUE *v=OBJECTPTR(base)+idx-1;
 
         if( argno>1 ) //beírás
         {

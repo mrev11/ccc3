@@ -42,7 +42,7 @@ VALUE *idxl() // (obsolete) indexkifejezés a baloldalon
 
     if( a->type==TYPE_ARRAY && i->type==TYPE_NUMBER ) 
     {
-        unsigned int len=a->data.array.oref->length;
+        unsigned int len=ARRAYLEN(a);
         unsigned int idx=D2INT(i->data.number);
 
         if( (idx<1) || (len<idx) )
@@ -50,7 +50,7 @@ VALUE *idxl() // (obsolete) indexkifejezés a baloldalon
             error_idx("idxl",a,2);
         }
         
-        VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+        VALUE *x=ARRAYPTR(a)+idx-1;
         POP();
         POP();
         return x;
@@ -64,7 +64,7 @@ VALUE *idxl() // (obsolete) indexkifejezés a baloldalon
         _o_method_hashitem.eval(2); //stack: item={key,value/NIL}
 
         VALUE *item=TOP(); //item[2] címét kell adni
-        VALUE *x=item->data.array.oref->ptr.valptr+1;
+        VALUE *x=ARRAYPTR(item)+1;
         POP();
         return x;
 
@@ -89,7 +89,7 @@ VALUE *idxl0(double i) // (obsolete) indexkifejezés a baloldalon (konstans inde
         error_arr("idxl0",a,1);
     }
 
-    unsigned int len=a->data.array.oref->length;
+    unsigned int len=ARRAYLEN(a);
     unsigned int idx=D2INT(i);
     
     if( (idx<1) || (len<idx) )
@@ -99,7 +99,7 @@ VALUE *idxl0(double i) // (obsolete) indexkifejezés a baloldalon (konstans inde
         POP();
     }
     
-    VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+    VALUE *x=ARRAYPTR(a)+idx-1;
     POP();
     return x;
 
@@ -118,7 +118,7 @@ VALUE *idxxl() // indexkifejezés a baloldalon
 
     if( a->type==TYPE_ARRAY && i->type==TYPE_NUMBER ) 
     {
-        unsigned int len=a->data.array.oref->length;
+        unsigned int len=ARRAYLEN(a);
         unsigned int idx=D2INT(i->data.number);
 
         if( (idx<1) || (len<idx) )
@@ -126,7 +126,7 @@ VALUE *idxxl() // indexkifejezés a baloldalon
             error_idx("idxxl",a,2);
         }
         
-        VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+        VALUE *x=ARRAYPTR(a)+idx-1;
         POP();
         return x;
     }
@@ -136,7 +136,7 @@ VALUE *idxxl() // indexkifejezés a baloldalon
         _o_method_hashitem.eval(2); //stack: item={key,value/NIL}
 
         VALUE *item=TOP(); //item[2] címét kell adni
-        VALUE *x=item->data.array.oref->ptr.valptr+1;
+        VALUE *x=ARRAYPTR(item)+1;
         return x;
     }
 
@@ -157,7 +157,7 @@ VALUE *idxxl0(double i) // indexkifejezés a baloldalon (konstans index)
         error_arr("idxxl0",a,1);
     }
 
-    unsigned int len=a->data.array.oref->length;
+    unsigned int len=ARRAYLEN(a);
     unsigned int idx=D2INT(i);
     
     if( (idx<1) || (len<idx) )
@@ -167,7 +167,7 @@ VALUE *idxxl0(double i) // indexkifejezés a baloldalon (konstans index)
         POP();
     }
     
-    VALUE *x=a->data.array.oref->ptr.valptr+idx-1;
+    VALUE *x=ARRAYPTR(a)+idx-1;
     return x;
 }
 
@@ -183,25 +183,25 @@ void idxr() // indexkifejezés a jobboldalon
     {
         if( a->type==TYPE_ARRAY )
         {
-            unsigned len=a->data.array.oref->length;
+            unsigned len=ARRAYLEN(a);
             unsigned idx=D2UINT(i->data.number);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
             }
             POP();    
-            *TOP()=*(a->data.array.oref->ptr.valptr+idx-1);
+            *TOP()=*(ARRAYPTR(a)+idx-1);
         }
 
         else if( a->type==TYPE_STRING )
         {
-            unsigned len=a->data.string.len;
+            unsigned len=STRINGLEN(a);
             unsigned idx=D2UINT(i->data.number);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
             }
-            CHAR c=a->data.string.oref->ptr.chrptr[idx-1];
+            CHAR c=STRINGPTR(a)[idx-1];
             POP();
             POP();
             *stringl(1)=c;
@@ -209,13 +209,13 @@ void idxr() // indexkifejezés a jobboldalon
 
         else if( a->type==TYPE_BINARY)
         {
-            unsigned len=a->data.binary.len;
+            unsigned len=BINARYLEN(a);
             unsigned idx=D2UINT(i->data.number);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
             }
-            BYTE c=a->data.binary.oref->ptr.binptr[idx-1];
+            BYTE c=BINARYPTR(a)[idx-1];
             POP();
             POP();
             *binaryl(1)=c;
@@ -246,19 +246,19 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
     
     if( a->type==TYPE_ARRAY )
     {
-        unsigned len=a->data.array.oref->length;
+        unsigned len=ARRAYLEN(a);
         unsigned idx=D2UINT(i);
         if( idx<1 || len<idx )
         {
             number(idx);
             error_idx("idxr0",a,2);
         }
-        *TOP()=*( a->data.array.oref->ptr.valptr+idx-1 );
+        *TOP()=*( ARRAYPTR(a)+idx-1 );
     }
 
     else if( a->type==TYPE_STRING )
     {
-        unsigned len=a->data.string.len;
+        unsigned len=STRINGLEN(a);
         unsigned idx=D2UINT(i);
 
         if( idx<1 || len<idx )
@@ -266,21 +266,21 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
             number(idx);
             error_idx("idxr0",a,2);
         }
-        CHAR c=a->data.string.oref->ptr.chrptr[idx-1];
+        CHAR c=STRINGPTR(a)[idx-1];
         POP();
         *stringl(1)=c;
     }
 
     else if( a->type==TYPE_BINARY )
     {
-        unsigned len=a->data.binary.len;
+        unsigned len=BINARYLEN(a);
         unsigned idx=D2UINT(i);
         if( idx<1 || len<idx )
         {
             number(idx);
             error_idx("idxr0",a,2);
         }
-        BYTE c=a->data.binary.oref->ptr.binptr[idx-1];
+        BYTE c=BINARYPTR(a)[idx-1];
         POP();
         *binaryl(1)=c;
     }
@@ -466,8 +466,8 @@ push_call("aadd",base);
         error_arg("aadd",base,2);
     }
 
-    VALUE *p_old=a->data.array.oref->ptr.valptr; //(NULL?)
-    int len_old=a->data.array.oref->length;
+    VALUE *p_old=ARRAYPTR(a); //(NULL?)
+    int len_old=ARRAYLEN(a);
     int len_ext=p_old?(p_old+len_old)->data.size:0;
     int len_new=len_old+1;
     
@@ -477,7 +477,7 @@ push_call("aadd",base);
 
         *(p_old+len_new)=*(p_old+len_old); //TYPE_END elem
         *(p_old+len_old)=*v;
-        a->data.array.oref->length=len_new;
+        ARRAYLEN(a)=len_new;
     }
     else
     {
@@ -497,8 +497,8 @@ push_call("aadd",base);
         {
             deleteValue(p_old);
         }
-        a->data.array.oref->ptr.valptr=p_new;
-        a->data.array.oref->length=len_new;
+        ARRAYPTR(a)=p_new;
+        ARRAYLEN(a)=len_new;
 
         VARTAB_UNLOCK();
     }
@@ -526,8 +526,8 @@ push_call("asize",base);
     }
 
     VALUE *p_new;
-    VALUE *p_old=a->data.array.oref->ptr.valptr; //(NULL?)
-    int len_old=a->data.array.oref->length;
+    VALUE *p_old=ARRAYPTR(a); //(NULL?)
+    int len_old=ARRAYLEN(a);
     int len_new=D2INT(l->data.number);
     int len_ext=p_old?((p_old+len_old)->data.size):0;
 
@@ -542,7 +542,7 @@ push_call("asize",base);
         {
             (p_old+i)->type=TYPE_NIL; //atomi
         }
-        a->data.array.oref->length=len_new;
+        ARRAYLEN(a)=len_new;
     }
     else
     {
@@ -581,8 +581,8 @@ push_call("asize",base);
             deleteValue(p_old);
         }
 
-        a->data.array.oref->ptr.valptr=p_new;
-        a->data.array.oref->length=len_new;
+        ARRAYPTR(a)=p_new;
+        ARRAYLEN(a)=len_new;
 
         VARTAB_UNLOCK();
     }
@@ -608,14 +608,14 @@ push_call("ains",base);
     }
 
     unsigned int pos=D2INT(p->data.number);
-    unsigned int len=a->data.array.oref->length;
+    unsigned int len=ARRAYLEN(a);
     
     if( (pos<1) || (len<pos) )
     {
         error_idx("ains",base,2);
     }
 
-    VALUE *ptr=a->data.array.oref->ptr.valptr; 
+    VALUE *ptr=ARRAYPTR(a); 
     unsigned int i;
 
     //for( i=len-1; i>=pos; i-- )
@@ -647,7 +647,7 @@ push_call("adel",base);
         error_arg("adel",base,2);
     }
 
-    unsigned int len=a->data.array.oref->length;
+    unsigned int len=ARRAYLEN(a);
     unsigned int pos=D2INT(p->data.number);
     
     if( (pos<1) || (len<pos) )
@@ -655,7 +655,7 @@ push_call("adel",base);
         error_idx("adel",base,2);
     }
 
-    VALUE *ptr=a->data.array.oref->ptr.valptr; 
+    VALUE *ptr=ARRAYPTR(a); 
     unsigned int i;
 
     //for( i=pos; i<len; i++ )
@@ -685,8 +685,8 @@ push_call("aclone",base);
         error_arg("aclone",base,1);
     }
     
-    unsigned int len=a->data.array.oref->length;
-    VALUE *p_old=a->data.array.oref->ptr.valptr;
+    unsigned int len=ARRAYLEN(a);
+    VALUE *p_old=ARRAYPTR(a);
     VALUE *p_new=array0(len);
 
     VALUE *an=TOP();
@@ -756,10 +756,10 @@ push_call("asort",base);
         error_arg("asort",base,4);
     }
 
-    unsigned int len=a->data.array.oref->length;
+    unsigned int len=ARRAYLEN(a);
     unsigned int st=D2INT(s->data.number);
     unsigned int cn=D2INT(c->data.number);
-    VALUE *p=a->data.array.oref->ptr.valptr;
+    VALUE *p=ARRAYPTR(a);
 
     push_symbol(b); 
     // qsort alatt az összehasonlító block van a stack tetején,

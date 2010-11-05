@@ -60,7 +60,7 @@ void _clp_argv(int argno)
             CHAR *p=utf8_to_wchar(ARGV[i],0,&reslen);
             strings(p,reslen);
             free(p);
-            VALUEPTR(a)[i-1]=*TOP();
+            ARRAYPTR(a)[i-1]=*TOP();
             POP();
         }
         _rettop();

@@ -134,8 +134,8 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
         {
             case TYPE_STRING:
             {
-                int al=a->data.string.len;
-                int bl=b->data.string.len;
+                int al=STRINGLEN(a);
+                int bl=STRINGLEN(b);
              
                 if( al!=bl )
                     result=0; // különböző hosszúak --> nem egyenlő
@@ -164,8 +164,8 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
 
             case TYPE_BINARY:
             {
-                int al=a->data.binary.len;
-                int bl=b->data.binary.len;
+                int al=BINARYLEN(a);
+                int bl=BINARYLEN(b);
              
                 if( al!=bl )
                     result=0; // különböző hosszúak --> nem egyenlő
@@ -278,8 +278,8 @@ int notequal()
             {
                 // a Clipper a relációt a jobboldal hosszában vizsgálja
 
-                int  al=a->data.string.len;
-                int  bl=b->data.string.len;
+                int  al=STRINGLEN(a);
+                int  bl=STRINGLEN(b);
 
                 if( bl==0 )
                 {
@@ -315,8 +315,8 @@ int notequal()
             {
                 // a Clipper a relációt a jobboldal hosszában vizsgálja
 
-                int  al=a->data.binary.len;
-                int  bl=b->data.binary.len;
+                int  al=BINARYLEN(a);
+                int  bl=BINARYLEN(b);
 
                 if( bl==0 )
                 {
@@ -419,7 +419,7 @@ int greaterthan()
         {
             case TYPE_STRING:
             {
-                int len=min( a->data.string.len, b->data.string.len );
+                int len=min( STRINGLEN(a), STRINGLEN(b) );
             
                 if( len==0 )
                 {
@@ -461,7 +461,7 @@ int greaterthan()
 
             case TYPE_BINARY:
             {
-                int len=min( a->data.binary.len, b->data.binary.len );
+                int len=min( BINARYLEN(a), BINARYLEN(b) );
             
                 if( len==0 )
                 {
@@ -544,8 +544,8 @@ int lessthan()
         {
             case TYPE_STRING:
             {
-                int  al=a->data.string.len;
-                int  bl=b->data.string.len;
+                int  al=STRINGLEN(a);
+                int  bl=STRINGLEN(b);
             
                 if( bl==0 )
                 {
@@ -588,8 +588,8 @@ int lessthan()
 
             case TYPE_BINARY:
             {
-                int  al=a->data.binary.len;
-                int  bl=b->data.binary.len;
+                int  al=BINARYLEN(a);
+                int  bl=BINARYLEN(b);
             
                 if( bl==0 )
                 {
@@ -666,8 +666,8 @@ void ss() //substring
 
     if( a->type==TYPE_STRING && b->type==TYPE_STRING )
     {
-        int  al=a->data.string.len;
-        int  bl=b->data.string.len;
+        int  al=STRINGLEN(a);
+        int  bl=STRINGLEN(b);
             
         if( al==0 )
         {
@@ -705,8 +705,8 @@ void ss() //substring
 
     else if( a->type==TYPE_BINARY && b->type==TYPE_BINARY )
     {
-        int  al=a->data.binary.len;
-        int  bl=b->data.binary.len;
+        int  al=BINARYLEN(a);
+        int  bl=BINARYLEN(b);
             
         if( al==0 )
         {

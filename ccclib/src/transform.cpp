@@ -101,7 +101,7 @@ static CHAR *ParsePicture(VALUE*vp, int*tf)
     
     int len;
     
-    if( vp->type!=TYPE_STRING || !(len=vp->data.string.len) )
+    if( vp->type!=TYPE_STRING || !(len=STRINGLEN(vp)) )
     {
         return NULL;
     }
@@ -169,7 +169,7 @@ void trn_string(VALUE *vs,VALUE *vp) //  --- string
         return;
     }
 
-    int len=vs->data.string.len;
+    int len=STRINGLEN(vs);
     const CHAR *s=len?STRINGPTR(vs):L""; //formázandó string
 
     //nálunk a kimenet hossza mindig egyenlő lesz a template hosszával,

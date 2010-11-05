@@ -62,14 +62,14 @@ static char *gettoken(int idx,int*len)
         {
             //kihagy;
         }
-        else if( !token->data.binary.len )
+        else if( !BINARYLEN(token) )
         {
             //kihagy;
         }
         else
         {
-            *len=token->data.binary.len;
-            p=token->data.string.oref->ptr.binptr;
+            *len=BINARYLEN(token);
+            p=BINARYPTR(token);
         }
     }
     return p;

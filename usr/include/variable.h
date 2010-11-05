@@ -76,7 +76,7 @@ struct VALUE
         struct
         {
             OREF *oref; // byte array
-            unsigned int len; // hossz (BYTE-ban mérve)
+            unsigned long len; // hossz (BYTE-ban mérve)
         } binary;
 
         struct

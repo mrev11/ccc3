@@ -53,10 +53,16 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
 {
 //stack:   --- s
 
+    unsigned long len=strlen((char*)ptr);
+    if( len>MAXBINLEN )
+    {
+        number(len);
+        error_bln("binaryn",stack-1,1);
+    }
+
     VARTAB_LOCK();
 
     OREF *o=oref_new(); 
-    int len=strlen((char*)ptr);
     BYTE *p=newBinary(len+1);
     memcpy(p,ptr,(len+1)*sizeof(BYTE));
     o->ptr.binptr=p;
@@ -72,9 +78,15 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
 }
 
 //------------------------------------------------------------------------
-void binarys(BYTE const *ptr, unsigned int len) //substring kimásolása new-val
+void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-val
 {
 //stack:   --- s
+
+    if( len>MAXBINLEN )
+    {
+        number(len);
+        error_bln("binarys",stack-1,1);
+    }
 
     VARTAB_LOCK();
 
@@ -95,10 +107,16 @@ void binarys(BYTE const *ptr, unsigned int len) //substring kimásolása new-val
 }
 
 //------------------------------------------------------------------------
-BYTE *binaryl(unsigned int len) //inicializálatlan binary new-val
+BYTE *binaryl(unsigned long len) //inicializálatlan binary new-val
 {
 //stack:   --- s
 //return: binary pointer
+
+    if( len>MAXBINLEN )
+    {
+        number(len);
+        error_bln("binaryl",stack-1,1);
+    }
 
     VARTAB_LOCK();
 
@@ -133,4 +151,8 @@ void binaryx(const char *s) // e.g. CR/LF: x"0d0a"
     }
 }
 
+//------------------------------------------------------------------------
+//compatibility
+void binarys(BYTE const *ptr, unsigned int len){binarys(ptr,(unsigned long)len);}
+BYTE *binaryl(unsigned int len){return binaryl((unsigned long)len);}
 //------------------------------------------------------------------------

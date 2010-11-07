@@ -141,7 +141,7 @@ while(stack<base+1)PUSHNIL();
         case TYPE_BLOCK:
             if(base->data.block.oref)
             {
-                len=base->data.block.oref->length;
+                len=BLOCKLEN(base);
             }
             break;
     }

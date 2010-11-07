@@ -144,7 +144,7 @@ VALUE *blkenv(VALUE *blk)
     // ha rossz a fordító, ezért nem kell vizsgálni
     // (esetleg run time errort lehet generálni)
     
-    return blk->data.block.oref->ptr.valptr;
+    return BLOCKPTR(blk);
 }
 
 //------------------------------------------------------------------------

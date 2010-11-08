@@ -1,0 +1,3 @@
+#!/bin/bash
+sharedmem-w.exe &
+sharedmem-r.exe

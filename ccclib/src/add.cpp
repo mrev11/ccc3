@@ -127,8 +127,8 @@ void add()
 
             if( b->type==TYPE_STRING )
             {
-                unsigned int la=STRINGLEN(a);
-                unsigned int lb=STRINGLEN(b);
+                unsigned long la=STRINGLEN(a);
+                unsigned long lb=STRINGLEN(b);
                 
                 if( lb==0 )
                 {
@@ -136,15 +136,13 @@ void add()
                 }
                 else if( la==0 )
                 {
-                    //a->data.string.oref=b->data.string.oref;
-                    //STRINGLEN(a)=STRINGLEN(b); //rossz
-                    *a=*b; //2008.12.10
+                    *a=*b;
                 }
                 else
                 {
                     // egyik string üres
 
-                    if( (la+lb)>MAXSTRLEN )
+                    if( la>MAXSTRLEN || lb>MAXSTRLEN )
                     {
                         error_cln("add",a,2);
                     }
@@ -152,9 +150,7 @@ void add()
                     CHAR *sum=stringl(la+lb); 
                     memcpy(sum,STRINGPTR(a),la*sizeof(CHAR));
                     memcpy(sum+la,STRINGPTR(b),lb*sizeof(CHAR));
-                    //a->data.string.oref=TOP()->data.string.oref;
-                    //STRINGLEN(a)=STRINGLEN(TOP()); //rossz
-                    *a=*TOP(); //2008.12.10
+                    *a=*TOP();
                 }
 
                 stack=b;
@@ -166,8 +162,8 @@ void add()
 
             if( b->type==TYPE_BINARY )
             {
-                unsigned int la=BINARYLEN(a);
-                unsigned int lb=BINARYLEN(b);
+                unsigned long la=BINARYLEN(a);
+                unsigned long lb=BINARYLEN(b);
                 
                 if( lb==0 )
                 {
@@ -175,25 +171,21 @@ void add()
                 }
                 else if( la==0 )
                 {
-                    //a->data.binary.oref=b->data.binary.oref;
-                    //BINARYLEN(a)=BINARYLEN(b); //rossz
                     *a=*b;
                 }
                 else
                 {
                     // egyik sem üres
 
-                    if( (la+lb)>MAXBINLEN )
+                    if( la>MAXBINLEN || lb>MAXBINLEN )
                     {
-                        error_cln("add",a,2);
+                        error_bln("add",a,2);
                     }
-  
+
                     BYTE *sum=binaryl(la+lb); 
                     memcpy(sum,BINARYPTR(a),la*sizeof(BYTE));
                     memcpy(sum+la,BINARYPTR(b),lb*sizeof(BYTE));
-                    //a->data.binary.oref=TOP()->data.binary.oref;
-                    //BINARYLEN(a)=BINARYLEN(TOP()); //rossz
-                    *a=*TOP(); //2008.12.10
+                    *a=*TOP();
                 }
 
                 stack=b;

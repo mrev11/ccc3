@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "inverz makro, errorgen_nul(), binaryl(unsigned long len)" #2010.11.05
+git commit --all -m "X és C típusok hossza unsigned long-ban számolva" #2010.11.08
 
 
 # "inverz makro, errorgen_nul(), binaryl(unsigned long len)" #2010.11.05

@@ -70,7 +70,7 @@ struct VALUE
         struct
         {
             OREF *oref; // wchar_t string
-            unsigned int len; // hossz (CHAR-ban mérve)
+            unsigned long len; // hossz (CHAR-ban mérve)
         } string;
 
         struct

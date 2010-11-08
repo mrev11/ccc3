@@ -42,7 +42,7 @@ void string(CHAR const *ptr) //új példány rámutatással (new nélkül)
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=wcslen(ptr);
+    STRINGLEN(v)=wcslen(ptr);
     v->type=TYPE_STRING;
  
     VARTAB_UNLOCK();
@@ -53,10 +53,16 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
 {
 //stack:   --- s
 
+    unsigned int len=wcslen(ptr);
+    if(len>MAXSTRLEN)
+    {
+        number(len);
+        error_cln("stringn",stack-1,1);
+    }
+
     VARTAB_LOCK();
 
     OREF *o=oref_new(); 
-    int len=wcslen(ptr);
     CHAR *p=newChar(len+1);
     wmemcpy(p,ptr,len+1);
     o->ptr.chrptr=p;
@@ -65,7 +71,7 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
 
     VARTAB_UNLOCK();
@@ -80,9 +86,15 @@ void stringnb(char const *ptr) //új string bytearrayből
 }
 
 //------------------------------------------------------------------------
-void strings(CHAR const *ptr, unsigned int len) //substring kimásolása new-val
+void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-val
 {
 //stack:   --- s
+
+    if(len>MAXSTRLEN)
+    {
+        number(len);
+        error_cln("strings",stack-1,1);
+    }
 
     VARTAB_LOCK();
 
@@ -96,13 +108,13 @@ void strings(CHAR const *ptr, unsigned int len) //substring kimásolása new-val
   
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
 
     VARTAB_UNLOCK();
 }
 
-void stringsb(char const *ptr, unsigned len) //új string bytearrayből
+void stringsb(char const *ptr, unsigned long len) //új string bytearrayből
 {
     unsigned reslen=0;
     CHAR *p=utf8_to_wchar(ptr,len,&reslen);
@@ -111,10 +123,16 @@ void stringsb(char const *ptr, unsigned len) //új string bytearrayből
 }
 
 //------------------------------------------------------------------------
-CHAR *stringl(unsigned int len) //inicializálatlan string new-val
+CHAR *stringl(unsigned long len) //inicializálatlan string new-val
 {
 //stack:   --- s
 //return: string pointer
+
+    if(len>MAXSTRLEN)
+    {
+        number(len);
+        error_cln("stringl",stack-1,1);
+    }
 
     VARTAB_LOCK();
 
@@ -126,11 +144,16 @@ CHAR *stringl(unsigned int len) //inicializálatlan string new-val
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
-    v->data.string.len=len;
+    STRINGLEN(v)=len;
     v->type=TYPE_STRING;
  
     VARTAB_UNLOCK();
     return o->ptr.chrptr;
 }
 
+//------------------------------------------------------------------------
+//compatibility
+void strings(CHAR const *ptr, unsigned int len){ strings(ptr,(unsigned long)len); }
+void stringsb(char const *ptr, unsigned len){ stringsb(ptr,(unsigned long)len); }
+CHAR *stringl(unsigned int len){ return stringl((unsigned long)len); }
 //------------------------------------------------------------------------

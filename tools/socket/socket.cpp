@@ -110,7 +110,7 @@ void _clp_connect(int argno)
     int   p = _parni(3);   //port number
 
     //Ez itt nem szükséges,
-    //mert a socket_connect ist
+    //mert a socket_connect is
     //tartalmazza a névfeloldást.
     //
     //push_symbol(base+1);
@@ -118,7 +118,7 @@ void _clp_connect(int argno)
     //_clp_gethostbyname(1);
     //a=BINARYPTR(TOP());
 
-    _retni( socket_connect(s,h,p) ); 
+    _retni( socket_connect(s,h,p) ); //-1 error, 0 success
     CCC_EPILOG();
 } 
 
@@ -203,7 +203,7 @@ void _clp_sread(int argno)
 
     if( (unsigned)nbyte>MAXBINLEN )
     {
-        error_cln("sread",base,argno);
+        error_bln("sread",base,argno);
     }
 
     char *buf=binaryl(nbyte);

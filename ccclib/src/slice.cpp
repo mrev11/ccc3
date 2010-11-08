@@ -29,28 +29,28 @@ void slice()
     VALUE *i=TOP2();
     VALUE *a=TOP3();
     
-    int idx=0;
+    unsigned long idx=0;
     if( i->type==TYPE_NIL )
     {
         idx=1;
     }
     else if( i->type==TYPE_NUMBER )
     {
-        idx=D2INT(i->data.number);
+        idx=i->data.number<0?0:D2ULONG(i->data.number);
     }
     else
     {
         error_arg("slice",a,3);
     }
 
-    int jdx=0;
+    unsigned long jdx=0;
     if( j->type==TYPE_NIL )
     {
-        jdx=0x7fffffff;
+        jdx=-1;
     }
     else if( j->type==TYPE_NUMBER )
     {
-        jdx=D2INT(j->data.number);
+        jdx=j->data.number<0?0:D2ULONG(j->data.number);
     }
     else
     {
@@ -60,7 +60,8 @@ void slice()
    
     if( a->type==TYPE_STRING )
     {
-        int len=STRINGLEN(a);
+        CHAR *s=STRINGPTR(a);
+        unsigned long len=STRINGLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )
@@ -69,8 +70,7 @@ void slice()
         }
         else
         {
-            CHAR *s=STRINGPTR(a);
-            strings(s+idx-1,jdx-idx+1);
+            strings(s+idx-1,jdx-idx+1); //jdx>=idx
         }
         *a=*TOP();
         stack=a+1;
@@ -78,7 +78,8 @@ void slice()
 
     else if( a->type==TYPE_BINARY )
     {
-        int len=BINARYLEN(a);
+        BYTE *s=BINARYPTR(a);
+        unsigned long len=BINARYLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )
@@ -87,8 +88,7 @@ void slice()
         }
         else
         {
-            BYTE *s=BINARYPTR(a);
-            binarys(s+idx-1,jdx-idx+1);
+            binarys(s+idx-1,jdx-idx+1); //jdx>=idx
         }
         *a=*TOP();
         stack=a+1;
@@ -96,7 +96,7 @@ void slice()
 
     else if( a->type==TYPE_ARRAY )
     {
-        int len=ARRAYLEN(a);
+        unsigned int len=ARRAYLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )
@@ -107,7 +107,7 @@ void slice()
         {
             int slen=jdx-idx+1; //>=1
             VALUE *v=array0(slen);
-            valuemove(v,VALUEPTR(a)+idx-1,slen);
+            valuemove(v,ARRAYPTR(a)+idx-1,slen);
         }
         *a=*TOP();
         stack=a+1;

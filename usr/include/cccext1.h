@@ -134,10 +134,10 @@ extern int  notequal(void);
 //string.obj:
 extern void string(const wchar_t*);
 extern void stringn(const wchar_t*);
-extern void strings(const wchar_t*,unsigned);
+extern void strings(const wchar_t*,unsigned long);
 extern void stringnb(const char*);
-extern void stringsb(const char*,unsigned);
-extern wchar_t* stringl(unsigned);
+extern void stringsb(const char*,unsigned long);
+extern wchar_t* stringl(unsigned long);
 
 //utf8conv.obj:
 extern int ucs_to_utf8(int,char*);

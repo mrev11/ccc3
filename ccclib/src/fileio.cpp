@@ -75,8 +75,8 @@ void _clp_fwrite(int argno) //Clipper
             //akkor az str2bin elott csonkitunk,
             //majd a hosszt atallitjuk NIL-re.
         
-            unsigned len=_parnu(3);
-            len=min(len,STRINGLEN(base+1));
+            double dlen=_parnd(3);
+            unsigned long len=min(STRINGLEN(base+1),dlen<0?0:D2ULONG(dlen));
             STRINGLEN(base+1)=len;
             (base+2)->type=TYPE_NIL;
         }
@@ -84,7 +84,13 @@ void _clp_fwrite(int argno) //Clipper
     }
 
     char *buf=_parb(2);
-    unsigned cnt=ISNUMBER(3) ? min(_parnu(3),_parblen(2)) : _parblen(2);
+    unsigned long cnt=_parblen(2);
+    if( ISNUMBER(3) )
+    {
+        double dcnt=_parnd(3);
+        cnt=min(cnt, dcnt<0?0:D2ULONG(dcnt) );
+    }
+    
     errno=0;
     _retni( write(fd,buf,cnt) );
     CCC_EPILOG();
@@ -102,25 +108,23 @@ void _clp_fread(int argno) //Clipper
 {
     CCC_PROLOG("fread",3);
 
-    int fd=_parni(1);
-    unsigned cnt=_parnu(3);
-
-    if( cnt>MAXBINLEN )
-    {
-        error_cln("fread",base,argno);
-    }
-
     if( ISREFBIN(2) )
     {
+        int fd=_parni(1);
         char *buf=REFBINPTR(2);
-        unsigned buflen=REFBINLEN(2);
+        unsigned long buflen=REFBINLEN(2);
+        unsigned long cnt=_parnu(3);
+
         if( buflen<cnt )
         {
             error_siz("fread",base,3);
         }
+
+        //bufból másolatot csinálumk
         char *buf1=binaryl(buflen);
         memmove(buf1,buf,buflen);
         (base+1)->data.vref->value=*TOP();
+
         errno=0;
         _retni( read(fd,buf1,cnt) );
     }

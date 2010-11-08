@@ -46,16 +46,11 @@ void _clp_padr(int argno)
     if( ISSTRING(1) )
     {
         CHAR *str=_parc(1);
-        unsigned len=_parclen(1);
+        unsigned long len=_parclen(1);
         unsigned plen=max(0,_parni(2));
         CHAR cfill=ISNIL(3)?' ':*_parc(3);
-
-        if( plen>MAXSTRLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         CHAR *p=stringl(plen);
+
         if( len==0 )
         {
             wmemset(p,cfill,plen);
@@ -73,16 +68,11 @@ void _clp_padr(int argno)
     else if( ISBINARY(1) )
     {
         char *str=_parb(1);
-        unsigned len=_parblen(1);
+        unsigned long len=_parblen(1);
         unsigned plen=max(0,_parni(2));
         char cfill=ISNIL(3)?' ':*_parb(3);
-
-        if( plen>MAXBINLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         char *p=binaryl(plen);
+
         if( len==0 )
         {
             memset(p,cfill,plen);
@@ -135,16 +125,11 @@ void _clp_padl(int argno)
     if( ISSTRING(1) )
     {
         CHAR *str=_parc(1);
-        unsigned len=_parclen(1);
+        unsigned long len=_parclen(1);
         unsigned plen=max(0,_parni(2));
         CHAR cfill=ISNIL(3)?' ':*_parc(3);
-
-        if( plen>MAXSTRLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         CHAR *p=stringl(plen);
+
         if( len==0 )
         {
             wmemset(p,cfill,plen);
@@ -162,16 +147,11 @@ void _clp_padl(int argno)
     else if( ISBINARY(1) )
     {
         char *str=_parb(1);
-        unsigned len=_parblen(1);
+        unsigned long len=_parblen(1);
         unsigned plen=max(0,_parni(2));
         char cfill=ISNIL(3)?' ':*_parb(3);
-
-        if( plen>MAXBINLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         char *p=binaryl(plen);
+
         if( len==0 )
         {
             memset(p,cfill,plen);
@@ -218,16 +198,11 @@ void _clp_padc(int argno)
     if( ISSTRING(1) )
     {
         CHAR *str=_parc(1);
-        unsigned len=_parclen(1);
+        unsigned long len=_parclen(1);
         unsigned plen=max(0,_parni(2));
         CHAR cfill=ISNIL(3)?' ':*_parc(3);
-
-        if( plen>MAXSTRLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         CHAR *p=stringl(plen);
+
         if( len==0 )
         {
             wmemset(p,cfill,plen);
@@ -248,16 +223,11 @@ void _clp_padc(int argno)
     else if( ISBINARY(1) )
     {
         char *str=_parb(1);
-        unsigned len=_parblen(1);
+        unsigned long len=_parblen(1);
         unsigned plen=max(0,_parni(2));
         char cfill=ISNIL(3)?' ':*_parb(3);
-
-        if( plen>MAXBINLEN )
-        {
-            error_cln("padr",base,argno);
-        }
-
         char *p=binaryl(plen);
+
         if( len==0 )
         {
             memset(p,cfill,plen);

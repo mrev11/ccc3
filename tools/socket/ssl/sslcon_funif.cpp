@@ -393,7 +393,7 @@ void _clp_sslcon_read(int argno)  //sread megfelelője
 
     if( (unsigned)nbyte>MAXBINLEN )
     {
-        error_cln("sslcon_read",base,argno);
+        error_bln("sslcon_read",base,argno);
     }
 
     char *buf=binaryl(nbyte);

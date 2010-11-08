@@ -33,7 +33,7 @@
 
 namespace _nsp_bignum{
 
-#define LEN(v)      (BINARYLEN(v))
+#define LEN(v)      BINARYLEN(v)
 #define DIG(v,i)    (BINARYPTR(v)[i])
 
 //---------------------------------------------------------------------------

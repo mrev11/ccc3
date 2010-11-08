@@ -32,8 +32,8 @@ void _clp_rat(int argno)
     {
         bin2str(base);
 
-        unsigned slen=_parclen(1); //ezt keressuk
-        unsigned tlen=_parclen(2); //ebben keresunk
+        unsigned long slen=_parclen(1); //ezt keressuk
+        unsigned long tlen=_parclen(2); //ebben keresunk
 
         if( slen==0 || tlen==0 || slen>tlen )
         {
@@ -43,23 +43,23 @@ void _clp_rat(int argno)
         {
             CHAR *sp=_parc(1); //ezt keressuk
             CHAR *tp=_parc(2); //ebben keresunk
-            long i;
-            for( i=tlen-slen; i>=0; i-- )
+            unsigned long i;
+            for( i=tlen-slen+1; i>0; i-- )
             {
-                 if( 0==wmemcmp(tp+i,sp,slen) )
+                 if( 0==wmemcmp(tp+i-1,sp,slen) )
                  {
                      break;
                  }
             }
-            _retni(i>=0?i+1:0);
+            _retni(i);
         }
     }
     else if( ISBINARY(2) )
     {
         str2bin(base);
 
-        unsigned slen=_parblen(1); //ezt keressuk
-        unsigned tlen=_parblen(2); //ebben keresunk
+        unsigned long slen=_parblen(1); //ezt keressuk
+        unsigned long tlen=_parblen(2); //ebben keresunk
 
         if( slen==0 || tlen==0 || slen>tlen )
         {
@@ -69,15 +69,15 @@ void _clp_rat(int argno)
         {
             char *sp=_parb(1); //ezt keressuk
             char *tp=_parb(2); //ebben keresunk
-            long i;
-            for( i=tlen-slen; i>=0; i-- )
+            unsigned long i;
+            for( i=tlen-slen+1; i>0; i-- )
             {
-                 if( 0==memcmp(tp+i,sp,slen) )
+                 if( 0==memcmp(tp+i-1,sp,slen) )
                  {
                      break;
                  }
             }
-            _retni(i>=0?i+1:0);
+            _retni(i);
         }
     }
     else

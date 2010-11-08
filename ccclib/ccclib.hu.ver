@@ -1,3 +1,201 @@
+2010.11.08
+  A string (C) változók hossza is unsigned int helyett unsigned long.
+  Ezeknek a hosszekezelése is át van írva a binary típushoz (X) hasonlóan.
+  Közvetlen cél az egységesség, sok gyakorlati haszna nincs.
+
+2010.11.05
+  Inverz makró helyettesítés.
+  Van néhány ilyen makró (közte néhány új):
+    #define BINARYPTR(v)   ((v)->data.binary.oref->ptr.binptr)
+    #define STRINGPTR(v)   ((v)->data.string.oref->ptr.chrptr)
+    #define ARRAYPTR(v)    ((v)->data.array.oref->ptr.valptr)
+    #define BINARYEN(v)    ((v)->data.binary.len)
+    #define STRINGLEN(v)   ((v)->data.string.len)
+    #define ARRAYLEN(v)    ((v)->data.array.oref->length)
+  Ezek a régi programokban nem voltak egyöntetűen használva.
+  Egy programmal az összes lehetséges helyre beírtam a makró baloldalát.
+  
+  Az új BINARYPTR makró ellenőrzi binptr!=0-t, és PTRERROR-t dob, ha null,
+  tehát normális runtime error keletkezik, ha a progam (tévesen) használni
+  akar egy lezárt mapot.
+
+  A MAXBINLEN és MAXSTRLEN korlátokat a binary.cpp és string.cpp
+  modulokban ellenőrizzük, amikor a memóriabuffer létrejön. A binary.cpp
+  modul függvényei unsigned long paramétert kérnek (a korábbi int helyett)
+  a régi változatok meg vannak tartva a kompatibilitás érdekében. Néhány 
+  esetben a binary hossz számításakor túlcsordulás lehet, az ilyen helyeken 
+  az összetevőket előzőleg ellenőrizni kell, pl. add, replicate.
+  
+  Offset paraméterek.
+  Az offset paraméterek a programban akármilyen (negatív/pozitív) értéket 
+  kaphatnak, de csak 1-től a (binary)tömb maximális méretéig terjedő
+  értékeket lehet elfogadni. Korábban jó volt a síma _parni vagy _parnu
+  paraméterátvétel. Most azonban a lehető legnagyobb pozitív (unsigned)
+  értéket is kezelni akarjuk, ezért külön le kell választani azt az
+  esetet amikor az eredetileg double típusú paraméter értéke negatív.
+  Példa a binary string indexelése:
+    unsigned long len=BINARYLEN(a);         // hossz
+    double dx=i->data.number;               // offset
+    unsigned long idx=dx<0?0:D2ULONG(dx);   // index: negatív->hiba, pozitív->ulong
+    if( idx<1 || len<idx )
+    {
+        error_idx("idxr",a,2);
+    }
+    BYTE c=BINARYPTR(a)[idx-1];
+
+  Makrók unsigned és signed összehasonlítására: GTUS, GEUS, minUS, maxUS.
+  
+  Változott
+
+    add.cpp add():
+        összeadandók hossza külön-külön is nézve (túlcsordulás ellen)
+        X típus hossza unsigned long
+
+    array.cpp idxr() idxr0():
+        unsigned long idx=dx<0?0:D2ULONG(dx);
+    
+    at.cpp:
+        unsigned long tlen=_parblen(2); //ebben keresunk
+        double dstrt=ISNIL(3)?0:_parnd(3)-1;
+        unsigned long strt=dstrt<0?tlen:D2ULONG(dstrt); //innen kezdve keresunk
+
+    base64.cpp:
+        unsigned long hosszak
+        maxhossz ellenőrzés
+
+    binary.cpp:
+        unsigned long paraméterezés
+        maxhossz ellenőrzések
+        compatibility függvények  unsigned int paraméterezéssel
+
+    empty.cpp:
+        unsigned long hosszak
+
+    equalto.cpp:
+        unsigned long hosszak
+    
+    errorgen.cpp:
+        void error_bln(const char *operation, VALUE *base, int argno)
+        void error_nul(const char *operation, VALUE *base, int argno)
+
+    fileio.cpp:
+        unsigned long hosszak
+        MAXBINLEN ellenőrzés felesleges (binaryl-ben van)
+
+    pad.cpp:
+        unsigned long hosszak
+        MAXBINLEN/MAXSTRLEN ellenőrzések kivéve
+
+    qout.cpp:
+        unsigned long BINARYLEN
+
+    rat.cpp:
+        unsigned long hosszak
+        (!)az unsigned long ciklusváltozó miatt másképp jár a ciklus
+
+    replicate.cpp:
+        unsigned long hosszak
+        maxhossz ellenőrzés double-ban kiszámított értékkel!
+
+    slice.cpp:
+        unsigned long idx;
+        idx=i->data.number<0?0:D2ULONG(i->data.number);
+        
+    str2bin.cpp bin2str():
+        unsigned long hosszak
+        maxhossz ellenőrzés
+    
+    string.cpp:
+        maxhossz ellenőrzések
+
+    stuff.cpp:
+        unsigned long hosszak
+        maxhossz ellenőrzés a bemenő stringre
+        (!)nsta eggyel hosszabb lehet, pl. stuff("a",2,0,"b") -> "ab" 
+        
+    substr.cpp _clp_substr(), _clp_left(), _clp_right():    
+        unsigned long hosszak
+        substr()-ben dbeg +/- esetei szétválasztva
+
+    trim.cpp:
+        unsigned long hosszak
+
+    upper.cpp:
+        unsigned long hosszak
+
+    varprint.cpp:
+        a binptr==0 stringeket kikerüli, "(null)"-t ír helyettük
+
+    vmm.cpp:
+        unsigned long hosszak (sok helyen)
+        64-biten xvputbin alkalmas nagy filék írására 
+
+
+2010.10.26
+  A binary változók hossza unsigned int helyett unsigned long.
+  
+  Könnyen lehet olyan változót készíteni, ami hasonlít egy binary 
+  string literálra, de nem a programba befordított stringre mutat,
+  hanem egy filemappingre. Az ilyen filemapping a változón keresztül úgy 
+  kezelhető, mint egy óriási string, ami benn van a memórában (működik vele 
+  substr, at, [], [..], stb.), pedig csak a _virtuális_ memóriában van benn.
+  Az ilyen map változók 2G méretig a mostani változtatások nélkül is prímán
+  működnek, érdemes azonban kiterjeszteni a hatókörüket, ez kiterjesztés 
+  a jelenlegi módosítás célja és értelme.
+  
+  32-biten: sizeof(int)==sizeof(long)==sizeof(void*)==4
+  azaz 32 bites (4G) a címtér, de a 3G feletti részt az os-ek speciális 
+  célra használják, így 32 biten csak a 2G-3G tartományt lehet megnyerni.
+  
+  64-biten: sizeof(int)==4, sizeof(long)==sizeof(void*)==8
+  azaz 64 bites a címtér, óriási (sokgigabájtos) fájlok válnak fread helyett
+  stringműveletekkel olvashatóvá.
+
+  Ha csak annyit teszünk, hogy a variable.h-beli VALUE strukturában 
+  a hossztípust átírjuk int-ről long-ra (és minden mást változatlanul hagyunk), 
+  akkor sem a fordításban, sem a működésben nem látunk változást, sizeof(VALUE) 
+  sem 32-biten, sem 64-biten nem változik, a korábban fordított objecteket össze 
+  lehet linkelni az újabbakkal (legalábbis little endian rendszeren).
+  
+  A mostani módosítások lényege, hogy a binary-string kezelő _műveletek_
+  is át vannak írva, hogy a hosszabban tárolt hosszadatot ne csonkítsák le, 
+  és így működőképesek maradjanak 2G felett is (32-biten 3G-ig, 64-biten
+  4G felett is).  Az érintett modulok/függvények: add, array ([]), at, rat, 
+  base64, empty, len, fileio, slice ([..]), substr, vmm, $, <, >, ==.
+  Normális méretű stringeknél semmilyen eltérésnek nem szabad mutatkoznia
+  a korábbiakhoz képest.
+  
+  Hibalehetőségek:
+  
+  (1) Eddig egy binary (X) típusú változónak fix memóriabuffere volt, 
+  ami nem tudott megszűnni. A map változók memóriabuffere azonban megszűnik,
+  ha a mapot lezárják. A filemap.close függvény az oref-ben átírja a binptr
+  tagot 0-ra, csakhogy ezt a programok eddig nem nézték (bíztak a buffer 
+  létezésében). Most bele van írva a ccclib-be a binptr==0 vizsgálat,
+  ez a mapoktól függetlenül semmiképp sem árt. A _parb() és BINARYPTR() 
+  makrókba bele van építve a vizsgálat. Ezekkel az óvintézkedésekkel
+  
+    map:=filemap.open(fd)
+    ? map[1..10] //Ok
+    filemap.close(map)
+    ? map[1..10] //hibás
+  
+  legalább normális hibával száll el, nem pedig SIGSEGV-vel.
+  A hibakezelést ellenállóvá kellett tenni a null pointeres binary
+  stringekkel szemben, hogy az ilyenek kiírása ne okozzon további
+  elszállást a stack printelése közben.
+  
+  (2) Nem tudjuk kezelni az olyan eseteket, amikor az mremap megváltoztatja
+  egy map hosszát. Ezért nem célszerű az mremap-ra CCC interfészt írni,
+  hanem új mapot kell csinálni, a régit pedig lezárni.
+  
+  (3) Korábban a program mindig tudta írni a buffereit (pl. xvputbin).
+  Most ez el-SIGSEGV-zik, ha a map PROT_WRITE nélkül volt megnyitva.
+  
+  (4) A map változókat használat után le kell zárni (filemap.close),
+  hogy ne fogyjanak el az erőforrások.
+  
+
 2010.05.25
   Újraírt time.cpp modul, ctime.cpp megszűnt.
 

@@ -1,0 +1,39 @@
+2G-nál kisebb filékre rendesen működik a filemap.
+Hogy nagyobb filékre is működjön, ahhoz módosítani kell: 
+
+32-biten 
+========
+
+3G-nál nagyobb filékre semmiképp sem működik,
+mert csak ekkora a címtér (a 3G és 4G közötti résznek 
+valamiféle speciális használata van, amit nem ismerek).
+
+2G-3G közötti méretekre működőképessé tehető, 
+ha egy csomó helyen (mint len, left, right, substr, stb.)
+gondosabban írjuk meg a hosszak kezelését (32-dik bit).
+
+A VALUE struktúrában az unsigned int -> unsigned long váltás
+(a hosszak tárolására) semmilyen  változást sem jelent, 
+mert sizeof(int)==sizeof(long)==4.
+
+
+64-biten
+========
+
+Jelenleg a VALUE struktúrában a hosszak unsigned int 
+mennyiségként tárolódnak.
+
+2G-4G közötti méretekre így is működőképessé tehető, 
+ha egy csomó helyen (mint len, left, right, substr, stb.)
+gondosabban írjuk meg a hosszak kezelését.
+
+4G feletti filéméretekhez változtatni kell a VALUE struktúrát
+(unsigned int -> unsigned long) a hosszak tárolásánál, 
+plusz egy csomó helyen (mint len, left, right, substr, stb.)
+át kell írni a hosszak kezelését unsigned long-ra, gondosan
+kezelve a felső bitet, hogy 32 biten megnyerjük a 2G-3G tartományt.
+
+A unsigned int -> unsigned long váltás (a VALUE-ban) little endian
+rendszeren nem okozza a ccclib inkompatibilitását, mert a sizeof(VALUE)
+változatlan marad, és a hossz ugyanazokon a bájtokon tárolódik,
+csak további bájtok további nagy helyiértékű adatokat tartalmazhatnak.

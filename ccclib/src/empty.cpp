@@ -53,14 +53,14 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_STRING:
         {
-            int len=STRINGLEN(base);
+            unsigned long len=STRINGLEN(base);
             if( len==0 ) 
             {
                 flag=1;
             }
             else
             {
-                int i;
+                unsigned long i;
                 CHAR *p=CHRPTR(1);
                 for(i=0; i<len; i++)
                 {
@@ -76,14 +76,14 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_BINARY:
         {
-            int len=BINARYLEN(base);
+            unsigned long len=BINARYLEN(base);
             if( len==0 ) 
             {
                 flag=1;
             }
             else
             {
-                int i;
+                unsigned long i;
                 BYTE *p=BINPTR(1);
                 for(i=0; i<len; i++)
                 {
@@ -118,7 +118,7 @@ VALUE *base=stack-argno;
 stack=base+min(argno,1);
 while(stack<base+1)PUSHNIL();
 //
-    int len=0;
+    unsigned long len=0;
 
     switch( base->type )
     {

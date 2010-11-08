@@ -29,9 +29,9 @@ void _clp_lower(int argno)
     if(ISSTRING(1))
     {
         CHAR *s=_parc(1);
-        int len=_parclen(1);
+        unsigned long len=_parclen(1);
         CHAR *p=stringl(len);
-        int i;
+        unsigned long i;
         for( i=0; i<len; i++)
         {
             p[i]=towlower(s[i]);
@@ -40,9 +40,9 @@ void _clp_lower(int argno)
     else if(ISBINARY(1))
     {
         char *s=_parb(1);
-        int len=_parblen(1);
+        unsigned long len=_parblen(1);
         char *p=binaryl(len);
-        int i;
+        unsigned long i;
         for( i=0; i<len; i++)
         {
             p[i]=tolower(s[i]);
@@ -63,9 +63,9 @@ void _clp_upper(int argno)
     if(ISSTRING(1))
     {
         CHAR *s=_parc(1);
-        int len=_parclen(1);
+        unsigned long len=_parclen(1);
         CHAR *p=stringl(len);
-        int i;
+        unsigned long i;
         for( i=0; i<len; i++)
         {
             p[i]=towupper(s[i]);
@@ -74,9 +74,9 @@ void _clp_upper(int argno)
     else if(ISBINARY(1))
     {
         char *s=_parb(1);
-        int len=_parblen(1);
+        unsigned long len=_parblen(1);
         char *p=binaryl(len);
-        int i;
+        unsigned long i;
         for( i=0; i<len; i++)
         {
             p[i]=toupper(s[i]);

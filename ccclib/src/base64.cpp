@@ -32,14 +32,20 @@ void _clp_base64_encode(int argno)
     
     str2bin(base);
 
-    char *bin = _parb(1);
-    int   len = _parblen(1); 
-    char *asc = binaryl( ((len+2)/3)*4 );
+    char *bin=_parb(1);
+    unsigned long len=_parblen(1); 
+
+    if( len>MAXBINLEN )
+    {
+        error_bln("base64_encode",base,1);
+    }
+
+    char *asc=binaryl(((len+2)/3)*4);
 
     // 3x8 bitet 4x6 bitbe kódol,
     // azaz minden 3 byte-ból 4 byte lesz
 
-    for( int i=0, index=0; i<len; i+=3, index+=4 ) 
+    for( unsigned int i=0, index=0; i<len; i+=3, index+=4 ) 
     {
         int quad = 0;
         int trip = 0;
@@ -95,11 +101,16 @@ void _clp_base64_decode(int argno)
 
     str2bin(base);
 
-    char *asc = _parb(1);
-    int  alen = _parblen(1); 
- 
+    char *asc=_parb(1);
+    unsigned long alen=_parblen(1); 
+
+    if( alen>MAXBINLEN )
+    {
+        error_bln("base64_decode",base,1);
+    }
+
     int tlen=alen;
-    int ix;
+    unsigned long ix;
     
     for( ix=0; ix<alen; ix++ )
     {

@@ -100,29 +100,36 @@ void var_print(VALUE *v)
             OUTNUM(BINARYLEN(v));
             OUTOREF(v->data.binary.oref);
             
-            OUTSTR(L" \"");
-            unsigned len=min(BINARYLEN(v),32);
-            if( len>0 )
+            if(BINARYPTR0(v)==0)
             {
-                char buf[64];
-                memcpy(buf,BINARYPTR(v),len);
-
-                unsigned int i;
-                for(i=0; i<len; i++)
-                {
-                    if( *(buf+i)<' ' )
-                    {
-                        *(buf+i)='^';
-                    }
-                }
-                *(buf+len)=(char)0;
-                if(len<STRINGLEN(v))
-                {
-                    strcat(buf," ... ");
-                }
-                OUTBIN(buf);
+                OUTSTR(L" (null)");
             }
-            OUTSTR(L"\"");
+            else
+            {
+                OUTSTR(L" \"");
+                unsigned len=min(BINARYLEN(v),32);
+                if( len>0 )
+                {
+                    char buf[64];
+                    memcpy(buf,BINARYPTR(v),len);
+
+                    unsigned int i;
+                    for(i=0; i<len; i++)
+                    {
+                        if( *(buf+i)<' ' )
+                        {
+                            *(buf+i)='^';
+                        }
+                    }
+                    *(buf+len)=(char)0;
+                    if(len<STRINGLEN(v))
+                    {
+                        strcat(buf," ... ");
+                    }
+                    OUTBIN(buf);
+                }
+                OUTSTR(L"\"");
+            }
             break;
         }
 

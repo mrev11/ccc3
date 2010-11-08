@@ -257,7 +257,7 @@ void _clp_setextra(int argno){setonoff(argno,FP_EXTRA);}
 //------------------------------------------------------------------------
 static void print_bin(int x)
 {
-    unsigned len=BINARYLEN(TOP());
+    unsigned long len=BINARYLEN(TOP());
     if( len )
     {
         if( outfile[x].remstat>0  )
@@ -334,7 +334,7 @@ static void out1(int x, VALUE *v)
             break;
 
         case TYPE_BINARY:
-            if( STRINGLEN(v)>0 )
+            if( BINARYLEN(v)>0 )
             {
                 PUSH(v);
                 print_bin(x);
@@ -360,7 +360,7 @@ static void out1(int x, VALUE *v)
             print_str(x);
             
 
-            for(int i=0;i<ARRAYLEN(v);i++)
+            for(int i=0; i<ARRAYLEN(v); i++)
             {
                 if(i)
                 {

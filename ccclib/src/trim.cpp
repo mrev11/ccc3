@@ -26,7 +26,7 @@ void _clp_ltrim(int argno)
     CCC_PROLOG("ltrim",1);
     if( ISSTRING(1) )
     {
-        int len=_parclen(1);
+        unsigned long len=_parclen(1);
         if( len<=0 )
         {
             _retc(L"");
@@ -44,7 +44,7 @@ void _clp_ltrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        int len=_parblen(1);
+        unsigned long len=_parblen(1);
         if( len<=0 )
         {
             _retb("");
@@ -73,7 +73,7 @@ void _clp_rtrim(int argno)
     CCC_PROLOG("rtrim",1);
     if( ISSTRING(1) )
     {
-        int len=_parclen(1);
+        unsigned long len=_parclen(1);
         if( len<=0 )
         {
             _retc(L"");
@@ -90,7 +90,7 @@ void _clp_rtrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        int len=_parblen(1);
+        unsigned long len=_parblen(1);
         if( len<=0 )
         {
             _retb("");
@@ -118,7 +118,7 @@ void _clp_alltrim(int argno)
     CCC_PROLOG("alltrim",1);
     if( ISSTRING(1) )
     {
-        int len=_parclen(1);
+        unsigned long len=_parclen(1);
         if( len<=0 )
         {
             _retc(L"");
@@ -140,7 +140,7 @@ void _clp_alltrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        int len=_parblen(1);
+        unsigned long len=_parblen(1);
         if( len<=0 )
         {
             _retb("");

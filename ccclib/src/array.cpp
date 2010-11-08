@@ -195,8 +195,9 @@ void idxr() // indexkifejezés a jobboldalon
 
         else if( a->type==TYPE_STRING )
         {
-            unsigned len=STRINGLEN(a);
-            unsigned idx=D2UINT(i->data.number);
+            unsigned long len=STRINGLEN(a);
+            double dx=i->data.number;
+            unsigned long idx=dx<0?0:D2ULONG(dx);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
@@ -209,8 +210,9 @@ void idxr() // indexkifejezés a jobboldalon
 
         else if( a->type==TYPE_BINARY)
         {
-            unsigned len=BINARYLEN(a);
-            unsigned idx=D2UINT(i->data.number);
+            unsigned long len=BINARYLEN(a);
+            double dx=i->data.number;
+            unsigned long idx=dx<0?0:D2ULONG(dx);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
@@ -258,9 +260,8 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
 
     else if( a->type==TYPE_STRING )
     {
-        unsigned len=STRINGLEN(a);
-        unsigned idx=D2UINT(i);
-
+        unsigned long len=STRINGLEN(a);
+        unsigned long idx=i<0?0:D2ULONG(i);
         if( idx<1 || len<idx )
         {
             number(idx);
@@ -273,8 +274,8 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
 
     else if( a->type==TYPE_BINARY )
     {
-        unsigned len=BINARYLEN(a);
-        unsigned idx=D2UINT(i);
+        unsigned long len=BINARYLEN(a);
+        unsigned long idx=i<0?0:D2ULONG(i);
         if( idx<1 || len<idx )
         {
             number(idx);
@@ -466,7 +467,7 @@ push_call("aadd",base);
         error_arg("aadd",base,2);
     }
 
-    VALUE *p_old=ARRAYPTR(a); //(NULL?)
+    VALUE *p_old=ARRAYPTR(a);
     int len_old=ARRAYLEN(a);
     int len_ext=p_old?(p_old+len_old)->data.size:0;
     int len_new=len_old+1;
@@ -526,7 +527,7 @@ push_call("asize",base);
     }
 
     VALUE *p_new;
-    VALUE *p_old=ARRAYPTR(a); //(NULL?)
+    VALUE *p_old=ARRAYPTR(a);
     int len_old=ARRAYLEN(a);
     int len_new=D2INT(l->data.number);
     int len_ext=p_old?((p_old+len_old)->data.size):0;

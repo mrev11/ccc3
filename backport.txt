@@ -6,6 +6,7 @@ CCC2 környezetben is szükség van:
         class.prg
         simplehash.prg
         xmethod3.cpp
+        vmm.cpp
 
     ccctools/build
     ccctools/prg2ppo

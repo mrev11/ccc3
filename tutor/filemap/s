@@ -1,3 +1,4 @@
 #!/bin/bash
 sharedmem-w.exe &
+sleep 2
 sharedmem-r.exe

@@ -22,7 +22,7 @@ local t
 
         t:=time()::str2bin
         xvputbin(map1,7,len(t),t)  //0 based
-        //filemap.sync(map1)
+        filemap.sync(map1)
         
         ? map2[8..15] //1 based
     end

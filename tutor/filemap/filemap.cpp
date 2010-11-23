@@ -22,13 +22,14 @@
 # include <sys/mman.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <fcntl.h>
-# include <ctype.h>
+#else
+# include <io.h>
 #endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <string.h>
 #include <cccapi.h>
 
@@ -181,7 +182,186 @@ void _clp_open(int argno)
 //--------------------------------------------------------------------------
 
 #else //WINDOWS
-//majd egyszer
+
+//-------------------------------------------------------------------------- 
+void _clp_sync(int argno)
+{
+    CCC_PROLOG("filemap.sync",1);
+
+    char *mapView=_parb(1);
+    unsigned long mapLength=_parblen(1);
+
+    if( 0==FlushViewOfFile(mapView,mapLength) )
+    {
+        //Windows hiba
+        //invalid pointer esetén nem jön vissza
+    
+        DWORD errorcode=GetLastError();
+
+        _clp_ioerrornew(0);
+
+        DUP();
+        string(CHRLIT("FlushViewOfFile failed"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.sync"));
+        _o_method_operation.eval(2);
+        POP();
+
+        DUP();
+        number(errorcode);
+        _o_method_oscode.eval(2);
+        POP();
+        
+        _clp_break(1);
+    }
+
+    _ret();
+    CCC_EPILOG();
+}
+
+//-------------------------------------------------------------------------- 
+void _clp_close(int argno)
+{
+    CCC_PROLOG("filemap.close",1);
+
+    char *mapView=_parb(1);
+
+    if( 0==UnmapViewOfFile(mapView) )
+    {
+        //Windows hiba
+        //invalid pointer esetén nem jön vissza
+    
+        DWORD errorcode=GetLastError();
+ 
+        _clp_ioerrornew(0);
+
+        DUP();
+        string(CHRLIT("UnmapViewOfFile failed"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.close"));
+        _o_method_operation.eval(2);
+        POP();
+
+        DUP();
+        number(errorcode);
+        _o_method_oscode.eval(2);
+        POP();
+        
+        _clp_break(1);
+    }
+
+    base->data.binary.oref->ptr.binptr=0; //ne működjön véletlenül
+
+    _ret();
+    CCC_EPILOG();
+}
+
+//-------------------------------------------------------------------------- 
+void _clp_open(int argno)  
+{    
+    CCC_PROLOG("filemap.open",2);
+    int fd=_parni(1);
+    char const *flags=ISNIL(2)?"r":_parcb(2);
+
+    int prot=PAGE_READONLY;
+    int accs=FILE_MAP_READ;
+    if(strchr(flags,'w')) 
+    {
+        prot=PAGE_READWRITE;
+        accs=FILE_MAP_WRITE;
+    }
+
+    HANDLE fhnd=(HANDLE)_get_osfhandle(fd);
+    unsigned long mapLength=GetFileSize(fhnd,0);
+
+    HANDLE mapHandle=CreateFileMapping(fhnd,0,prot,0,0,NULL);
+    if( mapHandle==0 )
+    {
+        DWORD errorcode=GetLastError();
+
+        _clp_ioerrornew(0);
+
+        DUP();
+        number(fd);
+        array(1);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        number(errorcode);
+        _o_method_oscode.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("CreateFileMapping failed")); 
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.open"));
+        _o_method_operation.eval(2);
+        POP();
+        
+        _clp_break(1);
+    }
+
+    char* mapView=(char*)MapViewOfFile(mapHandle,accs,0,0,0);
+    if( mapView==0 )
+    {
+        DWORD errorcode=GetLastError();
+
+        _clp_ioerrornew(0);
+
+        DUP();
+        number(fd);
+        array(1);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        number(errorcode);
+        _o_method_oscode.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("MapViewOfFile failed"));  
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.open"));
+        _o_method_operation.eval(2);
+        POP();
+        
+        _clp_break(1);
+    }
+
+    VARTAB_LOCK();
+
+    OREF *o=oref_new(); 
+    o->ptr.binptr=(BYTE*)mapView;
+    o->length=0; //szemétgyűjtés NEM törli 
+    o->next=NEXT_RESERVED;
+ 
+    VALUE *v=PUSHNIL();
+    v->data.binary.oref=o;
+    v->data.binary.len=mapLength;
+    v->type=TYPE_BINARY;
+ 
+    VARTAB_UNLOCK();
+
+    _rettop();
+    CloseHandle(mapHandle);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
 #endif
 
 }//namespace filemap

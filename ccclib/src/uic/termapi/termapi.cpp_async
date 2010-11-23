@@ -26,6 +26,8 @@
 #ifdef _UNIX_
 #include <sys/time.h>
 #include <sys/types.h>
+#else
+#include <windows.h>
 #endif
 
 #include <inttypes.h>

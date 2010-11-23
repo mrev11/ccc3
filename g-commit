@@ -4,9 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "X és C típusok hossza unsigned long-ban számolva" #2010.11.08
+git commit --all -m "windows karbantatas, filemap" #2010.11.23
 
-
+# "X és C típusok hossza unsigned long-ban számolva" #2010.11.08
 # "inverz makro, errorgen_nul(), binaryl(unsigned long len)" #2010.11.05
 # "jeed-ben sqldisconnect" #2010.10.24
 # "ccc2 backport" #2010.09.25

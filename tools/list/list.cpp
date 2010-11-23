@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <errno.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -60,7 +61,7 @@
 
  
 //-----------------------------------------------------------------------
-typedef int  mapsize_t; 
+typedef unsigned long mapsize_t; 
 
 static void show(char *txt, mapsize_t size);
 static void header(int percent);
@@ -110,11 +111,11 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    int maplen=lseek(fd,0,SEEK_END); lseek(fd,0,SEEK_SET); 
+    unsigned long maplen=lseek(fd,0,SEEK_END); lseek(fd,0,SEEK_SET); 
     caddr_t map=(caddr_t)mmap(NULL,maplen,PROT_READ,MAP_SHARED,fd,0);
     if( (map==NULL) || (map==(caddr_t)-1) )
     {
-        fprintf(stderr,"File mapping failed: %s\n",filename);
+        fprintf(stderr,"File mapping failed: %s (errno=%d)\n",filename,errno);
         exit(1);
     }
 
@@ -161,7 +162,7 @@ int main(int argc, char *argv[])
 //-----------------------------------------------------------------------
 static void show(char *txt, mapsize_t size)
 {
-    if( (size==0) || (size==-1) )
+    if( (size==0) || (size==(mapsize_t)-1) )
     {
         return;
     }          

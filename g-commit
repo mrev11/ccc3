@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "so-k cp helyett mv-vel kerulnek a helyukre" 2010.12.22
+git commit --all -m "so-k cp helyett mv-vel kerulnek a helyukre" #2010.12.22
 
 
 # "tutor/varstack" #2010.12.06

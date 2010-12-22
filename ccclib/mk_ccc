@@ -4,6 +4,12 @@ build.exe @ccc.bld #'BUILD_DBG=on'
 
 mkdir $CCCDIR/usr/lib/$CCCBIN 2>/dev/null
 cp -pf obj"$CCCBIN"/*.lib    $CCCDIR/usr/lib/$CCCBIN
-cp -pf obj"$CCCBIN"/*.so     $CCCDIR/usr/lib/$CCCBIN
+#cp -pf obj"$CCCBIN"/*.so     $CCCDIR/usr/lib/$CCCBIN
  
 
+#so közvetlen cp helyett mv-vel kerül a helyére,
+#hogy az éppen futó programok nem szálljanak el
+for so in $BUILD_OBJ/*.so; do
+    cp -pf $so $so.new
+    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+done

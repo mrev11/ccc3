@@ -3,6 +3,16 @@
 bapp_unix0.b -d. -sccc3_socket
 
 cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
+#cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
+
+
+#so közvetlen cp helyett mv-vel kerül a helyére,
+#hogy az éppen futó programok nem szálljanak el
+for so in obj$CCCBIN/*.so; do
+    cp -pf $so $so.new
+    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+done
+
+
 
 pushd ssl; m; popd 

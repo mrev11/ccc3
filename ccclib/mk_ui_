@@ -6,6 +6,12 @@ build.exe @ui_.bld
 
 mkdir $CCCDIR/usr/lib/$CCCBIN 2>/dev/null
 cp -pf $BUILD_OBJ/*.lib    $CCCDIR/usr/lib/$CCCBIN
-cp -pf $BUILD_OBJ/*.so     $CCCDIR/usr/lib/$CCCBIN
+#cp -pf $BUILD_OBJ/*.so     $CCCDIR/usr/lib/$CCCBIN
  
 
+#so közvetlen cp helyett mv-vel kerül a helyére,
+#hogy az éppen futó programok nem szálljanak el
+for so in $BUILD_OBJ/*.so; do
+    cp -pf $so $so.new
+    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+done

@@ -1,3 +1,50 @@
+2011.03.25
+  tableentity:insert visszaolvassa a rekordot, következmény:
+    1) insert megköveteli a kulcsszegmensek kitöltését
+    2) a defaulttal rendelkező mezők értéke visszaolvasódik
+
+  Oracle hiba (feature?): Serializable tranzakcióban egy insertet 
+  közvetlenül követő update/select néha nem találja az éppen előzőleg
+  berakott rekordot. (Feltehetően az indexpage split-je alkalmával.)
+  
+  Workaround:
+  
+  tableentity:insert azonnal visszaolvassa a kiírt rekordot,
+  és ha nem sikerül, akkor sqlserialerrort dob (amivel szemben
+  az alkalmazást fel kell készíteni a tranzakció ismétlésére.)
+  Tapasztalat szerint, ha egyszer működött a select, akkor később már nem 
+  lesz vele baj. A kompatibilitás érdekében ugyanez a visszaolvasás 
+  bekerült a postgres driverbe is (noha ott nincs ilyen hiba).
+  A visszaolvasáshoz szükséges a key segmentek kiolvasása, ami hibát dob, 
+  ha a kulcsok nincsenek kitöltve. Korábban nem volt feltétlenül 
+  szükséges kitölteni a kulcsmezőket, lehetett a mező default értékére 
+  hagyatkozni (de az új, szigorúbb megközelítés jobb).
+  
+  A fenti hiba speciális esete volt javítva a blobok írásánál, 
+  az ottani gyanús üzelmeket (2009.09.27: hibakód csere 1403->8177) 
+  meg lehet szüntetni.
+
+
+  columndef osztályban új attribútum: keyseg
+  Gyakran jól jön, ha keresgélés nélkül is lehet tudni egy oszlopról, 
+  hogy benne van-e a primkey-ben. A keyseg .f.-re inicializálódik, 
+  és akkor kap .t. értéket, amikor tdsutil.dom2prg (1.3.01+) beleteszi 
+  az oszlopot a primkey array-be.
+  
+  tableentity:update figyeli az előbbi keyseg flaget, és a keysegment
+  értékeket akkor sem módosítja, ha egyébként az isdirty .t.-t ad.
+
+
+  Az sqlconnection objektumban külön adminisztrálva a session/transaction 
+  isolation level.
+  
+    con:sqlisolationlevel(newlevel,flag:=.f.)
+  
+  Ha newlevel==NIL, akkor csak lekérdezés történik. 
+  flag==.t. a session isolation level beállítását/lekérdezését végzi
+  flag==.f. (default) a transaction isolation level beállítását/lekérdezését végzi
+  
+
 2010.09.23
   
   Postgres escapelés felülvizsgálva, leírás pgsql2.cpp végén.

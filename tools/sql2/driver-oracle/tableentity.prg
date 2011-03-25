@@ -334,6 +334,9 @@ local stmt,c,i,n,s,sep,isol
     next
     stmt+=crlf()+")"
     this:connection:sqlexec(stmt)
+
+    //stmt:="alter table "+tabname_q(this)+" initrans 32"
+    //this:connection:sqlexec(stmt)
     
     for n:=1 to len(this:__indexlist__)
         i:=this:__indexlist__[n]
@@ -349,6 +352,9 @@ local stmt,c,i,n,s,sep,isol
         next
         stmt+=")"
         this:connection:sqlexec(stmt)
+
+        //stmt:="alter index "+tabname_i(this,"_"+i:name)+" initrans 32"
+        //this:connection:sqlexec(stmt)
     next
     this:connection:__transactionid__++
 
@@ -423,20 +429,34 @@ local n,c,x
 
 ****************************************************************************
 static function tableentity.insert(this,o)
-local stmt,memo,n
-local cv:=colval(this,o,@memo)
-local rowcount:=0
-    if( cv!=NIL )
-        stmt:="insert into "+tabname_q(this)+cv
-        rowcount:=this:connection:sqlexec(stmt)
-        if( memo!=NIL )
-            for n:=1 to len(memo)
-                memowrite(o,memo[n])
-            next
-        end
+
+local cv,stmt,rowcount
+local o1,err
+local memo,n
+
+    cv:=colval(this,o,@memo)
+    stmt:="insert into "+tabname_q(this)+cv
+    rowcount:=this:connection:sqlexec(stmt)
+
+#define INSERT_REREAD
+#ifdef  INSERT_REREAD
+    if( (o1:=this:find(o))==NIL )
+        err:=sqlserialerrorNew()
+        err:operation   := "tableentity.insert"
+        err:description := "can't reread inserted data"
+        break(err)
+    else
+        o:__buffer__:=o1:__buffer__ //default értékek
+    end
+#endif
+
+    if( memo!=NIL )
+        for n:=1 to len(memo)
+            memowrite(o,memo[n])
+        next
     end
     return rowcount //affected rows
- 
+
 
 static function colval(tab,row,memo)
 
@@ -504,7 +524,7 @@ local n,c,x,setval
     for n:=1 to len(tab:columnlist)
         c:=tab:columnlist[n]
         
-        if( c:isdirty(row) )
+        if( c:isdirty(row) .and. !c:keyseg ) //keyseg: 2011.03.05
             x:=sql2.oracle.sqlvalue(row,c)
             if( setval==NIL )
                 setval:=" set "
@@ -780,31 +800,8 @@ local t:=o:__tableentity__
 local c:=t:columnlist[pos]
 local x:=c:eval(o)
 local lobini:="select "+c:expr+" from "+fromclause_0(t)+where_primarykey(t,o)
-local err,err1
     sql2.oracle.sqldebug(lobini)
-    begin
-        sql2.oracle._oci_memowrite(t:connection:__conhandle__,lobini,x)  //kiírt hossz
-    recover err <sqlerror>
-        if(err:subcode==1403) //no data
-
-            //workaround:
-            //Itt elvileg nem lehetne "no data" hiba, mert tudható, hogy 
-            //benn van a selectált rekord, de SERIALIZABLE módban hibázik 
-            //az Oracle. Az sqlserialerror-nál szokásos ismétlés segíthet,
-            //ezért a hibát sqlerror-ról sqlserialerror-ra cseréljük.
-
-            err1:=sqlserialerrorNew()
-            err1:operation   := err:operation
-            err1:description := err:description
-            err1:gencode     := err:gencode 
-            err1:subcode     := err:subcode 
-            err1:severity    := err:severity
-            err1:canretry    := err:canretry
-            break(err1)
-        else
-            break(err) //eredeti hiba
-        end
-    end
+    sql2.oracle._oci_memowrite(t:connection:__conhandle__,lobini,x)  //kiírt hossz
     return x
 
 ****************************************************************************

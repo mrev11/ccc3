@@ -20,7 +20,8 @@
 
 namespace tdsutil   fpath fname
 
-#define PROGRAM "dom2prg 1.3.00"
+#define PROGRAM "dom2prg 1.3.01"
+//2011.03.06:1.3.01: coldef primkey-be rakásakor beállítódik az új keyseg attribútum
 
 
 static template_new:=<<TEMPLATE_NEW>>
@@ -200,7 +201,7 @@ local err
         ? '    aadd(indexlist,dummy:__indexdefnew__("primarykey",primarykey,.t.))'
     end
     for n:=1 to len(primkey)
-        ? '    aadd(primarykey,c:=dummy:getcolumn("'+primkey[n]+'"))//;c:notnull:=.t.'
+        ? '    aadd(primarykey,c:=dummy:getcolumn("'+primkey[n]+'"));c:keyseg:=.t.//;c:notnull:=.t.'
         #ifdef EMLEKEZTETO //not null
           Kérdéses, hogy beállítsuk-e a primary key szegmenseket not null-ra.
         #endif

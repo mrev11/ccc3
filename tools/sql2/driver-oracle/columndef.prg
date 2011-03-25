@@ -31,6 +31,7 @@ class columndef(sql2.oracle.columnref)
     attrib  offset      // a mező kezdete a bufferben (0-tól indul)
     attrib  size        // indvar(2)+hotflg(2)+width(size-4)
     attrib  block       // mezőkiolvasó/értékadó block
+    attrib  keyseg      // .t. ha az oszlop eleme a primkey-nek
 
     method  sqltype
     method  indvar      {|t,o|xvgetint(o:__buffer__,t:offset)}
@@ -49,6 +50,7 @@ static function columndef.initialize(this,name,expr,type)
     this:(sql2.oracle.columnref)initialize(name,expr)  
     this:type:=type
     this:notnull:=.f. //default: lehet null
+    this:keyseg:=.f.  //a primkey-be rakáskor kell átállítani
     return this
 
 ******************************************************************************

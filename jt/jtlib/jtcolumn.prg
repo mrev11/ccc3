@@ -99,7 +99,7 @@ local funcstr,tmplstr,p,x
     end
     
     if( empty(this:width) )
-        this:width:=max(len(this:heading),len(tmplstr))
+        this:width:=min(32,max(len(this:heading),len(tmplstr)))
         if( this:type=="D" )
             this:width:=max(10,this:width)
         end

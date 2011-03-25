@@ -21,6 +21,8 @@
 
 namespace sql2.postgres
 
+#include "sql.ch"
+
 #ifdef EMLEKEZTETO //indvar,hotflg,fldval
 
 indvar  : buffer+offs+0
@@ -409,15 +411,28 @@ local n,c,x
 
 ****************************************************************************
 static function tableentity.insert(this,o)
-local stmt,n
-local cv:=colval(this,o)
-local rowcount:=0
-    if( cv!=NIL )
-        stmt:="insert into "+tabname_q(this)+cv
-        rowcount:=this:connection:sqlexec(stmt)
+
+local cv,stmt,rowcount
+local o1,err
+
+    cv:=colval(this,o)
+    stmt:="insert into "+tabname_q(this)+cv
+    rowcount:=this:connection:sqlexec(stmt)
+
+#define INSERT_REREAD
+#ifdef  INSERT_REREAD
+    if( (o1:=this:find(o))==NIL )
+        err:=sqlserialerrorNew()
+        err:operation   := "tableentity.insert"
+        err:description := "can't reread inserted data"
+        break(err)
+    else
+        o:__buffer__:=o1:__buffer__  //default értékek
     end
+#endif
+
     return rowcount //affected rows
- 
+
 
 static function colval(tab,row)
 
@@ -473,7 +488,7 @@ local n,c,x,setval
     for n:=1 to len(tab:columnlist)
         c:=tab:columnlist[n]
         
-        if( c:isdirty(row) )
+        if( c:isdirty(row) .and. !c:keyseg ) //keyseg: 2011.03.05
             x:=sql2.postgres.sqlvalue(row,c)
             if( setval==NIL )
                 setval:=" set "

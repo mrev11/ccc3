@@ -30,6 +30,7 @@ class sqlconnection(object)
     attrib  __coninfo__
     attrib  __transactionid__
     attrib  __isolationlevel__
+    attrib  __sessionisolationlevel__
     method  driver              {||"sql2.postgres"}
     method  version
     method  duplicate
@@ -57,6 +58,7 @@ static function sqlconnection.initialize(this,coninfo)
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__:=0
     this:__isolationlevel__:=ISOL_READ_COMMITTED
+    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
 
 #ifdef EMLEKEZTETO  //a Postgres autocommitról
     A Postgres 7.4-ben megszűnt a szerver oldali autocommit,
@@ -142,10 +144,16 @@ local err
     return err
 
 ******************************************************************************
-static function sqlconnection.sqlisolationlevel(this,numlevel,flag)
+static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
 local stmt,txtlevel
-local previous_level:=this:__isolationlevel__
+local previous_level
+
+    if( flag )
+        previous_level:=this:__sessionisolationlevel__
+    else
+        previous_level:=this:__isolationlevel__
+    end
 
     if( numlevel==NIL )
         //csak lekérdezés
@@ -161,27 +169,29 @@ local previous_level:=this:__isolationlevel__
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
     
-    if( empty(flag) )
+    
+    if( !flag )
         //egy tranzakcióra
         stmt:="set transaction isolation level "+txtlevel
-        this:sqlexec(stmt)
+
+        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"rollback"))
+        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
+        this:sqlexec(stmt) // ennek közvetlenül a begin után kell lennie
+
     else
         //a session-re
-        this:sqlexec("rollback")
         stmt:="set session characteristics as transaction isolation level "+txtlevel
-        this:sqlexec(stmt)
+
+        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"rollback"))
+        this:sqlexec(stmt) // ennek rollback és begin között kell lennie 
         sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
-        this:__transactionid__++
-
-        #ifdef EMLEKEZTETO //isolation level
-            Itt inkompatibilitás volt a 7.3.x -> 7.4.x váltáskor,
-            és egyelőre nem ismert, hogy az isolationlevel váltás
-            hogyan befolyásolja a tranzakcióhatárokat. 
-        #endif
     end
+ 
+    this:__transactionid__++
 
-    if( !empty(flag) )
-        this:__isolationlevel__:=numlevel
+    this:__isolationlevel__:=numlevel
+    if( flag )
+        this:__sessionisolationlevel__:=numlevel
     end
 
     return previous_level
@@ -191,6 +201,7 @@ static function sqlconnection.sqlcommit(this)
     this:sqlexec("commit")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
+    this:__isolationlevel__:=this:__sessionisolationlevel__
     return NIL
 
 ******************************************************************************
@@ -198,6 +209,7 @@ static function sqlconnection.sqlrollback(this)
     this:sqlexec("rollback")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
+    this:__isolationlevel__:=this:__sessionisolationlevel__
     return NIL
 
 #ifdef EMLEKEZTETO //autocommit

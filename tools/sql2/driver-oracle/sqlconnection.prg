@@ -30,6 +30,7 @@ class sqlconnection(object)
     attrib  __coninfo__
     attrib  __transactionid__
     attrib  __isolationlevel__
+    attrib  __sessionisolationlevel__
     method  driver              {||"sql2.oracle"}
     method  version
     method  duplicate
@@ -67,6 +68,7 @@ local pos,usr,psw,dbs
 
     this:__conhandle__:=sql2.oracle._oci_logon(usr,psw,dbs)
     this:__isolationlevel__:=ISOL_READ_COMMITTED
+    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
     this:sqlexec("alter session set isolation_level=read committed")
     this:__transactionid__:=0
     return this
@@ -136,10 +138,16 @@ local err
     return err
 
 ******************************************************************************
-static function sqlconnection.sqlisolationlevel(this,numlevel,flag)
+static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
 local stmt,txtlevel
-local previous_level:=this:__isolationlevel__
+local previous_level
+
+    if( flag )
+        previous_level:=this:__sessionisolationlevel__
+    else
+        previous_level:=this:__isolationlevel__
+    end
 
     if( numlevel==NIL )
         //csak lekérdezés
@@ -155,7 +163,9 @@ local previous_level:=this:__isolationlevel__
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
 
-    if( empty(flag) )
+    this:sqlrollback
+
+    if( !flag )
         //egy tranzakcióra
         stmt:="set transaction isolation level "+txtlevel
     else
@@ -164,9 +174,10 @@ local previous_level:=this:__isolationlevel__
     end
 
     this:sqlexec(stmt)
-    this:__transactionid__++
-    if( !empty(flag) )
-        this:__isolationlevel__:=numlevel
+
+    this:__isolationlevel__:=numlevel
+    if( flag )
+        this:__sessionisolationlevel__:=numlevel
     end
 
     return previous_level
@@ -175,12 +186,14 @@ local previous_level:=this:__isolationlevel__
 static function sqlconnection.sqlcommit(this)
     this:sqlexec("commit")
     this:__transactionid__++
+    this:__isolationlevel__:=this:__sessionisolationlevel__
     return NIL
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
     this:sqlexec("rollback")
     this:__transactionid__++
+    this:__isolationlevel__:=this:__sessionisolationlevel__
     return NIL
 
 ******************************************************************************

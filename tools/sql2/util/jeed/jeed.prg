@@ -62,6 +62,7 @@ local n
 
     //viewer:=jtentityeditorNew(8,16,24,100,table,.t.)
     viewer:=jtentityeditorNew(table,.t.)
+    viewer:maxrow(32)
     viewer:show
 
 

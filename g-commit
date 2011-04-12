@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "sql2: insert reread"  #2011.03.05
+git commit --all -m "jeed maxrow" #2011.04.12
 
+# "sql2: insert reread"  #2011.03.05
 # "so-k cp helyett mv-vel kerulnek a helyukre" #2010.12.22
 # "tutor/varstack" #2010.12.06
 # "windows karbantatas, filemap" #2010.11.23

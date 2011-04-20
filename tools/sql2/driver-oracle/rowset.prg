@@ -156,7 +156,7 @@ local columnlist,n
         rowentity:=objectNew(this:__table__:__rowclassid__)
         rowentity:initialize(this:__table__)
 
-        if( this:__table__:__rereadflag__!=.t. .and. this:__table__:__memocount__>0 )
+        if( this:__table__:__rereadflag__!=.t. .and. this:__table__:__memocount__!=NIL )
             columnlist:=this:__table__:columnlist
             for n:=1 to len(columnlist)
                 if( columnlist[n]:type=="M"  )

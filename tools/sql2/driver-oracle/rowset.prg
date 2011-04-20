@@ -140,6 +140,7 @@ local stmt,dst,n,c,t,deftyp,err
 ******************************************************************************
 static function rowset.next(this) //rowentity objektumgyártó
 local rowentity
+local columnlist,n
 
     if( this:__stmthandle__==NIL )
         //az eredmény NIL
@@ -155,10 +156,20 @@ local rowentity
         rowentity:=objectNew(this:__table__:__rowclassid__)
         rowentity:initialize(this:__table__)
 
+        if( this:__table__:__rereadflag__!=.t. .and. this:__table__:__memocount__>0 )
+            columnlist:=this:__table__:columnlist
+            for n:=1 to len(columnlist)
+                if( columnlist[n]:type=="M"  )
+                    columnlist[n]:eval(rowentity)  //behozza a memót
+                end
+            next
+        end
+
     else
         this:close
         //az eredmény NIL
     end
+
     return rowentity
  
 

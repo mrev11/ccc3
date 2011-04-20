@@ -27,6 +27,7 @@ class rowentity(object)  new: // nem kell new
     attrib  __buffer__
     attrib  __memolist__
     method  show                {|t|t:__tableentity__:show(t)}
+    method  showflags           {|t|t:__tableentity__:showflags(t)}
     method  insert              {|t|t:__tableentity__:insert(t)}
     method  update              {|t|t:__tableentity__:update(t)}
     method  delete              {|t|t:__tableentity__:delete(t)}

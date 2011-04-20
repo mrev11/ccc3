@@ -1,7 +1,10 @@
 
-#define VERZIO  "3.0.08"    
+#define VERZIO  "3.0.09"    
 
 #ifdef NOT_DEFINED
+
+2011.04.13 -- 3.0.09
+  Új rendezés: sortBaseName
 
 2010.06.28 -- 3.0.08
   Directory bejáráskor a message üzeneteket dispbegin/dispend-del

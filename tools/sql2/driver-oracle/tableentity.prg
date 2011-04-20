@@ -84,6 +84,7 @@ class tableentity(object) new: //abstract, nem kell new
     attrib  connection                  //adatbázis kapcsolat
     attrib  tablist                     //from táblák listája
     attrib  __buffer__                  //read buffer
+    attrib  __rereadflag__              //insert utáni reread jelző
 
     method  __selectlist__
     method  __fromclause__
@@ -97,6 +98,7 @@ class tableentity(object) new: //abstract, nem kell new
     method  instance                    //-> üres rowentity
     method  getprimarykey               //rowentity -> primkey
     method  show                        //tableentity:show(rowentity)
+    method  showflags                   //tableentity:showflags(rowentity)
     method  insert                      //tableentity:insert(rowentity)
     method  update                      //tableentity:update(rowentity)
     method  delete                      //tableentity:delete(rowentity)
@@ -427,6 +429,19 @@ local n,c,x
     next
     return NIL
 
+
+****************************************************************************
+static function tableentity.showflags(this,o) 
+local n,c,x,t
+    for n:=1 to len(this:columnlist)
+        c:=this:columnlist[n]
+        x:=c:eval(o)
+        t:=valtype(x)
+        x::=any2str::left(48)::strtran(chr(10)," ")::strtran(chr(13)," ")
+        ? c:name, t, "["+x+"]", if(c:isdirty(o),"D","")+if(c:isnull(o),"N","")
+    next
+    return NIL
+
 ****************************************************************************
 static function tableentity.insert(this,o)
 
@@ -440,12 +455,15 @@ local memo,n
 
 #define INSERT_REREAD
 #ifdef  INSERT_REREAD
+    this:__rereadflag__:=.t.
     if( (o1:=this:find(o))==NIL )
+        this:__rereadflag__:=NIL
         err:=sqlserialerrorNew()
         err:operation   := "tableentity.insert"
         err:description := "can't reread inserted data"
         break(err)
     else
+        this:__rereadflag__:=NIL
         o:__buffer__:=o1:__buffer__ //default értékek
     end
 #endif
@@ -751,6 +769,11 @@ local buffer,err
         if( x==NIL )
             x:=memoread(rowent,fldpos) 
             rowent:__memolist__[mempos]:=x
+            if(!empty(x))
+                buffer:=rowent:__buffer__
+                xvputint(buffer,offs,0) //not null
+                xvputflag(buffer,offs+2,.t.) //nohot
+            end
         end
 
     elseif( valtype(x)=="X" )

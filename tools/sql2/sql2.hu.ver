@@ -1,3 +1,32 @@
+2011.04.20
+  Oracleben nem lehet elhalasztani a memók beolvasását.
+  Eddig az volt a koncepció, hogy a memó akkor olvasódik be,
+  amikor az alkalmazás hivatkozik az értékére. Ez azonban nem
+  jól működik az ilyen esetekben:
+    
+    row:=table:instance
+    row:key:="key1"
+    row:memo:="vanaki forrón szereti"
+    row:insert
+    con:sqlcommit
+    
+    row1:=table:find({"key1"})
+    row1:key:="key2"
+    row1:insert
+    con:sqlcommit
+    
+  Itt a row1-ben elvileg benne van a "vanaki ..." memó, aminek 
+  key2-höz is ki kell íródnia. De nem íródott ki, mert a program 
+  nem hivatkozott rá, és azért be sem olvasódott a find-nál. 
+  Ezért a rowset:next az alkalmazástól függetlenül behozza a memókat.
+  Kivétel az insert utáni visszaolvasó select, ilyenkor a memót
+  nincs értelme visszaolvasni.
+  
+  Új metódusa van a soroknak, row:showflags. Olyan mint a show,
+  de max 48 széles mezőn írja ki az értékeket, azután viszont
+  feltünteti a dirty (D) és null (N) flaget. Teszteléshez jó.
+
+
 2011.03.25
   tableentity:insert visszaolvassa a rekordot, következmény:
     1) insert megköveteli a kulcsszegmensek kitöltését

@@ -417,6 +417,7 @@ local x,repeat:=.f.
 
     aadd(rendez,{"By date-time",{||sortIdo(brw)}})
     aadd(rendez,{"By name (default)",{||sortNev(brw)}})
+    aadd(rendez,{"By basename",{||sortBaseName(brw)}})
     aadd(rendez,{"By size",{||sortMeret(brw)}})
     brwMenu(brw,"Sort","Set order by name, time, size",rendez,"S")
 
@@ -629,6 +630,14 @@ local dbrw:=arrayNew(), fd,fd1
 static function sortNev(brw)
 local arr:=brwArray(brw)
     asort(arr,,,{|x,y|x[IDX_FILE]<y[IDX_FILE]})
+    brw:refreshAll()
+    return NIL
+
+
+******************************************************************************    
+static function sortBaseName(brw)
+local arr:=brwArray(brw)
+    asort(arr,,,{|x,y|fnameext(x[IDX_FILE])>fnameext(y[IDX_FILE])})
     brw:refreshAll()
     return NIL
 

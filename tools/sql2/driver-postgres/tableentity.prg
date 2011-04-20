@@ -98,6 +98,7 @@ class  tableentity(object) new: //nem kell new
     method  instance                    //-> üres rowentity
     method  getprimarykey               //rowentity -> primkey
     method  show                        //tableentity:show(rowentity)
+    method  showflags                   //tableentity:showflags(rowentity)
     method  insert                      //tableentity:insert(rowentity)
     method  update                      //tableentity:update(rowentity)
     method  delete                      //tableentity:delete(rowentity)
@@ -406,6 +407,18 @@ local n,c,x
         c:=this:columnlist[n]
         x:=c:eval(o)
         ? c:name, valtype(x)+"[", x, "]"
+    next
+    return NIL
+
+****************************************************************************
+static function tableentity.showflags(this,o) 
+local n,c,x,t
+    for n:=1 to len(this:columnlist)
+        c:=this:columnlist[n]
+        x:=c:eval(o)
+        t:=valtype(x)
+        x::=any2str::left(48)::strtran(chr(10)," ")::strtran(chr(13)," ")
+        ? c:name, t, "["+x+"]", if(c:isdirty(o),"D","")+if(c:isnull(o),"N","")
     next
     return NIL
 

@@ -443,11 +443,20 @@ local n,c,x,t
     return NIL
 
 ****************************************************************************
+//static function showbuffer(buf)
+//local n
+//    ? "BUF:"
+//    for n:=1 to len(buf)
+//        ?? buf[n]::asc::l2hex::padl(2,"0")::padl(3)
+//    next
+
+****************************************************************************
 static function tableentity.insert(this,o)
 
 local cv,stmt,rowcount
 local o1,err
 local memo,n
+local offset,ind
 
     cv:=colval(this,o,@memo)
     stmt:="insert into "+tabname_q(this)+cv
@@ -455,6 +464,11 @@ local memo,n
 
 #define INSERT_REREAD
 #ifdef  INSERT_REREAD
+    //Visszaolvasáskor nincs értelme a memót is visszaolvasni,
+    //mert a memó még ki sincs írva, csak egy empty_blob().
+    //Csak a memowrite fogja kiírni a memó tényleges tartalmát.
+    //rereadflag mutatja rowset:next-nek, hogy ne olvassa a memót.
+
     this:__rereadflag__:=.t.
     if( (o1:=this:find(o))==NIL )
         this:__rereadflag__:=NIL
@@ -464,6 +478,21 @@ local memo,n
         break(err)
     else
         this:__rereadflag__:=NIL
+
+        if( memo!=NIL )
+            //A buffer egyszerű cseréje (o <- o1) nem elég,
+            //mert a visszaolvasákor keletkezett o1:__buffer__-ben
+            //a memók indikátor változói nincsenek beállítva.
+            //Most beállítjuk.
+
+            for n:=1 to len(memo)
+                offset:=this:columnlist[memo[n]]:offset
+                ind:=xvgetint(o:__buffer__,offset)
+                xvputint(o1:__buffer__,offset,ind)
+                xvputflag(o1:__buffer__,offset+2,.t.) //nohot
+            next
+        end
+
         o:__buffer__:=o1:__buffer__ //default értékek
     end
 #endif
@@ -543,6 +572,7 @@ local n,c,x,setval
         c:=tab:columnlist[n]
         
         if( c:isdirty(row) .and. !c:keyseg ) //keyseg: 2011.03.05
+            c:setdirty(row,.f.)              //clear dirty: 2011.04.20
             x:=sql2.oracle.sqlvalue(row,c)
             if( setval==NIL )
                 setval:=" set "

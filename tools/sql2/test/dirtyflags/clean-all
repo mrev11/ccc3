@@ -1,0 +1,26 @@
+#!/bin/bash
+
+find . -type d \
+       -name code_generated -o \
+       -name ppo -o \
+       -name objlin -o \
+       -name objsol -o \
+       -name objfre | xargs rm -rf
+
+find . -type f \
+       -name outerr -o \
+       -name outcpp -o \
+       -name outlnk -o \
+       -name outpre -o \
+       -name outlemon -o \
+       -name outflex -o \
+       -name gccver.opt -o \
+       -name compopt -o \
+       -name rsplink -o \
+       -name 'log-*' -o \
+       -name '*.exe' -o \
+       -name '*.bak' -o \
+       -name error | xargs rm -f
+
+find . -type l | xargs rm -f
+

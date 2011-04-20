@@ -502,6 +502,7 @@ local n,c,x,setval
         c:=tab:columnlist[n]
         
         if( c:isdirty(row) .and. !c:keyseg ) //keyseg: 2011.03.05
+            c:setdirty(row,.f.)              //clear dirty: 2011.04.20
             x:=sql2.postgres.sqlvalue(row,c)
             if( setval==NIL )
                 setval:=" set "

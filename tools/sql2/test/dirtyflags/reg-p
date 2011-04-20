@@ -1,0 +1,185 @@
+
+PostgreSQL 9.0.4 on x86_64-unknown-linux-gnu, compiled by GCC gcc (Ubuntu/Linaro 4.5.2-8ubuntu3) 4.5.2, 64-bit
+
+instance
+key C [    ] N
+cval C [    ] N
+cvald C [    ] N
+nval N [         0] N
+nvald N [         0] N
+dval D [    -  -  ] N
+dvald D [    -  -  ] N
+lval L [.F.] N
+mval X [] N
+mvaln X [] N
+instance: minden érték empty, minden null, semmi sem dirty
+
+insert
+insert előtt
+key C [key1] D
+cval C [    ] N
+cvald C [    ] DN
+nval N [         0] D
+nvald N [         0] N
+dval D [    -  -  ] N
+dvald D [    -  -  ] DN
+lval L [.F.] D
+mval X [próba szerencse] D
+mvaln X [] D
+minimum a kulcsokat ki kell tölteni !null-ra
+bármilyen értékadás beállítja a mező dirty flagjét
+az értéktől fűggően beállítódik vagy törlődik a null flag
+a C típust ("") és a D típust (ctod("")) lehet értéken keresztül 
+nullra állítani, a többi típusnak csak a setnull metódussal
+
+insert után
+key C [key1] 
+cval C [    ] N
+cvald C [def ] 
+nval N [         0] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+insert: csak a !null mezőket viszi
+egyes null mezők a szerverben értéket kapnak, ezek null flagje törlődik
+minden dirty flag törlődik
+
+insert-2
+key C [key2] 
+cval C [HOPP] 
+cvald C [def ] 
+nval N [         1] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+insert-2: különböző kulcsokhoz is kiírható ugyanaz a row
+
+insert-3
+key C [key3] 
+cval C [KOPP] 
+cvald C [def ] 
+nval N [         2] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+insert-2: különböző kulcsokhoz is kiírható ugyanaz a row
+
+select/find
+key C [key3] 
+cval C [KOPP] 
+cvald C [def ] 
+nval N [         2] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+select: értékek a táblából, null, ami a táblában null, semmi sem dirty
+
+update
+update előtt
+key C [key3] 
+cval C [KOPP] 
+cvald C [def!] D
+nval N [         2] 
+nvald N [      1000] D
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] D
+mvaln X [] N
+
+update1 után
+key C [key3] 
+cval C [KOPP] 
+cvald C [def!] 
+nval N [         2] 
+nvald N [      1000] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] 
+mvaln X [] N
+
+update2 után
+key C [key3] 
+cval C [KOPP] 
+cvald C [def!] 
+nval N [         2] 
+nvald N [      1000] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] 
+mvaln X [] N
+update: csak a dirty mezőket viszi, a dirty flageket törli
+két egymás utáni update közül a második hatástalan (dirty mező híján)
+a null flageket nem változtatja    
+
+delete
+delete előtt
+key C [keyX] 
+cval C [    ] N
+cvald C [def!] 
+nval N [         3] 
+nvald N [      1000] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] 
+mvaln X [] N
+
+delete után
+key C [keyX] 
+cval C [    ] N
+cvald C [def!] 
+nval N [         3] 
+nvald N [      1000] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] 
+mvaln X [] N
+delete: ki kell legyenek töltve a kulcsok
+sem a dirty, sem a null flageket nem változtatja    
+
+key C [key1] 
+cval C [    ] N
+cvald C [def ] 
+nval N [         0] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+key C [key2] 
+cval C [HOPP] 
+cvald C [def ] 
+nval N [         1] 
+nvald N [       999] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse] 
+mvaln X [] N
+key C [key3] 
+cval C [KOPP] 
+cvald C [def!] 
+nval N [         2] 
+nvald N [      1000] 
+dval D [    -  -  ] N
+dvald D [2010-12-31] 
+lval L [.F.] 
+mval X [próba szerencse!] 
+mvaln X [] N

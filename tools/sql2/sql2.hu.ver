@@ -1,3 +1,47 @@
+2011.04.20 
+  INDIKÁTOR VÁLTOZÓK (megváltozott koncepció)
+
+  Korábban az insert/update nem módosította a dirty/null flaget.
+  Az insert utáni visszaolvasással a helyzet megváltozott, 
+  ui. az inserthez kapcsolt fetch mindenképpen módosít.
+  
+  Áttekintés:
+  
+  instance: 
+    empty értékek, minden null, semmi sem dirty.
+
+  select/find:
+    beolvasódnak a tábla adatai
+    a null flag akkor állítódik be, ha a tábla-beli adat null
+    semmi sem dirty
+
+  insert: 
+    a kulcsoknak kötelezően kitöltöttnek kell lennie
+    csak a !null mezők íródnak ki
+    egyes mezők a szerverben default értéket kaphatnak,
+    ezek visszaolvasódnak és a null flagjük törlődik
+    minden dirty flag törlődik
+
+  update: 
+    a kulcsoknak kötelezően kitöltöttnek kell lennie
+    csak a dirty mezők íródnak ki 
+    minden dirty flag törlődik (egy megismételt update már hatástalan)
+    a null flagek változatlanok
+    
+  delete:
+    a kulcsoknak kötelezően kitöltöttnek kell lennie
+    a dirty és null flagek változatlanok
+
+
+2011.04.20
+  Az insert utáni visszaolvasáskor a bufferek cseréje nem elég,
+  mert a visszaolvasákor keletkezett bufferben a memók indikátor 
+  változói nincsenek beállítva. Ezért az indikátor változókat
+  külön át kell másolni (Oracle).
+  
+  Az update törli a dirty flageket (Oracle, Postgres).
+
+
 2011.04.20
   Oracleben nem lehet elhalasztani a memók beolvasását.
   Eddig az volt a koncepció, hogy a memó akkor olvasódik be,
@@ -15,12 +59,14 @@
     row1:insert
     con:sqlcommit
     
-  Itt a row1-ben elvileg benne van a "vanaki ..." memó, aminek 
-  key2-höz is ki kell íródnia. De nem íródott ki, mert a program 
-  nem hivatkozott rá, és azért be sem olvasódott a find-nál. 
+  Itt a row1-ben elvileg benne van a "vanaki ..." memó, 
+  aminek key2-höz is ki kell íródnia. De nem íródott ki, 
+  mert a (régi) find nem olvasta be, a program meg nem hivatkozik 
+  rá, a kulcs átírása után pedig már meg sem találná. 
   Ezért a rowset:next az alkalmazástól függetlenül behozza a memókat.
   Kivétel az insert utáni visszaolvasó select, ilyenkor a memót
-  nincs értelme visszaolvasni.
+  nincs értelme visszaolvasni (ui. az insert még csak egy empty_blob-ot
+  írt ki, a tényleges tartalom kiírása később, külön menetben történik).
   
   Új metódusa van a soroknak, row:showflags. Olyan mint a show,
   de max 48 széles mezőn írja ki az értékeket, azután viszont

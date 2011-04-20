@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "Oracle memók" #2011.04.20
+git commit --all -m "sql2: dirty és null flagek" #2011.04.20
 
+# "Oracle memók" #2011.04.20
 # "jeed maxrow" #2011.04.12
 # "sql2: insert reread"  #2011.03.05
 # "so-k cp helyett mv-vel kerulnek a helyukre" #2010.12.22

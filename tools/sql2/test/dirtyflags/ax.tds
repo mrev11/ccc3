@@ -1,0 +1,26 @@
+
+
+name: ax
+
+table: ax
+
+column: key     C4
+
+column: cval    C4
+column: cvald   C4      d='def'
+column: nval    N8
+column: nvald   N8      d=999
+column: dval    D
+column: dvald   D       d='2010-12-31'
+column: lval    L
+column: mval    M
+column: mvaln   M
+
+
+primkey: key
+
+
+select: select_order
+    order(key)
+    
+

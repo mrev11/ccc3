@@ -1,0 +1,9 @@
+#!/bin/bash
+#export SQLDEBUG=on
+
+proba.exe O >log-o
+proba.exe P >log-p
+
+diff log-o log-p
+diff log-o reg-o
+diff log-p reg-p

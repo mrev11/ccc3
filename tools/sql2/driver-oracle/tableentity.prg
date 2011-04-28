@@ -557,7 +557,6 @@ local err
             err:operation:=stmt
             err:description+=str(rowcount)
             err:args:={rowcount}
-            err:candefault:=.t.
             break(err)
         end
     end
@@ -602,7 +601,6 @@ local err
         err:operation:=stmt
         err:description+=str(rowcount)
         err:args:={rowcount}
-        err:candefault:=.t.
         break(err)
     end
     return rowcount //affected rows

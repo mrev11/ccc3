@@ -1,3 +1,9 @@
+2011.04.26
+  sqlerror -> SQLCONCURRENCYERROR -> sqlserialerror
+                                  -> sqllockerror   -> sqldeadlockerror
+           -> sqlconnecterror
+           -> sqlrowcounterror
+
 2011.04.20 
   INDIKÁTOR VÁLTOZÓK (megváltozott koncepció)
 

@@ -58,6 +58,8 @@ extern void _clp_sqllockerrornew(int);
 extern void _clp_sqldeadlockerrornew(int);
 extern void _clp_sqlserialerrornew(int);
 extern void _clp_sqlconnecterrornew(int);
+extern void _clp_sqlnodatafounderrornew(int);
+extern void _clp_sqluniqueconstrainterrornew(int);
 
 namespace _nsp_sql2 {
 namespace _nsp_oracle {
@@ -185,6 +187,28 @@ static void pushconnecterror()
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
 
+static void pushnodatafounderror()
+//
+//  stack:  --- errobj
+//
+{
+    _clp_sqlnodatafounderrornew(0);
+    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
+    dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
+}
+
+static void pushuniqueconstrainterror()
+//
+//  stack:  --- errobj
+//
+{
+    _clp_sqluniqueconstrainterrornew(0);
+    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
+    dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
+}
+
 //----------------------------------------------------------------------------
 static void ocierror(OCIError *errhp, int ociresult) 
 //
@@ -283,6 +307,14 @@ static void ocierror(OCIError *errhp, int ociresult)
     else if( errcode==8177 )
     {
         pushserialerror();
+    }
+    else if( errcode==1403 )
+    {
+        pushnodatafounderror();
+    }
+    else if( errcode==1 )
+    {
+        pushuniqueconstrainterror();
     }
     else
     {

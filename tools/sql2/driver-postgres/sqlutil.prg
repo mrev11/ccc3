@@ -199,6 +199,8 @@ local status,code,desc,err
         err:=sqldeadlockerrorNew()
     elseif( code=="40001" )
         err:=sqlserialerrorNew()
+    elseif( code=="23505" )
+        err:=sqluniqueconstrainterrorNew()
     else
         err:=sqlerrorNew()
     end

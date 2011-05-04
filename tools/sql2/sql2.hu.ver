@@ -1,3 +1,20 @@
+2011.05.04
+  sqlerror hierachia átszervezve
+  új:  sqltranctlerror (Oracle, Postgres, ezeket érdemes ismételni)
+  új:  sqluniquecounstainterror (Oracle, Postgres)
+  új:  sqlnodatafounderror (Oracle serial mód hibája)
+
+    sqlerror
+        ->  sqltranctlerror
+                ->  sqlnodatafounderror
+                ->  sqluniqueconstrainterror
+                ->  sqlrowcounterror
+                ->  sqlconcurrencyerror
+                        ->  sqlserialerror
+                        ->  sqllockerror
+                                ->  sqldeadlockerror
+        ->  sqlconnecterror
+
 2011.04.26
   sqlerror -> SQLCONCURRENCYERROR -> sqlserialerror
                                   -> sqllockerror   -> sqldeadlockerror

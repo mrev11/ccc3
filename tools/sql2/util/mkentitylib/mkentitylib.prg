@@ -70,8 +70,10 @@ local args:={*}
     if( prgdir==NIL )
         prgdir:="."+dirsep()
         prgmove:=.f.
-    elseif( !right(prgdir,1)$"/\"  )
-        prgdir+=dirsep()
+    else
+        if( !right(prgdir,1)$"/\"  )
+            prgdir+=dirsep()
+        end
         dirmake(prgdir)
         prgmove:=.t.
     end
@@ -92,7 +94,7 @@ local args:={*}
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
             if( 0!=run("tds2prg.exe "+srcname) )
-                ?? "ERROR: tds2prg.exe "+srcname, "failed"; ?
+                ? "ERROR: tds2prg.exe "+srcname, "failed"; ?
                 errorlevel(1)
                 quit
             end
@@ -118,7 +120,7 @@ local args:={*}
             dtos(prg[p][F_DATE])+prg[p][F_TIME] )
             ?? srcname; ?
             if( 0!=run("ted2prg.exe "+srcname) )
-                ?? "ERROR: ted2prg.exe "+srcname, "failed"; ?
+                ? "ERROR: ted2prg.exe "+srcname, "failed"; ?
                 errorlevel(1)
                 quit
             end
@@ -141,12 +143,12 @@ local args:={*}
 static function mkentitylib(libname) 
 
 local skel:=<<SKELETON>>
-static function entitylib._LIBNAME_.init()
+static function _LIBNAME_.init()
 local libdata:=simplehashNew()_ENTITIES_
     return libdata
 
-function entitylib._LIBNAME_(name,conn)
-static libdata:=entitylib._LIBNAME_.init(),blk
+function _LIBNAME_(name,conn)
+static libdata:=_LIBNAME_.init(),blk
     if( name==NIL )
         return libdata //hashtable
     elseif( conn==NIL )
@@ -187,7 +189,7 @@ local entities:=""
     skel:=strtran(skel,"_LIBNAME_",libname)
     skel:=strtran(skel,"_ENTITIES_",entities)
     
-    prgname:="entitylib."+libname+".prg" 
+    prgname:=libname+".prg" 
     
     if( !skel==memoread(prgdir+prgname) )
         memowrit(prgdir+prgname,skel)

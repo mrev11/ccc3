@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "sqlconcurrencyerror" #2011.04.28
+git commit --all -m "sqltanctlerror" #2011.05.04
 
+# "sqlconcurrencyerror" #2011.04.28
 # "előző javítás javítása" #2011.04.20
 # "sql2: dirty és null flagek" #2011.04.20
 # "Oracle memók" #2011.04.20

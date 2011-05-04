@@ -355,6 +355,7 @@ static function header(x)
 static s_fspec:=""
 local hdrtxt//,crs:=setcursor(0)
 local mode,percent
+local flen,ftxt
  
     if( valtype(x)=="C" )
         #ifdef _UNIX_
@@ -369,7 +370,7 @@ local mode,percent
             percent:="100%"
 
         elseif( x:actrow<=1 )
-            percent:="0%"
+            percent:="  0%"
 
         else
             percent:=str(x:actrow/(len(x:atxt)+1)*100,3,0)+"%"
@@ -379,8 +380,18 @@ local mode,percent
     
         hdrtxt:="  Line"+str(x:actrow,6) 
         hdrtxt+="  Col"+str(x:actcol,5) 
-        hdrtxt+="  "+s_fspec
-        hdrtxt:=padr(hdrtxt,maxcol()-len(mode+" "+percent))+mode+" "+percent+" "
+        hdrtxt+="  FSPEC"
+        hdrtxt+="  "+mode+" "+percent+" "
+        
+        flen:=maxcol()-len(hdrtxt)+6
+        if( len(s_fspec)<=flen )
+            ftxt:=padr(s_fspec,flen)
+        else
+            ftxt:=padr(fname(s_fspec),flen)
+        end
+        
+        hdrtxt:=strtran(hdrtxt,"FSPEC",ftxt)
+        
     
         @ 0,0 say hdrtxt color zcolor_1()
     end

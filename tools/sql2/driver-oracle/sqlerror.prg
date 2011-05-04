@@ -18,6 +18,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/*
+sqlerror
+    ->  sqltranctlerror
+            ->  sqlnodatafounderror
+            ->  sqluniqueconstrainterror
+            ->  sqlrowcounterror
+            ->  sqlconcurrencyerror
+                    ->  sqlserialerror
+                    ->  sqllockerror
+                            ->  sqldeadlockerror
+    ->  sqlconnecterror
+
+  A programozás szepontjából egyetlen fontos dolog van: Tudni kell, 
+  mely hibák után érdemes ismételni a tranzakciót. A struktúra úgy
+  készült, hogy az sqltranctlerror alatt vannak az ismételéssel 
+  javítható hibák. Nemcsak a lockolással kapcsolatos hibák ilyenek.
+  
+  sqluniqueconstrainterror pl. keletkezhet azért, mert
+
+  1) hibás program be akar tenni egy már létező kulcsot
+
+  2) a program ellenőrzi a kulcs létezését, de ellenőrzéskor az még nem 
+  létezett, viszont mire berakná, addigra egy másik program megelőzte.
+  
+  A gyakorlat szempontjából a 2) eset a fontos, tehát érdemes az ilyeneket
+  a könnyű kezelés érdekében az sqltranctlerror alá sorolni.
+*/
+
 ****************************************************************************
 class sqlerror(apperror)
     method initialize
@@ -28,13 +56,48 @@ static function sqlerror.initialize(this)
     return this
 
 ****************************************************************************
-class sqlconcurrencyerror(sqlerror)
+class sqltranctlerror(sqlerror)
+    method initialize
+
+static function sqltranctlerror.initialize(this)
+    this:(sqlerror)initialize
+    this:description:="SQL2 transaction control error"
+    return this
+
+****************************************************************************
+class sqlnodatafounderror(sqltranctlerror)
+    method initialize
+
+static function sqlnodatafounderror.initialize(this)
+    this:(sqltranctlerror)initialize
+    this:description:="SQL2 no data found error"
+    return this
+
+****************************************************************************
+class sqluniqueconstrainterror(sqltranctlerror)
+    method initialize
+
+static function sqluniqueconstrainterror.initialize(this)
+    this:(sqltranctlerror)initialize
+    this:description:="SQL2 unique constraint error"
+    return this
+
+****************************************************************************
+class sqlrowcounterror(sqltranctlerror)
+    method initialize
+
+static function sqlrowcounterror.initialize(this)
+    this:(sqltranctlerror)initialize
+    this:description:="SQL2 rowcount error"
+    return this
+
+****************************************************************************
+class sqlconcurrencyerror(sqltranctlerror)
     method initialize
 
 static function sqlconcurrencyerror.initialize(this)
-    this:(sqlerror)initialize
+    this:(sqltranctlerror)initialize
     this:description:="SQL2 transaction concurrency control error"
-    this:canretry:=.t.
     return this
 
 ****************************************************************************
@@ -71,15 +134,6 @@ class sqlconnecterror(sqlerror)
 static function sqlconnecterror.initialize(this)
     this:(sqlerror)initialize
     this:description:="SQL2 connection error"
-    return this
-
-****************************************************************************
-class sqlrowcounterror(sqlerror)
-    method initialize
-
-static function sqlrowcounterror.initialize(this)
-    this:(sqlerror)initialize
-    this:description:="SQL2 rowcount error"
     return this
 
 ****************************************************************************

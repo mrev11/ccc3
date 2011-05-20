@@ -248,6 +248,9 @@ function searchinclude(incfil)
 
 local incdir:=split(includepath()+getenv("INCLUDE"),";"),n
 
+    incfil:=strtran(incfil,"/",dirsep())
+    incfil:=strtran(incfil,"\",dirsep())
+
     if( file(incfil) )
         return incfil
     

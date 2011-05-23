@@ -1,4 +1,7 @@
 
+2011.05.21 -- 1.3.03
+  search_include()-ban dirsep konverzió
+
 2010.07.18 -- 1.3.02
   --dry (vagy BUILD_DBG=dry) opció
   

@@ -1,7 +1,11 @@
 
-#define VERSION  "1.4.1"
+#define VERSION  "1.4.2"
+
 
 #ifdef _VERZIO_TORTENET_
+
+2011.05.21
+  searchinclude()-ban dirsep konverzió
 
 2009.04.27 -- 1.4.1
   Vararg API *[x1..x2] támogatás.

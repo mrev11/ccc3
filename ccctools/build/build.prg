@@ -58,7 +58,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.02"
+#define VERSION "1.3.03"
 
 ****************************************************************************
 function main()
@@ -937,6 +937,8 @@ local n1,n2:=0,line,delim,dpos,f
         end
 
         f:=substr(line,2,dpos-2)
+        f:=strtran(f,"/",dirsep())
+        f:=strtran(f,"\",dirsep())
             
         if( byrules(f,dep,dir,todo) )
             //a fordítási szabályok alapján előállítható

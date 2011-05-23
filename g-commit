@@ -4,7 +4,7 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "ppo2prg.searchinclude dirsep" #2011.05.20
+git commit --all -m "ppo2prg/build searchinclude dirsep konverzio" #2011.05.22
 
 # "sqltanctlerror" #2011.05.04
 # "sqlconcurrencyerror" #2011.04.28

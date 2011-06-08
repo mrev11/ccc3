@@ -1,7 +1,11 @@
 
-#define VERSION "2.1.06"
+#define VERSION "2.1.07"
 
 #ifndef VERSION  
+
+2011.05.03 -- 2.1.07
+  Ha egy hosszú filespec nem fér ki a zöld headerbe,
+  akkor csak a basename-et írja ki.
 
 2010.06.26 -- 2.1.06
   Lapozáskor a kiírás dispbegin/dispend-del összefogva.

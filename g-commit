@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "z.ver: elmaradt változásleírás" #2011.06.08
+git commit --all -m "new demo certificates" #2011.06.17
 
+# "z.ver: elmaradt változásleírás" #2011.06.08
 # "ppo2prg/build searchinclude dirsep konverzio" #2011.05.22
 # "sqltanctlerror" #2011.05.04
 # "sqlconcurrencyerror" #2011.04.28

@@ -97,7 +97,10 @@ function Message(get, text, color) // változó tartalmú message középen
 local curs:=setcursor(0)
 local posr:=row(), posc:=col()
 local savecolor
-local t:=12,l:=10,b:=16,r:=70
+//local t:=12,l:=10,b:=16,r:=70
+local mr:=int(maxrow()/2), mc:=int(maxcol())
+local t:=mr-2,l:=10,b:=mr+2,r:=mc-10
+
 
     if( get==NIL )
         savecolor:=setcolor(color)

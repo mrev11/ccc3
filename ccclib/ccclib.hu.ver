@@ -1,3 +1,6 @@
+2011.06.24
+  stvar.cpp: buffer overflow ellenőrzés, dupla helyfoglalás megszüntetve.
+  
 2010.11.08
   A string (C) változók hossza is unsigned int helyett unsigned long.
   Ezeknek a hosszekezelése is át van írva a binary típushoz (X) hasonlóan.

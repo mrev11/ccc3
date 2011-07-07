@@ -24,6 +24,7 @@ class xmlnode(object)
     method  initialize
     method  addattrib       {|this,x|aadd(this:attrib,x)}
     method  addcontent      {|this,x|aadd(this:content,x)}
+    method  addtext
     method  getattrib
     method  gettext
     method  xmlout
@@ -51,6 +52,18 @@ local x:=ascan(this:attrib,{|a|a:name==attrname})
         attrval:=substr(attrval,2,len(attrval)-2) //idézőjelek
     end
     return attrval
+
+****************************************************************************
+static function xmlnode.addtext(this,text)
+local child
+    if( "<"$text .or. "&"$text )
+        child:=xmlnodeNew("#CDATA") 
+    else
+        child:=xmlnodeNew("#TEXT") 
+    end
+    child:addcontent(text)
+    this:addcontent(child)
+    return child
 
 ****************************************************************************
 static function xmlnode.gettext(this)

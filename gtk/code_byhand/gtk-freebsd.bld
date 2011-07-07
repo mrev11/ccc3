@@ -3,6 +3,7 @@
 -p/usr/lib 
 
 -i/usr/X11R6/include/gtk-2.0
+-i/usr/X11R6/include/gdk-pixbuf-2.0
 -i/usr/X11R6/include/pango-1.0
 -i/usr/local/include/glib-2.0
 -i/usr/local/include/atk-1.0

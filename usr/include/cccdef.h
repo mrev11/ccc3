@@ -103,7 +103,7 @@ typedef struct
 
 //----------------------------------------------------------------------------
 unsigned const int STACK_SIZE=2048;
-unsigned const int STSTACK_SIZE=1024;
+unsigned const int STSTACK_SIZE=2048;
 
 #ifdef MULTITHREAD
   #define stack     (thread_data_ptr->_stack)

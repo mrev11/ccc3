@@ -109,7 +109,7 @@ local modos:={},index:={}
 
     brwApplyKey(brw,{|b,k|appkey(b,k,tab)})
     brwSetFocus(brw)
-    brwMenuName(brw,"["+fname+"]")
+    brwMenuName(brw,"["+fnameext(fname)+"]")
 
     setControl(tab,brw,control)
 
@@ -202,6 +202,13 @@ local tab:=tabResource(fname)
 ************************************************************************
 function rightName(name,length)
     return if(len(name)<=length,name,"..."+right(name,length-3))
+
+
+************************************************************************
+static function fnameext(name)   // name.ext
+local bslpos:=rat(dirsep(),name)
+    name:=substr(name,bslpos+1)
+    return alltrim(name)
 
 
 ************************************************************************

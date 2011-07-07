@@ -1,3 +1,8 @@
+
+2011.07.02 -- 1.4.03
+  node:addtext(text)
+  Egy text tartalmú #TEXT/#CDATA-t ad node content-jéhez.
+
 2010.02.17 -- 1.4.02
   #TEXT és #CDATA node-ra gettext.
 

@@ -161,7 +161,7 @@ local upgrade:=.f.
     brwColumn(brw,@"Len" ,brwABlock(brw,3),"@Z 999")
     brwColumn(brw,@"Dec" ,brwABlock(brw,4),"@Z 99")
 
-    brwMenuName(brw,"["+tabPathname(tab)+"]")
+    brwMenuName(brw,"["+tabFile(tab)+"]")
 
     brwMenu(brw,@"App" ,@"New field to the end",{||fld_append(brw)})
     brwMenu(brw,@"Ins" ,@"New field at the cursor position",{||fld_insert(brw)})

@@ -20,7 +20,12 @@
 
 *********************************************************************
 function main(fname)
-    //memowrit("pid",  alltrim(str(getpid()))  )
+#ifdef _UNIX_
+    if( !fname::lower==fname )
+        alert( "Case sensitive path;;"+fname,{"Quit"} )
+        quit
+    end
+#endif
     set dosconv fileshare
     appview("TVIEW") 
     return NIL

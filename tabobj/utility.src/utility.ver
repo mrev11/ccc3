@@ -1,8 +1,12 @@
 
 
-#define VERSION "CCC3-1.0.12"
+#define VERSION "CCC3-1.0.13"
 
 #ifdef _HISTORY_
+
+2011.07.08 -- 1.0.13
+  tstru: path kezeles javitva (igy is csak lower case path eseten mukodik)
+  tstru, tview: menuben fullpath helyett csak basename-et jeleniti meg
 
 2008.09.08 -- 1.0.12
    bt2dbf/bt2txt [-c ctrl] [-f] fname

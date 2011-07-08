@@ -88,7 +88,9 @@ local err
 
     while( NIL!=(upg:=struktura(tab)) ) //struktúra editálás
         
-        tab:=tabNew0(fname)
+        //tab:=tabNew0(fname)
+        tab:=tabNew0(tabFile(sav)) //2011.07.08
+        tabPath(tab,tabPath(sav))  //lower case path!
 
         for n:=1 to len(tabColumn(upg))
             if( !empty(tabColumn(upg)[n][1]) )

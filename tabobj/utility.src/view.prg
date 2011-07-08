@@ -44,6 +44,22 @@ local fname,control,n:=0,v
             fname:=v
         end
     end
+    
+    if( fname==NIL )
+        ? APPVER, " Copyright (C) ComFirm BT. 1998."
+        ? @"Usage: "+lower(APPNAME)+@" <filename>"
+        ?
+        quit
+    end
+
+    fname:=relpath(fname)
+
+    #ifdef _UNIX_
+        if( !fname::lower==fname )
+            alert( "Case sensitive path;;"+fname,{"Quit"} )
+            quit
+        end
+    #endif
 
     setcursor(0)
     setcolor("w/b,b/w")
@@ -52,11 +68,6 @@ local fname,control,n:=0,v
     //set printer to (APPNAME+".REP")
     //set printer on
 
-    if( fname==NIL )
-        ? APPVER, " Copyright (C) ComFirm BT. 1998."
-        ? @"Usage "+APPNAME+@" <filename>"
-        quit
-    end
     
     if( !lower(tabDataExt())$lower(fname)  )
         fname+=tabDataExt()
@@ -109,7 +120,8 @@ local modos:={},index:={}
 
     brwApplyKey(brw,{|b,k|appkey(b,k,tab)})
     brwSetFocus(brw)
-    brwMenuName(brw,"["+fnameext(fname)+"]")
+    brwMenuName(brw,"["+fname+"]")
+    //brwMenuName(brw,"["+fnameext(fname)+"]")
 
     setControl(tab,brw,control)
 
@@ -209,6 +221,15 @@ static function fnameext(name)   // name.ext
 local bslpos:=rat(dirsep(),name)
     name:=substr(name,bslpos+1)
     return alltrim(name)
+
+
+************************************************************************
+static function relpath(fname)
+local dn:=dirname()+dirsep()
+    if( at(dn,fname)==1 )
+        fname:=substr(fname,len(dn)+1)
+    end
+    return fname
 
 
 ************************************************************************

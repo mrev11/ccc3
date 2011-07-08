@@ -33,24 +33,43 @@ static APPNAME
 function appstru(fname,app)
 
 local tab,upg,sav,n,result
-local fnamex:=fname
+local fnamex
 local aidx,aidxc,i,c
 local err
 
     APPNAME:=app
+
+    if( fname==NIL )
+        ? APPVER, "Copyright (C) ComFirm BT. 1998."
+        ? @"Usage: "+lower(APPNAME)+" <filename>"
+        ?
+        quit
+    end
+
+    //a tabobj konyvtar (UNIX-on) csak lower case path-okkal mukodik
+    //az ujabb mc binding fullpath-t hasznal programinditaskor
+    //ettol elromlik a program, ha a path /-tol kezdve nem vegig lower case
+    //ezert az esetleges fullpath-t atalakitjuk relativ path-ra
+    //egyebkent is zavaroak a menuben megjeleno kilometer hosszu nevek
+
+    fname:=relpath(fname)
+    
+    #ifdef _UNIX_
+        if( !fname::lower==fname )
+            alert( "Case sensitive path;;"+fname,{"Quit"} )
+            quit
+        end
+    #endif
+
+    fnamex:=fname
 
     setcursor(0)
     setcolor("w/b,b/w")
 
     //set printer to (APPNAME+".REP")
     //set printer on
-
-    if( fnamex==NIL )
-        ? APPVER, "Copyright (C) ComFirm BT. 1998."
-        ? @"Usage "+APPNAME+" <filename>"
-        quit
-    end
     
+
     if( !lower(tabDataExt())$lower(fnamex)  )
         fnamex+=tabDataExt()
     else
@@ -163,7 +182,7 @@ local upgrade:=.f.
     brwColumn(brw,@"Len" ,brwABlock(brw,3),"@Z 999")
     brwColumn(brw,@"Dec" ,brwABlock(brw,4),"@Z 99")
 
-    brwMenuName(brw,"["+tabFile(tab)+"]")
+    brwMenuName(brw,"["+tabPathName(tab)+"]")
 
     brwMenu(brw,@"App" ,@"New field to the end",{||fld_append(brw)})
     brwMenu(brw,@"Ins" ,@"New field at the cursor position",{||fld_insert(brw)})
@@ -504,6 +523,15 @@ local n
         ? tab[n]
     next
     return NIL
+
+
+************************************************************************
+static function relpath(fname)
+local dn:=dirname()+dirsep()
+    if( at(dn,fname)==1 )
+        fname:=substr(fname,len(dn)+1)
+    end
+    return fname
 
 
 ************************************************************************

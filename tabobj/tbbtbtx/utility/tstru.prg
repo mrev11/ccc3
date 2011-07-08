@@ -20,15 +20,8 @@
 
 *********************************************************************
 function main(fname)
-#ifdef _UNIX_
-    if( !fname::lower==fname )
-        alert( "Case sensitive path;;"+fname,{"Quit"} )
-        quit
-    end
-#endif
     set dosconv fileshare
     appstru(fname,"TSTRU")
-    return NIL
 
 *********************************************************************
  

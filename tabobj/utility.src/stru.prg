@@ -41,7 +41,7 @@ local err
 
     if( fname==NIL )
         ? APPVER, "Copyright (C) ComFirm BT. 1998."
-        ? @"Usage: "+lower(APPNAME)+" <filename>"
+        ? @"Usage: "+lower(APPNAME)+@" <filename>"
         ?
         quit
     end
@@ -56,25 +56,25 @@ local err
     
     #ifdef _UNIX_
         if( !fname::lower==fname )
-            alert( "Case sensitive path;;"+fname,{"Quit"} )
+            alert( @"Nonlowercase path;;"+fname,{@"Quit"} )
             quit
         end
     #endif
 
     fnamex:=fname
 
+    if( !lower(tabDataExt())$lower(fnamex)  )
+        fnamex+=lower(tabDataExt())
+    else
+        fname:=left(fnamex,rat(".",fnamex)-1)
+    end
+
+
     setcursor(0)
     setcolor("w/b,b/w")
 
     //set printer to (APPNAME+".REP")
     //set printer on
-    
-
-    if( !lower(tabDataExt())$lower(fnamex)  )
-        fnamex+=tabDataExt()
-    else
-        fname:=left(fnamex,rat(".",fnamex)-1)
-    end
 
 
     if( !file(fnamex) )
@@ -86,8 +86,9 @@ local err
     tab:=tabResource(fnamex) 
 
     if( valtype(tab)!="A" .or. empty(tab) )
-        ? @"tabResource:", tab
-        return NIL
+        ? @"tabResource failed:", tab
+        ?
+        quit
     end
     
 

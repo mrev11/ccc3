@@ -56,10 +56,15 @@ local fname,control,n:=0,v
 
     #ifdef _UNIX_
         if( !fname::lower==fname )
-            alert( "Case sensitive path;;"+fname,{"Quit"} )
+            alert( @"Nonlowercase path;;"+fname,{@"Quit"} )
             quit
         end
     #endif
+
+    if( !lower(tabDataExt())$lower(fname)  )
+        fname+=lower(tabDataExt())
+    end
+
 
     setcursor(0)
     setcolor("w/b,b/w")
@@ -67,16 +72,12 @@ local fname,control,n:=0,v
 
     //set printer to (APPNAME+".REP")
     //set printer on
-
     
-    if( !lower(tabDataExt())$lower(fname)  )
-        fname+=tabDataExt()
-    end
 
     if( !file(fname) )
         ? fname,@"not found"
+        ?
         quit
-
     end
 
     kdirViewData(fname,control)

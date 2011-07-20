@@ -178,7 +178,7 @@ static function sqlquery.isnull(this,x)
 ****************************************************************************
 static function sqlquery.getbinary(this,x)
 local idx:=if(valtype(x)=="N",x,this:findcolumn(x))
-    return if(this:__indvar__[idx],"",sql2.postgres._pq_unescapebytea(this:__buffer__[idx]))
+    return if(this:__indvar__[idx],a"",sql2.postgres._pq_unescapebytea(this:__buffer__[idx]))
 
 ****************************************************************************
 static function sqlquery.getchar(this,x)

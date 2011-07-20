@@ -202,7 +202,7 @@ local buf:=this:__selectlist__[idx][SL_BUFFER]
 local ind:=bin2i(substr(buf,1,2))
 
     if( ind==-1 )
-        return ""
+        return a""
     elseif( typ==SQLT_AFC .or. typ==SQLT_CHR )
         return substr(buf,3)
     end

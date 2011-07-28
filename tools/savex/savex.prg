@@ -983,7 +983,7 @@ static dispcount:=0
 
                 if( !"L"$d1[n1][F_ATTR] .or. "d"$s_symlink )
                     if( includedir(name) )
-                        message(msg,padr(path+name,56))
+                        message(msg,padr(path+name,maxcol()-32))
                         if( ++dispcount>10 )
                             dispcount:=0
                             dispend()

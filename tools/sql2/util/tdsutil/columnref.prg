@@ -45,7 +45,8 @@ static function columnref.initialize(this,nam,exp)
 
 ******************************************************************************
 static function quotedname(x)
-    return tdsutil.sqlidquote(alltrim(x))
+    return alltrim(x)
+    //return tdsutil.sqlidquote(alltrim(x)) //megszűnt: 2011.07.20
 
 #ifdef EMLEKEZTETO
     Oracle-ben a "NAME" alakkal lehet tetszőleges azonosítót definiálni.

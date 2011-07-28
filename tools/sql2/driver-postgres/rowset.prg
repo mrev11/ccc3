@@ -116,7 +116,7 @@ local stmt,dst,status,err
     end
 
     stmt:="select"+dst+this:__table__:__selectlist__
-    stmt+=" from "+this:__table__:__fromclause__
+    stmt+=" from "+sql2.postgres.sqlbind(this:__table__:__fromclause__,bindarray)
 
     if( filterclause!=NIL )
         stmt+=" "+sql2.postgres.sqlbind(filterclause,bindarray)
@@ -152,7 +152,7 @@ local stmt,dst,status,err
         stmt+=" for update " //nem lehet timeout-ot megadni
     end
     
-    stmt:=sql2.postgres.sqlidcase(stmt,.f.)  // "ID" kisbetűre
+    //stmt:=sql2.postgres.sqlidcase(stmt,.f.)  //megszűnt: 2011.07.20
     
     sql2.postgres.sqldebug(stmt)
 

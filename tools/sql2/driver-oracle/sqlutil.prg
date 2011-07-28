@@ -137,7 +137,8 @@ local s:=dtos(x)
  
 ******************************************************************************
 function quotedname(x)
-    return sql2.oracle.sqlidquote(alltrim(x))
+    return alltrim(x)
+    //return sql2.oracle.sqlidquote(alltrim(x)) //megszűnt: 2011.07.20
 
 #ifdef EMLEKEZTETO // az "IDENT" alakú nevek használatáról
 

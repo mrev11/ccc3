@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "sqlquery.getbinary javitva" #2011.07.20
+git commit --all -m "sql2: sqlidquote megszunt; bind tabjoin-ban;" #2011.07.20
 
+# "sqlquery.getbinary javitva" #2011.07.20
 # "gtk readme" #2011.07.12
 # "tstru path" #2011.07.08
 # "stvar.cpp verify_overflow" #2011.07.07

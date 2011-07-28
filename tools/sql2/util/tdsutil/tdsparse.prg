@@ -288,7 +288,8 @@ local err
             where:=strtran(rmlf(tag:gettext),"&lt;","<") 
 
         elseif( tag:type=="order" )
-            order:=split(lower(rmlf(tag:gettext)))
+            //order:=split(lower(rmlf(tag:gettext)))
+            order:=rmlf(tag:gettext) //nem kell szétvágni: 2011.07.20
 
         //elseif( tag:type=="distinct" )
         //    distinct:=split(lower(rmlf(tag:gettext)))

@@ -113,19 +113,25 @@ void _clp_sqltabalias(int argno)
 
 join       [Jj][Oo][Ii][Nn]
 lpar       [( \n\r\t]*
-symbol     [_a-zA-Z][_a-zA-Z0-9]*
+symbol     [_a-zA-Z][\._a-zA-Z0-9]*
 
 %%
 
 {join}{lpar}{symbol}    {
-                            if( strstr(YYText(),searchsym) )
+                            const char *p=YYText();
+                            const char *q=p+YYLeng()-1; //symbol vége
+                            while( q>p && 
+                                   *q!='(' && *q!=' ' &&
+                                   *q!='\n' && *q!='\r' && *q!='\t' )
                             {
-                                char *p=strstr(input,YYText());
-                                if( p )
-                                {
-                                    return p-input+YYLeng()-strlen(searchsym)+1;
-                                }
-                                return 0;
+                                q--;
+                            }
+                            q++; //symbol eleje
+                            
+                            if( strcasecmp(q,searchsym)==0 )
+                            {
+                                char *s=strstr(input,YYText());
+                                return s-input+q-p+1;
                             }
                         }
 .

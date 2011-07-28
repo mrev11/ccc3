@@ -154,7 +154,8 @@ local a:="(",n
 
 ******************************************************************************
 function quotedname(x)
-    return sql2.postgres.sqlidquote(alltrim(x))
+    return alltrim(x)
+    //return sql2.postgres.sqlidquote(alltrim(x)) //megszűnt: 2011.07.20
 
 #ifdef EMLEKEZTETO //az idézett azonosítókról
     Oracle-ben a "NAME" alakkal lehet tetszőleges azonosítót definiálni.

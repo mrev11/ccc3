@@ -41,7 +41,7 @@ local tabjoin:=tdsdata:tabjoin
 local primkey:=tdsdata:primkey
 
 local n,i,c,c1,x
-local whr,ord,col,asc
+local whr,ord
 local err
 
     if( ename==NIL )
@@ -98,6 +98,7 @@ local err
                 c1:label:=c:label
                 c1:tooltip:=c:tooltip
                 c1:picture:=c:picture
+                c1:keyseg:=(0<ascan(primkey,{|x|x==c:name}))
             end
         next
 
@@ -181,33 +182,21 @@ local err
             ord:=""
             if( !empty(sellst[n][3]) ) //order
                 //pl. <order>col1, col2 desc nulls last, col3 asc</order>
-                for i:=1 to len(sellst[n][3])
-                    col:=alltrim(sellst[n][3][i])
-                    if( " "$col )
-                        asc:=substr(col,at(" ",col))
-                        col:=left(col,at(" ",col)-1)
-                    else
-                        asc:=""
-                    end
-                    x:=ascan(collst,{|c|c:name==col})
-                    if( x==0 )
-                        err:=tdserrorNew("dom2tabent")
-                        err:description:="unknown column name in order"
-                        err:args:={sellst[n][3][i]}
-                        break(err)
-                    end
-                    ord+=if(i==1,"",",")+collst[x]:name+asc
-                next
+                ord:=sellst[n][3] //nincs szétvágva: 2011.07.20
             end
-            aadd(tabent:__filterlist__,{sellst[n][1],whr,ord})
+            
             if( !empty(whr) )
                 whr:=tdsutil.replacename(whr,collst)
-            else
-                whr:=NIL
             end
             if( !empty(ord) )
                 ord:=tdsutil.replacename(ord,collst)
-            else
+            end
+            aadd(tabent:__filterlist__,{sellst[n][1],whr,ord})
+
+            if(empty(whr))
+                whr:=NIL
+            end
+            if(empty(ord))
                 ord:=NIL
             end
             classMethod(clid,sellst[n][1],mkblk_select(whr,ord))

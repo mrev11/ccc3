@@ -330,10 +330,11 @@ static function action_select_changed(this)
 
 local com:=this:var:select //combobox
 local pnl:=this:var:bind //bind panel
-local sel,whr,ord
+local sel,frm,whr,ord
 local n,x,lab,get,pnl1:=jtpanelNew()
 
     sel:=com:selecteditem
+    frm:=this:table:__tabjoin__
     whr:=this:table:__filterlist__[com:selectedindex][2]
     ord:=this:table:__filterlist__[com:selectedindex][3]
     
@@ -343,6 +344,9 @@ local n,x,lab,get,pnl1:=jtpanelNew()
     asize(this:bindget,0)
 
     x:=""
+    if( !empty(frm) )
+        x+=frm+" "
+    end
     if( !empty(whr) )
         x+=whr
     end

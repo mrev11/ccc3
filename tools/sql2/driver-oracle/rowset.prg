@@ -75,7 +75,7 @@ local stmt,dst,n,c,t,deftyp,err
     end
 
     stmt:="select"+dst+this:__table__:__selectlist__
-    stmt+=" from "+this:__table__:__fromclause__
+    stmt+=" from "+sql2.oracle.sqlbind(this:__table__:__fromclause__,bindarray)
 
     if( filterclause!=NIL )
         stmt+=" "+sql2.oracle.sqlbind(filterclause,bindarray)
@@ -101,7 +101,7 @@ local stmt,dst,n,c,t,deftyp,err
         stmt+=" for update wait "+alltrim(str(wait))
     end
 
-    stmt:=sql2.oracle.sqlidcase(stmt,.t.)
+    //stmt:=sql2.oracle.sqlidcase(stmt,.t.) //megszűnt: 2011.07.20
     
     sql2.oracle.sqldebug(stmt)
 

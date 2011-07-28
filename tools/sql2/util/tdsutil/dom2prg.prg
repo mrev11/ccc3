@@ -98,7 +98,7 @@ local tabjoin:=tdsdata:tabjoin
 local primkey:=tdsdata:primkey
 
 local tlist
-local whr,ord,col,asc
+local whr,ord
 local n,i,c,x    
 local outfile
 local err
@@ -275,32 +275,16 @@ local err
         ord:=""
         if( !empty(sellst[n][3]) ) //order
             //pl. <order>col1, col2 desc nulls last, col3 asc</order>
-            for i:=1 to len(sellst[n][3])
-                col:=alltrim(sellst[n][3][i])
-                if( " "$col )
-                    asc:=substr(col,at(" ",col))
-                    col:=left(col,at(" ",col)-1)
-                else
-                    asc:=""
-                end
-                x:=ascan(collst,{|c|c:name==col})
-                if( x==0 )
-                    err:=tdserrorNew("dom2prg")
-                    err:description:="unknown column name in order"
-                    err:args:={sellst[n][3][i]}
-                    break(err)
-                end
-                ord+=if(i==1,"",",")+collst[x]:name+asc
-            next
+            ord:=sellst[n][3]  //nincs szétvágva: 2011.07.20
         end
 
-        ? '    aadd(filterlist,{"'+sellst[n][1]+'","'+whr+'","'+ord+'"})'
         if( !empty(whr) )
             whr:="'"+tdsutil.sqlescape(tdsutil.replacename(whr,collst))+"'"
         end
         if( !empty(ord) )
             ord:="'"+tdsutil.sqlescape(tdsutil.replacename(ord,collst))+"'"
         end
+        ? '    aadd(filterlist,{"'+sellst[n][1]+'",'+whr+','+ord+'})'
         ? '    classMethod(clid,"'+sellst[n][1]+'",{|this,bnd,lck|this:__select__('+whr+','+ord+',bnd,lck)})'
     next
     ?

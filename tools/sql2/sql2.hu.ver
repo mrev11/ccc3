@@ -1,10 +1,20 @@
 2011.07.20
-  sqlquery.getbinary javítva
+  sqlquery.getbinary javítva.
+  
+  Az sqlidcase és sqlidquote használata megszűnt,
+  szükség esetén az azonosítókat idézve lehet beírni a tds-be.
+  
+  Az order(exp1,exp2,...) tagban ugyanolyan kifejezéslista lehet, 
+  mint az order by klózban (korábban csak oszlopnevek lehettek).
+  
+  A bind változókat a from klózban (tabjoin) is helyettesíti.
+  A jeed módosult, hogy ezeknek is értéket lehessen adni.
+
 
 2011.05.04
   sqlerror hierachia átszervezve
   új:  sqltranctlerror (Oracle, Postgres, ezeket érdemes ismételni)
-  új:  sqluniquecounstainterror (Oracle, Postgres)
+  új:  sqluniqueconstrainterror (Oracle, Postgres)
   új:  sqlnodatafounderror (Oracle serial mód hibája)
 
     sqlerror

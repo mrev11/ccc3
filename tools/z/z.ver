@@ -1,7 +1,24 @@
 
-#define VERSION "2.1.07"
+#define VERSION "2.1.08"
 
 #ifndef VERSION  
+
+2011.08.04 -- 2.1.08
+  Az fspec nélküli "z" csak az aktuális directoryból nyit meg filét,
+  nevezetesen a history és az aktuális directory első közös elemét,
+  (miközben figyelmen kívül hagyja a history elemben levő path-t).
+  
+  Figyelem: 
+  1) file(x) létező directorykra is .t.-t ad, 
+  ezért a directorykat külön ki kell zárni. Ez így van a windowsos 
+  CCC-ben is,  az eredeti Clippereben ellenőrizni kéne.
+  2) dirname() symlinkelt directorykban a linkelt path helyett
+  az abszolut path-t adja, ezért nem dönthető el, hogy a historyban
+  szereplő fspec azonos-e egy cwd-ben meglevő filével.
+
+  Azóta vannak ilyen gondok, mióta az mc-ben áttértek fullpath-os
+  filénév helyettesítésre, és így a filék többsége full specifikációval
+  szerepel a historyban.
 
 2011.05.03 -- 2.1.07
   Ha egy hosszú filespec nem fér ki a zöld headerbe,

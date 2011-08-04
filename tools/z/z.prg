@@ -289,7 +289,7 @@ local n,hx,item
 
     if( fspec==NIL )
         for n:=1 to len(history)
-            if( file(history[n][H_FILE]) )
+            if( file(fname(history[n][H_FILE])) .and. !direxist(fname(history[n][H_FILE])) )
                 fspec:=history[n][H_FILE]
                 hx:=n
                 exit
@@ -298,7 +298,7 @@ local n,hx,item
     end
 
     if( fspec==NIL )
-        alert("History empty!")
+        alert("No input file spec!")
         quit
     end
     

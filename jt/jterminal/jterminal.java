@@ -36,7 +36,7 @@ import java.net.*;
 public class jterminal extends Thread { 
 //===========================================================================
 
-public static final String JTVERSION = "1.1.15 (2009.08.08)";
+public static final String JTVERSION = "1.1.16 (2011.08.06)";
 public static final String JTCOPYRIGHT = JTVERSION+" ComFirm";
  
 public static final String AUTOCRE_LOWER = "created_automatically";
@@ -48,6 +48,7 @@ public static String encoding_in="UTF-8"; //inner encoding
 public static String encoding_def="ISO8859-2"; //default server encoding
 public String encoding_ex; //server encoding
 
+public static boolean windows_os=System.getProperty("file.separator").equals("\\");
 private static ClassLoader jtloader=null;
 
 private static int thcount=0;
@@ -822,4 +823,5 @@ static public void autoscroll(JComponent c)
 
 //---------------------------------------------------------------------------
 }
+
  

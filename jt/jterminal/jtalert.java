@@ -154,7 +154,30 @@ public void run()
         Toolkit.getDefaultToolkit().beep();
     }
     
+    //2011.08.06
+    if( jterminal.windows_os && parent!=null )
+    {
+        //enable, hogy ne keruljon alulra
+        //jterminal.out.println("ALERT.PARENT.ENABLED");
+        parent.setEnabled(true);
+    }
+
+    //2011.08.06
+    //feltetelezes szerint menti a parent allapotat,
+    //a sajat futasi idejere disabled allapotba teszi,
+    //majd dispose utan, visszateres elott visszaallitja 
+    //a mentett allapotot (tehat show alatt disabled,
+    //elotte-utana egy-egy pillanatra enabled)
+
     dialogwindow.show();
+
+    //2011.08.06
+    if( jterminal.windows_os && parent!=null )
+    {
+        //jterminal.out.println("ALERT.PARENT.DISABLED");
+        parent.setEnabled(false);
+    }
+
     (new jtremove(dialogwindow)).run();
  
     int ch=0;

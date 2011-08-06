@@ -60,7 +60,8 @@ local msg
         // blockjaiban is lehetnének (pl. meuitem4)
         
         if( msg=="x"  ) //x button
-            quit
+            //quit
+            dlg:close
  
         elseif( msg=="ok"  ) //ok button
             dlg:close
@@ -284,3 +285,4 @@ local m, mi
  
  
 ****************************************************************************
+

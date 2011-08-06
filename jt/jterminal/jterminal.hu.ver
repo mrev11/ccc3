@@ -1,3 +1,37 @@
+1.1.16 (2011.08.06)
+  A dialog alulra kerül, amikor a gyereke megszűnik.
+  
+    CCC kliens      Jterminal
+
+                    dialog
+                    menü megnyom
+                    dialog disabled
+                <<< <action>
+    végrehajtás
+    <jtalert>   >>>
+                    választ
+                    alert dispose
+                    dialog alulra kerül
+                <<< <jtalert>
+    <reaction>  >>>          
+                    dialog enabled
+                    dialog alul marad
+
+  A fenti üzenetváltás után az a dialog, ami az alert parentje 
+  volt alulra kerül. Ez a jelenség csak Windowson tapasztalható.
+  Ha a parent ablak disabled állapotban van, amikor a child megszűnik, 
+  akkor a Windows alulra teszi (fölé hoz más alkalmazásokat).
+  Linuxon ilyesmi nincs.
+  
+  A jelenség miatt az évek során többször próbálkoztam azzal, 
+  hogy akció alatt is maradjon enabled állapotban a dialog, 
+  de úgy nem biztosítható az adatok konzisztenciája.
+  
+  A mostani javítás lényege, hogy a parentet a child megszünésének
+  idejére ideiglenesen enabled állapotba helyezem.
+
+
+
 1.1.15 (2009.08.08)
   A 2006.08.31-es jtmutex-ezés megszüntetve.
   Nem világos, miért volt rá szükség, most deadlockot okoz.

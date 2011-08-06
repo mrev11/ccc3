@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m "z history"#2011.08.04
+git commit --all -m "jterminal dialog parent enable/disable"#2011.08.06
 
+# "z history"#2011.08.04
 # "sql2: sqlidquote megszunt; bind tabjoin-ban;" #2011.07.20
 # "sqlquery.getbinary javitva" #2011.07.20
 # "gtk readme" #2011.07.12

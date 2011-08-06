@@ -135,7 +135,30 @@ public void run()
         fc.addChoosableFileFilter( (jtfilefilter)filterlist.get(i) );
     }
 
+
+    //2011.08.06
+    if( jterminal.windows_os && parent!=null)
+    {
+        //enable, hogy ne keruljon alulra
+        //jterminal.out.println("FILECHOOSER.PARENT.ENABLED");
+        parent.setEnabled(true);
+    }
+    
+    //2011.08.06
+    //feltetelezes szerint fc menti a parent allapotat,
+    //a sajat futasi idejere disabled allapotba teszi,
+    //majd dispose utan, visszateres elott visszaallitja 
+    //amentett allapotot (tehat showDialog alatt disabled,
+    //elotte-utana egy-egy pillanatra enabled)
+
     int r=fc.showDialog(parent,text);
+
+    //2011.08.06
+    if( jterminal.windows_os && parent!=null)
+    {
+        //jterminal.out.println("FILECHOOSER.PARENT.DISABLED");
+        parent.setEnabled(false);
+    }
 
     String x="";
 

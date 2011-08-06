@@ -404,7 +404,23 @@ private void close() //az event dispath thread-ben fut
     {
         jterm.removedlg(this); 
         jterm.send("<destroy dialogid=\""+param.dialogid+"\"/>");
+
+        //2011.08.06
+        if( jterminal.windows_os && this.wnd.getParent()!=null )
+        {
+            //egy pillanatra enable, hogy ne keruljon alulra
+            //jterminal.out.println("JTDIALOG.PARENT.ENABLED");
+            this.wnd.getParent().setEnabled(true);
+        }
+
         this.wnd.dispose();
+
+        //2011.08.06
+        if( jterminal.windows_os && this.wnd.getParent()!=null )
+        {
+            //jterminal.out.println("JTDIALOG.PARENT.DISABLED");
+            this.wnd.getParent().setEnabled(false);
+        }
     }
 }
  

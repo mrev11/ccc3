@@ -5,6 +5,8 @@
 :set TEMP=
 set GREP=grep -i -H -n
 set FIND=savex.exe . -f -i.prg.cpp.c.ch.h.tex.java.lex.lem. -r.ppo. -lrobj*
+
+:set CYGWIN=nodosfilewarning
  
 zgrep.exe %1 %2
 

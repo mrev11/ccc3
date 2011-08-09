@@ -185,7 +185,7 @@ local err
 
     this:close()
 
-    this:fspec:=lower(alltrim(fspec))
+    this:fspec:=fspec
     this:fhandle:=hnd:=fopen(this:fspec,if(mode==NIL,FO_READ,mode))
 
     if( hnd<0 )

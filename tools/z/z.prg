@@ -271,6 +271,67 @@ local dx:=zhome()+"diffx"
 
 
 **********************************************************************   
+#ifdef _UNIX_
+
+static function wd() //  /path/to/working/dir/
+
+//FIGYELEM:
+// dirname() symbolic link directorykban abszolut path-t ad.
+// Ez azert van igy, mert a belul hivott getcwd igy mukodik,
+// es ezen nem is lehet valtoztatni.
+// A getenv("PWD")modszer mukodik Linuxon, FreeBSD-n NetBSD-n.
+// A PWD kornyezeti valtozo nem koveti a programban vegrehajtott
+// diskchange-et (ezzel szemben dirname es getcwd koveti).
+
+local wd:=getenv("PWD")
+    if( empty(wd) )
+        wd:=dirname()
+    end
+    if( !right(wd,1)==dirsep() )
+        wd+=dirsep()
+    end
+    return wd
+
+static function rel2abs(path)
+    if( !left(path,1)==dirsep() )
+        path:=wd()+path
+    end
+    path::=strtran("/./","/")
+    return path
+
+
+#else //_WINDOWS_
+
+static function wd(drv:=diskname()) // d:\path\to\working\dir\
+local wd:=drv+":"+dirname(drv)
+    if( !right(wd,1)==dirsep() )
+        wd+=dirsep()
+    end
+    return wd
+
+static function rel2abs(path)
+local drv
+    if( ":"$path )
+        drv:=path[1]
+        path:=path[3..]
+    else
+        drv:=diskname()
+    end
+
+    //drv  : drive name
+    //path : path without drive
+
+    if( left(path,1)==dirsep() )
+        path:=drv+":"+path
+    else
+        path:=wd(drv)+path
+    end
+    path::=strtran("\.\","\")
+    return path
+
+#endif
+
+**********************************************************************   
 static function history_load(fspec)
 
 local fhist:=zhome()+"history_uc.z"
@@ -289,27 +350,32 @@ local n,hx,item
 
     if( fspec==NIL )
         for n:=1 to len(history)
-            if( file(fname(history[n][H_FILE])) .and. !direxist(fname(history[n][H_FILE])) )
+            if( wd()==fpath(history[n][H_FILE]) .and. ;
+                file(history[n][H_FILE]) .and. !direxist(history[n][H_FILE]) )
+                
+                //az aktualis directoryban van
+                //letezik, nem directory (hanem fajl)
+                
                 fspec:=history[n][H_FILE]
                 hx:=n
                 exit
             end
         next
-    end
+        if( fspec==NIL )
+            alert("No input file spec!")
+            quit
+        end
 
-    if( fspec==NIL )
-        alert("No input file spec!")
-        quit
-    end
-    
-    if( hx==NIL )
+    else
+        fspec::=rel2abs //relative -> absolute path
         for n:=1 to len(history)
-            #ifdef _UNIX_
-                if( fspec==history[n][H_FILE] )
-            #else
-                if( lower(fspec)==lower(history[n][H_FILE]) )
-            #endif
+          #ifdef _UNIX_
+            if( fspec==history[n][H_FILE] )
+          #else
+            if( lower(fspec)==lower(history[n][H_FILE]) )
+          #endif
                 hx:=n
+                exit
             end
         next
     end
@@ -326,6 +392,7 @@ local n,hx,item
     else
         item:=asize(history[1],H_SIZEOF) 
     end
+    
     
     return history
 
@@ -345,8 +412,6 @@ local history:=history_load(fspec)
     history[1][H_SENSITIVE]:=zedit:casesensitive
  
     memowrit(fhist,arr2bin(history))
-    
-    return NIL
 
 
 **********************************************************************   
@@ -358,11 +423,7 @@ local mode,percent
 local flen,ftxt
  
     if( valtype(x)=="C" )
-        #ifdef _UNIX_
-            s_fspec:=x
-        #else
-            s_fspec:=upper(x)
-        #endif        
+         s_fspec:=x
  
     elseif( valtype(x)=="O" )
     
@@ -384,20 +445,14 @@ local flen,ftxt
         hdrtxt+="  "+mode+" "+percent+" "
         
         flen:=maxcol()-len(hdrtxt)+6
-        if( len(s_fspec)<=flen )
-            ftxt:=padr(s_fspec,flen)
-        else
-            ftxt:=padr(fname(s_fspec),flen)
-        end
-        
+        ftxt:=fname(s_fspec)+"  "+fpath(s_fspec)::strtran(getenv("HOME"),"~")
+        ftxt::=padr(flen)
         hdrtxt:=strtran(hdrtxt,"FSPEC",ftxt)
-        
     
         @ 0,0 say hdrtxt color zcolor_1()
     end
 
     //setcursor(crs)
-    return NIL
 
 
 **********************************************************************   

@@ -1,7 +1,16 @@
 
-#define VERSION "2.1.08"
+#define VERSION "2.1.09"
 
 #ifndef VERSION  
+
+2011.08.09 -- 2.1.09
+  A historyban teljesre kiegeszitett fajlspecifikaciot tarolunk.
+  Windowson a drive is benne van a teljes fajlspecifikacioban.
+  UNIX-on dirname() elott/helyett getenv("PWD")-t hasznalunk,
+  mert dirname() a symlink directorykra mindig az abszolut patht 
+  adja (belul getcwd-vel mukodik, nem valtoztathato).
+  
+  A 2011.05.03-es javitas helyett headerben: basename path.
 
 2011.08.04 -- 2.1.08
   Az fspec nélküli "z" csak az aktuális directoryból nyit meg filét,

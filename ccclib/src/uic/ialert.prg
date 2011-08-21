@@ -63,6 +63,9 @@
     Az alert() kikapcsolhatósága édekében errorblock mintájára 
     alertblock bevezetve.
 
+  2011.08.21
+    dispbegin/dispend-ből kijön.
+
 #endif
  
 #include "inkey.ch"
@@ -90,8 +93,7 @@ local mehet,key
 local top,left
 
     keyboard("") //2002.03.16
-
-    while(dispend()>0);end  //2011.08.21
+    dispbegin()
 
     if( empty(txt) .or. !valtype(txt)=='C' )
         return 0
@@ -177,11 +179,13 @@ local top,left
     next
 
     savscr:=DrawBox(top,left,top+height-1,left+width-1,B_SINGLE)
-
+    
     for n:=1 to len(tTxt)  
         // @ top+n,left+round((width-len(tTxt[n][1])-0.01)/2,0) say tTxt[n][1]
         @ top+n,left+(width-len(tTxt[n][1]))/2 say tTxt[n][1]
     next
+
+    while( !empty(dispend()) );end  //2011.08.21
 
     choice:=1
     mehet:=.t.

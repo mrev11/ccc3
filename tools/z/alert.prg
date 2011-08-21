@@ -33,8 +33,11 @@ local wtxt:=0,walt:=0
 local s,w,a,n,i
 local savscr,top,lef,bot,rig
 local color,cursor
+local r:=row(),c:=col()
 local key,choice,keyexit
 
+    keyboard("")
+    while(dispend()>0);end  //2011.08.21
 
     //txt meretezese
     
@@ -158,6 +161,7 @@ local key,choice,keyexit
     
     setcursor(cursor)
     setcolor(color)
+    setpos(r,c)
     restscreen(top,lef,bot,rig,savscr)
 
     return choice

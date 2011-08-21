@@ -374,7 +374,7 @@ local filnam
     
     filnam:=ExtractName(maskfile)
 
-    if( !empty(filnam:=GetText("Enter filename:", filnam, 32)) )
+    if( !empty(filnam:=GetText("Enter filename:", filnam)) )
 
         if( !("." $ filnam) )
             filnam+=MASKEXT
@@ -411,15 +411,16 @@ local ppos,epos
    return filename
 
 *************************************************************************
-function GetText(prompt, default, length)
+function GetText(prompt, txt:="", length:=128)
 local posr:=row(), posc:=col()
-local txt:=if(default==NIL,"",default)
-local ll:=if(length==NIL,16,length)
-local t:=MAXROW/2+1, l:=MAXCOL/2-2-ll/2
-local b:=t+6, r:=l+3+ll
-local screen:=DrawBox(t,l,b,r,B_DOUBLE)
-local get:=GetNew(t+4,l+2,{|x|if(x==NIL,padr(txt,ll),txt:=padr(x,ll))})
 local ncur:=setcursor(1)
+local ww:=48 //(get)window width
+local t:=MAXROW/2+1, l:=MAXCOL/2-2-ww/2
+local b:=t+6, r:=l+3+ww
+local screen:=DrawBox(t,l,b,r,B_DOUBLE)
+local get:=GetNew(t+4,l+2,{|x|if(x==NIL,padr(txt,length),txt:=padr(x,length))})
+
+     get:picture:="@S"+alltrim(str(ww))
 
      @ t+2,l+2 say prompt
      ReadModal({get})
@@ -431,6 +432,7 @@ local ncur:=setcursor(1)
      setcursor(ncur)
      restscreen(t,l,b,r,screen)
      setpos(posr,posc)
+
      return txt
 
 

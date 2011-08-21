@@ -79,7 +79,7 @@ function interactive_alert(txt,alts)
 
 local savscr
 local color, crs
-//local r:=row(),c:=col()
+local r:=row(),c:=col()
 local choice:=0
 local alternatives,shortcuts
 
@@ -90,6 +90,8 @@ local mehet,key
 local top,left
 
     keyboard("") //2002.03.16
+
+    while(dispend()>0);end  //2011.08.21
 
     if( empty(txt) .or. !valtype(txt)=='C' )
         return 0
@@ -217,7 +219,7 @@ local top,left
     end
 
     setcolor(color)
-    //setpos(r,c)
+    setpos(r,c) //kikommentezés megszüntetve 2011.08.12
     setcursor(crs)
     restscreen(top,left,top+height-1,left+width-1,savscr) 
 

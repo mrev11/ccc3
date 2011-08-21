@@ -1,3 +1,12 @@
+
+2011.08.21
+  ialert kiszabadítja magat a dispbegin()-ből.
+  Nem látszott a dispbegin/dispend között bekövetkezett hiba alartje.
+
+2011.08.12
+  ialert-ben cursor pozíció mentés/visszaállítás ki volt kommentezve.
+  Kikommentezés megszüntetve.
+
 2011.06.24
   stvar.cpp: buffer overflow ellenőrzés, dupla helyfoglalás megszüntetve.
   

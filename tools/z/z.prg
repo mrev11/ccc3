@@ -56,6 +56,8 @@ local emergency
 local fkeym:=zhome()+"keymap_uc.z"
 local ferror:=zhome()+"error.z" 
 
+    alertblock({|*|green_alert(*)})
+
     set printer to (ferror) additive
     set printer on
     setcolor(zcolor_0())
@@ -176,7 +178,6 @@ local ferror:=zhome()+"error.z"
 
     errorblock({|e|ebackup(zedit,emergency),eval(eblk,e)} )
     signalblock({|s|sighandler(s)}) //->errorblock
-    alertblock({|*|green_alert(*)})
  
     while( .t. )
 

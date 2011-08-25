@@ -1,5 +1,7 @@
 #!/bin/bash
-export CCC_NLSTEXT_TAB=$(pwd)/translate
+#export CCC_NLSTEXT_TAB=$(pwd)/translate
+#msk2say -r  maskdemo.sor  maskdemo.msk
+
 bapp_unixc.b -xdemo
 
 

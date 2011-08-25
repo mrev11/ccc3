@@ -37,7 +37,6 @@ local r:=row(),c:=col()
 local key,choice,keyexit
 
     keyboard("")
-    while(dispend()>0);end  //2011.08.21
 
     //txt meretezese
     
@@ -118,9 +117,11 @@ local key,choice,keyexit
     
     color:=setcolor(zcolor_1())
     cursor:=setcursor(0)
+    dispbegin()
     savscr:=drawbox(top,lef,bot,rig,2)
-    
     tdisp(top,lef,bot,rig,txt)    
+    while(dispend()>0);end  //2011.08.21
+
     choice:=1
     keyexit:=.f.
 

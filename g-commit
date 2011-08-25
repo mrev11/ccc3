@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "ialert: cursorpos, dispbegin" #2011.08.21
+git commit --all -m  "terminal: cursor_focus=1; mask: grchr javitva; msk2say: isbox javitva" #2011.08.25
 
+# "ialert: cursorpos, dispbegin" #2011.08.21
 # "z history absolute path"#2011.08.09
 # "jterminal dialog parent enable/disable"#2011.08.06
 # "z history"#2011.08.04

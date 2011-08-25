@@ -1,12 +1,12 @@
-//msk2say-2.0.01-unicode
+//msk2say-2.0.02-unicode
 
 #define g_mezo1         getlist[ 1]
-#define g_nev           getlist[ 2]
-#define g_mezo2         getlist[ 3]
-#define g_cim           getlist[ 4]
-#define g_ossz          getlist[ 5]
-#define g_tel           getlist[ 6]
-#define g_datum         getlist[ 7]
+#define g_mezo2         getlist[ 2]
+#define g_ossz          getlist[ 3]
+#define g_datum         getlist[ 4]
+#define g_nev           getlist[ 5]
+#define g_cim           getlist[ 6]
+#define g_tel           getlist[ 7]
 #define g_ugy           getlist[ 8]
 
 static function MASKDEMO(bLoad,bRead,bStore)
@@ -41,12 +41,12 @@ local msk:=mskCreate( 14, 30, 24, 76,bLoad,bRead,bStore)
     mskSay(msk, 10,  0,"╚═════════════════════════════════════════════╝")
 
     mskGet   (msk,  2, 12,@mezo1,"mezo1")
-    mskGet   (msk,  2, 33,@nev,"nev")
     mskGet   (msk,  4, 12,@mezo2,"mezo2")
-    mskGet   (msk,  4, 33,@cim,"cim")
     mskGet   (msk,  6, 12,@ossz,"ossz")
-    mskGet   (msk,  6, 33,@tel,"tel")
     mskGet   (msk,  8, 12,@datum,"datum")
+    mskGet   (msk,  2, 33,@nev,"nev")
+    mskGet   (msk,  4, 33,@cim,"cim")
+    mskGet   (msk,  6, 33,@tel,"tel")
     mskGet   (msk,  8, 33,@ugy,"ugy")
 
     mskShow(msk)

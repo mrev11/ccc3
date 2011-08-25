@@ -1,7 +1,7 @@
 
 2011.08.21
   ialert kiszabadítja magat a dispbegin()-ből.
-  Nem látszott a dispbegin/dispend között bekövetkezett hiba alartje.
+  Nem látszott a dispbegin/dispend között bekövetkezett hiba alertje.
 
 2011.08.12
   ialert-ben cursor pozíció mentés/visszaállítás ki volt kommentezve.

@@ -1,4 +1,12 @@
 
+2011.08.25
+    setwsize-ban: cursor_focus=1;
+
+    Enélkül mask.exe-ben (setwsize-zal indít) kezdetben nem villog a kurzor. 
+    A villogáshoz előbb le kellett venni, majd újra ráadni a fókuszt az ablakra.
+    (Így viszont esetleg előállhat a fordított szituáció.)
+ 
+
 2010.03.08
     setcursor és blink szinkronizálva.
 

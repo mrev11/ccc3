@@ -20,6 +20,7 @@
 
 //Utility mask filék say filékre való konvertálására
 
+//2.0.02-unicode: isbox javítva (Vermes M. 2011.08.25)
 //nls (Vermes M. 2006.09.25)
 //unicode (Vermes M. 2006.04.12)
 //checkbox/radiobutton támogatás (Vermes M. 2000.04.21)
@@ -364,7 +365,7 @@ local c,n,x:="",nls:={},nls1:={}
 
 ******************************************************************************
 static function isbox(c)
-static box:=B_SINGLE+B_DOUBLE+B_SINGLE_DOUBLE+B_DOUBLE_SINGLE
+static box:="┌├│╞└┬┼╪┴─╥╫╬╨┐┤╡┘╔╟╠╚╤╧═╦╩╗╢║╣╝╓╙╖╜╒╘╕╛"
     return left(c,1)$box
 
 ******************************************************************************
@@ -493,7 +494,7 @@ local i,j,t:={},tg:={}
 
 ******************************************************************************
 static function ver()
-    return "2.0.01-unicode"
+    return "2.0.02-unicode"
 
 
 ******************************************************************************

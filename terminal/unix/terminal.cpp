@@ -304,6 +304,7 @@ void setwsize(int x, int y)
     invbot=wheight-1;
     invrig=wwidth-1;
     dirty_buffer=1;
+    cursor_focus=1;
     invalidate_unlock();
 
 

@@ -1,0 +1,20 @@
+//msk2say-2.0.02-unicode
+
+
+static function BOX(bLoad,bRead,bStore)
+local msk:=mskCreate(  1,  7,  8, 52,bLoad,bRead,bStore)
+
+    mskSay(msk,  0,  0,"┌────┬───┐  ╒════╤═══╕  ╓────╥───╖  ╔════╦═══╗")
+    mskSay(msk,  1,  0,"│    │   │  │    │   │  ║    ║   ║  ║    ║   ║")
+    mskSay(msk,  2,  0,"├────┼───┤  ╞════╪═══╡  ╟────╫───╢  ╠════╬═══╣")
+    mskSay(msk,  3,  0,"│    │   │  │    │   │  ║    ║   ║  ║    ║   ║")
+    mskSay(msk,  4,  0,"│    │   │  │    │   │  ║    ║   ║  ║    ║   ║")
+    mskSay(msk,  5,  0,"└────┴───┘  ╘════╧═══╛  ╙────╨───╜  ╚════╩═══╝")
+    mskSay(msk,  6,  0,"                                              ")
+    mskSay(msk,  7,  0,@"ÁÉÍÓÖŐÚÜŰ   áéíóöőúüű                         ")
+
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    return lastkey()

@@ -233,7 +233,7 @@ static function get.type(get)
 static function get.undo(get)
     if( get:hasfocus )
         get:changed:=.f.
-        get:varget(get:original)
+        get:varput(get:original)
         get:reset
         if( get:type=="N" .or. "K"$func_string )
             get:clear:=.t.

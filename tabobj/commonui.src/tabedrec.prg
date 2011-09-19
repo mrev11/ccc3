@@ -65,7 +65,16 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
                 elseif( tabMemoField(tab,col[n]) )
                     aadd(v,"@R "+replicate("X",MEMOLENGTH))
                 else
-                    aadd(v,col[n][COL_PICT])
+                    //aadd(v,col[n][COL_PICT])
+                    //ha hosszú, akkor teljes hossz (2011.09.19)
+
+                    if( replicate("X",32)$col[n][COL_PICT] )
+                        aadd(v,"@R "+replicate("X",col[n][COL_WIDTH]))
+                    else
+                        aadd(v,col[n][COL_PICT])
+                    end
+
+
                 end
 
                 aadd(v,tabMemoField(tab,col[n]))
@@ -84,7 +93,15 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
             if( tabMemoField(tab,col[n]) )
                 aadd(v,"@R "+replicate("X",MEMOLENGTH))
             else
-                aadd(v,col[n][COL_PICT])
+                //aadd(v,col[n][COL_PICT])
+                //ha hosszú, akkor teljes hossz (2011.09.19)
+
+                if( replicate("X",32)$col[n][COL_PICT] )
+                    aadd(v,"@R "+replicate("X",col[n][COL_WIDTH]))
+                else
+                    aadd(v,col[n][COL_PICT])
+                end
+
             end
 
             aadd(v,tabMemoField(tab,col[n]))

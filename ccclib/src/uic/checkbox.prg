@@ -21,6 +21,10 @@
 ****************************************************************************
 class radiobutton(get) 
     method initialize
+    method left         {|this|this}
+    method right        {|this|this}
+    method home         {|this|this}
+    method end          {|this|this}
     method toggle       {|this|toggle(this)}
     method insert       {|this|toggle(this)}
     method overstrike   {|this|toggle(this)}
@@ -63,6 +67,10 @@ static function radiobutton.addto(g,group)
 ****************************************************************************
 class checkbox(get)  //compatibility
     method initialize
+    method left         {|this|this}
+    method right        {|this|this}
+    method home         {|this|this}
+    method end          {|this|this}
     method toggle       {|this|toggle(this)}
     method insert       {|this|toggle(this)}
     method overstrike   {|this|toggle(this)}

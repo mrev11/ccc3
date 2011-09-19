@@ -4,9 +4,10 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "tabedrec picture" #2011.09.19
+git commit --all -m  "checkbox:left felhldefinialva" #2011.09.19
 
 
+# "tabedrec picture" #2011.09.19
 # "localstack() return erteke derefelve" #2011.09.19
 # "get:undo javitva" #2011.08.29
 # "terminal: cursor_focus=1; mask: grchr javitva; msk2say: isbox javitva" #2011.08.25

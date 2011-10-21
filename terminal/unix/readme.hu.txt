@@ -1,4 +1,8 @@
 
+2011.10.20
+    paintline tárolja a képernyőt, és csak a változásokat írja ki,
+    ez csökkenti az képernyő műveleteket (és a hunyorgást) z-ben.
+
 2011.08.25
     setwsize-ban: cursor_focus=1;
 

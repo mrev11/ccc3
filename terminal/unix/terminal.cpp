@@ -41,6 +41,10 @@ static pthread_mutex_t mutex_blink=PTHREAD_MUTEX_INITIALIZER;
 static void blink_lock(){pthread_mutex_lock(&mutex_blink);}
 static void blink_unlock(){pthread_mutex_unlock(&mutex_blink);}
 
+static pthread_mutex_t mutex_paint=PTHREAD_MUTEX_INITIALIZER;
+static void paint_lock(){pthread_mutex_lock(&mutex_paint);}
+static void paint_unlock(){pthread_mutex_unlock(&mutex_paint);}
+
 screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
@@ -137,20 +141,69 @@ void invalidate(int t, int l, int b, int r)
 }
 
 //----------------------------------------------------------------------------
-static void paintline(int cx, int cy, XChar2b *txt, int txtlen, int attr)
+static void paintline(int cx, int cy, XChar2b *txt, int txtlen, int attr, int flag)
 {
-    int fg=0xf&(attr>>0);
-    int bg=0xf&(attr>>4);
-    XSetForeground(display,gc,rgb_color[fg]);
-    XSetBackground(display,gc,rgb_color[bg]);
-    int x=cx*fontwidth;
-    int y=cy*fontheight+fontascent;
-    XDrawImageString16(display,window,gc,x,y,txt,txtlen);
+    //tárolja a képernyőt
+    //ha flag==1, akkor mindent kiír
+    //ha flag==0, akkor csak a változást írja ki
+
+    static int bufsiz=0;
+    static XChar2b *buftext=0;
+    static int *bufattr=0;
+    if( bufsiz<(wwidth+1)*(wheight+1) )
+    {
+        bufsiz=(wwidth+1)*(wheight+1);
+        buftext=(XChar2b*)realloc(buftext,bufsiz*sizeof(XChar2b));
+        bufattr=(int*)realloc(bufattr,bufsiz*sizeof(int));
+    }
+
+    int pos0=cy*wwidth+cx,pos;
+    int chg=0,lef=0,rig=0;
+   
+    for(pos=0; pos<txtlen; pos++)
+    {
+        if( buftext[pos0+pos].byte1!=txt[pos].byte1 || 
+            buftext[pos0+pos].byte2!=txt[pos].byte2 || 
+            bufattr[pos0+pos]!=attr )
+        {
+            chg=1;  //changed
+            rig=0;  //right trim
+        }
+        else if( flag==0 )
+        {
+            if( chg==0 )
+            {
+                lef++; //left trim
+            }
+            rig++; //right trim
+        }
+        buftext[pos0+pos]=txt[pos];
+        bufattr[pos0+pos]=attr;
+    }
+
+    if( flag || chg )
+    {
+        cx+=lef;       //left trim
+        txt+=lef;      //left trim
+        txtlen-=lef;   //left trim
+        txtlen-=rig;   //right trim
+
+        int fg=0xf&(attr>>0);
+        int bg=0xf&(attr>>4);
+        XSetForeground(display,gc,rgb_color[fg]);
+        XSetBackground(display,gc,rgb_color[bg]);
+        int x=cx*fontwidth;
+        int y=cy*fontheight+fontascent;
+        XDrawImageString16(display,window,gc,x,y,txt,txtlen);
+
+        //printf("paintline: %d %d %d\n",cy,cx,txtlen); fflush(0);
+    }
 }
 
 //----------------------------------------------------------------------------
-static void paint(int top, int lef, int bot, int rig)
+static void paint(int top, int lef, int bot, int rig, int flag)
 {
+    paint_lock();
     //static int cnt=0;
     //printf("%d (%d,%d,%d,%d)\n",++cnt,top,lef,bot,rig);fflush(0);
 
@@ -167,7 +220,7 @@ static void paint(int top, int lef, int bot, int rig)
             screencell *cell=screen_buffer->cell(x,y);
             if( (buflen>0) && (cell->getattr()!=attr) )
             {
-                paintline(x0,y,(XChar2b*)buf,buflen,attr);
+                paintline(x0,y,(XChar2b*)buf,buflen,attr,flag);
                 buflen=0;
                 bufptr=buf;
                 attr=cell->getattr();
@@ -183,10 +236,12 @@ static void paint(int top, int lef, int bot, int rig)
         }
         if( buflen>0 )
         {
-            paintline(x0,y,(XChar2b*)buf,buflen,attr);
+            paintline(x0,y,(XChar2b*)buf,buflen,attr,flag);
         }
     }
     XFlush(display);
+
+    paint_unlock();
 }
 
 //----------------------------------------------------------------------------
@@ -252,7 +307,7 @@ static void blink(int flag)
 
     if( cursor_state )
     {
-        paint(prevy,prevx,prevy,prevx);
+        paint(prevy,prevx,prevy,prevx,1);
         cursor_state=0;
     }
     
@@ -371,7 +426,7 @@ static int eventproc(XEvent event)
         if( xevent->count==0 )
         {   
             //printf("EXPOSE (%d,%d,%d,%d)\n",top,lef,bot,rig);fflush(0);
-            paint(top,lef,bot,rig);
+            paint(top,lef,bot,rig,1);
             top=9999;
             lef=9999;
             bot=0;
@@ -422,9 +477,10 @@ static void eventloop()
         if( dirty_buffer )
         {
             invalidate_lock();
-            //printf("clear (%d,%d,%d,%d)\n",invtop,invlef,invbot,invrig);fflush(0);
+            //static int cnt=0;
+            //printf("clear (%d: %d,%d,%d,%d)\n",cnt++,invtop,invlef,invbot,invrig);fflush(0);
 
-            paint(invtop,invlef,invbot,invrig);
+            paint(invtop,invlef,invbot,invrig,0);
             invtop=9999;
             invlef=9999;
             invbot=0;

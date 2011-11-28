@@ -1,4 +1,7 @@
 
+2011.11.28 -- 1.4.04
+  Üres CDATA-ra (erre: '<![CDATA[]]>') elszállt.
+
 2011.07.02 -- 1.4.03
   node:addtext(text)
   Egy text tartalmú #TEXT/#CDATA-t ad node content-jéhez.

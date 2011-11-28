@@ -187,7 +187,8 @@ tnode(N) ::= TEXT(T).{
 tnode(N) ::= CDATA(T).{
     TBASE;
     push(parservp);//parser objektum
-    TPUSH(T);
+    //TPUSH(T); //rossz: üres CDATA-ra elszáll <![CDATA[]]>
+    if(T){TPUSH(T);}else{string(CHRLIT(""));}  //2011.11.28 javítás
 
     _nsp_xmldom::_nsp_lemon::_clp_tnode__cdata(2);
     N=D2INT((TOP()->data.number));

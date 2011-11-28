@@ -41,6 +41,7 @@ class jtdialog(jtelem)
     method  caption             {|this,x|if(x==NIL,this:text,this:text:=x)}
     method  list
     method  getcontrolbyname
+    method  get                 :getcontrolbyname
     method  add
     method  xmlout
     method  send                {|this,x|jtsocket():send(x)}

@@ -29,13 +29,14 @@
 ******************************************************************************
 function usage()
 local x:=<<usage>>
-Usage: bt2tds ifile -p pkey [-n nspac] [-t table] [-0 colnn]* [-o ofile]
+Usage: bt2tds ifile -p pkey [-n nspac] [-t table] [-0 colnn]* [-s colsk]* [-o ofile]
 
     ifile : input file specification (bt table)
     pkey  : primary key (must be an index in table)
     nspac : namespace for tableentity class
     table : qualified table name in SQL database
     colnn : column notnull
+    colsk : column skip
     ofile : output file (table definition script)
 
 <<usage>>
@@ -47,7 +48,7 @@ Usage: bt2tds ifile -p pkey [-n nspac] [-t table] [-0 colnn]* [-o ofile]
 function main()
 
 local n:=0,p,i
-local fspec,output,primkey,notnull:={},nspace,tname
+local fspec,output,primkey,notnull:={},colskip:={},nspace,tname
 local table,indname,indcol
 
     while( (p:=argv(++n))!=NIL )
@@ -55,6 +56,8 @@ local table,indname,indcol
             primkey:=upper(argv(++n))
         elseif( p=="-0" )
             aadd(notnull,upper(argv(++n)) )
+        elseif( p=="-s" )
+            aadd(colskip,upper(argv(++n)) )
         elseif( p=="-o" )
             output:=argv(++n)
         elseif( p=="-n" )
@@ -94,13 +97,13 @@ local table,indname,indcol
     set printer on
     set console off
     
-    outtds(table,primkey,notnull,nspace,tname)
+    outtds(table,primkey,notnull,colskip,nspace,tname)
 
     return NIL
 
 
 ******************************************************************************
-static function outtds(table,primkey,notnull,nspace,tname)
+static function outtds(table,primkey,notnull,colskip,nspace,tname)
 local n
 
     ? "name:", if(nspace==NIL,tabAlias(table),nspace)
@@ -110,7 +113,9 @@ local n
     ?
 
     for n:=1 to len(tabColumn(table))
-        outcoldef(table,n,notnull)
+        if( 0==ascan(colskip,{|x|x==tabColumn(table)[n][COL_NAME]}) )
+            outcoldef(table,n,notnull)
+        end
     next
     ?
 

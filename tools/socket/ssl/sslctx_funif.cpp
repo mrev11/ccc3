@@ -78,10 +78,14 @@ void _clp_sslctx_new(int argno)
     else
     {
         str2bin(base);
+        /* removed
              if( 0==strcmp(_parb(1),"SSLv2") )         method=SSLv2_method();
         else if( 0==strcmp(_parb(1),"SSLv2_server") )  method=SSLv2_server_method();
         else if( 0==strcmp(_parb(1),"SSLv2_client") )  method=SSLv2_client_method();
-        else if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv3_method();
+        else 
+        */
+        
+             if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv3_method();
         else if( 0==strcmp(_parb(1),"SSLv3_server") )  method=SSLv3_server_method();
         else if( 0==strcmp(_parb(1),"SSLv3_client") )  method=SSLv3_client_method();
         else if( 0==strcmp(_parb(1),"SSLv23") )        method=SSLv23_method();

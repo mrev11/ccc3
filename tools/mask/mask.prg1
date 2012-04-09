@@ -21,7 +21,7 @@
 #include "inkey.ch"
 #include "box.ch"
 
-#define VERSION  "2.1.00"  //2012.02.26 (méretek -size80x25 -size100x50 -size120x60 -size160x60)
+#define VERSION  "2.1.00"  //2012.02.26 (méretek -size80x25 -size100x50 -size120x60 -size160x60 )
 #define VERSION  "2.0.01"  //2011.08.25 (grchr javitva)
 #define VERSION  "2.0.00"  //2006.04.10 (Unicode)
 
@@ -49,7 +49,7 @@
 
 static maskfile:=""
 static origscrn:=NIL
-static origsize:=NIL    //a sizeCCCxRRR-ek közül az egyik
+static origsize:=NIL
 
 
 static size80x25:={80,25}
@@ -57,10 +57,9 @@ static size100x50:={100,50}
 static size120x60:={120,60}
 static size160x60:={160,60}
 static size200x60:={200,60}
-static termsize:=NIL    //a sizeCCCxRRR-ek közül az egyik
-
+static termsize:=size80x25
+static scalesize:=.f.
 #define CALCSIZE(t)  (t[1]*t[2]*4)
-
 
 *************************************************************************
 static function f_maxrow(s)
@@ -93,29 +92,10 @@ static function termsetup()
     settermsize(MAXROW+1,MAXCOL+1)
     setcursor(1)
 
-
-*************************************************************************
-static function termrect(size)
-    if( size==CALCSIZE(size80x25) )
-        return size80x25
-    elseif( size==CALCSIZE(size100x50) )
-        return size100x50
-    elseif( size==CALCSIZE(size120x60) )
-        return size120x60
-    elseif( size==CALCSIZE(size160x60) )
-        return size160x60
-    elseif( size==CALCSIZE(size200x60) )
-        return size200x60
-    end
-    ? "Incompatible screen size",size
-    ?
-    quit
-
-
 *************************************************************************
 function main()
 
-local n:=0, a, line
+local n:=0, a
 
 
     while( !empty(a:=argv(++n)) )
@@ -134,18 +114,23 @@ local n:=0, a, line
             
         elseif( a=="-size80x25" )
             termsize:=size80x25
+            scalesize:=.t.
       
         elseif( a=="-size100x50" )
             termsize:=size100x50
+            scalesize:=.t.
 
         elseif( a=="-size120x60" )
             termsize:=size120x60
+            scalesize:=.t.
 
         elseif( a=="-size160x60" )
             termsize:=size160x60
+            scalesize:=.t.
 
         elseif( a=="-size200x60" )
             termsize:=size200x60
+            scalesize:=.t.
 
         elseif( "-size"$a )
             ? "Known size options: -size80x25 -size100x50 -size120x60 -size160x60 -size200x60"
@@ -171,36 +156,71 @@ local n:=0, a, line
         end
         
         origscrn:=ReadMask(maskfile)
-        origsize:=termrect(len(origscrn))
         
-        if( termsize!=NIL )
+        if( scalesize )
             termsetup()
 
             if( len(origscrn)<=CALCSIZE(termsize) )
-                //nagyobba tölti be, mint az eredeti mérete
-                restscreen(0,0,origsize[2]-1,origsize[1]-1,origscrn)
-                origscrn:=savescreen(0,0,MAXROW,MAXCOL)
+                //nagyobba tölti be, mint a mérete
+
+                if( len(origscrn)==CALCSIZE(size80x25) )
+                    restscreen(0,0,size80x25[2]-1,size80x25[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size100x50) )
+                    restscreen(0,0,size100x50[2]-1,size100x50[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size120x60) )
+                    restscreen(0,0,size120x60[2]-1,size120x60[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size160x60) )
+                    restscreen(0,0,size160x60[2]-1,size160x60[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size200x60) )
+                    restscreen(0,0,size160x60[2]-1,size200x60[1]-1,origscrn)
+                else
+                    ? "Incompatible screen size",len(origscrn)
+                    ?
+                    quit
+                end
 
             else
-                //kisebbe tölti be, mint az eredeti mérete
-                for n:=0 to MAXROW
-                    line:=origscrn::substr(n*origsize[1]*4+1,origsize[1]*4)::left(termsize[1]*4)
-                    restscreen(n,0,n,MAXCOL,line)
-                next
-                origscrn:=savescreen(0,0,MAXROW,MAXCOL)
+                //kisebbe tölti be, mint a mérete
+
+                if( len(origscrn)==CALCSIZE(size80x25) )
+                    restscreen(0,0,size80x25[2]-1,size80x25[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size100x50) )
+                    restscreen(0,0,size100x50[2]-1,size100x50[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size120x60) )
+                    restscreen(0,0,size120x60[2]-1,size120x60[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size160x60) )
+                    restscreen(0,0,size160x60[2]-1,size160x60[1]-1,origscrn)
+                elseif( len(origscrn)==CALCSIZE(size200x60) )
+                    restscreen(0,0,size160x60[2]-1,size200x60[1]-1,origscrn)
+                else
+                    ? "Incompatible screen size",len(origscrn)
+                    ?
+                    quit
+                end
             end
 
         else
             //akkorába tölti be, mint amekkora a mérete
-            termsize:=origsize
+            if( len(origscrn)==CALCSIZE(size80x25) )
+                termsize:=size80x25
+            elseif( len(origscrn)==CALCSIZE(size100x50) )
+                termsize:=size100x50
+            elseif( len(origscrn)==CALCSIZE(size120x60) )
+                termsize:=size120x60
+            elseif( len(origscrn)==CALCSIZE(size160x60) )
+                termsize:=size160x60
+            elseif( len(origscrn)==CALCSIZE(size200x60) )
+                termsize:=size200x60
+            else
+                ? "Incompatible screen size",len(origscrn)
+                ?
+                quit
+            end
             termsetup()
             restscreen(0,0,MAXROW,MAXCOL,origscrn)
         end
 
     else
-        if( termsize==NIL )
-            termsize:=size80x25 //régi default
-        end
         termsetup()
         clear screen
         origscrn:=savescreen(0,0,MAXROW,MAXCOL)
@@ -246,9 +266,6 @@ local ins:=.f.
             elseif(2==alert("Maskfile not saved!",{"Continue editing","Exit without save"}))
                 exit
             end
-
-        elseif( key==K_ENTER )
-            showpos()
 
         elseif( key==K_UP )
             MoveCursor(-1,0)
@@ -325,14 +342,6 @@ local ins:=.f.
             if(!empty(aFile))
                 maskfile:=aFile[1]
                 origscrn:=ReadMask(maskfile) //1a-t levágja
-
-                //terminál méret változás
-                if( len(origscrn)!=SCREENSIZE )
-                    origsize:=termrect(len(origscrn))
-                    termsize:=origsize
-                    termsetup()
-                end
-
                 restscreen(0,0,MAXROW,MAXCOL,origscrn)
             end
 
@@ -844,8 +853,6 @@ local ind, key, cpr, cpc
 
         elseif(key==KEY_LINS .or. key==KEY_LIND)
             line:=key
-        elseif(key==K_ENTER)
-            showpos()
         end
     end
     return NIL
@@ -879,13 +886,5 @@ local aline,n,x,key
 
 
 *************************************************************************
-static function showpos()
-local get:=message(NIL,"("+(1+col())::str::alltrim+","+(1+row())::str::alltrim+")" )
-local key:=inkey(4)
-    message(get)
-    if( key!=0 )
-        keyboard(chr(key))
-    end
  
-*************************************************************************
  

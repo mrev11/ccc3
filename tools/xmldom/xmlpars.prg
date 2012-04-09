@@ -65,10 +65,14 @@ class xmlparser(object)
 
     attrib  processblock
     method  process         {|this,node|eval(this:processblock,node)}
+    
+    attrib  createnodeblock // ezzel hozza létre a node-okat
 
 
 ****************************************************************************
 static function xmlparser.initialize(this,f) 
+
+    this:createnodeblock:={|*|xmlnodeNew(*)}
 
     this:file:=f            // fname/fdesc
     this:inputblock:=NIL

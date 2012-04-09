@@ -71,7 +71,7 @@ local con
         elseif( argv(n)=="-n" )
             s_tabname:=argv(++n)
         elseif( argv(n)=="-s" )
-            s_skipfld:=":"+upper(argv(++n))+":"
+            s_skipfld+=":"+upper(argv(++n))+":"
         elseif( argv(n)=="-d" )
             s_driver:=left(upper(argv(++n)),1)
             if( !s_driver$"OP" )

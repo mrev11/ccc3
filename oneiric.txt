@@ -1,0 +1,52 @@
+Módosítások oneiric-en (gcc 4.6.1)
+
+--------------------------------------------------------------------------------
+libreadline5-dev helyett libreadline6-dev
+
+
+--------------------------------------------------------------------------------
+tabobj/tbbtbtx/utility/m
+5c5
+< bapp_unixc.b -xtstru -xtview -bccc3_btbtxui @parexe.bld
+---
+> bapp_unixc.b -xtstru -xtview  @parexe.bld  -bccc3_btbtxui
+
+Fel kel cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
+
+
+
+tabobj/tbbtbtx/utility/parexe.bld
+2d1
+< -bccc3_btbtx
+3a3
+> -bccc3_btbtx
+
+Itt is fel kel cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
+
+
+--------------------------------------------------------------------------------
+tools/socket/ssl/sslctx_funif.cpp
+80a81
+>         /* removed
+84c85,88
+<         else if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv3_method();
+---
+>         else 
+>         */
+>         
+>              if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv3_method();
+
+Az SSLv2 protokoll támogatása megszűnt, ki kell kommentezni.
+
+--------------------------------------------------------------------------------
+usr/bin/linux/__unix.b
+8c8
+<     export BUILD_LPT=$BUILD_LPT:/usr/lib64:/usr/lib:/usr/local/lib:/usr/X11/lib
+---
+>     export BUILD_LPT=$BUILD_LPT:/usr/lib/x86_64-linux-gnu:/usr/lib64:/usr/lib:/usr/local/lib:/usr/X11/lib
+
+64-bites könyvtárak új helyen.
+
+
+--------------------------------------------------------------------------------
+

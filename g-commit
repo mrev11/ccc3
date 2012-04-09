@@ -4,11 +4,12 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "xmldom: ures CDATA-ra elszallas javitva " #2011.11.28
+git commit --all -m  "oneiric; mask different size; xmlparse createnodeblock" #2012.04.09
 
 
+# "xmldom: ures CDATA-ra elszallas javitva " #2011.11.28
 # "unix terminal optimalizacio" #2011.10.21
-# "checkbox:left felhldefinialva" #2011.09.19
+# "checkbox:left felüldefinialva" #2011.09.19
 # "tabedrec picture" #2011.09.19
 # "localstack() return erteke derefelve" #2011.09.19
 # "get:undo javitva" #2011.08.29

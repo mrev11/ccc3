@@ -45,7 +45,7 @@ void _clp_g_timeout_add(int argno)
     }
     _clp_g_timeout_register_codeblock(1);
     int x=D2INT(TOP()->data.number);
-    g_timeout_add(timeout,cb,(gpointer)x);
+    g_timeout_add(timeout,cb,(gpointer)(long)x);
     _ret();
     CCC_EPILOG();
 }

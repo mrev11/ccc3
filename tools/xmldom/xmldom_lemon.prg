@@ -66,7 +66,8 @@ function node__lpar_symbol_attrlist_slash_rpar(this,s,a)
 local info:=this:lemon[s],node
 
     if( info:buildflag )
-        node:=xmlnodeNew(info:type)
+        //node:=xmlnodeNew(info:type)
+        node:=eval(this:createnodeblock,info:type)
         node:attrib:=this:lemon[a]
     end
 
@@ -95,7 +96,8 @@ local info:=this:lemon[s1],node,err
     end
 
     if( info:buildflag )
-        node:=xmlnodeNew(s2)
+        //node:=xmlnodeNew(s2)
+        node:=eval(this:createnodeblock,s2)
         node:attrib:=this:lemon[a]
         node:content:=this:lemon[c]
     end

@@ -23,6 +23,8 @@ class xmlnode(object)
 
     method  initialize
     method  addattrib       {|this,x|aadd(this:attrib,x)}
+    method  setattrib
+    method  delattrib
     method  addcontent      {|this,x|aadd(this:content,x)}
     method  addtext
     method  getattrib
@@ -42,6 +44,26 @@ static function xmlnode.initialize(this,type)
     this:content:={}
 
     return this
+
+
+****************************************************************************
+static function xmlnode.setattrib(this,oattr)
+local x:=ascan(this:attrib,{|a|a:name==oattr:name})
+    if( x>0 )
+        this:attrib[x]:=oattr
+    else
+        this:addattrib(oattr)
+    end
+
+
+****************************************************************************
+static function xmlnode.delattrib(this,attrname)
+local x:=ascan(this:attrib,{|a|a:name==attrname})
+    if( x>0 )
+        adel(this:attrib,x)
+        asize(this:attrib,len(this:attrib)-1)
+    end
+
 
 ****************************************************************************
 static function xmlnode.getattrib(this,attrname)

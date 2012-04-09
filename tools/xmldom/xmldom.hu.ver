@@ -1,4 +1,12 @@
 
+2012.02.25 -- 1.5.00
+  xmlparser2-ben új attrib: createnodeblock
+  Ezzel hozza létre a nodeokat, defaultja: {|*|xmlnodeNew(*)}
+  példa:  prs:createnodeblock:={|*|xhtmlnodeNew(*)}
+  így lehetséges xmlnode lesszármazottaiból felépített domot csinálni.
+  
+  xmlattrib-ban új metódusok: setattrib, delattrib.
+
 2011.11.28 -- 1.4.04
   Üres CDATA-ra (erre: '<![CDATA[]]>') elszállt.
 

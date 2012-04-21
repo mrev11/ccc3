@@ -21,6 +21,7 @@
 #include "inkey.ch"
 #include "box.ch"
 
+#define VERSION  "2.1.01"  //2012.04.21 (hosszabb, *.msk* alakú filénevek)
 #define VERSION  "2.1.00"  //2012.02.26 (méretek -size80x25 -size100x50 -size120x60 -size160x60)
 #define VERSION  "2.0.01"  //2011.08.25 (grchr javitva)
 #define VERSION  "2.0.00"  //2006.04.10 (Unicode)
@@ -321,7 +322,7 @@ local ins:=.f.
                 loop //continue editing
             end
 
-            aFile:=SelectFile("*.msk",,4,23,18,57)
+            aFile:=SelectFile("*.msk*",,4,23,18,57)
             if(!empty(aFile))
                 maskfile:=aFile[1]
                 origscrn:=ReadMask(maskfile) //1a-t levágja
@@ -455,7 +456,7 @@ function SelectFile(spec, attr, top, left, bottom, right)
 local t:=if(top==NIL,10,top) 
 local l:=if(left==NIL,38,left) 
 local b:=if(bottom==NIL,20,bottom) 
-local r:=if(right==NIL,78,right) 
+local r:=max(if(right==NIL,78,right),l+44)
 local aDir:=directory(spec,attr)
 local aMenu:={}, n
 local inich:=1,item
@@ -468,7 +469,7 @@ static prev:=""
             inich:=n
         end
         
-        item:= padr(aDir[n][1],13)+;     // name
+        item:= padr(aDir[n][1],23)+;     // name
                padl(aDir[n][3],9) +;     // date
                padl(aDir[n][4],9)        // time
                
@@ -522,21 +523,15 @@ local len:=len(x)
 
 
 *************************************************************************
-function ExtractName(filename)  // file.ext --> file
-local ppos,epos
-
+function ExtractName(filename) 
+local bspos
    if( empty(filename) )
        filename:=""
+   elseif( 0<(bspos:=rat(dirsep(),filename))  )
+       filename:=filename[bspos+1..]
    end
-
-   ppos:=rat(dirsep(),filename)
-   epos:=rat(".",filename)
-
-   if( epos>ppos )
-       filename:=left(filename,epos-1)
-   end
-   
    return filename
+
 
 *************************************************************************
 function GetText(prompt, txt:="", length:=128)

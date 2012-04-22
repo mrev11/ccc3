@@ -47,10 +47,13 @@ local addstmt:="t->add(KEY,VALUE);",x,n
             key:=left(txt[n],sep)
             value:=substr(txt[n],sep+3)
             value:=left(value,rat('"',value))
-            x:=addstmt
-            x:=strtran(x,"KEY",unicode_escape(key))
-            x:=strtran(x,"VALUE",unicode_escape(value))
+
+            //x:=addstmt
+            //x:=strtran(x,"KEY",unicode_escape(key))
+            //x:=strtran(x,"VALUE",unicode_escape(value))
             
+            x:="t->add("+unicode_escape(key)+","+unicode_escape(value)+");" //2012.04.22
+ 
             if( len(value)>2 )
                 ? x
             end

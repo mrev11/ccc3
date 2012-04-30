@@ -1,6 +1,7 @@
--r:ppo:backup.tmp:semaphor.tmp:html:dvi:.svn:.git:
+-r:.svn:.git:
+-r:ppo:backup.tmp:semaphor.tmp:html:dvi:
 -r:code_generated:
-#-lrexe*
+
 
 -lrobjlin*
 -lrobjfre*
@@ -11,7 +12,8 @@
  
 -x.obj.o.lib.so.exe.bak.a.hpp.dll.exp.log.pyc.class.jar.cer.
 -x.toc.aux.dvi.lj.
-#-x.zip.
+-x.out.rul.
+
 
 -lxoutpre
 -lxoutcpp
@@ -28,9 +30,7 @@
 -lxrsplink
 -lxrsplib
 
--lxparser.out
--lxparser.rul
- 
+
 -lxgccver.opt
 -lxlog-*
 -lxlog
@@ -50,4 +50,10 @@
 -plxusr/include/cccgtk.h
 -plxusr/include/gdk.ch
 -plxusr/include/gtk.ch
+
+
+-plicontent*.savex
+
+
+
  

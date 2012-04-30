@@ -9,11 +9,10 @@ objbor*
 *.tmp
 *.nopack
 code_generated
-#exe-ora
-#exe-pg
 html
 dvi
 jpg
+
 
 outc
 outcpp
@@ -24,17 +23,14 @@ outflex
 outtth
 compopt
 rsplink
-parser.out
 
 gccver.opt
 
 *.bak
-#*.savex
 *.exe
 *.class
 *.jar
 *.nopack
-*.exe
 *.dll
 *.exp
 *.so
@@ -43,17 +39,14 @@ gccver.opt
 *.obj
 *.o
 *.pyc
-*.class
-*.jar
 *.toc
 *.aux
 *.dvi
 *.lj
 *.log
+*.rul
+*.out
 
-#*.gz
-*.bz2
-*.zip
 
 log-*
 log
@@ -62,10 +55,6 @@ pid
 
 
 
-#installed
-usr/include/cccgtk.h
-usr/include/gdk.ch
-usr/include/gtk.ch
 
 #symlink
 usr/bin/linux/bt2dbf
@@ -142,12 +131,15 @@ usr/bin/freebsd/xstart
 usr/bin/freebsd/zg
 usr/bin/freebsd/zgrep
 
-#testdata
-#tools/sql2/test/testdata_lib/a.tds
-#tools/sql2/test/testdata_lib/b.tds
-#tools/sql2/test/testdata_lib/c.tds
-tools/sql2/test/testdata_lib/a.prg
-tools/sql2/test/testdata_lib/b.prg
-tools/sql2/test/testdata_lib/c.prg
-tools/sql2/test/testdata_lib/entitylib.testdata.prg
 
+
+#testdata (generated)
+tools/sql2/test/testdata_lib/a.tds
+tools/sql2/test/testdata_lib/b.tds
+tools/sql2/test/testdata_lib/c.tds
+
+
+#installed
+usr/include/cccgtk.h
+usr/include/gdk.ch
+usr/include/gtk.ch

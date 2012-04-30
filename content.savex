@@ -1,4 +1,6 @@
 -r:ppo:backup.tmp:semaphor.tmp:html:dvi:.svn:.git:
+-r:code_generated:
+#-lrexe*
 
 -lrobjlin*
 -lrobjfre*
@@ -6,9 +8,6 @@
 -lrobjmsc*
 -lrobjmng*
 -lrobjbor*
-
--r:code_generated:
--lrexe*
  
 -x.obj.o.lib.so.exe.bak.a.hpp.dll.exp.log.pyc.class.jar.cer.
 -x.toc.aux.dvi.lj.
@@ -35,6 +34,9 @@
 -lxgccver.opt
 -lxlog-*
 -lxlog
+-lxgtkapi.bt
+-lxg-*
+
 
 -lit
 -lim

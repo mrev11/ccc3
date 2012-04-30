@@ -1,9 +1,5 @@
 -s/opt/ccc3
 @content.savex
--x.savex.zip.
--r:ctree:tbdatidx::tbdbfctx:
--lrcgi*
--lr*.nopack
--lxg-*
+@content_repoba_ne.savex
 -ts
 -mw

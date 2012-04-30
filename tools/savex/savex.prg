@@ -70,6 +70,8 @@ static s_direxc           // pl: .ppo.obj32.
 static s_dirsep           // s_direxc elválasztó karaktere
 static s_seconds          // másodpercek megjelenítése
 static s_content          // search string
+static s_plikex           // like exclude (with path)
+static s_plikei           // like include (with path)
 static s_likex            // like exclude
 static s_likei            // like include 
 static s_liker            // like excluded dirs
@@ -137,6 +139,22 @@ local pfile,ptext,p,q
                     s_save+=";"+substr(opt[n],3) 
                 end
             end
+
+             if( OPT(n,"-plx") )
+                 if( s_plikex==NIL )
+                     s_plikex:={UPPER(substr(opt[n],5))}
+                 else
+                     aadd(s_plikex,UPPER(substr(opt[n],5)))
+                 end
+             end
+ 
+             if( OPT(n,"-pli") )
+                 if( s_plikei==NIL )
+                     s_plikei:={UPPER(substr(opt[n],5))}
+                 else
+                     aadd(s_plikei,UPPER(substr(opt[n],5)))
+                 end
+             end
 
             if( OPT(n,"-lx") )
                 if( s_likex==NIL )
@@ -959,14 +977,14 @@ function rdir(path)
 local dirlist:=arrayNew(),msg
     dispbegin()
     msg:=message(msg,path)
-    rdir0(path,dirlist,msg)
+    rdir0(path,dirlist,msg,len(path)+1)
     msg:=message(msg)
     dispend()
     asort(dirlist:resize,,,{|x,y|x[F_NAME]<y[F_NAME]}) //rendezve!
     return dirlist:array
 
 
-static function rdir0(path,dirlist,msg)
+static function rdir0(path,dirlist,msg,begpath)
 local n1,d1,name,mode,fspec,fcont
 static dispcount:=0
 
@@ -989,11 +1007,11 @@ static dispcount:=0
                             dispend()
                             dispbegin()
                         end                        
-                        rdir0(path+name+dirsep(),dirlist,msg)
+                        rdir0(path+name+dirsep(),dirlist,msg,begpath)
                     end
                 end
 
-            elseif( d1[n1][F_DATE]>=s_mindate .and. includefil(name) )
+            elseif( d1[n1][F_DATE]>=s_mindate .and. includefil(name,path::substr(begpath)) )
 
                 if( !"L"$d1[n1][F_ATTR] .or. "f"$s_symlink )
 
@@ -1034,9 +1052,16 @@ function includedir(name)
 
 
 ******************************************************************************
-function includefil(name)
+function includefil(name,relpath)
 
 local ext
+
+    if( s_plikex!=NIL .and. alike(s_plikex,relpath+name) )
+        return .f.
+    elseif( s_plikei!=NIL .and. alike(s_plikei,relpath+name) )
+        return .t.
+    end
+
 
     if( s_likex!=NIL .and. alike(s_likex,name) )
         return .f.

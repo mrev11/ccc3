@@ -1,7 +1,14 @@
 
-#define VERZIO  "3.0.09"    
+#define VERZIO  "3.0.10"    
 
 #ifdef NOT_DEFINED
+
+2012.04.30 -- 3.0.10
+  -plx  kihagyás relatív path + filénév alapján (like)
+  -pli  bevétel  relatív path + filénév alapján (like)
+
+  Hasonló, mint a korábbi -lx, -li de azok csak a filénév alapján
+  működtek, míg az új opciók a path közös részét is nézik.
 
 2011.04.13 -- 3.0.09
   Új rendezés: sortBaseName

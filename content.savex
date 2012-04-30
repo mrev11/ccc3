@@ -30,7 +30,7 @@
 -lxrsplib
 
 -lxparser.out
-#-lxparser.rul
+-lxparser.rul
  
 -lxgccver.opt
 -lxlog-*
@@ -40,4 +40,12 @@
 -lim
 -likeymap.z
  
+
+#generálódnak
+-plxtools/sql2/test/testdata_lib/*.tds
+
+#instalállódnak
+-plxusr/include/cccgtk.h
+-plxusr/include/gdk.ch
+-plxusr/include/gtk.ch
  

@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "mask *.msk* alakú filénevek; tran2cpp javítás" #2012.04.22
+git commit --all -m  "savex -plx -pli opciók, repo ellenőrzés" #2012.04.30
 
+# "mask *.msk* alakú filénevek; tran2cpp javítás" #2012.04.22
 # "oneiric; mask different size; xmlparse createnodeblock" #2012.04.09
 # "xmldom: ures CDATA-ra elszallas javitva " #2011.11.28
 # "unix terminal optimalizacio" #2011.10.21

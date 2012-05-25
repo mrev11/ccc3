@@ -103,6 +103,8 @@ wspace     [ \t\r\n]*
                 }
 }
 
+<<EOF>>         {return trim()?TEXT:0;}
+
 %%
 
 

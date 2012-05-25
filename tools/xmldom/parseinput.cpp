@@ -28,6 +28,7 @@ extern void  xmldom_parser(void*,int,CHAR*,VALUE*);
 
 DEFINE_METHOD(file);
 DEFINE_METHOD(entityconv);
+DEFINE_METHOD(preservespace);
 DEFINE_METHOD(debug);
 DEFINE_METHOD(lexer);
 DEFINE_METHOD(lemparser);
@@ -56,6 +57,10 @@ void _clp__xmldom_parser_parseinput(int argno)
         push(parservp);_o_method_entityconv.eval(1);
         ecf=(TOP()->type==TYPE_FLAG) ? TOP()->data.flag:0; pop();
 
+    int psp;
+        push(parservp);_o_method_preservespace.eval(1);
+        psp=(TOP()->type==TYPE_FLAG) ? TOP()->data.flag:0; pop();
+
     int dbg;
         push(parservp);_o_method_debug.eval(1);
         dbg=(TOP()->type==TYPE_FLAG) ? TOP()->data.flag:0; pop();
@@ -66,6 +71,7 @@ void _clp__xmldom_parser_parseinput(int argno)
         fnm=(TOP()->type==TYPE_BINARY) ? BINARYPTR(TOP()):0; pop();
 
     lexer->entityconversionflag=ecf; //&amp;, &lt;, stb. konvertálása
+    lexer->preservespace=psp; //space-ek megőrzése
     lexer->inputfspec=fnm?strdup(fnm):0; //filénév hibaüzenethez
     lexer->debugflag=dbg; //debugolás beállítása
 

@@ -126,6 +126,8 @@ class xmldom_lexer : public yyFlexLexer
     int inputfd;
     char *inputfspec;
     int entityconversionflag;
+    int preservespace;
+    int initialwspace;
     int eofflag;
     int debugflag;
     int encoding; //0==UTF-8, 1==ISO-8859-1, 2==ISO-8859-2, -1=ismeretlen
@@ -185,10 +187,24 @@ class xmldom_lexer : public yyFlexLexer
 
     int trim()
     {
-        while( (textsize>0) && isspace(text[textsize-1]) )
+        if( preservespace==0 || initialwspace==1 )
         {
-            text[textsize-1]=0;
-            textsize--;
+            int pos=0;    
+            while( (textsize>pos) && isspace(text[pos]) )
+            {
+                pos++;
+            }
+            if( pos )
+            {
+                textsize-=pos;
+                memmove(text,text+pos,textsize);
+                text[textsize]=0;
+            }
+            while( (textsize>0) && isspace(text[textsize-1]) )
+            {
+                textsize--;
+                text[textsize]=0;
+            }
         }
         return textsize>0;
     }
@@ -276,6 +292,8 @@ class xmldom_lexer : public yyFlexLexer
         inputfd=-1;
         inputfspec=0;
         entityconversionflag=0;
+        preservespace=0;
+        initialwspace=1;
         eofflag=0;
         debugflag=0;
         encoding=0;

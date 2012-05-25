@@ -29,7 +29,10 @@ class xmlnode(object)
     method  addtext
     method  getattrib
     method  gettext
-    method  xmlout
+    method  xmlout          //kiírás: minden külön sorba
+    method  xmloutpre       //kiírás: semmit nem változtat
+    method  xmloutind       //kiírás: indentálva
+
     attrib  type
     attrib  attrib
     attrib  content
@@ -106,6 +109,7 @@ local i, c, x:="", n
     end
     return x
 
+
 ****************************************************************************
 static function xmlnode.xmlout(this) 
 local n
@@ -151,3 +155,132 @@ local n
     end
 
 ****************************************************************************
+static function xmlnode.xmloutpre(this) 
+
+//Formázás nélkül írja ki az XML-t.
+//Ha a DOM parser:preservespace:=.t.-val készült,
+//akkor a bemenet és a kimenet ugyanaz.
+//Ha szükséges, CDATA-ra tér át a texteknél.
+
+local n
+
+    if( this:type=="#ROOT" )
+        for n:=1 to len(this:content)
+            this:content[n]:xmloutpre
+        next
+
+    elseif( left(this:type,1)=="?" )
+        ?? "<"+this:type
+        for n:=1 to len(this:attrib)
+            ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
+        next
+        ?? "?"+">"
+ 
+    elseif( this:type=="#TEXT" )
+        for n:=1 to len(this:content)
+            ?? cdataif(this:content[n])
+        next
+ 
+    elseif( this:type=="#CDATA" )
+        for n:=1 to len(this:content)
+            ?? "<![CDATA["
+            ?? this:content[n]
+            ?? "]]>"
+        next
+
+    else
+        ?? "<"+this:type
+        for n:=1 to len(this:attrib)
+            ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
+        next
+        if( empty(this:content) )
+            ?? "/>"
+        else
+            ?? ">"
+            for n:=1 to len(this:content)
+                this:content[n]:xmloutpre
+            next
+            ?? "</"+this:type+">"
+        end
+    end
+
+
+****************************************************************************
+static function xmlnode.xmloutind(this,indent:="") 
+
+//Indentálva írja ki az xml-t.
+//Akkor ad jó eredményt, ha a fa leveleiben text van,
+//és az elemzés parser:preservespace:=.f.-val készült.
+//Ha szükséges, CDATA-ra tér át a texteknél.
+
+local n,ind
+
+    if( this:type=="#ROOT" )
+        for n:=1 to len(this:content)
+            this:content[n]:xmloutind(indent)
+        next
+
+    elseif( left(this:type,1)=="?" )
+        ?? "<"+this:type
+        for n:=1 to len(this:attrib)
+            ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
+        next
+        ?? "?"+">" //?? "?>" volt, de azon MSVC internal error-ral elhasal!
+ 
+    elseif( this:type=="#TEXT" )
+        for n:=1 to len(this:content)
+            ?? cdataif(this:content[n])
+        next
+ 
+    elseif( this:type=="#CDATA" )
+        for n:=1 to len(this:content)
+            ?? "<![CDATA["
+            ?? this:content[n]
+            ?? "]]>"
+        next
+
+    else
+        ? indent+"<"+this:type
+        for n:=1 to len(this:attrib)
+            ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
+        next
+        if( empty(this:content) )
+            ?? "/>"
+        else
+            ?? ">"
+            for n:=1 to len(this:content)
+                this:content[n]:xmloutind(indent+"    ")
+            next
+            if( "#" $ this:content[1]:type )
+                ?? "</"+this:type+">"
+            else
+                ? indent+"</"+this:type+">"
+            end
+        end
+    end
+
+
+****************************************************************************
+static function cdata(x)
+local cd:="", n
+    while( .t. )
+        n:=at("]]>",x)
+        if( n==0 )
+            cd+="<![CDATA["+x+"]]>"
+            exit
+        else
+            cd+="<![CDATA["+left(x,n+1)+"]]>" 
+            x:=substr(x,n+2)
+        end
+    end
+    return  cd
+ 
+
+function cdataif(x)
+    if( "<"$x .or. "&"$x )
+        return  cdata(x) 
+    end
+    return x
+
+****************************************************************************
+                       

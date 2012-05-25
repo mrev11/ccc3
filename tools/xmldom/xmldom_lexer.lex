@@ -57,30 +57,30 @@ wspace     [ \t\r\n]*
 
 "<![CDATA["      {yy_push_state(cdata);}
 <cdata>{
-"]]>"{wspace}    {yy_pop_state(); return CDATA;}  
+"]]>"            {yy_pop_state(); return CDATA;}  
 .|\n             {cat();}  
 }
 
 
 "<!--"           {yy_push_state(comment);}
 <comment>{
-"-->"{wspace}    {yy_pop_state();}
+"-->"            {yy_pop_state();}
 .|\n             {} 
 }
 
 "<!DOCTYPE"      {yy_push_state(doctype);}
 <doctype>{
 {string}         {}  
-">"{wspace}      {yy_pop_state();}
+">"              {yy_pop_state();}
 .|\n             {} 
 }
  
 
-"<"              {yy_push_state(tag); return LPAR;}
+"<"              {yy_push_state(tag); initialwspace=0; return LPAR;}
 "<?"             {yy_push_state(tag); return LPARQM;}
 <tag>{
-">"{wspace}      {yy_pop_state(); return RPAR;} 
-"?>"{wspace}     {yy_pop_state(); return QMRPAR;} 
+">"              {yy_pop_state(); return RPAR;} 
+"?>"             {yy_pop_state(); return QMRPAR;} 
 {symbol}         {cat(); return SYMBOL;}  
 {string}         {cat(); return STRING;}  
 {wspace}         {}

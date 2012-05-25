@@ -1,4 +1,10 @@
 
+2012.05.25 -- 1.6.00
+  új attrib xmlparser-ban : preservespace (az elemző megtartja a space-eket)
+  új method xmlnode-ban   : xmloutpre (kiírás formázás nélkül)
+  új method xmlnode-ban   : xmloutind (kiírás indentálva)
+
+
 2012.05.25 -- 1.5.01
   Hibajavítás: 
     A bemenet végén (a gyökér tag után) levő szemetet nem vette észre, 

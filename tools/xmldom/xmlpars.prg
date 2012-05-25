@@ -41,6 +41,7 @@ class xmlparser(object)
     attrib  inputblock      // input kérő block
 
     attrib  entityconv      // "&amp;" -> "&" és társai
+    attrib  preservespace   // megőrzi-e a szóközöket (default=.f.)
     attrib  debug           // lexer/parser debug
     attrib  cargo           // tetszőleges adat
     attrib  rootflag        // mesterséges #ROOT node (compatibility)
@@ -78,6 +79,7 @@ static function xmlparser.initialize(this,f)
     this:inputblock:=NIL
 
     this:entityconv:=.f.
+    this:preservespace:=.f.
     this:debug:=.f.
     this:cargo:=NIL
     this:rootflag:=.t.      // compatibility

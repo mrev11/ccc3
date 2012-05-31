@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "xmldom 1.6.00 preservespace" #2012.05.25 
+git commit --all -m  "z editor: ztab javitva" #2012.05.31
 
+# "xmldom 1.6.00 preservespace" #2012.05.25 
 # "xmlparser elemzo szemetet szemetet engedett meg a bemenet vegen" #2012.05.25 
 # "savex -plx -pli opciók, repo ellenőrzés" #2012.04.30
 # "mask *.msk* alakú filénevek; tran2cpp javítás" #2012.04.22

@@ -35,8 +35,8 @@ local ts:=this:actcol%this:tabsiz
     this:wincol:=this:wincol+ts
 
     if( this:wincol>this:width-1 )
+        this:sftcol+=this:wincol-(this:width-1)  //jav: 2012.05.31
         this:wincol:=this:width-1
-        this:sftcol:=rlen-this:wincol
         this:display()
     else
         this:displine()

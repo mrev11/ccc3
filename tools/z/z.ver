@@ -1,7 +1,10 @@
 
-#define VERSION "2.1.09"
+#define VERSION "2.1.10"
 
 #ifndef VERSION  
+
+2012.05.31 -- 2.1.10
+  ztab javítva
 
 2011.08.09 -- 2.1.09
   A historyban teljesre kiegeszitett fajlspecifikaciot tarolunk.

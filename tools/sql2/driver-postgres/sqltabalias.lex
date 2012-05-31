@@ -38,6 +38,7 @@ struct sqltabalias_lexer : public yyFlexLexer
     char *input;
     char *inputptr;
     int inputsize;
+    int inputpos;
     char *searchsym;
 
     int LexerInput(char *buf, int maxsize)
@@ -62,6 +63,7 @@ struct sqltabalias_lexer : public yyFlexLexer
         input=ptr;
         inputptr=ptr;
         inputsize=size;
+        inputpos=0;
         searchsym=srch;
     }
 
@@ -130,12 +132,16 @@ symbol     [_a-zA-Z][\._a-zA-Z0-9]*
                             
                             if( strcasecmp(q,searchsym)==0 )
                             {
-                                char *s=strstr(input,YYText());
-                                return s-input+q-p+1;
+                                return inputpos+(q-p+1);
+                            }
+                            else
+                            {
+                                inputpos+=YYLeng();
                             }
                         }
-.
-\n
+
+.                       {inputpos+=YYLeng();}
+\n                      {inputpos+=YYLeng();}
 
 %%
 

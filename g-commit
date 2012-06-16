@@ -4,9 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "sql2: sqltabaias javitva" #2012.05.31
+git commit --all -m  "http_readmessage transfer-encoding: chunked" #2012.06.16
 
-
+# "sql2: sqltabaias javitva" #2012.05.31
 # "z editor: ztab javitva" #2012.05.31
 # "xmldom 1.6.00 preservespace" #2012.05.25 
 # "xmlparser elemzo szemetet szemetet engedett meg a bemenet vegen" #2012.05.25 

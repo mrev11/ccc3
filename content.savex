@@ -1,5 +1,6 @@
 -r:.svn:.git:
 -r:ppo:backup.tmp:semaphor.tmp:html:dvi:
+-r:exe-ora:exe-pg:
 -r:code_generated:
 
 

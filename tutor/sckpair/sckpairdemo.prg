@@ -39,7 +39,7 @@ local thr,thw,sp
 static function write(s)
 local x:=memoread("socketpair.prg"),n
     for n:=1 to len(x) 
-        swrite(s,substr(x,n,1),1)
+        swrite(s,substr(x,n,1))
         sleep(1)
     next
     sclose(s)

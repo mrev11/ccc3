@@ -1,4 +1,3 @@
 #!/bin/bash
-http-client.exe ok 80 /robots.txt
-#http-client.exe 127.0.0.1 8080 /send.prg
-#http-client.exe localhost 8080 /send.prg
+http-client.exe 127.0.0.1 8080 /http-server.prg
+

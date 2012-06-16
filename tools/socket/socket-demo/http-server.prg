@@ -23,9 +23,14 @@
 
 function main( )
 
-local s,c,req,get,htm,doc
+local crcr:=x"0d0a0d0a"
+local hdr200:=a"HTTP/1.1 200 OK"+crcr
+local hdr404:=a"HTTP/1.1 404 Not Found"+crcr
+local s,c,get,htm,doc
+local req,rsp,n
 
     ? "socket ", s:=socket()
+    setsockopt(s,"REUSEADDR",.t.)
     ? "bind   ", bind(s,PORT)
     ? "listen ", listen(s)
 
@@ -42,13 +47,24 @@ local s,c,req,get,htm,doc
             
             if( file(htm:=BASE+get[2]) )
                 doc:=memoread(htm,.t.) //binary
+                rsp:=hdr200+doc
             else
                 doc:=htm+a" NOT FOUND"+x"0d0a"
+                rsp:=hdr404+doc
             end
 
-            swrite(c,doc,len(doc)) 
+            //#define SLOW_RESPONSE
+            #ifdef SLOW_RESPONSE
+                for n:=1 to len(rsp) step 100
+                    swrite(c,rsp::substr(n,100))  //swrite-nak csak 2 paramétere van!
+                    sleep(100)
+                next
+            #else
+                swrite(c,rsp) 
+            #endif
+
+
+            ?? rsp::left(12)
             sclose(c)
         end
     end
-
-    return NIL

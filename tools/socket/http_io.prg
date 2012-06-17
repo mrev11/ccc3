@@ -31,8 +31,6 @@
 
 //#define IO_WARNING  //sikertelen io műveletek jelzése
 
-#define PRINT(x)    ? #x, x
-
 static crlf:=x"0d0a"
 static debug:=getenv("HTTP_DEBUG") 
 
@@ -43,15 +41,7 @@ function http_header(msg)
 
 *****************************************************************************
 function http_body(msg)
-local body:=substr(msg,at(crlf+crlf,msg)+4)
-
-//  if( http_getheader(msg,"Transfer-Encoding")::lower==a"chunked" )
-//      itt is össze lehetne rakni a chunktalanított bodyt
-//      de talán célszerűbb az olvasás közben
-//      mert mire használna a program egy chunkolt bodyt?
-//  end
-
-    return body
+    return substr(msg,at(crlf+crlf,msg)+4)
 
  
 *****************************************************************************
@@ -180,14 +170,19 @@ function http_readmessage(sck,timeout)
 // A http_readmessage-et akkor lehet használni,
 // ha az egész üzenet összegyűjthető egyetlen stringbe.
 // A visszatérési érték az összegyűjtött komplett üzenet.
-// Ha a transfer encoding chunked, akkor a program beolvas 
-// és konkatenál minden chunkot, így a message bodyban már 
-// nem lesznek chunkok, noha a headerben megmarad az eredeti 
-// transfer encoding.
+// Nem ez a helyzet például a forever frame technikánál,
+// ahol a (chunked) üzenetdarabok folytatólagos feldogozást igényelnek,
+// és ezért nem lehet az üzenet végét bevárni (nincs is vége).
 //
-// Nem használható a http_readmessage, ha az üzenet nem gyűjthető 
-// össze egyetlen stringbe, hanem a chunkok folytatólagos feldogozást 
-// igényelnek, mint pl. a forever frame technikában.
+// Ha van 'transfer-encoding: chunked' header, akkor a program beolvas 
+// és konkatenál minden chunkot. A visszaadott messageben már nem lesznek 
+// chunkok, noha a headerben megmarad az eredeti transfer encoding.
+//
+// Ha van content-length header, akkor az annak megfelelő hosszban olvasunk.
+//
+// Ha nincs se chunkolás, se content-length, akkor csak a headert olvassuk.
+//
+// Timeout esetén a program minden ágon NIL-t ad.
 
 
 local t0:=gettickcount()
@@ -210,18 +205,21 @@ local start,chlen,body
         #ifdef IO_WARNING
         ? "http_readmessage (1) error",sck
         #endif
-        return NIL
+        return NIL  // read error
     else
         msg+=rcv
     end
     
-    while( 0==(hlen:=at(crcr,msg)) .and. gettickcount()-t0<timeout )
+    while( 0==(hlen:=at(crcr,msg)) )
+        if( gettickcount()-t0>timeout )
+            return NIL  // timeout
+        end
         rcv:=sck:recvall(timeout)
         if( rcv==NIL )
             #ifdef IO_WARNING
             ? "http_readmessage (2) error",sck
             #endif
-            return NIL
+            return NIL  // read error
         else
             msg+=rcv
         end
@@ -235,24 +233,8 @@ local start,chlen,body
     end
 
     hlen+=(len(crcr)-1) //header length
-    
-    if( (clhdr:=http_getheader(msg,a"Content-Length"))!=NIL )
 
-        blen:=val(clhdr) //body length
-
-        while( len(msg)<hlen+blen .and. gettickcount()-t0<timeout )
-            rcv:=sck:recvall(timeout)    
-            if( rcv==NIL )
-                #ifdef IO_WARNING
-                ? "http_readmessage (4) error",sck
-                #endif
-                return NIL
-            else
-                msg+=rcv
-            end
-        end
-
-    elseif( (tehdr:=http_getheader(msg,a"Transfer-Encoding"))!=NIL .and. tehdr::lower==a"chunked"  )
+    if( (tehdr:=http_getheader(msg,a"Transfer-Encoding"))!=NIL .and. tehdr::lower==a"chunked" )
 
         body:=a""                                   // chunktalanított body
         start:=hlen+1                               // az első chunk hossz első bájtja
@@ -264,7 +246,7 @@ local start,chlen,body
                 ? "http_readmessage (5) error",sck
                 #endif
                 return NIL
-            elseif(chlen==0)
+            elseif( chlen==0 )
                 exit //utolsó chunk
             end
             
@@ -278,16 +260,28 @@ local start,chlen,body
         //a headerben benne van a 'Transfer-Encoding: chunked'
         //de valójában a body már chunktalanítva van
 
-    else
-        //ha nincs se Content-Length, se Transfer-Encoding,
-        //akkor nem lehet tudni, milyen hosszú az üzenet,
-        //ilyenkor timeout-ig vagy a socket lezáródásáig olvasunk,
-        //ez nyilván akkor működik jól, ha a küldő a megfelelő
-        //időben lezárja a socketet (ez a régi protokoll)
-        
-        while( gettickcount()-t0<timeout .and. NIL!=(rcv:=sck:recvall(timeout)) )
-            msg+=rcv
+    elseif( (clhdr:=http_getheader(msg,a"Content-Length"))!=NIL )
+    
+        blen:=val(clhdr) //body length
+
+        while( len(msg)<hlen+blen  )
+            if( gettickcount()-t0>timeout )
+                return NIL  // timeout
+            end
+            rcv:=sck:recvall(timeout)    
+            if( rcv==NIL )
+                #ifdef IO_WARNING
+                ? "http_readmessage (4) error",sck
+                #endif
+                return NIL  // read error
+            else
+                msg+=rcv
+            end
         end
+
+    else
+        //se Content-Length, se chunkolás
+        //csak a headert olvassuk (már megvan)
     end
 
 
@@ -310,39 +304,38 @@ local crpos,chlen,rcv
 
     // chunkok formátuma
     //
-    // hhhhCNCMxxxxCNmmmmmmmmmmmmmmmmmCNxCNmmmmmmmCN0CN
+    // hhhhCRCRxxxxCRmmmmmmmmmmmmmmmmmCRxCRmmmmmmmCR0CRCR
     //         ^                        ^
     //         start1                   start2
     // 
     // h  : header
     // x  : a chunk hossza hexában
-    // CN : \r\n  (két bájt)
+    // CR : \r\n  (két bájt)
     // m  : az üzenet tényleges tartalma (len(m)==x::bin2str::hex2l)
     //
     // az utolsó chunk (tartalmának) hossza 0
 
-
-    //? ">>>>>>>>>", start, "[",msg::substr(start-16,32)::strtran(x"0d0a",a"//")  ,"]"
-
-    while( (crpos:=at(crlf,msg,start))==0 .and. gettickcount()-t0<timeout )
+    while( (crpos:=at(crlf,msg,start))==0 )
+        if( gettickcount()-t0>timeout )
+            return NIL  //timeout
+        end
         rcv:=sck:recvall(timeout)    
         if( rcv==NIL )
-            return NIL
+            return NIL  //read error
         else
             msg+=rcv
         end
     end
     
-    //PRINT(crpos)
-    
     chlen:=msg[start..crpos-1]::bin2str::hex2l
 
-    //PRINT(chlen)
-
-    while( len(msg)<crpos+len(crlf)+chlen .and. gettickcount()-t0<timeout )
+    while( len(msg)<crpos+len(crlf)+chlen-1 )
+        if( gettickcount()-t0>timeout )
+            return NIL  //timeout
+        end
         rcv:=sck:recvall(timeout)    
         if( rcv==NIL )
-            return NIL
+            return NIL  //read error
         else
             msg+=rcv
         end

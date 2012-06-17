@@ -24,20 +24,22 @@
 ******************************************************************************
 function main(host,port,fspec)
 
-local s:=socket(), req, buf
+local s:=socket(), req, rsp
  
     connect(s,host,val(port))
 
     ? req:=a"GET "+str2bin(fspec)+a" HTTP/1.1"+x"0d0a0d0a"
 
     ? "send:", swrite(s,req)
-    buf:=http_readmessage(s,10000)
-    ? "recv:", len(buf)
-
-    ? "----------------------------------------------------------------------"
-    ? buf
-    ? "----------------------------------------------------------------------"
-    ?
+    rsp:=http_readmessage(s,10000)
+    ? "recv:", len(rsp)
+    
+    if( !empty(rsp) )
+        memowrit("response",rsp)
+    else
+        ferase("response")
+    end
+    
     
 ******************************************************************************
     

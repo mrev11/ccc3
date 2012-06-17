@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "http_readmessage transfer-encoding: chunked" #2012.06.16
+git commit --all -m  "http_readmessage timeout esetén minden ágon NIL-t ad." #2012.06.17
 
+# "http_readmessage transfer-encoding: chunked" #2012.06.16
 # "sql2: sqltabaias javitva" #2012.05.31
 # "z editor: ztab javitva" #2012.05.31
 # "xmldom 1.6.00 preservespace" #2012.05.25 

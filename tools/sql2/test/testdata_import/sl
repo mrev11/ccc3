@@ -1,0 +1,4 @@
+#!/bin/bash
+set -x
+DBDRIVER=sqlite3
+. import.b

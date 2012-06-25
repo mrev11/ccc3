@@ -1,0 +1,59 @@
+Az alapvető dolgok működnek. A különbségek:
+
+Ahol az Oracle és a Postgres egy sémanevet vár, ott az sqlite egy attached
+adatbázisnevet fogad el. Például
+    attach database 'db2' as konto;
+    create table konto.proba ....;
+    select * from konto.proba;
+Ez egyébként jól használható: A tds-beli aliasok és a database aliasok
+segítségével elég rugalmasan lehet megadni, hogy egy tábla végül is 
+melyik adatbázisban legyen.
+    
+
+Semmit nem tudok a konkurencia kezelésről, az interfészben egyelőre 
+nem foglalkoztam a kérdéssel.
+
+
+A logikai értékek 0/1-ként (int) vannak az adatbázisban,
+az SQL utasításokba is így kell beírni.
+
+
+A dátumértékek 'yyyy-mm-dd'-ként (text) vannak az adatbázisban,
+az SQL utasításokba is így kell beírni.
+
+
+Nincs full join és right join. A regressziós tesztek ezeken elszállnak.
+
+
+Aa sqlite3 sequence-ek növelt értékét csak a commit véglegesíti.
+Ezzel szemben pg/oracle-ben a sequence-ek rollback után sem lépnek
+vissza a korábbi értékre. Ez azért van így, mert az sqlite3-ban
+nics valódi sequence, hanem táblaként implementáltam.
+
+
+Nem lehet bármikor rollbackelni, csak akkor, ha nincs nyitva statement.
+Ezért arra gondoltam, hogy gyűjtöm a statementeket és a rollback előtt
+automatikusan mindent becsukok. Ez még nincs beleírva.
+
+
+Az ilyen mindent becsukás egyúttal azt jelenti, hogy nem lehet fetchelni
+a tranzakcióhatárokon át. Egyébként sem lehet, a rowset figyeli, hogy
+változott-e a tranzakció sorszám, és ha változott, akkor lezárja magát.
+Az Oracleban és Postgresben zagyva dolog, hogy mikor lehet fetchelni
+a tranzakcióhatáron át, mikor nem, szerintem az a jó, ha egyáltalán 
+nem lehet, igaz, hogy az több programozási munkát ad.
+
+
+Ha egy SQL utasítás hibás, akkor a Postgres azonnal abortálja az aktuális
+tranzakciót. Az Oracle és az SQLite nem abortál, hanem csak nem hajtódik
+végre a hibás utasítás, a tranzakció folytatható.  Miután a Postgres abortált,
+a következő utasítások tranzakción kívül vannak, és azért semmi sem 
+hajtódik végre. 
+
+
+Nincs backportolva CCC2-re. Az sqlite3 (ahogy látom) UTF-8 és UTF-16
+kódolásra van berendezkedve. Ki lehetne talán erőltetni valahogy a 
+Latin-2 kódolást is, de nem látom értelmét. Mindenesetre mechanikusan
+nem vihető át CCC2-re. (Amúgy, nekem az UTF-16 is elég bizarrnak tűnik.)
+
+

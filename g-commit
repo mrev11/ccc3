@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "http_readmessage timeout esetén minden ágon NIL-t ad." #2012.06.17
+git commit --all -m  "sql2.sqlite3" #2012.06.25
 
+# "http_readmessage timeout esetén minden ágon NIL-t ad." #2012.06.17
 # "http_readmessage transfer-encoding: chunked" #2012.06.16
 # "sql2: sqltabaias javitva" #2012.05.31
 # "z editor: ztab javitva" #2012.05.31

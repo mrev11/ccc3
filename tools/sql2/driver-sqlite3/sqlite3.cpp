@@ -40,22 +40,27 @@ void _clp__sqlite3_libversion(int argno)  // -> version (string)
 }
 
 //--------------------------------------------------------------------------
-void _clp__sqlite3_open(int argno)  // _sqlite3_open(filename) -> db/NIL
+void _clp__sqlite3_open(int argno)  // _sqlite3_open(filename[,@code]) -> db/NIL
 {
-    CCC_PROLOG("_sqlite3_open",1);
+    CCC_PROLOG("_sqlite3_open",2);
     convertfspec2nativeformat(base);
     const char *filename=_parb(1);
     sqlite3 *db=0;
     int code=sqlite3_open(filename,&db);
+    if( ISREF(2) )
+    {
+        number(code);
+        (base+1)->data.vref->value=*TOP();
+        pop();
+    }
     if( code==SQLITE_OK )
     {
-        pointer(db); // db, ha sikeres
+        _retp(db); // db, ha sikeres
     }
     else
     {
-        PUSHNIL();   // NIL, ha sikertelen, hibakód utólag lekérdezhető
+        _ret();    // NIL, ha sikertelen
     }
-    _rettop();
     CCC_EPILOG();
 }
 

@@ -51,7 +51,7 @@ class sqlconnection(object)
 ******************************************************************************
 static function sqlconnection.initialize(this,coninfo)  //coninfo egy filename
 
-local err,errmsg
+local err,code,errmsg
 local attach:="attach database '$DBFILE' as $ALIAS"
 local attach1,dbfali,n
 
@@ -65,13 +65,13 @@ local attach1,dbfali,n
     //coninfo: 'dbfile1:dbfile2=alias2:dbfile3=alias3...'
     coninfo::=split(pathsep()) //{dbfile1, dbfile2=alias2, ... }
 
-    this:__conhandle__:=_sqlite3_open(coninfo[1])
+    this:__conhandle__:=_sqlite3_open(coninfo[1],@code)
 
     if( this:__conhandle__==NIL )
         err:=sqlconnecterrorNew()
         err:operation:="sqlconnection.initialize"
         err:args:={this:__coninfo__}
-        //err:subcode:=_sqlite3_errcode(this:__conhandle__)
+        err:subcode:=code
         //err:description:=_sqlite3_errmsg(this:__conhandle__)
         break(err)
     else

@@ -1,13 +1,14 @@
 #!/bin/bash
+#set -x
 
-IOSTREAM=iostream-new
+#IOSTREAM=iostream-new
 #IOSTREAM=iostream-old
 
 FLEX=$CCCDIR/usr/bin/$CCCUNAME/flex.exe
 
 if [ ! -x $FLEX ]; then
-    gcc  -I .  *.c $IOSTREAM/skel.c  -o $FLEX
-    cp -p $IOSTREAM/flexlexer.h  $CCCDIR/usr/include
+    gcc  -I .  *.c -o $FLEX
+    cp -p flexlexer.h  $CCCDIR/usr/include
 
     if [ -x $FLEX ]; then
         echo 'flex compiled successfully'

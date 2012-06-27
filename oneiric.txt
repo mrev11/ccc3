@@ -11,7 +11,7 @@ tabobj/tbbtbtx/utility/m
 ---
 > bapp_unixc.b -xtstru -xtview  @parexe.bld  -bccc3_btbtxui
 
-Fel kel cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
+Fel kell cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
 
 
 
@@ -21,7 +21,7 @@ tabobj/tbbtbtx/utility/parexe.bld
 3a3
 > -bccc3_btbtx
 
-Itt is fel kel cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
+Itt is fel kell cserélni a könyvtárak sorrendjét, mert a linker rosszul keres.
 
 
 --------------------------------------------------------------------------------

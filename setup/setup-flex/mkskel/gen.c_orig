@@ -1436,7 +1436,7 @@ void make_tables()
                 indent_puts( "{" );
                 indent_puts( "if ( yy_act == 0 )" );
                 indent_up();
-                indent_puts( C_plus_plus &&0 ?
+                indent_puts( C_plus_plus ?
                         "cerr << \"--scanner backing up\\n\";" :
                         "fprintf( stderr, \"--scanner backing up\\n\" );" );
                 indent_down();
@@ -1445,7 +1445,7 @@ void make_tables()
                 out_dec( "else if ( yy_act < %d )\n", num_rules );
                 indent_up();
 
-                if ( C_plus_plus &&0 )
+                if ( C_plus_plus )
                         {
                         indent_puts(
         "cerr << \"--accepting rule at line \" << yy_rule_linenum[yy_act] <<" );
@@ -1467,7 +1467,7 @@ void make_tables()
                 out_dec( "else if ( yy_act == %d )\n", num_rules );
                 indent_up();
 
-                if ( C_plus_plus &&0 )
+                if ( C_plus_plus )
                         {
                         indent_puts(
 "cerr << \"--accepting default rule (\\\"\" << yytext << \"\\\")\\n\";" );
@@ -1485,7 +1485,7 @@ void make_tables()
                 out_dec( "else if ( yy_act == %d )\n", num_rules + 1 );
                 indent_up();
 
-                indent_puts( C_plus_plus &&0 ?
+                indent_puts( C_plus_plus ?
                         "cerr << \"--(end of buffer or a NUL)\\n\";" :
                 "fprintf( stderr, \"--(end of buffer or a NUL)\\n\" );" );
 
@@ -1495,7 +1495,7 @@ void make_tables()
                 outn( "else" );
                 indent_up();
 
-                if ( C_plus_plus &&0 )
+                if ( C_plus_plus )
                         {
                         indent_puts(
         "cerr << \"--EOF (start condition \" << YY_START << \")\\n\";" );
@@ -1623,3 +1623,4 @@ void make_tables()
         if ( sectnum == 3 )
                 (void) flexscan(); /* copy remainder of input to output */
         }
+

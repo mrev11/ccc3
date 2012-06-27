@@ -1,3 +1,5 @@
+Újabb beírások a fájl végén.
+
 
 Flex szintaktikai elemző generátor CCC-hez
 ==========================================
@@ -144,3 +146,12 @@ Ubuntu 4.10-en kétféle Flex-et is telepíthetünk:
     lehet használni.
 
 
+
+2012-06-26 Build-5: iostreamek kiirtása
+
+    A kétféle iostream (new/old) forrás megszűnt.
+    mkskel-ben egy olyan skel.c generálódik (skel.txt-ből),
+    ami egyáltalán nem használ STL-t.
+
+    Hatástalanítva lett az YY_INTERACTIVE makró (hatása, mintha
+    mindig be volna kapcsolva -B (batch) opció).

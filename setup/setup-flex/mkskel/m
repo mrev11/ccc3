@@ -1,0 +1,5 @@
+#!/bin/bash
+bapp_unix_.b
+mkskel.exe      >../skel.c
+cp -p  flexlexer.h_without_iostream   ../flexlexer.h
+cp -p  gen.c_without_iostream ../gen.c

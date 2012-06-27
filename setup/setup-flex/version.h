@@ -18,8 +18,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//2012.06.26 iostream-ek kiirtása
+#define FLEX_VERSION "2.5.4 CCC-Build-5" 
+
 //2010.04.01 gcc 4.3.2 warningok máskép elnyomva (kúrva anyjukat)
-#define FLEX_VERSION "2.5.4 CCC-Build-4" 
+//#define FLEX_VERSION "2.5.4 CCC-Build-4" 
 
 //2008.11.05 gcc 4.3.2 warningok elnyomva
 //#define FLEX_VERSION "2.5.4 CCC-Build-3" 

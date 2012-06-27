@@ -1,0 +1,53 @@
+iostream-ek kiirtása
+
+A korábbi mizéria a különféle iostream változatokkal megszűnik.
+Az iostreamtelenített verzió lesz a Build-5.
+
+A cél, hogy a generált scanner akkor se használjon iostream-eket,
+ha C++ opcióval készül, hanem szorítkozzon az fgetc, fread,... függvényekre.
+Ui. (egyrészt a STL undorító, másrészt) vannak platformok (Android), 
+ahol az STL hiányzik, mert egyébként nincs rá szükség.
+
+Az eredeti skel.c-ből vissza lett állítva skel.txt. 
+skel.c-ben nincs más, csak egyetlen változó, ami egy hosszú, sorokra 
+bontott szöveget tartalmaz. A szöveget programmal kiíratva kaptam az
+eredeti skel.txt-t (skel.txt_orig).
+
+A skel.txt a scannerben használt program váza (skeleton-ja).
+A módosításokat a skel.txt-ben kell(ett) elvégezni.
+Ilyen diraktívák vannak benne:
+
+közös kód
+%-
+  ez a kód kerül egy C scennerbe
+%+
+  ez a kód kód kerül egy C++ scennerbe
+%*          
+közös kód (vége a szétválasztásnak)
+
+A jelen esetben nyilvánvalóan csak a %+ részeket kellett nézni.
+
+skel.txt-ben: istream* helyett mindenhol FILE*
+
+Az mkskel.exe program a módosított skel.txt-ből előállítja az új skel.c-t. 
+(Ellenőrzés: az eredeti skel.txt-ből az eredeti skel.c áll elő.)
+
+flexlexer.h-ban: istream* helyett mindenhol FILE*
+gen.c-ben: a 'cerr << ...'  helyeken  C_plus_plus helyett C_plus_plus &&0
+
+
+Amúgy az egész sok hűhó semmiért. 
+Lényegében csak az yyFlexLexer osztály 3 virtual metódusában volt iostream:
+
+    LexerInput
+    LexerOutput
+    LexerError
+
+Az Output és az Error nem érdekesek. Próbáltam olyam programot keresni, 
+ami használja yyFlexLexer::LexerInput-ot, hogy tesztelhessem a változást. 
+Kiderült, hogy az összes meglevő program felüldefiniálja LexerInput-ot. 
+Vagyis a kód, ami évtizedes szenvedést okozott, még csak soha nem is futott, 
+csak a fordítást akadályozta.
+
+Az orig fájlok az iostreamek kiirtása előtti állapotot tartalmazzák (CCC-Build-4).
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+diff skel.txt_orig skel.txt | less

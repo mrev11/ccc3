@@ -80,6 +80,7 @@ static function sqlliteral_c(x)
     if( empty(x) )
         x:="null"
     else
+        x::=rtrim
         x::=strtran("'","''")
         x:="'"+x+"'"
     end

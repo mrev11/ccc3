@@ -85,7 +85,7 @@ local type,prec
     if( type=="C" )
         prec:=substr(this:type,2) 
         type:=if(val(prec)<=8,"char","varchar")
-        type+="("+prec+")"
+        type+="("+prec+") collate rtrim"
  
     elseif( type=="N" )
         prec:=substr(this:type,2) 

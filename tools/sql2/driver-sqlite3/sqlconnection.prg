@@ -49,11 +49,12 @@ class sqlconnection(object)
 
 
 ******************************************************************************
-static function sqlconnection.initialize(this,coninfo)  //coninfo egy filename
+static function sqlconnection.initialize(this,coninfo,cflags:="rwc")  //coninfo egy filename
 
 local err,code,errmsg
 local attach:="attach database '$DBFILE' as $ALIAS"
 local attach1,dbfali,n
+local flags
 
     this:(object)initialize
 
@@ -65,7 +66,49 @@ local attach1,dbfali,n
     //coninfo: 'dbfile1:dbfile2=alias2:dbfile3=alias3...'
     coninfo::=split(pathsep()) //{dbfile1, dbfile2=alias2, ... }
 
-    this:__conhandle__:=_sqlite3_open(coninfo[1],@code)
+
+    // A cflags paraméterrel nincs értelme játszani:
+    // Egyedül az SQLITE_OPEN_READONLY-nak lehetne értelme, 
+    // tapasztalat szerint azonban nem javítja a konkurencia kezelést,
+    // ráadásul readonlyban nem működik a WAL (Write Ahead Logging).
+    
+    // default journaling mode: rollback journal (delete)
+    // ehelyett beállítjuk a WAL módot: "PRAGMA journal_mode=WAL;"
+    //
+    // Előnye:)
+    //    az író és olvasó tranzakciók nem akadályozzák egymást!
+    //    (csak az író/író tranzakciók ütköznek)
+    //    gyorsabb
+    //
+    // Hátránya:(
+    //    a több adatbázisra kiterjedő tranzakciók nem atomiak
+    //    db-dhm, db-wal fájlok megjelenése
+    //    csak lokális fájlrendszeren lehet az adatbázis
+    //    kisebb tranzakciókat bír el
+    //
+    // Egyelőre nem világos, hogy ez fájlformátum,  vagy csak 
+    // hozzáférési módszer kérdése, ami alkalmanként változhat.
+    // Úgy  tűnik a fájlformátumban van benne.
+    // Ha egyszer be volt állítva a WAL, akkor úgy marad.
+    
+    
+    flags:=0
+    if( "ro"$cflags )
+        flags::=numor(SQLITE_OPEN_READONLY)
+
+    elseif( "rw"$cflags )
+        flags::=numor(SQLITE_OPEN_READWRITE)
+        if( "c"$cflags )
+            flags::=numor(SQLITE_OPEN_CREATE)
+        end
+    end
+
+    //flags::=numor(SQLITE_OPEN_NOMUTEX)
+    //flags::=numor(SQLITE_OPEN_FULLMUTEX)
+    //flags::=numor(SQLITE_OPEN_PRIVATECACHE)
+    //flags::=numor(SQLITE_OPEN_SHAREDCACHE)  //nem enged többszörösen attachelni
+
+    this:__conhandle__:=_sqlite3_open2(coninfo[1],flags,@code)
 
     if( this:__conhandle__==NIL )
         err:=sqlconnecterrorNew()
@@ -77,12 +120,16 @@ local attach1,dbfali,n
     else
         outerr("attach to "+coninfo[1]+endofline()) 
     end
+
+    this:sqlexec("PRAGMA journal_mode=WAL")  //WAL 
+
     
     for n:=2 to len(coninfo)
         attach1:=attach
         dbfali:=coninfo[n]::split("=")
         attach1::=strtran("$DBFILE",dbfali[1])
         attach1::=strtran("$ALIAS",dbfali[2])
+        set_journal_mode_to_wal(dbfali[1])
         _sqlite3_exec(this:__conhandle__,attach1,@errmsg)
 
         if( errmsg!=NIL )
@@ -105,6 +152,17 @@ local attach1,dbfali,n
     this:sqlexec("begin transaction")
 
     return this
+
+
+static function set_journal_mode_to_wal(dbfile)
+local db:=_sqlite3_open(dbfile),msg
+    if(db!=NIL)
+        _sqlite3_exec(db,"PRAGMA journal_mode=WAL;",@msg)
+        _sqlite3_close(db)
+        if(msg!=NIL)
+            outerr(msg)
+        end
+    end
 
 
 ******************************************************************************

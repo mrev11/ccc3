@@ -64,6 +64,33 @@ void _clp__sqlite3_open(int argno)  // _sqlite3_open(filename[,@code]) -> db/NIL
     CCC_EPILOG();
 }
 
+
+//--------------------------------------------------------------------------
+void _clp__sqlite3_open2(int argno)  // _sqlite3_open(filename,flags[,@code]) -> db/NIL
+{
+    CCC_PROLOG("_sqlite3_open2",3);
+    convertfspec2nativeformat(base);
+    const char *filename=_parb(1);
+    int flags=ISNIL(2) ? (SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE) : _parni(2);
+    sqlite3 *db=0;
+    int code=sqlite3_open_v2(filename,&db,flags,0); // 1=ro, 2=rw, 4=create
+    if( ISREF(3) )
+    {
+        number(code);
+        (base+2)->data.vref->value=*TOP();
+        pop();
+    }
+    if( code==SQLITE_OK )
+    {
+        _retp(db); // db, ha sikeres
+    }
+    else
+    {
+        _ret();    // NIL, ha sikertelen
+    }
+    CCC_EPILOG();
+}
+
 //--------------------------------------------------------------------------
 void _clp__sqlite3_errcode(int argno)  // _sqlite3_errcode(db) -> code
 {

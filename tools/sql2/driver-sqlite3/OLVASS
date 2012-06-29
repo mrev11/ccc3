@@ -1,3 +1,16 @@
+2012.06.29
+  Javítások:
+    sqlconnect PRAGMA journal_mode=WAL opcióval nyit
+    sqlliteral_c-ben rtrim
+    tabent:create a karakteres oszlopokat COLLATE RTRIM-mel definiálja
+
+  Megjegyzések:
+    A trimelés nincs magától, mint a többi adatbáziskezelőben.
+    A többi adatbáziskezelőtől eltérően '' és null különböznek.
+    Ez a változat már viszi a KHR9-et.
+
+2012.96.25
+
 Az alapvető dolgok működnek. A különbségek:
 
 Ahol az Oracle és a Postgres egy sémanevet vár, ott az sqlite egy attached

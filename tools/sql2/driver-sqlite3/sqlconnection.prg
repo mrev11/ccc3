@@ -82,7 +82,7 @@ local flags
     //
     // Hátránya:(
     //    a több adatbázisra kiterjedő tranzakciók nem atomiak
-    //    db-dhm, db-wal fájlok megjelenése
+    //    db-shm, db-wal fájlok megjelenése (többé nem egyfájlos a formátum)
     //    csak lokális fájlrendszeren lehet az adatbázis
     //    kisebb tranzakciókat bír el
     //

@@ -1,0 +1,3 @@
+#!/bin/bash
+#export SQLDEBUG=on
+c1.exe | tee log-c1

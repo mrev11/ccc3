@@ -16,7 +16,7 @@ Megjegyzés: SQLite3-ban nincs is más mód. Az SQLite-ot WAL-lal használjuk.
 Akkor most az SQLite is egy többfelhasználós MVCC (Multi Version Concurrency 
 Control) adatbáziskezelő? Nem teljesen. Az igazi MVCC adatbáziskezelők el tudják 
 különíteni a tranzakciókat, ha azok időben vagy térben diszjunktak, deadlockot 
-detektálnak, stb. Az SQLite3 tudása annyi, hogy felismeri, az időben átfedő 
+detektálnak, stb. Az SQLite3 tudása annyi, hogy felismeri az időben átfedő 
 író tranzakciókat, és az ilyeneket nem engedi befejezni. Mindenesetre látszik, 
 hogy a WAL algoritmusból lényegében már adódik az MVCC legfontosabb eleme.  
 

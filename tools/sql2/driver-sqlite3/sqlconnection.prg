@@ -194,8 +194,14 @@ local err,code,msg
     
     if( SQLITE_OK!=(code:=_sqlite3_exec(this:__conhandle__,stmt,@msg)) )
         //this:sqlrollback  //végtelen rekurziót okoz
-
-        err:=sqlerrorNew()
+        
+        if( code==SQLITE_BUSY )
+            err:=sqlserialerrorNew()
+        elseif( code==SQLITE_LOCKED )
+            err:=sqllockerrorNew()
+        else
+            err:=sqlerrorNew()
+        end
         err:operation:="sqlexec"
         err:description:=msg
         err:args:={stmt}

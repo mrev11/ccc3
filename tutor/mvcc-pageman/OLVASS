@@ -1,0 +1,148 @@
+
+Ez egy programozási gyakorlat, elvi váz, ami MVCC (Multi Version Concurrency Control)
+technikával snapshot isolation tulajdonságú tranzakció kezelő rendszert (TPS-t), 
+vagy kevésbé nagyképűen, lapkezelő rendszert valósít meg. Az MVCC snapshot isolation 
+technikának az a lényege, hogy az írás műveletek nem írják felül a korábbi tartalmakat, 
+hanem a modosuló adatbázis-objektumok újabb és újabb verzióit hozzák létre. 
+
+Az író és olvasó műveletek egyaránt tranzakciókba vannak csoportosítva. 
+Nincs külön tranzakció kezdő operáció, hanem a rendszer eleve mindig tranzakcióban van,
+és a tranzakció ilyen vagy olyan (commit/rollback) lezárása után automatikusan
+kezdődik a következő tranzakció.
+
+Természetesen ugyanahhoz a tranzakcióhoz tartozó irások vagy mind végrehajtódnak, 
+vagy semelyikük sem hajtódik végre (mindent vagy semmit). Szokatlanabb, hogy az
+olvasó műveletekre is hatnak a tranzakcióhatárok. Tranzakción belül az olvasások
+mindig az adatbázisnak azt az állapotát látják, ami a tranzakció indulásakor
+fennállt. Egy olvasást megismételve, akkor is változatlan tartalmat kapunk, 
+ha időközben a kérdéses adatbázis-objektumot egy konkurens tranzakció megváltoztatta 
+(vagyis létrehozta az objektum új verzióját).
+
+A rendszer nem szerverként működik, hanem könyvtárként, amit minden programba
+be kell fordítani. A 'dbproba' (adatbázis) fájl mellett létrejön egy 'dbproba-index' fájl,
+ami segíti a verziók gyors előkeresését, és egy 'dbproba-sema' (szemafor) fájl
+a konkurens programok szinkronizálásához.
+
+
+A programelemek a pageman névtérben vannak definiálva. Az alábbi osztályok vannak:
+
+1) pageman.page (logikai lapok)
+    
+    Kétféle értelemben gondolunk a lapokra.
+  
+    Logikai lap: A pgid azonosítja, több verziója lehet, a verziókat a trid
+    különbözteti meg, trid annak a tranzakciónak a sorszáma, ami a verziót
+    létrehozta. A pgid és trid metaadatként bele van írva a fizikai lapba.
+    
+    Fizikai lap: Lemezterület, ami tárolja egy logikai lap valamely verzióját.
+
+  page:pgid        
+
+    Kiírja/beolvassa a pgid-t (metaadat a lap elején).
+
+  page:trid
+
+    Kiírja/beolvassa a trid-t (metaadat a lap elején).
+
+  page:content     
+    
+    Kiírja/beolvassa az application data-t. Hogy az alkalmazás konkrétan
+    milyen adatok tárolására használja a lapokat, az szempontunkból érdektelen.
+  
+
+2) pageman.dbconnection (az alkalmazói programok interfésze)
+
+  con:=pageman.dbconnectionNew("dbproba")
+
+    Létrehoz egy adatbáziskapcsolatot, az adatbázis a dbproba fájlban lesz,
+    ha a dbproba fájl nem létezik, akkor létrehozza.
+  
+  con:close
+    
+    Lezárja az adatbáziskapcsolatot.
+  
+  page:=con:read(pgid)
+    
+    Beolvassa a pgid-vel azonosított lapot. 
+  
+  page:=con:append
+  
+    Létrehoz egy új lapot.
+
+  con:commit
+  
+    Kiírja a változásokat, új tranzakciót kezd.
+
+  con:rollback
+  
+    Nem írja ki a változásokat, új tranzakciót kezd (triviális).
+    
+
+3) pageman.database (ebben van a lényeg, a lapkezelés)
+    
+  Amit a programban database-nek hívok, az inkább egy Write Ahead Log (WAL),
+  ami előtét lehetne egy alapadatbázis előtt. Azokat a page-eket,
+  amik már nem szerepelnek kurrens tranzakcióban vissza lehetne mozgatni 
+  a WAL-ból az alapadatbázisba. Így a WAL nem tartalmazná az (esetleg óriási)
+  alapadatbázis összes adatát, csak azokat a lapokat, amik a közelmúltban
+  szerepeltek valamilyen író tranzakcióban.
+  
+  A dbconnection osztály a database osztálynak továbbítva valósítja 
+  meg a műveleteit. A dbconnection objektum tartalmazza a konkrét tranzakció
+  adatait, a readmarkot (a tranzakció kezdetkori utolsó commitolt tranzakció
+  sorszámát, amin túl nem lát) és az addig módosított lapokat. Ezek alapján
+  dolgozik a pageman.database objektum.
+  
+  A lényeges pontok:
+ 
+  database:commit sosem írja felül a módosuló lapot, hanem új verziót készít.
+  Vagyis a fizikai lapok (elvben) sosem módosulnak, hanem létrejön a modosuló
+  logikai lap egy újabb verziója.
+    
+  database:read mindig a tranzakció readmarkja előtti legfrissebb verziót adja.
+  Ha egy tranzakció többször beolvassa ugyanazt a lapot (pgid-t), akkor mindig 
+  ugyanazt a tartalmat kapja, akkor is, ha más tranzakciók módosították a lapot.
+  Az író és olvasó tranzakciók emiatt sosem akadályozzák egymást.
+    
+  database:commit nem engedi kiírni a tranzakciót, ha az módosítani 
+  akar egy olyan lapot, amit egy másik tranzakció időközben módosított.
+  Ilyenkor "could not serialize access due to concurrent update" szövegű
+  hiba keletkezik. A vesztes tranzakciót rollback-elni kell, és újra 
+  kell kezdeni. Fontos megérteni, hogy itt nem lockolásról van szó. 
+  Egyáltalán nincsenek lockok, ezért a helyzet akkor sem változik, 
+  ha a konkurens program kilép. Tehát nem a commit-ot (kiírást) kell 
+  ismételgetni, hanem új tranzakciót kell kezdeni.
+  
+
+Demók.
+
+  proba, proba1: létrehoznak egy teszt adatbázist.
+  c1, c2, c3:  egymással konkuráló tranzakciók.
+  proba-a, proba-b: egymással konkuráló tranzakciók.
+  bw-ini, bw-rev: demonstrálják az MVCC 'színfordító' anomáliáját.
+  
+  A demók a konkurencia kezelés szempontjából ugyanazokat a tulajdonságokat 
+  mutatják, mint az Oracle-ra, Postgresre vagy SQLite3-ra megírt változataik.
+  Kivétel a színfordító demó, ami ahány, annyi féle.
+  
+  Az SQLite3-nál kiütközik, hogy egyáltalán nem tud párhuzamosan futtatni 
+  több író tranzakciót.
+  
+  A Oracle serializable módja nem produkálja az anomáliát, hanem az egyik
+  tranzakciót abortálja.
+  
+  A Postgres 9.1 előtti változatai serializable(==repeatable read) módban
+  produkálják az anomáliát. A 9.1-nél nagyobbegyenlő változatokban
+  a repeatable read nem változott (u.a. mint a korábbi serializable, produkálja
+  az anomáliát), a serializable mód viszont 'true serializable'-ra változott
+  és nem produkálja.
+  
+  A pageman a várható módon produkálja az anomáliát.
+
+
+mvcc-simple
+
+  Ebben a direktoriban a program egy korábbi változata van, 
+  amiben még nincs index, nincs szemétgyűjtés, sem szinkronizálás,
+  és ezért egyszerűbben látszik benne az MVCC alapelve.
+

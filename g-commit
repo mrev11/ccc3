@@ -4,8 +4,9 @@ export EDITOR=z.exe
 
 git add .
 
-git commit --all -m  "sqlite3 different error classes" #2012.07.02
+git commit --all -m  "mvcc-pageman tutor" #2012.07.11
 
+# "sqlite3 different error classes" #2012.07.02
 # "sqlmvcc tutor" #2012.07.02
 # "sql2.sqlite3: WAL, rtrim" #2012.06.29
 # "flex iostream nelkul" #2012.06.27 

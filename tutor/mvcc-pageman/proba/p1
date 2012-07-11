@@ -1,0 +1,2 @@
+#!/bin/bash
+proba1.exe | tee log-p1

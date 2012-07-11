@@ -1,0 +1,4 @@
+
+  Ebben a direktoriban a program egy korábbi változata van, 
+  amiben még nincs index, nincs szemétgyűjtés, sem szinkronizálás,
+  és ezért egyszerűbben látszik benne az MVCC alapelve.

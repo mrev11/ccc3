@@ -1,0 +1,10 @@
+#!/bin/bash
+#rm dbproba*
+#bw-ini.exe
+
+bw-rev.exe B >log-bwb &
+#bw-rev.exe W >log-bww &
+
+sleep 2
+d3
+z log-d3

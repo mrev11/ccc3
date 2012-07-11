@@ -1,0 +1,2 @@
+#!/bin/bash
+dump1.exe | sort -k1 | tee log-d1

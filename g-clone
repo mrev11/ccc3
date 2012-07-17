@@ -26,7 +26,7 @@ cat >.git/config <<DELIMETER
         logallrefupdates = true
 
 [remote "origin"]
-        url = ssh://git@ccc.comfirm.hu:repositories/ccc3.git
+        url = git@ccc.comfirm.hu:repositories/ccc3.git
         fetch = +refs/heads/*:refs/remotes/origin/*
 
 [branch "master"]

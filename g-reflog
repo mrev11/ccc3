@@ -3,6 +3,4 @@
 echo
 echo '#-----------------------------------'
 
-git status
-
-
+git reflog

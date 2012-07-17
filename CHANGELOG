@@ -1,0 +1,134 @@
+2012.07.17 áttérés az új g-git scriptekre
+A változások a CHANGELOG-ban vannak vezetve.
+A CHANGELOG első üres sorokkal határolt bekezdéséből lesz a commit-message.
+A CHANGELOG mentődik a repóba, a commit-message fájl nem.
+
+
+# "sqlite3 different error classes" #2012.07.02
+# "sqlmvcc tutor" #2012.07.02
+# "sql2.sqlite3: WAL, rtrim" #2012.06.29
+# "flex iostream nelkul" #2012.06.27 
+# "sql2.sqlite3" #2012.06.25
+# "http_readmessage timeout esetén minden ágon NIL-t ad." #2012.06.17
+# "http_readmessage transfer-encoding: chunked" #2012.06.16
+# "sql2: sqltabaias javitva" #2012.05.31
+# "z editor: ztab javitva" #2012.05.31
+# "xmldom 1.6.00 preservespace" #2012.05.25 
+# "xmlparser elemzo szemetet szemetet engedett meg a bemenet vegen" #2012.05.25 
+# "savex -plx -pli opciók, repo ellenőrzés" #2012.04.30
+# "mask *.msk* alakú filénevek; tran2cpp javítás" #2012.04.22
+# "oneiric; mask different size; xmlparse createnodeblock" #2012.04.09
+# "xmldom: ures CDATA-ra elszallas javitva " #2011.11.28
+# "unix terminal optimalizacio" #2011.10.21
+# "checkbox:left felüldefinialva" #2011.09.19
+# "tabedrec picture" #2011.09.19
+# "localstack() return erteke derefelve" #2011.09.19
+# "get:undo javitva" #2011.08.29
+# "terminal: cursor_focus=1; mask: grchr javitva; msk2say: isbox javitva" #2011.08.25
+# "ialert: cursorpos, dispbegin" #2011.08.21
+# "z history absolute path"#2011.08.09
+# "jterminal dialog parent enable/disable"#2011.08.06
+# "z history"#2011.08.04
+# "sql2: sqlidquote megszunt; bind tabjoin-ban;" #2011.07.20
+# "sqlquery.getbinary javitva" #2011.07.20
+# "gtk readme" #2011.07.12
+# "tstru path" #2011.07.08
+# "stvar.cpp verify_overflow" #2011.07.07
+# "new demo certificates" #2011.06.17
+# "z.ver: elmaradt változásleírás" #2011.06.08
+# "ppo2prg/build searchinclude dirsep konverzio" #2011.05.22
+# "sqltanctlerror" #2011.05.04
+# "sqlconcurrencyerror" #2011.04.28
+# "előző javítás javítása" #2011.04.20
+# "sql2: dirty és null flagek" #2011.04.20
+# "Oracle memók" #2011.04.20
+# "jeed maxrow" #2011.04.12
+# "sql2: insert reread"  #2011.03.05
+# "so-k cp helyett mv-vel kerulnek a helyukre" #2010.12.22
+# "tutor/varstack" #2010.12.06
+# "windows karbantatas, filemap" #2010.11.23
+# "X és C típusok hossza unsigned long-ban számolva" #2010.11.08
+# "inverz makro, errorgen_nul(), binaryl(unsigned long len)" #2010.11.05
+# "jeed-ben sqldisconnect" #2010.10.24
+# "ccc2 backport" #2010.09.25
+# "SQl2 escape" #2010.09.23
+# "font-config" #2010.09.01
+# "build 1.3.02 --dry" #2010.07.18
+# "build 1.3.01" #2010.07.16
+# "build 1.3.00" #2010.07.12
+# "termapi sync/async"  #2010.07.11
+# "build cpp include-ok"  #2010.07.11
+# "hiányzó copyright-ok"  #2010.07.11
+# "slice array típusra" #2010.06.30
+# "z: dispbegin/dispend, hibakezelés finomítva" #2010.06.30
+# "savex: dispbegin/dispend" #2010.06.30
+# "többszálú terminál könyvtár, remote io letiltva lokális terminál esetén" #2010.06.30
+# "xmlrpc: Content-Length javitva" #2010.06.01
+# "websrw: if-modified-since header" #2010.05.26
+# "ctime.cpp megszunt" #2010.05.26
+# "time.cpp bovitve" #2010.05.26
+# "mask save" #2010.05.26
+
+# "REGEX_UTF8" #2010.04.30
+# "jtlib: changeitem atorokiti a dialogid-t fpath" #2010.04.15
+# "tutor: fpath" #2010.04.15
+# "regex modernizalas (windows)" #2010.04.15
+# "keymap_uc.z" #2010.04.13
+# "windows-os main-ekben _setmode(fd,O_BINARY)" #2010.04.09
+# "ignored retval javitas javitasa; install egybol vegleges ppo2cpp-t fordit" #2010.04.06
+# "terminál szinkronizáció" #2010.03.08
+# "xmldom: TEXT node-ra gettext"  #2010.02.17
+# "xmldom textnodeblock" #2010.02.12
+# "build 1.2.26 parfile include" #2010.02.04
+# "ppo2cpp 5.0.17 számliterál" #2010.01.25
+# "xmldom 1.4.00" #2010.01.11
+# "Lemon CCC-Build-3" #2010.01.11
+# "empty(block) visszaállítva a korábbi (==.f.) állapot" #2010.01.11
+# "ccclib:empty,len" #2009.12.30
+# "xmldom_lexer->getnext üres tokenekre javítás javítása" #2009.12.27
+# "ppo2cpp 5.0.16; setup-unix frissítve" #2009.12.18
+# "static class; recover <nsp.class>; xmethod3; prohibited method cast" #2009.12.14
+# "class.prg: runtime error, ha a metodus cast attributumot erint" #2009.12.02
+# "UTF-8 ellenőrzés az <<X>>...<<X>> stringekben." #2009.11.22
+# "xmldom_lexer->getnext üres tokenekre javítva" #2009.11.11
+# "xmldom: vedekezes az inputon elofordulo 0 byte ellen" #2009.11.10
+# "xmldom egységesítés, latin-2 támogatás" #2009.11.07
+# "Oracle SERIALIZABLE workaorund, handlerek nyilvántartása szinkronizálva" #2009.09.27
+# "mkentitylib errormessage" #2009.09.11
+# "jtsocket:queue, jtversion(timeout)" #2009.08.08
+# "jterminal unknown mnemonic"  #2009.08.05
+# "delempty" #2009.05.28
+# "netbsd gtk" #2009.05.10
+# "netbsd (5.0) port" #2009.05.07
+# "netbsd compatibility"
+# "tbrowse stabilize javítva"
+# "terminal invalidate szinkronizálva"
+# "ppo2cpp 5.0.13 vararg API bővítve, method forwarding átdolgozva" #2009.04.28
+# "ppo2cpp 5.0.12: method forwarding" #2009.04.22
+# "jt: cellaeditor számok változása, picturedocument R flag" #2009.03.15
+# "sql2: mkentitylib code_generated" #2009.03.15
+# "sql2: where x in :1" #2009.02.24
+# "xstart: hdup -> sethandleinhertflag" #2009.02.17
+# "jterminal 1.1.12, jtconnect hibaágak kidolgozása" #2009.02.05
+# "sslcon_accept-ben timeout (default: 10 sec)" #2009.02.05
+# "bovitett simplehash osztaly" #2009.01.20
+# "prg2ppo 1.4.0.rc1" #2009.01.12
+# "tex" #2009.01.12
+# "tutor qsort" #2008.12.23
+# "gtk javitgatas" #2008.12.15
+# "szalkezeles javitva" #2008.12.10
+# "Windows terminal FreeConsole" #2008.12.10
+# "GTK warnings" #2008.12.10
+# "delete -> DELTHRDATA" #2008.12.10
+# "closeonexec/sethandleinheritflag egysegesites" #2008.12.10
+# "SIGABRT kezeles" #2008.12.10
+# "ccc portok frissites" #2008.12.10
+# "unix-ncurses terminál" #2008.11.12
+# "telepitokeszlet frissites" #2008.11.05
+# "tovabbi gcc 4.3.2 warningok (flex)" #2008.11.05
+# "clean-all.b javitva" #2008.11.04
+# "gcc 4.3.2 warningok elnyomva" #2008.11.04
+# "qsort demó" #2008.11.04
+# "terminal expose event" #2008.10.21
+# "savex time korrekcio" #2008.09.17
+# "postfix comment"

@@ -1,6 +1,8 @@
 #!/bin/bash
+# listázza a branch-eket, lineárisan fejlesztünk, nálunk csak a master van
 
-#git branch | less
+echo
+echo '#-----------------------------------'
+git branch -v
 
-#git branch      v20080720  e8d8d684397f2962ae7ccaff9c218ea4263102cb
-#git checkout    v20080720
+

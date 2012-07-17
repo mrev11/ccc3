@@ -1,0 +1,20 @@
+##!/bin/bash
+# (nem végrehajtható, hogy mc-ben melléütéssel ne induljon el)
+# hasonló, mint a git rebase
+
+
+# git reset HEAD    - visszaállítja az indexet az utolsó commitra (working tree nem módosul)
+# git reset HEAD~1  - visszaállítja HEAD-et és az indexet a kurrens ág utolsó előtti commitjára (working tree nem módosul)
+# git reset HEAD~2  - visszaállítja HEAD-et és az indexet a kurrens ág kettővel korábbi commitjára (working tree nem módosul)
+
+# ez visszaveszi az utolsó két commit-ot
+# és a változatlan állapotú working tree-vel készít egy új commitot
+# ez az új commit tartalmazza a megszüntetett commitok változásait is
+
+git reset HEAD~2  &&  git add --all && git commit -F commit-message 
+git log --pretty=oneline  --abbrev-commit 
+
+# vagyis az elhamarkodott commitokat vissza lehet venni, ne szaporodjanak
+# nem világos, hogy léteznek-e/megszűnnek-e a visszavett commitok
+# ha már fel volt küldve egy commit a távoli repóba,
+# akkor így nem szabad visszacsinálni

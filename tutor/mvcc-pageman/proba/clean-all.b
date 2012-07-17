@@ -28,5 +28,6 @@ find . -type d | while read NAME; do
     rm -f $NAME/*.class $NAME/*.jar
     rm -f $NAME/*.bak
     rm -f $NAME/log-*
+    rm -f $NAME/dbproba*
 done
 

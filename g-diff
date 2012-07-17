@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# 1
-# work <--> index  (changes in the working tree not yet indexed)
-# git diff | less
+# a working tree eltérése az utolsó committól
 
-# 2
-# index <--> last commit (what would be committed on "git commit")
-# git diff --cached | less
+echo
+echo '#-----------------------------------'
 
-# 3
-# work <--> last commit (what would be committed on "git -a commit")
-git diff HEAD | less -S
+git add --all        # frissíti a staging indexet
+git diff  HEAD       # a staging index eltérése az utolsó committól
+

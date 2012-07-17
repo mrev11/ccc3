@@ -3,7 +3,7 @@ Ez egy programozási gyakorlat, elvi váz, ami MVCC (Multi Version Concurrency C
 technikával snapshot isolation tulajdonságú tranzakció kezelő rendszert (TPS-t), 
 vagy kevésbé nagyképűen, lapkezelő rendszert valósít meg. Az MVCC snapshot isolation 
 technikának az a lényege, hogy az írás műveletek nem írják felül a korábbi tartalmakat, 
-hanem a modosuló adatbázis-objektumok újabb és újabb verzióit hozzák létre. 
+hanem a módosuló adatbázis-objektumok újabb és újabb verzióit hozzák létre. 
 
 Az író és olvasó műveletek egyaránt tranzakciókba vannak csoportosítva. 
 Nincs külön tranzakció kezdő operáció, hanem a rendszer eleve mindig tranzakcióban van,
@@ -96,7 +96,7 @@ A programelemek a pageman névtérben vannak definiálva. Az alábbi osztályok 
   A lényeges pontok:
  
   database:commit sosem írja felül a módosuló lapot, hanem új verziót készít.
-  Vagyis a fizikai lapok (elvben) sosem módosulnak, hanem létrejön a modosuló
+  Vagyis a fizikai lapok (elvben) sosem módosulnak, hanem létrejön a módosuló
   logikai lap egy újabb verziója.
     
   database:read mindig a tranzakció readmarkja előtti legfrissebb verziót adja.

@@ -1,0 +1,13 @@
+##!/bin/bash
+# (nem végrehajtható, hogy mc-ben melléütéssel ne induljon el)
+# Azért nem jó önállóan végrejatani, mert a HEAD-et és az indexet
+# mindig szinkronban akarom tartani.
+
+
+# Ez teljes összhangba hozza a staging indexet a working tree-vel:
+#   - az új fájlokat beveszi az indexbe
+#   - a módosult fájlokat módosítja az indexben
+#   - a megszűnt fájlokat törli az indexből
+
+git add --all 
+

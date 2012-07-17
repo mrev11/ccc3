@@ -413,8 +413,7 @@ local todelete:={}
 ******************************************************************************************
 static function database.pagedel(db,todelete)
 
-static zero:=a"0"::replicate(16)
-static zero2:=(a"0"::replicate(16)+a"|")::replicate(2)
+static zero2:=zero+a"|"+zero+a"|"
 
 local n,key,pgno
 local page:=pageNew()

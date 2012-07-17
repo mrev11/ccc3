@@ -1,8 +1,8 @@
 #!/bin/bash
+# egysoros log
 
 echo
 echo '#-----------------------------------'
 
-git status
-
+git log --pretty=oneline  --abbrev-commit 
 

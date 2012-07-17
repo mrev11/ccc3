@@ -1,3 +1,12 @@
 #!/bin/bash
-( git commit -a -m "pull"  # mod del
-  git pull ) | less -S
+# pull előtt célszerű commitolni 
+# másképp egy sikertelen merge olyan hibás állapotra vezethet
+# amiből nehéz kikeveredni
+
+./g-commit
+
+echo
+echo '#-----------------------------------'
+
+git pull
+

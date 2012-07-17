@@ -1,4 +1,7 @@
 #!/bin/bash
 
-#git log
-git log --stat --summary >log
+echo
+echo '#-----------------------------------'
+
+git log
+

@@ -1,8 +1,8 @@
 #!/bin/bash
+# részletes log
+
 
 echo
 echo '#-----------------------------------'
 
-git status
-
-
+git log --stat --summary 

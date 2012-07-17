@@ -1,0 +1,9 @@
+#!/bin/bash
+# az utolsó előtti és az utolsó commitok eltérése
+# hasonlóan nézhető két tetszőleges commit eltérése
+
+echo
+echo '#-----------------------------------'
+
+git diff  HEAD^..HEAD
+

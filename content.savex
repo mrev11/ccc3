@@ -16,6 +16,8 @@
 -x.out.rul.
 
 
+-lxcommit-message
+
 -lxoutpre
 -lxoutcpp
 -lxoutlnk

@@ -20,14 +20,18 @@
 
 ************************************************************************
 function split(txt,sep:=if(valtype(txt)=="X",a",",","))
-local wlist:={}, n:=1, i, tail
+local wlist:={}, n:=1, i
+
     while( 0<(i:=at(sep,txt,n)) )
         aadd(wlist,txt[n..i-1])
         n:=i+1
     end
-    tail:=txt[n..]
-    if( !tail::empty  )
-        aadd(wlist,tail)
+
+    //ha van maradék, azt még hozzáadjuk
+    //a "" (üres) stringet nem adjuk hozzá
+
+    if( len(txt)>=n )
+        aadd(wlist,txt[n..])
     end
     return wlist
 
@@ -37,7 +41,9 @@ local wlist:={}, n:=1, i, tail
   Példák:
 
     ''      --> {}
+    ' '     --> {' '}
     ':'     --> {''}
+    ': '    --> {'',' '}
     'a'     --> {'a'}
     ':a'    --> {'','a'}  
     'a:'    --> {'a'}
@@ -45,9 +51,39 @@ local wlist:={}, n:=1, i, tail
     'a:b:'  --> {'a','b'}
     'a::b'  --> {'a','','b'}
 
-  Az utolsó határoló után csak akkor keletkezik tömbelem, ha az nem üres.
-  Ugyanezért az üres stringből üres array keletkezik (nem pedig {''}).
-  Ez kevesebb stringet gyárt, mint a korábbi változat, a kimenet ugyanaz.
+  Az utolsó határoló utáni részből csak akkor keletkezik tömbelem, ha az nem ''.
+  Ugyanezért az '' (üres) stringből üres array keletkezik (nem pedig {''}).
+  Ez kevesebb szemetet gyárt, mint a korábbi változat, a kimenet ugyanaz.
+
+
+//a régebbi változat (elég körülményes)
+
+function split(txt,sep)
+local wlist:={}, n:=0, i
+local emp:=if(valtype(txt)=="X",x"","")
+
+    if(sep==NIL)
+        sep:=","
+    end
+    
+    while( n<len(txt) )
+
+        txt:=substr(txt,n+1)    
+    
+        if( (i:=at(sep,txt))==0 )
+            aadd(wlist, txt)
+            n:=len(txt)
+        elseif(i==1)
+            aadd(wlist,emp)
+            n:=1
+        else
+            aadd(wlist,substr(txt,1,i-1))
+            n:=i
+        end
+    end
+
+    return wlist
+
 #endif
 
 

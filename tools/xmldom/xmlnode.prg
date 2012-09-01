@@ -27,6 +27,7 @@ class xmlnode(object)
     method  delattrib
     method  addcontent      {|this,x|aadd(this:content,x)}
     method  addtext
+    method  settext
     method  getattrib
     method  gettext
     method  xmlout          //kiírás: minden külön sorba
@@ -89,6 +90,13 @@ local child
     child:addcontent(text)
     this:addcontent(child)
     return child
+
+
+****************************************************************************
+static function xmlnode.settext(this,text)
+    this:content::asize(0)
+    return this:addtext(text)
+
 
 ****************************************************************************
 static function xmlnode.gettext(this)

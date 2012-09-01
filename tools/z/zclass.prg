@@ -185,7 +185,7 @@ local n
     for n:=1 to len(this:atxt)
         this:atxt[n]:=strtran(this:atxt[n],chr(13),"")
         //this:atxt[n]:=strtran(this:atxt[n],chr(9),space(this:tabsiz))
-        this:atxt[n]:=detab(this:atxt[n],2*this:tabsiz)
+        this:atxt[n]:=detab(this:atxt[n],this:tabsiz)
     next
     
     return this

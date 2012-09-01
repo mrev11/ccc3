@@ -56,6 +56,10 @@ class simplehash(object)
     method  nextkey       //  -> key
     method  nextvalue     //  -> value
 
+    method  list
+    method  listkey
+    method  listvalue
+
 
 ****************************************************************************
 static function simplehash.initialize(this,data) 
@@ -205,6 +209,31 @@ local x:=this:next
 static function simplehash.nextvalue(this)
 local x:=this:next
     return if(x==NIL,NIL,x[2])
+
+
+****************************************************************************
+static function simplehash.list(this)
+local item:=this:first
+    while( item!=NIL )
+        ? item
+        item:=this:next
+    end
+
+****************************************************************************
+static function simplehash.listkey(this)
+local item:=this:firstkey
+    while( item!=NIL )
+        ? item
+        item:=this:nextkey
+    end
+
+****************************************************************************
+static function simplehash.listvalue(this)
+local item:=this:firstvalue
+    while( item!=NIL )
+        ? item
+        item:=this:nextvalue
+    end
 
 ****************************************************************************
 //hash algoritmus

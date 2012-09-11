@@ -134,9 +134,9 @@ usr/bin/freebsd/zgrep
 
 
 #testdata (generated)
-tools/sql2/test/testdata_lib/a.tds
-tools/sql2/test/testdata_lib/b.tds
-tools/sql2/test/testdata_lib/c.tds
+#tools/sql2/test/testdata_lib/a.tds
+#tools/sql2/test/testdata_lib/b.tds
+#tools/sql2/test/testdata_lib/c.tds
 
 
 #installed

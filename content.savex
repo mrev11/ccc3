@@ -47,7 +47,7 @@
  
 
 #generálódnak
--plxtools/sql2/test/testdata_lib/*.tds
+#-plxtools/sql2/test/testdata_lib/*.tds
 
 #instalállódnak
 -plxusr/include/cccgtk.h

@@ -94,6 +94,19 @@ usr/bin/linux/xstart
 usr/bin/linux/zg
 usr/bin/linux/zgrep
 
+/usr/bin/linux/bt2tds
+/usr/bin/linux/bt2ted
+/usr/bin/linux/jeed
+/usr/bin/linux/mkentitylib
+/usr/bin/linux/tds2prg
+/usr/bin/linux/tds2ted
+/usr/bin/linux/ted2prg
+
+exe-ora
+exe-pg
+exe-sqlite3
+
+
 usr/bin/freebsd/bt2dbf
 usr/bin/freebsd/bt2txt
 usr/bin/freebsd/bti
@@ -130,6 +143,14 @@ usr/bin/freebsd/websrv
 usr/bin/freebsd/xstart
 usr/bin/freebsd/zg
 usr/bin/freebsd/zgrep
+
+/usr/bin/freebsd/bt2tds
+/usr/bin/freebsd/bt2ted
+/usr/bin/freebsd/jeed
+/usr/bin/freebsd/mkentitylib
+/usr/bin/freebsd/tds2prg
+/usr/bin/freebsd/tds2ted
+/usr/bin/freebsd/ted2prg
 
 
 

@@ -1,1 +1,4 @@
-2012.09.11 Teszt tds-ek visszatéve a mentésbe.
+2012.09.20 Saját Postgres és SQLite3 prototype deklarációk.
+Ezekkel installált Postgres és SQLite3 nélkül is fordul az interfész.
+SQL2 fordítása Windowson (kipróbálva nincs, kliens DLL-ek kellenének).
+xmlnode-ban function cdataif static-ra változtatva.

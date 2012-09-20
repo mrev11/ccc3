@@ -63,7 +63,8 @@
 #include <cccapi.h>
 
 //#include <pgsql/libpq-fe.h>
-#include <postgresql/libpq-fe.h>
+//#include <postgresql/libpq-fe.h>
+#include <pq.h>
 
 DEFINE_METHOD(operation);
 DEFINE_METHOD(description);

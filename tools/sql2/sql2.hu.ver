@@ -1,3 +1,8 @@
+2012.09.20
+  Saját Postgres és SQLite3 prototype deklarációk.
+  Installált Postgres és SQLite3 nélkül is lefordítható a könyvtár. 
+  Windowson is fordul (kipróbálva nincs, kliens DLL-ek kellenének).
+
 2012.05.21
   sqltabalias (pg/ora) javítva.
 

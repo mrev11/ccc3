@@ -23,7 +23,9 @@
 #include <stdio.h>
 #include <error.ch>
 #include <string.h>
-#include <sqlite3.h>
+
+#define CPP_PROTOTYPES
+#include <sqlite3.ch>
 
 #include <cccapi.h>
 

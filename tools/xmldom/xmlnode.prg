@@ -284,7 +284,7 @@ local cd:="", n
     return  cd
  
 
-function cdataif(x)
+static function cdataif(x)
     if( "<"$x .or. "&"$x )
         return  cdata(x) 
     end

@@ -29,8 +29,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <postgresql/libpq-fe.h>
-
+//#include <postgresql/libpq-fe.h>
+#include <pq.h>
 
 typedef void PQclear_t (PGresult *res);
 typedef void PQfinish_t (PGconn *conn);

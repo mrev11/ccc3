@@ -29,7 +29,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <sqlite3.h>
+#define CPP_PROTOTYPES
+#include <sqlite3.ch>
 
 typedef const char *sqlite3_libversion_t(void);
 typedef int sqlite3_open_t(const char *filename,sqlite3 **ppDb);

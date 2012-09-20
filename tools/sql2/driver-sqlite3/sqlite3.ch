@@ -47,3 +47,87 @@
 #define SQLITE_OPEN_FULLMUTEX        0x00010000  /* Ok for sqlite3_open_v2() */
 #define SQLITE_OPEN_SHAREDCACHE      0x00020000  /* Ok for sqlite3_open_v2() */
 #define SQLITE_OPEN_PRIVATECACHE     0x00040000  /* Ok for sqlite3_open_v2() */
+
+
+#ifdef CPP_PROTOTYPES
+
+// Ezek kellenek az interfész lefordításához.
+// Megfelelne az eredeti sqlite3.h is,
+// de így akkor is tudunk fordítani, 
+// ha nincs isntallálva az sqlite3.
+
+typedef struct sqlite3 sqlite3;
+typedef struct sqlite3_stmt sqlite3_stmt;
+
+typedef long long int sqlite3_int64;
+typedef unsigned long long int sqlite3_uint64;
+
+typedef struct Mem sqlite3_value;
+
+
+
+#ifndef SQLITE_API
+# define SQLITE_API
+#endif
+
+SQLITE_API const char *sqlite3_libversion(void);
+
+SQLITE_API int sqlite3_errcode(sqlite3 *db);
+SQLITE_API int sqlite3_extended_errcode(sqlite3 *db);
+SQLITE_API const char *sqlite3_errmsg(sqlite3*);
+
+SQLITE_API int sqlite3_open(
+  const char *filename,   /* Database filename (UTF-8) */
+  sqlite3 **ppDb          /* OUT: SQLite db handle */
+);
+
+SQLITE_API int sqlite3_open_v2(
+  const char *filename,   /* Database filename (UTF-8) */
+  sqlite3 **ppDb,         /* OUT: SQLite db handle */
+  int flags,              /* Flags */
+  const char *zVfs        /* Name of VFS module to use */
+);
+
+
+SQLITE_API int sqlite3_close(sqlite3*);
+SQLITE_API int sqlite3_close_v2(sqlite3*);
+
+SQLITE_API int sqlite3_exec(
+  sqlite3*,                                  /* An open database */
+  const char *sql,                           /* SQL to be evaluated */
+  int (*callback)(void*,int,char**,char**),  /* Callback function */
+  void *,                                    /* 1st argument to callback */
+  char **errmsg                              /* Error msg written here */
+);
+
+
+SQLITE_API int sqlite3_prepare_v2(
+  sqlite3 *db,            /* Database handle */
+  const char *zSql,       /* SQL statement, UTF-8 encoded */
+  int nByte,              /* Maximum length of zSql in bytes. */
+  sqlite3_stmt **ppStmt,  /* OUT: Statement handle */
+  const char **pzTail     /* OUT: Pointer to unused portion of zSql */
+);
+
+SQLITE_API int sqlite3_step(sqlite3_stmt*);
+SQLITE_API int sqlite3_finalize(sqlite3_stmt *pStmt);
+
+
+SQLITE_API const void *sqlite3_column_blob(sqlite3_stmt*, int iCol);
+SQLITE_API int sqlite3_column_bytes(sqlite3_stmt*, int iCol);
+SQLITE_API double sqlite3_column_double(sqlite3_stmt*, int iCol);
+SQLITE_API int sqlite3_column_int(sqlite3_stmt*, int iCol);
+SQLITE_API sqlite3_int64 sqlite3_column_int64(sqlite3_stmt*, int iCol);
+SQLITE_API const unsigned char *sqlite3_column_text(sqlite3_stmt*, int iCol);
+SQLITE_API int sqlite3_column_type(sqlite3_stmt*, int iCol);
+SQLITE_API sqlite3_value *sqlite3_column_value(sqlite3_stmt*, int iCol);
+SQLITE_API const char *sqlite3_column_name(sqlite3_stmt*, int N);
+SQLITE_API int sqlite3_column_count(sqlite3_stmt *pStmt);
+SQLITE_API int sqlite3_changes(sqlite3*);
+SQLITE_API sqlite3_int64 sqlite3_last_insert_rowid(sqlite3*);
+
+SQLITE_API void *sqlite3_malloc(int);
+SQLITE_API void *sqlite3_realloc(void*, int);
+SQLITE_API void sqlite3_free(void*);
+
+#endif

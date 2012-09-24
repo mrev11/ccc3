@@ -1,3 +1,5 @@
+2012.09.24 exec-ben a Unixos execvpe hiánya pótolva.
+   
 2012.09.20 SQLite3 tesztek futtatása Windowson.
 Ugyanazok a tesztek futnak, mint Linuxon (nincs right join).
 sqlite3.dll lefordítása:

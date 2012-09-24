@@ -1,6 +1,7 @@
 @echo off
 
-set GENSCRIPT=bt2tds.exe
+:set GENSCRIPT=bt2tds.exe
+set GENSCRIPT=echo
 
 %GENSCRIPT% ..\testdata\a.bt  -n testdata.a  -t konto.a  -p id
 %GENSCRIPT% ..\testdata\b.bt  -n testdata.b  -t konto.b  -p id

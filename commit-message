@@ -1,7 +1,1 @@
-2012.09.20 SQLite3 tesztek futtatása Windowson.
-Ugyanazok a tesztek futnak, mint Linuxon (nincs right join).
-sqlite3.dll lefordítása:
-gcc -O2 -DNDEBUG=1 -DTHREADSAFE=1 -c sqlite3.c
-gcc -shared -s -o sqlite3.dll sqlite3.o
-ahol sqlite3.c az egyfilés "amalgamation" kiszerelésből van,
-sqlite3.dll-t betesszük a path-ba.
+2012.09.24 exec-ben a Unixos execvpe hiánya pótolva.

@@ -148,7 +148,14 @@ void _clp_exec(int argno)
         else
         {
             #ifdef _UNIX_
-                result=execve(argv[0],argv,envp); //miért nincs execvpe ??
+                //szálbiztonság?
+                //miért nincs execvpe?
+                //ellenőrizve: Linux, FreeBSD, NetBSD
+                extern char **environ;
+                char **environ_save=environ;
+                environ=(char**)envp;
+                result=execvp(argv[0],argv);
+                environ=environ_save;
             #else
                 result=execvpe(argv[0],argv,envp); 
             #endif

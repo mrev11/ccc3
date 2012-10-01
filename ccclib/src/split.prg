@@ -19,7 +19,7 @@
  */
 
 ************************************************************************
-function split(txt,sep:=if(valtype(txt)=="X",a",",","))
+function split(txt:="",sep:=if(valtype(txt)=="X",a",",","))
 local wlist:={}, n:=1, i
 
     while( 0<(i:=at(sep,txt,n)) )

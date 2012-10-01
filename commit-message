@@ -1,1 +1,2 @@
-2012.09.24 exec-ben a Unixos execvpe hiánya pótolva.
+2012.10.01 Újraírt split újra javítva.
+A helyes eredmény:  split(NIL,"&") -> {}

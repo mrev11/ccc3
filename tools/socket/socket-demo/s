@@ -1,2 +1,0 @@
-#!/bin/bash
-./listener.exe 45000 recv.exe

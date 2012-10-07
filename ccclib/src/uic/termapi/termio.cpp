@@ -135,7 +135,7 @@ void connect_to_terminal()
         argv[3]=0;
 
         #ifdef WINDOWS        
-            spawnv(P_NOWAIT,argv[0],argv);
+            spawnv(P_NOWAIT,argv[0],(char*const*)argv);
             //Windowsban nincs jó hely lezárni s-t.
 
         #else

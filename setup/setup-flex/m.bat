@@ -11,7 +11,7 @@ gcc  -I .  *.c  -o %FLEX%
 
 :msc --------------------------------------------------------------------------
 if not "%cccbin%"=="msc" goto msc1
-cl -Fe%FLEX%  -I . *.c  
+cl -Fe%FLEX%  -I . *.c   /link bufferoverflowu.lib
 :msc1
 
 
@@ -23,7 +23,7 @@ if exist %FLEX% goto ok
     echo flex succesfully compiled
 
 :inst
-    copy %IOSTREAM%\flexlexer.h  %CCCDIR%\usr\include 1>NUL
+    copy flexlexer.h  %CCCDIR%\usr\include 1>NUL
 
 :stop
 

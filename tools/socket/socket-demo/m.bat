@@ -1,4 +1,2 @@
-call bapp_w32c -bccc3_socket
-copy listener.exe %cccdir%\usr\bin\nt
-copy remstart.exe %cccdir%\usr\bin\nt
+call bapp_w32_ -bccc3_socket
  

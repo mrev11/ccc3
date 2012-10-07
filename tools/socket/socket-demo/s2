@@ -1,0 +1,6 @@
+#!/bin/bash
+#listener.exe 45000 recv.exe
+
+xterm -e "listener.exe 45000 recv.exe" &
+sleep 2
+send.exe

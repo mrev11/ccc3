@@ -56,6 +56,12 @@ screenbuf *screen_buffer=0;
 
 #define NEWTHREAD(t) CreateThread(0,0,(LPTHREAD_START_ROUTINE)t,0,0,NULL);
 
+
+#undef min
+#undef max
+#define min(x,y)   ((x)<(y)?(x):(y))
+#define max(x,y)   ((x)>(y)?(x):(y))
+
  
 //---------------------------------------------------------------------------
 static void setcaret(HWND hwnd)
@@ -434,7 +440,7 @@ int WINAPI WinMain(
     char host[128]; strcpy(host,"127.0.0.1"); 
     int  port=55000;
     
-    if( *lpszCmdLine )
+    if( lpszCmdLine && *lpszCmdLine )
     {
         int i;
         for( i=0; i<127; i++ )

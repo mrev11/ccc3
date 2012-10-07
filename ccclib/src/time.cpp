@@ -128,7 +128,7 @@ void _clp_ostime(int argno)
     CCC_PROLOG("ostime",0);
     time_t t;
     time(&t);
-    _retnl(t);
+    _retnl((double)t);
     CCC_EPILOG();
 }
 
@@ -243,7 +243,7 @@ void _clp_dati2ostime(int argno) // Local {da,ti} -> time
 
     sscanf(t,"%d:%d:%d", &time.tm_hour, &time.tm_min, &time.tm_sec );
     
-    _retnl( mktime(&time) );
+    _retnl( (double) mktime(&time) );
     
     CCC_EPILOG();
 }

@@ -9,6 +9,7 @@ ole32.lib
 oleaut32.lib 
 uuid.lib 
 wsock32.lib
+bufferoverflowu.lib
 
 /OPT:NOREF
  

@@ -121,7 +121,7 @@ local screen
         cmd+=' "-p'+replace+'"'
     end
  
-    run ( "start " + cmd  )
+    run ( "start /b " + cmd  )
 
   #endif
 

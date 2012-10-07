@@ -27,37 +27,27 @@
 //paraméterben kapott parancs (szerver) úgy, hogy megkapja parancssori
 //argumentumként a megnyílt socketet. Ezen a socketen a kliens
 //és a szerver tetszés szerint kommunikálhat. Egy szerver program 
-//indítása után a listener a socketet lezárja, és tovább figyel,
+//indítása után a listener a kliens socketet lezárja, és tovább figyel,
 //azaz vár a következő kliensre.
 
 function main(port,torun)
 
 local s,c,r
 
+    ?  "socket:", s:=socket()
+    ?  "bind:"  , bind(s,val(port))
+    ?  "listen:", listen(s)
+
     while( .t. )
 
-        ?  ">socket:", str( s:=socket()       ,3,0)
-        ?? " bind:"  , str( bind(s,val(port)) ,3,0) 
-        ?? " listen:", str( listen(s)         ,3,0) 
-        ?? " accept:", str( c:=accept(s)      ,3,0) 
-        ?? " sclose:", str( sclose(s)         ,3,0) 
+        ? "accept:", c:=accept(s)
         
         #ifdef _UNIX_
-
-            //így lehet a standard inputot és 
-            //outputot a socketbe irányítani
-            //r:="&"+alltrim(str(c))
-            //run  ( torun+str(c)+" <"+r+" >"+r+" &" )
-
             run( torun+str(c)+" &" )
- 
         #else
             run( "start "+torun+str(c) )
 
         #endif
 
-        ?? " sclose:", str( sclose(c)         ,3,0) 
+        ? "sclose:", sclose(c)
     end
-
-    return NIL
-

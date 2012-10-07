@@ -120,7 +120,7 @@ void _clp_bin2f(int argno)
 void _clp_l2hex(int argno)
 {
     VALUE *base=stack-argno;
-    unsigned long x=0;
+    unsigned long long x=0;
     if( argno<1 )
     {
         error_arg("l2hex",base,argno);
@@ -131,14 +131,14 @@ void _clp_l2hex(int argno)
     }
     else if( base->type==TYPE_POINTER )
     {
-        x=(unsigned long)base->data.pointer;
+        x=(unsigned long long)base->data.pointer;
     }
     else
     {
         error_arg("l2hex",base,argno);
     }
     char buffer[32];
-    sprintf(buffer,"%lx",x);
+    sprintf(buffer,"%llx",x);
     stack=base;
     stringnb(buffer); 
 }

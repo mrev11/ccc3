@@ -77,9 +77,9 @@ static void createStatEntry(struct stat *buf)
         number(0); //Windowson nincs
     #endif
  
-    number(buf->st_atime);
-    number(buf->st_mtime);
-    number(buf->st_ctime);
+    number((double)buf->st_atime);
+    number((double)buf->st_mtime);
+    number((double)buf->st_ctime);
 
     array(N_STAT);
 }

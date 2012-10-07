@@ -121,7 +121,7 @@ local p,s,n,i,c,arg,env,res,cmd,var
             p:=proctab[i]
             c:=accept(s[n])
 
-            cmd:=cmdline(p:command,c)
+            cmd:=cmdline(p,c)
 
             if( empty(p:env) )
                 env:=NIL
@@ -138,6 +138,8 @@ local p,s,n,i,c,arg,env,res,cmd,var
                 dirchange(p:workdir)
             end
 
+
+            //? cmd
             res:=spawn(SPAWN_NOWAIT+SPAWN_PATH,cmd,env)
 
             if( !empty(p:workdir) )
@@ -164,15 +166,29 @@ local p,s,n,i,c,arg,env,res,cmd,var
 
 
 ******************************************************************************
-static function cmdline(txt,sck)
+static function cmdline(pitem,sck)
 
 // behelyettesíti a $(SOCKET) makrót
 // elvégzi az $(ENVIR) makrók helyettesítését,
 // az elválasztó szóközöket egységesíti,
 // visszatérés: {prog arg1 arg2...}
 
-local n, p, cmd
- 
+local cmd,n
+
+    if( pitem:executable!=NIL )
+        cmd:={pitem:executable}
+    else
+        cmd:=split(txtproc(pitem:command,sck)," ")
+    end
+
+    for n:=1 to len(pitem:arg)
+        aadd(cmd,txtproc(pitem:arg[n],sck))
+    next
+    return cmd 
+
+
+static function txtproc(txt,sck)
+local n,p
     txt:=alltrim(txt)
     txt:=strtran(txt,"$(SOCKET)",alltrim(str(sck)))
  
@@ -190,12 +206,8 @@ local n, p, cmd
     while( "  "$txt )
         txt:=strtran(txt,"  "," ")
     end
-    cmd:=split(txt," ")
-
-    cmd[1]:=which(cmd[1]) //megkeresi a pathban
-
-    return cmd 
-   
+    
+    return txt
 
 ******************************************************************************
 static function which(x) //megkeresi x-et a pathban
@@ -247,6 +259,8 @@ local n,item,attr,txt
             item:name:=txt
         elseif( attr=="env" )
             aadd(item:env,txt)
+        elseif( attr=="arg" )
+            aadd(item:arg,txt)
         elseif( attr=="interface" )
             item:interface:=txt
         elseif( attr=="host" )  //interface
@@ -261,6 +275,8 @@ local n,item,attr,txt
             item:workdir:=txt 
         elseif( attr=="command" )
             item:command:=txt
+        elseif( attr=="executable" )
+            item:executable:=txt
         else
             alert("Invalid XML tag: "+attr)
         end
@@ -280,10 +296,12 @@ class xstartitem(object)
     attrib socket
     attrib name
     attrib env
+    attrib arg
     attrib interface
     attrib port
     attrib workdir
     attrib command
+    attrib executable
 
 ******************************************************************************
 static function xstartitem.initialize(this) 
@@ -291,10 +309,12 @@ static function xstartitem.initialize(this)
     this:socket:=NIL
     this:name:=""
     this:env:={}
+    this:arg:={}
     this:interface:=NIL  //minden interfeszen figyel
     this:port:=NIL
     this:workdir:=NIL
     this:command:=NIL
+    this:executable:=NIL
     return this
 
 ******************************************************************************

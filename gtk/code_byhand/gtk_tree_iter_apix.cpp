@@ -37,7 +37,11 @@ namespace _nsp_tree_iter{
 void _clp_new(int argno)
 {
     CCC_PROLOG("gtk.tree_iter.new",0);
-    _retp( g_slice_new(GtkTreeIter) ); //2008.12.14
+    //_retp( g_slice_new(GtkTreeIter) ); //2008.12.14, ez is rossz
+
+    //2012.09.30
+    GtkTreeIter iter;
+    _retp(gtk_tree_iter_copy(&iter));  //talán így
     CCC_EPILOG();
 }
 

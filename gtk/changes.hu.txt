@@ -1,4 +1,14 @@
 
+2012.09.30
+  Nem jó a 2008.12.14-es javítás, helyette:
+
+    GtkTreeIter iter;
+    _retp(gtk_tree_iter_copy(&iter));  //talán így
+
+  A gtk_tree_iter_copy-ról írják, hogy az eredményét fel
+  kell szabadítani a gtk_tree_iter_free-vel. Passzolnak
+  anélkül, hogy bármit feltételeznék a belsejükről.
+
 2008.12.14
 
   A GtkTreeIter és GtkTextIter struktúrákat kompatibilis

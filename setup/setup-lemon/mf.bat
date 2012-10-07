@@ -2,7 +2,7 @@
 
 set LEMON=%CCCDIR%\usr\bin\%CCCUNAME%\lemon.exe
 
-if exist %LEMON% goto inst
+:if exist %LEMON% goto inst
 
 :mng --------------------------------------------------------------------------
 if not "%cccbin%"=="mng" goto mng1

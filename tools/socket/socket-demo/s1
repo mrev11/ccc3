@@ -1,0 +1,4 @@
+#!/bin/bash
+xterm -e "recv0.exe 5000" &
+sleep 2
+send0.exe

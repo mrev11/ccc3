@@ -105,6 +105,10 @@ pushd tools\mask
 call m.bat
 popd
 
+pushd tools\regex
+call m.bat
+popd
+
 pushd tools\savex
 call m.bat
 popd

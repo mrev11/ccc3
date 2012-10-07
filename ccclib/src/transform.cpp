@@ -245,7 +245,7 @@ void trn_number(VALUE *vs,VALUE *vp) //  --- string
     
     if( tf[TRANSFORM_Z] && !vs->data.number )
     {
-        number(wcslen(tempstr));
+        number( (double)wcslen(tempstr));
         _clp_space(1);
         return;
     }
@@ -317,7 +317,7 @@ void trn_number(VALUE *vs,VALUE *vp) //  --- string
     if( tf[TRANSFORM_B] )
     {
         _clp_ltrim(1);
-        number(wcslen(tempstr));
+        number((double)wcslen(tempstr));
         _clp_padr(2);
     }
 }

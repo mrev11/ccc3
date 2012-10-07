@@ -1,2 +1,5 @@
-2012.10.01 Újraírt split újra javítva.
-A helyes eredmény:  split(NIL,"&") -> {}
+2012.10.01 Windows 2012 Server 64 bit
+Jelentéktelen warningok javítása.
+MSC fordítási ociók: -G5 -GX megszűnt.
+MSC linkelési opciók:  bufferoverflowu.lib
+javítva: gtk_text_iter_apix.cpp, gtk_tree_iter_apix.cpp

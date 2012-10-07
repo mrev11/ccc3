@@ -30,7 +30,7 @@ local k:=0,s,sms
         ipaddr:="127.0.0.1"
     end
 
-    alert(ipaddr)
+    //alert(ipaddr)
 
     ? s:=socket()
     ? connect(s,ipaddr,45000)

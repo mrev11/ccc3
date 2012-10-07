@@ -1,3 +1,9 @@
+2012.10.01 Windows 2012 Server 64 bit
+Jelentéktelen warningok javítása.
+MSC fordítási ociók: -G5 -GX megszűnt.
+MSC linkelési opciók:  bufferoverflowu.lib
+javítva: gtk_text_iter_apix.cpp, gtk_tree_iter_apix.cpp
+
 2012.10.01 Újraírt split újra javítva.
 A helyes eredmény:  split(NIL,"&") -> {}
 
@@ -76,7 +82,7 @@ A CHANGELOG mentődik a repóba, a commit-message fájl nem.
 # "sql2: insert reread"  #2011.03.05
 # "so-k cp helyett mv-vel kerulnek a helyukre" #2010.12.22
 # "tutor/varstack" #2010.12.06
-# "windows karbantatas, filemap" #2010.11.23
+# "windows karbantartas, filemap" #2010.11.23
 # "X és C típusok hossza unsigned long-ban számolva" #2010.11.08
 # "inverz makro, errorgen_nul(), binaryl(unsigned long len)" #2010.11.05
 # "jeed-ben sqldisconnect" #2010.10.24

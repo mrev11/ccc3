@@ -37,7 +37,11 @@ namespace _nsp_text_iter{
 void _clp_new(int argno)
 {
     CCC_PROLOG("gtk.text_iter.new",0);
-    _retp( g_slice_new(GtkTextIter) ); //2008.12.14
+    //_retp( g_slice_new(GtkTextIter) ); //2008.12.14, ez sem
+
+    //2012.09.30
+    GtkTextIter iter;
+    _retp(gtk_text_iter_copy(&iter));  //talán így
     CCC_EPILOG();
 }
 

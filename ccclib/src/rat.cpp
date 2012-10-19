@@ -58,8 +58,8 @@ void _clp_rat(int argno)
     {
         str2bin(base);
 
-        unsigned long slen=_parblen(1); //ezt keressuk
-        unsigned long tlen=_parblen(2); //ebben keresunk
+        binarysize_t slen=_parblen(1); //ezt keressuk
+        binarysize_t tlen=_parblen(2); //ebben keresunk
 
         if( slen==0 || tlen==0 || slen>tlen )
         {
@@ -69,7 +69,7 @@ void _clp_rat(int argno)
         {
             char *sp=_parb(1); //ezt keressuk
             char *tp=_parb(2); //ebben keresunk
-            unsigned long i;
+            binarysize_t i;
             for( i=tlen-slen+1; i>0; i-- )
             {
                  if( 0==memcmp(tp+i-1,sp,slen) )
@@ -77,7 +77,7 @@ void _clp_rat(int argno)
                      break;
                  }
             }
-            _retni(i);
+            _retni((double)i);
         }
     }
     else

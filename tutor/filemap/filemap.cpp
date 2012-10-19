@@ -49,7 +49,7 @@ void _clp_sync(int argno)
     CCC_PROLOG("filemap.sync",1);
 
     char *mapView=_parb(1);
-    unsigned long mapLength=_parblen(1);
+    binarysize_t mapLength=_parblen(1);
 
     //if( 0!=msync(mapView,mapLength,MS_SYNC) )
     if( 0!=msync(mapView,mapLength,MS_SYNC|MS_INVALIDATE) ) //?
@@ -84,7 +84,7 @@ void _clp_close(int argno)
     CCC_PROLOG("filemap.close",1);
 
     char *mapView=_parb(1);
-    unsigned long mapLength=_parblen(1);
+    binarysize_t mapLength=_parblen(1);
 
     if( 0!=munmap(mapView,mapLength) )
     {
@@ -124,12 +124,36 @@ void _clp_open(int argno)
     if(strchr(flags,'r')) prot|=PROT_READ;
     if(strchr(flags,'w')) prot|=PROT_WRITE;
 
-    unsigned long mapLength;
-    unsigned long savepos;
+    off_t mapLength;
+    off_t savepos;
     
     savepos=lseek(fd,0,SEEK_CUR);
     mapLength=lseek(fd,0,SEEK_END); 
     lseek(fd,savepos,SEEK_SET);
+    
+    if( mapLength > (binarysize_t)mapLength  )
+    {
+        _clp_ioerrornew(0);
+
+        DUP();
+        number(fd);
+        number((double)mapLength);
+        array(2);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("not enough address space"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.open"));
+        _o_method_operation.eval(2);
+        POP();
+
+        _clp_break(1);
+    }
 
     caddr_t mapView=(caddr_t)mmap(NULL,mapLength,prot,MAP_SHARED,fd,0);
 
@@ -139,7 +163,8 @@ void _clp_open(int argno)
 
         DUP();
         number(fd);
-        array(1);
+        number((double)mapLength);
+        array(2);
         _o_method_args.eval(2);
         POP();
 
@@ -189,7 +214,7 @@ void _clp_sync(int argno)
     CCC_PROLOG("filemap.sync",1);
 
     char *mapView=_parb(1);
-    unsigned long mapLength=_parblen(1);
+    binarysize_t mapLength=_parblen(1);
 
     if( 0==FlushViewOfFile(mapView,mapLength) )
     {
@@ -277,9 +302,38 @@ void _clp_open(int argno)
         accs=FILE_MAP_WRITE;
     }
 
-    HANDLE fhnd=(HANDLE)_get_osfhandle(fd);
-    unsigned long mapLength=GetFileSize(fhnd,0);
+    long long mapLength;
+    long long savepos;
 
+    savepos=_lseeki64(fd,0,SEEK_CUR);
+    mapLength=_lseeki64(fd,0,SEEK_END); 
+    _lseeki64(fd,savepos,SEEK_SET);
+    
+    if( mapLength > (binarysize_t)mapLength  )
+    {
+        _clp_ioerrornew(0);
+
+        DUP();
+        number(fd);
+        number((double)mapLength);
+        array(2);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("not enough address space"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("filemap.open"));
+        _o_method_operation.eval(2);
+        POP();
+
+        _clp_break(1);
+    }
+
+    HANDLE fhnd=(HANDLE)_get_osfhandle(fd);
     HANDLE mapHandle=CreateFileMapping(fhnd,0,prot,0,0,NULL);
     if( mapHandle==0 )
     {
@@ -289,7 +343,8 @@ void _clp_open(int argno)
 
         DUP();
         number(fd);
-        array(1);
+        number((double)mapLength);
+        array(2);
         _o_method_args.eval(2);
         POP();
 

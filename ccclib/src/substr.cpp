@@ -74,16 +74,16 @@ void _clp_substr(int argno)
     else  //binary
     {
         BYTE *s=_parb(1);
-        unsigned long len=_parblen(1);
-        unsigned long beg;
+        binarysize_t len=_parblen(1);
+        binarysize_t beg;
         double dbeg=_parnd(2);
         if( dbeg>0 )
         {
-            beg=D2ULONG(dbeg);
+            beg=D2ULONGW(dbeg);
         }
         else
         {
-            beg=D2ULONG(-dbeg);
+            beg=D2ULONGW(-dbeg);
             if( beg>=len )
             {
                 beg=1;
@@ -143,7 +143,7 @@ void _clp_left(int argno)
     else
     {
         BYTE *s=_parb(1);
-        unsigned long len=_parblen(1);
+        binarysize_t len=_parblen(1);
         int cnt=minUS(len,_parni(2)); //min(unsigned,signed)
         
         if(cnt<=0)
@@ -180,7 +180,7 @@ void _clp_right(int argno)
     else
     {
         BYTE *s=_parb(1);
-        unsigned long len=_parblen(1);
+        binarysize_t len=_parblen(1);
         int cnt=minUS(len,_parni(2));  //min(unsigned,signed)
     
         if(cnt<=0)

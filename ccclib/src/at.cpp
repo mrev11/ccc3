@@ -72,10 +72,10 @@ void _clp_at(int argno)
     {
         str2bin(base);
 
-        unsigned long slen=_parblen(1); //ezt keressuk
-        unsigned long tlen=_parblen(2); //ebben keresunk
+        binarysize_t slen=_parblen(1); //ezt keressuk
+        binarysize_t tlen=_parblen(2); //ebben keresunk
         double dstrt=ISNIL(3)?0:_parnd(3)-1;
-        unsigned long strt=dstrt<0?tlen:D2ULONG(dstrt); //innen kezdve keresunk
+        binarysize_t strt=dstrt<0?tlen:D2ULONGW(dstrt); //innen kezdve keresunk
 
         if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen )
         {
@@ -85,7 +85,7 @@ void _clp_at(int argno)
         {
             char *sp=_parb(1); //ezt keressuk
             char *tp=_parb(2); //ebben keresunk
-            unsigned long i;
+            binarysize_t i;
 
             if( slen==1 ) //spec eset
             {
@@ -107,7 +107,7 @@ void _clp_at(int argno)
                      }
                 }
             }
-            _retni(i+slen<tlen+1?i+1:0);
+            _retni(i+slen<tlen+1?((double)(i+1)):0);
         }
     }
     else

@@ -58,7 +58,7 @@ DEFINE_METHOD(description);
 DEFINE_METHOD(args);
  
 //--------------------------------------------------------------------------
-static void vmhandle(VALUE *hnd, unsigned long size, const char *operation)
+static void vmhandle(VALUE *hnd, binarysize_t size, const char *operation)
 {
     const char *description;
 
@@ -83,7 +83,7 @@ static void vmhandle(VALUE *hnd, unsigned long size, const char *operation)
     _clp_errornew(0);
     dup(); stringnb(description); _o_method_description.eval(2); pop();
     dup(); stringnb(operation); _o_method_operation.eval(2); pop();
-    dup(); push(hnd);number(size);array(2); _o_method_args.eval(2); pop();
+    dup(); push(hnd);number((double)size);array(2); _o_method_args.eval(2); pop();
 
     _clp_break(1);
     pop();
@@ -94,7 +94,7 @@ void _clp_xvclear(int argno)
 {
     CCC_PROLOG("xvclear",1);
     char *buffer=_parb(1); 
-    unsigned long size=_parblen(1);
+    binarysize_t size=_parblen(1);
 
     while( size )
     {
@@ -109,13 +109,13 @@ void _clp_xvputfill(int argno)
 {
     CCC_PROLOG("xvputfill",4);
     char *buffer=_parb(1); 
-    unsigned long offs=_parnu(2);
-    unsigned long width=_parnu(3);
+    binarysize_t offs=_parnuw(2);
+    binarysize_t width=_parnuw(3);
 
     char c=(char)(0x00ff&_parni(4));
     vmhandle(PARPTR(1),offs+width,"XVPUTFILL");
 
-    unsigned long i;
+    binarysize_t i;
     for(i=0; i<width; i++)
     {
         *(buffer+offs+i)=c;
@@ -130,14 +130,14 @@ void _clp_xvputbin(int argno)
 {
     CCC_PROLOG("xvputbin",4);
     char *buffer=_parb(1);; 
-    unsigned long offs=_parnu(2);
-    unsigned long width=_parnu(3);
+    binarysize_t offs=_parnuw(2);
+    binarysize_t width=_parnuw(3);
     char *data=_parb(4);
-    unsigned long datlen=_parblen(4);
+    binarysize_t datlen=_parblen(4);
     
     vmhandle(PARPTR(1),offs+width,"XVPUTBIN");
 
-    unsigned long i;
+    binarysize_t i;
     for(i=0; (i<datlen) && (i<width); i++)
     {
         *(buffer+offs+i)=*(data+i);
@@ -162,12 +162,12 @@ void _clp_xvputchar(int argno)
 {
     CCC_PROLOG("xvputchar",4);
     char *buffer=_parb(1); 
-    unsigned long offs=_parnu(2);
-    unsigned long width=_parnu(3);
+    binarysize_t offs=_parnuw(2);
+    binarysize_t width=_parnuw(3);
     char *data=_parb(4);
     vmhandle(PARPTR(1),offs+width,"XVPUTCHAR");
 
-    unsigned long i;
+    binarysize_t i;
     char c;
  
     for(i=0; data && (c=*(data+i)) && (i<width); i++)
@@ -187,7 +187,7 @@ void _clp_xvputdouble(int argno)
 {
     CCC_PROLOG("xvputdouble",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     double data=_parnd(3);
     vmhandle(PARPTR(1),offs+sizeof(double),"XVPUTDOUBL");
     memcpy(buffer+offs,&data,sizeof(double));
@@ -200,7 +200,7 @@ void _clp_xvputlong(int argno)  //32-bit signed
 {
     CCC_PROLOG("xvputlong",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_s32 data=_parnl(3);
     vmhandle(PARPTR(1),offs+sizeof(vmm_s32),"XVPUTLONG");
     memcpy(buffer+offs,&data,sizeof(vmm_s32));
@@ -213,7 +213,7 @@ void _clp_xvputint(int argno) //16-bit signed
 {
     CCC_PROLOG("xvputint",3);
     char* buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_s16 data=(vmm_s16)_parni(3);
     vmhandle(PARPTR(1),offs+sizeof(vmm_s16),"XVPUTINT");
     memcpy(buffer+offs,&data,sizeof(vmm_s16));
@@ -227,7 +227,7 @@ void _clp_xvputbyte(int argno)
 {
     CCC_PROLOG("xvputbyte",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     int data=_parni(3);
     vmhandle(PARPTR(1),offs+sizeof(char),"XVPUTBYTE");
     *(buffer+offs)=(char)data;
@@ -240,7 +240,7 @@ void _clp_xvputflag(int argno)
 {
     CCC_PROLOG("xvputflag",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     int flag=_parl(3);
     vmhandle(PARPTR(1),offs+sizeof(char),"XVPUTFLAG");
     *(buffer+offs)=(char)(flag?1:0);
@@ -253,8 +253,8 @@ void _clp_xvgetchar(int argno)
 {
     CCC_PROLOG("xvgetchar",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
-    unsigned long width=_parnu(3);
+    binarysize_t offs=_parnuw(2);
+    binarysize_t width=_parnuw(3);
     vmhandle(PARPTR(1),offs+width,"XVGETCHAR");
     _retblen(buffer+offs,width);
     CCC_EPILOG();
@@ -265,7 +265,7 @@ void _clp_xvgetdouble(int argno)
 {
     CCC_PROLOG("xvgetdouble",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmhandle(PARPTR(1),offs+sizeof(double),"XVGETDOUBL");
     double retval;
     memcpy(&retval,buffer+offs,sizeof(double));
@@ -278,7 +278,7 @@ void _clp_xvgetlong(int argno) //32-bit signed
 {
     CCC_PROLOG("xvgetlong",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmhandle(PARPTR(1),offs+sizeof(vmm_s32),"XVGETLONG");
     vmm_s32 retval;
     memcpy(&retval,buffer+offs,sizeof(vmm_s32));
@@ -291,7 +291,7 @@ void _clp_xvgetint(int argno) //16-bit signed
 {
     CCC_PROLOG("xvgetint",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmhandle(PARPTR(1),offs+sizeof(vmm_s16),"XVGETINT");
     vmm_s16 retval;
     memcpy(&retval,buffer+offs,sizeof(vmm_s16));
@@ -304,7 +304,7 @@ void _clp_xvgetbyte(int argno)
 {
     CCC_PROLOG("xvgetbyte",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmhandle(PARPTR(1),offs+sizeof(char),"XVGETBYTE");
     _retni( 255 & *(buffer+offs) );
     CCC_EPILOG();
@@ -315,7 +315,7 @@ void _clp_xvgetflag(int argno)
 {
     CCC_PROLOG("xvgetflag",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmhandle(PARPTR(1),offs+sizeof(char),"XVGETFLAG");
     _retl( *(buffer+offs) );
     CCC_EPILOG();
@@ -327,7 +327,7 @@ void _clp_xvwrite(int argno)
     CCC_PROLOG("xvwrite",3);
     int fd=_parni(1);
     char *buffer=_parb(2);
-    unsigned long nbyte=_parnu(3);
+    binarysize_t nbyte=_parnuw(3);
     vmhandle(PARPTR(2),nbyte,"XVWRITE");
     _retni( write(fd,buffer,nbyte) );
     CCC_EPILOG();
@@ -339,8 +339,8 @@ void _clp_xvread(int argno)
     CCC_PROLOG("xvread",4);
     int fd=_parni(1);
     char *buffer=_parb(2);
-    unsigned long offs=_parnu(3);
-    unsigned long nbyte=_parnu(4);
+    binarysize_t offs=_parnuw(3);
+    binarysize_t nbyte=_parnuw(4);
     vmhandle(PARPTR(2),offs+nbyte,"XVREAD");
     _retni( read(fd,buffer+offs,nbyte) );
     CCC_EPILOG();
@@ -350,9 +350,9 @@ void _clp_xvread(int argno)
 void _clp_xvisequal(int argno)
 {
     CCC_PROLOG("xvisequal",5);
-    char *b1=_parb(1); unsigned long o1=_parnu(2);
-    char *b2=_parb(3); unsigned long o2=_parnu(4);
-    unsigned long nbyte=_parnu(5);
+    char *b1=_parb(1); binarysize_t o1=_parnuw(2);
+    char *b2=_parb(3); binarysize_t o2=_parnuw(4);
+    binarysize_t nbyte=_parnuw(5);
 
     vmhandle(PARPTR(1),o1+nbyte,"XVCOMPARE1");
     vmhandle(PARPTR(3),o2+nbyte,"XVCOMPARE2");
@@ -381,9 +381,9 @@ void _clp_xvmove(int argno)
     //Ugyanez áll a modul többi függvényére is.
 
     CCC_PROLOG("xvmove",5);
-    char *b1=_parb(1); unsigned long o1=_parnu(2);
-    char *b2=_parb(3); unsigned long o2=_parnu(4);
-    unsigned long nbyte=_parnu(5);
+    char *b1=_parb(1); binarysize_t o1=_parnuw(2);
+    char *b2=_parb(3); binarysize_t o2=_parnuw(4);
+    binarysize_t nbyte=_parnuw(5);
 
     vmhandle(PARPTR(1),o1+nbyte,"XVMOVE1");
     vmhandle(PARPTR(3),o2+nbyte,"XVMOVE2");
@@ -457,7 +457,7 @@ void _clp_xvputlit32(int argno) //INT32-ot ír little endianban
 {
     CCC_PROLOG("xvputlit32",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u32 data=LIT_32( (vmm_u32)_parnu(3) );
     vmhandle(PARPTR(1),offs+sizeof(data),"XVPUTLIT32");
     memcpy(buffer+offs,&data,sizeof(data));
@@ -470,7 +470,7 @@ void _clp_xvputlit16(int argno) //INT16-ot ír little endianban
 {
     CCC_PROLOG("xvputlit16",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u16 data=LIT_16( (vmm_u16)_parnu(3) );
     vmhandle(PARPTR(1),offs+sizeof(data),"XVPUTLIT16");
     memcpy(buffer+offs,&data,sizeof(data));
@@ -483,7 +483,7 @@ void _clp_xvgetlit32(int argno) //little endianban tárolt INT32-ot olvas
 {
     CCC_PROLOG("xvgetlit32",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u32 data;
     vmhandle(PARPTR(1),offs+sizeof(data),"XVGETLIT32");
     memcpy(&data,buffer+offs,sizeof(data));
@@ -496,7 +496,7 @@ void _clp_xvgetlit16(int argno) //little endianban tárolt INT16-ot olvas
 {
     CCC_PROLOG("xvgetlit16",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u16 data;
     vmhandle(PARPTR(1),offs+sizeof(data),"XVGETLIT16");
     memcpy(&data,buffer+offs,sizeof(data));
@@ -509,7 +509,7 @@ void _clp_xvputbig32(int argno) //INT32-ot ír big endianban
 {
     CCC_PROLOG("xvputbig32",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u32 data=BIG_32( (vmm_u32)_parnu(3) );
     vmhandle(PARPTR(1),offs+sizeof(data),"XVPUTBIG32");
     memcpy(buffer+offs,&data,sizeof(data));
@@ -522,7 +522,7 @@ void _clp_xvputbig16(int argno) //INT16-ot ír big endianban
 {
     CCC_PROLOG("xvputbig16",3);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u16 data=BIG_16( (vmm_u16)_parnu(3) );
     vmhandle(PARPTR(1),offs+sizeof(data),"XVPUTBIG16");
     memcpy(buffer+offs,&data,sizeof(data));
@@ -535,7 +535,7 @@ void _clp_xvgetbig32(int argno) //big endianban tárolt INT32-ot olvas
 {
     CCC_PROLOG("xvgetbig32",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u32 data;
     vmhandle(PARPTR(1),offs+sizeof(data),"XVGETBIG32");
     memcpy(&data,buffer+offs,sizeof(data));
@@ -548,7 +548,7 @@ void _clp_xvgetbig16(int argno) //big endianban tárolt INT16-ot olvas
 {
     CCC_PROLOG("xvgetbig16",2);
     char *buffer=_parb(1);
-    unsigned long offs=_parnu(2);
+    binarysize_t offs=_parnuw(2);
     vmm_u16 data;
     vmhandle(PARPTR(1),offs+sizeof(data),"XVGETBIG16");
     memcpy(&data,buffer+offs,sizeof(data));

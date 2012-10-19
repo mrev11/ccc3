@@ -233,10 +233,15 @@ extern VALUE PROTOTYPE_OBJECT;
 #define mod(x,y)   ((x)-((x)/(y))*(y))
 
 #define ROUND(x)   ((x)+((x)>0?0.5:-0.5))
+#define UROUND(x)  ((x)>0?(x)+0.5:0)
 #define D2INT(x)   ((int)ROUND(x))
 #define D2UINT(x)  ((unsigned)ROUND(x))
 #define D2LONG(x)  ((long)ROUND(x))
 #define D2ULONG(x) ((unsigned long)ROUND(x))
+
+#define D2LONGW(x)  ((long long)ROUND(x))
+#define D2ULONGW(x) ((unsigned long long)ROUND(x))
+#define D2ULONGX(x) ((unsigned long long)UROUND(x))
 
 //unsigned >  signed
 //unsigned >= signed

@@ -84,11 +84,11 @@ void _clp_fwrite(int argno) //Clipper
     }
 
     char *buf=_parb(2);
-    unsigned long cnt=_parblen(2);
+    binarysize_t cnt=_parblen(2);
     if( ISNUMBER(3) )
     {
         double dcnt=_parnd(3);
-        cnt=min(cnt, dcnt<0?0:D2ULONG(dcnt) );
+        cnt=min(cnt, D2ULONGX(dcnt) );
     }
     
     errno=0;

@@ -19,62 +19,54 @@
  */
 
 #include <io.h>
-
+#include <errno.h>
 #include <cccapi.h>
-#include <fileio.ch>  //Clipper
 
-//---------------------------------------------------------------------------
-void _clp_fseek(int argno)
+//----------------------------------------------------------------------------
+static int myftruncate(int fd, long long size)
 {
-    CCC_PROLOG("fseek",4);
+    long long actualpos=_lseeki64(fd,0L,SEEK_CUR);
+    _lseeki64(fd,size,SEEK_SET);
+    HANDLE fhnd=(HANDLE)_get_osfhandle(fd);
+    int result=SetEndOfFile(fhnd); //0 error, !0 OK (bool)
+    _lseeki64(fd,actualpos,SEEK_SET); //vissza
+    
+    if( result==0 )
+    {
+        errno=GetLastError();
+        return -1; //error
+    }
+    return 0; //OK
+}
+
+//----------------------------------------------------------------------------
+void _clp_ftruncate(int argno)
+{
+    CCC_PROLOG("ftruncate",3);
 
     int fd=_parni(1);
-    long long offs=0; //előjeles
-    int mode=0;
+    long long length=0;
 
     if( argno==2 ) 
     {
-        offs = _parnlw(2); //előjeles
-        mode = FS_SET;
+        length = _parnuw(2); 
     }
-    else if( argno==3 ) 
+    else if( argno==3 ) //large file support 
     {
-        offs = _parnlw(2); //előjeles
-        mode = _parni(3);
-    }
-    else if( argno==4 ) //large file support 
-    {
-        long long low,high;
-        low  = _parnlw(2); 
-        high = _parnlw(3); 
-        mode = _parni(4);
-        offs = (high<<32)+low;
+        long long  low,high;
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = (high<<32)+low;
     }
     else
     {
         ARGERROR();
     }
 
-    if( mode==FS_SET )
-    {
-        mode=SEEK_SET;
-    }
-    else if( mode==FS_RELATIVE )
-    {
-        mode=SEEK_CUR;
-    }
-    else if( mode==FS_END )
-    {
-        mode=SEEK_END;
-    }
-    else
-    {
-        ARGERROR();
-    }
-    
-    _retnd( (double)_lseeki64(fd,offs,mode) ); //offset OK, -1 error
+    _retni(myftruncate(fd,length)) ; //0 OK, -1 error
 
     CCC_EPILOG();
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+ 

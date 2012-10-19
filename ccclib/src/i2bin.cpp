@@ -127,7 +127,7 @@ void _clp_l2hex(int argno)
     }
     else if( base->type==TYPE_NUMBER )
     {
-        x=D2ULONG(base->data.number);
+        x=D2ULONGW(base->data.number);
     }
     else if( base->type==TYPE_POINTER )
     {
@@ -138,7 +138,28 @@ void _clp_l2hex(int argno)
         error_arg("l2hex",base,argno);
     }
     char buffer[32];
-    sprintf(buffer,"%llx",x);
+    #ifdef WINDOWS //rossz
+    {
+        int i=0;
+        char hex[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+        while(x)
+        {
+            buffer[i]=hex[x&0xf];
+            i++;
+            x=x>>4;
+        }
+        buffer[i]=0;
+        for(int j=0; j<i/2; j++)
+        {
+            char c=buffer[j];
+            buffer[j]=buffer[i-j-1];
+            buffer[i-j-1]=c;
+        }
+    }
+    #else
+        sprintf(buffer,"%llx",x);
+    #endif
+    
     stack=base;
     stringnb(buffer); 
 }

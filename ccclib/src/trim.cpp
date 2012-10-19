@@ -44,7 +44,7 @@ void _clp_ltrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        unsigned long len=_parblen(1);
+        binarysize_t len=_parblen(1);
         if( len<=0 )
         {
             _retb("");
@@ -90,7 +90,7 @@ void _clp_rtrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        unsigned long len=_parblen(1);
+        binarysize_t len=_parblen(1);
         if( len<=0 )
         {
             _retb("");
@@ -140,7 +140,7 @@ void _clp_alltrim(int argno)
     }
     else if( ISBINARY(1) )
     {
-        unsigned long len=_parblen(1);
+        binarysize_t len=_parblen(1);
         if( len<=0 )
         {
             _retb("");

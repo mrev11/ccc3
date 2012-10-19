@@ -18,63 +18,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <io.h>
-
 #include <cccapi.h>
-#include <fileio.ch>  //Clipper
 
-//---------------------------------------------------------------------------
-void _clp_fseek(int argno)
+//----------------------------------------------------------------------------
+void _clp_ftruncate(int argno)
 {
-    CCC_PROLOG("fseek",4);
+    CCC_PROLOG("ftruncate",3);
 
     int fd=_parni(1);
-    long long offs=0; //előjeles
-    int mode=0;
+    off_t length=0;
 
     if( argno==2 ) 
     {
-        offs = _parnlw(2); //előjeles
-        mode = FS_SET;
+        length = _parnuw(2); 
     }
-    else if( argno==3 ) 
+    else if( argno==3 ) //large file support 
     {
-        offs = _parnlw(2); //előjeles
-        mode = _parni(3);
-    }
-    else if( argno==4 ) //large file support 
-    {
-        long long low,high;
-        low  = _parnlw(2); 
-        high = _parnlw(3); 
-        mode = _parni(4);
-        offs = (high<<32)+low;
+        off_t low,high;
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = (high<<32)+low;
     }
     else
     {
         ARGERROR();
     }
 
-    if( mode==FS_SET )
-    {
-        mode=SEEK_SET;
-    }
-    else if( mode==FS_RELATIVE )
-    {
-        mode=SEEK_CUR;
-    }
-    else if( mode==FS_END )
-    {
-        mode=SEEK_END;
-    }
-    else
-    {
-        ARGERROR();
-    }
-    
-    _retnd( (double)_lseeki64(fd,offs,mode) ); //offset OK, -1 error
+    _retni( ftruncate(fd,length) );  //0 OK, -1 error
 
     CCC_EPILOG();
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+ 

@@ -29,28 +29,28 @@ void slice()
     VALUE *i=TOP2();
     VALUE *a=TOP3();
     
-    unsigned long idx=0;
+    unsigned long long idx=0;
     if( i->type==TYPE_NIL )
     {
         idx=1;
     }
     else if( i->type==TYPE_NUMBER )
     {
-        idx=i->data.number<0?0:D2ULONG(i->data.number);
+        idx=D2ULONGX(i->data.number);
     }
     else
     {
         error_arg("slice",a,3);
     }
 
-    unsigned long jdx=0;
+    unsigned long long jdx=0;
     if( j->type==TYPE_NIL )
     {
         jdx=-1;
     }
     else if( j->type==TYPE_NUMBER )
     {
-        jdx=j->data.number<0?0:D2ULONG(j->data.number);
+        jdx=D2ULONGX(j->data.number);
     }
     else
     {
@@ -79,7 +79,7 @@ void slice()
     else if( a->type==TYPE_BINARY )
     {
         BYTE *s=BINARYPTR(a);
-        unsigned long len=BINARYLEN(a);
+        binarysize_t len=BINARYLEN(a);
         idx=max(1,idx);
         jdx=min(len,jdx);
         if( idx>jdx )

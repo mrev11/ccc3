@@ -76,14 +76,14 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_BINARY:
         {
-            unsigned long len=BINARYLEN(base);
+            binarysize_t len=BINARYLEN(base);
             if( len==0 ) 
             {
                 flag=1;
             }
             else
             {
-                unsigned long i;
+                binarysize_t i;
                 BYTE *p=BINPTR(1);
                 for(i=0; i<len; i++)
                 {
@@ -118,7 +118,7 @@ VALUE *base=stack-argno;
 stack=base+min(argno,1);
 while(stack<base+1)PUSHNIL();
 //
-    unsigned long len=0;
+    binarysize_t len=0;
 
     switch( base->type )
     {
@@ -146,7 +146,7 @@ while(stack<base+1)PUSHNIL();
             break;
     }
     stack=base;
-    number(len);
+    number((double)len);
 }
 
 //--------------------------------------------------------------------

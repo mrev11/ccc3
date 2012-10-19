@@ -190,6 +190,7 @@ void _clp_findrest(int argno)
 //-----------------------------------------------------------------------
 static void push_direntry(int binopt)
 {
+/*
     WORD wdate,wtime;
     FileTimeToDosDateTime(&find.fdata.ftLastWriteTime,&wdate,&wtime);
 
@@ -208,6 +209,18 @@ static void push_direntry(int binopt)
 
     sprintf(time,"%02d:%02d:%02d",hour,minute,sec*2);
     sprintf(date,"%04d%02d%02d",1980+year,month,day);
+*/
+
+    SYSTEMTIME stUTC, stLocal;
+    FileTimeToSystemTime(&find.fdata.ftLastWriteTime,&stUTC);
+    SystemTimeToTzSpecificLocalTime(NULL,&stUTC,&stLocal);
+    
+    char date[32];
+    char time[32];
+    sprintf(date,"%04d%02d%02d",stLocal.wYear,stLocal.wMonth,stLocal.wDay);
+    sprintf(time,"%02d:%02d:%02d",stLocal.wHour,stLocal.wMinute,stLocal.wSecond);
+
+
 
     stringn(find.fdata.cFileName);        // F_NAME 
 
@@ -220,7 +233,12 @@ static void push_direntry(int binopt)
     {
         _clp_upper(1);
     }
-    number(find.fdata.nFileSizeLow);      // F_SIZE 
+
+    unsigned long long hi=find.fdata.nFileSizeHigh;
+    unsigned long long lo=find.fdata.nFileSizeLow;
+    //printf("\n%llx %llx %llx",lo,hi,(hi<<32)+lo);
+    
+    number((double)(hi<<32)+lo);          // F_SIZE 
     stringnb(date);
     _clp_stod(1);                         // F_DATE 
     stringnb(time);                       // F_TIME 

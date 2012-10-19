@@ -24,6 +24,7 @@
 
 *****************************************************************************
 function main(fspec)
+    set dosconv off
     set date format to "yyyy-mm-dd"
     rnm({|g|load(g,fspec)},{|g|readmodal(g,6)},{|g|store(g)})
 
@@ -77,7 +78,7 @@ local time2:=g_time2:varget
 
     if( name1==name2 )
     elseif( !empty(getenv("WiNdIr")) )
-        if( fileexist(name2) )
+        if( !upper(name1)==upper(name2) .and. fileexist(name2) )
             run( 'del "'+name2+'"' )
         end
         run( 'ren "'+name1+'" "'+name2+'"' )

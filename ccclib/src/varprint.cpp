@@ -97,7 +97,7 @@ void var_print(VALUE *v)
         case TYPE_BINARY:
         {
             OUTSTR(L"BINARY length=");
-            OUTNUM(BINARYLEN(v));
+            OUTNUM((double)BINARYLEN(v));
             OUTOREF(v->data.binary.oref);
             
             if(BINARYPTR0(v)==0)

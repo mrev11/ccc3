@@ -54,6 +54,7 @@ const int  NEXT_AGELIMIT  =-3;
 struct OREF;
 struct VREF;
 
+typedef size_t binarysize_t;
 
 struct VALUE
 {
@@ -76,7 +77,8 @@ struct VALUE
         struct
         {
             OREF *oref; // byte array
-            unsigned long len; // hossz (BYTE-ban mérve)
+            //unsigned long len; // hossz (BYTE-ban mérve)
+            binarysize_t len; // hossz (BYTE-ban mérve)
         } binary;
 
         struct

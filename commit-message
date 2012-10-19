@@ -1,5 +1,17 @@
-2012.10.01 Windows 2012 Server 64 bit
-Jelentéktelen warningok javítása.
-MSC fordítási ociók: -G5 -GX megszűnt.
-MSC linkelési opciók:  bufferoverflowu.lib
-javítva: gtk_text_iter_apix.cpp, gtk_tree_iter_apix.cpp
+2012.10.20 Portolás 64 bitre Windows 2012-n (második lépés).
+Első lépésben elértük, hogy minden forduljon és fusson, ami 32 biten futott.
+A második lépés célja, hogy a programok ki tudják használni a nagy címteret,
+azaz működjön a navigáció a filemapping nagy fájlokra is.
+(Unixon ezek korábban is működtek, csak Windowson van működésbeli változás.)
+Binary stringek hossza unsigned long -> binarysize_t (=size_t).
+Új makrók:  D2LONGW(x), D2ULONGW(x), D2ULONGX(x).
+Új makrók: PARNLW(i), PARNUW(i), PARNUX(i).
+Új makrók: _parnlw(i), _parnuw(i), _parnux(i).
+trim,  substr, slice, empty, at, rat, array: átírva binarysize_t-re.
+filemmap.cpp: átírva binarysize_t-re hibakezelés javítva.
+ftruncate: új modul fájl méret állítására (Linux/Windows külön).
+chsize: visszavezetve ftruncate-ra (depreacted, compatibility).
+fsetlock:  Windows/Linux szétválasztva, Windowson újraírva.
+fseek: Windowson újraítva _lseeki64()-re.
+findnext: fájl dátum kiolvasás újraírva, méret kilvasás javítva.
+vmm.cpp: átírva binarysize_t-re.

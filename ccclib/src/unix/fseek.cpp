@@ -19,43 +19,36 @@
  */
 
 #include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
+
 #include <cccapi.h>
-#include <fileio.ch>  
+#include <fileio.ch>    //Clipper
 
 //----------------------------------------------------------------------------
 void _clp_fseek(int argno) //Clipper
 {
     CCC_PROLOG("fseek",4);
     
-    int fd=0, mode=0;
-    off_t offs=0;
+    int fd=_parni(1);
+    off_t offs=0; //előjeles
+    int mode=0;
 
     if( argno==2 ) 
     {
-        fd   = _parni(1);
-        offs = (off_t)ROUND(_parnd(2));
+        offs = _parnlw(2); //előjeles
         mode = FS_SET;
     }
     else if( argno==3 ) 
     {
-        fd   = _parni(1);
-        offs = (off_t)ROUND(_parnd(2));
+        offs = _parnlw(2); //előjeles
         mode = _parni(3);
     }
     else if( argno==4 ) //large file support 
     {
         off_t low,high;
-        fd   = _parni(1);
-        low  = _parnu(2); 
-        high = _parnu(3); 
+        low  = _parnlw(2); 
+        high = _parnlw(3); 
         mode = _parni(4);
-      #ifdef _LFS_
         offs = (high<<32)+low;
-      #else
-        offs = low;
-      #endif
     }
     else
     {
@@ -79,7 +72,7 @@ void _clp_fseek(int argno) //Clipper
         ARGERROR();
     }
 
-    _retnd( lseek(fd,offs,mode) ); 
+    _retnd( (double) lseek(fd,offs,mode) );  //offset OK, -1 error
 
     CCC_EPILOG();
 }

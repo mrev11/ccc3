@@ -19,10 +19,32 @@
  */
 
 ******************************************************************************
-function direxist(fspec)   //nincs NG-ben 
-local dirspec:=str2bin(fspec),mode
+function direxist(dirspec)   //nincs NG-ben 
+
+local mode
 
 #ifdef WINDOWS
+local drive:="",curdir
+
+    dirspec::=bin2str
+
+    if( len(dirspec)>=2 .and. dirspec[2]==":" )
+
+        drive:=dirspec[1..2]
+        dirspec:=dirspec[3..]
+        curdir:=curdir(drive[1])
+
+        if( dirspec=="" )
+            dirspec:="\"+curdir
+        elseif( !dirspec[1]$"\/" )
+            if( curdir==""  )
+                dirspec:="\"+dirspec
+            else
+                dirspec:="\"+curdir+"\"+dirspec
+            end
+        end
+    end
+    
     //A windowsos stat_st_mode("c:\winnt\") NIL-t ad,
     //ezért levágjuk a záró slasht vagy bslasht.
     //Megj: mindig egyformán működik /-ra és \-ra.
@@ -30,9 +52,11 @@ local dirspec:=str2bin(fspec),mode
     //A UNIX-os stat_st_mode-ot nem zavarja a dirspec végén levő /.
     //Megj: csak set dosconv on esetén egyforma /-ra és \-ra.
 
-    while( len(dirspec)>1 .and. right(dirspec,1)$a"\/" )
+    while( len(dirspec)>1 .and. right(dirspec,1)$"\/" )
         dirspec:=left(dirspec,len(dirspec)-1)
     end
+
+    dirspec:=drive+dirspec
 #endif
 
     mode:=stat_st_mode(dirspec)

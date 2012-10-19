@@ -196,8 +196,7 @@ void idxr() // indexkifejezés a jobboldalon
         else if( a->type==TYPE_STRING )
         {
             unsigned long len=STRINGLEN(a);
-            double dx=i->data.number;
-            unsigned long idx=dx<0?0:D2ULONG(dx);
+            unsigned long idx=D2ULONGX(i->data.number);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
@@ -210,9 +209,8 @@ void idxr() // indexkifejezés a jobboldalon
 
         else if( a->type==TYPE_BINARY)
         {
-            unsigned long len=BINARYLEN(a);
-            double dx=i->data.number;
-            unsigned long idx=dx<0?0:D2ULONG(dx);
+            binarysize_t len=BINARYLEN(a);
+            binarysize_t idx=D2ULONGX(i->data.number);
             if( idx<1 || len<idx )
             {
                 error_idx("idxr",a,2);
@@ -261,7 +259,7 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
     else if( a->type==TYPE_STRING )
     {
         unsigned long len=STRINGLEN(a);
-        unsigned long idx=i<0?0:D2ULONG(i);
+        unsigned long idx=D2ULONGX(i);
         if( idx<1 || len<idx )
         {
             number(idx);
@@ -274,11 +272,11 @@ void idxr0(double i) // indexkifejezés a jobboldalon (konstans index)
 
     else if( a->type==TYPE_BINARY )
     {
-        unsigned long len=BINARYLEN(a);
-        unsigned long idx=i<0?0:D2ULONG(i);
+        binarysize_t len=BINARYLEN(a);
+        binarysize_t idx=D2ULONGX(i);
         if( idx<1 || len<idx )
         {
-            number(idx);
+            number((double)idx);
             error_idx("idxr0",a,2);
         }
         BYTE c=BINARYPTR(a)[idx-1];

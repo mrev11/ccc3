@@ -1,6 +1,7 @@
+2012.10.23 Terminál átirányítás átvizsgálva, javítva.
+
 2012.10.22 Új Windows/Linux közös teszt a terminálhoz és a remote io-hoz.
 xstart törli az <env>varname=</env> alakban megadott változókat.
-
 
 2012.10.20 Portolás 64 bitre Windows 2012-n (második lépés).
 Első lépésben elértük, hogy minden forduljon és fusson, ami 32 biten futott.

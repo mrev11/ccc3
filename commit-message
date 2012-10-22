@@ -1,2 +1,1 @@
-2012.10.22 Új Windows/Linux közös teszt a terminálhoz és a remote io-hoz.
-xstart törli az <env>varname=</env> alakban megadott változókat.
+2012.10.23 Terminál átirányítás átvizsgálva, javítva.

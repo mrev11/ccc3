@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <ctype.h>
 #include <inttypes.h>
 #include <netint.h>
 #include <sckcompat.h>
@@ -45,7 +46,7 @@ static SOCKET sck;
 static network_uint32_t iobuf32[BUFLEN32];
 static char *iobuffer=(char*)iobuf32;
 static FILE *qout[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
-static char *localname(int fp,char *fname);
+static char *localname(int fp,char *fname,int *additive);
 
 extern void setwsize(int x,int y);
 extern void setcursor(int x,int y);
@@ -309,14 +310,14 @@ void *tcpio_thread(void*arg)
 
                 if( 0<=fp && fp<SIZEQOUT )
                 {
-                    locnam=localname(fp,fname);
+                    locnam=localname(fp,fname,&additive);
                     if( locnam )
                     {
-                        if( fp==FP_CONSOLE && 0==strcasecmp(locnam,"y") )
+                        if( fp==FP_CONSOLE )
                         {
                             qout[fp]=stdout;
                         }
-                        else if( fp==FP_ERROR && 0==strcasecmp(locnam,"y") )
+                        else if( fp==FP_ERROR )
                         {
                             qout[fp]=stderr;
                         }
@@ -324,21 +325,9 @@ void *tcpio_thread(void*arg)
                         {
                             if( qout[fp] )
                             {
-                                if( fp!=FP_CONSOLE && fp!=FP_ERROR )
-                                {
-                                    fclose(qout[fp]);
-                                }
-                                fflush(0);
-                                qout[fp]=NULL;
+                                fclose(qout[fp]);
                             }
-                            if( strcasecmp(locnam,"y") ) 
-                            {
-                                qout[fp]=fopen(locnam,"ab");
-                            }
-                            else
-                            {
-                                qout[fp]=fopen(fname,additive?"ab":"wb");
-                            }
+                            qout[fp]=fopen(locnam,additive?"ab":"wb");
                         }
                         result=qout[fp] ? 1:0;
                     }
@@ -355,7 +344,13 @@ void *tcpio_thread(void*arg)
                 int fp=PARAM(0).get();
                 if( (fp<SIZEQOUT) && (qout[fp]!=NULL)  )
                 {
-                    fclose(qout[fp]);
+                    if( fp==FP_CONSOLE || fp==FP_ERROR )
+                    {
+                    }
+                    else
+                    {
+                        fclose(qout[fp]);
+                    }
                     qout[fp]=NULL;
                 }
                 //printf("TERMCMD_CLOSE %d\n",fp);fflush(0);
@@ -382,7 +377,7 @@ void *tcpio_thread(void*arg)
 
 
 //-------------------------------------------------------------------------
-static char *localname(int fp, char *fname)
+static char *localname(int fp, char *fname, int *additive)
 {
     static int firstrun=1;
 
@@ -412,51 +407,46 @@ static char *localname(int fp, char *fname)
         env_printer_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");
         env_printer_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");
     }
+
+         if( fp==FP_CONSOLE   && env_console   && !strcmp(env_console    ,"y") );
+    else if( fp==FP_PRINTER   && env_printer   && !strcmp(env_printer    ,"y") );
+    else if( fp==FP_ALTERNATE && env_alternate && !strcmp(env_alternate  ,"y") );
+    else if( fp==FP_EXTRA     && env_extra     && !strcmp(env_extra      ,"y") );
+    else
+    {
+        return 0; //nincs átirányítás
+    }
    
     char buf[8]; 
     strncpy(buf,fname,4);
+    buf[0]=toupper(buf[0]);
+    buf[1]=toupper(buf[1]);
+    buf[2]=toupper(buf[2]);
     buf[4]=(char)0;
     strcat(buf,":");
-    //strupr(buf);
 
     if( (buf==strstr(buf,"LPT1:")) && env_printer_lpt1 )
     {
-        return env_printer_lpt1;
+        fname=env_printer_lpt1;
+        //*additive=1;
     }
     else if( (buf==strstr(buf,"LPT2:")) && env_printer_lpt2 )
     {
-        return env_printer_lpt2;
+        fname=env_printer_lpt2;
+        //*additive=1;
     }
     else if( (buf==strstr(buf,"LPT3:")) && env_printer_lpt3 )
     {
-        return env_printer_lpt3;
+        fname=env_printer_lpt3;
+        //*additive=1;
     }
     else if( (buf==strstr(buf,"PRN:")) && env_printer_prn )
     {
-        return env_printer_prn;
-    }
-    else if( fp==FP_CONSOLE )
-    {
-        return env_console;
-    }
-    else if( fp==FP_PRINTER )
-    {
-        return env_printer;
-    }
-    else if( fp==FP_ALTERNATE )
-    {
-        return env_alternate;
-    }
-    else if( fp==FP_EXTRA )
-    {
-        return env_extra;
-    }
-    else if( fp==FP_ERROR )
-    {
-        return env_error;
+        fname=env_printer_prn;
+        //*additive=1;
     }
     
-    return NULL;
+    return fname; //ezen a néven kell megnyitni, vagy 0, ha nincs átirányítás
 }    
 
 //-------------------------------------------------------------------------

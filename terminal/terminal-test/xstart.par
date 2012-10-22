@@ -1,0 +1,19 @@
+
+<xstart>
+<item>
+    <name>worm</name>
+    <if>localhost</if>
+    <port>44965</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <command>screenwr/w.exe</command>
+</item>
+
+<item>
+    <name>remio</name>
+    <if>localhost</if>
+    <port>44966</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <env>CCC_REMOTEOPEN=allow</env>
+    <command>remio/remio.exe</command>
+</item>
+</xstart>

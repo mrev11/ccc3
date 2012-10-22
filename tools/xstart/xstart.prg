@@ -227,7 +227,7 @@ local p,n,f
 
 
 ******************************************************************************
-static function addenv(env,var)  //elkerüli a duplázást!
+static function addenv(env,var)  //kivesz, berak, cserél
 local varnam,varpos
 
     varnam:=left(var,at("=",var))
@@ -236,10 +236,20 @@ local varnam,varpos
     #else
         varpos:=ascan(env,{|x|!upper(x)!=upper(varnam)})
     #endif
+    
+    if( varnam==var )
+        // <env>varname=</env>  
+        if(varpos>0)
+            // kiveszi
+            adel(env,varpos)
+            asize(env,len(env)-1)
+        end
 
-    if( varpos==0 )
+    elseif( varpos==0 )
+        // berakja
         aadd(env,var)
     else
+        // cseréli
         env[varpos]:=var
     end
     return env

@@ -52,7 +52,7 @@ static struct
 } outfile[5] = 
 {
     {1, NULL   , "CON" , 0},
-    {0, NULL   , "PRN" , 0},
+    {0, NULL   , "LPT1", 0},
     {0, NULL   , NULL  , 0},
     {0, NULL   , NULL  , 0},
     {0, NULL   , "CON" , 0}
@@ -169,8 +169,8 @@ while(stack<base+2)PUSHNIL();
     if( outfile[x].remstat>0 ) //ha remote nyitva
     {
         remclose(x); //lezárni
-        outfile[x].remstat=0;
     }
+    outfile[x].remstat=0;
 
     if( (f->type==TYPE_BINARY) && (STRINGLEN(f)>0) )
     {
@@ -445,6 +445,7 @@ void _clp_qout(int argno)
 }    
 
 //------------------------------------------------------------------------
+#ifdef NOTDEFINED
 void _clp_print(int argno)
 {
     VALUE *base=stack-argno;
@@ -474,6 +475,7 @@ void _clp_print(int argno)
     stack=base;
     PUSH(&NIL);
 }
+#endif
 
 //------------------------------------------------------------------------
 void _clp___eject(int argno)

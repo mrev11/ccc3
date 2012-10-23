@@ -131,7 +131,7 @@ void _clp_l2hex(int argno)
     }
     else if( base->type==TYPE_POINTER )
     {
-        x=(unsigned long long)base->data.pointer;
+        x=(unsigned long long)(size_t)base->data.pointer;
     }
     else
     {

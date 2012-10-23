@@ -29,14 +29,47 @@
 
 #include <signal.ch>
 
+#ifdef WINDOWS
+#define strcasecmp stricmp
+#endif
 
-int remoteio_enabled=1;
+//-----------------------------------------------------------------------------
+static int isdosprinter(char *str)
+{
+    static const char *pr[]={"lpt1",  "lpt2",  "lpt3",  "prn", NULL}; 
+    for(int i=0; pr[i]; i++)
+    {
+        if( 0==strcasecmp(pr[i],str) )
+        {
+            return 1;
+        }
+    }
+    return 0;     
+}
 
 //-----------------------------------------------------------------------------
 int remopen(int fp, char *fname, int additive)
 {
-    if( remoteio_enabled==0 )
+    static const char *redir=getenv("CCC_REMOTEOPEN"); //allow, printer
+
+    if( redir==0 )
     {
+        //fprintf(stderr," deny(%s) ",fname);
+        return 0;
+    }
+    else if( !strcmp(redir,"allow") )
+    {
+        //fprintf(stderr," allow(%s) ",fname);
+        //emabled
+    }
+    else if( !strcmp(redir,"printer")  && isdosprinter(fname) )
+    {
+        //fprintf(stderr," printer(%s) ",fname);
+        //emabled
+    }
+    else
+    {
+        //fprintf(stderr,"deny(%s)",fname);
         return 0;
     }
     

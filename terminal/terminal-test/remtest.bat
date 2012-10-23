@@ -8,7 +8,7 @@ sleep 1
 :  ha helyben    -> akkor nem vitte at
 
 
-set CCCTERM_REDIR_CONSOLE=y
+set CCCTERM_REDIR_CONSOLE=n
 set CCCTERM_REDIR_PRINTER=y
 set CCCTERM_REDIR_ALTERNATE=y
 set CCCTERM_REDIR_EXTRA=n

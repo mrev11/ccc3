@@ -158,8 +158,8 @@ void connect_to_terminal()
         }
         atexit(atexit_bye);
         
-        extern int remoteio_enabled;
-        remoteio_enabled=0;
+        //extern int remoteio_enabled;
+        //remoteio_enabled=0;
 
         //Amikor a terminál lokális (ráadásul a CCC program gyereke),
         //akkor jobb, ha nincs remote io. Nincs is értelme, de főleg azért,

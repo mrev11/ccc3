@@ -1,3 +1,6 @@
+2012.10.23 További javítások az átirányításban.
+A CCC3 is figyeli a CCC_REMOTEOPEN-t (ugyanúgy, mint a CCC2).
+
 2012.10.23 Terminál átirányítás átvizsgálva, javítva.
 
 2012.10.22 Új Windows/Linux közös teszt a terminálhoz és a remote io-hoz.

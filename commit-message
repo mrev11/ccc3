@@ -1,1 +1,2 @@
-2012.10.23 Terminál átirányítás átvizsgálva, javítva.
+2012.10.23 További javítások az átirányításban.
+A CCC3 is figyeli a CCC_REMOTEOPEN-t (ugyanúgy, mint a CCC2).

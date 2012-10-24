@@ -379,34 +379,17 @@ void *tcpio_thread(void*arg)
 //-------------------------------------------------------------------------
 static char *localname(int fp, char *fname, int *additive)
 {
-    static int firstrun=1;
-
-    static char *env_console=0;
-    static char *env_printer=0;
-    static char *env_alternate=0;
-    static char *env_extra=0;
-    static char *env_error=0;
-
-    static char *env_printer_prn=0;
-    static char *env_printer_lpt1=0;
-    static char *env_printer_lpt2=0;
-    static char *env_printer_lpt3=0;
+    static char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
+    static char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
+    static char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
+    static char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
+    static char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
+                                                                             
+    static char *env_printer_prn  = getenv("CCCTERM_CAPTURE_PRN");        
+    static char *env_printer_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
+    static char *env_printer_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
+    static char *env_printer_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
     
-    if( firstrun )
-    {
-        firstrun=0;
-
-        env_console      = getenv("CCCTERM_REDIR_CONSOLE");
-        env_printer      = getenv("CCCTERM_REDIR_PRINTER");
-        env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");
-        env_extra        = getenv("CCCTERM_REDIR_EXTRA");
-        env_error        = getenv("CCCTERM_REDIR_ERROR");
-        
-        env_printer_prn  = getenv("CCCTERM_CAPTURE_PRN");
-        env_printer_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");
-        env_printer_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");
-        env_printer_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");
-    }
 
          if( fp==FP_CONSOLE   && env_console   && !strcmp(env_console    ,"y") );
     else if( fp==FP_PRINTER   && env_printer   && !strcmp(env_printer    ,"y") );
@@ -417,30 +400,22 @@ static char *localname(int fp, char *fname, int *additive)
         return 0; //nincs átirányítás
     }
    
-    char buf[8]; 
-    strncpy(buf,fname,4);
-    buf[0]=toupper(buf[0]);
-    buf[1]=toupper(buf[1]);
-    buf[2]=toupper(buf[2]);
-    buf[4]=(char)0;
-    strcat(buf,":");
-
-    if( (buf==strstr(buf,"LPT1:")) && env_printer_lpt1 )
+    if( (!strcasecmp(fname,"LPT1")) && env_printer_lpt1 )
     {
         fname=env_printer_lpt1;
-        //*additive=1;
+        //*additive=1; //felvetődött, de mégsem
     }
-    else if( (buf==strstr(buf,"LPT2:")) && env_printer_lpt2 )
+    else if( (!strcasecmp(fname,"LPT2")) && env_printer_lpt2 )
     {
         fname=env_printer_lpt2;
         //*additive=1;
     }
-    else if( (buf==strstr(buf,"LPT3:")) && env_printer_lpt3 )
+    else if( (!strcasecmp(fname,"LPT3")) && env_printer_lpt3 )
     {
         fname=env_printer_lpt3;
         //*additive=1;
     }
-    else if( (buf==strstr(buf,"PRN:")) && env_printer_prn )
+    else if( (!strcasecmp(fname,"PRN")) && env_printer_prn )
     {
         fname=env_printer_prn;
         //*additive=1;

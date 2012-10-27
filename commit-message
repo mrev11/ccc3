@@ -1,2 +1,4 @@
-2012.10.24 Ez még valahogy kimaradt.
-További javítások a terminálban.
+2012.10.27 GTK forditas korszerusitese Windowson.
+Alkalmazkodas a mono-2.10.9 csomagban levo GTK-hoz.
+Directoryk egyenkenti osszeszdese helyett minden directory include es lib alol.
+Nem fordulo modulok kihagyva.

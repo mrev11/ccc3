@@ -544,6 +544,7 @@
   (parameters
     '("guint" "xid")
   )
+  (CCC "skip")
 )
 
 (define-method add_embedded_xid
@@ -553,6 +554,7 @@
   (parameters
     '("guint" "xid")
   )
+  (CCC "skip")
 )
 
 (define-method _reposition

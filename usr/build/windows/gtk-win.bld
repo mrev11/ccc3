@@ -1,13 +1,55 @@
-#GTKDIR=c:\gtk\2.8
 
--i$(GTKDIR)\include\cairo 
--i$(GTKDIR)\include\atk-1.0 
--i$(GTKDIR)\include\glib-2.0 
--i$(GTKDIR)\include\gtk-2.0 
--i$(GTKDIR)\include\pango-1.0 
+#valogatas  nelkul az osszes dirctory
+#ami GTKDIR/include vagy GTKDIR/lib alatt van
 
--i$(GTKDIR)\lib\gtk-2.0\include
+-i$(GTKDIR)\include
+-i$(GTKDIR)\include\atk-1.0
+-i$(GTKDIR)\include\atk-1.0\atk
+-i$(GTKDIR)\include\cairo
+-i$(GTKDIR)\include\fontconfig
+-i$(GTKDIR)\include\freetype2
+-i$(GTKDIR)\include\freetype2\freetype
+-i$(GTKDIR)\include\freetype2\freetype\config
+-i$(GTKDIR)\include\gail-1.0
+-i$(GTKDIR)\include\gail-1.0\gail
+-i$(GTKDIR)\include\gail-1.0\libgail-util
+-i$(GTKDIR)\include\gdk-pixbuf-2.0
+-i$(GTKDIR)\include\gdk-pixbuf-2.0\gdk-pixbuf
+-i$(GTKDIR)\include\glib-2.0
+-i$(GTKDIR)\include\glib-2.0\gio
+-i$(GTKDIR)\include\glib-2.0\glib
+-i$(GTKDIR)\include\glib-2.0\gobject
+-i$(GTKDIR)\include\gtk-2.0
+-i$(GTKDIR)\include\gtk-2.0\gdk
+-i$(GTKDIR)\include\gtk-2.0\gtk
+-i$(GTKDIR)\include\libglade-2.0
+-i$(GTKDIR)\include\libglade-2.0\glade
+-i$(GTKDIR)\include\libpng14
+-i$(GTKDIR)\include\libxml2
+-i$(GTKDIR)\include\libxml2\libxml
+-i$(GTKDIR)\include\mono-2.0
+-i$(GTKDIR)\include\mono-2.0\mono
+-i$(GTKDIR)\include\mono-2.0\mono\cil
+-i$(GTKDIR)\include\mono-2.0\mono\jit
+-i$(GTKDIR)\include\mono-2.0\mono\metadata
+-i$(GTKDIR)\include\mono-2.0\mono\utils
+-i$(GTKDIR)\include\pango-1.0
+-i$(GTKDIR)\include\pango-1.0\pango
+
+-i$(GTKDIR)\lib
+-i$(GTKDIR)\lib\boo
+-i$(GTKDIR)\lib\gdk-pixbuf-2.0
+-i$(GTKDIR)\lib\gdk-pixbuf-2.0\2.10.0
+-i$(GTKDIR)\lib\glib-2.0
 -i$(GTKDIR)\lib\glib-2.0\include
+-i$(GTKDIR)\lib\gtk-2.0
+-i$(GTKDIR)\lib\gtk-2.0\2.10.0
+-i$(GTKDIR)\lib\gtk-2.0\2.10.0\engines
+-i$(GTKDIR)\lib\gtk-2.0\include
+-i$(GTKDIR)\lib\gtk-2.0\modules
+-i$(GTKDIR)\lib\ikvm
+-i$(GTKDIR)\lib\pkgconfig
+
 
 
 -p$(GTKDIR)\lib

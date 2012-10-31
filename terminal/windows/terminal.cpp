@@ -190,7 +190,8 @@ void invalidate(int t,int l,int b,int r)
                 
     RECT rect;
     rect.top    = t*fh;
-    rect.left   = l*fw; 
+  //rect.left   = l*fw; 
+    rect.left   = max(0,l*fw-1); //Windows 2000-en ez nem kellett
     rect.bottom = (b+1)*fh;  
     rect.right  = (r+1)*fw;   
  
@@ -318,8 +319,7 @@ LRESULT CALLBACK WindowProcMain(
  
                     SetBkColor(hdc,color_palette(bg));
                     SetTextColor(hdc,color_palette(fg));
-                    
-                    
+
                     #ifdef NO_OPTIMIZE
                     
                       //ez is működne

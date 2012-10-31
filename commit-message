@@ -1,4 +1,3 @@
-2012.10.27 GTK forditas korszerusitese Windowson.
-Alkalmazkodas a mono-2.10.9 csomagban levo GTK-hoz.
-Directoryk egyenkenti osszeszdese helyett minden directory include es lib alol.
-Nem fordulo modulok kihagyva.
+2012.10.31 Windows terminál javítás (csíkozó achoice).
+A terminálban 1 pixellel balrább kell kezdeni az invalidálást.
+Windows 2000-en ez nem kellett (valójában érthetetlen).

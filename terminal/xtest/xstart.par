@@ -6,4 +6,11 @@
     <interface>127.0.0.1</interface>
     <command>proba1.exe</command>
 </item>
+<item>
+    <name>Savex</name>
+    <port>55001</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <interface>127.0.0.1</interface>
+    <command>savex .</command>
+</item>
 </xstart>

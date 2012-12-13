@@ -140,6 +140,10 @@ local pfile,ptext,p,q
                 end
             end
 
+            if( OPT(n,"-w") )
+                s_work:=substr(opt[n],3)+dirsep()
+            end
+
              if( OPT(n,"-plx") )
                  if( s_plikex==NIL )
                      s_plikex:={UPPER(substr(opt[n],5))}

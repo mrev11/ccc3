@@ -82,8 +82,8 @@ local fd,o,n
     for n:=1 to len(ord)
         if( rcount>0 )
             __bt_sortkey(KEYFILE(table,ord[n]),rcount,keylen[n])
-            __copy_keys(table,fdkey[n],rcount,keylen[n],keynam[n],msg) 
         end
+        __copy_keys(table,fdkey[n],rcount,keylen[n],keynam[n],msg) //2012.12.13
         fclose(fdkey[n])
         ferase(KEYFILE(table,ord[n]))
     end

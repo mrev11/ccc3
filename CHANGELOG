@@ -1,3 +1,9 @@
+2012.12.13 tabsuppindex hibája (üres táblán) javítva.
+tabSuppIndex() nem hozta létre az új btree struktúrát a bt filében, 
+ha a bt filé egyetlen rekordot sem tartalmazott. Az ilyenkor appendált rekordok  
+suppindex kulcsai (hibásan) a recno indexbe kerültek, amitől úgy látszott,
+mintha a rekordok duplázódnának.
+
 2012.10.31 Windows terminál javítás (csíkozó achoice).
 A terminálban 1 pixellel balrább kell kezdeni az invalidálást.
 Windows 2000-en ez nem kellett (valójában érthetetlen).

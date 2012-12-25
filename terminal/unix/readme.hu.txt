@@ -1,3 +1,11 @@
+2012.12.19
+    terminal-xft. Ugyanaz a program, mint terminal, de a (korszerűbb)
+    libXft által kezelt freetype fontokat használja (mint a GTK). 
+    Környezet:  CCCTERM_XFTFONTSPEC=Monospace-12
+    Leginkább a Monospace fontot érdemes használni, az viszont akármilyen
+    méretre skálázható, pl. Monospace-16. A dobozrajzoló karakterek nem 
+    illeszkednek olyan pontosan, mint a pixmap fontoknál, a Kontó farok
+    karakterek nem képeznek egyenletes rácsot (a skálázás következménye).
 
 2011.10.20
     paintline tárolja a képernyőt, és csak a változásokat írja ki,

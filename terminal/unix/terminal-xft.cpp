@@ -339,13 +339,22 @@ static void blink(int flag)
         cursor_state=0;
     }
     
-    if( flag )
+    if( flag && 0 ) //aláhúzós kurzor
     {
+        screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
+        int attr=cell->getattr();
+        int bg=0xf&(attr>>4);
+        int crscolidx=15; //w+
+        if( bg==15 )
+        {
+            crscolidx=0; //n
+        }
+
         int dx=fontwidth;
         int dy=fontwidth/8<3?3:fontwidth/8;
         int x=cursor_x*fontwidth;
         int y=cursor_y*fontheight+fontheight-dy;
-        XSetForeground(display,gc,rgb_color[15]);
+        XSetForeground(display,gc,rgb_color[crscolidx]);
         XFillRectangle(display,window,gc,x,y,dx,dy);
         XFlush(display);
 
@@ -353,6 +362,22 @@ static void blink(int flag)
         prevx=cursor_x;
         prevy=cursor_y;
     }
+
+    if( flag  ) //bg<->fg váltogatós kurzor
+    {
+        screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
+        int attr=cell->getattr();
+        int fg=0xf&(attr>>0);
+        int bg=0xf&(attr>>4);
+        cell->setattr((fg<<4)+bg);
+        paint(cursor_y,cursor_x,cursor_y,cursor_x,1);
+        cell->setattr(attr);
+
+        cursor_state=1;
+        prevx=cursor_x;
+        prevy=cursor_y;
+    }
+
     cursor_tick=gettickcount();
     blink_unlock();
 }

@@ -1,3 +1,7 @@
+2013.01.10 Terminál kurzor.
+Többféle kurzor implementáció a linuxos terminálban:
+1) aláhózós, 2) fg<->bg váltogatós.
+
 2012.12.25 terminal-xft.
 Karakteres terminál program freetype fontokkal.
 

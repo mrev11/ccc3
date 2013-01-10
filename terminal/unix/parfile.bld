@@ -7,6 +7,7 @@
 -i/usr/X11R7/include
 -i/usr/X11R6/include
 -i/usr/include/freetype2
+-i/usr/local/include/freetype2
 -p/usr/X11R7/lib
 -p/usr/X11R6/lib
 -bccc3.lib

@@ -1,3 +1,6 @@
+2013.01.17 qout.cpp: eject javitva.
+eject akkor mukodik, ha set printer on.
+
 2013.01.10 Terminál kurzor.
 Többféle kurzor implementáció a linuxos terminálban:
 1) aláhózós, 2) fg<->bg váltogatós.

@@ -9,7 +9,7 @@ sleep 1
 #  helyben   -> akkor nem vitte at
 
 
-export CCCTERM_REDIR_CONSOLE=y
+export CCCTERM_REDIR_CONSOLE=n
 export CCCTERM_REDIR_PRINTER=y
 export CCCTERM_REDIR_ALTERNATE=y
 export CCCTERM_REDIR_EXTRA=n

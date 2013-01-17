@@ -481,7 +481,7 @@ void _clp_print(int argno)
 void _clp___eject(int argno)
 {
     VALUE *base=stack-argno;
-    if( outfile[FP_PRINTER].fp!=NULL )
+    if( outfile[FP_PRINTER].flag )
     {
         number(12); _clp_chr(1);
         number(13); _clp_chr(1);

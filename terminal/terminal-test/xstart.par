@@ -13,7 +13,7 @@
     <if>localhost</if>
     <port>44966</port>
     <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
-    <env>CCC_REMOTEOPEN=printer</env>
+    <env>CCC_REMOTEOPEN=allow</env>
     <command>remio/remio.exe</command>
 </item>
 </xstart>

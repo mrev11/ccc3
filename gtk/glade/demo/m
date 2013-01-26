@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc3_glade
+bapp_unix_.b -bccc3_glade -bccc3_gtk

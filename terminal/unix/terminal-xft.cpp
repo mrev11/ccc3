@@ -363,7 +363,26 @@ static void blink(int flag)
         prevy=cursor_y;
     }
 
-    if( flag  ) //bg<->fg váltogatós kurzor
+
+    if( flag  ) //balpixel kurzor
+    {
+        screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
+        int attr=cell->getattr();
+        int fg=0xf&(attr>>0);
+        int bg=0xf&(attr>>4);
+
+        int x=cursor_x*fontwidth;
+        int y=cursor_y*fontheight;
+        XSetForeground(display,gc,rgb_color[fg]);
+        XFillRectangle(display,window,gc,x,y,1,fontheight);
+        XFlush(display);
+
+        cursor_state=1;
+        prevx=cursor_x;
+        prevy=cursor_y;
+    }
+
+    if( flag && 0 ) //bg<->fg váltogatós kurzor
     {
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();

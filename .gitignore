@@ -86,6 +86,7 @@ usr/bin/linux/savex
 usr/bin/linux/setperm
 usr/bin/linux/stred
 usr/bin/linux/terminal
+usr/bin/linux/terminal-xft
 usr/bin/linux/tran2cpp
 usr/bin/linux/tstru
 usr/bin/linux/tview
@@ -93,6 +94,9 @@ usr/bin/linux/websrv
 usr/bin/linux/xstart
 usr/bin/linux/zg
 usr/bin/linux/zgrep
+
+usr/bin/linux/glist
+usr/bin/linux/gui
 
 /usr/bin/linux/bt2tds
 /usr/bin/linux/bt2ted

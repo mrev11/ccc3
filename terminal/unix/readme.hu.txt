@@ -26,7 +26,7 @@
     invalidate és paint szinkronizálva.
 
 2008.10.15
-    Javítva a képrnyőfrissítés (kisebb területeket rajzol újra). 
+    Javítva a képernyőfrissítés (kisebb területeket rajzol újra). 
     Hardver-gyorsításos Xorg-gal a kurzor mozgatásakor hunyorgott 
     a z-editor képernyője. A letakart terminál kitakarásakor túl 
     sok CPU-t fogyasztott az újrarajzolás.

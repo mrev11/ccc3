@@ -18,12 +18,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+#ifdef NOTDEFINED
+  2013.02.23
+  CCC2-ben és CCC3-ban ugyanaz.
+  Eredetileg a rendezendő fájlon működött az mmap.
+  A káros (idő előtti, implicit) szinkronizálás megelőzésére
+  a memory map és a fájl szét lettek választva (Linuxon),
+  Windowsban nincs változás.
+#endif
+
+
 #ifdef UNIX
 # include <sys/mman.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <ctype.h>
+# include <string.h>
+# include <errno.h>
 #endif
 
 #include <stdio.h>
@@ -42,11 +55,13 @@ static int key_length;
 #ifdef UNIX
 static char *mapView;
 static int  mapFile;
-static int  mapLength;
+static size_t mapLength;  //int nem elég
 
 //-------------------------------------------------------------------------- 
 char *filemap(char *filename)
 {    
+    //fprintf(stderr,"FILEMAP\n");
+
     if( 0>(mapFile=open(filename,O_RDWR)) )
     {
         stringnb("filemap"); _clp_taberroperation(1); pop();
@@ -56,21 +71,84 @@ char *filemap(char *filename)
     }
     
     mapLength=lseek(mapFile,0,SEEK_END); lseek(mapFile,0,SEEK_SET); 
-    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_SHARED,mapFile,0);
+    //caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_SHARED,mapFile,0);
+    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
     if( (map==NULL) || (map==(caddr_t)-1) )
     {
         stringnb("filemap"); _clp_taberroperation(1); pop();
         stringnb("file mapping failed"); _clp_taberrdescription(1); pop();
         stringnb(filename); _clp_taberrfilename(1); pop();
         _clp_taberror(0); pop();
+
+        fprintf(stderr,"filemap: mmap error %ld %d\n",mapLength,errno);
+        exit(1);
     }
 
-    return mapView=(char*)map; 
+    mapView=(char*)map;
+
+    lseek(mapFile,0,SEEK_SET);
+    size_t copLength=0;
+    while( copLength<mapLength )
+    {
+        int size=1024*1024*1024; //1G
+        if( (size_t)size > mapLength-copLength )
+        {
+            size=(size_t)(mapLength-copLength);
+        }
+    
+        size_t nbyte=read(mapFile,map,size);
+        if( nbyte<=0 )
+        {
+            stringnb("filemap"); _clp_taberroperation(1); pop();
+            stringnb("read failed"); _clp_taberrdescription(1); pop();
+            stringnb(filename); _clp_taberrfilename(1); pop();
+            _clp_taberror(0); pop();
+
+            fprintf(stderr,"filemap: read error %d\n",errno);
+            exit(1);
+        }
+        else
+        {
+            map+=nbyte;
+            copLength+=nbyte;
+        }
+    }
+
+    return mapView;
 }
 
 //-------------------------------------------------------------------------- 
 void unmapfile()
 {
+    caddr_t map=mapView;
+
+    lseek(mapFile,0,SEEK_SET);
+    size_t copLength=0;
+    while( copLength<mapLength )
+    {
+        int size=1024*1024*1024; //1G
+        if( (size_t)size > mapLength-copLength )
+        {
+            size=(size_t)(mapLength-copLength);
+        }
+
+        size_t nbyte=write(mapFile,map,size);
+        if( nbyte<=0 )
+        {
+            stringnb("unmapfile"); _clp_taberroperation(1); pop();
+            stringnb("write failed"); _clp_taberrdescription(1); pop();
+            _clp_taberror(0); pop();
+
+            fprintf(stderr,"unmapfile: write error %d\n",errno);
+            exit(1);
+        }
+        else
+        {
+            map+=nbyte;
+            copLength+=nbyte;
+        }
+    }
+
     munmap(mapView,mapLength);
     close(mapFile);
 }
@@ -158,4 +236,5 @@ void _clp___bt_sortkey(int argno)
 }
 
 //--------------------------------------------------------------------------
+
 

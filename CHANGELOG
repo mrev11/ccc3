@@ -1,4 +1,11 @@
-2012.02.11 build/git config javitgatas
+2013.02.23 tbbtbtx/btsort.cpp (filemapping,qsort).
+CCC2-ben es CCC3-ban ugyanaz.
+Eredetileg a rendezendo fajlon mukodott az mmap.
+A karos ido elotti, implicit szinkronizalas megelozesere
+a memory map es a fajl szet lettek valasztva (Linuxon),
+Windowsban maradt a regebbi kod.
+
+2013.02.11 build/git config javitgatas
 1) clone utan mindennek le kell tudni fordulni
 2) clone/pull + forditas utan a git ne akarjon commitolni
 

@@ -6,6 +6,7 @@
 -i$(CCCDIR)/ccclib/src/uic/termapi
 -i/usr/X11R7/include
 -i/usr/X11R6/include
+-i/usr/X11R7/include/freetype2
 -i/usr/include/freetype2
 -i/usr/local/include/freetype2
 -p/usr/X11R7/lib

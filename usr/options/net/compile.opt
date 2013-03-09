@@ -15,5 +15,6 @@
 -fPIC
 -Wall
 -Wno-unused
+-Wno-char-subscripts
 -I/usr/local/include
 -I/usr/pkg/include

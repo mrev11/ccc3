@@ -364,7 +364,7 @@ static void blink(int flag)
     }
 
 
-    if( flag  ) //balpixel kurzor
+    if( flag && 0  ) //balpixel kurzor
     {
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();
@@ -382,7 +382,7 @@ static void blink(int flag)
         prevy=cursor_y;
     }
 
-    if( flag && 0 ) //bg<->fg váltogatós kurzor
+    if( flag ) //bg<->fg váltogatós kurzor
     {
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();

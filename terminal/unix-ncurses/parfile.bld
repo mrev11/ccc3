@@ -3,6 +3,10 @@
 -d../common
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
+
+-i/usr/X11R7/include
+-i/usr/X11R6/include
+
 -bccc3.lib
 -bncursesw
 

@@ -57,6 +57,17 @@ static char *mapView;
 static int  mapFile;
 static size_t mapLength;  //int nem elég
 
+
+// #define ALG_SH   //MAP_SHARED     nincs másolás  (ez kéne, de Linuxon rossz)
+// #define ALG_PR   //MAP_PRIVATE    másolás vissza
+// #define ALG_AN   //MAP_ANONYMOUS  másolás oda-vissza (NetBSD-n MAP_ANON)
+
+#ifdef _LINUX_
+    #define ALG_AN
+#else
+    #define ALG_SH
+#endif
+
 //-------------------------------------------------------------------------- 
 char *filemap(char *filename)
 {    
@@ -71,8 +82,20 @@ char *filemap(char *filename)
     }
     
     mapLength=lseek(mapFile,0,SEEK_END); lseek(mapFile,0,SEEK_SET); 
-    //caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_SHARED,mapFile,0);
-    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+
+#ifdef ALG_SH
+    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_SHARED,mapFile,0);
+#endif
+
+#ifdef ALG_PR
+    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_PRIVATE,mapFile,0);
+#endif
+
+#ifdef ALG_AN
+    //caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+    caddr_t map=(caddr_t)mmap(NULL,mapLength,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
+#endif
+
     if( (map==NULL) || (map==(caddr_t)-1) )
     {
         stringnb("filemap"); _clp_taberroperation(1); pop();
@@ -85,6 +108,12 @@ char *filemap(char *filename)
     }
 
     mapView=(char*)map;
+
+#ifdef ALG_AN
+    //amikor a map nincs összekapcsolva a fájllal,
+    //akkor a memóriát inicializálni kell a fájl tartalmával,
+    //(ebben az esetben a mmap ugyanaz, mint a síma malloc)
+    //printf("másolás: file->map\n");
 
     lseek(mapFile,0,SEEK_SET);
     size_t copLength=0;
@@ -113,6 +142,7 @@ char *filemap(char *filename)
             copLength+=nbyte;
         }
     }
+#endif
 
     return mapView;
 }
@@ -120,6 +150,12 @@ char *filemap(char *filename)
 //-------------------------------------------------------------------------- 
 void unmapfile()
 {
+
+#ifndef ALG_SH
+    //amikor a map nem MAP_SHARED,
+    //akkor vissza kell írni a módosításokat a fájlba
+    //printf("MÁSOLÁS VISSZA: MAP -> FÁJL\n");
+
     caddr_t map=mapView;
 
     lseek(mapFile,0,SEEK_SET);
@@ -148,6 +184,7 @@ void unmapfile()
             copLength+=nbyte;
         }
     }
+#endif
 
     munmap(mapView,mapLength);
     close(mapFile);
@@ -237,4 +274,50 @@ void _clp___bt_sortkey(int argno)
 
 //--------------------------------------------------------------------------
 
+
+#ifdef NOTDEFINED
+
+         qsort       qsort      qsort      /usr/bin/sort
+         ALG_SH      ALG_PR     ALG_AN
+
+      LINUX (3.2.0, x86_64, 3.2GHz, 8GB)
+
+100E      0.05       0.04        0.04       0.2
+
+1M        0.5        0.5         0.5        1.5
+
+10M      93          7           6         18
+10M     101          7           6         17
+
+20M     607         17          16         42
+20M     583         17          16         40
+
+
+
+      NETBSD (6.1_RC1, amd64, 2GHz, 1.5GB)
+
+100E      0.2        0.2         0.2        0.3
+
+1M        1.2        2.5         2.0        4.3
+1M        1.2        2.1         1.9        5.2
+
+10M      13          24         24         93
+10M      10          24         24         89
+
+20M      50           x        195        352 
+20M      61                    188          
+20M      52                              
+
+
+Meresek: 100 ezer, 1 millió, 10 millió, 20 millió rekord rendezese.
+A rekordok 48 byte hosszuak, 20M rekord osszhossza 960,000,000 byte.
+A meresi eredmenyek masodpercben ertendok.
+A NetBSD-n a 20M eset eppen kiszorult a memoriabol.
+Az x-szel jelolt merest le kellett loni, mert aggasztoan sokaig zakatolt.
+
+A tanulsag (ami az aranyokbol latszik), hogy Linuxon elrontottak
+a MAP_SHARED mappinget, ami a Linuxtol kulonbozo rendszereken tovabbra
+is a legkedvezobb.
+
+#endif
 

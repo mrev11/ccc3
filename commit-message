@@ -1,6 +1,5 @@
-2013.02.23 tbbtbtx/btsort.cpp (filemapping,qsort).
-CCC2-ben es CCC3-ban ugyanaz.
-Eredetileg a rendezendo fajlon mukodott az mmap.
-A karos ido elotti, implicit szinkronizalas megelozesere
-a memory map es a fajl szet lettek valasztva (Linuxon),
-Windowsban maradt a regebbi kod.
+2013.03.04 NetBSD 6.1 forditas, mmap teszt.
+Tesztelve NetBSD-n a 2013.02.23-as filemapping javitas.
+NetBSD-n a vart modon (jol) mukodik a MAP_SHARED, ezert
+a MAP_SHARED->MAP_ANONYMOUS valtoztatas Linuxra lett korlatozva.
+(NetBSD-n MAP_ANONYMOUS helyett MAP_ANON-t kell hasznalni.)

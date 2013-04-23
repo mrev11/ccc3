@@ -1,9 +1,14 @@
 
-#define ID_SERVER  "CCC XMLRPC Server 1.1.01"
-#define ID_CLIENT  "CCC XMLRPC Client 1.1.01"
+#define ID_SERVER  "CCC XMLRPC Server 1.1.02"
+#define ID_CLIENT  "CCC XMLRPC Client 1.1.02"
  
  
 #ifdef _VERSION_HYSTORY_
+
+2013.04.22 -- 1.1.02
+  Objektumok konvertálásákor bin2str hiánya pótolva.
+  Az a probléma, hogy CCC2-ben az attribútumnevek C típusúak,
+  ezzel szemben CCC3-ban X (bináris) típusúak.
 
 2007.12.12 -- 1.1.01
   xmlrpcclient/xmlrpcserver-ben új attrubútum: sslcontext

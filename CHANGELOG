@@ -1,3 +1,5 @@
+2013.04.23 Javítás xmlrpc-ben.
+
 2013.03.04 NetBSD 6.1 forditas, mmap teszt.
 Tesztelve NetBSD-n a 2013.02.23-as filemapping javitas.
 NetBSD-n a vart modon (jol) mukodik a MAP_SHARED, ezert 

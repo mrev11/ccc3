@@ -147,7 +147,7 @@ local x, t:=valtype(v), n
  
 ****************************************************************************
 static function rpcmember(v)
-    return "<member><name>"+v[1]+"</name>"+rpcvalue(v[2])+"</member>"+crlf()
+    return "<member><name>"+bin2str(v[1])+"</name>"+rpcvalue(v[2])+"</member>"+crlf()
     
 ****************************************************************************
     

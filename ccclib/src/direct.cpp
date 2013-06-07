@@ -204,7 +204,7 @@ void _clp_dirremove(int argno) //CA-tools
 //------------------------------------------------------------------------
 void _clp_dirchange(int argno) //CA-tools  
 {
-    CCC_PROLOG("dirremove",1);
+    CCC_PROLOG("dirchange",1);
     _clp_convertfspec2nativeformat(1);
     errno=0;   
     #ifdef _UNIX_

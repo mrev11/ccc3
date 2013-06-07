@@ -1,1 +1,5 @@
-2013.04.23 Javítás xmlrpc-ben.
+2013.06.07 Javitasok xmlrpc-ben.
+rpcmethod  X/C tipuselteres javitva.
+rpcmonitor bovitve hitelesitessel.
+rpcwrapper uj opcio: --reuseaddr.
+rpc_server hibauzenet bovitve (args).

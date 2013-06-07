@@ -31,6 +31,7 @@ static keyfile
 static cafile
 static capath
 static sslcontext
+static reuseaddress
 
 *****************************************************************************
 function main()
@@ -53,6 +54,8 @@ local sck,c,n,i,e
             cafile:=opt[++n]
         elseif( opt[n]=="--capath" )
             capath:=opt[++n]
+        elseif( opt[n]=="--reuseaddr" )
+            reuseaddress:=.t.
         else
             usage()
         end
@@ -116,7 +119,7 @@ local sck,c,n,i,e
 
 *****************************************************************************
 static function usage()
-    ? "Usage: rpcwrapper [--key <keyfile>] [--cafile <cafile>] [--capath <capath>] --listener [iface]:port[:ssl] ..."
+    ? "Usage: rpcwrapper [--key <keyfile>] [--cafile <cafile>] [--capath <capath>] [--reuseaddr] --listener [iface]:port[:ssl] ..."
     ?
     quit
 
@@ -173,6 +176,9 @@ local iface,port,ssl,e
     this:iface:=iface
     this:port:=port
     this:counter:=0
+    if(reuseaddress==.t.)
+        this:reuseaddress(.t.)
+    end
     this:bind
     this:listen(20)
     return this

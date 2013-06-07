@@ -18,12 +18,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define VERSION "0.9.02"
+#include "ssl.ch"
+
+#define VERSION "0.9.02"   //2013.06.07 hitelesítés
+//#define VERSION "0.9.02"
 
 *****************************************************************************
-function main(host, port, ssl)
+function main(host,port,ssl,keyfile,capath,cafile)
 
 local b, w, sid
+local ctx,mode
     
     set printer to log-rpcmonitor
     set printer on
@@ -39,8 +43,37 @@ local b, w, sid
     w:=xmlrpcclientNew(host,port)
     w:keepalive:=.t.
     
-    if(ssl!=NIL)
-        w:sslcontext:=sslctxNew()
+
+    if(ssl!='SSL')
+        ? "PLAIN connection"
+    else
+        ? "SSL connection enabled"
+        ctx:=sslctxNew()
+
+        if( !empty(keyfile) )  //kliens hiteles?t?s
+            ? "KEYFILE",keyfile
+            ctx:use_certificate_file(keyfile)  
+            ctx:use_privatekey_file(keyfile)
+        end
+
+        if( !empty(capath) .or. !empty(cafile) ) //szerver hiteles?t?s
+            if( !empty(capath) )
+                ? "CAPATH",capath
+            else
+                capath:=NIL
+            end
+            if( !empty(cafile) )
+                ? "CAFILE",cafile
+            else
+                cafile:=NIL
+            end
+            mode:=SSL_VERIFY_PEER_CERT
+            ctx:set_verify(mode)
+            ctx:set_verify_depth(1)
+            ctx:load_verify_locations(cafile,capath)
+        end
+
+        w:sslcontext:=ctx
     end
     
     

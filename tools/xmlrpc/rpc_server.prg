@@ -128,6 +128,7 @@ local e, metidx:=ascan(this:methods,{|x|x[1]==metnam})
         e:=xmlrpcerrorNew()
         e:operation:="xmlrpcserver.methodidx"
         e:description:="unknown method"
+        e:args:={metnam}
         e:subsystem:="XMLRPC"
         break(e)
     end

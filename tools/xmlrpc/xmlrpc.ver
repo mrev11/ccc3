@@ -1,9 +1,13 @@
 
-#define ID_SERVER  "CCC XMLRPC Server 1.1.02"
+#define ID_SERVER  "CCC XMLRPC Server 1.1.03"
 #define ID_CLIENT  "CCC XMLRPC Client 1.1.02"
  
  
 #ifdef _VERSION_HYSTORY_
+
+2013.06.14 -- 1.1.03
+  felesleges/káros errorblock kezelés kihagyva
+  bővített faultString: "classname|metnam|operation|description|subsystem"
 
 2013.04.22 -- 1.1.02
   Objektumok konvertálásákor bin2str hiánya pótolva.

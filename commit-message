@@ -1,5 +1,2 @@
-2013.06.07 Javitasok xmlrpc-ben.
-rpcmethod  X/C tipuselteres javitva.
-rpcmonitor bovitve hitelesitessel.
-rpcwrapper uj opcio: --reuseaddr.
-rpc_server hibauzenet bovitve (args).
+2013.06.18 Javitasok xmlrpc-ben.
+faultString: "classname|metnam|operation|description|subsystem"

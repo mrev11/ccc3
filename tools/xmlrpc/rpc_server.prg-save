@@ -156,16 +156,10 @@ static function xmlrpcserver.response(this,sck)
  
 static errtyp:=errorNew()
 //static errtyp:=xmlrpcinvalidsiderrorNew()
-//static errtyp:=apperrorNew()
-//Nincs sok értelme az elkapott hibák közötti szelektálásnak,
-//ui. egy request-ben levő adathiba símán okozhat argument error-t
-//(például, ha egy dátum helyett NIL jön, akkor elszáll a dtos).
-//Az errorblock-kal kapcsolatos üzelmek ki lettek takarítva,
-//nincs olyan régi program, ami break helyett eval(errorblock)-ot
-//használna, viszont káros, mert végtelen rekurziót okozhat.
 
 local req,metnam,params,metblk,rsp,hdr
 local e,faultCode,faultString 
+local eb:=errorblock() //compatibility
 
     req:=http_readmessage(sck)
     if( req==NIL )
@@ -181,6 +175,20 @@ local e,faultCode,faultString
     
     req:=http_body(req) //xml request
 
+    if( this:recover )
+        //compatibility
+        //Ha esetleg egy régebbi program
+        //break(e) helyett eval(errorblock(),e)-vel
+        //akarna reagálni a hibára:
+
+        errorblock({|e|break(e)}) 
+        
+        //Ha azonban this:recover==.f.,
+        //azaz nem akarjuk elkapni a hibákat (teszteléskor),
+        //akkor az errorblockot nem szabad break-re cserélni,
+        //mert az végtelen rekurziót okoz!
+    end
+    
     begin
  
         req:=rpcdataCall(req)
@@ -202,6 +210,8 @@ local e,faultCode,faultString
 
     recover  e if(this:recover,errtyp,0)
     
+        errorblock(eb) //compatibility
+
         //Ha this:recover==.t. (default),
         //akkor elkapjuk a hibákat, és XMLRPC fault-ra konvertáljuk,
         //egyébként hagyjuk futni a standard hibakezelést.
@@ -215,25 +225,28 @@ local e,faultCode,faultString
         faultCode:=e:subcode
 
         faultString:=e:classname
+        faultString+="|"
         
         if( !empty(metnam) )
-            faultString+="|"
             faultString+=metnam
-        end
-        if( !empty(e:operation) )
-            faultString+="|"
+        elseif( !empty(e:operation) )
             faultString+=e:operation
         end
+        faultString+="|"
+
         if( !empty(e:description) )
-            faultString+="|"
             faultString+=e:description 
         end
+        faultString+="|"
+
         if( !empty(e:subsystem) )
-            faultString+="|"
             faultString+=e:subsystem
         end
-        //faultString: "classname|metnam|operation|description|subsystem"
+        
+        //faultString: "classname|operation|description|subsystem"
     end
+
+    errorblock(eb) //compatibility
 
     if( faultString!=NIL )
         rsp:=rpcmethodFault(faultCode,faultString)  

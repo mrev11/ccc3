@@ -31,7 +31,7 @@ static keyfile
 static cafile
 static capath
 static sslcontext
-static reuseaddress
+static reuseaddress:=.f.
 
 *****************************************************************************
 function main()
@@ -177,7 +177,7 @@ local iface,port,ssl,e
     this:port:=port
     this:counter:=0
     if(reuseaddress==.t.)
-        this:reuseaddress(.t.)
+        this:socket:reuseaddress(.t.)
     end
     this:bind
     this:listen(20)

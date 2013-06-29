@@ -1,3 +1,7 @@
+2013.06.29 XMLRPC wrapper reuseaddress.
+XMLRPC wrapper reuseaddress beallitas javitva.
+Hianyzo copyright-ok potolva.
+
 2013.06.18 Javitasok xmlrpc-ben.
 faultString: "classname|metnam|operation|description|subsystem"
 

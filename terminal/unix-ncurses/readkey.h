@@ -26,9 +26,43 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
+
+static termios t0;
+
+static void restore_attr()
+{
+    tcsetattr(0,TCSANOW,&t0);
+    //0==system("aplay /home/vermes/bin/signal.wav &");
+    //fprintf(stderr,"restore_attr\n");
+}
+
+static void set_attr()
+{
+    static int init=1;
+    if(init)
+    {
+        init=0;
+
+        tcgetattr(0,&t0);
+        atexit(restore_attr);
+
+        termios t1;
+        tcgetattr(0,&t1);
+        t1.c_lflag &= ~ICANON;
+        t1.c_lflag &= ~ECHO;
+        t1.c_lflag |=  ISIG;
+        t1.c_iflag = 0;
+        t1.c_cc[VMIN] = 1;
+        t1.c_cc[VTIME] = 0;
+        tcsetattr(0,TCSANOW,&t1);
+    }
+}
+
 //---------------------------------------------------------------------------
 static int __readkey()
 {
+    set_attr();
+
     static int esc=0;
     int key=0;
     
@@ -40,17 +74,6 @@ static int __readkey()
     }
 
     int fd=0;
-    termios t0,t1;
-    tcgetattr(fd,&t0);
-    tcgetattr(fd,&t1);
-    t1.c_lflag &= ~ICANON;
-    t1.c_lflag &= ~ECHO;
-    t1.c_lflag |=  ISIG;
-    t1.c_iflag = 0;
-    t1.c_cc[VMIN] = 1;
-    t1.c_cc[VTIME] = 0;
-    tcsetattr(fd,TCSANOW,&t1);
-
     struct timeval t;
     t.tv_sec=0;
     t.tv_usec=WAIT_MILLISEC*1000;
@@ -60,7 +83,13 @@ static int __readkey()
     if( 0<select(1,&fs,NULL,NULL,&t) )
     {
         char c=0;
-        int retcode=read(fd,&c,1); 
+        if( 0==read(fd,&c,1) )
+        {
+            //readable but no input
+            //e.g. process in background 
+            exit(0);
+        }
+        
         key=0xff&(int)c;
 
         if( ISESCAPE(key) )
@@ -71,8 +100,6 @@ static int __readkey()
             key=0;
         }
     }
- 
-    tcsetattr(fd,TCSANOW,&t0); //restore
 
     return key; 
 }

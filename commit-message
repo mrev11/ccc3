@@ -1,3 +1,21 @@
-2013.06.29 XMLRPC wrapper reuseaddress.
-XMLRPC wrapper reuseaddress beallitas javitva.
-Hianyzo copyright-ok potolva.
+2013.07.06 ncterm, inkey kis javítások.
+ui_/unix/inkey.cpp: átállítja fd0 attribútumait
+korábban minden olvasásnál át- és visszaállította (ne echózzon)
+ha az átállítás előtt nyomtak meg egy gombot, mégis echózott
+ha a visszaállítás előtt nyomtak ctrl-c-t, elromlott a konzol
+ezért átállítás a program elején, visszaállítás atexit-ben
+unix-ncurses/readkey.h fd0 attribútum átállítás, mint fent
+az ncterm nem futhat a háttérben (!)
+ezért, ha fd0 (a select szerint) olvasható, de nem jön adat,
+akkor ki kell lépni, enélkül beragadnak a háttérbe kerülő jobok
+uic/termapi/termio.cpp  terminál örököltetés
+CCCTERM_INHERIT=yes hatására  connect_to_terminal végén
+a CCCTERM_CONNECT változó átállítódik SOCKET:termsck-ra
+ennek hatására, ha a program elindít később egy terminálos
+child processzt, az örökölni fogja a parentje terminálját
+hogy a parent és a child kiírásai időben ne fedjék át egymást,
+a childnak várnia kell az indulással egy frissítési ciklust
+ha ugyanabban a terminálban jelenik meg a parent és a child,
+akkor a parentnek  meg kell várnia a child befejeződését
+tools/savex a run előtti/utáni savescreen/restscreen átkerült dolist-ba
+tools/z run előtt/után savescreen/restscreen

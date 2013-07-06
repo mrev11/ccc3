@@ -39,7 +39,7 @@ local markcol:=this:markcol
     
     elseif( markrow<x .and. x<actrow )
 
-        if( this:markmode=="CONT" )
+        if( this:markmode=="WIDE" )
             disp(this,x,1,,.t.)
         elseif( this:markmode=="RECT" )
             disp(this,x,1,markcol-1)
@@ -49,7 +49,7 @@ local markcol:=this:markcol
         
     elseif( x==markrow )
 
-        if( this:markmode=="CONT" )
+        if( this:markmode=="WIDE" )
             disp(this,x,1,markcol-1)
             if( x==actrow )
                 disp(this,x,markcol,actcol-1,.t.)
@@ -65,7 +65,7 @@ local markcol:=this:markcol
         
     elseif( x==actrow )  //markrow<actrow
 
-        if( this:markmode=="CONT" )
+        if( this:markmode=="WIDE" )
             disp(this,x,1,actcol-1,.t.)
             disp(this,x,actcol)
         elseif( this:markmode=="RECT" )

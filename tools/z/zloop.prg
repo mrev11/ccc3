@@ -93,7 +93,9 @@ local screen
             #ifndef _UNIX_
                 run ("start z "+this:clipfile+" -r")
             #else
-                run ("z "+this:clipfile+" -r &")
+                screen:=savescreen()
+                run ("z "+this:clipfile+" -r")
+                restscreen(,,,,screen)
             #endif
 
         elseif( key==K_F9 )    
@@ -161,7 +163,7 @@ local screen
             this:markmode:="RECT"
 
         elseif( key==K_ALT_W )    
-            this:markmode:="CONT"
+            this:markmode:="WIDE"
 
 
         elseif( this:modflg )

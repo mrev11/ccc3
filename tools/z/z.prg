@@ -97,6 +97,7 @@ local ferror:=zhome()+"error.z"
         quit
     end
 
+    //clear screen
     setcursor(1)
  
     keymap(memoread(fkeym))
@@ -203,6 +204,7 @@ local ferror:=zhome()+"error.z"
 
     restscreen(0,0,maxrow(),maxcol(),ss)
     setpos(sr,sc)
+    //sleep(60) //frissítési ciklus?
     
     return NIL
 
@@ -265,10 +267,12 @@ static function diff(zedit)
 local d1:=zhome()+"diff1"
 local d2:=zhome()+"diff2"
 local dx:=zhome()+"diffx"
+local screen:=savescreen()
     memowrit(d1,zedit:savedtext)
     memowrit(d2,zedit:gettext)
     run("diff "+d1+" "+d2+">"+dx)
     run("z "+dx+" -r")
+    restscreen(,,,,screen)
 
 
 **********************************************************************   

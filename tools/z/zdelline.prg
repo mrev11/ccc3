@@ -20,7 +20,7 @@
 
 *****************************************************************************
 function _zedit_delline(this)
-    this:markmode:="CONT"
+    this:markmode:="WIDE"
     this:clipboard:={this:atxt[this:actrow],""}
     adel(this:atxt,this:actrow)
     asize(this:atxt,len(this:atxt)-1)

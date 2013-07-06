@@ -1,7 +1,12 @@
 
-#define VERSION "2.1.10"
+#define VERSION "2.1.11"
 
 #ifndef VERSION  
+
+2013.07.06 -- 2.1.11
+  F7 és F9 körül savescreen/restscreen.
+  (Hogy ugyanabban a terminálban is jól látszódjon.)
+  CONT mód átnevezve WIDE-ra.
 
 2012.05.31 -- 2.1.10
   ztab javítva

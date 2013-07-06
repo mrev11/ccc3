@@ -40,7 +40,7 @@ local v:="Z-editor "+VERSION+" (C) ComFirm Bt."
  
         v+="[ Move-alt       mark           ];"
         v+="[ R-alt          RECT mode      ];"
-        v+="[ W-alt          CONT mode      ];;"
+        v+="[ W-alt          WIDE mode      ];;"
  
         v+="[ Escape         quit           ];"
     end

@@ -695,7 +695,7 @@ local w:=s_work+f
 local s:=s_save+f
 local fc:=if(opt==.t.,getenv("CMP"),getenv("DIFF"))
 local temp:=tempdir()
-local screen:=savescreen(0,0,maxrow(),maxcol())
+//local screen:=savescreen(0,0,maxrow(),maxcol())
 
     if( empty(fc) )
         fc:=if(opt==.t.,DEFAULT_CMPBIN,DEFAULT_CMPTXT)
@@ -726,10 +726,10 @@ local screen:=savescreen(0,0,maxrow(),maxcol())
         alert("Files match.") //no output from diff
     end
     
-    clear screen //2003.01.01
-    restscreen(0,0,maxrow(),maxcol(),screen)
-    setcursor(0) //hatástalan ???!
-    return NIL
+    //clear screen //2003.01.01
+    //restscreen(0,0,maxrow(),maxcol(),screen)
+    //setcursor(0) //hatástalan ???!
+    //return NIL
 
 
 ******************************************************************************    
@@ -1233,6 +1233,7 @@ static temp
 ****************************************************************************
 static function dolist(fil,opt,def)
 local ext,pos,exe
+local screen:=savescreen()
 
     ext:=fext(fil)[2..]+"=" //   xxx=
     opt:=split(opt,":")     // { xxx=less %f, *=list %f, ... }
@@ -1255,7 +1256,10 @@ local ext,pos,exe
     exe:=strtran(exe,"%b",fnameext(fil))
 
     //alert(exe)
+    setcursor(1)
     run(exe)
+    setcursor(0)
+    restscreen(,,,,screen)
 
 ****************************************************************************
 

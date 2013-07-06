@@ -196,6 +196,7 @@ void connect_to_terminal()
         if( strcmp(host,"SOCKET")==0 )
         {
             termsck=port;
+            sleep(60); //parent frissítési ciklusa
             //printf("inherit:%d\n",termsck);
         }
         else
@@ -208,6 +209,20 @@ void connect_to_terminal()
     if( termsck<0 )
     {
         error("connect_to_terminal failed");
+    }
+    
+    
+    char *inh=getenv("CCCTERM_INHERIT");
+    if(  inh!=0 && 0==strcmp(inh,"yes") )
+    {
+        char buf[64];
+        sprintf(buf,"CCCTERM_CONNECT=SOCKET:%d",termsck);
+        putenv(strdup(buf));
+        
+        //CCCTERM_CONNECT-et a jelen program többet nem használja,
+        //viszont egy esetleges child process az átállítás hatására
+        //ugyanazt a terminált fogja használni, mint a parent,
+        //bármi is volt korábban CCCTERM_CONNECT-ben.
     }
 }
 

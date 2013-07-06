@@ -27,22 +27,44 @@
 
 #include <cccapi.h>
 
+
+static termios t0;
+
+static void restore_attr()
+{
+    tcsetattr(0,TCSANOW,&t0);
+    //printf("restore_attr\n");
+}
+
+static void set_attr()
+{
+    static int init=1;
+    if(init)
+    {
+        init=0;
+
+        tcgetattr(0,&t0);
+        atexit(restore_attr);
+
+        termios t1;
+        tcgetattr(0,&t1);
+        t1.c_lflag &= ~ICANON;
+        t1.c_lflag &= ~ECHO;
+        t1.c_lflag |=  ISIG;
+        t1.c_iflag = 0;
+        t1.c_cc[VMIN] = 1;
+        t1.c_cc[VTIME] = 0;
+        tcsetattr(0,TCSANOW,&t1);
+    }
+}
+
 //--------------------------------------------------------------------------- 
 static int readkey(int wait)  //wait: millisec
 {
-    int key=0;
+    set_attr();
 
+    int key=0;
     int fd=0;
-    termios t0,t1;
-    tcgetattr(fd,&t0);
-    tcgetattr(fd,&t1);
-    t1.c_lflag &= ~ICANON;
-    t1.c_lflag &= ~ECHO;
-    t1.c_lflag |=  ISIG;
-    t1.c_iflag = 0;
-    t1.c_cc[VMIN] = 1;
-    t1.c_cc[VTIME] = 0;
-    tcsetattr(fd,TCSANOW,&t1);
 
     struct timeval t;
     if( wait<0 )
@@ -61,11 +83,16 @@ static int readkey(int wait)  //wait: millisec
     if( 0<select(1,&fs,NULL,NULL,&t) )
     {
         char c;
-        0==read(fd,&c,1);
+        int nbyte=read(fd,&c,1);
+        if( nbyte==0 )
+        {
+            //readable but no input
+            //e.g. process in background
+            //printf("no input\n");
+        }
         key=0xff&(int)c;
     }
  
-    tcsetattr(fd,TCSANOW,&t0); //restore
     return key; 
 }
 

@@ -1,7 +1,10 @@
 
-#define VERZIO  "3.0.10"    
+#define VERZIO  "3.0.11"
 
 #ifdef NOT_DEFINED
+
+2013.07.02 -- 3.0.11
+  savescreen/restscreen átrakva dolist-be.
 
 2012.04.30 -- 3.0.10
   -plx  kihagyás relatív path + filénév alapján (like)

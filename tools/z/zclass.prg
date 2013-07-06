@@ -105,7 +105,7 @@ local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     classAttrib(clid,"sftcol")   //ablaktolas oszlop : 0, ...
 
     classAttrib(clid,"markflg")  //.f. kijeloles nem aktiv
-    classAttrib(clid,"markmode") //CONT/RECT
+    classAttrib(clid,"markmode") //WIDE/RECT
     classAttrib(clid,"markrow")  //kijeloles kezdete : 1, ...
     classAttrib(clid,"markcol")  //kijeloles kezdete : 1, ...
                                      
@@ -159,7 +159,7 @@ local n
     this:sftcol  := 0
 
     this:markflg := .f.
-    this:markmode:= "CONT"
+    this:markmode:= "WIDE"
     this:markrow := 0
     this:markcol := 0
     this:tabsiz  := 4

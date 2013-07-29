@@ -1,7 +1,10 @@
 
-#define VERSION "2.1.11"
+#define VERSION "2.1.12"
 
 #ifndef VERSION  
+
+2013.07.10 -- 1.2.12
+  F12-re a kijelölt stringgel ss.
 
 2013.07.06 -- 2.1.11
   F7 és F9 körül savescreen/restscreen.

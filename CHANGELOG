@@ -1,3 +1,5 @@
+2013.07.29 z F12-re a kijelölt stringgel ss-sel keres.
+
 2013.07.06 ncterm, inkey kis javítások.
 ui_/unix/inkey.cpp: átállítja fd0 attribútumait
     korábban minden olvasásnál át- és visszaállította (ne echózzon)

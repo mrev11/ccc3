@@ -1,0 +1,38 @@
+#!/bin/bash
+
+export OREF_SIZE=200000
+                        
+export ZCOLOR_0=n/w              #text
+export ZCOLOR_1=w/n+,n/w         #header, alert, get 
+export ZCOLOR_2=w/n+             #mark
+export ZCOLOR_3=n/w              #alertbutton 
+
+#default
+#fekete alapon fehér
+#export ZCOLOR_0=w/n             #text
+#export ZCOLOR_1=w/bg,n/w        #header, alert, get 
+#export ZCOLOR_2=bg/w            #mark
+#export ZCOLOR_3=w/b,b/w         #alertbutton
+
+#fehér alapon kék
+#export ZCOLOR_0=b/w             #text
+#export ZCOLOR_2=w/b             #mark
+
+#fehér alapon fekete
+#export ZCOLOR_0=n/w             #text
+#export ZCOLOR_1=w/b,n/w         #header, alert, get
+#export ZCOLOR_2=w/n             #mark
+#export ZCOLOR_3=n/w,w/n         #alertbutton 
+
+
+if  echo "$CCCTERM_CONNECT" | grep "SOCKET:" >/dev/null; then
+    export ZCOLOR_0=w/b         #text
+    export ZCOLOR_1=b/w,w/b     #header, alert, get  
+    export ZCOLOR_2=b/w         #mark
+    export ZCOLOR_3=w/b,b/w     #alertbutton
+else    
+    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+    export CCCTERM_INHERIT=yes
+fi
+
+z.exe "$@"

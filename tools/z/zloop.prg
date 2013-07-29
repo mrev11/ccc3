@@ -28,7 +28,7 @@ local key
 local kmark:={K_ALT_END,K_ALT_HOME,K_ALT_PGDN,K_ALT_PGUP,;
               K_ALT_RIGHT,K_ALT_LEFT,K_ALT_UP,K_ALT_DOWN,;
               K_ALT_C,K_ALT_X,K_ALT_V,;
-              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6}
+              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_F12}
 
 local screen              
               
@@ -101,6 +101,17 @@ local screen
         elseif( key==K_F9 )    
             this:diff
             
+        elseif( key==K_F12 )    
+            if( !empty(this:markedstring) )
+                #ifndef _UNIX_
+                    run( "start ss '"+this:markedstring+"'" )
+                #else
+                    screen:=savescreen()
+                    run( "ss '"+this:markedstring+"'" )
+                    restscreen(,,,,screen)
+                #endif
+            end
+ 
         elseif( key==K_DOWN )    
             this:down()
 

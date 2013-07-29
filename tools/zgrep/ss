@@ -1,0 +1,16 @@
+#!/bin/bash
+#set -x
+export OREF_SIZE=1000000
+export CCCTERM_SIZE=100x40
+export CCC_XSIZE=$CCCTERM_SIZE
+
+
+export TEMP=~/.temp
+export GREP='grep -i -H -n'
+export FIND='export CCC_TERMINAL=dummy;\
+             savex.exe . -f -i.prg.cpp.c.cc.ch.h.tex.lex.lem.java.inc.tds.js. -r.ppo. -lrobj* -lr*.nopack'
+
+
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+
+zgrep.exe "$1" "$2" &

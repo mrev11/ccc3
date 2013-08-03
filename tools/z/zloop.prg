@@ -106,9 +106,11 @@ local screen
                 #ifndef _UNIX_
                     run( "start ss '"+this:markedstring+"'" )
                 #else
+                    setcursor(0)
                     screen:=savescreen()
                     run( "ss '"+this:markedstring+"'" )
                     restscreen(,,,,screen)
+                    setcursor(1)
                 #endif
             end
  

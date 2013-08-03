@@ -66,13 +66,13 @@ local gf,fd,b,n,m
         m+=" Replace:"+replace 
     end
     brwMenuName(b,m)
- 
+
+    setcursor(0)
+
     brwShow(b)
     brwLoop(b)
     brwHide(b)
-    
-    return NIL
-    
+
 
 *****************************************************************************
 static function view(b,search,replace)
@@ -102,6 +102,14 @@ local screen
         brwHide(b)
         run ( cmd )
         brwShow(b)
+
+    elseif( getenv("CCCTERM_INHERIT")=="yes" ) //2013.08.03
+        brwHide(b)
+        setcursor(1)
+        run ( cmd )
+        setcursor(0)
+        brwShow(b)
+
     else
         //alert(cmd+"&")
         run( cmd+"&" ) //külön ablak 

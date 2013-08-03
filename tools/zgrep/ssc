@@ -11,11 +11,11 @@ export FIND='export CCC_TERMINAL=dummy;\
              savex.exe . -f -i.prg.cpp.c.cc.ch.h.tex.lex.lem.java.inc.tds.js. -r.ppo. -lrobj* -lr*.nopack'
 
 if !(echo "$CCCTERM_CONNECT" | grep "SOCKET:" >/dev/null); then
-    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
-    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
 fi
 
-export CCCTERM_INHERIT=no
-#export CCCTERM_INHERIT=yes
+#export CCCTERM_INHERIT=no
+export CCCTERM_INHERIT=yes
 
-zgrep.exe "$1" "$2" &
+zgrep.exe "$1" "$2" 

@@ -137,7 +137,16 @@ local ferror:=zhome()+"error.z"
     txt:=memoread(fspec,.t.) //binary
     txt1:=bin2str(txt) //string
     if( !txt==str2bin(txt1) )
-        alert("Invalid UTF-8 encoding!")
+        n:=alert("Invalid UTF-8 encoding!",{"Quit","View","Edit"})
+        if( n<2 )
+            //0:Esc,1:Quit
+            quit 
+        elseif( n==2 )
+            //2:View
+            optrdonly:=.t.
+        else
+            //3:Edit
+        end
     end
     txt:=txt1
     txt1:=NIL

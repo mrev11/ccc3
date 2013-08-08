@@ -1,7 +1,10 @@
 
-#define VERSION "2.1.12"
+#define VERSION "2.1.13"
 
 #ifndef VERSION  
+
+2013.08.08 -- 1.2.13
+  Invalid UTF-8 encoding: Quit,View,Edit választás.
 
 2013.07.10 -- 1.2.12
   F12-re a kijelölt stringgel ss.

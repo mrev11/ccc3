@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export OREF_SIZE=200000
+                        
+export ZCOLOR_0=n/w             #text
+export ZCOLOR_1=n/rg,n/w        #header, alert, get 
+export ZCOLOR_2=w/br            #mark
+export ZCOLOR_3=w+/n            #alertbutton 
+
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+export CCCTERM_INHERIT=yes
+
+zhist.exe

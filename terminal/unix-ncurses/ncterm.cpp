@@ -61,21 +61,51 @@ static void initcoltrans(void)
 {
     coltrans=(int*)malloc(256*sizeof(int));
 
-    int i,j,x;
+    int i,j,x,r;
     for( i=0; i<8; i++ )
     {
         for( j=0; j < 8; j++ )
         {
             init_pair((i*8+j),rgb[j],rgb[i]);
-            int idx=i*16+j;
             x=COLOR_PAIR(i*8+j); 
+            r=COLOR_PAIR(j*8+i); //reverse
+            int idx=i*16+j;
                
-            *(coltrans+(idx+  0+0)) = x; 
-            *(coltrans+(idx+  0+8)) = x | WA_BOLD; //foreground+ negyed 
-            *(coltrans+(idx+128+0)) = x;  //background+ negyed
-            *(coltrans+(idx+128+8)) = x;
+            *(coltrans+(idx+  0+0)) = x;                    //normál negyed
+            *(coltrans+(idx+  0+8)) = x|WA_BOLD;            //fg+ negyed 
+            *(coltrans+(idx+128+0)) = r|WA_REVERSE|WA_BOLD; //bg+ negyed (*kérdéses)
+            *(coltrans+(idx+128+8)) = x;                    //nem használjuk
         }
     }
+
+    //init_pair(0,fg,bg) beállítása kivételes:
+    assume_default_colors(COLOR_BLACK,COLOR_BLACK);
+    
+
+    //*a bg+ negyedről:
+    //  (felcserélt fg/bg-re WA_REVERSE + WA_BOLD)
+    //
+    //xterm-ben (XFT Monospace fonttal): 
+    //  a fontokat vastagabbá (de nem világosabbá) teszi, 
+    //  a hátteret világosabbá teszi,
+    //  a dobozrajzoló karakterek elromlanak.
+    //
+    //  A dobozrajzolók elromlása fg+-ban és bg+-ban egyforma.
+    //  A dobozrajzolók elromlása fonttól függ:
+    //      XFT Monospace-szel elromlik
+    //      XFT Courier New-val nem romlik el
+    //      pixmap fonttal nem romlik el
+    //
+    //xfce4-terminal-ban (szintén Monospace fonttal): :
+    //  az fg-t vastagabbá, a bg-t világosabbá teszi,
+    //  a dobozrajzoló karakterek is működnek,
+    //  de F1-re a saját helpjét adja böngészőben,
+    //  más ESC szekvenciákat használ, mint az xterm
+    //  (annak ellenére, hogy TERM=xterm-et állít be).
+    //
+    //linux konzolban:
+    //  hatástalan, a bg+ negyed megyegyezik az fg+ negyeddel,
+    //  vagyis a dupla reverse trükk egyáltalán nem működik.
 }
 
 //----------------------------------------------------------------------------

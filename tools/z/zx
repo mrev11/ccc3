@@ -6,7 +6,7 @@ if [ "$CCCVER" == "3" ]; then
   export ZCOLOR_0=n/w              #text
   export ZCOLOR_1=w/+n,n/w         #header, alert, get 
   export ZCOLOR_2=w/n+             #mark
-  export ZCOLOR_3=n/w              #alertbutton 
+  export ZCOLOR_3=w+/n             #alertbutton 
 else
   export ZCOLOR_0=w/b              #text
 fi
@@ -16,18 +16,11 @@ fi
 #export ZCOLOR_0=w/n             #text
 #export ZCOLOR_1=w/bg,n/w        #header, alert, get 
 #export ZCOLOR_2=bg/w            #mark
-#export ZCOLOR_3=w/b,b/w         #alertbutton
+#export ZCOLOR_3=w/b             #alertbutton
 
 #fehér alapon kék
 #export ZCOLOR_0=b/w             #text
 #export ZCOLOR_2=w/b             #mark
-
-#fehér alapon fekete
-#export ZCOLOR_0=n/w             #text
-#export ZCOLOR_1=w/b,n/w         #header, alert, get
-#export ZCOLOR_2=w/n             #mark
-#export ZCOLOR_3=n/w,w/n         #alertbutton 
-
 
 
 #export CCCTERM_FONTSPEC=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
@@ -48,7 +41,7 @@ if  echo "$CCCTERM_CONNECT" | grep "SOCKET:" >/dev/null; then
     export ZCOLOR_0=w/b         #text
     export ZCOLOR_1=b/w,w/b     #header, alert, get 
     export ZCOLOR_2=b/w         #mark
-    export ZCOLOR_3=w/b,b/w     #alertbutton
+    export ZCOLOR_3=w+/b        #alertbutton
     nohup z.exe "$@"   1>>~/.z/nohup1.out  2>>~/.z/nohup2.out 
 else    
     export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"

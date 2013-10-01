@@ -1,3 +1,7 @@
+2013.10.01 btbtx táblaobjektumban tabKeyCompose újraírva.
+
+2013.09.02 z.exe jelzi, ha tul nagy filera inditottak el.
+
 2013.08.19 zhist - a historyból választott fájlra indítja z-t.
 
 2013.08.08 z Invalid UTF-8 encoding választós alert.

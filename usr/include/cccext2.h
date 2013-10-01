@@ -61,7 +61,7 @@ extern void _clp_arr2str(int);
 extern void _clp_bin2arr(int);
 
 //qout.obj:
-extern void _clp_print(int);
+//extern void _clp_print(int);
 extern void _clp_qqout(int);
 extern void _clp_fflush(int);
 extern void _clp_outerr(int);

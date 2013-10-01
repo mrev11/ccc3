@@ -1,6 +1,20 @@
 
 #ifdef _HISTORY_
 
+2013.09.26 -- 1.1.17"
+   tabKeyCompose() átírva.
+   A korábbi változat oszlopblokkal olvasta a kulcsszegmenseket.
+   Az oszlopblokk beépített típuskonverziót hajt végre az értéken,
+   amit vissza kellett konvertálni binary típusra. Az odavissza 
+   konverzió miatt egy karakteres mezőből képzett kulcs eltérhetett 
+   a mezőtől, ha a mező érvénytelen UTF-8 kódot tartalmazott. 
+   Példa: Egy CCC2-vel készült adatbázis C típusú mezőjében legyen 
+   mondjuk egy Latin-2 'á'. Ha ezt indexeltük CCC3-ban, akkor az á-ból
+   az indexben '?' lett. Ezután a rekordot nem lehetett seek-kel megtalálni.
+   Az új változat xvgetchar-ral (típuskonverzió nélkül) olvas,
+   így az indexbe mindig a mezővel egyező érték kerül (függetlenül
+   a kódolástól).
+
 2009.10.02 -- 1.1.16"
    gcc 4.3.2 warningok javitva.
 

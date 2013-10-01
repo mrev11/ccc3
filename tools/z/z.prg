@@ -135,6 +135,12 @@ local ferror:=zhome()+"error.z"
     end
  
     txt:=memoread(fspec,.t.) //binary
+    if( file(fspec) .and. directory(fspec)[1][2]!=len(txt) )
+        alert("File is too large",{"Quit"})
+        //tul nagy (>MAXSTRLEN) fileokat a memoread nem tud beolvasni
+        //tovabbra sincs kezelve, amikor az eredmeny string lesz tul nagy
+        quit
+    end
     txt1:=bin2str(txt) //string
     if( !txt==str2bin(txt1) )
         n:=alert("Invalid UTF-8 encoding!",{"Quit","View","Edit"})

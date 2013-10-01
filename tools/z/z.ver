@@ -1,7 +1,14 @@
 
-#define VERSION "2.1.13"
+#define VERSION "2.1.14"
 
 #ifndef VERSION  
+
+2013.09.02 -- 1.2.14
+  Nagy fileokat (>MAXSTRLEN) a memoread nem tud beolvasni,
+  ezt jelezni kell. Tovabbra sincs kezelve az az esetet, amikor
+  az eredmeny lesz nagyobb MAXSTRLEN-nel. Ilyenkor a mentes
+  lehetetlen, mert nem lehet eloallitani a memowrit-tel
+  kiirando stringet. (A gyakorlatban nincs ilyen.)
 
 2013.08.08 -- 1.2.13
   Invalid UTF-8 encoding: Quit,View,Edit választás.

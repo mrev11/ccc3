@@ -184,6 +184,36 @@ class xmldom_lexer : public yyFlexLexer
         textsize+=len;
     }
 
+    void code()
+    {
+        char *txt=(char*)YYText();
+        unsigned c;
+        if( *(txt+2)=='x' )
+        {
+            c=strtoul(txt+3,0,16);  //&#xhhhh;
+        }
+        else
+        {
+            c=strtoul(txt+2,0,10);  //&#nnnn;
+        }
+
+        char buf[8];
+        #ifdef _CCC2_
+            buf[0]=(char)(255&c);
+            buf[1]=(char)0;
+        #else 
+            if( encoding==0 )
+            {
+                ucs_to_utf8(c,buf);
+            }
+            else
+            {
+                buf[0]=(char)(255&c);
+                buf[1]=(char)0;
+            }
+        #endif
+        cat(buf);
+    }
 
     int trim()
     {

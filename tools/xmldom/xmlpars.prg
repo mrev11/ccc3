@@ -78,7 +78,7 @@ static function xmlparser.initialize(this,f)
     this:file:=f            // fname/fdesc
     this:inputblock:=NIL
 
-    this:entityconv:=.f.
+    this:entityconv:=.t.
     this:preservespace:=.f.
     this:debug:=.f.
     this:cargo:=NIL

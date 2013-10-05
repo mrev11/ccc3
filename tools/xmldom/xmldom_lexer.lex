@@ -35,24 +35,32 @@
 symbol     [_a-zA-Z][\.\-:_a-zA-Z0-9]*
 string     "\""[^\"]*"\""|"\'"[^\']*"\'" 
 wspace     [ \t\r\n]*
+dec        [0-9]+ 
+hex        [0-9a-fA-F]+ 
 
 
 %%
 
 "<#ROOT#>"       {return ROOT;} 
 [^<]             {cat();}
-"&amp;"          {entityconversionflag ? cat("&")  : cat("&amp;");}
-"&lt;"           {entityconversionflag ? cat("<")  : cat("&lt;");}
-"&gt;"           {entityconversionflag ? cat(">")  : cat("&gt;");}
-"&quot;"         {entityconversionflag ? cat("\"") : cat("&quot;");}
-"&apos;"         {entityconversionflag ? cat("\'") : cat("&apos;");}
+"&amp;"          {entityconversionflag ? cat("&")  : cat();}
+"&lt;"           {entityconversionflag ? cat("<")  : cat();}
+"&gt;"           {entityconversionflag ? cat(">")  : cat();}
+"&quot;"         {entityconversionflag ? cat("\"") : cat();}
+"&apos;"         {entityconversionflag ? cat("\'") : cat();}
+
+"&#"{dec}";"     {entityconversionflag ? code()    : cat();}
+"&#x"{hex}";"    {entityconversionflag ? code()    : cat();}
 
 [^<]/"<"         {cat(); if(trim()) return TEXT;}
-"&amp;"/"<"      {entityconversionflag ? cat("&")  : cat("&amp;"); return TEXT;}
-"&lt;"/"<"       {entityconversionflag ? cat("<")  : cat("&lt;"); return TEXT;}
-"&gt;"/"<"       {entityconversionflag ? cat(">")  : cat("&gt;"); return TEXT;}
-"&quot;"/"<"     {entityconversionflag ? cat("\"") : cat("&quot;"); return TEXT;}
-"&apos;"/"<"     {entityconversionflag ? cat("\'") : cat("&apos;"); return TEXT;}
+"&amp;"/"<"      {entityconversionflag ? cat("&")  : cat(); return TEXT;}
+"&lt;"/"<"       {entityconversionflag ? cat("<")  : cat(); return TEXT;}
+"&gt;"/"<"       {entityconversionflag ? cat(">")  : cat(); return TEXT;}
+"&quot;"/"<"     {entityconversionflag ? cat("\"") : cat(); return TEXT;}
+"&apos;"/"<"     {entityconversionflag ? cat("\'") : cat(); return TEXT;}
+
+"&#"{dec}";"/"<" {entityconversionflag ? code()    : cat(); return TEXT;}
+"&#x"{hex}";"/"<" {entityconversionflag ? code()   : cat(); return TEXT;}
 
 
 "<![CDATA["      {yy_push_state(cdata);}

@@ -1,3 +1,7 @@
+2013.10.05 -- 1.6.03
+  Konvertálja a &#NNNN; &#xHHHH; karakterkódokat.
+  xmlparser:entityconv defaultja .t.-re változott.
+
 2012.09.21 -- 1.6.02
   function cdataif static-ra változtatva.
 

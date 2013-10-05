@@ -196,7 +196,7 @@ local rsp, e
 static function xmlrpcclient.call(this,metnam,params)
 
 local e, result
-local faultcode,faultstring,fault
+local faultcode,faultstring
 
     if( params==NIL )
         params:={}
@@ -214,34 +214,12 @@ local faultcode,faultstring,fault
         faultcode:=result[2][1][2]
         faultstring:=result[2][2][2]
 
-        //"classname|operation|description|subsystem"
-        fault:=split(faultstring,"|") 
-
-        if( fault[1]=="xmlrpctimeouterror" )
-            e:=xmlrpctimeouterrorNew()
-        elseif( fault[1]=="xmlrpcsessionerror" )
-            e:=xmlrpcsessionerrorNew()
-        elseif( fault[1]=="xmlrpcinvalidsiderror" )
-            e:=xmlrpcinvalidsiderrorNew()
-        elseif( fault[1]=="xmlrpcaccessdeniederror" )
-            e:=xmlrpcaccessdeniederrorNew()
-        else
-            e:=xmlrpcerrorNew()
-        end
-        
-        if( e:classname=="xmlrpcerror" )
-            e:operation:="xmlrpcclient.call"
-            e:description:=faultstring
-            e:subsystem("XMLRPC")
-            e:subcode:=faultcode
-            e:args:=params
-        else
-            e:operation:=fault[2]
-            e:description:=fault[3]
-            e:subsystem:=fault[4]
-            e:subcode:=faultcode
-            e:args:=params
-        end
+        e:=xmlrpcerrorNew()
+        e:operation:="xmlrpcclient.call"
+        e:description:=faultstring
+        e:subsystem("XMLRPC")
+        e:subcode:=faultcode
+        e:args:=params
         break(e)
 
     else

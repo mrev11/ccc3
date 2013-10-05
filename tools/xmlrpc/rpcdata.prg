@@ -45,6 +45,7 @@ local p, o, name, params, n
     //xmldom 1.4.00 után
     p:=xmlparserNew()
     p:rootflag:=.f.
+    p:entityconv:=.t.
     o:=p:parsestring(xml)
     if( !o:type=="methodCall" )
         expected("methodCall",o:type) 
@@ -91,6 +92,7 @@ local p, o, params, fault, n
 
     p:=xmlparserNew()
     p:rootflag:=.f.
+    p:entityconv:=.t.
     o:=p:parsestring(xml)
     if( !o:type=="methodResponse" )
         expected("methodResponse",o:type) 
@@ -173,12 +175,16 @@ local t:=o:type, x
             x:=""
         else
             x:=o:content[1]:content[1] 
-            x:=strtran(x,"&lt;","<")
-            x:=strtran(x,"&amp;","&")
+            //x:=strtran(x,"&lt;","<")
+            //x:=strtran(x,"&amp;","&")
         end
 
     elseif( t=="dateTime.iso8601" )
-        x:=stod(left(o:content[1]:content[1],8))
+        x:=left(o:content[1]:content[1],8)
+        if( x=="00010101" )
+            x:="        "
+        end
+        x:=stod(x)
         
     elseif( t=="base64" )
         x:=base64_decode(o:content[1]:content[1])
@@ -195,8 +201,8 @@ local t:=o:type, x
             x:=""
         else
             x:=o:content[1]
-            x:=strtran(x,"&lt;","<")
-            x:=strtran(x,"&amp;","&")
+            //x:=strtran(x,"&lt;","<")
+            //x:=strtran(x,"&amp;","&")
         end
  
     elseif( t=="array" )

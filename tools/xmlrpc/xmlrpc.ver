@@ -5,6 +5,44 @@
  
 #ifdef _VERSION_HYSTORY_
 
+2013.10.05 -- 1.1.04
+  A bejövő XML character entity konverzióját a parser végzi,
+  ezért a típuskonverzióban levő korábbi  strtran(x,"&lt;","<")
+  és strtran(x,"&amp;","&") ki lett kommentezve (ui. pontosan 
+  egyszer kell konvertálni). Az entityconv más eseteket is visz, 
+  pl. a &#nnnn; és &#xhhhh; numerikus karakterkódokat is.
+  A kimenő XML-ben továbbra is csak a '<' és '&' van védve.
+
+  Sok esetben felesleges a védelem, pl. '>' => '&gt;' felesleges.
+  Egyes karakterek numerikus kódolása ('&#nnn;') felesleges.
+  Viszont kódolni kell: '<' => '&lt;', másképp elromlik a XML.
+  Kódolni kell: '&' => '&amp;', hogy működjön az "&lt;" string echózása.
+  Tehát az '<' és '&' karakterek védése szükséges és elégséges, mégis
+  egyes XMLRPC kliensek telerakják az XML-t felesleges kódolással.
+  
+  Egyszerűsítés az xmlrpcclient.call hibakezelésében:
+  Korábban a szerverből jövő faultstring elemzése alapján
+  különféle osztályú és kitöltésű hibákat dobott. Ez értelmetlen,
+  hiszen csakis a faultstring/faultcode tartalmaz infót a 
+  szerverben előállt hibáról. Most egységesen xmlrpcerror-t dob, 
+  ahol e:description:=faultstring, e:subcode:=faultcode, 
+  így biztosan nem vész el infó, és elkülönülve marad a szerverbeli 
+  és a kliensbeli hiba leírása.
+  
+  CCC2-ben a bedrótozott karakterkódolás Latin-2-re változott.
+  A CCC2-ben nincs megkülönböztetve a Latin-1 és Latin-2 kódolás. 
+  A változás hatása, hogy más programok értesülnek arról, hogy 
+  a kalapos-ü és hosszú-ü azonos kódját minek értelmezzék: ű-nek.
+  
+  Az üres dátum konvertálódik stod("00010101")-re és vissza. 
+  Megjegyzés1: __num2dat(0)==ctod(""), __num2dat(1)==stod("00010101").
+  Megjegyzés2: Mivel oda-vissza történik a konverzió, a CCC programokban
+  továbbra sem fogunk stod("00010101") dátumokkal találkozni az üres
+  dátum helyett, idegen programoknak viszont nem okoz gondot egy 
+  hibás    <dateTime.iso8601>        T00:00:00</dateTime.iso8601> tag,
+  helyette <dateTime.iso8601>00010101T00:00:00</dateTime.iso8601>-et kapnak.
+
+
 2013.06.14 -- 1.1.03
   felesleges/káros errorblock kezelés kihagyva
   bővített faultString: "classname|metnam|operation|description|subsystem"

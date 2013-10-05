@@ -21,7 +21,7 @@
 //CCC adatokat XMLRPC hívásokká alakít
 
 #ifdef _CCC2_
-static xmlheader:='<?xml version="1.0" encoding="ISO-8859-1"?>'
+static xmlheader:='<?xml version="1.0" encoding="ISO-8859-2"?>'
 #endif
 
 #ifdef _CCC3_
@@ -124,7 +124,11 @@ local x, t:=valtype(v), n
     elseif( t=="L" ) 
         x:="<boolean>"+if(v,"1","0")+"</boolean>" 
     elseif( t=="D" ) 
-        x:="<dateTime.iso8601>"+dtos(v)+"T00:00:00"+"</dateTime.iso8601>" 
+        x:=dtos(v)
+        if( x=="        " )
+            x:="00010101"
+        end
+        x:="<dateTime.iso8601>"+x+"T00:00:00"+"</dateTime.iso8601>" 
     elseif( t=="A" ) 
         x:="<array><data>"
         for n:=1 to len(v)

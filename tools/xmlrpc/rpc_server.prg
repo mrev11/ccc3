@@ -39,6 +39,7 @@ class xmlrpcserver(object)
     attrib reuseaddr    //reuse address flag
     attrib methods      //metódusok: {{m,b,h,s},...} 
     attrib keepalive    //tartja-e a kapcsolatot
+    attrib reqencoding  //required encoding in requests
     attrib debug        //printeli-e a debug infót
     attrib recover      //elkapja-e a hibákat
     attrib server       //szerver név (HTTP header)
@@ -166,6 +167,7 @@ static errtyp:=errorNew()
 
 local req,metnam,params,metblk,rsp,hdr
 local e,faultCode,faultString 
+local qmxml,docenc
 
     req:=http_readmessage(sck)
     if( req==NIL )
@@ -174,7 +176,7 @@ local e,faultCode,faultString
 
     if( this:debug )
         ? "-----------------------------------------------------------"
-        ? "XML-RPC REQUEST"
+        ? "XML-RPC REQUEST", date(), time()
         ? "-----------------------------------------------------------"
         ? req 
     end
@@ -183,7 +185,26 @@ local e,faultCode,faultString
 
     begin
  
-        req:=rpcdataCall(req)
+        req:=rpcdataCall(req,@qmxml)
+        
+        if( this:reqencoding!=NIL )
+            //? qmxml
+            if( !empty(qmxml) )
+                docenc:=qmxml:getattrib("encoding")
+            end
+            if( empty(docenc) )
+                docenc:="UTF-8"
+            end
+            //? docenc
+            if( !docenc==this:reqencoding )
+                e:=xmlrpcerrorNew()
+                e:operation:="xmlrpcserver.response"
+                e:description:="required encoding:"+this:reqencoding
+                e:args:={docenc}
+                break(e)
+            end
+        end
+        
 
         metnam:=req[1]                   //methodname
         params:=req[2]                   //array of params
@@ -250,7 +271,7 @@ local e,faultCode,faultString
 
     if( this:debug )
         ? "-----------------------------------------------------------"
-        ? "XML-RPC RESPONSE"
+        ? "XML-RPC RESPONSE", date(), time()
         ? "-----------------------------------------------------------"
         ? rsp 
     end

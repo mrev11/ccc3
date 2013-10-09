@@ -25,6 +25,7 @@ static mutex:=thread_mutex_init()
 static quitblk:={||DefQuit()}
 static signalblk:={|signum|DefSignal(signum)}
 static errorblk:={|e|DefError(e,.t.)}
+static breakblk:={|e|NIL}
 
 
 *****************************************************************************
@@ -216,6 +217,18 @@ local cho
     varstack()
     errorlevel(1)
     quit
+
+
+*****************************************************************************
+function breakblock(blk)
+local oldblk
+    MUTEX_LOCK
+    oldblk:=breakblk
+    if( valtype(blk)=="B" )
+        breakblk:=blk
+    end
+    MUTEX_UNLOCK
+    return oldblk
 
 
 *****************************************************************************

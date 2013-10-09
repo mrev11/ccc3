@@ -1,9 +1,14 @@
 
-#define ID_SERVER  "CCC XMLRPC Server 1.1.03"
-#define ID_CLIENT  "CCC XMLRPC Client 1.1.02"
+#define ID_SERVER  "CCC XMLRPC Server 1.1.05"
+#define ID_CLIENT  "CCC XMLRPC Client 1.1.05"
  
  
 #ifdef _VERSION_HYSTORY_
+
+2013.10.08 -- 1.1.05
+  új attrib: xmlrpcserver:reqencoding
+  Ha meg van adva, akkor ez a requestek kötelező kódolása.
+  Betű szerinti egyezést követel meg, eltérés esetén breakel.
 
 2013.10.05 -- 1.1.04
   A bejövő XML character entity konverzióját a parser végzi,

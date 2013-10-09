@@ -21,7 +21,7 @@
 //XML-RPC dokumentumot CCC struktúrába alakít
 
 ****************************************************************************
-function rpcdataCall(xml)
+function rpcdataCall(xml,qmxml)
 local p, o, name, params, n
 
     //xmldom 1.4.00 előtt
@@ -47,6 +47,7 @@ local p, o, name, params, n
     p:rootflag:=.f.
     p:entityconv:=.t.
     o:=p:parsestring(xml)
+    qmxml:=p:qmxml
     if( !o:type=="methodCall" )
         expected("methodCall",o:type) 
     end

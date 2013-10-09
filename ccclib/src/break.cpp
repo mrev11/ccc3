@@ -55,6 +55,12 @@ void _clp_break(int argno)
     VALUE *exception=(argno>0) ? base : &NIL; //ezt dobták
     int xtype=exception->type;
     int xsubtype=(xtype==TYPE_OBJECT?exception->data.object.subtype:0);
+
+    extern void _clp_breakblock(int);
+    _clp_breakblock(0);
+    push(exception);        
+    _clp_eval(2);
+    pop();
   
     //printf("\nx-type %s %d",ctype(xtype),xsubtype);fflush(0);
     

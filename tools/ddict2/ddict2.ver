@@ -1,7 +1,11 @@
 
-#define VERZIO "3.0.06"
+#define VERZIO "3.0.07"
 
 #ifndef VERZIO
+
+2013.10.16 -- 3.0.07
+   Hosszabb tábla- és indexfájl nevek.
+   Régi adatszótárak automatikusan upgrade-elődnek.
 
 2008.07.04 -- 3.0.06
    "A DBF létrehozása a tárolt struktúrával" funkció nem törölte

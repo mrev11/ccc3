@@ -105,7 +105,8 @@ local browse
     DDICT:path:=left(ddict,n)
     DDICT:file:=substr(ddict,n+1)
     tabDelIndex(DDICT:table)
-    
+
+    DDICT:upgrade    
     DDICT:open
     DDICT:control:="table"
     DDICT:gotop
@@ -113,13 +114,13 @@ local browse
     browse:=DDICT:browse(0,0,maxrow(),maxcol())
 
     brwColumn(browse,"",{||DDICT_STATE},1)
-    brwColumn(browse,"Table",{||tabver()},10)
+    brwColumn(browse,"Table",{||tabver()},18)
     brwColumn(browse,"Order",{||lower(DDICT_INDNAME)},10)
-    brwColumn(browse,"Index file",{||lower(DDICT_INDFILE)},8)
     brwColumn(browse,"Index columns",{||DDICT_INDFIELD},36)
     brwColumn(browse,"Directory",{||DDICT_DIRECTORY},28)
     brwColumn(browse,"Owner",{||DDICT_OWNER})
     brwColumn(browse,"Date",{||DDICT_STRDATE})
+    brwColumn(browse,"Index file",{||lower(DDICT_INDFILE)},16)
 
     brwMenuName(browse,"[Dictionary:"+ddictName()+"]")
 

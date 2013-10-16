@@ -48,7 +48,7 @@ local pos:=DDICT:position
 ****************************************************************************
 static function loadBev(getlist)
     //aeval(getlist,{|g|g:picture:="@!"})
-    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S10! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
+    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S16! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
 
     g_tab:postBlock:={||valTabName(getlist)}
     g_ord:postBlock:={||valOrdName(getlist)}
@@ -297,7 +297,7 @@ static function loadMod(getlist)
 local indcol:=split(DDICT_INDFIELD)
 
     //aeval(getlist,{|g|g:picture:="@!"})
-    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S10! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
+    aeval(getlist,{|g|g:picture:=if("col"$g:name,"@S16! NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN","@!")})
     
     g_tab:cargo:=ctoa(dbstruct())
     g_tab:preBlock:={||.f.}

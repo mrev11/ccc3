@@ -1,9 +1,12 @@
 
-#define ID_SERVER  "CCC XMLRPC Server 1.1.05"
-#define ID_CLIENT  "CCC XMLRPC Client 1.1.05"
+#define ID_SERVER  "CCC XMLRPC Server 1.1.06"
+#define ID_CLIENT  "CCC XMLRPC Client 1.1.06"
  
  
 #ifdef _VERSION_HYSTORY_
+
+2013.11.02 -- 1.1.06
+  faultCode típusa (a hibás) double helyett (szabványos) int.
 
 2013.10.08 -- 1.1.05
   új attrib: xmlrpcserver:reqencoding

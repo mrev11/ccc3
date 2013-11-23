@@ -2078,7 +2078,7 @@ int codegen_statement_begseq_lrecov_finally_END(parsenode *p,void *v)//PROTO
     }
 
     nltab();fprintf(code,"if(seq_%d>=0);",lab);
-    nltab();fprintf(code,"else if(seq_%d==-1){_clp_break(1);}",lab);
+    nltab();fprintf(code,"else if(seq_%d==-1){_clp_break0(1);}",lab);
 
     nltab();fprintf(code,"else if(seq_%d==-2)",lab);
     if( begseqdepth_ret>0 )

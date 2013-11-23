@@ -1,4 +1,10 @@
 
+2013.11.23 -- 5.0.18
+  breakblock támogatás a finally fordításában
+  A finally break helyett break0-t hív,
+  hogy a break-be bekerült breakblock hívás ne többszöröződjön.
+  Megj: régi break = break0, új break = break0+eval(breakblock).
+
 2010.01.21 -- 5.0.17
   Számliterálok kiírása alapvetően "%.16g" formázással történik.
   Ez most meg van toldva ".0"-val, ha az eredeti kiírás 8-nál hosszabb, 

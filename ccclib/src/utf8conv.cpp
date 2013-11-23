@@ -30,9 +30,7 @@
 #define H5 0xf8  //1111 1000
 #define H6 0xfc  //1111 1100
 #define H7 0xfe  //1111 1110
-#define H8 0xfe  //1111 1111
 
-#define L0 0x00  //0000 0000
 #define L1 0x01  //0000 0001
 #define L2 0x03  //0000 0011
 #define L3 0x07  //0000 0111
@@ -40,7 +38,6 @@
 #define L5 0x1f  //0001 1111
 #define L6 0x3f  //0011 1111
 #define L7 0x7f  //0111 1111
-#define L8 0x7f  //1111 1111
 
 #define CONT(x)  (((x)&H2)==H1) //continuing char
 #define SEQ2(x)  (((x)&H3)==H2) //2 byte sequence
@@ -48,9 +45,7 @@
 #define SEQ4(x)  (((x)&H5)==H4) //4 byte sequence
 #define SEQ5(x)  (((x)&H6)==H5) //5 byte sequence
 #define SEQ6(x)  (((x)&H7)==H6) //6 byte sequence
-#define SEQ7(x)  (((x)&H8)==H7) //7 byte sequence
 
-#define LOW0(x)  ((x)&L0)
 #define LOW1(x)  ((x)&L1)
 #define LOW2(x)  ((x)&L2)
 #define LOW3(x)  ((x)&L3)
@@ -87,7 +82,6 @@ int utf8_to_ucs(const char *utf8, int *ucs)
         else if( SEQ4(c) ){ seq=4; code=LOW3(c); }
         else if( SEQ5(c) ){ seq=5; code=LOW2(c); }
         else if( SEQ6(c) ){ seq=6; code=LOW1(c); }
-        else if( SEQ7(c) ){ seq=7; code=LOW0(c); }
     
         unsigned i;
         for( i=1; i<seq; i++ )

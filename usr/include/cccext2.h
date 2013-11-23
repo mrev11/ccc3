@@ -106,6 +106,7 @@ extern void _clp_trim(int);
 extern void _clp_evalarray(int);
 
 //break.obj:
+extern void _clp_break0(int);
 extern void _clp_break(int);
 
 //binary.obj:
@@ -207,6 +208,7 @@ extern void _clp_str(int);
 //deferror.obj:
 extern void _clp_quitblock(int);
 extern void _clp_errorblock(int);
+extern void _clp_breakblock(int);
 extern void _clp_signalblock(int);
 
 //rand.obj:

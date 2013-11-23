@@ -1,3 +1,12 @@
+2013.11.23 breakblock javitas
+  a kozbulso finally agak break-et hivtak,
+  emiatt a break elejen levo breakblock hivas megtobbszorozodott,
+  javitaskent a fordito a finally-ban break helyett break0-t fordit
+  break0 = regi (breakblock nelkuli) break
+  uj break = regi break + eval(breakblck)
+  a konyvtarakat ujra kell forditani
+  utf8conv felesleges makrok kihagyva
+
 2013.11.02 XMLRPC: faultCode tipusa  double helyett int.
 
 2013.10.16 ddict2-ben hosszabb filenevek.

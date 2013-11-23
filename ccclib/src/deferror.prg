@@ -25,7 +25,7 @@ static mutex:=thread_mutex_init()
 static quitblk:={||DefQuit()}
 static signalblk:={|signum|DefSignal(signum)}
 static errorblk:={|e|DefError(e,.t.)}
-static breakblk:={|e|NIL}
+static breakblk:=NIL
 
 
 *****************************************************************************

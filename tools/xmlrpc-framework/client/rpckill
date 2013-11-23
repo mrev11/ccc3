@@ -1,0 +1,9 @@
+#!/bin/bash
+
+killall -r 'rpc.*\.exe'
+
+# ez is jo, de egyszerubb a killall
+# ps -A | grep -e 'rpc.*\.exe' | grep -v grep | awk '{print $1}' | while read PID; do
+#     #echo $PID
+#     kill -TERM $PID
+# done

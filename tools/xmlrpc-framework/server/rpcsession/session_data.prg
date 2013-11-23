@@ -26,13 +26,7 @@
 #define TIMEOUT  xmlrpc_timeout()
 
 *****************************************************************************
-static function initialize() //táblát kreál, ha nincs
-static ini:=.f.
-
-    if( ini )
-        return NIL
-    end
-    ini:=.t.
+function initialize_session_table() //táblát kreál, ha nincs
 
     dirmake("rpcbase")
     //SESSION:path:="rpcbase"
@@ -42,15 +36,27 @@ static ini:=.f.
     //"set dosconv fileshare" kell minimum
     if( SESSION:open(OPEN_EXCLUSIVE,{||.f.}) )
         SESSION:zap
+        ? getpid(), "session table zapped"
     end
 
-    SESSION:open(OPEN_SHARED)
+    //rossz a lock protokoll
+    //a zap es az open(OPEN_SHARED) osszeakad
+    //azert kell a patkolas a sleep-pel
+    //SESSION:open(OPEN_SHARED) //deadlock
+
+    while( !SESSION:open(OPEN_SHARED,{||.f.}) )
+        SESSION:close
+        ? getpid(), "wait"
+        sleep(100)
+    end
+    ? getpid(), "open"
+
     SESSION:control:="sid"
+
 
 *****************************************************************************
 function session_ini(s) //letárol egy session objektumot
 
-    initialize() 
 
     SESSION:append
     SESSION_SID      := s:hash
@@ -67,7 +73,6 @@ function session_ini(s) //letárol egy session objektumot
 *****************************************************************************
 function session_out(sid) //érvénytelenít egy sid-et
 
-    initialize() 
 
     SESSION:seek(sid)
     while( !SESSION:eof .and. alltrim(SESSION_SID)==sid )
@@ -84,7 +89,6 @@ function session_out(sid) //érvénytelenít egy sid-et
 function  session_get(sid,errflag,prolongflag,loadflag) //ellenőriz/előszed egy sessiont
 local valid, sec, result
 
-    initialize() 
  
     valid := valtype(sid)$"XC" .and.;
              SESSION:seek({sid,"session"}) .and.;

@@ -12,18 +12,16 @@ PORTSSL=45001
 
 SERVERDIR=`pwd`/server
  
-#export XMLRPC_WRAPPER=$RPCHOST,$PORTPLAIN,PLAIN
-export XMLRPC_WRAPPER=$RPCHOST,$PORTSSL,SSL
+export XMLRPC_WRAPPER=$RPCHOST,$PORTPLAIN,PLAIN
+#export XMLRPC_WRAPPER=$RPCHOST,$PORTSSL,SSL
 
-export XMLRPC_TIMEOUT=300
-export XMLRPC_MAXSESSION=128
-export XMLRPC_MAXSAMEUID=4
+export XMLRPC_TIMEOUT=20
 
 $SERVERDIR/rpcsession.exe                       2>>err-rpcsession     &
 $SERVERDIR/rpcsession.exe                       2>>err-rpcsession     &
 $SERVERDIR/rpctest.exe                          2>>err-rpctest        & 
  
-$SERVERDIR/rpcwrapper.exe \
+$SERVERDIR/rpcwrapper.exe --reuseaddr \
     -k  localhost.pem \
     -l  $RPCHOST:$PORTPLAIN:plain \
     -l  $RPCHOST:$PORTSSL:ssl

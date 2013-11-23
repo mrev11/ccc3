@@ -34,6 +34,17 @@ static sslcontext
 static reuseaddress:=.f.
 
 *****************************************************************************
+static function errorhandler(e)
+    if( getclassid(e)==errorClass() )
+        ? "ERROR", e
+        callstack()
+        varstack()
+    else
+        ? e:classname, e:operation, e:description
+        //callstack()
+    end
+
+*****************************************************************************
 function main()
 
 local opt:=aclone(argv())
@@ -44,6 +55,7 @@ local sck,c,n,i,e
     set alternate on
     //set console off
     alertblock({|t,a|xmlrpc_alert(t,a)})
+    breakblock({|e|errorhandler(e)})
 
     for n:=1 to len(opt)
         if( opt[n]=="-l" .or. opt[n]=="--listener" )
@@ -98,9 +110,9 @@ local sck,c,n,i,e
                     sck[n]:destruct
                 recover e <apperror>
                     sck[n]:destruct
-                recover e //programozási hibák
-                    sck[n]:destruct
-                    ? e
+                recover e 
+                    //egyéb hiba
+                    //az error-okat errorhandler logolja
                 end
             end
         next
@@ -262,7 +274,7 @@ static function connection.initialize(this,s,m)
     this:time:=time()
     this:counter:=0
     this:timeout:=seconds()
-    ? date(),time(),"con",s,len(con)
+    printevent(this,"con")
     return this
 
 *****************************************************************************
@@ -272,12 +284,20 @@ static function connection.fd(this) //select-hez
 *****************************************************************************
 static function connection.destruct(this,idx) 
 local n
+begin
+    if(this:socket==NIL)
+        return NIL
+    end
+    
+    printevent(this,"del")
 
-    ? date(),time(),"del",this:socket,len(con),;
-                         if(this:module==NIL,"",this:module)
+    //con array-ből törölni
+    if( idx==NIL )
+        idx:=this:conidx 
+    end
+    xdel(con,idx)
 
     //megszűnt szerverek várakozó klienseit értesíteni kelli  
-
     if( this:client!=NIL )
         this:client:write(noservice(this:module+".*"))
     end
@@ -286,13 +306,12 @@ local n
     next
 
     this:socket:close
-
-    //con array-ből törölni
-
-    if( idx==NIL )
-        idx:=this:conidx 
-    end
-    xdel(con,idx)
+recover
+    //az errorokat errorhandler logolja
+    ? "destruct failed", this
+finally    
+    this:socket:=NIL
+end
 
 *****************************************************************************
 static function connection.conidx(this)
@@ -319,6 +338,7 @@ local clen,body,vpos,e
         e:=socketerrorNew()
         e:operation("connection.read")
         e:description:="no data"
+        e:args:={s:fd}
         break(e)
     end
     this:message+=r
@@ -345,8 +365,20 @@ local clen,body,vpos,e
 
 *****************************************************************************
 static function connection.write(this,msg)
-    this:counter++
-    return http_writemessage(this:socket,msg) 
+    if( this:socket!=NIL )
+        this:counter++
+        http_writemessage(this:socket,msg)
+    else
+        ? "response to connection destructed earlier"
+    end
+    
+    //itt mindenképpen vissza kell térni,
+    //mert ha a főciklus hibaága kapná el a hibát,
+    //akkor elmaradhat a forward client és queue kezelése,
+    //http_writemessage nem kivételt dob,
+    //hanem visszaadja az elküldött bájtok számát
+    //(ezért nem kell itt külön védelem)
+
 
 *****************************************************************************
 static function connection.forward(this)
@@ -543,24 +575,40 @@ static function printstate()
 local n, c
 
     ? 
-    ? 'rpcwrapper "system.printstate"', time()
-    ? "--------------------------------------------------------"
+    ? date(),time(), "system.printstate"
+    ? "------------------------------------------------------------------"
  
     for n:=1 to len(con)
         c:=con[n]
         if( c:module!=NIL )
-            ? padr(c:module,16),c:http,c:socket,c:time 
+            ? padr(c:module,16),c:http,;
+              c:socket:classname,c:socket:fd,;
+              c:time,;
+              if(c:client==NIL," ","C"),len(c:queue)
         end
     next
+    
+    ?
 
     for n:=1 to len(con)
         c:=con[n]
         if( c:module==NIL )
-            ? padr("client",16),c:http,c:socket,c:time,seconds()-c:timeout() 
+            ? padr("client",16),c:http,;
+              c:socket:classname,c:socket:fd,;
+              c:time 
         end
     next
  
-    ? "--------------------------------------------------------"
+    ? "------------------------------------------------------------------"
+
+
+*****************************************************************************
+static function printevent(this,event)
+    ? date(),time(),event,;
+      if(this:module==NIL,"client",this:module),;
+      this:socket:fd,;
+      len(con)
+
 
 *****************************************************************************
 static function check(sid)

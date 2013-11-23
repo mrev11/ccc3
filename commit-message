@@ -1,8 +1,12 @@
-2013.11.23 breakblock javitas
-a kozbulso finally agak break-et hivtak,
-emiatt a break elejen levo breakblock hivas megtobbszorozodott,
-javitaskent a fordito a finally-ban break helyett break0-t fordit
-break0 = regi (breakblock nelkuli) break
-uj break = regi break + eval(breakblck)
-a konyvtarakat ujra kell forditani
-utf8conv felesleges makrok kihagyva
+2013.11.23 javitasok xmlrpc-framework-ben
+rpcsession
+A SESSION tábla zapolása deadlockot okozott.
+A SESSION nyitása és zapolása át van téve a program elejére,
+a zappal összeakadó open close+várakozással próbálkozik.
+rpcwrapper
+Hibakezelés javítása:
+Megszűnt klienseknek nem kell választ küldeni.
+A destruct-ban nem szabad elszállni (mert kilép a program).
+A write-ban nem szabad elszállni (ugyan nem lép ki a program),
+de elmaradhat a forward-ban levő client és queue kezelés.
+Az error osztályú hibákat az errorhandler logolja.

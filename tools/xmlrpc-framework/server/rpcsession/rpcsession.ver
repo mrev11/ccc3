@@ -1,6 +1,11 @@
-#define VERSION "1.2.00"
+#define VERSION "13.11.22"
 
 #ifdef __HISTORY__
+
+2013.11.22 -- 1.2.00
+  A SESSION tábla zapolása deadlockot okozott.
+  A SESSION nyitása és zapolása át van téve a program elejére,
+  a zappal összeakadó open close+várakozással próbálkozik.
 
 2007.11.18 -- 1.2.00
   CCC3 port

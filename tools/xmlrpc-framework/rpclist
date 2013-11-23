@@ -1,0 +1,2 @@
+#!/bin/bash
+ps -A | grep -e 'rpc.*\.exe'  | grep -v grep | less

@@ -43,10 +43,17 @@ local client, e, sid, n:=0, blk:={||garbage()}
         client:debug:=.t.
 
         begin
+            //? sid:=client:call("session.login",{"proba","szerencse"})
             ? client:call("teszt.echo",{ sid, blk })  //szemetet küld
             ? client:call("session.logout",sid)
-        //recover e
-        //    ? e
+
+        recover e
+            //valójában a hiba kiírása érdektelen,
+            //mert a szerver megszakítja a kapcsolatot,
+            //ezért a hiba (a kliensben) mindig 
+            //"http_readmessage failed"
+            //? "ERROR",e:description
+            sleep(100)
         end
         
         client:close

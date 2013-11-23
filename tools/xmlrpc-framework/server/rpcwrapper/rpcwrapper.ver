@@ -1,7 +1,15 @@
 
-#define VERSION  "1.3.00"
+#define VERSION  "13.11.23"
 
 #ifdef __HISTORY__
+
+2013.11.23
+  Hibakezelés javítása:
+  Megszűnt klienseknek nem kell választ küldeni.
+  A destruct-ban nem szabad elszállni (mert kilép a program).
+  A write-ban nem szabad elszállni (ugyan nem lép ki a program),
+  de elmaradhat a forward-ban levő client és queue kezelés.
+  Az error osztályú hibákat az errorhandler logolja.
 
 2007.12.16 -- 1.3.00
   SSL támogatás.

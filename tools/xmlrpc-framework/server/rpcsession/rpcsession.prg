@@ -76,6 +76,7 @@ local server
 
     alertblock({|t,a|xmlrpc_alert(t,a)})
 
+    initialize_session_table()
     RPCUSER:open(OPEN_READONLY);  RPCUSER:control:="user"
     RPCAUTH:open(OPEN_READONLY);  RPCAUTH:control:="tid"
 

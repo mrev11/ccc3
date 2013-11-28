@@ -66,7 +66,8 @@ local m,name,n,d,d1:={}
 
         name:=d[n][F_NAME]
 
-        if( !(name=="." .or. name=="..") )
+        //if( !(name=="." .or. name=="..") )  // 2013.11.28  (kihagy: .git, .svn, .ssh)
+        if( !name[1]=="." )
 
             if( "D"$d[n][F_ATTR] )
             

@@ -35,13 +35,24 @@ static reuseaddress:=.f.
 
 *****************************************************************************
 static function errorhandler(e)
-    if( getclassid(e)==errorClass() )
+    
+    if( valtype(e)!="O" )
+        //nem objektum
+        ? e
+
+    elseif( !e:isderivedfrom(errorClass()) ) 
+        //objektum, de nem error leszármazott
+        ? e
+
+    elseif( getclassid(e)!=errorClass() )
+        //error leszármazott, de nem error
+        ? e:classname, e:operation, e:description
+
+    else
+        //error
         ? "ERROR", e
         callstack()
         varstack()
-    else
-        ? e:classname, e:operation, e:description
-        //callstack()
     end
 
 *****************************************************************************

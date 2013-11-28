@@ -1,3 +1,7 @@
+2013.11.28 rpcwrapper hibakezeles javitva.
+  setperm kihagyja a .* fileket.
+  file permission flagek javitva a repoban.
+
 2013.11.23 javitasok xmlrpc-framework-ben
 rpcsession
   A SESSION tábla zapolása deadlockot okozott.

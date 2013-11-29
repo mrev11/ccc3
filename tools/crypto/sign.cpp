@@ -55,7 +55,7 @@ void _clp_crypto_sign(int argno)  //egy lépésben
     //és a CCC szemétgyűjtés fogja eltakarítani.
 
     char *sigbuf=binaryl(EVP_PKEY_size(pkey));
-    unsigned int siglen=sizeof(sigbuf);
+    unsigned int siglen=0; //output
     int res=EVP_SignFinal(&md_ctx,(unsigned char*)sigbuf,&siglen,pkey);
 
     EVP_PKEY_free(pkey);                            //free
@@ -114,7 +114,7 @@ void _clp_crypto_sign_final(int argno)
     //és a CCC szemétgyűjtés fogja eltakarítani.
 
     char *sigbuf=binaryl(EVP_PKEY_size(pkey));
-    unsigned int siglen=sizeof(sigbuf);
+    unsigned int siglen=0; //output
     int res=EVP_SignFinal(md_ctx,(unsigned char*)sigbuf,&siglen,pkey);
 
     EVP_PKEY_free(pkey);

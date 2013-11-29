@@ -1,3 +1,6 @@
+2013.11.29 tools/crypto ccc2-backport.
+  kod egysegesitve (korabban a ccc2 hianyos volt)
+
 2013.11.28 rpcwrapper hibakezeles javitva.
   setperm kihagyja a .* fileket.
   file permission flagek javitva a repoban.

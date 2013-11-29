@@ -12,6 +12,7 @@ CCC2 környezetben is szükség van:
     ccctools/prg2ppo
 
     jt
+    tools/crypto
     tools/regex
     tools/socket
     tools/sql2

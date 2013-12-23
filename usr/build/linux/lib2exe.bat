@@ -18,6 +18,11 @@ echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 echo -Wl,--end-group >>$RSPLNK
  
+echo -Wl,--start-group >>$RSPLNK
+echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
+for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+echo -Wl,--end-group >>$RSPLNK
+ 
 echo `cat $CCCDIR/usr/options/$CCCBIN/link.opt` >>$RSPLNK
 
 if ! c++ `cat $RSPLNK` 2>outlnk;  then

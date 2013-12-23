@@ -1,3 +1,9 @@
+2013.11.29 obj2exe.bat,obj2exe.bat
+  a konyvtarakat felsorolo --start-group --end-group megduplazva
+  a CCC2-ben ez mar korabban megtortent, de a CCC3-ban valahogy kimaradt
+  (elromlott a gcc linker: a group opcio ellenere egymenetesen mukodik)
+  setperm.exe (elszallas helyett) jelzi a rossz UTF-8 kodolasu fileneveket
+
 2013.11.29 tools/crypto ccc2-backport.
   kod egysegesitve (korabban a ccc2 hianyos volt)
 

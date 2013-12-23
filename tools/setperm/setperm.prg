@@ -104,6 +104,13 @@ static function setperm(dentry)
 local mode:=stat_st_mode(dentry)
 local nmode:=mode
 local xmode,ymode
+
+    if(mode==NIL)
+        // directory() C típusban adja az eredményeket, de 
+        // nem minden fájlnév konvertálható hibátlanul C-re
+        ? "!!!!!!! cannot stat:",  dirsep()+curdir()+dirsep()+dentry
+        return NIL
+    end
  
     if( s_isdir(mode) )
         nmode:=oct2l("2775")

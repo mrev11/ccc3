@@ -65,7 +65,7 @@ struct nodetab {
     };
 
 
-    void list(char *prompt="")
+    void list(const char *prompt="")
     {
         int i=0;
         parsenode *p;

@@ -12,6 +12,8 @@ rm error 2>/dev/null
 echo -o $TARGET >$RSPLNK
 for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 
+#ld 2.22 (precise) egymenetes
+#echo -Wl,--copy-dt-needed-entries >>$RSPLNK
 echo -Wl,--start-group >>$RSPLNK
 echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK 
 echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  

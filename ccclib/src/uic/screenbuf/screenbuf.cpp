@@ -57,7 +57,7 @@ screencell *screenbuf::cell(int x, int y)
 }
     
 //----------------------------------------------------------------------------
-void screenbuf::dump(char *caption)
+void screenbuf::dump(const char *caption)
 {
     printf("%s-1\n",caption);
     for(int j=0; j<sizey; j++ )

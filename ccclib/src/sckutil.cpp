@@ -94,7 +94,7 @@ int socket_new()
 //----------------------------------------------------------------------------
 static void socket_addr_in(SOCKADDR_IN *saddr, char *ipaddr, int port)
 {
-    memset(saddr,0,sizeof(saddr));
+    memset(saddr,0,sizeof(SOCKADDR_IN));
     saddr->sin_addr.s_addr=ipaddr?inet_addr(ipaddr):htonl(INADDR_ANY);
     saddr->sin_port=htons((unsigned short)port);
     saddr->sin_family=AF_INET;

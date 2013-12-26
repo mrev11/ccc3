@@ -83,7 +83,7 @@ class screenbuf{
     screenbuf(int x, int y);
     ~screenbuf();
     screencell *cell(int x, int y);
-    void dump(char *caption="SCREEN");
+    void dump(const char *caption="SCREEN");
     void clear();
     void clearrect(int lef, int top, int rig, int bot);
     int getrect(int lef, int top, int rig, int bot, screencell *dest);

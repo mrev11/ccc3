@@ -1,2 +1,4 @@
--bccc3_xmldom
+#-bccc3_xmldom
+#jobb statikusan linkelni, mert az ld 2.22 (precise) rossz
+-bccc3_xmldom.lib
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

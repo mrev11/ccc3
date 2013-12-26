@@ -14,7 +14,11 @@ sudo apt-get install \
     glibc-doc \
     libx11-dev \
     libssl-dev \
-    libgtk2.0-dev \
     libpcre3-dev \
-    libreadline5-dev \
+    libreadline6-dev \
     git-core
+
+
+#    libgtk2.0-dev \
+#    libpangox-1.0-dev \
+

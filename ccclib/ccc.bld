@@ -5,5 +5,7 @@
 -duic/screenbuf
 -iinclude
 
+-bdl
+
 BUILD_SRC=src
  

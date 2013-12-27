@@ -1,4 +1,9 @@
-2013.12.26 ubuntu saucy install.
-Uj warningok megszuntetve.
-Az ld a 2.22 verziotol kezdve (szerintem) rosszul linkel.
-libccc3.so-ba linkelni kell dl-t, korabban eleg volt csak az exe-be linkelni.
+2013.12.27 ubuntu saucy install.
+linuxon a linkelo scriptekbe beirva: --no-as-needed
+ennek a defaultja valtozott meg, emiatt voltak a hibak
+az ezzel kapcsolatos tobbi valtoztatas visszaveve
+megj: debian wheezy-n nem valtoztattak meg a defaultot
+ezeken volt tesztelve:
+ubuntu lucid, precise, saucy
+debian wheezy
+freebsd 8.2, 9.2

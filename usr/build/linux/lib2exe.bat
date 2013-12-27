@@ -13,17 +13,19 @@ echo -o $TARGET >$RSPLNK
 for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 
 #ld 2.22 (precise) egymenetes
-#echo -Wl,--copy-dt-needed-entries >>$RSPLNK
+echo -Wl,--no-as-needed >>$RSPLNK
+
 echo -Wl,--start-group >>$RSPLNK
 echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK 
 echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 echo -Wl,--end-group >>$RSPLNK
  
-echo -Wl,--start-group >>$RSPLNK
-echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
-for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
-echo -Wl,--end-group >>$RSPLNK
+#ld 2.22 (precise) egymenetes
+#echo -Wl,--start-group >>$RSPLNK
+#echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
+#for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+#echo -Wl,--end-group >>$RSPLNK
  
 echo `cat $CCCDIR/usr/options/$CCCBIN/link.opt` >>$RSPLNK
 

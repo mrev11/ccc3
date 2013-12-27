@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Egy szokásos Ubuntu-Gutsy telepítés után
+# Egy szokásos 
+#       Ubuntu Precise 
+#       Debian Wheezy
+# telepítés után
 # ezeket a csomagokat kell felrakni,
 # hogy a CCC2/CCC3 leforduljon.
-# + a jt-hez kell a Sun Java.
-# + az SQL2-höz kell a PostgreSQL.
 
 sudo apt-get install \
     g++ \
@@ -13,6 +14,7 @@ sudo apt-get install \
     manpages-dev \
     glibc-doc \
     libx11-dev \
+    libxft-dev \
     libssl-dev \
     libpcre3-dev \
     libreadline6-dev \

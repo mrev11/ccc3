@@ -24,7 +24,19 @@
 #include <pthread.h>
 #include <signal.h>
 #include <locale.h>
-#include <ncursesw/ncurses.h>
+
+#if  defined _LINUX_
+    #include <ncursesw/ncurses.h>
+#elif defined _NETBSD_
+    #include <ncursesw/ncurses.h>
+    extern "C" int  waddnwstr(WINDOW*,wchar_t*,int);
+#elif defined _FREEBSD_
+    #include <ncurses/cursesw.h>
+    extern "C" int  waddnwstr(WINDOW*,wchar_t*,int);
+#else
+    #include <ncursesw/ncurses.h>
+#endif
+
 #include <screenbuf.h>
 #include <inkey.ch>
 #include <inkeymap.h>
@@ -125,7 +137,7 @@ static void paint(int top, int lef, int bot, int rig)
             
             move(y,x);
             attron(coltrans[255&at]);
-            addnwstr((wchar_t*)(void*)&ch,1);
+            waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
             attroff(coltrans[255&at]);
         }
     }

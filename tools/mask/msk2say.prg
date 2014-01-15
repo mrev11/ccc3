@@ -20,6 +20,7 @@
 
 //Utility mask filék say filékre való konvertálására
 
+//2.0.03 nagy maszkok támogatása (Vermes M. 2014.01.15)
 //2.0.02-unicode: isbox javítva (Vermes M. 2011.08.25)
 //nls (Vermes M. 2006.09.25)
 //unicode (Vermes M. 2006.04.12)
@@ -32,8 +33,8 @@
 
 #include "box.ch"
 
-#define MSK_MAXROW 25
-#define MSK_MAXCOL 80
+#define MSK_MAXROW     f_maxrow()
+#define MSK_MAXCOL     f_maxcol()
 
 #define TOP    rect[1]
 #define LEFT   rect[2]
@@ -44,6 +45,36 @@
 #define POSR(row,col)   "   @"+str(row+startRow,3)+","+str(col+startCol,3)
 #define POSRO(row,col)  (str(row,3)+","+str(col,3))
 #define NEVPAD(nev) padr(nev,12)
+
+static size80x25:={80,25}
+static size100x50:={100,50}
+static size120x60:={120,60}
+static size160x60:={160,60}
+static size200x60:={200,60}
+static termsize:=size80x25
+#define CALCSIZE(t)  (t[1]*t[2]*4)
+
+
+*************************************************************************
+static function termsetup()
+    f_maxcol(termsize[1])
+    f_maxrow(termsize[2])
+
+*************************************************************************
+static function f_maxrow(s)
+static x:=25
+    if( s!=NIL )
+        x:=s
+    end
+    return x
+
+static function f_maxcol(s)
+static x:=80
+    if( s!=NIL )
+        x:=s
+    end
+    return x
+
 
 ******************************************************************************
 function main(p1,p2,p3,p4)
@@ -89,13 +120,29 @@ local srTomb,say_mode
     end
 
     mskfile:=addEKieg(mskfile,".msk")
-    mskstr:=left(memoread(mskfile,.t.),MSK_MAXROW*MSK_MAXCOL*4)
+    mskstr:=memoread(mskfile,.t.)
 
-    if( len(mskstr)!=MSK_MAXROW*MSK_MAXCOL*4 )
-        ? "invalid msk file:", mskfile
+    if( len(mskstr)%4!=0  )
+        mskstr:=left(mskstr,len(mskstr)-1)
+    end
+
+    if( len(mskstr)==CALCSIZE(size80x25) )
+        termsize:=size80x25
+    elseif( len(mskstr)==CALCSIZE(size100x50) )
+        termsize:=size100x50
+    elseif( len(mskstr)==CALCSIZE(size120x60) )
+        termsize:=size120x60
+    elseif( len(mskstr)==CALCSIZE(size160x60) )
+        termsize:=size160x60
+    elseif( len(mskstr)==CALCSIZE(size200x60) )
+        termsize:=size200x60
+    else
+        ? "Incompatible msk file length",len(mskstr)
         ?
         quit
     end
+    termsetup()
+
 
     if( empty(sayfile) )
         sayfile:=addKieg(mskfile,".say")

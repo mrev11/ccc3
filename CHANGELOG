@@ -1,3 +1,12 @@
+2014.01.15 nagy maszkok.
+  (A mask 2.1.00 ota tamogatja nagy maszkok rajzolasat.)
+  msk2say kodot general a nagy maszkokbol.
+  Ha a kepernyo (terminal) kisebb, mint a maszk,
+  akkor a savescreen/restscreen runtime errort okoz,
+  ezt figyelembe kell venni az alkalmazas tervezesekor.
+
+2014.01.01 ncterm leforditva netbsd-n, freebsd-n.
+
 2013.12.27 ubuntu saucy install.
   linuxon a linkelo scriptekbe beirva: --no-as-needed
   ennek a defaultja valtozott meg, emiatt voltak a hibak
@@ -7,6 +16,7 @@
     ubuntu lucid, precise, saucy
     debian wheezy
     freebsd 8.2, 9.2
+    netbsd 5.1, 6.1.2
 
 2013.12.26 ubuntu saucy install.
   Uj warningok megszuntetve.

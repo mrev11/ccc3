@@ -1,9 +1,6 @@
-2013.12.27 ubuntu saucy install.
-linuxon a linkelo scriptekbe beirva: --no-as-needed
-ennek a defaultja valtozott meg, emiatt voltak a hibak
-az ezzel kapcsolatos tobbi valtoztatas visszaveve
-megj: debian wheezy-n nem valtoztattak meg a defaultot
-ezeken volt tesztelve:
-ubuntu lucid, precise, saucy
-debian wheezy
-freebsd 8.2, 9.2
+2014.01.15 nagy maszkok.
+(A mask 2.1.00 ota tamogatja nagy maszkok rajzolasat.)
+msk2say kodot general a nagy maszkokbol.
+Ha a kepernyo (terminal) kisebb, mint a maszk,
+akkor a savescreen/restscreen runtime errort okoz,
+ezt figyelembe kell venni az alkalmazas tervezesekor.

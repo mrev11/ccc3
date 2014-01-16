@@ -18,7 +18,7 @@ find . -type f \
        -name rsplink -o \
        -name error | xargs rm -f
 
-find . -type l | xargs rm -f
+#find . -type l | xargs rm -f
 
 
 find . -type d | while read NAME; do

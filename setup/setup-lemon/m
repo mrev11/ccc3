@@ -5,7 +5,7 @@ LEMON_EXE=$LEMON_PATH/lemon.exe
 
 
 if [ ! -x $LEMON_EXE ]; then
-    gcc  -I .  lemon.c  -o $LEMON_EXE
+    cc  -I .  lemon.c  -o $LEMON_EXE
     cp -p lempar.c  $LEMON_PATH/
 
     if [ -x $LEMON_EXE ]; then

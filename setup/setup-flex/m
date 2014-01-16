@@ -7,7 +7,7 @@
 FLEX=$CCCDIR/usr/bin/$CCCUNAME/flex.exe
 
 if [ ! -x $FLEX ]; then
-    gcc  -I .  *.c -o $FLEX
+    cc  -I .  *.c -o $FLEX
     cp -p flexlexer.h  $CCCDIR/usr/include
 
     if [ -x $FLEX ]; then

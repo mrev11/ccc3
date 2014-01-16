@@ -843,7 +843,7 @@ struct state *stp;     /* The state from which successors are computed */
 
     /* The state "newstp" is reached from the state "stp" by a shift action
     ** on the symbol "sp" */
-    Action_add(&stp->ap,SHIFT,sp,newstp);
+    Action_add(&stp->ap,SHIFT,sp,(char*)newstp);
   }
 }
 
@@ -944,7 +944,7 @@ struct lemon *lemp;
           if( SetFind(cfp->fws,j) ){
             /* Add a reduce action to the state "stp" which will reduce by the
             ** rule "cfp->rp" if the lookahead symbol is "lemp->symbols[j]" */
-            Action_add(&stp->ap,REDUCE,lemp->symbols[j],cfp->rp);
+            Action_add(&stp->ap,REDUCE,lemp->symbols[j],(char*)(cfp->rp));
           }
         }
       }
@@ -1380,7 +1380,7 @@ char **argv;
 
   OptInit(argv,options,stderr);
   if( version ){
-     printf("Lemon 1.0 CCC-Build-3\n");
+     printf("Lemon 1.0 CCC-Build-4\n");
      exit(0); 
   }
   if( OptNArgs()!=1 ){

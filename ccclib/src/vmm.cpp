@@ -357,14 +357,17 @@ void _clp_xvisequal(int argno)
     vmhandle(PARPTR(1),o1+nbyte,"XVCOMPARE1");
     vmhandle(PARPTR(3),o2+nbyte,"XVCOMPARE2");
     
-    while( --nbyte>=0  )
+    int flag=1;
+    while( nbyte>0  )
     {
+        --nbyte;
         if( *(b1+o1+nbyte) != *(b2+o2+nbyte) )
         {
+            flag=0;
             break;
         }
     }
-    _retl( nbyte<0 );  //.t., ha egyenlők
+    _retl( flag );  //.t., ha egyenlők
     CCC_EPILOG();
 }
  

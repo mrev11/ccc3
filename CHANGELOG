@@ -1,3 +1,15 @@
+2014.01.16 FreeBSD 10.0 forditas (clang).
+  gcc helyett cc parancs.
+  compile.opt helyett compile-clang.opt vagy compile-gcc.opt
+    (forditas elott ezek egyiket linkelni kell compile.opt-ba)
+    (clean-all.b-ben kihagyva a linkek torlese)
+  lemon.c-ben castok.
+  compile.opt-ban:
+    -O2
+    -Wno-empty-body
+    -Wno-constant-logical-operand
+  vmm.cpp xvisequal() hiba javita.
+
 2014.01.15 nagy maszkok.
   (A mask 2.1.00 ota tamogatja nagy maszkok rajzolasat.)
   msk2say kodot general a nagy maszkokbol.

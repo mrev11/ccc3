@@ -1,3 +1,7 @@
+2014.01.22 minusz 0 kiirasa javitva.
+  javitas str.cpp-ben: elkeruli a -0 kiirasat.
+  jeed.exe linkeles sql2_sqlite3-mal.
+
 2014.01.16 FreeBSD 10.0 forditas (clang).
   gcc helyett cc parancs.
   compile.opt helyett compile-clang.opt vagy compile-gcc.opt

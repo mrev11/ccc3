@@ -59,13 +59,44 @@ while(stack<base+3)PUSHNIL();
         }
     }
 
+    // if( x==0.0 )  //+0 vagy -0
+    // {
+    //     //megj: x=-x signneg-re fordul,
+    //     //signneg megforditja az elojel bitet,
+    //     //igy keletkezik a -0 szam,
+    //     //a -0-t a printf minusz elojellel irja ki,
+    //     //ez ellen kell vedekezni
+    //     
+    //     x=0; //+0, esetleg kioptimalizalja
+    // }
+
     //char buffer[512],pict[16];
     //sprintf(pict,"%%%d.%dlf",w,d);
     //int len=sprintf(buffer,pict,x);
-    
+
     char buffer[512];
     int len=sprintf(buffer,"%*.*lf",w,d,x); //minden fordító tudja
-    
+
+    // mutatja -0 elojelet
+    // printf("\n[%d] ",x!=0);
+    // printf("size=%d ",(int)sizeof(x));
+    // for(int ix=0; ix<(int)sizeof(x); ix++ )
+    // {
+    //     printf("%02x ",((char*)&x)[ix]); 
+    // }
+    // printf("%s",buffer);
+
+    if(x==0) 
+    { 
+        //avoid "-0" (Csiszár,2014.01.21)
+        //ezt nem optimalizalja ki
+        char *p=(char*)memchr(buffer,'-',len);
+        if( p!=0 ) 
+        {
+            *p=' '; 
+        }
+    }
+
     if( decimal->type!=TYPE_NUMBER && d>0 )
     {
         //leszedi jobbról a 0 tizedeseket, illetve

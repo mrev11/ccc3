@@ -17,7 +17,7 @@
 2012.05.25 -- 1.5.01
   Hibajavítás: 
     A bemenet végén (a gyökér tag után) levő szemetet nem vette észre, 
-    most a szemétre szintaktikai hinát jelez.
+    most a szemétre szintaktikai hibát jelez.
 
 2012.02.25 -- 1.5.00
   xmlparser2-ben új attrib: createnodeblock

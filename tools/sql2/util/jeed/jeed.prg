@@ -69,14 +69,16 @@ local n
 ******************************************************************************
 function sqlconnect()
 
-local con,arg:=argv(),n,x,ora,ser
+local con,arg:=argv(),n,x,ora,pgr,sl3,ser
     
     for n:=1 to len(arg)
         x:=upper(arg[n])
         if( x=="-O" )
             ora:=.t.
         elseif( x=="-P" )
-            ora:=.f.
+            pgr:=.t.
+        elseif( x=="-L" )
+            sl3:=.t.
         elseif( x=="-S" )
             ser:=.t.
         end
@@ -84,6 +86,13 @@ local con,arg:=argv(),n,x,ora,ser
 
     if( ora==.t. )
         con:=sql2.oracle.sqlconnectionNew()
+    elseif( sl3==.t. )
+#ifdef _CCC3_
+        con:=sql2.sqlite3.sqlconnectionNew()
+#else
+        ? "sqlite3 not supported"
+        quit
+#endif
     else
         con:=sql2.postgres.sqlconnectionNew() //default Postgres
     end

@@ -105,7 +105,8 @@ void _clp_localstack(int argno)
     }
     else
     {
-        PUSH(stackbuf+paridx-1);
+        //PUSH(stackbuf+paridx-1); //rossz
+        push_symbol(stackbuf+paridx-1); //deref 2011.09.19
         _rettop();
     }
     CCC_EPILOG();

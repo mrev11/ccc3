@@ -42,7 +42,7 @@ void binary(BYTE const *ptr) //új példány rámutatással (new nélkül)
  
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
-    v->data.binary.len=strlen((char*)ptr);
+    BINARYLEN(v)=strlen((char*)ptr);
     v->type=TYPE_BINARY;
  
     VARTAB_UNLOCK();
@@ -71,7 +71,7 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
  
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
-    v->data.binary.len=len;
+    BINARYLEN(v)=len;
     v->type=TYPE_BINARY;
 
     VARTAB_UNLOCK();
@@ -100,7 +100,7 @@ void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-va
   
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
-    v->data.binary.len=len;
+    BINARYLEN(v)=len;
     v->type=TYPE_BINARY;
 
     VARTAB_UNLOCK();
@@ -128,7 +128,7 @@ BYTE *binaryl(unsigned long len) //inicializálatlan binary new-val
  
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
-    v->data.binary.len=len;
+    BINARYLEN(v)=len;
     v->type=TYPE_BINARY;
  
     VARTAB_UNLOCK();

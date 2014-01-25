@@ -27,27 +27,6 @@
 #ifdef WINDOWS
 #include <io.h>
 #include <fcntl.h>
-
-static void setbinary(int fd)
-{
-    long oldhandle=_get_osfhandle(fd);
-    long newhandle;
-    DuplicateHandle( GetCurrentProcess(), 
-                     (HANDLE)oldhandle, 
-                     GetCurrentProcess(), 
-                     (HANDLE*)&newhandle, 
-                     0, 
-                     1, //inherit
-                     DUPLICATE_SAME_ACCESS );
-    close(fd);
-    int fd1=_open_osfhandle(newhandle,O_BINARY);  //ezért a szenvedés!
-    if( fd!=fd1 )
-    {
-        FILE*out=(fd==1?stderr:stdout);
-        fprintf(out,"setbinary failed: fd=%d, fd1=%d, errno=%d\n",fd,fd1,errno); 
-        exit(1);
-    }
-}
 #endif
  
 //----------------------------------------------------------------------------
@@ -55,8 +34,9 @@ int main(int argc, char **argv)
 {
     #ifdef WINDOWS
     _fmode=O_BINARY;
-    setbinary(1);
-    setbinary(2);
+    _setmode(0,O_BINARY);
+    _setmode(1,O_BINARY);
+    _setmode(2,O_BINARY);
     #endif
 
     if( !setlocale(LC_CTYPE,"") )

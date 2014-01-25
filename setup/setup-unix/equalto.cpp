@@ -134,8 +134,8 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
         {
             case TYPE_STRING:
             {
-                int al=a->data.string.len;
-                int bl=b->data.string.len;
+                unsigned long al=STRINGLEN(a);
+                unsigned long bl=STRINGLEN(b);
              
                 if( al!=bl )
                     result=0; // különböző hosszúak --> nem egyenlő
@@ -164,8 +164,8 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
 
             case TYPE_BINARY:
             {
-                int al=a->data.binary.len;
-                int bl=b->data.binary.len;
+                unsigned long al=BINARYLEN(a);
+                unsigned long bl=BINARYLEN(b);
              
                 if( al!=bl )
                     result=0; // különböző hosszúak --> nem egyenlő
@@ -176,7 +176,7 @@ int equalto()  // szigorú (nem Clipper =, != ...) egyenlőség
                     //egyik sem üres
                     BYTE *ap=BINARYPTR(a);
                     BYTE *bp=BINARYPTR(b);
- 
+                    
                     result=1;
                     while( bl-->0 )
                     {
@@ -278,8 +278,8 @@ int notequal()
             {
                 // a Clipper a relációt a jobboldal hosszában vizsgálja
 
-                int  al=a->data.string.len;
-                int  bl=b->data.string.len;
+                unsigned long  al=STRINGLEN(a);
+                unsigned long  bl=STRINGLEN(b);
 
                 if( bl==0 )
                 {
@@ -315,8 +315,8 @@ int notequal()
             {
                 // a Clipper a relációt a jobboldal hosszában vizsgálja
 
-                int  al=a->data.binary.len;
-                int  bl=b->data.binary.len;
+                unsigned long al=BINARYLEN(a);
+                unsigned long bl=BINARYLEN(b);
 
                 if( bl==0 )
                 {
@@ -419,7 +419,7 @@ int greaterthan()
         {
             case TYPE_STRING:
             {
-                int len=min( a->data.string.len, b->data.string.len );
+                unsigned long len=min( STRINGLEN(a), STRINGLEN(b) );
             
                 if( len==0 )
                 {
@@ -461,7 +461,7 @@ int greaterthan()
 
             case TYPE_BINARY:
             {
-                int len=min( a->data.binary.len, b->data.binary.len );
+                unsigned long len=min(BINARYLEN(a),BINARYLEN(b));
             
                 if( len==0 )
                 {
@@ -476,7 +476,7 @@ int greaterthan()
 
                     BYTE *ap=BINARYPTR(a);
                     BYTE *bp=BINARYPTR(b);
-            
+
                     while( (*ap==*bp) && (--len>0) )
                     {
                         ap++;
@@ -544,8 +544,8 @@ int lessthan()
         {
             case TYPE_STRING:
             {
-                int  al=a->data.string.len;
-                int  bl=b->data.string.len;
+                unsigned long al=STRINGLEN(a);
+                unsigned long bl=STRINGLEN(b);
             
                 if( bl==0 )
                 {
@@ -588,8 +588,8 @@ int lessthan()
 
             case TYPE_BINARY:
             {
-                int  al=a->data.binary.len;
-                int  bl=b->data.binary.len;
+                unsigned long al=BINARYLEN(a);
+                unsigned long bl=BINARYLEN(b);
             
                 if( bl==0 )
                 {
@@ -603,7 +603,7 @@ int lessthan()
                 {
                     BYTE *ap=BINARYPTR(a);
                     BYTE *bp=BINARYPTR(b);
-
+                    
                     result=0; //ha elfogy a jobboldal
  
                     while( bl-->0 )
@@ -666,25 +666,27 @@ void ss() //substring
 
     if( a->type==TYPE_STRING && b->type==TYPE_STRING )
     {
-        int  al=a->data.string.len;
-        int  bl=b->data.string.len;
+        unsigned long al=STRINGLEN(a);
+        unsigned long bl=STRINGLEN(b);
             
         if( al==0 )
         {
             stack-=2;
             logical(1);
         }
-        else if( bl==0 )
+        else if( bl<al )
         {
             stack-=2;
             logical(0);
         }
         else
         {
+            // 0<al<=bl
+
             CHAR *ap=STRINGPTR(a);
             CHAR *bp=STRINGPTR(b);
 
-            int i,j;
+            unsigned long i,j;
             for(i=0; i<=bl-al; i++)
             {
                 for(j=0; j<al; j++)
@@ -705,25 +707,27 @@ void ss() //substring
 
     else if( a->type==TYPE_BINARY && b->type==TYPE_BINARY )
     {
-        int  al=a->data.binary.len;
-        int  bl=b->data.binary.len;
+        unsigned long al=BINARYLEN(a);
+        unsigned long bl=BINARYLEN(b);
             
         if( al==0 )
         {
             stack-=2;
             logical(1);
         }
-        else if( bl==0 )
+        else if( bl<al )
         {
             stack-=2;
             logical(0);
         }
         else
         {
+            // 0<al<=bl
+        
             BYTE *ap=BINARYPTR(a);
             BYTE *bp=BINARYPTR(b);
-
-            int i,j;
+            
+            unsigned long i,j;
             for(i=0; i<=bl-al; i++)
             {
                 for(j=0; j<al; j++)

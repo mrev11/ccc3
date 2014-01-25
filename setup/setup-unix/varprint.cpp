@@ -97,43 +97,50 @@ void var_print(VALUE *v)
         case TYPE_BINARY:
         {
             OUTSTR(L"BINARY length=");
-            OUTNUM(v->data.binary.len);
+            OUTNUM((double)BINARYLEN(v));
             OUTOREF(v->data.binary.oref);
             
-            OUTSTR(L" \"");
-            unsigned len=min(v->data.binary.len,32);
-            if( len>0 )
+            if(BINARYPTR0(v)==0)
             {
-                char buf[64];
-                memcpy(buf,BINARYPTR(v),len);
-
-                unsigned int i;
-                for(i=0; i<len; i++)
-                {
-                    if( *(buf+i)<' ' )
-                    {
-                        *(buf+i)='^';
-                    }
-                }
-                *(buf+len)=(char)0;
-                if(len<v->data.string.len)
-                {
-                    strcat(buf," ... ");
-                }
-                OUTBIN(buf);
+                OUTSTR(L" (null)");
             }
-            OUTSTR(L"\"");
+            else
+            {
+                OUTSTR(L" \"");
+                unsigned len=min(BINARYLEN(v),32);
+                if( len>0 )
+                {
+                    char buf[64];
+                    memcpy(buf,BINARYPTR(v),len);
+
+                    unsigned int i;
+                    for(i=0; i<len; i++)
+                    {
+                        if( *(buf+i)<' ' )
+                        {
+                            *(buf+i)='^';
+                        }
+                    }
+                    *(buf+len)=(char)0;
+                    if(len<STRINGLEN(v))
+                    {
+                        strcat(buf," ... ");
+                    }
+                    OUTBIN(buf);
+                }
+                OUTSTR(L"\"");
+            }
             break;
         }
 
         case TYPE_STRING:
         {
             OUTSTR(L"STRING length=");
-            OUTNUM(v->data.string.len);
+            OUTNUM(STRINGLEN(v));
             OUTOREF(v->data.string.oref);
             
             OUTSTR(L" \"");
-            unsigned len=min(v->data.string.len,32);
+            unsigned len=min(STRINGLEN(v),32);
             if( len>0 )
             {
                 CHAR buf[64];
@@ -148,7 +155,7 @@ void var_print(VALUE *v)
                     }
                 }
                 *(buf+len)=(CHAR)0;
-                if(len<v->data.string.len)
+                if(len<STRINGLEN(v))
                 {
                     wcscat(buf,L" ... ");
                 }
@@ -160,7 +167,7 @@ void var_print(VALUE *v)
 
         case TYPE_ARRAY:
             OUTSTR(L"ARRAY length="); 
-            OUTNUM(v->data.array.oref->length);
+            OUTNUM(ARRAYLEN(v));
             OUTOREF(v->data.array.oref);
             break;
 

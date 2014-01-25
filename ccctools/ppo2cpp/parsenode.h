@@ -23,7 +23,7 @@
 
 #include <string.h>
 #include <stdarg.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #define SYM_LOCAL     0x010000
 #define SYM_GLOBSTAT  0x020000

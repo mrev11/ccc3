@@ -28,22 +28,40 @@ void _clp_substr(int argno)
     if( ISSTRING(1) )
     {
         CHAR *s=_parc(1);
-        int len=_parclen(1);
-        int beg=_parni(2);
-        if( beg<1 )
+        unsigned long len=_parclen(1);
+        unsigned long beg;
+        double dbeg=_parnd(2);
+        if( dbeg>0 )
         {
-            // Inkompatibilitás,
-            // a Clipper beg==0-ra is előlről indul,
-            // holott a 0. pozíció nincs értelmezve,
-            // mi beg==0-ra ""-t adunk.
+            beg=D2ULONG(dbeg);
+        }
+        else
+        {
+            beg=D2ULONG(-dbeg);
+            if( beg>=len )
+            {
+                beg=1;
+            }
+            else
+            {
+                beg=len-beg+1;
+            }
+        }
+        unsigned long cnt;
+        if( beg<1 || len<beg )
+        {
+            cnt=0;
+        }
+        else if( ISNIL(3) )
+        {
+            cnt=len-beg+1;
+        }
+        else
+        {
+            double dcnt=_parnd(3);
+            cnt=dcnt<0?0:min(D2ULONG(dcnt),len-beg+1);
+        }
 
-            beg=(beg+len<0) ? 1 : len+beg+1;
-        }
-        int cnt=len-beg+1;
-        if( !ISNIL(3) )
-        {
-            cnt=min(cnt,_parni(3));
-        }
         if( cnt<=0 )
         {
             _retc(L"");
@@ -53,21 +71,45 @@ void _clp_substr(int argno)
             _retclen(s+beg-1,cnt);
         }
     }
-    else
+    else  //binary
     {
         BYTE *s=_parb(1);
-        int len=_parblen(1);
-        int beg=_parni(2);
-        if( beg<1 )
+        binarysize_t len=_parblen(1);
+        binarysize_t beg;
+        double dbeg=_parnd(2);
+        if( dbeg>0 )
         {
-            beg=(beg+len<0) ? 1 : len+beg+1;
+            beg=D2ULONGW(dbeg);
         }
-        int cnt=len-beg+1;
-        if( !ISNIL(3) )
+        else
         {
-            cnt=min(cnt,_parni(3));
+            beg=D2ULONGW(-dbeg);
+            if( beg>=len )
+            {
+                beg=1;
+            }
+            else
+            {
+                beg=len-beg+1;
+            }
         }
-        if( cnt<=0 )
+
+        unsigned long cnt;
+        if( beg<1 || len<beg )
+        {
+            cnt=0;
+        }
+        else if( ISNIL(3) )
+        {
+            cnt=len-beg+1;
+        }
+        else
+        {
+            double dcnt=_parnd(3);
+            cnt=dcnt<0?0:min(D2ULONG(dcnt),len-beg+1);
+        }
+
+        if( cnt==0 )
         {
             _retb("");
         }
@@ -86,8 +128,8 @@ void _clp_left(int argno)
     if( ISSTRING(1) )
     {
         CHAR *s=_parc(1);
-        int len=_parclen(1);
-        int cnt=min(len,_parni(2));
+        unsigned long len=_parclen(1);
+        int cnt=minUS(len,_parni(2));
         
         if(cnt<=0)
         {
@@ -101,8 +143,8 @@ void _clp_left(int argno)
     else
     {
         BYTE *s=_parb(1);
-        int len=_parblen(1);
-        int cnt=min(len,_parni(2));
+        binarysize_t len=_parblen(1);
+        int cnt=minUS(len,_parni(2)); //min(unsigned,signed)
         
         if(cnt<=0)
         {
@@ -123,8 +165,8 @@ void _clp_right(int argno)
     if( ISSTRING(1) )
     {
         CHAR *s=_parc(1);
-        int len=_parclen(1);
-        int cnt=min(len,_parni(2));
+        unsigned long len=_parclen(1);
+        int cnt=minUS(len,_parni(2));
     
         if(cnt<=0)
         {
@@ -138,8 +180,8 @@ void _clp_right(int argno)
     else
     {
         BYTE *s=_parb(1);
-        int len=_parblen(1);
-        int cnt=min(len,_parni(2));
+        binarysize_t len=_parblen(1);
+        int cnt=minUS(len,_parni(2));  //min(unsigned,signed)
     
         if(cnt<=0)
         {

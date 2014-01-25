@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: ascan.ppo (5.0.17)
+//input: ascan.ppo (5.0.18)
 
 #include <cccdef.h>
 

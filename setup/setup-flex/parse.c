@@ -87,7 +87,7 @@
 void *alloca ();
 #   else
 #    ifdef __TURBOC__
-#     include <malloc.h>
+#     include <stdlib.h>
 #    else
 char *alloca ();
 #    endif

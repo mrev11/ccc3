@@ -23,7 +23,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
-#include <malloc.h>
 #include <cccapi.h>
 #include <xtxlegal.h>
 

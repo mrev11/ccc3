@@ -1,3 +1,3 @@
-2014.01.22 minusz 0 kiirasa javitva.
-javitas str.cpp-ben: elkeruli a -0 kiirasat.
-jeed.exe linkeles sql2_sqlite3-mal.
+2014.01.25 malloc.h megszuntetve
+<malloc.h> (depracated) mindenhol <stdlib.h>-ra cserelve
+setup-unix keszlet frissitve

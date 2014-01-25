@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: memoread.ppo (5.0.17)
+//input: memoread.ppo (5.0.18)
 
 #include <cccdef.h>
 

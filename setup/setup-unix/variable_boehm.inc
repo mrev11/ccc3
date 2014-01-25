@@ -25,9 +25,11 @@
 #include <stdlib.h>
 #include <cccapi.h> 
 
-#ifdef MULTITHREAD
+//Windowson egyszálú esetben is kell a GC_THREADS.
+//GC_THREADS nélkül, egyszálú CCC-vel fordított programok Windowson 
+//nem indulnak el: nem érkezik meg a vezérlés a C szintű main-be. 
+
 #define GC_THREADS
-#endif
 #include <gc/gc.h> 
 
 // Boehm-féle szemétgyűjtés

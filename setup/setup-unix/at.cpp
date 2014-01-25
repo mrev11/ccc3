@@ -31,12 +31,12 @@ void _clp_at(int argno)
     {
         bin2str(base);
 
-        unsigned slen=_parclen(1); //ezt keressuk
-        unsigned tlen=_parclen(2); //ebben keresunk
-        unsigned strt=ISNIL(3)?0:_parni(3)-1; //innen kezdve keresunk
+        unsigned long slen=_parclen(1); //ezt keressuk
+        unsigned long tlen=_parclen(2); //ebben keresunk
+        double dstrt=ISNIL(3)?0:_parnd(3)-1;
+        unsigned long strt=dstrt<0?tlen:D2ULONG(dstrt); //innen kezdve keresunk
 
-        //if( slen==0 || tlen==0 || strt+slen>tlen ) //overflow -> SIGSEGV!
-        if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen ) //2008.08.19
+        if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen )
         {
             _retni(0);
         }
@@ -44,7 +44,7 @@ void _clp_at(int argno)
         {
             CHAR *sp=_parc(1); //ezt keressuk
             CHAR *tp=_parc(2); //ebben keresunk
-            unsigned i;
+            unsigned long i;
             if( slen==1 ) //spec eset
             {
                 for(i=strt; i<tlen; i++)
@@ -72,11 +72,11 @@ void _clp_at(int argno)
     {
         str2bin(base);
 
-        unsigned slen=_parblen(1); //ezt keressuk
-        unsigned tlen=_parblen(2); //ebben keresunk
-        unsigned strt=ISNIL(3)?0:_parni(3)-1; //innen kezdve keresunk
+        binarysize_t slen=_parblen(1); //ezt keressuk
+        binarysize_t tlen=_parblen(2); //ebben keresunk
+        double dstrt=ISNIL(3)?0:_parnd(3)-1;
+        binarysize_t strt=dstrt<0?tlen:D2ULONGW(dstrt); //innen kezdve keresunk
 
-        //if( slen==0 || tlen==0 || strt+slen>tlen ) //overflow -> SIGSEGV!
         if( slen==0 || tlen==0 || slen>tlen || strt>tlen-slen )
         {
             _retni(0);
@@ -85,7 +85,7 @@ void _clp_at(int argno)
         {
             char *sp=_parb(1); //ezt keressuk
             char *tp=_parb(2); //ebben keresunk
-            unsigned i;
+            binarysize_t i;
 
             if( slen==1 ) //spec eset
             {
@@ -107,7 +107,7 @@ void _clp_at(int argno)
                      }
                 }
             }
-            _retni(i+slen<tlen+1?i+1:0);
+            _retni(i+slen<tlen+1?((double)(i+1)):0);
         }
     }
     else

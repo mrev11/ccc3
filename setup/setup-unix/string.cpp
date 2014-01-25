@@ -53,7 +53,7 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
 {
 //stack:   --- s
 
-    unsigned int len=wcslen(ptr);
+    unsigned long len=wcslen(ptr);
     if(len>MAXSTRLEN)
     {
         number(len);

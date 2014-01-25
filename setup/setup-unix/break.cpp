@@ -44,8 +44,26 @@ static const char *ctype(int type)
     return ".";
 }
 
+
 //----------------------------------------------------------------------------
 void _clp_break(int argno)
+{
+    VALUE *base=stack-argno;
+    VALUE *exception=(argno>0) ? base : &NIL; //ezt dobták
+
+    _clp_breakblock(0);
+    if( TOP()->type==TYPE_BLOCK )
+    {
+        push(exception);        
+        _clp_eval(2);
+    }
+    pop();
+
+    _clp_break0(argno); //eredeti
+}
+
+//----------------------------------------------------------------------------
+void _clp_break0(int argno)
 {
     //Figyelem:
     //a stack pointerek az első szabad helyre mutatnak

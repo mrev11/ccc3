@@ -155,3 +155,8 @@ Ubuntu 4.10-en kétféle Flex-et is telepíthetünk:
 
     Hatástalanítva lett az YY_INTERACTIVE makró (hatása, mintha
     mindig be volna kapcsolva -B (batch) opció).
+
+
+2014-01-25 Build-6: malloc.h megszüntetve
+
+    malloc.h helyett stdlib.h

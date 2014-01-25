@@ -29,25 +29,27 @@ void _clp_stuff(int argno)
     CCC_PROLOG("stuff",4);
     if( ISSTRING(1) )
     {
-        CHAR *s=_parc(1);           //ebben helyettesitunk
-        unsigned slen=_parclen(1);  //ilyen hosszuban helyettesitunk
-        unsigned nsta=_parni(2);    //innen kezdve
-        unsigned ndel=_parni(3);    //ennyit vagunk ki
-        CHAR *x=_parc(4);           //ezt rakjuk be
-        unsigned xlen=_parclen(4);  //ennyit rakunk be
+        CHAR *s=_parc(1);                //ebben helyettesitunk
+        unsigned long slen=_parclen(1);  //ilyen hosszuban helyettesitunk
+        double dsta=_parnd(2);           //innen kezdve
+        unsigned long nsta=dsta<0?0:D2ULONG(dsta);
+        double ddel=_parnd(3);           //ennyit vagunk ki
+        unsigned long ndel=ddel<0?0:D2ULONG(ddel);
+        CHAR *x=_parc(4);                //ezt rakjuk be
+        unsigned long xlen=_parclen(4);  //ennyit rakunk be
 
-        if( nsta==0 || nsta>slen )
+        if( slen > MAXSTRLEN )
+        {
+            error_cln("stuff",base,4);
+        }
+
+        if( nsta==0 || nsta>slen+1 )
         {
             ARGERROR();
         }
     
         ndel=min(ndel,slen-nsta+1);
-        unsigned nlen=slen-ndel+xlen;
-    
-        if( nlen > MAXSTRLEN )
-        {
-            error_cln("stuff",base,4);
-        }
+        unsigned long nlen=slen-ndel+xlen;
     
         CHAR *p=stringl(nlen);  // uj string a stacken
     
@@ -71,26 +73,27 @@ void _clp_stuff(int argno)
     }
     else if( ISBINARY(1) )
     {
-        char *s=_parb(1);           //ebben helyettesitunk
-        unsigned slen=_parblen(1);  //ilyen hosszuban helyettesitunk
-        unsigned nsta=_parni(2);    //innen kezdve
-        unsigned ndel=_parni(3);    //ennyit vagunk ki
-        char *x=_parb(4);           //ezt rakjuk be
-        unsigned xlen=_parblen(4);  //ennyit rakunk be
+        char *s=_parb(1);                //ebben helyettesitunk
+        unsigned long slen=_parblen(1);  //ilyen hosszuban helyettesitunk
+        double dsta=_parnd(2);           //innen kezdve
+        unsigned long nsta=dsta<0?0:D2ULONG(dsta);
+        double ddel=_parnd(3);           //ennyit vagunk ki
+        unsigned long ndel=ddel<0?0:D2ULONG(ddel);
+        char *x=_parb(4);                //ezt rakjuk be
+        unsigned long xlen=_parblen(4);  //ennyit rakunk be
 
-        if( nsta==0 || nsta>slen )
+        if( slen>MAXBINLEN )
+        {
+            error_bln("stuff",base,4);
+        }
+
+        if( nsta==0 || nsta>slen+1 )
         {
             ARGERROR();
-            nsta=1;
         }
     
         ndel=min(ndel,slen-nsta+1);
-        unsigned nlen=slen-ndel+xlen;
-    
-        if( nlen > MAXBINLEN )
-        {
-            error_cln("stuff",base,4);
-        }
+        unsigned long nlen=slen-ndel+xlen;
     
         char *p=binaryl(nlen);  // uj string a stacken
     

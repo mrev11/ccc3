@@ -29,10 +29,10 @@ void _clp_replicate(int argno)
 
     if( ISSTRING(1) )
     {
-        unsigned slen=_parclen(1);
+        unsigned long slen=_parclen(1);
         unsigned rlen=max(0,_parni(2));
 
-        if( slen*rlen>MAXSTRLEN )
+        if( slen>1 && (double)slen*(double)rlen>(double)MAXSTRLEN )
         {
             error_cln("replicate",base,2);
         }
@@ -56,12 +56,12 @@ void _clp_replicate(int argno)
 
     else if( ISBINARY(1) )
     {
-        unsigned slen=_parblen(1);
+        unsigned long slen=_parblen(1);
         unsigned rlen=max(0,_parni(2));
 
-        if( slen*rlen>MAXBINLEN )
+        if( slen>1 && (double)slen*(double)rlen>(double)MAXBINLEN )
         {
-            error_cln("replicate",base,2);
+            error_bln("replicate",base,2);
         }
 
         BYTE *p=binaryl(slen*rlen);
@@ -94,16 +94,8 @@ void _clp_space(int argno)
 {
     CCC_PROLOG("space",1);
     unsigned len=max(0,_parni(1));
-    if( len>MAXSTRLEN )
-    {
-        string(L"");
-        error_cln("space",base,argno);
-    }
-    else
-    {
-        CHAR *p=stringl(len);
-        wmemset(p,' ',len);
-    }
+    CHAR *p=stringl(len);
+    wmemset(p,' ',len);
     _rettop();
     CCC_EPILOG();
 }

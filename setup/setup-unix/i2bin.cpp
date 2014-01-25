@@ -42,7 +42,7 @@ void _clp_i2bin(int argno) //signed 16-bit
 void _clp_bin2i(int argno)  //signed 16-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_int16_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_int16_t)) )
     {
         error_arg("bin2i",base,argno);
     }
@@ -55,7 +55,7 @@ void _clp_bin2i(int argno)  //signed 16-bit
 void _clp_bin2w(int argno)  //unsigned 16-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_uint16_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_uint16_t)) )
     {
         error_arg("bin2w",base,argno);
     }
@@ -81,7 +81,7 @@ void _clp_l2bin(int argno) //signed 32-bit
 void _clp_bin2l(int argno) //signed 32-bit
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(c_int32_t)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_int32_t)) )
     {
         error_arg("bin2l",base,argno);
     }
@@ -107,7 +107,7 @@ void _clp_f2bin(int argno)
 void _clp_bin2f(int argno)
 {
     VALUE *base=stack-argno;
-    if( (argno<1) || (base->type!=TYPE_BINARY) || (base->data.binary.len<sizeof(double)) )
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(double)) )
     {
         error_arg("bin2f",base,argno);
     }
@@ -120,25 +120,46 @@ void _clp_bin2f(int argno)
 void _clp_l2hex(int argno)
 {
     VALUE *base=stack-argno;
-    unsigned long x=0;
+    unsigned long long x=0;
     if( argno<1 )
     {
         error_arg("l2hex",base,argno);
     }
     else if( base->type==TYPE_NUMBER )
     {
-        x=D2UINT(base->data.number);
+        x=D2ULONGW(base->data.number);
     }
     else if( base->type==TYPE_POINTER )
     {
-        x=(unsigned long)base->data.pointer;
+        x=(unsigned long long)(size_t)base->data.pointer;
     }
     else
     {
         error_arg("l2hex",base,argno);
     }
     char buffer[32];
-    sprintf(buffer,"%lx",x);
+    #ifdef WINDOWS //rossz
+    {
+        int i=0;
+        char hex[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+        while(x)
+        {
+            buffer[i]=hex[x&0xf];
+            i++;
+            x=x>>4;
+        }
+        buffer[i]=0;
+        for(int j=0; j<i/2; j++)
+        {
+            char c=buffer[j];
+            buffer[j]=buffer[i-j-1];
+            buffer[i-j-1]=c;
+        }
+    }
+    #else
+        sprintf(buffer,"%llx",x);
+    #endif
+    
     stack=base;
     stringnb(buffer); 
 }

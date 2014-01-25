@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: deferror.ppo (5.0.17)
+//input: deferror.ppo (5.0.18)
 
 #include <cccdef.h>
 
@@ -30,6 +30,7 @@ extern void _clp___varprint(int argno);
 extern void _clp_aadd(int argno);
 extern void _clp_alert(int argno);
 extern void _clp_bin2str(int argno);
+extern void _clp_breakblock(int argno);
 extern void _clp_callstack(int argno);
 static void _clp_deferror(int argno);
 static void _clp_defquit(int argno);
@@ -114,6 +115,16 @@ static VALUE* _st_errorblk_ptr()
     SIGNAL_UNLOCK();
     return _st_errorblk.ptr;
 }
+MUTEX_CREATE(_mutex_breakblk);
+static VALUE* _st_breakblk_ptr()
+{
+    SIGNAL_LOCK();
+    MUTEX_LOCK(_mutex_breakblk);
+    static stvar _st_breakblk(&NIL);
+    MUTEX_UNLOCK(_mutex_breakblk);
+    SIGNAL_UNLOCK();
+    return _st_breakblk.ptr;
+}
 
 static void _ini__mutex()
 {
@@ -185,37 +196,37 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("quitblock",base);
 //
-    line(32);
     line(33);
+    line(34);
     _clp_signal_lock(0);
     pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(34);
+    line(35);
     push_symbol(_st_quitblk_ptr());//global
     assign(base+1);//oldblk
     pop();
-    line(37);
-    line(35);
+    line(38);
+    line(36);
     push_symbol(base+0);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
     if(!flag()) goto if_1_1;
-        line(36);
+        line(37);
         push_symbol(base+0);//blk
         assign(_st_quitblk_ptr());//global
         pop();
     if_1_1:
     if_1_0:;
-    line(38);
+    line(39);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
     _clp_signal_unlock(0);
     pop();
-    line(39);
+    line(40);
     push_symbol(base+1);//oldblk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -232,37 +243,37 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("defquit",base);
 //
-    line(44);
+    line(45);
     number(24);
     string(L"");
     _clp_set(2);
     pop();
-    line(45);
+    line(46);
     number(23);
     string(L"off");
     _clp_set(2);
     pop();
-    line(46);
+    line(47);
     number(19);
     string(L"");
     _clp_set(2);
     pop();
-    line(47);
+    line(48);
     number(18);
     string(L"off");
     _clp_set(2);
     pop();
-    line(48);
+    line(49);
     number(22);
     string(L"");
     _clp_set(2);
     pop();
-    line(49);
+    line(50);
     number(21);
     string(L"off");
     _clp_set(2);
     pop();
-    line(50);
+    line(51);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -279,36 +290,36 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("signalblock",base);
 //
-    line(55);
     line(56);
+    line(57);
     _clp_signal_lock(0);
     pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(57);
+    line(58);
     push_symbol(_st_signalblk_ptr());//global
     assign(base+1);//oldblk
     pop();
-    line(60);
-    line(58);
+    line(61);
+    line(59);
     push_symbol(base+0);//blk
     push(&NIL);
     neeq();
     if(!flag()) goto if_2_1;
-        line(59);
+        line(60);
         push_symbol(base+0);//blk
         assign(_st_signalblk_ptr());//global
         pop();
     if_2_1:
     if_2_0:;
-    line(61);
+    line(62);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
     _clp_signal_unlock(0);
     pop();
-    line(62);
+    line(63);
     push_symbol(base+1);//oldblk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -325,31 +336,31 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("defsignal",base);
 //
-    line(67);
+    line(68);
     _clp_errornew(0);
     assign(base+1);//err
     pop();
-    line(68);
+    line(69);
     push_symbol(base+1);//err
     push_symbol(base+0);//signum
     _clp_signal_description(1);
     _o_method_description.eval(2);
     pop();
-    line(69);
+    line(70);
     push_symbol(base+1);//err
     push_symbol(base+0);//signum
     _o_method_subcode.eval(2);
     pop();
-    line(70);
+    line(71);
     push_symbol(base+1);//err
     string(L"SIGNAL");
     _o_method_subsystem.eval(2);
     pop();
-    line(71);
+    line(72);
     push_symbol(base+1);//err
     _clp_deferror(1);
     pop();
-    line(72);
+    line(73);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -366,37 +377,37 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("errorblock",base);
 //
-    line(77);
     line(78);
+    line(79);
     _clp_signal_lock(0);
     pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(79);
+    line(80);
     push_symbol(_st_errorblk_ptr());//global
     assign(base+1);//oldblk
     pop();
-    line(82);
-    line(80);
+    line(83);
+    line(81);
     push_symbol(base+0);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
     if(!flag()) goto if_3_1;
-        line(81);
+        line(82);
         push_symbol(base+0);//blk
         assign(_st_errorblk_ptr());//global
         pop();
     if_3_1:
     if_3_0:;
-    line(83);
+    line(84);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
     _clp_signal_unlock(0);
     pop();
-    line(84);
+    line(85);
     push_symbol(base+1);//oldblk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -413,18 +424,18 @@ while(stack<base+6)PUSHNIL();
 argno=2;
 push_call("deferror",base);
 //
-    line(90);
     line(91);
+    line(92);
     string(L"");
     assign(base+3);//msg
     pop();
-    line(92);
+    line(93);
     array(0);
     assign(base+4);//opt
     pop();
-    line(93);
-    line(141);
-    line(95);
+    line(94);
+    line(142);
+    line(96);
     push_symbol(base+0);//e
     _clp_valtype(1);
     string(L"O");
@@ -444,14 +455,14 @@ push_call("deferror",base);
     eqeq();
     }
     if(!flag()) goto if_4_1;
-        line(99);
-        line(97);
+        line(100);
+        line(98);
         push_symbol(base+0);//e
         _o_method_operation.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_5_1;
-            line(98);
+            line(99);
             push_symbol(base+3);//msg
             string(nls_text(L"Operation: "));
             push_symbol(base+0);//e
@@ -463,14 +474,14 @@ push_call("deferror",base);
             pop();
         if_5_1:
         if_5_0:;
-        line(103);
-        line(101);
+        line(104);
+        line(102);
         push_symbol(base+0);//e
         _o_method_filename.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_6_1;
-            line(102);
+            line(103);
             push_symbol(base+3);//msg
             string(L";");
             string(nls_text(L"Filename: "));
@@ -484,14 +495,14 @@ push_call("deferror",base);
             pop();
         if_6_1:
         if_6_0:;
-        line(107);
-        line(105);
+        line(108);
+        line(106);
         push_symbol(base+0);//e
         _o_method_description.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_7_1;
-            line(106);
+            line(107);
             push_symbol(base+3);//msg
             string(L";");
             string(nls_text(L"Description: "));
@@ -505,14 +516,14 @@ push_call("deferror",base);
             pop();
         if_7_1:
         if_7_0:;
-        line(111);
-        line(109);
+        line(112);
+        line(110);
         push_symbol(base+0);//e
         _o_method_subsystem.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_8_1;
-            line(110);
+            line(111);
             push_symbol(base+3);//msg
             string(L";");
             string(nls_text(L"Subsystem: "));
@@ -526,57 +537,57 @@ push_call("deferror",base);
             pop();
         if_8_1:
         if_8_0:;
-        line(115);
-        line(113);
+        line(116);
+        line(114);
         push_symbol(base+3);//msg
         _clp_empty(1);
         if(!flag()) goto if_9_1;
-            line(114);
+            line(115);
             string(nls_text(L"Unknown error"));
             assign(base+3);//msg
             pop();
         if_9_1:
         if_9_0:;
-        line(117);
+        line(118);
         push_symbol(base+4);//opt
         string(nls_text(L"Quit"));
         _clp_aadd(2);
         pop();
-        line(121);
-        line(119);
+        line(122);
+        line(120);
         push_symbol(base+0);//e
         _o_method_canretry.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_10_1;
-            line(120);
+            line(121);
             push_symbol(base+4);//opt
             string(nls_text(L"Retry"));
             _clp_aadd(2);
             pop();
         if_10_1:
         if_10_0:;
-        line(125);
-        line(123);
+        line(126);
+        line(124);
         push_symbol(base+0);//e
         _o_method_candefault.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_11_1;
-            line(124);
+            line(125);
             push_symbol(base+4);//opt
             string(nls_text(L"Default"));
             _clp_aadd(2);
             pop();
         if_11_1:
         if_11_0:;
-        line(129);
+        line(130);
         lab_12_1:
-        line(127);
+        line(128);
         push_symbol(base+5);//cho
         _clp_empty(1);
         if(!flag()) goto lab_12_2;
-            line(128);
+            line(129);
             push_symbol(base+3);//msg
             push_symbol(base+4);//opt
             _clp_alert(2);
@@ -584,8 +595,8 @@ push_call("deferror",base);
             pop();
         goto lab_12_1;
         lab_12_2:;
-        line(140);
-        line(131);
+        line(141);
+        line(132);
         push_symbol(base+4);//opt
         push_symbol(base+5);//cho
         idxr();
@@ -594,38 +605,38 @@ push_call("deferror",base);
         if(!flag()) goto if_13_1;
         goto if_13_0;
         if_13_1:
-        line(134);
+        line(135);
         push_symbol(base+4);//opt
         push_symbol(base+5);//cho
         idxr();
         string(nls_text(L"Retry"));
         eqeq();
         if(!flag()) goto if_13_2;
-            line(135);
+            line(136);
             push(&TRUE);
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         goto if_13_0;
         if_13_2:
-        line(137);
+        line(138);
         push_symbol(base+4);//opt
         push_symbol(base+5);//cho
         idxr();
         string(nls_text(L"Default"));
         eqeq();
         if(!flag()) goto if_13_3;
-            line(138);
+            line(139);
             push(&FALSE);
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         if_13_3:
         if_13_0:;
     if_4_1:
     if_4_0:;
-    line(143);
+    line(144);
     string(nls_text(L"default error block evaluated"));
     _clp_qout(1);
     pop();
-    line(213);
-    line(145);
+    line(214);
+    line(146);
     push_symbol(base+0);//e
     _clp_valtype(1);
     string(L"O");
@@ -638,20 +649,20 @@ push_call("deferror",base);
     _o_method_isderivedfrom.eval(2);
     }
     if(!flag()) goto if_14_1;
-        line(147);
+        line(148);
         string(nls_text(L"errorclass:"));
         push_symbol(base+0);//e
         _o_method_classname.eval(1);
         _clp_qout(2);
         pop();
-        line(151);
-        line(149);
+        line(152);
+        line(150);
         push_symbol(base+0);//e
         _o_method_operation.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_15_1;
-            line(150);
+            line(151);
             string(nls_text(L"operation:"));
             push_symbol(base+0);//e
             _o_method_operation.eval(1);
@@ -659,14 +670,14 @@ push_call("deferror",base);
             pop();
         if_15_1:
         if_15_0:;
-        line(155);
-        line(153);
+        line(156);
+        line(154);
         push_symbol(base+0);//e
         _o_method_description.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_16_1;
-            line(154);
+            line(155);
             string(nls_text(L"description:"));
             push_symbol(base+0);//e
             _o_method_description.eval(1);
@@ -674,21 +685,21 @@ push_call("deferror",base);
             pop();
         if_16_1:
         if_16_0:;
-        line(166);
-        line(157);
+        line(167);
+        line(158);
         push_symbol(base+0);//e
         _o_method_args.eval(1);
         _clp_valtype(1);
         string(L"A");
         eqeq();
         if(!flag()) goto if_17_1;
-            line(158);
+            line(159);
             string(nls_text(L"args:{"));
             _clp_qout(1);
             pop();
-            line(164);
+            line(165);
             {
-            line(159);
+            line(160);
             push(&ONE);
             int sg=sign();
             push(&ONE);
@@ -698,19 +709,19 @@ push_call("deferror",base);
             _o_method_args.eval(1);
             _clp_len(1);
             if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_18_2;
-                line(162);
-                line(160);
+                line(163);
+                line(161);
                 push_symbol(base+2);//i
                 push(&ONE);
                 gt();
                 if(!flag()) goto if_19_1;
-                    line(161);
+                    line(162);
                     string(L", ");
                     _clp_qqout(1);
                     pop();
                 if_19_1:
                 if_19_0:;
-                line(163);
+                line(164);
                 push_symbol(base+0);//e
                 _o_method_args.eval(1);
                 push_symbol(base+2);//i
@@ -727,20 +738,20 @@ push_call("deferror",base);
             goto lab_18_0;
             lab_18_2:;
             }
-            line(165);
+            line(166);
             string(L"}");
             _clp_qqout(1);
             pop();
         if_17_1:
         if_17_0:;
-        line(170);
-        line(168);
+        line(171);
+        line(169);
         push_symbol(base+0);//e
         _o_method_candefault.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_20_1;
-            line(169);
+            line(170);
             string(nls_text(L"candefault:"));
             push_symbol(base+0);//e
             _o_method_candefault.eval(1);
@@ -748,14 +759,14 @@ push_call("deferror",base);
             pop();
         if_20_1:
         if_20_0:;
-        line(174);
-        line(172);
+        line(175);
+        line(173);
         push_symbol(base+0);//e
         _o_method_canretry.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_21_1;
-            line(173);
+            line(174);
             string(nls_text(L"canretry:"));
             push_symbol(base+0);//e
             _o_method_canretry.eval(1);
@@ -763,14 +774,14 @@ push_call("deferror",base);
             pop();
         if_21_1:
         if_21_0:;
-        line(178);
-        line(176);
+        line(179);
+        line(177);
         push_symbol(base+0);//e
         _o_method_cansubstitute.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_22_1;
-            line(177);
+            line(178);
             string(nls_text(L"cansubstitute:"));
             push_symbol(base+0);//e
             _o_method_cansubstitute.eval(1);
@@ -778,14 +789,14 @@ push_call("deferror",base);
             pop();
         if_22_1:
         if_22_0:;
-        line(186);
-        line(184);
+        line(187);
+        line(185);
         push_symbol(base+0);//e
         _o_method_filename.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_23_1;
-            line(185);
+            line(186);
             string(nls_text(L"filename:"));
             push_symbol(base+0);//e
             _o_method_filename.eval(1);
@@ -793,14 +804,14 @@ push_call("deferror",base);
             pop();
         if_23_1:
         if_23_0:;
-        line(190);
-        line(188);
+        line(191);
+        line(189);
         push_symbol(base+0);//e
         _o_method_gencode.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_24_1;
-            line(189);
+            line(190);
             string(nls_text(L"gencode:"));
             push_symbol(base+0);//e
             _o_method_gencode.eval(1);
@@ -808,14 +819,14 @@ push_call("deferror",base);
             pop();
         if_24_1:
         if_24_0:;
-        line(194);
-        line(192);
+        line(195);
+        line(193);
         push_symbol(base+0);//e
         _o_method_oscode.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_25_1;
-            line(193);
+            line(194);
             string(nls_text(L"oscode:"));
             push_symbol(base+0);//e
             _o_method_oscode.eval(1);
@@ -823,14 +834,14 @@ push_call("deferror",base);
             pop();
         if_25_1:
         if_25_0:;
-        line(198);
-        line(196);
+        line(199);
+        line(197);
         push_symbol(base+0);//e
         _o_method_severity.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_26_1;
-            line(197);
+            line(198);
             string(nls_text(L"severity:"));
             push_symbol(base+0);//e
             _o_method_severity.eval(1);
@@ -838,14 +849,14 @@ push_call("deferror",base);
             pop();
         if_26_1:
         if_26_0:;
-        line(202);
-        line(200);
+        line(203);
+        line(201);
         push_symbol(base+0);//e
         _o_method_subcode.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_27_1;
-            line(201);
+            line(202);
             string(nls_text(L"subcode:"));
             push_symbol(base+0);//e
             _o_method_subcode.eval(1);
@@ -853,14 +864,14 @@ push_call("deferror",base);
             pop();
         if_27_1:
         if_27_0:;
-        line(206);
-        line(204);
+        line(207);
+        line(205);
         push_symbol(base+0);//e
         _o_method_subsystem.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_28_1;
-            line(205);
+            line(206);
             string(nls_text(L"subsystem:"));
             push_symbol(base+0);//e
             _o_method_subsystem.eval(1);
@@ -868,14 +879,14 @@ push_call("deferror",base);
             pop();
         if_28_1:
         if_28_0:;
-        line(210);
-        line(208);
+        line(211);
+        line(209);
         push_symbol(base+0);//e
         _o_method_tries.eval(1);
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_29_1;
-            line(209);
+            line(210);
             string(nls_text(L"tries:"));
             push_symbol(base+0);//e
             _o_method_tries.eval(1);
@@ -885,8 +896,8 @@ push_call("deferror",base);
         if_29_0:;
     goto if_14_0;
     if_14_1:
-    line(211);
-        line(212);
+    line(212);
+        line(213);
         string(nls_text(L"errorclass:"));
         push_symbol(base+0);//e
         _clp_valtype(1);
@@ -895,20 +906,67 @@ push_call("deferror",base);
         pop();
     if_14_2:
     if_14_0:;
-    line(215);
+    line(216);
     push(&ZERO);
     _clp_callstack(1);
     pop();
-    line(216);
+    line(217);
     _clp_varstack(0);
     pop();
-    line(217);
+    line(218);
     push(&ONE);
     _clp_errorlevel(1);
     pop();
-    line(218);
+    line(219);
     _clp___quit(0);
     pop();
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_breakblock(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+2)PUSHNIL();
+argno=1;
+push_call("breakblock",base);
+//
+    line(224);
+    line(225);
+    _clp_signal_lock(0);
+    pop();
+    push_symbol(_st_mutex_ptr());//global
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(226);
+    push_symbol(_st_breakblk_ptr());//global
+    assign(base+1);//oldblk
+    pop();
+    line(229);
+    line(227);
+    push_symbol(base+0);//blk
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    if(!flag()) goto if_30_1;
+        line(228);
+        push_symbol(base+0);//blk
+        assign(_st_breakblk_ptr());//global
+        pop();
+    if_30_1:
+    if_30_0:;
+    line(230);
+    push_symbol(_st_mutex_ptr());//global
+    _clp_thread_mutex_unlock(1);
+    pop();
+    _clp_signal_unlock(0);
+    pop();
+    line(231);
+    push_symbol(base+1);//oldblk
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
 push(&NIL);

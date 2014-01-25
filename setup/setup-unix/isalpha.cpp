@@ -31,14 +31,14 @@ void _clp_isalnum(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswalnum(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=isalnum(*BINARYPTR(base));
         }
@@ -58,14 +58,14 @@ void _clp_isalpha(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswalpha(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=isalpha(*BINARYPTR(base));
         }
@@ -85,14 +85,14 @@ void _clp_isdigit(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswdigit(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=isdigit(*BINARYPTR(base));
         }
@@ -112,14 +112,14 @@ void _clp_isxdigit(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswxdigit(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=isxdigit(*BINARYPTR(base));
         }
@@ -139,14 +139,14 @@ void _clp_isupper(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswupper(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=isupper(*BINARYPTR(base));
         }
@@ -166,14 +166,14 @@ void _clp_islower(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswlower(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=islower(*BINARYPTR(base));
         }
@@ -193,14 +193,14 @@ void _clp_iscntrl(int argno)
     int flag=0;
     if( ISSTRING(1) )
     {
-        if( 0<base->data.string.len )
+        if( 0<STRINGLEN(base) )
         {
             flag=iswcntrl(*STRINGPTR(base));
         }
     }
     else if( ISBINARY(1) )
     {
-        if( 0<base->data.binary.len )
+        if( 0<BINARYLEN(base) )
         {
             flag=iscntrl(*BINARYPTR(base));
         }

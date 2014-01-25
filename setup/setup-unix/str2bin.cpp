@@ -26,7 +26,11 @@ void str2bin(VALUE *v)
     if( v->type==TYPE_STRING )
     {
         CHAR *p=STRINGPTR(v);
-        unsigned len=v->data.string.len;
+        unsigned long len=STRINGLEN(v);
+        if( len>MAXSTRLEN )
+        {
+            error_cln("str2bin",v,1);
+        }
         unsigned res=0;
         BYTE *u=wchar_to_utf8(p,len,&res);
         binarys(u,res);
@@ -42,7 +46,11 @@ void bin2str(VALUE *v)
     if( v->type==TYPE_BINARY )
     {
         BYTE *u=BINARYPTR(v);
-        unsigned len=v->data.binary.len;
+        unsigned long len=BINARYLEN(v);
+        if( len>MAXBINLEN )
+        {
+            error_bln("bin2str",v,1);
+        }
         unsigned res=0;
         CHAR *p=utf8_to_wchar(u,len,&res);
         strings(p,res);

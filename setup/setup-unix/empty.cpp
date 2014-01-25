@@ -53,14 +53,14 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_STRING:
         {
-            int len=base->data.string.len;
+            unsigned long len=STRINGLEN(base);
             if( len==0 ) 
             {
                 flag=1;
             }
             else
             {
-                int i;
+                unsigned long i;
                 CHAR *p=CHRPTR(1);
                 for(i=0; i<len; i++)
                 {
@@ -76,14 +76,14 @@ while(stack<base+1)PUSHNIL();
 
         case TYPE_BINARY:
         {
-            int len=base->data.binary.len;
+            binarysize_t len=BINARYLEN(base);
             if( len==0 ) 
             {
                 flag=1;
             }
             else
             {
-                int i;
+                binarysize_t i;
                 BYTE *p=BINPTR(1);
                 for(i=0; i<len; i++)
                 {
@@ -98,11 +98,11 @@ while(stack<base+1)PUSHNIL();
         }
 
         case TYPE_ARRAY:
-            flag=(base->data.array.oref->length==0);
+            flag=(ARRAYLEN(base)==0);
             break;
 
         case TYPE_OBJECT:
-            flag=(base->data.object.oref->length==0);
+            flag=(OBJECTLEN(base)==0);
             break;
     }
 
@@ -118,35 +118,35 @@ VALUE *base=stack-argno;
 stack=base+min(argno,1);
 while(stack<base+1)PUSHNIL();
 //
-    int len=0;
+    binarysize_t len=0;
 
     switch( base->type )
     {
         case TYPE_BINARY:
-            len=base->data.binary.len;
+            len=BINARYLEN(base);
             break;
 
         case TYPE_STRING:
-            len=base->data.string.len;
+            len=STRINGLEN(base);
             break;
 
         case TYPE_ARRAY:
-            len=base->data.array.oref->length;
+            len=ARRAYLEN(base);
             break;
 
         case TYPE_OBJECT:
-            len=base->data.object.oref->length;
+            len=OBJECTLEN(base);
             break;
 
         case TYPE_BLOCK:
             if(base->data.block.oref)
             {
-                len=base->data.block.oref->length;
+                len=BLOCKLEN(base);
             }
             break;
     }
     stack=base;
-    number(len);
+    number((double)len);
 }
 
 //--------------------------------------------------------------------

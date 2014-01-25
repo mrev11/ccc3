@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//input: prg2ppo.ppo (5.0.17)
+//input: prg2ppo.ppo (5.0.18)
 
 #include <cccdef.h>
 
@@ -738,7 +738,7 @@ push_call("logo",base);
 //
     line(202);
     string(nls_text(L"CCC Preprocessor "));
-    string(L"1.4.1");
+    string(L"1.4.2");
     add();
     string(L" Copyright (C) ComFirm Bt.");
     add();
@@ -936,33 +936,47 @@ push_call("searchinclude",base);
     _clp_split(2);
     assign(base+1);//incdir
     pop();
-    line(266);
     line(251);
+    push_symbol(base+0);//incfil
+    string(L"/");
+    _clp_dirsep(0);
+    _clp_strtran(3);
+    assign(base+0);//incfil
+    pop();
+    line(252);
+    push_symbol(base+0);//incfil
+    string(L"\\");
+    _clp_dirsep(0);
+    _clp_strtran(3);
+    assign(base+0);//incfil
+    pop();
+    line(269);
+    line(254);
     push_symbol(base+0);//incfil
     _clp_file(1);
     if(!flag()) goto if_17_1;
-        line(252);
+        line(255);
         push_symbol(base+0);//incfil
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_17_0;
     if_17_1:
-    line(254);
+    line(257);
     _clp_sourcepath(0);
     push_symbol(base+0);//incfil
     add();
     _clp_file(1);
     if(!flag()) goto if_17_2;
-        line(255);
+        line(258);
         _clp_sourcepath(0);
         push_symbol(base+0);//incfil
         add();
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_17_0;
     if_17_2:
-    line(257);
-        line(265);
+    line(260);
+        line(268);
         {
-        line(258);
+        line(261);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -971,8 +985,8 @@ push_call("searchinclude",base);
         push_symbol(base+1);//incdir
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_18_2;
-            line(261);
-            line(259);
+            line(264);
+            line(262);
             push_symbol(base+1);//incdir
             push_symbol(base+2);//n
             idxr();
@@ -981,7 +995,7 @@ push_call("searchinclude",base);
             _clp_dirsep(0);
             neeq();
             if(!flag()) goto if_19_1;
-                line(260);
+                line(263);
                 push_symbol(base+1);//incdir
                 push_symbol(base+2);//n
                 idxr();
@@ -993,8 +1007,8 @@ push_call("searchinclude",base);
                 pop();
             if_19_1:
             if_19_0:;
-            line(264);
-            line(262);
+            line(267);
+            line(265);
             push_symbol(base+1);//incdir
             push_symbol(base+2);//n
             idxr();
@@ -1002,7 +1016,7 @@ push_call("searchinclude",base);
             add();
             _clp_file(1);
             if(!flag()) goto if_20_1;
-                line(263);
+                line(266);
                 push_symbol(base+1);//incdir
                 push_symbol(base+2);//n
                 idxr();
@@ -1023,7 +1037,7 @@ push_call("searchinclude",base);
         }
     if_17_3:
     if_17_0:;
-    line(267);
+    line(270);
     push_symbol(base+0);//incfil
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

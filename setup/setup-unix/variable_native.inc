@@ -23,7 +23,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <cccapi.h> 
  
 //  Javítások

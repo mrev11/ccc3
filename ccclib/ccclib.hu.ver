@@ -1,3 +1,9 @@
+2014.01.26 str.cpp ujrairva.
+
+2014.01.25 malloc.h megszuntetve
+  <malloc.h> (depracated) mindenhol <stdlib.h>-ra cserelve
+  setup-unix keszlet frissitve
+
 2013.10.08
   breakblock()
 

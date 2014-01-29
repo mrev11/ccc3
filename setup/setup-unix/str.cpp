@@ -20,142 +20,240 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+
 #include <cccapi.h>
 
-//------------------------------------------------------------------------
-void _clp_str(int argno)
+#define BUFSIZE 128
+
+#ifdef MSVC
+#define snprintf _snprintf
+#endif
+
+//----------------------------------------------------------------------------
+static void print1(char *buffer, double x)  //str(x) alak
 {
-VALUE *base=stack-argno;
-stack=base+min(argno,3);
-while(stack<base+3)PUSHNIL();
-//
-    VALUE *number=base;
-    VALUE *width=base+1;
-    VALUE *decimal=base+2;
-    
-    if( number->type!=TYPE_NUMBER  )
+    int len=sprintf(buffer,"%22.15le",x); 
+
+    if( len<0 )
     {
-        error_arg("str",base,3);
+        memset(buffer,'*',10);
+        buffer[10]=0;
+        return;
     }
 
-    int w=32,d=8;
-    double x=number->data.number;
+    //printf("\n|%s< ",buffer);
+    //16 darab (osszes pontos) jegy 22 hosszan
+    //           1         2
+    //|01234567890123456789012
+    //| 1.234567890000000e+03|
+    //|-1.234567890000000e+03|
     
-    if( width->type==TYPE_NUMBER )
+    while( buffer[len]!='e' )
     {
-        w=D2INT(width->data.number);
-        w=max(w,1);
-        w=min(w,32);
-
-        if( decimal->type==TYPE_NUMBER )
-        {
-            d=D2INT(decimal->data.number);
-            d=max(d,0);
-            d=min(d,16);
-        }
-        else
-        {
-            d=0;
-        }
+        --len;
     }
+    //len: e+xx offset
+    //printf("len=%d",len);
 
-    // if( x==0.0 )  //+0 vagy -0
-    // {
-    //     //megj: x=-x signneg-re fordul,
-    //     //signneg megforditja az elojel bitet,
-    //     //igy keletkezik a -0 szam,
-    //     //a -0-t a printf minusz elojellel irja ki,
-    //     //ez ellen kell vedekezni
-    //     
-    //     x=0; //+0, esetleg kioptimalizalja
-    // }
+    int exp=0;  //kitevo
+    sscanf(buffer+len+1,"%d",&exp); // pos/neg
 
-    //char buffer[512],pict[16];
-    //sprintf(pict,"%%%d.%dlf",w,d);
-    //int len=sprintf(buffer,pict,x);
-
-    char buffer[512];
-    int len=sprintf(buffer,"%*.*lf",w,d,x); //minden fordító tudja
-
-    // mutatja -0 elojelet
-    // printf("\n[%d] ",x!=0);
-    // printf("size=%d ",(int)sizeof(x));
-    // for(int ix=0; ix<(int)sizeof(x); ix++ )
-    // {
-    //     printf("%02x ",((char*)&x)[ix]); 
-    // }
-    // printf("%s",buffer);
-
-    if(x==0) 
-    { 
-        //avoid "-0" (Csiszár,2014.01.21)
-        //ezt nem optimalizalja ki
-        char *p=(char*)memchr(buffer,'-',len);
-        if( p!=0 ) 
-        {
-            *p=' '; 
-        }
-    }
-
-    if( decimal->type!=TYPE_NUMBER && d>0 )
+    //leszedi jobbrol a 0 tizedeseket, illetve
+    //a tizedespontot, ha nem marad ertekes tizedes
+        
+    buffer[len]=0;
+    while( *(buffer+len-1)=='0' )
     {
-        //leszedi jobbról a 0 tizedeseket, illetve
-        //a tizedespontot, ha nem marad értékes tizedes
+        buffer[--len]=0;
+    }
+    if( *(buffer+len-1)=='.' )
+    {
+        buffer[--len]=0;
+    }
+    //printf("\n|%s< %d %d",buffer,exp,len);
     
-        while( *(buffer+len-1)=='0' )
-        {
-            len--;
-        }
-        if( *(buffer+len-1)=='.' )
-        {
-            len--;
-        }
-        *(buffer+len)=0x00;
-    }
-    
-    if( width->type!=TYPE_NUMBER )
+    if( BUFSIZE < max(exp+3,-exp+len+1) )
     {
-        //legalább 10 egész pozíció,
-        //de lehet akárhány (kb. 300) jegy
-
-        char *p=(char*)memchr((void *)buffer,'.',len);
-        if( p==0 )
-        {
-            p=buffer+len;
-        }
-        int i=0;
-        while( (buffer<p) && ((++i<=10) || (*(p-1)!=' ')) ) //2007.07.04
-        { 
-            --p;
-        }
-        stringnb(p);
-    }
-    else if( len>w )
-    {
-        // NG szerint így kéne működnie, valójában
-        // len>w esetén azonnal csillagokat nyomtat
-    
-        char *p=(char*)memchr((void *)buffer,'.',len);
-        if( p==0 || (p-buffer>w) )
-        {
-            //nem fér el az egészrész
-            memset(buffer,'*',w);
-            stringsb(buffer,w);
-        }
-        else
-        {
-            //csonkítani kell a törtrészt
-            *(buffer+w)=0x00;
-            stringnb(buffer);
-        }
-    }
-    else
-    { 
-        stringnb(buffer);
+        //nem szabad buf-ot tulirni
+        memset(buffer,'*',10);
+        buffer[10]=0;
+        return;
     }
 
-    RETURN(base);
+    char buf[BUFSIZE];
+    int j=0;  //kovetkezo pozicio buf-ban
+    int k=0;  //kovetkezo pozicio buffer-ban
+
+    while( buffer[k]=='-' || buffer[k]==' ' || buffer[k]=='+' )
+    {
+        k++; //(esetleges) elojelen atlep
+    }
+    if( x<0 )
+    {
+        buf[j++]='-'; //elojel
+    }
+
+    int dec=0; //tizedes pozicio
+
+    while( exp<0 )
+    {
+        exp++;
+        buf[j++]='0';
+        if( dec==0 )
+        {
+            dec=j; //megjegyzi
+            buf[j++]='.';
+        }
+    }
+
+    //exp>=0
+
+    buf[j++]=buffer[k++]; //egesz resz
+    k++; //(esetleges) tizedesponton atlep
+
+    while( k<len )
+    {
+        if( dec==0 && exp==0 )
+        {
+            dec=j; //megjegyzi
+            buf[j++]='.';
+        }
+        exp--;
+        buf[j++]=buffer[k++];
+    }
+
+    while( exp>0 )
+    {
+        exp--;
+        buf[j++]='0';
+    }
+    buf[j]=0; //kesz, buf hossza j+0
+    
+    int offs=0;
+    if( dec==0 )
+    {
+        if(j<10)
+        {
+            offs=10-j;
+        }
+    }
+    else if( dec<10 )
+    {
+        offs=10-dec;
+    }
+
+    if( offs+j+1 > BUFSIZE )
+    {
+        //nem szabad buffer-t tulirni
+        memset(buffer,'*',10);
+        buffer[10]=0;
+        return;
+    }
+
+    if( offs )
+    {
+        memset(buffer,' ',offs);
+    }
+    memmove(buffer+offs,buf,j+1);
 }
 
+//----------------------------------------------------------------------------
+static void print2(char *buffer, double x, int w) //str(x,w) alak
+{
+    int len=snprintf(buffer,BUFSIZE,"%*.0lf",w,x);
+    if( len<0 || w<len )
+    {
+        memset(buffer,'*',w);
+        buffer[w]=0;
+        return;
+    }
 
-//------------------------------------------------------------------------
+    if( w-2>=0 && buffer[w-2]=='-' && buffer[w-1]=='0' )
+    {
+        buffer[w-2]=' '; // -0 ellen
+    }
+}
+
+//----------------------------------------------------------------------------
+static void print3(char *buffer, double x, int w, int d) //str(x,w,d) alak
+{
+    int len=snprintf(buffer,BUFSIZE,"%*.*lf",w,d,x);
+    
+    //valami hiba: len<0
+    //normal eset: len==w
+    //nem fert el: w<len
+
+#define KEVESEBB_TIZEDESSEL //kerdes, hogy jo-e ez
+#ifdef  KEVESEBB_TIZEDESSEL
+    if(  w<len && len-w<=d+1 )
+    {
+        //durvan
+        //*(buffer+w)=0x00;
+        //len=w;
+        
+        //finomabban
+        d-=(len-w);
+        d=(d<0)?0:d;
+        len=snprintf(buffer,BUFSIZE,"%*.*lf",w,d,x);
+    }
+#endif
+
+    if( len<0 || w<len )
+    {
+        memset(buffer,'*',w);
+        buffer[w]=0;
+        return;
+    }
+    
+    if(  w-d-3>=0 && buffer[w-d-3]=='-' && buffer[w-d-2]=='0' )
+    {
+        int i;
+        for( i=w-d; i<w; i++ )
+        {
+            if( buffer[i]!='0'  )
+            {
+                break;
+            }
+        }
+        if(w<=i)
+        {
+            buffer[w-d-3]=' '; // -0.0 ellen
+        }
+    }
+}
+
+//----------------------------------------------------------------------------
+void _clp_str(int argno)
+{
+    CCC_PROLOG("str",3);
+    double x=_parnd(1);
+    int w=ISNIL(2)?0:_parni(2);
+    int d=ISNIL(3)?0:_parni(3);
+
+    w=max(w,0);
+    w=min(w,BUFSIZE-1);
+    d=max(d,0);
+    d=min(d,BUFSIZE-4);
+
+    char buffer[BUFSIZE];buffer[0]=0;
+
+    if( w==0 ) // str(x)
+    {
+        print1(buffer,x); // str(x)
+    }
+    else if( d==0 ) // str(x,w)
+    {
+        print2(buffer,x,w); // str(x,w)
+    }
+    else
+    {
+        print3(buffer,x,w,d); // str(x,w,d)
+    }
+
+    _retcb(buffer);
+
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------

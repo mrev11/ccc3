@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------
 void _clp_spawn(int argno)
 
-// Kombinált spawn, hívási formák:
+// Kombinalt spawn, hivasi formak:
 // spawn(FLAG,prog,arg1,arg2,...,{env} )
 // spawn(SPAWN_WAIT+SPAWN_PATH,prog,arg1,arg2,...,{env} )
 // spawn(SPAWN_WAIT+SPAWN_PATH,{prog,arg1,arg2,...},{env} )
@@ -73,6 +73,11 @@ void _clp_spawn(int argno)
             argv[i]=BINARYPTR(TOP());
         }
         argv[i]=0;
+        
+        if(argv[0]==0)
+        {
+            ARGERROR();
+        }
 
         if( argno<3 || ISNIL(3) )
         {

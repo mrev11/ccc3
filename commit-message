@@ -1,1 +1,5 @@
-2014.01.29 setup-windows frissitve.
+2014.01.30 setup-windows ujra.
+A mingw32-es setup keszlet nem fut 64 biten (dll-ek hianyoznak).
+Setup keszlet ujraforditva msc-32-vel (ehhez nem kell plusz dll).
+Windows spawn.cpp-ben az argumentum ellenorzes javitva.
+Windows CCC3-as spawn.cpp bemasolva CCC2 ala.

@@ -15,11 +15,13 @@ else
 fi
 
 if  ! test -f ./usr/bin/$CCCUNAME/__unix.b; then
+    echo "CCCDIR/usr/bin/CCCUNAME/__unix.b not found"
     echo "CCCUNAME environment variable not properly set"
     exit 1
 fi
 
 if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
+    echo "CCCDIR/usr/options/CCCBIN/compile.opt not found"
     echo "CCCBIN environment variable not properly set"
     exit 1
 fi

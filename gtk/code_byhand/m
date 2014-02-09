@@ -6,9 +6,8 @@
 #BLD=gtk-freebsd.bld
 #BLD=gtk-netbsd.bld
 #BLD=gtk-hoary.bld
-#BLD=gtk-ubuntu.bld
 #BLD=gtk-natty.bld
-BLD=gtk-oneiric.bld
+BLD=gtk-ubuntu.bld
 
 pushd ../codegen && m && run.exe
 popd

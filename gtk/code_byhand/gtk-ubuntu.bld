@@ -1,10 +1,12 @@
-#Ubuntu Linuxokhoz a Breezytől kezdve
-#NexentaOS-hez
-
--p/usr/X11R6/lib 
--p/usr/lib 
+#Ubuntu Linuxokhoz
 
 
+-i/usr/lib/x86_64-linux-gnu/glib-2.0/include
+-i/usr/lib/x86_64-linux-gnu/gtk-2.0/include
+-i/usr/lib/glib-2.0/include 
+-i/usr/lib/gtk-2.0/include 
+
+-i/usr/include/gdk-pixbuf-2.0
 -i/usr/include/gtk-2.0 
 -i/usr/include/glib-2.0 
 -i/usr/include/gdk
@@ -12,10 +14,6 @@
 -i/usr/include/pango-1.0 
 -i/usr/include/atk-1.0
 -i/usr/include/freetype2 
--i/usr/lib/gtk-2.0/include 
--i/usr/lib/glib-2.0/include 
--i/usr/X11R6/include 
-
  
 -bgtk-x11-2.0
 -bgdk-x11-2.0

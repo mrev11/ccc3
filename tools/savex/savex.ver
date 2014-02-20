@@ -1,7 +1,10 @@
 
-#define VERZIO  "3.0.11"
+#define VERZIO  "3.0.12"
 
 #ifdef NOT_DEFINED
+
+2014.02.18 -- 3.0.12
+  filename escaping in cmp.
 
 2013.07.02 -- 3.0.11
   savescreen/restscreen átrakva dolist-be.

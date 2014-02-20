@@ -693,16 +693,23 @@ local timework:=brwArray(brw)[brwArrayPos(brw)][IDX_WORK]
 
 local w:=s_work+f
 local s:=s_save+f
-local fc:=if(opt==.t.,getenv("CMP"),getenv("DIFF"))
+local fc//:=if(opt==.t.,getenv("CMP"),getenv("DIFF"))
 local temp:=tempdir()
 //local screen:=savescreen(0,0,maxrow(),maxcol())
 
+    if( opt!=.t. .and. isbinfile(w,1) )
+        if( 2!=alert(w+" looks like a binary file",{"Compare as binary", "Compare as text"}) )
+            opt:=.t.
+        end
+    end
+
+    fc:=if(opt==.t.,getenv("CMP"),getenv("DIFF"))
     if( empty(fc) )
         fc:=if(opt==.t.,DEFAULT_CMPBIN,DEFAULT_CMPTXT)
     end
 
     if( opt==.t. )    
-        run (fc+" "+s+" "+w+" >"+temp+"fc_diff"+" 2>"+temp+"fc_err")
+        run (fc+" "+escape(s)+" "+escape(w)+" >"+temp+"fc_diff"+" 2>"+temp+"fc_err")
     else
         //összehasonlítás előtt a filékből ki kell
         //venni a CR-eket, és egységes kódrendszerre 
@@ -1260,6 +1267,28 @@ local screen:=savescreen()
     run(exe)
     setcursor(0)
     restscreen(,,,,screen)
+
+****************************************************************************
+function escape(fs)
+    fs::=strtran("\","\\")
+    fs::=strtran("'","\'")
+    fs::=strtran('"','\"')
+    fs::=strtran('?','\?')
+    fs::=strtran('*','\*')
+    fs::=strtran(':','\:')
+    fs::=strtran('$','\$')
+    fs::=strtran('&','\&')
+    fs::=strtran('(','\(')
+    fs::=strtran(')','\)')
+    fs::=strtran('[','\[')
+    fs::=strtran(']','\]')
+    fs::=strtran('{','\{')
+    fs::=strtran('}','\}')
+    fs::=strtran('<','\<')
+    fs::=strtran('>','\>')
+    fs::=strtran('|','\|')
+    fs::=strtran(' ','\ ')
+    return fs
 
 ****************************************************************************
 

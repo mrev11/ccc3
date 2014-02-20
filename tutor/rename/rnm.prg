@@ -83,7 +83,9 @@ local time2:=g_time2:varget
         end
         run( 'ren "'+name1+'" "'+name2+'"' )
     else
-        run( 'mv  "'+name1+'" "'+name2+'"' )
+        name1::=escape
+        name2::=escape
+        run( 'mv '+name1+' '+name2 )
     end
     
     if( date1==date2 .and. time1==time2 )
@@ -93,6 +95,28 @@ local time2:=g_time2:varget
    
     return .t.
  
+*****************************************************************************
+function escape(fs)
+    fs::=strtran("\","\\")
+    fs::=strtran("'","\'")
+    fs::=strtran('"','\"')
+    fs::=strtran('?','\?')
+    fs::=strtran('*','\*')
+    fs::=strtran(':','\:')
+    fs::=strtran('$','\$')
+    fs::=strtran('&','\&')
+    fs::=strtran('(','\(')
+    fs::=strtran(')','\)')
+    fs::=strtran('[','\[')
+    fs::=strtran(']','\]')
+    fs::=strtran('{','\{')
+    fs::=strtran('}','\}')
+    fs::=strtran('<','\<')
+    fs::=strtran('>','\>')
+    fs::=strtran('|','\|')
+    fs::=strtran(' ','\ ')
+    return fs
+
 *****************************************************************************
  
     

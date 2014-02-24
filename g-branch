@@ -1,8 +1,0 @@
-#!/bin/bash
-# listázza a branch-eket, lineárisan fejlesztünk, nálunk csak a master van
-
-echo
-echo '#-----------------------------------'
-git branch -v
-
-

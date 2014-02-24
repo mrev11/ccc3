@@ -17,6 +17,7 @@
 
 
 -lxcommit-message
+-lx.gitignore
 
 -lxoutpre
 -lxoutcpp
@@ -53,6 +54,7 @@
 -plxusr/include/cccgtk.h
 -plxusr/include/gdk.ch
 -plxusr/include/gtk.ch
+-plxusr/bin/$(CCCUNAME)/lempar.c
 
 
 -plicontent*.savex

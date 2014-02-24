@@ -1,9 +1,9 @@
-#!/bin/bash
+##!/bin/bash
 
-# Egy szokásos 
+# Egy szokasos 
 #       Ubuntu Precise 
 #       Debian Wheezy
-# telepítés után
+# telepites utan
 # ezeket a csomagokat kell felrakni,
 # hogy a CCC2/CCC3 leforduljon.
 

@@ -1,0 +1,76 @@
+
+
+#########################################################################
+# CCC beállítások
+#########################################################################
+#set -x
+
+export OREF_SIZE=150000
+
+export CCC2DIR=/opt/ccc2
+export CCC3DIR=/opt/ccc3
+
+export CCCDIR=$CCC3DIR
+
+export CCCBIN=lin
+export CCCUNAME=linux
+
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+export CCCTERM_SIZE=80x40
+CCCTERM_INHERIT=no
+
+#export CCCTERM_XFTFONTSPEC="Lucida Console-14"
+#export CCCTERM_XFTFONTSPEC="Courier-14"
+#export CCCTERM_XFTFONTSPEC="Courier New-14"
+#export CCCTERM_XFTFONTSPEC="Courier 10 Pitch-14"
+#export CCCTERM_XFTFONTSPEC="DejaVu Sans Mono-12"
+#export CCCTERM_XFTFONTSPEC="FreeMono-14"
+#export CCCTERM_XFTFONTSPEC="Liberation Mono-16"
+#export CCCTERM_XFTFONTSPEC="Nimbus Mono L-12"
+export CCCTERM_XFTFONTSPEC="Monospace-12"
+
+#ezeket együtt célszerű beállítani
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+#export CCCTERM_INHERIT=yes
+
+export JTERMINAL="$CCCDIR/usr/bin/$CCCUNAME/jterminal.jar"
+export JTRESOL=high
+
+export CCC_LANG=hu
+
+
+#CCC2
+export CCC_TERMINAL=X
+export CCC_XSIZE=80x43
+export CCC_XFONT=ccc8x16
+export CCC_XCOLORS=normal
+
+
+#########################################################################
+# Egyéb
+#########################################################################
+ 
+export PAGER="less -S"
+export EDITOR=z
+export VISUAL=mcedit
+export LANG=en_US.UTF-8
+
+#########################################################################
+# Path
+#########################################################################
+
+addpath $CCCDIR/usr/bin/$CCCUNAME
+addpath ~/bin
+addpath .
+
+addldpath $CCC2DIR/usr/lib/$CCCBIN
+addldpath $CCC3DIR/usr/lib/$CCCBIN
+
+
+#########################################################################
+
+show CCCDIR CCCVER LANG
+
+fpath.exe
+

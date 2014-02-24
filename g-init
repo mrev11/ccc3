@@ -1,7 +1,0 @@
-##!/bin/bash
-# (nem végrehajtható, hogy mc-ben melléütéssel ne induljon el)
-# csinál egy új lokális repót, amibe mindent commitol
-
-git init
-git add .
-git commit -m "initial import"

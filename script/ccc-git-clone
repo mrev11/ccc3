@@ -1,4 +1,0 @@
-#!/bin/bash
-#így lehet megszerezni a CCC3-at
-
-git clone  git://ccc.comfirm.hu/ccc3.git

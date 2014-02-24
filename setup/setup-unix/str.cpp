@@ -33,7 +33,7 @@
 //----------------------------------------------------------------------------
 static void print1(char *buffer, double x)  //str(x) alak
 {
-    int len=sprintf(buffer,"%22.15le",x); 
+    int len=sprintf(buffer,"%22.14le",x); 
 
     if( len<0 )
     {
@@ -43,7 +43,7 @@ static void print1(char *buffer, double x)  //str(x) alak
     }
 
     //printf("\n|%s< ",buffer);
-    //16 darab (osszes pontos) jegy 22 hosszan
+    //15 darab (osszes pontos) jegy 22 hosszan
     //           1         2
     //|01234567890123456789012
     //| 1.234567890000000e+03|

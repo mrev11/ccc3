@@ -1,0 +1,12 @@
+##!/bin/bash
+# CHANGELOG első bekezdéséből elkészíti commit-message-et.
+# Minden változást bevesz a staging indexbe és commitol.
+# Az indexet és a HEAD-et mindig szinkronban akarom tartani.
+
+firstpar.exe  CHANGELOG >commit-message  #(CCC program)
+
+echo
+echo '#-----------------------------------'
+
+git add --all && git commit --amend -F commit-message 
+

@@ -1,8 +1,11 @@
-#!/bin/bash
-# megmutatja az untracked fájlokat (-n nélkül le is törölné őket)
+##!/bin/bash
+# (nem végrehajtható, hogy mc-ben melléütéssel ne induljon el)
+# teljes visszaállás az utolsó commitra
 
 echo
 echo '#-----------------------------------'
 
-git clean -n   # -n == dry run
+git reset
+git checkout .
+git clean -f
 

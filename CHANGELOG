@@ -1,3 +1,8 @@
+2014.02.24 script tisztogatas.
+  Helyben forditas utan semmi se akarjon commitolodni.
+  Ha megis, akkor g-clean visszaall az utoso commitra.
+  A g-commit-ban hasznalt firstpar.prg beveve tutor-ba.
+
 2014.02.20 str.cpp javitva.
   str(x)-ben 16-rol 15-re csokkentve a kiirt jegyek szama.
   Fajlnevek escapelese rename-ben es savex-ben.

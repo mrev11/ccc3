@@ -1,9 +1,0 @@
-##!/bin/bash
-# (nem végrehajtható, hogy mc-ben melléütéssel ne induljon el)
-
-# A working tree-t visszaállítja az index-beli állapotra:
-#   - a módosult fájlokat visszaállítja az index-beli változatra.
-#   - a törölt fájlokat újra előveszi az index-ből.
-#   - de nem törli le az indexhez képest új fájlokat.
-
-git checkout .

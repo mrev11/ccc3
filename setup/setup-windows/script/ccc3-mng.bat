@@ -1,39 +1,46 @@
 @echo off
 
+set DRV1=c:
+set DRV2=e:
+
 set CCCBIN=mng
 set CCCVER=3
 set CCCUNAME=windows
-set CCCDIR=c:\ccc\ccc3
 set OREF_SIZE=50000
 
-set GNUDIR=c:\MinGW
-set MSCDIR=c:\msc2003
-:set GTKDIR=c:\gtk\2.8
-set GTKDIR=c:\mono201
+set CCCDIR=%DRV2%\ccc\ccc3
+set MNGDIR=%DRV2%\mingw32
+set MSCDIR=%DRV2%\msc2003
+set GTKDIR=%DRV2%\mono
+set GNUDIR=%DRV2%\git
 
-
-set PATH=%CCCDIR%\usr\bin\%CCCUNAME%;%PATH%
 set PATH=%GTKDIR%\bin;%PATH%
+set PATH=%GNUDIR%\bin;%PATH%
+set PATH=%CCCDIR%\usr\bin\%CCCUNAME%;%PATH%
+set PATH=%DRV1%\bin;%PATH%
 
-
-if "%CCCBIN%"=="mng" set CMPDIR=%GNUDIR%
+if "%CCCBIN%"=="mng" set CMPDIR=%MNGDIR%
 if "%CCCBIN%"=="msc" set CMPDIR=%MSCDIR%
+
 set PATH=%CMPDIR%\bin;%PATH%
 set INCLUDE=%CMPDIR%\include;%INCLUDE%
 set LIB=%CMPDIR%\lib;%LIB%
 
-
-set CCCTERM_SIZE=80x40
+set CCCTERM_SIZE=90x32
 set CCCTERM_FONTSIZE=18
 set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.exe
 set JTERMINAL=%CCCDIR%\usr\bin\%CCCUNAME%\jterminal.jar
 
 set ZCOLOR_0=b/w
 set ZCOLOR_2=w/b
-set ZHOME=c:\.z
+set ZHOME=%DRV1%\bin\z
 
 
-cd \
+%DRV2%
+cd %CCCDIR%
+
 title %CCCDIR%-%CCCBIN%
 set | grep CCC
 start /b
+
+

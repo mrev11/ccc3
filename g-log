@@ -3,5 +3,5 @@
 echo
 echo '#-----------------------------------'
 
-git log
+git log --date=iso
 

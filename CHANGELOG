@@ -1,3 +1,7 @@
+2014.03.19 Ellenorzes openSUSE 13.1-en, flex/lemon prototypes.
+  Az openSUSE 13.1-ben levo gcc 4.8.1 hianyolja az uj stilusu 
+  (parameterlistas) C deklaraciokat, deklaraciok potolva.
+
 2014.02.24 script tisztogatas.
   Helyben forditas utan semmi se akarjon commitolodni.
   Ha megis, akkor g-clean visszaall az utoso commitra.

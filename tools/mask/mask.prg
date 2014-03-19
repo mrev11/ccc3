@@ -878,7 +878,7 @@ static function showpos()
 local get:=message(NIL,"("+(1+col())::str::alltrim+","+(1+row())::str::alltrim+")" )
 local key:=inkey(4)
     message(get)
-    if( key!=0 )
+    if( key!=0 .and. key!=K_ENTER )
         keyboard(chr(key))
     end
  

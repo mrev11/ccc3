@@ -1,4 +1,13 @@
 -----------------------------------------------------------------------------
+CCC-Build-5 - 2014.03.19
+-----------------------------------------------------------------------------
+
+Deklarációk: Az openSUSE 13.1-gyel jövő gcc 4.8.1 nem fogadja el
+a paraméterlista nélküli (régi C stílusú) deklarációkat, hanem rengeteg
+warningot küld, ráadásul a  -Wno-unprototyped-calls nem működik, azaz
+nem lehet kikapcsolni a warningot. Ezért pótoltam a deklarációkat.
+
+-----------------------------------------------------------------------------
 CCC-Build-4 - 2014.01.15
 -----------------------------------------------------------------------------
 

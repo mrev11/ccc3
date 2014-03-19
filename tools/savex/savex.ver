@@ -1,7 +1,10 @@
 
-#define VERZIO  "3.0.12"
+#define VERZIO  "3.0.13"
 
 #ifdef NOT_DEFINED
+
+2014.03.19 -- 3.0.13
+  dirsep konverzio s_plikex-ben es s_plikei-ben.
 
 2014.02.18 -- 3.0.12
   filename escaping in cmp.

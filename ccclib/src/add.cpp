@@ -230,7 +230,7 @@ void mulnum(double v)
         return;
     }
 
-    error_arg("addnum",a,1);
+    error_arg("mulnum",a,1);
 }
 
 //------------------------------------------------------------------------

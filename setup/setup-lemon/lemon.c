@@ -6,7 +6,58 @@
 **
 ** The author of this program disclaims copyright.
 */
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <unistd.h>
 
+struct action;
+struct symbol;
+struct config;
+struct rule;
+struct state;
+struct lemon;
+struct plink;
+struct s_options;
+
+extern void myassert(char *file,int line);
+extern struct action *Action_sort(struct action *a);
+extern char *msort(char *list,char **next,int (*cmp)());
+extern int SetAdd(char *s,int e);
+extern int SetUnion(char *s1,char *s2);
+extern struct symbol *Symbol_find(char *key);
+extern struct config *Configlist_add(struct rule *rp,int dot);
+extern struct config *Configlist_addbasis(struct rule *, int);
+extern struct state *getstate(struct lemon *);
+extern struct state *State_find(struct config *);
+extern void Plink_copy(struct plink **, struct plink *);
+extern void Plink_add(struct plink **, struct config *);
+extern void Plink_delete(struct plink *);
+extern void Configlist_eat(struct config *);
+extern void Configlist_closure(struct lemon *lem);
+extern int State_insert(struct state *, struct config *);
+extern void buildshifts(struct lemon *, struct state *);
+static int resolve_conflict(struct action *apx,struct action *apy,struct symbol *errsym,struct lemon *lemp);
+extern void Configtable_clear( int(*)(/*struct config * */));
+extern struct config *Configtable_find(struct config *);
+extern int Configtable_insert(struct config *);
+extern void  SetFree(char*);
+extern int OptInit(char**,struct s_options*,FILE*);
+extern char *OptArg(int);
+extern struct symbol *Symbol_new(char *x);
+extern void Parse(struct lemon *lemp);
+extern void Reprint(struct lemon *);
+extern void  SetSize(int N); 
+extern void CompressTables(struct lemon *);
+extern void ReportOutput(struct lemon *);
+extern void ReportTable(struct lemon *, int);
+extern void ReportHeader(struct lemon *);
+extern char *Strsafe(char *y);
+extern char *Strsafe_find(char *);
+extern int Strsafe_insert(char *);
+extern int Symbol_insert(struct symbol *, char *);
 
 static char *basename(char *p)  
 {
@@ -36,18 +87,12 @@ static char *basename(char *p)
 typedef int COMPARE_T(const void*,const void*);
 
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-
 extern void qsort();
 extern double strtod();
 extern long strtol();
 extern void free();
 extern int access();
-//extern int atoi();
+extern int atoi();
 
 #ifndef __WIN32__
 #   if defined(_WIN32) || defined(WIN32)
@@ -406,7 +451,7 @@ struct action *ap2;
 struct action *Action_sort(ap)
 struct action *ap;
 {
-  ap = (struct action *)msort(ap,&ap->next,actioncmp);
+  ap = (struct action *)msort((void*)ap,(void*)&ap->next,actioncmp);
   return ap;
 }
 
@@ -1221,14 +1266,14 @@ struct lemon *lemp;
 
 /* Sort the configuration list */
 void Configlist_sort(){
-  current = (struct config *)msort(current,&(current->next),Configcmp);
+  current = (struct config *)msort((void*)current,(void*)&(current->next),Configcmp);
   currentend = 0;
   return;
 }
 
 /* Sort the basis configuration list */
 void Configlist_sortbasis(){
-  basis = (struct config *)msort(current,&(current->bp),Configcmp);
+  basis = (struct config *)msort((void*)current,(void*)&(current->bp),Configcmp);
   basisend = 0;
   return;
 }
@@ -1380,7 +1425,7 @@ char **argv;
 
   OptInit(argv,options,stderr);
   if( version ){
-     printf("Lemon 1.0 CCC-Build-4\n");
+     printf("Lemon 1.0 CCC-Build-5\n");
      exit(0); 
   }
   if( OptNArgs()!=1 ){

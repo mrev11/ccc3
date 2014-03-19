@@ -87,7 +87,7 @@ function main()
 
 local r:=row()
 local c:=col()
-local opt,n
+local opt,n,v
 local pfile,ptext,p,q
 
     #ifndef _UNIX_
@@ -144,21 +144,27 @@ local pfile,ptext,p,q
                 s_work:=substr(opt[n],3)+dirsep()
             end
 
-             if( OPT(n,"-plx") )
+            if( OPT(n,"-plx") )
+                 v:=UPPER(substr(opt[n],5))
+                 v::=strtran("/",dirsep())
+                 v::=strtran("\",dirsep())
                  if( s_plikex==NIL )
-                     s_plikex:={UPPER(substr(opt[n],5))}
+                     s_plikex:={v}
                  else
-                     aadd(s_plikex,UPPER(substr(opt[n],5)))
+                     aadd(s_plikex,v)
                  end
-             end
+            end
  
-             if( OPT(n,"-pli") )
-                 if( s_plikei==NIL )
-                     s_plikei:={UPPER(substr(opt[n],5))}
-                 else
-                     aadd(s_plikei,UPPER(substr(opt[n],5)))
-                 end
-             end
+            if( OPT(n,"-pli") )
+                v:=UPPER(substr(opt[n],5))
+                v::=strtran("/",dirsep())
+                v::=strtran("\",dirsep())
+                if( s_plikei==NIL )
+                    s_plikei:={v}
+                else
+                    aadd(s_plikei,v)
+                end
+            end
 
             if( OPT(n,"-lx") )
                 if( s_likex==NIL )
@@ -1276,6 +1282,7 @@ function escape(fs)
     fs::=strtran('?','\?')
     fs::=strtran('*','\*')
     fs::=strtran(':','\:')
+    fs::=strtran(';','\;')
     fs::=strtran('$','\$')
     fs::=strtran('&','\&')
     fs::=strtran('(','\(')

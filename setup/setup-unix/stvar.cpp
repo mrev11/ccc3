@@ -29,7 +29,7 @@ static void verify_overflow()
     //printf("\nststack_size %ld",ststack-ststackbuf);fflush(0);
     
     static int exit_flag=0;
-    if( exit_flag==0 && ststack-ststackbuf>STSTACK_SIZE-10 )
+    if( exit_flag==0 && ststack-ststackbuf>(int)STSTACK_SIZE-10 )
     {
         exit_flag=1;
         printf("\nStatic stack overflow");

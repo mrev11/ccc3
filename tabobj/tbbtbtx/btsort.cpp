@@ -103,7 +103,7 @@ char *filemap(char *filename)
         stringnb(filename); _clp_taberrfilename(1); pop();
         _clp_taberror(0); pop();
 
-        fprintf(stderr,"filemap: mmap error %ld %d\n",mapLength,errno);
+        fprintf(stderr,"filemap: mmap error %ld %d\n",(long)mapLength,errno);
         exit(1);
     }
 

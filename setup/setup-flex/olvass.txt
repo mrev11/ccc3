@@ -160,3 +160,9 @@ Ubuntu 4.10-en kétféle Flex-et is telepíthetünk:
 2014-01-25 Build-6: malloc.h megszüntetve
 
     malloc.h helyett stdlib.h
+
+
+2014-03-19 Build-7: unistd.h inkludálva
+
+    Az openSUSE-vel jövő gcc 4.8.1 nem fogadja el a paraméterlista 
+    nélküli (régiC stílusú) deklarációkat.

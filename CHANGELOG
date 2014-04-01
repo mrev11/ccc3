@@ -1,3 +1,6 @@
+2014.04.01 forditasi opcio: -O1/-O2
+  Teszt: openSUSE 13.1, Arch 2014.03.01, Fedora 20.
+
 2014.03.19 Ellenorzes openSUSE 13.1-en, flex/lemon prototypes.
   Az openSUSE 13.1-ben levo gcc 4.8.1 hianyolja az uj stilusu 
   (parameterlistas) C deklaraciokat, deklaraciok potolva.

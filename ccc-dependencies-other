@@ -1,0 +1,67 @@
+
+----------------------------------------------------------------------------
+openSUSE 1.3.1 (xfce4):
+----------------------------------------------------------------------------
+
+    gcc
+    gcc-c++
+    libX11-devel
+    libXft-devel
+    ncurses-devel
+    libopenssl-devel
+    pcre-devel
+
+    gtk2-devel
+    libpangox-1_0_0
+    libXi-devel
+
+    java-1_7_0-openjdk-devel
+
+
+----------------------------------------------------------------------------
+Arch Linux 2014.03.01 (xfce4):
+----------------------------------------------------------------------------
+
+    pacman -S xterm  mc 
+    pacman -S openssh   (X11Forwarding yes)
+    systemctl enable sshd.service
+    systemctl start sshd.service  
+
+    gcc                 (nincs külön c++ csomag)
+    pcre
+    ncurses             (/usr/include-ban: ln -s . ncursesw)
+
+    ttf-dejavu          (enélkül a jterminal nem működik)
+    jdk7-openjdk
+    
+    megjegyzések: 
+        nincsenek külön devel csomagok
+        a gtk alkatrészei xfce4-gyel települnek
+        rosszul jelenik meg az xfce4-panel
+
+
+----------------------------------------------------------------------------
+Fedora 20 (xfce4):
+----------------------------------------------------------------------------
+    xterm
+    mc
+
+    gcc
+    gcc-c++
+    openssl-devel
+    libX11-devel
+    libXft-devel
+    ncurses-devel
+    pcre-devel
+
+    gtk2-devel
+
+    java-1.7.0-openjdk-devel
+
+    megjegyzések: 
+        rosszul jelenik meg az xfce4-panel
+
+----------------------------------------------------------------------------
+
+    
+    

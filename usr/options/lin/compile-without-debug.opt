@@ -11,7 +11,7 @@
 -DMULTITHREAD
 -DxGC_BOEHM
 -DGC_NATIVE
--O6
+-O1
 -funsigned-char
 -fPIC
 -Wall

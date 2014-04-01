@@ -10,7 +10,7 @@
 -D_REENTRANT
 -DMULTITHREAD
 -DGC_NATIVE
--O6
+-O1
 -funsigned-char
 -fPIC
 -Wall

@@ -89,6 +89,7 @@ void _clp_fopen(int argno) //filé nyitás sopen()-nel
         if( fomode & FO_CREATE    ) acc |= O_CREAT; 
         if( fomode & FO_TRUNCATE  ) acc |= O_TRUNC; 
         if( fomode & FO_APPEND    ) acc |= O_APPEND;
+        if( fomode & FO_NOINHERIT ) acc |= O_NOINHERIT;
 
         //sharing
 

@@ -55,7 +55,19 @@
 #define FO_CREATE     256  // Nem létező file létrejön
 #define FO_TRUNCATE   512  // Létező file hosszát 0-ra állítja
 #define FO_APPEND    1024  // Writes will add to the end of the file
- 
+#define FO_NOINHERIT 2048  // Gyerek processz nem orokli az fd-t
+
+//megjegyzes:
+// A Linux 2.6.23 kerneltol kezdve tamogatott az O_CLOEXEC.
+// NetBSD 6.1-en mar van O_CLOEXEC tamogatas (5.1-en nincs).
+// FeeBSD 8.4-en mar van O_CLOEXEC tamogatas.
+// Korabbi UNIX rendszereken az FO_NOINHERIT opcio hatastalan.
+// Windowson alapvetoen az fd-k nem oroklodnek, csak a handle-k.
+// Ha a child tudja egy handle-rol, hogy az egy parent-tol orokolt 
+// file handle, akkor fd-t keszithet belole _open_osfhandle-vel.
+// Ha a parent FO_NOINHERIT opcioval nyitja a filet, akkor az 
+// fd-bol (_get_osfhandle-vel) kiolvashato handle nem oroklodik.
+
 
 // FCREATE() file attribute modes
 // NOTE:  FCREATE() always opens with (FO_READWRITE + FO_COMPAT)

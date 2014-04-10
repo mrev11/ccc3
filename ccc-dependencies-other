@@ -61,6 +61,25 @@ Fedora 20 (xfce4):
     megjegyzések: 
         rosszul jelenik meg az xfce4-panel
 
+
+----------------------------------------------------------------------------
+CentOS 6.5 (minimal desktop):
+----------------------------------------------------------------------------
+    xterm
+    mc
+
+    gcc
+    gcc-c++
+    openssl-devel
+    libX11-devel
+    libXft-devel
+    ncurses-devel
+    pcre-devel
+
+    gtk2-devel
+
+    java-1.7.0-openjdk-devel
+
 ----------------------------------------------------------------------------
 
     

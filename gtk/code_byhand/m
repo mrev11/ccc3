@@ -7,8 +7,8 @@
 #BLD=gtk-netbsd.bld
 #BLD=gtk-hoary.bld
 #BLD=gtk-natty.bld
-#BLD=gtk-ubuntu.bld
-BLD=gtk-suse13.bld
+BLD=gtk-ubuntu.bld
+#BLD=gtk-suse13.bld
 
 pushd ../codegen && m && run.exe
 popd

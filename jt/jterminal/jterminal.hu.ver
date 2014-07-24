@@ -1,3 +1,7 @@
+2014.04.27
+  Változott a Jáva, ezért a fordítás -source 1.5 -nowarn opciókkal megy. 
+  Másképp Latin-2 környezetben hibát jelez az UTF-8 kódolású kommentekre.
+
 1.1.16 (2011.08.06)
   A dialog alulra kerül, amikor a gyereke megszűnik.
   

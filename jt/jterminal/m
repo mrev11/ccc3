@@ -5,7 +5,7 @@ find . -type d | while read NAME; do
 done
 
 #if javac -deprecation jterminal.java 2>log-jterminal; then
-if javac jterminal.java 2>log-jterminal; then
+if javac  -source 1.5 -nowarn jterminal.java 2>log-jterminal; then
     mkjar
     cat log-jterminal
 else

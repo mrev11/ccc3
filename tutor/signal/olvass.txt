@@ -1,0 +1,11 @@
+
+
+2014.07.25
+  2005. után újra teszteltem a gyötrőprogramokat.
+  Minden program kibírt 10 percet hiba nélkül.
+
+  SIG_ABRT helyett SIG_HUP, mert az abortot nem kezeli a CCC.
+  x-24.prg-ben runningthread védelmére MUTEX2 kell,
+  hibásan MUTEX volt használva, előjött a hiba.
+  
+  

@@ -34,6 +34,8 @@ static pid
 
 function main(arg)
 
+    ? "MAIN", getpid(), thread_self()
+
     sig:=if(arg==NIL,.f.,.t.)
     pid:=getpid()
     
@@ -48,7 +50,7 @@ function main(arg)
 
 function sighandler()
 local th
-    ? "SIG",sig
+    ? "SIG",sig, getpid(), thread_self()
     if( sig )
         th:=thread_create( {||qout("HOPP")})   //... ha itt új szál indul
         thread_detach(th)
@@ -56,6 +58,7 @@ local th
 
     
 function lelo() //lelő
+    ? "LELO", getpid(), thread_self()
     sleep(1000)
     signal_send(pid,SIG_TERM)
     sleep(4000)
@@ -66,6 +69,7 @@ function lelo() //lelő
 
 function var() //vár
 local cnt:=0
+    ? "VAR ", getpid(), thread_self()
     while(.t.) 
         ? "var",++cnt
         sleep(250)

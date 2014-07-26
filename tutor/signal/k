@@ -1,2 +1,2 @@
 #!/bin/bash
-kill -KILL `cat pid`
+kill -ABRT `cat pid`

@@ -178,7 +178,7 @@ local self:=thread_self()
 local timer:=40
     while( .t. )
         sleep(timer*rand())
-        signal_send(getpid(),SIG_ABRT)
+        signal_send(getpid(),SIG_HUP)
     end
 
 *****************************************************************************

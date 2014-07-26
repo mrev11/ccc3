@@ -36,9 +36,9 @@ function main()
 
     ? getpid(), thread_self()
 
-    THREAD({|x|var(x)},"X")
-    THREAD({|x|var(x)},"Y")
-    THREAD({|x|var(x)},"Z")
+    THREAD({|x|var(x)},"X"); sleep(100)
+    THREAD({|x|var(x)},"Y"); sleep(100)
+    THREAD({|x|var(x)},"Z"); sleep(100)
 
     while( inkey(1)!=113 ) //q
     end

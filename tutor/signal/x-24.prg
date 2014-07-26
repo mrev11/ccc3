@@ -100,8 +100,7 @@ local i, thcnt:=0, timer:=40
     while( inkey()!=asc("q") )
         sleep(i:=int(timer*rand()))
         i:=1+i%thcnt
-        signal_send(pid[i],SIG_TERM+SIG_ABRT)
-        //signal_send(pid[i],SIG_TERM)
+        signal_send(pid[i],SIG_TERM)
 
         //véletlen sorrendben
         //véletlen időközökben (átlag 20 ms)
@@ -219,9 +218,9 @@ static function mkthread()
     sleep(2*rand()); thread_detach(thread_create({|x|dothread(x)},2))
   
 static function dothread(x)
-    MUTEX_LOCK
+    MUTEX2_LOCK
     ++runningthread
-    MUTEX_UNLOCK
+    MUTEX2_UNLOCK
     
     if(x==1)
         mkstring()
@@ -229,10 +228,10 @@ static function dothread(x)
         mkobject()
     end
 
-    MUTEX_LOCK
+    MUTEX2_LOCK
     --runningthread
-    COND_SIGNAL
-    MUTEX_UNLOCK
+    COND2_SIGNAL
+    MUTEX2_UNLOCK
     thread_exit()
 
     //minden threadet vagy el kell engedni: thread_detach(th)

@@ -1,0 +1,87 @@
+
+String(C)
+    mindig van oref-je
+
+    void string(CHAR const *ptr)    //új példány rámutatással (new nélkül)
+        o->ptr.binptr=(CHAR*)ptr;   //mutat a tartalomra
+        o->length=0;                //szemétgyűjtés NEM törli 
+
+    void stringn(CHAR const *ptr)   //új példány másolással (new)
+        o->ptr.binptr=              //újonnan létrejött memobj, tartalom belemásolva
+        o->length=-1;               //szemétgyűjtés törli
+
+    void strings(CHAR const*ptr,len)//substring kimásolása new-val
+        o->ptr.binptr=              //újonnan létrejött memobj, tartalom belemásolva
+        o->length=-1;               //szemétgyűjtés törli
+
+    CHAR *stringl(unsigned long len)//inicializálatlan string new-val
+        o->ptr.binptr=              //újonnan létrejött memobj
+        o->length=-1;               //szemétgyűjtés törli
+        
+    Megjegyzés: a string hossza az oref-re hivatkozó value-ban van.    
+
+    Az oref-ben levő hossz mutatja, hogy 
+    length== 0: nem kell törölni (free), nincs törlendő memóriaobjektum
+    length==-1: törölni kell a memóriaobjektumot, de nincsenek benne value-k
+    length>= 1: törölni kell a memóriaobjektumot + a benne levő value-kat
+       
+    Probléma, hogy a CCC2 a törlendő stringeknél az oref-ben nem -1 hosszt,
+    hanem 1 hosszt állít be. Ezért a szemétgyűjtés nem tud működni a típus 
+    vizsgálata nélkül.
+        
+
+Binary(X)
+    mindig van oref-je
+
+    void binary(BYTE const *ptr)    //új példány rámutatással (new nélkül)
+        o->ptr.binptr=(BYTE*)ptr;   //mutat a tartalomra
+        o->length=0;                //szemétgyűjtés NEM törli 
+
+    void binaryn(BYTE const *ptr)   //új példány másolással (new)
+        o->ptr.binptr=              //újonnan létrejött memobj, tartalom belemásolva
+        o->length=-1;               //szemétgyűjtés törli
+
+    void binarys(BYTE const*ptr,len)//substring kimásolása new-val
+        o->ptr.binptr=              //újonnan létrejött memobj, tartalom belemásolva
+        o->length=-1;               //szemétgyűjtés törli
+
+    BYTE *binaryl(unsigned long len)//inicializálatlan binary new-val
+        o->ptr.binptr=              //újonnan létrejött memobj
+        o->length=-1;               //szemétgyűjtés törli
+
+    Megjegyzés: a string hossza az oref-re hivatkozó value-ban van.    
+
+
+Array(A)
+    mindig van oref-je
+
+    ha oref->length>0 akkor
+        oref->ptr.valptr egy VALUE tömbre mutat
+        a valuetömb hossza: length+1+extsiz
+        valuetömb[length]-ben TYPE_END jelzi a végét
+        valuetömb[length]-ben size tartalmazza length+extsiz-t
+        
+    ha  oref->length==0 akkor
+        oref->ptr.valptr==0 (nincs hozzá memobj)
+        
+    void array(int len) //stackről levett elemekkel inicializált array
+        ez csinál EXTSIZ tartalék helyet
+
+    VALUE *array0(int len) //NIL-ekkel inicializált 1-dimenziós array        
+        ez nem csinál tartalék helyet
+        ezzel készülnek az objektumok is
+
+Object(O)
+    mindig van oref-je
+    1 dimenziós array-ként jön létre, extsiz==0
+    utólag be van állítva a value-ban a TYPE_ARRAY és a subtype
+    
+
+Block(B)
+    csak akkor van oref-je, ha vannak ref változók, ilyenkor
+    oref->length==ref változók száma
+    valuetömb hossza length+1 
+    utolsó elem típusa TYPE_END jelzi a tömb végét a szemétgyűjtésnek
+    utolsó elemben size==length (nincs extsiz)
+
+

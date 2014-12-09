@@ -5,7 +5,7 @@
 
 2013.09.02 -- 1.2.14
   Nagy fileokat (>MAXSTRLEN) a memoread nem tud beolvasni,
-  ezt jelezni kell. Tovabbra sincs kezelve az az esetet, amikor
+  ezt jelezni kell. Tovabbra sincs kezelve az az eset, amikor
   az eredmeny lesz nagyobb MAXSTRLEN-nel. Ilyenkor a mentes
   lehetetlen, mert nem lehet eloallitani a memowrit-tel
   kiirando stringet. (A gyakorlatban nincs ilyen.)

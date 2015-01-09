@@ -1,0 +1,39 @@
+
+Kezdeti berendezkedés
+
+Kezdetben 'root' felhasználó van jelszó nélkül, ezt úgy hagyjuk.
+Az alkalmazások indításakor meg kell adni a felhasználót, pl:
+    mysql -u root
+    mysqlshow -u root
+    
+Első felhasználó létrehozása (root-ként mysql-ben):
+
+  create database konto;                      -- mysql-ben database = schema;
+  grant all on konto.* to konto;              -- létrejön a konto felhasznalo
+  use mysql                                   -- kiválasztja a mysql adatbázist
+  set password for 'konto'=password('konto');
+
+Most be lehet jelentkezni:
+                          host        user    passw   db
+  sql2.mysql._my_connect("localhost","konto","konto","konto")
+      vagy
+  con:=sql2.mysql.sqlconnectionNew(":root::mysql") //host,user,pw,db
+      vagy
+  con:=sql2.mysql.sqlconnectionNew(":konto:konto:konto") //host,user,pw,db
+      vagy
+  con:=sql2.mysql.sqlconnectionNew()  //adatok MYSQL_CONNECT-ből
+
+
+Nincs full join. 
+Egyes esetekben rossz hibajelzést ad full joinra,
+ismeretlen oszlopot mond, noha létezik az oszlop.
+
+
+Nincsenek sequence-ek, táblákkal emuláljuk:
+create table <tabname> (value integer primary key auto_increment) ENGINE=MYISAM
+Az INNODB motorral gyakori deadlock keletkezne.
+A MYISAM nem tranzakciós, ami itt éppen kapóra jön.
+Az auto_increment szintaktikája eltér a Postgrestől.
+    
+
+

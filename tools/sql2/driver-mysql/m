@@ -1,0 +1,19 @@
+#!/bin/bash
+bapp_unix0.b  -sccc3_sql2_mysql
+
+
+if [ -s error ]; then
+    list error &
+else
+    cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+    #cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
+    cp -pf sql.ch  $CCCDIR/usr/include
+
+    #so közvetlen cp helyett mv-vel kerül a helyére,
+    #hogy az éppen futó programok nem szálljanak el
+    for so in obj$CCCBIN/*.so; do
+        cp -pf $so $so.new
+        mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+    done
+
+fi

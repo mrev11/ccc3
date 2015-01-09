@@ -76,6 +76,9 @@ local con:=sqlconnect(),tbl,rset,row
     ? "-------------------------------------------------------------"
     ? "localtds.ab"
 
+if( con:driver $ "sql2.mysql.sql2.sqlite3" )
+    ? con:driver,"does not support full join"
+else
     tbl:=localtds.ab.tableEntityNew(con)
     rset:=tbl:selord
     while( (row:=rset:next)!=NIL )
@@ -88,11 +91,15 @@ local con:=sqlconnect(),tbl,rset,row
           printitem(row:val_b , 10)
     end
     rset:close  //magától is lezáródik
+end
 
 
     ? "-------------------------------------------------------------"
     ? "localtds.abc"
 
+if( con:driver $ "sql2.mysql.sql2.sqlite3" )
+    ? con:driver,"does not support full join"
+else
     tbl:=localtds.abc.tableEntityNew(con)
     rset:=tbl:selord
     while( (row:=rset:next)!=NIL )
@@ -104,11 +111,15 @@ local con:=sqlconnect(),tbl,rset,row
           printitem(row:attrib, 10)
     end
     rset:close  //magától is lezáródik
+end
 
 
     ? "-------------------------------------------------------------"
     ? "localtds.abc (nulls)"
 
+if( con:driver $ "sql2.mysql.sql2.sqlite3" )
+    ? con:driver,"does not support full join"
+else
     tbl:=localtds.abc.tableEntityNew(con)
     rset:=tbl:selord
     while( (row:=rset:next)!=NIL )
@@ -120,7 +131,7 @@ local con:=sqlconnect(),tbl,rset,row
           pxitem(tbl:getcolumn('attrib'), row, 10)
     end
     rset:close  //magától is lezáródik
-
+end
 
     con:sqldisconnect
    

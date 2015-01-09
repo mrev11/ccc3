@@ -162,6 +162,9 @@ local query, n
     ? "-------------------------------------------------------------"
     ?? query_ab
 
+if( con:driver $ "sql2.mysql.sql2.sqlite3" )
+    ? con:driver,"does not support full join"
+else
     query:=con:sqlquerynew(query_ab)
     //query:list //megfigyelhető a prefetch
     while( query:next )
@@ -191,10 +194,14 @@ local query, n
         #endif
     end
     query:close  //magától is lezáródik
+end
 
     ? "-------------------------------------------------------------"
     ?? query_abc
 
+if( con:driver $ "sql2.mysql.sql2.sqlite3" )
+    ? con:driver,"does not support full join"
+else
     query:=con:sqlquerynew(query_abc)
     while( query:next )
         ? printitem(query, 'id_a'  ,"N",  4),; 
@@ -205,6 +212,7 @@ local query, n
           printitem(query, 'attrib',"C", 24)
     end
     query:close  //magától is lezáródik
+end
 
     con:sqldisconnect
 

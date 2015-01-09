@@ -1,0 +1,39 @@
+
+
+name: proba
+version: "1"
+
+
+table: konto.proba=p
+
+column: szamlaszam      C24             nn x=szamla
+column: devnem          C3
+column: nev             C30             x=megnevezes
+column: egyenleg        N20.2           x=osszeg
+column: sorszam         N6
+column: tulmenflag      L
+column: konyvkelt       D
+column: megjegyzes      M
+
+primkey: szamlaszam,devnem
+
+index: nev(nev,szamlaszam)
+
+select: select_kk  
+    where konyvkelt<:1 or konyvkelt is null 
+    order by szamlaszam
+
+select: select_ge  
+    where szamlaszam>=:1 
+    order by nev desc,szamlaszam
+
+select: select_tf
+    where tulmenflag=:1
+    order by szamlaszam
+
+select: select_bl
+    where egyenleg<:1 
+    order by szamlaszam
+
+
+

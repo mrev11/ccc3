@@ -1,0 +1,4 @@
+#!/bin/bash
+DBDRIVER=mysql
+export MYSQL_CONNECT=:konto:konto:konto
+. import.b

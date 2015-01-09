@@ -90,6 +90,8 @@ local xx,n
         memowrit("xx-1",row1:remark)
         memowrit("xx-2",row2:remark)
         alert("Error!")
+    else
+        alert("Ok")
     end
     
     con:sqldisconnect

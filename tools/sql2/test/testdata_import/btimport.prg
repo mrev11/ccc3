@@ -50,7 +50,7 @@ function usage()
 local x:=<<usage>>
 Usage: btimport -d driver -e entity -f btfile [-n table] [-s skipfld]*
 
-    driver  : O[racle]/P[ostgres]/S[QLite3]/M[ySQL]
+    driver  : O[racle]/P[ostgres]/S[QLite3]/M[ySQL]/D[b2]
     entity  : tableentity class name in the linked entitylib
     btfile  : bt (dat/dbf) file specification to be imported
     table   : qulified table name in the SQL database
@@ -87,7 +87,7 @@ local con
             s_skipfld:=":"+upper(argv(++n))+":"
         elseif( argv(n)=="-d" )
             s_driver:=left(upper(argv(++n)),1)
-            if( !s_driver$"OPSM" )
+            if( !s_driver$"OPSMD" )
                 usage()
             end
         end
@@ -120,6 +120,8 @@ local con
         con:=sql2.sqlite3.sqlconnectionNew()
     elseif( s_driver=="M" )
         con:=sql2.mysql.sqlconnectionNew()
+    elseif( s_driver=="D" )
+        con:=sql2.db2.sqlconnectionNew()
     end
     
     tent:=ENTITYLIB(s_entname,con)

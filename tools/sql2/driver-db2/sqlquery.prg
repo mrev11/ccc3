@@ -18,9 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-namespace sql2.mysql
+namespace sql2.db2
 
-#include "my.ch"
+#include "db2.ch"
 
 #ifdef EMLEKEZTETO //sqlquery program használat
 
@@ -41,7 +41,6 @@ namespace sql2.mysql
 #endif
 
 
-
 ****************************************************************************
 class sqlquery(object)
     method  initialize
@@ -50,6 +49,7 @@ class sqlquery(object)
     attrib  __querytext__
     attrib  __stmthandle__
     attrib  __selectlist__
+    attrib  __db2coltype__
     attrib  __buffer__
 
     method  next
@@ -67,43 +67,39 @@ class sqlquery(object)
 ****************************************************************************
 static function sqlquery.initialize(this,con,query,bind)
 local err
-local fldcnt,n
+local fldcnt,coldesc,n
+local rc
 
     if( bind!=NIL )
-        query:=sql2.mysql.sqlbind(query,bind)
+        query:=sql2.db2.sqlbind(query,bind)
     end
 
     this:connection:=con
     this:__querytext__:=query
-    sql2.mysql.sqldebug(this:__querytext__)
-    this:__stmthandle__:=sql2.mysql._my_real_query(this:connection:__conhandle__,this:__querytext__)
-    
-    if( this:__stmthandle__==NIL ) 
-        //? "hibás, nincs letárolva"
-        err:=sql2.mysql.sqlerrorCreate(this:connection:__conhandle__)
+    sql2.db2.sqldebug(this:__querytext__)
+    this:__stmthandle__:=sql2.db2._db2_execdirect(this:connection:__conhandle__,this:__querytext__)
+    rc:=sql2.db2._db2_retcode(this:__stmthandle__)
+
+    if( rc!=SQL_SUCCESS )
+        err:=sql2.db2.sqlerror_create(this:__stmthandle__)
         err:operation:="sqlquery.initialize"
         err:args:={query}
         this:close
         break(err)
 
-    elseif( 0==(fldcnt:=sql2.mysql._my_field_count(this:connection:__conhandle__))  )  
-        // ? "nem select", fldcnt , sql2.mysql._my_affected_rows(this:connection:__conhandle__)
-        // FIGYELEM
-        // fldcnt:=sql2.mysql._my_num_fields(this:__stmthandle__)    
-        // elSISEGVzik, ha az utasítás nem select
-
+    elseif( 0==(fldcnt:=sql2.db2._db2_numresultcols(this:__stmthandle__)) )  
+        // ? "nem select"
         this:close // itt csak selectekkel foglalkozunk
         
     else
-        // ? "select", fldcnt, sql2.mysql._my_affected_rows(this:connection:__conhandle__)
-        // FIGYELEM
-        // sql2.mysql._my_null_result(this:__stmthandle__)
-        // csak azt mutatja, hogy select vagy nem select,
-        // de nem mutatja, hogy üres-e a select!
-        
+        // ? "select"
         this:__selectlist__:=array(fldcnt)
+        this:__db2coltype__:=array(fldcnt)
         for n:=1 to len(this:__selectlist__)
-             this:__selectlist__[n]:=sql2.mysql._my_field_name(this:__stmthandle__,n-1)
+            coldesc:=sql2.db2._db2_describecol(this:__stmthandle__,n)
+            this:__selectlist__[n]:=coldesc[1]
+            this:__db2coltype__[n]:=coldesc[2]
+            //this:__selectlist__[n]:=sql2.db2._db2_colname(this:__stmthandle__,n)
         next
     end
     return this
@@ -112,12 +108,23 @@ local fldcnt,n
 ****************************************************************************
 static function sqlquery.next(this)
 local retcode:=.f.
+local n,convtype
 
     if( this:__stmthandle__==NIL )
         //closed
-    elseif( NIL==(this:__buffer__:=sql2.mysql._my_fetch_row(this:__stmthandle__)) )
+    elseif( SQL_SUCCESS!=sql2.db2._db2_fetch(this:__stmthandle__) )
         this:close
     else
+        this:__buffer__:=array(this:fcount)
+        for n:=1 to this:fcount
+            if( this:__db2coltype__[n]==SQL_BLOB  )
+                convtype:=SQL_BINARY
+            else
+                convtype:=SQL_CHAR
+            end
+            //más típusokat is számításba kéne venni
+            this:__buffer__[n]:=sql2.db2._db2_getdata(this:__stmthandle__,n,convtype)
+        next
         retcode:=.t.
     end
 
@@ -126,7 +133,7 @@ local retcode:=.f.
 ****************************************************************************
 static function sqlquery.close(this)
     if( this:__stmthandle__!=NIL )
-        sql2.mysql._my_free_result(this:__stmthandle__) 
+        sql2.db2._db2_closestatement(this:__stmthandle__) 
         this:__stmthandle__:=NIL
         this:__buffer__:=NIL
     end

@@ -1,3 +1,9 @@
+2015.01.20
+  sql2.db2 interfész
+
+2015.01.03 
+  sql2.mysql interfész
+
 2012.09.20
   Saját Postgres és SQLite3 prototype deklarációk.
   Installált Postgres és SQLite3 nélkül is lefordítható a könyvtár. 

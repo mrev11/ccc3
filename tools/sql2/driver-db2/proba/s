@@ -1,4 +1,5 @@
 #!/bin/bash
 export SQLDEBUG=on
-entity.exe
-query.exe
+
+tabtest1.exe  
+

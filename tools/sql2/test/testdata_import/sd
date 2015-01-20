@@ -1,0 +1,4 @@
+#!/bin/bash
+DBDRIVER=db2
+export DB2_CONNECT="@sample"
+. import.b

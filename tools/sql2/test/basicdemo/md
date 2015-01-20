@@ -1,0 +1,7 @@
+#!/bin/bash
+mkdir exe-db2  2>/dev/null
+cp -p start-scripts/*.b exe-db2 2>/dev/null
+cd tds; m; cd ..
+
+bapp_unixc.b  @parfile-d.bld
+

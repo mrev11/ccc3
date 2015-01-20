@@ -1,0 +1,2 @@
+-p$(DB2_HOME)/lib
+-blibdb2.so

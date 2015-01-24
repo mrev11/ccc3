@@ -91,6 +91,7 @@ class rowset(object)
     attrib  __ntuples__
     attrib  __next__
     attrib  __transactionid__
+    attrib  __closestmtidx__
     method  __select__
     method  next
     method  close
@@ -100,6 +101,7 @@ static function rowset.initialize(this,tab)
     this:(object)initialize
     this:__tableblk__:={||tab} //rekurzivitás ellen blockba!
     this:__transactionid__:=tab:connection:__transactionid__
+    this:__closestmtidx__:=tab:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     return this
 
 
@@ -198,16 +200,25 @@ local rowentity,stmt,result,status,err
         sql2.postgres.sqldebug(stmt)
         result:=sql2.postgres._pq_exec(this:__table__:connection:__conhandle__,stmt)
         status:=sql2.postgres._pq_resultstatus(result)
-        
-        if( status==PGRES_TUPLES_OK .and. sql2.postgres._pq_ntuples(result)==1 )
-            rowentity:=mkrow(this,result,1)
-        else
-            //err:=sql2.postgres.sqlerrorCreate(result)
-            //err:list
+
+        if( status!=PGRES_TUPLES_OK )
+            //error, kivételt dob
+            err:=sql2.postgres.sqlerrorCreate(result)
+            err:operation:="rowset:next"
+            sql2.postgres._pq_clear(result)
             this:close
-            //az eredmény NIL
+            break(err)
+
+        elseif( sql2.postgres._pq_ntuples(result)!=1 )
+            //nincs adat, az eredmény NIL
+            sql2.postgres._pq_clear(result)
+            this:close
+
+        else
+            //van adat, az eredmény egy row
+            rowentity:=mkrow(this,result,1)
+            sql2.postgres._pq_clear(result)
         end
-        sql2.postgres._pq_clear(result)
 
     elseif( ++this:__next__>this:__ntuples__ )
         this:close
@@ -258,6 +269,11 @@ local result,status,err
 
         sql2.postgres._pq_clear(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-rs"
+        this:__table__:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
     return NIL
 

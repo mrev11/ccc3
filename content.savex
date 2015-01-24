@@ -10,6 +10,7 @@
 -lrobjmsc*
 -lrobjmng*
 -lrobjbor*
+-lrexe-*
  
 -x.obj.o.lib.so.exe.bak.a.hpp.dll.exp.log.pyc.class.jar.cer.
 -x.toc.aux.dvi.lj.

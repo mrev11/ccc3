@@ -18,8 +18,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*
-*/
+
+//deadlock-or demonstráló program
+//SQLite3 elszáll "database is locked", mert egyfelhasználós
+//
+//DB2 már az update előtti find-on fennakad, mert nem MVCC,
+//a beolvasni kívánt rekord módosult, de még nem commitolták.
+
 
 #define WAIT   ? "press any key"; inkey(0)
 
@@ -32,17 +37,17 @@
 
 
 ****************************************************************************************
-function main()
+function main(db,isolev)
 
-local con1:=connect()  
+local con1:=connect(db,isolev)
 local tab1:=isol.tableEntityNew(con1)
 
-local con2:=connect()  
+local con2:=connect(db,isolev)
 local tab2:=isol.tableEntityNew(con2)
 
 local row1,row2
 
-    thread_create({||sleep(3000),qout("deadlock"),quit()})
+    thread_create({||sleep(5000),qout("deadlock"+chr(10)),quit()})
 
     query(tab1)
     

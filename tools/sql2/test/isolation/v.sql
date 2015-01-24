@@ -1,2 +1,2 @@
-select * from isol order by key;
+select * from isol order by "key";
 quit;

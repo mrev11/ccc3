@@ -31,6 +31,9 @@ class sqlconnection(object)
     attrib  __transactionid__
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
+    attrib  __statementstoclose__
+    method  __addstatementtoclose__
+    method  __clearstatement__
     method  driver              {||"sql2.postgres"}
     method  version
     method  duplicate
@@ -59,6 +62,7 @@ static function sqlconnection.initialize(this,coninfo)
     this:__transactionid__:=0
     this:__isolationlevel__:=ISOL_READ_COMMITTED
     this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__statementstoclose__:=array(64)
 
 #ifdef EMLEKEZTETO  //a Postgres autocommitról
     A Postgres 7.4-ben megszűnt a szerver oldali autocommit,
@@ -164,6 +168,7 @@ local previous_level
 
     elseif( numlevel==ISOL_SERIALIZABLE )
         txtlevel:="SERIALIZABLE"
+        //txtlevel:="REPEATABLE READ"  //ez is elég jó
 
     else
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
@@ -198,6 +203,7 @@ local previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("commit")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
@@ -206,6 +212,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("rollback")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
@@ -219,5 +226,42 @@ static function sqlconnection.sqlrollback(this)
     Ekkor minden commit után automatikusan indult a következő
     tranzakció, ami a következő commit-ig tartott.
 #endif
+
+
+******************************************************************************
+static function sqlconnection.__addstatementtoclose__(this,blk)
+local idx,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]==NIL )
+            this:__statementstoclose__[idx]:=blk
+            return idx
+        end
+    next
+    err:=sqlerrorNew()
+    err:operation:="sqlconnection.__addstatementtoclose__"
+    err:description:="too many statements"
+    break(err)
+
+******************************************************************************
+static function sqlconnection.__clearstatement__(this,idx)
+    this:__statementstoclose__[idx]:=NIL
+
+
+******************************************************************************
+static function sqlconnection.close_pending_statements(this)
+local idx,n:=0,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]!=NIL )
+            eval(this:__statementstoclose__[idx])
+            this:__statementstoclose__[idx]:=NIL
+            n++
+        end
+    next
+    if( n>0 )
+        err:=sqlerrorNew()
+        err:operation:="sqlconnection.close_pending_statements"
+        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        break(err)
+    end
 
 ******************************************************************************

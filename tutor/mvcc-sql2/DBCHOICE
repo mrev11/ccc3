@@ -1,9 +1,10 @@
 P
 
 
-csak az első karakter számít: O,P,L
+csak az első karakter számít: O,P,L,D,M
 
 O: Oracle
 P: Postgres
 L: SQLite3
-
+D: DB2
+M: MySQL

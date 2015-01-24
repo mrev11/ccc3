@@ -31,6 +31,9 @@ class sqlconnection(object)
     attrib  __transactionid__
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
+    attrib  __statementstoclose__
+    method  __addstatementtoclose__
+    method  __clearstatement__
     method  driver              {||"sql2.mysql"}
     method  version
     method  duplicate
@@ -71,6 +74,7 @@ static function sqlconnection.initialize(this,coninfo)
     
     this:__conhandle__:=sql2.mysql._my_connect(coninfo[1],coninfo[2],coninfo[3],coninfo[4],coninfo[5],coninfo[6],coninfo[7])
 
+    sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='ANSI_QUOTES'"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session transaction isolation level read committed"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set autocommit=0"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
@@ -78,13 +82,14 @@ static function sqlconnection.initialize(this,coninfo)
     this:__transactionid__:=0
     this:__isolationlevel__:=ISOL_READ_COMMITTED
     this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__statementstoclose__:=array(64)
 
     return this
 
 ******************************************************************************
 static function sqlconnection.version(this)
 local v:=sql2.mysql._my_get_server_info(this:__conhandle__)
-    return v
+    return "MySQL "+v
 
 ******************************************************************************
 static function sqlconnection.duplicate(this)
@@ -180,7 +185,8 @@ local previous_level
         txtlevel:="READ COMMITTED"
 
     elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"
+        txtlevel:="SERIALIZABLE"  //rosszul kezeli a konkurenciát, deadlock
+        //txtlevel:="REPEATABLE READ" //nem kezeli a konkurenciát, elvesző update-ek 
 
     else
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
@@ -211,6 +217,7 @@ local previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("commit")
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
     this:__transactionid__++
@@ -218,9 +225,47 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("rollback")
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
     this:__transactionid__++
     this:__isolationlevel__:=this:__sessionisolationlevel__
+
+
+******************************************************************************
+static function sqlconnection.__addstatementtoclose__(this,blk)
+local idx,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]==NIL )
+            this:__statementstoclose__[idx]:=blk
+            return idx
+        end
+    next
+    err:=sqlerrorNew()
+    err:operation:="sqlconnection.__addstatementtoclose__"
+    err:description:="too many statements"
+    break(err)
+
+******************************************************************************
+static function sqlconnection.__clearstatement__(this,idx)
+    this:__statementstoclose__[idx]:=NIL
+
+
+******************************************************************************
+static function sqlconnection.close_pending_statements(this)
+local idx,n:=0,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]!=NIL )
+            eval(this:__statementstoclose__[idx])
+            this:__statementstoclose__[idx]:=NIL
+            n++
+        end
+    next
+    if( n>0 )
+        err:=sqlerrorNew()
+        err:operation:="sqlconnection.close_pending_statements"
+        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        break(err)
+    end
 
 ******************************************************************************

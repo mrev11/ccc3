@@ -51,6 +51,7 @@ class sqlquery(object)
     attrib  __selectlist__
     attrib  __db2coltype__
     attrib  __buffer__
+    attrib  __closestmtidx__
 
     method  next
     method  close
@@ -101,6 +102,8 @@ local rc
             this:__db2coltype__[n]:=coldesc[2]
             //this:__selectlist__[n]:=sql2.db2._db2_colname(this:__stmthandle__,n)
         next
+
+        this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     end
     return this
 
@@ -136,6 +139,11 @@ static function sqlquery.close(this)
         sql2.db2._db2_closestatement(this:__stmthandle__) 
         this:__stmthandle__:=NIL
         this:__buffer__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-qu"
+        this:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
 
 ****************************************************************************

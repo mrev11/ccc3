@@ -31,6 +31,9 @@ class sqlconnection(object)
     attrib  __transactionid__
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
+    attrib  __statementstoclose__
+    method  __addstatementtoclose__
+    method  __clearstatement__
     method  driver              {||"sql2.oracle"}
     method  version
     method  duplicate
@@ -65,6 +68,7 @@ local usr,psw,dbs
     this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
     this:sqlexec("alter session set isolation_level=read committed")
     this:__transactionid__:=0
+    this:__statementstoclose__:=array(64)
     return this
 
 ******************************************************************************
@@ -171,7 +175,7 @@ local previous_level
         txtlevel:="READ COMMITTED"
 
     elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"
+        txtlevel:="SERIALIZABLE"  //nincs "REPEATABLE READ"
 
     else
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
@@ -198,6 +202,7 @@ local previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("commit")
     this:__transactionid__++
     this:__isolationlevel__:=this:__sessionisolationlevel__
@@ -205,10 +210,47 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("rollback")
     this:__transactionid__++
     this:__isolationlevel__:=this:__sessionisolationlevel__
     return NIL
+
+******************************************************************************
+static function sqlconnection.__addstatementtoclose__(this,blk)
+local idx,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]==NIL )
+            this:__statementstoclose__[idx]:=blk
+            return idx
+        end
+    next
+    err:=sqlerrorNew()
+    err:operation:="sqlconnection.__addstatementtoclose__"
+    err:description:="too many statements"
+    break(err)
+
+******************************************************************************
+static function sqlconnection.__clearstatement__(this,idx)
+    this:__statementstoclose__[idx]:=NIL
+
+
+******************************************************************************
+static function sqlconnection.close_pending_statements(this)
+local idx,n:=0,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]!=NIL )
+            eval(this:__statementstoclose__[idx])
+            this:__statementstoclose__[idx]:=NIL
+            n++
+        end
+    next
+    if( n>0 )
+        err:=sqlerrorNew()
+        err:operation:="sqlconnection.close_pending_statements"
+        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        break(err)
+    end
 
 ******************************************************************************
 

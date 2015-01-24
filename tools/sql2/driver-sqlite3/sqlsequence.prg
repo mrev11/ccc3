@@ -62,15 +62,13 @@ static function sqlsequence.initialize(this,con,name)
 
 ****************************************************************************
 static function sqlsequence.create(this)
-local stmt:="create table :1(value integer primary key autoincrement);"
     this:connection:sqlcommit
-    this:connection:sqlexec(stmt,{this:name})
-    if( this:start!=NIL )
-        stmt:="insert into :1 values(:2);delete from :1;"
-        this:connection:sqlexec(stmt,{this:name,this:start})
+    this:connection:sqlexec("create table "+this:name+" (value integer primary key autoincrement);")
+    if( this:start!=NIL .and. this:start>=1 )
+        this:connection:sqlexec("insert into "+this:name+" values(:1)",{this:start-1})
+        this:connection:sqlexec("delete from "+this:name) 
     end
     this:connection:sqlcommit
-
 
 ****************************************************************************
 static function sqlsequence.drop(this)
@@ -82,10 +80,9 @@ local stmt:="drop table "+this:name
 
 ****************************************************************************
 static function sqlsequence.nextval(this)
-local stmt:="insert into :1 values(null);delete from :1;"
-    this:connection:sqlexec(stmt,{this:name})
+    this:connection:sqlexec("insert into "+this:name+" values(null)") 
+    this:connection:sqlexec("delete from "+this:name) 
     return _sqlite3_last_insert_rowid(this:connection:__conhandle__)
-
 
 ****************************************************************************
 

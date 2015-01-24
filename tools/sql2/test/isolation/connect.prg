@@ -18,27 +18,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//4 verzio: Oracle/Postgres, SERIALIZABLE/READ_COMMITTED
-
-
 #include "sql.ch"
 
 
-function connect()
+function connect(db:="P",isolev:="COM")  //db: P,M,O,D,L.  isolev: COM,SER
 
 local con
 
-    if( getenv("ISOLATION_DB")=="O" )
-        con:=sql2.oracle.sqlconnectionNew()  
+    set date format 'yyyy-mm-dd'
+    
+    if( db$'M')
+        con:=sql2.mysql.sqlconnectionNew() 
+    elseif( db$'P')
+        con:=sql2.postgres.sqlconnectionNew() 
+    elseif( db$'D')
+        con:=sql2.db2.sqlconnectionNew() 
+    elseif( db$'O')
+        con:=sql2.oracle.sqlconnectionNew() 
+    elseif( db$'L')
+        con:=sql2.sqlite3.sqlconnectionNew() 
+    end
+    
+    if( isolev=="SER" )
+        con:sqlisolationlevel(ISOL_SERIALIZABLE,.t.)    //.t.=session
+    elseif( isolev=="COM" )
+        con:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)  //.t.=session, default
     else
-        con:=sql2.postgres.sqlconnectionNew()  
+      //con:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)  //.t.=session, default
     end
 
-    con:sqlisolationlevel(ISOL_SERIALIZABLE,.t.)
-    //con:sqlisolationlevel(ISOL_READ_COMMITTED,.t.) //default
-
-
-    ? con:classname,if(con:sqlisolationlevel==0,"READ_COMMITTED","SERIALIZABLE")
+    ? con:version, isolev
 
     return con
 

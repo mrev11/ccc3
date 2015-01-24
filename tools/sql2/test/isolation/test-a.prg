@@ -20,25 +20,40 @@
 
 // Mutatja a "repeatable read" tulajdonságot.
 
+// DB2      megakad a delete-ben"
+// SQLite3  Ok**
+// MySQL    Ok***
+// Oracle   Ok
+// Postgres Ok
+
+
+//Megjegyzés*: Nem MVCC, hanem az izolációt lockokkal valósítja meg. 
+//RS=read stability (rekord lock), RR=repeatable read (table lock),
+//emiatt kell várnia a delete-vel.
+//
+//Megjegyzés**: A WAL miatt viselkedik az MVCC-hez hasonlóan.
+//
+//Megjegyzés***: SERIALIZE helyett REPEATABLE READ kell.
+
+
 #define WAIT   ? "press any key"; inkey(0)
 
 
 #include "sql.ch"
 
 ****************************************************************************************
-function main()
+function main(db,isolev)
 
-local con:=connect()  
+local con:=connect(db,isolev)
 local tab:=isol.tableEntityNew(con)
 
-local con1:=connect()  
+local con1:=connect(db,isolev)
 local tab1:=isol.tableEntityNew(con1)
 
 
     ? "látja?"
     query(tab)
  
-
     concurrent(tab1)
 
     WAIT
@@ -57,6 +72,8 @@ local tab1:=isol.tableEntityNew(con1)
     con:sqldisconnect    
     
     WAIT
+    
+    ?
 
 ****************************************************************************************
 function query(tab)

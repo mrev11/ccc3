@@ -1,3 +1,16 @@
+2015.01.23 sqlcommit/sqlrollback kivetelt dob lezaratlan query/rowset-re.
+  con:sqlcommit es con:sqlrollback automatikusan lezarnak minden 
+      fuggoben levo queryt es rowsetet, es ha volt mit lezarni, 
+      akkor kivetelt dobnak. Eredmeny: tranzakciohataron nem lehet
+      feldolgozas alatt allo (lezaratlan) query vagy rowset.
+  SQLite3 sqlsequence javitva: A bind parameterrel nem szabad
+      adatbazis objektum neveket helyettesiteni, mert a helyettesites
+      karakterliteralkent tortenik, vagyis idezojelbe kerul.
+  SQLite3 egyfelhasznalos, nincs 'for update'.
+  MySQL beallitja sql_mode='ANSI_QUOTES'-ot.
+  Postgres rowset:next-ben hibakezeles.
+  Postgres query:next-ben hibakezeles.
+
 2015.01.20 sql2.db2 interface library
 
 2015.01.08 sql2.mysql interface library

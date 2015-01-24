@@ -32,7 +32,10 @@ class sqlconnection(object)
     attrib  __transactionid__
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
-    attrib  __statementhandles__
+
+    attrib  __statementstoclose__
+    method  __addstatementtoclose__
+    method  __clearstatement__
 
     method  driver                  {||"sql2.sqlite3"}
     method  version
@@ -147,7 +150,7 @@ local flags
     this:__transactionid__:=0
     this:__isolationlevel__:=ISOL_READ_COMMITTED
     this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
-    this:__statementhandles__:={}
+    this:__statementstoclose__:=array(64)
     
     this:sqlexec("begin transaction")
 
@@ -242,7 +245,7 @@ static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.finalizeall(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("commit transaction")
     this:sqlexec("begin transaction")
     this:__transactionid__++
@@ -250,25 +253,46 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.finalizeall(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("rollback transaction")
     this:sqlexec("begin transaction")
     this:__transactionid__++
 
 
 ******************************************************************************
-static function sqlconnection.finalizeall(this)
-local n
-    for n:=1 to len(this:__statementhandles__)
-        _sqlite3_finalize(this:__statementhandles__[n])
+static function sqlconnection.__addstatementtoclose__(this,blk)
+local idx,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]==NIL )
+            this:__statementstoclose__[idx]:=blk
+            return idx
+        end
     next
+    err:=sqlerrorNew()
+    err:operation:="sqlconnection.__addstatementtoclose__"
+    err:description:="too many statements"
+    break(err)
 
-// Az elképzelés, hogy commit/rollback alkalmával minden statementet
-// automatikusan lezárunk -> nincs fetch across transaction.
-// Az sqlexec-ben belsőleg használt stmt-ke nem érdekesek.
-// A prepare-ből kapott stmt-t be kell tenni a listába.
-// Ha az alkalmazás azt lezárja, akkor ki kell venni a listából (többszörös lezárás SIGSEGV).
-// Ha az alkalmazás nem zárja le, akkor a tranzkció végén magától lezáródik.
+******************************************************************************
+static function sqlconnection.__clearstatement__(this,idx)
+    this:__statementstoclose__[idx]:=NIL
 
+
+******************************************************************************
+static function sqlconnection.close_pending_statements(this)
+local idx,n:=0,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]!=NIL )
+            eval(this:__statementstoclose__[idx])
+            this:__statementstoclose__[idx]:=NIL
+            n++
+        end
+    next
+    if( n>0 )
+        err:=sqlerrorNew()
+        err:operation:="sqlconnection.close_pending_statements"
+        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        break(err)
+    end
 
 ******************************************************************************

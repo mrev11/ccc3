@@ -52,6 +52,7 @@ class sqlquery(object)
     attrib  __cursor__
     attrib  __prefetched__
     attrib  __selectlist__
+    attrib  __closestmtidx__
 
     method  next
     method  close
@@ -91,6 +92,7 @@ local err
     end
     
     this:__prefetched__:=this:next //felszedi az oszlopadatokat
+    this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
 
     return this
 
@@ -131,6 +133,11 @@ static function sqlquery.close(this)
     if( this:__stmthandle__!=NIL )
         _sqlite3_finalize(this:__stmthandle__)
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-qu"
+        this:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
 
 ****************************************************************************

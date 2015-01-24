@@ -52,6 +52,7 @@ class rowset(object)
     attrib  __stmthandle__
     attrib  __next__
     attrib  __transactionid__
+    attrib  __closestmtidx__
     method  __select__
     method  next
     method  close
@@ -60,6 +61,7 @@ class rowset(object)
 static function rowset.initialize(this,tab) 
     this:__tableblk__:={||tab} //rekurzivitás ellen blockba!
     this:__transactionid__:=tab:connection:__transactionid__
+    this:__closestmtidx__:=tab:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     return this
 
 
@@ -182,6 +184,11 @@ static function rowset.close(this)
     if( this:__stmthandle__!=NIL )
         sql2.db2._db2_closestatement(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-rs"
+        this:__table__:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
 
 

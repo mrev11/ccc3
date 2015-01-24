@@ -21,28 +21,6 @@
 #include "inkey.ch"
 #include "sql.ch"
 
-***********************************************************************************************
-static function connect()
-local con
-local dbchoice:=memoread("DBCHOICE")::alltrim[1]
-
-    if( dbchoice=="O" )
-        con:=sql2.oracle.sqlconnectionNew()
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //session
-
-    elseif( dbchoice=="P" )
-        con:=sql2.postgres.sqlconnectionNew()
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //session
-
-    elseif( dbchoice=="L" )
-        con:=sql2.sqlite3.sqlconnectionNew()  // "db1:db1=konto"
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //hatástalan
-    end
-    
-    ? con:version
-
-    return con
-
 
 ***********************************************************************************************
 function main()
@@ -57,9 +35,9 @@ local con,tab,row,n
     tab:=proba.tableEntityNew(con)
     
     begin
-        tab:create
+        tab:drop
     end
-    tab:zap
+    tab:create
     
     for n:=0 to 9
         row:=tab:instance

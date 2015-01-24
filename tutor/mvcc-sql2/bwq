@@ -1,0 +1,16 @@
+#!/bin/bash
+#export SQLDEBUG=on
+
+bw-ini.exe    
+
+#export SQLDEBUG=on
+
+bw-revq.exe
+
+bw-revq.exe B  >log-bwb  2>&1  &
+bw-revq.exe W  >log-bww  2>&1  &
+
+
+sleep 2
+
+bw-revq.exe

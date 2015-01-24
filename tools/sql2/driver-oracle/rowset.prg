@@ -50,6 +50,7 @@ class rowset(object)
     attrib  __tableblk__
     attrib  __transactionid__
     attrib  __stmthandle__
+    attrib  __closestmtidx__
     method  __select__
     method  next
     method  close
@@ -59,6 +60,7 @@ static function rowset.initialize(this,tab)
     this:(object)initialize()
     this:__tableblk__:={||tab} //rekurzivitás ellen blockba!
     this:__transactionid__:=tab:connection:__transactionid__
+    this:__closestmtidx__:=tab:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     return this
 
 
@@ -178,6 +180,11 @@ static function rowset.close(this)
     if(this:__stmthandle__!=NIL)
         sql2.oracle._oci_freestatement(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-rs"
+        this:__table__:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
     return NIL
  

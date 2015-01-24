@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DB=D   #DB2
+
+. s

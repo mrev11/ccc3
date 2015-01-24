@@ -1,3 +1,20 @@
+2015.01.23
+  con:sqlcommit és con:sqlrollback automatikusan lezárnak minden 
+  függőben levő queryt és rowsetet, és ha volt mit lezárni, 
+  akkor kivételt dobnak. Eredmény: tranzakcióhatáron nem lehet
+  feldolgozás alatt álló (lezáratlan) query vagy rowset.
+  
+  SQLite3 sqlsequence javítva. A bind paraméterrel nem szabad
+  adatbázis objektum neveket helyettesíteni, mert a helyettesítés
+  karakterliterálként történik, vagyis idézőjelbe kerül.
+
+  SQLite3 egyfelhasználós, nincs 'for update'.
+  
+  MySQL beállítja sql_mode='ANSI_QUOTES'-ot.
+  
+  Postgres rowset:next-ben hibakezelés.
+  Postgres query:next-ben hibakezelés.
+
 2015.01.20
   sql2.db2 interfész
 

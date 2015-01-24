@@ -1,0 +1,29 @@
+#!/bin/bash
+#export SQLDEBUG=on
+m
+
+export MYSQL_CONNECT=:konto:konto:konto
+export DB2_CONNECT=@sample
+export ORACLE_CONNECT=konto@XE/konto
+export SQLITE3_CONNECT=`pwd`/konto.db:`pwd`/konto.db=konto
+
+export PGDATABASE=tesztkonto
+export PGUSER=konto
+export PGPASSWORD=konto
+
+## DB=P   #Postgres
+## DB=M   #MySQL
+## DB=D   #DB2
+## DB=O   #Oracle
+## DB=L   #SQLite3
+
+
+time   tabtest1.exe $DB 40
+#time   tabtest2.exe $DB >log$DB
+#time   tabtest3.exe $DB
+
+#time   tabtest4.exe $DB
+time   tabtest5.exe $DB; time   tabtest2.exe $DB
+#time   tabtest6.exe $DB
+
+time   querytest1.exe $DB

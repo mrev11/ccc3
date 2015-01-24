@@ -33,18 +33,19 @@
 
 
 ****************************************************************************************
-function main(commit:="yes")
+function main(db,isolev,commit:="yes")
 
 local id:="1"
 local con,tab,row
 local err,state
-
-local thr:=thread_create({||concurrent(.t.)})
+local thr
 
     commit:=(commit=="yes")
 
-    con:=connect()  
+    con:=connect(db,isolev)
     tab:=isol.tableEntityNew(con)
+    
+    thr:=thread_create({||concurrent(db,isolev,.t.)})
 
     ? "================================================================"
     query(tab) //tranzakció indul
@@ -79,7 +80,7 @@ local thr:=thread_create({||concurrent(.t.)})
         ? id+"-OK"
 
 
-    recover err <sqlserialerror>
+    recover err <sqlerror>
         con:sqlrollback
         ? id+"-FAILED in "+state, err:classname, "("+err:description+")"
     
@@ -95,14 +96,14 @@ local thr:=thread_create({||concurrent(.t.)})
     ?
 
 ****************************************************************************************
-function concurrent(commit:=.t.)
+function concurrent(db,isolev,commit:=.t.)
 
 
 local id:="2"
 local con,tab,row
 local err,state
 
-    con:=connect()  
+    con:=connect(db,isolev)
     tab:=isol.tableEntityNew(con)
 
 
@@ -134,7 +135,7 @@ local err,state
 
         ? id+"-OK"
 
-    recover err <sqlserialerror>
+    recover err <sqlerror>
         con:sqlrollback
         ? id+"-FAILED in "+state, err:classname, "("+err:description+")"
     

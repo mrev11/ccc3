@@ -18,14 +18,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "sql.ch"
+function main(db,isolev)
 
-function main()
+local con:=connect(db,isolev)
+local tab:=isol.tableEntityNew(con)
+local rowset,row
 
-local con:=connect()  
+    rowset:=tab:select_ordered
+    while( NIL!=(row:=rowset:next ) )
+        ? row:key, row:name, row:number
+    end
 
-    con:sqlexec("delete from isol")
-
-    con:sqlcommit
     con:sqldisconnect    
+    ?
+    
     

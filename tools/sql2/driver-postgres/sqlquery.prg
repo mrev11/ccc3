@@ -49,12 +49,13 @@ class sqlquery(object)
 
     attrib  connection
     attrib  __querytext__
-    attrib  __stmthandle__  //PQresult
+    attrib  __stmthandle__
     attrib  __cursor__
     attrib  __prefetched__
     attrib  __selectlist__
     attrib  __buffer__
     attrib  __indvar__
+    attrib  __closestmtidx__
 
     method  next
     method  close
@@ -93,6 +94,7 @@ local status,err
         break(err)
     else
         this:__prefetched__:=this:next //felszedi az oszlopadatokat
+        this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     end
 
     return this
@@ -105,6 +107,7 @@ local status,err
 static function sqlquery.next(this)
 
 local n,stmt,result,status,retcode:=.f.
+local err
 
     if( this:__stmthandle__==NIL )
         retcode:=.f.
@@ -119,7 +122,16 @@ local n,stmt,result,status,retcode:=.f.
         result:=sql2.postgres._pq_exec(this:connection:__conhandle__,stmt)
         status:=sql2.postgres._pq_resultstatus(result)
 
-        if( status==PGRES_TUPLES_OK )
+        if( status!=PGRES_TUPLES_OK )
+            //error, kivételt dob
+            err:=sql2.postgres.sqlerrorCreate(result)
+            err:operation:="sqlquery:next"
+            sql2.postgres._pq_clear(result)
+            this:close
+            retcode:=.f.
+            break(err)
+
+        else
 
             if( this:__selectlist__==NIL )
                 //első alkalommal feltöltjük az oszlopneveket
@@ -131,23 +143,22 @@ local n,stmt,result,status,retcode:=.f.
                 next
             end
 
-            if( sql2.postgres._pq_ntuples(result)==1 )
+            if( sql2.postgres._pq_ntuples(result)!=1 )
+                //nincs adat, az eredmény .f.
+                sql2.postgres._pq_clear(result)
+                this:close
+                retcode:=.f.
+            else
+                //van adat, az eredmény .t.
                 for n:=1 to len(this:__indvar__)
                     this:__buffer__[n]:=sql2.postgres._pq_getvalue0(result,1,n) //binary string
                     this:__indvar__[n]:=sql2.postgres._pq_getisnull(result,1,n)
                 next
+                sql2.postgres._pq_clear(result)
                 retcode:=.t.
-            else
-                this:close
-                retcode:=.f.
             end
-
-        else
-            this:close
-            retcode:=.f.
         end
 
-        sql2.postgres._pq_clear(result)
     end
 
     return retcode
@@ -157,6 +168,11 @@ static function sqlquery.close(this)
     if( this:__stmthandle__!=NIL )
         sql2.postgres._pq_clear(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-qu"
+        this:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
     return NIL
 

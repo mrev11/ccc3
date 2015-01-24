@@ -1,0 +1,31 @@
+#!/bin/bash
+m
+
+export MYSQL_CONNECT=:konto:konto:konto
+export DB2_CONNECT=@sample
+export ORACLE_CONNECT=konto@XE/konto
+export SQLITE3_CONNECT=`pwd`/konto.db:`pwd`/konto.db=konto
+
+export PGDATABASE=tesztkonto
+export PGUSER=konto
+export PGPASSWORD=konto
+
+## DB=P   #Postgres
+## DB=M   #MySQL
+## DB=D   #DB2
+## DB=O   #Oracle
+## DB=L   #SQLite3
+
+
+isol--init.exe  $DB >/dev/null
+#isol--list.exe  $DB
+
+#export SQLDEBUG=on
+
+#test-a.exe     $DB  SER
+#test-a1.exe    $DB  SER
+#test-b.exe     $DB  SER
+test-c.exe     $DB  SER
+#test-d.exe     $DB  SER  yes
+#test-e.exe     $DB  SER  yes
+

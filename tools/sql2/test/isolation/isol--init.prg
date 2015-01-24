@@ -18,19 +18,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function main()
+function main(db,isolev)
 
-local con:=connect()  
+local con:=connect(db,isolev)
 local tab:=isol.tableEntityNew(con)
 local row
 local err
 
     begin
-        tab:create
-    recover err <sqlerror>
-        //err:list
+        tab:drop
     end
-    
+    tab:create
+    //tab:zap    
+
+
     row:=tab:instance
 
     row:key:="1"
@@ -70,5 +71,6 @@ local err
     
     con:sqlcommit
     con:sqldisconnect    
+    ?
     
     

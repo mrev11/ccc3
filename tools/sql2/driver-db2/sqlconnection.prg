@@ -31,6 +31,9 @@ class sqlconnection(object)
     attrib  __transactionid__
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
+    attrib  __statementstoclose__
+    method  __addstatementtoclose__
+    method  __clearstatement__
     method  driver              {||"sql2.db2"}
     method  version
     method  duplicate
@@ -91,6 +94,7 @@ local usr,psw,dbs
     this:__transactionid__:=0
     this:__isolationlevel__:=ISOL_READ_COMMITTED
     this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__statementstoclose__:=array(64)
 
     return this
 
@@ -214,6 +218,7 @@ local previous_level
 
     elseif( numlevel==ISOL_SERIALIZABLE )
         txtlevel:="SERIALIZABLE"
+        //txtlevel:="REPEATABLE READ"
 
     else
         txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
@@ -227,6 +232,12 @@ local previous_level
         //a session-re
         stmt:="set isolation level "+txtlevel   //csak ez van
     end
+
+//ezek volnának, de nincs használható cs-nél erősebb
+//    stmt:="set current isolation level ur" //uncomitted read  
+//    stmt:="set current isolation level cs" //cursor stability   = ANSI read committed
+//    stmt:="set current isolation level rs" //read stability     = ANSI repeatable read
+//    stmt:="set current isolation level rr" //repeatable read    = ANSI serializable
 
     this:__conhandle__::sql2.db2._db2_execdirect("rollback")::sql2.db2._db2_closestatement
     this:sqlexec(stmt)
@@ -243,6 +254,7 @@ local previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("commit")
     this:__transactionid__++
 
@@ -258,6 +270,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
+    sqlconnection.close_pending_statements(this)
     this:sqlexec("rollback")
     this:__transactionid__++
 
@@ -269,6 +282,43 @@ static function sqlconnection.sqlrollback(this)
             this:sqlexec("set isolation level serializable")
         end
         this:__isolationlevel__:=this:__sessionisolationlevel__
+    end
+
+
+******************************************************************************
+static function sqlconnection.__addstatementtoclose__(this,blk)
+local idx,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]==NIL )
+            this:__statementstoclose__[idx]:=blk
+            return idx
+        end
+    next
+    err:=sqlerrorNew()
+    err:operation:="sqlconnection.__addstatementtoclose__"
+    err:description:="too many statements"
+    break(err)
+
+******************************************************************************
+static function sqlconnection.__clearstatement__(this,idx)
+    this:__statementstoclose__[idx]:=NIL
+
+
+******************************************************************************
+static function sqlconnection.close_pending_statements(this)
+local idx,n:=0,err
+    for idx:=1 to len(this:__statementstoclose__)
+        if( this:__statementstoclose__[idx]!=NIL )
+            eval(this:__statementstoclose__[idx])
+            this:__statementstoclose__[idx]:=NIL
+            n++
+        end
+    next
+    if( n>0 )
+        err:=sqlerrorNew()
+        err:operation:="sqlconnection.close_pending_statements"
+        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        break(err)
     end
 
 ******************************************************************************

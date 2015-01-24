@@ -48,7 +48,6 @@ namespace _nsp_sql2{
 namespace _nsp_db2{
 
 
-static SQLHANDLE global_henv; // global environment handle
 
 static struct{
     int       active;
@@ -63,7 +62,7 @@ static struct{
 } db2_statement[MAX_STATEMENT];
 MUTEX_CREATE(mutex_stm);
 
-
+MUTEX_CREATE(mutex_env);
 
 //----------------------------------------------------------------------------
 static void getdiag(SQLSMALLINT htype, SQLHANDLE hndl)
@@ -131,14 +130,6 @@ static int db2_init_handles()
     
     if( !initialized  )
     {
-        SQLRETURN rc=SQLAllocHandle(SQL_HANDLE_ENV,SQL_NULL_HANDLE,&global_henv);
-        if(rc!=SQL_SUCCESS)
-        {
-            pusherror();
-            dup(); string(CHRLIT("could not allocate environment handle"));_o_method_description.eval(2);pop(); 
-            _clp_break(1);pop();
-        }
-
         int i;
         for( i=0; i<MAX_CONNECTION; i++ )
         {
@@ -160,7 +151,25 @@ static int db2_init_handles()
 
 static int init=db2_init_handles();
 
+//----------------------------------------------------------------------------
+static SQLHANDLE db2_global_henv()
+{
+    static SQLHANDLE global_henv=0; // global environment handle
 
+    MUTEX_LOCK(mutex_env);
+    if(global_henv==0)
+    {
+        SQLRETURN rc=SQLAllocHandle(SQL_HANDLE_ENV,SQL_NULL_HANDLE,&global_henv);
+        if(rc!=SQL_SUCCESS)
+        {
+            pusherror();
+            dup(); string(CHRLIT("could not allocate environment handle"));_o_method_description.eval(2);pop(); 
+            _clp_break(1);pop();
+        }
+    }
+    MUTEX_UNLOCK(mutex_env);
+    return global_henv;
+}
 
 //----------------------------------------------------------------------------
 static int verify_conidx(int x)
@@ -241,7 +250,7 @@ static int get_connection_handle() // üres conidx, vagy error
         if( 0==db2_connection[i].active )
         {
             db2_connection[i].active=1;
-            SQLRETURN rc=SQLAllocHandle(SQL_HANDLE_DBC, global_henv, &db2_connection[i].conhnd);
+            SQLRETURN rc=SQLAllocHandle(SQL_HANDLE_DBC, db2_global_henv(), &db2_connection[i].conhnd);
             if( rc!=SQL_SUCCESS )
             {
                 pusherror();
@@ -618,7 +627,7 @@ void _clp__db2_setisolation(int argno) // conidx, level --> rc
     else
     {
         //level=SQL_TXN_REPEATABLE_READ;
-        level=SQL_TXN_SERIALIZABLE;
+        level=SQL_TXN_SERIALIZABLE;  //nincs különbség?
     }
 
     SQLRETURN rc=SQLSetConnectAttr(hdbc,SQL_ATTR_TXN_ISOLATION,(void*)level,SQL_NTS);

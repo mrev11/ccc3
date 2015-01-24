@@ -22,29 +22,6 @@
 #include "sql.ch"
 
 ***********************************************************************************************
-static function connect()
-local con
-local dbchoice:=memoread("DBCHOICE")::alltrim[1]
-
-    if( dbchoice=="O" )
-        con:=sql2.oracle.sqlconnectionNew()
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //session
-
-    elseif( dbchoice=="P" )
-        con:=sql2.postgres.sqlconnectionNew()
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //session
-
-    elseif( dbchoice=="L" )
-        con:=sql2.sqlite3.sqlconnectionNew()  // "db1:db1=konto"
-        con:sqlIsolationLevel(ISOL_SERIALIZABLE,.t.)  //hatástalan
-    end
-    
-    ? con:version
-
-    return con
-
-
-***********************************************************************************************
 static function getkey(key) //inkey wrapper
 static skey:=0
 local rkey
@@ -70,15 +47,13 @@ local key
     set date format "yyyy-mm-dd"
     
     con:=connect()
-    
-    
-    tab:=proba.tableEntityNew(con)
-    
-    begin
-        tab:create
-    end
 
-    tab:zap
+    tab:=proba.tableEntityNew(con)
+    begin
+        tab:drop
+    end
+    tab:create
+
     row:=tab:instance
     row:szamlaszam :='111111112222222233333333'
     row:devnem     :="HUF"

@@ -51,6 +51,7 @@ class sqlquery(object)
     attrib  __stmthandle__
     attrib  __selectlist__
     attrib  __buffer__
+    attrib  __closestmtidx__
 
     method  next
     method  close
@@ -105,6 +106,8 @@ local fldcnt,n
         for n:=1 to len(this:__selectlist__)
              this:__selectlist__[n]:=sql2.mysql._my_field_name(this:__stmthandle__,n-1)
         next
+
+        this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     end
     return this
 
@@ -129,6 +132,11 @@ static function sqlquery.close(this)
         sql2.mysql._my_free_result(this:__stmthandle__) 
         this:__stmthandle__:=NIL
         this:__buffer__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-qu"
+        this:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
 
 ****************************************************************************

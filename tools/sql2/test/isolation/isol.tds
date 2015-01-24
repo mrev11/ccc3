@@ -6,16 +6,16 @@ version: "1"
 
 table: konto.isol
 
-column: key       C8    nn
+column: key       C8    nn  x="key"         --mysql kulcsszó
 column: name      C8    nn
-column: number    N10   nn
+column: number    N10   nn  x="number"      --oracle kulcsszó
 
 
 primkey: key
 
 
 select: select_ordered
-    order(key)
+    order by key
 
 select: select_name
     where name=:1

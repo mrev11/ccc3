@@ -1,0 +1,88 @@
+
+Amikor ezt írom, nincs még eldöntve, hogy a
+
+    con:sqlrollback
+    con:sqlcommit
+
+lezárjanak-e automatikusan minden statement handle-t.
+Ha ez a lezárás bekerül az intérfészbe, akkor egységesen lehetetlenné válik a 
+tranzakcióhatáron átnyúló fetchelés mind az sqlquery-ben, mind a tableentity-ben.
+
+A jelenlegi helyzet: rowset:next, commit
+    rowset:next észreveszi, hogy a tranid változott, a rowset lezáródik.
+    Ha a next ciklusból kiugrunk, a handle lezáratlan maradhat (no more handle).
+
+A jelenlegi helyzet: rowset:next, rollback
+    Ugyanaz, mint rowset:next, commit-nál,
+    kivétel: SQLite3 nem enged rollback-et, ha lezáratlan statement van
+    (cannot rollback transaction - SQL statements in progress).
+
+
+A query:next nem figyeli a tranzakcióid-ket, ezért az sql2-es programok
+a fetch over commit/rollback-et illetően úgy működnek, ahogy az alap sql.
+
+A jelenlegi helyzet: query:next, commit
+    db2     átmegy
+    sqlite  átmegy
+    mysql   átmegy
+    oracle  átmegy
+    pgres   NIL-t ad (nem záródik le)
+
+A jelenlegi helyzet: query:next, rollback
+    db2     NIL-t ad (nem záródik le)
+    sqlite  elszáll (cannot rollback transaction - SQL statements in progress)
+    mysql   átmegy
+    oracle  átmegy
+    pgres   NIL-t ad (nem záródik le)
+
+A Postgres esetében különleges, hogy a NIL-t adó query:next belsejében levő 
+fetch hibás lesz, ezért a Postgres belsőleg csinál egy rollbacket (amit nem 
+követ az interfész által máshol automatikusan kiadott start transaction), és így 
+a további utasítások tranzakción kívülre kerülnek, azaz mind hibásak lesznek,
+tehát a következö sql utasításon el fog szállni a program.
+
+A Postgres a query-t declare cursor-ral csinálja. Ha síma select-tel csinálná, 
+akkor ugyanúgy működne, mint az Oracle és MySQL. A declare cursoros query 
+is át tudna menni a commiton a "with hold" klózzal. A declare cursoros query 
+azonban semmiképp sem megy át a rollbacken.
+
+
+Ha con:sqlrollback és con:sqlcommit automatikusan lezár minden életben levő
+(az adott con-hoz tartozó) utasítást, akkor kiegyenlítődik a motorok közötti
+különbség. Nem lesz lehetőség a tranzakcióhatárokon átnyúló fetchelésre
+függetlenül attól, hogy commit vagy rollback zárta-e le a tranzakciót.
+Nem gyűlnek fel halott statement handle-k. Ezzel szemben bizonyos programokhoz
+több connection lesz szükséges (mint a tabtest5 programban).
+
+
+Az adatbáziskezelők arra törekednek, hogy a funkcionalitásukat bővítsék,
+pl. lehetővé tegyék a fetch over commit-ot, ebben különféle szinteken állnak.
+Az sql2 interfész ezzel szemben arra törekszik, hogy az interfész egyformán
+működjön minden motorral. Ezért a különféle motorok tudásának a közös
+részét szabad felhasználni, azaz teljesen meg kell tiltani a tranzakció
+határon átnyúló fetchet. 
+
+A rowsetekben már kezdetektől meg volt tiltva a határon átnyúló fetch, 
+a queryben azonban nem. Ezenkívül vannak furcsa kivételek (az SQLite 
+elszállása a rollbacken, a Postgres tranzakción kívülre kerülése ), 
+amik összevisszaságot okoznak.
+
+
+Három lehetőség van:
+
+1) Beépítem a con:sqlrollback-be és con:sqlcommitba-ba, hogy automatikusan
+zárják le a rowseteket és queryket. Ezzel rend lesz. Előnye (és egyúttal
+hátránya), hogy lezserebb programozást tesz lehetővé, pl. egy rollback
+mindig tiszta lapot eredményez.
+
+2) Beépítem a con:sqlrollback-be és con:sqlcommitba-ba, hogy ellenőrizzék,
+van-e lezáratlan statement handle, és dobjanak kivételt, ha van. Ez az,
+amit jelenleg az SQLite csinál a rollback-kel. Ettől rend lesz. Precíz 
+programozást igényel, kínosan ügyelni kell, hogy a tranzakcióhatárokon
+minden le legyen zárva.
+
+3) Hagyunk mindent, ahogy van. Akkor csak azok a programok lesznek
+az sql motortól függetlenek, amiket úgy írunk, ahogy a 2) verzió megköveteli. 
+Más esetben lehet, hogy az program az egyik motorral működik, 
+de a másikkal nem.
+

@@ -30,7 +30,7 @@
 //_pq_untrace(conn)                ->  NIL
 //
 //_pq_exec(conn,"query")           ->  stmidx/NIL
-//_pq_clear(conn)                  ->  NIL
+//_pq_clear(result)                ->  NIL
 //_pq_resultstatus(result)         ->  code
 //_pq_resulterrormessage(result)   ->  "errmsg"
 //_pq_resulterrorfield(result,fld) ->  "field"

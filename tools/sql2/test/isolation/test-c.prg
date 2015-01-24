@@ -32,16 +32,15 @@
 
 
 ****************************************************************************************
-function main()
+function main(db,isolev)
 
-local con1:=connect()  
+local con1:=connect(db,isolev)
 local tab1:=isol.tableEntityNew(con1)
 
-local con2:=connect()  
+local con2:=connect(db,isolev)
 local tab2:=isol.tableEntityNew(con2)
 
 local row1,row2
-
 
     query(tab1)
     
@@ -64,6 +63,7 @@ local row1,row2
     con2:sqldisconnect    
     
     WAIT
+    ?
 
 ****************************************************************************************
 function query(tab)

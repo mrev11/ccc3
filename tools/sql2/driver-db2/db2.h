@@ -183,15 +183,18 @@ typedef  int            SQLHSTMT;
 
 
 
+extern 
 SQLRETURN   SQLAllocHandle   (SQLSMALLINT       HandleType,
                               SQLHANDLE         InputHandle,
                               SQLHANDLE        *OutputHandlePtr);
 
 
+extern 
 SQLRETURN   SQLFreeHandle    (SQLSMALLINT       HandleType,
                               SQLHANDLE         Handle);
 
 
+extern 
 SQLRETURN   SQLConnect       (SQLHDBC           ConnectionHandle,  /* hdbc */
                               SQLCHAR          *ServerName,        /* szDSN */
                               SQLSMALLINT       NameLength1,       /* cbDSN */
@@ -201,9 +204,11 @@ SQLRETURN   SQLConnect       (SQLHDBC           ConnectionHandle,  /* hdbc */
                               SQLSMALLINT       NameLength3);      /* cbAuthStr */
 
 
+extern 
 SQLRETURN   SQLDisconnect    (SQLHDBC           ConnectionHandle); /* hdbc */
 
 
+extern 
 SQLRETURN   SQLGetDiagRec    (SQLSMALLINT       HandleType,        /* fHandleType */
                               SQLHANDLE         Handle,            /* hHandle */
                               SQLSMALLINT       RecNumber,         /* iRecNumber */
@@ -214,23 +219,28 @@ SQLRETURN   SQLGetDiagRec    (SQLSMALLINT       HandleType,        /* fHandleTyp
                               SQLSMALLINT      *TextLengthPtr);    /* *pcbErrorMsg */
 
 
+extern 
 SQLRETURN   SQLFreeStmt      (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLUSMALLINT      Option);           /* fOption */
 
 
+extern 
 SQLRETURN   SQLExecDirect    (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLCHAR          *StatementText,     /* szSqlStr */
                               SQLINTEGER        TextLength);       /* cbSqlStr */
 
 
+extern 
 SQLRETURN   SQLRowCount      (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLINTEGER       *RowCountPtr);      /* pcrow */
 
 
+extern 
 SQLRETURN   SQLNumResultCols (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLSMALLINT      *ColumnCountPtr);   /* pccol */
 
 
+extern 
 SQLRETURN   SQLColAttribute  (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLSMALLINT       ColumnNumber,      /* icol */
                               SQLSMALLINT       FieldIdentifier,   /* fDescType */
@@ -240,6 +250,7 @@ SQLRETURN   SQLColAttribute  (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLPOINTER        NumericAttrPtr);   /* pfDesc */
 
 
+extern 
 SQLRETURN   SQLDescribeCol   (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLUSMALLINT      ColumnNumber,      /* icol */
                               SQLCHAR          *ColumnName,        /* szColName */
@@ -251,9 +262,11 @@ SQLRETURN   SQLDescribeCol   (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLSMALLINT      *NullablePtr);      /* pfNullable */
 
 
+extern 
 SQLRETURN   SQLFetch         (SQLHSTMT          StatementHandle);  /* hstmt */
 
 
+extern 
 SQLRETURN   SQLGetData       (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLUSMALLINT      ColumnNumber,      /* icol */
                               SQLSMALLINT       TargetType,        /* fCType */
@@ -262,10 +275,12 @@ SQLRETURN   SQLGetData       (SQLHSTMT          StatementHandle,   /* hstmt */
                               SQLINTEGER       *StrLen_or_IndPtr); /* pcbValue */
 
 
+extern 
 SQLRETURN   SQLEndTran       (SQLSMALLINT       HandleType,
                               SQLHANDLE         Handle,
                               SQLSMALLINT       CompletionType);
 
+extern 
 SQLRETURN   SQLSetConnectAttr(SQLHDBC           ConnectionHandle,
                               SQLINTEGER        Attribute,
                               SQLPOINTER        ValuePtr,

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+touch konto.db
+
+DB=L   #SQLite3
+
+. s

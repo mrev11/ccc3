@@ -52,6 +52,7 @@ class rowset(object)
     attrib  __tableblk__
     attrib  __stmthandle__
     attrib  __transactionid__
+    attrib  __closestmtidx__
     method  __select__
     method  next
     method  close
@@ -61,6 +62,7 @@ static function rowset.initialize(this,tab)
     this:(object)initialize
     this:__tableblk__:={||tab} //rekurzivitás ellen blockba!
     this:__transactionid__:=tab:connection:__transactionid__
+    this:__closestmtidx__:=tab:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     return this
 
 
@@ -90,16 +92,15 @@ local stmt,dst,err
     if( wait==NIL )
         //no lock
     elseif( wait==0 )
-        stmt+=" for update " //nem lehet timeout-ot megadni
+        //stmt+=" for update " //nem lehet timeout-ot megadni
     elseif( wait==-1 )
         //Mint az előbbi eset, de korlátlan ideig vár.
         //stmt+=" for update wait "
-        stmt+=" for update " //nem lehet timeout-ot megadni
     else
         //Mint az előbbi eset, de a megadott másodpercig vár.
         //stmt+=" for update wait "+alltrim(str(wait))
-        stmt+=" for update " //nem lehet timeout-ot megadni
     end
+    //SQLite egyfelhasználós, nincs 'for update'
     
     //stmt:=sql2.sqlite3.sqlidcase(stmt,.f.)  //megszűnt: 2011.07.20
     
@@ -178,6 +179,11 @@ static function rowset.close(this)
     if( this:__stmthandle__!=NIL )
         _sqlite3_finalize(this:__stmthandle__)
         this:__stmthandle__:=NIL
+    end
+    if( this:__closestmtidx__!=NIL )
+        //? "CLEAR-rs"
+        this:__table__:connection:__clearstatement__(this:__closestmtidx__)
+        this:__closestmtidx__:=NIL
     end
 
 

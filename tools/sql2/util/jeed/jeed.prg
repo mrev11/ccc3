@@ -102,9 +102,9 @@ local con,arg:=argv(),n,x,ora,pgr,sl3,mys,ser
     end
     
     if( ser==.t. )
-        con:sqlisolationlevel(ISOL_SERIALIZABLE,.t.)
+        con:sqlisolationlevel(ISOL_SER,.t.)
     else
-        //default: ISOL_READ_COMMITTED
+        //default: ISOL_COM
     end
 
     return  con

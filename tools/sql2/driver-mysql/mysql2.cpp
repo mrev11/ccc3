@@ -429,7 +429,7 @@ void _clp__my_fetch_row(int argno) // stmidx --> {fld1,fld2,...}
 }    
 
 //--------------------------------------------------------------------------
-void _clp__my_escapestring(int argno) //az "'" és "\" karaktereket duplázza
+void _clp__my_escapestring(int argno) //az "'" (és  "\") karaktereket duplázza
 {
     CCC_PROLOG("_my_escapestring",1);
     char *from=_parcb(1);
@@ -440,7 +440,7 @@ void _clp__my_escapestring(int argno) //az "'" és "\" karaktereket duplázza
     for(int i=0; i<fleng; i++)
     {
         int c=from[i];
-        if( c=='\\' || c=='\'')
+        if( /*c=='\\' ||*/ c=='\'')
         {
             to[tleng++]=c;
         }
@@ -450,6 +450,11 @@ void _clp__my_escapestring(int argno) //az "'" és "\" karaktereket duplázza
     _retcblen(to,tleng);
     CCC_EPILOG();
 }
+
+//Megjegyzés.
+//  az interfész beállítja:
+//      set session sql_mode='no_backslash_escapes'
+//  ezért a '\'-t nem kell duplázni
 
 //--------------------------------------------------------------------------
 

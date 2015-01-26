@@ -158,10 +158,23 @@ function quotedname(x)
 ******************************************************************************
 function sqlerror_create(stmidx)
 local err
-    err:=sqlerrorNew()
-    sql2.db2._db2_getdiagrec(err,stmidx) //description/subcode/subsystem/severity
+local diag:=sql2.db2._db2_getdiagarr(stmidx) //-> {subcode,desc}
+
+    if( len(diag)!=2 )
+        err:=sqlerrorNew()
+        diag:={-999,""}
+    elseif(diag[1]==-911)
+        err:=sqldeadlockerrorNew()
+    else
+        err:=sqlerrorNew()
+    end
+    err:subcode:=diag[1]
+    err:description:=diag[2]
+    err:subsystem:="SQL.DB2"
+
     err:description::=strtran(chr(10),";")
     err:description::=strtran(chr(13),"")
+
     return err
 
 

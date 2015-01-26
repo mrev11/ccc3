@@ -89,18 +89,22 @@ local stmt,dst,n,c,t,deftyp,err
     
     if( wait==NIL )
         //no lock
-    elseif( wait==0 )
-        //Az eredménytábla sorait lockolja,
-        //a lock független a fetcheléstől (előre minden sort lockol),
-        //a lockokat csak a commit/rollback szünteti meg, rowset:close nem,
-        //ha a lock nem sikerül, kivételt dob.
-        stmt+=" for update nowait "
-    elseif( wait==-1 )
-        //Mint az előbbi eset, de korlátlan ideig vár .
-        stmt+=" for update "
+
+//    elseif( wait==0 )
+//        //Az eredménytábla sorait lockolja,
+//        //a lock független a fetcheléstől (előre minden sort lockol),
+//        //a lockokat csak a commit/rollback szünteti meg, rowset:close nem,
+//        //ha a lock nem sikerül, kivételt dob.
+//        stmt+=" for update nowait "
+//    elseif( wait==-1 )
+//        //Mint az előbbi eset, de korlátlan ideig vár .
+//        stmt+=" for update "
+//    else
+//        //Mint az előbbi eset, de a megadott másodpercig vár.
+//        stmt+=" for update wait "+alltrim(str(wait))
+
     else
-        //Mint az előbbi eset, de a megadott másodpercig vár.
-        stmt+=" for update wait "+alltrim(str(wait))
+        stmt+=lock_clause(wait)
     end
 
     //stmt:=sql2.oracle.sqlidcase(stmt,.t.) //megszűnt: 2011.07.20
@@ -138,6 +142,56 @@ local stmt,dst,n,c,t,deftyp,err
     //Ha lock volt előírva, és az nem sikerült,
     //akkor kivételt dobunk: sqllockerror, sqldeadlockerror.
 
+
+******************************************************************************
+static function lock_clause(wait)
+
+//korábban
+// NOLOCK                  NIL
+// LOCK_NOWAIT             0
+// LOCK_SWAIT              4
+// LOCK_MWAIT              8
+// LOCK_LWAIT              60
+// LOCK_WAIT               -1
+//
+//újabb
+// "x"      exclusive lock, wait forever
+// "x0"     exclusive lock, nowait
+// "x10"    exclusive lock, wait 10 sec
+// "s"      shared lock, wait forever
+
+local clause,time
+
+    if( wait==NIL  )
+        clause:=""
+
+    elseif( valtype(wait)=="N" )
+        if( wait==0 )
+            clause:=" for update nowait"
+        elseif( wait==-1 )
+            clause:=" for update"
+        else
+            clause:=" for update wait "+alltrim(str(wait))
+        end
+
+    else//if( valtype(wait)=="C" )
+        if( wait[1]$"sx" ) //nincs shared lock
+            clause:=" for update"
+        end
+
+        time:=wait[2..]
+        if( empty(time) )
+            //ok
+        else
+            if( time=="0" )
+                clause+=" nowait"
+            else
+                clause+=" wait "+time
+            end
+        end
+    end
+    
+    return clause
 
 ******************************************************************************
 static function rowset.next(this) //rowentity objektumgyártó

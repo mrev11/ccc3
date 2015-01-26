@@ -35,7 +35,7 @@
     helyesen az egyenlegnek 1100-zal kell nőnie.
     
     Itt nem explicit lockolással történik a konkurrencia kezelés,
-    hanem beállítjuk az ISOL_SERIALIZABLE tranzakció izolációt.
+    hanem beállítjuk az ISOL_SER tranzakció izolációt.
     Ekkor, ha a szerver nem tudja automatikus lockolásokkal 
     sorosítani a tranzakciót, runtime error keletkezik,
     rollback-elünk, és ismétlünk.
@@ -53,7 +53,7 @@ local flag:=.t. //session=.t., transaction=.f.
     set date format "yyyy-mm-dd"
  
     con:=sqlConnect()
-    con:sqlIsolationLevel(ISOL_SERIALIZABLE,flag) 
+    con:sqlIsolationLevel(ISOL_SER,flag) 
 
     tbl:=testdata.a.tableEntityNew(con)
 

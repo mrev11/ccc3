@@ -60,8 +60,8 @@ static function sqlconnection.initialize(this,coninfo)
     //sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"set autocommit to off"))
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__:=0
-    this:__isolationlevel__:=ISOL_READ_COMMITTED
-    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__isolationlevel__:=ISOL_COM
+    this:__sessionisolationlevel__:=ISOL_COM
     this:__statementstoclose__:=array(64)
 
 #ifdef EMLEKEZTETO  //a Postgres autocommitról
@@ -150,8 +150,16 @@ local err
 ******************************************************************************
 static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
-local stmt,txtlevel
+//flag==.t. az egész sessionre
+//flag==.f. egy tranzakcióra
+
+local stmt,txtlevel:=""
 local previous_level
+
+    if( numlevel==ISOL_READ_COMMITTED )
+        //compatibility
+        numlevel:=ISOL_COM
+    end
 
     if( flag )
         previous_level:=this:__sessionisolationlevel__
@@ -162,34 +170,43 @@ local previous_level
     if( numlevel==NIL )
         //csak lekérdezés
         return previous_level
-
-    elseif( numlevel==ISOL_READ_COMMITTED )
-        txtlevel:="READ COMMITTED"
-
-    elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"
-        //txtlevel:="REPEATABLE READ"  //ez is elég jó
-
-    else
-        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
+
+    if( 0!=numand(numlevel,ISOL_SER) )
+        txtlevel+=", isolation level SERIALIZABLE"
+    end
+    if( 0!=numand(numlevel,ISOL_REP) )
+        txtlevel+=", isolation level REPEATABLE READ"
+    end
+    if( 0!=numand(numlevel,ISOL_COM) )
+        txtlevel+=", isolation level READ COMMITTED"
+    end
+    if( 0!=numand(numlevel,ISOL_RO) )
+        txtlevel+=", READ ONLY"
+    end
+    if( 0!=numand(numlevel,ISOL_RW) )
+        txtlevel+=", READ WRITE"
+    end
+    txtlevel::=substr(2) //kezdő "," levéve
     
     
-    if( !flag )
-        //egy tranzakcióra
-        stmt:="set transaction isolation level "+txtlevel
-
-        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"rollback"))
-        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
-        this:sqlexec(stmt) // ennek közvetlenül a begin után kell lennie
-
-    else
+    if( flag )
         //a session-re
-        stmt:="set session characteristics as transaction isolation level "+txtlevel
+        stmt:="set session characteristics as transaction "+txtlevel
 
+        sqlconnection.close_pending_statements(this,"set isolation")
         sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"rollback"))
         this:sqlexec(stmt) // ennek rollback és begin között kell lennie 
         sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
+
+    else
+        //egy tranzakcióra
+        stmt:="set transaction "+txtlevel
+
+        sqlconnection.close_pending_statements(this,"set isolation")
+        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"rollback"))
+        sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
+        this:sqlexec(stmt) // ennek közvetlenül a begin után kell lennie
     end
  
     this:__transactionid__++
@@ -201,9 +218,10 @@ local previous_level
 
     return previous_level
 
+
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"commit transaction")
     this:sqlexec("commit")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
@@ -212,7 +230,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"rollback transaction")
     this:sqlexec("rollback")
     sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__conhandle__,"begin transaction"))
     this:__transactionid__++
@@ -248,7 +266,7 @@ static function sqlconnection.__clearstatement__(this,idx)
 
 
 ******************************************************************************
-static function sqlconnection.close_pending_statements(this)
+static function sqlconnection.close_pending_statements(this,txt)
 local idx,n:=0,err
     for idx:=1 to len(this:__statementstoclose__)
         if( this:__statementstoclose__[idx]!=NIL )
@@ -260,7 +278,7 @@ local idx,n:=0,err
     if( n>0 )
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
-        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
         break(err)
     end
 

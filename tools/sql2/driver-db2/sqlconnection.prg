@@ -89,11 +89,11 @@ local usr,psw,dbs
     this:__conhandle__:=sql2.db2._db2_connect(dbs,usr,psw)
 
     sql2.db2._db2_setautocommit(this:__conhandle__,.f.)
-    sql2.db2._db2_setisolation(this:__conhandle__,ISOL_READ_COMMITTED)
+    sql2.db2._db2_setisolation(this:__conhandle__,ISOL_COM)
 
     this:__transactionid__:=0
-    this:__isolationlevel__:=ISOL_READ_COMMITTED
-    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__isolationlevel__:=ISOL_COM
+    this:__sessionisolationlevel__:=ISOL_COM
     this:__statementstoclose__:=array(64)
 
     return this
@@ -200,8 +200,16 @@ local err
 ******************************************************************************
 static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
-local stmt,txtlevel
+//flag==.t. az egész sessionre
+//flag==.f. egy tranzakcióra
+
+local stmt,txtlevel:=""
 local previous_level
+
+    if( numlevel==ISOL_READ_COMMITTED )
+        //compatibility
+        numlevel:=ISOL_COM
+    end
 
     if( flag )
         previous_level:=this:__sessionisolationlevel__
@@ -212,38 +220,45 @@ local previous_level
     if( numlevel==NIL )
         //csak lekérdezés
         return previous_level
-
-    elseif( numlevel==ISOL_READ_COMMITTED )
-        txtlevel:="READ COMMITTED"
-
-    elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"
-        //txtlevel:="REPEATABLE READ"
-
-    else
-        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
-    end
-    
-    
-    if( !flag )
-        //egy tranzakcióra
-        stmt:="set isolation level "+txtlevel   //csak ez van
-    else
-        //a session-re
-        stmt:="set isolation level "+txtlevel   //csak ez van
     end
 
-//ezek volnának, de nincs használható cs-nél erősebb
-//    stmt:="set current isolation level ur" //uncomitted read  
-//    stmt:="set current isolation level cs" //cursor stability   = ANSI read committed
-//    stmt:="set current isolation level rs" //read stability     = ANSI repeatable read
-//    stmt:="set current isolation level rr" //repeatable read    = ANSI serializable
+    if( 0!=numand(numlevel,ISOL_SER) )
+        txtlevel+=", isolation level SERIALIZABLE"
+    end
+    if( 0!=numand(numlevel,ISOL_REP) )
+        txtlevel+=", isolation level SERIALIZABLE"
+    end
+    if( 0!=numand(numlevel,ISOL_COM) )
+        txtlevel+=", isolation level READ COMMITTED"
+    end
+    if( 0!=numand(numlevel,ISOL_RO) )
+        //txtlevel+=", READ ONLY"   
+    end
+    if( 0!=numand(numlevel,ISOL_RW) )
+        //txtlevel+=", READ WRITE"
+    end
+    txtlevel::=substr(2) //kezdő "," levéve
+  
+// ezek a szintek volnának:
+//
+//  stmt:="set current isolation level ur" //uncomitted read  
+//  stmt:="set current isolation level cs" //cursor stability   = ANSI read committed
+//  stmt:="set current isolation level rs" //read stability     = ANSI repeatable read
+//  stmt:="set current isolation level rr" //repeatable read    = ANSI serializable
+//
+// nincs használható, cs-nél erősebb
+// nincs megkülönböztetett session és tranasction level
+// a 'current' szó opcionális, nincs megkülönböztető jelentése
+// nincs semmilyen összefüggésben a tranzakcióhatárokkal
+// az érték lekérdezhető: con:sqlqueryNew("values current isolation")
 
-    this:__conhandle__::sql2.db2._db2_execdirect("rollback")::sql2.db2._db2_closestatement
-    this:sqlexec(stmt)
-    this:__conhandle__::sql2.db2._db2_execdirect("rollback")::sql2.db2._db2_closestatement
-
+    sqlconnection.close_pending_statements(this,"set isolation")
+    this:sqlexec("rollback")
     this:__transactionid__++
+    
+    if( !empty(txtlevel) )
+        this:sqlexec("set"+txtlevel)
+    end
 
     this:__isolationlevel__:=numlevel
     if( flag )
@@ -254,15 +269,15 @@ local previous_level
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"commit transaction")
     this:sqlexec("commit")
     this:__transactionid__++
 
     if( this:__isolationlevel__!=this:__sessionisolationlevel__ )
         //sql2.db2._db2_setisolation(this:__conhandle__,this:__sessionisolationlevel__)
-        if( this:__sessionisolationlevel__==ISOL_READ_COMMITTED )
+        if( this:__sessionisolationlevel__==ISOL_COM )
             this:sqlexec("set isolation level read committed")
-        elseif( this:__sessionisolationlevel__==ISOL_SERIALIZABLE ) 
+        elseif( this:__sessionisolationlevel__==ISOL_SER ) 
             this:sqlexec("set isolation level serializable")
         end
         this:__isolationlevel__:=this:__sessionisolationlevel__
@@ -270,15 +285,15 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"rollback transaction")
     this:sqlexec("rollback")
     this:__transactionid__++
 
     if( this:__isolationlevel__!=this:__sessionisolationlevel__ )
         //sql2.db2._db2_setisolation(this:__conhandle__,this:__sessionisolationlevel__)
-        if( this:__sessionisolationlevel__==ISOL_READ_COMMITTED )
+        if( this:__sessionisolationlevel__==ISOL_COM )
             this:sqlexec("set isolation level read committed")
-        elseif( this:__sessionisolationlevel__==ISOL_SERIALIZABLE ) 
+        elseif( this:__sessionisolationlevel__==ISOL_SER ) 
             this:sqlexec("set isolation level serializable")
         end
         this:__isolationlevel__:=this:__sessionisolationlevel__
@@ -305,7 +320,7 @@ static function sqlconnection.__clearstatement__(this,idx)
 
 
 ******************************************************************************
-static function sqlconnection.close_pending_statements(this)
+static function sqlconnection.close_pending_statements(this,txt)
 local idx,n:=0,err
     for idx:=1 to len(this:__statementstoclose__)
         if( this:__statementstoclose__[idx]!=NIL )
@@ -317,7 +332,7 @@ local idx,n:=0,err
     if( n>0 )
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
-        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
         break(err)
     end
 

@@ -97,6 +97,34 @@ static void getdiag(SQLSMALLINT htype, SQLHANDLE hndl)
     }
 }
 
+static void getdiagarr(SQLSMALLINT htype, SQLHANDLE hndl)
+{
+    SQLCHAR sqlstate[SQL_SQLSTATE_SIZE + 1];
+    SQLINTEGER sqlcode=0;
+    SQLCHAR message[SQL_MAX_MESSAGE_LENGTH + 1];
+    SQLSMALLINT length;
+
+    if( SQLGetDiagRec(   htype,
+                         hndl,
+                         1,
+                         sqlstate,
+                         &sqlcode,
+                         message,
+                         SQL_MAX_MESSAGE_LENGTH + 1,
+                         &length) == SQL_SUCCESS )
+                         
+    {
+        number(sqlcode);                    //sqlcode/subcode
+
+        stringnb("<");
+        stringnb((char*)sqlstate);add();
+        stringnb(">");add();
+        stringnb((char*)message);add();     //sqlstate/description
+        
+        array(2);
+    }
+}
+
 static void pusherror()
 //
 //  stack:  --- errobj
@@ -390,6 +418,20 @@ void _clp__db2_getdiagrec(int argno) // errobj,stmidx --> errobj
     CCC_EPILOG();
 }    
 
+
+//--------------------------------------------------------------------------
+void _clp__db2_getdiagarr(int argno) // stmidx --> {subcode,description}
+{
+    CCC_PROLOG("_db2_getdiagarr",1);
+    int stmidx=verify_stmidx(_parni(1));
+    SQLHANDLE hstm=db2_statement[stmidx].stmhnd;
+    
+    getdiagarr(SQL_HANDLE_STMT,hstm);
+    _rettop();
+    
+    CCC_EPILOG();
+}    
+
 //--------------------------------------------------------------------------
 void _clp__db2_fetch(int argno) // stmidx --> retcode
 {
@@ -642,7 +684,7 @@ void _clp__db2_setisolation(int argno) // conidx, level --> rc
 }    
 
 //--------------------------------------------------------------------------
-void _clp__db2_escapestring(int argno) //az "'" és "\" karaktereket duplázza
+void _clp__db2_escapestring(int argno) // az "'" karaktereket duplázza
 {
     CCC_PROLOG("_db2_escapestring",1);
     char *from=_parcb(1);
@@ -653,7 +695,7 @@ void _clp__db2_escapestring(int argno) //az "'" és "\" karaktereket duplázza
     for(int i=0; i<fleng; i++)
     {
         int c=from[i];
-        if( c=='\\' || c=='\'')
+        if( c=='\'')
         {
             to[tleng++]=c;
         }

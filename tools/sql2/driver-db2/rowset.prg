@@ -89,24 +89,10 @@ local fldcnt
         stmt+=" order by "+orderbyclause
     end
     
-    if( wait==NIL )
+    if( wait==NIL  )
         //no lock
-
-    elseif( wait==0 )
-        //Az eredménytábla sorait lockolja,
-        //a lock független a fetcheléstől (előre minden sort lockol),
-        //a lockokat csak a commit/rollback szünteti meg, rowset:close nem,
-        //ha a lock nem sikerül, kivételt dob.
-        //stmt+=" for update nowait "
-        stmt+=" for update " //nem lehet timeout-ot megadni
-    elseif( wait==-1 )
-        //Mint az előbbi eset, de korlátlan ideig vár .
-        //stmt+=" for update wait "
-        stmt+=" for update " //nem lehet timeout-ot megadni
     else
-        //Mint az előbbi eset, de a megadott másodpercig vár.
-        //stmt+=" for update wait "+alltrim(str(wait))
-        stmt+=" for update " //nem lehet timeout-ot megadni
+        stmt+=lock_clause(wait)
     end
     
     //stmt:=sql2.db2.sqlidcase(stmt,.f.)  //megszűnt: 2011.07.20
@@ -123,7 +109,7 @@ local fldcnt
         sql2.db2._db2_closestatement(this:__stmthandle__)
         this:__stmthandle__:=NIL
         //az itteni rollback nincs benne az sqldebug listában
-        sql2.db2._db2_endtran(this:__conhandle__,SQL_ROLLBACK)
+        sql2.db2._db2_endtran(this:__table__:connection:__conhandle__,SQL_ROLLBACK)
         this:__transactionid__++
         break(err)
     end
@@ -135,9 +121,44 @@ local fldcnt
      
 
 ******************************************************************************
+static function lock_clause(wait)
+
+//korábban
+// NOLOCK                  NIL
+// LOCK_NOWAIT             0
+// LOCK_SWAIT              4
+// LOCK_MWAIT              8
+// LOCK_LWAIT              60
+// LOCK_WAIT               -1
+//
+//újabb
+// "x"      exclusive lock, wait forever
+// "x0"     exclusive lock, nowait
+// "x10"    exclusive lock, wait 10 sec
+// "s"      shared lock, wait forever
+
+local clause
+
+    if( wait==NIL  )
+        clause:=""
+
+    elseif( valtype(wait)=="N" )
+        clause:=" with rr use and keep exclusive locks"
+
+    else//if( valtype(wait)=="C" )
+        if( wait[1]$"x" )
+            clause:=" with rr use and keep exclusive locks"
+        elseif( wait[1]$"s" )
+            clause:=" with rr use and keep share locks"
+        end
+    end
+
+    return clause
+
+******************************************************************************
 static function rowset.next(this) //rowentity objektumgyártó
 
-local rowentity,retcode
+local rowentity,retcode,err
 
     if( this:__stmthandle__==NIL )
         //az eredmény NIL
@@ -148,9 +169,18 @@ local rowentity,retcode
         this:close
 
     elseif( SQL_SUCCESS!=(retcode:=sql2.db2._db2_fetch(this:__stmthandle__)) )
-        //az eredmény NIL
-        this:close
 
+        //elfogyott az adat vagy deadlock
+        //az eredmény NIL
+
+        if( retcode==SQL_NO_DATA )
+            this:close 
+        else
+            err:=sql2.db2.sqlerror_create(this:__stmthandle__)
+            err:operation:="rowset:next"
+            this:close
+            break(err)
+        end
     else
         rowentity:=mkrow(this)
     end

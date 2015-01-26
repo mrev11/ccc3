@@ -137,21 +137,24 @@ local stmt,dst,status,err
             stmt:="declare "+this:__cursor__+" cursor  for "+stmt
         end
         #endif
-    elseif( wait==0 )
-        //Az eredménytábla sorait lockolja,
-        //a lock független a fetcheléstől (előre minden sort lockol),
-        //a lockokat csak a commit/rollback szünteti meg, rowset:close nem,
-        //ha a lock nem sikerül, kivételt dob.
-        //stmt+=" for update nowait "
-        stmt+=" for update " //nem lehet timeout-ot megadni
-    elseif( wait==-1 )
-        //Mint az előbbi eset, de korlátlan ideig vár .
-        //stmt+=" for update wait "
-        stmt+=" for update " //nem lehet timeout-ot megadni
+
+//    elseif( wait==0 )
+//        //Az eredménytábla sorait lockolja,
+//        //a lock független a fetcheléstől (előre minden sort lockol),
+//        //a lockokat csak a commit/rollback szünteti meg, rowset:close nem,
+//        //ha a lock nem sikerül, kivételt dob.
+//        stmt+=" for update nowait " //9.0-ban van NOWAIT
+//    elseif( wait==-1 )
+//        //Mint az előbbi eset, de korlátlan ideig vár .
+//        //stmt+=" for update wait "
+//        stmt+=" for update " //nem lehet timeout-ot megadni
+//    else
+//        //Mint az előbbi eset, de a megadott másodpercig vár.
+//        //stmt+=" for update wait "+alltrim(str(wait))
+//        stmt+=" for update " //nem lehet timeout-ot megadni
+
     else
-        //Mint az előbbi eset, de a megadott másodpercig vár.
-        //stmt+=" for update wait "+alltrim(str(wait))
-        stmt+=" for update " //nem lehet timeout-ot megadni
+        stmt+=lock_clause(wait)
     end
     
     //stmt:=sql2.postgres.sqlidcase(stmt,.f.)  //megszűnt: 2011.07.20
@@ -181,6 +184,56 @@ local stmt,dst,status,err
     //Ha lock volt előírva, és az nem sikerült,
     //akkor kivételt dobunk: sqllockerror, sqldeadlockerror.
      
+
+******************************************************************************
+static function lock_clause(wait)
+
+//korábban
+// NOLOCK                  NIL
+// LOCK_NOWAIT             0
+// LOCK_SWAIT              4
+// LOCK_MWAIT              8
+// LOCK_LWAIT              60
+// LOCK_WAIT               -1
+//
+//újabb
+// "x"      exclusive lock, wait forever
+// "x0"     exclusive lock, nowait
+// "x10"    exclusive lock, wait 10 sec
+// "s"      shared lock, wait forever
+
+local clause,time
+
+    if( wait==NIL  )
+        clause:=""
+
+    elseif( valtype(wait)=="N" )
+        if( wait==0 )
+            clause:=" for update nowait"
+        else
+            clause:=" for update"  //timeout not supported
+        end
+
+    else//if( valtype(wait)=="C" )
+        if( wait[1]=='x' )
+            clause:=" for update "
+        elseif( wait[1]=='s' )
+            clause:=" for share "
+        end
+        
+        time:=wait[2..]
+        if( empty(time) )
+            //ok
+        else
+            if( time=="0" )
+                clause+="nowait"
+            else
+                //clause+=time     //timeout not supported
+            end
+        end
+    end
+    
+    return clause
 
 ******************************************************************************
 static function rowset.next(this) //rowentity objektumgyártó

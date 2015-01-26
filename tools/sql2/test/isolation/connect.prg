@@ -40,11 +40,11 @@ local con
     end
     
     if( isolev=="SER" )
-        con:sqlisolationlevel(ISOL_SERIALIZABLE,.t.)    //.t.=session
+        con:sqlisolationlevel(ISOL_SER,.t.)  //.t.=session
     elseif( isolev=="COM" )
-        con:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)  //.t.=session, default
+        con:sqlisolationlevel(ISOL_COM,.t.)  //.t.=session, default
     else
-      //con:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)  //.t.=session, default
+      //con:sqlisolationlevel(ISOL_COM,.t.)  //.t.=session, default
     end
 
     ? con:version, isolev

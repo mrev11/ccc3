@@ -1,3 +1,19 @@
+2015.01.26 isolation level beallitas atdolgozva, rowset lock atdolgozva.
+  con:sqlisolationlevel-ben beallithato:
+    ISOL_SER   serializable 
+    ISOL_REP   repeatable read 
+    ISOL_COM   read committed 
+    ISOL_RO    read only 
+    ISOL_RW    read write 
+  rowset lock parameter:
+    NIL    no lock
+    "x"    exclusive lock, wait forever
+    "x0"   exclusive lock, no wait 
+    "x99"  exclusive lock, wait 99 sec
+    "s"    shared lock, wait forever
+    "s0"   shared lock, no wait 
+    "s99"  shared lock, wait 99 sec
+
 2015.01.23
   con:sqlcommit és con:sqlrollback automatikusan lezárnak minden 
   függőben levő queryt és rowsetet, és ha volt mit lezárni, 

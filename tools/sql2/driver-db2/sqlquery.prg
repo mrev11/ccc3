@@ -112,11 +112,20 @@ local rc
 static function sqlquery.next(this)
 local retcode:=.f.
 local n,convtype
+local result,err
 
     if( this:__stmthandle__==NIL )
         //closed
-    elseif( SQL_SUCCESS!=sql2.db2._db2_fetch(this:__stmthandle__) )
-        this:close
+
+    elseif( SQL_SUCCESS!=(result:=sql2.db2._db2_fetch(this:__stmthandle__)) )
+        if( result==SQL_NO_DATA  )
+            this:close
+        else
+            err:=sql2.db2.sqlerror_create(this:__stmthandle__)
+            err:operation:="sqlquery:next"
+            this:close
+            break(err)
+        end
     else
         this:__buffer__:=array(this:fcount)
         for n:=1 to this:fcount

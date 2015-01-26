@@ -100,7 +100,7 @@ local err
 ****************************************************************************
 static function sqlquery.next(this)
 
-local n,result,retcode:=.f.
+local n,result,err,retcode:=.f.
 
     if( this:__stmthandle__==NIL )
         retcode:=.f.
@@ -121,9 +121,17 @@ local n,result,retcode:=.f.
                 next
             end
             retcode:=.t.
-        else
+
+        elseif( result==SQLITE_DONE )
             this:close
             retcode:=.f.
+
+        else
+            err:=sqlerrorNew()
+            err:operation:="sqlquery.next"
+            err:description:=_sqlite3_errmsg(this:onnection:__conhandle__)
+            err:subcode:=_sqlite3_errcode(this:connection:__conhandle__)
+            break(err)
         end
     end
     return retcode

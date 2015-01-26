@@ -148,8 +148,8 @@ local flags
     next
 
     this:__transactionid__:=0
-    this:__isolationlevel__:=ISOL_READ_COMMITTED
-    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__isolationlevel__:=ISOL_COM
+    this:__sessionisolationlevel__:=ISOL_COM
     this:__statementstoclose__:=array(64)
     
     this:sqlexec("begin transaction")
@@ -239,13 +239,38 @@ local err
 
 ******************************************************************************
 static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
-    //tisztázatlan
-    return this:__isolationlevel__
+local previous_level
+
+    if( numlevel==ISOL_READ_COMMITTED )
+        //compatibility
+        numlevel:=ISOL_COM
+    end
+
+    if( flag )
+        previous_level:=this:__sessionisolationlevel__
+    else
+        previous_level:=this:__isolationlevel__
+    end
+
+    if( numlevel==NIL )
+        //csak lekérdezés
+        return previous_level
+    end
+
+    sqlconnection.close_pending_statements(this,"set isolation")
+    this:sqlrollback
+
+    this:__isolationlevel__:=numlevel
+    if( flag )
+        this:__sessionisolationlevel__:=numlevel
+    end
+
+    return previous_level
 
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"commit transaction")
     this:sqlexec("commit transaction")
     this:sqlexec("begin transaction")
     this:__transactionid__++
@@ -253,7 +278,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"rollback transaction")
     this:sqlexec("rollback transaction")
     this:sqlexec("begin transaction")
     this:__transactionid__++
@@ -279,7 +304,7 @@ static function sqlconnection.__clearstatement__(this,idx)
 
 
 ******************************************************************************
-static function sqlconnection.close_pending_statements(this)
+static function sqlconnection.close_pending_statements(this,txt)
 local idx,n:=0,err
     for idx:=1 to len(this:__statementstoclose__)
         if( this:__statementstoclose__[idx]!=NIL )
@@ -291,7 +316,7 @@ local idx,n:=0,err
     if( n>0 )
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
-        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
         break(err)
     end
 

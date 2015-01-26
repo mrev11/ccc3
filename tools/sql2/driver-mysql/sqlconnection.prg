@@ -75,13 +75,14 @@ static function sqlconnection.initialize(this,coninfo)
     this:__conhandle__:=sql2.mysql._my_connect(coninfo[1],coninfo[2],coninfo[3],coninfo[4],coninfo[5],coninfo[6],coninfo[7])
 
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='ANSI_QUOTES'"))
+    sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='no_backslash_escapes'"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session transaction isolation level read committed"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set autocommit=0"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
 
     this:__transactionid__:=0
-    this:__isolationlevel__:=ISOL_READ_COMMITTED
-    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__isolationlevel__:=ISOL_COM
+    this:__sessionisolationlevel__:=ISOL_COM
     this:__statementstoclose__:=array(64)
 
     return this
@@ -168,8 +169,16 @@ local err
 ******************************************************************************
 static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
-local stmt,txtlevel
+//flag==.t. az egész sessionre
+//flag==.f. egy tranzakcióra
+
+local stmt,txtlevel:=""
 local previous_level
+
+    if( numlevel==ISOL_READ_COMMITTED )
+        //compatibility
+        numlevel:=ISOL_COM
+    end
 
     if( flag )
         previous_level:=this:__sessionisolationlevel__
@@ -180,31 +189,39 @@ local previous_level
     if( numlevel==NIL )
         //csak lekérdezés
         return previous_level
-
-    elseif( numlevel==ISOL_READ_COMMITTED )
-        txtlevel:="READ COMMITTED"
-
-    elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"  //rosszul kezeli a konkurenciát, deadlock
-        //txtlevel:="REPEATABLE READ" //nem kezeli a konkurenciát, elvesző update-ek 
-
-    else
-        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
+
+    if( 0!=numand(numlevel,ISOL_SER) )
+        txtlevel+=", isolation level SERIALIZABLE"
+    end
+    if( 0!=numand(numlevel,ISOL_REP) )
+        txtlevel+=", isolation level SERIALIZABLE"  //REPEATABLE READ rossz
+    end
+    if( 0!=numand(numlevel,ISOL_COM) )
+        txtlevel+=", isolation level READ COMMITTED"
+    end
+    if( 0!=numand(numlevel,ISOL_RO) )
+        txtlevel+=", READ ONLY"
+    end
+    if( 0!=numand(numlevel,ISOL_RW) )
+        txtlevel+=", READ WRITE"
+    end
+    txtlevel::=substr(2) //kezdő "," levéve
+
     
-    
-    if( !flag )
-        //egy tranzakcióra
-        stmt:="set transaction isolation level "+txtlevel
-    else
+    if( flag )
         //a session-re
-        stmt:="set session transaction isolation level "+txtlevel
+        stmt:="set session transaction"+txtlevel
+    else
+        //egy tranzakcióra
+        stmt:="set transaction"+txtlevel
     end
 
+    //mindkét esetben ugyanaz a sorrend kell
+    sqlconnection.close_pending_statements(this,"set isolation")
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"rollback"))
     this:sqlexec(stmt)
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
-
 
     this:__transactionid__++
 
@@ -215,9 +232,21 @@ local previous_level
 
     return previous_level
 
+//megjegyzés:
+//
+//5.5-ben nem lehet megadni READ ONLY-t és READ WRITE-ot
+//  tehát csak ezek lehetségesek:
+//    con:sqlisolationlevel(ISOL_COM)
+//    con:sqlisolationlevel(ISOL_SER)
+//
+//5.6-tól kezdve lehet kihasználni az itt beépített tudást
+//  például
+//    con:sqlisolationlevel(ISOL_SER+ISOL_RO)
+
+
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"commit transaction")
     this:sqlexec("commit")
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
     this:__transactionid__++
@@ -225,7 +254,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"rollback transaction")
     this:sqlexec("rollback")
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))
     this:__transactionid__++
@@ -252,7 +281,7 @@ static function sqlconnection.__clearstatement__(this,idx)
 
 
 ******************************************************************************
-static function sqlconnection.close_pending_statements(this)
+static function sqlconnection.close_pending_statements(this,txt)
 local idx,n:=0,err
     for idx:=1 to len(this:__statementstoclose__)
         if( this:__statementstoclose__[idx]!=NIL )
@@ -264,7 +293,7 @@ local idx,n:=0,err
     if( n>0 )
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
-        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
         break(err)
     end
 

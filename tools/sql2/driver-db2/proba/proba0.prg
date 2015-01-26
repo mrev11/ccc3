@@ -15,8 +15,8 @@ local err
     
     //? sql2.db2._db2_setautocommit(con,.t.)
     //? sql2.db2._db2_setautocommit(con,.f.)
-    //? sql2.db2._db2_setisolation(con,ISOL_SERIALIZABLE)
-    //? sql2.db2._db2_setisolation(con,ISOL_READ_COMMITTED)
+    //? sql2.db2._db2_setisolation(con,ISOL_SER)
+    //? sql2.db2._db2_setisolation(con,ISOL_COM)
 
 
     ? "isol", stm:=sql2.db2._db2_execdirect(con,"set isolation level read committed")

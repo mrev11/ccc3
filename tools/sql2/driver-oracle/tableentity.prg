@@ -317,7 +317,7 @@ local stmt,c,i,n,s,sep,isol
 
   begin
     this:connection:sqlcommit
-    isol:=this:connection:sqlisolationlevel(ISOL_READ_COMMITTED,.t.)
+    isol:=this:connection:sqlisolationlevel(ISOL_COM,.t.)
 
     stmt:="create table "+tabname_q(this)+"("
     for n:=1 to len(this:columnlist)
@@ -367,7 +367,7 @@ local stmt,c,i,n,s,sep,isol
 
 #ifdef EMLEKEZTETO // create table in SERIALIZABLE mode
 Oracle-ben nem működik a create table, ha isolation level=SERIALIZABLE
-van beállítva. Ezért ideiglenesen át kell váltani ISOL_READ_COMMITTED-ra.
+van beállítva. Ezért ideiglenesen át kell váltani ISOL_COM-ra.
 'alter session' kell, 'set transaction' nem elég.
 #endif 
 

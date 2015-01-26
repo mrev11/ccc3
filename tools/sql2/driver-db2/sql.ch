@@ -27,9 +27,16 @@
 #define LOCK_MWAIT              8
 #define LOCK_LWAIT              60
 #define LOCK_WAIT               -1
- 
-#define ISOL_READ_COMMITTED     0
-#define ISOL_SERIALIZABLE       1
+
+
+#define ISOL_READ_COMMITTED     0   //compatibility
+#define ISOL_SERIALIZABLE       1   //compatibility
+
+#define ISOL_SER                1
+#define ISOL_REP                2  
+#define ISOL_COM                4   //default
+#define ISOL_RO                32
+#define ISOL_RW                64   //default
 
 #endif
  

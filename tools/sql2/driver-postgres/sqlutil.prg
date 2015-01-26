@@ -196,7 +196,9 @@ local status,code,desc,err
     desc:=strtran(desc,chr(13),"")
 #endif    
 
-    if( code=="40P01" )
+    if( code=="55P03" )
+        err:=sqllockerrorNew()
+    elseif( code=="40P01" )
         err:=sqldeadlockerrorNew()
     elseif( code=="40001" )
         err:=sqlserialerrorNew()

@@ -64,8 +64,8 @@ local usr,psw,dbs
     psw:=coninfo[3]
     
     this:__conhandle__:=sql2.oracle._oci_logon(usr,psw,dbs)
-    this:__isolationlevel__:=ISOL_READ_COMMITTED
-    this:__sessionisolationlevel__:=ISOL_READ_COMMITTED
+    this:__isolationlevel__:=ISOL_COM
+    this:__sessionisolationlevel__:=ISOL_COM
     this:sqlexec("alter session set isolation_level=read committed")
     this:__transactionid__:=0
     this:__statementstoclose__:=array(64)
@@ -158,8 +158,16 @@ local err
 ******************************************************************************
 static function sqlconnection.sqlisolationlevel(this,numlevel,flag:=.f.)
 
+//flag==.t. az egész sessionre
+//flag==.f. egy tranzakcióra
+
 local stmt,txtlevel
 local previous_level
+
+    if( numlevel==ISOL_READ_COMMITTED )
+        //compatibility
+        numlevel:=ISOL_COM
+    end
 
     if( flag )
         previous_level:=this:__sessionisolationlevel__
@@ -170,28 +178,74 @@ local previous_level
     if( numlevel==NIL )
         //csak lekérdezés
         return previous_level
-
-    elseif( numlevel==ISOL_READ_COMMITTED )
-        txtlevel:="READ COMMITTED"
-
-    elseif( numlevel==ISOL_SERIALIZABLE )
-        txtlevel:="SERIALIZABLE"  //nincs "REPEATABLE READ"
-
-    else
-        txtlevel:="UNSUPPORTED_ISOLATION_LEVEL"
     end
 
-    this:sqlrollback
 
-    if( !flag )
-        //egy tranzakcióra
-        stmt:="set transaction isolation level "+txtlevel
+    sqlconnection.close_pending_statements(this,"set isolation")
+    this:sqlexec("rollback")
+    this:__transactionid__++
+
+    
+    if( flag )
+        //session
+
+        txtlevel:=NIL
+        if( 0!=numand(numlevel,ISOL_SER) )
+            txtlevel:="SERIALIZABLE"
+
+        elseif( 0!=numand(numlevel,ISOL_REP) ) //not supported
+            txtlevel:="SERIALIZABLE"
+
+        elseif( 0!=numand(numlevel,ISOL_COM) )
+            txtlevel:="READ COMMITTED"
+        else
+            //ISOL_RO not supported
+            //ISOL_RW default
+        end
+        if( txtlevel!=NIL  )
+            stmt:="alter session set isolation_level="+txtlevel
+            this:sqlexec(stmt)
+        end
+
     else
-        //a session-re
-        stmt:="alter session set isolation_level="+txtlevel
-    end
+        //transaction
 
-    this:sqlexec(stmt)
+        txtlevel:=NIL
+        if( 0!=numand(numlevel,ISOL_RO) )
+            txtlevel:="READ ONLY"
+        elseif( 0!=numand(numlevel,ISOL_RW) )
+            txtlevel:="READ WRITE"
+        end
+
+        if( txtlevel!=NIL )
+            stmt:="set transaction "+txtlevel
+            this:sqlexec(stmt)
+
+            //READ ONLY => transaction read stability
+            //READ WRITE => statement read stability
+            //ezeknek adunk elsőbbséget
+
+        else
+            //az Oracle 'set transaction' csak egy attribútomot fogad el
+            //csakis a tranzakció első utasítása lehet 'set transaction'
+            //=> egy tranzakcióban csak egy attribútumot lehet beállítani
+
+            txtlevel:=NIL
+            if( 0!=numand(numlevel,ISOL_SER) )
+                txtlevel:="SERIALIZABLE"
+
+            elseif( 0!=numand(numlevel,ISOL_REP) )
+                txtlevel:="SERIALIZABLE"
+
+            elseif( 0!=numand(numlevel,ISOL_COM) )
+                txtlevel:="READ COMMITTED"
+            end
+            if( txtlevel!=NIL )
+                stmt:="set transaction isolation level "+txtlevel
+                this:sqlexec(stmt)
+            end
+        end
+    end
 
     this:__isolationlevel__:=numlevel
     if( flag )
@@ -200,9 +254,10 @@ local previous_level
 
     return previous_level
 
+
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"commit transaction")
     this:sqlexec("commit")
     this:__transactionid__++
     this:__isolationlevel__:=this:__sessionisolationlevel__
@@ -210,7 +265,7 @@ static function sqlconnection.sqlcommit(this)
 
 ******************************************************************************
 static function sqlconnection.sqlrollback(this)
-    sqlconnection.close_pending_statements(this)
+    sqlconnection.close_pending_statements(this,"rollback transaction")
     this:sqlexec("rollback")
     this:__transactionid__++
     this:__isolationlevel__:=this:__sessionisolationlevel__
@@ -236,7 +291,7 @@ static function sqlconnection.__clearstatement__(this,idx)
 
 
 ******************************************************************************
-static function sqlconnection.close_pending_statements(this)
+static function sqlconnection.close_pending_statements(this,txt)
 local idx,n:=0,err
     for idx:=1 to len(this:__statementstoclose__)
         if( this:__statementstoclose__[idx]!=NIL )
@@ -248,7 +303,7 @@ local idx,n:=0,err
     if( n>0 )
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
-        err:description:="cannot commit/rollback transaction - SQL statements in progress"
+        err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
         break(err)
     end
 

@@ -62,15 +62,21 @@ static function sqlconnection.initialize(this,coninfo)
     //példa ":konto:konto:konto" (default host=localhost, default port ...)
 
     coninfo::=split(":")::asize(7)
+
     if( coninfo[5]::empty )
         coninfo[5]:=0
+    else
+        coninfo[5]::=val
     end
+
     if( coninfo[7]::empty )
         coninfo[7]:=0
+    else
+        coninfo[7]::=val
     end
     coninfo[7]::=numor(2) //CLIENT_FOUND_ROWS (update rowcount error!)
 
-    //a többi paraméter defaultja ''
+    //a többi paraméter defaultja '' vagy NIL (asize miatt lehet NIL)
     
     this:__conhandle__:=sql2.mysql._my_connect(coninfo[1],coninfo[2],coninfo[3],coninfo[4],coninfo[5],coninfo[6],coninfo[7])
 

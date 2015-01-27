@@ -218,6 +218,9 @@ local previous_level
 
     return previous_level
 
+// A beállítások lekérdezhetők:
+//  select current_setting('transaction_read_only')
+//  select current_setting('transaction_isolation')
 
 ******************************************************************************
 static function sqlconnection.sqlcommit(this)

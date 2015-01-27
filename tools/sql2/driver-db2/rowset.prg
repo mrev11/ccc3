@@ -155,6 +155,14 @@ local clause
 
     return clause
 
+// Megjegyzés: Ilyen egyéni módon lockol a db2.
+// A 'for update' ezzel szemben egyáltalán nem lockol!
+// SQL parancsban timeoutot nem lehet megadni.
+// A timeoutot rendszerparaméterben lehet szabályozni:
+//  db2 "update db cfg for sample using  LOCKTIMEOUT  60"
+
+
+
 ******************************************************************************
 static function rowset.next(this) //rowentity objektumgyártó
 

@@ -1,3 +1,5 @@
+2015.01.27 sql2.mysql.sqlconnection.initialize javitva
+
 2015.01.26 isolation level beallitas atdolgozva, rowset lock atdolgozva.
   con:sqlisolationlevel-ben beallithato:
     ISOL_SER   serializable 
@@ -27,6 +29,7 @@
   SQLite3 egyfelhasználós, nincs 'for update'.
   
   MySQL beállítja sql_mode='ANSI_QUOTES'-ot.
+  MySQL beállítja sql_mode='no_backslash_escapes'
   
   Postgres rowset:next-ben hibakezelés.
   Postgres query:next-ben hibakezelés.

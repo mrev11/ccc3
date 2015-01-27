@@ -1,0 +1,11 @@
+db2 "connect to sample"
+ db2 "update db cfg for sample using  PCKCACHESZ        AUTOMATIC"
+ db2 "update db cfg for sample using  LOCKLIST          AUTOMATIC"
+ db2 "update db cfg for sample using  MAXLOCKS          AUTOMATIC"
+ db2 "update db cfg for sample using  LOCKTIMEOUT       60"
+
+#db2 "update db cfg for sample using  SORTHEAP          AUTOMATIC"
+#db2 "update db cfg for sample using  SHEAPTHRES_SHR    AUTOMATIC"
+#db2 "update db cfg for sample using  DATABASE_MEMORY   AUTOMATIC"
+
+db2 get db cfg 

@@ -202,6 +202,9 @@ local rowentity,result
 
     elseif( NIL==(result:=sql2.mysql._my_fetch_row(this:__stmthandle__)) )
         //az eredmény NIL
+        //sql2.mysql.sqlerrorCreate(this:__table__:connection:__conhandle__):list
+        //ha csak egyszerűen elfogynak a rekordok, akkor az error objektum üres
+        //nem tudható, lehet-e itt egyéb hiba
         this:close
 
     else

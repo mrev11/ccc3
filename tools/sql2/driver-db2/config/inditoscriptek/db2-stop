@@ -1,0 +1,7 @@
+#!/bin/bash
+. db2profile
+
+db2stop force
+db2 terminate
+
+

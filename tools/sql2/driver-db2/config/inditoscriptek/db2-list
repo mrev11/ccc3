@@ -1,0 +1,6 @@
+#!/bin/bash
+. db2profile
+
+#db2start
+ps -A -f | grep db2 | less -S
+

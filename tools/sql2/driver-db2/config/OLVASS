@@ -1,0 +1,82 @@
+Custom telepítést kell választani,
+és a fejlesztőeszközöket is telepíteni kell.
+
+Source-olni kell ~/sqllib/db2profile-t.
+
+Sample adatbázis létrehozása: db2sampl
+
+Nonroot telepítésnél nem lesz magától TCP listener.
+
+Szerver konfiguráció: db2 get dbm cfg
+
+Ez kiprinteli az összes adatbázis objektum struktúrát:
+db2look -d sample -e 
+
+
+Egy példa session:
+
+    db2 connect to sample
+    db2 describe table employee
+    db2 'select * from employee'
+    db2 terminate
+
+A fentiekből az látszik, hogy a db2 sorozatos futásakor
+valahol megőrzi az adatbázis kapcsolatát, és végül csak
+a terminate parancsra disconnectál.
+
+Script végrehajtása:  
+    db2 -tf %f | less -S
+(ez van betéve mc-be)    
+    
+
+TCP konfigurálás
+http://www.solutioning.eu/2013/04/26/enable-tcpip-communcations-on-db2/
+http://db2commerce.com/2011/04/14/how-to-catalog-a-db2-database/
+
+1) A szerveren  (ezektől lesz listener)
+
+# ezek nem elég
+#    /etc/services-be egy plusz sor
+#    db2c_vermes  50000/tcp
+#    
+#    db2set DB2COMM=tcpip
+#    db2 update database manager configuration using svcename db2c_vermes
+#    
+#    (restart the DB2 instance)
+#
+#    db2stop force
+#    db2start
+
+Nem a fentiek kellenek, hanem
+    megeditálni ~/sqllib/instance/db2rfe.cfg-t
+
+    ENABLE_OS_AUTHENTICATION=YES
+    RESERVE_REMOTE_CONNECTION=YES
+    SVCENAME=db2c_vermes
+    SVCEPORT=50000
+
+    utána:  sudo  ./db2rfe -f db2rfe.cfg
+
+2) A kliensen
+
+    db2 catalog tcpip node <NODENAME> remote <REMOTE> server <PORT>
+    NODENAME  egy (max 8 hosszú) azonosító
+    REMOTE    a szerver IP címe
+    PORT      a szerver port száma
+
+
+    db2 catalog database <DATABASENAME> as <ALIASNAME> at node <NODENAME>
+
+    (refresh directory)
+    db2 terminate
+
+Infó:
+    db2 list database directory
+    db2 list node directory
+
+    uncatalaog node <NODENAME>
+    uncatalog database <DBALIAS>
+
+
+
+

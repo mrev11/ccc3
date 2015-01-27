@@ -1,3 +1,5 @@
+2015.01.27 sql2.mysql.sqlconnection.initialize javitva
+
 2015.01.26 isolation level beallitas atdolgozva, rowset lock atdolgozva.
   con:sqlisolationlevel-ben beallithato:
     ISOL_SER   serializable 

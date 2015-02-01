@@ -20,19 +20,27 @@
 
 namespace tdsutil   fpath fname
 
-#define PROGRAM "dom2prg 1.3.01"
+#define PROGRAM "dom2prg 1.3.02"
+//2015.02.01:1.3.01: mutex védelem az osztály regisztrálása körül
 //2011.03.06:1.3.01: coldef primkey-be rakásakor beállítódik az új keyseg attribútum
 
 
 static template_new:=<<TEMPLATE_NEW>>
+static mutex:=thread_mutex_init()
+
 function XxXXxX.tableEntityNew(connection,tablist)
 local parentclid:=connection:__tableentityclass__
 local parentname:=classname(parentclid)
 local classname:=parentname+".XxXXxX"
-local clid:=classidbyname(classname)
+local clid
+    signal_lock()
+    thread_mutex_lock(mutex)
+    clid:=classidbyname(classname)
     if( clid==0 )
         clid:=XxXXxX.tableEntityRegister(connection)
     end
+    thread_mutex_unlock(mutex)
+    signal_unlock()
     return objectNew(clid):initialize(connection,tablist)
 <<TEMPLATE_NEW>>
 

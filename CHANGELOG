@@ -1,3 +1,7 @@
+2015.02.01 sql2.mysql.sqlconnection.initialize javitva
+  sql_mode beallitas: set session sql_mode='ANSI_QUOTES,no_backslash_escapes'
+  tdsutil/dom2prg-ben mutex vedelem az osztaly regisztralasa korul
+
 2015.01.27 sql2.mysql.sqlconnection.initialize javitva
 
 2015.01.26 isolation level beallitas atdolgozva, rowset lock atdolgozva.

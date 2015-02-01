@@ -80,8 +80,19 @@ static function sqlconnection.initialize(this,coninfo)
     
     this:__conhandle__:=sql2.mysql._my_connect(coninfo[1],coninfo[2],coninfo[3],coninfo[4],coninfo[5],coninfo[6],coninfo[7])
 
-    sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='ANSI_QUOTES'"))
-    sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='no_backslash_escapes'"))
+// nem így kell beállítani
+//  sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='ANSI_QUOTES'"))
+//  sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='no_backslash_escapes'"))
+// hanem így:
+
+    sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session sql_mode='ANSI_QUOTES,no_backslash_escapes'"))
+
+// a beállítások lekérdezhetők:
+//  q:=con:sqlqueryNew("select @@session.sql_mode")
+//  while( q:next )
+//      ? q:getchar(1)
+//  end
+
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set session transaction isolation level read committed"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"set autocommit=0"))
     sql2.mysql._my_free_result(sql2.mysql._my_real_query(this:__conhandle__,"start transaction"))

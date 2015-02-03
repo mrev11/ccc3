@@ -1,3 +1,17 @@
+2015.02.02 sql2.postgres.sqlquery atdolgozva.
+  Megszunt az automatikus 'declare CURSORID cursor for ...' kiegeszites.
+  A program alkalmazkodik ahhoz, hogy a queryben van-e 'declare cursor',
+  azaz a 'declare CID cursor for select ...' alaknal kulon fetch-elget.
+  A kurzorazonosito elhagyhato, azaz ha a queryt CID nelkul adjak meg 
+  (declare cursor for select ...), akkor automatikus CID keszul.
+  Rowsetben es queryben: A szalbiztonsag erdekeben static valtozo helyett 
+  con:__cursorcount__ (uj attrib) szamlalja a kurzorokat. A deklaralt 
+  kurzorok lezarasa (rowsetben is, queryben is) rahagyhato a pg-re.
+
+  Elavult ismeret, miszerint a 'declare CID cursor for select ...' alaku 
+  queryben nem lehet 'for update' clause. Lehet, hatasara a fetch lockol.
+  (A 8.2-es doksiban meg hiba, a 8.3-as doksi mar lehetsegesnek mondja.)
+
 2015.02.01 sql2.mysql.sqlconnection.initialize javitva
   sql_mode beallitas: set session sql_mode='ANSI_QUOTES,no_backslash_escapes'
   tdsutil/dom2prg-ben mutex vedelem az osztaly regisztralasa korul

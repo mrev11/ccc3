@@ -86,8 +86,8 @@ class rowset(object)
     method  initialize
     method  __table__           {|this|eval(this:__tableblk__)}
     attrib  __tableblk__
-    attrib  __stmthandle__      // PQresult
-    attrib  __cursor__
+    attrib  __stmthandle__
+    attrib  __cursorid__        // SQL azonosító
     attrib  __ntuples__
     attrib  __next__
     attrib  __transactionid__
@@ -132,9 +132,9 @@ local stmt,dst,status,err
         //no lock
         #ifdef USE_CURSOR
         if( NIL==crsflg )
-            this:__cursor__:="crs_"+alltrim(str(++_crs_count))
-            //stmt:="declare "+this:__cursor__+" cursor with hold for "+stmt
-            stmt:="declare "+this:__cursor__+" cursor  for "+stmt
+            this:__cursorid__:="rowset_"+alltrim(str(++this:__table__:connection:__cursorcount__))
+            //stmt:="declare "+this:__cursorid__+" cursor with hold for "+stmt
+            stmt:="declare "+this:__cursorid__+" cursor  for "+stmt
         end
         #endif
 
@@ -160,14 +160,13 @@ local stmt,dst,status,err
     //stmt:=sql2.postgres.sqlidcase(stmt,.f.)  //megszűnt: 2011.07.20
     
     sql2.postgres.sqldebug(stmt)
-
     this:__stmthandle__:=sql2.postgres._pq_exec(this:__table__:connection:__conhandle__,stmt)
     status:=sql2.postgres._pq_resultstatus(this:__stmthandle__)
     
-    if( this:__cursor__!=NIL .and. status==PGRES_COMMAND_OK )
+    if( this:__cursorid__!=NIL .and. status==PGRES_COMMAND_OK )
         //OK
 
-    elseif( this:__cursor__==NIL .and. status==PGRES_TUPLES_OK )
+    elseif( this:__cursorid__==NIL .and. status==PGRES_TUPLES_OK )
         this:__ntuples__:=sql2.postgres._pq_ntuples(this:__stmthandle__)
         this:__next__:=0
 
@@ -248,8 +247,8 @@ local rowentity,stmt,result,status,err
         //az eredmény NIL
         this:close
 
-    elseif( this:__cursor__!=NIL )
-        stmt:="fetch forward 1 in "+this:__cursor__
+    elseif( this:__cursorid__!=NIL )
+        stmt:="fetch forward 1 in "+this:__cursorid__
         sql2.postgres.sqldebug(stmt)
         result:=sql2.postgres._pq_exec(this:__table__:connection:__conhandle__,stmt)
         status:=sql2.postgres._pq_resultstatus(result)
@@ -301,57 +300,33 @@ local rowentity,columnlist,n,x
 
 ******************************************************************************
 static function rowset.close(this)
-local result,status,err
     if(this:__stmthandle__!=NIL)
         //? sql2.postgres._pq_resultstatus(this:__stmthandle__) //érdektelen
-
-        if( this:__cursor__==NIL )
-            //nincs kurzor
-        elseif( this:__table__:connection:__transactionid__!=this:__transactionid__ )
-            //már volt commit/rollback
-        else
-            result:=sql2.postgres._pq_exec(this:__table__:connection:__conhandle__,"close "+this:__cursor__)
-            status:=sql2.postgres._pq_resultstatus(result)
-            if( status!=PGRES_COMMAND_OK ) 
-                err:=sql2.postgres.sqlerrorCreate(result)
-                //err:list
-                outerr("WARNING:",err:description,endofline())
-            end
-            sql2.postgres._pq_clear(result) 
-        end
-
         sql2.postgres._pq_clear(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+        this:__cursorid__:=NIL //nem kell vele foglalkozni
     end
     if( this:__closestmtidx__!=NIL )
         //? "CLEAR-rs"
         this:__table__:connection:__clearstatement__(this:__closestmtidx__)
         this:__closestmtidx__:=NIL
     end
-    return NIL
+
 
 #ifdef NOT_DEFINED
-  Megjegyzés, Postgresben két dolgot kell lezárni:
+  Megjegyzés, Postgresben két dolgot kell/lehet lezárni:
 
-  i) a "declare cursor" utasítást handlerét,
+  i) A "declare CID cursor for select..." utasítást handlerét,
     ez mindenképpen szükséges, másképp fogy a memória. 
 
-  ii) magát a cursort egy "close cursor" SQL utasítással,
+  ii) Magát a cursort egy "close CID" SQL utasítással,
     ez automatikusan is megtörténik a commit/rollbacknél.
+    Mivel automatikusan lezáródik, nem érdemes vele bajlódni.
+    Ha rossz helyen próbáljuk lezárni, az hibát okoz.
+    Ha hagyjuk, akkor ugyanazt a kurzor azonosítót 
+    a tranzación belül nem lehet újra használni.
 #endif
 
-#ifdef NOT_DEFINED
-static function close(this)
-    if(this:__stmthandle__!=NIL)
-        if(this:__cursor__!=NIL)
-            sql2.postgres._pq_clear(sql2.postgres._pq_exec(this:__table__:connection:__conhandle__,"close "+this:__cursor__)) 
-        end
-        sql2.postgres._pq_clear(this:__stmthandle__) 
-        this:__stmthandle__:=NIL
-    end
-    return NIL
-#endif    
-  
 
 ******************************************************************************
 #ifdef EMLEKEZTETO  //a Postgres tranzakciók automatikus abortjáról

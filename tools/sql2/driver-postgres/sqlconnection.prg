@@ -32,6 +32,7 @@ class sqlconnection(object)
     attrib  __isolationlevel__
     attrib  __sessionisolationlevel__
     attrib  __statementstoclose__
+    attrib  __cursorcount__
     method  __addstatementtoclose__
     method  __clearstatement__
     method  driver              {||"sql2.postgres"}
@@ -63,6 +64,7 @@ static function sqlconnection.initialize(this,coninfo)
     this:__isolationlevel__:=ISOL_COM
     this:__sessionisolationlevel__:=ISOL_COM
     this:__statementstoclose__:=array(64)
+    this:__cursorcount__:=0
 
 #ifdef EMLEKEZTETO  //a Postgres autocommitról
     A Postgres 7.4-ben megszűnt a szerver oldali autocommit,

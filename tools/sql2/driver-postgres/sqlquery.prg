@@ -41,8 +41,6 @@ namespace sql2.postgres
 #endif
 
 
-static _crs_count:=0
-
 ****************************************************************************
 class sqlquery(object)
     method  initialize
@@ -50,12 +48,15 @@ class sqlquery(object)
     attrib  connection
     attrib  __querytext__
     attrib  __stmthandle__
-    attrib  __cursor__
+    attrib  __cursorid__    // SQL azonosító
     attrib  __prefetched__
     attrib  __selectlist__
     attrib  __buffer__
     attrib  __indvar__
     attrib  __closestmtidx__
+    attrib  __ntuples__
+    attrib  __next__
+    attrib  __transactionid__
 
     method  next
     method  close
@@ -71,43 +72,79 @@ class sqlquery(object)
 
 ****************************************************************************
 static function sqlquery.initialize(this,con,query,bind)
-local status,err
+local status,pos,n,err
 
     if( bind!=NIL )
         query:=sql2.postgres.sqlbind(query,bind)
     end
 
-    this:(object)initialize
-
     this:connection:=con
-    this:__cursor__:="query_"+alltrim(str(++_crs_count))
-    this:__querytext__:="declare "+this:__cursor__+" cursor for "+query
+    this:__transactionid__:=con:__transactionid__
+    this:__querytext__:=(query::=alltrim)
+
+    if( query[1..8]::lower=="declare " )
+        if( 0<(pos:=at(" cursor",lower(query))) )
+            //declare CURSORID cursor for ...
+            this:__cursorid__:=query[9..pos-1]::alltrim  
+            if( empty(this:__cursorid__) )
+                this:__cursorid__:="query_"+alltrim(str(++this:connection:__cursorcount__)) //automatikus cursorid
+                query:="declare "+this:__cursorid__+query[8..]
+                this:__querytext__:=query
+            end
+        end
+    end
+
+    this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
+
     sql2.postgres.sqldebug(this:__querytext__)
     this:__stmthandle__:=sql2.postgres._pq_exec(this:connection:__conhandle__,this:__querytext__)
     status:=sql2.postgres._pq_resultstatus(this:__stmthandle__)
 
-    if( status!=PGRES_COMMAND_OK )
+    if( this:__cursorid__!=NIL .and. status==PGRES_COMMAND_OK )
+        this:__prefetched__:=this:next //felszedi az oszlopadatokat
+
+    elseif( this:__cursorid__==NIL .and. status==PGRES_TUPLES_OK )
+        this:__ntuples__:=sql2.postgres._pq_ntuples(this:__stmthandle__)
+        this:__next__:=0
+
+        //feltöltjük az oszlopneveket
+        this:__selectlist__:=array(sql2.postgres._pq_nfields(this:__stmthandle__))
+        this:__buffer__:=array(sql2.postgres._pq_nfields(this:__stmthandle__))
+        this:__indvar__:=array(sql2.postgres._pq_nfields(this:__stmthandle__))
+        for n:=1 to len(this:__selectlist__)
+            this:__selectlist__[n]:=sql2.postgres._pq_fname(this:__stmthandle__,n)
+        next
+
+    elseif( status==PGRES_COMMAND_OK )
+        //Ide jön, ha az utasítás nem select,
+        //hanem pl. update (aminek persze nincs értelme).
+        //Végül is működik, lehet hagyni, de akár hibát is 
+        //lehetne jelezni, ahogy az Oracle teszi.
+
+        this:__ntuples__:=0
+        this:__next__:=0
+
+    else
         err:=sql2.postgres.sqlerrorCreate(this:__stmthandle__)
-        err:operation:="sqlqueryIni"
+
+        //itt lehetne a nem selectet jelezni
+        //if( status==PGRES_COMMAND_OK )
+        //    err:description:="SQL select statement expected"
+        //end
+
+        err:operation:="sqlquery.initialize"
         err:args:={query}
         this:close
         break(err)
-    else
-        this:__prefetched__:=this:next //felszedi az oszlopadatokat
-        this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
     end
 
     return this
     
-//Ez nem működik, ha a selectben "for update" van.
-//Kéne egy cursor nélküli változat is lockoláshoz.
-//Lehet lockolni így: con:sqlexec("select ... for update").
     
 ****************************************************************************
 static function sqlquery.next(this)
 
-local n,stmt,result,status,retcode:=.f.
-local err
+local n,stmt,result,status,err,retcode:=.f.
 
     if( this:__stmthandle__==NIL )
         retcode:=.f.
@@ -116,8 +153,9 @@ local err
         retcode:=.t.
         this:__prefetched__:=.f.
 
-    else
-        stmt:="fetch forward 1 in "+this:__cursor__
+    elseif( this:__cursorid__!=NIL )
+
+        stmt:="fetch forward 1 in "+this:__cursorid__
         sql2.postgres.sqldebug(stmt)
         result:=sql2.postgres._pq_exec(this:connection:__conhandle__,stmt)
         status:=sql2.postgres._pq_resultstatus(result)
@@ -128,8 +166,8 @@ local err
             err:operation:="sqlquery:next"
             sql2.postgres._pq_clear(result)
             this:close
-            retcode:=.f.
             break(err)
+            retcode:=.f.
 
         else
 
@@ -159,6 +197,18 @@ local err
             end
         end
 
+    elseif( ++this:__next__>this:__ntuples__ )
+        //kurzor nélkül, elfogyott az adat
+        this:close
+        retcode:=.f.
+
+    else
+        //kurzor nélkül, van adat
+        for n:=1 to len(this:__indvar__)
+            this:__buffer__[n]:=sql2.postgres._pq_getvalue0(this:__stmthandle__,this:__next__,n) //binary string
+            this:__indvar__[n]:=sql2.postgres._pq_getisnull(this:__stmthandle__,this:__next__,n)
+        next
+        retcode:=.t.
     end
 
     return retcode
@@ -168,13 +218,28 @@ static function sqlquery.close(this)
     if( this:__stmthandle__!=NIL )
         sql2.postgres._pq_clear(this:__stmthandle__) 
         this:__stmthandle__:=NIL
+        this:__cursorid__:=NIL
     end
     if( this:__closestmtidx__!=NIL )
         //? "CLEAR-qu"
         this:connection:__clearstatement__(this:__closestmtidx__)
         this:__closestmtidx__:=NIL
     end
-    return NIL
+
+
+#ifdef NOT_DEFINED
+  Megjegyzés, Postgresben két dolgot kell/lehet lezárni:
+
+  i) A "declare CID cursor for select..." utasítást handlerét,
+    ez mindenképpen szükséges, másképp fogy a memória. 
+
+  ii) Magát a cursort egy "close CID" SQL utasítással,
+    ez automatikusan is megtörténik a commit/rollbacknél.
+    Mivel automatikusan lezáródik, nem érdemes vele bajlódni.
+    Ha rossz helyen próbáljuk lezárni, az hibát okoz.
+    Ha hagyjuk, akkor ugyanazt a kurzor azonosítót 
+    a tranzación belül nem lehet újra használni.
+#endif
 
 ****************************************************************************
 static function sqlquery.findcolumn(this,name)

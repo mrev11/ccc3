@@ -1,5 +1,5 @@
 2015.02.03 sqlqueryNew("nonselect") alak mukodesenek egysegesitese.
-  sqlqueryNew("nonselect") minden interfeszben mukodik.
+  sqlqueryNew("nonselect") minden interfeszben hibat ad.
   Mindenhol egysegesitve az err:subcode-ok beallitas. 
 
 2015.02.02 sql2.postgres.sqlquery atdolgozva.

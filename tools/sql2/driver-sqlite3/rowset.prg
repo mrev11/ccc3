@@ -102,6 +102,7 @@ local stmt,dst,err
         err:operation:="rowset.__select__"
         err:description:=_sqlite3_errmsg(this:__table__:connection:__conhandle__)
         err:subcode:=_sqlite3_errcode(this:__table__:connection:__conhandle__)
+        err:subsystem:="sql2.sqlite3"
         err:args:={stmt}
         break(err)
     end
@@ -173,6 +174,7 @@ local rowentity,result,err
             err:operation:="rowset.next"
             err:description:=_sqlite3_errmsg(this:__table__:connection:__conhandle__)
             err:subcode:=_sqlite3_errcode(this:__table__:connection:__conhandle__)
+            err:subsystem:="sql2.sqlite3"
             break(err)
         end
     end

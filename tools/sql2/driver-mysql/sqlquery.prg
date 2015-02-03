@@ -93,7 +93,18 @@ local fldcnt,n
         // fldcnt:=sql2.mysql._my_num_fields(this:__stmthandle__)    
         // elSISEGVzik, ha az utasítás nem select
 
-        this:close // itt csak selectekkel foglalkozunk
+        //itt csak selectekkel foglalkozunk
+        //de hagyni is lehetne (működik)
+
+        this:close
+        //return this //nem select végrehajtva
+
+        err:=sqlerrorNew()
+        err:operation:="sqlquery.initialize"
+        err:description:="select statement requiered"
+        err:args:={this:__querytext__}
+        err:subsystem:="sql2.mysql"
+        break(err)
         
     else
         // ? "select", fldcnt, sql2.mysql._my_affected_rows(this:connection:__conhandle__)

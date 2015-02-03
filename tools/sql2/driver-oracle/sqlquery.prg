@@ -104,11 +104,18 @@ local n,buffer,size,type,err
 
     if( sql2.oracle._oci_stmtattrget(this:__stmthandle__,OCI_ATTR_STMT_TYPE)!=OCI_STMT_SELECT )
         //nem select utasítás
-        sql2.oracle._oci_freestatement(this:__stmthandle__)
+        //itt csak selectekkel foglalkozunk
+        //de hagyni is lehetne (működik)
+
+        sql2.oracle._oci_executestatement(this:__stmthandle__,1)
+        this:close
+
+        //return this //nem select végrehajtva
+
         err:=sqlerrorNew()
         err:operation:="sqlqueryini"
         err:description:="select statement requiered"
-        err:subsystem:="OCI2"
+        err:subsystem:="sql2.oracle"
         err:args:={query}
         break(err)
     end

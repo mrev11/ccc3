@@ -263,6 +263,7 @@ local idx,err
     err:=sqlerrorNew()
     err:operation:="sqlconnection.__addstatementtoclose__"
     err:description:="too many statements"
+    err:subsystem:="sql2.postgres"
     break(err)
 
 ******************************************************************************
@@ -284,6 +285,7 @@ local idx,n:=0,err
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
         err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
+        err:subsystem:="sql2.postgres"
         break(err)
     end
 

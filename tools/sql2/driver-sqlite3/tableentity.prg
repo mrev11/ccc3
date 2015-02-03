@@ -385,6 +385,7 @@ local n,c,err,key:=array(len(this:__primarykey__))
             err:=sqlerrorNew()
             err:operation("getprimarykey")
             err:description("null key segment")
+            err:subsystem:="sql2.sqlite3"
             break(err)
         end
         key[n]:=c:eval(o)
@@ -429,6 +430,7 @@ local o1,err
         err:=sqlserialerrorNew()
         err:operation   := "tableentity.insert"
         err:description := "can't reread inserted data"
+        err:subsystem:="sql2.sqlite3"
         break(err)
     else
         o:__buffer__:=o1:__buffer__  //default értékek
@@ -478,6 +480,7 @@ local err
             err:operation:=stmt
             err:description+=str(rowcount)
             err:args:={rowcount}
+            err:subsystem:="sql2.sqlite3"
             break(err)
         end
     end
@@ -515,6 +518,7 @@ local err
         err:operation:=stmt
         err:description+=str(rowcount)
         err:args:={rowcount}
+        err:subsystem:="sql2.sqlite3"
         break(err)
     end
     return rowcount //affected rows
@@ -785,6 +789,7 @@ local buffer,err
         err:=errorNew()
         err:operation:="memo assign"
         err:description:="invalid memo value type"
+        err:subsystem:="sql2.sqlite3"
         break(err)
     end
     

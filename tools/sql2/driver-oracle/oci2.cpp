@@ -138,7 +138,7 @@ static void pusherror()
 //
 {
     _clp_sqlerrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -149,7 +149,7 @@ static void pushlockerror()
 //
 {
     _clp_sqllockerrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -160,7 +160,7 @@ static void pushdeadlockerror()
 //
 {
     _clp_sqldeadlockerrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -171,7 +171,7 @@ static void pushserialerror()
 //
 {
     _clp_sqlserialerrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -182,7 +182,7 @@ static void pushconnecterror()
 //
 {
     _clp_sqlconnecterrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -193,7 +193,7 @@ static void pushnodatafounderror()
 //
 {
     _clp_sqlnodatafounderrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -204,7 +204,7 @@ static void pushuniqueconstrainterror()
 //
 {
     _clp_sqluniqueconstrainterrornew(0);
-    dup(); string(CHRLIT("OCI2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.oracle"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }

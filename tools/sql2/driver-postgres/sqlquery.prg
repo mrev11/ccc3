@@ -116,22 +116,26 @@ local status,pos,n,err
         next
 
     elseif( status==PGRES_COMMAND_OK )
-        //Ide jön, ha az utasítás nem select,
+        //Ide akkor jön, ha az utasítás nem select,
         //hanem pl. update (aminek persze nincs értelme).
-        //Végül is működik, lehet hagyni, de akár hibát is 
-        //lehetne jelezni, ahogy az Oracle teszi.
+        //Itt csak selectekkel foglalkozunk,
+        //de hagyni is lehetne (működik).
 
+        this:close
         this:__ntuples__:=0
         this:__next__:=0
 
+        //return this //nem select végrehajtva
+
+        err:=sqlerrorNew()
+        err:operation:="sqlquery.initialize"
+        err:description:="select statement requiered"
+        err:args:={this:__querytext__}
+        err:subsystem:="sql2.postgres"
+        break(err)
+
     else
         err:=sql2.postgres.sqlerrorCreate(this:__stmthandle__)
-
-        //itt lehetne a nem selectet jelezni
-        //if( status==PGRES_COMMAND_OK )
-        //    err:description:="SQL select statement expected"
-        //end
-
         err:operation:="sqlquery.initialize"
         err:args:={query}
         this:close

@@ -119,6 +119,7 @@ local flags
         err:args:={this:__coninfo__}
         err:subcode:=code
         //err:description:=_sqlite3_errmsg(this:__conhandle__)
+        err:subsystem:="sql2.sqlite3"
         break(err)
     else
         outerr("attach to "+coninfo[1]+endofline()) 
@@ -139,8 +140,9 @@ local flags
             err:=sqlconnecterrorNew()
             err:operation:="sqlconnection.initialize"
             err:args:={attach1}
-            err:subcode:=_sqlite3_errcode(this:__conhandle__)
             err:description:=errmsg
+            err:subcode:=_sqlite3_errcode(this:__conhandle__)
+            err:subsystem:="sql2.sqlite3"
             break(err)
         else
             outerr(attach1+endofline()) 
@@ -209,6 +211,7 @@ local err,code,msg
         err:description:=msg
         err:args:={stmt}
         err:subcode:=code
+        err:subsystem:="sql2.sqlite3"
         break(err)
     end
 
@@ -296,6 +299,7 @@ local idx,err
     err:=sqlerrorNew()
     err:operation:="sqlconnection.__addstatementtoclose__"
     err:description:="too many statements"
+    err:subsystem:="sql2.sqlite3"
     break(err)
 
 ******************************************************************************
@@ -317,6 +321,7 @@ local idx,n:=0,err
         err:=sqlerrorNew()
         err:operation:="sqlconnection.close_pending_statements"
         err:description:="cannot TXT - SQL statements in progress"::strtran("TXT",txt)
+        err:subsystem:="sql2.sqlite3"
         break(err)
     end
 

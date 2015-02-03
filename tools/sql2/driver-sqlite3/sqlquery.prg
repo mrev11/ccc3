@@ -50,7 +50,6 @@ class sqlquery(object)
     attrib  __querytext__
     attrib  __stmthandle__
     attrib  __cursor__
-    attrib  __prefetched__
     attrib  __selectlist__
     attrib  __closestmtidx__
 
@@ -68,7 +67,7 @@ class sqlquery(object)
 
 ****************************************************************************
 static function sqlquery.initialize(this,con,query,bind)
-local err
+local err,n
 
     if( bind!=NIL )
         query:=sql2.sqlite3.sqlbind(query,bind)
@@ -86,13 +85,35 @@ local err
         err:operation:="sqlquery.initialize"
         err:description:=_sqlite3_errmsg(this:connection:__conhandle__)
         err:subcode:=_sqlite3_errcode(this:connection:__conhandle__)
+        err:subsystem:="sql2.sqlite3"
         err:args:={this:__querytext__}
-        //this:close //?
         break(err)
     end
-    
-    this:__prefetched__:=this:next //felszedi az oszlopadatokat
-    this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
+
+    if( 0==_sqlite3_column_count(this:__stmthandle__) )
+        //nem select (hanem pl. update)
+        //itt csak selectekkel foglalkozunk
+        //de hagyni is lehetne (működik)
+        
+        this:next //ez kell, hogy tényelegesen végrehajtsa
+        this:close
+        
+        //return this //nem select végrehajtva
+
+        err:=sqlerrorNew()
+        err:operation:="sqlquery.initialize"
+        err:description:="select statement requiered"
+        err:args:={this:__querytext__}
+        err:subsystem:="sql2.sqlite3"
+        break(err)
+    else
+        this:__selectlist__:=array(_sqlite3_column_count(this:__stmthandle__))
+        for n:=1 to len(this:__selectlist__)
+            this:__selectlist__[n]:=_sqlite3_column_name(this:__stmthandle__,n)
+        next
+
+        this:__closestmtidx__:=this:connection:__addstatementtoclose__({||this:__closestmtidx__:=NIL,this:close})
+    end
 
     return this
 
@@ -105,21 +126,9 @@ local n,result,err,retcode:=.f.
     if( this:__stmthandle__==NIL )
         retcode:=.f.
 
-    elseif( this:__prefetched__==.t. )
-        retcode:=.t.
-        this:__prefetched__:=.f.
-
     else
         result:=_sqlite3_step(this:__stmthandle__)
         if( result==SQLITE_ROW )
-
-            if( this:__selectlist__==NIL )
-                //első alkalommal feltöltjük az oszlopneveket
-                this:__selectlist__:=array(_sqlite3_column_count(this:__stmthandle__))
-                for n:=1 to len(this:__selectlist__)
-                    this:__selectlist__[n]:=_sqlite3_column_name(this:__stmthandle__,n)
-                next
-            end
             retcode:=.t.
 
         elseif( result==SQLITE_DONE )
@@ -131,6 +140,7 @@ local n,result,err,retcode:=.f.
             err:operation:="sqlquery.next"
             err:description:=_sqlite3_errmsg(this:onnection:__conhandle__)
             err:subcode:=_sqlite3_errcode(this:connection:__conhandle__)
+            err:subsystem:="sql2.sqlite3"
             break(err)
         end
     end

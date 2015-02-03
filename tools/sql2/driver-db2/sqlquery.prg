@@ -89,8 +89,19 @@ local rc
         break(err)
 
     elseif( 0==(fldcnt:=sql2.db2._db2_numresultcols(this:__stmthandle__)) )  
-        // ? "nem select"
-        this:close // itt csak selectekkel foglalkozunk
+        //? "nem select"
+        //itt csak selectekkel foglalkozunk
+        //de hagyni is lehetne (működik)
+
+        this:close 
+        //return this //nem select végrehajtva
+
+        err:=sqlerrorNew()
+        err:operation:="sqlquery.initialize"
+        err:description:="select statement requiered"
+        err:args:={this:__querytext__}
+        err:subsystem:="sql2.db2"
+        break(err)
         
     else
         // ? "select"

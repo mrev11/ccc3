@@ -1,3 +1,7 @@
+2015.02.03 sqlqueryNew("nonselect") alak mukodesenek egysegesitese.
+  sqlqueryNew("nonselect") minden interfeszben mukodik.
+  Mindenhol egysegesitve az err:subcode-ok beallitas. 
+
 2015.02.02 sql2.postgres.sqlquery atdolgozva.
   Megszunt az automatikus 'declare CURSORID cursor for ...' kiegeszites.
   A program alkalmazkodik ahhoz, hogy a queryben van-e 'declare cursor',

@@ -91,7 +91,7 @@ static void getdiag(SQLSMALLINT htype, SQLHANDLE hndl)
  
         dup(); number(sqlcode);_o_method_subcode.eval(2);pop();  
 
-        dup(); string(CHRLIT("SQL2.DB2"));_o_method_subsystem.eval(2);pop(); 
+        dup(); string(CHRLIT("sql2.db2"));_o_method_subsystem.eval(2);pop(); 
         dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
         dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
     }
@@ -131,7 +131,7 @@ static void pusherror()
 //
 {
     _clp_sqlerrornew(0);
-    dup(); string(CHRLIT("SQL2.DB2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.db2"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }
@@ -142,7 +142,7 @@ static void pushconnecterror()
 //
 {
     _clp_sqlconnecterrornew(0);
-    dup(); string(CHRLIT("SQL2.DB2"));_o_method_subsystem.eval(2);pop(); 
+    dup(); string(CHRLIT("sql2.db2"));_o_method_subsystem.eval(2);pop(); 
     dup(); stringnb(trace->func);_o_method_operation.eval(2);pop();
     dup(); number(ES_ERROR);_o_method_severity.eval(2);pop();  
 }

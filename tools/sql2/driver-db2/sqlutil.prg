@@ -170,7 +170,7 @@ local diag:=sql2.db2._db2_getdiagarr(stmidx) //-> {subcode,desc}
     end
     err:subcode:=diag[1]
     err:description:=diag[2]
-    err:subsystem:="SQL.DB2"
+    err:subsystem:="sql2.db2"
 
     err:description::=strtran(chr(10),";")
     err:description::=strtran(chr(13),"")

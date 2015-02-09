@@ -26,6 +26,13 @@
 #include <codegen.h>
 #include <nodetab.h>
 
+#ifdef WINDOWS  //lock/unlock
+    #include <windows.h>
+    #include <io.h>
+#else
+    #include <sys/file.h>
+#endif
+
 extern ppo2cpp_lexer *lexer;
 
 int headerflag=1;
@@ -134,6 +141,23 @@ static void symbol_search(parsenode *p)
 
 static void write_strtab(FILE *strtab, parsenode *pnode)
 {
+
+//lock
+    int fd=fileno(strtab);
+    if( fd<0 )
+    {
+        return;
+    }
+#ifdef WINDOWS
+    HANDLE fh=(HANDLE)_get_osfhandle(fd);
+    OVERLAPPED ol;
+    memset(&ol,0,sizeof(ol));
+    LockFileEx(fh,LOCKFILE_EXCLUSIVE_LOCK,0,1,0,&ol);
+#else
+    flock(fd,LOCK_EX);
+#endif    
+
+
     const char *p=pnode->text;
     int len=strlen(p);
     if( len>3 )
@@ -165,6 +189,15 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
             fprintf(strtab,"%s<<\"\" from %s (%d)\n",p,inp,pnode->lineno);
         }
     }
+
+//unlock
+#ifdef WINDOWS
+    memset(&ol,0,sizeof(ol));
+    UnlockFileEx(fh,0,1,0,&ol);
+#else
+    flock(fd,LOCK_UN);
+#endif    
+
 }
 
 }//%include

@@ -80,6 +80,7 @@ pushd ccclib; m; popd
 #-------------------
  
 pushd ccctools/build; m; popd
+#pushd ccctools/buildp; m; popd
 pushd ccctools/prg2ppo; m; popd
 pushd ccctools/removecr; m; popd
 pushd ccctools/mklink; m; popd

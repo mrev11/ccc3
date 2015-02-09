@@ -1,4 +1,7 @@
 
+2015.02.09 -- 5.0.19
+  parser.lem: write_strtab-ban flock.
+
 2013.11.23 -- 5.0.18
   breakblock támogatás a finally fordításában
   A finally break helyett break0-t hív,

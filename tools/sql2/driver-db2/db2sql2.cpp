@@ -463,7 +463,7 @@ void _clp__db2_getdata(int argno) // stmidx,colnum,ctype --> adat
                             &lenind);
     db2_statement[stmidx].retcode=rc;
 
-    //printf("\n>>> %d colnum=%d ctype=%d lenind=%3d ",rc,colnum,ctype,lenind );
+    //printf("\n>>> rc=%d colnum=%d ctype=%2d bufsiz=%d lenind=%3d ",rc,colnum,ctype,(int)sizeof(buffer),lenind );
 
     if( rc==SQL_SUCCESS  )
     {
@@ -496,13 +496,14 @@ void _clp__db2_getdata(int argno) // stmidx,colnum,ctype --> adat
                             &lenext);
         db2_statement[stmidx].retcode=rc;
 
-        //printf(" >>> rc=%d lenext=%3d ",rc,lenext );
+        //printf(" >>> rc=%d chrflg=%d lenext=%3d",rc,chrflg,lenext );
 
         if( rc==SQL_SUCCESS  )
         {
             if( lenind>=0 )
             {
-                _retblen(bufext,lenind);
+                //_retblen(bufext,lenind);
+                _rettop();
             }
             else //if(lenind==SQL_NULL_DATA )
             {

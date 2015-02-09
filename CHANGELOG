@@ -1,3 +1,5 @@
+2015.02.09 buildp: uj program, build parhuzamositott valtozata.
+
 2015.02.03 sqlqueryNew("nonselect") alak mukodesenek egysegesitese.
   sqlqueryNew("nonselect") minden interfeszben hibat ad.
   Mindenhol egysegesitve az err:subcode-ok beallitas. 

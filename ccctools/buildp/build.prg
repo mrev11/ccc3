@@ -67,7 +67,7 @@ static mutex_th:=thread_mutex_init()
 static cond_th:=thread_cond_init()
 static thread_count:=0
 
-#define VERSION "1.3.03p"
+#define VERSION "1.3.04p"
 //#define run(x)  qqout("RUN:",x,chr(10));RUN(x)
 
 ****************************************************************************
@@ -191,6 +191,8 @@ local opt:=aclone(argv()),n
         quit
     end
 
+    params_lib()  //before cd .buld/.build 
+
     dirmake("ppo")
     dirmake(s_pobjdir)
     dirmake(".build")
@@ -210,11 +212,10 @@ local opt:=aclone(argv()),n
     if( !left(getenv("BUILD_SRC"),1)==dirsep() )
         putenv("BUILD_SRC="+s_curdir+dirsep()+getenv("BUILD_SRC") )
     end
-    
 
     root()
-    params()
-    build()
+    params_inc() //after cd .buld/.build 
+    build() //cd ../..
     
     ?
 
@@ -339,7 +340,7 @@ local srcroot,d,n
  
 
 ****************************************************************************
-static function params() //paraméterek a fordítónak/linkernek
+static function params_inc() //paraméterek a fordítónak
 
 local txt,set,lst,n
 
@@ -367,6 +368,11 @@ local txt,set,lst,n
     putenv("BUILD_INC="+txt)
     //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildi",txt)
  
+
+****************************************************************************
+static function params_lib() //paraméterek a linkernek
+
+local txt,set,lst,n
  
     //library directories 
 
@@ -396,8 +402,6 @@ local txt,set,lst,n
     end
     //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildb",txt)
     
-    return NIL
-
 
 ****************************************************************************
 static function build()
@@ -1084,14 +1088,14 @@ local sharing:=lower(getenv("BUILD_SHR"))  //"shared" or "static" libraries
 
 local n,i,txt:="" 
 local f0,f1,f2,f3,pf1,pf2,pf3
-    
- 
+
+
     for n:=1 to len(liblist) 
 
         if( empty(f0:=liblist[n]) )
             loop
         end
-        
+
         if( ".lib"$f0 .or. ".a"$f0 .or. ".so"$f0 )
             f1:=f0
             f2:=f0

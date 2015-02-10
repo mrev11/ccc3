@@ -67,7 +67,7 @@ static mutex_th:=thread_mutex_init()
 static cond_th:=thread_cond_init()
 static thread_count:=0
 
-#define VERSION "1.3.04p"
+#define VERSION "1.3.05p"
 //#define run(x)  qqout("RUN:",x,chr(10));RUN(x)
 
 ****************************************************************************
@@ -191,18 +191,17 @@ local opt:=aclone(argv()),n
         quit
     end
 
-    params_lib()  //before cd .buld/.build 
+    params_lib()  //before cd ppo/work.build 
 
     dirmake("ppo")
     dirmake(s_pobjdir)
-    dirmake(".build")
-    if( 0!=dirchange(".build") )
-        ? 'cd .build failed',ferror()
+    if( 0!=dirchange("ppo") )
+        ? 'cd ppo failed',ferror()
         quit
     end
-    dirmake(".build")
-    if( 0!=dirchange(".build") )
-        ? 'cd .build failed',ferror()
+    dirmake("work.build")
+    if( 0!=dirchange("work.build") )
+        ? 'cd work.build failed',ferror()
         quit
     end
     run( "rm -f "+s_objdir )
@@ -214,7 +213,7 @@ local opt:=aclone(argv()),n
     end
 
     root()
-    params_inc() //after cd .buld/.build 
+    params_inc() //after cd ppo/work.build 
     build() //cd ../..
     
     ?
@@ -521,8 +520,8 @@ local d1,f,o,n,i,txt,dep
         thread_join(thread[n] )
     next 
     dirchange("..")
+    run("rm -fr work.build")
     dirchange("..")
-    run("rm -fr .build")
 
     //itt már megvan az összes object
     

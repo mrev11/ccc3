@@ -1,2 +1,2 @@
 @echo off 
-echo Do not run this on Windows!
+echo Can't run on Windows!

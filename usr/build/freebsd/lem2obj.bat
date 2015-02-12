@@ -1,23 +1,26 @@
 #!/bin/bash
 echo LEM2OBJ.BAT $1 $2 
+OUTLEMON=outlemon-$1
+ERROR=error--outlemon-$1
 
-rm error 2>/dev/null
-mkdir ppo 2>/dev/null
+#rm -f error
+rm -f $ERROR
+mkdir -p ppo
 
-#? removecr.exe $2/$1.lem 
 
-#Lemon fordítás
+#Lemon forditas
 
-if lemon.exe -q $2/$1.lem 1>outlemon 2>&1; then
+if ! lemon.exe -q $2/$1.lem 1>$OUTLEMON 2>&1; then
+    touch error
+    mv $OUTLEMON $ERROR
+    rm -f $2/$1.c
+    cat $ERROR
+else    
+    #cat $OUTLEMON
+    rm -f $OUTLEMON
     mv  $2/$1.c  ppo/$1.cpp
-    #C++ fordítás (cpp-->obj)
+    #C++ forditas (cpp-->obj)
     $BUILD_BAT/_compile.b $1 ppo
-    cat outlemon
-else
-    rm  $2/$1.c 2>/dev/null 
-    cp outlemon error;
 fi
 
 echo ----------------------------------------------------------------
-
-

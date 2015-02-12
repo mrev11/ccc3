@@ -1,6 +1,8 @@
-Ugyanaz, mint a korábbi build.exe, 
-csak párhuzamosítja a fordításokat.
+Párhuzamosított build.exe.
 
-Windowson nem működik.
+A párhuzamos futást a BUILD_THR=number_of_threads környezeti 
+változóval lehet bekapcsolni. A default 1 darab szál.
 
-Kísérleti állapotban levő program.
+BUILD_THR=1 esetén lehet használni a régi build scripteket
+és régi ppo2cpp-t. BUILD_THR>1 esetén az új scriptek kellenek
+és legalább 5.0.20-as ppo2cpp.

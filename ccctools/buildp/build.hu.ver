@@ -1,6 +1,21 @@
 
-2015.02.12 -- 1.3.04
-  Induláskor törli az 'error' fájlt.
+2015.02.12 -- 1.4.00  Párhuzamosított build verzió.
+
+  Minden a build által elindított komponenst át kellett
+  alakítani, hogy a munkafájlok között ne legyen névütközés,
+  amikor pl. egyszerre több ppo2cpp.exe vagy cpp2obj.bat fut.
+  Egyelőre csak a linuxos build.bat készlet van átalakítva.
+
+  A párhuzamos futást a BUILD_THR=number_of_threads környezeti 
+  változóval lehet bekapcsolni. A default 1 darab szál.
+
+  BUILD_THR=1 esetén lehet használni a régi build scripteket
+  és régi ppo2cpp-t. BUILD_THR>1 esetén az új scriptek kellenek
+  és legalább 5.0.20-as ppo2cpp.
+  
+  Az új scriptek működnek a régi builddel (1.3.03), kivéve,
+  hogy az esetleges 'error' fájlokat kézzel kell letörölni.
+
 
 2011.05.21 -- 1.3.03
   search_include()-ban dirsep konverzió

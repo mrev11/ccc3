@@ -2,11 +2,14 @@
 echo C2OBJ.BAT $1 $2 
 
 TARGET=$BUILD_OBJ/$1.obj
-CMPOPT=$BUILD_OBJ/compopt
+CMPOPT=$BUILD_OBJ/compopt-$1
+OUTC=outc-$1
+ERROR=error--outc-$1
 
-rm error 2>/dev/null
-mkdir $BUILD_OBJ 2>/dev/null
-rm $CMPOPT 2>/dev/null
+#rm -f error
+rm -f $ERROR
+rm -f $CMPOPT
+mkdir -p $BUILD_OBJ
 
 if ! test -f $CCCDIR/usr/options/$CCCBIN/gccver.opt; then
    gccver.b >$CCCDIR/usr/options/$CCCBIN/gccver.opt 
@@ -19,13 +22,15 @@ if test -f "$BUILD_CFG"; then
     cat $BUILD_CFG >>$CMPOPT 
 fi
  
-#C fordítás (c-->obj)
-if ! gcc `cat $CMPOPT` -o $TARGET  -c $2/$1.c  2>outc; then
-    cp outc error;
-    rm $TARGET 2>/dev/null;
-else
-    cat outc
+#C forditas (c-->obj)
+if ! cc `cat $CMPOPT` -o $TARGET  -c $2/$1.c  2>$OUTC; then
+    touch error
+    cp $OUTC $ERROR
+    rm -f $TARGET
 fi
+
+cat $OUTC
+rm -f $OUTC
 
 echo ----------------------------------------------------------------
 

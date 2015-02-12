@@ -1,12 +1,16 @@
 #!/bin/bash
-#C++ fordítás
+#C++ forditas
 #set -x
 
 TARGET=$BUILD_OBJ/$1.obj
-CMPOPT=$BUILD_OBJ/compopt
-rm error 2>/dev/null
-mkdir $BUILD_OBJ 2>/dev/null
-rm $CMPOPT 2>/dev/null
+CMPOPT=$BUILD_OBJ/compopt-$1
+OUTCPP=outcpp-$1
+ERROR=error--$OUTCPP
+
+#rm -f error
+rm -f $ERROR
+rm -f $CMPOPT 
+mkdir -p $BUILD_OBJ
 
 if ! test -f $CCCDIR/usr/options/$CCCBIN/gccver.opt; then
    gccver.b >$CCCDIR/usr/options/$CCCBIN/gccver.opt 
@@ -19,16 +23,18 @@ if test -f "$BUILD_CFG"; then
     cat $BUILD_CFG >>$CMPOPT 
 fi
  
-if c++ `cat $CMPOPT` -o $TARGET -c $2/$1.cpp 2>outcpp; then
+if c++ `cat $CMPOPT` -o $TARGET -c $2/$1.cpp 2>$OUTCPP; then
 
     if [ [$BUILD_CPP] != [] ]; then
-        mkdir $BUILD_CPP 2>/dev/null;
+        mkdir -p $BUILD_CPP;
         cp -pf $2/$1.cpp $BUILD_CPP;
     fi;
 
-    cat outcpp
-
 else
-    cp outcpp error;
+    touch error
+    cp $OUTCPP $ERROR
+    rm -f $TARGET
 fi
 
+cat $OUTCPP
+rm -f $OUTCPP

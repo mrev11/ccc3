@@ -1,12 +1,15 @@
 #!/bin/bash
 echo PRG2OBJ.BAT $1 $2 
- 
-rm error 2>/dev/null
-mkdir ppo 2>/dev/null
+
+#rm -f error 
+rm -f error--outpre-$1
+rm -f error--ppo2cpp-$1
+rm -f error--outcpp-$1
+mkdir -p ppo
 
 #(1) Preprocesszor (prg-->ppo)
-CMPOPT=ppo/prg2ppo
-rm $CMPOPT 2>/dev/null
+CMPOPT=ppo/prg2ppo-$1
+rm -f $CMPOPT
 
 echo $BUILD_PRE >>$CMPOPT
 for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
@@ -15,37 +18,43 @@ echo -dARROW     >>$CMPOPT
 echo -d_CCC_     >>$CMPOPT
 echo -d_CCC3_    >>$CMPOPT
 echo -d_UNIX_    >>$CMPOPT 
-echo -d_NETBSD_ >>$CMPOPT 
+echo -d_NETBSD_  >>$CMPOPT 
 echo -ustd1.ch   >>$CMPOPT
 
-if [ "$CCC_USE_CCCPP" == "y" -o "$CCC_USE_CCCPP" == "yes" ]; then
-   PRG2PPO_EXE="cccpp -p"
+
+#(1) Elofeldolgozas (prg-->ppo)
+
+PRG2PPO_EXE=prg2ppo.exe
+
+if ! $PRG2PPO_EXE $2/$1.prg -oppo/$1.ppo @$CMPOPT >outpre-$1; then
+    touch error;
+    cat outpre-$1;
+    echo
+    mv  outpre-$1  error--outpre-$1;
+
 else
-   PRG2PPO_EXE=prg2ppo.exe
-fi
+    rm outpre-$1;
 
-if $PRG2PPO_EXE $2/$1.prg -oppo/$1.ppo @$CMPOPT >outpre; then
-
-    #(2) CCC fordítás (ppo-->cpp)
+    #(2) CCC forditas (ppo-->cpp)
 
     pushd ppo >/dev/null
-    rm $1.cpp 2>/dev/null
-    echo $2/$1.prg >ppo2cpp
+    rm -f $1.cpp
+    echo $2/$1.prg >ppo2cpp-$1
  
-    if ppo2cpp.exe $1.ppo 2>>ppo2cpp; then
+    if ! ppo2cpp.exe $1.ppo 2>>ppo2cpp-$1; then
         popd >/dev/null;
-
-        #(3) C++ fordítás (cpp-->obj)
-        $BUILD_BAT/_compile.b $1 ppo;
+        touch error;
+        cat ppo/ppo2cpp-$1;
+        mv  ppo/ppo2cpp-$1 error--ppo2cpp-$1;
 
     else
-        cp ppo2cpp ../error;
         popd >/dev/null;
-    fi;
+        rm -f ppo/ppo2cpp-$1;
 
-else
-    cp outpre error;
-fi
+        #(3) C++ forditas (cpp-->obj)
+        $BUILD_BAT/_compile.b $1 ppo;
+    fi;
+fi;
 
 echo ----------------------------------------------------------------
 

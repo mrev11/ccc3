@@ -33,7 +33,7 @@ extern void  ParseFree(void*,void(*)(void*));
 extern void  ParseTrace(FILE*,const char*); 
 extern void  Parse(void*,int,parsenode*);  //3th arg: %token_type {parsenode*} 
 
-static const char *version_number="5.0.19";
+static const char *version_number="5.0.20";
 
 ppo2cpp_lexer *lexer;
 
@@ -61,6 +61,9 @@ int main(int argc, char**argv)
     int fd=0;
     char input[256]="";
     char output[256]="";
+    char ppo2cpp_code[256]="";
+    char ppo2cpp_diag[256]="";
+    char ppo2cpp_meth[256]="";
     lexer=new ppo2cpp_lexer(fd);
     int quiet=0, veronly=0;
 
@@ -137,10 +140,50 @@ int main(int argc, char**argv)
             }
             strcat(output,".cpp");
         }
+
+//        strcpy(ppo2cpp_code,input);strcat(ppo2cpp_code,".code");
+//        strcpy(ppo2cpp_diag,input);strcat(ppo2cpp_diag,".diag");
+//        strcpy(ppo2cpp_meth,input);strcat(ppo2cpp_meth,".meth");
+
+        {//code
+            char *p;
+            strcpy(ppo2cpp_code,input);
+            if( (0!=(p=strrchr(ppo2cpp_code,'.'))) && 
+                (0==strchr(p,'\\')) && 
+                (0==strchr(p,'/')) )
+            {
+                *p=0x00;
+            }
+            strcat(ppo2cpp_code,".code");
+        }
+
+        {//diag
+            char *p;
+            strcpy(ppo2cpp_diag,input);
+            if( (0!=(p=strrchr(ppo2cpp_diag,'.'))) && 
+                (0==strchr(p,'\\')) && 
+                (0==strchr(p,'/')) )
+            {
+                *p=0x00;
+            }
+            strcat(ppo2cpp_diag,".diag");
+        }
+
+        {//meth
+            char *p;
+            strcpy(ppo2cpp_meth,input);
+            if( (0!=(p=strrchr(ppo2cpp_meth,'.'))) && 
+                (0==strchr(p,'\\')) && 
+                (0==strchr(p,'/')) )
+            {
+                *p=0x00;
+            }
+            strcat(ppo2cpp_meth,".meth");
+        }
     }
 
-    code=fopen("ppo2cpp.code","w");
-    diag=fopen("ppo2cpp.diag","w");
+    code=fopen(ppo2cpp_code,"w");
+    diag=fopen(ppo2cpp_diag,"w");
 
     fundecl_ini();
     flddecl_ini();
@@ -171,7 +214,7 @@ int main(int argc, char**argv)
     // azután  kell kiírni metdecl_list-et
     // csakhogy metdecl_list-nek járuléka van fundecl_list-ben
     // ezért kétszer kell futtatni (az első kimenet ppo2cpp.meth-be)
-    void *retcode=freopen("ppo2cpp.meth","w+",stdout); //warning: ignoring return value
+    void *retcode=freopen(ppo2cpp_meth,"w+",stdout); //warning: ignoring return value
     metdecl_list();
 
     if( *output )
@@ -186,7 +229,7 @@ int main(int argc, char**argv)
     flddecl_list();
     metdecl_list();
 
-    code=fopen("ppo2cpp.code","r");
+    code=fopen(ppo2cpp_code,"r");
     namespace_begin(current_namespace);
     int c;
     while( EOF!=(c=fgetc(code)) )
@@ -200,9 +243,9 @@ int main(int argc, char**argv)
     
     if( !debug )
     {
-        remove("ppo2cpp.code");
-        remove("ppo2cpp.diag");
-        remove("ppo2cpp.meth");
+        remove(ppo2cpp_code);
+        remove(ppo2cpp_diag);
+        remove(ppo2cpp_meth);
     }
 
     return 0;

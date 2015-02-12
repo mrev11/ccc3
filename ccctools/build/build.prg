@@ -58,7 +58,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.03"
+#define VERSION "1.3.04"
 
 ****************************************************************************
 function main()
@@ -452,6 +452,8 @@ local d1,f,o,n,i,txt,dep
         next
         ?
     end
+
+    ferase("error")
  
     for n:=1 to len(todo)
         makeobj(todo[n])

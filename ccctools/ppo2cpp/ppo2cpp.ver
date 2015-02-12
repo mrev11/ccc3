@@ -1,3 +1,6 @@
+2015.02.11 -- 5.0.20
+  Munkafájlok (ppo2cpp_code, ppo2cpp_diag, ppo2cpp_meth) neve 
+  a forrásból képezve, hogy ne ütközzenek.
 
 2015.02.09 -- 5.0.19
   parser.lem: write_strtab-ban flock.

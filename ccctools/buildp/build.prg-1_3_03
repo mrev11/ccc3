@@ -58,12 +58,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.4.00"
-
-static mutex_count:=thread_mutex_init()
-static cond_count:=thread_cond_init()
-static thread_count:=0
-static maxthread:=1
+#define VERSION "1.3.03"
 
 ****************************************************************************
 function main()
@@ -73,13 +68,8 @@ local opt:=aclone(argv()),n
 #define OPTION(x)  x==left(opt[n],2) 
 #define VALUE()    substr(opt[n],3)
 
-    if( file(getenv("BUILD_BAT")+dirsep()+"multithread_support") )
-        maxthread:=max(1,val(getenv("BUILD_THR")))
-    end
-
     if( !s_quiet )
         ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
-        ?? " (Thr"+alltrim(str(maxthread))+")"
         ?
     end
 
@@ -381,7 +371,6 @@ local mmd:={}     //main-t tartalmazó objectek (csak prg-ből)
 local todo:={}    //mit kell csinálni
 
 local d1,f,o,n,i,txt,dep
-local thread:={},th
 
 
     if( s_main!=NIL )
@@ -464,25 +453,9 @@ local thread:={},th
         ?
     end
  
-    ferase("error")
     for n:=1 to len(todo)
-        thread_mutex_lock(mutex_count)
-        ++thread_count
-        while( thread_count>MAXTHREAD )
-            thread_cond_wait(cond_count,mutex_count)
-        end
-        thread_mutex_unlock(mutex_count)
-
-        th:=thread_create({|i|makeobj(todo[i])},n)
-        if( fext(todo[n][1])==".obj" )
-            aadd(thread,th)
-        else
-            thread_join(th)  //pl. egy say-t meg kell várni
-        end
+        makeobj(todo[n])
     next
-    for n:=1 to len(thread)
-        thread_join(thread[n] )
-    next 
 
     //itt már megvan az összes object
     
@@ -493,39 +466,18 @@ local thread:={},th
             makeso(s_libnam,lib)
         end
         
-        //for n:=1 to len(mmd)
-        //    makeexe1(mmd[n],s_libnam)
-        //next
-        manage_threads({|x|makeexe1(x,s_libnam)},mmd) 
+        for n:=1 to len(mmd)
+            makeexe1(mmd[n],s_libnam)
+        next
 
     else
-        //for n:=1 to len(mmd)
-        //    makeexe(mmd[n],lib)
-        //next
-        manage_threads({|x|makeexe(x,lib)},mmd) 
+        for n:=1 to len(mmd)
+            makeexe(mmd[n],lib)
+        next
     end
  
     return NIL
 
-
-
-****************************************************************************
-static function manage_threads(blk,a)
-local thread:={},th,n
-    for n:=1 to len(a)
-        thread_mutex_lock(mutex_count)
-        ++thread_count
-        while( thread_count>MAXTHREAD )
-            thread_cond_wait(cond_count,mutex_count)
-        end
-        thread_mutex_unlock(mutex_count)
-
-        th:=thread_create({|i|eval(blk,a[i])},n)
-        aadd(thread,th)
-    next
-    for n:=1 to len(thread)
-        thread_join(thread[n] )
-    next 
 
 
 ****************************************************************************
@@ -767,11 +719,6 @@ local objlist, xobj
 
         run1 (torun)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -854,11 +801,6 @@ local objdir:=getenv("BUILD_OBJ"), n
     if( update )
         run1 (torun)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -931,11 +873,6 @@ local n,p1,p2
     
         run1(torun+" "+p1+" "+p2)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -944,23 +881,9 @@ local n,p1,p2
 ****************************************************************************
 static function run1(cmd)
 
-static mutex_out:=thread_mutex_init()
-static count:=0
-local runtmp,out
-
     if( !s_dry )
 
-        thread_mutex_lock(mutex_out)
-        runtmp:="log-runtmp"+alltrim(str(++count))
-        thread_mutex_unlock(mutex_out)
-
-        run(cmd+" >"+runtmp)
-        out:=memoread(runtmp)
-        ferase(runtmp)
-
-        thread_mutex_lock(mutex_out)
-        ?? out
-        thread_mutex_unlock(mutex_out)
+        run(cmd)
 
         if( file("error") )
             #ifdef _UNIX_
@@ -968,9 +891,8 @@ local runtmp,out
             #else
               run ("type error")
             #endif
-            //?
-            //quit
-            s_dry:=.t.
+            ?
+            quit
         end
     end
  

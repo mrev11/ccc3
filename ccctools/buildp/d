@@ -1,0 +1,2 @@
+#!/bin/bash
+diff build.prg-1_3_03 build.prg | less

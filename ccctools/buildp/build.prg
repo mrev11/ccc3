@@ -58,12 +58,12 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.4.00"
+#define VERSION "1.4.01"
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
 static thread_count:=0
-static maxthread:=1
+static maxthread:=4
 
 ****************************************************************************
 function main()
@@ -73,8 +73,10 @@ local opt:=aclone(argv()),n
 #define OPTION(x)  x==left(opt[n],2) 
 #define VALUE()    substr(opt[n],3)
 
-    if( file(getenv("BUILD_BAT")+dirsep()+"multithread_support") )
-        maxthread:=max(1,val(getenv("BUILD_THR")))
+    if( !file(getenv("BUILD_BAT")+dirsep()+"multithread_support") )
+        maxthread:=1
+    elseif( 1<=val(getenv("BUILD_THR"))  )
+        maxthread:=val(getenv("BUILD_THR"))
     end
 
     if( !s_quiet )

@@ -1,7 +1,7 @@
 Párhuzamosított build.exe.
 
 A párhuzamos futást a BUILD_THR=number_of_threads környezeti 
-változóval lehet bekapcsolni. A default 1 darab szál.
+változóval lehet bekapcsolni. A default 4 darab szál.
 
 BUILD_THR=1 esetén lehet használni a régi build scripteket
 és régi ppo2cpp-t. BUILD_THR>1 esetén az új scriptek kellenek

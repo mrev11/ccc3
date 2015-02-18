@@ -1,4 +1,9 @@
 
+2015.02.14 -- 1.4.01  maxthread default 4.
+  maxthread defaultja 4
+  ha nincs BUILD_BAT/multithread_support file, akkor maxthread=1
+  ha meg van adva BUILD_THR, akkor maxthread=BUILD_THR
+
 2015.02.12 -- 1.4.00  Párhuzamosított build verzió.
 
   Minden a build által elindított komponenst át kellett

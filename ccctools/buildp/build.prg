@@ -58,7 +58,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.4.01"
+#define VERSION "1.4.02"
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -383,7 +383,6 @@ local mmd:={}     //main-t tartalmazó objectek (csak prg-ből)
 local todo:={}    //mit kell csinálni
 
 local d1,f,o,n,i,txt,dep
-local thread:={},th
 
 
     if( s_main!=NIL )
@@ -475,16 +474,23 @@ local thread:={},th
         end
         thread_mutex_unlock(mutex_count)
 
-        th:=thread_create({|i|makeobj(todo[i])},n)
-        if( fext(todo[n][1])==".obj" )
-            aadd(thread,th)
-        else
-            thread_join(th)  //pl. egy say-t meg kell várni
+        thread_create_detach({|i|makeobj(todo[i])},n)
+        
+        if( !fext(todo[n][1])==".obj" .and. n<len(todo) .and. fext(todo[n+1][1])==".obj" )
+            //mindent megvár
+            thread_mutex_lock(mutex_count)
+            while( thread_count>0 )
+                thread_cond_wait(cond_count,mutex_count)
+            end
+            thread_mutex_unlock(mutex_count)
         end
     next
-    for n:=1 to len(thread)
-        thread_join(thread[n] )
-    next 
+    //mindent megvár
+    thread_mutex_lock(mutex_count)
+    while( thread_count>0 )
+        thread_cond_wait(cond_count,mutex_count)
+    end
+    thread_mutex_unlock(mutex_count)
 
     //itt már megvan az összes object
     

@@ -1,4 +1,6 @@
 
+2015.02.22 -- 1.4.02 resource-ok forditasa is parhuzamositva.
+
 2015.02.14 -- 1.4.01  maxthread default 4.
   maxthread defaultja 4
   ha nincs BUILD_BAT/multithread_support file, akkor maxthread=1

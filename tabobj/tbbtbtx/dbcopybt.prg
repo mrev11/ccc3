@@ -109,8 +109,8 @@ local msg,total,cnt:=0
 ******************************************************************************
 #else //OPTIMIZED aktuális változat, a kulcsokat rendezi
 
-//#define ORDERBY_RECNO     //megtartja a rekordok eredeti sorrendjét
-#define ORDERBY_PAGE      //elveszhet a rekordok eredeti sorrendje
+#define ORDERBY_RECNO     //megtartja a rekordok eredeti sorrendjét
+//#define ORDERBY_PAGE      //elveszhet a rekordok eredeti sorrendje
  
 //2002.12.18 memók packolása (opcionális)
 #define MEMOPACK  //packolja-e a memókat?

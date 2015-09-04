@@ -1,6 +1,20 @@
 
 #ifdef _HISTORY_
 
+2015.09.03 -- 1.1.18
+  mpool.cpp
+    reszletesebb debug info
+    mpool_put-ben CRC iras, mpool_get-ben CRC ellenorzes
+  btcopy.prg
+    packolas ORDERBY_RECNO algoritmussal
+    ORDERBY_PAGE: 
+       CRC hibas filet egyaltalan nem tud packolni,
+       hiszen minden lapot be kell olvasni,
+       hibas lapbol is kell info (index vagy adat)
+    ORDERBY_RECNO: 
+       CRC hibas filet is tud packolni,
+       ha a recno index es az adatlapok hibatlanok
+
 2013.09.26 -- 1.1.17"
    tabKeyCompose() átírva.
    A korábbi változat oszlopblokkal olvasta a kulcsszegmenseket.

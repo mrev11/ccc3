@@ -1,3 +1,9 @@
+2015.09.24 week() implementacio
+  week() -> 1-53, het sorszama az evben, CA-Tools 
+  isoweek() -> 1-53, het sorszama az evben, ISO kompatibilis 
+  isleap() -> .t./.f., szokoev, CA-Tools 
+
+
 2014.01.26 str.cpp ujrairva.
 
 2014.01.25 malloc.h megszuntetve

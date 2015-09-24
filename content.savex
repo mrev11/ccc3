@@ -1,6 +1,5 @@
 -r:.svn:.git:
 -r:ppo:backup.tmp:semaphor.tmp:html:dvi:
--r:exe-ora:exe-pg:exe-sqlite3:
 -r:code_generated:
 
 
@@ -15,6 +14,7 @@
 -x.obj.o.lib.so.exe.bak.a.hpp.dll.exp.log.pyc.class.jar.cer.
 -x.toc.aux.dvi.lj.
 -x.out.rul.
+-x.och.cls.
 
 
 -lxcommit-message
@@ -48,15 +48,15 @@
 -likeymap.z
  
 
-#generálódnak
+#generalodnak
 #-plxtools/sql2/test/testdata_lib/*.tds
 
-#instalállódnak
+#installalodnak
 -plxusr/include/cccgtk.h
 -plxusr/include/gdk.ch
 -plxusr/include/gtk.ch
 -plxusr/bin/$(CCCUNAME)/lempar.c
-
+-plxusr/include/objgen.ch
 
 -plicontent*.savex
 

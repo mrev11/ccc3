@@ -1,3 +1,8 @@
+2015.09.24 week() implementacio
+  week() -> 1-53, het sorszama az evben, CA-Tools 
+  isoweek() -> 1-53, het sorszama az evben, ISO kompatibilis 
+  isleap() -> .t./.f., szokoev, CA-Tools 
+
 2015.09.03 serult bt filek jobb vedelme
   mpool.cpp: mpool_put-ben CRC iras, mpool_get-ben CRC ellenorzes
   btcopy.prg: packolas ORDERBY_RECNO algoritmussal

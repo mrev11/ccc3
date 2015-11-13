@@ -1,6 +1,9 @@
 
 #ifdef _HISTORY_
 
+2015.11.12 -- 1.1.19
+  mpool.cpp warning javitas
+
 2015.09.03 -- 1.1.18
   mpool.cpp
     reszletesebb debug info

@@ -1,3 +1,6 @@
+2015.11.12
+  mpool.cpp warning javitas
+
 2015.09.24 week() implementacio
   week() -> 1-53, het sorszama az evben, CA-Tools 
   isoweek() -> 1-53, het sorszama az evben, ISO kompatibilis 

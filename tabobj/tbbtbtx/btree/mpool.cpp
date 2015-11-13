@@ -250,7 +250,7 @@ void *mpool_get(MPOOL *mp, pgno_t pgno)
     }
     else
     {
-        fprintf(stderr,"corrupt page in fd=%d pgno=%d(%x) at offset %lx\n", mp->fd, pgno, code, ((off_t)pgno)*mp->pagesize );
+        fprintf(stderr,"corrupt page in fd=%d pgno=%d(%x) at offset %lx\n", mp->fd, pgno, code, ((unsigned long)pgno)*mp->pagesize );
         //raise(SIGABRT);
         raise(SIGTERM);
     }

@@ -99,14 +99,31 @@ int yy_input(char *buf, int *result, int max_size)
         c=getc(yyin);
     }
 
+    static int eof_reached=0;
+
     if( c!=EOF )
     {
+        eof_reached=0;
         buf[0]=c;
         *result=1;
     }
     else
     {
-        *result=YY_NULL;
+        if(eof_reached==0)
+        {
+            //mesterséges \n a file végén
+            //néha gond, ha az utolsó sor végén nincs \n
+            //ilyen eset pl. ? //<<EOF>>
+            //mert \n hiánya miatt nem illeszkedik a COMMENT1 szabály
+
+            eof_reached=1;
+            buf[0]='\n';   //mesterséges \n
+            *result=1;
+        }
+        else
+        {
+            *result=YY_NULL;
+        }
     }
     
     //printf("%c",c);

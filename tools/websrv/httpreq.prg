@@ -56,14 +56,21 @@ local line1
     #ifdef DEBUG0
         ? "<<<<< recv <<<<<<<<<<<<<<<"
         ? this:req
+        ? "<<<<<"
     #endif
 
     line1:=left(this:req,at(bin(10),this:req))
     line1:=strtran(line1,bin(13))
     line1:=strtran(line1,bin(10))
+    if( !a"HTTP"$line1 )//minimal syntax check
+        return NIL
+    end
     this:line1:=line1
-
     line1:=split(this:line1," ") 
+    if( len(line1)<2 )//minimal syntax check
+        return NIL
+    end
+ 
     this:op  := line1[1]
     this:url := line1[2] //dirsep=="/"
 

@@ -1,7 +1,10 @@
 
-#define VERSION "2.4.06"
+#define VERSION "2.4.07"
 
 #ifdef HISTORY
+2.4.07 -- 2015.12.14
+    minimális szintaxis ellenőrzés httpreq--ben.
+
 2.4.06 -- 2010.05.25
     if-modified-since header kezelése.
 

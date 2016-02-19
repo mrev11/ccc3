@@ -16,3 +16,4 @@
 -fPIC
 -Wall
 -Wno-unused
+-Wno-trigraphs

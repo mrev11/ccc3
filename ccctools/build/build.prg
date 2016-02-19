@@ -33,7 +33,7 @@ static s_version := .f.
  
 static s_debug:=.f.
 static s_dry:=.f.
-static s_primary:=".y.lem.lex.prg.cpp.c.asm."
+static s_primary:=".y.lem.lex.prg.cpp.c.asm.tds."
 
 static s_libabs:=.t. //minden platformon abszolút lib specifikációk
  
@@ -50,6 +50,7 @@ static s_rules:={;
 {".asm",".obj"},;
 {".c"  ,".obj"},;
 {".cpp",".obj"},;
+{".tds",".obj"},;
 {".prg",".obj"},;
 {".y"  ,".obj"},;
 {".lem",".obj"},;
@@ -58,7 +59,7 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.04"
+#define VERSION "1.3.05" // 2016.02.19 tds2prg tamogatas
 
 ****************************************************************************
 function main()

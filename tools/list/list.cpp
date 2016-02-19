@@ -239,7 +239,9 @@ static void header(int percent)
 {
     char header[256];
     sprintf(header," %s  %d%%",filename,percent);
-    writetext(0,0,MAXCOL,header,0x37);
+    //writetext(0,0,MAXCOL,header,0x37);
+    //writetext(0,0,MAXCOL,header,0xe0);
+    writetext(0,0,MAXCOL,header,0x70);
     //setcaption(header,strlen(header)); //ez is működik
 }
 

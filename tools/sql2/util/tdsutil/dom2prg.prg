@@ -20,8 +20,9 @@
 
 namespace tdsutil   fpath fname
 
-#define PROGRAM "dom2prg 1.3.02"
-//2015.02.01:1.3.01: mutex védelem az osztály regisztrálása körül
+#define PROGRAM "dom2prg 1.3.03"
+//2016.02.19:1.3.03: egyedi tmp fájl a párhuzamosíthatóság érdekében
+//2015.02.01:1.3.02: mutex védelem az osztály regisztrálása körül
 //2011.03.06:1.3.01: coldef primkey-be rakásakor beállítódik az új keyseg attribútum
 
 
@@ -124,7 +125,7 @@ local err
     outfile:=fpath(fspec)+fname(fspec)+".prg"
     ferase(outfile)
     
-    set printer to outdom2prg
+    set printer to (outfile+".tmp") 
     set printer on
     set console off
     
@@ -306,7 +307,7 @@ local err
     set printer off
     set printer to
     
-    frename("outdom2prg",outfile)
+    frename(outfile+".tmp",outfile)
 
     return NIL
 

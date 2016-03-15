@@ -1,3 +1,9 @@
+2016.03.12
+  ncurses-es terminálban nonl() mód.
+
+2016.03.10
+  swrite atirva 3 parameteresre fwrite mintajara.
+
 2016.02.19
   build.exe tamogatja a tds2prg forditast.
   tds2prg.exe javitva a parhuzamosithatosag erdekeben.

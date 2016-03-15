@@ -224,6 +224,7 @@ int main(int argc, char *argv[])
     atexit(bye);
     cbreak();
     noecho();
+    nonl();
     getmaxyx(stdscr,wheight,wwidth);
     start_color();
     initcoltrans();

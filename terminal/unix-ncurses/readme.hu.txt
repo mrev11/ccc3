@@ -95,3 +95,51 @@ Mindezen hibák miatt az ncterm csak szükségmegoldásként jön számításba,
 ha az X-es terminál nem áll rendelkezésre. 
 
 
+nl() vs. nonl() mód
+-------------------
+
+Azt írja a man, hogy nl() bekapcsolja, nonl() kikapcsolja
+a kimeneten az nl->crnl konverziót:
+
+   The  nl and nonl routines control whether the underlying
+   display device translates the return key into newline on
+   input, and whether it translates newline into return and
+   line-feed on output.  Initially, these  translations  do
+   occur.
+
+Nem így van! Minden esetben az ncurses-es programok induláskor
+KIKAPCSOLJÁK az nl->crnl konverziót. Azt hogy egy terminálban
+be van-e kapcsolva a konverzió az stty programmal lehet megnézni.
+
+   ssty -F /dev/pts/n  -a | grep onlcr
+   
+(n-edik pts). Ha be van kapcsolva, akkor 'onlcr' van a kimeneten,
+ha nincs bekapcsolva, akkor '-onlcr'. Ellenőrizhető, hogy akár
+meg van híva nl() vagy nonl(), akár nincs, az ncurses-es program 
+pszeudo terminálja -onlcr állapotban van. Az ncurses-es program
+kilépéskor visszaállítja a terminált a default onlcr módba.
+(Szintén az ssty-vel ellenőrizhető). Ha a visszaállítás elmarad,
+akkor lép fel az ismert jelenség, amikor is a parancsor kurzora 
+nem talál vissza balra, hanem mindig csak jobbra és lefele halad.
+
+Az nl() és nonl() igazi jelentése: 
+
+nl módban a kurzor lefele mozgatására olyan kód generálódik,
+ami használja a \n vezérlő karaktert, és FELTÉTELEZI, hogy a 
+terminál nem végez \n->\r\n konverziót. Ha mégis végez, akkor 
+a generált kód rossz lesz. Például az ilyen kódot fájlba mentve, 
+majd a fájlt konvertáló terminálba cat-olva hibás képet kapunk.
+
+nonl módban a könyvtár a kurzor mozgatására NEM HASZNÁL \n-t,
+hanem konkrétan megadott sorokra pozicionál. Ennek az az előnye, 
+hogy nem számít, vajon a terminál végez-e \n->\r\n-t. Az ilyen 
+kimenetet el lehet menteni, majd cat-olni, nem romlik el. 
+
+Célszerű tehát nonl módot használni.
+
+
+  
+
+
+
+

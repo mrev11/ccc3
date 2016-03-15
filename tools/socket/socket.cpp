@@ -170,6 +170,7 @@ void _clp_setsockopt(int argno)
 //---------------------------------------------------------------------------
 void _clp_swrite(int argno)
 {
+#if 0 //atírva 3 parameteresre fwrite mintajara
     CCC_PROLOG("swrite",2);
     str2bin(base+1);
     int s     = _parni(1);      //socket number
@@ -177,6 +178,49 @@ void _clp_swrite(int argno)
     int blen  = _parblen(2);    //number of bytes to write
     _retni( socket_write(s,buf,blen) );
     CCC_EPILOG();
+#endif
+
+    CCC_PROLOG("swrite",3);
+    int s=_parni(1); //socket number
+
+    if( ISSTRING(2) )
+    {
+        //Ha a C típust írunk,
+        //és meg van adva a hossz,
+        //akkor a hosszt nem byte-ban, 
+        //hanem karakterben szamoljuk.
+
+        if( !ISNIL(3) )
+        {
+            //Ha hossz is meg van adva,
+            //akkor az str2bin elott csonkitunk,
+            //majd a hosszt atallitjuk NIL-re.
+
+            double dlen=_parnd(3);
+            unsigned long len=min(STRINGLEN(base+1),dlen<0?0:D2ULONG(dlen));
+            STRINGLEN(base+1)=len;
+            (base+2)->type=TYPE_NIL;
+        }
+        str2bin(base+1);
+    }
+
+    char *buf = _parb(2); //buffer to write
+    binarysize_t cnt = _parblen(2); //number of bytes to write
+
+    if( ISNUMBER(3) )
+    {
+        double dcnt=_parnd(3);
+        cnt=min(cnt, D2ULONGX(dcnt) );
+    }
+
+    _retni( socket_write(s,buf,cnt) );
+    CCC_EPILOG();
+
+    //Az egyszeru eset, amikor a bemenet bytearray ("X").
+    //Ha a bemenet "C" string, akkor azt konvertalja "X"-re.
+    //Ha ilyenkor meg van adva a hossz is , azzal az str2bin 
+    //elott csonkit, majd a konvertalt bytearray egeszet irja ki.
+
 }    
  
 //---------------------------------------------------------------------------

@@ -19,5 +19,10 @@
  */
 
 
-extern void inkeymap_init();
-extern int  inkeymap_find_sequence(char *sequence, int seqlen);
+extern void inkeymap_init(void);
+extern int inkeymap_find_sequence(char *sequence, int seqlen);
+
+
+#define NOT_A_SEQUENCE     9999   //nem lehet ilyen inkey code
+#define MAYBE_A_SEQUENCE      0
+

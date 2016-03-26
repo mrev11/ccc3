@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export INKEYMAP=`pwd`/INKEYMAP-xfce4
+
+zc $1

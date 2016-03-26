@@ -1,2 +1,4 @@
 #!/bin/bash
-bapp_unix0.b -mtestkey -mlearnkey -mshowseq
+bapp_unix0.b @parfile.bld
+
+

@@ -18,15 +18,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define WAIT_MILLISEC 25 //lokálisan 25, távolról 100
-#define ISESCAPE(k)  ((k)==0x1b || (k)==0xc2 || (k)==0xc3)
- 
-#include <termios.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <termios.h>
 #include <fcntl.h>
 #include <sys/time.h>
 
+#include <inkey.ch>
+#include <inkeymap.h>
 
+int readkey__called_from_learnkey=0;
+
+
+#define WAIT_MILLISEC 100
+#define ISESCAPE(k)  ((k)==0x1b || (k)==0xc5 || (k)==0xc3)
+
+
+//---------------------------------------------------------------------------
 static termios t0;
 
 static void restore_attr()
@@ -58,22 +68,14 @@ static void set_attr()
     }
 }
 
+
 //---------------------------------------------------------------------------
-static int __readkey()
+int __readkey()
 {
     set_attr();
 
-    static int esc=0;
     int key=0;
-    
-    if( esc )
-    {
-        key=esc;
-        esc=0;
-        return key; 
-    }
 
-    int fd=0;
     struct timeval t;
     t.tv_sec=0;
     t.tv_usec=WAIT_MILLISEC*1000;
@@ -83,25 +85,85 @@ static int __readkey()
     if( 0<select(1,&fs,NULL,NULL,&t) )
     {
         char c=0;
-        if( 0==read(fd,&c,1) )
+        if( 0==read(0,&c,1) )
         {
             //readable but no input
             //e.g. process in background 
             exit(0);
         }
-        
         key=0xff&(int)c;
-
-        if( ISESCAPE(key) )
-        {
-            //esc elé beszúrunk egy plusz 0-t.
-
-            esc=key;
-            key=0;
-        }
     }
-
+    
+    //printf("<%d>",key);fflush(0);
     return key; 
 }
  
+
 //---------------------------------------------------------------------------
+int readkey()  //API
+{
+    char sequence[1024];
+    int seqlen=0;
+    int escape=0;    
+    sequence[seqlen]=0;
+    
+    while(1)
+    {
+        int key=__readkey();
+        
+        if( key==0 )
+        {
+            if( readkey__called_from_learnkey!=0 && escape!=0 )
+            {
+                printf("%s",sequence); //tanuló módban printel
+            }
+            return escape; //szóló escape vagy 0
+        }
+        else if(ISESCAPE(key))
+        {   
+            escape=key;
+            seqlen=0;
+            sprintf(sequence+seqlen,"%02x",(unsigned)key);
+            seqlen+=2;
+            sequence[seqlen]=0;
+            continue; 
+        }
+        else if( seqlen>0 )
+        {
+            sprintf(sequence+seqlen,"%02x",(unsigned)key);
+            seqlen+=2;
+            sequence[seqlen]=0;
+        
+            if( readkey__called_from_learnkey!=0 )
+            {
+                continue; //tanuló módban nem keres
+            }
+            
+            escape=0;
+
+            int code=inkeymap_find_sequence(sequence,seqlen); //inkey code? 
+            
+            if( code==MAYBE_A_SEQUENCE  )
+            {
+                continue;
+            }
+            else if( code==NOT_A_SEQUENCE )
+            {
+                //clear input
+                while(__readkey()!=0);
+                return 0; 
+            }
+            else //found a sequence
+            {
+                return code;
+            }
+        }
+        else
+        {
+            return key==127 ? K_BS:key;
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+

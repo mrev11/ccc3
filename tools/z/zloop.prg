@@ -28,9 +28,9 @@ local key
 local kmark:={K_ALT_END,K_ALT_HOME,K_ALT_PGDN,K_ALT_PGUP,;
               K_ALT_RIGHT,K_ALT_LEFT,K_ALT_UP,K_ALT_DOWN,;
               K_ALT_C,K_ALT_X,K_ALT_V,;
-              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_F12}
+              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_F12,K_SH_F12}
 
-local screen              
+local screen
               
     if( this:actrow>len(this:atxt) )
 
@@ -109,6 +109,19 @@ local screen
                     setcursor(0)
                     screen:=savescreen()
                     run( "ss '"+this:markedstring+"'" )
+                    restscreen(,,,,screen)
+                    setcursor(1)
+                #endif
+            end
+
+        elseif( key==K_SH_F12 )    
+            if( !empty(this:markedstring) )
+                #ifndef _UNIX_
+                    run( "start ss '"+esc(this:markedstring)+"'" )
+                #else
+                    setcursor(0)
+                    screen:=savescreen()
+                    run( "ss '"+esc(this:markedstring)+"'" )
                     restscreen(,,,,screen)
                     setcursor(1)
                 #endif
@@ -240,6 +253,18 @@ local screen
 
     return NIL  
 
+
+****************************************************************************   
+static function esc(x)
+local y:="",i
+    for i:=1 to len(x)
+        if( isalnum(x[i]) )
+            y+=x[i]
+        else
+            y+="\"+x[i]
+        end
+    next
+    return y
 
 ****************************************************************************   
 

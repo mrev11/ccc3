@@ -23,8 +23,9 @@
 #include <unistd.h>
 #include <inkey.ch>
 
-#define  LEARNKEY
-#include "../readkey.cpp"
+extern int readkey();
+extern int readkey__called_from_learnkey;
+
 
 struct KEYMAP
 {
@@ -137,6 +138,8 @@ struct KEYMAP
 //---------------------------------------------------------------------------
 int main(int argc, char**argv)
 {
+    readkey__called_from_learnkey=1;
+
     int i=0;
     while( 1 )
     {

@@ -1,6 +1,7 @@
 -mncterm
 -d.
 -d../common
+-dreadkey
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 

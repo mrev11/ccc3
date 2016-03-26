@@ -25,7 +25,10 @@
 #include <unistd.h>
 
 #include <inkey.ch>
-#include "../readkey.h"
+
+extern int __readkey();
+extern int readkey();
+
 
 //---------------------------------------------------------------------------
 int main(int argc, char**argv)

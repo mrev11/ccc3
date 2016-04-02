@@ -298,15 +298,11 @@ static void keypress(XEvent event)
     {
         code=ucs;
     }
-    else if( asc )
+    else if( asc && asc!=127 ) //delete=127
     {
         if( (state&4) && 'a'<=asc  && asc<='z' )
         {
             code=-(asc-'a'+1); //ALT_A,...,ALT_Z
-        }
-        else if( asc==127 )
-        {
-            code=7; //delete
         }
         else
         {

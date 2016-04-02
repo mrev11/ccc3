@@ -37,6 +37,7 @@
 #include <termapi.h>
 
 #include <signal.ch>
+#include <inkey.ch>
 
 
 static screenbuf *screen=0;
@@ -55,6 +56,8 @@ static int dirty_cursorpos=0;
 
 static int s_cursorstate=1; //a terminál tulajdonsága
 static int dirty_cursorstate=0;
+
+static int ctrl_inkey=1;  // 1 -> K_DOWN==^X ... (compatible)
 
 MUTEX_CREATE(mutex_display);
 
@@ -333,7 +336,39 @@ int getkey(int timeout)
         signal_raise(SIG_TERM);
         exit(1);
     }
-    return key.get();
+  
+    int code=key.get();
+    if( ctrl_inkey )
+    {
+        switch( code )
+        {
+            //K_UP==^E
+            //K_DOWN==^X ... default mode
+
+            case K_NAV_UP:    code=K_UP;    break;
+            case K_NAV_DOWN:  code=K_DOWN;  break;
+            case K_NAV_LEFT:  code=K_LEFT;  break;
+            case K_NAV_RIGHT: code=K_RIGHT; break;
+            case K_NAV_HOME:  code=K_HOME;  break;
+            case K_NAV_END:   code=K_END;   break;
+            case K_NAV_PGUP:  code=K_PGUP;  break;
+            case K_NAV_PGDN:  code=K_PGDN;  break;
+            case K_NAV_INS:   code=K_INS;   break;
+            case K_NAV_DEL:   code=K_DEL;   break;
+        }  
+    }
+    return code; 
+}
+
+//----------------------------------------------------------------------------
+int get_ctrl_inkey_mode()
+{
+    return ctrl_inkey;
+}
+
+void set_ctrl_inkey_mode(int mode)
+{
+    ctrl_inkey=mode;
 }
 
 //----------------------------------------------------------------------------

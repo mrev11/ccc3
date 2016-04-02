@@ -21,6 +21,7 @@
 #include <wchar.h>
 #include <termapi.h>
 #include <cccapi.h>
+#include <inkey.ch>
 
 //------------------------------------------------------------------------
 #define TYPEAHEAD   32
@@ -130,6 +131,49 @@ push_call("__keyboard",base);
 stack=base;
 push(&NIL);
 pop_call();
+}
+
+//------------------------------------------------------------------------
+void _clp_setctrlinkey(int argno)
+{
+    extern int get_ctrl_inkey_mode();
+    extern void set_ctrl_inkey_mode(int);
+
+    CCC_PROLOG("setctrlinkey",1);
+    int prevmode=get_ctrl_inkey_mode();
+    if( !ISNIL(1) )
+    {
+        int mode=_parl(1);
+        set_ctrl_inkey_mode(mode);
+    }
+    _retl(prevmode);
+    CCC_EPILOG();
+}
+
+//------------------------------------------------------------------------
+void _clp_inkey_nav2ctrl(int argno)
+{
+    CCC_PROLOG("inkey_nav2ctrl",1);
+    int code=_parni(1);
+
+    switch( code )
+    {
+        // visszakonvertál a 
+        // K_UP==^E, K_DOWN==^X ... módra
+
+        case K_NAV_UP:    code=K_UP;    break;
+        case K_NAV_DOWN:  code=K_DOWN;  break;
+        case K_NAV_LEFT:  code=K_LEFT;  break;
+        case K_NAV_RIGHT: code=K_RIGHT; break;
+        case K_NAV_HOME:  code=K_HOME;  break;
+        case K_NAV_END:   code=K_END;   break;
+        case K_NAV_PGUP:  code=K_PGUP;  break;
+        case K_NAV_PGDN:  code=K_PGDN;  break;
+        case K_NAV_INS:   code=K_INS;   break;
+        case K_NAV_DEL:   code=K_DEL;   break;
+    }
+    _retni(code); 
+    CCC_EPILOG();
 }
 
 //------------------------------------------------------------------------

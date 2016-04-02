@@ -1,3 +1,25 @@
+2018.04.02  K_NAV_UP (uj) inkey kodok
+  Hagyomanyosan a K_UP,K_DOWN... inkey kodok egybeesnek bizonyos 
+  ctrl karakterekkel:
+    K_UP      Ctrl-E  K_NAV_UP   
+    K_DOWN    Ctrl-X  K_NAV_DOWN 
+    K_LEFT    Ctrl-S  K_NAV_LEFT 
+    K_RIGHT   Ctrl-D  K_NAV_RIGHT
+    K_HOME    Ctrl-A  K_NAV_HOME 
+    K_END     Ctrl-F  K_NAV_END  
+    K_PGUP    Ctrl-R  K_NAV_PGUP 
+    K_PGDN    Ctrl-C  K_NAV_PGDN 
+    K_INS     Ctrl-V  K_NAV_INS  
+    K_DEL     Ctrl-G  K_NAV_DEL
+  Igy azonban egy CCC program nem tud kulonbseget tenni az UP nyil
+  lenyomasa es a ^E lenyomasa kozott. Hogy ez a megkulonboztetes 
+  lehetseges legyen, az uj terminal az egyedi K_NAV_UP... kodokat
+  kuldi a CCC programnak. A ccc3_uic konyvtar alapallapotban ezeket
+  kicsereli a hagyomanyos K_UP, K_DOWN keszletre, ezert a regi
+  a programok nem veszik eszre a kulonbseget. Ha egy program meg 
+  akarja kulonboztetni a K_UP-ot a ^E-tol, akkor a setctrlinkey(.f.) 
+  hivassal kikapcsolja a cserét, ezaltal az uj K_NAV_UP kodot kapja.  
+
 2016.03.15  ncterm-ben ujrairt readkey.
 
 2016.03.12

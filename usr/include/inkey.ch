@@ -188,4 +188,17 @@
 #define K_ALT_F12         -512
 
 
+#define K_NAV_UP          -141
+#define K_NAV_DOWN        -142
+#define K_NAV_LEFT        -143
+#define K_NAV_RIGHT       -144
+#define K_NAV_HOME        -145
+#define K_NAV_END         -146
+#define K_NAV_PGUP        -147
+#define K_NAV_PGDN        -148
+
+#define K_NAV_INS         -151
+#define K_NAV_DEL         -152
+
+
 #endif

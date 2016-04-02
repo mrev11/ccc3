@@ -34,6 +34,18 @@ extern int readkey();
 int main(int argc, char**argv)
 {
     int prev=0;
+    
+    //        \E[?1l\E>
+    //printf("%c[?1l%c>   CSI \n",27,27); // CSI: \E[A,\E[B,\E[C,\E[D,\E[H,\E[F
+
+
+    //        \E[?1h\E=
+    //printf("%c[?1h%c=   SS3 \n",27,27); // SS3: \EOA,\EOB,\EOC,\EOD,\EOH,\EOF
+
+
+
+
+
 
     while(1)
     {

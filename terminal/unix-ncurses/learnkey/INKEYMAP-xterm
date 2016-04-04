@@ -13,7 +13,6 @@ K_NAV_LEFT    1b5b44,-143
 K_NAV_RIGHT   1b5b43,-144
 K_NAV_HOME    1b5b48,-145
 K_NAV_END     1b5b46,-146
-
 K_NAV_PGUP    1b5b357e,-147
 K_NAV_PGDN    1b5b367e,-148
 
@@ -33,35 +32,38 @@ K_ALT_HOME    1b5b313b3348,-135
 K_ALT_END     1b5b313b3346,-136
 K_ALT_PGUP    1b5b353b337e,-137
 K_ALT_PGDN    1b5b363b337e,-138
+
 K_ESC         1b,27
 K_NAV_INS     1b5b327e,-151
 K_NAV_DEL     1b5b337e,-152
-K_ALT_A       c3a1,-1
-K_ALT_B       c3a2,-2
-K_ALT_C       c3a3,-3
-K_ALT_D       c3a4,-4
-K_ALT_E       c3a5,-5
-K_ALT_F       c3a6,-6
-K_ALT_G       c3a7,-7
-K_ALT_H       c3a8,-8
-K_ALT_I       c3a9,-9
-K_ALT_J       c3aa,-10
-K_ALT_K       c3ab,-11
-K_ALT_L       c3ac,-12
-K_ALT_M       c3ad,-13
-K_ALT_N       c3ae,-14
-K_ALT_O       c3af,-15
-K_ALT_P       c3b0,-16
-K_ALT_Q       c3b1,-17
-K_ALT_R       c3b2,-18
-K_ALT_S       c3b3,-19
-K_ALT_T       c3b4,-20
-K_ALT_U       c3b5,-21
-K_ALT_V       c3b6,-22
-K_ALT_W       c3b7,-23
-K_ALT_X       c3b8,-24
-K_ALT_Y       c3b9,-25
-K_ALT_Z       c3ba,-26
+
+K_ALT_A       1b61,-1
+K_ALT_B       1b62,-2
+K_ALT_C       1b63,-3
+K_ALT_D       1b64,-4
+K_ALT_E       1b65,-5
+K_ALT_F       1b66,-6
+K_ALT_G       1b67,-7
+K_ALT_H       1b68,-8
+K_ALT_I       1b69,-9
+K_ALT_J       1b6a,-10
+K_ALT_K       1b6b,-11
+K_ALT_L       1b6c,-12
+K_ALT_M       1b6d,-13
+K_ALT_N       1b6e,-14
+K_ALT_O       1b6f,-15
+K_ALT_P       1b70,-16
+K_ALT_Q       1b71,-17
+K_ALT_R       1b72,-18
+K_ALT_S       1b73,-19
+K_ALT_T       1b74,-20
+K_ALT_U       1b75,-21
+K_ALT_V       1b76,-22
+K_ALT_W       1b77,-23
+K_ALT_X       1b78,-24
+K_ALT_Y       1b79,-25
+K_ALT_Z       1b7a,-26
+
 K_F1          1b4f50,-201
 K_F2          1b4f51,-202
 K_F3          1b4f52,-203
@@ -112,16 +114,16 @@ K_ALT_F11     1b5b32333b337e,-511
 K_ALT_F12     1b5b32343b337e,-512
 
 
-á c3a1,225    ua. mint K_ALT_A
-é c3a9,233    ua. mint K_ALT_I
-í c3ad,237    ua. mint K_ALT_M
-ó c3b3,243    ua. mint K_ALT_S
-ö c3b6,246    ua. mint K_ALT_V
+á c3a1,225
+é c3a9,233
+í c3ad,237
+ó c3b3,243
+ö c3b6,246
 ő c591,337
-ú c3ba,250    ua. mint K_ALT_Z
+ú c3ba,250
 ü c3bc,252
 ű c5b1,369
-ä c3a4,228    ua. mint K_ALT_D
+ä c3a4,228
 Á c381,193
 É c389,201
 Í c38d,205

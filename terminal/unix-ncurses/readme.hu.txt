@@ -138,7 +138,68 @@ kimenetet el lehet menteni, majd cat-olni, nem romlik el.
 Célszerű tehát nonl módot használni.
 
 
+
+K_ALT_* billentyűk vs ékezetes karakterek
+-----------------------------------------
   
+Az xterm alapállapotban ALT+betűre UTF-8 szekvenciákat küld.
+Ezek az UTF-8 karakterek összevissza helyeken vannak
+(ezért lényegében nem lehet őket használni) emellett elfedik
+az alt-os kombinációkat, amik kellenek a z-ben editáláshoz.
+Ezért az INKEYMAP_xtrem fájlban ilyen sorok voltak
+
+    K_ALT_A       c3a1,-1
+    K_ALT_B       c3a2,-2
+    K_ALT_C       c3a3,-3
+    ...
+
+amik UTF-8 szekvenciák helyett a K_ALT_* inkey kódokat adták. 
+Választani kellett, hogy inkey kódokat akarunk-e inkabb, 
+vagy ékezetes karaktereket. Az inkey kódokat választottam.
+
+Van azonban jobb megoldás.  Létre kell hozni a ~/.Xdefaults
+fájlt az alábbi tartalommal (vagy, ha már van, akkor beleírni):
+
+    xterm*metaSendsEscape: true
+
+Ennek hatására az xterm ALT-a-ra \Ea szekvenciát (stb) küld. 
+Ha tehát az előbbi sorokat kicseréljük
+
+    K_ALT_A       1b61,-1
+    K_ALT_B       1b62,-2
+    K_ALT_C       1b63,-3
+    ...
+    
+akkor megvannak az K_ALT_* inkey kódok. Plusz berakjuk a
+következő sorokat:
+
+    á c3a1,225
+    é c3a9,233
+    í c3ad,237
+    ó c3b3,243
+    ...
+   
+és akkor megvannak az ékezetes betűink is. Jelen állapotában
+a readkey nem konvertál tetszőleges UTF-8 szekvenciát, csak
+azokat, amiket beírunk az INKEYMAP fájlba.
+
+Megj: Az .Xdefaults új tartalma akkor válik hatásossá, ha az 
+X-et újraindítjuk, vagy a fájlt xrdb-vel explicite betöltjük.
+
+Megj: Xfce4-ben a keyboard layout átállítása 'system defaults'-ról
+(bármire) azt okozza, hogy az ALT-navigáció szekvenciák elromlanak,
+és csak az X újraindításával állnak helyre.
+
+
+
+
+
+
+
+
+
+
+
 
 
 

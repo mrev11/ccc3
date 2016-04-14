@@ -1,3 +1,21 @@
+
+2016.04.14 szignál maszkolás
+  Korábban csak  CCC szintű "maszkolás" volt.
+  A sigcccmask-ban beállított szignálokat a CCC handler 
+  egyszerűen ignorálta. Ilyenkor a rendszer úgy veszi, 
+  hogy a szignál kézbesítve volt (ügy elintézve). Ezzel 
+  szemben, ha a maszkot a rendszer szintjén is beállítjuk,
+  akkor a rendszer olyan szálat keres, ami nem maszkolja
+  az adott szignált, és ha talál ilyet, akkor ez a szál
+  kapja meg a szignált. Tehát kaphatunk olyan szignálokat,
+  amik korábban elvesztek.
+  
+  thread.cpp-ben javítva a szignál maszk öröklődése.
+  sigprocmask helyett pthread_sigmask-ot kell használni.
+
+  signals.cpp, thread.cpp, thread_data.h átvive CCC2-be.
+
+
 2015.09.24 week() implementacio
   week() -> 1-53, het sorszama az evben, CA-Tools 
   isoweek() -> 1-53, het sorszama az evben, ISO kompatibilis 

@@ -18,6 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//2016.04.14
+//A korábbi változat elrontotta a szignál maszkok öröklődését.
+//A man szerint sigprocmask helyett pthread_sigmask-ot kell használni.
+//Ugyanez a kód átkerült a CCC2-be is.
+
+
 //POSIX thread API
 
 #include <signal.h>
@@ -64,24 +70,6 @@ struct thread_block
     int sigmask;
 };
 
-//---------------------------------------------------------------------------
-static sigset_t signal_mask()
-{
-    sigset_t set;
-    sigemptyset(&set);
-    sigaddset(&set,SIGHUP);
-    sigaddset(&set,SIGINT);
-    sigaddset(&set,SIGQUIT);
-    sigaddset(&set,SIGILL);
-    sigaddset(&set,SIGABRT);
-    sigaddset(&set,SIGFPE);
-    sigaddset(&set,SIGSEGV);
-    sigaddset(&set,SIGPIPE);
-    sigaddset(&set,SIGTERM);
-    return set;
-}
-
-static sigset_t sigmask=signal_mask();
 
 #ifdef MUTEX_DBG //deadlockok kereséséhez
 #include <mutex_dbg.h>
@@ -95,7 +83,9 @@ static void *thread(void *ptr)
     //listakezelés van, aminek egyedül kell futnia,
     //a listát a szemétgyűjtés is használja:
 
-    sigprocmask(SIG_BLOCK,&sigmask,0);
+    sigset_t set1,set2;
+    sigfillset(&set1);
+    pthread_sigmask(SIG_BLOCK,&set1,&set2); //mindent blokkol, set2-ben ment
 
     vartab_lock0(); //nincs még siglocklev
     pthread_setspecific(thread_key, NEWTHRDATA());
@@ -118,7 +108,7 @@ static void *thread(void *ptr)
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&mutex);
 
-    sigprocmask(SIG_UNBLOCK,&sigmask,0);
+    pthread_sigmask(SIG_SETMASK,&set2,0); //vissza (öröklődik)
 
     //a hívó szál továbbengedve,
     //az új szál kódblokkja elindítva:
@@ -130,21 +120,16 @@ static void *thread(void *ptr)
     //az eredményt eldobjuk (nem tudjuk visszaadni),
     //a saját lokális stacket megszüntetjük:
 
-    sigprocmask(SIG_BLOCK,&sigmask,0);
+    pthread_sigmask(SIG_BLOCK,&set1,0); //mindent blokkol
     vartab_lock0();
     DELTHRDATA(pthread_getspecific(thread_key));
     vartab_unlock0(); //nincs már siglocklev
-    //sigprocmask(SIG_UNBLOCK,&sigmask,0);
 
     //vartab_unlock0() nélkül lockolva marad a mutex,
     //azaz egy megszűnt szál lockja megmarad (rendszer hiba);
     //a vartab_unlock0()-ban levő pthread_mutex_unlock gyakran
     //SIGSEGV-zik, ha szignált kap (rendszer hiba);
-    //ha itt "sigprocmask(SIG_UNBLOCK,&sigmask,0);" hivással
-    //töröljük a maszkolást, akkor gyakran SIGSEGV-zik a program;
-    //a man nem ír arról, hogy a maszkolás
-    //a szálakra nézve privát, vagy globális,
-    //de a tapasztalat azt mutatja, hogy privát;
+    //megj: a maszkolás a szálakra nézve privát;
 
     return 0;
 }
@@ -213,7 +198,9 @@ void _clp_thread_detach(int argno)
 void _clp_thread_exit(int argno)
 {
     CCC_PROLOG("thread_exit",0);
-    sigprocmask(SIG_BLOCK,&sigmask,0);
+    sigset_t set1;
+    sigfillset(&set1);
+    pthread_sigmask(SIG_BLOCK,&set1,0);
     vartab_lock();
     DELTHRDATA(pthread_getspecific(thread_key));
     vartab_unlock0();

@@ -1,3 +1,17 @@
+2016.04.14 szignal maszkolas
+  Korabban csak  CCC szintu "maszkolas" volt.
+  A sigcccmask-ban beallitott szignalokat a CCC handler 
+  egyszeruen ignoralta. Ilyenkor a rendszer ugy veszi, 
+  hogy a szignal kezbesitve volt (ugy elintezve). Ezzel 
+  szemben, ha a maszkot a rendszer szintjen is beallitjuk,
+  akkor a rendszer olyan szalat keres, ami nem maszkolja
+  az adott szignalt, es ha talal ilyet, akkor ez a szal
+  kapja meg a szignalt. Tehat kaphatunk olyan szignalokat,
+  amik korabban elvesztek.
+  thread.cpp-ben javitva a szignal maszk oroklodese.
+  sigprocmask helyett pthread_sigmask-ot kell hasznalni.
+  signals.cpp, thread.cpp, thread_data.h atvive CCC2-be.
+
 2018.04.03 Uj INKEYMAP-xterm file.
 
 2018.04.02  K_NAV_UP (uj) inkey kodok

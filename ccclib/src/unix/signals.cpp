@@ -26,6 +26,42 @@
 
 
 //--------------------------------------------------------------------------
+static void setmask()
+{
+    sigset_t set;
+    sigemptyset(&set);
+    int mask=sigcccmask;
+    if( mask & SIG_HUP  ) {sigaddset(&set,SIGHUP);}
+    if( mask & SIG_INT  ) {sigaddset(&set,SIGINT);}
+    if( mask & SIG_QUIT ) {sigaddset(&set,SIGQUIT);}
+    if( mask & SIG_ILL  ) {sigaddset(&set,SIGILL);}
+    if( mask & SIG_ABRT ) {sigaddset(&set,SIGABRT);}
+    if( mask & SIG_FPE  ) {sigaddset(&set,SIGFPE);}
+    if( mask & SIG_SEGV ) {sigaddset(&set,SIGSEGV);}
+    if( mask & SIG_PIPE ) {sigaddset(&set,SIGPIPE);}
+    if( mask & SIG_TERM ) {sigaddset(&set,SIGTERM);}
+    if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
+    if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
+    if( mask & SIG_KILL ) {sigaddset(&set,SIGKILL);}
+#ifdef MULTITHREAD
+    pthread_sigmask(SIG_SETMASK, &set,0);
+#else
+    sigprocmask(SIG_SETMASK, &set,0);
+#endif
+}
+
+//2016.04.14
+//Korábban csak  CCC szintű "maszkolás" volt.
+//A sigcccmask-ban beállított szignálokat a CCC handler 
+//egyszerűen ignorálta. Ilyenkor a rendszer úgy veszi, 
+//hogy a szignál kézbesítve volt (ügy elintézve). Ezzel 
+//szemben, ha a maszkot a rendszer szintjén is beállítjuk,
+//akkor a rendszer olyan szálat keres, ami nem maszkolja
+//az adott szignált, és ha talál ilyet, akkor ez a szál
+//kapja meg a szignált. Tehát kaphatunk olyan szignálokat,
+//amik korábban elvesztek.
+
+//--------------------------------------------------------------------------
 static int cccsig2signum(int cccsig)
 {
     switch( cccsig )
@@ -118,6 +154,11 @@ static void signal_handler(int signum)
     else if( (cccsig&~sigcccmask)==0 ) 
     {
         return;
+        
+        //2016.04.14
+        //A setmask-os módosítás után erre az ágra nem jön,
+        //ui. ha a maszk a rendszer szinten is be van állítva,
+        //akkor nem kaphatunk olyan szignált, amit sigcccmask maszkol. 
     }
     else if( siglocklev>0 ) //egy szálra vonatkozó szemafor kapcsoló
     {
@@ -276,6 +317,7 @@ void _clp_signal_setmask(int argno) //szignálok letiltása
     {
         sigcccmask = _parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }
@@ -289,6 +331,7 @@ void _clp_signal_mask(int argno) //szignálok letiltása
     {
         sigcccmask |= _parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }
@@ -302,6 +345,7 @@ void _clp_signal_unmask(int argno) //szignálok letiltása
     {
         sigcccmask &= ~_parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }

@@ -1,7 +1,10 @@
 
-#define VERSION "2.1.15"
+#define VERSION "2.1.16"
 
 #ifndef VERSION  
+
+2015.04.19 -- 1.2.16
+  K_CTRL_F6 kijelölt terület ékezetlenítése.
 
 2015.03.16 -- 1.2.15
   K_SH_F12 kereses escape-elt stringgel.

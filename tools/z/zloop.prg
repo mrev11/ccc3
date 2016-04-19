@@ -28,7 +28,7 @@ local key
 local kmark:={K_ALT_END,K_ALT_HOME,K_ALT_PGDN,K_ALT_PGUP,;
               K_ALT_RIGHT,K_ALT_LEFT,K_ALT_UP,K_ALT_DOWN,;
               K_ALT_C,K_ALT_X,K_ALT_V,;
-              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_F12,K_SH_F12}
+              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_CTRL_F6,K_F12,K_SH_F12}
 
 local screen
               
@@ -229,6 +229,10 @@ local screen
  
             elseif( key==K_SH_F6 )    
                 this:toupper
+                this:changed:=.t.
+
+            elseif( key==K_CTRL_F6 )    
+                this:toascii
                 this:changed:=.t.
 
             elseif( key==K_F4 )    

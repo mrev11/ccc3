@@ -1,3 +1,7 @@
+
+2015.04.19  z.exe K_CTRL_F6 ekezetltenites
+  z-ben K_CTRL_F6 a kijelolt teruletet ekezetleniti.
+
 2016.04.14 szignal maszkolas
   Korabban csak  CCC szintu "maszkolas" volt.
   A sigcccmask-ban beallitott szignalokat a CCC handler 

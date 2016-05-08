@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
 #include <wchar.h>
 #include <termapi.h>
 #include <cccapi.h>
@@ -125,7 +126,7 @@ push_call("__keyboard",base);
     if( base->type==TYPE_STRING )
     {
         kbmax=min(TYPEAHEAD,STRINGLEN(base));
-        wmemcpy(keyboard_buffer,STRINGPTR(base),kbmax);
+        memcpy(keyboard_buffer,STRINGPTR(base),kbmax*sizeof(CHAR));
     }
 //
 stack=base;

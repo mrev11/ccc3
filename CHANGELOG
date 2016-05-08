@@ -1,3 +1,10 @@
+2015.05.03 uic konyvtar CCC2-vel is lefordithato.
+  Alternativ ccc2_uic konyvtar, ccc3_uic-bol atalakitassal:
+    screencell 4 byte helyett 2 byte
+    sendrect konvertal latin2-rol utf8-ra
+    inkey konvertal CCC3-rol CCC2-re
+  Ezzel a CCC3 terminalok hasznalhatok CCC2-ben is.
+  CCC3-ban nincs szandekos valtozas.
 
 2015.04.19  z.exe K_CTRL_F6 ekezetltenites
   z-ben K_CTRL_F6 a kijelolt teruletet ekezetleniti.

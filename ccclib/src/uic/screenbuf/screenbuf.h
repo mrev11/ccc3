@@ -27,7 +27,18 @@
 
 #define DEFATTR 0x07
 
-class screencell{
+#ifdef _CCC2_
+#define screencell          screencell2 
+#define screencell_term     screencell4
+#endif
+
+#ifdef _CCC3_
+#define screencell          screencell4 
+#define screencell_term     screencell4
+#endif
+
+
+class screencell4{
   private:
     unsigned char low_char;
     unsigned char high_char;
@@ -65,7 +76,40 @@ class screencell{
         low_attr=0xff&a;
         high_attr=0xff&(a>>8);
     }
-};
+}; //CCC3 (4 byteos) screencell
+
+
+class screencell2{
+  private:
+    unsigned char low_char;
+    unsigned char low_attr;
+
+  public:
+
+    c_uint16_t getchar()
+    {
+        c_uint16_t c=0;
+        c|=low_char;
+        return c;
+    }
+
+    void setchar( c_uint16_t c )
+    {
+        low_char=0xff&c;
+    }
+
+    c_uint16_t getattr()
+    {
+        c_uint16_t a=0;
+        a|=low_attr;
+        return a;
+    }
+
+    void setattr( c_uint16_t a )
+    {
+        low_attr=0xff&a;
+    }
+}; //CCC2 (2 byteos) screencell
 
 
 class screenbuf{

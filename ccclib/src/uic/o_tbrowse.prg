@@ -988,7 +988,7 @@ local headskip:=1+if(empty(brw:headsep),-1,0)+if(empty(brw:_hasheading_),-1,0)
         end
     next
     
-    buffer+=devoutbuffer(space(brw:nRight-brw:nLeft+1-len(buffer)/4),lcol1)
+    buffer+=devoutbuffer(space(brw:nRight-brw:nLeft+1-len(buffer)/sizeof_screencell()),lcol1)
 
     _brwaux_cpytobuff(brw,line,buffer)
 

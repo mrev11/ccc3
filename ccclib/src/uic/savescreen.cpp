@@ -35,7 +35,7 @@ void _clp_savescreen(int argno)
     if( top>bot || bot>(unsigned)maxrow() || 
         lef>rig || rig>(unsigned)maxcol() )
     {
-        error_gen(L"incompatible screen size","savescreen",base,4);
+        error_gen(CHRLIT("incompatible screen size"),"savescreen",base,4);
     }
 
     unsigned len=(bot-top+1)*(rig-lef+1)*sizeof(screencell);
@@ -61,7 +61,7 @@ void _clp_restscreen(int argno)
         lef>rig || rig>(unsigned)maxcol() ||
         ((bot-top+1)*(rig-lef+1)*sizeof(screencell))!=len )
     {
-        error_gen(L"incompatible screen size","restscreen",base,5);
+        error_gen(CHRLIT("incompatible screen size"),"restscreen",base,5);
     }
 
     putrect(lef,top,rig,bot,scr);

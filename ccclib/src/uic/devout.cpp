@@ -223,3 +223,11 @@ void _clp_devoutpict(int argno)
 }
 
 //----------------------------------------------------------------------------
+void _clp_sizeof_screencell(int argno) 
+{
+    CCC_PROLOG("sizeof_screencell",0);
+    _retni( sizeof(screencell) );
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------

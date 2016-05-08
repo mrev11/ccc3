@@ -95,10 +95,11 @@ static void sendrect()
 
         int cells=(rig-lef+1)*(bot-top+1);
         int size1=sizeof(network_uint32_t)*6;
-        int size2=sizeof(screencell)*cells;
+        int size2=sizeof(screencell_term)*cells;
         char *buf=(char*)malloc(size1+size2);
         network_uint32_t *buf1=(network_uint32_t*)buf;
         screencell *buf2=(screencell*)(buf+size1);
+        screencell_term *buf3=(screencell_term*)(buf+size1);
 
         buf1[0].set(TERMCMD_PUTRECT);
         buf1[1].set(size1+size2);
@@ -108,6 +109,18 @@ static void sendrect()
         buf1[5].set(bot);
 
         getrect(lef,top,rig,bot,buf2);
+
+#ifdef _CCC2_
+        for(int i=0;i<cells;i++)
+        {
+            extern int convtab_lat2ucs(int);
+            int j=cells-1-i;
+            int c=buf2[j].getchar();
+            int a=buf2[j].getattr();
+            buf3[j].setchar(convtab_lat2ucs(c));
+            buf3[j].setattr(a);
+        }
+#endif
 
         termio_send(buf,size1+size2);
         free(buf);
@@ -357,6 +370,13 @@ int getkey(int timeout)
             case K_NAV_DEL:   code=K_DEL;   break;
         }  
     }
+
+#ifdef _CCC2_
+    //CCC3-rol CCC2-re
+    extern int convtab_inkey3_to_inkey2(int);
+    code=convtab_inkey3_to_inkey2(code);
+#endif
+
     return code; 
 }
 

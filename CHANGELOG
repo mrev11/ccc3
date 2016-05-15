@@ -1,4 +1,8 @@
-2015.05.03 uic konyvtar CCC2-vel is lefordithato.
+2016.05.15 terminal elfogadja a CCC2 gotoxy parancsot.
+  Kivetelesen elfogadja a CCC2 (!) parancsot,
+  hogy a konytarat kikerulo kontospw-vel is mukodjon.
+
+2016.05.03 uic konyvtar CCC2-vel is lefordithato.
   Alternativ ccc2_uic konyvtar, ccc3_uic-bol atalakitassal:
     screencell 4 byte helyett 2 byte
     sendrect konvertal latin2-rol utf8-ra
@@ -6,7 +10,7 @@
   Ezzel a CCC3 terminalok hasznalhatok CCC2-ben is.
   CCC3-ban nincs szandekos valtozas.
 
-2015.04.19  z.exe K_CTRL_F6 ekezetltenites
+2016.04.19  z.exe K_CTRL_F6 ekezetltenites
   z-ben K_CTRL_F6 a kijelolt teruletet ekezetleniti.
 
 2016.04.14 szignal maszkolas
@@ -23,9 +27,9 @@
   sigprocmask helyett pthread_sigmask-ot kell hasznalni.
   signals.cpp, thread.cpp, thread_data.h atvive CCC2-be.
 
-2018.04.03 Uj INKEYMAP-xterm file.
+2016.04.03 Uj INKEYMAP-xterm file.
 
-2018.04.02  K_NAV_UP (uj) inkey kodok
+2016.04.02  K_NAV_UP (uj) inkey kodok
   Hagyomanyosan a K_UP,K_DOWN... inkey kodok egybeesnek bizonyos 
   ctrl karakterekkel:
     K_UP      Ctrl-E  K_NAV_UP   

@@ -113,11 +113,14 @@ static void sendrect()
 #ifdef _CCC2_
         for(int i=0;i<cells;i++)
         {
+            extern int convtab_cwi2lat(int);
             extern int convtab_lat2ucs(int);
             int j=cells-1-i;
             int c=buf2[j].getchar();
             int a=buf2[j].getattr();
-            buf3[j].setchar(convtab_lat2ucs(c));
+            c=convtab_cwi2lat(c);
+            c=convtab_lat2ucs(c);
+            buf3[j].setchar(c);
             buf3[j].setattr(a);
         }
 #endif

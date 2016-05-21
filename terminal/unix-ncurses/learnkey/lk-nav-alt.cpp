@@ -19,89 +19,54 @@
  */
 
  
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-
 #include <inkey.ch>
 
-extern int __readkey();
 extern int readkey();
+extern int readkey__called_from_learnkey;
 
 
-//---------------------------------------------------------------------------
-void printseq(int *seq,int len)
+struct KEYMAP
 {
-    int i;
+  char const *name;
+  int code;
+} keymap[]={ 
 
-    for(i=0; i<len; i++)
-    {
-        int ch=seq[i];
-        printf("%02x",(unsigned)ch);
-    }
+{"K_ALT_UP      ",K_ALT_UP      },
+{"K_ALT_DOWN    ",K_ALT_DOWN    },
+{"K_ALT_LEFT    ",K_ALT_LEFT    },
+{"K_ALT_RIGHT   ",K_ALT_RIGHT   },
+{"K_ALT_HOME    ",K_ALT_HOME    },
+{"K_ALT_END     ",K_ALT_END     },
+{"K_ALT_PGUP    ",K_ALT_PGUP    },
+{"K_ALT_PGDN    ",K_ALT_PGDN    },
 
-    while( i++<16 )
-    {
-        printf("  ");
-    }
-
-
-    for(i=0; i<len; i++)
-    {
-        int ch=seq[i];
-        if( ch==0x1b )
-        {
-            printf("\\E");
-        }
-        else if( 32<ch && ch<127 )
-        {
-            printf("%c",ch);
-        }
-        else
-        {
-            printf("<%02x>",(unsigned)ch);
-        }
-    }
-    
-    printf("\n");    
-}
-
-
+{0,0}};
 
 //---------------------------------------------------------------------------
 int main(int argc, char**argv)
 {
-    
-    //        \E[?1l\E>
-    //printf("%c[?1l%c>   CSI \n",27,27); // CSI: \E[A,\E[B,\E[C,\E[D,\E[H,\E[F
+    readkey__called_from_learnkey=1;
 
-
-    //        \E[?1h\E=
-    //printf("%c[?1h%c=   SS3 \n",27,27); // SS3: \EOA,\EOB,\EOC,\EOD,\EOH,\EOF
-
-
-    int len=0;
-    int seq[128];
-
-    while(1)
+    int i=0;
+    while( 1 )
     {
-        int ch=__readkey();
+        if( keymap[i].name==0 )
+        {
+            return 0;
+        }
 
-        if( ch==0 )
-        {
-            if( len )
-            {
-                printseq(seq,len);
-                len=0;
-            }
-        }
-        else
-        {
-            seq[len++]=ch;
-        }
+        printf("%s",keymap[i].name);
+        fflush(0);
+        while( 0==readkey() );
+        printf(",%d\n",keymap[i].code);
+
+        i++;
     }
 }
 
 //---------------------------------------------------------------------------
+
+
 

@@ -1,0 +1,7 @@
+esc sequences from terminfo
+K_NAV_UP      1b4f41,-141
+K_NAV_DOWN    1b4f42,-142
+K_NAV_LEFT    1b4f44,-143
+K_NAV_RIGHT   1b4f43,-144
+K_NAV_HOME    1b4f48,-145
+K_NAV_END     1b4f46,-146

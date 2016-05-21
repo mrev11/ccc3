@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#INKEYMAP Linux konzolhoz
+#A sorrend szamit, ui.
+#ha ket kombinacio ugyanazt a szekvenciat generalja,
+#akkor az az inkey keletkezik, ami map listaban elobb van.
+#Azok a csoportok, amik nem adnak (kulon) kodot, elhagyhatok.
+
+#Installalni kell (loadkeys) keymap-ccc-t.
+
+(
+
+cat result-lk-nav           ;echo
+cat result-lk-nav-sh        ;echo
+cat result-lk-nav-ctrl      ;echo
+cat result-lk-nav-alt       ;echo
+
+cat result-lk-esc           ;echo
+
+cat result-lk-alt           ;echo
+
+cat result-lk-fun           ;echo
+cat result-lk-fun-sh        ;echo
+cat result-lk-fun-ctrl      ;echo
+cat result-lk-fun-alt       ;echo
+
+cat ../x-utf8seq            ;echo
+cat ../x-terminfo           ;echo 
+
+) > INKEYMAP-linux
+
+
+#rogton installaljuk
+cp -p INKEYMAP-linux  ~/.z

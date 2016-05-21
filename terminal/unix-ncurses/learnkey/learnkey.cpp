@@ -32,14 +32,24 @@ struct KEYMAP
   char const *name;
   int code;
 } keymap[]={ 
-{"K_UP          ",K_UP          },
-{"K_DOWN        ",K_DOWN        },
-{"K_LEFT        ",K_LEFT        },
-{"K_RIGHT       ",K_RIGHT       },
-{"K_HOME        ",K_HOME        },
-{"K_END         ",K_END         },
-{"K_PGUP        ",K_PGUP        },
-{"K_PGDN        ",K_PGDN        },
+{"K_NAV_UP      ",K_NAV_UP      },
+{"K_NAV_DOWN    ",K_NAV_DOWN    },
+{"K_NAV_LEFT    ",K_NAV_LEFT    },
+{"K_NAV_RIGHT   ",K_NAV_RIGHT   },
+{"K_NAV_HOME    ",K_NAV_HOME    },
+{"K_NAV_END     ",K_NAV_END     },
+{"K_NAV_PGUP    ",K_NAV_PGUP    },
+{"K_NAV_PGDN    ",K_NAV_PGDN    },
+
+{"K_SH_UP       ",K_SH_UP       },
+{"K_SH_DOWN     ",K_SH_DOWN     },
+{"K_SH_LEFT     ",K_SH_LEFT     },
+{"K_SH_RIGHT    ",K_SH_RIGHT    },
+{"K_SH_HOME     ",K_SH_HOME     },
+{"K_SH_END      ",K_SH_END      },
+//{"K_SH_PGUP     ",K_SH_PGUP     },
+//{"K_SH_PGDN     ",K_SH_PGDN     },
+
 {"K_CTRL_UP     ",K_CTRL_UP     },
 {"K_CTRL_DOWN   ",K_CTRL_DOWN   },
 {"K_CTRL_LEFT   ",K_CTRL_LEFT   },
@@ -48,6 +58,7 @@ struct KEYMAP
 {"K_CTRL_END    ",K_CTRL_END    },
 {"K_CTRL_PGUP   ",K_CTRL_PGUP   },
 {"K_CTRL_PGDN   ",K_CTRL_PGDN   },
+
 {"K_ALT_UP      ",K_ALT_UP      },
 {"K_ALT_DOWN    ",K_ALT_DOWN    },
 {"K_ALT_LEFT    ",K_ALT_LEFT    },
@@ -56,9 +67,11 @@ struct KEYMAP
 {"K_ALT_END     ",K_ALT_END     },
 {"K_ALT_PGUP    ",K_ALT_PGUP    },
 {"K_ALT_PGDN    ",K_ALT_PGDN    },
+
 {"K_ESC         ",K_ESC         },
 {"K_INS         ",K_INS         },
 {"K_DEL         ",K_DEL         },
+
 {"K_ALT_A       ",K_ALT_A       },
 {"K_ALT_B       ",K_ALT_B       },
 {"K_ALT_C       ",K_ALT_C       },
@@ -85,6 +98,7 @@ struct KEYMAP
 {"K_ALT_X       ",K_ALT_X       },
 {"K_ALT_Y       ",K_ALT_Y       },
 {"K_ALT_Z       ",K_ALT_Z       },
+
 {"K_F1          ",K_F1          },
 {"K_F2          ",K_F2          },
 {"K_F3          ",K_F3          },
@@ -97,6 +111,7 @@ struct KEYMAP
 {"K_F10         ",K_F10         },
 {"K_F11         ",K_F11         },
 {"K_F12         ",K_F12         },
+
 {"K_SH_F1       ",K_SH_F1       },
 {"K_SH_F2       ",K_SH_F2       },
 {"K_SH_F3       ",K_SH_F3       },
@@ -109,6 +124,7 @@ struct KEYMAP
 {"K_SH_F10      ",K_SH_F10      },
 {"K_SH_F11      ",K_SH_F11      },
 {"K_SH_F12      ",K_SH_F12      },
+
 {"K_CTRL_F1     ",K_CTRL_F1     },
 {"K_CTRL_F2     ",K_CTRL_F2     },
 {"K_CTRL_F3     ",K_CTRL_F3     },
@@ -121,6 +137,7 @@ struct KEYMAP
 {"K_CTRL_F10    ",K_CTRL_F10    },
 {"K_CTRL_F11    ",K_CTRL_F11    },
 {"K_CTRL_F12    ",K_CTRL_F12    },
+
 {"K_ALT_F1      ",K_ALT_F1      },
 {"K_ALT_F2      ",K_ALT_F2      },
 {"K_ALT_F3      ",K_ALT_F3      },
@@ -133,6 +150,7 @@ struct KEYMAP
 {"K_ALT_F10     ",K_ALT_F10     },
 {"K_ALT_F11     ",K_ALT_F11     },
 {"K_ALT_F12     ",K_ALT_F12     },
+
 {0,0}};
 
 //---------------------------------------------------------------------------

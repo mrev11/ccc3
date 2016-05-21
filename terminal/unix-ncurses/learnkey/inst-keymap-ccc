@@ -1,4 +1,4 @@
 #!/bin/bash
 if [ "$TERM" == "linux" ]; then
-    sudo loadkeys keymap-ccc 
+    sudo loadkeys keymap-ccc
 fi

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#for LK in lk*.exe; do
+#    script=$(basename  $LK .exe)
+#    echo  $LK   \| tee  result-$script    >$script
+#    
+#    . $script 
+#done
+
+
+
+#egyenkent is indithato scriptek
+
+. lk-nav        ;echo
+. lk-nav-sh     ;echo
+. lk-nav-ctrl   ;echo
+. lk-nav-alt    ;echo
+                     
+. lk-esc        ;echo
+                     
+. lk-alt        ;echo
+                     
+. lk-fun        ;echo
+. lk-fun-sh     ;echo
+. lk-fun-ctrl   ;echo
+. lk-fun-alt    ;echo
+

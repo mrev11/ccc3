@@ -1,3 +1,4 @@
+
 -mterminal
 -mterminal-xft
 -d.
@@ -11,9 +12,11 @@
 -i/usr/local/include/freetype2
 -p/usr/X11R7/lib
 -p/usr/X11R6/lib
--bccc3.lib
+-bccc$(CCCVER).lib
 -bX11
 -bXft
 
+
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_CFG=compopt.ext
 

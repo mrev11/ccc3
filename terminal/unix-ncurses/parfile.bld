@@ -8,8 +8,9 @@
 -i/usr/X11R7/include
 -i/usr/X11R6/include
 
--bccc3.lib
+-bccc$(CCCVER).lib
 -bncursesw
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_CFG=compopt.ext
 

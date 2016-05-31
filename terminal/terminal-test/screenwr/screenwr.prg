@@ -92,11 +92,23 @@ local x:={{s,o}},n,key
         
 
 *****************************************************************************
+
+#ifdef _CCC3_
 static function tail(n)        
     return  replicate(chr(0x2588),n)+;
             replicate(chr(0x2593),n)+;
             replicate(chr(0x2592),n)+;
             replicate(chr(0x2591),n)
+#endif
+
+
+#ifdef _CCC2_
+static function tail(n)        
+    return  replicate(chr(254),n)+;
+            replicate(chr(249),n)+;
+            replicate(chr(159),n)+;
+            replicate(chr(157),n)
+#endif
  
 
 *****************************************************************************

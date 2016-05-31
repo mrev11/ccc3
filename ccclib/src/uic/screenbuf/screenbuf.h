@@ -27,14 +27,15 @@
 
 #define DEFATTR 0x07
 
-#ifdef _CCC2_
-#define screencell          screencell2 
-#define screencell_term     screencell4
-#endif
-
-#ifdef _CCC3_
-#define screencell          screencell4 
-#define screencell_term     screencell4
+#if defined COMPILE_TERMINAL
+  #define screencell          screencell4 
+  #undef  screencell_term
+#elif defined _CCC3_
+  #define screencell          screencell4 
+  #define screencell_term     screencell4
+#elif defined _CCC2_
+  #define screencell          screencell2 
+  #define screencell_term     screencell4
 #endif
 
 

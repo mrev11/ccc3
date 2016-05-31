@@ -90,6 +90,7 @@ pushd ccctools/mklink; m; popd
 #-------------------
  
 pushd terminal/unix; m; popd
+pushd terminal/unix-ncurses; m; popd
 
 
 #-------------------

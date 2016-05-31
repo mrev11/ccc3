@@ -1,0 +1,22 @@
+#!/bin/bash
+
+java -jar  $JTERMINAL localhost  46002  key=keystore.jks  psw=changeit
+
+
+#  ssl           - bekapcsolja az SSL-t
+#
+#  aut[=<store>] - bekapcsolja az SSL-t
+#                  plusz bekapcsolja a szerver hitelesítést
+#                  <store>-ból veszi a certificate-eket
+#                  ha <store> nincs megadva, akkor cacerts-ből veszi
+#                  (aminek helye: /usr/lib/java/jre/lib/security/cacerts)
+#
+#  key=<store>   - bekapcsolja az SSL-t 
+#                  plusz bekapcsolja a kliens hitelesítést
+#                  <store>-ból veszi a kulcsot és certificate-et
+#                  ha a key opció nincs megadva, akkor .keystore-ból veszi
+#                  (aminek helye: $(HOME)/.keystore)
+#
+#  psw=<passw>   - bekapcsolja az SSL-t 
+#                  plusz bekapcsolja a kliens hitelesítést
+#                  megadja a kulcshoz való password-öt

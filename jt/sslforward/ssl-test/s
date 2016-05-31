@@ -6,7 +6,7 @@ APPL=empty.exe
 echo $PORT
 
 # 1) egyszerű listener ssl nélkül
- jtlisten.exe $PORT $APPL -jtdebug
+# jtlisten.exe $PORT $APPL -jtdebug
 
 
 # 2) egyszerű listener ssl forwardinggal (kell hozzá a server.pem filé)
@@ -14,7 +14,7 @@ echo $PORT
 
 
 # 3) önálló program indítás 
-# $APPL -jtauto -jtdebug
+ $APPL -jtauto -jtdebug
 
 
 # 4) önálló program indítás 

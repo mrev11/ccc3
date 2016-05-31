@@ -1,4 +1,0 @@
-#!/bin/bash
-keytool -storepasswd -keystore keys -new changeit
- 
- 

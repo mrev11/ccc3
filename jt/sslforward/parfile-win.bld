@@ -2,7 +2,7 @@
 -mjtlisten
  
 -d.
--dwin32
+-dwindows
 #-dsckutil
  
 -blibeay32

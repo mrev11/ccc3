@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+#ellenorzes:
+#ha kivesszuk, akkor nem mukodik a server auth
+
+keytool -delete \
+    -keystore keystore.jks  -storepass changeit \
+    -alias localhost

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+keytool -list \
+    -keystore keystore.jks -storepass changeit | less
+ 
+ 

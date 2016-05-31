@@ -1,4 +1,0 @@
-#!/bin/bash
-keytool -list -v -keystore keys -storepass changeit | less
- 
- 

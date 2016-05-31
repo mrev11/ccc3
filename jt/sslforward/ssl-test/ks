@@ -1,0 +1,60 @@
+#!/bin/bash
+
+#ezek vannak/lesznek
+# localhost.pem      : a szerver kulcsparja
+# localhost-cert.pem : a szerver certificate-ja, betesszuk keystore-ba
+# keystore.jks       : (letrejon) kulcstar (passw: changeit)
+# test-cert.pem      : (letrejon) a kliens certificate-ja
+
+
+#start from scratch
+rm keystore.jks test-cert.pem
+
+
+#csinal egy keystore-t (keystore.jks)
+#abban letrehoz egy onalairt kulcspart
+#aminek az alias neve "test"
+#a kulcsnak nincs kulon jelszava
+
+keytool -genkey \
+    -keystore keystore.jks -storepass changeit -keypass changeit \
+    -alias test \
+    -dname "CN=Test Client, O=ComFirm Bt, L=Budapest, S=Hungary, C=HU"\
+    -keyalg RSA\
+    -keysize 2048\
+    -validity 10000
+ 
+
+
+#exportaljuk az onalirt kulcshoz tartozo cert-et
+#(az -rfc opcio hatasara a formatum pem)
+
+keytool -exportcert \
+     -keystore keystore.jks  -storepass changeit \
+     -alias test -file test-cert.pem \
+     -rfc
+     
+
+
+#a pem-et betesszuk a szerveren capath-ba (plusz c_rehash)
+#ez alapjan hitelesiti a szerver a klienst
+
+mv test-cert.pem  cert
+c_rehash cert
+
+
+#importaljuk a szerver cert-jet
+#ez alapjan hitelesiti a kliens a szervert
+#a szerven ez a kulcspar van megadva pkeyfile-ban
+#(automatikus 'yes' valasz)
+
+keytool -import \
+     -keystore keystore.jks  -storepass changeit \
+     -alias localhost -file localhost-cert.pem   \
+<< 'EOF'
+yes
+EOF
+
+
+
+ 

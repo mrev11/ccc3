@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#ellenorzes:
+#ha visszatesszuk, akkor ujra  mukodik a server auth
+ 
+keytool -import \
+     -keystore keystore.jks  -storepass changeit \
+     -alias localhost -file localhost-cert.pem \
+<< 'EOF'
+yes
+EOF
+ 

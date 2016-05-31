@@ -1,0 +1,4 @@
+Windowson nincs c_rehash,
+ezert a test-cert tanusitvanyt alairtam localhost.pem-mel,
+igy nem CAPATH-t, hanem CAFILE=localhost-cert.pem-et kell 
+megadni a kliens hitelesiteshez. Ezert ures a direktori.

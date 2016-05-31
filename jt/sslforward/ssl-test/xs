@@ -1,2 +1,3 @@
 #!/bin/bash
+rm -f xstart.log
 xstart.exe parfile.xml

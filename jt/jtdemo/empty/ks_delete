@@ -1,7 +1,0 @@
-#!/bin/bash
-keytool -delete \
-    -keystore keys  -storepass changeit \
-    -alias comfirm
-
-keytool -list -v -keystore keys -storepass changeit | less
- 

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#a CA (openssl) altal keszitett
+#(a test-req.pem-re kapott valasz) importalasa
+#ez helyettesiti az eredeti onalairt kulcspart
+ 
+keytool -import \
+     -keystore keystore.jks  -storepass changeit \
+     -alias test -file test-cert.pem 
+     
+     

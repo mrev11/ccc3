@@ -1,0 +1,66 @@
+<xstart>
+
+<item>
+    <name>Empty Plain</name>
+    <host>localhost</host>
+    <port>46000</port>
+    <workdir></workdir>
+    <command>empty.exe -jtsocket $(SOCKET)</command>
+</item>
+
+<item>
+    <name>Empty SSL forw</name>
+    <host>localhost</host>
+    <port>46001</port>
+    <workdir></workdir>
+    <env>SSLFORW_PKEYFILE=localhost.pem</env>
+    <command>sslforward.exe empty.exe -jtsocket $(SOCKET)</command>
+</item>
+
+
+<item>
+    <name>Empty SSL forw, client-auth</name>
+    <host>localhost</host>
+    <port>46002</port>
+    <workdir></workdir>
+    <env>SSLFORW_PKEYFILE=localhost.pem</env>
+    <env>SSLFORW_CAPATH=cert</env>
+    <env>SSLFORW_CAFILE=localhost.pem</env>
+    <command>sslforward.exe empty.exe -jtsocket $(SOCKET)</command>
+</item>
+
+
+
+
+
+<item>
+    <name>Empty SSL</name>
+    <host>localhost</host>
+    <port>46008</port>
+    <workdir></workdir>
+    <command>empty.exe 
+                -jtsocket $(SOCKET) 
+                -jtkey localhost.pem
+    </command>
+</item>
+
+<item>
+    <name>Empty SSL, client-auth</name>
+    <host>localhost</host>
+    <port>46009</port>
+    <workdir></workdir>
+    <command>empty.exe  
+                -jtsocket $(SOCKET)
+                -jtkey localhost.pem
+                -jtca  localhost-cert.pem
+    </command>
+
+
+    <!-- 
+                -jtca  localhost-cert.pem
+                -jtca  cert/test-cert.pem
+    -->
+</item>
+ 
+</xstart>
+ 

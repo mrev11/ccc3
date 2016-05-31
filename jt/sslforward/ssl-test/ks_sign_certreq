@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#az onalairt kulcsparbol keszit egy cert requestet
+#ezt el kell kuldeni a CA-nak (atvinni ~/ssl/xsign-ba)
+#ott keszul egy SITE_CA-val alairt certificate
+#amit importalunk es ami helyettesiti az eredeti kulcspart
+
+keytool -certreq \
+    -keystore keystore.jks -storepass changeit \
+    -alias test \
+    -dname "C=HU, ST=Hungary, L=Budapest, O=ComFirm, CN=test" \
+    -file test-req.pem
+    
+ 
+ 

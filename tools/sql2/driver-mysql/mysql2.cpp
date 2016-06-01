@@ -378,7 +378,7 @@ void _clp__my_affected_rows(int argno) // conidx --> num
 {
     CCC_PROLOG("_my_affected_rows",1);
     int conidx=verify_conidx(_parni(1));
-    _retni( mysql_affected_rows( mysql_connection[conidx].conhnd ) );
+    _retni( (double)mysql_affected_rows( mysql_connection[conidx].conhnd ) );
     CCC_EPILOG();
 }    
 

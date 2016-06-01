@@ -678,6 +678,7 @@ local objlist
                 end
             next
             memowrit(objdir+dirsep()+"objects",objlist)
+            memowrit(objdir+dirsep()+"objects-"+libnam,objlist)
         #endif
 
         run1 (torun)
@@ -772,6 +773,7 @@ local objlist, xobj
                 end
             next
             memowrit(objdir+dirsep()+"objects",objlist)
+            memowrit(objdir+dirsep()+"objects-"+exenam,objlist)
         #endif
 
         run1 (torun)

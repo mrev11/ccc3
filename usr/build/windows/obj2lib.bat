@@ -1,23 +1,31 @@
 @echo off
 echo OBJ2LIB.BAT %1 
 
-:Vagy a paraméterként vagy az objects-ben 
-:kapott filéket kell rsplib-be kiírni.
-:Build vagy egyik vagy másik módon működik,
-:az egyiknek üresnek kell lennie.
-:Azért van ez a kettősség, hogy átmenetileg 
-:a régi build is működjön az új bat-okkal.
+:Vagy a parameterkent vagy az objects-ben 
+:kapott fileket kell rsplib-be kiirni.
+:Build vagy egyik vagy masik modon mukodik,
+:az egyiknek uresnek kell lennie.
+:Azert van ez a kettosseg, hogy atmenetileg 
+:a regi build is mukodjon az uj bat-okkal.
 
 pushd %BUILD_OBJ%
 
+set LIBNAM=%1
 set TARGET=%1.lib
 set LSTFIL=%1.lst
-set RSPLIB=rsplib
+set RSPLIB=rsplib-%1
+set OUTLIB=outlib-%1
+set ERROR=error--outlib-%1
+
+set OBJECTS=objects-%1
+if exist %OBJECTS% goto objects_ok
 set OBJECTS=objects
+:objects_ok
 
 del %TARGET% 2>nul
+del %LSTFIL% 2>nul
 del %RSPLIB% 2>nul
-del error 2>nul
+del %ERROR% 2>nul
 
 :mng --------------------------------------------------------------------------
 if not "%cccbin%"=="mng" goto msc
@@ -35,12 +43,12 @@ if [%1]==[] goto endobj_mn
 
 type %OBJECTS% >>%RSPLIB% 2>nul
 
-ccomp ar @%RSPLIB% 2>outlib
+ccomp ar @%RSPLIB% 2>%OUTLIB%
 goto iferror
 
 
 :msc --------------------------------------------------------------------------
-if not "%cccbin%"=="msc" goto bor
+if not "%cccbin%"=="msc" goto cccbin_not_set
 
 echo -OUT:%TARGET% >%RSPLIB%
 
@@ -55,28 +63,7 @@ if [%1]==[] goto endobj_ms
 
 type %OBJECTS% >>%RSPLIB% 2>nul
 
-lib @%RSPLIB% >outlib
-goto iferror
-
-
-:bor --------------------------------------------------------------------------
-if not "%cccbin%"=="bor" goto cccbin_not_set
-
-echo %TARGET% /C /P256 ^& >%RSPLIB% 
-
-if exist %OBJECTS% goto endobj_br
-shift
-:begobj_br
-if [%1]==[] goto endobj_br
-  echo +%1 ^& >>%RSPLIB%
-  shift
-  goto begobj_br
-:endobj_br
-
-type %OBJECTS% >>%RSPLIB% 2>nul
-echo ,%LSTFIL% >>%RSPLIB% 
- 
-tlib @%RSPLIB%
+lib @%RSPLIB% >%OUTLIB%
 goto iferror
 
 
@@ -86,8 +73,18 @@ goto stop
  
  
 :iferror ----------------------------------------------------------------------
-if errorlevel 1 copy outlib error >nul
+if not errorlevel 1 goto stop
+
+    touch error
+    del   %TARGET% 2>nul
+    copy  %OUTLIB% %ERROR% >nul
+    type  %OUTLIB%
 
 :stop
+
+del  %OUTLIB% 2>nul
+del  %OBJECTS% 2>nul
+del  objects 2>nul
+
 popd
 @echo -------------------------------------------------------------------------

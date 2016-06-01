@@ -39,7 +39,7 @@ void _clp_findfirst(int argno)
 {
     CCC_PROLOG("findfirst",2);
 
-    CHAR *fspec=L"*"; //default
+    const CHAR *fspec=L"*"; //default
     if( !ISNIL(1) )
     {
         convertfspec2nativeformat(base);

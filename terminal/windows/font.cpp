@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static char *fontface="Courier New";
+static const char *fontface="Courier New";
 static int fontheight=16;
 
 

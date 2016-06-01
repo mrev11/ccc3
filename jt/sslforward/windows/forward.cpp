@@ -37,6 +37,8 @@ static void error();
 #define MAX(a,b)  (((a)>(b))?(a):(b))
 #define MIN(a,b)  (((a)<(b))?(a):(b))
 
+#undef  BUFSIZ
+#define BUFSIZ (16*1024)
  
 //----------------------------------------------------------------------------
 void forward(SSL *ssl, int ts, int as)
@@ -87,8 +89,8 @@ static void forward1(SSL *ssl, int sck)
 {
     //printf("forw-1\n");
 
-    int bs=16*1024;
-    char buffer[bs];
+    int bs=BUFSIZ;
+    char buffer[BUFSIZ];
     int nbyte=SSL_read(ssl,buffer,bs);
 
     if( nbyte<=0 )
@@ -123,8 +125,8 @@ static void forward2(int sck, SSL *ssl)
 {
     //printf("forw-2\n");
 
-    int bs=4*1024;
-    char buffer[bs];
+    int bs=BUFSIZ;
+    char buffer[BUFSIZ];
     int av=socket_available(sck);
     int nbyte=recv(sck,buffer,MIN(bs,av),0);
     

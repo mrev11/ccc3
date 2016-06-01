@@ -1,15 +1,18 @@
 @echo off 
 echo C2OBJ.BAT %1 %2 
 
-:C fordítás (c-->obj)
+:C forditas (c-->obj)
 
 set TARGET=%BUILD_OBJ%\%1.obj
-set CMPOPT=%BUILD_OBJ%\compopt
-md %BUILD_OBJ% 2>nul
-del error 2>nul
-del %CMPOPT% 2>nul
-type %cccdir%\usr\options\%cccbin%\%BUILD_OPT% >>%CMPOPT%
+set CMPOPT=%BUILD_OBJ%\compopt-%1
+set OUTC=outc-%1
+set ERROR=error--%OUTC%
 
+del %ERROR% 2>nul
+del %CMPOPT% 2>nul
+md %BUILD_OBJ% 2>nul
+
+type %CCCDIR%\usr\options\%CCCBIN%\%BUILD_OPT% >>%CMPOPT%
 set ECHOOUT=%CMPOPT%
 set ECHOPRE=-I
 set ECHOPOST=
@@ -20,43 +23,18 @@ type %BUILD_CFG% >>%CMPOPT%
 :cfg
  
 :mng --------------------------------------------------------------------------
-if not "%cccbin%"=="mng" goto msc
+if not "%CCCBIN%"=="mng" goto msc
 
-echo %1 >>outc
-ccomp gcc @%CMPOPT% -o %TARGET% -c %2\%1.c 2>>outc
+ccomp gcc @%CMPOPT% -o %TARGET% -c %2\%1.c 2>>%OUTC%
 goto iferror 
  
 
 :msc --------------------------------------------------------------------------
-if not "%cccbin%"=="msc" goto wat
+if not "%CCCBIN%"=="msc" goto cccbin_not_set
 
 echo -Fo%TARGET% >>%CMPOPT%  
-cl %2\%1.c @%CMPOPT% >outc
+cl %2\%1.c @%CMPOPT% >%OUTC%
 goto iferror
-
-
-
-:wat --------------------------------------------------------------------------
-if not "%cccbin%"=="wat" goto bor
-
-echo -Fo=%TARGET% >>%CMPOPT%  
-wcc386 %2\%1.c @%CMPOPT% >outc
-goto iferror
-
-
-
-:bor --------------------------------------------------------------------------
-if not "%cccbin%"=="bor" goto gcc
-
-bcc32 -c -o%TARGET% @%CMPOPT% %2\%1.c >outc
-goto iferror
- 
-
-
-:gcc --------------------------------------------------------------------------
-if not "%cccbin%"=="gcc" goto cccbin_not_set
-goto iferror
- 
 
  
 :cccbin_not_set --------------------------------------------------------------- 
@@ -65,14 +43,17 @@ goto stop
 
  
 :iferror ----------------------------------------------------------------------
-if errorlevel 1 copy  outc error  >nul
-if exist error goto stop
+if not  errorlevel 1 goto stop
+    touch error
+    del  %TARGET%
+    copy %OUTC% %ERROR% >nul
+    type %OUTC%
 
-if [%BUILD_CPP%]==[] goto stop
-md %BUILD_CPP% 2>nul
-copy %2\%1.c %BUILD_CPP% 
- 
 :stop
+
+del %OUTC%
+
+
 @echo -------------------------------------------------------------------------
 
  

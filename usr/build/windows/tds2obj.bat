@@ -1,11 +1,30 @@
-@echo off 
-@echo PRG2OBJ.BAT %1 %2 
+@echo off
+@echo TDS2OBJ.BAT %1 %2 
 
+del error 2>nul 
+del error--tds2prg-%1 2>nul
 del error--outpre-%1 2>nul
 del error--ppo2cpp-%1 2>nul
 del error--outcpp-%1 2>nul
 md ppo 2>nul
  
+del ppo\%1.prg 2>nul
+copy %2\%1.tds ppo\%1.tmp >nul
+tds2prg.exe   ppo\%1.tmp  >ppo\tds2prg-%1
+del ppo\%1.tmp
+if exist ppo\%1.prg goto vanprg
+    touch error
+    move ppo\tds2prg-%1 error--tds2prg-%1 >nul
+    echo 'tds2prg' %1 FAILED
+    grep '^description:' error--tds2prg-%1
+goto stop
+:vanprg
+
+del ppo\tds2prg-%1
+
+
+: innen kezdve ugyanaz, mint prg2ppo
+: kiveve hogy a prg-t a ppo-bol veszi
 
 :Preprocesszor (prg-->ppo)
 set CMPOPT=ppo\prg2ppo-%1
@@ -29,7 +48,7 @@ echo -ustd1.ch   >>%CMPOPT%
 :type %CMPOPT%
 
 if [%prg2ppo%] == [] set prg2ppo=prg2ppo
-%prg2ppo% %2\%1.prg -oppo\%1.ppo  @%CMPOPT% >outpre-%1
+%prg2ppo% ppo\%1.prg -oppo\%1.ppo  @%CMPOPT% >outpre-%1
 if not errorlevel 1 goto prg2ppo_ok
     touch error
     type outpre-%1
@@ -58,4 +77,3 @@ call %BUILD_BAT%\_compile %1 ppo
 :stop
 @echo -------------------------------------------------------------------------
 
- 

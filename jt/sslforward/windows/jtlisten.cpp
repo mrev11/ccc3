@@ -95,7 +95,7 @@ int main(int argc, char* argv[] )
             {
                 av[i]=argv[2+i];
             }
-            av[i++]="-jtsocket";
+            av[i++]=strdup("-jtsocket");
             av[i++]=sck;
             av[i++]=0;
             

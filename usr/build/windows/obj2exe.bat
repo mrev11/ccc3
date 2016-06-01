@@ -1,22 +1,28 @@
 @echo off
-echo OBJ2EXE.BAT %1 %BUILD_EXE%
+@echo OBJ2EXE.BAT %1 %BUILD_EXE%
 
-:Vagy a paraméterként vagy az objects-ben 
-:kapott filéket kell rsplink-be kiírni.
-:Build vagy egyik vagy másik módon működik,
-:az egyiknek üresnek kell lennie.
-:Azért van ez a kettősség, hogy átmenetileg 
-:a régi build is működjön az új bat-okkal.
+:Vagy a parameterkent vagy az objects-ben 
+:kapott fileket kell rsplink-be kiirni.
+:Build vagy egyik vagy masik modon mukodik,
+:az egyiknek uresnek kell lennie.
+:Azert van ez a kettosseg, hogy atmenetileg 
+:a regi build is mukodjon az uj bat-okkal.
 
 set EXENAM=%1
 set TARGET=%BUILD_EXE%\%1.exe 
-set RSPLNK=%BUILD_OBJ%\rsplink
+set RSPLNK=%BUILD_OBJ%\rsplink-%1
+set OUTLNK=outlnk-%1
+set ERROR=error--outlnk-%1
+
+set OBJECTS=%BUILD_OBJ%\objects-%1
+if exist %OBJECTS% goto objects_ok
 set OBJECTS=%BUILD_OBJ%\objects
+:objects_ok
+
 
 del %TARGET% 2>nul
 del %RSPLNK% 2>nul
-del error 2>nul
-
+del %ERROR% 2>nul
 
 :mng --------------------------------------------------------------------------
 if not "%cccbin%"=="mng" goto msc
@@ -49,12 +55,12 @@ echo -Wl,--end-group >>%RSPLNK%
  
 type %CCCDIR%\usr\options\%CCCBIN%\link.opt >>%RSPLNK%
 
-ccomp c++ @%RSPLNK% 2>outlnk
+ccomp c++ @%RSPLNK% 2>%OUTLNK%
 goto iferror
  
 
 :msc --------------------------------------------------------------------------
-if not "%cccbin%"=="msc" goto bor
+if not "%cccbin%"=="msc" cccbin_not_set
  
 echo -nologo >%RSPLNK%
 echo -subsystem:%BUILD_SYS% >>%RSPLNK%
@@ -82,58 +88,27 @@ call %BUILD_BAT%\_echo %BUILD_LIB%
  
 type %cccdir%\usr\options\msc\link.opt >>%RSPLNK%
 
-link @%RSPLNK% >outlnk
-goto iferror
-
-
-:bor --------------------------------------------------------------------------
-if not "%cccbin%"=="bor" goto cccbin_not_set
-
-set CONCAT=-c -L
-set CONCATPRE=
-set CONCATPOST=;
-call %BUILD_BAT%\_concat %BUILD_LPT%
-echo %CONCAT% %BUILD_SYS% + >%RSPLNK%
-
-
-if exist %OBJECTS% goto endobj_brx
-set CONCAT=
-:begobj_br
-if [%1]==[] goto endobj_br
-  set CONCAT=%CONCAT% %BUILD_OBJ%\%1
-  shift
-  goto begobj_br
-:endobj_br
-echo %CONCAT% >>%RSPLNK%
-:endobj_brx
-
-type %OBJECTS% >>%RSPLNK% 2>nul
-
-echo %TARGET% >>%RSPLNK%
-echo nul >>%RSPLNK%
- 
-set ECHOOUT=%RSPLNK%
-set ECHOPRE=
-set ECHOPOST= +
-call %BUILD_BAT%\_echo %BUILD_LIB%
-
-type %cccdir%\usr\options\bor\link.opt >>%RSPLNK% 
-
-ilink32 @%RSPLNK%. >outlnk    
+link @%RSPLNK% >%OUTLNK%
 goto iferror
 
 
 :cccbin_not_set ---------------------------------------------------------------
 echo cccbin environment variable not set >error
 goto stop
-
  
 :iferror ----------------------------------------------------------------------
-if errorlevel 1 copy outlnk error >nul
-del %BUILD_EXE%\%EXENAM%.tds 2>nul
-if exist error del %TARGET% 2>nul
+if not errorlevel 1 goto stop
+    touch error
+    del  %TARGET% 2>nul
+    copy %OUTLNK% %ERROR% >nul
+    type %OUTLNK%
 
 :stop
+
+del  %OUTLNK% 2>nul
+del  %OBJECTS% 2>nul
+del  %BUILD_OBJ%\objects 2>nul
+
 @echo -------------------------------------------------------------------------
 
  

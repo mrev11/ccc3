@@ -19,8 +19,8 @@
  */
 
 
-#include <unistd.h>
-#include <sys/wait.h>
+//#include <unistd.h>
+//#include <sys/wait.h>
  
 #include <openssl/err.h>
 #include <openssl/ssl.h>

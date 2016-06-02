@@ -19,7 +19,9 @@
  */
 
 
+#ifdef UNIX
 #include <sys/wait.h>
+#endif
  
 #include <openssl/err.h>
 #include <openssl/ssl.h>
@@ -143,11 +145,13 @@ static void forward2(int sck, SSL *ssl)
 //----------------------------------------------------------------------------
 static void zombi()
 {
+    #ifdef UNIX
     int pid, wstat; 
     while( 0<(pid=waitpid(0,&wstat,WNOHANG)) )
     {
         //printf("waitpid %d %d\n",pid,wstat);
     }
+    #endif
 }
 
 //----------------------------------------------------------------------------

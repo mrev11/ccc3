@@ -1,7 +1,7 @@
--bccc3_jt
--bccc3_socket 
--bccc3_sslsocket 
--bccc3_xmldom
--bccc3_btbtx.lib
+-bccc$(CCCVER)_jt
+-bccc$(CCCVER)_socket 
+-bccc$(CCCVER)_sslsocket 
+-bccc$(CCCVER)_xmldom
+-bccc$(CCCVER)_btbtx.lib
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

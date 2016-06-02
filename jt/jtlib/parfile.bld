@@ -1,4 +1,4 @@
--sccc3_jt
+-sccc$(CCCVER)_jt
 
 # Ha nincs kéznél az openssl könyvtár,
 # akkor is le lehet fordítani a programot SSL támogatás nélkül

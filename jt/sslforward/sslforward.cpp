@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 #ifdef HASZNALAT
 
     Legyen 
@@ -41,27 +42,19 @@
         A -jtsocket <sck> opció nem csak a parancs végén lehet.
 
 #endif
- 
 
-#include <unistd.h>
-#include <sys/wait.h>
- 
-#include <openssl/err.h>
-#include <openssl/ssl.h>
- 
+
 #include <sckcompat.h>
 #include <sckutil.h>
  
-extern SSL_CTX *ssl_server_context();
-extern void socketpair(int*,int*);
-extern void forward(SSL *ssl, int trmsck, int appsck);
+extern void serve_client_accept(int trmsck);
+extern void serve_client_connect(int trmsck);
+extern void start_srvapp(int clnsck);
+extern void start_child(char* argv[]);
 
-static void serve_client(int termsck);
-static void start_srvapp(int sck);
- 
 static int ARGC;
 static char **ARGV;
- 
+
 //----------------------------------------------------------------------------
 int main(int argc, char* argv[] )
 {
@@ -83,38 +76,8 @@ int main(int argc, char* argv[] )
         exit(1);
     }
 
-    serve_client( jtsocket );
+    serve_client_accept( jtsocket );
     return 0;
-}
-
-//----------------------------------------------------------------------------
-static void serve_client(int trmsck)
-{
-    SSL_CTX *ctx=ssl_server_context();
-
-    SSL *ssl=SSL_new(ctx);
-    SSL_set_fd(ssl,trmsck);
-    if( !SSL_accept(ssl) )
-    {
-        printf("SSL_accept failed\n");
-        exit(1);
-    }
-
-    int appsck,clnsck;
-    socketpair(&appsck,&clnsck); //kilep, ha sikertelen
- 
-    if( fork() )  
-    {
-        socket_close(clnsck);
-        forward(ssl,trmsck,appsck);
-    }
-    else
-    {
-        socket_close(trmsck);
-        socket_close(appsck);
-        start_srvapp(clnsck);
-    }
-
 }
 
 //----------------------------------------------------------------------------
@@ -133,10 +96,9 @@ void start_srvapp(int sck)
         }
     }
 
-    execvp(argv[0],argv);
-
-    //csak hiba esetén jön vissza
-    fprintf(stderr,"\nexecvp failed: %s ", argv[0]);
+    start_child(argv);
+    //Windowson azonnal visszajön
+    //Linuxon csak hiba esetén jön vissza
 }
 
 //----------------------------------------------------------------------------

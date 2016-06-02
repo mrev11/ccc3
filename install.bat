@@ -53,7 +53,7 @@ pushd ccctools\ccomp
 call m.bat
 popd
  
-pushd ccctools\build
+pushd ccctools\buildp
 call m.bat
 popd
 

@@ -1,3 +1,2 @@
 @echo off
-bapp_w320  @parfile-win.bld
-
+call bapp_w320.bat @parfile.bld

@@ -1,21 +1,22 @@
 @echo off
 
-pushd jterminal 
-    call m
-popd    
+:pushd jterminal 
+:call m
+:popd    
 
 pushd jtlib 
-    call m 
+call m 
 popd
 
 pushd jtstart 
-    call m
+call m
 popd
     
 pushd sslforward 
-    call m
+call m
 popd
 
-pushd msk2dlg 
-    call m 
+pushd msk2dlg
+call m
 popd
+

@@ -18,9 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//egyszerűsített C++ szintű socket interfész;
-//a felsőbb szintek elől elfedi a UNIX/Windows különbséget;
-//viszonylag egyszerűen használható C++-ból;
+//egyszerusitett C++ szintu socket interfesz;
+//a felsobb szintek elol elfedi a UNIX/Windows kulonbseget;
+//viszonylag egyszeruen hasznalhato C++-bol;
 
 #include <sckcompat.h>
 #include <sckutil.h>
@@ -47,7 +47,7 @@ int socket_wsastartup()
 }
 
 //----------------------------------------------------------------------------
-#ifdef WINDOWS //errno beállítás
+#ifdef WINDOWS //errno beallitas
     #define ERRNO(x)  (errno=(x)?GetLastError():0)
 #else
     #define ERRNO(x)
@@ -100,7 +100,7 @@ static void socket_addr_in(SOCKADDR_IN *saddr, char *ipaddr, int port)
     saddr->sin_family=AF_INET;
 }
 
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------------- 
 int socket_bind(int socket, char *ipaddr, int port) //compat
 {
     return socket_bind(socket, (const char*) ipaddr, port);
@@ -108,16 +108,16 @@ int socket_bind(int socket, char *ipaddr, int port) //compat
 
 int socket_bind(int socket, const char *ipaddr, int port)
 {
-    //Jó-e a default REUSEADDR opció?
+    //Jo-e a default REUSEADDR opcio?
     //
-    //1. Linuxon nem látszik a hatása. Más processz által fogvatartott
-    //   portra semmiképp sem lehet bindelni. A saját processz által
-    //   korábban bindelt portot korlátozás nélkül újra lehet használni.
+    //1. Linuxon nem latszik a hatasa. Mas processz altal fogvatartott
+    //   portra semmikepp sem lehet bindelni. A sajat processz altal
+    //   korabban bindelt portot korlatozas nelkul ujra lehet hasznalni.
     //
-    //2. Windowson REUSEADDR=1 esetén más processz által fogott portot
-    //   is lehet bindelni, ami ronda hiba. REUSEADDR=0 esetén viszont egy
-    //   processz nem tudja többször bindelni ugyanazt a portot. Például
-    //   nem lehet ilyen ciklust használni: socket,bind,listen,accept,close.
+    //2. Windowson REUSEADDR=1 eseten mas processz altal fogott portot
+    //   is lehet bindelni, ami ronda hiba. REUSEADDR=0 eseten viszont egy
+    //   processz nem tudja tobbszor bindelni ugyanazt a portot. Peldaul
+    //   nem lehet ilyen ciklust hasznalni: socket,bind,listen,accept,close.
 
     char *host=0;
     char buf[32];
@@ -214,6 +214,16 @@ int socket_setoption(int s, int option, int value)
     return result;
 }
 
+//----------------------------------------------------------------------------
+int socket_noinherit(int s) //close-on-exec
+{
+  #ifdef WINDOWS
+    return (SetHandleInformation((HANDLE)s,HANDLE_FLAG_INHERIT,0)==0) ? -1 : s;
+  #else
+    return (fcntl(s,F_SETFD,FD_CLOEXEC)==-1) ? -1 : s;  
+  #endif
+}
+
 //---------------------------------------------------------------------------- 
 int socket_available(int sck)
 {
@@ -226,9 +236,9 @@ int socket_available(int sck)
 //---------------------------------------------------------------------------
 int socket_write(int s, void*buf, int len)
 {
-    // UNIX-on a send SIGPIPE-ot válthat ki, 
-    // ha a másik fél megszakítja a kapcsolatot.
-    // Ha az nincs kezelve, akkor a send csendben kilép. 
+    // UNIX-on a send SIGPIPE-ot valthat ki, 
+    // ha a masik fel megszakitja a kapcsolatot.
+    // Ha az nincs kezelve, akkor a send csendben kilep. 
     // Windowson, Solarison, FreeBSD-n MSG_NOSIGNAL=0.
     
     return send(s,(char*)buf,len,MSG_NOSIGNAL);
@@ -237,30 +247,30 @@ int socket_write(int s, void*buf, int len)
 //---------------------------------------------------------------------------
 int socket_read(int s, void*dest, int dlen, int wtime)
 {
-    //s-ből beolvas dest-be dlen darab byteot
+    //s-bol beolvas dest-be dlen darab byteot
 
-    //akkor tér vissza, ha 
-    //  megjött a kért mennyiségű adat,
-    //  lejárt a várakozási idő (wtime>=0),
-    //  hiba keletkezett az olvasásban
+    //akkor ter vissza, ha 
+    //  megjott a kert mennyisegu adat,
+    //  lejart a varakozasi ido (wtime>=0),
+    //  hiba keletkezett az olvasasban
    
-    //ha wtime<0, akkor örökké vár
+    //ha wtime<0, akkor orokke var
  
-    //visszatérés
-    //  recvlen>=0 esetén: beolvasott byteok száma
-    //  recvlen<0  esetén: hiba
+    //visszateres
+    //  recvlen>=0 eseten: beolvasott byteok szama
+    //  recvlen<0  eseten: hiba
 
-    //olvasási hiba esetén, 
-    //  ha van beolvasott adat, ezek hosszát adja,
-    //  ha nincs beolvasott adat, negatívot ad
+    //olvasasi hiba eseten, 
+    //  ha van beolvasott adat, ezek hosszat adja,
+    //  ha nincs beolvasott adat, negativot ad
 
 
     char *buf=(char*)dest;                //ide olvasunk
     int recvlen=0;                        //beolvasott adatok hossza
-    int result=0;                         //utolsó olvasás eredménye
-    int firstread=1;                      //egyszer mindenképpen olvasunk
-    int wtimerest=wtime<0?1000000:wtime;  //maradék idő
-    unsigned long time0=now();            //olvasás kezdetének ideje (ms)
+    int result=0;                         //utolso olvasas eredmenye
+    int firstread=1;                      //egyszer mindenkeppen olvasunk
+    int wtimerest=wtime<0?1000000:wtime;  //maradek ido
+    unsigned long time0=now();            //olvasas kezdetenek ideje (ms)
  
 
     while( firstread || ((recvlen<dlen) && (wtimerest>0)) )
@@ -279,15 +289,15 @@ int socket_read(int s, void*dest, int dlen, int wtime)
 
         if( select(s+1,&fd_read,NULL,&fd_err,&tv) )
         {
-            //ide akkor jön, ha 
-            //1) van olvasnivaló,
-            //2) a csatorna lezáródott,
-            //3) a select hibakóddal tért vissza
+            //ide akkor jon, ha 
+            //1) van olvasnivalo,
+            //2) a csatorna lezarodott,
+            //3) a select hibakoddal tert vissza
             
-            //a hibát recv eredményéből detektáljuk
-            //CSAK a result>0 eset számít sikeresnek
-            //Linuxon recv nemlétező vonal esetén 0-át ad
-            //NT-n recv nemlétező vonal esetén -1-et ad
+            //a hibat recv eredmenyebol detektaljuk
+            //CSAK a result>0 eset szamit sikeresnek
+            //Linuxon recv nemletezo vonal eseten 0-at ad
+            //NT-n recv nemletezo vonal eseten -1-et ad
 
             result=recv(s,buf+recvlen,dlen-recvlen,0);
             
@@ -335,14 +345,14 @@ int socket_error()
     return errno;
 
     //return GetLastError();  //UNIX-on errno
-    //Az eredeti koncepció az volt, 
+    //Az eredeti koncepcio az volt, 
     //hogy ez Windowson a GetLastError()-t adja,
-    //azonban a CCC stack kezelés törli a kódot,
-    //ezért inkább megőrizzük a kódot errno-ban.
+    //azonban a CCC stack kezeles torli a kodot,
+    //ezert inkabb megorizzuk a kodot errno-ban.
 }
  
 //----------------------------------------------------------------------------
-//összetett funkciók
+//osszetett funkciok
 //----------------------------------------------------------------------------
 int client_socket_new(const char *ipaddr, int port)
 {
@@ -388,7 +398,7 @@ int server_socket(const char *ipaddr, int port, int qlen){return server_socket_n
 //----------------------------------------------------------------------------
 int server_socket_accept(int srvsck)
 {
-    return socket_accept(srvsck); //hiba esetén -1
+    return socket_accept(srvsck); //hiba eseten -1
 }
  
 //---------------------------------------------------------------------------- 

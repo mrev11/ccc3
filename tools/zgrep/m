@@ -1,3 +1,4 @@
 #!/bin/bash
-bapp_unixc.b 'BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)' 'BUILD_SHR=static'
-ldd `which zgrep.exe`
+bapp_unixc.b @parfile.bld
+
+#ldd `which zgrep.exe`

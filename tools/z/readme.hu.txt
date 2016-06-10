@@ -1,8 +1,8 @@
 
-Hogyan kell használni a Z-EDITOR-t?
+Hogyan kell hasznalni a Z-EDITOR-t?
 ===================================
 
-Billentyűk
+Billentyuk
 ----------
 
 ESC      : escape
@@ -23,76 +23,76 @@ ALT-X    : cut
 ALT-C    : copy
 ALT-V    : paste
 
-ALT-CRS  : kijelölés
-SH-CRS   : kijelölés
+ALT-CRS  : kijeloles
+SH-CRS   : kijeloles
 
 
 
-Segédfilék
+Segedfilek
 ----------
 
 clipbrd.z:
-  a clipboard-ot tartalmazza, azért nem a Windows clipboard-ot használja, 
-  hogy könnyű legyen portolni UNIX-ra (megtörtént)
+  a clipboard-ot tartalmazza, azert nem a Windows clipboard-ot hasznalja, 
+  hogy konnyu legyen portolni UNIX-ra (megtortent)
 
 history.z:  
-  a korábban editált filék pozícióját tartalmazza
+  a korabban editalt filek poziciojat tartalmazza
 
 error.z:
-  az elszállásoknál keletkező infót gyűjti
+  az elszallasoknal keletkezo infot gyujti
 
 keymap.z:
-  billentyűkód átdefiniálásokat tartalmaz, csak azok a sorok számítanak,
-  amik két vesszővel elválasztott ASCII kóddal kezdődnek  
+  billentyukod atdefinialasokat tartalmaz, csak azok a sorok szamitanak,
+  amik ket vesszovel elvalasztott ASCII koddal kezdodnek  
 
 
-NT-n a segédfiléket a program mindig a z.exe-t tartalmazó directoryban
-keresi, illetve itt hozza létre, ezért z.exe egy példányát egyszerre 
-csak egy programozó használhatja, máskülönben összekeveredik a 
-clipboard és a history.  
+NT-n a segedfileket a program mindig a z.exe-t tartalmazo directoryban
+keresi, illetve itt hozza letre, ezert z.exe egy peldanyat egyszerre 
+csak egy programozo hasznalhatja, maskulonben osszekeveredik a 
+clipboard es a history.  
 
-Linuxon a segédfilék helye ~/.z, ezért ott nincsenek ilyen korlátozások.
+Linuxon a segedfilek helye ~/.z, ezert ott nincsenek ilyen korlatozasok.
 
 
 
-Ékezetes kódkészlet
+Ekezetes kodkeszlet
 -------------------
 
-NT-n a program jelenleg CWI kódkészletre van konfigurálva. Az ékezetes
-betűket a magyar szabvány szeriniti helyen lévű billentyűkkel plusz
-az ALT vagy CTRL lenyomásával lehet képezni. Ezenkívül a jelenlegi
-keymap.z az ékezetes kisbetűket előállítja az általam megszokott
-kombinációkkal (pl. ALT-a=á).
+NT-n a program jelenleg CWI kodkeszletre van konfiguralva. Az ekezetes
+betuket a magyar szabvany szeriniti helyen levu billentyukkel plusz
+az ALT vagy CTRL lenyomasaval lehet kepezni. Ezenkivul a jelenlegi
+keymap.z az ekezetes kisbetuket eloallitja az altalam megszokott
+kombinaciokkal (pl. ALT-a=a).
 
-Linuxon a Latin2 kódkészletet használjuk, a billentyűkiosztás
-az .Xmodmap és a keymap.z filékben tetszőlegesen beállítható.
+Linuxon a Latin2 kodkeszletet hasznaljuk, a billentyukiosztas
+az .Xmodmap es a keymap.z filekben tetszolegesen beallithato.
 
 
 
-Kijelölések
+Kijelolesek
 -----------
 
-A kijelölés az ALT és SHIFT kombinációkkal egyformán működik
+A kijeloles az ALT es SHIFT kombinaciokkal egyforman mukodik
 (Linuxon csak az ALT-os). A Clipper inkey.ch-ban nincsnek K_SH_LEFT stb. 
-szimbólumok, ezért a program mindenhol a K_ALT_LEFT stb. szimbólumokat 
-használja, de a billentyűzet olvasás (NT-n) úgy van konfigurálva, 
-hogy a SHIFT-es kombináció ugyanazt az értéket adja, mint az ALT-os.
+szimbolumok, ezert a program mindenhol a K_ALT_LEFT stb. szimbolumokat 
+hasznalja, de a billentyuzet olvasas (NT-n) ugy van konfiguralva, 
+hogy a SHIFT-es kombinacio ugyanazt az erteket adja, mint az ALT-os.
 
 
 
 Copy/Paste
 ----------
 
-A copy funkció nem lehet CTRL-C, mert az NT-n megállítaná a programot,
-ezért CTRL helyett ALT-os billentyűkombinációkat használunk.
+A copy funkcio nem lehet CTRL-C, mert az NT-n megallitana a programot,
+ezert CTRL helyett ALT-os billentyukombinaciokat hasznalunk.
 
 
 
 Alert
 -----
 
-Az itteni alert csak abban különbözik a standard könyvtári
-alert-től, hogy zöld, ezenkívül egyszerűbb, esztétikusabb kódja van.
+Az itteni alert csak abban kulonbozik a standard konyvtari
+alert-tol, hogy zold, ezenkivul egyszerubb, esztetikusabb kodja van.
 
 
 

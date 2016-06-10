@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define ZGREP  "Grep Viewer 2.0.00-Unicode"
+#define ZGREP  zgrep_version()
 
 #define FIND    getenv("FIND") 
 #define GREP    getenv("GREP")
@@ -34,17 +34,35 @@ local gf,fd,b,n,m
     run( FIND+" >"+TEMPFD )
     fd:=lines(memoread(TEMPFD))
 
+  #ifdef WINDOWS
+    //windows hiba
+    if( empty(fd) )
+        sleep(500)
+        fd:=lines(memoread(TEMPFD))
+    end
+  #endif
+
     ferase(TEMPGR)
     for n:=1 to len(fd)
         fd[n]:=strtran(fd[n],chr(13),"")
-        //alert( GREP+' "'+search+'" '+fd[n]+" >>"+TEMPGR )
-        run( GREP+' "'+search+'" '+fd[n]+" >>"+TEMPGR )
+        if( empty(fd[n]) )
+            // ??
+        elseif( !file(fd[n]) )
+            alert("File not found: "+fd[n])
+        else
+            //alert( GREP+' "'+search+'"  "'+fd[n]+'" >>'+TEMPGR )
+                run( GREP+' "'+search+'"  "'+fd[n]+'" >>'+TEMPGR )
+        end
     next
 
     gf:=memoread(TEMPGR)
 
     if( empty(gf) )
         quit
+    end
+
+    if( search==NIL )
+        search:=""
     end
 
     gf:=lines(gf)
@@ -75,91 +93,3 @@ local gf,fd,b,n,m
 
 
 *****************************************************************************
-static function view(b,search,replace)
-
-local a:=brwArray(b)
-local p:=brwArrayPos(b)
-local x:=split(a[p][1],":")
-local fspec:=x[1]
-local line:=x[2]
-local cmd:="z.exe "+fspec  //"z" nem jó!
-local screen
-
-  #ifdef _UNIX_
-    if( line!=NIL )
-        cmd+=" '-l"+line+"'"
-    end
-
-    if( search!=NIL )
-        cmd+=" '-S"+search+"'"
-    end
-
-    if( replace!=NIL )
-        cmd+=" '-p"+replace+"'" 
-    end
- 
-    if( getenv("CCC_TERMINAL")=="term" ) //2002.12.31
-        brwHide(b)
-        run ( cmd )
-        brwShow(b)
-
-    elseif( getenv("CCCTERM_INHERIT")=="yes" ) //2013.08.03
-        brwHide(b)
-        setcursor(1)
-        run ( cmd )
-        setcursor(0)
-        brwShow(b)
-
-    else
-        //alert(cmd+"&")
-        run( cmd+"&" ) //külön ablak 
-    end
-    
-
-  #else
-    if( line!=NIL )
-        cmd+=' "-l'+line+'"' 
-    end
-
-    if( search!=NIL )
-        cmd+=' "-S'+search+'"'
-    end
-
-    if( replace!=NIL )
-        cmd+=' "-p'+replace+'"'
-    end
- 
-    run ( "start /b " + cmd  )
-
-  #endif
-
-    return .t.
-
-
-*****************************************************************************
-static function lines(txt)  //z-ből átvéve
-
-local a:={},n1,n:=1,i:=0
-
-    while( .t. )
-
-        if( ++i>len(a) )
-            asize(a,i+256)
-        end
-
-        if( 0<(n1:=at(chr(10),txt,n)) )
-            a[i]:=substr(txt,n,n1-n)
-            n:=n1+1
-        else
-            a[i]:=substr(txt,n)
-            if( empty(a[i]) )
-                i--
-            end
-            exit
-        end
-    end
-
-    return asize(a,i)
-
-**************************************************************************** 
-        

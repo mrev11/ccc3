@@ -20,8 +20,8 @@
 
 #ifndef _SCKCOMPAT_H_
 
-//Ezek kiegyenlítik a UNIX és a Windows
-//közötti különbségek túlnyomó részét.
+//Ezek kiegyenlitik a UNIX es a Windows
+//kozotti kulonbsegek tulnyomo reszet.
 
 
 #ifndef _UNIX_
@@ -56,6 +56,7 @@ typedef int                     SOCKLEN_T;
 #include <sys/time.h>
 #include <sys/times.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #ifdef _SOLARIS_
 #include <sys/filio.h>

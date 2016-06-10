@@ -60,23 +60,23 @@
 #define DTSIZE            if(s_seconds,15,12)
 #define FISIZE            if(s_seconds,40,46)+maxcol()-80
 
-static s_save             // mentő/frissítő directory
-static s_work             // aktuális directory
-static s_extinc           // bevett kiterjesztések
-static s_extexc           // kihagyott kiterjesztések
-static s_mindate          // minimális dátum
-static s_compmode         // mód: -m0, -m1, -mw, -ms
+static s_save             // mento/frissito directory
+static s_work             // aktualis directory
+static s_extinc           // bevett kiterjesztesek
+static s_extexc           // kihagyott kiterjesztesek
+static s_mindate          // minimalis datum
+static s_compmode         // mod: -m0, -m1, -mw, -ms
 static s_direxc           // pl: .ppo.obj32.
-static s_dirsep           // s_direxc elválasztó karaktere
-static s_seconds          // másodpercek megjelenítése
+static s_dirsep           // s_direxc elvalaszto karaktere
+static s_seconds          // masodpercek megjelenitese
 static s_content          // search string
 static s_plikex           // like exclude (with path)
 static s_plikei           // like include (with path)
 static s_likex            // like exclude
 static s_likei            // like include 
 static s_liker            // like excluded dirs
-static s_find             // browse helyett listáz (mint a UNIX-os find)
-static s_symlink          // symlinkek bevétele
+static s_find             // browse helyett listaz (mint a UNIX-os find)
+static s_symlink          // symlinkek bevetele
 
 static s_edit:=""
 static s_list:=""
@@ -101,7 +101,7 @@ local pfile,ptext,p,q
     set cursor off
     set color to  w/b,b/w,,,w/b,rg+/b
     
-    //kezdőértékek
+    //kezdoertekek
 
     s_save:=NIL
     s_work:="."+dirsep()
@@ -113,7 +113,7 @@ local pfile,ptext,p,q
     s_seconds:=.f.
     s_symlink:=""
  
-    //argumentumok átvétele
+    //argumentumok atvetele
 
     opt:=argv() 
 
@@ -144,28 +144,6 @@ local pfile,ptext,p,q
                 s_work:=substr(opt[n],3)+dirsep()
             end
 
-            if( OPT(n,"-plx") )
-                 v:=UPPER(substr(opt[n],5))
-                 v::=strtran("/",dirsep())
-                 v::=strtran("\",dirsep())
-                 if( s_plikex==NIL )
-                     s_plikex:={v}
-                 else
-                     aadd(s_plikex,v)
-                 end
-            end
- 
-            if( OPT(n,"-pli") )
-                v:=UPPER(substr(opt[n],5))
-                v::=strtran("/",dirsep())
-                v::=strtran("\",dirsep())
-                if( s_plikei==NIL )
-                    s_plikei:={v}
-                else
-                    aadd(s_plikei,v)
-                end
-            end
-
             if( OPT(n,"-lx") )
                 if( s_likex==NIL )
                     s_likex:={UPPER(substr(opt[n],4))}
@@ -179,6 +157,28 @@ local pfile,ptext,p,q
                     s_likei:={UPPER(substr(opt[n],4))}
                 else
                     aadd(s_likei,UPPER(substr(opt[n],4)))
+                end
+            end
+
+            if( OPT(n,"-plx") )
+                v:=UPPER(substr(opt[n],5))
+                v::=strtran("/",dirsep())
+                v::=strtran("\",dirsep())
+                if( s_plikex==NIL )
+                    s_plikex:={v}
+                else
+                    aadd(s_plikex,v)
+                end
+            end
+ 
+            if( OPT(n,"-pli") )
+                v:=UPPER(substr(opt[n],5))
+                v::=strtran("/",dirsep())
+                v::=strtran("\",dirsep())
+                if( s_plikei==NIL )
+                    s_plikei:={v}
+                else
+                    aadd(s_plikei,v)
                 end
             end
 
@@ -293,7 +293,7 @@ local pfile,ptext,p,q
 
     if( !empty(s_find) )
 
-        outlst() //browseolás helyett listáz
+        outlst() //browseolas helyett listaz
 
     else
 
@@ -458,10 +458,10 @@ local x,repeat:=.f.
     begin
         brwLoop(brw)
     recover x <C>
-        //alert("újraolvas")
+        //alert("ujraolvas")
     //recover x
-    //  minden más kivétel hiba,
-    //  amit a default hibakezelő kap el
+    //  minden mas kivetel hiba,
+    //  amit a default hibakezelo kap el
     end
 
     brwHide(brw)
@@ -717,9 +717,9 @@ local temp:=tempdir()
     if( opt==.t. )    
         run (fc+" "+escape(s)+" "+escape(w)+" >"+temp+"fc_diff"+" 2>"+temp+"fc_err")
     else
-        //összehasonlítás előtt a filékből ki kell
-        //venni a CR-eket, és egységes kódrendszerre 
-        //kell transzformálni
+        //osszehasonlitas elott a filekbol ki kell
+        //venni a CR-eket, es egyseges kodrendszerre 
+        //kell transzformalni
 
         removecr(w,temp+"work")
         removecr(s,temp+"save")
@@ -741,7 +741,7 @@ local temp:=tempdir()
     
     //clear screen //2003.01.01
     //restscreen(0,0,maxrow(),maxcol(),screen)
-    //setcursor(0) //hatástalan ???!
+    //setcursor(0) //hatastalan ???!
     //return NIL
 
 
@@ -768,7 +768,7 @@ local n,a,x,t
         adel(arr,pos)
         asize(arr,len(arr)-1)
     else
-        //utolsó sor empty-re állítva
+        //utolso sor empty-re allitva
         a:=arr[1]
         for n:=1 to len(a)
             x:=a[n]
@@ -893,7 +893,7 @@ local binflag
         for n:=1 to len(arr)
 
             if( empty(save_or_work) .and. arr[n][IDX_WORK] < arr[n][IDX_SAVE] .or.;
-               !empty(save_or_work) .and. arr[n][IDX_WORK] > arr[n][IDX_SAVE] ) //hátrafelé
+               !empty(save_or_work) .and. arr[n][IDX_WORK] > arr[n][IDX_SAVE] ) //hatrafele
 
                 fname:=arr[n][IDX_FILE]
                 fsize:=arr[n][IDX_SIZE]
@@ -1113,7 +1113,7 @@ local n
 function xfilecopy(source,destin)
 local subdir,bslash
 
-    ferase(destin)  //Linux NetWare emuláció hiba elkerülésére
+    ferase(destin)  //Linux NetWare emulacio hiba elkerulesere
 
     bslash:=rat(dirsep(),destin)
     if( bslash>1 )
@@ -1140,7 +1140,7 @@ local dir:="",tok,bslash
         if( !empty(dir+=tok) )
         
             if( !empty(directory(LOWER(dir),"D")) )
-                //alert("Létezik:"+LOWER(dir))
+                //alert("Letezik:"+LOWER(dir))
             else
                 dirmake( LOWER(dir) ) 
             end
@@ -1257,11 +1257,11 @@ local screen:=savescreen()
     elseif( 0<(pos:=ascan(opt,{|x|at("*=",x)==1})) )
         exe:=opt[pos][3..]
     else
-        exe:=def //bedrótozott default
+        exe:=def //bedrotozott default
     end
 
     if( !"%"$exe )
-        exe+=' "%f" ' //idézőjelekkel védve
+        exe+=' "%f" ' //idezojelekkel vedve
     end
     
     exe:=strtran(exe,"%f",fil)

@@ -1,3 +1,8 @@
+-d.
+-dver$(CCCVER)
+
 -lz 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
-BUILD_SHR=static
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME) 
+
+
+#'BUILD_SHR=static'

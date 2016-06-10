@@ -39,7 +39,6 @@ extern void start_srvapp(int clnsck);
 extern void start_child(char* argv[]);
 
 static void serve_client(int trmsck, int srvflg);
-static int  noinherit(int);
 
 
 //----------------------------------------------------------------------------
@@ -59,10 +58,9 @@ static void serve_client(int trmsck, int srvflg)
 {
     int appsck,clnsck;
     socketpair(&appsck,&clnsck); //kilep, ha sikertelen
-#ifdef WINDOWS
-    appsck=noinherit(appsck);
-    trmsck=noinherit(trmsck);
-#endif
+
+    appsck=socket_noinherit(appsck);
+    trmsck=socket_noinherit(trmsck);
 
     SSL_CTX*ctx=srvflg ? ssl_server_context():ssl_client_context();
     SSL *ssl=SSL_new(ctx);
@@ -111,14 +109,14 @@ void start_child( char* argv[])
 
 #ifdef WINDOWS
     int result=spawnvp(P_NOWAIT,argv[0],argv);
-    //azonnal visszajön
+    //azonnal visszajon
     if(result==-1)
     {
         fprintf(stderr,"\nspawnvp failed: %s ", argv[0]);
     }
 #else //UNIX
     execvp(argv[0],argv);
-    //csak hiba esetén jön vissza
+    //csak hiba eseten jon vissza
     fprintf(stderr,"\nexecvp failed: %s ", argv[0]);
 #endif
 
@@ -127,26 +125,3 @@ void start_child( char* argv[])
 
 
 //----------------------------------------------------------------------------
-#ifdef WINDOWS
-
-static int noinherit(int socket)
-{
-    int sckdup;
-    HANDLE procid=GetCurrentProcess();
-
-    BOOL ok=DuplicateHandle( procid, 
-                             (HANDLE)socket, 
-                             procid, 
-                             (HANDLE*)&sckdup,
-                             DUPLICATE_SAME_ACCESS, 
-                             (BOOL)0, //no inherir
-                             0 );
-
-    socket_close(socket);
-    return ok ? sckdup : -1;
-}
-
-#endif
-//----------------------------------------------------------------------------
-
-

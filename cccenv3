@@ -7,9 +7,9 @@
 
 export OREF_SIZE=150000
 
+export CCCVER=3
 export CCC2DIR=/opt/ccc2
 export CCC3DIR=/opt/ccc3
-
 export CCCDIR=$CCC3DIR
 
 export CCCBIN=lin

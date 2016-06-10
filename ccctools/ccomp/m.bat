@@ -1,5 +1,6 @@
 @echo off
 :Windowson nem tudja magat felulirni
+del error 2>nul
 
 set EXE=%CCCDIR%\usr\bin\%CCCUNAME%
 copy %EXE%\ccomp.exe . >nul

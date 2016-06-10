@@ -81,6 +81,7 @@ local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     classMethod(clid,"toupper",{|t|_zedit_chcase(t,.t.)}) 
     classMethod(clid,"tolower",{|t|_zedit_chcase(t,.f.)}) 
     classMethod(clid,"toascii",{|t|_zedit_toascii(t)}) 
+    classMethod(clid,"tolatin2",{|t|_zedit_tolatin2(t)}) 
  
     classMethod(clid,"search",{|t,m|_zedit_search(t,m)}) 
     classMethod(clid,"replace",{|t,m|_zedit_replace(t,m)}) 

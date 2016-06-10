@@ -22,6 +22,17 @@
 #include "fileio.ch"
 #include "signal.ch"
 
+#ifdef _CCC2_
+  #include "charconv.ch"
+
+  #define HISTORY_NAME "history.z"
+  #define BIN2ARR(x)   _chr2arr(x)
+  #define ARR2BIN(x)   _arr2chr(x)
+#else
+  #define HISTORY_NAME "history_uc.z"
+  #define BIN2ARR(x)   bin2arr(x)
+  #define ARR2BIN(x)   arr2bin(x)
+#endif
 
 #define MAXHISTORY  128
 
@@ -50,14 +61,19 @@ local sr:=row(),sc:=col()
 local ss:=savescreen(0,0,maxrow(),maxcol())
 
 local item,n,hr,hc,hwr,hwc,hrs,hss,hcs
-local zedit,txt,txt1,exitcode,created:=.f.
+local zedit,txt,txt1,codepage,exitcode,created:=.f.
 
 local emergency
-local fkeym:=zhome()+"keymap_uc.z"
-local ferror:=zhome()+"error.z" 
+local ferror:=zhome()+"error.z"
+#ifdef _CCC2_ 
+  local fkeym:=zhome()+"keymap.z"
+#else
+  local fkeym:=zhome()+"keymap_uc.z"
+#endif
 
     alertblock({|*|green_alert(*)})
 
+    set dosconv off
     set printer to (ferror) additive
     set printer on
     setcolor(zcolor_0())
@@ -141,6 +157,8 @@ local ferror:=zhome()+"error.z"
         //tovabbra sincs kezelve, amikor az eredmeny string lesz tul nagy
         quit
     end
+
+#ifdef _CCC3_ //UTF-8 kodoloas ellenorzese
     txt1:=bin2str(txt) //string
     if( !txt==str2bin(txt1) )
         n:=alert("Invalid UTF-8 encoding!",{"Quit","View","Edit"})
@@ -156,6 +174,7 @@ local ferror:=zhome()+"error.z"
     end
     txt:=txt1
     txt1:=NIL
+#endif
 
     zedit:=zeditNew(txt,1,0,maxrow(),maxcol())
 
@@ -169,7 +188,7 @@ local ferror:=zhome()+"error.z"
     zedit:searchstring:=hss
     zedit:replacestring:=hrs
     zedit:casesensitive:=hcs
-    zedit:saveblk:={|t|save(t,fspec)}
+    zedit:saveblk:={|t|save(t,fspec,codepage)}
     zedit:diffblk:={|t|diff(t)}
     
     if( optrdonly==.t. )
@@ -191,14 +210,14 @@ local ferror:=zhome()+"error.z"
     end
     
     emergency:=zhome()+fname(fspec)+"."+alltrim(str(getpid()))
-
+ 
     errorblock({|e|ebackup(zedit,emergency),eval(eblk,e)} )
     signalblock({|s|sighandler(s)}) //->errorblock
  
     while( .t. )
 
         exitcode:=zedit:loop() 
-        
+
         if( !zedit:modflg )
             //nem szabad menteni
             exit
@@ -207,6 +226,22 @@ local ferror:=zhome()+"error.z"
             if( zedit:save )
                 exit
             end
+
+#ifdef _CCC2_  //karakter konverzio
+        elseif( exitcode==K_CTRL_F10 )
+            codepage:=CHARTAB_CCC2LAT //850-es codepage
+            zedit:changed:=.t.
+            if( zedit:save )
+                exit
+            end
+
+        elseif( exitcode==K_ALT_F10 )
+            codepage:=CHARTAB_CCC2CWI //437-es codepage
+            zedit:changed:=.t.
+            if( zedit:save )
+                exit
+            end
+#endif
 
         elseif( !zedit:changed .or.;
                 zedit:savedtext==zedit:gettext .or.;
@@ -219,53 +254,61 @@ local ferror:=zhome()+"error.z"
 
     restscreen(0,0,maxrow(),maxcol(),ss)
     setpos(sr,sc)
-    //sleep(60) //frissítési ciklus?
+    //sleep(60) //frissitesi ciklus?
     
     return NIL
 
 
 **********************************************************************   
-static function save(zedit,fspec)
+static function save(zedit,fspec,codepage)
 
 local txt, bintxt
 local bakname,baksize,fdesc
 local nbyte,success:=.t.
 local zsave
 
-    if( zedit:changed .and. !zedit:savedtext==(txt:=zedit:gettext) )
+    if( zedit:changed )
 
-        //alert("SAVE:"+fspec)    
-            
-        if( 0<(baksize:=len(str2bin(zedit:savedtext))))
-            bakname:=fspec+".bak"
-            if( baksize!=(nbyte:=filecopy(fspec,bakname)) )
-                alert("Failed to save "+bakname+" "+errno())
+        txt:=zedit:gettext
+#ifdef _CCC2_ //karakter konverzio
+        if( codepage!=NIL )
+            txt:=_charconv(txt,codepage)
+        end
+#endif    
+
+        if( !zedit:savedtext==txt )
+
+            if( 0<(baksize:=len(str2bin(zedit:savedtext))))
+                bakname:=fspec+".bak"
+                if( baksize!=(nbyte:=filecopy(fspec,bakname)) )
+                    alert("Failed to save "+bakname+" "+errno())
+                    success:=.f.
+                end
+            end
+
+            if( 0>(fdesc:=fopen(fspec,FO_READWRITE+FO_CREATE)) )
+                alert("Failed to open "+fspec+" "+errno())
+                success:=.f.
+
+            elseif( chsize(fdesc,0), bintxt:=str2bin(txt),;
+                   len(bintxt)!=(nbyte:=fwrite(fdesc,bintxt)) ) 
+                alert("Failed to write "+fspec+" "+errno())
                 success:=.f.
             end
-        end
+            fclose(fdesc)
 
-        if( 0>(fdesc:=fopen(fspec,FO_READWRITE+FO_CREATE)) )
-            alert("Failed to open "+fspec+" "+errno())
-            success:=.f.
-
-        elseif( chsize(fdesc,0), bintxt:=str2bin(txt),;
-               len(bintxt)!=(nbyte:=fwrite(fdesc,bintxt)) ) 
-            alert("Failed to write "+fspec+" "+errno())
-            success:=.f.
-        end
-        fclose(fdesc)
-
-        if( success )
-            zedit:changed:=.f.
-            zedit:savedtext:=txt
+            if( success )
+                zedit:changed:=.f.
+                zedit:savedtext:=txt
+            end
         end
     end
     
     if( success .and. !empty(zsave:=getenv("ZSAVE")) .and. file(zsave) )
-        //ha a mentés sikeres,
-        //és meg van adva a ZSAVE változó,
-        //és az egy létező script a working diretoryban,
-        //akkor azt végrehajtja a frissen mentett filére
+        //ha a mentes sikeres,
+        //es meg van adva a ZSAVE valtozo,
+        //es az egy letezo script a working diretoryban,
+        //akkor azt vegrehajtja a frissen mentett filere
         run( zsave+" "+fspec )
     end
     
@@ -351,15 +394,16 @@ local drv
 
 #endif
 
+
 **********************************************************************   
 static function history_load(fspec)
 
-local fhist:=zhome()+"history_uc.z"
+local fhist:=zhome()+HISTORY_NAME
 local history:=memoread(fhist,.t.)
 local n,hx,item
 
     if( !empty(history) )
-        history:=bin2arr(history)
+        history:=BIN2ARR(history)
     else
         history:={}
     end
@@ -413,14 +457,13 @@ local n,hx,item
         item:=asize(history[1],H_SIZEOF) 
     end
     
-    
     return history
 
 
 **********************************************************************   
 static function history_store(fspec,zedit)
 
-local fhist:=zhome()+"history_uc.z"
+local fhist:=zhome()+HISTORY_NAME
 local history:=history_load(fspec)
 
     history[1][H_ROW]:=zedit:actrow
@@ -431,8 +474,8 @@ local history:=history_load(fspec)
     history[1][H_REPLACE]:=zedit:replacestring
     history[1][H_SENSITIVE]:=zedit:casesensitive
  
-    memowrit(fhist,arr2bin(history))
-
+    memowrit(fhist,ARR2BIN(history))
+    
 
 **********************************************************************   
 static function header(x)
@@ -443,7 +486,7 @@ local mode,percent
 local flen,ftxt
  
     if( valtype(x)=="C" )
-         s_fspec:=x
+        s_fspec:=x
  
     elseif( valtype(x)=="O" )
     
@@ -456,7 +499,7 @@ local flen,ftxt
         else
             percent:=str(x:actrow/(len(x:atxt)+1)*100,3,0)+"%"
         end
-        
+
         mode:=x:markmode
     
         hdrtxt:="  Line"+str(x:actrow,6) 
@@ -570,8 +613,8 @@ local err
     if( numand(signum,SIG_HUP+SIG_INT)!=0 )
         //ezek elnyomva
     else
-        //ne keletkezzen hiba a hibakezelésben,
-        //ha leszakadt a terminál --> kikapcsol:
+        //ne keletkezzen hiba a hibakezelesben,
+        //ha leszakadt a terminal --> kikapcsol:
         alertblock({|txt,alt|qout(txt,alt),1})
     
         err:=errorNew()
@@ -580,12 +623,12 @@ local err
         err:subsystem:="SIGNAL"
         break(err)
         
-        //errorblock végrehajtja ebackup-ot
+        //errorblock vegrehajtja ebackup-ot
     end
 
-    //Emlékeztető: A CCC futtatórendszer nem engedi,
-    //hogy a signal handler rekurzívan meghívódjon,
-    //azért itt nem kell rekurzió ellen védekezni.
+    //Emlekezteto: A CCC futtatorendszer nem engedi,
+    //hogy a signal handler rekurzivan meghivodjon,
+    //azert itt nem kell rekurzio ellen vedekezni.
 
 **********************************************************************   
 

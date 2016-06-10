@@ -1,9 +1,6 @@
 @echo off
 
-if not "%cccbin%"=="bor" goto initial
-echo Borland C not supported
-goto stop
-
+set CCCVER=3
 
 :-------------------
 : initial setup

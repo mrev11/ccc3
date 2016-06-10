@@ -1,5 +1,0 @@
-#!/bin/bash
-. $CCCDIR/usr/bin/linux/__unix.b
-export BUILD_LIB=ccc2.lib,ccc2_uic.lib,term.lib,ncurses
-build.exe -p/usr/lib
-

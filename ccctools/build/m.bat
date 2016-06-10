@@ -1,6 +1,7 @@
 @echo off
-:Windowson nem tudja magát felülírni,
-:ezért ideiglenesen idehozunk egy példányt
+del error 2>nul
+:Windowson nem tudja magat felulirni,
+:ezert ideiglenesen idehozunk egy peldanyt
 
 set EXE=%CCCDIR%\usr\bin\%CCCUNAME%
 copy %EXE%\build.exe . >nul

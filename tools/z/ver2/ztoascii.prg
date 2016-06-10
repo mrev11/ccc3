@@ -18,31 +18,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef NOT_DEFINED
-  MS környezetben 
-  a VCToolkitSetup.exe-ből és az MS Platform SDK CD-ből
-  nem kerül elő 32-bites lib.exe.
-  
-  Ennek pótlására két lehetőség van:
-  
-  1) 
-    Valahogy lefordítjuk ezt a programot (tyúk-tojás probléma).
-    A program mutatja, hogy lib.exe == link.exe -lib.
-  2)
-    Bevesszük a path-ba a 64-bites (?) lib.exe-t,
-    ami a ...\bin\win64-ben van, és tapasztalat szerint 
-    működik 32-bites környezetben is.
-#endif
 
+function _zedit_toascii(this)
+local clp, n 
+    if( this:markflg )
+        this:cut(.f.) 
+        clp:=this:clipboard 
+        
+        for n:=1 to len(clp)
+            clp[n]::=utf8_to_latin2::latin2_to_ascii
+        next
+        
+        this:clipboard:=clp
+        this:paste
+    end 
+ 
 
-function main(*)
-
-local args:={*},n
-local cmd:="link.exe -lib"
-
-    for n:=1 to len(args)
-        cmd+=" "+args[n]
-    next
-
-    errorlevel(run(cmd))
-    
+function _zedit_tolatin2(this)
+local clp, n 
+    if( this:markflg )
+        this:cut(.f.) 
+        clp:=this:clipboard 
+        
+        for n:=1 to len(clp)
+            clp[n]::=utf8_to_latin2
+        next
+        
+        this:clipboard:=clp
+        this:paste
+    end 
+ 

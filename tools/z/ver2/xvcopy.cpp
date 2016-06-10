@@ -18,31 +18,32 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-*****************************************************************************
-function _zedit_tab(this)
+#include <stdio.h>
+#include <string.h>
 
-local rlen:=len(this:atxt[this:actrow])
-local ts:=this:actcol%this:tabsiz
-    if( ts==0 )
-        ts:=this:tabsiz
-    end
-    ts:=this:tabsiz-ts+1
+#include <cccapi.h>
 
-    if( this:actcol<=rlen  )
-        this:atxt[this:actrow]:=stuff(this:atxt[this:actrow],this:actcol,0,space(ts))
-    end
 
-    this:wincol:=this:wincol+ts
+void _clp_xvcopy(int argno)
+{
+    CCC_PROLOG("xvcopy",3);
 
-    if( this:wincol>this:width-1 )
-        this:sftcol+=this:wincol-(this:width-1) //jav: 2012.05.31
-        this:wincol:=this:width-1
-        this:display()
-    else
-        this:displine()
-    end
-
-    return NIL
-
-*****************************************************************************
+    char    *buf = _parc(1);
+    unsigned ofs = _parni(2);
+    char    *sub = _parc(3);
+    
+    unsigned lb=_parclen(1);
+    unsigned ls=_parclen(3);
+    
+    if( lb<ofs+ls )
+    {
+        error_siz("xvcopy",base,3);
+    }
+    
+    memcpy(buf+ofs,sub,ls);
+    
+    _ret();
+    
+    CCC_EPILOG();
+}
 

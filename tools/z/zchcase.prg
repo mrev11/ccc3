@@ -19,6 +19,23 @@
  */
 
 
+#ifdef _CCC2_
+
+#include "charconv.ch"
+
+static function xupper(s) 
+    return _charconv(s,CHARTAB_LOWER2UPPER)
+
+static function xlower(s) 
+    return _charconv(s,CHARTAB_UPPER2LOWER) 
+
+#define UPPER(x) xupper(x)
+#define LOWER(x) xlower(x) 
+
+#endif
+
+
+
 function _zedit_chcase(this,flag)
 
 local clp, n 
@@ -28,7 +45,7 @@ local clp, n
         clp:=this:clipboard 
         
         for n:=1 to len(clp)
-            clp[n]:=if(flag,upper(clp[n]),lower(clp[n]))
+            clp[n]:=if(flag,UPPER(clp[n]),LOWER(clp[n]))
         next
         
         this:clipboard:=clp
@@ -36,3 +53,4 @@ local clp, n
     end 
  
     return NIL 
+

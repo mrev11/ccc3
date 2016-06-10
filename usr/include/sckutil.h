@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//interfész az sckutil.cpp-hez
+//interfesz az sckutil.cpp-hez
 
 #define  SOCKOPT_NODELAY        1
 #define  SOCKOPT_NONBLOCKING    2
@@ -34,6 +34,7 @@ extern int socket_accept(int srvsocket);
 extern int socket_connect(int socket, char *ipaddr, int port); //compat
 extern int socket_connect(int socket, const char *ipaddr, int port);
 extern int socket_setoption(int s, int option, int value);
+extern int socket_noinherit(int socket);
 extern int socket_available(int sck);
 extern int socket_write(int socket, void*src, int datalen);
 extern int socket_read(int socket, void*dest, int datalen, int wtime);

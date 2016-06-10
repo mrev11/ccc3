@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 
+export CCCVER=3
+
 #-------------------
 # CCCDIR verification
 #-------------------

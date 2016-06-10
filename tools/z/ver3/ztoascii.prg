@@ -36,3 +36,9 @@ local clp, n
     end 
  
     return NIL 
+
+
+function _zedit_tolatin2(this)
+    //empty
+
+    

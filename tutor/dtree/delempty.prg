@@ -56,7 +56,9 @@ local dir:=directory(path+dirsep()+fullmask(),"DL")
         elseif( !isempty(path+dirsep()+name) )
             cnt++ //nemüres directory
 
-        elseif( 0!=ferase(path+dirsep()+name) )
+        //elseif( 0!=ferase(path+dirsep()+name) )
+        elseif( 0!=dirremove(path+dirsep()+name) )
+            ? "cannot delete", path+dirsep()+name
             cnt++ //nem törölhető directory
  
         else

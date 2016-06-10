@@ -22,7 +22,15 @@
 
  
 function zversion()
-local v:="Z-editor "+VERSION+" (C) ComFirm Bt." 
+
+#ifdef _CCC2_
+local ccc:="CCC2"
+#else
+local ccc:="CCC3"
+#endif
+
+
+local v:="Z-editor "+VERSION+" "+ccc 
 
     if( maxrow()>=24 )
 

@@ -52,10 +52,10 @@ static void error(const char *msg)
     signal_raise(SIG_TERM);
     exit(1);
 
-    //A signal_raise közvetlenül meghívja a CCC signal kezelőt.
-    //Értelme, hogy a hibakezelés így egyszerűen átadható CCC szintre.
-    //Ha a terminált nem CCC környezetben használjuk, akkor kell mellékelni
-    //egy signal_raise függvényt.
+    //A signal_raise kozvetlenul meghivja a CCC signal kezelot.
+    //Ertelme, hogy a hibakezeles igy egyszeruen atadhato CCC szintre.
+    //Ha a terminalt nem CCC kornyezetben hasznaljuk, akkor kell mellekelni
+    //egy signal_raise fuggvenyt.
 }
 
 //----------------------------------------------------------------------------
@@ -74,25 +74,25 @@ static void sleep(int ms)
 //----------------------------------------------------------------------------
 static void atexit_bye()
 {
-    socket_close(termsck); // jelzés a terminálnak
-    sleep(100);     // (0.1sec) a terminál kilép
+    socket_close(termsck); // jelzes a terminalnak
+    sleep(100);     // (0.1sec) a terminal kilep
     
-    //A terminál a socket lezáródásából értesül arról, hogy 
-    //a szerverprogram kilépett. Így a terminálnak (child)
-    //van ideje előbb kilépni, mint ahogy a szerverprogram 
-    //(parent) kilépne. Ez akkor fontos, amikor a szerver és 
-    //az ncurses terminál ugyanabban az ablakban fut.
+    //A terminal a socket lezarodasabol ertesul arrol, hogy 
+    //a szerverprogram kilepett. Igy a terminalnak (child)
+    //van ideje elobb kilepni, mint ahogy a szerverprogram 
+    //(parent) kilepne. Ez akkor fontos, amikor a szerver es 
+    //az ncurses terminal ugyanabban az ablakban fut.
 }
 
 //----------------------------------------------------------------------------
 void connect_to_terminal()
 {
     //CCCTERM_CONNECT nincs megadva    -> connect 127.0.0.1:55000
-    //CCCTERM_CONNECT létező termspec  -> automatikusan elindítja
+    //CCCTERM_CONNECT letezo termspec  -> automatikusan elinditja
     //CCCTERM_CONNECT port             -> connect 127.0.0.1:port
     //CCCTERM_CONNECT :port            -> connect 127.0.0.1:port
     //CCCTERM_CONNECT host:port        -> connect host:port
-    //CCCTERM_CONNECT SOCKET:sck       -> örökli a socketet
+    //CCCTERM_CONNECT SOCKET:sck       -> orokli a socketet
 
     char *constr=getenv("CCCTERM_CONNECT");
     struct stat buf;
@@ -103,7 +103,7 @@ void connect_to_terminal()
         //printf("default:127.0.0.1/55000\n");
     }
 
-    else if( 0==stat(constr,&buf) ) //létező termspec
+    else if( 0==stat(constr,&buf) ) //letezo termspec
     {
         int s=socket_new();
         int p, p1=55500, p2=55700;
@@ -126,9 +126,13 @@ void connect_to_terminal()
         {
             error("connect failed");
         }
+        if( socket_noinherit(s)<0 )
+        {
+            error("noinherit failed");
+        }
 
         char buf[16];
-        const char *argv[4]; //hogy lehet elkerülni a cast-ot (exec-nél)?
+        const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
         argv[0]=constr;
         argv[1]="--socket";
         argv[2]=buf;sprintf(buf,"%d",clntsck);
@@ -136,7 +140,7 @@ void connect_to_terminal()
 
         #ifdef WINDOWS        
             spawnv(P_NOWAIT,argv[0],(char*const*)argv);
-            //Windowsban nincs jó hely lezárni s-t.
+            //Windowsban nincs jo hely lezarni s-t.
 
         #else
             if( fork()==0 )
@@ -161,12 +165,12 @@ void connect_to_terminal()
         //extern int remoteio_enabled;
         //remoteio_enabled=0;
 
-        //Amikor a terminál lokális (ráadásul a CCC program gyereke),
-        //akkor jobb, ha nincs remote io. Nincs is értelme, de főleg azért,
-        //mert nehezítené a hibakezelést. Pl., ha a CCC program SIGINT-et kap,
-        //azt azonnal megkapja a terminál (gyerek) is. Ilyenkor a program
-        //a már kilépett terminálnak próbálja küldeni a hibaüzenetet,
-        //amiből újabb signal keletkezik (hiba a hibakezelésben).
+        //Amikor a terminal lokalis (raadasul a CCC program gyereke),
+        //akkor jobb, ha nincs remote io. Nincs is ertelme, de foleg azert,
+        //mert nehezitene a hibakezelest. Pl., ha a CCC program SIGINT-et kap,
+        //azt azonnal megkapja a terminal (gyerek) is. Ilyenkor a program
+        //a mar kilepett terminalnak probalja kuldeni a hibauzenetet,
+        //amibol ujabb signal keletkezik (hiba a hibakezelesben).
     }
 
     else
@@ -196,7 +200,7 @@ void connect_to_terminal()
         if( strcmp(host,"SOCKET")==0 )
         {
             termsck=port;
-            sleep(60); //parent frissítési ciklusa
+            sleep(60); //parent frissitesi ciklusa
             //printf("inherit:%d\n",termsck);
         }
         else
@@ -219,15 +223,15 @@ void connect_to_terminal()
         sprintf(buf,"CCCTERM_CONNECT=SOCKET:%d",termsck);
         putenv(strdup(buf));
         
-        //CCCTERM_CONNECT-et a jelen program többet nem használja,
-        //viszont egy esetleges child process az átállítás hatására
-        //ugyanazt a terminált fogja használni, mint a parent,
-        //bármi is volt korábban CCCTERM_CONNECT-ben.
+        //CCCTERM_CONNECT-et a jelen program tobbet nem hasznalja,
+        //viszont egy esetleges child process az atallitas hatasara
+        //ugyanazt a terminalt fogja hasznalni, mint a parent,
+        //barmi is volt korabban CCCTERM_CONNECT-ben.
     }
 }
 
 //--------------------------------------------------------------------------
-int termio_send(void* source, int size) //adatküldés
+int termio_send(void* source, int size) //adatkuldes
 { 
     MUTEX_LOCK(mutex_send);
 

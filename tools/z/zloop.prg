@@ -28,16 +28,16 @@ local key
 local kmark:={K_ALT_END,K_ALT_HOME,K_ALT_PGDN,K_ALT_PGUP,;
               K_ALT_RIGHT,K_ALT_LEFT,K_ALT_UP,K_ALT_DOWN,;
               K_ALT_C,K_ALT_X,K_ALT_V,;
-              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_CTRL_F6,K_F12,K_SH_F12}
+              K_F3,K_ALT_F3,K_F4,K_ALT_F4,K_F6,K_SH_F6,K_CTRL_F6,K_ALT_F6,K_F12,K_SH_F12}
 
 local screen
               
     if( this:actrow>len(this:atxt) )
 
-        //itt újrapozícionáljuk az editort,
-        //ez akkor szükséges, ha a history
-        //adatai nem érvényesek, mert pl.
-        //kicserélődött a filé
+        //itt ujrapozicionaljuk az editort,
+        //ez akkor szukseges, ha a history
+        //adatai nem ervenyesek, mert pl.
+        //kicserelodott a file
 
         this:ctrlpgup()
     end
@@ -77,6 +77,15 @@ local screen
         elseif( key==K_F2 )    
             this:save
 
+        elseif( key==K_CTRL_F10 )    
+            return K_CTRL_F10
+
+        elseif( key==K_ALT_F10 )    
+            return K_ALT_F10
+
+        elseif( key==K_SH_F10 )    
+            return K_SH_F10
+ 
         elseif( key==K_F3 )    
             this:search()
 
@@ -100,11 +109,11 @@ local screen
 
         elseif( key==K_F9 )    
             this:diff
-            
+
         elseif( key==K_F12 )    
             if( !empty(this:markedstring) )
                 #ifndef _UNIX_
-                    run( "start ss '"+this:markedstring+"'" )
+                    run( 'ss "'+this:markedstring+'"' )
                 #else
                     setcursor(0)
                     screen:=savescreen()
@@ -117,7 +126,7 @@ local screen
         elseif( key==K_SH_F12 )    
             if( !empty(this:markedstring) )
                 #ifndef _UNIX_
-                    run( "start ss '"+esc(this:markedstring)+"'" )
+                    run( 'start ss "'+esc(this:markedstring)+'"' )
                 #else
                     setcursor(0)
                     screen:=savescreen()
@@ -126,7 +135,7 @@ local screen
                     setcursor(1)
                 #endif
             end
- 
+            
         elseif( key==K_DOWN )    
             this:down()
 
@@ -162,13 +171,13 @@ local screen
             this:markright()
 
         elseif( key==K_ALT_LEFT )
-            this:markleft() 
+            this:markleft()
 
         elseif( key==K_ALT_END )    
             this:markend()
 
         elseif( key==K_ALT_HOME )
-            this:markhome() 
+            this:markhome()
 
         elseif( key==K_ALT_DOWN )    
             this:markdown()
@@ -180,7 +189,7 @@ local screen
             this:markpgdn()
 
         elseif( key==K_ALT_PGUP )
-            this:markpgup() 
+            this:markpgup()
 
         elseif( key==K_ALT_C )    
             this:copy()
@@ -235,6 +244,10 @@ local screen
                 this:toascii
                 this:changed:=.t.
 
+            elseif( key==K_ALT_F6 ) //csak CCC2   
+                this:tolatin2
+                this:changed:=.t.
+
             elseif( key==K_F4 )    
                 this:replace()
 
@@ -269,6 +282,7 @@ local y:="",i
         end
     next
     return y
+
 
 ****************************************************************************   
 

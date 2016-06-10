@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -x
 #példa zg használatára
-export CCCTERM_CONNECT=$CCCDIR/usr/bin/linux/terminal.exe
+#export CCCTERM_CONNECT=$CCCDIR/usr/bin/linux/terminal.exe
 export CCCTERM_SIZE=120x40
 
 grep -H -n main *.prg  >outpre

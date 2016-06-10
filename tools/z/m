@@ -1,3 +1,4 @@
 #!/bin/bash
 bapp_unixc.b @parfile.bld
-ldd `which z.exe` 
+
+#ldd `which z.exe` 

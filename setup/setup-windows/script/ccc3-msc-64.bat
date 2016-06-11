@@ -36,7 +36,7 @@ set INCLUDE=%CMPDIR%\Include\crt\sys;%INCLUDE%;
 
 set LIB=%CMPDIR%\Lib\AMD64;%LIB%
 
-set CCCTERM_SIZE=90x32
+set CCCTERM_SIZE=90x40
 set CCCTERM_FONTSIZE=18
 set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.exe
 set JTERMINAL=%CCCDIR%\usr\bin\%CCCUNAME%\jterminal.jar
@@ -50,5 +50,5 @@ set ZHOME=%DRV1%\bin\z
 cd %CCCDIR%
 
 title %CCCDIR%-%CCCBIN%
-set | grep CCC
+set | grep CCC | sort
 start /b /d %CCCDIR%

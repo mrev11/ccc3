@@ -26,7 +26,7 @@ set PATH=%CMPDIR%\bin;%PATH%
 set INCLUDE=%CMPDIR%\include;%INCLUDE%
 set LIB=%CMPDIR%\lib;%LIB%
 
-set CCCTERM_SIZE=90x32
+set CCCTERM_SIZE=90x40
 set CCCTERM_FONTSIZE=18
 set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.exe
 set JTERMINAL=%CCCDIR%\usr\bin\%CCCUNAME%\jterminal.jar
@@ -36,11 +36,13 @@ set ZCOLOR_2=w/b
 set ZHOME=%DRV1%\bin\z
 
 
+set CCC_AUTOCACHE=c:\autocache
+
 %DRV2%
 cd %CCCDIR%
 
 title %CCCDIR%-%CCCBIN%
-set | grep CCC
+set | grep CCC | sort
 start /b /d %CCCDIR%
 
 

@@ -3,18 +3,19 @@
 set DRV1=c:
 set DRV2=e:
 
-set CCCBIN=mng
-set CCCVER=3
+set CCCBIN=msc
+set CCCVER=2
 set CCCUNAME=windows
 set OREF_SIZE=50000
 
-set CCCDIR=%DRV2%\ccc\ccc3
-set MNGDIR=%DRV2%\mingw32
+set CCCDIR=%DRV2%\ccc\ccc2c
+set MNGDIR=%DRV2%\mingw64
 set MSCDIR=%DRV2%\msc2003
-set GTKDIR=%DRV2%\mono
 set GNUDIR=%DRV2%\git
 
-set PATH=%GTKDIR%\bin;%PATH%
+:a mingw-vel forditott exek-nek
+set PATH=%MNGDIR%\bin;%PATH%
+
 set PATH=%GNUDIR%\bin;%PATH%
 set PATH=%CCCDIR%\usr\bin\%CCCUNAME%;%PATH%
 set PATH=%DRV1%\bin;%PATH%
@@ -22,9 +23,14 @@ set PATH=%DRV1%\bin;%PATH%
 if "%CCCBIN%"=="mng" set CMPDIR=%MNGDIR%
 if "%CCCBIN%"=="msc" set CMPDIR=%MSCDIR%
 
-set PATH=%CMPDIR%\bin;%PATH%
-set INCLUDE=%CMPDIR%\include;%INCLUDE%
-set LIB=%CMPDIR%\lib;%LIB%
+set PATH=%CMPDIR%\Bin\Win64\x86\AMD64;%PATH%
+
+:sorrend fontos
+set INCLUDE=%CMPDIR%\Include;%INCLUDE%;
+set INCLUDE=%CMPDIR%\Include\crt;%INCLUDE%;
+set INCLUDE=%CMPDIR%\Include\crt\sys;%INCLUDE%;
+
+set LIB=%CMPDIR%\Lib\AMD64;%LIB%
 
 set CCCTERM_SIZE=90x32
 set CCCTERM_FONTSIZE=18
@@ -42,5 +48,3 @@ cd %CCCDIR%
 title %CCCDIR%-%CCCBIN%
 set | grep CCC | sort
 start /b
-
-

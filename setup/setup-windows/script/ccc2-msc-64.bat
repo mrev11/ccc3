@@ -5,7 +5,7 @@ set DRV2=e:
 
 set CCCBIN=msc
 set CCCVER=2
-set CCCUNAME=nt
+set CCCUNAME=windows
 set OREF_SIZE=50000
 
 set CCCDIR=%DRV2%\ccc\ccc2-64
@@ -34,10 +34,30 @@ set INCLUDE=%CMPDIR%\Include\crt\sys;%INCLUDE%;
 
 set LIB=%CMPDIR%\Lib\AMD64;%LIB%
 
-set CCCTERM_SIZE=90x32
-set CCCTERM_FONTSIZE=18
-set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.exe
-:set CCC_TERMINAL_SOCKET=%CCCDIR%\terminal-nt-alt\terminal\terminal.exe
+
+:megj
+: CCC_TERMINAL_SOCKET ua. mint CCC3-ban CCCTERM_CONNECT
+:
+: ket terminal van
+:
+:1) %CCCDIR%/usr/bin/%CCCUNAME%/termclnt.exe
+:  ennek nincsenek kornyezeti valtozoi
+:  a konzol beallitasaival lehet konfiguralni
+:
+:2) %CCCDIR%/usr/bin/%CCCUNAME%/terminal.exe
+:  CCCTERM_KEYDEF
+:  CCCTERM_SIZE
+:  CCCTERM_FONT
+
+set CCC_TERMINAL_SOCKET=%CCCDIR%/usr/bin/%CCCUNAME%/terminal.exe
+set CCCTERM_KEYDEF=%CCCDIR%/usr/bin/%CCCUNAME%/keydef-vm.v2i
+set CCCTERM_SIZE=100x40
+set CCCTERM_FONT=terminal_10x16
+
+
+
+
+
 set JTERMINAL=%CCCDIR%\usr\bin\%CCCUNAME%\jterminal.jar
 
 set ZCOLOR_0=b/w
@@ -49,5 +69,5 @@ set ZHOME=%DRV1%\bin\z
 cd %CCCDIR%
 
 title %CCCDIR%-%CCCBIN%
-set | grep CCC
+set | grep CCC | sort
 start /b

@@ -43,5 +43,5 @@ set ZHOME=%DRV1%\bin\z
 cd %CCCDIR%
 
 title %CCCDIR%-%CCCBIN%
-set | grep CCC
+set | grep CCC | sort
 start /b

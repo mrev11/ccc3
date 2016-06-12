@@ -1249,6 +1249,8 @@ local ext,pos,exe
 local screen:=savescreen()
 
     ext:=fext(fil)[2..]+"=" //   xxx=
+    opt::=LOWER
+    ext::=LOWER
     opt:=split(opt,":")     // { xxx=less %f, *=list %f, ... }
 
     if( 0<(pos:=ascan(opt,{|x|at(ext,x)==1})) )
@@ -1268,7 +1270,7 @@ local screen:=savescreen()
     exe:=strtran(exe,"%p",fpath0(fil))
     exe:=strtran(exe,"%b",fnameext(fil))
 
-    //alert(exe)
+    //? exe
     setcursor(1)
     run(exe)
     setcursor(0)

@@ -32,9 +32,6 @@ set LIB=%CMPDIR%\lib;%LIB%
 
 
 
-:megj
-: CCC_TERMINAL_SOCKET ua. mint CCC3-ban CCCTERM_CONNECT
-:
 : ket terminal van
 :
 :1) %CCCDIR%/usr/bin/%CCCUNAME%/termclnt.exe
@@ -46,7 +43,7 @@ set LIB=%CMPDIR%\lib;%LIB%
 :  CCCTERM_SIZE
 :  CCCTERM_FONT
 
-set CCC_TERMINAL_SOCKET=%CCCDIR%/usr/bin/%CCCUNAME%/terminal.exe
+set CCCTERM_CONNECT=%CCCDIR%/usr/bin/%CCCUNAME%/terminal.exe
 set CCCTERM_KEYDEF=%CCCDIR%/usr/bin/%CCCUNAME%/keydef-vm.v2i
 set CCCTERM_SIZE=100x40
 set CCCTERM_FONT=terminal_10x16

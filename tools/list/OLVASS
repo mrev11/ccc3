@@ -1,0 +1,44 @@
+
+Demo program, ami azt mutatja, hogy a terminal API-t
+a CCC-tol fuggetlenul is lehet hasznalni. A beforditott
+vagy belinkelt reszek egyszeruen athozhatok, pl. ccc3.lib 
+linkelese helyett at lehet hozni az sckutil.cpp es 
+utf8conv.cpp modulokat (amik nem huzzak be a CCC 
+futtatorendszert). 
+
+Demo program, ami mutatja a filemap hasznalatat.
+
+Eredetileg UTF-8 kodolasu szoveg megjelenitesere lett irva.
+Latin kodolasu szoveg megjelenitesehez (CCC2-ben) hatastalanitva
+lett az UTF-8 -> UCS konverzio.
+
+
+UTF-8 szoveg
+GNU GENERAL PUBLIC LICENSE
+ТЕРМИНЫ И УСЛОВИЯ КОПИРОВАНИЯ, РАСПРОСТРАНЕНИЯ И МОДИФИКАЦИИ
+
+Latin-2 szoveg
+�t sz�p sz�zl�ny �r�lt �r�t ny�z
+�T SZ�P SZ�ZL�NY �R�LT �R�T NY�Z
+
+
+Ezeket linkeli ccc2.lib-bol:
+    undefined reference to `client_socket(char const*, int)'
+    undefined reference to `client_socket(char*, int)'
+    undefined reference to `socket_accept(int)'
+    undefined reference to `socket_bind(int, char const*, int)'
+    undefined reference to `socket_close(int)'
+    undefined reference to `socket_error()'
+    undefined reference to `socket_listen(int)'
+    undefined reference to `socket_new()'
+    undefined reference to `socket_noinherit(int)'
+    undefined reference to `socket_read(int, void*, int, int)'
+    undefined reference to `socket_write(int, void*, int)'
+
+Ezeket linkeli ccc2_uic.lib-bol:
+    undefined reference to `convtab_cwi2lat(int)'
+    undefined reference to `convtab_lat2ucs(int)'
+    undefined reference to `convtab_inkey3_to_inkey2(int)'
+
+
+

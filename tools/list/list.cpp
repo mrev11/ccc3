@@ -18,6 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+
+
 #define VERSION   "3.0.00-unicode"
 
 #ifdef UNIX 
@@ -37,12 +40,7 @@
  
 #else //WIN32
 
-#ifdef BORLAND
-#define COMPILER "bor"
-#endif
-#ifdef WATCOM
-#define COMPILER "wat"
-#endif
+
 #ifdef MSVC
 #define COMPILER "msc"
 #endif
@@ -69,10 +67,6 @@ static int  setbuf(char *txt, mapsize_t size);
 static void getlineptr(char *txt, mapsize_t size, int move);
 static void writetext(int row, int col1, int col2, char *text, int attr);
 
-extern int ucs_to_utf8(int,char*);
-extern int utf8_to_ucs(const char*,int*);
-extern wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
-extern char* wchar_to_utf8(const wchar_t*,unsigned,unsigned*);
  
 #define MAXROW    maxrow()
 #define MAXCOL    maxcol()
@@ -88,6 +82,51 @@ static  int       shift=0;
 #define max(x,y)   ((x)>(y)?(x):(y))
 
 #define SCREENCELL(x) ((screencell*)malloc((x)*sizeof(screencell)))
+
+
+#ifdef _CCC3_
+  //eredetileg UTF-8 kodolasu szoveg megjelenitesere irva
+
+  extern int utf8_to_ucs(const char*,int*);
+  extern wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
+
+#else  //_CCC2_  (ccc2c!)
+  //az eredetileg UTF-8 kodolasu szoveg megjelenitesere irt
+  //programban hatastalanitjuk az UTF-8 -> wchar_t konverziot
+
+  #undef  wchar_t
+  #define wchar_t  char
+
+  static int utf8_to_ucs(const char*,int*);
+  static wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
+
+  static int utf8_to_ucs(const char *utf8, int *ucs)
+  {
+    //eredetileg
+    // egy UTF-8 sorozattal kodolt karaktert konvertal UCS4-re
+    // ha a bytesorozat ervenytelen akkor az eredmeny 0
+    // visszaadja a bytesorozatbol elhasznalt byteok szamat
+
+    *ucs=*utf8;
+    return 1;
+  }
+
+  static wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
+  {
+    //eredetileg
+    //bemenet: utf8 kodolasu blen hosszu bytearray
+    //vissza : wide karaktereket tartalmazo sring (a vegen 0)
+    //kimenet: reslen a string hossza
+    //felhasznalas utan a pointert fel kell szabaditani (free)
+    
+    char *wt=(char*)malloc(blen+1);
+    memcpy(wt,utf8,blen);
+    wt[blen]=0;
+    *reslen=blen;
+    return wt;
+  }
+#endif
+
 
 //-----------------------------------------------------------------------
 int main(int argc, char *argv[])
@@ -156,8 +195,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+
 //-----------------------------------------------------------------------
-// Innen kezdve a UNIX és Windows kód azonos!
+// Innen kezdve a UNIX es Windows kod azonos!
 //-----------------------------------------------------------------------
 static void show(char *txt, mapsize_t size)
 {
@@ -181,7 +221,7 @@ static void show(char *txt, mapsize_t size)
  
     while(1)
     {
-        int ch=getkey(-1); //végtelen várakozás
+        int ch=getkey(-1); //vegtelen varakozas
         
         switch( ch )
         {
@@ -242,7 +282,7 @@ static void header(int percent)
     //writetext(0,0,MAXCOL,header,0x37);
     //writetext(0,0,MAXCOL,header,0xe0);
     writetext(0,0,MAXCOL,header,0x70);
-    //setcaption(header,strlen(header)); //ez is működik
+    //setcaption(header,strlen(header)); //ez is mukodik
 }
 
 //-----------------------------------------------------------------------
@@ -295,6 +335,7 @@ static int setbuf(char *txt, mapsize_t size)
         }
     }
     putrect(0,1,MAXCOL,MAXROW,cell);
+    free(cell);
     return (int)(100*(double)(long)(eop+1-txt)/(double)size);
 }
 
@@ -380,8 +421,8 @@ static void getlineptr(char *txt, mapsize_t size, int move)
 //-----------------------------------------------------------------------------
 static void writetext(int row, int col1, int col2, char *text, int attr)
 {
-    //row,col1,col2 0-tól indul
-    //text UTF-8 kódolású
+    //row,col1,col2 0-tol indul
+    //text UTF-8 kodolasu
 
     unsigned len=0;
     wchar_t *wt=utf8_to_wchar(text,strlen(text),&len);

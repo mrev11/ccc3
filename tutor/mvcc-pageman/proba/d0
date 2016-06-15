@@ -1,2 +1,0 @@
-#!/bin/bash
-dump0.exe | sort -k1 | tee log-d0

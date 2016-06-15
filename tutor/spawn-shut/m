@@ -1,3 +1,0 @@
-#!/bin/bash
-bapp_unixc.b  -malert
-bapp_unix_.b  -mspawn-shut -bccc3_socket

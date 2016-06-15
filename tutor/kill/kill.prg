@@ -18,32 +18,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//nyersen, ahogy fizikailag vannak
-//de kihagyja a törölt (szabad) lapokat
+#include "spawn.ch"
+#include "signal.ch"
 
-
-#include "fileio.ch"
-
+//Elindítja a pm.exe programot (valamit, bármit),
+//és ha az nem lép ki 5 sec-en belül, akkor lelövi.
 
 function main()
-
-local con:=pageman.dbconnectionNew("dbproba")
-local ps:=con:database:pagesize
-local page:=pageman.pageNew()
-
-
-    con:database:lock
-    con:database:metadata_load
-    con:database:list
+local pid,th,pp:=pipe()
+    ? "pid",pid:=spawn(SPAWN_NOWAIT+SPAWN_PATH,"pm.exe","-A","-f")
+    th:=thread_create({||shut(pid,5000,pp[1])})
+    ? "wait",waitpid(pid,,0)
+    fclose(pp[2])
+    ? "join",thread_join(th)
+    fclose(pp[1])
     ?
 
-    fseek(con:database:fd,ps,FS_SET)  //az elsőt (meta) kihagyja
-    while( ps==xvread(con:database:fd,page:buffer,0,ps) )
-        if( !page:pgid==a"0"::replicate(16)  )
-            ? page:pgid, page:trid, page:content
-        end
+static function shut(pid,timeout,pipe)
+    if( 0<select({pipe},,,timeout) )
+        ? "select"
+        thread_exit()
     end
+    ? "kill"
+    signal_send(pid,SIG_KILL)
 
-    con:database:unlock
 
-    ?

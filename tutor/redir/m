@@ -1,2 +1,3 @@
 #!/bin/bash
-bapp_unix_.b
+bapp_unix_.b  -d. -dunix
+

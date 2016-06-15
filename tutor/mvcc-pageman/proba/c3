@@ -1,3 +1,0 @@
-#!/bin/bash
-#export SQLDEBUG=on
-c3.exe | tee log-c3

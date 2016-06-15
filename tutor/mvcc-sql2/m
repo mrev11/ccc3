@@ -1,5 +1,0 @@
-#!/bin/bash
-mkentitylib.exe --prgdir code_generated 
-
-bapp_unix_.b @parfile.bld
-

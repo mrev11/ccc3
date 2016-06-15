@@ -1,2 +1,0 @@
-#!/bin/bash
-dump2.exe | tee log-d2

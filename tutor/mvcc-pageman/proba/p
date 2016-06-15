@@ -1,3 +1,0 @@
-#!/bin/bash
-rm dbproba*
-proba.exe | tee log-p

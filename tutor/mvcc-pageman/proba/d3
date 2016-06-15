@@ -1,2 +1,0 @@
-#!/bin/bash
-dump3.exe | tee log-d3

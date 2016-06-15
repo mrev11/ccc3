@@ -18,18 +18,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//CHILD:
+//stdout-ra echo-zza,
+//amit stdin-ból olvas.
+
+*****************************************************************************
 function main()
 
-local c:=bin(0)
+local bs:=32,nb
+local buf:=replicate(a" ",bs)
 
-    set printer to log
-    set printer on
-    
-    while( 0<fread(0,@c,1) )
-        ?? c
+    ? "child-1"
+ 
+    while( 0<(nb:=fread(0,@buf,bs)) )
+        ?? left(buf,nb)
+        sleep(10)
     end
-    
-    //alert("HOPP")
-    
+
+    ? "child-2"
+ 
     return NIL
-    
+
+
+*****************************************************************************

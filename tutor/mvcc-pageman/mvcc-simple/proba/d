@@ -1,2 +1,0 @@
-#!/bin/bash
-dump.exe | sort -k1 | tee dump

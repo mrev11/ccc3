@@ -329,8 +329,9 @@ static function usage()
     ? "Mode  - comparing mode                       e.g. -m1 (see below)"
     ? 'Text  - only those files contain text        e.g. "-ctext"'
     ?
-    ? "   -m0  : exist in Work and Save, different datetime"
+    ? "   -m0  : exist in Work and Save, different size or datetime"
     ? "   -m1  : exist in Work and Save (default)"
+    ? "   -m2  : exist in Work and Save, the same size and datetime"
     ? "   -mw  : files newer in WORK than SAVE or missed in SAVE"
     ? "   -ms  : files newer in SAVE than WORK or missed in WORK"
     ?
@@ -421,7 +422,8 @@ local x,repeat:=.f.
     if( !"."==s_save )
 
         aadd(olvas,{"-m0: exist here and there, differ",{||s_compmode:="0",repeat:=.t.,break("X")}})
-        aadd(olvas,{"-m1: exist here and there",{||s_compmode:="1",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m1: exist here and there        ",{||s_compmode:="1",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m2: exist here and there, match ",{||s_compmode:="2",repeat:=.t.,break("X")}})
         aadd(olvas,{"-mW: newer in WORK or missed in SAVE",{||s_compmode:="W",repeat:=.t.,break("X")}})
         aadd(olvas,{"-mS: newer in SAVE or missed in WORK",{||s_compmode:="S",repeat:=.t.,break("X")}})
         brwMenu(brw,"Reread","Read disks and compare files",olvas,"R")
@@ -512,23 +514,18 @@ local arr:=brwArray(brw)
 static function makearr()
 local dbrw:={}
 
-
     if( "."==s_save )
         dbrw:=makearr_(s_work)
 
-    elseif( s_compmode=="0" )
-        dbrw:=makearr0(s_work,s_save,.f.)
-
-    elseif( s_compmode=="1" )
-        dbrw:=makearr0(s_work,s_save,.t.)
+    elseif( s_compmode$"012" )
+        dbrw:=makearr_012(s_work,s_save)
 
     elseif( s_compmode$"wW" )
-        dbrw:=makearr1(s_work,s_save,.t.)
+        dbrw:=makearr_ws(s_work,s_save)
 
     elseif( s_compmode$"sS" )
-        dbrw:=makearr1(s_save,s_work,.f.)
+        dbrw:=makearr_ws(s_save,s_work)
     end
-
 
     return dbrw
 
@@ -570,7 +567,7 @@ local x2:=brwArray(brw)[brwArrayPos(brw)][IDX_WORK]
 
 
 ******************************************************************************    
-static function makearr0(d,d1,flag)
+static function makearr_012(d,d1)
 
 local lwork:=len(d)
 local lsave:=len(d1)
@@ -596,11 +593,25 @@ local dbrw:=arrayNew(), fd, fd1
             
             date1:=dirSave[n1][F_DATE]
             time1:=dirSave[n1][F_TIME]
+            
+            if(s_compmode=="0") //differ
+                if( date!=date1 .or. time!=time1 )
+                    fd:=formDate(date,time)
+                    fd1:=formDate(date1,time1)
+                    dbrw:add({file,fd1,fd,size})
+                end
 
-            if( flag .or. date!=date1 .or. time!=time1 )
+            elseif(s_compmode=="1") //any
                 fd:=formDate(date,time)
                 fd1:=formDate(date1,time1)
                 dbrw:add({file,fd1,fd,size})
+
+            elseif(s_compmode=="2") //match
+                if( date==date1 .and. time==time1 )
+                    fd:=formDate(date,time)
+                    fd1:=formDate(date1,time1)
+                    dbrw:add({file,fd1,fd,size})
+                end
             end
         end
     next
@@ -609,7 +620,7 @@ local dbrw:=arrayNew(), fd, fd1
 
 
 ******************************************************************************    
-static function makearr1(d,d1,flag)
+static function makearr_ws(d,d1)
 
 local lwork:=len(d)
 local lsave:=len(d1)
@@ -643,9 +654,9 @@ local dbrw:=arrayNew(), fd,fd1
         fd1:=formDate(date1,time1)
 
         if( fd1<fd )
-            if( flag )
+            if( s_compmode$"wW" )
                 dbrw:add({file,fd1,fd,size})
-            else
+            elseif( s_compmode$"sS" )
                 dbrw:add({file,fd,fd1,size})
             end
         end
@@ -1073,30 +1084,58 @@ function includefil(name,relpath)
 
 local ext
 
+    //kivetelek pathname alapjan
     if( s_plikex!=NIL .and. alike(s_plikex,relpath+name) )
         return .f.
     elseif( s_plikei!=NIL .and. alike(s_plikei,relpath+name) )
         return .t.
     end
 
-
+    //kivetelek basename alapjan
     if( s_likex!=NIL .and. alike(s_likex,name) )
         return .f.
- 
     elseif( s_likei!=NIL .and. alike(s_likei,name) ) 
         return .t.
+    end
+    
+    //nem kiveteles
+    //alapvetoen kiterjesztesre megadott
+    //mintakon mulik a kizaras/bevetel
+    //ha van -x, akkor csak azt nezi
 
-    elseif( s_extexc!=NIL )
+    if( s_extexc!=NIL )
+        //ha van kizaro szabaly, az dont, 
+        //akar van illeszkedes akar nincs
         ext:=fext(name)+"."
         return !ext$s_extexc
- 
     elseif( s_extinc!=NIL ) 
+        //ha van bevevo szabaly, az dont, 
+        //akar van illeszkedes akar nincs
         ext:=fext(name)+"."
         return ext$s_extinc
     end
-    
-    return s_likei==NIL
 
+    //nincs -x minta
+    //nincs -i minta
+    //akkor veszi be,
+    //ha nincs (p)likei minta
+    
+    return s_plikei==NIL .and. s_likei==NIL
+
+#ifdef NOTDEFINED
+peldak:
+  1) mindent bevesz
+    savex . 
+
+  2) a savex-eket kihagyja (minden mast bevesz)
+    savex . -x.savex. 
+
+  3) a savex-eket altalaban kihagyja, de a '*socket*.savex'-eket beveszi
+    savex . -x.savex. '-pli*socket*.savex'
+
+  4) csak a '*socket*.savex'-eket veszi be
+    savex . '-pli*socket*.savex'
+#endif
 
 ******************************************************************************
 function alike(minta,str)

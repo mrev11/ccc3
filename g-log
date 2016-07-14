@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo
-echo '#-----------------------------------'
-
-git log --date=iso
-

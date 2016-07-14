@@ -65,7 +65,7 @@ static s_work             // aktualis directory
 static s_extinc           // bevett kiterjesztesek
 static s_extexc           // kihagyott kiterjesztesek
 static s_mindate          // minimalis datum
-static s_compmode         // mod: -m0, -m1, -mw, -ms
+static s_compmode         // mod: -m0, -m1, -m2, -md, -mw, -ms
 static s_direxc           // pl: .ppo.obj32.
 static s_dirsep           // s_direxc elvalaszto karaktere
 static s_seconds          // masodpercek megjelenitese
@@ -332,6 +332,7 @@ static function usage()
     ? "   -m0  : exist in Work and Save, different size or datetime"
     ? "   -m1  : exist in Work and Save (default)"
     ? "   -m2  : exist in Work and Save, the same size and datetime"
+    ? "   -md  : unio of -mw and ms"
     ? "   -mw  : files newer in WORK than SAVE or missed in SAVE"
     ? "   -ms  : files newer in SAVE than WORK or missed in WORK"
     ?
@@ -421,11 +422,12 @@ local x,repeat:=.f.
 
     if( !"."==s_save )
 
-        aadd(olvas,{"-m0: exist here and there, differ",{||s_compmode:="0",repeat:=.t.,break("X")}})
-        aadd(olvas,{"-m1: exist here and there        ",{||s_compmode:="1",repeat:=.t.,break("X")}})
-        aadd(olvas,{"-m2: exist here and there, match ",{||s_compmode:="2",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m0: exist here and there, differ   ",{||s_compmode:="0",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m1: exist here and there           ",{||s_compmode:="1",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-m2: exist here and there, match    ",{||s_compmode:="2",repeat:=.t.,break("X")}})
         aadd(olvas,{"-mW: newer in WORK or missed in SAVE",{||s_compmode:="W",repeat:=.t.,break("X")}})
         aadd(olvas,{"-mS: newer in SAVE or missed in WORK",{||s_compmode:="S",repeat:=.t.,break("X")}})
+        aadd(olvas,{"-mD: unio of -mW and -mS            ",{||s_compmode:="D",repeat:=.t.,break("X")}})
         brwMenu(brw,"Reread","Read disks and compare files",olvas,"R")
 
         brwMenu(brw,"Save",formDir(s_save,35)+" <-- "+formDir(s_work,35),{||repeat:=.t.,copyMent(brw)},"S")
@@ -519,6 +521,9 @@ local dbrw:={}
 
     elseif( s_compmode$"012" )
         dbrw:=makearr_012(s_work,s_save)
+
+    elseif( s_compmode$"dD" )
+        dbrw:=makearr_d(s_work,s_save)
 
     elseif( s_compmode$"wW" )
         dbrw:=makearr_ws(s_work,s_save)
@@ -616,6 +621,69 @@ local dbrw:=arrayNew(), fd, fd1
         end
     next
     
+    return dbrw:resize
+
+
+******************************************************************************    
+static function elore_lep(dir,dirnam,n,file,dtime,size)
+local date, time
+    if( ++n<=len(dir) )
+        file:=substr(dir[n][F_NAME],len(dirnam)+1)
+        date:=dir[n][F_DATE]
+        time:=dir[n][F_TIME]
+        size:=dir[n][F_SIZE]
+        dtime:=formDate(date,time)
+    else
+        file:=NIL
+        size:=NIL
+        dtime:=NIL
+    end
+
+******************************************************************************    
+static function makearr_d(d,d1)
+
+local dirWork:=rdir(d)
+local dirSave:=rdir(d1)
+local n ,file ,fd ,size
+local n1,file1,fd1,size1
+local fdnull:=formDate(ctod(""),space(8)) //ures file-date
+local dbrw:=arrayNew()
+
+    n:=n1:=0
+    elore_lep(dirWork,d ,@n ,@file ,@fd ,@size )
+    elore_lep(dirSave,d1,@n1,@file1,@fd1,@size1)
+
+    while( file!=NIL .or. file1!=NIL )
+        if( file1==NIL )
+            //elfogyott a save, work-ot betenni
+            dbrw:add({file,fdnull,fd,size})
+            elore_lep(dirWork,d ,@n ,@file ,@fd ,@size)
+
+        elseif( file==NIL )
+            //elfogyott a work, save-et betenni
+            dbrw:add({file1,fd1,fdnull,size1})
+            elore_lep(dirSave,d1,@n1,@file1,@fd1,@size1)
+
+        elseif( strcmp(file,file1)>0 )                   //work nagyobb
+            dbrw:add({file1,fd1,fdnull,size1})           //a kisebbet beteszi
+            elore_lep(dirSave,d1,@n1,@file1,@fd1,@size1) //a kisebben lep
+
+        elseif( strcmp(file,file1)<0 )                   //save nagyobb
+            dbrw:add({file,fdnull,fd,size})              //a kisebbet beteszi
+            elore_lep(dirWork,d ,@n ,@file ,@fd ,@size ) //a kisebben lep
+
+        else //file==file1
+            if( fd==fd1 )
+                //megegyeznek, kihagy (mindketto)
+            else
+                //kulonboznek, betesz (mindketto)
+                 dbrw:add({file,fd1,fd,size})
+            end
+            elore_lep(dirWork,d ,@n ,@file ,@fd ,@size )
+            elore_lep(dirSave,d1,@n1,@file1,@fd1,@size1)
+        end        
+    end
+
     return dbrw:resize
 
 
@@ -1337,6 +1405,23 @@ function escape(fs)
     fs::=strtran('|','\|')
     fs::=strtran(' ','\ ')
     return fs
+
+****************************************************************************
+static function strcmp(a,b)
+local result:="?"
+    if( a==b )
+        result:=0       //"="
+    elseif( a<b )
+        result:=-1      //"<"
+    elseif( a>b )
+        result:=1       //">"
+    elseif( b<a )
+        result:=1       //">"
+    elseif( b>a )
+        result:=-1      //"<"
+    end
+    //? "["+a+"]", result, "["+b+"]"
+    return result
 
 ****************************************************************************
 

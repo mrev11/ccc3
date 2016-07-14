@@ -1,8 +1,0 @@
-#!/bin/bash
-# egysoros log
-
-echo
-echo '#-----------------------------------'
-
-git log --pretty=oneline  --abbrev-commit 
-

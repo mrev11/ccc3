@@ -119,8 +119,13 @@ local key,choice,keyexit
     cursor:=setcursor(0)
     dispbegin()
     savscr:=drawbox(top,lef,bot,rig,2)
-    tdisp(top,lef,bot,rig,txt)    
-    while(dispend()>0);end  //2011.08.21
+    tdisp(top,lef,bot,rig,txt)
+
+    #ifdef _CCC2_
+        dispend()
+    #else    
+        while(dispend()>0);end  //2011.08.21 // 2016.06.11 CCC2 incompatible!
+    #endif
 
     choice:=1
     keyexit:=.f.

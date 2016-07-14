@@ -1,7 +1,11 @@
 
-#define VERZIO  "4.0.01"
+#define VERZIO  "4.0.02"
 
 #ifdef NOT_DEFINED
+
+2016.07.13 -- 4.0.02
+  -mD -mW es -mS unioja
+  -mD mindket oldalon minden elterest listaz
 
 2016.06.17 -- 4.0.01
   -m2 az egyezoket listazza.

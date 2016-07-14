@@ -1,7 +1,9 @@
 @echo off
 
-set STARTDIR=/temp/websrv
+:abszolut path
+set STARTDIR=e:\ccc\ccc2\ccctutor\websrv
 
 websrv.exe  @parfile.web
+
 
 

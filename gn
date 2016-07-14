@@ -1,0 +1,11 @@
+#!/bin/bash
+#set -x
+
+#export DEBUG=yes
+export OREF_SIZE=500000
+export CCCTERM_INHERIT=yes
+gitnav.exe
+
+
+#ez átkerült a post-checkout hook-ba
+#filetime-restore.exe

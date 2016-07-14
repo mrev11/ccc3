@@ -95,8 +95,8 @@ local pos:=rat(".",fspec)
 *****************************************************************************
 static function xtrim(x)
 local wspace:=chr(9)+chr(10)+chr(13)+chr(32)
-local pos:=1
-    while( substr(x,pos,1)$wspace )
+local c,pos:=1
+    while( !empty(c:=substr(x,pos,1)) .and. c$wspace )
         pos++
     end
     return substr(x,pos)

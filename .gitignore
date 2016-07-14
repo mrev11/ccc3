@@ -1,17 +1,21 @@
-ppo
-objlin*
-objfre*
-objsol*
-objmng*
-objmsc*
-objbor*
 
-*.tmp
-*.nopack
-code_generated
-html
-dvi
-jpg
+
+*.bak
+*~
+
+*.exe
+objlin/
+objlin_uic/
+objlin_ui_/
+ppo/
+code_generated/
+error
+error--*
+
+commit-message
+/g-*
+/*.savex
+
 
 
 outc
@@ -23,14 +27,13 @@ outflex
 outtth
 compopt
 rsplink
-
 gccver.opt
 
-*.bak
-*.exe
+
+*.tmp
+*.nopack
 *.class
 *.jar
-*.nopack
 *.dll
 *.exp
 *.so
@@ -56,8 +59,6 @@ usr/include/gdk.ch
 usr/include/gtk.ch
 
 
-#testdata (generated)
-
 log-*
 log
 exe
@@ -66,10 +67,6 @@ pid
 exe-ora
 exe-pg
 exe-sqlite3
-
-#tools/sql2/test/testdata_lib/a.tds
-#tools/sql2/test/testdata_lib/b.tds
-#tools/sql2/test/testdata_lib/c.tds
 
 
 #symlink
@@ -95,12 +92,6 @@ usr/bin/linux/bapp_linuxc_datidx.b
 usr/bin/linux/bapp_linuxc_dbfctx.b
 usr/bin/linux/bapp_linuxg.b
 usr/bin/linux/bapp_linuxg_dbfctx.b
-
-
-terminal-unix/ccc_term_static/readkey.lex
-terminal-unix/ccc_term_static/vc_term.cpp
-terminal-unix/ccc_term_static/vc_term.h
-terminal-unix/ccc_term_static/vcbase.cpp
 
 
 cccgtk/codegen/gtkapi.bt

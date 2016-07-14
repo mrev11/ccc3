@@ -1,8 +1,0 @@
-#!/bin/bash
-# részletes log
-
-
-echo
-echo '#-----------------------------------'
-
-git log --stat --summary 

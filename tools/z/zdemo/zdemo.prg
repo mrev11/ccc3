@@ -21,7 +21,7 @@
 function main()
 
 
-local i, exitcode, result, resfil:="result.txt"
+local i, exitcode, result, resfil:="result.bak"
 
 local top:=5
 local lef:=10

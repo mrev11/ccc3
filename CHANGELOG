@@ -1,3 +1,14 @@
+
+
+
+2016.07.12 Atteres a repo-beli eletre.
+  Megj: Ahogy elkezdtem ftr/fts-sel kezelni a fájlokat,
+  egy rakás fájl visszaregult. Egy fajl attol regul vissza,
+  hogy a work tree-ben van ugyanolyan tartalmu, regebbi fajl,
+  ftr/fts pedig a tartalom alapjan azonositja a fajlokat.
+  savex-ben -mD opcio
+  kimaradt GPL copyrightok potolva 
+
 2016.06.19 savex 4.0.01 -m2 osszehasonlitas 
 
 2016.06.15 Tisztogatas.

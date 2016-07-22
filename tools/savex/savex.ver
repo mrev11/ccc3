@@ -1,7 +1,13 @@
 
-#define VERZIO  "4.0.02"
+#define VERZIO  "5.0.00"
+
 
 #ifdef NOT_DEFINED
+
+2016.07.13 -- 5.0.00
+   mechanikusan szetdarabolva kisebb prg modulokra
+   a static valtozok elerese setget fuggvenyekkel
+   osszehasonlito browse atirva jobb technikaval
 
 2016.07.13 -- 4.0.02
   -mD -mW es -mS unioja

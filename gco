@@ -1,5 +1,17 @@
 #!/bin/bash
 
+if ! test -x .git/hooks/post-checkout; then
+/bin/cat << 'EOF' >.git/hooks/post-checkout
+#!/bin/bash
+echo 'Invoked post-checkout'
+filetime-restore.exe
+EOF
+chmod 755 .git/hooks/post-checkout
+fi
+
+
+
+
 #ezek átkerülhetnének .git/hooks/pre-commit-ba,
 #de nem tudnak átkerülni, mert a pre-commit-ban 
 #végrehajtott 'git add' már nem hat a folyamatban levő commit-ra
@@ -16,7 +28,7 @@
 
 filetime-save.exe
 git add .FILETIME_$USER
-firstpar.exe  CHANGELOG >commit-message
+firstpar.exe  CHANGELOG_vermes >commit-message
 git commit -F commit-message
 rm commit-message
 

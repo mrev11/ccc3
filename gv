@@ -1,5 +1,6 @@
 #!/bin/bash
 #git diff viewer
+export CCCTERM_INHERIT=yes
 git add --all
 exec gitview.exe  "$@"
 

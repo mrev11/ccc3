@@ -26,6 +26,8 @@
 //helyette a read-bufferen belül rendezgeti az adatokat,
 //és így kevésbé terheli a szemétgyűjtést -> gyorsabb.
 
+//Kiegészítve az endofline atribútummal (sorvég karakter).
+
 #define INCSIZE 4096
 
 ****************************************************************************
@@ -34,6 +36,7 @@ class readline(object)
     attrib fd
     attrib buffer
     attrib nbyte
+    attrib endofline
     method readline
 
 ****************************************************************************
@@ -42,16 +45,16 @@ static function readline.initialize(this,fd)
     this:fd:=fd
     this:buffer:=a""
     this:nbyte:=0
+    this:endofline:=bin(10)
     return this
     
 ****************************************************************************
 static function readline.readline(this)
 
-static nl:=bin(10)
-local line,nlpos,nbyte
+local line,eolpos,nbyte
 
-    nlpos:=at(nl,this:buffer)
-    while( nlpos<=0 .or. this:nbyte<nlpos )
+    eolpos:=at(this:endofline,this:buffer)
+    while( eolpos<=0 .or. this:nbyte<eolpos )
         if( this:nbyte>=len(this:buffer) )
             this:buffer+=replicate(x"00",INCSIZE)
         end
@@ -59,15 +62,15 @@ local line,nlpos,nbyte
         if( nbyte>0 )
             this:nbyte+=nbyte
         else
-            nlpos:=NIL
+            eolpos:=NIL
             exit
         end
-        nlpos:=at(nl,this:buffer)
+        eolpos:=at(this:endofline,this:buffer)
     end
     
-    if( nlpos!=NIL )
-        line:=xvgetchar(this:buffer,0,nlpos)
-        xvmove(this:buffer,0,this:buffer,nlpos,this:nbyte-=nlpos)
+    if( eolpos!=NIL )
+        line:=xvgetchar(this:buffer,0,eolpos)
+        xvmove(this:buffer,0,this:buffer,eolpos,this:nbyte-=eolpos)
     elseif(this:nbyte>0)
         line:=xvgetchar(this:buffer,0,this:nbyte)
         this:buffer:=a""

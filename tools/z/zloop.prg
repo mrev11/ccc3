@@ -200,6 +200,9 @@ local screen
         elseif( key==K_ALT_W )    
             this:markmode:="WIDE"
 
+        elseif( key==K_ALT_P )    
+            this:findpar
+
 
         elseif( this:modflg )
      

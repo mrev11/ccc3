@@ -5,11 +5,11 @@
 -i../../rpcutil/dd
 -b../../$$(rpcutil)
 
--bccc3_btbtx
--bccc3_crypto
--bccc3_xmlrpc
--bccc3_xmldom
--bccc3_socket
--bccc3_sslsocket
+-bccc$(CCCVER)_btbtx
+-bccc$(CCCVER)_crypto
+-bccc$(CCCVER)_xmlrpc
+-bccc$(CCCVER)_xmldom
+-bccc$(CCCVER)_socket
+-bccc$(CCCVER)_sslsocket
  
 BUILD_EXE=..

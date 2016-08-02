@@ -1,8 +1,25 @@
 
-#define VERZIO  "5.0.00"
+#define VERZIO  "5.1.00"
 
 
 #ifdef NOT_DEFINED
+
+2016.07.29 -- 5.1.00
+   A -s opcio korabban additiv volt, most a kesobb megadott 
+   ertek atirja az elozot. A regi mukodesi mod elerheto, 
+   ha egyszerre adjuk meg a directorykat (nincs sok ertelme).
+   A -s opcio defaultja '.' (korabban az additivitas miatt
+   nem lehetett defaultja, hianyzo -s-re helpet adott).
+   Uj opcio: helpet ad -h-ra.
+   Opciok elemzese a szokasos if..elseif..elseif..else..end 
+   szerkezettel, hibat jelez nem ertelmezett opciora.
+   Hibat jelez nem talalhato @savex parameterfajlra.
+   Korabban a @savex parameterfajlok parametereit forditott
+   sorrendben ertelmezte (vajon miert), most normalisan.
+   Kihagyja a parameterfajlok # komment sorait (korabban ezek 
+   ugy mentek at, hogy nem ertelezett opcionak szamitottak, 
+   amit a program warning nelkul eldobott).
+   Ekezetlenites, hogy CCC2-ben is olvashato legyen.
 
 2016.07.13 -- 5.0.00
    mechanikusan szetdarabolva kisebb prg modulokra

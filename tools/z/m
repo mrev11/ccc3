@@ -2,3 +2,10 @@
 bapp_unixc.b @parfile.bld
 
 #ldd `which z.exe` 
+
+
+mkdir -p ~/.z
+cp -pf ./keymap.z  ~/.z
+cp -pf ./keymap_uc.z  ~/.z
+
+

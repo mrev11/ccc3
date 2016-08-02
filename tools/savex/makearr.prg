@@ -31,7 +31,7 @@ local dbrw:={}
         dbrw:=makearr_(s_work)
 
     elseif( s_compmode$"012wWsSdD" )
-        dbrw:=makearr_012wsd(s_work,s_save) //összes mód!
+        dbrw:=makearr_012wsd(s_work,s_save) //osszes mod!
 
     end
 
@@ -84,7 +84,7 @@ local date, time
 
 
 ******************************************************************************    
-static function makearr_012wsd(dw,ds)  //összes mód
+static function makearr_012wsd(dw,ds)  //osszes mod
 
 local dirWork:=rdir(dw)
 local dirSave:=rdir(ds)
@@ -100,23 +100,23 @@ local dbrw:=arrayNew()
 
     while( filew!=NIL .or. files!=NIL )
         if( files==NIL )
-            //work hátrébb (save elfogyott)
+            //work hatrebb (save elfogyott)
             BERAK_W("wd")
             ELORE_W
 
         elseif( filew==NIL )
-            //save hátrébb (work elfogyott)
+            //save hatrebb (work elfogyott)
             BERAK_S("sd")
             ELORE_S
 
         elseif( strcmp(filew,files)<0 ) //egyik sem NIL
-            //work hátrébb
+            //work hatrebb
             BERAK_W("wd")
             ELORE_W
 
 
         elseif( strcmp(filew,files)>0 )
-            //save hátrébb
+            //save hatrebb
             BERAK_S("sd")
             ELORE_S
 

@@ -1,3 +1,9 @@
+2016.08.02 z.exe K_ALT_P-re zarojelpart keres;
+  savex.exe -s opcioja megszunt additivnak lenni;
+  savex.exe -s opciojanak defaultja '.';
+  tools parfile.bld-k egysegesitese a CCCVER valtozoval;
+  gtk konyvtar: megszunt API-k kihagyasa a forditasbol
+
 2016.07.27 script tisztogatas;
   A git-es scriptek vegkepp ki lettek pucolva.
   Akinek ilyesmi kell, csinal maganak,

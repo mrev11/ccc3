@@ -1,11 +1,13 @@
 
-#define VERSION "3.0.00"
+#define VERSION "3.1.0"
 
 #ifndef VERSION  
 
+2016/08/02 -- 3.1.0
+  K_ALT_P megkeresi a zarojel parjat.
+
 2016/06/09 -- 3.0.00
   egysegesitett CCC2/CCC3 verzio
-
 
 2015.04.19 -- 2.1.16
   K_CTRL_F6 kijelolt terulet ekezetlenitese.

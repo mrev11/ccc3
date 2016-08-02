@@ -16,3 +16,8 @@ fi
 
 bapp_unix0.b @parfile.bld
 
+mkdir -p  ~/.z
+cp -pf  ./learnkey/inkeymap-linux/INKEYMAP-linux  ~/.z
+cp -pf  ./learnkey/inkeymap-xterm/INKEYMAP-xterm  ~/.z
+
+

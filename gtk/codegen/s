@@ -1,5 +1,5 @@
 #!/bin/bash
-rm *.bak
-#rm ../code_generated/*_api.cpp
-#rm ../code_generated/*_reg.prg
+rm -f *.bak
+#rm -f ../code_generated/*_api.cpp
+#rm -f ../code_generated/*_reg.prg
 run.exe #>log

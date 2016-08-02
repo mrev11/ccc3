@@ -75,6 +75,7 @@ local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     classMethod(clid,"copy",{|t|_zedit_copy(t)})  
     classMethod(clid,"paste",{|t|_zedit_paste(t)})  
     classMethod(clid,"markedstring",{|t|_zedit_markedstring(t)})  
+    classMethod(clid,"findpar",{|t|_zedit_findpar(t)})  
  
     classMethod(clid,"gettext",{|t|_zedit_gettext(t)}) 
 

@@ -6,6 +6,8 @@
 *.exe
 objlin/
 objlin_uic/
+objlin_uid/
+objlin_uif/
 objlin_ui_/
 ppo/
 code_generated/
@@ -64,9 +66,11 @@ log
 exe
 pid
 
-exe-ora
-exe-pg
-exe-sqlite3
+exe-db2/
+exe-my/
+exe-ora/
+exe-pg/
+exe-sqlite3/
 
 
 #symlink
@@ -94,7 +98,6 @@ usr/bin/linux/bapp_linuxg.b
 usr/bin/linux/bapp_linuxg_dbfctx.b
 
 
-cccgtk/codegen/gtkapi.bt
-
+gtkapi.bt
 
 

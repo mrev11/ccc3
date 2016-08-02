@@ -40,13 +40,12 @@ static s_likei            // like include
 static s_liker            // like excluded dirs
 static s_find             // browse helyett listaz (mint a UNIX-os find)
 static s_symlink          // symlinkek bevetele
-
-static s_edit:=""
-static s_list:=""
+static s_edit             // editalast vegzo programok
+static s_list             // listazast vegzo programok
 
 
 ****************************************************************************
-//setget függvények a többi modul számára
+//setget fuggvenyek a tobbi modul szamara
 
 function s_save     (x);  return if(x==NIL, s_save       , s_save      :=x)
 function s_work     (x);  return if(x==NIL, s_work       , s_work      :=x)
@@ -89,7 +88,7 @@ local pfile,ptext,p,q
     
     //kezdoertekek
 
-    s_save:=NIL
+    s_save:="."
     s_work:="."+dirsep()
     s_extinc:=NIL
     s_extexc:=NIL
@@ -98,6 +97,8 @@ local pfile,ptext,p,q
     s_direxc:=NIL
     s_seconds:=.f.
     s_symlink:=""
+    s_edit:=""
+    s_list:=""
  
     //argumentumok atvetele
 
@@ -106,161 +107,157 @@ local pfile,ptext,p,q
 
     for n:=1 to len(opt)
 
-        if( opt[n]!=NIL )
+        if( opt[n]==NIL )
+            loop
+        end
         
-            opt[n]:=parproc(opt[n])
-            
-            if( opt[n]=="." )
-                s_save:=opt[n]
+        opt[n]:=parproc(opt[n])
+
+        if( OPT(n,"-h") )
+            usage()
+            quit
+        
+        elseif( opt[n]=="." )
+            s_save:=opt[n]
+
+        elseif( substr(opt[n],2,1)==":" )
+            s_save:=opt[n]
+
+        elseif( OPT(n,"-s") )
+            s_save:=substr(opt[n],3)
+
+        elseif( OPT(n,"-w") )
+            s_work:=substr(opt[n],3)+dirsep()
+
+        elseif( OPT(n,"-lx") )
+            if( s_likex==NIL )
+                s_likex:={UPPER(substr(opt[n],4))}
+            else
+                aadd(s_likex,UPPER(substr(opt[n],4)))
             end
 
-            if( substr(opt[n],2,1)==":" )
-                s_save:=opt[n]
-            end
- 
-            if( OPT(n,"-s") )
-                if( s_save==NIL )
-                    s_save:=substr(opt[n],3)
-                else
-                    s_save+=";"+substr(opt[n],3) 
-                end
+        elseif( OPT(n,"-li") )
+            if( s_likei==NIL )
+                s_likei:={UPPER(substr(opt[n],4))}
+            else
+                aadd(s_likei,UPPER(substr(opt[n],4)))
             end
 
-            if( OPT(n,"-w") )
-                s_work:=substr(opt[n],3)+dirsep()
+        elseif( OPT(n,"-plx") )
+            v:=UPPER(substr(opt[n],5))
+            v::=strtran("/",dirsep())
+            v::=strtran("\",dirsep())
+            if( s_plikex==NIL )
+                s_plikex:={v}
+            else
+                aadd(s_plikex,v)
             end
 
-            if( OPT(n,"-lx") )
-                if( s_likex==NIL )
-                    s_likex:={UPPER(substr(opt[n],4))}
-                else
-                    aadd(s_likex,UPPER(substr(opt[n],4)))
-                end
+        elseif( OPT(n,"-pli") )
+            v:=UPPER(substr(opt[n],5))
+            v::=strtran("/",dirsep())
+            v::=strtran("\",dirsep())
+            if( s_plikei==NIL )
+                s_plikei:={v}
+            else
+                aadd(s_plikei,v)
             end
 
-            if( OPT(n,"-li") )
-                if( s_likei==NIL )
-                    s_likei:={UPPER(substr(opt[n],4))}
-                else
-                    aadd(s_likei,UPPER(substr(opt[n],4)))
-                end
+        elseif( OPT(n,"-lr") )
+            if( s_liker==NIL )
+                s_liker:={UPPER(substr(opt[n],4))}
+            else
+                aadd(s_liker,UPPER(substr(opt[n],4)))
             end
 
-            if( OPT(n,"-plx") )
-                v:=UPPER(substr(opt[n],5))
-                v::=strtran("/",dirsep())
-                v::=strtran("\",dirsep())
-                if( s_plikex==NIL )
-                    s_plikex:={v}
-                else
-                    aadd(s_plikex,v)
-                end
+        elseif( OPT(n,"-i") )
+            if( s_extinc==NIL )
+                s_extinc:=substr(opt[n],3)
+            else
+                s_extinc+=";"+substr(opt[n],3)
             end
- 
-            if( OPT(n,"-pli") )
-                v:=UPPER(substr(opt[n],5))
-                v::=strtran("/",dirsep())
-                v::=strtran("\",dirsep())
-                if( s_plikei==NIL )
-                    s_plikei:={v}
-                else
-                    aadd(s_plikei,v)
-                end
+            s_extinc:=UPPER(s_extinc)
+
+        elseif( OPT(n,"-x") )
+            if( s_extexc==NIL )
+                s_extexc:=substr(opt[n],3)
+            else
+                s_extexc+=";"+substr(opt[n],3)
+            end
+            s_extexc:=UPPER(s_extexc)
+
+        elseif( OPT(n,"-r") )
+            if( s_direxc==NIL )
+                s_direxc:=substr(opt[n],3)
+            else
+                s_direxc+=";"+substr(opt[n],3)
+            end
+            s_direxc:=UPPER(s_direxc)
+            s_dirsep:=left(s_direxc,1)
+
+        elseif( OPT(n,"-d") )
+            if( len(substr(opt[n],3))==8 )
+                s_mindate:=stod(substr(opt[n],3))
+            elseif( len(substr(opt[n],3))==10 )
+                s_mindate:=ctod(substr(opt[n],3))
             end
 
-            if( OPT(n,"-lr") )
-                if( s_liker==NIL )
-                    s_liker:={UPPER(substr(opt[n],4))}
-                else
-                    aadd(s_liker,UPPER(substr(opt[n],4)))
-                end
-            end
- 
-            if( OPT(n,"-i") )
-                if( s_extinc==NIL )
-                    s_extinc:=substr(opt[n],3)
-                else
-                    s_extinc+=";"+substr(opt[n],3)
-                end
-                s_extinc:=UPPER(s_extinc)
-            end
+        elseif( OPT(n,"-m") )
+            s_compmode:=substr(opt[n],3)
+        
+        elseif( OPT(n,"-t") )
+            s_seconds:=substr(opt[n],3,1)$"sS"
+        
+        elseif( OPT(n,"-c") )
+            s_content:=substr(opt[n],3)
+            alert("Containing: ["+s_content+"]")
 
-            if( OPT(n,"-x") )
-                if( s_extexc==NIL )
-                    s_extexc:=substr(opt[n],3)
-                else
-                    s_extexc+=";"+substr(opt[n],3)
-                end
-                s_extexc:=UPPER(s_extexc)
+        elseif( OPT(n,"-f") )
+            s_find:=.t.
+        
+        elseif( OPT(n,"-y") )
+            if( opt[n]=="-y" )        //minden symlinket bevesz
+                s_symlink:="df"
+            elseif( opt[n]=="-yd" )   //a dir symlinkeket beveszi
+                s_symlink+="d"
+            elseif( opt[n]=="-yf" )   //a file symlinkeket beveszi
+                s_symlink+="f"
             end
-            
-            if( OPT(n,"-r") )
-                if( s_direxc==NIL )
-                    s_direxc:=substr(opt[n],3)
-                else
-                    s_direxc+=";"+substr(opt[n],3)
-                end
-                s_direxc:=UPPER(s_direxc)
-                s_dirsep:=left(s_direxc,1)
-            end
-
-            if( OPT(n,"-d") )
-                if( len(substr(opt[n],3))==8 )
-                    s_mindate:=stod(substr(opt[n],3))
-                elseif( len(substr(opt[n],3))==10 )
-                    s_mindate:=ctod(substr(opt[n],3))
-                end
-            end
-
-            if( OPT(n,"-m") )
-                s_compmode:=substr(opt[n],3)
-            end
-
-            if( OPT(n,"-t") )
-                s_seconds:=substr(opt[n],3,1)$"sS"
-            end
-
-            if( OPT(n,"-c") )
-                s_content:=substr(opt[n],3)
-                alert("Containing: ["+s_content+"]")
-            end
-
-            if( OPT(n,"-f") )
-                s_find:=.t.
-            end
-
-            if( OPT(n,"-y") )
-                if( opt[n]=="-y" )        //minden symlinket bevesz
-                    s_symlink:="df"
-                elseif( opt[n]=="-yd" )   //a dir symlinkeket beveszi
-                    s_symlink+="d"
-                elseif( opt[n]=="-yf" )   //a file symlinkeket beveszi
-                    s_symlink+="f"
-                end
-            end
-            
-            if( OPT(n,"--list:") )
-                s_list+=opt[n][7..]
-            end
-
-            if( OPT(n,"--edit:") )
-                s_edit+=opt[n][7..]
-            end
- 
-            if( "@"$opt[n] .and. file(pfile:=substr(opt[n],2)) )
+        
+        elseif( OPT(n,"--list:") )
+            s_list+=opt[n][7..]
+        
+        elseif( OPT(n,"--edit:") )
+            s_edit+=opt[n][7..]
+        
+        elseif( opt[n][1]=="@" )
+        
+            if( file(pfile:=substr(opt[n],2)) )
                 ptext:=memoread(pfile)
                 ptext:=strtran(ptext,chr(13),"")
                 ptext:=split(ptext,chr(10))
-
-                for p:=len(ptext) to 1 step -1
+    
+                for p:=1 to len(ptext)
                     ptext[p]:=alltrim(ptext[p])
-                    if( !empty(ptext[p]) )
+                    if( empty(ptext[p]) )
+                        //ures
+                    elseif( ptext[p][1]=="#" )
+                        //komment
+                    else
                         asize(opt,1+len(opt))
                         ains(opt,n+1)
                         opt[n+1]:=ptext[p]
                     end
                 next
+            else
+                ?? "Parameter file not found:", pfile;?
+                quit
             end
+
+        else
+            ? "Unknown option:", opt[n]
+            usage()
+            quit
         end
     next
 
@@ -272,10 +269,6 @@ local pfile,ptext,p,q
         s_edit:=getenv("EDIT")
     end
     
-    if( empty(s_save) )
-        usage()
-        quit
-    end
 
     if( !empty(s_find) )
 

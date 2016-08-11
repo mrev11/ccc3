@@ -17,10 +17,13 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+ 
+#include "fileio.ch" 
 
 function _zedit_clipboard(this,clip)
 
-local tclip,n,n1
+local tclip,n,n1,fd
 
     if( clip==NIL )
 
@@ -41,16 +44,15 @@ local tclip,n,n1
         end
 
     elseif( valtype(clip)=="A" )
-    
-        tclip:=""
-        for n:=1 to len(clip)
-            if( n>1 )
-                tclip+=endofline()
-            end
-            tclip+=clip[n]
-        next
 
-        memowrit(this:clipfile,tclip)
+        fd:=fopen(this:clipfile,FO_READWRITE+FO_CREATE+FO_TRUNCATE)
+        if(fd>0)
+            for n:=1 to len(clip)-1
+                fwrite(fd,clip[n]+endofline())
+            next
+            fwrite(fd,clip[n])
+            fclose(fd)
+        end
 
     else
         memowrit(this:clipfile,clip:="") 

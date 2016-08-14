@@ -237,7 +237,7 @@ local pfile,ptext,p,q
                 ptext:=strtran(ptext,chr(13),"")
                 ptext:=split(ptext,chr(10))
     
-                for p:=1 to len(ptext)
+                for p:=len(ptext) to 1 step -1 //ez a sorrend kell 
                     ptext[p]:=alltrim(ptext[p])
                     if( empty(ptext[p]) )
                         //ures

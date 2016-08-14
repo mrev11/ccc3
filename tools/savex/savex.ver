@@ -1,8 +1,13 @@
 
-#define VERZIO  "5.1.00"
+#define VERZIO  "5.1.1"
 
 
 #ifdef NOT_DEFINED
+
+2016.08.14 -- 5.1.1
+   Az elozo javitas elrontotta a  @savex parameterfajlok 
+   ertelmezesenek sorrendjet, vissza kellett allni a korabbi 
+   megoldasra.
 
 2016.07.29 -- 5.1.00
    A -s opcio korabban additiv volt, most a kesobb megadott 

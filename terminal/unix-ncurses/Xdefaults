@@ -1,2 +1,11 @@
 xterm*metaSendsEscape: true
+xterm*utf8Title: true
+xterm*VT100.geometry: 96x32
+
+;xterm*font: -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+xterm*faceName: Monospace-11
+
+xterm*background: grey
+xterm*foreground: black
+
 

@@ -40,6 +40,7 @@ static void setmask()
     if( mask & SIG_SEGV ) {sigaddset(&set,SIGSEGV);}
     if( mask & SIG_PIPE ) {sigaddset(&set,SIGPIPE);}
     if( mask & SIG_TERM ) {sigaddset(&set,SIGTERM);}
+    if( mask & SIG_TSTP ) {sigaddset(&set,SIGTSTP);}
     if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
     if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
     if( mask & SIG_KILL ) {sigaddset(&set,SIGKILL);}
@@ -75,6 +76,7 @@ static int cccsig2signum(int cccsig)
         case SIG_SEGV: return SIGSEGV;   // Segmentation violation (ANSI)
         case SIG_PIPE: return SIGPIPE;   // Broken pipe (POSIX)
         case SIG_TERM: return SIGTERM;   // Termination (ANSI)
+        case SIG_TSTP: return SIGTSTP;   // Terminal stop
 
         case SIG_CONT: return SIGCONT;   // Continue (POSIX)
         case SIG_STOP: return SIGSTOP;   // Stop, unblockable (POSIX)
@@ -97,6 +99,7 @@ static int signum2cccsig(int signum)
         case SIGSEGV: return SIG_SEGV;   // Segmentation violation (ANSI)
         case SIGPIPE: return SIG_PIPE;   // Broken pipe (POSIX)
         case SIGTERM: return SIG_TERM;   // Termination (ANSI)
+        case SIGTSTP: return SIG_TSTP;   // Terminal stop
 
         case SIGCONT: return SIG_CONT;   // Continue (POSIX)
         case SIGSTOP: return SIG_STOP;   // Stop, unblockable (POSIX)
@@ -183,27 +186,19 @@ static void signal_handler(int signum)
 //--------------------------------------------------------------------------
 void setup_signal_handlers()
 {
-    #ifdef _SOLARIS_
-        sigset(SIGHUP  ,signal_handler);
-        sigset(SIGINT  ,signal_handler);
-        sigset(SIGQUIT ,signal_handler);
-        sigset(SIGILL  ,signal_handler);
-        //sigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
-        sigset(SIGFPE  ,signal_handler);
-        sigset(SIGSEGV ,signal_handler);
-        sigset(SIGPIPE ,signal_handler);
-        sigset(SIGTERM ,signal_handler);
-    #else
-        signal(SIGHUP  ,signal_handler);
-        signal(SIGINT  ,signal_handler);
-        signal(SIGQUIT ,signal_handler);
-        signal(SIGILL  ,signal_handler);
-        //signal(SIGABRT ,signal_handler); //kivéve 2008.11.27
-        signal(SIGFPE  ,signal_handler);
-        signal(SIGSEGV ,signal_handler);
-        signal(SIGPIPE ,signal_handler);
-        signal(SIGTERM ,signal_handler);
-    #endif
+    sigset(SIGHUP  ,signal_handler);
+    sigset(SIGINT  ,signal_handler);
+    sigset(SIGQUIT ,signal_handler);
+    sigset(SIGILL  ,signal_handler);
+    //sigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
+    sigset(SIGFPE  ,signal_handler);
+    sigset(SIGSEGV ,signal_handler);
+    sigset(SIGPIPE ,signal_handler);
+    sigset(SIGTERM ,signal_handler);
+
+    //sigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
+    //sigset(SIGTSTP ,SIG_IGN);
+    //sigset(SIGTSTP ,SIG_DFL);
 }
 
 //--------------------------------------------------------------------------
@@ -219,6 +214,7 @@ int signal_raise(int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; signal_handler(SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; signal_handler(SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; signal_handler(SIGTERM);}
+    if( cccsig&SIG_TSTP) {++cnt; signal_handler(SIGTSTP);}
     return cnt;
 }
 
@@ -235,6 +231,7 @@ int signal_send(int pid, int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; kill(pid,SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; kill(pid,SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; kill(pid,SIGTERM);}
+    if( cccsig&SIG_TSTP) {++cnt; kill(pid,SIGTSTP);}
 
     if( cccsig&SIG_CONT) {++cnt; kill(pid,SIGCONT);}
     if( cccsig&SIG_STOP) {++cnt; kill(pid,SIGSTOP);}
@@ -296,6 +293,7 @@ void _clp_signal_description(int argno) //szignál leírása
         case SIG_SEGV: strcpy(desc,"SIGSEGV (Invalid memory reference)");break;
         case SIG_PIPE: strcpy(desc,"SIGPIPE (Broken pipe)");break;
         case SIG_TERM: strcpy(desc,"SIGTERM (Termination signal)");break;
+        case SIG_TSTP: strcpy(desc,"SIGTSTP (Terminal stop)");break;
 
         case SIG_CONT: strcpy(desc,"SIGCONT (Continue signal)");break;
         case SIG_STOP: strcpy(desc,"SIGSTOP (Stop, unblockable)");break;

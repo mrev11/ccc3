@@ -36,5 +36,6 @@
 #define SIG_CONT    1024    // Continue (POSIX)
 #define SIG_STOP    2048    // Stop, unblockable (POSIX)
 #define SIG_KILL    4096    // Kill, unblockable (POSIX)
+#define SIG_TSTP    8192    // Terminal stop (CTRL-Z)
 
 #endif//_SIGNAL_CH_

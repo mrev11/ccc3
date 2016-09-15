@@ -18,8 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define VERSION "3.0.00"
+#define VERSION "3.0.1"
 
+
+//3.0.1 (2016-09-95) szokozoket tartalmazo fajlnevek kezelve
 
 function zgrep_version()
 

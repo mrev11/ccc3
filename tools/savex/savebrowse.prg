@@ -129,6 +129,10 @@ local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
     elseif( key==K_F4 )
         dolist(f,s_edit,DEFAULT_EDIT)
         return .t.
+
+    elseif( key==K_CTRL_P )
+        play(brw)
+        return .t.
     end
 
 

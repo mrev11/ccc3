@@ -23,7 +23,7 @@
 
 
 ******************************************************************************    
-function sortNev(brw)
+function sortName(brw)
 local arr:=brwArray(brw)
     asort(arr,,,{|x,y|x[IDX_FILE]<y[IDX_FILE]})
     brw:refreshAll()
@@ -39,7 +39,7 @@ local arr:=brwArray(brw)
 
 
 ******************************************************************************    
-function sortIdo(brw)
+function sortTime(brw)
 local arr:=brwArray(brw)
     if( "S"$s_compmode )
         asort(arr,,,{|x,y|x[IDX_SAVE]>y[IDX_SAVE]})
@@ -51,7 +51,7 @@ local arr:=brwArray(brw)
 
 
 ******************************************************************************    
-function sortMeret(brw)
+function sortSize(brw)
 local arr:=brwArray(brw)
     asort(arr,,,{|x,y|x[IDX_SIZE]>y[IDX_SIZE]})
     brw:refreshAll()

@@ -25,7 +25,11 @@ if [ $CCCBIN == "lin" ]; then
     export BUILD_INC=$CCCDIR/usr/include
     
     lptadd $CCCDIR/usr/lib/$CCCBIN
-    if uname -a | grep x86_64 >/dev/null; then
+    if uname -a | grep armv7l >/dev/null; then
+        lptadd /usr/lib/arm-linux-gnueabihf
+        lptadd /lib/arm-linux-gnueabihf
+
+    elif uname -a | grep x86_64 >/dev/null; then
         #echo 64-bit
         lptadd /usr/lib/x86_64-linux-gnu
         lptadd /lib/x86_64-linux-gnu

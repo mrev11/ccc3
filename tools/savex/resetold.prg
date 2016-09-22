@@ -19,34 +19,59 @@
  */
 
 #include "savex.ch"
+#include "statvar.ch"
 
 
 ******************************************************************************    
-function kihagy(brw)
+function resetold(brw)
+
 local arr:=brwArray(brw)
 local pos:=brwArrayPos(brw)
-local n,a,x,t
-    if( len(arr)>1 )
-        adel(arr,pos)
-        asize(arr,len(arr)-1)
+local fname:=arr[pos][IDX_FILE]
+
+local wfile:=s_work+fname
+local sfile:=s_save+fname
+local wtime:=arr[pos][IDX_WORK]
+local stime:=arr[pos][IDX_SAVE]
+
+    if( empty(wtime) )
+        ferase(sfile)
+
+    elseif( empty(stime) )
+        ferase(wfile)
+
+    elseif( stime<wtime )
+        xfilecopy(sfile,wfile)
+
+    elseif( wtime<stime )
+        xfilecopy(wfile,sfile)
+
     else
-        //utolso sor empty-re allitva
-        a:=arr[1]
-        for n:=1 to len(a)
-            x:=a[n]
-            t:=valtype(x)
-            if( t=="C")
-                x:=""
-            elseif( t=="D" )
-                x:=ctod("")
-            elseif( t=="N" )
-                x:=0
-            end
-            a[n]:=x
-        next
+        //nincs mit visszaallitani
     end
-    brwArrayPos(brw,min(pos,len(arr)))
-    brw:refreshAll()
-    return .t.
+
+
+******************************************************************************    
+function copynew(brw)
+
+local arr:=brwArray(brw)
+local pos:=brwArrayPos(brw)
+local fname:=arr[pos][IDX_FILE]
+
+local wfile:=s_work+fname
+local sfile:=s_save+fname
+local wtime:=arr[pos][IDX_WORK]
+local stime:=arr[pos][IDX_SAVE]
+
+    if( empty(wtime) .or. wtime<stime )
+        xfilecopy(sfile,wfile)
+
+    elseif( empty(stime) .or. stime<wtime )
+        xfilecopy(wfile,sfile)
+
+    else
+        //nincs mit masolni
+    end
+
 
 ******************************************************************************    

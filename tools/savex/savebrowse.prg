@@ -41,7 +41,7 @@ local x,repeat:=.f.
 
     brwArray(brw,dbrw)
 
-    if( "."==s_save )
+    if( ""==s_save )
         colFile:=brwColumn(brw,"File",f0Block(brw,IDX_FILE),FISIZE)
         colWork:=brwColumn(brw,"Date/Time",d0Block(brw,IDX_WORK))
     else
@@ -58,14 +58,14 @@ local x,repeat:=.f.
     brwColumn(brw,"Size",brwABlock(brw,IDX_SIZE),"9999,999,999")
     
     brw:freeze:=1
-    if( !"."==s_save )
+    if( !""==s_save )
         colSave:colorBlock:={|x|x:=brwArrayPos(brw),if(dbrw[x][IDX_SAVE]>dbrw[x][IDX_WORK],{6,6},{1,2})}
     end
     colWork:colorBlock:={|x|x:=brwArrayPos(brw),if(dbrw[x][IDX_SAVE]<dbrw[x][IDX_WORK],{6,6},{1,2})}
     
     brwMenuName(brw,"["+alltrim(str(len(dbrw)))+"]")
 
-    if( !"."==s_save )
+    if( !""==s_save )
 
         aadd(olvas,{"-m0: exist here and there, differ   ",{||S_COMPMODE("0"),repeat:=.t.,break("X")}})
         aadd(olvas,{"-m1: exist here and there           ",{||S_COMPMODE("1"),repeat:=.t.,break("X")}})
@@ -73,29 +73,31 @@ local x,repeat:=.f.
         aadd(olvas,{"-mW: newer in WORK or missed in SAVE",{||S_COMPMODE("W"),repeat:=.t.,break("X")}})
         aadd(olvas,{"-mS: newer in SAVE or missed in WORK",{||S_COMPMODE("S"),repeat:=.t.,break("X")}})
         aadd(olvas,{"-mD: unio of -mW and -mS            ",{||S_COMPMODE("D"),repeat:=.t.,break("X")}})
-        brwMenu(brw,"Reread","Read disks and compare files",olvas,"R")
+        brwMenu(brw,"Reread","Read disks and compare files",olvas)  //R shortcut megszunt
 
-        brwMenu(brw,"Save",formDir(s_save,35)+" <-- "+formDir(s_work,35),{||repeat:=.t.,copyMent(brw)},"S")
-        brwMenu(brw,"Freshen",formDir(s_save,35)+" --> "+formDir(s_work,35),{||repeat:=.t.,copyFrissit(brw)},"F")
+        brwMenu(brw,"Save",formDir(s_save,35)+" <-- "+formDir(s_work,35),{||repeat:=.t.,copySave(brw)}) //S shortcut megszunt
+        brwMenu(brw,"Freshen",formDir(s_save,35)+" --> "+formDir(s_work,35),{||repeat:=.t.,copyFreshen(brw)}) //F shortcut megszunt
  
-        aadd(timecorr,{"Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyIdo(brw,.f.),break("X")}})
-        aadd(timecorr,{"Reset datetime in WORK if file contents are the same",{||repeat:=.t.,copyIdo(brw,.t.),break("X")}})
+        aadd(timecorr,{"Reset datetime in SAVE if file contents are the same",{||repeat:=.t.,copyTime(brw,.f.),break("X")}})
+        aadd(timecorr,{"Reset datetime in WORK if file contents are the same",{||repeat:=.t.,copyTime(brw,.t.),break("X")}})
         brwMenu(brw,"Time","Reset datetime if file contents are the same",timecorr)
 
         brwMenu(brw,"DelSav","Delete newer files in SAVE",{||repeat:=.t.,delSave(brw)})
         brwMenu(brw,"DelWrk","Delete newer files in WORK",{||repeat:=.t.,delWork(brw)})
 
-        brwMenu(brw,"Skip","Skip selected row from comparing and saving",{||kihagy(brw)},"S")
+        //brwMenu(brw,"Skip","Skip selected row from comparing and saving",{||skiprow(brw)},"S") //megszunt, helyette shortcut
         brwMenu(brw,"TxtCmp","Diff text files (by rows)",{||compFile(brw),.t.},"T")
         brwMenu(brw,"BinCmp","Compare binary files",{||compFile(brw,.t.),.t.},"B")
+
+        brwApplyKey(brw,{|b,k|applykey2(b,k)})
     else
-        brwApplyKey(brw,{|b,k|applykey(b,k)})
+        brwApplyKey(brw,{|b,k|applykey1(b,k)})
     end
 
-    aadd(rendez,{"By date-time",{||sortIdo(brw)}})
-    aadd(rendez,{"By name (default)",{||sortNev(brw)}})
+    aadd(rendez,{"By date-time",{||sortTime(brw)}})
+    aadd(rendez,{"By name (default)",{||sortName(brw)}})
     aadd(rendez,{"By basename",{||sortBaseName(brw)}})
-    aadd(rendez,{"By size",{||sortMeret(brw)}})
+    aadd(rendez,{"By size",{||sortSize(brw)}})
     brwMenu(brw,"Sort","Set order by name, time, size",rendez,"S")
 
     brwMenu(brw,"List","List rows to standard output",{||listbrw(brw)},"L")
@@ -118,19 +120,48 @@ local x,repeat:=.f.
     return repeat
 
 ******************************************************************************    
-static function applykey(brw,key)
+static function applykey1(brw,key) //onedir mode
 
 local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
 
-    if( key==K_F3 )
-        dolist(f,s_list,DEFAULT_LIST)
+    if( key==K_ALT_S )
+        skiprow(brw)
+        return .t.
+
+    elseif( key==K_F3 )
+        dolist(s_work+f,s_list,DEFAULT_LIST)
         return .t.
 
     elseif( key==K_F4 )
-        dolist(f,s_edit,DEFAULT_EDIT)
+        dolist(s_work+f,s_edit,DEFAULT_EDIT)
         return .t.
 
-    elseif( key==K_CTRL_P )
+    elseif( key==K_ALT_P )
+        play(brw)
+        return .t.
+    end
+
+
+******************************************************************************    
+static function applykey2(brw,key) //twodir mode
+
+local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
+
+    if( key==K_ALT_S )
+        skiprow(brw)
+        return .t.
+
+    elseif( key==K_ALT_R .and. 2==alert("Reset old version?",{"Escape","Continue"}) )
+        resetold(brw)
+        skiprow(brw)
+        return .t.
+
+    elseif( key==K_ALT_N .and. 2==alert("Copy new version?",{"Escape","Continue"}) )
+        copynew(brw)
+        skiprow(brw)
+        return .t.
+
+    elseif( key==K_ALT_P )
         play(brw)
         return .t.
     end

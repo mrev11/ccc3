@@ -25,20 +25,10 @@
 ****************************************************************************
 function outlst()
 
-local slist,i
-local aname,n
-
-    slist:=split(s_save,";") 
- 
-    for i:=1 to len(slist)
-
-        aname:=makearr_(slist[i]+dirsep())
-
-        for n:=1 to len(aname)
-            ?? slist[i]+dirsep()+aname[n][1]+endofline() 
-        next
+local arr:=makearr(),n
+    for n:=1 to len(arr)
+        ?? arr[n][1]+endofline() 
     next
 
-    return NIL
 
 ****************************************************************************

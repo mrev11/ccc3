@@ -40,13 +40,11 @@ local screen:=savescreen()
         exe:=def //bedrotozott default
     end
 
-    if( !"%"$exe )
+    if( !"%f"$exe )
         exe+=' "%f" ' //idezojelekkel vedve
     end
     
     exe:=strtran(exe,"%f",fil)
-    exe:=strtran(exe,"%p",fpath0(fil))
-    exe:=strtran(exe,"%b",fnameext(fil))
 
     //? exe
     setcursor(1)

@@ -1,8 +1,47 @@
 
-#define VERZIO  "5.1.1"
+#define VERZIO  "5.2.0"
 
 
 #ifdef NOT_DEFINED
+
+2016.09.16 -- 5.2.0
+   A -pli,-plx parametereket fajlban is meg lehet adni:
+   
+   -pli@<filespec>
+   
+   A '-pli'-t nem egy minta koveti, hanem a @<filespec>.
+   A program beolvassa a fajlt, aminek soraiban egy-egy minta  
+   kell legyen (-pli nelkul). A sorokbol ('-pli'-t hozzaadva) 
+   kepez egy -pli opciot, amit hozzaad a parameterlistahoz. 
+   Igy nagyon sok minta (pl. programmal listazott fajlnev) 
+   megadhato -pli opciokent.
+   
+   Azokat a -pli/-plx mintakat, amikben nincs '*' vagy '?'
+   karakter nem a like fuggvennyel probalja illeszteni,
+   hanem beteszi a plihash/plxhash tablakba, es mintaillesztes
+   helyett hash keresest vegez. Ez felgyorsitja a programot,
+   ha sok konkret filespecet tartalmazo -pli opcionk van.
+   
+   megszunt shortcutok
+   R shortcut megszunt (reread, felesleges)
+   S shortcut megszunt (save, veszelyes, utkoztek: save,skip,sort)
+   F shortcut megszunt (freshen, veszelyes)
+   
+   megmaradt shortcutok
+   T Text compare
+   B Binary compare
+   S Sort
+   
+   uj shortcut
+   ALT-S Skip       a skip menu megszunt, helyette shortcut
+   ALT-R ResetOld   visszaall: az ujat felulirja a regivel (vagy torli) + skip
+   ALT-N CopyNew    frissit: az ujjal felulirja a regit + skip
+   
+   play.prg atirva
+   s_work default erteke "./" helyett ""
+   -s es -w additivitasa vegleg megszunt (ertelmetlen)
+   usage atirva
+   at lesz az egesz nevezve ddsync-re
 
 2016.08.14 -- 5.1.1
    Az elozo javitas elrontotta a  @savex parameterfajlok 

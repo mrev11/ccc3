@@ -109,9 +109,9 @@ static function includefil(name,relpath)
 local ext
 
     //kivetelek pathname alapjan
-    if( s_plikex!=NIL .and. alike(s_plikex,relpath+name) )
+    if( plxhash(relpath+name) .or. s_plikex!=NIL .and. alike(s_plikex,relpath+name) )
         return .f.
-    elseif( s_plikei!=NIL .and. alike(s_plikei,relpath+name) )
+    elseif( plihash(relpath+name) .or. s_plikei!=NIL .and. alike(s_plikei,relpath+name) )
         return .t.
     end
 
@@ -143,8 +143,8 @@ local ext
     //nincs -i minta
     //akkor veszi be,
     //ha nincs (p)likei minta
-    
-    return s_plikei==NIL .and. s_likei==NIL
+
+    return plihash():itemcount==0 .and. s_plikei==NIL .and. s_likei==NIL
 
 #ifdef NOTDEFINED
 peldak:

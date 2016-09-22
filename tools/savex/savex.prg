@@ -89,7 +89,7 @@ local pfile,ptext,p,q
     //kezdoertekek
 
     s_save:="."
-    s_work:="."+dirsep()
+    s_work:="."
     s_extinc:=NIL
     s_extexc:=NIL
     s_mindate:=ctod("")
@@ -114,7 +114,7 @@ local pfile,ptext,p,q
         opt[n]:=parproc(opt[n])
 
         if( OPT(n,"-h") )
-            usage()
+            ? usage()
             quit
         
         elseif( opt[n]=="." )
@@ -127,7 +127,7 @@ local pfile,ptext,p,q
             s_save:=substr(opt[n],3)
 
         elseif( OPT(n,"-w") )
-            s_work:=substr(opt[n],3)+dirsep()
+            s_work:=substr(opt[n],3)
 
         elseif( OPT(n,"-lx") )
             if( s_likex==NIL )
@@ -144,20 +144,50 @@ local pfile,ptext,p,q
             end
 
         elseif( OPT(n,"-plx") )
+            if( OPT(n,"-plx@") )
+                pfile:=substr(opt[n],6)
+                ptext:=memoread(pfile)::strtran(chr(13),"")
+                ptext::=split(chr(10))
+                for p:=1 to len(ptext)
+                    if( !empty(ptext[p]) )
+                        aadd(opt,"-plx"+ptext[p])
+                    end
+                next
+                loop
+            end
+
             v:=UPPER(substr(opt[n],5))
             v::=strtran("/",dirsep())
             v::=strtran("\",dirsep())
-            if( s_plikex==NIL )
+
+            if( !"*"$v .and. !"?"$v )
+                plxhash(v,.t.)  //berakja egy hashbe
+            elseif( s_plikex==NIL )
                 s_plikex:={v}
             else
                 aadd(s_plikex,v)
             end
 
         elseif( OPT(n,"-pli") )
+            if( OPT(n,"-pli@") )
+                pfile:=substr(opt[n],6)
+                ptext:=memoread(pfile)::strtran(chr(13),"")
+                ptext::=split(chr(10))
+                for p:=1 to len(ptext)
+                    if( !empty(ptext[p]) )
+                        aadd(opt,"-pli"+ptext[p])
+                    end
+                next
+                loop
+            end
+
             v:=UPPER(substr(opt[n],5))
             v::=strtran("/",dirsep())
             v::=strtran("\",dirsep())
-            if( s_plikei==NIL )
+
+            if( !"*"$v .and. !"?"$v )
+                plihash(v,.t.)  //berakja egy hashbe
+            elseif( s_plikei==NIL )
                 s_plikei:={v}
             else
                 aadd(s_plikei,v)
@@ -256,7 +286,7 @@ local pfile,ptext,p,q
 
         else
             ? "Unknown option:", opt[n]
-            usage()
+            ? usage()
             quit
         end
     next
@@ -269,30 +299,47 @@ local pfile,ptext,p,q
         s_edit:=getenv("EDIT")
     end
     
+    
+    if( !direxist(s_save) )
+        alert(s_save+" not found!")
+        quit
+    elseif( right(s_save,1)!=dirsep() )
+        s_save+=dirsep()
+    end
+    if( s_save=="."+dirsep() )
+        s_save:=""
+    end
+    
+    if( !direxist(s_work) )
+        alert(s_work+" not found!")
+        quit
+    elseif( right(s_work,1)!=dirsep() )
+        s_work+=dirsep()
+    end
+    if( s_work=="."+dirsep() )
+        s_work:=""
+    end
+    
+    
+    if( empty(s_save) )
+        //onedir mode
+        s_seconds:=.t. //van eleg hely
+    else
+        //twodir mode
+        s_mindate:=ctod("")
+        s_content:=NIL
+    end
+
 
     if( !empty(s_find) )
-
-        outlst() //browseolas helyett listaz
-
+        outlst()
     else
-
-        if( !direxist(s_save) )
-            alert(s_save+" not found!")
-            quit
-        elseif( s_save=="." )
-            s_seconds:=.t.
-        elseif( !right(s_save,1)$":"+dirsep() )
-            s_save+=dirsep()
-        end
-
         while( savebrowse() );end
     end
 
     setpos(r,c)
     setcursor(1)
     
-    return NIL
-
 
 ****************************************************************************
 static function parproc(par) 

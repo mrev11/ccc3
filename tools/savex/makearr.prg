@@ -27,7 +27,7 @@
 function makearr()
 local dbrw:={}
 
-    if( "."==s_save )
+    if( ""==s_save )
         dbrw:=makearr_(s_work)
 
     elseif( s_compmode$"012wWsSdD" )
@@ -39,7 +39,7 @@ local dbrw:={}
 
 
 ******************************************************************************    
-function makearr_(d)
+static function makearr_(d)
 
 local lwork:=len(d)
 local dirWork:=rdir(d)

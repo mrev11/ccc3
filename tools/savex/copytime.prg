@@ -24,7 +24,7 @@
 
 
 ******************************************************************************    
-function copyIdo(brw,save_or_work)
+function copyTime(brw,save_or_work)
 
 local arr:=brwArray(brw), n
 local msg, fw, fs, fname, ftime, fsize

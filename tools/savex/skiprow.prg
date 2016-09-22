@@ -19,43 +19,34 @@
  */
 
 #include "savex.ch"
-#include "statvar.ch"
 
 
 ******************************************************************************    
-function copyFrissit(brw)
-local arr:=brwArray(brw), n
-local msg, fname
-
-    msg:=message(msg,"Freshen")
-
-    for n:=1 to len(arr)
-        if( arr[n][IDX_WORK] < arr[n][IDX_SAVE] )
-            fname:=arr[n][IDX_FILE]
-            msg:=message(msg,s_save+fname+" --> "+s_work+fname)
-            xfilecopy(s_save+fname,s_work+fname)
-        end
-    next
-    message(msg)
-    return .f.
-
-******************************************************************************    
-function copyMent(brw)
-local arr:=brwArray(brw), n
-local msg, fname
-
-    msg:=message(msg,"Save")
-
-    for n:=1 to len(arr)
-        if( arr[n][IDX_WORK] > arr[n][IDX_SAVE] )
-            fname:=arr[n][IDX_FILE]
-            msg:=message(msg,s_save+fname+" <-- "+s_work+fname)
-            xfilecopy(s_work+fname,s_save+fname)
-        end
-    next
-    message(msg)
-    return .f.
-
-
+function skiprow(brw)
+local arr:=brwArray(brw)
+local pos:=brwArrayPos(brw)
+local n,a,x,t
+    if( len(arr)>1 )
+        adel(arr,pos)
+        asize(arr,len(arr)-1)
+    else
+        //utolso sor empty-re allitva
+        a:=arr[1]
+        for n:=1 to len(a)
+            x:=a[n]
+            t:=valtype(x)
+            if( t=="C")
+                x:=""
+            elseif( t=="D" )
+                x:=ctod("")
+            elseif( t=="N" )
+                x:=0
+            end
+            a[n]:=x
+        next
+    end
+    brwArrayPos(brw,min(pos,len(arr)))
+    brw:refreshAll()
+    return .t.
 
 ******************************************************************************    

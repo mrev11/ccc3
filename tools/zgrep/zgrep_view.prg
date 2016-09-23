@@ -26,7 +26,7 @@ local p:=brwArrayPos(b)
 local x:=split(a[p][1],":")
 local fspec:=x[1]
 local line:=x[2]
-local cmd:="z.exe '"+fspec::strtran("'","\'")+"'"  //"z" nem jo!
+local cmd:='z.exe "'+fspec+'"' //a "z" script itt nem jo!
 local screen
 
   #ifdef _UNIX_

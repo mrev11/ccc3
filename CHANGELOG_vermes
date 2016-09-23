@@ -1,3 +1,6 @@
+2016.09.24 zgrep-ben fajlnevek "" koze teve;
+  (az elozo javitas ''-t hasznalt, de az windowson rossz)
+
 2016.09.22 savex 5.2.0;
   savex 5.2.0 (nincs teljesen kitesztelve);
   __unix.b-ben raspbian tamogatas;

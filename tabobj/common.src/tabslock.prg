@@ -121,7 +121,7 @@ local sfil:=sdir+dirsep()+f
         //nem "Szemfor lock sikertelen"-t kell jelenteni,
         //hanem normál runtime errort generálni
         
-        if( empty(directory(lower(sdir),"D")) )
+        if( empty(directory(lower(sdir),"HD")) )
             taberrOperation("tabSlock")
             taberrDescription(@"failed creating semaphor directory")
             taberrFilename(sdir)

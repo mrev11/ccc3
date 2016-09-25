@@ -32,7 +32,7 @@ local wd:=dirsep()+curdir()
 function isempty(path)
 
 local cnt:=0,name,attr,n
-local dir:=directory(path+dirsep()+fullmask(),"DL")
+local dir:=directory(path+dirsep()+fullmask(),"DLH")
 
     for n:=1 to len(dir)
         name:=dir[n][F_NAME]

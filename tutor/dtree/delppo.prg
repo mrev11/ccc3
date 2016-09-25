@@ -38,7 +38,7 @@ function main(rootdir)
 *****************************************************************************
 function delppo(dir)    
 
-local d:=directory(dir+"*.*","D")
+local d:=directory(dir+"*.*","HD")
 local d1:={}, n
 local t, i
 
@@ -50,7 +50,7 @@ local t, i
 
             if( "ppo"==lower(d[n][F_NAME]) )
                 //ennek a belsejét le kell törölni
-                t:=directory(dir+"ppo\*.*")
+                t:=directory(dir+"ppo\*.*","H")
                 for i:=1 to len(t)
                     ? dir+"PPO\"+t[i][F_NAME]
                     ferase( dir+"PPO\"+t[i][F_NAME] )

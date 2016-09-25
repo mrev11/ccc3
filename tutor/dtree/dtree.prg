@@ -61,7 +61,7 @@ local name,n,d,d1:={}
         run(s_cmd)
     end
 
-    d:=directory(fullmask(),"D")
+    d:=directory(fullmask(),"DH")
     
     for n:=1 to len(d)
         name:=alltrim(d[n][F_NAME])

@@ -44,7 +44,7 @@ function main(rootdir)
 *****************************************************************************
 function delobj(dir)    
 
-local d:=directory(dir+fullmask(),"D")
+local d:=directory(dir+fullmask(),"DH")
 local d1:={}, n
 local dname,t,i
 
@@ -61,7 +61,7 @@ local dname,t,i
             if( 1==at(objdir,dname) )
                 //ennek a belsejét le kell törölni
 
-                t:=directory(dir+dname+dirsep()+fullmask())
+                t:=directory(dir+dname+dirsep()+fullmask(),"H")
                 for i:=1 to len(t)
                     ? dir+dname+dirsep()+t[i][F_NAME]
                     ferase( dir+dname+dirsep()+t[i][F_NAME] )

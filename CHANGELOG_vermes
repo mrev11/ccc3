@@ -1,3 +1,7 @@
+2016.09.25 directory() hivasokban 'H' attributum;
+  Sok helyen be kell venni a H attributumu fajlokat. 
+  Megj: Linuxon nincsenek H atributumu fajlok.
+
 2016.09.25 con.db2 atnevezve conn.db2
 
 2016.09.24 zgrep-ben fajlnevek "" koze teve;

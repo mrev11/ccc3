@@ -85,7 +85,7 @@ static function doproc()
 static indent:=0
 local name,n,d,d1:={}
 
-    d:=directory(fullmask(),"D-L")
+    d:=directory(fullmask(),"D-LH")
     
     for n:=1 to len(d)
 

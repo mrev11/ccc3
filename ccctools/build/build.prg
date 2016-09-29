@@ -389,7 +389,7 @@ local d1,f,o,n,i,txt,dep
         
         ?? "",dir[n]
 
-        d1:=directory(dir[n]+dirsep()+"*.*") 
+        d1:=directory(dir[n]+dirsep()+"*.*","H") 
  
         for i:=1 to len(d1)
             
@@ -904,7 +904,7 @@ static function run1(cmd)
 
 ****************************************************************************
 static function ftime(fspec)
-local d:=directory(fspec)
+local d:=directory(fspec,"H")
     if( len(d)==1 )
         return dtos(d[1][F_DATE])+"-"+d[1][F_TIME]
     end

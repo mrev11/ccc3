@@ -103,7 +103,7 @@ local status
     table:=jtbrowsearrayNew()
     table:name:='table'
     table:tooltip:="öt szép szűzlány őrült írót nyúz"
-    table:array(directory(fullmask()))
+    table:array(directory(fullmask()),"H")
     table:maxrow:=15
     table:addcolumn("#row",{||table:arraypos},"@RN 9999") 
     table:addcolumn("File",F_NAME,16) 

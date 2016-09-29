@@ -58,7 +58,7 @@ local charset
         end
     next
 
-    dirlst:=directory(wd+dspec+str2bin(fullmask()),"D",.t.) //binopt==.t.
+    dirlst:=directory(wd+dspec+str2bin(fullmask()),"HD",.t.) //binopt==.t.
     asort(dirlst,,,{|x,y|dircomp(x,y,sort,reverse)})
     
     html:=a"<html><hdr>"+bin(10)

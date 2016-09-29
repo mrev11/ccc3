@@ -36,7 +36,7 @@ function main()
 static function doproc(dspec)
 local name,n,d,d1:={}
 
-    d:=directory(dspec+dirsep()+fullmask(),"D")
+    d:=directory(dspec+dirsep()+fullmask(),"DH")
     
     for n:=1 to len(d)
         name:=alltrim(d[n][F_NAME])

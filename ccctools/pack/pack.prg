@@ -24,7 +24,7 @@
 *****************************************************************************
 function pack(dir,dirnames,filnames)
 
-local d:=directory(dir+dirsep()+fullmask(),"DL")
+local d:=directory(dir+dirsep()+fullmask(),"DHL")
 local d1:={},n,x,a
 
     for n:=1 to len(d)

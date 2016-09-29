@@ -24,7 +24,7 @@
 #include "_tesztdb.ch"
 
 function main()
-local dir:=directory("*.*"), n
+local dir:=directory("*.*","H"), n
 
     TESZTDB:open
     

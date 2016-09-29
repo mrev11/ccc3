@@ -25,7 +25,7 @@
 function main()
 local d,n,e
 
-    d:=directory("*.exe")
+    d:=directory("*.exe","H")
     for n:=1 to len(d)
         e:=d[n][1] 
         run("ln -s "+e+" "+left(e,at(".",e)-1))

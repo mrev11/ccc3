@@ -33,7 +33,7 @@ static function load(getlist,fs)
 
 local l:=len(g_name1:varget)
 local p:="@S"+alltrim(str(l))+" "+replicate("X",256) 
-local d:=directory(fs,"D")
+local d:=directory(fs,"HD")
 
     if( len(d)!=1 )
         ? "File or directory not found:", fs

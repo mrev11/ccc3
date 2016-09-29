@@ -25,7 +25,7 @@
 function main()
 local d,n,hash:=tutor.hashtableNew()
 
-    d:=directory(getenv("CCCDIR")+dirsep()+fullmask(),"D")
+    d:=directory(getenv("CCCDIR")+dirsep()+fullmask(),"HD")
     for n:=1 to len(d)
         hash:add(d[n])
     next

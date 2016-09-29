@@ -170,7 +170,7 @@ local dlg,m,group,n,c,dir
  
     // combo
     
-    dir:=directory("*.prg")
+    dir:=directory("*.prg","H")
     dlg:choice:additem("Van, aki forrón szereti.")
     dlg:choice:additem("Próba szerencse.")
     for n:=1 to len(dir)
@@ -203,7 +203,7 @@ local dlg,m,group,n,c,dir
 
     // table
 
-    dlg:adir:array:=directory("*")
+    dlg:adir:array:=directory("*","H")
 
     dlg:adir:addcolumn("#row",{||dlg:adir:arraypos},"@RN 999,999") 
     dlg:adir:addcolumn("File",F_NAME,"@! XXXXXXXXXXXXXXXX") 

@@ -38,7 +38,7 @@ local dir:="",tok,bslash
         
         if( !empty(dir+=tok) )
         
-            if( !empty(directory(LOWER(dir),"D")) )
+            if( !empty(directory(LOWER(dir),"DH")) )
                 //alert("Letezik:"+LOWER(dir))
             else
                 dirmake( LOWER(dir) ) 

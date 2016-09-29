@@ -70,7 +70,7 @@ local cnt:=0,a,n
             thread_mutex_unlock(mutex)
         end
         
-        directory("/opt/ccc2/ccclib/src")
+        directory("/opt/ccc2/ccclib/src","H")
 
         a:={}
         for n:=1 to 100

@@ -25,7 +25,7 @@ function main()
 local d,fname,n
 local hash:=simplehashNew()
 
-    d:=directory(fullmask(),"D")
+    d:=directory(fullmask(),"DH")
     for n:=1 to len(d)
         fname:=d[n][1]
         //hash:set(fname,d[n])

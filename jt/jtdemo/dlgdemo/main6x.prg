@@ -326,7 +326,7 @@ local label
 
     pane:additem(table:=jtbrowsearrayNew())
     table:name:="table"
-    table:array:=d:=directory(fullmask())
+    table:array:=d:=directory(fullmask(),"H")
     for n:=1 to len(d)
         d[n][5]:=empty(d[n][5])
     next

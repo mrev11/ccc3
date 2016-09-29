@@ -60,7 +60,7 @@ static function doproc()
 
 local m,name,n,d,d1:={}
 
-    d:=directory(,"D")
+    d:=directory(,"DH")
     
     for n:=1 to len(d)
 

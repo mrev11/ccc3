@@ -27,7 +27,7 @@ local fspec1,dir,strfrom,strto
 
     set dosconv off
 
-    dir:=directory(fspec)
+    dir:=directory(fspec,"H")
     if( len(dir)!=1 )
         ? fspec, @"not found"
         ?

@@ -506,7 +506,7 @@ local filnam
             filnam+=MASKEXT
         end
 
-        if( empty( directory(filnam) ) .or.;
+        if( empty( directory(filnam,"H") ) .or.;
             2==alert("File exists, overwrite?", {"Cancel","Overwrite"} ) )
 
             memowrit(lower(maskfile:=filnam),origscrn:=savescreen(0,0,MAXROW,MAXCOL))

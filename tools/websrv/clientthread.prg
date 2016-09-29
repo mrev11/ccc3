@@ -119,7 +119,7 @@ local fd,size,buffer,nbyte
                     end
                 end
 
-            elseif( len(dirlst:=directory(workdir+request:url))!=1 )
+            elseif( len(dirlst:=directory(workdir+request:url,"H"))!=1 )
                 repl:=mkerror(a"404 Not Found")
 
             elseif( a".shtml"==right(request:url,6) )

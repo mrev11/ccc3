@@ -36,7 +36,7 @@
 ***************************************************************************** 
 function main()
 
-local dir:=directory(getenv("CCCDIR")+"/ccclib/src/*.*","D")
+local dir:=directory(getenv("CCCDIR")+"/ccclib/src/*.*","DH")
 local pos:=1
 local b,c,k
 

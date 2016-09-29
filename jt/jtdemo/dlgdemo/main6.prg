@@ -339,7 +339,7 @@ local label
     pane:icon:=ICON_MIDDLE
     pane:tooltip:="Tooltip for pane3"
 
-    d:=directory(fullmask(),"D")
+    d:=directory(fullmask(),"HD")
     for n:=1 to len(d)
         d[n][5]:=empty(d[n][5])
     next

@@ -46,7 +46,7 @@ local d,n
     comboentry:signal_connect("changed",{|w|cb_comboentry_changed(w)})
     comboentry:get_child:signal_connect("activate",{|w|cb_comboentry_activate(w)})
 
-    d:=directory("*.prg")
+    d:=directory("*.prg","H")
     
     for n:=1 to len(d)
         combo:append_text(d[n][1])

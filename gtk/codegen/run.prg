@@ -29,12 +29,12 @@ function main()
 
 local dc:=setdosconv(DOSCONV_BS2SLASH+DOSCONV_FNAME2LOWER )
 
-local defs:=directory("../defs/*.defs")
-local defsa:=directory("../defs/api/*.defs")
-local defsr:=directory("../defs/reg/*.defs")
+local defs:=directory("../defs/*.defs","H")
+local defsa:=directory("../defs/api/*.defs","H")
+local defsr:=directory("../defs/reg/*.defs","H")
 
-local api:=directory(codedir()+dirsep()+"*_api.cpp")
-local reg:=directory(codedir()+dirsep()+"*_reg.prg")
+local api:=directory(codedir()+dirsep()+"*_api.cpp","H")
+local reg:=directory(codedir()+dirsep()+"*_reg.prg","H")
 local n
 
     gtkapi_init()

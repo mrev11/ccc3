@@ -88,14 +88,14 @@ local filetime:=getfiletime(NICK)[3] //directory idő!
     
     if( lasttime==NIL .or. filetime!=NIL .and. lasttime!=filetime )
         lasttime:=filetime
-        dlg:var:nicklist:array:=directory(NICK+dirsep()+fullmask())
+        dlg:var:nicklist:array:=directory(NICK+dirsep()+fullmask(),"H")
         dlg:var:nicklist:pagefirst
     end
 
 ******************************************************************************
 static function sweep() //beragadt nickek törlése
 local nicklist,n,nn,fd
-    nicklist:=directory(NICK+dirsep()+fullmask())
+    nicklist:=directory(NICK+dirsep()+fullmask(),"H")
     for n:=1 to len(nicklist)
         if( !nicklist[n][1]==s_nick() ) //sajátot nem
             nn:=NICK+dirsep()+nicklist[n][1]

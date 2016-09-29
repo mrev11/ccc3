@@ -52,7 +52,7 @@ local dlg,brw,bar,pan,box,msg
     
     jtencoding("UTF-8")
     
-    dir:=directory(s_zipdir+dirsep()+fullmask())
+    dir:=directory(s_zipdir+dirsep()+fullmask(),"H")
     
   #ifdef _WINDOWS_
     for n:=1 to len(dir)

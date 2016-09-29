@@ -81,8 +81,8 @@ local args:={*}
    
     //1. lépés: tds
     
-    src:=directory("*.tds")
-    prg:=directory(prgdir+"*.prg")
+    src:=directory("*.tds","H")
+    prg:=directory(prgdir+"*.prg","H")
  
     for n:=1 to len(src)
         srcname:=src[n][F_NAME] 
@@ -107,8 +107,8 @@ local args:={*}
 
     //2. lépés: ted
     
-    src:=directory("*.ted")
-    prg:=directory(prgdir+"*.prg")
+    src:=directory("*.ted","H")
+    prg:=directory(prgdir+"*.prg","H")
  
     for n:=1 to len(src)
         srcname:=src[n][F_NAME] 
@@ -167,7 +167,7 @@ local entname
 local prgname 
 local entities:=""
 
-    src:=directory(prgdir+"*.prg")
+    src:=directory(prgdir+"*.prg","H")
     
     for n:=1 to len(src)
 

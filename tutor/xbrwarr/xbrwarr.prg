@@ -22,7 +22,7 @@
 
 function main()
 
-local dir:=directory("*.*","D")
+local dir:=directory("*.*","DH")
 local brw:=brwCreate(10,10,maxrow()-2,maxcol()-10)
 local smenu:={}
 

@@ -57,7 +57,7 @@ local nbyte,buf:=replicate(a" ",32)
 static function child() //ír a pipe-ba 
 
 local pw:=val(argv(1))
-local d:=directory("*.*"),n
+local d:=directory("*.*","H"),n
  
     for n:=1 to len(d)
         fwrite( pw,d[n][1] )

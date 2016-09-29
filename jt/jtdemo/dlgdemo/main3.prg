@@ -98,7 +98,7 @@ local wrap
         choice:name:='choice'
         choice:tooltip:="Filé kiválasztás."
         choice:valid:=.t.
-        dir:=directory("*.txt")
+        dir:=directory("*.txt","H")
         for n:=1 to len(dir)
             choice:additem(dir[n][1])
         next

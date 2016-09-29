@@ -62,7 +62,7 @@ local window, treeview, model
 
 **************************************************************************** 
 static function create_model()
-local d:=directory(fullmask(),"D"),n
+local d:=directory(fullmask(),"DH"),n
     for n:=1 to len(d)
          d[n][F_DATE]:=dtoc(d[n][F_DATE])
     next

@@ -48,7 +48,7 @@ local d,n,c:=bin(0)
     fclose( r1 )               //csak a child-nak kell 
     fclose( w2 )               //csak a child-nak kell  
     
-    d:=directory("*")
+    d:=directory("*","H")
     
     for n:=1 to len(d)
         fwrite( w1, d[n][1]+endofline() )

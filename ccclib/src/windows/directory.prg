@@ -29,6 +29,7 @@ local fitem
 local adddir:=.f.
 local addhid:=.f.
 local addsys:=.f.
+local addlnk:=.f.
 
 static mutex:=thread_mutex_init()
 
@@ -43,6 +44,7 @@ static mutex:=thread_mutex_init()
         adddir:= !"-D"$attr .and. "D"$attr
         addhid:= !"-H"$attr .and. "H"$attr
         addsys:= !"-S"$attr .and. "S"$attr
+        addlnk:= !"-L"$attr .and. "L"$attr
     end
  
     thread_mutex_lock(mutex)
@@ -58,6 +60,8 @@ static mutex:=thread_mutex_init()
         elseif( "S"$attr .and. !addsys )
             //kihagy
         elseif( "H"$attr .and. !addhid )
+            //kihagy
+        elseif( "L"$attr .and. !addlnk )
             //kihagy
         else
             //bevesz

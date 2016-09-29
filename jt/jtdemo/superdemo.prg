@@ -85,12 +85,12 @@ local err,supdir,exedir,exenam
 static function exelst(lst,dspec) //összegyűjti az exe filéket
 local d,n
 
-    d:=directory(dspec+dirsep()+"*.exe")
+    d:=directory(dspec+dirsep()+"*.exe","H")
     for n:=1 to len(d)
         aadd(lst,dspec+dirsep()+d[n][F_NAME])
     next
 
-    d:=directory(dspec+dirsep()+"*","D")
+    d:=directory(dspec+dirsep()+"*","HD")
     for n:=1 to len(d)
         if( "D"$d[n][F_ATTR] .and.;
             !d[n][F_NAME]=="." .and.;

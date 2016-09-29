@@ -9,6 +9,9 @@ objlin_uic/
 objlin_uid/
 objlin_uif/
 objlin_ui_/
+objmng/
+objmng_ui_/
+objmng_uic/
 ppo/
 code_generated/
 error

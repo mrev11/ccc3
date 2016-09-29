@@ -24,12 +24,17 @@
 #include <fileconv.ch>
  
 
+#ifndef FILE_ATTRIBUTE_REPARSE_POINT
+#define FILE_ATTRIBUTE_REPARSE_POINT 0
+#endif
+
 static struct
 {
   int done;
   HANDLE fhnd;
   _WIN32_FIND_DATAW fdata;                  
 } find={1,INVALID_HANDLE_VALUE};  
+
 
 static void push_direntry(int binopt);
  
@@ -55,6 +60,7 @@ void _clp_findfirst(int argno)
         if( strchr(aspec,'H') ){ attr|=FILE_ATTRIBUTE_HIDDEN; }
         if( strchr(aspec,'S') ){ attr|=FILE_ATTRIBUTE_SYSTEM; }
         if( strchr(aspec,'D') ){ attr|=FILE_ATTRIBUTE_DIRECTORY; }
+        if( strchr(aspec,'L') ){ attr|=FILE_ATTRIBUTE_REPARSE_POINT; }
     }
  
     find.fhnd=FindFirstFileW(fspec,&find.fdata);    
@@ -93,7 +99,19 @@ void _clp_findfirstx(int argno) //binary filénevet  ad
         if( strchr(aspec,'H') ){ attr|=FILE_ATTRIBUTE_HIDDEN; }
         if( strchr(aspec,'S') ){ attr|=FILE_ATTRIBUTE_SYSTEM; }
         if( strchr(aspec,'D') ){ attr|=FILE_ATTRIBUTE_DIRECTORY; }
+        if( strchr(aspec,'L') ){ attr|=FILE_ATTRIBUTE_REPARSE_POINT; }
     }
+
+    //ez volna a bovitett API
+    //de itt nincs ra szukseg
+    //
+    //find.fhnd=FindFirstFileExW(
+    //  fspec,
+    //  FindExInfoStandard,
+    //  &find.fdata,
+    //  FindExSearchNameMatch,
+    //  0,
+    //  0);    
     
     find.fhnd=FindFirstFileW(fspec,&find.fdata);    
     find.done=(find.fhnd==INVALID_HANDLE_VALUE); 
@@ -267,6 +285,11 @@ static void push_direntry(int binopt)
     if( find.fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
     {
         string(L"D");
+        add();
+    }
+    if( find.fdata.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT )
+    {
+        string(L"L");
         add();
     }
 

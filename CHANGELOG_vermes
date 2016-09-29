@@ -1,5 +1,10 @@
+2016.09.29 symlinkek tamogatasa windowson;
+
+2016.09.25 alkalmazkodas a windows-hoz;
+  .gitignore boviteve az objmng directorykkal;
+
 2016.09.25 directory() hivasokban 'H' attributum;
-  Tovabb helyeken beveve a H attributum. 
+  Tovabbi helyeken beveve a H attributum. 
 
 2016.09.25 directory() hivasokban 'H' attributum;
   Sok helyen be kell venni a H attributumu fajlokat. 

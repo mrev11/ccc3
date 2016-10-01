@@ -20,5 +20,6 @@
 
 extern void connect_to_terminal();
 extern int  termio_send(void* source, int size);
+extern int  termio_send2(void* source, int size, void* source2, int size2);
 extern int  termio_recv(void* destination, int size, int timeout=-1, int errflag=1);
 extern void termio_drop(int size);

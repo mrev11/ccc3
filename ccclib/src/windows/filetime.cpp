@@ -232,4 +232,82 @@ void _clp___dosdatetimetofiletime(int argno)  //WINDOWS
 }
 
 //----------------------------------------------------------------------
+void _clp___localtimetofiletime(int argno) //WINDOWS
+{
+    //{date,"hh:mm:ss"} -> 64 bites FILETIME struct 
+
+    CCC_PROLOG("__localtimetofiletime",2);
+
+    str2bin(base+1);
+    long  dat=_pard(1);
+    char *tim=_parb(2); 
+
+    unsigned int year,month,day;  
+    unsigned int hour=0,minute=0,sec=0; 
+
+    date(dat);
+    _clp_day(1);
+    day=D2INT(TOP()->data.number);
+    POP();
+
+    date(dat);
+    _clp_month(1);
+    month=D2INT(TOP()->data.number);
+    POP();
+
+    date(dat);
+    _clp_year(1);
+    year=D2INT(TOP()->data.number);
+    POP();
+ 
+    sscanf(tim,"%d:%d:%d",&hour,&minute,&sec);
+
+    //megvannak az inputok
+    //printf("year=%d month=%d day=%d\n",year,month,day);
+    //printf("hour=%d minute=%d seconds=%d\n",hour,minute,sec);
+
+    SYSTEMTIME stUTC, stLocal;
+    stLocal.wYear=year;
+    stLocal.wMonth=month;
+    stLocal.wDay=day;
+    stLocal.wHour=hour;
+    stLocal.wMinute=minute;
+    stLocal.wSecond=sec;
+    TzSpecificLocalTimeToSystemTime(NULL,&stLocal,&stUTC);
+
+    FILETIME ft;
+    SystemTimeToFileTime(&stUTC,&ft);
+    _retblen((char*)&ft,sizeof(ft));
+    CCC_EPILOG();
+}
+
+
+//----------------------------------------------------------------------
+void _clp___filetimetolocaltime(int argno) //WINDOWS
+{
+    //64 bites FILETIME struct -> {date,"hh:mm:ss"}
+
+    CCC_PROLOG("__filetimetolocaltime",1);
+ 
+    FILETIME *ft=(FILETIME*)_parb(1);
+    SYSTEMTIME stUTC, stLocal;
+    FileTimeToSystemTime(ft,&stUTC);
+    SystemTimeToTzSpecificLocalTime(NULL,&stUTC,&stLocal);
+
+    char date[32];
+    char time[32];
+    sprintf(date,"%04d%02d%02d",stLocal.wYear,stLocal.wMonth,stLocal.wDay);
+    sprintf(time,"%02d:%02d:%02d",stLocal.wHour,stLocal.wMinute,stLocal.wSecond);
+
+    stringnb(date);
+    _clp_stod(1);
+    stringnb(time);
+    array(2);
+
+   _rettop();
+
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------
 

@@ -400,8 +400,7 @@ void setcaption(char *cap, int len)
     network_uint32_t buf[2];
     buf[0].set(TERMCMD_SETCAPTION);
     buf[1].set(sizeof(buf)+len);
-    termio_send(buf,sizeof(buf));
-    termio_send(cap,len);
+    termio_send2(buf,sizeof(buf),cap,len);
 }
 
 //----------------------------------------------------------------------------

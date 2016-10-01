@@ -144,7 +144,7 @@ static int xsend(SOCKET s, void* source, int srclen) //adatküldés
 static void cmd()
 {
     static int cnt=0;
-    printf("\n%4d cmd: %2d %4d ", ++cnt, CMDCODE.get(), DATALEN.get() );
+    printf("\n%4d cmd: %4x %4d ", ++cnt, CMDCODE.get(), DATALEN.get() );
 }
 
 //--------------------------------------------------------------------------

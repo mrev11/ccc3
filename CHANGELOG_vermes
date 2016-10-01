@@ -1,3 +1,9 @@
+2016.10.01 terminal szinkronizalas javitas
+  dupla termio_send helyett termio_send2 (folyamatos mutex lock)
+  a dupla hivas kozben elengedett mutex miatt keveredtek a message-ek;
+  windowson uj: __localtimetofiletime __filetimetolocaltime;
+  setfdati-ban javitva a local idozona kezelese;
+
 2016.10.01 terminal szinkronizalas javitas;
   termapi.cpp_async atnevezve termapi_async.h
   termapi.cpp_sync atnevezve termapi_sync.h  (nincs karbantartva)

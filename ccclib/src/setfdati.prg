@@ -36,7 +36,8 @@ local modtime
 #ifdef _UNIX_
     modtime:=dati2ostime(da,ti)
 #else    
-    modtime:=__dosdatetimetofiletime(da,ti) 
+    //modtime:=__dosdatetimetofiletime(da,ti) // UTC
+    modtime:=__localtimetofiletime(da,ti)    // local time
 #endif    
 
     if( modtime==NIL )

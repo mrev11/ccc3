@@ -79,8 +79,7 @@ int remopen(int fp, char *fname, int additive)
     request[1].set(sizeof(request)+len);
     request[2].set(fp);
     request[3].set(additive);
-    termio_send(request,sizeof(request));
-    termio_send(fname,len);
+    termio_send2(request,sizeof(request),fname,len);
 
     network_uint32_t response[2];
     termio_recv(response,sizeof(response)); //header
@@ -128,8 +127,7 @@ void remwrite(int fp, char *data, int datalen)
         buf[0].set(TERMCMD_WRITE);
         buf[1].set(sizeof(buf)+len);
         buf[2].set(fp);
-        termio_send(buf,sizeof(buf));
-        termio_send(data+sentlen,len);
+        termio_send2(buf,sizeof(buf),data+sentlen,len);
         
         sentlen+=len;
     }

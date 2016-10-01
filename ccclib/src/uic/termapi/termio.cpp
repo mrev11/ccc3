@@ -231,10 +231,8 @@ void connect_to_terminal()
 }
 
 //--------------------------------------------------------------------------
-int termio_send(void* source, int size) //adatkuldes
+static int termio_send_without_lock(void* source, int size) //adatkuldes
 { 
-    MUTEX_LOCK(mutex_send);
-
     //printf("termio_send: %d\n",size);fflush(0);
     //printf(".");fflush(0);
 
@@ -250,9 +248,29 @@ int termio_send(void* source, int size) //adatkuldes
         }
         nbyte+=result;
     }
-
-    MUTEX_UNLOCK(mutex_send);
     return nbyte;
+}
+
+
+//--------------------------------------------------------------------------
+int termio_send(void* source, int size) //adatkuldes
+{ 
+    MUTEX_LOCK(mutex_send);
+    int nbyte=termio_send_without_lock(source,size);
+    MUTEX_UNLOCK(mutex_send);
+    return nbyte;  //not used
+}
+
+
+//--------------------------------------------------------------------------
+int termio_send2(void* source, int size, void* source2, int size2) //adatkuldes
+{ 
+    int nbyte=0;
+    MUTEX_LOCK(mutex_send);
+    nbyte+=termio_send_without_lock(source,size);
+    nbyte+=termio_send_without_lock(source2,size2);
+    MUTEX_UNLOCK(mutex_send);
+    return nbyte;  //not used
 }
 
 //----------------------------------------------------------------------------

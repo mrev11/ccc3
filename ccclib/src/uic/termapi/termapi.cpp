@@ -21,7 +21,7 @@
 #include "termutil.h"
 
 #ifdef ASYNC
-    #include "termapi.cpp_async"
+    #include "termapi_async.h"
 #else
-    #include "termapi.cpp_sync"
+    #include "termapi_sync.h"
 #endif

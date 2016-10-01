@@ -1,3 +1,7 @@
+2016.10.01 terminal szinkronizalas javitas;
+  termapi.cpp_async atnevezve termapi_async.h
+  termapi.cpp_sync atnevezve termapi_sync.h  (nincs karbantartva)
+
 2016.09.29 symlinkek tamogatasa windowson;
 
 2016.09.25 alkalmazkodas a windows-hoz;

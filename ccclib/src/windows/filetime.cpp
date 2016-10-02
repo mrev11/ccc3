@@ -23,18 +23,25 @@
 
 // getfiletime(fspec) --> {create_time, access_time, modif_time}
 //
-// 10^-7 sec pontosságú idők 64 biten tárolva.
-// Ha a filé nem nyitható meg, akkor {NIL,NIL,NIL}-t ad.
-// Clipper szinten ezek karakter típusúak, 
-// ezért más eszközök nélkül csak mentés visszaállításra alkalmasak.
+// 10^-7 sec pontossagu idok 64 biten tarolva.
+// Ha a file nem nyithato meg, akkor {NIL,NIL,NIL}-t ad.
+// Clipper szinten ezek karakter tipusuak, 
+// ezert mas eszkozok nelkul csak mentes visszaallitasra alkalmasak.
 
 // setfiletime(fspec,create_time,access_time,modif_time) --> success
 //
-// A getfiletime-ból kapott időket felteszi a filére. 
-// Ha valamelyik idő NIL, akkor azt nem módosítja.
-// Ez biztosítja, hogy getfiletime hibája esetén setfiletime
-// egyszerűen hatástalan, nem pedig elrontja a filé időket.
+// A getfiletime-bol kapott idoket felteszi a filere. 
+// Ha valamelyik ido NIL, akkor azt nem modositja.
+// Ez biztositja, hogy getfiletime hibaja eseten setfiletime
+// egyszeruen hatastalan, nem pedig elrontja a file idoket.
 
+#ifdef _CCC3_
+#define CREATEFILE CreateFileW
+#endif
+
+#ifdef _CCC2_
+#define CREATEFILE CreateFile
+#endif
 
 //----------------------------------------------------------------------
 void _clp_getfiletime(int argno) //WINDOWS
@@ -45,8 +52,7 @@ void _clp_getfiletime(int argno) //WINDOWS
     CHAR *fname=_parc(1);
 
     FILETIME ftcre,ftacc,ftmod;
-    
-    HANDLE fhnd = CreateFileW(
+    HANDLE fhnd = CREATEFILE(
         fname,                             //lpszName
         GENERIC_READ,                      //access mode
         FILE_SHARE_READ|FILE_SHARE_WRITE,  //share mode 
@@ -100,7 +106,7 @@ void _clp_setfiletime(int argno) //WINDOWS
 
     BOOL result;
     
-    HANDLE fhnd = CreateFileW(
+    HANDLE fhnd = CREATEFILE(
         fname,                             //lpszName
         GENERIC_WRITE,                     //access mode
         FILE_SHARE_READ|FILE_SHARE_WRITE,  //share mode 
@@ -123,113 +129,6 @@ void _clp_setfiletime(int argno) //WINDOWS
     CCC_EPILOG();
 }
 
-
-//----------------------------------------------------------------------
-void _clp___filetimetodosdatetime(int argno) //WINDOWS
-{
-    //64 bites FILETIME struct -> {date,"hh:mm:ss"}/NIL
-
-
-    CCC_PROLOG("__filetimetodosdatetime",1);
- 
-    FILETIME *ft=(FILETIME*)_parb(1);
-
-    WORD wdate=0;
-    WORD wtime=0;
-    
-    if( FileTimeToDosDateTime(ft,&wdate,&wtime) )
-    {
-    
-        unsigned int hour,minute,sec; char time[32];
-        unsigned int year,month,day;  char date[32];
-        
-        hour   = (wtime>>11) & 0x1F;
-        minute = (wtime>> 5) & 0x3F;
-        sec    = (wtime    ) & 0x1F;
-
-        year   = (wdate>> 9) & 0x7F;
-        month  = (wdate>> 5) & 0x0F;
-        day    = (wdate    ) & 0x1F;
-
-        sprintf(time,"%02d:%02d:%02d",hour,minute,sec*2);
-        sprintf(date,"%04d%02d%02d",1980+year,month,day);
-        
-        stringnb(date); _clp_stod(1);   // date
-        stringnb(time);                 // time
- 
-        array(2);
-    }
-    else
-    {
-        logical(0);
-    }
-
-   _rettop();
-
-    CCC_EPILOG();
-}
-
-//----------------------------------------------------------------------
-void _clp___dosdatetimetofiletime(int argno)  //WINDOWS
-{
-    //(date,"hh:mm:ss") --> 64 bites FILETIME struct/NIL
-
-    CCC_PROLOG("__dosdatetimetofiletime",2);
-    str2bin(base+1);
-    long  dat=_pard(1);
-    char *tim=_parb(2); 
-
-    unsigned int hour=0,minute=0,sec=0; 
-    unsigned int year,month,day;  
-    
-    //extern void _clp_year(int argno);
-    //extern void _clp_month(int argno);
-    //extern void _clp_day(int argno);
-    
-    date(dat);
-    _clp_day(1);
-    day=D2INT(TOP()->data.number);
-    POP();
-
-    date(dat);
-    _clp_month(1);
-    month=D2INT(TOP()->data.number);
-    POP();
-
-    date(dat);
-    _clp_year(1);
-    year=D2INT(TOP()->data.number)-1980;
-    POP();
- 
-    sscanf(tim,"%d:%d:%d",&hour,&minute,&sec);
-    
-    //printf("\n %d/%d/%d - %d:%d:%d",year+1980,month,day,hour,minute,sec);
-
-
-    FILETIME ft;
-    WORD wdate=0;
-    WORD wtime=0;
-    
-    wdate |= ((year   & 0x7f)<<9 );
-    wdate |= ((month  & 0x0f)<<5 );
-    wdate |= ((day    & 0x1f)    );
- 
-    wtime |= ((hour   & 0x1f)<<11);
-    wtime |= ((minute & 0x3f)<<5 );
-    wtime |= ((sec/2  & 0x1f)    );
-
- 
-    if( DosDateTimeToFileTime(wdate,wtime,&ft) )
-    {
-        _retblen((char*)&ft,sizeof(ft));
-    }
-    else
-    {
-        _ret();
-    }
-    
-    CCC_EPILOG();
-}
 
 //----------------------------------------------------------------------
 void _clp___localtimetofiletime(int argno) //WINDOWS

@@ -1,6 +1,8 @@
-221e6aa9c096e6f5db9e81cef02a9b4f16778109 2016100211:43:28 ./CHANGELOG_vermes
-4ea0ba5b15d5f21baa7f5fb81ff2db2cb9e1eb50 2016100211:41:09 ./usr/bin/linux/savex
-e2639564e8ad83434058474a4ad3b6fd28e0b8a7 2016100211:40:50 ./tools/savex/findfile.prg
+66bbf0a465910efc5d60cd7e1f4083f7aa24fc81 2016100215:11:46 ./CHANGELOG_vermes
+e87aeb3558ed78d48283bac2635301421cfc44a7 2016100213:49:53 ./usr/bin/linux/savex
+53c3e269278944d455ccac03b05778dda7c89d28 2016100213:49:52 ./tools/savex/findfile.prg
+547573f9b28a08e17ebe289665236b105072824b 2016100213:34:23 ./ccclib/src/windows/filetime.cpp
+a381102b0ed48eedbbb28612d80af5bf83cc140b 2016100213:32:20 ./ccclib/src/setfdati.prg
 b6fd497f42b42580598f3fe68768bf5e68b7b294 2016100211:27:52 ./tools/savex/savex.ver
 e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100210:42:52 ./tools/savex/savebrowse.prg
 01c273df77e0a7245a090ed3b14626dfe5c23442 2016100118:52:19 ./usr/bin/linux/firstpar
@@ -8,8 +10,6 @@ e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100210:42:52 ./tools/savex/savebrow
 014ba7236a0118a5ff5a9796866e5cffe813a22a 2016100116:51:30 ./usr/bin/linux/list
 f4149625b23ee91256834c9d103dac7cf8881bdc 2016100116:47:11 ./ccclib/src/uic/termapi/remoteio.cpp
 29992ff2f31af0634c9f397887d11532ec68ce23 2016100116:45:33 ./ccclib/src/uic/termapi/termapi_async.h
-fda56e85e5250fbabeba522f91d479cadcc9f2ea 2016100116:15:11 ./ccclib/src/setfdati.prg
-b3a4baec0b75c3a1cfd84bdd98a02d9b37f124b4 2016100116:12:33 ./ccclib/src/windows/filetime.cpp
 31033ae76d638130020e9123306e1cff5d5aa9ee 2016100110:10:06 ./ccclib/src/uic/termapi/termio.cpp
 cf63fe140195bcac0e1a5f57cedf6087a275428f 2016100109:19:14 ./ccclib/src/uic/termapi/termio.h
 a87e44a62a494dd7a197238f3aa45321324a9907 2016100109:11:27 ./terminal/common/tcpio.cpp

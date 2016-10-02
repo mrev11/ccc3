@@ -1,47 +1,27 @@
 
 static pattern:=""
 
-#ifdef NOTDEFINED
 
-//Eredetileg mask-kal keszult dialog:
-//az msk fajlok CCC2/CCC3-ban elternek,
-//raadasul binarisak, nem jo bajlodni veluk,
-//ezert az eredmeny say-t kezzel inkludaltam.
-//Az eredeti msk fajl nincs megorizve.
-
-#ifdef _CCC2_
-#include "ffile2.say"
-#define FFILE ffile2
-#endif
-
-#ifdef _CCC3_
-#include "ffile3.say"
-#define FFILE ffile3
-#endif
-
-#else
-
-//msk2say-2.0.02-unicode
-
-#define g_fspec         getlist[ 1]
-
+***************************************************************************************
 static function FFILE(bLoad,bRead,bStore)
-local fspec       :=space(26)
-local msk:=mskCreate( 11, 33, 13, 62,bLoad,bRead,bStore)
 
-    mskSay(msk,  0,  0,"╔════════════════════════════╗")
-    mskSay(msk,  1,  0,"║ ")
-    mskSay(msk,  1, 28,@" ║")
-    mskSay(msk,  2,  0,"╚════════════════════════════╝")
+local fspec:=space(26)
+local msk:=mskCreate(5,2,5,40,bLoad,bRead,bStore)
 
-    mskGet   (msk,  1,  2,@fspec,"fspec")
+    mskGet(msk,0,0,@fspec,"fspec")
 
     mskShow(msk)
     mskLoop(msk)
     mskHide(msk)
-    return lastkey()
 
-#endif
+//Eredetileg mask-kal keszult dialog:
+//az msk fajlok CCC2/CCC3-ban elternek,
+//raadasul binarisak, nem jo bajlodni veluk,
+//ezert az eredmeny say-t atirtam.
+//Az eredeti msk fajl nincs megorizve.
+
+#define g_fspec         getlist[ 1]
+
 
 
 ***************************************************************************************

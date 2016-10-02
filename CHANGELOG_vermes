@@ -1,5 +1,14 @@
-2016.10.02 savex '/' shortcut-ra keres;
+20126.10.02  windows: setfdati javitas;
+  windows: __filetimetodosdatetime() megszunt;
+  windows: __dosdatetimetofiletime() megszunt;
+  windows: __filetimetolocaltime() uj;
+  windows: __localtimetofiletime() uj;
+  windows: filetime.cpp egysegesitve (ccc2/ccc3;
+  windows: setfdati atirva __localtimetofiletime()-ra;
+  savex: findfile maszkja egysegesitve (ccc2/ccc3);
 
+2016.10.02 savex '/' shortcut-ra keres;
+  
 2016.10.01 terminal szinkronizalas javitas
   dupla termio_send helyett termio_send2 (folyamatos mutex lock)
   a dupla hivas kozben elengedett mutex miatt keveredtek a message-ek;

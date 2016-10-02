@@ -1,3 +1,5 @@
+2016.10.02 savex '/' shortcut-ra keres;
+
 2016.10.01 terminal szinkronizalas javitas
   dupla termio_send helyett termio_send2 (folyamatos mutex lock)
   a dupla hivas kozben elengedett mutex miatt keveredtek a message-ek;

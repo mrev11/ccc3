@@ -139,6 +139,10 @@ local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
     elseif( key==K_ALT_P )
         play(brw)
         return .t.
+
+    elseif( key==asc("/") ) 
+        find_file(brw)
+        return .t.
     end
 
 
@@ -163,6 +167,10 @@ local f:=brwArray(brw)[brwArrayPos(brw)][IDX_FILE]
 
     elseif( key==K_ALT_P )
         play(brw)
+        return .t.
+
+    elseif( key==asc("/") ) 
+        find_file(brw)
         return .t.
     end
 

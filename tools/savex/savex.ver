@@ -1,8 +1,12 @@
 
-#define VERZIO  "5.2.0"
+#define VERZIO  "5.2.1"
 
 
 #ifdef NOT_DEFINED
+
+2016.10.02 -- 5.2.1
+   A '/' shortcutra beszed egy stringet, es azzal keres
+   a browse elso oszlopaban az aktualis sortol lefele.
 
 2016.09.16 -- 5.2.0
    A -pli,-plx parametereket fajlban is meg lehet adni:

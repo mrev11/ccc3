@@ -1,4 +1,7 @@
-66bbf0a465910efc5d60cd7e1f4083f7aa24fc81 2016100215:11:46 ./CHANGELOG_vermes
+71a60a6c921cf7931d473a059c0aaa6c992d7aa2 2016100223:13:29 ./CHANGELOG_vermes
+37048dac8d45f65e178bcde0a3165680629f1654 2016100222:18:59 ./ccclib/src/windows/directory.prg
+510800d68a9139e4ad7465b499a38c77ee2d7fdb 2016100219:37:50 ./ccclib/src/windows/findnext.cpp
+a3f36e840729976b07f1423680191aa553f8cb87 2016100219:34:06 ./.gitignore
 e87aeb3558ed78d48283bac2635301421cfc44a7 2016100213:49:53 ./usr/bin/linux/savex
 53c3e269278944d455ccac03b05778dda7c89d28 2016100213:49:52 ./tools/savex/findfile.prg
 547573f9b28a08e17ebe289665236b105072824b 2016100213:34:23 ./ccclib/src/windows/filetime.cpp
@@ -17,10 +20,7 @@ b513249cf35a258e927ae71269e98d2093897fd8 2016100100:07:05 ./ccclib/src/uic/terma
 3f5b6af48de8b24720838fde2b058a84739f5cf1 2016093021:52:34 ./usr/bin/windows/sx.bat
 b2c12a3dbfc0bc7f3485436e38fa177c4889c170 2016093010:52:28 ./tutor/fpath/parfile.bld
 b97603d40d695c762c1f53f11c9d171fa0fb2d99 2016093010:51:00 ./tutor/sqrt/m.bat
-e2b5db3148d27a7627102d98068f1cc6fa723000 2016092916:56:59 ./ccclib/src/windows/findnext.cpp
 3fa71f440f2d9cf0488538b72f1673b9ae4272e3 2016092915:43:49 ./jt/jtdemo/superdemo.prg
-9c976df15be16e4b6271c095e5f89ca4a83e3c78 2016092914:22:09 ./.gitignore
-84a6efb4caf6987614d530948266214ac9649273 2016092913:24:43 ./ccclib/src/windows/directory.prg
 129a19b9b7b35e5f7ad81015bfdb4e91ea62b0c1 2016092909:33:59 ./usr/bin/linux/rnm
 63bd174b33d3221f42b6c51c9725dd3ac3f8ab0e 2016092909:33:58 ./usr/bin/linux/setperm
 dde4867b52ca53db2d5d176627e77774978e3999 2016092909:33:58 ./usr/bin/linux/websrv
@@ -719,7 +719,6 @@ ac65fbd08847b51145ab5383fedbf650e6ca51c3 2013081913:04:59 ./tools/z/zhist.prg
 df56a0191e84855cfb57fd954796a2ffc733a289 2013070614:52:49 ./tools/z/zdisplin.prg
 01d259b5d453d7a1c2d3e569112f498d44336929 2013070614:52:41 ./tools/z/zdelline.prg
 eeb67aa1c0b6f5971eb3e7bdc143101d90e4a4cc 2013070211:59:51 ./ccclib/src/ui_/unix/inkey.cpp
-cff2f1b34e0d7a4fce98445798d276689e48f657 2013061019:40:38 ./tools/xmlrpc/rpc_server.prg-save
 3831181ea36ab89daa22000ef3d201e1fdbab5cd 2013060714:19:00 ./tools/xmlrpc-framework/client/rpcmonitor/rpcmonitor.prg
 201dbb5b076ae7d38e92b881d52338a5914bb447 2013052410:43:42 ./ccclib/src/direct.cpp
 8ae46b5a5f70b070c30e808a4cb031c71022828c 2013050313:31:26 ./tools/xmlrpc-framework/rpclist
@@ -1219,7 +1218,6 @@ c08c319f6ff83e3e57944c70f17820d00e164a8c 2008090416:41:27 ./ccctools/ppo2cpp/tes
 3872371f451d2d955b66655b2e912e704e5666fd 2008082711:22:03 ./ccctools/ppo2cpp/test-postfix/s
 ecc364f4f093212c3b77a1f28765cbe4d9525bae 2008082711:19:57 ./ccctools/ppo2cpp/m
 d120394522f4201308002575cda492c43a491d8c 2008082710:49:12 ./ccctools/ppo2cpp/test-postfix/postfix_funcall.prg
-d2bd6bcc63aab261a13463b06d93ca61b47dcd9b 2008082511:53:40 ./tools/socket/http_io.prg.save2
 d9d2b41130b70df8fe91251d4cc1c6ff7e85a4be 2008082508:28:02 ./ccctools/ppo2cpp/test-postfix/m.bat
 32afe97aa0a9b4d6914a61b6a8a9a65b26290131 2008082009:27:11 ./tools/regex/regex-demo/test.prg
 ee829cf3ac26ca3bd22edeaceedec20078d324d8 2008082008:56:03 ./tools/regex/regex_util.prg
@@ -1307,7 +1305,6 @@ e1269de7d475a2dfa2e55663bc389178ce3e93ad 2008030523:42:10 ./ccctools/prg2ppo/xtx
 1b9a6035f958dea2219df82047ae21a2383edec6 2008030423:37:32 ./setup/setup-unix/variable_boehm.inc
 b0bf6d6826a954ca49367858db0c7bb8e02792d4 2008030411:13:30 ./doc/10ev.hu.tex
 9c99530b17a78925578cbeda8702a248c22fa630 2008030411:10:53 ./doc/10ev.tex
-5732eab95ed20a9c19b716b8afb6a829682e57a1 2008022818:46:18 ./tutor/readline/readline.prg.save
 b5fdddf723429f91916f9242f0d3bbe4befdb7ca 2008022418:38:35 ./setup/setup-unix/variablex.cpp
 b9b0e9b5af8c7a7643098064be8c1ac5452531c3 2008022121:11:39 ./tutor/hash/hashtable.prg
 cccb0f847f8794dd66008e3a77aeb79b86b6c187 2008021712:08:28 ./setup/setup-unix/file.cpp
@@ -1351,13 +1348,10 @@ f4b332071fdf4aa30e649a42fff441c533c6014b 2008012421:37:32 ./tools/crypto/ccc_cry
 8f46439ee450018d5ddafdf1e8ab7a3cd9752736 2008011912:46:01 ./jt/jtdemo/tree/tree2.prg
 73e21d79d75b7f40aa4c39680e35963437342494 2008011903:00:17 ./jt/jtlib/jttree.prg
 b1a5072459191953ed2b57192aa506998ddfe754 2008011901:34:04 ./jt/jtdemo/tree/tree1.prg
-e5fbbaa32663841c44050a85f670ed0fe4c3eb47 2008011901:09:30 ./ccclib/src/class.prg.save
 02aac140b6508980332f30ab6cc60a8bcb93630c 2008011812:55:25 ./jt/jtlib/jtsplitpane.prg
 6844f0d200837dbebac8676c890ccbe9980974e5 2008011518:30:35 ./jt/jterminal/getutil/treefield.java
 4a5a43d7db1520b1b76dbbaa8701652c41a32fce 2008011515:21:26 ./jt/jtdemo/tpane/tpane1.prg
-e53489906799c5f97dfefd157b6321956e27771e 2007121812:51:18 ./ccclib/src/windows/findnext.cpp.save
 93d1208e311ea44442e332d1ed3f966e5e08e9fd 2007121800:25:31 ./tools/websrv/parfile.web
-0eaa8de964c11c89512b7a39b09f4125a13253c7 2007121718:45:06 ./tools/websrv/dirpage.prg.save
 c663ab0ba45144d30a0df349aa9f7cc2b1c47e6b 2007121718:43:24 ./tools/websrv/parfile.bld
 0f0cfc46879ce9cd64304644b736abec743e12ba 2007121718:29:53 ./tools/websrv/hexcode.lex
 f2208c3a59abc85f6f582dfcb52f4be434b2287d 2007121716:33:11 ./ccclib/src/unix/directory.prg
@@ -1634,7 +1628,6 @@ a270b10edbaf75bc30fe536fa4185f2a60a3e5ae 2007021514:19:54 ./tools/websrv/htdocs/
 3044ef30186399b6c01551ad427f1e18f72a9f6b 2007021309:43:42 ./jt/jtdemo/fchooser/fcdialog.dlg
 2750a81273171d60a44119afc8e5e474b769d180 2007021219:56:23 ./jt/jtdemo/fchooser/fchooser.prg
 882d6d51d9ecb06cf40b3f75a7d2098700ebcf59 2007021219:08:57 ./jt/jtdemo/fchooser/fc.prg
-8b6487d62613afbdf381d72ad6815e22dbf93055 2007021218:37:00 ./ccclib/src/unix/directory.prg.save
 b20c0132ecb0d057d96e00f36fafa6805c09ac57 2007021216:43:49 ./jt/jtdemo/fchooser/fcdialog.msk
 6ae18e5e37a2165b26cb4b38770fb3e839d8467f 2007020810:54:16 ./ccclib/src/windows/nlstext.cpp
 2af9cde926e7c049be4c519c946b488abb178035 2007020810:48:12 ./setup/setup-unix/nlstext.cpp
@@ -2064,7 +2057,6 @@ d2d279238ebfdb1c0800ce76386231f88783e0eb 2006052407:40:33 ./jt/msk2dlg/pdialog.m
 4ecbc499075bbff3d7fb06431f1fa58c0a6e3eb2 2006052311:43:04 ./gtk/codegen/m.bat
 9170dded0e341719f768b2bc3078901abf1e1e7f 2006052311:40:36 ./tutor/dtree/m.bat
 9b006bf0a3a5d889d63d5b28bcb5418340aaacdd 2006052311:35:55 ./gtk/code_byhand/m.bat
-1d16571c2f0c4bcb868d7dae83f5b1b5af04dd68 2006052308:32:28 ./ccclib/src/windows/directory.prg.save
 0eb465dc057fa222c7eaa8f8382ce8cd3bdf5c49 2006052221:27:20 ./tutor/settermsize/settermsize.prg
 3966a696033f3af20f5115bcacac6c18a7a65295 2006052219:23:54 ./terminal/unix/x1
 97b3c4e923538b1e4318271329f0b5953d70d660 2006052219:17:43 ./terminal/unix/x
@@ -2159,7 +2151,6 @@ e364c548aebc2a043b889971a5a19f61e796d208 2006042912:46:47 ./gtk/code_byhand/code
 3e5c2ae600bafc0db080b096e2f933fb7b59b99d 2006042912:44:24 ./gtk/code_byhand/gtk_editable_apix.cpp
 05cb13f9aececd6b3ee3659e357adf9868bb7f58 2006042912:40:58 ./gtk/codegen/codegen_api.prg
 67d203b3b9fa2539e03b516a31bde68b186ad76c 2006042912:13:21 ./gtk/codegen/m
-f002538e80dca17bb612b54f4a9e20b513663d0d 2006042912:10:56 ./ccclib/src/fileconv.cpp.save
 aa07891a80e7de584af9b0e30c35d3e3ed49e5d6 2006042911:30:32 ./ccclib/src/like.prg
 0639bb783aa91d54e3eb9c711e9a11f2aa7ac85c 2006042911:07:18 ./gtk/codegen/types/types.prg
 ee013936e9c4162144854c41ae074e2a9369391c 2006042911:07:12 ./gtk/codegen/types/fordit.prg
@@ -2210,7 +2201,6 @@ d814c862be48b8f902850c0fbb9f6779631df99a 2006042910:17:24 ./gtk/examples/base/fu
 965d3df6bbfe3319db798d837441f4b2edb7cd1c 2006042910:17:22 ./gtk/codegen/gtklist.prg
 87d900e2c826c7cddec968326baa51c7a020dfc8 2006042910:17:21 ./gtk/codegen/xreg.prg
 f960cc3ddcc263e91ae9c7c0deb3851cbe5c0241 2006042819:15:36 ./tools/xmldom/demo/example.xml
-c2e81ecfcc8eb917a923f05bb1c8a9494f972823 2006042812:46:32 ./tools/socket/http_io.prg.save
 59947eff9fa2bf999dbea724898bec9c4973d07e 2006042618:29:10 ./tools/xmlrpc/demo-rpc/demostruct.prg
 62a08d71a20263e74248b4a8c7bc276b83286f79 2006042520:14:54 ./tutor/xtabobj/dd/xddict.bt
 7624cfc773307512a0ed6be3e6308169001ad58c 2006042520:14:54 ./tutor/xtabobj/dd/xddict.btx
@@ -2401,7 +2391,6 @@ eb4e2d86f61751799ff2e794b7d408a63471f659 2006041410:59:15 ./setup/setup-unix/eva
 663fcb6dd63460b0cd0944d4c406e9ca5ded643c 2006041410:59:15 ./setup/setup-unix/object.cpp
 793929dfdb269f1820a41d80b939ea100984166a 2006041410:59:14 ./ccclib/src/ui_/windows/inkey.cpp
 1d4504c3b56741304ed68b4610a23d52e0ef8fdf 2006041410:59:14 ./ccclib/src/unix/fdup.cpp
-9aa47388a29e0253e075e36dfb6939de8c090de5 2006041410:59:14 ./ccclib/src/unix/spawn.cpp.save
 17bd208ea31daa4d58e6c41bc918d0b5bceb52fc 2006041410:59:14 ./ccclib/src/unix/wait.cpp
 cab8e8e82a2601b9552d46ac2947bcbf6837ca87 2006041323:54:26 ./tools/socket/socket-demo/gethost.prg
 c18556ce3e59655b9682357ff59d539dfc4666ff 2006041322:46:52 ./tools/socket/socket-demo/ss

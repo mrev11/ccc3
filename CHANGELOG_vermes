@@ -1,3 +1,5 @@
+2016.10.02 windows directory default: +L
+
 20126.10.02  windows: setfdati javitas;
   windows: __filetimetodosdatetime() megszunt;
   windows: __dosdatetimetofiletime() megszunt;

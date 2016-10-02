@@ -4,14 +4,19 @@
 *~
 
 *.exe
+
 objlin/
-objlin_uic/
-objlin_uid/
-objlin_uif/
 objlin_ui_/
+objlin_uic/
+objlin_uif/
+objlin_uid/
+
 objmng/
 objmng_ui_/
 objmng_uic/
+objmng_uiw/
+objmng_uif/
+
 ppo/
 code_generated/
 error

@@ -29,7 +29,7 @@ local fitem
 local adddir:=.f.
 local addhid:=.f.
 local addsys:=.f.
-local addlnk:=.f.
+local addlnk:=.t. //symlink
 
 static mutex:=thread_mutex_init()
 

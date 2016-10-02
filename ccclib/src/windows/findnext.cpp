@@ -208,26 +208,6 @@ void _clp_findrest(int argno)
 //-----------------------------------------------------------------------
 static void push_direntry(int binopt)
 {
-/*
-    WORD wdate,wtime;
-    FileTimeToDosDateTime(&find.fdata.ftLastWriteTime,&wdate,&wtime);
-
-    unsigned int hour,minute,sec;
-    char time[32];
-    unsigned int year,month,day;
-    char date[32];
-        
-    hour   = (wtime>>11) & 0x1F;
-    minute = (wtime>> 5) & 0x3F;
-    sec    = (wtime    ) & 0x1F;
-
-    year   = (wdate>> 9) & 0x7F;
-    month  = (wdate>> 5) & 0x0F;
-    day    = (wdate    ) & 0x1F;
-
-    sprintf(time,"%02d:%02d:%02d",hour,minute,sec*2);
-    sprintf(date,"%04d%02d%02d",1980+year,month,day);
-*/
 
     SYSTEMTIME stUTC, stLocal;
     FileTimeToSystemTime(&find.fdata.ftLastWriteTime,&stUTC);

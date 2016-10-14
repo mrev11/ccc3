@@ -1,3 +1,19 @@
+
+2016.10.12 directory() modernizalas;
+  fileseek.prg: torolve, benne levo API megszunt;
+  fileattr.ch: torolve;
+  ctdisk.ch: torolve;
+  unix/findnext.prg: torolve;
+  windows/findnext.cpp: atirva reentransra, benne levo API visszaminositve belsore;
+  unix/readir.cpp: atirva reentransra;
+  stat.cpp: uj fuggvenyek, stat_st_size(), fstat_st_size(); 
+  unix/directory.prg: reentrans, linktarget, wildcard nelkul optimalizalva;   
+  windows/directory.prg: reentrans, adja a linktargeteket;
+  windows/filecopy.cpp: kiszedve a megszunt filesize() API;
+  z: fajlmeret ellenorzes fstat_st_size-zal (directory helyett);
+  mklink: intelligensebb kiirasok
+  err: script a hibak gyors ellenorzesehez
+
 2016.10.02 windows directory default: +L
 
 20126.10.02  windows: setfdati javitas;

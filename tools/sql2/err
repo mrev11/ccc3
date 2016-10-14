@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#set -x
+
+if [ "$1" == "" ];then
+    LOG=log-mkall
+else
+    LOG=$1
+fi
+
+egrep  -i "(error|warning|undefined|unresolved)" $LOG  | grep -v PRG2OBJ
+

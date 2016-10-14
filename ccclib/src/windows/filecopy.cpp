@@ -35,9 +35,17 @@ void _clp_filecopy(int argno) //CA-Tools
     if( result )
     {
         push_symbol(base+1);
-        //extern void _clp_filesize(int);
-        _clp_filesize(1);
-        errno=0;
+        extern void _clp_stat_st_size(int);
+        _clp_stat_st_size(1); //size/NIL
+        if( TOP()->type==TYPE_NUMBER )
+        {
+            errno=0;
+        }
+        else
+        {
+            pop();
+            number(-1);
+        }
     }
     else
     {

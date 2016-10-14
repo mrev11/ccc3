@@ -52,7 +52,7 @@ function main()
 
 local opt:=argv()
 local optrdonly,optline,optcol,optsearch,optcase,optreplace
-local fspec
+local fspec,fd
  
 local eblk:=errorblock(),e
 local sblk:=signalblock()
@@ -151,11 +151,19 @@ local ferror:=zhome()+"error.z"
     end
  
     txt:=memoread(fspec,.t.) //binary
-    if( file(fspec) .and. directory(fspec,"HD")[1][2]!=len(txt) )
-        alert("File is too large",{"Quit"})
-        //tul nagy (>MAXSTRLEN) fileokat a memoread nem tud beolvasni
-        //tovabbra sincs kezelve, amikor az eredmeny string lesz tul nagy
-        quit
+    if( file(fspec) )
+        //ellenorzesek
+        if( (fd:=fopen(fspec))<0 )
+            alert("No access to this file",{"Quit"})
+        elseif( fstat_st_size(fd)!=len(txt) )
+            alert("File is too large to edit or cannot stat",{"Quit"})
+            //tul nagy (>MAXSTRLEN) fileokat a memoread nem tud beolvasni
+            //tovabbra sincs kezelve, amikor az eredmeny string lesz tul nagy
+            fclose(fd)
+            quit
+        else
+            fclose(fd)
+        end        
     end
 
 #ifdef _CCC3_ //UTF-8 kodoloas ellenorzese
@@ -363,6 +371,10 @@ static function rel2abs(path)
     return path
 
 
+static function cmpcase(x)
+    return x
+
+
 #else //_WINDOWS_
 
 static function wd(drv:=diskname()) // d:\path\to\working\dir\
@@ -392,6 +404,9 @@ local drv
     path::=strtran("\.\","\")
     return path
 
+static function cmpcase(x)
+    return lower(x)
+
 #endif
 
 
@@ -411,10 +426,14 @@ local n,hx,item
     if( len(history)>MAXHISTORY )
         asize(history,MAXHISTORY)
     end
+    
+    //for n:=1 to len(history)
+    //    ? history[n]
+    //next
 
     if( fspec==NIL )
         for n:=1 to len(history)
-            if( wd()==fpath(history[n][H_FILE]) .and. ;
+            if( cmpcase(wd())==cmpcase(fpath(history[n][H_FILE])) .and. ;
                 file(history[n][H_FILE]) .and. !direxist(history[n][H_FILE]) )
                 
                 //az aktualis directoryban van
@@ -433,11 +452,7 @@ local n,hx,item
     else
         fspec::=rel2abs //relative -> absolute path
         for n:=1 to len(history)
-          #ifdef _UNIX_
-            if( fspec==history[n][H_FILE] )
-          #else
-            if( lower(fspec)==lower(history[n][H_FILE]) )
-          #endif
+            if( cmpcase(fspec)==cmpcase(history[n][H_FILE]) )
                 hx:=n
                 exit
             end

@@ -29,6 +29,7 @@
 #define F_DATE        3
 #define F_TIME        4
 #define F_ATTR        5
+#define F_LINK        6
 
 // Length of array
 #define F_LEN         5

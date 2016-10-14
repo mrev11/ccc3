@@ -1,4 +1,4 @@
-
+﻿
 /*
  *  CCC - The Clipper to C++ Compiler
  *  Copyright (C) 2005 ComFirm BT.
@@ -25,12 +25,20 @@
 #include <stat.ch>
 
 
+
+#ifdef WINDOWS
+#define LSTAT   stat
+#else
+#define LSTAT   lstat
+#endif
+
+
 #ifdef WINDOWS
 // POSIX file type test macros.  
 // The parameter is an st_mode value.
  
 #ifdef MSVC 
-// Ezek MSVC-ből hiányoznak:
+// Ezek MSVC-bol hianyoznak:
 
 #define S_ISDIR(m)  ((m) & 0x4000)
 #define S_ISCHR(m)  ((m) & 0x2000)
@@ -40,15 +48,15 @@
 
 #endif
 
-// Ezek egyáltalán nincsenek Windowsban:
+// Ezek egyaltalan nincsenek Windowsban:
 
 #define S_ISSOCK(m) ((m) & 0x0000)  //mindig false
 #define S_ISLNK(m)  ((m) & 0x0000)  //mindig false 
 
-//Megjegyzés:
-//Az alsó bitekben a szokásos filé engedélyek vannak,
-//amiket chmod-dal lehet állítani. Windowson ezek közül
-//csak a readonly attribútumnak van jelentősége.
+//Megjegyzes:
+//Az also bitekben a szokasos file engedelyek vannak,
+//amiket chmod-dal lehet allitani. Windowson ezek kozul
+//csak a readonly attributumnak van jelentosege.
 
 #endif
 
@@ -90,10 +98,16 @@ void _clp_stat(int argno) // stat array (see stat.ch), or NIL
     CCC_PROLOG("stat",1);
     _clp_convertfspec2nativeformat(1); 
     struct stat buf;
-#ifdef _UNIX_    
+
+#if defined _CCC2_  
+    char *fspec=_parc(1);
+    if( 0!=stat(fspec,&buf) )
+
+#elif defined _UNIX_ //CCC3-UNIX
     char *fspec=_parb(1);
     if( 0!=stat(fspec,&buf) )
-#else
+
+#else //CCC3-WINDOWS
     bin2str(base);
     CHAR *fspec=_parc(1);
     if( 0!=_wstat(fspec,(struct _stat*)&buf) )
@@ -116,12 +130,17 @@ void _clp_stat_st_mode(int argno) // leggyakrabban csak ez kell
 {
     CCC_PROLOG("stat_st_mode",1);
     _clp_convertfspec2nativeformat(1); 
-
     struct stat buf;
-#ifdef _UNIX_    
+
+#if defined _CCC2_
+    char *fspec=_parc(1);
+    if( 0!=stat(fspec,&buf) )
+
+#elif defined _UNIX_    
     char *fspec=_parb(1);
     if( 0!=stat(fspec,&buf) )
-#else
+
+#else //CCC3-WINDOWS
     bin2str(base);
     CHAR *fspec=_parc(1);
     if( 0!=_wstat(fspec,(struct _stat*)&buf) )
@@ -136,21 +155,57 @@ void _clp_stat_st_mode(int argno) // leggyakrabban csak ez kell
 
     CCC_EPILOG();
 }
+
+//----------------------------------------------------------------------
+void _clp_stat_st_size(int argno) // ez is gyakran kell
+{
+    CCC_PROLOG("stat_st_size",1);
+    _clp_convertfspec2nativeformat(1); 
+    struct stat buf;
+
+#if defined _CCC2_
+    char *fspec=_parc(1);
+    if( 0!=stat(fspec,&buf) )
+
+#elif defined _UNIX_    
+    char *fspec=_parb(1);
+    if( 0!=stat(fspec,&buf) )
+
+#else
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+#endif
+    {
+        _ret();
+    }
+    else
+    {
+        _retni(buf.st_size);
+    }
+
+    CCC_EPILOG();
+}
  
 //----------------------------------------------------------------------
 void _clp_lstat(int argno)
 {
     CCC_PROLOG("lstat",1);
     _clp_convertfspec2nativeformat(1);
-
     struct stat buf;
-#ifdef UNIX
+
+#if defined _CCC2_
+    char *fspec=_parc(1);
+    if( 0!=LSTAT(fspec, &buf) )
+
+#elif defined _UNIX_
     char *fspec=_parb(1);
     if( 0!=lstat(fspec, &buf) )
+
 #else
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //Windowson nincs link
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //nincs _wlstat  (vagy mi)
 #endif    
     {
         _ret();
@@ -167,17 +222,22 @@ void _clp_lstat(int argno)
 //----------------------------------------------------------------------
 void _clp_lstat_st_mode(int argno)
 {
-    CCC_PROLOG("lstat",1);
+    CCC_PROLOG("lstat_st_mode",1);
     _clp_convertfspec2nativeformat(1);
-
     struct stat buf;
-#ifdef UNIX
+
+#if defined _CCC2_
+    char *fspec=_parc(1);
+    if( 0!=LSTAT(fspec, &buf) ) //Linuxon lstat, Windowson stat (nincs lstat)
+
+#elif defined _UNIX_
     char *fspec=_parb(1);
     if( 0!=lstat(fspec, &buf) )
+
 #else    
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //Windowson nincs link 
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
 #endif    
     {
         _ret();
@@ -191,9 +251,40 @@ void _clp_lstat_st_mode(int argno)
 }
 
 //----------------------------------------------------------------------
+void _clp_lstat_st_size(int argno)
+{
+    CCC_PROLOG("lstat_st_size",1);
+    _clp_convertfspec2nativeformat(1);
+    struct stat buf;
+
+#if defined _CCC2_
+    char *fspec=_parc(1);
+    if( 0!=LSTAT(fspec, &buf) ) //Linuxon lstat, Windowson stat (nincs lstat)
+
+#elif defined _UNIX_
+    char *fspec=_parb(1);
+    if( 0!=lstat(fspec, &buf) )
+
+#else    
+    bin2str(base);
+    CHAR *fspec=_parc(1);
+    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+#endif    
+    {
+        _ret();
+    }
+    else
+    {
+        _retni(buf.st_size);
+    }
+
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------
 void _clp_fstat(int argno)
 {
-    CCC_PROLOG("stat",1);
+    CCC_PROLOG("fstat",1);
 
     struct stat buf;
     if( 0!=fstat(_parni(1), &buf) )
@@ -212,7 +303,7 @@ void _clp_fstat(int argno)
 //----------------------------------------------------------------------
 void _clp_fstat_st_mode(int argno)
 {
-    CCC_PROLOG("stat",1);
+    CCC_PROLOG("fstat_st_mode",1);
 
     struct stat buf;
     if( 0!=fstat(_parni(1), &buf) )
@@ -222,6 +313,25 @@ void _clp_fstat_st_mode(int argno)
     else
     {
         _retni(buf.st_mode);
+    }
+
+    CCC_EPILOG();
+}
+
+
+//----------------------------------------------------------------------
+void _clp_fstat_st_size(int argno)
+{
+    CCC_PROLOG("fstat_st_size",1);
+
+    struct stat buf;
+    if( 0!=fstat(_parni(1), &buf) )
+    {
+        _ret();
+    }
+    else
+    {
+        _retni(buf.st_size);
     }
 
     CCC_EPILOG();

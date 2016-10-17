@@ -1,3 +1,5 @@
+2016.10.17 windows lstat implementacio;
+  filetime() workaround Windows-2000-re;
 
 2016.10.12 directory() modernizalas;
   fileseek.prg: torolve, benne levo API megszunt;

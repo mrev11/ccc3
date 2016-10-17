@@ -434,12 +434,11 @@ static int link_direntry(__findstate *fs)
             7,      //share: mas processzeknek mindent enged
             0,      //security
             3,      //OPEN_EXISTING
-            FILE_FLAG_BACKUP_SEMANTICS | FILE_ATTRIBUTE_REPARSE_POINT | FILE_FLAG_OPEN_REPARSE_POINT,
+            FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
             0);
 
     //megjegyzes
     //FILE_FLAG_BACKUP_SEMANTICS: directoryra csak ezzel lehet handle-t kapni 
-    //FILE_ATTRIBUTE_REPARSE_POINT: nincs dokumentalva (forras google)
     //FILE_FLAG_OPEN_REPARSE_POINT: ne a targetet nyissa meg, hanem a linket 
 
     if( hnd==INVALID_HANDLE_VALUE )

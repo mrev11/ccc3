@@ -131,6 +131,73 @@ void _clp_setfiletime(int argno) //WINDOWS
 
 
 //----------------------------------------------------------------------
+static void prnft(FILETIME *ft)
+{
+    SYSTEMTIME st; FileTimeToSystemTime(ft,&st);
+    printf("  %08x %08x ",ft->dwHighDateTime,ft->dwLowDateTime);
+    printf(" -- %02d:%02d", st.wHour, st.wMinute);
+    printf("\n");
+}
+
+static void prndd(FILETIME DD)
+{
+    printf("  %08x %08x ",DD.dwHighDateTime,DD.dwLowDateTime);
+    printf("\n");
+}
+
+//----------------------------------------------------------------------
+static FILETIME dif(FILETIME *A, FILETIME *B)
+{
+    //printf("\ndif\n");
+    //prnft(A);
+    //prnft(B);
+    
+    FILETIME R;
+    int atvitel=(A->dwLowDateTime<B->dwLowDateTime)?1:0;
+    R.dwLowDateTime=A->dwLowDateTime-B->dwLowDateTime;
+    R.dwHighDateTime=A->dwHighDateTime-(B->dwHighDateTime+atvitel);
+
+    //prndd(R);
+    //printf("---\n");
+
+    return R;
+}
+
+static void add(FILETIME *A, FILETIME DD)
+{
+    //printf("\nadd\n");
+    //prnft(A);
+    //prndd(DD);
+
+    A->dwLowDateTime+=DD.dwLowDateTime;
+    int atvitel=(A->dwLowDateTime<DD.dwLowDateTime)?1:0;
+    A->dwHighDateTime+=(DD.dwHighDateTime+atvitel);
+
+    //prnft(A);
+    //printf("---\n");
+}
+
+FILETIME offset_utc_to_loc()
+{
+    SYSTEMTIME lt; GetLocalTime(&lt);
+    SYSTEMTIME st; GetSystemTime(&st);
+    FILETIME flt; SystemTimeToFileTime(&lt,&flt);
+    FILETIME fst; SystemTimeToFileTime(&st,&fst);
+    FILETIME offs=dif(&flt,&fst);
+    return offs; // add(utc,offs) -> loc
+}
+
+FILETIME offset_loc_to_utc()
+{
+    SYSTEMTIME lt; GetLocalTime(&lt);
+    SYSTEMTIME st; GetSystemTime(&st);
+    FILETIME flt; SystemTimeToFileTime(&lt,&flt);
+    FILETIME fst; SystemTimeToFileTime(&st,&fst);
+    FILETIME offs=dif(&fst,&flt);
+    return offs; // add(loc,offs) -> utc
+}
+
+//----------------------------------------------------------------------
 void _clp___localtimetofiletime(int argno) //WINDOWS
 {
     //{date,"hh:mm:ss"} -> 64 bites FILETIME struct 
@@ -172,10 +239,19 @@ void _clp___localtimetofiletime(int argno) //WINDOWS
     stLocal.wHour=hour;
     stLocal.wMinute=minute;
     stLocal.wSecond=sec;
+#ifdef NOTDEFINED
     TzSpecificLocalTimeToSystemTime(NULL,&stLocal,&stUTC);
 
     FILETIME ft;
     SystemTimeToFileTime(&stUTC,&ft);
+#else
+    //Windows 2000-ben nincs TzSpecificLocalTimeToSystemTime
+    FILETIME ft;
+    SystemTimeToFileTime(&stLocal,&ft);
+    //printf("\n<<");prnft(&ft);
+    add(&ft,offset_loc_to_utc());
+    //printf("\n>>");prnft(&ft);
+#endif
     _retblen((char*)&ft,sizeof(ft));
     CCC_EPILOG();
 }
@@ -190,8 +266,16 @@ void _clp___filetimetolocaltime(int argno) //WINDOWS
  
     FILETIME *ft=(FILETIME*)_parb(1);
     SYSTEMTIME stUTC, stLocal;
+#ifdef NOTDEFINED
     FileTimeToSystemTime(ft,&stUTC);
     SystemTimeToTzSpecificLocalTime(NULL,&stUTC,&stLocal);
+#else
+    FILETIME tmp=*ft; //ne az eredeti modosuljon
+    //printf("\n>>");prnft(&tmp);
+    add(&tmp,offset_utc_to_loc());
+    //printf("\n<<");prnft(&tmp);
+    FileTimeToSystemTime(&tmp,&stLocal);
+#endif
 
     char date[32];
     char time[32];
@@ -209,4 +293,3 @@ void _clp___filetimetolocaltime(int argno) //WINDOWS
 }
 
 //----------------------------------------------------------------------
-

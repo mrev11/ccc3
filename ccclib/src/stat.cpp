@@ -24,43 +24,9 @@
 #include <errno.h>
 #include <stat.ch>
 
+extern int lstat(const char *fspec, struct stat *buf);
+extern int _wlstat(const wchar_t *fspec, struct stat *buf);
 
-
-#ifdef WINDOWS
-#define LSTAT   stat
-#else
-#define LSTAT   lstat
-#endif
-
-
-#ifdef WINDOWS
-// POSIX file type test macros.  
-// The parameter is an st_mode value.
- 
-#ifdef MSVC 
-// Ezek MSVC-bol hianyoznak:
-
-#define S_ISDIR(m)  ((m) & 0x4000)
-#define S_ISCHR(m)  ((m) & 0x2000)
-#define S_ISBLK(m)  ((m) & 0x3000)
-#define S_ISREG(m)  ((m) & 0x8000)
-#define S_ISFIFO(m) ((m) & 0x1000)
-
-#endif
-
-// Ezek egyaltalan nincsenek Windowsban:
-
-#define S_ISSOCK(m) ((m) & 0x0000)  //mindig false
-#define S_ISLNK(m)  ((m) & 0x0000)  //mindig false 
-
-//Megjegyzes:
-//Az also bitekben a szokasos file engedelyek vannak,
-//amiket chmod-dal lehet allitani. Windowson ezek kozul
-//csak a readonly attributumnak van jelentosege.
-
-#endif
-
- 
 //----------------------------------------------------------------------
 static void createStatEntry(struct stat *buf)
 {
@@ -84,7 +50,7 @@ static void createStatEntry(struct stat *buf)
     #else
         number(0); //Windowson nincs
     #endif
- 
+
     number((double)buf->st_atime);
     number((double)buf->st_mtime);
     number((double)buf->st_ctime);
@@ -196,7 +162,7 @@ void _clp_lstat(int argno)
 
 #if defined _CCC2_
     char *fspec=_parc(1);
-    if( 0!=LSTAT(fspec, &buf) )
+    if( 0!=lstat(fspec, &buf) )
 
 #elif defined _UNIX_
     char *fspec=_parb(1);
@@ -205,7 +171,7 @@ void _clp_lstat(int argno)
 #else
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) ) //nincs _wlstat  (vagy mi)
+    if( 0!=_wlstat(fspec,&buf) )
 #endif    
     {
         _ret();
@@ -228,7 +194,7 @@ void _clp_lstat_st_mode(int argno)
 
 #if defined _CCC2_
     char *fspec=_parc(1);
-    if( 0!=LSTAT(fspec, &buf) ) //Linuxon lstat, Windowson stat (nincs lstat)
+    if( 0!=lstat(fspec, &buf) )
 
 #elif defined _UNIX_
     char *fspec=_parb(1);
@@ -237,7 +203,7 @@ void _clp_lstat_st_mode(int argno)
 #else    
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+    if( 0!=_wlstat(fspec,&buf) )
 #endif    
     {
         _ret();
@@ -259,7 +225,7 @@ void _clp_lstat_st_size(int argno)
 
 #if defined _CCC2_
     char *fspec=_parc(1);
-    if( 0!=LSTAT(fspec, &buf) ) //Linuxon lstat, Windowson stat (nincs lstat)
+    if( 0!=lstat(fspec, &buf) )
 
 #elif defined _UNIX_
     char *fspec=_parb(1);
@@ -268,7 +234,7 @@ void _clp_lstat_st_size(int argno)
 #else    
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+    if( 0!=_wlstat(fspec,&buf) )
 #endif    
     {
         _ret();

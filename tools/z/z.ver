@@ -1,7 +1,10 @@
 
-#define VERSION "3.1.1"
+#define VERSION "3.1.2"
 
 #ifndef VERSION  
+
+2016/10/25 -- 3.1.2
+  clipfile kiirasa javitva
 
 2016/08/11 -- 3.1.1
   clipfile kiirasa sorok osszeadasa plusz memowrit helyett

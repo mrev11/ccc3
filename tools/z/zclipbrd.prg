@@ -47,10 +47,12 @@ local tclip,n,n1,fd
 
         fd:=fopen(this:clipfile,FO_READWRITE+FO_CREATE+FO_TRUNCATE)
         if(fd>0)
-            for n:=1 to len(clip)-1
-                fwrite(fd,clip[n]+endofline())
+            for n:=1 to len(clip)
+                if(n>1)
+                    fwrite(fd,endofline())
+                end
+                fwrite(fd,clip[n])
             next
-            fwrite(fd,clip[n])
             fclose(fd)
         end
 

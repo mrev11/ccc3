@@ -26,7 +26,7 @@ function usage()
 local options:=<<OPT>>
 ddsync -- directory synchronization
 
-With ddsync you can examine files in a driectory structure.
+With ddsync you can examine files in a directory structure.
 Also, you can compare modification time of files in two parallel 
 directory structures, examine the difference of file contents with 
 diff utility, and synchronize files between the structures.
@@ -36,7 +36,7 @@ Onedir mode:
     All files of WORK directory that satisfy name-filter criteria 
     will be showed in a browse. The selection happens as follows:
  
-    1) Any directory match to a pattern in -r or -lr will be skipped.
+    1) Any directories match to a pattern in -r or -lr will be skipped.
 
     2) Files that match to a pattern in -plx will be excluded. 
     3) Files that match to a pattern in -pli will be included. 

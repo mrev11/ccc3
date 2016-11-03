@@ -1,0 +1,10 @@
+-xterminal-gtk
+-d.
+-d../common
+-d$(CCCDIR)/ccclib/src/uic/screenbuf
+-i$(CCCDIR)/ccclib/src/uic/termapi
+-bccc$(CCCVER).lib
+
+BUILD_CFG=obj$(CCCBIN)/gtk-cflags
+BUILD_LIBX=obj$(CCCBIN)/gtk-libs
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

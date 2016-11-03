@@ -23,6 +23,9 @@ echo -Wl,--start-group >>$RSPLNK
 echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK 
 echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+if test -f "$BUILD_LIBX"; then
+    cat $BUILD_LIBX >>$RSPLNK
+fi
 echo -Wl,--end-group >>$RSPLNK
  
 cat $CCCDIR/usr/options/$CCCBIN/link.opt >>$RSPLNK

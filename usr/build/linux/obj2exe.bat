@@ -1,4 +1,5 @@
 #!/bin/bash
+#set -x
 echo OBJ2EXE.BAT $1 $BUILD_EXE
 
 EXENAM=$1
@@ -21,6 +22,9 @@ echo -Wl,--no-as-needed >>$RSPLNK
 echo -Wl,--start-group >>$RSPLNK
 for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLNK; done
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+if test -f "$BUILD_LIBX"; then
+    cat $BUILD_LIBX >>$RSPLNK
+fi
 echo -Wl,--end-group >>$RSPLNK
 
 cat $CCCDIR/usr/options/$CCCBIN/link.opt >>$RSPLNK

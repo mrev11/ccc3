@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. gtkconf
+cat compopt.ext >>obj$CCCBIN/gtk-cflags
+
+bapp_unix0.b  @parfile.bld
+

@@ -28,7 +28,7 @@ namespace _nsp_text_buffer {
 //---------------------------------------------------------------------------
 void _clp_get_text(int argno)
 {
-    CCC_PROLOG("gtk.text_buffer.set_text",4);
+    CCC_PROLOG("gtk.text_buffer.get_text",4);
     gpointer self=_parp(1);
     GtkTextIter *iter_start=ISNIL(2)?0:(GtkTextIter*)_parp(2);
     GtkTextIter *iter_end=ISNIL(3)?0:(GtkTextIter*)_parp(3);

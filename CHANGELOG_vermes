@@ -1,3 +1,9 @@
+
+2016.11.04 terminal-gtk ablak atmeretezes
+  keszhez kozeli allapot (linuxon);
+  terminal.exe es terminal-xft.exe programok korszerusitve
+  kezelik a KP_Delete + NumLock kombinaciot;
+
 2016.11.03 uj terminal implementacio: terminal-gtk;
 
 2016.10.26 z.exe-ben _zedit_clipboard elszallas javitva;

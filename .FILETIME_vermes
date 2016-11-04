@@ -1,18 +1,30 @@
-a1408027bbc6d70261bd0b6df2af9a4a80c1e521 2016110323:28:34 ./terminal/gtk/terminal-gtk.cpp
-d9f8e5a6024a1287bf8850ce4b1861de793b1960 2016110318:39:30 ./terminal/xtest/xstart.log
-0c4a1e35338f26136ff7684658f8090e7bceb005 2016110318:35:39 ./CHANGELOG_vermes
+b093345bf0a3b726ac5fe690508ed73ead038ddd 2016110422:23:21 ./CHANGELOG_vermes
+6f988f201c00f313c8fefb1a9b348c043cf469ab 2016110422:09:18 ./terminal/gtk/terminal-gtk.cpp
+7573efc51aa6d1218707d505ed22bfb13125e3ee 2016110421:58:49 ./terminal/xtest/xstart.log
+bddc25dbeb918dfde7be2d56685d615bed63a293 2016110419:30:51 ./terminal/windows/keydown.cpp
+028551e9d49fb1a88900b4e63a7fc3a4c3af3408 2016110419:30:18 ./terminal/unix/keycode_x.cpp
+49bd402da2d64eb9057c4d4ea585be556c3aa14d 2016110419:30:13 ./terminal/windows/keycode_win.cpp
+6df39ec97e432127a8834d86ede20c7ffcc5c71e 2016110419:11:06 ./terminal/gtk/keycode_gtk.cpp
+22680357e51b01ac8c1eb7b5ea3dc63e845c8dd3 2016110419:03:47 ./terminal/unix/s
+87d9c7d18f11f09d42e6c33768f774bc224652e5 2016110419:00:39 ./usr/bin/linux/terminal
+119b251caea13fc632a557b134dacf9f41358b63 2016110419:00:39 ./usr/bin/linux/terminal-xft
+e5e4744cfcc1215c9b481ea70de3a085df359730 2016110419:00:38 ./terminal/unix/keypress.cpp
+edd37a0d28a8cccd7813c38697b6694f88bdced2 2016110418:37:31 ./terminal/common/keycode.h
+2c64bf4f6043a7350ab9c85d2811115b624df5b3 2016110418:33:54 ./terminal/unix/terminal.cpp
+cab99a6e76caf0cac64297ddcdc3d74b1eda235d 2016110418:33:35 ./terminal/unix/terminal-xft.cpp
+2af908e501deedb56451b5e1c5d45cde81c299e1 2016110410:01:21 ./terminal/gtk/s
+55d8b13862ad045edfe01baa5f72b3b7bd2bcaee 2016110409:42:12 ./usr/bin/linux/gitnav
+ac6129ccf475db25517852d97a36990eca998052 2016110409:42:12 ./usr/bin/linux/gitref
+87307226d3babdc266559c2eea04f2e877a4ca71 2016110409:42:12 ./usr/bin/linux/gitstat
+583c191fa0084167c5fa6ce708ace5f522c1cedc 2016110409:42:12 ./usr/bin/linux/gitview
+7236bf135b971c89269cf6e60acf03dd38e784de 2016110409:42:10 ./usr/bin/linux/filetime-save
+01c273df77e0a7245a090ed3b14626dfe5c23442 2016110409:42:10 ./usr/bin/linux/firstpar
 e04cdb6a74c8ffc76085409488f484b04b0b62e9 2016110318:32:17 ./terminal/gtk/gtkconf
 74cbf46c26515d54ea20367117e2f87d19b56595 2016110318:32:00 ./terminal/gtk/parfile.bld
 6c9589506757bef6a31b6332355fa2b53d548cee 2016110318:15:01 ./terminal/gtk/m
-1bd7e02e890c2976eb2471649fcdf1917dba22cd 2016110311:24:20 ./terminal/gtk/keycode_gtk.cpp
-e528d060836ac8dbf02853b8f8fabdff8bca637b 2016110311:17:49 ./terminal/gtk/compopt.ext
 83efa298f86737679a65a9df0bd038a5d759daed 2016110308:08:42 ./gtk/log-mkall
 a56ffc02134170026073ea6aca1bcdd6b73cf558 2016110308:08:42 ./usr/bin/linux/glist
 6b3273c4cc35d7a0e68d97890c4252f013c9af51 2016110308:08:42 ./usr/bin/linux/gui
-e595041b9146be0da330ab794bd4352b061b483f 2016110307:58:21 ./usr/bin/linux/gitnav
-7a45c8a5418bf802aaa1bb6ea0c2fb6337852cf4 2016110307:58:21 ./usr/bin/linux/gitref
-9ada0f6df49be39619f1f4fdff04aa91c5be1f70 2016110307:58:21 ./usr/bin/linux/gitstat
-df1e063c702558c15761630813c43cf399d29e06 2016110307:58:21 ./usr/bin/linux/gitview
 244ad8f5fd3d65957c3a3bbe5d258cc7e72e2aa5 2016110307:57:41 ./log-install
 05d23b516c69d02ecbd679af48ffecb32dd59f49 2016110307:57:34 ./usr/bin/linux/xstart
 4fb7c42e994aceeb7685b0f09c45239be2dfce54 2016110307:57:32 ./usr/bin/linux/websrv
@@ -384,10 +396,8 @@ bae979e3fa45b041e96bae52e992bacbf57fb008 2016101619:11:49 ./ccclib/src/stat.cpp
 f9c3d9750309131dad9605eea864411257f18fd9 2016101609:49:49 ./usr/include/stat.ch
 af1e20f87f264336cd0d4b0060a241342c5f56d0 2016101511:54:02 ./ccclib/src/windows/filetime.cpp
 0b8e5ed14e778f1e552d4d5345421cb77063bf43 2016101315:34:10 ./usr/bin/linux/filetime-restore
-f4b12c7e85625a8cacc4a5fd3b5444f64179cfca 2016101315:34:10 ./usr/bin/linux/filetime-save
 61583531c6cf53cf92ea20d4bf306e350136e6c1 2016101315:27:30 ./usr/bin/linux/mklink
 6301b38198699b6ff3578a5b2b7641e72bb419e6 2016101315:27:29 ./ccctools/mklink/mklink.prg
-eae309b719e37996d03a2bbe076b1341af6f93c2 2016101315:13:27 ./usr/bin/linux/firstpar
 ae63578d99edaa79965f8a7bc18cd13a7f5f3a87 2016101312:00:13 ./ccclib/src/unix/readdir.cpp
 958677e9bb38867ec6d153222791f2ebfe570315 2016101311:40:05 ./ccclib/src/unix/directory.prg
 bb4f0439c7a31e99c6ecf30fbf7f68bbda06beff 2016101310:42:14 ./ccclib/src/windows/directory.prg
@@ -463,8 +473,6 @@ ab49d9fb37bb10b3242be34b0b5284d421a224ec 2016092401:40:19 ./usr/bin/linux/zgrep
 d9b6f903efcb870ba4658a87829f502d8de01b37 2016092401:40:18 ./tools/zgrep/zgrep_version.prg
 cd9bb3a8484139686afe6b7b6f48d7b340ab0f0a 2016092401:39:06 ./tools/zgrep/zgrep_view.prg
 e3f44338820b351fd0b9442b75305401898b81b1 2016092217:05:08 ./usr/bin/linux/ncterm
-e5a11942b267be005b336e0e9cf3b488b69ed565 2016092217:05:00 ./usr/bin/linux/terminal
-16a354e0c76029ffef69e6ade07d3a42bca9e43f 2016092217:05:00 ./usr/bin/linux/terminal-xft
 3b53a1073992e3e490c484b8fd4dd798c61575f3 2016092212:14:12 ./usr/bin/linux/libcontent
 ba7d9ef6b65e2980b8b8e89bed9aba79f9f9e257 2016092212:14:12 ./usr/bin/linux/pm
 cbc8fc18e2ab31322002d0c907a25ed6e9248841 2016092212:14:11 ./usr/bin/linux/oggedit
@@ -668,7 +676,6 @@ b428ea1236d8ae5f93c2031c1f33cbd024e2a345 2016053114:35:19 ./jt/sslforward/ssl-te
 64facb9de4d07b0c98925ccc39ade78dd6c1196e 2016052713:28:22 ./terminal/unix/m
 caa07feb4b71a52db4ea87bf20ddc1c2fe94ad0d 2016052713:18:11 ./terminal/unix/parfile.bld
 7270d0c5a5e671153d5dd8fe93c9d84d0b363400 2016052708:15:07 ./terminal/terminal-test/screenwr/screenwr.prg
-3c39ccfd5b141ebd1d48bbbb4a7939e93d5293ec 2016052707:28:32 ./terminal/common/keycode.cpp
 9d8b3723a0f9944dba83b33d8eaa21b265da98a6 2016052512:38:27 ./ccclib/src/uic/screenbuf/screenbuf.h
 8fb75ee8333017af818a35393e7db0064a52fc94 2016052512:29:48 ./terminal/unix/compopt.ext
 d23dc5a67ea2126321c40bbb8085e195a2a1e73a 2016052412:19:34 ./tools/list/m
@@ -735,8 +742,6 @@ f94b4385deabcf7b8e83a7c6dd77bd0a60c019fa 2016041408:20:27 ./ccclib/ccclib.hu.ver
 3c6ecd2e61f5d4d2173e5faefa12faa3d573eeb7 2016041408:13:44 ./ccclib/src/unix/thread.cpp
 f93c424c1d0d870416103ba5de7cac3a1e699bfd 2016040314:54:03 ./terminal/unix-ncurses/readme.hu.txt
 88f8eb0ef12325da73c4b839bde1ea7b3c03c716 2016032711:40:00 ./terminal/common/inkey3.ch
-57d0cdf19f0cab1b86c343a6e8b71fb3cfbc2f9e 2016032711:35:48 ./terminal/unix/terminal.cpp
-7fe42e21175a8504b902ccc6088e86d4543d2aff 2016032711:31:08 ./terminal/unix/terminal-xft.cpp
 db0d2a946bab024844a1cfc62aa470db95bf15a0 2016031610:41:13 ./terminal/unix-ncurses/readkey/inkeymap.cpp
 9e0d81c17d4db4139a370934c2e716c0066e58fe 2016031610:41:12 ./terminal/unix-ncurses/readkey/inkeymap.h
 ec3e5ead05882b1c66f44ed34d85a2561bd687df 2016031610:37:23 ./terminal/unix-ncurses/learnkey/t
@@ -2575,7 +2580,6 @@ eb8da114f7b05bfc52a9392ce48a47a823e4a86c 2006042517:43:04 ./usr/bin/windows/bapp
 8da3cf05b305af110f7fc49d33483e4855ae9768 2006042517:22:50 ./ccclib/uic.bldwin
 cc2368006750169276ac335f151419ad6409ecb5 2006042517:22:35 ./ccclib/ui_.bldwin
 f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042517:22:22 ./ccclib/ccc.bldwin
-cac6053af304c3254b9ce9a83e767c1ca5672674 2006042516:19:22 ./terminal/unix/s
 4c55aadb0992735c17b2d252d49b2ead8f9997a9 2006042516:18:36 ./terminal/windows/xstart.par
 e6f19eef2020e46b852e3cb91d77deaf101021d1 2006042513:38:23 ./ccclib/src/uic/listbox.prg
 6b4fbcdb30e33f82e37b4be8f657d83a9b8423f7 2006042512:48:33 ./ccclib/src/uic/o_tbcolumn.prg
@@ -2792,7 +2796,6 @@ d74f4ac3e807f75584f8279464a1c94173cb595c 2006040714:25:12 ./usr/include/box.ch
 1927689fa1b32bc5f3fc7d0af63b863881cd9ceb 2006040614:59:38 ./ccclib/src/uic/setcaption.cpp
 e6bdbb7349ad8a99d622f0e01085d2f6a284040e 2006040612:55:21 ./terminal/xtest/s
 9b4bb19ed4b5da498c9205e7973b77f66b43afca 2006040418:09:54 ./terminal/windows/s.bat
-6c6b125adeb94c5ccad1a9a2efddb5d025bd7b86 2006040417:10:12 ./terminal/windows/keydown.cpp
 92f855b53e372dee60d70f98f1e1fdc892bad900 2006040413:58:26 ./terminal/common/color.cpp
 20af638c654392cb005429b1254f616d3dadfd3d 2006040413:01:13 ./tools/socket/clean.b
 a1ef89500b445c94fede904d520d0cfc85516b86 2006040412:20:19 ./clean-obj.bat

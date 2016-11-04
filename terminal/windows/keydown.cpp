@@ -22,7 +22,7 @@
 #include <windows.h>
 #include <stdio.h>
   
-extern int keycode(int i,int j);
+extern int keycode_win(int i,int j);
 
 static int state_shift=0;  //1
 static int state_ctrl=0;   //2
@@ -101,7 +101,7 @@ void keydown(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     if( state_lalt )  state|=4;
     if( state_ralt )  state|=4;
 
-    int inkeycode=keycode(key,state);
+    int inkeycode=keycode_win(key,state);
 
     if( inkeycode )
     {

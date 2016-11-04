@@ -80,7 +80,7 @@ extern void setcursor(int x,int y);
 extern void setcursoroff(void);
 extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
-extern int  keycode(int,int);
+extern void keypress(XEvent event);
 extern int  color_palette(int);
 
 //---------------------------------------------------------------------------
@@ -270,55 +270,6 @@ static void paint(int top, int lef, int bot, int rig, int flag)
     XFlush(display);
 
     paint_unlock();
-}
-
-//----------------------------------------------------------------------------
-static void keypress(XEvent event)
-{
-    char buffer[32];
-    int bufsize=sizeof(buffer);
-    int leng;
-    KeySym key;
-    XComposeStatus compose;
-    leng=XLookupString(&event.xkey,buffer,bufsize,&key,&compose);
-    buffer[leng]=0;
-
-    int state=0;
-    if(event.xkey.state & ShiftMask) state|=1;
-    if(event.xkey.state & ControlMask) state|=2;
-    if(event.xkey.state & Mod1Mask) state|=4;
-
-    int asc=buffer[0];
-    int ucs=keysym2ucs(key);
-    int code=0;
-
-    //printf("keypress %d (%s) state=%d asc=%u key=%d ucs=%d(%x) ",leng,buffer,state,(unsigned)buffer[0],(int)key,ucs,ucs);
-
-    if( ucs>127 )
-    {
-        code=ucs;
-    }
-    else if( asc && asc!=127 ) //delete=127
-    {
-        if( (state&4) && 'a'<=asc  && asc<='z' )
-        {
-            code=-(asc-'a'+1); //ALT_A,...,ALT_Z
-        }
-        else
-        {
-            code=asc;
-        }
-    }
-    else
-    {
-        code=keycode((int)key,state);
-    }
-    //printf("code=%d\n",code); fflush(0);
-
-    if( code )
-    {
-        tcpio_sendkey(code);
-    }
 }
 
 //----------------------------------------------------------------------------

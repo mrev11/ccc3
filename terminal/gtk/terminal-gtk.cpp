@@ -1,46 +1,53 @@
 
+
+#ifdef _UNIX_
+  #include <sys/times.h>
+#else
+  #include <windows.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
-#include <sys/times.h>
 
 #include <pango/pango.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <screenbuf.h>
-//#include <inkey.ch>
 
-
-static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
-static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
-static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
-
-static pthread_mutex_t mutex_blink=PTHREAD_MUTEX_INITIALIZER;
-static void blink_lock(){pthread_mutex_lock(&mutex_blink);}
-static void blink_unlock(){pthread_mutex_unlock(&mutex_blink);}
-
-//static pthread_mutex_t mutex_paint=PTHREAD_MUTEX_INITIALIZER;
-//static void paint_lock(){pthread_mutex_lock(&mutex_paint);}
-//static void paint_unlock(){pthread_mutex_unlock(&mutex_paint);}
+#ifdef _UNIX_
+  static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
+  static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
+  static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
+#else
+  static HANDLE mutex_inv=CreateMutex(0,0,0);
+  static void invalidate_lock(){WaitForSingleObject(mutex_inv,INFINITE);}
+  static void invalidate_unlock(){ReleaseMutex(mutex_inv);}
+#endif
 
 
 screenbuf *screen_buffer=0;
-static int wwidth=80;
-static int wheight=25;
+static int wwidth=0;
+static int wheight=0;
+static int dirty_size=0;
+
 static int invtop=9999,invlef=9999,invbot=0,invrig=0;
 static int dirty_buffer=0;
 
-static GtkWidget *gtkwindow;
-static GtkWidget *gtkview;
-static GtkTextBuffer *gtkbuffer;
-
-
-static int cursor_x=0;
-static int cursor_y=0;
+static int cursor_x=10;
+static int cursor_y=10;
 static int cursor_onoff=1;
 static int cursor_state=0;
-static unsigned cursor_tick=0;
 static int cursor_focus=0;
+static int dirty_curpos=0;
+static unsigned cursor_tick=0;
+
+static char *caption=0;
+static int dirty_caption=0;
+
+
+static GtkWidget *gtkwindow;
+static GtkTextBuffer *gtkbuffer;
 
 
 extern void tcpio_ini(const char*,int);
@@ -55,11 +62,23 @@ extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
 
 
+#ifndef GDK_KEY_Delete
+//compatibility
+#define GDK_KEY_Delete         GDK_Delete        
+#define GDK_KEY_KP_Delete      GDK_KP_Delete     
+#endif
+
+
+
 //---------------------------------------------------------------------------
 static unsigned gettickcount(void)
 {
+  #ifdef _UNIX_
     struct tms buf;
     return (unsigned)times(&buf)*10;
+  #else
+    return GetTickCount();
+  #endif
 }
 
 //---------------------------------------------------------------------------
@@ -67,35 +86,34 @@ static void sleep(int ms)
 {
     if(ms>0)
     {
+      #ifdef _UNIX_
         struct timeval t;
         t.tv_sec=ms/1000;
         t.tv_usec=(ms%1000)*1000;
         select(0,NULL,NULL,NULL,&t);
+      #else
+        Sleep( ms );
+      #endif
     }
 }
 
 //---------------------------------------------------------------------------
-PangoFontDescription *pangofont()
+static PangoFontDescription *pangofont()
 {
-    const char *fontname="Monospace 14"; //FONTSPEC (space!)
+    //Peldak a font megadasara
+    //linux  :   export CCCTERM_GTKFONTSPEC="Monospace 12"
+    //windows:   set CCCTERM_GTKFONTSPEC=Monospace 12
+    //windows:   set CCCTERM_GTKFONTSPEC=Courier New 15
+
+    const char *fontname="Monospace 13"; //default font
     
     if( getenv("CCCTERM_GTKFONTSPEC") )
     {
         fontname=getenv("CCCTERM_GTKFONTSPEC");
+        //printf("fontname [%s]\n",fontname);
     }
-
     PangoFontDescription *font=pango_font_description_from_string(fontname);
     return font;
-}
-
-
-//---------------------------------------------------------------------------
-void setcaption(char *cap)
-{
-    //printf("%s\n",cap);
-    gdk_threads_enter();
-    gtk_window_set_title(GTK_WINDOW(gtkwindow),cap);
-    gdk_threads_leave();
 }
 
 //---------------------------------------------------------------------------------
@@ -110,7 +128,7 @@ static int color_palette_rev(int x)
 }
 
 //---------------------------------------------------------------------------------
-GtkTextTag *lookup_tag(int fg, int bg)
+static GtkTextTag *lookup_tag(int fg, int bg)
 {
     GtkTextTagTable *tagtable=gtk_text_buffer_get_tag_table(gtkbuffer);
 
@@ -129,7 +147,7 @@ GtkTextTag *lookup_tag(int fg, int bg)
 }
 
 //----------------------------------------------------------------------------
-static void setattr(int y, int x1, int x, int attr)  //beallit [x1,x) attr
+static void setattr(int y, int x1, int x, int attr)  //[x1,x)-be attr
 {
     int fg=0xf&(attr>>0);
     int bg=0xf&(attr>>4);  
@@ -171,8 +189,6 @@ static void set_attrs_line(int y)
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
 {
-    gdk_threads_enter();
-
     int x,y;
     for( y=top; y<=bot; y++) //ciklus a dirty rect soraira
     {
@@ -205,59 +221,20 @@ static void paint(int top, int lef, int bot, int rig)
 
         set_attrs_line(y);
     }
-
-    gdk_threads_leave();
 }
 
-
 //----------------------------------------------------------------------------
-void invalidate(int t, int l, int b, int r)
-{
-    //printf("dirty (%d,%d,%d,%d)\n",t,l,b,r);
-
-    invalidate_lock();
-
-    if(t<invtop) invtop=t;
-    if(l<invlef) invlef=l;
-    if(b>invbot) invbot=b;
-    if(r>invrig) invrig=r;
-    dirty_buffer=1;
-
-    //terminal-xft eventloop-bol inditja paint-et,
-    //itt nincs eventloop (gtk_main belsejeben van), 
-    //ugyhogy innnen indul a paint
-    //az invtop,...,dirty_buffer nyilvantartas felesleges
-    //az invalidate_lock() vedelem is felesleges
-
-    paint(invtop,invlef,invbot,invrig);
-
-    invtop=9999;
-    invlef=9999;
-    invbot=0;
-    invrig=0;
-    dirty_buffer=0;
-
-    invalidate_unlock();
-}
-
-
-//----------------------------------------------------------------------------
-static void blink(int flag)
+static void blink(int flag)  //bg<->fg valtogatos kurzor
 {
     static int prevx=0;
     static int prevy=0;
-    
-    blink_lock();
-    gdk_threads_enter();
 
-    if( cursor_state )
+    if( flag ) 
     {
-        set_attrs_line(prevy);
-        cursor_state=0;
-    }
-
-    if( flag ) //bg<->fg váltogatós kurzor
-    {
+        if( cursor_state && prevy!=cursor_y )
+        {
+            set_attrs_line(prevy);
+        }
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();
         int fg=0xf&(attr>>0);
@@ -266,34 +243,132 @@ static void blink(int flag)
         set_attrs_line(cursor_y);
         cell->setattr(attr);  //rogton vissza
 
-        cursor_state=1;
         prevx=cursor_x;
         prevy=cursor_y;
+        cursor_state=1;
     }
-
+    else if(cursor_state)
+    {
+        set_attrs_line(prevy);
+        cursor_state=0;
+    }
+    
     cursor_tick=gettickcount();
+}
 
-    gdk_threads_leave();
-    blink_unlock();
+
+//----------------------------------------------------------------------------
+void invalidate(int t, int l, int b, int r)
+{
+    //printf("invalidate(%d,%d,%d,%d)",t,l,b,r);
+    invalidate_lock();
+    if(t<invtop) invtop=t;
+    if(l<invlef) invlef=l;
+    if(b>invbot) invbot=b;
+    if(r>invrig) invrig=r;
+    dirty_buffer=1;
+    invalidate_unlock();
+    //printf("!\n");
+}
+
+//----------------------------------------------------------------------------
+static void invalidate_gtk()
+{
+    //printf("invalidate_gtk()");
+    invalidate_lock();
+    paint(invtop,invlef,invbot,invrig);
+    invtop=9999;
+    invlef=9999;
+    invbot=0;
+    invrig=0;
+    dirty_buffer=0;
+    invalidate_unlock();
+    //printf("!\n");
+}
+
+
+//---------------------------------------------------------------------------
+void setcaption(char *cap)
+{
+    //printf("setcaption(%s)",cap);
+    invalidate_lock();
+    char buf[256];
+    buf[0]='[';
+    strncpy(buf+1,cap,200);
+    strcat(buf,"]");
+    free(caption);
+    caption=strdup(buf);
+    dirty_caption=1;
+    invalidate_unlock();
+    //printf("!\n");
+}
+
+//---------------------------------------------------------------------------
+static void setcaption_gtk()
+{
+    //printf("setcaption_gtk()");
+    invalidate_lock();
+    gtk_window_set_title(GTK_WINDOW(gtkwindow),caption);
+    dirty_caption=0;
+    invalidate_unlock();
+    //printf("!\n");
 }
 
 //----------------------------------------------------------------------------
 void setwsize(int x, int y)
 {
-    gdk_threads_enter();
-
+    //printf("setwsize(%d,%d)",x,y);
+    invalidate_lock();
     wwidth=x;
     wheight=y;
     cursor_x=0;
     cursor_y=0;
 
-    free(screen_buffer);
+    if(screen_buffer)
+    {
+        delete screen_buffer;
+    }
     screen_buffer=new screenbuf(wwidth,wheight);
 
+    invtop=0;
+    invlef=0;
+    invbot=wheight-1;
+    invrig=wwidth-1;
+    cursor_focus=1;
+    dirty_buffer=1;
+    dirty_size=1;
+
+    invalidate_unlock();
+    //printf("!\n");
+}
+
+//----------------------------------------------------------------------------
+void setwsize_gtk()
+{
+    //printf("setwsize_gtk()");
+    invalidate_lock();
+
+    if( wwidth==0 || wheight==0 )
+    {
+        if( getenv("CCCTERM_SIZE") )
+        {
+            sscanf(getenv("CCCTERM_SIZE"),"%dx%d",&wwidth,&wheight);
+        }
+        if( wwidth==0 || wheight==0 )
+        {
+            wwidth=80;
+            wheight=25;
+        }
+        screen_buffer=new screenbuf(wwidth,wheight);
+    }
+    
     //ablakmeret:
     //a meretet az hatarozza meg, hogy mennyi text van benne
     //elore feltoltjuk annyi szoveggel, amekkoranak lennie kell,
-    //es kesobb nem engedjuk valtoztatni a szoveg mennyiseget
+    //es kesobb nem engedjuk valtoztatni a szoveg mennyiseget.
+    //vigyazni kell, hogy a szovegbe ne keruljon linefeed,
+    //mert az megvaltoztatja a sorok szamat es meretet,
+    //pl. egy sorban nem lehet az lf utanra pozicionalni.
 
     GtkTextIter iter1,iter2;
     gtk_text_buffer_get_iter_at_offset(gtkbuffer,&iter1,0);
@@ -319,45 +394,65 @@ void setwsize(int x, int y)
     gtk_text_iter_set_line_offset(&iter,cursor_x);
     gtk_text_buffer_place_cursor(gtkbuffer,&iter);
 
-    gdk_threads_leave();
+    dirty_size=0;
+
+    invalidate_unlock();
+    //printf("!\n");
 }
 
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
-    blink_lock();
+    //printf("setcursor(%d,%d)",x,y);
+    invalidate_lock();
     cursor_x=x;
     cursor_y=y;
-    blink_unlock();
+    dirty_curpos=1;
+    invalidate_unlock();
+    //printf("!\n");
+}
 
-    if( cursor_onoff )
-    {
-        blink(1);
-    }
-
-    gdk_threads_enter();
+//----------------------------------------------------------------------------
+void setcursor_gtk()
+{
+    //printf("setcursor_gtk()");
+    invalidate_lock();
     GtkTextIter iter;
     gtk_text_buffer_get_iter_at_line_offset(gtkbuffer,&iter,cursor_y,cursor_x);
     gtk_text_buffer_place_cursor(gtkbuffer,&iter);
-    gdk_threads_leave();
+    if(cursor_onoff)
+    {
+        blink(1);
+    }
+    dirty_curpos=0;
+    invalidate_unlock();
+    //printf("!\n");
 }
+
 
 //----------------------------------------------------------------------------
 void setcursoroff()
 {
-    blink(cursor_onoff=0);
+    //printf("setcursoroff()");
+    cursor_onoff=0;
+    //printf("!\n");
 }
+
 
 //----------------------------------------------------------------------------
 void setcursoron()
 {
-    blink(cursor_onoff=1);
+    //printf("setcursoron()");
+    cursor_onoff=1;
+    //printf("!\n");
 }
 
 
 //----------------------------------------------------------------------------
 static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer data)
 {
+    //printf("cb_key_press_event\n");
+
     int keyval=event->keyval;
     int hwkeycode=event->hardware_keycode;
     int length=event->length;   //string hossza: 0,1,2
@@ -393,6 +488,8 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
         else
         {
             //KP_Delete + NumLock
+            //magyar keyboard layout-nal ',' kellene
+            //hogyan lehet kitalalni, mi a layout?
             code='.';
         }
     }
@@ -431,7 +528,7 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
 //----------------------------------------------------------------------------
 static int cb_focus_in_event()
 {
-    //printf( "focus IN\n");
+    //printf("cb_focus_in_event\n");
     cursor_focus=1;
     return 0;
 }
@@ -439,14 +536,48 @@ static int cb_focus_in_event()
 //----------------------------------------------------------------------------
 static int cb_focus_out_event()
 {
-    //printf( "focus OUT\n");
+    //printf("cb_focus_out_event\n");
     cursor_focus=0;
+    return 0;
+}
+
+//----------------------------------------------------------------------------
+static int cb_realize(GtkWidget *window, gpointer data)
+{
+    //printf("cb_realize\n");
+    return 0;
+}
+
+//----------------------------------------------------------------------------
+static int cb_destroy()
+{
+    //printf("cb_destroy\n");
+    gtk_main_quit();
     return 0;
 }
 
 //----------------------------------------------------------------------------
 static int cb_timeout(void*data)
 {
+    //printf("cb_timeout\n");
+
+    if( dirty_size ) //ennek kell elol lenni!
+    {
+        setwsize_gtk();
+    }
+    else if( dirty_buffer )
+    {
+        invalidate_gtk();
+    }
+    else if( dirty_caption )
+    {
+        setcaption_gtk();
+    }
+    else if( dirty_curpos )
+    {
+        setcursor_gtk();
+    }
+
     unsigned tick=gettickcount()-cursor_tick;
 
     if( cursor_state && tick>400  )
@@ -463,12 +594,10 @@ static int cb_timeout(void*data)
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[]) 
 {
-    gdk_threads_init();
     gtk_init(&argc, &argv);
 
     char host[256]; strcpy(host,"127.0.0.1"); 
     int port=55000;
-
     if( argc>=2 )
     {
         strcpy(host,argv[1]); 
@@ -477,21 +606,18 @@ int main(int argc, char *argv[])
     {
         sscanf(argv[2],"%d",&port); 
     }
-    if( getenv("CCCTERM_SIZE") )
-    {
-        sscanf(getenv("CCCTERM_SIZE"),"%dx%d",&wwidth,&wheight);
-    }
 
-    //gtkwindow > vbox > gtkview > gtkbuffer
-    gtkwindow=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    //gtkwindow > vbox > view > gtkbuffer
+    gtkwindow=gtk_window_new(GTK_WINDOW_TOPLEVEL); //printf("instance %x\n",(long long)(void*)gtkwindow);
     GtkWidget *vbox=gtk_vbox_new(FALSE,0); gtk_container_add(GTK_CONTAINER(gtkwindow),vbox);
-    gtkview=gtk_text_view_new(); gtk_box_pack_start(GTK_BOX(vbox), gtkview, TRUE, TRUE, 0);
-    gtkbuffer=gtk_text_view_get_buffer(GTK_TEXT_VIEW(gtkview));
+    GtkWidget *view=gtk_text_view_new(); gtk_box_pack_start(GTK_BOX(vbox),view,TRUE,TRUE,0);
+    gtkbuffer=gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
 
-    g_signal_connect(G_OBJECT(gtkwindow),"destroy",G_CALLBACK(gtk_main_quit),NULL);
-    g_signal_connect(G_OBJECT(gtkwindow),"key_press_event",G_CALLBACK(cb_key_press_event),NULL);
-    g_signal_connect(G_OBJECT(gtkwindow),"focus-in-event",G_CALLBACK(cb_focus_in_event),NULL);
-    g_signal_connect(G_OBJECT(gtkwindow),"focus-out-event",G_CALLBACK(cb_focus_out_event),NULL);
+    gtk_signal_connect(GTK_OBJECT(gtkwindow),"destroy",G_CALLBACK(cb_destroy),NULL);
+    //gtk_signal_connect(GTK_OBJECT(gtkwindow),"realize",G_CALLBACK(cb_realize),NULL);
+    gtk_signal_connect(GTK_OBJECT(gtkwindow),"key_press_event",G_CALLBACK(cb_key_press_event),NULL);
+    gtk_signal_connect(GTK_OBJECT(gtkwindow),"focus-in-event",G_CALLBACK(cb_focus_in_event),NULL);
+    gtk_signal_connect(GTK_OBJECT(gtkwindow),"focus-out-event",G_CALLBACK(cb_focus_out_event),NULL);
 
     //agybaj, ahogy magatol pozicional
     //gtk_window_set_position(GTK_WINDOW(gtkwindow),GTK_WIN_POS_NONE);
@@ -499,27 +625,31 @@ int main(int argc, char *argv[])
     int dx=gettickcount()%300;
     int dy=gettickcount()%100;
     gtk_window_move(GTK_WINDOW(gtkwindow),80+dx,60+dy);
-
     gtk_window_set_resizable(GTK_WINDOW(gtkwindow),0);
     gtk_window_set_title(GTK_WINDOW(gtkwindow),"terminal-gtk");
 
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(gtkview),0);
-    gtk_widget_modify_font(gtkview,pangofont());
 
-    setwsize(wwidth,wheight);
+    gtk_text_view_set_editable(GTK_TEXT_VIEW(view),0);
+    gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view),0);
+    gtk_widget_modify_font(view,pangofont());
 
-    gdk_threads_enter();
+    setwsize_gtk();
 
     tcpio_ini(host,port);
-    pthread_t t=0;
-    pthread_create(&t,0,tcpio_thread,0); 
+    #ifdef _UNIX_
+      pthread_t t=0;
+      pthread_create(&t,0,tcpio_thread,0); 
+    #else
+      DWORD threadid=0;
+      CreateThread(0,0,(LPTHREAD_START_ROUTINE)tcpio_thread,0,0,&threadid);
+    #endif
     sleep(100);
 
     gtk_widget_show_all(gtkwindow);
-    gtk_timeout_add(50,cb_timeout,NULL);
+    gtk_timeout_add(10,cb_timeout,NULL);
+
     gtk_main();
 
-    gdk_threads_leave();
     return 0;
 }
 

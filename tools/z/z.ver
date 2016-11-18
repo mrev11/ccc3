@@ -1,7 +1,13 @@
 
-#define VERSION "3.1.2"
+#define VERSION "3.1.3"
 
 #ifndef VERSION  
+
+2016/11/15 -- 3.1.3
+  Allithato, milyen sorveget rakjon a kimenetbe:
+    export ZEOL=CRLF   (platformtol fuggetlenul) CRLF
+    export ZEOL=LF     (platformtol fuggetlenul) LF
+  Ha nincs megadva, akkor az endofline()-t veszi.
 
 2016/10/25 -- 3.1.2
   clipfile kiirasa javitva

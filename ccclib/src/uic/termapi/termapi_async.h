@@ -39,6 +39,11 @@
 #include <signal.ch>
 #include <inkey.ch>
 
+#undef min
+#undef max
+#define min(x,y)   ((x)<(y)?(x):(y))
+#define max(x,y)   ((x)>(y)?(x):(y))
+
 
 static screenbuf *screen=0;
 

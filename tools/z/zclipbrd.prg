@@ -49,7 +49,7 @@ local tclip,n,n1,fd
         if(fd>0)
             for n:=1 to len(clip)
                 if(n>1)
-                    fwrite(fd,endofline())
+                    fwrite(fd,this:endofline())
                 end
                 fwrite(fd,clip[n])
             next

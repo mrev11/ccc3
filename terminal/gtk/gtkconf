@@ -1,9 +1,0 @@
-
-mkdir -p obj$CCCBIN
-pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
-pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
-
-
-#export BUILD_CFG=`pwd`/obj$CCCBIN/gtk-cflags
-#export BUILD_LIBX=`pwd`/obj$CCCBIN/gtk-libs
-

@@ -35,10 +35,12 @@ extern void _clp_signal_execute_codeblock(int argno);
 DEFINE_METHOD(operation);
 DEFINE_METHOD(description);
 
+
+
 //---------------------------------------------------------------------------
 static void cb_wxv(GtkWidget *w, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(2);
     pop();
@@ -47,7 +49,7 @@ static void cb_wxv(GtkWidget *w, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wixv(GtkWidget *w, gint a, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     number(a);
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -57,7 +59,7 @@ static void cb_wixv(GtkWidget *w, gint a, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wiixv(GtkWidget *w, gint a1, gint a2, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     number(a1);
     number(a2);
@@ -68,7 +70,7 @@ static void cb_wiixv(GtkWidget *w, gint a1, gint a2, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wiibxv(GtkWidget *w, gint a1, gint a2, gint b, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     number(a1);
     number(a2);
@@ -80,7 +82,7 @@ static void cb_wiibxv(GtkWidget *w, gint a1, gint a2, gint b, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wsxv(GtkWidget *w, gpointer s, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     stringn0((char*)s); //path_string
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -90,7 +92,7 @@ static void cb_wsxv(GtkWidget *w, gpointer s, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wssxv(GtkWidget *w, gchar *a1, gchar *a2, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     stringn0(a1); //pathstr
     stringn0(a2); //newtext
@@ -101,7 +103,7 @@ static void cb_wssxv(GtkWidget *w, gchar *a1, gchar *a2, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wpxv(GtkWidget *w, gpointer *p, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     pointer(p);
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -111,7 +113,7 @@ static void cb_wpxv(GtkWidget *w, gpointer *p, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wppxv(GtkWidget *w, gpointer *p1, gpointer *p2, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     pointer(p1);
     pointer(p2);
@@ -122,7 +124,7 @@ static void cb_wppxv(GtkWidget *w, gpointer *p1, gpointer *p2, gpointer x)
 //---------------------------------------------------------------------------
 static void cb_wpixv(GtkWidget *w, gpointer *p1, gint a, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     pointer(p1);
     number(a);
@@ -133,7 +135,7 @@ static void cb_wpixv(GtkWidget *w, gpointer *p1, gint a, gpointer x)
 //---------------------------------------------------------------------------
 static gint cb_wpxb(GtkWidget *w, gpointer *e, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     pointer(e); //event 
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -150,7 +152,7 @@ static gint cb_wpxb(GtkWidget *w, gpointer *e, gpointer x)
 //---------------------------------------------------------------------------
 static gint cb_wixb(GtkWidget *w, gint a, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     number(a);
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -167,7 +169,7 @@ static gint cb_wixb(GtkWidget *w, gint a, gpointer x)
 //---------------------------------------------------------------------------
 static gint cb_wbxb(GtkWidget *w, gint b, gpointer x)
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(w); //widget
     logical(b);
     _nsp_gtk::_nsp_gobject::_clp_signal_execute_codeblock(3);
@@ -219,7 +221,8 @@ void *find_callback(gpointer widget, const char *sig)
 {
     void *callback=0;
 
-    GType itype=G_TYPE_FROM_INSTANCE(widget);
+    GType itype=G_OBJECT_TYPE(widget);
+
     guint signal_id=g_signal_lookup(sig,itype);
     if( signal_id==0 )
     {

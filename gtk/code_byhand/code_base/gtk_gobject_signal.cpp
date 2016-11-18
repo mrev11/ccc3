@@ -39,15 +39,14 @@ DEFINE_METHOD(description);
 
 #define DEBUG_NOTIFY
 
-
 //---------------------------------------------------------------------------
 static void destroy_notify(void *x, GClosure *closure)
 {
     #ifdef DEBUG_NOTIFY
-    printf("\nNOTIFY %ld %lx", (long)x, (unsigned long)closure);
+    printf("\nNOTIFY %ld %lx", (LONG)x, (ULONG)closure);
     #endif 
 
-    number((long)x); //idx
+    number((LONG)x); //idx
     _nsp_gtk::_nsp_gobject::_clp_signal_unregister_codeblock(1);
     pop();
 }
@@ -88,10 +87,10 @@ static void signal_connect(int argno, GConnectFlags flags)
     gulong id=g_signal_connect_data(    G_OBJECT(wdg),
                                         name,
                                         G_CALLBACK(callback),
-                                        (gpointer)idx,
+                                        (gpointer)(LONG)idx,
                                         destroy_notify,
                                         flags );
-    _retp((void*)id);
+    _retp((void*)(ULONG)id);
     CCC_EPILOG();
 }
 
@@ -112,7 +111,7 @@ void _clp_signal_handler_disconnect(int argno)
 {
     CCC_PROLOG("gtk.gobject.signal_handler_disconnect",2);
     gpointer o=_parp(1);
-    gulong id=(gulong)_parp(2);
+    gulong id=(ULONG)_parp(2);
     g_signal_handler_disconnect(o,id);
     _ret();
     CCC_EPILOG();
@@ -123,7 +122,7 @@ void _clp_signal_handler_block(int argno)
 {
     CCC_PROLOG("gtk.gobject.signal_handler_block",2);
     gpointer o=_parp(1);
-    gulong id=(gulong)_parp(2);
+    gulong id=(ULONG)_parp(2);
     g_signal_handler_block(o,id);
     _ret();
     CCC_EPILOG();
@@ -134,7 +133,7 @@ void _clp_signal_handler_unblock(int argno)
 {
     CCC_PROLOG("gtk.gobject.signal_unhandler_block",2);
     gpointer o=_parp(1);
-    gulong id=(gulong)_parp(2);
+    gulong id=(ULONG)_parp(2);
     g_signal_handler_unblock(o,id);
     _ret();
     CCC_EPILOG();

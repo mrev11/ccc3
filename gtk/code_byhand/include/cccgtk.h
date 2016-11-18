@@ -63,6 +63,9 @@ extern void _retclen_utf8(const char *str, int len, VALUE *base);
 #define _retclen_utf8(s,l)  (s==0?_retc(L""):_retcblen(s,l))
 
 
+#define LONG    long)(long long                    //cast: (LONG)
+#define ULONG   unsigned long)(unsigned long long  //cast: (ULONG)
+
 
 #endif //_CCCGTK_H_
 

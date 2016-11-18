@@ -1,0 +1,9 @@
+-xterminal-gtk
+-d.
+-d../common
+-d$(CCCDIR)/ccclib/src/uic/screenbuf
+-i$(CCCDIR)/ccclib/src/uic/termapi
+-bccc$(CCCVER).lib
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_CFG=compopt.ext

@@ -1,3 +1,6 @@
+2016.11.12 windowson minden leforditva az uj msys2/mingw64-gyel;
+  az ssl/crypto/gtk forditasban uj konyvtarnevek;
+  z.exe a ZEOL valtozoban megadott modon kepezi a sorvegeket
 
 2016.11.04 terminal-gtk ablak atmeretezes
   keszhez kozeli allapot (linuxon);

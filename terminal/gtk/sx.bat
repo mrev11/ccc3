@@ -10,6 +10,7 @@ set EDIT=*=z.exe %%f:bt=tstru %%f
 :: (a % karaktert vedeni kell -> %%)
 
 set CCCTERM_INHERIT=yes
+set CCCTERM_CONNECT=%CCCDIR%\usr\bin\%CCCUNAME%\terminal-gtk.exe
 
 savex.exe %1 %2 %3 %4 %5 %6 
 

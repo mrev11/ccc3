@@ -26,10 +26,11 @@
 extern void _clp_g_timeout_register_codeblock(int);
 extern void _clp_g_timeout_execute_codeblock(int);
 
+
 //----------------------------------------------------------------------------
 static gboolean cb(gpointer data)
 {
-    number((long)data);
+    number((LONG)data);
     _clp_g_timeout_execute_codeblock(1);
     return flag();
 }
@@ -45,7 +46,7 @@ void _clp_g_timeout_add(int argno)
     }
     _clp_g_timeout_register_codeblock(1);
     int x=D2INT(TOP()->data.number);
-    g_timeout_add(timeout,cb,(gpointer)(long)x);
+    g_timeout_add(timeout,cb,(gpointer)(LONG)x);
     _ret();
     CCC_EPILOG();
 }

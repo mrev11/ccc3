@@ -42,7 +42,7 @@ struct __opdirstate
 
     ~__opdirstate()
     {
-        if(this->dirstream);
+        if(this->dirstream)
         {
             closedir(this->dirstream);
         }

@@ -32,6 +32,7 @@ extern void _clp_cell_register_codeblock(int argno);
 extern void _clp_cell_unregister_codeblock(int argno);
 extern void _clp_cell_execute_codeblock(int argno);
 
+
 //------------------------------------------------------------------------------
 static void cell_data_func( GtkCellLayout* column,
                             GtkCellRenderer* renderer,
@@ -39,7 +40,7 @@ static void cell_data_func( GtkCellLayout* column,
                             GtkTreeIter* iter,
                             gpointer x )
 {
-    number((long)x); //idx
+    number((LONG)x); //idx
     pointer(column);
     pointer(renderer);
     pointer(model);
@@ -52,10 +53,10 @@ static void cell_data_func( GtkCellLayout* column,
 static void destroy_notify(void *x)
 {
     #ifdef DEBUG_NOTIFY
-    printf("\nNOTIFY-cell-data-func %ld", (long)x);
+    printf("\nNOTIFY-cell-data-func %ld", (LONG)x);
     #endif 
 
-    number((long)x); //idx
+    number((LONG)x); //idx
     _nsp_gtk::_nsp_cell_layout::_clp_cell_unregister_codeblock(1);
     pop();
 }

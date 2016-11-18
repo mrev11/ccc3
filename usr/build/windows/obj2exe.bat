@@ -34,6 +34,7 @@ set ECHOPRE=-L
 set ECHOPOST=
 call %BUILD_BAT%\_echo %BUILD_LPT%
 
+echo -Wl,--no-as-needed >>%RSPLNK%
 echo -Wl,--start-group >>%RSPLNK%
 
 if exist %OBJECTS% goto endobj_mn

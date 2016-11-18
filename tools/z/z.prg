@@ -185,6 +185,14 @@ local ferror:=zhome()+"error.z"
 #endif
 
     zedit:=zeditNew(txt,1,0,maxrow(),maxcol())
+    
+    if( !empty(getenv("ZEOL")) )
+        if( "CRLF"==upper(getenv("ZEOL")) )
+            zedit:endofline:=chr(13)+chr(10)
+        else
+            zedit:endofline:=chr(10)
+        end
+    end
 
     zedit:clipfile:=zhome()+"clipbrd.z"
     zedit:keymapblk:={|k|keymap(k)}

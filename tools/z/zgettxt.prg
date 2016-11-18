@@ -31,7 +31,7 @@ local len1, txt, n
 
     len1:=len(this:atxt[1])
     for n:=2 to len(this:atxt)
-        len1+=len(endofline())+len(this:atxt[n])
+        len1+=len(this:endofline())+len(this:atxt[n])
     next
 
     txt:=space(len1)
@@ -39,8 +39,8 @@ local len1, txt, n
     xvcopy(txt,0,this:atxt[1])
     len1:=len(this:atxt[1])
     for n:=2 to len(this:atxt)
-        xvcopy(txt,len1,endofline()+this:atxt[n])
-        len1+=len(endofline())+len(this:atxt[n])
+        xvcopy(txt,len1,this:endofline()+this:atxt[n])
+        len1+=len(this:endofline())+len(this:atxt[n])
     next
 
     return txt

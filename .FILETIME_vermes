@@ -1,31 +1,75 @@
-b093345bf0a3b726ac5fe690508ed73ead038ddd 2016110422:23:21 ./CHANGELOG_vermes
-6f988f201c00f313c8fefb1a9b348c043cf469ab 2016110422:09:18 ./terminal/gtk/terminal-gtk.cpp
-7573efc51aa6d1218707d505ed22bfb13125e3ee 2016110421:58:49 ./terminal/xtest/xstart.log
+d557b04a9305c574a60d516c01330376f41debfc 2016111817:51:47 ./jt/jtdemo/sign/m.bat
+ee1a4dd4e92b7c3dfbd922060d75552bc14d653c 2016111817:51:47 ./tutor/simplechat/m.bat
+9ec821f518a81c782be4400625886919f39f5faa 2016111817:45:30 ./jt/jtdemo/tabedit/m.bat
+97b14c756311cbc99ec08f0b1f220887f9e8fff6 2016111817:27:11 ./jt/jtdemo/scroll/m.bat
+cbd69eec7c20140655ff1c5c7a6f03be805e6c51 2016111817:25:43 ./tools/websrv/m.bat
+d3c5ffb40f32f41489cfbd645bc97997c329940b 2016111817:25:20 ./jt/jtstart/m.bat
+92480b2598c7217661c7581920a515aa9edbf89e 2016111816:09:17 ./terminal/gtk/parfile-win.bld
+d305749e91c34c60f51eae67e99167359e8889db 2016111800:10:10 ./usr/bin/linux/terminal-gtk
+6ce1b56287a48761ca63dfe64e3ab0c1210b857b 2016111800:09:54 ./terminal/gtk/OLVASS
+a223a8a131ab2a8aec228b671cbf06b39aadb385 2016111800:05:24 ./terminal/gtk/terminal-gtk.cpp
+73075300bfbaa2e861f1d7a46c303937eb57be48 2016111723:30:12 ./terminal/xtest/xstart.log
+c43ac6379cc342ce441d13b1e24c7eb175640b5e 2016111716:48:48 ./usr/build/windows/gtk-win.bld
+6ec1e32d8e9ffa582e42d152b00e66957ff4bf53 2016111714:37:37 ./CHANGELOG_vermes
+aaff82968abd13bd20a673f69553f7191809b68c 2016111709:18:37 ./gtk/code_byhand/code_base/gtk_gobject_cb.cpp
+f470b8b486b718e72faf93f6fa22dea15b420fc1 2016111617:18:58 ./usr/bin/windows/ssc.bat
+57466511bcd70c4cf789dadb0bfd7b5a9f9a4592 2016111614:54:39 ./usr/bin/linux/zhist
+0b12801f12a160f1a04681bce7fcf9d671a57c84 2016111614:54:37 ./tools/z/z.ver
+3880f45d87edebe7468b1d8aa197460b34bfce1d 2016111614:45:26 ./tools/z/z.prg
+b3de39c532b35424e964a3dd7cd2e83b32e0fdba 2016111614:32:49 ./tools/z/zgettxt.prg
+cb61681cd82f9de032d0c7602c8f02ee1837e6ac 2016111614:32:24 ./tools/z/zclipbrd.prg
+9facc390c139b33c1afd529a697e2bb0a7ac9902 2016111614:32:01 ./tools/z/zclass.prg
+f19a431c8b061165082ad42ffc4d14ddace757aa 2016111217:35:55 ./ccclib/src/unix/readdir.cpp
+93b7e3f629480044226c5d451e3c03013634de32 2016110910:35:35 ./gtk/code_byhand/gtk_cell_layout_data_func_apix.cpp
+fa105a2dab6d7d4f3a7bc5a6aa264946848b5b2a 2016110910:35:06 ./gtk/code_byhand/code_util/g_timeout.cpp
+73bafa31361af60bb3d69454af0dcffd741bd58c 2016110910:34:28 ./gtk/code_byhand/code_base/gtk_gobject_signal.cpp
+a34b459a349064c52d5abb9583e4af49ad18807d 2016110910:33:28 ./gtk/code_byhand/include/cccgtk.h
+b751111b59d040176f2e71e35d0156ca2e9dc928 2016110815:10:35 ./tools/sql2/log-mkall
+d481b18a2995bfffde8bfe246407c5c043e84ded 2016110815:06:08 ./terminal/gtk/sx.bat
+655d35572fdf23d4fa75e2c9a8a86e9b775e781b 2016110719:52:05 ./usr/bin/linux/ncterm
+df355ca824bdbdaf490a39cc198e4758f9b7c938 2016110719:51:56 ./usr/bin/linux/terminal
+958c84b59bb25d4a2f4ae52a2fd93ffaa3dcc6f1 2016110719:51:56 ./usr/bin/linux/terminal-xft
+be03758ab8d9a0a637eb54d869a7796b88e1de8b 2016110700:05:24 ./terminal/gtk/s
+a09c5ce4fdeb9278fe43d7e2efe1bd8da72e6fcc 2016110620:49:32 ./log-install
+14a8cd6f1ebbbba3bf3b9e3433f6d064554572c9 2016110620:33:04 ./terminal/gtk/s.bat
+e6ae01e567195ceef1e0022cb39b06ab80be783c 2016110618:30:01 ./tools/socket/ssl/sslauth-demo/m.bat
+c89cd5a198f99382fe6b8eac664925d2fed7c6cb 2016110618:29:30 ./tools/socket/ssl/sslsocket-demo/m.bat
+f890d94084be05d642a428fd9829757413ae472d 2016110618:25:56 ./tools/regex/regex-demo/m.bat
+5dbefeb8a2f6f6123d0dc6ed36d58e378c2fe529 2016110618:20:27 ./tools/crypto/demo/m.bat
+5d79b08af7a405787492898fd6e355e112786783 2016110618:19:14 ./tools/crypto/blowfish/m.bat
+f1facfa0f066cd67be5fe449e3cc7025986dc7e0 2016110611:41:58 ./usr/bin/linux/termgtk
+4a00be061716fdac0aac51f6d4d4c84d11534fae 2016110601:48:45 ./terminal/gtk/m
+59be497c9f9333bdc8c2ffbf1ba05207f3e7e9df 2016110523:48:38 ./usr/options/mng/link.opt
+9480bc4ce4344cc49db3c7f2385fcd98927d6733 2016110523:13:01 ./usr/build/windows/obj2exe.bat
+c9b639a395421eca3b429e00860a3a7e3a38b4c0 2016110522:03:36 ./ccclib/src/uic/termapi/termapi_async.h
+0cdb3463a2fb85ce8465ea8dd5b96dae4cf7b434 2016110512:33:55 ./usr/bin/linux/jeed
+e8274f0c6807cd811bdd3fd485cdd615b2a56556 2016110512:33:54 ./usr/bin/linux/tds2prg
+74de7399ae7b224408c010947c496c0130414937 2016110512:33:54 ./usr/bin/linux/tds2ted
+9322c7b4f0b870d9085195b415e0d4f0ded6a7df 2016110512:33:54 ./usr/bin/linux/ted2prg
+ce0c884b594d96cd7368267acf108b4b81a59b99 2016110512:33:53 ./usr/bin/linux/mkentitylib
+ca734415a2158ccf8d05782e539bdb17f6bce7e7 2016110512:33:52 ./usr/bin/linux/bt2tds
+9ac4f555e4fead7cc66fec222fccafcf8cc9af04 2016110512:33:52 ./usr/bin/linux/bt2ted
+71780ba681adf4e836b3822c95469ce64abcb419 2016110511:02:05 ./gtk/g_type_regression/m.bat
+1ae49a0b616acbf84207c9484a1edf65706a67b6 2016110509:53:21 ./terminal/gtk/keycode_gtk.cpp
+0b576ccc20de63421492a376bde4edbc4f5fa81b 2016110509:31:04 ./terminal/common/mutex.cpp
+bbc6e62fe9c6342ac8edd7545bb25309d6f800f2 2016110507:39:01 ./terminal/windows/keycode_win.cpp
 bddc25dbeb918dfde7be2d56685d615bed63a293 2016110419:30:51 ./terminal/windows/keydown.cpp
 028551e9d49fb1a88900b4e63a7fc3a4c3af3408 2016110419:30:18 ./terminal/unix/keycode_x.cpp
-49bd402da2d64eb9057c4d4ea585be556c3aa14d 2016110419:30:13 ./terminal/windows/keycode_win.cpp
-6df39ec97e432127a8834d86ede20c7ffcc5c71e 2016110419:11:06 ./terminal/gtk/keycode_gtk.cpp
 22680357e51b01ac8c1eb7b5ea3dc63e845c8dd3 2016110419:03:47 ./terminal/unix/s
-87d9c7d18f11f09d42e6c33768f774bc224652e5 2016110419:00:39 ./usr/bin/linux/terminal
-119b251caea13fc632a557b134dacf9f41358b63 2016110419:00:39 ./usr/bin/linux/terminal-xft
 e5e4744cfcc1215c9b481ea70de3a085df359730 2016110419:00:38 ./terminal/unix/keypress.cpp
 edd37a0d28a8cccd7813c38697b6694f88bdced2 2016110418:37:31 ./terminal/common/keycode.h
 2c64bf4f6043a7350ab9c85d2811115b624df5b3 2016110418:33:54 ./terminal/unix/terminal.cpp
 cab99a6e76caf0cac64297ddcdc3d74b1eda235d 2016110418:33:35 ./terminal/unix/terminal-xft.cpp
-2af908e501deedb56451b5e1c5d45cde81c299e1 2016110410:01:21 ./terminal/gtk/s
 55d8b13862ad045edfe01baa5f72b3b7bd2bcaee 2016110409:42:12 ./usr/bin/linux/gitnav
 ac6129ccf475db25517852d97a36990eca998052 2016110409:42:12 ./usr/bin/linux/gitref
 87307226d3babdc266559c2eea04f2e877a4ca71 2016110409:42:12 ./usr/bin/linux/gitstat
 583c191fa0084167c5fa6ce708ace5f522c1cedc 2016110409:42:12 ./usr/bin/linux/gitview
 7236bf135b971c89269cf6e60acf03dd38e784de 2016110409:42:10 ./usr/bin/linux/filetime-save
 01c273df77e0a7245a090ed3b14626dfe5c23442 2016110409:42:10 ./usr/bin/linux/firstpar
-e04cdb6a74c8ffc76085409488f484b04b0b62e9 2016110318:32:17 ./terminal/gtk/gtkconf
 74cbf46c26515d54ea20367117e2f87d19b56595 2016110318:32:00 ./terminal/gtk/parfile.bld
-6c9589506757bef6a31b6332355fa2b53d548cee 2016110318:15:01 ./terminal/gtk/m
 83efa298f86737679a65a9df0bd038a5d759daed 2016110308:08:42 ./gtk/log-mkall
 a56ffc02134170026073ea6aca1bcdd6b73cf558 2016110308:08:42 ./usr/bin/linux/glist
 6b3273c4cc35d7a0e68d97890c4252f013c9af51 2016110308:08:42 ./usr/bin/linux/gui
-244ad8f5fd3d65957c3a3bbe5d258cc7e72e2aa5 2016110307:57:41 ./log-install
 05d23b516c69d02ecbd679af48ffecb32dd59f49 2016110307:57:34 ./usr/bin/linux/xstart
 4fb7c42e994aceeb7685b0f09c45239be2dfce54 2016110307:57:32 ./usr/bin/linux/websrv
 31c0b371d31670d2615ba1528a74cdeb1897a620 2016110307:57:18 ./usr/bin/linux/prg2ppo
@@ -305,8 +349,6 @@ f86ac4ba0d647ee2a9a07b1b321ae920442747ba 2016102917:39:35 ./gtk/code_generated/g
 73027c0ec582ce71bcca4c2fb97727958c0a50ff 2016102917:39:35 ./gtk/code_generated/gtk_tree_view_column_api.cpp
 154320a22f10abd5e8517c0cdd7c4ff308365b18 2016102917:39:35 ./gtk/code_generated/gtk_tree_view_column_reg.prg
 3bf5ceb7ed0517ef02bb1af7f3f4f8f128f9212b 2016102518:17:47 ./usr/bin/linux/savex
-5689cef8de592af4ea5cbacccbcc19b779804d34 2016102518:13:45 ./tools/z/z.ver
-e2969d32de9419e433de6d00a4d82a4ed144d270 2016102518:04:57 ./tools/z/zclipbrd.prg
 0794598dba1b97e3eb91d6840e5017d45cb634ca 2016102013:54:33 ./doc/html/exception.aux
 5f930319aca4765bae4e5d4da60d77d22cb6b3d2 2016102013:54:33 ./doc/html/exception.html
 ee2617e983c0f26fe18f1d2020827ca67ee57b0a 2016102013:54:33 ./doc/html/exception.log
@@ -385,7 +427,6 @@ d90737796b8800a06e1377dd496782fddc0974a7 2016102013:33:10 ./doc/ccc-belulrol/ins
 a077626c9eb658fe7b540687c24a88f8b236fb07 2016102012:35:40 ./doc/10ev.tex
 0e202aed397646daaff3fb6f0ca00aedff8ffb86 2016101909:48:24 ./tools/savex/usage.prg
 0ea47edae6d10914dc74cf6e1c29421bd45a2764 2016101718:42:21 ./ccclib/src/windows/lstat.cpp
-eb5bfa53a14e0c20a03fa0ba3b21bf8616a186e4 2016101714:16:21 ./tools/sql2/log-mkall
 dcf5de15ae5ba451c7efd7161d78302d96ea0974 2016101714:16:16 ./tools/sql2/test/basicdemo/tds/code_generated/ab.prg
 667981a7c568304457c770ae1ff049ad92f78e14 2016101714:16:16 ./tools/sql2/test/basicdemo/tds/code_generated/abc.prg
 5bd2e06c4165e07526e9e143f666bf7f016f7bff 2016101714:16:16 ./tools/sql2/test/basicdemo/tds/code_generated/proba.prg
@@ -398,12 +439,10 @@ af1e20f87f264336cd0d4b0060a241342c5f56d0 2016101511:54:02 ./ccclib/src/windows/f
 0b8e5ed14e778f1e552d4d5345421cb77063bf43 2016101315:34:10 ./usr/bin/linux/filetime-restore
 61583531c6cf53cf92ea20d4bf306e350136e6c1 2016101315:27:30 ./usr/bin/linux/mklink
 6301b38198699b6ff3578a5b2b7641e72bb419e6 2016101315:27:29 ./ccctools/mklink/mklink.prg
-ae63578d99edaa79965f8a7bc18cd13a7f5f3a87 2016101312:00:13 ./ccclib/src/unix/readdir.cpp
 958677e9bb38867ec6d153222791f2ebfe570315 2016101311:40:05 ./ccclib/src/unix/directory.prg
 bb4f0439c7a31e99c6ecf30fbf7f68bbda06beff 2016101310:42:14 ./ccclib/src/windows/directory.prg
 2507775ded269801ff435cc674ceaa79741f9fd2 2016101223:10:51 ./usr/include/directry.ch
 c5d626319731118f29227145f87ac66180ad7405 2016101219:02:05 ./tools/sql2/err
-fbb3e17f1a906285f307f7c9b03dcee6ab5d146e 2016100823:41:39 ./tools/z/z.prg
 9a74adda900e90fe7dfa1912b13e4e0cd378ebc1 2016100822:13:43 ./ccclib/src/windows/filecopy.cpp
 53c3e269278944d455ccac03b05778dda7c89d28 2016100213:49:52 ./tools/savex/findfile.prg
 a381102b0ed48eedbbb28612d80af5bf83cc140b 2016100213:32:20 ./ccclib/src/setfdati.prg
@@ -411,12 +450,10 @@ b6fd497f42b42580598f3fe68768bf5e68b7b294 2016100211:27:52 ./tools/savex/savex.ve
 e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100210:42:52 ./tools/savex/savebrowse.prg
 014ba7236a0118a5ff5a9796866e5cffe813a22a 2016100116:51:30 ./usr/bin/linux/list
 f4149625b23ee91256834c9d103dac7cf8881bdc 2016100116:47:11 ./ccclib/src/uic/termapi/remoteio.cpp
-29992ff2f31af0634c9f397887d11532ec68ce23 2016100116:45:33 ./ccclib/src/uic/termapi/termapi_async.h
 31033ae76d638130020e9123306e1cff5d5aa9ee 2016100110:10:06 ./ccclib/src/uic/termapi/termio.cpp
 cf63fe140195bcac0e1a5f57cedf6087a275428f 2016100109:19:14 ./ccclib/src/uic/termapi/termio.h
 a87e44a62a494dd7a197238f3aa45321324a9907 2016100109:11:27 ./terminal/common/tcpio.cpp
 b513249cf35a258e927ae71269e98d2093897fd8 2016100100:07:05 ./ccclib/src/uic/termapi/termapi.cpp
-3f5b6af48de8b24720838fde2b058a84739f5cf1 2016093021:52:34 ./usr/bin/windows/sx.bat
 b2c12a3dbfc0bc7f3485436e38fa177c4889c170 2016093010:52:28 ./tutor/fpath/parfile.bld
 b97603d40d695c762c1f53f11c9d171fa0fb2d99 2016093010:51:00 ./tutor/sqrt/m.bat
 3fa71f440f2d9cf0488538b72f1673b9ae4272e3 2016092915:43:49 ./jt/jtdemo/superdemo.prg
@@ -472,12 +509,10 @@ f34f0625a6ab62116733a177b676930162743f3e 2016092401:40:19 ./usr/bin/linux/stred
 ab49d9fb37bb10b3242be34b0b5284d421a224ec 2016092401:40:19 ./usr/bin/linux/zgrep
 d9b6f903efcb870ba4658a87829f502d8de01b37 2016092401:40:18 ./tools/zgrep/zgrep_version.prg
 cd9bb3a8484139686afe6b7b6f48d7b340ab0f0a 2016092401:39:06 ./tools/zgrep/zgrep_view.prg
-e3f44338820b351fd0b9442b75305401898b81b1 2016092217:05:08 ./usr/bin/linux/ncterm
 3b53a1073992e3e490c484b8fd4dd798c61575f3 2016092212:14:12 ./usr/bin/linux/libcontent
 ba7d9ef6b65e2980b8b8e89bed9aba79f9f9e257 2016092212:14:12 ./usr/bin/linux/pm
 cbc8fc18e2ab31322002d0c907a25ed6e9248841 2016092212:14:11 ./usr/bin/linux/oggedit
 8630c5a081b83bda0f29fa11378ef110372a9766 2016092212:14:11 ./usr/bin/linux/oggplay
-d24425e830c5f108bff1e5cddd40b01d71701acf 2016092212:14:07 ./usr/bin/linux/zhist
 745f262f2f40eff34b93f3bb30ef5b133d5cb8cf 2016092212:14:03 ./usr/bin/linux/tran2cpp
 1db09d2fecdadf25a93f1eb8f7a7aba7bf2b4b75 2016092212:14:00 ./usr/bin/linux/msk2say
 a9679bafed1d039e2f47023bf2f316f4ba7c7f5b 2016092212:13:59 ./usr/bin/linux/ddict2
@@ -514,7 +549,6 @@ caa8fe4436b8f3514ae0cfffbfdf413095b435ac 2016091512:50:14 ./ccclib/src/unix/sign
 f31fe7d6f35001f5a6f0f616a115e466cfe8ab74 2016090911:21:00 ./usr/include/signal.ch
 4158832e3eb358c5bad2bd36f113386dc935e9c4 2016080210:20:08 ./tools/z/zfindpar.prg
 43cd4a29016cb5f8bfe07cabf27a975098f661c1 2016080209:45:14 ./tools/z/zloop.prg
-ef87e472b17ac02956e7ea4a4f5dee549bf9cc5f 2016080209:35:28 ./tools/z/zclass.prg
 6f5697cf6447323d32c84aef170bbf24ae274fe2 2016072814:53:19 ./gtk/codegen/s
 7f26e2746333dab5f721a0a7cf8bd23a8b380bf6 2016072814:18:20 ./tools/xmlrpc-framework/server/test/parfile.bld
 816d3040ecdf0fe1df0e84c2a2848b2372d7f807 2016072814:18:09 ./tools/xmlrpc-framework/server/rpcwrapper/parfile.bld
@@ -574,7 +608,6 @@ d798056f9998a8f50eeb564280b587388c344ee6 2016061114:56:33 ./setup/setup-windows/
 08f10b5f53f6b3f8a76da48f9f7294d7846e6ba3 2016061114:56:12 ./setup/setup-windows/script/ccc2c-msc-64.bat
 de4f58f47902e7ec486ec73eeea6266346c19057 2016061114:55:57 ./setup/setup-windows/script/ccc2c-mng-64.bat
 f863320034ac12d58eddf6b251f494918485506c 2016061014:15:22 ./tools/zgrep/zg.bat
-6c73721d42978880115a6e030978de39e95190b3 2016061014:11:49 ./tools/zgrep/m.bat
 af48cc66998ed095b3191ad174b6a97f87988abb 2016061013:34:03 ./ccctools/removecr/m.bat
 2ba884b605879d46e79ee241e23d85a766c73092 2016061013:33:48 ./ccctools/ppo2cpp/m.bat
 3bb1771c5fdd067e0c23aebfe6ae304ca057bcc2 2016061013:33:37 ./ccctools/ccomp/m.bat
@@ -608,6 +641,7 @@ b8d4defdcf632577521e0338cae25251cb9d7c9f 2016060913:44:49 ./tools/z/readme.hu.tx
 cf7190a7dd75c127ee921b3960ed009dc1bc0230 2016060912:13:17 ./tools/z/ver2/zsearch.say
 210128737f3a73ac890c1956effb949387e6aab9 2016060911:52:55 ./tools/z/zchcase.prg
 93b3fe04736ca207cb9ca9186b5ec1fb1846c194 2016060909:52:13 ./cccenv3
+6c73721d42978880115a6e030978de39e95190b3 2016060815:39:25 ./tools/zgrep/m.bat
 d69d6c04271ab29426fd873f4e90a5ddd0023047 2016060814:47:52 ./tools/sql2/test/testdata_lib/testdata.prg
 8d865a2ffda734c2402258e487695690bdec36d0 2016060814:47:40 ./tools/sql2/test/testdata_lib/m
 2643482f96f01cdf7f97f6f7ab56d7bad3b1eb6e 2016060312:59:10 ./install.bat
@@ -629,7 +663,6 @@ fde27d672f75c3b176dba0d8621c7644e89bb328 2016060121:49:48 ./terminal/windows/par
 758dded7bf0e24bea77b81b5ec5c7f6d3f00229a 2016060120:48:02 ./usr/build/windows/tds2obj.bat
 96997b7cac198212778547f09741f97240967cae 2016060120:34:03 ./usr/build/windows/olvass.txt
 238398cd757f8e50feaf9024b4461e9596d49cce 2016060120:32:02 ./usr/build/windows/obj2lib.bat
-141aa006da45002e1ae7a11181f5b2092db11fdc 2016060120:31:24 ./usr/build/windows/obj2exe.bat
 250159f4bde517ba92eaf4f6a78bbf240501b191 2016060120:30:53 ./usr/build/windows/lex2obj.bat
 cd3b59989376e6a726a0da4dd97c3d0444429760 2016060120:30:32 ./usr/build/windows/lem2obj.bat
 4442ce535c6599984d2c400368e1303f3b4ad1ca 2016060120:30:15 ./usr/build/windows/cpp2obj.bat
@@ -1103,7 +1136,6 @@ f2fbea9aba8536285677476dcaf234e4bce844d4 2012121317:32:06 ./tabobj/tbbtbtx/btind
 53c10869d59d749d03efee5ff6eda3845d723cea 2012103110:32:35 ./terminal/windows/terminal.cpp
 10c659d8e24298f10bba6ef95996d0648c8d15a6 2012103008:11:38 ./terminal/xtest/xstart.par
 2185c96863e82a27707a9a1768985ffd479d79a4 2012102714:37:54 ./gtk/defs/gtkwindow.defs
-bededecb3b14a590af0b5ae7c08f85600134b3e0 2012102713:50:34 ./usr/build/windows/gtk-win.bld
 a51b0466e4e5c648d2278b393e4b8082122832b1 2012102313:56:57 ./setup/setup-unix/i2bin.cpp
 86502900bacc9b414cde5b8cefbaa88fceb650cb 2012102310:02:32 ./terminal/terminal-test/remtest.bat
 86e4b332162579a8e92f9b88f1d43b585b6eb356 2012102215:27:18 ./terminal/terminal-test/clean-all.b
@@ -1223,7 +1255,6 @@ b83ad38258c8931898b31e13c128d245b4afb19f 2012052514:24:01 ./tools/xmldom/parsein
 3ff633108874e8313d827f3692a49bea2cce4b7f 2012042211:36:20 ./tools/tran2cpp/tran2cpp.prg
 2a171d3ce702c08d6533ee59798b572290f6c336 2012040712:47:03 ./tools/sql2/util/btimport/btimport.prg
 295c09c612011e8076ce7ad1b8b17c9184269447 2012040712:07:28 ./tools/sql2/util/bt2tds/bt2tds.prg
-a056866a862f4f9d4e429502211c84300d901454 2012022812:51:04 ./gtk/code_byhand/code_util/g_timeout.cpp
 405b2266730e2e093a00ea5ad4dbdc0ecc340e8a 2012022611:21:22 ./tools/mask/kozepes.msk
 e3ae42850f095dbf4bbe493f9673f2eda4476b95 2012022610:46:45 ./tools/mask/nagy.msk
 a8f87446421cce99e2f021f3493297ddec667f19 2012022518:37:47 ./tools/xmldom/xmldom_lemon.prg
@@ -1368,10 +1399,7 @@ e54601d340d1bd86380e1a4d767f3ddd1ad11a2d 2010043011:23:41 ./tools/regex/regex.ch
 9ffb59a881b0457b3f026a1d4e89919e242131fc 2010041618:55:38 ./jt/jtlib/jtlib.ver
 9f94166c7fe6e0054c8e880b59ba718443328df7 2010041618:45:39 ./tutor/fpath/fpath.prg
 c82d282b0b36014d70e5110a06536deeaea3790d 2010041618:36:57 ./jt/jtlib/jtelem.prg
-c1274e7cae3c80408d5a0ba24f148b611759a018 2010041422:59:34 ./tools/regex/regex-demo/m.bat
 12a5f7fac897621451bf2129cd8b8742687efe8a 2010041419:35:14 ./tutor/fpath/m.bat
-35d5ef881a68a9a666c2a7277555ae01a3a4e4fa 2010041316:32:38 ./tools/socket/ssl/sslsocket-demo/m.bat
-7d97b40c4f0fa601594362212a2c0dc27f562f56 2010041316:32:19 ./tools/crypto/blowfish/m.bat
 1b7c40f6335808746f8023b80d134a674eda3ad7 2010041314:07:41 ./setup/setup-windows/script/cm.bat
 5804e6e91125fe48764b380ac5096c2c3fae26da 2010040808:57:16 ./setup/setup-unix/main.cpp
 c084c901cf025d6c908eb0923deff47bad9a5a25 2010040609:17:29 ./setup/setup-unix/m
@@ -1646,9 +1674,7 @@ e567e434f1b3054809535e71248ac4c86f9b2aa5 2008051610:53:29 ./jt/jterminal/jtmenui
 73d51b31ee6f9fa3c5252876914e6ddd9d9f472d 2008050600:26:22 ./tutor/simplechat/parfile.bld
 ff6ea983f6e759f86a955e8dcc53fe8aa51bb9e2 2008050600:18:04 ./tutor/simplechat/chat-config.prg
 f5590bdf58b96a22d482c7b6bc7f964f5f217abd 2008050600:14:36 ./tutor/simplechat/chat.prg
-554edd1c0d3aeaad22de1a0cbef090f23b8f2773 2008050521:47:37 ./tutor/simplechat/m.bat
 8f97d81ed48476837768ca2cf843a48d7479108a 2008043019:07:56 ./tools/z/zsetpos.prg
-b223fab12c21e7836c9a35e9b68480a5d5b9c540 2008043019:05:31 ./tools/z/zgettxt.prg
 b14b6ed9172a7791dcfd8055f82a613c6de2bbc8 2008043019:04:10 ./tools/z/zenter.prg
 e054902a2bd2881a1e605963bdc0d9e9f39ada65 2008043018:40:07 ./tools/z/zreplace.prg
 a4d7604723990f7f604e88ef6ee9b1d53b58eea4 2008043018:38:20 ./tools/z/zsearch.prg
@@ -1679,7 +1705,6 @@ d7f145439201033f6da9523661ff61c37590a4ec 2008021621:51:47 ./ccclib/src/chmod.cpp
 bd61813c1e30811f63b349ec05b060ef8511972b 2008021620:16:41 ./ccclib/src/windows/utime.prg
 893dc6c1af45d1f30d44246e77a67a38ee386ccc 2008021011:33:24 ./gtk/code_byhand/save/OLVASS
 7c4f1d01347b0baaf1f4016c14fd2e2464c30bdd 2008020913:09:25 ./jt/jterminal/m.bat
-0f24ecfab45ff16e54f354bbeda79b239a82bbd2 2008020517:34:15 ./tools/crypto/readme.hu.txt
 32f6d4f24f2040d1446e0041292bcbd3df9550d1 2008020517:27:04 ./tools/socket/ssl/sslsocket-demo/s1.bat
 3a94e33b128d887db73644758fe6b861936f603a 2008020517:26:54 ./tools/socket/ssl/sslsocket-demo/c1.bat
 b1fe61acea58d1e23c0a3e4bada39a09d2cff805 2008020517:25:16 ./tools/socket/ssl/sslsocket-demo/c1-ssl.bat
@@ -1690,7 +1715,6 @@ fba16ea88fc781a8397b0a24dbb929cbeaa9f0fc 2008020517:25:01 ./tools/socket/ssl/ssl
 5e2895d6b0f6f3611ff6c325a812afc597df9945 2008013110:22:16 ./gtk/examples/base/objectlevel/calendar.prg
 c7cad0a05e5c67c382a4696138ffcf2040fa8238 2008013110:02:45 ./gtk/defs/gtkcalendar.defs
 8dfe822d4cd2829028b5875d569d188e4609a0a0 2008012909:51:05 ./gtk/code_byhand/gtk_calendar_apix.cpp
-f8c8b82b1423e6a239bd6d814623d848c95b9059 2008012900:38:35 ./gtk/code_byhand/code_base/gtk_gobject_cb.cpp
 6078d2cc7e25e8908e09d027708f95d8b70e0b1c 2008012900:25:23 ./gtk/glade/demo/project10.glade
 7cdd7b351e24e072e4b0c74f90476ed72e861ffa 2008012900:07:14 ./gtk/examples/base/functionlevel/calendar.prg
 62c7400273901d7d8529934d3c3d33162e449d56 2008012823:45:04 ./gtk/glade/wdg_gladecalendar.prg
@@ -1810,22 +1834,16 @@ ba9bd265e355cc4cffbe8fe392b22ce4592dff1e 2007110710:47:18 ./gtk/examples/gallery
 3c0cce6fac9bdb59f9e79d6790850ddad57ca496 2007102915:54:13 ./tools/socket/scknames.cpp
 b8c39a95d83d68d1a1dd9a496f7c584dba889df5 2007091019:10:24 ./jt/jtdemo/dlgdemo/parfile.xml
 04c18d21db459d04ea3003f5a330205c498af515 2007091018:31:38 ./jt/jtdemo/clean.bat
-2542aaea84dad7e8f1d1a628d6f852ec270e2e04 2007091017:30:25 ./tools/websrv/m.bat
 3d1bd3cfb28c424d1728eb1ae08247663ef2adef 2007091017:11:22 ./tools/socket/clean.bat
 4a80e6c79f45718aa978d73f17bb7e0d1b0a2ed5 2007090918:59:18 ./jt/jtdemo/sign/m
 f8223d6b556d35d9596c857e70c3f6ac1aede3a3 2007090918:58:53 ./jt/jtdemo/tabedit/m
 52f4d7d728b7b0543160c2fdf7aab69b37f30936 2007090918:50:00 ./jt/clean.bat
 9c601a8ff186b55939c42dfa218c97c0a397fb55 2007090918:11:18 ./jt/jtdemo/scroll/m
 b0dcbb8f4e384da0d981c6279ff9d6377dd70696 2007090918:09:52 ./jt/jtdemo/mkall.bat
-fa810f9f5dd3a1264c8fde9fa89d63c2129dc19d 2007090918:08:54 ./jt/jtstart/m.bat
-7ee21ab7b1a509061c9030432b331caa522e2c98 2007090918:08:19 ./jt/jtdemo/tabedit/m.bat
-52a6c331df93f3002da1dd8f01da7dcd0dc519be 2007090918:01:09 ./jt/jtdemo/sign/m.bat
-dea35066c458c342e8fb6a80357ae9260005ea4b 2007090917:54:54 ./jt/jtdemo/scroll/m.bat
 ac034ff164922c9f1d23d0ae5a77ec841dacc9de 2007090917:38:26 ./jt/jtlib/m.bat
 cd52d6b1941f5fe1792e745cde3878e5955e2449 2007090915:55:06 ./jt/jterminal/t.bat
 1c1c2d6630db8e531cd14e3497ff18df48886366 2007090912:25:13 ./tools/socket/ssl/sslauth-demo/c1.bat
 18fc983964318908ded0fc6c4b2b809de3f7ca94 2007090912:24:37 ./tools/socket/ssl/sslauth-demo/s1.bat
-33ec2e03e58a43449b38c6657319b64e39e45f81 2007090912:24:17 ./tools/socket/ssl/sslauth-demo/m.bat
 09d19071681755802a2b6a5df638f99601e39004 2007090911:45:47 ./tools/socket/ssl/sslsocket-demo/c2-ssl.bat
 2061af4457318211a9f1c8a7dbc2a961f47cbf98 2007090911:45:27 ./tools/socket/ssl/sslsocket-demo/c2.bat
 f77de53eacc2dfe01448b16d1eaf68e981669b7b 2007090911:43:10 ./tools/socket/ssl/sslsocket-demo/s3-ssl.bat
@@ -1967,8 +1985,6 @@ eb16d4352d18feb79bb00cdf5547f5786929425f 2007030814:22:33 ./tools/crypto/cast.cp
 b99cfb6faf17e5eb1900876870ad90d8951f4b30 2007030814:10:20 ./tools/crypto/cast/cfb64.prg
 16f20fa4b8b26cb6b925363720bdfd34a1d03d8d 2007030813:51:58 ./tools/crypto/cast/cbc.prg
 75758b4dde5d3b79dffe53cbad3c4776bcb2ae45 2007030813:33:15 ./tools/crypto/cast/ecb.prg
-1dbefeb988be5ac18dd80c406f37920524ed8e9c 2007030618:43:06 ./tools/crypto/des/m.bat
-d5a12b2e06e3e99867dee245352c6ca5c24fd33c 2007030616:41:14 ./tools/crypto/demo/m.bat
 88a999a02fee980e51ed3f85bcba852d29941c72 2007030513:10:42 ./tools/crypto/blowfish/clean.b
 afe2d5ebc8c31fc1c408c6a1bbe9db629f294d72 2007030513:07:55 ./tools/crypto/blowfish/m
 7a90f17bcd64a7691606623f7ad4b30c1c591894 2007030512:12:35 ./tools/crypto/des/ede2_cbc.prg
@@ -2506,7 +2522,6 @@ e11fcb54a6fa41f753d3b02db23d61d5d3aa7f5b 2006042913:33:51 ./gtk/code_byhand/gtk_
 cf02adf3e9aa2656000467d70dcd4dd3e9b48c4c 2006042913:32:09 ./gtk/code_byhand/gtk_tree_model_apix.cpp
 3baabaa3cf36f0814b668233a34f57f9acbfae0e 2006042913:28:47 ./gtk/code_byhand/gtk_stock_apix.cpp
 545a387dcaa97079bf6a60626571b05228fd36f8 2006042913:26:33 ./gtk/code_byhand/gtk_list_store_apix.cpp
-adc0ca5e19fb6f4c9790bda0c513e0555a3a9b24 2006042913:00:09 ./gtk/code_byhand/code_base/gtk_gobject_signal.cpp
 dac274f914a1f294a5dc69ba88b1737951b7b096 2006042912:51:40 ./gtk/code_byhand/include/cccgtk.h
 e364c548aebc2a043b889971a5a19f61e796d208 2006042912:46:47 ./gtk/code_byhand/code_base/gtk_gobject_apix.cpp
 997fe70e88f01add282d0ff17306e67f02f967c1 2006042912:45:13 ./gtk/code_byhand/gtk_file_selection_apix.cpp
@@ -2583,8 +2598,6 @@ f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042517:22:22 ./ccclib/ccc.bldwin
 4c55aadb0992735c17b2d252d49b2ead8f9997a9 2006042516:18:36 ./terminal/windows/xstart.par
 e6f19eef2020e46b852e3cb91d77deaf101021d1 2006042513:38:23 ./ccclib/src/uic/listbox.prg
 6b4fbcdb30e33f82e37b4be8f657d83a9b8423f7 2006042512:48:33 ./ccclib/src/uic/o_tbcolumn.prg
-529fc266dde3d19ae665464f67b9aab0c4bbf4b5 2006042510:49:00 ./terminal/windows/mutex.cpp
-23f618b0021717a7b4e83d4153a807ddbb0af834 2006042510:43:55 ./terminal/unix/mutex.cpp
 a8e2efd9b3846628d1c4e6baf1be3d9b6f86895e 2006042510:26:38 ./ccclib/src/uic/colorutil.prg
 3ce99b0fe45c8c457399188c32fb6a51ab5e9454 2006042417:54:24 ./setup/setup-unix/color.cpp
 73e366201f69c9ed7eb60ed26875c22049f49d89 2006042218:47:25 ./tabobj/tbbtbtx/utility/parlib.bld
@@ -2848,7 +2861,6 @@ a3d58807625cf9919f9bbe2e073347aa4e35d873 2006021616:34:59 ./tutor/nlstext/s.bat
 f1d2d8871ff7fbd1ede3d45a3cc24df883877e81 2006012615:39:42 ./gtk/pack.b
 ba2ac33b0d4b2fadfc624a53734ff6e9fee6e093 2006012520:51:48 ./gtk/cleanall.bat
 52b59b4ed35bfc26e1da612643d761636f8bc617 2006012511:40:32 ./gtk/code_byhand/gtk.bld
-9e620e61d3d893e46174d7a5b8fa1cf040f9b998 2006012510:54:12 ./gtk/code_byhand/gtk_cell_layout_data_func_apix.cpp
 d1966af938c44278ceba403721721d184dbb4696 2006012510:45:21 ./gtk/code_byhand/gtk_style_apix.cpp
 358dc837014f077edb37163cacccdab7b3e3c60e 2006012510:45:00 ./gtk/code_byhand/gtk_menu_apix.cpp
 35142c1934252a04c5dd319f03ca4825c1406bdb 2006012510:44:30 ./gtk/code_byhand/gtk_frame_apix.cpp
@@ -3278,7 +3290,6 @@ a908d3c29a66a8f064a16768e92ab23b5ae12cdf 2003082016:54:07 ./usr/lib/fre/ldd-show
 cbc61101c6afad38087d611cc9c340f7e2c26c0f 2003082013:42:11 ./tools/ddict2/m
 10556fdc2585de705d99866d9ff2ee76ada275bc 2003082011:59:50 ./tools/ddict2/parfile.bld
 29b0449e895dca234b244dfbe403b7f470a2a4c2 2003082011:59:12 ./tools/ddict2/m.bat
-382beebd342ffe3f841d9ccff185a38835b59d73 2003081920:45:36 ./usr/options/mng/link.opt
 694aaf544122fd8b8841b539c96c23e7d21d7455 2003081916:36:32 ./tabobj/tbbtbtx/btree/swap.cpp
 a0a87a4ccc37ce33ebd1539dba3cc67a6aa19456 2003081916:36:24 ./tabobj/tbbtbtx/btree/bt_swap.cpp
 01763b8e87dc61b15507400b02ac63b59e82ac79 2003081915:23:44 ./ccctools/prg2ppo/xtrans.ch

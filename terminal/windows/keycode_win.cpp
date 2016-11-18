@@ -59,7 +59,6 @@
 #define KEY_F10         VK_F10
 #define KEY_F11         VK_F11
 #define KEY_F12         VK_F12
-#endif
 
 #define KEYCODE keycode_win
 #include <keycode.h>

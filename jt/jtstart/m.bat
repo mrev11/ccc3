@@ -1,2 +1,2 @@
 @echo off
-bapp_w32_ @parfile.bld -blibeay32 -bssleay32
+bapp_w32_ @parfile.bld -bcrypto -bssl

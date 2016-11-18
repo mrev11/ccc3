@@ -128,6 +128,8 @@ local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     classAttrib(clid,"diffblk")
     classMethod(clid,"diff",{|t|if(t:diffblk!=NIL,eval(t:diffblk,t),.t.)})
 
+    classAttrib(clid,"endofline")//mi legyen a sorok vegen
+
     return clid
 
 
@@ -190,6 +192,8 @@ local n
         //this:atxt[n]:=strtran(this:atxt[n],chr(9),space(this:tabsiz))
         this:atxt[n]:=detab(this:atxt[n],this:tabsiz)
     next
+
+    this:endofline:=endofline()
     
     return this
 

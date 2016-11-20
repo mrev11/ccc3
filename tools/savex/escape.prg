@@ -20,6 +20,9 @@
 
 ****************************************************************************
 function escape(fs)
+#ifdef _UNIX_
+    //vedi a specialis karaktereket,
+    //hogy bash-nek jo legyen a parancs
     fs::=strtran("\","\\")
     fs::=strtran("'","\'")
     fs::=strtran('"','\"')
@@ -39,6 +42,10 @@ function escape(fs)
     fs::=strtran('>','\>')
     fs::=strtran('|','\|')
     fs::=strtran(' ','\ ')
+#else
+    //nem tudom mi kell Windows-ban
+    fs:='"' +fs+ '"'
+#endif
     return fs
 
 ****************************************************************************

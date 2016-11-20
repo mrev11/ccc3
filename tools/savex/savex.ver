@@ -1,8 +1,11 @@
 
-#define VERZIO  "5.2.1"
+#define VERZIO  "5.2.2"
 
 
 #ifdef NOT_DEFINED
+
+2016.11.19 -- 5.2.2
+   Spec fajlnevek vedelme Windows parancssorban.
 
 2016.10.02 -- 5.2.1
    A '/' shortcutra beszed egy stringet, es azzal keres

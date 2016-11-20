@@ -1,3 +1,7 @@
+
+2016.11.20 hianyzo copyright-ok potolva;
+  savex: fajlnevek vedelme Windows parancssorban;
+
 2016.11.12 windowson minden leforditva az uj msys2/mingw64-gyel;
   az ssl/crypto/gtk forditasban uj konyvtarnevek;
   z.exe a ZEOL valtozoban megadott modon kepezi a sorvegeket

@@ -1,4 +1,22 @@
 
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifdef _UNIX_
   #include <sys/times.h>
@@ -60,6 +78,7 @@ extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
 extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
+extern int  utf8_to_ucs(const char*string, int*);
 
 
 #ifndef GDK_KEY_Delete
@@ -495,24 +514,19 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
     }
     else if( length==0 )
     {
-        extern int keycode_gtk(int keyval,int state);
         code=keycode_gtk(keyval,state);
     }
     else if( asc>=128 )
     {
-        extern int utf8_to_ucs(const char*string, int*);
         utf8_to_ucs(string,&code);
+    }
+    else if( (state&4) && 'a'<=asc  && asc<='z' )
+    {
+        code=-(asc-'a'+1); //ALT_A,...,ALT_Z
     }
     else
     {
-        if( (state&4) && 'a'<=asc  && asc<='z' )
-        {
-            code=-(asc-'a'+1); //ALT_A,...,ALT_Z
-        }
-        else
-        {
-            code=asc;
-        }
+        code=asc;
     }
 
     //printf("code=%d state=%d keyval=%x length=%d string=[%s] asc=%d\n", code,state,keyval,length,string,asc);

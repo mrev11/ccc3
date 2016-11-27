@@ -1,4 +1,12 @@
 
+2016.11.27 -- 1.4.4
+  Dinamikus forditasi szabalyok.
+  A futas elejen a BUILD_BAT directory tartalmabol
+  megallapitja, milyen forditasi muveletek lehetsegesek,
+  igy nem kell azokat a programba bedrotozni.
+  Resource-ok keresese hash-sel optimalizalva.
+  tdc2prgch forditas.
+
 2016.02.19 -- 1.4.03 kozvetlen tds2obj forditas.
 
 2015.02.22 -- 1.4.02 resource-ok forditasa is parhuzamositva.

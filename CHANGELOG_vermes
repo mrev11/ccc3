@@ -1,4 +1,12 @@
 
+2016.11.27 tobb resource fordito tamogatasa;
+  build-ben dinamikus forditasi szabalyok;
+  build-ben a resource-ok keresese hash-sel optimalizalva;
+  tdc2prgch kodgenerator tamogatva;
+  page atirva CCC3-ra;
+  msk2pge atirva CCC3-ra;
+  pge2wro atirva CCC3-ra;
+
 2016.11.20 hianyzo copyright-ok potolva;
   savex: fajlnevek vedelme Windows parancssorban;
 

@@ -1,2 +1,4 @@
--lmask
+-d. 
+-dutil 
+
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

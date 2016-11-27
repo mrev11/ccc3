@@ -33,7 +33,8 @@ static s_version := .f.
  
 static s_debug:=.f.
 static s_dry:=.f.
-static s_primary:=".y.lem.lex.prg.cpp.c.asm.tds."
+static s_primary   //kiszamitja s_rules-bol //:=".y.lem.lex.prg.cpp.c.asm.tds.tdc."
+static s_resource  //kiszamitja s_rules-bol //:=".msk.mnt.cls.htm.pge.tdc"
 
 static s_libabs:=.t. //minden platformon abszolút lib specifikációk
  
@@ -47,6 +48,7 @@ static s_rules:={;
 {".msk",".wro"},;
 {".pge",".out"},;
 {".pge",".wro"},;
+{".tdc",".ch" },;
 {".asm",".obj"},;
 {".c"  ,".obj"},;
 {".cpp",".obj"},;
@@ -55,11 +57,14 @@ static s_rules:={;
 {".y"  ,".obj"},;
 {".lem",".obj"},;
 {".lex",".obj"},;
+{".tdc",".obj"},;
 {".obj",".lib"},;
 {".obj",".exe"};
 }
 
-#define VERSION "1.3.05" // 2016.02.19 tds2prg tamogatas
+static resource_hash:=simplehashNew()
+
+#define VERSION "1.3.6" // 2016.11.27 dinamikus forditasi szabalyok
 
 ****************************************************************************
 function main()
@@ -175,11 +180,64 @@ local opt:=aclone(argv()),n
         quit
     end
 
+    s_rules_from_build_bat()
+    extension_types()
+
     root()
     params()
     build()
     
     ?
+
+
+****************************************************************************
+static function s_rules_from_build_bat()
+
+//a BUILD_BAT directory tartalmabol
+// dinamikusan eloallitja az s_rules tombot
+
+local d,n,rule
+
+    asize(s_rules,0)
+    d:=directory(getenv("BUILD_BAT")+dirsep()+"*.bat")
+    for n:=1 to len(d)
+        rule:=d[n][1]::strtran(".bat","")::split("2")
+        if( len(rule)==2 )
+            rule[1]:="."+rule[1]
+            rule[2]:="."+rule[2]
+            aadd(s_rules,rule)
+        end
+    next
+    
+    //for n:=1 to len(s_rules)
+    //    ? s_rules[n]
+    //next
+
+
+****************************************************************************
+static function extension_types()
+local r1,r2,n
+
+    s_primary:=""
+    s_resource:=""
+
+    for n:=1 to len(s_rules)
+        r1:=s_rules[n][1]
+        r2:=s_rules[n][2]
+
+        //vigyazat: tdc$primary and tdc$resource!
+        
+        if( r2==".obj" )
+            s_primary+=r1
+        end
+        if( !r2+"."$".obj.lib.exe." )
+            s_resource+=r1 //tobbszorozodhet
+        end
+    next
+    s_primary+="."
+    s_resource+="."
+    //? s_primary
+    //? s_resource
 
 
 ****************************************************************************
@@ -397,6 +455,10 @@ local d1,f,o,n,i,txt,dep
                 
             if( fext(f)+"."$s_primary  )
                 aadd(obj,dir[n]+dirsep()+f)
+            end
+            //vigyazat: tdc$primary and tdc$resource!
+            if( fext(f)+"."$s_resource )
+                resource_hash[f]:=dir[n]+dirsep()+f
             end
         next
     next
@@ -1076,6 +1138,12 @@ local p                 //az előállítandó filé directoryja
 local r,e0              //resource name/kiterjesztés
 local i
 
+    if( e==".ch" .and. !f[1]=="_" )
+        //csak olyan ch-kat probal resourcebol 
+        //legyartani, amik '_' karakterrel kezdodnek
+        return .f.
+    end
+
     for i:=1 to len(s_rules) 
     
         if( s_rules[i][2]==e )
@@ -1084,7 +1152,8 @@ local i
         
             //előállítható, ha létezik az alábbi filé    
 
-            if( NIL!=(r:=search_file(dir,f+e0))  )
+            //if( NIL!=(r:=search_file(dir,f+e0))  )
+            if( NIL!=(r:=resource_hash[f+e0]) )
                 p:=fpath(r)
                 adddep(dep,p+f+e)
                 if( 0==ascan(todo,{|x|x[1]==p+f+e}) )

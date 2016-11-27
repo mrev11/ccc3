@@ -123,7 +123,7 @@ local srTomb,say_mode
     mskstr:=memoread(mskfile,.t.)
 
     if( len(mskstr)%4!=0  )
-        mskstr:=left(mskstr,len(mskstr)-1)
+        mskstr:=left(mskstr,len(mskstr)-(len(mskstr)%4))
     end
 
     if( len(mskstr)==CALCSIZE(size80x25) )

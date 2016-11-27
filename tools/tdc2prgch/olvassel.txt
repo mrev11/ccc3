@@ -1,0 +1,8 @@
+tdc2prgch
+---------
+
+.ch és -prg fájlok készítése .tdc-ből.
+A tesztje a csiszar.wrk-ban van.
+
+Csiszár Levente <csiszar@eriadorber.hu>, 2016.11.22
+

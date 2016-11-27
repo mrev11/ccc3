@@ -1,0 +1,405 @@
+#!/usr/bin/perl -w
+#********************************************************************
+# tdc2prgch: Create a prg and a ch CCC source files from a tdc file.
+# 2000, Levente Csiszár
+#********************************************************************
+sub info
+{
+
+   if (@ARGV == 0)
+   {
+      print "tdc2prgch: Create a prg and a ch CCC source files from a tdc file.\n";
+      print "\n";
+      print "Usage\n";
+      print "\n";
+      print "   \$ tdc2prgch tdcfile[.tdc]\n";
+      print "\n";
+      exit(1);
+   }
+}
+#********************************************************************
+
+#********************************************************************
+# Check:
+
+#   tablename len        max 7
+#   index file name len  max 8
+#   fieldname len        max 10.
+
+#   duplicate !table
+#   duplicate !path
+#   Unique fieldname
+#   Unique index name.
+#   Unique index file name(?)
+#   All field in index expression must be valid field.
+
+$|=1;
+#********************************************************************
+$dirsep="/";
+
+#********************************************************************
+$maxlen_tablename=7;
+$maxlen_indexfilename=8;
+$maxlen_fieldname=10;
+
+#********************************************************************
+$filename="";
+
+#********************************************************************
+sub perr
+{
+   my $l=shift;
+
+   print STDERR "*** Error *** in $filename(".sprintf("%4d",$l)."): ",@_,"\n";
+   $err=1;
+}
+
+#********************************************************************
+sub perr_die
+{
+   perr @_;
+   exit(1);
+}
+
+#********************************************************************
+sub format_fields
+{
+   my($name,$type,$len,$dec)=@_;
+
+   return sprintf("%-12s %s %3d %2d",uc($name),uc($type),$len,$dec);
+}
+
+#********************************************************************
+sub getIFile
+{
+   my @w=split(/ +/,$_[0]);
+
+   return $w[1];
+}
+
+#********************************************************************
+sub readtdc
+{
+   ($filename) = @_;
+   my (@w,$i,$j,$line,$s);
+   my @index_lines=();
+
+   $tdc_table="";
+   $tdc_path="";
+   $tdc_owner="";
+   $tdc_version=-1;
+   @tdc_indexes=();
+   @tdc_fields=();
+   my %field_names=();
+   my %index_names=();
+   my %indexfile_names=();
+
+   #print "file: $filename\n";
+   open(FILE,"<$filename") or die ("Open error: $filename\n");
+   $line=0;
+   while(<FILE>)
+   {
+      chomp($_);
+      $_ =~ s/\r//g;
+      $line++;
+
+      if (/^!table/)
+      {
+         /^!table +(\w[\w\n]*) *$/ or perr_die $line, "Syntax error: $_";
+         if ($tdc_table)
+         {
+            perr $line, "Duplicate !table: $_";
+            $err=1;
+            next;
+         }
+         if (length($1)>$maxlen_tablename)
+         {
+            perr $line, "Too long table name (max $maxlen_tablename) : $1";
+            $err=1;
+            next;
+         }
+         $tdc_table=lc($1);
+      }
+      elsif (/^!path/)
+      {
+         /^!path +([^ ]+) *$/ or perr_die $line, "Syntax error: $_";
+         if ($tdc_path)
+         {
+            perr $line, "Duplicate !path: $_";
+            $err=1;
+            next;
+         }
+         $tdc_path=lc($1);
+      }
+      elsif (/^!owner/)
+      {
+         /^!owner +([^ ]+) *$/ or perr_die $line, "Syntax error: $_";
+         if ($tdc_owner)
+         {
+            perr $line, "Duplicate !owner: $_";
+            $err=1;
+            next;
+         }
+         $tdc_owner=$1;
+      }
+      elsif (/^!version/)  # ddict version
+      {
+         /^!version +([0-9]+) *$/ or perr_die $line, "Syntax error: $_";
+         if ($tdc_version != -1)
+         {
+            perr $line, "Duplicate !tdc_version: $_";
+            $err=1;
+            next;
+         }
+         $tdc_version=$1;
+      }
+      elsif (/^!index/)
+      {
+         /^!index +(\w[\w\n]*) +(\w[\w\n]*) +(\w[\w\n]*( +\w[\w\n]*)*) *$/ or 
+            perr_die $line, "Syntax error: $_";
+         if (exists $indexfile_names{lc($1)})
+         {
+            perr $line, "Duplicate index file name: $1";
+            $err=1;
+            next;
+         }
+         $indexfile_names{lc($1)}=$_;
+
+         if (exists $index_names{lc($2)})
+         {
+            perr $line, "Duplicate index name: $2";
+            $err=1;
+            next;
+         }
+         $index_names{lc($2)}=$_;
+
+         if (length($2)>$maxlen_indexfilename)
+         {
+            perr $line, "Too long index file name (max $maxlen_indexfilename) : $2";
+            $err=1;
+            next;
+         }
+
+         push @tdc_indexes,lc("$1 $2 $3");
+         push @index_lines,$line;
+      }
+      elsif (/^!field/)
+      {
+         /^!field +(\w[\w\n]*) +([CcNnDdLl]) +(\d+)(( +\d+)?) *$/ or
+            perr_die $line, "Syntax error: $_";
+         if (exists $field_names{lc($1)})
+         {
+            perr $line, "Duplicate field name: $1";
+            $err=1;
+            next;
+         }
+         if (length($1)>$maxlen_fieldname)
+         {
+            perr $line, "Too long field name (max $maxlen_fieldname): $1";
+            $err=1;
+            next;
+         }
+         
+         $s=$4;
+         if ($s)
+         {
+            $s =~ s/^ +//g;
+            $s =~ s/  +/ /g;
+         }
+         else
+         {
+            $s=0;
+         }
+         
+         push @tdc_fields,format_fields($1,$2,$3,$s);
+         $field_names{lc($1)}=$_;
+      }
+      elsif (/^!/)
+      {
+         perr $line, "Unknow tdc keyword: $_";
+         $err=1;
+      }
+   }
+
+   close FILE;
+
+   $tdc_table or perr $line, "Missing !table";
+
+   # Check field names in indexes.
+   for($i=0;$i<@tdc_indexes;$i++)
+   {
+      @w=split(/ +/,$tdc_indexes[$i]);
+
+      # print "Check index: $i ",$tdc_indexes[$i],"";
+      for($j=2;$j<@w;$j++)
+      {
+         if (! exists $field_names{lc($w[$j])})
+         {
+             perr $index_lines[$i], 
+                  "Field in index expression does not exist: $w[$j]";
+         }
+      }
+   }
+
+   $tdc_owner="guest" if (! $tdc_owner);
+   $tdc_version=0     if ($tdc_version == -1);
+
+}
+
+#********************************************************************
+sub writeprg
+{
+   my ($fpath)= @_;
+   my ($i,$j,@w);
+   my $tab="    ";
+   # Indexes must be sorted by file name, because ddict2 uses this
+   # sorting and ctree driver is sensible for the order (uhhh...).
+   my @tdc_indexes_sorted =
+      sort {uc(getIFile($a)) cmp uc(getIFile($b))} @tdc_indexes;
+   my $fname;
+
+
+   # Print .ch
+   $fname = "$fpath"."_".lc($tdc_table).".ch";
+   open (FILE,  ">$fname") or die "Open error: $fname\n";
+
+   print  FILE "\n";
+   printf FILE "#define %s             (TABLE:_$tdc_table)\n",uc($tdc_table);
+
+   print  FILE "\n";
+
+   print  FILE "#ifdef ARROW\n";
+
+   for $i (0..@tdc_fields-1)
+   {
+      @w=split(/ +/,$tdc_fields[$i]);
+      printf FILE "#define %s_%-10s  %s->%-12s\n",
+                   uc($tdc_table),uc($w[0]),lc($tdc_table),lc($w[0]);
+   }
+
+   print  FILE "#else\n";
+
+   for $i (0..@tdc_fields-1)
+   {
+      @w=split(/ +/,$tdc_fields[$i]);
+      printf FILE "#define %s_%-10s  (FIELD:_%s:%d)\n",
+                  uc($tdc_table),uc($w[0]),lc($tdc_table),$i+1;
+   }
+
+   print  FILE "#endif\n";
+
+   print  FILE "\n";
+
+   close FILE;
+
+
+   # Print .prg
+   $fname=$fpath."_".lc($tdc_table).".prg";
+   open FILE, ">$fname" or die "Open error: $fname\n";
+
+   printf FILE "function _%s(col,exp)\n",uc($tdc_table);
+
+   print  FILE "static dbf\n";
+   print  FILE $tab."if(empty(dbf))\n";
+   print  FILE $tab.$tab."dbf:=tabNew(\"".uc($tdc_table)."\")\n";
+   if ($tdc_path)
+   {
+      print  FILE $tab.$tab."tabPath(dbf,\"".uc($tdc_path)."\\\")\n";
+   }
+
+   for $i (0..@tdc_fields-1)
+   {
+      @w=split(/ +/,$tdc_fields[$i]);
+      push(@w,0);
+      printf FILE $tab.$tab."tabAddColumn(dbf,{%-12s,\"%s\",%3d,%2d})\n",
+                             '"'.uc($w[0]).'"',uc($w[1]),$w[2],$w[3];
+   }
+
+   for $i (0..@tdc_indexes_sorted-1)
+   {
+      @w=split(/ +/,$tdc_indexes_sorted[$i]);
+      printf FILE $tab.$tab."tabAddIndex(dbf,{\"%s\",\"%s\",",
+                             uc($w[0]),uc($w[1]);
+
+         printf FILE "{\"%s\"",uc($w[2]);
+         for $j (3..@w-1)
+         {
+            printf FILE ",\"%s\"",uc($w[$j]);
+         }
+         print FILE "}";
+
+      print FILE "})\n";
+   }
+
+   print  FILE $tab."end\n";
+   print  FILE $tab."if(col==NIL)\n";
+   print  FILE $tab.$tab."return dbf\n";
+   print  FILE $tab."end\n";
+   print  FILE $tab."return tabEvalColumn(dbf,col,exp)\n";
+   print  FILE "\n";
+
+   close FILE;
+}
+
+
+#********************************************************************
+sub chfext
+# Change the extension of a filename.
+{
+   my ($filename,$ext)=@_;
+
+   # $filename =~ s/\.[^\\:\.]*$//;   # dos
+   # $filename =~ s/\.[^\/\.]*$//;     #unix
+   $filename =~ s/\.[^\/\\:\.]*$//;  # dos & unix
+   return $filename.$ext;
+}
+
+#********************************************************************
+sub addfext
+# Add an extension to a filename if it has no extension.
+{
+   my ($filename,$ext)=@_;
+
+   return $filename if (chfext($filename,"") ne $filename);
+
+   return chfext($filename,$ext);
+}
+#********************************************************************
+sub getfpath
+{
+   my ($filename)=@_;
+
+   # $filename =~ s/\\[^\\:]*$//;     # dos
+   # $filename =~ s/\/[^\/]*$//;      # unix
+   $filename =~ s/(\/|^)[^\/\\:]*$//;     # dos & unix
+   return $filename?$filename.$dirsep:"";
+}
+#********************************************************************
+#  main
+#********************************************************************
+sub main
+{
+   info;
+
+   $err=0;
+
+   for $tdc (@ARGV)
+   {
+      
+      readtdc(addfext($tdc,".tdc"));
+   
+      # print "tdc_table  : $tdc_table\n";
+      # print "tdc_path   : $tdc_path\n";
+      # print "tdc_indexes: ",@tdc_indexes,"\n";
+      # print "tdc_fields : ",@tdc_fields,"\n";
+   
+      $err and exit($err);
+
+      writeprg(getfpath($tdc));
+   }
+}
+
+#********************************************************************
+main
+#********************************************************************
+

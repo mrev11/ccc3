@@ -2,6 +2,6 @@
 #export CCC_NLSTEXT_TAB=$(pwd)/translate
 #msk2say -r  maskdemo.sor  maskdemo.msk
 
-bapp_unixc.b -xdemo
+bapp_unixc.b -lmask -xdemo
 
 

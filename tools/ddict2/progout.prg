@@ -356,7 +356,7 @@ local memofield:={}, dbmname
 static function progWrite(file,txt) // kiírja text-et, ha megváltozott
     file:=lower(file) //99.07.27
 
-    //txt+=chr(26) //EOF
+    txt+=chr(26) //EOF
 
     if( !(memoread(ddictPath()+file)==txt) )
         if(!memowrit(ddictPath()+file,txt))

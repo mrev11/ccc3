@@ -18,6 +18,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//2016.12.01
+//a korabbi program atirva olyan szervezesure,
+//ahogy a (jol sikerult) gtk-s terminal mukodik:
+//a tcpio szal kizarolag csak letarolja a valtozasokat,
+//minden kepernyo muveletet az eventloop szal vegez. 
+
+
 #include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,27 +44,27 @@ static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
 static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
 static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
 
-static pthread_mutex_t mutex_blink=PTHREAD_MUTEX_INITIALIZER;
-static void blink_lock(){pthread_mutex_lock(&mutex_blink);}
-static void blink_unlock(){pthread_mutex_unlock(&mutex_blink);}
-
-static pthread_mutex_t mutex_paint=PTHREAD_MUTEX_INITIALIZER;
-static void paint_lock(){pthread_mutex_lock(&mutex_paint);}
-static void paint_unlock(){pthread_mutex_unlock(&mutex_paint);}
 
 screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
+static int dirty_size=0;
+
 static int invtop=9999,invlef=9999,invbot=0,invrig=0;
 static int dirty_buffer=0;
-static int fontwidth,fontheight,fontascent;
 
 static int cursor_x=0;
 static int cursor_y=0;
 static int cursor_onoff=1;
 static int cursor_state=0;
-static unsigned cursor_tick=0;
 static int cursor_focus=0;
+static int dirty_curpos=0;
+static unsigned cursor_tick=0;
+
+static char *caption=0;
+static int dirty_caption=0;
+
+static int fontwidth,fontheight,fontascent;
 
 Display *display;
 Window window;
@@ -118,26 +125,6 @@ static XFontStruct *loadfont()
         exit(1);
     }
     return font;
-}
-
-//----------------------------------------------------------------------------
-void setcaption(char *cap)
-{
-    //printf("%s\n",cap);fflush(0);
-    XSetStandardProperties(display,window,cap,0,0,0,0,0); 
-}
-
-//----------------------------------------------------------------------------
-void invalidate(int t, int l, int b, int r)
-{
-    //printf("dirty (%d,%d,%d,%d)\n",t,l,b,r);
-    invalidate_lock();
-    if(t<invtop) invtop=t;
-    if(l<invlef) invlef=l;
-    if(b>invbot) invbot=b;
-    if(r>invrig) invrig=r;
-    dirty_buffer=1;
-    invalidate_unlock();
 }
 
 //----------------------------------------------------------------------------
@@ -203,7 +190,6 @@ static void paintline(int cx, int cy, XChar2b *txt, int txtlen, int attr, int fl
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig, int flag)
 {
-    paint_lock();
     //static int cnt=0;
     //printf("%d (%d,%d,%d,%d)\n",++cnt,top,lef,bot,rig);fflush(0);
 
@@ -240,72 +226,127 @@ static void paint(int top, int lef, int bot, int rig, int flag)
         }
     }
     XFlush(display);
-
-    paint_unlock();
 }
 
 //----------------------------------------------------------------------------
-static void blink(int flag)
+static void blink(int flag)  //bg<->fg váltogatós kurzor
 {
     static int prevx=0;
     static int prevy=0;
-
-    blink_lock();
-
-    if( cursor_state )
-    {
-        paint(prevy,prevx,prevy,prevx,1);
-        cursor_state=0;
-    }
     
-    if( flag ) //aláhúzós kurzor
+    if( flag )
     {
-        screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
-        int attr=cell->getattr();
-        int bg=0xf&(attr>>4);
-        int crscolidx=15; //w+
-        if( bg==15 )
+        if( cursor_state && (prevx!=cursor_x || prevy!=cursor_y) )
         {
-            crscolidx=0; //n
+            paint(prevy,prevx,prevy,prevx,1);
+            cursor_state=0;
         }
 
-        int dx=fontwidth;
-        int dy=fontwidth/8<3?3:fontwidth/8;
-        int x=cursor_x*fontwidth;
-        int y=cursor_y*fontheight+fontheight-dy;
-        XSetForeground(display,gc,rgb_color[crscolidx]);
-        XFillRectangle(display,window,gc,x,y,dx,dy);
-        XFlush(display);
-
-        cursor_state=1;
-        prevx=cursor_x;
-        prevy=cursor_y;
-    }
-
-    if( flag && 0 ) //bg<->fg váltogatós kurzor
-    {
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();
         int fg=0xf&(attr>>0);
         int bg=0xf&(attr>>4);
         cell->setattr((fg<<4)+bg);
         paint(cursor_y,cursor_x,cursor_y,cursor_x,1);
-        cell->setattr(attr);
+        cell->setattr(attr);  //rogton vissza
 
         cursor_state=1;
         prevx=cursor_x;
         prevy=cursor_y;
     }
+    else if( cursor_state )
+    {
+        paint(prevy,prevx,prevy,prevx,1);
+        cursor_state=0;
+    }
 
     cursor_tick=gettickcount();
-    blink_unlock();
 }
+
+
+//----------------------------------------------------------------------------
+void invalidate(int t, int l, int b, int r)
+{
+    //printf("dirty (%d,%d,%d,%d)\n",t,l,b,r);
+    invalidate_lock();
+    if(t<invtop) invtop=t;
+    if(l<invlef) invlef=l;
+    if(b>invbot) invbot=b;
+    if(r>invrig) invrig=r;
+    dirty_buffer=1;
+    invalidate_unlock();
+}
+
+//----------------------------------------------------------------------------
+void invalidate_loop()
+{
+    invalidate_lock();
+    paint(invtop,invlef,invbot,invrig,0);
+    invtop=9999;
+    invlef=9999;
+    invbot=0;
+    invrig=0;
+    dirty_buffer=0;
+    invalidate_unlock();
+}
+
+//----------------------------------------------------------------------------
+void setcaption(char *cap)
+{
+    invalidate_lock();
+    char buf[256];
+    buf[0]='(';
+    strncpy(buf+1,cap,200);
+    strcat(buf,")");
+    free(caption);
+    caption=strdup(buf);
+    dirty_caption=1;
+    invalidate_unlock();
+}
+
+
+//----------------------------------------------------------------------------
+void setcaption_loop()
+{
+    invalidate_lock();
+    XSetStandardProperties(display,window,caption,0,0,0,0,0); 
+    dirty_caption=0;
+    invalidate_unlock();
+
+}
+
 
 //----------------------------------------------------------------------------
 void setwsize(int x, int y)
 {
+    invalidate_lock();
     wwidth=x;
     wheight=y;
+    cursor_x=0;
+    cursor_y=0;
+
+    if(screen_buffer)
+    {
+        delete screen_buffer;
+    }
+    screen_buffer=new screenbuf(wwidth,wheight);
+
+    invtop=0;
+    invlef=0;
+    invbot=wheight-1;
+    invrig=wwidth-1;
+    cursor_focus=1;
+    dirty_buffer=1;
+    dirty_size=1;
+
+    invalidate_unlock();
+}
+
+
+//----------------------------------------------------------------------------
+void setwsize_loop()
+{
+    invalidate_lock();
 
     XUnmapWindow(display,window);
     static XSizeHints size_hints;
@@ -316,115 +357,85 @@ void setwsize(int x, int y)
     size_hints.max_height = wheight*fontheight;
     XSetStandardProperties(display,window,0,0,0,0,0,&size_hints); 
     XMapWindow(display,window);
-    
-    if(screen_buffer)
-    {
-        delete screen_buffer;
-    }
 
-    screen_buffer=new screenbuf(wwidth,wheight);
+    dirty_size=0;
 
-
-    invalidate_lock();
-    invtop=0;
-    invlef=0;
-    invbot=wheight-1;
-    invrig=wwidth-1;
-    dirty_buffer=1;
-    cursor_focus=1;
     invalidate_unlock();
-
-
-    cursor_x=0;
-    cursor_y=0;
 }
 
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
-    blink_lock();
+    invalidate_lock();
     cursor_x=x;
     cursor_y=y;
-    blink_unlock();
+    dirty_curpos=1;
+    invalidate_unlock();
+}
 
-    if( cursor_onoff )
+//----------------------------------------------------------------------------
+void setcursor_loop()
+{
+    invalidate_lock();
+    if(cursor_onoff)
     {
         blink(1);
     }
+    dirty_curpos=0;
+    invalidate_unlock();
 }
 
 //----------------------------------------------------------------------------
 void setcursoroff()
 {
-    blink(cursor_onoff=0);
+    cursor_onoff=0;
 }
 
 //----------------------------------------------------------------------------
 void setcursoron()
 {
-    blink(cursor_onoff=1);
+    cursor_onoff=1;
 }
 
 //----------------------------------------------------------------------------
-static int eventproc(XEvent event)
+static void timeout()
 {
-    if( event.type==Expose ) 
-    {
-        //xevent->count jelentése:
-        //legalább ennyi expose message van még a queue-ban,
-        //megvárjuk az utolsót (count==0), és csak akkor rajzolunk,
-        //addig gyűjtjük az invalid területet.
+    #ifdef NOTDEFINED
+    printf("timeout S%d B%d T%d C%d\n", 
+            dirty_size, 
+            dirty_buffer,
+            dirty_caption, 
+            dirty_curpos);
+    #endif
 
-        XExposeEvent *xevent=(XExposeEvent*)&event;
-
-        int c=xevent->count;
-        int x=xevent->x;
-        int y=xevent->y;
-        int w=xevent->width;
-        int h=xevent->height;
-
-        //printf("E %d (%d %d %d %d)\n",c,x,y,w,h );fflush(0);
-
-        static int top=9999;
-        static int lef=9999;
-        static int bot=0;
-        static int rig=0;
-
-        if( top > y/fontheight     ) top=y/fontheight;     //max
-        if( lef > x/fontwidth      ) lef=x/fontwidth;      //max
-        if( bot < (y+h)/fontheight ) bot=(y+h)/fontheight; //min
-        if( rig < (x+w)/fontwidth  ) rig=(x+w)/fontwidth;  //min
-        
-        if( xevent->count==0 )
-        {   
-            //printf("EXPOSE (%d,%d,%d,%d)\n",top,lef,bot,rig);fflush(0);
-            paint(top,lef,bot,rig,1);
-            top=9999;
-            lef=9999;
-            bot=0;
-            rig=0;
-        }
-    }
-    else if( event.type==KeyPress )
+    if( dirty_size ) //ennek kell elol lenni!
     {
-        //printf("K");fflush(0);
-        keypress(event);
+        setwsize_loop();
     }
-    else if( event.type==FocusIn )
+    else if( dirty_buffer )
     {
-        //printf("Fi");fflush(0);
-        cursor_focus=1;
+        invalidate_loop();
     }
-    else if( event.type==FocusOut )
+    else if( dirty_caption )
     {
-        //printf("Fo");fflush(0);
-        cursor_focus=0;
+        setcaption_loop();
     }
-    else
+
+    if( dirty_curpos )
     {
-        //printf("U");fflush(0);
+        setcursor_loop();
     }
-    return 0;
+
+    unsigned tick=gettickcount()-cursor_tick;
+
+    if( cursor_state && tick>400  )
+    {
+        blink(0);
+    }
+    else if( cursor_onoff && cursor_focus && !cursor_state && tick>200  )
+    {
+        blink(1);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -437,43 +448,63 @@ static void eventloop()
         {
             XEvent event;
             XNextEvent(display,&event);
-            if( eventproc(event) )
+
+            if( event.type==Expose ) 
             {
-                //printf("\nEnd of eventloop\n");fflush(0);
-                return;
-            }
-        }
+                //xevent->count jelentése:
+                //legalább ennyi expose message van még a queue-ban,
+                //megvárjuk az utolsót (count==0), és csak akkor rajzolunk,
+                //addig gyűjtjük az invalid területet.
+
+                XExposeEvent *xevent=(XExposeEvent*)&event;
+
+                int c=xevent->count;
+                int x=xevent->x;
+                int y=xevent->y;
+                int w=xevent->width;
+                int h=xevent->height;
+
+                //printf("E %d (%d %d %d %d)\n",c,x,y,w,h );fflush(0);
+
+                static int top=9999;
+                static int lef=9999;
+                static int bot=0;
+                static int rig=0;
+
+                if( top > y/fontheight     ) top=y/fontheight;     //max
+                if( lef > x/fontwidth      ) lef=x/fontwidth;      //max
+                if( bot < (y+h)/fontheight ) bot=(y+h)/fontheight; //min
+                if( rig < (x+w)/fontwidth  ) rig=(x+w)/fontwidth;  //min
         
-        unsigned tick=gettickcount()-cursor_tick;
-
-        if( dirty_buffer )
-        {
-            invalidate_lock();
-            //static int cnt=0;
-            //printf("clear (%d: %d,%d,%d,%d)\n",cnt++,invtop,invlef,invbot,invrig);fflush(0);
-
-            paint(invtop,invlef,invbot,invrig,0);
-            invtop=9999;
-            invlef=9999;
-            invbot=0;
-            invrig=0;
-            dirty_buffer=0;
-            invalidate_unlock();
-
-            if( cursor_state )
+                if( xevent->count==0 )
+                {   
+                    //printf("EXPOSE (%d,%d,%d,%d)\n",top,lef,bot,rig);fflush(0);
+                    paint(top,lef,bot,rig,1);
+                    top=9999;
+                    lef=9999;
+                    bot=0;
+                    rig=0;
+                }
+            }
+            else if( event.type==KeyPress )
             {
-                blink(1);
+                //printf("K");fflush(0);
+                keypress(event);
+            }
+            else if( event.type==FocusIn )
+            {
+                //printf("Fi");fflush(0);
+                cursor_focus=1;
+            }
+            else if( event.type==FocusOut )
+            {
+                //printf("Fo");fflush(0);
+                cursor_focus=0;
             }
         }
-        else if( cursor_state && tick>400  )
-        {
-            blink(0);
-        }
-        else if( cursor_onoff && cursor_focus && !cursor_state && tick>200  )
-        {
-            blink(1);
-        }
-        sleep(50);
+
+        timeout();
+        sleep(10);
     }
 }
 

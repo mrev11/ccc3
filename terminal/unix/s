@@ -1,4 +1,4 @@
 #!/bin/bash
 
-terminal.exe localhost 55000
-#terminal-xft.exe localhost 55000
+#terminal.exe localhost 55000
+terminal-xft.exe localhost 55000

@@ -78,10 +78,19 @@ local temp:=tempdir()
 
 ******************************************************************************    
 static function removecr_file(f,f1)
+local prediff
 local x:=memoread(f,.t.)
     x:=removecr(x)
     memowrit(f1,x)
-    return NIL
+    if(right(f1,4)=="work")
+        prediff:=getenv("PREDIFFW")
+    elseif(right(f1,4)=="save")
+        prediff:=getenv("PREDIFFS")
+    end
+    if(!empty(prediff))
+        run(prediff+" <"+f1+" >"+f1+".x")
+        frename(f1+".x",f1)
+    end
 
 
 ******************************************************************************    

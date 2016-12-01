@@ -1,3 +1,9 @@
+2016.12.01 terminal es terminal-xft atirva;
+  a korabbi programok atirva olyan szervezesure,
+  ahogy a gtk-s terminal mukodik:
+  a tcpio szal kizarolag csak lekesziti a valtozasokat,
+  minden kepernyo muveletet az eventloop szal vegez;
+  savex a sima textcmp funkcioban is alkalmazza PREDIFF(S/W)-t; 
 
 2016.11.27 tobb resource fordito tamogatasa;
   build-ben dinamikus forditasi szabalyok;

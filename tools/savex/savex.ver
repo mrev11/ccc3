@@ -1,8 +1,11 @@
 
-#define VERZIO  "5.2.2"
+#define VERZIO  "5.2.3"
 
 
 #ifdef NOT_DEFINED
+
+2016.11.29 -- 5.2.3
+   PREDIFF(W/S) alkalmazasa compfile-ben is.
 
 2016.11.19 -- 5.2.2
    Spec fajlnevek vedelme Windows parancssorban.

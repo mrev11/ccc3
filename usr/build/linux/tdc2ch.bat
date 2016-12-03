@@ -6,10 +6,9 @@ echo TDC2CH.BAT $1 $2
 rm -f error--tdc2ch-$1
 mkdir -p ppo
 
-rm -f ppo/$1.prg
 rm -f ppo/$1.ch
-cp -f $2/$1.tdc ppo/$1.tmp
-tdc2prgch.exe  ppo/$1.tmp 2>ppo/tdc2ch-$1
+cp -f $2/$1.tdc ppo/$1.tmp-ch
+tdc2prgch.exe --ch  ppo/$1.tmp-ch 2>ppo/tdc2ch-$1
 
 if ! test -f ppo/$1.ch; then
     touch error
@@ -20,9 +19,8 @@ if ! test -f ppo/$1.ch; then
 else
     mv ppo/$1.ch $2/$1.ch
 
-    rm -f ppo/$1.prg
-    rm -f ppo/$1.tmp
-    rm -f ppo/tdc2prg-$1
+    rm -f ppo/$1.tmp-ch
+    rm -f ppo/tdc2ch-$1
 fi
 
 

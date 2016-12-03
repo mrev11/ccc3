@@ -2,7 +2,7 @@
 // tdc2prgch.prg: tdc -> .prg, .ch
 //*******************************************************************
 
-#define VERSION "v1.0.01"
+#define VERSION "v1.0.2"
 
 //*******************************************************************
 // #define DEBUG(x) x
@@ -23,19 +23,29 @@ local a:=argv()
 local i
 local oTdc
 local e
+local wrprg:=.t.
+local wrch:=.t.
 
    if (empty(a))
       outstd("tdc2prgch "+VERSION+": make .ch and .prg from .tdc file",endofline())
       quit
    endif
    for i:=1 to len(a)
-      DEBUG(outstd("tdc: ",i::stra,addfext(a[i],".tdc"),endofline()))
-      begin
-         oTdc:=readtdc(a[i])
-         DEBUG(outstd(oTdc::toStr,endofline()))
-         writetdc(oTdc)
-      recover e <tdcerror>
-         // Nem kell csinálni semmit.
+      if( a[i]=="--prg" )
+           wrprg:=.t.
+           wrch:=.f.
+      elseif( a[i]=="--ch"  )
+           wrprg:=.f.
+           wrch:=.t.
+      else
+         DEBUG(outstd("tdc: ",i::stra,addfext(a[i],".tdc"),endofline()))
+         begin
+            oTdc:=readtdc(a[i])
+            DEBUG(outstd(oTdc::toStr,endofline()))
+            writetdc(oTdc,wrprg,wrch)
+         recover e <tdcerror>
+            // Nem kell csinálni semmit.
+         end
       end
    end for
 
@@ -289,7 +299,7 @@ static function pString(s)
 return '"'+s+'"'
 
 //*******************************************************************
-static function writetdc(o)
+static function writetdc(o,wrprg:=.t.,wrch:=.t.)
 local tIndexes
 local sCh:="",sPrg:=""
 // A DBM-et is kell majd kezelni, lásd ddict2 forrás.
@@ -372,13 +382,17 @@ local w
    DEBUG(outstd(".prg file: "+filepath+".prg",endofline()))
    DEBUG(outstd(sPrg))
 
+if(wrch)
    if (nil<>(w:=fmemowrite(filepath+".ch",sCh)))
       perr(w)
    endif
+end
 
+if(wrprg)
    if (nil<>(w:=fmemowrite(filepath+".prg",sPrg)))
       perr(w)
    endif
+end
 
 return nil
 

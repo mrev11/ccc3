@@ -6,6 +6,11 @@ dátum, a programozó neve, verzió (ha van) a változás leírása.
 
 Csiszár Levente <csiszar@eriadorber.hu>, 1998.01.13
 
+2016.12.03, Vermes M., TDC2PRGCH v1.0.2
+  --prg opcio: csak a prg kimenetet irja ki 
+  --ch opcio: csak a ch kimenetet irja ki 
+
+
 2016.11.22, Csiszár Levente, TDC2PRGCH v1.0.01
 
  - ccc3. 

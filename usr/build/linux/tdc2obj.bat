@@ -10,9 +10,8 @@ rm -f error--outcpp-$1
 mkdir -p ppo
 
 rm -f ppo/$1.prg
-rm -f ppo/$1.ch
-cp -f $2/$1.tdc ppo/$1.tmp
-tdc2prgch.exe  ppo/$1.tmp 2>ppo/tdc2prg-$1
+cp -f $2/$1.tdc ppo/$1.tmp-prg
+tdc2prgch.exe --prg  ppo/$1.tmp-prg 2>ppo/tdc2prg-$1
 
 if ! test -f ppo/$1.prg; then
     touch error
@@ -21,9 +20,8 @@ if ! test -f ppo/$1.prg; then
     echo 'tdc2prg' $1 FAILED
 else
 
+rm -f ppo/$1.tmp-prg
 rm -f ppo/tdc2prg-$1
-rm -f ppo/$1.ch
-rm -f ppo/$1.tmp
 
 
 

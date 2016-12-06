@@ -23,38 +23,43 @@
  
 ******************************************************************************
 //Public interface
-//function tabSetChangeLogInfo()           // programfüggő információ hozzáadása
-//function tabIsChangeLogEnabled()         // be van-e kapcsolva a napló (globálisan)
-//function tabIsTableLogged(table)         // kell-e naplózni a táblát
-//function tabChangeLogLock()              // lockolja a naplót
-//function tabChangeLogUnlock()            // unlocklolja a naplót
-//function tabWriteChangeLog(table)        // a tábla változásainak naplózása
-//function tabWriteChangeLogPack(table)    // a táblát packolták
-//function tabWriteChangeLogZap(table)     // a táblát zapolták
-//function tabWriteChangeLogCreate(table)  // tábla létrehozás
-//function tabWriteChangeLogDrop(table)    // tábla megszüntetés
-//function tabWriteChangeLogUpgrade(table) // tábla átalakítása
+//function tabSetChangeLogInfo()           // programfuggo informacio hozzaadasa
+//function tabIsChangeLogEnabled()         // be van-e kapcsolva a naplo (globalisan)
+//function tabIsTableLogged(table)         // kell-e naplozni a tablat
+//function tabChangeLogLock()              // lockolja a naplot
+//function tabChangeLogUnlock()            // unlocklolja a naplot
+//function tabWriteChangeLog(table)        // a tabla valtozasainak naplozasa
+//function tabWriteChangeLogPack(table)    // a tablat packoltak
+//function tabWriteChangeLogZap(table)     // a tablat zapoltak
+//function tabWriteChangeLogCreate(table)  // tabla letrehozas
+//function tabWriteChangeLogDrop(table)    // tabla megszuntetes
+//function tabWriteChangeLogUpgrade(table) // tabla atalakitasa
  
 
 // FILES:
 //
 // Name             Content             Descriptor
 //
-// changelog        [changelog123456]   fdlog0      aktuális napló neve
-// changelog000001  [XML<close/>]                   lezárt napló
-// changelog000002  [XML<close/>]                   lezárt napló 
+// changelog        [changelog123456]   fdlog0      aktualis naplo neve
+// changelog000001  [XML<close/>]                   lezart naplo
+// changelog000002  [XML<close/>]                   lezart naplo 
 // ...
 // ...
-// changelog123456  [XML]               fdlog       aktuális napló 
-// mutex            []                  fdmutex     mutex (lock) filé
-// tabspec          [f1,f2,...]                     naplózandó táblák
+// changelog123456  [XML]               fdlog       aktualis naplo 
+// mutex            []                  fdmutex     mutex (lock) file
+// tabspec          [f1,f2,...]                     naplozando tablak
  
 
-#define LOG_FILE   "CCC_TRANSACTION_LOG_FILE"      //logilé neve
-#define LOG_MUTEX  "CCC_TRANSACTION_LOG_MUTEX"     //lockfilé neve
-#define LOG_CREATE "CCC_TRANSACTION_LOG_CREATE"    //=auto esetén létrehozza
-#define LOG_TABLES "CCC_TRANSACTION_LOG_TABLES"    //naplózandó táblák
-#define LOG_SIZE   "CCC_TRANSACTION_LOG_SIZE"      //logilé max mérete
+#define LOG_FILE    "CCC_TRANSACTION_LOG_FILE"      //logile neve
+#define LOG_MUTEX   "CCC_TRANSACTION_LOG_MUTEX"     //lockfile neve
+#define LOG_CREATE  "CCC_TRANSACTION_LOG_CREATE"    //=auto eseten letrehozza
+#define LOG_TABLES  "CCC_TRANSACTION_LOG_TABLES"    //naplozando tablak
+#define LOG_XTABLES "CCC_TRANSACTION_LOG_XTABLES"   //nem naplozando tablak
+#define LOG_SIZE    "CCC_TRANSACTION_LOG_SIZE"      //logfile max merete
+#define LOG_ARCDIR  "CCC_TRANSACTION_LOG_ARCDIR"    //logfileket ide mozgatja, amikor lezarodnak.
+#define LOG_LEVEL   "CCC_TRANSACTION_LOG_LEVEL"     //logolas szint. 'all' vagy egy szam.
+#define LOG_FUNC    "CCC_TRANSACTION_LOG_FUNC"      //logolas szintek funkcionkent. 'nev:level' felsorolasok.
+
 
 static info
 
@@ -62,20 +67,142 @@ static fdlog0
 static fdlog       
 static fdmutex
 static tabspec
+static xtabspec
 static logname
 static logmaxsize:=1024*1024*1024 //default 1GB
+static logarcdir
+static loglevel
+static logfunctions // {{funName,level},...}
+
+// A programok beallitjak, hogy milyen funkciot milyen szinten
+// csinalnak eppen.
+static prog_logfunction:=nil
+static prog_loglevel:=0
  
+static logfunction_level:=nil
+static logfunction_enabled:=.t.
+
 ******************************************************************************
 function tabSetChangeLogInfo(attrvals)
     info:=attrvals
     return NIL
 
 ******************************************************************************
+static function _afn(fileDir,fileName)
+   if (empty(fileDir))
+      return fileName
+   elseif (right(filedir,1)==":" .or.;
+           right(filedir,1)=="\" .or.;
+           right(filedir,1)=="/")
+      return fileDir+fileName
+   endif
+return fileDir+dirsep()+fileName
+
+******************************************************************************
+static function _dirdirmake(path)
+local dir:="",tok,bslash,code:=0
+
+    path:=strtran(path,"/",dirsep())  //2001.11.15
+    path:=strtran(path,"\",dirsep())
+ 
+    while( !empty(path) )
+
+        if( (bslash:=at(dirsep(),path))>0 )
+             tok:=left(path,bslash-1)
+             path:=substr(path,bslash+1)
+        else
+             tok:=path
+             path:=""
+        end
+
+        code:=dirmake(dir+=tok)
+
+        dir+=dirsep()
+    end
+
+    return code
+    
+
+//  code lehetseges ertekei:
+//
+//  0 - ok
+// -2 - file not found (?)
+// -3 - path not found 
+// -5 - access denied  (ezt adja akkor is, ha mar letezett)
+   
+******************************************************************************
+function tabSetLogFunction(functionName,level)
+
+    tabIsChangeLogEnabled() // Beolvassa a log parametereket.
+
+    prog_loglevel   :=level
+    if (prog_logfunction==functionName)
+       logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+    else
+       prog_loglevel   :=level
+       prog_logfunction:=functionName
+       tabSetLogFunction_enabled()
+    endif   
+
+return nil
+
+******************************************************************************
+function tabGetLogFunction(functionName,level)
+
+    functionName:=prog_logfunction
+    level       :=prog_loglevel
+
+return nil
+
+******************************************************************************
+function tabSetLogFunctionSave(functionName,level)
+local s:={prog_logfunction,prog_loglevel}
+
+    tabSetLogFunction(functionName,level)
+    
+return s
+
+******************************************************************************
+function tabSetLogFunctionRestore(s)
+
+    tabSetLogFunction(s[1],s[2])
+    
+return s
+
+******************************************************************************
+function tabIsLogFunction()
+return logfunction_enabled
+
+******************************************************************************
+function tabSetLogFunction_enabled()
+// Megallapitja, hogy eppen logolhatunk-e funkcio:level szempontbol.
+// 'all' eseten minden logol,
+// szam eseten, annal tobbet, minel magasabb a szam
+local i
+
+    if ( !empty(logfunctions) )
+        for i:=1 to len(logfunctions)
+            if( prog_logfunction==logfunctions[i][1] )
+                logfunction_level:=logfunctions[i][2]
+                logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+                return logfunction_enabled
+            end 
+        end
+    end
+
+    // Ha nincsenek funkciok megadva, akkor csak a loglevel jatszik
+    logfunction_level:=loglevel
+    logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+
+return logfunction_enabled
+
+******************************************************************************
 function tabIsChangeLogEnabled() 
  
 static logenabled
-local envlog,envmut,envcre,envtsp,envsiz
-local n
+local envlog,envmut,envcre,envtsp,envxtsp,envsiz,envarcdir,envloglevel,envlogfunc
+local ilogfunctions
+local n,e
 
     if( logenabled==NIL )
         logenabled:=!empty(getenv(LOG_FILE)) 
@@ -86,7 +213,11 @@ local n
             envmut:=getenv(LOG_MUTEX)  
             envcre:=getenv(LOG_CREATE)  
             envtsp:=getenv(LOG_TABLES)  
+            envxtsp:=getenv(LOG_XTABLES)  
             envsiz:=getenv(LOG_SIZE)  
+            envarcdir:=getenv(LOG_ARCDIR)  
+            envloglevel:=getenv(LOG_LEVEL)
+            envlogfunc:=getenv(LOG_FUNC)
 
             fdlog0:=xopen(envlog,envcre=="auto")
             logname:=loglastname(envlog)
@@ -98,7 +229,7 @@ local n
             end
  
             if( !empty(envtsp) )
-                fclose( xopen(envtsp) ) //csak ellenőrzés 
+                fclose( xopen(envtsp) ) //csak ellenorzes 
 
                 tabspec:=memoread(envtsp)
                 tabspec:=strtran(tabspec," ","")
@@ -111,9 +242,74 @@ local n
                 next
             end
 
+            if( !empty(envxtsp) )
+                fclose( xopen(envxtsp) ) //csak ellenorzes 
+
+                xtabspec:=memoread(envxtsp)
+                xtabspec:=strtran(xtabspec," ","")
+                xtabspec:=strtran(xtabspec,chr(13),"")
+                xtabspec:=strtran(xtabspec,chr(10),",")
+                xtabspec:=strtran(xtabspec,"\","/")
+                xtabspec:=split(xtabspec)
+                for n:=1 to len(xtabspec)
+                    xtabspec[n]:=upper(xtabspec[n])
+                next
+            end
+
             if( !empty(envsiz) )
                 logmaxsize:=1024*1024*max(1,val(envsiz))
-                //logfile maximális mérete MB-ban, legalább 1MB
+                //logfile maximalis merete MB-ban, legalabb 1MB
+            end
+
+            if( !empty(envarcdir) )
+                _dirdirmake(envarcdir)
+                if( !direxist(envarcdir) )
+                e:=apperrorNew()
+                    e:operation:="create directory"
+                    e:description:="directory does not exist"
+                    e:filename:=envarcdir
+                    e:oscode:=ferror()
+                    e:canretry:=.f.
+                    break(e)                
+                end
+                logarcdir:=envarcdir
+            end
+
+            if( !empty(envloglevel) )
+                if( envloglevel=='all' )
+                    loglevel:=nil
+                else
+                    loglevel:=val(envloglevel)
+                end
+            end
+
+            if( !empty(envlogfunc) )
+                envlogfunc:=strtran(envlogfunc," ","")
+                envlogfunc:=strtran(envlogfunc,chr(13),"")
+                envlogfunc:=strtran(envlogfunc,chr(10),",")
+                logfunctions:=split(envlogfunc)
+                for n:=1 to len(logfunctions)
+                    ilogfunctions:=split(logfunctions[n])
+                    if( len(ilogfunctions)==0 )
+                       logfunctions[n]:={"",nil}
+                    elseif( len(ilogfunctions)==1 )
+                       logfunctions[n]:={ilogfunctions[1],nil}
+                    else
+                       logfunctions[n]:={;
+                           ilogfunctions[1],;
+                           if(ilogfunctions[2]=='all',;
+                               nil,;
+                               val(ilogfunctions[2]);
+                           );
+                        }
+                    end
+                next
+                
+                if( envloglevel=='all' )
+                    loglevel:=nil
+                else
+                    loglevel:=val(loglevel)
+                end
             end
         end
     end 
@@ -123,18 +319,22 @@ local n
 ******************************************************************************
 function tabIsTableLogged(table)
 local ts
+
+    if(!logfunction_enabled)
+        return .f.
+    endif
     if( table[TAB_LOGGED]==NIL )
         ts:=tabPath(table)+tabFile(table)
         ts:=upper(strtran(ts,"\","/"))
     
         if( !tabIsChangeLogEnabled() )
             table[TAB_LOGGED]:=.f.
-        elseif( tabspec==NIL )    
-            table[TAB_LOGGED]:=.t.
-        elseif( 0<ascan(tabspec,{|x|x==ts}) )
-            table[TAB_LOGGED]:=.t.
-        else
+        elseif( xtabspec<>NIL .and. 0<ascan(xtabspec,{|x|x==ts}) )
             table[TAB_LOGGED]:=.f.
+        elseif( tabspec<>NIL .and. 0==ascan(tabspec,{|x|x==ts}) )
+            table[TAB_LOGGED]:=.f.
+        else
+            table[TAB_LOGGED]:=.t.
         end
     end
     return table[TAB_LOGGED] 
@@ -144,11 +344,24 @@ function tabChangeLogLock()
 
 local level:=_writechangelog_mutex(fdmutex,.t.) 
 local logpos:=fseek(fdlog,0,FS_END)
+local oldlogname,e
 
     while( logpos>logmaxsize .and. level==1 )
+        oldlogname:=logname
         logname:=lognextname(logname)
         fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
         fclose(fdlog)
+        if (!empty(logarcdir))
+           if (fileexist(oldlogname) .and. 0<>frename(oldlogname,_afn(logarcdir,oldlogname)))
+          e:=apperrorNew()
+              e:operation:="Move log file"
+              e:description:="Move failed"
+              e:filename:=logarcdir
+              e:oscode:=ferror()
+              e:canretry:=.f.
+              break(e)                
+           endif
+        endif
         fdlog:=xopen(logname,.t.)
         logpos:=fseek(fdlog,0,FS_END) 
         //alert( logname+str(getpid()) )
@@ -187,7 +400,7 @@ local offs,width,name,type,dec
     table[TAB_RECBUF]:=r1
 
     if( xvisequal(r0,0,r1,0,len(r0)) )
-        //mégsincs módosítás
+        //megsincs modositas
         //(sok ilyen eset van)
         return NIL
     end
@@ -564,5 +777,3 @@ static function cdataif(x)
     return x
 
 ******************************************************************************
-
- 

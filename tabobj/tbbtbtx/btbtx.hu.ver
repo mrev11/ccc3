@@ -1,10 +1,13 @@
 
 #ifdef _HISTORY_
 
-2015.11.12 -- 1.1.19
+2016.12.05 -- 2.1.0
+  tabchlog.prg-ben Cs.L. valtozatatasai CCC2-bol athozva.
+
+2015.11.12 -- 2.0.5
   mpool.cpp warning javitas
 
-2015.09.03 -- 1.1.18
+2015.09.03 -- 2.0.4
   mpool.cpp
     reszletesebb debug info
     mpool_put-ben CRC iras, mpool_get-ben CRC ellenorzes
@@ -18,7 +21,7 @@
        CRC hibas filet is tud packolni,
        ha a recno index es az adatlapok hibatlanok
 
-2013.09.26 -- 1.1.17"
+2013.09.26 -- 2.0.3
    tabKeyCompose() átírva.
    A korábbi változat oszlopblokkal olvasta a kulcsszegmenseket.
    Az oszlopblokk beépített típuskonverziót hajt végre az értéken,
@@ -32,10 +35,10 @@
    így az indexbe mindig a mezővel egyező érték kerül (függetlenül
    a kódolástól).
 
-2009.10.02 -- 1.1.16"
+2009.10.02 -- 2.0.2
    gcc 4.3.2 warningok javitva.
 
-2008.04.21 -- 1.1.15"
+2008.04.21 -- 2.0.1
    Sun/Solarison nem működött a filemapping a file-share protokoll miatt,
    ezért a kulcsok rendezésére szolgáló ideiglenes filé létrehozása
     fcreate(KEYFILE(table,o),FO_READWRITE+FO_SHARED) helyett
@@ -52,7 +55,7 @@
    Az indexinfót tabCreate-ban 3 helyett 4 hosszan kell a resourceba írni, 
    máskülönben a packolás átváltoztatja a suppindexeket permanens indexszé.
 
-2006.04.20 -- 2.0.00"
+2006.04.20 -- 2.0.0
    Portolás unicode-ra.
    Új mezőtípus: X.
    A C mezők str2bin-nel tárolódnak, és bin2str-rel olvasódnak ki.

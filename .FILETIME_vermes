@@ -1,7 +1,20 @@
-dba6dd16cfd6931b0120d1590f12086e5ebb8ed5 2016120316:28:28 ./CHANGELOG_vermes
+569c24701db21ff39e3cdad6415779ad24ff8531 2016120609:21:12 ./CHANGELOG_vermes
+a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120515:09:01 ./tabobj/common.src/tabchlog.prg
+559d9a88a8a494b63cecc247cc725a241010c8f9 2016120515:01:01 ./tabobj/tbbtbtx/btbtx.hu.ver
+a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120514:56:54 ./tabobj/common.src/common.hu.ver
+ceb4ac35cdadcf904d9206e6dcc019c4a6052472 2016120410:10:43 ./tools/sql2/log-mkall
+bdb64c377d3dea0d5472aeaadbd20b5c168b50de 2016120410:10:37 ./usr/bin/linux/jeed
+755a6580f32a59ee58629fc0362c311f79c7b318 2016120410:10:37 ./usr/bin/linux/tds2prg
+52b7c7e12e59921de043e25cfccd6f8ddf48135d 2016120410:10:37 ./usr/bin/linux/tds2ted
+ec409b31814ade046b4b6f30abde695de169eb1a 2016120410:10:37 ./usr/bin/linux/ted2prg
+a14ba7042c0a581257682a993ae103425a6eb9d4 2016120410:10:35 ./usr/bin/linux/bt2tds
+a36092e01ccc407e57ff85392282dd6cb988bc0b 2016120410:10:35 ./usr/bin/linux/bt2ted
+85fe6155c68dedaed4bad5ae3ea7375a81754344 2016120410:10:35 ./usr/bin/linux/mkentitylib
+4aacc388434ebe334c4e7a666c08daf3c60fe1e6 2016120316:46:41 ./usr/bin/linux/firstpar
 d02303052e114a0d50f38f7a468abece2d09b2dd 2016120316:04:14 ./install.b
 4fb0be4fd047e5bde4f2f8e8cab206c194c86128 2016120315:52:03 ./usr/build/linux/tdc2obj.bat
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120315:46:46 ./usr/build/linux/tdc2ch.bat
+7fc80ec51525d5c08ca720e153f3c4f024538778 2016120315:35:02 ./usr/bin/linux/tdc2prgch
 86ebc7b934d548de2c4cdd71aa279b1350876fe0 2016120315:25:48 ./tools/tdc2prgch/tdc2prgch.prg
 000adf8852af5ee8ecd1c03f896da505833dc62c 2016120315:23:30 ./tools/tdc2prgch/valt.dok
 94bfcebccba5c719c9e26531c50827467657513c 2016120116:05:56 ./usr/bin/linux/terminal
@@ -10,6 +23,9 @@ a7aa2e786e0588d8d1a7e43e96346a0eda1565fd 2016120116:05:55 ./terminal/unix/termin
 0f8672e8d77bffd08caccf03caf0775efe5e17c0 2016120114:58:06 ./terminal/unix/terminal-xft.cpp
 0f784282a80d0747e3e106cb7f57be2459d066c1 2016120111:17:02 ./terminal/unix/s
 38e70de8e851f3e0f2a9f684dc26c78e9c041873 2016113013:36:13 ./terminal/xtest/xstart.log
+1e666b45be0e03b7987677980b14d8b4569a2b99 2016113012:24:51 ./usr/bin/linux/sslforw-serv
+66e42a3c432ac525e82b67c19d77463e57580f02 2016113012:24:51 ./usr/bin/linux/sslforw-term
+6d8ce355abcf44f8e36ec5ad585648306ea564de 2016113012:24:51 ./usr/bin/linux/sslforward
 5d85f92867c3ec4c1776f452696c7585c7648cc4 2016112920:33:20 ./terminal/terminal-test/screenwr/s
 880558edb32e86deaa3fe6b001d04d172cca7ec1 2016112913:01:23 ./usr/bin/linux/ddict2
 6aeac14b682dd7e46d568aa2ed96d1948089fa02 2016112913:01:18 ./tools/ddict2/progout.prg
@@ -27,7 +43,6 @@ ae7081f3809a22b6c63ccccf541cb7556dcc81d8 2016112714:27:32 ./ccctools/build/build
 4c6be8c396fbefa8e436aad3f67f54173b96896f 2016112714:27:22 ./ccctools/buildp/build.hu.ver
 dbfcf374f8dd355174beae0c872a64cc3216eba2 2016112714:23:03 ./usr/bin/linux/terminal-gtk
 a80ba374b253b0d582abdc1a54d599fab0289adb 2016112714:22:53 ./usr/bin/linux/delobj
-4e614bb414dc992e4797f686f346a164a2044773 2016112714:22:53 ./usr/bin/linux/firstpar
 4c376e4bebd3e998f16664de2eea98412910e39f 2016112714:22:53 ./usr/bin/linux/libcontent
 e4e7ee23dd3c79567b115830152b0007f186dc7d 2016112714:22:53 ./usr/bin/linux/pm
 1ff2e61d6a8aba69e7464010fee28271fe1a480d 2016112714:22:53 ./usr/bin/linux/rnm
@@ -112,7 +127,6 @@ f19a431c8b061165082ad42ffc4d14ddace757aa 2016111217:35:55 ./ccclib/src/unix/read
 fa105a2dab6d7d4f3a7bc5a6aa264946848b5b2a 2016110910:35:06 ./gtk/code_byhand/code_util/g_timeout.cpp
 73bafa31361af60bb3d69454af0dcffd741bd58c 2016110910:34:28 ./gtk/code_byhand/code_base/gtk_gobject_signal.cpp
 a34b459a349064c52d5abb9583e4af49ad18807d 2016110910:33:28 ./gtk/code_byhand/include/cccgtk.h
-b751111b59d040176f2e71e35d0156ca2e9dc928 2016110815:10:35 ./tools/sql2/log-mkall
 d481b18a2995bfffde8bfe246407c5c043e84ded 2016110815:06:08 ./terminal/gtk/sx.bat
 be03758ab8d9a0a637eb54d869a7796b88e1de8b 2016110700:05:24 ./terminal/gtk/s
 14a8cd6f1ebbbba3bf3b9e3433f6d064554572c9 2016110620:33:04 ./terminal/gtk/s.bat
@@ -815,7 +829,6 @@ be45ba07a81b588a0cdefdaef777dbd0dca27e6a 2016021712:28:21 ./usr/options/lin/comp
 9184724fa700fc2cfe9c55b339249e9f74006952 2015121417:37:02 ./tools/websrv/httpreq.prg
 6e4ae4e649607844e341157c1f0875e6ea17d7be 2015121215:15:20 ./ccctools/prg2ppo/input.lex
 09052d79c8f5bec7c53fbf6abdda7d38df0f3f53 2015121215:11:41 ./ccctools/prg2ppo/prg2ppo.ver
-f89fb37478f07bef5a85543eef675bd784240575 2015111209:20:23 ./tabobj/tbbtbtx/btbtx.hu.ver
 62f57b9dcd99f6fc5fae95112a244fbf76c9450d 2015111209:13:22 ./tabobj/tbbtbtx/btree/mpool.cpp
 d8b6609a5390b997e9bbb337639788df9ef0a4fa 2015092409:33:49 ./ccclib/src/week_iso.prg
 e7011e3ecbfc8ea0fb513e0301c3df84331a39a4 2015092409:33:28 ./ccclib/src/month.prg
@@ -1701,7 +1714,6 @@ a4d7604723990f7f604e88ef6ee9b1d53b58eea4 2008043018:38:20 ./tools/z/zsearch.prg
 51abedd7c53901165101f7d51db09f0cc705490f 2008042320:16:31 ./tutor/simplechat/config.msk
 253de2188c335663a27bcac71f53c7754e082ee5 2008042319:49:39 ./tutor/simplechat/chat.ch
 7ee8b83f9625fdb1b3cc252bf57ada23e04d30c5 2008042118:10:25 ./tabobj/tbbtbtx/dbcreate.prg
-784bed2249bd684ee26b9df9cd1ed3072ab9d680 2008042118:05:01 ./tabobj/common.src/common.hu.ver
 2f1e5146da5aef350eb27ea22d4a126cdd6e05bd 2008042118:04:26 ./tabobj/common.src/tabindex.prg
 abf34a04e7a4a62f2616bdfcc3c79354f010128d 2008032710:41:38 ./jt/jtlib/jttable.prg
 f438c1c2c3fd1d5392c384b46674b4368c07f386 2008032710:16:31 ./jt/jterminal/getutil/picturefield.java
@@ -2059,7 +2071,6 @@ e75873aab665402d8caa12410c2d7ace40a73979 2007010219:07:08 ./tabobj/common.src/ta
 51c887f0b3bc7bbd36b68fbca3588d3790fadfe9 2007010219:04:15 ./tabobj/common.src/taberror.prg
 f30690186cddec4eeea27de18e46df8fc8825bf3 2007010219:03:54 ./tabobj/common.src/tabcpyto.prg
 f6d20e41001120047fac1db480bf88cc26b71c10 2007010219:03:35 ./tabobj/common.src/tabcolum.prg
-82313b9d9bfd52be4e454f293b7df7833d6c2460 2007010219:02:58 ./tabobj/common.src/tabchlog.prg
 26b869c19fbc31af8b87c8dc2fefea3e8249a39d 2007010219:01:41 ./tabobj/common.src/tabapprc.prg
 506083a0f51412c41a402caf6f8784923c4f617d 2007010219:01:24 ./tabobj/common.src/tabappfr.prg
 646fe62cef42bf5c006c3c85234123c76cbafffc 2007010218:58:40 ./tabobj/common.src/netbusy.prg

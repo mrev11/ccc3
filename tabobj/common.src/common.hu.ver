@@ -1,3 +1,6 @@
+2016.12.05
+  tabchlog.prg-ben Cs.L. valtozatatasai CCC2-bol athozva.
+
 2008.04.21
   Az indexek neve nagybetűsen van tárolva a fájlban,
   ezért tabScanIndex-ben is nagybetűsen kell keresni.

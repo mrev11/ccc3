@@ -64,7 +64,7 @@ static s_rules:={;
 
 static resource_hash:=simplehashNew()
 
-#define VERSION "1.4.4" // 2016.11.27 dinamikus forditasi szabalyok
+#define VERSION "1.4.5" // 2016.12.07 forditasi szabalyok rendezese javitva
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -220,10 +220,28 @@ local d,n,rule
         end
     next
     
+    asort(s_rules,,,{|x,y|rulesort(x,y)})
+    
     //for n:=1 to len(s_rules)
-    //    ? s_rules[n]
+    //    ? n, s_rules[n]
     //next
 
+static function rulesort(x,y)
+local result
+    if(result==NIL); result:=cmp(".exe",x,y); end
+    if(result==NIL); result:=cmp(".so" ,x,y); end
+    if(result==NIL); result:=cmp(".lib",x,y); end
+    if(result==NIL); result:=cmp(".obj",x,y); end
+    if(result==NIL); result:=x[1]<y[1]; end
+    return result
+        
+static function cmp(ext,x,y)
+    if( x[2]==ext )
+        return if(y[2]==ext,x[1]<y[1],.f.)
+    elseif( y[2]==ext )
+        return if(x[2]==ext,x[1]<y[1],.t.)
+    end
+    return NIL 
 
 ****************************************************************************
 static function extension_types()
@@ -526,7 +544,7 @@ local d1,f,o,n,i,txt,dep
         next
         ?
     end
- 
+    
     ferase("error")
     for n:=1 to len(todo)
         thread_mutex_lock(mutex_count)

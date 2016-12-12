@@ -131,6 +131,14 @@ void _clp_setfiletime(int argno) //WINDOWS
 
 
 //----------------------------------------------------------------------
+#ifdef NOTDEFINED
+
+//Az alabbiak Windows-2000-en a TzSpecificLocalTimeToSystemTime()
+//hianyat probaltak volna elkerulni, azonban a megoldas rossz, 
+//mert nem veszi figyelembe, hogy az UTC és a localtime kozotti 
+//elteres nem allando, hanem fugg a teli-nyari idoszamitastol.
+//Emiatt dobni kell a Windows-2000 tamogatast.
+
 static void prnft(FILETIME *ft)
 {
     SYSTEMTIME st; FileTimeToSystemTime(ft,&st);
@@ -196,7 +204,7 @@ FILETIME offset_loc_to_utc()
     FILETIME offs=dif(&fst,&flt);
     return offs; // add(loc,offs) -> utc
 }
-
+#endif
 //----------------------------------------------------------------------
 void _clp___localtimetofiletime(int argno) //WINDOWS
 {
@@ -239,7 +247,7 @@ void _clp___localtimetofiletime(int argno) //WINDOWS
     stLocal.wHour=hour;
     stLocal.wMinute=minute;
     stLocal.wSecond=sec;
-#ifdef NOTDEFINED
+#ifndef NOTDEFINED
     TzSpecificLocalTimeToSystemTime(NULL,&stLocal,&stUTC);
 
     FILETIME ft;
@@ -266,7 +274,7 @@ void _clp___filetimetolocaltime(int argno) //WINDOWS
  
     FILETIME *ft=(FILETIME*)_parb(1);
     SYSTEMTIME stUTC, stLocal;
-#ifdef NOTDEFINED
+#ifndef NOTDEFINED
     FileTimeToSystemTime(ft,&stUTC);
     SystemTimeToTzSpecificLocalTime(NULL,&stUTC,&stLocal);
 #else

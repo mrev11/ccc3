@@ -1,9 +1,10 @@
+79f882b85ff296375c0cd3103fc6b67fa9c69ede 2016121213:56:20 ./ccclib/src/windows/filetime.cpp
+ea02d74077be10a715142446e4b60a62fbd4e1e3 2016121213:51:17 ./CHANGELOG_vermes
 88dbbb35d14de5a550c5c82cf4e8f11c40122464 2016120723:49:13 ./usr/bin/linux/build
 7d2cd42da8f31057deca2d073e89fe9f15842a33 2016120723:48:38 ./ccctools/build/build.prg
 1cfb416d8bd718d50ee4644e8ef5a54b7c138155 2016120723:48:17 ./ccctools/buildp/build.prg
 8a097eebd5ef3369b16c7efa8075425c601ce761 2016120723:47:35 ./ccctools/build/build.hu.ver
 33f88fe998ae3d0d79153a7be23ca59e08cd2053 2016120723:47:21 ./ccctools/buildp/build.hu.ver
-344de0ccbd120c53f57c08da09a136121296eb80 2016120723:44:49 ./CHANGELOG_vermes
 a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120515:09:01 ./tabobj/common.src/tabchlog.prg
 559d9a88a8a494b63cecc247cc725a241010c8f9 2016120515:01:01 ./tabobj/tbbtbtx/btbtx.hu.ver
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120514:56:54 ./tabobj/common.src/common.hu.ver
@@ -509,7 +510,6 @@ c2f3bcd51e5191cc2dde0e14d6bf7ad1067a1520 2016101714:16:17 ./tools/sql2/test/basi
 68796856a059742a0eae6797a1e239cbcb074a38 2016101619:16:49 ./ccclib/src/windows/findnext.cpp
 bae979e3fa45b041e96bae52e992bacbf57fb008 2016101619:11:49 ./ccclib/src/stat.cpp
 f9c3d9750309131dad9605eea864411257f18fd9 2016101609:49:49 ./usr/include/stat.ch
-af1e20f87f264336cd0d4b0060a241342c5f56d0 2016101511:54:02 ./ccclib/src/windows/filetime.cpp
 6301b38198699b6ff3578a5b2b7641e72bb419e6 2016101315:27:29 ./ccctools/mklink/mklink.prg
 958677e9bb38867ec6d153222791f2ebfe570315 2016101311:40:05 ./ccclib/src/unix/directory.prg
 bb4f0439c7a31e99c6ecf30fbf7f68bbda06beff 2016101310:42:14 ./ccclib/src/windows/directory.prg

@@ -1,3 +1,5 @@
+2016.12.17 Windows __filetimetoutctime() fuggveny;
+
 2016.12.12 Windows-2000 tamogatas dobva;
   A 2016.10.17-os filetime() workaround Windows-2000-re
   nem veszi figyelembe a teli-nyari idoszamitast;

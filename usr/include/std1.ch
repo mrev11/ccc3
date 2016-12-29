@@ -188,18 +188,12 @@
 //get
 //-----------------------------------------------------------------------
 
-#command @ <row>, <col> GET <var>                                       ;
-                        [PICTURE <pic>]                                 ;
-                        [VALID <valid>]                                 ;
-                        [WHEN <when>]                                   ;
-                        [SEND <msg>]                                    ;
-                                                                        ;
-      => SetPos( <row>, <col> )                                         ;
-       ; AAdd(                                                          ;
-           GetList,                                                     ;
-           GETNEW(@<var>,<"var">,<pic>,<{valid}>,<{when}>):display()    ;
-           )                                                            ;
-      [; ATail(GetList):<msg>]
+#command @ <row>, <col> GET <var>                                           ;
+                            [PICTURE <pic>]                                 ;
+                            [VALID <valid>]                                 ;
+                            [WHEN <when>]                                   ;
+    => SetPos( <row>, <col> )                                               ;
+     ; AAdd(GetList,_GETNEW(@<var>,<"var">,<pic>,<{valid}>,<{when}>):display())
 
 
 //-----------------------------------------------------------------------

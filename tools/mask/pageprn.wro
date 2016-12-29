@@ -1,0 +1,47 @@
+// pge2wro v3.0.0 
+
+#ifndef I_SCRSTR                                        
+#define I_SCRSTR                                        
+#command @ <row>, <col> SCREEN <scr> SAY <xpr>         ;
+                        [PICTURE <pic>]                ;
+                        [COLOR <color>]                ;
+                                                       ;
+      => scrPos( <scr>, <row>, <col> )                 ;
+       ; scrOutPict( <scr>, <xpr>, <pic> [, <color>] )  
+#define wrpict(i) if(pictlist==nil,nil,pictlist[i])     
+#endif                                                  
+
+
+#define p_redir   pgelist[  1] //21
+#define p_o       pgelist[  2] // 1
+#define p_pi      pgelist[  3] // 2
+
+#define PGELIST         3
+
+
+
+static function wrpageprn(scr,pgelist)
+
+   @ 14, 44 screen scr say "╔═══════════════════════╗"
+   @ 15, 44 screen scr say "║"
+   @ 15, 46 screen scr say "Redirected"
+   @ 15, 57 screen scr say "to:"
+   @ 15, 68 screen scr say "║"
+   @ 16, 44 screen scr say "║"
+   @ 16, 46 screen scr say xtrpadr(p_redir, , 21)
+   @ 16, 68 screen scr say "║"
+   @ 17, 44 screen scr say "║"
+   @ 17, 68 screen scr say "║"
+   @ 18, 44 screen scr say "║"
+   @ 18, 46 screen scr say "Landscape/Portrait:"
+   @ 18, 66 screen scr say xtrpadr(p_o, ,  1)
+   @ 18, 68 screen scr say "║"
+   @ 19, 44 screen scr say "║"
+   @ 19, 68 screen scr say "║"
+   @ 20, 44 screen scr say "║"
+   @ 20, 46 screen scr say "Pitch:"
+   @ 20, 53 screen scr say xtrpadr(p_pi, ,  2)
+   @ 20, 68 screen scr say "║"
+   @ 21, 44 screen scr say "╚═══════════════════════╝"
+return scr
+

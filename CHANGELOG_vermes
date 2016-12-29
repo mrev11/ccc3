@@ -1,3 +1,8 @@
+2016.12.29 demo-wro.prg;
+  scrstr.prg, scrstr.ch hozzadva;
+  getcmd.prg athozva ccc2-bol;
+  @ get preprocesszalasa getnew helyett _getnew-val;
+ 
 2016.12.24 inkeymap-aquaris;
 
 2016.12.17 Windows __filetimetoutctime() fuggveny;

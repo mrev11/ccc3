@@ -1,6 +1,11 @@
-538f3926f6413c32781bf5d86e6c8248cf99bd1c 2016122411:23:31-UTC ./CHANGELOG_vermes
+e9fd470a834f0c821e989c64b53b91f7e9bfcf66 2016122914:40:27-UTC ./CHANGELOG_vermes
+2740bf690e10109c8f4887c80825431ab0b8c308 2016122914:09:45-UTC ./log-install
+dfe2562e4302dd13987584eb8e06bce2813e6e42 2016122913:23:34-UTC ./usr/include/std1.ch
+b9c5e9d2423f4cca06032b910fb25761b6362ac5 2016122913:19:16-UTC ./ccclib/src/uic/getcmd.prg
+bc10e18ddc2a45fa79de09086138b7bc017d9488 2016122909:56:08-UTC ./tools/mask/pageprn.wro
+cd8ea02cba951687b37e2f6cdaa170f29bd219c6 2016122909:56:06-UTC ./tools/mask/m-demo
+7d848efac51f9611647a6b70f3fdcb553dc66e6a 2016122909:55:26-UTC ./tools/mask/demo-wro.prg
 e1240eaa8eeb7e885aa03dc0d124f324e6c09c8f 2016121709:14:10-UTC ./tools/sql2/log-mkall
-138d9b94c4cdc16819f31e9348e6e74a0f610771 2016121709:13:34-UTC ./log-install
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
 cacddfa259ce7ed1c13aea03f055abfa5ac27fba 2016121514:17:08-UTC ./usr/bin/linux/gitnav
 52104951b395daafe44c598d971a6824a099d9c3 2016121514:17:08-UTC ./usr/bin/linux/gitref
@@ -17,13 +22,6 @@ cacddfa259ce7ed1c13aea03f055abfa5ac27fba 2016121514:17:08-UTC ./usr/bin/linux/gi
 a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.src/tabchlog.prg
 559d9a88a8a494b63cecc247cc725a241010c8f9 2016120514:01:01-UTC ./tabobj/tbbtbtx/btbtx.hu.ver
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver
-a5f1621e41c44e070e9b53614d01fa42946c6896 2016120409:10:37-UTC ./usr/bin/linux/jeed
-d5d8380a6fd75e76e8fd361b465d9e661788a04f 2016120409:10:37-UTC ./usr/bin/linux/tds2prg
-4d8ad26e37030400bbf5286d67cc8e39206fa9db 2016120409:10:37-UTC ./usr/bin/linux/tds2ted
-b0e035d4d51c366dd61dbd4e69ba06144d7713b0 2016120409:10:37-UTC ./usr/bin/linux/ted2prg
-113318c63d11d4b28b6adcc5943e5d3f3f48863c 2016120409:10:35-UTC ./usr/bin/linux/bt2tds
-5b404432dc853ce05d707686e309f02cf2eb54a3 2016120409:10:35-UTC ./usr/bin/linux/bt2ted
-b60ae7c14bff1964a20136c82628c7fa20892226 2016120409:10:35-UTC ./usr/bin/linux/mkentitylib
 d02303052e114a0d50f38f7a468abece2d09b2dd 2016120315:04:14-UTC ./install.b
 4fb0be4fd047e5bde4f2f8e8cab206c194c86128 2016120314:52:03-UTC ./usr/build/linux/tdc2obj.bat
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120314:46:46-UTC ./usr/build/linux/tdc2ch.bat
@@ -80,7 +78,6 @@ d95b9023bf5d93f6ff64d35d1ece1e934867604a 2016112713:22:30-UTC ./usr/bin/linux/pr
 64627dd9c2ab5586dbc67a9c33c3c962cfa3c280 2016112713:22:13-UTC ./usr/bin/linux/ppo2cpp
 3a9140a7be7803812da51f63bbb71a771dd08432 2016112713:22:03-UTC ./usr/bin/linux/flex
 3406028ca7de121ebafdca59e93e0893ebb9f69a 2016112713:22:03-UTC ./usr/bin/linux/lemon
-cb9337761c2678ce68a48d30813e79ac4e8d720a 2016112712:26:03-UTC ./tools/mask/m-demo
 bb4c25e2c94d28df706d42c9f96e09549af7b186 2016112712:25:17-UTC ./tools/mask/m
 b2c7fd7469cb7e1553c5f61d1888a5aa5fcf1c28 2016112712:13:27-UTC ./tools/mask/pge2wro.prg
 2ea7b09e151ef7c6ec27163f6c0f9eddd251cb4d 2016112613:03:38-UTC ./tools/mask/msk2pge.prg
@@ -1826,7 +1823,6 @@ a03dba75ca974881fa5c06f63fca38e28588f928 2007080918:21:54-UTC ./tools/socket/ssl
 9a310d7b2a05e9803f27cbf0646e5157986963f2 2007080218:53:36-UTC ./tools/sql2/test/basicdemo/compat/charconv.cpp
 f5e505adc5e7d207c10326c01c89527b2e81b054 2007080218:42:35-UTC ./tools/sql2/test/testdata/b.bt
 bcbe6b71ecf4dc53514b142dc9aac490fe404e0d 2007080218:42:35-UTC ./tools/sql2/test/testdata/b.btx
-48eb2fe83b5d7bd8f1f39c7848a3b393acd62591 2007080206:42:16-UTC ./usr/include/std1.ch
 6b553dbf10612ea743b2b3d2d7d7081a02a67aba 2007080112:35:53-UTC ./jt/jtlib/jtpanel.prg
 3f1c20e6343cd24dcce81fd40ecfc7fa331f1260 2007080111:37:23-UTC ./tools/sql2/util/tdsutil/sqlplaceholders.cpp
 ec16c15b6b04ef3b0bc04d1ec528636ac90ef405 2007080111:36:49-UTC ./tools/sql2/util/tdsutil/sqlidqoute.lex
@@ -3524,6 +3520,7 @@ b0bfba16a82a496a885d5f2908a091265731c1ac 1999030716:36:06-UTC ./tools/z/zriglef.
 6473c57e3e658e420224c4eda7f0ec0454f38d27 1998122110:52:46-UTC ./jt/jtdemo/jtconnect/server.pem
 c76b610d20e57831ab0efe68a4deb51cc032709f 1998102801:17:01-UTC ./jt/jtdemo/tabedit/dd/_szamla.ch
 5e127090d294408d0997f50d2198f4cb69e3f92f 1998102801:17:01-UTC ./jt/jtdemo/tabedit/dd/_szamla.prg
+2e51e22150f3e8e129b4c2d9a2638e421c0bb6b1 1998090916:03:58-UTC ./tools/mask/scrstr.prg
 6cf90e940c60fbd1eb6a77c6ff71db8dcdfdf00c 1997072702:32:20-UTC ./setup/setup-flex/tblcmp.c
 88be495a061474159a77cf55e0bc543954517112 1997072702:32:20-UTC ./setup/setup-flex/yylex.c
 d63ca64a5422a4fe00d7e2771dc550d0ae433703 1997072702:32:19-UTC ./setup/setup-flex/misc.c
@@ -3531,3 +3528,4 @@ d63ca64a5422a4fe00d7e2771dc550d0ae433703 1997072702:32:19-UTC ./setup/setup-flex
 931041f55d07b8daccfe0eb0f97982b9cc2c4fe4 1997072702:32:19-UTC ./setup/setup-flex/sym.c
 27668e88930945bd99134fb3341bf50c18df7dc9 1997072702:32:18-UTC ./setup/setup-flex/ecs.c
 84f1bb45de7559e424f741ab77295612a0c18aa2 1997072702:32:16-UTC ./setup/setup-flex/ccl.c
+88ad042ecd2ac68e0a5c8cb0133a58f9de6b479e 1997062111:28:46-UTC ./tools/mask/scrstr.ch

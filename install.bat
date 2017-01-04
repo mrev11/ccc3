@@ -66,6 +66,13 @@ pushd terminal\windows
 call m.bat
 popd
 
+if not exist %CMPDIR%\include\gtk-2.0\gtk\gtk.h goto terminal-gtk
+  pushd terminal\gtk
+  call m.bat
+  popd
+:terminal-gtk
+
+
 :-------------------
 : tabobj
 :-------------------

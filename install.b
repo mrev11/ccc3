@@ -94,6 +94,9 @@ pushd ccctools/mklink; m; popd
 pushd terminal/unix; m; popd
 pushd terminal/unix-ncurses; m; popd
 
+if test -f /usr/include/gtk-2.0/gtk/gtk.h; then
+    pushd terminal/gtk; m; popd
+fi
 
 #-------------------
 # tabobj

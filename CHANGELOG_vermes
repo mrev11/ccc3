@@ -1,3 +1,6 @@
+2017.01.04  automatikus symlinkek torolve;
+  terminal-gtk forditas install.b-ben;
+
 2016.12.29 demo-wro.prg;
   scrstr.prg, scrstr.ch hozzadva;
   getcmd.prg athozva ccc2-bol;

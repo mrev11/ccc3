@@ -22,19 +22,19 @@ _Dr. Vermes Mátyás_
     A.4  [SQL2 interfész](http://ccc.comfirm.hu/ccc3/sql2.html)   
     A.5  [GTK interfész](http://ccc.comfirm.hu/ccc3/cccgtk.html)   
 
-[1]: #ccc-belülről_1-bevezetés  
-[2]: #ccc-belülről_2-telepítés  
-[3]: #ccc-belülről_3-hello-world  
-[4]: #ccc-belülről_4-változók  
-[5]: #ccc-belülről_5-függvényhívás  
-[6]: #ccc-belülről_6-objektumok  
-[7]: #ccc-belülről_7-kivételkezelés  
-[8]: #ccc-belülről_8-többszálúság  
-[9]: #ccc-belülről_9-unicode  
-[A]: #ccc-belülről_a-régebbi-dokumentációk  
+[1]: #1
+[2]: #2
+[3]: #3
+[4]: #4
+[5]: #5
+[6]: #6
+[7]: #7
+[8]: #8
+[9]: #9
+[A]: #A
 
 
-##  1.  Bevezetés
+##  1.  Bevezetés<a name="1"></a>
 
 A Clipper praktikus, egyszerű, általános célra használható eszköz volt. Nem
 véletlen a rendkívüli népszerűség, amire a maga idejében szert tett. A DOS-
@@ -86,7 +86,7 @@ meghaladó, új részekre fókuszálok, ezen belül is elsősorban magára a nye
 belinkeltem néhány régi doksit. A Clipper eredeti HTML leírása egyes részeiben
 még mindig használható.
 
-##  2.  Telepítés
+##  2.  Telepítés<a name="2"></a>
 
 A CCC többféle rendszeren fut: Windowson MinGW vagy Microsoft-C fordítóval.
 Különféle Linuxokon, BSD-ken, Solarison GCC fordítóval. Mi most az Ubuntu
@@ -226,7 +226,7 @@ Időről időre mégis megjelennek warningok, ez amiatt van, hogy a C++ fordít�
 ellenőrzéseit szigorítják. A CCC karbantartása során ezek rendszeresen
 javításra kerülnek.
 
-##  3.  Hello World
+##  3.  Hello World<a name="3"></a>
 
 Készítünk egy directoryt, mondjuk `$HOME/temp/hello`, és abban egy `hello.prg`
 nevű fájlt.
@@ -316,7 +316,7 @@ Végül, szokássá vált, hogy a build-et indító parancsot (script nevet) be�
 egy `m` nevű fájlba (scriptbe). A CCC programkészítés így az egybetűs `m`
 (make) parancsra indul.
 
-##  4.  Változók
+##  4.  Változók<a name="4"></a>
 
 ###  4.1.  Deklaráció
 
@@ -1353,7 +1353,7 @@ feladatok, robotvezérlés, effélék, ahol semmilyen szünet nem megengedhető,
 ilyesmire a CCC nem alkalmas. (Egyébként a Jáva licencében is leírják, hogy
 atomerőművek és repülőgépek vezérlésére nem jó.)
 
-##  5.  Függvényhívás
+##  5.  Függvényhívás<a name="5"></a>
 
 ###  5.1.  Független modulok
 
@@ -2038,7 +2038,7 @@ Amikor a függvényhívás operátort nem közvetlenül követi a függvénynév
 ahogy a példában egy balzárójel ékelődik `::=` és `val` közé), akkor az üres
 zárójelpárt nem lehet elhagyni.
 
-##  6.  Objektumok
+##  6.  Objektumok<a name="6"></a>
 
 ###  6.1.  Alapok
 
@@ -2794,7 +2794,7 @@ között. A fordítóprogram egyébként úgy működik, hogy a `class` definíc
 belsőleg előállítja a függvényinterfész kódot, és azt a szokásos módon
 lefordítja.
 
-##  7.  Kivételkezelés
+##  7.  Kivételkezelés<a name="7"></a>
 
 ###  7.1.  Mikor kapunk el kivételt?
 
@@ -3209,7 +3209,7 @@ A `begin...recover` és `break` működését tanulmányozhatjuk kikapcsolt
 hibakezelés mellett, ha a `fuggveny2`-ben megszüntetjük az `errorblock()`
 hívás kikommentezését.
 
-##  8.  Többszálúság
+##  8.  Többszálúság<a name="8"></a>
 
 ###  8.1.  Pthread API
 
@@ -3560,7 +3560,7 @@ egy folyamatosan futó tesztprogramot átlagosan hetente akaszt meg...
 Szerencsére ilyen eset már évek óta nem volt. Mérget azonban nem lehet rá
 venni.
 
-##  9.  Unicode
+##  9.  Unicode<a name="9"></a>
 
 ###  9.1.  Unicode támogatás
 
@@ -4030,7 +4030,7 @@ tartalmaz fordítást egyik vagy másik stringre, attól még működni fog a
 program, csak ekkor a fordítással nem rendelkező stringek eredeti szövege
 jelenik meg.
 
-##  A.  Régebbi dokumentációk
+##  A.  Régebbi dokumentációk<a name="A"></a>
 
 Összegyűjtöttem és belinkeltem néhány régről meglevő dokumentációt.
 

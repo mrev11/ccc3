@@ -1,13 +1,13 @@
 
-# CCC is 10 years old
+# CCC is 20 years old
 
 _M. Vermes_
 
-September, 2006
+September, 2016
 
 
   
-According to changelists CCC is 10 years old: It is descended from Clipper, it
+According to changelists CCC is 20 years old: It is descended from Clipper, it
 translates the source code into C and a stack machine implemented in C. It is
 a program language and developing tool independent of platforms.
 

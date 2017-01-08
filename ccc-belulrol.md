@@ -6,21 +6,33 @@ _Dr. Vermes Mátyás_
 2009\. december
 
 
-1  Bevezetés  
-2  Telepítés  
-3  Hello World  
-4  Változók  
-5  Függvényhívás  
-6  Objektumok  
-7  Kivételkezelés  
-8  Többszálúság  
-9  Unicode  
-A  Régebbi dokumentációk  
+[1  Bevezetés][1]  
+[2  Telepítés][2]  
+[3  Hello World][3]    
+[4  Változók][4]  
+[5  Függvényhívás][5]  
+[6  Objektumok][6]  
+[7  Kivételkezelés][7]  
+[8  Többszálúság][8]  
+[9  Unicode][9]  
+[A  Régebbi dokumentációk][A]  
     A.1  [Eredeti Clipper doksi](http://ccc.comfirm.hu/pub/ng)   
     A.2  [CCC projekt manager](http://ccc.comfirm.hu/ccc3/build.html)   
     A.3  [Jáva terminál](http://ccc.comfirm.hu/ccc3/jterminal.html)   
     A.4  [SQL2 interfész](http://ccc.comfirm.hu/ccc3/sql2.html)   
     A.5  [GTK interfész](http://ccc.comfirm.hu/ccc3/cccgtk.html)   
+
+[1]: #ccc-belülről_1-bevezetés  
+[2]: #ccc-belülről_2-telepítés  
+[3]: #ccc-belülről_3-hello-world  
+[4]: #ccc-belülről_4-változók  
+[5]: #ccc-belülről_5-függvényhívás  
+[6]: #ccc-belülről_6-objektumok  
+[7]: #ccc-belülről_7-kivételkezelés  
+[8]: #ccc-belülről_8-többszálúság  
+[9]: #ccc-belülről_9-unicode  
+[A]: #ccc-belülről_a-régebbi-dokumentációk  
+
 
 ##  1.  Bevezetés
 
@@ -3287,7 +3299,7 @@ volna. A program azonban szándékosan el van rontva, ki van kommentezve a
     
     
 
-A mutex (_mut _ually _ex _clusive) olyan dolog, amit lockolni (zárolni,
+A mutex (_mutually exclusive_) olyan dolog, amit lockolni (zárolni,
 megfogni) és unlockolni (elengedni) lehet. A lényeg, hogy egyszerre legfeljebb
 egy szál foghatja a mutexet. Amíg egy szál fogva tartja, addig a többi szálból
 meghívott `thread_mutex_lock` vár a mutex felszabadulására. A mutex
@@ -3391,7 +3403,7 @@ thread kilépését.
 A példa fő tanulsága, hogyan várunk arra `main`-ben, hogy a `level` változó (a
 többi szál tevékenységének következtében) lecsökkenjen egy kívánt értékre. A
 program elején egy mutex és egy cond objektumot hoztunk létre. Általában egy
-cond (_cond _ition) objektumot mindig egy mutexszel együtt használunk.
+cond  (_condition_) objektumot mindig egy mutexszel együtt használunk.
 
 Az alábbi kódrészletben a `thread_cond_wait(cond,mutex)` híváskor `mutex`-nek
 lockolva kell lennie. A `thread_cond_wait` automatikusan elengedi a mutexet,

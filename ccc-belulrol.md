@@ -3238,7 +3238,7 @@ rendelkezésre szálak indítására és szinkronizálására:
 A CCC szintre kivezetett egyszerűsített pthread API CCC-ből ugyanúgy működik,
 mint C-ből. Nincs értelme most referenciaszerű leírást adni róla, mert több
 ilyen található az interneten. [Itt van pl. egy a számos
-közül](http://cs.pub.ro/~apc/2003/resources/pthreads/uguide/document.htm). A
+közül](https://computing.llnl.gov/tutorials/pthreads/). A
 man is használható a _pthread_ címszavaknál. Magam is a man oldalak alapján
 dolgozom, pl.
 

@@ -45,3 +45,39 @@ together with Clipper. This way the class libraries have less importance,
 because the infrastructure accesible from C is always available. This is the
 philosophy of CCC.
 
+These documents may be interesting for Hungarian readers:
+
+[CCC belülről](doc/ccc-belulrol.md)    
+[Programkészítés a Build-del](ccctools/buildp/build.md)    
+[SQL2 1.1 interfész](tools/sql2/sql2.md)    
+[CCC-GTK csatoló](gtk/cccgtk.md)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-----------------------------------------------------------------
+(it is annoying, that do not exist a common solution for Gollum and GitHub):
+Links in Gollum (do not work in GitHub):    
+[CCC belülről](doc/ccc-belulrol)    
+[Programkészítés a Build-del](ccctools/buildp/build)    
+[SQL2 1.1 interfész](tools/sql2/sql2)    
+[CCC-GTK csatoló](gtk/cccgtk)    
+
+
+WikiLink Syntax (do not work in GitHub):  
+[[CCC belülről|doc/ccc-belulrol]]    
+[[Programkészítés a Build-del|ccctools/buildp/build]]    
+[[SQL2 1.1 interfész|tools/sql2/sql2]]    
+[[CCC-GTK csatoló|gtk/cccgtk]]    
+
+Links in GitHub (do not work in Gollum):    
+------------------------------------------------------------------->

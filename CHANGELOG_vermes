@@ -1,4 +1,8 @@
 2017.01.19  dokumentumok README.md-bol linkelve;
+  install-linux.md
+  install-windows.md
+
+2017.01.19  dokumentumok README.md-bol linkelve;
   ccctools/buildp/build.md    
   tools/sql2/sql2.md    
   gtk/cccgtk.md    

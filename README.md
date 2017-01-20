@@ -45,6 +45,11 @@ together with Clipper. This way the class libraries have less importance,
 because the infrastructure accesible from C is always available. This is the
 philosophy of CCC.
 
+[Linux Install](doc/install-linux.md)    
+[Windows Install](doc/install-windows.md)    
+
+
+
 These documents may be interesting for Hungarian readers:
 
 [CCC belülről](doc/ccc-belulrol.md)    

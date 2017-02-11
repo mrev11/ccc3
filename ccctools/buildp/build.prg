@@ -36,7 +36,7 @@ static s_dry:=.f.
 static s_primary   //kiszamitja s_rules-bol //:=".y.lem.lex.prg.cpp.c.asm.tds.tdc."
 static s_resource  //kiszamitja s_rules-bol //:=".msk.mnt.cls.htm.pge.tdc"
 
-static s_libabs:=.t. //minden platformon abszolút lib specifikációk
+static s_libspec   //lib specifikációk
  
 static s_rules:={;
 {".msk",".dlg"},;
@@ -64,7 +64,7 @@ static s_rules:={;
 
 static resource_hash:=simplehashNew()
 
-#define VERSION "1.4.5" // 2016.12.07 forditasi szabalyok rendezese javitva
+#define VERSION "1.4.6" //-b-vel megadott kulso lib-ektol fuggest is vizsgal
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -441,10 +441,9 @@ local txt,set,lst,n
     txt:=strtran(txt,","," ")  //","->" "
     txt:=strtran(txt,";"," ")  //";"->" "
     putenv("BUILD_LIB="+txt)
-    if( s_libabs )
-        putenv("BUILD_LIB="+search_library())
-    end
-    //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildb",txt)
+    s_libspec:=search_library()
+    putenv("BUILD_LIB="+s_libspec)
+    s_libspec::=split(" ")
     
     return NIL
 
@@ -647,25 +646,7 @@ local objdir:=getenv("BUILD_OBJ"), n
         depend:=object[n]
         torun+=" "+depend
         depend:=objdir+dirsep()+depend+".obj"
-        tdepend:=ftime(depend)
-
-        if( tdepend==NIL )
-            if( s_dry )
-                tdepend:=""
-            else
-                ? depend, @"does not exist"
-                ?
-                errorlevel(1)
-                quit
-            end
-
-        elseif( ttarget<tdepend )
-            update:=.t.
-        end
-
-        if( s_debug )
-            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-        end
+        update:=verifdep(ttarget,depend).or.update
     next
 
     if( s_debug )
@@ -710,25 +691,7 @@ local objlist
     
         depend:=object[n]
         depend:=objdir+dirsep()+depend+".obj"
-        tdepend:=ftime(depend)
-
-        if( tdepend==NIL )
-            if(s_dry)
-                tdepend:=""
-            else
-                ? depend, @"does not exist"
-                ?
-                errorlevel(1)
-                quit
-            end
-
-        elseif( ttarget<tdepend )
-            update:=.t.
-        end
-
-        if( s_debug )
-            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-        end
+        update:=verifdep(ttarget,depend).or.update
     next
 
     if( s_debug )
@@ -800,25 +763,15 @@ local objlist, xobj
         end
         
         depend:=objdir+dirsep()+depend+".obj"
-        tdepend:=ftime(depend)
-
-        if( tdepend==NIL )
-            if( s_dry )
-                tdepend:=""
-            else
-                ? depend, @"does not exist"
-                ?
-                errorlevel(1)
-                quit
-            end
-        elseif( ttarget<tdepend )
-            update:=.t.
-        end
-
-        if( s_debug )
-            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-        end
+        update:=verifdep(ttarget,depend).or.update
     next
+    
+    for n:=1 to len(s_libspec)                           /**/
+        if( s_libspec[n]::right(4)==".lib" )             /**/
+            depend:=s_libspec[n]                         /**/
+            update:=verifdep(ttarget,depend).or.update   /**/
+        end                                              /**/
+    next                                                 /**/
 
     if( s_debug )
         ? 
@@ -894,48 +847,19 @@ local objdir:=getenv("BUILD_OBJ"), n
     depend:=mmod
     torun+=" "+depend
     depend:=objdir+dirsep()+depend+".obj"
-    tdepend:=ftime(depend)
-
-    if( tdepend==NIL )
-        if( s_dry )
-            tdepend:=""
-        else
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
-        end
-    elseif( ttarget<tdepend )
-        update:=.t.
-    end
-
-    if( s_debug )
-        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-    end
- 
+    update:=verifdep(ttarget,depend).or.update
  
     depend:=libnam
     torun+=" "+depend
     depend:=objdir+dirsep()+depend+".lib"
-    tdepend:=ftime(depend)
-    
-    if( tdepend==NIL )
-        if( s_dry )
-            tdepend:=""
-        else
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
-        end
-    elseif( ttarget<tdepend )
-        update:=.t.
-    end
-
-    if( s_debug )
-        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-    end
+    update:=verifdep(ttarget,depend).or.update
  
+    for n:=1 to len(s_libspec)                           /**/
+        if( s_libspec[n]::right(4)==".lib" )             /**/
+            depend:=s_libspec[n]                         /**/
+            update:=verifdep(ttarget,depend).or.update   /**/
+        end                                              /**/
+    next                                                 /**/
 
     if( s_debug )
         ? 
@@ -978,25 +902,7 @@ local n,p1,p2
  
     for n:=2 to len(deplist)
         depend:=deplist[n] 
-        tdepend:=ftime(depend)
-        
-        if( tdepend==NIL )
-            if( s_dry )
-                tdepend:=""
-            else
-                ? deplist[n], @"does not exist"
-                ?
-                errorlevel(1)
-                quit
-            end
-
-        elseif( ttarget<tdepend )
-            update:=.t.
-        end
-
-        if( s_debug )
-            ? "  ",depend,"["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-        end
+        update:=verifdep(ttarget,depend).or.update
     next
 
     if( s_debug )
@@ -1208,7 +1114,7 @@ local f0,f1,f2,f3,pf1,pf2,pf3
             txt+=f0+" " //eredeti alak
         end
     next
- 
+
     return txt
 
 ****************************************************************************
@@ -1343,6 +1249,33 @@ local i,n,x
             todo[n][i]:=x
         next
     next
+
+
+****************************************************************************
+static function verifdep(ttarget,depend)
+
+local update:=.f.
+local tdepend:=ftime(depend)
+
+    if( tdepend==NIL )
+        if( s_dry )
+            tdepend:=""
+        else
+            ? depend, @"does not exist"
+            ?
+            errorlevel(1)
+            quit
+        end
+
+    elseif( ttarget<tdepend )
+        update:=.t.
+    end
+
+    if( s_debug )
+        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+    end
+    
+    return update
 
 
 ****************************************************************************

@@ -1,3 +1,11 @@
+2017.02.11 Build a kulso lib-ektol valo fuggoseget is vizsgalja;
+  A -b-vel megadott (kulso) lib-ektol valo fuggoseget is vizsgalja;
+  Korabban ezt nem vizsgaltuk, mert Linuxon tulnyomoan so-kat hasznalunk,
+  az uj so-k pedig az exe ujralinkelese nelkul is ervenyre jutnak.  
+  Most csak a lib kiterjesztesu statikus libeket vettem be, de ertelme 
+  lehet az so-kat is nezni, ha ellenorizni akarjuk az ujralinkelhetoseget;
+  Kodismetles megszuntetesere: verifdep;
+
 2017.01.19  dokumentumok README.md-bol linkelve;
   install-linux.md
   install-windows.md

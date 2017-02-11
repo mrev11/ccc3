@@ -1,4 +1,12 @@
 
+2017.02.11 -- 1.4.6
+  A -b-vel megadott (kulso) lib-ektol valo fuggoseget is vizsgalja;
+  Korabban ezt nem vizsgaltuk, mert Linuxon tulnyomoan so-kat hasznalunk,
+  az uj so-k pedig az exe ujralinkelese nelkul is ervenyre jutnak.  
+  Most csak a lib kiterjesztesu statikus libeket vettem be, de ertelme 
+  lehet az so-kat is nezni, ha ellenorizni akarjuk az ujralinkelhetoseget;
+  Kodismetles megszuntetesere: verifdep;
+
 2016.11.27 -- 1.4.5
   Forditasi szabalyok sorrendje javitva.
 

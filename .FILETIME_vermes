@@ -1,6 +1,13 @@
+7eed49e0e693ca34065980b27367071bd8c69bdf 2017021118:14:46-UTC ./CHANGELOG_vermes
+f453d3ff938ca47dd8e827d0d04f55e3a9a1532d 2017021118:12:56-UTC ./ccctools/buildp/build.hu.ver
+68e63d1f608b982082b20a32f7c78f8d73b82981 2017021118:05:46-UTC ./ccctools/buildp/build.prg
+08f77137ca257e7a151673f9a50bbc555aa3273a 2017021117:06:44-UTC ./usr/bin/linux/build
+bd01279a3f203c9dfd7a45adae9ae6aa1fecf2cf 2017021115:55:14-UTC ./usr/bin/linux/gitnav
+d3d882b4270c4e9e10eca0e90c71fdde627fa74e 2017021115:55:14-UTC ./usr/bin/linux/gitref
+c5977d7f1ea9bf13333d969e172d9df804d9ee5c 2017021115:55:14-UTC ./usr/bin/linux/gitstat
+f10c17a53d9637a2a9d3faf108cb825a6fa36f23 2017021115:55:14-UTC ./usr/bin/linux/gitview
 b70e316d23743ee8cd0d85f8d294d6a837630579 2017012109:22:13-UTC ./g-mdlink-cre
 77a780fee5c7b88bd8221dd9b7b757428993799e 2017012109:20:12-UTC ./g-mdlink-del
-e524951b119521779e3b03279e7fc230b9d3a619 2017012021:50:24-UTC ./CHANGELOG_vermes
 1b10054c5e6768b27dd7904629db867ab32dec6a 2017012020:58:06-UTC ./doc/install-windows.md
 06fd5c3a5064e5669b4e7bfa0c64e55d42756185 2017012015:18:28-UTC ./doc/install-linux.md
 7f4db261fd5f3e3d2aeaa987744ecb4e70a4eed4 2017012010:37:57-UTC ./README.md
@@ -31,7 +38,6 @@ fc652c01e237ddc6bc462b928859113ebeacd36e 2017011707:07:47-UTC ./doc/html/cccgtk.
 53990704edc042671181633fb79efbaf9950ccbe 2017011614:01:20-UTC ./ccctools/buildp/build.md
 6c0d9d6485a9238807d9d76dd2ffa92db58ddd53 2017011612:27:58-UTC ./tools/mask/m.bat
 87209a53e9a7db09b35f7c17554d3ecd87c34e6f 2017011519:26:56-UTC ./tools/mask/m
-9954eeaf4c3955f57223c0b00943ebaac1c224ba 2017011510:31:45-UTC ./usr/bin/linux/gitref
 817d58aba9e05bf92128e45fdeea947cb5516472 2017011409:50:19-UTC ./doc/html/tabnaplo.aux
 80c36659b6b8187c6fcedf7697a243f9d2222a58 2017011409:50:19-UTC ./doc/html/tabnaplo.html
 b88ffbf9961894877afd365690d2562076f5be23 2017011409:50:19-UTC ./doc/html/tabnaplo.log
@@ -186,9 +192,6 @@ c7a4c70d26de027130db44a02b068f45cf69e4f0 2017011015:41:50-UTC ./jt/jterminal/jtw
 73e0bf813d95ba0f321822e996445b90acf92396 2017011015:41:50-UTC ./jt/jterminal/jtwindow.class
 7e2b66f334906a91150ede8e65711f271f1b08e1 2017011015:41:50-UTC ./jt/jterminal/xmlcomponent.class
 46edfc89f313c13c57222ac5bbcdbd63bc7e0034 2017010410:15:52-UTC ./install.bat
-cacddfa259ce7ed1c13aea03f055abfa5ac27fba 2017010308:41:39-UTC ./usr/bin/linux/gitnav
-444677bedc576921d49e4749b793e18f4db574a3 2017010308:41:39-UTC ./usr/bin/linux/gitstat
-1d0908c8bc35f4f8906b13910056a5bf733d10fe 2017010308:41:39-UTC ./usr/bin/linux/gitview
 8b1aa271f2901bb8e264ff572f0fa871aae0a48e 2017010308:41:37-UTC ./usr/bin/linux/filetime-restore
 9fb5926757285ffc0d2b14e18df95bcabbfcfc6a 2017010308:41:37-UTC ./usr/bin/linux/filetime-save
 87f712a040e187a3f804bf6aca5bb8c3f7eeb58f 2017010308:32:43-UTC ./log-install
@@ -200,11 +203,8 @@ cd8ea02cba951687b37e2f6cdaa170f29bd219c6 2016122909:56:06-UTC ./tools/mask/m-dem
 7d848efac51f9611647a6b70f3fdcb553dc66e6a 2016122909:55:26-UTC ./tools/mask/demo-wro.prg
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
 91081e76a701425999020af0e4c9f6d42e80ca3c 2016121514:17:06-UTC ./usr/bin/linux/firstpar
-6c0b8bcdaeefffa87ef2aeee3f568732fb32526d 2016120722:49:13-UTC ./usr/bin/linux/build
 7d2cd42da8f31057deca2d073e89fe9f15842a33 2016120722:48:38-UTC ./ccctools/build/build.prg
-1cfb416d8bd718d50ee4644e8ef5a54b7c138155 2016120722:48:17-UTC ./ccctools/buildp/build.prg
 8a097eebd5ef3369b16c7efa8075425c601ce761 2016120722:47:35-UTC ./ccctools/build/build.hu.ver
-33f88fe998ae3d0d79153a7be23ca59e08cd2053 2016120722:47:21-UTC ./ccctools/buildp/build.hu.ver
 a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.src/tabchlog.prg
 559d9a88a8a494b63cecc247cc725a241010c8f9 2016120514:01:01-UTC ./tabobj/tbbtbtx/btbtx.hu.ver
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver

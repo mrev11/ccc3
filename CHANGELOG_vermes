@@ -1,3 +1,7 @@
+2017.02.19 Menuzo browseban tobbszintu popup menu;
+  ha a kodblock helyen array van, akkor egy uj popup menu nyilik;
+  (25 ev utan bovult az API);
+
 2017.02.11 Windowson dummy obj2so.bat file;
 
 2017.02.11 Build a kulso lib-ektol valo fuggoseget is vizsgalja;

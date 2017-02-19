@@ -25,7 +25,8 @@ function main()
 local dir:=directory("*.*","DH")
 local brw:=brwCreate(10,10,maxrow()-2,maxcol()-10)
 local smenu:={}
-
+local popup2:={}
+local popup3:={}
 
     setcursor(0)
     set date format to "yyyy.mm.dd"
@@ -38,11 +39,29 @@ local smenu:={}
     brwColumn(brw,"Time",brwABlock(brw,F_TIME))
     brwColumn(brw,"Attr",brwABlock(brw,F_ATTR),1)
 
+    aadd(smenu,{"Popup2",popup2})
+    aadd(popup2,{"Second Level Popup+0!", {|| alert("popup2#0"), 0 }})
+    aadd(popup2,{"Second Level Popup+1!", {|| alert("popup2#1"), 1 }})
+    aadd(popup2,{"Second Level Popup+2!", {|| alert("popup2#2"), 2 }})
+    aadd(popup2,{"Second Level Popup+3!", {|| alert("popup2#3"), 3 }})
+    aadd(popup2,{"Second Level Popup+4!", {|| alert("popup2#4"), 4 }})
+    aadd(popup2,{"Second Level Popup+5!", {|| alert("popup2#5"), 5 }})
+    aadd(popup2,{"Second Level Popup+6!", {|| alert("popup2#6"), 6 }})
+
+    aadd(popup2,{"Popup3!", popup3})
+    aadd(popup3,{"Third Level Popup+0!", {|| alert("popup3#0"), 0 }})
+    aadd(popup3,{"Third Level Popup+1!", {|| alert("popup3#1"), 1 }})
+    aadd(popup3,{"Third Level Popup+2!", {|| alert("popup3#2"), 2 }})
+    aadd(popup3,{"Third Level Popup+3!", {|| alert("popup3#3"), 3 }})
+    aadd(popup3,{"Third Level Popup+4!", {|| alert("popup3#4"), 4 }})
+    aadd(popup3,{"Third Level Popup+5!", {|| alert("popup3#5"), 5 }})
+    aadd(popup3,{"Third Level Popup+6!", {|| alert("popup3#6"), 6 }})
+
     aadd(smenu,{"By name",{|b|sortbyname(b)}})
     aadd(smenu,{"By time",{|b|sortbytime(b)}})
     aadd(smenu,{"By size",{|b|sortbysize(b)}})
     aadd(smenu,{MENUSEP})
-    aadd(smenu,{"Hopp",{||alert("öt szép szűzlány őrült írót nyúz")}})
+    aadd(smenu,{"Hopp",{||alert("öt szép szűzlány őrült írót nyúz"),-1}})
     
     brwMenu(brw,"Sort","Sort by name/time/size",smenu)
     brwMenu(brw,"Alert","Make an alert",;

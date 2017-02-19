@@ -1,12 +1,18 @@
-8d864b1afca490c8f9e081ddef0eef594634af03 2017021118:40:03-UTC ./CHANGELOG_vermes
+996d48c045c5e0353561767c2cd18341af397c6c 2017021919:37:26-UTC ./tutor/xbrwarr/xbrwarr.prg
+e569024127628d0013da5a2fcd9d55f2e5cb4af6 2017021919:32:03-UTC ./ccclib/src/uic/brwmenu.prg
+5d8ba91afd945134e53d29d6f73ba531f3f6e2ae 2017021913:06:29-UTC ./CHANGELOG_vermes
+d421dc148c7ee24eef651ecc7a18604c3526a677 2017021910:58:37-UTC ./log-install
+577dca401d4d78460325abe83721bb7998313477 2017021910:58:23-UTC ./usr/bin/linux/firstpar
+80ed7d8382632dee78bc1e6b721d48a764c36a9c 2017021408:04:57-UTC ./usr/bin/linux/gitnav
+aa76ad06626db1e57aa07da7fd591bdf7d23e692 2017021408:04:57-UTC ./usr/bin/linux/gitref
+cec8b97612d649b011956702390a636219c50fe8 2017021408:04:57-UTC ./usr/bin/linux/gitstat
+f443e5ffe0d10c3aecab7dc6414689e8f7ca5522 2017021408:04:57-UTC ./usr/bin/linux/gitview
 fb2fdd2ed8dcc0de718f7df6051dcb6d7a40de7c 2017021118:39:34-UTC ./usr/build/windows/obj2so.bat
 f453d3ff938ca47dd8e827d0d04f55e3a9a1532d 2017021118:12:56-UTC ./ccctools/buildp/build.hu.ver
 68e63d1f608b982082b20a32f7c78f8d73b82981 2017021118:05:46-UTC ./ccctools/buildp/build.prg
 08f77137ca257e7a151673f9a50bbc555aa3273a 2017021117:06:44-UTC ./usr/bin/linux/build
-bd01279a3f203c9dfd7a45adae9ae6aa1fecf2cf 2017021115:55:14-UTC ./usr/bin/linux/gitnav
-d3d882b4270c4e9e10eca0e90c71fdde627fa74e 2017021115:55:14-UTC ./usr/bin/linux/gitref
-c5977d7f1ea9bf13333d969e172d9df804d9ee5c 2017021115:55:14-UTC ./usr/bin/linux/gitstat
-f10c17a53d9637a2a9d3faf108cb825a6fa36f23 2017021115:55:14-UTC ./usr/bin/linux/gitview
+41c98c7a6c60e2308637300a6ad4c945a59cb5d8 2017020914:57:36-UTC ./usr/bin/linux/mview
+b328dc49ff4ceb4b8340aec803ef3400e19e1a0f 2017020914:57:36-UTC ./usr/bin/linux/pop3
 b70e316d23743ee8cd0d85f8d294d6a837630579 2017012109:22:13-UTC ./g-mdlink-cre
 77a780fee5c7b88bd8221dd9b7b757428993799e 2017012109:20:12-UTC ./g-mdlink-del
 1b10054c5e6768b27dd7904629db867ab32dec6a 2017012020:58:06-UTC ./doc/install-windows.md
@@ -195,7 +201,6 @@ c7a4c70d26de027130db44a02b068f45cf69e4f0 2017011015:41:50-UTC ./jt/jterminal/jtw
 46edfc89f313c13c57222ac5bbcdbd63bc7e0034 2017010410:15:52-UTC ./install.bat
 8b1aa271f2901bb8e264ff572f0fa871aae0a48e 2017010308:41:37-UTC ./usr/bin/linux/filetime-restore
 9fb5926757285ffc0d2b14e18df95bcabbfcfc6a 2017010308:41:37-UTC ./usr/bin/linux/filetime-save
-87f712a040e187a3f804bf6aca5bb8c3f7eeb58f 2017010308:32:43-UTC ./log-install
 4f73b8fbee26afeef525eafbe5a9360b55735687 2017010308:31:24-UTC ./install.b
 dfe2562e4302dd13987584eb8e06bce2813e6e42 2016122913:23:34-UTC ./usr/include/std1.ch
 b9c5e9d2423f4cca06032b910fb25761b6362ac5 2016122913:19:16-UTC ./ccclib/src/uic/getcmd.prg
@@ -203,7 +208,6 @@ bc10e18ddc2a45fa79de09086138b7bc017d9488 2016122909:56:08-UTC ./tools/mask/pagep
 cd8ea02cba951687b37e2f6cdaa170f29bd219c6 2016122909:56:06-UTC ./tools/mask/m-demo
 7d848efac51f9611647a6b70f3fdcb553dc66e6a 2016122909:55:26-UTC ./tools/mask/demo-wro.prg
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
-91081e76a701425999020af0e4c9f6d42e80ca3c 2016121514:17:06-UTC ./usr/bin/linux/firstpar
 7d2cd42da8f31057deca2d073e89fe9f15842a33 2016120722:48:38-UTC ./ccctools/build/build.prg
 8a097eebd5ef3369b16c7efa8075425c601ce761 2016120722:47:35-UTC ./ccctools/build/build.hu.ver
 a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.src/tabchlog.prg
@@ -379,7 +383,6 @@ fc06ea923a2bba3c5dfe7c200a8bb10ca17a7883 2016092907:10:56-UTC ./tutor/hash/hashd
 4b4c95671773d308f307781a5a5d0c25e7d94876 2016092907:10:48-UTC ./tutor/hash/hashdemo1.prg
 3ded9c035185261ab02fda59cf4e8ce4cb0e1227 2016092907:10:27-UTC ./tutor/spawn/test0.prg
 00c23f8065261fa0d3b3a2744bce1cf3a2a6567f 2016092907:10:18-UTC ./tutor/xbrowse/xbrowse.prg
-6827e3639e40999e56c205f19c918d2a05e8a99b 2016092907:10:11-UTC ./tutor/xbrwarr/xbrwarr.prg
 f1bd286c369db72ae6bf1f65b3d82c7008e45d20 2016092907:10:03-UTC ./tutor/xtabobj/xtesztdb.prg
 ab126cffe97658175bf0b375ed235b898868ef0f 2016092907:09:23-UTC ./tutor/multithread/array-test.prg
 6567a184e71a28bae39324912312b1bb19f2dbfe 2016092907:09:10-UTC ./tutor/redir/unix/parent.prg
@@ -1377,7 +1380,6 @@ d02377bb7bb53ca51e46addc7f8202dc3af3bbec 2009080521:26:33-UTC ./jt/jtlib/jtenvir
 dc91e9b2693b0f94fe778595fd6ae440ff50252c 2009050309:24:15-UTC ./usr/bin/netbsd/bapp_unix_btbtx.b
 737c0c8dd6f48c0f1c9df6c501d4e3cbe101f80a 2009050309:24:07-UTC ./usr/bin/netbsd/bapp_unix_.b
 acc82bb39e3ca5d24ba25a3e14955812a7db671e 2009050309:23:59-UTC ./usr/bin/netbsd/bapp_unix0.b
-c8f5c60d920361322b03f84c1c056e58ac9633a9 2009050306:54:49-UTC ./ccclib/src/uic/brwmenu.prg
 5bc543cbf361d76789b39064a630096f5ce40f59 2009050305:52:22-UTC ./ccclib/src/uic/m
 f2250b868fa0c3c48c9ccbc0d79b74efa698b2c9 2009050114:43:32-UTC ./usr/options/fre/link.opt
 a93f66039cf5697a89ecb533f929b6fd34498e8a 2009042813:49:44-UTC ./ccctools/ppo2cpp/test-forward/proba.prg
@@ -2567,7 +2569,6 @@ cc1c3b4abb10acaa81c6acb3f81fea8ded7d952b 2006041808:22:18-UTC ./usr/bin/freebsd/
 cc2127d17a95b3a3b90645a1c471348cbd7ce292 2006041506:01:04-UTC ./ccctools/ppo2cpp/utf8conv.cpp
 c5ed672de5f8c1baaab16dc3bf6daeb986a67e86 2006041415:29:44-UTC ./tools/xstart/m.bat
 f85062cd25efaee93e833c64be4aad41d75743c8 2006041414:22:50-UTC ./ccclib/src/unix/exename.prg
-c02a4c5ba626619f8a1ae57eb9bda6e660e05e99 2006041413:46:10-UTC ./tutor/xbrwarr/s
 7b63bf6b0487c482ab0b98092b88f594c944523d 2006041413:38:56-UTC ./tutor/xbrwarr/m.bat
 9d4a87f0361c6835f97c548b78de0efd2a66d3f4 2006041413:38:46-UTC ./tutor/xbrwarr/m
 0482341df0ca10d3c117c1db715975af4ea89982 2006041413:23:32-UTC ./ccctools/removecr/m

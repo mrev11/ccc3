@@ -689,6 +689,7 @@ local type:=valtype( menu )
 local ptext:={}, choice:=1, chnxt
 local screen, color, n, h, w
 local sepchr:=MENUSEP,mit
+local popblk
 
     if( type!="A" )
         return .f.
@@ -757,10 +758,15 @@ local sepchr:=MENUSEP,mit
         elseif( choice>0 )
             
             if( ptext[choice]!=sepchr )
-        
+            
+                popblk:=brwPopup2(menu[choice][2])
+                if( valtype(popblk)!="B" )
+                    loop
+                end
+
                 restscreen(posr+1,posc,posr+h+2,posc+w+1,screen)
                 color:=setcolor(color)
-                chnxt:=eval(menu[choice][2],browse)
+                chnxt:=eval(popblk,browse)
                 if( valtype(chnxt)!="N" .or. chnxt<0 .or. len(ptext)<chnxt )
                     browse:cargo[BR_POPUP]:=.f.
                     return .t.
@@ -784,6 +790,74 @@ local sepchr:=MENUSEP,mit
     restscreen(posr+1,posc,posr+h+2,posc+w+1,screen)
     return .t.
    
+
+************************************************************************
+static function brwPopup2(menu)
+
+local ptext:={}, choice:=1
+local screen, n, h, w
+local sepchr:=MENUSEP,mit
+
+local posr:=row()-1
+local posc:=col()
+local choblk
+
+    if(valtype(menu)=="B")
+        return menu  //rekurzio vege
+    end
+
+    h:=len(menu)
+    w:=8 //minimum ennyi
+    ptext:={}
+
+    for n:=1 to h
+        mit:=menu[n][1]
+        aadd(ptext,mit)
+        if( mit!=sepchr .and. w<len(mit) )
+            w:=len(mit)
+        end
+    next
+
+    for n:=1 to len(ptext)
+        if( ptext[n]!=sepchr )
+            //normál item
+        else
+            //elválasztó, méretre vágjuk
+            ptext[n]:=replicate(sepchr,w)
+        end
+    next
+
+    posc:=min(posc, maxcol()-w-2)
+    h:=min(h, maxrow()-posr-2)
+
+    screen:=drawBox(posr+1,posc,posr+h+2,posc+w+1,B_SINGLE)
+
+    while(.t.)
+        choice:=achoice(posr+2,posc+1,posr+h+1,posc+w,ptext,,,choice)
+
+        if( lastkey()==K_LEFT )
+            exit
+
+        elseif( lastkey()==K_RIGHT )
+            exit
+
+        elseif( lastkey()==K_ESC )
+            exit
+
+        elseif( choice>0 )
+            
+            if( !(ptext[choice]!=sepchr) )
+                //separator
+            else
+                choblk:=brwPopup2(menu[choice][2]) //rekurzio
+                exit
+            end
+        end
+    end
+
+    restscreen(posr+1,posc,posr+h+2,posc+w+1,screen)
+    return choblk //choiced block/NIL
+
 
 ************************************************************************
 static function WriteMenu(browse, nMove)

@@ -1,3 +1,0 @@
-#!/bin/bash
-xbrwarr.exe >log
-list.exe log

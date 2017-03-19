@@ -1,9 +1,10 @@
-3fded8f4294d2823668f2118efe447b48af763d5 2017031514:39:24-UTC ./CHANGELOG_vermes
+474fa7be2acd60b7db53b07f8e2f0c672121f8d9 2017031909:08:10-UTC ./CHANGELOG_vermes
+36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
+75607572bfca575e6b5795e1b4a8456194980654 2017031906:48:26-UTC ./usr/bin/linux/msk2html
 bd4ccb9208f01f3e778d5518e6b949b2c763d3f0 2017031512:33:44-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-hun.txt
 2c31ceddb6ab87c3712820ad644c93c3970e30c6 2017031512:26:45-UTC ./tools/sql2/driver-sqlite3/regression/OLVASS
 23ef682d33674e2ca5985df1c878903a9bce0299 2017031511:58:28-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-regression.rb
 f58f161b6fcaa79f3ac1626562b79308025ec54b 2017031511:55:47-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-eng.txt
-7e3650e23e075bc0236549f0e3ed0a99aab39654 2017031415:55:14-UTC ./usr/bin/linux/msk2html
 e46d7408396295908fe10d13b6508589d99240c1 2017031214:18:56-UTC ./tools/sql2/log-mkall
 0c35ea2c395ee59b4614af46ca0d4834fa1360d2 2017030416:04:56-UTC ./gtk/examples/gallery/appwindow/log
 afa9dc7b4ef222276090ec41e898ffb5b822188b 2017022514:49:54-UTC ./gtk/log-mkall

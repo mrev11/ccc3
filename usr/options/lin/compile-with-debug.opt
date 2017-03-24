@@ -12,7 +12,9 @@
 -DxGC_BOEHM
 -DGC_NATIVE
 -ggdb
+-pg
 -funsigned-char
 -fPIC
 -Wall
 -Wno-unused
+-Wno-trigraphs

@@ -1,3 +1,6 @@
+2017.03.24 -- 5.0.21
+  npdetab.h-ban realloc meretezes javitva; 
+
 2015.02.11 -- 5.0.20
   Munkafájlok (ppo2cpp_code, ppo2cpp_diag, ppo2cpp_meth) neve 
   a forrásból képezve, hogy ne ütközzenek.

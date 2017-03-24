@@ -45,10 +45,12 @@ struct nodetab {
 
     int add(void *p)  // return: elemek száma
     {
+        //printf("nodetab-add %d %s\n",top,((top>=len)?"realloc":""));
+
         if( top>=len )
         {
             len+=256;
-            buffer=(void**)realloc(buffer,len);
+            buffer=(void**)realloc(buffer,len*sizeof(void*));
         }
         buffer[top++]=p;
         return top;

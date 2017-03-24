@@ -1,12 +1,17 @@
-156d733285cc4d06318dc07ac638d9f7c86403c4 2017032418:56:32-UTC ./CHANGELOG_vermes
+303b54106a1dc63cae4a86465e30362838c63edc 2017032418:58:36-UTC ./CHANGELOG_vermes
 841af9f93a0643e3565275c6510513184c63ed8a 2017032418:30:09-UTC ./ccctools/buildp/build.hu.ver
 dabf348fdac3875031e5aaa641e219a557796b04 2017032418:29:33-UTC ./ccctools/buildp/build.prg
 c52a5a9a63e51e0fbcec692ee979be64e6d9bd79 2017032418:28:32-UTC ./ccctools/build/build.prg
 16f47e6be60743e6d9be5c51755328492317bc7f 2017032418:27:37-UTC ./ccctools/build/build.hu.ver
+eb0e10d0576dc590b5dc093d51fce0a7bc324fe1 2017032417:56:18-UTC ./tools/tdc2prgch/tabsuper.prg
 cd5db2d7080ba8736e320f87b753c9650bc8b6e2 2017032417:55:18-UTC ./ccctools/ppo2cpp/nodetab.h
 a407adea5590f1a5012d73ff336a1687e1740175 2017032417:54:45-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 eef140eaa2dd939edb10e372a817c19e2784dc72 2017032417:54:24-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
+3d504b121e6f23692d9f1a9f87b61a43f82605c2 2017032416:25:03-UTC ./tools/tdc2prgch/prg2tdc.prg
 ebce979e04ed7655b40afa47d94c07371a83e0cd 2017032408:59:32-UTC ./usr/options/lin/compile-with-debug.opt
+68ed85b7b09c562446095b07590fadc916a39dc1 2017032215:34:07-UTC ./tools/ddict2/progout.prg
+8c06ce6146d3ec3e3f63ee02ed7058ac32cc3a0f 2017032215:24:43-UTC ./tools/ddict2/ddict2.prg
+731616a301f5fe219a6b4da96a5b7cb89684a98e 2017032212:29:32-UTC ./tools/ddict2/dddel.prg
 36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
 bd4ccb9208f01f3e778d5518e6b949b2c763d3f0 2017031512:33:44-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-hun.txt
 2c31ceddb6ab87c3712820ad644c93c3970e30c6 2017031512:26:45-UTC ./tools/sql2/driver-sqlite3/regression/OLVASS
@@ -43,7 +48,6 @@ a7aa2e786e0588d8d1a7e43e96346a0eda1565fd 2016120115:05:55-UTC ./terminal/unix/te
 0f8672e8d77bffd08caccf03caf0775efe5e17c0 2016120113:58:06-UTC ./terminal/unix/terminal-xft.cpp
 0f784282a80d0747e3e106cb7f57be2459d066c1 2016120110:17:02-UTC ./terminal/unix/s
 5d85f92867c3ec4c1776f452696c7585c7648cc4 2016112919:33:20-UTC ./terminal/terminal-test/screenwr/s
-6aeac14b682dd7e46d568aa2ed96d1948089fa02 2016112912:01:18-UTC ./tools/ddict2/progout.prg
 8c489c560c14b8c7242c59f92f6c53d4cc62da26 2016112911:11:08-UTC ./tools/savex/savex.ver
 05899f6b98d4a58f0473c4758b2127264312ac31 2016112910:59:41-UTC ./tools/savex/compfile.prg
 b2c7fd7469cb7e1553c5f61d1888a5aa5fcf1c28 2016112712:13:27-UTC ./tools/mask/pge2wro.prg
@@ -744,7 +748,6 @@ dc2e26d5291b87406a0c3c89a204cffa19abc3c2 2013101615:56:50-UTC ./tools/ddict2/msk
 9fcc9ad03fbbcdecb0c3d7878005506e86f9b040 2013101615:56:45-UTC ./tools/ddict2/sorrend.prg
 26c894a036cc774cb9cd2c0353ae4a843bce59f1 2013101615:55:58-UTC ./tools/ddict2/msksor.msk
 28ebe72caad7f99a00b5546f7f962152aecf8dd0 2013101615:52:15-UTC ./tools/ddict2/ddict2.ver
-7066ea3d5077ccf8e801b09dda0c826f7240f7a3 2013101615:51:10-UTC ./tools/ddict2/ddict2.prg
 22e138463bc95de0f58ffa5cff58a1072bb4267c 2013101615:47:05-UTC ./tools/ddict2/dd/dummy.bt
 f4b5b1bda22d4821e9074fad7c7eaddeba8cbb3f 2013100907:33:17-UTC ./tools/xmlrpc/m
 712a9ccd4dc0655ab43b37d6744866139074490a 2013100906:15:58-UTC ./tools/xmlrpc/rpc_server.prg

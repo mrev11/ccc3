@@ -1,3 +1,10 @@
+2017.03.24 ddict korszerusites;
+  dddel torli datadict.bt-bol azokat a sorokat, amikhez nincs prg;
+  prg2tdc a regi datadict prg-kbol eloallitja a tdc-ket;
+  tabsuper a tdc-kbol eloallitja tabByName-et, tabSuperList-et;
+  opcionalis namespace a tabSuperList, tabByName fuggvenyekben;
+  ddict2 opcionalisan namespace-be teszi a super fuggvenyeket;
+
 2017.03.24 build hosszabb dependecy listet enged meg;
 
 2017.03.24 ppo2cpp-ben a nodetab atmeretezes javitva;

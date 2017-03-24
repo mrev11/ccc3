@@ -28,39 +28,35 @@
 
 
 ****************************************************************************
-function main(a,b,c,d) //argumentumok: dbf directory, adatszótár
+function main(*) //argumentumok: dbfdir, datadict, namespace
 
 local sset:=standardset()
-local psiz:=4
-local p:=array(psiz),i,dbfdir,ddict
+local p:={*},pp,i,dbfdir,ddict,nspace
 local karbtart:={}, struct:={}, program:={}
 local ddpath, ddname, n
 local browse
-
-    p[1]:=a
-    p[2]:=b
-    p[3]:=c
-    p[4]:=d
 
     i:=1
     while( i<=len(p) .and. p[i]!=NIL )
     
         p[i]:=strtran(p[i],"/",dirsep())
         p[i]:=strtran(p[i],"\",dirsep())
+        
+        pp:=","+p[i]+","
  
-        if( p[i]$",-u+,/u+,/u,-u," )
+        if( pp $ ",-u+,-u," )
             underscore("_") //default
             adel(p,i)
 
-        elseif( p[i]$",-u-,/u-," )
+        elseif( pp $ ",-u-," )
             underscore("") 
             adel(p,i)
 
-        elseif( p[i]$",-s+,/s+,/s,-s," )
+        elseif( pp $ ",-s+,-s," )
             superlist(.t.) //default
             adel(p,i)
 
-        elseif( p[i]$",-s-,/s-," )
+        elseif( pp $ ",-s-," )
             superlist(.f.) 
             adel(p,i)
 
@@ -74,10 +70,11 @@ local browse
         ? "Copyright (C) ComFirm BT. 1998. All rights reserved"
 
         ?
-        ? "Usage: ddict2 [dbfDir [ddPathName]]  [-u+|-u-] [-s+|-s-]"
+        ? "Usage: ddict2 [dbfDir [ddPathName [namespace]]]  [-u+|-u-] [-s+|-s-]"
         ?
         ? "dbfDir     : directory containing database tables (default='.')"
         ? "ddPathName : datadict file (default='datadict')"
+        ? "namespace  : namespace of tabSuperList"
         ? "-u+,-u-    : underline before object names (default: -u+)"
         ? "-s+,-s-    : genarate _super??.prg modules (default: -s+)"
         ?
@@ -95,9 +92,12 @@ local browse
         ? "Hit any key!"
         inkey(0)
     end
+    
+    p::asize(3)
 
     dbfdir := if(NIL==p[1],".",p[1])
     ddict  := if(NIL==p[2],"datadict",p[2])
+    nspace := if(NIL==p[3],"",p[3]+".")
     
     dbfRoot(dbfdir)  //beállítja a dbf directory-t
     
@@ -141,9 +141,9 @@ local browse
     aadd(karbtart,{"Delete older version                 ",{||verzioDelete(),browse:refreshAll(),.t.}})
     brwMenu(browse,"Maintain","Maintaining table/index definitions",karbtart)
 
-    aadd(program,{"Generate #ifdef ARROW type include files",{||progOutPut(browse,"##")}})
-    aadd(program,{"Generate (FIELD:alias:count) type include files",{||progOutPut(browse,"::")}})
-    aadd(program,{"Generate alias->field type include files",{||progOutPut(browse,"->")}})
+    aadd(program,{"Generate #ifdef ARROW type include files",{||progOutPut(browse,"##",nspace)}})
+    aadd(program,{"Generate (FIELD:alias:count) type include files",{||progOutPut(browse,"::",nspace)}})
+    aadd(program,{"Generate alias->field type include files",{||progOutPut(browse,"->",nspace)}})
     brwMenu(browse,"Program","Generate program output (PRG,CH)",program)
 
     brwMenu(browse,"Pack!","Remove deleted records from datadict file",{||ddictPack(browse),.t.})

@@ -43,7 +43,7 @@ static sx:=.t.
 //* PROGRAMKIMENET előállítása
 
 ****************************************************************************
-function progOutPut(browse,mode)
+function progOutPut(browse,mode,nspace)
 local tab, msg
 local pos:=DDICT:position
 local lsuper:={}, xsup:=0, xtab:=0
@@ -57,9 +57,9 @@ local crlf4:=chr(13)+chr(10)+replicate(" ",4)
   //  lib  : datadict.rsp   // datadict.lib feltöltéséhez
 
 
-    super:=crlf0+"function tabSuperList()"
+    super:=crlf0+"function "+nspace+"tabSuperList()"
     super+=crlf0+"local supList:={}"
-    nsuper:=crlf0+"function tabNameList()"
+    nsuper:=crlf0+"function "+nspace+"tabNameList()"
     nsuper+=crlf0+"local nameList:={}"
     rmk:=".prg.obj:"
     rmk+=crlf4+"clipper $* /w/n/m/es2 >>clpout"
@@ -77,10 +77,10 @@ local crlf4:=chr(13)+chr(10)+replicate(" ",4)
         xtab++
         if( (xtab%100)==0 )
             xsup++
-            super+=crlf4+"return tabSuper"+alltrim(str(xsup))+"(supList)"
+            super+=crlf4+"return "+nspace+"tabSuper"+alltrim(str(xsup))+"(supList)"
             super+=crlf0
             aadd(lsuper,super)
-            super:=crlf0+"function tabSuper"+alltrim(str(xsup))+"(supList)"
+            super:=crlf0+"function "+nspace+"tabSuper"+alltrim(str(xsup))+"(supList)"
         end
 
         super+=crlf4+"aadd(supList,{||"+UNDERSCORE+alltrim(DDICT_TABLE)+"()})"
@@ -103,9 +103,9 @@ local crlf4:=chr(13)+chr(10)+replicate(" ",4)
     nsuper+=crlf4+"return nameList"
     aadd(lsuper,nsuper+crlf0)
 
-    byname+=crlf0+"function tabByName(t)"
-    byname+=crlf0+"local n:=ascan(tabNameList(),{|s|s==upper(alltrim(t))})"
-    byname+=crlf4+"return if(n>0,eval(tabSuperList()[n]),NIL)"
+    byname+=crlf0+"function "+nspace+"tabByName(t)"
+    byname+=crlf0+"local n:=ascan("+nspace+"tabNameList(),{|s|s==upper(alltrim(t))})"
+    byname+=crlf4+"return if(n>0,eval("+nspace+"tabSuperList()[n]),NIL)"
     aadd(lsuper,byname+crlf0)
 
     if( superlist() )

@@ -1,4 +1,8 @@
-1897778cdf365424d8f8bd4b199bf480c9d8a128 2017032418:53:42-UTC ./CHANGELOG_vermes
+156d733285cc4d06318dc07ac638d9f7c86403c4 2017032418:56:32-UTC ./CHANGELOG_vermes
+841af9f93a0643e3565275c6510513184c63ed8a 2017032418:30:09-UTC ./ccctools/buildp/build.hu.ver
+dabf348fdac3875031e5aaa641e219a557796b04 2017032418:29:33-UTC ./ccctools/buildp/build.prg
+c52a5a9a63e51e0fbcec692ee979be64e6d9bd79 2017032418:28:32-UTC ./ccctools/build/build.prg
+16f47e6be60743e6d9be5c51755328492317bc7f 2017032418:27:37-UTC ./ccctools/build/build.hu.ver
 cd5db2d7080ba8736e320f87b753c9650bc8b6e2 2017032417:55:18-UTC ./ccctools/ppo2cpp/nodetab.h
 a407adea5590f1a5012d73ff336a1687e1740175 2017032417:54:45-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 eef140eaa2dd939edb10e372a817c19e2784dc72 2017032417:54:24-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
@@ -11,8 +15,6 @@ f58f161b6fcaa79f3ac1626562b79308025ec54b 2017031511:55:47-UTC ./tools/sql2/drive
 996d48c045c5e0353561767c2cd18341af397c6c 2017021919:37:26-UTC ./tutor/xbrwarr/xbrwarr.prg
 e569024127628d0013da5a2fcd9d55f2e5cb4af6 2017021919:32:03-UTC ./ccclib/src/uic/brwmenu.prg
 fb2fdd2ed8dcc0de718f7df6051dcb6d7a40de7c 2017021118:39:34-UTC ./usr/build/windows/obj2so.bat
-f453d3ff938ca47dd8e827d0d04f55e3a9a1532d 2017021118:12:56-UTC ./ccctools/buildp/build.hu.ver
-68e63d1f608b982082b20a32f7c78f8d73b82981 2017021118:05:46-UTC ./ccctools/buildp/build.prg
 1b10054c5e6768b27dd7904629db867ab32dec6a 2017012020:58:06-UTC ./doc/install-windows.md
 06fd5c3a5064e5669b4e7bfa0c64e55d42756185 2017012015:18:28-UTC ./doc/install-linux.md
 7f4db261fd5f3e3d2aeaa987744ecb4e70a4eed4 2017012010:37:57-UTC ./README.md
@@ -30,8 +32,6 @@ bc10e18ddc2a45fa79de09086138b7bc017d9488 2016122909:56:08-UTC ./tools/mask/pagep
 cd8ea02cba951687b37e2f6cdaa170f29bd219c6 2016122909:56:06-UTC ./tools/mask/m-demo
 7d848efac51f9611647a6b70f3fdcb553dc66e6a 2016122909:55:26-UTC ./tools/mask/demo-wro.prg
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
-7d2cd42da8f31057deca2d073e89fe9f15842a33 2016120722:48:38-UTC ./ccctools/build/build.prg
-8a097eebd5ef3369b16c7efa8075425c601ce761 2016120722:47:35-UTC ./ccctools/build/build.hu.ver
 a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.src/tabchlog.prg
 559d9a88a8a494b63cecc247cc725a241010c8f9 2016120514:01:01-UTC ./tabobj/tbbtbtx/btbtx.hu.ver
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver

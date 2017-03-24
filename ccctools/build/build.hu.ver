@@ -1,4 +1,7 @@
 
+2017.03.24 -- 1.3.8
+  Csak 1024 hosszu dependency listet gondol rekurzivnak.
+
 2016.11.27 -- 1.3.7
   Forditasi szabalyok sorrendje javitva.
 

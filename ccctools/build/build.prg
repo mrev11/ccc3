@@ -64,7 +64,7 @@ static s_rules:={;
 
 static resource_hash:=simplehashNew()
 
-#define VERSION "1.3.7" // 2016.12.07 forditasi szabalyok rendezese javitva
+#define VERSION "1.3.8" // 2017.03.24 hosszabb dependency list
 
 ****************************************************************************
 function main()
@@ -505,7 +505,7 @@ local d1,f,o,n,i,txt,dep
         for i:=2 to len(dep)
             if( i==2 )
                 //txt: már beolvasta
-            elseif(i>128)
+            elseif(i>1024)
                 ? "recursive dependencies:",dep
                 ?
                 quit

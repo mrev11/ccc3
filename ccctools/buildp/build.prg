@@ -64,7 +64,7 @@ static s_rules:={;
 
 static resource_hash:=simplehashNew()
 
-#define VERSION "1.4.6" //-b-vel megadott kulso lib-ektol fuggest is vizsgal
+#define VERSION "1.4.7" //hosszabb dependecy list
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -515,7 +515,7 @@ local d1,f,o,n,i,txt,dep
         for i:=2 to len(dep)
             if( i==2 )
                 //txt: már beolvasta
-            elseif(i>128)
+            elseif(i>1024)
                 ? "recursive dependencies:",dep
                 ?
                 quit

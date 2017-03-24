@@ -1,4 +1,7 @@
 
+2017.03.24 -- 1.4.7
+  Csak 1024 hosszu dependency listet gondol rekurzivnak.
+
 2017.02.11 -- 1.4.6
   A -b-vel megadott (kulso) lib-ektol valo fuggoseget is vizsgalja;
   Korabban ezt nem vizsgaltuk, mert Linuxon tulnyomoan so-kat hasznalunk,

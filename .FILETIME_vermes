@@ -1,3 +1,9 @@
+70ffa5f098ac42aed1c0023ceebbd37f2db9254c 2017040613:42:20-UTC ./ccctools/build/build.hu.ver
+c8bf733884cf4ef5dddb3701a83a610b990b4f04 2017040613:37:40-UTC ./usr/bin/linux/build
+2856ecacab40077840c56e103b4da985aad2aed0 2017040613:36:14-UTC ./ccctools/build/build.prg
+c45920fae4a33db1fc4b741af7797be77b8f555d 2017040613:01:47-UTC ./CHANGELOG_vermes
+453d40e2922bcf3b6d71622a44c067184a18de8b 2017040611:53:15-UTC ./ccctools/buildp/build.hu.ver
+e7cf4ee21ac17974c429093b54452fcbc6894e6c 2017040611:51:30-UTC ./ccctools/buildp/build.prg
 ae691d581753bcb6cd5a83f83bf24ef33ad239eb 2017032907:53:44-UTC ./tools/sql2/log-mkall
 dcf5de15ae5ba451c7efd7161d78302d96ea0974 2017032907:53:39-UTC ./tools/sql2/test/basicdemo/tds/code_generated/ab.prg
 667981a7c568304457c770ae1ff049ad92f78e14 2017032907:53:39-UTC ./tools/sql2/test/basicdemo/tds/code_generated/abc.prg
@@ -335,7 +341,6 @@ cefc95f5a196ff4dd14505dd4be301c582ef4ea0 2017032421:12:02-UTC ./usr/bin/linux/te
 9d504d16715d3b3d0cabdf397e780aaacf3fc05c 2017032421:12:02-UTC ./usr/bin/linux/terminal-xft
 d95b9023bf5d93f6ff64d35d1ece1e934867604a 2017032421:12:01-UTC ./usr/bin/linux/prg2ppo
 887fcd2e27d599742b5827dbf56a48ea090602e2 2017032421:12:01-UTC ./usr/bin/linux/removecr
-67816ae59a2e08fdae2adda490dc6ff8cffe25b9 2017032421:12:00-UTC ./usr/bin/linux/build
 a4532e5766ca2d62ec96b9af8a678a3cf55cb03b 2017032421:11:43-UTC ./usr/bin/linux/ppo2cpp
 206429f4e8099f11379850e2328195f4722cfcfa 2017032421:11:42-UTC ./setup/setup-unix/prg2ppo/rsplink
 175ddf1979fba334bd567e14650a28b8bcb269c6 2017032421:11:42-UTC ./setup/setup-unix/removecr/rsplink
@@ -344,11 +349,6 @@ a4532e5766ca2d62ec96b9af8a678a3cf55cb03b 2017032421:11:43-UTC ./usr/bin/linux/pp
 3a9140a7be7803812da51f63bbb71a771dd08432 2017032421:11:34-UTC ./usr/bin/linux/flex
 3406028ca7de121ebafdca59e93e0893ebb9f69a 2017032421:11:34-UTC ./usr/bin/linux/lemon
 a70a961c898acdcf3f4e592da53336be945d6a45 2017032421:11:18-UTC ./usr/options/lin/gccver.opt
-303b54106a1dc63cae4a86465e30362838c63edc 2017032418:58:36-UTC ./CHANGELOG_vermes
-841af9f93a0643e3565275c6510513184c63ed8a 2017032418:30:09-UTC ./ccctools/buildp/build.hu.ver
-dabf348fdac3875031e5aaa641e219a557796b04 2017032418:29:33-UTC ./ccctools/buildp/build.prg
-c52a5a9a63e51e0fbcec692ee979be64e6d9bd79 2017032418:28:32-UTC ./ccctools/build/build.prg
-16f47e6be60743e6d9be5c51755328492317bc7f 2017032418:27:37-UTC ./ccctools/build/build.hu.ver
 eb0e10d0576dc590b5dc093d51fce0a7bc324fe1 2017032417:56:18-UTC ./tools/tdc2prgch/tabsuper.prg
 cd5db2d7080ba8736e320f87b753c9650bc8b6e2 2017032417:55:18-UTC ./ccctools/ppo2cpp/nodetab.h
 a407adea5590f1a5012d73ff336a1687e1740175 2017032417:54:45-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp

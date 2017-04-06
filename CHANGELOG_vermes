@@ -1,3 +1,6 @@
+2017.04.06 build.exe -o opcio;
+  -o opcioval egyes forrasok kihagyhatok: -o<sourcefile_to_omit>;
+
 2017.03.24 ddict korszerusites;
   dddel torli datadict.bt-bol azokat a sorokat, amikhez nincs prg;
   prg2tdc a regi datadict prg-kbol eloallitja a tdc-ket;

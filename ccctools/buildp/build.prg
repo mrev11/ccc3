@@ -63,8 +63,9 @@ static s_rules:={;
 }
 
 static resource_hash:=simplehashNew()
+static omitted_hash:=simplehashNew()
 
-#define VERSION "1.4.7" //hosszabb dependecy list
+#define VERSION "1.4.8" //-o opcio
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -144,6 +145,8 @@ local opt:=aclone(argv()),n
                 s_main+=","+VALUE()
             end
 
+        elseif( OPTION("-o") )
+            omitted_hash[VALUE()::strtran("\","/")]:=.t.
 
         elseif( OPTION("-h") )
             usage()
@@ -482,7 +485,11 @@ local d1,f,o,n,i,txt,dep
             f:=lower(d1[i][1])
             
             if( fext(f)+"."$s_primary  )
-                aadd(obj,dir[n]+dirsep()+f)
+                if( omitted_hash[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
+                    //kihagy
+                else
+                    aadd(obj,dir[n]+dirsep()+f)
+                end
             end
             //vigyazat: tdc$primary and tdc$resource!
             if( fext(f)+"."$s_resource )

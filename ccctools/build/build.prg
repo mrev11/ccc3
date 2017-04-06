@@ -63,8 +63,10 @@ static s_rules:={;
 }
 
 static resource_hash:=simplehashNew()
+static omitted_hash:=simplehashNew()
 
-#define VERSION "1.3.8" // 2017.03.24 hosszabb dependency list
+#define VERSION "1.3.9" //-o opcio
+//#define VERSION "1.3.8" // 2017.03.24 hosszabb dependency list
 
 ****************************************************************************
 function main()
@@ -132,6 +134,8 @@ local opt:=aclone(argv()),n
                 s_main+=","+VALUE()
             end
 
+        elseif( OPTION("-o") )
+            omitted_hash[VALUE()::strtran("\","/")]:=.t.
 
         elseif( OPTION("-h") )
             usage()
@@ -472,7 +476,11 @@ local d1,f,o,n,i,txt,dep
             f:=lower(d1[i][1])
                 
             if( fext(f)+"."$s_primary  )
-                aadd(obj,dir[n]+dirsep()+f)
+                if( omitted_hash[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
+                    //kihagy
+                else
+                    aadd(obj,dir[n]+dirsep()+f)
+                end
             end
             //vigyazat: tdc$primary and tdc$resource!
             if( fext(f)+"."$s_resource )

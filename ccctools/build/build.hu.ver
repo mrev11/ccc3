@@ -1,4 +1,7 @@
 
+2017.04.06 -- 1.3.9
+  -o opcioval egyes forrasok kihagyhatok: -o<sourcefile_to_omit>
+
 2017.03.24 -- 1.3.8
   Csak 1024 hosszu dependency listet gondol rekurzivnak.
 

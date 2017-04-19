@@ -1,3 +1,8 @@
+2017.04.19  xstart helyettesiti a kornyezeti valtozokat;
+   Az XML <env> tagokban elofordulo $(NAME) alaku valtozok
+   helyere becsereli a korabbi <env> tagokkal megadott
+   vagy a getenv(NAME)-bol kapott erteket;
+
 2017.04.06 build.exe -o opcio;
   -o opcioval egyes forrasok kihagyhatok: -o<sourcefile_to_omit>;
 

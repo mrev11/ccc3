@@ -59,7 +59,7 @@ static proctab:={}
 function main(parfile)
 
 local wd:=dirname() //curdir nem jó
-local p,s,n,i,c,arg,env,res,cmd,var
+local p,s,n,i,c,arg,env,res,cmd,var,hash
 
     set date format "yyyy-mm-dd"
     set printer to xstart.log additive
@@ -126,10 +126,13 @@ local p,s,n,i,c,arg,env,res,cmd,var
             if( empty(p:env) )
                 env:=NIL
             else
+                hash:=simplehashNew()
+                hash["SOCKET"]:=alltrim(str(c))
                 env:=environment()
                 for i:=1 to len(p:env)
                     var:=p:env[i]
-                    var:=strtran(var,"$(SOCKET)",alltrim(str(c)))
+                    //var:=strtran(var,"$(SOCKET)",alltrim(str(c)))
+                    var::=procvar(hash)
                     addenv(env,var)
                 next
             end
@@ -327,5 +330,59 @@ static function xstartitem.initialize(this)
     this:executable:=NIL
     return this
 
+
 ******************************************************************************
+static function procvar(var,hash)
+// var:  VARNAME=some$(OTHER)value
+
+local name,value
+local replacenam,replaceval
+local pos1,pos2
+local err
+
+    pos1:=at("=",var)
+    if( pos1<2 )
+        err:=errorNew()
+        err:description:="invalid environment"
+        err:args:={var}
+        break(err)
+    end
+
+    name:=var[..pos1-1]
+    value:=var[pos1+1..]
+    hash[name]:=value
+
+    while( 0<(pos1:=at("$(",value)) )
+        pos2:=at(")",value,pos1)
+
+        if( empty(replacenam:=value[pos1+2..pos2-1]) )
+            value:=value[..pos1-1]+chr(1)+value[pos1+1..]     // $ csere
+
+        elseif( !validname(replacenam) )
+            value:=value[..pos1-1]+chr(1)+value[pos1+1..]     // $ csere
+
+        elseif( !empty(replaceval:=hash[replacenam]) )
+            value:=value[..pos1-1]+replaceval+value[pos2+1..] // helyettesit
+
+        elseif( !empty(replaceval:=getenv(replacenam))  )
+            value:=value[..pos1-1]+replaceval+value[pos2+1..] // helyettesit
+
+        else
+            value:=value[..pos1-1]+value[pos2+1..]            // $(name) kihagyva
+        end
+    end
+    value::=strtran(chr(1),"$")
+
+    //? ">>>", name+"="+value
+    
+    return name+"="+value
+    
+
+******************************************************************************
+static function validname(name)
+    return !("$"$name.or."("$name.or.")"$name)
+
+
+******************************************************************************
+
 

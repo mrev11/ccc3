@@ -96,7 +96,8 @@ static function sqlliteral_n(x)
     return ltrim(str(x))
 
 static function sqlliteral_d(x)
-    return  if(empty(x),"null","to_date('"+dtoc(x)+"')")
+    //return  if(empty(x),"null","to_date('"+dtoc(x)+"')")
+    return  if(empty(x),"null","to_date("+x::dtos::transform("'XXXX-XX-XX'")+")")
 
 static function sqlliteral_l(x)
     return if(x,"1","0")

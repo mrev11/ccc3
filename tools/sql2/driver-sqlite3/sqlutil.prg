@@ -113,7 +113,8 @@ static function sqlliteral_n(x)
 
 static function sqlliteral_d(x)
     //return  if(empty(x),"null","to_date('"+dtoc(x)+"')")
-    return  if(empty(x),"null","'"+dtoc(x)+"'")
+    //return  if(empty(x),"null","'"+dtoc(x)+"'")
+    return  if(empty(x),"null",x::dtos::transform("'XXXX-XX-XX'"))
 
 #ifdef EMLEKEZTETO //dátum literál formátum
     A Postgres 'yyyy-mm-dd' alakban, szövegesen adja a dátumokat, és

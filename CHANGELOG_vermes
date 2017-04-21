@@ -1,3 +1,10 @@
+2017.04.21 SQL2 sqlliteral_d fixen 'YYYY-MM-DD' formatumot hasznal.
+  korabbi konverzio: if(empty(x),"null","'"+dtoc(x)+"'")
+  mostani konverzio: if(empty(x),"null",x::dtos::transform("'XXXX-XX-XX'"))
+  A korabbi konverziohoz mindig be kellett allitani a set date format-ot,
+  es nem mukodott a program, ha ez elmaradt. Most a (mashol akarhogy beallitott) 
+  date format-tol fuggetlenul mindig 'YYYY-MM-DD'-vel konvertal.
+
 2017.04.19  xstart helyettesiti a kornyezeti valtozokat;
    Az XML <env> tagokban elofordulo $(NAME) alaku valtozok
    helyere becsereli a korabbi <env> tagokkal megadott

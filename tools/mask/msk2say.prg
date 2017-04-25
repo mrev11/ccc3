@@ -20,8 +20,9 @@
 
 //Utility mask filék say filékre való konvertálására
 
-//2.0.03 nagy maszkok támogatása (Vermes M. 2014.01.15)
-//2.0.02-unicode: isbox javítva (Vermes M. 2011.08.25)
+//2.0.4 sorrend kezeles javitva (Vermes M. 2017.04.26)
+//2.0.3 nagy maszkok támogatása (Vermes M. 2014.01.15)
+//2.0.2-unicode: isbox javítva (Vermes M. 2011.08.25)
 //nls (Vermes M. 2006.09.25)
 //unicode (Vermes M. 2006.04.12)
 //checkbox/radiobutton támogatás (Vermes M. 2000.04.21)
@@ -94,14 +95,18 @@ local srTomb,say_mode
         if( !empty(p[i]) )
 
             if( left(p[i],1)=='-' )
-                w:=lower(substr(p[i],2))
+                w:=lower(substr(p[i],2,1))
 
                 if( w=="r" )
                     w:=memoread(p[i+1])
-                    w:=strtran(w,chr(10),"")
+                    w:=strtran(w,","," ")
+                    w:=strtran(w,chr(10)," ")
                     w:=strtran(w,chr(13),"")
-                    w:=strtran(w," ","")
-                    srTomb:=split(w)
+                    while("  "$w)
+                        w::=strtran("  "," ")
+                    end
+                    w::=alltrim
+                    srTomb:=split(w," ")
                     i++
                 end
 
@@ -541,7 +546,7 @@ local i,j,t:={},tg:={}
 
 ******************************************************************************
 static function ver()
-    return "2.0.02-unicode"
+    return "2.0.04-unicode"
 
 
 ******************************************************************************

@@ -1,5 +1,8 @@
+eb3c7363501f154e7c468d09defcfa143113b37d 2017042522:02:55-UTC ./CHANGELOG_vermes
+39ef826b4d54df1159a4faa9360db2adc1e08f47 2017042522:01:26-UTC ./usr/bin/linux/msk2say
+18890dd0ca8c2f76b7bce20aac05cd6cbac633d9 2017042522:01:24-UTC ./tools/mask/msk2say.prg
+b26b93680c8e442c8e4b03f5cb759b7ed97a11d2 2017042208:42:39-UTC ./gtk/log-mkall
 8df064cf9a6edf92d6b9c1977a1175dde8371fb2 2017042121:08:19-UTC ./tools/sql2/log-mkall
-af0880b5f511c4ae54fef8bc9655645efbe6e463 2017042121:08:08-UTC ./CHANGELOG_vermes
 7d7cfb8d76b07bb7f036b78c6585f82c3386043e 2017042121:07:21-UTC ./tools/sql2/sql2.hu.ver
 4acb9ac7be2a8c2981e0040dc0cfec5b6aa0c194 2017042121:00:36-UTC ./tools/sql2/driver-postgres/sqlutil.prg
 94deeaaa27250ee4a0f6b33fa7a81c4c2d96efef 2017042121:00:06-UTC ./tools/sql2/driver-oracle/sqlutil.prg
@@ -108,7 +111,6 @@ b0e035d4d51c366dd61dbd4e69ba06144d7713b0 2017032907:53:37-UTC ./usr/bin/linux/te
 b60ae7c14bff1964a20136c82628c7fa20892226 2017032907:53:36-UTC ./usr/bin/linux/mkentitylib
 113318c63d11d4b28b6adcc5943e5d3f3f48863c 2017032907:53:35-UTC ./usr/bin/linux/bt2tds
 5b404432dc853ce05d707686e309f02cf2eb54a3 2017032907:53:35-UTC ./usr/bin/linux/bt2ted
-cd2dc988f965b427ce7c80abeb2c0ea0e282f2f6 2017032706:52:37-UTC ./gtk/log-mkall
 18013211a315a7c71405c3ca6cddda188470b325 2017032706:52:37-UTC ./usr/bin/linux/glist
 ceab96ed400f45dab41950fc6a373df5c0f18dd3 2017032706:52:37-UTC ./usr/bin/linux/gui
 489bb324fa9ae03e4d7bb1d198fadfd4fd8ee281 2017032706:52:11-UTC ./gtk/code_generated/gtk_icon_source_api.cpp
@@ -412,7 +414,6 @@ bc152ff4947a8c6816d26d31d5a043c1c4b15d90 2017032421:12:15-UTC ./usr/bin/linux/se
 a569bb6fcf9198e25926733afc508bb28580a524 2017032421:12:14-UTC ./usr/bin/linux/savex
 f81135074e6dcd714405d7344340eaec18e2307c 2017032421:12:13-UTC ./usr/bin/linux/mask
 2356f3955d06d6a5e10c129a32ab55dacf29207c 2017032421:12:13-UTC ./usr/bin/linux/msk2pge
-92b5c3f60adcb657078bee31bd039756cf94ecf8 2017032421:12:13-UTC ./usr/bin/linux/msk2say
 eb610c9de839240d6cbda96830d08b43e564260c 2017032421:12:13-UTC ./usr/bin/linux/page
 8393801e198b64b1ecf0953f94622f1d55491b4a 2017032421:12:13-UTC ./usr/bin/linux/pge2wro
 d76ddf42eb5710a8407bdcac16a813b848d9043f 2017032421:12:11-UTC ./usr/bin/linux/dddel
@@ -493,7 +494,6 @@ f943e7362dccf658362bf9b7f9d280830d3cb03c 2016112520:14:39-UTC ./tools/mask/pageq
 c1d482f1dd6f9c49cdd4a57cbb5cd716e5c45a50 2016112519:56:40-UTC ./tools/mask/kivonugy.pge
 df0a46fca7e53755c156e719710209515ed7551b 2016112519:53:39-UTC ./tools/mask/haz.pge
 b2686ad127f6dc29b1e29e730d177506c3661b1c 2016112519:53:00-UTC ./tools/mask/fejleszt.pge
-7ac4ff42d6c70063a1312bc8310c444e2fff77a4 2016112311:52:50-UTC ./tools/mask/msk2say.prg
 9d931217c4eca1232a4ed042cf839c4c14d7d6e7 2016112214:45:02-UTC ./usr/build/linux/tds2obj.bat
 d6e07985e871369c01e321e22e7fdebdd1d08e85 2016112213:08:03-UTC ./tools/tdc2prgch/parfile.bld
 057ff73b8e79cbf09c5f541cc1224bd0196e56cc 2016112211:50:02-UTC ./tools/tdc2prgch/olvassel.txt

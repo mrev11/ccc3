@@ -1,3 +1,5 @@
+2017.04.26 msk2say-ben sorrend kezeles javitva;
+
 2017.04.21 SQL2 sqlliteral_d fixen 'YYYY-MM-DD' formatumot hasznal.
   korabbi konverzio: if(empty(x),"null","'"+dtoc(x)+"'")
   mostani konverzio: if(empty(x),"null",x::dtos::transform("'XXXX-XX-XX'"))

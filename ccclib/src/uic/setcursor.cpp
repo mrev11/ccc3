@@ -81,7 +81,9 @@ void _clp_maxcol(int argno)
 void _clp_settermsize(int argno) //settermsize(rows,cols)
 {
     CCC_PROLOG("settermsize",2);
+    _clp_dispbegin(0);pop();
     setwsize(_parni(2),_parni(1)); //setwsize(x,y);
+    _clp_dispend(0);pop();
     CCC_EPILOG();
 }
 

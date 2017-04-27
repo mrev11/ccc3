@@ -1,4 +1,4 @@
-//msk2say-2.0.02-unicode
+//msk2say-2.0.04-unicode
 
 #define g_mezo1         getlist[ 1]
 #define g_mezo2         getlist[ 2]

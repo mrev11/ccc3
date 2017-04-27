@@ -1,4 +1,7 @@
-eb3c7363501f154e7c468d09defcfa143113b37d 2017042522:02:55-UTC ./CHANGELOG_vermes
+c8b6cdb263bb1fa1efbf22b814ab4773fe6f8028 2017042706:25:27-UTC ./CHANGELOG_vermes
+f00044b3e99ca0fc5c236226c98cd498eb5a96c0 2017042706:18:12-UTC ./ccclib/src/uic/setcursor.cpp
+937f170fc53b3c54f17ca0debc80bf20035cea9d 2017042522:24:05-UTC ./tools/mask/maskdemo.say
+e91cfb664b0fb48bc20953ac5c06393b33069f73 2017042522:23:58-UTC ./tools/mask/maskdemo.sor
 39ef826b4d54df1159a4faa9360db2adc1e08f47 2017042522:01:26-UTC ./usr/bin/linux/msk2say
 18890dd0ca8c2f76b7bce20aac05cd6cbac633d9 2017042522:01:24-UTC ./tools/mask/msk2say.prg
 b26b93680c8e442c8e4b03f5cb759b7ed97a11d2 2017042208:42:39-UTC ./gtk/log-mkall
@@ -1335,7 +1338,6 @@ cb7a0beb1f5240d49e1095a0d6901ec753b23109 2011091910:23:49-UTC ./ccclib/src/uic/c
 430fe9e4c3b0f5ea014083bc2b9c1a8a9255e25d 2011091909:51:21-UTC ./tabobj/commonui.src/tabedrec.prg
 af5e0dad5a5517a68d5489036b3696dc523d64c8 2011091909:37:01-UTC ./setup/setup-unix/procline.cpp
 669948b7ed23d31ae3ceb42d336177890f459a4f 2011082818:55:05-UTC ./ccclib/src/uic/o_get.prg
-910eefa59adf11caff12d5f4ce8f56db83c0f23e 2011082512:18:52-UTC ./tools/mask/maskdemo.say
 2438fb1d097ab0f8e53ca5a31159f8f2df64eb8a 2011082512:08:13-UTC ./tools/mask/box.say
 ea887c120b4fcb6e2a0fa3158542b1ea778bab08 2011082512:07:59-UTC ./tools/mask/box.msk
 14daf10fbb6582df1979b4c0071c25931d535f41 2011082107:56:17-UTC ./ccclib/src/uic/ialert.prg
@@ -2157,7 +2159,6 @@ e8ffddbf92d3d9115fa410e02f51ced7864b4ec3 2006092615:54:07-UTC ./tools/sql2/util/
 193bfe254d539058b3c9b60c5c4e00e97379a857 2006092612:56:50-UTC ./tools/sql2/util/mkall.bat
 cdfad4d8c37347d8e73ff0836f6a8ab4d5a87594 2006092612:53:32-UTC ./tools/sql2/driver-oracle/m.bat
 049ef290bcfd34cf3ac431430661fedf1ef05c7b 2006092612:53:04-UTC ./tools/sql2/driver-postgres/m.bat
-0ad3aa7504db07e2d9fdc6a39338934c8140f3fa 2006092513:08:25-UTC ./tools/mask/maskdemo.sor
 3337e0d7be5d33c3e07f5b6e52f6cfff175d920f 2006092512:56:22-UTC ./tools/mask/demo.prg
 4a86334a8b82e19f588c250ac947b2ffa0795cf8 2006091608:41:25-UTC ./tools/sql2/texdoc/osszetett_tran.tex
 453c78c0e324d6e2c400a292a0183c986ea35fa8 2006091515:08:49-UTC ./tools/sql2/driver-postgres/sqlsequence.prg
@@ -2494,7 +2495,6 @@ c9bb713921163a5682967cba187e643d5dfd73bc 2006052309:35:55-UTC ./gtk/code_byhand/
 0eb465dc057fa222c7eaa8f8382ce8cd3bdf5c49 2006052219:27:20-UTC ./tutor/settermsize/settermsize.prg
 3966a696033f3af20f5115bcacac6c18a7a65295 2006052217:23:54-UTC ./terminal/unix/x1
 97b3c4e923538b1e4318271329f0b5953d70d660 2006052217:17:43-UTC ./terminal/unix/x
-4a3e3402f6eb64e30faac3d3a3ff79fc27c4cb9c 2006052215:34:30-UTC ./ccclib/src/uic/setcursor.cpp
 ca8efab0f97917a1584b29d309802a80af25e489 2006052211:44:42-UTC ./tutor/settermsize/m.bat
 6550a2450ed221f1a97444b40029645f8542e2aa 2006052211:05:27-UTC ./ccclib/src/uic/termapi/termapi.h
 c931f674601d460181718d80627107cb992c80b7 2006052210:54:22-UTC ./ccclib/src/uic/termapi/termcmd.h

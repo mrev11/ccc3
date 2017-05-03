@@ -1,3 +1,5 @@
+2017.05.03 tisztogatas a linuxos terminal kodjaban;
+
 2017.04.27 settermsize dispbegin/dispend-del vedve;
   A dispbegin mellekhatasara van szukseg: uriti a dirty buffert,
   enelkul a terminalmeret csokkentese utan aszinkron kuldott 

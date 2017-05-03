@@ -309,7 +309,7 @@ void invalidate(int t, int l, int b, int r)
 }
 
 //----------------------------------------------------------------------------
-void invalidate_loop()
+static void invalidate_loop()
 {
     invalidate_lock();
     paint(invtop,invlef,invbot,invrig,0);
@@ -337,7 +337,7 @@ void setcaption(char *cap)
 
 
 //----------------------------------------------------------------------------
-void setcaption_loop()
+static void setcaption_loop()
 {
     invalidate_lock();
     XSetStandardProperties(display,window,caption,0,0,0,0,0); 
@@ -373,7 +373,7 @@ void setwsize(int x, int y)
 }
 
 //----------------------------------------------------------------------------
-void setwsize_loop()
+static void setwsize_loop()
 {
     invalidate_lock();
 
@@ -405,7 +405,7 @@ void setcursor(int x, int y)
 
 
 //----------------------------------------------------------------------------
-void setcursor_loop()
+static void setcursor_loop()
 {
     //printf("setcursor_loop\n");
     invalidate_lock();

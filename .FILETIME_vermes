@@ -1,4 +1,12 @@
-c8b6cdb263bb1fa1efbf22b814ab4773fe6f8028 2017042706:25:27-UTC ./CHANGELOG_vermes
+b725a2e43cf456e561a99ed1c7287cef6f804c3f 2017050306:21:16-UTC ./CHANGELOG_vermes
+4122dbb565ef8ebdee40f5a2dad328511ac3f1c5 2017050306:17:35-UTC ./usr/bin/linux/terminal
+972ec546805d39e2c8ccb2b7f92a63c1cae996de 2017050306:17:35-UTC ./usr/bin/linux/terminal-xft
+1500d81c502c2f38396e2fb12217ead97a5e39fd 2017050306:17:24-UTC ./terminal/unix/terminal.cpp
+67f97a9442d770eabd651fa5a765360cc58a4e0b 2017050306:16:00-UTC ./terminal/unix/terminal-xft.cpp
+e928de4cf2e21dad8ce87967de07bd6e0b5f3909 2017050306:14:55-UTC ./usr/bin/linux/terminal-gtk
+4aa66c5de5e0cd2e1b4c781137fae86b1bfe5266 2017050306:14:39-UTC ./terminal/gtk/terminal-gtk.cpp
+3c0f763165a56ed801e6c60e6383e3d5ec4f930e 2017050121:28:25-UTC ./usr/bin/linux/ncterm
+ca0a442695f3975641d08013f79ffffe8ba2d1a4 2017050119:07:29-UTC ./terminal/common/tcpio.cpp
 f00044b3e99ca0fc5c236226c98cd498eb5a96c0 2017042706:18:12-UTC ./ccclib/src/uic/setcursor.cpp
 937f170fc53b3c54f17ca0debc80bf20035cea9d 2017042522:24:05-UTC ./tools/mask/maskdemo.say
 e91cfb664b0fb48bc20953ac5c06393b33069f73 2017042522:23:58-UTC ./tools/mask/maskdemo.sor
@@ -428,11 +436,7 @@ ec27c72b5673e684f6e86ad78c7eb465c5a42b3f 2017032421:12:08-UTC ./usr/bin/linux/bt
 c1ec4237a553d44a1bd916bb2ebc96764539015b 2017032421:12:08-UTC ./usr/bin/linux/bti
 1edf8e7abf48b842becb31f8727910ca5de16b83 2017032421:12:08-UTC ./usr/bin/linux/tstru
 e2657d0ba4e0fa25e4d0921bb3292864a07f2f5f 2017032421:12:08-UTC ./usr/bin/linux/tview
-7ddc4341c754ad56bfff218c8e9eb9461410a9b9 2017032421:12:03-UTC ./usr/bin/linux/terminal-gtk
 c7cc69ff84b510f445f43d0f1ccd6d8f3cec17b9 2017032421:12:02-UTC ./usr/bin/linux/mklink
-7457383920cd76615618a7e85992ab004aaebb3a 2017032421:12:02-UTC ./usr/bin/linux/ncterm
-cefc95f5a196ff4dd14505dd4be301c582ef4ea0 2017032421:12:02-UTC ./usr/bin/linux/terminal
-9d504d16715d3b3d0cabdf397e780aaacf3fc05c 2017032421:12:02-UTC ./usr/bin/linux/terminal-xft
 d95b9023bf5d93f6ff64d35d1ece1e934867604a 2017032421:12:01-UTC ./usr/bin/linux/prg2ppo
 887fcd2e27d599742b5827dbf56a48ea090602e2 2017032421:12:01-UTC ./usr/bin/linux/removecr
 a4532e5766ca2d62ec96b9af8a678a3cf55cb03b 2017032421:11:43-UTC ./usr/bin/linux/ppo2cpp
@@ -481,8 +485,6 @@ a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.sr
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120314:46:46-UTC ./usr/build/linux/tdc2ch.bat
 86ebc7b934d548de2c4cdd71aa279b1350876fe0 2016120314:25:48-UTC ./tools/tdc2prgch/tdc2prgch.prg
 000adf8852af5ee8ecd1c03f896da505833dc62c 2016120314:23:30-UTC ./tools/tdc2prgch/valt.dok
-a7aa2e786e0588d8d1a7e43e96346a0eda1565fd 2016120115:05:55-UTC ./terminal/unix/terminal.cpp
-0f8672e8d77bffd08caccf03caf0775efe5e17c0 2016120113:58:06-UTC ./terminal/unix/terminal-xft.cpp
 0f784282a80d0747e3e106cb7f57be2459d066c1 2016120110:17:02-UTC ./terminal/unix/s
 5d85f92867c3ec4c1776f452696c7585c7648cc4 2016112919:33:20-UTC ./terminal/terminal-test/screenwr/s
 8c489c560c14b8c7242c59f92f6c53d4cc62da26 2016112911:11:08-UTC ./tools/savex/savex.ver
@@ -507,7 +509,6 @@ abf97f66b970821f01daf70b6d57961b5d37acd8 2016112208:14:28-UTC ./tools/tdc2prgch/
 f93f61a4a2ab4b18d4d637a77f679b1fa4ee4ca1 2016112123:14:00-UTC ./tools/tdc2prgch/util/consistof.prg
 a89b25533f1a11c12d33954c0b1ff638b970c789 2016112122:28:14-UTC ./tools/tdc2prgch/util/splitsp.prg
 6bf3d2de02d34cf358a7fb94c502286c742141e3 2016111919:12:33-UTC ./tools/savex/escape.prg
-7b3085ffd9eac70043e5783ff8afb79329ab05bd 2016111912:46:28-UTC ./terminal/gtk/terminal-gtk.cpp
 b94139ffc98b82216a59c43b9304df731fc118b9 2016111816:51:47-UTC ./jt/jtdemo/sign/m.bat
 fcf53e7a2e4f9882b1b44ece7866f2a6e2dfe9b9 2016111816:51:47-UTC ./tutor/simplechat/m.bat
 c766b898a8662aa3212c20dfa8451c978bbe6395 2016111816:45:30-UTC ./jt/jtdemo/tabedit/m.bat
@@ -574,7 +575,6 @@ e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100208:42:52-UTC ./tools/savex/save
 f4149625b23ee91256834c9d103dac7cf8881bdc 2016100114:47:11-UTC ./ccclib/src/uic/termapi/remoteio.cpp
 31033ae76d638130020e9123306e1cff5d5aa9ee 2016100108:10:06-UTC ./ccclib/src/uic/termapi/termio.cpp
 cf63fe140195bcac0e1a5f57cedf6087a275428f 2016100107:19:14-UTC ./ccclib/src/uic/termapi/termio.h
-a87e44a62a494dd7a197238f3aa45321324a9907 2016100107:11:27-UTC ./terminal/common/tcpio.cpp
 b513249cf35a258e927ae71269e98d2093897fd8 2016093022:07:05-UTC ./ccclib/src/uic/termapi/termapi.cpp
 38e9313d79fffb44c3da9d559844d88d6dd11699 2016093008:52:28-UTC ./tutor/fpath/parfile.bld
 8fe740ad9876cf295e27ada225bf30dc6d6d02d0 2016093008:51:00-UTC ./tutor/sqrt/m.bat

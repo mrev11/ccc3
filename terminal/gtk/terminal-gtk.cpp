@@ -362,7 +362,7 @@ void setwsize(int x, int y)
 }
 
 //----------------------------------------------------------------------------
-void setwsize_gtk()
+static void setwsize_gtk()
 {
     //printf("setwsize_gtk()");
     invalidate_lock();
@@ -432,7 +432,7 @@ void setcursor(int x, int y)
 }
 
 //----------------------------------------------------------------------------
-void setcursor_gtk()
+static void setcursor_gtk()
 {
     //printf("setcursor_gtk()");
     invalidate_lock();

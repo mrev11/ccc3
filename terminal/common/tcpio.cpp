@@ -304,8 +304,10 @@ void *tcpio_thread(void*arg)
                 int r = PARAM(2).get();
                 int b = PARAM(3).get();
                 screencell *cell=(screencell*)&PARAM(4);
-                screen->putrect(l,t,r,b,cell);
-                invalidate(t,l,b,r);
+                if(screen->putrect(l,t,r,b,cell))
+                {
+                    invalidate(t,l,b,r);
+                }
                 //printf("TERMCMD_PUTRECT %d %d %d %d\n",l,t,r,b);fflush(0);
                 break;
             }

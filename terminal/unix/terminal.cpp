@@ -348,7 +348,7 @@ static void setwsize_loop()
 {
     invalidate_lock();
 
-    XUnmapWindow(display,window);
+    //XUnmapWindow(display,window); //hide
     static XSizeHints size_hints;
     size_hints.flags = PSize | PMinSize | PMaxSize;
     size_hints.min_width  = wwidth*fontwidth;
@@ -356,11 +356,18 @@ static void setwsize_loop()
     size_hints.min_height = wheight*fontheight;
     size_hints.max_height = wheight*fontheight;
     XSetStandardProperties(display,window,0,0,0,0,0,&size_hints); 
-    XMapWindow(display,window);
+    //XMapWindow(display,window);  //show
 
     dirty_size=0;
 
     invalidate_unlock();
+
+    // Megjegyzes:
+    // A terminal ablak meretet valtozatlanul kell tartani.
+    // Ezt ugy erjuk el, hogy hints.max=hints.min-t allitunk be.
+    // Ekkor azonban az XResizeWindow sem tudja valtoztatni a meretet.
+    // Tehat az atmeretezeshez a hint-eket kell atallitani.
+    // Nem jo az ablakot unmap/map-olni, mert valtozik tole a pozicio.
 }
 
 //----------------------------------------------------------------------------

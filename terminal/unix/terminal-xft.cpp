@@ -377,7 +377,7 @@ static void setwsize_loop()
 {
     invalidate_lock();
 
-    XUnmapWindow(display,window);
+    //XUnmapWindow(display,window);  //hide window
     static XSizeHints size_hints;
     size_hints.flags = PSize | PMinSize | PMaxSize;
     size_hints.min_width  = wwidth*fontwidth;
@@ -385,7 +385,7 @@ static void setwsize_loop()
     size_hints.min_height = wheight*fontheight;
     size_hints.max_height = wheight*fontheight;
     XSetStandardProperties(display,window,0,0,0,0,0,&size_hints); 
-    XMapWindow(display,window);
+    //XMapWindow(display,window);  //show window
 
     dirty_size=0;
 

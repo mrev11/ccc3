@@ -1,3 +1,6 @@
+2017.05.04 terminal ablak atmeretezese javitva;
+  Nem jo az ablakot unmap/map-olni, mert valtozik tole a pozicio;
+
 2017.05.03 tisztogatas a linuxos terminal kodjaban;
 
 2017.04.27 settermsize dispbegin/dispend-del vedve;

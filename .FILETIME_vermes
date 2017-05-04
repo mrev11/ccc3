@@ -1,8 +1,8 @@
-b725a2e43cf456e561a99ed1c7287cef6f804c3f 2017050306:21:16-UTC ./CHANGELOG_vermes
-4122dbb565ef8ebdee40f5a2dad328511ac3f1c5 2017050306:17:35-UTC ./usr/bin/linux/terminal
-972ec546805d39e2c8ccb2b7f92a63c1cae996de 2017050306:17:35-UTC ./usr/bin/linux/terminal-xft
-1500d81c502c2f38396e2fb12217ead97a5e39fd 2017050306:17:24-UTC ./terminal/unix/terminal.cpp
-67f97a9442d770eabd651fa5a765360cc58a4e0b 2017050306:16:00-UTC ./terminal/unix/terminal-xft.cpp
+df902358bc6b94151c2c5e89da7c7be91ba12dfd 2017050421:23:05-UTC ./CHANGELOG_vermes
+2832df7b518d44f151bbcff065b1b8cdc71ac010 2017050421:20:21-UTC ./usr/bin/linux/terminal
+1acaf0041a934b4330dbacf319fea0bd1ce94afa 2017050421:20:19-UTC ./terminal/unix/terminal.cpp
+abaf20a7359e43e7d58cc889a55b1354c952e5f8 2017050421:08:45-UTC ./usr/bin/linux/terminal-xft
+79eb184571feec156f8363496d647d453c07f829 2017050421:08:02-UTC ./terminal/unix/terminal-xft.cpp
 e928de4cf2e21dad8ce87967de07bd6e0b5f3909 2017050306:14:55-UTC ./usr/bin/linux/terminal-gtk
 4aa66c5de5e0cd2e1b4c781137fae86b1bfe5266 2017050306:14:39-UTC ./terminal/gtk/terminal-gtk.cpp
 3c0f763165a56ed801e6c60e6383e3d5ec4f930e 2017050121:28:25-UTC ./usr/bin/linux/ncterm

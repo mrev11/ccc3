@@ -1,0 +1,182 @@
+
+A controlokról
+
+Ezek vannak
+ -  get (hagyományos get, ezekről itt nem esik szó)
+ -  checkbox
+ -  radio button
+ -  listbox
+ -  alt button (saját találmány)
+
+Mindezek a get osztaly közvetlen leszármazottai.
+Az msk2say generálja a hívásukat a say-ben az msk alapján.
+Így kell őket bejelölni az msk-ban:
+
+    class            inverz mező      megjelenés
+    -----            -----------      ----------
+    get              name             text mező
+    checkbox         [name            [x]
+    radiobutton      (name            (*)
+    listbox          {name            text mező (+achoice)
+    altbutton        /name            alt1/alt2/alt3
+
+Ilyen kód kerül a say fájlba (például):
+
+    mskGet       (msk, 15, 21, @g4   , "g4"  )
+    mskCheck     (msk, 12,  3, @i    , "i"   )
+    mskRadio     (msk,  2,  3, @a    , "a"   )
+    mskList      (msk,  2, 21, @lst1 , "lst1")
+    mskAltButton (msk, 12, 21, @alt2 , "alt2")
+
+ahol típustól függetlenül a negyedik argumentum értéke egy olyan
+hosszú space, mint ahogy berajzoltuk a maszkba az inverz mezőt.
+Az ötödik argumentum a get (leszármazott) objektum neve,
+az objektumra a programban a g_<name> makróval lehet hivatkozni,
+g_<name> valamelyik getlist elemre preprocesszálódik.
+
+A fenti esetek mindegyikében az alábbi block kerül az objektumba
+
+    {|x|if(x==NIL,var,var:=x)}
+
+ahol var az előbbi negyedik argumentum. Tehát kezdetben típustól
+függetlenül varget/varput  a berajzolt hosszúságú space értékét
+olvassa, illetve változtatja. Ebből tudja az objektum, hogy milyen
+hosszú mezőt rajzoltak neki. Később ez a block kicserélődhet.      
+
+
+
+#------------------------------------------------------------------------------
+# Checkbox
+#------------------------------------------------------------------------------
+
+Ha rákerül a fókusz, akkor bármely (nem navigáló) billentyűleütésre
+változik a gom állapota. Vagyis ez egy egyszerű toggle button.
+
+    o:varget        --> .t./.f.
+    o:varput(.t.)   bekapcsolja
+    o:varput(.f.)   kikapcsolja
+
+    o:settrue       ua. mint o:varput(.t.)
+    o:setfalse      ua. mint o:varput(.f.)
+    o:toggle        ua. mint o:varput(if(o:varget,.f.,.t.))
+
+    o:picture       "XXX"
+    
+    kezdeti értéke .f.     
+
+
+#------------------------------------------------------------------------------
+# Radio button
+#------------------------------------------------------------------------------
+
+Ha rákerül a fókusz, akkor (bármely) billentyűleütésre a gomb
+benyomódik, a hozzárendelt érték true-ra változik. Emellett a
+gomb benyomása (bekapcsolása, true-ra állítása) kikapcsolja azokat
+a gombokat,  amik a benyomott gombbal azonos csoportban vannak.
+Tehát azonos csoportban max egy gomb lehet benyomva, de lehet,
+hogy egy sincs.
+
+Igy kell a gombokat csoportokba sorolni:
+
+    group1:={}; g_r1:addto(group1); g_r2:addto(group1); g_r3:addto(group1);   
+    group2:={}; g_r4:addto(group2); g_r5:addto(group2); g_r6:addto(group2);   
+
+Ez  r1,r2,r3-at a group1-hez, r4,r5,r6-ot pedig a group2-höz rendeli. 
+
+    o:varget        --> .t./.f.
+    o:varput(.t.)   bekapcsolja (a többi csoportbeli gomb kikapcsolódik)
+    o:varput(.f.)   kikapcsolja
+
+    o:picture       "XXX"
+    o:group         csoport tömb, amiben a csoporthoz tartozó objektumok vannak
+    o:addto(group)  hozzadaja o-t group-hoz, o:group:=group                   
+    
+    kezdeti értéke .f.
+
+
+#------------------------------------------------------------------------------
+# Listbox
+#------------------------------------------------------------------------------
+
+Amikor rákerül a fókusz, akkor billentyűleütésre a text mező editálása 
+helyett feljön egy choicebox, amiből ki lehet választani az objektum értékét.
+Ha a leütött billentyű egy betű, akkor a choicebox default választása az
+az első item, aminek első betűje egyezik a leütütt betűvel. Egyéb esetben 
+(pl. space-re) az achoice az aktuális érték helyén nyílik ki.
+
+    o:menu          az alernatívák tömbje, kezdetben {}
+    o:item(text)    a text alternatívát hozzáadja o:menu-höz
+    o:selected      az aktuális választás (indexe), kezdetben 0 
+    o:scan(text)    --> index/0, kikeresi az illeszkedő alternatívát
+
+    o:select(key)   beállítja a választást
+                    ha key NIL, akkor csak lekérdezés
+                    ha key szám, akkor egyszerűen o:selected:=key (index)
+                    ha key text, akkor o:selected:=o:scan(key)
+                    --> o:selected
+    
+    o:block         {|x|o:menu[o:select(x)]}         
+    o:varget        --> a kiválasztott alternatíva teljes szövege                    
+    o:varput(key)   beállítja a választást index vagy illeszkedő text alapján
+
+    o:picture       "XXX..." a berajzolt hosszban
+
+    kezdeti értéke 0 (amivel nem lehet megjeleníteni)
+    
+
+A varget/varput belsőleg nincs használva, esért a kliens program a block
+kicserélésével máskép működő varget/varput-ot készíthet. Például
+    
+    o:block:={|x|o:menu[o:select(x)][1..2] }
+                                    ^^^^^^         
+
+ezzel a blockkal a varget az alternatívák első 2 karakterét adja, ami
+alkalmas lehet a kétbetűs országkódokat adó listboxhoz.    
+
+
+#------------------------------------------------------------------------------
+# Altbutton
+#------------------------------------------------------------------------------
+
+Kisszámú alternatíva közötti választáshoz, mint pl. Ffi/Nő. Hasonló 
+a radio buttonokhoz vagy a listboxhoz, de itt az alternatívák nem egy 
+choiceboxban jönnek föl, hanem eleve fönn vannak a maszkban, és látszik, 
+hogy melyik van aktuálisan kiválasztva. A radio buttonokhoz képest az
+a különbség, hogy nem kell csoportba rendezéssel foglalkozni, mert az
+eleve adott. 
+
+    o:alternatives  az alternatívák tömbje
+                    megadható {"Férfi","Nő"} formában vagy
+                    "Férfi/Nő" formában (amit visszavezet az előzőre)
+    
+    o:choidx        a kiválasztott elem indexe
+
+    o:choice(key)   beállítja/lekérdezi a választást
+                    ha key NIL, akkor csak lekérdezés
+                    ha key szám, akkor egyszerűen o:choidx:=key (index)
+                    ha key text, akkor o:choidx = az illeszkedő alternatíva indexe
+                    --> o:choidx
+
+    o:block         o:block:={|x|o:alternatives[o:choice(x)]}
+    o:varget        --> a kiválasztott teljes szövege
+    o:varput        beállítja a választást index vagy illeszkedő text alapján
+
+    o:picture       "XXX..." a berajzolt hosszban
+
+    kezdeti értéke 1 
+
+
+A varget/varput belsőleg nincs használva, ezért a kliens program 
+a block kicserélésével máskép működő varget/varput-ot készíthet. 
+Például
+    
+    o:block:={|x|o:alternatives[o:choice(x)][1]}
+                                            ^^^     
+
+ezzel a blockkal a varget az alternatívák első  karakterét adja, 
+ami pl. alkalmas lehet az ügyfélkód (M/V) kiválasztására.    
+
+
+#------------------------------------------------------------------------------
+
+

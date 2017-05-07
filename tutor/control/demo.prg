@@ -18,13 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "radio.say"
+#include "control.say"
  
 
 ******************************************************************************
 function main()
-    radio({|g|load(g)},{|g|readmodal(g)},{|g|store(g)})
-    return NIL
+    control({|g|load(g)},{|g|readmodal(g)},{|g|store(g)})
 
 
 ******************************************************************************
@@ -35,60 +34,53 @@ local g2:={}
 
     g_a:addto(g1)
     g_b:addto(g1)
-    g_c:addto(g1)
+    g_c:addto(g1)   ;g_c:varput(.t.)
     g_d:addto(g1)
 
     g_e:addto(g2)
     g_f:addto(g2)
     g_g:addto(g2)
-    g_h:addto(g2)
+    g_h:addto(g2)   ;g_h:varput(.t.)
     
-    g_aa:picture:="@S10 "+replicate("X",64)
-    
-    g_aa:item("1 Van, aki forrón szereti!")
-    g_aa:item("2 Próba szerencse")
-    g_aa:item("3 Öt szép szűzlány őrült írót nyúz")
-    g_aa:item("4 Van, aki forrón szereti!")
-    g_aa:item("5 Próba szerencse")
-    g_aa:item("6 Öt szép szűzlány őrült írót nyúz")
-    g_aa:select(3)
+    g_i:varput:=.t.
+    g_j:varput:=.t.
 
 
-    g_bb:item("1 Van, aki forrón szereti!")
-    g_bb:item("2 Próba szerencse")
-    g_bb:item("3 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("4 Van, aki forrón szereti!")
-    g_bb:item("5 Próba szerencse")
-    g_bb:item("6 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("7 Van, aki forrón szereti!")
-    g_bb:item("8 Próba szerencse")
-    g_bb:item("9 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("10 Van, aki forrón szereti!")
-    g_bb:item("11 Próba szerencse")
-    g_bb:item("12 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("13 Van, aki forrón szereti!")
-    g_bb:item("14 Próba szerencse")
-    g_bb:item("15 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("16 Van, aki forrón szereti!")
-    g_bb:item("17 Próba szerencse")
-    g_bb:item("18 Öt szép szűzlány őrült írót nyúz")
-    g_bb:item("19 Hopp!")
-    g_bb:item("20 Hopp!")
-    g_bb:select(1)
+    g_lst1:picture:="@S20 "+replicate("X",64)
+    
+    g_lst1:item("1 Van, aki forrón szereti!")
+    g_lst1:item("2 Próba szerencse")
+    g_lst1:item("3 Öt szép szűzlány őrült írót nyúz")
+    g_lst1:item("4 Van, aki forrón szereti!")
+    g_lst1:item("5 Próba szerencse")
+    g_lst1:item("6 Öt szép szűzlány őrült írót nyúz")
+    g_lst1:select(3)
+
+
+    g_lst2:menu:=crm.orszagkod()
+    g_lst2:block:={|x|g_lst2:menu[g_lst2:select(x)][1..2]}
+    g_lst2:select("HU")
+    g_lst2:picture:="XX"
+    g_lst2:varput:="  "
   
+    g_alt1:alternatives("Kutya/Macska/Nyúl")
+
+    g_alt2:alternatives({"Magszem","Vállalk"}); g_alt2:choice("V")
+    g_alt2:block:={|x|g_alt2:alternatives[g_alt2:choice(x)][1..1]}
     
     
     //g_a:postblock:={|g|if(g:varget,(alert("WRONG"),.f.),.t.)}
    
     aeval(getlist,{|g|g:display})
 
-    return NIL
-
 
 ******************************************************************************
 static function store(getlist)
-    aeval(getlist,{|g|qout(g:varget)})
-    return .t.    
+local n
+    for n:=1 to len(getlist)
+        ? n, getlist[n]:varget::valtype, getlist[n]:name::padr(10), getlist[n]:varget
+    next
+    return .f.    
 
 
 

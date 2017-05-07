@@ -1,0 +1,100 @@
+//msk2say-2.1.0-unicode
+
+#define g_a             getlist[ 1]
+#define g_b             getlist[ 2]
+#define g_c             getlist[ 3]
+#define g_d             getlist[ 4]
+#define g_lst1          getlist[ 5]
+#define g_lst2          getlist[ 6]
+#define g_e             getlist[ 7]
+#define g_f             getlist[ 8]
+#define g_g             getlist[ 9]
+#define g_h             getlist[10]
+#define g_alt1          getlist[11]
+#define g_g1            getlist[12]
+#define g_g2            getlist[13]
+#define g_i             getlist[14]
+#define g_j             getlist[15]
+#define g_k             getlist[16]
+#define g_l             getlist[17]
+#define g_alt2          getlist[18]
+#define g_g3            getlist[19]
+#define g_g4            getlist[20]
+
+static function CONTROL(bLoad,bRead,bStore)
+local a           :=space( 3)
+local lst1        :=space(20)
+local b           :=space( 3)
+local c           :=space( 3)
+local lst2        :=space(20)
+local d           :=space( 3)
+local e           :=space( 3)
+local alt1        :=space( 6)
+local f           :=space( 3)
+local g           :=space( 3)
+local g1          :=space(20)
+local h           :=space( 3)
+local g2          :=space(20)
+local i           :=space( 3)
+local alt2        :=space( 6)
+local j           :=space( 3)
+local k           :=space( 3)
+local g3          :=space(20)
+local l           :=space( 3)
+local g4          :=space(20)
+local msk
+
+    msk:=mskCreate(  1, 20, 20, 63,bLoad,bRead,bStore)
+
+    mskColorSay() //push
+    mskSay(msk,  0,  1,"╓──────────────────────────────────────────╖")
+    mskSay(msk,  1,  1,"║                                          ║")
+    mskSay(msk,  2,  1,"║"+@"      Rad-a   Lst1:                       "+"║")
+    mskSay(msk,  3,  1,"║"+@"      Rad-b                               "+"║")
+    mskSay(msk,  4,  1,"║"+@"      Rad-c   Lst2:                       "+"║")
+    mskSay(msk,  5,  1,"║"+@"      Rad-d                               "+"║")
+    mskSay(msk,  6,  1,"║                                          ║")
+    mskSay(msk,  7,  1,"║"+@"      Rad-e   Alt1:                       "+"║")
+    mskSay(msk,  8,  1,"║"+@"      Rad-f                               "+"║")
+    mskSay(msk,  9,  1,"║"+@"      Rad-g   Get1:                       "+"║")
+    mskSay(msk, 10,  1,"║"+@"      Rad-h   Get2:                       "+"║")
+    mskSay(msk, 11,  1,"║                                          ║")
+    mskSay(msk, 12,  1,"║"+@"      Chk-i   Alt2                        "+"║")
+    mskSay(msk, 13,  1,"║"+@"      Chk-j                               "+"║")
+    mskSay(msk, 14,  1,"║"+@"      Chk-k   Get3:                       "+"║")
+    mskSay(msk, 15,  1,"║"+@"      Chk-l   Get4:                       "+"║")
+    mskSay(msk, 16,  1,"║                                          ║")
+    mskSay(msk, 17,  1,"║                                          ║")
+    mskSay(msk, 18,  1,"║                                          ║")
+    mskSay(msk, 19,  1,"╙──────────────────────────────────────────╜")
+
+    alert("HOPP")
+
+    mskColorGet() //push
+    mskRadio     (msk,  2,  3,@a,"a")
+    mskRadio     (msk,  3,  3,@b,"b")
+    mskRadio     (msk,  4,  3,@c,"c")
+    mskRadio     (msk,  5,  3,@d,"d")
+    mskList      (msk,  2, 21,@lst1,"lst1")
+    mskList      (msk,  4, 21,@lst2,"lst2")
+    mskRadio     (msk,  7,  3,@e,"e")
+    mskRadio     (msk,  8,  3,@f,"f")
+    mskRadio     (msk,  9,  3,@g,"g")
+    mskRadio     (msk, 10,  3,@h,"h")
+    mskAltButton (msk,  7, 21,@alt1,"alt1")
+    mskGet       (msk,  9, 21,@g1,"g1")
+    mskGet       (msk, 10, 21,@g2,"g2")
+    mskCheck     (msk, 12,  3,@i,"i")
+    mskCheck     (msk, 13,  3,@j,"j")
+    mskCheck     (msk, 14,  3,@k,"k")
+    mskCheck     (msk, 15,  3,@l,"l")
+    mskAltButton (msk, 12, 21,@alt2,"alt2")
+    mskGet       (msk, 14, 21,@g3,"g3")
+    mskGet       (msk, 15, 21,@g4,"g4")
+    mskColorRestore() //pop
+
+    mskShow(msk)
+    mskLoop(msk)
+    mskHide(msk)
+    mskColorRestore() //pop
+    return lastkey()

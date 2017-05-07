@@ -1,3 +1,5 @@
+2017.05.07 checkboxok es radio buttonok kirajzolasa korszerusitve;
+
 2017.05.04 terminal ablak atmeretezese javitva;
   Nem jo az ablakot unmap/map-olni, mert valtozik tole a pozicio;
 

@@ -35,14 +35,12 @@ class radiobutton(get)
     method addto
     attrib group
 
-****************************************************************************
-function radiobuttonIni(this,r,c,b,v) //compatibility
-    return this:(radiobutton)initialize(r,c,b,v)
 
 ****************************************************************************
 static function radiobutton.initialize(this,r,c,b,v) 
     this:(get)initialize(r,c,b,v)
     this:varput(.f.)
+    this:picture:="XXX"
     return this
 
 ****************************************************************************
@@ -85,6 +83,7 @@ function checkboxIni(this,r,c,b,v)  //compatibility
 ****************************************************************************
 static function checkbox.initialize(this,r,c,b,v) 
     this:(get)initialize(r,c,b,v)
+    this:picture:="XXX"
     this:varput(.f.)
     return this
 
@@ -94,11 +93,13 @@ static function display(this,c)
 local l:=left(c,1)
 local r:=right(c,1)
 local flg:=if(this:varget,substr(c,2,1)," ")
-local clr:=logcolor(this:colorspec,if(this:hasfocus,2,1))
+local color_normal:=logcolor(this:colorspec,1)
+local color_invers:=logcolor(this:colorspec,2)
+local color_flag:=if(this:hasfocus,color_invers,color_normal)
     
-    @ this:row,this:col   say l
-    @ this:row,this:col+1 say flg color clr
-    @ this:row,this:col+2 say r 
+    @ this:row,this:col   say l   color color_flag
+    @ this:row,this:col+1 say flg color color_flag
+    @ this:row,this:col+2 say r   color color_flag
 
     setpos(this:row,this:col+1)
 

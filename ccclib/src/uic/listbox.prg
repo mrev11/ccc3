@@ -21,62 +21,96 @@
 ****************************************************************************
 class listbox(get) 
     method initialize
+
     method choice       {|this|choice(this)}
-    method insert       {|this|choice(this)}
-    method overstrike   {|this|choice(this)}
-    method delete       {|this|choice(this)}
-    method backspace    {|this|choice(this)}
+    method insert       {|this,c|choice(this,c)}    // c-re keres
+    method overstrike   {|this,c|choice(this,c)}    // c-re keres
+    method delete       {|this|choice(this)}        // elfedi az editalasi funkciot
+    method backspace    {|this|choice(this)}        // elfedi az editalasi funkciot
     method select       {|this,n|select(this,n)}
     method scan         {|this,k|scan(this,k)}
     method item         {|this,i|aadd(this:menu,i)}
+
     attrib selected
     attrib menu
 
-****************************************************************************
-function listboxIni(this,r,c,b,v) //compatibility
-    return this:(listbox)initialize(r,c,b,v)
 
 ****************************************************************************
 static function listbox.initialize(this,r,c,b,v) 
     this:(get)initialize(r,c,b,v)
-    this:picture:=replicate("X",len(this:varget))
+    this:picture:=replicate("X",len(this:varget)) //eredeti blokk
     this:selected:=0
     this:menu:={}
+
+    // Blokk kicserelve:
+
+    this:block:={|x|this:menu[this:select(x)]}
+
+    // varget/varput a selected ertekevel dolgozik.
+    // A belso mukodesben varget/varput-ot nem hasznaljuk,
+    // igy a kliens program a block atirasaval tetszoleges
+    // choidx <--> value lekepezest alkalmazhat.
+    
+    //a default blokkal
+    //  varget a kivalasztott item teljes szoveget adja
+    //  varput index vagy illeszkedo szoveg alapjan valaszt
+
     return this
+
 
 ****************************************************************************
 static function scan(this,key)
 local n, w:=len(key)
     for n:=1 to len(this:menu)
-        if( key==left(this:menu[n],w) )
+        if( this:menu[n]==key  )
+            return n
+        end
+    next
+    for n:=1 to len(this:menu)
+        if( !(this:menu[n]!=key)  )
             return n
         end
     next
     return 0
- 
-****************************************************************************
-static function select(this,k)
-    if( valtype(k)=="C" )
-        k:=this:scan(k) 
-    end
-    if( 1<=k .and. k<=len(this:menu) )
-        this:varput(this:menu[k])
-    else
-        this:varput("")
-    end
-    this:selected:=k
-    this:reset
-    return NIL
+
 
 ****************************************************************************
-static function choice(this)
+static function select(this,key)
+    if( key==NIL )
+        //lekerdezes
+
+    elseif( valtype(key)=="N" )
+        this:selected:=key
+
+    elseif( valtype(key)=="C" )
+        key:=this:scan(key) 
+        if( key>0 )
+            this:selected:=key
+        end
+    end
+    return this:selected
+
+
+****************************************************************************
+static function choice(this,ckey)
  
-local color:=revcolor()
+local color
 local t,l,b,r,s
 local w:=0,n,ch
- 
+local ncho
+
     for n:=1 to len(this:menu)
         w:=max(w,len(this:menu[n]))
+    next
+
+    for n:=1 to len(this:menu)
+        if( this:menu[n][1]::lower==ckey )
+            ncho:=n
+            exit
+        end
+        //ckey az a karakter, ami kivaltotta a keresest
+        //ha van ckey kezdetu item, akkor arra pozicionaljuk a keresest
+        //ha nincs, akkor a selected-re pozicionalunk
     next
 
     t:=this:row+1 
@@ -105,13 +139,14 @@ local w:=0,n,ch
         end
     end
 
-    ch:=choicebox(t,l,b,r,this:menu,,,this:selected)
+    color:=revcolor()    
+    ch:=choicebox(t,l,b,r,this:menu,,,if(empty(ncho),this:selected,ncho))
+    setcolor(color)
     
     if( ch>0 )
         this:select(ch)
+        this:reset
     end
-    
-    setcolor(color)
-    return NIL
+
 
 ****************************************************************************

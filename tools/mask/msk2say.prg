@@ -20,6 +20,11 @@
 
 //Utility mask filék say filékre való konvertálására
 
+//2.1.0 (Vermes M. 2017.05.06)
+//  altbuttonok tamogatasa 
+//  szinek tamogatasa: CCC_MSKCOLOR_SAY, CCC_MSKCOLOR_GET
+//  egesz sorokat iro mskSay-eket general
+//
 //2.0.4 sorrend kezeles javitva (Vermes M. 2017.04.26)
 //2.0.3 nagy maszkok támogatása (Vermes M. 2014.01.15)
 //2.0.2-unicode: isbox javítva (Vermes M. 2011.08.25)
@@ -335,8 +340,10 @@ local r,line,attr,color,c,i,startI,startColor,w,nev,sor
                 while( i<=len(line) .and. color[i]<16 )
                     i++
                 end 
-                aadd(result,{"S",sor,startI-1,i-startI,substr(line,startI,i-startI),NIL})
-
+#define WHOLE_LINE
+#ifndef WHOLE_LINE
+                aadd(result,{"S",sor,startI-1,i-startI,substr(line,startI,i-startI),NIL}) //say kulon
+#endif
             else
                 // Kiemelt szín. Ezt a színt kell követni.
                 startColor:=color[i]
@@ -349,12 +356,36 @@ local r,line,attr,color,c,i,startI,startColor,w,nev,sor
                 nev:=alltrim(w)
 
                 if( empty(nev) )
-                    aadd(result,{"S",sor,startI-1,i-startI,w,NIL})
+#ifndef WHOLE_LINE
+                    aadd(result,{"S",sor,startI-1,i-startI,w,NIL})  //say kulon
+#endif
                 else
                     aadd(result,{"G",sor,startI-1,i-startI,nev,NIL})
                 end
             end
         end 
+          
+#ifdef WHOLE_LINE       
+        //say-ek kulon
+        //Ez a megoldas egesz sorokat ir ki,
+        //nem keruli ki, hanem csak space-ekkel helyettesiti a geteket.
+        //Amikor a getek kirajzoljak magukat, akkor ezek a helyek felulirodnak.
+        //Nem jo kikerulni a geteket, mert a nemrajzolas is rajzolas:
+        //Peldaul egy get nem tudja kisebbre venni magat a berajzoltnal,
+        //mert ott marad a berajzolt helyen egy lyuk.
+
+        for i:=1 to len(line)
+            startI:=i
+            while( i<len(line) .and. color[i]>=16 )
+                ++i
+            end
+            if( startI<i )
+                line:=line[1..startI-1]+space(i-startI)+line[i..]
+            end
+        next  
+        aadd(result,{"S",sor,0,len(line),line,NIL}) //say-ek kulon
+#endif
+
     next
     return {rect,result}
 
@@ -431,6 +462,8 @@ local type:=left(name,1)
         name:=strtran(substr(name,2),")","")
     elseif( type=="{" )
         name:=strtran(substr(name,2),"}","")
+    elseif( type=="/" )
+        name:=strtran(substr(name,2),"/","")
     end
     return alltrim(name)
 
@@ -446,6 +479,8 @@ local type:=left(name,1)
         type:="Radio"
     elseif( type=="{" )
         type:="List"
+    elseif( type=="/" )
+        type:="AltButton"
     else
         type:="Get"
     end
@@ -478,6 +513,12 @@ local i,w
     oTomb:=mskLeiroTomb[MSKL_OBJTOMB]
     glsta:={}
 
+    prog+=newl+"    msk:=mskCreate("+str(TOP,3)+","+str(LEFT,3)+",";
+                                    +str(BOTTOM,3)+","+str(RIGHT,3)+;
+                                    ",bLoad,bRead,bStore)"
+    prog+=newl
+    prog+=newl+"    mskColorSay() //push"
+
     for i:=1 to len(oTomb)
         if( oTomb[i][MSKLO_TYPE]=='S' )
             //w:='"'+oTomb[i][MSKLO_STR]+'"'
@@ -498,20 +539,23 @@ local i,w
 
     for i:=1 to len(glsta)
         w:=glsta[i]
-        glst+=newl+"    msk"+padr(gtype(w),6)+"(msk,"+POSRO(w[MSKLO_ROW],w[MSKLO_COL])+",@"+gname(w)+","+'"'+gname(w)+'"'+")"
+        glst+=newl+"    msk"+padr(gtype(w),10)+"(msk,"+POSRO(w[MSKLO_ROW],w[MSKLO_COL])+",@"+gname(w)+","+'"'+gname(w)+'"'+")"
         defi+=newl+"#define g_"+NEVPAD(gname(w))+"  "+"getlist["+str(i,2)+"]"
     next
 
-    decl+=newl+"local msk:=mskCreate("+str(TOP,3)+","+str(LEFT,3)+",";
-                                      +str(BOTTOM,3)+","+str(RIGHT,3)+;
-                                     ",bLoad,bRead,bStore)"
+    decl+=newl+"local msk"
 
-    prog+=newl+glst
+
+    prog+=newl
+    prog+=newl+"    mskColorGet() //push"
+    prog+=glst
+    prog+=newl+"    mskColorRestore() //pop"
 
     prog+=newl
     prog+=newl+"    mskShow(msk)"
     prog+=newl+"    mskLoop(msk)"
     prog+=newl+"    mskHide(msk)"
+    prog+=newl+"    mskColorRestore() //pop"
     prog+=newl+"    return lastkey()"
 
     return( memowrit(file,vers+defi+newl+decl+newl+prog+newl))
@@ -546,7 +590,7 @@ local i,j,t:={},tg:={}
 
 ******************************************************************************
 static function ver()
-    return "2.0.04-unicode"
+    return "2.1.0-unicode"
 
 
 ******************************************************************************

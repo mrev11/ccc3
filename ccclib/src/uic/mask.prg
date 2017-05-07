@@ -32,6 +32,32 @@
 
 #define MSK_SIZE     10
 
+static color:={}
+
+
+*************************************************************************
+function mskColorSay(spec) //push
+    if( empty(spec) )
+        spec:=getenv("CCC_MSKCOLOR_SAY")
+    end
+    if( empty(spec) )
+        spec:=NIL
+    end
+    aadd(color,setcolor(spec))
+
+function mskColorGet(spec) //push
+    if( empty(spec) )
+        spec:=getenv("CCC_MSKCOLOR_GET")
+    end
+    if( empty(spec) )
+        spec:=NIL
+    end
+    aadd(color,setcolor(spec))
+
+function mskColorRestore()  //pop
+    setcolor(color::atail)
+    asize(color,max(1,len(color)-1))
+
 
 *************************************************************************
 function mskCreate(t,l,b,r,bl,br,bs)
@@ -48,7 +74,6 @@ local msk:=array(MSK_SIZE)
     msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
     msk[ MSK_CURSOR ]:=setcursor(1)
 
-    dispbegin()
     @ t,l clear to b,r
     return msk
 
@@ -87,11 +112,17 @@ local get:=listboxNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},
     aadd(msk[MSK_GETLIST],get)   
     return get
  
- 
+
+*************************************************************************
+function mskAltButton(msk,r,c,var,name)
+local get:=altbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],get)   
+    return get
+
+
 *************************************************************************
 function mskShow(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
-    dispend()
     readexit(.f.)
     return msk
 

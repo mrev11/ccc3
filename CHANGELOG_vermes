@@ -1,3 +1,12 @@
+2017.05.07 mask.prg;
+  uj fuggveny: mskAltButton()
+  szinek kezelese: mskColorSay(), mskColorGet(), mskColorRestore()
+  beallitjak a CCC_MSKCOLOR_SAY-ben es CCC_MSKCOLOR_GET-ben
+  megadott szineket, illetve visszaallitjak az eredeti szint;
+  Egy osszetartozo dispbegin/dispend par (amik azonban kulonbozo
+  fuggvenyekben voltak,  es igy zavart okoztak) torolve;
+  
+
 2017.05.07 uj get leszarmazott control: altbutton;
 
 2017.05.07 listboxok korszerusitve;

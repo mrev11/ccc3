@@ -30,6 +30,14 @@ function revcolor()
 // színét, és visszaadja a régi beállítást.
 local color:=setcolor()
 local clist:=split(color)
+local fgbg
+    if( len(clist)<1 )
+        aadd(clist,"w/n")
+    end
+    if( len(clist)<2 )
+        fgbg:=clist[1]::split("/")
+        aadd(clist,fgbg[2]+"/"+fgbg[1])
+    end
     setcolor(clist[2]+","+clist[1])
     return color
 

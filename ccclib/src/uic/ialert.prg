@@ -103,7 +103,7 @@ local top,left
         alts:={@"OK"}
     end
 
-    color:=setcolor("W+/R")
+    color:=setcolor("W+/GR")
     crs:=setcursor(SC_NONE)
 
     alternatives:={}
@@ -232,7 +232,7 @@ local top,left
 
 *********************************************************************
 static function chdraw(tAlt,choice,row,col)
-local stColor:="W+/R"
+local stColor:="W+/RG"
 local hiColor:="W+/B"
 local i
 

@@ -20,26 +20,37 @@
 
 ************************************************************************
 function LogColor(color,cnum) // color-ból a cnum-edik logikai szín    
-local col:=split(color)
-    return if(len(col)>=cnum,col[cnum],NIL)
+local col:=color::split
+local tmp
+    if( len(col)>=cnum )
+        return col[cnum]
+    end
+    if( len(col)==1 .and. cnum==2 )
+        tmp:=col[1]::split("/")
+        return tmp[2]+"/"+tmp[1]
+    end
+    return col[1]
 
 
 ************************************************************************
 function revcolor()
+
 // Megfordítja az aktuális color első két 
 // színét, és visszaadja a régi beállítást.
-local color:=setcolor()
-local clist:=split(color)
-local fgbg
-    if( len(clist)<1 )
-        aadd(clist,"w/n")
+
+local col:=setcolor()::split
+local tmp,n
+    if( len(col)==1 )
+        col::aadd(setcolor()::logcolor(2))
     end
-    if( len(clist)<2 )
-        fgbg:=clist[1]::split("/")
-        aadd(clist,fgbg[2]+"/"+fgbg[1])
-    end
-    setcolor(clist[2]+","+clist[1])
-    return color
+    tmp:=col[1]
+    col[1]:=col[2]
+    col[2]:=tmp
+    tmp:=col[1]
+    for n:=2 to len(col)
+        tmp+=","+col[n]
+    next
+    return setcolor(tmp)
 
 
 ************************************************************************

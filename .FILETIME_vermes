@@ -1,8 +1,17 @@
-9735cf9a0c4d10c9ac59c11dffad23398fea7487 2017050722:17:01-UTC ./CHANGELOG_vermes
-2271f2878f5fcfdaf61feb3bf0ce7dcf99edaddf 2017050720:00:27-UTC ./usr/bin/linux/msk2say
-6135f4f14b34a40d8d17fbedf16beb287fbecec7 2017050720:00:24-UTC ./tools/mask/msk2say.prg
-37937ce8ad8eb4c970e987f9ce34a4c87cb1a78a 2017050719:34:24-UTC ./ccclib/src/uic/listbox.prg
-ee6c564127381095a0d0cee2ff553550be9fa3bb 2017050715:51:24-UTC ./tutor/control/control.say
+c03eac329644aa121c317dde963ca7c3bea0f161 2017050813:27:42-UTC ./CHANGELOG_vermes
+5355506ba38bd03835d2d592f9df46f1d8b9afdb 2017050813:23:11-UTC ./tutor/xbrwarr/s
+b98b172f217952af6616dec0a6d29b49eb91fca1 2017050812:51:30-UTC ./ccclib/src/uic/colorutil.prg
+8f184335b3be42bd9279c7f73b7afb8fd57f2639 2017050811:37:15-UTC ./ccclib/src/uic/brwmenu.prg
+cb6d4d9186f4375b4f1b4fb64062ecae29917d06 2017050810:03:08-UTC ./ccclib/src/uic/listbox.prg
+1686cfdae79e9378efd4f4b3084db666603573e3 2017050809:50:30-UTC ./usr/bin/linux/msk2say
+82e8a416da1ec4e78e46556479dbe21e53943b77 2017050809:50:27-UTC ./tools/mask/msk2say.prg
+6bd300597c9a352e42d3667d10bfa3a9abe7fa49 2017050809:36:12-UTC ./usr/bin/linux/gitnav
+f040768a5cd64415914c639aca694e0836d17c7e 2017050809:36:12-UTC ./usr/bin/linux/gitref
+15363eadbad8175a9766041b341778695ee01dff 2017050809:36:12-UTC ./usr/bin/linux/gitstat
+4c07245ae6db4647a0e2562e4a964a55c233b9ff 2017050809:36:12-UTC ./usr/bin/linux/gitview
+c27a05161e5368872a179ec5a5b5653bca58e7e9 2017050809:34:21-UTC ./tutor/xmask/demo.say
+c6888079e7a92701793c3be517ef3f343cdde688 2017050808:10:41-UTC ./ccclib/src/uic/ialert.prg
+45d6ab05e6df47c224b19536e522ed25474224ac 2017050807:10:08-UTC ./tutor/control/control.say
 1f97987739a7f8a0f1b4650ec5a28ae554140fc6 2017050715:05:26-UTC ./tutor/control/demo.prg
 86511d0a23097e13a28da19905617ec49b393d65 2017050714:47:37-UTC ./tutor/control/s
 7537509f233a694fc870ebffbbd73abbffcdc022 2017050714:46:28-UTC ./tutor/control/orszagkod.prg
@@ -11,7 +20,6 @@ fa1f4fc192e4b93f25636adcef338e445348e354 2017050714:18:31-UTC ./tutor/control/OL
 4df21f1b678f9ab36f80f69e051394866e9de394 2017050713:30:26-UTC ./ccclib/src/uic/altbutton.prg
 d75943b032c023074a079b993b50ce6b62dbef0a 2017050712:12:44-UTC ./ccclib/src/uic/checkbox.prg
 0635370aef29570dc56861a06a13979dcf75e0ca 2017050707:25:45-UTC ./tutor/control/control.sor
-7c1d3f652cadd1e3144ae103ad2ff804104f1f39 2017050706:22:47-UTC ./ccclib/src/uic/colorutil.prg
 703ceaad4d6b54701c46e4e00a1d11fd6a357533 2017050706:13:58-UTC ./ccclib/src/uic/mask.prg
 2832df7b518d44f151bbcff065b1b8cdc71ac010 2017050421:20:21-UTC ./usr/bin/linux/terminal
 1acaf0041a934b4330dbacf319fea0bd1ce94afa 2017050421:20:19-UTC ./terminal/unix/terminal.cpp
@@ -406,10 +414,6 @@ f86ac4ba0d647ee2a9a07b1b321ae920442747ba 2017032706:52:07-UTC ./gtk/code_generat
 975d4290e21026b9194b8fdf2124e443fe5c4af9 2017032706:52:07-UTC ./gtk/code_generated/gtk_tree_selection_reg.prg
 73027c0ec582ce71bcca4c2fb97727958c0a50ff 2017032706:52:07-UTC ./gtk/code_generated/gtk_tree_view_column_api.cpp
 154320a22f10abd5e8517c0cdd7c4ff308365b18 2017032706:52:07-UTC ./gtk/code_generated/gtk_tree_view_column_reg.prg
-6ccd07802f8f646d24d7b40888c70237fb677916 2017032421:12:44-UTC ./usr/bin/linux/gitnav
-6722c270a991608faf4923ca692a1f80dc72d76d 2017032421:12:44-UTC ./usr/bin/linux/gitref
-b7ac08fc65ed1ad4634819d33edad913a160f841 2017032421:12:44-UTC ./usr/bin/linux/gitstat
-b8080b40de4e0bf78ae6f3b56289576f1872c449 2017032421:12:44-UTC ./usr/bin/linux/gitview
 8b1aa271f2901bb8e264ff572f0fa871aae0a48e 2017032421:12:42-UTC ./usr/bin/linux/filetime-restore
 9fb5926757285ffc0d2b14e18df95bcabbfcfc6a 2017032421:12:42-UTC ./usr/bin/linux/filetime-save
 91081e76a701425999020af0e4c9f6d42e80ca3c 2017032421:12:42-UTC ./usr/bin/linux/firstpar
@@ -471,7 +475,6 @@ ebce979e04ed7655b40afa47d94c07371a83e0cd 2017032408:59:32-UTC ./usr/options/lin/
 36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
 23ef682d33674e2ca5985df1c878903a9bce0299 2017031511:58:28-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-regression.rb
 996d48c045c5e0353561767c2cd18341af397c6c 2017021919:37:26-UTC ./tutor/xbrwarr/xbrwarr.prg
-e569024127628d0013da5a2fcd9d55f2e5cb4af6 2017021919:32:03-UTC ./ccclib/src/uic/brwmenu.prg
 fb2fdd2ed8dcc0de718f7df6051dcb6d7a40de7c 2017021118:39:34-UTC ./usr/build/windows/obj2so.bat
 1b10054c5e6768b27dd7904629db867ab32dec6a 2017012020:58:06-UTC ./doc/install-windows.md
 06fd5c3a5064e5669b4e7bfa0c64e55d42756185 2017012015:18:28-UTC ./doc/install-linux.md
@@ -1351,7 +1354,6 @@ af5e0dad5a5517a68d5489036b3696dc523d64c8 2011091909:37:01-UTC ./setup/setup-unix
 669948b7ed23d31ae3ceb42d336177890f459a4f 2011082818:55:05-UTC ./ccclib/src/uic/o_get.prg
 2438fb1d097ab0f8e53ca5a31159f8f2df64eb8a 2011082512:08:13-UTC ./tools/mask/box.say
 ea887c120b4fcb6e2a0fa3158542b1ea778bab08 2011082512:07:59-UTC ./tools/mask/box.msk
-14daf10fbb6582df1979b4c0071c25931d535f41 2011082107:56:17-UTC ./ccclib/src/uic/ialert.prg
 704770d5a467cf04be0fee2767beb030c9dd5f3d 2011080814:16:38-UTC ./tools/dbaseiii/dbfclass.prg
 64633b04222be4701e923e54a7765b872b103189 2011080614:49:45-UTC ./jt/jterminal/jterminal.java
 b0ec6f0105191376cbce979c2a02ab7e1d45089c 2011080614:37:04-UTC ./jt/jterminal/jtdialog.java
@@ -1695,7 +1697,6 @@ ea845f69301a492a35a6df58b59703ba60af1f87 2008081908:12:08-UTC ./tools/regex/rege
 11a0dd9385c15a2ab5cd6a23718bcc26cecf48e7 2008080507:40:54-UTC ./tutor/rename/rnm.say
 6e6ae61d3c32dd6bef50d97857d320fa22688963 2008080507:40:51-UTC ./tutor/rename/rnm.msk
 0715b859ac137176a0e57021d4584addc2aabe14 2008080507:05:39-UTC ./tools/mask/filter.msk
-cc66cd4cb7850b09a77c6c8db525c5865ffb359b 2008080506:47:38-UTC ./tutor/xmask/demo.say
 3dfd74e28e684dae775b6840174ca9929f8a6af8 2008080506:47:30-UTC ./tutor/xmask/demo.msk
 1c77c1d4d791c5295fbe1952956f213eeafc3191 2008080308:51:07-UTC ./tutor/oggedit/oggplay.prg
 550affb2e69d162e9fbfc9f7f13f642ef868f761 2008080307:57:58-UTC ./tutor/pipedemo/child.prg

@@ -1,5 +1,8 @@
 #!/bin/bash
+
+pushd msk2say; m; popd
+
 bapp_unixc.b  -xmask -xpage  @parfile.bld
-bapp_unix_.b  -xmsk2say -xmsk2pge -xpge2wro  @parfile.bld
+bapp_unix_.b  -xmsk2pge -xpge2wro  @parfile.bld
 
 

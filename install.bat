@@ -72,6 +72,13 @@ if not exist %CMPDIR%\include\gtk-2.0\gtk\gtk.h goto terminal-gtk
   popd
 :terminal-gtk
 
+:-------------------
+: msk2say.exe-t elore
+:-------------------
+
+pushd tools\mask
+call m.bat
+popd
 
 :-------------------
 : tabobj
@@ -102,10 +109,6 @@ call m.bat
 popd
 
 pushd tools\list
-call m.bat
-popd
-
-pushd tools\mask
 call m.bat
 popd
 

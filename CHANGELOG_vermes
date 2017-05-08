@@ -1,3 +1,9 @@
+2017.05.08 Az installban msk2say elore lett veve;
+  Ha egyszerre le vannak torolve a say fajlok es az msk2say.exe,
+  akkor az msk-kat tartalmazo projektek nem tudnak lefordulni.
+  Ugyanezert msk2say nem lehet olyan projektben, ami msk-kat is
+  tartalmaz, tehat az msk2say-t kulon kell forditani;
+
 2017.05.09 A brwCreate-tel keszitett browse-ok szine globalisan allithato;
   A CCC_BRWCOLOR valtozoban megadott colorspec-et teszi bele a browse-okba:
     colorspec::logcolor(1) -> a browse sorai

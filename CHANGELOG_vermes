@@ -1,3 +1,11 @@
+2017.05.09 A brwCreate-tel keszitett browse-ok szine globalisan allithato;
+  A CCC_BRWCOLOR valtozoban megadott colorspec-et teszi bele a browse-okba:
+    colorspec::logcolor(1) -> a browse sorai
+    colorspec::logcolor(2) -> a browse menuje
+    colorspec::logcolor(3) -> a browse kurzor sora
+  ha nincs megadva logcolor(3) vagy az egyezik logcolor(1)-gyel,
+  akkor kepernyotartalom inverzevel vilagitja ki a kurzorsort;
+
 2017.05.09 listbox achoice szin a get:colorspec-bol szarmaztatva;
 
 2017.05.08 msk2say kikeruli a " karaktereket;

@@ -51,6 +51,27 @@
 
 
 ************************************************************************
+function brwColor(spec)
+static colorspec:=inicolor()
+local prev:=colorspec
+    if( spec==NIL )
+        //lekerdezes
+    elseif( spec::empty )
+        colorspec:=inicolor()
+    else
+        colorspec:=spec
+    end
+    return prev
+
+static function inicolor()
+local colorspec:=getenv("CCC_BRWCOLOR")
+    if( colorspec::empty )
+        colorspec:=setcolor()
+    end
+    return colorspec
+
+
+************************************************************************
 function brwCreate(nTop, nLeft, nBottom, nRight, default)
 local browse, n
 
@@ -68,7 +89,7 @@ local browse, n
     browse:autoLite:=.f.
     browse:headSep:=B_HD+B_DS8+B_HD
     browse:colSep:=" "+B_VS+" " 
-    browse:colorSpec:=setcolor()
+    browse:colorSpec:=brwColor()
     browse:cargo:=array(BR_SLOTS)
     browse:cargo[BR_SCREEN]:=savescreen(BROWSERECT)
 
@@ -325,10 +346,19 @@ function brwClear(browse)
 function brwHighlight(browse)
 local scr
 local headskip:=1+if(empty(browse:headsep),-1,0)+if(empty(browse:_hasheading_),-1,0) 
+local color1
+local color3
  
     if( browse:cargo[BR_HIGHLIGHT] .and. browse:cargo[BR_VISIBLE] )
+        color1:=browse:colorspec::logcolor(1)
+        color3:=browse:colorspec::logcolor(3)
 
-        scr:=screeninv(browse:_buffer_[browse:rowPos])
+        if( empty(color3) .or. color1==color3  )
+            //compatible default 
+            scr:=screeninv(browse:_buffer_[browse:rowPos])
+        else
+            scr:=screenchangeattr(browse:_buffer_[browse:rowPos],color3)
+        end
 
         restscreen( browse:nTop+browse:rowPos+headskip,;
                     browse:nLeft,;
@@ -337,6 +367,26 @@ local headskip:=1+if(empty(browse:headsep),-1,0)+if(empty(browse:_hasheading_),-
                     scr )
     end
     return browse
+
+
+static function screenchangeattr(scr,color)
+local ch:=scr::screenchar
+local r,c,save1,save2
+static at,prev
+
+    if( at==NIL .or. !prev==color )
+        r:=row()
+        c:=col()
+        dispbegin()
+        save1:=savescreen(r,c,r,c)
+        @ r,c say " " color color
+        save2:=savescreen(r,c,r,c)
+        restscreen(r,c,r,c,save1)
+        dispend()
+        at:=screenattr(save2)
+        prev:=color
+    end
+    return screencompose(ch,replicate(at,len(ch)))
 
 //korábban síma textben volt tárolva a browse tartalma
 //most (1998.05.02) viszont savescreen formátumban

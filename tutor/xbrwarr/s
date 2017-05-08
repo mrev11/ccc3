@@ -1,0 +1,3 @@
+#!/bin/bash
+export CCC_BRWCOLOR=w/n,w/gb,w/gb
+xbrwarr.exe

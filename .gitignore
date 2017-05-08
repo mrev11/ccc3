@@ -61,6 +61,7 @@ gccver.opt
 *.log
 *.rul
 *.out
+*.say
 
 commit-message
 

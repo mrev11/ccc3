@@ -391,7 +391,14 @@ local r,line,attr,color,c,i,startI,startColor,w,nev,sor
 
 
 ******************************************************************************
-static function decomp(str) //NLS: különválasztja a dobozrajzolókat
+static function decomp(str)   //eredeti decomp hatastalanitva
+    return '"' + str::strtran('"',<<REPL>>"+'"'+"<<REPL>>) + '"'
+
+//mellekes eszrevetel:
+//az alabbi (eredeti) algoritmus elmulasztja
+//kikerulni  a '"' karaktereket 
+
+static function xxdecomp(str) //NLS: különválasztja a dobozrajzolókat
 
 local c,n,x:="",nls:={},nls1:={}
 
@@ -549,12 +556,14 @@ local i,w
     prog+=newl
     prog+=newl+"    mskColorGet() //push"
     prog+=glst
-    prog+=newl+"    mskColorRestore() //pop"
 
     prog+=newl
     prog+=newl+"    mskShow(msk)"
     prog+=newl+"    mskLoop(msk)"
     prog+=newl+"    mskHide(msk)"
+
+    prog+=newl
+    prog+=newl+"    mskColorRestore() //pop"
     prog+=newl+"    mskColorRestore() //pop"
     prog+=newl+"    return lastkey()"
 

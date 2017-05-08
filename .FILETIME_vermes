@@ -1,4 +1,5 @@
-0b42d4d77bf0aef75b3f5f5dd8e73e3d2577d92d 2017050813:28:31-UTC ./CHANGELOG_vermes
+c00d59371b234f04413c95110223e59571cb8782 2017050813:34:23-UTC ./.gitignore
+1ac128671730d4f9d438c1bd7f37afc5e57c5ae1 2017050813:30:24-UTC ./CHANGELOG_vermes
 5355506ba38bd03835d2d592f9df46f1d8b9afdb 2017050813:23:11-UTC ./tutor/xbrwarr/s
 b98b172f217952af6616dec0a6d29b49eb91fca1 2017050812:51:30-UTC ./ccclib/src/uic/colorutil.prg
 8f184335b3be42bd9279c7f73b7afb8fd57f2639 2017050811:37:15-UTC ./ccclib/src/uic/brwmenu.prg
@@ -9,9 +10,7 @@ cb6d4d9186f4375b4f1b4fb64062ecae29917d06 2017050810:03:08-UTC ./ccclib/src/uic/l
 f040768a5cd64415914c639aca694e0836d17c7e 2017050809:36:12-UTC ./usr/bin/linux/gitref
 15363eadbad8175a9766041b341778695ee01dff 2017050809:36:12-UTC ./usr/bin/linux/gitstat
 4c07245ae6db4647a0e2562e4a964a55c233b9ff 2017050809:36:12-UTC ./usr/bin/linux/gitview
-c27a05161e5368872a179ec5a5b5653bca58e7e9 2017050809:34:21-UTC ./tutor/xmask/demo.say
 c6888079e7a92701793c3be517ef3f343cdde688 2017050808:10:41-UTC ./ccclib/src/uic/ialert.prg
-45d6ab05e6df47c224b19536e522ed25474224ac 2017050807:10:08-UTC ./tutor/control/control.say
 1f97987739a7f8a0f1b4650ec5a28ae554140fc6 2017050715:05:26-UTC ./tutor/control/demo.prg
 86511d0a23097e13a28da19905617ec49b393d65 2017050714:47:37-UTC ./tutor/control/s
 7537509f233a694fc870ebffbbd73abbffcdc022 2017050714:46:28-UTC ./tutor/control/orszagkod.prg
@@ -30,7 +29,6 @@ e928de4cf2e21dad8ce87967de07bd6e0b5f3909 2017050306:14:55-UTC ./usr/bin/linux/te
 3c0f763165a56ed801e6c60e6383e3d5ec4f930e 2017050121:28:25-UTC ./usr/bin/linux/ncterm
 ca0a442695f3975641d08013f79ffffe8ba2d1a4 2017050119:07:29-UTC ./terminal/common/tcpio.cpp
 f00044b3e99ca0fc5c236226c98cd498eb5a96c0 2017042706:18:12-UTC ./ccclib/src/uic/setcursor.cpp
-937f170fc53b3c54f17ca0debc80bf20035cea9d 2017042522:24:05-UTC ./tools/mask/maskdemo.say
 e91cfb664b0fb48bc20953ac5c06393b33069f73 2017042522:23:58-UTC ./tools/mask/maskdemo.sor
 b26b93680c8e442c8e4b03f5cb759b7ed97a11d2 2017042208:42:39-UTC ./gtk/log-mkall
 8df064cf9a6edf92d6b9c1977a1175dde8371fb2 2017042121:08:19-UTC ./tools/sql2/log-mkall
@@ -569,7 +567,6 @@ edd37a0d28a8cccd7813c38697b6694f88bdced2 2016110417:37:31-UTC ./terminal/common/
 4a47eefe9d97bc880901eaa28991a775500b1ef1 2016110306:56:53-UTC ./usr/build/linux/lib2exe.bat
 adcaf08c8a80823dfda0768798491f53896968d5 2016110306:56:09-UTC ./usr/build/linux/obj2exe.bat
 cc4f18f1ba7dd1d1e4dc53da72ece25557da0e3d 2016102919:33:14-UTC ./gtk/code_byhand/gtk_text_buffer_apix.cpp
-549314a3dd788025c6a66b2d448b2e95107472fc 2016102011:53:21-UTC ./.gitignore
 a9d3ae2f41964ec7a5a9a1863adcbf5231895187 2016102011:51:08-UTC ./tools/sql2/texdoc/attekintes.tex
 8686e17f80ba934e584e80b5fcd0d4a932941e9c 2016102011:43:40-UTC ./doc/10ev.hu.tex
 d90737796b8800a06e1377dd496782fddc0974a7 2016102011:33:10-UTC ./doc/ccc-belulrol/install.tex
@@ -729,8 +726,6 @@ b8d4defdcf632577521e0338cae25251cb9d7c9f 2016060911:44:49-UTC ./tools/z/readme.h
 49612c8784cdc38ac735d88df2c1ce901e4a72e7 2016060911:33:02-UTC ./tools/z/m.bat
 9657e78b8ef3f46eda6821ccca517b7e401bc499 2016060910:45:16-UTC ./tools/z/ver3/ztoascii.prg
 164f9b020917ed41df86a3f99b1c9abd047fa9fd 2016060910:14:31-UTC ./tools/z/parfile.bld
-387079fbe49ac26daa748253714532b80c222e86 2016060910:13:17-UTC ./tools/z/ver2/zreplace.say
-cf7190a7dd75c127ee921b3960ed009dc1bc0230 2016060910:13:17-UTC ./tools/z/ver2/zsearch.say
 210128737f3a73ac890c1956effb949387e6aab9 2016060909:52:55-UTC ./tools/z/zchcase.prg
 93b3fe04736ca207cb9ca9186b5ec1fb1846c194 2016060907:52:13-UTC ./cccenv3
 7f3588fa6ad0ef9377d576d5a1720cbf9eac9ed4 2016060813:39:25-UTC ./tools/savex/m.bat
@@ -1188,7 +1183,6 @@ b0c5cd01442eafe9a46bd9cc6d892c7b864ad367 2013110914:35:50-UTC ./setup/setup-unix
 fa51ac9a7d818d84144b20b7aefb8b9099ba03e0 2013101616:15:49-UTC ./tools/ddict2/dd/_ddictx.ch
 2198136a502fbf004bd31c92bc8207b608eaf7f2 2013101616:15:49-UTC ./tools/ddict2/dd/_dummy.ch
 e3c37db42984cb2099b2f44b3f04760317dfa4d6 2013101616:15:49-UTC ./tools/ddict2/dd/_dummy.prg
-dc2e26d5291b87406a0c3c89a204cffa19abc3c2 2013101615:56:50-UTC ./tools/ddict2/msksor.say
 9fcc9ad03fbbcdecb0c3d7878005506e86f9b040 2013101615:56:45-UTC ./tools/ddict2/sorrend.prg
 26c894a036cc774cb9cd2c0353ae4a843bce59f1 2013101615:55:58-UTC ./tools/ddict2/msksor.msk
 28ebe72caad7f99a00b5546f7f962152aecf8dd0 2013101615:52:15-UTC ./tools/ddict2/ddict2.ver
@@ -1352,7 +1346,6 @@ f2939100f0a94781231e99f38329fcb080aadf88 2011120919:50:44-UTC ./tutor/pm/linux/p
 430fe9e4c3b0f5ea014083bc2b9c1a8a9255e25d 2011091909:51:21-UTC ./tabobj/commonui.src/tabedrec.prg
 af5e0dad5a5517a68d5489036b3696dc523d64c8 2011091909:37:01-UTC ./setup/setup-unix/procline.cpp
 669948b7ed23d31ae3ceb42d336177890f459a4f 2011082818:55:05-UTC ./ccclib/src/uic/o_get.prg
-2438fb1d097ab0f8e53ca5a31159f8f2df64eb8a 2011082512:08:13-UTC ./tools/mask/box.say
 ea887c120b4fcb6e2a0fa3158542b1ea778bab08 2011082512:07:59-UTC ./tools/mask/box.msk
 704770d5a467cf04be0fee2767beb030c9dd5f3d 2011080814:16:38-UTC ./tools/dbaseiii/dbfclass.prg
 64633b04222be4701e923e54a7765b872b103189 2011080614:49:45-UTC ./jt/jterminal/jterminal.java
@@ -1694,7 +1687,6 @@ aba3005d6431026b1462de4d7b1c922e3f39e68f 2008082506:28:02-UTC ./ccctools/ppo2cpp
 ee829cf3ac26ca3bd22edeaceedec20078d324d8 2008082006:56:03-UTC ./tools/regex/regex_util.prg
 d702bb49b9b68d70192af60b966d717f0936749f 2008082006:55:53-UTC ./tools/regex/utf8_charpos.cpp
 ea845f69301a492a35a6df58b59703ba60af1f87 2008081908:12:08-UTC ./tools/regex/regex-demo/s
-11a0dd9385c15a2ab5cd6a23718bcc26cecf48e7 2008080507:40:54-UTC ./tutor/rename/rnm.say
 6e6ae61d3c32dd6bef50d97857d320fa22688963 2008080507:40:51-UTC ./tutor/rename/rnm.msk
 0715b859ac137176a0e57021d4584addc2aabe14 2008080507:05:39-UTC ./tools/mask/filter.msk
 3dfd74e28e684dae775b6840174ca9929f8a6af8 2008080506:47:30-UTC ./tutor/xmask/demo.msk
@@ -1702,7 +1694,6 @@ ea845f69301a492a35a6df58b59703ba60af1f87 2008081908:12:08-UTC ./tools/regex/rege
 550affb2e69d162e9fbfc9f7f13f642ef868f761 2008080307:57:58-UTC ./tutor/pipedemo/child.prg
 5874d86523622b94a730b4bbb805702472348b0a 2008070406:35:41-UTC ./tools/ddict2/struct.prg
 6d6a3a6446e8a9b60d3e794bb5a86b1395ced168 2008062510:16:42-UTC ./tools/ddict2/browse.prg
-797947336f81161379a51c09140dfc048ba5543a 2008060512:35:03-UTC ./tabobj/utility.src/kdirseek.say
 36b005358933d5ca1cbca6f000922cf40d498b24 2008060208:34:01-UTC ./tabobj/utility.src/kdirseek.msk
 2f937f2bf260afe023d1ca31235b63ed54f70f1c 2008052320:28:20-UTC ./tutor/oggedit/op
 583ad7f6a6dbbdc77f735ef68e13cfdc885a5f82 2008052320:27:54-UTC ./tutor/oggedit/oe
@@ -1870,7 +1861,6 @@ c461bb1389ae3caa10fdd4a11452c8174d54296e 2007111810:26:00-UTC ./tools/xmlrpc-fra
 007c8549aafcfbb8f93a9544de81549df4ba18e6 2007111810:22:53-UTC ./tools/xmlrpc-framework/clean.b
 55abde7e1b3c4efdb4c3d0c3787585b0421da58c 2007111810:13:08-UTC ./tools/xmlrpc-framework/mkall.b
 0c509a71123c52e0a65b3bd4ab8d469893a9a93e 2007111715:26:28-UTC ./tools/xmlrpc-framework/rpcbase/rpcuser.bt
-e9000797ee8f8cdc87e411654cfb387e45ef04ce 2007111713:23:20-UTC ./tools/xmlrpc-framework/client/rpcmonitor/login.say
 fbc130139cdb95e26fcc913a5de78e2d188b0428 2007111713:23:11-UTC ./tools/xmlrpc-framework/client/rpcmonitor/login.msk
 3f55c31ee7fe3ff0d103c62288646f04fc9ada0b 2007111713:22:21-UTC ./tools/xmlrpc-framework/client/rpcmonitor/m
 f032836e0ce36e8efc264581e690cbffedeb98d9 2007111713:17:33-UTC ./tools/xmlrpc-framework/rpcutil/rpcalert.prg
@@ -2127,8 +2117,6 @@ ce517342ae4559a1f32f9b200e4f7242d89f2b45 2006122714:22:23-UTC ./tools/ddict2/ver
 6018991a1e6c06d06c033ec113c2b79e80c4f649 2006122713:01:11-UTC ./tools/mask/maskdemo.msk
 ee3da54eff8a4f428c6905cb9961675a7362f0aa 2006122712:02:06-UTC ./tools/ddict2/owner.prg
 7b31f9aa358a3d3a01fca73580e8f083743656b8 2006122712:00:30-UTC ./tools/ddict2/merge.prg
-5b15267fb350390744505fb2c793bd85e8beaea9 2006122711:58:07-UTC ./tools/ddict2/mskmerge.say
-52b8f73f606394a33b13d1b31df858781c6e4bcc 2006122711:58:07-UTC ./tools/ddict2/mskowner.say
 6079861cf6502a4dd1bb39aa741092e11aca8f60 2006122711:54:42-UTC ./tools/ddict2/mskowner.msk
 08ff077aad22f7cef1896bfae6e1a4ab5f018a2f 2006122711:53:59-UTC ./tools/ddict2/mskmerge.msk
 d761ecbd88f7b4ee44edc91b4c98f16ae3a077ae 2006122711:02:23-UTC ./tools/dbfview/dbfview.prg
@@ -2671,7 +2659,6 @@ f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042515:22:22-UTC ./ccclib/ccc.bldwi
 dd9f2e5f4ac876b65cf7f634019f776658f264f3 2006042209:51:31-UTC ./ccclib/src/uic/brwedit.prg
 a3f18b4d5b613bc3fa11b8e81318ba09917cf788 2006042209:31:22-UTC ./ccclib/src/uic/memoedit.prg
 83301462fe6772789eb1669e00e087dadb68da37 2006042209:25:46-UTC ./tutor/readline/m
-cacfc0546711422da6d817368d6350f7c8fcd6a2 2006042208:10:34-UTC ./tools/dbfview/search.say
 305960317410daf18366093cb43d9dcd05fb7be3 2006042208:09:45-UTC ./tools/dbfview/search.msk
 0442e05e7adba9f3a4476363b095909692e7bab3 2006042207:52:10-UTC ./tools/dbaseiii/dbfbrowse.prg
 e55082e4d007c250d1245b97390e26cfb48c08d4 2006042207:49:50-UTC ./tabobj/common.src/tabfldtb.prg
@@ -2834,8 +2821,6 @@ b152ccdf4c2116d3357998ff46672c0460e852e6 2006041319:08:58-UTC ./tools/socket/soc
 0fce00455d7ca32063efb19fc672124b02ccd4c8 2006041317:58:35-UTC ./tools/mask/haz.msk
 cabb16c8d1ed760272f0a567fc2b12c375572fba 2006041317:57:19-UTC ./tools/mask/proba.msk
 90d6d8e34a849939d30296aba68f725a8e68c8e9 2006041316:28:21-UTC ./setup/setup-unix/asc.cpp
-85dd612886d745750fb50dfc5bc589c41282de45 2006041315:31:16-UTC ./tools/z/ver3/zreplace.say
-557566345dd7e781d1e1afa85bd10c074b6074ad 2006041315:31:16-UTC ./tools/z/ver3/zsearch.say
 eb2cdbdab0761dd394d6eabe67c0a5bce97cf957 2006041315:31:06-UTC ./tools/z/ver3/zsearch.msk
 5826689ddb3d41cf9154ead92418a71bbbf9cce3 2006041315:30:09-UTC ./tools/z/ver3/zreplace.msk
 479872540767eb0f0890d75c54d47fc17eaffbc7 2006041212:33:34-UTC ./usr/build/solaris/msk2say.bat
@@ -3586,7 +3571,6 @@ e652a6399a4d985e44f67ebc345b9be68243c16b 2000042409:06:56-UTC ./tutor/control/ra
 b1e5d651dfd970d538e3b661c9622b1b522d1a99 2000011320:59:52-UTC ./usr/build/windows/pge2wro.bat
 7208a1139026b744e587093392403d90e922bf06 2000011320:59:44-UTC ./usr/build/windows/msk2wro.bat
 f096ce0cbd06f37dd1cb1e28b6d822b6039bb28a 2000011320:59:36-UTC ./usr/build/windows/pge2out.bat
-5dc44ba7e91537e19813c288c120db82e926d8f0 2000011310:51:28-UTC ./ccctools/ppo2cpp/test/z.say
 26d8668432f4d4539d48b4acd8b376c60c3b0b13 2000011223:58:12-UTC ./tools/ddict2/fspec.prg
 4ef0be2bb16016cae9e182249f602e2f09ce77eb 2000011211:38:42-UTC ./usr/include/achoice.ch
 c90a14782475b87aa861a19855ff5b6efb3fe704 2000011211:38:42-UTC ./usr/include/assert.ch

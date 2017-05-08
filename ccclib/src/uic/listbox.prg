@@ -139,7 +139,9 @@ local ncho
         end
     end
 
-    color:=revcolor()    
+    //a listboxhoz tartozo choicebox 
+    //a get:colorspec forditottjaval mukodik
+    color:=setcolor(this:colorspec::logcolor(2)+","+this:colorspec::logcolor(1))  
     ch:=choicebox(t,l,b,r,this:menu,,,if(empty(ncho),this:selected,ncho))
     setcolor(color)
     

@@ -1,5 +1,12 @@
-4c0e1d9da8f6155673c2345dc4444debd40a39aa 2017050820:31:38-UTC ./CHANGELOG_vermes
-7b65ce7a8af6616b3344348547b5f52f777a7abd 2017050820:25:25-UTC ./log-install
+1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
+8e8d41a8d790d469c87f5ef57d0990773f26483f 2017050906:40:37-UTC ./usr/build/windows/sor2say.bat
+409cb427517b78bad8f8a2a0b459739b43ce7bd7 2017050906:36:43-UTC ./CHANGELOG_vermes
+d25644d0e39b0dc37ee1fd796e6658f65dc120e3 2017050906:35:40-UTC ./ccctools/buildp/build.hu.ver
+f150240cf1a64e2990f0aef0e04d35dc72ff3600 2017050906:29:34-UTC ./log-gitnav
+fd419b03dc150554369d615f922ce8ffbd8b1149 2017050823:32:09-UTC ./usr/build/linux/sor2say.bat
+8db311c367dc5076fc4cde67d9e2c97e172f5637 2017050823:25:42-UTC ./usr/bin/linux/build
+0614e5a2056bff71690942e9437b8e0451b857fa 2017050823:25:40-UTC ./ccctools/buildp/build.prg
+4a2c95eda172849cf8a6ddaab4f238c736accd16 2017050820:35:03-UTC ./log-install
 e44cc516ae7caeda208abd03947c7bcda29d5057 2017050820:25:25-UTC ./tutor/rename/rnm.say
 577dca401d4d78460325abe83721bb7998313477 2017050820:25:25-UTC ./usr/bin/linux/firstpar
 53ecd08def8b734e5138301a3f932d7ddb742241 2017050820:25:25-UTC ./usr/bin/linux/rnm
@@ -23,7 +30,6 @@ e62754719bcdb3b7dee199e14a889911e732bc23 2017050820:10:46-UTC ./tools/mask/msk2s
 42ac0dccbb85e589c168bfafabd80a1f9aaf5e2e 2017050820:10:22-UTC ./tools/mask/msk2say/m.bat
 c00d59371b234f04413c95110223e59571cb8782 2017050813:34:23-UTC ./.gitignore
 5355506ba38bd03835d2d592f9df46f1d8b9afdb 2017050813:23:11-UTC ./tutor/xbrwarr/s
-b98b172f217952af6616dec0a6d29b49eb91fca1 2017050812:51:30-UTC ./ccclib/src/uic/colorutil.prg
 8f184335b3be42bd9279c7f73b7afb8fd57f2639 2017050811:37:15-UTC ./ccclib/src/uic/brwmenu.prg
 cb6d4d9186f4375b4f1b4fb64062ecae29917d06 2017050810:03:08-UTC ./ccclib/src/uic/listbox.prg
 1686cfdae79e9378efd4f4b3084db666603573e3 2017050809:50:30-UTC ./usr/bin/linux/msk2say
@@ -56,11 +62,8 @@ df97ca1eb6813491cd0f37254f850f5dc245e117 2017042120:58:01-UTC ./tools/sql2/drive
 b6772c75b4cb0850b96ff5c5bc7a350d803cc1f4 2017042120:55:57-UTC ./tools/sql2/driver-sqlite3/sqlutil.prg
 3ab79e4b21e263ebe9e18989a8f8c9115efacaa0 2017041919:08:13-UTC ./usr/bin/linux/xstart
 6f0e1b0aa093c8cbedd968dbfb0b15ffc22f8599 2017041919:08:10-UTC ./tools/xstart/xstart.prg
-85ec20ba77f222201fe8cafb988aa70ad0052190 2017040619:46:30-UTC ./usr/bin/linux/build
 70ffa5f098ac42aed1c0023ceebbd37f2db9254c 2017040613:42:20-UTC ./ccctools/build/build.hu.ver
 2856ecacab40077840c56e103b4da985aad2aed0 2017040613:36:14-UTC ./ccctools/build/build.prg
-453d40e2922bcf3b6d71622a44c067184a18de8b 2017040611:53:15-UTC ./ccctools/buildp/build.hu.ver
-e7cf4ee21ac17974c429093b54452fcbc6894e6c 2017040611:51:30-UTC ./ccctools/buildp/build.prg
 6ed8add3007df3a92684bd67ec94f2f35e082696 2017032421:12:26-UTC ./usr/bin/linux/delobj
 77f02cbe0f8a72d5ebe5aa667478a1187c04131b 2017032421:12:26-UTC ./usr/bin/linux/libcontent
 d7c961c5aecba715415e8973266ffc168e5ed3f2 2017032421:12:26-UTC ./usr/bin/linux/pm

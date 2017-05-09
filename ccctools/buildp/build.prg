@@ -65,7 +65,7 @@ static s_rules:={;
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.4.8" //-o opcio
+#define VERSION "1.4.9"
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -1150,7 +1150,8 @@ local f:=fname(fil)     //az előállítandó filé neve
 local e:=fext(fil)      //az előállítandó filé kiterjesztése
 local p                 //az előállítandó filé directoryja
 local r,e0              //resource name/kiterjesztés
-local i
+local i,x
+local result:=.f.
 
     if( e==".ch" .and. !f[1]=="_" )
         //csak olyan ch-kat probal resourcebol 
@@ -1170,14 +1171,21 @@ local i
             if( NIL!=(r:=resource_hash[f+e0]) )
                 p:=fpath(r)
                 adddep(dep,p+f+e)
-                if( 0==ascan(todo,{|x|x[1]==p+f+e}) )
+                if( 0==(x:=ascan(todo,{|x|x[1]==p+f+e})) )
                     aadd(todo,{p+f+e,p+f+e0})
+                elseif( 0==ascan(todo[x],{|x|x==p+f+e0}) )
+                    aadd(todo[x],p+f+e0)
+                    // itt gyulnek az olyanok, mint 
+                    //  {demo.say, demo.msk, demo.sor}
+                    // a masodikbol akarja majd letrehozni az elsot
+                    // hogy melyik a masodik/harmadik az az s_rules 
+                    // rendezesetol fugg (abc szerint)
                 end
-                return .t.    
+                result:=.t.    
             end
         end
     next
-    return .f.
+    return result
 
 
 ****************************************************************************

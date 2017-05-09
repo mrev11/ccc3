@@ -1,6 +1,8 @@
+42e8d7731ab666eead26adbb424601bf9b85de2b 2017050908:59:53-UTC ./ccclib/src/uic/checkbox.prg
+48cc957a8693ab1cad22835858a6af83431c7326 2017050907:57:16-UTC ./tutor/control/control.say
+95c664c05d39a798c0e9c97ccd21bcf49a58ef99 2017050907:46:53-UTC ./CHANGELOG_vermes
 1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
 8e8d41a8d790d469c87f5ef57d0990773f26483f 2017050906:40:37-UTC ./usr/build/windows/sor2say.bat
-409cb427517b78bad8f8a2a0b459739b43ce7bd7 2017050906:36:43-UTC ./CHANGELOG_vermes
 d25644d0e39b0dc37ee1fd796e6658f65dc120e3 2017050906:35:40-UTC ./ccctools/buildp/build.hu.ver
 f150240cf1a64e2990f0aef0e04d35dc72ff3600 2017050906:29:34-UTC ./log-gitnav
 fd419b03dc150554369d615f922ce8ffbd8b1149 2017050823:32:09-UTC ./usr/build/linux/sor2say.bat
@@ -41,7 +43,6 @@ c6888079e7a92701793c3be517ef3f343cdde688 2017050808:10:41-UTC ./ccclib/src/uic/i
 155773efb69210bb36b368506cda607ba30ff522 2017050714:22:29-UTC ./tutor/control/control.msk
 fa1f4fc192e4b93f25636adcef338e445348e354 2017050714:18:31-UTC ./tutor/control/OLVASS
 4df21f1b678f9ab36f80f69e051394866e9de394 2017050713:30:26-UTC ./ccclib/src/uic/altbutton.prg
-d75943b032c023074a079b993b50ce6b62dbef0a 2017050712:12:44-UTC ./ccclib/src/uic/checkbox.prg
 0635370aef29570dc56861a06a13979dcf75e0ca 2017050707:25:45-UTC ./tutor/control/control.sor
 703ceaad4d6b54701c46e4e00a1d11fd6a357533 2017050706:13:58-UTC ./ccclib/src/uic/mask.prg
 2832df7b518d44f151bbcff065b1b8cdc71ac010 2017050421:20:21-UTC ./usr/bin/linux/terminal

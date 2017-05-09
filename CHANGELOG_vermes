@@ -1,4 +1,6 @@
-2017.05.9 Tobb resource-bol eloallo include-ok fuggoseget is nezi;
+2017.05.09 colorutil ujra ujrairva;
+
+2017.05.09 Tobb resource-bol eloallo include-ok fuggoseget is nezi;
   A konkret eset: say(msk,sor), ahol most a sor megvaltozasa 
   is kivaltja az ujraforditast. Hogy vegul az msk2say.bat
   vagy a sor2say.bat fog-e futni, az az s_rules rendezettsegetol fugg,

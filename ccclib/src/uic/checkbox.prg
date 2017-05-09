@@ -77,10 +77,6 @@ class checkbox(get)  //compatibility
     method display      {|this|display(this,"[X]")}
 
 ****************************************************************************
-function checkboxIni(this,r,c,b,v)  //compatibility
-    return this:(checkbox)initialize(r,c,b,v) 
-
-****************************************************************************
 static function checkbox.initialize(this,r,c,b,v) 
     this:(get)initialize(r,c,b,v)
     this:picture:="XXX"

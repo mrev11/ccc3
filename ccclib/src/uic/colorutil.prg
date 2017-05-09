@@ -22,15 +22,25 @@
 function LogColor(color,cnum) // color-ból a cnum-edik logikai szín    
 local col:=color::split
 local tmp
-    if( len(col)>=cnum )
-        return col[cnum]
+    if( empty(col) )
+        col:={"w/n"}
     end
-    if( len(col)==1 .and. cnum==2 )
-        tmp:=col[1]::split("/")
-        return tmp[2]+"/"+tmp[1]
-    end
-    return col[1]
 
+    if( len(col)>=cnum .and. !empty(col[cnum]) )
+        // ha meg van adva
+        tmp:=col[cnum]
+ 
+    elseif( cnum==2 )
+        // ha col[2] nincs megadva,
+        // akkor veszi col[1] inverzet
+        tmp:=col[1]::split("/")
+        tmp:=tmp[2]+"/"+tmp[1]
+
+    else
+        tmp:=col[1]
+    end
+
+    return tmp
 
 ************************************************************************
 function revcolor()
@@ -40,12 +50,12 @@ function revcolor()
 
 local col:=setcolor()::split
 local tmp,n
-    if( len(col)==1 )
-        col::aadd(setcolor()::logcolor(2))
+    if( len(col)<2 )
+        asize(col,2)
     end
-    tmp:=col[1]
-    col[1]:=col[2]
-    col[2]:=tmp
+
+    col[1]:=setcolor()::logcolor(2)
+    col[2]:=setcolor()::logcolor(1)
     tmp:=col[1]
     for n:=2 to len(col)
         tmp+=","+col[n]

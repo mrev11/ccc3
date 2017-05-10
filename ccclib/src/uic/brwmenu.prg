@@ -778,7 +778,7 @@ local popblk
     h:=min(h, maxrow()-posr-2)
 
     color:=setcolor(logColor(browse:colorSpec,2)+","+;
-                    logColor(browse:colorSpec,1))
+                    logColor(browse:colorSpec,4))
     screen:=drawBox(posr+1,posc,posr+h+2,posc+w+1,B_SINGLE)
 
     while(.t.)

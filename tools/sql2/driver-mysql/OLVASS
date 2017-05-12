@@ -1,17 +1,81 @@
 
-Kezdeti berendezkedés
+Kezdeti berendezkedes
+=====================
 
-Kezdetben 'root' felhasználó van jelszó nélkül, ezt úgy hagyjuk.
-Az alkalmazások indításakor meg kell adni a felhasználót, pl:
+Kezdetben 'root' felhasznalo van jelszo nelkul, ezt ugy hagyjuk. 
+Az alkalmazasok inditasakor meg kell adni a felhasznalot, pl:
+
     mysql -u root
     mysqlshow -u root
-    
-Első felhasználó létrehozása (root-ként mysql-ben):
 
-  create database konto;                      -- mysql-ben database = schema;
-  grant all on konto.* to konto;              -- létrejön a konto felhasznalo
-  use mysql                                   -- kiválasztja a mysql adatbázist
-  set password for 'konto'=password('konto');
+Ha mar van ~/.mylogin.cnf, vagy ~/.my.cnf, akkor az ezekben megadott
+jelszot akarja hasznalni. A -p-vel lehet neki megmondani, hogy kerjen 
+jelszot, arra lehet ENTER-t utni (ures jelszo), tehat ilyenkor: 
+
+    mysql -u root  -p
+
+
+Adatbazis (=schema) letrehozasa (root-kent):
+
+    create database konto 
+        default character set utf8
+        default collate utf8_general_ci;
+    
+
+Elso felhasznalo letrehozasa (root-kent):
+
+    create user 'konto' identified by 'konto';
+    grant all on konto.* to konto;
+
+
+Kliens oldali utilityk (pl. mysql) konfiguralasa:
+
+    ezeket kell beirni ~/.my.cnf-be:
+
+    [mysql]
+    user=konto
+    password=konto
+    database=konto
+    default-character-set=utf8
+
+
+Charsetek konfiguralasa:
+
+    A szerver oldalon a 'create database'-ben adjuk meg a charsetet.
+
+    A kliens oldali utilityk a .my.cnf-bol veszik a charsetet.
+    
+    A CCC programoknak kulon utasitassal kell beallitania a charsetet:
+    
+    if( con:driver=="sql2.mysql" )
+        con:sqlexec( "set names 'utf8'" )
+    end
+
+    A charset helyes beallitasat ellenorizni kell
+    
+    local con:=sql2.mysql.sqlconnectionNew()
+    local q:=con:sqlqueryNew("show variables like 'char%';")
+        while( q:next  )
+            ? q:getchar(1)::padr(32), q:getchar(2)
+        end
+    
+    ezt kell kapni:
+    
+    character_set_client             utf8
+    character_set_connection         utf8
+    character_set_database           utf8
+    character_set_filesystem         binary
+    character_set_results            utf8
+    character_set_server             utf8
+    character_set_system             utf8
+
+    Tipikus hiba, hogy a set names 'utf8' utasitas kimarad,
+    emiatt a szerver azt hiszi, hogy a CCC program altal kuldott, 
+    eleve utf8 kodolasu szoveg latin1-ben van, tahat atkodolja 
+    utf8-ra,  ami igy a dupla kodolas miatt hibasan fog tarolodni 
+    a szerveren.
+    
+    
 
 Most be lehet jelentkezni:
                           host        user    passw   db
@@ -35,5 +99,6 @@ Az INNODB motorral gyakori deadlock keletkezne.
 A MYISAM nem tranzakciós, ami itt éppen kapóra jön.
 Az auto_increment szintaktikája eltér a Postgrestől.
     
+
 
 

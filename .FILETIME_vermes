@@ -1,4 +1,5 @@
-bc8e703be3e5267f2a0dce990f2c62f062f3b0e5 2017051009:42:25-UTC ./CHANGELOG_vermes
+068e090601e89090226595ea6daf704c70f4156f 2017051213:09:16-UTC ./CHANGELOG_vermes
+b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/driver-mysql/OLVASS
 cf88ff6079fe045ab00172c4118311f51bf65820 2017051009:30:31-UTC ./usr/bin/linux/msk2say
 6de4fa19e5210b4421db1fbe9793c7737f1fb333 2017051009:30:25-UTC ./tools/mask/msk2say/msk2say.prg
 f03e3a672b7585f157360e23838077184348856b 2017050918:53:46-UTC ./tutor/xbrwarr/s
@@ -705,7 +706,6 @@ ad0827c48c5c521e1ca98f87ca18a8c76da24bfc 2015010508:22:49-UTC ./tools/sql2/drive
 3e17d6ff179c5db69094fba2e6626364a400318f 2015010415:57:38-UTC ./tools/sql2/driver-mysql/proba/tabtest3.prg
 f6dece3d03dfd7c8decc7479578cdd02d96b195e 2015010415:57:28-UTC ./tools/sql2/driver-mysql/proba/tabtest4.prg
 757935219f84afab67383400ef323b91e8e02d64 2015010314:21:04-UTC ./tools/sql2/driver-mysql/myload.cpp
-f0af092bc5ec888bf3f1e8a3237aef6a17f4a7f0 2015010314:07:49-UTC ./tools/sql2/driver-mysql/OLVASS
 e1bfff5dc2a81e4d4810c0417c561ef20a79efd4 2015010313:56:01-UTC ./tools/sql2/test/basicdemo/entity.prg
 489147e73f35264428cc005f4d6d2b6e5dd97e48 2015010313:55:45-UTC ./tools/sql2/test/basicdemo/query.prg
 f2bdc246be6e7ea5282a8da549cbd1579e822b80 2015010313:12:08-UTC ./tools/sql2/test/basicdemo/binarydata.prg

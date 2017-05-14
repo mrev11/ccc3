@@ -46,6 +46,8 @@ extern void tcpio_ini(const char*,int);
 extern void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 extern int  readkey();
+extern int  colorext_extidx2legidx(int);
+extern void message(char const *msg, ...);
 
 
 screenbuf *screen_buffer;
@@ -131,11 +133,17 @@ static void paint(int top, int lef, int bot, int rig)
             screencell *cell=screen_buffer->cell(x,y);
             int ch=cell->getchar();
             int at=cell->getattr();
-
             if(ch==0x2018) ch=0x60; //`
             if(ch==0x2019) ch=0x27; //'
             
             move(y,x);
+            if( at&0xff00 )
+            {
+                //ezeket lehetne tablazatositani
+                int atl=colorext_extidx2legidx(at&0xff);
+                int ath=colorext_extidx2legidx((at>>8)&0xff);
+                at=(ath<<4)|atl;
+            }
             attron(coltrans[255&at]);
             waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
             attroff(coltrans[255&at]);

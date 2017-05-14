@@ -83,7 +83,14 @@ void _clp_screeninv(int argno)
         int c=scr[i].getchar();
         int a=scr[i].getattr();
         inv[i].setchar(c);
-        inv[i].setattr(((0xf0&a)>>4)+((0x0f&a)<<4));
+        if( a&0xff00 )
+        {
+            inv[i].setattr(((0xff00&a)>>8)+((0x00ff&a)<<8));
+        }
+        else
+        {
+            inv[i].setattr(((0xf0&a)>>4)+((0x0f&a)<<4));
+        }
     }
     _rettop();
     CCC_EPILOG();

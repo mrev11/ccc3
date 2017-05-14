@@ -64,7 +64,7 @@ void screenbuf::dump(const char *caption)
     {
         for(int i=0; i<sizex; i++ )
         {
-            printf("%04x %02x ", 
+            printf("%04x %04x ", 
                    cell(i,j)->getchar(),cell(i,j)->getattr() );
         }
         printf("\n");

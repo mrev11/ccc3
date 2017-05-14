@@ -78,6 +78,7 @@ extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
 extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
+extern int  colorext_palette(int);
 extern int  utf8_to_ucs(const char*string, int*);
 
 
@@ -139,11 +140,19 @@ static PangoFontDescription *pangofont()
 static int color_palette_rev(int x)
 {
     //gtk-nak forditva kell
-    int c=color_palette(x);
-    int rr = c & 0x0000ff;
-    int gg = c & 0x00ff00;
-    int bb = c & 0xff0000;
-    return (rr<<16) | gg | (bb>>16);
+    if( (x&0xf0)==0 )
+    {
+        int c=color_palette(x);
+        int rr = c & 0x0000ff;
+        int gg = c & 0x00ff00;
+        int bb = c & 0xff0000;
+        return (rr<<16) | gg | (bb>>16);
+    }
+    else
+    {
+        return colorext_palette(x);
+    }
+    return 0;
 }
 
 //---------------------------------------------------------------------------------
@@ -168,8 +177,17 @@ static GtkTextTag *lookup_tag(int fg, int bg)
 //----------------------------------------------------------------------------
 static void setattr(int y, int x1, int x, int attr)  //[x1,x)-be attr
 {
-    int fg=0xf&(attr>>0);
-    int bg=0xf&(attr>>4);  
+    int fg,bg;
+    if(  attr&0xff00 )
+    {
+        fg=0xff&(attr>>0);
+        bg=0xff&(attr>>8);  
+    }
+    else
+    {
+        fg=0xf&(attr>>0);
+        bg=0xf&(attr>>4);  
+    }
     GtkTextTag *tag=lookup_tag(fg,bg);
 
     GtkTextIter iter1, iter2;
@@ -256,9 +274,18 @@ static void blink(int flag)  //bg<->fg valtogatos kurzor
         }
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
         int attr=cell->getattr();
-        int fg=0xf&(attr>>0);
-        int bg=0xf&(attr>>4);
-        cell->setattr((fg<<4)+bg);
+        if( attr&0xff00 )
+        {
+            int fg=0xff&(attr>>0);
+            int bg=0xff&(attr>>8);
+            cell->setattr((fg<<8)+bg);
+        }
+        else
+        {
+            int fg=0xf&(attr>>0);
+            int bg=0xf&(attr>>4);
+            cell->setattr((fg<<4)+bg);
+        }
         set_attrs_line(cursor_y);
         cell->setattr(attr);  //rogton vissza
 

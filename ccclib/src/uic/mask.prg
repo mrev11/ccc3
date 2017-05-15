@@ -121,6 +121,13 @@ local get:=altbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)
 
 
 *************************************************************************
+function mskPushButton(msk,r,c,var,name)
+local get:=pushbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],get)   
+    return get
+
+
+*************************************************************************
 function mskShow(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
     readexit(.f.)

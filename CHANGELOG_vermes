@@ -1,3 +1,7 @@
+2017.05.15 pushbutton tamogatas;
+   uj osztaly: pushbutton.prg;
+   valtoztak: mask.prg, msk2say.prg;
+
 2017.05.15 listbox kereso funkcioval felszerelve;
 
 2017.05.15 radiobutton:group getjei kodblokkba lettek bujtatva,

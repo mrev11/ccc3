@@ -471,6 +471,8 @@ local type:=left(name,1)
         name:=strtran(substr(name,2),"}","")
     elseif( type=="/" )
         name:=strtran(substr(name,2),"/","")
+    elseif( type=="<" )
+        name:=strtran(substr(name,2),">","")
     end
     return alltrim(name)
 
@@ -488,6 +490,8 @@ local type:=left(name,1)
         type:="List"
     elseif( type=="/" )
         type:="AltButton"
+    elseif( type=="<" )
+        type:="PushButton"
     else
         type:="Get"
     end

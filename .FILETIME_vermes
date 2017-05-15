@@ -1,4 +1,8 @@
-1ccea8d4efb772c1a1af99bec790bff43139358e 2017051512:25:18-UTC ./CHANGELOG_vermes
+f748c556e953028625650323ddfde8030a778b47 2017051513:04:12-UTC ./CHANGELOG_vermes
+5c8705b52dd2f791602971526a9a986a2008a410 2017051512:56:06-UTC ./ccclib/src/uic/pushbutton.prg
+5b4b1547dfc121e893ca03d82e6694ad7f342397 2017051512:37:36-UTC ./ccclib/src/uic/mask.prg
+283fc2fdb595ee52e2184b59b0afcdd49f970ae4 2017051512:35:00-UTC ./usr/bin/linux/msk2say
+a675bb0089e6f3ea2e99ae24494015e928fe4c7c 2017051512:34:58-UTC ./tools/mask/msk2say/msk2say.prg
 499a7b56418204e068606a458db3b9f4a4843510 2017051512:23:00-UTC ./ccclib/src/uic/listbox.prg
 af6d7cd1ff3d733d67b73b803efb820defe38cde 2017051505:58:40-UTC ./ccclib/src/uic/checkbox.prg
 4a2f3f43992c30043dcdc594a2ce8e92cd4fe830 2017051505:48:57-UTC ./tutor/control/control.say
@@ -35,8 +39,6 @@ b6d184334ff9dcd6587692d993b04f91126c426f 2017051407:25:20-UTC ./terminal/gtk/ter
 43db27b4d108a2f308e2c1f43e0c6080bcad2777 2017051218:48:02-UTC ./ccclib/src/uic/savescreen.cpp
 87dff074b0c9d728b9107eb6e687bc7fa350c8df 2017051216:09:12-UTC ./ccclib/src/uic/screenbuf/screenbuf.cpp
 b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/driver-mysql/OLVASS
-cf88ff6079fe045ab00172c4118311f51bf65820 2017051009:30:31-UTC ./usr/bin/linux/msk2say
-6de4fa19e5210b4421db1fbe9793c7737f1fb333 2017051009:30:25-UTC ./tools/mask/msk2say/msk2say.prg
 f03e3a672b7585f157360e23838077184348856b 2017050918:53:46-UTC ./tutor/xbrwarr/s
 fa7d104cc6c4a09089628fdeb31b421ee55b8515 2017050918:51:03-UTC ./ccclib/src/uic/brwmenu.prg
 1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
@@ -61,7 +63,6 @@ c6888079e7a92701793c3be517ef3f343cdde688 2017050808:10:41-UTC ./ccclib/src/uic/i
 fa1f4fc192e4b93f25636adcef338e445348e354 2017050714:18:31-UTC ./tutor/control/OLVASS
 4df21f1b678f9ab36f80f69e051394866e9de394 2017050713:30:26-UTC ./ccclib/src/uic/altbutton.prg
 0635370aef29570dc56861a06a13979dcf75e0ca 2017050707:25:45-UTC ./tutor/control/control.sor
-703ceaad4d6b54701c46e4e00a1d11fd6a357533 2017050706:13:58-UTC ./ccclib/src/uic/mask.prg
 ca0a442695f3975641d08013f79ffffe8ba2d1a4 2017050119:07:29-UTC ./terminal/common/tcpio.cpp
 f00044b3e99ca0fc5c236226c98cd498eb5a96c0 2017042706:18:12-UTC ./ccclib/src/uic/setcursor.cpp
 e91cfb664b0fb48bc20953ac5c06393b33069f73 2017042522:23:58-UTC ./tools/mask/maskdemo.sor

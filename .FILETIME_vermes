@@ -1,4 +1,6 @@
-5e06eb93144101763db4d42ee68a32842a19b0dd 2017051412:24:04-UTC ./CHANGELOG_vermes
+23b87d53c91a05ce886e676ed290a905f1887edc 2017051506:10:09-UTC ./CHANGELOG_vermes
+af6d7cd1ff3d733d67b73b803efb820defe38cde 2017051505:58:40-UTC ./ccclib/src/uic/checkbox.prg
+4a2f3f43992c30043dcdc594a2ce8e92cd4fe830 2017051505:48:57-UTC ./tutor/control/control.say
 8550ee10b4b4226c3c05c4819e315a93f96c2da7 2017051408:44:20-UTC ./usr/bin/linux/terminal
 052efeb5b3b4c72e6a6d2b3a3f521e649dc78f45 2017051408:44:15-UTC ./terminal/unix/terminal.cpp
 31c774fe17a40f5ea4888a5795b3cbe6ceb79294 2017051408:41:42-UTC ./usr/bin/linux/terminal-xft
@@ -36,7 +38,6 @@ cf88ff6079fe045ab00172c4118311f51bf65820 2017051009:30:31-UTC ./usr/bin/linux/ms
 6de4fa19e5210b4421db1fbe9793c7737f1fb333 2017051009:30:25-UTC ./tools/mask/msk2say/msk2say.prg
 f03e3a672b7585f157360e23838077184348856b 2017050918:53:46-UTC ./tutor/xbrwarr/s
 fa7d104cc6c4a09089628fdeb31b421ee55b8515 2017050918:51:03-UTC ./ccclib/src/uic/brwmenu.prg
-42e8d7731ab666eead26adbb424601bf9b85de2b 2017050908:59:53-UTC ./ccclib/src/uic/checkbox.prg
 1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
 8e8d41a8d790d469c87f5ef57d0990773f26483f 2017050906:40:37-UTC ./usr/build/windows/sor2say.bat
 d25644d0e39b0dc37ee1fd796e6658f65dc120e3 2017050906:35:40-UTC ./ccctools/buildp/build.hu.ver

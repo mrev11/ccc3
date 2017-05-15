@@ -45,12 +45,13 @@ static function radiobutton.initialize(this,r,c,b,v)
 
 ****************************************************************************
 static function radiobutton.varput(this,x)
-local n
+local n,g
     eval(this:block,x)
     if( this:hasfocus .and. x .and. this:group!=NIL )
         for n:=1 to len(this:group)
-            if( !this:group[n]:hasfocus .and. this:group[n]:varget )
-                this:group[n]:toggle
+            g:=this:group[n]::eval
+            if( !g:hasfocus .and. g:varget )
+                g:toggle
             end
         next
     end
@@ -58,7 +59,7 @@ local n
 
 ****************************************************************************
 static function radiobutton.addto(g,group)
-    aadd(group,g)
+    aadd(group,{||g})
     g:group:=group
     return NIL
     

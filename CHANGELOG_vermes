@@ -1,3 +1,9 @@
+2017.05.16 ccc_config kiserletileg bevezetve;
+  A CCC_CONFIG env valtozoban megadott fajl tartalma:
+    NEV=ERTEK
+  alaku sorok, ezekbol hash tabla keszul, ami a programokbol
+  lekerdezheto a ccc_config(NEV) fuggvenyhivassal;
+
 2017.05.15 pushbutton tamogatas;
    uj osztaly: pushbutton.prg;
    valtoztak: mask.prg, msk2say.prg;

@@ -49,26 +49,17 @@
 #define BROWSERECT   browse:nTop-5,browse:nLeft-1,browse:nBottom+FOOT+1,browse:nRight+1
 #define STEPBYSTEP   while(inkey()!=0);end //a browse lassítására
 
+static looplevel:=0
 
 ************************************************************************
-function brwColor(spec)
-static colorspec:=inicolor()
-local prev:=colorspec
-    if( spec==NIL )
-        //lekerdezes
-    elseif( spec::empty )
-        colorspec:=inicolor()
-    else
-        colorspec:=spec
+function brwColor()
+local key:="BRWCOLOR"+looplevel::str::alltrim
+local value:=ccc_config(key)
+    if(value==NIL)
+        //? key, "not defined ->", setcolor()
+        value:=setcolor()
     end
-    return prev
-
-static function inicolor()
-local colorspec:=getenv("CCC_BRWCOLOR")
-    if( colorspec::empty )
-        colorspec:=setcolor()
-    end
-    return colorspec
+    return value
 
 
 ************************************************************************
@@ -127,6 +118,8 @@ local browse, n
 ************************************************************************
 function brwLoop(arg)
 local browse, nKey:=0
+
+    looplevel++
     
     if( valtype(arg)=="O" )
         // az argumentum maga a browse object
@@ -170,6 +163,8 @@ local browse, nKey:=0
             end
         end
     end
+
+    looplevel--
     return nKey
 
 

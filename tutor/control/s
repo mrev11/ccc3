@@ -1,11 +1,6 @@
 #!/bin/bash
 
 
-export CCC_MSKCOLOR_SAY=n/w,n/w+
-
-#export CCC_MSKCOLOR_GET=w+/n+,w+/n,n/w+
-#export CCC_MSKCOLOR_GET=w+/n+,n/w+,w+/n
-export CCC_MSKCOLOR_GET=w+/n+,n/w+,w+/gr
-
+export CCC_CONFIG=config
 
 demo.exe

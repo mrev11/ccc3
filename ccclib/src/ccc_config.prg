@@ -3,44 +3,35 @@ static config:=initconfig()
 
 ***************************************************************************************
 static function initconfig()
-
-local hash,cnf,n
-
+local hash,cnf,n,pos,key,value
+    hash:=simplehashNew()
     if( !empty(getenv("CCC_CONFIG")) .and. !empty(cnf:=getenv("CCC_CONFIG")::memoread)  )
-        //? "read ccc_config from", getenv("CCC_CONFIG")
-        
         cnf::=strtran(chr(13),"")
         cnf::=split(chr(10))
-        
-        hash:=simplehashNew()
         for n:=1 to len(cnf)
-            cnf[n]::=split("=")
-            if( cnf[n]::len==2 )
-                hash[cnf[n][1]]:=cnf[n][2]
+            if( (pos:=at('=',cnf[n]))>0 )
+                key:=cnf[n][1..pos-1]::alltrim
+                value:=cnf[n][pos+1..]
+                hash[key]:=value
             end
         next
     end
-
+    //hash:list
     return hash
 
 
 ***************************************************************************************
 function ccc_config(key,value)
-
-    if( value==NIL ) 
-        value:=if(config==NIL,NIL,config[key])
-
-    elseif(config==NIL)
-        config:=simplehashNew()
-        config[key]:=value
-
+local prev
+    if( key==NIL )
+        return config 
+    elseif( value==NIL ) 
+        return config[key]
     else
+        prev:=config[key]
         config[key]:=value
+        return prev
     end
-
-    //? key, value
-    return value
-
 
 ***************************************************************************************
     

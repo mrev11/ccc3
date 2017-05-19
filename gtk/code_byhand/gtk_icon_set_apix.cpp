@@ -32,7 +32,7 @@ void _clp_get_sizes(int argno)
     GtkIconSet *self=(GtkIconSet*)_parp(1);
     GtkIconSize *sizes=0;
     gint n_sizes=0;
-    if( self!=0 )
+    if(self!=0)
     {
         gtk_icon_set_get_sizes(self,&sizes,&n_sizes);
     }

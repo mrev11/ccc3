@@ -42,6 +42,8 @@ function mskColorSay(spec) //push
     end
     if( empty(spec) )
         spec:=NIL
+    else
+        spec::=strtran(" ","")
     end
     aadd(color,setcolor(spec))
 
@@ -51,6 +53,8 @@ function mskColorGet(spec) //push
     end
     if( empty(spec) )
         spec:=NIL
+    else
+        spec::=strtran(" ","")
     end
     aadd(color,setcolor(spec))
 

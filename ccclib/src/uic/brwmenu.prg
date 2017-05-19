@@ -56,8 +56,9 @@ function brwColor()
 local key:="BRWCOLOR"+looplevel::str::alltrim
 local value:=ccc_config(key)
     if(value==NIL)
-        //? key, "not defined ->", setcolor()
         value:=setcolor()
+    else
+        value::=strtran(" ","")
     end
     return value
 
@@ -118,9 +119,9 @@ local browse, n
 ************************************************************************
 function brwLoop(arg)
 local browse, nKey:=0
-
-    looplevel++
     
+    looplevel++
+
     if( valtype(arg)=="O" )
         // az argumentum maga a browse object
 

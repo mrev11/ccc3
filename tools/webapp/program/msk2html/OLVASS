@@ -1,0 +1,6 @@
+2012.08.28 Elkészíti a table-k vázát.
+Segédprogram, ami msk filékből html maszkot előállító programot generál.
+
+Az itteni xhtmlnode.prg nem ugyanaz, mint ami a wutil-ban van.
+Ki vannak hagyva azok a metódusok, amik a kódgeneráláshoz nem kellenek,
+de egy csomó dolgot behúznának a linkeléskor.

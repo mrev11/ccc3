@@ -1,0 +1,5 @@
+#!/bin/bash
+rm  -f log-webapp*
+
+webapp.exe    #1>/dev/null 
+

@@ -1,0 +1,73 @@
+//msk2html 1.0.00
+
+
+static function xhtmlpage.fldset2()
+static page:=<<PAGE>>
+
+<fieldset
+  style="top:0px;left:0px;height:334px;width:439px;position:relative">
+<legend></legend>
+<fieldset
+  id="id"
+  style="position:absolute;top:122px;left:145px;height:162px;width:247px;">
+<legend>Legend</legend>
+<input
+  type="text"
+  id="get1"
+  style="position:absolute;top:21px;left:23px;width:124px;"></input>
+<input
+  type="text"
+  id="get2"
+  style="position:absolute;top:141px;left:113px;width:106px;"></input>
+<label
+  style="position:absolute;top:25px;left:5px;width:7px;">B</label>
+<label
+  style="position:absolute;top:25px;left:248px;width:7px;">C</label>
+<label
+  style="position:absolute;top:145px;left:5px;width:25px;">XXX</label>
+<label
+  style="position:absolute;top:145px;left:248px;width:7px;">F</label></fieldset>
+<label
+  style="position:absolute;top:27px;left:9px;width:7px;">X</label>
+<label
+  style="position:absolute;top:99px;left:153px;width:7px;">X</label>
+<label
+  style="position:absolute;top:99px;left:252px;width:79px;">XXXXXXXXX</label>
+<label
+  style="position:absolute;top:99px;left:396px;width:7px;">X</label>
+<label
+  style="position:absolute;top:123px;left:135px;width:7px;">X</label>
+<label
+  style="position:absolute;top:123px;left:414px;width:7px;">X</label>
+<label
+  style="position:absolute;top:147px;left:126px;width:16px;">AA</label>
+<label
+  style="position:absolute;top:147px;left:414px;width:25px;">DDD</label>
+<label
+  style="position:absolute;top:267px;left:126px;width:16px;">EE</label>
+<label
+  style="position:absolute;top:267px;left:414px;width:25px;">GDD</label>
+<label
+  style="position:absolute;top:291px;left:135px;width:7px;">X</label>
+<label
+  style="position:absolute;top:291px;left:414px;width:7px;">X</label>
+<label
+  style="position:absolute;top:315px;left:153px;width:7px;">X</label>
+<label
+  style="position:absolute;top:315px;left:216px;width:70px;">XXXXXXXX</label>
+<label
+  style="position:absolute;top:315px;left:396px;width:7px;">X</label></fieldset>
+<<PAGE>>
+    return page
+
+static function xhtmldom.fldset2(legtxt)
+local prs:=xmlparser2New(),dom,leg
+    prs:createnodeblock:={|*|xhtmlnodeNew(*)}
+    dom:=prs:parsestring(xhtmlpage.fldset2())
+    leg:=dom:content[1]
+    if( legtxt!=NIL )
+        leg:addtext(legtxt)
+    else
+        leg:setstyle("display:none")
+    end
+    return dom //fieldset

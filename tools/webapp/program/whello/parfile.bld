@@ -1,0 +1,8 @@
+-d.
+-bwebapputil
+-bccc3_socket 
+-bccc3_xmldom
+-bccc3_crypto
+
+#BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=..

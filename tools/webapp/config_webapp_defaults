@@ -1,0 +1,16 @@
+
+#interface to listen (default: localhost)
+iface=localhost
+
+#port to listen (default: 45678)
+port=45678
+
+#use SSL (default: true)
+ssl=false
+
+#private key (default: weabappdemo.pem)
+keyfile=webappdemo.pem
+
+#webapp to start (also use "weabapp_start" config file)
+start=whello.exe
+

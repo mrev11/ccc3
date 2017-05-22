@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#export MINWIDTH=82
+for MSK in *.msk; do
+    msk2html.exe $MSK
+done
+
+
+bapp_unix_.b @parfile.bld
+
+
+proba.exe

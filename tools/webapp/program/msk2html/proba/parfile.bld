@@ -1,0 +1,3 @@
+-d.
+-b../../wutil/objlin/wutil.lib
+-bccc3_xmldom

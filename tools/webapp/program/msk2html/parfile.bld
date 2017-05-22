@@ -1,0 +1,10 @@
+-d.
+-bccc3_xmldom
+
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_SHR=static
+
+
+#xhtmlnode.prg csökkentett változata áthozva. 
+#Csökkentett, hogy ne kelljen az egész wutil.lib.

@@ -1,0 +1,53 @@
+//msk2html 1.0.00
+
+
+static function xhtmlpage.textget()
+static page:=<<PAGE>>
+
+<fieldset
+  style="top:0px;left:0px;height:142px;width:358px;position:relative">
+<legend></legend>
+<input
+  type="text"
+  id="g1"
+  style="position:absolute;top:24px;left:126px;width:151px;"></input>
+<input
+  type="text"
+  id="g2"
+  style="position:absolute;top:48px;left:126px;width:79px;"></input>
+<input
+  type="text"
+  id="g3"
+  style="position:absolute;top:72px;left:126px;width:232px;"></input>
+<input
+  type="text"
+  id="g4"
+  style="position:absolute;top:96px;left:126px;width:232px;"></input>
+<input
+  type="text"
+  id="g5"
+  style="position:absolute;top:120px;left:126px;width:232px;"></input>
+<label
+  style="position:absolute;top:27px;left:9px;width:70px;">Text egy</label>
+<label
+  style="position:absolute;top:51px;left:9px;width:88px;">Text kettő</label>
+<label
+  style="position:absolute;top:75px;left:9px;width:88px;">Text három</label>
+<label
+  style="position:absolute;top:99px;left:9px;width:79px;">Text négy</label>
+<label
+  style="position:absolute;top:123px;left:9px;width:61px;">Text öt</label></fieldset>
+<<PAGE>>
+    return page
+
+static function xhtmldom.textget(legtxt)
+local prs:=xmlparser2New(),dom,leg
+    prs:createnodeblock:={|*|xhtmlnodeNew(*)}
+    dom:=prs:parsestring(xhtmlpage.textget())
+    leg:=dom:content[1]
+    if( legtxt!=NIL )
+        leg:addtext(legtxt)
+    else
+        leg:setstyle("display:none")
+    end
+    return dom //fieldset

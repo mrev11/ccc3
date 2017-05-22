@@ -50,8 +50,8 @@ local gf,fd,b,n,m
         elseif( !file(fd[n]) )
             alert("File not found: "+fd[n])
         else
-            //alert( GREP+' "'+search+'"  "'+fd[n]+'" >>'+TEMPGR )
-                run( GREP+' "'+search+'"  "'+fd[n]+'" >>'+TEMPGR )
+            //alert( GREP+' "'+search::strtran('"','\"')+'"  "'+fd[n]+'" >>'+TEMPGR )
+                run( GREP+' "'+search::strtran('"','\"')+'"  "'+fd[n]+'" >>'+TEMPGR )
         end
     next
 

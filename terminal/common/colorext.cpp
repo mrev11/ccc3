@@ -38,6 +38,22 @@ int colorext_palette(int x)  // extidx -> 3byte rgb
 }
 
 
+//---------------------------------------------------------------------------------
+int colorext_palette_rev(int x)  // extidx -> 3byte rgb (forditva)
+{
+    int w = (x & 0x01);        //0,1
+    int bx=((x & 0x60)>>4)|w;  //3bit intensity index: 0,..,7
+    int gx=((x & 0x18)>>2)|w;  //3bit intensity index: 0,..,7
+    int rx=((x & 0x06)>>0)|w;  //3bit intensity index: 0,..,7
+
+    //              0    0+   1    1+   2    2+   3    3+
+    int color[8]={0x00,0x20,0x40,0x60,0x80,0xa0,0xc0,0xff};
+    int rgb=color[rx]<<16|color[gx]<<8|color[bx];
+
+    return rgb;  //3byte rgb (forditva)
+}
+
+
 #ifdef NOTDEF
 //---------------------------------------------------------------------------------
 typedef struct colint 

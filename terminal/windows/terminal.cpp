@@ -33,6 +33,7 @@ extern void keyup(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void tcpio_ini(const char *ip, int port); 
 extern void *tcpio_thread(void*); 
 extern int  color_palette(int); 
+extern int  colorext_palette_rev(int); 
 extern HFONT font();
 
 static int wwidth=80;
@@ -314,12 +315,23 @@ LRESULT CALLBACK WindowProcMain(
                     wchar_t t=(wchar_t)(screen_buffer->cell(j,i)->getchar()); 
                     unsigned c=(unsigned)(screen_buffer->cell(j,i)->getattr()); 
                     
-                    int fg=c&15;
-                    int bg=c>>4;
+                    if( 0xff00&c )
+                    {
+                        int fg=0x7f&(c>>0); //jelzobit leveve
+                        int bg=0x7f&(c>>8); //jelzobit leveve
  
-                    SetBkColor(hdc,color_palette(bg));
-                    SetTextColor(hdc,color_palette(fg));
-
+                        SetBkColor(hdc,colorext_palette_rev(bg));
+                        SetTextColor(hdc,colorext_palette_rev(fg));
+                    }
+                    else
+                    {
+                        int fg=c&15;
+                        int bg=c>>4;
+ 
+                        SetBkColor(hdc,color_palette(bg));
+                        SetTextColor(hdc,color_palette(fg));
+                    }
+                    
                     #ifdef NO_OPTIMIZE
                     
                       //ez is működne

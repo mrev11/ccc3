@@ -367,22 +367,10 @@ local color3
 
 static function screenchangeattr(scr,color)
 local ch:=scr::screenchar
-local r,c,save1,save2
-static at,prev
+local a:=devoutbuffer("@",color)
+    a::=substr(len(a)/2+1) // 1 vagy 2 bajtos attributum
+    return screencompose(ch,replicate(a,len(ch)))
 
-    if( at==NIL .or. !prev==color )
-        r:=row()
-        c:=col()
-        dispbegin()
-        save1:=savescreen(r,c,r,c)
-        @ r,c say " " color color
-        save2:=savescreen(r,c,r,c)
-        restscreen(r,c,r,c,save1)
-        dispend()
-        at:=screenattr(save2)
-        prev:=color
-    end
-    return screencompose(ch,replicate(at,len(ch)))
 
 //korábban síma textben volt tárolva a browse tartalma
 //most (1998.05.02) viszont savescreen formátumban

@@ -1,3 +1,10 @@
+2017.05.24 screenattrib es screencompose-ban extended color tamogatas:
+  screenattrib tovabbra is 1 bajtos attributumokbol allo tombot ad
+  (maskepp elromlananak olyan programok, mint msk2say, msk2html),
+  az esetleges 2 bajtos attributumokat konvertalja 1 bajtosra.
+  A screencompose elfogad 1 es 2 bajtos attributumokat is.
+  brwhighlight atirva, hogy mukodjon 1 es 2 bajtos attributumokkal is.
+
 2017.05,24 Windows terminalban extended color tamogatas;
 
 2017.05.22 webapp keretrendszer hozzaadva;

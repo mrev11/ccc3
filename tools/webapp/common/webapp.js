@@ -571,6 +571,187 @@ XCODE.evententer=function(event)
 }
 
 
+
+XCODE.num2str=function(num,dec) //szamok formazasa
+// dec=undef: tizedesek nelkul, elvalaszto vesszok nelkul
+// dec=0    : tizedesek nelkul, elvalaszto vesszokkel
+// dec>=1   : tizedesekkel, elvalaszto vesszokkel
+
+{
+    var x;
+    if( dec!=undefined  )
+    {
+        x=num.toLocaleString("en-US",{minimumFractionDigits:dec,maximumFractionDigits:dec});
+    }
+    else
+    {
+        x=num.toString();
+    }
+    return x;
+} 
+
+XCODE.numblur=function(e,dec)
+// az inputmezo elhagyasakor (onblur) megformazza bevitt szamot
+// onblur="numblur(event,2)" 
+// onkeypress="numkeypress(event)"
+{
+    var ctrl=e.target;
+    var text=ctrl.value.replace(/,/g,"").replace(/ /g,""); //kiszedi a szemetet
+    var num=Number(text);
+    ctrl.value=XCODE.num2str(num,dec);
+}
+
+XCODE.numkeypress=function(e) 
+// szamok bevitele kozben (onkeypress) nem enged be szemet karaktereket
+// onblur="numblur(event,2)" 
+// onkeypress="numkeypress(event)"
+{
+    if( e.charCode==0 )
+    {
+        //del,bs,right,left,...
+    }
+    else
+    {
+        var ctrl=e.target; //input mezo
+        var x=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
+        
+        if( !/^[+-]?[,0-9]*(\.[0-9]*)?$/.test(x) )
+        {
+            //beillesztes letiltva
+            e.preventDefault();
+        }
+    }
+}
+
+
+XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
+{
+    var s=d.getFullYear().toString();
+    s+="-"+(1+d.getMonth()).toLocaleString("en-US",{minimumIntegerDigits:2})
+    s+="-"+d.getDate().toLocaleString("en-US",{minimumIntegerDigits:2})
+    return s
+}
+
+XCODE.datblur=function(e)
+// inputmezo elhagyasakor (onblur) utolag formazza a datumot
+// onblur="datblur(event)" 
+// onkeypress="datkeypress(event)" 
+// pattern="[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"
+{
+    var ctrl=e.target;
+    var x=ctrl.value.replace(/-/g,"");
+    x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8)
+    var x=x.replace("--","");
+    ctrl.value=x; 
+}
+
+XCODE.datkeypress=function(e) 
+// datumok bevitele kozben (onkeypress) nem enged be szemet karaktereket
+// onblur="datblur(event)" 
+// onkeypress="datkeypress(event)" 
+// pattern="[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"
+{
+    if( e.charCode==0 )
+    {
+        //del,bs,right,left,...
+    }
+    else
+    {
+        var ctrl=e.target; //input mezo
+        var x=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
+        x=x.replace(/-/g,"" ); //kiszedi a szemetet
+        x=x+"19991010".slice(x.length);
+        x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6);
+        x=x.replace("-00","-01")
+        d=new Date(x);  //pl. new Date('1954-10-11')
+        
+        if( !(x==XCODE.dat2str(d))  )
+        {
+            //beillesztes letiltva
+            e.preventDefault();
+        }
+    }
+}
+
+
+XCODE.accblur=function(e)
+{
+    var ctrl=e.target;
+    var x=ctrl.value
+    var ax=x.split("-");
+    if( ax.length>=3  )
+    {
+        x+="0".repeat(8-ax[2].length);
+    }  
+    x=x.toUpperCase();
+    ctrl.value=x;
+}
+
+XCODE.acckeypress=function(e,opt)
+{
+    if( e.charCode==0 )
+    {
+        return; //del,bs,right,left,...
+    }
+    
+    if( opt==undefined )
+    {
+        opt="FUA";
+    }
+    var optlen=opt.length;
+
+    var ctrl=e.target;
+    var x=ctrl.value;
+    var len=x.length;
+    var pos=ctrl.selectionStart; //caret pozicio
+    var chr=String.fromCharCode(e.charCode); //aktualis karakter
+    x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
+    var comp=x.split("-"); // {F,U,A}
+
+    if( comp.length>optlen )
+    {
+        //'-'-t gepeltek, 
+        //de nem lehet tobb '-' benne
+        e.preventDefault(); 
+        return; 
+    }
+
+    var regex={};
+    regex["F"]=/^[0-9]{1,8}$/;
+    regex["U"]=/^[0-9a-zA-Z]{0,8}$/;
+    regex["A"]=/^[0-9]{0,8}$/;
+    
+    for(i=0; i<comp.length; i++)
+    {
+        if( comp[i]==undefined )
+        {        
+            comp[i]="";
+        }
+
+        if( !regex[opt.charAt(i)].test(comp[i]) )
+        {
+            if( (len==pos) && 
+                (len==8 || len==17) && 
+                (i<optlen-1) && 
+                (regex[opt.charAt(i+1)].test(chr)) )
+            {
+                //automatikusan atviszi 
+                //a kovetkezo komponensbe
+                ctrl.value=ctrl.value+"-"+chr;
+            }
+            e.preventDefault(); 
+            return;
+        }
+    }
+}
+
+
 function chr(code)
 {
     return String.fromCharCode(code);

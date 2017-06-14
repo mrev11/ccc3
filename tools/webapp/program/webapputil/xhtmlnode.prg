@@ -6,7 +6,7 @@
 class xhtmlnode(xmlnode)
 
     method  addattrib    // felüldefiniálva (automatikusan készíti az xmlattrib objektumot)
-    method  setattrib    // felüldefiniálva (automatikusan készíti az xmlqttrib objektumot)
+    method  setattrib    // felüldefiniálva (automatikusan készíti az xmlattrib objektumot)
 
     method  setstyle     // berak/felülír egy stílust
     method  delstyle     // töröl egy stílust
@@ -18,6 +18,10 @@ class xhtmlnode(xmlnode)
     method  onclick_formdata
     method  onchange_formdata
     method  onenter_formdata
+
+    method  input_date
+    method  input_number
+    method  input_account
 
     // az alábbiak azonnal küldenek,
     // tehát csak korábban feltöltött, 
@@ -325,7 +329,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
     end
-    node:setattrib( xhtmlnode.attrib("onkeypress",code))
+    node:setattrib( xhtmlnode.attrib("onkeyup",code))
 
 // Megjegyzés:
 // A text mezőkön akkor keletkezik onchange,
@@ -333,6 +337,42 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 // Az onenter_formdata csak enterre küldi a formdatát, 
 // az onchange_formdata enterre is és a fókusz elvesztésére is küldi.
 
+
+************************************************************************************************
+function xhtmlnode.input_date(node)
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(event)"))
+    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"))
+
+
+************************************************************************************************
+function xhtmlnode.input_number(node,dec)
+local code
+    if(dec==NIL)
+        //helyertek vesszok nelkul
+        code:="CODE.numblur(event)"
+    else
+        //helyertek vesszokkel
+        //dec>=0, nulla vagy tobb tizedessel
+        code:="CODE.numblur(event,DEC)"::strtran("DEC",dec::str::alltrim)
+    end
+    node:setattrib(xhtmlnode.attrib("onblur",code)) 
+    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
+
+
+************************************************************************************************
+function xhtmlnode.input_account(node,opt:="FUA")
+local pattern:=""
+
+    if( "F"$opt ); pattern+="-[0-9]{8}"    ; end
+    if( "U"$opt ); pattern+="-[0-9A-Z]{8}" ; end
+    if( "A"$opt ); pattern+="-[0-9]{8}"    ; end
+    pattern::=substr(2)
+
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.accblur(event)"))
+    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.acckeypress(event,'OPT')"::strtran("OPT",opt)))
+    node:setattrib(xhtmlnode.attrib("pattern",pattern))
+    node:setstyle("font-family:monospace")
 
 ************************************************************************************************
     

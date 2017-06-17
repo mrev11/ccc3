@@ -20,7 +20,8 @@ local dir:=directory("program/*.exe")
 local prev,b,n
 
     webapp.defaults() // mindig kell
-    webapp.debug() // fejlesztéskor jó
+    //webapp.debug(.t.) // fejlesztéskor jó
+    webapp.script('CODE.webapp.frame.height="400";')
     
     asort(dir,,,{|x,y| x[1]<y[1] })
 

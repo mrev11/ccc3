@@ -1,6 +1,9 @@
-9c031fcbd761a6810597a1c9f5e5e9cd5dc95ee5 2017061415:12:36-UTC ./CHANGELOG_vermes
-786c6213e3eb02c57fde18182f6b79a788f9a888 2017061414:42:57-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
-71412f971064d11c90becaa6ae7d94974bbe656c 2017061414:24:20-UTC ./tools/webapp/common/webapp.js
+13691135c4c6f2fcf5cb2dce1a65fbd20a1ee33d 2017061706:05:18-UTC ./CHANGELOG_vermes
+ee2f23e845510ede019a85b16f8c61cf1f7a5cc7 2017061619:50:37-UTC ./tools/webapp/common/webapp.js
+17f525d8602703b15d52dd472b0ec3196b440008 2017061614:01:10-UTC ./tools/webapp/program/whello/wstart.prg
+da172bd91ecbfea4456b431e35c0bb81cd9c68dd 2017061611:23:17-UTC ./tools/webapp/s
+c00c6f314ce9a696e6cb9f7718cd4ddd2dad10ec 2017061606:56:20-UTC ./tools/webapp/common/webapp.html
+d70c9847726307a41ef6ade59f582f5cbbb36c7b 2017061514:33:15-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 f78b37f114930d97f1f60e6b63782eadd033c531 2017060615:29:30-UTC ./usr/bin/linux/msk2html
 edb53507284effc7cca69952d4f2610dbf7cb2bb 2017060615:29:29-UTC ./usr/bin/linux/webapp
 dcf5de15ae5ba451c7efd7161d78302d96ea0974 2017060615:29:22-UTC ./tools/sql2/test/basicdemo/tds/code_generated/ab.prg
@@ -85,7 +88,6 @@ d28a9bbe0ea2461d5c0a37449fa9184942f91fa6 2017052407:22:50-UTC ./terminal/common/
 164f53915dc71d8d14855ddfad210a60f2d47341 2017052206:11:34-UTC ./tools/webapp/config_webapp_start
 b41279f0c1d2550588ead3a1bbb0467bd8e162ff 2017052206:11:18-UTC ./tools/webapp/program/whello/parfile.bld
 b0965fafad11413df80ed616cfd68ffeef47e061 2017052206:06:20-UTC ./tools/webapp/config_webapp_defaults
-4fecf337d9f6d12f865781cfa99e8d07f452fe1e 2017052206:05:28-UTC ./tools/webapp/s
 21a04e25d52c9581e7adf6d807a61a958bed33e6 2017052206:03:00-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 efba5385e765878bfdace8c376a495513ceec46e 2017052205:56:46-UTC ./tools/webapp/program/webapputil/m
 adeb0f3f17d92254b2640b1c2c89baf55ced4c19 2017052205:55:25-UTC ./tools/webapp/program/m
@@ -170,7 +172,6 @@ a2acd39428ec7dc76030a37343e830101a3afd39 2017031813:52:36-UTC ./tools/webapp/pro
 23ef682d33674e2ca5985df1c878903a9bce0299 2017031511:58:28-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-regression.rb
 dd3ea44f8b991d420332ce4f93584b1f0f911885 2017031415:11:31-UTC ./tools/webapp/program/webapputil/webspawn.prg
 8ea197300878f5595af54b4227f41101a7a498a8 2017031415:11:25-UTC ./tools/webapp/program/webapputil/getmessage.prg
-82bf0ff1d6b4f76d7973d232954b2b72baa6be85 2017031413:45:36-UTC ./tools/webapp/program/whello/wstart.prg
 2fe6fc753088c591b4b88e592069e6ecd72b7edf 2017030807:55:56-UTC ./tools/webapp/program/webapp/webapp.prg
 12a451c89291391fb86f48b6910a3c9d8d9423c6 2017022712:50:54-UTC ./tools/webapp/m
 996d48c045c5e0353561767c2cd18341af397c6c 2017021919:37:26-UTC ./tutor/xbrwarr/xbrwarr.prg
@@ -914,7 +915,6 @@ f2fbea9aba8536285677476dcaf234e4bce844d4 2012121316:32:06-UTC ./tabobj/tbbtbtx/b
 3e05a65148189e2cbc538ad7eeefbfc8196639a7 2012111807:13:55-UTC ./tools/webapp/program/webapputil/websocket.prg
 8bba7e83da0dac46139ed0ca6192885575a30764 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.p12
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
-b7dd4bff96c939f1236f57af322b35e9430818b6 2012111609:24:51-UTC ./tools/webapp/common/webapp.html
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
 73dd648c0cd17c798ba6f5846b62e40f0bd4e269 2012102712:37:54-UTC ./gtk/defs/gtkwindow.defs
 a51b0466e4e5c648d2278b393e4b8082122832b1 2012102311:56:57-UTC ./setup/setup-unix/i2bin.cpp
@@ -998,7 +998,6 @@ cc9994f240196a1d3720f9c2a60437730f16f653 2012090310:43:57-UTC ./tools/webapp/pro
 f9422e156bdf38e19a538a89d0b4917bcf44f99e 2012090309:57:51-UTC ./tools/webapp/program/webapputil/walert.prg
 3507141bdfc7237e03f11f354ac1f9340d1ff271 2012090309:51:03-UTC ./tools/webapp/program/webapputil/script.prg
 7d63c99734c17e9db9030229941567d02d76dcc6 2012083108:31:12-UTC ./ccclib/src/simplehash.prg
-79be95a34cbbf85b0619efafb1f8ebed7c151ce6 2012082812:34:18-UTC ./tools/webapp/common/webapp.css
 39872b99fa9edcfe7aa53c49d063dd0cfd38b564 2012082211:30:15-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 dc447a3333d1c5044e031381cced59f47386870c 2012072706:16:34-UTC ./tools/sql2/driver-sqlite3/OLVASS
 80b2c865c8543e4f1054065347105bce1915bd82 2012071710:26:23-UTC ./tutor/readline/firstpar.prg
@@ -1078,7 +1077,6 @@ adc83b19e793491b1c6ea0fd8b46cd9f32e592fc 2011123109:08:55-UTC ./tools/webapp/pro
 f62b45e4921c67ce2945079b3a8c575b6c3d7802 2011121211:09:48-UTC ./tools/webapp/common/invaliduse.html
 f2939100f0a94781231e99f38329fcb080aadf88 2011120919:50:44-UTC ./tutor/pm/linux/pm.prg
 ecb2d3355ca3de16432f1a2f14a082783aaf25b9 2011120919:46:52-UTC ./tools/webapp/program/webapp/sighandler.prg
-25be478207bc0827822f4f4fb09dfb02c8098a4f 2011120408:36:47-UTC ./tools/webapp/common/show.js
 c6c194d8186e5b1017a4055fd947ec3bdfbf0fd3 2011112822:06:49-UTC ./tools/webapp/program/webapputil/urlutil.prg
 288a6f5d94c9500de2ae7aee91e3a667ac712f29 2011112819:41:13-UTC ./tools/xmldom/xmldom_parser.lem
 7592eb584d581d7f0815aaf6250d3a8d7cfad7c1 2011111821:51:33-UTC ./tools/webapp/program/webapp/socketpair.prg

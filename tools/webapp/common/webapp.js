@@ -4,16 +4,6 @@ var XCODE={}; //object
 var CODE=XCODE;
 
 
-function TOPWIN()
-{
-    return this;
-
-    //ennek a this-nek metódus/attribútumai XCODE, TOPWIN, SHOW
-    //mégis az onload-ban futtatott SHOW nem mutatja őket,
-    //működnek, de a SHOW for(key in obj) ciklusából hiányoznak
-}
-
-
 XCODE.onload_main=function(uri)
 {
     XCODE.websckuri=uri;
@@ -50,7 +40,7 @@ XCODE.onload_main=function(uri)
     XCODE.webapp={};
     XCODE.frmaux={};
 
-    XCODE.main.window=TOPWIN();
+    XCODE.main.window=window;
     XCODE.main.document=XCODE.main.window.document;
     XCODE.main.display=XCODE.main.document.getElementById("display");
 
@@ -468,38 +458,6 @@ XCODE.restoredisplay=function(key)
 }
 
 
-
-XCODE.treenode_toggle=function(elem)
-{
-    var dsp,lab=elem.innerHTML;
-    if( lab.indexOf("(+)")>=0 )
-    {
-        dsp="block";
-        elem.innerHTML=elem.innerHTML.replace("(+)","(-)");
-    }
-    else if( lab.indexOf("(-)")>=0 )
-    {
-        dsp="none";
-        elem.innerHTML=elem.innerHTML.replace("(-)","(+)");
-    }
-    else
-    {
-        return;
-    }
-
-    var par=elem.parentNode;
-    var ch=par.firstChild;
-    while( ch )
-    {   
-        if( ch.className=="treenode" )
-        {
-            ch.style.display=dsp;
-        }
-        ch=ch.nextSibling;
-    }
-}
-
-
 XCODE.onclick_row=function(row)
 {
     //<table><tbody><tr></tr></tbody></table>
@@ -639,11 +597,11 @@ XCODE.datblur=function(e)
 // inputmezo elhagyasakor (onblur) utolag formazza a datumot
 // onblur="datblur(event)" 
 // onkeypress="datkeypress(event)" 
-// pattern="[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"
+// pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 {
     var ctrl=e.target;
     var x=ctrl.value.replace(/-/g,"");
-    x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8)
+    x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
     var x=x.replace("--","");
     ctrl.value=x; 
 }
@@ -652,7 +610,7 @@ XCODE.datkeypress=function(e)
 // datumok bevitele kozben (onkeypress) nem enged be szemet karaktereket
 // onblur="datblur(event)" 
 // onkeypress="datkeypress(event)" 
-// pattern="[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"
+// pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 {
     if( e.charCode==0 )
     {
@@ -668,7 +626,7 @@ XCODE.datkeypress=function(e)
         x=x.replace(/-/g,"" ); //kiszedi a szemetet
         x=x+"19991010".slice(x.length);
         x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6);
-        x=x.replace("-00","-01")
+        x=x.replace("-00","-01");
         d=new Date(x);  //pl. new Date('1954-10-11')
         
         if( !(x==XCODE.dat2str(d))  )
@@ -683,7 +641,7 @@ XCODE.datkeypress=function(e)
 XCODE.accblur=function(e)
 {
     var ctrl=e.target;
-    var x=ctrl.value
+    var x=ctrl.value;
     var ax=x.split("-");
     if( ax.length>=3  )
     {

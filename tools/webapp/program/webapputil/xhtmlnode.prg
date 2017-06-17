@@ -342,7 +342,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 function xhtmlnode.input_date(node)
     node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(event)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}"))
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}"))
 
 
 ************************************************************************************************

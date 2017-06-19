@@ -1,11 +1,11 @@
-c86b21089837df7806f8e87ca0ff5b939b8a640c 2017061906:47:11-UTC ./CHANGELOG_vermes
-8bef1acf06fb28de75ed76b2c384acdbc8e72ff9 2017061818:01:19-UTC ./tools/webapp/program/webapputil/webpage.prg
+c57c4079f6c3ec8a147a761e75299606a48f93cb 2017061911:48:15-UTC ./CHANGELOG_vermes
+2980e5b9325d54fca9285d8ba6bb1671fc89f32c 2017061911:38:21-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
+a7953569733f2673eb8fa76d6623bdd92d64364a 2017061909:07:10-UTC ./tools/webapp/program/webapputil/webpage.prg
 87a860f668682572b515bcf90d04631551d62d26 2017061710:28:20-UTC ./tools/webapp/common/webapp.js
 614cfe552b50852d9ac8d1bc26fb488cabdd29d1 2017061706:46:33-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 17f525d8602703b15d52dd472b0ec3196b440008 2017061614:01:10-UTC ./tools/webapp/program/whello/wstart.prg
 da172bd91ecbfea4456b431e35c0bb81cd9c68dd 2017061611:23:17-UTC ./tools/webapp/s
 c00c6f314ce9a696e6cb9f7718cd4ddd2dad10ec 2017061606:56:20-UTC ./tools/webapp/common/webapp.html
-d70c9847726307a41ef6ade59f582f5cbbb36c7b 2017061514:33:15-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 f78b37f114930d97f1f60e6b63782eadd033c531 2017060615:29:30-UTC ./usr/bin/linux/msk2html
 edb53507284effc7cca69952d4f2610dbf7cb2bb 2017060615:29:29-UTC ./usr/bin/linux/webapp
 dcf5de15ae5ba451c7efd7161d78302d96ea0974 2017060615:29:22-UTC ./tools/sql2/test/basicdemo/tds/code_generated/ab.prg

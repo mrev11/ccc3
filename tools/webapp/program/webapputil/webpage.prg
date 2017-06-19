@@ -57,6 +57,8 @@ local fs
 
     this:(xhtmlnode)initialize("div")
 
+    this:createnodehash
+
     this:menuid:={}
     this:formid:={}
     

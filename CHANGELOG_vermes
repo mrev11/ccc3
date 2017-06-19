@@ -1,3 +1,10 @@
+
+2017.06.19 A webapp.page osztaly nodehash attributumanak tipusa 
+  valtozott simplehash-rol xhtmlnode.nodehash-re. Igy a createnodehash 
+  hivast  meg lehet sporolni. Ha egy kontrol nincs meg a hashben, akkor 
+  a hash automatikusan ujrageneralodik, ha a kontrol azutan sincs meg, 
+  akkor apperror kivetel keletkezik; 
+
 2017.06.17 tisztogatas webapp-ban;
     szazalekos meretezes mindenhol kiveve;
     Kontos dolgok kiveve;

@@ -257,8 +257,8 @@ local q
 
 ************************************************************************************************
 function xhtmlnode.createnodehash(node) //hash {key=id,value=node} 
-local hash:=simplehashNew()
-    xhtmlnode.createnodehash1(node,@hash)
+local hash:=nodehashNew(node)
+    xhtmlnode.createnodehash1(node,hash)
     return hash
 
 
@@ -269,7 +269,7 @@ local id:=node:getattrib("id"),n
     end
     for n:=1 to len(node:content)
         if( !"#"$node:content[n]:type  )
-            xhtmlnode.createnodehash1(node:content[n],@hash)
+            xhtmlnode.createnodehash1(node:content[n],hash)
         end
     next
 
@@ -373,6 +373,43 @@ local pattern:=""
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.acckeypress(event,'OPT')"::strtran("OPT",opt)))
     node:setattrib(xhtmlnode.attrib("pattern",pattern))
     node:setstyle("font-family:monospace")
+
+
+************************************************************************************************
+static class xhtmlnode.nodehash(simplehash)
+
+    method  initialize
+
+    attrib  nodeblk     //a node, aminek az elemei a hash-ben vannak
+                        //a rekurzio elkerulese erdekeben blokkban
+
+    method  node        {|this|eval(this:nodeblk)}  
+    
+    method  get         //feluldefinialva
+                        //ha eloszor nem talal, ujrageneralja a hash-t
+                        //ha akkor sem talal, kivetelt dob
+
+
+static function xhtmlnode.nodehash.initialize(this,node)
+    this:(simplehash)initialize
+    this:nodeblk:={||node}
+    return this
+    
+
+static function xhtmlnode.nodehash.get(this,key)
+local err,val
+    if( NIL==(val:=this:(simplehash)get(key)) )
+        xhtmlnode.createnodehash1(this:node,this)
+        if( NIL==(val:=this:(simplehash)get(key)) )
+            err:=apperrorNew()
+            err:operation:="nodehash.get"
+            err:description:="Undefined node ID"
+            err:args:={key}
+            break(err)
+        end
+    end
+    return val
+
 
 ************************************************************************************************
     

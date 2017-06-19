@@ -1,3 +1,6 @@
+2017.06.19 webapp.page:addaction is atveszi a block parametert;
+  webapp.form.addformaction is atveszi a block parametert;
+  Nincs szukseg a page fieldsetjeben a margin-left stilusra;
 
 2017.06.19 webapp.spawn-ban formdata.SPAWN helyett jobb  egy 
   sima SPAWN-t echozni. Maskepp a formdata esetleges hibaja

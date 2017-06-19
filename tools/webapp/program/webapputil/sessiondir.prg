@@ -60,7 +60,7 @@ local dspec:="session"
 function sessiondel(sessionid:=session.id())
 local dspec:="session"+dirsep()+sessionid[1..2]+dirsep()+sessionid
     run( "rm -rf "+dspec )
-    ? "SESSIONDEL", sessionid
+    ? "SESSIONDEL", sessionid, argv(0)
 
 ***************************************************************************************
 

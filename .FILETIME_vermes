@@ -1,7 +1,8 @@
-83e01f29a2dc75a2d711c2f3b8c59d7ef7adce5e 2017061913:58:04-UTC ./CHANGELOG_vermes
+df5dfcd8ea4cc9c3d378cc4329e2ff8ffe5dd508 2017061919:46:44-UTC ./CHANGELOG_vermes
+31f3057fe4f95f765325c433415fbb543c6d62ec 2017061917:48:50-UTC ./tools/webapp/program/webapputil/sessiondir.prg
+7dddcd7b4aea084ae122e76d8d37f11d305b04ff 2017061916:52:54-UTC ./tools/webapp/program/webapputil/webpage.prg
 457e55599b43376667c12dc9e505ffd845927669 2017061913:51:43-UTC ./tools/webapp/program/webapputil/webspawn.prg
 2980e5b9325d54fca9285d8ba6bb1671fc89f32c 2017061911:38:21-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
-a7953569733f2673eb8fa76d6623bdd92d64364a 2017061909:07:10-UTC ./tools/webapp/program/webapputil/webpage.prg
 87a860f668682572b515bcf90d04631551d62d26 2017061710:28:20-UTC ./tools/webapp/common/webapp.js
 614cfe552b50852d9ac8d1bc26fb488cabdd29d1 2017061706:46:33-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 17f525d8602703b15d52dd472b0ec3196b440008 2017061614:01:10-UTC ./tools/webapp/program/whello/wstart.prg
@@ -998,7 +999,6 @@ cc9994f240196a1d3720f9c2a60437730f16f653 2012090310:43:57-UTC ./tools/webapp/pro
 f9422e156bdf38e19a538a89d0b4917bcf44f99e 2012090309:57:51-UTC ./tools/webapp/program/webapputil/walert.prg
 3507141bdfc7237e03f11f354ac1f9340d1ff271 2012090309:51:03-UTC ./tools/webapp/program/webapputil/script.prg
 7d63c99734c17e9db9030229941567d02d76dcc6 2012083108:31:12-UTC ./ccclib/src/simplehash.prg
-39872b99fa9edcfe7aa53c49d063dd0cfd38b564 2012082211:30:15-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 dc447a3333d1c5044e031381cced59f47386870c 2012072706:16:34-UTC ./tools/sql2/driver-sqlite3/OLVASS
 80b2c865c8543e4f1054065347105bce1915bd82 2012071710:26:23-UTC ./tutor/readline/firstpar.prg
 a2ff1dab81d0144ec5b9123f87e0459eb80dad92 2012062917:15:54-UTC ./tools/sql2/driver-sqlite3/columndef.prg

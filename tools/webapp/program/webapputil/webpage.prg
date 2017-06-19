@@ -72,7 +72,9 @@ local fs
     this:menu:setstyle("float:left;margin-top:64")
     
     fs:=xhtmlnodeNew("fieldset")
-    fs:setstyle("border:0;margin-left:FORMMARGIN"::strtran("FORMMARGIN",(MENUWIDTH+FSMARGIN)::str::alltrim)  )
+    //nem kell a margin-left
+    //fs:setstyle("border:0;margin-left:FORMMARGIN"::strtran("FORMMARGIN",(MENUWIDTH+FSMARGIN)::str::alltrim)  )
+    fs:setstyle("border:0;")
     this:addcontent(fs)
 
     this:caption:=xhtmlnodeNew("#TEXT")
@@ -177,6 +179,7 @@ local fid,bid,but
     fid:=form:getattrib("id")
     this:form:addcontent(form)
     this:formid::aadd(fid)
+    form:pageblk:={||this}
     
     if( this:form:content::len==1 )
         form:visible:=.t.
@@ -212,11 +215,14 @@ local par:={},n
 
 
 ************************************************************************************************
-static function page.addaction(this,id,value,title)
+static function page.addaction(this,id,value,title,blk)
     if(  valtype(id)=="O" )
         this:action:content::aadd(id) //kész objektum
     else
         this:action:addcontent(buttonNew(id,value,title))
+    end
+    if(blk!=NIL)
+        this:actionhash["formdata."+id]:=blk
     end
 
 
@@ -356,6 +362,8 @@ class form(xhtmlnode)
     attrib  formaction
     method  addformaction
 
+    attrib  pageblk
+    method  page            {|this| if(this:pageblk==NIL,NIL,eval(this:pageblk))}
 
 static function form.initialize(this,formid,fieldset,tabtext)
     this:(xhtmlnode)initialize("div")
@@ -380,7 +388,7 @@ static function form.upload(this)
     webapp.innerhtml(this:getattrib("id"),this:htmlcontent)
 
 
-static function form.addformaction(this,id,value,title)
+static function form.addformaction(this,id,value,title,blk)
     if( this:formaction==NIL )
         this:formaction:=xhtmlnodeNew("div")
         this:formaction:setattrib("class","formaction")
@@ -391,6 +399,9 @@ static function form.addformaction(this,id,value,title)
         this:formaction:addcontent(id) //kész objektum
     else
         this:formaction:addcontent(buttonNew(id,value,title))
+    end
+    if( blk!=NIL .and. this:page!=NIL )
+        this:page:actionhash["formdata."+id]:=blk
     end
 
 

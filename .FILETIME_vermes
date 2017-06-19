@@ -1,5 +1,7 @@
-13691135c4c6f2fcf5cb2dce1a65fbd20a1ee33d 2017061706:05:18-UTC ./CHANGELOG_vermes
-ee2f23e845510ede019a85b16f8c61cf1f7a5cc7 2017061619:50:37-UTC ./tools/webapp/common/webapp.js
+c86b21089837df7806f8e87ca0ff5b939b8a640c 2017061906:47:11-UTC ./CHANGELOG_vermes
+8bef1acf06fb28de75ed76b2c384acdbc8e72ff9 2017061818:01:19-UTC ./tools/webapp/program/webapputil/webpage.prg
+87a860f668682572b515bcf90d04631551d62d26 2017061710:28:20-UTC ./tools/webapp/common/webapp.js
+614cfe552b50852d9ac8d1bc26fb488cabdd29d1 2017061706:46:33-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 17f525d8602703b15d52dd472b0ec3196b440008 2017061614:01:10-UTC ./tools/webapp/program/whello/wstart.prg
 da172bd91ecbfea4456b431e35c0bb81cd9c68dd 2017061611:23:17-UTC ./tools/webapp/s
 c00c6f314ce9a696e6cb9f7718cd4ddd2dad10ec 2017061606:56:20-UTC ./tools/webapp/common/webapp.html
@@ -88,7 +90,6 @@ d28a9bbe0ea2461d5c0a37449fa9184942f91fa6 2017052407:22:50-UTC ./terminal/common/
 164f53915dc71d8d14855ddfad210a60f2d47341 2017052206:11:34-UTC ./tools/webapp/config_webapp_start
 b41279f0c1d2550588ead3a1bbb0467bd8e162ff 2017052206:11:18-UTC ./tools/webapp/program/whello/parfile.bld
 b0965fafad11413df80ed616cfd68ffeef47e061 2017052206:06:20-UTC ./tools/webapp/config_webapp_defaults
-21a04e25d52c9581e7adf6d807a61a958bed33e6 2017052206:03:00-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 efba5385e765878bfdace8c376a495513ceec46e 2017052205:56:46-UTC ./tools/webapp/program/webapputil/m
 adeb0f3f17d92254b2640b1c2c89baf55ced4c19 2017052205:55:25-UTC ./tools/webapp/program/m
 5f425b7d4c5c294a47d5bdf9b3e0bfe146fc9b7d 2017052205:53:06-UTC ./tools/webapp/program/msk2html/parfile.bld
@@ -167,7 +168,6 @@ c31e728733ecc049af10048ef43104518c5afc15 2017032106:48:35-UTC ./tools/webapp/pro
 d8dc40e35b23ec46b9b940fde221e019f5873940 2017032106:36:11-UTC ./tools/webapp/program/webapp/sample_config_webapp_defaults
 4fcdc448c384ab8110c67bc8c2cdd3685cc90458 2017031912:05:07-UTC ./tools/webapp/program/webapp/loadconfig.prg
 36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
-22393dc6c00ac1d164113b57daf2abcbddcd998c 2017031820:45:49-UTC ./tools/webapp/program/webapputil/webpage.prg
 a2acd39428ec7dc76030a37343e830101a3afd39 2017031813:52:36-UTC ./tools/webapp/program/webapp/sample_config_webapp_start
 23ef682d33674e2ca5985df1c878903a9bce0299 2017031511:58:28-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-regression.rb
 dd3ea44f8b991d420332ce4f93584b1f0f911885 2017031415:11:31-UTC ./tools/webapp/program/webapputil/webspawn.prg

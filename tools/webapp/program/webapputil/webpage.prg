@@ -123,7 +123,7 @@ local fs
 #endif
 
 ************************************************************************************************
-static function page.addmenu(this,id,value,title)
+static function page.addmenu(this,id,value,title,blk)
 local button
     if( valtype(id)=="O" )
         button:=id  //kész objektum
@@ -136,6 +136,9 @@ local button
     end
     this:menuid::aadd(button:getattrib("id"))
     this:menu:addcontent(button)
+    if(blk!=NIL)
+        this:actionhash["formdata."+id]:=blk
+    end
 
 
 ************************************************************************************************
@@ -151,7 +154,7 @@ local button
 
 
 ************************************************************************************************
-static function page.addsubmenu(this,id,value,title)
+static function page.addsubmenu(this,id,value,title,blk)
 local button
     if( valtype(id)=="O" )
         button:=id //kész objektum
@@ -160,6 +163,9 @@ local button
     end
     this:menuid::aadd(button:getattrib("id"))
     this:menu:addcontent(button) 
+    if(blk!=NIL)
+        this:actionhash["formdata."+id]:=blk
+    end
 
 
 ************************************************************************************************

@@ -486,8 +486,8 @@ XCODE.turndebug=function(flag)
     XCODE.debug=flag;
     if(flag)
     {
-        XCODE.webapp.frame.height="600";
-        XCODE.frmaux.frame.height="400";
+        //XCODE.webapp.frame.height="600";
+        //XCODE.frmaux.frame.height="400";
         XCODE.frmaux.frame.style.display="block";
     }
 }

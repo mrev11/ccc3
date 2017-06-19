@@ -32,16 +32,15 @@ local dom,len,err
     //Az elinditott program valahogy befejezodott,
     //de nem biztos, hogy minden neki szolo uzenetet kiolvasott.
     //Itt most kitisztitjuk a bennragadt uzeneteket,
-    webapp.script('CODE.formdata("SPAWN");') //formdata.SPAWN-t küld vissza
+    webapp.script("CODE.echo('<SPAWN/>')")
     while(.t.)
         begin
-            webapp.waitmessage("formdata.SPAWN")
+            webapp.waitmessage("SPAWN")
             exit
-        recover err <webapp.browsererror>
+        recover err <apperror>
             ? err
         end
     end
-
 
     rest::=strtran("LENGTH",len::str::alltrim)
     script(rest)

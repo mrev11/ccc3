@@ -1,4 +1,9 @@
 
+2017.06.19 webapp.spawn-ban formdata.SPAWN helyett jobb  egy 
+  sima SPAWN-t echozni. Maskepp a formdata esetleges hibaja
+  (pl. multiple control) zavarhatja a valasz megvarasat.
+  (A child hibas formdatajanak elemzesetol a parent szall el.)
+
 2017.06.19 A webapp.page osztaly nodehash attributumanak tipusa 
   valtozott simplehash-rol xhtmlnode.nodehash-re. Igy a createnodehash 
   hivast  meg lehet sporolni. Ha egy kontrol nincs meg a hashben, akkor 

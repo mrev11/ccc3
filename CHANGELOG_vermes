@@ -1,3 +1,5 @@
+2017.06.21 webapp.js: kimaradt textarea tamogatas potolva;
+
 2017.06.20 page hangolgatas;
   A page:upload bejegyzi a page-be, hogy mar megtortent a feltoltes.
   Ha megtortent, akkor a loop elotti automatikus feltoltes elmarad.

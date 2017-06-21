@@ -366,9 +366,15 @@ XCODE.updatecontrol=function(id,value)
             }
         }
     }
+    else if( ctrl.nodeName=="TEXTAREA" )
+    {
+        ctrl.value=value;
+    }
+
     else if( ctrl.nodeName!="INPUT" )
     {
         //kihagy
+        //alert(ctrl.nodeName);
     }
     else if( ctrl.type=="radio" )
     {

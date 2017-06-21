@@ -1,10 +1,10 @@
+830066d3832696ab91e5b20c511730dd50c63f92 2017062116:37:33-UTC ./CHANGELOG_vermes
+abf12623dacecfcbf384388d6e103bf67648f46f 2017062116:11:14-UTC ./tools/webapp/common/webapp.js
 b21f9e07f9bf66ed4ed3f3ee4990063bdaae34b6 2017062114:47:08-UTC ./tools/webapp/program/webapputil/webpage.prg
-1907211523ec624b0a73c724ad0f568c3c8f3075 2017062114:45:17-UTC ./CHANGELOG_vermes
 fbf99be4cbce7cb01244f029cbe8474d1b1780c0 2017062114:22:15-UTC ./tools/webapp/program/webapputil/formdata.prg
 31f3057fe4f95f765325c433415fbb543c6d62ec 2017061917:48:50-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 457e55599b43376667c12dc9e505ffd845927669 2017061913:51:43-UTC ./tools/webapp/program/webapputil/webspawn.prg
 2980e5b9325d54fca9285d8ba6bb1671fc89f32c 2017061911:38:21-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
-87a860f668682572b515bcf90d04631551d62d26 2017061710:28:20-UTC ./tools/webapp/common/webapp.js
 614cfe552b50852d9ac8d1bc26fb488cabdd29d1 2017061706:46:33-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 17f525d8602703b15d52dd472b0ec3196b440008 2017061614:01:10-UTC ./tools/webapp/program/whello/wstart.prg
 da172bd91ecbfea4456b431e35c0bb81cd9c68dd 2017061611:23:17-UTC ./tools/webapp/s

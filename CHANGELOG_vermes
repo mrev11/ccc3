@@ -1,3 +1,15 @@
+2017.06.20 page hangolgatas;
+  A page:upload bejegyzi a page-be, hogy mar megtortent a feltoltes.
+  Ha megtortent, akkor a loop elotti automatikus feltoltes elmarad.
+  Ha megtortent, akkor a loop elotti/utani automatikus kepernyo 
+  save/restore is elmarad, azaz kikerulhetok az automatizmosok; 
+  A page:loop elejere automatikus formdata:update kerult; 
+  A page:loop-ban ismetlodo automatikus formdata:update meghagyva; 
+  A page:addform es a form:addformaction hivasi sorrendje tetszoleges;
+  formdata:update es formdata:upload vegrehajt egy formdata:save-et, 
+  ami utan egy megismetelt update mar nem csinal semmit;
+  formdata:list javitgatva;
+
 2017.06.19 webapp.page:addaction is atveszi a block parametert;
   webapp.form.addformaction is atveszi a block parametert;
   Nincs szukseg a page fieldsetjeben a margin-left stilusra;

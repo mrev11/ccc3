@@ -134,6 +134,7 @@ local ctrl,upd,cmd:=""
         ctrl:=this:hash:nextvalue
     end
     script(cmd)
+    this:save
 
 
 ***************************************************************************************
@@ -150,6 +151,7 @@ local ctrl,upd,cmd:=""
     end
 
     script(cmd)
+    this:save
 
 
 ***************************************************************************************
@@ -176,14 +178,15 @@ local ctrl,arr:={},n
           ctrl:id::padr(12),;
           "[",ctrl:value::format,"]",;
           "[",ctrl:orig::format,"]"
-          
-        if( ctrl:value::len>32 )
-            ?? " ..."
-        end
     next
 
 static function format(x)
-    x::=strtran(chr(10),"")::left(24)::alltrim
+    x::=any2str
+    x::=strtran(chr(10),"")
+    x::=alltrim
+    if( len(x)>24  )
+        x::=left(20)+" ..."
+    end
     return x
 
 
@@ -197,8 +200,6 @@ local x:=":",arr:={},ctrl,n
         elseif( ctrl:type=="radio" .and. ctrl:value=="false" )
             //kihagy
         elseif( ctrl:type=="checkbox" .and. ctrl:value=="false" )
-            //kihagy
-        elseif( ctrl:type=="select" .and. "Nincs" $ ctrl:value )
             //kihagy
         elseif( empty(ctrl:value) )
             //kihagy

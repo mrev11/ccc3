@@ -45,7 +45,8 @@ class page(xhtmlnode)
 
     method  createnodehash   {|this|this:nodehash:=xhtmlnode.createnodehash(this)}
 
-    method  upload           {|this| webapp.uploaddisplay(this:html)} //az egészet elküldi
+    attrib  uploaded                
+    method  upload           {|this|webapp.uploaddisplay(this:html),this:uploaded:=.t.} //az egészet elküldi
     method  update           :upload
 
     method  loop
@@ -58,7 +59,7 @@ local fs
     this:(xhtmlnode)initialize("div")
 
     this:createnodehash
-
+    this:uploaded:=.f.
     this:menuid:={}
     this:formid:={}
     
@@ -174,12 +175,22 @@ local button
 
 ************************************************************************************************
 static function page.addform(this,form)
-local fid,bid,but
+local fid,bid,but,item
 
     fid:=form:getattrib("id")
     this:form:addcontent(form)
     this:formid::aadd(fid)
+
     form:pageblk:={||this}
+    if( form:actionhash!=NIL )
+        //atveszi az ideiglenes tarolobol
+        item:=form:actionhash:first
+        while( item!=NIL )
+            this:actionhash[item[1]]:=item[2]
+            item:=form:actionhash:next
+        end
+        form:actionhash:=NIL //nem kell tobbet
+    end
     
     if( this:form:content::len==1 )
         form:visible:=.t.
@@ -230,12 +241,17 @@ static function page.addaction(this,id,value,title,blk)
 static function page.loop(this)
 
 local data,msg,tab,blk,res,item
-local key:="page"+gettickcount()::str::alltrim
+local key//:="page"+gettickcount()::str::alltrim
 local n,pdx,visible
 
-    webapp.savedisplay(key) 
-    webapp.emptydisplay()
-    this:upload  //feltölti az oldalt (mint stringet innerHTML-be)
+    if( !this:uploaded )
+        key:="page"+gettickcount()::str::alltrim
+        webapp.savedisplay(key) 
+        webapp.emptydisplay()
+        this:upload  //feltölti az oldalt (mint stringet innerHTML-be)
+    end
+
+    this:formdata:update
 
     if( this:initblock!=NIL )
         eval(this:initblock,this)
@@ -322,13 +338,14 @@ local n,pdx,visible
             end
         end
 
-        //Érdemes ezt iderakni?
         if( msg::startswith("formdata.") )
             data:update
         end
     end
-    
-    webapp.restoredisplay(key)
+
+    if(key!=NIL)    
+        webapp.restoredisplay(key)
+    end
     
     if( res::valtype=="B" )
         eval(res,data)
@@ -360,6 +377,7 @@ class form(xhtmlnode)
     attrib  tabtext
     
     attrib  formaction
+    attrib  actionhash
     method  addformaction
 
     attrib  pageblk
@@ -400,8 +418,16 @@ static function form.addformaction(this,id,value,title,blk)
     else
         this:formaction:addcontent(buttonNew(id,value,title))
     end
-    if( blk!=NIL .and. this:page!=NIL )
-        this:page:actionhash["formdata."+id]:=blk
+    if( blk!=NIL )
+        if( this:page==NIL )
+            // ideiglenes tárolás
+            if( this:actionhash==NIL )
+                this:actionhash:=simplehashNew()
+            end
+            this:actionhash["formdata."+id]:=blk
+        else
+            this:page:actionhash["formdata."+id]:=blk
+        end
     end
 
 

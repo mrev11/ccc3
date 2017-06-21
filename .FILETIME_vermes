@@ -1,6 +1,7 @@
-df5dfcd8ea4cc9c3d378cc4329e2ff8ffe5dd508 2017061919:46:44-UTC ./CHANGELOG_vermes
+b21f9e07f9bf66ed4ed3f3ee4990063bdaae34b6 2017062114:47:08-UTC ./tools/webapp/program/webapputil/webpage.prg
+1907211523ec624b0a73c724ad0f568c3c8f3075 2017062114:45:17-UTC ./CHANGELOG_vermes
+fbf99be4cbce7cb01244f029cbe8474d1b1780c0 2017062114:22:15-UTC ./tools/webapp/program/webapputil/formdata.prg
 31f3057fe4f95f765325c433415fbb543c6d62ec 2017061917:48:50-UTC ./tools/webapp/program/webapputil/sessiondir.prg
-7dddcd7b4aea084ae122e76d8d37f11d305b04ff 2017061916:52:54-UTC ./tools/webapp/program/webapputil/webpage.prg
 457e55599b43376667c12dc9e505ffd845927669 2017061913:51:43-UTC ./tools/webapp/program/webapputil/webspawn.prg
 2980e5b9325d54fca9285d8ba6bb1671fc89f32c 2017061911:38:21-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 87a860f668682572b515bcf90d04631551d62d26 2017061710:28:20-UTC ./tools/webapp/common/webapp.js
@@ -900,7 +901,6 @@ eeb67aa1c0b6f5971eb3e7bdc143101d90e4a4cc 2013070209:59:51-UTC ./ccclib/src/ui_/u
 8ae46b5a5f70b070c30e808a4cb031c71022828c 2013050311:31:26-UTC ./tools/xmlrpc-framework/rpclist
 8deffc7cc1309f463f31809e9eeea3950270c002 2013041614:19:33-UTC ./tools/xmlrpc/demo-rpc/parfile.bld
 6568f99037f8670df6a1daed2ab9d2cd7769b61b 2013041507:04:35-UTC ./tools/webapp/program/webapputil/opensessionfile.prg
-1954baeae63ae2d673b2944ce1769dd7c8ef9d99 2013041412:57:40-UTC ./tools/webapp/program/webapputil/formdata.prg
 842f687a6ffbbff6b2dbbe3bbc8035a8b26d3329 2013032010:31:37-UTC ./usr/tex/script/foot.html
 e58df8cdf798e9554ce31279c50d0bec73d426de 2013021711:01:24-UTC ./terminal/unix/readme.hu.txt
 fdbae32d52c46cd0ae18fbb42de4e85e7d15f481 2013021310:28:15-UTC ./tools/webapp/program/whello/wecho.prg

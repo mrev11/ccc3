@@ -1,3 +1,7 @@
+2017.06.21 webapp: checksum-os vackok megszuntetve;
+  formdata:cheksum megszunt;
+  page:formcheck, page:savecheck, page verifycheck megszunt;
+
 2017.06.21 webapp.js: kimaradt textarea tamogatas potolva;
 
 2017.06.20 page hangolgatas;

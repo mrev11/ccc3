@@ -34,9 +34,6 @@ class page(xhtmlnode)
     attrib  active_form
     
     attrib  formdata         // minden formdata message frissíti
-    attrib  formcheck        // formdata:checksum-ot tárolja a változás detektálásához
-    method  savecheck        // kiszámítja formcheck-et
-    method  verifycheck      // ellenőrzi a változást  (sajnos ez nem jó, mindig jelez)
 
     attrib  nodehash         // hash a kontrollokból, item={id,ctrl}, nem feltétlenül uptodate
     
@@ -351,21 +348,6 @@ local n,pdx,visible
         eval(res,data)
     end
 
-
-************************************************************************************************
-static function page.savecheck(this)
-    return this:formcheck:=this:formdata:checksum
-
-************************************************************************************************
-static function page.verifycheck(this)
-    return this:formcheck==this:formdata:checksum
-    
-    // Sajnos ez nem jó, 
-    // szinte mindig eltérést jelez,
-    // mert nem lehet megkülönböztetni az üres
-    // és az inicializálatlan értékeket,
-    // egyelőre nem látok megoldást,
-    // nem érdemes erőltetni.
 
 ************************************************************************************************
 //form

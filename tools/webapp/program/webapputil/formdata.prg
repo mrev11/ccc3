@@ -20,7 +20,6 @@ class formdata(object)
     method  update
     method  upload
     method  list
-    method  checksum
 
     method  save            //minden kulcsra orig:=value 
     method  rest            //minden kulcsra value:=orig
@@ -187,32 +186,6 @@ static function format(x)
     if( len(x)>24  )
         x::=left(20)+" ..."
     end
-    return x
-
-
-***************************************************************************************
-static function formdata.checksum(this)
-local x:=":",arr:={},ctrl,n
-    ctrl:=this:hash:firstvalue
-    while( ctrl!=NIL )
-        if( ctrl:type=="label" )
-            //kihagy
-        elseif( ctrl:type=="radio" .and. ctrl:value=="false" )
-            //kihagy
-        elseif( ctrl:type=="checkbox" .and. ctrl:value=="false" )
-            //kihagy
-        elseif( empty(ctrl:value) )
-            //kihagy
-        else
-            arr::aadd(ctrl)
-        end
-        ctrl:=this:hash:nextvalue
-    end
-    asort(arr,,,{|x,y|x:id<y:id})
-    for n:=1 to len(arr)
-        ctrl:=arr[n]
-        x+=ctrl:id+"="+ctrl:value+":"
-    next
     return x
 
 

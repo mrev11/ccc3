@@ -387,6 +387,10 @@ XCODE.updatecontrol=function(id,value)
     else
     {
         ctrl.value=value;
+        if( ctrl.onblur!=undefined )
+        {
+            ctrl.onblur(ctrl);
+        }
     }
 }
 
@@ -554,12 +558,11 @@ XCODE.num2str=function(num,dec) //szamok formazasa
     return x;
 } 
 
-XCODE.numblur=function(e,dec)
+XCODE.numblur=function(ctrl,dec)
 // az inputmezo elhagyasakor (onblur) megformazza bevitt szamot
-// onblur="numblur(event,2)" 
+// onblur="numblur(this,2)" 
 // onkeypress="numkeypress(event)"
 {
-    var ctrl=e.target;
     var text=ctrl.value.replace(/,/g,"").replace(/ /g,""); //kiszedi a szemetet
     var num=Number(text);
     ctrl.value=XCODE.num2str(num,dec);
@@ -567,7 +570,7 @@ XCODE.numblur=function(e,dec)
 
 XCODE.numkeypress=function(e) 
 // szamok bevitele kozben (onkeypress) nem enged be szemet karaktereket
-// onblur="numblur(event,2)" 
+// onblur="numblur(this,2)" 
 // onkeypress="numkeypress(event)"
 {
     if( e.charCode==0 )
@@ -599,13 +602,12 @@ XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
     return s
 }
 
-XCODE.datblur=function(e)
+XCODE.datblur=function(ctrl)
 // inputmezo elhagyasakor (onblur) utolag formazza a datumot
-// onblur="datblur(event)" 
+// onblur="datblur(this)" 
 // onkeypress="datkeypress(event)" 
 // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 {
-    var ctrl=e.target;
     var x=ctrl.value.replace(/-/g,"");
     x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
     var x=x.replace("--","");
@@ -614,7 +616,7 @@ XCODE.datblur=function(e)
 
 XCODE.datkeypress=function(e) 
 // datumok bevitele kozben (onkeypress) nem enged be szemet karaktereket
-// onblur="datblur(event)" 
+// onblur="datblur(this)" 
 // onkeypress="datkeypress(event)" 
 // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 {
@@ -644,9 +646,8 @@ XCODE.datkeypress=function(e)
 }
 
 
-XCODE.accblur=function(e)
+XCODE.accblur=function(ctrl)
 {
-    var ctrl=e.target;
     var x=ctrl.value;
     var ax=x.split("-");
     if( ax.length>=3  )

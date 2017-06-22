@@ -340,7 +340,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.input_date(node)
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(event)"))
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}"))
 
@@ -350,11 +350,11 @@ function xhtmlnode.input_number(node,dec)
 local code
     if(dec==NIL)
         //helyertek vesszok nelkul
-        code:="CODE.numblur(event)"
+        code:="CODE.numblur(this)"
     else
         //helyertek vesszokkel
         //dec>=0, nulla vagy tobb tizedessel
-        code:="CODE.numblur(event,DEC)"::strtran("DEC",dec::str::alltrim)
+        code:="CODE.numblur(this,DEC)"::strtran("DEC",dec::str::alltrim)
     end
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
@@ -369,7 +369,7 @@ local pattern:=""
     if( "A"$opt ); pattern+="-[0-9]{8}"    ; end
     pattern::=substr(2)
 
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.accblur(event)"))
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.accblur(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.acckeypress(event,'OPT')"::strtran("OPT",opt)))
     node:setattrib(xhtmlnode.attrib("pattern",pattern))
     node:setstyle("font-family:monospace")

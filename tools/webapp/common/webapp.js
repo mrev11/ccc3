@@ -250,9 +250,17 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             else
             {
                 var v=ctrl[n].value;
-                if( ctrl[n].pattern.includes("[0-9]{8}-") || ctrl[n].pattern.includes("-[0-9]{8}") )
+                if( ctrl[n].pattern.includes("[0-9A-Z]{8}") ) //szamlaszam
                 {
                     v=v.replace(/-/g,"");       
+                }
+                else if( ctrl[n].pattern.includes("[0-9]{4}-[0-9]{2}-[0-9]{2}") ) //datum
+                {
+                    v=v.replace(/-/g,"");       
+                }
+                else if( ctrl[n].pattern.includes("[0-9\+\-\.,]*") ) //number
+                {
+                    v=v.replace(/,/g,"");       
                 }
                 x+="<value>"+XCODE.cdataif(v)+"</value>";
             }
@@ -690,6 +698,11 @@ XCODE.acckeypress=function(e,opt)
 {
     if( e.charCode==0 )
     {
+        if( e.which==13 && e.target.onblur!=undefined )
+        {
+            var ctrl=e.target;
+            ctrl.onblur(ctrl);
+        }
         return; //del,bs,right,left,...
     }
     

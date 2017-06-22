@@ -13,6 +13,9 @@ class formdata(object)
 
     method  initialize
     method  get
+    method  getnumber
+    method  getdate
+    method  getlogical
     method  put
     method  remove          :hash:remove   
     method  clear
@@ -76,6 +79,46 @@ local ctrl:=this:hash[x::bin2str]
 
 //megjegyzés: fdata:get(x) ugyanaz, mint fdata[x]  (rövidítés)
 
+***************************************************************************************
+static function formdata.getnumber(this,x)
+local ctrl:=this:hash[x::bin2str]
+    if( ctrl!=NIL )
+        x:=ctrl:value
+        //a bongeszo is kiveszi a vesszoket 
+        //x::=strtran(",","")::val
+        x::=val
+        return x
+    end
+
+***************************************************************************************
+static function formdata.getdate(this,x)
+local ctrl:=this:hash[x::bin2str]
+    if( ctrl!=NIL )
+        x:=ctrl:value
+        begin
+            //a bongeszo is kiveszi a kotojeleket 
+            //x::=strtran("-","")::stod
+            x::=stod
+        recover
+            //ervenytelen a datum, mi legyen?
+            //ha ures datummal megyunk tovabb,
+            //akkor nem lehet megkulonboztetni 
+            //a hibat szandekos/valodi ures datumtol
+            //ezert legyen inkabb NIL
+            //x:=ctod("")
+            x:=NIL
+        end
+        return x
+    end
+
+
+***************************************************************************************
+static function formdata.getlogical(this,x)
+local ctrl:=this:hash[x::bin2str]
+    if( ctrl!=NIL )
+        x:=ctrl:value
+        return x=="true"
+    end
 
 ***************************************************************************************
 static function formdata.put(this,x,y,type)
@@ -83,10 +126,21 @@ local ctrl:=this:hash[x::bin2str]
     if( ctrl==NIL )
         ctrl:=htmlcontrolNew(xmlnodeNew())
         ctrl:id:=x
-        ctrl:type:=if(type==NIL,"text",type)
+        ctrl:type:=if(type==NIL,"text",type) //HTML tipus
         ctrl:orig:="?"
         this:hash[x]:=ctrl
     end
+    
+    if( valtype(y)=="C" )
+        //ok
+    elseif( valtype(y)=="N" )
+        y::=str
+    elseif( valtype(y)=="D" )
+        y::=transform("@D 9999-99-99")
+    elseif( valtype(y)=="L" )
+        y:=if(y,"true","false")
+    end
+    
     ctrl:value:=y
 
 //megjegyzés: fdata:put(x,y)-ra nincs az előzőhöz hasonló rövidítés

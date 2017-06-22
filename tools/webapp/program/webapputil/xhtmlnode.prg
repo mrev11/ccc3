@@ -342,7 +342,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 function xhtmlnode.input_date(node)
     node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}"))
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}")) //webapp.js errol ismeri fel a datumokat
 
 
 ************************************************************************************************
@@ -358,6 +358,7 @@ local code
     end
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9\+\-\.,]*")) //webapp.js errol ismeri fel a szamokat
 
 
 ************************************************************************************************
@@ -371,7 +372,7 @@ local pattern:=""
 
     node:setattrib(xhtmlnode.attrib("onblur","CODE.accblur(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.acckeypress(event,'OPT')"::strtran("OPT",opt)))
-    node:setattrib(xhtmlnode.attrib("pattern",pattern))
+    node:setattrib(xhtmlnode.attrib("pattern",pattern)) //webapp.js errol ismeri fel a szamlaszamokat
     node:setstyle("font-family:monospace")
 
 

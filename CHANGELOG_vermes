@@ -1,4 +1,18 @@
 2017.06.22 webapp.js hangolgatas;
+  webapp.js-ben formdata kiveszi
+    - a szamlaszamokbol a kotojeleket,
+    - a datumokbol a kotojeleket,
+    - a szamokbol a vesszoket;
+  xhtmlnode.input_date, input_number, input_account mindegyike 
+  rendelkezik pattern attributummal, amit a webapp.js felhasznal az 
+  adott tipus felismeresehez (hogy kivegye a kotojeleket es vesszoket); 
+  Enter-re acckeypress (szamlaszamok onkeypress fuggvenye)
+  megigazitja az editalt szamlaszamot;
+  formdata:put karakterre konvertal;
+  uj metodusok: formdata:getnumber, formdata:getdate, formdata:getlogical
+  a megfelelo tipusra konvertal (karakterekre maradt a korabbi get).
+
+2017.06.22 webapp.js hangolgatas;
   editalas elott a szamlaszamokba kotojelet tesz;
   formdataba teves elott a szamlaszamokbol kiveszi a kotojelet;
   Enter-re numkeypress megigazitja az editalt szamot (meghivja onblur-t);

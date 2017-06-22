@@ -249,7 +249,12 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             }
             else
             {
-                x+="<value>"+XCODE.cdataif(ctrl[n].value)+"</value>";
+                var v=ctrl[n].value;
+                if( ctrl[n].pattern.includes("[0-9]{8}-") || ctrl[n].pattern.includes("-[0-9]{8}") )
+                {
+                    v=v.replace(/-/g,"");       
+                }
+                x+="<value>"+XCODE.cdataif(v)+"</value>";
             }
             x+="</control>";
         }
@@ -576,6 +581,11 @@ XCODE.numkeypress=function(e)
     if( e.charCode==0 )
     {
         //del,bs,right,left,...
+        if( e.which==13 && e.target.onblur!=undefined )
+        {
+            var ctrl=e.target;
+            ctrl.onblur(ctrl);
+        }
     }
     else
     {
@@ -623,6 +633,11 @@ XCODE.datkeypress=function(e)
     if( e.charCode==0 )
     {
         //del,bs,right,left,...
+        if( e.which==13 && e.target.onblur!=undefined )
+        {
+            var ctrl=e.target;
+            ctrl.onblur(ctrl);
+        }
     }
     else
     {
@@ -649,6 +664,19 @@ XCODE.datkeypress=function(e)
 XCODE.accblur=function(ctrl)
 {
     var x=ctrl.value;
+    if( !x.includes("-") )
+    {
+        var y=x.slice(0,8);;
+        var n=8;
+        var sl=x.slice(n,n+8);
+        while( sl.length>0 )
+        {
+            y+="-"+sl;
+            n+=8;
+            sl=x.slice(n,n+8);
+        }
+        x=y;
+    }
     var ax=x.split("-");
     if( ax.length>=3  )
     {

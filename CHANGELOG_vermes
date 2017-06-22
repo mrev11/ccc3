@@ -1,3 +1,9 @@
+2017.06.22 webapp.js hangolgatas;
+  editalas elott a szamlaszamokba kotojelet tesz;
+  formdataba teves elott a szamlaszamokbol kiveszi a kotojelet;
+  Enter-re numkeypress megigazitja az editalt szamot (meghivja onblur-t);
+  Enter-re datkeypress megigazitja az editalt datunot (meghivja onblur-t);
+
 2017.06.22 webapp.js: onblur event fuggvenyek valtozatak;
   numblur, datblur, accblur az event helyett a this-szel hivodik;
   numblur, datblur, accblur-t az updatecontrol is meghivja;

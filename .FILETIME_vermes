@@ -1,7 +1,7 @@
-4b1fb344c9e381eeddcfc0d07b5ba3c65379b47e 2017062310:10:10-UTC ./CHANGELOG_vermes
+7afe1e0a3d9ee2481e10b6e52758b337dec4cf7e 2017062315:10:19-UTC ./CHANGELOG_vermes
+026e9c4494703a89faf05cded450491b71596e50 2017062314:29:40-UTC ./tools/webapp/program/webapputil/formdata.prg
+6d313c9175abd393cce6bef5c3e33162729da792 2017062314:08:04-UTC ./tools/webapp/common/webapp.js
 d7d6beb2cc1af297f4662a76e526859f69cffada 2017062308:12:15-UTC ./tools/webapp/common/favicon.ico
-5ab6f0435e5d07003322ac479a7a1b1bb89a9a3b 2017062216:42:17-UTC ./tools/webapp/program/webapputil/formdata.prg
-ee355f285b229bd7c81370ff96e5bf564d6e2c3f 2017062216:37:15-UTC ./tools/webapp/common/webapp.js
 a87c4026832aab4a9409e071b62b8bc24f32928f 2017062216:28:02-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 9ccba0ed16a292c91dff0baaa9890f3281a808df 2017062211:53:37-UTC ./tools/webapp/program/webapputil/webpage.prg
 9dcaa9b5aedcb80e2150c56367853b158d74873e 2017062208:26:20-UTC ./tools/webapp/program/webapputil/xhtmltable.prg

@@ -165,7 +165,7 @@ XCODE.send=function(message)
             {
                 x=x.replace("COLOR","green");
             }
-            x+=CODE.htmlstring(message);
+            x+=XCODE.htmlstring(message);
             x+='</span>';
             XCODE.frmaux.writeln(x);
         }
@@ -586,14 +586,14 @@ XCODE.numkeypress=function(e)
 // onblur="numblur(this,2)" 
 // onkeypress="numkeypress(event)"
 {
-    if( e.charCode==0 )
+    if( XCODE.evententer(e) && e.target.onblur!=undefined )
+    {
+        var ctrl=e.target;
+        ctrl.onblur(ctrl);
+    }
+    else if( e.charCode==0 )
     {
         //del,bs,right,left,...
-        if( e.which==13 && e.target.onblur!=undefined )
-        {
-            var ctrl=e.target;
-            ctrl.onblur(ctrl);
-        }
     }
     else
     {
@@ -638,14 +638,14 @@ XCODE.datkeypress=function(e)
 // onkeypress="datkeypress(event)" 
 // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 {
-    if( e.charCode==0 )
+    if( XCODE.evententer(e) && e.target.onblur!=undefined )
+    {
+        var ctrl=e.target;
+        ctrl.onblur(ctrl);
+    }
+    else if( e.charCode==0 )
     {
         //del,bs,right,left,...
-        if( e.which==13 && e.target.onblur!=undefined )
-        {
-            var ctrl=e.target;
-            ctrl.onblur(ctrl);
-        }
     }
     else
     {
@@ -696,14 +696,16 @@ XCODE.accblur=function(ctrl)
 
 XCODE.acckeypress=function(e,opt)
 {
+    if( XCODE.evententer(e) && e.target.onblur!=undefined )
+    {
+        var ctrl=e.target;
+        ctrl.onblur(ctrl);
+        return;
+    }
     if( e.charCode==0 )
     {
-        if( e.which==13 && e.target.onblur!=undefined )
-        {
-            var ctrl=e.target;
-            ctrl.onblur(ctrl);
-        }
-        return; //del,bs,right,left,...
+        //del,bs,right,left,...
+        return; 
     }
     
     if( opt==undefined )

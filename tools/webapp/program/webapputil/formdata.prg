@@ -98,14 +98,19 @@ local ctrl:=this:hash[x::bin2str]
         begin
             //a bongeszo is kiveszi a kotojeleket 
             //x::=strtran("-","")::stod
-            x::=stod
+
+            if( empty(x) )
+                x::=ctod  //ures datum
+            else
+                x::=stod
+            end
+
         recover
             //ervenytelen a datum, mi legyen?
             //ha ures datummal megyunk tovabb,
             //akkor nem lehet megkulonboztetni 
             //a hibat szandekos/valodi ures datumtol
             //ezert legyen inkabb NIL
-            //x:=ctod("")
             x:=NIL
         end
         return x

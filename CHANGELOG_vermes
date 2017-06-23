@@ -1,3 +1,8 @@
+2017.06.23 webapp.js javitas;
+  Enter-re az FF mas erteket rak event.charCode-ba, mint a tobbi 
+  browser. A Firefox 0-t, a tobbi browser 13-at. A kulonbseg felderitese
+  es kikerulese fel napi pocsoles;
+
 2017.06.23 webapp/common/favicon.ico csere;
 
 2017.06.22 webapp.js hangolgatas;

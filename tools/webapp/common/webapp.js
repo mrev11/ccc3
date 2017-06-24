@@ -76,6 +76,11 @@ XCODE.onload_main=function(uri)
         while( n>0 && (pos=x.lastIndexOf("###",pos-1))>=0 )
         {
             n--;
+            if( x.length-pos>1024*1024  )
+            {
+                n=0;
+                break;
+            }
         }
         if( n==0 && pos>=0 )
         {

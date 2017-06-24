@@ -1,6 +1,7 @@
-7afe1e0a3d9ee2481e10b6e52758b337dec4cf7e 2017062315:10:19-UTC ./CHANGELOG_vermes
+150336a546dcdb4f7be355a83ec4d5b30718e255 2017062421:11:50-UTC ./CHANGELOG_vermes
+536030770dbe077fa8295167f8b24a6794c6b94b 2017062420:58:54-UTC ./tools/webapp/program/webapputil/websocket.prg
+5b3765d3c5fa24a7b44032b155402930aa8e674f 2017062420:47:31-UTC ./tools/webapp/common/webapp.js
 026e9c4494703a89faf05cded450491b71596e50 2017062314:29:40-UTC ./tools/webapp/program/webapputil/formdata.prg
-6d313c9175abd393cce6bef5c3e33162729da792 2017062314:08:04-UTC ./tools/webapp/common/webapp.js
 d7d6beb2cc1af297f4662a76e526859f69cffada 2017062308:12:15-UTC ./tools/webapp/common/favicon.ico
 a87c4026832aab4a9409e071b62b8bc24f32928f 2017062216:28:02-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 9ccba0ed16a292c91dff0baaa9890f3281a808df 2017062211:53:37-UTC ./tools/webapp/program/webapputil/webpage.prg
@@ -914,7 +915,6 @@ f2fbea9aba8536285677476dcaf234e4bce844d4 2012121316:32:06-UTC ./tabobj/tbbtbtx/b
 85aa76f771b58968f39af0a67e108d8ddad12bf1 2012112912:50:21-UTC ./tools/webapp/program/webapputil/jsstring.prg
 00e92b4e3343c65388aeda0678da544c694ac7d0 2012111911:11:26-UTC ./tools/webapp/program/webapp/httputil.prg
 302f116f88ad984789e2af431474426471c4a6e6 2012111911:00:50-UTC ./tools/webapp/common/main.css
-3e05a65148189e2cbc538ad7eeefbfc8196639a7 2012111807:13:55-UTC ./tools/webapp/program/webapputil/websocket.prg
 8bba7e83da0dac46139ed0ca6192885575a30764 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.p12
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par

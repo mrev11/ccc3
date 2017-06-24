@@ -12,11 +12,12 @@ local frame_masked
 local payload_len
 local masking_key
 local body
+local timeout:=30000 //30sec
 
     while(.t.)
 
         begin
-            if( NIL==(c:=sck:recv(1,1000)) )
+            if( len(c:=sck:recv(1,timeout))<1 )
                 break("Nincs kezdőbájt")
             else
                 c::=asc
@@ -24,7 +25,7 @@ local body
             frame_fin:=(c::numand(0b10000000))!=0
             frame_opcode:=c::numand(0b00001111) //1=text 2=binary  8=close 9=ping 10=pong
 
-            if( NIL==(c:=sck:recv(1,1000)) )
+            if( len(c:=sck:recv(1,timeout))<1 )
                 break("Nincs payload_len-1")
             else
                 c::=asc
@@ -35,7 +36,7 @@ local body
             if( payload_len==126 )
                 payload_len:=0
                 for n:=1 to 2
-                    if( NIL==(c:=sck:recv(1,1000)) )
+                    if( len(c:=sck:recv(1,timeout))<1 )
                         break("Nincs payload_len-2")
                     else
                         c::=asc
@@ -46,7 +47,7 @@ local body
             elseif( payload_len==127 )
                 payload_len:=0
                 for n:=1 to 8
-                    if( NIL==(c:=sck:recv(1,1000)) )
+                    if( len(c:=sck:recv(1,timeout))<1 )
                         break("Nincs payload_len-8")
                     else
                         c::=asc
@@ -54,10 +55,10 @@ local body
                     payload_len:=payload_len*256+c
                 next
             end
-    
+
     
             if( frame_masked )
-                masking_key:=sck:recv(4,1000)
+                masking_key:=sck:recv(4,timeout)
                 if( len(masking_key)!=4 )
                     break("Nincs masking_key")
                 end
@@ -65,7 +66,7 @@ local body
 
             fragment:=a""
             while( fragment::len<payload_len )
-                c:=sck:recv(payload_len-(fragment::len),1000)
+                c:=sck:recv(payload_len-(fragment::len),timeout)
                 if( c==NIL )
                     break("Nem jött elég adat")
                 else
@@ -76,44 +77,68 @@ local body
             if( frame_masked )
                 fragment::=websocket.mask(masking_key)
             end
-
+            
         recover err <C>    
             ? err
             return NIL
         end
 
-        //? frame_fin, frame_opcode, frame_masked, payload_len 
+        //? frame_fin, frame_opcode, frame_masked, payload_len::l2hex 
         //for n:=1 to len(fragment)
         //    ?? "  ["+fragment[n]::asc::l2hex+"]"
         //next
 
 
         // fragmentation
-        //  unfragmented message : (FIN==1,OP!=0)  
-        //  fragmented message   : (FIN==0,OP!=0)  (FIN==0,OP==0)*  (FIN==1,OP==0)
+        //  unfragmented message : A(FIN==1,OP!=0)  
+        //  fragmented message   : B(FIN==0,OP!=0)  C(FIN==0,OP==0)*  D(FIN==1,OP==0)
         // control frames (ping, pong) are always unfragmented 
         // control frames may be injected in a fragmented message
 
-        if( frame_opcode<=2 ) //0=continuation, 1=text, 2=binary
-            if( body==NIL )
-                body:=fragment
-            else
-                body+=fragment
+
+        if( frame_opcode==0 ) //continuation
+            //C|D eset
+            
+            if( body==NIL )  
+                //ide nem jöhet:
+                //ha nem elég nagy a recv timeout-ja,
+                //akkor mégis elofordul, hogy ráfut erre az ágra
+                //a timeout-ot megnöveltem 1 sec-ről 30 sec-re
+                //a recv eredményét NIL helyett hosszra kell ellenőrizni
             end
+            
+            body+=fragment
             if( frame_fin )
                 return body
             end
 
+        elseif( frame_opcode==1 ) //text
+            //A|B eset
+            body:=fragment
+            if( frame_fin )
+                return body
+            end
+            
+        elseif( frame_opcode==2 ) //binary
+            //A}B eset
+            body:=fragment
+            if( frame_fin )
+                return body
+            end
+
+
         elseif( frame_opcode==8 ) //close
             ? "close"
+            ? frame_fin, frame_opcode, frame_masked, payload_len 
             return NIL
 
         elseif( frame_opcode==9 ) //ping
+            ? "ping"
+            ? frame_fin, frame_opcode, frame_masked, payload_len 
             pong(sck,fragment) //visszaküld egy pongot
 
-            ? "ping"
             if( body==NIL )
-                //tobább kell várni, de nem itt, hanem a hívó programban
+                //tovább kell várni, de nem itt, hanem a hívó programban
                 return "" 
             else
                 //közbeékelt ping, tovább kell olvasni
@@ -121,19 +146,22 @@ local body
 
         elseif( frame_opcode==10 ) //pong
             ? "pong"
+            ? frame_fin, frame_opcode, frame_masked, payload_len 
+
             if( body==NIL )
-                //szóló pong, tobább kell várni a hívó programban
+                //szóló pong, tovább kell várni a hívó programban
                 return "" 
             else
                 //közbeékelt pong, tovább kell olvasni
             end
 
         else
-            //ide nem jöhet
+            ? "websocket: invalid opcode"
             ? frame_fin, frame_opcode, frame_masked, payload_len 
             for n:=1 to len(fragment)
                 ?? "  ["+fragment[n]::asc::l2hex+"]"
             next
+            return NIL
         end
     end
 
@@ -146,7 +174,57 @@ local hdr2:=bin(len(body))  //MSK=0, len (len<=125)
 
 
 ***************************************************************************************
-function writemessage(sck,msg)
+//#define DARABOL
+#ifdef  DARABOL
+
+function writemessage(sck,msg) //darabolva
+local frgsiz:=8192
+local fin:=0, op:=1
+    while( len(msg)>0 )
+        if(len(msg)<=frgsiz)
+            fin:=128
+        end
+        writemessage1(sck,bin(fin+op),msg[1..frgsiz])
+        op:=0
+        msg:=msg[frgsiz+1..]
+    end
+
+
+function writemessage1(sck,hdr,msg)
+//local hdr:=bin(129)
+local len, pll, n
+
+    msg::=str2bin
+    len:=len(msg)
+
+    if( len<126 )
+        hdr+=bin(len) //payload length
+
+    elseif( len<=0xffff )
+        hdr+=bin(126)
+        pll:=a""
+        for n:=1 to 2
+            pll:=bin(mod(len,256))+pll
+            len:=int(len/256)
+        next
+        hdr+=pll
+
+    else
+        hdr+=bin(127)
+        pll:=a""
+        for n:=1 to 8
+            pll:=bin(mod(len,256))+pll
+            len:=int(len/256)
+        next
+        hdr+=pll
+    end
+
+    sck:send(hdr+msg)
+
+#else
+
+
+function writemessage(sck,msg) //egyben
 
 local hdr:=bin(129)
 local len, pll, n
@@ -177,7 +255,7 @@ local len, pll, n
     end
 
     sck:send(hdr+msg)
-
+#endif
 
 
 ***************************************************************************************

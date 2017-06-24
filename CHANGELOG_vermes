@@ -1,3 +1,11 @@
+2017.06.24 websocket.readmessage-ben megnovelt timeout;
+  webapp.debug(.t.)-vel intenziv echozas utan egy ido mulva 
+  a bongeszok nem tudtak a timeouton belul valaszolni;
+  websocket.readmessage-ben a recv eredmenyet hosszra kell vizsgalni;
+  webabb.js-ben lekorlatoztam frmaux meretet, mert a  tul sok adat
+  miatt meg nagyobb timeout-ot igenyelnek a bongeszok;
+  websocket.writemessage-nek keszult egy darabolos valtozta;
+
 2017.06.23 webapp.js javitas;
   Enter-re az FF mas erteket rak event.charCode-ba, mint a tobbi 
   browser. A Firefox 0-t, a tobbi browser 13-at. A kulonbseg felderitese

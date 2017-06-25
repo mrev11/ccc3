@@ -2,62 +2,68 @@
 
 ***************************************************************************************
 function main(sessionid,sckstr,*)
-local data,x
 
-    set alternate to log-wecho
-    set alternate on
-
+    printlog()
+    //set console off
     ? {*}
+    webapp.demo.defaults()
 
-    webapp.ffsocket(sckstr)
-
-    webapp.script('CODE.webapp.frame.frameBorder="1";')
-    webapp.script('CODE.frmaux.frame.style.display="block";')
-    webapp.script('CODE.frmaux.frame.frameBorder="1";')
-    frmaux.clear()
+    //ez nagyon megterheli a böngészőt
+    //a timeoutok tesztelésére hasznos
     //webapp.debug(.t.)
 
-    webapp.innerhtml("display","WEcho")
-
-    webapp.script('CODE.formdata("INIT");')
-    x:=webapp.waitmessage("formdata.INIT",@data)
-    frmaux.writeln(x)
-
-    ? x:=webapp.echo("proba")
-    
     echotest()
-
-    sleep(2000)
-    
-    
 
 
 ***************************************************************************************
 static function echotest()
-local snd,rsp
-local n
 
-    for n:=-30 to 10
+local data,n,k:=0
 
-        snd:=replicate(a"ABCDEFGHIJKLMNOPQRSTUWVXYZabcdefghijklmnopqrstuwvxyz",2000)
-        //snd::=left(65535+n)
-        snd::=left(126+n)
-    
-        memowrit( "log-snd",snd )
+    data:=a"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    data+=data::lower
+    data::=replicate(2000)
 
-        websocket.writemessage( webapp.ffsocket(), a"CODE.echo('XX')"::strtran(a'XX',snd) )
-        rsp:=websocket.readmessage( webapp.ffsocket() )
+    webapp.innerhtml("display","WEcho")
 
-        memowrit( "log-rsp",rsp )
-        
-        if( !snd==rsp )
-            ? "eltér", n
-        else
-            ? "ok   ", n
-        end
-        
+    while( k<1000  )
+        for n:=-29 to 20
+            echo( (++k)::str::alltrim::str2bin + data::left(126+n) )
+            ?? k
+        next
+        for n:=-29 to 20
+            echo( (++k)::str::alltrim::str2bin + data::left( 65535+n) )
+            ?? k
+        next
+
+        webapp.innerhtml("display","WEcho"+str(k))
     next
+
+    sleep(1000)
     
+
+***************************************************************************************
+static function echo(snd)
+local rsp
+
+    memowrit( "log-snd",snd )
+    websocket.writemessage( webapp.ffsocket(), a"CODE.echo('XX')"::strtran(a'XX',snd) )
+    rsp:=websocket.readmessage( webapp.ffsocket() )
+
+    if( rsp==NIL )
+        ? "websocket closed"
+        quit
+    end
+    memowrit( "log-rsp",rsp )
+
+    if( snd==rsp )
+        ? "egyezik  ", len(snd)
+    else
+        ? "eltér    ", len(snd)
+        quit
+    end
+
+
 ***************************************************************************************
     
     

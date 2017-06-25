@@ -1,3 +1,5 @@
+2017.06.25 webapp demok korszerusitve;
+
 2017.06.24 websocket.readmessage-ben megnovelt timeout;
   webapp.debug(.t.)-vel intenziv echozas utan egy ido mulva 
   a bongeszok nem tudtak a timeouton belul valaszolni;

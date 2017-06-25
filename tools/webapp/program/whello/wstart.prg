@@ -19,9 +19,9 @@ local msg, data
 local dir:=directory("program/*.exe")
 local prev,b,n
 
-    webapp.defaults() // mindig kell
-    //webapp.debug(.t.) // fejlesztéskor jó
-    webapp.script('CODE.webapp.frame.height="400";')
+    printlog(.t.)
+
+    webapp.demo.defaults()
     
     asort(dir,,,{|x,y| x[1]<y[1] })
 
@@ -29,6 +29,7 @@ local prev,b,n
         b:=button
         b::=strtran("BUTID",dir[n][1])
         b::=strtran("BUTNAM",dir[n][1])
+        b::=strtran(".exe","")
         if( dir[n][1][1]!=prev )
             prev:=dir[n][1][1]
             b:="<p>"+b
@@ -42,7 +43,13 @@ local prev,b,n
     // message loop
     while( NIL!=(msg:=webapp.getmessage(@data)) )
         if( msg::startswith("formdata.") )
-            webapp.spawn(data:source,*)
+            if( data:source=="wstart"  )
+                ? "wstart reloaded"
+                webapp.exec(data:source+".exe",*)
+            else
+                ? "start", data:source+".exe"
+                webapp.spawn(data:source+".exe",*)
+            end
         end
     end
     

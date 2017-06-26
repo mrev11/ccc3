@@ -42,8 +42,9 @@ class page(xhtmlnode)
 
     method  createnodehash   {|this|this:nodehash:=xhtmlnode.createnodehash(this)}
 
+    attrib  cacheable
     attrib  uploaded                
-    method  upload           {|this|webapp.uploaddisplay(this:html),this:uploaded:=.t.} //az egészet elküldi
+    method  upload           //{|this|webapp.uploaddisplay(this:html),this:uploaded:=.t.} //az egészet elküldi
     method  update           :upload
 
     method  loop
@@ -56,6 +57,7 @@ local fs
     this:(xhtmlnode)initialize("div")
 
     this:createnodehash
+    this:cacheable:=.t.    
     this:uploaded:=.f.
     this:menuid:={}
     this:formid:={}
@@ -232,6 +234,33 @@ static function page.addaction(this,id,value,title,blk)
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
     end
+
+
+************************************************************************************************
+static function page.upload(this)
+    if( this:cacheable )
+        page.upload_cache(this)
+    else
+        webapp.uploaddisplay(this:html)
+    end
+    this:uploaded:=.t.
+
+
+static function page.upload_cache(this)
+local pageid:="",pn,pl,n:=2
+    while( !empty(pn:=procname(n)) ) 
+        pl:=procline(n)::any2str::alltrim
+        pageid+=pn+"("+pl+")"
+        n++
+    end 
+    pageid+=argv(0)  
+
+    if( !webapp.xlib.isdefined(pageid) )
+        webapp.uploaddisplay(this:html)
+        webapp.xlib.save_innerHTML(pageid,"display")
+    else
+        webapp.xlib.set_innerHTML("display",pageid)
+    end    
 
 
 ************************************************************************************************

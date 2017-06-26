@@ -1,3 +1,10 @@
+2017.06.26 webapp: objektum cache a bongeszoben;
+  webapp.js, XCODE.xlib={}, barmit tartalmazhat;
+  webapp.js, XCODE.xlib.isdefined(id), tartalmazza-e id-t;
+  webapp.page:upload nezi, hogy a page megvan-e mar a bongeszoben;
+  a cacheles letilthato: page:cacheable:=.f.;
+  xlib.prg: cachelest vegzo fugvenyek; 
+
 2017.06.25 webapp demok korszerusitve;
 
 2017.06.24 websocket.readmessage-ben megnovelt timeout;

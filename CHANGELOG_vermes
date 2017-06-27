@@ -1,4 +1,9 @@
-2017.06.26 webapp: objektum cache a bongeszoben;
+201.06.28 webapp letoltesek korszerusitve;
+  dnloadsessionfile, linksessionfile ujrairva;
+  webapp.js-ben uj elem: dnloadlink;
+  webapp.sessiondir() dirsep-pel a vegen adja a nevet;
+
+201.06.26 webapp: objektum cache a bongeszoben;
   webapp.js, XCODE.xlib={}, barmit tartalmazhat;
   webapp.js, XCODE.xlib.isdefined(id), tartalmazza-e id-t;
   webapp.page:upload nezi, hogy a page megvan-e mar a bongeszoben;

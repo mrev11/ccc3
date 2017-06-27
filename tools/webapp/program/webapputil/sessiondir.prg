@@ -53,7 +53,7 @@ local dspec:="session"
         dirmake(dspec)
     end
     
-    return dspec
+    return dspec+dirsep()
 
 
 ***************************************************************************************

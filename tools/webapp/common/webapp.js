@@ -43,8 +43,8 @@ XCODE.onload_main=function(uri)
     XCODE.main.window=window;
     XCODE.main.document=XCODE.main.window.document;
     XCODE.main.display=XCODE.main.document.getElementById("display");
-
     XCODE.webapp.frame=XCODE.main.document.getElementById("webapp");
+
     XCODE.webapp.window=XCODE.webapp.frame.contentWindow;
     XCODE.webapp.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
     XCODE.webapp.document=XCODE.webapp.window.document;
@@ -54,6 +54,12 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.display.id="display";
     XCODE.webapp.display.name="display";
     //XCODE.webapp.display.innerHTML="webapp";
+    XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
+    XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
+    XCODE.webapp.dnloadlink.id="dnloadlink";
+    XCODE.webapp.dnloadlink.name="dnloadlink";
+    XCODE.webapp.dnloadlink.download="";
+    XCODE.webapp.dnloadlink.style.display="none";
     XCODE.webapp.window.CODE=XCODE;
 
     XCODE.frmaux.frame=XCODE.main.document.getElementById("frmaux");

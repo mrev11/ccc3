@@ -1,4 +1,8 @@
 2017.06.28 webapp javitasok;
+  A xhtmlnode:html string előállításakor escapelni kell, 
+  nert a CDATA-t a böngészők commentnek értelmezik;
+
+2017.06.28 webapp javitasok;
   page:upload: a page objektumid-hez hozza lett veve az exe datumideje;
   linksessionfile parameterezese: linksessionfile(id,doc,text:=doc); 
 

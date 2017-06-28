@@ -1,4 +1,5 @@
-65a97dbe68549e85259da11da27316baa0ec6513 2017062812:15:38-UTC ./CHANGELOG_vermes
+e9dde0d58d989edb9fa21e39c5d6da6952650df4 2017062820:51:13-UTC ./CHANGELOG_vermes
+9f32d38e120fa7f71ff083c6745b3a7835929652 2017062817:08:50-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 87fa1c07647d84c2a0fa4a0b65a677c1df00125d 2017062808:35:53-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 dac8b0bbea4b1d008336dd4aa36c4c055d5b27c4 2017062808:10:02-UTC ./tools/webapp/program/webapputil/webpage.prg
 022ca31efe98e2b5eb2e24d0fdac46cb654d7f7b 2017062719:53:18-UTC ./tools/webapp/common/webapp.js
@@ -9,7 +10,6 @@ d148d97cadc10354219c5aacd739bb9155f48cf9 2017062511:47:36-UTC ./tools/webapp/pro
 d71d2909228ae50a458f002079c8971d62d11c20 2017062316:47:56-UTC ./tools/webapp/program/whello/whello.prg
 026e9c4494703a89faf05cded450491b71596e50 2017062314:29:40-UTC ./tools/webapp/program/webapputil/formdata.prg
 d7d6beb2cc1af297f4662a76e526859f69cffada 2017062308:12:15-UTC ./tools/webapp/common/favicon.ico
-a87c4026832aab4a9409e071b62b8bc24f32928f 2017062216:28:02-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 9dcaa9b5aedcb80e2150c56367853b158d74873e 2017062208:26:20-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 2e37b4e57dbe2f06aef5f7d6a39aa3e9e13c13df 2017062119:00:31-UTC ./tools/websrv/htdocs/localhost/favicon.ico
 a7935228686ed8a1103a74ed5a08cab0728c1b7e 2017061914:35:29-UTC ./tools/webapp/program/whello/wstart.prg

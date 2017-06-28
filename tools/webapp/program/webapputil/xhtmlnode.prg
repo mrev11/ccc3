@@ -170,7 +170,9 @@ local n
  
     elseif( this:type=="#CDATA" )
         for n:=1 to len(this:content)
-            html+="<![CDATA["+this:content[n]+"]]>"
+            //html+="<![CDATA["+this:content[n]+"]]>"
+            //a böngészők commentnek értelmezik a CDATA-t!
+            html+=this:content[n]::webapp.htmlstring
         next
 
     else

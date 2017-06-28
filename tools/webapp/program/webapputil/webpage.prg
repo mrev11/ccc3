@@ -1,4 +1,6 @@
 
+#include "directry.ch"
+
 namespace webapp
 
 #define MENUWIDTH 140
@@ -247,7 +249,8 @@ static function page.upload(this)
 
 
 static function page.upload_cache(this)
-local pageid:="",pn,pl,n:=2
+local pageid,pn,pl,n:=2
+    pageid:=dati_of_exe()
     while( !empty(pn:=procname(n)) ) 
         pl:=procline(n)::any2str::alltrim
         pageid+=pn+"("+pl+")"
@@ -261,6 +264,12 @@ local pageid:="",pn,pl,n:=2
     else
         webapp.xlib.set_innerHTML("display",pageid)
     end    
+
+
+static function dati_of_exe() //az exe linkelési dátumideje
+local pid:=getpid()::str::alltrim
+local dir:=directory("/proc/"+pid+"/exe","L")
+    return dir[1][F_DATE]::dtos+dir[1][F_TIME]::strtran(":","") 
 
 
 ************************************************************************************************

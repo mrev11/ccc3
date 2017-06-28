@@ -1,4 +1,8 @@
-201.06.28 webapp letoltesek korszerusitve;
+2017.06.28 webapp javitasok;
+  page:upload: a page objektumid-hez hozza lett veve az exe datumideje;
+  linksessionfile parameterezese: linksessionfile(id,doc,text:=doc); 
+
+2017.06.28 webapp letoltesek korszerusitve;
   dnloadsessionfile, linksessionfile ujrairva;
   webapp.js-ben uj elem: dnloadlink;
   webapp.sessiondir() dirsep-pel a vegen adja a nevet;

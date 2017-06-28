@@ -19,10 +19,10 @@ local code:=<<CODE>>CODE.webapp.dnloadlink.href="$URL";CODE.webapp.dnloadlink.cl
 
 
 **************************************************************************************
-function linksessionfile(id,text,doc) 
+function linksessionfile(id,doc,text:=doc) 
 
 // Csinál egy linket az id elemben
-// a link URL-je a doc-ra  mutat (file a sessiondirben)
+// a link URL-je a doc-ra mutat (file a sessiondirben)
 // a link szövege text
 
 local link:="<a href='$URL' download>"+text+"</a>" //ez kell, ez HTML5

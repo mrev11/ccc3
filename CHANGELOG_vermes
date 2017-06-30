@@ -1,3 +1,28 @@
+2017.06.30 webapp page atdolgozva;
+attrib uploaded: attrib helyett method, 
+    ami azt nezi, hogy NIL van-e restorkey-ben;
+method upload: a screen menteset is ez vegzi,
+    logikus, hiszen ez csinálja az elso kepernyo modositast,
+    tehat kozvetlenul ez elott, ehhez kapcsolodoan kell menteni,
+    a pege-ek cache-elését is ez vegzi'
+attrib restorkey: uj attributum, 
+    tarolja a mentett kepernyo kulcsat,
+    page:restorekey!=NIL-bol tudhato, hogy upload mar lefutott;  
+attrib initblock: felesleges,  megszunt;
+method close: uj method, kilép a page:loop-bol;
+attrib menuid: megszunt, helyette jobb megoldas;
+attrib formid: megszunt, helyette jobb megoldas;
+page.addmenu: a close es quit id-k specialis kezelese megszunt;
+    class closebutton:  megszunt;
+    class quitbutton:  megszunt; 
+    class htmldebugbutton:  megszunt; 
+page.loop: egyszerusitesek:
+    kilepoblokk felesleges, zavaros, megszuntetve;
+    formdata.quit uzenet specialis kezelese megszunt;
+    quit uzenet specialis kezelese megszunt;
+    html uzenet specialis kezelese megszunt;
+    close uzenet kezelese valtozott, vegrehajtja p:close-t;
+
 2017.06.28 webapp javitasok;
   A xhtmlnode:html string előállításakor escapelni kell, 
   nert a CDATA-t a böngészők commentnek értelmezik;

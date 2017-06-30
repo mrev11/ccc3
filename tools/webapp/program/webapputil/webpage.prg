@@ -11,43 +11,38 @@ namespace webapp
 ************************************************************************************************
 class page(xhtmlnode)
 
+    method  initialize
+
     attrib  caption          // <#TEXT>, az oldal címe
     attrib  menu             // <div>, főmenü az oldal bal szélén, egymás alatti gombok
     attrib  form             // <div>, amiben a formok vannak, egyszerre egy látható
     attrib  tabbut           // <div>, a látható formot kiválasztó buttonok
     attrib  action           // <div>, a formok alatt vizszintesen sorakozó gombok
     attrib  status           // <div>, a formok alatt egy üres hely üzenetek számára
-
-    attrib  menuid           // azonosítók listája
-    attrib  formid           // azonosítók listája
     
-    attrib  actionhash
-    
-    method  initialize
     method  addmenu
     method  addpdmenu
     method  addsubmenu
     method  addform
     method  addaction
+    attrib  actionhash
     method  setstatus        {|t,x|webapp.innerhtml(t:status:getattrib("id"),x)}
-                             
 
     method  switch_to_form
     attrib  active_form
     
     attrib  formdata         // minden formdata message frissíti
+    attrib  cargo            // tetszőleges adat
 
     attrib  nodehash         // hash a kontrollokból, item={id,ctrl}, nem feltétlenül uptodate
-    
-    attrib  cargo            // tetszőleges adat
-    attrib  initblock        // page:loop értékeli ki az oldal feltöltés után, de a loop előtt
-
     method  createnodehash   {|this|this:nodehash:=xhtmlnode.createnodehash(this)}
 
     attrib  cacheable
-    attrib  uploaded                
-    method  upload           //{|this|webapp.uploaddisplay(this:html),this:uploaded:=.t.} //az egészet elküldi
+    attrib  restorekey             
+    method  uploaded         {|this|this:restorekey!=NIL}
+    method  upload
     method  update           :upload
+    method  close            {|this|webapp.script(<<CODE>>CODE.echo('<close/>')<<CODE>>)} 
 
     method  loop
     
@@ -61,8 +56,6 @@ local fs
     this:createnodehash
     this:cacheable:=.t.    
     this:uploaded:=.f.
-    this:menuid:={}
-    this:formid:={}
     
     this:actionhash:=simplehashNew()
 
@@ -133,14 +126,9 @@ static function page.addmenu(this,id,value,title,blk)
 local button
     if( valtype(id)=="O" )
         button:=id  //kész objektum
-    elseif( id=="quit" )
-        button:=quitbuttonNew(id,value,title)
-    elseif( id=="close" )
-        button:=closebuttonNew(id,value,title)
     else
         button:=menubuttonNew(id,value,title)
     end
-    this:menuid::aadd(button:getattrib("id"))
     this:menu:addcontent(button)
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
@@ -155,7 +143,6 @@ local button
     else
         button:=pdmenubuttonNew(id,value,title)
     end
-    this:menuid::aadd(button:getattrib("id"))
     this:menu:addcontent(button)
 
 
@@ -167,8 +154,21 @@ local button
     else
         button:=submenubuttonNew(id,value,title)
     end
-    this:menuid::aadd(button:getattrib("id"))
     this:menu:addcontent(button) 
+    if(blk!=NIL)
+        this:actionhash["formdata."+id]:=blk
+    end
+
+
+************************************************************************************************
+static function page.addaction(this,id,value,title,blk)
+local button
+    if(  valtype(id)=="O" )
+        button:=id //kész objektum
+    else
+        button:=buttonNew(id,value,title)
+    end
+    this:action:addcontent(button)
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
     end
@@ -180,7 +180,6 @@ local fid,bid,but,item
 
     fid:=form:getattrib("id")
     this:form:addcontent(form)
-    this:formid::aadd(fid)
 
     form:pageblk:={||this}
     if( form:actionhash!=NIL )
@@ -204,20 +203,20 @@ local fid,bid,but,item
     end
 
     if( form:tabtext!=NIL )
-        bid:=fid::strtran("form_","tabbut_")  //pl. form_formid_szer -> tabbut_formid_szer
+        bid:=fid::strtran("form_","tabbut_")
         but:=tabbuttonNew(bid,form:tabtext)
         this:tabbut:addcontent(but)
-        this:actionhash["tabbutton."+bid]:={||this:switch_to_form(fid)}
     end
 
 
 ************************************************************************************************
 static function page.switch_to_form(this,fid)
-local par:={},n
+local par:={},n,idn
     par::aadd("none")
-    for n:=1 to len(this:formid)
-        if( !this:formid[n]==fid )
-            par::aadd(this:formid[n])
+    for n:=1 to len(this:form:content)
+        idn:=this:form:content[n]:getattrib("id")
+        if( !idn==fid )
+            par::aadd(idn)
         end
     next
     par::aadd("block")
@@ -227,28 +226,25 @@ local par:={},n
 
 
 ************************************************************************************************
-static function page.addaction(this,id,value,title,blk)
-    if(  valtype(id)=="O" )
-        this:action:content::aadd(id) //kész objektum
-    else
-        this:action:addcontent(buttonNew(id,value,title))
-    end
-    if(blk!=NIL)
-        this:actionhash["formdata."+id]:=blk
-    end
+static function page.upload(this)
+local pageid
 
+    pageid:=pageid()
+    this:restorekey:=pageid+time()
+    webapp.savedisplay(this:restorekey) 
+    webapp.emptydisplay()
+
+    if( !this:cacheable )
+        webapp.uploaddisplay(this:html)
+    elseif( !webapp.xlib.isdefined(pageid) )
+        webapp.uploaddisplay(this:html)
+        webapp.xlib.save_innerHTML(pageid,"display")
+    else
+        webapp.xlib.set_innerHTML("display",pageid)
+    end
 
 ************************************************************************************************
-static function page.upload(this)
-    if( this:cacheable )
-        page.upload_cache(this)
-    else
-        webapp.uploaddisplay(this:html)
-    end
-    this:uploaded:=.t.
-
-
-static function page.upload_cache(this)
+static function pageid()
 local pageid,pn,pl,n:=2
     pageid:=dati_of_exe()
     while( !empty(pn:=procname(n)) ) 
@@ -256,16 +252,11 @@ local pageid,pn,pl,n:=2
         pageid+=pn+"("+pl+")"
         n++
     end 
-    pageid+=argv(0)  
-
-    if( !webapp.xlib.isdefined(pageid) )
-        webapp.uploaddisplay(this:html)
-        webapp.xlib.save_innerHTML(pageid,"display")
-    else
-        webapp.xlib.set_innerHTML("display",pageid)
-    end    
+    pageid+=argv(0)
+    return pageid  
 
 
+************************************************************************************************
 static function dati_of_exe() //az exe linkelési dátumideje
 local pid:=getpid()::str::alltrim
 local dir:=directory("/proc/"+pid+"/exe","L")
@@ -275,116 +266,70 @@ local dir:=directory("/proc/"+pid+"/exe","L")
 ************************************************************************************************
 static function page.loop(this)
 
-local data,msg,tab,blk,res,item
-local key//:="page"+gettickcount()::str::alltrim
-local n,pdx,visible
+local msg,data,blk
+local n,menuid,visible
 
     if( !this:uploaded )
-        key:="page"+gettickcount()::str::alltrim
-        webapp.savedisplay(key) 
-        webapp.emptydisplay()
-        this:upload  //feltölti az oldalt (mint stringet innerHTML-be)
+        //menti a kepernyot 
+        //megorzi a visszallitashoz szukseges kulcsot
+        //feltölti az oldalt (mint stringet innerHTML-be)
+        //kezeli az objektum cache-t
+        //tudja, ha mar futott (csak egyszer fut)
+        //a loop elott kulon is hivhato
+
+        this:upload  
     end
 
     this:formdata:update
 
-    if( this:initblock!=NIL )
-        eval(this:initblock,this)
-    end
-
     while( NIL!=(msg:=webapp.getmessage(@data)) )
         //? "MESSAGE:", msg
-
-        if( msg::startswith("formdata.") )
-            
-            if( msg=="formdata.quit" )
-                if( webapp.alert("Kilép a programból?",{"Mégsem","Kilép"})==2 )
-                    webapp.innerhtml("display","<h3>Köszönjük, hogy használta a programot</h3>")
-                    quit
-                end
+        
+        if( NIL!=(blk:=this:actionhash[msg]) )
+            if( msg::startswith("formdata.") )
+                this:formdata:=data
             end
-
-            //data:list
+            eval(blk,this)  
+            this:formdata:update
 
         elseif( msg=="tabbutton" )
-            tab:=data:gettext  //pl. tabbut_formid_szer (a button id-je)
-            //item:=this:actionhash:first
-            //while( item!=NIL )
-            //    ? item
-            //    item:=this:actionhash:next
-            //end
-            blk:=this:actionhash["tabbutton."+tab]
-            if( blk!=NIL )
-                eval(blk,tab::strtran("tabbut_","form_"))
-            end
+            this:switch_to_form( data:gettext::strtran("tabbut_","form_") )
 
         elseif( msg=="pdbutton" )
             visible:={}
-            pdx:=ascan(this:menuid,{|id|id==data:gettext})
             for n:=1 to len(this:menu:content)
-                if( this:menu:content[n]:classname=="webapp.pdmenubutton" )
-                    if( n==pdx ) 
-                        if( !this:menu:content[pdx]:visible )
-                            this:menu:content[pdx]:visible:=.t.
-                            visible::aadd("block")
-                        else
-                            this:menu:content[pdx]:visible:=.f.
-                            visible::aadd("none")
-                        end
+                menuid:=this:menu:content[n]:getattrib("id")
+                if( menuid==data:gettext )
+                    //pdmenu, amin klikkeltek
+                    if( !this:menu:content[n]:visible )
+                        this:menu:content[n]:visible:=.t.
+                        visible::aadd("block")
                     else
                         this:menu:content[n]:visible:=.f.
                         visible::aadd("none")
                     end
+
+                elseif( this:menu:content[n]:classname=="webapp.pdmenubutton" )
+                    //pdmenu, masik
+                    this:menu:content[n]:visible:=.f.
+                    visible::aadd("none")
+
                 elseif( this:menu:content[n]:classname=="webapp.submenubutton" )
-                    visible::aadd(this:menuid[n])
+                    //submenu
+                    visible::aadd(menuid)
+     
                 end
             next
             evalarray({|*|webapp.style.display(*)},visible)
             
         elseif( msg=="close" )
-            if( webapp.alert("Bezárja az oldalt?",{"Mégsem","Bezár"})==2 )
-                exit  //kilép a page:loop-ból
-            end
+            exit  //kilép a page:loop-ból
 
-        elseif( msg=="quit" )
-            if( webapp.alert("Kilép a programból?",{"Mégsem","Kilép"})==2 )
-                webapp.innerhtml("display","<h3>Köszönjük, hogy használta a programot</h3>")
-                quit //kilép a programból
-            end
-
-        elseif( msg=="html" )
-            //az oldal aktuális HTML tartalma (debug célra)
-            memowrit("debug.html","<html>"+data:gettext+"</html>")
-        end
-        
-        res:=NIL
-        blk:=this:actionhash[msg]
-        if( blk!=NIL )
-
-            //res:=eval(blk,data)
-            //!!!! változás 2012.08.30 
-            //data helyett this az argumentum, this:formdata-ban van a korábbi data
-
-            this:formdata:=data
-            res:=eval(blk,this)  
-
-            if( res::valtype=="B" )
-                exit //kilép a page:loop-ból
-            end
-        end
-
-        if( msg::startswith("formdata.") )
-            data:update
         end
     end
 
-    if(key!=NIL)    
-        webapp.restoredisplay(key)
-    end
-    
-    if( res::valtype=="B" )
-        eval(res,data)
-    end
+    webapp.restoredisplay(this:restorekey)
+    this:restorekey:=NIL
 
 
 ************************************************************************************************
@@ -497,32 +442,6 @@ local msg:="<tabbutton>ID</tabbutton>"::strtran("ID",id)::webapp.jsstring
 
 
 ************************************************************************************************
-//quitbutton
-************************************************************************************************
-class quitbutton(webapp.menubutton)
-    method  initialize
-
-static function quitbutton.initialize(this,id,value,title)
-local msg:="<quit/>"::webapp.jsstring
-    this:(webapp.menubutton)initialize(id,value,title)
-    this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)   ))
-    return this
-
-
-************************************************************************************************
-//closebutton
-************************************************************************************************
-class closebutton(webapp.menubutton)
-    method  initialize
-
-static function closebutton.initialize(this,id,value,title)
-local msg:="<close/>"::webapp.jsstring
-    this:(webapp.menubutton)initialize(id,value,title)
-    this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)   ))
-    return this
-
-
-************************************************************************************************
 //pdmenubutton (pulldown)
 ************************************************************************************************
 class pdmenubutton(webapp.menubutton)
@@ -550,22 +469,3 @@ static function submenubutton.initialize(this,id,value,title)
 
 
 ************************************************************************************************
-//htmldebugbutton
-************************************************************************************************
-class htmldebugbutton(webapp.button)
-    method  initialize
-
-static function htmldebugbutton.initialize(this,id:="html",value:="Print HTML",title:="Kiírja az oldal aktuális HTML tartalmát")
-local code:="CODE.send('<html>'+CODE.cdata(CODE.webapp.display.innerHTML)+'</html>')"
-    this:(webapp.button)initialize(id,value,title)
-    this:setattrib(xhtmlnode.attrib("onclick",code))
-    return this
-
-************************************************************************************************
-
-
-
-
-
-
-

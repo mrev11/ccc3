@@ -1,4 +1,6 @@
-e1b16cf4c2bd1e05db00123c8c57c06c38b8f3f6 2017063008:45:55-UTC ./CHANGELOG_vermes
+550621cdd2ced15a2850a5e145719de483acd649 2017063015:23:51-UTC ./CHANGELOG_vermes
+d12c42de0aef6f8d8b4ae97dbc6d8df5e508caf8 2017063012:52:30-UTC ./tools/webapp/program/webapputil/script.prg
+2782602d8724e2cc782319683a15ad3efc1300e3 2017063012:43:44-UTC ./tools/webapp/program/webapputil/frmaux.prg
 baeedcaf41245b723ad48e04a2e9edb38e9d47e2 2017063007:44:49-UTC ./tools/webapp/program/webapputil/webpage.prg
 9f32d38e120fa7f71ff083c6745b3a7835929652 2017062817:08:50-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 87fa1c07647d84c2a0fa4a0b65a677c1df00125d 2017062808:35:53-UTC ./tools/webapp/program/webapputil/sessionfile.prg
@@ -1003,7 +1005,6 @@ d13e0d733b0bab64c3b059673f13e2d9af878495 2012092008:24:43-UTC ./tools/sql2/test/
 10a580b3b6940084826adbb1a89f483329a0b3e7 2012090312:44:49-UTC ./tools/webapp/program/msk2html/OLVASS
 cc9994f240196a1d3720f9c2a60437730f16f653 2012090310:43:57-UTC ./tools/webapp/program/msk2html/xhtmlnode.prg
 f9422e156bdf38e19a538a89d0b4917bcf44f99e 2012090309:57:51-UTC ./tools/webapp/program/webapputil/walert.prg
-3507141bdfc7237e03f11f354ac1f9340d1ff271 2012090309:51:03-UTC ./tools/webapp/program/webapputil/script.prg
 7d63c99734c17e9db9030229941567d02d76dcc6 2012083108:31:12-UTC ./ccclib/src/simplehash.prg
 dc447a3333d1c5044e031381cced59f47386870c 2012072706:16:34-UTC ./tools/sql2/driver-sqlite3/OLVASS
 80b2c865c8543e4f1054065347105bce1915bd82 2012071710:26:23-UTC ./tutor/readline/firstpar.prg
@@ -1075,7 +1076,6 @@ e731c0697f7ce1d4b466767588d477754bc59682 2012021916:20:24-UTC ./tabobj/tbbtbtx/u
 ffa6071c629a5f75e5cf8157991527355b39f4b4 2012010814:36:00-UTC ./doc/ccc-belulrol/script/foot.html
 117c5a0a314a1dd1b13cbe7e4c7ff6ecf1f41f35 2012010814:25:41-UTC ./doc/h
 729531760c2477267d3e059ca4cf003f989fbfc6 2012010313:29:40-UTC ./tools/webapp/program/webapputil/mask.cpp
-3801cbc21e4ea18a65c71691308fa3926cd72b4c 2012010309:58:14-UTC ./tools/webapp/program/webapputil/frmaux.prg
 49b495f90e22ac0e6a66c44df71ff8d93d68f8c1 2012010309:30:06-UTC ./tools/webapp/program/webapputil/private.prg
 adc83b19e793491b1c6ea0fd8b46cd9f32e592fc 2011123109:08:55-UTC ./tools/webapp/program/webapp/webapp.ch
 26f976fa0466de4cc3b7acf3f136376bb2a91179 2011121805:25:03-UTC ./tools/webapp/program/webapputil/md5passw.prg

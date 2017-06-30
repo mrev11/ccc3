@@ -1,3 +1,12 @@
+2017.06.30 webapp "script" fuggvenyek;
+  Korvonalazodott az iranyelv, hogy kozvetlen javascript kuldes 
+  ne tortenjen a webapputil konytaron kivulrol.  Ez azt jelenti, 
+  hogy a webapp.script fuggveny csak a konyvtaron belul hasznalhato, 
+  tehat minden ilyen hasznalathoz kell kesziteni egy fuggveny API-t. 
+  Ilyenek keszultek most a webapp es frmaux framek  parameterezesere 
+  (visible, border, size). A bongeszobol echozasra, formdata kuldesre. 
+  Egyelore.
+
 2017.06.30 webapp page atdolgozva;
 attrib uploaded: attrib helyett method, 
     ami azt nezi, hogy NIL van-e restorkey-ben;

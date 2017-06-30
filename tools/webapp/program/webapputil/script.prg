@@ -17,6 +17,43 @@ function script(x)
 
 
 ***************************************************************************************
+function visible(flag)
+local code:=<<code>>CODE.webapp.frame.style.display="$DISP";<<code>>
+    code::=strtran("$DISP",if(flag,"block","none"))
+    webapp.script(code)
+
+
+***************************************************************************************
+function border(flag)
+local code:=<<code>>CODE.webapp.frame.frameBorder="$BORDER";<<code>>
+    code::=strtran("$BORDER",if(flag,"1","0"))
+    webapp.script(code)
+
+
+***************************************************************************************
+function size(w,h)
+local code:=""
+local codew:=<<code>>CODE.webapp.frame.width="$WIDTH";<<code>>
+local codeh:=<<code>>CODE.webapp.frame.height="$HEIGHT";<<code>>
+    if(w!=NIL)
+        code+=codew::strtran("$WIDTH",w::str::alltrim)
+    end
+    if(h!=NIL)
+        code+=codeh::strtran("$HEIGHT",h::str::alltrim)
+    end
+    webapp.script(code)
+
+
+***************************************************************************************
+function debug(flag:=.t.)
+    if( flag )
+        script( "CODE.turndebug(true); ")
+    else
+        script( "CODE.turndebug(false); ")
+    end
+
+
+***************************************************************************************
 function setattrib(id,attr,value)
 local code:="CODE.webapp.document.getElementById('ID').ATTR=VALUE; "
     code::=strtran("ID",id)
@@ -59,20 +96,17 @@ local code:="CODE.webapp.document.getElementById('ID').style.PROP=TXT; "
 //setattrib speciális esete 
 
 ***************************************************************************************
-function echo(x)
-local data
-    webapp.script("CODE.echo('<"+x+"/>')")
-    webapp.waitmessage(x,@data)
-    return data
+function echo(x)  //kuldje vissza a stringet
+local code:=<<code>>CODE.echo('$STRING');<<code>>
+    code::=strtran("$STRING",x)
+    webapp.script(code)
 
 
 ***************************************************************************************
-function debug(flag:=.t.)
-    if( flag )
-        script( "CODE.turndebug(true); ")
-    else
-        script( "CODE.turndebug(false); ")
-    end
-
+function formdata(x) //kuldjon formdatat x-bol
+local code:=<<code>>CODE.formdata('$CTRLID');<<code>>
+    code::=strtran("$CTRLID",x)
+    webapp.script(code)
+                 
 
 ***************************************************************************************

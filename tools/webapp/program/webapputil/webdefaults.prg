@@ -14,20 +14,29 @@ function defaults()
 
     set date format 'yyyy-mm-dd'
 
-    // frame-ek tulajdonságainak beállítása, három frame van:
+
+    webapp.debug(.f.)
+    frmaux.clear()  
+
+
+    // három frame van:
     // - main    : a gyökér, az alkalmazás nem használja
     // - webapp  : main gyereke, ebben jelenik meg az alkalmazás
     // - frmaux  : main gyereke, teszt kiírásoknak (defaultban nem látszik)
-    
-    //webapp.frame
-    //webapp.script('CODE.webapp.frame.frameBorder="1";')       //default: 0 (nincs border)
-    webapp.script('CODE.webapp.frame.height="800";')            //frame magassága
-    webapp.script('CODE.webapp.frame.width="1000";')            //frame szélessége
 
-    //aux.frame
-    //webapp.script('CODE.frmaux.frame.style.display="block";') //default: none (nem látszik)
-    //webapp.script('CODE.frmaux.frame.frameBorder="1";')       //default: 0 (nincs border)
-    //webapp.script('CODE.frmaux.frame.height="400";')          //frame magassága
-    //webapp.script('CODE.frmaux.frame.width="1000";')          //frame sszélessége
-    //frmaux.clear()
+
+    //webapp frame beállításai
+
+        webapp.visible(.t.)
+        webapp.border(.f.)
+        webapp.size(1000,800)
+
+    //frmaux frame beállításai
+
+        frmaux.visible(.f.)
+        frmaux.border(.t.)
+        frmaux.size(1000,400)
+
+
+
 

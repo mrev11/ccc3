@@ -42,7 +42,10 @@ class page(xhtmlnode)
     method  uploaded         {|this|this:restorekey!=NIL}
     method  upload
     method  update           :upload
-    method  close            {|this|webapp.script(<<CODE>>CODE.echo('<close/>')<<CODE>>)} 
+
+    attrib  closed           //mutatja, hogy ki kell lepni a loop-bol
+    method  close            {|this|this:closed:=.t.} 
+    attrib  msgtimeout       //getmessage-nek atadott timeout millisec
 
     method  loop
     
@@ -282,10 +285,28 @@ local n,menuid,visible
 
     this:formdata:update
 
-    while( NIL!=(msg:=webapp.getmessage(@data)) )
+    this:closed:=.f.
+    while( !this:closed ) 
+        msg:=webapp.getmessage(@data,this:msgtimeout)
         //? "MESSAGE:", msg
+
+        if( msg==NIL )
+            //a kapcsolat megszakadt
+            //leggyakoribb ok, hogy kiléptek a böngészőből
+            exit
+
+        elseif( msg::empty  )
+            //lejárt a timeout
+            //leggyakoribb ok, hogy a user inaktiv
+            
+            if( NIL!=(blk:=this:actionhash["msgtimeout"]) )
+                eval(blk,this)
+                this:formdata:update
+            else
+                exit
+            end
         
-        if( NIL!=(blk:=this:actionhash[msg]) )
+        elseif( NIL!=(blk:=this:actionhash[msg]) )
             if( msg::startswith("formdata.") )
                 this:formdata:=data
             end
@@ -321,16 +342,18 @@ local n,menuid,visible
                 end
             next
             evalarray({|*|webapp.style.display(*)},visible)
-            
-        elseif( msg=="close" )
-            exit  //kilép a page:loop-ból
 
         end
     end
 
     webapp.restoredisplay(this:restorekey)
     this:restorekey:=NIL
+    
+    return msg //az utolso message
 
+    //(NIL)     magszakadt a kapcsolat
+    //(empty)   lejart a msgtimeout es nem volt megadva akcio
+    //(other)   az akcio bezarta a page-et
 
 ************************************************************************************************
 //form

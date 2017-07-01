@@ -1,3 +1,8 @@
+2017.07.01 webapp javitgatasok;
+  webdefaults: kozvetlen scriptelgetes helyett fuggvenyek;
+  whello/defaults: kozvetlen scriptelgetes helyett fuggvenyek;
+  webapp.page: page:close atirva, timeout kezeles;
+
 2017.06.30 webapp "script" fuggvenyek;
   Korvonalazodott az iranyelv, hogy kozvetlen javascript kuldes 
   ne tortenjen a webapputil konytaron kivulrol.  Ez azt jelenti, 

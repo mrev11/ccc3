@@ -261,9 +261,13 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             else
             {
                 var v=ctrl[n].value;
-                if( ctrl[n].pattern.includes("[0-9A-Z]{8}") ) //szamlaszam
+                if( ctrl[n].pattern.includes("(^.*$)|") ) //picture (valid)
                 {
-                    v=v.replace(/-/g,"");       
+                    v=XCODE.picreadvalue(ctrl[n]);       
+                }
+                else if( ctrl[n].pattern.includes("(^@*$)|") ) //picture (invalid)
+                {
+                    v=XCODE.picreadvalue(ctrl[n]);       
                 }
                 else if( ctrl[n].pattern.includes("[0-9]{4}-[0-9]{2}-[0-9]{2}") ) //datum
                 {
@@ -562,9 +566,29 @@ XCODE.evententer=function(event)
     return event.which==13;
 }
 
+function chr(code)
+{
+    return String.fromCharCode(code);
+}
 
 
+XCODE.xlib={}; //objektumtár
+XCODE.xlib.isdefined=function(id)
+{
+    if( XCODE.xlib[id]!=undefined  )
+    {
+        XCODE.echo('<isdefined>true</isdefined>');
+    }
+    else
+    {
+        XCODE.echo('<isdefined>false</isdefined>');
+    }
+};
+
+
+//-------------------------------------------------------------------------------
 XCODE.num2str=function(num,dec) //szamok formazasa
+//-------------------------------------------------------------------------------
 // dec=undef: tizedesek nelkul, elvalaszto vesszok nelkul
 // dec=0    : tizedesek nelkul, elvalaszto vesszokkel
 // dec>=1   : tizedesekkel, elvalaszto vesszokkel
@@ -582,20 +606,18 @@ XCODE.num2str=function(num,dec) //szamok formazasa
     return x;
 } 
 
-XCODE.numblur=function(ctrl,dec)
-// az inputmezo elhagyasakor (onblur) megformazza bevitt szamot
-// onblur="numblur(this,2)" 
-// onkeypress="numkeypress(event)"
+//-------------------------------------------------------------------------------
+XCODE.numsettlevalue=function(ctrl,dec)
+//-------------------------------------------------------------------------------
 {
     var text=ctrl.value.replace(/,/g,"").replace(/ /g,""); //kiszedi a szemetet
     var num=Number(text);
     ctrl.value=XCODE.num2str(num,dec);
 }
 
+//-------------------------------------------------------------------------------
 XCODE.numkeypress=function(e) 
-// szamok bevitele kozben (onkeypress) nem enged be szemet karaktereket
-// onblur="numblur(this,2)" 
-// onkeypress="numkeypress(event)"
+//-------------------------------------------------------------------------------
 {
     if( XCODE.evententer(e) && e.target.onblur!=undefined )
     {
@@ -622,8 +644,9 @@ XCODE.numkeypress=function(e)
     }
 }
 
-
+//-------------------------------------------------------------------------------
 XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
+//-------------------------------------------------------------------------------
 {
     var s=d.getFullYear().toString();
     s+="-"+(1+d.getMonth()).toLocaleString("en-US",{minimumIntegerDigits:2})
@@ -631,11 +654,9 @@ XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
     return s
 }
 
-XCODE.datblur=function(ctrl)
-// inputmezo elhagyasakor (onblur) utolag formazza a datumot
-// onblur="datblur(this)" 
-// onkeypress="datkeypress(event)" 
-// pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+//-------------------------------------------------------------------------------
+XCODE.datsettlevalue=function(ctrl)
+//-------------------------------------------------------------------------------
 {
     var x=ctrl.value.replace(/-/g,"");
     x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
@@ -643,11 +664,9 @@ XCODE.datblur=function(ctrl)
     ctrl.value=x; 
 }
 
+//-------------------------------------------------------------------------------
 XCODE.datkeypress=function(e) 
-// datumok bevitele kozben (onkeypress) nem enged be szemet karaktereket
-// onblur="datblur(this)" 
-// onkeypress="datkeypress(event)" 
-// pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+//-------------------------------------------------------------------------------
 {
     if( XCODE.evententer(e) && e.target.onblur!=undefined )
     {
@@ -680,116 +699,223 @@ XCODE.datkeypress=function(e)
 }
 
 
-XCODE.accblur=function(ctrl)
+//-------------------------------------------------------------------------------
+XCODE.picsettlevalue=function(ctrl)
+//-------------------------------------------------------------------------------
 {
-    var x=ctrl.value;
-    if( !x.includes("-") )
-    {
-        var y=x.slice(0,8);;
-        var n=8;
-        var sl=x.slice(n,n+8);
-        while( sl.length>0 )
-        {
-            y+="-"+sl;
-            n+=8;
-            sl=x.slice(n,n+8);
-        }
-        x=y;
+    if( typeof(ctrl)=="string" )
+    { 
+        ctrl=document.getElementById(ctrl);
     }
-    var ax=x.split("-");
-    if( ax.length>=3  )
+    var v=ctrl.value;
+    var pic=ctrl.pattern.slice(7);
+    var num="0123456789";
+    var abc="abcdefghijklmnopqrstuvwxyz";
+    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var x="";
+    ctrl.pattern="(^@*$)|"+pic
+    if( v=="" )
     {
-        x+="0".repeat(8-ax[2].length);
-    }  
-    x=x.toUpperCase();
-    ctrl.value=x;
-}
+        ctrl.pattern="(^.*$)|"+pic
+        return x;
+    }
+    var i=0,j=0;
+    for(i=0,j=0; i<pic.length && j<v.length; i++,j++)
+    {
+        var t=pic.charAt(i);
+        if( "09".includes(t) )
+        {
+            if((num).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "a".includes(t) )
+        {
+            if((abc+ABC).includes(v.charAt(j))){x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "A".includes(t) )
+        {
+            if((abc+ABC).includes(v.charAt(j))){x+=v.charAt(j).toUpperCase();}else{return "? "+x;}
+        }
+        else if( t=="n" )
+        {
+            if((num+abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( t=="N" )
+        {
+            if((num+abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j).toUpperCase();}else{return "? "+x;}
+        }
+        else if( t=="X" )
+        {
+            x+=v.charAt(j);
+        }
+        else 
+        {
+            x+=t;
+            if( t!=v.charAt(j) )
+            {
+                --j;
+            }
+        }
+    }
 
-XCODE.acckeypress=function(e,opt)
+    //1) lehet, hogy pic es v egyszerre elfogyott -> kesz
+    //2) lehet, hogy v-bol maradt -> hibas adat
+    //3) lehet, hogy pic-bol maradt -> el kell fogyasztani
+
+    for( ; j<v.length; j++  )
+    {
+        return "? "+x;
+    }
+    for( ; i<pic.length; i++  )
+    {
+        var t=pic.charAt(i);
+        if( "9AaNn".includes(t) )
+        { 
+            return "? "+x;
+        }
+        else
+        {
+            x+=t;
+        }
+    }
+    ctrl.pattern="(^.*$)|"+pic
+    ctrl.value=x;
+    return x;
+} 
+
+
+//-------------------------------------------------------------------------------
+XCODE.picreadvalue=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if(typeof(ctrl)=="string")
+    { 
+        ctrl=document.getElementById(ctrl);
+    }
+    var v=ctrl.value;
+    var pic=ctrl.pattern.slice(7);
+    var num="0123456789";
+    var abc="abcdefghijklmnopqrstuvwxyz";
+    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var x="";
+    if( v=="" )
+    {
+        return x;
+    }
+    for(var i=0, j=0; i<pic.length && j<v.length; i++,j++ )
+    {
+        var t=pic.charAt(i);
+        if( "09".includes(t) )
+        {
+            if((num).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "Aa".includes(t) )
+        {
+            if((abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "Nn".includes(t) )
+        {
+            if((num+abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "X".includes(t) )
+        {
+            x+=v.charAt(j);
+        }
+        else 
+        {
+            if( t!=v.charAt(j) ) {return "? "+x;}
+        }
+    }
+
+    //1) lehet, hogy pic es v egyszerre elfogyott -> kesz
+    //2) lehet, hogy v-bol maradt -> hibas adat
+    //3) lehet, hogy pic-bol maradt -> el kell fogyasztani
+
+    for( ; j<v.length; j++  )
+    {
+        return "? "+x;
+    }
+    for( ; i<pic.length; i++  )
+    {
+        var t=pic.charAt(i);
+        if( "9AaNn".includes(t) )
+        { 
+            return "? "+x;
+        }
+    }
+    return x;
+} 
+
+//-------------------------------------------------------------------------------
+XCODE.pickeypress=function(e) 
+//-------------------------------------------------------------------------------
 {
     if( XCODE.evententer(e) && e.target.onblur!=undefined )
     {
         var ctrl=e.target;
         ctrl.onblur(ctrl);
-        return;
     }
-    if( e.charCode==0 )
+    else if( e.charCode==0 )
     {
         //del,bs,right,left,...
-        return; 
-    }
-    
-    if( opt==undefined )
-    {
-        opt="FUA";
-    }
-    var optlen=opt.length;
-
-    var ctrl=e.target;
-    var x=ctrl.value;
-    var len=x.length;
-    var pos=ctrl.selectionStart; //caret pozicio
-    var chr=String.fromCharCode(e.charCode); //aktualis karakter
-    x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
-    var comp=x.split("-"); // {F,U,A}
-
-    if( comp.length>optlen )
-    {
-        //'-'-t gepeltek, 
-        //de nem lehet tobb '-' benne
-        e.preventDefault(); 
-        return; 
-    }
-
-    var regex={};
-    regex["F"]=/^[0-9]{1,8}$/;
-    regex["U"]=/^[0-9a-zA-Z]{0,8}$/;
-    regex["A"]=/^[0-9]{0,8}$/;
-    
-    for(i=0; i<comp.length; i++)
-    {
-        if( comp[i]==undefined )
-        {        
-            comp[i]="";
-        }
-
-        if( !regex[opt.charAt(i)].test(comp[i]) )
-        {
-            if( (len==pos) && 
-                (len==8 || len==17) && 
-                (i<optlen-1) && 
-                (regex[opt.charAt(i+1)].test(chr)) )
-            {
-                //automatikusan atviszi 
-                //a kovetkezo komponensbe
-                ctrl.value=ctrl.value+"-"+chr;
-            }
-            e.preventDefault(); 
-            return;
-        }
-    }
-}
-
-
-function chr(code)
-{
-    return String.fromCharCode(code);
-}
-
-
-XCODE.xlib={}; //objektumtár
-XCODE.xlib.isdefined=function(id)
-{
-    if( XCODE.xlib[id]!=undefined  )
-    {
-        XCODE.echo('<isdefined>true</isdefined>');
     }
     else
     {
-        XCODE.echo('<isdefined>false</isdefined>');
-    }
-};
+        var ctrl=e.target; //input mezo
+        var v=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        var x=v.slice(0,pos)+chr+v.slice(pos); //karakter beillesztve
+        var pic=ctrl.pattern.slice(7);
+        var num="0123456789";
+        var abc="abcdefghijklmnopqrstuvwxyz";
+        var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+        var i=0, j=0;
+        for(i=0, j=0; i<pic.length && j<x.length; i++ )
+        {
+            var t=pic.charAt(i);
+            if( "09".includes(t) )
+            {
+                if((num).includes(x.charAt(j))){j++;} else {break;}
+            }
+            else if( "Aa".includes(t) )
+            {
+                if((abc+ABC).includes(x.charAt(j))){j++;} else {break;}
+            }
+            else if( "Nn".includes(t) )
+            {
+                if((num+abc+ABC).includes(x.charAt(j))){j++;} else {break;}
+            }
+            else if( "X".includes(t) )
+            {
+                j++;
+            }
+            else 
+            {
+                if( t==x.charAt(j) )
+                {
+                    j++;
+                }
+                else
+                {
+                    x=x.slice(0,j)+t+x.slice(j);
+                    j++;
+                    pos++;
+                }
+            }
+        }
+        if( j>=x.length  )
+        {
+            ctrl.value=x;
+            ctrl.selectionStart=pos+1;
+            ctrl.selectionEnd=pos+1;
+            ctrl.focus();
+        }
+        e.preventDefault();
+    }
+}
+
+//-------------------------------------------------------------------------------
 
 
 

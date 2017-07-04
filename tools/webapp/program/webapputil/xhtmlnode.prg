@@ -21,7 +21,8 @@ class xhtmlnode(xmlnode)
 
     method  input_date
     method  input_number
-    method  input_account
+    method  input_picture
+    method  input_accountnumber
 
     // az alábbiak azonnal küldenek,
     // tehát csak korábban feltöltött, 
@@ -342,7 +343,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.input_date(node)
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.datblur(this)"))
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.datsettlevalue(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}")) //webapp.js errol ismeri fel a datumokat
 
@@ -352,11 +353,11 @@ function xhtmlnode.input_number(node,dec)
 local code
     if(dec==NIL)
         //helyertek vesszok nelkul
-        code:="CODE.numblur(this)"
+        code:="CODE.numsettlevalue(this)"
     else
         //helyertek vesszokkel
         //dec>=0, nulla vagy tobb tizedessel
-        code:="CODE.numblur(this,DEC)"::strtran("DEC",dec::str::alltrim)
+        code:="CODE.numsettlevalue(this,DEC)"::strtran("DEC",dec::str::alltrim)
     end
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
@@ -364,17 +365,20 @@ local code
 
 
 ************************************************************************************************
-function xhtmlnode.input_account(node,opt:="FUA")
-local pattern:=""
+function xhtmlnode.input_picture(node,pic)
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.picsettlevalue(this)")) 
+    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.pickeypress(event)")) 
+    node:setattrib(xhtmlnode.attrib("pattern","(^.*$)|"+pic))
 
-    if( "F"$opt ); pattern+="-[0-9]{8}"    ; end
-    if( "U"$opt ); pattern+="-[0-9A-Z]{8}" ; end
-    if( "A"$opt ); pattern+="-[0-9]{8}"    ; end
-    pattern::=substr(2)
 
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.accblur(this)"))
-    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.acckeypress(event,'OPT')"::strtran("OPT",opt)))
-    node:setattrib(xhtmlnode.attrib("pattern",pattern)) //webapp.js errol ismeri fel a szamlaszamokat
+************************************************************************************************
+function xhtmlnode.input_accountnumber(node,opt:="FUA")
+local pic:=""
+    if( "F"$opt ); pic+="-99999999"; end
+    if( "U"$opt ); pic+="-NNNNNNNN"; end
+    if( "A"$opt ); pic+="-00000000"; end
+    pic::=substr(2)
+    xhtmlnode.input_picture(node,pic)
     node:setstyle("font-family:monospace")
 
 

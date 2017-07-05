@@ -915,6 +915,86 @@ XCODE.pickeypress=function(e)
     }
 }
 
+//------------------------------------------------------------------------------
+XCODE.xpattern=function(ctrl)
+//------------------------------------------------------------------------------
+{
+    //if( typeof(ctrl)=="string" )
+    //{
+    //    ctrl=document.getElementById(ctrl);
+    //}
+    if( ctrl.xpattern==undefined )
+    {
+        var pat=ctrl.pattern;
+        if(!pat.startsWith("^")){pat="^"+pat;}
+        if(!pat.endsWith("$")){pat+="$";}
+        var match=pat.match(/(\[[^\]]+\])|(\{[^}]+\})|(\\.)|(.)/g);
+        // (\[[^\]]+\])
+        // (\{[^}]+\})
+        // (\\.)
+        // (.)
+        var xpat="";
+        for( var n=0; n<match.length; n++ )
+        {
+            var x=match[n];
+            if( x[0]=='[' )
+            {
+              //x='[@'+x.slice(1);
+              x='[\\v'+x.slice(1); // [0-9] -> [\v0-9]
+            }
+            else if( x[0]=='\\' )
+            {
+              //x='[@'+x+']';
+              x='[\\v'+x+']'; // \x -> [\v\x]
+            }
+            else if( "^?*+{".includes(x[0]) )
+            {
+            }
+            else if( "$".includes(x[0]) )
+            {
+              //x='@*$';
+              x='\\v*$'; // $ -> \v*$
+            }
+            else
+            {
+              //x='[@\\'+x+']';
+              x='[\\v\\'+x+']'; //x -> [\v\x]
+            }
+            xpat+=x;
+        }
+        //XCODE.writeln(pat);
+        //XCODE.writeln(match.toString());
+        //XCODE.writeln(xpat);
+        ctrl.xpattern=xpat;
+    }
+    return ctrl.xpattern;
+}
+
+//------------------------------------------------------------------------------
+XCODE.patkeypress=function(e)
+//------------------------------------------------------------------------------
+{
+    if( e.charCode==0 )
+    {
+        //del,bs,right,left,...
+    }
+    else
+    {
+        var ctrl=e.target; //input mezo
+        var v=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        var x=v.slice(0,pos)+chr+v.slice(pos); //karakter beillesztve
+        var reg=new RegExp( XCODE.xpattern(ctrl));
+
+        //if( !reg.test(x+"@".repeat(1024)) )
+        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
+        {
+            e.preventDefault();
+        }
+    }
+} 
+
 //-------------------------------------------------------------------------------
 
 

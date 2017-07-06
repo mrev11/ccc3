@@ -717,7 +717,31 @@ XCODE.xpicture=function(ctrl)
     if( ctrl.xpicture==undefined )
     {   
         ctrl.xpicture=ctrl.pattern;
-        ctrl.pattern=".*";
+        var xpat="^";
+        for(var n=0; n<ctrl.xpicture.length; n++)
+        {
+            var c=ctrl.xpicture[n];
+            if(c=="9")
+                xpat+="[0-9]";   
+            else if(c=="a")
+                xpat+="[a-zA-Z]";   
+            else if(c=="A")
+                xpat+="[a-zA-Z]";   
+            else if(c=="n")
+                xpat+="[0-9a-zA-Z]";   
+            else if(c=="N")
+                xpat+="[0-9a-zA-Z]";   
+            else if(c=="X")
+                xpat+=".";   
+            else
+            {
+                //xpat+="[\\"+c+"]";
+                xpat+="\\"+c;
+            }
+        }
+        xpat+="$";
+        ctrl.pattern=xpat;
+        ///!ctrl.pattern="^.*$";
         ctrl.xreadvalue=function()
         {
             return XCODE.picreadvalue(this);                
@@ -820,10 +844,10 @@ XCODE.picsettlevalue=function(ctrl)
     var abc="abcdefghijklmnopqrstuvwxyz";
     var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var x="";
-    ctrl.pattern="^$"
+    ///!ctrl.pattern="^$"
     if( v=="" )
     {
-        ctrl.pattern="^.*$"
+        ///!ctrl.pattern="^.*$"
         return x;
     }
     var i=0,j=0;
@@ -875,7 +899,7 @@ XCODE.picsettlevalue=function(ctrl)
     for( ; i<pic.length; i++  )
     {
         var t=pic.charAt(i);
-        if( "9AaNn".includes(t) )
+        if( "9AaNnX".includes(t) )
         { 
             return "? "+x;
         }
@@ -884,11 +908,10 @@ XCODE.picsettlevalue=function(ctrl)
             x+=t;
         }
     }
-    ctrl.pattern="^.*$"
+    ///!ctrl.pattern="^.*$"
     ctrl.value=x;
     return x;
 } 
-
 
 
 //-------------------------------------------------------------------------------
@@ -910,7 +933,8 @@ XCODE.pickeypress=function(e)
         var v=ctrl.value; //tartalom az aktualis karakter nelkul
         var pos=ctrl.selectionStart; //caret pozicio
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
-        var x=v.slice(0,pos)+chr+v.slice(pos); //karakter beillesztve
+        var x=v.slice(0,pos)+chr; //balfel + uj karakter
+        var xr=v.slice(pos); //jobbfel
         var pic=XCODE.xpicture(ctrl);
         var num="0123456789";
         var abc="abcdefghijklmnopqrstuvwxyz";
@@ -924,13 +948,48 @@ XCODE.pickeypress=function(e)
             {
                 if((num).includes(x.charAt(j))){j++;} else {break;}
             }
-            else if( "Aa".includes(t) )
+            else if( "a".includes(t) )
             {
                 if((abc+ABC).includes(x.charAt(j))){j++;} else {break;}
             }
-            else if( "Nn".includes(t) )
+            else if( "A".includes(t) )
+            {
+                if( abc.includes(x.charAt(j)) )
+                {
+                    if( x.charAt(j)!=x.charAt(j).toUpperCase() )
+                    {
+                        x=x.slice(0,j)+x.charAt(j).toUpperCase()+x.slice(j+1);
+                    }
+                    j++;
+                }
+                else if( ABC.includes(x.charAt(j)) )
+                {
+                    j++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else if( "n".includes(t) )
             {
                 if((num+abc+ABC).includes(x.charAt(j))){j++;} else {break;}
+            }
+            else if( "N".includes(t) )
+            {
+                if( (abc).includes(x.charAt(j))) 
+                {
+                    x=x.slice(0,j)+x.charAt(j).toUpperCase()+x.slice(j+1);
+                    j++;
+                } 
+                if( (num+ABC).includes(x.charAt(j))) 
+                {
+                    j++;
+                } 
+                else   
+                {
+                    break;
+                }
             }
             else if( "X".includes(t) )
             {
@@ -950,9 +1009,14 @@ XCODE.pickeypress=function(e)
                 }
             }
         }
-        if( j>=x.length  )
+        if( j>=x.length )
         {
-            ctrl.value=x;
+            var offs=x.length+xr.length-pic.length;
+            if( offs>0 )
+            {
+                xr=xr.slice(offs)
+            }
+            ctrl.value=x+xr;
             ctrl.selectionStart=pos+1;
             ctrl.selectionEnd=pos+1;
             ctrl.focus();
@@ -960,7 +1024,6 @@ XCODE.pickeypress=function(e)
         e.preventDefault();
     }
 }
-
 
 //------------------------------------------------------------------------------
 XCODE.xpattern=function(ctrl)

@@ -1,9 +1,20 @@
+2017.07.06 webapp: picture-os kontrollok editalasa;
+  A kontrollok editalasakor egy billentyuleutes akkor elfogadott, 
+  ha a tartalom balrol a kurzorpozicoig illeszkedik a picture-hoz.
+  Ha van hely, akkor a jobboldali resz jobbra tolodik (ins mode),
+  ha nincs hely, akkor felulirodik (overwrite mode).
+  A picture-os kontrollok automatikusan csinalnak maguknak
+  egy pattern="regex" attributumot, hogy a bongeszo ellenorihesse
+  a tartalom ervenyesseget. (Korabban a program cserelgette a patternt
+  "^$" <--> "^.*$" aszerint, hogy eppen ervenyes vagy ervenytelen
+  volt-e a tartalom.) 
+
 2017.07.05 webapp: kontrollokban xreadvalue metodus;
   A formdata nem a pattern alapjan dont, hogy a kulonfele  
   kontroll fajtakbol hogyan kell kiolvasni a bennuk levo adatot, 
   hanem (ha van neki) meghivja a kontroll xreadvalue metodusat.
 
-2017.07.05 webapp: input_patern;
+2017.07.05 webapp: input_pattern;
 
 2017.07.04 webapp: input_picture;
   Clipper-szeru template-eket tamogato picture;

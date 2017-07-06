@@ -259,23 +259,15 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
                 x+="<value>"+ctrl[n].checked+"</value>";
             }
             else
-            {
-                var v=ctrl[n].value;
-                if( ctrl[n].pattern.includes("(^.*$)|") ) //picture (valid)
+            {   
+                var v;
+                if( ctrl[n].xreadvalue!=undefined )
                 {
-                    v=XCODE.picreadvalue(ctrl[n]);       
+                    v=ctrl[n].xreadvalue();
                 }
-                else if( ctrl[n].pattern.includes("(^@*$)|") ) //picture (invalid)
+                else
                 {
-                    v=XCODE.picreadvalue(ctrl[n]);       
-                }
-                else if( ctrl[n].pattern.includes("[0-9]{4}-[0-9]{2}-[0-9]{2}") ) //datum
-                {
-                    v=v.replace(/-/g,"");       
-                }
-                else if( ctrl[n].pattern.includes("[0-9\+\-\.,]*") ) //number
-                {
-                    v=v.replace(/,/g,"");       
+                    v=ctrl[n].value;
                 }
                 x+="<value>"+XCODE.cdataif(v)+"</value>";
             }
@@ -610,7 +602,14 @@ XCODE.num2str=function(num,dec) //szamok formazasa
 XCODE.numsettlevalue=function(ctrl,dec)
 //-------------------------------------------------------------------------------
 {
-    var text=ctrl.value.replace(/,/g,"").replace(/ /g,""); //kiszedi a szemetet
+    if( ctrl.xreadvalue==undefined )
+    {
+        ctrl.xreadvalue=function()
+        {
+            return this.value.replace(/,/g,"").replace(/ /g,"");
+        }
+    }
+    var text=ctrl.xreadvalue();
     var num=Number(text);
     ctrl.value=XCODE.num2str(num,dec);
 }
@@ -658,7 +657,14 @@ XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
 XCODE.datsettlevalue=function(ctrl)
 //-------------------------------------------------------------------------------
 {
-    var x=ctrl.value.replace(/-/g,"");
+    if( ctrl.xreadvalue==undefined )
+    {
+        ctrl.xreadvalue=function()
+        {
+            return this.value.replace(/-/g,"");
+        }
+    }
+    var x=ctrl.xreadvalue();
     x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
     var x=x.replace("--","");
     ctrl.value=x; 
@@ -699,6 +705,106 @@ XCODE.datkeypress=function(e)
 }
 
 
+
+//-------------------------------------------------------------------------------
+XCODE.xpicture=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if(typeof(ctrl)=="string")
+    { 
+        ctrl=document.getElementById(ctrl);
+    }
+    if( ctrl.xpicture==undefined )
+    {   
+        ctrl.xpicture=ctrl.pattern;
+        ctrl.pattern=".*";
+        ctrl.xreadvalue=function()
+        {
+            return XCODE.picreadvalue(this);                
+        }
+    }
+    return ctrl.xpicture;
+}
+
+
+//-------------------------------------------------------------------------------
+XCODE.xreadvalue=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if(typeof(ctrl)=="string")
+    { 
+        ctrl=document.getElementById(ctrl);
+    }
+    if( ctrl.xreadvalue!=undefined )
+    {
+        return ctrlr.xreadvalue();    
+    }
+}
+
+
+//-------------------------------------------------------------------------------
+XCODE.picreadvalue=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if(typeof(ctrl)=="string")
+    { 
+        ctrl=document.getElementById(ctrl);
+    }
+    var v=ctrl.value;
+    var pic=XCODE.xpicture(ctrl);
+    var num="0123456789";
+    var abc="abcdefghijklmnopqrstuvwxyz";
+    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var x="";
+    if( v=="" )
+    {
+        return x;
+    }
+    for(var i=0, j=0; i<pic.length && j<v.length; i++,j++ )
+    {
+        var t=pic.charAt(i);
+        if( "09".includes(t) )
+        {
+            if((num).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "Aa".includes(t) )
+        {
+            if((abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "Nn".includes(t) )
+        {
+            if((num+abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
+        }
+        else if( "X".includes(t) )
+        {
+            x+=v.charAt(j);
+        }
+        else 
+        {
+            if( t!=v.charAt(j) ) {return "? "+x;}
+        }
+    }
+
+    //1) lehet, hogy pic es v egyszerre elfogyott -> kesz
+    //2) lehet, hogy v-bol maradt -> hibas adat
+    //3) lehet, hogy pic-bol maradt -> el kell fogyasztani
+
+    for( ; j<v.length; j++  )
+    {
+        return "? "+x;
+    }
+    for( ; i<pic.length; i++  )
+    {
+        var t=pic.charAt(i);
+        if( "9AaNn".includes(t) )
+        { 
+            return "? "+x;
+        }
+    }
+    return x;
+} 
+
+
 //-------------------------------------------------------------------------------
 XCODE.picsettlevalue=function(ctrl)
 //-------------------------------------------------------------------------------
@@ -707,16 +813,17 @@ XCODE.picsettlevalue=function(ctrl)
     { 
         ctrl=document.getElementById(ctrl);
     }
+
     var v=ctrl.value;
-    var pic=ctrl.pattern.slice(7);
+    var pic=XCODE.xpicture(ctrl);
     var num="0123456789";
     var abc="abcdefghijklmnopqrstuvwxyz";
     var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var x="";
-    ctrl.pattern="(^@*$)|"+pic
+    ctrl.pattern="^$"
     if( v=="" )
     {
-        ctrl.pattern="(^.*$)|"+pic
+        ctrl.pattern="^.*$"
         return x;
     }
     var i=0,j=0;
@@ -777,73 +884,12 @@ XCODE.picsettlevalue=function(ctrl)
             x+=t;
         }
     }
-    ctrl.pattern="(^.*$)|"+pic
+    ctrl.pattern="^.*$"
     ctrl.value=x;
     return x;
 } 
 
 
-//-------------------------------------------------------------------------------
-XCODE.picreadvalue=function(ctrl)
-//-------------------------------------------------------------------------------
-{
-    if(typeof(ctrl)=="string")
-    { 
-        ctrl=document.getElementById(ctrl);
-    }
-    var v=ctrl.value;
-    var pic=ctrl.pattern.slice(7);
-    var num="0123456789";
-    var abc="abcdefghijklmnopqrstuvwxyz";
-    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var x="";
-    if( v=="" )
-    {
-        return x;
-    }
-    for(var i=0, j=0; i<pic.length && j<v.length; i++,j++ )
-    {
-        var t=pic.charAt(i);
-        if( "09".includes(t) )
-        {
-            if((num).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
-        }
-        else if( "Aa".includes(t) )
-        {
-            if((abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
-        }
-        else if( "Nn".includes(t) )
-        {
-            if((num+abc+ABC).includes(v.charAt(j))) {x+=v.charAt(j);}else{return "? "+x;}
-        }
-        else if( "X".includes(t) )
-        {
-            x+=v.charAt(j);
-        }
-        else 
-        {
-            if( t!=v.charAt(j) ) {return "? "+x;}
-        }
-    }
-
-    //1) lehet, hogy pic es v egyszerre elfogyott -> kesz
-    //2) lehet, hogy v-bol maradt -> hibas adat
-    //3) lehet, hogy pic-bol maradt -> el kell fogyasztani
-
-    for( ; j<v.length; j++  )
-    {
-        return "? "+x;
-    }
-    for( ; i<pic.length; i++  )
-    {
-        var t=pic.charAt(i);
-        if( "9AaNn".includes(t) )
-        { 
-            return "? "+x;
-        }
-    }
-    return x;
-} 
 
 //-------------------------------------------------------------------------------
 XCODE.pickeypress=function(e) 
@@ -865,7 +911,7 @@ XCODE.pickeypress=function(e)
         var pos=ctrl.selectionStart; //caret pozicio
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
         var x=v.slice(0,pos)+chr+v.slice(pos); //karakter beillesztve
-        var pic=ctrl.pattern.slice(7);
+        var pic=XCODE.xpicture(ctrl);
         var num="0123456789";
         var abc="abcdefghijklmnopqrstuvwxyz";
         var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -915,14 +961,15 @@ XCODE.pickeypress=function(e)
     }
 }
 
+
 //------------------------------------------------------------------------------
 XCODE.xpattern=function(ctrl)
 //------------------------------------------------------------------------------
 {
-    //if( typeof(ctrl)=="string" )
-    //{
-    //    ctrl=document.getElementById(ctrl);
-    //}
+    if( typeof(ctrl)=="string" )
+    {
+        ctrl=document.getElementById(ctrl);
+    }
     if( ctrl.xpattern==undefined )
     {
         var pat=ctrl.pattern;
@@ -995,7 +1042,7 @@ XCODE.patkeypress=function(e)
     }
 } 
 
-//-------------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------------
 
 

@@ -1,3 +1,8 @@
+2017.07.05 webapp: kontrollokban xreadvalue metodus;
+  A formdata nem a pattern alapjan dont, hogy a kulonfele  
+  kontroll fajtakbol hogyan kell kiolvasni a bennuk levo adatot, 
+  hanem (ha van neki) meghivja a kontroll xreadvalue metodusat.
+
 2017.07.05 webapp: input_patern;
 
 2017.07.04 webapp: input_picture;

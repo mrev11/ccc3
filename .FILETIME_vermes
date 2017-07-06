@@ -1,6 +1,6 @@
-709313dd503de01d283a3f5ca474cd0f218057a4 2017070512:34:19-UTC ./CHANGELOG_vermes
-655446730f2b93980ceafc227256a0a55d009a85 2017070509:37:42-UTC ./tools/webapp/common/webapp.js
-9fbf0521959562bad46b502256fe036743377a21 2017070408:06:35-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
+e78d70668334978b6cfcf6a36aceee03b9631d5e 2017070614:03:59-UTC ./CHANGELOG_vermes
+c219c288c1e76c3bb5d43993d1c9188860756165 2017070513:57:30-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
+238d776512f6e5efb23b1ff2b8548ebf64832878 2017070513:21:19-UTC ./tools/webapp/common/webapp.js
 94d29752fc10cca800fa0686cec3bf5bf01461b4 2017070108:20:37-UTC ./tools/webapp/program/webapputil/webpage.prg
 a106d950556b41542436778ce625f1576c3b7132 2017063016:48:40-UTC ./tools/webapp/program/whello/defaults.prg
 f4001db504d0a74cc3151847cafb79a1ab3eb1b3 2017063016:48:09-UTC ./tools/webapp/program/webapputil/webdefaults.prg

@@ -23,6 +23,7 @@ class xhtmlnode(xmlnode)
     method  input_number
     method  input_picture
     method  input_accountnumber
+    method  input_pattern
 
     // az alábbiak azonnal küldenek,
     // tehát csak korábban feltöltött, 
@@ -368,7 +369,13 @@ local code
 function xhtmlnode.input_picture(node,pic)
     node:setattrib(xhtmlnode.attrib("onblur","CODE.picsettlevalue(this)")) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.pickeypress(event)")) 
-    node:setattrib(xhtmlnode.attrib("pattern","(^.*$)|"+pic))
+    node:setattrib(xhtmlnode.attrib("pattern",pic))
+
+
+************************************************************************************************
+function xhtmlnode.input_pattern(node,pat)
+    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.patkeypress(event)")) 
+    node:setattrib(xhtmlnode.attrib("pattern",pat::strtran("\","\\")))
 
 
 ************************************************************************************************

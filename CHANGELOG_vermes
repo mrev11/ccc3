@@ -1,10 +1,18 @@
+2017.07.07 webapp.js feldarabolva;
+  xhtmlnode.input_picture a data-picture attributumot hasznalja;
+  xhtmlnode.input_pattern nem escapeli \-t, mart a jsstring teszi;
+  webapp.jsstring escapeli az '\' karaktert;
+  Az input kontrollok xreadvalue metodusanak beallitasa mindenhol
+  a *settlevalue(ctrl)-ben tortenik, ami onblur-bol hivodik,
+  az onblur-t pedig mindig meghivja az XCODE.updatecontrol();
+
 2017.07.06 webapp: picture-os kontrollok editalasa;
   A kontrollok editalasakor egy billentyuleutes akkor elfogadott, 
   ha a tartalom balrol a kurzorpozicoig illeszkedik a picture-hoz.
   Ha van hely, akkor a jobboldali resz jobbra tolodik (ins mode),
   ha nincs hely, akkor felulirodik (overwrite mode).
   A picture-os kontrollok automatikusan csinalnak maguknak
-  egy pattern="regex" attributumot, hogy a bongeszo ellenorihesse
+  egy pattern="regex" attributumot, hogy a bongeszo ellenorizhesse
   a tartalom ervenyesseget. (Korabban a program cserelgette a patternt
   "^$" <--> "^.*$" aszerint, hogy eppen ervenyes vagy ervenytelen
   volt-e a tartalom.) 

@@ -8,18 +8,9 @@ XCODE.onload_main=function(uri)
 {
     XCODE.websckuri=uri;
     XCODE.connected=false;
-    XCODE.private=[]; //array
+    XCODE.privatedata=[]; //array
     XCODE.debug=false;
-    
-    if( typeof MozWebSocket != "undefined" )
-    {
-        //alert("FF 10.x-ig MozWebSocket");
-        window.WebSocket=MozWebSocket;
-    }
-    //else
-    //{
-    //    alert("FF 11.x-től WebSocket");
-    //}
+
     XCODE.websocket = new window.WebSocket(uri);
 
     window.onkeydown=function(event)
@@ -97,14 +88,7 @@ XCODE.onload_main=function(uri)
     }
 
     XCODE.frmaux.window.CODE=XCODE;
-
-    //var link=XCODE.webapp.document.createElement("link");
-    //link.href="webapp.css";
-    //link.rel="stylesheet";
-    //link.type="text/css";
-    //XCODE.webapp.body.appendChild(link);
 }
-
 
 
 XCODE.onopen=function(evt)
@@ -236,7 +220,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
         }
     }
 
-    var ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    ctrl=XCODE.webapp.document.getElementsByTagName("input");
     for( n=0; n<ctrl.length; n++ )
     {
         if( ctrl[n].type=="text" ||
@@ -260,16 +244,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             }
             else
             {   
-                var v;
-                if( ctrl[n].xreadvalue!=undefined )
-                {
-                    v=ctrl[n].xreadvalue();
-                }
-                else
-                {
-                    v=ctrl[n].value;
-                }
-                x+="<value>"+XCODE.cdataif(v)+"</value>";
+                x+="<value>"+XCODE.cdataif(XCODE.xreadvalue(ctrl[n]))+"</value>";
             }
             x+="</control>";
         }
@@ -319,6 +294,20 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
 
     XCODE.send(x);
 }
+
+
+XCODE.xreadvalue=function(ctrl)
+{
+    if( ctrl.xreadvalue!=undefined )
+    {
+        return ctrl.xreadvalue();    
+    }
+    else
+    {
+        return ctrl.value;    
+    }
+}
+
 
 XCODE.cdataif=function(x)
 {
@@ -439,31 +428,31 @@ XCODE.echo=function(x)
 
 XCODE.privatelength=function()
 {
-    XCODE.send("<PRIVATELENGTH>"+XCODE.private.length.toString()+"</PRIVATELENGTH>");
+    XCODE.send("<PRIVATELENGTH>"+XCODE.privatedata.length.toString()+"</PRIVATELENGTH>");
 }
 
 XCODE.privatepop=function(len)
 {
-    while(XCODE.private.length>len)
+    while(XCODE.privatedata.length>len)
     {
-        XCODE.private.pop();
+        XCODE.privatedata.pop();
     }
 }
 
 XCODE.privatepush=function()
 {
-    XCODE.private.push(new Array());
+    XCODE.privatedata.push(new Array());
 }
 
 XCODE.setprivatedata=function(key,data)
 {
-    tail=XCODE.private[ XCODE.private.length-1 ]; //utolsó elem
+    tail=XCODE.privatedata[ XCODE.privatedata.length-1 ]; //utolsó elem
     tail[key]=data;
 }
 
 XCODE.getprivatedata=function(key)
 {
-    tail=XCODE.private[ XCODE.private.length-1 ]; //utolsó elem
+    tail=XCODE.privatedata[ XCODE.privatedata.length-1 ]; //utolsó elem
     return tail[key];
 }
 
@@ -578,6 +567,73 @@ XCODE.xlib.isdefined=function(id)
 };
 
 
+
+//-------------------------------------------------------------------------------
+XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
+//-------------------------------------------------------------------------------
+{
+    var s=d.getFullYear().toString();
+    s+="-"+(1+d.getMonth()).toLocaleString("en-US",{minimumIntegerDigits:2})
+    s+="-"+d.getDate().toLocaleString("en-US",{minimumIntegerDigits:2})
+    return s
+}
+
+//-------------------------------------------------------------------------------
+XCODE.datsettlevalue=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if( ctrl.xreadvalue==undefined )
+    {
+        ctrl.xreadvalue=function()
+        {
+            return this.value.replace(/-/g,"");
+        }
+    }
+    var x=ctrl.xreadvalue();
+    x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
+    x=x.replace("--","");
+    ctrl.value=x; 
+}
+
+//-------------------------------------------------------------------------------
+XCODE.datkeypress=function(e) 
+//-------------------------------------------------------------------------------
+{
+    var ctrl=e.target; //input mezo
+
+    if( XCODE.evententer(e) && e.target.onblur!=undefined )
+    {
+        ctrl.onblur(ctrl);
+    }
+    else if( e.charCode==0 )
+    {
+        //del,bs,right,left,...
+    }
+    else
+    {
+        var x=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
+        x=x.replace(/-/g,"" ); //kiszedi a szemetet
+        x=x+"19991010".slice(x.length);
+        x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6);
+        x=x.replace("-00","-01");
+        d=new Date(x);  //pl. new Date('1954-10-11')
+        
+        if( !(x==XCODE.dat2str(d))  )
+        {
+            //beillesztes letiltva
+            e.preventDefault();
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------
+
+
+
+
 //-------------------------------------------------------------------------------
 XCODE.num2str=function(num,dec) //szamok formazasa
 //-------------------------------------------------------------------------------
@@ -618,9 +674,10 @@ XCODE.numsettlevalue=function(ctrl,dec)
 XCODE.numkeypress=function(e) 
 //-------------------------------------------------------------------------------
 {
+    var ctrl=e.target; //input mezo
+
     if( XCODE.evententer(e) && e.target.onblur!=undefined )
     {
-        var ctrl=e.target;
         ctrl.onblur(ctrl);
     }
     else if( e.charCode==0 )
@@ -629,7 +686,6 @@ XCODE.numkeypress=function(e)
     }
     else
     {
-        var ctrl=e.target; //input mezo
         var x=ctrl.value; //tartalom az aktualis karakter nelkul
         var pos=ctrl.selectionStart; //caret pozicio
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
@@ -644,65 +700,105 @@ XCODE.numkeypress=function(e)
 }
 
 //-------------------------------------------------------------------------------
-XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
-//-------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+XCODE.xpattern=function(ctrl)
+//------------------------------------------------------------------------------
 {
-    var s=d.getFullYear().toString();
-    s+="-"+(1+d.getMonth()).toLocaleString("en-US",{minimumIntegerDigits:2})
-    s+="-"+d.getDate().toLocaleString("en-US",{minimumIntegerDigits:2})
-    return s
+    if( ctrl.xpattern==undefined )
+    {
+        var pat=ctrl.pattern;
+        if(!pat.startsWith("^")){pat="^"+pat;}
+        if(!pat.endsWith("$")){pat+="$";}
+        var match=pat.match(/(\[[^\]]+\])|(\{[^}]+\})|(\\.)|(.)/g);
+        // (\[[^\]]+\])
+        // (\{[^}]+\})
+        // (\\.)
+        // (.)
+        var xpat="";
+        for( var n=0; n<match.length; n++ )
+        {
+            var x=match[n];
+            if( x[0]=='[' )
+            {
+                x='[\\v'+x.slice(1); // [0-9] -> [\v0-9]
+            }
+            else if( x[0]=='\\' )
+            {
+                x='[\\v'+x+']'; // \x -> [\v\x]
+            }
+            else if( "^?*+{()|".includes(x[0]) )
+            {
+            }
+            else if( "$".includes(x[0]) )
+            {
+                x='\\v*$'; // $ -> \v*$
+            }
+            else
+            {
+                x='[\\v'+x+']'; //x -> [\vx]
+            }
+            xpat+=x;
+        }
+        console.log(pat);
+        console.log(match.toString());
+        console.log(xpat);
+        ctrl.xpattern=xpat;
+    }
+    return ctrl.xpattern;
 }
 
-//-------------------------------------------------------------------------------
-XCODE.datsettlevalue=function(ctrl)
-//-------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+XCODE.patsettlevalue=function(ctrl)
+//------------------------------------------------------------------------------
 {
     if( ctrl.xreadvalue==undefined )
     {
+        //honnan hivodik?
+        //modszer a callstack megtekintesere
+        //console.log(new Error().stack);
+
         ctrl.xreadvalue=function()
         {
-            return this.value.replace(/-/g,"");
+            var v=this.value;
+            var r=new RegExp(this.pattern)
+            if( !r.test(v) )
+            {
+                v="? "+v;
+            }
+            return v;
         }
     }
-    var x=ctrl.xreadvalue();
-    x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6,8);
-    var x=x.replace("--","");
-    ctrl.value=x; 
 }
 
-//-------------------------------------------------------------------------------
-XCODE.datkeypress=function(e) 
-//-------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+XCODE.patkeypress=function(e)
+//------------------------------------------------------------------------------
 {
-    if( XCODE.evententer(e) && e.target.onblur!=undefined )
-    {
-        var ctrl=e.target;
-        ctrl.onblur(ctrl);
-    }
-    else if( e.charCode==0 )
+    var ctrl=e.target; //input mezo
+
+    if( e.charCode==0 )
     {
         //del,bs,right,left,...
     }
     else
     {
-        var ctrl=e.target; //input mezo
-        var x=ctrl.value; //tartalom az aktualis karakter nelkul
+        var v=ctrl.value; //tartalom az aktualis karakter nelkul
         var pos=ctrl.selectionStart; //caret pozicio
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
-        x=x.slice(0,pos)+chr+x.slice(pos); //karakter beillesztve
-        x=x.replace(/-/g,"" ); //kiszedi a szemetet
-        x=x+"19991010".slice(x.length);
-        x=x.slice(0,4)+"-"+x.slice(4,6)+"-"+x.slice(6);
-        x=x.replace("-00","-01");
-        d=new Date(x);  //pl. new Date('1954-10-11')
-        
-        if( !(x==XCODE.dat2str(d))  )
+        var x=v.slice(0,pos)+chr; //balfel + uj karakter
+        var xr=v.slice(pos); //jobbfel
+        var pat=XCODE.xpattern(ctrl);
+        var reg=new RegExp(pat);
+        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
         {
-            //beillesztes letiltva
             e.preventDefault();
         }
     }
-}
+} 
+
+//-------------------------------------------------------------------------------
+
 
 
 
@@ -710,75 +806,60 @@ XCODE.datkeypress=function(e)
 XCODE.xpicture=function(ctrl)
 //-------------------------------------------------------------------------------
 {
-    if(typeof(ctrl)=="string")
-    { 
-        ctrl=document.getElementById(ctrl);
-    }
     if( ctrl.xpicture==undefined )
-    {   
-        ctrl.xpicture=ctrl.pattern;
+    {
+        ctrl.xpicture=ctrl.getAttribute("data-picture");
         var xpat="^";
         for(var n=0; n<ctrl.xpicture.length; n++)
         {
             var c=ctrl.xpicture[n];
-            if(c=="9")
-                xpat+="[0-9]";   
-            else if(c=="a")
-                xpat+="[a-zA-Z]";   
-            else if(c=="A")
-                xpat+="[a-zA-Z]";   
-            else if(c=="n")
-                xpat+="[0-9a-zA-Z]";   
-            else if(c=="N")
-                xpat+="[0-9a-zA-Z]";   
-            else if(c=="X")
-                xpat+=".";   
-            else
+            if( c=="9" )
             {
-                //xpat+="[\\"+c+"]";
+                xpat+="[0-9]";
+            }   
+            else if("aA".includes(c))
+            {
+                xpat+="[a-zA-Z]";
+            }   
+            else if("nN".includes(c))
+            {
+                xpat+="[0-9a-zA-Z]";
+            }   
+            else if(c=="X")
+            {
+                xpat+=".";
+            }   
+            else if("?*+{}()[]|^$".includes(c) )
+            {
                 xpat+="\\"+c;
             }
+            else if(c=="\\")
+            {
+                xpat+="\\\\";
+            }   
+            else
+            {
+                xpat+=c;
+            } 
         }
         xpat+="$";
+        //console.log(new Error().stack);
+        //console.log(ctrl.xpicture);
+        //console.log(xpat);
         ctrl.pattern=xpat;
-        ///!ctrl.pattern="^.*$";
-        ctrl.xreadvalue=function()
-        {
-            return XCODE.picreadvalue(this);                
-        }
     }
     return ctrl.xpicture;
 }
-
-
-//-------------------------------------------------------------------------------
-XCODE.xreadvalue=function(ctrl)
-//-------------------------------------------------------------------------------
-{
-    if(typeof(ctrl)=="string")
-    { 
-        ctrl=document.getElementById(ctrl);
-    }
-    if( ctrl.xreadvalue!=undefined )
-    {
-        return ctrlr.xreadvalue();    
-    }
-}
-
 
 //-------------------------------------------------------------------------------
 XCODE.picreadvalue=function(ctrl)
 //-------------------------------------------------------------------------------
 {
-    if(typeof(ctrl)=="string")
-    { 
-        ctrl=document.getElementById(ctrl);
-    }
     var v=ctrl.value;
-    var pic=XCODE.xpicture(ctrl);
     var num="0123456789";
     var abc="abcdefghijklmnopqrstuvwxyz";
     var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var pic=XCODE.xpicture(ctrl);
     var x="";
     if( v=="" )
     {
@@ -833,21 +914,22 @@ XCODE.picreadvalue=function(ctrl)
 XCODE.picsettlevalue=function(ctrl)
 //-------------------------------------------------------------------------------
 {
-    if( typeof(ctrl)=="string" )
-    { 
-        ctrl=document.getElementById(ctrl);
+    if( ctrl.xreadvalue==undefined )
+    {
+        ctrl.xreadvalue=function()
+        {
+            return XCODE.picreadvalue(this);                
+        }
     }
 
     var v=ctrl.value;
-    var pic=XCODE.xpicture(ctrl);
     var num="0123456789";
     var abc="abcdefghijklmnopqrstuvwxyz";
     var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var pic=XCODE.xpicture(ctrl);
     var x="";
-    ///!ctrl.pattern="^$"
     if( v=="" )
     {
-        ///!ctrl.pattern="^.*$"
         return x;
     }
     var i=0,j=0;
@@ -908,7 +990,6 @@ XCODE.picsettlevalue=function(ctrl)
             x+=t;
         }
     }
-    ///!ctrl.pattern="^.*$"
     ctrl.value=x;
     return x;
 } 
@@ -918,9 +999,10 @@ XCODE.picsettlevalue=function(ctrl)
 XCODE.pickeypress=function(e) 
 //-------------------------------------------------------------------------------
 {
+    var ctrl=e.target; //input mezo
+
     if( XCODE.evententer(e) && e.target.onblur!=undefined )
     {
-        var ctrl=e.target;
         ctrl.onblur(ctrl);
     }
     else if( e.charCode==0 )
@@ -929,16 +1011,15 @@ XCODE.pickeypress=function(e)
     }
     else
     {
-        var ctrl=e.target; //input mezo
         var v=ctrl.value; //tartalom az aktualis karakter nelkul
         var pos=ctrl.selectionStart; //caret pozicio
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
         var x=v.slice(0,pos)+chr; //balfel + uj karakter
         var xr=v.slice(pos); //jobbfel
-        var pic=XCODE.xpicture(ctrl);
         var num="0123456789";
         var abc="abcdefghijklmnopqrstuvwxyz";
         var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var pic=XCODE.xpicture(ctrl);
 
         var i=0, j=0;
         for(i=0, j=0; i<pic.length && j<x.length; i++ )
@@ -1026,86 +1107,3 @@ XCODE.pickeypress=function(e)
 }
 
 //------------------------------------------------------------------------------
-XCODE.xpattern=function(ctrl)
-//------------------------------------------------------------------------------
-{
-    if( typeof(ctrl)=="string" )
-    {
-        ctrl=document.getElementById(ctrl);
-    }
-    if( ctrl.xpattern==undefined )
-    {
-        var pat=ctrl.pattern;
-        if(!pat.startsWith("^")){pat="^"+pat;}
-        if(!pat.endsWith("$")){pat+="$";}
-        var match=pat.match(/(\[[^\]]+\])|(\{[^}]+\})|(\\.)|(.)/g);
-        // (\[[^\]]+\])
-        // (\{[^}]+\})
-        // (\\.)
-        // (.)
-        var xpat="";
-        for( var n=0; n<match.length; n++ )
-        {
-            var x=match[n];
-            if( x[0]=='[' )
-            {
-              //x='[@'+x.slice(1);
-              x='[\\v'+x.slice(1); // [0-9] -> [\v0-9]
-            }
-            else if( x[0]=='\\' )
-            {
-              //x='[@'+x+']';
-              x='[\\v'+x+']'; // \x -> [\v\x]
-            }
-            else if( "^?*+{".includes(x[0]) )
-            {
-            }
-            else if( "$".includes(x[0]) )
-            {
-              //x='@*$';
-              x='\\v*$'; // $ -> \v*$
-            }
-            else
-            {
-              //x='[@\\'+x+']';
-              x='[\\v\\'+x+']'; //x -> [\v\x]
-            }
-            xpat+=x;
-        }
-        //XCODE.writeln(pat);
-        //XCODE.writeln(match.toString());
-        //XCODE.writeln(xpat);
-        ctrl.xpattern=xpat;
-    }
-    return ctrl.xpattern;
-}
-
-//------------------------------------------------------------------------------
-XCODE.patkeypress=function(e)
-//------------------------------------------------------------------------------
-{
-    if( e.charCode==0 )
-    {
-        //del,bs,right,left,...
-    }
-    else
-    {
-        var ctrl=e.target; //input mezo
-        var v=ctrl.value; //tartalom az aktualis karakter nelkul
-        var pos=ctrl.selectionStart; //caret pozicio
-        var chr=String.fromCharCode(e.charCode); //aktualis karakter
-        var x=v.slice(0,pos)+chr+v.slice(pos); //karakter beillesztve
-        var reg=new RegExp( XCODE.xpattern(ctrl));
-
-        //if( !reg.test(x+"@".repeat(1024)) )
-        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
-        {
-            e.preventDefault();
-        }
-    }
-} 
-
-
-//-------------------------------------------------------------------------------
-
-

@@ -1,0 +1,10 @@
+#!/bin/bash
+rm -f webapp.js
+touch webapp.js
+
+cat  webapp-core.js  >>webapp.js
+cat  webapp-dat.js   >>webapp.js
+cat  webapp-num.js   >>webapp.js
+cat  webapp-pat.js   >>webapp.js
+cat  webapp-pic.js   >>webapp.js
+

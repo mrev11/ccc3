@@ -1,0 +1,4 @@
+#!/bin/bash
+java -jar ~/bin/yuicompressor.jar webapp.js   
+
+#2>log-compjs

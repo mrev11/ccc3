@@ -65,6 +65,11 @@ local c
         //x::=strtran(c,  "'+ chr("+asc(c)::str::alltrim+") +'"   )
         x::=strtran(c,"")
     end
+
+    c:="\"
+    if( c$x )
+        x::=strtran("\","\\")
+    end
     
     x:="'"+x+"'"
     x::=strtran("+''","")

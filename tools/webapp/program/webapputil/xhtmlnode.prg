@@ -346,7 +346,7 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 function xhtmlnode.input_date(node)
     node:setattrib(xhtmlnode.attrib("onblur","CODE.datsettlevalue(this)"))
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}")) //webapp.js errol ismeri fel a datumokat
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9]{4}-[0-9]{2}-[0-9]{2}"))
 
 
 ************************************************************************************************
@@ -362,20 +362,21 @@ local code
     end
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","[0-9\+\-\.,]*")) //webapp.js errol ismeri fel a szamokat
+    node:setattrib(xhtmlnode.attrib("pattern","[0-9\+\-\.,]*"))
 
 
 ************************************************************************************************
 function xhtmlnode.input_picture(node,pic)
     node:setattrib(xhtmlnode.attrib("onblur","CODE.picsettlevalue(this)")) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.pickeypress(event)")) 
-    node:setattrib(xhtmlnode.attrib("pattern",pic))
+    node:setattrib(xhtmlnode.attrib("data-picture",pic))
 
 
 ************************************************************************************************
 function xhtmlnode.input_pattern(node,pat)
+    node:setattrib(xhtmlnode.attrib("onblur","CODE.patsettlevalue(this)")) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.patkeypress(event)")) 
-    node:setattrib(xhtmlnode.attrib("pattern",pat::strtran("\","\\")))
+    node:setattrib(xhtmlnode.attrib("pattern",pat))
 
 
 ************************************************************************************************

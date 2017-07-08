@@ -374,6 +374,12 @@ function xhtmlnode.input_picture(node,pic)
 
 ************************************************************************************************
 function xhtmlnode.input_pattern(node,pat)
+    if( !left(pat,1)=="^" )
+        pat:="^"+pat
+    end
+    if( !right(pat,1)=="$" )
+        pat+="$"
+    end
     node:setattrib(xhtmlnode.attrib("onblur","CODE.patsettlevalue(this)")) 
     node:setattrib(xhtmlnode.attrib("onkeypress","CODE.patkeypress(event)")) 
     node:setattrib(xhtmlnode.attrib("pattern",pat))

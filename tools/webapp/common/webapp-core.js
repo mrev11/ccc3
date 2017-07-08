@@ -425,6 +425,19 @@ XCODE.echo=function(x)
 }
 
 
+XCODE.settle=function()
+{
+    var ctrl,n;
+    ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    for( n=0; n<ctrl.length; n++ )
+    {
+        if( ctrl[n].onblur!=undefined )
+        {
+            ctrl[n].onblur(ctrl[n]);
+        }
+    }
+}
+
 
 XCODE.privatelength=function()
 {

@@ -1,3 +1,17 @@
 #!/bin/bash
+
 #java -jar ~/bin/closure-compiler.jar --help >HELP
-java -jar ~/bin/closure-compiler.jar --js webapp.js   
+#exit
+
+
+rm -f webapp.js
+touch webapp.js
+
+java -jar ~/bin/closure-compiler.jar --js webapp-core.js >>webapp.js
+java -jar ~/bin/closure-compiler.jar --js webapp-dat.js  >>webapp.js
+java -jar ~/bin/closure-compiler.jar --js webapp-num.js  >>webapp.js
+java -jar ~/bin/closure-compiler.jar --js webapp-pat.js  >>webapp.js
+java -jar ~/bin/closure-compiler.jar --js webapp-pic.js  >>webapp.js
+
+
+ls -l webapp.js

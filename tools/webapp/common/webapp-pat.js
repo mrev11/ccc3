@@ -38,9 +38,9 @@ XCODE.xpattern=function(ctrl)
             }
             xpat+=x;
         }
-        console.log(pat);
-        console.log(match.toString());
-        console.log(xpat);
+        //console.log(pat);
+        //console.log(match.toString());
+        //console.log(xpat);
         ctrl.xpattern=xpat;
     }
     return ctrl.xpattern;
@@ -59,10 +59,13 @@ XCODE.patsettlevalue=function(ctrl)
         ctrl.xreadvalue=function()
         {
             var v=this.value;
-            var r=new RegExp(this.pattern)
-            if( !r.test(v) )
+            if( v!="" )
             {
-                v="? "+v;
+                var r=new RegExp(this.pattern)
+                if( !r.test(v) )
+                {
+                    v="? "+v;
+                }
             }
             return v;
         }

@@ -40,7 +40,7 @@ function emptydisplay() //üres (új) displayt csinál (div element)
 
 ************************************************************************************
 function uploaddisplay(x) //betölt egy oldalt webapp.display-be
-    script("CODE.webapp.display.innerHTML="+x::jsstring+";")
+    script("CODE.webapp.display.innerHTML="+x::jsstring+";CODE.settle();")
 
 
 ************************************************************************************

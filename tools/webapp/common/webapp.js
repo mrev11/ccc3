@@ -425,6 +425,19 @@ XCODE.echo=function(x)
 }
 
 
+XCODE.settle=function()
+{
+    var ctrl,n;
+    ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    for( n=0; n<ctrl.length; n++ )
+    {
+        if( ctrl[n].onblur!=undefined )
+        {
+            ctrl[n].onblur(ctrl[n]);
+        }
+    }
+}
+
 
 XCODE.privatelength=function()
 {
@@ -740,9 +753,9 @@ XCODE.xpattern=function(ctrl)
             }
             xpat+=x;
         }
-        console.log(pat);
-        console.log(match.toString());
-        console.log(xpat);
+        //console.log(pat);
+        //console.log(match.toString());
+        //console.log(xpat);
         ctrl.xpattern=xpat;
     }
     return ctrl.xpattern;
@@ -761,10 +774,13 @@ XCODE.patsettlevalue=function(ctrl)
         ctrl.xreadvalue=function()
         {
             var v=this.value;
-            var r=new RegExp(this.pattern)
-            if( !r.test(v) )
+            if( v!="" )
             {
-                v="? "+v;
+                var r=new RegExp(this.pattern)
+                if( !r.test(v) )
+                {
+                    v="? "+v;
+                }
             }
             return v;
         }
@@ -810,10 +826,89 @@ XCODE.xpicture=function(ctrl)
     {
         ctrl.xpicture=ctrl.getAttribute("data-picture");
         var xpat="^";
+        var p="",r=0;
+
+        var addexp=function()
+        {
+            //console.log(xpat,p,r);
+            if( p=="" )
+            {
+            }
+            else if( "09".includes(p) )
+            {
+                xpat+="[0-9]";
+            }   
+            else if("aA".includes(p))
+            {
+                xpat+="[a-zA-Z]";
+            }   
+            else if("nN".includes(p))
+            {
+                xpat+="[0-9a-zA-Z]";
+            }   
+            else if( "X".includes(p) )
+            {
+                xpat+=".";
+            }   
+            else if("?*+{}()[]|^$".includes(p) )
+            {
+                xpat+="\\"+p;
+            }
+            else if(p=="\\")
+            {
+                xpat+="\\\\";
+            }   
+            else
+            {
+                xpat+=p;
+            } 
+            if(r>1)
+            {
+                xpat+="{"+r.toString()+"}"
+            }
+        }
+
         for(var n=0; n<ctrl.xpicture.length; n++)
         {
             var c=ctrl.xpicture[n];
-            if( c=="9" )
+            if( c==p )
+            {
+                r++;
+            }
+            else
+            {
+                addexp();
+                p=c;
+                r=1;
+            }
+        }
+        if(r>0)
+        {
+            addexp();
+        }
+        xpat+="$";
+        //console.log(new Error("testing XCODE.xpicture").stack);
+        //console.log(ctrl.xpicture);
+        //console.log(xpat);
+        ctrl.pattern=xpat;
+    }
+    return ctrl.xpicture;
+
+}
+
+
+//-------------------------------------------------------------------------------
+XCODE.xxpicture=function(ctrl)
+//-------------------------------------------------------------------------------
+{
+    if( ctrl.xpicture==undefined )
+    {
+        ctrl.xpicture=ctrl.getAttribute("data-picture");
+        var xpat="^";
+        for(var n=0; n<ctrl.xpicture.length; n++)
+        {
+            var c=ctrl.xpicture[n];
+            if( "09".includes(c) )
             {
                 xpat+="[0-9]";
             }   
@@ -856,15 +951,15 @@ XCODE.picreadvalue=function(ctrl)
 //-------------------------------------------------------------------------------
 {
     var v=ctrl.value;
-    var num="0123456789";
-    var abc="abcdefghijklmnopqrstuvwxyz";
-    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var pic=XCODE.xpicture(ctrl);
     var x="";
     if( v=="" )
     {
         return x;
     }
+    var num="0123456789";
+    var abc="abcdefghijklmnopqrstuvwxyz";
+    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var pic=XCODE.xpicture(ctrl);
     for(var i=0, j=0; i<pic.length && j<v.length; i++,j++ )
     {
         var t=pic.charAt(i);
@@ -901,7 +996,7 @@ XCODE.picreadvalue=function(ctrl)
     for( ; i<pic.length; i++  )
     {
         var t=pic.charAt(i);
-        if( "9AaNn".includes(t) )
+        if( "9AaNnX".includes(t) )
         { 
             return "? "+x;
         }
@@ -921,17 +1016,16 @@ XCODE.picsettlevalue=function(ctrl)
             return XCODE.picreadvalue(this);                
         }
     }
-
     var v=ctrl.value;
-    var num="0123456789";
-    var abc="abcdefghijklmnopqrstuvwxyz";
-    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var pic=XCODE.xpicture(ctrl);
     var x="";
     if( v=="" )
     {
         return x;
     }
+    var num="0123456789";
+    var abc="abcdefghijklmnopqrstuvwxyz";
+    var ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var pic=XCODE.xpicture(ctrl);
     var i=0,j=0;
     for(i=0,j=0; i<pic.length && j<v.length; i++,j++)
     {

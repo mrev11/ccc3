@@ -1,3 +1,10 @@
+2017.07.08  webapp javitasok;
+  XCODE.settle az oldal feltoltese utan minden onblur-t lefuttat;
+  XCODE.patsettlevalue elfogadja az ures kitoltest;
+  XCODE,picture intelligensebb pattern generálás;
+  webapp.jsstring intelligensebb es hatekonyabb escapeles;
+  xhtmlnode.input_pattern: pattern -> ^pattern$;
+
 2017.07.07 webapp.js feldarabolva;
   xhtmlnode.input_picture a data-picture attributumot hasznalja;
   xhtmlnode.input_pattern nem escapeli \-t, mart a jsstring teszi;

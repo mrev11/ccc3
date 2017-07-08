@@ -1,4 +1,12 @@
 #!/bin/bash
-java -jar ~/bin/yuicompressor.jar webapp.js   
+rm -f webapp.js
+touch webapp.js
 
-#2>log-compjs
+java -jar ~/bin/yuicompressor.jar webapp-core.js >>webapp.js
+java -jar ~/bin/yuicompressor.jar webapp-dat.js  >>webapp.js
+java -jar ~/bin/yuicompressor.jar webapp-num.js  >>webapp.js
+java -jar ~/bin/yuicompressor.jar webapp-pat.js  >>webapp.js
+java -jar ~/bin/yuicompressor.jar webapp-pic.js  >>webapp.js
+
+
+ls -l webapp.js

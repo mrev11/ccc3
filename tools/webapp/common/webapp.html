@@ -27,15 +27,54 @@ legend.errormsg{
     border:1px solid #ffb0b0;
 }
 
-label{
+h1,h2,h3,label{
     color:#605050;
     font-weight:bold;
 }
 
-input[type=text]{
-    #font-family:monospace;
-    #font-size:14px;
+
+
+input[type=button][data-pushed=true]{
+/*
+    outline: 1px groove #808080;
+*/
+    box-shadow: 2px 2px 2px #a0b0b0;
 }
+
+input[type=text]:focus{
+    background-color: #ffffff;
+}
+input[type=text]:not(focus){
+    background-color: #f0f0f0;
+}
+
+input[type=text]{
+/*
+    font-family:monospace;
+    font-size:14px;
+
+    outline:0px groove #808080;
+    outline:0px;
+    border: 1px solid #808080;
+    border-radius: 3px;
+    box-shadow:0px 0px 0px #a0a0a0;
+*/
+    outline:0px;
+    border: 0px none #808080;
+    border-radius: 3px;
+    box-shadow:2px 2px 2px #a0b0b0;
+}
+
+
+input[pattern]:invalid:focus{
+    color: #a00000;
+}
+input[pattern]:invalid:not(focus){
+    color:red;
+}
+
+
+
 
 div.alert{
     background:#eeee77;

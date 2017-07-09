@@ -1,4 +1,12 @@
 2017.07.08  webapp javitasok;
+  page:visible metodus megszunt;
+  page:switch_to_form beallitja az activ form buttonjaban a 
+  data-pushed="true" attributumot, ami alapjan CSS-sel lehet
+  mutatni, hogy melyik gomb van benyomva.
+  webabb.data.pushed: uj fuggveny a webapp.disabled  mintajara;
+  webapp.html: jatek a CSS stilusokkal;
+
+2017.07.08  webapp javitasok;
   XCODE.settle az oldal feltoltese utan minden onblur-t lefuttat;
   XCODE.patsettlevalue elfogadja az ures kitoltest;
   XCODE,picture intelligensebb pattern generálás;

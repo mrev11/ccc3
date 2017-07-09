@@ -1,4 +1,7 @@
-7bd1c7dcd177ae5d880354e7bcc824273c4ed911 2017070820:31:01-UTC ./CHANGELOG_vermes
+052ed5bf1f21143c38cf642bf3cc166b0c951f78 2017070921:27:18-UTC ./CHANGELOG_vermes
+8b3da979fb53d2a1598a30bd554def0af67787a7 2017070921:13:32-UTC ./tools/webapp/common/webapp.html
+76a5d22dfbbeba5ae3be1555100a674901c2deba 2017070917:04:45-UTC ./tools/webapp/program/webapputil/webpage.prg
+4db56004425dd61d4f7abb51988f8399e77136aa 2017070915:21:57-UTC ./tools/webapp/program/webapputil/disabled.prg
 6c7afcb73938b5337abe53e7c369a11eb4be5e05 2017070820:21:32-UTC ./tools/webapp/common/webapp.js
 a94a39cecb6449e89e0c3a3bc4a9dc124b1ffab8 2017070815:11:47-UTC ./tools/webapp/common/webapp-pat.js
 2684de2412c05669fce17eeae9ecc27da0acecae 2017070815:07:55-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
@@ -16,7 +19,6 @@ de47635387115d7116a11e0bfbf07e4fd44342af 2017070618:28:00-UTC ./usr/bin/linux/gi
 f8b9abdf7001b18089c9f2b898486afc5e8bc52d 2017070618:28:00-UTC ./usr/bin/linux/gitref
 a32346a4284c15c57c5f89162463f82bc078cf09 2017070618:28:00-UTC ./usr/bin/linux/gitstat
 0b92513bc1c93ddbd603561501f7a353ef3806bb 2017070618:28:00-UTC ./usr/bin/linux/gitview
-94d29752fc10cca800fa0686cec3bf5bf01461b4 2017070108:20:37-UTC ./tools/webapp/program/webapputil/webpage.prg
 a106d950556b41542436778ce625f1576c3b7132 2017063016:48:40-UTC ./tools/webapp/program/whello/defaults.prg
 f4001db504d0a74cc3151847cafb79a1ab3eb1b3 2017063016:48:09-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 d12c42de0aef6f8d8b4ae97dbc6d8df5e508caf8 2017063012:52:30-UTC ./tools/webapp/program/webapputil/script.prg
@@ -35,7 +37,6 @@ a7935228686ed8a1103a74ed5a08cab0728c1b7e 2017061914:35:29-UTC ./tools/webapp/pro
 0fe92e521512c665483e97b76dad5edb1837ad85 2017061914:35:14-UTC ./tools/webapp/program/whello/printlog.prg
 457e55599b43376667c12dc9e505ffd845927669 2017061913:51:43-UTC ./tools/webapp/program/webapputil/webspawn.prg
 da172bd91ecbfea4456b431e35c0bb81cd9c68dd 2017061611:23:17-UTC ./tools/webapp/s
-c00c6f314ce9a696e6cb9f7718cd4ddd2dad10ec 2017061606:56:20-UTC ./tools/webapp/common/webapp.html
 f78b37f114930d97f1f60e6b63782eadd033c531 2017060615:29:30-UTC ./usr/bin/linux/msk2html
 edb53507284effc7cca69952d4f2610dbf7cb2bb 2017060615:29:29-UTC ./usr/bin/linux/webapp
 dcf5de15ae5ba451c7efd7161d78302d96ea0974 2017060615:29:22-UTC ./tools/sql2/test/basicdemo/tds/code_generated/ab.prg
@@ -1070,7 +1071,6 @@ bb2739677a6b29fd4b2ae87c67b0d259d7deb0a6 2012042208:22:09-UTC ./tools/webapp/pro
 bc662b58a5d2a3a1268c3a6545ce40cc0842168a 2012042111:13:47-UTC ./tools/webapp/program/msk2html/proba/m
 539e0a069c089c81df0b704042b85b576504de0a 2012042111:13:25-UTC ./tools/webapp/program/msk2html/proba/OLVASS
 18573e7f980578c0d54ffd0941555f84fd6c0ff2 2012042109:49:56-UTC ./tools/webapp/program/msk2html/proba/textget.msk
-fd516083cb762446f1a21721be955c634daa7e9f 2012041412:18:06-UTC ./tools/webapp/program/webapputil/disabled.prg
 2a171d3ce702c08d6533ee59798b572290f6c336 2012040710:47:03-UTC ./tools/sql2/util/btimport/btimport.prg
 295c09c612011e8076ce7ad1b8b17c9184269447 2012040710:07:28-UTC ./tools/sql2/util/bt2tds/bt2tds.prg
 2cbec1b3c0d11082997d200e065bc8a3c1de2706 2012040512:21:55-UTC ./tools/webapp/program/webapputil/quitblock.prg

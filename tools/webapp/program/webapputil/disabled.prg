@@ -25,6 +25,28 @@ local x:=""
     //  id4,id5 -> enabled
 
 
+
+***************************************************************************************
+function data.pushed(*)
+local arg:={*},n
+local code:=<<CODE>>CODE.webapp.document.getElementById('ID').setAttribute("data-pushed","FLAG");<<CODE>>
+local flag:='true'
+local x:=""
+    for n:=1 to len(arg)
+        if( valtype(arg[n])=="L" )
+            flag:=if(arg[n],'true','false')
+        else
+            x+=code::strtran("ID",arg[n])::strtran("FLAG",flag)
+        end
+    next
+    script(x)
+
+    //pl:
+    // webapp.data.pushed(.t.,id1,id2,id3,.f.,id4,id5)
+    //  id1,id2,id3 -> data-pushed=true
+    //  id4,id5 -> data-pushed=false
+    
+
 ***************************************************************************************
 function style.display(*)
 local arg:={*},n

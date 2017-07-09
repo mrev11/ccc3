@@ -196,12 +196,6 @@ local fid,bid,but,item
     end
     
     if( this:form:content::len==1 )
-        form:visible:=.t.
-        this:active_form:=fid
-    end
-
-    if( this:form:content::len>1 .and. form:visible )
-        this:form:content[1]:visible:=.f.
         this:active_form:=fid
     end
 
@@ -215,16 +209,32 @@ local fid,bid,but,item
 ************************************************************************************************
 static function page.switch_to_form(this,fid)
 local par:={},n,idn
+local push:={},buttxt,butidn,butid
     par::aadd("none")
+    push::aadd(.f.)
     for n:=1 to len(this:form:content)
         idn:=this:form:content[n]:getattrib("id")
+        buttxt:=this:form:content[n]:tabtext
+        butidn:=if(buttxt==NIL,NIL,idn::strtran("form_","tabbut_"))
         if( !idn==fid )
             par::aadd(idn)
+            if( butidn!=NIL )
+                push::aadd(butidn)
+            end
+        else
+            butid:=butidn
         end
     next
     par::aadd("block")
     par::aadd(fid)
     evalarray({|*|webapp.style.display(*)},par)
+    if( butid!=NIL )
+        push::aadd(.t.)
+        push::aadd(butid)
+    end
+    if( len(push)>1 )
+        evalarray({|*|webapp.data.pushed(*)},push)
+    end
     this:active_form:=fid
 
 
@@ -284,6 +294,7 @@ local n,menuid,visible
     end
 
     this:formdata:update
+    this:switch_to_form(this:active_form)
 
     this:closed:=.f.
     while( !this:closed ) 
@@ -360,7 +371,6 @@ local n,menuid,visible
 ************************************************************************************************
 class form(xhtmlnode)
     method  initialize
-    method  visible
     method  upload
     attrib  tabtext
     
@@ -381,13 +391,6 @@ static function form.initialize(this,formid,fieldset,tabtext)
     this:setstyle("display:none") //nem látható
     this:tabtext:=tabtext
     return this
-
-static function form.visible(this,visible)
-local prev:=this:getstyle("display")
-    if( visible!=NIL )
-        this:setstyle("display:VISIBLE"::strtran("VISIBLE",if(visible,"block","none")))
-    end
-    return !prev=="none"
 
 
 static function form.upload(this)

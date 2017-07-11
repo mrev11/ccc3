@@ -78,56 +78,6 @@ XCODE.xpicture=function(ctrl)
 
 }
 
-
-//-------------------------------------------------------------------------------
-XCODE.xxpicture=function(ctrl)
-//-------------------------------------------------------------------------------
-{
-    if( ctrl.xpicture==undefined )
-    {
-        ctrl.xpicture=ctrl.getAttribute("data-picture");
-        var xpat="^";
-        for(var n=0; n<ctrl.xpicture.length; n++)
-        {
-            var c=ctrl.xpicture[n];
-            if( "09".includes(c) )
-            {
-                xpat+="[0-9]";
-            }   
-            else if("aA".includes(c))
-            {
-                xpat+="[a-zA-Z]";
-            }   
-            else if("nN".includes(c))
-            {
-                xpat+="[0-9a-zA-Z]";
-            }   
-            else if(c=="X")
-            {
-                xpat+=".";
-            }   
-            else if("?*+{}()[]|^$".includes(c) )
-            {
-                xpat+="\\"+c;
-            }
-            else if(c=="\\")
-            {
-                xpat+="\\\\";
-            }   
-            else
-            {
-                xpat+=c;
-            } 
-        }
-        xpat+="$";
-        //console.log(new Error().stack);
-        //console.log(ctrl.xpicture);
-        //console.log(xpat);
-        ctrl.pattern=xpat;
-    }
-    return ctrl.xpicture;
-}
-
 //-------------------------------------------------------------------------------
 XCODE.picreadvalue=function(ctrl)
 //-------------------------------------------------------------------------------

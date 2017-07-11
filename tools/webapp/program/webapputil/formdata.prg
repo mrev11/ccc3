@@ -90,31 +90,27 @@ local ctrl:=this:hash[x::bin2str]
         return x
     end
 
+
 ***************************************************************************************
-static function formdata.getdate(this,x)
-local ctrl:=this:hash[x::bin2str]
+static function formdata.getdate(this,id)
+local ctrl:=this:hash[id::bin2str],x,d
     if( ctrl!=NIL )
         x:=ctrl:value
         begin
-            //a bongeszo is kiveszi a kotojeleket 
-            //x::=strtran("-","")::stod
-
+            x::=strtran("-","")
             if( empty(x) )
-                x::=ctod  //ures datum
+                d:=ctod("") //empty
             else
-                x::=stod
+                d:=stod(x)
+                if( !x==dtos(d) )
+                    d:=NIL  //invalid
+                end
             end
-
         recover
-            //ervenytelen a datum, mi legyen?
-            //ha ures datummal megyunk tovabb,
-            //akkor nem lehet megkulonboztetni 
-            //a hibat szandekos/valodi ures datumtol
-            //ezert legyen inkabb NIL
-            x:=NIL
+            d:=NIL //invalid
         end
-        return x
     end
+    return d
 
 
 ***************************************************************************************

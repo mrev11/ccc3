@@ -208,16 +208,16 @@ local fid,bid,but,item
 
 ************************************************************************************************
 static function page.switch_to_form(this,fid)
-local par:={},n,idn
+local disp:={},n,idn
 local push:={},buttxt,butidn,butid
-    par::aadd("none")
+    disp::aadd("none")
     push::aadd(.f.)
     for n:=1 to len(this:form:content)
         idn:=this:form:content[n]:getattrib("id")
         buttxt:=this:form:content[n]:tabtext
         butidn:=if(buttxt==NIL,NIL,idn::strtran("form_","tabbut_"))
         if( !idn==fid )
-            par::aadd(idn)
+            disp::aadd(idn)
             if( butidn!=NIL )
                 push::aadd(butidn)
             end
@@ -225,9 +225,9 @@ local push:={},buttxt,butidn,butid
             butid:=butidn
         end
     next
-    par::aadd("block")
-    par::aadd(fid)
-    evalarray({|*|webapp.style.display(*)},par)
+    disp::aadd("block")
+    disp::aadd(fid)
+    evalarray({|*|webapp.style.display(*)},disp)
     if( butid!=NIL )
         push::aadd(.t.)
         push::aadd(butid)
@@ -294,7 +294,11 @@ local n,menuid,visible
     end
 
     this:formdata:update
-    this:switch_to_form(this:active_form)
+    
+    if( this:active_form!=NIL )
+        //lehet, hogy nincs egy form sem
+        this:switch_to_form(this:active_form)
+    end
 
     this:closed:=.f.
     while( !this:closed ) 

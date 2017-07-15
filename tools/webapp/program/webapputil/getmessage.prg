@@ -1,10 +1,61 @@
 
 namespace webapp
 
-//#define PRINT_MESSAGE
+
+***************************************************************************************
+function logmessage(flag)
+static st_flag:=.f.
+    if( flag!=NIL )
+        st_flag:=flag
+    end
+    return st_flag
+
 
 ***************************************************************************************
 function getmessage(data,timeout)  // @data
+local t0:=gettickcount(),t1,msg
+    while(.t.)
+        msg:=getmessage1(@data,timeout)
+
+
+        if( msg==NIL )
+            //megszakadt
+            exit
+
+        elseif( !empty(msg) )
+            //kesz
+            exit
+
+        elseif( timeout==NIL )
+            //vegtelen timeout, tovabb var
+
+        else
+            t1:=gettickcount()
+            if( (t1-t0)<timeout )
+                //maradt ido, tovabb var 
+                timeout-=(t1-t0)
+                t0:=t1
+            else
+                //lejart a timeout
+                exit
+            end
+        end
+    end
+    return msg
+    
+//azert kellett ezt kozbeiktatni
+//mert az edge-ben "technikai timeout"-ok keletkeznek
+//1) olvashatot jelez a select, de nem jon semmi
+//2) felpercenkent szolo pong-okat kuldozget
+//
+//korabban ez nem latszott, mert olyan message loopjaim voltak
+//amik csendben fordultak egyet timeout eseten
+//az ujabb page:loop azonban kilep timeoutra
+//(hogy az alkalmazas tudjon jatszani a timeout-tal)
+
+
+***************************************************************************************
+function getmessage1(data,timeout)  // @data
 
 local sck:=webapp.ffsocket()
 local msg,prs,dom,err
@@ -15,6 +66,12 @@ local msg,prs,dom,err
 
     msg:=websocket.readmessage(sck)
 
+
+    if( logmessage() ) 
+        ? "readmessage<<[",msg,"]"
+    end 
+
+
     if( msg==NIL )
         return NIL  //kapcsolat megszakadt
     end
@@ -23,13 +80,6 @@ local msg,prs,dom,err
         return ""   //close, ping, pong?
     end
 
-
-    #ifdef PRINT_MESSAGE
-        ? "---------------------------------------"
-        ? msg
-        ? "---------------------------------------"
-    #endif
-    
     prs:=xmlparser2New()
     dom:=prs:parsestring(msg)
     

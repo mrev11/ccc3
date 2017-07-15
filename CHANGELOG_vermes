@@ -1,3 +1,19 @@
+2017.07.15 webapp javitasok;
+  Hianyzo String.prototype.includes potolva (IE 10-11-ben nincs);
+  Hianyzo String.prototype.startsWith potolva (IE 10-11-ben nincs);
+  Hianyzo String.prototype.endsWith potolva (IE 10-11-ben nincs);
+  Hianyzo String.prototype.repeat potolva (IE 10-11-ben nincs);
+  Datum ellenorzes atirva IE10-en is futo valtozatra;
+  webapp.logmessage() alkalmazasbol beallithato szerver oldali log;
+  webapp.getmessage() timeoutja kulon retegben merve, ui. az IE es
+  Az Edge es IE technikai timeoutokat okoz, amin tovabb kell lepni;
+  Az <a download> attributum IE-ben nincs tamogatva, ezert nem 
+  működik: webapp.dnloadsessionfile es webapp.linksessionfile
+  A download attributum ertelme, hogy a browser csak toltse le,
+  de ne nyissa meg az url-t. Az IE megnyitja, amivel elnavigal
+  a webapp alkalmazasrol. Alternatíva a webapp.opensessionfile(),
+  ami azonban szar, nem veletlenul talaltak ki a download-ot; 
+
 2017.07.11 webapp javitasok;
   datumok ellenorzese teljesen ujrairva;
   webapp-pic.js-bol nem hasznalt kod torolve;

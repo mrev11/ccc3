@@ -4,12 +4,13 @@ namespace websocket
 
 #define INDENT     chr(10)+"   "
 
-#define DEBUGINFO  INDENT, "frame_fin:",    frame_fin,      ;
+#define DEBUGINFO  INDENT, "time        :", time(),         ;
+                   INDENT, "frame_fin   :", frame_fin,      ;
                    INDENT, "frame_opcode:", frame_opcode,   ;
                    INDENT, "frame_masked:", frame_masked,   ;
-                   INDENT, "payload_len:",  payload_len,    ;    
-                   INDENT, "timeout:",      timeout
-
+                   INDENT, "payload_len :", payload_len,    ;    
+                   INDENT, "timeout     :", timeout
+                   
 
 //egyik vagy masik
 //#define WRITEMESSAGE_WHOLE      writemessage
@@ -184,7 +185,7 @@ local body
             ? "pong", DEBUGINFO
             if( body==NIL )
                 //szolo pong, tovabb kell varni a hivo programban
-                return "" 
+                return ""
             else
                 //kozbeekelt pong, tovabb kell olvasni
             end
@@ -209,6 +210,9 @@ local hdr2:=bin(len(body))  //MSK=0, len (len<=125)
 
 ***************************************************************************************
 function WRITEMESSAGE_WHOLE(sck,msg) //egyben kuld
+    if( webapp.logmessage() )
+        ? "writemessage >>[",msg,"]"
+    end
     writefragment(sck,bin(129),msg)
 
 
@@ -216,6 +220,9 @@ function WRITEMESSAGE_WHOLE(sck,msg) //egyben kuld
 function WRITEMESSAGE_FRAGMENTED(sck,msg) //darabolva kuld
 local frgsiz:=FRGSIZ
 local fin:=0, op:=1
+    if( webapp.logmessage() )
+        ? "writemessage >>[",msg,"]"
+    end
     while( len(msg)>0 )
         if(len(msg)<=frgsiz)
             fin:=128

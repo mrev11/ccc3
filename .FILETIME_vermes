@@ -1,7 +1,11 @@
-5ca853c66e61d5960beb27e1a1593b361d28ccbf 2017071115:28:49-UTC ./CHANGELOG_vermes
-b5ca2df08769ad2b64f4797c003ac7bc535d0b6c 2017071114:32:22-UTC ./tools/webapp/common/webapp.js
+71a3fa652015fcd5eddb999ff6be933b5a90050f 2017071520:38:53-UTC ./CHANGELOG_vermes
+4dfb5ccdcef83ac14f77df5e1fc7ea79f378bd77 2017071520:36:10-UTC ./tools/webapp/common/webapp.js
+74db149cc8ca768aa2ed810abc14163fce7fb0ed 2017071519:40:29-UTC ./tools/webapp/common/webapp-dat.js
+9e872b54ddb02301fc2fc91f30cc8e81af64299e 2017071517:50:38-UTC ./tools/webapp/common/webapp-core.js
+150f8d26a265245d49116ab376305fc34dc93221 2017071516:34:48-UTC ./tools/webapp/program/webapputil/websocket.prg
+7414f302db80cd28109f6342d7bc42f6e7a97045 2017071516:20:58-UTC ./tools/webapp/common/webapp.html
+662e3d3ff64f7825267a40bbc0c35bd2d1cb0d9c 2017071512:24:31-UTC ./tools/webapp/program/webapputil/getmessage.prg
 6709eaffaee033eb1dfa578755150bf5f6a756ca 2017071114:00:23-UTC ./tools/webapp/program/webapputil/webpage.prg
-3fe171275c49f3cfbc281dab460929f309263da6 2017071112:27:20-UTC ./tools/webapp/common/webapp-dat.js
 12c2b1519ee2b1791cc117c87e355b9db97c8e83 2017071109:35:41-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 52edb36a780445ea81d5885096c7b1a8ead82e23 2017071014:57:38-UTC ./tools/webapp/program/webapputil/formdata.prg
 c9379afa2cbe44ec362d2be98c68661e0ceb7326 2017071013:00:45-UTC ./tools/webapp/common/webapp-pic.js
@@ -87,10 +91,8 @@ c7a4c70d26de027130db44a02b068f45cf69e4f0 2017071012:36:01-UTC ./jt/jterminal/jtw
 4c2e8eccb1a3c5a996e423008d3ae7a3b18486a8 2017071012:36:01-UTC ./jt/jterminal/jtwindow$jtf.class
 73e0bf813d95ba0f321822e996445b90acf92396 2017071012:36:01-UTC ./jt/jterminal/jtwindow.class
 7e2b66f334906a91150ede8e65711f271f1b08e1 2017071012:36:01-UTC ./jt/jterminal/xmlcomponent.class
-9d94b8bfbb9f1f5a9d4cc11051073bc4c6856a1b 2017071007:21:39-UTC ./tools/webapp/common/webapp.html
 4db56004425dd61d4f7abb51988f8399e77136aa 2017070915:21:57-UTC ./tools/webapp/program/webapputil/disabled.prg
 a94a39cecb6449e89e0c3a3bc4a9dc124b1ffab8 2017070815:11:47-UTC ./tools/webapp/common/webapp-pat.js
-0d300fca3b4aa22e8ac0e91e8027c2f62e204822 2017070813:49:41-UTC ./tools/webapp/common/webapp-core.js
 a89ae2b26f27d72bf6cdcbf9778d929d0a5f8b17 2017070812:36:41-UTC ./tools/webapp/program/webapputil/private.prg
 56c4012a0a7592f5fdf74a6d7a65df7777fef5e8 2017070812:01:45-UTC ./tools/webapp/common/m-google
 95ae121d4d73e5ebddf3a789ce09aacfab679425 2017070812:01:41-UTC ./tools/webapp/common/m-yahoo
@@ -110,7 +112,6 @@ d12c42de0aef6f8d8b4ae97dbc6d8df5e508caf8 2017063012:52:30-UTC ./tools/webapp/pro
 6dc6356ccf23b9bf3fb91d8acf5e63e5e059eb71 2017062713:15:22-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 8cab8d5ee810fa5fd06fbcbb8d5fb526ca1f4098 2017062612:57:26-UTC ./tools/webapp/program/webapputil/xlib.prg
 d148d97cadc10354219c5aacd739bb9155f48cf9 2017062511:47:36-UTC ./tools/webapp/program/whello/wecho.prg
-0bb29911e07ec3a3952105850a5755ac5b8f0943 2017062511:33:04-UTC ./tools/webapp/program/webapputil/websocket.prg
 d71d2909228ae50a458f002079c8971d62d11c20 2017062316:47:56-UTC ./tools/webapp/program/whello/whello.prg
 d7d6beb2cc1af297f4662a76e526859f69cffada 2017062308:12:15-UTC ./tools/webapp/common/favicon.ico
 9dcaa9b5aedcb80e2150c56367853b158d74873e 2017062208:26:20-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
@@ -278,7 +279,6 @@ d8dc40e35b23ec46b9b940fde221e019f5873940 2017032106:36:11-UTC ./tools/webapp/pro
 36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
 a2acd39428ec7dc76030a37343e830101a3afd39 2017031813:52:36-UTC ./tools/webapp/program/webapp/sample_config_webapp_start
 23ef682d33674e2ca5985df1c878903a9bce0299 2017031511:58:28-UTC ./tools/sql2/driver-sqlite3/regression/sqlite3-regression.rb
-8ea197300878f5595af54b4227f41101a7a498a8 2017031415:11:25-UTC ./tools/webapp/program/webapputil/getmessage.prg
 2fe6fc753088c591b4b88e592069e6ecd72b7edf 2017030807:55:56-UTC ./tools/webapp/program/webapp/webapp.prg
 996d48c045c5e0353561767c2cd18341af397c6c 2017021919:37:26-UTC ./tutor/xbrwarr/xbrwarr.prg
 fb2fdd2ed8dcc0de718f7df6051dcb6d7a40de7c 2017021118:39:34-UTC ./usr/build/windows/obj2so.bat

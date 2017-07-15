@@ -580,15 +580,57 @@ XCODE.xlib.isdefined=function(id)
 };
 
 
+if( String.prototype.includes==undefined )
+{
+    String.prototype.includes=function(x)
+    {
+        return this.indexOf(x)>=0;
+    }
+}
+
+if( String.prototype.startsWith==undefined )
+{
+    String.prototype.startsWith=function(x)
+    {
+        return this.indexOf(x)==0;
+    }
+}
+
+if( String.prototype.endsWith==undefined )
+{
+    String.prototype.endsWith=function(x)
+    {
+        return this.lastIndexOf(x)==(this.length-x.length);
+    }
+}
+
+if( String.prototype.repeat==undefined )
+{
+    String.prototype.repeat=function(x)
+    {
+        var r="";
+        while(x>0.5)
+        {
+            r+=this;
+            x--;
+        } 
+        return r;
+    }
+}
+
+
 
 //-------------------------------------------------------------------------------
 XCODE.dat2str=function(d) //datumok formazasa: YYYY-MM-DD
 //-------------------------------------------------------------------------------
 {
-    var s=d.getFullYear().toString();
-    s+="-"+(1+d.getMonth()).toLocaleString("en-US",{minimumIntegerDigits:2})
-    s+="-"+d.getDate().toLocaleString("en-US",{minimumIntegerDigits:2})
-    return s
+    var yyyy=(d.getFullYear()).toString();
+    var mm=(1+d.getMonth()).toString();
+    var dd=(d.getDate()).toString();
+    yyyy=("0000"+yyyy);yyyy=yyyy.slice(yyyy.length-4); //padl
+    mm=("00"+mm);mm=mm.slice(mm.length-2); //padl
+    dd=("00"+dd);dd=dd.slice(dd.length-2); //padl
+    return yyyy+"-"+mm+"-"+dd;
 }
 
 

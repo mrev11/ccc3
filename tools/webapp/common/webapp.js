@@ -48,8 +48,8 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
     XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
     XCODE.webapp.dnloadlink.id="dnloadlink";
-    XCODE.webapp.dnloadlink.name="dnloadlink";
     XCODE.webapp.dnloadlink.download="";
+    XCODE.webapp.dnloadlink.target="_blank";
     XCODE.webapp.dnloadlink.style.display="none";
     XCODE.webapp.window.CODE=XCODE;
 

@@ -1,7 +1,8 @@
-71a3fa652015fcd5eddb999ff6be933b5a90050f 2017071520:38:53-UTC ./CHANGELOG_vermes
-4dfb5ccdcef83ac14f77df5e1fc7ea79f378bd77 2017071520:36:10-UTC ./tools/webapp/common/webapp.js
+ffc048ec1f981a218d43c25b3dcb95dcb75c7d9a 2017071614:10:16-UTC ./tools/webapp/common/webapp.js
+18fb323b043c1fab403839e39b54c3f20a2266d6 2017071614:09:54-UTC ./CHANGELOG_vermes
+289b42826626b246ff0c8e844d32c24bd231278e 2017071606:53:11-UTC ./tools/webapp/program/webapputil/sessionfile.prg
+77793eb080e5391b3c7711355581880fd0c1281d 2017071606:51:09-UTC ./tools/webapp/common/webapp-core.js
 74db149cc8ca768aa2ed810abc14163fce7fb0ed 2017071519:40:29-UTC ./tools/webapp/common/webapp-dat.js
-9e872b54ddb02301fc2fc91f30cc8e81af64299e 2017071517:50:38-UTC ./tools/webapp/common/webapp-core.js
 150f8d26a265245d49116ab376305fc34dc93221 2017071516:34:48-UTC ./tools/webapp/program/webapputil/websocket.prg
 7414f302db80cd28109f6342d7bc42f6e7a97045 2017071516:20:58-UTC ./tools/webapp/common/webapp.html
 662e3d3ff64f7825267a40bbc0c35bd2d1cb0d9c 2017071512:24:31-UTC ./tools/webapp/program/webapputil/getmessage.prg
@@ -108,7 +109,6 @@ a106d950556b41542436778ce625f1576c3b7132 2017063016:48:40-UTC ./tools/webapp/pro
 f4001db504d0a74cc3151847cafb79a1ab3eb1b3 2017063016:48:09-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 d12c42de0aef6f8d8b4ae97dbc6d8df5e508caf8 2017063012:52:30-UTC ./tools/webapp/program/webapputil/script.prg
 2782602d8724e2cc782319683a15ad3efc1300e3 2017063012:43:44-UTC ./tools/webapp/program/webapputil/frmaux.prg
-87fa1c07647d84c2a0fa4a0b65a677c1df00125d 2017062808:35:53-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 6dc6356ccf23b9bf3fb91d8acf5e63e5e059eb71 2017062713:15:22-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 8cab8d5ee810fa5fd06fbcbb8d5fb526ca1f4098 2017062612:57:26-UTC ./tools/webapp/program/webapputil/xlib.prg
 d148d97cadc10354219c5aacd739bb9155f48cf9 2017062511:47:36-UTC ./tools/webapp/program/whello/wecho.prg

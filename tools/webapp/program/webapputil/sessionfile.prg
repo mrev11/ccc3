@@ -25,7 +25,7 @@ function linksessionfile(id,doc,text:=doc)
 // a link URL-je a doc-ra mutat (file a sessiondirben)
 // a link szövege text
 
-local link:="<a href='$URL' download>"+text+"</a>" //ez kell, ez HTML5
+local link:="<a href='$URL' download target='_blank'>"+text+"</a>" //ez kell, ez HTML5
 local url:='webapp/dnload/$SESSIONID/'+doc
     url::=strtran("$SESSIONID",webapp.session.id())
     link::=strtran("$URL",url)

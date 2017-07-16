@@ -1,3 +1,7 @@
+2017.07.16 webapp javitasok;
+  Az <a download target="_blank"> elnavigalas ellen,
+  ezzel IE10-11 is viszonylag normalisan hasznalhato;
+  
 2017.07.15 webapp javitasok;
   Hianyzo String.prototype.includes potolva (IE 10-11-ben nincs);
   Hianyzo String.prototype.startsWith potolva (IE 10-11-ben nincs);

@@ -7,11 +7,19 @@
 rm -f webapp.js
 touch webapp.js
 
-java -jar ~/bin/closure-compiler.jar --js webapp-core.js >>webapp.js
-java -jar ~/bin/closure-compiler.jar --js webapp-dat.js  >>webapp.js
-java -jar ~/bin/closure-compiler.jar --js webapp-num.js  >>webapp.js
-java -jar ~/bin/closure-compiler.jar --js webapp-pat.js  >>webapp.js
-java -jar ~/bin/closure-compiler.jar --js webapp-pic.js  >>webapp.js
+
+java -jar  ~/bin/closure-compiler.jar --js webapp-core.js         >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-websocket.js    >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-formdata.js     >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-private.js      >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-xlib.js         >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-util.js         >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-inp_date.js     >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-inp_number.js   >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-inp_picture.js  >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-inp_regex.js    >>webapp.js
+java -jar  ~/bin/closure-compiler.jar --js webapp-compat.js       >>webapp.js
 
 
 ls -l webapp.js
+

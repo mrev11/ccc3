@@ -16,67 +16,22 @@ Content-Type: text/html;charset=UTF-8
 <html>
 <head>
 <meta charset="utf-8" />
-!!INCLUDE_SCRIPT!!
-!!INCLUDE_STYLE!!
+$$JAVASCRIPT
 </head>
 
-<body onload="XCODE.onload_main('!!WSURI!!')">
-<iframe id="webapp" name="webapp" width="1000" height="600" frameborder="0" style="display:block" !!SOURCE!!></iframe>
-<iframe id="frmaux" name="frmaux" width="1000" height="200" frameborder="0" style="display:none"></iframe>
+<body onload="XCODE.onload_main('$$WEBSOCKET')">
+<iframe id="webapp"  frameborder="0" style="display:block" $$FRAMESOURCE></iframe>
+<iframe id="frmaux"  frameborder="0" style="display:none"></iframe>
 <div id="display"></div>
 </body>
 </html>
 <<PAGE>>::str2bin::httpheader_crlf
 
-
-    page_main::=strtran(a"!!WSURI!!",wsuri)
-
-
-    //egyik vagy másik
-    page_main::=strtran(a"!!SOURCE!!",a'src="webapp.html"')
-    //page_main::=strtran(a"!!SOURCE!!",a'') //itt kiveszi, webapp.js-ben dinamikusan kell betenni (IE-ben rossz)
-
-
-    //egyik vagy másik
-    //page_main::=strtran(a"!!INCLUDE_SCRIPT!!",a'<script type="text/javascript">'+memoread("common/webapp.js",.t.)+a'</script>') //direkt beteszi
-    page_main::=strtran(a"!!INCLUDE_SCRIPT!!",a'<script type="text/javascript" src="webapp.js"></script>') //hivatkozás
-
-
-    //egyik vagy másik
-    page_main::=strtran(a"!!INCLUDE_STYLE!!",a'<style>'+memoread("common/main.css",.t.)+a'</style>') //direkt beteszi
-    //page_main::=strtran(a"!!INCLUDE_STYLE!!",a'<link rel="stylesheet" type="text/css" href="main.css"/>') //hivatkozás  (IE mime type mismatch!)
-
+    page_main::=strtran(a"$$WEBSOCKET",wsuri)
+    page_main::=strtran(a"$$JAVASCRIPT",a'<script type="text/javascript" src="webapp.js"></script>')
+    page_main::=strtran(a"$$FRAMESOURCE",a'src="webapp.html"')
 
     return page_main
-    
-
-#ifdef NOTDEFINED
-
-  Az IE10-ben bizonytalan, hogyan töltődnek be az oldal komponensei, ezért 
-
-    <script type="text/javascript" src="webapp.js" ></script>
-
-  helyett a szerver oldalon elvégezzük az include-ot:
-
-    <script type="text/javascript">
-    !!INCLUDE_SCRIPT!!
-    </script>
-    
-  Ugyanezért 
-
-    <link rel="stylesheet" type="text/css" href="main.css" />
-
-  helyett
-
-    <style>
-    !!INCLUDE_STYLE!!
-    </style>
-    
-  És ugyanezért a webapp iframe-ben a dinamikus betöltés helyett előre megadjuk
-  az src="webapp.html" attribútumot, ahol a webapp.html-ban pontosan ugyanzok
-  a css előírások vannak, mint a korábbi webapp.css-ben.
-
-#endif    
     
 
 ***************************************************************************************

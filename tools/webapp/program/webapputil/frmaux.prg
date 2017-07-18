@@ -19,10 +19,10 @@ local code:=""
 local codew:=<<code>>CODE.frmaux.frame.width="$WIDTH";<<code>>
 local codeh:=<<code>>CODE.frmaux.frame.height="$HEIGHT";<<code>>
     if(w!=NIL)
-        code+=codew::strtran("$WIDTH",w::str::alltrim)
+        code+=codew::strtran("$WIDTH",w::any2str::alltrim)
     end
     if(h!=NIL)
-        code+=codeh::strtran("$HEIGHT",h::str::alltrim)
+        code+=codeh::strtran("$HEIGHT",h::any2str::alltrim)
     end
     webapp.script(code)
 

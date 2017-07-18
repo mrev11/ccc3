@@ -1,3 +1,13 @@
+2017.07.19 webapp javitasok;
+  webapp.page atalakitva: minden eleme CSS-sel parameterezheto;
+  webapp.html komplett (de ures) HTML fajl, linkeli webapp.css-t;
+  main.css megszunt;
+  javascript fajlok tovabb darabolva;
+  webapp.prg: a bedrotozott kezdooldal kitisztitva;
+  frmaux.size(), webapp.size() string argumentumokat is elfogad;
+  bovites: xhtmlnodeNew(type,"a1=v1","a2=v2", ... )
+  overlay-ezos webapp.alert();
+
 2017.07.16 webapp javitasok;
   Az <a download target="_blank"> elnavigalas ellen,
   ezzel IE10-11 is viszonylag normalisan hasznalhato;

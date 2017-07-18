@@ -4,7 +4,9 @@ var XCODE={}; //object
 var CODE=XCODE;
 
 
+//------------------------------------------------------------------------------
 XCODE.onload_main=function(uri)
+//------------------------------------------------------------------------------
 {
     XCODE.websckuri=uri;
     XCODE.connected=false;
@@ -43,8 +45,9 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.display=XCODE.webapp.document.createElement("div");
     XCODE.webapp.body.appendChild(XCODE.webapp.display);
     XCODE.webapp.display.id="display";
-    XCODE.webapp.display.name="display";
-    //XCODE.webapp.display.innerHTML="webapp";
+    XCODE.webapp.overlay=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.body.appendChild(XCODE.webapp.overlay);
+    XCODE.webapp.overlay.id="overlay";
     XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
     XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
     XCODE.webapp.dnloadlink.id="dnloadlink";
@@ -91,20 +94,45 @@ XCODE.onload_main=function(uri)
 }
 
 
+//------------------------------------------------------------------------------
+XCODE.turndebug=function(flag)
+//------------------------------------------------------------------------------
+{
+    XCODE.debug=flag;
+    if(flag)
+    {
+        XCODE.frmaux.frame.style.display="block";
+    }
+    else
+    {
+        XCODE.frmaux.frame.style.display="none";
+    }
+}
+
+
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
 XCODE.onopen=function(evt)
+//------------------------------------------------------------------------------
 {
     XCODE.frmaux.writeln("CONNECTED");
     XCODE.connected=true;
 }
 
+//------------------------------------------------------------------------------
 XCODE.onclose=function(evt)
+//------------------------------------------------------------------------------
 {
     alert("websocket closed");
     XCODE.frmaux.writeln("DISCONNECTED");
     XCODE.connected=false;
 }
 
+//------------------------------------------------------------------------------
 XCODE.onmessage=function(evt)
+//------------------------------------------------------------------------------
 {
     var txt=evt.data;
 
@@ -132,14 +160,19 @@ XCODE.onmessage=function(evt)
     }
 }
 
+//------------------------------------------------------------------------------
 XCODE.onerror=function(evt)
+//------------------------------------------------------------------------------
 {
     XCODE.frmaux.write('websocket error:');
     XCODE.frmaux.writeln(evt.toString());
     XCODE.connected=false;
 }
 
+
+//------------------------------------------------------------------------------
 XCODE.send=function(message)
+//------------------------------------------------------------------------------
 {
     if( XCODE.connected )
     {
@@ -171,18 +204,47 @@ XCODE.send=function(message)
     }
 }
 
-XCODE.htmlstring=function(x)
+//------------------------------------------------------------------------------
+XCODE.senderror=function(desc,args)
+//------------------------------------------------------------------------------
 {
-    x=x.replace(/&/g,"&amp;");
-    x=x.replace(/>/g,"&gt;");
-    x=x.replace(/</g,"&lt;");
-    return x;
+    var msg="";
+    msg+='<error>';
+    msg+='<description>';
+    msg+=XCODE.cdataif( desc );
+    msg+='</description>';
+    msg+='<args>';
+    msg+=XCODE.cdataif(args);
+    msg+='</args>';
+    msg+='</error>';
+    XCODE.send(msg);
 }
+
+//------------------------------------------------------------------------------
+XCODE.sendwarning=function(desc,args)
+//------------------------------------------------------------------------------
+{
+    var msg="";
+    msg+='<warning>';
+    msg+='<description>';
+    msg+=XCODE.cdataif( desc );
+    msg+='</description>';
+    msg+='<args>';
+    msg+=XCODE.cdataif(args);
+    msg+='</args>';
+    msg+='</warning>';
+    XCODE.send(msg);
+}
+
+//------------------------------------------------------------------------------
+
 
 
 XCODE.onclick_in_progress=false;
 
+//------------------------------------------------------------------------------
 XCODE.onclick_formdata=function(srcid) //fékezve küld
+//------------------------------------------------------------------------------
 {
     if(!XCODE.onclick_in_progress)
     {
@@ -201,7 +263,9 @@ XCODE.onclick_formdata=function(srcid) //fékezve küld
     }
 }
 
+//------------------------------------------------------------------------------
 XCODE.formdata=function(srcid) //feltétel nélkül küld
+//------------------------------------------------------------------------------
 {
     var ctrl,n;
     var x="<formdata>";
@@ -296,7 +360,9 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
 }
 
 
+//------------------------------------------------------------------------------
 XCODE.xreadvalue=function(ctrl)
+//------------------------------------------------------------------------------
 {
     if( ctrl.xreadvalue!=undefined )
     {
@@ -309,31 +375,9 @@ XCODE.xreadvalue=function(ctrl)
 }
 
 
-XCODE.cdataif=function(x)
-{
-    if( 0<=x.indexOf("<") || 0<=x.indexOf(">") || 0<=x.indexOf("&") )
-    {
-        x=XCODE.cdata(x);
-    }
-    return x;
-}
-
-
-XCODE.cdata=function(x)
-{
-    //<![CDATA[ xxx ]]>
-    var y="",n;
-    while( 0<=(n=x.indexOf("]]>")) )
-    {
-        y+='<![CDATA['+x.substr(0,n+1)+']]>';
-        x=x.substr(n+1);
-    }
-    y+='<![CDATA['+x+']]>';
-    return y;
-}
-
-
+//------------------------------------------------------------------------------
 XCODE.updatecontrol=function(id,value)
+//------------------------------------------------------------------------------
 {
     var ctrl=XCODE.webapp.document.getElementById(id);
 
@@ -403,40 +447,7 @@ XCODE.updatecontrol=function(id,value)
     }
 }
 
-
-XCODE.click=function(id)
-{
-    var ctrl=XCODE.webapp.document.getElementById(id);
-    if( ctrl==null )
-    {
-        console.log( "click: getElementById("+id+") returned null" );
-    }
-    else
-    {
-        ctrl.click();
-        //console.log("click on "+ctrl.id);
-    }
-}
-
-
-XCODE.echo=function(x)
-{
-    XCODE.send(x);
-}
-
-
-XCODE.settle=function()
-{
-    var ctrl,n;
-    ctrl=XCODE.webapp.document.getElementsByTagName("input");
-    for( n=0; n<ctrl.length; n++ )
-    {
-        if( ctrl[n].onblur!=undefined )
-        {
-            ctrl[n].onblur(ctrl[n]);
-        }
-    }
-}
+//------------------------------------------------------------------------------
 
 
 XCODE.privatelength=function()
@@ -490,81 +501,6 @@ XCODE.restoredisplay=function(key)
 }
 
 
-XCODE.onclick_row=function(row)
-{
-    //<table><tbody><tr></tr></tbody></table>
-    var sec=row.parentElement; //HTMLTableSectionElement 
-    var tab=sec.parentElement; //HTMLTableElement
-    if( tab.selectedrow )
-    {
-        if( tab.selectedrow.className=="evenX" )
-        {
-            tab.selectedrow.className="even";
-        }
-        else if( tab.selectedrow.className=="oddX" )
-        {
-            tab.selectedrow.className="odd";
-        }
-        tab.selectedrow.bgColor=null;
-    }
-    tab.selectedrow=row;
-    row.className+="X";
-    row.bgColor="#ffff00";
-}
-
-
-XCODE.turndebug=function(flag)
-{
-    XCODE.debug=flag;
-    if(flag)
-    {
-        //XCODE.webapp.frame.height="600";
-        //XCODE.frmaux.frame.height="400";
-        XCODE.frmaux.frame.style.display="block";
-    }
-}
-
-
-XCODE.senderror=function(desc,args)
-{
-    var msg="";
-    msg+='<error>';
-    msg+='<description>';
-    msg+=XCODE.cdataif( desc );
-    msg+='</description>';
-    msg+='<args>';
-    msg+=XCODE.cdataif(args);
-    msg+='</args>';
-    msg+='</error>';
-    XCODE.send(msg);
-}
-
-
-XCODE.sendwarning=function(desc,args)
-{
-    var msg="";
-    msg+='<warning>';
-    msg+='<description>';
-    msg+=XCODE.cdataif( desc );
-    msg+='</description>';
-    msg+='<args>';
-    msg+=XCODE.cdataif(args);
-    msg+='</args>';
-    msg+='</warning>';
-    XCODE.send(msg);
-}
-
-
-XCODE.evententer=function(event)
-{
-    return event.which==13;
-}
-
-function chr(code)
-{
-    return String.fromCharCode(code);
-}
-
 
 XCODE.xlib={}; //objektumtár
 XCODE.xlib.isdefined=function(id)
@@ -580,43 +516,127 @@ XCODE.xlib.isdefined=function(id)
 };
 
 
-if( String.prototype.includes==undefined )
+
+
+//------------------------------------------------------------------------------
+XCODE.cdataif=function(x)
+//------------------------------------------------------------------------------
 {
-    String.prototype.includes=function(x)
+    if( 0<=x.indexOf("<") || 0<=x.indexOf(">") || 0<=x.indexOf("&") )
     {
-        return this.indexOf(x)>=0;
+        x=XCODE.cdata(x);
+    }
+    return x;
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.cdata=function(x)
+//------------------------------------------------------------------------------
+{
+    //<![CDATA[ xxx ]]>
+    var y="",n;
+    while( 0<=(n=x.indexOf("]]>")) )
+    {
+        y+='<![CDATA['+x.substr(0,n+1)+']]>';
+        x=x.substr(n+1);
+    }
+    y+='<![CDATA['+x+']]>';
+    return y;
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.evententer=function(event)
+//------------------------------------------------------------------------------
+{
+    return event.which==13;
+}
+
+
+//------------------------------------------------------------------------------
+function chr(code)
+//------------------------------------------------------------------------------
+{
+    return String.fromCharCode(code);
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.htmlstring=function(x)
+//------------------------------------------------------------------------------
+{
+    x=x.replace(/&/g,"&amp;");
+    x=x.replace(/>/g,"&gt;");
+    x=x.replace(/</g,"&lt;");
+    return x;
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.click=function(id)
+//------------------------------------------------------------------------------
+{
+    var ctrl=XCODE.webapp.document.getElementById(id);
+    if( ctrl==null )
+    {
+        console.log( "click: getElementById("+id+") returned null" );
+    }
+    else
+    {
+        ctrl.click();
+        //console.log("click on "+ctrl.id);
     }
 }
 
-if( String.prototype.startsWith==undefined )
+//------------------------------------------------------------------------------
+XCODE.onclick_row=function(row)
+//------------------------------------------------------------------------------
 {
-    String.prototype.startsWith=function(x)
+    //<table><tbody><tr></tr></tbody></table>
+    var sec=row.parentElement; //HTMLTableSectionElement 
+    var tab=sec.parentElement; //HTMLTableElement
+    if( tab.selectedrow )
     {
-        return this.indexOf(x)==0;
-    }
-}
-
-if( String.prototype.endsWith==undefined )
-{
-    String.prototype.endsWith=function(x)
-    {
-        return this.lastIndexOf(x)==(this.length-x.length);
-    }
-}
-
-if( String.prototype.repeat==undefined )
-{
-    String.prototype.repeat=function(x)
-    {
-        var r="";
-        while(x>0.5)
+        if( tab.selectedrow.className=="evenX" )
         {
-            r+=this;
-            x--;
-        } 
-        return r;
+            tab.selectedrow.className="even";
+        }
+        else if( tab.selectedrow.className=="oddX" )
+        {
+            tab.selectedrow.className="odd";
+        }
+    }
+    tab.selectedrow=row;
+    row.className+="X";
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.echo=function(x)
+//------------------------------------------------------------------------------
+{
+    XCODE.send(x);
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.settle=function()
+//------------------------------------------------------------------------------
+{
+    var ctrl,n;
+    ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    for( n=0; n<ctrl.length; n++ )
+    {
+        if( ctrl[n].onblur!=undefined )
+        {
+            ctrl[n].onblur(ctrl[n]);
+        }
     }
 }
+
+
+//------------------------------------------------------------------------------
 
 
 
@@ -878,109 +898,6 @@ XCODE.numkeypress=function(e)
 }
 
 //-------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-XCODE.xpattern=function(ctrl)
-//------------------------------------------------------------------------------
-{
-    if( ctrl.xpattern==undefined )
-    {
-        var pat=ctrl.pattern;
-        if(!pat.startsWith("^")){pat="^"+pat;}
-        if(!pat.endsWith("$")){pat+="$";}
-        var match=pat.match(/(\[[^\]]+\])|(\{[^}]+\})|(\\.)|(.)/g);
-        // (\[[^\]]+\])
-        // (\{[^}]+\})
-        // (\\.)
-        // (.)
-        var xpat="";
-        for( var n=0; n<match.length; n++ )
-        {
-            var x=match[n];
-            if( x[0]=='[' )
-            {
-                x='[\\v'+x.slice(1); // [0-9] -> [\v0-9]
-            }
-            else if( x[0]=='\\' )
-            {
-                x='[\\v'+x+']'; // \x -> [\v\x]
-            }
-            else if( "^?*+{()|".includes(x[0]) )
-            {
-            }
-            else if( "$".includes(x[0]) )
-            {
-                x='\\v*$'; // $ -> \v*$
-            }
-            else
-            {
-                x='[\\v'+x+']'; //x -> [\vx]
-            }
-            xpat+=x;
-        }
-        //console.log(pat);
-        //console.log(match.toString());
-        //console.log(xpat);
-        ctrl.xpattern=xpat;
-    }
-    return ctrl.xpattern;
-}
-
-//------------------------------------------------------------------------------
-XCODE.patsettlevalue=function(ctrl)
-//------------------------------------------------------------------------------
-{
-    if( ctrl.xreadvalue==undefined )
-    {
-        //honnan hivodik?
-        //modszer a callstack megtekintesere
-        //console.log(new Error().stack);
-
-        ctrl.xreadvalue=function()
-        {
-            var v=this.value;
-            if( v!="" )
-            {
-                var r=new RegExp(this.pattern)
-                if( !r.test(v) )
-                {
-                    v="? "+v;
-                }
-            }
-            return v;
-        }
-    }
-}
-
-//------------------------------------------------------------------------------
-XCODE.patkeypress=function(e)
-//------------------------------------------------------------------------------
-{
-    var ctrl=e.target; //input mezo
-
-    if( e.charCode==0 )
-    {
-        //del,bs,right,left,...
-    }
-    else
-    {
-        var v=ctrl.value; //tartalom az aktualis karakter nelkul
-        var pos=ctrl.selectionStart; //caret pozicio
-        var chr=String.fromCharCode(e.charCode); //aktualis karakter
-        var x=v.slice(0,pos)+chr; //balfel + uj karakter
-        var xr=v.slice(pos); //jobbfel
-        var pat=XCODE.xpattern(ctrl);
-        var reg=new RegExp(pat);
-        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
-        {
-            e.preventDefault();
-        }
-    }
-} 
-
-//-------------------------------------------------------------------------------
-
-
 
 
 //-------------------------------------------------------------------------------
@@ -1316,3 +1233,146 @@ XCODE.pickeypress=function(e)
 }
 
 //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+XCODE.xpattern=function(ctrl)
+//------------------------------------------------------------------------------
+{
+    if( ctrl.xpattern==undefined )
+    {
+        var pat=ctrl.pattern;
+        if(!pat.startsWith("^")){pat="^"+pat;}
+        if(!pat.endsWith("$")){pat+="$";}
+        var match=pat.match(/(\[[^\]]+\])|(\{[^}]+\})|(\\.)|(.)/g);
+        // (\[[^\]]+\])
+        // (\{[^}]+\})
+        // (\\.)
+        // (.)
+        var xpat="";
+        for( var n=0; n<match.length; n++ )
+        {
+            var x=match[n];
+            if( x[0]=='[' )
+            {
+                x='[\\v'+x.slice(1); // [0-9] -> [\v0-9]
+            }
+            else if( x[0]=='\\' )
+            {
+                x='[\\v'+x+']'; // \x -> [\v\x]
+            }
+            else if( "^?*+{()|".includes(x[0]) )
+            {
+            }
+            else if( "$".includes(x[0]) )
+            {
+                x='\\v*$'; // $ -> \v*$
+            }
+            else
+            {
+                x='[\\v'+x+']'; //x -> [\vx]
+            }
+            xpat+=x;
+        }
+        //console.log(pat);
+        //console.log(match.toString());
+        //console.log(xpat);
+        ctrl.xpattern=xpat;
+    }
+    return ctrl.xpattern;
+}
+
+//------------------------------------------------------------------------------
+XCODE.patsettlevalue=function(ctrl)
+//------------------------------------------------------------------------------
+{
+    if( ctrl.xreadvalue==undefined )
+    {
+        //honnan hivodik?
+        //modszer a callstack megtekintesere
+        //console.log(new Error().stack);
+
+        ctrl.xreadvalue=function()
+        {
+            var v=this.value;
+            if( v!="" )
+            {
+                var r=new RegExp(this.pattern)
+                if( !r.test(v) )
+                {
+                    v="? "+v;
+                }
+            }
+            return v;
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+XCODE.patkeypress=function(e)
+//------------------------------------------------------------------------------
+{
+    var ctrl=e.target; //input mezo
+
+    if( e.charCode==0 )
+    {
+        //del,bs,right,left,...
+    }
+    else
+    {
+        var v=ctrl.value; //tartalom az aktualis karakter nelkul
+        var pos=ctrl.selectionStart; //caret pozicio
+        var chr=String.fromCharCode(e.charCode); //aktualis karakter
+        var x=v.slice(0,pos)+chr; //balfel + uj karakter
+        var xr=v.slice(pos); //jobbfel
+        var pat=XCODE.xpattern(ctrl);
+        var reg=new RegExp(pat);
+        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
+        {
+            e.preventDefault();
+        }
+    }
+} 
+
+//-------------------------------------------------------------------------------
+
+
+
+
+if( String.prototype.includes==undefined )
+{
+    String.prototype.includes=function(x)
+    {
+        return this.indexOf(x)>=0;
+    }
+}
+
+if( String.prototype.startsWith==undefined )
+{
+    String.prototype.startsWith=function(x)
+    {
+        return this.indexOf(x)==0;
+    }
+}
+
+if( String.prototype.endsWith==undefined )
+{
+    String.prototype.endsWith=function(x)
+    {
+        return this.lastIndexOf(x)==(this.length-x.length);
+    }
+}
+
+if( String.prototype.repeat==undefined )
+{
+    String.prototype.repeat=function(x)
+    {
+        var r="";
+        while(x>0.5)
+        {
+            r+=this;
+            x--;
+        } 
+        return r;
+    }
+}
+

@@ -5,6 +5,8 @@
 ************************************************************************************************
 class xhtmlnode(xmlnode)
 
+    method  initialize
+
     method  addattrib    // felüldefiniálva (automatikusan készíti az xmlattrib objektumot)
     method  setattrib    // felüldefiniálva (automatikusan készíti az xmlattrib objektumot)
 
@@ -33,6 +35,22 @@ class xhtmlnode(xmlnode)
     method  visible      // node:visible(.t./.f.)  true-ra látható
     method  focus
     method  update       // a megváltozott content-et elküldi a böngészőbe      
+
+
+************************************************************************************************
+static function xhtmlnode.initialize(this,type,*)
+local attr:={*[3..]},n,a
+    this:(xmlnode)initialize(type)
+    for n:=1 to len(attr)
+        a:=attr[n]
+        a::=split("=")
+        if( '"'$a[2]  )
+            this:addattrib(a[1],"'"+a[2]+"'")
+        else
+            this:addattrib(a[1],'"'+a[2]+'"')
+        end
+    next
+    return this
 
 
 ************************************************************************************************

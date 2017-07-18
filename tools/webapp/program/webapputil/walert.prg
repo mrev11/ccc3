@@ -24,12 +24,9 @@ local c:="",n,msg,data,choice
     a::=strtran("ALTERNATIVES",c)
     a::=strtran("TEXT",text)
 
-    webapp.savedisplay("alert")
-    webapp.emptydisplay()
-    webapp.innerhtml("display",a)
+    webapp.innerhtml("overlay",a)
+    webapp.script("CODE.webapp.overlay.style.display='block'")
     webapp.focus("alert1")
-    
-    //memowrit("alert.html",a)
     
     while( NIL!=(msg:=webapp.getmessage(@data)) )
         if( msg::startswith("formdata.") )
@@ -38,12 +35,11 @@ local c:="",n,msg,data,choice
         end
     end
 
-    webapp.restoredisplay("alert")
+    webapp.script("CODE.webapp.overlay.style.display='none'")
+    webapp.innerhtml("overlay","")
+
     
     return choice // 1,2,3...  (nincs esc==0 lehetőség)
 
 ***************************************************************************************
 
-    
-    
-    

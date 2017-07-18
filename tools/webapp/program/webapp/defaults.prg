@@ -69,9 +69,7 @@ function sck_listener()
 static sck
     if(sck==NIL)
         sck:=socketNew()
-        if( default_interface()=="localhost" )
-            sck:reuseaddress(.t.) //élesből kivenni
-        end
+        sck:reuseaddress(.t.) //élesből kivenni
         sck:bind(default_interface(),default_port())
     end
     return sck

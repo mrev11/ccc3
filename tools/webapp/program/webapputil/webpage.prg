@@ -13,12 +13,13 @@ class page(xhtmlnode)
 
     method  initialize
 
-    attrib  caption          // <#TEXT>, az oldal címe
-    attrib  menu             // <div>, főmenü az oldal bal szélén, egymás alatti gombok
-    attrib  form             // <div>, amiben a formok vannak, egyszerre egy látható
-    attrib  tabbut           // <div>, a látható formot kiválasztó buttonok
-    attrib  action           // <div>, a formok alatt vizszintesen sorakozó gombok
-    attrib  status           // <div>, a formok alatt egy üres hely üzenetek számára
+    attrib  menu             // <div.menu>      főmenü az oldal bal szélén, egymás alatti gombok
+    attrib  formset          // <div.formset>   amiben a caption, tabbuttonok es formok vannak
+    attrib  caption          // <div.caption>   az oldal címe
+    attrib  tabbut           // <div.tabbut>    a látható formot kiválasztó buttonok
+    attrib  form             // <div.form>      amiben a formok vannak, egyszerre egy látható
+    attrib  action           // <div.action>    a formok alatt vizszintesen sorakozó gombok
+    attrib  status           // <div.status>    a formok alatt egy üres hely üzenetek számára
     
     method  addmenu
     method  addpdmenu
@@ -52,77 +53,72 @@ class page(xhtmlnode)
 
 ************************************************************************************************
 static function page.initialize(this,caption)
-local fs
 
-    this:(xhtmlnode)initialize("div")
+    this:(xhtmlnode)initialize("div","class=page")
 
     this:createnodehash
     this:cacheable:=.t.    
     this:uploaded:=.f.
-    
     this:actionhash:=simplehashNew()
-
     this:formdata:=webapp.formdataNew(xmlnodeNew())  //egy üres formdata
 
-    this:menu:=xhtmlnodeNew("div")
+
+    //HTML structure
+
+    this:menu:=xhtmlnodeNew("div","class=menu","style=display:none")
     this:addcontent(this:menu)
-    this:menu:addattrib( xhtmlnode.attrib("class","menu") )
-    this:menu:setstyle("float:left;margin-top:64")
     
-    fs:=xhtmlnodeNew("fieldset")
-    //nem kell a margin-left
-    //fs:setstyle("border:0;margin-left:FORMMARGIN"::strtran("FORMMARGIN",(MENUWIDTH+FSMARGIN)::str::alltrim)  )
-    fs:setstyle("border:0;")
-    this:addcontent(fs)
+    this:formset:=xhtmlnodeNew("div","class=formset")
+    this:addcontent(this:formset)
 
-    this:caption:=xhtmlnodeNew("#TEXT")
+    this:caption:=xhtmlnodeNew("div","class=caption")
+    this:formset:addcontent(this:caption)
     if( caption!=NIL )
-        this:caption:addcontent(caption)
+        this:caption:addcontent(xhtmlnodeNew("#TEXT"))
+        this:caption:content[1]:addcontent(caption)
+        //itt a '<' karakterek escapelése ki van kerülve
+        //ezert a caption lehet pl. <h3>text</h3>
+        //(ez egy trükk? vagy rendben van)
     end
-    fs:addcontent(this:caption)
-    
-    this:tabbut:=xhtmlnodeNew("div")
-    this:tabbut:addattrib( xhtmlnode.attrib("class","tabbut") )
-    fs:addcontent(this:tabbut)
 
-    fs:addcontent(xhtmlnodeNew("p"))
+    this:tabbut:=xhtmlnodeNew("div","class=tabbut","style=display:none")
+    this:formset:addcontent(this:tabbut)
 
-    this:form:=xhtmlnodeNew("div")
-    this:form:addattrib( xhtmlnode.attrib("class","form") )
-    fs:addcontent(this:form)
+    this:form:=xhtmlnodeNew("div","class=form")
+    this:formset:addcontent(this:form)
 
-    fs:addcontent(xhtmlnodeNew("p"))
+    this:action:=xhtmlnodeNew("div","class=action","style=display:none")
+    this:formset:addcontent(this:action)
 
-    this:action:=xhtmlnodeNew("div")
-    this:action:addattrib( xhtmlnode.attrib("class","action") )
-    fs:addcontent(this:action)
-
-    fs:addcontent(xhtmlnodeNew("p"))
-
-    this:status:=xhtmlnodeNew("div")
-    this:status:addattrib( xhtmlnode.attrib("class","status") )
-    this:status:addattrib( xhtmlnode.attrib("id","status") )
-    fs:addcontent(this:status)
+    this:status:=xhtmlnodeNew("div","class=status")
+    this:formset:addcontent(this:status)
 
     return this
 
 
-#ifdef NOTDEFIND //ez a szerkezete
-<div>
+#ifdef NOTDEFINED
+A page xhtmlnode-ok szerkezete:
+
+<div class="page">
+
     <div class="menu">
         <br/><input.../><br/><input.../> ...
     </div>
-    <fieldset>
-        caption-text
-        <div class="tabbut"><input.../><input.../> ... <p/></div>
-        <p/>
-        <div class="form"><div id="formid"><fieldset.../></div> ... </div>
-        <p/>
+
+    <div class=formset>
+        <div class=caption>captxt</div>
+        <div class="tabbut"><input.../><input.../> ...</div>
+        <div class="form">
+            <div id="formid1"><fieldset.../></div> 
+            <div id="formid2"><fieldset.../></div> 
+            ... 
+        </div>
         <div class="action"><input.../><input.../>...</div>
         <div id="status"></div>
-    </fieldset>
+    </div>
 </div>
 #endif
+
 
 ************************************************************************************************
 static function page.addmenu(this,id,value,title,blk)
@@ -136,6 +132,7 @@ local button
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
     end
+    this:menu:setstyle("display:block")
 
 
 ************************************************************************************************
@@ -147,6 +144,7 @@ local button
         button:=pdmenubuttonNew(id,value,title)
     end
     this:menu:addcontent(button)
+    this:menu:setstyle("display:block")
 
 
 ************************************************************************************************
@@ -175,6 +173,7 @@ local button
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
     end
+    this:action:setstyle("display:block")
 
 
 ************************************************************************************************
@@ -182,6 +181,7 @@ static function page.addform(this,form)
 local fid,bid,but,item
 
     fid:=form:getattrib("id")
+    form:setattrib("class","subform")
     this:form:addcontent(form)
 
     form:pageblk:={||this}
@@ -203,6 +203,7 @@ local fid,bid,but,item
         bid:=fid::strtran("form_","tabbut_")
         but:=tabbuttonNew(bid,form:tabtext)
         this:tabbut:addcontent(but)
+        this:tabbut:setstyle("display:block")
     end
 
 
@@ -403,9 +404,7 @@ static function form.upload(this)
 
 static function form.addformaction(this,id,value,title,blk)
     if( this:formaction==NIL )
-        this:formaction:=xhtmlnodeNew("div")
-        this:formaction:setattrib("class","formaction")
-        this:content::aadd(xhtmlnodeNew("p"))
+        this:formaction:=xhtmlnodeNew("div","class=formaction")
         this:content::aadd(this:formaction)
     end
     if(  valtype(id)=="O" )
@@ -452,9 +451,8 @@ class menubutton(webapp.button)
 
 static function menubutton.initialize(this,id,value,title)
     this:(webapp.button)initialize(id,value,title)
-    this:addattrib(xhtmlnode.attrib("class","menu"))
-    this:setstyle("width:MENUWIDTH"::strtran("MENUWIDTH",MENUWIDTH::str::alltrim))
-    this:setstyle("margin:6 4 0 4;display:block")
+    this:addattrib(xhtmlnode.attrib("class","menubutton"))
+    this:setstyle("display:block")
     return this
 
 
@@ -467,6 +465,7 @@ class tabbutton(webapp.button)
 static function tabbutton.initialize(this,id,value,title)
 local msg:="<tabbutton>ID</tabbutton>"::strtran("ID",id)::webapp.jsstring
     this:(webapp.button)initialize(id,value,title)
+    this:addattrib(xhtmlnode.attrib("class","tabbutton"))
     this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)))
     return this
 
@@ -474,14 +473,16 @@ local msg:="<tabbutton>ID</tabbutton>"::strtran("ID",id)::webapp.jsstring
 ************************************************************************************************
 //pdmenubutton (pulldown)
 ************************************************************************************************
-class pdmenubutton(webapp.menubutton)
+class pdmenubutton(webapp.button)
     attrib  visible
     method  initialize
 
 static function pdmenubutton.initialize(this,id,value,title)
 local msg:="<pdbutton>ID</pdbutton>"::strtran("ID",id)::webapp.jsstring
-    this:(webapp.menubutton)initialize(id,"["+value+"]",title)
+    this:(webapp.button)initialize(id,"["+value+"]",title)
+    this:addattrib(xhtmlnode.attrib("class","pdmenubutton"))
     this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)))
+    this:setstyle("display:block")
     this:visible:=.f.
     return this
 
@@ -489,12 +490,13 @@ local msg:="<pdbutton>ID</pdbutton>"::strtran("ID",id)::webapp.jsstring
 ************************************************************************************************
 //submenubutton
 ************************************************************************************************
-class submenubutton(webapp.menubutton)
+class submenubutton(webapp.button)
     method  initialize
 
 static function submenubutton.initialize(this,id,value,title)
-    this:(webapp.menubutton)initialize(id,value,title)
-    this:setstyle("border:0;margin:0 4 0 4;display:none")
+    this:(webapp.button)initialize(id,value,title)
+    this:addattrib(xhtmlnode.attrib("class","submenubutton"))
+    this:setstyle("display:none")
     return this
 
 

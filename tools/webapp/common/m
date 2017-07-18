@@ -2,10 +2,19 @@
 rm -f webapp.js
 touch webapp.js
 
-cat  webapp-core.js  >>webapp.js
-cat  webapp-dat.js   >>webapp.js
-cat  webapp-num.js   >>webapp.js
-cat  webapp-pat.js   >>webapp.js
-cat  webapp-pic.js   >>webapp.js
+cat  webapp-core.js         >>webapp.js
+cat  webapp-websocket.js    >>webapp.js
+cat  webapp-formdata.js     >>webapp.js
+cat  webapp-private.js      >>webapp.js
+cat  webapp-xlib.js         >>webapp.js
+cat  webapp-util.js         >>webapp.js
+cat  webapp-inp_date.js     >>webapp.js
+cat  webapp-inp_number.js   >>webapp.js
+cat  webapp-inp_picture.js  >>webapp.js
+cat  webapp-inp_regex.js    >>webapp.js
+cat  webapp-compat.js       >>webapp.js
+
 
 ls -l webapp.js
+
+

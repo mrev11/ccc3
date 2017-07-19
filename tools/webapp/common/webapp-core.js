@@ -43,6 +43,15 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.document=XCODE.webapp.window.document;
     XCODE.webapp.body=XCODE.webapp.document.body;
 
+    XCODE.webapp.menuicon=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.body.appendChild(XCODE.webapp.menuicon);
+    XCODE.webapp.menuicon.id="menuicon";
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.accessKey="m";
+    XCODE.webapp.menuicon.onclick=function(){XCODE.menuicon_clicked()};
+
     XCODE.webapp.display=XCODE.webapp.document.createElement("div");
     XCODE.webapp.body.appendChild(XCODE.webapp.display);
     XCODE.webapp.display.id="display";
@@ -57,15 +66,6 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.dnloadlink.download="";
     XCODE.webapp.dnloadlink.target="_blank";
     XCODE.webapp.dnloadlink.style.display="none";
-
-    XCODE.webapp.menuicon=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.body.appendChild(XCODE.webapp.menuicon);
-    XCODE.webapp.menuicon.id="menuicon";
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.accessKey="m";
-    XCODE.webapp.menuicon.onclick=function(){XCODE.menuicon_clicked()};
 
     XCODE.webapp.window.CODE=XCODE;
 

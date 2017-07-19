@@ -1,8 +1,11 @@
-d518685131f68acdbe8e2eff954ab9a23c65f5f1 2017071910:50:31-UTC ./tools/webapp/common/webapp.css
-3e3f06e3bd0d9c6930dcc2c5e5afbe5df9fbf4b5 2017071909:56:40-UTC ./tools/webapp/common/webapp.js
-baacca86f581140f2655e3415569a6fcaa5988d8 2017071909:52:54-UTC ./tools/webapp/common/webapp-core.js
+3d3260958618972aaad67e6cbb531411754faa1e 2017071916:49:52-UTC ./CHANGELOG_vermes
+0f3cea89cf481110f9dc5e42ff79a816c2bac094 2017071916:47:55-UTC ./tools/webapp/common/webapp.js
+78f828c7bd67ed48927305ea8d53f3967c8af5ff 2017071916:43:16-UTC ./tools/webapp/common/webapp.css-raw
+7de5df5c220022557cdfcefbf0a1dac84d9a1397 2017071916:41:50-UTC ./tools/webapp/common/webapp.css-blue
+1ec8a0f7ecd479fd6d9c67b409bc7a3bdb316a09 2017071916:41:38-UTC ./tools/webapp/common/webapp.css
+634292db7da2ae83bb732dd74aa408dd91cae503 2017071916:38:40-UTC ./tools/webapp/common/webapp.css-green
+d9c8bd77f2178f80e1fe3e10606ecf234fa3f8e1 2017071912:17:10-UTC ./tools/webapp/common/webapp-core.js
 e9acd9516db24705dac956978d996beff600a5b8 2017071823:39:13-UTC ./tools/webapp/program/webapputil/webpage.prg
-88b3d5258b393f344735f0b69985745cd9cdf6e7 2017071823:37:18-UTC ./CHANGELOG_vermes
 b31987fc84d95382a2feb1dc788e8b5712398ff1 2017071823:32:26-UTC ./tools/webapp/program/webapputil/walert.prg
 af769f319a15c201eef665bd1a7864854b9ac165 2017071822:06:07-UTC ./tools/webapp/program/webapputil/frmaux.prg
 66abf4f5bb8dbfc5d90d012ba96aa256544b0f3e 2017071819:39:45-UTC ./usr/bin/linux/webapp
@@ -20,8 +23,6 @@ fdd09e0b9f01b4dc20f9c6d39bfcd44fb65f3ed6 2017071807:42:55-UTC ./tools/webapp/com
 0b39d665614645d0c9aac5d8c4a2cb6c2bd99822 2017071807:24:49-UTC ./tools/webapp/common/webapp-compat.js
 b07e5c489b1ec40c956811452296f3a0a8ebab7c 2017071716:33:07-UTC ./tools/webapp/program/webapp/defaults.prg
 2d10ff307ee71a22a84612b0d814f0dbe676006a 2017071715:34:56-UTC ./tools/webapp/common/webapp.html
-61463cabfe56d17146494d1158d664268515ac6c 2017071715:31:48-UTC ./tools/webapp/common/webapp.html-css
-3a3c44096fcd06476552c081469adb7cc5743d53 2017071615:34:38-UTC ./tools/webapp/common/webapp.html-kiserlet
 289b42826626b246ff0c8e844d32c24bd231278e 2017071606:53:11-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 74db149cc8ca768aa2ed810abc14163fce7fb0ed 2017071519:40:29-UTC ./tools/webapp/common/webapp-dat.js
 150f8d26a265245d49116ab376305fc34dc93221 2017071516:34:48-UTC ./tools/webapp/program/webapputil/websocket.prg

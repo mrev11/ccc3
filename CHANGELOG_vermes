@@ -1,3 +1,9 @@
+2017.07.19 webapp.css tervek;
+
+2017.07.19 webapp javitasok;
+  frmaux ki-bekapcsolo ikon a bal also sarokban;
+  a webapp.page-ek horizontalisan nem scrolloznak;
+
 2017.07.19 webapp javitasok;
   webapp.page atalakitva: minden eleme CSS-sel parameterezheto;
   webapp.html komplett (de ures) HTML fajl, linkeli webapp.css-t;

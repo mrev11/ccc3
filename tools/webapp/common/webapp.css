@@ -6,6 +6,7 @@ body{
     font-size: 12px;
 }
 
+
 /********** LABEL **********/
 
 h1,h2,h3,label,legend{
@@ -38,6 +39,20 @@ div.alert{
     border:1px solid #dddd66;
 }
 
+
+/********** MENUICON (frmaux) **********/
+                      
+#menuicon {
+    float:left;
+    display: block;
+}
+
+#menuicon div {
+    width: 12px;
+    height: 2px;
+    background-color: black;
+    margin: 2px 0;
+}
 
 /********** INPUT TEXT **********/
 
@@ -96,6 +111,18 @@ td{
 
 
 
+
+/********** PAGE HORIZONTAL SCROLLING **********/
+
+#display{
+    overflow-x: hidden;
+}
+
+#display .page{
+    width: 2000px;
+}
+
+
 /********** PAGE LEFT SIDE MENU **********/
 
 div.page  div.menu {
@@ -103,7 +130,7 @@ div.page  div.menu {
     width: auto;
     margin-top: 60px;
     margin-right: 6px;
-    border: 2px solid #f08080;
+    border: 5px solid red;
 }
 
 div.page div.menu  input.menubutton, input.pdmenubutton, input.submenubutton {
@@ -125,18 +152,18 @@ div.page div.menu  input.submenubutton {
 div.page div.formset{
     float: left;
     width:80%;
-    border: 2px solid #8080f0;
+    border: 5px solid black;
 }                             
 
 div.page div.formset div.form div.subform fieldset{
-    border:5px solid #c0c0c0;
+    border: 5px solid grey;
 }                             
 
 
 /********** PAGE TABBED PANE **********/
 
 div.page  div.formset div.tabbut{
-    border: 2px solid #80f080;
+    border: 5px solid green;
 }
 
 div.page  div.formset div.tabbut input[type=button]{
@@ -150,7 +177,7 @@ div.page  div.formset div.tabbut input[type=button][data-pushed=true]{
 /********** PAGE ACTION MENU **********/
 
 div.page  div.formset div.action{
-    border: 2px solid #80f080;
+    border: 5px solid cyan;
 }
 
 div.page  div.formset div.action input[type=button]{
@@ -160,7 +187,7 @@ div.page  div.formset div.action input[type=button]{
 /********** PAGE FORMACTION MENU **********/
 
 div.page div.formset div.form div.subform div.formaction{
-    border:2px solid black;
+    border: 5px solid blue;
 }                             
 
 

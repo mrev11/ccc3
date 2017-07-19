@@ -42,18 +42,31 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
     XCODE.webapp.document=XCODE.webapp.window.document;
     XCODE.webapp.body=XCODE.webapp.document.body;
+
     XCODE.webapp.display=XCODE.webapp.document.createElement("div");
     XCODE.webapp.body.appendChild(XCODE.webapp.display);
     XCODE.webapp.display.id="display";
+
     XCODE.webapp.overlay=XCODE.webapp.document.createElement("div");
     XCODE.webapp.body.appendChild(XCODE.webapp.overlay);
     XCODE.webapp.overlay.id="overlay";
+
     XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
     XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
     XCODE.webapp.dnloadlink.id="dnloadlink";
     XCODE.webapp.dnloadlink.download="";
     XCODE.webapp.dnloadlink.target="_blank";
     XCODE.webapp.dnloadlink.style.display="none";
+
+    XCODE.webapp.menuicon=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.body.appendChild(XCODE.webapp.menuicon);
+    XCODE.webapp.menuicon.id="menuicon";
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
+    XCODE.webapp.menuicon.accessKey="m";
+    XCODE.webapp.menuicon.onclick=function(){XCODE.menuicon_clicked()};
+
     XCODE.webapp.window.CODE=XCODE;
 
     XCODE.frmaux.frame=XCODE.main.document.getElementById("frmaux");
@@ -109,6 +122,18 @@ XCODE.turndebug=function(flag)
     }
 }
 
+//------------------------------------------------------------------------------
+XCODE.menuicon_clicked=function()
+{
+    if( XCODE.frmaux.frame.style.display=="block" )
+    { 
+        XCODE.turndebug(false);
+    }
+    else
+    {
+        XCODE.turndebug(true);
+    }
+}
 
 //------------------------------------------------------------------------------
 

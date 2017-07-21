@@ -2,19 +2,29 @@
 rm -f webapp.js
 touch webapp.js
 
-cat  webapp-core.js         >>webapp.js
-cat  webapp-websocket.js    >>webapp.js
-cat  webapp-formdata.js     >>webapp.js
-cat  webapp-private.js      >>webapp.js
-cat  webapp-xlib.js         >>webapp.js
-cat  webapp-util.js         >>webapp.js
-cat  webapp-inp_date.js     >>webapp.js
-cat  webapp-inp_number.js   >>webapp.js
-cat  webapp-inp_picture.js  >>webapp.js
-cat  webapp-inp_regex.js    >>webapp.js
-cat  webapp-compat.js       >>webapp.js
+cat   webapp-core.js         >>webapp.js
+cat   webapp-websocket.js    >>webapp.js
+cat   webapp-formdata.js     >>webapp.js
+cat   webapp-private.js      >>webapp.js
+cat   webapp-xlib.js         >>webapp.js
+cat   webapp-util.js         >>webapp.js
+cat   webapp-inp_date.js     >>webapp.js
+cat   webapp-inp_number.js   >>webapp.js
+cat   webapp-inp_picture.js  >>webapp.js
+cat   webapp-inp_regex.js    >>webapp.js
+cat   webapp-compat.js       >>webapp.js
+
+lessc webapp.less            >webapp.css
 
 
-ls -l webapp.js
+
+#exit 0
+
+
+minify --no-comments webapp.js
+minify --no-comments webapp.css
+
+mv webapp.min.js  webapp.js 
+mv webapp.min.css webapp.css 
 
 

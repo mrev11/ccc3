@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# ezek nodejs programok
+#   installálni kell nodejs-t
+# utána
+#   npm install -g less
+#   npm install -g less-plugin-clean-css
+#   npm install -g minifier
+
+
+#nem tömörít:
+lessc webapp.less >webapp.css
+
+
+#tömörít:
+#lessc webapp.less --clean-css="--s1 --advanced" >webapp.css
+
+
+#deprecated módszerrel tömörít:
+#lessc -x webapp.less >webapp.css

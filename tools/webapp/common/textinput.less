@@ -1,0 +1,31 @@
+
+
+/********** INPUT TEXT **********/
+
+input[type=text]{
+    color:@GLOBAL_TEXT_COLOR;
+    outline:0px;
+    border: 0px none #888;
+    border-radius: 3px;
+    box-shadow:1px 1px 1px #abb;
+}
+
+input[type=text]:focus{
+    background-color: #ffffff;
+}
+
+input[type=text]:not(focus){
+    background-color: #f4f4f4;
+}
+
+input[pattern]:invalid:focus{
+    color: #c00000;
+    background-color: #ffeeee;
+}
+
+input[pattern]:invalid:not(focus){
+    color:red;
+    background-color: #ffa0a0;
+}
+
+

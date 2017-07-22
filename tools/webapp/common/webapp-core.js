@@ -60,6 +60,10 @@ XCODE.onload_main=function(uri)
     XCODE.webapp.body.appendChild(XCODE.webapp.overlay);
     XCODE.webapp.overlay.id="overlay";
 
+    XCODE.webapp.blind=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.overlay.appendChild(XCODE.webapp.blind);
+    XCODE.webapp.blind.id="blind";
+
     XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
     XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
     XCODE.webapp.dnloadlink.id="dnloadlink";

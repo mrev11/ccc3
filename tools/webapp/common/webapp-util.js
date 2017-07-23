@@ -128,6 +128,7 @@ XCODE.openalert=function(alert_as_html)
     bln.style.height="0px";
     bln.innerHTML=alert_as_html;
     var alr=bln.firstChild;
+    alr.savefocus=XCODE.webapp.document.activeElement;
     ovl.style.display="block";
     console.log(XCODE.webapp.window.getComputedStyle(alr));
     var height=XCODE.webapp.window.getComputedStyle(alr).height
@@ -140,8 +141,10 @@ XCODE.closealert=function()
 {
     var ovl=XCODE.webapp.overlay;
     var bln=XCODE.webapp.blind;
+    var alr=bln.firstChild;
     ovl.style.display="none";
     bln.style.height="0px";
+    alr.savefocus.focus();
     bln.innerHTML="";
 }
 

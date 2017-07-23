@@ -12,6 +12,9 @@
     &:hover{
         background-color: @BUTTON_COLOR_HOVER;
     }
+    &:focus{
+        text-decoration: underline;
+    }
     &:disabled{
         background-color: @BUTTON_COLOR_DISABLED;
     }
@@ -28,13 +31,6 @@ input[type=button] {
         box-shadow: 1px 2px darken(@BUTTON_COLOR_SHADOW,20%);
         transform: translateY(1px);
     }
-}
-
-
-input[type=button].submenubutton {
-    background-color: @SMBUTTON_COLOR_BG;
-    &:hover{background-color: @SMBUTTON_COLOR_HOVER;}
-    &:disabled{background-color: @SMBUTTON_COLOR_DISABLED;}
 }
 
 /********** SELECT BUTTONS **********/

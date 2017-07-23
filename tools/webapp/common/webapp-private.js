@@ -32,6 +32,7 @@ XCODE.getprivatedata=function(key)
 
 XCODE.savedisplay=function(key)
 {
+    XCODE.webapp.display.savefocus=XCODE.webapp.document.activeElement;
     XCODE.setprivatedata(key,XCODE.webapp.display);
 }
 
@@ -48,5 +49,7 @@ XCODE.restoredisplay=function(key)
     d=XCODE.getprivatedata(key)
     XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
     XCODE.webapp.display=d;
+    XCODE.webapp.display.savefocus.focus();
+    delete XCODE.webapp.display.savefocus;
 }
 

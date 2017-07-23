@@ -1,3 +1,9 @@
+2017.07.23 wbapp javitasok;
+  text alahuzva a fokuszt birtoklo buttonokban;
+  webapp.alert menti/visszaallitja a fokuszt;
+  webapp.spawn menti/visszaallitja a fokuszt;
+  webapp,page:get - uj metodus, tovabbitva a nodehash-nek; 
+
 2017.07.22 webapp.alert legordulos valtozat;
 
 2017.07.21 webapp CSS atirva less preprocesszorra;

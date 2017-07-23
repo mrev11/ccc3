@@ -13,6 +13,9 @@ input[type=button] {
 input[type=button]:hover {
   background-color: #3c3cd4;
 }
+input[type=button]:focus {
+  text-decoration: underline;
+}
 input[type=button]:disabled {
   background-color: #6060b0;
 }
@@ -20,15 +23,6 @@ input[type=button]:active {
   background-color: #3c3cd4;
   box-shadow: 1px 2px #777777;
   transform: translateY(1px);
-}
-input[type=button].submenubutton {
-  background-color: #4794c4;
-}
-input[type=button].submenubutton:hover {
-  background-color: #3579a3;
-}
-input[type=button].submenubutton:disabled {
-  background-color: #557183;
 }
 /********** SELECT BUTTONS **********/
 select {
@@ -45,8 +39,14 @@ select {
 select:hover {
   background-color: #3c3cd4;
 }
+select:focus {
+  text-decoration: underline;
+}
 select:disabled {
   background-color: #6060b0;
+}
+input[type=radio]:focus {
+  text-decoration: underline;
 }
 /********** INPUT TEXT **********/
 input[type=text] {
@@ -182,17 +182,24 @@ div.page div.menu {
   border: 5px none red;
 }
 div.page div.menu input.menubutton,
-input.pdmenubutton,
-input.submenubutton {
+div.page div.menu input.pdmenubutton,
+div.page div.menu input.submenubutton {
   width: 120px;
 }
 div.page div.menu input.menubutton,
-input.pdmenubutton {
+div.page div.menu input.pdmenubutton {
   margin: 6px 4px 0px 4px;
 }
 div.page div.menu input.submenubutton {
   border: 0;
-  margin: 0px 4px 0px 4px;
+  margin: 1px 4px 0px 4px;
+  background-color: #4794c4;
+}
+div.page div.menu input.submenubutton:hover {
+  background-color: #3579a3;
+}
+div.page div.menu input.submenubutton:disabled {
+  background-color: #557183;
 }
 /********** PAGE FORMSET FIELDSET **********/
 div.page div.formset {
@@ -205,7 +212,7 @@ div.page div.formset div.form div.subform fieldset {
   border: 1px solid #ccccbe;
   border-radius: 10px;
 }
-/********** PAGE TABBED PANE **********/
+/********** PAGE TAB-BUTTONS **********/
 div.page div.formset div.tabbut {
   border: 5px none green;
   padding: 0px 0px 0px 5px;

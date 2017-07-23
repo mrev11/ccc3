@@ -37,6 +37,7 @@ class page(xhtmlnode)
 
     attrib  nodehash         // hash a kontrollokból, item={id,ctrl}, nem feltétlenül uptodate
     method  createnodehash   {|this|this:nodehash:=xhtmlnode.createnodehash(this)}
+    method  get              :nodehash:get
 
     attrib  cacheable
     attrib  restorekey             

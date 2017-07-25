@@ -9,8 +9,12 @@ local code:=<<code>>CODE.frmaux.frame.style.display="$DISP";<<code>>
 
 ***************************************************************************************
 function border(flag)
-local code:=<<code>>CODE.frmaux.frame.frameBorder="$BORDER";<<code>>
-    code::=strtran("$BORDER",if(flag,"1","0"))
+local code:=<<code>>CODE.frmaux.frame.style.borderStyle="$BORDER";<<code>>
+    if( valtype(flag)=="L"  )
+        code::=strtran("$BORDER",if(flag,"solid","none"))
+    else
+        code::=strtran("$BORDER",flag)
+    end
     webapp.script(code)
 
 ***************************************************************************************

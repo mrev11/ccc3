@@ -20,8 +20,8 @@ $$JAVASCRIPT
 </head>
 
 <body onload="XCODE.onload_main('$$WEBSOCKET')">
-<iframe id="webapp"  frameborder="0" style="display:block" $$FRAMESOURCE></iframe>
-<iframe id="frmaux"  frameborder="0" style="display:none"></iframe>
+<iframe id="webapp" style="display:block; border-style:none; border-width:thin" $$FRAMESOURCE></iframe>
+<iframe id="frmaux" style="display:none; border-style:solid; border-width:thin"></iframe>
 <div id="display"></div>
 </body>
 </html>

@@ -49,9 +49,11 @@ select:disabled {
 input[type=text] {
   color: #566;
   outline: 0px;
-  border: 0px none #888;
+  border-style: solid;
+  border-width: thin;
   border-radius: 3px;
-  box-shadow: 1px 1px 1px #abb;
+  border-color: #ccc;
+  box-shadow: 1px 1px 2px #abb;
 }
 input[type=text]:focus {
   background-color: #ffffff;
@@ -97,7 +99,7 @@ textarea {
   font-family: sans-serif;
   color: #566;
   font-weight: normal;
-  border: 1px solid #ccccbe;
+  border: thin solid #ccccbe;
   outline: none;
 }
 /********** MENUICON (frmaux) **********/
@@ -206,7 +208,7 @@ div.page div.formset {
 }
 div.page div.formset div.form div.subform fieldset {
   background-color: #ffffee;
-  border: 1px solid #ccccbe;
+  border: thin solid #ccccbe;
   border-radius: 10px;
 }
 /********** PAGE TAB-BUTTONS **********/

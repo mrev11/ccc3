@@ -1,3 +1,5 @@
+2017.07.25 webapp - style="border-width: thin;"
+
 2017.07.25 keyboard inkey kodokat is elfogad;
   keyboard egy helyett tobb parametert is atvesz, melyek kozott 
   lehet X,C,N tipus ezzel kozvetlenul inkeycode-ok is betolthetok 

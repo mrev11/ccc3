@@ -25,9 +25,9 @@
 #include <inkey.ch>
 
 //------------------------------------------------------------------------
-#define TYPEAHEAD   32
+#define TYPEAHEAD  128
 
-static CHAR keyboard_buffer[TYPEAHEAD];
+static int keyboard_buffer[TYPEAHEAD];
 static int kbmax=0;
 static int kbact=0;
 
@@ -106,8 +106,6 @@ void _clp_lastkey(int argno)
 void _clp___keyboard(int argno)
 {
 VALUE *base=stack-argno;
-stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
 push_call("__keyboard",base);
 //
     
@@ -116,17 +114,29 @@ push_call("__keyboard",base);
     kbmax=0;
     kbact=0;
 
-    // keyboard "string"
-
-    if( base->type==TYPE_BINARY )
+    for( VALUE *v=base; v<stack; v++ )
     {
-        bin2str(base);
-    }
-
-    if( base->type==TYPE_STRING )
-    {
-        kbmax=min(TYPEAHEAD,STRINGLEN(base));
-        memcpy(keyboard_buffer,STRINGPTR(base),kbmax*sizeof(CHAR));
+        if( v->type==TYPE_BINARY )
+        {
+            bin2str(v);
+        }
+        
+        if( v->type==TYPE_STRING )
+        {
+            for(unsigned int i=0; i<STRINGLEN(v) && kbmax<TYPEAHEAD; i++ )
+            {
+                keyboard_buffer[kbmax]=(int)(STRINGPTR(v)[i]);
+                kbmax++;
+            }
+        }
+        else if( v->type==TYPE_NUMBER )
+        {
+            if( kbmax<TYPEAHEAD )
+            {
+                keyboard_buffer[kbmax]=D2INT(v->data.number);
+                kbmax++;
+            }
+        }
     }
 //
 stack=base;

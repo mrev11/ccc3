@@ -1,4 +1,9 @@
-2017.05.23 webapp javitasok;
+2017.05.25 keyboard inkey kodokat is elfogad;
+  keyboard egy helyett tobb parametert is atvesz, melyek kozott 
+  lehet X,C,N tipus ezzel kozvetlenul inkeycode-ok is betolthetok 
+  a bufferba (korabban pl. keyboard(chr(K_ALT_F10)) mukodott). 
+
+2017.05.25 webapp javitasok;
   nodejs telepites leiras (less, minifier);
   webapp.js es webapp.css keszites build-bol kihagyva
   (hogy hianyzo nodejs eseten ne torlodjon a telepitett css/js);

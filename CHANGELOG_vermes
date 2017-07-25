@@ -1,3 +1,9 @@
+2017.05.23 webapp javitasok;
+  nodejs telepites leiras (less, minifier);
+  webapp.js es webapp.css keszites build-bol kihagyva
+  (hogy hianyzo nodejs eseten ne torlodjon a telepitett css/js);
+  nehany szin valtozott; 
+
 2017.07.23 wbapp javitasok;
   text alahuzva a fokuszt birtoklo buttonokban;
   webapp.alert menti/visszaallitja a fokuszt;

@@ -45,9 +45,6 @@ select:focus {
 select:disabled {
   background-color: #6060b0;
 }
-input[type=radio]:focus {
-  text-decoration: underline;
-}
 /********** INPUT TEXT **********/
 input[type=text] {
   color: #566;
@@ -153,7 +150,7 @@ textarea {
 }
 /********** BODY **********/
 body {
-  background: #fff;
+  background: #ffffff;
   font-size: 12px;
   font-family: sans-serif;
 }
@@ -208,7 +205,7 @@ div.page div.formset {
   border: 5px none black;
 }
 div.page div.formset div.form div.subform fieldset {
-  background-color: #ffe;
+  background-color: #ffffee;
   border: 1px solid #ccccbe;
   border-radius: 10px;
 }
@@ -219,7 +216,7 @@ div.page div.formset div.tabbut {
 }
 div.page div.formset div.tabbut input[type=button] {
   background-color: #b3b3a7;
-  border: 1px solid #676759;
+  border: 1px solid #8f8f7e;
   color: #000;
   padding: 6px 12px;
   transition: 0.3s;
@@ -227,7 +224,7 @@ div.page div.formset div.tabbut input[type=button] {
 }
 div.page div.formset div.tabbut input[type=button][data-pushed=true] {
   background-color: #f2f2e2;
-  border: 1px solid #c3c378;
+  border: 1px solid #d3d39b;
 }
 /********** PAGE ACTION MENU **********/
 div.page div.formset div.action {

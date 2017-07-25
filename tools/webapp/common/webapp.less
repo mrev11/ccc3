@@ -1,6 +1,6 @@
 
 
-@BACKGROUND_COLOR: #fff;
+@BACKGROUND_COLOR: #ffffff;
 @GLOBAL_FONT_SIZE: 12px;
 @GLOBAL_FONT_FAMILY: sans-serif;
 @GLOBAL_TEXT_COLOR: #566;
@@ -22,7 +22,7 @@
 @SMBUTTON_COLOR_DISABLED: desaturate(darken(@SMBUTTON_COLOR_BG,10%),30%);
 
 //maszkok
-@FIELDSET_COLOR: #ffe;
+@FIELDSET_COLOR: #ffffee;
 @FIELDSET_BUTTON_COLOR_ACTIVE: mix(@FIELDSET_COLOR,#000,95%);
 @FIELDSET_BUTTON_COLOR_INACTIVE: mix(@FIELDSET_COLOR,#000,70%);
 
@@ -110,7 +110,7 @@ div.page  div.formset div.tabbut{
 
     input[type=button]{
         background-color: @FIELDSET_BUTTON_COLOR_INACTIVE;
-        border: 1px solid darken(@FIELDSET_BUTTON_COLOR_INACTIVE,30%);
+        border: 1px solid darken(@FIELDSET_BUTTON_COLOR_INACTIVE,15%);
         color: #000;
         padding: 6px 12px;
         transition: 0.3s;
@@ -118,7 +118,7 @@ div.page  div.formset div.tabbut{
     
         &[data-pushed=true]{
             background-color: @FIELDSET_BUTTON_COLOR_ACTIVE;
-            border: 1px solid darken(@FIELDSET_BUTTON_COLOR_ACTIVE,30%);
+            border: 1px solid darken(@FIELDSET_BUTTON_COLOR_ACTIVE,20%);
         }
     }
 }

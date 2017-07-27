@@ -1,6 +1,7 @@
+b61e3bf9f4f0a8861338ef4bbb90e61b8ca9085d 2017072609:25:30-UTC ./tools/webapp/common/webapp.css
+3f468dead9474e5bffa63a4f2e366ebcefee35c1 2017072609:25:29-UTC ./tools/webapp/common/webapp.less
+9fe8b8b918f9d6ebcf5d2474542b26cb729c7e95 2017072609:02:52-UTC ./tools/webapp/common/table.less
 b9f658b356f72c552bc425aadb3f1aa992122604 2017072521:07:06-UTC ./CHANGELOG_vermes
-b42a81e752948a2a89c00455abb7aabcfa8d4267 2017072517:38:21-UTC ./tools/webapp/common/webapp.css
-7236db77e1ae248fc54fc45305cfa51e92110734 2017072517:38:19-UTC ./tools/webapp/common/webapp.less
 dcbf0b3ed0f04d675a669e9d3e161448b01e0f7b 2017072517:32:55-UTC ./tools/webapp/common/textarea.less
 814758720945145fd74680829a164228d2355725 2017072517:28:24-UTC ./tools/webapp/common/textinput.less
 0609f5e4367d631772fac51d50133b98fd7542b0 2017072517:21:31-UTC ./usr/bin/linux/webapp
@@ -27,7 +28,6 @@ c879a63dfd520a13b1020b4e57c3bbdc9150d9ef 2017072207:28:03-UTC ./tools/webapp/pro
 1871f418d449b958cc1f53dd458e5c03080807e0 2017072206:31:07-UTC ./tools/webapp/common/webapp-core.js
 b9aa6ed4d609077a89fa57e4dae0f6fdee3fbf31 2017072122:02:17-UTC ./tools/webapp/common/m
 3a493c09c3363c79c5ff380ff4761c68ba32e4c8 2017072113:27:47-UTC ./tools/webapp/common/lc
-f13ed7aecfd4d0c225e2aef1925b77e8ebef7076 2017072111:26:01-UTC ./tools/webapp/common/table.less
 e6fbb6a9462f81237a70af935780d6fa633e3fbf 2017072109:06:48-UTC ./tools/webapp/common/menuicon.less
 5ed5515cb7d9dbd369106b925d4b8ebdefb6f62a 2017071814:37:22-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 f124ed3d534933dbd393d7cd6dc638aec21b3590 2017071807:50:26-UTC ./tools/webapp/common/webapp-websocket.js

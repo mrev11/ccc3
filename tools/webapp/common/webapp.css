@@ -92,6 +92,7 @@ th {
 td {
   color: #566;
   white-space: nowrap;
+  font-size: smaller;
 }
 /********** TEXTAREA **********/
 textarea {
@@ -209,7 +210,7 @@ div.page div.formset {
 div.page div.formset div.form div.subform fieldset {
   background-color: #ffffee;
   border: thin solid #ccccbe;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 /********** PAGE TAB-BUTTONS **********/
 div.page div.formset div.tabbut {

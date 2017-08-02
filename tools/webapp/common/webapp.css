@@ -212,6 +212,11 @@ div.page div.formset div.form div.subform fieldset {
   border: thin solid #ccccbe;
   border-radius: 6px;
 }
+div.page div.formset div.form div.subform fieldset legend {
+  background-color: #ffffee;
+  border: thin solid #ccccbe;
+  border-radius: 10px;
+}
 /********** PAGE TAB-BUTTONS **********/
 div.page div.formset div.tabbut {
   border: 5px none green;

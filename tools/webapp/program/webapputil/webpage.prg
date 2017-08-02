@@ -21,6 +21,7 @@ class page(xhtmlnode)
     attrib  action           // <div.action>    a formok alatt vizszintesen sorakozó gombok
     attrib  status           // <div.status>    a formok alatt egy üres hely üzenetek számára
     
+    method  setcaption
     method  addmenu
     method  addpdmenu
     method  addsubmenu
@@ -119,6 +120,13 @@ A page xhtmlnode-ok szerkezete:
     </div>
 </div>
 #endif
+
+
+************************************************************************************************
+static function page.setcaption(this,caption)
+    this:caption:content::asize(0)
+    this:caption:addcontent(xhtmlnodeNew("#TEXT"))
+    this:caption:content[1]:addcontent(caption)
 
 
 ************************************************************************************************

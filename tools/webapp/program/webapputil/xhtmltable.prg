@@ -16,6 +16,7 @@ class xhtmltable(xhtmlnode)
     method  tfoot           {|this|this:content[3]}
 
     method  clear           {|this|this:tbody:content::asize(0)}
+    method  update          //feluldefinialva: torli selectdrow-t
 
 ************************************************************************************************
 static function xhtmltable.initialize(this,id)
@@ -116,6 +117,15 @@ static function xhtmltable.colinfo.initialize(this,h,p,s)
 ************************************************************************************************
 function xhtmltable.rowid(x)
     return "ROWID"+x::str::alltrim
+
+
+************************************************************************************************
+static function xhtmltable.update(this)
+local id:=this:getattrib("id")
+local code:="CODE.webapp.document.getElementById('$ID').selectedrow=null;"
+    code::=strtran('$ID',id)
+    webapp.script(code)
+    this:(xhtmlnode)update
 
 
 ************************************************************************************************

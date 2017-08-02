@@ -1,7 +1,11 @@
-b61e3bf9f4f0a8861338ef4bbb90e61b8ca9085d 2017072609:25:30-UTC ./tools/webapp/common/webapp.css
-3f468dead9474e5bffa63a4f2e366ebcefee35c1 2017072609:25:29-UTC ./tools/webapp/common/webapp.less
+d844b21c5fcde8f6088476fa661067253c5c2066 2017080208:29:25-UTC ./CHANGELOG_vermes
+cdd0a0173ee7dbb503a28bfea9161b3238c31cc8 2017080120:42:18-UTC ./tools/webapp/common/webapp.css
+fe15857c6806e70b24268cb84499ea8b66867814 2017080120:42:18-UTC ./tools/webapp/common/webapp.js
+bed71547ba1a9e06c882850c0c0c5870f035ab5a 2017080120:42:16-UTC ./tools/webapp/common/webapp-util.js
+50811151ed0b87ac392547cec173bf2971195e5a 2017080120:20:32-UTC ./tools/webapp/common/webapp.less
+6f0fc787071bd54b0472cf2616b13438f24ad95f 2017080117:19:34-UTC ./tools/webapp/program/webapputil/webpage.prg
+f1bed2e5e7e4f9cfc80c983e4bf61a0ccf68f434 2017080112:09:46-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 9fe8b8b918f9d6ebcf5d2474542b26cb729c7e95 2017072609:02:52-UTC ./tools/webapp/common/table.less
-b9f658b356f72c552bc425aadb3f1aa992122604 2017072521:07:06-UTC ./CHANGELOG_vermes
 dcbf0b3ed0f04d675a669e9d3e161448b01e0f7b 2017072517:32:55-UTC ./tools/webapp/common/textarea.less
 814758720945145fd74680829a164228d2355725 2017072517:28:24-UTC ./tools/webapp/common/textinput.less
 0609f5e4367d631772fac51d50133b98fd7542b0 2017072517:21:31-UTC ./usr/bin/linux/webapp
@@ -19,10 +23,7 @@ c6d464ea3966a093555449a544f8cb043f31549a 2017072420:04:48-UTC ./usr/bin/linux/gi
 9aaeef1b4b59ebda00494fb62ba78eddcafe94d3 2017072420:04:48-UTC ./usr/bin/linux/gitview
 91081e76a701425999020af0e4c9f6d42e80ca3c 2017072420:04:46-UTC ./usr/bin/linux/firstpar
 eba197de7a9c98a3275bee69eaa580f0811681d1 2017072316:05:42-UTC ./tools/webapp/common/button.less
-ba6cb658db5a81fe38d2e53bdeb9a13f951c91fb 2017072309:29:11-UTC ./tools/webapp/common/webapp.js
 ea1321ee1342b165b1a60c3f0b7cf0009fc11141 2017072309:21:11-UTC ./tools/webapp/common/webapp-private.js
-0b1d3fbd6e6fd26b96551f301247b9fc9f301673 2017072309:11:28-UTC ./tools/webapp/common/webapp-util.js
-a88e56b18afbaac4482a31a4c9941a48653b8b83 2017072306:53:16-UTC ./tools/webapp/program/webapputil/webpage.prg
 2bbbc4c9a13c2d3b97bb219cb0e673cf3f971545 2017072210:29:57-UTC ./tools/webapp/common/alert.less
 c879a63dfd520a13b1020b4e57c3bbdc9150d9ef 2017072207:28:03-UTC ./tools/webapp/program/webapputil/walert.prg
 1871f418d449b958cc1f53dd458e5c03080807e0 2017072206:31:07-UTC ./tools/webapp/common/webapp-core.js
@@ -136,7 +137,6 @@ f4001db504d0a74cc3151847cafb79a1ab3eb1b3 2017063016:48:09-UTC ./tools/webapp/pro
 d148d97cadc10354219c5aacd739bb9155f48cf9 2017062511:47:36-UTC ./tools/webapp/program/whello/wecho.prg
 d71d2909228ae50a458f002079c8971d62d11c20 2017062316:47:56-UTC ./tools/webapp/program/whello/whello.prg
 d7d6beb2cc1af297f4662a76e526859f69cffada 2017062308:12:15-UTC ./tools/webapp/common/favicon.ico
-9dcaa9b5aedcb80e2150c56367853b158d74873e 2017062208:26:20-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 2e37b4e57dbe2f06aef5f7d6a39aa3e9e13c13df 2017062119:00:31-UTC ./tools/websrv/htdocs/localhost/favicon.ico
 a7935228686ed8a1103a74ed5a08cab0728c1b7e 2017061914:35:29-UTC ./tools/webapp/program/whello/wstart.prg
 0fe92e521512c665483e97b76dad5edb1837ad85 2017061914:35:14-UTC ./tools/webapp/program/whello/printlog.prg

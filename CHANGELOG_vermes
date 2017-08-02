@@ -1,4 +1,17 @@
+2017/08.02 letrehozva a devel branch;
+  Hogy nyugodtan lehessen menteni, de ne változzon folyton a master; 
+  webapp - xhtmltable:update feluldefinialva, torli selectedrow-t;
+  webapp - page:setcaption, utolag is megadhato a caption div;
+  webapp.less: fieldset legend-eknek stilus;
+  webapp.js: openalert a window tetejere scrolloz;
+
 2017.07.25 webapp - style="border-width: thin;"
+  Kerdes valamelyik forumon: hogy lehet 1px-nel vekonyabb a border?
+  Valasz: te hulye, nem erted, hogy az 1px a legveknyabb?
+  A valasz a hulye, ui. nem erti, hogy a bongeszo a zoomolassal
+  nagyitja az 1px-et, ugyhogy az 1px egyaltalan nem valami vekony, 
+  vagyis az eredeti kerdes ertelmes. A zoomolaskor sem vastagodo
+  bordert igy lehet megadni: style="border-width: thin;"
 
 2017.07.25 keyboard inkey kodokat is elfogad;
   keyboard egy helyett tobb parametert is atvesz, melyek kozott 

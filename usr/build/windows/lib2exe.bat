@@ -32,6 +32,9 @@ set ECHOPRE=
 set ECHOPOST=
 call %BUILD_BAT%\_echo %BUILD_LIB%
 
+if [%BUILD_LIBX%]==[] goto endlibx_mn
+    type %BUILD_LIBX% >>%RSPLNK%
+:endlibx_mn
 echo -Wl,--end-group >>%RSPLNK%
  
 type %CCCDIR%\usr\options\%CCCBIN%\link.opt >>%RSPLNK%

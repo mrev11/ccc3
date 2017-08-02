@@ -1,4 +1,13 @@
-d844b21c5fcde8f6088476fa661067253c5c2066 2017080208:29:25-UTC ./CHANGELOG_vermes
+8bfa0a99021e5bd50fb4a37eed5d23d9d6dafa02 2017080214:21:11-UTC ./usr/build/windows/lib2exe.bat
+5311b606374e09dfc75c54a2c749275a28e88ef0 2017080214:20:48-UTC ./usr/build/windows/obj2exe.bat
+50b05517d2152e9df8479b44900c6a1f8c24194b 2017080213:10:43-UTC ./usr/bin/linux/terminal-gtk
+0c51ac5bd3fea33bff9f52ef48b573e844c0dcba 2017080212:52:43-UTC ./CHANGELOG_vermes
+7ad48772c0cba73e1f59919c9750d85e03f783b7 2017080212:47:36-UTC ./terminal/gtk/m
+d8434c066b71fc4b36f1f58bb2f2889a39bba218 2017080212:45:33-UTC ./terminal/gtk3/m
+bc322fffe3b1c527600e8815851d271928bab40c 2017080212:16:29-UTC ./terminal/gtk/m.bat
+05723cc2f5285b1428c6177a9c504b154061b42c 2017080212:12:51-UTC ./terminal/gtk3/m.bat
+a601757a92493e89fa3ba8a64548d858f6c8d565 2017080210:18:28-UTC ./terminal/gtk3/terminal-gtk.cpp
+34b7320bcfcd6770c45e3444c01796f71f0b0cd0 2017080209:23:15-UTC ./terminal/gtk3/keycode_gtk.cpp
 cdd0a0173ee7dbb503a28bfea9161b3238c31cc8 2017080120:42:18-UTC ./tools/webapp/common/webapp.css
 fe15857c6806e70b24268cb84499ea8b66867814 2017080120:42:18-UTC ./tools/webapp/common/webapp.js
 bed71547ba1a9e06c882850c0c0c5870f035ab5a 2017080120:42:16-UTC ./tools/webapp/common/webapp-util.js
@@ -195,7 +204,6 @@ eb610c9de839240d6cbda96830d08b43e564260c 2017060615:27:22-UTC ./usr/bin/linux/pa
 283fc2fdb595ee52e2184b59b0afcdd49f970ae4 2017060615:27:21-UTC ./usr/bin/linux/msk2say
 bd8bad411a3fb65cfd090fec2bc1c792f6851937 2017060615:27:20-UTC ./usr/bin/linux/ncterm
 eabce40ae0fd6d59e8df105db1cb922faf71451d 2017060615:27:20-UTC ./usr/bin/linux/terminal
-f49f85b0ba70ced7552ef29463c920becd81dba7 2017060615:27:20-UTC ./usr/bin/linux/terminal-gtk
 a72b05f8ba9ad31c64f1553e11ddd3361e94d357 2017060615:27:20-UTC ./usr/bin/linux/terminal-xft
 c7cc69ff84b510f445f43d0f1ccd6d8f3cec17b9 2017060615:27:19-UTC ./usr/bin/linux/mklink
 6fd8ee6f87c50e79e7fe7f24305aa6e17102e1ae 2017060615:27:19-UTC ./usr/bin/linux/prg2ppo
@@ -209,7 +217,7 @@ a4532e5766ca2d62ec96b9af8a678a3cf55cb03b 2017060615:27:01-UTC ./usr/bin/linux/pp
 3a9140a7be7803812da51f63bbb71a771dd08432 2017060615:26:51-UTC ./usr/bin/linux/flex
 3406028ca7de121ebafdca59e93e0893ebb9f69a 2017060615:26:51-UTC ./usr/bin/linux/lemon
 a70a961c898acdcf3f4e592da53336be945d6a45 2017060615:26:51-UTC ./usr/options/lin/gccver.opt
-112d4c06758f7b9c6accf18191131d016996ba4a 2017052507:51:53-UTC ./tutor/control/s.bat
+112d4c06758f7b9c6accf18191131d016996ba4a 2017052506:46:02-UTC ./tutor/control/s.bat
 9c714704eb38c248fddbd1b96a29f881aeaa9c70 2017052420:14:19-UTC ./tutor/xbrwarr/config
 2fad6a9b55ff2de6fe7d10be21dde72e85cbb66a 2017052420:06:22-UTC ./ccclib/src/screenchar.cpp
 8429d67b5aea5402aa29a4d23eda69bd533a535e 2017052419:32:58-UTC ./ccclib/src/uic/brwmenu.prg
@@ -348,7 +356,6 @@ c766b898a8662aa3212c20dfa8451c978bbe6395 2016111816:45:30-UTC ./jt/jtdemo/tabedi
 db61c25b9d51cdc9a0a9a5e77cd6bca83d554511 2016111816:27:11-UTC ./jt/jtdemo/scroll/m.bat
 cbd69eec7c20140655ff1c5c7a6f03be805e6c51 2016111816:25:43-UTC ./tools/websrv/m.bat
 112a4018fc53793b59433623a9f33dae8f59b54a 2016111816:25:20-UTC ./jt/jtstart/m.bat
-e39d2b6b52fbf7bac0cab714970dc22b524ddfea 2016111815:09:17-UTC ./terminal/gtk/parfile-win.bld
 6ce1b56287a48761ca63dfe64e3ab0c1210b857b 2016111723:09:54-UTC ./terminal/gtk/OLVASS
 c43ac6379cc342ce441d13b1e24c7eb175640b5e 2016111715:48:48-UTC ./usr/build/windows/gtk-win.bld
 aaff82968abd13bd20a673f69553f7191809b68c 2016111708:18:37-UTC ./gtk/code_byhand/code_base/gtk_gobject_cb.cpp
@@ -363,19 +370,13 @@ ee75a97192eb65759df55d617ae9cd2cf882c1e7 2016110909:35:35-UTC ./gtk/code_byhand/
 236b5498f1e83fa4d8f8953a79aea71ae7e5b1d4 2016110909:35:06-UTC ./gtk/code_byhand/code_util/g_timeout.cpp
 4bd1da9c6a98ea71b22b99c59ead7eb00674d016 2016110909:34:28-UTC ./gtk/code_byhand/code_base/gtk_gobject_signal.cpp
 88cfc1ac4690cb116de452c85185035efcdc73df 2016110909:33:28-UTC ./gtk/code_byhand/include/cccgtk.h
-18015c1d27ccc5da820a3822e0bf5d01044205be 2016110814:06:08-UTC ./terminal/gtk/sx.bat
-be03758ab8d9a0a637eb54d869a7796b88e1de8b 2016110623:05:24-UTC ./terminal/gtk/s
-767d91537e45511aa7ff028c3960ae4d39b8983f 2016110619:33:04-UTC ./terminal/gtk/s.bat
 8e833da1c8a14fd6da16a886ffa342dc8abdff3d 2016110617:30:01-UTC ./tools/socket/ssl/sslauth-demo/m.bat
 761013c16a9a088329d61563f150d016f2a246fa 2016110617:29:30-UTC ./tools/socket/ssl/sslsocket-demo/m.bat
 79c1c1712282455ef561be44814c60281c1caf80 2016110617:25:56-UTC ./tools/regex/regex-demo/m.bat
 8588136079f25307d0286264fa0264d10f5849d0 2016110617:20:27-UTC ./tools/crypto/demo/m.bat
 f3aa2e0cb936e61b080fe7312adfacf38f15f98e 2016110617:19:14-UTC ./tools/crypto/blowfish/m.bat
-4a00be061716fdac0aac51f6d4d4c84d11534fae 2016110600:48:45-UTC ./terminal/gtk/m
 d202baa472fa45a102f6737e80a8c49b9a7c75c1 2016110522:48:38-UTC ./usr/options/mng/link.opt
-8c63f122074ca70677237cad306f18fbc2025573 2016110522:13:01-UTC ./usr/build/windows/obj2exe.bat
 9b5d6f3e65da2d75c01ad0036437f52acc89cdb6 2016110521:03:36-UTC ./ccclib/src/uic/termapi/termapi_async.h
-be695d1a5b2f211fab658d6bd72b69a640b960a2 2016110510:02:05-UTC ./terminal/gtk/m.bat
 218aa20ee7efbe45498bbf3510d7d650c3b7e513 2016110508:53:21-UTC ./terminal/gtk/keycode_gtk.cpp
 75a4926fb61ea985fb9091c7d4ba163bad322f69 2016110508:31:04-UTC ./terminal/common/mutex.cpp
 0b03cd729f70cd1b5dc1c60d1e045fb6957b05df 2016110506:39:01-UTC ./terminal/windows/keycode_win.cpp
@@ -574,7 +575,6 @@ cd3b59989376e6a726a0da4dd97c3d0444429760 2016060118:30:32-UTC ./usr/build/window
 b52966fc57b6b984a58b1bc9778375424c922660 2016060118:29:51-UTC ./usr/build/windows/c2obj.bat
 916d39281558657fcf7018bf84cf545f57b16deb 2016060118:29:21-UTC ./usr/build/windows/_compile.bat
 34c183f1da6bd61dea14349020c8572f80caf254 2016060118:26:49-UTC ./tools/z/latin2_to_ascii.lex
-4155b84017507993e9965a6b09232a50c1605792 2016060113:29:04-UTC ./usr/build/windows/lib2exe.bat
 f58c6dfb5d74b99b6b27317b5c0b8251e486685f 2016060112:18:33-UTC ./tools/sql2/driver-mysql/mysql2.cpp
 7a5e3c92c846fad5762eac8999435b6fe3256456 2016060109:53:23-UTC ./terminal/windows/font.cpp
 16b78876a5829685d30b69aa26afdd7a60602249 2016060106:56:10-UTC ./jt/mkall.bat

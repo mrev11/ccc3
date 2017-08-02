@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export CCCTERM_SIZE=80x30
-#$CCCDIR/usr/bin/linux/terminal-gtk.exe
-terminal-gtk.exe

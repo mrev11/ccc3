@@ -1,4 +1,6 @@
-2017/08.02 letrehozva a devel branch;
+2017.08.02 terminal-gtk portolva GTK3-ra; 
+
+2017.08.02 letrehozva a devel branch;
   Hogy nyugodtan lehessen menteni, de ne változzon folyton a master; 
   webapp - xhtmltable:update feluldefinialva, torli selectedrow-t;
   webapp - page:setcaption, utolag is megadhato a caption div;

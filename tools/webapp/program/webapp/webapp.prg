@@ -16,11 +16,11 @@ Content-Type: text/html;charset=UTF-8
 <html>
 <head>
 <meta charset="utf-8" />
-$$JAVASCRIPT
+<script type="text/javascript" src="webapp.js"></script>
 </head>
 
 <body onload="XCODE.onload_main('$$WEBSOCKET')">
-<iframe id="webapp" style="display:block; border-style:none; border-width:thin" $$FRAMESOURCE></iframe>
+<iframe id="webapp" style="display:block; border-style:none; border-width:thin" src="webapp.html"></iframe>
 <iframe id="frmaux" style="display:none; border-style:solid; border-width:thin"></iframe>
 <div id="display"></div>
 </body>
@@ -28,8 +28,6 @@ $$JAVASCRIPT
 <<PAGE>>::str2bin::httpheader_crlf
 
     page_main::=strtran(a"$$WEBSOCKET",wsuri)
-    page_main::=strtran(a"$$JAVASCRIPT",a'<script type="text/javascript" src="webapp.js"></script>')
-    page_main::=strtran(a"$$FRAMESOURCE",a'src="webapp.html"')
 
     return page_main
     

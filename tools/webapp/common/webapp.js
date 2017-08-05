@@ -36,6 +36,7 @@ XCODE.onload_main=function(uri)
     XCODE.main.window=window;
     XCODE.main.document=XCODE.main.window.document;
     XCODE.main.display=XCODE.main.document.getElementById("display");
+    XCODE.main.document.body.style.margin="0px";
     XCODE.webapp.frame=XCODE.main.document.getElementById("webapp");
 
     XCODE.webapp.window=XCODE.webapp.frame.contentWindow;

@@ -1,4 +1,5 @@
-712607eec8c3088b63d753c1715f4232e72b6d2b 2017080517:24:11-UTC ./CHANGELOG_vermes
+335ef993c1e0134a0907be20c1395164fd6f31a3 2017080715:50:33-UTC ./CHANGELOG_vermes
+4dff1a0b0a5232c7a987d8fbae1b3fac616e3799 2017080715:01:09-UTC ./tools/webapp/program/webapputil/script.prg
 ef41c40cc29d6e49fddc6acc4c6390d7eb4946ff 2017080515:10:50-UTC ./tools/webapp/common/webapp.css
 168f32f7ea03113bcd17be6a2244c1ce68e8971f 2017080515:10:50-UTC ./tools/webapp/common/webapp.js
 c13944d04b883280dc79dc8e34474a2d881bba03 2017080514:27:55-UTC ./tools/webapp/common/webapp.less
@@ -21,7 +22,6 @@ f1bed2e5e7e4f9cfc80c983e4bf61a0ccf68f434 2017080112:09:46-UTC ./tools/webapp/pro
 dcbf0b3ed0f04d675a669e9d3e161448b01e0f7b 2017072517:32:55-UTC ./tools/webapp/common/textarea.less
 814758720945145fd74680829a164228d2355725 2017072517:28:24-UTC ./tools/webapp/common/textinput.less
 097ab7f7387f7da530c8bb766529cb1a6c586998 2017072517:17:24-UTC ./tools/webapp/program/webapputil/frmaux.prg
-847be4cfc88d4935e4501fcc8d861458a66b75b3 2017072517:17:02-UTC ./tools/webapp/program/webapputil/script.prg
 7d132e459e82157cd8533396aa9000a1886bbe30 2017072511:29:08-UTC ./ccclib/src/uic/inkey.cpp
 0d7859fa56cb17b8e9b844c1c94b07ff43ee9683 2017072510:58:48-UTC ./usr/include/std1.ch
 aa98a0262897c22c629ff017ed3afd913dd3337e 2017072510:41:07-UTC ./log-install

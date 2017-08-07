@@ -82,6 +82,12 @@ local code:="CODE.webapp.document.getElementById('ID').focus(); "
     script(code)
 
 ***************************************************************************************
+function click(id)
+local code:="CODE.webapp.document.getElementById('ID').click(); "
+    code::=strtran("ID",id)
+    script(code)
+
+***************************************************************************************
 function innerhtml(id,txt)
 local code:="CODE.webapp.document.getElementById('ID').innerHTML=TXT; "
     code::=strtran("ID",id)

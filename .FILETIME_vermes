@@ -1,7 +1,9 @@
-335ef993c1e0134a0907be20c1395164fd6f31a3 2017080715:50:33-UTC ./CHANGELOG_vermes
+4f77abb5a399c12cb57d45adf1bf6e87c9337775 2017080916:12:01-UTC ./CHANGELOG_vermes
+545352bc633cf4e8a8d4d0bfc631726e6caa1907 2017080916:07:54-UTC ./tools/webapp/common/webapp.css
+5b9afe134dabbada5f38c3dd7943bba0eeafd6ad 2017080916:07:54-UTC ./tools/webapp/common/webapp.js
+b614e4645c91050616200e9711b2c286db984860 2017080916:05:30-UTC ./tools/webapp/common/alert.less
+61a2e1ca7603abed29016dc3aa95074da041323f 2017080915:57:54-UTC ./tools/webapp/common/webapp-util.js
 4dff1a0b0a5232c7a987d8fbae1b3fac616e3799 2017080715:01:09-UTC ./tools/webapp/program/webapputil/script.prg
-ef41c40cc29d6e49fddc6acc4c6390d7eb4946ff 2017080515:10:50-UTC ./tools/webapp/common/webapp.css
-168f32f7ea03113bcd17be6a2244c1ce68e8971f 2017080515:10:50-UTC ./tools/webapp/common/webapp.js
 c13944d04b883280dc79dc8e34474a2d881bba03 2017080514:27:55-UTC ./tools/webapp/common/webapp.less
 5fd5b058409de9f48ec7a47b75ba41aa12fd3a50 2017080514:04:32-UTC ./tools/webapp/common/webapp-core.js
 93c62902e6db680fedd3477610e18e9e7662aa9a 2017080513:51:59-UTC ./usr/bin/linux/webapp
@@ -15,7 +17,6 @@ bc322fffe3b1c527600e8815851d271928bab40c 2017080212:16:29-UTC ./terminal/gtk/m.b
 05723cc2f5285b1428c6177a9c504b154061b42c 2017080212:12:51-UTC ./terminal/gtk3/m.bat
 a601757a92493e89fa3ba8a64548d858f6c8d565 2017080210:18:28-UTC ./terminal/gtk3/terminal-gtk.cpp
 34b7320bcfcd6770c45e3444c01796f71f0b0cd0 2017080209:23:15-UTC ./terminal/gtk3/keycode_gtk.cpp
-bed71547ba1a9e06c882850c0c0c5870f035ab5a 2017080120:42:16-UTC ./tools/webapp/common/webapp-util.js
 6f0fc787071bd54b0472cf2616b13438f24ad95f 2017080117:19:34-UTC ./tools/webapp/program/webapputil/webpage.prg
 f1bed2e5e7e4f9cfc80c983e4bf61a0ccf68f434 2017080112:09:46-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 9fe8b8b918f9d6ebcf5d2474542b26cb729c7e95 2017072609:02:52-UTC ./tools/webapp/common/table.less
@@ -34,7 +35,6 @@ c6d464ea3966a093555449a544f8cb043f31549a 2017072420:04:48-UTC ./usr/bin/linux/gi
 91081e76a701425999020af0e4c9f6d42e80ca3c 2017072420:04:46-UTC ./usr/bin/linux/firstpar
 eba197de7a9c98a3275bee69eaa580f0811681d1 2017072316:05:42-UTC ./tools/webapp/common/button.less
 ea1321ee1342b165b1a60c3f0b7cf0009fc11141 2017072309:21:11-UTC ./tools/webapp/common/webapp-private.js
-2bbbc4c9a13c2d3b97bb219cb0e673cf3f971545 2017072210:29:57-UTC ./tools/webapp/common/alert.less
 c879a63dfd520a13b1020b4e57c3bbdc9150d9ef 2017072207:28:03-UTC ./tools/webapp/program/webapputil/walert.prg
 b9aa6ed4d609077a89fa57e4dae0f6fdee3fbf31 2017072122:02:17-UTC ./tools/webapp/common/m
 3a493c09c3363c79c5ff380ff4761c68ba32e4c8 2017072113:27:47-UTC ./tools/webapp/common/lc

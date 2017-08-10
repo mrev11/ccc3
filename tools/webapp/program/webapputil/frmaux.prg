@@ -20,12 +20,18 @@ local code:=<<code>>CODE.frmaux.frame.style.borderStyle="$BORDER";<<code>>
 ***************************************************************************************
 function size(w,h)
 local code:=""
-local codew:=<<code>>CODE.frmaux.frame.width="$WIDTH";<<code>>
-local codeh:=<<code>>CODE.frmaux.frame.height="$HEIGHT";<<code>>
+local codew:=<<code>>CODE.frmaux.frame.style.width="$WIDTH";<<code>>
+local codeh:=<<code>>CODE.frmaux.frame.style.height="$HEIGHT";<<code>>
     if(w!=NIL)
+        if( valtype(w)=="N" )
+            w::=str::alltrim+"px"
+        end
         code+=codew::strtran("$WIDTH",w::any2str::alltrim)
     end
     if(h!=NIL)
+        if( valtype(h)=="N" )
+            h::=str::alltrim+"px"
+        end
         code+=codeh::strtran("$HEIGHT",h::any2str::alltrim)
     end
     webapp.script(code)

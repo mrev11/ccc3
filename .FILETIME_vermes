@@ -1,13 +1,15 @@
-4f77abb5a399c12cb57d45adf1bf6e87c9337775 2017080916:12:01-UTC ./CHANGELOG_vermes
-545352bc633cf4e8a8d4d0bfc631726e6caa1907 2017080916:07:54-UTC ./tools/webapp/common/webapp.css
-5b9afe134dabbada5f38c3dd7943bba0eeafd6ad 2017080916:07:54-UTC ./tools/webapp/common/webapp.js
-b614e4645c91050616200e9711b2c286db984860 2017080916:05:30-UTC ./tools/webapp/common/alert.less
+99a0328f2449ab0dda35020d1f7d898ba60f773c 2017081014:03:37-UTC ./CHANGELOG_vermes
+fa2024b31c53ab7f59ce703fb40fbac2d150af53 2017081014:00:51-UTC ./tools/webapp/common/webapp.css
+5814cde740e3c91d7070b627e17b20754fd23887 2017081014:00:51-UTC ./tools/webapp/common/webapp.js
+83268038935e7a552434358868f0108dea8b52f0 2017081013:44:38-UTC ./usr/bin/linux/webapp
+e2fa13a0e0050d42b8843fbb81d1c0f4c2c77504 2017081013:44:06-UTC ./tools/webapp/common/webapp.less
+bf1fd89cee6f32003d2c5a133dca2868a0c3cbf8 2017081013:35:24-UTC ./tools/webapp/program/webapputil/webdefaults.prg
+56ee055527d8656d43a657ad553e18c12adbd60c 2017081010:31:20-UTC ./tools/webapp/common/alert.less
+dadf19f729972cb804b0d5e90638b8b2f7bea2c3 2017081009:49:25-UTC ./tools/webapp/common/webapp-core.js
+b6765128cf276bd87b901ec08a00250041ba8e0b 2017081009:45:31-UTC ./tools/webapp/program/webapputil/frmaux.prg
+dcce16985fdb585d1532b39124e471d98f0ba4c0 2017081009:39:41-UTC ./tools/webapp/program/webapputil/script.prg
+1c3e74333ccad17c87608bab6886e538964d68a4 2017081009:24:31-UTC ./tools/webapp/program/webapp/webapp.prg
 61a2e1ca7603abed29016dc3aa95074da041323f 2017080915:57:54-UTC ./tools/webapp/common/webapp-util.js
-4dff1a0b0a5232c7a987d8fbae1b3fac616e3799 2017080715:01:09-UTC ./tools/webapp/program/webapputil/script.prg
-c13944d04b883280dc79dc8e34474a2d881bba03 2017080514:27:55-UTC ./tools/webapp/common/webapp.less
-5fd5b058409de9f48ec7a47b75ba41aa12fd3a50 2017080514:04:32-UTC ./tools/webapp/common/webapp-core.js
-93c62902e6db680fedd3477610e18e9e7662aa9a 2017080513:51:59-UTC ./usr/bin/linux/webapp
-e86ce67f8abfc8639d564842fffee7b7269fa795 2017080513:51:50-UTC ./tools/webapp/program/webapp/webapp.prg
 8bfa0a99021e5bd50fb4a37eed5d23d9d6dafa02 2017080214:21:11-UTC ./usr/build/windows/lib2exe.bat
 5311b606374e09dfc75c54a2c749275a28e88ef0 2017080214:20:48-UTC ./usr/build/windows/obj2exe.bat
 50b05517d2152e9df8479b44900c6a1f8c24194b 2017080213:10:43-UTC ./usr/bin/linux/terminal-gtk
@@ -22,7 +24,6 @@ f1bed2e5e7e4f9cfc80c983e4bf61a0ccf68f434 2017080112:09:46-UTC ./tools/webapp/pro
 9fe8b8b918f9d6ebcf5d2474542b26cb729c7e95 2017072609:02:52-UTC ./tools/webapp/common/table.less
 dcbf0b3ed0f04d675a669e9d3e161448b01e0f7b 2017072517:32:55-UTC ./tools/webapp/common/textarea.less
 814758720945145fd74680829a164228d2355725 2017072517:28:24-UTC ./tools/webapp/common/textinput.less
-097ab7f7387f7da530c8bb766529cb1a6c586998 2017072517:17:24-UTC ./tools/webapp/program/webapputil/frmaux.prg
 7d132e459e82157cd8533396aa9000a1886bbe30 2017072511:29:08-UTC ./ccclib/src/uic/inkey.cpp
 0d7859fa56cb17b8e9b844c1c94b07ff43ee9683 2017072510:58:48-UTC ./usr/include/std1.ch
 aa98a0262897c22c629ff017ed3afd913dd3337e 2017072510:41:07-UTC ./log-install
@@ -45,7 +46,6 @@ fdd09e0b9f01b4dc20f9c6d39bfcd44fb65f3ed6 2017071807:42:55-UTC ./tools/webapp/com
 3448ec265930c192c2597b70d9d79f6fbc0f6bd7 2017071807:37:42-UTC ./tools/webapp/common/webapp-formdata.js
 0b39d665614645d0c9aac5d8c4a2cb6c2bd99822 2017071807:24:49-UTC ./tools/webapp/common/webapp-compat.js
 b07e5c489b1ec40c956811452296f3a0a8ebab7c 2017071716:33:07-UTC ./tools/webapp/program/webapp/defaults.prg
-2d10ff307ee71a22a84612b0d814f0dbe676006a 2017071715:34:56-UTC ./tools/webapp/common/webapp.html
 289b42826626b246ff0c8e844d32c24bd231278e 2017071606:53:11-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 74db149cc8ca768aa2ed810abc14163fce7fb0ed 2017071519:40:29-UTC ./tools/webapp/common/webapp-dat.js
 150f8d26a265245d49116ab376305fc34dc93221 2017071516:34:48-UTC ./tools/webapp/program/webapputil/websocket.prg
@@ -140,7 +140,6 @@ a89ae2b26f27d72bf6cdcbf9778d929d0a5f8b17 2017070812:36:41-UTC ./tools/webapp/pro
 2b3d42385cc79cf7a8982ac63b136420b4ffd156 2017070808:13:49-UTC ./tools/webapp/program/webapputil/jsstring.prg
 ac1fe19a5d6f296d9fce5aea6292506d9e7f3b46 2017070710:03:06-UTC ./tools/webapp/common/webapp-num.js
 a106d950556b41542436778ce625f1576c3b7132 2017063016:48:40-UTC ./tools/webapp/program/whello/defaults.prg
-f4001db504d0a74cc3151847cafb79a1ab3eb1b3 2017063016:48:09-UTC ./tools/webapp/program/webapputil/webdefaults.prg
 6dc6356ccf23b9bf3fb91d8acf5e63e5e059eb71 2017062713:15:22-UTC ./tools/webapp/program/webapputil/sessiondir.prg
 8cab8d5ee810fa5fd06fbcbb8d5fb526ca1f4098 2017062612:57:26-UTC ./tools/webapp/program/webapputil/xlib.prg
 d148d97cadc10354219c5aacd739bb9155f48cf9 2017062511:47:36-UTC ./tools/webapp/program/whello/wecho.prg
@@ -1182,7 +1181,6 @@ ffa6071c629a5f75e5cf8157991527355b39f4b4 2012010814:36:00-UTC ./doc/ccc-belulrol
 729531760c2477267d3e059ca4cf003f989fbfc6 2012010313:29:40-UTC ./tools/webapp/program/webapputil/mask.cpp
 adc83b19e793491b1c6ea0fd8b46cd9f32e592fc 2011123109:08:55-UTC ./tools/webapp/program/webapp/webapp.ch
 26f976fa0466de4cc3b7acf3f136376bb2a91179 2011121805:25:03-UTC ./tools/webapp/program/webapputil/md5passw.prg
-f62b45e4921c67ce2945079b3a8c575b6c3d7802 2011121211:09:48-UTC ./tools/webapp/common/invaliduse.html
 f2939100f0a94781231e99f38329fcb080aadf88 2011120919:50:44-UTC ./tutor/pm/linux/pm.prg
 ecb2d3355ca3de16432f1a2f14a082783aaf25b9 2011120919:46:52-UTC ./tools/webapp/program/webapp/sighandler.prg
 c6c194d8186e5b1017a4055fd947ec3bdfbf0fd3 2011112822:06:49-UTC ./tools/webapp/program/webapputil/urlutil.prg

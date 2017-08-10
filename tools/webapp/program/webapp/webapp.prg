@@ -15,14 +15,13 @@ Content-Type: text/html;charset=UTF-8
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-<script type="text/javascript" src="webapp.js"></script>
+ <meta charset="utf-8" />
+ <script type="text/javascript" src="webapp.js"></script>
+ <link rel="stylesheet" type="text/css" href="webapp.css">
 </head>
-
-<body onload="XCODE.onload_main('$$WEBSOCKET')">
-<iframe id="webapp" style="display:block; border-style:none; border-width:thin" src="webapp.html"></iframe>
-<iframe id="frmaux" style="display:none; border-style:solid; border-width:thin"></iframe>
-<div id="display"></div>
+<body onload="XCODE.onload('$$WEBSOCKET')">
+ <div id="webapp"></div><!--iframe-->
+ <div id="frmaux"</div><!--iframe-->
 </body>
 </html>
 <<PAGE>>::str2bin::httpheader_crlf

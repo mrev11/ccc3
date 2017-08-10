@@ -5,7 +5,7 @@ var CODE=XCODE;
 
 
 //------------------------------------------------------------------------------
-XCODE.onload_main=function(uri)
+XCODE.onload=function(uri)
 //------------------------------------------------------------------------------
 {
     XCODE.websckuri=uri;
@@ -34,15 +34,16 @@ XCODE.onload_main=function(uri)
     XCODE.frmaux={};
 
     XCODE.main.window=window;
-    XCODE.main.document=XCODE.main.window.document;
-    XCODE.main.display=XCODE.main.document.getElementById("display");
-    XCODE.main.document.body.style.margin="0px";
-    XCODE.webapp.frame=XCODE.main.document.getElementById("webapp");
+    XCODE.main.document=window.document;
+    XCODE.main.body=window.document.body;
 
-    XCODE.webapp.window=XCODE.webapp.frame.contentWindow;
+    XCODE.webapp.frame=XCODE.main.document.getElementById("webapp");
+    XCODE.webapp.window=XCODE.main.window;
     XCODE.webapp.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
-    XCODE.webapp.document=XCODE.webapp.window.document;
-    XCODE.webapp.body=XCODE.webapp.document.body;
+    XCODE.webapp.document=XCODE.main.document;
+    XCODE.webapp.body=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.frame.appendChild(XCODE.webapp.body);
+    XCODE.webapp.body.id="body";
 
     XCODE.webapp.menuicon=XCODE.webapp.document.createElement("div");
     XCODE.webapp.body.appendChild(XCODE.webapp.menuicon);
@@ -74,16 +75,18 @@ XCODE.onload_main=function(uri)
 
     XCODE.webapp.window.CODE=XCODE;
 
+
     XCODE.frmaux.frame=XCODE.main.document.getElementById("frmaux");
-    XCODE.frmaux.window=XCODE.frmaux.frame.contentWindow;
+    XCODE.frmaux.window=XCODE.main.window;
     XCODE.frmaux.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
-    XCODE.frmaux.document=XCODE.frmaux.window.document;
-    XCODE.frmaux.body=XCODE.frmaux.document.body;
+    XCODE.frmaux.document=XCODE.main.document;
+    XCODE.frmaux.body=XCODE.frmaux.document.createElement("div");
+    XCODE.frmaux.frame.appendChild(XCODE.frmaux.body);
+    XCODE.frmaux.body.id="body";
+
     XCODE.frmaux.display=XCODE.frmaux.document.createElement("div");
     XCODE.frmaux.body.appendChild(XCODE.frmaux.display);
     XCODE.frmaux.display.id="display";
-    XCODE.frmaux.display.name="display";
-    //XCODE.frmaux.display.innerHTML="frmaux";
 
     XCODE.frmaux.clear=function(message){XCODE.frmaux.display.innerHTML='';}
     XCODE.frmaux.write=function(message){XCODE.frmaux.display.innerHTML+=message+' ';}

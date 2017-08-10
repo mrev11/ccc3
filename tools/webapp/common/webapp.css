@@ -144,7 +144,7 @@ textarea {
   transition: height 0.3s;
 }
 #alert {
-  background-color: rgba(255, 255, 0, 0.8);
+  background-color: rgba(255, 255, 0, 0.9);
   padding: 0px 50px;
   margin: 0px 0px;
   border: 1px solid #dddd66;
@@ -159,6 +159,32 @@ body {
   font-family: sans-serif;
   padding: 8px 8px;
   margin: 8px 8px;
+}
+/********** WEBAPP **********/
+#webapp {
+  display: block;
+  border-style: none;
+  border-width: thin;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 400px;
+  width: 100%;
+  resize: vertical;
+  overflow: hidden;
+}
+/********** FRMAUX **********/
+#frmaux {
+  display: none;
+  border-style: solid;
+  border-width: thin;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 200px;
+  width: 100%;
+  resize: vertical;
+  overflow: auto;
 }
 /********** LABEL **********/
 h1,

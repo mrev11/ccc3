@@ -21,7 +21,7 @@ Content-Type: text/html;charset=UTF-8
 </head>
 <body onload="XCODE.onload('$$WEBSOCKET')">
  <div id="webapp"></div><!--iframe-->
- <div id="frmaux"</div><!--iframe-->
+ <div id="frmaux"></div><!--iframe-->
 </body>
 </html>
 <<PAGE>>::str2bin::httpheader_crlf

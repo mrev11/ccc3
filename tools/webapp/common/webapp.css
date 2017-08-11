@@ -170,8 +170,20 @@ body {
   left: 0px;
   height: 400px;
   width: 100%;
-  resize: vertical;
   overflow: hidden;
+}
+#resize {
+  position: absolute;
+  background-color: #fff;
+  border-style: solid none none none;
+  border-width: thin;
+  border-color: #ccc;
+  box-shadow: 0px 1px 3px 0px #ccc inset;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  cursor: row-resize;
 }
 /********** FRMAUX **********/
 #frmaux {

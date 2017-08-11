@@ -1,3 +1,5 @@
+2017.08.11 webapp resize bar;
+
 2017.08.10 webapp iframek megszuntetve;
   iframe#webapp -> div#webapp;
   iframe#frmaux -> div#frmaux;

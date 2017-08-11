@@ -73,6 +73,34 @@ XCODE.onload=function(uri)
     XCODE.webapp.dnloadlink.target="_blank";
     XCODE.webapp.dnloadlink.style.display="none";
 
+    XCODE.webapp.resize=XCODE.webapp.document.createElement("div");
+    XCODE.webapp.resize.id="resize";
+    XCODE.webapp.body.appendChild(XCODE.webapp.resize);
+    XCODE.webapp.resize.active=false;
+    XCODE.resizeInit=function(e)
+    {
+        XCODE.webapp.document.body.style.cursor="row-resize";
+        XCODE.webapp.resize.active=true;
+        e.preventDefault();
+    }
+    XCODE.resizeStop=function(e)
+    {
+        XCODE.webapp.document.body.style.cursor="default";
+        XCODE.webapp.resize.active=false;
+    }
+    XCODE.resizeDoit=function(e)
+    {
+        if( XCODE.webapp.resize.active )
+        {
+            var box=XCODE.webapp.frame;
+            box.style.height=(e.clientY-box.offsetTop)+'px';
+            e.preventDefault();
+        }
+    }
+    XCODE.webapp.resize.addEventListener('mousedown',XCODE.resizeInit,false);
+    XCODE.webapp.window.addEventListener('mousemove',XCODE.resizeDoit,false);
+    XCODE.webapp.window.addEventListener('mouseup',XCODE.resizeStop,false);
+
     XCODE.webapp.window.CODE=XCODE;
 
 

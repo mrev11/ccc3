@@ -4,8 +4,10 @@ namespace frmaux
 ***************************************************************************************
 function visible(flag)
 local code:=<<code>>CODE.frmaux.frame.style.display="$DISP";<<code>>
+    code+=<<code>>CODE.webapp.resize.style.display="$DISP";<<code>>
     code::=strtran("$DISP",if(flag,"block","none"))
     webapp.script(code)
+
 
 ***************************************************************************************
 function border(flag)

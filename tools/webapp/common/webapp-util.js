@@ -122,16 +122,23 @@ XCODE.settle=function()
 XCODE.openalert=function(alert_as_html)
 //------------------------------------------------------------------------------
 {
-    window.scrollTo(0,0);
+    XCODE.webapp.window.scrollTo(0,0);
     var ovl=XCODE.webapp.overlay;
     var bln=XCODE.webapp.blind;
     bln.style.height="0px";
     bln.innerHTML=alert_as_html;
     var alr=bln.firstChild;
+    var style=XCODE.webapp.window.getComputedStyle(alr);
+    var height=style.getPropertyValue("height");
+    //console.log(height);
+    //console.log(Number(height.replace("px","")));
+    height=(Number(height.replace("px",""))+16).toString()+"px";
+    //console.log(height);
     alr.savefocus=XCODE.webapp.document.activeElement;
+    ovl.style.transitionDelay="0s";
     ovl.style.zIndex="2";
     ovl.style.backgroundColor="rgba(0,0,0,0.2)" //transition!
-    bln.style.height="100%"; //transition!
+    bln.style.height=height; //transition!
 }
 
 //------------------------------------------------------------------------------
@@ -142,6 +149,7 @@ XCODE.closealert=function()
     var bln=XCODE.webapp.blind;
     var alr=bln.firstChild;
     bln.style.height="0%";
+    ovl.style.transitionDelay="0.3s";
     ovl.style.backgroundColor="rgba(0,0,0,0.0)"
     ovl.style.zIndex="-1";
     //bln.innerHTML=""; //ez eliminalja a transitiont!

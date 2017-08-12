@@ -38,18 +38,22 @@ local code:=<<code>>CODE.webapp.frame.style.borderStyle="$BORDER";<<code>>
 function size(w,h)
 local code:=""
 local codew:=<<code>>CODE.webapp.frame.style.width="$WIDTH";<<code>>
+local codesw:=<<code>>CODE.webapp.frame.save_width="$WIDTH";<<code>>
 local codeh:=<<code>>CODE.webapp.frame.style.height="$HEIGHT";<<code>>
+local codesh:=<<code>>CODE.webapp.frame.save_height="$HEIGHT";<<code>>
     if(w!=NIL)
         if( valtype(w)=="N" )
             w::=str::alltrim+"px"
         end
         code+=codew::strtran("$WIDTH",w::any2str::alltrim)
+        code+=codesw::strtran("$WIDTH",w::any2str::alltrim)
     end
     if(h!=NIL)
         if( valtype(h)=="N" )
             h::=str::alltrim+"px"
         end
         code+=codeh::strtran("$HEIGHT",h::any2str::alltrim)
+        code+=codesh::strtran("$HEIGHT",h::any2str::alltrim)
     end
     webapp.script(code)
 

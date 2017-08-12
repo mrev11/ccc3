@@ -87,6 +87,7 @@ XCODE.onload=function(uri)
     {
         XCODE.webapp.document.body.style.cursor="default";
         XCODE.webapp.resize.active=false;
+        e.preventDefault();
     }
     XCODE.resizeDoit=function(e)
     {
@@ -136,7 +137,9 @@ XCODE.onload=function(uri)
             x=x.substring(pos);
         }
         XCODE.frmaux.display.innerHTML=x+message+' <br/>';
-        XCODE.frmaux.window.scrollTo(0,XCODE.frmaux.document.body.scrollHeight); //az iframe aljára scrolloz
+        //az aljára scrolloz
+        var frm=XCODE.frmaux.frame;
+        frm.scrollTop=frm.scrollHeight-frm.clientHeight; 
     }
 
     XCODE.frmaux.window.CODE=XCODE;
@@ -148,26 +151,29 @@ XCODE.turndebug=function(flag)
 //------------------------------------------------------------------------------
 {
     XCODE.debug=flag;
-    if(flag)
-    {
-        XCODE.frmaux.frame.style.display="block";
-    }
-    else
-    {
-        XCODE.frmaux.frame.style.display="none";
-    }
 }
 
 //------------------------------------------------------------------------------
 XCODE.menuicon_clicked=function()
 {
-    if( XCODE.frmaux.frame.style.display=="block" )
+    if( XCODE.frmaux.frame.style.display!="block" )
     { 
-        XCODE.turndebug(false);
+        XCODE.debug=true;
+        XCODE.frmaux.frame.style.display="block";
+        XCODE.webapp.resize.style.display="block";
     }
     else
     {
-        XCODE.turndebug(true);
+        XCODE.frmaux.frame.style.display="none";
+        XCODE.webapp.resize.style.display="none";
+        if( XCODE.webapp.frame.save_height!=undefined )
+        {
+            XCODE.webapp.frame.style.height=XCODE.webapp.frame.save_height;
+        }
+        else
+        {
+            XCODE.webapp.frame.style.removeProperty("height");
+        }
     }
 }
 
@@ -704,16 +710,23 @@ XCODE.settle=function()
 XCODE.openalert=function(alert_as_html)
 //------------------------------------------------------------------------------
 {
-    window.scrollTo(0,0);
+    XCODE.webapp.window.scrollTo(0,0);
     var ovl=XCODE.webapp.overlay;
     var bln=XCODE.webapp.blind;
     bln.style.height="0px";
     bln.innerHTML=alert_as_html;
     var alr=bln.firstChild;
+    var style=XCODE.webapp.window.getComputedStyle(alr);
+    var height=style.getPropertyValue("height");
+    //console.log(height);
+    //console.log(Number(height.replace("px","")));
+    height=(Number(height.replace("px",""))+16).toString()+"px";
+    //console.log(height);
     alr.savefocus=XCODE.webapp.document.activeElement;
+    ovl.style.transitionDelay="0s";
     ovl.style.zIndex="2";
     ovl.style.backgroundColor="rgba(0,0,0,0.2)" //transition!
-    bln.style.height="100%"; //transition!
+    bln.style.height=height; //transition!
 }
 
 //------------------------------------------------------------------------------
@@ -724,6 +737,7 @@ XCODE.closealert=function()
     var bln=XCODE.webapp.blind;
     var alr=bln.firstChild;
     bln.style.height="0%";
+    ovl.style.transitionDelay="0.3s";
     ovl.style.backgroundColor="rgba(0,0,0,0.0)"
     ovl.style.zIndex="-1";
     //bln.innerHTML=""; //ez eliminalja a transitiont!

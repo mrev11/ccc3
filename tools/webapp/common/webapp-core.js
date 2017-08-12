@@ -87,6 +87,7 @@ XCODE.onload=function(uri)
     {
         XCODE.webapp.document.body.style.cursor="default";
         XCODE.webapp.resize.active=false;
+        e.preventDefault();
     }
     XCODE.resizeDoit=function(e)
     {
@@ -136,7 +137,9 @@ XCODE.onload=function(uri)
             x=x.substring(pos);
         }
         XCODE.frmaux.display.innerHTML=x+message+' <br/>';
-        XCODE.frmaux.window.scrollTo(0,XCODE.frmaux.document.body.scrollHeight); //az iframe aljára scrolloz
+        //az aljára scrolloz
+        var frm=XCODE.frmaux.frame;
+        frm.scrollTop=frm.scrollHeight-frm.clientHeight; 
     }
 
     XCODE.frmaux.window.CODE=XCODE;
@@ -148,26 +151,29 @@ XCODE.turndebug=function(flag)
 //------------------------------------------------------------------------------
 {
     XCODE.debug=flag;
-    if(flag)
-    {
-        XCODE.frmaux.frame.style.display="block";
-    }
-    else
-    {
-        XCODE.frmaux.frame.style.display="none";
-    }
 }
 
 //------------------------------------------------------------------------------
 XCODE.menuicon_clicked=function()
 {
-    if( XCODE.frmaux.frame.style.display=="block" )
+    if( XCODE.frmaux.frame.style.display!="block" )
     { 
-        XCODE.turndebug(false);
+        XCODE.debug=true;
+        XCODE.frmaux.frame.style.display="block";
+        XCODE.webapp.resize.style.display="block";
     }
     else
     {
-        XCODE.turndebug(true);
+        XCODE.frmaux.frame.style.display="none";
+        XCODE.webapp.resize.style.display="none";
+        if( XCODE.webapp.frame.save_height!=undefined )
+        {
+            XCODE.webapp.frame.style.height=XCODE.webapp.frame.save_height;
+        }
+        else
+        {
+            XCODE.webapp.frame.style.removeProperty("height");
+        }
     }
 }
 

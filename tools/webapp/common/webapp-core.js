@@ -93,8 +93,10 @@ XCODE.onload=function(uri)
     {
         if( XCODE.webapp.resize.active )
         {
+            var par=XCODE.main.body;
             var box=XCODE.webapp.frame;
-            box.style.height=(e.clientY-box.offsetTop)+'px';
+            console.log(e.clientY,box.offsetTop,par.scrollTop);
+            box.style.height=String(e.clientY-box.offsetTop+par.scrollTop)+'px';
             e.preventDefault();
         }
     }

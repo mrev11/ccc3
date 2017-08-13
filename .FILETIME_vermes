@@ -1,8 +1,9 @@
-a573ff33fdf7ea51accf0a3de81bf23621234450 2017081214:06:48-UTC ./tools/webapp/common/webapp.css
+79d7effc65c5f7bd7ee7c77bdd46e6338ea3ae92 2017081312:53:02-UTC ./CHANGELOG_vermes
+a1b1a3be172c10e9c7671cd92aae98d6beef724a 2017081308:52:19-UTC ./tools/webapp/common/webapp.css
+6890408cfa5cd6e5bdd9bc43eacf18cc5b5de91c 2017081308:52:18-UTC ./tools/webapp/common/webapp.js
+a9a1cd060b6828805af738c5c3919e0bdd2dda51 2017081308:52:17-UTC ./tools/webapp/common/webapp-core.js
+ca1e4aa4923c7d749236a0b4bc925247cf89337a 2017081308:19:10-UTC ./tools/webapp/common/button.less
 53918fd08d73465bc6b7a52e25187b714c4c6136 2017081214:06:43-UTC ./tools/webapp/common/webapp.less
-7982ccde18c42318269b9a9e5c9d533caa844f96 2017081213:56:31-UTC ./CHANGELOG_vermes
-7b4fd8b35126976c0d79adb5e4cef92601d2f0b0 2017081213:40:53-UTC ./tools/webapp/common/webapp.js
-466d62d6c8a4daf9d6ebb377cb7676fd0a0d955f 2017081212:39:54-UTC ./tools/webapp/common/webapp-core.js
 c28a00156b2ef78efe8153adaadb7cd6ff5065dc 2017081211:30:46-UTC ./tools/webapp/program/whello/defaults.prg
 0f98a8057851534f47cae731200b8a602c9a942a 2017081211:10:15-UTC ./tools/webapp/program/webapputil/frmaux.prg
 3a14dd090bf2e9b786b128b65f794ad0b0916aed 2017081209:58:00-UTC ./tools/webapp/program/webapputil/script.prg
@@ -35,7 +36,6 @@ aa98a0262897c22c629ff017ed3afd913dd3337e 2017072510:41:07-UTC ./log-install
 c6d464ea3966a093555449a544f8cb043f31549a 2017072420:04:48-UTC ./usr/bin/linux/gitstat
 9aaeef1b4b59ebda00494fb62ba78eddcafe94d3 2017072420:04:48-UTC ./usr/bin/linux/gitview
 91081e76a701425999020af0e4c9f6d42e80ca3c 2017072420:04:46-UTC ./usr/bin/linux/firstpar
-eba197de7a9c98a3275bee69eaa580f0811681d1 2017072316:05:42-UTC ./tools/webapp/common/button.less
 ea1321ee1342b165b1a60c3f0b7cf0009fc11141 2017072309:21:11-UTC ./tools/webapp/common/webapp-private.js
 c879a63dfd520a13b1020b4e57c3bbdc9150d9ef 2017072207:28:03-UTC ./tools/webapp/program/webapputil/walert.prg
 b9aa6ed4d609077a89fa57e4dae0f6fdee3fbf31 2017072122:02:17-UTC ./tools/webapp/common/m

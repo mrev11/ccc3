@@ -17,14 +17,30 @@ cat   webapp-compat.js       >>webapp.js
 lessc webapp.less            >webapp.css
 
 
+if false; then
+    minify --no-comments webapp.js
+    minify --no-comments webapp.css
 
-exit 0
+    mv webapp.min.js  webapp.js 
+    mv webapp.min.css webapp.css 
+fi
+
+gzip --keep --force  webapp.js
+gzip --keep --force  webapp.css
 
 
-minify --no-comments webapp.js
-minify --no-comments webapp.css
 
-mv webapp.min.js  webapp.js 
-mv webapp.min.css webapp.css 
+
+
+
+
+
+
+
+
+
+
+
+
 
 

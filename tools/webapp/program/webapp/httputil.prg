@@ -62,9 +62,15 @@ Content-Length: LENGTH
 <<PAGE>>
 local x,len
 local fspec:=geturl(req)
+local enc:=http_getheader(req,"Accept-Encoding")
+local gzip:=a"gzip"$enc
 
     fspec:="common/"+fspec
-    if( !file(fspec) .or.  empty(x:=memoread(fspec,.t.)) )
+    if( gzip .and. file(fspec+".gz") .and. !empty(x:=memoread(fspec+".gz",.t.)) )
+        gzip:=.t.
+    elseif( file(fspec) .and. !empty(x:=memoread(fspec,.t.)) )
+        gzip:=.f.
+    else
         return NIL
     end
 
@@ -75,6 +81,10 @@ local fspec:=geturl(req)
         page::=http_setheader("Content-Type","text/css")
     elseif( fspec::right(3)==".js" )
         page::=http_setheader("Content-Type","text/javascript")
+    end
+    
+    if(gzip)
+        page::=http_setheader("Content-Encoding","gzip")
     end
     
     len:=x::len::str::alltrim::str2bin

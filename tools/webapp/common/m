@@ -25,22 +25,3 @@ if false; then
     mv webapp.min.css webapp.css 
 fi
 
-gzip --keep --force  webapp.js
-gzip --keep --force  webapp.css
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,14 @@
-19a4cd2f6c0dae03fcae380ee76b112450f2b81e 2017081613:20:58-UTC ./CHANGELOG_vermes
+f72d16b1f5253c3c1eda88d5332bc64749cd5c25 2017081815:02:53-UTC ./usr/bin/linux/webapp
+f78744b622f5f552771999e61efedf5a49e6cba7 2017081815:02:49-UTC ./tools/webapp/program/webapp/defaults.prg
+fd1dac4d78601ebcaaa20f9e8c076fe9f3337e9b 2017081814:44:07-UTC ./tools/webapp/program/webapp/httputil.prg
+c1fa1771c40d51e67f1261205689f259a3e638bc 2017081814:32:32-UTC ./tools/webapp/config_webapp_defaults
+63775182019a8904274383f80c1a64cb58a5c647 2017081814:30:39-UTC ./tools/webapp/program/webapp/sample_config_webapp_defaults
+6daa6d4ffe9771111317708d9239b219e366e57f 2017081812:28:56-UTC ./CHANGELOG_vermes
+30f6eae027a50f73b402bd3cf8932a7b8d177a27 2017081811:51:50-UTC ./tools/webapp/common/m
+3834c66a20ac4927a33c9464f9b1d0d005b64d4e 2017081811:21:01-UTC ./tools/webapp/program/webapp/zlib.cpp
+a358db8c45cfa16578eae6515729d1c9a8de3b13 2017081810:07:49-UTC ./tools/webapp/program/webapp/parfile.bld
 5de8bf6c07286bb8532b46c5c47ebcb3f4b20302 2017081613:13:07-UTC ./tools/webapp/common/webapp.css
-edf9d9a55a0f99ce1c8593934d893e3b54e64c98 2017081613:12:34-UTC ./tools/webapp/common/m
 8ba62a29e1d082f1ef920d7728912d6d35dbdaa6 2017081613:06:36-UTC ./tools/webapp/common/.gitignore
-58a2f6f48c0cf26cd6924ebe5276436f2e1ed1a2 2017081613:03:23-UTC ./usr/bin/linux/webapp
-77209399f69f3e923a7d2f8863005ea735f911af 2017081613:03:21-UTC ./tools/webapp/program/webapp/httputil.prg
 ef4392a0a24baba9b699ac438549d6aad5f7e520 2017081608:00:12-UTC ./tools/webapp/common/webapp.less
 6890408cfa5cd6e5bdd9bc43eacf18cc5b5de91c 2017081308:52:18-UTC ./tools/webapp/common/webapp.js
 a9a1cd060b6828805af738c5c3919e0bdd2dda51 2017081308:52:17-UTC ./tools/webapp/common/webapp-core.js
@@ -48,7 +53,6 @@ f124ed3d534933dbd393d7cd6dc638aec21b3590 2017071807:50:26-UTC ./tools/webapp/com
 fdd09e0b9f01b4dc20f9c6d39bfcd44fb65f3ed6 2017071807:42:55-UTC ./tools/webapp/common/webapp-xlib.js
 3448ec265930c192c2597b70d9d79f6fbc0f6bd7 2017071807:37:42-UTC ./tools/webapp/common/webapp-formdata.js
 0b39d665614645d0c9aac5d8c4a2cb6c2bd99822 2017071807:24:49-UTC ./tools/webapp/common/webapp-compat.js
-b07e5c489b1ec40c956811452296f3a0a8ebab7c 2017071716:33:07-UTC ./tools/webapp/program/webapp/defaults.prg
 289b42826626b246ff0c8e844d32c24bd231278e 2017071606:53:11-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 74db149cc8ca768aa2ed810abc14163fce7fb0ed 2017071519:40:29-UTC ./tools/webapp/common/webapp-dat.js
 150f8d26a265245d49116ab376305fc34dc93221 2017071516:34:48-UTC ./tools/webapp/program/webapputil/websocket.prg
@@ -227,11 +231,9 @@ d28a9bbe0ea2461d5c0a37449fa9184942f91fa6 2017052407:22:50-UTC ./terminal/common/
 53dc488329cb25cb55e2aaedf232bfc73f691ff8 2017052315:13:21-UTC ./tutor/xbrwarr/s.bat
 164f53915dc71d8d14855ddfad210a60f2d47341 2017052206:11:34-UTC ./tools/webapp/config_webapp_start
 b41279f0c1d2550588ead3a1bbb0467bd8e162ff 2017052206:11:18-UTC ./tools/webapp/program/whello/parfile.bld
-b0965fafad11413df80ed616cfd68ffeef47e061 2017052206:06:20-UTC ./tools/webapp/config_webapp_defaults
 efba5385e765878bfdace8c376a495513ceec46e 2017052205:56:46-UTC ./tools/webapp/program/webapputil/m
 adeb0f3f17d92254b2640b1c2c89baf55ced4c19 2017052205:55:25-UTC ./tools/webapp/program/m
 5f425b7d4c5c294a47d5bdf9b3e0bfe146fc9b7d 2017052205:53:06-UTC ./tools/webapp/program/msk2html/parfile.bld
-f5b8ffb24a276e6d0cc4917f3dadcabead4cd5a0 2017052205:52:00-UTC ./tools/webapp/program/webapp/parfile.bld
 7ca79b5a0a385c310e045e35694dccb7f20fe851 2017052113:30:01-UTC ./tools/webapp/program/msk2html/msk2html.prg
 9f6be0e299ff4ddfdb84c3a1bf20ddd678805534 2017052107:28:40-UTC ./tools/zgrep/zgrep.prg
 4e5ebc29baf4aaff61856c17139f75098e0cf390 2017051905:35:17-UTC ./tutor/xbrwarr/s
@@ -301,7 +303,6 @@ ebce979e04ed7655b40afa47d94c07371a83e0cd 2017032408:59:32-UTC ./usr/options/lin/
 68ed85b7b09c562446095b07590fadc916a39dc1 2017032215:34:07-UTC ./tools/ddict2/progout.prg
 8c06ce6146d3ec3e3f63ee02ed7058ac32cc3a0f 2017032215:24:43-UTC ./tools/ddict2/ddict2.prg
 731616a301f5fe219a6b4da96a5b7cb89684a98e 2017032212:29:32-UTC ./tools/ddict2/dddel.prg
-d8dc40e35b23ec46b9b940fde221e019f5873940 2017032106:36:11-UTC ./tools/webapp/program/webapp/sample_config_webapp_defaults
 4fcdc448c384ab8110c67bc8c2cdd3685cc90458 2017031912:05:07-UTC ./tools/webapp/program/webapp/loadconfig.prg
 36938f23336cfcef3560f10eeea4e64e8256abdd 2017031909:06:21-UTC ./usr/build/linux/msk2html.bat
 a2acd39428ec7dc76030a37343e830101a3afd39 2017031813:52:36-UTC ./tools/webapp/program/webapp/sample_config_webapp_start

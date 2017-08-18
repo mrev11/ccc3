@@ -1,3 +1,8 @@
+2017.08.18 webapp gzip tamogatas;
+  linkeli a zlib konyvtarat;
+  a commondata-kat tomoriti, tarolja, tomoritve kuldi; 
+  a sessiondata-kat tomoriti, tomoritve kuldi;
+
 2017.08.16 webapp commondata gzip encoding;
 
 2017.08.13 webapp javitgatas;

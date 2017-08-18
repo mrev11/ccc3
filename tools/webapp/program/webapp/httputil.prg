@@ -62,14 +62,22 @@ Content-Length: LENGTH
 <<PAGE>>
 local x,len
 local fspec:=geturl(req)
-local enc:=http_getheader(req,"Accept-Encoding")
-local gzip:=a"gzip"$enc
+local enc,gzip:=.f.
+
+    if( use_gzip_encoding() )
+        enc:=http_getheader(req,"Accept-Encoding")
+        gzip:=a"gzip"$enc
+    end
 
     fspec:="common/"+fspec
-    if( gzip .and. file(fspec+".gz") .and. !empty(x:=memoread(fspec+".gz",.t.)) )
+    if( gzip .and. !empty(x:=memoread(fspec+".gz",.t.)) )
         gzip:=.t.
-    elseif( file(fspec) .and. !empty(x:=memoread(fspec,.t.)) )
-        gzip:=.f.
+    elseif( !empty(x:=memoread(fspec,.t.)) )
+        if( gzip )
+            x::=zlib.deflate
+            memowrit(fspec+".gz",x)
+            ? "GZIPPED:",fspec
+        end
     else
         return NIL
     end
@@ -114,6 +122,12 @@ local sessionid
 local pos
 local fspec
 local content
+local enc,gzip:=.f.
+
+    if( use_gzip_encoding() )
+        enc:=http_getheader(req,"Accept-Encoding")
+        gzip:=a"gzip"$enc
+    end
 
     req::=bin2str
 
@@ -127,11 +141,17 @@ local content
         return NIL
     end
 
-    page::=strtran("LENGTH",content::len::str::alltrim)
     page::=str2bin
     page::=httpheader_crlf
+
+    if(gzip)
+        content::=zlib.deflate
+        page::=http_setheader("Content-Encoding","gzip")
+        ? "GZIPPED:",fspec
+    end
+    page::=strtran(a"LENGTH",content::len::str::alltrim::str2bin)
     page+=content
-    
+
     return page
 
 

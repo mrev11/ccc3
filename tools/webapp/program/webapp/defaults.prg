@@ -109,4 +109,11 @@ static ssl:=if(option_hash["ssl"]=="false",.f.,.t.)
 
 
 ***************************************************************************************
+function use_gzip_encoding()
+static gzip:=if(option_hash["gzip"]=="false",.f.,.t.)
+    return gzip
+
+// false: nem tomorit, true: tomorit, default=true
+
+***************************************************************************************
 

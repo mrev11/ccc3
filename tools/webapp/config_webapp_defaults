@@ -16,3 +16,6 @@ start=whello.exe
 
 #content-encoding
 gzip=true
+
+#sec-websocket-extensions
+permessage-deflate=true

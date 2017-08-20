@@ -1,5 +1,5 @@
 #!/bin/bash
-bapp_unix_.b -swebapputil
+bapp_unix_.b @parfile.bld
 
 cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
 

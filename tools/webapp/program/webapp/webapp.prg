@@ -131,7 +131,7 @@ local req,wsuri,page,msg
             quit
 
         elseif( req::startswith(a"GET /websocket ") )
-            brwsocket:send(handshake(req))
+            brwsocket:send(websocket.handshake(req))
             start_session()
 
         elseif( req::startswith(a"GET /webapp/dnload/") )
@@ -230,33 +230,6 @@ local sid
     sid::=crypto_md5::crypto_bin2hex
     return sid  //X típus
 
-
-***************************************************************************************
-static function handshake(hsreq) //handshake request
-
-local hsrsp:=<<HANDSHAKE>>HTTP/1.1 101 Switching Protocols
-Upgrade: websocket
-Connection: Upgrade
-Sec-WebSocket-Accept: ACCEPTKEY
-
-<<HANDSHAKE>>::str2bin
-
-local magic:=a"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-local key,akey
-
-    key:=http_getheader(hsreq,"Sec-WebSocket-Key")
-
-    akey:=key
-    akey+=magic
-    akey::=crypto_sha1()
-    akey::=base64_encode
-
-    hsrsp::=strtran("ACCEPTKEY",akey)
-    
-    hsrsp::=strtran(x"0d",x"")
-    hsrsp::=strtran(x"0a",x"0d0a")  // Chromium!
-    
-    return hsrsp  //handshake response  (X típus)
 
 
 ***************************************************************************************

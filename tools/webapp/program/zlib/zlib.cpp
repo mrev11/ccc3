@@ -102,7 +102,20 @@ void _clp_deflate(int argno)
     assert(lenstrm==(int)sizeof(z_stream)); 
     char *buf=_parb(2);
     int lenbuf=_parblen(2);
-    int flush= ISNIL(3) ? Z_NO_FLUSH : (_parl(3) ? Z_FINISH : Z_NO_FLUSH);
+    int flush;
+    
+    if( ISNIL(3) )
+    {
+        flush=Z_NO_FLUSH;
+    }
+    else if( ISFLAG(3) )
+    {
+        flush=_parl(3)?Z_FINISH:Z_NO_FLUSH;
+    }
+    else
+    {
+        flush=_parni(3);
+    }
 
     strm->next_in=(unsigned char*)buf;
     strm->avail_in=lenbuf;
@@ -127,8 +140,10 @@ void _clp_deflate(int argno)
             add();
         }
         
-        //ha teleirta out-ot:  strm->avail_out==0  -> folytat
-        //ha maradt hely out-ban:  strm->avail_out!=0 -> kesz 
+        // mindaddig ujrahivjuk deflate-et
+        // amig mindent ki tud irni, amit akar 
+        // ha maradt hely out-ban:  strm->avail_out!=0 -> kesz 
+        // ha teleirta out-ot:  strm->avail_out==0  -> folytat
 
     } while (strm->avail_out == 0);
     assert(strm->avail_in == 0);     // all input will be used
@@ -152,7 +167,7 @@ void _clp_inflateinit2(int argno)
     //attol hasznal (zlib helyett) gzip formatunot,
     //hogy windowBits-hez hozza van adva 16
 
-    CCC_PROLOG("zlib.inflateinit2",2);
+    CCC_PROLOG("zlib.inflateinit2",1);
 
     int winbit = ISNIL(1) ? 31 : _parni(1); //15=zlib format, 31=gzip format
 

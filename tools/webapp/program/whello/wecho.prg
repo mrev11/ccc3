@@ -10,7 +10,7 @@ function main(sessionid,sckstr,*)
 
     //ez nagyon megterheli a böngészőt
     //a timeoutok tesztelésére hasznos
-    //webapp.debug(.t.)
+    webapp.debug(.f.)
 
     echotest()
 

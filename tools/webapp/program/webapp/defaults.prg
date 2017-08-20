@@ -115,5 +115,13 @@ static gzip:=if(option_hash["gzip"]=="false",.f.,.t.)
 
 // false: nem tomorit, true: tomorit, default=true
 
+
+***************************************************************************************
+function use_permessage_deflate()
+static pmd:=if(option_hash["permessage-deflate"]=="false",.f.,.t.)
+    return pmd
+
+// false: nem tomorit, true: tomorit, default=true
+
 ***************************************************************************************
 

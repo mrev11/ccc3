@@ -4,12 +4,13 @@ namespace websocket
 
 #define INDENT     chr(10)+"   "
 
-#define DEBUGINFO  INDENT, "time        :", time(),         ;
-                   INDENT, "frame_fin   :", frame_fin,      ;
-                   INDENT, "frame_opcode:", frame_opcode,   ;
-                   INDENT, "frame_masked:", frame_masked,   ;
-                   INDENT, "payload_len :", payload_len,    ;    
-                   INDENT, "timeout     :", timeout
+#define DEBUGINFO  INDENT, "time            :", time(),         ;
+                   INDENT, "frame_fin       :", frame_fin,      ;
+                   INDENT, "frame_opcode    :", frame_opcode,   ;
+                   INDENT, "frame_masked    :", frame_masked,   ;
+                   INDENT, "frame_compress  :", frame_compress, ;
+                   INDENT, "payload_len     :", payload_len,    ;    
+                   INDENT, "timeout         :", timeout
                    
 
 //egyik vagy masik
@@ -28,6 +29,7 @@ local fragment,c,n
 local frame_fin
 local frame_opcode
 local frame_masked
+local frame_compress
 local payload_len
 local masking_key
 local timeout:=TIMEOUT
@@ -35,11 +37,11 @@ local body
 
     while(.t.)
 
-        frame_fin    :=NIL
-        frame_opcode :=NIL
-        frame_masked :=NIL
-        payload_len  :=NIL
-        masking_key  :=NIL
+        frame_fin       :=NIL
+        frame_opcode    :=NIL
+        frame_masked    :=NIL
+        payload_len     :=NIL
+        masking_key     :=NIL
 
         begin
             if( len(c:=sck:recv(1,timeout))<1 )
@@ -49,6 +51,12 @@ local body
             end
             frame_fin:=(c::numand(0b10000000))!=0
             frame_opcode:=c::numand(0b00001111) //1=text 2=binary  8=close 9=ping 10=pong
+
+            if( frame_compress==NIL )
+                //(csak) az elso frame-ben
+                //lehet beallitva a tomorites bit
+                frame_compress:=(c::numand(0b01000000))!=0  //RSV1
+            end
 
             if( len(c:=sck:recv(1,timeout))<1 )
                 break("No payload_len1")
@@ -122,8 +130,9 @@ local body
         end
 
         //? DEBUGINFO
+        //? 
         //for n:=1 to len(fragment)
-        //    ?? "  ["+fragment[n]::asc::l2hex+"]"
+        //    ?? n::str(4)+"["+fragment[n]::asc::l2hex+"]"
         //next
 
 
@@ -148,21 +157,21 @@ local body
             
             body+=fragment
             if( frame_fin )
-                return body
+                return if(frame_compress,decompress(body),body)
             end
 
         elseif( frame_opcode==1 ) //text
             //A|B eset
             body:=fragment
             if( frame_fin )
-                return body
+                return if(frame_compress,decompress(body),body)
             end
             
         elseif( frame_opcode==2 ) //binary
-            //A}B eset
+            //A|B eset
             body:=fragment
             if( frame_fin )
-                return body
+                return if(frame_compress,decompress(body),body)
             end
 
 
@@ -207,28 +216,38 @@ local hdr2:=bin(len(body))  //MSK=0, len (len<=125)
     sck:send(hdr1+hdr2+body) //body from the corresponding ping
 
 
-
 ***************************************************************************************
 function WRITEMESSAGE_WHOLE(sck,msg) //egyben kuld
     if( webapp.logmessage() )
         ? "writemessage >>[",msg,"]"
     end
+    msg::=str2bin
     writefragment(sck,bin(129),msg)
 
 
 ***************************************************************************************
 function WRITEMESSAGE_FRAGMENTED(sck,msg) //darabolva kuld
 local frgsiz:=FRGSIZ
-local fin:=0, op:=1
+local fin:=0, op:=1, def:=0
+
     if( webapp.logmessage() )
         ? "writemessage >>[",msg,"]"
     end
+    msg::=str2bin
+
+    if(use_compress())
+        msg:=compress(msg)
+        def:=64 //RSV1 bit
+    end
+
     while( len(msg)>0 )
         if(len(msg)<=frgsiz)
             fin:=128
         end
-        writefragment(sck,bin(fin+op),msg[1..frgsiz])
+        
+        writefragment(sck,bin(fin+def+op),msg[1..frgsiz])
         op:=0
+        def:=0
         msg:=msg[frgsiz+1..]
     end
 
@@ -237,7 +256,6 @@ local fin:=0, op:=1
 static function writefragment(sck,hdr,msg)
 local len, pll, n
 
-    msg::=str2bin
     len:=len(msg)
 
     if( len<126 )
@@ -284,31 +302,30 @@ local y:=a"",i,j
 
 
 ***************************************************************************************
-function handshake(hsreq) //handshake request
-
-local hsrsp:=<<HANDSHAKE>>HTTP/1.1 101 Switching Protocols
-Upgrade: websocket
-Connection: Upgrade
-Sec-WebSocket-Accept: ACCEPTKEY
-
-<<HANDSHAKE>>::str2bin
-
-local magic:=a"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-local key,akey
-
-    key:=http_getheader(hsreq,"Sec-WebSocket-Key")
-
-    akey:=key
-    akey+=magic
-    akey::=crypto_sha1()
-    akey::=base64_encode
-
-    hsrsp::=strtran("ACCEPTKEY",akey)
-
-    hsrsp::=strtran(x"0d",x"")
-    hsrsp::=strtran(x"0a",x"0d0a")  // Chromium!
-    
-    return hsrsp  //handshake response  (X tipus)
+static function use_compress()
+static flag:="permessage-deflate"$getenv("Sec-WebSocket-Extensions")
+    return flag
 
 
 ***************************************************************************************
+static function decompress(x)
+static strm:=zlib.inflateinit2(-15) //winbit=15, 32K window, -15=RAW 
+    //? "INFLATE", len(x), " ->"
+    x:=zlib.inflate(strm,x+x"0000ffff")
+    //?? len(x)
+    return x
+
+
+***************************************************************************************
+static function compress(x)
+static strm:=zlib.deflateinit2(NIL,-15)
+static cnt:=0
+    //? "DEFLATE", len(x), " ->"
+    x:=zlib.deflate(strm,x,3) //Z_FULL_FLUSH
+    x:=left(x,len(x)-4)
+    //?? len(x)
+    return x
+    
+
+***************************************************************************************
+

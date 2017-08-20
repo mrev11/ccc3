@@ -18,7 +18,7 @@ void _clp_mask(int argno)
     {
         buf[i]^=key[i%4];
     }
-    _retb(buf);
+    stack=base+1; // retv(base);
     CCC_EPILOG();
 }
 

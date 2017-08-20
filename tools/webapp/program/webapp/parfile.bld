@@ -1,4 +1,5 @@
 -d.
+-d../zlib
 -bccc3_socket 
 -bccc3_sslsocket
 -bccc3_crypto

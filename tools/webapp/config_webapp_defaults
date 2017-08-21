@@ -1,12 +1,12 @@
 
 #interface to listen (default: localhost)
-iface=localhost
+iface=127.0.0.1
 
 #port to listen (default: 45678)
 port=45678
 
 #use SSL (default: true)
-ssl=false
+ssl=true
 
 #private key (default: weabappdemo.pem)
 keyfile=webappdemo.pem

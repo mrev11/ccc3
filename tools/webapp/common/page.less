@@ -1,0 +1,94 @@
+
+
+/********** PAGE LEFT SIDE MENU **********/
+
+div.page  div.menu {
+    float: left;
+    width: auto;
+    margin-top: 60px;
+    margin-right: 6px;
+    border: 5px none red; 
+    padding: 4px 2px;  
+
+    input.menubutton, input.pdmenubutton, input.submenubutton {
+        width: 120px;
+    }
+
+    input.menubutton, input.pdmenubutton{
+        margin: 6px 4px 0px 4px; 
+    }
+
+    input.submenubutton {
+        border: 0;
+        margin: 1px 4px 0px 4px;
+        background-color: @SMBUTTON_COLOR_BG;
+        &:hover{background-color: @SMBUTTON_COLOR_HOVER;}
+        &:disabled{background-color: @SMBUTTON_COLOR_DISABLED;}
+    }
+}
+
+/********** PAGE FORMSET FIELDSET **********/
+
+div.page div.formset{
+    float: left;
+    width:80%;
+    border: 5px none black;
+    padding: 4px 2px;  
+}                             
+
+div.page div.formset div.form div.subform fieldset{
+    background-color: @FIELDSET_COLOR; 
+    border: thin solid mix(@FIELDSET_COLOR,#000,80%); 
+    border-radius: 6px;
+    
+    legend {
+        background-color: @FIELDSET_COLOR; 
+        border: thin solid mix(@FIELDSET_COLOR,#000,80%); 
+        border-radius: 10px;
+        //color: red;
+    }
+}                             
+
+/********** PAGE TAB-BUTTONS **********/
+
+div.page  div.formset div.tabbut{
+    border: 5px none green;
+    padding: 0px 0px 0px 5px; 
+
+    input[type=button]{
+        background-color: @FIELDSET_BUTTON_COLOR_INACTIVE;
+        border: 1px solid darken(@FIELDSET_BUTTON_COLOR_INACTIVE,15%);
+        color: #000;
+        padding: 6px 12px;
+        transition: 0.3s;
+        margin: 0px 0px 4px 2px;
+    
+        &[data-pushed=true]{
+            background-color: @FIELDSET_BUTTON_COLOR_ACTIVE;
+            border: 1px solid darken(@FIELDSET_BUTTON_COLOR_ACTIVE,20%);
+        }
+    }
+}
+
+/********** PAGE ACTION MENU **********/
+
+div.page  div.formset div.action{
+    border: 5px none cyan;  
+
+    input[type=button]{
+        padding: 4px 10px;
+        margin: 5px 0px 2px 2px;
+    }
+}
+
+/********** PAGE FORMACTION MENU **********/
+
+div.page div.formset div.form div.subform div.formaction{
+    border: 5px none  blue;  
+
+    input[type=button]{
+        padding: 4px 10px;
+        margin: 5px 0px 2px 2px;
+    }
+}                             
+

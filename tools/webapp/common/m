@@ -1,4 +1,12 @@
 #!/bin/bash
+
+rm -f *.gz
+
+# megjegyes: webapp.js.gz, webapp.css.gz 
+# Ezek a gz fajlok automatikusan letrejonnek,
+# es amig leteznek, a szerver mindig azokat kuldi,
+# tehat a valtozasok ervenyre jutasahoz torolni kell.
+
 rm -f webapp.js
 touch webapp.js
 

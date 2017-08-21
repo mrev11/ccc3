@@ -1,3 +1,95 @@
+/********** LABEL **********/
+h1,
+h2,
+h3,
+label,
+legend {
+  color: #566;
+  font-weight: normal;
+}
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+/********** PAGE LEFT SIDE MENU **********/
+div.page div.menu {
+  float: left;
+  width: auto;
+  margin-top: 60px;
+  margin-right: 6px;
+  border: 5px none red;
+  padding: 4px 2px;
+}
+div.page div.menu input.menubutton,
+div.page div.menu input.pdmenubutton,
+div.page div.menu input.submenubutton {
+  width: 120px;
+}
+div.page div.menu input.menubutton,
+div.page div.menu input.pdmenubutton {
+  margin: 6px 4px 0px 4px;
+}
+div.page div.menu input.submenubutton {
+  border: 0;
+  margin: 1px 4px 0px 4px;
+  background-color: #4794c4;
+}
+div.page div.menu input.submenubutton:hover {
+  background-color: #3579a3;
+}
+div.page div.menu input.submenubutton:disabled {
+  background-color: #557183;
+}
+/********** PAGE FORMSET FIELDSET **********/
+div.page div.formset {
+  float: left;
+  width: 80%;
+  border: 5px none black;
+  padding: 4px 2px;
+}
+div.page div.formset div.form div.subform fieldset {
+  background-color: #ffffee;
+  border: thin solid #ccccbe;
+  border-radius: 6px;
+}
+div.page div.formset div.form div.subform fieldset legend {
+  background-color: #ffffee;
+  border: thin solid #ccccbe;
+  border-radius: 10px;
+}
+/********** PAGE TAB-BUTTONS **********/
+div.page div.formset div.tabbut {
+  border: 5px none green;
+  padding: 0px 0px 0px 5px;
+}
+div.page div.formset div.tabbut input[type=button] {
+  background-color: #b3b3a7;
+  border: 1px solid #8f8f7e;
+  color: #000;
+  padding: 6px 12px;
+  transition: 0.3s;
+  margin: 0px 0px 4px 2px;
+}
+div.page div.formset div.tabbut input[type=button][data-pushed=true] {
+  background-color: #f2f2e2;
+  border: 1px solid #d3d39b;
+}
+/********** PAGE ACTION MENU **********/
+div.page div.formset div.action {
+  border: 5px none cyan;
+}
+div.page div.formset div.action input[type=button] {
+  padding: 4px 10px;
+  margin: 5px 0px 2px 2px;
+}
+/********** PAGE FORMACTION MENU **********/
+div.page div.formset div.form div.subform div.formaction {
+  border: 5px none  blue;
+}
+div.page div.formset div.form div.subform div.formaction input[type=button] {
+  padding: 4px 10px;
+  margin: 5px 0px 2px 2px;
+}
 /********** PUSH BUTTONS **********/
 input[type=button] {
   color: #fff;
@@ -105,6 +197,8 @@ textarea {
 }
 /********** MENUICON (frmaux) **********/
 #menuicon {
+  margin-right: 8px;
+  margin-bottom: 8px;
   float: right;
   display: block;
 }
@@ -154,12 +248,11 @@ body {
   background: #ffffff;
   font-size: 12px;
   font-family: sans-serif;
-  padding: 8px 8px;
-  margin: 8px 8px;
+  padding: 2px 2px;
+  margin: 2px 2px;
 }
 /********** WEBAPP **********/
 #webapp {
-  display: block;
   position: relative;
   top: 0px;
   left: 0px;
@@ -171,133 +264,48 @@ body {
   border-width: thin;
   box-shadow: 1px 2px 10px 1px #ccc   inset;
 }
-#webapp #body {
-  padding: 2px 2px 10px 2px;
-}
-#resize {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  border-style: solid none none none;
-  border-width: thin;
-  border-color: #ccc;
-  box-shadow: 0px 1px 3px 0px #ccc inset;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 5px;
-  cursor: row-resize;
-}
-/********** FRMAUX **********/
-#frmaux {
-  display: none;
-  border-style: solid;
-  border-width: thin;
-  position: relative;
-  top: 0px;
-  left: 0px;
-  height: 200px;
-  width: 100%;
-  resize: vertical;
-  overflow: auto;
-}
-#frmaux #body #display {
-  font-size: small;
-  font-weight: lighter;
-  font-family: monospace;
-}
-/********** LABEL **********/
-h1,
-h2,
-h3,
-label,
-legend {
-  color: #566;
-  font-weight: normal;
-}
-/********** PAGE HORIZONTAL SCROLLING **********/
 #webapp #body #display {
+  margin: 8px 8px 10px 8px;
   overflow-x: hidden;
 }
 #webapp #body #display .page {
   width: 2000px;
 }
-/********** PAGE LEFT SIDE MENU **********/
-div.page div.menu {
-  float: left;
-  width: auto;
-  margin-top: 60px;
-  margin-right: 6px;
-  border: 5px none red;
-  padding: 4px 2px;
+/********** FRMAUX **********/
+#frmaux {
+  display: none;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: initial;
+  width: 100%;
+  overflow: hidden;
+  border-style: solid;
+  border-width: thin;
 }
-div.page div.menu input.menubutton,
-div.page div.menu input.pdmenubutton,
-div.page div.menu input.submenubutton {
-  width: 120px;
+#frmaux #body #display {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 250px;
+  padding-bottom: 10px;
+  overflow: auto;
+  font-size: small;
+  font-weight: lighter;
+  font-family: monospace;
 }
-div.page div.menu input.menubutton,
-div.page div.menu input.pdmenubutton {
-  margin: 6px 4px 0px 4px;
-}
-div.page div.menu input.submenubutton {
-  border: 0;
-  margin: 1px 4px 0px 4px;
-  background-color: #4794c4;
-}
-div.page div.menu input.submenubutton:hover {
-  background-color: #3579a3;
-}
-div.page div.menu input.submenubutton:disabled {
-  background-color: #557183;
-}
-/********** PAGE FORMSET FIELDSET **********/
-div.page div.formset {
-  float: left;
-  width: 80%;
-  border: 5px none black;
-  padding: 4px 2px;
-}
-div.page div.formset div.form div.subform fieldset {
-  background-color: #ffffee;
-  border: thin solid #ccccbe;
-  border-radius: 6px;
-}
-div.page div.formset div.form div.subform fieldset legend {
-  background-color: #ffffee;
-  border: thin solid #ccccbe;
-  border-radius: 10px;
-}
-/********** PAGE TAB-BUTTONS **********/
-div.page div.formset div.tabbut {
-  border: 5px none green;
-  padding: 0px 0px 0px 5px;
-}
-div.page div.formset div.tabbut input[type=button] {
-  background-color: #b3b3a7;
-  border: 1px solid #8f8f7e;
-  color: #000;
-  padding: 6px 12px;
-  transition: 0.3s;
-  margin: 0px 0px 4px 2px;
-}
-div.page div.formset div.tabbut input[type=button][data-pushed=true] {
-  background-color: #f2f2e2;
-  border: 1px solid #d3d39b;
-}
-/********** PAGE ACTION MENU **********/
-div.page div.formset div.action {
-  border: 5px none cyan;
-}
-div.page div.formset div.action input[type=button] {
-  padding: 4px 10px;
-  margin: 5px 0px 2px 2px;
-}
-/********** PAGE FORMACTION MENU **********/
-div.page div.formset div.form div.subform div.formaction {
-  border: 5px none  blue;
-}
-div.page div.formset div.form div.subform div.formaction input[type=button] {
-  padding: 4px 10px;
-  margin: 5px 0px 2px 2px;
+/********** RESIZE BARs **********/
+.resize {
+  background-color: #fff;
+  border-style: solid none none none;
+  border-width: thin;
+  border-color: #ccc;
+  box-shadow: 0px 1px 3px 0px #ccc inset;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  cursor: row-resize;
 }

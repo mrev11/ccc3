@@ -85,7 +85,8 @@ local keyfile:=option_hash["keyfile"]
     end
 
     if(ctx==NIL)
-        ctx:=sslctxNew("TLSv1_server") 
+        //ctx:=sslctxNew("TLSv1_server") 
+        ctx:=sslctxNew("SSLv23_server")
 
         ctx:use_certificate_file("keys/"+keyfile)
         ctx:use_privatekey_file("keys/"+keyfile)

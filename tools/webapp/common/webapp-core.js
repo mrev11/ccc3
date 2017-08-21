@@ -73,36 +73,39 @@ XCODE.onload=function(uri)
     XCODE.webapp.dnloadlink.target="_blank";
     XCODE.webapp.dnloadlink.style.display="none";
 
+    //resizing webapp frame
     XCODE.webapp.resize=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.resize.id="resize";
+    XCODE.webapp.resize.className="resize";
+    XCODE.webapp.resize.id="resizew";
+    XCODE.webapp.resize.style.display="none";
     XCODE.webapp.body.appendChild(XCODE.webapp.resize);
     XCODE.webapp.resize.active=false;
-    XCODE.resizeInit=function(e)
+    XCODE.webapp.resize.init=function(e)
     {
         XCODE.webapp.document.body.style.cursor="row-resize";
         XCODE.webapp.resize.active=true;
         e.preventDefault();
     }
-    XCODE.resizeStop=function(e)
+    XCODE.webapp.resize.stop=function(e)
     {
         XCODE.webapp.document.body.style.cursor="default";
         XCODE.webapp.resize.active=false;
         e.preventDefault();
     }
-    XCODE.resizeDoit=function(e)
+    XCODE.webapp.resize.doit=function(e)
     {
         if( XCODE.webapp.resize.active )
         {
             var par=XCODE.main.body;
             var box=XCODE.webapp.frame;
-            console.log(e.clientY,box.offsetTop,par.scrollTop);
+            //console.log(e.clientY,box.offsetTop,par.scrollTop);
             box.style.height=String(e.clientY-box.offsetTop+par.scrollTop)+'px';
             e.preventDefault();
         }
     }
-    XCODE.webapp.resize.addEventListener('mousedown',XCODE.resizeInit,false);
-    XCODE.webapp.window.addEventListener('mousemove',XCODE.resizeDoit,false);
-    XCODE.webapp.window.addEventListener('mouseup',XCODE.resizeStop,false);
+    XCODE.webapp.resize.addEventListener('mousedown',XCODE.webapp.resize.init,false);
+    XCODE.webapp.window.addEventListener('mousemove',XCODE.webapp.resize.doit,false);
+    XCODE.webapp.window.addEventListener('mouseup',XCODE.webapp.resize.stop,false);
 
     XCODE.webapp.window.CODE=XCODE;
 
@@ -140,9 +143,43 @@ XCODE.onload=function(uri)
         }
         XCODE.frmaux.display.innerHTML=x+message+' <br/>';
         //az aljára scrolloz
-        var frm=XCODE.frmaux.frame;
-        frm.scrollTop=frm.scrollHeight-frm.clientHeight; 
+        var dsp=XCODE.frmaux.display;
+        dsp.scrollTop=dsp.scrollHeight-dsp.clientHeight; 
     }
+
+    //resizing frmaux frame
+    XCODE.frmaux.resize=XCODE.frmaux.document.createElement("div");
+    XCODE.frmaux.resize.className="resize";
+    XCODE.frmaux.resize.id="resizex";
+    XCODE.frmaux.body.appendChild(XCODE.frmaux.resize);
+    XCODE.frmaux.resize.active=false;
+    XCODE.frmaux.resize.init=function(e)
+    {
+        XCODE.frmaux.document.body.style.cursor="row-resize";
+        XCODE.frmaux.resize.active=true;
+        e.preventDefault();
+    }
+    XCODE.frmaux.resize.stop=function(e)
+    {
+        XCODE.frmaux.document.body.style.cursor="default";
+        XCODE.frmaux.resize.active=false;
+        e.preventDefault();
+    }
+    XCODE.frmaux.resize.doit=function(e)
+    {
+        if( XCODE.frmaux.resize.active )
+        {
+            var par=XCODE.main.body;
+            var box=XCODE.frmaux.frame;
+            var dsp=XCODE.frmaux.display;
+            //console.log(e.clientY,box.offsetTop,par.scrollTop);
+            dsp.style.height=String(e.clientY-box.offsetTop+par.scrollTop)+'px';
+            e.preventDefault();
+        }
+    }
+    XCODE.frmaux.resize.addEventListener('mousedown',XCODE.frmaux.resize.init,false);
+    XCODE.frmaux.window.addEventListener('mousemove',XCODE.frmaux.resize.doit,false);
+    XCODE.frmaux.window.addEventListener('mouseup',XCODE.frmaux.resize.stop,false);
 
     XCODE.frmaux.window.CODE=XCODE;
 }

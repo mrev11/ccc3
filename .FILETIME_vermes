@@ -1,11 +1,14 @@
-dacaa03e3b90039aebfd18cc87402cef0b7396bc 2017082121:07:38-UTC ./CHANGELOG_vermes
-41899bd3a27405783502f4a2b32a9da5abcd25be 2017082120:31:20-UTC ./tools/webapp/common/webapp.css
+fa0b9811f4fb335d79d100d50f6c408e31608333 2017082215:59:47-UTC ./CHANGELOG_vermes
+faafc9a20407c7da47d6168d07d04040fad425d3 2017082213:54:42-UTC ./tools/webapp/program/webapputil/webpage.prg
+3ba4db3091ac04191910a05bc1c461e326c4d6bd 2017082213:49:02-UTC ./tools/webapp/common/webapp.css
+ac71fa7771a049db8c2963cb8503b15729e5bd36 2017082213:49:02-UTC ./tools/webapp/common/webapp.js
+6db17f25be960c63f79ebbee03d13e1d8da521ce 2017082213:48:34-UTC ./tools/webapp/common/webapp-private.js
+f2e1ff10a6df079b4260641f736edeb3e67da50e 2017082210:57:59-UTC ./tools/webapp/common/menuicon.less
+137dba14b841cd9acd6463472642a1b90d1d330e 2017082210:18:04-UTC ./tools/webapp/program/webapputil/private.prg
 680980f8b24e57bffc4174c9ea9b4641e7bba5c0 2017082120:31:19-UTC ./tools/webapp/common/webapp.less
 ecf347436cc60258a260eace822966f4d11614e7 2017082120:31:02-UTC ./tools/webapp/common/image.less
 1b3c5fb4bead599863503ea478a42e9f5f80c286 2017082119:00:10-UTC ./tools/webapp/common/m
 a24d2541b5e0c6f1e2e8f3aaa1353e48aa28a382 2017082118:54:11-UTC ./tools/webapp/common/webapp-core.js
-206efca5c54738f25657a7997ca93d6712f7e0d6 2017082118:54:11-UTC ./tools/webapp/common/webapp.js
-e69566ad2a06b9d077e061d394d28f8a385c86c9 2017082118:49:54-UTC ./tools/webapp/common/menuicon.less
 deaf3602b685584a884065ba354c3fd61a902d38 2017082109:54:59-UTC ./tools/webapp/common/label.less
 c0bfc597bced2c469145f3407b3eadf3a5a174ed 2017082109:52:02-UTC ./tools/webapp/common/page.less
 f0dce24dde5a0cb15c33b0d3fc7f6803f025fbc4 2017082109:23:42-UTC ./usr/bin/linux/webapp
@@ -39,7 +42,6 @@ bc322fffe3b1c527600e8815851d271928bab40c 2017080212:16:29-UTC ./terminal/gtk/m.b
 05723cc2f5285b1428c6177a9c504b154061b42c 2017080212:12:51-UTC ./terminal/gtk3/m.bat
 a601757a92493e89fa3ba8a64548d858f6c8d565 2017080210:18:28-UTC ./terminal/gtk3/terminal-gtk.cpp
 34b7320bcfcd6770c45e3444c01796f71f0b0cd0 2017080209:23:15-UTC ./terminal/gtk3/keycode_gtk.cpp
-6f0fc787071bd54b0472cf2616b13438f24ad95f 2017080117:19:34-UTC ./tools/webapp/program/webapputil/webpage.prg
 f1bed2e5e7e4f9cfc80c983e4bf61a0ccf68f434 2017080112:09:46-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 9fe8b8b918f9d6ebcf5d2474542b26cb729c7e95 2017072609:02:52-UTC ./tools/webapp/common/table.less
 dcbf0b3ed0f04d675a669e9d3e161448b01e0f7b 2017072517:32:55-UTC ./tools/webapp/common/textarea.less
@@ -54,7 +56,6 @@ aa98a0262897c22c629ff017ed3afd913dd3337e 2017072510:41:07-UTC ./log-install
 c6d464ea3966a093555449a544f8cb043f31549a 2017072420:04:48-UTC ./usr/bin/linux/gitstat
 9aaeef1b4b59ebda00494fb62ba78eddcafe94d3 2017072420:04:48-UTC ./usr/bin/linux/gitview
 91081e76a701425999020af0e4c9f6d42e80ca3c 2017072420:04:46-UTC ./usr/bin/linux/firstpar
-ea1321ee1342b165b1a60c3f0b7cf0009fc11141 2017072309:21:11-UTC ./tools/webapp/common/webapp-private.js
 c879a63dfd520a13b1020b4e57c3bbdc9150d9ef 2017072207:28:03-UTC ./tools/webapp/program/webapputil/walert.prg
 3a493c09c3363c79c5ff380ff4761c68ba32e4c8 2017072113:27:47-UTC ./tools/webapp/common/lc
 5ed5515cb7d9dbd369106b925d4b8ebdefb6f62a 2017071814:37:22-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
@@ -151,7 +152,6 @@ c7a4c70d26de027130db44a02b068f45cf69e4f0 2017071012:36:01-UTC ./jt/jterminal/jtw
 7e2b66f334906a91150ede8e65711f271f1b08e1 2017071012:36:01-UTC ./jt/jterminal/xmlcomponent.class
 4db56004425dd61d4f7abb51988f8399e77136aa 2017070915:21:57-UTC ./tools/webapp/program/webapputil/disabled.prg
 a94a39cecb6449e89e0c3a3bc4a9dc124b1ffab8 2017070815:11:47-UTC ./tools/webapp/common/webapp-pat.js
-a89ae2b26f27d72bf6cdcbf9778d929d0a5f8b17 2017070812:36:41-UTC ./tools/webapp/program/webapputil/private.prg
 2b3d42385cc79cf7a8982ac63b136420b4ffd156 2017070808:13:49-UTC ./tools/webapp/program/webapputil/jsstring.prg
 ac1fe19a5d6f296d9fce5aea6292506d9e7f3b46 2017070710:03:06-UTC ./tools/webapp/common/webapp-num.js
 6dc6356ccf23b9bf3fb91d8acf5e63e5e059eb71 2017062713:15:22-UTC ./tools/webapp/program/webapputil/sessiondir.prg

@@ -201,6 +201,7 @@ textarea {
   margin-bottom: 8px;
   float: right;
   display: block;
+  cursor: pointer;
 }
 #menuicon div {
   width: 12px;

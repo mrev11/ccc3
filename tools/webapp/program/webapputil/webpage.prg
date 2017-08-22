@@ -256,6 +256,7 @@ local pageid
     this:restorekey:=pageid+time()
     webapp.savedisplay(this:restorekey) 
     webapp.emptydisplay()
+    //webapp.unrefdisplay() //nem javit (ezzel is villog) 
 
     if( !this:cacheable )
         webapp.uploaddisplay(this:html)

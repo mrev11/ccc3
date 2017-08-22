@@ -37,6 +37,10 @@ function restoredisplay(key) //a key kulcs alatt mentett displayt visszaállítj
 function emptydisplay() //üres (új) displayt csinál (div element)
     script('CODE.emptydisplay();') 
 
+************************************************************************************
+function unrefdisplay() //displayt egy masolattal helyettesiti
+    script('CODE.unrefdisplay();') 
+
 
 ************************************************************************************
 function uploaddisplay(x) //betölt egy oldalt webapp.display-be

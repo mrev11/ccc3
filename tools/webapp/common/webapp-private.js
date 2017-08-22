@@ -36,9 +36,18 @@ XCODE.savedisplay=function(key)
     XCODE.setprivatedata(key,XCODE.webapp.display);
 }
 
+XCODE.unrefdisplay=function()
+{
+    var d=XCODE.webapp.document.createElement("div");
+    d.id="display";
+    d.innerHTML=XCODE.webapp.display.innerHTML;
+    XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
+    XCODE.webapp.display=d;
+}
+
 XCODE.emptydisplay=function()
 {
-    d=document.createElement("div");
+    var d=XCODE.webapp.document.createElement("div");
     d.id="display";
     XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
     XCODE.webapp.display=d;
@@ -46,10 +55,13 @@ XCODE.emptydisplay=function()
 
 XCODE.restoredisplay=function(key)
 {
-    d=XCODE.getprivatedata(key)
+    var d=XCODE.getprivatedata(key)
     XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
     XCODE.webapp.display=d;
-    XCODE.webapp.display.savefocus.focus();
+    if( XCODE.frmaux.frame.style.display!="block" )
+    { 
+        XCODE.webapp.display.savefocus.focus();
+    }
     delete XCODE.webapp.display.savefocus;
 }
 

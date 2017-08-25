@@ -32,36 +32,23 @@ XCODE.getprivatedata=function(key)
 
 XCODE.savedisplay=function(key)
 {
-    XCODE.webapp.display.savefocus=XCODE.webapp.document.activeElement;
-    XCODE.setprivatedata(key,XCODE.webapp.display);
-}
-
-XCODE.unrefdisplay=function()
-{
-    var d=XCODE.webapp.document.createElement("div");
-    d.id="display";
-    d.innerHTML=XCODE.webapp.display.innerHTML;
-    XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
-    XCODE.webapp.display=d;
+    XCODE.webapp.display.savefocus=XCODE.document.x.activeElement;
+    XCODE.setprivatedata(key,XCODE.webapp.display); //burkolo
 }
 
 XCODE.emptydisplay=function()
 {
-    var d=XCODE.webapp.document.createElement("div");
-    d.id="display";
-    XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
-    XCODE.webapp.display=d;
+    var dsp=XCODE.div("display_webapp","display");
+    XCODE.webapp.display.x.parentNode.replaceChild(dsp.x,XCODE.webapp.display.x);
+    XCODE.webapp.display=dsp;
 }
 
 XCODE.restoredisplay=function(key)
 {
-    var d=XCODE.getprivatedata(key)
-    XCODE.webapp.display.parentNode.replaceChild(d,XCODE.webapp.display);
-    XCODE.webapp.display=d;
-    if( XCODE.frmaux.frame.style.display!="block" )
-    { 
-        XCODE.webapp.display.savefocus.focus();
-    }
+    var dsp=XCODE.getprivatedata(key) //burkolo
+    XCODE.webapp.display.x.parentNode.replaceChild(dsp.x,XCODE.webapp.display.x);
+    XCODE.webapp.display=dsp;
+    XCODE.webapp.display.savefocus.focus();
     delete XCODE.webapp.display.savefocus;
 }
 

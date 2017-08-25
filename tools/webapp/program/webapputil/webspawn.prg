@@ -11,14 +11,14 @@ using webapp script
 function spawn(*) // spawn(app,sessionid,sckstr,user,...)
 
 local save:=<<X>>
-CODE.savedisplay("spawn-display");
-CODE.emptydisplay();
-CODE.privatelength();
+XCODE.savedisplay("spawn-display");
+XCODE.emptydisplay();
+XCODE.privatelength();
 <<X>>
 
 local rest:=<<X>>
-CODE.privatepop(LENGTH);
-CODE.restoredisplay("spawn-display");
+XCODE.privatepop(LENGTH);
+XCODE.restoredisplay("spawn-display");
 <<X>>
 
 local dom,len,err
@@ -32,7 +32,7 @@ local dom,len,err
     //Az elinditott program valahogy befejezodott,
     //de nem biztos, hogy minden neki szolo uzenetet kiolvasott.
     //Itt most kitisztitjuk a bennragadt uzeneteket,
-    webapp.script("CODE.echo('<SPAWN/>')")
+    webapp.script("XCODE.echo('<SPAWN/>')")
     while(.t.)
         begin
             webapp.waitmessage("SPAWN")
@@ -48,7 +48,7 @@ local dom,len,err
 
 *************************************************************************************
 function exec(*) // exec(app,sessionid,sckstr,user,...)
-    script(<<X>>CODE.emptydisplay();<<X>>)
+    script(<<X>>XCODE.emptydisplay();<<X>>)
     .exec({*},.t.)
     //ide már nem jön
 

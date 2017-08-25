@@ -24,7 +24,7 @@ local data,n,k:=0
     data+=data::lower
     data::=replicate(2000)
 
-    webapp.innerhtml("display","WEcho")
+    webapp.innerhtml("display_webapp","WEcho")
 
     while( k<1000  )
         for n:=-29 to 20
@@ -36,7 +36,7 @@ local data,n,k:=0
             ?? k
         next
 
-        webapp.innerhtml("display","WEcho"+str(k))
+        webapp.innerhtml("display_webapp","WEcho"+str(k))
     next
 
     sleep(1000)
@@ -47,7 +47,7 @@ static function echo(snd)
 local rsp
 
     memowrit( "log-snd",snd )
-    websocket.writemessage( webapp.ffsocket(), a"CODE.echo('XX')"::strtran(a'XX',snd) )
+    websocket.writemessage( webapp.ffsocket(), a"XCODE.echo('XX')"::strtran(a'XX',snd) )
     rsp:=websocket.readmessage( webapp.ffsocket() )
 
     if( rsp==NIL )

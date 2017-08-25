@@ -59,7 +59,7 @@ XCODE.htmlstring=function(x)
 XCODE.click=function(id)
 //------------------------------------------------------------------------------
 {
-    var ctrl=XCODE.webapp.document.getElementById(id);
+    var ctrl=XCODE.document.x.getElementById(id);
     if( ctrl==null )
     {
         console.log( "click: getElementById("+id+") returned null" );
@@ -107,7 +107,7 @@ XCODE.settle=function()
 //------------------------------------------------------------------------------
 {
     var ctrl,n;
-    ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    ctrl=XCODE.document.x.getElementsByTagName("input");
     for( n=0; n<ctrl.length; n++ )
     {
         if( ctrl[n].onblur!=undefined )
@@ -117,43 +117,5 @@ XCODE.settle=function()
     }
 }
 
-
-//------------------------------------------------------------------------------
-XCODE.openalert=function(alert_as_html)
-//------------------------------------------------------------------------------
-{
-    XCODE.webapp.window.scrollTo(0,0);
-    var ovl=XCODE.webapp.overlay;
-    var bln=XCODE.webapp.blind;
-    bln.style.height="0px";
-    bln.innerHTML=alert_as_html;
-    var alr=bln.firstChild;
-    var style=XCODE.webapp.window.getComputedStyle(alr);
-    var height=style.getPropertyValue("height");
-    //console.log(height);
-    //console.log(Number(height.replace("px","")));
-    height=(Number(height.replace("px",""))+16).toString()+"px";
-    //console.log(height);
-    alr.savefocus=XCODE.webapp.document.activeElement;
-    ovl.style.transitionDelay="0s";
-    ovl.style.zIndex="2";
-    ovl.style.backgroundColor="rgba(0,0,0,0.2)" //transition!
-    bln.style.height=height; //transition!
-}
-
-//------------------------------------------------------------------------------
-XCODE.closealert=function()
-//------------------------------------------------------------------------------
-{
-    var ovl=XCODE.webapp.overlay;
-    var bln=XCODE.webapp.blind;
-    var alr=bln.firstChild;
-    bln.style.height="0%";
-    ovl.style.transitionDelay="0.3s";
-    ovl.style.backgroundColor="rgba(0,0,0,0.0)"
-    ovl.style.zIndex="-1";
-    //bln.innerHTML=""; //ez eliminalja a transitiont!
-    alr.savefocus.focus();
-}
 
 //------------------------------------------------------------------------------

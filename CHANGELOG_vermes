@@ -1,3 +1,10 @@
+2017.08,25 webapp javascript-ek es css-ek ujrairva;
+  html elemekbe beledefinialas megszunt -> beagyazott objektunok;
+  pozicionalas flex-es divekkel;
+  a js kodokra CODE helyett XCODE-dal kell hivatkozni;
+  megszunt fuggvenyek:
+    frmaux.size, frmaux.border, webapp.size, webapp.border;
+
 2017.08.22 webapp javitgatas;
 
 2017.08.21 webapp frmaux is meretezheto;

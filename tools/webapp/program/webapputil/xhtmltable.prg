@@ -70,7 +70,7 @@ local tr,rowcnt,rowid,td,n
 
     tr:setattrib( xhtmlnode.attrib("id",rowid) )
     tr:setattrib( xhtmlnode.attrib("class",if(rowcnt%2==0,"even","odd" )))
-    tr:setattrib( xhtmlnode.attrib("onclick","CODE.onclick_row(this)"))
+    tr:setattrib( xhtmlnode.attrib("onclick","XCODE.onclick_row(this)"))
 
     for n:=1 to len(row)
         td:=xhtmlnodeNew("td")
@@ -122,7 +122,7 @@ function xhtmltable.rowid(x)
 ************************************************************************************************
 static function xhtmltable.update(this)
 local id:=this:getattrib("id")
-local code:="CODE.webapp.document.getElementById('$ID').selectedrow=null;"
+local code:="XCODE.document.x.getElementById('$ID').selectedrow=null;"
     code::=strtran('$ID',id)
     webapp.script(code)
     this:(xhtmlnode)update

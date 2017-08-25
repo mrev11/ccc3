@@ -279,7 +279,7 @@ local tr,rowcnt,rowid,td,n
 
     tr:setattrib( xhtmlnode.attrib("id",rowid) )
     tr:setattrib( xhtmlnode.attrib("class",if(rowcnt%2==0,"even","odd" )))
-    tr:setattrib( xhtmlnode.attrib("onclick","CODE.onclick_row(this)"))
+    tr:setattrib( xhtmlnode.attrib("onclick","XCODE.onclick_row(this)"))
 
     for n:=1 to len(row)
         td:=xhtmlnodeNew("td")
@@ -388,7 +388,7 @@ local node
 
 ************************************************************************************************
 function xhtmlnode.onclick_formdata(node,id) //klikkre formdata-t küld
-local code:="CODE.onclick_formdata(this.id)"
+local code:="XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
@@ -398,7 +398,7 @@ local code:="CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.onchange_formdata(node,id) //változásra formdata-t küld
-local code:="CODE.onclick_formdata(this.id)"
+local code:="XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
@@ -408,7 +408,7 @@ local code:="CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.onenter_formdata(node,id) //enter leütésre formdata-t küld
-local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
+local code:="XCODE.evententer(event) && XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")

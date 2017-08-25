@@ -178,7 +178,7 @@ local ctrl,upd,cmd:=""
     while( ctrl!=NIL )
 
         if( !ctrl:orig==ctrl:value )
-            upd:='CODE.updatecontrol("id",VALUE); '
+            upd:='XCODE.updatecontrol("id",VALUE); '
             upd::=strtran("id",ctrl:id)
             upd::=strtran("VALUE",ctrl:value::jsstring)
             cmd+=upd
@@ -197,7 +197,7 @@ local ctrl,upd,cmd:=""
 
     ctrl:=this:hash:firstvalue
     while( ctrl!=NIL )
-        upd:='CODE.updatecontrol("id",XX); '
+        upd:='XCODE.updatecontrol("id",XX); '
         upd::=strtran("id",ctrl:id)
         upd::=strtran("XX",ctrl:value::jsstring)
         cmd+=upd
@@ -302,7 +302,7 @@ class formdataerror(apperror)
 
 ***************************************************************************************
 function updatecontrol(id,value) //egyet beállít
-local code:='CODE.updatecontrol("id",VALUE); '
+local code:='XCODE.updatecontrol("id",VALUE); '
     code::=strtran("id",id)
     code::=strtran("VALUE",value::jsstring)
     script(code)

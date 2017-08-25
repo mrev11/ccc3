@@ -8,7 +8,7 @@ function main(sessionid,sckstr,*)
     ? {*}
     webapp.demo.defaults()
 
-    webapp.innerhtml("display","Hello World!")
+    webapp.innerhtml("display_webapp","Hello World!")
     sleep(2000)
 
 

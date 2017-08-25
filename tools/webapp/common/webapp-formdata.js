@@ -14,7 +14,7 @@ XCODE.onclick_formdata=function(srcid) //fékezve küld
     }
     else
     {
-        var ctrl=XCODE.webapp.document.getElementById(srcid);
+        var ctrl=XCODE.document.x.getElementById(srcid);
         if( ctrl.nodeName=="INPUT" && ctrl.type=="checkbox" )
         {
             //visszaállítani
@@ -31,7 +31,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
     var x="<formdata>";
     x+="<source>"+srcid+"</source>";
     
-    var sctrl=XCODE.webapp.document.getElementById(srcid);
+    var sctrl=XCODE.document.x.getElementById(srcid);
     if( sctrl!=null )
     {
         if( sctrl.type!=null )
@@ -44,7 +44,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
         }
     }
 
-    ctrl=XCODE.webapp.document.getElementsByTagName("input");
+    ctrl=XCODE.document.x.getElementsByTagName("input");
     for( n=0; n<ctrl.length; n++ )
     {
         if( ctrl[n].type=="text" ||
@@ -74,7 +74,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
         }
     }
 
-    ctrl=XCODE.webapp.document.getElementsByTagName("textarea");
+    ctrl=XCODE.document.x.getElementsByTagName("textarea");
     for( n=0; n<ctrl.length; n++ )
     {
         x+="<control>";
@@ -85,7 +85,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
         x+="</control>";
     }
 
-    ctrl=XCODE.webapp.document.getElementsByTagName("select");
+    ctrl=XCODE.document.x.getElementsByTagName("select");
     for( n=0; n<ctrl.length; n++ )
     {
         x+="<control>";
@@ -96,7 +96,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
         x+="</control>";
     }
 
-    ctrl=XCODE.webapp.document.getElementsByTagName("table");
+    ctrl=XCODE.document.x.getElementsByTagName("table");
     for( n=0; n<ctrl.length; n++ )
     {
         if( ctrl[n].id )
@@ -139,7 +139,7 @@ XCODE.xreadvalue=function(ctrl)
 XCODE.updatecontrol=function(id,value)
 //------------------------------------------------------------------------------
 {
-    var ctrl=XCODE.webapp.document.getElementById(id);
+    var ctrl=XCODE.document.x.getElementById(id);
 
     if( ctrl==null )
     {

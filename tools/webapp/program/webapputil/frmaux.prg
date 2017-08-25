@@ -3,52 +3,22 @@ namespace frmaux
 
 ***************************************************************************************
 function visible(flag)
-local code:=<<code>>CODE.frmaux.frame.style.display="$DISP";<<code>>
-    code+=<<code>>CODE.webapp.resize.style.display="$DISP";<<code>>
-    code::=strtran("$DISP",if(flag,"block","none"))
+local code:=<<code>>XCODE.frmaux.visible($FLAG);<<code>>
+    code::=strtran("$FLAG",if(flag,"true","false"))
     webapp.script(code)
 
-
-***************************************************************************************
-function border(flag)
-local code:=<<code>>CODE.frmaux.frame.style.borderStyle="$BORDER";<<code>>
-    if( valtype(flag)=="L"  )
-        code::=strtran("$BORDER",if(flag,"solid","none"))
-    else
-        code::=strtran("$BORDER",flag)
-    end
-    webapp.script(code)
-
-***************************************************************************************
-function size(w,h)
-local code:=""
-local codew:=<<code>>CODE.frmaux.frame.style.width="$WIDTH";<<code>>
-local codeh:=<<code>>CODE.frmaux.frame.style.height="$HEIGHT";<<code>>
-    if(w!=NIL)
-        if( valtype(w)=="N" )
-            w::=str::alltrim+"px"
-        end
-        code+=codew::strtran("$WIDTH",w::any2str::alltrim)
-    end
-    if(h!=NIL)
-        if( valtype(h)=="N" )
-            h::=str::alltrim+"px"
-        end
-        code+=codeh::strtran("$HEIGHT",h::any2str::alltrim)
-    end
-    webapp.script(code)
 
 ***************************************************************************************
 function clear()
-    webapp.script( 'CODE.frmaux.clear();' )
+    webapp.script( 'XCODE.frmaux.clear();' )
 
 ***************************************************************************************
 function write(x)
-    webapp.script( 'CODE.frmaux.write('+x::webapp.jsstring+');' )
+    webapp.script( 'XCODE.frmaux.write('+x::webapp.jsstring+');' )
 
 ***************************************************************************************
 function writeln(x)
-    webapp.script( 'CODE.frmaux.writeln('+x::webapp.jsstring+');' )
+    webapp.script( 'XCODE.frmaux.writeln('+x::webapp.jsstring+');' )
 
 
 ***************************************************************************************

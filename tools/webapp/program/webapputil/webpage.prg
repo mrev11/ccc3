@@ -262,9 +262,9 @@ local pageid
         webapp.uploaddisplay(this:html)
     elseif( !webapp.xlib.isdefined(pageid) )
         webapp.uploaddisplay(this:html)
-        webapp.xlib.save_innerHTML(pageid,"display")
+        webapp.xlib.save_innerHTML(pageid,"display_webapp")
     else
-        webapp.xlib.set_innerHTML("display",pageid)
+        webapp.xlib.set_innerHTML("display_webapp",pageid)
     end
 
 ************************************************************************************************
@@ -446,7 +446,7 @@ static function button.initialize(this,id,value,title)
     this:addattrib(xhtmlnode.attrib("type","button"))
     this:addattrib(xhtmlnode.attrib("id",id))
     this:addattrib(xhtmlnode.attrib("value",value))
-    this:addattrib(xhtmlnode.attrib("onclick","CODE.onclick_formdata(this.id)"))
+    this:addattrib(xhtmlnode.attrib("onclick","XCODE.onclick_formdata(this.id)"))
     if( title!=NIL  )
         this:addattrib(xhtmlnode.attrib("title",title))
     end
@@ -476,7 +476,7 @@ static function tabbutton.initialize(this,id,value,title)
 local msg:="<tabbutton>ID</tabbutton>"::strtran("ID",id)::webapp.jsstring
     this:(webapp.button)initialize(id,value,title)
     this:addattrib(xhtmlnode.attrib("class","tabbutton"))
-    this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)))
+    this:setattrib(xhtmlnode.attrib("onclick","XCODE.echo(MSG)"::strtran("MSG",msg)))
     return this
 
 
@@ -491,7 +491,7 @@ static function pdmenubutton.initialize(this,id,value,title)
 local msg:="<pdbutton>ID</pdbutton>"::strtran("ID",id)::webapp.jsstring
     this:(webapp.button)initialize(id,"["+value+"]",title)
     this:addattrib(xhtmlnode.attrib("class","pdmenubutton"))
-    this:setattrib(xhtmlnode.attrib("onclick","CODE.echo(MSG)"::strtran("MSG",msg)))
+    this:setattrib(xhtmlnode.attrib("onclick","XCODE.echo(MSG)"::strtran("MSG",msg)))
     this:setstyle("display:block")
     this:visible:=.f.
     return this

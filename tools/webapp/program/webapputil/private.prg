@@ -8,43 +8,39 @@ using webapp script jsstring
 ************************************************************************************
 function privatelength()  //lekérdezi a stack állását
 local dom
-    script("CODE.privatelength();") //PRIVATELENGTH-t küld vissza
+    script("XCODE.privatelength();") //PRIVATELENGTH-t küld vissza
     webapp.waitmessage('PRIVATELENGTH',@dom)
     return dom:gettext::val
 
 
 ************************************************************************************
 function privatepush() //új elemet rak a stackre (egy üres arrayt)
-    script("CODE.privatepush();")
+    script("XCODE.privatepush();")
 
 
 ************************************************************************************
 function privatepop(len) //leüríti a stacket len-ig
-    script("CODE.privatepop("+str(len)::alltrim+");")
+    script("XCODE.privatepop("+str(len)::alltrim+");")
 
 
 ************************************************************************************
 function savedisplay(key) //elmenti a displayt a key kulcs alatt
-    script('CODE.savedisplay("'+key+'");') //elmenti a displayt (a böngészőben)
+    script('XCODE.savedisplay("'+key+'");') //elmenti a displayt (a böngészőben)
 
 
 ************************************************************************************
 function restoredisplay(key) //a key kulcs alatt mentett displayt visszaállítja
-    script('CODE.restoredisplay("'+key+'");') //visszaállítja a displayt
+    script('XCODE.restoredisplay("'+key+'");') //visszaállítja a displayt
 
 
 ************************************************************************************
 function emptydisplay() //üres (új) displayt csinál (div element)
-    script('CODE.emptydisplay();') 
-
-************************************************************************************
-function unrefdisplay() //displayt egy masolattal helyettesiti
-    script('CODE.unrefdisplay();') 
+    script('XCODE.emptydisplay();') 
 
 
 ************************************************************************************
 function uploaddisplay(x) //betölt egy oldalt webapp.display-be
-    script("CODE.webapp.display.innerHTML="+x::jsstring+";CODE.settle();")
+    script("XCODE.webapp.display.x.innerHTML="+x::jsstring+";XCODE.settle();")
 
 
 ************************************************************************************

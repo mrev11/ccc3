@@ -7,7 +7,7 @@ using webapp script
 ***************************************************************************************
 function disabled(*)
 local arg:={*},n
-local code:="CODE.webapp.document.getElementById('ID').disabled=FLAG;"
+local code:="XCODE.document.x.getElementById('ID').disabled=FLAG;"
 local flag:='true'
 local x:=""
     for n:=1 to len(arg)
@@ -29,7 +29,7 @@ local x:=""
 ***************************************************************************************
 function data.pushed(*)
 local arg:={*},n
-local code:=<<CODE>>CODE.webapp.document.getElementById('ID').setAttribute("data-pushed","FLAG");<<CODE>>
+local code:=<<CODE>>XCODE.document.x.getElementById('ID').setAttribute("data-pushed","FLAG");<<CODE>>
 local flag:='true'
 local x:=""
     for n:=1 to len(arg)
@@ -50,7 +50,7 @@ local x:=""
 ***************************************************************************************
 function style.display(*)
 local arg:={*},n
-local code:="CODE.webapp.document.getElementById('ID').style.display='MODE';"
+local code:="XCODE.document.x.getElementById('ID').style.display='MODE';"
 local mode:="block"
 local x:=""
     for n:=1 to len(arg)

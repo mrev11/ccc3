@@ -16,6 +16,7 @@ cat   webapp-formdata.js     >>webapp.js
 cat   webapp-private.js      >>webapp.js
 cat   webapp-xlib.js         >>webapp.js
 cat   webapp-util.js         >>webapp.js
+cat   webapp-alert.js        >>webapp.js
 cat   webapp-inp_date.js     >>webapp.js
 cat   webapp-inp_number.js   >>webapp.js
 cat   webapp-inp_picture.js  >>webapp.js

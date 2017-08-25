@@ -326,7 +326,7 @@ local node
 
 ************************************************************************************************
 function xhtmlnode.onclick_formdata(node,id) //klikkre formdata-t küld
-local code:="CODE.onclick_formdata(this.id)"
+local code:="XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
@@ -336,7 +336,7 @@ local code:="CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.onchange_formdata(node,id) //változásra formdata-t küld
-local code:="CODE.onclick_formdata(this.id)"
+local code:="XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
@@ -346,7 +346,7 @@ local code:="CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.onenter_formdata(node,id) //enter leütésre formdata-t küld
-local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
+local code:="XCODE.evententer(event) && XCODE.onclick_formdata(this.id)"
     if(id!=NIL)
         //ha id meg van adva, akkor az lesz az srcid
         code::=strtran('this.id',"'"+id+"'")
@@ -362,8 +362,8 @@ local code:="CODE.evententer(event) && CODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.input_date(node)
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.datsettlevalue(this)"))
-    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.datkeypress(event)"))
+    node:setattrib(xhtmlnode.attrib("onblur","XCODE.datsettlevalue(this)"))
+    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.datkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 
 
@@ -372,21 +372,21 @@ function xhtmlnode.input_number(node,dec)
 local code
     if(dec==NIL)
         //helyertek vesszok nelkul
-        code:="CODE.numsettlevalue(this)"
+        code:="XCODE.numsettlevalue(this)"
     else
         //helyertek vesszokkel
         //dec>=0, nulla vagy tobb tizedessel
-        code:="CODE.numsettlevalue(this,DEC)"::strtran("DEC",dec::str::alltrim)
+        code:="XCODE.numsettlevalue(this,DEC)"::strtran("DEC",dec::str::alltrim)
     end
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.numkeypress(event)"))
+    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.numkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","^[0-9\+\-\.,]*$"))
 
 
 ************************************************************************************************
 function xhtmlnode.input_picture(node,pic)
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.picsettlevalue(this)")) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.pickeypress(event)")) 
+    node:setattrib(xhtmlnode.attrib("onblur","XCODE.picsettlevalue(this)")) 
+    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.pickeypress(event)")) 
     node:setattrib(xhtmlnode.attrib("data-picture",pic))
 
 
@@ -398,8 +398,8 @@ function xhtmlnode.input_pattern(node,pat)
     if( !right(pat,1)=="$" )
         pat+="$"
     end
-    node:setattrib(xhtmlnode.attrib("onblur","CODE.patsettlevalue(this)")) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","CODE.patkeypress(event)")) 
+    node:setattrib(xhtmlnode.attrib("onblur","XCODE.patsettlevalue(this)")) 
+    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.patkeypress(event)")) 
     node:setattrib(xhtmlnode.attrib("pattern",pat))
 
 

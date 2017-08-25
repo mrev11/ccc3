@@ -18,58 +18,23 @@ function script(x)
 
 ***************************************************************************************
 function visible(flag)
-local code:=<<code>>CODE.webapp.frame.style.display="$DISP";<<code>>
+local code:=<<code>>XCODE.webapp.x.style.display="$DISP";<<code>>
     code::=strtran("$DISP",if(flag,"block","none"))
-    webapp.script(code)
-
-
-***************************************************************************************
-function border(flag)
-local code:=<<code>>CODE.webapp.frame.style.borderStyle="$BORDER";<<code>>
-    if( valtype(flag)=="L" )
-        code::=strtran("$BORDER",if(flag,"solid","none"))
-    else
-        code::=strtran("$BORDER",flag)
-    end
-    webapp.script(code)
-
-
-***************************************************************************************
-function size(w,h)
-local code:=""
-local codew:=<<code>>CODE.webapp.frame.style.width="$WIDTH";<<code>>
-local codesw:=<<code>>CODE.webapp.frame.save_width="$WIDTH";<<code>>
-local codeh:=<<code>>CODE.webapp.frame.style.height="$HEIGHT";<<code>>
-local codesh:=<<code>>CODE.webapp.frame.save_height="$HEIGHT";<<code>>
-    if(w!=NIL)
-        if( valtype(w)=="N" )
-            w::=str::alltrim+"px"
-        end
-        code+=codew::strtran("$WIDTH",w::any2str::alltrim)
-        code+=codesw::strtran("$WIDTH",w::any2str::alltrim)
-    end
-    if(h!=NIL)
-        if( valtype(h)=="N" )
-            h::=str::alltrim+"px"
-        end
-        code+=codeh::strtran("$HEIGHT",h::any2str::alltrim)
-        code+=codesh::strtran("$HEIGHT",h::any2str::alltrim)
-    end
     webapp.script(code)
 
 
 ***************************************************************************************
 function debug(flag:=.t.)
     if( flag )
-        script( "CODE.turndebug(true); ")
+        script( "XCODE.debug=true;")
     else
-        script( "CODE.turndebug(false); ")
+        script( "XCODE.debug=false;")
     end
 
 
 ***************************************************************************************
 function setattrib(id,attr,value)
-local code:="CODE.webapp.document.getElementById('ID').ATTR=VALUE; "
+local code:="XCODE.document.x.getElementById('ID').ATTR=VALUE; "
     code::=strtran("ID",id)
     code::=strtran("ATTR",attr)
     code::=strtran("VALUE",value::webapp.jsstring)
@@ -78,7 +43,7 @@ local code:="CODE.webapp.document.getElementById('ID').ATTR=VALUE; "
 
 ***************************************************************************************
 function setmethod(id,meth,value)
-local code:="CODE.webapp.document.getElementById('ID').METH=function(){VALUE}; "
+local code:="XCODE.document.x.getElementById('ID').METH=function(){VALUE}; "
     code::=strtran("ID",id)
     code::=strtran("METH",meth)
     code::=strtran("VALUE",value)
@@ -87,19 +52,19 @@ local code:="CODE.webapp.document.getElementById('ID').METH=function(){VALUE}; "
 
 ***************************************************************************************
 function focus(id)
-local code:="CODE.webapp.document.getElementById('ID').focus(); "
+local code:="XCODE.document.x.getElementById('ID').focus(); "
     code::=strtran("ID",id)
     script(code)
 
 ***************************************************************************************
 function click(id)
-local code:="CODE.webapp.document.getElementById('ID').click(); "
+local code:="XCODE.document.x.getElementById('ID').click(); "
     code::=strtran("ID",id)
     script(code)
 
 ***************************************************************************************
 function innerhtml(id,txt)
-local code:="CODE.webapp.document.getElementById('ID').innerHTML=TXT; "
+local code:="XCODE.document.x.getElementById('ID').innerHTML=TXT; "
     code::=strtran("ID",id)
     code::=strtran("TXT",txt::webapp.jsstring)
     script(code)
@@ -107,7 +72,7 @@ local code:="CODE.webapp.document.getElementById('ID').innerHTML=TXT; "
 
 ***************************************************************************************
 function style(id,prop,txt)
-local code:="CODE.webapp.document.getElementById('ID').style.PROP=TXT; "
+local code:="XCODE.document.x.getElementById('ID').style.PROP=TXT; "
     code::=strtran("ID",id)
     code::=strtran("PROP",prop)
     code::=strtran("TXT",txt::webapp.jsstring)
@@ -117,14 +82,14 @@ local code:="CODE.webapp.document.getElementById('ID').style.PROP=TXT; "
 
 ***************************************************************************************
 function echo(x)  //kuldje vissza a stringet
-local code:=<<code>>CODE.echo('$STRING');<<code>>
+local code:=<<code>>XCODE.echo('$STRING');<<code>>
     code::=strtran("$STRING",x)
     webapp.script(code)
 
 
 ***************************************************************************************
 function formdata(x) //kuldjon formdatat x-bol
-local code:=<<code>>CODE.formdata('$CTRLID');<<code>>
+local code:=<<code>>XCODE.formdata('$CTRLID');<<code>>
     code::=strtran("$CTRLID",x)
     webapp.script(code)
                  

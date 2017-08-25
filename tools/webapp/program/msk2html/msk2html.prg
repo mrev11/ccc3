@@ -601,7 +601,7 @@ local table
             node:type:="input"
             node:addattrib(xhtmlnode.attrib("type","button")) 
             node:addattrib(xhtmlnode.attrib("value",if(!empty(comp:text),comp:text,comp:name)))
-            node:addattrib(xhtmlnode.attrib("onclick","CODE.onclick_formdata(this.id)"))
+            node:addattrib(xhtmlnode.attrib("onclick","XCODE.onclick_formdata(this.id)"))
 
 
         elseif( comp:type=="radio" )

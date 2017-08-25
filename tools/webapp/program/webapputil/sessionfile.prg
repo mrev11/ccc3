@@ -12,7 +12,7 @@ local url:='webapp/dnload/$SESSIONID/'+doc
 **************************************************************************************
 function dnloadsessionfile(doc) //letölt egy sessiondirben levő dokumentumot
 local url:='webapp/dnload/$SESSIONID/'+doc
-local code:=<<CODE>>CODE.webapp.dnloadlink.href="$URL";CODE.webapp.dnloadlink.click();<<CODE>>
+local code:=<<CODE>>XCODE.dnloadlink.href="$URL";XCODE.dnloadlink.click();<<CODE>>
     url::=strtran("$SESSIONID",webapp.session.id())
     code::=strtran('$URL',url)
     webapp.script(code)

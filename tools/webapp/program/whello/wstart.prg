@@ -11,7 +11,7 @@ BUTTONS
 <<HTML>>
 
 local button:=<<BUTTTON>>
-<input type='button', id='BUTID' value='BUTNAM' onclick="CODE.onclick_formdata(this.id)"/>  
+<input type='button', id='BUTID' value='BUTNAM' onclick="XCODE.onclick_formdata(this.id)"/>  
 <<BUTTTON>>
 
 
@@ -20,6 +20,7 @@ local dir:=directory("program/*.exe")
 local prev,b,n
 
     printlog(.t.)
+    webapp.logmessage(.t.)
 
     webapp.demo.defaults()
     

@@ -8,7 +8,7 @@ namespace webapp
 function alert(text,alternatives)
 
 local a:=<<ALERT>><div id="alert"><p><h3>TEXT</h3><p>ALTERNATIVES</div><<ALERT>>
-local b:=<<BUTTON>><input type="button" value="@VALUE" id="@ID" onclick="CODE.onclick_formdata(this.id)"/> <<BUTTON>>
+local b:=<<BUTTON>><input type="button" value="@VALUE" id="@ID" onclick="XCODE.onclick_formdata(this.id)"/> <<BUTTON>>
 local c:="",n,msg,data,choice
 
     if( empty(alternatives) )
@@ -25,7 +25,7 @@ local c:="",n,msg,data,choice
     a::=strtran("TEXT",text)
     a::=webapp.jsstring()
 
-    webapp.script("CODE.openalert("+a+")")
+    webapp.script("XCODE.openalert("+a+")")
     webapp.focus("alert1")
     
     while( NIL!=(msg:=webapp.getmessage(@data)) )
@@ -35,7 +35,7 @@ local c:="",n,msg,data,choice
         end
     end
 
-    webapp.script("CODE.closealert();")
+    webapp.script("XCODE.closealert();")
 
     
     return choice // 1,2,3...  (nincs esc==0 lehetőség)

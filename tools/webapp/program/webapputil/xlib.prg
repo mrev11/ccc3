@@ -5,7 +5,7 @@ namespace webapp
 ***************************************************************************************
 function xlib.isdefined(idobj)
 local code:=<<CODE>>
-CODE.xlib.isdefined('$IDOBJ');
+XCODE.xlib.isdefined('$IDOBJ');
 <<CODE>> 
 local data
     code::=strtran("$IDOBJ",idobj)
@@ -17,7 +17,7 @@ local data
 ***************************************************************************************
 function xlib.save_innerHTML(idobj,idelem)
 local code:=<<CODE>> 
-CODE.xlib['$IDOBJ']=CODE.webapp.document.getElementById('$IDELEM').innerHTML; 
+XCODE.xlib['$IDOBJ']=XCODE.document.x.getElementById('$IDELEM').innerHTML; 
 <<CODE>>
     code::=strtran("$IDOBJ",idobj)
     code::=strtran("$IDELEM",idelem)
@@ -26,7 +26,7 @@ CODE.xlib['$IDOBJ']=CODE.webapp.document.getElementById('$IDELEM').innerHTML;
 ***************************************************************************************
 function xlib.save_outerHTML(idobj,idelem)
 local code:=<<CODE>> 
-CODE.xlib['$IDOBJ']=CODE.webapp.document.getElementById('$IDELEM').outerHTML; 
+XCODE.xlib['$IDOBJ']=XCODE.document.x.getElementById('$IDELEM').outerHTML; 
 <<CODE>>
     code::=strtran("$IDOBJ",idobj)
     code::=strtran("$IDELEM",idelem)
@@ -36,7 +36,7 @@ CODE.xlib['$IDOBJ']=CODE.webapp.document.getElementById('$IDELEM').outerHTML;
 ***************************************************************************************
 function xlib.set_innerHTML(idelem,idobj)
 local code:=<<CODE>> 
-CODE.webapp.document.getElementById('$IDELEM').innerHTML=CODE.xlib['$IDOBJ']; 
+XCODE.document.x.getElementById('$IDELEM').innerHTML=XCODE.xlib['$IDOBJ']; 
 <<CODE>>
     code::=strtran("$IDOBJ",idobj)
     code::=strtran("$IDELEM",idelem)

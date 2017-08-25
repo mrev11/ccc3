@@ -1,21 +1,23 @@
 
 
-var XCODE={}; //object
-var CODE=XCODE;
+var XCODE={};
 
-
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 XCODE.onload=function(uri)
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 {
+    //burkolo objektumok
+    XCODE.window={x:window};
+    XCODE.document={x:window.document};
+    XCODE.body={x:window.document.body};
+
     XCODE.websckuri=uri;
     XCODE.connected=false;
     XCODE.privatedata=[]; //array
-    XCODE.debug=false;
+    XCODE.debug=true;
 
     XCODE.websocket = new window.WebSocket(uri);
-
-    window.onkeydown=function(event)
+    XCODE.window.x.onkeydown=function(event)
     {
         //a websocket lezáródása ellen
         if( event.which==27 )
@@ -23,110 +25,42 @@ XCODE.onload=function(uri)
             event.preventDefault();
         }
     }
-
     XCODE.websocket.onopen = function(evt) { XCODE.onopen(evt) };
     XCODE.websocket.onclose = function(evt) { XCODE.onclose(evt) };
     XCODE.websocket.onmessage = function(evt) { XCODE.onmessage(evt) };
     XCODE.websocket.onerror = function(evt) { XCODE.onerror(evt) };
 
-    XCODE.main={};
-    XCODE.webapp={};
-    XCODE.frmaux={};
+    XCODE.webapp=XCODE.region("webapp");
+    XCODE.body.x.appendChild(XCODE.webapp.x);
 
-    XCODE.main.window=window;
-    XCODE.main.document=window.document;
-    XCODE.main.body=window.document.body;
+    XCODE.menuicon=XCODE.div("menuicon");
+    XCODE.webapp.scroll.x.insertBefore(XCODE.menuicon.x,XCODE.webapp.display.x);
+    XCODE.menuicon.x.appendChild(XCODE.document.x.createElement("div"))
+    XCODE.menuicon.x.appendChild(XCODE.document.x.createElement("div"))
+    XCODE.menuicon.x.appendChild(XCODE.document.x.createElement("div"))
+    XCODE.menuicon.x.accessKey="m";
+    XCODE.menuicon.x.onclick=function(){XCODE.menuicon_clicked()};
 
-    XCODE.webapp.frame=XCODE.main.document.getElementById("webapp");
-    XCODE.webapp.window=XCODE.main.window;
-    XCODE.webapp.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
-    XCODE.webapp.document=XCODE.main.document;
-    XCODE.webapp.body=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.frame.appendChild(XCODE.webapp.body);
-    XCODE.webapp.body.id="body";
+    XCODE.overlay=XCODE.div("overlay");
+    XCODE.body.x.appendChild(XCODE.overlay.x);
+    XCODE.blind=XCODE.div("blind");
+    XCODE.overlay.x.appendChild(XCODE.blind.x);
 
-    XCODE.webapp.menuicon=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.body.appendChild(XCODE.webapp.menuicon);
-    XCODE.webapp.menuicon.id="menuicon";
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.appendChild(XCODE.webapp.document.createElement("div"));
-    XCODE.webapp.menuicon.accessKey="m";
-    XCODE.webapp.menuicon.onclick=function(){XCODE.menuicon_clicked()};
-
-    XCODE.webapp.display=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.body.appendChild(XCODE.webapp.display);
-    XCODE.webapp.display.id="display";
-
-    XCODE.webapp.overlay=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.body.appendChild(XCODE.webapp.overlay);
-    XCODE.webapp.overlay.id="overlay";
-
-    XCODE.webapp.blind=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.overlay.appendChild(XCODE.webapp.blind);
-    XCODE.webapp.blind.id="blind";
-
-    XCODE.webapp.dnloadlink=XCODE.webapp.document.createElement("a");
-    XCODE.webapp.body.appendChild(XCODE.webapp.dnloadlink);
-    XCODE.webapp.dnloadlink.id="dnloadlink";
-    XCODE.webapp.dnloadlink.download="";
-    XCODE.webapp.dnloadlink.target="_blank";
-    XCODE.webapp.dnloadlink.style.display="none";
-
-    //resizing webapp frame
-    XCODE.webapp.resize=XCODE.webapp.document.createElement("div");
-    XCODE.webapp.resize.className="resize";
-    XCODE.webapp.resize.id="resizew";
-    XCODE.webapp.resize.style.display="none";
-    XCODE.webapp.body.appendChild(XCODE.webapp.resize);
-    XCODE.webapp.resize.active=false;
-    XCODE.webapp.resize.init=function(e)
-    {
-        XCODE.webapp.document.body.style.cursor="row-resize";
-        XCODE.webapp.resize.active=true;
-        e.preventDefault();
-    }
-    XCODE.webapp.resize.stop=function(e)
-    {
-        XCODE.webapp.document.body.style.cursor="default";
-        XCODE.webapp.resize.active=false;
-        e.preventDefault();
-    }
-    XCODE.webapp.resize.doit=function(e)
-    {
-        if( XCODE.webapp.resize.active )
-        {
-            var par=XCODE.main.body;
-            var box=XCODE.webapp.frame;
-            //console.log(e.clientY,box.offsetTop,par.scrollTop);
-            box.style.height=String(e.clientY-box.offsetTop+par.scrollTop)+'px';
-            e.preventDefault();
-        }
-    }
-    XCODE.webapp.resize.addEventListener('mousedown',XCODE.webapp.resize.init,false);
-    XCODE.webapp.window.addEventListener('mousemove',XCODE.webapp.resize.doit,false);
-    XCODE.webapp.window.addEventListener('mouseup',XCODE.webapp.resize.stop,false);
-
-    XCODE.webapp.window.CODE=XCODE;
+    XCODE.dnloadlink=XCODE.document.x.createElement("a");
+    XCODE.body.x.appendChild(XCODE.dnloadlink);
+    XCODE.dnloadlink.id="dnloadlink";
+    XCODE.dnloadlink.download="";
+    XCODE.dnloadlink.target="_blank";
+    XCODE.dnloadlink.style.display="none";
 
 
-    XCODE.frmaux.frame=XCODE.main.document.getElementById("frmaux");
-    XCODE.frmaux.window=XCODE.main.window;
-    XCODE.frmaux.window.onkeydown=XCODE.main.window.onkeydown; //minden ablakra
-    XCODE.frmaux.document=XCODE.main.document;
-    XCODE.frmaux.body=XCODE.frmaux.document.createElement("div");
-    XCODE.frmaux.frame.appendChild(XCODE.frmaux.body);
-    XCODE.frmaux.body.id="body";
-
-    XCODE.frmaux.display=XCODE.frmaux.document.createElement("div");
-    XCODE.frmaux.body.appendChild(XCODE.frmaux.display);
-    XCODE.frmaux.display.id="display";
-
-    XCODE.frmaux.clear=function(message){XCODE.frmaux.display.innerHTML='';}
-    XCODE.frmaux.write=function(message){XCODE.frmaux.display.innerHTML+=message+' ';}
+    XCODE.frmaux=XCODE.region("frmaux"); 
+    XCODE.body.x.appendChild(XCODE.frmaux.x);
+    XCODE.frmaux.clear=function(){XCODE.frmaux.display.x.innerHTML='';}
+    XCODE.frmaux.write=function(message){XCODE.frmaux.display.x.innerHTML+=message+' ';}
     XCODE.frmaux.writeln=function(message)
     {
-        var x=XCODE.frmaux.display.innerHTML;
+        var x=XCODE.frmaux.display.x.innerHTML;
         var n=24, pos=x.length;
         while( n>0 && (pos=x.lastIndexOf("###",pos-1))>=0 )
         {
@@ -141,80 +75,102 @@ XCODE.onload=function(uri)
         {
             x=x.substring(pos);
         }
-        XCODE.frmaux.display.innerHTML=x+message+' <br/>';
+        XCODE.frmaux.display.x.innerHTML=x+message+' <br/>';
         //az aljára scrolloz
-        var dsp=XCODE.frmaux.display;
-        dsp.scrollTop=dsp.scrollHeight-dsp.clientHeight; 
+        var scr=XCODE.frmaux.scroll.x;
+        scr.scrollTop=scr.scrollHeight-scr.clientHeight; 
     }
-
-    //resizing frmaux frame
-    XCODE.frmaux.resize=XCODE.frmaux.document.createElement("div");
-    XCODE.frmaux.resize.className="resize";
-    XCODE.frmaux.resize.id="resizex";
-    XCODE.frmaux.body.appendChild(XCODE.frmaux.resize);
-    XCODE.frmaux.resize.active=false;
-    XCODE.frmaux.resize.init=function(e)
+    XCODE.frmaux.visible=function(flag)
     {
-        XCODE.frmaux.document.body.style.cursor="row-resize";
-        XCODE.frmaux.resize.active=true;
-        e.preventDefault();
-    }
-    XCODE.frmaux.resize.stop=function(e)
-    {
-        XCODE.frmaux.document.body.style.cursor="default";
-        XCODE.frmaux.resize.active=false;
-        e.preventDefault();
-    }
-    XCODE.frmaux.resize.doit=function(e)
-    {
-        if( XCODE.frmaux.resize.active )
+        // true-ra debug mode on
+        // false-ra debug mode off
+        
+        if( flag )
         {
-            var par=XCODE.main.body;
-            var box=XCODE.frmaux.frame;
-            var dsp=XCODE.frmaux.display;
-            //console.log(e.clientY,box.offsetTop,par.scrollTop);
-            dsp.style.height=String(e.clientY-box.offsetTop+par.scrollTop)+'px';
-            e.preventDefault();
-        }
-    }
-    XCODE.frmaux.resize.addEventListener('mousedown',XCODE.frmaux.resize.init,false);
-    XCODE.frmaux.window.addEventListener('mousemove',XCODE.frmaux.resize.doit,false);
-    XCODE.frmaux.window.addEventListener('mouseup',XCODE.frmaux.resize.stop,false);
-
-    XCODE.frmaux.window.CODE=XCODE;
-}
-
-
-//------------------------------------------------------------------------------
-XCODE.turndebug=function(flag)
-//------------------------------------------------------------------------------
-{
-    XCODE.debug=flag;
-}
-
-//------------------------------------------------------------------------------
-XCODE.menuicon_clicked=function()
-{
-    if( XCODE.frmaux.frame.style.display!="block" )
-    { 
-        XCODE.debug=true;
-        XCODE.frmaux.frame.style.display="block";
-        XCODE.webapp.resize.style.display="block";
-    }
-    else
-    {
-        XCODE.frmaux.frame.style.display="none";
-        XCODE.webapp.resize.style.display="none";
-        if( XCODE.webapp.frame.save_height!=undefined )
-        {
-            XCODE.webapp.frame.style.height=XCODE.webapp.frame.save_height;
+            XCODE.frmaux.x.style.display="block";
+            XCODE.webapp.resize.x.style.display="block";
+            XCODE.webapp.x.style.flex="0 0 auto";
+            //XCODE.webapp.x.style.height="300px";
+            XCODE.webapp.x.style.height=(XCODE.window.x.innerHeight*0.66+"px")   ;
         }
         else
         {
-            XCODE.webapp.frame.style.removeProperty("height");
+            XCODE.frmaux.x.style.display="none";
+            XCODE.webapp.resize.x.style.display="none";
+            XCODE.webapp.x.style.flex="1 0 auto";
+            XCODE.webapp.x.style.height="initial";
         }
     }
+
+    //ezzel ebred
+    XCODE.debug=false;
+    XCODE.frmaux.visible(XCODE.debug);
 }
 
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
+XCODE.div=function(id,cl) //div-et tartalmazo burkolokat gyart
+//--------------------------------------------------------------------------------------
+{
+    var x=XCODE.document.x.createElement("div")
+    if(id!=undefined) x.id=id;
+    if(cl!=undefined) x.className=cl;
+    return {x};
+}
+
+//--------------------------------------------------------------------------------------
+XCODE.region=function(id)
+//--------------------------------------------------------------------------------------
+{
+    var reg=XCODE.div("region_"+id,"region");    
+    reg.scroll=XCODE.div("scroll_"+id,"scroll");    
+    reg.x.appendChild(reg.scroll.x);
+
+    reg.display=XCODE.div("display_"+id,"display"); 
+    reg.scroll.x.appendChild(reg.display.x);
+
+    reg.resize=XCODE.div("resize_"+id,"resize"); 
+    reg.x.appendChild(reg.resize.x);
+    
+    
+    var elem=reg.resize.x;
+    elem.active=false;
+    elem.start=function(e)
+    {
+        document.body.style.cursor="row-resize";
+        elem.active=true;
+        e.preventDefault();
+    }
+    elem.addEventListener('mousedown',elem.start,false);
+    elem.stop=function(e)
+    {
+        if( elem.active )
+        {
+            document.body.style.cursor="default";
+            elem.active=false;
+            e.preventDefault();
+        }
+    }
+    window.addEventListener('mouseup',elem.stop,false);
+    elem.move=function(e)
+    {
+        if( elem.active )
+        {
+            var par=elem.parentElement;
+            par.style.height=String(e.clientY-par.offsetTop+XCODE.body.x.scrollTop)+'px';
+            e.preventDefault();
+        }
+    }
+    window.addEventListener('mousemove',elem.move,false);
+
+    return reg;
+}
+
+//--------------------------------------------------------------------------------------
+XCODE.menuicon_clicked=function()
+//--------------------------------------------------------------------------------------
+{
+    XCODE.frmaux.visible(XCODE.frmaux.x.style.display=="none");
+}
+
+//--------------------------------------------------------------------------------------
 

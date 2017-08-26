@@ -15,9 +15,12 @@ Sec-WebSocket-Accept: ACCEPTKEY
 local magic:=a"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 local wsv,wse,key,akey
 
-    wsv:=http_getheader(hsreq,"Sec-WebSocket-Version")::bin2str
-    wse:=http_getheader(hsreq,"Sec-WebSocket-Extensions")::bin2str
+    wsv:=http_getheader(hsreq,"Sec-WebSocket-Version")
+    wse:=http_getheader(hsreq,"Sec-WebSocket-Extensions")
     key:=http_getheader(hsreq,"Sec-WebSocket-Key")
+
+    wsv:=if(empty(wsv),"",wsv::bin2str)
+    wse:=if(empty(wse),"",wse::bin2str)
 
     putenv("Sec-WebSocket-Version="+wsv)
     putenv("Sec-WebSocket-Extensions=")

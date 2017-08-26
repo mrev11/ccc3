@@ -11,9 +11,12 @@ img {
   max-width: 100%;
   max-height: 100%;
 }
-/********** PAGE LEFT SIDE MENU **********/
+div.page {
+  display: flex;
+  flex-direction: row;
+}
 div.page div.menu {
-  float: left;
+  flex: 0 0 auto;
   width: auto;
   margin-top: 60px;
   margin-right: 6px;
@@ -40,24 +43,11 @@ div.page div.menu input.submenubutton:hover {
 div.page div.menu input.submenubutton:disabled {
   background-color: #557183;
 }
-/********** PAGE FORMSET FIELDSET **********/
 div.page div.formset {
-  float: left;
-  width: 80%;
+  flex: 0 0 auto;
   border: 5px none black;
   padding: 4px 2px;
 }
-div.page div.formset div.form div.subform fieldset {
-  background-color: #ffffee;
-  border: thin solid #ccccbe;
-  border-radius: 6px;
-}
-div.page div.formset div.form div.subform fieldset legend {
-  background-color: #ffffee;
-  border: thin solid #ccccbe;
-  border-radius: 10px;
-}
-/********** PAGE TAB-BUTTONS **********/
 div.page div.formset div.tabbut {
   border: 5px none green;
   padding: 0px 0px 0px 5px;
@@ -74,19 +64,27 @@ div.page div.formset div.tabbut input[type=button][data-pushed=true] {
   background-color: #f2f2e2;
   border: 1px solid #d3d39b;
 }
-/********** PAGE ACTION MENU **********/
-div.page div.formset div.action {
-  border: 5px none cyan;
+div.page div.formset div.form div.subform fieldset {
+  background-color: #ffffee;
+  border: thin solid #ccccbe;
+  border-radius: 6px;
 }
-div.page div.formset div.action input[type=button] {
-  padding: 4px 10px;
-  margin: 5px 0px 2px 2px;
+div.page div.formset div.form div.subform fieldset legend {
+  background-color: #ffffee;
+  border: thin solid #ccccbe;
+  border-radius: 10px;
 }
-/********** PAGE FORMACTION MENU **********/
 div.page div.formset div.form div.subform div.formaction {
   border: 5px none  blue;
 }
 div.page div.formset div.form div.subform div.formaction input[type=button] {
+  padding: 4px 10px;
+  margin: 5px 0px 2px 2px;
+}
+div.page div.formset div.action {
+  border: 5px none cyan;
+}
+div.page div.formset div.action input[type=button] {
   padding: 4px 10px;
   margin: 5px 0px 2px 2px;
 }
@@ -275,7 +273,7 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 }
-.region .display {
+.region .scroll .display {
   background: #fff;
 }
 .region .resize {

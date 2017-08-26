@@ -263,7 +263,6 @@ body {
   width: 100%;
   height: 300px;
   overflow: hidden;
-  background: #fff;
 }
 .region .scroll {
   position: absolute;
@@ -272,9 +271,6 @@ body {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-}
-.region .scroll .display {
-  background: #fff;
 }
 .region .resize {
   position: absolute;

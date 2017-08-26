@@ -1,6 +1,6 @@
+586b1c921296fc8b7041eac2375310c776f94365 2017082615:25:47-UTC ./tools/webapp/common/webapp.css
+5674942f1d84bc88100e916d3df4c84f9846e985 2017082615:23:55-UTC ./tools/webapp/common/webapp.less
 494fbdb60970788aa5a4ba01ecadb2fc6b5295ce 2017082608:51:50-UTC ./CHANGELOG_vermes
-e8b1639fbc2dd4ea301e05f0b1b279acfb6fce7e 2017082608:34:36-UTC ./tools/webapp/common/webapp.css
-dff0d5d824cb7dc46c041165fd34943ceaacd334 2017082608:34:35-UTC ./tools/webapp/common/webapp.less
 db1cfdc3a587624b58e967b9d1af8aff6cca87d6 2017082608:22:31-UTC ./tools/webapp/common/page.less
 e81533e76966db37779f87a31f8cfdcc45ab2cec 2017082516:20:50-UTC ./tools/webapp/log-webapp
 a82820338c6ca2c35732b52f25c5eece1b8559cd 2017082516:20:50-UTC ./tools/webapp/log-wstart

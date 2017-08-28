@@ -1,4 +1,3 @@
-/********** LABEL **********/
 h1,
 h2,
 h3,
@@ -88,7 +87,6 @@ div.page div.formset div.action input[type=button] {
   padding: 4px 10px;
   margin: 5px 0px 2px 2px;
 }
-/********** PUSH BUTTONS **********/
 input[type=button] {
   color: #fff;
   background-color: #66d;
@@ -114,7 +112,6 @@ input[type=button]:active {
   box-shadow: 1px 1px #777777;
   transform: translateY(1px);
 }
-/********** SELECT BUTTONS **********/
 select {
   color: #fff;
   background-color: #66d;
@@ -135,7 +132,6 @@ select:focus {
 select:disabled {
   background-color: #6060b0;
 }
-/********** INPUT TEXT **********/
 input[type=text] {
   color: #566;
   outline: 0px;
@@ -159,7 +155,6 @@ input[pattern]:invalid:not(focus) {
   color: red;
   background-color: #ffa0a0;
 }
-/********** TABLE **********/
 tr {
   cursor: pointer;
 }
@@ -184,7 +179,6 @@ td {
   white-space: nowrap;
   font-size: smaller;
 }
-/********** TEXTAREA **********/
 textarea {
   font-size: 12px;
   font-family: sans-serif;
@@ -193,7 +187,6 @@ textarea {
   border: thin solid #ccccbe;
   outline: none;
 }
-/********** MENUICON (frmaux) **********/
 #menuicon {
   margin-right: 8px;
   margin-bottom: 8px;
@@ -207,7 +200,6 @@ textarea {
   background-color: black;
   margin: 2px 0;
 }
-/********** ALERT **********/
 #overlay {
   position: fixed;
   top: 0;
@@ -224,14 +216,14 @@ textarea {
   align-items: center;
   justify-content: center;
 }
-#blind {
+#overlay #blind {
   background-color: rgba(0, 0, 0, 0);
   width: 90%;
   height: 0%;
   overflow: hidden;
   transition: height 0.3s;
 }
-#alert {
+#overlay #blind #alert {
   background-color: rgba(250, 250, 100, 0.9);
   padding: 0px 50px;
   margin: 8px 8px;
@@ -295,7 +287,7 @@ body {
   display: block;
 }
 #region_webapp .display {
-  margin: 30px 30px 10px 20px;
+  margin: 0px 10px 0px 15px;
 }
 #region_frmaux {
   display: block;

@@ -33,3 +33,9 @@ local url:='webapp/dnload/$SESSIONID/'+doc
 
 
 **************************************************************************************
+function sessionurl(fname)
+//igy kell kepezni egy sessiondir-ben levo file URL-jet
+    return "/webapp/dnload/"+webapp.session.id()+"/"+fname
+
+
+**************************************************************************************

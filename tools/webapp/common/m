@@ -23,7 +23,19 @@ cat   webapp-inp_picture.js  >>webapp.js
 cat   webapp-inp_regex.js    >>webapp.js
 cat   webapp-compat.js       >>webapp.js
 
-lessc webapp.less            >webapp.css
+
+##lessc webapp.less          >webapp.css
+
+for COLORS in colors-*.less; do
+    cp $COLORS colors.less
+    COLORS=$(echo $COLORS | sed s^colors-^^ )
+    COLORS=$(echo $COLORS | sed s^.less^^ )
+
+    lessc webapp.less >webapp-$COLORS.css
+done
+cp webapp-slateblue.css  webapp.css  #ez a default
+rm colors.less
+
 
 
 if false; then

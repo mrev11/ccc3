@@ -1,3 +1,13 @@
+
+2017.09.01 webapp konyvtar bovites:
+  webapp.loaadscript, 
+  webapp.loadstyle, 
+  webapp.isdefined,
+  webapp.sessionurl;
+  a fieldset legendek id-t kapnak;
+  az osszes szintema elore legyartva;
+  a szintemak programbol valaszthatok;
+
 2017.09.01 webapp szintemak;
 
 2017.08.28 webapp js, less fajlok egysegesen formazva; 

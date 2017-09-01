@@ -95,3 +95,24 @@ local code:=<<code>>XCODE.formdata('$CTRLID');<<code>>
                  
 
 ***************************************************************************************
+function isdefined(symbol)
+local code:=<<CODE>>
+    XCODE.send("<isdefined>"+($SYMBOL!=undefined).toString()+"</isdefined>")
+<<CODE>>
+local data
+    webapp.script(code::strtran("$SYMBOL",symbol))
+    webapp.waitmessage("isdefined",@data)
+    return "true"==data:gettext
+
+
+***************************************************************************************
+function loadscript(url)
+    webapp.script( 'XCODE.loadscript("$URL")'::strtran("$URL",url))
+
+
+***************************************************************************************
+function loadstyle(url)
+    webapp.script('XCODE.loadstyle("$URL")'::strtran("$URL",url))
+
+
+***************************************************************************************

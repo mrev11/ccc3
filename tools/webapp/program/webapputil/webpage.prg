@@ -401,6 +401,9 @@ static function form.initialize(this,formid,fieldset,tabtext)
     if( fieldset!=NIL )
         //üres is lehet
         this:addcontent(fieldset)
+        if( fieldset:content::len>=1 .and. fieldset:content[1]:type=="legend" )
+            fieldset:content[1]:setattrib("id","legend_"+formid)
+        end
     end
     this:addattrib(xhtmlnode.attrib("id","form_"+formid))
     this:setstyle("display:none") //nem látható

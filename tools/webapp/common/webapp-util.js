@@ -119,3 +119,24 @@ XCODE.settle=function()
 
 
 //------------------------------------------------------------------------------
+XCODE.loadscript=function(url)
+//------------------------------------------------------------------------------
+{
+    var element=XCODE.document.x.createElement("script");
+    element.src=url;
+    XCODE.document.x.head.appendChild(element);
+}
+
+//------------------------------------------------------------------------------
+XCODE.loadstyle=function(url)
+//------------------------------------------------------------------------------
+{
+    var element=XCODE.document.x.createElement("link");
+    element.rel="stylesheet";
+    element.type="text/css";
+    element.href=url;
+    XCODE.document.x.head.appendChild(element);
+}
+
+//------------------------------------------------------------------------------
+

@@ -144,6 +144,12 @@ local enc,gzip:=.f.
     page::=str2bin
     page::=httpheader_crlf
 
+    if( fspec::right(4)==".css" )
+        page::=http_setheader("Content-Type","text/css")
+    elseif( fspec::right(3)==".js" )
+        page::=http_setheader("Content-Type","text/javascript")
+    end
+
     if(gzip)
         content::=zlib.deflate
         page::=http_setheader("Content-Encoding","gzip")

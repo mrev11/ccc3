@@ -1,3 +1,6 @@
+2017.09.24 webapp fejlesztesek
+  scriptek letoltesekor Content-Type beallitva;
+  uj javascript fuggveny: unloadstyle;
 
 2017.09.01 webapp konyvtar bovites:
   webapp.loaadscript, 

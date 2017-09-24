@@ -139,4 +139,23 @@ XCODE.loadstyle=function(url)
 }
 
 //------------------------------------------------------------------------------
+XCODE.unloadstyle=function(url)
+//------------------------------------------------------------------------------
+{
+    var rx=new RegExp(url);
+    var styles=XCODE.document.x.getElementsByTagName("link");
+    for( var i=styles.length-1; i>=0; i-- )
+    {
+        if( styles[i].getAttribute("href")!=null )
+        {
+            if( rx.test(styles[i].getAttribute("href")) )
+            {
+                console.log("removed:",styles[i]);
+                styles[i].parentNode.removeChild(styles[i]);
+            }
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
 

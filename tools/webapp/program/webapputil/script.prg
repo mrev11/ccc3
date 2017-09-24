@@ -114,5 +114,9 @@ function loadscript(url)
 function loadstyle(url)
     webapp.script('XCODE.loadstyle("$URL")'::strtran("$URL",url))
 
+***************************************************************************************
+function unloadstyle(url)
+    webapp.script('XCODE.unloadstyle("$URL")'::strtran("$URL",url))
+
 
 ***************************************************************************************

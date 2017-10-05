@@ -103,6 +103,39 @@ void connect_to_terminal()
         //printf("default:127.0.0.1/55000\n");
     }
 
+#ifdef UNIX
+    else if( 0==stat(constr,&buf) ) //letezo termspec (UNIX socket)
+    {
+        //printf("UNIX socket\n");
+        int sv[2]={-1,-1}; 
+        int clntsck;
+        if( 0!=socketpair(AF_LOCAL,SOCK_STREAM,0,sv) )
+        {
+            error("socketpair failed");
+        }
+        clntsck=sv[0];
+        termsck=sv[1];
+
+        char buf[16];
+        const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
+        argv[0]=constr;
+        argv[1]="--socket";
+        argv[2]=buf;sprintf(buf,"%d",clntsck);
+        argv[3]=0;
+
+        if( fork()==0 )
+        {
+            socket_close(termsck);
+            execv(argv[0], (char*const*)argv); //kurva anyjukat 
+            //csak ha execv sikertelen
+            fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
+            error("execv failed");
+        }
+        socket_close(clntsck);
+        atexit(atexit_bye);
+    }
+#endif
+
     else if( 0==stat(constr,&buf) ) //letezo termspec
     {
         int s=socket_new();

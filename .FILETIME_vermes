@@ -1,4 +1,8 @@
-0f43534d2df1b438b9bda733846477496fca2921 2017092408:07:37-UTC ./CHANGELOG_vermes
+b51d5dbde505f13d84b9f8327dbfa42d03afab6a 2017100513:37:01-UTC ./CHANGELOG_vermes
+43c4587492fc95a7cb2acec6b5099710bc099edf 2017100513:21:13-UTC ./ccclib/src/uic/termapi/termio.cpp
+40791fab8d22de0c8cab3e4da8142066565009b9 2017100512:57:21-UTC ./log-install
+865e27724d8f95556b95cacdb9d0db93a403a432 2017100512:57:19-UTC ./usr/bin/linux/list
+ecd28c0e8c672a1427c041fab9c957f20a6cf8e7 2017093007:23:07-UTC ./tutor/xmask/demo.say
 bcb09fa9e05888bbd5372d0210a53db5b173491a 2017092407:56:43-UTC ./tools/webapp/common/webapp.js
 dfc34cc2d8c4e8f06c51910412db51ddb2a5603d 2017092407:56:41-UTC ./tools/webapp/common/webapp-util.js
 bbbe10258eba0633b62cebcd9f0e9cc3edfdaff7 2017092313:35:13-UTC ./usr/bin/linux/webapp
@@ -8,8 +12,8 @@ b5fb69574a63117dfd17bc8c6f950e6cb21931ae 2017092312:50:11-UTC ./tools/webapp/pro
 e48b4e222efd7b6cc6d785c98756187fdf4287d7 2017091210:07:09-UTC ./usr/bin/linux/gitref
 2b653f544087fb4341d6d4c13dc0ed78c2c204a5 2017091210:07:09-UTC ./usr/bin/linux/gitstat
 76a0b2a96f56a45d1dc327a92e42a85eeaac8770 2017091210:07:09-UTC ./usr/bin/linux/gitview
-f49f85b0ba70ced7552ef29463c920becd81dba7 2017090914:52:57-UTC ./usr/bin/linux/terminal-gtk
-3bc844a9c1ae28e6762a0136571f03dc5fac8f4e 2017090408:13:22-UTC ./log-install
+f49f85b0ba70ced7552ef29463c920becd81dba7 2017090914:51:04-UTC ./usr/bin/linux/terminal-gtk
+50b05517d2152e9df8479b44900c6a1f8c24194b 2017090914:49:08-UTC ./usr/bin/linux/terminal-gtk3
 536bb999c3a8ad1c325c9ae7477cc8f4b24691a3 2017090117:12:40-UTC ./tools/webapp/program/webapputil/sessionfile.prg
 8b58d3dba2f296914058523935689a1db24eb782 2017090116:47:53-UTC ./tools/webapp/program/webapputil/webpage.prg
 7a3f22df19ff20dcf01b34099687d8245199739f 2017090112:42:21-UTC ./tools/webapp/common/m
@@ -218,7 +222,6 @@ ab6b2a246f6c6ad982cd58b32e2f1bb2f0dc1c63 2017060615:27:35-UTC ./usr/bin/linux/pr
 bc152ff4947a8c6816d26d31d5a043c1c4b15d90 2017060615:27:33-UTC ./usr/bin/linux/setperm
 d76ddf42eb5710a8407bdcac16a813b848d9043f 2017060615:27:31-UTC ./usr/bin/linux/dddel
 5b935e105596575e2aa1f1b9c94daeb053bff3be 2017060615:27:31-UTC ./usr/bin/linux/ddict2
-fb7f105cd1f38ed15164951fdede77582cd7d55f 2017060615:27:31-UTC ./usr/bin/linux/list
 fd5f7a128a075ede45afa8b8b3ff963e72fa376a 2017060615:27:29-UTC ./usr/bin/linux/dbfview
 1261812435ba07a384619bc7da160d83a3c5ebc5 2017060615:27:27-UTC ./usr/bin/linux/bt2dbf
 ec27c72b5673e684f6e86ad78c7eb465c5a42b3f 2017060615:27:27-UTC ./usr/bin/linux/bt2txt
@@ -428,7 +431,6 @@ be3af9f37837f4c03986e809d1f1ba1e27688f63 2016100211:49:53-UTC ./tools/savex/find
 a381102b0ed48eedbbb28612d80af5bf83cc140b 2016100211:32:20-UTC ./ccclib/src/setfdati.prg
 e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100208:42:52-UTC ./tools/savex/savebrowse.prg
 f4149625b23ee91256834c9d103dac7cf8881bdc 2016100114:47:11-UTC ./ccclib/src/uic/termapi/remoteio.cpp
-31033ae76d638130020e9123306e1cff5d5aa9ee 2016100108:10:06-UTC ./ccclib/src/uic/termapi/termio.cpp
 cf63fe140195bcac0e1a5f57cedf6087a275428f 2016100107:19:14-UTC ./ccclib/src/uic/termapi/termio.h
 b513249cf35a258e927ae71269e98d2093897fd8 2016093022:07:05-UTC ./ccclib/src/uic/termapi/termapi.cpp
 38e9313d79fffb44c3da9d559844d88d6dd11699 2016093008:52:28-UTC ./tutor/fpath/parfile.bld

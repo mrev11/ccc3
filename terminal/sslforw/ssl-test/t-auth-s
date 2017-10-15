@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. t--host
+
+
+c_rehash pem/clncert
+export SSLFORW_CAPATH=pem/clncert
+#export SSLFORW_CAFILE=pem/clncert/localhost-cert.pem
+
+export SSLFORW_PKEYFILE=pem/clnpkey/demo.pem
+export SSLFORW_CERTFILE=pem/clnpkey/demo.pem
+
+
+sslforw-term.exe  $host:40003  terminal-xft.exe
+

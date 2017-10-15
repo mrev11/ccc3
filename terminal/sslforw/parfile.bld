@@ -1,0 +1,13 @@
+-msslforw-serv
+-msslforw-term
+-msslforward
+#-msleep
+ 
+-d.
+
+-p/usr/lib
+-bssl
+-bcrypto
+-bccc$(CCCVER).lib
+ 
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

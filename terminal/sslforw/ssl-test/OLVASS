@@ -1,0 +1,22 @@
+
+SSL továbbító segédprogramok.
+
+A CCC3 program és a terminál közötti (alapesetben plain)
+forgalmat titkosítják. A jterminal projekthez készült sslforward 
+program egyszerű átalakításával készültek.
+
+sslforw-serv.exe:
+    A szerver oldalon végzi a ki-betitkosítást,
+    plain forgalmat közvetít a szerver programnak. 
+    SSL  forgalmat közvetít a terminálnak. 
+
+sslforw-term.exe
+    A terminál oldalon végzi a ki-betitkosítást,
+    plain forgalmat közvetít a terminálnak,
+    SSL forgalmat közvetít a szervernek,
+
+A szerver programot egy listener indítja az sslforw-serv.exe
+közbeiktatásával. A terminált a sslforw-term.exe közbeiktatásával
+kell indítani, ahogy az xstart-os példa mutatja.
+
+

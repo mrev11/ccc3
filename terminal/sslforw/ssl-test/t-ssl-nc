@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. t--host
+
+export CCCTERM_SIZE=90x20
+
+
+sslforw-term.exe  $host:40002  ncterm.exe
+

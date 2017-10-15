@@ -1,0 +1,43 @@
+<xstart>
+
+<item>
+    <name>savex.exe PLAIN</name>
+    <if>localhost</if>
+    <port>40001</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <command>savex.exe .</command>
+</item>
+
+
+<item>
+    <name>savex.exe SSL</name>
+    <if>localhost</if>
+    <port>40002</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <env>SSLFORW_CAPATH=</env>
+    <env>SSLFORW_CAFILE=</env>
+    <env>SSLFORW_PKEYFILE=pem/srvpkey/localhost.pem</env>
+    <env>SSLFORW_CERTFILE=pem/srvpkey/localhost.pem</env>
+    <command>sslforw-serv.exe savex.exe .</command>
+</item>
+
+
+<item>
+    <name>savex.exe AUTH</name>
+    <if>localhost</if>
+    <port>40003</port>
+    <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
+    <env>SSLFORW_CAFILE=pem/srvcert/localhost-cert.pem</env>
+    <env>SSLFORW_PKEYFILE=pem/srvpkey/localhost.pem</env>
+    <env>SSLFORW_CERTFILE=pem/srvpkey/localhost.pem</env>
+    <command>sslforw-serv.exe savex.exe .</command>
+</item>
+
+
+<!--
+    <env>SSLFORW_CAPATH=pem/srvcert</env>
+-->
+
+
+
+</xstart>

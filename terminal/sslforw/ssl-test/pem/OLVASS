@@ -1,0 +1,24 @@
+Demó kulcsok.
+
+Kliens ezeket használja: clncert, clnpkey
+Szerver ezeket használja: srvcert, srvpkey
+
+clncert
+   Itt van az a tanúsítvány, ami kell a szerver hitelesítéséhez.
+   A szerver azzal hitelesíti magát, hogy ismeri az itteni cert-hez
+   tartozó privát kulcsot.
+
+clnpkey
+   Itt van a kliens privát kulcsa és tanúsítványa.
+
+
+srvcert
+   Itt vannak azok a tanúsítványok, ami kellenek a kliensek 
+   hitelesítéséhez. A kliensek úgy hitelesítik magukat, hogy
+   olyan privát kulcsot ismernek, ami alá van írva egy itteni
+   tanúsítványhoz tartozó kulccsal.
+
+srcpkey
+   Itt van a szerver privát kulcsa és tanúsítványa.
+
+   

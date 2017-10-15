@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+. t--host
+
+terminal-xft.exe $host 40001
+

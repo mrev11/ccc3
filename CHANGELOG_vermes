@@ -1,3 +1,7 @@
+2017.10.19 szemetgyujtes valtozott:
+  variable_native.inc -> variable,cpp
+  (helyettesiti  a korabbi variable.cpp-t);
+
 2017.10.18 szemetgyujtes valtozott:
   vartab_mark-ba visszarakva a tipusvizsgalat;
   variable_native.inc-ben modositasok;

@@ -1,4 +1,5 @@
-668a6c009014e0ba3dd8f563cb551fdbf7d53a40 2017101519:54:01-UTC ./CHANGELOG_vermes
+f4562510a8315bd8ddd8087aeee2684a619285c6 2017101914:09:22-UTC ./CHANGELOG_vermes
+d80107042a013194da8834c6f069c8539637ee06 2017101914:02:04-UTC ./ccclib/src/variable_native.inc
 adc8babc53ea3e2d60f98ec1966d8504eceadb0b 2017101519:38:27-UTC ./usr/bin/linux/sslforw-serv
 fe58a8398dbdcabab41f09e8caf92a616e8607ed 2017101519:38:27-UTC ./usr/bin/linux/sslforw-term
 5f1874b6c87c7657f55d4aa5db8558d98279bafa 2017101519:38:27-UTC ./usr/bin/linux/sslforward
@@ -1328,7 +1329,6 @@ d354f53db3015e96dc104ac8982394e65bb94595 2010110508:03:56-UTC ./setup/setup-unix
 c70f9aa57ab23865b29450bb70aaedb8a20a742f 2010110218:29:10-UTC ./gtk/code_byhand/gtk_item_factory_apix.cpp
 43df782a95e4a680459a030ffe719636a146e67a 2010110217:43:14-UTC ./setup/setup-unix/argv.cpp
 5ae4632094ea59842bf89e139ef7ec358016b7fe 2010110216:09:40-UTC ./setup/setup-unix/binary.cpp
-9d2a81e8d0ce0a9b2d7092d3ff644d271dd0e21f 2010110212:42:21-UTC ./ccclib/src/variable_nativeold.inc
 1f1e9095cd62f99c62abb8ebe8c7c32600b33875 2010110209:35:09-UTC ./tools/sql2/util/tdsutil/replacename.lex
 cf63672cb78e22744c907966a25d92343e71b72b 2010110209:34:13-UTC ./tutor/bignum/bignum.cpp
 a04cf39398e0fc558894d535f479d2035e7090f2 2010110110:27:07-UTC ./setup/setup-unix/errorgen.cpp
@@ -1901,8 +1901,6 @@ b81a7d0b0f6c3ff28df286c26f238877f82ee586 2007060812:49:29-UTC ./tools/sql2/util/
 038812be9aab1e9a22123ff9f2541b2fa29e3588 2007052211:40:40-UTC ./doc/boehmgc_vs_nativgc.txt
 4d74aff17c43260e551d3c0de7964a283d9f5fbe 2007052115:47:02-UTC ./jt/jtlib/jttoolbar.prg
 7d2ff534e8430cd984847c46bde00bc5ec088c82 2007051410:33:23-UTC ./usr/options/boehm_gc.hu.txt
-9b00fcc956386dff6b0554a5644d7be0e48aabd1 2007051210:00:08-UTC ./ccclib/src/variable_boehm1.inc
-85ab3ca8bbe049575699af774d601c6b790ee8bc 2007051014:46:57-UTC ./ccclib/src/variable_boehm0.inc
 3dfe17ef57b12440372270ea024f89d3f742725a 2007050509:19:47-UTC ./tools/xmldom/demo/malloc_dbg/mdbg.b
 0f6bbf6336dfd7a19c83fe9d20a5fc50e2b30aa3 2007042508:02:52-UTC ./usr/include/mutex_dbg.h
 82e9ed6d95587d49f388a3606db5beeae59db033 2007042412:28:08-UTC ./tools/xmldom/demo/malloc_dbg/m

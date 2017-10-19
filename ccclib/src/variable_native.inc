@@ -72,7 +72,7 @@ static VREF *vref;
 
 static volatile int garbage_collection_is_running=0;
 
-static void vartab_mark(void*);
+static void vartab_mark(VALUE*);
 static void vartab_sweep();
 
 
@@ -396,7 +396,13 @@ void vartab_rebuild(void)
             oref[n].next=NEXT_UNKNOWN;
             if( OLD_OREF(n) )
             {
-                vartab_mark(oref+n);
+                OREF *o=oref+n;
+                o->next=NEXT_RESERVED;
+                o->age++;
+                if( o->length>0 )
+                {
+                    mark_push(o);
+                }
             }
         }
     }
@@ -406,7 +412,7 @@ void vartab_rebuild(void)
 
     for( sp=ststackbuf; sp<ststack; sp++)
     {
-        vartab_mark(sp->data.pointer);
+        vartab_mark(sp);
     }
 
 #ifdef MULTITHREAD
@@ -419,7 +425,7 @@ void vartab_rebuild(void)
     {
         for( sp=td->_stackbuf; sp<td->_stack; sp++)
         {
-            vartab_mark(sp->data.pointer);
+            vartab_mark(sp);
         }
         td=td->next;
     }
@@ -427,7 +433,7 @@ void vartab_rebuild(void)
     //local változók stack-je
     for( sp=stackbuf; sp<stack; sp++)
     {
-        vartab_mark(sp->data.pointer);
+        vartab_mark(sp);
     }
 #endif
 
@@ -437,7 +443,7 @@ void vartab_rebuild(void)
         VALUE *v=marked_oref->ptr.valptr;
         for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
         {
-            vartab_mark(v->data.pointer); //push
+            vartab_mark(v); //push
         }
     }
 
@@ -477,19 +483,29 @@ void vartab_rebuild(void)
 }
 
 //---------------------------------------------------------------------------
-static void vartab_mark(void *ptr)
+static void vartab_mark(VALUE *valueptr)
 {
-    int oidx=(OREF*)ptr-oref;
-    if( 0<=oidx && oidx<OREF_SIZE ) //valid oref
+    int type=valueptr->type;
+    void *ptr=valueptr->data.pointer;
+
+    if( type<TYPE_GARBAGE )
     {
-        OREF *o=oref+oidx;
-        if( o->next==NEXT_UNKNOWN )
+        //kihagy
+    }
+    else if( type<TYPE_REF )
+    {
+        int oidx=(OREF*)ptr-oref;
+        if( 0<=oidx && oidx<OREF_SIZE ) //valid oref
         {
-            o->next=NEXT_RESERVED;
-            o->age++;
-            if( o->length>0 )
+            OREF *o=oref+oidx;
+            if( o->next==NEXT_UNKNOWN )
             {
-                mark_push(o);
+                o->next=NEXT_RESERVED;
+                o->age++;
+                if( o->length>0 )
+                {
+                    mark_push(o);
+                }
             }
         }
     }
@@ -502,7 +518,7 @@ static void vartab_mark(void *ptr)
             if( r->next==NEXT_UNKNOWN )
             {
                 r->next=NEXT_RESERVED;
-                vartab_mark(r->value.data.pointer);
+                vartab_mark(&(r->value));
             }
         }
     }

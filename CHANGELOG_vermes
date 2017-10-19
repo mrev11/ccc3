@@ -1,3 +1,8 @@
+2017.10.18 szemetgyujtes valtozott:
+  vartab_mark-ba visszarakva a tipusvizsgalat;
+  variable_native.inc-ben modositasok;
+  a tobbi (nem hasznalt) variable_*.inc-ben torolve;
+
 2017.10.15 sslforw berakva a terminal directoryba;
 
 2017.10.05 Linuxon lokalis terminal UNIX sockettel;

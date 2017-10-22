@@ -1,3 +1,9 @@
+2017.10.22 szemetgyujtes valtozott:
+  a) vartab_mark tipusvizsgalattal (teszt);
+  b) vartab_mark tipusvizsgalat nelkul (eles);
+  a PUSHNIL makro nullazza a NIL-ekben levo pointert
+  (hogy kevesebb feleslegesen megorzott objektum maradjon);
+
 2017.10.19 szemetgyujtes valtozott:
   variable_native.inc -> variable,cpp
   (helyettesiti  a korabbi variable.cpp-t);

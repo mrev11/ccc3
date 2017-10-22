@@ -488,6 +488,7 @@ static void vartab_mark(VALUE *valueptr)
     int type=valueptr->type;
     void *ptr=valueptr->data.pointer;
 
+#ifdef USE_TYPE_INFO //not defined
     if( type<TYPE_GARBAGE )
     {
         //kihagy
@@ -522,6 +523,45 @@ static void vartab_mark(VALUE *valueptr)
             }
         }
     }
+#else
+        // Szalbiztonsag:
+        // Ez a stabilabbnak gondolt valtozat.
+        // A szemetgyujtes igy nem fugg attol,
+        // hogy milyen sorrendben allitjak be
+        // v->type-ot es v->data.pointer-t.
+        // Amig egy pointer beallitasa atomi,
+        // a tipus es a pointer beallitasa nem atomi.
+        // A NIL-ekben levo inicializalatlan pointer
+        // feleslegesen megorzott objektumokat okoz,
+        // ezert celszeru a NIL-eket nullazni.
+
+        int oidx=(OREF*)ptr-oref;
+        if( 0<=oidx && oidx<OREF_SIZE ) //valid oref
+        {
+            OREF *o=oref+oidx;
+            if( o->next==NEXT_UNKNOWN )
+            {
+                o->next=NEXT_RESERVED;
+                o->age++;
+                if( o->length>0 )
+                {
+                    mark_push(o);
+                }
+            }
+            return;
+        }
+        int vidx=(VREF*)ptr-vref;
+        if( 0<=vidx && vidx<VREF_SIZE ) //valid vref
+        {
+            VREF *r=vref+vidx;
+            if( r->next==NEXT_UNKNOWN )
+            {
+                r->next=NEXT_RESERVED;
+                vartab_mark(&(r->value));
+            }
+            return;
+        }
+#endif
 }
 
 //---------------------------------------------------------------------------

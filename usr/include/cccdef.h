@@ -116,7 +116,7 @@ unsigned const int STSTACK_SIZE=2048;
 extern VALUE *ststack;
 extern VALUE ststackbuf[];
  
-#define PUSHNIL()  (stack->type=TYPE_NIL,stack++)
+#define PUSHNIL()  (stack->type=TYPE_NIL,stack->data.pointer=0,stack++)
 #define PUSHFLG()  (stack->type=TYPE_FLAG,stack++)
 #define PUSHDAT()  (stack->type=TYPE_DATE,stack++)
 #define PUSHPTR()  (stack->type=TYPE_POINTER,stack++)

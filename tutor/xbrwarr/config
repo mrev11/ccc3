@@ -1,4 +1,11 @@
 
+#BRWCOLOR0=r/w
 #BRWCOLOR0=w/n,w/gb,w/gb,n/w
 BRWCOLOR0=w/112,,w+/022,w+/012
 
+
+# szinek:
+# 1 - a browse alapszine
+# 2 - a popup menuk alapszine               (default: 1 inverze)
+# 3 - a browse kiemelt soranak szine        (default: 1 inverze)
+# 4 - a popup menuk kiemelt soranak szine   (default: 1)

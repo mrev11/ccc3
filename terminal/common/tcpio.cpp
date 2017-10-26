@@ -432,7 +432,12 @@ static char *localname(int fp, char *fname, int *additive)
         fname=env_printer_prn;
         //*additive=1;
     }
-    
+
+    extern const char* unique_id();    
+    static char uniquename[1024];
+    sprintf(uniquename,"%s-%s",fname,unique_id());
+    return uniquename;
+
     return fname; //ezen a néven kell megnyitni, vagy 0, ha nincs átirányítás
 }    
 

@@ -1,3 +1,11 @@
+2017.10.28 modositasok a terminalban:
+  CCC_REMOTEOPEN=y helyett megadhato CCCTERM_REMOTEOPEN=y is;
+  CCCTERM_REDIR_USEUID=y bekapcsolja a neveket egyedive tevo toldalekot;
+  A CCCTERM_REDIR_* valtozoknak csak az elso betujet nezi;
+  TERMCMD_TERMINATE: uj terminal opcode,  erre a terminal kilep;
+  TERMCMD_OPEN: az atiranyitott fajlnevekben dirsep-et '_'-re csereli;
+  a terminal lockolja az atiranyitott fajlok 0-dik bajtjat;
+
 2017.10.26 modositas a terminalban:
   egyedi toldalekot ad az atiranyitott fajlok nevehez; 
 

@@ -32,5 +32,6 @@
 #define TERMCMD_SETCAPTION      0x409
 #define TERMCMD_GETWSIZE        0x40a
 #define TERMCMD_SETWSIZE        0x40b
+#define TERMCMD_TERMINATE       0x4ff
 
 #endif

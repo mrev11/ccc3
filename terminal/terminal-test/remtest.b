@@ -13,6 +13,7 @@ export CCCTERM_REDIR_CONSOLE=n
 export CCCTERM_REDIR_PRINTER=y
 export CCCTERM_REDIR_ALTERNATE=y
 export CCCTERM_REDIR_EXTRA=n
+export CCCTERM_REDIR_USEUID=n
 
 export CCCTERM_CAPTURE_PRN=remio-printer.bak
 export CCCTERM_CAPTURE_LPT1=remio-printer.bak

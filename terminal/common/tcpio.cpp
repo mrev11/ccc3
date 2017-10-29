@@ -145,6 +145,7 @@ static void cmd()
 {
     static int cnt=0;
     printf("\n%4d cmd: %4x %4d ", ++cnt, CMDCODE.get(), DATALEN.get() );
+    fflush(0);
 }
 
 //--------------------------------------------------------------------------
@@ -210,6 +211,11 @@ void *tcpio_thread(void*arg)
         if( !xrecv(sck,iobuffer,header_size) )
         {
             exit(0);
+        }
+
+        if( CMDCODE.get()==TERMCMD_TERMINATE )
+        {
+            error("terminate request");
         }
 
         if( CMDCODE.get()==3 && DATALEN.get()==8 )
@@ -340,6 +346,11 @@ void *tcpio_thread(void*arg)
                                 fclose(qout[fp]);
                             }
                             qout[fp]=fopen(locnam,additive?"ab":"wb");
+                            if(qout[fp])
+                            {
+                                extern int fsetlock(int,int,int);
+                                fsetlock(fileno(qout[fp]),0,1);
+                            }
                         }
                         result=qout[fp] ? 1:0;
                     }
@@ -362,6 +373,8 @@ void *tcpio_thread(void*arg)
                     else
                     {
                         fclose(qout[fp]);
+                        extern int funlock(int,int,int);
+                        funlock(fileno(qout[fp]),0,1);
                     }
                     qout[fp]=NULL;
                 }
@@ -389,6 +402,19 @@ void *tcpio_thread(void*arg)
 
 
 //-------------------------------------------------------------------------
+static void replace_char(char *p, int c1, int c2)
+{
+    while( *p )
+    {
+        if( *p==c1 )
+        {
+            *p=c2;
+        }
+        p++;
+    }
+}
+
+//-------------------------------------------------------------------------
 static char *localname(int fp, char *fname, int *additive)
 {
     static char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
@@ -396,49 +422,53 @@ static char *localname(int fp, char *fname, int *additive)
     static char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
     static char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
     static char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
+    static char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
                                                                              
     static char *env_printer_prn  = getenv("CCCTERM_CAPTURE_PRN");        
     static char *env_printer_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
     static char *env_printer_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
     static char *env_printer_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
     
+    //printf("env_console[%s]\n",env_console);fflush(0);
+    //printf("env_printer[%s]\n",env_printer);fflush(0);
+    //printf("env_alternate[%s]\n",env_alternate);fflush(0);
+    //printf("env_extra[%s]\n",env_extra);fflush(0);
+    //printf("env_error[%s]\n",env_error);fflush(0);
+    //printf("env_useuid[%s]\n",env_useuid);fflush(0);
 
-         if( fp==FP_CONSOLE   && env_console   && !strcmp(env_console    ,"y") );
-    else if( fp==FP_PRINTER   && env_printer   && !strcmp(env_printer    ,"y") );
-    else if( fp==FP_ALTERNATE && env_alternate && !strcmp(env_alternate  ,"y") );
-    else if( fp==FP_EXTRA     && env_extra     && !strcmp(env_extra      ,"y") );
+         if( fp==FP_CONSOLE   && env_console   && env_console[0]   == 'y' );
+    else if( fp==FP_PRINTER   && env_printer   && env_printer[0]   == 'y' );
+    else if( fp==FP_ALTERNATE && env_alternate && env_alternate[0] == 'y' );
+    else if( fp==FP_EXTRA     && env_extra     && env_extra[0]     == 'y' );
     else
     {
         return 0; //nincs átirányítás
     }
-   
-    if( (!strcasecmp(fname,"LPT1")) && env_printer_lpt1 )
+    
+    static char locnam[1024];
+         if( !strcasecmp(fname,"LPT1") ) strcpy(locnam, env_printer_lpt1 ? env_printer_lpt1:"printer1");
+    else if( !strcasecmp(fname,"LPT2") ) strcpy(locnam, env_printer_lpt2 ? env_printer_lpt2:"printer2");
+    else if( !strcasecmp(fname,"LPT3") ) strcpy(locnam, env_printer_lpt3 ? env_printer_lpt3:"printer3");
+    else if( !strcasecmp(fname,"PRN" ) ) strcpy(locnam, env_printer_prn  ? env_printer_prn :"printer");
+    else                                 strcpy(locnam, fname);
+
+    // az additive flag hasznalata felvetodott, de megse kell
+    // az LPT neveket nem jo meghagyni, mert a windows  nem tudja megnyitni
+
+    if( env_useuid && env_useuid[0]=='y' )
     {
-        fname=env_printer_lpt1;
-        //*additive=1; //felvetődött, de mégsem
-    }
-    else if( (!strcasecmp(fname,"LPT2")) && env_printer_lpt2 )
-    {
-        fname=env_printer_lpt2;
-        //*additive=1;
-    }
-    else if( (!strcasecmp(fname,"LPT3")) && env_printer_lpt3 )
-    {
-        fname=env_printer_lpt3;
-        //*additive=1;
-    }
-    else if( (!strcasecmp(fname,"PRN")) && env_printer_prn )
-    {
-        fname=env_printer_prn;
-        //*additive=1;
+        extern const char* unique_id();    
+        static char uniquename[1024];
+        sprintf(uniquename,"%s-%s",locnam,unique_id());
+        strcpy(locnam,uniquename);
     }
 
-    extern const char* unique_id();    
-    static char uniquename[1024];
-    sprintf(uniquename,"%s-%s",fname,unique_id());
-    return uniquename;
+    replace_char(locnam,'/','_');
+    replace_char(locnam,'\\','_');
 
-    return fname; //ezen a néven kell megnyitni, vagy 0, ha nincs átirányítás
+    printf("REDIR %d: %s -> %s\n",fp,fname,locnam);fflush(0);
+
+    return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    
 
 //-------------------------------------------------------------------------

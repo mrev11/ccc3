@@ -51,6 +51,13 @@ static int isdosprinter(char *str)
 int remopen(int fp, char *fname, int additive)
 {
     static const char *redir=getenv("CCC_REMOTEOPEN"); //allow, printer
+    static const char *redir2=getenv("CCCTERM_REMOTEOPEN"); //allow, printer
+    
+    if( redir2 )
+    {
+        redir=redir2;
+    }
+    
 
     if( redir==0 )
     {

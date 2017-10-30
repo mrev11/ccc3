@@ -1,9 +1,11 @@
+344015c5510ea99a3a46644a2f48dab86ddb817d 2017103006:17:29-UTC ./CHANGELOG_vermes
+325937f2c329bbf2112e5d5bb76a922ec324d9a2 2017103006:10:37-UTC ./usr/bin/linux/terminal-gtk
+2341356765c2485678cafd640e78519a1a9cbb7f 2017103006:10:35-UTC ./terminal/gtk3/terminal-gtk.cpp
+2c9ae0de7f24f5133485a96c92fdc8874ad7c6ea 2017103006:10:14-UTC ./terminal/gtk/terminal-gtk.cpp
 fd5361632394d6d758f6910dece390f41fc7cc6d 2017102910:00:43-UTC ./terminal/common/tcpio.cpp
 b5e994e2fb739b6da02d5ab0510290c5f27c3e8e 2017102909:53:20-UTC ./usr/bin/linux/ncterm
 995dfdc9f4d7c7788e1f0087255dde791c7cac9e 2017102909:53:20-UTC ./usr/bin/linux/terminal
-65639018d29a0138cca8de8dec0680e68b397593 2017102909:53:20-UTC ./usr/bin/linux/terminal-gtk
 215ceeb7be2754efe49b48bf7195a70870185e60 2017102909:53:20-UTC ./usr/bin/linux/terminal-xft
-d67238dbe127842277847051e7f979bbfa1f2bcc 2017102908:21:25-UTC ./CHANGELOG_vermes
 6eed4a87b566dbb78c82a50e297bccde0ab016ec 2017102815:52:04-UTC ./usr/bin/linux/sslforw-serv
 f9c4ab37b78d76a0ed0417a24337bce6c0fbc9b7 2017102815:52:04-UTC ./usr/bin/linux/sslforw-term
 fb4a767ae4c4bcea266bf8ce491875fa3006290a 2017102815:52:04-UTC ./usr/bin/linux/sslforward
@@ -140,7 +142,6 @@ bf1fd89cee6f32003d2c5a133dca2868a0c3cbf8 2017081013:35:24-UTC ./tools/webapp/pro
 d8434c066b71fc4b36f1f58bb2f2889a39bba218 2017080212:45:33-UTC ./terminal/gtk3/m
 bc322fffe3b1c527600e8815851d271928bab40c 2017080212:16:29-UTC ./terminal/gtk/m.bat
 05723cc2f5285b1428c6177a9c504b154061b42c 2017080212:12:51-UTC ./terminal/gtk3/m.bat
-a601757a92493e89fa3ba8a64548d858f6c8d565 2017080210:18:28-UTC ./terminal/gtk3/terminal-gtk.cpp
 34b7320bcfcd6770c45e3444c01796f71f0b0cd0 2017080209:23:15-UTC ./terminal/gtk3/keycode_gtk.cpp
 7d132e459e82157cd8533396aa9000a1886bbe30 2017072511:29:08-UTC ./ccclib/src/uic/inkey.cpp
 0d7859fa56cb17b8e9b844c1c94b07ff43ee9683 2017072510:58:48-UTC ./usr/include/std1.ch
@@ -195,7 +196,6 @@ c1bc5f5d3e816e89d5b2a57369575de38040cab8 2017051407:40:49-UTC ./tools/z/ver3/zre
 072eef791d81481bc8587e38e3ac93c6a9c2992c 2017051407:40:32-UTC ./tools/mask/maskdemo.say
 8264de53d44a97041082f1660ef576316ada8667 2017051407:38:38-UTC ./ccclib/src/color.cpp
 b42a24ac696712b953229a7e30f3233c6e16117f 2017051407:34:26-UTC ./terminal/unix-ncurses/ncterm.cpp
-b6d184334ff9dcd6587692d993b04f91126c426f 2017051407:25:20-UTC ./terminal/gtk/terminal-gtk.cpp
 43db27b4d108a2f308e2c1f43e0c6080bcad2777 2017051218:48:02-UTC ./ccclib/src/uic/savescreen.cpp
 87dff074b0c9d728b9107eb6e687bc7fa350c8df 2017051216:09:12-UTC ./ccclib/src/uic/screenbuf/screenbuf.cpp
 b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/driver-mysql/OLVASS

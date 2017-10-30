@@ -541,10 +541,47 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
     }
     else if( length==0 )
     {
+//#ifdef WINDOWS //őŐűŰ
+        char *name=gdk_keyval_name(keyval);
+             if( !strcmp(name,"odoubleacute" ) ) code=337;
+        else if( !strcmp(name,"udoubleacute" ) ) code=369;
+        else if( !strcmp(name,"Odoubleacute" ) ) code=336;
+        else if( !strcmp(name,"Udoubleacute" ) ) code=368;
+        else
+//#endif
         code=keycode_gtk(keyval,state);
     }
     else if( asc>=128 )
     {
+//#ifdef WINDOWS //áÁéÉíÍóÓöÖúÚüÜ
+        // Az event->string-nek a karakternek megfelelo  
+        // UTF-8 stringet kellene tartalmaznia.
+        // Linuxon ez igy is van, Windowson azonban az
+        // event->string-ben a Latin2 kodolasu karakter van.
+        // Azt hiszem, valami kornyezeti valtozo alapjan dont 
+        // a GTK, hogy milyen kodolasu legyen a string,
+        // pl. Linuxon is el lehet rontani, ha a LANG-ot
+        // valami UTF-8-tol kulonbozore allitom.
+        // Nem jovok ra, hogy windowson mit kell beallitani.
+        // Ideiglenes megoldas: legalabb a magyar legyen jo.
+        
+        char *name=gdk_keyval_name(keyval);
+             if( !strcmp(name,"aacute"       ) ) code=225;
+        else if( !strcmp(name,"eacute"       ) ) code=233;
+        else if( !strcmp(name,"iacute"       ) ) code=237;
+        else if( !strcmp(name,"oacute"       ) ) code=243;
+        else if( !strcmp(name,"uacute"       ) ) code=250;
+        else if( !strcmp(name,"odiaeresis"   ) ) code=246;
+        else if( !strcmp(name,"udiaeresis"   ) ) code=252;
+        else if( !strcmp(name,"Aacute"       ) ) code=193;
+        else if( !strcmp(name,"Eacute"       ) ) code=201;
+        else if( !strcmp(name,"Iacute"       ) ) code=205;
+        else if( !strcmp(name,"Oacute"       ) ) code=211;
+        else if( !strcmp(name,"Uacute"       ) ) code=218;
+        else if( !strcmp(name,"Odiaeresis"   ) ) code=214;
+        else if( !strcmp(name,"Udiaeresis"   ) ) code=220;
+        else
+//#endif  
         utf8_to_ucs(string,&code);
     }
     else if( (state&4) && 'a'<=asc  && asc<='z' )

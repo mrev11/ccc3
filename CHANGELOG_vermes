@@ -1,3 +1,15 @@
+2017.10.30 gtk terminalok javitgatasa:
+  Az event->string-nek a karakternek megfelelo  
+  UTF-8 stringet kellene tartalmaznia.
+  Linuxon ez igy is van, Windowson azonban az
+  event->string-ben a Latin2 kodolasu karakter van.
+  Azt hiszem, valami kornyezeti valtozo alapjan dont 
+  a GTK, hogy milyen kodolasu legyen a string,
+  pl. Linuxon is el lehet rontani, ha a LANG-ot
+  valami UTF-8-tol kulonbozore allitom.
+  Nem jovok ra, hogy windowson mit kell beallitani.
+  Ideiglenes megoldas: legalabb a magyar legyen jo.
+
 2017.10.28 modositasok a terminalban:
   CCC_REMOTEOPEN=y helyett megadhato CCCTERM_REMOTEOPEN=y is;
   CCCTERM_REDIR_USEUID=y bekapcsolja a neveket egyedive tevo toldalekot;

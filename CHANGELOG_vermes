@@ -1,3 +1,6 @@
+2017.10.30 gtk terminalok javitgatasa
+  A kulonbozo windowsok maskepp rosszak;
+
 2017.10.30 gtk terminalok javitgatasa:
   Az event->string-nek a karakternek megfelelo  
   UTF-8 stringet kellene tartalmaznia.

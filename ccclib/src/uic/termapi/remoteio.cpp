@@ -67,12 +67,12 @@ int remopen(int fp, char *fname, int additive)
     else if( !strcmp(redir,"allow") )
     {
         //fprintf(stderr," allow(%s) ",fname);
-        //emabled
+        //enabled
     }
     else if( !strcmp(redir,"printer")  && isdosprinter(fname) )
     {
         //fprintf(stderr," printer(%s) ",fname);
-        //emabled
+        //enabled
     }
     else
     {

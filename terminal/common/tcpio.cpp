@@ -445,12 +445,22 @@ static char *localname(int fp, char *fname, int *additive)
         return 0; //nincs átirányítás
     }
     
+
     static char locnam[1024];
-         if( !strcasecmp(fname,"LPT1") ) strcpy(locnam, env_printer_lpt1 ? env_printer_lpt1:"printer1");
-    else if( !strcasecmp(fname,"LPT2") ) strcpy(locnam, env_printer_lpt2 ? env_printer_lpt2:"printer2");
-    else if( !strcasecmp(fname,"LPT3") ) strcpy(locnam, env_printer_lpt3 ? env_printer_lpt3:"printer3");
-    else if( !strcasecmp(fname,"PRN" ) ) strcpy(locnam, env_printer_prn  ? env_printer_prn :"printer");
-    else                                 strcpy(locnam, fname);
+           char basnam[1024];
+    strcpy(locnam,fname);
+    strcpy(basnam,fname);
+
+    replace_char(locnam,'\\','/');
+    if( strrchr(locnam,'/') ) strcpy(basnam,strrchr(locnam,'/')+1);
+    if( strrchr(basnam,'.') ) *(strrchr(basnam,'.'))=0;
+    if( strrchr(basnam,':') ) *(strrchr(basnam,':'))=0;
+    replace_char(locnam,'/','_');
+    
+         if( !strcasecmp(basnam,"LPT1") ) strcpy(locnam, env_printer_lpt1 ? env_printer_lpt1:"printer1");
+    else if( !strcasecmp(basnam,"LPT2") ) strcpy(locnam, env_printer_lpt2 ? env_printer_lpt2:"printer2");
+    else if( !strcasecmp(basnam,"LPT3") ) strcpy(locnam, env_printer_lpt3 ? env_printer_lpt3:"printer3");
+    else if( !strcasecmp(basnam,"PRN" ) ) strcpy(locnam, env_printer_prn  ? env_printer_prn :"printer");
 
     // az additive flag hasznalata felvetodott, de megse kell
     // az LPT neveket nem jo meghagyni, mert a windows  nem tudja megnyitni
@@ -463,10 +473,8 @@ static char *localname(int fp, char *fname, int *additive)
         strcpy(locnam,uniquename);
     }
 
-    replace_char(locnam,'/','_');
-    replace_char(locnam,'\\','_');
 
-    printf("REDIR %d: %s -> %s\n",fp,fname,locnam);fflush(0);
+    printf("\nREDIR %d: %s -> %s",fp,fname,locnam);fflush(0);
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    

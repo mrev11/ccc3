@@ -63,6 +63,10 @@ gccver.opt
 *.out
 *.say
 
+*.cls
+*.och
+objgen.ch
+
 commit-message
 
 

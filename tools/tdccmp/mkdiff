@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# a datadict-ben levo osszes tdc
+# es egy kontodat-ban levo adatfajok
+# strukturaja kozott elteres
+
+
+DATADICT=~/konto/devel/datadict
+KONTODAT=~/konto/data/cetelem
+
+tdccmp.exe  $DATADICT  $KONTODAT | grep -v Missing | tee log-tdccmp
+#tdccmp.exe $DATADICT  $KONTODAT | grep    Missing | tee log-tdccmp-missing

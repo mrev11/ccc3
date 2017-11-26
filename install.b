@@ -124,6 +124,7 @@ pushd tools/savex; m; popd
 pushd tools/setperm; m; popd
 pushd tools/socket; m; popd
 pushd tools/tdc2prgch; m; popd
+pushd tools/tdccmp; m; popd
 pushd tools/tran2cpp; m; popd  #string translation libraries
 pushd tools/websrv; m; popd
 pushd tools/xmldom; m; popd

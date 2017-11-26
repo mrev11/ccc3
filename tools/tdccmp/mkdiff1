@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# egyetlen tdc
+# es a hozza tartozo adatfajl
+# strukturajanak elterese
+
+
+DATADICT=~/konto/devel/datadict
+KONTODAT=~/konto/data/cetelem
+
+TDCSPEC=$DATADICT/_user.tdc
+BTSPEC=$KONTODAT/user.bt
+
+tdccmp.exe  $TDCSPEC  $BTSPEC
+
+

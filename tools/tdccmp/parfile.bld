@@ -1,0 +1,4 @@
+-d.
+-i$(CCCDIR)/tabobj/tbbtbtx
+-bccc$(CCCVER)_btbtx
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

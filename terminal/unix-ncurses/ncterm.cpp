@@ -145,7 +145,12 @@ static void paint(int top, int lef, int bot, int rig)
                 at=(ath<<4)|atl;
             }
             attron(coltrans[255&at]);
-            waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
+            //waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
+            char buf[10];
+            extern int ucs_to_utf8(int ucs, char*utf8);
+            int len=ucs_to_utf8(ch,buf);
+            waddnstr(stdscr,buf,len);
+            
             attroff(coltrans[255&at]);
         }
     }

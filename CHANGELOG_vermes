@@ -1,3 +1,7 @@
+2017.12.02 javitasok az androidhoz:
+  alapkonyvtar signal.cpp: sigset helyett sigaction (sigset obsolete);
+  curses terminal: waddnwstr helyett konverzio + waddnstr (waddnwstr hianyzik);
+
 2017.11.26 tdccmp: utility bt struktutak ellenorzesere;
 
 2017.11.06 terminal: LPT eszkoznevek transzformalva; 

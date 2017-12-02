@@ -184,21 +184,35 @@ static void signal_handler(int signum)
 }
 
 //--------------------------------------------------------------------------
+static void xsigset(int signum, sighandler_t sighnd)
+{
+    //obsolete
+    //sigset(signum,sighnd); 
+    //return;
+
+    struct sigaction act;
+    memset(&act,0,sizeof(act));
+    act.sa_handler=sighnd;
+    sigaction(signum,&act,0);
+}
+
 void setup_signal_handlers()
 {
-    sigset(SIGHUP  ,signal_handler);
-    sigset(SIGINT  ,signal_handler);
-    sigset(SIGQUIT ,signal_handler);
-    sigset(SIGILL  ,signal_handler);
-    //sigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
-    sigset(SIGFPE  ,signal_handler);
-    sigset(SIGSEGV ,signal_handler);
-    sigset(SIGPIPE ,signal_handler);
-    sigset(SIGTERM ,signal_handler);
+    //sigset helyett sigaction
 
-    //sigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
-    //sigset(SIGTSTP ,SIG_IGN);
-    //sigset(SIGTSTP ,SIG_DFL);
+    xsigset(SIGHUP  ,signal_handler);
+    xsigset(SIGINT  ,signal_handler);
+    xsigset(SIGQUIT ,signal_handler);
+    xsigset(SIGILL  ,signal_handler);
+    //xsigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
+    xsigset(SIGFPE  ,signal_handler);
+    xsigset(SIGSEGV ,signal_handler);
+    xsigset(SIGPIPE ,signal_handler);
+    xsigset(SIGTERM ,signal_handler);
+
+    //xsigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
+    //xsigset(SIGTSTP ,SIG_IGN);
+    //xsigset(SIGTSTP ,SIG_DFL);
 }
 
 //--------------------------------------------------------------------------

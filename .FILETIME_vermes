@@ -1,4 +1,7 @@
-6e47222f573a9c7e39bad287b5f24d726637fa21 2017112612:03:35-UTC ./CHANGELOG_vermes
+65cefddb469ad8966552c40c784361f0555c8d23 2017120220:47:33-UTC ./CHANGELOG_vermes
+42e1f45aa739e15169d73f6475e015860f5eab1f 2017120220:40:46-UTC ./ccclib/src/unix/signals.cpp
+d30462184718d53d8895260fed83d3d1b48e73bf 2017120209:16:28-UTC ./usr/bin/linux/ncterm
+ecffbd01481b28da808c0ef0f7b66d68b19d7af1 2017120209:15:29-UTC ./terminal/unix-ncurses/ncterm.cpp
 d9934e8e02f3d57379ca0c88b25bdd37f488e7f3 2017112612:02:04-UTC ./install.b
 fce79f3c75233f8fb69392edd1c5d48dcc0fc62e 2017112612:00:09-UTC ./tools/tdccmp/parfile.bld
 d591640a695dd272f92db7bc082ad05ac110dd2b 2017112611:47:05-UTC ./tools/tdccmp/mkdiff1
@@ -22,7 +25,6 @@ f34fa790304035825f082284f08010fbc53cbbea 2017110812:06:31-UTC ./usr/bin/linux/td
 eafee3ad11f3aba2b77b0e8f2e90d89a723cddec 2017110812:06:30-UTC ./usr/bin/linux/bt2tds
 5da87e548e1f9f7a14832f07e8e450d9a6539880 2017110812:06:30-UTC ./usr/bin/linux/bt2ted
 2b56a0b391ba9c5a430f2bfb7e6b729d176fc4b2 2017110812:06:30-UTC ./usr/bin/linux/mkentitylib
-a0912df3eb884c60eca67cf83ca2d090cde38004 2017110608:23:29-UTC ./usr/bin/linux/ncterm
 d3e4a41baf54fe5503a39c5db512b18983ab1f90 2017110608:23:29-UTC ./usr/bin/linux/terminal
 a53933980dc6d4cdddbc226bd9256d9b2b66ce78 2017110608:23:29-UTC ./usr/bin/linux/terminal-gtk
 d7e58760a2b47438ace70d22f01d5e54694ccaf0 2017110608:23:29-UTC ./usr/bin/linux/terminal-xft
@@ -219,7 +221,6 @@ c1bc5f5d3e816e89d5b2a57369575de38040cab8 2017051407:40:49-UTC ./tools/z/ver3/zre
 14efac1675e86430fdac3f14356fbec87a8e01af 2017051407:40:37-UTC ./tabobj/utility.src/kdirseek.say
 072eef791d81481bc8587e38e3ac93c6a9c2992c 2017051407:40:32-UTC ./tools/mask/maskdemo.say
 8264de53d44a97041082f1660ef576316ada8667 2017051407:38:38-UTC ./ccclib/src/color.cpp
-b42a24ac696712b953229a7e30f3233c6e16117f 2017051407:34:26-UTC ./terminal/unix-ncurses/ncterm.cpp
 43db27b4d108a2f308e2c1f43e0c6080bcad2777 2017051218:48:02-UTC ./ccclib/src/uic/savescreen.cpp
 87dff074b0c9d728b9107eb6e687bc7fa350c8df 2017051216:09:12-UTC ./ccclib/src/uic/screenbuf/screenbuf.cpp
 b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/driver-mysql/OLVASS
@@ -422,7 +423,6 @@ c972a102998e0bf77d96d4f7d9ac5714f01e992e 2016091617:24:05-UTC ./tools/savex/skip
 5a2fb4fd7d6dcdbc9ccdcf5574ebe99de39b054a 2016091608:04:51-UTC ./tools/savex/rdir.prg
 b08e1abd5f94773e45e2391c563355bcd770577d 2016091608:04:29-UTC ./tools/savex/hash.prg
 1fd67393b7e6577bda865eeb2df8b8309a5c0d6c 2016091510:57:11-UTC ./terminal/unix-ncurses/Xdefaults
-caa8fe4436b8f3514ae0cfffbfdf413095b435ac 2016091510:50:14-UTC ./ccclib/src/unix/signals.cpp
 f31fe7d6f35001f5a6f0f616a115e466cfe8ab74 2016090909:21:00-UTC ./usr/include/signal.ch
 935dc97bcafdc14e973bb0e0fbe74538ec4b22aa 2016082610:02:41-UTC ./terminal/common/message.cpp
 98ae44dc3be93a4a9c80c00e67be18b3b8b49503 2016080208:20:09-UTC ./tools/z/zfindpar.prg

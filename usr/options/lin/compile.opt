@@ -17,3 +17,4 @@
 -Wall
 -Wno-unused
 -Wno-trigraphs
+-Wno-empty-body

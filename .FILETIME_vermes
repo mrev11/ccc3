@@ -1,4 +1,6 @@
-e41efda513c8eacc369801202ffc00c620c582dc 2017120508:09:26-UTC ./CHANGELOG_vermes
+6d9f7d849ad6495cbedeeb698dc6bc07113d5f68 2017120508:32:30-UTC ./CHANGELOG_vermes
+0a22c17948b185e8ec1b2935dfcb9028d08ab1fc 2017120508:30:40-UTC ./usr/options/lin/compile-with-debug.opt
+8112c0af1d2336476981471f9045aa19f595802d 2017120508:30:33-UTC ./usr/options/lin/compile-without-debug.opt
 965690042bd6e5e39383df07474e1e0c6d9f992a 2017120508:08:26-UTC ./usr/bin/linux/__unix.b
 d9b089a2c400eb38603225a56578718d67a7bb47 2017120508:03:35-UTC ./log-install
 bc2cadd5117c97c6a24f7e1c480b7c8beb46595f 2017120508:03:34-UTC ./usr/bin/linux/websrv
@@ -260,7 +262,6 @@ cd5db2d7080ba8736e320f87b753c9650bc8b6e2 2017032417:55:18-UTC ./ccctools/ppo2cpp
 a407adea5590f1a5012d73ff336a1687e1740175 2017032417:54:45-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 eef140eaa2dd939edb10e372a817c19e2784dc72 2017032417:54:24-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 3d504b121e6f23692d9f1a9f87b61a43f82605c2 2017032416:25:03-UTC ./tools/tdc2prgch/prg2tdc.prg
-ebce979e04ed7655b40afa47d94c07371a83e0cd 2017032408:59:32-UTC ./usr/options/lin/compile-with-debug.opt
 68ed85b7b09c562446095b07590fadc916a39dc1 2017032215:34:07-UTC ./tools/ddict2/progout.prg
 8c06ce6146d3ec3e3f63ee02ed7058ac32cc3a0f 2017032215:24:43-UTC ./tools/ddict2/ddict2.prg
 731616a301f5fe219a6b4da96a5b7cb89684a98e 2017032212:29:32-UTC ./tools/ddict2/dddel.prg
@@ -671,7 +672,6 @@ e56e2a618af7cc8751cd43d6eccced80cad0fb57 2016031414:17:17-UTC ./terminal/unix-nc
 f7d6cd82521e3508ecf4c9885562fb212e75641f 2016031413:22:35-UTC ./terminal/unix-ncurses/learnkey/testkey.cpp
 d4fd66b115292e9d2d6a00ccf6995c64f32bbb58 2016031007:54:37-UTC ./tools/socket/socket.cpp
 dee7a4c839de5c7d1d4564ca66c6dd2753f9fb4f 2016021915:12:30-UTC ./tools/sql2/util/tdsutil/dom2prg.prg
-be45ba07a81b588a0cdefdaef777dbd0dca27e6a 2016021711:28:21-UTC ./usr/options/lin/compile.opt
 80bddf6c6ef96fd120ed77ab17b66cd5edf99302 2016021017:26:40-UTC ./terminal/sslforw/ssl-test/OLVASS
 40f9869509ec47f056b1dfea6c2f94908d82c323 2016021015:45:17-UTC ./jt/sslforward/m
 7ddad010c723b1f988dcebafad42d5edb6e78aca 2015121416:46:19-UTC ./tools/websrv/websrv.ver

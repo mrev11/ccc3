@@ -1,4 +1,7 @@
 2017.12.05 javitasok az androidhoz:
+  Elnyomva a warning: -Wno-empty-body;
+
+2017.12.05 javitasok az androidhoz:
   A $PREFIX/lib helyen is keresi a konyvtarakat;
 
 2017.12.05 javitasok az androidhoz:

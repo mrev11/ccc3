@@ -65,7 +65,7 @@ static s_rules:={;
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.4.9"
+#define VERSION "1.4.10"
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -1118,7 +1118,11 @@ local f0,f1,f2,f3,pf1,pf2,pf3
         next
         
         if( i>len(dirlist) )
-            txt+=f0+" " //eredeti alak
+            if( f0[1..2]=="-l" )            
+                txt+=f0+" " //eredeti alak
+            else
+                txt+="-l"+f0+" "
+            end 
         end
     next
 

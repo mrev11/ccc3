@@ -1,3 +1,9 @@
+2017.12.05 javitasok az androidhoz:
+  Build a nem talalt libeket -l-lel balrol kiegeszitve irja be az rsplnk 
+  valaszfajlba, ezzel megadja az eselyt a linkernek a tovabbi keresesre. 
+  Korabban az eredeti alakot irta be, ami csak arra jo, hogy mutassa, 
+  mit nem talalt.
+
 2017.12.02 javitasok az androidhoz:
   alapkonyvtar signal.cpp: sigset helyett sigaction (sigset obsolete);
   curses terminal: waddnwstr helyett konverzio + waddnstr (waddnwstr hianyzik);

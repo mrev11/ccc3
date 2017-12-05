@@ -1,8 +1,18 @@
-65cefddb469ad8966552c40c784361f0555c8d23 2017120220:47:33-UTC ./CHANGELOG_vermes
+d9b089a2c400eb38603225a56578718d67a7bb47 2017120508:03:35-UTC ./log-install
+bc2cadd5117c97c6a24f7e1c480b7c8beb46595f 2017120508:03:34-UTC ./usr/bin/linux/websrv
+4801fa8c8edadb2bcf4435cd25fa88ee1d520bea 2017120508:03:34-UTC ./usr/bin/linux/xstart
+c9eb61c41c4ea6590ee5174cfea76fca4a56ccf0 2017120508:03:31-UTC ./usr/bin/linux/terminal-gtk
+0deae02606e747ad7e3131dc1c6837285a46a055 2017120508:03:30-UTC ./usr/bin/linux/prg2ppo
+517a3ee985de2a0631c42ea7574f00175ed0db57 2017120508:03:30-UTC ./usr/bin/linux/removecr
+e1b2a4c712b90072392cd833965f8071e67f80ae 2017120508:03:18-UTC ./CHANGELOG_vermes
+ee975f02fce1417ee6d7246d96f018375ec365d6 2017120507:56:27-UTC ./usr/bin/linux/build
+11257e992097139aa23693fdc6ce113b3d97765d 2017120507:56:07-UTC ./ccctools/buildp/build.prg
+4897cedfc9140d18f50fd09e3311b9193af25a46 2017120507:55:38-UTC ./ccctools/buildp/build.hu.ver
 42e1f45aa739e15169d73f6475e015860f5eab1f 2017120220:40:46-UTC ./ccclib/src/unix/signals.cpp
 d30462184718d53d8895260fed83d3d1b48e73bf 2017120209:16:28-UTC ./usr/bin/linux/ncterm
 ecffbd01481b28da808c0ef0f7b66d68b19d7af1 2017120209:15:29-UTC ./terminal/unix-ncurses/ncterm.cpp
 d9934e8e02f3d57379ca0c88b25bdd37f488e7f3 2017112612:02:04-UTC ./install.b
+b5529cd0fd084636230aae4e1c19279b91c7c379 2017112612:00:17-UTC ./usr/bin/linux/tdccmp
 fce79f3c75233f8fb69392edd1c5d48dcc0fc62e 2017112612:00:09-UTC ./tools/tdccmp/parfile.bld
 d591640a695dd272f92db7bc082ad05ac110dd2b 2017112611:47:05-UTC ./tools/tdccmp/mkdiff1
 e5c33891d88a6fc03d6633c64fe05082288b1c84 2017112611:42:07-UTC ./tools/tdccmp/mkdiff
@@ -26,7 +36,6 @@ eafee3ad11f3aba2b77b0e8f2e90d89a723cddec 2017110812:06:30-UTC ./usr/bin/linux/bt
 5da87e548e1f9f7a14832f07e8e450d9a6539880 2017110812:06:30-UTC ./usr/bin/linux/bt2ted
 2b56a0b391ba9c5a430f2bfb7e6b729d176fc4b2 2017110812:06:30-UTC ./usr/bin/linux/mkentitylib
 d3e4a41baf54fe5503a39c5db512b18983ab1f90 2017110608:23:29-UTC ./usr/bin/linux/terminal
-a53933980dc6d4cdddbc226bd9256d9b2b66ce78 2017110608:23:29-UTC ./usr/bin/linux/terminal-gtk
 d7e58760a2b47438ace70d22f01d5e54694ccaf0 2017110608:23:29-UTC ./usr/bin/linux/terminal-xft
 7336154b0a55e761475536deaec289d3a14ac32d 2017110608:23:26-UTC ./terminal/common/tcpio.cpp
 ae03c0aab6a90c38e93c9d4c920016110d37c952 2017110607:55:34-UTC ./ccclib/src/uic/termapi/remoteio.cpp
@@ -37,7 +46,6 @@ c34b30783f4bfd3b7190546ea37a11a557090d1b 2017103010:48:38-UTC ./terminal/gtk3/te
 6eed4a87b566dbb78c82a50e297bccde0ab016ec 2017102815:52:04-UTC ./usr/bin/linux/sslforw-serv
 f9c4ab37b78d76a0ed0417a24337bce6c0fbc9b7 2017102815:52:04-UTC ./usr/bin/linux/sslforw-term
 fb4a767ae4c4bcea266bf8ce491875fa3006290a 2017102815:52:04-UTC ./usr/bin/linux/sslforward
-98652fe1f825d863d06aaabd17d5045b7051fba1 2017102814:21:13-UTC ./log-install
 27566a9fed3cba96b21653761f4f9b5fc8fb8014 2017102814:21:11-UTC ./usr/bin/linux/list
 525ceb3332c58fa3eb820e788ddb37d608ed4fe6 2017102814:09:39-UTC ./terminal/m
 be3db46edfd796a5d057ea4b5621d76fad2ebeed 2017102813:52:21-UTC ./terminal/terminal-test/remtest.b
@@ -66,8 +74,6 @@ e3310ac58c06514c93422195c855f4fc1c16426c 2017102208:10:31-UTC ./usr/bin/linux/lo
 2da8e7880d887aa8de66eb6fa015e612f273d2ad 2017102208:10:27-UTC ./usr/bin/linux/zg
 ea138d2559afd7e9cb1ac7cdda09aab2b8a1a2ef 2017102208:10:27-UTC ./usr/bin/linux/zgrep
 357200f3b2e39a717b3f9cbfb5433bce110c6939 2017102208:10:27-UTC ./usr/bin/linux/zhist
-14cef6164491ddb373978d34059f7ab1285bda6e 2017102208:10:25-UTC ./usr/bin/linux/xstart
-a500a27d85cc88fceb5cc9ac4550ef0b968eb2fc 2017102208:10:23-UTC ./usr/bin/linux/websrv
 ae58c86ad3e0bd6f5882be3e3e2b0d28b912c229 2017102208:10:22-UTC ./usr/bin/linux/prg2tdc
 d6a87c8e5c3dc2298403241de5c6fbb759951dd1 2017102208:10:22-UTC ./usr/bin/linux/tabsuper
 71a75812e2e46d0c002e9050d50e8e59cabb2f63 2017102208:10:22-UTC ./usr/bin/linux/tdc2prgch
@@ -87,9 +93,6 @@ f8af0453f251ed9003508fbfc00c95c21d40d9ac 2017102208:10:10-UTC ./usr/bin/linux/pg
 b3078747f09d447851f12a4ff8a3fb079e0f4234 2017102208:10:09-UTC ./usr/bin/linux/page
 4adeae98b782bf3ac9efc85d7d0cc40c3f308b65 2017102208:10:08-UTC ./usr/bin/linux/msk2say
 77d49112cdddad740f69796ca8a8cf536cde004b 2017102208:10:07-UTC ./usr/bin/linux/mklink
-fe11d11d5bad83f4ebeaf6bb2a00aebfa0b59aff 2017102208:10:07-UTC ./usr/bin/linux/removecr
-41d120cfca443fa3f44b12fbd94f0386d33541c6 2017102208:10:06-UTC ./usr/bin/linux/prg2ppo
-55d4e35e9bd44bf73804e0058e992446289914bc 2017102208:10:05-UTC ./usr/bin/linux/build
 6b99795f0d2136215cfd5b7153970351e0513f1c 2017102208:09:48-UTC ./usr/bin/linux/ppo2cpp
 b2ee5f0329efe4a22ac6a6a1901902be39053bf1 2017102208:09:38-UTC ./usr/bin/linux/flex
 68b7b0d13b8bcf0be7282cba7c9701738eea8d77 2017102208:09:38-UTC ./usr/bin/linux/lemon
@@ -226,9 +229,7 @@ c1bc5f5d3e816e89d5b2a57369575de38040cab8 2017051407:40:49-UTC ./tools/z/ver3/zre
 b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/driver-mysql/OLVASS
 1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
 8e8d41a8d790d469c87f5ef57d0990773f26483f 2017050906:40:37-UTC ./usr/build/windows/sor2say.bat
-d25644d0e39b0dc37ee1fd796e6658f65dc120e3 2017050906:35:40-UTC ./ccctools/buildp/build.hu.ver
 fd419b03dc150554369d615f922ce8ffbd8b1149 2017050823:32:09-UTC ./usr/build/linux/sor2say.bat
-0614e5a2056bff71690942e9437b8e0451b857fa 2017050823:25:40-UTC ./ccctools/buildp/build.prg
 c1e8185608661da579819422cecd27e0111e6e2a 2017050820:23:44-UTC ./install.bat
 d7ea36a6f97a1e0c626662f2a4656bedc576dff5 2017050820:14:33-UTC ./tools/mask/m
 6376ca46482402a2e5a0e5071203bdab7ee293db 2017050820:14:15-UTC ./tools/mask/m.bat

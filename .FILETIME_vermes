@@ -1,10 +1,11 @@
+e41efda513c8eacc369801202ffc00c620c582dc 2017120508:09:26-UTC ./CHANGELOG_vermes
+965690042bd6e5e39383df07474e1e0c6d9f992a 2017120508:08:26-UTC ./usr/bin/linux/__unix.b
 d9b089a2c400eb38603225a56578718d67a7bb47 2017120508:03:35-UTC ./log-install
 bc2cadd5117c97c6a24f7e1c480b7c8beb46595f 2017120508:03:34-UTC ./usr/bin/linux/websrv
 4801fa8c8edadb2bcf4435cd25fa88ee1d520bea 2017120508:03:34-UTC ./usr/bin/linux/xstart
 c9eb61c41c4ea6590ee5174cfea76fca4a56ccf0 2017120508:03:31-UTC ./usr/bin/linux/terminal-gtk
 0deae02606e747ad7e3131dc1c6837285a46a055 2017120508:03:30-UTC ./usr/bin/linux/prg2ppo
 517a3ee985de2a0631c42ea7574f00175ed0db57 2017120508:03:30-UTC ./usr/bin/linux/removecr
-e1b2a4c712b90072392cd833965f8071e67f80ae 2017120508:03:18-UTC ./CHANGELOG_vermes
 ee975f02fce1417ee6d7246d96f018375ec365d6 2017120507:56:27-UTC ./usr/bin/linux/build
 11257e992097139aa23693fdc6ce113b3d97765d 2017120507:56:07-UTC ./ccctools/buildp/build.prg
 4897cedfc9140d18f50fd09e3311b9193af25a46 2017120507:55:38-UTC ./ccctools/buildp/build.hu.ver
@@ -409,7 +410,6 @@ d62067c215bddd1542aaa0a491a90575435a4253 2016092522:18:29-UTC ./tutor/dtree/delo
 958f408ee70ec1da9262e03700fd0067a61af3fa 2016092522:17:52-UTC ./tutor/dtree/delempty.prg
 d9b6f903efcb870ba4658a87829f502d8de01b37 2016092323:40:18-UTC ./tools/zgrep/zgrep_version.prg
 cd9bb3a8484139686afe6b7b6f48d7b340ab0f0a 2016092323:39:06-UTC ./tools/zgrep/zgrep_view.prg
-5d28cb3b59c856fffe1fbeeb8c6daa66c1295476 2016092208:52:12-UTC ./usr/bin/linux/__unix.b
 dcb84a99a2ed9335a83238362f3d475592b71c76 2016091810:29:04-UTC ./tools/savex/sx.b
 199a5596ee594968e5bbcab7f22800269cf8eb4a 2016091810:28:40-UTC ./tools/savex/play.prg
 a6496b4b5c81c5428b4524722dc2ae22fd7e9bfd 2016091807:26:06-UTC ./tools/savex/dolist.prg

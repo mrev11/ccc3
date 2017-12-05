@@ -40,6 +40,7 @@ if [ $CCCBIN == "lin" ]; then
         lptadd /lib/i386-linux-gnu
         lptadd /usr/lib32
     fi    
+    lptadd $PREFIX/lib #android termux
     lptadd /usr/lib
     lptadd /lib
 

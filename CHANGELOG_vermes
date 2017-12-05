@@ -1,4 +1,7 @@
 2017.12.05 javitasok az androidhoz:
+  A $PREFIX/lib helyen is keresi a konyvtarakat;
+
+2017.12.05 javitasok az androidhoz:
   Build a nem talalt libeket -l-lel balrol kiegeszitve irja be az rsplnk 
   valaszfajlba, ezzel megadja az eselyt a linkernek a tovabbi keresesre. 
   Korabban az eredeti alakot irta be, ami csak arra jo, hogy mutassa, 

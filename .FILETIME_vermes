@@ -1,4 +1,20 @@
-6d9f7d849ad6495cbedeeb698dc6bc07113d5f68 2017120508:32:30-UTC ./CHANGELOG_vermes
+4e1bb79f5f6e3b917a8fd39d7efdeb69f0022aa9 2017121113:41:34-UTC ./CHANGELOG_vermes
+a2cc274dedf468c82b62892c5deade5f9d5a9a53 2017121113:28:20-UTC ./tools/pcre/test/test_ccc3/test_ccc3.prg
+84f114769041fe1a7689ba35957d11be30c42d74 2017121113:22:01-UTC ./tools/pcre/test/test_ccc2/test_ccc2.prg
+db1cbac797d777ae789228cf02468256bccc9fa8 2017121113:06:46-UTC ./tools/pcre/test/parfile.bld
+b8dfc25f587b6e0fbdcf6d5c364bfaa84dcfade1 2017121113:03:27-UTC ./tools/pcre/test/s
+07df09a50fcbe930d3fd5a846cc24acc4cf72457 2017121108:42:02-UTC ./tools/pcre/pcre.cpp
+8246d55fc0c756bfca391a1fcbe314c5b1751e43 2017121108:38:12-UTC ./tools/pcre/pcre.ch
+afd0593ada061125b92848f3e1392add9de289d4 2017121108:38:09-UTC ./tools/pcre/pcre_include/pcre_inc.cpp
+37d3d24ea58817ab27fe58c5c206ec801215ef17 2017121014:51:52-UTC ./usr/include/pcre_error.ch
+e28d0eb633dc1e33751d142f541f3aa7620a8c0a 2017121014:19:16-UTC ./tools/pcre/pcre_include/s
+a30ddd713d0e9b8d1c72938f621b7239a53b3f9d 2017121014:00:15-UTC ./tools/pcre/pcre_include/m
+e279a6377a67b994b17bb55cfdd036d0bc0242bc 2017121013:51:22-UTC ./tools/pcre/m
+08f1e827b4ab611c1cfeedb95228a7277ffb75e7 2017121013:30:47-UTC ./tools/pcre/parfile.bld
+58e7052a785e685c7eef233777d369e9d100e0ca 2017120910:17:03-UTC ./tools/pcre/pcre_example/pcre_example.cpp
+755b623af999cb3ca05d270ee4465b64d345e6e0 2017120909:06:42-UTC ./tools/pcre/pcre_example/s
+3c1deed5862ff2910b7a5a3a76eb6233b7c96f4f 2017120909:06:22-UTC ./tools/pcre/pcre_example/parfile.bld
+e16f8234d5d6661793d1727b6c790361566548d8 2017120909:05:53-UTC ./tools/pcre/pcre_example/m
 0a22c17948b185e8ec1b2935dfcb9028d08ab1fc 2017120508:30:40-UTC ./usr/options/lin/compile-with-debug.opt
 8112c0af1d2336476981471f9045aa19f595802d 2017120508:30:33-UTC ./usr/options/lin/compile-without-debug.opt
 965690042bd6e5e39383df07474e1e0c6d9f992a 2017120508:08:26-UTC ./usr/bin/linux/__unix.b
@@ -14,6 +30,7 @@ ee975f02fce1417ee6d7246d96f018375ec365d6 2017120507:56:27-UTC ./usr/bin/linux/bu
 42e1f45aa739e15169d73f6475e015860f5eab1f 2017120220:40:46-UTC ./ccclib/src/unix/signals.cpp
 d30462184718d53d8895260fed83d3d1b48e73bf 2017120209:16:28-UTC ./usr/bin/linux/ncterm
 ecffbd01481b28da808c0ef0f7b66d68b19d7af1 2017120209:15:29-UTC ./terminal/unix-ncurses/ncterm.cpp
+91dc7c7ed1245d27cb573da4b0f55ab6f91be11a 2017112616:42:53-UTC ./tools/tdc2prgch/tdc2prgch.prg
 d9934e8e02f3d57379ca0c88b25bdd37f488e7f3 2017112612:02:04-UTC ./install.b
 b5529cd0fd084636230aae4e1c19279b91c7c379 2017112612:00:17-UTC ./usr/bin/linux/tdccmp
 fce79f3c75233f8fb69392edd1c5d48dcc0fc62e 2017112612:00:09-UTC ./tools/tdccmp/parfile.bld
@@ -287,7 +304,6 @@ a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.sr
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver
 4fb0be4fd047e5bde4f2f8e8cab206c194c86128 2016120314:52:03-UTC ./usr/build/linux/tdc2obj.bat
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120314:46:46-UTC ./usr/build/linux/tdc2ch.bat
-86ebc7b934d548de2c4cdd71aa279b1350876fe0 2016120314:25:48-UTC ./tools/tdc2prgch/tdc2prgch.prg
 000adf8852af5ee8ecd1c03f896da505833dc62c 2016120314:23:30-UTC ./tools/tdc2prgch/valt.dok
 0f784282a80d0747e3e106cb7f57be2459d066c1 2016120110:17:02-UTC ./terminal/unix/s
 5d85f92867c3ec4c1776f452696c7585c7648cc4 2016112919:33:20-UTC ./terminal/terminal-test/screenwr/s

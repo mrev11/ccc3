@@ -1,0 +1,2 @@
+#!/bin/bash
+bapp_unix0.b -xpcre_inc

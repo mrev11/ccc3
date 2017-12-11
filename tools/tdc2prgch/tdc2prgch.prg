@@ -9,9 +9,9 @@
 #define DEBUG(x)
 
 //*******************************************************************
-#define MAXLEN_TABLENAME      7
-#define MAXLEN_INDEXFILENAME  8
-#define MAXLEN_FIELDNAME     10
+#define MAXLEN_TABLENAME     23
+#define MAXLEN_INDEXFILENAME 24
+#define MAXLEN_FIELDNAME     20
 
 
 //*******************************************************************
@@ -357,7 +357,7 @@ local w
    // DEBUG(outstd(o:fields,endofline()))
    for i:=1 to len(o:fields)
       f:=o:fields[i]
-      sPrg+=tab+tab+"tabAddColumn(dbf,{"+f:fname::upper::pString::padr(12)+","+;
+      sPrg+=tab+tab+"tabAddColumn(dbf,{"+f:fname::upper::pString::padr(24)+","+;
            f:ftype::pString+","+f:flen::padl(3)+","+f:fdec::padl(2)+"})"+eol
    end for
 

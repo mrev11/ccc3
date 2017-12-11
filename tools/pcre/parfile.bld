@@ -1,0 +1,3 @@
+-sccc$(CCCVER)_pcre
+-bpcre
+-bpcre32

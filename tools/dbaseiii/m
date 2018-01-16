@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# dbaseiii.so behúzza a fullscreen könyvtárakat
-# ha az nem megfelelő, akkor dbaseiii.lib-et kell linkelni;
-# a memókezeléshez linkelni kell a btbtx táblaobjektumot
+# dbaseiii.so behuzza a fullscreen konyvtarakat
+# ha az nem megfelelo, akkor dbaseiii.lib-et kell linkelni;
+# a memokezeleshez linkelni kell a btbtx tablaobjektumot
 
-bapp_unix0.b -sccc3_dbaseiii
+bapp_unix0.b -sccc"$CCCVER"_dbaseiii
 
 cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN 
 #cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN 
  
 
-#so közvetlen cp helyett mv-vel kerül a helyére,
-#hogy az éppen futó programok nem szálljanak el
-for so in obj$CCCBIN/*.so; do
+#so kozvetlen cp helyett mv-vel kerul a helyere,
+#hogy az eppen futo programok nem szalljanak el
+find obj$CCCBIN/*.so | while read so; do
     cp -pf $so $so.new
     mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
 done

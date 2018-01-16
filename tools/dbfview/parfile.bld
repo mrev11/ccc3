@@ -1,7 +1,7 @@
--bccc3_dbaseiii
--bccc3_btbtx
+-bccc$(CCCVER)_dbaseiii
+-bccc$(CCCVER)_btbtx
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 
-#btbtx-ből kell a memókezelés, és még néhány dolog
+#btbtx-bol kell a memokezeles, es meg nehany dolog
 

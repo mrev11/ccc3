@@ -1,18 +1,16 @@
 #!/bin/bash
 bapp_unix0.b  -sccc3_sql2_sqlite3
 
-if [ -s error ]; then
-    list error &
-else
-    cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-    #cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
-    #cp -pf sql.ch  $CCCDIR/usr/include #nincs neki ilyen
+cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+#cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
+#cp -pf sql.ch  $CCCDIR/usr/include #nincs neki ilyen
 
-    #so közvetlen cp helyett mv-vel kerül a helyére,
-    #hogy az éppen futó programok nem szálljanak el
-    for so in obj$CCCBIN/*.so; do
-        cp -pf $so $so.new
-        mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-    done
+#so kozvetlen cp helyett mv-vel kerul a helyere,
+#hogy az eppen futo programok nem szalljanak el
+find obj$CCCBIN/*.so | while read so; do
+    cp -pf $so $so.new
+    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+done
 
-fi
+
+# nincs ccc2-es valtozata!

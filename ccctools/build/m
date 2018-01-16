@@ -1,6 +1,6 @@
 #!/bin/bash
-# FreeBSD-n build.exe nem tudja megát felülírni,
-# ezért idehozunk belõle egy példányt.
+# FreeBSD-n build.exe nem tudja megat felulirni,
+# ezert idehozunk belole egy peldanyt.
 
 EXE=$CCCDIR/usr/bin/$CCCUNAME
 cp -p $EXE/build.exe .

@@ -1,5 +1,4 @@
 @echo off
-del error 2>nul
 :Windowson nem tudja magat felulirni,
 :ezert ideiglenesen idehozunk egy peldanyt
 

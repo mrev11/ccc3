@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc3_regex
+bapp_unix_.b -bccc"$CCCVER"_regex

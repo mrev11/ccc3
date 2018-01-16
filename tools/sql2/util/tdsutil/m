@@ -1,10 +1,13 @@
 #!/bin/bash
-bapp_unix_.b -sccc3_tds @parfile.bld
+bapp_unix_.b -sccc"$CCCVER"_tds @parfile.bld
 
-if [ -s error ]; then
-    list error &
-else
-    cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-    cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
-fi
+cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+#cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
+
+#so kozvetlen cp helyett mv-vel kerul a helyere,
+#hogy az eppen futo programok nem szalljanak el
+find obj$CCCBIN/*.so | while read so; do    
+    cp -pf $so $so.new
+    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
+done
 

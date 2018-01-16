@@ -1,3 +1,12 @@
+2018.01.18 make (m, mb.bat, parfile.bld) scriptek korszerusitese:
+  Az m scriptekben
+    for so in obj$CCCBIN/*.so; do
+  helyett
+    find obj$CCCBIN/*.so | while read so; do
+  elobbi ciklus (zavart okozva) egyszer akkor is fut, 
+  ha valami hiba miatt nem keszult el az so;
+  Egyforma scriptek CCC2-re es CCC3-ra;
+
 2018.01.16 pcre2 interfesz konyvtar;
   3 darab kulonbozo regex konyvtar van:
   1) CCCDIR/tools/regex

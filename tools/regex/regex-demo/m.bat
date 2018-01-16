@@ -1,5 +1,3 @@
 @echo off
-call bapp_w32_  -bccc3_regex -bpcreposix -bpcre
+call bapp_w32_  -bccc%CCCVER%_regex -bpcreposix -bpcre
 
-
-:-bpcre -b_chkstk.o

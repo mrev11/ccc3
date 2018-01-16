@@ -1,14 +1,14 @@
 #!/bin/bash
-bapp_unix_.b -sccc3_regex -bpcreposix
+bapp_unix_.b -sccc"$CCCVER"_regex -bpcreposix
 
 cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN
 #cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
 cp -pf *.ch  $CCCDIR/usr/include
 
 
-#so közvetlen cp helyett mv-vel kerül a helyére,
-#hogy az éppen futó programok nem szálljanak el
-for so in obj$CCCBIN/*.so; do
+#so kozvetlen cp helyett mv-vel kerul a helyere,
+#hogy az eppen futo programok nem szalljanak el
+find obj$CCCBIN/*.so | while read so; do
     cp -pf $so $so.new
     mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
 done

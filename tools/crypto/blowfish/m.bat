@@ -1,3 +1,3 @@
 @echo off
-bapp_w32_  -bccc3_crypto -bcrypto
+bapp_w32_  -bccc%CCCVER%_crypto -bcrypto
 

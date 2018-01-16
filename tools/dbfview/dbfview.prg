@@ -18,17 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//dbf megjelenítő,
+//dbf megjelenito,
 //Vermes M. 2003.03.10.
-//példa a dbaseiii osztály
-//(dbfclass, dbfedrec) használatára.
+//pelda a dbaseiii osztaly
+//(dbfclass, dbfedrec) hasznalatara.
 //
-//mutatja a memók tartalmát (.dbm file),
-//stringeket tud keresni (f/F billentyűk),
-//bármely típus string ábrázolása kereshető,
-//mezőhatárokon átlógó találatokat jelezhet,
-//lehet csak egy mezőben keresni (memókban is),
-//lehet hátrafelé keresni.
+//mutatja a memok tartalmat (.dbm file),
+//stringeket tud keresni (f/F billentyuk),
+//barmely tipus string abrazolasa keresheto,
+//mezohatarokon atlogo talalatokat jelezhet,
+//lehet csak egy mezoben keresni (memokban is),
+//lehet hatrafele keresni.
 
 #include "inkey.ch"
  
@@ -86,7 +86,7 @@ local memonm,memofd,e
             if( w>64 )
                 p:="@S64 "+p
             
-            elseif( left(h,3)=="DBM" .and. w==10  ) //memó
+            elseif( left(h,3)=="DBM" .and. w==10  ) //memo
             
                 if( memofd==NIL )
                     memonm:=strtran(dbfspec,".dbf",".dbm")
@@ -100,9 +100,9 @@ local memonm,memofd,e
                     end
                 end
                 
-                db:fldblk[n]:=memoblk(memofd,db:fldblk[n])  //blokk lecserélve
-                c[3]:=512                                   //width lecserélve
-                p:="@S64 "+replicate("X",1024)              //picture lecserélve
+                db:fldblk[n]:=memoblk(memofd,db:fldblk[n])  //blokk lecserelve
+                c[3]:=512                                   //width lecserelve
+                p:="@S64 "+replicate("X",1024)              //picture lecserelve
             end
 
         elseif( t=="N" )
@@ -169,7 +169,7 @@ static function applykey(b,k,db)
 
 
 ******************************************************************************
-// Keresés
+// Kereses
 ******************************************************************************
 static function getlistini(getlist,db)
 local n

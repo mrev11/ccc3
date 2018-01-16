@@ -19,9 +19,9 @@
  */
 
 //1999.02.16
-//az eredetileg táblaobjektumokhoz készült kód
-//átalakítva dbaseiiiClass osztályhoz
-//member függvényként (editrecord) is hívható
+//az eredetileg tablaobjektumokhoz keszult kod
+//atalakitva dbaseiiiClass osztalyhoz
+//member fuggvenykent (editrecord) is hivhato
 
 #include "inkey.ch"
 #include "dbstruct.ch"
@@ -41,13 +41,13 @@ static widthWind:=60
 function dbEditRecord(db,opt,fld)
 
 // opt - "EMST"  Exit,Modify,Store,Type
-// fld - {{"FIELD","Megnevezés","PICTURE"},{...},{...},...}
+// fld - {{"FIELD","Megnevezes","PICTURE"},{...},{...},...}
 
 local margin:=int((maxcol()-widthWind)/2)
 local col:=db:dbstruct,value:={},n,m,c,v,dcol
 local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
 
-    brw:flushright:=.f. //számok balra igazítva  
+    brw:flushright:=.f. //szamok balra igazitva  
  
     if( opt==NIL )
         opt:="EMST"
@@ -95,7 +95,7 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
     end
 
     brwColumn(brw,"Data",{||formaz(brw)},widthData)
-    dcol:=brw:colcount //editálható oszlop száma
+    dcol:=brw:colcount //editalhato oszlop szama
  
     if( "S"$opt )
         brwColumn(brw,"",{||status(brw,db)},1)
@@ -164,9 +164,9 @@ local value,field
     return NIL
 
 //Ez nincs kidolgozva:
-//egyrészt a dbaseiii osztály readonly,
-//másrészt ki van véve a recordlock,
-//ezért a függvény a jelenlegi formájában hatástalan.
+//egyreszt a dbaseiii osztaly readonly,
+//masreszt ki van veve a recordlock,
+//ezert a fuggveny a jelenlegi formajaban hatastalan.
 
 ************************************************************************
 static function edit(brw,dcol) 

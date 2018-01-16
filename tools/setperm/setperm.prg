@@ -24,11 +24,11 @@ directories     2775
 regular files   664/775
 symbolic links  skip
 
-végrehajthatóak:
-  az "m" nevű filék
-  a .b kiterjesztésű bash scriptek
-  a #! kezdetű scriptek
-  a (7f)ELF kezdetű ELF filék
+vegrehajthatoak:
+  az "m" nevu filek
+  a .b kiterjesztesu bash scriptek
+  a #! kezdetu scriptek
+  a (7f)ELF kezdetu ELF filek
 
 #endif
 
@@ -106,8 +106,8 @@ local nmode:=mode
 local xmode,ymode
 
     if(mode==NIL)
-        // directory() C típusban adja az eredményeket, de 
-        // nem minden fájlnév konvertálható hibátlanul C-re
+        // directory() C tipusban adja az eredmenyeket, de 
+        // nem minden fajlnev konvertalhato hibatlanul C-re
         ? "!!!!!!! cannot stat:",  dirsep()+curdir()+dirsep()+dentry
         return NIL
     end

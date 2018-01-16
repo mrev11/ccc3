@@ -19,7 +19,7 @@
  */
 
 *************************************************************************
-function dbBrowse(this,top,left,bottom,right,def) //menüző browse
+function dbBrowse(this,top,left,bottom,right,def) //menuzo browse
 
 local browse:=brwCreate(top,left,bottom,right)
 local n, col

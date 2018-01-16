@@ -18,12 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//2005.06.20  sruktúrált kivételkezelés
-//2003.08.01  user interface leválasztva
-//2003.02.03  little/big endian támogatás
-//2001.08.01  dbstruct normalizálva
-//2001.07.07  új metódus: editrecord
-//javítva 2001.01.29
+//2005.06.20  srukturalt kivetelkezeles
+//2003.08.01  user interface levalasztva
+//2003.02.03  little/big endian tamogatas
+//2001.08.01  dbstruct normalizalva
+//2001.07.07  uj metodus: editrecord
+//javitva 2001.01.29
 
 #include "fileio.ch"
 
@@ -62,7 +62,7 @@ local clname,clid,n
         classMethod(clid,"deleted"    ,{|this|_dbaseiii_deleted(this) })
         classMethod(clid,"evalcolumn" ,{|this,n,x| _dbaseiii_evalcolumn(this,n,x) })
 
-        //Ezek különvéve (tagfüggvényként megszűntek)
+        //Ezek kulonveve (tagfuggvenykent megszuntek)
         //classMethod(clid,"browse"     ,{|this,t,l,b,r,d| dbBrowse(this,t,l,b,r,d) })
         //classMethod(clid,"editrecord" ,{|this,o,f| dbEditRecord(this,o,f) })
  
@@ -123,7 +123,7 @@ static function clIni(this)
 
 
 **************************************************************************** 
-static function clStruct(this) //mezőkiértékelő metódusok 
+static function clStruct(this) //mezokiertekelo metodusok 
 
 local err,fld,i
 local clid:=getclassid(this)
@@ -139,20 +139,20 @@ local n:=ascan(s_clid,{|x|x[CL_ID]==clid})
     
     elseif( this:structname==NIL )
 
-        //nem kell csinálni semmit
+        //nem kell csinalni semmit
 
     elseif( s_clid[n][CL_STRU]==NIL )
 
-        //először nyílik meg,
-        //eltároljuk a struktúrát,
-        //létrehozzuk a mező metódusokat
+        //eloszor nyilik meg,
+        //eltaroljuk a strukturat,
+        //letrehozzuk a mezo metodusokat
 
         s_clid[n][CL_STRU]:=arr2bin(this:dbstruct)
         
         for i:=1 to len(this:dbstruct)
             fld:=this:structname+"_"+lower(alltrim(this:dbstruct[i][1]))
             //classMethod(clid,fld,evalfldblk(this,i)) ROSSZ!!
-            classMethod(clid,fld,evalfldblk(i))  //javítás 2001.01.29
+            classMethod(clid,fld,evalfldblk(i))  //javitas 2001.01.29
         next
 
     elseif( !s_clid[n][CL_STRU]==arr2bin(this:dbstruct) )
@@ -167,7 +167,7 @@ local n:=ascan(s_clid,{|x|x[CL_ID]==clid})
 
 
 ****************************************************************************
-static function evalfldblk(n)  //javítás 2001.01.29 
+static function evalfldblk(n)  //javitas 2001.01.29 
     return {|t|eval(t:fldblk[n])} 
 
 //static function evalfldblk(this,n)   ROSSZ!!
@@ -180,7 +180,7 @@ static function _dbaseiii_open(this,fspec,mode,ublk)
 local hnd, buffer:=replicate(x"20",32)
 local hdrlen,reclen,reccnt,fldcnt
 local name,type,length,dec
-local n,l,blk,offs:=2 //első byte deleted flag
+local n,l,blk,offs:=2 //elso byte deleted flag
 local err
 
     this:close()
@@ -240,18 +240,18 @@ local err
 
         if( type=="C" )
             length+=256*dec
-            dec:=0  //normalizálás
+            dec:=0  //normalizalas
             blk:=blkchar(this,offs,length)
  
         elseif( type=="N" )
             blk:=blknumber(this,offs,length)
 
         elseif( type=="D" )
-            dec:=0  //normalizálás 
+            dec:=0  //normalizalas 
             blk:=blkdate(this,offs,length)
  
         elseif( type=="L" )
-            dec:=0  //normalizálás 
+            dec:=0  //normalizalas 
             blk:=blkflag(this,offs,length)
  
         else
@@ -308,7 +308,7 @@ static function dbGoeof(this)
 
 
 *************************************************************************
-static function _dbaseiii_goto(this,n) //minden mozgás ezzel történik
+static function _dbaseiii_goto(this,n) //minden mozgas ezzel tortenik
 
     n:=round(n,0)
 
@@ -342,10 +342,10 @@ function _dbaseiii_gobottom(this)
 *************************************************************************
 function _dbaseiii_skip(this,n)
 
-//Ugyanaz a modell, mint a táblaobjektumban:
-//Van a filé végén egy virtuális EOF rekord, amiről hátrafelé BOTTOM-ra lép.
-//Ilyen rekord a filé elején nincs, ha nekiütközik a filé elejének, akkor
-//újrapozícionálja magát gotop-pal, de beállítja eof-ot .t.-re.
+//Ugyanaz a modell, mint a tablaobjektumban:
+//Van a file vegen egy virtualis EOF rekord, amirol hatrafele BOTTOM-ra lep.
+//Ilyen rekord a file elejen nincs, ha nekiutkozik a file elejenek, akkor
+//ujrapozicionalja magat gotop-pal, de beallitja eof-ot .t.-re.
 
 local skp:=0
 
@@ -353,14 +353,14 @@ local skp:=0
         n:=1
     end
     
-    //itt egyesével lépkedünk,
-    //hogy később (esetleg) a filtert is kezelhessük
+    //itt egyesevel lepkedunk,
+    //hogy kesobb (esetleg) a filtert is kezelhessuk
 
-    if( n>0 ) //előre
+    if( n>0 ) //elore
 
         while( n>0 )
             if( this:recno==0 )
-                exit //eof==.t.,recno==0 (virtuális EOF)
+                exit //eof==.t.,recno==0 (virtualis EOF)
             
             elseif( _dbaseiii_goto(this,this:recno+1) )
                 n--
@@ -368,15 +368,15 @@ local skp:=0
             end
         end
     
-    elseif( n<0 ) //hátra
+    elseif( n<0 ) //hatra
     
-        if( this:recno==0 ) //virtuális EOF-ról először BOTTOM-ra
+        if( this:recno==0 ) //virtualis EOF-rol eloszor BOTTOM-ra
 
             if( _dbaseiii_gobottom(this) )
                 n++
                 skp--
             else
-                n:=0 //eof==.t.,recno==0 (virtuális EOF)
+                n:=0 //eof==.t.,recno==0 (virtualis EOF)
             end
         end
     
@@ -388,20 +388,20 @@ local skp:=0
 
             elseif( _dbaseiii_gotop(this) )
                 this:eof:=.t.
-                exit //eof==.t., recno==1 (TOP-ra pozícionál)
+                exit //eof==.t., recno==1 (TOP-ra pozicional)
 
             else
-                exit //eof==.t.,recno==0 (virtuális EOF)
+                exit //eof==.t.,recno==0 (virtualis EOF)
 
             end
         end
 
-    else //csak újraolvas
+    else //csak ujraolvas
     
         _dbaseiii_goto(this,this:recno)
     end
 
-    return skp  //hányat lépett (előjeles)
+    return skp  //hanyat lepett (elojeles)
 
 
 

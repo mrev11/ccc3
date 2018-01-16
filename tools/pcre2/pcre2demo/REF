@@ -1,0 +1,13 @@
+Ezeket linkeli:
+
+    pcre2_compile_8
+    pcre2_match_8
+
+    pcre2_code_free_8
+    pcre2_match_data_free_8
+
+    pcre2_get_error_message_8
+    pcre2_get_ovector_pointer_8
+    pcre2_match_data_create_from_pattern_8
+    pcre2_pattern_info_8
+

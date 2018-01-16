@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#set -x
+
+if [ "$CCCVER" == "2" ];then
+    test_ccc2.exe    | tee log-ccc2
+fi
+
+if [ "$CCCVER" == "3" ];then
+    test_ccc3.exe    | tee log-ccc3
+fi

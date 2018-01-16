@@ -1,0 +1,4 @@
+-sccc$(CCCVER)_pcre2
+
+-bpcre2-8
+-bpcre2-32

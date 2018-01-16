@@ -1,0 +1,23 @@
+
+3 darab kulonbozo regex konyvtar van:
+
+1) CCCDIR/tools/regex
+
+    A (regi) pcre konyvtarra epulo pcreposix konyvtarhoz ad interfeszt. 
+    Mukodik: csak X tipussal.
+    
+
+2) CCCDIR/tools/pcre
+
+    A (regi) pcre konyvtarhoz ad kozvetlen interfeszt.
+    Mukodik: X es C tipusokkal.
+
+
+3) CCCDIR/tools/pcre2
+
+    Az (ujabb) pcre2 konyvtarhoz ad kozvetlen interfeszt.
+    Mukodik: X es C tipusokkal.
+
+
+A (regi) pcre konyvtarat obsolete-nek tekintik,
+ezert a CCCDIR/tools/pcre2-t celszeru hasznalni.

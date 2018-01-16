@@ -5,6 +5,24 @@
 
 #include <cccapi.h>
 
+#ifdef WINDOWS  
+  //Windows: sizeof(wchar_t)==16
+  #define   pcre_WIDE           pcre16
+  #define   pcre_extra_WIDE     pcre16_extra
+  #define   PCRE_SPTR_WIDE      PCRE_SPTR16
+  #define   PCRE_COMPILE2_WIDE  pcre16_compile2
+  #define   PCRE_STUDY_WIDE     pcre16_study 
+  #define   PCRE_EXEC_WIDE      pcre16_exec
+#else 
+  //Linux: sizeof(wchar_t)==32
+  #define   pcre_WIDE           pcre32
+  #define   pcre_extra_WIDE     pcre32_extra
+  #define   PCRE_SPTR_WIDE      PCRE_SPTR32
+  #define   PCRE_COMPILE2_WIDE  pcre32_compile2
+  #define   PCRE_STUDY_WIDE     pcre32_study 
+  #define   PCRE_EXEC_WIDE      pcre32_exec
+#endif
+
 DEFINE_METHOD(operation);
 DEFINE_METHOD(description);
 DEFINE_METHOD(subsystem);
@@ -21,14 +39,14 @@ struct pcreinfo
 
     union
     {
-        pcre    *ptrpcre;
-        pcre32  *ptrpcre32;
-    } data;
+        pcre            *pcode;
+        pcre_WIDE       *pcodew;
+    } code;
 
     union
     {
-        pcre_extra    *ptrpcre_extra;
-        pcre32_extra  *ptrpcre32_extra;
+        pcre_extra      *pextra;
+        pcre_extra_WIDE *pextraw;
     } extra;
 };
 
@@ -45,13 +63,13 @@ static void pcreinfo_free(pcreinfo *info)
 {
     if( info )
     {
-        if( info->data.ptrpcre )
+        if( info->code.pcode )
         {
-            pcre_free(info->data.ptrpcre );
+            pcre_free(info->code.pcode );
         }
-        if( info->extra.ptrpcre_extra )
+        if( info->extra.pextra )
         {
-            pcre_free_study(info->extra.ptrpcre_extra );
+            pcre_free_study(info->extra.pextra );
         }
         free(info);
     }
@@ -85,7 +103,7 @@ void _clp_compile(int argno) //pcre.compile(regex,flags) -> pcre
     //printf("CCC2 string\n");
     char *regex=_parc(1);
     info->byte=1;
-    info->data.ptrpcre=pcre_compile2(regex,options,
+    info->code.pcode=pcre_compile2(regex,options,
                             &pcreErrorCode,&pcreErrorStr,&pcreErrorOffset,0);
 
 #else
@@ -94,16 +112,16 @@ void _clp_compile(int argno) //pcre.compile(regex,flags) -> pcre
         //printf("CCC3 binary\n");
         char *regex=_parb(1);
         info->byte=1;
-        info->data.ptrpcre=pcre_compile2(regex,options,
+        info->code.pcode=pcre_compile2(regex,options,
                             &pcreErrorCode,&pcreErrorStr,&pcreErrorOffset,0);
     }
     else if( base->type==TYPE_STRING )
     {
         //printf("CCC3 string\n");
         //CHAR* regex=_parc(1);
-        PCRE_SPTR32 regex=(PCRE_SPTR32)_parc(1);
+        PCRE_SPTR_WIDE regex=(PCRE_SPTR_WIDE)_parc(1);
         info->byte=4;
-        info->data.ptrpcre32=pcre32_compile2(regex,options,
+        info->code.pcodew=PCRE_COMPILE2_WIDE(regex,options,
                             &pcreErrorCode,&pcreErrorStr,&pcreErrorOffset,0);
     }
     else
@@ -112,7 +130,7 @@ void _clp_compile(int argno) //pcre.compile(regex,flags) -> pcre
     }
 #endif
 
-    if(  info->data.ptrpcre==0 )
+    if(  info->code.pcode==0 )
     {
         //HIBA
         
@@ -139,11 +157,11 @@ void _clp_compile(int argno) //pcre.compile(regex,flags) -> pcre
         
         if( info->byte==1 )
         {
-            info->extra.ptrpcre_extra=pcre_study(info->data.ptrpcre,0,&pcreErrorStr);
+            info->extra.pextra=pcre_study(info->code.pcode,0,&pcreErrorStr);
         }
         else
         {
-            info->extra.ptrpcre32_extra=pcre32_study(info->data.ptrpcre32,0,&pcreErrorStr);
+            info->extra.pextraw=PCRE_STUDY_WIDE(info->code.pcodew,0,&pcreErrorStr);
         }
 
         if( pcreErrorStr!=0 )
@@ -194,8 +212,8 @@ void _clp_exec(int argno) //pcre.exe(rxinfo,txt,start,options) -> pcre
         char *txt=_parb(2);
         int len=_parblen(2);
         start=ISNIL(3)?0:_parni(3)-1;
-        retval=pcre_exec(   info->data.ptrpcre,
-                            info->extra.ptrpcre_extra,
+        retval=pcre_exec(   info->code.pcode,
+                            info->extra.pextra,
                             txt,
                             len,
                             start,
@@ -206,12 +224,11 @@ void _clp_exec(int argno) //pcre.exe(rxinfo,txt,start,options) -> pcre
 
     else if( info->byte==4 )
     {
-        //CHAR *txt=_parc(2);
-        PCRE_SPTR32 txt=(PCRE_SPTR32)_parc(2);
+        PCRE_SPTR_WIDE txt=(PCRE_SPTR_WIDE)_parc(2);
         int len=_parclen(2);
         start=ISNIL(3)?0:_parni(3)-1;
-        retval=pcre32_exec( info->data.ptrpcre32,
-                            info->extra.ptrpcre32_extra,
+        retval=PCRE_EXEC_WIDE( info->code.pcodew,
+                            info->extra.pextraw,
                             txt,
                             len,
                             start,

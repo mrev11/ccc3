@@ -1,1 +1,1 @@
-install >log-install 2>&1
+install 2>&1 | tee log-install

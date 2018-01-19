@@ -1,7 +1,10 @@
 #!/bin/bash
-if [ -f $CCCDIR/usr/lib/$CCCBIN/libccc3_jt.so ]; then
+
+LIB=$CCCDIR/usr/lib/$CCCBIN/libccc"$CCCVER"_jt.so
+
+if [ -f $LIB ]; then
     ./mo
     ./mp
 else
-    echo "This project needs ccc3_jt library."
+    echo "This project needs $LIB library."
 fi

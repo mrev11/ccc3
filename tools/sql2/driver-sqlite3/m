@@ -1,5 +1,5 @@
 #!/bin/bash
-bapp_unix0.b  -sccc3_sql2_sqlite3
+bapp_unix0.b  -sccc"$CCCVER"_sql2_sqlite3
 
 cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
 #cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN

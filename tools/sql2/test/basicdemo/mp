@@ -1,7 +1,6 @@
 #!/bin/bash
 mkdir exe-pg 2>/dev/null
 cp -p start-scripts/*.b exe-pg 2>/dev/null
-cd tds; m; cd ..
 
 bapp_unixc.b  @parfile-p.bld
 

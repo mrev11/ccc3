@@ -8,10 +8,16 @@ del error--ppo2cpp-%1 2>nul
 del error--outcpp-%1 2>nul
 md ppo 2>nul
  
+::del ppo\%1.prg 2>nul
+::copy %2\%1.tds ppo\%1.tmp >nul
+::tds2prg.exe   ppo\%1.tmp  >ppo\tds2prg-%1
+::del ppo\%1.tmp
+
+del %2\%1.prg 2>nul
 del ppo\%1.prg 2>nul
-copy %2\%1.tds ppo\%1.tmp >nul
-tds2prg.exe   ppo\%1.tmp  >ppo\tds2prg-%1
-del ppo\%1.tmp
+tds2prg.exe  %2\%1.tds  >ppo\tds2prg-%1
+move %2\%1.prg ppo\%1.prg 2>nul
+
 if exist ppo\%1.prg goto vanprg
     touch error
     move ppo\tds2prg-%1 error--tds2prg-%1 >nul
@@ -38,13 +44,13 @@ set ECHOPOST=
 call %BUILD_BAT%\_echo %BUILD_INC%
 
  
-echo -dARROW     >>%CMPOPT%
-echo -d_CCC_     >>%CMPOPT%
-echo -d_CCC3_    >>%CMPOPT%
-echo -dWIN32     >>%CMPOPT%
-echo -dWINDOWS   >>%CMPOPT%
-echo -d_WINDOWS_ >>%CMPOPT%
-echo -ustd1.ch   >>%CMPOPT%
+echo -dARROW            >>%CMPOPT%
+echo -d_CCC_            >>%CMPOPT%
+echo -d_CCC%CCCVER%_    >>%CMPOPT%
+echo -dWIN32            >>%CMPOPT%
+echo -dWINDOWS          >>%CMPOPT%
+echo -d_WINDOWS_        >>%CMPOPT%
+echo -ustd1.ch          >>%CMPOPT%
 :type %CMPOPT%
 
 if [%prg2ppo%] == [] set prg2ppo=prg2ppo

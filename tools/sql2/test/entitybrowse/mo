@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir exe-ora 2>/dev/null
-cd tds; mkentitylib.exe; cd ..
+#cd tds; mkentitylib.exe; cd ..
 
 bapp_unix_.b  @parfile-o.bld
 

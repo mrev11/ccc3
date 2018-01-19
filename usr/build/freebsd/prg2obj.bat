@@ -14,12 +14,12 @@ rm -f $CMPOPT
 echo $BUILD_PRE >>$CMPOPT
 for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
  
-echo -dARROW     >>$CMPOPT
-echo -d_CCC_     >>$CMPOPT
-echo -d_CCC3_    >>$CMPOPT
-echo -d_UNIX_    >>$CMPOPT 
-echo -d_FREEBSD_ >>$CMPOPT 
-echo -ustd1.ch   >>$CMPOPT
+echo -dARROW            >>$CMPOPT
+echo -d_CCC_            >>$CMPOPT
+echo -d_CCC"$CCCVER"_   >>$CMPOPT
+echo -d_UNIX_           >>$CMPOPT 
+echo -d_FREEBSD_        >>$CMPOPT 
+echo -ustd1.ch          >>$CMPOPT
 
 
 #(1) Elofeldolgozas (prg-->ppo)

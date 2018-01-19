@@ -1,4 +1,4 @@
--bccc3_btbtx
+-bccc$(CCCVER)_btbtx
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 
 

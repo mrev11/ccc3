@@ -1,7 +1,7 @@
--bccc3_sql2_oracle
--bccc3_sql2_postgres
--bccc3_tds
--bccc3_btbtx
+-bccc$(CCCVER)_sql2_oracle
+-bccc$(CCCVER)_sql2_postgres
+-bccc$(CCCVER)_tds
+-bccc$(CCCVER)_btbtx
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 

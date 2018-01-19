@@ -79,7 +79,6 @@ local tentity:=proba.tableEntityNew(con)
         brw:addcolumn("Könyvkelt",tentity:getcolumn("konyvkelt"),"@RD")
         brw:addcolumn("Túl",tentity:getcolumn("tulmenflag"),"@RL")
         brw:addcolumn("Egyenleg",tentity:getcolumn("egyenleg"),"@RN 999,999,999.99")
-        #endif
     #endif
     
     bar:=dlg:add(jttoolbarNew())

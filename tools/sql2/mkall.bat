@@ -1,7 +1,7 @@
 @echo off
 
 : Windowson is minden lefordul, 
-: de semmi sincs kipróbálva,
+: de semmi sincs kiprobalva,
 : szerezni kellene kliens dll-eket.
 
 pushd driver-postgres

@@ -1,2 +1,0 @@
-#!/bin/bash
-mkentitylib.exe  --force --prgdir code_generated 

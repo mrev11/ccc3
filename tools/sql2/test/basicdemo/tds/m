@@ -1,3 +1,0 @@
-#!/bin/bash
-mkentitylib.exe  --prgdir code_generated
-

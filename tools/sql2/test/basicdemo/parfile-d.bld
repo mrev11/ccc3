@@ -1,9 +1,9 @@
 -d.
--dtds/code_generated
+-dtds
 -dconnect-db2
 
 -b../$$(testdata_lib)
--bccc3_sql2_db2
+-bccc$(CCCVER)_sql2_db2
 
 BUILD_EXE=exe-db2
 

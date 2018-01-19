@@ -1,9 +1,9 @@
 -d.
--dtds/code_generated
+-dtds
 -dconnect-sqlite3
 
 -b../$$(testdata_lib)
--bccc3_sql2_sqlite3
+-bccc$(CCCVER)_sql2_sqlite3
 
 BUILD_EXE=exe-sqlite3
 

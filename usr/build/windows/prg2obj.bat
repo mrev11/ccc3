@@ -19,13 +19,13 @@ set ECHOPOST=
 call %BUILD_BAT%\_echo %BUILD_INC%
 
  
-echo -dARROW     >>%CMPOPT%
-echo -d_CCC_     >>%CMPOPT%
-echo -d_CCC3_    >>%CMPOPT%
-echo -dWIN32     >>%CMPOPT%
-echo -dWINDOWS   >>%CMPOPT%
-echo -d_WINDOWS_ >>%CMPOPT%
-echo -ustd1.ch   >>%CMPOPT%
+echo -dARROW            >>%CMPOPT%
+echo -d_CCC_            >>%CMPOPT%
+echo -d_CCC%CCCVER%_    >>%CMPOPT%
+echo -dWIN32            >>%CMPOPT%
+echo -dWINDOWS          >>%CMPOPT%
+echo -d_WINDOWS_        >>%CMPOPT%
+echo -ustd1.ch          >>%CMPOPT%
 :type %CMPOPT%
 
 if [%prg2ppo%] == [] set prg2ppo=prg2ppo

@@ -1,9 +1,9 @@
 -d.
--dtds/code_generated
+-dtds
 -dconnect-pg
 
 -b../$$(testdata_lib)
--bccc3_sql2_postgres
+-bccc$(CCCVER)_sql2_postgres
 
 BUILD_EXE=exe-pg
 

@@ -1,1 +1,1 @@
-Példaprogramok az isolation level-ek nézegetéséhez.
+Peldaprogramok az isolation level-ek nezegetesehez.

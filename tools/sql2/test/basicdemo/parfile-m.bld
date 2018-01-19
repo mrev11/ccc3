@@ -1,9 +1,9 @@
 -d.
--dtds/code_generated
+-dtds
 -dconnect-my
 
 -b../$$(testdata_lib)
--bccc3_sql2_mysql
+-bccc$(CCCVER)_sql2_mysql
 
 BUILD_EXE=exe-my
 

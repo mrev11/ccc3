@@ -1,1 +1,1 @@
-bapp_w32c  @parfile.bld
+bapp_w32_  @parfile.bld   -bssl -bcrypto

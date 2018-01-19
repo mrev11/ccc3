@@ -1,3 +1,8 @@
+2018.01.19 install scriptek tovabbi egysegesitese;
+  socket egysegesitve 
+  xmldom egysegesitve 
+  xmlrpc egysegesitve 
+
 2018.01.19 sql2 install scriptek egysegesitve
   (hogy egyszerubb legyen a karbantartasuk);
   konyvtar hivatkozasok linuxon: ccc"$CCCVER"_libname

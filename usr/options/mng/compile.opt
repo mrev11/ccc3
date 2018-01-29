@@ -1,5 +1,5 @@
 -c 
--O1
+-O0
 -DMINGW
 -D_CCC_
 -D_CCC3_

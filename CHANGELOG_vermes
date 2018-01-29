@@ -1,3 +1,15 @@
+2018.01.29 Kulonfele portok felrissitve:
+    Windows 32 bit
+    FreeBSD 11.1
+    NetBSD 7.1.1
+  .gitignore-ba: beirva objfre/, objnet/
+  dtos.cpp: ures blokk ";" helyett "{}"
+  signals.cpp: BSD-kbol hianyzo typedef sighandler_t potolva
+  variable.cpp: int vidx helyett unsigned vidx (mingw32 compiler hiba miatt)
+  options/mng/compile.opt: -O1 helyett -O0 (mingw32 compiler hiba miatt)
+  options/fre/compile.opt: fixen odateve (korabban link volt)
+  tds2obj.bat: BSD-ken odamasolva
+
 2018.01.19 install scriptek tovabbi egysegesitese;
   socket egysegesitve 
   xmldom egysegesitve 

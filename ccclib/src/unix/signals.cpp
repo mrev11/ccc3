@@ -24,6 +24,7 @@
 #include <signal.ch>
 #include <cccapi.h>
 
+typedef void (*sighandler_t)(int);  //BSD-kbol hianyzik
 
 //--------------------------------------------------------------------------
 static void setmask()

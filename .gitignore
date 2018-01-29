@@ -17,6 +17,18 @@ objmng_uic/
 objmng_uiw/
 objmng_uif/
 
+objfre/
+objfre_ui_/
+objfre_uic/
+objfre_uiw/
+objfre_uif/
+
+objnet/
+objnet_ui_/
+objnet_uic/
+objnet_uiw/
+objnet_uif/
+
 ppo/
 html/
 dvi/

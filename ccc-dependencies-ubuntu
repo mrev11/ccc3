@@ -16,6 +16,7 @@ sudo apt-get install \
     libx11-dev \
     libxft-dev \
     libssl-dev \
+    libpcre2-dev \
     libpcre3-dev \
     libreadline6-dev \
     git-core

@@ -495,8 +495,8 @@ static void vartab_mark(VALUE *valueptr)
     }
     else if( type<TYPE_REF )
     {
-        int oidx=(OREF*)ptr-oref;
-        if( 0<=oidx && oidx<OREF_SIZE ) //valid oref
+        unsigned int oidx=(OREF*)ptr-oref;
+        if( oidx<(unsigned)OREF_SIZE ) //valid oref
         {
             OREF *o=oref+oidx;
             if( o->next==NEXT_UNKNOWN )
@@ -512,8 +512,8 @@ static void vartab_mark(VALUE *valueptr)
     }
     else
     {
-        int vidx=(VREF*)ptr-vref;
-        if( 0<=vidx && vidx<VREF_SIZE ) //valid vref
+        unsigned int vidx=(VREF*)ptr-vref;
+        if( vidx<(unsigned)VREF_SIZE ) //valid vref
         {
             VREF *r=vref+vidx;
             if( r->next==NEXT_UNKNOWN )
@@ -535,8 +535,8 @@ static void vartab_mark(VALUE *valueptr)
         // feleslegesen megorzott objektumokat okoz,
         // ezert celszeru a NIL-eket nullazni.
 
-        int oidx=(OREF*)ptr-oref;
-        if( 0<=oidx && oidx<OREF_SIZE ) //valid oref
+        unsigned int oidx=(OREF*)ptr-oref;
+        if( oidx<(unsigned)OREF_SIZE ) //valid oref
         {
             OREF *o=oref+oidx;
             if( o->next==NEXT_UNKNOWN )
@@ -550,8 +550,8 @@ static void vartab_mark(VALUE *valueptr)
             }
             return;
         }
-        int vidx=(VREF*)ptr-vref;
-        if( 0<=vidx && vidx<VREF_SIZE ) //valid vref
+        unsigned int vidx=(VREF*)ptr-vref;
+        if( vidx<(unsigned)VREF_SIZE ) //valid vref
         {
             VREF *r=vref+vidx;
             if( r->next==NEXT_UNKNOWN )

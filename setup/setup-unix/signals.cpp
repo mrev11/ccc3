@@ -24,6 +24,44 @@
 #include <signal.ch>
 #include <cccapi.h>
 
+typedef void (*sighandler_t)(int);  //BSD-kbol hianyzik
+
+//--------------------------------------------------------------------------
+static void setmask()
+{
+    sigset_t set;
+    sigemptyset(&set);
+    int mask=sigcccmask;
+    if( mask & SIG_HUP  ) {sigaddset(&set,SIGHUP);}
+    if( mask & SIG_INT  ) {sigaddset(&set,SIGINT);}
+    if( mask & SIG_QUIT ) {sigaddset(&set,SIGQUIT);}
+    if( mask & SIG_ILL  ) {sigaddset(&set,SIGILL);}
+    if( mask & SIG_ABRT ) {sigaddset(&set,SIGABRT);}
+    if( mask & SIG_FPE  ) {sigaddset(&set,SIGFPE);}
+    if( mask & SIG_SEGV ) {sigaddset(&set,SIGSEGV);}
+    if( mask & SIG_PIPE ) {sigaddset(&set,SIGPIPE);}
+    if( mask & SIG_TERM ) {sigaddset(&set,SIGTERM);}
+    if( mask & SIG_TSTP ) {sigaddset(&set,SIGTSTP);}
+    if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
+    if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
+    if( mask & SIG_KILL ) {sigaddset(&set,SIGKILL);}
+#ifdef MULTITHREAD
+    pthread_sigmask(SIG_SETMASK, &set,0);
+#else
+    sigprocmask(SIG_SETMASK, &set,0);
+#endif
+}
+
+//2016.04.14
+//Korábban csak  CCC szintű "maszkolás" volt.
+//A sigcccmask-ban beállított szignálokat a CCC handler 
+//egyszerűen ignorálta. Ilyenkor a rendszer úgy veszi, 
+//hogy a szignál kézbesítve volt (ügy elintézve). Ezzel 
+//szemben, ha a maszkot a rendszer szintjén is beállítjuk,
+//akkor a rendszer olyan szálat keres, ami nem maszkolja
+//az adott szignált, és ha talál ilyet, akkor ez a szál
+//kapja meg a szignált. Tehát kaphatunk olyan szignálokat,
+//amik korábban elvesztek.
 
 //--------------------------------------------------------------------------
 static int cccsig2signum(int cccsig)
@@ -39,6 +77,7 @@ static int cccsig2signum(int cccsig)
         case SIG_SEGV: return SIGSEGV;   // Segmentation violation (ANSI)
         case SIG_PIPE: return SIGPIPE;   // Broken pipe (POSIX)
         case SIG_TERM: return SIGTERM;   // Termination (ANSI)
+        case SIG_TSTP: return SIGTSTP;   // Terminal stop
 
         case SIG_CONT: return SIGCONT;   // Continue (POSIX)
         case SIG_STOP: return SIGSTOP;   // Stop, unblockable (POSIX)
@@ -61,6 +100,7 @@ static int signum2cccsig(int signum)
         case SIGSEGV: return SIG_SEGV;   // Segmentation violation (ANSI)
         case SIGPIPE: return SIG_PIPE;   // Broken pipe (POSIX)
         case SIGTERM: return SIG_TERM;   // Termination (ANSI)
+        case SIGTSTP: return SIG_TSTP;   // Terminal stop
 
         case SIGCONT: return SIG_CONT;   // Continue (POSIX)
         case SIGSTOP: return SIG_STOP;   // Stop, unblockable (POSIX)
@@ -118,6 +158,11 @@ static void signal_handler(int signum)
     else if( (cccsig&~sigcccmask)==0 ) 
     {
         return;
+        
+        //2016.04.14
+        //A setmask-os módosítás után erre az ágra nem jön,
+        //ui. ha a maszk a rendszer szinten is be van állítva,
+        //akkor nem kaphatunk olyan szignált, amit sigcccmask maszkol. 
     }
     else if( siglocklev>0 ) //egy szálra vonatkozó szemafor kapcsoló
     {
@@ -140,29 +185,35 @@ static void signal_handler(int signum)
 }
 
 //--------------------------------------------------------------------------
+static void xsigset(int signum, sighandler_t sighnd)
+{
+    //obsolete
+    //sigset(signum,sighnd); 
+    //return;
+
+    struct sigaction act;
+    memset(&act,0,sizeof(act));
+    act.sa_handler=sighnd;
+    sigaction(signum,&act,0);
+}
+
 void setup_signal_handlers()
 {
-    #ifdef _SOLARIS_
-        sigset(SIGHUP  ,signal_handler);
-        sigset(SIGINT  ,signal_handler);
-        sigset(SIGQUIT ,signal_handler);
-        sigset(SIGILL  ,signal_handler);
-        //sigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
-        sigset(SIGFPE  ,signal_handler);
-        sigset(SIGSEGV ,signal_handler);
-        sigset(SIGPIPE ,signal_handler);
-        sigset(SIGTERM ,signal_handler);
-    #else
-        signal(SIGHUP  ,signal_handler);
-        signal(SIGINT  ,signal_handler);
-        signal(SIGQUIT ,signal_handler);
-        signal(SIGILL  ,signal_handler);
-        //signal(SIGABRT ,signal_handler); //kivéve 2008.11.27
-        signal(SIGFPE  ,signal_handler);
-        signal(SIGSEGV ,signal_handler);
-        signal(SIGPIPE ,signal_handler);
-        signal(SIGTERM ,signal_handler);
-    #endif
+    //sigset helyett sigaction
+
+    xsigset(SIGHUP  ,signal_handler);
+    xsigset(SIGINT  ,signal_handler);
+    xsigset(SIGQUIT ,signal_handler);
+    xsigset(SIGILL  ,signal_handler);
+    //xsigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
+    xsigset(SIGFPE  ,signal_handler);
+    xsigset(SIGSEGV ,signal_handler);
+    xsigset(SIGPIPE ,signal_handler);
+    xsigset(SIGTERM ,signal_handler);
+
+    //xsigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
+    //xsigset(SIGTSTP ,SIG_IGN);
+    //xsigset(SIGTSTP ,SIG_DFL);
 }
 
 //--------------------------------------------------------------------------
@@ -178,6 +229,7 @@ int signal_raise(int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; signal_handler(SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; signal_handler(SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; signal_handler(SIGTERM);}
+    if( cccsig&SIG_TSTP) {++cnt; signal_handler(SIGTSTP);}
     return cnt;
 }
 
@@ -194,6 +246,7 @@ int signal_send(int pid, int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; kill(pid,SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; kill(pid,SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; kill(pid,SIGTERM);}
+    if( cccsig&SIG_TSTP) {++cnt; kill(pid,SIGTSTP);}
 
     if( cccsig&SIG_CONT) {++cnt; kill(pid,SIGCONT);}
     if( cccsig&SIG_STOP) {++cnt; kill(pid,SIGSTOP);}
@@ -255,6 +308,7 @@ void _clp_signal_description(int argno) //szignál leírása
         case SIG_SEGV: strcpy(desc,"SIGSEGV (Invalid memory reference)");break;
         case SIG_PIPE: strcpy(desc,"SIGPIPE (Broken pipe)");break;
         case SIG_TERM: strcpy(desc,"SIGTERM (Termination signal)");break;
+        case SIG_TSTP: strcpy(desc,"SIGTSTP (Terminal stop)");break;
 
         case SIG_CONT: strcpy(desc,"SIGCONT (Continue signal)");break;
         case SIG_STOP: strcpy(desc,"SIGSTOP (Stop, unblockable)");break;
@@ -276,6 +330,7 @@ void _clp_signal_setmask(int argno) //szignálok letiltása
     {
         sigcccmask = _parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }
@@ -289,6 +344,7 @@ void _clp_signal_mask(int argno) //szignálok letiltása
     {
         sigcccmask |= _parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }
@@ -302,6 +358,7 @@ void _clp_signal_unmask(int argno) //szignálok letiltása
     {
         sigcccmask &= ~_parni(1);
     }
+    setmask();
     _retni(mask);
     CCC_EPILOG();
 }

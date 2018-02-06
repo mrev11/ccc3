@@ -144,6 +144,7 @@ pushd tutor/dtree; m; popd
 pushd tutor/pm/$CCCUNAME; m; popd
 pushd tutor/readline; m; popd
 pushd tutor/rename; m; popd
+pushd tutor/fpath; m; popd
 
 
 #-------------------

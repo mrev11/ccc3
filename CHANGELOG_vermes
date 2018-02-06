@@ -1,3 +1,9 @@
+2018.02.06 linux setup felfrissitve:
+  ujrageneralva az indulo cpp keszlet;
+  a variable.cpp-t erinto forditasi hiba clang-gal is jelentkezik,
+  ezert a variable.cpp-t a setup-unix-ban is frissiteni kellett;
+  a build parhuzamositott valtozata kerult s setup-ba;
+
 2018.01.29 Kulonfele portok felrissitve:
     Windows 32 bit
     FreeBSD 11.1

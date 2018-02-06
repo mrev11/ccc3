@@ -1,0 +1,3 @@
+-s$(CCCDIR)/ccclib/src/ui_/unix
+-i.cpp.h.
+-m0

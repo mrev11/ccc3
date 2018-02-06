@@ -332,6 +332,9 @@ static int determineUnixAccessMode(int fomode)
     if( fomode & FO_CREATE    ) unixmode |= O_CREAT; 
     if( fomode & FO_TRUNCATE  ) unixmode |= O_TRUNC; 
     if( fomode & FO_APPEND    ) unixmode |= O_APPEND;
+    #if defined O_CLOEXEC
+    if( fomode & FO_NOINHERIT ) unixmode |= O_CLOEXEC;
+    #endif
 
     return unixmode;
 }

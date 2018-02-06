@@ -82,10 +82,10 @@ static void dtos(long n, char *buf)
         y=1+((n-1)/1461)*4;
         n=1+mod(n-1,1461);
      
-        if( n<=365 );
-        else if( n-=365, y++, n<=365 );
-        else if( n-=365, y++, n<=365 );
-        else if( n-=365, y++, n<=366 );
+        if( n<=365 ){}
+        else if( n-=365, y++, n<=365 ){}
+        else if( n-=365, y++, n<=365 ){}
+        else if( n-=365, y++, n<=366 ){}
 
         lofm[1]=(mod(y,4)==0?29:28);
 

@@ -1,4 +1,6 @@
-c9feebd96cdd6fe863a46927882bf7692b136263 2018021409:12:57-UTC ./CHANGELOG_vermes
+f534290ae20d42d38080b991ba98bfdf0d6d88d1 2018022115:02:51-UTC ./install.bat
+e152f418eb2ff518059cb5dd5c9043b8cbc32f84 2018022114:58:59-UTC ./CHANGELOG_vermes
+1621a4d290f9416f8275ccec7f1f7e4c595341bc 2018022112:40:48-UTC ./ccclib/src/qout.cpp
 fe8f0d116b32ec2150e105b216be26401a7be661 2018021409:02:48-UTC ./log-install
 f7d52d5cbc85f59a37fb6083af110c8ece2b66bf 2018021409:02:48-UTC ./usr/bin/linux/gitnav
 54ef9d820042e7d94999c9a06c1f3a0a2cb20fcd 2018021409:02:48-UTC ./usr/bin/linux/gitref
@@ -88,8 +90,6 @@ ee58fb3625f17909cda20ba2ffb1883e843a3cb1 2018020614:28:09-UTC ./setup/setup-unix
 e065b8b763eab7f0e76991635d42c6abb593fe3a 2018020614:28:08-UTC ./setup/setup-unix/prg2ppo/dbdefine.cpp
 c7813ebed2400811b08c8dfc9a033ded3c00201a 2018020614:28:08-UTC ./setup/setup-unix/prg2ppo/dbtransl.cpp
 146cf94e8b4e5678f38829577b7dcebf5a6fd452 2018020614:28:08-UTC ./setup/setup-unix/prg2ppo/dbundef.cpp
-f62367af2c65f03e203f2414140f5a169e955d31 2018020614:28:08-UTC ./setup/setup-unix/prg2ppo/input.cpp
-9c6949480e8407a9f34d440d444a81bed22c9fea 2018020614:28:08-UTC ./setup/setup-unix/prg2ppo/xtxlegal.cpp
 0f18e5e7bae4037f124aa80a15ef39178691494c 2018020614:27:53-UTC ./setup/setup-unix/build/build.cpp
 82e1eb68184f8eb428044623689968e3329b8de1 2018020614:27:53-UTC ./setup/setup-unix/build/fspec.cpp
 412894d4a2444e52b87626fb0c53b1482b072e6a 2018020614:26:12-UTC ./setup/setup-unix/alert.cpp
@@ -107,6 +107,7 @@ d3c7fee722b2082cc6813a67231905af4b40c39d 2018020614:26:10-UTC ./setup/setup-unix
 5be8315c77a43c62c56d22922adee76d8e1bbb17 2018020614:26:10-UTC ./setup/setup-unix/strtran.cpp
 ea6e8ee0617418423ba85a05bafd7b2a322d6781 2018020614:26:09-UTC ./setup/setup-unix/arr2bin.cpp
 eda44c778940cf5015c864baea04024d92563584 2018020614:26:09-UTC ./setup/setup-unix/ascan.cpp
+9c6949480e8407a9f34d440d444a81bed22c9fea 2018020613:54:19-UTC ./setup/setup-unix/prg2ppo/xtxlegal.cpp
 3acddd25827a0a99746784484771a52dc64ae373 2018020613:53:27-UTC ./setup/setup-unix/build/s_buildp_ppo.savex
 02dee80690c9a260c0f52e6de002c196aa22cb3d 2018012913:25:41-UTC ./ccclib/src/variable.cpp
 089eb5a3aaea7026438d40b77afcd34ccc9ae919 2018012910:29:08-UTC ./usr/options/mng/compile.opt
@@ -177,7 +178,6 @@ eec217849faeb94c7fa71652d785edcb7314fc50 2018011712:16:14-UTC ./tools/xmlrpc/dem
 9fd6c40a4f29c631c2bc87e98462ce271058bf7b 2018011712:06:54-UTC ./tools/xmlrpc/parfile.bld
 f319e6ab829dc5cc54a2d6443ec0155dc050a134 2018011712:04:32-UTC ./tools/xmldom/demo/m
 23328a8f27c3bb627ea896227ad527f9365c88d1 2018011712:03:18-UTC ./tools/xmldom/m.bat
-41c073b40d5a18a679b70bbee9d27be91f25822d 2018011710:18:30-UTC ./install.bat
 e62dec701c47d0facfef5f065713215d43d3b78d 2018011610:51:36-UTC ./tools/mask/msk2say/m.bat
 e6997f0bbc2b4a64e297eb05a92fc9d7e8e1c8db 2018011610:28:31-UTC ./k.bat
 c20f985f32d0314c66702c08a2f7193b1d89fc52 2018011610:16:23-UTC ./k.b
@@ -754,6 +754,7 @@ caa07feb4b71a52db4ea87bf20ddc1c2fe94ad0d 2016052711:18:11-UTC ./terminal/unix/pa
 9d8b3723a0f9944dba83b33d8eaa21b265da98a6 2016052510:38:27-UTC ./ccclib/src/uic/screenbuf/screenbuf.h
 8fb75ee8333017af818a35393e7db0064a52fc94 2016052510:29:48-UTC ./terminal/unix/compopt.ext
 d23dc5a67ea2126321c40bbb8085e195a2a1e73a 2016052410:19:34-UTC ./tools/list/m
+f62367af2c65f03e203f2414140f5a169e955d31 2016052408:12:00-UTC ./setup/setup-unix/prg2ppo/input.cpp
 461d2e570bf0b111ca43018cca7e0857c275df56 2016052212:11:54-UTC ./terminal/sslforw/ssl-test/pem/rehash
 a6649f575721b839bd323d98c4feb8bad4f20203 2016052212:11:08-UTC ./terminal/sslforw/ssl-test/pem/OLVASS
 437100fa695ead955bcf6a950599731365b41fe0 2016052211:15:42-UTC ./terminal/sslforw/ssl-test/t--host

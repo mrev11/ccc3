@@ -1,3 +1,7 @@
+2018.02.21 qout egysegesitve:
+  ugyanaz a forras ccc2-ben es ccc3-ban (kommentek ekezet nelkul, literalok makrozva);
+  ugyanaz a forras Linuxon es Windowson (Windows ag megszunt, Linuxon nincs valtozas);
+
 2018.02.14 linux setup bovitve:
   terminal-gtk3 is lefordul;
   sslforward is lefordul;

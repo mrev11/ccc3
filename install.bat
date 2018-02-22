@@ -66,11 +66,21 @@ pushd terminal\windows
 call m.bat
 popd
 
-if not exist %CMPDIR%\include\gtk-3.0\gtk\gtk.h goto terminal-gtk
-  pushd terminal\gtk3
+pushd terminal\sslforw
+call m.bat
+popd
+
+if not exist %CMPDIR%\include\gtk-2.0\gtk\gtk.h goto terminal-gtk
+  pushd terminal\gtk
   call m.bat
   popd
 :terminal-gtk
+
+if not exist %CMPDIR%\include\gtk-3.0\gtk\gtk.h goto terminal-gtk3
+  pushd terminal\gtk3
+  call m.bat
+  popd
+:terminal-gtk3
 
 :-------------------
 : msk2say.exe-t elore

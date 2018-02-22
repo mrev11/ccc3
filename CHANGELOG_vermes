@@ -1,3 +1,7 @@
+2018.02.22 windows: install.b bovult:
+  sslforw leforditva;
+  terminal-gtk3 (feltetelesen) leforditva;
+
 2018.02.21 qout egysegesitve:
   ugyanaz a forras ccc2-ben es ccc3-ban (kommentek ekezet nelkul, literalok makrozva);
   ugyanaz a forras Linuxon es Windowson (Windows ag megszunt, Linuxon nincs valtozas);

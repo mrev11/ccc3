@@ -345,7 +345,7 @@ local screen:=savescreen()
     memowrit(d1,zedit:savedtext)
     memowrit(d2,zedit:gettext)
     run("diff "+d1+" "+d2+">"+dx)
-    run("z "+dx+" -r")
+    run("z.exe "+dx+" -r")
     restscreen(,,,,screen)
 
 

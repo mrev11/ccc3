@@ -99,13 +99,9 @@ local screen
             this:searchagain("p")
 
         elseif( key==K_F7 )    
-            #ifndef _UNIX_
-                run ("start z "+this:clipfile+" -r")
-            #else
-                screen:=savescreen()
-                run ("z "+this:clipfile+" -r")
-                restscreen(,,,,screen)
-            #endif
+            screen:=savescreen()
+            run ("z.exe "+this:clipfile+" -r")
+            restscreen(,,,,screen)
 
         elseif( key==K_F9 )    
             this:diff

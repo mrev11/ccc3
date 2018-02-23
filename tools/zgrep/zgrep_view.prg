@@ -67,7 +67,15 @@ local screen
         cmd+=' "-p'+replace+'"'
     end
  
-    run ( cmd  )
+    if( getenv("CCCTERM_INHERIT")=="yes" ) //2018.02.22
+        brwHide(b)
+        setcursor(1)
+        run ( cmd )
+        setcursor(0)
+        brwShow(b)
+    else
+        run( cmd )
+    end
 
   #endif
 

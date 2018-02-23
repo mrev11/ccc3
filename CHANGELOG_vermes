@@ -1,3 +1,9 @@
+2018.02.23 z, zgrep javitva:
+  amikor z.exe vagy zgrep.exe inditja z-t, akkor nem az 
+  inditoscriptet kell hasznlani, hanem kozvetlenul z.exe-t;
+  zgrep windowson is fel-le kapcsolja a kurzort;
+  strcasecmp definialasa feltetelesen (ne akadjon meg a korabbi definicion);
+
 2018.02.22 windows: install.b bovult:
   sslforw leforditva;
   terminal-gtk3 (feltetelesen) leforditva;

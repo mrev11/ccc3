@@ -14,31 +14,22 @@
 
 
 export OREF_SIZE=200000
-export CCCTERM_SIZE=100x40
-export CCC_XSIZE=$CCCTERM_SIZE
-
+export CCCTERM_SIZE=120x40
 
 export TEMP=~/.temp
-export GREP='grep -i -H -n'
-export FIND='export CCC_TERMINAL=dummy;\
-             savex.exe . -f -i.bat.prg.cpp.cpp_async.cc.ch.h.tex.lex.lem.java.inc.tds.js. -r.ppo. -lrobj* -lr*.nopack'
-
-if !(echo "$CCCTERM_CONNECT" | grep "SOCKET:" >/dev/null); then
-    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe" #choice: X
-   #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"       #choice: ncurses
-fi
+export GREP='grep --text -i -H -n'
+export FIND='savex.exe . -y -f -i.js.less.bat.prg.cpp.c.ch.h.lex.lem.java.tds.IMP.EXP. -r.ppo. -lrobj* -lr*.nopack'
 
 
 if echo "$CCCTERM_CONNECT" | grep "ncterm.exe" >/dev/null; then
     export CCCTERM_INHERIT=yes
-    zgrep.exe "$1" "$2"         #must not run in bacground
+    zgrep.exe "$1" "$2"         #must not run in background
 
 elif echo "$CCCTERM_CONNECT" | grep "SOCKET:" >/dev/null; then
-    zgrep.exe "$1" "$2"         #must not run in bacground
+    zgrep.exe "$1" "$2"         #must not run in background
 
 else    
-    export CCCTERM_INHERIT=no   #choice: run childs in separate window
-   #export CCCTERM_INHERIT=yes  #choice: run childs in inherited window
+    export CCCTERM_INHERIT=no   #choice: separate window
+    #export CCCTERM_INHERIT=yes  #choice: inherited window
     zgrep.exe "$1" "$2" &       #may run in bacground
 fi    
-

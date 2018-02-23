@@ -34,8 +34,12 @@
 #undef TEXT
 #undef BYTE
 #undef CHAR
-#define wcscasecmp  wcsicmp
-#define strcasecmp  stricmp
+#ifndef wcscasecmp
+  #define wcscasecmp  wcsicmp
+#endif
+#ifndef strcasecmp
+  #define strcasecmp  stricmp
+#endif
 #endif
 
 #define BYTE char

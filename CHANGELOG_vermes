@@ -1,3 +1,11 @@
+2018.02.23  filecreat.cpp egysegesitve:
+  Egyseges forras ccc2-ben es ccc3-ban (kommentek ekezet nelkul, makrok).
+  A nyomtato eszkozok kezelese Linuxon es Windowson egyforma:
+  Az LPT1 es tarsai eszkozok megnyitasakor elindul a CCCLPR_CAPTURE 
+  vatozoban megadott program, ami stdin-jeben orokli egy pipe olvashato veget.
+  A nyomtast indito program a pipe irhato vegebe irja a nyomtatnivalot.
+  A mukodes kivaltasahoz be kell allitani a DOSCONV_SPECDOSDEV bitet.
+
 2018.02.23 z, zgrep javitva:
   amikor z.exe vagy zgrep.exe inditja z-t, akkor nem az 
   inditoscriptet kell hasznlani, hanem kozvetlenul z.exe-t;

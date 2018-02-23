@@ -23,11 +23,16 @@
 #include <share.h>
 #include <errno.h>
 #include <stdio.h>
+#include <process.h>
 
 #include <fileio.ch>
+#include <fileconv.ch>
 #include <cccapi.h>
+
+#define DOSNAME_LEN           4
  
 static int ccc_defsharemode=0;
+
  
 //---------------------------------------------------------------------------
 static int bit_defsharemode()
@@ -61,18 +66,191 @@ void _clp_setshare(int argno)
     }
     else
     {
-        _retl(0); //visszautasítva
+        _retl(0); //visszautasitva
     }
     CCC_EPILOG();
 }
 
-//---------------------------------------------------------------------------
-void _clp_fopen(int argno) //filé nyitás sopen()-nel
+//----------------------------------------------------------------------------
+static int dup_noinherit(int fd)
 {
-    CCC_PROLOG("fopen",2);
+    HANDLE oldhandle=(HANDLE)_get_osfhandle(fd);    
+    HANDLE newhandle;
+
+    DuplicateHandle( GetCurrentProcess(), 
+                     oldhandle, 
+                     GetCurrentProcess(), 
+                     &newhandle, 
+                     0, 
+                     0, // inheritflag
+                     DUPLICATE_SAME_ACCESS );
+
+    return _open_osfhandle((long long)newhandle,0);
+}
+
+//----------------------------------------------------------------------------
+static int startlpr(char *printer)
+{
+    // Nyomtatas a CCCLPR_CAPTURE scripttel printer-re
+    // Visszateres: fd>=0, amibe irni kell, vagy -1
+
+    char *lpr=getenv("CCCLPR_CAPTURE");
+    if( lpr==0 || lpr[0]==0 )
+    {
+        return -1;
+    }
+
+    int p[2]; 
+    _pipe(p,0,O_BINARY); //a size parametert nem hasznalja
+
+    int fd0=dup(0); //save
+    close(0); dup(p[0]); close(p[0]); //0 helyere p[0]
+    int fd=dup_noinherit(p[1]); close(p[1]); //nem oroklodik
+
+    char *argv[3];
+    argv[0]=lpr;
+    argv[1]=printer;
+    argv[2]=0;
+    if( -1==spawnv(P_NOWAIT,argv[0],argv) )
+    {
+        fprintf(stderr,"script not found (CCCLPR_CAPTURE=%s)\n",lpr);
+        close(fd);
+        fd=-1;
+    }
+    close(0); dup(fd0); close(fd0); //restore
+    return fd;
+}
+
+//----------------------------------------------------------------------------
+static char *dosname(char *str, char *dnamebuf)
+{
+    // Ha str 'drive:' alaku akkor a drive-ot adja, 
+    // egyebkent a filenevet path es kiterjesztes nelkul.
+    // A filespecbol a path-t, a space-eket, a kiterjesztest torli. 
+    // Ha a kapott nev ures, vagy  hosszabb, mint 4, akkor NULL-t ad.
+
+    if( str==NULL || str[0]=='\0' )
+    {
+        return NULL;
+    }
+
+    int i,j,ibuf=0;
+ 
+    for( i=strlen(str)-1; i>=0 && isspace(str[i]); i-- );
+
+    if( i<0 )
+    {
+        return NULL;
+    }
+
+    if( str[i]==':' ) // drive: alaku nev. 
+    {
+        for(j=0; j<i; j++)
+        {
+            char c=str[j];
+            if( isspace(c) )
+            {
+                //continue
+            }
+            else if( c==':' || c=='\\' || c=='/' )
+            {
+                return NULL;
+            }
+            else if( c=='.' )
+            {
+                break;
+            }
+
+            if( ibuf>=DOSNAME_LEN )
+            {
+                return NULL;
+            }
+            dnamebuf[ibuf++]=c;
+        }
+    }
+    else
+    {
+        // path\file alaku nev.
+
+        for( j=i; j>=0 && !(str[j]==':'||str[j]=='\\'||str[j]=='/'); j-- );
+
+        for( j=j+1; j<=i; j++ )
+        {
+            char c=str[j];
+            if( isspace(c) )
+            {
+                //continue
+            }
+            else if( c=='.' )
+            {
+                break;
+            }
+
+            if( ibuf>=DOSNAME_LEN )
+            {
+                return NULL;
+            }
+            dnamebuf[ibuf++]=c;
+        }
+    }
+
+    dnamebuf[ibuf]='\0';
+    return dnamebuf;
+}
+
+//----------------------------------------------------------------------------
+static int isdosprinter(char *str)
+{
+    static const char *pr[]={"lpt1",  "lpt2",  "lpt3",  "prn", NULL}; 
+
+    int i;
+    for(i=0; pr[i]; i++)
+    {
+        if( 0==strcasecmp(pr[i],str) )
+        {
+            return 1;
+        }
+    }
+    return 0;     
+}
+
+//---------------------------------------------------------------------------
+static int open(VALUE *base,int acc, int shr, int att)
+{
+    int argno=stack-base;
     convertfspec2nativeformat(base);
     bin2str(base);
-    CHAR *fs=_parc(1);
+    CHAR *fs=_parc(1); // CCC3:wchar_t, CCC2:char
+
+    if( DOSCONV&DOSCONV_SPECDOSDEV )
+    {
+        push(base);
+        str2bin(TOP());
+        char *name=BINARYPTR(TOP()); //fs with 1-byte char type
+
+        char dnamebuf[DOSNAME_LEN+1];
+        char *dname=dosname(name,dnamebuf);
+        //printf("DNAME: %s -> %s\n",name,dname);
+
+        if( dname && isdosprinter(dname) )
+        {
+            return startlpr(dname);
+        }
+    }
+
+    errno=0;
+
+  #ifdef _CCC3_
+    return _wsopen(fs,acc,shr,att);
+  #else
+    return _sopen(fs,acc,shr,att);
+  #endif
+}
+
+//----------------- ----------------------------------------------------------
+void _clp_fopen(int argno) //file nyitas sopen()-nel
+{
+    CCC_PROLOG("fopen",2);
 
     int acc=O_RDONLY;
     int shr=bit_defsharemode();
@@ -106,18 +284,14 @@ void _clp_fopen(int argno) //filé nyitás sopen()-nel
         }
     }
 
-    errno=0;
-    _retni( _wsopen(fs,acc|O_BINARY,shr,att) );
+    _retni( open(base,acc|O_BINARY,shr,att) );
     CCC_EPILOG();
 }
 
 //---------------------------------------------------------------------------
-void _clp_fcreate(int argno) //Clipper (filé kreálás sopen()-nel)
+void _clp_fcreate(int argno) //Clipper (file krealas sopen()-nel)
 {
     CCC_PROLOG("fcreate",2);
-    convertfspec2nativeformat(base);
-    bin2str(base);
-    CHAR *fs=_parc(1);
 
     int acc=(O_RDWR|O_CREAT|O_TRUNC);
     int shr=bit_defsharemode();
@@ -131,8 +305,7 @@ void _clp_fcreate(int argno) //Clipper (filé kreálás sopen()-nel)
         if( fcmode & FC_APPEND   )  acc |= O_APPEND;
     }                           
 
-    errno=0;
-    _retni( _wsopen(fs,acc|O_BINARY,shr,att) );
+    _retni( open(base,acc|O_BINARY,shr,att) );
     CCC_EPILOG();
 }
 

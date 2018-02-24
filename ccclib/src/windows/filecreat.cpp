@@ -89,19 +89,16 @@ static int dup_noinherit(int fd)
 }
 
 //----------------------------------------------------------------------------
-static int startlpr(char *printer)
+static int startlpr(char *lpr, char *printer)
 {
-    // Nyomtatas a CCCLPR_CAPTURE scripttel printer-re
+    // Nyomtatas a CCCLPR_CAPTURE=lpr scripttel
     // Visszateres: fd>=0, amibe irni kell, vagy -1
 
-    char *lpr=getenv("CCCLPR_CAPTURE");
-    if( lpr==0 || lpr[0]==0 )
+    int p[2];
+    if( _pipe(p,0,O_BINARY) )
     {
         return -1;
     }
-
-    int p[2]; 
-    _pipe(p,0,O_BINARY); //a size parametert nem hasznalja
 
     int fd0=dup(0); //save
     close(0); dup(p[0]); close(p[0]); //0 helyere p[0]
@@ -221,6 +218,7 @@ static int open(VALUE *base,int acc, int shr, int att)
     convertfspec2nativeformat(base);
     bin2str(base);
     CHAR *fs=_parc(1); // CCC3:wchar_t, CCC2:char
+    char *capture=0;
 
     if( DOSCONV&DOSCONV_SPECDOSDEV )
     {
@@ -232,9 +230,25 @@ static int open(VALUE *base,int acc, int shr, int att)
         char *dname=dosname(name,dnamebuf);
         //printf("DNAME: %s -> %s\n",name,dname);
 
-        if( dname && isdosprinter(dname) )
+             if( dname && 0==strcasecmp(dname,"LPT1") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT1")) ){}
+        else if( dname && 0==strcasecmp(dname,"LPT2") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT2")) ){}
+        else if( dname && 0==strcasecmp(dname,"LPT3") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT3")) ){}
+        else if( dname && 0==strcasecmp(dname,"PRN" ) && 0!=(capture=getenv("CCCLPR_CAPTURE_PRN" )) ){}
+        else if( dname &&  isdosprinter(dname)        && 0!=(capture=getenv("CCCLPR_CAPTURE"     )) ){}
+        
+        if( capture && capture==strstr(capture,"pipe:") )
         {
-            return startlpr(dname);
+            return startlpr(capture+5,dname);
+        }
+        else if( capture && capture==strstr(capture,"file:") )
+        {
+            name=capture+5;
+            binaryn(name); bin2str(TOP()); fs=STRINGPTR(TOP());
+        }
+        else if(capture)
+        {
+            name=capture;
+            binaryn(name); bin2str(TOP()); fs=STRINGPTR(TOP());
         }
     }
 

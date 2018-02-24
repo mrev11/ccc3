@@ -122,16 +122,10 @@ static int ulock(int hnd, int unixShareMode)
 }
 
 //----------------------------------------------------------------------------
-static int startlpr(char *printer)
+static int startlpr(char *lpr, char *printer)
 {
-    // Nyomtatas az CCCLPR_CAPTURE scripttel printer-re
+    // Nyomtatas a CCCLPR_CAPTURE=lpr scripttel 
     // Visszateres: fd>=0, amibe irni kell, vagy -1
-
-    char *lpr=getenv("CCCLPR_CAPTURE");
-    if( lpr==0 || lpr[0]==0 )
-    {
-        return -1;
-    }
 
     int p[2];
     if( pipe(p) )
@@ -262,24 +256,41 @@ static int isdosprinter(char *str)
 //----------------------------------------------------------------------------
 static int uopen(char *name, int shrmod, int accmod, int cremod)
 {
-    int fd=-1;
 
     char dnamebuf[DOSNAME_LEN+1];
     char *dname=(DOSCONV&DOSCONV_SPECDOSDEV)?dosname(name,dnamebuf):0;
+    char *capture=0;
 
-    if( dname && isdosprinter(dname) )
+    if( dname && (0==strcasecmp(dname,"con")) )
     {
-        fd=startlpr(dname);
-    }
-    else if( dname && (0==strcasecmp(dname,"con")) )
-    {
-        fd=dup(1); //stdout
+        return dup(1); //stdout
     }
     else if( dname && (0==strcasecmp(dname,"nul")) )
     {
-        fd=open("/dev/null",O_RDWR); 
+        return open("/dev/null",O_RDWR); 
     }
-    else if( -1!=(fd=open(name,accmod,cremod)) ) 
+    else if( dname && 0==strcasecmp(dname,"LPT1") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT1")) ){}
+    else if( dname && 0==strcasecmp(dname,"LPT2") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT2")) ){}
+    else if( dname && 0==strcasecmp(dname,"LPT3") && 0!=(capture=getenv("CCCLPR_CAPTURE_LPT3")) ){}
+    else if( dname && 0==strcasecmp(dname,"PRN")  && 0!=(capture=getenv("CCCLPR_CAPTURE_PRN" )) ){}
+    else if( dname &&  isdosprinter(dname)        && 0!=(capture=getenv("CCCLPR_CAPTURE"     )) ){}
+  
+    if( capture && capture==strstr(capture,"pipe:") )
+    {
+        return startlpr(capture+5,dname);
+    }
+    else if( capture && capture==strstr(capture,"file:") )
+    {
+        name=capture+5;
+    }
+    else if( capture )
+    {
+        name=capture;
+    }
+
+    int fd=open(name,accmod,cremod);
+
+    if( 0<=fd ) 
     {
         if( DOSCONV & DOSCONV_FILESHARE )
         {

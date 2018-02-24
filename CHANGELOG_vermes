@@ -1,3 +1,22 @@
+2018.02.24 nyomtato eszkozok kezelese a szerver oldalon:
+  Ha be van allitva a DOSCONV_SPECDOSDEV bit,  akkor az alabbi 
+  kornyezeti valtozok vezerlik a nyomatato eszkozok megnyitasat: 
+    CCCLPR_CAPTURE_LPT1=pipe:filespec
+    CCCLPR_CAPTURE_LPT2=file:filespec
+    CCCLPR_CAPTURE_LPT3=filespec
+    CCCLPR_CAPTURE_PRN
+    CCCLPR_CAPTURE
+  Ha a program az LPT1 eszkozt akarja megnyitni, es meg van adva 
+  a CCCLPR_CAPTURE_LPT1 valtozo, akkor annak a tartalma szerint 
+  tortenik az eszkoz "megnyitasa". Ha ez nincs megadva, de meg van
+  adva a CCCLPR_CAPTURE, akkor pedig annak a tartalmat veszi.
+  Ha CCCLPR_CAPTURE_LPT1=<filespec> alaku, akkor a <filespec> nyilik meg.
+  Ha CCCLPR_CAPTURE_LPT1=file:<filespec>,  akkor is a <filespec> nyilik meg.
+  Ha CCCLPR_CAPTURE_LPT1=pipe:<filespec>,  akkor a szerverprogram
+  elinditja <filespec>-et, ami az stdin-jebol tudja olvasni
+  a nyomtatni valo adatokat. Linuxon es Windowson egyforma.
+  A korabb CCC_LPR valtozo megszunt.
+
 2018.02.24 (minden) terminal: az LTP eszkozok kimenete pipe-ba iranyithato;
   pelda: 
   CCCTERM_REDIR_PRINTER=y               # a printer kimenetet atkuldi a terminalnak

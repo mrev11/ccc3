@@ -1,3 +1,10 @@
+2018.02.24 (minden) terminal: az LTP eszkozok kimenete pipe-ba iranyithato;
+  pelda: 
+  CCCTERM_REDIR_PRINTER=y               # a printer kimenetet atkuldi a terminalnak
+  CCCTERM_CAPTURE_LPT1=log-remio-lpt1   # (a terminalon) LPT1 fajlba iranyitva
+  CCCTERM_CAPTURE_LPT1=pipe:ccclpr      # (a terminalon) LPT1 pipe-ba iranyitva a ccclpr programnak
+
+
 2018.02.24 xstart: megadhato a logfile neve;
 
 2018.02.23  filecreat.cpp egysegesitve:

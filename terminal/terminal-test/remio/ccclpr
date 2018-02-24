@@ -1,0 +1,14 @@
+#!/bin/bash
+export LC_COLLATE=C  
+
+PRINTER="$1"
+
+echo $PRINTER                >log-"$PRINTER"
+echo UNIX                   >>log-"$PRINTER"
+
+printenv | grep CCC | sort  >>log-"$PRINTER"
+
+cat                         >>log-"$PRINTER"
+
+
+

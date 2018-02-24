@@ -1,4 +1,5 @@
 #!/bin/bash
+gc
 cd screenwr && m && cd ..
 cd remio && m && cd ..
 

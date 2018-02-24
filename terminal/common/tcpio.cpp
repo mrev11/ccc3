@@ -46,7 +46,8 @@ static SOCKET sck;
 static network_uint32_t iobuf32[BUFLEN32];
 static char *iobuffer=(char*)iobuf32;
 static FILE *qout[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
-static char *localname(int fp,char *fname,int *additive);
+extern FILE *startlpr(const char *fspec, const char *dev);
+static char *localname(int fp,char *fname, const char **dev);
 
 extern void setwsize(int x,int y);
 extern void setcursor(int x,int y);
@@ -328,7 +329,8 @@ void *tcpio_thread(void*arg)
 
                 if( 0<=fp && fp<SIZEQOUT )
                 {
-                    locnam=localname(fp,fname,&additive);
+                    const char *dev;
+                    locnam=localname(fp,fname,&dev);
                     if( locnam )
                     {
                         if( fp==FP_CONSOLE )
@@ -345,7 +347,16 @@ void *tcpio_thread(void*arg)
                             {
                                 fclose(qout[fp]);
                             }
-                            qout[fp]=fopen(locnam,additive?"ab":"wb");
+                            
+                            if( strstr(locnam,"pipe:")==locnam )
+                            {
+                                qout[fp]=startlpr(locnam,dev);
+                            }
+                            else
+                            {
+                                qout[fp]=fopen(locnam,additive?"ab":"wb");
+                            }
+
                             if(qout[fp])
                             {
                                 extern int fsetlock(int,int,int);
@@ -415,7 +426,7 @@ static void replace_char(char *p, int c1, int c2)
 }
 
 //-------------------------------------------------------------------------
-static char *localname(int fp, char *fname, int *additive)
+static char *localname(int fp, char *fname, const char **dev)
 {
     static char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
     static char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
@@ -457,10 +468,10 @@ static char *localname(int fp, char *fname, int *additive)
     if( strrchr(basnam,':') ) *(strrchr(basnam,':'))=0;
     replace_char(locnam,'/','_');
     
-         if( !strcasecmp(basnam,"LPT1") ) strcpy(locnam, env_printer_lpt1 ? env_printer_lpt1:"printer1");
-    else if( !strcasecmp(basnam,"LPT2") ) strcpy(locnam, env_printer_lpt2 ? env_printer_lpt2:"printer2");
-    else if( !strcasecmp(basnam,"LPT3") ) strcpy(locnam, env_printer_lpt3 ? env_printer_lpt3:"printer3");
-    else if( !strcasecmp(basnam,"PRN" ) ) strcpy(locnam, env_printer_prn  ? env_printer_prn :"printer");
+         if( !strcasecmp(basnam,"LPT1") ) {*dev="LPT1"; strcpy(locnam, env_printer_lpt1 ? env_printer_lpt1:"printer1");}
+    else if( !strcasecmp(basnam,"LPT2") ) {*dev="LPT2"; strcpy(locnam, env_printer_lpt2 ? env_printer_lpt2:"printer2");}
+    else if( !strcasecmp(basnam,"LPT3") ) {*dev="LPT3"; strcpy(locnam, env_printer_lpt3 ? env_printer_lpt3:"printer3");}
+    else if( !strcasecmp(basnam,"PRN" ) ) {*dev="PRN";  strcpy(locnam, env_printer_prn  ? env_printer_prn :"printer");}
 
     // az additive flag hasznalata felvetodott, de megse kell
     // az LPT neveket nem jo meghagyni, mert a windows  nem tudja megnyitni

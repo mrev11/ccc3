@@ -56,13 +56,28 @@ példa a paraméterfilére:
 static proctab:={}
 
 ******************************************************************************
-function main(parfile)
+function main(*)
 
+local args:={*}
+local parfile:="xstart.par"
+local logfile:="xstart.log"
 local wd:=dirname() //curdir nem jó
 local p,s,n,i,c,arg,env,res,cmd,var,hash
 
+
+    for n:=1 to len(args)
+        if( args[n]=="-p" )
+            parfile:=args[++n]
+        elseif( args[n]=="-l" )
+            logfile:=args[++n]
+        else
+            parfile:=args[n]
+        end
+    next
+
+
     set date format "yyyy-mm-dd"
-    set printer to xstart.log additive
+    set printer to (logfile) additive
     set printer on
  
     if( parfile==NIL .or. !file(parfile) )

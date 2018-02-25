@@ -5,6 +5,7 @@
 
 
 #ifdef _WINDOWS_
+
 #include <io.h>
 #include <fcntl.h>
 #include <process.h>
@@ -26,22 +27,42 @@ static int dup_noinherit(int fd)
     return _open_osfhandle((long long)newhandle,0);
 }
 
-#endif
-
-
 //----------------------------------------------------------------------------
-FILE *startlpr(const char *fspec, const char *dev)
+FILE *startlpr(const char *lpr, const char *dev)
 {
-    if( fspec!=strstr(fspec,"pipe:") )
+    int p[2];
+    if( _pipe(p,0,O_BINARY) )
     {
         return 0;
     }
-    const char *lpr=fspec+5;
 
-    fprintf(stderr,"\nSTARTLPR: %s %s", fspec, dev);
+    int fd0=dup(0); //save
+    close(0); dup(p[0]); close(p[0]); //0 helyere p[0]
+    int fd=dup_noinherit(p[1]); close(p[1]); //nem oroklodik
+
+    char *argv[3];
+    argv[0]=(char*)lpr;
+    argv[1]=(char*)dev;
+    argv[2]=0;
+    if( -1==spawnv(P_NOWAIT,argv[0],argv) )
+    {
+        fprintf(stderr,"\nSTARTLPR script not found (CCCTERM_CAPTURE:%s)",lpr);
+        close(fd);
+        fd=-1;
+    }
+    close(0); dup(fd0); close(fd0); //restore
+
+    return fdopen(fd,"wb");
+}
+
+//----------------------------------------------------------------------------
+#endif
+
 
 #ifdef _UNIX_
-
+//----------------------------------------------------------------------------
+FILE *startlpr(const char *lpr, const char *dev)
+{
     int p[2];
     if( pipe(p) )
     {
@@ -66,7 +87,7 @@ FILE *startlpr(const char *fspec, const char *dev)
         //execvp(argv[0],argv);   // path-bol is indit
 
         //ide csak hiba eseten jon 
-        fprintf(stderr,"\nscript not found (CCCTERM_CAPTURE_%s=%s)",dev,fspec);
+        fprintf(stderr,"\nSTARTLPR script not found (CCCTERM_CAPTURE:%s)",lpr);
         exit(1);     
     }
 
@@ -74,37 +95,7 @@ FILE *startlpr(const char *fspec, const char *dev)
 
     close(p[0]);
     return fdopen(p[1],"wb");
-
-
-
-#else //WINDOWS
-
-    int p[2];
-    if( _pipe(p,0,O_BINARY) )
-    {
-        return 0;
-    }
-
-    int fd0=dup(0); //save
-    close(0); dup(p[0]); close(p[0]); //0 helyere p[0]
-    int fd=dup_noinherit(p[1]); close(p[1]); //nem oroklodik
-
-    char *argv[3];
-    argv[0]=(char*)lpr;
-    argv[1]=(char*)dev;
-    argv[2]=0;
-    if( -1==spawnv(P_NOWAIT,argv[0],argv) )
-    {
-        fprintf(stderr,"\nscript not found (CCCTERM_CAPTURE_%s=%s)",dev,fspec);
-        close(fd);
-        fd=-1;
-    }
-    close(0); dup(fd0); close(fd0); //restore
-
-    return fdopen(fd,"wb");
-
-#endif
 }
 
-
-
+//----------------------------------------------------------------------------
+#endif

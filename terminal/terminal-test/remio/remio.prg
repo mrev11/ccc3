@@ -29,10 +29,10 @@ local n:=0
     eject
 
     set alternate on
-    set alternate to remio-alternate.bak additive
+    set alternate to log-remio-alternate additive
 
     set extra on
-    set extra to remio-extra.bak
+    set extra to log-remio-extra
 
     while(.t.)
         ++n

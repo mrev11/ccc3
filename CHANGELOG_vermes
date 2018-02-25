@@ -1,3 +1,29 @@
+2018.02.25 nyomtato eszkozok kezelese a terminal oldalon:
+  Ha a szerveren be van allitva CCCTERM_REMOTEOPEN=allow/printer,
+  akkor a szerver a qout kimenetet megprobalja atkuldeni a terminalra.
+  Ha a terminalban be van allitva ezek egyike-masika:  
+    CCCTERM_REDIR_CONSOLE=y      
+    CCCTERM_REDIR_PRINTER=y
+    CCCTERM_REDIR_ALTERNATE=y
+    CCCTERM_REDIR_EXTRA=y
+  akkor a terminal elfogadja az atiranyitott qout-ot (megnyilik a csatorna).
+  Az alabbi kornyezeti valtozok akkor erdekesek, ha az atiranyitott
+  csatorna valamilyen nyomtato eszkoz (LPT1,LPT2,LPT3,PRN).
+    CCCTERM_CAPTURE_LPT1
+    CCCTERM_CAPTURE_LPT2
+    CCCTERM_CAPTURE_LPT3
+    CCCTERM_CAPTURE_PRN
+    CCCTERM_CAPTURE
+  Ha a terminal az LPT1 eszkozt akarja megnyitni, es meg van adva 
+  a CCCTERM_CAPTURE_LPT1 valtozo, akkor annak a tartalma szerint 
+  tortenik az eszkoz "megnyitasa". Ha ez nincs megadva, de meg van
+  adva a CCCTERM_CAPTURE, akkor pedig annak a tartalmat veszi.
+  Ha CCCTERM_CAPTURE_LPT1=<filespec> alaku, akkor a <filespec> nyilik meg.
+  Ha CCCTERM_CAPTURE_LPT1=file:<filespec>,  akkor is a <filespec> nyilik meg.
+  Ha CCCTERM_CAPTURE_LPT1=pipe:<filespec>,  akkor a terminal
+  elinditja <filespec>-et, ami az stdin-jebol tudja olvasni
+  a nyomtatni valo adatokat. Linuxon es Windowson egyforma.
+
 2018.02.24 nyomtato eszkozok kezelese a szerver oldalon:
   Ha be van allitva a DOSCONV_SPECDOSDEV bit,  akkor az alabbi 
   kornyezeti valtozok vezerlik a nyomatato eszkozok megnyitasat: 

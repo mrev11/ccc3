@@ -92,12 +92,13 @@ local tTxt,tAlt,wt,wx,wAlt,hAlt
 local mehet,key
 local top,left
 
-    keyboard("") //2002.03.16
-    dispbegin()
 
     if( empty(txt) .or. !valtype(txt)=='C' )
         return 0
     end
+
+    keyboard("") //2002.03.16
+    dispbegin()
 
     if( empty(alts) .or. valtype(alts)!='A' )
         alts:={@"OK"}

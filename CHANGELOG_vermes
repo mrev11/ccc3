@@ -1,3 +1,6 @@
+2018.03.08 ialert.prg javitva:
+  ures alert meg a dispbegin() elott visszater;
+
 2018.02.25 nyomtato eszkozok kezelese a terminal oldalon:
   Ha a szerveren be van allitva CCCTERM_REMOTEOPEN=allow/printer,
   akkor a szerver a qout kimenetet megprobalja atkuldeni a terminalra.

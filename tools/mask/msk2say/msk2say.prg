@@ -519,7 +519,7 @@ local i,w
 
     startRow:=TOP
     startCol:=LEFT
-    decl+=newl+"static function "+upper(BaseName(ExtractName(file)))+"(bLoad,bRead,bStore)"
+    decl+=newl+"static function msk"+upper(BaseName(ExtractName(file)))+"create(bLoad,bRead,bStore)"
 
     oTomb:=mskLeiroTomb[MSKL_OBJTOMB]
     glsta:={}
@@ -563,13 +563,15 @@ local i,w
     prog+=newl+"    mskColorGet() //push"
     prog+=glst
     prog+=newl+"    mskColorRestore() //pop"
+    prog+=newl+"    return msk"
 
     prog+=newl
+
+    prog+=newl+"static function "+upper(BaseName(ExtractName(file)))+"(bLoad,bRead,bStore)"
+    prog+=newl+"local msk:=msk"+upper(BaseName(ExtractName(file)))+"create(bLoad,bRead,bStore)"
     prog+=newl+"    mskShow(msk)"
     prog+=newl+"    mskLoop(msk)"
     prog+=newl+"    mskHide(msk)"
-
-    prog+=newl
     prog+=newl+"    return lastkey()"
 
     return( memowrit(file,vers+defi+newl+decl+newl+prog+newl))
@@ -604,7 +606,7 @@ local i,j,t:={},tg:={}
 
 ******************************************************************************
 static function ver()
-    return "2.1.0-unicode"
+    return "2.1.1-Unicode"
 
 
 ******************************************************************************

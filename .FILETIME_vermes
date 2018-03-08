@@ -1,5 +1,7 @@
-5295f9ac1e72e8db66d748f3502e9e8415229fd9 2018030809:14:14-UTC ./CHANGELOG_vermes
-276142f8c2ff14927c7272600a3be543bad94e16 2018030808:52:09-UTC ./log-install
+493e9abcd5d3fe08b7fb639b80f37d6039436f06 2018030810:01:04-UTC ./CHANGELOG_vermes
+ce64c01257a79c49f3038ead3e5cfd764d1425db 2018030810:00:02-UTC ./usr/bin/linux/msk2say
+7b5aa3627e9bab67c2c2d2e0ede9d094b59548ee 2018030810:00:00-UTC ./tools/mask/msk2say/msk2say.prg
+7c757cc9a226ecd4435147e51cb8d1b43b8db3e6 2018030809:31:09-UTC ./log-install
 ca6451f56f127c88559c4aa7f073deec50ba6eb7 2018030808:52:08-UTC ./usr/bin/linux/websrv
 9a92bb61e683911149d320860ad6306e26337ce3 2018030808:52:08-UTC ./usr/bin/linux/xstart
 35f3b7ddb2ba40e31ea1482786ed26adb708a603 2018030808:52:05-UTC ./usr/bin/linux/removecr
@@ -8,8 +10,6 @@ a2ca02f2c746fa94f999c8c7304efcf74237e3e6 2018030808:52:04-UTC ./usr/bin/linux/bu
 c5d61069cdfdef02c8479fe7c46e1dbbea928de6 2018030807:45:41-UTC ./ccclib/src/procline.cpp
 9bb49c50feadf07a7f1fea7e3bad1fa2e778f11a 2018030807:23:44-UTC ./ccclib/src/uic/ialert.prg
 953e3fd54d860b4d86e8701bfdfd00f71e4587a1 2018030507:47:23-UTC ./ccclib/src/uic/mask.prg
-6e6015f7ac110577d698088451ad6b8a32e6db39 2018030507:39:50-UTC ./usr/bin/linux/msk2say
-ad04aa85c39fe4a97901a1961c6097b1ceda6c32 2018030507:39:49-UTC ./tools/mask/msk2say/msk2say.prg
 9734aef56ee788514776598a3984b3250204e559 2018030422:53:38-UTC ./usr/bin/linux/firstpar
 4a2f3f43992c30043dcdc594a2ce8e92cd4fe830 2018030413:27:01-UTC ./tutor/control/control.say
 eea683029c915244c0ec23e400f6e017ee8e1290 2018030308:13:46-UTC ./ccclib/src/uic/pushbutton.prg

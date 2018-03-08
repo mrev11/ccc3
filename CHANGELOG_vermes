@@ -1,3 +1,10 @@
+2018.03.08 procline.cpp egysegesitve:
+  kommentek ekezetlenitve;
+  CCC3/CCC2 makrok;
+  uj fuggveny: localstacktop(); 
+  uj fuggveny: localstackdepth();
+
+
 2018.03.08 ialert.prg javitva:
   ures alert meg a dispbegin() elott visszater;
 

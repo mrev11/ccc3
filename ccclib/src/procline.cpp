@@ -43,7 +43,7 @@ void _clp_procname(int argno) // Clipper kompatibilis
         level=D2INT(base->data.number);
     }
     stack=base;
-    trace-level>tracebuf ? stringnb((trace-level)->func) : string(L""); 
+    trace-level>tracebuf ? stringnb((trace-level)->func) : string(CHRLIT("")); 
 }
 
 //----------------------------------------------------------------------------
@@ -60,11 +60,11 @@ void _clp_callstack(int argno)
     TRACE *t=trace-level;
     while( t>tracebuf )
     {
-        string(L"\n  called from "); _clp_qqout(1); pop();
+        string(CHRLIT("\n  called from ")); _clp_qqout(1); pop();
         binaryn(t->func); _clp_qqout(1); pop();
-        string(L"("); _clp_qqout(1); pop();
+        string( CHRLIT("(")); _clp_qqout(1); pop();
         number(t->line); _clp_str(1); _clp_alltrim(1); _clp_qqout(1); pop();
-        string(L")"); _clp_qqout(1); pop();
+        string(CHRLIT(")")); _clp_qqout(1); pop();
         --t;
     }
 
@@ -74,6 +74,7 @@ void _clp_callstack(int argno)
 //----------------------------------------------------------------------------
 void _clp_varstack(int argno)
 {
+    extern void stack_print(void);
     stack_print();
     stack-=argno;
     PUSHNIL();
@@ -114,13 +115,13 @@ void _clp_localstack(int argno)
 
 #ifdef MEGJEGYZES
 
-    localstack() lehetővé teszi, hogy a lokális
-    stack alján levő változókban a szálra specifikus, 
-    a szálban globális adatokat tároljunk.
+    localstack() lehetove teszi, hogy a lokalis
+    stack aljan levo valtozokban a szalra specifikus, 
+    a szalban globalis adatokat taroljunk.
 
-    Thread-specifikus static változókat körülményes volna 
-    CCC-ben implementálni, sokkal egyszerűbb megengedni, 
-    hogy a szál lenyúljon a lokális stack aljáig. Példa:
+    Thread-specifikus static valtozokat korulmenyes volna 
+    CCC-ben implementalni, sokkal egyszerubb megengedni, 
+    hogy a szal lenyuljon a lokalis stack aljaig. Pelda:
 
     function main()
     local v:="anything"
@@ -132,21 +133,69 @@ void _clp_localstack(int argno)
         thread_join(th)
         return NIL
 
-    A szálban hívott localstack() értékei:
+    A szalban hivott localstack() ertekei:
 
     localstack(1)  ->  blk
     localstack(2)  ->  a
     localstack(3)  ->  b
-    localstack(4)  ->  nem definiált (proc-tól függ)
-    localstack(5)  ->  nem definiált, stb.
+    localstack(4)  ->  nem definialt (proc-tol fugg)
+    localstack(5)  ->  nem definialt, stb.
     
-    A blokknak átadott paramétereket lehet megkapni
-    a szálból bárhonnan, legfeljebb olyan számban,
-    ahány x1, x2,... paramétere van a blocknak.
-    Ha közönséges (nem többszálú) programból hívjuk,
-    akkor is megkaphatók a lokális stacken levő változók. 
-    Tanulságos megnézni varstack() eredményét.
+    A blokknak atadott parametereket lehet megkapni
+    a szalbol barhonnan, legfeljebb olyan szamban,
+    ahany x1, x2,... parametere van a blocknak.
+    Ha kozonseges (nem tobbszalu) programbol hivjuk,
+    akkor is megkaphatok a lokalis stacken levo valtozok. 
+    Tanulsagos megnezni varstack() eredmenyet.
 #endif 
+
+
+//----------------------------------------------------------------------------
+void _clp_localstacktop(int argno)
+{
+    //stack_print();
+
+    CCC_PROLOG("localstack",1);
+    int paridx=_parni(1);
+    if( (paridx<0) || (stack-paridx-1<stackbuf) )
+    {
+        _ret();
+    }
+    else
+    {
+        push_symbol(stack-paridx-1);
+        _rettop();
+    }
+    CCC_EPILOG();
+}
+
+#ifdef MEGJEGYZES
+    Ez is a stack elemeihez ad hozzaferest, 
+    csak visszafele: a top-tol indulva a stack aljaig
+    localstacktop(0) mindig 0, mert a 0 parametert adja
+    loclastacktop(1) az 1 alatti elso elem
+    loclastacktop(2) a 2 alatti masodik elem, stb.
+#endif
+
+
+//----------------------------------------------------------------------------
+void _clp_localstackdepth(int argno)
+{
+    stack-=argno;
+    number(stack-stackbuf);
+}
+
+#ifdef MEGJEGYZES
+    Megadja a local stacken levo VALUE-k szamat.
+
+    local ...
+    local depth:=localstackdepth() //utolso local
+    
+    if( depth==localstack(depth) )
+        //ez teljesul az utolsonak 
+        //definialt local valtozora
+    end
+#endif
  
 //----------------------------------------------------------------------------
 

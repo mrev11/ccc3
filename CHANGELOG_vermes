@@ -1,3 +1,7 @@
+2018.03.08 pushbutton.prg kiegeszitesek:
+  a getekhez hasonloan hasznalja a pre/post blokkokat;
+  a getekhez hasonloan reagal K_TAB,K_PGDN,K_HOME,K_CTRL_W-ra;
+
 2018.03.08 procline.cpp egysegesitve:
   kommentek ekezetlenitve;
   CCC3/CCC2 makrok;

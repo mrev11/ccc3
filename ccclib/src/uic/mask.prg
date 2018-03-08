@@ -26,11 +26,11 @@
 #define MSK_BLOAD     6
 #define MSK_BREAD     7
 #define MSK_BSTORE    8
-
 #define MSK_SCREEN    9
 #define MSK_CURSOR   10
-
-#define MSK_SIZE     10
+#define MSK_CRSPOS   11
+#define MSK_SAYLIST  12
+#define MSK_SIZE     12
 
 static color:={}
 
@@ -75,18 +75,17 @@ local msk:=array(MSK_SIZE)
     msk[ MSK_BLOAD  ]:=bl
     msk[ MSK_BREAD  ]:=br
     msk[ MSK_BSTORE ]:=bs
-    msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
-    msk[ MSK_CURSOR ]:=setcursor(1)
+    msk[ MSK_SCREEN ]:=NIL
+    msk[ MSK_CURSOR ]:=NIL
+    msk[ MSK_CRSPOS ]:=NIL
+    msk[ MSK_SAYLIST]:={}
 
-    @ t,l clear to b,r
     return msk
 
 
 *************************************************************************
 function mskSay(msk,r,c,s)
-    devpos(msk[MSK_TOP]+r,msk[MSK_LEFT]+c)
-    devout(s)
-    return NIL
+    aadd(msk[MSK_SAYLIST],{r,c,s,setcolor()})
 
 
 *************************************************************************
@@ -133,13 +132,26 @@ local get:=pushbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x
 
 *************************************************************************
 function mskShow(msk)
-    eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
-    readexit(.f.)
-    return msk
 
+local t:=msk[ MSK_TOP    ]
+local l:=msk[ MSK_LEFT   ]
+local b:=msk[ MSK_BOTTOM ]
+local r:=msk[ MSK_RIGHT  ]
+local slist:=msk[MSK_SAYLIST],n
+
+    msk[ MSK_CURSOR ]:=setcursor(1)
+    msk[ MSK_CRSPOS ]:={row(),col()}
+    msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
+
+    for n:=1 to len(slist)
+        @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color slist[n][4]
+    next
+    return msk
 
 *************************************************************************
 function mskLoop(msk)
+    eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
+    readexit(.f.)
     while(.t.)
         eval(msk[MSK_BREAD],msk[MSK_GETLIST])
         if( lastkey()==27 .or. eval(msk[MSK_BSTORE],msk[MSK_GETLIST]) )
@@ -152,8 +164,41 @@ function mskLoop(msk)
 *************************************************************************
 function mskHide(msk)
     setcursor(msk[MSK_CURSOR])
+    setpos(msk[MSK_CRSPOS][1],msk[MSK_CRSPOS][2])
     restscreen(msk[MSK_TOP],msk[MSK_LEFT],msk[MSK_BOTTOM],msk[MSK_RIGHT],msk[MSK_SCREEN])
     return msk
 
+
+*************************************************************************
+function mskReplace(msk,x,y) //athelyezi a maszkot 
+
+local t:=msk[MSK_TOP]
+local l:=msk[MSK_LEFT]
+local b:=msk[MSK_BOTTOM]
+local r:=msk[MSK_RIGHT]
+local glist:=msk[MSK_GETLIST],n
+local dx:=x-l
+local dy:=y-t
+local scr
+
+    if( msk[MSK_SCREEN]!=NIL )
+        scr:=savescreen(t,l,b,r)                // ez a kirajzolt maszk
+        restscreen(t,l,b,r,msk[MSK_SCREEN])     // visszaallitva az eredeti kepernyo
+    end
+
+    msk[MSK_TOP]    := t+=dy
+    msk[MSK_LEFT]   := l+=dx
+    msk[MSK_BOTTOM] := b+=dy
+    msk[MSK_RIGHT]  := r+=dx
+
+    if( msk[MSK_SCREEN]!=NIL )
+        msk[MSK_SCREEN]:=savescreen(t,l,b,r)    // mentve a kepernyo az uj helyen
+        restscreen(t,l,b,r,scr)                 // kirajzolt maszk az uj helyen
+    end
+        
+    for n:=1 to len(glist)
+        glist[n]:col+=dx
+        glist[n]:row+=dy   
+    next
 
 *************************************************************************

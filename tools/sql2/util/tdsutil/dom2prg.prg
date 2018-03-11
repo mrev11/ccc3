@@ -187,6 +187,9 @@ local err
             if( c:picture!=NIL )
                 ?? ';c:picture:="'+strtran(c:picture,'"',"'")+'"'
             end
+            if( c:collate!=NIL )
+                ?? ';c:collate:="'+strtran(c:collate,'"',"'")+'"'
+            end
 
         end
     next

@@ -165,7 +165,7 @@ static function coldef(tag1)
 local col
 local n,tag
 local name,expr,type,notnull,default
-local label,tooltip,picture
+local label,tooltip,picture,collate
 local err
 
     for n:=1 to len(tag1:content)
@@ -198,6 +198,9 @@ local err
         elseif( tag:type=="default" )
             default:=tag:gettext
 
+        elseif( tag:type=="collate" )
+            collate:=tag:gettext
+
         else
             err:=tdserrorNew("tdsutil.domparse")
             err:description:="unknown tag in column"
@@ -225,6 +228,7 @@ local err
     if(picture!=NIL); col:picture:=picture; end
     if(notnull!=NIL); col:notnull:=notnull; end
     if(default!=NIL); col:default:=default; end
+    if(collate!=NIL); col:collate:=collate; end
     
     return col
 

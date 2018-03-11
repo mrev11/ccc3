@@ -1,3 +1,10 @@
+2018.03.11 tds-ben az oszlopdefioniciokhoz collate kiegeszites adhato:
+  Pelda
+    column:  text  C30    c=hu_HU
+  Ez csak a postgresben letezik (legalabbis ilyen formaban),
+  a tobbi adatbazisnal nem generalodik kod a collate clause-bol.
+  A collate clause case sensitive.
+
 2017.04.21 sqlliteral_d fixen 'YYYY-MM-DD' formatumot hasznal.
   korabbi konverzio: if(empty(x),"null","'"+dtoc(x)+"'")
   mostani konverzio: if(empty(x),"null",x::dtos::transform("'XXXX-XX-XX'"))

@@ -122,7 +122,7 @@ local col:=xmlnodeNew("column")
 local name:=xmlnodeNew("name")
 local type:=xmlnodeNew("type")
 local typdef,realtype
-local n,expr,notnull,default,label,picture,tooltip
+local n,expr,notnull,default,label,picture,tooltip,collate
 local err
 
     entry:=alltrim(substr(entry,8))  //"column:" levágva
@@ -152,6 +152,9 @@ local err
         elseif( left(entry[n],2)=="d=" )
             default:=xmlnodeNew("default")
             addtext(default,substr(entry[n],3))
+        elseif( left(entry[n],2)=="c=" )
+            collate:=xmlnodeNew("collate")
+            addtext(collate,substr(entry[n],3))
         elseif( left(entry[n],2)=="nn" )
             notnull:=xmlnodeNew("notnull")
         else
@@ -184,6 +187,9 @@ local err
     end
     if(tooltip!=NIL)
         col:addcontent(tooltip)
+    end
+    if(collate!=NIL)
+        col:addcontent(collate)
     end
     return col
 

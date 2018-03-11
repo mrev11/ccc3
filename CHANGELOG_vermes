@@ -1,3 +1,10 @@
+2018.03.11 tds-ben az oszlopdefioniciokhoz collate kiegeszites adhato:
+  Pelda
+    column:  text  C30    c=hu_HU
+  Ez csak a postgresben letezik (legalabbis ilyen formaban),
+  a tobbi adatbazisnal nem generalodik kod a collate clause-bol.
+  A postgres collate clause case sensitive.
+
 2018.03.09 pelda maszk athelyezesere;
 
 2018.03.08 msk2say.prg modularisab maszkok:

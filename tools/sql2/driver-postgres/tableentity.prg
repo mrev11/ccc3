@@ -331,6 +331,10 @@ local stmt,c,i,n,s,sep
         if( c:default!=NIL )
             stmt+=" default "+c:default
         end
+        if( c:collate!=NIL )
+            //egyelore csak postgres
+            stmt+=" collate "+'"'+c:collate::strtran('"','')::strtran("'","")+'"' //case sensitive
+        end
     next
     stmt+=crlf()+")"
     this:connection:sqlexec(stmt)

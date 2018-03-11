@@ -27,6 +27,7 @@ class columndef(sql2.oracle.columnref)
     attrib  type        // típus: Cw, Nw[,d], D, L, M 
     attrib  notnull     // .t., ha a mező nem lehet null
     attrib  default     // default érték null helyett
+    attrib  collate
 
     attrib  offset      // a mező kezdete a bufferben (0-tól indul)
     attrib  size        // indvar(2)+hotflg(2)+width(size-4)

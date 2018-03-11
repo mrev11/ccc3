@@ -33,6 +33,7 @@ class columndef(tdsutil.columnref)
     attrib  label
     attrib  tooltip
     attrib  picture
+    attrib  collate
 
 ******************************************************************************
 static function columndef.initialize(this,nam,exp,typ)

@@ -18,14 +18,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Változótáblák méretének és szemétgyűjtés paramétereinek felülírása:
+//Valtozotablak meretenek es szemetgyujtes parametereinek felulirasa:
 //
-//Ezt a függvényt vartab_ini hívja meg az objektumtér inicializálásakor.
-//Ha a függvény törzse üres, akkor a variable.cpp-ben definiált default
-//méretekkel jönnek létre a változótáblák, és a default értékekkel fog
-//működni a szemétgyűjtés. Ha ezt egy alkalmazás meg akarja változtatni,
-//akkor a jelen forrásból lokálisan másolatot kell csinálni, és a
-//kikommentezett sorokat visszatéve beállíthatók a kívánt értékek.
+//Ezt a fuggvenyt vartab_ini hivja meg az objektumter inicializalasakor.
+//Ha a fuggveny torzse ures, akkor a variable.cpp-ben definialt default
+//meretekkel jonnek letre a valtozotablak, es a default ertekekkel fog
+//mukodni a szemetgyujtes. Ha ezt egy alkalmazas meg akarja valtoztatni,
+//akkor a jelen forrasbol lokalisan masolatot kell csinalni, es a
+//kikommentezett sorokat visszateve beallithatok a kivant ertekek.
 
 #include <cccapi.h>
 
@@ -36,15 +36,15 @@ void vartab_setsize( struct VARTAB_SETSIZE *vss )
    // egyszerre ennyi objektum lehet a CCC programban
 
    // *vss->vref_size=5000;
-   // egyszerre ennyi referencia szerint átadott változó lehet
+   // egyszerre ennyi referencia szerint atadott valtozo lehet
 
    // *vss->alloc_count=40000;
-   // ha az utolsó szemétgyűjtés után gyártott objektumok száma
-   // túllépi alloc_count-ot, akkor beindul a szemétgyűjtés
+   // ha az utolso szemetgyujtes utan gyartott objektumok szama
+   // tullepi alloc_count-ot, akkor beindul a szemetgyujtes
 
    // *vss->alloc_size=0x200000L; //2MB
-   // ha az utolsó szemétgyűjtés után gyártott objektumok összmérete
-   // túllépi alloc_size-ot, akkor beindul a szemétgyűjtés
+   // ha az utolso szemetgyujtes utan gyartott objektumok osszmerete
+   // tullepi alloc_size-ot, akkor beindul a szemetgyujtes
 }
 
 //-------------------------------------------------------------------

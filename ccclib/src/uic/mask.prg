@@ -143,6 +143,7 @@ local slist:=msk[MSK_SAYLIST],n
     msk[ MSK_CRSPOS ]:={row(),col()}
     msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
 
+    @ t,l clear to b,r 
     for n:=1 to len(slist)
         @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color slist[n][4]
     next

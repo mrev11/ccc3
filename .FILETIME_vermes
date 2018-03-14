@@ -1,4 +1,6 @@
-a264838fb8ff0a79a09846eee908f48052e64829 2018031108:44:48-UTC ./CHANGELOG_vermes
+f7abb4f93ef3701c6ff555af098d0439dbd73aed 2018031412:53:07-UTC ./CHANGELOG_vermes
+9fa3bf492b8f9d3b9653fcc8d44c8aa96f358979 2018031412:48:55-UTC ./ccclib/src/variablex.cpp
+0f243754a00dd91d3b1f316cf4f299591a84dd8a 2018031412:45:50-UTC ./ccclib/src/uic/mask.prg
 64024185c8593adb25fb241d6ae3279a42c5798d 2018031108:44:00-UTC ./tools/sql2/sql2.hu.ver
 a68410019187ecd17347d2f5fe00733649519c14 2018031013:02:34-UTC ./tools/sql2/driver-postgres/tableentity.prg
 3acfc6564b6a231c14d2bb63a2688d09830dcd3a 2018031012:51:16-UTC ./usr/bin/linux/tds2prg
@@ -46,7 +48,6 @@ a2ca02f2c746fa94f999c8c7304efcf74237e3e6 2018030808:52:04-UTC ./usr/bin/linux/bu
 75c6e75283e2b70ec20221f062831e87e6161db6 2018030808:52:04-UTC ./usr/bin/linux/prg2ppo
 c5d61069cdfdef02c8479fe7c46e1dbbea928de6 2018030807:45:41-UTC ./ccclib/src/procline.cpp
 9bb49c50feadf07a7f1fea7e3bad1fa2e778f11a 2018030807:23:44-UTC ./ccclib/src/uic/ialert.prg
-953e3fd54d860b4d86e8701bfdfd00f71e4587a1 2018030507:47:23-UTC ./ccclib/src/uic/mask.prg
 eea683029c915244c0ec23e400f6e017ee8e1290 2018030308:13:46-UTC ./ccclib/src/uic/pushbutton.prg
 40f338a8eff94dc144611e4141b318030fad419d 2018022508:51:14-UTC ./terminal/terminal-test/remtest.b
 e7e4bd0737fa5ba9c9ad802cc644dba1269d894e 2018022508:50:09-UTC ./terminal/terminal-test/remio/remio.prg

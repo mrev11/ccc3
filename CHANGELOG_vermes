@@ -1,3 +1,5 @@
+2018.03.14 mskShow()-ba visszarakva a clear;
+
 2018.03.11 tds-ben az oszlopdefioniciokhoz collate kiegeszites adhato:
   Pelda
     column:  text  C30    c=hu_HU

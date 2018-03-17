@@ -23,16 +23,6 @@ namespace sql2.oracle
 #include "oci.ch"
 #include "sql.ch"
 
-******************************************************************************
-function sqldebug(stmt)
-static debug:=!empty(getenv("SQLDEBUG"))
-    if(debug)
-        stmt:=strtran(stmt,chr(10)," ")
-        stmt:=strtran(stmt,chr(13)," ")
-        ? ">>>>",alltrim(stmt)
-    end
-    return NIL
-
 
 ******************************************************************************
 function sqlvalue(row,c) //insert/update utasításba írandó érték

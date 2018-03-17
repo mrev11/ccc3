@@ -1,3 +1,10 @@
+2018.03.17 sql2 konyvtar: sqldebug szelektiven listaz;
+  export SQLDEBUG=on                      (mindent listaz)
+  export SQLDEBUG=on:commit:rollback      (csak ezeket listazza)
+  export SQLDEBUG=off                     (semmit sem listaz)
+  export SQLDEBUG=off:fetch               (csak ezeket nem listazza)
+  export SQLDEBUG=x                       (barmi egyeb: mindent listaz)
+
 2018.03.11 tds-ben az oszlopdefioniciokhoz collate kiegeszites adhato:
   Pelda
     column:  text  C30    c=hu_HU

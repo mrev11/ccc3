@@ -26,7 +26,7 @@
 //----------------------------------------------------------------------------
 void _clp_rat(int argno)
 {
-    CCC_PROLOG("rat",2);
+    CCC_PROLOG("rat",3);
 
     if( ISSTRING(2) )
     {
@@ -34,6 +34,21 @@ void _clp_rat(int argno)
 
         unsigned long slen=_parclen(1); //ezt keressuk
         unsigned long tlen=_parclen(2); //ebben keresunk
+
+        if( !ISNIL(3) )
+        {
+            double strt=_parnd(3);  // innen kezdve keresunk
+            if( strt<=0 )
+            {
+                tlen=0;
+            }
+            else if( D2ULONG(strt)<tlen-slen+1 )
+            {
+                tlen=D2ULONG(strt)+slen-1;
+                // maximum illeszkedo offset : tlen-slen+1 
+                // az elobbi modositas utan  : tlen-slen+1 = (strt+slen-1)-slen+1 = strt
+            }
+        }
 
         if( slen==0 || tlen==0 || slen>tlen )
         {
@@ -60,6 +75,22 @@ void _clp_rat(int argno)
 
         binarysize_t slen=_parblen(1); //ezt keressuk
         binarysize_t tlen=_parblen(2); //ebben keresunk
+
+        if( !ISNIL(3) )
+        {
+            double strt=_parnd(3);  // innen kezdve keresunk
+            if( strt<=0 )
+            {
+                tlen=0;
+            }
+            else if( D2ULONG(strt)<tlen-slen+1 )
+            {
+                tlen=D2ULONG(strt)+slen-1;
+                // maximum illeszkedo offset : tlen-slen+1 
+                // az elobbi modositas utan  : tlen-slen+1 = (strt+slen-1)-slen+1 = strt
+            }
+        }
+
 
         if( slen==0 || tlen==0 || slen>tlen )
         {

@@ -131,29 +131,6 @@ void _clp_open(int argno)
     mapLength=lseek(fd,0,SEEK_END); 
     lseek(fd,savepos,SEEK_SET);
     
-    if( mapLength > (binarysize_t)mapLength  )
-    {
-        _clp_ioerrornew(0);
-
-        DUP();
-        number(fd);
-        number((double)mapLength);
-        array(2);
-        _o_method_args.eval(2);
-        POP();
-
-        DUP();
-        string(CHRLIT("not enough address space"));
-        _o_method_description.eval(2);
-        POP();
-
-        DUP();
-        string(CHRLIT("filemap.open"));
-        _o_method_operation.eval(2);
-        POP();
-
-        _clp_break(1);
-    }
 
     caddr_t mapView=(caddr_t)mmap(NULL,mapLength,prot,MAP_SHARED,fd,0);
 
@@ -309,29 +286,6 @@ void _clp_open(int argno)
     mapLength=_lseeki64(fd,0,SEEK_END); 
     _lseeki64(fd,savepos,SEEK_SET);
     
-    if( mapLength > (binarysize_t)mapLength  )
-    {
-        _clp_ioerrornew(0);
-
-        DUP();
-        number(fd);
-        number((double)mapLength);
-        array(2);
-        _o_method_args.eval(2);
-        POP();
-
-        DUP();
-        string(CHRLIT("not enough address space"));
-        _o_method_description.eval(2);
-        POP();
-
-        DUP();
-        string(CHRLIT("filemap.open"));
-        _o_method_operation.eval(2);
-        POP();
-
-        _clp_break(1);
-    }
 
     HANDLE fhnd=(HANDLE)_get_osfhandle(fd);
     HANDLE mapHandle=CreateFileMapping(fhnd,0,prot,0,0,NULL);

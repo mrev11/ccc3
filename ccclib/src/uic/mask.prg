@@ -131,6 +131,13 @@ local get:=pushbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x
 
 
 *************************************************************************
+function mskBrowse(msk,t,l,b,r,var,name)
+local brw:=getbrwNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LEFT]+r,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],brw)   
+    return brw
+
+
+*************************************************************************
 function mskShow(msk)
 
 local t:=msk[ MSK_TOP    ]

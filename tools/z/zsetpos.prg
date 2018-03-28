@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define S_ROW  10
-#define S_COL  15
+#define S_ROW   int(this:height/3)  // 15
+#define S_COL   int(this:width/5)   // 20
 
 ****************************************************************************
 function _zedit_setpos(this,r,c)

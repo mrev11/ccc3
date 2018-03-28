@@ -1,3 +1,8 @@
+2018.03.28  msk2say teljesen ujrairva:
+  a CCC2/CCC3 valtozatok egysegesitve,
+  a tobbsoros komponenseket is kezeli,
+  tamogatja a maszkban megjelenitett browset;
+
 2018.03.28  getbrw objektum: maszkban megjeleno (getlist-be teheto) browse;
 
 2018.03.28 rat() offset parameter hianya potolva;

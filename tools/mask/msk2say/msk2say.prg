@@ -18,39 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Utility mask filék say filékre való konvertálására
+//3.0.0   az egesz ujrairva
+//3.0.1   csiszar-fele checkek tamogatva 
 
-//2.1.0 (Vermes M. 2017.05.06)
-//  altbuttonok tamogatasa 
-//  szinek tamogatasa: CCC_MSKCOLOR_SAY, CCC_MSKCOLOR_GET
-//  egesz sorokat iro mskSay-eket general
-//
-//2.0.4 sorrend kezeles javitva (Vermes M. 2017.04.26)
-//2.0.3 nagy maszkok támogatása (Vermes M. 2014.01.15)
-//2.0.2-unicode: isbox javítva (Vermes M. 2011.08.25)
-//nls (Vermes M. 2006.09.25)
-//unicode (Vermes M. 2006.04.12)
-//checkbox/radiobutton támogatás (Vermes M. 2000.04.21)
-//portolva CCC kódrendszerre (Vermes M. 2000.01.11)
-//átdolgozva: Csiszár Levente
-//eredetileg: Vermes M.
- 
 ******************************************************************************
 
-#include "box.ch"
+#define MAXROW          f_maxrow()
+#define MAXCOL          f_maxcol()
 
-#define MSK_MAXROW     f_maxrow()
-#define MSK_MAXCOL     f_maxcol()
+#define NORMAL          7
+#define INVERS          112
 
+#define attr(n)         asc(substr(linea,n,1))
+#define char(n)         substr(linec,n,1)
+
+static mskname
+
+static inv:={}
+static say:={}
+
+static rect:={999,999,0,0}
 #define TOP    rect[1]
 #define LEFT   rect[2]
 #define BOTTOM rect[3]
 #define RIGHT  rect[4]
-
-#define POS(row,col)    "   @"+str(row,3)+","+str(col,3)
-#define POSR(row,col)   "   @"+str(row+startRow,3)+","+str(col+startCol,3)
-#define POSRO(row,col)  (str(row,3)+","+str(col,3))
-#define NEVPAD(nev) padr(nev,12)
 
 static size80x25:={80,25}
 static size100x50:={100,50}
@@ -58,80 +49,60 @@ static size120x60:={120,60}
 static size160x60:={160,60}
 static size200x60:={200,60}
 static termsize:=size80x25
-#define CALCSIZE(t)  (t[1]*t[2]*4)
+#define CALCSIZE(t)     (t[1]*t[2]*screencell_width())
 
-
-*************************************************************************
-static function termsetup()
-    f_maxcol(termsize[1])
-    f_maxrow(termsize[2])
-
-*************************************************************************
-static function f_maxrow(s)
-static x:=25
-    if( s!=NIL )
-        x:=s
-    end
-    return x
-
-static function f_maxcol(s)
-static x:=80
-    if( s!=NIL )
-        x:=s
-    end
-    return x
+#define PRINT(x)    ? #x, x
 
 
 ******************************************************************************
-function main(p1,p2,p3,p4)
+static function ver()
+    return "3.0.1-"+cccver()
 
-local msk,mskstr,n,begrow
-local mskfile,sayfile
-local p:={p1,p2,p3,p4}
-local i,j,w
-local srTomb,say_mode
+******************************************************************************
+static function usage()
+    ? "msk2say "+ver()
+    ? "Usage: msk2say [-r sort-file] mskfile [sayfile]"
+    ?
+    quit
 
-    set date to ansi
+******************************************************************************
+function main(*)
 
-    for i:=1 to len(p)
+local arg:={*},n
+local mskfile,sayfile,sorfile
+local mskstr
+local code
 
-        p[i]:=lower(ifNil(p[i],""))
-
-        if( !empty(p[i]) )
-
-            if( left(p[i],1)=='-' )
-                w:=lower(substr(p[i],2,1))
-
-                if( w=="r" )
-                    w:=memoread(p[i+1])
-                    w:=strtran(w,","," ")
-                    w:=strtran(w,chr(10)," ")
-                    w:=strtran(w,chr(13),"")
-                    while("  "$w)
-                        w::=strtran("  "," ")
-                    end
-                    w::=alltrim
-                    srTomb:=split(w," ")
-                    i++
-                end
-
-            elseif( mskfile==NIL )
-                mskfile:=p[i]
-
-            elseif( sayfile==NIL )
-                sayfile:=p[i]
-            end
+    for n:=1 to len(arg)
+        if( arg[n]=="-r" )
+            sorfile:=arg[++n]
+        elseif( mskfile==NIL )
+            mskfile:=arg[n]
+        elseif( sayfile==NIL )
+            sayfile:=arg[n]
+        else
+            usage()
         end
     next
 
     if( empty(mskfile) )
         usage()
-        quit
+    end
+    
+
+    if( mskfile::fext0::empty )
+        mskfile+=".msk"
     end
 
-    mskfile:=addEKieg(mskfile,".msk")
-    mskstr:=memoread(mskfile,.t.)
+    if( sayfile::empty )
+        sayfile:=mskfile::fpath+mskfile::fname+".say"
+    elseif( sayfile::fext0::empty )
+        sayfile+=".say"
+    end
 
+    mskname:=fname(sayfile)
+
+    mskstr:=memoread(mskfile,.t.)
     if( len(mskstr)%4!=0  )
         mskstr:=left(mskstr,len(mskstr)-(len(mskstr)%4))
     end
@@ -153,460 +124,352 @@ local srTomb,say_mode
     end
     termsetup()
 
+    parsescreen(mskstr,sorfile)    
+    code:=codegen()
+    code::=chrcnv()
+    memowrit(sayfile,code)
 
-    if( empty(sayfile) )
-        sayfile:=addKieg(mskfile,".say")
-    else
-        sayFile:=addEKieg(sayfile,".say")
-    end
-
-    sayLTOutObj(mskLeiroTomb(mskstr),sayfile,srTomb)
-
-    return NIL
 
 ******************************************************************************
-function usage()
-    ? "msk2say "+ver()
-    ? "Usage: msk2say [-r sort-file] mskfile [sayfile]"
-    ?
-    quit
-    return NIL
+static function parsescreen(screen,sorfile)
 
-******************************************************************************
-function findRev(str,charSet)
-// A charSet-ben levő karaktereket keresi visszafelé az str-ben
-// Ret. pos, ha talált, 0, ha nem.
-local i,w
-    i:=len(str)
-    while( i>0 )
-        if( 0!=(w:=at(substr(str,i,1),charSet)) )
-            return i
-        end
-        i--
-    next
-    return 0
+local line,linec,linea
+local rw,cl,cbeg,comp
+local cw:=screencell_width()
 
-******************************************************************************
-function ExtractName( filename )  // file.ext --> file
-local i
-    if( empty(filename) )
-        return ""
-    end
-    i:=findRev(fileName,".:\/")
+    //inverz komponensek
 
-    if( i==0 )
-        return fileName
-    end
+    for rw:=0 to MAXROW-1
 
-    if( substr(fileName,i,1)=='.' )
-        return left(fileName,i-1)
-    end
-    return fileName
+        cbeg:=NIL
 
-******************************************************************************
-function BaseName( filename )  // path\file.ext --> file.ext
-local i
-    if( empty(filename) )
-        return ""
-    end
-    i:=findRev(fileName,":\/")
-    if( i==0 )
-        return fileName
-    end
-    return substr(fileName,i+1)
+        line:=substr(screen,cw*rw*MAXCOL+1,cw*MAXCOL)
+        linec:=screenchar(line)
+        linea:=screenattr(line)
 
-******************************************************************************
-function addKieg(filename,kieg)
-// Pl. addKieg("haz.msk",".say") --> "haz.say"
-// Pl. addKieg("haz.",".say")    --> "haz.say"
-local w:=ExtractName(filename)
-    filename:=w+kieg
-    return filename
-
-******************************************************************************
-function addEKieg(filename,kieg)
-// Pl. addEKieg("haz.msk",".say") --> "haz.msk"
-// Pl. addEKieg("haz",".say")     --> "haz.say"
-local w:=ExtractName(filename)
-    if( w==filename )
-        filename:=w+kieg
-    end
-    return filename
-
-******************************************************************************
-function calcRect(screen)
-
-local rect:={0,0,0,0}
-local text:=screenchar(screen)
-local attr:=screenattr(screen)
-local i,j,t,a
-
-    LEFT:=MSK_MAXCOL-1
-    RIGHT:=0
-    TOP:=MSK_MAXROW-1
-    BOTTOM:=0
-    
-    for i:=0 to MSK_MAXROW-1
-        for j:=0 to MSK_MAXCOL-1
-            t:=substr(text,1+i*MSK_MAXCOL+j,1)
-            a:=substr(attr,1+i*MSK_MAXCOL+j,1)
-            if( !empty(t) .or. asc(a)>16 )
-                if( i<TOP )
-                    TOP:=i
+        for cl:=1 to MAXCOL+1
+        
+            if( cbeg==NIL )
+                if( attr(cl)==INVERS )
+                    cbeg:=cl // komponens kezdodik
                 end
-                if( i>BOTTOM )
-                    BOTTOM:=i
-                end
-                if( j>RIGHT )
-                    RIGHT:=j
-                end
-                if( j<LEFT )
-                    LEFT:=j
+            else
+                if( attr(cl)==NORMAL .or. cl==MAXCOL+1 )
+                    comp:=invNew(linec[cbeg..cl-1],rw,cbeg-1,rw,cl-2)
+                    aadd(inv,comp)
+                    cbeg:=NIL // komponenes vege
                 end
             end
         next
     next
-    return rect
 
-******************************************************************************
-static function ifNil(valOrig,valNil)
-    return if(valOrig==NIL,valNil,valOrig)
+    //sima labelek
 
-******************************************************************************
-#define MSKL_RECT     1
-#define MSKL_OBJTOMB  2
-#define N_MSKL        2
+    for rw:=0 to MAXROW-1
 
-#define MSKLO_TYPE         1
-#define MSKLO_ROW          2
-#define MSKLO_COL          3
-#define MSKLO_FIELDLEN     4
-#define MSKLO_STR          5
-#define N_MSKLO            6
+        cbeg:=NIL
 
-******************************************************************************
-function mskLeiroTomb(screen)
+        line:=substr(screen,cw*rw*MAXCOL+1,cw*MAXCOL)
+        linec:=screenchar(line)
+        linea:=screenattr(line)
 
-// Ad egy tömböt, amiben a say-ek és a get-ek fel vannak sorolva.
-//
-// return: NIL, ha a képernyő üres, egyébként {rect,objTomb}
-//
-// rect: {top,left,bottom,right}
-//
-// objTomb: {{típus,row,col,len,str,megjelenít}, ... }
-//
-// A 'típus' jelenleg lehet: 'S' say, 'G' get.
-//
-// A row,col az ablak bal felső sarkához relatív, 
-// a számozás 0-tól indul.
-//
-// A 'len' a mező hosszát mutatja. Say-nél az str pontosan 
-// ilyen hosszú.
-//
-// Az 'str' say-nél a megjelenítendő string, get-nél a mező
-// neve balra igazítva, a végéről az üres karakerek levágva.
-//
-// A 'megjelenít' jelenleg lehet: NIL (mindig kell)
-// és 'C' (csak karakteres megjelenítésnél kell).
-
-local result
-local rect:=calcRect(screen)
-local lines:=screenchar(screen)
-local attrs:=screenattr(screen)
-local r,line,attr,color,c,i,startI,startColor,w,nev,sor
-
-    if( empty(rect) )
-        return NIL
-    end
-
-    result:={}
-
-    for r:=TOP to BOTTOM
-    
-        line:=substr(lines,1+MSK_MAXCOL*r+LEFT,RIGHT-LEFT+1)
-        attr:=substr(attrs,1+MSK_MAXCOL*r+LEFT,RIGHT-LEFT+1)
-        color:=array(len(attr))
-        for c:=1 to len(attr)
-            color[c]:=asc(substr(attr,c,1)) // színkódok tömbje
-        next
-        sor:=r-TOP
-
-        i:=1
-        while( i<=len(line) )
-
-            if( color[i]<16 )
-                // Nem kiemelt szín, szöveg konstans eleje.
-                startI:=i
-                while( i<=len(line) .and. color[i]<16 )
-                    i++
-                end 
-#define WHOLE_LINE
-#ifndef WHOLE_LINE
-                aadd(result,{"S",sor,startI-1,i-startI,substr(line,startI,i-startI),NIL}) //say kulon
-#endif
+        for cl:=1 to MAXCOL+1
+        
+            if( cbeg==NIL )
+                if( attr(cl)==NORMAL .and. !empty(char(cl)) )
+                    cbeg:=cl // label kezdodik
+                end
             else
-                // Kiemelt szín. Ezt a színt kell követni.
-                startColor:=color[i]
-                startI:=i
-                while( i<=len(line) .and. color[i]==startColor )
-                    i++
-                end 
-
-                w:=substr(line,startI,i-startI)
-                nev:=alltrim(w)
-
-                if( empty(nev) )
-#ifndef WHOLE_LINE
-                    aadd(result,{"S",sor,startI-1,i-startI,w,NIL})  //say kulon
-#endif
-                else
-                    aadd(result,{"G",sor,startI-1,i-startI,nev,NIL})
+                if( attr(cl)==INVERS .or. cl==MAXCOL+1 )
+                    comp:=sayNew(linec[cbeg..cl-1],rw,cbeg-1)
+                    aadd(say,comp)
+                    cbeg:=NIL // komponenes vege
                 end
             end
-        end 
-          
-#ifdef WHOLE_LINE       
-        //say-ek kulon
-        //Ez a megoldas egesz sorokat ir ki,
-        //nem keruli ki, hanem csak space-ekkel helyettesiti a geteket.
-        //Amikor a getek kirajzoljak magukat, akkor ezek a helyek felulirodnak.
-        //Nem jo kikerulni a geteket, mert a nemrajzolas is rajzolas:
-        //Peldaul egy get nem tudja kisebbre venni magat a berajzoltnal,
-        //mert ott marad a berajzolt helyen egy lyuk.
-
-        for i:=1 to len(line)
-            startI:=i
-            while( i<len(line) .and. color[i]>=16 )
-                ++i
-            end
-            if( startI<i )
-                line:=line[1..startI-1]+space(i-startI)+line[i..]
-            end
-        next  
-        aadd(result,{"S",sor,0,len(line),line,NIL}) //say-ek kulon
-#endif
-
+        next
     next
-    return {rect,result}
+
+    compat()           // csiszar-fele check (nehany plusz say)
+    concat_say()       // a say-eket vizszintesen egyesiti
+    concat_inv()       // a tobbsoros komponenseket fuggolegesen egyesiti
+    sort_inv(sorfile)  // rendezi a geteket a sorfile szerint
+    calcrect()         // kiszamolja a minimalis fedo teglalapot
+    zerooffset()       // az egeszet a bal-felso sarokba tolja
+
+******************************************************************************
+static function codegen()
+
+local eol:=endofline()
+local n,width,c,t
+local code:="//msk2say "+ver()+eol
+
+    code+=eol
+    for n:=1 to len(inv)
+        code+="#define g_"+inv[n]:name::padr(14)+"getlist["+n::padnum(2)+"]"+eol
+    next
+    code+=eol
+
+    code+=strtran("static function msk$MSKNAMEcreate(bLoad,bRead,bStore)","$MSKNAME",upper(mskname))+eol
+    for n:=1 to len(inv)
+        width:=inv[n]:right-inv[n]:left+1
+        code+="local "+inv[n]:name::padr(12)+":=space("+width::padnum(2)+")"+eol
+    next
+    code+="local msk"+eol
+    code+=eol
+    
+    code+="    msk:=mskCreate("+TOP::padnum      +","+;
+                                LEFT::padnum     +","+; 
+                                BOTTOM::padnum   +","+; 
+                                RIGHT::padnum    +","+;
+                                "bLoad,bRead,bStore)"+eol 
+    code+=eol
+    
+    code+="    mskColorSay() //push"+eol
+    for n:=1 to len(say)
+        c:=say[n]
+        code+='    mskSay(msk,'+c:row::padnum+','+c:col::padnum+','+'"'+c:text+'"'+')'+eol
+    next
+    code+="    mskColorRestore() //pop"+eol
+    code+=eol
+
+    code+="    mskColorGet() //push"+eol
+    for n:=1 to len(inv)
+        c:=inv[n]
+        t:=c:text[1]
+        if( t::isalpha );  code+="    mskGet       "+parlist(c)+eol
+        elseif( t=='/' );  code+="    mskAltButton "+parlist(c)+eol
+        elseif( t=='{' );  code+="    mskList      "+parlist(c)+eol
+        elseif( t=='[' );  code+="    mskCheck     "+parlist(c)+eol
+        elseif( t=='(' );  code+="    mskRadio     "+parlist(c)+eol
+        elseif( t=='<' );  code+="    mskPushButton"+parlist(c)+eol
+        elseif( t=='#' );  code+="    mskBrowse    "+parlistx(c)+eol
+        else            ;  code+="    mskGet       "+parlist(c)+eol  //valami mindenekeppen kell
+        end        
+    next
+    code+="    mskColorRestore() //pop"+eol
+    code+="    return msk"+eol
+    code+=eol
+
+    code+="static function $MSKNAME(bLoad,bRead,bStore)"::strtran("$MSKNAME",upper(mskname))+eol
+    code+="local msk:=msk$MSKNAMEcreate(bLoad,bRead,bStore)"::strtran("$MSKNAME",upper(mskname))+eol
+    code+="    mskShow(msk)"+eol
+    code+="    mskLoop(msk)"+eol
+    code+="    mskHide(msk)"+eol
+    code+="    return lastkey()"+eol
+    code+=eol
+
+    return code
 
 
 ******************************************************************************
-static function decomp(str)   //eredeti decomp hatastalanitva
-    return '"' + str::strtran('"',<<REPL>>"+'"'+"<<REPL>>) + '"'
+static function parlist(c)
+    return "(msk,"+c:top::padnum+","+c:left::padnum+",@"+c:name+","+'"'+c:name+'")'
 
-//mellekes eszrevetel:
-//az alabbi (eredeti) algoritmus elmulasztja
-//kikerulni  a '"' karaktereket 
+static function parlistx(c)
+    return "(msk,"+c:top::padnum+","+c:left::padnum+","+c:bottom::padnum+","+c:right::padnum+",@"+c:name+","+'"'+c:name+'")'
 
-static function xxdecomp(str) //NLS: különválasztja a dobozrajzolókat
 
-local c,n,x:="",nls:={},nls1:={}
+******************************************************************************
+static function calcrect()
+local n
 
-    for n:=1 to len(str)
-        c:=substr(str,n,1)
-        if( len(x)==0 )
-            x:=c
-        else
-            if( isbox(c)!=isbox(x) )
-                aadd(nls,x)
-                x:=c
+    for n:=1 to len(say)
+        TOP::=min(say[n]:row)
+        LEFT::=min(say[n]:col)
+        BOTTOM::=max(say[n]:row)
+        RIGHT::=max(say[n]:col+len(say[n]:text)-1)
+    next
+
+    for n:=1 to len(inv)
+        TOP::=min(inv[n]:top)
+        LEFT::=min(inv[n]:left)
+        BOTTOM::=max(inv[n]:bottom)
+        RIGHT::=max(inv[n]:right)
+    next
+
+******************************************************************************
+static function zerooffset()
+local n
+    for n:=1 to len(say)
+        say[n]:row-=TOP
+        say[n]:col-=LEFT
+    next
+
+    for n:=1 to len(inv)
+        inv[n]:top-=TOP
+        inv[n]:left-=LEFT
+        inv[n]:bottom-=TOP
+        inv[n]:right-=LEFT
+    next
+
+******************************************************************************
+static function sort_inv(sorfile)
+
+local sor,n,i
+
+    for n:=1 to len(inv) 
+        inv[n]:order:=n //default
+    next
+
+    if( !empty(sorfile) )
+
+        sor:=memoread(sorfile)
+        sor::=strtran(","," ")
+        sor::=strtran(chr(10)," ")
+        sor::=strtran(chr(13),"")
+        while("  "$sor)
+            sor::=strtran("  "," ")
+        end
+        sor::=alltrim
+        sor::=split(" ")
+
+        for n:=1 to len(inv) 
+            i:=ascan(sor,{|s|s==inv[n]:name})
+            if( i<1 )
+                ? "WARNING", inv[n]:name, "not in", sor 
             else
-                x+=c
+                inv[n]:order:=i
             end
+        next
+        asort(inv,,,{|x,y|x:order<y:order})    
+    end
+
+
+******************************************************************************
+static function compat() //csiszar-fele check
+local n
+    for n:=1 to len(inv)
+        if( "?"==inv[n]:text::left(1) )
+            aadd(say,sayNew("[ ]",inv[n]:top,inv[n]:left))
+            inv[n]:left++
+            inv[n]:right:=inv[n]:left
         end
     next
-    if( len(x)>0 )
-        aadd(nls,x)
-    end
-    
-    //nls:={...B,X,B,X,...}, ahol 
-    //B tisztán box karakter, 
-    //X nem box karakter (lehet space).
-    //Most összevonjuk azokat a BXB részsorozatokat, ahol X üres.
+    //a beszurasok miatt ujra kell rendezni
+    //concat_say()-nek rendezetten kellenek a say-ek
+    asort(say,,,{|x,y| x:row<y:row .or. x:row==y:row .and. x:col<y:col})
 
-    aadd(nls,"") //végére
-    aadd(nls1,"") //elejére
 
-    for n:=1 to len(nls)-1
-        if( !empty(nls[n]) )
-            aadd(nls1,nls[n])
+******************************************************************************
+static function concat_say() //vizszintesen osszeadja
+local n:=2
+    while( n<=len(say) )
+        if( say[n]:row==say[n-1]:row )
+            say[n-1]:text::=padr(say[n]:col-say[n-1]:col)
+            say[n-1]:text+=say[n]:text
+            adel(say,n)
+            asize(say,len(say)-1)
         else
-            x:=len(nls1)
-            nls1[x]+=nls[n]
-            nls1[x]+=nls[n+1]
             n++
         end
-    next
-    
-    x:=""
-    for n:=1 to len(nls1)
-        if( len(c:=nls1[n])>0 )
-            if( len(x)>0 )
-                x+="+"
-            end
-            if( isbox(c) .or. empty(c) )
-                x+='"'+c+'"'
-            else
-                x+='@"'+c+'"'
-            end
+    end
+
+
+******************************************************************************
+static function concat_inv() //fuggolegesen osszeadja
+local n:=2,i
+    while( n<=len(inv) )
+        if( inv[n]:text::empty )  
+            for i:=1 to n-1
+                if( inv[i]:left!=inv[n]:left )
+                elseif( inv[i]:right!=inv[n]:right )
+                elseif( inv[i]:bottom!=inv[n]:top-1 )
+                else
+                    inv[i]:bottom++
+                end
+            next
+            adel(inv,n)
+            asize(inv,len(inv)-1)
+        else
+            n++
         end
-    next
+    end
+
+
+******************************************************************************
+static function padnum(n,width:=3)
+    n::=str::alltrim
+    if( len(n)<width )
+        n::=padl(width)
+    end
+    return n //string
+
+
+******************************************************************************
+static class say(object)
+    attrib  text
+    attrib  row
+    attrib  col
+    method  initialize
+
+static function say.initialize(this,x,r,c)
+    this:text:=x::rtrim     
+    this:row:=r
+    this:col:=c
+    return this
+
+
+******************************************************************************
+static class inv(object)
+    attrib  text
+    attrib  name
+    attrib  top
+    attrib  left
+    attrib  bottom
+    attrib  right
+    attrib  order
+    method  initialize
+
+static function inv.initialize(this,x,t,l,b,r)
+    this:text:=x::alltrim     
+    this:top:=t
+    this:left:=l
+    this:bottom:=b
+    this:right:=r
+
+    this:name:=this:text
+    if( !this:name::left(1)::isalpha )
+        this:name::=substr(2)
+    end
+    if( !this:name::right(1)::isalnum )
+        this:name::=left(len(this:name)-1)
+    end
+
+    return this
+
+
+******************************************************************************
+static function termsetup()
+    f_maxcol(termsize[1])
+    f_maxrow(termsize[2])
+
+
+static function f_maxrow(s)
+static x:=25
+    if( s!=NIL )
+        x:=s
+    end
     return x
 
-******************************************************************************
-static function isbox(c)
-static box:="┌├│╞└┬┼╪┴─╥╫╬╨┐┤╡┘╔╟╠╚╤╧═╦╩╗╢║╣╝╓╙╖╜╒╘╕╛"
-    return left(c,1)$box
-
-******************************************************************************
-static function gname(x)
-local name:=x[MSKLO_STR] 
-local type:=left(name,1)
-
-    if( type=="[" )
-        name:=strtran(substr(name,2),"]","")
-    elseif( type=="(" )
-        name:=strtran(substr(name,2),")","")
-    elseif( type=="{" )
-        name:=strtran(substr(name,2),"}","")
-    elseif( type=="/" )
-        name:=strtran(substr(name,2),"/","")
-    elseif( type=="<" )
-        name:=strtran(substr(name,2),">","")
+static function f_maxcol(s)
+static x:=80
+    if( s!=NIL )
+        x:=s
     end
-    return alltrim(name)
+    return x
 
 
 ******************************************************************************
-static function gtype(x)
-local name:=x[MSKLO_STR] 
-local type:=left(name,1)
-
-    if( type=="[" )
-        type:="Check"
-    elseif( type=="(" )
-        type:="Radio"
-    elseif( type=="{" )
-        type:="List"
-    elseif( type=="/" )
-        type:="AltButton"
-    elseif( type=="<" )
-        type:="PushButton"
-    else
-        type:="Get"
-    end
-    return type
- 
-
-******************************************************************************
-function sayLTOutObj(mskLeiroTomb,file,srTomb)
-//mskLeiroTomb-ből objektumos típusú .say filét állít elő
-
-local rect:=mskLeiroTomb[MSKL_RECT] 
-local vers:="//msk2say-"+ver()+endofline()
-local prog:=""
-local defi:=""
-local decl:=""
-local glst:=""
-local glsta,oTomb
-local newl:=endofline()
-local startRow,startCol
-local i,w
-
-    if( empty(mskLeiroTomb) )
-        return NIL
-    end
-
-    startRow:=TOP
-    startCol:=LEFT
-    decl+=newl+"static function msk"+upper(BaseName(ExtractName(file)))+"create(bLoad,bRead,bStore)"
-
-    oTomb:=mskLeiroTomb[MSKL_OBJTOMB]
-    glsta:={}
-
-    prog+=newl+"    msk:=mskCreate("+str(TOP,3)+","+str(LEFT,3)+",";
-                                    +str(BOTTOM,3)+","+str(RIGHT,3)+;
-                                    ",bLoad,bRead,bStore)"
-    prog+=newl
-    prog+=newl+"    mskColorSay() //push"
-
-    for i:=1 to len(oTomb)
-        if( oTomb[i][MSKLO_TYPE]=='S' )
-            //w:='"'+oTomb[i][MSKLO_STR]+'"'
-            w:=decomp(oTomb[i][MSKLO_STR]) //NLS
-            prog+=newl+"    mskSay(msk,"+POSRO(oTomb[i][MSKLO_ROW],oTomb[i][MSKLO_COL])+","+w+")"
-        elseif( oTomb[i][MSKLO_TYPE]=='G' )
-            decl+=newl+"local "+NEVPAD(gname(oTomb[i]))+":=space("+str(oTomb[i][MSKLO_FIELDLEN],2)+")"
-            aadd(glsta,oTomb[i])
-        else
-            ? "say/get of unknown type:",oTomb[i][MSKLO_TYPE]
-            quit
-        end
-    next
-
-    prog+=newl+"    mskColorRestore() //pop"
-
-    if( !empty(srTomb) )
-        sorrend(glsta,srTomb)
-    end
-
-    for i:=1 to len(glsta)
-        w:=glsta[i]
-        glst+=newl+"    msk"+padr(gtype(w),10)+"(msk,"+POSRO(w[MSKLO_ROW],w[MSKLO_COL])+",@"+gname(w)+","+'"'+gname(w)+'"'+")"
-        defi+=newl+"#define g_"+NEVPAD(gname(w))+"  "+"getlist["+str(i,2)+"]"
-    next
-
-    decl+=newl+"local msk"
-
-
-    prog+=newl
-    prog+=newl+"    mskColorGet() //push"
-    prog+=glst
-    prog+=newl+"    mskColorRestore() //pop"
-    prog+=newl+"    return msk"
-
-    prog+=newl
-
-    prog+=newl+"static function "+upper(BaseName(ExtractName(file)))+"(bLoad,bRead,bStore)"
-    prog+=newl+"local msk:=msk"+upper(BaseName(ExtractName(file)))+"create(bLoad,bRead,bStore)"
-    prog+=newl+"    mskShow(msk)"
-    prog+=newl+"    mskLoop(msk)"
-    prog+=newl+"    mskHide(msk)"
-    prog+=newl+"    return lastkey()"
-
-    return( memowrit(file,vers+defi+newl+decl+newl+prog+newl))
-
-
-******************************************************************************
-static function sorrend(glsta,sorrendTomb)
-
-//A sorrendTomb-ben szereplő get azonosítók sorrendjét megváltoztatja
-//a glsta-ban úgy, hogy a sorrendjük a sorrendTombben levőkkel azonos
-//legyen. Ha egy glsta elem nem szerepel a sorrendTomb-ben, akkor a helye 
-//nem változik. A glsta formája megfelel az mskLeiro-ban szereplő OBJTOMB-nek.
-
-local i,j,t:={},tg:={}
-
-    for i:=1 to len(sorrendTomb)
-        if( 0==(j:=ascan(glsta,{|x| sorrendTomb[i]==gname(x)})))
-            ? "unknown get field:", sorrendTomb[i]
-        else
-            aadd(t,j)
-            aadd(tg,glsta[j])
-        end
-    next
-
-    asort(t)
-
-    for i:=1 to len(t)
-        glsta[t[i]]:=tg[i]
-    next
-    return NIL
-
-
-******************************************************************************
-static function ver()
-    return "2.1.1-Unicode"
+#ifdef _CCC3_
+  static function cccver(); return("CCC3")
+  static function screencell_width(); return 4
+  static function chrcnv(x); return x
+#else
+  #include "charconv.ch"
+  static function cccver(); return("CCC2")
+  static function screencell_width(); return 2
+  static function chrcnv(x); return x::_charconv(CHARTAB_CWI2CCC)::_charconv(CHARTAB_CCC2LAT)
+#endif
 
 
 ******************************************************************************

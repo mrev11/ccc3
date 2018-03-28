@@ -1,5 +1,8 @@
-0504e0b191110bc0ef721facdb47485e33a1db17 2018032813:53:15-UTC ./CHANGELOG_vermes
-430bdf2d5a6f849d5ffbdc2079b79172aa3e4983 2018032519:47:08-UTC ./log-install
+d8a4c17f2fea35574a45b4e3537fe15548a81b5f 2018032814:12:55-UTC ./CHANGELOG_vermes
+38224eea0903984521de9c3f84f652e81c88d836 2018032814:09:30-UTC ./tutor/control/browse_in_mask.say
+6d92f44e5f729e992cf7c1c96e0c1edb346dbec4 2018032814:09:30-UTC ./tutor/control/control.say
+59d18aec8c18f5c2ddd3d1777ba55e267bfdd53d 2018032814:09:11-UTC ./tutor/control/s3
+618f18119dd1e6acc3de6d20142c82683b720bf2 2018032813:57:25-UTC ./log-install
 92d2632d2489970a9345a3640312841bc1d73caf 2018032519:47:08-UTC ./usr/bin/linux/gitnav
 8b5ce3b0f90d70dcf679bd08e8fa6f185675b5a0 2018032519:47:08-UTC ./usr/bin/linux/gitref
 3ff67b37fe96deb05986f2486fbbdc04fe005829 2018032519:47:08-UTC ./usr/bin/linux/gitstat
@@ -23,7 +26,10 @@ ff4b539ea951895afbb13b2a3a8ea51d7f25f827 2018032519:46:15-UTC ./usr/bin/linux/pr
 3c05403b4a82f5177a3b153e40f0bd6095ec4403 2018032513:33:03-UTC ./ccclib/src/rat.cpp
 66ae6c7288617a8339c859e90a1e5e5c8b2bfa50 2018032414:55:39-UTC ./tools/mask/msk2say/msk2say.prg
 bd4a6ff6bc620ad2c15ae60d7a57a43c7d09592c 2018032413:12:31-UTC ./ccclib/src/uic/mask.prg
+22602817ecd1232951453f1fd9ba57eca9ae9263 2018032409:06:23-UTC ./tutor/control/demo3.prg
+8a637f3ad1bcc70a07a15c15bb7d1ce66c5dc939 2018032408:46:29-UTC ./tutor/control/browse_in_mask.msk
 9922d00778357df74af134db181ab1269d080cfc 2018032317:33:05-UTC ./ccclib/src/uic/getbrw.prg
+51fbcd3f67cfcb7b562e13861f5b32ad82086ff8 2018032313:03:54-UTC ./tutor/control/browse_in_mask.sor
 3704afb599912c9e1698a81a39e87083d779aba3 2018031710:21:50-UTC ./tools/sql2/sql2.hu.ver
 51d2a9d520a08af11ad765a22e0d7e0eceb23069 2018031710:17:28-UTC ./tools/sql2/driver-sqlite3/sqlutil.prg
 e28edc915b8368670aac1ae6bc0cc0e1d2da2d27 2018031710:17:19-UTC ./tools/sql2/driver-sqlite3/sqldebug.prg

@@ -1,0 +1,6 @@
+-ltv
+-d.
+-dver$(CCCVER)
+
+
+BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

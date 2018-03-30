@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if ! test -f log-data; then
+    data.exe
+fi
+
+
+
+tv.exe log-data #| tee log-textview

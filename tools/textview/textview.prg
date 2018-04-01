@@ -11,6 +11,7 @@ class textview(object)
     method  bolpos      // a sor elso karakterenek pozicioja
     method  eolpos      // a sor utolso karakterenek (\n) pozicioja
     method  line        // a szoveg egy sora (C)
+    method  linex       // a szoveg egy sora +[\r]\n (X)
 
 
     attrib  top

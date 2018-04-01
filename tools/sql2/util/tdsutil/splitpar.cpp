@@ -51,7 +51,7 @@ void _clp_splitpar(int argno)
             if( state==1 && par==0 )
             {
                 state=0; //vége
-                if( pleft==txt[i1] )
+                if( pleft==(int)txt[i1] )
                 {
                     strings(txt+i1+1,i-i1-2); //leszedi a szélét
                 }
@@ -78,8 +78,8 @@ void _clp_splitpar(int argno)
                 if(c=='{'){pleft='{';pright='}';par++;}
                 if(c=='['){pleft='[';pright=']';par++;}
             }
-            else if( c==pleft )  par++;
-            else if( c==pright ) par--;
+            else if( (int)c==pleft )  par++;
+            else if( (int)c==pright ) par--;
         }
     }
     

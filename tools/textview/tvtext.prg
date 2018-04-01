@@ -42,3 +42,13 @@ local p2:=this:eolpos(n)
 
 
 ********************************************************************************************
+function textview.linex(this,n)
+local p1:=this:bolpos(n)
+local p2:=this:eolpos(n)
+    if( p1==NIL .or. p2==NIL )
+        return ""
+    end
+    return this:text[p1..p2]
+
+
+********************************************************************************************

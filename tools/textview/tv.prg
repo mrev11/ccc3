@@ -2,7 +2,7 @@
 #include "directry.ch"
 
 **********************************************************************************************
-function main(fspec)
+function main(fspec,pos)
 
 local tv,fd,map
 local d:=directory(fspec)
@@ -27,7 +27,14 @@ local d:=directory(fspec)
     tv:headerblk:={|x|header(x,fspec)}
     tv:mskcolor:="n/330,n/222+"
     tv:txtcolor:="n/w"
+    
+    if( pos!=NIL )
+        tv:setpos(val(pos))
+    end
+    
     tv:loop
+
+    ?? tv:offset
     
 
 **********************************************************************************************
@@ -45,7 +52,7 @@ local offset
 local totlen
 
     offset:=x:offset
-    totlen:=x:text::len
+    totlen:=max(1,x:text::len) //ne legyen 0!
     
     hdrtxt+=" $FSPEC"
     hdrtxt+=" "+offset::str::alltrim+"/"+totlen::str::alltrim

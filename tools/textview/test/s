@@ -4,6 +4,6 @@ if ! test -f log-data; then
     data.exe
 fi
 
+OFFSET=`cat log-textview`
 
-
-tv.exe log-data #| tee log-textview
+tv.exe log-data $OFFSET | tee log-textview

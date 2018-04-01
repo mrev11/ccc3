@@ -158,7 +158,7 @@ local pos1,pos2
     end
     pos2:=at(bin(10),this:text,pos1+1)
     if( pos2==0 .and. pos1<len(this:text) )
-        pos2:=len(this:text)
+        pos2:=len(this:text)+1
     end
     if( pos2==0 )
         return .f.

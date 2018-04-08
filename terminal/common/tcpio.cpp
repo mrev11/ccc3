@@ -502,7 +502,7 @@ static char *localname(int fp, char *fname, const char **dev)
     }
 
 
-    fprintf(stderr,"\nREDIR %d: %s -> %s",fp,fname,locnam);fflush(0);
+    //fprintf(stderr,"\nREDIR %d: %s -> %s",fp,fname,locnam);fflush(0);
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    

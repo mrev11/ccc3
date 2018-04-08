@@ -4,6 +4,9 @@ if ! test -f log-data; then
     data.exe
 fi
 
-OFFSET=`cat log-textview`
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+echo -e "\e]12;darkgreen\a"  # set cursor color
+echo -e "\e]12;brown\a"  # set cursor color
 
-tv.exe log-data $OFFSET | tee log-textview
+tv.exe log-data
+

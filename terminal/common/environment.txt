@@ -10,5 +10,5 @@ CCCTERM_CAPTURE_LPT3        target file/device of lpt3
 CCCTERM_CAPTURE_PRN         target file/device of prn
 
 CCCTERM_FONTFACE            font type in terminal window
-CCCTERM_FONTSIZE            terminal window size
+CCCTERM_FONTSIZE            terminal font size
 

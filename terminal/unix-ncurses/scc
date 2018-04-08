@@ -1,0 +1,10 @@
+#!/bin/bash
+# set cursor color
+
+# usage: 
+#    scc red
+#    scc darkred
+#    scc maroon
+#    ...
+
+echo -e "\e]12;$1\a"

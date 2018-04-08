@@ -31,11 +31,10 @@ local d:=directory(fspec)
     if( pos!=NIL )
         tv:setpos(val(pos))
     end
-    
+
     tv:loop
 
-    ?? tv:offset
-    
+    //?? tv:offset //elrontja az ncterm kepernyojet
 
 **********************************************************************************************
 static function wallpaper()  //a pozicionalas tesztelesehez

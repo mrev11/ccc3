@@ -13,8 +13,8 @@ local color,offset
 
     if(offset!=NIL)
         this:setpos(offset)
-        this:display
     end
+    this:display
 
 
 ****************************************************************************
@@ -36,7 +36,7 @@ local spict:="@S"+glen+"K "+replicate(template,48)
 
     g_search:picture:=spict
     g_search:varput(this:searchstring)
-    g_search:postblock:={|g|!empty(g:varget())}
+    //g_search:postblock:={|g|!empty(g:varget())}
 
 
 ****************************************************************************

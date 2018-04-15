@@ -3,10 +3,7 @@
 ********************************************************************************************
 function textview.text(this,x)
     if( x!=NIL )
-        if( valtype(x)=="C" )
-            x::=str2bin
-        end
-        this:_text_:=x
+        this:_text_:=str2bin(x)
         this:setpos(1)
     end
     return this:_text_

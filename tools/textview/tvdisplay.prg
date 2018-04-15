@@ -4,6 +4,7 @@
 function textview.display(this)
 
 local n
+
     dispbegin()
     for n:=1 to this:height
         this:displine(n)
@@ -20,15 +21,30 @@ local col:=this:left
 local tbeg:=this:sftcol+1
 local twid:=this:width
 local color:=this:txtcolor
+local pos:=0,lss,tss
 
     text::=substr(tbeg,twid)::padr(twid)
-    
-    if( !empty(color) )
-        @ row,col SAY text COLOR color
-    else
-        @ row,col SAY text
-    end
 
+    @ row,col SAY text COLOR color
+
+    //kiemeli a search stringet (elhagyhato)
+
+    while( !empty(this:searchstring) .and. ;
+           0<(pos:=at(this:searchstring,this:line(n),pos+1)) )
+
+        tss:=this:searchstring
+        lss:=this:searchstring::len
+
+        if( pos<tbeg )
+            col:=0
+            tss::=right(lss-tbeg+pos)::left(twid)
+        else
+            col:=pos-tbeg
+            tss::=left(twid-col)
+        end
+        //? col, "["+tss+"]", color::logcolor(2)
+        @ row,col SAY tss COLOR color::logcolor(2)
+    end
 
 ********************************************************************************************
 

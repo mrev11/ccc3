@@ -196,9 +196,9 @@ local n, clp:="", line,col1,col2
             end
 
         elseif( this:markmode=="RECT" )
+            col1:=this:markcol
+            col2:=this:actcol
             if( col1<col2 )
-                col1:=this:markcol
-                col2:=this:actcol
                 for n:=this:markrow to this:actrow
                     clp+=padr(substr(this:atxt[n],col1,col2-col1),col2-col1)
                 next

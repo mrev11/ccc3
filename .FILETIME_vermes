@@ -1,8 +1,15 @@
-cdf367d8bf39d610187b36dcdcdc87fade310595 2018041510:03:32-UTC ./CHANGELOG_vermes
-05d20c9dbc870ab324ad75cfced039fc519e5dc7 2018041509:51:32-UTC ./usr/bin/linux/gitfollow
-e0d56a1fc81b30d76ea55cde7c9033ebb827dc46 2018041509:48:34-UTC ./usr/bin/linux/gitnav
+2b64a8ffb9057cbb2adfe738194608eca612cc17 2018042607:50:09-UTC ./CHANGELOG_vermes
+02e31411cf15d2c16ea7d8ba0e5a1f5b0dfc4f81 2018042607:29:03-UTC ./tools/z/z.ver
+8c285f6fea20ee5e8ad6fd59736e29d76210336d 2018042606:44:22-UTC ./tools/z/zcolor.prg
+d079679b31823ffb71790eddab6e1a34bf402691 2018042207:54:20-UTC ./log-install
+428f79dbe8db8b852298cdd43c3965fc8ac55e13 2018042207:54:20-UTC ./usr/bin/linux/gitfollow
+55df342ee0b955bed49a068ddce7942662cbee42 2018042207:54:20-UTC ./usr/bin/linux/gitnav
+4dd67f81053675b96d75fae7b7422d7285e60110 2018042207:54:20-UTC ./usr/bin/linux/gitref
+5f63d82e2f724c06bdb8f80559ea41d8f7d4b65a 2018042207:54:20-UTC ./usr/bin/linux/gitstat
+8da97707b99a08dc31cff348b5bc90ee68815f2a 2018042207:54:20-UTC ./usr/bin/linux/gitview
+b8c9c798ed17d1533995298f52fa9631f839cfc7 2018042007:06:47-UTC ./usr/bin/freebsd/make.b
+b327275a5252d2824eae12f4ba92d81e89edfcef 2018041915:21:21-UTC ./tools/z/zcopy.prg
 ec69e4d482187ac92746f9514098edc69d2f857c 2018041410:24:08-UTC ./usr/bin/linux/tv
-34db1eec8c60022ad021f4caa7cc76d7c4445b56 2018041314:00:53-UTC ./tools/textview/test/log-data
 5079f20d11f3d5cc5a5827119b1a223e4ecf56a6 2018041313:56:09-UTC ./tools/textview/tvdisplay.prg
 4fd99a88ec11eb54ab40162e5ae7192230b7d254 2018041313:09:40-UTC ./tools/textview/tvsearch.prg
 eb4dcc83d771384bd952643807995c22845a8c9b 2018041209:33:36-UTC ./tools/textview/tvtext.prg
@@ -10,8 +17,6 @@ aca660378c2cf8c23bc89e6df265fa8a557831e6 2018040817:16:09-UTC ./tools/textview/t
 6ff60ec176e57b78457a1cdaf708415497b8bdf8 2018040817:14:56-UTC ./tools/textview/test/s.bat
 7ca54947d4d4fbf803fa544f595893b53fabf458 2018040817:13:35-UTC ./tools/textview/test/m.bat
 c99fab6e761365ef2cffaf285ae2d9a460af83ed 2018040817:12:43-UTC ./tools/textview/m.bat
-29015348f67bfa235a979efb8ea535e8c84ff544 2018040807:29:40-UTC ./log-install
-4929b863dc4267cdc5ffd8f231eadd476ea37127 2018040807:29:40-UTC ./usr/bin/linux/gitview
 b87d9ec8cdbaf4c4f94ce4fc20090fd98091e4ad 2018040807:28:47-UTC ./usr/bin/linux/terminal-gtk
 5fa0d34d44ed3c260e3b887189282cb586a02aa3 2018040807:28:47-UTC ./usr/bin/linux/terminal-gtk3
 1bacfe11d3cad9ec60d7cda3d4977afec199b714 2018040807:28:46-UTC ./usr/bin/linux/ncterm
@@ -31,8 +36,6 @@ ec8d145528d11021275524fc98410ad9418d1cb5 2018033112:10:45-UTC ./tools/sql2/util/
 5a4a553f3662216c75af126c990ed7cb03a5c1c6 2018032910:34:49-UTC ./tools/textview/tvloop.prg
 59d18aec8c18f5c2ddd3d1777ba55e267bfdd53d 2018032814:09:11-UTC ./tutor/control/s3
 3e65abe83f73d750b8b1f4dd25ebcfca06878d6f 2018032706:40:46-UTC ./tools/textview/test/d
-8b5ce3b0f90d70dcf679bd08e8fa6f185675b5a0 2018032519:47:08-UTC ./usr/bin/linux/gitref
-3ff67b37fe96deb05986f2486fbbdc04fe005829 2018032519:47:08-UTC ./usr/bin/linux/gitstat
 6046d69ca1a8f61caea2125f1432e2fed970313b 2018032519:47:04-UTC ./usr/bin/linux/msk2html
 87bd71ab3c19d59b215eaa76b22d980d3eee1937 2018032519:46:42-UTC ./tutor/rename/rnm.say
 d52952ea354316b3daa440ab0c392a14f8a7f1cf 2018032519:46:36-UTC ./tools/z/ver3/zreplace.say
@@ -154,7 +157,6 @@ d0aa1f1d0f9a95a2d1ba1b5c1e0bc6a1e7d083a1 2018022320:27:52-UTC ./usr/bin/linux/ss
 5a1d9e2e848f4162e3cdba994d4564c4067f0295 2018022320:08:55-UTC ./tools/zgrep/ss.b
 586d14445ac6f84fa0cfd8c89068bef55debe1a8 2018022320:01:07-UTC ./usr/include/cccdef.h
 beb3770026c55ee8da049d3c07ee305e52cdfc29 2018022319:58:09-UTC ./tools/zgrep/zgrep_view.prg
-e6d39845fdd262b9a2948d0bb2cefdf099b0c4a2 2018022215:25:43-UTC ./tools/z/z.ver
 b1b0159cfe3d03ed281f4cfe805013c0b259270f 2018022215:19:01-UTC ./tools/z/zloop.prg
 54c0e9d723d6abe4eb34302fdd90bdc79999aed7 2018022215:18:13-UTC ./tools/z/z.prg
 256a821d2240d8a30b540009b53cc4f5abc99281 2018022213:48:29-UTC ./install.bat
@@ -1945,7 +1947,6 @@ c6b44af7bf7834fa25f614b659ff60c8e2c3d30a 2007041210:28:19-UTC ./tutor/multithrea
 eea4e5bb79dd824f0f843a4c17cc8a0a8c7269af 2007041016:32:56-UTC ./jt/jtdemo/tabedit/szladlg.prg
 9eb321c9d0143831fe2ff855b38fe7cbc21bf026 2007041016:20:43-UTC ./jt/jtdemo/tabedit/dlg_szamla.msk
 7eb3b234bc2c1c7e6a1e1f246bcdf9c4058d80dc 2007031811:17:00-UTC ./tools/z/zmark.prg
-ae042f130dcccc0e5b016f19b4825fca7a47c38b 2007031716:16:50-UTC ./tools/z/zcopy.prg
 2e89976f60a955de5a01254f8dd19b66acc46717 2007031512:19:12-UTC ./gtk/code_byhand/gtk-freebsd62.bld
 443414537492bbcf55f664f970a78aa7f82a98c1 2007030914:48:31-UTC ./tools/crypto/blowfish/clean.bat
 dbb614df74e93ccb35e34e6ee8f44beeca89f9f2 2007030813:49:49-UTC ./tools/crypto/blowfish/ofb64.prg
@@ -1988,7 +1989,6 @@ b20c0132ecb0d057d96e00f36fafa6805c09ac57 2007021215:43:49-UTC ./jt/jtdemo/fchoos
 cd6f74f6c48fd365a09e72c3609e8cca51478ff6 2007020112:00:55-UTC ./usr/bin/linux/nlstran.b
 8664a858d21578e005375032cb069b258117a320 2007020111:46:53-UTC ./ccclib/tran/demo/s
 c85c9a32ef35e4ed5824803ca5940c9cee5ca8bf 2007020111:35:24-UTC ./ccclib/tran/demo/nlsdemo.prg
-61e2d9e4f5924bbf8da68dfc19e29aa0cfa48d15 2007012512:03:30-UTC ./tools/z/zcolor.prg
 b15aac2c4882e7e8972df7c13af4dae877daa47b 2007012216:45:59-UTC ./usr/build/solaris/c2obj.bat
 f72e7ace2dcb9e154f4e6fa4309e2311f1ddc6f8 2007012216:45:50-UTC ./usr/build/solaris/_compile.b
 14d673a36268eb7b143890d5b35d82e2906a9ab3 2007012013:15:54-UTC ./tools/crypto/sha1.cpp

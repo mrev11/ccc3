@@ -1,7 +1,16 @@
 
-#define VERSION "3.1.4"
+#define VERSION "3.1.5"
 
 #ifndef VERSION  
+
+2018/04/25 -- 3.1.5
+  _zedit_markedstring javitva
+  zcolor-ban uj kornyezeti valtozok a szinek megadasara:
+    ZCOLOR_TEXT=w/b,n/232     (ket szinpar: a normal es a kijelolt terulet szine)
+    ZCOLOR_MASK=n/133,w+/211  (ket szinpar: a mask es a benne levo get szine)
+  A masodik szinpar opcionalis, ha nincs megadva, akkor az elso inverzet veszi.
+  A header es alert szine ugyanaz, mint a maske.
+  A kivalasztott alert button szine a mask szinenek inverze.
 
 2018/02/22 -- 3.1.4
   Amikor z sajat magat inditja, akkor nem a z scriptet,

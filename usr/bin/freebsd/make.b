@@ -79,7 +79,7 @@ done
 
 if [ "$TRGTYP" == "lib" ]; then
 
-    ar q $LIBPATH/$TARGET.lib *.o 
+    ar -c -q $LIBPATH/$TARGET.lib *.o 
 
  
 elif [ "$TRGTYP" == "so" ]; then

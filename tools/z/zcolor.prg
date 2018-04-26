@@ -18,53 +18,67 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 *******************************************************************************
 function zcolor_0()  //text
 static c
-   if( c==NIL )
-       if( !empty(c:=getenv("ZCOLOR_0")) )
-           //OK
-       else
-           c:="w/n,n/w"
-       end
-   end
-   return c
+    if( c==NIL )
+        if( !empty(c:=getenv("ZCOLOR_TEXT")) )
+            c::=logcolor(1)
+        elseif( !empty(c:=getenv("ZCOLOR_0")) )
+            //OK
+        else
+            c:="w/n"
+        end
+    end
+    return c
 
 *******************************************************************************
 function zcolor_1()  //header, alert, get
 static c
-   if( c==NIL )
-       if( !empty(c:=getenv("ZCOLOR_1")) )
-           //OK
-       else
-           c:="w/bg,n/w"
-       end
-   end
-   return c
+    if( c==NIL )
+        if( !empty(c:=getenv("ZCOLOR_MASK")) )
+            //OK
+        elseif( !empty(c:=getenv("ZCOLOR_1")) )
+            //OK
+        else
+            c:="w/bg,n/w"
+        end
+    end
+    return c
 
 *******************************************************************************
 function zcolor_2() //mark
 static c
-   if( c==NIL )
-       if( !empty(c:=getenv("ZCOLOR_2")) )
-           //OK
-       else
-           c:="bg/w,w/bg"
-       end
-   end
-   return c
+    if( c==NIL )
+        if( !empty(c:=getenv("ZCOLOR_TEXT")) )
+            c::=logcolor(2)
+        elseif( !empty(c:=getenv("ZCOLOR_2")) )
+            //OK
+        else
+            c:="bg/w"
+        end
+    end
+    return c
 
 *******************************************************************************
 function zcolor_3() //alertbutton
 static c
-   if( c==NIL )
-       if( !empty(c:=getenv("ZCOLOR_3")) )
-           //OK
-       else
-           c:="w/b,b/w"
-       end
-   end
-   return c
+    if( c==NIL )
+        if( !empty(c:=getenv("ZCOLOR_MASK")) )
+            c::=logcolor(1)
+            c::=split("/")
+            if( !"+"$c[2] .and. !"n"$c[2] )
+                c[2]+="+"
+            end
+            c:=c[2]+"/"+c[1]
+        elseif( !empty(c:=getenv( "ZCOLOR_3")) )
+            //OK
+        else
+            c:="w/b"
+        end
+    end
+    return c
 
 *******************************************************************************
  

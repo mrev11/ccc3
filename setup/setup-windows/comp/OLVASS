@@ -1,0 +1,6 @@
+
+scriptek a CCC kezdeti installalasahoz
+
+Plusz  eszkoz (comp.exe) az installacios keszlet osszeallitasahoz.
+A comp.exe program egy directoryban minden cpp-t lefordit (amihez 
+nincs ujabb o), es letorli azokat az o-kat, amikhez nincs cpp.

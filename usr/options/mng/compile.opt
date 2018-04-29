@@ -10,3 +10,7 @@
 -DGC_NATIVE
 -funsigned-char
 -mms-bitfields
+-Wno-unused
+-Wno-trigraphs
+-Wno-empty-body
+-Wno-int-to-pointer-cast

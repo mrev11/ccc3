@@ -1,3 +1,11 @@
+2018.04.29 windows setup lecserelve;
+2018.04.28 alternativ windows setup:
+  Az windowsos indulo keszlet is cpp forrasbol fordul
+  (hogy ne legyen szukseg exe fajlok orizgetesere);
+  Az (uj) int-to-pointer-cast warning hatastalanitva;
+  A warningok listazasa (Windowson veletlenul el voltak nyomva);
+  Windowson #define strcasecmp ifdefelve;
+
 2018.04.26 z javitasok:
   _zedit_markedstring javitva
   zcolor-ban uj kornyezeti valtozok a szinek megadasara:

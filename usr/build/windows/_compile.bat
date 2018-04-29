@@ -55,10 +55,10 @@ if errorlevel 1 goto error
     touch error
     del   %TARGET%  2>nul
     copy  %OUTCPP% %ERROR% >nul
-    type  %OUTCPP%
 
 :stop
 
+type  %OUTCPP%
 del %OUTCPP%
 
 

@@ -30,7 +30,9 @@
 #include <signal.ch>
 
 #ifdef WINDOWS
-#define strcasecmp stricmp
+  #ifndef strcasecmp
+    #define strcasecmp stricmp
+  #endif
 #endif
 
 //-----------------------------------------------------------------------------

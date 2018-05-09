@@ -324,15 +324,15 @@ local w
 
    for i:=1 to len(o:fields)
       f:=o:fields[i]
-      sCh+="#define "+o:table::upper+"_"+f:fname::upper::padr(11)+" "+;
-           o:table::lower+"->"+f:fname::lower::padr(12)+eol
+      sCh+="#define "+o:table::upper+"_"+f:fname::upper::padr(MAXLEN_FIELDNAME)+" "+;
+           o:table::lower+"->"+f:fname::lower::padr(MAXLEN_FIELDNAME)+eol
    end for
 
    sCh+="#else"+eol;
 
    for i:=1 to len(o:fields)
       f:=o:fields[i]
-      sCh+="#define "+o:table::upper+"_"+f:fname::upper::padr(11)+" "+;
+      sCh+="#define "+o:table::upper+"_"+f:fname::upper::padr(MAXLEN_FIELDNAME)+" "+;
            "(FIELD:_"+o:table::lower+":"+i::stra+")"+eol
    end for
 
@@ -357,7 +357,7 @@ local w
    // DEBUG(outstd(o:fields,endofline()))
    for i:=1 to len(o:fields)
       f:=o:fields[i]
-      sPrg+=tab+tab+"tabAddColumn(dbf,{"+f:fname::upper::pString::padr(24)+","+;
+      sPrg+=tab+tab+"tabAddColumn(dbf,{"+f:fname::upper::pString::padr(MAXLEN_FIELDNAME)+","+;
            f:ftype::pString+","+f:flen::padl(3)+","+f:fdec::padl(2)+"})"+eol
    end for
 

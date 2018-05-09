@@ -1,5 +1,6 @@
-f8b5969af48faec713ba89c240cfbe677e705d60 2018042911:11:06-UTC ./CHANGELOG_vermes
-f5edcde5e29a2d6759c08d6a18bbe53734e88ca9 2018042910:11:44-UTC ./log-install
+746bbace406ab788c2123605069d7adb41d0e812 2018050908:04:53-UTC ./CHANGELOG_vermes
+cce2a7adff9e0e3872fe6be98b05e4a2525eaa32 2018050814:48:01-UTC ./tools/tdc2prgch/tdc2prgch.prg
+06f3aa24b701acb87bd4478fde67aaf918820330 2018050307:28:18-UTC ./log-install
 256a821d2240d8a30b540009b53cc4f5abc99281 2018042908:43:46-UTC ./install.bat
 4ef429987384346d2c18cda035980a20638e5d0c 2018042818:56:44-UTC ./ccclib/src/uic/termapi/remoteio.cpp
 8bed9be5c3e08b7dea2c7be5791e6c2c43a96287 2018042818:56:44-UTC ./setup/setup-windows-alt/m.bat
@@ -18,13 +19,13 @@ c24ebd53cd769cc8c9f6a53582b1ed4496ff3cc6 2018042816:40:24-UTC ./setup/setup-wind
 72e5e7514e95f2aad8bb60d62d3f2cc2be977c1c 2018042816:12:02-UTC ./setup/setup-windows-alt/lib3/OLVASS
 569934b2d1194476a4ed87992e8658f49dc5e199 2018042816:10:54-UTC ./setup/setup-windows-alt/lib2/OLVASS
 56f090c2cec16b68cbe9cf970d459537de0946d0 2018042816:06:56-UTC ./setup/setup-windows-alt/comp/comp.prg
-62049987efd3585fe576823ac7b2b653b40977e5 2018042721:15:58-UTC ./setup/setup-windows-alt/_prg2ppo/trinp.cpp
-9e50e55ac2eaad6409824d16e8faef585aba327e 2018042721:15:58-UTC ./setup/setup-windows-alt/_prg2ppo/xtlex.cpp
-0cfd04d0486fc8cbbf15a022ac2fa2d0654ec9ac 2018042721:15:57-UTC ./setup/setup-windows-alt/_prg2ppo/input.cpp
-6807d8f700fe40d2fcf9b40c4f4b16b3100d110a 2018042721:15:57-UTC ./setup/setup-windows-alt/_prg2ppo/trfind.cpp
-34ea51b7880d29e39056acd22b9a1a3d86042c37 2018042721:15:57-UTC ./setup/setup-windows-alt/_prg2ppo/xtxlegal.cpp
 dee2dabbbec433f2fa5b1c40893eb6434bab46ac 2018042721:15:53-UTC ./setup/setup-windows-alt/_ccomp/ccomp.cpp
 166109f0c49d3636f7ef2e1bc14287e46faabc4e 2018042721:14:53-UTC ./setup/setup-windows-alt/lib3/directory.cpp
+9e50e55ac2eaad6409824d16e8faef585aba327e 2018042716:32:22-UTC ./setup/setup-windows-alt/_prg2ppo/xtlex.cpp
+62049987efd3585fe576823ac7b2b653b40977e5 2018042716:32:21-UTC ./setup/setup-windows-alt/_prg2ppo/trinp.cpp
+0cfd04d0486fc8cbbf15a022ac2fa2d0654ec9ac 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/input.cpp
+6807d8f700fe40d2fcf9b40c4f4b16b3100d110a 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/trfind.cpp
+34ea51b7880d29e39056acd22b9a1a3d86042c37 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/xtxlegal.cpp
 6261c590819d557af1a746dec19961c8df3471c0 2018042608:14:12-UTC ./usr/bin/linux/gitfollow
 a6cf749dfb5fb3ef049b465da6340eb405464e4b 2018042608:14:12-UTC ./usr/bin/linux/gitnav
 f78731d3d96e46d67629cbe31a56c98b5f61fd73 2018042608:14:12-UTC ./usr/bin/linux/gitref
@@ -124,7 +125,7 @@ eba6e91c36acdc181193a3cbdccbbb061fd6eb96 2018040708:03:54-UTC ./terminal/unix-nc
 ec8d145528d11021275524fc98410ad9418d1cb5 2018033112:10:45-UTC ./tools/sql2/util/tdsutil/splitpar.cpp
 0f209f24a7b2c32f89e646f93f3f1f0316344e96 2018033012:06:55-UTC ./tools/textview/parfile.bld
 5a4a553f3662216c75af126c990ed7cb03a5c1c6 2018032910:34:49-UTC ./tools/textview/tvloop.prg
-59d18aec8c18f5c2ddd3d1777ba55e267bfdd53d 2018032814:09:11-UTC ./tutor/control/s3
+59d18aec8c18f5c2ddd3d1777ba55e267bfdd53d 2018032814:06:31-UTC ./tutor/control/s3
 3e65abe83f73d750b8b1f4dd25ebcfca06878d6f 2018032706:40:46-UTC ./tools/textview/test/d
 87bd71ab3c19d59b215eaa76b22d980d3eee1937 2018032519:46:42-UTC ./tutor/rename/rnm.say
 d52952ea354316b3daa440ab0c392a14f8a7f1cf 2018032519:46:36-UTC ./tools/z/ver3/zreplace.say
@@ -379,7 +380,6 @@ e16f8234d5d6661793d1727b6c790361566548d8 2017120909:05:53-UTC ./tools/pcre/pcre_
 11257e992097139aa23693fdc6ce113b3d97765d 2017120507:56:07-UTC ./ccctools/buildp/build.prg
 4897cedfc9140d18f50fd09e3311b9193af25a46 2017120507:55:38-UTC ./ccctools/buildp/build.hu.ver
 ecffbd01481b28da808c0ef0f7b66d68b19d7af1 2017120209:15:29-UTC ./terminal/unix-ncurses/ncterm.cpp
-91dc7c7ed1245d27cb573da4b0f55ab6f91be11a 2017112616:42:53-UTC ./tools/tdc2prgch/tdc2prgch.prg
 fce79f3c75233f8fb69392edd1c5d48dcc0fc62e 2017112612:00:09-UTC ./tools/tdccmp/parfile.bld
 d591640a695dd272f92db7bc082ad05ac110dd2b 2017112611:47:05-UTC ./tools/tdccmp/mkdiff1
 e5c33891d88a6fc03d6633c64fe05082288b1c84 2017112611:42:07-UTC ./tools/tdccmp/mkdiff

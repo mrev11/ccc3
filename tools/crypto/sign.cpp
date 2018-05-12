@@ -24,9 +24,15 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 #include <openssl/buffer.h>
+#include <openssl/opensslv.h>
 
 #include <cccapi.h>
 #include <ccc_crypto.h>
+
+#if OPENSSL_VERSION_NUMBER <  0x10100000L
+static EVP_MD_CTX *EVP_MD_CTX_new(){return new EVP_MD_CTX;}
+static void EVP_MD_CTX_free(EVP_MD_CTX *ctx){delete ctx;}
+#endif
  
 //-------------------------------------------------------------------------- 
 void _clp_crypto_sign(int argno)  //egy lépésben
@@ -44,9 +50,9 @@ void _clp_crypto_sign(int argno)  //egy lépésben
         crypto_error("PEM_parse_PrivateKey");
     }
 
-    EVP_MD_CTX md_ctx;
-    EVP_SignInit(&md_ctx,EVP_sha1());
-    EVP_SignUpdate(&md_ctx,datbuf,datlen);
+    EVP_MD_CTX *md_ctx=EVP_MD_CTX_new();
+    EVP_SignInit(md_ctx,EVP_sha1());
+    EVP_SignUpdate(md_ctx,datbuf,datlen);
 
     //Ezt tudják a normális fordítók (GCC):
     //  unsigned char sigbuf[ EVP_PKEY_size(pkey) ];
@@ -56,9 +62,10 @@ void _clp_crypto_sign(int argno)  //egy lépésben
 
     char *sigbuf=binaryl(EVP_PKEY_size(pkey));
     unsigned int siglen=0; //output
-    int res=EVP_SignFinal(&md_ctx,(unsigned char*)sigbuf,&siglen,pkey);
+    int res=EVP_SignFinal(md_ctx,(unsigned char*)sigbuf,&siglen,pkey);
 
     EVP_PKEY_free(pkey);                            //free
+    EVP_MD_CTX_free(md_ctx);    
     
     if( res!=1 )
     {
@@ -74,7 +81,7 @@ void _clp_crypto_sign(int argno)  //egy lépésben
 void _clp_crypto_sign_init(int argno)  //részletekben
 {
     CCC_PROLOG("crypto_sign_init",0);
-    EVP_MD_CTX *md_ctx=new EVP_MD_CTX();
+    EVP_MD_CTX *md_ctx=EVP_MD_CTX_new();
     EVP_SignInit(md_ctx,EVP_sha1());
     _retp(md_ctx);
     CCC_EPILOG();
@@ -103,7 +110,7 @@ void _clp_crypto_sign_final(int argno)
     EVP_PKEY *pkey=PEM_parse_PrivateKey(privkey); 
     if( pkey==NULL )
     {
-        delete md_ctx;
+        EVP_MD_CTX_free(md_ctx);
         crypto_error("PEM_parse_PrivateKey");
     }
 
@@ -118,7 +125,7 @@ void _clp_crypto_sign_final(int argno)
     int res=EVP_SignFinal(md_ctx,(unsigned char*)sigbuf,&siglen,pkey);
 
     EVP_PKEY_free(pkey);
-    delete md_ctx;
+    EVP_MD_CTX_free(md_ctx);
  
     if( 1!=res )
     {
@@ -178,12 +185,13 @@ void _clp_crypto_verify(int argno)  //egy lépésben
         X509_free(x509);                                   
     }
   
-    EVP_MD_CTX md_ctx;
-    EVP_VerifyInit(&md_ctx,EVP_sha1());
-    EVP_VerifyUpdate(&md_ctx,datbuf,datlen);
-    int res=EVP_VerifyFinal(&md_ctx,sigbuf,siglen,pkey);
+    EVP_MD_CTX *md_ctx=EVP_MD_CTX_new();
+    EVP_VerifyInit(md_ctx,EVP_sha1());
+    EVP_VerifyUpdate(md_ctx,datbuf,datlen);
+    int res=EVP_VerifyFinal(md_ctx,sigbuf,siglen,pkey);
 
     EVP_PKEY_free(pkey);
+    EVP_MD_CTX_free(md_ctx);    
     
     _retl( res==1 );
 
@@ -194,7 +202,7 @@ void _clp_crypto_verify(int argno)  //egy lépésben
 void _clp_crypto_verify_init(int argno)  //részletekben
 {
     CCC_PROLOG("crypto_verify_init",0);
-    EVP_MD_CTX *md_ctx=new EVP_MD_CTX();
+    EVP_MD_CTX *md_ctx=EVP_MD_CTX_new();
     EVP_VerifyInit(md_ctx,EVP_sha1());
     _retp(md_ctx);
     CCC_EPILOG();
@@ -231,7 +239,7 @@ void _clp_crypto_verify_final(int argno)
         pkey=PEM_parse_PublicKey(bm); 
         if( pkey==NULL )
         {
-            delete md_ctx;
+            EVP_MD_CTX_free(md_ctx);    
             crypto_error("PEM_parse_PublicKey");
         }
     }
@@ -241,7 +249,7 @@ void _clp_crypto_verify_final(int argno)
         X509 *x509=PEM_parse_X509(bm);
         if( x509==NULL ) 
         {
-            delete md_ctx;
+            EVP_MD_CTX_free(md_ctx);    
             crypto_error("PEM_parse_X509");
         }
  
@@ -249,7 +257,7 @@ void _clp_crypto_verify_final(int argno)
         if( pkey==NULL )
         {
             X509_free(x509);
-            delete md_ctx;
+            EVP_MD_CTX_free(md_ctx);    
             crypto_error("X509_get_pubkey");
         }
 
@@ -259,7 +267,7 @@ void _clp_crypto_verify_final(int argno)
     int res=EVP_VerifyFinal(md_ctx,sigbuf,siglen,pkey);
 
     EVP_PKEY_free(pkey);
-    delete md_ctx;
+    EVP_MD_CTX_free(md_ctx);    
    
     _retl( res==1 );
 

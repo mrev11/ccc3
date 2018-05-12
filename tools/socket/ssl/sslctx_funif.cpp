@@ -23,8 +23,17 @@
 #include <string.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
+#include <openssl/opensslv.h>
 
 #include <cccapi.h>
+
+
+#if OPENSSL_VERSION_NUMBER <  0x10100000L
+static const SSL_METHOD *TLS_method()         {return TLSv1_method();}        
+static const SSL_METHOD *TLS_server_method()  {return TLSv1_server_method();} 
+static const SSL_METHOD *TLS_client_method()  {return TLSv1_client_method();}
+#endif
+
 
 static int initmodule()
 {
@@ -85,15 +94,24 @@ void _clp_sslctx_new(int argno)
         else 
         */
         
-             if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv3_method();
-        else if( 0==strcmp(_parb(1),"SSLv3_server") )  method=SSLv3_server_method();
-        else if( 0==strcmp(_parb(1),"SSLv3_client") )  method=SSLv3_client_method();
+             if( 0==strcmp(_parb(1),"SSLv3") )         method=SSLv23_method();
+        else if( 0==strcmp(_parb(1),"SSLv3_server") )  method=SSLv23_server_method();
+        else if( 0==strcmp(_parb(1),"SSLv3_client") )  method=SSLv23_client_method();
         else if( 0==strcmp(_parb(1),"SSLv23") )        method=SSLv23_method();
         else if( 0==strcmp(_parb(1),"SSLv23_server") ) method=SSLv23_server_method();
         else if( 0==strcmp(_parb(1),"SSLv23_client") ) method=SSLv23_client_method();
-        else if( 0==strcmp(_parb(1),"TLSv1") )         method=TLSv1_method();
-        else if( 0==strcmp(_parb(1),"TLSv1_server") )  method=TLSv1_server_method();
-        else if( 0==strcmp(_parb(1),"TLSv1_client") )  method=TLSv1_client_method();
+
+        else if( 0==strcmp(_parb(1),"TLSv1") )         method=TLS_method();
+        else if( 0==strcmp(_parb(1),"TLSv1_server") )  method=TLS_server_method();
+        else if( 0==strcmp(_parb(1),"TLSv1_client") )  method=TLS_client_method();
+
+
+        //az alabbiakat kell hasznalni
+        //minden mas deprecated/removed
+
+        else if( 0==strcmp(_parb(1),"TLS") )           method=TLS_method();
+        else if( 0==strcmp(_parb(1),"TLS_server") )    method=TLS_server_method();
+        else if( 0==strcmp(_parb(1),"TLS_client") )    method=TLS_client_method();
     }
 
     SSL_CTX *ctx=SSL_CTX_new( (SSL_METHOD*) method );

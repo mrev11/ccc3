@@ -61,7 +61,8 @@ void _clp_crypto_rand_pseudo_bytes(int argno)
     int length=_parni(1);
     char *buf=binaryl(length);
 
-    if( 0<=RAND_pseudo_bytes((unsigned char*)buf,length) )
+  //if( 0<=RAND_pseudo_bytes((unsigned char*)buf,length) )  //deprecated
+    if( 1==RAND_bytes((unsigned char*)buf,length) )
     {
         _retblen(buf,length);
     }

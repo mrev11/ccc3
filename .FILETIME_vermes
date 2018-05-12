@@ -1,6 +1,10 @@
-746bbace406ab788c2123605069d7adb41d0e812 2018050908:04:53-UTC ./CHANGELOG_vermes
+4b01d4e0d0fb050570fa9b9a08127aa7f4e04f2c 2018051209:12:15-UTC ./CHANGELOG_vermes
+35fc6ed7207602a85a121087ff092fec587e2118 2018051122:34:00-UTC ./tools/socket/ssl/sslctx_funif.cpp
+0fcf91ca3d25a486120fa8fd28048cec4655a98e 2018051121:51:27-UTC ./tools/crypto/rand.cpp
+8f6c16431a69b853b2ad19068453d4e1b650cdce 2018051121:27:03-UTC ./tools/crypto/sign.cpp
+dc8ffa471c6facb8e647c8756498e03a292a0bb1 2018050908:17:58-UTC ./log-install
+b5f30cbd736268cc5970d973a29e5cea8e104ae4 2018050908:17:20-UTC ./usr/bin/linux/tdc2prgch
 cce2a7adff9e0e3872fe6be98b05e4a2525eaa32 2018050814:48:01-UTC ./tools/tdc2prgch/tdc2prgch.prg
-06f3aa24b701acb87bd4478fde67aaf918820330 2018050307:28:18-UTC ./log-install
 256a821d2240d8a30b540009b53cc4f5abc99281 2018042908:43:46-UTC ./install.bat
 4ef429987384346d2c18cda035980a20638e5d0c 2018042818:56:44-UTC ./ccclib/src/uic/termapi/remoteio.cpp
 8bed9be5c3e08b7dea2c7be5791e6c2c43a96287 2018042818:56:44-UTC ./setup/setup-windows-alt/m.bat
@@ -64,7 +68,6 @@ fbbbdc151bf5f2786148152868b0eab269f8a1cf 2018042608:13:40-UTC ./usr/bin/linux/st
 2af06dced374d1fe61b4c448133bdf78f7068be5 2018042608:13:36-UTC ./usr/bin/linux/websrv
 f497bf599341e4b1dc1132e8ae2bc27adebd403c 2018042608:13:34-UTC ./usr/bin/linux/prg2tdc
 e64706ea23a55190e10dc279818735dcd73625fe 2018042608:13:34-UTC ./usr/bin/linux/tabsuper
-bcfec4b6e9c78eebd608e140eb8ea3679076d7f6 2018042608:13:34-UTC ./usr/bin/linux/tdc2prgch
 d3549a0a2191e80da64e1a2c08bc6b8001aec841 2018042608:13:34-UTC ./usr/bin/linux/tdccmp
 e5315194040514d37bed2da45de07dda9996831e 2018042608:13:34-UTC ./usr/bin/linux/tran2cpp
 2b0345705297414584f191a6047d6e76aaac8b3c 2018042608:13:32-UTC ./usr/bin/linux/savex
@@ -1120,7 +1123,6 @@ f1d705cb7602ee84691b4cca3a9544298141bb80 2014011607:59:56-UTC ./usr/options/fre/
 0781bdb27ad595463a2702b0b853b5985f613bb7 2014011517:30:27-UTC ./setup/setup-lemon/m
 fb498ec4e8aa4c4352fdd1f0384a0fab481b194a 2013112911:29:57-UTC ./backport.txt
 2108f44f3930582c36ab953aaab2716999f8d213 2013112911:18:39-UTC ./tools/crypto/clean.b
-6dffcbbb23e6c9dd90947ead0db83c0404feb3fe 2013112909:58:25-UTC ./tools/crypto/sign.cpp
 a860da2eb475e1e9d198036ab4f07c6bc77256dc 2013112813:55:19-UTC ./tools/setperm/setgid_on_directories
 14c7bf4199346f00d90cfdcbed8b9741d99f4fca 2013112511:38:16-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.prg
 6e79f17980d8272282e336b5ceab88f92ee40453 2013112316:33:44-UTC ./ccclib/src/deferror.prg
@@ -1293,7 +1295,6 @@ bc662b58a5d2a3a1268c3a6545ce40cc0842168a 2012042111:13:47-UTC ./tools/webapp/pro
 405b2266730e2e093a00ea5ad4dbdc0ecc340e8a 2012022610:21:22-UTC ./tools/mask/kozepes.msk
 e3ae42850f095dbf4bbe493f9673f2eda4476b95 2012022609:46:45-UTC ./tools/mask/nagy.msk
 a8f87446421cce99e2f021f3493297ddec667f19 2012022517:37:47-UTC ./tools/xmldom/xmldom_lemon.prg
-dea59134f63c0c66a40eafe080ac8622d8416bb8 2012021916:39:13-UTC ./tools/socket/ssl/sslctx_funif.cpp
 e731c0697f7ce1d4b466767588d477754bc59682 2012021916:20:24-UTC ./tabobj/tbbtbtx/utility/m
 458d385f0bfa44605bea9767e2ea4134367a4396 2012021916:17:17-UTC ./tabobj/tbbtbtx/utility/parexe.bld
 6ccad6e08bce3aebd0d4fa9401f7c104d00caa78 2012010815:49:32-UTC ./doc/ccc-belulrol/script/head.html
@@ -2543,7 +2544,6 @@ f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042515:22:22-UTC ./ccclib/ccc.bldwi
 6b4fbcdb30e33f82e37b4be8f657d83a9b8423f7 2006042510:48:33-UTC ./ccclib/src/uic/o_tbcolumn.prg
 73e366201f69c9ed7eb60ed26875c22049f49d89 2006042216:47:25-UTC ./tabobj/tbbtbtx/utility/parlib.bld
 4ea0146b9237efde7cdcc66e694eeec87b2eb27f 2006042214:29:29-UTC ./tools/crypto/rsapubenc.cpp
-6e415edc769688b37156caedb984aa38f18573bb 2006042214:22:57-UTC ./tools/crypto/rand.cpp
 89807763146b264b3b4e5a58da46c70108ef53df 2006042214:16:48-UTC ./tools/crypto/bin2hex.cpp
 dd9f2e5f4ac876b65cf7f634019f776658f264f3 2006042209:51:31-UTC ./ccclib/src/uic/brwedit.prg
 a3f18b4d5b613bc3fa11b8e81318ba09917cf788 2006042209:31:22-UTC ./ccclib/src/uic/memoedit.prg

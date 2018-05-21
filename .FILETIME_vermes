@@ -1,8 +1,10 @@
-4b01d4e0d0fb050570fa9b9a08127aa7f4e04f2c 2018051209:12:15-UTC ./CHANGELOG_vermes
+c2dc638c543d425bf497a1b58a3bb9f56af92290 2018052106:21:40-UTC ./CHANGELOG_vermes
+75881f168ec34219a1975f3ab79c751a1a79468d 2018052106:20:00-UTC ./ccclib/m
+5ceda35604d79a4cb6875065c98376094cb2753d 2018051920:17:35-UTC ./log-install
+a98e9b313d1da8860e8e46d6cfe1335d9d9199e7 2018051920:16:59-UTC ./usr/bin/linux/websrv
 35fc6ed7207602a85a121087ff092fec587e2118 2018051122:34:00-UTC ./tools/socket/ssl/sslctx_funif.cpp
 0fcf91ca3d25a486120fa8fd28048cec4655a98e 2018051121:51:27-UTC ./tools/crypto/rand.cpp
 8f6c16431a69b853b2ad19068453d4e1b650cdce 2018051121:27:03-UTC ./tools/crypto/sign.cpp
-dc8ffa471c6facb8e647c8756498e03a292a0bb1 2018050908:17:58-UTC ./log-install
 b5f30cbd736268cc5970d973a29e5cea8e104ae4 2018050908:17:20-UTC ./usr/bin/linux/tdc2prgch
 cce2a7adff9e0e3872fe6be98b05e4a2525eaa32 2018050814:48:01-UTC ./tools/tdc2prgch/tdc2prgch.prg
 256a821d2240d8a30b540009b53cc4f5abc99281 2018042908:43:46-UTC ./install.bat
@@ -65,7 +67,6 @@ fbbbdc151bf5f2786148152868b0eab269f8a1cf 2018042608:13:40-UTC ./usr/bin/linux/st
 0b36dc9f75c21911e6adcbe2d1db48bb952a4130 2018042608:13:40-UTC ./usr/bin/linux/zgrep
 29261cddb86e92d02e7527e083888400a017c7b0 2018042608:13:39-UTC ./usr/bin/linux/zhist
 9a92bb61e683911149d320860ad6306e26337ce3 2018042608:13:37-UTC ./usr/bin/linux/xstart
-2af06dced374d1fe61b4c448133bdf78f7068be5 2018042608:13:36-UTC ./usr/bin/linux/websrv
 f497bf599341e4b1dc1132e8ae2bc27adebd403c 2018042608:13:34-UTC ./usr/bin/linux/prg2tdc
 e64706ea23a55190e10dc279818735dcd73625fe 2018042608:13:34-UTC ./usr/bin/linux/tabsuper
 d3549a0a2191e80da64e1a2c08bc6b8001aec841 2018042608:13:34-UTC ./usr/bin/linux/tdccmp
@@ -99,10 +100,6 @@ ff4b539ea951895afbb13b2a3a8ea51d7f25f827 2018042608:13:14-UTC ./usr/bin/linux/pr
 89c1cc2b7093c5faa1d216b3542576992d9ec503 2018042608:13:14-UTC ./usr/bin/linux/terminal-xft
 79edfde4e2df23a32bb577f54fa391cf499a0ba4 2018042608:13:12-UTC ./usr/bin/linux/build
 70ab30fb6c07e651c406f48f7489586cd2bd5934 2018042608:13:04-UTC ./usr/bin/linux/ppo2cpp
-175ddf1979fba334bd567e14650a28b8bcb269c6 2018042608:13:03-UTC ./setup/setup-unix/removecr/rsplink
-206429f4e8099f11379850e2328195f4722cfcfa 2018042608:13:02-UTC ./setup/setup-unix/prg2ppo/rsplink
-04a031e84662ab6a982ee7cbc9191308f820031e 2018042608:13:00-UTC ./setup/setup-unix/build/rsplink
-2365336f989e98a2a2ff0b505f323f1f1e9ce06d 2018042608:13:00-UTC ./setup/setup-unix/compopt
 98fdd6ee83bccaec7006e9d7fa3b56fc3c2aec1b 2018042608:12:53-UTC ./usr/bin/linux/flex
 7346b9526d3aafebc12b26bddd81848ab068626d 2018042608:12:53-UTC ./usr/bin/linux/lemon
 a70a961c898acdcf3f4e592da53336be945d6a45 2018042608:12:53-UTC ./usr/options/lin/gccver.opt
@@ -1110,7 +1107,6 @@ fc5aefda582bf1b6cd68b4049c72f02b1afa94d9 2014012508:14:45-UTC ./gtk/glade/gtksym
 1698ace1e8b9e91fdbf669711ca805650e8b9980 2014012508:14:04-UTC ./ccctools/ppo2cpp/parsenode.h
 36ddd765d3df7ac26b06e7521c9ad2d009852e88 2014012508:13:58-UTC ./ccctools/ppo2cpp/lexer.lex
 8715c35a969ceb71064bf80148c3f0aee47fdf3b 2014012508:13:53-UTC ./ccctools/ppo2cpp/lexer.h
-af76c83c7f8577d28f5e16d89104f6cb21dcfda1 2014012508:13:47-UTC ./setup/setup-unix/variable_native.inc
 ce4b40e078efce1500717e09253121839428b882 2014012508:04:47-UTC ./setup/setup-flex/parse.c
 9263ea27c72136f86fb10f8df85929fe1a1f96e3 2014012508:04:37-UTC ./setup/setup-flex/flexdef.h
 b13f9eda01343d236e8f551352f087a3d0255f5d 2014012107:28:16-UTC ./tools/xmldom/xmldom.hu.ver
@@ -1177,7 +1173,6 @@ f2fbea9aba8536285677476dcaf234e4bce844d4 2012121316:32:06-UTC ./tabobj/tbbtbtx/b
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
 73dd648c0cd17c798ba6f5846b62e40f0bd4e269 2012102712:37:54-UTC ./gtk/defs/gtkwindow.defs
-a51b0466e4e5c648d2278b393e4b8082122832b1 2012102311:56:57-UTC ./setup/setup-unix/i2bin.cpp
 d9f64eb5a808d41a91199bcabd3c756d3fb75600 2012102117:47:44-UTC ./tools/xstart/xstart.par
 493aa183a916f3f7ce655334eb27fb923f0d99f7 2012102114:39:13-UTC ./terminal/terminal-test/remio/m.bat
 24e75028d7a896d97da0cc0d6127f802dffc5f24 2012102111:26:26-UTC ./terminal/terminal-test/screenwr/m
@@ -1195,7 +1190,6 @@ be0129718eb0801e41808340ce1594407cd8055b 2012101006:54:33-UTC ./setup/setup-unix
 72af0b9246404d1e18f154b815edd60e6ed3cbb0 2012100914:14:43-UTC ./setup/setup-unix/fileio.cpp
 7aee4c7f9d5cc64650124dc7f7d9646ee3e5717f 2012100913:58:10-UTC ./setup/setup-unix/slice.cpp
 4cc331af565d91354dfb5772cb1f7619bff9df95 2012100913:56:21-UTC ./setup/setup-unix/at.cpp
-3d9099b56867dbbe0789a422470ef052439fbf9d 2012100913:54:47-UTC ./setup/setup-unix/rat.cpp
 74862bb159d2183b508ab06e4f504acfca0932c5 2012100912:41:10-UTC ./setup/setup-unix/array.cpp
 f4f863d96312cb5101a032140764d28aee0a65f4 2012100908:55:54-UTC ./setup/setup-unix/varprint.cpp
 d05d030cb1d2444297845b4839f80d713af51462 2012100908:26:09-UTC ./setup/setup-unix/substr.cpp
@@ -1309,7 +1303,6 @@ c6c194d8186e5b1017a4055fd947ec3bdfbf0fd3 2011112822:06:49-UTC ./tools/webapp/pro
 7592eb584d581d7f0815aaf6250d3a8d7cfad7c1 2011111821:51:33-UTC ./tools/webapp/program/webapp/socketpair.prg
 48d097b59230eb572d8ef06adfc1ca9e3d412248 2011111509:53:17-UTC ./jt/jtlib/jtdialog.prg
 430fe9e4c3b0f5ea014083bc2b9c1a8a9255e25d 2011091909:51:21-UTC ./tabobj/commonui.src/tabedrec.prg
-af5e0dad5a5517a68d5489036b3696dc523d64c8 2011091909:37:01-UTC ./setup/setup-unix/procline.cpp
 669948b7ed23d31ae3ceb42d336177890f459a4f 2011082818:55:05-UTC ./ccclib/src/uic/o_get.prg
 ea887c120b4fcb6e2a0fa3158542b1ea778bab08 2011082512:07:59-UTC ./tools/mask/box.msk
 64633b04222be4701e923e54a7765b872b103189 2011080614:49:45-UTC ./jt/jterminal/jterminal.java
@@ -1418,7 +1411,6 @@ c82d282b0b36014d70e5110a06536deeaea3790d 2010041616:36:57-UTC ./jt/jtlib/jtelem.
 d2f2ef693f05c7b518fe0778039023c019e91b59 2010041417:35:14-UTC ./tutor/fpath/m.bat
 8d6face4cbecb534e38b132b84dac715426e50dd 2010040806:57:16-UTC ./setup/setup-unix/main.cpp
 c084c901cf025d6c908eb0923deff47bad9a5a25 2010040607:17:29-UTC ./setup/setup-unix/m
-c7fe0792b5f6944df501976870c9596dbdcfe6d1 2010040210:24:45-UTC ./ccclib/m
 476e1308d1cb765c283c1b8e1f25cd68b2910d42 2010040116:17:18-UTC ./gtk/examples/gallery/statusicon/iconimage.prg
 64064fded284635647027bba1ae99588b20bb21d 2010040112:13:17-UTC ./ccctools/prg2ppo/xtlex.lex
 9aad1fc225acc15431932f556d9417651457cfbe 2010040112:13:12-UTC ./ccctools/prg2ppo/trinp.lex
@@ -1686,8 +1678,6 @@ f5d2413a0484e14e30b1d910dedbbd5cc49e99c7 2008031322:52:44-UTC ./jt/jterminal/get
 eeaad7126c0dc5dbf03d465ee882c36070d332b5 2008031322:06:43-UTC ./jt/jterminal/getutil/getcolor.java
 f5af0a45b09e351b0dc5271a4becb765cf3a1e54 2008031312:29:31-UTC ./ccctools/ppo2cpp/test-slice/s.prg
 e1269de7d475a2dfa2e55663bc389178ce3e93ad 2008030522:42:10-UTC ./ccctools/prg2ppo/xtxlegal.h
-1b9a6035f958dea2219df82047ae21a2383edec6 2008030422:37:32-UTC ./setup/setup-unix/variable_boehm.inc
-b5fdddf723429f91916f9242f0d3bbe4befdb7ca 2008022417:38:35-UTC ./setup/setup-unix/variablex.cpp
 b9b0e9b5af8c7a7643098064be8c1ac5452531c3 2008022120:11:39-UTC ./tutor/hash/hashtable.prg
 58c5f8a274284b82b8c44daca94854198b23db75 2008021711:08:28-UTC ./setup/setup-unix/file.cpp
 f3d43a4c1f8908e7e8c5070070886d9cdf27b520 2008021709:13:01-UTC ./setup/setup-unix/run.cpp

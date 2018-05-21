@@ -138,8 +138,11 @@ void _clp_l2hex(int argno)
         error_arg("l2hex",base,argno);
     }
     char buffer[32];
-    #ifdef WINDOWS //rossz
+    #ifdef NOTDEFINED // WINDOWS msc hiba elkerulese
     {
+        //mivel az msc mar nincs tamogatva
+        //eleg csak az alapesetet megtartani
+    
         int i=0;
         char hex[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
         while(x)
@@ -147,6 +150,10 @@ void _clp_l2hex(int argno)
             buffer[i]=hex[x&0xf];
             i++;
             x=x>>4;
+        }
+        if(i==0)
+        {
+            buffer[i++]='0';
         }
         buffer[i]=0;
         for(int j=0; j<i/2; j++)

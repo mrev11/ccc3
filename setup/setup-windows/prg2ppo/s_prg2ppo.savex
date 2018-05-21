@@ -1,0 +1,3 @@
+-s$(CCCDIR)/ccctools/prg2ppo
+-i.cpp.h.ch.
+-m0

@@ -1,0 +1,3 @@
+-s$(CCCDIR)/ccclib/ppo
+-i.cpp.
+-m0

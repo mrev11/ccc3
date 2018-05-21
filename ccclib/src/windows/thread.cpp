@@ -74,17 +74,17 @@ int WCODE(int x)
 //---------------------------------------------------------------------------
 static void *thread(void *ptr)
 {
-    //saját lokális stack létrehozása,
-    //thread_data konstruktorában és destruktorában
-    //listakezelés van, aminek egyedül kell futnia,
-    //a listát a szemétgyűjtés is használja:
+    //sajat lokalis stack letrehozasa,
+    //thread_data konstruktoraban es destruktoraban
+    //listakezeles van, aminek egyedul kell futnia,
+    //a listat a szemetgyujtes is hasznalja:
 
-    vartab_lock0(); //nincs még siglocklev
+    vartab_lock0(); //nincs meg siglocklev
     TlsSetValue(thread_key,NEWTHRDATA());
-    vartab_unlock0(); //nem bántjuk siglocklev-et (1)
+    vartab_unlock0(); //nem bantjuk siglocklev-et (1)
 
-    //block plusz paraméterek átmásolása a saját stackre,
-    //a hívó szálnak várnia kell, erre szolgál mutex és cond:
+    //block plusz parameterek atmasolasa a sajat stackre,
+    //a hivo szalnak varnia kell, erre szolgal mutex es cond:
 
     thread_block *b=(thread_block*)ptr;
     int n;
@@ -92,24 +92,24 @@ static void *thread(void *ptr)
     {
         PUSH((b->blk)+n);
     }
-    sigcccmask=b->sigmask; //öröklődik
-    siglocklev=b->sigllev; //öröklődik (eddig 1 volt)
+    sigcccmask=b->sigmask; //oroklodik
+    siglocklev=b->sigllev; //oroklodik (eddig 1 volt)
 
     SetEvent(event);
 
-    //a hívó szál továbbengedve,
-    //az új szál kódblokkja elindítva:
+    //a hivo szal tovabbengedve,
+    //az uj szal kodblokkja elinditva:
     
     _clp_eval(n);
     POP();
 
-    //a szál futása befejeződött,
-    //az eredményt eldobjuk (nem tudjuk visszaadni),
-    //a saját lokális stacket megszüntetjük:
+    //a szal futasa befejezodott,
+    //az eredmenyt eldobjuk (nem tudjuk visszaadni),
+    //a sajat lokalis stacket megszuntetjuk:
 
     vartab_lock();
     DELTHRDATA(TlsGetValue(thread_key));
-    vartab_unlock0(); //nincs már siglocklev
+    vartab_unlock0(); //nincs mar siglocklev
 
     return 0;
 }
@@ -126,10 +126,10 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
     thread_block b;
     b.blk=blk;
     b.argno=argno;
-    b.sigllev=siglocklev; //öröklődik
-    b.sigmask=sigcccmask; //öröklődik
+    b.sigllev=siglocklev; //oroklodik
+    b.sigmask=sigcccmask; //oroklodik
 
-    SIGNAL_LOCK();  //az aktuális szálra voatkozik
+    SIGNAL_LOCK();  //az aktualis szalra voatkozik
 
     WaitForSingleObject(mutex,INFINITE);
     ResetEvent(event);
@@ -139,7 +139,7 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
     {
         WaitForSingleObject(event,INFINITE);
         ReleaseMutex(mutex);
-        SIGNAL_UNLOCK(); //az aktuális szálra voatkozik
+        SIGNAL_UNLOCK(); //az aktualis szalra voatkozik
         stack-=argno;
         pointer( (void*)thandle );
     }
@@ -148,7 +148,7 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
         //printf("GetLastError %d %x\n",GetLastError(),GetLastError());
         //fflush(0);
         ReleaseMutex(mutex);
-        SIGNAL_UNLOCK(); //az aktuális szálra voatkozik
+        SIGNAL_UNLOCK(); //az aktualis szalra voatkozik
         stack-=argno;
         PUSHNIL();
     }
@@ -159,11 +159,20 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
 void _clp_thread_self(int argno)
 {
     stack-=argno;
-    DWORD threadid=GetCurrentThreadId();
-    pointer( (void*)threadid );
+
+    //DWORD threadid=GetCurrentThreadId();
+    //pointer( (void*)threadid );
+    //(warningot ad cast-ra, helyette union)
+
+
+    union{ void *ptr; DWORD dwd;} threadid;
+    threadid.ptr=0; 
+    threadid.dwd=GetCurrentThreadId(); 
+    pointer( threadid.ptr );
+
     
-    //Ad egy szálra egyedi azonosítót.
-    //Nem egyezik thread_create értékével!
+    //Ad egy szalra egyedi azonositot.
+    //Nem egyezik thread_create ertekevel!
 }
  
 //---------------------------------------------------------------------------
@@ -332,4 +341,5 @@ void _clp_thread_create_detach(int argno)
 //---------------------------------------------------------------------------
 
 #endif
+
 

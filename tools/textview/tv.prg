@@ -2,23 +2,19 @@
 #include "directry.ch"
 
 **********************************************************************************************
-function main(fspec,pos)
+function main(fspec,search)
 
 local tv,fd,map
-local d:=directory(fspec)
+local hist:=history_load(fspec)[1] //{fspec,offset,search}
 
-    if( len(d)!=1 )
-        ? "Not found:", fspec
+    if( !file(fspec:=hist[1]) )
+        alert("'"+fspec+"' not found!",{"Quit"}) 
         quit
     end
-    
-    if( d[1][F_SIZE]<100 )
-        map:=memoread(fspec,.t.) 
-    else
-        fd:=fopen(fspec)
-        map:=filemap.open(fd)
-        fclose(fd)
-    end
+
+    fd:=fopen(fspec)
+    map:=filemap.open(fd)
+    fclose(fd)
 
     //wallpaper()
     //tv:=textviewNew(map,4,10,24,70)
@@ -28,13 +24,20 @@ local d:=directory(fspec)
     tv:mskcolor:="n/330,n/222+"
     tv:txtcolor:="n/w"
     
-    if( pos!=NIL )
-        tv:setpos(val(pos))
+    if( !empty(hist[2]) )
+        tv:setpos(hist[2])
     end
 
+    if( search!=NIL )
+       tv:searchstring:=search
+    elseif( !empty(hist[3]) )
+       tv:searchstring:=hist[3]
+    end
+ 
     tv:loop
+    
+    history_store(fspec,tv)
 
-    //?? tv:offset //elrontja az ncterm kepernyojet
 
 **********************************************************************************************
 static function wallpaper()  //a pozicionalas tesztelesehez

@@ -18,7 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//primitív process manager Linuxra
+//primitiv process manager Linuxra
+
 
 *********************************************************************************************
 function main()
@@ -49,6 +50,8 @@ local b, sig:={}
     brwMenu(b,"Files","View open files",{||files(b),.t.})
     brwMenu(b,"Status","View process status",{||status(b),.t.})
     brwMenu(b,"Envir","View environment variables",{||envir(b),.t.})
+
+    brwApplyKey(b,{|b,k|appkey_search(b,k)})
  
     brwShow(b)
     brwLoop(b)

@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//primitív process manager FreeBSD-re
+//primitiv process manager FreeBSD-re
 
 static PIDPOS:=1
 
@@ -48,10 +48,16 @@ local b, sig:={}
     aadd(sig,{"SIGKILL",{||send(b,"KILL")}})
     brwMenu(b,"Send","Send signal to process",sig)
 
-    //Ezek nem működnek
+    //Linuxon ezek a /proc fs-bol veszik az adataikat.
+    //FreeBSD-n is lehet /proc (kulon mountolni kell: mount -t procfs proc /proc).
+    //Sajnos azonban a FreeBSD-s /proc-ban nincs hasznalhato info.
+    //A vegeredmeny, hogy FreeBSD-n az alabbiak nem mukodnek:
+
     //brwMenu(b,"Files","View open files",{||files(b),.t.})
     //brwMenu(b,"Status","View process status",{||status(b),.t.})
     //brwMenu(b,"Envir","View environment variables",{||envir(b),.t.})
+
+    brwApplyKey(b,{|b,k|appkey_search(b,k)})
  
     brwShow(b)
     brwLoop(b)
@@ -86,7 +92,7 @@ local t, n, ps, line1, args:=argv()
         line1::=strtran("  "," ")
     end
     line1::=split(" ")
-    PIDPOS:=ascan(line1,{|x|x=="PID"}) //signal küldéshez kell
+    PIDPOS:=ascan(line1,{|x|x=="PID"}) //signal kuldeshez kell
 
 
     b:column[1]:heading:=t[1]

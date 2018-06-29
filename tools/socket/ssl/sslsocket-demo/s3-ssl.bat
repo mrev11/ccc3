@@ -1,2 +1,2 @@
 @echo off
-demo_server3.exe ssl
+demo_server3.exe ssl | tee log-s

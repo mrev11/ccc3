@@ -1,3 +1,11 @@
+2018.06.29 sslsocket javitgatas:
+  A http_readmessage() osszegyujtve (egyben) adta a transfer-encoding=chunked
+  tipusu uzeneteket, de meghagyta az eredeti headert. Most a transfer-encoding
+  headert kiveszi, es berak egy content-length headert.
+  sslcon.initialize minden esetben erteket ad this:ssl-nek es this:fd-nek.
+  sslcon.connect a set_tlsext_host_name() hivassal a host nevet is kuldi.
+  Uj fuggveny: sslcon_set_tlsext_host_name()
+
 2018.06.11 (netbsd) pm-ben kereses;
 
 2018.06.11 (freebsd) pm-ben kereses;

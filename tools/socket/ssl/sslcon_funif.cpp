@@ -101,6 +101,17 @@ void _clp_sslcon_get_fd(int argno)
 }
 
 //--------------------------------------------------------------------------
+void _clp_sslcon_set_tlsext_host_name(int argno)
+{
+    CCC_PROLOG("sslcon_set_tlsext_host_name",2);
+    str2bin(base+1);
+    SSL  *ssl  = (SSL*)_parp(1);    //SSL struct
+    char *name = _parb(2);          //host name
+    _retni( SSL_set_tlsext_host_name(ssl,name)); //1 success, 0 error
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
 void _clp_sslcon_accept(int argno)
 {
     CCC_PROLOG("sslcon_accept",2);

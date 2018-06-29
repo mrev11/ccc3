@@ -129,18 +129,15 @@ class sslcon(socket)
 ******************************************************************************
 static function sslcon.initialize(this,context,sck)
     this:ctx:=context
+    this:ssl:=sslcon_new(this:ctx:handle)
     if( valtype(sck)=="N" )
         this:fd:=sck
-        this:ssl:=sslcon_new(this:ctx:handle)
-        sslcon_set_fd(this:ssl,this:fd)
     elseif( valtype(sck)=="O" )
         this:fd:=sck:fd
-        this:ssl:=sslcon_new(this:ctx:handle)
-        sslcon_set_fd(this:ssl,this:fd)
     else
         this:fd:=socket()
-        this:ssl:=NIL
     end
+    sslcon_set_fd(this:ssl,this:fd)
     return this
 
 ******************************************************************************
@@ -175,8 +172,13 @@ local code,err
         err:args:={this:fd,host,port}
         break(err)
     end
-    this:ssl:=sslcon_new(this:ctx:handle)
-    sslcon_set_fd(this:ssl,this:fd)
+    code:=sslcon_set_tlsext_host_name(this:ssl,host)
+    if( code!=1 )
+        err:=sslerrorNew("sslcon.connect")
+        err:description:="unable to set TLS servername extension"
+        err:args:={this:fd,host,port}
+        break(err)
+    end
     code:=sslcon_connect(this:ssl)
     if( code!=1 )
         err:=sslerrorNew("sslcon.connect")

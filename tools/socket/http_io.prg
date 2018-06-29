@@ -177,6 +177,7 @@ function http_readmessage(sck,timeout)
 // Ha van 'transfer-encoding: chunked' header, akkor a program beolvas 
 // és konkatenál minden chunkot. A visszaadott messageben már nem lesznek 
 // chunkok, noha a headerben megmarad az eredeti transfer encoding.
+// VALTOZAS: 'transfer-encoding' kicserelve 'content-length'-re.
 //
 // Ha van content-length header, akkor az annak megfelelő hosszban olvasunk.
 //
@@ -255,10 +256,19 @@ local start,chlen,body
             start+=chlen+len(crlf)                  // következő chunk hossz első bájtja
         end
         
-        msg:=left(msg,hlen)+body
+        //VALTOZAS
+        //  msg:=left(msg,hlen)+body
+        //
+        //  //a headerben benne van a 'Transfer-Encoding: chunked'
+        //  //de valójában a body már chunktalanítva van
+        //
+        //KIVESZEM a 'Transfer-Encoding: chunked' headert
+        //BERAKOM "Content-Length" hedaert
 
-        //a headerben benne van a 'Transfer-Encoding: chunked'
-        //de valójában a body már chunktalanítva van
+        msg::=left(hlen)
+        msg::=http_removeheader("Transfer-Encoding")
+        msg::=http_setheader("Content-Length",body::len::str::alltrim)
+        msg+=body
 
     elseif( (clhdr:=http_getheader(msg,a"Content-Length"))!=NIL )
     

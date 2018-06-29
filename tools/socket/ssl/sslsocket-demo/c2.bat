@@ -1,2 +1,2 @@
 @echo off
-demo_client2.exe
+demo_client2.exe | tee log-c

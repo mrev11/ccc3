@@ -1,2 +1,2 @@
 #!/bin/bash
-demo_client2.exe  ssl | tee logc
+demo_client2.exe  ssl | tee log-c

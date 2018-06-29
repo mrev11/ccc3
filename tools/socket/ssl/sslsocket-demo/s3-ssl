@@ -1,2 +1,2 @@
 #!/bin/bash
-demo_server3.exe ssl  | tee logs
+demo_server3.exe ssl  | tee log-s

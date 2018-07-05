@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//CCC select interfész UNIX-ra és Win32-re
+//CCC select interfesz UNIX-ra es Win32-re
 //Vermes M., 2001.06.03.
 
 #include <sckcompat.h> 
@@ -28,48 +28,48 @@
 //---------------------------------------------------------------------------
 void _clp_select_sckdesc(int argno)  
 {
-    //par1: olvasásra váró fd-k (array, opcionális)
-    //par2: írásra váró fd-k (array, opcionális)
-    //par3: kivételes fd-k (array, opcionális)
-    //par4: várakozási idő msec (number, NIL=végtelen)
+    //par1: olvasasra varo fd-k (array, opcionalis)
+    //par2: irasra varo fd-k (array, opcionalis)
+    //par3: kiveteles fd-k (array, opcionalis)
+    //par4: varakozasi ido msec (number, NIL=vegtelen)
     
-    //az array paraméterek módosulnak, 
-    //csak az írható/olvasható/kivételes fd-k maradnak benne,
-    //visszatérés: a feltételt teljesítő fd-k száma
+    //az array parameterek modosulnak, 
+    //csak az irhato/olvashato/kiveteles fd-k maradnak benne,
+    //visszateres: a feltetelt teljesito fd-k szama
     
-    //Példák:
+    //Peldak:
     //
-    //1. várakozás egyetlen socket olvasására
+    //1. varakozas egyetlen socket olvasasara
     //
     //     select({s},,,1000)
     //
-    //  1 sec-ig vár arra, hogy az s socket olvasható legyen,
-    //  ha ezalatt jön adat, akkor azonnal visszatér 1 értékkel,
-    //  ha nem jön adat, akkor csak 1 sec múlva, 0 értékkel.
+    //  1 sec-ig var arra, hogy az s socket olvashato legyen,
+    //  ha ezalatt jon adat, akkor azonnal visszater 1 ertekkel,
+    //  ha nem jon adat, akkor csak 1 sec mulva, 0 ertekkel.
     //
-    //2. várakozás több socket olvashatóságára
+    //2. varakozas tobb socket olvashatosagara
     //
     //     sck:={s1,s2,s3}
     //     select(sck)
     //
-    //  Addig vár, amíg az sck socketei közül valamelyik olvasható 
-    //  nem lesz, amikor ez bekövetkezik, azonnal visszatér az olvasható 
-    //  socketek számával. Az sck array módosul, csak azokat a socketeket 
-    //  fogja tartalmazni, amik (blokkolás nélkül) olvashatók.
+    //  Addig var, amig az sck socketei kozul valamelyik olvashato 
+    //  nem lesz, amikor ez bekovetkezik, azonnal visszater az olvashato 
+    //  socketek szamaval. Az sck array modosul, csak azokat a socketeket 
+    //  fogja tartalmazni, amik (blokkolas nelkul) olvashatok.
     //
-    //3. várakozás megadott ideig
+    //3. varakozas megadott ideig
     //
     //     #xtranslate sleep(<wtime>)  =>  select(,,,<wtime>)
     //
-    //  Ez használható volna a sleep-re, ha az nem volna lényegében 
-    //  ugyanígy, de függvényként implementálva az alapkönyvtárban.
+    //  Ez hasznalhato volna a sleep-re, ha az nem volna lenyegeben 
+    //  ugyanigy, de fuggvenykent implementalva az alapkonyvtarban.
     
  
-    //Megjegyzés:
-    //Ha a távoli fél lezár egy socketet, az NEM a kivételes
-    //socketek között, hanem az olvasható socketek halmazában
-    //jelenik meg, de ezután az olvasás hibás lesz. Úgy látszik,
-    //ez a lezáródó socketek normális sorsa.
+    //Megjegyzes:
+    //Ha a tavoli fel lezar egy socketet, az NEM a kiveteles
+    //socketek kozott, hanem az olvashato socketek halmazaban
+    //jelenik meg, de ezutan az olvasas hibas lesz. Ugy latszik,
+    //ez a lezarodo socketek normalis sorsa.
 
 
     CCC_PROLOG("select_sckdesc",4);
@@ -107,7 +107,7 @@ void _clp_select_sckdesc(int argno)
     struct timeval tv;
     if( !ISNIL(4) )
     {
-        long t=_parnu(4); //várakozási idő (msec)
+        long t=_parnu(4); //varakozasi ido (msec)
         tv.tv_sec=t/1000;
         tv.tv_usec=(t%1000)*1000;   
     }
@@ -118,7 +118,7 @@ void _clp_select_sckdesc(int argno)
     {
         if( ISARRAY(set+1) )
         {
-            push(base+set);number(0);_clp_asize(2);pop(); //kiürítve
+            push(base+set);number(0);_clp_asize(2);pop(); //kiuritve
 
             for( s=0; s<=smax; s++ )
             {

@@ -19,10 +19,10 @@
  */
 
 #ifdef NOT_DEFINED
-    Van olyan eset, amikor az SSL alatt levő fd-t a select 
-    nem olvashatónak mutatja, de maga az SSL mégis olvasható. 
-    Ez akkor fordul elő, ha az ssl az fd-ből előreolvasott, 
-    és vannak "pending" byteok.
+    Van olyan eset, amikor az SSL alatt levo fd-t a select 
+    nem olvashatonak mutatja, de maga az SSL megis olvashato. 
+    Ez akkor fordul elo, ha az ssl az fd-bol eloreolvasott, 
+    es vannak "pending" byteok.
 #endif
 
 ******************************************************************************
@@ -52,7 +52,7 @@ local ctx,ss,s,err,result
             
             ?
             while( 0<s:pending .or. 0<select({s:fd}) )
-                ?? result:=s:recv(128,0) //socket VAGY sslcon (nem vár)
+                ?? result:=s:recv(128,0) //socket VAGY sslcon (nem var)
 
                 if( result==NIL )            
                     exit

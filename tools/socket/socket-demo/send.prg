@@ -38,7 +38,7 @@ local k:=0,s,sms
     sms:=smessageNew(s)
     
     while( k!=K_ESC )
-        ? sms:message:={"Próba szerencse!"}, sms:counter
+        ? sms:message:={"Proba szerencse!"}, sms:counter
         k:=inkey(0)
     end
 

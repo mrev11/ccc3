@@ -18,10 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Az sckutil.cpp-ben definiált egyszerűsített 
-//függvénykészletre épülő Clipper szintű interfész.
-//Itt már nincs különbség a UNIX és Windows között,
-//ezért nem kell sckcompat.h-t inkludálni
+//Az sckutil.cpp-ben definialt egyszerusitett 
+//fuggvenykeszletre epulo Clipper szintu interfesz.
+//Itt mar nincs kulonbseg a UNIX es Windows kozott,
+//ezert nem kell sckcompat.h-t inkludalni
 
 #include <string.h> 
 
@@ -43,11 +43,11 @@ void _clp_bind(int argno)
     CCC_PROLOG("bind",3);
     int  s=_parni(1);  //socket number
     int  p=0;          //port number
-    char *a=0;         //ip address (opcionális)
+    char *a=0;         //ip address (opcionalis)
     
-    //a korábbi változatban az ip cím nem volt megadható,
-    //a kompatibilitás kedvéért most minden kombinációban
-    //elfogadjuk az ip, port paramétereket a 2-3 pozíción 
+    //a korabbi valtozatban az ip cim nem volt megadhato,
+    //a kompatibilitas kedveert most minden kombinacioban
+    //elfogadjuk az ip, port parametereket a 2-3 pozicion 
 
     if( ISNIL(2) )
     {
@@ -109,9 +109,9 @@ void _clp_connect(int argno)
     char *h = _parb(2);    //host address
     int   p = _parni(3);   //port number
 
-    //Ez itt nem szükséges,
+    //Ez itt nem szukseges,
     //mert a socket_connect is
-    //tartalmazza a névfeloldást.
+    //tartalmazza a nevfeloldast.
     //
     //push_symbol(base+1);
     //extern void _clp_gethostbyname(int);
@@ -170,7 +170,7 @@ void _clp_setsockopt(int argno)
 //---------------------------------------------------------------------------
 void _clp_swrite(int argno)
 {
-#if 0 //atírva 3 parameteresre fwrite mintajara
+#if 0 //atirva 3 parameteresre fwrite mintajara
     CCC_PROLOG("swrite",2);
     str2bin(base+1);
     int s     = _parni(1);      //socket number
@@ -185,8 +185,8 @@ void _clp_swrite(int argno)
 
     if( ISSTRING(2) )
     {
-        //Ha a C típust írunk,
-        //és meg van adva a hossz,
+        //Ha a C tipust irunk,
+        //es meg van adva a hossz,
         //akkor a hosszt nem byte-ban, 
         //hanem karakterben szamoljuk.
 
@@ -228,16 +228,16 @@ void _clp_sread(int argno)
 {
     //result:=sread(socket,nbyte,wtime)
     //
-    //socket-ből beolvas nbyte darab byteot
+    //socket-bol beolvas nbyte darab byteot
     //
-    //akkor tér vissza, ha
+    //akkor ter vissza, ha
     //
-    //  ready   : result == nbyte hosszúságú bynary string (bytearray)
+    //  ready   : result == nbyte hosszusagu bynary string (bytearray)
     //
-    //  timeout : result == nbyte-nál rövidebb bynary string (bytearray)
+    //  timeout : result == nbyte-nal rovidebb bynary string (bytearray)
     //
     //  error   : result == NIL, ha semmit sem lehetett olvasni
-    //            result == nemüres, nbyte-nál rövidebb bytearray
+    //            result == nemures, nbyte-nal rovidebb bytearray
 
     CCC_PROLOG("sread",3);
     
@@ -268,8 +268,8 @@ void _clp_sread(int argno)
 //---------------------------------------------------------------------------
 void _clp_sready(int argno)
 {
-    //megadja a socketből azonnal olvasható byteok számát
-    //NEM jelzi a vonal szakadását (ilyenkor is 0-át ad)
+    //megadja a socketbol azonnal olvashato byteok szamat
+    //NEM jelzi a vonal szakadasat (ilyenkor is 0-at ad)
 
     CCC_PROLOG("sready",1);
     int s=_parni(1); //socket number

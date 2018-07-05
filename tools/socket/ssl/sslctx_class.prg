@@ -163,9 +163,9 @@ local err,retcode
         break(err)
     end
 
-// ha ez nincs megadva, és a session cache sincs kikapcsolva,
-// akkor cache-ben levő session-ökre nem működik a connect,
-// ezt elkerülendő, az initialize beállít egy nemüres defaultot
+// ha ez nincs megadva, es a session cache sincs kikapcsolva,
+// akkor cache-ben levo session-okre nem mukodik a connect,
+// ezt elkerulendo, az initialize beallit egy nemures defaultot
 
 ******************************************************************************
 static function sslctx.quiet_shutdown(this,flag) //set-get
@@ -176,7 +176,7 @@ static function sslctx.quiet_shutdown(this,flag) //set-get
     end
     return flag
 
-// ezt beállítva shutdown nem küldi a "close notify" üzenetet
+// ezt beallitva shutdown nem kuldi a "close notify" uzenetet
 
 ******************************************************************************
 static function sslctx.session_cache_mode(this,mode) //set-get
@@ -199,7 +199,7 @@ static function sslctx.session_cache_timeout(this,timeout) //set-get
     end
     return timeout
 
-// ennyi másodperc alatt jár le egy session érvényessége
+// ennyi masodperc alatt jar le egy session ervenyessege
 
 ******************************************************************************
 static function sslctx.session_cache_size(this,size) //set-get
@@ -210,14 +210,14 @@ static function sslctx.session_cache_size(this,size) //set-get
     end
     return size
 
-// ennyi darab session fér bele a cache-be
+// ennyi darab session fer bele a cache-be
 
 ******************************************************************************
 static function sslctx.flush_sessions(this)
     sslctx_flush_sessions(this:handle)
 
-// törli a cache-ből a lejárt sesssion-öket
-// magától csak minden 256-dik alkalommal takarít
+// torli a cache-bol a lejart sesssion-oket
+// magatol csak minden 256-dik alkalommal takarit
 
 ******************************************************************************
 static function sslctx.session_number(this)

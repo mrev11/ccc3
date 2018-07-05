@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//a klienst hitelesítő, önmagát igazoló zerver
+//a klienst hitelesito, onmagat igazolo zerver
 
 #include "ssl.ch"
 
@@ -31,21 +31,21 @@ local ss,s,err,result
 //local cafile,capath:="cert"
 local cafile:="cert/localhost-cert.pem",capath
 
-// A cafile/capath-ban a kliens hitelesítéshez
-// használható certificate-ek vannak megadva.
+// A cafile/capath-ban a kliens hitelesiteshez
+// hasznalhato certificate-ek vannak megadva.
 // Az 1 db cafile-ban sok certificate section lehet.
-// A capath directory filéiben egy-egy certificate lehet.
+// A capath directory fileiben egy-egy certificate lehet.
 // Egy kliens akkor lesz elfogadva, ha olyan certificate-je van,
-// amit aláírtak egy cafile/capath-ban levő certificate-hez
-// tartozó kulccsal. A két legegyszerűbb eset:
-// 1. Berakjuk capath-ba a kliensek önaláírt certificate-jeit.
-// 2. Egy közös kulccsal aláírjuk a kliensek certificate-jeit.
-// A demóban használt demo-cert alá van írva loclahost.pem-mel.
+// amit alairtak egy cafile/capath-ban levo certificate-hez
+// tartozo kulccsal. A ket legegyszerubb eset:
+// 1. Berakjuk capath-ba a kliensek onalairt certificate-jeit.
+// 2. Egy kozos kulccsal alairjuk a kliensek certificate-jeit.
+// A demoban hasznalt demo-cert ala van irva loclahost.pem-mel.
 //
-// A demóban localhost.pem két szerepet is játszik.
-// 1. Szerver azonosítás és titkosítás.
-// 2. Kliens hitelesítés.
-// Élesben ehhez külön kulcsokat ajánlatos használni.
+// A demoban localhost.pem ket szerepet is jatszik.
+// 1. Szerver azonositas es titkositas.
+// 2. Kliens hitelesites.
+// Elesben ehhez kulon kulcsokat ajanlatos hasznalni.
 
     ctx:=sslctxNew("SSLv23_server") 
     ctx:use_certificate_file("localhost.pem")
@@ -72,7 +72,7 @@ local cafile:="cert/localhost-cert.pem",capath
             
             ?
             while( s:waitforrecv )
-                ?? result:=s:recv(128,0) //socket VAGY sslcon (nem vár)
+                ?? result:=s:recv(128,0) //socket VAGY sslcon (nem var)
 
                 if( result==NIL )            
                     exit

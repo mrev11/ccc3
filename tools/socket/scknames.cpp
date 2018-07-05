@@ -88,7 +88,7 @@ void _clp_getdomainname(int argno)
 {
     CCC_PROLOG("getdomainname",0);
     //char name[256];
-    //_retc( getdomainname(name,256)?"":name );  //mindig üres ???
+    //_retc( getdomainname(name,256)?"":name );  //mindig ures ???
     _retb(""); 
     CCC_EPILOG();
 }

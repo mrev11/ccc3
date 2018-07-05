@@ -1,3 +1,27 @@
+2018.07.05 peer nevek lekerdezese cert-bol:
+  sslcon_connect(ssl,blk) plusz opcionalis parameter: blk.
+  sslcon:connect(host,port,blk) plusz opcionalis parameter: blk.
+  Az opcionalis kodblokk az sslctx_verifycb()-bol hivodik meg.
+  Az sslctx_verifycb()-nek uj implementacioja van, es kulon 
+  forrasmodulba kerult, hogy alkalmazasszinten  cserelheto legyen.
+  A sslctx_verifycb a certificate chain minden elemere meghivodik:
+    eloszor a root ca cert-jere,
+    aztan a kozbulso cert-ekre, 
+    vegul az aktualis peer cert-jere (depth=0).
+  A kodblokk az aktualis peer neveivel (mint parameterrel) hivodik meg:
+    eloszor a peer CN (Common Name) nevevel, 
+    utana a SAN (Subject Alternative Name) neveivel.
+  Pelda:
+    local names:={}
+    ...
+    sslcon:connect("comfirm.hu",443,{|x|aadd(names,x)})
+    ...
+  A connect utan a names array-ben megkapjuk a peer neveit. 
+  Ez alapjan ellenorizni lehet, hogy a peer neve passzol-e
+  ahhoz a host/domain nevhez, amihez konnektaltunk. 
+  Ekezetes szovegek kigyomlalva.
+
+
 2018.06.29 sslsocket javitgatas:
   A http_readmessage() osszegyujtve (egyben) adta a transfer-encoding=chunked
   tipusu uzeneteket, de meghagyta az eredeti headert. Most a transfer-encoding

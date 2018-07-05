@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//küld egy HTTPS requestet
+//kuld egy HTTPS requestet
 
 #include "ssl.ch"
 
@@ -27,10 +27,10 @@ static crlf:=x"0d0a"
 ******************************************************************************
 function main()
 
-local ctx,s
+local ctx,s,names:={}
 
 local x:=<<REQ>>GET / HTTPS/1.1
-Host: localhost
+Host: comfirm.hu
 User-Agent: demo-client
 Accept: text/html;text/plain;
 Accept-Charset: UTF-8,*
@@ -38,17 +38,25 @@ Connection: keep-alive<<REQ>>+bin2str(crlf+crlf)
 
     ctx:=sslctxNew() 
     
-    //ez alá van írva localhost.pem-mel
+    //ez ala van irva localhost.pem-mel
     ctx:use_certificate_file("demo-cert.pem")  
     ctx:use_privatekey_file("demo-key.pem")
 
+#define VERIFY
+#ifdef VERIFY
+    ctx:set_verify(SSL_VERIFY_PEER_CERT)
+    ctx:set_verify_depth(5)
+    ctx:load_verify_locations("comfirm.hu-cert.pem")
+#endif
+
     s:=sslconNew(ctx)
-    s:connect("localhost",443)
+    s:connect("comfirm.hu",443,{|x|aadd(names,x)})
+    ? names
     s:send(x)
     ? s:recvall(1000) //1 sec timeout
     s:close
-
     ?
+
 
 ******************************************************************************
 

@@ -18,17 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Minimális listener Linuxra és Windowsra.
+//Minimalis listener Linuxra es Windowsra.
 //
-//Indítása: listener port command
+//Inditasa: listener port command
 //
-//A program figyel az első paraméterben magadott porton.
-//Ha jelentkezik egy kliens, akkor végrehajtódik a második
-//paraméterben kapott parancs (szerver) úgy, hogy megkapja parancssori
-//argumentumként a megnyílt socketet. Ezen a socketen a kliens
-//és a szerver tetszés szerint kommunikálhat. Egy szerver program 
-//indítása után a listener a kliens socketet lezárja, és tovább figyel,
-//azaz vár a következő kliensre.
+//A program figyel az elso parameterben magadott porton.
+//Ha jelentkezik egy kliens, akkor vegrehajtodik a masodik
+//parameterben kapott parancs (szerver) ugy, hogy megkapja parancssori
+//argumentumkent a megnyilt socketet. Ezen a socketen a kliens
+//es a szerver tetszes szerint kommunikalhat. Egy szerver program 
+//inditasa utan a listener a kliens socketet lezarja, es tovabb figyel,
+//azaz var a kovetkezo kliensre.
 
 function main(port,torun)
 

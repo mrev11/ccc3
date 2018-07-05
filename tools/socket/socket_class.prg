@@ -19,14 +19,14 @@
  */
 
 #ifdef EMLEKEZTETO
-  Burkoló objektum socketekhez.
-  A metódusok közvetlenül vissza vannak vezetve
-  a ccc3_socket könyvtárban levő függvényinterfészre.
-  A bind,listen,accept,connect hiba esetén socketerror-t dob.
+  Burkolo objektum socketekhez.
+  A metodusok kozvetlenul vissza vannak vezetve
+  a ccc3_socket konyvtarban levo fuggvenyinterfeszre.
+  A bind,listen,accept,connect hiba eseten socketerror-t dob.
 
-  Az interfész megegyezik az sslcon-beli interfésszel. 
-  Ez lehetővé teszi, hogy (az SSL bekapcsolásától eltekintve) 
-  ugyanaz a kód képes legyen SSL-lel és anélkül működni.
+  Az interfesz megegyezik az sslcon-beli interfesszel. 
+  Ez lehetove teszi, hogy (az SSL bekapcsolasatol eltekintve) 
+  ugyanaz a kod kepes legyen SSL-lel es anelkul mukodni.
   
   Szerver:
 
@@ -66,7 +66,7 @@
         s:=sslconConnect(ctx,s) //s: plain socket --> SSL socket
     end
 
-    s:send("Öt szép szűzlány őrült írót nyúz") //plain VAGY ssl
+    s:send("Ot szep szuzlany orult irot nyuz") //plain VAGY ssl
     s:close
 #endif  
 
@@ -111,7 +111,7 @@ local e,prev,success
     end
 
     if( inheritflag!=NIL ) 
-        //beállítás
+        //beallitas
         success:=sethandleinheritflag(this:fd,inheritflag)
         if( !success )
             e:=socketerrorNew("socket.inherit")
@@ -155,7 +155,7 @@ local code,err
     return code
 
 ******************************************************************************
-static function socket.accept(this)  //objektumgyártó!
+static function socket.accept(this)  //objektumgyarto!
 local fd,err
     fd:=.accept(this:fd)
     if( fd<0 )

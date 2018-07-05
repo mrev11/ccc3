@@ -76,9 +76,8 @@ local req,chunk,n,w
                 w++
                 chunk:=doc::substr(n,w)
             end
-
-            sclose(c)
         end
+        sclose(c)
     end
 
 

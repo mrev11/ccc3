@@ -29,7 +29,7 @@ local errcod,errstr
     this:description:=openssl_error_string()
     return this
 
-//Példa error stringre:
+//Pelda error stringre:
 //"error:1408F10B:SSL routines:SSL3_GET_RECORD:wrong version number"
 
 ******************************************************************************

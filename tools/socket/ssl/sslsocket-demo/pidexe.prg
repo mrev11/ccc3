@@ -19,14 +19,14 @@
  */
 
 function printpid()
-    set printer to pid
+    set printer to log-pid
     set printer on
     ?? getpid()
     set printer to
     set printer off
 
 function printexe()
-    set printer to exe
+    set printer to log-exe
     set printer on
     ?? exename()
     set printer to

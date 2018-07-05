@@ -35,7 +35,7 @@ local k:=0,s
     
     
     while( k!=K_ESC )
-        ? swrite(s,"Próba szerencse!")
+        ? swrite(s,"Proba szerencse!")
         k:=inkey(0)
     end
     

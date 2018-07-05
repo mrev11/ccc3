@@ -18,18 +18,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Miből áll a HTTP üzenet:  byteokból vagy karakterekből?
+//Mibol all a HTTP uzenet:  byteokbol vagy karakterekbol?
 //Mire vonatkozik a Content-Length header:  a byte hosszra?
 //
-//Ezek a programok feltételezik, hogy az msg paraméter binary string.
-//Minden más paramétert binaryra konvertálnak (ha eleve nem az).
-//A http_writemessage az msg-t is binaryra konvertálja.
-//A visszatérési értékük binary string, pl. http_readmessage --> binary.
-//A Content-Length byte számban értendő.
-//A http_readmessage megköveteli, hogy Content-Length meg legyen adva.
+//Ezek a programok feltetelezik, hogy az msg parameter binary string.
+//Minden mas parametert binaryra konvertalnak (ha eleve nem az).
+//A http_writemessage az msg-t is binaryra konvertalja.
+//A visszateresi ertekuk binary string, pl. http_readmessage --> binary.
+//A Content-Length byte szamban ertendo.
+//A http_readmessage megkoveteli, hogy Content-Length meg legyen adva.
 
 
-//#define IO_WARNING  //sikertelen io műveletek jelzése
+//#define IO_WARNING  //sikertelen io muveletek jelzese
 
 static crlf:=x"0d0a"
 static debug:=getenv("HTTP_DEBUG") 
@@ -71,7 +71,7 @@ local x,y,pos
 
     if( pos>0 .and. pos<at(crlf+crlf,msg) )
         x:=left(msg,pos-1)
-        y:=substr(msg,pos+2) //crlf-et átlépni
+        y:=substr(msg,pos+2) //crlf-et atlepni
         pos:=at(crlf,y)
         y:=substr(y,pos)
     else
@@ -167,23 +167,23 @@ local result
 *****************************************************************************
 function http_readmessage(sck,timeout)
 
-// A http_readmessage-et akkor lehet használni,
-// ha az egész üzenet összegyűjthető egyetlen stringbe.
-// A visszatérési érték az összegyűjtött komplett üzenet.
-// Nem ez a helyzet például a forever frame technikánál,
-// ahol a (chunked) üzenetdarabok folytatólagos feldogozást igényelnek,
-// és ezért nem lehet az üzenet végét bevárni (nincs is vége).
+// A http_readmessage-et akkor lehet hasznalni,
+// ha az egesz uzenet osszegyujtheto egyetlen stringbe.
+// A visszateresi ertek az osszegyujtott komplett uzenet.
+// Nem ez a helyzet peldaul a forever frame technikanal,
+// ahol a (chunked) uzenetdarabok folytatolagos feldogozast igenyelnek,
+// es ezert nem lehet az uzenet veget bevarni (nincs is vege).
 //
 // Ha van 'transfer-encoding: chunked' header, akkor a program beolvas 
-// és konkatenál minden chunkot. A visszaadott messageben már nem lesznek 
+// es konkatenal minden chunkot. A visszaadott messageben mar nem lesznek 
 // chunkok, noha a headerben megmarad az eredeti transfer encoding.
 // VALTOZAS: 'transfer-encoding' kicserelve 'content-length'-re.
 //
-// Ha van content-length header, akkor az annak megfelelő hosszban olvasunk.
+// Ha van content-length header, akkor az annak megfelelo hosszban olvasunk.
 //
-// Ha nincs se chunkolás, se content-length, akkor csak a headert olvassuk.
+// Ha nincs se chunkolas, se content-length, akkor csak a headert olvassuk.
 //
-// Timeout esetén a program minden ágon NIL-t ad.
+// Timeout eseten a program minden agon NIL-t ad.
 
 
 local t0:=gettickcount()
@@ -230,15 +230,15 @@ local start,chlen,body
         #ifdef IO_WARNING
         ? "http_readmessage (3) error",sck
         #endif
-        return NIL //nem jött header 
+        return NIL //nem jott header 
     end
 
     hlen+=(len(crcr)-1) //header length
 
     if( (tehdr:=http_getheader(msg,a"Transfer-Encoding"))!=NIL .and. tehdr::lower==a"chunked" )
 
-        body:=a""                                   // chunktalanított body
-        start:=hlen+1                               // az első chunk hossz első bájtja
+        body:=a""                                   // chunktalanitott body
+        start:=hlen+1                               // az elso chunk hossz elso bajtja
 
         while(.t.)
             chlen:=nextchunk(sck,@msg,start,t0,timeout)
@@ -248,19 +248,19 @@ local start,chlen,body
                 #endif
                 return NIL
             elseif( chlen==0 )
-                exit //utolsó chunk
+                exit //utolso chunk
             end
             
-            start:=at(crlf,msg,start)+len(crlf)     // a tartalom első bájtja
-            body+=msg::substr(start,chlen)          // chunktalanított body
-            start+=chlen+len(crlf)                  // következő chunk hossz első bájtja
+            start:=at(crlf,msg,start)+len(crlf)     // a tartalom elso bajtja
+            body+=msg::substr(start,chlen)          // chunktalanitott body
+            start+=chlen+len(crlf)                  // kovetkezo chunk hossz elso bajtja
         end
         
         //VALTOZAS
         //  msg:=left(msg,hlen)+body
         //
         //  //a headerben benne van a 'Transfer-Encoding: chunked'
-        //  //de valójában a body már chunktalanítva van
+        //  //de valojaban a body mar chunktalanitva van
         //
         //KIVESZEM a 'Transfer-Encoding: chunked' headert
         //BERAKOM "Content-Length" hedaert
@@ -290,8 +290,8 @@ local start,chlen,body
         end
 
     else
-        //se Content-Length, se chunkolás
-        //csak a headert olvassuk (már megvan)
+        //se Content-Length, se chunkolas
+        //csak a headert olvassuk (mar megvan)
     end
 
 
@@ -312,18 +312,18 @@ static function nextchunk(sck,msg,start,t0,timeout)
 
 local crpos,chlen,rcv
 
-    // chunkok formátuma
+    // chunkok formatuma
     //
     // hhhhCRCRxxxxCRmmmmmmmmmmmmmmmmmCRxCRmmmmmmmCR0CRCR
     //         ^                        ^
     //         start1                   start2
     // 
     // h  : header
-    // x  : a chunk hossza hexában
-    // CR : \r\n  (két bájt)
-    // m  : az üzenet tényleges tartalma (len(m)==x::bin2str::hex2l)
+    // x  : a chunk hossza hexaban
+    // CR : \r\n  (ket bajt)
+    // m  : az uzenet tenyleges tartalma (len(m)==x::bin2str::hex2l)
     //
-    // az utolsó chunk (tartalmának) hossza 0
+    // az utolso chunk (tartalmanak) hossza 0
 
     while( (crpos:=at(crlf,msg,start))==0 )
         if( gettickcount()-t0>timeout )

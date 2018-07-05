@@ -20,7 +20,7 @@
 
 // 2006.11.16
 // eval(errorblock,e) helyett break(e)
-// socketerror-t és invalidformaterror-t (CRC) dob
+// socketerror-t es invalidformaterror-t (CRC) dob
 
 ****************************************************************************
 class smessage(object)
@@ -135,7 +135,7 @@ static function hdr2crc(h)
 
 #ifdef HEADER
   1- 4 byte hossz
-  5- 8 byte sorszám 
+  5- 8 byte sorszam 
   9-12 byte flagek
  13-16 byte CRC
 #endif

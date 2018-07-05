@@ -21,7 +21,7 @@
 function main(sslflag)
 local s
 local ctx
-local x:=a"Öt szép szűzlány őrült írót nyúz",n
+local x:=a"Ot szep szuzlany orult irot nyuz",n
 
     s:=socketNew()
     s:connect("localhost",40000)

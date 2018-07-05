@@ -42,7 +42,7 @@ local ctx,ss,s,err
             if( sslflag!=NIL )        
                 s:=sslconAccept(ctx,s) //socket -> sslcon
             end
-            ? s:recv(64) //socket VAGY sslcon (vár)
+            ? s:recv(64) //socket VAGY sslcon (var)
 
         recover err <socketerror>
             ? err:description

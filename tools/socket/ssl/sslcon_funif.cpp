@@ -120,14 +120,14 @@ void _clp_sslcon_accept(int argno)
     int timeout=ISNIL(2)?1000000:_parni(2); //msec
     
     //A timeout a handshake-re vonatkozik,
-    //azaz a connect után ennyi idő van az SSL kapcsolat felépítésére.
-    //Ha az SSL_accept-et blokkoló socketre hívjuk meg, és a konnektáló 
-    //fél egyszerűen nem mond semmit, akkor a kommunikáció örökre beragad.
+    //azaz a connect utan ennyi ido van az SSL kapcsolat felepitesere.
+    //Ha az SSL_accept-et blokkolo socketre hivjuk meg, es a konnektalo 
+    //fel egyszeruen nem mond semmit, akkor a kommunikacio orokre beragad.
    
     int sckfd=SSL_get_fd(ssl);
 
-    //CCC-ben a socketek blokkolók
-    //most átállítjuk nonblockingra
+    //CCC-ben a socketek blokkolok
+    //most atallitjuk nonblockingra
     socket_setoption(sckfd,SOCKOPT_NONBLOCKING,1);
 
     unsigned long time0=milliseconds();
@@ -157,7 +157,7 @@ void _clp_sslcon_accept(int argno)
                 }
                 else if( 0>=timeout )
                 {
-                    _retni(-1000); //saját hibakód: timeout
+                    _retni(-1000); //sajat hibakod: timeout
                     break;
                 }
                 else
@@ -183,7 +183,7 @@ void _clp_sslcon_accept(int argno)
 
                 if( 0>=timeout )
                 {
-                    _retni(-1000); //saját hibakód: timeout
+                    _retni(-1000); //sajat hibakod: timeout
                     break;
                 }
                 else
@@ -215,7 +215,7 @@ void _clp_sslcon_accept(int argno)
         }
 
         unsigned long time1=milliseconds();  
-        if( time1<time0 ) //túlcsordulás?
+        if( time1<time0 ) //tulcsordulas?
         {
             time0=time1; 
         }
@@ -223,7 +223,7 @@ void _clp_sslcon_accept(int argno)
         time0=time1;
     }
 
-    //visszaállítjuk blockingra
+    //visszaallitjuk blockingra
     socket_setoption(sckfd,SOCKOPT_NONBLOCKING,0);
 
     CCC_EPILOG();
@@ -232,8 +232,9 @@ void _clp_sslcon_accept(int argno)
 //--------------------------------------------------------------------------
 void _clp_sslcon_connect(int argno)
 {
-    CCC_PROLOG("sslcon_connect",1);
+    CCC_PROLOG("sslcon_connect",2);
     SSL *ssl=(SSL*)_parp(1);
+    //masodik parameter: opcionalis blokk!
     _retni(SSL_connect(ssl)); //retcode==1, ha rendben
     CCC_EPILOG();
 }
@@ -250,9 +251,9 @@ void _clp_sslcon_clear(int argno)
 //----------------------------------------------------------------------------
 static int ssl_write(SSL *ssl, void*buf, int len)
 {
-    // UNIX-on a send SIGPIPE-ot válthat ki, 
-    // ha a másik fél megszakítja a kapcsolatot.
-    // Ha az nincs kezelve, akkor a send csendben kilép. 
+    // UNIX-on a send SIGPIPE-ot valthat ki, 
+    // ha a masik fel megszakitja a kapcsolatot.
+    // Ha az nincs kezelve, akkor a send csendben kilep. 
     // Windowson, Solarison, FreeBSD-n MSG_NOSIGNAL=0.
     
     return SSL_write(ssl,(char*)buf,len);
@@ -261,30 +262,30 @@ static int ssl_write(SSL *ssl, void*buf, int len)
 //---------------------------------------------------------------------------
 static int ssl_read(SSL *s, void*dest, int dlen, int wtime)
 {
-    //s-ből beolvas dest-be dlen darab byteot
+    //s-bol beolvas dest-be dlen darab byteot
 
-    //akkor tér vissza, ha 
-    //  megjött a kért mennyiségű adat,
-    //  lejárt a várakozási idő (wtime>=0),
-    //  hiba keletkezett az olvasásban
+    //akkor ter vissza, ha 
+    //  megjott a kert mennyisegu adat,
+    //  lejart a varakozasi ido (wtime>=0),
+    //  hiba keletkezett az olvasasban
    
-    //ha wtime<0, akkor örökké vár
+    //ha wtime<0, akkor orokke var
  
-    //visszatérés
-    //  recvlen>=0 esetén: beolvasott byteok száma
-    //  recvlen<0  esetén: hiba
+    //visszateres
+    //  recvlen>=0 eseten: beolvasott byteok szama
+    //  recvlen<0  eseten: hiba
 
-    //olvasási hiba esetén, 
-    //  ha van beolvasott adat, ezek hosszát adja,
-    //  ha nincs beolvasott adat, negatívot ad
+    //olvasasi hiba eseten, 
+    //  ha van beolvasott adat, ezek hosszat adja,
+    //  ha nincs beolvasott adat, negativot ad
 
 
     char *buf=(char*)dest;                //ide olvasunk
     int recvlen=0;                        //beolvasott adatok hossza
-    int result=0;                         //utolsó olvasás eredménye
-    int firstread=1;                      //egyszer mindenképpen olvasunk
-    int wtimerest=wtime<0?1000000:wtime;  //maradék idő
-    unsigned long time0=milliseconds();   //olvasás kezdetének ideje (ms)
+    int result=0;                         //utolso olvasas eredmenye
+    int firstread=1;                      //egyszer mindenkeppen olvasunk
+    int wtimerest=wtime<0?1000000:wtime;  //maradek ido
+    unsigned long time0=milliseconds();   //olvasas kezdetenek ideje (ms)
     int sckfd=SSL_get_fd(s);              //socket fdesc
 
     while( firstread || ((recvlen<dlen) && (wtimerest>0)) )
@@ -302,23 +303,23 @@ static int ssl_read(SSL *s, void*dest, int dlen, int wtime)
         tv.tv_usec=(wtimerest%1000)*1000;  //mikrosec 
 
         #ifdef NOT_DEFINED
-          Van olyan eset, amikor az SSL alatt levő fd-t a select 
-          nem olvashatónak mutatja, de maga az SSL mégis olvasható. 
-          Ez akkor fordul elő, ha az ssl az fd-ből előreolvasott, 
-          és vannak "pending" byteok.
+          Van olyan eset, amikor az SSL alatt levo fd-t a select 
+          nem olvashatonak mutatja, de maga az SSL megis olvashato. 
+          Ez akkor fordul elo, ha az ssl az fd-bol eloreolvasott, 
+          es vannak "pending" byteok.
         #endif
 
         if( SSL_pending(s) || select(sckfd+1,&fd_read,NULL,&fd_err,&tv) )
         {
-            //ide akkor jön, ha 
-            //1) van olvasnivaló,
-            //2) a csatorna lezáródott,
-            //3) a select hibakóddal tért vissza
+            //ide akkor jon, ha 
+            //1) van olvasnivalo,
+            //2) a csatorna lezarodott,
+            //3) a select hibakoddal tert vissza
             
-            //a hibát recv eredményéből detektáljuk
-            //CSAK a result>0 eset számít sikeresnek
-            //Linuxon recv nemlétező vonal esetén 0-át ad
-            //NT-n recv nemlétező vonal esetén -1-et ad
+            //a hibat recv eredmenyebol detektaljuk
+            //CSAK a result>0 eset szamit sikeresnek
+            //Linuxon recv nemletezo vonal eseten 0-at ad
+            //NT-n recv nemletezo vonal eseten -1-et ad
 
             result=SSL_read(s,buf+recvlen,dlen-recvlen);
             //printf("\n>>SSL_read[%d] ",result);fflush(0);
@@ -346,7 +347,7 @@ static int ssl_read(SSL *s, void*dest, int dlen, int wtime)
         if( wtime>=0 )
         {
             unsigned long time1=milliseconds();
-            if( time1<time0 ) //túlcsordulás?
+            if( time1<time0 ) //tulcsordulas?
             {
                 time0=time1;
             }
@@ -369,7 +370,7 @@ static int ssl_read(SSL *s, void*dest, int dlen, int wtime)
 }
 
 //----------------------------------------------------------------------------
-void _clp_sslcon_write(int argno) //swrite megfelelője
+void _clp_sslcon_write(int argno) //swrite megfeleloje
 {
     CCC_PROLOG("sslcon_write",2);
     str2bin(base+1);
@@ -381,20 +382,20 @@ void _clp_sslcon_write(int argno) //swrite megfelelője
 }
 
 //--------------------------------------------------------------------------
-void _clp_sslcon_read(int argno)  //sread megfelelője
+void _clp_sslcon_read(int argno)  //sread megfeleloje
 {
     //result:=sslcon_read(ssl,nbyte,wtime)
     //
-    //ssl-ből beolvas nbyte darab byteot
+    //ssl-bol beolvas nbyte darab byteot
     //
-    //akkor tér vissza, ha
+    //akkor ter vissza, ha
     //
-    //  ready   : result == nbyte hosszúságú bynary string (bytearray)
+    //  ready   : result == nbyte hosszusagu bynary string (bytearray)
     //
-    //  timeout : result == nbyte-nál rövidebb bynary string (bytearray)
+    //  timeout : result == nbyte-nal rovidebb bynary string (bytearray)
     //
     //  error   : result == NIL, ha semmit sem lehetett olvasni
-    //            result == nemüres, nbyte-nál rövidebb bytearray
+    //            result == nemures, nbyte-nal rovidebb bytearray
 
     CCC_PROLOG("sslcon_read",3);
     

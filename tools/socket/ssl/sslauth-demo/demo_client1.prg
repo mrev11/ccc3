@@ -18,21 +18,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//a szervert hitelesítő, önmagát igazoló kliens
+//a szervert hitelesito, onmagat igazolo kliens
 
 #include "ssl.ch"
 
 function main()
 
 local ctx,mode
-local s,x:=a"Öt szép szűzlány őrült írót nyúz",n
+local s,x:=a"Ot szep szuzlany orult irot nyuz",n
 
 local cafile:="cert/localhost-cert.pem"
-//local cafile:="demo-cert.pem" //ellenpróba: ezzel nem megy
+//local cafile:="demo-cert.pem" //ellenproba: ezzel nem megy
 
     ctx:=sslctxNew() 
     
-    //ez alá van írva localhost.pem-mel
+    //ez ala van irva localhost.pem-mel
     ctx:use_certificate_file("demo-cert.pem")  
     ctx:use_privatekey_file("demo-key.pem")
     
@@ -42,7 +42,7 @@ local cafile:="cert/localhost-cert.pem"
         ctx:set_verify_depth(1)
         ctx:load_verify_locations(cafile)
         
-        //szerver/kliens hitelesítése egyformán
+        //szerver/kliens hitelesitese egyforman
     end
 
     s:=sslconNew(ctx)

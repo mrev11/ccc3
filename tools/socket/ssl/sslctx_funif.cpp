@@ -34,6 +34,7 @@ static const SSL_METHOD *TLS_server_method()  {return TLSv1_server_method();}
 static const SSL_METHOD *TLS_client_method()  {return TLSv1_client_method();}
 #endif
 
+extern int sslctx_verifycb(int preverify_ok, X509_STORE_CTX *ctx);
 
 static int initmodule()
 {
@@ -82,7 +83,7 @@ void _clp_sslctx_new(int argno)
     const SSL_METHOD *method=0;
     if( ISNIL(1) )
     {
-        method=SSLv23_method(); //kérdéses mi legyen a default
+        method=SSLv23_method(); //kerdeses mi legyen a default
     }
     else
     {
@@ -194,19 +195,6 @@ void _clp_sslctx_check_private_key(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------
-static int cb_verify(int preverify_ok, X509_STORE_CTX *ctx)
-{
-    if( preverify_ok )
-    {
-        char buf[512]; buf[0]=0;
-        //SSL *ssl=(SSL*)X509_STORE_CTX_get_ex_data(ctx,SSL_get_ex_data_X509_STORE_CTX_idx());
-        X509 *cert=X509_STORE_CTX_get_current_cert(ctx);
-        X509_NAME_oneline(X509_get_subject_name(cert),buf,256);
-        fprintf(stderr,"\nsslaccept: %s",buf);
-    }
-    return preverify_ok;
-}
 
 //--------------------------------------------------------------------------
 void _clp_sslctx_set_verify(int argno)
@@ -214,7 +202,7 @@ void _clp_sslctx_set_verify(int argno)
     CCC_PROLOG("sslctx_set_verify",2);
     SSL_CTX *ctx=(SSL_CTX*)_parp(1);
     int mode=_parni(2);
-    SSL_CTX_set_verify(ctx,mode,cb_verify);
+    SSL_CTX_set_verify(ctx,mode,sslctx_verifycb);
     _ret();
     CCC_EPILOG();
 }
@@ -380,7 +368,7 @@ void _clp_sslctx_sess_set_cache_size(int argno)
 {
     CCC_PROLOG("sslctx_sess_set_cache_size",2);
     SSL_CTX *ctx=(SSL_CTX*)_parp(1);
-    long size=_parnl(2); //0=korlátlan!
+    long size=_parnl(2); //0=korlatlan!
     _retnl( SSL_CTX_sess_set_cache_size(ctx,size) );
     CCC_EPILOG();
 }

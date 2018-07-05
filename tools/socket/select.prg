@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//wrapper select_sckdesc vagy select_sckobj felé
-//korábban  select_sckdesc == select volt.
+//wrapper select_sckdesc vagy select_sckobj fele
+//korabban  select_sckdesc == select volt.
 
 ******************************************************************************
 function select(rd,wr,ex,wt)

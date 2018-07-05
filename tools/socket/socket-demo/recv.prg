@@ -23,7 +23,7 @@ function main(sck)
 local s,c,r
 local sms
 
-    set printer to recv
+    set printer to log-recv
     set printer on
 
 #ifdef BIND

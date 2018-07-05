@@ -35,9 +35,9 @@ local s:=socket(), req, rsp
     ? "recv:", len(rsp)
     
     if( !empty(rsp) )
-        memowrit("response",rsp)
+        memowrit("log-response",rsp)
     else
-        ferase("response")
+        ferase("log-response")
     end
     
     

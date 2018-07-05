@@ -19,7 +19,7 @@
  */
 
 //select socket objektumokra
-//(visszavezetve az fd-ken működő selectre)
+//(visszavezetve az fd-ken mukodo selectre)
 
 *****************************************************************************
 function select_sckobj(rd,wr,ex,wt)

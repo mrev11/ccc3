@@ -19,18 +19,18 @@
  */
 
 #ifdef EMLEKEZTETO
-  Burkoló objektum SSL socketekhez.
-  A metódusok vissza vannak vezetve
-  az sslcon_funif modulban levő függvényinterfészre.
-  Az sslconAccept és sslconConnect sslerror-t dobhat.
+  Burkolo objektum SSL socketekhez.
+  A metodusok vissza vannak vezetve
+  az sslcon_funif modulban levo fuggvenyinterfeszre.
+  Az sslconAccept es sslconConnect sslerror-t dobhat.
 
-  Az interfész megegyezik az socket-beli interfésszel. 
-  Ez lehetővé teszi, hogy (az SSL bekapcsolásától eltekintve) 
-  ugyanaz a kód képes legyen SSL-lel és anélkül működni.
+  Az interfesz megegyezik az socket-beli interfesszel. 
+  Ez lehetove teszi, hogy (az SSL bekapcsolasatol eltekintve) 
+  ugyanaz a kod kepes legyen SSL-lel es anelkul mukodni.
   
-  Úgy kell bekapcsolni az SSL-t, hogy
-  kliens oldalon: connect után a plain socketet SSL-lé konvertáljuk,
-  szerver oldalon: accept után a plain socketet SSL-lé konvertáljuk.
+  Ugy kell bekapcsolni az SSL-t, hogy
+  kliens oldalon: connect utan a plain socketet SSL-le konvertaljuk,
+  szerver oldalon: accept utan a plain socketet SSL-le konvertaljuk.
   
   Szerver:
 
@@ -70,19 +70,19 @@
         s:=sslconConnect(ctx,s) //s: plain socket --> SSL socket
     end
 
-    s:send("Öt szép szűzlány őrült írót nyúz") //plain VAGY ssl
+    s:send("Ot szep szuzlany orult irot nyuz") //plain VAGY ssl
     s:close
 #endif  
 
 ******************************************************************************
-function sslconAccept(ctx,sck) //objektumgyártó: plain socket -> ssl socket
+function sslconAccept(ctx,sck) //objektumgyarto: plain socket -> ssl socket
 local scon,code,err
     scon:=sslconNew(ctx,sck)
     code:=sslcon_accept(scon:ssl,ctx:handshake_timeout)
     if( code!=1 )
         err:=sslerrorNew("sslconAccept")
         scon:close
-        if(code==-1000) //saját hibakód
+        if(code==-1000) //sajat hibakod
             err:description:="SSL_accept timeout"
             err:subcode:=0
         end
@@ -91,7 +91,7 @@ local scon,code,err
     return scon
 
 ******************************************************************************
-function sslconConnect(ctx,sck) //objektumgyártó: plain socket -> ssl socket
+function sslconConnect(ctx,sck) //objektumgyarto: plain socket -> ssl socket
 local scon,code,err
     scon:=sslconNew(ctx,sck)
     code:=sslcon_connect(scon:ssl)
@@ -120,7 +120,7 @@ class sslcon(socket)
     method shutdown
     method close
     
-    //örökölve
+    //orokolve
     //attrib fd
     //method reuseaddress
     //method bind
@@ -141,7 +141,7 @@ static function sslcon.initialize(this,context,sck)
     return this
 
 ******************************************************************************
-static function sslcon.accept(this)  //objektumgyártó!
+static function sslcon.accept(this)  //objektumgyarto!
 local scon,fd,code,err
     fd:=.accept(this:fd)
     if( fd<0 )
@@ -154,7 +154,7 @@ local scon,fd,code,err
     if( code!=1 )
         err:=sslerrorNew("sslcon.accept")
         scon:close
-        if(code==-1000)//saját hibakód
+        if(code==-1000)//sajat hibakod
             err:description:="SSL_accept timeout"
             err:subcode:=0
         end
@@ -163,7 +163,7 @@ local scon,fd,code,err
     return scon //sslcon objektum
 
 ******************************************************************************
-static function sslcon.connect(this,host,port) 
+static function sslcon.connect(this,host,port,blk) 
 local code,err
     code:=.connect(this:fd,host,port)
     if( code!=0 )
@@ -179,7 +179,7 @@ local code,err
         err:args:={this:fd,host,port}
         break(err)
     end
-    code:=sslcon_connect(this:ssl)
+    code:=sslcon_connect(this:ssl,blk)
     if( code!=1 )
         err:=sslerrorNew("sslcon.connect")
         this:close
@@ -231,10 +231,10 @@ local buf:=a"",inc
 static function sslcon.shutdown(this)
     return sslcon_shutdown(this:ssl)
 
-// "close notify" üzenetet küld a peernek (ezzel csak baj van)
-// "jónak" minősíti a session-t, amitől az megmarad a cache-ben
-// a shutdown nélküli SSL_free a session-t a cache-ből is törli,
-// tehát shutdown nélkül nem működik a cache
+// "close notify" uzenetet kuld a peernek (ezzel csak baj van)
+// "jonak" minositi a session-t, amitol az megmarad a cache-ben
+// a shutdown nelkuli SSL_free a session-t a cache-bol is torli,
+// tehat shutdown nelkul nem mukodik a cache
 
 ******************************************************************************
 static function sslcon.close(this)

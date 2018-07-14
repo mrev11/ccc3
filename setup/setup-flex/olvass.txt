@@ -166,3 +166,10 @@ Ubuntu 4.10-en kétféle Flex-et is telepíthetünk:
 
     Az openSUSE-vel jövő gcc 4.8.1 nem fogadja el a paraméterlista 
     nélküli (régiC stílusú) deklarációkat.
+
+
+2018.07.13 Build-8: 'register' minostites kiszedve
+
+    A C++ 17-ben a register minosites deprecated.
+    
+

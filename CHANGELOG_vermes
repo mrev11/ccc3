@@ -1,3 +1,6 @@
+2018.07.14 A flex-bol kiszedve a register minosites:
+   C++ 17-ben a register minosites deprecated.
+
 2018.07.05 peer nevek lekerdezese cert-bol:
   sslcon_connect(ssl,blk) plusz opcionalis parameter: blk.
   sslcon:connect(host,port,blk) plusz opcionalis parameter: blk.

@@ -29,6 +29,7 @@ static mime:={;
     {".txt",    a"text/plain"},;
     {".html",   a"text/html"},;
     {".htm",    a"text/html"},;
+    {".ico",    a"image/x-icon"},;
     {".png",    a"image/png"},;
     {".jpeg",   a"image/jpeg"},;
     {".jpg",    a"image/jpeg"},;

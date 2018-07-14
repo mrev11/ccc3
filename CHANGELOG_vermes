@@ -1,3 +1,7 @@
+2018.07.14 javitgatasok:
+  webapp kitolti content-length headert;
+  websrv a favicon.ico-t image/x-icon mime type-pal adja;
+
 2018.07.14 A flex-bol kiszedve a register minosites:
    C++ 17-ben a register minosites deprecated.
 

@@ -9,10 +9,13 @@ static appsocket
 ***************************************************************************************
 static function page_main(wsuri)
 
-local page_main:=<<PAGE>>HTTP/1.1 200 Ok
+local http_header:=<<PAGE>>HTTP/1.1 200 Ok
 Content-Type: text/html;charset=UTF-8
+Content-Length: $CONTLENG
 
-<!DOCTYPE html>
+<<PAGE>>::str2bin
+
+local http_body:=<<PAGE>><!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
@@ -21,12 +24,19 @@ Content-Type: text/html;charset=UTF-8
 </head>
 <body onload="XCODE.onload('$$WEBSOCKET')"></body>
 </html>
-<<PAGE>>::str2bin::httpheader_crlf
+<<PAGE>>::str2bin
 
-    page_main::=strtran(a"$$WEBSOCKET",wsuri)
+    http_body::=strtran(a"$$WEBSOCKET",wsuri)
+    http_header::=strtran(a"$CONTLENG",http_body::len::str::alltrim::str2bin )
+    http_header::=httpheader_crlf  //x"0a" -> x"0d0a"
+   
+    //? http_header+http_body
 
-    return page_main
-    
+    return http_header+http_body
+
+//VALTOZAS
+//kulon osszerakva a header es a body
+//keszit Content-Length headert  
 
 ***************************************************************************************
 function main()

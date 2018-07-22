@@ -1,3 +1,14 @@
+2018.07.22 uj fuggveny: asortkey():
+  Hasonlo az asort()-hoz, csak mas tipusu a block-ot hasznal.
+  Nem osszehasonlito blockot kell megadni, hanem egy olyan blockot, 
+  ami az x tombelembol eloallitja azt a kulcsot, amit mar egyszeruen 
+  ossze lehet hasonlitani a < operatorral. A default block {|x|x}. 
+  Plusz parameter egy ascend/descend flag, a default .t.==ascend.
+  hivasi formak:
+     asortkey(arr,flag)
+     asortkey(arr,blk,[flag])
+     asortkey(aarr,[start],[count],[blk],[flag])
+
 2018.07.22 asort.cpp uj implementacio:
   parameter ellenorzes hianyai potolva;
   hivasi formak:

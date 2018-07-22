@@ -17,6 +17,7 @@ call cc %CCCDIR%\ccclib\src\add.cpp
 call cc %CCCDIR%\ccclib\src\argv.cpp
 call cc %CCCDIR%\ccclib\src\array.cpp
 call cc %CCCDIR%\ccclib\src\asc.cpp
+call cc %CCCDIR%\ccclib\src\asort.cpp
 call cc %CCCDIR%\ccclib\src\at.cpp
 call cc %CCCDIR%\ccclib\src\binary.cpp
 call cc %CCCDIR%\ccclib\src\break.cpp

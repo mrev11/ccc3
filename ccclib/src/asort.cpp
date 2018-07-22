@@ -22,76 +22,104 @@
 #include <stdlib.h>
 #include <cccapi.h>
 
+static void valuesort_cmp(VALUE *v, int n);
+static int valuecompare_cmp(const void *x, const void *y);
 
 //------------------------------------------------------------------------
 void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 {
-VALUE *base=stack-argno;
-stack=base+min(argno,4);
-while(stack<base+4)PUSHNIL();
-push_call("asort",base);
-//
-    VALUE *a=base;     
-    VALUE *s=base+1;     
-    VALUE *c=base+2;     
-    VALUE *b=base+3;     
+    CCC_PROLOG("asort",4);
 
-    if( a->type!=TYPE_ARRAY )
-    {
-        error_arg("asort",base,4);
-    }
-    
-    if( s->type==TYPE_NIL )
-    {
-        *s=ONE;
-    }
+    VALUE *arr=_para(1);    // array to sort
+    unsigned start=1;       // start index
+    unsigned count=0;       // count of elements to sort
+    VALUE *blk=&NIL;        // compare block
 
-    if( c->type==TYPE_NIL )
-    {
-        push_symbol(a);
-        _clp_len(1);
-        *c=*TOP();
-        POP();
-    }
+    // hivasi formak:
+    //  asort(a,b)
+    //  asort(a,[s],[c],[b])
 
-    if( b->type==TYPE_NIL )
+    if( ISBLOCK(2) )
     {
-        _clp__asort_ascendblock(0);
-        *b=*TOP();
-        POP();
+        blk=PARPTR(2);
+    }    
+    else
+    {
+        start=ISNIL(2)?start:_parnu(2);
+        count=ISNIL(3)?count:_parnu(3);
+        if( ISNIL(4) )
+        {
+            blk=PARPTR(4);
+        }
+        else if( ISBLOCK(4) )
+        {
+            blk=PARPTR(4);
+        }
+        else
+        {
+            error_arg("asort",base,4);
+        }
     }
 
-    if( s->type!=TYPE_NUMBER ||  c->type!=TYPE_NUMBER || b->type!=TYPE_BLOCK )
+    unsigned len=_paralen(1);
+    start=max(start,1);
+    start=min(start,len);
+    if( count==0 )
     {
-        error_arg("asort",base,4);
+        count=len;
+    }
+    count=min(count,len-start+1);
+
+    if( count>1  )
+    {
+        push_symbol(blk);
+
+        // valusort kozben 
+        // a compare block van a stack tetejen
+        // a stack nem valtozhat
+
+        valuesort_cmp(arr+start-1,count);
     }
 
-    unsigned int len=ARRAYLEN(a);
-    unsigned int st=D2INT(s->data.number);
-    unsigned int cn=D2INT(c->data.number);
-    VALUE *p=ARRAYPTR(a);
-
-    push_symbol(b); 
-    // qsort alatt az összehasonlító block van a stack tetején,
-    // ezt a compare használja két array elem összehasonlítására
-
-    //debug("qsort hívás előtt");
-    //qsort(p+st-1,min(cn,len-st+1),sizeof(VALUE),valuecompare);
-    valuesort(p+st-1,min(cn,len-st+1));
-    //debug("qsort hívás után");
-//
-*base=*a;
-stack=base+1;
-pop_call();
+    _retv(arr);    
+    CCC_EPILOG();
 }
 
 //------------------------------------------------------------------------
-int valuecompare(const void *x, const void *y)
+static void valuesort_cmp(VALUE *v, int n)
+{
+#if ! defined MULTITHREAD
+
+    SIGNAL_LOCK();
+    qsort(v,n,sizeof(VALUE),valuecompare_cmp);
+    SIGNAL_UNLOCK();
+
+#else
+    if( thread_data::tdata_count==1 )
+    {
+        SIGNAL_LOCK();
+        qsort(v,n,sizeof(VALUE),valuecompare_cmp);
+        SIGNAL_UNLOCK();
+    }
+    else
+    {
+        SIGNAL_LOCK();
+        thread_data_ptr->lock();
+        qsort(v,n,sizeof(VALUE),valuecompare_cmp);
+        thread_data_ptr->unlock();
+        SIGNAL_UNLOCK();
+    }
+
+#endif  //MULTITHREAD
+}
+
+//------------------------------------------------------------------------
+static int valuecompare_cmp(const void *x, const void *y)
 {
 #ifdef MULTITHREAD
-    //Miközben qsort meghívja az összehasonlítást,
-    //engedni kell a szemétgyűjtést, máskülönben deadlock keletkezik,
-    //ha az összehasonlító bokkban objektumok is készülnek.
+    //Mikozben qsort meghivja az osszehasonlitast,
+    //engedni kell a szemetgyujtest, maskulonben deadlock keletkezik,
+    //ha az osszehasonlito bokkban objektumok is keszulnek.
     if( thread_data::tdata_count>1 )    
     {
         thread_data_ptr->unlock();
@@ -100,25 +128,43 @@ int valuecompare(const void *x, const void *y)
 
     SIGNAL_UNLOCK();
     
-    //TOP=összehasonlító block
-    //stack változatlan marad
+    //TOP=osszehasonlito block
+    //stack valtozatlan marad
 
-    // Az összehasonlítást két irányban is el kell végezni,
-    // hogy detektálható legyen az egyenlő eset. A Clipperben
-    // megadható kódblock nem szimmetrikus (csak T/F-et ad),
-    // és ezért az egyenő elemeket tartalmazó array-re a qsort
-    // nem mindig tud lefutni, ha csak -1/1-et adogatunk neki.
-    // így is baj lehet a Clipper string összehasonlítasa miatt.
+    // Az osszehasonlitast ket iranyban is el kell vegezni,
+    // hogy detektalhato legyen az egyenlo eset. A Clipper
+    // osszehasonlito operatorok stringeken ugy mukodnek, 
+    // hogy eloszor a baloldalt csonkitjak a jobboldal hosszara,
+    // es az igy csonkitott baloldalt vetik ossze a jobboldallal.
+    // Emiatt csak a < es >= operatotok mukodnek a vart modon.
+    // A >, <=, != operatorok furcsa eredmenyt adnak, amikor
+    // a balodal egyezik a jobboldallal a jobboldal hosszaban.
+    // Celszeru a compare blokkban a <-t vagy >=-t hasznalni.
 
-    //egyik irány
-    DUP();
+
+    //egyik irany
+    if( TOP()->type==TYPE_BLOCK )
+    {
+        DUP();
+    }
+    else
+    {
+        _clp__asort_ascendblock(0);
+    }
     push_symbol((VALUE*)x);
     push_symbol((VALUE*)y);
     _clp_eval(3);
     int f1=flag();
 
-    //másik irány
-    DUP();
+    //masik irany
+    if( TOP()->type==TYPE_BLOCK )
+    {
+        DUP();
+    }
+    else
+    {
+        _clp__asort_ascendblock(0);
+    }
     push_symbol((VALUE*)y);
     push_symbol((VALUE*)x);
     _clp_eval(3);
@@ -137,4 +183,60 @@ int valuecompare(const void *x, const void *y)
 }
 
 //------------------------------------------------------------------------
+
+#ifdef NOTDEFINED
+
+function main()
+    test("aaa","a")
+    
+    
+function test(a,b)
+    ?  a> b, a, "> ", b, "  "
+    ?? b> a, b, "> ", a, "vigyazz"
+
+    ?  a< b, a, "< ", b, "  "
+    ?? b< a, b, "< ", a, "  "
+
+    ?  a>=b, a, ">=", b, "  "
+    ?? b>=a, b, ">=", a, "  "
+
+    ?  a<=b, a, "<=", b, "  "
+    ?? b<=a, b, "<=", a, "vigyazz"
+
+
+    ?  a!=b, a, "!=", b, "  "
+    ?? b!=a, b, "!=", a, "vigyazz"
+
+    ?
+
+
+// eredmeny
+//
+// .F. aaa >  a   .F. a >  aaa vigyazz
+// .F. aaa <  a   .T. a <  aaa   
+// .T. aaa >= a   .F. a >= aaa   
+// .T. aaa <= a   .T. a <= aaa vigyazz
+// .F. aaa != a   .T. a != aaa vigyazz
+//
+// Tehat:
+// Nem string argumentumokra mindegyik osszehasonlito operator "jo".
+// Fix hosszu stringekre mindegyik osszehasonlito operator "jo".
+// Olyan esetekben, amnikor a baloldal a jobboldal hosszabbitasa (ax>b)
+// azonban a >, <=, != operatorok "furcsan" mukodnek.
+// A furcsasag nem a CCC hibaja, hanem kompatibilitas miatt pontosan
+// reprodukalni kellett a Clipper mukodeset. Ugyanezert nem is lehet
+// most utolag kijavitani.
+//
+//  ax <= a   -> .t., mert a baloldal csonkitodik 'a'-ra
+//  a  <= aa  -> .t., mert a jobboldal hosszabb
+//  ax <= aa  -> .f., mert 'x' nagyobb, mint 'a'
+//
+// Azt kapjuk, hogy ez a relacio nem tranzitiv, tehat nem lehet rendezes.
+// Ha pedig nem rendezes, akkor a qsort mukodese bizonytalan az olyan
+// kodblokkokkal, amik a > es <= operatorral hasonlitanak ossze stringeket.
+// Tehat (legalabb stringeknel) a < es >= operatorokra kell szoritkozni!
+
+#endif
+
+
 

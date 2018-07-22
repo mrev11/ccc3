@@ -146,7 +146,6 @@ extern wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
 extern char* wchar_to_utf8(const wchar_t*,unsigned,unsigned*);
 
 //array.obj:
-extern int valuecompare(const void*,const void*);
 extern VALUE* idxl(void); //obsolete
 extern VALUE* idxxl(void);
 extern void idxr(void);
@@ -195,7 +194,6 @@ extern void deleteValue(VALUE*);
 extern OREF* oref_new(void);
 extern VREF* vref_new(void);
 extern void valuemove(VALUE*,VALUE*,int);
-extern void valuesort(VALUE*,int);
 
 //dtos.obj:
 extern long stod(const char*);

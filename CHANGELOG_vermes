@@ -1,3 +1,12 @@
+2018.07.22 asort.cpp uj implementacio:
+  parameter ellenorzes hianyai potolva;
+  hivasi formak:
+    asort(a,[s],[c],[blk])  (hagyomanyos forma)
+    asort(a,blk)    (uj: s es c teljesen elhagyhato)
+  CCC2/CCC3 egysegesitett forras;
+  a variable.cpp-beli valuesort megszunt;
+  nincs valtozas a mukodesben;
+
 2018.07.22 array.cpp-bol kulonveve asort.cpp;
   a setup-ba is be kell rakni 
   (modularisabb, kod/mukodes nem valtozott)

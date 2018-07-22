@@ -87,14 +87,6 @@ void vartab_lock(){ SIGNAL_LOCK(); }
 void vartab_unlock(){ SIGNAL_UNLOCK(); }
 
 //---------------------------------------------------------------------------
-void valuesort(VALUE *v, int n)  //egyszálú
-{
-    SIGNAL_LOCK();
-    qsort(v,n,sizeof(VALUE),valuecompare);
-    SIGNAL_UNLOCK();
-}
-
-//---------------------------------------------------------------------------
 void valuemove(VALUE *to, VALUE *fr, int n)  //egyszálú 
 {
     SIGNAL_LOCK();
@@ -113,28 +105,6 @@ void vartab_lock0(){ MUTEX_LOCK(mutex); }
 void vartab_unlock0(){ MUTEX_UNLOCK(mutex); }
 void vartab_lock(){ SIGNAL_LOCK(); MUTEX_LOCK(mutex); }
 void vartab_unlock(){ MUTEX_UNLOCK(mutex); SIGNAL_UNLOCK(); }
-
-//---------------------------------------------------------------------------
-void valuesort(VALUE *v, int n)
-{
-    if( n<2 )
-    {
-    }
-    else if( thread_data::tdata_count==1 )
-    {
-        SIGNAL_LOCK();
-        qsort(v,n,sizeof(VALUE),valuecompare);
-        SIGNAL_UNLOCK();
-    }
-    else
-    {
-        SIGNAL_LOCK();
-        thread_data_ptr->lock();
-        qsort(v,n,sizeof(VALUE),valuecompare);
-        thread_data_ptr->unlock();
-        SIGNAL_UNLOCK();
-    }
-}
 
 //---------------------------------------------------------------------------
 void valuemove(VALUE *to, VALUE *fr, int n)

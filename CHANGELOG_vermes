@@ -1,3 +1,5 @@
+2018.07.22 array.cpp ekezetlenitve (egysegesites elokeszitese);
+
 2018.07.22 uj fuggveny: asortkey():
   Hasonlo az asort()-hoz, csak mas tipusu a block-ot hasznal.
   Nem osszehasonlito blockot kell megadni, hanem egy olyan blockot, 

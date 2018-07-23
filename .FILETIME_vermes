@@ -1,4 +1,4 @@
-f387a2a5e2d85da844bd60d97091ab2f8370f0c4 2018072213:53:28-UTC ./CHANGELOG_vermes
+b30143ee61d16a190cbf5de574ecfc69adaeb33d 2018072304:55:10-UTC ./CHANGELOG_vermes
 ee491bcd025ce17b46d8b250bfc182a47e407181 2018072213:36:48-UTC ./ccclib/src/array.cpp
 e12acdf396d274ade97a09550c6e24ad81ef68a2 2018072213:30:43-UTC ./log-install
 4102e9fe5264b8b124ecc8821fc6fcbbb191ba9a 2018072213:09:41-UTC ./ccclib/src/asortkey.cpp
@@ -17,7 +17,6 @@ e8fe7d772b10a4c5b8cd7bd21389ea2e39ec9e0b 2018072212:48:08-UTC ./usr/bin/linux/pr
 7615d57763dcd6c0c073a5e5c757f7f56c82ff05 2018072212:25:35-UTC ./setup/setup-unix/variable.cpp
 f127a692cee9452b0f62430b3d5abc3ae2bd664b 2018072209:52:13-UTC ./setup/setup-unix/asort.cpp
 833d598c721dfbcfc3672bc40832c0a5679ba71d 2018072209:34:28-UTC ./setup/setup-windows/make_setup_lib.bat
-481a3ededc3a89fe73b83085dc63df68e7dcd641 2018072209:32:48-UTC ./setup/setup-unix/array.cpp
 b87289382b32cfc2c8f5725ebfd094eb107c47ad 2018071406:15:54-UTC ./setup/setup-flex/olvass.txt
 22169606b843e5fce61dd68d798059f27e1cd5a2 2018071316:15:43-UTC ./usr/bin/linux/webapp
 52aa599fe031da1bc38e4a97ff42faf2af6f3a92 2018071316:15:20-UTC ./tutor/pm/linux/3/search.say

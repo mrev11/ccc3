@@ -31,7 +31,7 @@ local a:=array(1000),n
 
     qsort(a) //növekvő
 
-    set printer to sorted
+    set printer to log-sorted
     set printer on
     set console off
 
@@ -41,7 +41,7 @@ local a:=array(1000),n
     ?
     
 ****************************************************************************
-function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y})
+function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<y})
 local q
     if( p<r )
         q:=qsplit(a,p,r,blk)

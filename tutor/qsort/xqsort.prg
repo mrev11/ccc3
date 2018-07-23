@@ -52,7 +52,7 @@ function main(arg)
 
 local a:=array(5000),n
 local cmpcnt:=0
-local blk:={|x,y|++cmpcnt,x>y}
+local blk:={|x,y|++cmpcnt,y<x}
 
     for n:=1 to len(a)
         a[n]:=random()%20 //-> sok egyenlő elem
@@ -77,7 +77,7 @@ local blk:={|x,y|++cmpcnt,x>y}
     ? arg, cmpcnt
     ?
 
-    set printer to sorted
+    set printer to log-sorted
     set printer on
     set console off
 
@@ -94,7 +94,7 @@ local blk:={|x,y|++cmpcnt,x>y}
 //ez lehet a könyvtári asort függvény helyettesítése
 
 ****************************************************************************
-static function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //elvi implementáció
+static function qsort(a,p:=1,r:=len(a),blk:={|x,y|x<y}) //elvi implementáció
 
 local q
 
@@ -114,7 +114,7 @@ local q
 #define PUSH(a,x1,x2,b)   if(x1+3<x2,(stack1[stkptr]:=x1,stack2[stkptr]:=x2,++stkptr),isort(a,x1,x2,b))
 
 ****************************************************************************
-static function xqsort(a,p:=1,r:=len(a),blk:={|x,y|x<=y}) //optimalizált implementáció
+static function xqsort(a,p:=1,r:=len(a),blk:={|x,y|x<y}) //optimalizált implementáció
 
 local pow2:=1,log2:=0
 local stack1,stack2,stkptr:=1

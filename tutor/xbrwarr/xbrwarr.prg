@@ -78,19 +78,19 @@ local popup3:={}
 
 static function sortbyname(b)    
 local a:=brwArray(b)
-    asort(a,,,{|x,y| x[F_NAME]<=y[F_NAME]})
+    asort(a,,,{|x,y| x[F_NAME]<y[F_NAME]})
     b:refreshall()
     return NIL
     
 static function sortbytime(b)    
 local a:=brwArray(b)
-    asort(a,,,{|x,y| dtos(x[F_DATE])+x[F_TIME]<=dtos(y[F_DATE])+y[F_TIME]})
+    asort(a,,,{|x,y| dtos(x[F_DATE])+x[F_TIME]<dtos(y[F_DATE])+y[F_TIME]})
     b:refreshall()
     return NIL
 
 static function sortbysize(b)    
 local a:=brwArray(b)
-    asort(a,,,{|x,y| x[F_SIZE]<=y[F_SIZE]})
+    asort(a,,,{|x,y| x[F_SIZE]<y[F_SIZE]})
     b:refreshall()
     return NIL
 

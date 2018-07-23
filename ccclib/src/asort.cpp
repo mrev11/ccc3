@@ -30,7 +30,7 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 {
     CCC_PROLOG("asort",4);
 
-    VALUE *arr=_para(1);    // array to sort
+    VALUE *arr=_para(1);    // first element of array to sort (a[1])
     unsigned start=1;       // start index
     unsigned count=0;       // count of elements to sort
     VALUE *blk=&NIL;        // compare block
@@ -81,7 +81,7 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
         valuesort_cmp(arr+start-1,count);
     }
 
-    _retv(arr);    
+    _retv(base); //array   
     CCC_EPILOG();
 }
 

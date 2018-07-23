@@ -36,7 +36,7 @@ void _clp_asortkey(int argno)
 {
     CCC_PROLOG("asortkey",5);
 
-    VALUE *arr=_para(1);    // array to sort
+    VALUE *arr=_para(1);    // first element of array to sort (a[1])
     unsigned start=1;       // start index
     unsigned count=0;       // count of elements to sort
     VALUE *blk=&NIL;        // key block
@@ -100,7 +100,7 @@ void _clp_asortkey(int argno)
         valuesort_key(arr+start-1,count);
     }
     
-    _retv(arr);
+    _retv(base); //array
     CCC_EPILOG();
 }
 

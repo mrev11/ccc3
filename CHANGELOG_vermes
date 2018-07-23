@@ -1,3 +1,7 @@
+2018.07.23 asort() es asortkey() hibaja javitva:
+  asort(arr) return erteke arr helyett veletlenul arr[1] volt;
+  osszehasonlito blokkokban atteres a < operatorra (legalabb stringeknel);
+
 2018.07.23 array.cpp egysegesites;
 
 2018.07.22 array.cpp ekezetlenitve (egysegesites elokeszitese);

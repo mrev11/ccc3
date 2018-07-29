@@ -1,3 +1,12 @@
+2018.07.29 visszaallitva az egyszalu forditas lehetosege;
+  ezeket kell valtoztatni:
+    usr/option/*/compile.opt-ban -DMULTITHREAD-et kikommentezni
+    setup/setup-unix/m-ben buildp helyett build-et forditani
+    install.b-ben buildp helyett build-et forditani
+  megj: object/lib/so-k nem kompatibilisek, mindent ujra kell forditani
+  megj: csak azok a programok futnak, amik nem hasznalnak threadeket
+
+
 2018.07.23 asort() es asortkey() hibaja javitva:
   asort(arr) return erteke arr helyett veletlenul arr[1] volt;
   osszehasonlito blokkokban atteres a < operatorra (legalabb stringeknel);

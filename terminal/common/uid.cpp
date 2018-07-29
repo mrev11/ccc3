@@ -63,10 +63,13 @@ const char *unique_id()
         int c;
     } data;
 
-    #ifdef WINDOWS
+    data.p=0;
+    #ifdef MULTITHREAD
+      #ifdef WINDOWS
         data.p=(void*)GetCurrentThreadId();
-    #else
+      #else
         data.p=(void*)pthread_self();
+      #endif
     #endif
     data.t=time(0);
     data.c++;

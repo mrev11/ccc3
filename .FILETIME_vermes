@@ -1,4 +1,13 @@
-43b783be548b62223fdf8bd9aeca8ba4e5be6c45 2018072908:27:51-UTC ./log-install
+7b0bfdedca6e812761688e3cb8c25e050db084e3 2018073107:05:14-UTC ./CHANGELOG_vermes
+f9f51b35ed119e413ba3443c29ed8377beab3edc 2018073106:15:24-UTC ./setup/setup-windows/prg2ppo/trinp.cpp
+fc77fe918c0ceee247db3edfd0b1626afc215467 2018073106:15:24-UTC ./setup/setup-windows/prg2ppo/xtlex.cpp
+7c424ad170c6001c39724e1932e509e75826071b 2018073106:15:23-UTC ./setup/setup-windows/prg2ppo/input.cpp
+63951ac650eb1dae0c54295c368e0f6a34b3e995 2018073106:15:23-UTC ./setup/setup-windows/prg2ppo/trfind.cpp
+ae9c06ab098d5ce00f44a8eec2971c35b685fe4e 2018073106:06:57-UTC ./log-install
+334808b3a3a90e387fc8443fa649733b7f2ff952 2018073106:05:58-UTC ./setup/setup-unix/prg2ppo/input.cpp
+6b16774df40dd3ea7c7ecd4bbc3e2b34f86476b3 2018073106:05:58-UTC ./setup/setup-unix/prg2ppo/trfind.cpp
+00374ce3c699ab3242f1d410fbf3a8e62876b53b 2018073106:05:58-UTC ./setup/setup-unix/prg2ppo/trinp.cpp
+683f56000af46ab5e1d2d74215b949069cfd150d 2018073106:05:58-UTC ./setup/setup-unix/prg2ppo/xtlex.cpp
 befabeb196eaa19649f62bd1e5eed714246c69c7 2018072908:27:51-UTC ./usr/bin/linux/gitfollow
 0fff8b2b070b4e8be9ee03c434994a1f362ed89b 2018072908:27:51-UTC ./usr/bin/linux/gitnav
 ce61a68d687ad697f7aef3efba23ea8eb32a65bd 2018072908:27:51-UTC ./usr/bin/linux/gitref
@@ -65,7 +74,6 @@ b87d9ec8cdbaf4c4f94ce4fc20090fd98091e4ad 2018072908:26:58-UTC ./usr/bin/linux/te
 d021d8310087d66076636dc488e198a33a1691a4 2018072908:26:56-UTC ./usr/bin/linux/removecr
 f3fbbb009fc7834d73118c6fe277ff78b3ac27ec 2018072908:26:55-UTC ./usr/bin/linux/build
 2365336f989e98a2a2ff0b505f323f1f1e9ce06d 2018072908:26:43-UTC ./setup/setup-unix/compopt
-3c6cf33dc51d27d36035c2764b9010848ecdfdc7 2018072908:26:19-UTC ./CHANGELOG_vermes
 c9fc8730123f02b4cdad2eb6d3cd4a83282af7b5 2018072907:42:35-UTC ./terminal/common/uid.cpp
 01aea5563e698d58b5fe0cdcf2a7b157cc9e14a7 2018072907:35:38-UTC ./setup/setup-unix/build/build.cpp
 6405e02c73066e9831dfb9138d0f138ef8620291 2018072907:35:07-UTC ./setup/setup-unix/m
@@ -190,10 +198,6 @@ dad57080db3b6dc1cfe4325f2df4656e0dad8935 2018042818:56:44-UTC ./terminal/common/
 18e5bfd66e8ba36e7fe5ca1c28ff9ccf86482521 2018042818:56:44-UTC ./usr/options/mng/compile.opt
 dee2dabbbec433f2fa5b1c40893eb6434bab46ac 2018042721:15:53-UTC ./setup/setup-windows-alt/_ccomp/ccomp.cpp
 166109f0c49d3636f7ef2e1bc14287e46faabc4e 2018042721:14:53-UTC ./setup/setup-windows-alt/lib3/directory.cpp
-9e50e55ac2eaad6409824d16e8faef585aba327e 2018042716:32:22-UTC ./setup/setup-windows-alt/_prg2ppo/xtlex.cpp
-62049987efd3585fe576823ac7b2b653b40977e5 2018042716:32:21-UTC ./setup/setup-windows-alt/_prg2ppo/trinp.cpp
-0cfd04d0486fc8cbbf15a022ac2fa2d0654ec9ac 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/input.cpp
-6807d8f700fe40d2fcf9b40c4f4b16b3100d110a 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/trfind.cpp
 34ea51b7880d29e39056acd22b9a1a3d86042c37 2018042716:32:20-UTC ./setup/setup-windows-alt/_prg2ppo/xtxlegal.cpp
 02e31411cf15d2c16ea7d8ba0e5a1f5b0dfc4f81 2018042607:29:03-UTC ./tools/z/z.ver
 8c285f6fea20ee5e8ad6fd59736e29d76210336d 2018042606:44:22-UTC ./tools/z/zcolor.prg
@@ -907,7 +911,6 @@ caa07feb4b71a52db4ea87bf20ddc1c2fe94ad0d 2016052711:18:11-UTC ./terminal/unix/pa
 9d8b3723a0f9944dba83b33d8eaa21b265da98a6 2016052510:38:27-UTC ./ccclib/src/uic/screenbuf/screenbuf.h
 8fb75ee8333017af818a35393e7db0064a52fc94 2016052510:29:48-UTC ./terminal/unix/compopt.ext
 d23dc5a67ea2126321c40bbb8085e195a2a1e73a 2016052410:19:34-UTC ./tools/list/m
-f62367af2c65f03e203f2414140f5a169e955d31 2016052408:12:00-UTC ./setup/setup-unix/prg2ppo/input.cpp
 461d2e570bf0b111ca43018cca7e0857c275df56 2016052212:11:54-UTC ./terminal/sslforw/ssl-test/pem/rehash
 a6649f575721b839bd323d98c4feb8bad4f20203 2016052212:11:08-UTC ./terminal/sslforw/ssl-test/pem/OLVASS
 437100fa695ead955bcf6a950599731365b41fe0 2016052211:15:42-UTC ./terminal/sslforw/ssl-test/t--host
@@ -1176,9 +1179,6 @@ d62f1066f4854cb2a0db7b2a1fce17f6b2e6acc6 2014022607:56:33-UTC ./setup/setup-unix
 57787e453767b705759e5a9719e966e04e7d0832 2014022014:09:53-UTC ./setup/setup-unix/str.cpp
 6545dcd79f9b235d44f1be3b102b409bdf31a2d9 2014020215:01:28-UTC ./gtk/code_byhand/gtk-ubuntu.bld
 39c642b8a1fd0dbf9ae4ea1019d422cf80c7195a 2014013012:02:54-UTC ./ccclib/src/windows/spawn.cpp
-384009e54bb5804f5ac1b6d45ba31fca77d93be2 2014012508:29:58-UTC ./setup/setup-unix/prg2ppo/trinp.cpp
-e10dd11594b3455bee756d240e152fd8a90566e2 2014012508:29:58-UTC ./setup/setup-unix/prg2ppo/xtlex.cpp
-667817758c8642df065fa60b6632043727bae93a 2014012508:29:57-UTC ./setup/setup-unix/prg2ppo/trfind.cpp
 cc1cdedb72169e492871a09f987012a40915c5b6 2014012508:15:42-UTC ./usr/include/hashtable.h
 a390f354718097e86e81e89aea1a27be899346f2 2014012508:15:20-UTC ./tools/xmldom/xmldom_lexer.h
 0c423077ed208de39f3cd4755e2b3409d3a39bb0 2014012508:15:08-UTC ./tools/xmldom/demo/malloc_dbg/malloc_dbg.cpp

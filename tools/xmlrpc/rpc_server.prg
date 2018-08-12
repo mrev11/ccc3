@@ -51,6 +51,7 @@ class xmlrpcserver(object)
     attrib scklisten    //ezen a socket objektumon figyel
     attrib sslcontext   //ha ez nem NIL, akkor bekapcsolja az SSL-t
     attrib rpcstruct    //hogy veszi at a struct-okat: attrvals/hash
+    attrib dofork       //.t.: minden kapcsolatot kulon processz kezel (default=.f.)
 
 *****************************************************************************
 static function xmlrpcserver.initialize(this,ifport,ctx) 
@@ -101,6 +102,7 @@ local a,e
     this:recover:=.t.
     this:evalarray:=.t.
     this:socketlist:={}
+    this:dofork:=.f.
  
     this:server:=ID_SERVER
 
@@ -295,15 +297,38 @@ local readable,n,i,p,e,s,r
         aadd(this:socketlist,this:scklisten)
     end
 
-    while( .t. )
+    while( !empty(this:socketlist) )
+
+        //ha a szervernek nincs listenere (nem figyel)
+        //mert peldaul forkolt gyerek
+        //vagy mas modon kapott socketeken log
+        //de a socketek megszakadnak es elfogynak
+        //akkor uresse valhat a socketlist
+        //olyankor ne maradjon vegtelen ciklusban
 
         select( readable:=aclone(this:socketlist),,,this:loopfreq )
 
         for n:=1 to len(readable)
 
             if( readable[n]==this:scklisten )
+
                 begin
                     s:=this:scklisten:accept
+
+                    #ifdef _UNIX_
+                        if( this:dofork==.t. )
+                            if( 0==fork() )
+                                //child
+                                this:scklisten:close
+                                this:socketlist:={}
+                            else
+                                //parent
+                                s:close
+                                exit
+                            end
+                        end
+                    #endif
+
                     if( this:sslcontext!=NIL )
                         #ifdef SSL_SUPPORT
                             s:=sslconAccept(this:sslcontext,s) //socket -> sslcon
@@ -340,6 +365,12 @@ local readable,n,i,p,e,s,r
         if( this:loopblock!=NIL )
             eval(this:loopblock,this)
         end
+
+        #ifdef _UNIX_
+            while( 0<waitpid(,,1) ) //1==WNOHANG (csak UNIX)
+                //zombiek takarítása
+            end
+        #endif
     end
 
 

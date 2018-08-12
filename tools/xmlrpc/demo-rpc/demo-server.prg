@@ -36,6 +36,7 @@ local ctx
     end
     
     
+  //server:=xmlrpcserverNew()                   //sehol sem figyel
   //server:=xmlrpcserverNew(":45000")           //minden interfészen figyel
     server:=xmlrpcserverNew("localhost:45000")  //csak localhost-on figyel
   //server:=xmlrpcserverNew("127.0.0.1:45000")  //csak localhost-on figyel
@@ -47,6 +48,7 @@ local ctx
     server:debug        :=.f.   //default .f.
     server:recover      :=.t.   //default .t.
     server:reuseaddr    :=.t.   //default .f.
+  //server:dofork       :=.t.   //default .f. forkoljon-e a szerver
     
     server:sslcontext   :=ctx   //bekapcsolja az SSL-t (ha ctx nem NIL)
  
@@ -67,7 +69,7 @@ local ctx
     server:closeblock({|srv,sck|qout("Closed:",sck)})
 
     //server:loopfreq:=5000 //msec
-    //server:loopblock({|srv|qout("loop",time())})
+    //server:loopblock({|srv|qout("loop",time(),server:socketlist,getpid())})
     
     server:loop
 

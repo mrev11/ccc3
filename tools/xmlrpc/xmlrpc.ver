@@ -1,9 +1,21 @@
 
-#define ID_SERVER  "CCC XMLRPC Server 1.1.06"
-#define ID_CLIENT  "CCC XMLRPC Client 1.1.06"
+#define ID_SERVER  "CCC XMLRPC Server 1.2.0"
+#define ID_CLIENT  "CCC XMLRPC Client 1.2.0"
  
  
 #ifdef _VERSION_HYSTORY_
+2018.08.10 -- 1.2.0
+  Uj server/client attributum: attrib rpcstruct.
+  Ha erteke NIL/"attrvals", akkor a program az XMLRPC struct-okat 
+  {{attr,val}...} alaku array-kent kapja meg. Ez a korabbi mukodes.
+  Ha rpcstruct erteke "hash", akkor az XMLRPC struct-okat a program
+  simplehash objektumban kapja. Ez az uj mukodes.
+  
+  Az interfesz a CCC objektumokat XMLRPC struct-kent kuldi, 
+  ahol az {attr,val} parokbol lesznek a struct member-ei.
+  A regi mukodesben a konverzio nem fuggott az objetum fajtajatol.
+  Valtozas: A simplehash tipusu objektumok eseten specialisan a hash 
+  {key,value} parjaibol keszulnek a struct member-ek.
 
 2013.11.02 -- 1.1.06
   faultCode típusa (a hibás) double helyett (szabványos) int.

@@ -40,6 +40,7 @@ class xmlrpcclient(object)
     attrib URI        //HTTP header (általában /RPC2)
     attrib timeout    //ennyit vár a válaszra (ezred sec)
     attrib sslcontext //ha ez nem NIL, akkor bekapcsolja az SSL-t
+    attrib rpcstruct  //hogy veszi at a struct-okat: attrvals/hash
 
 
 *****************************************************************************
@@ -204,15 +205,19 @@ local faultcode,faultstring
         params:={params}
     end
 
-    this:write( rpcmethodCall(metnam,params) )
-    result:=rpcdataResponse(http_body( this:read ))
+    this:write( xmlrpcclient.rpcmethodCall(this,metnam,params) )
+    result:=xmlrpcclient.rpcdataResponse(this,http_body( this:read ))
 
- 
     if( !result[1] )
         //a szerver hibát jelzett
-
-        faultcode:=result[2][1][2]
-        faultstring:=result[2][2][2]
+        
+        if( valtype(result[2])=="A" )
+            faultcode:=result[2][1][2]
+            faultstring:=result[2][2][2]
+        else // if(this:rpcstruct=="hash")
+            faultcode:=result[2]["faultCode"]
+            faultstring:=result[2]["faultString"]
+        end
 
         e:=xmlrpcerrorNew()
         e:operation:="xmlrpcclient.call"

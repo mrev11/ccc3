@@ -42,6 +42,7 @@ local ctx
   //server:=xmlrpcserverNew("xxxyyyzzz:45000")  //socketerror-t dob
   //server:=xmlrpcserverNew("127.0.0.2:45000")  //nem veszi észre a hibát
 
+    server:rpcstruct    :="hash"
     server:keepalive    :=.t.   //default .f.
     server:debug        :=.f.   //default .f.
     server:recover      :=.t.   //default .t.
@@ -49,6 +50,7 @@ local ctx
     
     server:sslcontext   :=ctx   //bekapcsolja az SSL-t (ha ctx nem NIL)
  
+    server:addmethod("sample.echo1"   ,{|x|qout(x),x})
     server:addmethod("sample.echo"    ,{|*|{*}})
     server:addmethod("sample.gettime" ,{||time()})
     server:addmethod("sample.sum"     ,{|x,y|x+y})
@@ -64,8 +66,8 @@ local ctx
     
     server:closeblock({|srv,sck|qout("Closed:",sck)})
 
-    server:loopfreq:=5000 //msec
-    server:loopblock({|srv|qout("loop",time())})
+    //server:loopfreq:=5000 //msec
+    //server:loopblock({|srv|qout("loop",time())})
     
     server:loop
 

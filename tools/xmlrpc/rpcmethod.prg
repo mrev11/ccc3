@@ -31,7 +31,7 @@ static xmlheader:='<?xml version="1.0" encoding="UTF-8"?>'
 
 
 ****************************************************************************
-function rpcmethodCall(name, params) 
+function xmlrpcclient.rpcmethodCall(this,name,params) 
 local x:=xmlheader+crlf()
     x+="<methodCall>"+crlf()
     x+="<methodName>"+name+"</methodName>"+crlf()
@@ -40,7 +40,7 @@ local x:=xmlheader+crlf()
     return x
 
 ****************************************************************************
-function rpcmethodResponse(params) 
+function xmlrpcserver.rpcmethodResponse(this,params) 
 local x:=xmlheader+crlf() 
     x+="<methodResponse>"+crlf()
     x+=rpcparams(params)
@@ -48,7 +48,7 @@ local x:=xmlheader+crlf()
     return x
 
 ****************************************************************************
-function rpcmethodFault(code,errmsg) 
+function xmlrpcserver.rpcmethodFault(this,code,errmsg) 
 local x:=xmlheader+crlf() 
     x+="<methodResponse>"+crlf()
     x+="<fault>"+crlf()
@@ -109,6 +109,7 @@ static function rpcvalue(v)
 ****************************************************************************
 static function rpctype(v)
 local x, t:=valtype(v), n
+local item
     if( t=="U" )
         x:="" 
     elseif( t=="C" )
@@ -138,10 +139,18 @@ local x, t:=valtype(v), n
         x+="</data></array>"
     elseif( t=="O" ) 
         x:="<struct>"+crlf()  
-        v:=v:attrvals
-        for n:=1 to len(v)
-            x+=rpcmember(v[n])
-        next
+        if( v:isDerivedFrom(simpleHashClass()) )
+            item:=v:first
+            while( item!=NIL )
+                x+=rpcmember({item[1],item[2]})
+                item:=v:next
+            end 
+        else
+            v:=v:attrvals
+            for n:=1 to len(v)
+                x+=rpcmember(v[n])
+            next
+        end
         x+="</struct>"
     elseif( t=="B" ) 
         x:=eval(v) //megformázza magát!

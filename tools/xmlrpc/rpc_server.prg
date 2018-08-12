@@ -50,6 +50,7 @@ class xmlrpcserver(object)
     attrib socketlist   //az összes élő socket objektum
     attrib scklisten    //ezen a socket objektumon figyel
     attrib sslcontext   //ha ez nem NIL, akkor bekapcsolja az SSL-t
+    attrib rpcstruct    //hogy veszi at a struct-okat: attrvals/hash
 
 *****************************************************************************
 static function xmlrpcserver.initialize(this,ifport,ctx) 
@@ -185,7 +186,7 @@ local qmxml,docenc
 
     begin
  
-        req:=rpcdataCall(req,@qmxml)
+        req:=xmlrpcserver.rpcdataCall(this,req,@qmxml)
         
         if( this:reqencoding!=NIL )
             //? qmxml
@@ -257,9 +258,9 @@ local qmxml,docenc
     end
 
     if( faultString!=NIL )
-        rsp:=rpcmethodFault(faultCode,faultString)  
+        rsp:=xmlrpcserver.rpcmethodFault(this,faultCode,faultString)  
     else
-        rsp:=rpcmethodResponse( {rsp} )
+        rsp:=xmlrpcserver.rpcmethodResponse(this,{rsp})
     end
 
     hdr:="HTTP/1.1 200 OK"+crlf()

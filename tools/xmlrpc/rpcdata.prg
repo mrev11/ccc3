@@ -21,8 +21,9 @@
 //XML-RPC dokumentumot CCC struktúrába alakít
 
 ****************************************************************************
-function rpcdataCall(xml,qmxml)
+function xmlrpcserver.rpcdataCall(this,xml,qmxml)  //this:server
 local p, o, name, params, n
+local style
 
     //xmldom 1.4.00 előtt
     //
@@ -46,7 +47,13 @@ local p, o, name, params, n
     p:=xmlparserNew()
     p:rootflag:=.f.
     p:entityconv:=.t.
+    
+    if( this:rpcstruct!=NIL ) 
+        style:=xmlattribNew("style",'"'+this:rpcstruct+'"')
+        p:contentblock:={|p,n|if(n:type=="struct",n:addattrib(style),NIL),.t.}
+    end
     o:=p:parsestring(xml)
+    //o:xmloutind
     qmxml:=p:qmxml
     if( !o:type=="methodCall" )
         expected("methodCall",o:type) 
@@ -74,8 +81,9 @@ local p, o, name, params, n
 
 
 ****************************************************************************
-function rpcdataResponse(xml)
+function xmlrpcclient.rpcdataResponse(this,xml) //this:client
 local p, o, params, fault, n
+local style
 
     //xmldom 1.4.00 előtt
     //
@@ -94,7 +102,12 @@ local p, o, params, fault, n
     p:=xmlparserNew()
     p:rootflag:=.f.
     p:entityconv:=.t.
+    if( this:rpcstruct!=NIL ) 
+        style:=xmlattribNew("style",'"'+this:rpcstruct+'"')
+        p:contentblock:={|p,n|if(n:type=="struct",n:addattrib(style),NIL),.t.}
+    end
     o:=p:parsestring(xml)
+    //o:xmloutind
     if( !o:type=="methodResponse" )
         expected("methodResponse",o:type) 
     end
@@ -236,9 +249,19 @@ local x,data,n
 ****************************************************************************
 static function rpcstruct(o)
 local x,n
-    x:=array(len(o:content))
-    for n:=1 to len(x)
-        x[n]:=rpcmember(o:content[n]) 
+local item
+local style:=o:getattrib("style")
+    if( style==NIL .or. style=="attrvlas"  )
+        x:=array(len(o:content))
+        for n:=1 to len(x)
+            x[n]:=rpcmember(o:content[n]) 
+        end
+    elseif( style=="hash" )
+        x:=simplehashNew()
+        for n:=1 to len(o:content)
+            item:=rpcmember(o:content[n])
+            x[item[1]]:=item[2] 
+        end
     end
     return x
 
@@ -284,4 +307,4 @@ local e:=invalidformaterrorNew()
 
 
 ****************************************************************************
- 
+

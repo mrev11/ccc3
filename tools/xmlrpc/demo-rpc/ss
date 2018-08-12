@@ -1,2 +1,2 @@
 #!/bin/bash
-demo-server.exe SSL
+demo-server.exe #SSL

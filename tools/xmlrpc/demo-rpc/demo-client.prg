@@ -47,7 +47,8 @@ local e
     client:=xmlrpcclientNew(host,val(port))
     client:timeout:=1000 
     client:keepalive:=.t.
-    client:debug:=.t.
+    //client:debug:=.t.
+    client:rpcstruct:="hash"
     
     ? client:host, client:port
     ?
@@ -152,9 +153,33 @@ local e
                 e:list
             end
 
+        elseif( k=="!" )
+            //? client:call("sample.echo1", "Próba szerencse" )
+            //? client:call("sample.echo1", 3.141592 )
+            ? client:call("sample.echo1", proba.PStructNew() )
+
         end
     end
 
     ?
 
+
 *****************************************************************************
+class proba.PStruct(object)
+    attrib  __classname__
+    attrib  text1
+    attrib  text2
+    attrib  text3
+
+    method  initialize
+    
+static function proba.PStruct.initialize(this)
+    this:__classname__:="proba.PStruct"  //a java miatt case sensitive
+    this:text1:="egy"
+    this:text2:="ketto"
+    this:text3:="harom"
+    return this
+
+*****************************************************************************
+
+

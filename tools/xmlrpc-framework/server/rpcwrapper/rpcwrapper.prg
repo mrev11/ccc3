@@ -447,23 +447,23 @@ local r,n,module,host,port,c
     if( m0=="system" )
 
         if( m=="system.register" )
-            r:=rpcdataCall(this:request) //{"system.register",{module}}}
+            r:=xmlrpcserver.rpcdataCall(NIL,this:request) //{"system.register",{module}}}
             this:module:=r[2][1]
             s:=rpcresponse(.t.)
 
         elseif( m=="system.listservices" )
-            r:=rpcdataCall(this:request) //{"system.listservices",{sid}}}
+            r:=xmlrpcserver.rpcdataCall(NIL,this:request) //{"system.listservices",{sid}}}
             s:=rpcresponse(listservices())
 
         elseif( m=="system.listclients" )
-            r:=rpcdataCall(this:request) //{"system.listclients",{sid}}}
+            r:=xmlrpcserver.rpcdataCall(NIL,this:request) //{"system.listclients",{sid}}}
             s:=rpcresponse(listclients())
 
         elseif( m=="system.getversion" )
             s:=rpcresponse(VERSION)
  
         elseif( m=="system.down" )
-            r:=rpcdataCall(this:request) //{"system.down",{sid,module}}}
+            r:=xmlrpcserver.rpcdataCall(NIL,this:request) //{"system.down",{sid,module}}}
             if( check(r[2][1]) )
                 down(r[2][2])
             end
@@ -526,12 +526,12 @@ static function noservice(name)
 
 *****************************************************************************
 static function rpcfault(code,description)
-local rsp:=rpcmethodFault(code,description)     
+local rsp:=xmlrpcserver.rpcmethodFault(NIL,code,description)     
     return addheader(rsp)
 
 *****************************************************************************
 static function rpcresponse(value)
-local rsp:=rpcmethodResponse({value})    
+local rsp:=xmlrpcserver.rpcmethodResponse(NIL,{value})    
     return addheader(rsp)
 
 *****************************************************************************

@@ -1,7 +1,14 @@
 
-#define VERSION  "13.11.23"
+#define VERSION  "18.08.13"
 
 #ifdef __HISTORY__
+
+2018.08.13
+  Alkalmazkodas az XMLRPC 1.2.0 valtozasahoz.
+  rpcmethodFault(...)      -->  xmlrpcserver.rpcmethodFault(NIL,...)
+  rpcmethodResponse(...})  -->  xmlrpcserver.rpcmethodResponse(NIL,...)
+  rpcdataCall(...)         -->  xmlrpcserver.rpcdataCall(NIL,...)
+
 
 2013.11.23
   Hibakezelés javítása:

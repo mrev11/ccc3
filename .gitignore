@@ -88,6 +88,7 @@ usr/include/gdk.ch
 usr/include/gtk.ch
 
 
+err-*
 log-*
 log
 exe

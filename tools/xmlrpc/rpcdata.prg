@@ -48,7 +48,8 @@ local style
     p:rootflag:=.f.
     p:entityconv:=.t.
     
-    if( this:rpcstruct!=NIL ) 
+    if( this!=NIL .and. this:rpcstruct!=NIL )
+        //server objektum nelkul is meghivhato 
         style:=xmlattribNew("style",'"'+this:rpcstruct+'"')
         p:contentblock:={|p,n|if(n:type=="struct",n:addattrib(style),NIL),.t.}
     end
@@ -102,7 +103,8 @@ local style
     p:=xmlparserNew()
     p:rootflag:=.f.
     p:entityconv:=.t.
-    if( this:rpcstruct!=NIL ) 
+    if( this!=NIL .and. this:rpcstruct!=NIL ) 
+        //server objektum nelkul is meghivhato 
         style:=xmlattribNew("style",'"'+this:rpcstruct+'"')
         p:contentblock:={|p,n|if(n:type=="struct",n:addattrib(style),NIL),.t.}
     end

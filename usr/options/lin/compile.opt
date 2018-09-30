@@ -19,3 +19,7 @@
 -Wno-trigraphs
 -Wno-empty-body
 -Wno-invalid-source-encoding
+-Wno-format-overflow
+-Wno-class-memaccess
+-Wno-parentheses
+

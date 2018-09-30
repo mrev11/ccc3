@@ -1,3 +1,9 @@
+2018.09.30 gcc 8.2.1 warningok megszuntetve;
+  -Wno-format-overflow  (sprintf kimeneti buffere esetleg nem eleg nagy)
+  -Wno-class-memaccess  (VALUE objektumok memmove-val torteno masolasa miatt)
+  -Wno-parentheses      (felesleges zarojelekre figyelmeztet, hulyeseg)
+  Ezek a warningok (egyelore csak linuxon) le vannak tiltva. 
+
 2018.08.13 rpcwrapper: alkalmazkodas az XMLRPC valtozasahoz.
 
 2018.08.12 XMLRPC 1.3.0 forkolo szerverek;

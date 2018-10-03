@@ -20,14 +20,33 @@
 
 //kulonveve, hogy konnyebb legyen kicserelni
 
-#include <string.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 //#include <openssl/opensslv.h>
 
+#ifdef WINDOWS
+// openssl/ossl_typ.h-ban:
+// typedef struct X509_name_st X509_NAME;
+//
+// cccapi.h <- windows.h <- wincrypt.h-ban:
+// #define X509_NAME ((LPCSTR) 7)
+// (elrontja a X509_NAME-t)
+#define __WINCRYPT_H__ //ne inkludalja wincrypt.h-t!
+#endif
+
 #include <cccapi.h>
+
+#ifdef WINDOWS
+//alternativ megoldas wincrypt.h ellen:
+//#undef X509_NAME
+
+//Megjegyezes
+//Felvetodik, hogy lehetne-e a cccapi.h-t elore venni.
+//Nem lehet, mert cccapi.h definialja a stack makrot
+//a stack szimbolumot viszont hasznalja openssl/safestack.h.
+#endif
 
 //--------------------------------------------------------------------------
 static void print_cn_name(X509_NAME* const name)

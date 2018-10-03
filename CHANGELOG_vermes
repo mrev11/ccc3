@@ -1,3 +1,5 @@
+2018.10.03 windowson wincrypt.h inkludja kikerulve;
+
 2018.09.30 gcc 8.2.1 warningok megszuntetve;
   -Wno-format-overflow  (sprintf kimeneti buffere esetleg nem eleg nagy)
   -Wno-class-memaccess  (VALUE objektumok memmove-val torteno masolasa miatt)

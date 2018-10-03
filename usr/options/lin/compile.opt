@@ -22,4 +22,4 @@
 -Wno-format-overflow
 -Wno-class-memaccess
 -Wno-parentheses
-
+-Wno-unknown-warning-option

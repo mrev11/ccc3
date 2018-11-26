@@ -189,30 +189,6 @@ local html:="",n
 
 
 ************************************************************************************************
-static function xhtmlnode.disable(this,flag)
-    webapp.disabled( flag, this:getattrib("id"))
-
-
-************************************************************************************************
-static function xhtmlnode.visible(this,flag)
-    webapp.style.display( if(flag,"block","none"), this:getattrib("id"))
-
-
-************************************************************************************************
-static function xhtmlnode.focus(this)
-    webapp.focus(this:getattrib("id"))
-
-
-************************************************************************************************
-static function xhtmlnode.update(this)
-
-// olyan elemekre használható, amik korábban már 
-// fel voltak töltve, és van azonosítójuk (id attrib)
-
-    webapp.innerhtml(this:getattrib("id"),this:htmlcontent)
-
-
-************************************************************************************************
 * xhtmltable
 ************************************************************************************************
 class xhtmltable(xhtmlnode)

@@ -1,3 +1,8 @@
+2018.11.26 javitgatas
+  a pcreposix-ot (egyes rendszereken) explicit linkelni kell;
+  webapp/program/msk2html linkelest akadalyozo kod kihagyva
+  (-O0 undefined reference, -O1 kioptimalizalja -> atcsuszik);
+  
 2018.10.03 windowson wincrypt.h inkludja kikerulve;
 
 2018.09.30 gcc 8.2.1 warningok megszuntetve;

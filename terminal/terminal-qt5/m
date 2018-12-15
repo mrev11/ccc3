@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#export BUILD_DBG=dry
+#export BUILD_THR=1
+
+bapp_unix0.b  @parfile.bld
+

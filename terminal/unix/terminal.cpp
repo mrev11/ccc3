@@ -108,7 +108,7 @@ static XFontStruct *loadfont()
 {
     const char *fontname="-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1";
     
-    if( getenv("CCCTERM_FONTSPEC") )
+    if( getenv("CCCTERM_FIXFONT") )
     {
         //Bármelyik fix, unicode (iso10646) font megfelel.
         //Ilyen unicode fontok vannak a KDE-ben:
@@ -117,7 +117,7 @@ static XFontStruct *loadfont()
         //-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
         //-misc-console-medium-r-normal--8-80-72-72-c-80-iso10646-1
         
-        fontname=getenv("CCCTERM_FONTSPEC");
+        fontname=getenv("CCCTERM_FIXFONT");
     }
 
     XFontStruct *font=XLoadQueryFont(display,fontname);

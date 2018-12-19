@@ -80,6 +80,7 @@ extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
 extern int  utf8_to_ucs(const char*string, int*);
+extern void fontspec(const char *envname, char **fontface, int *fontsize);
 
 
 #ifndef GDK_KEY_Delete
@@ -125,13 +126,13 @@ static PangoFontDescription *pangofont()
     //windows:   set CCCTERM_GTKFONTSPEC=Monospace 12
     //windows:   set CCCTERM_GTKFONTSPEC=Courier New 15
 
-    const char *fontname="Monospace 13"; //default font
-    
-    if( getenv("CCCTERM_GTKFONTSPEC") )
-    {
-        fontname=getenv("CCCTERM_GTKFONTSPEC");
-        //printf("fontname [%s]\n",fontname);
-    }
+    char fontname[1024];
+    char *fontface;
+    int fontsize;
+    fontspec("CCCTERM_GTKFONTSPEC",&fontface,&fontsize); //environment
+    sprintf(fontname,"%s %d",fontface,fontsize);
+    //printf("FONT %s\n",fontname);fflush(0);
+
     PangoFontDescription *font=pango_font_description_from_string(fontname);
     return font;
 }

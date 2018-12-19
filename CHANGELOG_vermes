@@ -1,3 +1,10 @@
+2018.12.19 terminal fontok megadasa valtozokban:
+  terminal      CCCTERM_FIXFONT     default -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+  terminal-xft  CCCTERM_XFTFONTSPEC default CCCTERM_FONTSPEC (Monospace-12)
+  terminal-gtk  CCCTERM_GTKFONTSPEC default CCCTERM_FONTSPEC (Monospace-12) 
+  terminal-gtk3 CCCTERM_GTKFONTSPEC default CCCTERM_FONTSPEC (Monospace-12) 
+  terminal-qt5  CCCTERM_QTFONTSPEC  default CCCTERM_FONTSPEC (Monospace-12) 
+
 2018.12.15 terminal-qt5
 
 2018.11.26 javitgatas

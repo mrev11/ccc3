@@ -91,6 +91,7 @@ extern void invalidate(int,int,int,int);
 extern void keypress(XEvent event);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
+extern void fontspec(const char *envname, char **fontface, int *fontsize);
 
 //---------------------------------------------------------------------------
 static unsigned gettickcount(void)
@@ -114,12 +115,12 @@ static void sleep(int ms)
 //---------------------------------------------------------------------------
 static XftFont *xft_loadfont()
 {
-    const char *fontname="Monospace-12"; //FONTSPEC
-    
-    if( getenv("CCCTERM_XFTFONTSPEC") )
-    {
-        fontname=getenv("CCCTERM_XFTFONTSPEC");
-    }
+    char fontname[1024];
+    char *fontface;
+    int fontsize;
+    fontspec("CCCTERM_XFTFONTSPEC",&fontface,&fontsize); //environment
+    sprintf(fontname,"%s-%d",fontface,fontsize);
+    //printf("FONT %s\n",fontname);fflush(0);
 
     XftFont *font=XftFontOpenName(display,screen,fontname);
     if( font==0 )

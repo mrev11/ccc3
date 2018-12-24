@@ -115,14 +115,14 @@ extern void setcursoron(void);
 #define BLINK_UP  1
 #define BLINK_DN  2
 
-#define POSX(x)  ((int)((x)*fwidth+0.5))
+#define POSX(x)  ((x)*fwidth)
 #define POSY(y)  ((y)*fheight)
 
 //------------------------------------------------------------------------------------------
 struct TerminalWindow : public QRasterWindow
 {
     double fwidth;      //font width (pixel)
-    int fheight;        //font height (pixel)
+    double fheight;     //font height (pixel)
 
     int fontsize;
     char *fontname;
@@ -261,7 +261,7 @@ struct TerminalWindow : public QRasterWindow
         r = (bg & 0x0000ff)>>0;
         QBrush brush(QColor(r,g,b)); painter->setBackground(brush);
 
-        QRect rect(POSX(col),POSY(row),POSX(len),POSY(1));
+        QRectF rect(POSX(col),POSY(row),POSX(col+len)-POSX(col),POSY(1));
         unsigned txtlen;
         char *txt=wchar_to_utf8(ucs,len,&txtlen);
         painter->fillRect(rect,brush);
@@ -271,7 +271,7 @@ struct TerminalWindow : public QRasterWindow
 
     void drawCell(int row, int col, int ucs, int attr, int inv=0)
     {
-        QRect rect(POSX(col), POSY(row), POSX(1), POSY(1));
+        QRectF rect(POSX(col), POSY(row), POSX(col+1)-POSX(col), POSY(1));
 
         int fg,bg,r,g,b;
 

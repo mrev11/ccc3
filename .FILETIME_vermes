@@ -1,3 +1,5 @@
+6c45726408ced964046951d6109c57c45fa0409a 2018122409:49:36-UTC ./CHANGELOG_vermes
+fef72e426d9b7703264507f862a8e2503b77b367 2018122409:34:02-UTC ./terminal/terminal-qt5/terminal-qt5.cpp
 7157fecc7a71d67a632c75e9f2dad520abe03720 2018121909:52:19-UTC ./usr/bin/linux/ncterm
 90db3461902cb10503d5990cc6b30d03d5514a02 2018121909:52:18-UTC ./usr/bin/linux/sslforw-serv
 509b6dbcb8bb4523fd017ed2c560114952538f46 2018121909:52:18-UTC ./usr/bin/linux/sslforw-term
@@ -6,13 +8,11 @@
 d2e48d0d0fc3bfaf2c54bc0424912e842e30d4f6 2018121909:52:18-UTC ./usr/bin/linux/terminal-xft
 8f8bcdaf6e5203d682d589b6676ec7f2b17d1c40 2018121909:52:17-UTC ./usr/bin/linux/terminal-gtk
 33dfbb56b1fae8459445eedff5531b45f79cf1da 2018121909:52:16-UTC ./usr/bin/linux/terminal-gtk3
-c651f9f836999c5aed6c8458ce798a90496382df 2018121909:48:58-UTC ./CHANGELOG_vermes
 8affe91d2de683121dccc2b3c89be79ffd767d19 2018121909:39:25-UTC ./terminal/unix/terminal.cpp
 939611e59210d68070fac670fd05f35127e1e1a3 2018121908:55:56-UTC ./terminal/unix/terminal-xft.cpp
 85055e85c7814212f2aa3dc9753eeff060da6022 2018121908:55:31-UTC ./terminal/gtk3/terminal-gtk3.cpp
 bed4996c6611c1e06655ae58768530c24011e7b2 2018121908:55:21-UTC ./terminal/gtk/terminal-gtk.cpp
 364df041c0f8d94936b9fb911e6f9ec5b499c474 2018121419:11:42-UTC ./terminal/common/fontspec.cpp
-5af1a0e96dfa639f52377d05fa5e9d759450c75a 2018121415:24:01-UTC ./terminal/terminal-qt5/terminal-qt5.cpp
 471f2be7137b6d49677f6acc83fac10bd3a40387 2018121320:57:16-UTC ./terminal/terminal-qt5/parfile.bld
 26fa4f1ada23c4507c1dfbc1afa9706d82a6a6e3 2018121316:17:07-UTC ./terminal/terminal-qt5/keycode_qt5.cpp
 e245faf42bfb23c0fe16658877eb242e191d1634 2018121115:32:20-UTC ./terminal/terminal-qt5/m

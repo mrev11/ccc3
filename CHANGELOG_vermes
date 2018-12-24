@@ -1,3 +1,6 @@
+2018.12.14 terminal-qt5 pozicionalas:
+  QRect helyett QRectF a kerekitesi hibak ellen;
+
 2018.12.19 terminal fontok megadasa valtozokban:
   terminal      CCCTERM_FIXFONT     default -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
   terminal-xft  CCCTERM_XFTFONTSPEC default CCCTERM_FONTSPEC (Monospace-12)

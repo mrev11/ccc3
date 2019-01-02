@@ -207,25 +207,41 @@ static void paintline(int cx, int cy, wchar_t *txt, int txtlen, int attr, int fl
         int x=cx*fontwidth;
         int y=cy*fontheight;//+fontascent;
 
+        XRectangle r;
+        r.x = 0;
+        r.y = 0;
+        r.width = txtlen*fontwidth;
+        r.height = fontheight;
+        XftDrawSetClipRectangles(draw,x,y,&r,1);
+
+        //az Xft fontok neha kilognak a teglalapjukbol,
+        //korabban az elszemetesedes ellen ugy vedekeztem,
+        //hogy egy pixellel nagyobb teglalapot toroltem a bg-vel,
+        //de nem ez kell, hanem ki-be kell kapcsolgatni a clip-et,
+        //ami a kilogo szemeteket levagja
+
         if( attr&0xff00 )
         {
             int fg=0x7f&(attr>>0); //jelzobit leveve
             int bg=0x7f&(attr>>8); //jelzobit leveve
-            XftDrawRect(draw,&xft_color_ext[bg],x,y,txtlen*fontwidth+1,fontheight+1);
+            XftDrawRect(draw,&xft_color_ext[bg],x,y,txtlen*fontwidth,fontheight);
             XftDrawString32(draw,&xft_color_ext[fg],xftfont,x,y+fontascent,(FcChar32*)txt,txtlen);
         }
         else
         {
             int fg=0xf&(attr>>0);
             int bg=0xf&(attr>>4);
-            XftDrawRect(draw,&xft_color[bg],x,y,txtlen*fontwidth+1,fontheight+1);
+            XftDrawRect(draw,&xft_color[bg],x,y,txtlen*fontwidth,fontheight);
             XftDrawString32(draw,&xft_color[fg],xftfont,x,y+fontascent,(FcChar32*)txt,txtlen);
 
+            //MEGOLDAS: XftDrawSetClipRectangles
             //nem lehet kitalalni, hogy mekkora teglalapot kell torolni,
             //a kulonbozokeppen skalazott fontok kilognak a teglalapjukbol,
             //ha tul kicsit torlok, elszemetesedik a kepernyo,
             //ha tul nagyot torlok, akkor meg hezagos lesz a kepernyo
         }
+
+        XftDrawSetClip(draw, 0);
         //printf("paintline: %d %d %d\n",cy,cx,txtlen); fflush(0);
     }
 }

@@ -1,3 +1,10 @@
+2019-01-02 terminal-xft szemetesedes javitasa:
+  az Xft fontok neha kilognak a teglalapjukbol,
+  korabban az elszemetesedes ellen ugy vedekeztem,
+  hogy egy pixellel nagyobb teglalapot toroltem a bg-vel,
+  de nem ez kell, hanem ki-be kell kapcsolgatni a clip-et,
+  ami a kilogo szemeteket levagja
+
 2018.12.14 terminal-qt5 pozicionalas:
   QRect helyett QRectF a kerekitesi hibak ellen;
 

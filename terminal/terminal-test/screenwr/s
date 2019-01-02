@@ -6,6 +6,6 @@ export CCCTERM_GTKFONTSPEC="Monospace 14"
 export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
 export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
 export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
-export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk.exe"
 
 w.exe

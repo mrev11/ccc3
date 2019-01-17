@@ -88,7 +88,7 @@ local fd,size,buffer,nbyte
         
         if( request:op $ a".GET.HEAD.POST." )
  
-            if( a".."$request:url )
+            if( a".."$request:url .and. a"/../"$a"/"+request:url+a"/" )
                 repl:=mkerror(a"403 Forbidden")
 
             elseif( request:isexcluded )

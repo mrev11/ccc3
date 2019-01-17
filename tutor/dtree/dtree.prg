@@ -22,14 +22,16 @@
 
 static s_cmd
 static s_skip
+static s_link:=.f.
 
+static dirstack:={}
 
 *****************************************************************************
 function main()
 
 local arg:=argv(), n
 
-    set dosconv off
+    aadd(dirstack,dirsep()+curdir())
     
     for n:=1 to len(arg)
         if( left(arg[n],2)=="-c" )
@@ -37,6 +39,9 @@ local arg:=argv(), n
 
         elseif( left(arg[n],2)=="-s" ) 
             s_skip:=substr(arg[n],3) 
+
+        elseif( arg[n]=="-l" ) 
+            s_link:=.t. 
             
         else //compatibility
             s_cmd:=arg[n]
@@ -45,8 +50,7 @@ local arg:=argv(), n
     next
 
     doproc()
-    ?
-    return NIL
+
 
 *****************************************************************************
 static function doproc()    
@@ -56,7 +60,7 @@ local name,n,d,d1:={}
     //alert(curdir())
 
     if( empty(s_cmd) )
-        ? curdir()
+        ?? atail(dirstack); ?
     else
         run(s_cmd)
     end
@@ -67,7 +71,8 @@ local name,n,d,d1:={}
         name:=alltrim(d[n][F_NAME])
 
         if( "D"$d[n][F_ATTR] .and.;
-            !"L"$d[n][F_ATTR] .and. !name=="." .and.!name==".." )
+            (s_link .or. !"L"$d[n][F_ATTR]) .and.; 
+            !name=="." .and.!name==".." )
 
             if( empty(s_skip) .or. !upper(name)$upper(s_skip) )
                 aadd(d1,name)
@@ -79,12 +84,13 @@ local name,n,d,d1:={}
     
     for n:=1 to len(d1)
         name:=d1[n] 
-        if( 0<=dirchange(name) )
+        aadd(dirstack,atail(dirstack)+dirsep()+name) 
+        if( 0<=dirchange(atail(dirstack)) )
              doproc()
-             dirchange("..")
+             asize(dirstack,len(dirstack)-1)
+             dirchange(atail(dirstack))
         end
     next
-    
-    return NIL
+
 
 *****************************************************************************

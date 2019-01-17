@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export CCCTERM_XFTFONTSPEC="Monospace-12"
-export CCCTERM_GTKFONTSPEC="Monospace 14"
+export CCCTERM_FONTSPEC=14
 
-export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
-export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
 export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
-#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk3.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-qt5.exe"
 
 w.exe

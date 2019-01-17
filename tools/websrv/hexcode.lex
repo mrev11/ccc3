@@ -175,7 +175,7 @@ void _clp_hexencode(int argno)
     {
         int c=255&(int)input[i];
 
-        if( 32<c && c<128 )
+        if( 32<c && c<128 && c!=35 ) //'#'
         {
             p[j]=c;
             j+=1;

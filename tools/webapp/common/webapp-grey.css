@@ -147,6 +147,21 @@ input[type=text][pattern]:invalid:not(focus) {
   color: red;
   background-color: #ffa0a0;
 }
+input[type=password] {
+  color: #566;
+  outline: 0px;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 3px;
+  border-color: #ccc;
+  box-shadow: 1px 1px 2px #abb;
+}
+input[type=password]:focus {
+  background-color: #ffffff;
+}
+input[type=password]:not(focus) {
+  background-color: #f4f4f4;
+}
 select {
   color: #fff;
   background-color: grey;

@@ -120,3 +120,23 @@ function unloadstyle(url)
 
 
 ***************************************************************************************
+function getpassword(srcid,salt1,salt2)
+local code:=<<CODE>>XCODE.getpassword("$PASSWD","$SALT1","$SALT2")<<CODE>>
+local data
+    code::=strtran('$PASSWD',srcid)
+    if(salt1==NIL)
+        code::=strtran(',"$SALT1"','')
+    else
+        code::=strtran('$SALT1',salt1)
+    end
+    if(salt2==NIL)
+        code::=strtran(',"$SALT2"','')
+    else
+        code::=strtran('$SALT2',salt2)
+    end
+    webapp.script(code)
+    webapp.waitmessage("password",@data)
+    return data:gettext
+
+
+***************************************************************************************

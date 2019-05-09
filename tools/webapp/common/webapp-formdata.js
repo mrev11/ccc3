@@ -66,6 +66,10 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             {
                 x+="<value>"+ctrl[n].checked+"</value>";
             }
+            else if( ctrl[n].type=="password" )
+            {
+                x+="<value>"+"*".repeat(ctrl[n].value.length)+"</value>";
+            }
             else
             {   
                 x+="<value>"+XCODE.cdataif(XCODE.xreadvalue(ctrl[n]))+"</value>";

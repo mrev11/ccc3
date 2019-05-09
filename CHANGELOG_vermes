@@ -1,3 +1,9 @@
+2019.05.09 webapp password kezeles;
+  formdata nem kuldi a jelszo tipusu mezok tartalmat (helyette ***);
+  webapp.getpassword(id,s1,s2) md5-tel titkositva kulon hivassal kuldi a jelszot;
+  webapp.js-ben md5 szamitas;
+  jelszo mezok stilusa is beallitva a textinput.less-ben;
+
 2019.01.19 kis javitgatasok:
   websrv .. forbidden eset finomitva;
   websrv hexcode.lex #-t is escapeli;

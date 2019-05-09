@@ -22,6 +22,8 @@ cat   webapp-inp_number.js   >>webapp.js
 cat   webapp-inp_picture.js  >>webapp.js
 cat   webapp-inp_regex.js    >>webapp.js
 cat   webapp-compat.js       >>webapp.js
+cat   webapp-md5.js          >>webapp.js
+cat   webapp-password.js     >>webapp.js
 
 
 ##lessc webapp.less          >webapp.css

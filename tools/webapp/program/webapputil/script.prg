@@ -140,3 +140,13 @@ local data
 
 
 ***************************************************************************************
+function getpwstrength(srcid)
+local code:=<<CODE>>XCODE.getpwstrength("$PASSWD")<<CODE>>
+local data
+    code::=strtran('$PASSWD',srcid)
+    webapp.script(code)
+    webapp.waitmessage("pwstrength",@data)
+    return data:gettext::val // number   
+
+
+***************************************************************************************

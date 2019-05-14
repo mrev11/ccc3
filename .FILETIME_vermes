@@ -1,3 +1,8 @@
+347e0b3536da15ed59ed6b2bde3fcaeba315b81f 2019051119:45:59-UTC ./log-install
+8b67f5d684b7474c8a463745d5f32eb8ad4eed54 2019051119:45:54-UTC ./jt/jterminal/jterminal.jar
+15e153b25930730994aceaad89a7634fcd1938ac 2019050916:04:31-UTC ./tools/webapp/program/webapputil/script.prg
+b6ca3ab64c6c2668c4eed72a9189ce3b3a741301 2019050916:02:52-UTC ./tools/webapp/common/webapp.js
+f3611dc0afb6d407805e0526ab22d9642fecad70 2019050916:02:47-UTC ./tools/webapp/common/webapp-password.js
 15e646b0f376009be7784e8b4e1c79bdd457c0e0 2019050908:33:36-UTC ./usr/bin/linux/msk2html
 3cb98146358e1e9c8899e1a628f8693261078008 2019050908:33:35-UTC ./usr/bin/linux/webapp
 7522c9f7aa332f1268e43dd6155d921e3c2c7e36 2019050908:31:34-UTC ./CHANGELOG_vermes
@@ -7,14 +12,10 @@ ed66e2b121ae1df4aac422c6f869fae850f610f7 2019050908:19:50-UTC ./tools/webapp/com
 62f34afe270a2bf4b62a52fc520815b8741a25af 2019050908:19:50-UTC ./tools/webapp/common/webapp-tomato.css
 10d8cc023dd9dde158d39177d6441c90b54c7974 2019050908:19:50-UTC ./tools/webapp/common/webapp.css
 1727d9ee2ecde97b8ab0f161a65d3eeb301c2ff4 2019050908:19:49-UTC ./tools/webapp/common/webapp-grey.css
-5c7e709bd5821fa3bc9c62707d1d8c3b32abff03 2019050908:19:49-UTC ./tools/webapp/common/webapp.js
 70233da46743cb456c4b1e89a8cf6bf22827fd1e 2019050908:19:35-UTC ./tools/webapp/common/webapp-formdata.js
-d031480eba1a1b3dc56522c134f3b1c8b7d9970b 2019050908:12:27-UTC ./tools/webapp/program/webapputil/script.prg
-1e363d31b9590824b95c46eef247bf968fea78b0 2019050907:58:05-UTC ./tools/webapp/common/webapp-password.js
 d0e5ef004b865cfc7d779e48692e981ca072c4ae 2019050907:31:39-UTC ./tools/webapp/common/m
 c594c45949eebe7005a6a789345a6c8e45e22345 2019050906:15:58-UTC ./tools/webapp/common/textinput.less
 2e3145062e0283815efd409c2753832d1fb0ed9e 2019050818:23:45-UTC ./tools/webapp/common/webapp-md5.js
-7923811c7981a24a63e2561b58747bbff8441ca0 2019050205:22:01-UTC ./log-install
 5fc02d9d77b795c0dad0255f963052910f563f4d 2019050205:22:01-UTC ./usr/bin/linux/gitstat
 bda980de17f74225200226b833530272361d6a03 2019050205:22:00-UTC ./usr/bin/linux/gitfollow
 788a25c1554080b0643c4a8827758c865a0f5450 2019050205:22:00-UTC ./usr/bin/linux/gitnav
@@ -23,7 +24,6 @@ c7ea05125d5223c1bf6c242b66b23c7f6099f82c 2019050205:22:00-UTC ./usr/bin/linux/gi
 3381e0ef97123ef95b0b462a319286ed43567d71 2019050205:21:58-UTC ./usr/bin/linux/filetime-restore
 519b98d7b31b6e8c7234b163030013ac2cadb559 2019050205:21:58-UTC ./usr/bin/linux/filetime-save
 049623346c0e26b23fc91f0862d81eb28467c36a 2019050205:21:58-UTC ./usr/bin/linux/firstpar
-9c1bf4895a8746be315f56f5f4ffd6b8099d0c8c 2019050205:21:56-UTC ./jt/jterminal/jterminal.jar
 27e28576676d7c0262907f5ba9ed6b31afeda573 2019050205:21:55-UTC ./jt/jterminal/base64.class
 c0304be9909911cad315f6e8f471259a6b8100ef 2019050205:21:55-UTC ./jt/jterminal/getutil/cellcolor.class
 55954935eba6a13c2fd3fe21d9e03c4a99616391 2019050205:21:55-UTC ./jt/jterminal/getutil/checkfield.class

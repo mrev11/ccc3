@@ -1,3 +1,13 @@
+2019.05.20 webapp fejlesztesek:
+  page:reload uj metodus, ujrakuldi a DOM egy reszfajat;
+  page:onclick_formdata   uj metodus
+  page:onchange_formdata  uj metodus
+  page:oncenter_formdata  uj metodus
+  beallitjak egy kontrol attributumat, hogy az esemenyre formdatat kuldjon, plusz
+  a megadott kodblokkot felveszi page actionhash-ebe "formdata."+ctrlid kulccsal;
+  xhtmlnode.input_number-ben megadhato a text-align (default=right);
+  xhtmltable.addrow-ban a cellak erteke nem csak text lehet, hanem objektum is;
+
 2019.05.09 webapp password kezeles;
   formdata nem kuldi a jelszo tipusu mezok tartalmat (helyette ***);
   webapp.getpassword(id,s1,s2) md5-tel titkositva kulon hivassal kuldi a jelszot;

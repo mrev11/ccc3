@@ -368,7 +368,7 @@ function xhtmlnode.input_date(node)
 
 
 ************************************************************************************************
-function xhtmlnode.input_number(node,dec)
+function xhtmlnode.input_number(node,dec,align:="right"  )
 local code
     if(dec==NIL)
         //helyertek vesszok nelkul
@@ -381,7 +381,7 @@ local code
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.numkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","^[0-9\+\-\.,]*$"))
-
+    node:setstyle("text-align:"+align)
 
 ************************************************************************************************
 function xhtmlnode.input_picture(node,pic)

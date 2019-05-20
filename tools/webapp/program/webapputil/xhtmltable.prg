@@ -75,8 +75,10 @@ local tr,rowcnt,rowid,td,n
     for n:=1 to len(row)
         td:=xhtmlnodeNew("td")
         tr:addcontent(td)
-        
-        if( this:colinfo[n]:picture==NIL )
+
+        if( valtype(row[n])=="O" )
+            td:addcontent(row[n])
+        elseif( this:colinfo[n]:picture==NIL )
             td:addtext(row[n])
         else
             td:addtext(row[n]::transform(this:colinfo[n]:picture) )

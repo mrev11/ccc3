@@ -45,10 +45,18 @@ class page(xhtmlnode)
     method  uploaded         {|this|this:restorekey!=NIL}
     method  upload
     method  update           :upload
+    method  reload           //kicsereli a fa egy reszfajat
 
     attrib  closed           //mutatja, hogy ki kell lepni a loop-bol
     method  close            {|this|this:closed:=.t.} 
     attrib  msgtimeout       //getmessage-nek atadott timeout millisec
+
+
+    method  onclick_formdata
+    method  onchange_formdata
+    method  onenter_formdata
+
+
 
     method  loop
     
@@ -268,6 +276,23 @@ local pageid
     end
 
 ************************************************************************************************
+static function page.reload(this,node)
+
+local nodeid
+local nodeobj
+
+    if( valtype(node)=="C" )
+        nodeid:=node
+        nodeobj:=this[nodeid]
+    else
+        nodeobj:=node
+        nodeid:=node:getattrib("id") 
+    end
+
+    webapp.innerhtml(nodeid,nodeobj:htmlcontent) //csereli a belsejet
+     
+
+************************************************************************************************
 static function pageid()
 local pageid,pn,pl,n:=2
     pageid:=dati_of_exe()
@@ -285,6 +310,20 @@ static function dati_of_exe() //az exe linkelési dátumideje
 local pid:=getpid()::str::alltrim
 local dir:=directory("/proc/"+pid+"/exe","L")
     return dir[1][F_DATE]::dtos+dir[1][F_TIME]::strtran(":","") 
+
+
+************************************************************************************************
+static function page.onclick_formdata(this,ctrlid,blk)
+    this[ctrlid]:onclick_formdata
+    this:actionhash["formdata."+ctrlid]:=blk
+
+static function page.onchange_formdata(this,ctrlid,blk)
+    this[ctrlid]:onchange_formdata
+    this:actionhash["formdata."+ctrlid]:=blk
+
+static function page.onenter_formdata(this,ctrlid,blk)
+    this[ctrlid]:onenter_formdata
+    this:actionhash["formdata."+ctrlid]:=blk
 
 
 ************************************************************************************************

@@ -229,7 +229,7 @@ local ctrl,arr:={},n
         ctrl:=arr[n]
         ? ctrl:type::padr(12),;
           ctrl:group::padr(12),;
-          ctrl:id::padr(12),;
+          ctrl:id::padr(24),;
           "[",ctrl:value::format,"]",;
           "[",ctrl:orig::format,"]"
     next

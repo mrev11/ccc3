@@ -1,3 +1,7 @@
+2019.05.22 webapp:
+  textarea szinezese hozzaigazitva a get-ekhez;
+  formdata:list 24 hosszan irja ki a mezoazonositokat;
+
 2019.05.22 pcre2:
   pcre2.h inkludja elott stdint.h-t is inkludalni kell;
 

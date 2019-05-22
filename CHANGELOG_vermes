@@ -1,3 +1,6 @@
+2019.05.22 pcre2:
+  pcre2.h inkludja elott stdint.h-t is inkludalni kell;
+
 2019.05.20 webapp fejlesztesek:
   page:reload uj metodus, ujrakuldi a DOM egy reszfajat;
   page:onclick_formdata   uj metodus

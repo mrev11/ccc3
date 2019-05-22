@@ -44,6 +44,7 @@ extern void _clp_apperrornew(int);
 //    Linux   : pcre2_match -> pcre2_match_32, mert sizeof(wchar_t)==32
 
 
+#include <stdint.h> //2019-05-22 korabban ez nem kellett
 #include <pcre2.h>
 
 namespace _nsp_pcre2{

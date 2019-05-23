@@ -1,3 +1,9 @@
+2019.05.23 webapp:
+  webapp.selectedindex() lekerdezi/beallitja egy select kivalasztasat;
+  get-ek arnyekolasa kikommentezve;
+  textarea kulon font-size beallitasa kikommentezve; 
+  textarea sarka lekerekitve a (getekhez hasonloan);
+
 2019.05.22 webapp:
   textarea szinezese hozzaigazitva a get-ekhez;
   formdata:list 24 hosszan irja ki a mezoazonositokat;

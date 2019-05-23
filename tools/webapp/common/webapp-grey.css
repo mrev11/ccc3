@@ -131,7 +131,6 @@ input[type=text] {
   border-width: thin;
   border-radius: 3px;
   border-color: #ccc;
-  box-shadow: 1px 1px 2px #abb;
 }
 input[type=text]:focus {
   background-color: #ffffff;
@@ -154,7 +153,6 @@ input[type=password] {
   border-width: thin;
   border-radius: 3px;
   border-color: #ccc;
-  box-shadow: 1px 1px 2px #abb;
 }
 input[type=password]:focus {
   background-color: #ffffff;
@@ -207,11 +205,11 @@ td {
   font-size: smaller;
 }
 textarea {
-  font-size: 12px;
   font-family: sans-serif;
   color: #566;
   font-weight: normal;
   border: thin solid #c0bfb9;
+  border-radius: 3px;
   outline: none;
 }
 textarea:focus {

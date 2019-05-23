@@ -150,3 +150,27 @@ local data
 
 
 ***************************************************************************************
+function selectedindex(ctrlid,idx)
+
+//lekerdezi/beallitja a bongeszoben egy select selectedIdndex attributumat
+//a formdata a selected option szovegevel dolgozik, ami nem mindig eleg
+
+local code, data
+
+    if( idx==NIL )
+        //lekerdezes
+        code:=<<CODE>>XCODE.send("<selectedindex>"+XCODE.document.x.getElementById('$CTRLID').selectedIndex.toString()+"</selectedindex>")<<CODE>>
+        webapp.script(code::strtran("$CTRLID",ctrlid))
+        webapp.waitmessage("selectedindex",@data)
+        return data:gettext::val
+    else
+        //beallitas
+        code:="XCODE.document.x.getElementById('$CTRLID').selectedIndex=$IDX"
+        code::=strtran("$CTRLID",ctrlid)
+        code::=strtran("$IDX",idx::str::alltrim)
+        webapp.script(code)
+        return NIL
+    end
+
+
+***************************************************************************************

@@ -1,3 +1,6 @@
+2019.05.29 msk2html:
+  #define makrokat gyart a kontrollok id-jehez;
+
 2019.05.23 webapp:
   webapp.selectedindex() lekerdezi/beallitja egy select kivalasztasat;
   get-ek arnyekolasa kikommentezve;

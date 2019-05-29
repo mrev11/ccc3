@@ -21,7 +21,8 @@
 
 #include "box.ch"
 
-#define VERSION "1.0.3"  //2017-03-18 fieldsetek alja kicsit lejjebb
+#define VERSION "1.1.0"  //2019-05-29 #define-okat képez az id-kbol
+//#define VERSION "1.0.3"  //2017-03-18 fieldsetek alja kicsit lejjebb
 //#define VERSION "1.0.2"  //id-vel rendelkező labelek default szövege javítva
 //#define VERSION "1.0.1"
 
@@ -732,6 +733,7 @@ local table
     sort(box)
     
     template::=strtran("%CONTENT%",box:html())
+    template:=mkdef(box,clsname)+template
     
     return template
 
@@ -795,6 +797,47 @@ local c:=if(comp:text==NIL,0.35,0.25)
 
 static function fshsiz(comp)
     return "width:"+(   (comp:right-comp:left-1.5)*HX    )::int::str::alltrim+"px;"
+
+*****************************************************************************
+static function mkdef(node,clsname)
+local adef,n,define
+    mkdef1(node,clsname,adef:={})
+    define:=""
+    for n:=1 to len(adef)
+        define+=adef[n]+crlf()
+    next
+    return define
+    
+
+static function mkdef1(node,clsname,adef)
+local n,ntype,type,id,define
+
+    if( valtype(node)!="O" .or. !node:isderivedfrom(xhtmlnodeClass()) )
+        return NIL
+    end
+
+    if( node:getattrib("id")!=NIL )
+        ntype:=node:type
+        type:=node:getattrib("type")
+        id:=node:getattrib("id")
+
+        define:="#define "+upper(clsname)
+        if( !ntype=="input" )
+            define+="_"+upper(ntype)
+        end
+        if( !type==NIL )
+            define+="_"+upper(type)
+        end
+        define+="_"+upper(id)
+        define::=strtran("-","_")
+        define::=padr(48)
+        define+='"'+id+'"'
+        aadd(adef,define)
+    end
+
+    for n:=1 to len(node:content)
+        mkdef1(node:content[n],clsname,adef)
+    next
 
 *****************************************************************************
 static function sort(node)

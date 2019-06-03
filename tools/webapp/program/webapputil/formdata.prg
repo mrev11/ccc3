@@ -23,6 +23,7 @@ class formdata(object)
     method  update
     method  upload
     method  list
+    method  copytohash
 
     method  save            //minden kulcsra orig:=value 
     method  rest            //minden kulcsra value:=orig
@@ -243,6 +244,15 @@ static function format(x)
     end
     return x
 
+***************************************************************************************
+static function formdata.copytohash(this)
+local hash:=simplehashNew(),item
+    item:=this:hash:first
+    while( item!=NIL )
+        hash[item[1]]:=item[2]:value
+        item:=this:hash:next
+    end
+    return hash
 
 ***************************************************************************************
 static function formdata.save(this) //minden kulcsra: orig:=value

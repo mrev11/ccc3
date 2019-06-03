@@ -506,6 +506,7 @@ local r:=maxrect()
 static function prgoutput(clsname,screen)
 
 local template:=<<TEMPLATE>>
+#ifndef SYMBOLSONLY
 static function xhtmlpage.CLSNAME()
 static page:=<<PAGE>>
 %CONTENT%
@@ -523,6 +524,7 @@ local prs:=xmlparser2New(),dom,leg
         leg:setstyle("display:none")
     end
     return dom //fieldset
+#endif
 <<TEMPLATE>>
 
 

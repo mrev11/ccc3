@@ -1,4 +1,5 @@
 
+#include "ssl.ch"
 #include "webapp.ch"
 
 static option_hash:=load_config()
@@ -79,18 +80,40 @@ function ssl_context()
 
 static ctx
 local keyfile:=option_hash["keyfile"]
+local cafile:=option_hash["cafile"]
+local capath:=option_hash["capath"]
+local mode
 
     if(keyfile==NIL)
         keyfile:="webappdemo.pem"
+    end
+
+    if(keyfile!=NIL)    
+        keyfile:="keys/"+keyfile
+        ? "ssl_context_keyfile",keyfile
+    end
+    if(cafile!=NIL)
+        cafile:="keys/"+cafile
+        ? "ssl_context_cafile",cafile
+    end
+    if(capath!=NIL)
+        capath:="keys/"+capath
+        ? "ssl_context_capath",capath
     end
 
     if(ctx==NIL)
         //ctx:=sslctxNew("TLSv1_server") 
         ctx:=sslctxNew("SSLv23_server")
 
-        ctx:use_certificate_file("keys/"+keyfile)
-        ctx:use_privatekey_file("keys/"+keyfile)
-        ? "ssl_context use",keyfile
+        ctx:use_certificate_file(keyfile)
+        ctx:use_privatekey_file(keyfile)
+
+        if( capath!=NIL .or. cafile!=NIL )
+            mode := SSL_VERIFY_PEER_CERT
+            ctx:set_verify(mode)
+            ctx:set_verify_depth(1)
+            ctx:load_verify_locations(cafile,capath)
+        end
     end
     return ctx
 

@@ -1,12 +1,14 @@
-779402b3846853a7556ec858eeb314deb92cf929 2019060320:26:43-UTC ./CHANGELOG_vermes
-34e9f239ee0e7b178596a63f9132a607148b5728 2019060319:39:18-UTC ./usr/bin/linux/msk2html
+b0d2d8f2374d1182ee2faa8571053907804aada7 2019061013:15:42-UTC ./CHANGELOG_vermes
+67b9f41a0daf00bc3b0b8ae3253c88582b1c3ede 2019061012:48:12-UTC ./usr/bin/linux/msk2html
+f900b4aed453ff955cbcae355728dfaa1257bc82 2019061012:48:09-UTC ./tools/webapp/program/msk2html/msk2html.prg
+fc2b0542d835dcc1d1dd6c07fb0af92abbfdb6b7 2019061012:44:57-UTC ./usr/build/linux/msk2html.bat
+2facb90e6161eeb765ed09c013df748d323c1bcf 2019061012:26:19-UTC ./usr/bin/linux/build
+7714680c9bd098da58f1dc5d54660f0c6d3ebfa2 2019061006:01:36-UTC ./log-install
+26c78da668771255feae5fd5ce50fc7297dff76b 2019061006:01:31-UTC ./jt/jterminal/jterminal.jar
 c8958c3a25c0c7158f7983a31e15ac0299bc02f1 2019060319:39:17-UTC ./usr/bin/linux/webapp
 3a5c3e4127050fc329647c4b4e5662acd2b142da 2019060319:02:01-UTC ./tools/webapp/program/webapp/defaults.prg
 f239a31dd944d7afa7882e79b88ecd0bf7c7a40b 2019060309:10:17-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 335ae3b6020c163c5dc6a068faba73717f2ad2e2 2019053013:29:46-UTC ./tools/webapp/program/webapputil/formdata.prg
-f45ed0e694818e8aae2435f618fa342b7af14dbf 2019053013:06:49-UTC ./tools/webapp/program/msk2html/msk2html.prg
-13ed3ae05a8ace2a683a561100b1bb5d1b7cd70a 2019052906:09:24-UTC ./log-install
-ccf44c90744ebb3fb7c2234bf8102366ef464c78 2019052906:09:19-UTC ./jt/jterminal/jterminal.jar
 2bd8428f003e782e68a08c71bccde6110f6668b3 2019052317:08:03-UTC ./tools/webapp/common/webapp-grey.css
 4948e6343db0542e38b915e35e109971b3daa068 2019052317:08:03-UTC ./tools/webapp/common/webapp-olivedrab.css
 a94b9f4e58eb02e121c15b454bd3fecbb8ffc17b 2019052317:08:03-UTC ./tools/webapp/common/webapp-orange.css
@@ -173,7 +175,6 @@ a0d667764d1e49f0523bfd00b55a6f09776395b6 2019050205:20:47-UTC ./usr/bin/linux/ss
 4d63a50b4021c57f45031f1309f330fcc249b41e 2019050205:20:45-UTC ./usr/bin/linux/terminal
 aa2aee92dd3a8ef78a36945cef0263c7802fa3da 2019050205:20:45-UTC ./usr/bin/linux/terminal-xft
 b443bf84aecd61ac129a65b300433639d032adc6 2019050205:20:44-UTC ./usr/bin/linux/prg2ppo
-0dd10da23b36ab241ec358db04b2ab5cc89882f1 2019050205:20:43-UTC ./usr/bin/linux/build
 be019c32e195c4700013180681e5eb269571471b 2019050205:20:32-UTC ./usr/bin/linux/ppo2cpp
 9421b264fdacf200a6174dacdf4c4aa4836b2d73 2019050205:20:27-UTC ./setup/setup-unix/compopt
 585f24d49aafa40dd489cb2429672b5b9e53f034 2019050205:20:20-UTC ./usr/bin/linux/lemon

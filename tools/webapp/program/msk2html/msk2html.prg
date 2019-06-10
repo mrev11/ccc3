@@ -21,7 +21,8 @@
 
 #include "box.ch"
 
-#define VERSION "1.1.0"  //2019-05-29 #define-okat képez az id-kbol
+#define VERSION "1.1.1"  //2019-06-10 felesleges dirsep kihagyva
+//#define VERSION "1.1.0"  //2019-05-29 #define-okat képez az id-kbol
 //#define VERSION "1.0.3"  //2017-03-18 fieldsetek alja kicsit lejjebb
 //#define VERSION "1.0.2"  //id-vel rendelkező labelek default szövege javítva
 //#define VERSION "1.0.1"
@@ -125,8 +126,6 @@ local path, prgcode
 
     if( empty(path:=fpath(msk)) )
         path:=""
-    else
-        path+=dirsep()
     end
 
     if( !file(msk) )

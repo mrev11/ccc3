@@ -104,7 +104,7 @@ input[type=button] {
   background-color: slateblue;
   box-shadow: 1px 2px #aad;
   border-radius: 3px;
-  margin: 2px 2px 2px 2px;
+  margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
   border: none;
@@ -165,7 +165,7 @@ select {
   background-color: slateblue;
   box-shadow: 1px 2px #aad;
   border-radius: 3px;
-  margin: 2px 2px 2px 2px;
+  margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
   border: none;

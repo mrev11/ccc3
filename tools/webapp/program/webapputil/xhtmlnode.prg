@@ -27,6 +27,8 @@ class xhtmlnode(xmlnode)
     method  input_accountnumber
     method  input_pattern
 
+    method  clear        {|this|this:content::asize(0)}
+
     // az alábbiak azonnal küldenek,
     // tehát csak korábban feltöltött, 
     // id-vel rendelkező elemekre működnek
@@ -35,7 +37,6 @@ class xhtmlnode(xmlnode)
     method  visible      // node:visible(.t./.f.)  true-ra látható
     method  focus
     method  update       // a megváltozott content-et elküldi a böngészőbe      
-    method  clear        {|this|this:content::asize(0)}
 
 ************************************************************************************************
 static function xhtmlnode.initialize(this,type,*)

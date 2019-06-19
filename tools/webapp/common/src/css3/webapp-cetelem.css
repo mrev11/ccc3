@@ -35,7 +35,7 @@ div.page div.menu input.submenubutton {
   border-color: #6b9252;
 }
 div.page div.menu input.submenubutton:hover {
-  border-bottom-color: #3b502d;
+  border-left-color: #53713f;
 }
 div.page div.menu input.submenubutton:disabled {
   background-color: #585858;
@@ -122,15 +122,15 @@ input[type=button] {
   border: none;
   color: #fff;
   background-color: #40a000;
-  background-image: linear-gradient(#a0d080, #40a000);
+  background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   padding: 1px 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   border-style: solid;
   border-top-width: 0;
-  border-bottom-width: 2px;
-  border-left-width: 0px;
-  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 10px;
+  border-right-width: 10px;
   border-color: #40a000;
   transition: 0.3s;
 }
@@ -138,7 +138,7 @@ input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-bottom-color: #173a00;
+  border-left-color: #2c6d00;
 }
 input[type=button]:disabled {
   background-image: none;

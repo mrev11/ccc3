@@ -1,5 +1,19 @@
 #!/bin/bash
 
+CSSDIR=src/css2
+
+DEFAULT=webapp-cetelem.css
+#DEFAULT=webapp-grey.css
+#DEFAULT=webapp-olivedrab.css
+#DEFAULT=webapp-orange.css
+#DEFAULT=webapp-seagreen.css
+#DEFAULT=webapp-slateblue.css
+#DEFAULT=webapp-tomato.css
+
+
+
+
+
 rm -f *.gz
 
 # megjegyes: webapp.js.gz, webapp.css.gz 
@@ -10,41 +24,40 @@ rm -f *.gz
 rm -f webapp.js
 touch webapp.js
 
-cat   webapp-core.js         >>webapp.js
-cat   webapp-websocket.js    >>webapp.js
-cat   webapp-formdata.js     >>webapp.js
-cat   webapp-private.js      >>webapp.js
-cat   webapp-xlib.js         >>webapp.js
-cat   webapp-util.js         >>webapp.js
-cat   webapp-alert.js        >>webapp.js
-cat   webapp-inp_date.js     >>webapp.js
-cat   webapp-inp_number.js   >>webapp.js
-cat   webapp-inp_picture.js  >>webapp.js
-cat   webapp-inp_regex.js    >>webapp.js
-cat   webapp-compat.js       >>webapp.js
-cat   webapp-md5.js          >>webapp.js
-cat   webapp-password.js     >>webapp.js
+cat   src/javascript/webapp-core.js         >>webapp.js
+cat   src/javascript/webapp-websocket.js    >>webapp.js
+cat   src/javascript/webapp-formdata.js     >>webapp.js
+cat   src/javascript/webapp-private.js      >>webapp.js
+cat   src/javascript/webapp-xlib.js         >>webapp.js
+cat   src/javascript/webapp-util.js         >>webapp.js
+cat   src/javascript/webapp-alert.js        >>webapp.js
+cat   src/javascript/webapp-inp_date.js     >>webapp.js
+cat   src/javascript/webapp-inp_number.js   >>webapp.js
+cat   src/javascript/webapp-inp_picture.js  >>webapp.js
+cat   src/javascript/webapp-inp_regex.js    >>webapp.js
+cat   src/javascript/webapp-compat.js       >>webapp.js
+cat   src/javascript/webapp-md5.js          >>webapp.js
+cat   src/javascript/webapp-password.js     >>webapp.js
 
 
-##lessc webapp.less          >webapp.css
 
+pushd $CSSDIR >/dev/null
 for COLORS in colors-*.less; do
     cp $COLORS colors.less
     COLORS=$(echo $COLORS | sed s^colors-^^ )
     COLORS=$(echo $COLORS | sed s^.less^^ )
-
     lessc webapp.less >webapp-$COLORS.css
 done
-cp webapp-slateblue.css  webapp.css  #ez a default
 rm colors.less
+popd >/dev/null
+
+cp -p $CSSDIR/$DEFAULT  webapp.css  #ez a default
 
 
 
-if false; then
-    minify --no-comments webapp.js
-    minify --no-comments webapp.css
-
-    mv webapp.min.js  webapp.js 
-    mv webapp.min.css webapp.css 
-fi
+# minify --no-comments webapp.js
+# minify --no-comments webapp.css
+#
+# mv webapp.min.js  webapp.js 
+# mv webapp.min.css webapp.css 
 

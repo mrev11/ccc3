@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include <stdint.h> //2019-05-22 korabban ez nem kellett
 #include <pcre2.h>
 
 

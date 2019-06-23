@@ -531,12 +531,20 @@ class pdmenubutton(webapp.button)
 
 static function pdmenubutton.initialize(this,id,value,title)
 local msg:="<pdbutton>ID</pdbutton>"::strtran("ID",id)::webapp.jsstring
-    this:(webapp.button)initialize(id,"["+value+"]",title)
+    //this:(webapp.button)initialize(id,"["+value+"]",title)
+    this:(webapp.button)initialize(id,value+" »",title)
     this:addattrib(xhtmlnode.attrib("class","pdmenubutton"))
     this:setattrib(xhtmlnode.attrib("onclick","XCODE.echo(MSG)"::strtran("MSG",msg)))
     this:setstyle("display:block")
     this:visible:=.f.
     return this
+
+    //e29dae ❮
+    //e29daf ❯
+    //2039 ‹
+    //203a ›
+    //171 «
+    //187 »
 
 
 ************************************************************************************************

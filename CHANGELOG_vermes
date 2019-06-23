@@ -1,3 +1,5 @@
+2019.06.23 webapp stilusok javitgatva;
+
 2019.06.20 pcre2.h elott stdint.h-t is inkludalni kell;
    (a 2019-05-22-es javitas tovabbi helyeken is berakva);
 

@@ -59,6 +59,7 @@ div.page div.formset div.tabbut input[type=button] {
   color: #3e4a4a;
   background-color: #a8a7a2;
   border: thin solid #83827a;
+  text-shadow: none;
   padding: 2px 12px;
   transition: 0.1s;
   margin: 0px 0px 4px 2px;
@@ -124,6 +125,7 @@ input[type=button] {
   background-color: olivedrab;
   background-image: linear-gradient(#b5c791, olivedrab);
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
   padding: 1px 8px;
   border-radius: 10px;
   border-style: solid;

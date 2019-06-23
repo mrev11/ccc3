@@ -1,4 +1,7 @@
-eb184c61c0d9a63421b78f2dee7f45f2d5f1ef9d 2019062012:10:59-UTC ./CHANGELOG_vermes
+434dd6c9523528adc12be071253b668810b0d9fa 2019062311:14:32-UTC ./tools/webapp/common/webapp.css
+e3b5d0affa5249e02ce89c3226689dbfee671922 2019062311:13:57-UTC ./CHANGELOG_vermes
+b8527922405669902fa6635aa8d0b4d5a2564715 2019062309:31:38-UTC ./tools/webapp/common/src/css2/colors-cetelem.less
+3bd39c8f93489a0c498a6f6eb398cbfc9767085b 2019062106:44:51-UTC ./tools/webapp/program/webapputil/webpage.prg
 d3375cd49c3d72bd3269b4dcb954890819798e0d 2019062012:06:56-UTC ./tools/pcre2/pcre2demo/pcre2demo-8.cpp
 05c6498aa1f995408a4ff3dc8201bc6d7ddcc816 2019062012:06:51-UTC ./tools/pcre2/pcre2demo/pcre2demo-32.cpp
 c7f670b9bcc7cd1f821d5560824e65fc4f338d20 2019062012:06:46-UTC ./tools/pcre2/pcre2demo/pcre2demo-0-8.cpp
@@ -11,7 +14,6 @@ c850c548600dbb928277a8bbace9d132024f7a56 2019061916:34:25-UTC ./tools/webapp/com
 18921ba1333eaf02aed12962ef6f0d19de21b08b 2019061916:34:25-UTC ./tools/webapp/common/src/css2/webapp-seagreen.css
 d65c9ba3c036a09053712b4c06011cd82970b838 2019061916:34:25-UTC ./tools/webapp/common/src/css2/webapp-slateblue.css
 fb535dc0f94dfc49759b220cc3800dddeda8d3e1 2019061916:34:25-UTC ./tools/webapp/common/src/css2/webapp-tomato.css
-deaf07cbdc723b5c4502743e1c62f38bd317b9e9 2019061916:34:25-UTC ./tools/webapp/common/webapp.css
 98103da283285487ad371eecafdd7e80ffaa6f6d 2019061916:32:41-UTC ./tools/webapp/common/src/css3/webapp-grey.css
 1fc11008e4b02f2f831d7f9b4e31f37d1de1d918 2019061916:32:41-UTC ./tools/webapp/common/src/css3/webapp-olivedrab.css
 cf1e7556f53d2abcee6b3ec139d21ab59ae3b981 2019061916:32:41-UTC ./tools/webapp/common/src/css3/webapp-orange.css
@@ -32,7 +34,6 @@ a3eff2f65146647984200bc0488a07ad0229bf4e 2019061909:53:53-UTC ./tools/webapp/com
 7c8698b850d28a7835968103e7201e143f1897b0 2019061907:03:43-UTC ./tools/webapp/common/src/css2/colors-seagreen.less
 0a7c4ea2304b474aba1aaa4a1914a3b35df1388d 2019061907:03:33-UTC ./tools/webapp/common/src/css2/colors-orange.less
 7f614a8187211fb4cf7cd6602d8bf18269932aad 2019061907:03:19-UTC ./tools/webapp/common/src/css2/colors-grey.less
-279e6338dc65977b8989b71edbe282bdd58b2681 2019061906:58:00-UTC ./tools/webapp/common/src/css2/colors-cetelem.less
 fee08bfabd90758eb25a983754ae08c61433afd2 2019061906:51:05-UTC ./tools/webapp/common/src/css2/webapp.less
 caf4a4b00bf6f41b128677e9d894c4b6952ffd42 2019061820:58:06-UTC ./tools/webapp/common/src/css2/colors-olivedrab.less
 82f1c9ff5cd93da85a35db1c501dc2588e6e5daf 2019061811:54:45-UTC ./tools/webapp/common/webapp-grey.css
@@ -55,7 +56,6 @@ c8958c3a25c0c7158f7983a31e15ac0299bc02f1 2019060319:39:17-UTC ./usr/bin/linux/we
 a3bd5f91bd4232ae9d881da57d3f57cb654f99ce 2019052309:04:52-UTC ./tools/webapp/program/webapputil/script.prg
 4cf50fb33b7ca495792a622ab3448c58f4fb7cad 2019052307:38:36-UTC ./tools/webapp/common/textarea.less
 aea6564328d10f1fed6024699e2382f30c05e2f7 2019052220:03:02-UTC ./tools/pcre2/pcre2.cpp
-941730c1697d6bb221554b04ef568db3ae62d745 2019052013:03:12-UTC ./tools/webapp/program/webapputil/webpage.prg
 28a72fd2a52ccd4a4e32cd7daadc0194edb40f71 2019051711:29:04-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
 b6ca3ab64c6c2668c4eed72a9189ce3b3a741301 2019050914:02:52-UTC ./tools/webapp/common/webapp.js
 f3611dc0afb6d407805e0526ab22d9642fecad70 2019050912:02:47-UTC ./tools/webapp/common/webapp-password.js

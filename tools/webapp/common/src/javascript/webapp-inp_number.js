@@ -21,7 +21,7 @@ XCODE.num2str=function(num,dec) //szamok formazasa
 } 
 
 //------------------------------------------------------------------------------
-XCODE.numsettlevalue=function(ctrl,dec)
+XCODE.numsettlevalue=function(ctrl,dec,zero)
 //------------------------------------------------------------------------------
 {
     if( ctrl.xreadvalue==undefined )
@@ -33,8 +33,16 @@ XCODE.numsettlevalue=function(ctrl,dec)
     }
     var text=ctrl.xreadvalue();
     var num=Number(text);
-    ctrl.value=XCODE.num2str(num,dec);
+    if( num==0 && zero!=undefined && zero=="blank" )
+    {
+        ctrl.value="";
+    }
+    else
+    {
+        ctrl.value=XCODE.num2str(num,dec);
+    }
 }
+
 
 //------------------------------------------------------------------------------
 XCODE.numkeypress=function(e) 

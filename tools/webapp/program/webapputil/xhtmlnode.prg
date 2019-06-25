@@ -369,20 +369,33 @@ function xhtmlnode.input_date(node)
 
 
 ************************************************************************************************
-function xhtmlnode.input_number(node,dec,align:="right"  )
-local code
-    if(dec==NIL)
-        //helyertek vesszok nelkul
-        code:="XCODE.numsettlevalue(this)"
-    else
-        //helyertek vesszokkel
-        //dec>=0, nulla vagy tobb tizedessel
-        code:="XCODE.numsettlevalue(this,DEC)"::strtran("DEC",dec::str::alltrim)
+function xhtmlnode.input_number(node,dec,flags:='r')
+local code:="XCODE.numsettlevalue(this,DEC,ZERO)"
+
+    if( dec!=NIL )
+        code::=strtran("DEC",dec::str::alltrim)
     end
+    if( 'z'$flags )
+        code::=strtran("ZERO","'blank'")
+    end
+    code::=strtran(",ZERO","")
+    code::=strtran("DEC","null")
+    code::=strtran(",null)",")")
+
     node:setattrib(xhtmlnode.attrib("onblur",code)) 
     node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.numkeypress(event)"))
     node:setattrib(xhtmlnode.attrib("pattern","^[0-9\+\-\.,]*$"))
-    node:setstyle("text-align:"+align)
+
+    if( "r"$flags )
+        node:setstyle("text-align:right")
+    elseif( "l"$flags )
+        node:setstyle("text-align:left")
+    elseif( "c"$flags )
+        node:setstyle("text-align:center")
+    else
+        node:setstyle("text-align:right")
+    end
+
 
 ************************************************************************************************
 function xhtmlnode.input_picture(node,pic)

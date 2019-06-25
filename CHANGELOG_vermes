@@ -1,3 +1,9 @@
+2019.06.25 webapp xhtmlnode.input_number flags parameter:
+  'r'$flags  -> align right  (default);
+  'c'$flags  -> align center; 
+  'l'$flags  -> align left;
+  'z'$flags  -> display zero as blank;
+    
 2019.06.23 webapp stilusok javitgatva;
 
 2019.06.20 pcre2.h elott stdint.h-t is inkludalni kell;

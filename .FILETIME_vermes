@@ -1,5 +1,8 @@
+33acdb1e407f29c022b608eda8e846f9debf94b1 2019062519:21:53-UTC ./CHANGELOG_vermes
+9d8fddba2efa5fb5d55ce6c8aabca5bfeed18ec5 2019062516:31:11-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
+32fb421ab63361d9f94c9ba942d1870b74d8254b 2019062515:49:39-UTC ./tools/webapp/common/webapp.js
+b3d8d99fb4d832056e26a4418985d3f48cac0c47 2019062515:49:34-UTC ./tools/webapp/common/src/javascript/webapp-inp_number.js
 434dd6c9523528adc12be071253b668810b0d9fa 2019062311:14:32-UTC ./tools/webapp/common/webapp.css
-e3b5d0affa5249e02ce89c3226689dbfee671922 2019062311:13:57-UTC ./CHANGELOG_vermes
 b8527922405669902fa6635aa8d0b4d5a2564715 2019062309:31:38-UTC ./tools/webapp/common/src/css2/colors-cetelem.less
 3bd39c8f93489a0c498a6f6eb398cbfc9767085b 2019062106:44:51-UTC ./tools/webapp/program/webapputil/webpage.prg
 d3375cd49c3d72bd3269b4dcb954890819798e0d 2019062012:06:56-UTC ./tools/pcre2/pcre2demo/pcre2demo-8.cpp
@@ -44,7 +47,6 @@ caf4a4b00bf6f41b128677e9d894c4b6952ffd42 2019061820:58:06-UTC ./tools/webapp/com
 374fcb1c4b30ac69ff5446382bdaa744c171c549 2019061716:53:22-UTC ./tools/webapp/common/button.less
 91537a527f0cc0681cbf96490ef063337d3a47f6 2019061708:19:11-UTC ./usr/bin/linux/terminal-gtk3
 0dd10da23b36ab241ec358db04b2ab5cc89882f1 2019061708:19:05-UTC ./usr/bin/linux/build
-7bb1fc203da29ac3c62fa47d431a6ec47ea9208d 2019061409:14:48-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 67b9f41a0daf00bc3b0b8ae3253c88582b1c3ede 2019061012:48:12-UTC ./usr/bin/linux/msk2html
 f900b4aed453ff955cbcae355728dfaa1257bc82 2019061012:48:09-UTC ./tools/webapp/program/msk2html/msk2html.prg
 fc2b0542d835dcc1d1dd6c07fb0af92abbfdb6b7 2019061012:44:57-UTC ./usr/build/linux/msk2html.bat
@@ -57,7 +59,6 @@ a3bd5f91bd4232ae9d881da57d3f57cb654f99ce 2019052309:04:52-UTC ./tools/webapp/pro
 4cf50fb33b7ca495792a622ab3448c58f4fb7cad 2019052307:38:36-UTC ./tools/webapp/common/textarea.less
 aea6564328d10f1fed6024699e2382f30c05e2f7 2019052220:03:02-UTC ./tools/pcre2/pcre2.cpp
 28a72fd2a52ccd4a4e32cd7daadc0194edb40f71 2019051711:29:04-UTC ./tools/webapp/program/webapputil/xhtmltable.prg
-b6ca3ab64c6c2668c4eed72a9189ce3b3a741301 2019050914:02:52-UTC ./tools/webapp/common/webapp.js
 f3611dc0afb6d407805e0526ab22d9642fecad70 2019050912:02:47-UTC ./tools/webapp/common/webapp-password.js
 70233da46743cb456c4b1e89a8cf6bf22827fd1e 2019050904:19:35-UTC ./tools/webapp/common/webapp-formdata.js
 2e3145062e0283815efd409c2753832d1fb0ed9e 2019050814:23:45-UTC ./tools/webapp/common/webapp-md5.js
@@ -658,7 +659,6 @@ b4aca1ea3a2f4fd0ec953c70460748774d739d24 2017090105:12:44-UTC ./tools/webapp/com
 3c80a2aef06097222d8dcd20ec07d5cd9cab8b4b 2017082804:43:59-UTC ./tools/webapp/common/webapp-private.js
 3c4fca1293501da83953994f1d74d9d54bce06e0 2017082804:43:02-UTC ./tools/webapp/common/webapp-inp_regex.js
 1a36cf5736068bac9ca4051535cf5533f54d023f 2017082804:42:44-UTC ./tools/webapp/common/webapp-inp_picture.js
-84c1f1f215fc3598860c51ec0f6d30dfa3e080f9 2017082804:42:07-UTC ./tools/webapp/common/webapp-inp_number.js
 949668fcb24f3172610936356d3ac8b37a6ced2d 2017082804:41:45-UTC ./tools/webapp/common/webapp-inp_date.js
 c557956bee03ce57b0878ad51399fcb9577d8bdb 2017082804:40:47-UTC ./tools/webapp/common/webapp-core.js
 bb81a885aebbe4229093f4ac065f0be95ffa03e9 2017082804:35:04-UTC ./tools/webapp/common/alert.less

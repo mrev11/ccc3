@@ -59,8 +59,8 @@ div.page div.formset div.tabbut {
 }
 div.page div.formset div.tabbut input[type=button] {
   color: #000;
-  background-color: #a8a7a2;
-  border: thin solid #83827a;
+  background-color: #e4e3db;
+  border: thin solid #c3c1b0;
   box-shadow: 1px 2px #aaa;
   padding: 2px 12px;
   transition: 0.1s;
@@ -71,8 +71,8 @@ div.page div.formset div.tabbut input[type=button]:active {
   transform: translateY(1px);
 }
 div.page div.formset div.tabbut input[type=button][data-pushed=true] {
-  background-color: #e4e3db;
-  border: thin solid #b8b5a1;
+  background-color: white;
+  border: thin solid #cccccc;
 }
 div.page div.formset div.form div.subform fieldset {
   color: #413932;
@@ -118,6 +118,8 @@ input[type=button]:focus {
 }
 input[type=button]:disabled {
   background-color: #ad7b1f;
+  color: #bfbfbf;
+  cursor: auto;
 }
 input[type=button]:active {
   background-color: #cc8400;
@@ -180,6 +182,8 @@ select:focus {
 }
 select:disabled {
   background-color: #ad7b1f;
+  color: #bfbfbf;
+  cursor: auto;
 }
 tr {
   cursor: pointer;

@@ -1,3 +1,7 @@
+2019.06.27 javitgatasok;
+  mask editor: nem ertelmezett (F-key) kodok kihagyva;
+  webapp: disabled buttonok egerkurzora visszaallitva auto-ra;
+
 2019.06.25 webapp xhtmlnode.input_number flags parameter:
   'r'$flags  -> align right  (default);
   'c'$flags  -> align center; 

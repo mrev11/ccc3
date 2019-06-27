@@ -144,8 +144,10 @@ input[type=button]:hover {
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #3e5d10;
-  border-color: #3e5d10;
+  background-color: #587828;
+  border-color: #587828;
+  color: #bfbfbf;
+  cursor: auto;
 }
 input[type=button]:active {
   background-image: none;

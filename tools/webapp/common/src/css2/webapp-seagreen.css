@@ -146,6 +146,8 @@ input[type=button]:disabled {
   background-image: none;
   background-color: #306f6b;
   border-color: #306f6b;
+  color: #bfbfbf;
+  cursor: auto;
 }
 input[type=button]:active {
   background-image: none;

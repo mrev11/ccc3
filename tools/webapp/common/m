@@ -1,13 +1,13 @@
 #!/bin/bash
 
-CSSDIR=src/css2
+CSSDIR=src/css3
 
-DEFAULT=webapp-cetelem.css
+#DEFAULT=webapp-cetelem.css
 #DEFAULT=webapp-grey.css
 #DEFAULT=webapp-olivedrab.css
 #DEFAULT=webapp-orange.css
 #DEFAULT=webapp-seagreen.css
-#DEFAULT=webapp-slateblue.css
+DEFAULT=webapp-slateblue.css
 #DEFAULT=webapp-tomato.css
 
 

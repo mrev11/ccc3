@@ -337,6 +337,9 @@ local ins:=.f.
                 restscreen(0,0,MAXROW,MAXCOL,origscrn)
             end
 
+        elseif( key<0 )
+            //nem ertelmezett F-key
+
         else 
        
             if(ins .and. col()<MAXCOL)

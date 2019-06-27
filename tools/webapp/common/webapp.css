@@ -3,7 +3,7 @@ h2,
 h3,
 label,
 legend {
-  color: #455;
+  color: #566;
   font-weight: normal;
 }
 img {
@@ -31,19 +31,19 @@ div.page div.menu input.submenubutton {
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #789252;
-  border-color: #789252;
+  background-color: #4a8cb8;
+  border-color: #4a8cb8;
 }
 div.page div.menu input.submenubutton:hover {
-  border-bottom-color: #42502d;
+  border-left-color: #2c5571;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #585858;
-  border-color: #585858;
+  background-color: #596a76;
+  border-color: #596a76;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #5d713f;
-  border-color: #5d713f;
+  background-color: #3a7095;
+  border-color: #3a7095;
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -56,7 +56,7 @@ div.page div.formset div.tabbut {
 }
 div.page div.formset div.tabbut input[type=button] {
   background-image: none;
-  color: #2d3939;
+  color: #3e4a4a;
   background-color: #a8a7a2;
   border: thin solid #83827a;
   text-shadow: none;
@@ -102,7 +102,7 @@ select {
   margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
-  color: #2d3939;
+  color: #3e4a4a;
   border: thin solid #d3d0b8;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.1);
 }
@@ -122,38 +122,40 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: #60a000;
-  background-image: linear-gradient(#b0d080, #60a000);
+  background-color: slateblue;
+  background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
   padding: 1px 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   border-style: solid;
   border-top-width: 0;
-  border-bottom-width: 2px;
-  border-left-width: 0px;
-  border-right-width: 0px;
-  border-color: #60a000;
+  border-bottom-width: 0px;
+  border-left-width: 10px;
+  border-right-width: 10px;
+  border-color: slateblue;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-bottom-color: #233a00;
+  border-left-color: #3b2d94;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #3e5d10;
-  border-color: #3e5d10;
+  background-color: #655d97;
+  border-color: #655d97;
+  color: #bfbfbf;
+  cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #416d00;
-  border-color: #416d00;
+  background-color: #4b39bb;
+  border-color: #4b39bb;
 }
 input[type=text] {
-  color: #455;
+  color: #566;
   outline: 0px;
   border-style: solid;
   border-width: thin;
@@ -175,7 +177,7 @@ input[type=text][pattern]:invalid:not(focus) {
   background-color: #ffa0a0;
 }
 input[type=password] {
-  color: #455;
+  color: #566;
   outline: 0px;
   border-style: solid;
   border-width: thin;
@@ -219,13 +221,13 @@ th {
   background-color: grey;
 }
 td {
-  color: #455;
+  color: #566;
   white-space: nowrap;
   font-size: smaller;
 }
 textarea {
   font-family: sans-serif;
-  color: #455;
+  color: #566;
   font-weight: normal;
   border: thin solid #c0bfb9;
   border-radius: 3px;

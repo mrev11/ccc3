@@ -57,8 +57,8 @@ div.page div.formset div.tabbut {
 div.page div.formset div.tabbut input[type=button] {
   background-image: none;
   color: #2d3939;
-  background-color: #f0efe7;
-  border: thin solid #d3d0b8;
+  background-color: #e4e3db;
+  border: thin solid #c3c1b0;
   text-shadow: none;
   padding: 2px 12px;
   transition: 0.1s;
@@ -79,6 +79,9 @@ div.page div.formset div.form div.subform fieldset {
   border-radius: 6px;
 }
 div.page div.formset div.form div.subform fieldset legend {
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #2d3939;
   background-color: #f0efe7;
   border: thin solid #c0bfb9;
   border-radius: 10px;
@@ -114,6 +117,9 @@ select:focus {
 }
 select:not(focus) {
   background-color: #f4f4f4;
+}
+select option {
+  font-size: smaller;
 }
 input[type=button] {
   border-radius: 3px;

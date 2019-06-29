@@ -81,6 +81,9 @@ div.page div.formset div.form div.subform fieldset {
   border-radius: 6px;
 }
 div.page div.formset div.form div.subform fieldset legend {
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #3e4a4a;
   background-color: #f0efe7;
   border: thin solid #c0bfb9;
   border-radius: 10px;
@@ -98,6 +101,9 @@ div.page div.formset div.action {
 div.page div.formset div.action input[type=button] {
   padding: 4px 10px;
   margin: 5px 0px 2px 2px;
+}
+select option {
+  font-size: smaller;
 }
 input[type=button] {
   color: #fff;

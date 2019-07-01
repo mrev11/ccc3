@@ -1,3 +1,8 @@
+2012.08.28 class attribútumot is készít
+Ha pl. egy label így van beírva: @id.class1.class2,
+akkor ilyen tag készül: <label id="id" class="class1 class2">
+(korábban ebből  <label id="id.class1.class2"> generálódott volna)
+
 2012.08.28 Elkészíti a table-k vázát.
 Segédprogram, ami msk filékből html maszkot előállító programot generál.
 

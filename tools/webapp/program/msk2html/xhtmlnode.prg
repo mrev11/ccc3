@@ -10,7 +10,7 @@
 class xhtmlnode(xmlnode)
 
     method  addattrib    // felüldefiniálva (automatikusn készíti az xmlattrib objektunot)
-    method  setattrib    // felüldefiniálva (automatikusn készíti az xmlqttrib objektunot)
+    method  setattrib    // felüldefiniálva (automatikusn készíti az xmlattrib objektunot)
 
     method  setstyle     // berak/felülír egy stílust
     method  delstyle     // töröl egy stílust

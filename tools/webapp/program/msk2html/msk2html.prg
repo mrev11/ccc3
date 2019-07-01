@@ -21,7 +21,8 @@
 
 #include "box.ch"
 
-#define VERSION "1.1.1"  //2019-06-10 felesleges dirsep kihagyva
+#define VERSION "1.2.0"   //class attribútumokat is készít
+//#define VERSION "1.1.1"  //2019-06-10 felesleges dirsep kihagyva
 //#define VERSION "1.1.0"  //2019-05-29 #define-okat képez az id-kbol
 //#define VERSION "1.0.3"  //2017-03-18 fieldsetek alja kicsit lejjebb
 //#define VERSION "1.0.2"  //id-vel rendelkező labelek default szövege javítva
@@ -313,6 +314,14 @@ local p:=parse(str)
     c:left:=col
     c:bottom:=row
     c:right:=col+len(str)-1
+    
+    
+    if( c:name!=NIL .and. "."$c:name)
+        c:aclass:=split(c:name,'.')
+        c:name:=c:aclass[1]
+        c:aclass:=c:aclass[2..]
+    end
+    
 
     maxrect(c)
 
@@ -480,6 +489,7 @@ static class component(object)
     attrib  left
     attrib  bottom
     attrib  right
+    attrib  aclass
 
     attrib  fieldset
 
@@ -692,6 +702,13 @@ local table
             node:addattrib(xhtmlnode.attrib("id",comp:name))
         end
         
+        if( !empty(comp:aclass) )
+            node:addattrib("class","")
+            for i:=1 to len(comp:aclass)
+                node:setattrib("class",if(i==1,"",node:getattrib("class")+" ")+comp:aclass[i])
+            next
+        end
+
 
         for i:=1 to len(fieldset)
             fs:=list[i]

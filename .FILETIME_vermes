@@ -1,3 +1,6 @@
+4734ff65bc5f24979149ed8eda4884ce655f13e8 2019070313:44:44-UTC ./CHANGELOG_vermes
+4473730106d79e24c6c914c291024951a629d76c 2019070312:37:24-UTC ./tools/webapp/common/local.css
+f0809f39da25e8acaf772f00b17e38fec51aa96c 2019070120:26:36-UTC ./tools/webapp/program/webapputil/webpage.prg
 3e2b59f934e7cb7ddf7c5bb9375bb9ab4de6493f 2019062920:13:38-UTC ./tools/webapp/common/src/css3/webapp-grey.css
 6fe73adf9b7f12e800f996e10508db72ee7f2298 2019062920:13:38-UTC ./tools/webapp/common/src/css3/webapp-olivedrab.css
 cf359b127d509d064a36cde9b1ee32b05123814a 2019062920:13:38-UTC ./tools/webapp/common/src/css3/webapp-orange.css
@@ -9,7 +12,6 @@ cf359b127d509d064a36cde9b1ee32b05123814a 2019062920:13:38-UTC ./tools/webapp/com
 bca4345af306343f23a6bc2a8c1677907b24602b 2019062920:07:49-UTC ./tools/webapp/common/src/css3/page.less
 4d1bcff738712c4fd4386969116eaa48f908bf20 2019062919:53:20-UTC ./usr/bin/linux/msk2html
 8ca723f24d8e7ecab05438fbbd0ea1d4cdededb5 2019062919:53:17-UTC ./tools/webapp/program/msk2html/msk2html.prg
-8496ea0cb7afe6583c8e5423cd12cfe2f7398cde 2019062919:46:46-UTC ./CHANGELOG_vermes
 dcbbdd40f7ae1247c47c509d541b43d692cf7b89 2019062919:42:57-UTC ./tools/webapp/program/msk2html/OLVASS
 b7667177155c26d241174ec9d0997e30bb76535c 2019062916:56:05-UTC ./tools/webapp/program/msk2html/xhtmlnode.prg
 ff336dad8aabdcd7307ccbc5c3a8eb8bb545ecfb 2019062914:34:27-UTC ./tools/webapp/common/src/css1/webapp-orange.css
@@ -58,7 +60,6 @@ f26b336bb0f640ffe39d1f7d5d5f2ee46ffd9690 2019062707:27:53-UTC ./usr/bin/linux/ma
 9d8fddba2efa5fb5d55ce6c8aabca5bfeed18ec5 2019062516:31:11-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg
 32fb421ab63361d9f94c9ba942d1870b74d8254b 2019062515:49:39-UTC ./tools/webapp/common/webapp.js
 b3d8d99fb4d832056e26a4418985d3f48cac0c47 2019062515:49:34-UTC ./tools/webapp/common/src/javascript/webapp-inp_number.js
-3bd39c8f93489a0c498a6f6eb398cbfc9767085b 2019062106:44:51-UTC ./tools/webapp/program/webapputil/webpage.prg
 d3375cd49c3d72bd3269b4dcb954890819798e0d 2019062012:06:56-UTC ./tools/pcre2/pcre2demo/pcre2demo-8.cpp
 05c6498aa1f995408a4ff3dc8201bc6d7ddcc816 2019062012:06:51-UTC ./tools/pcre2/pcre2demo/pcre2demo-32.cpp
 c7f670b9bcc7cd1f821d5560824e65fc4f338d20 2019062012:06:46-UTC ./tools/pcre2/pcre2demo/pcre2demo-0-8.cpp

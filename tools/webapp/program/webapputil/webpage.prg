@@ -375,7 +375,7 @@ local n,menuid,visible
             if( msg::startswith("formdata.") )
                 this:formdata:=data
             end
-            eval(blk,this)  
+            eval(blk,this,data)  
             this:formdata:update
 
         elseif( msg=="tabbutton" )

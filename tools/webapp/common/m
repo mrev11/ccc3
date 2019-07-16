@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CSSDIR=src/css3
+CSSDIR=src/css2
 
 DEFAULT=webapp-cetelem.css
 #DEFAULT=webapp-grey.css

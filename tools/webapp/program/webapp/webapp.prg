@@ -19,6 +19,7 @@ local http_body:=<<PAGE>><!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <script type="text/javascript" src="webapp.js"></script>
   <link rel="stylesheet" type="text/css" href="webapp.css">
 </head>

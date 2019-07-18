@@ -1,4 +1,4 @@
-/*src/css-flat:slateblue*/
+/*src/css-grad:slateblue*/
 h1,
 h2,
 h3,
@@ -45,7 +45,7 @@ div.page div.menu input.submenubutton {
   border-color: #4a8cb8;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #2c5571;
+  border-bottom-color: #2c5571;
 }
 div.page div.menu input.submenubutton:disabled {
   background-color: #596a76;
@@ -91,10 +91,10 @@ div.page div.formset div.form div.subform fieldset {
 div.page div.formset div.form div.subform fieldset legend {
   padding-left: 8px;
   padding-right: 8px;
-  color: white;
-  background-color: grey;
-  border-radius: 4px;
-  font-weight: bold;
+  color: #3e4a4a;
+  background-color: #f0efe7;
+  border: thin solid #c0bfb9;
+  border-radius: 10px;
 }
 div.page div.formset div.form div.subform div.formaction {
   border: 5px none  blue;
@@ -139,16 +139,16 @@ input[type=button] {
   border: none;
   color: #fff;
   background-color: slateblue;
-  background-image: none;
+  background-image: linear-gradient(#b5ade6, slateblue);
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
   padding: 1px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
   border-style: solid;
   border-top-width: 0;
-  border-bottom-width: 0px;
-  border-left-width: 10px;
-  border-right-width: 10px;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
+  border-right-width: 0px;
   border-color: slateblue;
   transition: 0.3s;
 }
@@ -156,7 +156,7 @@ input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #3b2d94;
+  border-bottom-color: #3b2d94;
 }
 input[type=button]:disabled {
   background-image: none;

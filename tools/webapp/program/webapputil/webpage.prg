@@ -75,7 +75,7 @@ static function page.initialize(this,caption)
 
     //HTML structure
 
-    this:menu:=xhtmlnodeNew("div","class=menu","style=display:none")
+    this:menu:=xhtmlnodeNew("div","class=menu"/*,"style=display:none"*/)
     this:addcontent(this:menu)
     
     this:formset:=xhtmlnodeNew("div","class=formset")
@@ -149,7 +149,7 @@ local button
     if(blk!=NIL)
         this:actionhash["formdata."+id]:=blk
     end
-    this:menu:setstyle("display:block")
+    //this:menu:setstyle("display:block")
 
 
 ************************************************************************************************
@@ -161,7 +161,7 @@ local button
         button:=pdmenubuttonNew(id,value,title)
     end
     this:menu:addcontent(button)
-    this:menu:setstyle("display:block")
+    //this:menu:setstyle("display:block")
 
 
 ************************************************************************************************

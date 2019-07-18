@@ -1,16 +1,19 @@
 #!/bin/bash
 
-CSSDIR=src/css2
+# DEFAULT_STYLE=src/css-push
+# DEFAULT_STYLE=src/css-grad
+  DEFAULT_STYLE=src/css-flat
 
-DEFAULT=webapp-cetelem.css
-#DEFAULT=webapp-grey.css
-#DEFAULT=webapp-olivedrab.css
-#DEFAULT=webapp-orange.css
-#DEFAULT=webapp-seagreen.css
-#DEFAULT=webapp-slateblue.css
-#DEFAULT=webapp-tomato.css
+# DEFAULT_COLOR=webapp-cetelem.css
+# DEFAULT_COLOR=webapp-grey.css
+# DEFAULT_COLOR=webapp-olivedrab.css
+# DEFAULT_COLOR=webapp-orange.css
+# DEFAULT_COLOR=webapp-seagreen.css
+  DEFAULT_COLOR=webapp-slateblue.css
+# DEFAULT_COLOR=webapp-tomato.css
 
-
+  DEFAULT_STYLE_M=src/css-mobil
+  DEFAULT_COLOR_M=webapp-seagreen.css
 
 
 
@@ -41,17 +44,25 @@ cat   src/javascript/webapp-password.js     >>webapp.js
 
 
 
-pushd $CSSDIR >/dev/null
-for COLORS in colors-*.less; do
-    cp $COLORS colors.less
-    COLORS=$(echo $COLORS | sed s^colors-^^ )
-    COLORS=$(echo $COLORS | sed s^.less^^ )
-    lessc webapp.less >webapp-$COLORS.css
-done
-rm colors.less
-popd >/dev/null
 
-cp -p $CSSDIR/$DEFAULT  webapp.css  #ez a default
+for CSSDIR in src/css*; do
+    echo $CSSDIR
+    pushd $CSSDIR >/dev/null
+    for COLORS in ../root/colors/colors-*.less; do
+        cp $COLORS colors.less
+        COLORS=$(echo $COLORS | sed s^.*colors-^^ )
+        COLORS=$(echo $COLORS | sed s^.less^^ )
+        echo "/*$CSSDIR:$COLORS*/" >webapp-$COLORS.css
+        lessc webapp.less >>webapp-$COLORS.css
+    done
+    rm colors.less
+    popd >/dev/null
+done
+
+
+#set -x
+cp -p $DEFAULT_STYLE/$DEFAULT_COLOR  webapp.css  #ez a default
+cp -p $DEFAULT_STYLE_M/$DEFAULT_COLOR_M  webappm.css  #mobil
 
 
 

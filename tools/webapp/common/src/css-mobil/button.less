@@ -1,0 +1,79 @@
+
+#button() {
+    border-radius: 3px;
+    margin: 0px 2px 2px 2px;
+    cursor: pointer;
+    outline: none;
+    &:focus{text-decoration: underline;}
+}
+
+
+select{
+    #button;
+
+    color: darken(@GLOBAL_TEXT_COLOR,10%);
+
+    &:focus{
+        background-color: #ffffff;
+    }
+
+    &:not(focus){
+        background-color: #f4f4f4;
+    }
+
+    border: thin solid darken(@FIELDSET_COLOR_BG,15%);
+    box-shadow: 0 3px 7px 0 rgba(0,0,0,0.1);
+
+    option{
+        font-size: smaller;
+    }
+}
+
+
+
+// PUSH BUTTONS
+
+input[type=button] {
+
+    #button;
+
+    border: none;
+    color: @BUTTON_COLOR_FG;
+    background-color: @BUTTON_COLOR_BG;
+    //background-image: linear-gradient(mix(@BUTTON_COLOR_BG,#fff,50%),@BUTTON_COLOR_BG);
+    background-image: none;
+    box-shadow: 0 3px 7px 0 rgba(0,0,0,0.3);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+
+    padding: 1px 8px;
+
+    border-radius: 6px;
+    border-style:solid;
+    border-top-width:0;
+    border-bottom-width:0px;
+    border-left-width:10px;
+    border-right-width:10px;
+    border-color:@BUTTON_COLOR_BG;
+
+    &:hover {
+        border-left-color:@BUTTON_COLOR_HOVER;
+    }
+
+    &:disabled {
+        background-image: none;
+        background-color: @BUTTON_COLOR_DISABLED; 
+        border-color: @BUTTON_COLOR_DISABLED;
+        color: darken(@BUTTON_COLOR_FG,25%);
+        cursor: auto;
+    }
+
+
+    &:active{
+        background-image: none;
+        background-color: @BUTTON_COLOR_ACTIVE;
+        border-color: @BUTTON_COLOR_ACTIVE;
+    }
+    
+    transition: 0.3s;
+}
+

@@ -1,4 +1,4 @@
-/*src/css-flat:slateblue*/
+/*src/css-mobil:slateblue*/
 h1,
 h2,
 h3,
@@ -22,22 +22,30 @@ img {
 }
 div.page {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 div.page div.menu {
-  flex: 0 0 auto;
-  width: auto;
-  margin-top: 60px;
-  margin-right: 6px;
-  border: 5px none red;
-  padding: 4px 2px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0px;
+  padding: 0px;
 }
 div.page div.menu input.menubutton,
 div.page div.menu input.pdmenubutton,
 div.page div.menu input.submenubutton {
-  width: 120px;
   height: 32px;
-  margin: 2px 4px 0px 4px;
+  min-width: 120px;
+  margin-left: 1px;
+  margin-right: 1px;
+  margin-bottom: 0px;
+  border-radius: 0px;
 }
 div.page div.menu input.submenubutton {
   background-image: none;
@@ -59,6 +67,8 @@ div.page div.formset {
   flex: 0 0 auto;
   border: 5px none black;
   padding: 4px 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 div.page div.formset div.tabbut {
   border: 5px none green;
@@ -259,7 +269,7 @@ textarea:not(focus) {
   margin-right: 8px;
   margin-bottom: 8px;
   float: right;
-  display: block;
+  display: none;
   cursor: pointer;
 }
 #menuicon div {
@@ -329,7 +339,8 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .region .resize {
   position: absolute;
@@ -352,9 +363,6 @@ body {
 }
 #region_webapp .resize {
   display: block;
-}
-#region_webapp .display {
-  margin: 0px 10px 0px 15px;
 }
 #region_frmaux {
   display: block;

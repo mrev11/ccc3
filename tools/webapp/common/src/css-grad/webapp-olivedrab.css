@@ -1,4 +1,4 @@
-/*src/css-flat:slateblue*/
+/*src/css-grad:olivedrab*/
 h1,
 h2,
 h3,
@@ -41,19 +41,19 @@ div.page div.menu input.submenubutton {
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #4a8cb8;
-  border-color: #4a8cb8;
+  background-color: #4bb041;
+  border-color: #4bb041;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #2c5571;
+  border-bottom-color: #2b6626;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #596a76;
-  border-color: #596a76;
+  background-color: #536e50;
+  border-color: #536e50;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #3a7095;
-  border-color: #3a7095;
+  background-color: #3b8b33;
+  border-color: #3b8b33;
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -91,10 +91,10 @@ div.page div.formset div.form div.subform fieldset {
 div.page div.formset div.form div.subform fieldset legend {
   padding-left: 8px;
   padding-right: 8px;
-  color: white;
-  background-color: grey;
-  border-radius: 4px;
-  font-weight: bold;
+  color: #3e4a4a;
+  background-color: #f0efe7;
+  border: thin solid #c0bfb9;
+  border-radius: 10px;
 }
 div.page div.formset div.form div.subform div.formaction {
   border: 5px none  blue;
@@ -138,37 +138,37 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: slateblue;
-  background-image: none;
+  background-color: olivedrab;
+  background-image: linear-gradient(#b5c791, olivedrab);
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
   padding: 1px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
   border-style: solid;
   border-top-width: 0;
-  border-bottom-width: 0px;
-  border-left-width: 10px;
-  border-right-width: 10px;
-  border-color: slateblue;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-color: olivedrab;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #3b2d94;
+  border-bottom-color: #2d3c0f;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #655d97;
-  border-color: #655d97;
+  background-color: #46522c;
+  border-color: #46522c;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #4b39bb;
-  border-color: #4b39bb;
+  background-color: #4c6519;
+  border-color: #4c6519;
 }
 input[type=text] {
   color: #566;

@@ -1,0 +1,146 @@
+
+
+//PAGE
+div.page{
+    display: flex;
+    flex-direction: column;
+
+    //LEFT SIDE MENU
+    div.menu {
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        margin:0px;
+        padding: 0px;  
+    
+        input.menubutton, input.pdmenubutton, input.submenubutton {
+            height: 32px;
+            min-width: 120px;
+
+            margin-left: 1px;
+            margin-right: 1px;
+            margin-bottom: 0px;
+            border-radius: 0px;
+            //text-align: center;
+        }
+    
+        input.submenubutton {
+            background-image: none;
+            background-color: @SMBUTTON_COLOR_BG;
+            border-color:@SMBUTTON_COLOR_BG;
+
+            &:hover{
+                border-left-color: @SMBUTTON_COLOR_HOVER;
+            }
+
+            &:disabled{
+                background-color: @SMBUTTON_COLOR_DISABLED;
+                border-color: @SMBUTTON_COLOR_DISABLED;
+            }
+
+            &:active{
+                background-color: @SMBUTTON_COLOR_ACTIVE; 
+                border-color: @SMBUTTON_COLOR_ACTIVE;
+            }
+        }
+    }
+
+    //FORMSET
+    div.formset{
+        flex: 0 0 auto;
+        border: 5px none black;
+        padding: 4px 2px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+        
+        div.caption{
+        }  
+
+        //TABBUT (FORM-VALTO FULEK)
+        div.tabbut{
+            border: 5px none green;
+            padding: 0px 0px 0px 5px; 
+        
+            input[type=button]{
+                background-image:none;
+                color: darken(@GLOBAL_TEXT_COLOR,10%);
+                background-color: @FIELDSET_BUTTON_COLOR_INACTIVE;
+                border: thin solid darken(@FIELDSET_BUTTON_COLOR_INACTIVE,15%);
+                //box-shadow: 1px 2px @FIELDSET_BUTTON_COLOR_SHADOW;
+                text-shadow: none; //0 1px 1px rgba(0,0,0,0.6);
+
+                padding: 2px 12px;
+                transition: 0.1s;
+                margin: 0px 0px 4px 2px;
+
+                &:active{
+                    box-shadow: 1px 1px darken(@FIELDSET_BUTTON_COLOR_SHADOW,20%);
+                    transform: translateY(1px);
+                }
+            
+                &[data-pushed=true]{
+                    background-color: @FIELDSET_BUTTON_COLOR_ACTIVE;
+                    border: thin solid darken(@FIELDSET_BUTTON_COLOR_ACTIVE,20%);
+                }
+            }
+        }
+
+        //FORM 
+        div.form{
+            div.subform{
+
+                //FIELDSET (MSK->HTML)
+                fieldset{
+                    color: @FIELDSET_COLOR_FG; 
+                    background-color: @FIELDSET_COLOR_BG; 
+                    border: thin solid mix(@FIELDSET_COLOR_BG,#000,80%); 
+                    border-radius: 6px;
+                    legend {
+                        padding-left:8px;
+                        padding-right:8px;
+
+                        //color: darken(@GLOBAL_TEXT_COLOR,10%);
+                        //background-color: @FIELDSET_COLOR_BG; 
+                        //border: thin solid mix(@FIELDSET_COLOR_BG,#000,80%); 
+                        //border-radius: 10px;
+
+                        color:white;
+                        background-color:grey;
+                        border-radius: 4px;
+                        font-weight:bold;
+                    }
+                }
+
+                //FORMACTION (MENU A FORMOKBAN)
+                div.formaction{
+                    border: 5px none  blue;  
+                    input[type=button]{
+                        padding: 4px 10px;
+                        margin: 5px 0px 2px 2px;
+                    }
+                }
+            }
+        }
+
+        //ACTION (MENU A FORMOK ALATT)
+        div.action{
+            border: 5px none cyan;  
+
+            input[type=button]{
+                padding: 4px 10px;
+                margin: 5px 0px 2px 2px;
+            }
+        }
+    }                             
+}
+

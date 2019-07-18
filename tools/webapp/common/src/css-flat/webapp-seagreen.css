@@ -1,4 +1,4 @@
-/*src/css-flat:slateblue*/
+/*src/css-flat:seagreen*/
 h1,
 h2,
 h3,
@@ -41,19 +41,19 @@ div.page div.menu input.submenubutton {
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #4a8cb8;
-  border-color: #4a8cb8;
+  background-color: #5e9996;
+  border-color: #5e9996;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #2c5571;
+  border-left-color: #375a58;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #596a76;
-  border-color: #596a76;
+  background-color: #626262;
+  border-color: #626262;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #3a7095;
-  border-color: #3a7095;
+  background-color: #4b7977;
+  border-color: #4b7977;
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -138,7 +138,7 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: slateblue;
+  background-color: lightseagreen;
   background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
@@ -149,26 +149,26 @@ input[type=button] {
   border-bottom-width: 0px;
   border-left-width: 10px;
   border-right-width: 10px;
-  border-color: slateblue;
+  border-color: lightseagreen;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #3b2d94;
+  border-left-color: #105c57;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #655d97;
-  border-color: #655d97;
+  background-color: #306f6b;
+  border-color: #306f6b;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #4b39bb;
-  border-color: #4b39bb;
+  background-color: #188781;
+  border-color: #188781;
 }
 input[type=text] {
   color: #566;

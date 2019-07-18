@@ -1,4 +1,4 @@
-/*src/css-flat:slateblue*/
+/*src/css-push:seagreen*/
 h1,
 h2,
 h3,
@@ -36,24 +36,27 @@ div.page div.menu input.menubutton,
 div.page div.menu input.pdmenubutton,
 div.page div.menu input.submenubutton {
   width: 120px;
-  height: 32px;
-  margin: 2px 4px 0px 4px;
+}
+div.page div.menu input.menubutton,
+div.page div.menu input.pdmenubutton {
+  margin: 6px 4px 0px 4px;
 }
 div.page div.menu input.submenubutton {
-  background-image: none;
-  background-color: #4a8cb8;
-  border-color: #4a8cb8;
+  border: 0;
+  margin: 2px 4px 0px 4px;
+  background-color: #5e9996;
+  box-shadow: 1px 2px #aba;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #2c5571;
+  background-color: #375a58;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #596a76;
-  border-color: #596a76;
+  background-color: #626262;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #3a7095;
-  border-color: #3a7095;
+  background-color: #4b7977;
+  box-shadow: 1px 1px #718e71;
+  transform: translateY(1px);
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -65,11 +68,10 @@ div.page div.formset div.tabbut {
   padding: 0px 0px 0px 5px;
 }
 div.page div.formset div.tabbut input[type=button] {
-  background-image: none;
-  color: #3e4a4a;
+  color: #000;
   background-color: #e4e3db;
   border: thin solid #c3c1b0;
-  text-shadow: none;
+  box-shadow: 1px 2px #aaa;
   padding: 2px 12px;
   transition: 0.1s;
   margin: 0px 0px 4px 2px;
@@ -91,10 +93,10 @@ div.page div.formset div.form div.subform fieldset {
 div.page div.formset div.form div.subform fieldset legend {
   padding-left: 8px;
   padding-right: 8px;
-  color: white;
-  background-color: grey;
-  border-radius: 4px;
-  font-weight: bold;
+  color: #3e4a4a;
+  background-color: #f0efe7;
+  border: thin solid #c0bfb9;
+  border-radius: 10px;
 }
 div.page div.formset div.form div.subform div.formaction {
   border: 5px none  blue;
@@ -110,65 +112,35 @@ div.page div.formset div.action input[type=button] {
   padding: 4px 10px;
   margin: 5px 0px 2px 2px;
 }
-select {
-  border-radius: 3px;
-  margin: 0px 2px 2px 2px;
-  cursor: pointer;
-  outline: none;
-  color: #3e4a4a;
-  border: thin solid #d3d0b8;
-  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.1);
-}
-select:focus {
-  text-decoration: underline;
-}
-select:focus {
-  background-color: #ffffff;
-}
-select:not(focus) {
-  background-color: #f4f4f4;
-}
 select option {
   font-size: smaller;
 }
 input[type=button] {
+  color: #fff;
+  background-color: lightseagreen;
+  box-shadow: 1px 2px #aad;
   border-radius: 3px;
   margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
   border: none;
-  color: #fff;
-  background-color: slateblue;
-  background-image: none;
-  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
-  padding: 1px 8px;
-  border-radius: 6px;
-  border-style: solid;
-  border-top-width: 0;
-  border-bottom-width: 0px;
-  border-left-width: 10px;
-  border-right-width: 10px;
-  border-color: slateblue;
-  transition: 0.3s;
+  padding: 2px 8px;
+}
+input[type=button]:hover {
+  background-color: #105c57;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
-input[type=button]:hover {
-  border-left-color: #3b2d94;
-}
 input[type=button]:disabled {
-  background-image: none;
-  background-color: #655d97;
-  border-color: #655d97;
+  background-color: #306f6b;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
-  background-image: none;
-  background-color: #4b39bb;
-  border-color: #4b39bb;
+  background-color: #188781;
+  box-shadow: 1px 1px #6161c0;
+  transform: translateY(1px);
 }
 input[type=text] {
   color: #566;
@@ -207,15 +179,27 @@ input[type=password]:not(focus) {
   background-color: #f4f4f4;
 }
 select {
+  color: #fff;
+  background-color: lightseagreen;
+  box-shadow: 1px 2px #aad;
   border-radius: 3px;
   margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
+  border: none;
   padding: 1px 2px;
   font-size: small;
 }
+select:hover {
+  background-color: #105c57;
+}
 select:focus {
   text-decoration: underline;
+}
+select:disabled {
+  background-color: #306f6b;
+  color: #bfbfbf;
+  cursor: auto;
 }
 tr {
   cursor: pointer;
@@ -348,7 +332,7 @@ body {
   border-style: solid;
   border-color: #888;
   border-width: thin;
-  box-shadow: 0px 0px 20px 2px #ccc inset;
+  box-shadow: 0px 0px 20px 2px #888 inset;
 }
 #region_webapp .resize {
   display: block;

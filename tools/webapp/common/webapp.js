@@ -2,6 +2,7 @@
 
 var XCODE={};
 
+
 //------------------------------------------------------------------------------
 XCODE.onload=function(uri)
 //------------------------------------------------------------------------------
@@ -111,7 +112,7 @@ XCODE.onload=function(uri)
 XCODE.div=function(id,cl) //div-et tartalmazo burkolokat gyart
 //------------------------------------------------------------------------------
 {
-    var x=XCODE.document.x.createElement("div")
+    var x=XCODE.document.x.createElement("div");
     if(id!=undefined) x.id=id;
     if(cl!=undefined) x.className=cl;
     return {x:x};
@@ -329,6 +330,8 @@ XCODE.onclick_formdata=function(srcid) //fékezve küld
 XCODE.formdata=function(srcid) //feltétel nélkül küld
 //------------------------------------------------------------------------------
 {
+    //console.log("formdata",srcid);
+
     var ctrl,n;
     var x="<formdata>";
     x+="<source>"+srcid+"</source>";
@@ -373,7 +376,13 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
                 x+="<value>"+"*".repeat(ctrl[n].value.length)+"</value>";
             }
             else
-            {   
+            { 
+                if( ctrl[n].onblur && ctrl[n].edit_in_progress )
+                {
+                    //console.log('settle',ctrl[n].id);
+                    ctrl[n].edit_in_progress.settle=true;
+                    ctrl[n].onblur();
+                }  
                 x+="<value>"+XCODE.cdataif(XCODE.xreadvalue(ctrl[n]))+"</value>";
             }
             x+="</control>";
@@ -715,9 +724,20 @@ XCODE.settle=function()
     {
         if( ctrl[n].onblur!=undefined )
         {
-            ctrl[n].onblur(ctrl[n]);
+            ctrl[n].onblur();
         }
     }
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.edit_in_progress=function(ctrl)
+//------------------------------------------------------------------------------
+{
+    //console.log('edit_in_progress',ctrl.id)
+    ctrl.edit_in_progress={};
+    ctrl.edit_in_progress.settle=false;
+    ctrl.edit_in_progress.origvalue=ctrl.value;
 }
 
 
@@ -852,6 +872,18 @@ XCODE.datreadvalue=function(ctrl)
 XCODE.datsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("datsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+ 
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()
@@ -863,6 +895,11 @@ XCODE.datsettlevalue=function(ctrl)
     var x="";
     if( v=="" )
     {
+        if( edit && !settle && ctrl.value!=origvalue )
+        {
+            //console.log("dispatch");
+            ctrl.dispatchEvent(new Event('change'));
+        }
         return x;
     }
     v=v.replace(/-/g,"" );
@@ -906,6 +943,12 @@ XCODE.datsettlevalue=function(ctrl)
         x+=" " //ne illeszkedjen!
     }
     ctrl.value=x;
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
+    }
     return x;
     
     //a return ertek nincs sehol felhasznalva
@@ -1017,6 +1060,18 @@ XCODE.num2str=function(num,dec) //szamok formazasa
 XCODE.numsettlevalue=function(ctrl,dec,zero)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("numsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()
@@ -1210,6 +1265,18 @@ XCODE.picreadvalue=function(ctrl)
 XCODE.picsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("picsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()
@@ -1221,6 +1288,11 @@ XCODE.picsettlevalue=function(ctrl)
     var x="";
     if( v=="" )
     {
+        if( edit && !settle && ctrl.value!=origvalue )
+        {
+            //console.log("dispatch");
+            ctrl.dispatchEvent(new Event('change'));
+        }
         return x;
     }
     var num="0123456789";
@@ -1284,6 +1356,12 @@ XCODE.picsettlevalue=function(ctrl)
         {
             x+=t;
         }
+    }
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
     }
     ctrl.value=x;
     return x;
@@ -1454,6 +1532,18 @@ XCODE.xpattern=function(ctrl)
 XCODE.patsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("patsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         //honnan hivodik?
@@ -1473,6 +1563,12 @@ XCODE.patsettlevalue=function(ctrl)
             }
             return v;
         }
+    }
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
     }
 }
 
@@ -1820,3 +1916,619 @@ XCODE.getpwstrength=function(srcid)
 }
 
 //------------------------------------------------------------------------------
+
+XCODE.xlib.combo={}
+
+XCODE.xlib.combo.show=function(input_id) //input-onclick
+{
+    //console.log("show",input_id);
+    var combo_id=input_id+"-combo";
+    var input=document.getElementById(input_id);
+    var combo=document.getElementById(combo_id);
+    combo.style.display="block";
+    XCODE.xlib.combo.findrow(combo,input.value);
+}
+
+XCODE.xlib.combo.clear=function(combo_id) //input-onblur
+{
+    //console.log("clear",combo_id);
+    var combo=document.getElementById(combo_id)
+    combo.style.display="none";
+}
+
+
+XCODE.xlib.combo.pick=function(ctrl) //click on a <tr> element
+{
+    //console.log("pick",ctrl.textContent.trim().replace(/\n/g,';'));
+    var input=XCODE.xlib.combo.getinput(ctrl);
+    input.value=ctrl.textContent.trim().split('\n')[0];
+    input.dispatchEvent(new Event('change'));
+}
+
+
+XCODE.xlib.combo.keyup=function(event)  //editalas
+{ 
+    var input=event.target; //input mezo
+    var combo_id=input.id+"-combo";
+    var combo=document.getElementById(combo_id);
+
+    //console.log(event,input.value);
+
+    if( event.key.length==1 )
+    {
+        combo.style.display="block";
+        XCODE.xlib.combo.findrow(combo,input.value);
+    }
+}
+
+
+XCODE.xlib.combo.keydown=function(event)  //navigalas
+{
+    var input=event.target; //input mezo
+    var combo_id=input.id+"-combo";
+    var combo=document.getElementById(combo_id);
+
+    //console.log(event,input.value);
+
+    if( event.key=='Enter' /* || event.key=='Tab' */ )
+    {
+        var row=null;
+        if( combo.style.display!='none' )
+        {
+            row=XCODE.xlib.combo.findselectedrow(combo);
+        }
+        if( !row )
+        {
+            row=XCODE.xlib.combo.findrow(combo,input.value);
+        }
+
+        if( row )
+        {
+            var v=row.textContent.trim().split('\n')[0];  
+            if( input.value!=v )
+            {
+                input.value=v;
+                input.dispatchEvent(new Event('change'));
+            }
+            input.dispatchEvent(new Event('blur'));
+        }
+    }
+
+    else if( event.key=="ArrowDown" )
+    {
+        if( combo.style.display=='none' )
+        {
+            combo.style.display="block";
+            XCODE.xlib.combo.findrow(combo,input.value);
+        }
+        else
+        {
+            var row=XCODE.xlib.combo.findselectedrow(combo);
+
+            if( row )
+            {
+                var num1=Number(row.id.substr(5,row.id.length))+1;
+                var rowid1='ROWID'+num1;
+                var row1=XCODE.xlib.combo.findrowid(combo,rowid1);
+                if( row1 )
+                {
+                    var cls=row.getAttribute('class');
+                    var cls1=row1.getAttribute('class');
+                    row.setAttribute('class',cls.replace('X',''));
+                    row1.setAttribute('class',cls1+"X");
+        
+                    var rrect=row1.getBoundingClientRect();
+                    var crect=combo.getBoundingClientRect();
+                    if( rrect.bottom>crect.bottom )
+                    {
+                        row1.scrollIntoView(false);
+                    }
+                }
+            }
+            else
+            {
+                XCODE.xlib.combo.findrow(combo,input.value);
+            }
+        }
+    }
+
+    else if( event.key=="ArrowUp" )
+    {
+        if( combo.style.display=='none' )
+        {
+            combo.style.display="block";
+            XCODE.xlib.combo.findrow(combo,input.value);
+        }
+        else
+        {
+            var row=XCODE.xlib.combo.findselectedrow(combo);
+
+            if( row  )
+            {
+                var num1=Number(row.id.substr(5,row.id.length))-1;
+                var rowid1='ROWID'+num1;
+                var row1=XCODE.xlib.combo.findrowid(combo,rowid1);
+                if( row1 )
+                {
+                    var cls=row.getAttribute('class');
+                    var cls1=row1.getAttribute('class');
+                    row.setAttribute('class',cls.replace('X',''));
+                    row1.setAttribute('class',cls1+"X");
+        
+                    var rrect=row1.getBoundingClientRect();
+                    var crect=combo.getBoundingClientRect();
+                    if( rrect.top<crect.top )
+                    {
+                        row1.scrollIntoView();
+                    }
+                }
+            }
+            else
+            {
+                XCODE.xlib.combo.findrow(combo,input.value);
+            }
+        }
+    }
+}
+
+
+XCODE.xlib.combo.findrow=function(node,value) //input.value egyezes alapjan keres
+{
+    var row=null;
+    var ch=node.childNodes;
+    for(var n=0; n<ch.length; n++)
+    {
+        var ch1=ch[n];
+        if( ch1.tagName=="TR" )
+        {
+            var txt=ch1.textContent.trim(); 
+            var cls=ch1.getAttribute('class');
+            //console.log(cls,txt);
+            if( cls )
+            {
+                cls=cls.replace('X','');
+                if( txt.substr(0,value.length)==value )
+                {
+                    cls+='X';
+                    value='???'+value;
+                    ch1.scrollIntoView();
+                    row=ch1;
+                }
+                ch1.setAttribute('class',cls);
+            }
+        }
+        else
+        {
+            ch1=XCODE.xlib.combo.findrow(ch1,value);
+            if( !row )
+            {
+                row=ch1;
+            }
+        }
+    }
+    return row;
+}
+
+
+XCODE.xlib.combo.findselectedrow=function(node) // class='oddX/evenX'-et keres
+{
+    var ch=node.childNodes;
+    for(var n=0; n<ch.length; n++)
+    {
+        var ch1=ch[n];
+        if( ch1.tagName=="TR" )
+        {
+            var cls=ch1.getAttribute('class');
+            //console.log("cls",cls);
+            if( cls=="oddX" || cls=="evenX" )
+            {
+                //console.log(ch1);
+                return ch1;
+            }
+        }
+        else
+        {
+            ch1=XCODE.xlib.combo.findselectedrow(ch1);
+            if( ch1 )
+            {
+                return ch1;
+            }
+        }
+    }
+}
+
+
+XCODE.xlib.combo.findrowid=function(node,rowid) //ROWID<n>-et keres
+{
+    var ch=node.childNodes;
+    for(var n=0; n<ch.length; n++)
+    {
+        var ch1=ch[n];
+        if( ch1.tagName=="TR" )
+        {  
+            //console.log(ch1.getAttribute('id'));
+            if( ch1.getAttribute('id')==rowid )
+            {
+                return ch1;
+            }
+        }
+        else
+        {
+            ch1=XCODE.xlib.combo.findrowid(ch1,rowid);
+            if( ch1 )
+            {
+                return ch1;
+            }
+        }
+    }
+}
+
+
+XCODE.xlib.combo.getpicker=function(ctrl)
+{
+    while( ctrl!=null )
+    {
+        //console.log(ctrl.nodeName,ctrl.className);
+        if( ctrl.className=="combo" )
+        {
+            var input_id=ctrl.id.replace("-combo","");
+            var input=document.getElementById(input_id);
+            return ctrl;
+        }
+        ctrl=ctrl.parentNode;
+    }
+}
+
+XCODE.xlib.combo.getinput=function(ctrl)
+{
+    while( ctrl!=null )
+    {
+        //console.log(ctrl.nodeName,ctrl.className);
+        if( ctrl.className=="combo" )
+        {
+            var input_id=ctrl.id.replace("-combo","");
+            var input=document.getElementById(input_id);
+            return input;
+        }
+        ctrl=ctrl.parentNode;
+    }
+}
+
+
+XCODE.xlib.combo.gettable=function(combo)
+{
+    var children=combo.childNodes;
+    for( var n=0; n<children.length; n++ )
+    {
+        if( children[n].tagName=="TABLE" )
+        {
+            return children[n];
+        }
+    }
+}
+
+
+XCODE.xlib.datepicker={};
+
+
+XCODE.xlib.datepicker.show=function(input_id) //input-onclick
+{
+    //console.log("show",input_id);
+    var datepicker_id=input_id+"-datepicker";
+    var input=document.getElementById(input_id);
+    var datepicker=document.getElementById(datepicker_id);
+    datepicker.innerHTML=XCODE.xlib.datepicker.table(input.value);
+    datepicker.style.display="block";
+    event.stopPropagation();
+}
+
+
+XCODE.xlib.datepicker.clear=function(datepicker_id) //input-onblur
+{
+    //console.log("clear",datepicker_id);
+    var datepicker=document.getElementById(datepicker_id)
+    datepicker.style.display="none";
+}
+
+
+XCODE.xlib.datepicker.pick=function(ctrl,n_date,otherpage) //td-onmousedown
+{
+    //console.log("pick",ctrl.textContent);
+    var input=XCODE.xlib.datepicker.getinput(ctrl);
+    var picker=XCODE.xlib.datepicker.getpicker(ctrl);
+
+    if( otherpage ) 
+    {
+        picker.innerHTML=XCODE.xlib.datepicker.table(input.value,n_date);
+        event.preventDefault();
+    }
+    else 
+    {
+        var d_date=new Date(n_date);
+        input.value=XCODE.dat2str(d_date);
+        //input.dispatchEvent(new Event('change'));
+        //console.log('datepicker_pick: dispatch-change');
+    }
+}
+
+XCODE.xlib.datepicker.getpicker=function(ctrl)
+{
+    while( ctrl!=null )
+    {
+        //console.log(ctrl.nodeName,ctrl.className);
+        if( ctrl.className=="datepicker" )
+        {
+            var input_id=ctrl.id.replace("-datepicker","");
+            var input=document.getElementById(input_id);
+            return ctrl;
+        }
+        ctrl=ctrl.parentNode;
+    }
+}
+
+XCODE.xlib.datepicker.getinput=function(ctrl)
+{
+    while( ctrl!=null )
+    {
+        //console.log(ctrl.nodeName,ctrl.className);
+        if( ctrl.className=="datepicker" )
+        {
+            var input_id=ctrl.id.replace("-datepicker","");
+            var input=document.getElementById(input_id);
+            return input;
+        }
+        ctrl=ctrl.parentNode;
+    }
+}
+
+
+XCODE.xlib.datepicker.table=function(inputvalue,n_date) 
+{
+    //-----------------------
+    var DATEPICKER_CONFIG = {
+    'cssprefix'  : 'dp',
+    'months'     : ['Január','Február','Március','Április','Május','Június','Július','Augusztus','Szeptember','Október','November','December'],
+    'weekdays'   : ['Vas','Hét','Ked','Sze','Csü','Pén','Szo'],
+    'longwdays'  : ['Vasárnap','Hétfő','Kedd','Szerda','Csütörtök','Péntek','Szombat'],
+    'weekstart'  : 1, // first day of week: 0-Su or 1-Mo
+    'prevyear'   : 'Előző év',
+    'nextyear'   : 'Következő év',
+    'prevmonth'  : 'Előző hónap',
+    'nextmonth'  : 'Következő hónap',
+    };
+
+    //-----------------------
+    function datepicker_resettime(d_date) 
+    {
+        d_date.setMilliseconds(0);
+        d_date.setSeconds(0);
+        d_date.setMinutes(0);
+        d_date.setHours(12);
+        return d_date;
+    }
+
+    //-----------------------
+    function datepicker_makehandler(d_date,d_diff,s_units) 
+    {
+        var s_units=(s_units=='y'?'FullYear':'Month');
+        var d_result=new Date(d_date);
+        if(d_diff) 
+        {
+            d_result['set'+s_units](d_date['get'+s_units]()+d_diff); //interesting   
+            if(d_result.getDate() != d_date.getDate())
+            {
+                d_result.setDate(0); //last day of previous month
+            }
+        }
+        return ' onmousedown="XCODE.xlib.datepicker.pick(this,'+ d_result.valueOf() + (d_diff?',1':'')  +')"';
+    }
+    //-----------------------
+
+    var s_pfx = DATEPICKER_CONFIG.cssprefix;
+
+    var d_today = datepicker_resettime(new Date());
+
+    var d_selected;
+    var n_millisec=Date.parse(inputvalue);
+    if( !isNaN(n_millisec) )
+    {
+        d_selected=datepicker_resettime(new Date(n_millisec));
+    }
+    else
+    {
+        d_selected=new Date(d_today);
+    }
+
+    var d_date;   
+    if( n_date==null )
+    {
+        d_date=new Date(d_selected);
+    }
+    else
+    {
+        d_date=new Date(n_date);
+    }
+
+    //console.log(inputvalue,d_selected, d_date);
+
+    var s_html;
+
+    s_html='<table class="'+s_pfx+'Controls">';
+    s_html+='<tbody>';
+    s_html+='<tr>'
+        + '<td class="'+s_pfx+'PrevYear" ' + datepicker_makehandler(d_date, -1, 'y') + ' title="' + DATEPICKER_CONFIG.prevyear  + '">«</td>'
+        + '<td class="'+s_pfx+'PrevMonth"' + datepicker_makehandler(d_date, -1, 'm') + ' title="' + DATEPICKER_CONFIG.prevmonth + '">‹</td>'
+        + '<th>' + d_date.getFullYear() + ' ' + DATEPICKER_CONFIG.months[d_date.getMonth()]+'</th>'
+        + '<td class="'+s_pfx+'NextMonth"' + datepicker_makehandler(d_date,  1, 'm') + ' title="' + DATEPICKER_CONFIG.nextmonth + '">›</td>'
+        + '<td class="'+s_pfx +'NextYear"' + datepicker_makehandler(d_date,  1, 'y') + ' title="' + DATEPICKER_CONFIG.nextyear  + '">»</td>'
+        + '</tr>';
+    s_html+='</tbody>';
+    s_html+='</table>';
+    
+    
+    s_html+='<table class="'+s_pfx+'Grid">';
+    s_html+='<tbody>';
+
+    // print weekdays titles
+    s_html+='<tr>';
+    for( var i=0; i<7; i++ )
+    {
+        s_html+='<th>' + DATEPICKER_CONFIG.weekdays[(DATEPICKER_CONFIG.weekstart+i)%7] + '</th>';
+    }
+    s_html+='</tr>';
+
+    // print calendar table
+
+    var d_firstDay = new Date(d_date);
+    d_firstDay.setDate(1);
+    d_firstDay.setDate(1-(7+d_firstDay.getDay()-DATEPICKER_CONFIG.weekstart)%7);
+    var d_current = new Date(d_firstDay);
+
+    while( d_current.getMonth()==d_date.getMonth() || d_current.getMonth()==d_firstDay.getMonth()) 
+    {
+        s_html+='<tr>';
+        for( var n_wday=0; n_wday<7; n_wday++ ) 
+        {
+            var a_class = [];
+            var n_date  = d_current.getDate();
+            var n_month = d_current.getMonth();
+
+            if( d_current.getMonth() != d_date.getMonth() )
+            {
+                a_class[a_class.length] = s_pfx+'OtherMonth';
+            }
+            if( d_current.getDay() == 0 || d_current.getDay() == 6 )
+            {
+                a_class[a_class.length] = s_pfx+'Weekend';
+            }
+            if( d_current.valueOf() == d_today.valueOf() )
+            {
+                a_class[a_class.length]=s_pfx+'Today';
+            }
+            if( d_current.valueOf() == d_selected.valueOf() )
+            {
+                a_class[a_class.length] = s_pfx + 'Selected';
+            }
+
+            s_html+='<td'+datepicker_makehandler(d_current)+(a_class.length?'class="'+ a_class.join(' ')+'">':'>')+n_date+'</td>';
+
+            d_current.setDate(++n_date);
+        }
+        s_html+='</tr>';
+    }
+    s_html+='</tbody>';
+    s_html+='</table>';
+
+    return s_html;
+}
+
+
+
+XCODE.xlib.popup={};
+
+
+XCODE.xlib.popup.clicked=function(ctrl)
+{
+    //console.log("popup_clicked");
+
+    if( document.body.getAttribute("onclick")==null  )
+    {
+        var popupid=ctrl.getAttribute("popupid");
+        var popuptag=ctrl.getAttribute("popuptag");
+        var popupcls=ctrl.getAttribute("popupcls");
+
+        if( !XCODE.xlib.popup.x )
+        {
+            XCODE.xlib.popup.x=XCODE.document.x.createElement("div");
+        }
+
+        XCODE.xlib.popup.x.style.top=event.clientY.toString()+"px";
+        XCODE.xlib.popup.x.style.left=event.clientX.toString()+"px";
+        XCODE.xlib.popup.x.setAttribute("class",popupcls);
+        XCODE.xlib.popup.x.setAttribute("onclick","event.stopPropagation()"); //mukodjon a drag
+        var msg="<"+popuptag+">"
+        msg+=popupid
+        msg+="</"+popuptag+">"
+        XCODE.echo(msg)
+        //event.stopPropagation(); //akadalyozna a sorok kivalasztasat (sargitasat)
+    }                          
+
+}
+
+
+XCODE.xlib.popup.show=function(html)
+{
+    //console.log("popup_show");
+
+    var popup=XCODE.xlib.popup.x;
+    popup.innerHTML=html;
+    popup.style.display='block';
+    document.body.setAttribute("onclick","XCODE.xlib.popup.clear()");
+    XCODE.webapp.scroll.x.insertBefore(popup,XCODE.webapp.display.x);
+}
+
+
+XCODE.xlib.popup.clear=function()
+{ 
+    //console.log("popup_clear");
+
+    var popup=XCODE.xlib.popup.x;
+    popup.style.display='none';
+    popup.innerHTML='';
+    popup.onmousedown=null;
+    document.body.removeAttribute("onclick")
+    XCODE.webapp.scroll.x.removeChild(popup);
+}
+
+
+
+XCODE.xlib.dragElement=function(elmnt) 
+{
+    //console.log("dragElement");
+
+    var pos1=0,pos2=0,pos3=0,pos4=0;
+    elmnt.onmousedown=dragMouseDown;
+
+    //nem vilagos:
+    //hova definialodik dragMouseDown?
+    //ujradefinialodik-e dragMouseDown dragElement minden hivasakor?
+    //hol vannak a pos1... valtozok?
+    //hogyan latja dragMouseDown pos1-et?
+
+    function dragMouseDown(e) 
+    {
+        //console.log("dragMouseDown");
+
+        //e = e || window.event;  //ez mi?
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = dragMouseUp;
+        document.onmousemove = dragMouseMove;
+    }
+
+    function dragMouseMove(e) 
+    {
+        //console.log("dragMouseMove");
+
+        //e = e || window.event;
+        e.preventDefault();
+        pos1=pos3-e.clientX;
+        pos2=pos4-e.clientY;
+        pos3=e.clientX;
+        pos4=e.clientY;
+        elmnt.style.top=(elmnt.offsetTop-pos2)+"px";
+        elmnt.style.left=(elmnt.offsetLeft-pos1)+"px";
+    }
+
+    function dragMouseUp(e) 
+    {
+        //console.log("dragMouseUp");
+
+        //e = e || window.event;
+        e.preventDefault();
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+

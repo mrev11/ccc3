@@ -112,9 +112,20 @@ XCODE.settle=function()
     {
         if( ctrl[n].onblur!=undefined )
         {
-            ctrl[n].onblur(ctrl[n]);
+            ctrl[n].onblur();
         }
     }
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.edit_in_progress=function(ctrl)
+//------------------------------------------------------------------------------
+{
+    //console.log('edit_in_progress',ctrl.id)
+    ctrl.edit_in_progress={};
+    ctrl.edit_in_progress.settle=false;
+    ctrl.edit_in_progress.origvalue=ctrl.value;
 }
 
 

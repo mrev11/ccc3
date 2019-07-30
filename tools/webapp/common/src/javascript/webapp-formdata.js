@@ -27,6 +27,8 @@ XCODE.onclick_formdata=function(srcid) //fékezve küld
 XCODE.formdata=function(srcid) //feltétel nélkül küld
 //------------------------------------------------------------------------------
 {
+    //console.log("formdata",srcid);
+
     var ctrl,n;
     var x="<formdata>";
     x+="<source>"+srcid+"</source>";
@@ -71,7 +73,13 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
                 x+="<value>"+"*".repeat(ctrl[n].value.length)+"</value>";
             }
             else
-            {   
+            { 
+                if( ctrl[n].onblur && ctrl[n].edit_in_progress )
+                {
+                    //console.log('settle',ctrl[n].id);
+                    ctrl[n].edit_in_progress.settle=true;
+                    ctrl[n].onblur();
+                }  
                 x+="<value>"+XCODE.cdataif(XCODE.xreadvalue(ctrl[n]))+"</value>";
             }
             x+="</control>";

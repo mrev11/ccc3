@@ -2,6 +2,7 @@
 
 var XCODE={};
 
+
 //------------------------------------------------------------------------------
 XCODE.onload=function(uri)
 //------------------------------------------------------------------------------
@@ -111,7 +112,7 @@ XCODE.onload=function(uri)
 XCODE.div=function(id,cl) //div-et tartalmazo burkolokat gyart
 //------------------------------------------------------------------------------
 {
-    var x=XCODE.document.x.createElement("div")
+    var x=XCODE.document.x.createElement("div");
     if(id!=undefined) x.id=id;
     if(cl!=undefined) x.className=cl;
     return {x:x};

@@ -50,6 +50,18 @@ XCODE.xpattern=function(ctrl)
 XCODE.patsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("patsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         //honnan hivodik?
@@ -69,6 +81,12 @@ XCODE.patsettlevalue=function(ctrl)
             }
             return v;
         }
+    }
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
     }
 }
 

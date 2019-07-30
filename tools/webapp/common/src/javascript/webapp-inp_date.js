@@ -51,6 +51,18 @@ XCODE.datreadvalue=function(ctrl)
 XCODE.datsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("datsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+ 
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()
@@ -62,6 +74,11 @@ XCODE.datsettlevalue=function(ctrl)
     var x="";
     if( v=="" )
     {
+        if( edit && !settle && ctrl.value!=origvalue )
+        {
+            //console.log("dispatch");
+            ctrl.dispatchEvent(new Event('change'));
+        }
         return x;
     }
     v=v.replace(/-/g,"" );
@@ -105,6 +122,12 @@ XCODE.datsettlevalue=function(ctrl)
         x+=" " //ne illeszkedjen!
     }
     ctrl.value=x;
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
+    }
     return x;
     
     //a return ertek nincs sehol felhasznalva

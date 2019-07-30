@@ -26,6 +26,7 @@ function contenttype(fspec)
 static mime:={;
     {".php",    a"text/plain"},;
     {".css",    a"text/css"},;
+    {".js",     a"text/javascript"},;
     {".txt",    a"text/plain"},;
     {".html",   a"text/html"},;
     {".htm",    a"text/html"},;

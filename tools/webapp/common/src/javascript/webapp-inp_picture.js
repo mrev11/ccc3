@@ -141,6 +141,18 @@ XCODE.picreadvalue=function(ctrl)
 XCODE.picsettlevalue=function(ctrl)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("picsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()
@@ -152,6 +164,11 @@ XCODE.picsettlevalue=function(ctrl)
     var x="";
     if( v=="" )
     {
+        if( edit && !settle && ctrl.value!=origvalue )
+        {
+            //console.log("dispatch");
+            ctrl.dispatchEvent(new Event('change'));
+        }
         return x;
     }
     var num="0123456789";
@@ -215,6 +232,12 @@ XCODE.picsettlevalue=function(ctrl)
         {
             x+=t;
         }
+    }
+
+    if( edit && !settle && ctrl.value!=origvalue )
+    {
+        //console.log("dispatch");
+        ctrl.dispatchEvent(new Event('change'));
     }
     ctrl.value=x;
     return x;

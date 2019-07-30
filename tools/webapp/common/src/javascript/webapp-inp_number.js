@@ -24,6 +24,18 @@ XCODE.num2str=function(num,dec) //szamok formazasa
 XCODE.numsettlevalue=function(ctrl,dec,zero)
 //------------------------------------------------------------------------------
 {
+    var edit=false;
+    var settle=false;
+    var origvalue;
+    if( ctrl.edit_in_progress )
+    {
+        edit=true;
+        settle=ctrl.edit_in_progress.settle;
+        origvalue=ctrl.edit_in_progress.origvalue;
+        ctrl.edit_in_progress=null;
+    }
+    //console.log("numsettlevalue",ctrl.id,"edit=",edit,"settle=",settle,origvalue);
+
     if( ctrl.xreadvalue==undefined )
     {
         ctrl.xreadvalue=function()

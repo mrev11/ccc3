@@ -1,3 +1,17 @@
+2019-07-30
+  webapp: datepicker widget;
+  webapp: combo widget;
+  webapp: popup widget (athozva a local-bol src-be);
+  onchange es onblur sorrendje:
+  a date,number,picture,pattern inputoknal fontos,
+  hogy az ertek kiolvasasa elott vegrehajtodjon az onblur,
+  a bongeszo azonban az onchange-et elobb futtatja mint az onblur-t,
+  ezert egyes input mezok az onfocus-ban csinalnak magukban egy 
+  edit_in_progress nevu objektumot (amit az onblur szuntet meg)
+  az edit_in_progress letezesebol a formdata tudja,
+  hogy az adott mezo onblur-jet soron kivul futtatni kell
+
+  
 2019.07.18
   webapp css-ek atszervezve;
   mobil tamogatas; 

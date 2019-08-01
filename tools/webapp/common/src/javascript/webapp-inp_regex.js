@@ -34,7 +34,8 @@ XCODE.xpattern=function(ctrl)
             }
             else
             {
-                x='[\\v'+x+']'; //x -> [\vx]
+                //x='[\\v'+x+']'; //x -> [\vx]  hiba:  [\v.] rossz
+                x='(\\v|'+x+')'; //x -> (\v|x)
             }
             xpat+=x;
         }
@@ -107,9 +108,16 @@ XCODE.patkeypress=function(e)
         var chr=String.fromCharCode(e.charCode); //aktualis karakter
         var x=v.slice(0,pos)+chr; //balfel + uj karakter
         var xr=v.slice(pos); //jobbfel
+
         var pat=XCODE.xpattern(ctrl);
         var reg=new RegExp(pat);
-        if( !reg.test(x+String.fromCharCode(11).repeat(1024)) ) // \v
+        var str=x+String.fromCharCode(11).repeat(1024);  // chr(11)=\v (vertical tab)
+
+        //console.log(str);
+        //console.log(reg);
+        //console.log(reg.test(str));
+
+        if( !reg.test(str) ) 
         {
             e.preventDefault();
         }

@@ -1,3 +1,0 @@
-#!/bin/bash
-rm -f ../../webapp.css.gz
-cp -p $1 ../../webapp.css

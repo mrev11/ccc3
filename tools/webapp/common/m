@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# DEFAULT_STYLE=src/css-push
-# DEFAULT_STYLE=src/css-grad
-  DEFAULT_STYLE=src/css-flat
+# DEFAULT_STYLE=src/css/style-push
+# DEFAULT_STYLE=src/css/style-grad
+  DEFAULT_STYLE=src/css/style-flat
 
 # DEFAULT_COLOR=webapp-cetelem.css
 # DEFAULT_COLOR=webapp-grey.css
@@ -12,7 +12,7 @@
   DEFAULT_COLOR=webapp-slateblue.css
 # DEFAULT_COLOR=webapp-tomato.css
 
-  DEFAULT_STYLE_M=src/css-mobil
+  DEFAULT_STYLE_M=src/css/style-mobil
   DEFAULT_COLOR_M=webapp-seagreen.css
 
 
@@ -46,13 +46,12 @@ cat   src/javascript/datepicker.js          >>webapp.js
 cat   src/javascript/popup.js               >>webapp.js
 
 #exit 0
+#set -x
 
-
-
-for CSSDIR in src/css*; do
+for CSSDIR in src/css/style-*; do
     echo $CSSDIR
     pushd $CSSDIR >/dev/null
-    for COLORS in ../root/colors/colors-*.less; do
+    for COLORS in ../colors/colors-*.less; do
         cp $COLORS colors.less
         COLORS=$(echo $COLORS | sed s^.*colors-^^ )
         COLORS=$(echo $COLORS | sed s^.less^^ )

@@ -1,0 +1,2 @@
+#!/bin/bash
+m  2>&1 | tee log-install 

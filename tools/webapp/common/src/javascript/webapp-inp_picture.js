@@ -9,6 +9,7 @@ XCODE.xpicture=function(ctrl)
         ctrl.xpicture=ctrl.getAttribute("data-picture");
         var xpat="^";
         var p="",r=0;
+        var last=false;
 
         var addexp=function()
         {
@@ -44,7 +45,12 @@ XCODE.xpicture=function(ctrl)
             {
                 xpat+=p;
             } 
-            if(r>1)
+        
+            if( last && p=='X' )
+            {
+                xpat+="{0,"+r.toString()+"}" //X-ek a vegen elhagyhatok
+            }
+            else if(r>1)
             {
                 xpat+="{"+r.toString()+"}"
             }
@@ -66,6 +72,7 @@ XCODE.xpicture=function(ctrl)
         }
         if(r>0)
         {
+            last=true;
             addexp();
         }
         xpat+="$";

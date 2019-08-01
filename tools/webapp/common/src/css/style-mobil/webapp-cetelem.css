@@ -1,4 +1,4 @@
-/*src/css/style-mobil:seagreen*/
+/*src/css/style-mobil:cetelem*/
 div.page {
   display: flex;
   flex-direction: column;
@@ -28,19 +28,19 @@ div.page div.menu input.submenubutton {
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #5e9996;
-  border-color: #5e9996;
+  background-color: #789252;
+  border-color: #789252;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #375a58;
+  border-left-color: #42502d;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #626262;
-  border-color: #626262;
+  background-color: #585858;
+  border-color: #585858;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #4b7977;
-  border-color: #4b7977;
+  background-color: #5d713f;
+  border-color: #5d713f;
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -55,7 +55,7 @@ div.page div.formset div.tabbut {
 }
 div.page div.formset div.tabbut input[type=button] {
   background-image: none;
-  color: #3e4a4a;
+  color: #2d3939;
   background-color: #e4e3db;
   border: thin solid #c3c1b0;
   text-shadow: none;
@@ -104,7 +104,7 @@ select {
   margin: 0px 2px 2px 2px;
   cursor: pointer;
   outline: none;
-  color: #3e4a4a;
+  color: #2d3939;
   border: thin solid #d3d0b8;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.1);
 }
@@ -127,7 +127,7 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: lightseagreen;
+  background-color: #60a000;
   background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
@@ -138,26 +138,26 @@ input[type=button] {
   border-bottom-width: 0px;
   border-left-width: 10px;
   border-right-width: 10px;
-  border-color: lightseagreen;
+  border-color: #60a000;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #105c57;
+  border-left-color: #233a00;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #306f6b;
-  border-color: #306f6b;
+  background-color: #587828;
+  border-color: #587828;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #188781;
-  border-color: #188781;
+  background-color: #416d00;
+  border-color: #416d00;
 }
 #menuicon {
   margin-right: 8px;
@@ -177,7 +177,7 @@ h2,
 h3,
 label,
 legend {
-  color: #566;
+  color: #455;
   font-weight: normal;
 }
 label.thead {
@@ -194,7 +194,7 @@ img {
   max-height: 100%;
 }
 input[type=text] {
-  color: #566;
+  color: #455;
   outline: 0px;
   border-style: solid;
   border-width: thin;
@@ -216,7 +216,7 @@ input[type=text][pattern]:invalid:not(focus) {
   background-color: #ffa0a0;
 }
 input[type=password] {
-  color: #566;
+  color: #455;
   outline: 0px;
   border-style: solid;
   border-width: thin;
@@ -260,13 +260,13 @@ th {
   background-color: grey;
 }
 td {
-  color: #566;
+  color: #455;
   white-space: nowrap;
   font-size: smaller;
 }
 textarea {
   font-family: sans-serif;
-  color: #566;
+  color: #455;
   font-weight: normal;
   border: thin solid #c0bfb9;
   border-radius: 3px;

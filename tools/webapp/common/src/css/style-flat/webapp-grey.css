@@ -1,53 +1,43 @@
-/*src/css/style-mobil:seagreen*/
+/*src/css/style-flat:grey*/
 div.page {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 div.page div.menu {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  position: relative;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin: 0px;
-  padding: 0px;
+  flex: 0 0 auto;
+  width: auto;
+  margin-top: 60px;
+  margin-right: 6px;
+  border: 5px none red;
+  padding: 4px 2px;
 }
 div.page div.menu input.menubutton,
 div.page div.menu input.pdmenubutton,
 div.page div.menu input.submenubutton {
+  width: 120px;
   height: 32px;
-  min-width: 120px;
-  margin-left: 1px;
-  margin-right: 1px;
-  margin-bottom: 0px;
-  border-radius: 0px;
+  margin: 2px 4px 0px 4px;
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #5e9996;
-  border-color: #5e9996;
+  background-color: #5aa682;
+  border-color: #5aa682;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #375a58;
+  border-left-color: #36644e;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #626262;
-  border-color: #626262;
+  background-color: #666666;
+  border-color: #666666;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #4b7977;
-  border-color: #4b7977;
+  background-color: #488568;
+  border-color: #488568;
 }
 div.page div.formset {
   flex: 0 0 auto;
   border: 5px none black;
   padding: 4px 2px;
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 div.page div.formset div.tabbut {
   border: 5px none green;
@@ -127,7 +117,7 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: lightseagreen;
+  background-color: grey;
   background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
@@ -138,39 +128,26 @@ input[type=button] {
   border-bottom-width: 0px;
   border-left-width: 10px;
   border-right-width: 10px;
-  border-color: lightseagreen;
+  border-color: grey;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #105c57;
+  border-left-color: #4d4d4d;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #306f6b;
-  border-color: #306f6b;
+  background-color: #676767;
+  border-color: #676767;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #188781;
-  border-color: #188781;
-}
-#menuicon {
-  margin-right: 8px;
-  margin-bottom: 8px;
-  float: right;
-  display: none;
-  cursor: pointer;
-}
-#menuicon div {
-  width: 12px;
-  height: 2px;
-  background-color: black;
-  margin: 2px 0;
+  background-color: #676767;
+  border-color: #676767;
 }
 h1,
 h2,
@@ -277,6 +254,19 @@ textarea:focus {
 }
 textarea:not(focus) {
   background-color: #f4f4f4;
+}
+#menuicon {
+  margin-right: 8px;
+  margin-bottom: 8px;
+  float: right;
+  display: block;
+  cursor: pointer;
+}
+#menuicon div {
+  width: 12px;
+  height: 2px;
+  background-color: black;
+  margin: 2px 0;
 }
 #overlay {
   position: fixed;
@@ -450,8 +440,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 }
 .region .resize {
   position: absolute;
@@ -474,6 +463,9 @@ body {
 }
 #region_webapp .resize {
   display: block;
+}
+#region_webapp .display {
+  margin: 0px 10px 0px 15px;
 }
 #region_frmaux {
   display: block;

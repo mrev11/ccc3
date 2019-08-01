@@ -1,4 +1,4 @@
-/*src/css/style-mobil:seagreen*/
+/*src/css/style-mobil:orange*/
 div.page {
   display: flex;
   flex-direction: column;
@@ -28,19 +28,19 @@ div.page div.menu input.submenubutton {
 }
 div.page div.menu input.submenubutton {
   background-image: none;
-  background-color: #5e9996;
-  border-color: #5e9996;
+  background-color: #b3c029;
+  border-color: #b3c029;
 }
 div.page div.menu input.submenubutton:hover {
-  border-left-color: #375a58;
+  border-left-color: #646c17;
 }
 div.page div.menu input.submenubutton:disabled {
-  background-color: #626262;
-  border-color: #626262;
+  background-color: #757b3b;
+  border-color: #757b3b;
 }
 div.page div.menu input.submenubutton:active {
-  background-color: #4b7977;
-  border-color: #4b7977;
+  background-color: #8b9620;
+  border-color: #8b9620;
 }
 div.page div.formset {
   flex: 0 0 auto;
@@ -127,7 +127,7 @@ input[type=button] {
   outline: none;
   border: none;
   color: #fff;
-  background-color: lightseagreen;
+  background-color: orange;
   background-image: none;
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
@@ -138,26 +138,26 @@ input[type=button] {
   border-bottom-width: 0px;
   border-left-width: 10px;
   border-right-width: 10px;
-  border-color: lightseagreen;
+  border-color: orange;
   transition: 0.3s;
 }
 input[type=button]:focus {
   text-decoration: underline;
 }
 input[type=button]:hover {
-  border-left-color: #105c57;
+  border-left-color: #996300;
 }
 input[type=button]:disabled {
   background-image: none;
-  background-color: #306f6b;
-  border-color: #306f6b;
+  background-color: #ad7b1f;
+  border-color: #ad7b1f;
   color: #bfbfbf;
   cursor: auto;
 }
 input[type=button]:active {
   background-image: none;
-  background-color: #188781;
-  border-color: #188781;
+  background-color: #cc8400;
+  border-color: #cc8400;
 }
 #menuicon {
   margin-right: 8px;

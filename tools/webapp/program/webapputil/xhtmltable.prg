@@ -10,6 +10,7 @@ class xhtmltable(xhtmlnode)
     method  addcolumn
     method  addrow
     method  getrow
+    method  addoption
 
     method  thead           {|this|this:content[1]}
     method  tbody           {|this|this:content[2]}
@@ -78,16 +79,17 @@ local tr,rowcnt,rowid,td,n
 
         if( valtype(row[n])=="O" )
             td:addcontent(row[n])
-        elseif( this:colinfo[n]:picture==NIL )
+        elseif( empty(this:colinfo) .or. this:colinfo[n]:picture==NIL )
             td:addtext(row[n])
         else
             td:addtext(row[n]::transform(this:colinfo[n]:picture) )
         end
-        if( this:colinfo[n]:style!=NIL )
+        if( !empty(this:colinfo) .and. this:colinfo[n]:style!=NIL )
             td:setattrib( xhtmlnode.attrib("style",this:colinfo[n]:style) )
         end
     next
 
+    return tr
 
 ************************************************************************************************
 static function xhtmltable.getrow(this,rowid)
@@ -100,6 +102,22 @@ local x
         return NIL
     end
     return this:tbody:content[x]
+
+
+************************************************************************************************
+static function xhtmltable.addoption(this,row)
+local tr
+    if( valtype(row)!="A" )
+        row:={row}
+    end
+    tr:=this:addrow(row)
+    tr:delattrib("onclick")
+    tr:setattrib("onmousedown","XCODE.xlib.combo.pick(this)")
+    return tr
+
+// kenyelmi metodus
+// hogy az xhtmltable objektumot
+// egyszerubb legyen combo boxkent hasznalni
 
 
 ************************************************************************************************

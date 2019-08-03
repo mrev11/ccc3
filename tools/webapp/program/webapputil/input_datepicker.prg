@@ -43,7 +43,8 @@ local inp1,onblur0,onblur1
         onblur1+=onblur0
     end
     inp1:setattrib("onblur",onblur1)
-    
+
+    return inp1    
 
 // <div style="inp eredeti pozicioja">
 //    <input id="eredeti_id"/>

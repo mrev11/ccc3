@@ -56,6 +56,8 @@ class page(xhtmlnode)
     method  onchange_formdata
     method  onenter_formdata
 
+    method  input_datepicker
+    method  input_combo
 
 
     method  loop
@@ -324,6 +326,16 @@ static function page.onchange_formdata(this,ctrlid,blk)
 static function page.onenter_formdata(this,ctrlid,blk)
     this[ctrlid]:onenter_formdata
     this:actionhash["formdata."+ctrlid]:=blk
+
+
+************************************************************************************************
+static function page.input_datepicker(this,ctrlid)
+local inp:=this[ctrlid]::webapp.input_datepicker() //elromlik a nodehash  
+    this:nodehash[ctrlid]:=inp //megjavitja
+
+static function page.input_combo(this,ctrlid,table)
+local inp:=this[ctrlid]::webapp.input_combo(table) //elromlik a nodehash  
+    this:nodehash[ctrlid]:=inp //megjavitja
 
 
 ************************************************************************************************

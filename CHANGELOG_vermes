@@ -1,3 +1,10 @@
+2019-08-03 webapp keretrendszer;
+  uj metoddus page:input_datepicker(ctrlid);
+  uj metoddus page:input_combo(ctrlid,table);
+  (kijavitjak az ohatatlanul elromlo page:nodehash-t);
+  page:createnodehash kihagyja a ROWID<n> id-ket;
+
+
 2019-08-01 webapp keretrendszer:
   uj metodus: xhtmltable:addoption;
   popup, datepicker, combo athozva a keretrendszerbe;

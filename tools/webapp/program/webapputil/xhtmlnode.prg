@@ -287,7 +287,7 @@ local hash:=nodehashNew(node)
 
 static function xhtmlnode.createnodehash1(node,hash)
 local id:=node:getattrib("id"),n
-    if( id!=NIL )
+    if( id!=NIL .and. !'ROWID'$id )
         hash[id]:=node
     end
     for n:=1 to len(node:content)

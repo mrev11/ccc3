@@ -33,6 +33,19 @@ function debug(flag:=.t.)
 
 
 ***************************************************************************************
+function getattrib(ctrlid,attrnm)
+local code:=<<CODE>>
+XCODE.send("<getattrib>"+XCODE.document.x.getElementById('$CTRLID').getAttribute('$ATTRNM')+"</getattrib>");
+<<CODE>>
+local data
+    code::=strtran("$CTRLID",ctrlid)
+    code::=strtran("$ATTRNM",attrnm)
+    webapp.script(code)
+    webapp.waitmessage("getattrib",@data)
+    return data:gettext  // 'null', ha nem letezik
+
+
+***************************************************************************************
 function setattrib(id,attr,value)
 local code:="XCODE.document.x.getElementById('ID').ATTR=VALUE; "
     code::=strtran("ID",id)

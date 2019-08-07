@@ -132,7 +132,16 @@ XCODE.picreadvalue=function(ctrl)
     {
         return "? "+x;
     }
-    for( ; i<pic.length; i++  )
+
+
+    //a picture vegen levo X-ek trimelve
+    var len=pic.length;
+    while( 0<len && pic.charAt(len-1)=='X' )
+    {
+        len--;
+    }
+
+    for( ; i<len; i++  )
     {
         var t=pic.charAt(i);
         if( "9AaNnX".includes(t) )
@@ -228,7 +237,15 @@ XCODE.picsettlevalue=function(ctrl)
     {
         return "? "+x;
     }
-    for( ; i<pic.length; i++  )
+
+    //a picture vegen levo X-ek trimelve
+    var len=pic.length;
+    while( 0<len && pic.charAt(len-1)=='X' )
+    {
+        len--;
+    }
+
+    for( ; i<len; i++  )
     {
         var t=pic.charAt(i);
         if( "9AaNnX".includes(t) )

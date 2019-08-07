@@ -363,15 +363,23 @@ local code:="XCODE.evententer(event) && XCODE.onclick_formdata(this.id)"
 
 ************************************************************************************************
 function xhtmlnode.input_date(node)
-    node:setattrib(xhtmlnode.attrib("onfocus","XCODE.edit_in_progress(this)"))
-    node:setattrib(xhtmlnode.attrib("onblur","XCODE.datsettlevalue(this)"))
-    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.datkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+local onblur:=node:getattrib("onblur")
+    if(onblur==NIL)
+        onblur:=""
+    end
+    node:setattrib("onfocus","XCODE.edit_in_progress(this)")
+    node:setattrib("onblur","XCODE.datsettlevalue(this);"+onblur)
+    node:setattrib("onkeypress","XCODE.datkeypress(event)")
+    node:setattrib("pattern","^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 
 
 ************************************************************************************************
 function xhtmlnode.input_number(node,dec,flags:='r')
-local code:="XCODE.numsettlevalue(this,DEC,ZERO)"
+local code:="XCODE.numsettlevalue(this,DEC,ZERO);"
+local onblur:=node:getattrib("onblur")
+    if(onblur==NIL)
+        onblur:=""
+    end
 
     if( dec!=NIL )
         code::=strtran("DEC",dec::str::alltrim)
@@ -383,10 +391,10 @@ local code:="XCODE.numsettlevalue(this,DEC,ZERO)"
     code::=strtran("DEC","null")
     code::=strtran(",null)",")")
 
-    node:setattrib(xhtmlnode.attrib("onfocus","XCODE.edit_in_progress(this)"))
-    node:setattrib(xhtmlnode.attrib("onblur",code)) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.numkeypress(event)"))
-    node:setattrib(xhtmlnode.attrib("pattern","^[0-9\+\-\.,]*$"))
+    node:setattrib("onfocus","XCODE.edit_in_progress(this)")
+    node:setattrib("onblur",code+onblur) 
+    node:setattrib("onkeypress","XCODE.numkeypress(event)")
+    node:setattrib("pattern","^[0-9\+\-\.,]*$")
 
     if( "r"$flags )
         node:setstyle("text-align:right")
@@ -401,24 +409,34 @@ local code:="XCODE.numsettlevalue(this,DEC,ZERO)"
 
 ************************************************************************************************
 function xhtmlnode.input_picture(node,pic)
-    node:setattrib(xhtmlnode.attrib("onfocus","XCODE.edit_in_progress(this)"))
-    node:setattrib(xhtmlnode.attrib("onblur","XCODE.picsettlevalue(this)")) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.pickeypress(event)")) 
-    node:setattrib(xhtmlnode.attrib("data-picture",pic))
+local onblur:=node:getattrib("onblur")
+    if(onblur==NIL)
+        onblur:=""
+    end
+
+    node:setattrib("onfocus","XCODE.edit_in_progress(this)")
+    node:setattrib("onblur","XCODE.picsettlevalue(this);"+onblur) 
+    node:setattrib("onkeypress","XCODE.pickeypress(event)") 
+    node:setattrib("data-picture",pic)
 
 
 ************************************************************************************************
 function xhtmlnode.input_pattern(node,pat)
+local onblur:=node:getattrib("onblur")
+    if(onblur==NIL)
+        onblur:=""
+    end
+
     if( !left(pat,1)=="^" )
         pat:="^"+pat
     end
     if( !right(pat,1)=="$" )
         pat+="$"
     end
-    node:setattrib(xhtmlnode.attrib("onfocus","XCODE.edit_in_progress(this)"))
-    node:setattrib(xhtmlnode.attrib("onblur","XCODE.patsettlevalue(this)")) 
-    node:setattrib(xhtmlnode.attrib("onkeypress","XCODE.patkeypress(event)")) 
-    node:setattrib(xhtmlnode.attrib("pattern",pat))
+    node:setattrib("onfocus","XCODE.edit_in_progress(this)")
+    node:setattrib("onblur","XCODE.patsettlevalue(this);"+onblur)
+    node:setattrib("onkeypress","XCODE.patkeypress(event)") 
+    node:setattrib("pattern",pat)
 
 
 ************************************************************************************************

@@ -34,6 +34,7 @@ static mime:={;
     {".png",    a"image/png"},;
     {".jpeg",   a"image/jpeg"},;
     {".jpg",    a"image/jpeg"},;
+    {".svg",    a"image/svg+xml"},;
     {".gif",    a"image/gif"},;
     {".jnlp",   a"application/x-java-jnlp-file"};
 }

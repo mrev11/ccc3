@@ -63,6 +63,7 @@ Content-Length: LENGTH
 local x,len
 local fspec:=geturl(req)
 local enc,gzip:=.f.
+local ct
 
     if( use_gzip_encoding() )
         enc:=http_getheader(req,"Accept-Encoding")
@@ -85,10 +86,9 @@ local enc,gzip:=.f.
     page::=str2bin
     page::=httpheader_crlf
 
-    if( fspec::right(4)==".css" )
-        page::=http_setheader("Content-Type","text/css")
-    elseif( fspec::right(3)==".js" )
-        page::=http_setheader("Content-Type","text/javascript")
+    ct:=contenttype(fspec)
+    if(ct!=NIL)
+        page::=http_setheader("Content-Type",ct)
     end
     
     if(gzip)
@@ -123,6 +123,7 @@ local pos
 local fspec
 local content
 local enc,gzip:=.f.
+local ct
 
     if( use_gzip_encoding() )
         enc:=http_getheader(req,"Accept-Encoding")
@@ -144,10 +145,9 @@ local enc,gzip:=.f.
     page::=str2bin
     page::=httpheader_crlf
 
-    if( fspec::right(4)==".css" )
-        page::=http_setheader("Content-Type","text/css")
-    elseif( fspec::right(3)==".js" )
-        page::=http_setheader("Content-Type","text/javascript")
+    ct:=contenttype(fspec)
+    if(ct!=NIL)
+        page::=http_setheader("Content-Type",ct)
     end
 
     if(gzip)
@@ -185,5 +185,28 @@ local dspec:="session"
 
 
 ***************************************************************************************
+static function contenttype(fspec)
+
+static mime:={;
+    {".txt",    "text/plain"},;
+    {".css",    "text/css"},;
+    {".js",     "text/javascript"},;
+    {".txt",    "text/plain"},;
+    {".html",   "text/html"},;
+    {".htm",    "text/html"},;
+    {".ico",    "image/x-icon"},;
+    {".png",    "image/png"},;
+    {".jpeg",   "image/jpeg"},;
+    {".jpg",    "image/jpeg"},;
+    {".svg",    "image/svg+xml"},;
+    {".gif",    "image/gif"},;
+    {".jnlp",   "application/x-java-jnlp-file"};
+}
+local extn:=lower(substr(fspec,rat(".",fspec))) //extension
+local mtyp:=ascan(mime,{|m|m[1]==extn})  //mime type index
+    if( mtyp>0 )
+        return mime[mtyp][2]
+    end 
     
+***************************************************************************************
     

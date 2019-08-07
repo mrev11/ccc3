@@ -142,6 +142,14 @@ img {
   max-width: 100%;
   max-height: 100%;
 }
+input.combo {
+  padding-right: 20px;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyAKICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgCiAgICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgCiAgICB3aWR0aD0iMTRweCIKICAgIGhlaWdodD0iMTJweCIgCiAgICB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+IAogICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsNjQgMTcxLDM2IDEwMCwxMDcgMjgsMzYgMCw2NCAxMDAsMTY0IiBmaWxsPSIjNDU1Ii8+Cjwvc3ZnPgo=');
+  background-position-x: 100%;
+  background-position-y: 50%;
+  background-repeat: no-repeat;
+}
 input[type=text] {
   color: #566;
   outline: 0px;
@@ -285,8 +293,7 @@ textarea:not(focus) {
   border-color: rgba(200, 200, 0, 0.9);
   box-shadow: 3px 3px 5px 1px gray;
 }
-/*div containing the table*/
-.combo {
+div.combo {
   position: relative;
   display: none;
   z-index: 1;
@@ -295,7 +302,6 @@ textarea:not(focus) {
   padding: 0 2px 2px 2px;
   border: 1px solid silver;
   box-shadow: none;
-  /* 6px 8px 16px 10px rgba(0,0,0,0.2);*/
   color: black;
   background-color: white;
   border-radius: 5px;
@@ -303,11 +309,10 @@ textarea:not(focus) {
   overflow-y: auto;
   overflow-x: hidden;
 }
-.combo thead {
+div.combo thead {
   display: none;
 }
-/*div containing the date picker*/
-.datepicker {
+div.datepicker {
   position: relative;
   display: none;
   z-index: 1;
@@ -315,13 +320,11 @@ textarea:not(focus) {
   padding: 0 2px 2px 2px;
   border: 1px solid silver;
   box-shadow: none;
-  /* 6px 8px 16px 10px rgba(0,0,0,0.2);*/
   color: black;
   background-color: white;
   border-radius: 5px;
 }
-/* table containing navigation and current month */
-.dpControls {
+div.datepicker table.dpControls {
   border-collapse: collapse;
   border: 0;
   width: 100%;
@@ -331,7 +334,7 @@ textarea:not(focus) {
   color: grey;
   background-color: white;
 }
-.dpControls td {
+div.datepicker table.dpControls td {
   border-collapse: collapse;
   border: 0;
   padding: 0;
@@ -339,7 +342,7 @@ textarea:not(focus) {
   text-align: center;
   cursor: pointer;
 }
-.dpControls th {
+div.datepicker table.dpControls th {
   border-collapse: collapse;
   border: 0;
   padding: 0;
@@ -350,13 +353,12 @@ textarea:not(focus) {
   color: grey;
   background-color: white;
 }
-/* table containing week days header and calendar grid */
-.dpGrid {
+div.datepicker table.dpGrid {
   border-collapse: collapse;
   border: 0px solid silver;
   width: 100%;
 }
-.dpGrid th {
+div.datepicker table.dpGrid th {
   border: 1px solid silver;
   border-collapse: collapse;
   padding: 3px 0;
@@ -364,7 +366,7 @@ textarea:not(focus) {
   font-family: sans-serif;
   font-size: smaller;
 }
-.dpGrid td {
+div.datepicker table.dpGrid td {
   border: 0;
   border-collapse: collapse;
   padding: 2px 0;
@@ -374,13 +376,13 @@ textarea:not(focus) {
   font-size: smaller;
   cursor: pointer;
 }
-.dpGrid td.dpOtherMonth {
+div.datepicker table.dpGrid td.dpOtherMonth {
   color: silver;
 }
-.dpGrid td.dpToday {
+div.datepicker table.dpGrid td.dpToday {
   border: 1px solid grey;
 }
-.dpGrid td.dpSelected {
+div.datepicker table.dpGrid td.dpSelected {
   background-color: yellow;
 }
 .popup {

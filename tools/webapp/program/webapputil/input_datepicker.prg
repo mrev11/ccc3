@@ -35,6 +35,7 @@ local inp1,onblur0,onblur1
 
     input_aux(inp,"datepicker")
     inp1:=inp:content[1]  //eredeti kontrol
+    inp1:setattrib("class","datepicker")
     inp1:setattrib("onclick","XCODE.xlib.datepicker.show('"+inp1:getattrib("id")+"')")
 
     onblur0:=inp1:getattrib("onblur") //esetleges korabbi

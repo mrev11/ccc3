@@ -1,3 +1,28 @@
+2019-08-07 webapp keretrendszer;
+  arrow.down.svg;
+  xhtmlnode.input_picture,
+  xhtmlnode.input_pattern,
+  xhtmlnode.input_nummber,
+  xhtmlnode.input_date: az onblur-t, nem felulirjak, hanem kiegeszitik;
+  ugyanezek felveve page metodosnak:
+    page:input_picture(ctrlid,pic),
+    page:input_pattern(ctrlid,pat),
+    page:input_number(ctrlid,dec,flags),
+    page:input_date(ctrlid);
+  uj fuggveny webapp.getattrib(ctrlid,attrname);
+  div.datepicker-ben beallitva: class="datepciker";
+  input.combo-ban-ban beallitva: class="combo";
+  input.combo szelessege korrigalva, hogy elferjen a down-arrow;
+  webapp/httputil.prg: altalanosabban kezelt content-type-ok;
+  inp_picture.js: a "...XXXXXX" alaku picture-ok zaro X-eit nem kell kitolteni;
+  datepicker.js: az onclick ki-be kapcsolja a datepcikert;
+  combo.js: az onclick ki-be kapcsolja a combot;
+  combo.js: az input kontrolban beallitva a rowid="ROWID<n>" attributum;
+  textinput.less: kiegeszitve az input.combo szekcioval;
+  datepicker.less modularizalva;
+  combo.less modularizalva;
+  websrv: *.svg -> Content-type: image/svg+xml
+
 2019-08-03 webapp keretrendszer;
   uj metoddus page:input_datepicker(ctrlid);
   uj metoddus page:input_combo(ctrlid,table);

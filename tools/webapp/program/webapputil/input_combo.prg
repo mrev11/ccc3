@@ -30,11 +30,12 @@ local inp1, div
 
 ***************************************************************************************
 function input_combo(inp,table)
-local inp1,onblur0,onblur1
+local inp1,onblur0,onblur1,w
 
     input_aux(inp,"combo")
     inp1:=inp:content[1]  //eredeti kontrol
     inp:content[2]:addcontent(table)
+    inp1:setattrib("class","combo")
     inp1:setattrib("onclick","XCODE.xlib.combo.show('"+inp1:getattrib("id")+"')")
     inp1:setattrib("onkeyup","XCODE.xlib.combo.keyup(event)")
     inp1:setattrib("onkeydown","XCODE.xlib.combo.keydown(event)")
@@ -45,6 +46,9 @@ local inp1,onblur0,onblur1
         onblur1+=onblur0
     end
     inp1:setattrib("onblur",onblur1)
+    
+    w:=inp1:getstyle("width")::val-19 //padding miatt korrigalva
+    inp1:setstyle("width:"+w::str::alltrim+"px;")
 
     return inp1    
 

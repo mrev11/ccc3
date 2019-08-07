@@ -9,7 +9,14 @@ XCODE.xlib.datepicker.show=function(input_id) //input-onclick
     var input=document.getElementById(input_id);
     var datepicker=document.getElementById(datepicker_id);
     datepicker.innerHTML=XCODE.xlib.datepicker.table(input.value);
-    datepicker.style.display="block";
+    if( datepicker.style.display=="none" )
+    {
+        datepicker.style.display="block";
+    }
+    else
+    {
+        datepicker.style.display="none";
+    }
     event.stopPropagation();
 }
 

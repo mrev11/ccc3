@@ -56,9 +56,14 @@ class page(xhtmlnode)
     method  onchange_formdata
     method  onenter_formdata
 
+    method  input_date
+    method  input_number
+    method  input_picture
+    method  input_pattern
+    method  input_accountnumber
+
     method  input_datepicker
     method  input_combo
-
 
     method  loop
     
@@ -326,6 +331,23 @@ static function page.onchange_formdata(this,ctrlid,blk)
 static function page.onenter_formdata(this,ctrlid,blk)
     this[ctrlid]:onenter_formdata
     this:actionhash["formdata."+ctrlid]:=blk
+
+
+************************************************************************************************
+static function page.input_date(this,ctrlid)
+    this[ctrlid]:input_date
+
+static function page.input_number(this,ctrlid,dec,flags)
+    this[ctrlid]:input_number(dec,flags)
+
+static function page.input_picture(this,ctrlid,pic)
+    this[ctrlid]:input_picture(pic)
+
+static function page.input_pattern(this,ctrlid,pat)
+    this[ctrlid]:input_pattern(pat)
+
+static function page.input_accountnumber(this,ctrlid,opt)
+    this[ctrlid]:input_accountnumber(opt)
 
 
 ************************************************************************************************

@@ -1256,7 +1256,16 @@ XCODE.picreadvalue=function(ctrl)
     {
         return "? "+x;
     }
-    for( ; i<pic.length; i++  )
+
+
+    //a picture vegen levo X-ek trimelve
+    var len=pic.length;
+    while( 0<len && pic.charAt(len-1)=='X' )
+    {
+        len--;
+    }
+
+    for( ; i<len; i++  )
     {
         var t=pic.charAt(i);
         if( "9AaNnX".includes(t) )
@@ -1352,7 +1361,15 @@ XCODE.picsettlevalue=function(ctrl)
     {
         return "? "+x;
     }
-    for( ; i<pic.length; i++  )
+
+    //a picture vegen levo X-ek trimelve
+    var len=pic.length;
+    while( 0<len && pic.charAt(len-1)=='X' )
+    {
+        len--;
+    }
+
+    for( ; i<len; i++  )
     {
         var t=pic.charAt(i);
         if( "9AaNnX".includes(t) )
@@ -1940,8 +1957,15 @@ XCODE.xlib.combo.show=function(input_id) //input-onclick
     var combo_id=input_id+"-combo";
     var input=document.getElementById(input_id);
     var combo=document.getElementById(combo_id);
-    combo.style.display="block";
-    XCODE.xlib.combo.findrow(combo,input.value);
+    if( combo.style.display=="none" )
+    {
+        combo.style.display="block";
+        XCODE.xlib.combo.findrow(combo,input.value);
+    }
+    else
+    {
+        combo.style.display="none";
+    }
 }
 
 XCODE.xlib.combo.clear=function(combo_id) //input-onblur
@@ -1957,6 +1981,7 @@ XCODE.xlib.combo.pick=function(ctrl) //click on a <tr> element
     //console.log("pick",ctrl.textContent.trim().replace(/\n/g,';'));
     var input=XCODE.xlib.combo.getinput(ctrl);
     input.value=ctrl.textContent.trim().split('\n')[0];
+    input.setAttribute("rowid",ctrl.id);
     input.dispatchEvent(new Event('change'));
 }
 
@@ -2003,6 +2028,7 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
             if( input.value!=v )
             {
                 input.value=v;
+                input.setAttribute("rowid",row.id);
                 input.dispatchEvent(new Event('change'));
             }
             input.dispatchEvent(new Event('blur'));
@@ -2233,7 +2259,14 @@ XCODE.xlib.datepicker.show=function(input_id) //input-onclick
     var input=document.getElementById(input_id);
     var datepicker=document.getElementById(datepicker_id);
     datepicker.innerHTML=XCODE.xlib.datepicker.table(input.value);
-    datepicker.style.display="block";
+    if( datepicker.style.display=="none" )
+    {
+        datepicker.style.display="block";
+    }
+    else
+    {
+        datepicker.style.display="none";
+    }
     event.stopPropagation();
 }
 

@@ -1,0 +1,8 @@
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    width="14px"
+    height="12px" 
+    viewBox="0 0 300 200"> 
+    <polygon points="200,64 171,36 100,107 28,36 0,64 100,164" fill="#fff"/>
+</svg>

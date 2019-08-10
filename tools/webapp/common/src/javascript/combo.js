@@ -40,6 +40,12 @@ XCODE.xlib.combo.keyup=function(event)  //editalas
 { 
     var input=event.target; //input mezo
     var combo_id=input.id+"-combo";
+    if( input.type=="button" )
+    {
+        var input_id=input.id.replace("-button","");
+        input=document.getElementById(input_id);
+        combo_id=input.id+"-combo";
+    }
     var combo=document.getElementById(combo_id);
 
     //console.log(event,input.value);
@@ -56,6 +62,12 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
 {
     var input=event.target; //input mezo
     var combo_id=input.id+"-combo";
+    if( input.type=="button" )
+    {
+        var input_id=input.id.replace("-button","");
+        input=document.getElementById(input_id);
+        combo_id=input.id+"-combo";
+    }
     var combo=document.getElementById(combo_id);
 
     //console.log(event,input.value);

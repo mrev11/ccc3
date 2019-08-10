@@ -64,6 +64,7 @@ class page(xhtmlnode)
 
     method  input_datepicker
     method  input_combo
+    method  input_selbox
 
     method  loop
     
@@ -357,6 +358,10 @@ local inp:=this[ctrlid]::webapp.input_datepicker() //elromlik a nodehash
 
 static function page.input_combo(this,ctrlid,table)
 local inp:=this[ctrlid]::webapp.input_combo(table) //elromlik a nodehash  
+    this:nodehash[ctrlid]:=inp //megjavitja
+
+static function page.input_selbox(this,ctrlid,table)
+local inp:=this[ctrlid]::webapp.input_selbox(table) //elromlik a nodehash  
     this:nodehash[ctrlid]:=inp //megjavitja
 
 

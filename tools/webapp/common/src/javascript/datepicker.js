@@ -154,11 +154,11 @@ XCODE.xlib.datepicker.table=function(inputvalue,n_date)
     s_html='<table class="'+s_pfx+'Controls">';
     s_html+='<tbody>';
     s_html+='<tr>'
-        + '<td class="'+s_pfx+'PrevYear" ' + datepicker_makehandler(d_date, -1, 'y') + ' title="' + DATEPICKER_CONFIG.prevyear  + '">«</td>'
-        + '<td class="'+s_pfx+'PrevMonth"' + datepicker_makehandler(d_date, -1, 'm') + ' title="' + DATEPICKER_CONFIG.prevmonth + '">‹</td>'
+        + '<td class="'+s_pfx+'PrevYear" ' + datepicker_makehandler(d_date, -1, 'y') + ' title="' + DATEPICKER_CONFIG.prevyear  + '"><span style="font-size:large;">«</span></td>'
+        + '<td class="'+s_pfx+'PrevMonth"' + datepicker_makehandler(d_date, -1, 'm') + ' title="' + DATEPICKER_CONFIG.prevmonth + '"><span style="font-size:large;">‹</span></td>'
         + '<th>' + d_date.getFullYear() + ' ' + DATEPICKER_CONFIG.months[d_date.getMonth()]+'</th>'
-        + '<td class="'+s_pfx+'NextMonth"' + datepicker_makehandler(d_date,  1, 'm') + ' title="' + DATEPICKER_CONFIG.nextmonth + '">›</td>'
-        + '<td class="'+s_pfx +'NextYear"' + datepicker_makehandler(d_date,  1, 'y') + ' title="' + DATEPICKER_CONFIG.nextyear  + '">»</td>'
+        + '<td class="'+s_pfx+'NextMonth"' + datepicker_makehandler(d_date,  1, 'm') + ' title="' + DATEPICKER_CONFIG.nextmonth + '"><span style="font-size:large;">›</span></td>'
+        + '<td class="'+s_pfx +'NextYear"' + datepicker_makehandler(d_date,  1, 'y') + ' title="' + DATEPICKER_CONFIG.nextyear  + '"><span style="font-size:large;">»</span></td>'
         + '</tr>';
     s_html+='</tbody>';
     s_html+='</table>';

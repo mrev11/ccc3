@@ -87,7 +87,7 @@ local onblur0,onblur1
     end
     button:setattrib("onblur",onblur1)
 
-    divouter:xmloutind
+    //divouter:xmloutind
 
     return inptxt   
 

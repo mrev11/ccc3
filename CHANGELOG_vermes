@@ -1,3 +1,8 @@
+2019-08-21 osztaly-metodus cache-eles uj modszerek; 
+   xnethod4: egy elemu cache-ek tobbszorozve;
+   xnethod5: xmethod4 + a 'sima' o:method esetre globalis cache;
+   ezek egyelore csak kiserletek;
+
 2019-08-07 webapp keretrendszer:
   datepicker csinositva;
   popup-ok ujrairva;

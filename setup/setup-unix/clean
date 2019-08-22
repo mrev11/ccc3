@@ -18,6 +18,7 @@ cleandir()
 
 cleandir .
 cleandir build
+cleandir buildp
 cleandir ppo2cpp
 cleandir prg2ppo
 cleandir removecr

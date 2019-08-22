@@ -151,18 +151,18 @@ static void walk(ELEM *elem)
 
     if( bname==0  ) // object:method
     {
-        printf("\nclass _method5_%s: public _method5_",sname);
-        printf("{public: _method5_%s():_method5_(\"%s\"){};};",sname,sname);
-        printf(" static _method5_%s _o_method_%s;",sname,sname);
+        printf("\nclass _method4_%s: public _method4_",sname);
+        printf("{public: _method4_%s():_method4_(\"%s\"){};};",sname,sname);
+        printf(" static _method4_%s _o_method_%s;",sname,sname);
     }
     else if( pname==0  ) // object:(class)method 
     {
         char clsfun[BUFSIZE];
         sprintf(clsfun,"%sclass",bname_d);
         char *bcall=fundecl_clpcall(clsfun);
-        printf("\nclass _method5_%s_C_%s: public _method5c_",sname,bname);
-        printf("{public: _method5_%s_C_%s():_method5c_(\"%s\",%s){};};",sname,bname,sname,bcall);
-        printf(" static _method5_%s_C_%s _o_method_%s_C_%s;",sname,bname,sname,bname);
+        printf("\nclass _method4_%s_C_%s: public _method4c_",sname,bname);
+        printf("{public: _method4_%s_C_%s():_method4c_(\"%s\",%s){};};",sname,bname,sname,bcall);
+        printf(" static _method4_%s_C_%s _o_method_%s_C_%s;",sname,bname,sname,bname);
         free(bcall);
     }
     else if( 0==strcmp(pname,"super") ) // object:(super:class)method  
@@ -170,9 +170,9 @@ static void walk(ELEM *elem)
         char clsfun[BUFSIZE];
         sprintf(clsfun,"%sclass",bname_d);
         char *bcall=fundecl_clpcall(clsfun);
-        printf("\nclass _method5_%s_S_%s: public _method5s_",sname,bname);
-        printf("{public: _method5_%s_S_%s():_method5s_(\"%s\",%s){};};",sname,bname,sname,bcall);
-        printf(" static _method5_%s_S_%s _o_method_%s_S_%s;",sname,bname,sname,bname);
+        printf("\nclass _method4_%s_S_%s: public _method4s_",sname,bname);
+        printf("{public: _method4_%s_S_%s():_method4s_(\"%s\",%s){};};",sname,bname,sname,bcall);
+        printf(" static _method4_%s_S_%s _o_method_%s_S_%s;",sname,bname,sname,bname);
         free(bcall);
     }
     else  // object:(parent:class)method   
@@ -185,9 +185,9 @@ static void walk(ELEM *elem)
         sprintf(prnfun,"%sclass",pname_d);
         char *pcall=fundecl_clpcall(prnfun);
 
-        printf("\nclass _method5_%s_P_%s_C_%s: public _method5p_",sname,pname,bname);
-        printf("{public: _method5_%s_P_%s_C_%s():_method5p_(\"%s\",%s,%s){};};",sname,pname,bname,sname,pcall,bcall);
-        printf(" static _method5_%s_P_%s_C_%s _o_method_%s_P_%s_C_%s;",sname,pname,bname,sname,pname,bname);
+        printf("\nclass _method4_%s_P_%s_C_%s: public _method4p_",sname,pname,bname);
+        printf("{public: _method4_%s_P_%s_C_%s():_method4p_(\"%s\",%s,%s){};};",sname,pname,bname,sname,pcall,bcall);
+        printf(" static _method4_%s_P_%s_C_%s _o_method_%s_P_%s_C_%s;",sname,pname,bname,sname,pname,bname);
 
         free(bcall);
         free(pcall);

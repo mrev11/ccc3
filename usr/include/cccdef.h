@@ -312,45 +312,40 @@ typedef USHORT FLAG;
 #define MUTEX_CREATE(x)
 #define MUTEX_DECLARE(x)
 #define MUTEX_INIT(x)
-#define MUTEX_LOCK(x)      0
-#define MUTEX_UNLOCK(x)    0
+#define MUTEX_LOCK(x)       0
+#define MUTEX_UNLOCK(x)     0
+
+#define MUTEX_POINTER       void*
+#define MUTEX_ADDRESS(x)    0
+#define MUTEX_LOCK_PTR(x)   0
+#define MUTEX_UNLOCK_PTR(x) 0
 
 #elif defined UNIX
 
-#define MUTEX_CREATE(x)    static pthread_mutex_t x=PTHREAD_MUTEX_INITIALIZER
-#define MUTEX_DESTROY(x)   pthread_mutex_destroy(&x)
-#define MUTEX_DECLARE(x)   pthread_mutex_t x
-#define MUTEX_INIT(x)      pthread_mutex_init(&x,0)
+#define MUTEX_CREATE(x)     static pthread_mutex_t x=PTHREAD_MUTEX_INITIALIZER
+#define MUTEX_DESTROY(x)    pthread_mutex_destroy(&x)
+#define MUTEX_DECLARE(x)    pthread_mutex_t x
+#define MUTEX_INIT(x)       pthread_mutex_init(&x,0)
+#define MUTEX_LOCK(x)       pthread_mutex_lock(&x)
+#define MUTEX_UNLOCK(x)     pthread_mutex_unlock(&x)
 
-//#define MUTEX_DBG //setup-kor nem lehet bekapcsolva
-#ifdef  MUTEX_DBG
-
-//MUTEX_DBG: deadlockok felderítésére szolgál.
-//Ha definiálva van, saját nyilvántartást vezet a lockolt mutexekről, 
-//és deadlock esetén megpróbál úgy megállni, hogy a gdb backtrace 
-//segítségével meg lehessen állapítani  a deadlock helyét és okát.
-//
-//Ahhoz hogy a backtrace informatív legyen:
-//  -O6 helyett -ggdb opcióval kell fordítani,
-//  telepíteni kell a libc debug változatát,
-//  és annak helyét meg kell adni az LD_LIBRARY_PATH-ban.
-
-extern int pthread_mutex_lock_wrapper(pthread_mutex_t *m);
-extern int pthread_mutex_unlock_wrapper(pthread_mutex_t *m);
-#define MUTEX_LOCK(x)      pthread_mutex_lock_wrapper(&x)
-#define MUTEX_UNLOCK(x)    pthread_mutex_unlock_wrapper(&x)
-#else //eredeti (debug nélküli) változat
-#define MUTEX_LOCK(x)      pthread_mutex_lock(&x)
-#define MUTEX_UNLOCK(x)    pthread_mutex_unlock(&x)
-#endif
+#define MUTEX_POINTER       pthread_mutex_t*
+#define MUTEX_ADDRESS(x)    (&x)
+#define MUTEX_LOCK_PTR(x)   pthread_mutex_lock(x)
+#define MUTEX_UNLOCK_PTR(x) pthread_mutex_unlock(x)
 
 #else //WINDOWS
-#define MUTEX_CREATE(x)    static HANDLE x=CreateMutex(0,0,0)
-#define MUTEX_DESTROY(x)   CloseHandle(x)
-#define MUTEX_DECLARE(x)   HANDLE x
-#define MUTEX_INIT(x)      x=CreateMutex(0,0,0)
-#define MUTEX_LOCK(x)      WaitForSingleObject(x,INFINITE)
-#define MUTEX_UNLOCK(x)    ReleaseMutex(x)
+#define MUTEX_CREATE(x)     static HANDLE x=CreateMutex(0,0,0)
+#define MUTEX_DESTROY(x)    CloseHandle(x)
+#define MUTEX_DECLARE(x)    HANDLE x
+#define MUTEX_INIT(x)       x=CreateMutex(0,0,0)
+#define MUTEX_LOCK(x)       WaitForSingleObject(x,INFINITE)
+#define MUTEX_UNLOCK(x)     ReleaseMutex(x)
+
+#define MUTEX_POINTER       HANDLE
+#define MUTEX_ADDRESS(x)    (x)
+#define MUTEX_LOCK_PTR(x)   WaitForSingleObject(x,INFINITE)
+#define MUTEX_UNLOCK_PTR(x) ReleaseMutex(x)
 #endif
 
 #ifdef MULTITHREAD
@@ -368,6 +363,8 @@ extern int pthread_mutex_unlock_wrapper(pthread_mutex_t *m);
 //----------------------------------------------------------------------------
 #include <xmethod2.h>
 #include <xmethod3.h>
+#include <xmethod4.h>
+#include <xmethod5.h>
 #include <cccext1.h>
 #include <cccext2.h>
 

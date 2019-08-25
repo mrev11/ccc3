@@ -35,9 +35,9 @@ local addstmt:="t->add(KEY,VALUE);",x,n
     end
     
     
-    ? "#include <hashtable.h>"
+    ? "#include <hashtable_nls.h>"
     ?
-    ? "void hashtable_fill(hashtable *t){"
+    ? "void hashtable_fill(hashtable_nls *t){"
     
     txt:=split(txt,chr(10))
 

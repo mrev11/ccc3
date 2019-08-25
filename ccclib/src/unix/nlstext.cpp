@@ -20,12 +20,12 @@
 
 #include <stdio.h>
 #include <dlfcn.h>
-#include <hashtable.h>
+#include <hashtable_nls.h>
 #include <cccapi.h>
 
-static hashtable *nls_hashtable=0;
+static hashtable_nls *nls_hashtable=0;
 
-typedef void hashtable_fill_t(hashtable*);
+typedef void hashtable_fill_t(hashtable_nls*);
 
 //----------------------------------------------------------------------------
 static void load(char *libname)
@@ -37,7 +37,7 @@ static void load(char *libname)
         return;
     }
 
-    void *sym=dlsym(hnd,"_Z14hashtable_fillP9hashtable");
+    void *sym=dlsym(hnd,"_Z14hashtable_fillP13hashtable_nls");
     if( !sym )
     {
         fprintf(stderr,"Error: hashtable_fill not found in %s\n",libname);
@@ -60,7 +60,7 @@ void _clp_nls_load_translation(int argno)
     {
         if( !nls_hashtable )
         {
-            nls_hashtable=new hashtable();
+            nls_hashtable=new hashtable_nls();
         }
         char buf[256];
         snprintf(buf,sizeof(buf),"lib%s.%s.so",appl,lang);

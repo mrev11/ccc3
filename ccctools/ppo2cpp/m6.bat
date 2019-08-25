@@ -1,5 +1,5 @@
 @echo off
-copy metdecl.cpp5 metdecl.cpp
+copy metdecl.cpp6 metdecl.cpp
 del objmng\metdecl.obj
 del error 2>nul
 bapp_w320 -mppo2cpp "BUILD_EXE=$(CCCDIR)\usr\bin\$(CCCUNAME)"

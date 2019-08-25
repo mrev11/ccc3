@@ -23,23 +23,21 @@
 #include <stdlib.h>
 
 //----------------------------------------------------------------------------
-static unsigned int __hashcode(const char *p)
+union hashvalue
 {
-    unsigned hcode;
-    for( hcode=0; *p; p++ )
-    {
-        hcode+=(unsigned)*p;
-        hcode*=99817; //prím
-    }
-    return hcode;
-}
-
+    int         value_int;
+    unsigned    value_unsigned;
+    long        value_long;
+    double      value_double;
+    void       *value_vptr;
+    char       *value_cptr;
+};
 
 //-----------------------------------------------------------------------------
-struct node
+struct hashitem
 {
     const char *key;
-    void *value;
+    hashvalue value;
 };
 
 //-----------------------------------------------------------------------------
@@ -47,9 +45,21 @@ class hashtable_simple
 {
   private:
 
-    node *buffer;
+    hashitem *buffer;
     unsigned int buflen;
     unsigned int itemcount;
+    unsigned int iter;
+
+    static unsigned hashcode(const char *p)
+    {
+        unsigned hcode;
+        for( hcode=0; *p; p++ )
+        {
+            hcode+=(unsigned)*p;
+            hcode*=99817; //prím
+        }
+        return hcode;
+    }
 
     void rebuild()
     {
@@ -69,9 +79,10 @@ class hashtable_simple
         buflen=temp->buflen;
     };
 
+
     int index(char const *key)
     {
-        unsigned int hcode=__hashcode(key);
+        unsigned int hcode=hashcode(key);
         unsigned int hidx=hcode%buflen;
         
         while(1)
@@ -98,8 +109,8 @@ class hashtable_simple
     {
         itemcount=0;
         buflen=len;
-        buffer=(node*)malloc(sizeof(node)*buflen);
-        memset(buffer,0,sizeof(node)*buflen);
+        buffer=(hashitem*)malloc(sizeof(hashitem)*buflen);
+        memset(buffer,0,sizeof(hashitem)*buflen);
     };
     
     ~hashtable_simple()
@@ -107,13 +118,13 @@ class hashtable_simple
         free(buffer);
     }
 
-    void *get(const char *key)
+    hashvalue get(const char *key)
     {
         unsigned int x=index(key);
         return buffer[x].value;
     }
   
-    void add(const char *key, void *value)
+    void add(const char *key, hashvalue value)
     {
         //printf("add %s %s %d/%d\n",key,value,itemcount,buflen);
 
@@ -128,6 +139,26 @@ class hashtable_simple
         }
         buffer[x].key=key;
         buffer[x].value=value;
+    }
+    
+    hashitem *first()
+    {
+        iter=0;
+        while( iter<buflen && buffer[iter].value.value_vptr==0 )
+        {
+            iter++;
+        }
+        return iter<buflen?buffer+iter:(hashitem*)0;
+    }
+
+    hashitem *next()
+    {
+        iter++;
+        while( iter<buflen && buffer[iter].value.value_vptr==0 )
+        {
+            iter++;
+        }
+        return iter<buflen?buffer+iter:(hashitem*)0;
     }
 };
 

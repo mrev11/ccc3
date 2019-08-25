@@ -364,7 +364,7 @@ typedef USHORT FLAG;
 #include <xmethod2.h>
 #include <xmethod3.h>
 #include <xmethod4.h>
-#include <xmethod5.h>
+#include <xmethod6.h>
 #include <cccext1.h>
 #include <cccext2.h>
 

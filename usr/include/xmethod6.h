@@ -18,88 +18,78 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _XMETHOD5_H_
-#define _XMETHOD5_H_ 
+#ifndef _XMETHOD6_H_
+#define _XMETHOD6_H_ 
 
-#ifndef SLOTITEM
-#define SLOTITEM
-struct slotitem 
-{
-    int   classid;
-    VALUE slotvalue; //codeblock/attrindex
-};
-#endif
 
 typedef void CLASSID(int argno);
 
 //----------------------------------------------------------------------------
-class _method5_
+class _method6_
 {
   protected:
 
+    virtual void init();
     virtual void findslot(int clid);
 
-    const char *slotname;
-    unsigned slothashcode;
-    unsigned slotbuffersize;
-    slotitem *slotbuffer;
-
-    MUTEX_POINTER mutexptr;
+    unsigned slotid;
+    const char *slotname;   // pl. "initialize"
+    const char *xslotname;  // pl. (object)initialize => "(1)initialize"
 
   public:
 
     void eval(int argno);
-    _method5_(const char *sname);
-    virtual ~_method5_(){};
+    _method6_(const char *sname);
+    virtual ~_method6_(){};
 };
 
 
 //----------------------------------------------------------------------------
-class _method5s_ : public _method5_
+class _method6s_ : public _method6_
 {
   protected:
 
+    virtual void init();
     virtual void findslot(int clid);
     CLASSID *baseid;
 
-    MUTEX_DECLARE(mutex);
 
   public:
 
-    _method5s_(const char *sname, CLASSID *bid);
+    _method6s_(const char *sname, CLASSID *bid);
 };
 
 
 //----------------------------------------------------------------------------
-class _method5c_ : public _method5_
+class _method6c_ : public _method6_
 {
   protected:
 
+    virtual void init();
     virtual void findslot(int clid);
     CLASSID *baseid;
 
-    MUTEX_DECLARE(mutex);
 
   public:
 
-    _method5c_(const char *sname, CLASSID *bid);
+    _method6c_(const char *sname, CLASSID *bid);
 };
 
 
 //----------------------------------------------------------------------------
-class _method5p_ : public _method5_
+class _method6p_ : public _method6_
 {
   protected:
 
+    virtual void init();
     virtual void findslot(int clid);
     CLASSID *prntid;
     CLASSID *baseid;
 
-    MUTEX_DECLARE(mutex);
 
   public:
 
-    _method5p_(const char *sname, CLASSID *pid, CLASSID *bid);
+    _method6p_(const char *sname, CLASSID *pid, CLASSID *bid);
 };
  
 //----------------------------------------------------------------------------

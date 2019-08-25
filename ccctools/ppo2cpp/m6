@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+cp metdecl.cpp6 metdecl.cpp
+rm objlin/metdecl*
+
+bapp_unix0.b -mppo2cpp  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME"

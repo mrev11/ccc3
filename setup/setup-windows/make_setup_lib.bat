@@ -69,7 +69,7 @@ call cc %CCCDIR%\ccclib\src\variablex.cpp
 call cc %CCCDIR%\ccclib\src\varprint.cpp
 call cc %CCCDIR%\ccclib\src\xmethod3.cpp
 call cc %CCCDIR%\ccclib\src\xmethod4.cpp
-call cc %CCCDIR%\ccclib\src\xmethod5.cpp
+call cc %CCCDIR%\ccclib\src\xmethod6.cpp
 
 
 :: plusz le kell forditani a helyben megorzott cpp-ket,

@@ -1,3 +1,6 @@
+2019-08-27 osztaly-metodus cache-eles:
+  xmethod6-ban a hash kulcsok kozvetlenul a baseclass pointerbol kepezve; 
+
 2019-08-25
   atnevezes: hashtable.h -> hashtable_nls.h
 

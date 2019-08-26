@@ -29,7 +29,6 @@ class _method6_
 {
   protected:
 
-    virtual void init();
     virtual void findslot(int clid);
 
     unsigned slotid;
@@ -49,7 +48,6 @@ class _method6s_ : public _method6_
 {
   protected:
 
-    virtual void init();
     virtual void findslot(int clid);
     CLASSID *baseid;
 
@@ -65,7 +63,6 @@ class _method6c_ : public _method6_
 {
   protected:
 
-    virtual void init();
     virtual void findslot(int clid);
     CLASSID *baseid;
 
@@ -81,7 +78,6 @@ class _method6p_ : public _method6_
 {
   protected:
 
-    virtual void init();
     virtual void findslot(int clid);
     CLASSID *prntid;
     CLASSID *baseid;

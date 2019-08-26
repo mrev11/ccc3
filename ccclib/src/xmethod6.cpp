@@ -45,7 +45,7 @@ static void bye()
     while(item)
     {
         unsigned slotid=item->value.value_unsigned;
-        printf("\n> %-24s%5d",item->key,slotid);
+        printf("\n> %-32s%5d",item->key,slotid);
 
         int x=0;
         for(unsigned clid=1; clid<=slotbuffer_rowsize[slotid-1]; clid++)
@@ -127,7 +127,6 @@ static unsigned global_cache_set(const char *xslotname, unsigned clid)
     } 
 
     slotbuffer[slotid-1][clid-1]=*TOP(); //beteszi a cache-be
-    //dup();_clp_qout(1);pop();   
 
     MUTEX_UNLOCK(mutex);
     return slotid;
@@ -147,15 +146,7 @@ static int global_cache_get(unsigned slotid, unsigned clid)
             push(slot);
             success=1;
         }
-        //else
-        //{
-        //    printf("\n type: nil");
-        //}
     }
-    //else
-    //{
-    //    printf("\n size: %d %d %d %d", slotbuffer_size,slotid,slotbuffer_rowsize[slotid-1],clid );
-    //}
     MUTEX_UNLOCK(mutex);
     return success;   
 }
@@ -173,12 +164,25 @@ _method6_::_method6_(const char *sname)
 _method6s_::_method6s_(const char *sname, CLASSID *bid) : _method6_(sname)
 {
     baseid=bid; 
+    char buf[1024];
+    sprintf(buf,"(super@%p)%s",baseid,slotname);
+    xslotname=strdup(buf);
 };
 
 
 _method6c_::_method6c_(const char *sname, CLASSID *bid) : _method6_(sname)
 {
     baseid=bid; 
+    char buf[1024];
+    sprintf(buf,"(%p)%s",baseid,slotname);
+    xslotname=strdup(buf);
+
+    //baseid pointer a _clp_<classname>class fuggvenyre
+    //baseid() a stackre tenne az osztalyazonositot
+    //jelenleg azonban ezt meg nem lehet hasznalni
+    //mert a c++ kulso static objektumok inicializalasakor
+    //nem letezik meg a CCC futtatokornyezet
+    //ezert magabol a pointerbol keszul a hash kulcs
 };
 
 
@@ -186,43 +190,10 @@ _method6p_::_method6p_(const char *sname, CLASSID *pid, CLASSID *bid) : _method6
 {
     prntid=pid; 
     baseid=bid; 
+    char buf[1024];
+    sprintf(buf,"(%p@%p)%s",prntid,baseid,slotname);
+    xslotname=strdup(buf);
 };
-
-
-//----------------------------------------------------------------------
-void _method6_::init()
-{
-    //ezeknek a konstruktorban kene lenni
-    //de a static objektumok inicializalasa rossz
-    //(nem lehet tudni, hogy a static objektumok
-    //mikor inicializalodnak, es hogy akkor el-e
-    //mar a CCC futtatorendszer: nem el)
-}
-
-void _method6s_::init()
-{
-    int basecls; baseid(0); basecls=D2UINT(TOP()->data.number); pop();
-    char buf[1024];
-    sprintf(buf,"(sup@%d)%s",basecls,slotname);
-    xslotname=strdup(buf);
-}
-
-void _method6c_::init()
-{
-    int basecls; baseid(0); basecls=D2UINT(TOP()->data.number); pop();
-    char buf[1024];
-    sprintf(buf,"(%d)%s",basecls,slotname);
-    xslotname=strdup(buf);
-}
-
-void _method6p_::init()
-{
-    int prntcls; prntid(0); prntcls=D2UINT(TOP()->data.number); pop();
-    int basecls; baseid(0); basecls=D2UINT(TOP()->data.number); pop();
-    char buf[1024];
-    sprintf(buf,"(%d@%d)%s",prntcls,basecls,slotname);
-    xslotname=strdup(buf);
-}
 
 
 //----------------------------------------------------------------------
@@ -284,11 +255,6 @@ void _method6_::eval(int argno)
 {
     //stack: Obj A1 A2... Aargno-1 --- retval
 
-    if( slotid==0 )
-    {
-        init();
-    }
-    
     VALUE *base=stack-argno;  //object
     if( base->type!=TYPE_OBJECT )
     {

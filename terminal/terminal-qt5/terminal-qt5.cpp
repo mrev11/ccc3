@@ -73,7 +73,7 @@ static int dirty_caption=0;
 static int dirty_blink=0;
 
 
-class TerminalWindow;
+struct TerminalWindow;
 static TerminalWindow *qtwindow;
 
 

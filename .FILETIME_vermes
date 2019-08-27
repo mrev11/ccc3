@@ -1,5 +1,7 @@
-72265739c9f6f92cbe6267acd4686bc9abf6c90d 2019082612:58:05-UTC ./CHANGELOG_vermes
-33cbbe49f107b50e09276796be654287baf318a3 2019082607:19:36-UTC ./log-install
+69c4ce7703b1e5ad4f3dd8e9a95a1ab8291566b7 2019082707:52:40-UTC ./CHANGELOG_vermes
+8ac519f653986fce192b35a3e73ec8c021b320a8 2019082707:05:11-UTC ./log-install
+1ae82932d4edaebd3921a0c75117f5122b33337e 2019082707:05:05-UTC ./jt/jterminal/jterminal.jar
+ad8b19a56d018fdd4f09046126592e1b4e0d63da 2019082614:13:19-UTC ./terminal/terminal-qt5/terminal-qt5.cpp
 1bb0b52234413c1e1084c2c4a4286dafb43565bb 2019082607:19:36-UTC ./usr/bin/linux/gitfollow
 127129231550601ccc50d9aadf34e91c80190bbc 2019082607:19:36-UTC ./usr/bin/linux/gitnav
 692fc181687cba0e7fb554e4cb5a84611a2c72c0 2019082607:19:36-UTC ./usr/bin/linux/gitref
@@ -8,7 +10,6 @@ a6029393e70b40e5f685d128353343315d6b1533 2019082607:19:36-UTC ./usr/bin/linux/gi
 65549b3951c1b2597f6a6bfae42c13cc750a371b 2019082607:19:33-UTC ./usr/bin/linux/filetime-restore
 55adc63e7e6006b8bf0b4fbd055d6ac52b58df16 2019082607:19:33-UTC ./usr/bin/linux/filetime-save
 658cc5bf4f8ffbfa8c0cb008cd11d953885c2e4a 2019082607:19:33-UTC ./usr/bin/linux/firstpar
-844d98970e78b4df6a8b0fe98fbbab45abde1b48 2019082607:19:31-UTC ./jt/jterminal/jterminal.jar
 b46bfd94703b5da6c9de924c33313ed1b67249cd 2019082607:19:26-UTC ./usr/bin/linux/msk2html
 f463e35cd7d76689fc57340d58af9cb33fb82452 2019082607:19:25-UTC ./usr/bin/linux/webapp
 bf7b84e76c35920a021dd7b26c58b4b4ef2124c6 2019082607:19:22-UTC ./usr/bin/linux/tv
@@ -293,7 +294,6 @@ d1e36f285efff7d8916d97d093c8470c28b577ef 2019011706:52:50-UTC ./tools/websrv/web
 ee304c6e75925b56c39eefc2f90d7c434e857aab 2019011706:50:34-UTC ./tools/websrv/hexcode.lex
 b0be519572ae3737a5e544430b37d334e4da8a72 2019011706:47:44-UTC ./tools/websrv/clientthread.prg
 4d3309690ec0ac07d6fef1a78598fc9dd3373d1c 2019010216:09:17-UTC ./terminal/unix/terminal-xft.cpp
-fef72e426d9b7703264507f862a8e2503b77b367 2018122409:34:02-UTC ./terminal/terminal-qt5/terminal-qt5.cpp
 8affe91d2de683121dccc2b3c89be79ffd767d19 2018121909:39:25-UTC ./terminal/unix/terminal.cpp
 85055e85c7814212f2aa3dc9753eeff060da6022 2018121908:55:31-UTC ./terminal/gtk3/terminal-gtk3.cpp
 bed4996c6611c1e06655ae58768530c24011e7b2 2018121908:55:21-UTC ./terminal/gtk/terminal-gtk.cpp

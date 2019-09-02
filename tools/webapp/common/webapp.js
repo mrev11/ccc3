@@ -2513,47 +2513,52 @@ XCODE.xlib.popup.show=function(html)
 {
     //console.log("popup_show");
 
-    XCODE.xlib.popup.active=true;
-    XCODE.xlib.popup.x=XCODE.document.x.createElement("div");
-    var popup=XCODE.xlib.popup.x;
-    popup.innerHTML=html;
-
-    var parent=XCODE.xlib.popup.ctrl;
-    while(parent)
+    if( XCODE.xlib.popup.active==null && 
+        XCODE.xlib.popup.posx!=null && 
+        XCODE.xlib.popup.posx!=null )
     {
-        //console.log(parent.nodeName);
-        if( parent.nodeName=="FIELDSET" )
+        XCODE.xlib.popup.active=true;
+        XCODE.xlib.popup.x=XCODE.document.x.createElement("div");
+        var popup=XCODE.xlib.popup.x;
+        popup.innerHTML=html;
+    
+        var parent=XCODE.xlib.popup.ctrl;
+        while(parent)
         {
-            break;
+            //console.log(parent.nodeName);
+            if( parent.nodeName=="FIELDSET" )
+            {
+                break;
+            }
+            parent=parent.parentElement;
         }
-        parent=parent.parentElement;
+        if(!parent)
+        {
+            parent=XCODE.webapp.scroll.x;
+        }
+        else
+        {
+            var rect=parent.getBoundingClientRect(); 
+            XCODE.xlib.popup.posx-=rect.left;
+            XCODE.xlib.popup.posy-=rect.top;
+        }
+        XCODE.xlib.popup.parent=parent;
+    
+        popup.style.top=XCODE.xlib.popup.posy.toString()+"px";
+        popup.style.left=XCODE.xlib.popup.posx.toString()+"px";
+        popup.style.display='block';
+        popup.setAttribute("class",XCODE.xlib.popup.popupcls);
+        popup.setAttribute("onclick","event.stopPropagation()"); //mukodjon a drag
+    
+        parent.appendChild(popup);
+        document.body.setAttribute("onclick","XCODE.xlib.popup.clear()");
+        XCODE.xlib.dragElement(popup); 
     }
-    if(!parent)
-    {
-        parent=XCODE.webapp.scroll.x;
-    }
-    else
-    {
-        var rect=parent.getBoundingClientRect(); 
-        XCODE.xlib.popup.posx-=rect.left;
-        XCODE.xlib.popup.posy-=rect.top;
-    }
-    XCODE.xlib.popup.parent=parent;
-
-    popup.style.top=XCODE.xlib.popup.posy.toString()+"px";
-    popup.style.left=XCODE.xlib.popup.posx.toString()+"px";
-    popup.style.display='block';
-    popup.setAttribute("class",XCODE.xlib.popup.popupcls);
-    popup.setAttribute("onclick","event.stopPropagation()"); //mukodjon a drag
-
-    parent.appendChild(popup);
-    document.body.setAttribute("onclick","XCODE.xlib.popup.clear()");
-    XCODE.xlib.dragElement(popup); 
 }
 
 
 XCODE.xlib.popup.clear=function()
-{ 
+{   
     //console.log("popup_clear");
 
     var popup=XCODE.xlib.popup.x;

@@ -1,3 +1,7 @@
+2019-09-02
+  webapp combo box szinkronizalva (egyszerre csak egy);
+  xmethod6 signal ellen vedve;
+
 2019-08-27 terminal-qt5 warning javitva:
 
 2019-08-27 osztaly-metodus cache-eles:

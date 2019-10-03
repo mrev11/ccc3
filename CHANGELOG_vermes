@@ -1,3 +1,6 @@
+2019-10-03 webapp javitgatas:
+  updatecontrol-ban javitva a TABLE-k ertekadasa;
+
 2019-10-02 webapp javitgatas:
   combo-k scrollozasa javitva;
   scrollIntoView helyett mindenhol XCODE.bringintoview();

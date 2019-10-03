@@ -180,13 +180,15 @@ XCODE.updatecontrol=function(id,value)
     }
     else if( ctrl.nodeName=="TABLE" )
     {
-        var row=ctrl.getElementsByTagName("tr"); //összes tr tag
+        XCODE.unclick_row(ctrl.selectedrow);
+        ctrl.selectedrow=null;
+        var body=ctrl.getElementsByTagName("tbody")[0];
+        var row=body.getElementsByTagName("tr"); //összes tr tag
         for( var i=0; i<row.length; i++ ) 
         {
             if( row[i].id==value )
             {
                 XCODE.onclick_row(row[i]);
-                //row[i].scrollIntoView();
                 XCODE.bringintoview(ctrl.parentNode,row[i]);
                 break;
             }

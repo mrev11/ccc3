@@ -483,13 +483,15 @@ XCODE.updatecontrol=function(id,value)
     }
     else if( ctrl.nodeName=="TABLE" )
     {
-        var row=ctrl.getElementsByTagName("tr"); //összes tr tag
+        XCODE.unclick_row(ctrl.selectedrow);
+        ctrl.selectedrow=null;
+        var body=ctrl.getElementsByTagName("tbody")[0];
+        var row=body.getElementsByTagName("tr"); //összes tr tag
         for( var i=0; i<row.length; i++ ) 
         {
             if( row[i].id==value )
             {
                 XCODE.onclick_row(row[i]);
-                //row[i].scrollIntoView();
                 XCODE.bringintoview(ctrl.parentNode,row[i]);
                 break;
             }
@@ -691,19 +693,27 @@ XCODE.onclick_row=function(row)
     //<table><tbody><tr></tr></tbody></table>
     var sec=row.parentElement; //HTMLTableSectionElement 
     var tab=sec.parentElement; //HTMLTableElement
-    if( tab.selectedrow )
-    {
-        if( tab.selectedrow.className=="evenX" )
-        {
-            tab.selectedrow.className="even";
-        }
-        else if( tab.selectedrow.className=="oddX" )
-        {
-            tab.selectedrow.className="odd";
-        }
-    }
+    XCODE.unclick_row(tab.selectedrow);
     tab.selectedrow=row;
     row.className+="X";
+}
+
+
+//------------------------------------------------------------------------------
+XCODE.unclick_row=function(row)
+//------------------------------------------------------------------------------
+{
+    if( row )
+    {
+        if( row.className=="evenX" )
+        {
+            row.className="even";
+        }
+        else if( row.className=="oddX" )
+        {
+            row.className="odd";
+        }
+    }
 }
 
 

@@ -186,7 +186,8 @@ XCODE.updatecontrol=function(id,value)
             if( row[i].id==value )
             {
                 XCODE.onclick_row(row[i]);
-                row[i].scrollIntoView();
+                //row[i].scrollIntoView();
+                XCODE.bringintoview(ctrl.parentNode,row[i]);
                 break;
             }
         }

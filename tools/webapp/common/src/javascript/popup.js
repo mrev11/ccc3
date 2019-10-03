@@ -31,7 +31,7 @@ XCODE.xlib.popup.show=function(html)
 
     if( XCODE.xlib.popup.active==null && 
         XCODE.xlib.popup.posx!=null && 
-        XCODE.xlib.popup.posx!=null )
+        XCODE.xlib.popup.posy!=null )
     {
         XCODE.xlib.popup.active=true;
         XCODE.xlib.popup.x=XCODE.document.x.createElement("div");

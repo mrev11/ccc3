@@ -169,4 +169,23 @@ XCODE.unloadstyle=function(url)
 }
 
 //------------------------------------------------------------------------------
+XCODE.bringintoview=function(div,elmnt)
+{
+    //div: ebben scrollozodik elmnt
+    //elmnt: ezt akarjuk lathato helyre scrollozni
+    //
+    //elmnt.scrollIntoView()-t helyettesiti,
+    //ami nem jo, mert az egesz ablakot rangatja
 
+    if( div.scrollTop>elmnt.offsetTop )
+    {
+        div.scrollTop=elmnt.offsetTop;
+    }
+    else if( div.scrollTop<elmnt.offsetTop+elmnt.scrollHeight-div.offsetHeight )
+    {
+        div.scrollTop=elmnt.offsetTop+elmnt.scrollHeight-div.offsetHeight
+    }
+
+}
+
+//------------------------------------------------------------------------------

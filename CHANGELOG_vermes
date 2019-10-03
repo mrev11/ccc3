@@ -1,3 +1,10 @@
+2019-10-02 webapp javitgatas:
+  combo-k scrollozasa javitva;
+  scrollIntoView helyett mindenhol XCODE.bringintoview();
+  combo: position,top,left transzformacio javitva;
+  datepicker: position,top,left transzformacio javitva;
+  selbox: position,top,left transzformacio javitva;
+
 2019-09-02
   webapp combo box szinkronizalva (egyszerre csak egy);
   xmethod6 signal ellen vedve;

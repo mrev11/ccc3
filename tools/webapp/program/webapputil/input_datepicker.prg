@@ -4,6 +4,7 @@ namespace webapp
 ***************************************************************************************
 static function input_aux(inp,aux:="aux")
 local inp1, div
+local st
 
     inp1:=xhtmlnodeNew("input")
     inp1:content:={} //inp:content::aclone 
@@ -14,9 +15,24 @@ local inp1, div
     inp:content:={inp1}
     inp:attrib:={}
     
-    inp:setstyle( "position:"+inp1:getstyle("position") )
-    inp:setstyle( "top:"+inp1:getstyle("top") )
-    inp:setstyle( "left:"+inp1:getstyle("left") )
+    //inp:setstyle( "position:"+inp1:getstyle("position") )
+    //inp:setstyle( "top:"+inp1:getstyle("top") )
+    //inp:setstyle( "left:"+inp1:getstyle("left") )
+
+    st:=inp1:getstyle("position")
+    if( st!=NIL )
+        inp:setstyle( "position:"+st )
+    end
+    st:=inp1:getstyle("top")
+    if( st!=NIL ) 
+        inp:setstyle( "top:"+st)
+    end
+    st:=inp1:getstyle("left")
+    if( st!=NIL )
+        inp:setstyle( "left:"+st )
+    end
+
+
     
     inp1:setstyle("position:relative")
     inp1:delstyle("top")

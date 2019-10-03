@@ -12,6 +12,7 @@ local inptxt
 local id:=inp:getattrib("id")
 local onchange:=inp:getattrib("onchange")
 local value:=inp:getattrib("value")
+local st
 
     button:=xhtmlnodeNew("input")
     button:attrib:=inp:attrib//::aclone
@@ -25,9 +26,19 @@ local value:=inp:getattrib("value")
     divouter:=inp
     divouter:type:="div"
     divouter:attrib:={}
-    divouter:setstyle( "position:"+button:getstyle("position") )
-    divouter:setstyle( "top:"+button:getstyle("top") )
-    divouter:setstyle( "left:"+button:getstyle("left") )
+
+    st:=button:getstyle("position")
+    if( st!=NIL )
+        divouter:setstyle( "position:"+st )
+    end
+    st:=button:getstyle("top")
+    if( st!=NIL ) 
+        divouter:setstyle( "top:"+st)
+    end
+    st:=button:getstyle("left")
+    if( st!=NIL )
+        divouter:setstyle( "left:"+st )
+    end
 
     button:setstyle("position:relative")
     button:delstyle("top")

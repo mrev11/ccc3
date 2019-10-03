@@ -489,7 +489,8 @@ XCODE.updatecontrol=function(id,value)
             if( row[i].id==value )
             {
                 XCODE.onclick_row(row[i]);
-                row[i].scrollIntoView();
+                //row[i].scrollIntoView();
+                XCODE.bringintoview(ctrl.parentNode,row[i]);
                 break;
             }
         }
@@ -781,7 +782,26 @@ XCODE.unloadstyle=function(url)
 }
 
 //------------------------------------------------------------------------------
+XCODE.bringintoview=function(div,elmnt)
+{
+    //div: ebben scrollozodik elmnt
+    //elmnt: ezt akarjuk lathato helyre scrollozni
+    //
+    //elmnt.scrollIntoView()-t helyettesiti,
+    //ami nem jo, mert az egesz ablakot rangatja
 
+    if( div.scrollTop>elmnt.offsetTop )
+    {
+        div.scrollTop=elmnt.offsetTop;
+    }
+    else if( div.scrollTop<elmnt.offsetTop+elmnt.scrollHeight-div.offsetHeight )
+    {
+        div.scrollTop=elmnt.offsetTop+elmnt.scrollHeight-div.offsetHeight
+    }
+
+}
+
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 XCODE.openalert=function(alert_as_html)
@@ -1960,7 +1980,11 @@ XCODE.xlib.combo.show=function(input_id) //input-onclick
     if( combo.style.display=="none" )
     {
         combo.style.display="block";
-        XCODE.xlib.combo.findrow(combo,input.value);
+        row=XCODE.xlib.combo.findrow(combo,input.value);
+        if(row)
+        {
+            XCODE.bringintoview(combo,row);
+        }
     }
     else
     {
@@ -2069,13 +2093,7 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
                     var cls1=row1.getAttribute('class');
                     row.setAttribute('class',cls.replace('X',''));
                     row1.setAttribute('class',cls1+"X");
-        
-                    var rrect=row1.getBoundingClientRect();
-                    var crect=combo.getBoundingClientRect();
-                    if( rrect.bottom>crect.bottom )
-                    {
-                        row1.scrollIntoView(false);
-                    }
+                    XCODE.bringintoview(combo,row1);
                 }
             }
             else
@@ -2107,13 +2125,7 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
                     var cls1=row1.getAttribute('class');
                     row.setAttribute('class',cls.replace('X',''));
                     row1.setAttribute('class',cls1+"X");
-        
-                    var rrect=row1.getBoundingClientRect();
-                    var crect=combo.getBoundingClientRect();
-                    if( rrect.top<crect.top )
-                    {
-                        row1.scrollIntoView();
-                    }
+                    XCODE.bringintoview(combo,row1);
                 }
             }
             else
@@ -2144,7 +2156,7 @@ XCODE.xlib.combo.findrow=function(node,value) //input.value egyezes alapjan kere
                 {
                     cls+='X';
                     value='???'+value;
-                    ch1.scrollIntoView();
+                    //ch1.scrollIntoView(false);
                     row=ch1;
                 }
                 ch1.setAttribute('class',cls);
@@ -2515,7 +2527,7 @@ XCODE.xlib.popup.show=function(html)
 
     if( XCODE.xlib.popup.active==null && 
         XCODE.xlib.popup.posx!=null && 
-        XCODE.xlib.popup.posx!=null )
+        XCODE.xlib.popup.posy!=null )
     {
         XCODE.xlib.popup.active=true;
         XCODE.xlib.popup.x=XCODE.document.x.createElement("div");

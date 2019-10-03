@@ -10,7 +10,11 @@ XCODE.xlib.combo.show=function(input_id) //input-onclick
     if( combo.style.display=="none" )
     {
         combo.style.display="block";
-        XCODE.xlib.combo.findrow(combo,input.value);
+        row=XCODE.xlib.combo.findrow(combo,input.value);
+        if(row)
+        {
+            XCODE.bringintoview(combo,row);
+        }
     }
     else
     {
@@ -119,13 +123,7 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
                     var cls1=row1.getAttribute('class');
                     row.setAttribute('class',cls.replace('X',''));
                     row1.setAttribute('class',cls1+"X");
-        
-                    var rrect=row1.getBoundingClientRect();
-                    var crect=combo.getBoundingClientRect();
-                    if( rrect.bottom>crect.bottom )
-                    {
-                        row1.scrollIntoView(false);
-                    }
+                    XCODE.bringintoview(combo,row1);
                 }
             }
             else
@@ -157,13 +155,7 @@ XCODE.xlib.combo.keydown=function(event)  //navigalas
                     var cls1=row1.getAttribute('class');
                     row.setAttribute('class',cls.replace('X',''));
                     row1.setAttribute('class',cls1+"X");
-        
-                    var rrect=row1.getBoundingClientRect();
-                    var crect=combo.getBoundingClientRect();
-                    if( rrect.top<crect.top )
-                    {
-                        row1.scrollIntoView();
-                    }
+                    XCODE.bringintoview(combo,row1);
                 }
             }
             else
@@ -194,7 +186,7 @@ XCODE.xlib.combo.findrow=function(node,value) //input.value egyezes alapjan kere
                 {
                     cls+='X';
                     value='???'+value;
-                    ch1.scrollIntoView();
+                    //ch1.scrollIntoView(false);
                     row=ch1;
                 }
                 ch1.setAttribute('class',cls);

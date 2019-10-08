@@ -171,7 +171,8 @@ static function islocked(table)
         //Ha viszont itt megállunk, akkor jónak tudott programokról
         //derülhet ki váratlanul, hogy EOF-ba írnak.
 
-        if( tabEof(table) )
+        //if( tabEof(table) )
+        if( tabPosition(table)==0 ) //2019-10-08
             taberrOperation("tabEvalColumn")
             taberrDescription(@"writing EOF")
             tabError(table)

@@ -23,6 +23,7 @@ function main()
 local thr,thw,sp
 
     ? sp:=socketpair()
+    //? sp:=unix_socketpair()
 
     thr:=thread_create({||read(sp[1])})
     thw:=thread_create({||write(sp[2])})

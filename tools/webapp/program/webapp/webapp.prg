@@ -189,7 +189,7 @@ local req,wsuri,page,msg
 ***************************************************************************************
 static function start_session()
 
-local sp:=socketpair() //{sa,sc}  plain fd-k
+local sp:=unix_socketpair() //{sa,sc}  plain fd-k
 local sid:=sessionid()
 local pid,n
 //local env0,env1

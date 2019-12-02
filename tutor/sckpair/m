@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc3_socket
+bapp_unix_.b -d. -dunix -bccc3_socket

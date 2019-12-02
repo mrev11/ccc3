@@ -1,7 +1,14 @@
-23eb760cc140c0617d8b8958fda0a7e5eb462692 2019102011:39:55-UTC ./CHANGELOG_vermes
-e236170c0a7e0f18a6eb30211d09c8de4d149252 2019102011:33:29-UTC ./usr/bin/linux/webapp
+d6fcf540dc0525e48904ef6208bba6097f6060ed 2019120211:11:05-UTC ./CHANGELOG_vermes
+aa1242d69536de6846b5941a23400cee95e3df14 2019120210:56:33-UTC ./tutor/sckpair/sckpairdemo.prg
+ac66d6ec2b012233f4263c6d636990dd73193153 2019120210:53:34-UTC ./tutor/sckpair/m
+7189d6578a6d600d41eb629bdbe1992e60ee1019 2019112611:20:51-UTC ./usr/bin/linux/msk2html
+b01bd7119c1d7b5c02f04298f07d02f200384928 2019112611:20:50-UTC ./usr/bin/linux/webapp
+a0ab973b1794caffcfbe74efa3c731d4e8d247a4 2019111914:36:08-UTC ./tools/xmldom/xmldom_lemon.prg
+b4123b6619092bf373821f7b5d4424decf8a9a6b 2019111914:24:41-UTC ./tools/xmldom/xmldom_parser.lem
+21b413e363fa77431c7c0dba6dcaeb458f44c0d7 2019111914:13:59-UTC ./tools/xmldom/xmldom_lexer.lex
+f0e5e18ee79f20a743c6885be954d73b1606961f 2019111412:45:31-UTC ./usr/bin/linux/websrv
+6eda17e49fd230e10b89da83db2cc4cc17560158 2019111309:00:29-UTC ./usr/build/linux/for2obj.bat
 f11538b35a6d3add1da08c5c92a440546e5ebe8d 2019102011:33:23-UTC ./tools/webapp/program/webapp/webapp.prg
-f67df5de2d1250f55790b70bc0e5a3a0c9ba8f02 2019102011:30:41-UTC ./tutor/sckpair/sckpairdemo.prg
 f5c2aa94a18656c43db3a1fe3cddc8f2b49ed5c8 2019102011:30:14-UTC ./tutor/sckpair/unix_socketpair.cpp
 97920a0f87159152de97b142561e6c940f62dd80 2019102011:11:01-UTC ./tutor/sckpair/s
 d5aeea0af7b9dc7b564bb7c02e5e0a9ebf11f33b 2019101909:08:46-UTC ./log-install
@@ -15,7 +22,6 @@ e2421ec8a1b296b313aa230baafd6c2d06ed7d51 2019101909:08:43-UTC ./usr/bin/linux/fi
 69cf9f48df11f7727213e02e6a4dcdefaf3e61b2 2019101909:08:42-UTC ./usr/bin/linux/filetime-save
 fcb5be275fa3955786037104a1755ebe330125ce 2019101909:08:40-UTC ./jt/jterminal/jterminal.jar
 5b304d613e405561b1d799fd0b7f48b9f392b6a4 2019101909:08:37-UTC ./usr/bin/linux/terminal-qt5
-2e754708a0f59f6358d19cc4d1cc1d13eafd3b8a 2019101909:08:35-UTC ./usr/bin/linux/msk2html
 2013dcfc61f50190c0996c529e53f84faf30cdfc 2019101909:08:30-UTC ./usr/bin/linux/tv
 44da2f124d4ddd3e44575f11f4ae832b53b5719b 2019101909:08:19-UTC ./usr/bin/linux/jeed
 a3531fc776136bbc85384c91205a7f79a599c1a4 2019101909:08:18-UTC ./usr/bin/linux/tds2prg
@@ -41,7 +47,6 @@ f27b4834aefe37a0fa32485be68664e67854356e 2019101909:07:53-UTC ./usr/bin/linux/zg
 3de770102ccef023488aaf750722291890d74c42 2019101909:07:53-UTC ./usr/bin/linux/zgrep
 0ee320d41f72c3fa2a815d083b188fb5f312ea02 2019101909:07:52-UTC ./usr/bin/linux/zhist
 ed518b380fd987e471b6b72ce87bc6dbf331fe55 2019101909:07:49-UTC ./usr/bin/linux/xstart
-8c9b1c2200173a6c6b87a6954364e13ef66de38e 2019101909:07:46-UTC ./usr/bin/linux/websrv
 56a095cedb26c4e2acfec7fa6a3a9e391faf8aed 2019101909:07:45-UTC ./usr/bin/linux/tran2cpp
 586b417b9d51425600e155d5b0e081b0437f155e 2019101909:07:44-UTC ./usr/bin/linux/prg2tdc
 6475ae0229d869927c95d535d955983e3bd6d574 2019101909:07:44-UTC ./usr/bin/linux/tabsuper
@@ -316,7 +321,6 @@ d52952ea354316b3daa440ab0c392a14f8a7f1cf 2018093006:20:03-UTC ./tools/z/ver3/zre
 9a9f4ad026fb201b86ccba007e701b3a8c34f2f2 2018093006:19:54-UTC ./tools/ddict2/mskowner.say
 c01b7499952052a1111ebf5582b22512c9d22368 2018093006:19:54-UTC ./tools/ddict2/msksor.say
 f4ad1673970c9af7eb2da35e08433c4051d65772 2018093006:19:53-UTC ./tools/dbfview/search.say
-e9639d2bac2c2014a819c2150f97c63112cdb2f5 2018093006:19:45-UTC ./tools/mask/maskdemo.say
 6771e22048e2fbec967012f60abbcc1a46195a30 2018081306:13:00-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.ver
 8dfc8261ef47c5450e36ad94ecb64182b0d5b436 2018081306:07:41-UTC ./tools/xmlrpc/xmlrpc.ver
 e3fb4c57534cfb4ecd768ba7280ef3c992658acd 2018081305:40:00-UTC ./.gitignore
@@ -1414,7 +1418,6 @@ e3c37db42984cb2099b2f44b3f04760317dfa4d6 2013101616:15:49-UTC ./tools/ddict2/dd/
 810f2feda3524f7bbbe50ccdd313096dd424b923 2013101614:42:41-UTC ./tools/ddict2/dd/ddictx.bt
 22e138463bc95de0f58ffa5cff58a1072bb4267c 2013101614:41:38-UTC ./tools/ddict2/dd/dummy.bt
 938ffac19561eb9e6b10519c1df2d03cdcc2056e 2013100209:56:26-UTC ./tools/xmldom/xmlpars.prg
-25498bce8a743511efb65d34033c7981c8f4cee6 2013093022:11:03-UTC ./tools/xmldom/xmldom_lexer.lex
 958a0b1a55de96ed336b5f77abc06b18efb5b1f4 2013092607:08:43-UTC ./tabobj/tbbtbtx/dbindex.prg
 ac65fbd08847b51145ab5383fedbf650e6ca51c3 2013081911:04:59-UTC ./tools/z/zhist.prg
 5bdcb006d93fb63a514e373f2af6827346d15b0f 2013081211:21:27-UTC ./usr/bin/linux/z
@@ -1537,7 +1540,6 @@ bc662b58a5d2a3a1268c3a6545ce40cc0842168a 2012042111:13:47-UTC ./tools/webapp/pro
 6614f1812591d49f5d4e1665b42bf941f2c8269d 2012022612:01:15-UTC ./tools/webapp/program/msk2html/proba/parfile.bld
 405b2266730e2e093a00ea5ad4dbdc0ecc340e8a 2012022610:21:22-UTC ./tools/mask/kozepes.msk
 e3ae42850f095dbf4bbe493f9673f2eda4476b95 2012022609:46:45-UTC ./tools/mask/nagy.msk
-a8f87446421cce99e2f021f3493297ddec667f19 2012022517:37:47-UTC ./tools/xmldom/xmldom_lemon.prg
 e731c0697f7ce1d4b466767588d477754bc59682 2012021916:20:24-UTC ./tabobj/tbbtbtx/utility/m
 458d385f0bfa44605bea9767e2ea4134367a4396 2012021916:17:17-UTC ./tabobj/tbbtbtx/utility/parexe.bld
 6ccad6e08bce3aebd0d4fa9401f7c104d00caa78 2012010815:49:32-UTC ./doc/ccc-belulrol/script/head.html
@@ -1547,7 +1549,6 @@ adc83b19e793491b1c6ea0fd8b46cd9f32e592fc 2011123109:08:55-UTC ./tools/webapp/pro
 26f976fa0466de4cc3b7acf3f136376bb2a91179 2011121805:25:03-UTC ./tools/webapp/program/webapputil/md5passw.prg
 ecb2d3355ca3de16432f1a2f14a082783aaf25b9 2011120919:46:52-UTC ./tools/webapp/program/webapp/sighandler.prg
 c6c194d8186e5b1017a4055fd947ec3bdfbf0fd3 2011112822:06:49-UTC ./tools/webapp/program/webapputil/urlutil.prg
-288a6f5d94c9500de2ae7aee91e3a667ac712f29 2011112819:41:13-UTC ./tools/xmldom/xmldom_parser.lem
 7592eb584d581d7f0815aaf6250d3a8d7cfad7c1 2011111821:51:33-UTC ./tools/webapp/program/webapp/socketpair.prg
 48d097b59230eb572d8ef06adfc1ca9e3d412248 2011111509:53:17-UTC ./jt/jtlib/jtdialog.prg
 430fe9e4c3b0f5ea014083bc2b9c1a8a9255e25d 2011091909:51:21-UTC ./tabobj/commonui.src/tabedrec.prg
@@ -2759,7 +2760,6 @@ ac895c97343109492853086729c425944d4f6d6f 2006042018:02:50-UTC ./tutor/tab2xml/pa
 ddf5918e4e92cb0892394c81e35073560d44b89c 2006042017:34:35-UTC ./tutor/spawn/test2.prg
 2a872812420a163742aa413ab547b8cd55bcf520 2006042017:32:44-UTC ./tutor/spawn/test1.prg
 d05f15e00e0c5652ed263e22fd37788b5075261d 2006042016:31:34-UTC ./tutor/sckpair/m.bat
-d3588cdc626a2634539397de98cae5d5a748a28d 2006042016:31:24-UTC ./tutor/sckpair/m
 e88ac67209ed748922fc608dffb1f4181dbbbbd3 2006042016:30:11-UTC ./tutor/redir/redir.prg
 a8f228251f3d80dc2f4f7d7ef4aa82e212899d15 2006042016:29:23-UTC ./tutor/redir/child.prg
 56b9a88d43aef159cc9de1471ff5264a4faeeda9 2006042016:07:06-UTC ./tutor/rawstring/rawstring.prg

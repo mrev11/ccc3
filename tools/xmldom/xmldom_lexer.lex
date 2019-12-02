@@ -102,6 +102,7 @@ hex        [0-9a-fA-F]+
                     dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
                     dup();stringnb("xmldom_lexer");_o_method_operation.eval(2);pop();
                     dup();stringnb(desc);_o_method_description.eval(2);pop();
+                    dup();number(1);_o_method_subcode.eval(2);pop();
                     if( inputfspec )
                     {
                         dup();stringnb(inputfspec);_o_method_filename.eval(2);pop();

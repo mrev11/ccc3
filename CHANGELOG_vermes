@@ -1,3 +1,12 @@
+2019-12-02
+  xmldom-ban plusz hiba info megadva
+     unexpected char: subcode=1
+     invalid declaration syntax: args={symbol}, subcode=2
+     syntax error: subcode=3
+     tag mismatch: args={tag1,tag2}, subcode=10;
+  sckpair demoban Windows es Unix eset szetvalasztva;
+  fortran forditas: for2obj.bat;   
+
 2019-10-20 webapp-ban unix_socketpair;
 
 2019-10-08

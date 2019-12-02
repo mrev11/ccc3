@@ -22,8 +22,13 @@
 function main()
 local thr,thw,sp
 
+#ifdef _UNIX_
+    //Windowson ez nincs
+    ? sp:=unix_socketpair()
+#else
+    //Linux vagy Windows
     ? sp:=socketpair()
-    //? sp:=unix_socketpair()
+#endif
 
     thr:=thread_create({||read(sp[1])})
     thw:=thread_create({||write(sp[2])})

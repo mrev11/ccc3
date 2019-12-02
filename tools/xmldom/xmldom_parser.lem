@@ -73,6 +73,7 @@ DEFINE_METHOD(lexer);
     dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
     dup();stringnb("xmldom_parser");_o_method_operation.eval(2);pop();
     dup();stringnb(desc);_o_method_description.eval(2);pop();
+    dup();number(3);_o_method_subcode.eval(2);pop();
     if( lexer->inputfspec )
     {
         dup();stringnb(lexer->inputfspec);_o_method_filename.eval(2);pop();

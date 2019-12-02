@@ -92,6 +92,8 @@ local info:=this:lemon[s1],node,err
         err:operation:="xmldom_parser"
         err:filename:=xmldom.lexer.inputfspec(this:lexer)
         err:description:="tag mismatch <"+info:type+"></"+s2+"> near #line "+alltrim(str(xmldom.lexer.lineno(this:lexer)))
+        err:args:={info:type,s2}
+        err:subcode:=10
         break(err)
     end
 
@@ -200,6 +202,8 @@ local info,err
         err:operation:="xmldom_parser"
         err:filename:=xmldom.lexer.inputfspec(this:lexer)
         err:description:="invalid declaration syntax <?"+s+"...?> near #line "+alltrim(str(xmldom.lexer.lineno(this:lexer)))
+        err:args:={s}
+        err:subcode:=2
         break(err)
     end
     info:=this:infopush("?"+s)

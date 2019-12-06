@@ -4,3 +4,25 @@
 -d../code_generated
 
 -iinclude
+
+BUILD_CFG=obj$(CCCBIN)/gtk-cflags
+BUILD_LIBX=obj$(CCCBIN)/gtk-libs
+
+
+#-bgtk-x11-2.0 
+#-bgdk-x11-2.0 
+#-bpangocairo-1.0 
+#-batk-1.0 
+#-bcairo 
+#-bgdk_pixbuf-2.0 
+#-bgio-2.0 
+#-bpangoft2-1.0 
+#-bpango-1.0 
+#-bgobject-2.0 
+#-bglib-2.0 
+#-bharfbuzz 
+#-bfontconfig 
+#-bfreetype 
+
+ 
+ 

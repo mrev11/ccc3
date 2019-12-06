@@ -1,19 +1,14 @@
 #!/bin/bash
 
-#BLD=gtk-suse9.bld
-#BLD=gtk-suse10.bld
-#BLD=gtk-suse-kde-32.bld
-#BLD=gtk-freebsd.bld
-#BLD=gtk-netbsd.bld
-#BLD=gtk-hoary.bld
-#BLD=gtk-natty.bld
-BLD=gtk-ubuntu.bld
-#BLD=gtk-suse13.bld
-
 pushd ../codegen && m && run.exe
 popd
 
-bapp_unix_.b  @gtk.bld  @"$BLD" -sccc3_gtk
+mkdir -p obj$CCCBIN
+pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
+pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
+echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
+
+bapp_unix_.b  @gtk.bld  -sccc3_gtk
 
 if test -s error; then
     list error &

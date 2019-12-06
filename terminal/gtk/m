@@ -4,6 +4,7 @@ mkdir -p obj$CCCBIN
 pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
 pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
 echo -DCOMPILE_TERMINAL  >>obj$CCCBIN/gtk-cflags
+echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
 
 bapp_unix0.b  @parfile.bld
 

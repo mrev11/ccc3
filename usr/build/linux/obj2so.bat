@@ -19,6 +19,9 @@ shift
 for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLNK; done
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+if test -f "$BUILD_LIBX"; then
+    cat $BUILD_LIBX >>$RSPLNK
+fi
 
 echo "-Wl,-soname=$LIBNAM" >>$RSPLNK 
  

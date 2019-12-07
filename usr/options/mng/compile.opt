@@ -14,3 +14,4 @@
 -Wno-trigraphs
 -Wno-empty-body
 -Wno-int-to-pointer-cast
+-Wno-incompatible-ms-struct

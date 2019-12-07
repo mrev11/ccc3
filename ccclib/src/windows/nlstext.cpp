@@ -39,8 +39,8 @@ static void load(char *libname)
 
     void *sym=0;
 
-         if( sym=(void*)GetProcAddress(hnd,"hashtable_fill") ); //MSC
-    else if( sym=(void*)GetProcAddress(hnd,"_Z14hashtable_fillP13hashtable_nls") ); //GCC 3.x+
+         if( (sym=(void*)GetProcAddress(hnd,"hashtable_fill")) ); //MSC
+    else if( (sym=(void*)GetProcAddress(hnd,"_Z14hashtable_fillP13hashtable_nls")) ); //GCC 3.x+
     else
     {
         fprintf(stderr,"Error: hashtable_fill not found in %s\n",libname);

@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
     }
 
     mapFileHandle=CreateFileMapping(fileHandle,0,PAGE_READONLY,0,0,NULL);
-    if( mapFileHandle<=0 )
+    if( mapFileHandle==0 )
     {
         fprintf(stderr,"\nFile mapping failed: %s",filename);
         exit(1);

@@ -430,10 +430,10 @@ static void setwsize_gtk()
     GtkTextTag *tag=lookup_tag(7,0); // w/n
     for( i=0; i<wheight-1; i++ )
     {
-        gtk_text_buffer_insert_with_tags(gtkbuffer,&iter,buf,wwidth,tag,NULL);
+        gtk_text_buffer_insert_with_tags(gtkbuffer,&iter,buf,wwidth,tag,(char*)NULL);
         gtk_text_buffer_insert(gtkbuffer,&iter,"\n",1);
     }
-    gtk_text_buffer_insert_with_tags(gtkbuffer,&iter,buf,wwidth,tag,NULL); //utolso sor \n nelkul
+    gtk_text_buffer_insert_with_tags(gtkbuffer,&iter,buf,wwidth,tag,(char*)NULL); //utolso sor \n nelkul
     free(buf);
 
     //kezdo kurzor pozicio

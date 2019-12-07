@@ -213,7 +213,7 @@ char *filemap(char *filename)
     }
 
     mapFileHandle=CreateFileMapping(fileHandle,0,PAGE_READWRITE,0,0,NULL);
-    if( mapFileHandle<=0 )
+    if( mapFileHandle==0 )
     {
         stringnb("filemap"); _clp_taberroperation(1); pop();
         stringnb("file mapping failed"); _clp_taberrdescription(1); pop();

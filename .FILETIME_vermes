@@ -1,4 +1,8 @@
-9e9b5dc90125a074abd91278904092e0332f0f4c 2020022314:31:32-UTC ./CHANGELOG_vermes
+8f0ef41174def0d8b64629b37ca11b16649fbbaf 2020022314:39:29-UTC ./log-install
+51ab284c8c9450a5894f72c7ecf0d3883775fcbe 2020022314:39:22-UTC ./jt/jterminal/jterminal.jar
+a23d454ba6eb7c22150bea0d42c0619a3e8c0186 2020022314:39:18-UTC ./usr/bin/linux/msk2html
+4c2ce73bfbf9d01f6f88bcf9c75e2d7c147a0143 2020022314:39:17-UTC ./usr/bin/linux/webapp
+86970384f0a11106c252014b25b618fffdea3133 2020022314:35:09-UTC ./CHANGELOG_vermes
 6d04e7c94b6582b5c17d2e761991b4ef45e6c055 2020022314:20:38-UTC ./tools/webapp/program/webapputil/input_selbox.prg
 28c05e3e31c5b18620400b344fc2654cd62b1b86 2020022314:20:33-UTC ./tools/webapp/program/webapputil/input_datepicker.prg
 68ba2d7c0f6a1c2c09e13cc61e583dc156223c8c 2020022314:20:27-UTC ./tools/webapp/program/webapputil/input_combo.prg
@@ -14,9 +18,6 @@ bf6a41ab221682fd32fffd702f7b7216aa2c1260 2020022012:18:29-UTC ./tools/csvreader/
 0a6d1f0d7d0b4bb3d9249a293fb14bc3eb423c51 2020022012:16:58-UTC ./tools/csvreader/demo2.prg
 65d8ab12fc5d838c82a3d21d56910d99c6de140f 2020022010:20:45-UTC ./tools/csvreader/cr.prg
 fc79639a22e70e00392cee7a8481992d2542d52d 2020021912:45:49-UTC ./tools/csvreader/regex/m
-7189d6578a6d600d41eb629bdbe1992e60ee1019 2020021810:35:04-UTC ./usr/bin/linux/msk2html
-b01bd7119c1d7b5c02f04298f07d02f200384928 2020021810:35:03-UTC ./usr/bin/linux/webapp
-9dc096a6b741ca1adba1589c1f47e1cf41a9a673 2020021712:22:30-UTC ./log-install
 9b08804195d15a22b52756af151cf67a97aaba58 2020021712:22:30-UTC ./usr/bin/linux/gitstat
 1ad954bb9ad106607c18b2283e34062fe1a9da56 2020021712:22:29-UTC ./usr/bin/linux/gitfollow
 b7874c3cfd5dd67e90ab94cc7c6c6e7c508dc2d0 2020021712:22:29-UTC ./usr/bin/linux/gitnav
@@ -32,7 +33,6 @@ e4829a5d64ad4c611ef3fc33fee8e575123a1113 2020021712:22:24-UTC ./jt/jterminal/get
 3dd716dca2da8f2362457e3737feecd774b10c3b 2020021712:22:24-UTC ./jt/jterminal/getutil/picturedocument.class
 294772f2e82d095a5bdddc12e1ce6f7116f56b8d 2020021712:22:24-UTC ./jt/jterminal/getutil/radiofield.class
 ff7a9249632f9e916faa12810f94696f7f538770 2020021712:22:24-UTC ./jt/jterminal/jtchange.class
-f5b13198174de7e15639922f7accc27af76c1ae5 2020021712:22:24-UTC ./jt/jterminal/jterminal.jar
 dc9a88ef77152ba8dbc3975441ee009fba43a12a 2020021712:22:24-UTC ./jt/jterminal/jtmenucheck.class
 644e2325758a93b588bd67a8065dcce10508ce6f 2020021712:22:24-UTC ./jt/jterminal/jtmenuradio.class
 807fda5ff545fdcb6df691956e8c79fe7aa5b37d 2020021712:22:24-UTC ./jt/jterminal/jtradio.class

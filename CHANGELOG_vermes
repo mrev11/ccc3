@@ -1,3 +1,5 @@
+2020-02-23 CSV reader
+
 2020-02-23 webapp readfile API
   A bongeszoben <input type="file"> kontrollal kivalasztott fajlok beolvasasa.
   A tallozo kontroll formdata-erteke a kivalasztott fajlok listaja, ami nem

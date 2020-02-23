@@ -1,0 +1,3 @@
+csvreader masik implementacioja
+ez pcreposix-szal elemzi a csv-t
+csak binary tipusu bemenetre mukodik

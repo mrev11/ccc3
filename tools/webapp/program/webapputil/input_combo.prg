@@ -44,7 +44,7 @@ function input_combo(inp,table)
 local inp1,onblur0,onblur1,w
 
     input_aux(inp,"combo")
-    inp1:=inp:content[1]  //eredeti kontrol
+    inp1:=inp:content[1]  //eredeti kontroll
     inp:content[2]:addcontent(table)
     inp1:setattrib("class","combo")
     inp1:setattrib("onclick","XCODE.xlib.combo.show('"+inp1:getattrib("id")+"')")

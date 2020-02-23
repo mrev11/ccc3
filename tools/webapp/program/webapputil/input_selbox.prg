@@ -82,7 +82,7 @@ local onblur0,onblur1
 
     divouter:=inp
 
-    button:=divouter:content[1]  //eredeti kontrol
+    button:=divouter:content[1]  //eredeti kontroll
     divcombo:=divouter:content[2]
     inptxt:=divouter:content[3]
 

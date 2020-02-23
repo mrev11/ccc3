@@ -179,11 +179,17 @@ local ctrl,upd,cmd:=""
     while( ctrl!=NIL )
 
         if( !ctrl:orig==ctrl:value )
-            upd:='XCODE.updatecontrol("id",VALUE); '
-            upd::=strtran("id",ctrl:id)
-            upd::=strtran("VALUE",ctrl:value::jsstring)
-            cmd+=upd
-            //? ctrl:orig,"->",ctrl:value,"UPDATE",upd
+
+            // az <input type="file"> kontrollok erteke array
+            // az ilyeneket ki kell hagyni (nem modosithatok)
+
+            if( valtype(ctrl:value)=="C" )
+                upd:='XCODE.updatecontrol("id",VALUE); '
+                upd::=strtran("id",ctrl:id)
+                upd::=strtran("VALUE",ctrl:value::jsstring)
+                cmd+=upd
+                //? ctrl:orig,"->",ctrl:value,"UPDATE",upd
+            end
         end
 
         ctrl:=this:hash:nextvalue
@@ -198,10 +204,12 @@ local ctrl,upd,cmd:=""
 
     ctrl:=this:hash:firstvalue
     while( ctrl!=NIL )
-        upd:='XCODE.updatecontrol("id",XX); '
-        upd::=strtran("id",ctrl:id)
-        upd::=strtran("XX",ctrl:value::jsstring)
-        cmd+=upd
+        if( valtype(ctrl:value)=="C" )
+            upd:='XCODE.updatecontrol("id",XX); '
+            upd::=strtran("id",ctrl:id)
+            upd::=strtran("XX",ctrl:value::jsstring)
+            cmd+=upd
+        end
         ctrl:=this:hash:nextvalue
     end
 
@@ -282,7 +290,7 @@ class htmlcontrol(object)
     method  initialize
 
 static function htmlcontrol.initialize(this,node)
-local n,child
+local n,x,child,flist
 
     this:group:=""
 
@@ -299,8 +307,22 @@ local n,child
             this:group:=child:gettext
 
         elseif( child:type=="value" )
-            this:value:=child:gettext
-            this:orig:=this:value
+
+            if( child:content::empty() .or.;
+                child:content[1]:type=="#TEXT" .or.; 
+                child:content[1]:type=="#CDATA" )
+
+                this:value:=child:gettext
+                this:orig:=this:value
+
+            elseif( child:content[1]:type=="filelist" )
+                this:value:={}
+                this:orig:=this:value
+                flist:=child:content[1]
+                for x:=1 to len(flist:content)
+                    aadd(this:value,flist:content[x]:gettext)
+                next
+            end
         end
     next
     return this

@@ -1,3 +1,17 @@
+2020-02-23 webapp readfile API
+  A bongeszoben <input type="file"> kontrollal kivalasztott fajlok beolvasasa.
+  A tallozo kontroll formdata-erteke a kivalasztott fajlok listaja, ami nem
+  a szokasos C, hanem A tipusu. A fromdata.update a lista valtozasat nem kudi, 
+  vagyis a szerverbol nem lehet valtoztatni a kivalasztast (egyebkent sem lehetne).
+  tallozo parameterezese:
+    //az msk-bol <input type="text"> keletkezik
+    //azt at kell irni <input type="file">-ra, pl.
+    page["browse"]:setattrib("type","file")
+    page["browse"]:setattrib("multiple","true")
+    page["browse"]:setattrib("accept","image/*,.pdf")
+  tallozoval kivalasztott fajl beolvasasa:
+    txt:=webapp.readfile("browse",1,mode)
+
 2019-12-07 clang forditas windowson:
   a clang altal jelzett warningok javitva;
   ezek elnyomva

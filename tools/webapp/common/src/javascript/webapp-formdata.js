@@ -51,6 +51,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
     {
         if( ctrl[n].type=="text" ||
             ctrl[n].type=="hidden" ||
+            ctrl[n].type=="file" ||
             ctrl[n].type=="password" ||
             ctrl[n].type=="checkbox" ||
             ctrl[n].type=="radio" )
@@ -71,6 +72,21 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             else if( ctrl[n].type=="password" )
             {
                 x+="<value>"+"*".repeat(ctrl[n].value.length)+"</value>";
+            }
+            else if( ctrl[n].type=="file" )
+            {
+                x+="<value>"
+                x+="<filelist>"
+                var i;
+                for(i=0; i<ctrl[n].files.length; i++ )
+                {
+                    //console.log( i, ctrl[n].files[i].name );
+                    x+="<file>"
+                    x+=XCODE.cdataif( ctrl[n].files[i].name );
+                    x+="</file>"
+                }
+                x+="</filelist>"
+                x+="</value>"
             }
             else
             { 

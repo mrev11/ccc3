@@ -354,6 +354,7 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
     {
         if( ctrl[n].type=="text" ||
             ctrl[n].type=="hidden" ||
+            ctrl[n].type=="file" ||
             ctrl[n].type=="password" ||
             ctrl[n].type=="checkbox" ||
             ctrl[n].type=="radio" )
@@ -374,6 +375,21 @@ XCODE.formdata=function(srcid) //feltétel nélkül küld
             else if( ctrl[n].type=="password" )
             {
                 x+="<value>"+"*".repeat(ctrl[n].value.length)+"</value>";
+            }
+            else if( ctrl[n].type=="file" )
+            {
+                x+="<value>"
+                x+="<filelist>"
+                var i;
+                for(i=0; i<ctrl[n].files.length; i++ )
+                {
+                    //console.log( i, ctrl[n].files[i].name );
+                    x+="<file>"
+                    x+=XCODE.cdataif( ctrl[n].files[i].name );
+                    x+="</file>"
+                }
+                x+="</filelist>"
+                x+="</value>"
             }
             else
             { 
@@ -1978,6 +1994,75 @@ XCODE.getpwstrength=function(srcid)
 }
 
 //------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------
+XCODE.readfile=function(ctrlid,x,mode) 
+//------------------------------------------------------------------------------
+{
+    var ctrl=document.getElementById(ctrlid); //browse: <input type="file">
+    var file=ctrl.files[x-1] // 0-tol indexel
+    var reader = new FileReader();
+
+    reader.onerror=function()
+    {
+        //üzenet: webconsole-ra
+        var err="read error: "+reader.error.message;
+        console.log(err);
+
+        //üzenet: frmaux-ba        
+        XCODE.frmaux.writeln('<span style="color: red;">'+err+'</span>');
+
+        var x="<readfile>"+err+"</readfile>";
+        XCODE.send(x);
+    }
+
+    reader.onload=function()
+    {
+        //console.log( reader.result );
+        var x="<readfile>"
+        x+=XCODE.cdataif(reader.result);
+        x+="</readfile>";
+        XCODE.send(x);
+    }
+    
+    if( mode==null )
+    {
+        reader.readAsDataURL(file);
+    }
+
+    else if( mode=="dataurl" )
+    {
+        reader.readAsDataURL(file);
+    }
+
+    else if( mode=="binary" )
+    {
+        reader.readAsBinaryString(file);
+    }
+
+    else if( mode.indexOf("text")==0 )  // pl. "text-ISO-9959-2"
+    {
+        if( mode=="text" )
+        {
+            reader.readAsText(file); // UTF-8
+        }
+        else
+        {
+            var encoding=mode.substring(5);
+            reader.readAsText(file,encoding);
+        }
+    }
+
+    else
+    {
+        reader.readAsDataURL(file);
+    }
+
+}
+
+
 
 XCODE.xlib.combo={}
 

@@ -41,6 +41,7 @@ cat   src/javascript/webapp-inp_regex.js    >>webapp.js
 cat   src/javascript/webapp-compat.js       >>webapp.js
 cat   src/javascript/webapp-md5.js          >>webapp.js
 cat   src/javascript/webapp-password.js     >>webapp.js
+cat   src/javascript/webapp-readfile.js     >>webapp.js
 cat   src/javascript/combo.js               >>webapp.js
 cat   src/javascript/datepicker.js          >>webapp.js
 cat   src/javascript/popup.js               >>webapp.js

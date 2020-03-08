@@ -3,4 +3,5 @@ cd gtk3         && m  && cd ..
 cd gtk          && m  && cd ..
 cd sslforw      && m  && cd ..
 cd unix         && m  && cd ..
-cd unix-ncurses && m  && cd ..
+#cd unix-ncurses && m  && cd ..
+cd unix-termkey && m  && cd ..

@@ -1,3 +1,9 @@
+2020-02-07 terminal/unix-termkey:
+  Ugyanaz a program, mint s korabbi unix-ncurses,
+  kiveve, hogy a billentyu olvasas a libtermkey konyvtarral megy,
+  igy az escape szekvenciak elozetes regisztralasa nelkul is 
+  hordozhato az eltero terminal fajtak kozott.
+
 2020-02-23 CSV reader
 
 2020-02-23 webapp readfile API

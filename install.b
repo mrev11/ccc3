@@ -92,7 +92,8 @@ pushd ccctools/mklink; m; popd
 #-------------------
  
 pushd terminal/unix; m; popd
-pushd terminal/unix-ncurses; m; popd
+#pushd terminal/unix-ncurses; m; popd
+pushd terminal/unix-termkey; m; popd
 pushd terminal/sslforw; m; popd
 
 if test -f /usr/include/gtk-2.0/gtk/gtk.h; then

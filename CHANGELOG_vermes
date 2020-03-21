@@ -1,4 +1,12 @@
-2020-02-07 terminal/unix-termkey:
+2020-03-21 terminal/unix-termkey:
+  A libtermkey
+    Linux/NetBSD-en Shift-F1-et Key=<F13>-nak adja
+    FreeBSD-n Shift-F1-et Key=<F1>-nek mod=SHIFT modositassal adja
+  (hasonlo elteres minden Fn gombra es modositora)
+  ezt a kulonbseget FreeBSD-n ki kell egyenliteni.
+
+
+2020-03-07 terminal/unix-termkey:
   Ugyanaz a program, mint s korabbi unix-ncurses,
   kiveve, hogy a billentyu olvasas a libtermkey konyvtarral megy,
   igy az escape szekvenciak elozetes regisztralasa nelkul is 

@@ -1,28 +1,39 @@
 ##!/bin/bash
 
-# Egy szokasos 
-#       Ubuntu Precise 
-#       Debian Wheezy
+# Egy 
+#   Ubuntu Xenial->Eoan Server 
 # telepites utan
 # ezeket a csomagokat kell felrakni,
 # hogy a CCC2/CCC3 leforduljon.
 
 sudo apt-get install \
     g++ \
-    libncurses5-dev \
     libncursesw5-dev \
-    manpages-dev \
-    glibc-doc \
+    libtermkey-dev \
     libx11-dev \
     libxft-dev \
     libssl-dev \
     libpcre2-dev \
     libpcre3-dev \
-    libreadline6-dev \
-    git-core
+    libreadline-dev \
+    git
 
+exit 0
 
-#    libgtk2.0-dev \
-#    libgtk-3-dev \
-#    libpangox-1.0-dev \
+#opcionalis dokumentacio
+sudo apt-get install \
+    manpages-dev \
+    glibc-doc
+
+#opcionalis forditas clang-gal
+sudo apt-get install \
+    clang
+
+#opcionalis GTK-2 interface
+sudo apt-get install \
+    libgtk2.0-dev
+
+#opcionalis GTK-3 terminal
+sudo apt-get install \
+    libgtk-3-dev
 

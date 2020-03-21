@@ -1,3 +1,12 @@
+2020-03-21 tisztogatas:
+  felesleges fajlok torolve;
+  ccc-dependencies-ubuntu aktualizalva;
+  minta bashrcx fajl;
+  minta envccc fajl;
+  hianyzo copyright-ok potolva;
+  ccctools/pack/copyright kihagyja setup-ot es a ppo-kat;
+
+
 2020-03-21 terminal/unix-termkey:
   A libtermkey
     Linux/NetBSD-en Shift-F1-et Key=<F13>-nak adja

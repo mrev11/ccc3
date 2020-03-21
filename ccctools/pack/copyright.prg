@@ -22,7 +22,7 @@ static copyright:=<<TEXT>>
  */
 <<TEXT>>
 
-static s_skip:=":.:..:objlin:objfre:objsol:objmng:objbor:objmsc:"
+static s_skip:=":.:..:objlin:objfre:objsol:objmng:objbor:objmsc:setup:ppo:"
 static s_srcf:=".cpp.h.prg.ch.lem.lex.java."
 
 

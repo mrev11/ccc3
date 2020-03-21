@@ -1,0 +1,67 @@
+
+
+#########################################################################
+# CCC beallitasok
+#########################################################################
+
+export OREF_SIZE=200000
+
+
+export CCC2DIR=/opt/ccc2c
+export CCC3DIR=/opt/ccc3
+export CCCBIN=lin
+export CCCUNAME=linux
+export CCC_LANG=hu
+
+if [ "$CCCVER" == ""  ]; then
+    export CCCVER=3
+    export CCCDIR=$CCC3DIR
+elif [ "$CCCVER" == "2"  ]; then
+    export CCCDIR=$CCC2DIR
+elif [ "$CCCVER" == "3"  ]; then
+    export CCCDIR=$CCC3DIR
+else
+    echo invalid value of CCCVER: $CCCVER
+    exit
+fi
+
+if [ "$CCCTERM_CONNECT" == ""  ];then
+    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
+    export CCCTERM_INHERIT=yes
+
+    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+    export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk.exe"
+    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk3.exe"
+    #export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-qt5.exe"
+    #export CCCTERM_CONNECT="comfirm.hu:45799"
+    export CCCTERM_INHERIT=no
+
+    export CCCTERM_SIZE=100x40
+    export CCCTERM_FONTSPEC=Monospace-12
+fi
+
+export JTRESOL=high
+export JTERMINAL="$CCCDIR/usr/bin/$CCCUNAME/jterminal.jar"
+
+# export CCC_STRING_TAB=/home/vermes/temp/STRTAB
+# export CCC_LANG=hu
+# export CCC_AUTOCACHE=/run/shm/autocache
+
+
+#########################################################################
+# Path
+#########################################################################
+
+addpath $CCC3DIR/usr/bin/$CCCUNAME
+addpath $CCCDIR/usr/bin/$CCCUNAME
+addpath ~/bin
+addpath .
+
+addldpath $CCC2DIR/usr/lib/$CCCBIN
+addldpath $CCC3DIR/usr/lib/$CCCBIN
+addldpath $CCCDIR/usr/lib/$CCCBIN
+
+#########################################################################
+
+

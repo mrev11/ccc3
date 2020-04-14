@@ -50,8 +50,10 @@ static SOCKET sck;
 static network_uint32_t iobuf32[BUFLEN32];
 static char *iobuffer=(char*)iobuf32;
 static FILE *qout[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
+static char *fnames[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
 extern FILE *startlpr(const char *fspec, const char *dev);
 static char *localname(int fp,char *fname, const char **dev);
+static void autostart(char *fname);
 
 extern void setwsize(int x,int y);
 extern void setcursor(int x,int y);
@@ -333,7 +335,7 @@ void *tcpio_thread(void*arg)
 
                 if( 0<=fp && fp<SIZEQOUT )
                 {
-                    const char *dev;
+                    const char *dev=0;
                     locnam=localname(fp,fname,&dev);
                     if( locnam )
                     {
@@ -360,11 +362,17 @@ void *tcpio_thread(void*arg)
                             else if( strstr(locnam,"file:")==locnam )
                             {
                                 qout[fp]=fopen(locnam+5,additive?"ab":"wb");
+                                free(fnames[fp]);
+                                fnames[fp]=strdup(locnam+5);
+                                //printf("%d <<< %s\n",fp, fnames[fp]);
                             }
                             else
                             {
                                 qout[fp]=fopen(locnam,additive?"ab":"wb");
-                            }
+                                free(fnames[fp]);
+                                fnames[fp]=strdup(locnam);
+                                //printf("%d <<< %s\n",fp, fnames[fp]);
+                           }
 
                             if(qout[fp])
                             {
@@ -395,6 +403,12 @@ void *tcpio_thread(void*arg)
                         fclose(qout[fp]);
                         extern int funlock(int,int,int);
                         funlock(fileno(qout[fp]),0,1);
+                        if(fnames[fp])
+                        {
+                            autostart(fnames[fp]);
+                            free(fnames[fp]);
+                            fnames[fp]=0;
+                        }
                     }
                     qout[fp]=NULL;
                 }
@@ -510,6 +524,49 @@ static char *localname(int fp, char *fname, const char **dev)
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    
+
+//-------------------------------------------------------------------------
+static void autostart(char *fname)
+{
+    static char *env_autostart=getenv("CCCTERM_REDIR_AUTOSTART");
+
+    int flag=0;
+    
+    if( env_autostart==0 )
+    {
+        flag=0;
+    }
+    else if( *env_autostart=='y' )
+    {
+        flag=1;
+    }
+    else if( *env_autostart=='.' )
+    {
+        char *p=strrchr(fname,'.');
+        if( p==0 )
+        {
+            flag=0;
+        }
+        else
+        {
+            char ext[128];
+            strncpy(ext,p,sizeof(ext)-1);
+            strncat(ext,".",sizeof(ext)-1); 
+            flag=(0!=strstr(env_autostart,ext));
+        }
+    }
+        
+    if( flag )
+    {
+        char cmdbuf[1024];
+        #ifdef UNIX
+            snprintf(cmdbuf,sizeof(cmdbuf),"xdg-open %s",fname);
+        #else
+            snprintf(cmdbuf,sizeof(cmdbuf),"start %s",fname);
+        #endif
+        system(cmdbuf);
+    }
+}
 
 //-------------------------------------------------------------------------
 

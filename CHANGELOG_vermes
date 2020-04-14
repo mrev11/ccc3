@@ -1,3 +1,9 @@
+2020-04-14 terminal autostart:
+  CCCTERM_REDIR_AUTOSTART=y 
+    minden atiranyitott fajlra elinditja a default megjelenitot
+  CCCTERM_REDIR_AUTOSTART=.ext1.ext2.
+    a megadott kiterjesztesekre elinditja a default megjelenitot   
+
 2020-03-21 tisztogatas:
   felesleges fajlok torolve;
   ccc-dependencies-ubuntu aktualizalva;

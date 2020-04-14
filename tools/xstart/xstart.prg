@@ -153,7 +153,7 @@ local p,s,n,i,c,arg,env,res,cmd,var,hash
             end
 
             if( !empty(p:workdir) )
-                dirchange(p:workdir)
+                dirchange(txtproc(p:workdir,0))
             end
 
 
@@ -209,7 +209,6 @@ static function txtproc(txt,sck)
 local n,p
     txt:=alltrim(txt)
     txt:=strtran(txt,"$(SOCKET)",alltrim(str(sck)))
- 
     while( 0<(n:=at("$(",txt)) )  // ...$(...)...
         p:=left(txt,n-1)
         txt:=substr(txt,n+2)

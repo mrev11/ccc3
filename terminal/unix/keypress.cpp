@@ -78,7 +78,7 @@ void keypress(XEvent event)
             code='.';
         }
     }
-    else if( asc )
+    else if( asc && asc !=13 )
     {
         if( (state&4) && 'a'<=asc  && asc<='z' )
         {

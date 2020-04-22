@@ -73,6 +73,9 @@
 #define K_BS                 8   // Ctrl-H
 #define K_TAB                9   // Ctrl-I
 
+#define K_CTRL_ENTER        10   // Ctrl-J
+#define K_CTRL_RETURN       10   // Ctrl-J
+
 // Control keys
 
 #define K_CTRL_A             1   // Home

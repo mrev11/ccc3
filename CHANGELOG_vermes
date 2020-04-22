@@ -1,3 +1,5 @@
+2020-04-22 inkey.ch-ban K_CTRL_ENTER (u.a. mint K_CTRL_J==10);
+
 2020-04-14 terminal autostart:
   CCCTERM_REDIR_AUTOSTART=y 
     minden atiranyitott fajlra elinditja a default megjelenitot

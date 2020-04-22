@@ -119,7 +119,7 @@ void key_press(QKeyEvent *ev)
 
 
     int code=qstring_to_unicode(ev->text());
-    if( code )
+    if( code && code!=13 )
     {
         if( (int)ev->key()==Qt::Key_Delete )
         {

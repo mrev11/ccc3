@@ -587,7 +587,7 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
             code='.';
         }
     }
-    else if( length==0 )
+    else if( length==0 || asc==13 )
     {
         code=keycode_gtk(keyval,state);
     }

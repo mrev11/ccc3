@@ -43,7 +43,7 @@ static int  v2i[48][5]={
 {KEY_KP_INS     ,K_NAV_INS      ,K_INS      ,K_INS          ,K_INS},
 {KEY_KP_DEL     ,K_NAV_DEL      ,K_DEL      ,K_DEL          ,K_DEL},
 
-{KEY_RETURN     ,K_RETURN       ,K_RETURN   ,K_RETURN       ,K_RETURN},
+{KEY_RETURN     ,K_RETURN       ,K_RETURN   ,K_CTRL_RETURN  ,K_RETURN},
 {KEY_ESC        ,K_ESC          ,K_ESC      ,K_ESC          ,K_ESC},
 {KEY_BS         ,K_BS           ,K_BS       ,K_BS           ,K_BS},
 {KEY_TAB        ,K_TAB          ,K_TAB      ,K_TAB          ,K_TAB},

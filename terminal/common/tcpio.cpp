@@ -564,7 +564,7 @@ static void autostart(char *fname)
         #else
             snprintf(cmdbuf,sizeof(cmdbuf),"start %s",fname);
         #endif
-        system(cmdbuf);
+        int result=system(cmdbuf);
     }
 }
 

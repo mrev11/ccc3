@@ -18,23 +18,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TERMCMD_H_
-#define _TERMCMD_H_
 
-#define TERMCMD_SETCURSORON     0x401
-#define TERMCMD_SETCURSOROFF    0x402
-#define TERMCMD_GOTOXY          0x403
-#define TERMCMD_PUTRECT         0x404
-#define TERMCMD_KEYCODE         0x405
-#define TERMCMD_OPEN            0x406
-#define TERMCMD_CLOSE           0x407
-#define TERMCMD_WRITE           0x408
-#define TERMCMD_SETCAPTION      0x409
-#define TERMCMD_GETWSIZE        0x40a
-#define TERMCMD_SETWSIZE        0x40b
-#define TERMCMD_MESSAGE         0x40c
-#define TERMCMD_GETENV          0x40d
-#define TERMCMD_PUTENV          0x40e
-#define TERMCMD_TERMINATE       0x4ff
+#include <cccapi.h>
 
-#endif
+//----------------------------------------------------------------------------
+void _clp_termgetenv(int argno)
+{
+    CCC_PROLOG("termgetenv",1);
+    str2bin(base);
+    char *env=_parb(1);
+    extern char *termgetenv(char *env);
+    char *val=termgetenv(env);
+    if(val)
+    {
+        _retcb(val);
+        free(val);
+    }
+    else
+    {
+        _ret();
+    }
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------
+void _clp_termputenv(int argno)  // termputenv("ENVIR=value")
+{
+    CCC_PROLOG("termputenv",1);
+    str2bin(base);
+    char *env=_parb(1);
+    extern char *termputenv(char *env);
+    termputenv(env);
+    _ret();
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------
+

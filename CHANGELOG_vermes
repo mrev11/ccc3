@@ -1,3 +1,8 @@
+2020-05-07 terminal protokoll bovitve:
+  TERMCMD_MESSAGE szoveges uzenet a terminalnak;
+  TERMCMD_GETENV terminal kornyezeti valtozo lekerdezes;
+  TERMCMD_PUTENV terminal kornyezeti valtozo beallitas;
+
 2020-04-22 inkey.ch-ban K_CTRL_ENTER (u.a. mint K_CTRL_J==10);
 
 2020-04-14 terminal autostart:

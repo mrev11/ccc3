@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #ifdef _UNIX_
 #include <sys/time.h>
@@ -63,6 +65,8 @@ static int s_cursorstate=1; //a terminál tulajdonsága
 static int dirty_cursorstate=0;
 
 static int ctrl_inkey=1;  // 1 -> K_DOWN==^X ... (compatible)
+
+static char*term_message=0;
 
 MUTEX_CREATE(mutex_display);
 
@@ -167,6 +171,21 @@ static void sendcursorstate()
 }
 
 //----------------------------------------------------------------------------
+static void sendmessage()
+{
+    if( term_message )
+    {
+        int len=strlen(term_message);
+        network_uint32_t buf[2];
+        buf[0].set(TERMCMD_MESSAGE);
+        buf[1].set(sizeof(buf)+len+1);
+        termio_send2(buf,sizeof(buf),term_message,len+1); //lezaro 0
+    }
+    free(term_message);
+    term_message=0;
+}
+
+//----------------------------------------------------------------------------
 static void sendall()
 {
     sendrect();
@@ -178,6 +197,10 @@ static void sendall()
     if(dirty_cursorpos && s_cursorstate)
     {
         sendcursorpos();
+    }
+    if( term_message )
+    {
+        sendmessage();
     }
 }
 
@@ -199,6 +222,36 @@ static void *thread_display(void *ptr)
 }
 
 //----------------------------------------------------------------------------
+static void *thread_message(void *ptr)
+{
+    char *env=getenv("CCCTERM_MAILSLOT");
+    if( !env )
+    {
+        return 0;
+    }
+    int fd=open(env,O_RDONLY);
+    if( fd<0 )
+    {
+        return 0;
+    }
+    lseek(fd,0,SEEK_END);
+
+    char buf[1024];
+    while(display_loop)
+    {
+        int nbyte=read(fd,buf,sizeof(buf)-1);
+        if( nbyte>0 )
+        {        
+            buf[nbyte]=0;
+            term_message=strdup(buf);
+        }
+        lseek(fd,0,SEEK_END);
+        sleep(500);
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------------
 void initialize_terminal()
 {
     int sizex=0;
@@ -211,11 +264,17 @@ void initialize_terminal()
 
 #ifdef WINDOWS
     CreateThread(0,0,(LPTHREAD_START_ROUTINE)thread_display,0,0,NULL);
+    CreateThread(0,0,(LPTHREAD_START_ROUTINE)thread_message,0,0,NULL);
 #else    
     pthread_t t=0;
     if( 0!=pthread_create(&t,0,thread_display,0) )
     {
         fprintf(stderr,"display thread cannot start\n");
+        exit(1);
+    }
+    if( 0!=pthread_create(&t,0,thread_message,0) )
+    {
+        fprintf(stderr,"message thread cannot start\n");
         exit(1);
     }
 #endif
@@ -471,6 +530,52 @@ void setwsize(int sizex, int sizey)
     dirty_cursorpos=1;
     dirty_cursorstate=1;
 }
+
+//----------------------------------------------------------------------------
+char *termgetenv(char *env)
+{
+    int len=strlen(env);
+
+    network_uint32_t buf[2];
+    buf[0].set(TERMCMD_GETENV);
+    buf[1].set(sizeof(buf)+len+1);
+    termio_send2(buf,sizeof(buf),env,len+1);
+
+    termio_recv(buf,sizeof(buf)); //header
+    while( buf[0].get()!=TERMCMD_GETENV )
+    {
+        if( buf[0].get()!=TERMCMD_KEYCODE )
+        {
+            //ilyen nem lehet
+            fprintf(stderr,"getwsize: unexpected message\n");
+            signal_raise(SIG_TERM);
+            exit(1);
+        }
+        termio_drop(buf[1].get()-sizeof(buf)); //dropping rest
+        termio_recv(buf,sizeof(buf)); //header
+    }
+
+    len=buf[1].get()-sizeof(buf);
+    if( len>0 )
+    {
+        char *val=(char*)malloc(len);
+        termio_recv(val,len);
+        return val;
+    }
+    return 0;
+}
+
+
+//----------------------------------------------------------------------------
+void termputenv(char *env)
+{
+    int len=strlen(env);
+    network_uint32_t buf[2];
+    buf[0].set(TERMCMD_PUTENV);
+    buf[1].set(sizeof(buf)+len+1);
+    termio_send2(buf,sizeof(buf),env,len+1);
+}
+
 
 //----------------------------------------------------------------------------
 

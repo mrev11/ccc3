@@ -18,6 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <stdio.h>
+#include <wchar.h>
 #include <ctype.h>
 #include <inttypes.h>
 #include <netint.h>
@@ -61,6 +63,9 @@ extern void setcursoroff(void);
 extern void setcursoron(void);
 extern void setcaption(char *cap);
 extern void invalidate(int,int,int,int);
+extern wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
+extern void mutex_xsend_lock();
+extern void mutex_xsend_unlock();
 
 #define IOBUFFER(x)     (iobuf32[x])
 #define CMDCODE         IOBUFFER(0)
@@ -123,9 +128,6 @@ static int xrecv(SOCKET s, void*destin, int destlen) //adatfogadás
 //--------------------------------------------------------------------------
 static int xsend(SOCKET s, void* source, int srclen) //adatküldés
 { 
-    extern void mutex_xsend_lock();
-    extern void mutex_xsend_unlock();
-
     mutex_xsend_lock();
 
     char *buffer=(char*)source;
@@ -356,7 +358,7 @@ void *tcpio_thread(void*arg)
                             
                             if( strstr(locnam,"pipe:")==locnam )
                             {
-                                fprintf(stderr,"\nSTARTLPR: %s %s",locnam,dev);
+                                //fprintf(stderr,"\nSTARTLPR: %s %s",locnam,dev);
                                 qout[fp]=startlpr(locnam+5,dev);
                             }
                             else if( strstr(locnam,"file:")==locnam )
@@ -429,6 +431,79 @@ void *tcpio_thread(void*arg)
                 //printf("\nTERMCMD_WRITE %d %d\n",fp,len);fflush(0);
                 break;
             }
+
+            case TERMCMD_MESSAGE:
+            {   
+                char *text=(char*)&PARAM(0);
+                unsigned txtlen=0;
+                wchar_t *wtext=utf8_to_wchar(text,strlen(text),&txtlen);
+                screencell *scbuf=(screencell*)malloc((screen->sizex)*sizeof(screencell));
+                int t,l,b,r;
+
+                for(int i=0; i<screen->sizex; i++)
+                {
+                    wchar_t ch=i<(int)txtlen ? wtext[i]:' ';
+                    scbuf[i].setchar(ch);
+                    scbuf[i].setattr(0xe0);
+                }
+                t = screen->sizey-1;
+                b = screen->sizey-1;
+                l = 0;
+                r = screen->sizex-1;
+                screen->putrect(l,t,r,b,scbuf);
+                invalidate(t,l,b,r);
+
+                //egy-ket masodpercig fenn tartjuk                
+                mutex_xsend_lock();
+                sleep(3000);
+                mutex_xsend_unlock();
+
+                /*
+                //lejart a varakozas, atszinezzuk
+                for(int i=0; i<screen->sizex; i++)
+                {
+                    scbuf[i].setattr(0x60);
+                }
+                t = screen->sizey-1;
+                b = screen->sizey-1;
+                l = 0;
+                r = screen->sizex-1;
+                screen->putrect(l,t,r,b,scbuf);
+                invalidate(t,l,b,r);
+                */
+
+                free(wtext);
+                free(scbuf);
+                break;
+            }
+
+            case TERMCMD_GETENV:
+            {   
+                char *env=(char*)&PARAM(0);
+                int len=DATALEN.get();
+                char *val=getenv(env);
+                if(val)
+                {
+                    DATALEN.set(header_size+strlen(val)+1);
+                    strcpy((char*)&PARAM(0),val);
+                }
+                else
+                {
+                    DATALEN.set(header_size);
+                }
+                xsend(sck,iobuffer,DATALEN.get());
+                //printf("TERMCMD_GETENV\n");fflush(0);
+                break;
+            }
+
+            case TERMCMD_PUTENV:
+            {   
+                char *env=(char*)&PARAM(0);
+                int len=strlen(env);
+                putenv(strdup(env));
+                //printf("TERMCMD_PUTENV\n");fflush(0);
+                break;
+            }
         }
     }
     return 0;
@@ -451,18 +526,18 @@ static void replace_char(char *p, int c1, int c2)
 //-------------------------------------------------------------------------
 static char *localname(int fp, char *fname, const char **dev)
 {
-    static char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
-    static char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
-    static char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
-    static char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
-    static char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
-    static char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
-                                                                             
-    static char *env_capture      = getenv("CCCTERM_CAPTURE");        
-    static char *env_capture_prn  = getenv("CCCTERM_CAPTURE_PRN");        
-    static char *env_capture_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
-    static char *env_capture_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
-    static char *env_capture_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
+    char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
+    char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
+    char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
+    char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
+    char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
+    char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
+                                                                      
+    char *env_capture      = getenv("CCCTERM_CAPTURE");        
+    char *env_capture_prn  = getenv("CCCTERM_CAPTURE_PRN");        
+    char *env_capture_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
+    char *env_capture_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
+    char *env_capture_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
 
     if( env_capture_prn  == 0 ) env_capture_prn  = env_capture;
     if( env_capture_lpt1 == 0 ) env_capture_lpt1 = env_capture;
@@ -528,7 +603,7 @@ static char *localname(int fp, char *fname, const char **dev)
 //-------------------------------------------------------------------------
 static void autostart(char *fname)
 {
-    static char *env_autostart=getenv("CCCTERM_REDIR_AUTOSTART");
+    char *env_autostart=getenv("CCCTERM_REDIR_AUTOSTART");
 
     int flag=0;
     

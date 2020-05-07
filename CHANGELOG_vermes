@@ -1,3 +1,7 @@
+2020-05-07 uic-bol elavult dolgok dobva:
+  termapi_sync.h megszunt;
+  termapi_async.h atnevezve -> termapi.cpp;
+
 2020-05-07 terminal protokoll bovitve:
   TERMCMD_MESSAGE szoveges uzenet a terminalnak;
   TERMCMD_GETENV terminal kornyezeti valtozo lekerdezes;

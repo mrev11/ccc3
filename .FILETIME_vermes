@@ -1,11 +1,14 @@
-7efd237015eace681013615e17e70b23b1d29771 2020050721:51:53-UTC ./CHANGELOG_vermes
-a4ae2b6b86f525a05149276acebff512dbf66fc9 2020050721:48:05-UTC ./log-install
+38cc117abd058045550f4e5710063ebb10d3f0e6 2020050809:26:33-UTC ./ccclib/uic.bldwin
+958ad558da5d1d88f95de3434c13d0d835cc81d9 2020050807:37:57-UTC ./CHANGELOG_vermes
+766f4c911a1f573f3d2ee2ba61867df28cf1d71d 2020050807:27:49-UTC ./log-install
+a2e53a313a6987c17feeab4d63558c9a01b4a5fc 2020050807:27:43-UTC ./jt/jterminal/jterminal.jar
+85f3c95184bdba2cb11519e00c9fa5d46ea7436c 2020050807:23:23-UTC ./ccclib/src/uic/compat/computername.prg
+a75781607d7556d7c0d3122bee585c48997b7f81 2020050807:19:31-UTC ./ccclib/uic.bld
 69ee8c1cdc787ba986199d00aa1f015e27f2853d 2020050721:48:04-UTC ./usr/bin/linux/gitfollow
 980187a99e8b49fd0ba03de3eef495e4ebce2648 2020050721:48:04-UTC ./usr/bin/linux/gitnav
 04b244a725cde873b7ada6731a41326625fedea0 2020050721:48:04-UTC ./usr/bin/linux/gitref
 be03d4e52f2ece2ac2da9b64a061ad1e443e5d41 2020050721:48:04-UTC ./usr/bin/linux/gitstat
 592513c20aba896bd28623df1e1697ccbc3ed6c6 2020050721:48:04-UTC ./usr/bin/linux/gitview
-6ff4efac397d8ceec6da2b85ac8a59f432207bda 2020050721:47:59-UTC ./jt/jterminal/jterminal.jar
 80583d2184c358253e2b580ca6aaddd0af4b2aa7 2020050721:47:57-UTC ./usr/bin/linux/terminal-qt5
 926422f9325c25482188965e3bdebf5aac03d99f 2020050721:47:02-UTC ./usr/bin/linux/list
 cc26b1d4d2b95a04a73a587346893f02badcc5fa 2020050721:41:13-UTC ./ccclib/src/uic/termapi/termapi.cpp
@@ -2727,7 +2730,6 @@ c94b63a8b9ee472bef7c3f0804d43cfbc028c74f 2006042515:43:04-UTC ./usr/bin/windows/
 1371e9a115b3e3ed5b1fee5b13cc0168ec625863 2006042515:42:34-UTC ./usr/bin/windows/bapp_w32c.bat
 b5ea4d9a55405c9b6ef148013f5c6412e4ec8df1 2006042515:42:18-UTC ./usr/bin/windows/bapp_w320g.bat
 2209d50883c8c99c7c672cc0ec7cb95f090dbae8 2006042515:42:02-UTC ./usr/bin/windows/bapp_w320.bat
-8da3cf05b305af110f7fc49d33483e4855ae9768 2006042515:22:50-UTC ./ccclib/uic.bldwin
 7f88b2e5beb09feafa98baa58580928cd62b0964 2006042515:22:35-UTC ./ccclib/ui_.bldwin
 f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042515:22:22-UTC ./ccclib/ccc.bldwin
 4c55aadb0992735c17b2d252d49b2ead8f9997a9 2006042514:18:36-UTC ./terminal/windows/xstart.par
@@ -2897,7 +2899,6 @@ eb2cdbdab0761dd394d6eabe67c0a5bce97cf957 2006041313:31:06-UTC ./tools/z/ver3/zse
 7db54ec355775d58feb150e243a5c45850fe00fa 2006041212:33:13-UTC ./usr/build/windows/msk2say.bat
 543f46ad630a7952225efe2d5515d3842bc811df 2006041212:32:46-UTC ./usr/build/netbsd/msk2say.bat
 b8a93f8c754470957db9b3f6aeb02dcdfb3e1dff 2006041212:14:39-UTC ./tutor/control/radio.msk
-f4384536599d4662922c2dbb1da27f084fbf2433 2006041211:15:43-UTC ./ccclib/uic.bld
 672e0433428ded83758414d5928721a12cc78a66 2006041211:15:25-UTC ./ccclib/ccc.bld
 84d4f4cdd6e71d8ca6717a68735f297bc60b5ecf 2006041111:35:43-UTC ./setup/setup-unix/remoteio.cpp
 6570dc57f6bd608cd50dea4f91ea492ad28fc07a 2006041017:42:44-UTC ./terminal/xtest/proba2.prg

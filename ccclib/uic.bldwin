@@ -1,8 +1,8 @@
 -lccc3_uic
 
 -duic
--duic/windows
 -duic/termapi
+-duic/compat
 
 -iuic/screenbuf
 -iinclude

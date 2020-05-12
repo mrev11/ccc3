@@ -45,25 +45,51 @@ static const char *ctype(int type)
 }
 
 
-//----------------------------------------------------------------------------
-void _clp_break(int argno)
-{
-    VALUE *base=stack-argno;
-    VALUE *exception=(argno>0) ? base : &NIL; //ezt dobták
+static void _break_(int argno,int bbflag);
 
-    _clp_breakblock(0);
-    if( TOP()->type==TYPE_BLOCK )
-    {
-        push(exception);        
-        _clp_eval(2);
-    }
-    pop();
-
-    _clp_break0(argno); //eredeti
-}
 
 //----------------------------------------------------------------------------
 void _clp_break0(int argno)
+{
+    _break_(argno,0);
+}
+
+//----------------------------------------------------------------------------
+void _clp_break(int argno)
+{
+    _break_(argno,1);
+}
+
+
+//----------------------------------------------------------------------------
+static int bbeval(VALUE *exception, VALUE *usingstk1)
+{
+    int result=1;
+
+    SEQJMP *seqjmp1=seqjmp;
+    while( (--seqjmp1)->jmp_usingstk >= usingstk1 )
+    {
+        //keressuk a breakblockot
+    }
+
+    if( seqjmp1->jmp_stack->type==TYPE_BLOCK )
+    {
+        push(seqjmp1->jmp_stack);
+        push(exception);
+        _clp_eval(2);
+        result=TOP()->type==TYPE_NIL;
+        pop();
+    }
+
+    return result;
+
+    // ha nincs breakblock          -> result==1 -> elkapja
+    // ha breakblock eredmenye  NIL -> result==1 -> elkapja
+    // ha breakblock eredmenye !NIL -> result==0 -> nem kapja el
+}
+
+//----------------------------------------------------------------------------
+static void _break_(int argno,int bbflag)
 {
     //Figyelem:
     //a stack pointerek az első szabad helyre mutatnak
@@ -93,7 +119,10 @@ void _clp_break0(int argno)
             //hogy mit vár a recover,
             //akkor bármit elkapunk
 
-            break;
+            if( !bbflag || bbeval(exception,usingstk1) )
+            {
+                break;
+            }
         }
         else if( type==xtype )
         {
@@ -103,15 +132,23 @@ void _clp_break0(int argno)
 
             if( type!=TYPE_OBJECT )
             {
-                break;
+                if( !bbflag || bbeval(exception,usingstk1) )
+                {
+                    break;
+                }
             }
-
-            push(exception);
-            number(subtype);
-            _o_method_isderivedfrom.eval(2);
-            if( flag() )
+            else
             {
-                break;
+                push(exception);
+                number(subtype);
+                _o_method_isderivedfrom.eval(2);
+                if( flag() )
+                {
+                    if( !bbflag || bbeval(exception,usingstk1) )
+                    {
+                        break;
+                    }
+                }
             }
         }
         --usingstk1;

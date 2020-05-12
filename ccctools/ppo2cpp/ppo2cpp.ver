@@ -1,3 +1,6 @@
+2020.05.10 -- 5.1.
+  begin-hez kapcsolt breakblock;
+
 2017.03.24 -- 5.0.21
   npdetab.h-ban realloc meretezes javitva; 
 

@@ -1950,6 +1950,24 @@ int codegen_statement_begseq_lrecov_finally_END(parsenode *p,void *v)//PROTO
     nltab();fprintf(code,"seqjmp->jmp_trace=trace;");
     nltab();fprintf(code,"seqjmp->jmp_usingstk=usingstk;");
 
+    /*
+    parsenode *beg=p->right[0];
+    printf("%s\n",beg->text);
+    if( beg->codegen==codegen_begseq_BEGSEQ_newline_lstatement )
+    {
+        printf("BEGSEQ without breakblock\n");
+    }
+    else if( beg->codegen==codegen_begseq_BEGSEQ_expr_newline_lstatement )
+    {
+        printf("BEGSEQ with breakblock\n");
+    }
+    else
+    {
+        printf("ILYEN NINCS\n");
+    }
+    */
+
+
     parsenode *lst=p->right[1];
     parsenode *fin=p->right[2];
     int recov=0;
@@ -2247,7 +2265,20 @@ int codegen_statement_expr(parsenode *p,void *v)//PROTO
 int codegen_begseq_BEGSEQ_newline_lstatement(parsenode *p,void *v)//PROTO
 {
     tabdepth++;
+    nltab();fprintf(code,"_clp_breakblock(0);//BREAKBLOCK");
     cgen(p,1); //lstatement
+    nltab();fprintf(code,"pop();//BREAKBLOCK");
+    tabdepth--;
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_begseq_BEGSEQ_expr_newline_lstatement(parsenode *p,void *v)//PROTO
+{
+    tabdepth++;
+    cgen(p,0); fprintf(code,"//BREAKBLOCK");
+    cgen(p,2); //lstatement
+    nltab();fprintf(code,"pop();//BREAKBLOCK");
     tabdepth--;
     return 0;
 }

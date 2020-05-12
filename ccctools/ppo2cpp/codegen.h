@@ -97,6 +97,7 @@ extern int codegen_statement_LOOP(parsenode *p,void *v);
 extern int codegen_statement_EXIT(parsenode *p,void *v);
 extern int codegen_statement_expr(parsenode *p,void *v);
 extern int codegen_begseq_BEGSEQ_newline_lstatement(parsenode *p,void *v);
+extern int codegen_begseq_BEGSEQ_expr_newline_lstatement(parsenode *p,void *v);
 extern int codegen_lrecov(parsenode *p,void *v);
 extern int codegen_lrecov_lrecov_recov(parsenode *p,void *v);
 extern int codegen_recov_RECOVER_newline_lstatement(parsenode *p,void *v);

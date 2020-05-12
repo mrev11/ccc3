@@ -831,6 +831,12 @@ begseq(B) ::= BEGSEQ newline(N) lstatement(L).{
     B->codegen=codegen_begseq_BEGSEQ_newline_lstatement;  
 }
 
+begseq(B) ::= BEGSEQ expr(X) newline(N) lstatement(L).{
+    B=(new parsenode)->rule(3,X,N,L);
+    B->text="begseq ::= BEGSEQ expr_newline lstatement.";
+    B->codegen=codegen_begseq_BEGSEQ_expr_newline_lstatement;  
+}
+
 lrecov(L) ::= .{
     L=(new parsenode)->rule(0);
     L->text="lrecov ::= .";

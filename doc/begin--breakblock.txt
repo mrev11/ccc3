@@ -1,0 +1,63 @@
+
+Új BEGIN-RECOVER szerkezet
+
+1. Régi eset
+
+    //A begin-hez nincs megadva speciális breakblock,
+    //érvényre juthat az esetleg beállított default breakblock,
+    //például: breakblock({||qout("default-breakblock")}).    
+    
+    begin
+        ...
+    end
+
+2. Új eset
+
+    //A begin-hez speciális breakblock tartozik,
+    //a speciális breakblocknak elsőbbsége van a defaulttal szemben,
+    //a default breakblocknak ilyenkor nincs hatása.
+
+    begin {||qout("spec-breakblock")}
+        ...
+    end
+
+Ha a begin-hez tartozik breakblock (akár default, akár speciális), ÉS a 
+kivételt a típusa alapján elkaphatná a begin-hez tartozó valamelyik recover, 
+akkor kiértékeődik a breakblock, méghozzá a break() hívás környezetében.
+(Ha nincs a kivétel elkapásához megfelelő típusú recover, akkor a breakblock
+sem fut, és végül kiértékelődhet az errorblock.) 
+
+A kivétel elkapását a (def/spec) breakblock eredménye határozza meg:
+
+ a) Ha a breakblock NIL-t ad (ez a tipikus, ha csak callstack/varstack 
+    van  benne), akkor a program recover ágnál folytatódik (elkapta).
+
+ b) Ha a breakblock értéke !NIL, akkor a program másik alkalmas recovert
+    keres, miközben még mindig megvan a hiba környezete. 
+
+    A spec-breakblock alkalmas arra, hogy a program a kivétel vizsgálata
+    alapján eldöntse, hogy el akarja-e kapni a kivételt, vagy pedig átengedi
+    a hibakezelést a felsőbb szinteknek. Korábban csak arra volt lehetőség,
+    hogy a recover ág break-eljen, de azzal megsemmisül a hiba eredeti
+    környezete.
+
+
+INKOMPATIBILITÁSOK:
+
+A régi (default) breakblock, minden break-re lefutott. Most csak akkor fut,
+ha a programban van a break elkapására alkalmas recover.
+
+A korábbi programokban a (default) breakblock eredményétől függetlenül
+a megfelelő típusú recover mindig elkapta a kivételt. Most csak akkor, 
+ha a breakblock eredménye NIL. 
+
+A régi CCC könyvtárban levő break nem kompatibilis az új fordítású EXE-vel.
+A régi break nem figyeli a speciális breakblockot. A program nem száll el, 
+de a spec-breakblock nem működik.
+
+Az új CCC könyvtárban levő új break nem kompatibilis a régi fordítású EXE-vel.
+Az új break a stacken keresi a breakblockot, ahol azonban valami más értéket
+talál. Ha véletlenül ez az érték egy block, akkor azt végrehajtja, aminek
+a hatása kiszámíthatatlan. Szerencsésebb esetben csak nem hajtódik végre
+az errorblock.
+

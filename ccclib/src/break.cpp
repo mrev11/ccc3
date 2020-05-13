@@ -1,4 +1,4 @@
-
+     
 /*
  *  CCC - The Clipper to C++ Compiler
  *  Copyright (C) 2005 ComFirm BT.
@@ -34,7 +34,9 @@ static const char *ctype(int type)
         case TYPE_DATE:     return "D";
         case TYPE_FLAG:     return "L";
         case TYPE_POINTER:  return "P";
+#ifdef _CCC3C
         case TYPE_BINARY:   return "X";
+#endif
         case TYPE_STRING:   return "C";
         case TYPE_ARRAY:    return "A";
         case TYPE_BLOCK:    return "B";
@@ -92,17 +94,17 @@ static int bbeval(VALUE *exception, VALUE *usingstk1)
 static void _break_(int argno,int bbflag)
 {
     //Figyelem:
-    //a stack pointerek az első szabad helyre mutatnak
+    //a stack pointerek az elso szabad helyre mutatnak
     //(stack, trace, seqjmp, usingstk).
 
     VALUE *base=stack-argno;
-    VALUE *exception=(argno>0) ? base : &NIL; //ezt dobták
+    VALUE *exception=(argno>0) ? base : &NIL; //ezt dobtak
     int xtype=exception->type;
     int xsubtype=(xtype==TYPE_OBJECT?exception->data.object.subtype:0);
   
     //printf("\nx-type %s %d",ctype(xtype),xsubtype);fflush(0);
     
-    //kompatibilis recover-t keresünk
+    //kompatibilis recover-t keresunk
     VALUE *usingstk1=usingstk;
     while( usingstk1>usingstkbuf )
     {
@@ -116,8 +118,8 @@ static void _break_(int argno,int bbflag)
         if( type==TYPE_NIL )
         {
             //ha nincs megadva, 
-            //hogy mit vár a recover,
-            //akkor bármit elkapunk
+            //hogy mit var a recover,
+            //akkor barmit elkapunk
 
             if( !bbflag || bbeval(exception,usingstk1) )
             {
@@ -126,9 +128,9 @@ static void _break_(int argno,int bbflag)
         }
         else if( type==xtype )
         {
-            //ha ismert, hogy mit vár a recover,
-            //akkor az egyező típusokat, objektumoknál pedig 
-            //a leszármaztatott osztályokat kapjuk el
+            //ha ismert, hogy mit var a recover,
+            //akkor az egyezo tipusokat, objektumoknal pedig 
+            //a leszarmaztatott osztalyokat kapjuk el
 
             if( type!=TYPE_OBJECT )
             {
@@ -158,12 +160,12 @@ static void _break_(int argno,int bbflag)
     
     if( usingstk1>usingstkbuf )
     {
-        //printf("\nkivétel elkapva");fflush(0);
-        //találtunk kompatibilis recover-t
-        //megkeressük a hozzá tartozó seqjmp elemet
-        //eközben a finally blokkokat végrehajtjuk
+        //printf("\nkivetel elkapva");fflush(0);
+        //talaltunk kompatibilis recover-t
+        //megkeressuk a hozza tartozo seqjmp elemet
+        //ekozben a finally blokkokat vegrehajtjuk
 
-        //amíg seqjmp->jmp_usingstk szabad helyre mutat
+        //amig seqjmp->jmp_usingstk szabad helyre mutat
         while( (--seqjmp)->jmp_usingstk >= usingstk1 )
         {
             int type=seqjmp->jmp_usingstk->type;
@@ -171,9 +173,9 @@ static void _break_(int argno,int bbflag)
         
             if( type==TYPE_END )
             {
-                //olyan begin utasítás,
+                //olyan begin utasitas,
                 //amiben egy recover sem kapta el a breaket,
-                //de van benne finally blokk, amit most végrehajtunk
+                //de van benne finally blokk, amit most vegrehajtunk
 
                 *(seqjmp->jmp_stack)=*exception;
                 stack=seqjmp->jmp_stack+1; 
@@ -189,29 +191,29 @@ static void _break_(int argno,int bbflag)
         //level=1,2,3...
         //printf("\nlevel %d",level);fflush(0);
 
-        //kivételt a stackre
+        //kivetelt a stackre
         *(seqjmp->jmp_stack)=*exception;
         stack=seqjmp->jmp_stack+1;    
         trace=seqjmp->jmp_trace;    
         usingstk=seqjmp->jmp_usingstk+finally;  //esetleges END-et vissza
-        longjmp(seqjmp++->jmpb,level);  //végleges pop a recoverben
+        longjmp(seqjmp++->jmpb,level);  //vegleges pop a recoverben
     }
     else
     {
-        //printf("\nkezeletlen kivétel");fflush(0);
-        //nem találtunk kompatibilis recover-t
-        //ilyenkor a stacket nem fejtjük vissza
-        //a begin blokkokat nem hajtjuk végre
-        //csak végrehajtjuk az errorblock-ot
+        //printf("\nkezeletlen kivetel");fflush(0);
+        //nem talaltunk kompatibilis recover-t
+        //ilyenkor a stacket nem fejtjuk vissza
+        //a begin blokkokat nem hajtjuk vegre
+        //csak vegrehajtjuk az errorblock-ot
 
         _clp_errorblock(0);
         push(exception);        
         _clp_eval(2);
         _rettop();
 
-        //Visszatérhet, 
-        //ha például a kivétel error leszármazott,
-        //és canretry==.t. vagy  candefault==.t..
+        //Visszaterhet, 
+        //ha peldaul a kivetel error leszarmazott,
+        //es canretry==.t. vagy  candefault==.t..
     }
 }
 

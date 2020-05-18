@@ -34,7 +34,7 @@ static const char *ctype(int type)
         case TYPE_DATE:     return "D";
         case TYPE_FLAG:     return "L";
         case TYPE_POINTER:  return "P";
-#ifdef _CCC3C
+#ifdef _CCC3C_
         case TYPE_BINARY:   return "X";
 #endif
         case TYPE_STRING:   return "C";

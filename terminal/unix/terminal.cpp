@@ -40,6 +40,8 @@
 #include <screenbuf.h>
 #include <inkey.ch>
 
+#define THREAD_ENTRY /*nothing*/
+
 static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
 static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
 static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
@@ -73,7 +75,7 @@ unsigned rgb_color[16];
 unsigned rgb_color_ext[128];
 
 extern void tcpio_ini(const char*,int);
-extern void *tcpio_thread(void*);
+extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 
 extern void setcursor(int x,int y);

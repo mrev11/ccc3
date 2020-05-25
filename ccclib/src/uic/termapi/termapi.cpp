@@ -28,11 +28,18 @@
 #include <fcntl.h>
 
 #ifdef _UNIX_
-#include <sys/time.h>
-#include <sys/types.h>
+  #include <sys/time.h>
+  #include <sys/types.h>
 #else
-#include <windows.h>
+  #include <windows.h>
 #endif
+
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
 
 #include <inttypes.h>
 #include <netint.h>
@@ -207,7 +214,7 @@ static void sendall()
 }
 
 //----------------------------------------------------------------------------
-static void *thread_display(void *ptr)
+THREAD_ENTRY static void *thread_display(void *ptr)
 {
     while(display_loop)
     {
@@ -224,7 +231,7 @@ static void *thread_display(void *ptr)
 }
 
 //----------------------------------------------------------------------------
-static void *thread_message(void *ptr)
+THREAD_ENTRY static void *thread_message(void *ptr)
 {
     char *env=getenv("CCCTERM_MAILSLOT");
     if( !env )

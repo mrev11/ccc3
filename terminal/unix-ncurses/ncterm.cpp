@@ -41,9 +41,10 @@
 #include <inkey.ch>
 #include <inkeymap.h>
 
+#define THREAD_ENTRY /*nothing*/
 
 extern void tcpio_ini(const char*,int);
-extern void *tcpio_thread(void*);
+extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 extern int  readkey();
 extern int  colorext_extidx2legidx(int);

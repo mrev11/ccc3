@@ -20,6 +20,13 @@
 
 //WINDOWS thread API
 
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
+
 #include <cccapi.h>
  
 #ifndef MULTITHREAD
@@ -72,7 +79,7 @@ int WCODE(int x)
 }
 
 //---------------------------------------------------------------------------
-static void *thread(void *ptr)
+THREAD_ENTRY static void *thread(void *ptr)
 {
     //sajat lokalis stack letrehozasa,
     //thread_data konstruktoraban es destruktoraban

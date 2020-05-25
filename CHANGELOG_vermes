@@ -1,3 +1,8 @@
+2020-05-25 clang warning javitasa:
+  CreateThread() parameteret stdcall-nak kell definialni,
+  WINDOWS-on #define THREAD_ENTRY __stdcall
+  UNIX-on #define THREAD_ENTRY /*nothing*/
+
 2020-05-18 hibajavitas;
 
 2020-05-13 uj crypto fuggvenyek: sha512;

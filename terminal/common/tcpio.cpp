@@ -37,6 +37,12 @@
   #endif
 #endif
 
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
 
 #define BUFLEN32       100000
 #define MAXBUFLEN      (BUFLEN32*sizeof(network_uint32_t))
@@ -204,7 +210,7 @@ void tcpio_sendkey(int key)
 } 
 
 //--------------------------------------------------------------------------
-void *tcpio_thread(void*arg)
+THREAD_ENTRY void *tcpio_thread(void*arg)
 {
     unsigned param_size=sizeof(network_uint32_t);
     unsigned header_size=2*param_size;
@@ -644,4 +650,5 @@ static void autostart(char *fname)
 }
 
 //-------------------------------------------------------------------------
+
 

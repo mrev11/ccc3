@@ -24,6 +24,13 @@
   #include <windows.h>
 #endif
 
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -69,7 +76,7 @@ static GtkTextBuffer *gtkbuffer;
 
 
 extern void tcpio_ini(const char*,int);
-extern void *tcpio_thread(void*);
+extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 
 extern void setcursor(int x,int y);

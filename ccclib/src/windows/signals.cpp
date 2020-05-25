@@ -26,6 +26,13 @@
 
 #include <cccapi.h>
 
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
+
 //--------------------------------------------------------------------------
 static int cccsig2signum(int cccsig)
 {
@@ -116,7 +123,7 @@ static void signal_handler(int signum)
 }
 
 //-------------------------------------------------------------------------
-static BOOL ctrlc_handler(DWORD event) 
+THREAD_ENTRY static BOOL ctrlc_handler(DWORD event) 
 {
     //fprintf(stderr,"CTRL_C received\n");fflush(0);
 

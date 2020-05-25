@@ -27,11 +27,13 @@
 #include <string.h>
 #include <screenbuf.h>
 
+#define THREAD_ENTRY __stdcall
+
 extern void keychar(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void keydown(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void keyup(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void tcpio_ini(const char *ip, int port); 
-extern void *tcpio_thread(void*); 
+extern THREAD_ENTRY void *tcpio_thread(void*); 
 extern int  color_palette(int); 
 extern int  colorext_palette_rev(int); 
 extern HFONT font();

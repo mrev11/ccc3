@@ -26,6 +26,13 @@
   #include <windows.h>
 #endif
 
+#ifdef WINDOWS
+  #define THREAD_ENTRY  __stdcall
+#else
+  #define THREAD_ENTRY  /*nothing*/
+#endif
+
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -84,7 +91,7 @@ extern char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen)
 
 //kozos forras
 extern void tcpio_ini(const char*,int);
-extern void *tcpio_thread(void*);
+extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 extern int  color_palette(int);
 extern int  colorext_palette(int);

@@ -1,6 +1,11 @@
-a68dcb16bb33765eb8e1db29bc2e5043cdba038b 2020070509:05:06-UTC ./CHANGELOG_vermes
-eb72f56335734784b665948d422d050c4ee44591 2020070410:14:38-UTC ./tabobj/s.savex
-1d157a126f0345c24f65ed909f38ef22fef733d7 2020070410:08:47-UTC ./usr/bin/linux/tview
+ca85f6c55c456623dfa3831782fce0ec270d6d0e 2020070509:17:26-UTC ./CHANGELOG_vermes
+62726910db8c204ebfa4dd076021f3636bc84500 2020070509:14:13-UTC ./usr/bin/linux/tview
+be981ecf0d93b68dd3574bd20000dff76f080da8 2020070509:13:09-UTC ./tabobj/s.savex
+3f768b23179ae7b153e8adffe3fb32122f6f06c6 2020070509:11:59-UTC ./tabobj/tbbtbtx/utility/parlib.bld
+a2377518983fdc655ccceac2ad12c41ae53f3bd3 2020070509:10:56-UTC ./tabobj/tbbtbtx/par-unixui.bld
+ea7cd74486a01bd71bda6c7b47c964abec7bde14 2020070509:10:47-UTC ./tabobj/tbbtbtx/par-unix.bld
+34e670336b2b33ea01f14e6213e87cf0bbe5ae47 2020070509:10:38-UTC ./tabobj/tbbtbtx/par-ntui.bld
+df6c0b0b3f1ffb74c1f969298386839e0573373c 2020070509:10:23-UTC ./tabobj/tbbtbtx/par-nt.bld
 4436bf18d4c1239aa9d4a2f01ea4bf12609024b5 2020062508:41:12-UTC ./log-install
 51b873cb7d47d7a90e7f5d0676c04b625830f15f 2020062508:41:06-UTC ./jt/jterminal/jterminal.jar
 f91299cd9a83c426c4e9f9d1e09d4bfc04083a6d 2020062508:40:11-UTC ./usr/bin/linux/tdc2prgch
@@ -2743,7 +2748,6 @@ b5ea4d9a55405c9b6ef148013f5c6412e4ec8df1 2006042515:42:18-UTC ./usr/bin/windows/
 f24403d72fa033ad15e3c4d478fd9391a89720cc 2006042515:22:22-UTC ./ccclib/ccc.bldwin
 4c55aadb0992735c17b2d252d49b2ead8f9997a9 2006042514:18:36-UTC ./terminal/windows/xstart.par
 6b4fbcdb30e33f82e37b4be8f657d83a9b8423f7 2006042510:48:33-UTC ./ccclib/src/uic/o_tbcolumn.prg
-73e366201f69c9ed7eb60ed26875c22049f49d89 2006042216:47:25-UTC ./tabobj/tbbtbtx/utility/parlib.bld
 4ea0146b9237efde7cdcc66e694eeec87b2eb27f 2006042214:29:29-UTC ./tools/crypto/rsapubenc.cpp
 89807763146b264b3b4e5a58da46c70108ef53df 2006042214:16:48-UTC ./tools/crypto/bin2hex.cpp
 dd9f2e5f4ac876b65cf7f634019f776658f264f3 2006042209:51:31-UTC ./ccclib/src/uic/brwedit.prg
@@ -2816,14 +2820,11 @@ bdad7147d82886250a5d647048e8de503a95648b 2006042014:22:23-UTC ./tutor/nlstext/tr
 19aa49c8898c52e84847fd6505a4f1608d5dac90 2006042011:00:48-UTC ./tutor/nlstext/translation/hu/nlstext.hu.tran
 6dd1d061623365503660d66a732f381b3376da28 2006042010:38:09-UTC ./ccctools/readme.hu.txt
 c39736426498bea3befc1f176083c1ebc2903fd4 2006041918:49:31-UTC ./terminal/xtest/proba.prg
-09054dbed3fcfe4352a2c155585b25f0a65c912d 2006041915:08:37-UTC ./tabobj/tbbtbtx/par-nt.bld
-15e15d0874da664d0a0339e753f115feec751dba 2006041915:08:23-UTC ./tabobj/tbbtbtx/par-unix.bld
 0b3bbf0d75be0740f7ac64d7a4c89e6527d70206 2006041914:44:17-UTC ./tabobj/tbbtbtx/btree/db.cpp
 7dea5ff040be570f9150d4f52c2e888e62819cab 2006041913:21:13-UTC ./tabobj/tbbtbtx/dbinfo.prg
 5ab31108e6a3b98796d02e6cf084569ed54fd718 2006041913:19:42-UTC ./ccclib/src/arr2bin.prg
 523dde7e8847fffd3b047b6846b0becdbe90ffb8 2006041912:59:30-UTC ./tabobj/tbbtbtx/btree/bt_data.cpp
 03b7273dcaba48021c23f67634e7bf2b053005c6 2006041912:08:56-UTC ./tabobj/tbbtbtx/btree/readme.hu.txt
-2231e5d7e15465df21e396f899efc89b119cc7d1 2006041911:54:13-UTC ./tabobj/tbbtbtx/par-unixui.bld
 0b6ad5d2deab94076df6b205f41c5945ad49479f 2006041911:39:57-UTC ./tabobj/tbbtbtx/btree/numseg.cpp
 84e463f233fbb5fef1147bd78fc4d342ace4297e 2006041910:47:17-UTC ./tabobj/common.src/table.ch
 de5b729ce5921ccbf6fe5ec2f0fba6049e86a526 2006041910:47:11-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp
@@ -2834,7 +2835,6 @@ abdcdf7d9f0b3bd88648602b2f22c60f61ff0f4e 2006041910:47:02-UTC ./tabobj/common.sr
 fa15f5557f7b89317237f16eb2e9ebe9c0a8957a 2006041910:47:02-UTC ./tabobj/common.src/tabnames.prg
 19e972410b4aaf739aaef9409efadacf33a5776b 2006041910:47:02-UTC ./tabobj/common.src/tabrenam.prg
 708c2b32e31c696d94873c9cdd42025f3334ab3d 2006041910:47:02-UTC ./tabobj/common.src/tabsave.prg
-0f2c6f98d12e936f770f9d2d81080f6e6f9589ce 2006041910:37:31-UTC ./tabobj/tbbtbtx/par-ntui.bld
 f1aa71ea41087fffcafcbfe26e62d16a465459a4 2006041808:25:47-UTC ./usr/bin/solaris/bapp_unixc_btbtx.b
 3981debf40639ce77770331eb4d08e469cf770b5 2006041808:25:37-UTC ./usr/bin/solaris/bapp_unixc.b
 9f4cc7935f6a3155d61054b2a6fa644f9dcecfba 2006041808:25:15-UTC ./usr/bin/solaris/bapp_unix_.b

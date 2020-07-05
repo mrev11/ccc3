@@ -1,2 +1,2 @@
 -ltutil 
--d$(CCCDIR)/tabobj/utility.src 
+-d../../utility.src 

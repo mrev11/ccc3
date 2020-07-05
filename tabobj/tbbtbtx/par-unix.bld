@@ -2,5 +2,5 @@
 
 -d.
 -dbtree
--d$(CCCDIR)/tabobj/common.src
+-d../common.src
 

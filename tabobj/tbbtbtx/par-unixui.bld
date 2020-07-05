@@ -1,4 +1,4 @@
 -sccc3_btbtxui
--d$(CCCDIR)/tabobj/commonui.src
+-d../commonui.src
 
  

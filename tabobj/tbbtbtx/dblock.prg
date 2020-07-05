@@ -356,7 +356,7 @@ function tabLocklist(table)
 
 
 ******************************************************************************
-function tabUnlockEOF(table,pos) 
+function tabUnlockEOF(table) 
 
 //A minden más unlock funkció tranzakció közben hatástalan,
 //azonban EOF-ot tranzakció alatt is el kell tudni engedni.

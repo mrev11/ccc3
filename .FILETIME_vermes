@@ -1,13 +1,19 @@
+a68dcb16bb33765eb8e1db29bc2e5043cdba038b 2020070509:05:06-UTC ./CHANGELOG_vermes
+eb72f56335734784b665948d422d050c4ee44591 2020070410:14:38-UTC ./tabobj/s.savex
+1d157a126f0345c24f65ed909f38ef22fef733d7 2020070410:08:47-UTC ./usr/bin/linux/tview
+4436bf18d4c1239aa9d4a2f01ea4bf12609024b5 2020062508:41:12-UTC ./log-install
+51b873cb7d47d7a90e7f5d0676c04b625830f15f 2020062508:41:06-UTC ./jt/jterminal/jterminal.jar
+f91299cd9a83c426c4e9f9d1e09d4bfc04083a6d 2020062508:40:11-UTC ./usr/bin/linux/tdc2prgch
+9bc548bdd40f0c6c07a5e66196746031ac00679d 2020062214:27:30-UTC ./tabobj/tbbtbtx/dblock.prg
+1a33742d82db9e98b647b21fa119e8d8d276689f 2020062212:12:15-UTC ./tabobj/tbbtbtx/dbmove.prg
+6f299af42e214b0a9a5b602e724469bc9d50bc1e 2020062208:29:39-UTC ./tabobj/tbbtbtx/bttable.ch
 b28c38c16ff29a483eb347035b4c047ef5135e26 2020061415:41:03-UTC ./tools/crypto/demo/bcrypt.prg
 528bc8f74ecba7c13c2e36b7559e2cbeb375dbe3 2020061415:37:24-UTC ./tools/crypto/bcrypt_hash.cpp
-8b405c03f3802ae2c1f7da217b4563399e7ca461 2020061415:15:45-UTC ./log-install
 7c3260b48c13cded9783973f4676f77b0f1856a0 2020061415:15:42-UTC ./usr/bin/linux/filetime-restore
 e8deaadffda3e82ae6163ae3a1e51b55dbf9031e 2020061415:15:42-UTC ./usr/bin/linux/filetime-save
-6e333b031b482fc3fa8aff10f1a794098a22f33f 2020061415:15:40-UTC ./jt/jterminal/jterminal.jar
 3b08ad4ee99a0771bb49dea253374f426a82ede3 2020061415:15:37-UTC ./usr/bin/linux/terminal-qt5
 7cb90813b0f3fed4002c7aa9cf3317fd22e38086 2020061415:15:33-UTC ./usr/bin/linux/webapp
 d09739706782bd2bd17e0361d638b38f09581b6d 2020061318:38:10-UTC ./tools/crypto/demo/bcrypt_test.prg
-62062e24c5803c83b13c70c0c603229e242b6804 2020061314:12:30-UTC ./CHANGELOG_vermes
 e9d1240d6ff49815bdc2f004f8a2d7bd7182b271 2020060310:02:46-UTC ./usr/bin/linux/gitfollow
 77822edac03f4d714758c55746e273a96d29e861 2020060310:02:46-UTC ./usr/bin/linux/gitnav
 391ff3007289b70734af9d3754a9c59072dca1b1 2020060310:02:46-UTC ./usr/bin/linux/gitref
@@ -44,7 +50,6 @@ b22df84fe048bf775f2263025e4a552e02805729 2020060310:01:53-UTC ./usr/bin/linux/zg
 f377f483512d18f1fd96e4d846748ad71035584c 2020060310:01:45-UTC ./usr/bin/linux/tran2cpp
 ff4fa6c271445a96390a5201b060c5082f1b29b1 2020060310:01:44-UTC ./usr/bin/linux/prg2tdc
 f42c4ff234748584d47797a79e80ffd757b5a576 2020060310:01:44-UTC ./usr/bin/linux/tabsuper
-a166e80bd8162f0645e2db483f7dae8d4f7a870d 2020060310:01:44-UTC ./usr/bin/linux/tdc2prgch
 90dde59eb44f95d0146ca7ca1fc081b175b604d1 2020060310:01:44-UTC ./usr/bin/linux/tdccmp
 aec715e218559fd699a40f4f6df7ac76c2729e1f 2020060310:01:40-UTC ./usr/bin/linux/savex
 70ca6ec8cb913fa2427eca91aec5b3eb46680194 2020060310:01:40-UTC ./usr/bin/linux/setperm
@@ -56,7 +61,6 @@ cc181b38ede4621c3e55bc5a819bbf861126934b 2020060310:01:32-UTC ./usr/bin/linux/bt
 71c24f168dad4870e92f44a0e5bab2a96417ba65 2020060310:01:32-UTC ./usr/bin/linux/bt2txt
 6eabe287ca956a1a0ad7b4ebbcd4b6bddcb11a61 2020060310:01:32-UTC ./usr/bin/linux/bti
 1df8719b8ace36ab5c64c372a3d052f51a7be16b 2020060310:01:32-UTC ./usr/bin/linux/tstru
-62726910db8c204ebfa4dd076021f3636bc84500 2020060310:01:32-UTC ./usr/bin/linux/tview
 a24a949caa92a1c10096fc2d947695e8843dcc42 2020060310:01:24-UTC ./usr/bin/linux/mask
 e83ee05f935f66df4c40d330183c4b11982cf84d 2020060310:01:24-UTC ./usr/bin/linux/msk2pge
 d055563f591267bd22d41fae4b2d8c04e3d10e4e 2020060310:01:24-UTC ./usr/bin/linux/page
@@ -2209,9 +2213,7 @@ c0e6aefa334a10ec524a034f7fef4ee833f803b4 2007010401:06:00-UTC ./ccclib/tran/hu/n
 bb0c417de489fba1036dcea0075a7c58eea54c2c 2007010218:23:06-UTC ./tabobj/tbbtbtx/dbverify.prg
 8f2da4e8cd0f912e995375287a1ecac04da50c1b 2007010218:22:43-UTC ./tabobj/tbbtbtx/dbopen.prg
 a03fbd204635c82631f4aa6e866dd1cbb6710750 2007010218:21:55-UTC ./tabobj/tbbtbtx/dbnames.prg
-57862bc096201e1ad7317beb3b425c3a6c4e7ca3 2007010218:21:45-UTC ./tabobj/tbbtbtx/dbmove.prg
 8b0e619a59c5d39305c0aa31daa7b93784e15338 2007010218:20:47-UTC ./tabobj/tbbtbtx/dbmodif.prg
-352c7e46cbc50e0519b6f7d1c34b6f5612e8d1b3 2007010218:19:55-UTC ./tabobj/tbbtbtx/dblock.prg
 b5263837a44e18ea74d572575e21b01b9fb90501 2007010218:12:51-UTC ./tabobj/commonui.src/tabbrows.prg
 e233bb1fb4764cede53e899e20c80055606ef739 2007010218:11:38-UTC ./tabobj/common.src/transact.prg
 881709725344aa80419578e038a174cf904b828a 2007010218:09:44-UTC ./tabobj/common.src/tabupgrd.prg
@@ -2817,7 +2819,6 @@ c39736426498bea3befc1f176083c1ebc2903fd4 2006041918:49:31-UTC ./terminal/xtest/p
 09054dbed3fcfe4352a2c155585b25f0a65c912d 2006041915:08:37-UTC ./tabobj/tbbtbtx/par-nt.bld
 15e15d0874da664d0a0339e753f115feec751dba 2006041915:08:23-UTC ./tabobj/tbbtbtx/par-unix.bld
 0b3bbf0d75be0740f7ac64d7a4c89e6527d70206 2006041914:44:17-UTC ./tabobj/tbbtbtx/btree/db.cpp
-f55212584801ef70f813cb09b32b7797ee3ca8ab 2006041913:25:23-UTC ./tabobj/tbbtbtx/bttable.ch
 7dea5ff040be570f9150d4f52c2e888e62819cab 2006041913:21:13-UTC ./tabobj/tbbtbtx/dbinfo.prg
 5ab31108e6a3b98796d02e6cf084569ed54fd718 2006041913:19:42-UTC ./ccclib/src/arr2bin.prg
 523dde7e8847fffd3b047b6846b0becdbe90ffb8 2006041912:59:30-UTC ./tabobj/tbbtbtx/btree/bt_data.cpp

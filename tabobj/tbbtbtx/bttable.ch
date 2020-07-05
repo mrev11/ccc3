@@ -99,18 +99,6 @@
 
 
 //---------------------------------------------------------------------------
-// Szűrés
-//---------------------------------------------------------------------------
-
-#define REC_DELETED(t)   (42==xvgetbyte(table[TAB_RECBUF],0))
-#define REC_FLTOK(t)     (t[TAB_FILTER]==NIL.or.eval(t[TAB_FILTER]))
-#define REC_DELOK(t)     (!REC_DELETED(t))
-#define REC_INSCOPE(t)   (REC_DELOK(t).and.REC_FLTOK(t))
-
-#define tabInscope(t)    REC_INSCOPE(t)   
-
-
-//---------------------------------------------------------------------------
 // Memória foglalás
 //---------------------------------------------------------------------------
 

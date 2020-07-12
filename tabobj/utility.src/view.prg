@@ -27,7 +27,7 @@
 #define APPVER APPNAME+" "+VERSION
 
 static APPNAME
- 
+
 *********************************************************************
 function appview(app)
 
@@ -92,7 +92,7 @@ local modos:={},index:={}
     if( empty(tab:=kdirOpen(fname)) )
         return NIL
     end
-        
+    
     brw:=tabBrowse(tab,0,0,maxrow(),maxcol(),.t.)
     recnum:=TBColumnNew(@" Rec#",{||tabPosition(tab)},"9999999")
     brw:insColumn(1,recnum)
@@ -108,13 +108,18 @@ local modos:={},index:={}
     aadd(index,{@"natural order",{||setControl(tab,brw,0)}})
     brwMenu(brw,@"Index",@"Set controlling index (order)",index,"I")
 
-    aadd(modos,{@"Modify selected record",{||modosit(brw,tab)}})
+    aadd(modos,{@"Modify current record",{||modosit(brw,tab)}})
     aadd(modos,{@"Append empty record",{||ujrekord(brw,tab)}})
-    aadd(modos,{@"Delete selected record",{||torol(brw,tab)}})
-    aadd(modos,{@"Lock selected record",{||lockol(brw,tab)}})
+    aadd(modos,{@"Delete current record",{||torol(brw,tab)}})
+    aadd(modos,{@"Goto record position",{||goto(brw,tab)}})
+    aadd(modos,{@"Lock current record",{||lockcur(brw,tab)}})
+    aadd(modos,{@"Lock records by position",{||lockpos(brw,tab)}})
+    aadd(modos,{@"Lock multiple records",{||lockmul(brw,tab)}})
+    aadd(modos,{@"Unlock records by position",{||unlockpos(brw,tab)}})
+    aadd(modos,{@"Unlock all records",{||tabunlock(tab)}})
     aadd(modos,{@"Pack database file",{||pakkol(brw,tab)}})
     aadd(modos,{@"Zap database file",{||zapol(brw,tab)}})
-    aadd(modos,{@"Lock database file",{||xopen(brw,tab)}})
+    aadd(modos,{@"Lock database file",{||lockfil(brw,tab)}})
  
     brwMenu(brw,@"Modify",@"Modify selected record, append, delete, pack",modos,"M")
 

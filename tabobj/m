@@ -1,0 +1,10 @@
+#!/bin/bash
+
+compile()
+{
+    pushd tbbtbtx && m && popd 
+}
+
+compile 2>&1 | tee  log-install
+
+

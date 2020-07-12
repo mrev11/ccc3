@@ -20,43 +20,85 @@
 
 #include "table.ch"
 
-
-************************************************************************
-function ujrekord(brw,tab)
-    tabAppend(tab)
-    modosit(brw,tab)
-    return NIL
+#include "recpos.say"
 
 
 ************************************************************************
 function modosit(dbfbrw,tab)
     if( !tabEof(tab) )
         brwKillFocus(dbfbrw)
-        tabModRecord(tab)
+        modrecord(tab)
         brwSetFocus(dbfbrw)
         dbfbrw:refreshAll()
     end
-    return NIL
 
 
 ************************************************************************
-function lockol(dbfbrw,tab)
-    if( tabRlock(tab,busyRecord()) )
-        alert(@"Record locked "+alltrim(str(tabPosition(tab))),{@"Unlock"})
-        tabUnlock(tab)
+function ujrekord(brw,tab)
+    tabAppend(tab)
+    modosit(brw,tab)
+
+
+************************************************************************
+function torol(brw,tab)
+    if( !tabEof(tab) .and.;
+        2<=alert(@"Delete record?",{@"Cancel",@"Delete"}) .and.;
+        tabRLock(tab,busyRecord()) )
+        tabDelete(tab)
+        brw:refreshAll()
     end
-    return NIL
+
+
+************************************************************************
+function goto(dbfbrw,tab)
+local recpos
+    recpos:=poslist()
+    if( !empty(recpos) )
+        tabGoto(tab,recpos[1])
+    end
+    dbfbrw:refreshAll()
  
 
 ************************************************************************
-function xopen(brw,tab)
-local save:=tabSave(tab)
-    if( tabOpen(tab,OPEN_EXCLUSIVE,busyFile()) )
-        alert(@"File locked",{@"Unlock"})
+function lockcur(dbfbrw,tab)
+    if( tabRlock(tab,busyRecord()) )
+        dbfbrw:refreshAll()
+        prnlklist(tab,{@"Unlock"})
+        tabUnlock(tab)
     end
-    tabOpen(tab)
-    tabRestore(tab,save)
-    return NIL
+    prnlklist(tab)
+
+
+************************************************************************
+function lockpos(dbfbrw,tab)
+local recpos,n,pos
+    recpos:=poslist()
+    for n:=1 to len(recpos)
+        pos:=recpos[n]
+        tabMlock(tab,@pos,busyRecord())
+        recpos[n]:=pos
+    next
+    dbfbrw:refreshAll()
+    prnlklist(tab)
+ 
+
+************************************************************************
+function lockmul(dbfbrw,tab)
+local recpos,n
+    recpos:=poslist()
+    tabAlock(tab,recpos,busyRecord())
+    dbfbrw:refreshAll()
+    prnlklist(tab)
+
+
+************************************************************************
+function unlockpos(dbfbrw,tab)
+local recpos,n
+    recpos:=poslist()
+    for n:=1 to len(recpos)
+        tabUnlock(tab,recpos[n],busyRecord())
+    next
+    prnlklist(tab)
 
 
 ************************************************************************
@@ -69,7 +111,6 @@ local save:=tabSave(tab)
     tabOpen(tab)
     tabRestore(tab,save)
     brw:gotop()
-    return NIL
  
 
 ************************************************************************
@@ -82,25 +123,39 @@ local save:=tabSave(tab)
     tabOpen(tab)
     tabRestore(tab,save)
     brw:gotop()
-    return NIL
  
 
 ************************************************************************
-function torol(brw,tab)
-    if( !tabEof(tab) .and.;
-        2<=alert(@"Delete record?",{@"Cancel",@"Delete"}) .and.;
-        tabRLock(tab,busyRecord()) )
-
-        tabDelete(tab)
-        brw:refreshAll()
+function lockfil(brw,tab)
+local save:=tabSave(tab)
+    if( tabOpen(tab,OPEN_EXCLUSIVE,busyFile()) )
+        alert(@"File locked",{@"Unlock"})
     end
-    return NIL
+    tabOpen(tab)
+    tabRestore(tab,save)
 
 
 ************************************************************************
-function tabModRecord(tab)
+static function modrecord(tab)
     tabEditRecord(tab,"EMTS")
-    return NIL
+
+
+************************************************************************
+static function poslist()
+local poslist:="",recpos,n
+    recpos({||},{|g|readmodal(g)},{|getlist|poslist:=g_recpos:varget,.t.})
+    recpos:=strtran(poslist," ","")::split
+    for n:=1 to len(recpos)
+        recpos[n]::=val
+    next
+    return recpos
+
+
+************************************************************************
+static function prnlklist(tab,alt:={@"Ok"})
+local lklist:=tabLocklist(tab)::any2str::strtran(" ","")
+    ? "curpos: ",tabPosition(tab), "  locked:", lklist
+    alert(@"Locked rekords "+lklist,alt)
 
 
 ************************************************************************

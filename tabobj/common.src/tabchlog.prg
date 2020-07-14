@@ -577,11 +577,14 @@ static function write_fieldupdate(col,v0,v1)
 local name, type, w, d
 
     name:=col[COL_NAME]
-    type:=col[COL_TYPE]
+    type:=valtype(v0)
 
     if( type=="C" )
         v0:=cdataif(alltrim(v0))
         v1:=cdataif(alltrim(v1))
+    elseif( type=="X" )
+        v0:=cdataifx(alltrim(v0))
+        v1:=cdataifx(alltrim(v1))
     elseif( type=="N" )
         w:=col[COL_WIDTH]
         d:=col[COL_DEC]
@@ -595,7 +598,12 @@ local name, type, w, d
         v1:=if(v1,"T","F")
     end
 
-    writeln( "<f><n>"+name+"</n><t>"+type+"</t><b>"+v0+"</b><a>"+v1+"</a></f>" )
+    write("<f><n>"+name+"</n><t>"+type+"</t><b>")
+    write(v0)
+    write("</b><a>")
+    write(v1)
+    write("</a></f>")
+    write(bin(10))
 
     return NIL
 
@@ -605,10 +613,12 @@ static function write_field(col,v)
 local name,type,w,d
 
     name:=col[COL_NAME]
-    type:=col[COL_TYPE]
+    type:=valtype(v)
 
     if( type=="C" )
         v:=cdataif(alltrim(v))
+    elseif( type=="X" )
+        v:=cdataifx(alltrim(v))
     elseif( type=="N" )
         w:=col[COL_WIDTH]
         d:=col[COL_DEC]
@@ -619,7 +629,10 @@ local name,type,w,d
         v:=if(v,"T","F")
     end
 
-    writeln( "<f><n>"+name+"</n><t>"+type+"</t><v>"+v+"</v></f>" )
+    write("<f><n>"+name+"</n><t>"+type+"</t><v>")
+    write(v)
+    write("</v></f>")
+    write(bin(10))
 
     return NIL
  
@@ -714,6 +727,7 @@ local buf,siz
     buf:=replicate(x"20",siz)
     fseek(fd,0,FS_SET)
     fread(fd,@buf,siz)
+    buf::=bin2str //CCC3
     buf:=strtran(buf,chr(32),"")
     buf:=strtran(buf,chr(10),"")
     buf:=strtran(buf,chr(13),"")
@@ -773,6 +787,29 @@ local cd:="", n
 static function cdataif(x)
     if( "<"$x .or. "&"$x )
         return  cdata(x) 
+    end
+    return x
+
+
+******************************************************************************
+static function cdatax(x)
+local cd:=a"", n
+    while( .t. )
+        n:=at(a"]]>",x)
+        if( n==0 )
+            cd+=a"<![CDATA["+x+a"]]>"
+            exit
+        else
+            cd+=a"<![CDATA["+left(x,n+1)+a"]]>" 
+            x:=substr(x,n+2)
+        end
+    end
+    return  cd
+
+******************************************************************************
+static function cdataifx(x)
+    if( a"<"$x .or. a"&"$x )
+        return  cdatax(x) 
     end
     return x
 

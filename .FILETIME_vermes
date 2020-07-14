@@ -1,6 +1,7 @@
-f3b45900ea396d912e4b6e513839e268e661179e 2020071418:24:58-UTC ./CHANGELOG_vermes
+d401c8529e29edfb3926167f2d6cba006a47d512 2020071421:49:06-UTC ./tabobj/log-install
+5871564fe00ad06a0a9a1c5ef500576ab27ae67c 2020071421:48:34-UTC ./CHANGELOG_vermes
+19f9edcc73929c36d8d5bd443b02c5dd868c23a6 2020071421:46:08-UTC ./tabobj/common.src/tabchlog.prg
 832639b1d5b0201b7f4831be1174ee5f1a6bdac9 2020071418:23:03-UTC ./tabobj/tbbtbtx/dbcopybt.prg
-ff4d30002af6daa904f52d746232d8d8195c1a1d 2020071418:11:54-UTC ./tabobj/log-install
 7846ade8bb0ad21cc51ad03c19f2b736bf13f9e7 2020071412:50:47-UTC ./usr/bin/linux/msk2html
 f0ab8deb10b330789efd912bf3d0f37f16231aa5 2020071412:50:46-UTC ./usr/bin/linux/webapp
 fd9de42e2d2602abee3e44f141bfd594a3147ac9 2020071207:47:19-UTC ./usr/bin/linux/tview
@@ -901,7 +902,6 @@ b9c5e9d2423f4cca06032b910fb25761b6362ac5 2016122913:19:16-UTC ./ccclib/src/uic/g
 bc10e18ddc2a45fa79de09086138b7bc017d9488 2016122909:56:08-UTC ./tools/mask/pageprn.wro
 7d8a8f2e23a8138006f0dd667c041495e216dc99 2016122909:55:27-UTC ./tools/mask/demo-wro.prg
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
-a37ce41d4efdfbbc0893ec41125416afa93b6f8d 2016120514:09:01-UTC ./tabobj/common.src/tabchlog.prg
 559d9a88a8a494b63cecc247cc725a241010c8f9 2016120514:01:01-UTC ./tabobj/tbbtbtx/btbtx.hu.ver
 a764a67cdc8abc1a1b522a07c13a8e7d07656983 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120314:46:46-UTC ./usr/build/linux/tdc2ch.bat

@@ -1,8 +1,11 @@
+f3b45900ea396d912e4b6e513839e268e661179e 2020071418:24:58-UTC ./CHANGELOG_vermes
+832639b1d5b0201b7f4831be1174ee5f1a6bdac9 2020071418:23:03-UTC ./tabobj/tbbtbtx/dbcopybt.prg
+ff4d30002af6daa904f52d746232d8d8195c1a1d 2020071418:11:54-UTC ./tabobj/log-install
+7846ade8bb0ad21cc51ad03c19f2b736bf13f9e7 2020071412:50:47-UTC ./usr/bin/linux/msk2html
+f0ab8deb10b330789efd912bf3d0f37f16231aa5 2020071412:50:46-UTC ./usr/bin/linux/webapp
 fd9de42e2d2602abee3e44f141bfd594a3147ac9 2020071207:47:19-UTC ./usr/bin/linux/tview
-a44028c217d2f7a076d8a8e3181543323e52e617 2020071207:24:51-UTC ./tabobj/log-install
 43fce9e36390ca17091742f97fbd21dd87e97c48 2020071118:33:49-UTC ./tabobj/utility.src/kdirmodi.prg
 f0e63488241b471de7e80b4d6e5b8e9aa69c27ba 2020071118:27:32-UTC ./tabobj/utility.src/view.prg
-2f6f540ccc781917167ab16129637dd95340f3c5 2020070512:32:16-UTC ./CHANGELOG_vermes
 8efd9b406177b353dcd302c2c294eb41ab71485b 2020070512:31:21-UTC ./tabobj/utility.src/recpos.say
 aa34e24a7ec681d6d4a4191fc70d7b620d5454d8 2020070512:30:59-UTC ./log-install
 b35e1ce75fc2ddce10f6a5ce59fe37ed0bd42169 2020070512:30:54-UTC ./jt/jterminal/jterminal.jar
@@ -22,7 +25,6 @@ b28c38c16ff29a483eb347035b4c047ef5135e26 2020061415:41:03-UTC ./tools/crypto/dem
 7c3260b48c13cded9783973f4676f77b0f1856a0 2020061415:15:42-UTC ./usr/bin/linux/filetime-restore
 e8deaadffda3e82ae6163ae3a1e51b55dbf9031e 2020061415:15:42-UTC ./usr/bin/linux/filetime-save
 3b08ad4ee99a0771bb49dea253374f426a82ede3 2020061415:15:37-UTC ./usr/bin/linux/terminal-qt5
-7cb90813b0f3fed4002c7aa9cf3317fd22e38086 2020061415:15:33-UTC ./usr/bin/linux/webapp
 d09739706782bd2bd17e0361d638b38f09581b6d 2020061318:38:10-UTC ./tools/crypto/demo/bcrypt_test.prg
 e9d1240d6ff49815bdc2f004f8a2d7bd7182b271 2020060310:02:46-UTC ./usr/bin/linux/gitfollow
 77822edac03f4d714758c55746e273a96d29e861 2020060310:02:46-UTC ./usr/bin/linux/gitnav
@@ -30,7 +32,6 @@ e9d1240d6ff49815bdc2f004f8a2d7bd7182b271 2020060310:02:46-UTC ./usr/bin/linux/gi
 c4dafde940290060b852de516bce5235d7eab7aa 2020060310:02:46-UTC ./usr/bin/linux/gitstat
 4fccd98eb1ba79cca3aeb4ad3372954cc11b568e 2020060310:02:46-UTC ./usr/bin/linux/gitview
 789ca5f25ed39249ce23ae3346c03d728e8843de 2020060310:02:43-UTC ./usr/bin/linux/firstpar
-14ab57a09279870dec41aec63a981e52ee6d5f15 2020060310:02:35-UTC ./usr/bin/linux/msk2html
 bde2e763d5d62f7c260dc9f2dd853b3b66cd3cde 2020060310:02:30-UTC ./usr/bin/linux/tv
 e2d9d0fd4f11f72049e361f8799d7436bf032373 2020060310:02:20-UTC ./usr/bin/linux/jeed
 0f666e50fccfc35a62f84ba0dc637001ad5b9a92 2020060310:02:19-UTC ./usr/bin/linux/tds2prg
@@ -1253,7 +1254,6 @@ e7011e3ecbfc8ea0fb513e0301c3df84331a39a4 2015092407:33:28-UTC ./ccclib/src/month
 124696343b22cdca82d23d761e0843a8ad9d353f 2015092407:33:06-UTC ./ccclib/src/week.prg
 c8f9e8679524fdad700b547f05c0ad1624048b4a 2015090315:00:55-UTC ./tutor/checksum/OLVASS
 b101ec5437aec2fbd9901b92f7351b657e1a44ab 2015090314:58:31-UTC ./tutor/checksum/checksum.prg
-7bd56e46088521be780f70a9ae99bd00286af357 2015090314:31:36-UTC ./tabobj/tbbtbtx/dbcopybt.prg
 499dd62ee627c4a5a353573714ea4d291a0a1403 2015090221:10:07-UTC ./tutor/checksum/crc32.cpp
 7465fba09cceb2a5996106702cc634ec97a8ff38 2015060821:22:35-UTC ./tools/tdc2prgch/util/tostr.prg
 eea0250932aad6162d319f7552e4fdb4fb4ac979 2015032710:51:21-UTC ./gtk/examples/base/objectlevel/tabbedpane1.prg

@@ -257,6 +257,7 @@ local column,memblk,mx,mv
                 if( memblk!=NIL )
                     set signal block
                     table[TAB_EOF]:=.f.           //EOF törölve
+                    table[TAB_POSITION]:=1        //nem lehet 0 (ideiglenesen)
                     for mx:=1 to len(memblk)
                         table[TAB_MEMOHND]:=mh    //régi memó
                         mv:=eval(memblk[mx])      //olvasás a memóból

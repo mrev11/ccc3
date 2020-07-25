@@ -83,7 +83,7 @@ BTREE *__bt_open(int fd, int psize)
 
         if( t->magic!=BTREEMAGIC )
         {
-            //fordított byte sorrend?
+            //forditott byte sorrend?
             
             if( F_ISSET(t,B_NEEDSWAP) )
             {

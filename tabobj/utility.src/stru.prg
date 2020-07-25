@@ -92,8 +92,8 @@ local err
     end
     
 
-    //az index oszlopok sorszámokkal vannak nyilvántartva
-    //mivel az editálás során a sorszámok elcsúszhatnak,
+    //az index oszlopok sorszamokkal vannak nyilvantartva
+    //mivel az editalas soran a sorszamok elcsuszhatnak,
     //meg kell jegyezni az oszlopneveket
     
     aidx:=tabIndex(tab)
@@ -106,7 +106,7 @@ local err
     
     sav:=aclone(tab)
 
-    while( NIL!=(upg:=struktura(tab)) ) //struktúra editálás
+    while( NIL!=(upg:=struktura(tab)) ) //struktura editalas
         
         //tab:=tabNew0(fname)
         tab:=tabNew0(tabFile(sav)) //2011.07.08
@@ -324,7 +324,7 @@ static function fld_insert(brw)
 local arr:=brwArray(brw)
 local pos:=brwArrayPos(brw)
 
-    aadd(arr,NIL) //ains kicsúsztatja az utolsó elemet!
+    aadd(arr,NIL) //ains kicsusztatja az utolso elemet!
     ains(arr,pos)
     arr[pos]:=BLANKROW
     brw:refreshall()

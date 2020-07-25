@@ -18,16 +18,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : a táblaobjektum szemafor lockja
-//STATUS    : közös
+//TARTALOM  : a tablaobjektum szemafor lockja
+//STATUS    : kozos
 
 //function tabSLock(table,usrblk)    //lock
 //function tabSUnlock(table)         //unlock
 
-//ezt ki lehet egészíteni a dummy filéken alkalmazott
-//lockokkal úgy, hogy helyettesítse a natív rekordlockokat,
+//ezt ki lehet egesziteni a dummy fileken alkalmazott
+//lockokkal ugy, hogy helyettesitse a nativ rekordlockokat,
 //ilyen lesz a lock rendszer az sql-es motorokban,
-//és esetleg az összes többiben is (az egységesség kedvéért)
+//es esetleg az osszes tobbiben is (az egysegesseg kedveert)
 
 
 ******************************************************************************
@@ -37,12 +37,12 @@
 #define SEMDIR     "semaphor.tmp"
 
 //1998.11.18
-//Korábban a sema_open és sema_close utility függvényeket
-//használtuk a table szemaforozásához, a szemafor directoryt
-//azonban jobb mindenhol külön létrehozni, ezért itt saját
-//static függvényeket használok, míg az eredeti függvények
-//meg vannak tartva általános célra. A szemafor filé nevét
-//nem tabAlias()-ból, hanem tabFile()-ből kell képezni.
+//Korabban a sema_open es sema_close utility fuggvenyeket
+//hasznaltuk a table szemaforozasahoz, a szemafor directoryt
+//azonban jobb mindenhol kulon letrehozni, ezert itt sajat
+//static fuggvenyeket hasznalok, mig az eredeti fuggvenyek
+//meg vannak tartva altalanos celra. A szemafor file nevet
+//nem tabAlias()-bol, hanem tabFile()-bol kell kepezni.
 
 
 ******************************************************************************
@@ -109,17 +109,17 @@ local sfil:=sdir+dirsep()+f
 
         dirmake(lower(sdir))
         
-        //itt szerencsére elég a dirmake(),
-        //mert tabCreate nem hozza létre automatikusan
-        //a tabPath-ban megadott alkönyvtárat, és ezért
-        //legfeljebb egy könyvtárral kell lejjebb menni,
+        //itt szerencsere eleg a dirmake(),
+        //mert tabCreate nem hozza letre automatikusan
+        //a tabPath-ban megadott alkonyvtarat, es ezert
+        //legfeljebb egy konyvtarral kell lejjebb menni,
         //dirdirmake() a klibrary-ban volna
         
-        //ellenőrizni kell, hogy a directory valóban létrejött-e, 
-        //ha a kreálás sikertelen, akkor az valószínűleg
-        //a tabPath() alkönyvtár hiányát jelenti, ekkor
+        //ellenorizni kell, hogy a directory valoban letrejott-e, 
+        //ha a krealas sikertelen, akkor az valoszinuleg
+        //a tabPath() alkonyvtar hianyat jelenti, ekkor
         //nem "Szemfor lock sikertelen"-t kell jelenteni,
-        //hanem normál runtime errort generálni
+        //hanem normal runtime errort generalni
         
         if( empty(directory(lower(sdir),"HD")) )
             taberrOperation("tabSlock")

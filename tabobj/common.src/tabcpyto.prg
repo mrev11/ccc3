@@ -19,7 +19,7 @@
  */
 
 //TARTALOM  : copy to
-//STATUS    : közös
+//STATUS    : kozos
 //
 //function tabCopyTo(table,fileName,fieldList)
 
@@ -64,7 +64,7 @@ local err, msg
     
         for n:=1 to len(flist)
 
-            value:=eval(flist[n][COL_BLOCK]) //adatbázismező kiolvasása
+            value:=eval(flist[n][COL_BLOCK]) //adatbazismezo kiolvasasa
             
             if( (type:=flist[n][COL_TYPE])=="C" )
                 if( !tabMemoField(table,flist[n]) )

@@ -94,10 +94,10 @@ static function createdbf(table)
 local ext:=lower(tabDataExt())
 local mem:=lower(tabMemoExt())
  
-local datname:=lower(tabPathName(table))    //adatfilé
-local dbdname:=lower(tabMemoName(table))    //memófilé  
-local dbfname:=strtran(datname,ext,".dbf")  //DBF adatfilé 
-local dbmname:=strtran(datname,ext,".dbm")  //DBM memófilé   
+local datname:=lower(tabPathName(table))    //adatfile
+local dbdname:=lower(tabMemoName(table))    //memofile  
+local dbfname:=strtran(datname,ext,".dbf")  //DBF adatfile 
+local dbmname:=strtran(datname,ext,".dbm")  //DBM memofile   
  
 local err,msg 
 local hnd,hnd1
@@ -287,12 +287,12 @@ local dat:=date()
     
     xvclear(buf)
     xvputbyte (buf, 0,3)                  //  DBF3                 1
-    xvputbyte (buf, 1,year(dat)%100)      //  év                   1
-    xvputbyte (buf, 2,month(dat))         //  hónap                1
+    xvputbyte (buf, 1,year(dat)%100)      //  ev                   1
+    xvputbyte (buf, 2,month(dat))         //  honap                1
     xvputbyte (buf, 3,day(dat))           //  nap                  1
 
-    xvputlit32 (buf, 4,lastrec)           //  rekordok száma       4
-    xvputlit16 (buf, 8,hdrlen)            //  fejléc hossza        2
+    xvputlit32 (buf, 4,lastrec)           //  rekordok szama       4
+    xvputlit16 (buf, 8,hdrlen)            //  fejlec hossza        2
     xvputlit16 (buf,10,reclen)            //  rekordok hossza      2
     
     fseek(hnd,0,FS_SET) 

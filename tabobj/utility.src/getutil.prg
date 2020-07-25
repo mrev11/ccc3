@@ -103,10 +103,10 @@ local X:=if(template==NIL,"X",left(template,1))
     g:varPut(text)
     return g 
 /*
-    Beállítja g:picture-jét "@S<n>K XXXXXXXXXXXXXXXXXXXXXXXXX"-re,
+    Beallitja g:picture-jet "@S<n>K XXXXXXXXXXXXXXXXXXXXXXXXX"-re,
     ahol <n> g eredeti hossza,
-    XX-ek hossza egyenlő text hosszával,
-    g új értéke text lesz.
+    XX-ek hossza egyenlo text hosszaval,
+    g uj erteke text lesz.
 */  
 
 ************************************************************************
@@ -116,8 +116,8 @@ local l:=len(get:varGet())
     return l
 
 ************************************************************************
-//  getlist  minden elemének kiértékeli a postBlock-ját, és
-//  újra editáltatja azokat, amelyek nem jól voltak kitöltve.
+//  getlist  minden elemenek kiertekeli a postBlock-jat, es
+//  ujra editaltatja azokat, amelyek nem jol voltak kitoltve.
 //
 function getValidAll(getlist)
 local n, get, pre, post
@@ -146,27 +146,27 @@ local never:={||.f.}
     return aeval(glist,{|g|g:preBlock:=never})
 
 ************************************************************************
-//  Ha sok olyan get mező van a maszkban, amelyiknek a 
+//  Ha sok olyan get mezo van a maszkban, amelyiknek a 
 //  preBlock-ja fixen .f.-et ad, akkor a kurzor nehezen mozog 
-//  közöttük, mert mindegyiket ki kell értékelni menet közben. 
-//  Ezért, ha a preBlock-ok értéke nem függ(!) a get objectek
-//  adattartalmától, akkor célszerű a getlist-ből előre kiszűrni
-//  azokat az elemeket, amelyekre úgysem léphet rá a kurzor.
+//  kozottuk, mert mindegyiket ki kell ertekelni menet kozben. 
+//  Ezert, ha a preBlock-ok erteke nem fugg(!) a get objectek
+//  adattartalmatol, akkor celszeru a getlist-bol elore kiszurni
+//  azokat az elemeket, amelyekre ugysem lephet ra a kurzor.
 //
-//  Ilyenkor a readmodal()-t egyszerűen helyettesítsük readfilt()-tel.
+//  Ilyenkor a readmodal()-t egyszeruen helyettesitsuk readfilt()-tel.
 //
-//  Ha a get mezők sorrendjét is kézbe kell venni, akkor ugyanez a
-//  módszer alkalmazandó, csakhogy ott az elemeket egyenként kell
-//  átmásolni a kívánt sorrendben (esetleg kihagyva azokat, amelyekre
-//  a kurzor nem léphet rá). Fontos tudni, hogy ez a művelet nem 
-//  változtatja az eredeti getlist-et, tehát a validokban lévő
-//  hivatkozások az eredeti getlist elemekre továbbra is jók maradnak.
+//  Ha a get mezok sorrendjet is kezbe kell venni, akkor ugyanez a
+//  modszer alkalmazando, csakhogy ott az elemeket egyenkent kell
+//  atmasolni a kivant sorrendben (esetleg kihagyva azokat, amelyekre
+//  a kurzor nem lephet ra). Fontos tudni, hogy ez a muvelet nem 
+//  valtoztatja az eredeti getlist-et, tehat a validokban levo
+//  hivatkozasok az eredeti getlist elemekre tovabbra is jok maradnak.
 //  
-//  Eredetileg a preBlock-ok mindig egy paraméterrel vannak kiértékelve,
-//  és ez az egy paraméter maga a get object. Abból a célból, hogy a 
-//  preBlock tudhassa, hogy nem a read van folyamatban, csak a szűrés,
-//  a readfilt mégegy paramétert átad a preBlock-nak a kiértékeléskor.
-//  A második paraméter értéke megállapodás szerint "readfilt".
+//  Eredetileg a preBlock-ok mindig egy parameterrel vannak kiertekelve,
+//  es ez az egy parameter maga a get object. Abbol a celbol, hogy a 
+//  preBlock tudhassa, hogy nem a read van folyamatban, csak a szures,
+//  a readfilt megegy parametert atad a preBlock-nak a kiertekeleskor.
+//  A masodik parameter erteke megallapodas szerint "readfilt".
 //
 function readfilt(glist)
 local g:={}, n

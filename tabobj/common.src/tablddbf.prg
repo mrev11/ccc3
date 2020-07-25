@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : DBF betöltése DBM memóval együtt
-//STATUS    : közös
+//TARTALOM  : DBF betoltese DBM memoval egyutt
+//STATUS    : kozos
 //
 //function tabLoadDBF(tab,dbf)
 
@@ -43,16 +43,16 @@ local buffer:=replicate(x"20",32)
 local hdrlen,reclen,reccnt,fldcnt
 local name,type,length,dec
 local konvtab:={},c,blk
-local n,i,l,offs:=2 //első byte=deleted flag
+local n,i,l,offs:=2 //elso byte=deleted flag
 local msg,msgtotal,msgdbnam
 
     tranNotAllowedInTransaction(tab,"loaddbf")
 
     tabCommit(tab)
 
-    //az exkluzív open megkövetelése megakadályozza,
-    //hogy a dbf alapú rendszerekben egy táblába önmagát
-    //importáljuk (!)
+    //az exkluziv open megkovetelese megakadalyozza,
+    //hogy a dbf alapu rendszerekben egy tablaba onmagat
+    //importaljuk (!)
 
     if( tabIsopen(tab)<OPEN_EXCLUSIVE )
         taberrOperation("tabLoadDBF")
@@ -73,7 +73,7 @@ local msg,msgtotal,msgdbnam
     //dbm: filename.dbm
     
     hnd:=fopen(dbf,FO_READ)
-    hnd1:=memoOpen(dbm,FO_READ)  //nem feltétlenül létezik
+    hnd1:=memoOpen(dbm,FO_READ)  //nem feltetlenul letezik
 
     if( hnd<0 )
         taberrOperation("tabLoadDBF")
@@ -123,9 +123,9 @@ local msg,msgtotal,msgdbnam
 
             if( left(name,3)=="DBM" .and. length==10 )
                 if( hnd1>=0 )
-                    blk:=blkmemo(offs,hnd1) //memó field
+                    blk:=blkmemo(offs,hnd1) //memo field
                 else
-                    //nincs meg a memófilé
+                    //nincs meg a memofile
                     blk:={||a""}
                 end
             end
@@ -146,17 +146,17 @@ local msg,msgtotal,msgdbnam
         i:=ascan(tabColumn(tab),{|x|alltrim(x[COL_NAME])==alltrim(name)})
 
         if( i==0 ) 
-            //nincs meg a mező
+            //nincs meg a mezo
 
         elseif( type!=tabColumn(tab)[i][COL_TYPE] ) 
-            //eltér a típusa
+            //elter a tipusa
             taberrOperation("tabLoadDBF")
             taberrDescription(@"same field name with different type")
             taberrArgs(name)
             tabError(tab)
 
         else
-            //konvertáljuk
+            //konvertaljuk
             aadd(konvtab,{blk,tabColumn(tab)[i][COL_BLOCK]})
         end
 
@@ -184,7 +184,7 @@ local msg,msgtotal,msgdbnam
             message(msg,msgdbnam+str(n)+msgtotal)
         end
         
-        if( !left(buffer,1)==a"*" )  //nem  törölt
+        if( !left(buffer,1)==a"*" )  //nem  torolt
 
             tabAppend(tab)
 
@@ -206,7 +206,7 @@ local msg,msgtotal,msgdbnam
 
     sleep(500)
     msg:=message(msg)
-    return n //rekordszám
+    return n //rekordszam
 
 
 *************************************************************************

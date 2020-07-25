@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : DBF átmásolása töröltek kihagyásával
-//STATUS    : közös utility
+//TARTALOM  : DBF atmasolasa toroltek kihagyasaval
+//STATUS    : kozos utility
 //
 //function copydbf(dbfsrc,dbfdest)
 
@@ -40,7 +40,7 @@ local hnd1,hnd2
 local buffer, header, buf4
 local hdrlen,reclen,reccnt,fldcnt
 local name,type,length,dec
-local n,l,offs:=2 //első byte=deleted flag
+local n,l,offs:=2 //elso byte=deleted flag
 local msg,msgtotal,msgdbnam
 
     hnd1:=fopen(db1,FO_READ+FO_EXCLUSIVE)
@@ -79,10 +79,10 @@ local msg,msgtotal,msgdbnam
     reclen:=xvgetlit16(buffer,10,0) 
     fldcnt:=(hdrlen-32-(hdrlen%32))/32
 
-    ? @"rekordszám   :", reccnt
-    ? @"fejléc hossz :", hdrlen
+    ? @"rekordszam   :", reccnt
+    ? @"fejlec hossz :", hdrlen
     ? @"rekord hossz :", reclen
-    ? @"mezők száma  :", fldcnt 
+    ? @"mezok szama  :", fldcnt 
     
     header:=replicate(x"20",hdrlen-32)
 
@@ -141,7 +141,7 @@ local msg,msgtotal,msgdbnam
             message(msg,msgdbnam+str(n)+msgtotal)
         end
         
-        if( !left(buffer,1)=="*" ) //nem törölt
+        if( !left(buffer,1)=="*" ) //nem torolt
             if( fwrite(hnd2,buffer)!=reclen )
                 taberrOperation("copydbf")
                 taberrDescription(@"DBF write failed")
@@ -155,7 +155,7 @@ local msg,msgtotal,msgdbnam
     fwrite(hnd2,chr(26)) //EOF=1A
     fseek(hnd2,4,FS_SET)
     xvputlit32(buf4:=replicate(x"20",4),0,reccnt)
-    fwrite(hnd2,buf4) //fejléc: rekordszám
+    fwrite(hnd2,buf4) //fejlec: rekordszam
 
     message(msg,msgdbnam+str(n)+msgtotal)
 
@@ -164,7 +164,7 @@ local msg,msgtotal,msgdbnam
 
     sleep(100)
     msg:=message(msg)
-    return n //rekordszám
+    return n //rekordszam
 
 
 *************************************************************************

@@ -18,35 +18,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : filé struktúrájának frissítése az objektum szerint
-//STATUS    : közös, ifdef
+//TARTALOM  : file strukturajanak frissitese az objektum szerint
+//STATUS    : kozos, ifdef
 //
-//function tabUpgrade(table,force)     //struktúra frissítése
-//function tabAutoUpgrade(table,force) //frissít, ha szükséges
+//function tabUpgrade(table,force)     //struktura frissitese
+//function tabAutoUpgrade(table,force) //frissit, ha szukseges
 
 
 #include "tabobj.ch"
 
-//konvertálja a tényleges filét az objektumnak megfelelően,
-//ha a híváskor a filé nyitva van, akkor nem csinál semmit,
-//hiszen megnyitható filénél nincs szükség konverzióra,
-//konverzió után a filé lezárva marad, azaz :isopen nem változik
+//konvertalja a tenyleges filet az objektumnak megfeleloen,
+//ha a hivaskor a file nyitva van, akkor nem csinal semmit,
+//hiszen megnyithato filenel nincs szukseg konverziora,
+//konverzio utan a file lezarva marad, azaz :isopen nem valtozik
 //
-//konverziós szabályok:
-//    nem enged mezőt kihagyni
-//    mező típusa nem lehet eltérő
-//    mezőhosszt hajlandó megváltoztatni (csökkent/növel)
+//konverzios szabalyok:
+//    nem enged mezot kihagyni
+//    mezo tipusa nem lehet eltero
+//    mezohosszt hajlando megvaltoztatni (csokkent/novel)
 //
-//    force==.t.-vel erőszakos konverziót csinál
+//    force==.t.-vel eroszakos konverziot csinal
 //
-//visszatérés:
+//visszateres:
 //    .t., ha OK
-//    .f., ha a szabályok nem engedik a konverziót
-//    NIL, ha a filé foglalt
+//    .f., ha a szabalyok nem engedik a konverziot
+//    NIL, ha a file foglalt
 
 
 ******************************************************************************
-function tabUpgrade(table,force) //.t.=OK, NIL=foglalt, .f.:=nem konvertálható
+function tabUpgrade(table,force) //.t.=OK, NIL=foglalt, .f.:=nem konvertalhato
 
 local result
 local savefile:=tabFile(table)
@@ -56,13 +56,13 @@ local saveindex:=tabIndex(table)
 
     if( tabIsopen(table)>0 )
         //nyitva van, 
-        //nincs szükség konverzióra
+        //nincs szukseg konverziora
 
         result:=.t. 
 
     elseif( tabSlock(table,{||0})<=0 )
-        //ha nem lehet rá szemafort tenni,
-        //akkor másvalaki foglalkozik vele,
+        //ha nem lehet ra szemafort tenni,
+        //akkor masvalaki foglalkozik vele,
         //nem lehet upgradelni 
        
         result:=NIL        
@@ -94,32 +94,32 @@ local logged
     tabDelIndex(table) 
     tabIndex(table,{})
 
-    //DBFNTX-ben az indexeket ki kell venni az objektumnól, 
-    //mert a tmp filénév képzés miatt (+"$") a transzformált
-    //indexnevek hosszabbak volnának 8-nál, és ezen elakad
+    //DBFNTX-ben az indexeket ki kell venni az objektumnol, 
+    //mert a tmp filenev kepzes miatt (+"$") a transzformalt
+    //indexnevek hosszabbak volnanak 8-nal, es ezen elakad
 
-    //DATIDX-ben és Btrieve-ben nem szabad az objektumból kivenni, 
-    //mert akkor a filé resource-ába sem kerülnének be az indexek
+    //DATIDX-ben es Btrieve-ben nem szabad az objektumbol kivenni, 
+    //mert akkor a file resource-aba sem kerulnenek be az indexek
     
     //DBFCTX-ben mindegy
 #endif    
 
-    //a filéből kiolvasott adatok alapján
-    //létrehozunk egy (nem statikus) táblát, 
-    //amivel megnyitható a filé (tabVerify átengedi)
+    //a filebol kiolvasott adatok alapjan
+    //letrehozunk egy (nem statikus) tablat, 
+    //amivel megnyithato a file (tabVerify atengedi)
 
     tabfil:=tabStructInfo(table)
 
     if( tabfil==NIL )
         return NIL //foglalt
     elseif( empty(tabfil) )
-        return .f. //nem állapítható meg a struktúra, nem konvertálható
+        return .f. //nem allapithato meg a struktura, nem konvertalhato
     end
     
-    //ne tegyen rá szemafor lockot,
-    //az ugyanis összeakadna a már meglévő,
-    //azonos nevű, de másik objektumban (table)
-    //nyilvántartott lockkal:
+    //ne tegyen ra szemafor lockot,
+    //az ugyanis osszeakadna a mar meglevo,
+    //azonos nevu, de masik objektumban (table)
+    //nyilvantartott lockkal:
 
     tabfil[TAB_SLOCKCNT]:=1 
     
@@ -127,9 +127,9 @@ local logged
         return NIL //foglalt
     end
 
-    //ideiglenes néven létrehozzuk az objektummal megegyező 
-    //struktúrájú üres filét, először töröljük a maradékot
-    //meg kell gondolni az NTX-ek ütközését
+    //ideiglenes neven letrehozzuk az objektummal megegyezo 
+    //strukturaju ures filet, eloszor toroljuk a maradekot
+    //meg kell gondolni az NTX-ek utkozeset
 
     logged:=table[TAB_LOGGED]
     table[TAB_LOGGED]:=.f.
@@ -139,10 +139,10 @@ local logged
     tabCreate(table)
     tabOpen(table,OPEN_APPEND) 
 
-    //összeszedjük a konvertálandó oszlopokat
+    //osszeszedjuk a konvertalando oszlopokat
 
-    colfil:=tabColumn(tabfil)  //eredeti filé
-    colobj:=tabColumn(table)   //új filé az objektum alapján
+    colfil:=tabColumn(tabfil)  //eredeti file
+    colobj:=tabColumn(table)   //uj file az objektum alapjan
 
     for n:=1 to len(colfil)
 
@@ -159,21 +159,21 @@ local logged
             aadd(konvtab,{kiolvas,beir})
         
         else
-            //akkor konvertálható,
-            //ha minden mező megvan az új táblában,
-            //egyezik a típusa, 
-            //egyébként jelezni kell, hogy nem konvertálható
-            //force==.t. erőszakos konverziót ír elő
+            //akkor konvertalhato,
+            //ha minden mezo megvan az uj tablaban,
+            //egyezik a tipusa, 
+            //egyebkent jelezni kell, hogy nem konvertalhato
+            //force==.t. eroszakos konverziot ir elo
             
             if( force!=.t. )
                 tabClose(table)
                 tabClose(tabfil)
-                return .f. //nem konvertálható
+                return .f. //nem konvertalhato
             end
         end
     next
 
-    //konvertálunk
+    //konvertalunk
     
     toupgrade:=@"Copy  "+tabPathName(tabfil)
     total:="/"+alltrim(str(tabLastrec(tabfil)))
@@ -189,8 +189,8 @@ local logged
         tabAppend(table) 
 
         for n:=1 to len(konvtab)
-            value:=eval(konvtab[n][1]) //olvas a régiből
-            eval(konvtab[n][2],value)  //ír az újba
+            value:=eval(konvtab[n][1]) //olvas a regibol
+            eval(konvtab[n][2],value)  //ir az ujba
         next
         tabSkip(tabfil)
     end
@@ -200,18 +200,18 @@ local logged
     tabClose(tabfil)
     
     
-    //előállt a konvertált filé ideiglenes néven, 
-    //el kell még végezni a backup-ot és az átnevezéseket
-    //tabfil : structinfo-ból, name (eredeti filé)
-    //table  : program-ból, $name (konvertált filé)
+    //eloallt a konvertalt file ideiglenes neven, 
+    //el kell meg vegezni a backup-ot es az atnevezeseket
+    //tabfil : structinfo-bol, name (eredeti file)
+    //table  : program-bol, $name (konvertalt file)
     
     if( !tabBackup(tabfil) )
-        //? "nem sikerült elmenteni a régi verziót"
+        //? "nem sikerult elmenteni a regi verziot"
         return NIL 
     end
 
     if( !tabRename(table,tabFile(tabfil)) )
-        //? "nem sikerült átnevezni az új filét"
+        //? "nem sikerult atnevezni az uj filet"
         return NIL 
     end
 

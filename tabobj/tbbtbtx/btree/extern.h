@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//belső függvények
+//belso fuggvenyek
 
   int    __bt_free         (BTREE*, PAGE*);
   PAGE  *__bt_new0         (BTREE*, pgno_t*, pgno_t*);

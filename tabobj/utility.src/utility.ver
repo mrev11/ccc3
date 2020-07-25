@@ -12,87 +12,87 @@
    bt2dbf/bt2txt [-c ctrl] [-f] fname
 
 2008.06.02 -- 1.0.11"
-   10-nél hosszabb (max 32) mezőnevek.
+   10-nel hosszabb (max 32) mezonevek.
 
-   Maguk a motorok nem változtak.
-   A DATIDX és BTBTX motor magától működik hosszú mezőnevekkel is
-   A DBFCTX motor természetesen nem tud hosszú mezőnevekkel működni.
-   A utilityk (tstru, xstru, tview, xview, ddict2) kicsit változtak, 
-   hogy kezelni lehessen a hosszú mezőneveket.
+   Maguk a motorok nem valtoztak.
+   A DATIDX es BTBTX motor magatol mukodik hosszu mezonevekkel is
+   A DBFCTX motor termeszetesen nem tud hosszu mezonevekkel mukodni.
+   A utilityk (tstru, xstru, tview, xview, ddict2) kicsit valtoztak, 
+   hogy kezelni lehessen a hosszu mezoneveket.
 
-   A dat2dbf, bt2dbf (egyelőre) eredeti állapotukban maradtak. 
-   Működnek, de lecsonkítják a mezőneveket 10 karakterre. 
-   Emiatt a dbf exportban egyező mezőnevek is keletkezhetnek.
+   A dat2dbf, bt2dbf (egyelore) eredeti allapotukban maradtak. 
+   Mukodnek, de lecsonkitjak a mezoneveket 10 karakterre. 
+   Emiatt a dbf exportban egyezo mezonevek is keletkezhetnek.
 
-   A tableobjektum loaddbf metódusa szintén eredeti állapotában maradt. 
-   Az olyan dbf-beli mezőket, amiknek nincs megfelelője a 
-   táblaobjektumban (mert pl. lerövidült a neve) nem importálja.
+   A tableobjektum loaddbf metodusa szinten eredeti allapotaban maradt. 
+   Az olyan dbf-beli mezoket, amiknek nincs megfeleloje a 
+   tablaobjektumban (mert pl. lerovidult a neve) nem importalja.
 
-   Tehát csak az interaktív táblaeditáló programokban van változás.
+   Tehat csak az interaktiv tablaeditalo programokban van valtozas.
 
 2006.08.17 -- 1.0.10"
-   kdirseek-ben a széles mezők picture-je javítva.
+   kdirseek-ben a szeles mezok picture-je javitva.
 
 2006.02.20 -- 1.0.09
-  Tview indításakor beállítható az index (-c opció).
+  Tview inditasakor beallithato az index (-c opcio).
 
 2001.10.15 -- 1.0.08
-  xstru/dstru elszállt, ha mező appendből esc-pel kiléptek.
+  xstru/dstru elszallt, ha mezo appendbol esc-pel kileptek.
 
 2001.08.29 -- 1.0.07
-  xstru elszállt, ha index appendből esc-pel kiléptek.
+  xstru elszallt, ha index appendbol esc-pel kileptek.
 
 2001.07.07 -- 1.0.06
-  tabModRecord helyett tabEditRecord a könyvtárból.
+  tabModRecord helyett tabEditRecord a konyvtarbol.
 
 
 2000.07.15 -- 1.0.05
  
-  Zap, exclusive open és rekord lock funkcióval bővítve.
-  A z editor billentyűkezelője átvéve.
+  Zap, exclusive open es rekord lock funkcioval bovitve.
+  A z editor billentyukezeloje atveve.
 
 2000.05.11 -- 1.0.04
 
-  kdirseek gyorskeresője inicializálva van az aktuális értékekkel
+  kdirseek gyorskeresoje inicializalva van az aktualis ertekekkel
 
 2000.03.18 -- 1.0.03
   
-  A széles picture-ök transzformációja javítva.
+  A szeles picture-ok transzformacioja javitva.
 
-  brwedit.prg (alapkönyvtár) javítva, ezzel a bstru és
-  társai elszállása megszűnt.
+  brwedit.prg (alapkonyvtar) javitva, ezzel a bstru es
+  tarsai elszallasa megszunt.
 
 
 1999.06.15 -- 1.0.02
 
-  implementáció DBFCTX-re is (indexek nélkül)
-  további javítgatások
+  implementacio DBFCTX-re is (indexek nelkul)
+  tovabbi javitgatasok
 
 
 1999.06.13 -- 1.0.01
  
-  A struktúra módosítás algoritmusa a következő volt:
+  A struktura modositas algoritmusa a kovetkezo volt:
   
-  1. az oszlopok tömbjét {}-re átírtuk,
-  2. az indexek tömbjét {}-re átírtuk,
-  3. tabAddColumn() hívásokkal betettük az új oszlokoat,
-  4. tabAddIndex() hívásokkal betettük az új indexeket,
-  5. az így manipulált objektummal tabUpgrade-et csináltunk.
+  1. az oszlopok tombjet {}-re atirtuk,
+  2. az indexek tombjet {}-re atirtuk,
+  3. tabAddColumn() hivasokkal betettuk az uj oszlokoat,
+  4. tabAddIndex() hivasokkal betettuk az uj indexeket,
+  5. az igy manipulalt objektummal tabUpgrade-et csinaltunk.
   
-  Ez azonban ROSSZ, mert a rekordbuffer hossza nem inicializálódik,
-  az újonnan betett mezők offsetei rossz értékek, ami mindenféle
-  GPF-re vezet, és a módosított filé teljesen elromlik. 
+  Ez azonban ROSSZ, mert a rekordbuffer hossza nem inicializalodik,
+  az ujonnan betett mezok offsetei rossz ertekek, ami mindenfele
+  GPF-re vezet, es a modositott file teljesen elromlik. 
   
-  Helyette ez a javított algoritmus kell:
+  Helyette ez a javitott algoritmus kell:
   
-  1. tabNew0()-val vadonat új objektumot csinálunk
-  2. tabAddColumn() hívásokkal betesszük az új oszlokoat
-  3. tabAddIndex() hívásokkal betesszük az új indexeket
-  4. az objektummal tabUpgrade-et csinálunk
+  1. tabNew0()-val vadonat uj objektumot csinalunk
+  2. tabAddColumn() hivasokkal betesszuk az uj oszlokoat
+  3. tabAddIndex() hivasokkal betesszuk az uj indexeket
+  4. az objektummal tabUpgrade-et csinalunk
  
 
-  Oszlopnevek, típusok, hosszak, index oszlopok ellenőrzése.
+  Oszlopnevek, tipusok, hosszak, index oszlopok ellenorzese.
  
-  Rengeteg kisebb nagyobb egyéb javítás.
+  Rengeteg kisebb nagyobb egyeb javitas.
 
 #endif

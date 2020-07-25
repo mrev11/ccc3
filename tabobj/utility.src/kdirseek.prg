@@ -68,7 +68,7 @@ local n:=g_seg1:varGet()
 static function kdload(getlist,tab)
 local gcol:={g_col1,g_col2,g_col3,g_col4}
 local gseg:={g_seg1,g_seg2,g_seg3,g_seg4}
-local index:=tabIndex(tab)[tabControl(tab)][IND_COL] //index oszlopok sorszáma
+local index:=tabIndex(tab)[tabControl(tab)][IND_COL] //index oszlopok sorszama
 local column:=tabColumn(tab), n
 local name,type,width,dec
 local pict,value

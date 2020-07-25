@@ -18,17 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : tábla alkatérszeinek mentése, átnevezése
-//STATUS    : egyelőre közös, ifdef, SQL-ben eltérő lesz
+//TARTALOM  : tabla alkaterszeinek mentese, atnevezese
+//STATUS    : egyelore kozos, ifdef, SQL-ben eltero lesz
 //
-//function tabRename(table,name)   adatfilé, index, memó átnevezése
-//function tabBackup(table)        adatfilé, memó átmásolása backup.tmp-be
-//function tabDelTable(table)      adatfilé, index,memó törlése
-//function tabDelIndex(table)      index(ek) törlése
+//function tabRename(table,name)   adatfile, index, memo atnevezese
+//function tabBackup(table)        adatfile, memo atmasolasa backup.tmp-be
+//function tabDelTable(table)      adatfile, index,memo torlese
+//function tabDelIndex(table)      index(ek) torlese
 
 #include "tabobj.ch"
 
-#define BACKUPDIR "backup.tmp"  //nem lehet a végén dirsep!
+#define BACKUPDIR "backup.tmp"  //nem lehet a vegen dirsep!
 
 
 ****************************************************************************
@@ -96,7 +96,7 @@ function tabDelIndex(table)
 
 local result:=.t.
 
-#ifdef _DBFNTX_  //ha több index is lehet
+#ifdef _DBFNTX_  //ha tobb index is lehet
 local path:=tabPath(table)    
 local ext:=tabIndexExt(table)
 local aindex:=tabIndex(table), i, iname
@@ -127,17 +127,17 @@ local result:=.t.
     ferase(f2)
 
     if( file(f2) )
-        result:=.f. //a korábbi példány nem törölhető
+        result:=.f. //a korabbi peldany nem torolheto
     
     elseif( file(f1) )
 
-        //csak akkor kell működnie,
-        //ha létezik az átnevezendő filé
+        //csak akkor kell mukodnie,
+        //ha letezik az atnevezendo file
         
         frename(f1,f2)
 
         if( !file(f2) )
-            result:=.f. //nem vitte át az új névbe/helyre
+            result:=.f. //nem vitte at az uj nevbe/helyre
         end
     end
     

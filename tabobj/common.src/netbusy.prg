@@ -21,13 +21,13 @@
 // Vermes M. 1993.09.16
 
 ************************************************************************
-// Visszaad egy kódblokkot, amit egy sikertelen rlock hajthat végre.
+// Visszaad egy kodblokkot, amit egy sikertelen rlock hajthat vegre.
 //
 function busyRecord()
     return {||alert(@"Record lock failed!",{@"Quit"}),.f.}
 
 ************************************************************************
-// Visszaad egy kódblokkot, amit egy sikertelen append hajthat végre.
+// Visszaad egy kodblokkot, amit egy sikertelen append hajthat vegre.
 //
 function busyFile(fname)
 local fn:=if(!empty(fname),": "+fname,"!")

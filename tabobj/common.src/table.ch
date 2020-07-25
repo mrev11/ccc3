@@ -26,7 +26,7 @@
 #xtranslate (OBJ:<t>:<m>)([<p,...>])[:=<x>] => <m>(<t>()[,<p>][,<x>])
 
 #xtranslate (FIELD:<t>:<c>)[:=<x>] => tabEvalColumn(<t>(),<c>[,<x>])
-//#xtranslate (FIELD:<t>:<c>)[:=<x>] => <t>(<c>[,<x>]) // egyenértékű
+//#xtranslate (FIELD:<t>:<c>)[:=<x>] => <t>(<c>[,<x>]) // egyenerteku
 
 #xtranslate (MEMO:<m>)[:=<x>] => <m>([<x>])
 
@@ -98,17 +98,17 @@
 #endif
 *****************************************************************************
 #ifndef COL_NAME
-#define COL_NAME        1   // oszlop-, és egyben mezőnév
-#define COL_TYPE        2   // típus: C,N,D,L
-#define COL_WIDTH       3   // mezőszélesség
+#define COL_NAME        1   // oszlop-, es egyben mezonev
+#define COL_TYPE        2   // tipus: C,N,D,L
+#define COL_WIDTH       3   // mezoszelesseg
 #define COL_DEC         4   // tizedesjegyek (0, ha TYPE!=N)
-#define COL_PICT        5   // mező picture
+#define COL_PICT        5   // mezo picture
 #endif
 
 #ifndef IND_NAME
-#define IND_NAME        1   // index azonosító
-#define IND_FILE        2   // indexfájl neve (path és .ntx nélkül)
-#define IND_COL         3   // az indexet alkotó oszlopok neve/sorszáma
+#define IND_NAME        1   // index azonosito
+#define IND_FILE        2   // indexfajl neve (path es .ntx nelkul)
+#define IND_COL         3   // az indexet alkoto oszlopok neve/sorszama
 #endif
 
 #ifndef OPEN_CLOSED

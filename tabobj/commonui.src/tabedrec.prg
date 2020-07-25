@@ -39,13 +39,13 @@ static widthWind:=60
 function tabEditRecord(tab,opt,fld)
  
 // opt - "EMST"  Exit,Modify,Store,Type
-// fld - {{"FIELD","Megnevezés","PICTURE"},{...},{...},...}
+// fld - {{"FIELD","Megnevezes","PICTURE"},{...},{...},...}
 
 local margin:=int((maxcol()-widthWind)/2)
 local col:=tabColumn(tab),value:={},n,m,c,v,dcol
 local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
 
-    brw:flushright:=.f. //számok balra igazítva
+    brw:flushright:=.f. //szamok balra igazitva
 
     if( opt==NIL )
         opt:="EMST"
@@ -66,7 +66,7 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
                     aadd(v,"@R "+replicate("X",MEMOLENGTH))
                 else
                     //aadd(v,col[n][COL_PICT])
-                    //ha hosszú, akkor teljes hossz (2011.09.19)
+                    //ha hosszu, akkor teljes hossz (2011.09.19)
 
                     if( replicate("X",32)$col[n][COL_PICT] )
                         aadd(v,"@R "+replicate("X",col[n][COL_WIDTH]))
@@ -94,7 +94,7 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
                 aadd(v,"@R "+replicate("X",MEMOLENGTH))
             else
                 //aadd(v,col[n][COL_PICT])
-                //ha hosszú, akkor teljes hossz (2011.09.19)
+                //ha hosszu, akkor teljes hossz (2011.09.19)
 
                 if( replicate("X",32)$col[n][COL_PICT] )
                     aadd(v,"@R "+replicate("X",col[n][COL_WIDTH]))
@@ -121,7 +121,7 @@ local brw:=brwCreate(3,margin,maxrow()-1,maxcol()-margin)
     end
 
     brwColumn(brw,@"Data",{||formaz(brw)},widthData)
-    dcol:=brw:colcount //editálható oszlop száma
+    dcol:=brw:colcount //editalhato oszlop szama
 
     if( "S"$opt )
         brwColumn(brw,"",{||status(brw,tab)},1)
@@ -261,16 +261,16 @@ local memoflg,memotxt,scrn,curs
 
 ************************************************************************
 static function setget(arr,pos,pict,x)
-//A getek stringeket (C) editálnak, binary (X) adatokat nem!
-//Ezért, amikor egy memó vagy binary mező bekerül a getbe editálásra,
-//akkor automatikusan stringre konvertálódik (itt infó veszhet el).
-//Amikor az editált stringet kivesszük, vissza kell konvertálni binaryra.
+//A getek stringeket (C) editalnak, binary (X) adatokat nem!
+//Ezert, amikor egy memo vagy binary mezo bekerul a getbe editalasra,
+//akkor automatikusan stringre konvertalodik (itt info veszhet el).
+//Amikor az editalt stringet kivesszuk, vissza kell konvertalni binaryra.
 
     if( x==NIL )
         x:=arr[pos][MODR_VALUE]
     else
         if( valtype(arr[pos][MODR_VALUE])=="X" )
-            x:=str2bin(x) //visszakonvertál
+            x:=str2bin(x) //visszakonvertal
         end
         arr[pos][MODR_VALUE]:=if(len(pict)>MEMOLENGTH,rtrim(x),x)
     end

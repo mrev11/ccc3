@@ -18,74 +18,74 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : a memófilé műveletei
-//STATUS    : közös
+//TARTALOM  : a memofile muveletei
+//STATUS    : kozos
 //
-//function tabMemoField(table,col)         memó-e a megadott oszlop
-//function tabMemoHandle(table)            memófilé handlere
-//function tabMemoActive(table)            van-e nyitva memófilé
-//function tabMemoCount(table)             a memó mezők száma
-//function tabMemoWrite(table,memo,value)  memó beírása (memo=C10 offset)
-//function tabMemoRead(table,memo)         memó kiolvasása (memo=C10 offset)
-//function tabMemoPict()                   memó picture
+//function tabMemoField(table,col)         memo-e a megadott oszlop
+//function tabMemoHandle(table)            memofile handlere
+//function tabMemoActive(table)            van-e nyitva memofile
+//function tabMemoCount(table)             a memo mezok szama
+//function tabMemoWrite(table,memo,value)  memo beirasa (memo=C10 offset)
+//function tabMemoRead(table,memo)         memo kiolvasasa (memo=C10 offset)
+//function tabMemoPict()                   memo picture
 
 
 #include "fileio.ch"
 #include "tabobj.ch"
 
 /*
-Hogyan lehet létrehozni memó mezőt?
+Hogyan lehet letrehozni memo mezot?
 ===================================
 
-A memó mező neve DBM-mel kell kezdődjöm,
-és C10 típusa kell legyen, pl. DBMPROBA C10.
-Clipperben (és ezért mindenhol) a memó mezők nevének
-már a DBM utáni első karakterben különbözniük kell.
+A memo mezo neve DBM-mel kell kezdodjom,
+es C10 tipusa kell legyen, pl. DBMPROBA C10.
+Clipperben (es ezert mindenhol) a memo mezok nevenek
+mar a DBM utani elso karakterben kulonbozniuk kell.
 
-A memó érték egy külön filében tárolódik
-a DATIDX(DBD) formátumban ennek kiterjesztése DBD
-a DBFCTX(DBM) és DBFNTX(DBM) formátumokban a kiterjesztés DBM.
+A memo ertek egy kulon fileben tarolodik
+a DATIDX(DBD) formatumban ennek kiterjesztese DBD
+a DBFCTX(DBM) es DBFNTX(DBM) formatumokban a kiterjesztes DBM.
 
-Maga a formátum (a kiterjesztéstől eltekintve) azonos,
-a jelenlegi formátumot azonosító név: "DBM Format 1.0".
-A formátum különböző blokkmértű filék egyidejű kezelésére képes,
-a blokkméret a headerben tárolódik, 
-a legkisebb lehetséges méret 64 byte, a default 256 byte.
+Maga a formatum (a kiterjesztestol eltekintve) azonos,
+a jelenlegi formatumot azonosito nev: "DBM Format 1.0".
+A formatum kulonbozo blokkmertu filek egyideju kezelesere kepes,
+a blokkmeret a headerben tarolodik, 
+a legkisebb lehetseges meret 64 byte, a default 256 byte.
 
-Amikor egy memó mezőnek értéket adunk, akkor a memó filébe az új
-érték azonnal kiíródik, egyúttal a rekordbufferbe beíródik a memó 
-első blokkjának új offsete C10 formátumban. 
-Ha ezután a rekord commitolódik akkor az új offseten lévő memó érték
+Amikor egy memo mezonek erteket adunk, akkor a memo filebe az uj
+ertek azonnal kiirodik, egyuttal a rekordbufferbe beirodik a memo 
+elso blokkjanak uj offsete C10 formatumban. 
+Ha ezutan a rekord commitolodik akkor az uj offseten levo memo ertek
 fog a rekordhoz tartozni. Ha a commit elmarad, akkor a DBF (DAT)
-által tárolt offset nem változik, és igy a memó értéke is változatlan
-(a korábbi memóérték a commit előtt sosem íródik felül).
-A memó felülírásával feleslegessé váló blokkok a commit után 
-bekerülnek a memófilé szabadlistájába. Ha a commit elmarad 
-(pl. ALT-C kilépéskor), akkor a kiírt blokkok zárvánnyá válnak,
-és csak a filé packolásakor szűnnek meg.
+altal tarolt offset nem valtozik, es igy a memo erteke is valtozatlan
+(a korabbi memoertek a commit elott sosem irodik felul).
+A memo felulirasaval feleslegesse valo blokkok a commit utan 
+bekerulnek a memofile szabadlistajaba. Ha a commit elmarad 
+(pl. ALT-C kilepeskor), akkor a kiirt blokkok zarvannya valnak,
+es csak a file packolasakor szunnek meg.
 
 
-Hol kell módosítani a többi forrást?
+Hol kell modositani a tobbi forrast?
 ====================================
 
-Táblaobjektum:
+Tablaobjektum:
 
- 1. fel kell venni a TAB_MEMOHND attribútumot a táblaobjektumba
- 2. fel kell venni a TAB_MEMODEL attribútumot a táblaobjektumba
- 3. tabCreate-ban létre kell hozni a memó filét (ha van memó mező)
- 4. tabUse-ban meg kell nyitni a memó filét (ha van memó mező)
- 5. tabClose-ban le kell zárni a memó filét, ha nyitva van
- 6. tabAddColumn-ban speciális blokkot kell készíteni a memó mezőknek
- 7. tabAddColumn-ban a memó mezőknek "@S30 XXX..." picture-t adunk
- 8. tabCommit-ban a TAB_MEMODEL lista memóit törölni kell
- 9. tabPack-ot ki kell egészíteni a memó filé packolásával (megy enélkül is)
-10. tabZap-ot ki kell egészíteni a memó zapolásával (megy enélkül is)
-11. tabAppendRecord-ot ki kell egészíteni a memók átmásolásával
+ 1. fel kell venni a TAB_MEMOHND attributumot a tablaobjektumba
+ 2. fel kell venni a TAB_MEMODEL attributumot a tablaobjektumba
+ 3. tabCreate-ban letre kell hozni a memo filet (ha van memo mezo)
+ 4. tabUse-ban meg kell nyitni a memo filet (ha van memo mezo)
+ 5. tabClose-ban le kell zarni a memo filet, ha nyitva van
+ 6. tabAddColumn-ban specialis blokkot kell kesziteni a memo mezoknek
+ 7. tabAddColumn-ban a memo mezoknek "@S30 XXX..." picture-t adunk
+ 8. tabCommit-ban a TAB_MEMODEL lista memoit torolni kell
+ 9. tabPack-ot ki kell egesziteni a memo file packolasaval (megy enelkul is)
+10. tabZap-ot ki kell egesziteni a memo zapolasaval (megy enelkul is)
+11. tabAppendRecord-ot ki kell egesziteni a memok atmasolasaval
 
 
-Alkalmazások:
+Alkalmazasok:
 
-1. kdirmodi.prg-ban az editálást kicsit meg kell változtatni (megy enélkül is)
+1. kdirmodi.prg-ban az editalast kicsit meg kell valtoztatni (megy enelkul is)
 
 */
 
@@ -94,7 +94,7 @@ Alkalmazások:
 
 
 ****************************************************************************
-function tabMemoField(table,col) //memó-e a megadott mező?
+function tabMemoField(table,col) //memo-e a megadott mezo?
 
     if( valtype(col)!="A" )
         col:=tabGetColumn(table,col)
@@ -106,18 +106,18 @@ function tabMemoField(table,col) //memó-e a megadott mező?
 
 
 ****************************************************************************
-function tabMemoHandle(table)  //az objektum memófiléjének handlere
+function tabMemoHandle(table)  //az objektum memofilejenek handlere
     return table[TAB_MEMOHND]
 
 
 ****************************************************************************
-function tabMemoActive(table)  //van-e nyitva memófilé
+function tabMemoActive(table)  //van-e nyitva memofile
 local memohnd:=table[TAB_MEMOHND]
     return valtype(memohnd)=="N" .and. memohnd>=0
 
 
 ****************************************************************************
-function tabMemoCount(table)  //a memó mezők száma
+function tabMemoCount(table)  //a memo mezok szama
 
 local column:=tabColumn(table),n
 local count:=0
@@ -190,14 +190,14 @@ function tabMemoPict()
 /*
 function tabMemoPack(table)
 
-//vázlat arra, 
-//  hogyan kell a memó filét packolni,
-//  a hatékonyság kedvéért bele fogom szőni
-//  a kódot a tabPack-ba, hogy ne kelljen 
-//  kétszer végigmenni a filén
+//vazlat arra, 
+//  hogyan kell a memo filet packolni,
+//  a hatekonysag kedveert bele fogom szoni
+//  a kodot a tabPack-ba, hogy ne kelljen 
+//  ketszer vegigmenni a filen
 
 local mname:=tabMemoName(table)                                  //eredeti
-local tname:=tabPath(table)+TMPCHR+tabFile(table)+tabMemoExt(table) //temporális
+local tname:=tabPath(table)+TMPCHR+tabFile(table)+tabMemoExt(table) //temporalis
 local bname:=tabPath(table)+tabFile(table)+"_DBM"+".BAK"         //backup
 
 local mhnd:=tabMemoHandle(table), thnd
@@ -217,9 +217,9 @@ local blk:={},v
     while( !tabEof(table) )
     
         for n:=1 to len(blk)
-            v:=eval(blk[n])            //olvasás a memóból
-            table[TAB_MEMOHND]:=thnd   //temporális handler 
-            eval(blk[n],v)             //írás a temporális memóba
+            v:=eval(blk[n])            //olvasas a memobol
+            table[TAB_MEMOHND]:=thnd   //temporalis handler 
+            eval(blk[n],v)             //iras a temporalis memoba
             table[TAB_MEMOHND]:=mhnd   //memo handler vissza
         next
         

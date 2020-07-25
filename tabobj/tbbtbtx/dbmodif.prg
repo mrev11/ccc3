@@ -26,9 +26,9 @@
 ******************************************************************************
 //Public interface
 
-//function tabCommit(table)                 //módosult rekord kiírása
-//function tabDelete(table)                 //töröl + lép
-//function tabDeleted(table)                //törölt-e a rekord?
+//function tabCommit(table)                 //modosult rekord kiirasa
+//function tabDelete(table)                 //torol + lep
+//function tabDeleted(table)                //torolt-e a rekord?
 //function tabMAppend(table,userblock)      //append, lockokat megtartja
 //function tabAppend(table,userblock,flag)  //append
 //function tabInsert(table,key,usrblk,flag) //append egyedi kulccsal
@@ -46,17 +46,17 @@ local recno,status,modifkey
 
         if( tranIsActiveTransaction() ) 
         
-            if( pup==NIL ) //rekordállapot mentés
+            if( pup==NIL ) //rekordallapot mentes
 
                 tranAddToPendingUpdates({;
-                    table,;                        //tábla
-                    tabPosition(table),;           //pozíció (recno)
-                    substr(table[TAB_RECBUF],1),;  //rekord másolat!
+                    table,;                        //tabla
+                    tabPosition(table),;           //pozicio (recno)
+                    substr(table[TAB_RECBUF],1),;  //rekord masolat!
                     save_curkey(table),;           //eredeti kulcsok
                     table[TAB_RECPOS],;            //page/index! 
-                    table[TAB_MODIFKEY],;          //módosult-e kulcs 
-                    table[TAB_MODIFAPP],;          //új-e a rekord
-                    ACLONE(table[TAB_MEMODEL])} )  //törlendő memók
+                    table[TAB_MODIFKEY],;          //modosult-e kulcs 
+                    table[TAB_MODIFAPP],;          //uj-e a rekord
+                    ACLONE(table[TAB_MEMODEL])} )  //torlendo memok
 
                 table[TAB_MODIFKEY]:=.f.
                 table[TAB_MODIFAPP]:=.f.
@@ -65,10 +65,10 @@ local recno,status,modifkey
                 //?"<save>",table[TAB_POSITION],_db_recpos2array(table[TAB_RECPOS]) 
                 return NIL
  
-            else //rekordállapot visszaállítás
+            else //rekordallapot visszaallitas
 
                 table[TAB_POSITION] := pup[PUP_POSITION] 
-                table[TAB_RECBUF]   := substr(pup[PUP_RECBUF],1) //másolat!
+                table[TAB_RECBUF]   := substr(pup[PUP_RECBUF],1) //masolat!
                 restore_curkey(table,pup[PUP_CURKEY])
                 table[TAB_RECPOS]   := pup[PUP_RECPOS]
                 table[TAB_MODIFKEY] := pup[PUP_MODIFKEY] 
@@ -91,8 +91,8 @@ local recno,status,modifkey
         
             _db_header_read(table[TAB_BTREE],.t.) //for writing
 
-            //ki kell törölni az aktuális rekord kulcsait 
-            //csak a megváltozott kulcsokat törlöm
+            //ki kell torolni az aktualis rekord kulcsait 
+            //csak a megvaltozott kulcsokat torlom
             
             index:=tabIndex(table)
             recno:=tabPosition(table)
@@ -134,7 +134,7 @@ local recno,status,modifkey
         end
 
         if( modifkey )
-            //be kell tenni az új kulcsokat 
+            //be kell tenni az uj kulcsokat 
 
             if( table[TAB_MODIFAPP] )
                 keynew:=tabKeyCompose(table,0)
@@ -178,7 +178,7 @@ local recno,status,modifkey
             tabEstablishPosition(table)
         end
 
-        //megszűnt memók törlése
+        //megszunt memok torlese
         tabMemoDel(table)
 
         set signal enable
@@ -187,7 +187,7 @@ local recno,status,modifkey
 
 
 ******************************************************************************
-function tabCommitAll(table)  //összes table objektumra
+function tabCommitAll(table)  //osszes table objektumra
 local n, tlist:=tabObjectList()
 
     for n:=1 to len(tlist)
@@ -203,7 +203,7 @@ local n, tlist:=tabObjectList()
 function tabDelete(table) // delete + skip
 local pos:=tabPosition(table)
 
-    if( pos<=0 ) //a filé nincs pozícionálva
+    if( pos<=0 ) //a file nincs pozicionalva
         return NIL
 
     elseif( !tabIsLocked(table) )
@@ -231,7 +231,7 @@ function tabDeleted(table) //deleted()
 
 
 ******************************************************************************
-function tabMAppend(table,userblock) //append blank, meglévő lockokat maradnak
+function tabMAppend(table,userblock) //append blank, meglevo lockokat maradnak
     return tabAppend(table,userblock,.f.)  
 
 
@@ -240,7 +240,7 @@ function tabAppend(table,userblock,flag) //append blank
 local result, recpos, recno
 
     tabGoEof(table)
-    xvputbyte(table[TAB_RECBUF],0,42) //42==asc("*") törölt
+    xvputbyte(table[TAB_RECBUF],0,42) //42==asc("*") torolt
     recpos:=_db_append(table[TAB_BTREE],table[TAB_RECBUF],@recno)
     
     //?"<append>",recno,_db_recpos2array(recpos)
@@ -254,7 +254,7 @@ local result, recpos, recno
     table[TAB_MODIF]:=.t.
     table[TAB_MODIFKEY]:=.t.
     table[TAB_MODIFAPP]:=.t.
-    xvputbyte(table[TAB_RECBUF],0,32) //32==asc(" ") törölt vissza
+    xvputbyte(table[TAB_RECBUF],0,32) //32==asc(" ") torolt vissza
 
     return result
 
@@ -262,22 +262,22 @@ local result, recpos, recno
 ******************************************************************************
 function tabInsert(table,key,usrblk,flag)
 
-// key   : az aktuális vezérlőindexnek megfelelő kulcskifejezés lista
-// usrblk: átadja tabAppend()-nek
-// flag  : átadja tabAppend()-nek
+// key   : az aktualis vezerloindexnek megfelelo kulcskifejezes lista
+// usrblk: atadja tabAppend()-nek
+// flag  : atadja tabAppend()-nek
 //
-// tabInsert() rááll a kulcslista (key) által azonosított rekordra.
-// Ha ilyen rekord nincs, akkor betesz egyet, ennek kulcsmezőit kitőlti 
-// a key-ben megadott értékekkel, majd egy újbóli seek-kel ellenőrzi,
-// hogy az első seek és a bevitel között egy másik munkaállomás nem
-// vitt-e be egy ugyanolyan kulcsú rekordot. Ha a bevitel után a rekord
-// nem egyedi, akkor a rutin törli a frissen bevitt rekordot, és rááll
-// a második seek-ben talált rekordra.
+// tabInsert() raall a kulcslista (key) altal azonositott rekordra.
+// Ha ilyen rekord nincs, akkor betesz egyet, ennek kulcsmezoit kitolti 
+// a key-ben megadott ertekekkel, majd egy ujboli seek-kel ellenorzi,
+// hogy az elso seek es a bevitel kozott egy masik munkaallomas nem
+// vitt-e be egy ugyanolyan kulcsu rekordot. Ha a bevitel utan a rekord
+// nem egyedi, akkor a rutin torli a frissen bevitt rekordot, es raall
+// a masodik seek-ben talalt rekordra.
 //
-// Visszatérés:
-// NIL, ha a fájlban már benne volt a keresett rekord
-// .t., ha a rekord a hívás hatására került be a fájlba
-// .f., ha a rekord nem volt benn, és nem is sikerült berakni
+// Visszateres:
+// NIL, ha a fajlban mar benne volt a keresett rekord
+// .t., ha a rekord a hivas hatasara kerult be a fajlba
+// .f., ha a rekord nem volt benn, es nem is sikerult berakni
 //
 
 local ind,n,posapp,posseek

@@ -21,11 +21,11 @@
 
 #ifdef NOTDEFINED
   2013.02.23
-  CCC2-ben és CCC3-ban ugyanaz.
-  Eredetileg a rendezendő fájlon működött az mmap.
-  A káros (idő előtti, implicit) szinkronizálás megelőzésére
-  a memory map és a fájl szét lettek választva (Linuxon),
-  Windowsban nincs változás.
+  CCC2-ben es CCC3-ban ugyanaz.
+  Eredetileg a rendezendo fajlon mukodott az mmap.
+  A karos (ido elotti, implicit) szinkronizalas megelozesere
+  a memory map es a fajl szet lettek valasztva (Linuxon),
+  Windowsban nincs valtozas.
 #endif
 
 
@@ -55,12 +55,12 @@ static int key_length;
 #ifdef UNIX
 static char *mapView;
 static int  mapFile;
-static size_t mapLength;  //int nem elég
+static size_t mapLength;  //int nem eleg
 
 
-// #define ALG_SH   //MAP_SHARED     nincs másolás  (ez kéne, de Linuxon rossz)
-// #define ALG_PR   //MAP_PRIVATE    másolás vissza
-// #define ALG_AN   //MAP_ANONYMOUS  másolás oda-vissza (NetBSD-n MAP_ANON)
+// #define ALG_SH   //MAP_SHARED     nincs masolas  (ez kene, de Linuxon rossz)
+// #define ALG_PR   //MAP_PRIVATE    masolas vissza
+// #define ALG_AN   //MAP_ANONYMOUS  masolas oda-vissza (NetBSD-n MAP_ANON)
 
 #ifdef _LINUX_
     #define ALG_AN
@@ -110,10 +110,10 @@ char *filemap(char *filename)
     mapView=(char*)map;
 
 #ifdef ALG_AN
-    //amikor a map nincs összekapcsolva a fájllal,
-    //akkor a memóriát inicializálni kell a fájl tartalmával,
-    //(ebben az esetben a mmap ugyanaz, mint a síma malloc)
-    //printf("másolás: file->map\n");
+    //amikor a map nincs osszekapcsolva a fajllal,
+    //akkor a memoriat inicializalni kell a fajl tartalmaval,
+    //(ebben az esetben a mmap ugyanaz, mint a sima malloc)
+    //printf("masolas: file->map\n");
 
     lseek(mapFile,0,SEEK_SET);
     size_t copLength=0;
@@ -153,8 +153,8 @@ void unmapfile()
 
 #ifndef ALG_SH
     //amikor a map nem MAP_SHARED,
-    //akkor vissza kell írni a módosításokat a fájlba
-    //printf("MÁSOLÁS VISSZA: MAP -> FÁJL\n");
+    //akkor vissza kell irni a modositasokat a fajlba
+    //printf("MASOLAS VISSZA: MAP -> FAJL\n");
 
     caddr_t map=mapView;
 
@@ -309,7 +309,7 @@ void _clp___bt_sortkey(int argno)
 20M      52                              
 
 
-Meresek: 100 ezer, 1 millió, 10 millió, 20 millió rekord rendezese.
+Meresek: 100 ezer, 1 millio, 10 millio, 20 millio rekord rendezese.
 A rekordok 48 byte hosszuak, 20M rekord osszhossza 960,000,000 byte.
 A meresi eredmenyek masodpercben ertendok.
 A NetBSD-n a 20M eset eppen kiszorult a memoriabol.

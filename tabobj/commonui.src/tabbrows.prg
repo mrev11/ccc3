@@ -18,13 +18,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : browse függvények
-//STATUS    : közös, ifdef
+//TARTALOM  : browse fuggvenyek
+//STATUS    : kozos, ifdef
 //
 //
-//function tabBrowse(table,t,l,b,r,def) //menüző browse
-//function tabSBrowse(table)            //teszt browse (seek után hasznos)
-//function tabTBrowse(table)            //teszt browse az összes table objectre
+//function tabBrowse(table,t,l,b,r,def) //menuzo browse
+//function tabSBrowse(table)            //teszt browse (seek utan hasznos)
+//function tabTBrowse(table)            //teszt browse az osszes table objectre
 
 
 #include "tabobj.ch"
@@ -34,10 +34,10 @@ static function skipBrowse(table,stp) //skip browse-okhoz
 
 local n
     if(table[TAB_MODIF] .and. stp!=0)
-        // TAB_MODIF vizsgálata nem hagyható ki,
-        // mert a belső használatú tabGetNext(),
-        // tabGetPrev() a gyorsaság érdekében már
-        // nem végez commit-ot.
+        // TAB_MODIF vizsgalata nem hagyhato ki,
+        // mert a belso hasznalatu tabGetNext(),
+        // tabGetPrev() a gyorsasag erdekeben mar
+        // nem vegez commit-ot.
         tabCommit(table)
     end
     if( stp>0 )
@@ -55,7 +55,7 @@ local n
 
 
 ******************************************************************************
-function tabBrowse(table,top,left,bottom,right,def) //menüző browse
+function tabBrowse(table,top,left,bottom,right,def) //menuzo browse
 
 local browse:=brwCreate(top,left,bottom,right)
 local n, col
@@ -75,7 +75,7 @@ local n, col
    
 
 ******************************************************************************
-function tabSBrowse(table) //teszt browse (seek után hasznos)
+function tabSBrowse(table) //teszt browse (seek utan hasznos)
 
 local browse, posColumn
 local crs:=setcursor(0)
@@ -104,7 +104,7 @@ local found:=@"  Found:"+if(tabFound(table),"T","F")
 
 
 ******************************************************************************
-function tabTBrowse(table) //teszt browse az összes table objectre
+function tabTBrowse(table) //teszt browse az osszes table objectre
 
 local objectlist:=tabObjectList()
 local browse

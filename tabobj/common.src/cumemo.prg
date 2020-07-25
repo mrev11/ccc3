@@ -18,30 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : "DBM Format 1.0" memófilék kezelése
-//STATUS    : közös utility
+//TARTALOM  : "DBM Format 1.0" memofilek kezelese
+//STATUS    : kozos utility
 //
-//function memoCreate(fname,blksiz)        //memófilé létrehozása
-//function memoOpen(fname)                 //memó megnyitása
-//function memoClose(hnd)                  //memó lezárása
-//function memoBlockSize(size)             //default blokkméret beállítása
-//function memoGetBlockSize(hnd)           //aktuális blokkméret lekérdezése
-//function memoGetDataSize(hnd)            //adatok mérete egy blokkban
-//function memoGetHeaderSize()             //header mérete
+//function memoCreate(fname,blksiz)        //memofile letrehozasa
+//function memoOpen(fname)                 //memo megnyitasa
+//function memoClose(hnd)                  //memo lezarasa
+//function memoBlockSize(size)             //default blokkmeret beallitasa
+//function memoGetBlockSize(hnd)           //aktualis blokkmeret lekerdezese
+//function memoGetDataSize(hnd)            //adatok merete egy blokkban
+//function memoGetHeaderSize()             //header merete
 //function memoGetFormat()                 //format string
-//function memoAddValue(hnd,value)         //érték beírása a memóba
-//function memoGetValue(hnd,offset)        //érték kiolvasása
-//function memoDeleteValue(hnd,offset)     //érték törlése
+//function memoAddValue(hnd,value)         //ertek beirasa a memoba
+//function memoGetValue(hnd,offset)        //ertek kiolvasasa
+//function memoDeleteValue(hnd,offset)     //ertek torlese
 
 
 #include "fileio.ch"
 #include "error.ch"
 
-// problémák:
+// problemak:
 //
-// byte-sorrend érzékeny a formátum
-// little endian lesz a platformfüggetlen formátum
-// át kéne térni az xvalloc/xvread/xvwrite API-ra
+// byte-sorrend erzekeny a formatum
+// little endian lesz a platformfuggetlen formatum
+// at kene terni az xvalloc/xvread/xvwrite API-ra
 // Clipperben marad a mostani program
 
 
@@ -71,12 +71,12 @@ memoError(21,"memoOpen","read error")
 
 
 ***************************************************************************    
-static blocksize:={}                             //dbm filénként külön blocksize
-static formatstr:=a"DBM Format 1.0"              //formátum azonosító string
+static blocksize:={}                             //dbm filenkent kulon blocksize
+static formatstr:=a"DBM Format 1.0"              //formatum azonosito string
 
-#define MEMO_BLKSIZ   blocksize[hnd+1]           //blokkméret
-#define MEMO_HDRSIZ   10                         //header méret
-#define MEMO_DATSIZ   (MEMO_BLKSIZ-MEMO_HDRSIZ)  //adatterület
+#define MEMO_BLKSIZ   blocksize[hnd+1]           //blokkmeret
+#define MEMO_HDRSIZ   10                         //header meret
+#define MEMO_DATSIZ   (MEMO_BLKSIZ-MEMO_HDRSIZ)  //adatterulet
 
 #ifdef _DBFNTX_
 #define sleep(x) inkey(x/1000)
@@ -87,9 +87,9 @@ static formatstr:=a"DBM Format 1.0"              //formátum azonosító string
 //blokk: nnnnllllbb ... adatok ...
 //       12345678901
 //
-// nnnn : a next blokk offsete, az utolsó blokkban 0
-// llll : az első blokkban az utolsó blokk offsete, egyébként 0
-// bb   : az adott blokkban tárolt byteok száma (0 is lehet)
+// nnnn : a next blokk offsete, az utolso blokkban 0
+// llll : az elso blokkban az utolso blokk offsete, egyebkent 0
+// bb   : az adott blokkban tarolt byteok szama (0 is lehet)
 
 static function ndatabyte(buf)
     //return bin2w(substr(buf,9,2))
@@ -174,7 +174,7 @@ local buffer:=replicate(x"20",16), nb
         #ifdef _UNIX_
             setcloexecflag(hnd,.t.)
         #else
-            hnd:=fdup(hnd,.f.,.t.) //nem öröklődik 
+            hnd:=fdup(hnd,.f.,.t.) //nem oroklodik 
         #endif
     
         if( len(blocksize)<hnd+1 )
@@ -293,13 +293,13 @@ local blknum:=0
     while( (nbrd:=fread(hnd,@buffer,MEMO_BLKSIZ))==MEMO_BLKSIZ )
     
         nofs:=getnextoffs(buffer) //next blokk offset
-        ndat:=ndatabyte(buffer) //adatbyteok száma a blokkban
+        ndat:=ndatabyte(buffer) //adatbyteok szama a blokkban
 
-        //a láncok első elemében a lastoffs mező
-        //kötelezően ki kell legyen töltve, a többi
-        //elemben kötelezően nulla, ezt ellenőrzöm,
-        //hogy megelőzzem a nem előlről történő
-        //olvasást és törlést, vagy a téves kapcsolódást
+        //a lancok elso elemeben a lastoffs mezo
+        //kotelezoen ki kell legyen toltve, a tobbi
+        //elemben kotelezoen nulla, ezt ellenorzom,
+        //hogy megelozzem a nem elolrol torteno
+        //olvasast es torlest, vagy a teves kapcsolodast
         
         if( blknum++==0 )
             lofs:=getlastoffs(buffer) //last block offset
@@ -307,8 +307,8 @@ local blknum:=0
             if( lofs==0 )
 
                 //runtime error
-                //valószínűleg nem az első elemétől
-                //akarja olvasni a listát
+                //valoszinuleg nem az elso elemetol
+                //akarja olvasni a listat
                 memoError(3,"memoGetValue",@"invalid memo offset")
             end
         else
@@ -316,10 +316,10 @@ local blknum:=0
             if( getlastoffs(buffer)!=0 )
 
                 //runtime error
-                //nem az első listaelem,
-                //mégis ki van töltve a lastoffs mező
-                //talán beletévedtünk egy másik listába,
-                //vagy hurkot találtunk
+                //nem az elso listaelem,
+                //megis ki van toltve a lastoffs mezo
+                //talan beletevedtunk egy masik listaba,
+                //vagy hurkot talaltunk
 
                 memoError(4,"memoGetValue",@"invalid memo chain")
             end
@@ -330,14 +330,14 @@ local blknum:=0
             //runtime error
             memoError(5,"memoGetValue",@"invalid data size in memo block")
 
-        elseif( nofs==0 ) //utolsó blokk
+        elseif( nofs==0 ) //utolso blokk
             value+=getdata(buffer,ndat)
 
             if( offset!=lofs )
                 //runtime error
-                //a lista nem ott végződik, 
-                //ahol az első elemében talált lastoffs
-                //mező szerint kellene
+                //a lista nem ott vegzodik, 
+                //ahol az elso elemeben talalt lastoffs
+                //mezo szerint kellene
                 memoError(6,"memoGetValue",@"invalid end of memo list")
             end
 
@@ -358,15 +358,15 @@ local blknum:=0
 ***************************************************************************    
 function memoDeleteValue(hnd,offset)
 
-//az offset kezdetű listát
-//be kell tenni a szabad lista elejére
+//az offset kezdetu listat
+//be kell tenni a szabad lista elejere
 
 local header:=replicate(x"20",MEMO_HDRSIZ)
 local buffer:=replicate(x"20",MEMO_HDRSIZ)
 local lastoffs,nextoffs
 local nb
 
-    //a memo filét lockoljuk
+    //a memo filet lockoljuk
     while( 0!=fsetlock(hnd,0,MEMO_BLKSIZ) )
         sleep(200)
     end
@@ -383,14 +383,14 @@ local nb
         memoError(9,"memoDeleteValue",@"read error")
     end
     
-    //itt ellenőrzés céljából
-    //végig lehetne menni a listán
+    //itt ellenorzes celjabol
+    //vegig lehetne menni a listan
     
     lastoffs:=getlastoffs(buffer)
     if( lastoffs==0 )
         //runtime error
-        //valószínűleg nem az első elemétől
-        //akarja törölni a listát
+        //valoszinuleg nem az elso elemetol
+        //akarja torolni a listat
         memoError(10,"memoDeleteValue",@"invalid memo offset")
     end
     
@@ -423,7 +423,7 @@ local nb
 
     set signal enable
  
-    //a memo filé lockját elengedjük
+    //a memo file lockjat elengedjuk
     funlock(hnd,0,MEMO_BLKSIZ)
 
     return NIL
@@ -437,12 +437,12 @@ local buffer:=replicate(x"20",MEMO_HDRSIZ)
 local noffs:=0
 local nb
 
-    //a memo filét lockoljuk
+    //a memo filet lockoljuk
     while( 0!=fsetlock(hnd,0,MEMO_BLKSIZ) )
         sleep(200)
     end
 
-    //a szabad lista elejéről veszünk blokkokat
+    //a szabad lista elejerol veszunk blokkokat
 
     while( len(blocks)<nblock )
 
@@ -461,7 +461,7 @@ local nb
         end
     end
 
-    //a szabad lista elejét átállítjuk
+    //a szabad lista elejet atallitjuk
     
     if( noffs!=0 )
 
@@ -482,7 +482,7 @@ local nb
     end
 
 
-    //a további szükséges blokkokat létrehozzuk
+    //a tovabbi szukseges blokkokat letrehozzuk
     
     while( len(blocks)<nblock )
         noffs:=fseek(hnd,0,FS_END)
@@ -493,7 +493,7 @@ local nb
         aadd(blocks,noffs)
     end
 
-    //a memo filé lockját elengedjük
+    //a memo file lockjat elengedjuk
     funlock(hnd,0,MEMO_BLKSIZ)
     
     return blocks

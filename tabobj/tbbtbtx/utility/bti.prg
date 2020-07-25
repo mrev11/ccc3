@@ -18,11 +18,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Indexelő utility btbtx formátumhoz
+//Indexelo utility btbtx formatumhoz
 //
-// bti [-f]fname [-l]             //indexek listázása
-// bti fname -diname              //index törlés (+összes suppindex)
-// bti fname -ainame -sseg1 ...   //új index hozzáadása
+// bti [-f]fname [-l]             //indexek listazasa
+// bti fname -diname              //index torles (+osszes suppindex)
+// bti fname -ainame -sseg1 ...   //uj index hozzaadasa
 
 #include "table.ch"
 
@@ -119,8 +119,8 @@ static function addindex(fname,iname,seg)
 local t:=tabResource(fname)
 local b:=errorblock(),e,order
 
-    //ha létezett az index, akkor töröljük,
-    //majd az új adatokkal (újra) betesszük
+    //ha letezett az index, akkor toroljuk,
+    //majd az uj adatokkal (ujra) betesszuk
 
     begin
         order:=tabGetIndex(t,iname)  
@@ -129,11 +129,11 @@ local b:=errorblock(),e,order
     end
     tabAddIndex(t,{iname,"",seg,.f.})
     
-    //Az új index struktúrával megnyitjuk a filét,
+    //Az uj index strukturaval megnyitjuk a filet,
     //ha az index inkompatibilis, akkor tabindexerror hiba keletkezik,
-    //amit csendben továbbengedünk, és tabOpen újraépíti az indexet.
-    //Itt kifejezetten az errorblock-os hibakezelés kell,
-    //ui. vissza kell térni tabOpen-be, hogy az folytassa.
+    //amit csendben tovabbengedunk, es tabOpen ujraepiti az indexet.
+    //Itt kifejezetten az errorblock-os hibakezeles kell,
+    //ui. vissza kell terni tabOpen-be, hogy az folytassa.
 
     errorblock({|x|if(x:candefault,qout("build: "+iname),eval(b,e))}) 
     tabOpen(t,OPEN_EXCLUSIVE)
@@ -147,8 +147,8 @@ static function delindex(fname,iname)
 local t:=tabResource(fname),o
     tabOpen(t,OPEN_EXCLUSIVE)
     o:=tabGetIndex(t,iname)  
-    tabIndex(t)[o][4]:=.t.    //beállítva a suppindex flag
-    tabDropindex(t)   //törli az összes suppindexet is
+    tabIndex(t)[o][4]:=.t.    //beallitva a suppindex flag
+    tabDropindex(t)   //torli az osszes suppindexet is
     return NIL
  
 

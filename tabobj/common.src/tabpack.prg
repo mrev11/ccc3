@@ -18,11 +18,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : tábla pack/zap
-//STATUS    : közös
+//TARTALOM  : tabla pack/zap
+//STATUS    : kozos
 //
-//function tabPack(table)   adatfilé packolása
-//function tabZap(table)    adatfilé zapolása
+//function tabPack(table)   adatfile packolasa
+//function tabZap(table)    adatfile zapolasa
 
 #include "error.ch"
 #include "tabobj.ch"
@@ -51,10 +51,10 @@
 
 #ifndef OPTIMIZED
 
-//Az itteni pack arra épül, hogy tabUpgrade minden rekordot mezőnként 
-//átír egy új, ideiglenes filébe, miközben kihagyja a törölt rekordokat. 
-//Az algoritmus lassú, mert nem használja a platformfüggő optimalizálási 
-//lehetőségeket (viszont egységes).
+//Az itteni pack arra epul, hogy tabUpgrade minden rekordot mezonkent 
+//atir egy uj, ideiglenes filebe, mikozben kihagyja a torolt rekordokat. 
+//Az algoritmus lassu, mert nem hasznalja a platformfuggo optimalizalasi 
+//lehetosegeket (viszont egyseges).
 
 ******************************************************************************
 function tabPack(table)
@@ -146,7 +146,7 @@ local logged
 
         copydbf(lower(tabPathName(table)),lower(tmp+tabDataExt())) //pack dbf
         if( tabMemoCount(table)>0 )
-            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memó
+            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memo
         end
 
         if( !tabBackup(table) )
@@ -166,7 +166,7 @@ local logged
             frename(lower(tmp+tabMemoExt()),lower(tabMemoName(table)))
         end
 
-        tabOpen(table,OPEN_EXCLUSIVE)  //újraindexel
+        tabOpen(table,OPEN_EXCLUSIVE)  //ujraindexel
         tabRestore(table,save)
         tabGotop(table)
         table[TAB_LOGGED]:=logged
@@ -206,7 +206,7 @@ local logged
         tabClose(table)
 
         if( tabMemoCount(table)>0 )
-            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memó
+            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memo
         end
 
         if( !tabBackup(table) )
@@ -226,7 +226,7 @@ local logged
             frename(lower(tmp+tabMemoExt()),lower(tabMemoName(table)))
         end
 
-        tabOpen(table,OPEN_EXCLUSIVE)  //újraindexel
+        tabOpen(table,OPEN_EXCLUSIVE)  //ujraindexel
         tabRestore(table,save)
         tabGotop(table)
         table[TAB_LOGGED]:=logged
@@ -239,7 +239,7 @@ local logged
 
 
 ******************************************************************************
-function tabZap(table)  //fájl kiürítése
+function tabZap(table)  //fajl kiuritese
 
 local result
 local save:=tabSave(table)

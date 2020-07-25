@@ -25,10 +25,10 @@
 //Public interface
 
 //function tabOpen(table,mode,userblock)  //megnyitja a table-t 
-//function tabGoEOF(table)                //EOF-ra áll (belső)
-//function tabClose(table)                //lezárja a table-t
-//function tabCloseAll()                  //minden table-t lezár
-//function tabIsOpen(table)               //nyitási mód
+//function tabGoEOF(table)                //EOF-ra all (belso)
+//function tabClose(table)                //lezarja a table-t
+//function tabCloseAll()                  //minden table-t lezar
+//function tabIsOpen(table)               //nyitasi mod
 
 
 ******************************************************************************
@@ -84,7 +84,7 @@ local errblk, err
  
     if( !file(fname) )
 
-        //teszteléshez automatikus dbf->dat konverzió
+        //teszteleshez automatikus dbf->dat konverzio
         dbf:=lower(tabPath(table)+tabFile(table)+".dbf")
         if( file(dbf)  )
             tabCreate(table)
@@ -118,7 +118,7 @@ local errblk, err
         tabError(table)
     end
 
-    if( mode>OPEN_EXCLUSIVE ) //OPEN_APPEND implementációja később
+    if( mode>OPEN_EXCLUSIVE ) //OPEN_APPEND implementacioja kesobb
         mode:=OPEN_EXCLUSIVE
     end
  
@@ -140,30 +140,30 @@ local errblk, err
         tabSunlock(table)
         
         begin
-            tabVerify(table)  //kiszámítja table[TAB_RECLEN]-t
-            //Az új begin/recover/finally-ból szabad kiugrani.
+            tabVerify(table)  //kiszamitja table[TAB_RECLEN]-t
+            //Az uj begin/recover/finally-bol szabad kiugrani.
             exit //OK
 
-            //Ha az objektum és a filé inkompatibilisek,
+            //Ha az objektum es a file inkompatibilisek,
             //akkor tabVerify tabindexerror/tabstructerror-t dob,
-            //és err:args-ban az inkompatibilis indexek neve van,
-            //amit meg kell jegyezni a konverzióhoz.
+            //es err:args-ban az inkompatibilis indexek neve van,
+            //amit meg kell jegyezni a konverziohoz.
 
         recover err <tabindexerror>
 
             err:candefault:=.t.
             break(err)
 
-            //Csak akkor jön vissza, 
-            //ha az interaktív alertben a "Default"-ot választották.
-            //Probléma, ha a breaket eltéríti egy külső recover.
+            //Csak akkor jon vissza, 
+            //ha az interaktiv alertben a "Default"-ot valasztottak.
+            //Problema, ha a breaket elteriti egy kulso recover.
 
-            //visszazár
+            //visszazar
             tabClose(table)
             
             if( 0<tabSlock(table,{||0}) .and. tabUse(table,OPEN_EXCLUSIVE) )
                 tabSunlock(table)
-                //konverzió (reindex)
+                //konverzio (reindex)
                 tabAlloc(table) 
                 tabGotop(table) 
                 build_bt_index(table,err:args,.t.)
@@ -205,7 +205,7 @@ local memohnd
         return .f.
     else
         #ifdef _UNIX_
-          //fdup elvesztené a protokoll lockot
+          //fdup elvesztene a protokoll lockot
           setcloexecflag(table[TAB_FHANDLE],.t.)
         #else
           table[TAB_FHANDLE]:=fdup(table[TAB_FHANDLE],.f.,.t.)
@@ -217,7 +217,7 @@ local memohnd
         return .f.
     end
     
-    //esetleges beragadt index törlése 
+    //esetleges beragadt index torlese 
     _db_delord(table[TAB_BTREE],"<#>") 
  
     if( 0<tabMemoCount(table) )
@@ -236,7 +236,7 @@ local memohnd
 
 
 ******************************************************************************
-function tabGoEOF(table) // EOF-ra áll
+function tabGoEOF(table) // EOF-ra all
     tabCommit(table)
     xvputfill(table[TAB_RECBUF],0,table[TAB_RECLEN],32) //space
     table[TAB_EOF]:=.t.
@@ -245,7 +245,7 @@ function tabGoEOF(table) // EOF-ra áll
 
 
 ******************************************************************************
-function tabClose(table) //lezárja a fájlt
+function tabClose(table) //lezarja a fajlt
 
     tranNotAllowedInTransaction(table,"close",.t.)
  
@@ -284,7 +284,7 @@ function tabClose(table) //lezárja a fájlt
 
 
 ******************************************************************************
-function tabCloseAll() //minden táblaobjektumot lezár
+function tabCloseAll() //minden tablaobjektumot lezar
 local objectlist:=tabObjectList(), n
     for n:=1 to len(objectList)
          tabClose(objectList[n])
@@ -293,7 +293,7 @@ local objectlist:=tabObjectList(), n
 
 
 ******************************************************************************
-function tabIsOpen(table) //visszaadja a megnyitási módot
+function tabIsOpen(table) //visszaadja a megnyitasi modot
     return table[TAB_OPEN]
 
 

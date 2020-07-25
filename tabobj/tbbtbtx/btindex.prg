@@ -25,10 +25,10 @@
 #define KEYFILE(t,o)   lower(tabPathName(t)+alltrim(str(o)))
 #define OPERATION      "build_bt_index"
 
-//Felépíti (vagy újraépíti) az {order} sorszámú index(ek)et.
-//A táblának exkluzívan nyitva kell lennie.
-//Kötelezően ord>0, azaz order nem tartalmazhatja a recno indexet.
-//Ha resource==.t., akkor frissíti a filében a resource infót.
+//Felepiti (vagy ujraepiti) az {order} sorszamu index(ek)et.
+//A tablanak exkluzivan nyitva kell lennie.
+//Kotelezoen ord>0, azaz order nem tartalmazhatja a recno indexet.
+//Ha resource==.t., akkor frissiti a fileben a resource infot.
 
 ******************************************************************************
 function build_bt_index(table,order,resource)

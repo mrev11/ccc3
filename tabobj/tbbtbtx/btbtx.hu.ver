@@ -22,174 +22,174 @@
        ha a recno index es az adatlapok hibatlanok
 
 2013.09.26 -- 2.0.3
-   tabKeyCompose() átírva.
-   A korábbi változat oszlopblokkal olvasta a kulcsszegmenseket.
-   Az oszlopblokk beépített típuskonverziót hajt végre az értéken,
-   amit vissza kellett konvertálni binary típusra. Az odavissza 
-   konverzió miatt egy karakteres mezőből képzett kulcs eltérhetett 
-   a mezőtől, ha a mező érvénytelen UTF-8 kódot tartalmazott. 
-   Példa: Egy CCC2-vel készült adatbázis C típusú mezőjében legyen 
-   mondjuk egy Latin-2 'á'. Ha ezt indexeltük CCC3-ban, akkor az á-ból
-   az indexben '?' lett. Ezután a rekordot nem lehetett seek-kel megtalálni.
-   Az új változat xvgetchar-ral (típuskonverzió nélkül) olvas,
-   így az indexbe mindig a mezővel egyező érték kerül (függetlenül
-   a kódolástól).
+   tabKeyCompose() atirva.
+   A korabbi valtozat oszlopblokkal olvasta a kulcsszegmenseket.
+   Az oszlopblokk beepitett tipuskonverziot hajt vegre az erteken,
+   amit vissza kellett konvertalni binary tipusra. Az odavissza 
+   konverzio miatt egy karakteres mezobol kepzett kulcs elterhetett 
+   a mezotol, ha a mezo ervenytelen UTF-8 kodot tartalmazott. 
+   Pelda: Egy CCC2-vel keszult adatbazis C tipusu mezojeben legyen 
+   mondjuk egy Latin-2 'a'. Ha ezt indexeltuk CCC3-ban, akkor az a-bol
+   az indexben '?' lett. Ezutan a rekordot nem lehetett seek-kel megtalalni.
+   Az uj valtozat xvgetchar-ral (tipuskonverzio nelkul) olvas,
+   igy az indexbe mindig a mezovel egyezo ertek kerul (fuggetlenul
+   a kodolastol).
 
 2009.10.02 -- 2.0.2
    gcc 4.3.2 warningok javitva.
 
 2008.04.21 -- 2.0.1
-   Sun/Solarison nem működött a filemapping a file-share protokoll miatt,
-   ezért a kulcsok rendezésére szolgáló ideiglenes filé létrehozása
+   Sun/Solarison nem mukodott a filemapping a file-share protokoll miatt,
+   ezert a kulcsok rendezesere szolgalo ideiglenes file letrehozasa
     fcreate(KEYFILE(table,o),FO_READWRITE+FO_SHARED) helyett
     fopen(KEYFILE(table,o),FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK)-kal.
-   Két helyen is javítva: 1) a packolásnál 2) a suppindexeknél.
+   Ket helyen is javitva: 1) a packolasnal 2) a suppindexeknel.
  
-   Az eredeti fcreate-os változatnak más hibái is vannak:
-   FO_READWRITE felesleges, mivel fcreate-nál az a default.
-   FO_SHARED hatástalan, mivel az fcreate nem veszi figyelembe.
-   (Megj: Clipper örökség, hogy az fcreate nem állítja be a share módot. 
-   A CA-Tools setshare() függvénnyel globálisan állítható az fcreate 
-   által használt share mode.)
+   Az eredeti fcreate-os valtozatnak mas hibai is vannak:
+   FO_READWRITE felesleges, mivel fcreate-nal az a default.
+   FO_SHARED hatastalan, mivel az fcreate nem veszi figyelembe.
+   (Megj: Clipper orokseg, hogy az fcreate nem allitja be a share modot. 
+   A CA-Tools setshare() fuggvennyel globalisan allithato az fcreate 
+   altal hasznalt share mode.)
  
-   Az indexinfót tabCreate-ban 3 helyett 4 hosszan kell a resourceba írni, 
-   máskülönben a packolás átváltoztatja a suppindexeket permanens indexszé.
+   Az indexinfot tabCreate-ban 3 helyett 4 hosszan kell a resourceba irni, 
+   maskulonben a packolas atvaltoztatja a suppindexeket permanens indexsze.
 
 2006.04.20 -- 2.0.0
-   Portolás unicode-ra.
-   Új mezőtípus: X.
-   A C mezők str2bin-nel tárolódnak, és bin2str-rel olvasódnak ki.
-   Az X mezők str2bin-nel tárolódnak, és binary-ként olvasódnak.
-   A memó mezők str2bin-nel tárolódnak, és binary-ként olvasódnak.
+   Portolas unicode-ra.
+   Uj mezotipus: X.
+   A C mezok str2bin-nel tarolodnak, es bin2str-rel olvasodnak ki.
+   Az X mezok str2bin-nel tarolodnak, es binary-kent olvasodnak.
+   A memo mezok str2bin-nel tarolodnak, es binary-kent olvasodnak.
 
-   Megjegyzés: A program nincs az elejétől a végéig átvizsgálva,
-   sem tesztelve (ahogy lennie kellene), hanem ahol a próbálgatás
-   kihozta a string<-->binary konfliktusokat, ott javítottam.
+   Megjegyzes: A program nincs az elejetol a vegeig atvizsgalva,
+   sem tesztelve (ahogy lennie kellene), hanem ahol a probalgatas
+   kihozta a string<-->binary konfliktusokat, ott javitottam.
 
 2005.08.08 -- 1.1.14"
-   A quitblock-ban csak akkor szabad további adatbázisműveleteket
-   (pl. tabCloseAll) végrehajtani, ha errorlevel()==0.
+   A quitblock-ban csak akkor szabad tovabbi adatbazismuveleteket
+   (pl. tabCloseAll) vegrehajtani, ha errorlevel()==0.
 
 
 2005.04.26 -- 1.1.13"
-   A filéhozzáférésekben a specifikáció mindenhol kisbetűs. 
+   A filehozzaferesekben a specifikacio mindenhol kisbetus. 
    Ezekre kell figyelni: tabPathName, tabIndexName, tabMemoName.
-   Korábban csak az esetek felében volt beírva a lower,
-   ami azt eredményezte, hogy a btbtx könyvtár nem működött
-   a "set dosconv off" beállítással. Most a dosconv beállítástól
-   függetlenül a táblaobjektum (a programban) case insensitive,
-   a fájlrendszerben pedig szigorúan kisbetűs nevekkel tárolódik.
-   Sajnos nem lehet elérni nagybetűs directoryban levő táblát.
+   Korabban csak az esetek feleben volt beirva a lower,
+   ami azt eredmenyezte, hogy a btbtx konyvtar nem mukodott
+   a "set dosconv off" beallitassal. Most a dosconv beallitastol
+   fuggetlenul a tablaobjektum (a programban) case insensitive,
+   a fajlrendszerben pedig szigoruan kisbetus nevekkel tarolodik.
+   Sajnos nem lehet elerni nagybetus directoryban levo tablat.
    
-   Windowson a változás érdektelen. Unixon mint eddig, ezután is 
-   csak kisbetűs táblaobjektumok létezhetnek, viszont a könyvtár 
-   használható "set dosconv off"-os programmal, így más filék 
-   (nem táblaobjektum) lehetnek case sensitivek.
+   Windowson a valtozas erdektelen. Unixon mint eddig, ezutan is 
+   csak kisbetus tablaobjektumok letezhetnek, viszont a konyvtar 
+   hasznalhato "set dosconv off"-os programmal, igy mas filek 
+   (nem tablaobjektum) lehetnek case sensitivek.
    
-   set dosconv off       : névkonverzió és file-lock protokoll kikapcsolva
-   set dosconv fileshare : file-lock protokoll be-, névkonverzió kikapcsolva
+   set dosconv off       : nevkonverzio es file-lock protokoll kikapcsolva
+   set dosconv fileshare : file-lock protokoll be-, nevkonverzio kikapcsolva
 
 
 2004.07.16 -- 1.1.12" 
-   Hibajelzés memók indexelésére.
+   Hibajelzes memok indexelesere.
 
 2004.04.18 -- 1.1.11" 
-    Új megoldás a rekordsorrend megtartására packban:
-    A módosított tabAppend nem használja a szabadlistát
+    Uj megoldas a rekordsorrend megtartasara packban:
+    A modositott tabAppend nem hasznalja a szabadlistat
     (tabAppend->_db_append->__bt_append->__bt_new/__bt_new0)
-    A rekordok másolásakor így haladhatunk a lapok sorrendjében.
+    A rekordok masolasakor igy haladhatunk a lapok sorrendjeben.
 
-    Megjegyzés:
+    Megjegyzes:
 
-    Eredetileg a pack a lapokon végigfutva gyűjtötte a nem törölt 
-    rekordokat. Ez akkor is működőképes, ha a recno index sérült.
-    Mivel a tabAppend a szabadlistából is használt lapokat az új 
-    rekordok kiírására, a pack után megváltozhatott a rekordok 
-    recno szerinti rendezettsége. Ez akadályozta pack replikálását.
-    A replikálhatóság érdekében a 2004.03.10-es javítás úgy módosította
-    a packot, hogy az recno szerinti sorrendben gyűjtse a rekordokat.
-    A mostani módosítás egyesíti a két módszer előnyeit.
+    Eredetileg a pack a lapokon vegigfutva gyujtotte a nem torolt 
+    rekordokat. Ez akkor is mukodokepes, ha a recno index serult.
+    Mivel a tabAppend a szabadlistabol is hasznalt lapokat az uj 
+    rekordok kiirasara, a pack utan megvaltozhatott a rekordok 
+    recno szerinti rendezettsege. Ez akadalyozta pack replikalasat.
+    A replikalhatosag erdekeben a 2004.03.10-es javitas ugy modositotta
+    a packot, hogy az recno szerinti sorrendben gyujtse a rekordokat.
+    A mostani modositas egyesiti a ket modszer elonyeit.
 
 2004.03.10 -- 1.1.10" 
-    tabPosition()==0-nál lockCurrent nem lockolhat.
-    Rekordsorrendet megtartó packolás (a replikáció érdekében).
-    tabCreate naplózása.
+    tabPosition()==0-nal lockCurrent nem lockolhat.
+    Rekordsorrendet megtarto packolas (a replikacio erdekeben).
+    tabCreate naplozasa.
 
 2004.01.14 -- 1.1.09" 
-   Packolásnál nyitva maradt a memófilé.
-   Az előző javítás elrontotta a lock protokollt.
+   Packolasnal nyitva maradt a memofile.
+   Az elozo javitas elrontotta a lock protokollt.
 
 2003.11.20 -- 1.1.08" 
-   Nem öröklődő filédescriptorok.
+   Nem oroklodo filedescriptorok.
  
 2003.10.17 -- 1.1.07" 
-   Portolás GCC 3.3-ra.
-   Maximális picture hossz a karakteres oszlopokban: 64.
+   Portolas GCC 3.3-ra.
+   Maximalis picture hossz a karakteres oszlopokban: 64.
 
 2003.05.13 -- 1.1.06" 
-   Az EOF írásának ellenőrzése elrontotta a memók packolását.
-   Javítás: a memók packolásakor az EOF flaget törölni kell.
+   Az EOF irasanak ellenorzese elrontotta a memok packolasat.
+   Javitas: a memok packolasakor az EOF flaget torolni kell.
 
 2003.03.21 -- 1.1.05" 
   tranRecordLockedInTransaction(table)
-    A tranzakció végén (commit/rollback) pontosan azok a lockok
-    szűnnek meg, amik a tranzakció közben jöttek létre.
+    A tranzakcio vegen (commit/rollback) pontosan azok a lockok
+    szunnek meg, amik a tranzakcio kozben jottek letre.
   
   function tranDeleteOnRollback(table,pos)
-    A rollback törli azokat a rekordokat, amik a táblák TAB_TRANDEL
-    listájában vannak felsorolva. Jelenleg csak a tabInsert használja.
+    A rollback torli azokat a rekordokat, amik a tablak TAB_TRANDEL
+    listajaban vannak felsorolva. Jelenleg csak a tabInsert hasznalja.
  
 2003.03.04 -- 1.1.04
-  Az előző javítás (tabKeyLength) elrontotta a packot, javítva.
+  Az elozo javitas (tabKeyLength) elrontotta a packot, javitva.
 
 2003.02.22 -- 1.1.03
-  EOF írásának ellenőrzése (inkompatibilis?).
+  EOF irasanak ellenorzese (inkompatibilis?).
 
-  Új  függvény: tabKeyLength(). Korábban a len(tabKeyCompose())
-  kifejezéssel számítottuk a kulcsok hosszát, ezzel azonban többször 
-  baj volt, amikor a táblában nem volt egyetlen rekord sem, vagy
-  nem volt pozícionálva.
+  Uj  fuggveny: tabKeyLength(). Korabban a len(tabKeyCompose())
+  kifejezessel szamitottuk a kulcsok hosszat, ezzel azonban tobbszor 
+  baj volt, amikor a tablaban nem volt egyetlen rekord sem, vagy
+  nem volt pozicionalva.
   
-  Elakadt 0 rekordot tartalmazó filék indexelésében, a kritikus
-  ágakat át kell ugrani.
+  Elakadt 0 rekordot tartalmazo filek indexeleseben, a kritikus
+  agakat at kell ugrani.
   
-  tabVerify() újraépíti az egész oszlopstruktúrát, így a programba
-  legvégül mindig a filével összhangban levő objektum kerül, még 
-  ha nem is tud a program minden oszlopról.
+  tabVerify() ujraepiti az egesz oszlopstrukturat, igy a programba
+  legvegul mindig a filevel osszhangban levo objektum kerul, meg 
+  ha nem is tud a program minden oszloprol.
  
 2003.02.13 -- 1.1.02
-  A seek nem kalkulálta újra a talált kulcsot a getnext ág után,
-  ezért találatot jelzett olyankor, amikor egyező kulcsú, de törölt
-  (kiszűrt) rekordot talált.
+  A seek nem kalkulalta ujra a talalt kulcsot a getnext ag utan,
+  ezert talalatot jelzett olyankor, amikor egyezo kulcsu, de torolt
+  (kiszurt) rekordot talalt.
 
 2003.02.10 -- 1.1.01
-  Nem jó helyen volt tabOpen-ben a tabSunlock.
+  Nem jo helyen volt tabOpen-ben a tabSunlock.
   A hiba csak Windowson jelentkezett (mert UNIX-on ugyanaz
-  a processz kétszer is meg tud nyitni egy filét exkluzívan?).
+  a processz ketszer is meg tud nyitni egy filet exkluzivan?).
 
 2002.12.20 -- 1.1.00
-  Naplózás, az alábbi környezeti változókkal szabályozható:
+  Naplozas, az alabbi kornyezeti valtozokkal szabalyozhato:
 
-  CCC_TRANSACTION_FILE_LOG    fspec, amibe írja a naplót (lehet NFS-en)
-  CCC_TRANSACTION_FILE_MUTEX  fspec, amit lockoláshoz használ (lokális)
-  CCC_TRANSACTION_FILE_ALIAS  fspec, ami a naplózandó aliasokat tartalmazza
+  CCC_TRANSACTION_FILE_LOG    fspec, amibe irja a naplot (lehet NFS-en)
+  CCC_TRANSACTION_FILE_MUTEX  fspec, amit lockolashoz hasznal (lokalis)
+  CCC_TRANSACTION_FILE_ALIAS  fspec, ami a naplozando aliasokat tartalmazza
   
-  A naplózást a nem üres CCC_TRANSACTION_FILE_LOG kapcsolja be.
-  Ha CCC_TRANSACTION_FILE_ALIAS üres, akkor mindent naplóz.
+  A naplozast a nem ures CCC_TRANSACTION_FILE_LOG kapcsolja be.
+  Ha CCC_TRANSACTION_FILE_ALIAS ures, akkor mindent naploz.
  
 2002.12.17 -- 1.0.00
-  Memók packolása (a többi driver még nem packolja a memókat).
+  Memok packolasa (a tobbi driver meg nem packolja a memokat).
 
 2002.12.16 -- 0.9.02
-  A mezőértékadás kifejezés értéke (szabványosan) a jobboldal.
+  A mezoertekadas kifejezes erteke (szabvanyosan) a jobboldal.
 
 2002.11.13 -- 0.9.01
-  Hibás volt a nulla rekordot tartalmazó filék packolása.
+  Hibas volt a nulla rekordot tartalmazo filek packolasa.
 
 2002.03.26 -- 0.8.30
-  Optimalizált indexelés (build_bt_index) kulcsrendezéssel.
-  tabOpen-ben az inkompatibilis indexek konverzióját 
-  tabUpgrade helyett build_bt_index végzi.
+  Optimalizalt indexeles (build_bt_index) kulcsrendezessel.
+  tabOpen-ben az inkompatibilis indexek konverziojat 
+  tabUpgrade helyett build_bt_index vegzi.
 
 2002.03.25 -- 0.8.20
   Large file support Linuxon.
@@ -198,22 +198,22 @@
   Automatikus little/big endian swap.
 
 2002.01.21 -- 0.8.00
-  Optimalizált pack rekordmásolással, kulcsrendezéssel. 
+  Optimalizalt pack rekordmasolassal, kulcsrendezessel. 
 
 2001.12.25 -- 0.7.00
 
-  OK számmezők kulcsképzése
+  OK szammezok kulcskepzese
   OK tabVerify az indexekre
-  OK suppindex/dropindex implementációt feléleszteni
-  OK törölt indexet egyben a szabadlistába fűzni
-  OK konkurrencia kezelés a header lapok módosításakor
-  OK konkurrencia kezelés az adatlapok módosításakor
-  OK konkurrencia kezelés az index műveletekre
-  OK tranzakcióssá tenni az indexelést
-  OK optimalizált loaddbf (rekordmásolással) 
-  OK nyúzó teszt
-     OPEN_APPEND mód támogatás
-     keresés százalékra
+  OK suppindex/dropindex implementaciot feleleszteni
+  OK torolt indexet egyben a szabadlistaba fuzni
+  OK konkurrencia kezeles a header lapok modositasakor
+  OK konkurrencia kezeles az adatlapok modositasakor
+  OK konkurrencia kezeles az index muveletekre
+  OK tranzakciossa tenni az indexelest
+  OK optimalizalt loaddbf (rekordmasolassal) 
+  OK nyuzo teszt
+     OPEN_APPEND mod tamogatas
+     kereses szazalekra
 #endif
 
 

@@ -22,30 +22,30 @@
 #include "tabobj.ch"
 
 
-//table alapján készít egy olyan másik nem statikus tárolású
-//objektumot, ami a lehető leginkább konzisztens a lemezfilével
-//az így készült objektum alkalmas kell legyen a filék megnyitására,
-//így a struktúra eltérésének vizsgálatára (tabVerify, KVERIF), 
-//és a struktúra konverziójára (tabUpgrade)
+//table alapjan keszit egy olyan masik nem statikus tarolasu
+//objektumot, ami a leheto leginkabb konzisztens a lemezfilevel
+//az igy keszult objektum alkalmas kell legyen a filek megnyitasara,
+//igy a struktura elteresenek vizsgalatara (tabVerify, KVERIF), 
+//es a struktura konverziojara (tabUpgrade)
 //
-//példa: tabOpen DBSTRUCT eltérés miatt nem tudja megnyitni a filét,
-//ekkor tabStructInfo-val kiolvassuk a filé tényleges struktúráját,
-//ez összehasonlítható az objektummal, és elvégezhető a konverzió.
+//pelda: tabOpen DBSTRUCT elteres miatt nem tudja megnyitni a filet,
+//ekkor tabStructInfo-val kiolvassuk a file tenyleges strukturajat,
+//ez osszehasonlithato az objektummal, es elvegezheto a konverzio.
 //
-//visszatérés:
-//1. !empty: sikerült használható (kompatibilis) infót gyűjteni
-//2. {}    : a filé struktúrája nem állapítható meg (inkompatibilis)
-//3. NIL   : a filé foglalt, nem lehetett beleolvasni
+//visszateres:
+//1. !empty: sikerult hasznalhato (kompatibilis) infot gyujteni
+//2. {}    : a file strukturaja nem allapithato meg (inkompatibilis)
+//3. NIL   : a file foglalt, nem lehetett beleolvasni
 
 
 ******************************************************************************
-function tabStructInfo(table) //megnyitható objektum a filé info alapján
+function tabStructInfo(table) //megnyithato objektum a file info alapjan
 
-//table alapján készít egy olyan másik nem statikus tárolású
-//objektumot, ami a lehető leginkább konzisztens a lemezfilével
-//az így készült objektum alkalmas kell legyen a filék megnyitására,
-//így a struktúra eltérésének vizsgálatára (tabVerify, KVERIF), 
-//és a struktúra konverziójára (tabUpgrade)
+//table alapjan keszit egy olyan masik nem statikus tarolasu
+//objektumot, ami a leheto leginkabb konzisztens a lemezfilevel
+//az igy keszult objektum alkalmas kell legyen a filek megnyitasara,
+//igy a struktura elteresenek vizsgalatara (tabVerify, KVERIF), 
+//es a struktura konverziojara (tabUpgrade)
 
     return tabResource( lower(tabPathName(table)) )
 

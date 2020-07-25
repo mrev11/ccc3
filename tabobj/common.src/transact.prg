@@ -21,9 +21,9 @@
 #include "tabobj.ch"
 
 
-//#define PUP_TABLE       1  //minden formátumban
-//#define PUP_POSITION    2  //minden formátumban 
-//#define PUP_RECBUF      3  //minden formátumban 
+//#define PUP_TABLE       1  //minden formatumban
+//#define PUP_POSITION    2  //minden formatumban 
+//#define PUP_RECBUF      3  //minden formatumban 
  
 #ifdef _DBFNTX_
 
@@ -34,7 +34,7 @@ function tranNotAllowedInTransaction(table,op,mode)
 
 static debug:="debug"$getenv("TRANCOMMIT")
 
-static trantables:={} //2000.07.16 javítás 
+static trantables:={} //2000.07.16 javitas 
 static tranindex:={}
 static pendingupdate:={}
 static activetransaction:=.f.
@@ -71,8 +71,8 @@ function tranRecordLockedInTransaction(table)
     end
     if( table[TAB_TRANLOCK]==NIL )
         table[TAB_TRANLOCK]:=len(table[TAB_LOCKLST])
-        //megjegyzi az első olyan lock indexét,
-        //ami a tranzakción belül lett feltéve
+        //megjegyzi az elso olyan lock indexet,
+        //ami a tranzakcion belul lett felteve
     end
     return NIL
 
@@ -93,15 +93,15 @@ function tranDeleteOnRollback(table,pos)
 ****************************************************************************
 static function tranClearTransactionID(rb) 
 
-//2000.07.16 javítás
-//korábban ez tabObjectList minden elemére történt,
-//ami elengedett minden lockot, olyan filék lockjait is,
-//amik nem vettek részt a tranzakcióban
+//2000.07.16 javitas
+//korabban ez tabObjectList minden elemere tortent,
+//ami elengedett minden lockot, olyan filek lockjait is,
+//amik nem vettek reszt a tranzakcioban
 
-//2003.03.21 javítás
-//csak azokat a lockokat engedjük el, 
-//amik a tranzakción belül lettek feltéve,
-//töröljük a TAB_TRANDEL listában felsorolt rekordokat
+//2003.03.21 javitas
+//csak azokat a lockokat engedjuk el, 
+//amik a tranzakcion belul lettek felteve,
+//toroljuk a TAB_TRANDEL listaban felsorolt rekordokat
 
 local n, table
 local dlst,llst,x,i
@@ -110,7 +110,7 @@ local dlst,llst,x,i
     
         table:=trantables[n] 
 
-        // törlendő rekordok (rollback)
+        // torlendo rekordok (rollback)
 
         if( rb==.t. .and. NIL!=(dlst:=table[TAB_TRANDEL]) )
             for i:=1 to len(dlst)
@@ -120,7 +120,7 @@ local dlst,llst,x,i
             next
         end
  
-        // unlockolandó rekordok
+        // unlockolando rekordok
 
         x:=table[TAB_TRANLOCK] 
         if( x==NIL )
@@ -151,18 +151,18 @@ function tranSyncronizeRecord(table) //compatibility
 ****************************************************************************
 function tranSynchronizeRecord(table,lockflag)  
 
-//újraírva 2001.12.14
-//Kiírja az aktuális rekordot.
-//Olyankor van rá szükség, amikor tranzakció
-//közben rá kell seekelni egy új rekordra (pl.insert),
-//vagy azonnal láthatóvá kell tenni egy közösen
-//használt számláló tartalmát.
+//ujrairva 2001.12.14
+//Kiirja az aktualis rekordot.
+//Olyankor van ra szukseg, amikor tranzakcio
+//kozben ra kell seekelni egy uj rekordra (pl.insert),
+//vagy azonnal lathatova kell tenni egy kozosen
+//hasznalt szamlalo tartalmat.
 
-//kiegészítve 2002.02.16
-//Ha lockflag==.t., akkor a rekord lockját elengedi.
-//Enélkül pl. a PARAM tábla ügyszám számlálót tartalmazó
-//rekordján a tranzakció egész ideje alatt lock maradna,
-//ami teljesen sorbaállítaná a konkurrens programokat.
+//kiegeszitve 2002.02.16
+//Ha lockflag==.t., akkor a rekord lockjat elengedi.
+//Enelkul pl. a PARAM tabla ugyszam szamlalot tartalmazo
+//rekordjan a tranzakcio egesz ideje alatt lock maradna,
+//ami teljesen sorbaallitana a konkurrens programokat.
 
 local pup,t,n
 local tranid,recno
@@ -350,8 +350,8 @@ local savepos
             set signal enable
 
             for n:=1 to len(savepos)
-                //csak miután minden commit megvan,
-                //azután pozícionálunk az eredeti rekordra
+                //csak miutan minden commit megvan,
+                //azutan pozicionalunk az eredeti rekordra
                 if( savepos[n]!=NIL )
                     tabGoto(savepos[n][1],savepos[n][2]) 
                 end
@@ -381,9 +381,9 @@ local del0
 local del1
 local n, keyx
 
-    //a tranzakció előtt lemezre írt rekord:
-    //tranid törlése miatt tabGoto nem szedi fel
-    //a memóriában tárolt rekordváltozatot
+    //a tranzakcio elott lemezre irt rekord:
+    //tranid torlese miatt tabGoto nem szedi fel
+    //a memoriaban tarolt rekordvaltozatot
 
     tab[TAB_TRANID]:=NIL
     tabGoto(tab,pos)     
@@ -396,8 +396,8 @@ local n, keyx
         keyx:=key(tab)
     end
     
-    //a tranzakció közben módosult rekord:
-    //a pup-ban tárolt rekord közvetlenül betöltve
+    //a tranzakcio kozben modosult rekord:
+    //a pup-ban tarolt rekord kozvetlenul betoltve
     
     tab[TAB_RECBUF]:=substr(rec,1)
     del1:=tabDeleted(tab)
@@ -408,15 +408,15 @@ local n, keyx
         keyx:=key(tab)
     end
     
-    //az eredeti táblaállapot visszaállítása,
-    //nincs rá szükseg, de biztos, ami biztos
+    //az eredeti tablaallapot visszaallitasa,
+    //nincs ra szukseg, de biztos, ami biztos
     
     tab[TAB_TRANID]:=tid 
     tabGoto(tab,pos0)    
     
-    //az eltérések listázása:
-    //alább már nem módosítjuk a táblát,
-    //és a rekordbuffert sem olvassuk
+    //az elteresek listazasa:
+    //alabb mar nem modositjuk a tablat,
+    //es a rekordbuffert sem olvassuk
 
     ? @"table:", tabFile(tab), @" recno:", pos, @" key:", keyx
     

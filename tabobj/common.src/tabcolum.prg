@@ -18,21 +18,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : tábla objektum oszlop metódusok platformfüggetlen része
-//STATUS    : közös
+//TARTALOM  : tabla objektum oszlop metodusok platformfuggetlen resze
+//STATUS    : kozos
 //
-//function tabColNumber(table,colName)   oszlopnévből oszlopsorszám
-//function tabColumn(table)              oszlopok struktúrája
-//function tabGetColumn(table,col)       oszlop keresése az objektumban
-//function tabEvalColumn(table,col,exp)  oszlop kiértékelése és értékadása
-//function tabBlock(table,col,block)     oszlop kiértékelő blockja
-//function tabFcount(table)              oszlopok száma
+//function tabColNumber(table,colName)   oszlopnevbol oszlopsorszam
+//function tabColumn(table)              oszlopok strukturaja
+//function tabGetColumn(table,col)       oszlop keresese az objektumban
+//function tabEvalColumn(table,col,exp)  oszlop kiertekelese es ertekadasa
+//function tabBlock(table,col,block)     oszlop kiertekelo blockja
+//function tabFcount(table)              oszlopok szama
 //function tabPicture(table,col,pict)    oszlop picture-je
 
 #include "tabobj.ch"
 
 ******************************************************************************
-function tabColNumber(table,colName) //oszlopnévből oszlopsorszám
+function tabColNumber(table,colName) //oszlopnevbol oszlopsorszam
 local column:=table[TAB_COLUMN], num
     colName:=upper(alltrim(colName))
     num:=ascan(column,{|x|x[COL_NAME]==colName} )
@@ -46,12 +46,12 @@ local column:=table[TAB_COLUMN], num
 
 
 ******************************************************************************
-function tabColumn(table) //oszlopok struktúrája
+function tabColumn(table) //oszlopok strukturaja
     return table[TAB_COLUMN]
 
 
 ******************************************************************************
-function tabGetColumn(table,col) //oszlop keresése az objektumban
+function tabGetColumn(table,col) //oszlop keresese az objektumban
     if(valtype(col)=="C")
         col:=tabColNumber(table,col)
     end
@@ -59,12 +59,12 @@ function tabGetColumn(table,col) //oszlop keresése az objektumban
 
 
 ******************************************************************************
-function tabEvalColumn(table,col,exp) //oszlop kiértékelése és értékadása
+function tabEvalColumn(table,col,exp) //oszlop kiertekelese es ertekadasa
     return eval(tabGetColumn(table,col)[COL_BLOCK],exp)
 
 
 ******************************************************************************
-function tabBlock(table,col,block) //oszlop kiértékelő blockja
+function tabBlock(table,col,block) //oszlop kiertekelo blockja
 local column:=tabGetColumn(table,col)
     return if(block==NIL,column[COL_BLOCK],column[COL_BLOCK]:=block)
 
@@ -76,7 +76,7 @@ local column:=tabGetColumn(table, col)
 
 
 ******************************************************************************
-function tabFcount(table) //oszlopok száma
+function tabFcount(table) //oszlopok szama
     return len(table[TAB_COLUMN])
 
 

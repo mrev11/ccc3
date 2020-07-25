@@ -18,29 +18,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : egyszerű szemafor protokol
-//STATUS    : közös utility
+//TARTALOM  : egyszeru szemafor protokol
+//STATUS    : kozos utility
 
 
 #include "fileio.ch"
 
-// egyszerű szemafor protokoll
+// egyszeru szemafor protokoll
 //
 // hnd:=sema_open(sname,mode)
 // sema_close(hnd)
 //
-// mode értéke lehet FO_EXCLUSIVE (default), vagy FO_SHARED
+// mode erteke lehet FO_EXCLUSIVE (default), vagy FO_SHARED
 //
-// ezek közönséges file open/close műveletek,
-// a filék a semaphor-ban jönnek létre (automatikusan),
-// hiba: az exclusive szemafor lockok nem ágyazhatók egymásba
+// ezek kozonseges file open/close muveletek,
+// a filek a semaphor-ban jonnek letre (automatikusan),
+// hiba: az exclusive szemafor lockok nem agyazhatok egymasba
 //
-// a protokol nyilván platformfüggetlen, 
-// a fő nehézség, hogy meg kell állapodni a szemafor nevekben,
+// a protokol nyilvan platformfuggetlen, 
+// a fo nehezseg, hogy meg kell allapodni a szemafor nevekben,
 
-// a tábla objketumok szemaforozása a tabslock-ban megírt
-// külön függvényekkel történik, ezek megmaradtak általános
-// használatra
+// a tabla objketumok szemaforozasa a tabslock-ban megirt
+// kulon fuggvenyekkel tortenik, ezek megmaradtak altalanos
+// hasznalatra
 
 
 #define SEMDIR     "semaphor.tmp"

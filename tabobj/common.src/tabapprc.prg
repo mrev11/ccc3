@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : append record (azonos struktúrájú másik filéből)
-//STATUS    : közös
+//TARTALOM  : append record (azonos strukturaju masik filebol)
+//STATUS    : kozos
 //
 //function tabAppendRecord(table,tabfrom,usrblk,flag)
 

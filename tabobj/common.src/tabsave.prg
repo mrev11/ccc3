@@ -18,12 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : save/restore/filter függvények
-//STATUS    : közös, ifdef
+//TARTALOM  : save/restore/filter fuggvenyek
+//STATUS    : kozos, ifdef
 //
 //function tabSave(table)           //elmenti:{control,filter,position}
-//function tabRestore(table,state)  //beállítja:{control,filter,position}
-//function tabFilter(table,filter)  //filter beállítása/lekérdezése
+//function tabRestore(table,state)  //beallitja:{control,filter,position}
+//function tabFilter(table,filter)  //filter beallitasa/lekerdezese
 
 #include "tabobj.ch"
 
@@ -33,14 +33,14 @@ function tabSave(table) //elmenti:{control,filter,position}
 
 
 ******************************************************************************
-function tabRestore(table,state)  //beállítja:{control,filter,position}
+function tabRestore(table,state)  //beallitja:{control,filter,position}
     tabControlIndex(table,state[1])
     tabFilter(table,state[2]) 
     tabGoto(table,state[3])
     return state
 
 ******************************************************************************
-function tabFilter(table,filter) //filter beállítása/lekérdezése
+function tabFilter(table,filter) //filter beallitasa/lekerdezese
 local old:=table[TAB_FILTER]
 
     if( filter==NIL )

@@ -29,8 +29,8 @@
 //----------------------------------------------------------------------------
 void __bt_pagelock(BTREE *t, pgno_t pgno, int type)
 {
-    //page lockolása írásra     __bt_pagelock(t,pgno,1);
-    //page lockolása olvasásra  __bt_pagelock(t,pgno,0);
+    //page lockolasa irasra     __bt_pagelock(t,pgno,1);
+    //page lockolasa olvasasra  __bt_pagelock(t,pgno,0);
  
     struct flock fl;
 
@@ -68,11 +68,11 @@ void __bt_pageunlock(BTREE *t, pgno_t pgno)
 
 #else
 //-----------------------------------------------------------------------------
-// Szükségmegoldás Windows-ra.
-// 1) a lockolt terület nem olvasható
-// 2) hiányzik a shared lock
+// Szuksegmegoldas Windows-ra.
+// 1) a lockolt terulet nem olvashato
+// 2) hianyzik a shared lock
 
-//pagelock: (2GB-1KB-pgno) pozíción 1 byte
+//pagelock: (2GB-1KB-pgno) pozicion 1 byte
 #define PAGE2POS(pgno) ((unsigned)2*1024*1024*1024-1024-(pgno))
  
 #include <windows.h>

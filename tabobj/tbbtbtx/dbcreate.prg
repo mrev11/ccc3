@@ -24,10 +24,10 @@
 ******************************************************************************
 //Public interface
 //
-//function tabNew(alias)                //létrehoz egy új table objectet
-//function tabDestruct(table)           //megszünteti az objektumot
-//function tabObjectList(table)         //a table objectek listája
-//function tabCreate(table,userblock)   //a nemlétező dbf-et kreálja
+//function tabNew(alias)                //letrehoz egy uj table objectet
+//function tabDestruct(table)           //megszunteti az objektumot
+//function tabObjectList(table)         //a table objectek listaja
+//function tabCreate(table,userblock)   //a nemletezo dbf-et krealja
 
 ******************************************************************************
 
@@ -39,12 +39,12 @@ function tabLibName()
 
 
 ******************************************************************************
-function tabNew(alias) //létrehoz egy új table objectet
+function tabNew(alias) //letrehoz egy uj table objectet
 local table:=tabNew0(alias)
     aadd(tabobjectList,table)
     return table 
 
-function tabNew0(alias) //létrehoz egy új table objectet (nem teszi listába)
+function tabNew0(alias) //letrehoz egy uj table objectet (nem teszi listaba)
 local table:=array(TAB_SIZEOF)
 
     table[TAB_ALIAS   ] := upper(alltrim(alias))
@@ -73,7 +73,7 @@ local table:=array(TAB_SIZEOF)
 
 
 ******************************************************************************
-function tabDestruct(table) //megszünteti az objektumot
+function tabDestruct(table) //megszunteti az objektumot
 local n, tlist:={}
     tabClose(table)
     asize(table,0)
@@ -87,18 +87,18 @@ local n, tlist:={}
 
 
 ******************************************************************************
-function tabObjectList(table) //a table objectek listája
+function tabObjectList(table) //a table objectek listaja
    return tabobjectList
 
 
 ******************************************************************************
-function tabCreate(table,userblock) //kreálja a nemlétező fájlt
+function tabCreate(table,userblock) //krealja a nemletezo fajlt
 local lkcnt:=tabSLock(table)
 local res:=lkcnt>0 .and. create(table,userblock)
     tabSUnlock(table)
     return res
 
-static function create(table,userblock) //kreálja a nemlétező fájlt
+static function create(table,userblock) //krealja a nemletezo fajlt
 
 local n,rcol,rind,db
 
@@ -121,7 +121,7 @@ local n,rcol,rind,db
         rind:=aclone(tabIndex(table))
         for n:=1 to len(rind)
             //asize(rind[n],3)
-            asize(rind[n],4) //3 helyett 4 (suppindex infó)
+            asize(rind[n],4) //3 helyett 4 (suppindex info)
         next
         
         _db_addresource(db,arr2bin(rcol),0) //fix:pgno=1,indx=0
@@ -144,7 +144,7 @@ local n,rcol,rind,db
             end
         end
  
-        //vissza kell zárni
+        //vissza kell zarni
         _db_close(db)
 
         tabWriteChangeLogCreate(table)         

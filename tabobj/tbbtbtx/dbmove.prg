@@ -28,39 +28,39 @@
 ******************************************************************************
 // Public interface
 
-//function tabSkip(table,stp)          //skip előre/hátra
-//function tabSeek(table,exp)          //nagyobbegyenlőre
-//function tabSeekLE(table,exp)        //kisebbegyenlőre (vagy legkisebbre)
-//function tabSeekGE(table,exp)        //nagyobbegyenlőre (vagy legnagyobbra)
+//function tabSkip(table,stp)          //skip elore/hatra
+//function tabSeek(table,exp)          //nagyobbegyenlore
+//function tabSeekLE(table,exp)        //kisebbegyenlore (vagy legkisebbre)
+//function tabSeekGE(table,exp)        //nagyobbegyenlore (vagy legnagyobbra)
 //function tabGoTop(table)             //gotop
 //function tabGoBottom(table)          //gobottom
-//function tabGetNext(table,stp)       //előre index szerint (belső)
-//function tabGetPrev(table,stp)       //hátra index szerint (belső)
+//function tabGetNext(table,stp)       //elore index szerint (belso)
+//function tabGetPrev(table,stp)       //hatra index szerint (belso)
 //function tabGoto(table,pos)          //goto
-//function tabEstablishPosition(table) //prev/next beállítása (belső)
-//function tabPosition(table)          //recno() vagy 0, ha EOF-on áll
-//function tabLastRec(table)           //rekordok száma
+//function tabEstablishPosition(table) //prev/next beallitasa (belso)
+//function tabPosition(table)          //recno() vagy 0, ha EOF-on all
+//function tabLastRec(table)           //rekordok szama
 //function tabEof(table)               //eof().or.bof()
 //function tabFound(table)             //found()
 
 
 ******************************************************************************
-//EOF beállítása:
+//EOF beallitasa:
 //
-//  tabEOF() kétféle szituációban ad .t.-t
+//  tabEOF() ketfele szituacioban ad .t.-t
 //    
-//  1) ha kisérlet történt top elé pozícionálni (skip -1),
-//     ilyenkor tabEOF()==.t., és tabPosition()==1.
+//  1) ha kiserlet tortent top ele pozicionalni (skip -1),
+//     ilyenkor tabEOF()==.t., es tabPosition()==1.
 //
-//  2) ha nemlétező rekordra (pos<=0 .or. lastrec<pos) akarnak
-//     pozícionálni, ilyenkor tabEOF()==.t., és tabPosition()==0.
+//  2) ha nemletezo rekordra (pos<=0 .or. lastrec<pos) akarnak
+//     pozicionalni, ilyenkor tabEOF()==.t., es tabPosition()==0.
 //       
-//  Tehát a fájl pozícionálatlanságát (utolsó utáni fiktív rekordon
-//  állását) a tabPosition()==0 reláció mutatja. 
+//  Tehat a fajl pozicionalatlansagat (utolso utani fiktiv rekordon
+//  allasat) a tabPosition()==0 relacio mutatja. 
 
 
 ******************************************************************************
-// Szűrés
+// Szures
 ******************************************************************************
 static function tabInscope(t)
     if( 42==xvgetbyte(t[TAB_RECBUF],0) )
@@ -75,7 +75,7 @@ static function tabInscope(t)
 
 
 ******************************************************************************
-function tabSkip(table,stp)  //skip előre/hátra
+function tabSkip(table,stp)  //skip elore/hatra
 
     if(table[TAB_MODIF]); tabCommit(table); end
     if(stp==NIL); stp:=1; end
@@ -83,7 +83,7 @@ function tabSkip(table,stp)  //skip előre/hátra
 
     if( stp>0 )
         if( stp>tabGetNext(table,stp) )
-            tabGoEOF(table) // EOF-ra áll
+            tabGoEOF(table) // EOF-ra all
         else
             table[TAB_EOF]:=.f.
         end
@@ -100,17 +100,17 @@ function tabSkip(table,stp)  //skip előre/hátra
         //??
 
     else
-        //újraolvassuk a rekordot
+        //ujraolvassuk a rekordot
         tabSetPos(table, _db_wrbig32(table[TAB_POSITION])+table[TAB_RECPOS] )
     end   
     return !table[TAB_EOF]
 
 
 ******************************************************************************
-function tabSeek(table,exp)  //keresés nagyobbegyenlőre
+function tabSeek(table,exp)  //kereses nagyobbegyenlore
 
-// összetett indexkifejezést {}-ban felsorolva kell megadni,
-// csak TAB_ORDER>0 esetén (azaz beállított indexszel) alkalmazható
+// osszetett indexkifejezest {}-ban felsorolva kell megadni,
+// csak TAB_ORDER>0 eseten (azaz beallitott indexszel) alkalmazhato
 
 local ord:=table[TAB_ORDER]
 local key,keyf,pos
@@ -133,7 +133,7 @@ local key,keyf,pos
     keyf:=_db_seek(table[TAB_BTREE],key)
 
     if( !tabSetPos(table,keyf) )  
-        //EOF-ra állt
+        //EOF-ra allt
 
     elseif( tabInscope(table) )
         table[TAB_EOF]:=.f.
@@ -154,12 +154,12 @@ local key,keyf,pos
 
     return table[TAB_FOUND]
     
-    //Megjegyzés: a talált kulcs egyezőségét csak a megadott 
-    //hosszban (key hosszában) kell vizsgálni (<= operátor).
+    //Megjegyzes: a talalt kulcs egyezoseget csak a megadott 
+    //hosszban (key hosszaban) kell vizsgalni (<= operator).
 
 
 ******************************************************************************
-function tabSeekLE(table,exp) //seek kisebbegyenlőre (vagy legkisebbre)
+function tabSeekLE(table,exp) //seek kisebbegyenlore (vagy legkisebbre)
     if( tabSeek(table,exp) )
         return .t.
     elseif( tabEof(table) )
@@ -171,7 +171,7 @@ function tabSeekLE(table,exp) //seek kisebbegyenlőre (vagy legkisebbre)
  
 
 ******************************************************************************
-function tabSeekGE(table,exp) //seek nagyobbegyenlőre (vagy legnagyobbra)
+function tabSeekGE(table,exp) //seek nagyobbegyenlore (vagy legnagyobbra)
     if( tabSeek(table,exp) )
         return .t.
     elseif( tabEof(table) )
@@ -181,10 +181,10 @@ function tabSeekGE(table,exp) //seek nagyobbegyenlőre (vagy legnagyobbra)
 
 
 ******************************************************************************
-static function tabExpIndex(table,aexp) //tömbből indexkifejezés
+static function tabExpIndex(table,aexp) //tombbol indexkifejezes
 
-// az aexp kifejezéslistából kulcsértéket készít seek számára
-// (column az aktuális indexet alkotó oszlopok sorszámának listája)
+// az aexp kifejezeslistabol kulcserteket keszit seek szamara
+// (column az aktualis indexet alkoto oszlopok sorszamanak listaja)
 
 local column:=table[TAB_INDEX][table[TAB_ORDER]][IND_COL],n
 local col,type,width,dec,segval,key:=x""
@@ -196,7 +196,7 @@ local col,type,width,dec,segval,key:=x""
         tabError(table)
     end
     
-    //megengedjük, hogy aexp rövidebb legyen
+    //megengedjuk, hogy aexp rovidebb legyen
     
     for n:=1 to len(aexp)
 
@@ -225,9 +225,9 @@ local col,type,width,dec,segval,key:=x""
 
     return key 
     
-    //az itteni key végén nincs a recno-ból képzett suffix,
-    //ezért az mindig rövidebb, mint amit tabKeyCompose ad,
-    //egyébként a két függvény nagyon hasonló
+    //az itteni key vegen nincs a recno-bol kepzett suffix,
+    //ezert az mindig rovidebb, mint amit tabKeyCompose ad,
+    //egyebkent a ket fuggveny nagyon hasonlo
 
 
 ******************************************************************************
@@ -239,7 +239,7 @@ function tabGoTop(table)  //gotop
     _db_setord(table[TAB_BTREE],KEYORDER)
 
     if( !tabSetPos(table,_db_first(table[TAB_BTREE])) )
-        //EOF-ra állt
+        //EOF-ra allt
     elseif( tabInscope(table) )
         table[TAB_EOF]:=.f.
     elseif( 1>tabGetNext(table,1) )
@@ -260,7 +260,7 @@ function tabGoBottom(table)  //gobottom
     _db_setord(table[TAB_BTREE],KEYORDER)
  
     if( !tabSetPos(table,_db_last(table[TAB_BTREE])) )
-        //EOF-ra állt
+        //EOF-ra allt
     elseif( tabInscope(table) )
         table[TAB_EOF]:=.f.
     elseif( 1>tabGetPrev(table,1) )  
@@ -273,10 +273,10 @@ function tabGoBottom(table)  //gobottom
 
 
 ******************************************************************************
-function tabGetNext(table,stp) //előre index szerint 
+function tabGetNext(table,stp) //elore index szerint 
 local n:=0,nextpos
     if( tabPosition(table)==0 )
-        // EOF-ról nem lehet előre lépni
+        // EOF-rol nem lehet elore lepni
         return 0 
     end
 
@@ -292,10 +292,10 @@ local n:=0,nextpos
 
 
 ******************************************************************************
-function tabGetPrev(table,stp) //hátra index szerint 
+function tabGetPrev(table,stp) //hatra index szerint 
 local n:=0,prevpos
     if( tabPosition(table)==0 )
-        //EOF-ról először BOTTOM-ra kell visszalépni
+        //EOF-rol eloszor BOTTOM-ra kell visszalepni
         if( tabGobottom(table) .and. tabInscope(table) ) 
             n++                    
         end
@@ -327,10 +327,10 @@ local key,keyf,pup
     if( keyf!=key )
 
         if( table[TAB_TRANID]!=NIL .and. tranLastRecordUpdate(table,@pup) )
-            //Ez az az eset, amikor egy tranzakcióban
-            //appendált rekordra visszapozícionálunk,
-            //ilyenkor BTBTX-ben nem elég a recno-t tudni,
-            //hanem a recpos-t is vissza kell állítani.
+            //Ez az az eset, amikor egy tranzakcioban
+            //appendalt rekordra visszapozicionalunk,
+            //ilyenkor BTBTX-ben nem eleg a recno-t tudni,
+            //hanem a recpos-t is vissza kell allitani.
         
             table[TAB_RECPOS]:=pup[PUP_RECPOS]
         else
@@ -352,7 +352,7 @@ local key,keyf,pup
 
 
 ******************************************************************************
-function tabEstablishPosition(table) //prev/next beállításához (belső)
+function tabEstablishPosition(table) //prev/next beallitasahoz (belso)
 
 local key,keyf,n:=0
 
@@ -381,7 +381,7 @@ local key,keyf,n:=0
 
 
 ******************************************************************************
-static function tabReadRecord(table) //rekord olvasás
+static function tabReadRecord(table) //rekord olvasas
     if( table[TAB_RECLEN]!=;
         _db_read(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS]) )
         tabGoEOF(table)
@@ -411,12 +411,12 @@ local primarykey
 
 
 ******************************************************************************
-function tabPosition(table) //recno() vagy 0, ha EOF-on áll
+function tabPosition(table) //recno() vagy 0, ha EOF-on all
     return table[TAB_POSITION]
 
 
 ******************************************************************************
-function tabLastRec(table)  //rekordszám
+function tabLastRec(table)  //rekordszam
     return _db_lastrec(table[TAB_BTREE])
 
 
@@ -431,7 +431,7 @@ function tabFound(table)  //found()
 
 
 ******************************************************************************
-function tabReadOriginalRecordFromDisk(table) //naplózáshoz
+function tabReadOriginalRecordFromDisk(table) //naplozashoz
 local err,buffer
     buffer:=replicate(x"20",table[TAB_RECLEN]) 
     if( table[TAB_RECLEN]!=_db_read(table[TAB_BTREE],buffer,table[TAB_RECPOS]) )

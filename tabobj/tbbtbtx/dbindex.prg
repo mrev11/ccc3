@@ -24,15 +24,15 @@
 ******************************************************************************
 //Public interface
 
-//function tabControlIndex(table,ord)     //vezérlő index kiválasztása/lekérdezése
+//function tabControlIndex(table,ord)     //vezerlo index kivalasztasa/lekerdezese
 //function tabSuppIndex(table,index)      //ideiglenes indexet ad table-hoz
-//function tabDropIndex(table)            //ideiglenes index törlése
-//function tabKeyCompose(table,order)     //kulcs az aktuális rekordból
-//function tabKeyLength(table,order)      //kulcshossz az aktuális indexből 
+//function tabDropIndex(table)            //ideiglenes index torlese
+//function tabKeyCompose(table,order)     //kulcs az aktualis rekordbol
+//function tabKeyLength(table,order)      //kulcshossz az aktualis indexbol 
  
 
 ******************************************************************************
-function tabControlIndex(table,ord) //vezérlő index kiválasztása/lekérdezése
+function tabControlIndex(table,ord) //vezerlo index kivalasztasa/lekerdezese
 local old:=table[TAB_ORDER]
     if( ord!=NIL .and. (ord:=tabGetIndex(table,ord))!=NIL .and. ord!=old )
         tabCommit(table)
@@ -66,28 +66,28 @@ local msg, total, n
     
     if( (ord:=tabScanIndex(table,index))==NIL )
 
-        //ha korábban is volt ilyen index,
-        //akkor csak be kell állítani,
-        //olyankor ide nem jön
+        //ha korabban is volt ilyen index,
+        //akkor csak be kell allitani,
+        //olyankor ide nem jon
 
         state:=tabSave(table)
         tabControlIndex(table,0)
         tabFilter(table,0)
         tabDeleteFieldTable(table)
  
-        tabAddIndex(table,index)  //oszlop blockot módosít!
-        index[IND_TYPE]:=.t.  //ideiglenes indexet jelölő flag
+        tabAddIndex(table,index)  //oszlop blockot modosit!
+        index[IND_TYPE]:=.t.  //ideiglenes indexet jelolo flag
         ord:=len(table[TAB_INDEX])
 
       #ifdef UNSORTED_KEYS
 
-        //A kulcsok rendezetlen sorrenben való rakosgatásánál 
-        //sokkal hatékonyabb, ha először rendezzük a kulcsokat. 
-        //Nagy filéknél (tíz millió rekord felett) óriási a különbség.
-        //Ezért az #else (build_bt_index) ágat kell befordítani.
+        //A kulcsok rendezetlen sorrenben valo rakosgatasanal 
+        //sokkal hatekonyabb, ha eloszor rendezzuk a kulcsokat. 
+        //Nagy fileknel (tiz millio rekord felett) oriasi a kulonbseg.
+        //Ezert az #else (build_bt_index) agat kell beforditani.
         
         db:=table[TAB_BTREE]
-        _db_creord(db,ordname:="<#>") //ideiglenes név
+        _db_creord(db,ordname:="<#>") //ideiglenes nev
 
         n:=0
         total:="/"+alltrim(str(tabLastRec(table)))
@@ -106,12 +106,12 @@ local msg, total, n
             tabSkip(table)
         end
 
-        //Ha idáig nem jut el, akkor az új index <#> néven
-        //marad benne a filében, azt az open észre fogja venni,
-        //és törli a félbemaradt indexet.
+        //Ha idaig nem jut el, akkor az uj index <#> neven
+        //marad benne a fileben, azt az open eszre fogja venni,
+        //es torli a felbemaradt indexet.
 
-        _db_renord(db,ordname,index[IND_NAME]) //végleges név
-        _db_addresource(db,arr2bin(tabIndex(table)),1) //frissít
+        _db_renord(db,ordname,index[IND_NAME]) //vegleges nev
+        _db_addresource(db,arr2bin(tabIndex(table)),1) //frissit
 
         if( msg!=NIL )
             msg:=message(msg)
@@ -130,13 +130,13 @@ local msg, total, n
 
 
 ******************************************************************************
-function tabDropIndex(table)  //ideiglenes indexek törlése
+function tabDropIndex(table)  //ideiglenes indexek torlese
 local lkcnt:=tabSLock(table)
 local res:=lkcnt>0 .and. _DropIndex(table)
     tabSUnLock(table)
     return res
 
-static function _DropIndex(table)  //ideiglenes indexek törlése
+static function _DropIndex(table)  //ideiglenes indexek torlese
 
 local index,aindex:=tabIndex(table)
 local col,acolumn:=tabColumn(table)
@@ -157,8 +157,8 @@ local filno,status
     state:=tabSave(table)
     tabDeleteFieldTable(table)
     
-    //először minden indexet törlünk,
-    //utána az állandókat visszarakjuk
+    //eloszor minden indexet torlunk,
+    //utana az allandokat visszarakjuk
     
     for n:=1 to len(acolumn)
         col:=acolumn[n]
@@ -173,12 +173,12 @@ local filno,status
         if( !index[IND_TYPE] )
             tabAddIndex(table,index)
         else
-            //az egész indexet szabadlistába tesszük
+            //az egesz indexet szabadlistaba tesszuk
             _db_delord(table[TAB_BTREE],index[IND_NAME])
         end
     next
     
-    _db_addresource(table[TAB_BTREE],arr2bin(tabIndex(table)),1) //frissít
+    _db_addresource(table[TAB_BTREE],arr2bin(tabIndex(table)),1) //frissit
     
     tabRestore(table,state)
     tabSetFieldTable(table)
@@ -186,7 +186,7 @@ local filno,status
 
 
 ******************************************************************************
-function tabKeyCompose(table,order) //kulcs az aktuális rekordból
+function tabKeyCompose(table,order) //kulcs az aktualis rekordbol
 
 local aindex:=tabIndex(table)
 local idxcol:=if(order>0,aindex[order][IND_COL],{})
@@ -201,10 +201,10 @@ local segval,key:=x""
         width  := col[COL_WIDTH]
         dec    := col[COL_DEC]
 
-        //2013.09.26 átírva, sajnos ez kivétel:
-        //Az olvasás az oszlopblokk megkerülésével,
-        //közvetlenül a rekordbufferből történik.
-        //hogy elkerüljük az odavissza típuskonverziót.
+        //2013.09.26 atirva, sajnos ez kivetel:
+        //Az olvasas az oszlopblokk megkerulesevel,
+        //kozvetlenul a rekordbufferbol tortenik.
+        //hogy elkeruljuk az odavissza tipuskonverziot.
         segval := xvgetchar(table[TAB_RECBUF],offs,width)
 
         if( type=="N" )
@@ -218,7 +218,7 @@ local segval,key:=x""
 
 
 ******************************************************************************
-function tabKeyLength(table,order) //kulcshossz az aktuális indexből
+function tabKeyLength(table,order) //kulcshossz az aktualis indexbol
 
 local aindex:=tabIndex(table)
 local idxcol:=if(order>0,aindex[order][IND_COL],{})

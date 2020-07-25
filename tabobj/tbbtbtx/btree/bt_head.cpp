@@ -29,9 +29,9 @@
 #include <io.h>
 #endif
  
-// __bt_header_read(t,1) növeli a lockcount-ot
-// __bt_header_write/release csökkenti a lockcount-ot 
-// ezeknek szigorúan párban kell állniuk
+// __bt_header_read(t,1) noveli a lockcount-ot
+// __bt_header_write/release csokkenti a lockcount-ot 
+// ezeknek szigoruan parban kell allniuk
 
 //----------------------------------------------------------------------------
 static void swap_in(BTREE *t)

@@ -21,25 +21,25 @@
 #include "fileio.ch"
 #include "tabobj.ch"
 
-//rekord lock: (2GB-1MB-recno) pozíción 1 byte
+//rekord lock: (2GB-1MB-recno) pozicion 1 byte
 static OFFSET:=2*(1024*1024*1024)-(1024*1024)
 
 ******************************************************************************
 //Public interface
 
-//function tabLock(table,userblock)           //fájl lock
+//function tabLock(table,userblock)           //fajl lock
 //function tabALock(table,recarr,userblock)   //array lock
-//function tabMLock(table,rec,userblock)      //többszörös rekord lock
+//function tabMLock(table,rec,userblock)      //tobbszoros rekord lock
 //function tabRLock(table,userblock)          //egyszeres rekord lock
 //function tabRecLock(table,record,userblock) //rekord lock
-//function tabUnlockAll(table)                //összes table objektumra
-//function tabUnlock(table,record)            //fájl és single/multiple unlock
-//function tabIsLocked(table)                 //keresés locklist-ben
-//function tabLocklist(table)                 //lockolt rekordok listája  
+//function tabUnlockAll(table)                //osszes table objektumra
+//function tabUnlock(table,record)            //fajl es single/multiple unlock
+//function tabIsLocked(table)                 //kereses locklist-ben
+//function tabLocklist(table)                 //lockolt rekordok listaja  
 
 
 ******************************************************************************
-function tabLock(table,userblock) //fájl lock
+function tabLock(table,userblock) //fajl lock
 
 local mode:=tabIsOpen(table)
 local state:=tabSave(table)
@@ -50,7 +50,7 @@ local state:=tabSave(table)
 
     while( .t. )
         if( tabOpen(table,OPEN_EXCLUSIVE,{||.f.}) )
-            //tabOpen() tartalmazza a szükséges várakozást
+            //tabOpen() tartalmazza a szukseges varakozast
             table[TAB_LOCKFIL]:=.t.
             table[TAB_LOCKLST]:={}
             tabRestore(table,state)
@@ -78,23 +78,23 @@ local state:=tabSave(table)
 
 ******************************************************************************
 function tabALock(table,recarr,userblock) //array lock
-// elengedi a korábbi rekordlockokat, lockolja recarr elemeit,
+// elengedi a korabbi rekordlockokat, lockolja recarr elemeit,
 // ha valamelyik lock sikertelen, elengedi az addigi lockokat
 
     return tabRecLock(table,recarr,userblock)
 
 
 ******************************************************************************
-function tabMLock(table,rec,userblock) //többszörös rekord lock
-// lockol egy rekordot, a meglevő lockok megmaradnak
-// rec defaultja az aktuális rekord
+function tabMLock(table,rec,userblock) //tobbszoros rekord lock
+// lockol egy rekordot, a meglevo lockok megmaradnak
+// rec defaultja az aktualis rekord
 
     return tabRecLock(table,if(rec==NIL,tabPosition(table),rec),userblock)
 
 
 *****************************************************************************
 function tabRLock(table,userblock) //egyszeres rekord lock
-// lockolja az aktuális rekordot, előzőleg a többi lockot feloldja
+// lockolja az aktualis rekordot, elozoleg a tobbi lockot feloldja
 
     return tabRecLock(table,,userblock)
 
@@ -176,17 +176,17 @@ local status, pos:=tabPosition(table)
             table[TAB_LOCKLST]:={pos}
         end
     end
-    return status  //szám, 0==OK
+    return status  //szam, 0==OK
 
 
 *****************************************************************************
 static function lockPosition(table,pos)  //Lock Record by Position
 local status
 
-    if( pos<0 )  //pos==0==EOF-ot még lehet lockolni, de negatívot nem
+    if( pos<0 )  //pos==0==EOF-ot meg lehet lockolni, de negativot nem
         status:=-1 
 
-    elseif( ascan(table[TAB_LOCKLST],pos)!=0 )  //már lockolva volt, OK
+    elseif( ascan(table[TAB_LOCKLST],pos)!=0 )  //mar lockolva volt, OK
         status:=0
 
     else  //most lockoljuk       
@@ -202,7 +202,7 @@ local status
             end
         end
     end
-    return status  //szám, 0==OK
+    return status  //szam, 0==OK
 
 
 *****************************************************************************
@@ -281,7 +281,7 @@ local apos:=table[TAB_LOCKLST],n
 
 
 *****************************************************************************
-static function tabReRead(table) //rekord újraolvasás
+static function tabReRead(table) //rekord ujraolvasas
 local len:=_db_read(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS])
     if( len!=table[TAB_RECLEN] )
         taberrOperation("tabReRead")
@@ -292,7 +292,7 @@ local len:=_db_read(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS])
 
 
 *****************************************************************************
-function tabUnlockAll(table)  //összes table objektumra
+function tabUnlockAll(table)  //osszes table objektumra
 local n, tlist:=tabObjectList()
 
     for n:=1 to len(tlist)
@@ -305,7 +305,7 @@ local n, tlist:=tabObjectList()
 
 
 *****************************************************************************
-function tabUnlock(table,pos) //filé és single/multiple rekord
+function tabUnlock(table,pos) //file es single/multiple rekord
 local state
 
     tabCommit(table) 
@@ -313,11 +313,11 @@ local state
     if( tranIsActiveTransaction() )
         //megtartjuk a lockokat
  
-    elseif( pos==NIL ) // összes rekordlock vagy fájllock 
+    elseif( pos==NIL ) // osszes rekordlock vagy fajllock 
 
         if( table[TAB_LOCKFIL] )
-            //Az alábbi utasítás kell, hogy tabUnlock() 
-            //és tabClose()  ne válhassanak rekurzívvá.
+            //Az alabbi utasitas kell, hogy tabUnlock() 
+            //es tabClose()  ne valhassanak rekurzivva.
             table[TAB_LOCKFIL]:=.f.
 
             state:=tabSave(table)
@@ -335,7 +335,7 @@ local state
 
 
 *****************************************************************************
-static function lockDelete(table,record) //lock kivétele locklist-ből
+static function lockDelete(table,record) //lock kivetele locklist-bol
 local n:=ascan(table[TAB_LOCKLST],record)
     if( n!=0 )
         adel(table[TAB_LOCKLST],n)
@@ -345,7 +345,7 @@ local n:=ascan(table[TAB_LOCKLST],record)
 
 
 *****************************************************************************
-function tabIsLocked(table) //keresés locklist-ben
+function tabIsLocked(table) //kereses locklist-ben
     return table[TAB_OPEN]==OPEN_EXCLUSIVE .or.;
            ascan(table[TAB_LOCKLST],tabPosition(table))>0
    
@@ -358,8 +358,8 @@ function tabLocklist(table)
 ******************************************************************************
 function tabUnlockEOF(table) 
 
-//A minden más unlock funkció tranzakció közben hatástalan,
-//azonban EOF-ot tranzakció alatt is el kell tudni engedni.
+//A minden mas unlock funkcio tranzakcio kozben hatastalan,
+//azonban EOF-ot tranzakcio alatt is el kell tudni engedni.
 
     if( 0==dbunlock(table,0) ) 
         lockDelete(table,0)

@@ -19,7 +19,7 @@
  */
 
 //TARTALOM  : append from (delimited)
-//STATUS    : közös
+//STATUS    : kozos
 //
 //function tabAppendFrom(table,fileName,fieldList)
 
@@ -95,7 +95,7 @@ local err, msg
 
                 end
 
-                eval(flist[n][COL_BLOCK],value) //írás az adatbázismezőbe
+                eval(flist[n][COL_BLOCK],value) //iras az adatbazismezobe
             end
             tabUnlock(table)
         end
@@ -114,7 +114,7 @@ local toklist:={}, s,t,c
     while(.t.)
         if( left(line,1)=='"' )
             s:=2
-          //t:=at('",',line) //nem jól kezeli a "," mezőket!! 1997.09.22
+          //t:=at('",',line) //nem jol kezeli a "," mezoket!! 1997.09.22
             t:=at('",',substr(line,2))+1
             c:=t+2
         else

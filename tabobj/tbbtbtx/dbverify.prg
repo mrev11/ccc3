@@ -24,19 +24,19 @@
 ******************************************************************************
 //Public interface
 //
-//function tabVerify(table)               //objektum <--> filé (belső)
+//function tabVerify(table)               //objektum <--> file (belso)
  
 ******************************************************************************
-function tabVerify(table) //egyezteti az objektum és a filé adatait
+function tabVerify(table) //egyezteti az objektum es a file adatait
     tabVerifyColumn(table)
     tabVerifyIndex(table) 
     return NIL
 
 ******************************************************************************
-static function tabVerifyColumn(table) //egyezteti a mezőket
+static function tabVerifyColumn(table) //egyezteti a mezoket
  
-local fld  //a filében talált oszlopok tömbje
-local col  //az objektumban lévő oszlopok tömbje
+local fld  //a fileben talalt oszlopok tombje
+local col  //az objektumban levo oszlopok tombje
 local c,n,m
  
     fld:=tabReadColumn(table)   
@@ -48,7 +48,7 @@ local c,n,m
 
     for n:=1 to len(col)
 
-        //nem okoz hibát, ha a fld bővebb
+        //nem okoz hibat, ha a fld bovebb
         
         c:=col[n]
         m:=ascan(fld,{|f|f[COL_NAME]==c[COL_NAME]})
@@ -59,7 +59,7 @@ local c,n,m
         //        c[COL_WIDTH] ,fld[m][COL_WIDTH],;
         //        c[COL_DEC]   ,fld[m][COL_DEC]
         //else
-        //    ? n, padr(c[COL_NAME],10), "hiányzik"
+        //    ? n, padr(c[COL_NAME],10), "hianyzik"
         //end
 
         if( m==0.or.;
@@ -74,9 +74,9 @@ local c,n,m
         end
     next 
     
-    //az oszlopstruktúrát újraépítjük
+    //az oszlopstrukturat ujraepitjuk
     
-    asize(tabColumn(table),0) //kiüríti
+    asize(tabColumn(table),0) //kiuriti
     for n:=1 to len(fld)
         tabAddColumn(table,fld[n])
     next
@@ -87,18 +87,18 @@ local c,n,m
 ******************************************************************************
 static function tabVerifyIndex(table) //egyezteti az indexeket
 
-local aCtxInd:=tabReadIndex(table)      //a fájlban talált indexek
+local aCtxInd:=tabReadIndex(table)      //a fajlban talalt indexek
 local aTabInd:=tabIndex(table,aCtxInd)  //objektum szerinti indexek
 local n, i, indnam, rebuild:={}
 
-    //Jelenleg az objektumban a filé-resource-ból kiolvasott 
-    //index definíció van, ezt egyeztetjük az eredeti objektumnal.
+    //Jelenleg az objektumban a file-resource-bol kiolvasott 
+    //index definicio van, ezt egyeztetjuk az eredeti objektumnal.
 
     for n:=1 to len(aTabInd)
         if( NIL==tabScanIndex(table,aTabInd[n]) )
 
-            //A filében vagy nincs meg aTabInd[n],
-            //vagy ha megvan, eltér a szerkezete.
+            //A fileben vagy nincs meg aTabInd[n],
+            //vagy ha megvan, elter a szerkezete.
 
             aadd(rebuild,indnam:=aTabInd[n][IND_NAME])
             i:=ascan(tabIndex(table),{|x|x[IND_NAME]==indnam})
@@ -106,16 +106,16 @@ local n, i, indnam, rebuild:={}
             if( i>0 )
                 adel(tabIndex(table),i)
                 asize(tabIndex(table),len(tabIndex(table))-1)
-                //egyező nevű, eltérő szerkezetű index törölve
+                //egyezo nevu, eltero szerkezetu index torolve
             end
             tabAddIndex(table,aTabInd[n])
         end
     next
     
-    //Most az objektumban, a filé és az eredeti objektum indexeinek
-    //uniója van, és azonos nevű, de eltérű tartalmú indexek esetén
-    //az objektumbeli definíció van megtartva (kész a konverzióra).
-    //A rebuild array tartalmazza az újraépítendő indexek nevét.
+    //Most az objektumban, a file es az eredeti objektum indexeinek
+    //unioja van, es azonos nevu, de elteru tartalmu indexek eseten
+    //az objektumbeli definicio van megtartva (kesz a konverziora).
+    //A rebuild array tartalmazza az ujraepitendo indexek nevet.
     
     if( !empty(rebuild) )
         taberrOperation("tabVerifyIndex")
@@ -124,19 +124,19 @@ local n, i, indnam, rebuild:={}
         tabIndexError(table) //break van benne
     end
 
-    //Ezen a ponton teljesül, hogy a filében lévő indexek 
-    //kompatibilisek az objektummal, de lehet, hogy a filében
-    //több index is van, és a sorrendjük is eltérhet.
-    //A programnak minden meglévő indexet karban kell tartania,
-    //a filében érvényes index sorrendet kell használnia,
-    //ezért a legegyszerűbb, ha az index struktúrát lecseréljük.
-    //Az index struktúrát a tabAddindex-szel kell újraépíteni,
-    //hogy a kulcs oszlopok megfelelő blockot kapjanak.
+    //Ezen a ponton teljesul, hogy a fileben levo indexek 
+    //kompatibilisek az objektummal, de lehet, hogy a fileben
+    //tobb index is van, es a sorrendjuk is elterhet.
+    //A programnak minden meglevo indexet karban kell tartania,
+    //a fileben ervenyes index sorrendet kell hasznalnia,
+    //ezert a legegyszerubb, ha az index strukturat lecsereljuk.
+    //Az index strukturat a tabAddindex-szel kell ujraepiteni,
+    //hogy a kulcs oszlopok megfelelo blockot kapjanak.
     
-    //? "obj infó:", aTabInd
-    //? "res infó:", aCtxInd
+    //? "obj info:", aTabInd
+    //? "res info:", aCtxInd
     
-    tabIndex(table,{}) //kiüríti
+    tabIndex(table,{}) //kiuriti
     
     for n:=1 to len(aCtxInd)
         tabAddIndex(table,aCtxInd[n])

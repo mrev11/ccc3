@@ -18,30 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//TARTALOM  : tábla objektum index metódusok platformfüggetlen része
-//STATUS    : közös, ifdef
+//TARTALOM  : tabla objektum index metodusok platformfuggetlen resze
+//STATUS    : kozos, ifdef
 //
-//function tabAddIndex(table,index)     állandó indexet ad table-hoz
-//function tabGetIndex(table,ind)       index név -> sorszám
-//function tabIndex(table,change)       indexek struktúrája
-//function tabScanIndex(table,index)    index keresése az objektumban
+//function tabAddIndex(table,index)     allando indexet ad table-hoz
+//function tabGetIndex(table,ind)       index nev -> sorszam
+//function tabIndex(table,change)       indexek strukturaja
+//function tabScanIndex(table,index)    index keresese az objektumban
 
 #include "tabobj.ch"
 
 
 ******************************************************************************
-function tabAddIndex(table,index) //állandó indexet ad table-hoz
+function tabAddIndex(table,index) //allando indexet ad table-hoz
 
-// A fájl megnyitása előtt kell hívni, csakis az objektumgeneráló
-// függvényben. A betett indexek állandóak, nem változtathatók,
-// és meg kell egyezniük a lemezfájlban nyilvántartott indexeléssel.
+// A fajl megnyitasa elott kell hivni, csakis az objektumgeneralo
+// fuggvenyben. A betett indexek allandoak, nem valtoztathatok,
+// es meg kell egyezniuk a lemezfajlban nyilvantartott indexelessel.
 //
 // index szerkezete: {name,file,{col1,col2,...},type}
-// az első három elem kötelező
+// az elso harom elem kotelezo
 //    name: az index logikai neve
-//    file: az indexfilé(k) neve (ha vannak index filék)
-//    coln: az indexet alkotó oszlopok neve/sorszáma
-//    type: .f. állandó, a program automatikusan beállítja
+//    file: az indexfile(k) neve (ha vannak index filek)
+//    coln: az indexet alkoto oszlopok neve/sorszama
+//    type: .f. allando, a program automatikusan beallitja
 
 local n, column:=index[IND_COL], cix, col
 
@@ -79,11 +79,11 @@ local n, column:=index[IND_COL], cix, col
 
 
 ******************************************************************************
-function tabGetIndex(table,ind) //index név -> sorszám
+function tabGetIndex(table,ind) //index nev -> sorszam
 
 // ind lehet 
 // 1) az index logikai neve 
-// 2) az index szótárbeli sorszáma
+// 2) az index szotarbeli sorszama
 
 local aIndex:=table[TAB_INDEX], name
 
@@ -107,7 +107,7 @@ local aIndex:=table[TAB_INDEX], name
 
 
 ******************************************************************************
-function tabIndex(table,change) //indexek struktúrája
+function tabIndex(table,change) //indexek strukturaja
 local prev:=table[TAB_INDEX]
     if( change!=NIL )
         table[TAB_INDEX]:=change
@@ -116,24 +116,24 @@ local prev:=table[TAB_INDEX]
 
 
 ******************************************************************************
-function tabScanIndex(table,index) //index keresése az objektumban
+function tabScanIndex(table,index) //index keresese az objektumban
 
-// Megnézi, hogy egy index benne van-e az objektumban.
-// Az oszloplisták (kulcsszegmensek) egyezősége szerint keres,
-// ha megtalálta visszaadja a kulcs sorszámát, egyébként NIL-t.
+// Megnezi, hogy egy index benne van-e az objektumban.
+// Az oszloplistak (kulcsszegmensek) egyezosege szerint keres,
+// ha megtalalta visszaadja a kulcs sorszamat, egyebkent NIL-t.
 
 local icol:=index[IND_COL]     // a keresett index oszlopai
-local length:=len(icol)        // keresett index oszlopainak száma
+local length:=len(icol)        // keresett index oszlopainak szama
 local iname:=index[IND_NAME]   // a keresett index neve
-local tindex:=tabIndex(table)  // table index struktúra
+local tindex:=tabIndex(table)  // table index struktura
 local tcol, tname, n, c
 local iseg, tseg
 
     iname:=upper(alltrim(iname))
 
-    // a ciklust visszafelé kell járatni, hogy
-    // először az ideiglenes indexeket találja meg,
-    // ugyanis ezek keresése a tipikus
+    // a ciklust visszafele kell jaratni, hogy
+    // eloszor az ideiglenes indexeket talalja meg,
+    // ugyanis ezek keresese a tipikus
 
     for n:=len(tindex) to 1 step -1
     
@@ -157,7 +157,7 @@ local iseg, tseg
                 if( !iseg==tseg )
                     exit
                 elseif( c==length )
-                    return n  //kulcs sorszám 
+                    return n  //kulcs sorszam 
                 end
             next
         end
@@ -166,7 +166,7 @@ local iseg, tseg
 
 
 ******************************************************************************
-static function PrintIndex(table,aindex) //teszt célú printelés
+static function PrintIndex(table,aindex) //teszt celu printeles
 
 local n,s
 local indfil,indnam,indcol
@@ -188,8 +188,8 @@ local indfil,indnam,indcol
             if(s>1)
                 ?? ","
             end
-          //?? alltrim(str(indcol[s]))                //sorszámos kiírás
-            ?? tabColumn(table)[indcol[s]][COL_NAME]  //név szerinti kiírás
+          //?? alltrim(str(indcol[s]))                //sorszamos kiiras
+            ?? tabColumn(table)[indcol[s]][COL_NAME]  //nev szerinti kiiras
         next
         ?? "}"
     next

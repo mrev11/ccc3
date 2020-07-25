@@ -70,9 +70,9 @@ int __bt_seq(BTREE *t, DBT *key, int flags)
         __bt_pagelock(t,P_ROOT(t),0); //for reading
     }
     
-    // __bt_seq rekurzív a kurzor helyreállítása miatt,
-    // a lockot azonban nem szabad rekurzívan alkalmazni,
-    // mert visszatéréskor a kelleténél hamarabb elengedné.
+    // __bt_seq rekurziv a kurzor helyreallitasa miatt,
+    // a lockot azonban nem szabad rekurzivan alkalmazni,
+    // mert visszatereskor a kelletenel hamarabb elengedne.
  
     // If scan uninitialized as yet, or starting at a specific record, 
     // set the scan to a specific key.  Both __bt_seqset and __bt_seqadv pin

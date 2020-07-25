@@ -29,21 +29,21 @@
 //----------------------------------------------------------------------------
 RECPOS __bt_addresource(BTREE *t, DBT*data, indx_t index)
 {
-    // A data-ban megadott resource-ot kiírja az 1-es page-re,
-    // ha az 1-es page még nem létezik, csinál egy új page-et,
+    // A data-ban megadott resource-ot kiirja az 1-es page-re,
+    // ha az 1-es page meg nem letezik, csinal egy uj page-et,
     // ha ez nem 1-es, akkor perror,
-    // a megadott indexbe (0-tól indul) írja data-t,
-    // index nem lehet nagyobb NEXTINDEX-nél (vagy perror),
-    // ha index<NEXTINDEX, akkor a nagyobb indexű rekordokat törli,
-    // így mindig index lesz a legutolsó rekord indexe.
-    // Visszaadja azt a recpos-t, amivel a beírt adat kiolvasható.
+    // a megadott indexbe (0-tol indul) irja data-t,
+    // index nem lehet nagyobb NEXTINDEX-nel (vagy perror),
+    // ha index<NEXTINDEX, akkor a nagyobb indexu rekordokat torli,
+    // igy mindig index lesz a legutolso rekord indexe.
+    // Visszaadja azt a recpos-t, amivel a beirt adat kiolvashato.
 
     PAGE *h;
     u_int32_t nbytes;
     char *dest;
     RECPOS recpos={0,0};
 
-    mpool_count(t->bt_mp,"addresource-0");//ellenőrzés 
+    mpool_count(t->bt_mp,"addresource-0");//ellenorzes 
 
     h=(PAGE*)mpool_get(t->bt_mp,1);    
     nbytes=NBLEAFDBT(data->size); 
@@ -88,7 +88,7 @@ RECPOS __bt_addresource(BTREE *t, DBT*data, indx_t index)
     recpos.pgno=1; 
     recpos.index=index;
 
-    mpool_count(t->bt_mp,"addresource-1");//ellenőrzés 
+    mpool_count(t->bt_mp,"addresource-1");//ellenorzes 
     return recpos;
 }
 
@@ -101,7 +101,7 @@ RECPOS __bt_append(BTREE *t, DBT*data, int *recno)
     char *dest;
     RECPOS recpos={0,0};
 
-    mpool_count(t->bt_mp,"append-0");//ellenőrzés 
+    mpool_count(t->bt_mp,"append-0");//ellenorzes 
     __bt_header_read(t,1);
 
     if( t->bt_lastdatapage )
@@ -124,7 +124,7 @@ RECPOS __bt_append(BTREE *t, DBT*data, int *recno)
         #ifdef PREFER_FREELIST
           h=__bt_new(t,&npg,0);
         #else
-          h=__bt_new0(t,&npg,0); //pack replikálhatósága érdekében, 2004.04.18
+          h=__bt_new0(t,&npg,0); //pack replikalhatosaga erdekeben, 2004.04.18
         #endif
 
         __bt_pageunlock(t,t->bt_lastdatapage);    
@@ -154,7 +154,7 @@ RECPOS __bt_append(BTREE *t, DBT*data, int *recno)
 
     __bt_pageunlock(t,t->bt_lastdatapage);    
     __bt_header_write(t);
-    mpool_count(t->bt_mp,"append-1");//ellenőrzés 
+    mpool_count(t->bt_mp,"append-1");//ellenorzes 
 
     return recpos;
 }
@@ -165,7 +165,7 @@ int __bt_read(BTREE *t, DBT*data, RECPOS *recpos)
     PAGE *h;
     int recsiz=0; 
 
-    mpool_count(t->bt_mp,"read-0");//ellenőrzés 
+    mpool_count(t->bt_mp,"read-0");//ellenorzes 
     
     if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,recpos->pgno))) &&
         (h->flags==P_DATA) && 
@@ -181,7 +181,7 @@ int __bt_read(BTREE *t, DBT*data, RECPOS *recpos)
     {
         mpool_put(t->bt_mp,h,0); 
     }
-    mpool_count(t->bt_mp,"read-1");//ellenőrzés 
+    mpool_count(t->bt_mp,"read-1");//ellenorzes 
     return recsiz;
 }
 
@@ -191,7 +191,7 @@ int __bt_read1(BTREE *t, DBT*data, pgno_t pgno, indx_t index)
     PAGE *h;
     int recsiz=0; 
     
-    mpool_count(t->bt_mp,"read1-0");//ellenőrzés 
+    mpool_count(t->bt_mp,"read1-0");//ellenorzes 
 
     if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,pgno))) &&
         (h->flags==P_DATA) && 
@@ -207,7 +207,7 @@ int __bt_read1(BTREE *t, DBT*data, pgno_t pgno, indx_t index)
     {
         mpool_put(t->bt_mp,h,0); 
     }
-    mpool_count(t->bt_mp,"read1-1");//ellenőrzés 
+    mpool_count(t->bt_mp,"read1-1");//ellenorzes 
     return recsiz;
 }
  
@@ -217,7 +217,7 @@ int __bt_rewrite(BTREE *t, DBT*data, RECPOS *recpos)
     PAGE *h;
     int success=0;
 
-    mpool_count(t->bt_mp,"rewrite-0");//ellenőrzés 
+    mpool_count(t->bt_mp,"rewrite-0");//ellenorzes 
     __bt_pagelock(t,recpos->pgno,1);    
 
     if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,recpos->pgno))) &&
@@ -237,7 +237,7 @@ int __bt_rewrite(BTREE *t, DBT*data, RECPOS *recpos)
     }
 
     __bt_pageunlock(t,recpos->pgno);    
-    mpool_count(t->bt_mp,"rewrite-1"); //ellenőrzés
+    mpool_count(t->bt_mp,"rewrite-1"); //ellenorzes
 
     return success?RET_SUCCESS:RET_ERROR; 
 }

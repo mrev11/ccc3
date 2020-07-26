@@ -1,6 +1,63 @@
 
 #ifdef _HISTORY_
 
+2020-07-26 -- 3.0.0
+  KETFELE TORLESI MOD
+
+  1) Hagyomanyos: A torolt rekord benne marad a "recno" indexben
+    es az osszes tobbi indexben. Beallitodik a (belso) torolt flag.
+    A navigalo muveletek (skip, seek, gotop) a torolt flag alapjan
+    ugorjak at a torolt rekordokat, a filterezeshez hasonloan.
+    A torolt rekordra goto-val ra lehet pozicionalni.
+
+  2) Uj torles: A torolt rekord kikerul a "recno" indexbol es az
+    osszes tobbi indexbol, viszont bekerul az uj "deleted" indexbe-be.
+    A (indexekben) navigalo muveletek (skip, seek, gotop, goto) 
+    egyaltalan nem latjak a torolt rekordokat (a goto sem) es 
+    ezert egy torolt rekordra semmikepp sem lehet rapozicionalni
+    (a goto-val sem). Nemletezo poziciora pozicionalas EOF-ra allitja 
+    a tablat, es a tabGoto() visszaterese false.
+
+  Az ujfajta torles celja, hogy a torolt rekordok ujra felhasznalhatok
+  legyenek a fajl packolasa nelkul. Mielott a fajl meretet novelne,
+  az append megnezi, hogy a "deleted"-ben van-e ujra felhasznalhato
+  rekord, es ha van, akkor ujrahasznositja, azaz visszateszi az elo
+  rekordok koze.
+    
+  MILYEN ANOMALIAKRA KELL SZAMITANI?
+
+  a) A goto sikertelen, ha a rekord idokozben torlodott.
+  b) A goto egy uj rekordot talal, ha a rekord nem csak torlodott,
+     de a recno-ja idokozben ujra felhasznalasra kerult.
+  c) Egy uj rekord nem a recno-k vegere kerul (hanem barhova).
+
+  KEEPDELETED
+
+  Kulonosen veszelyes a b) anomalia. Ennek az elkerulesere valo
+  a tablaobjektum uj keepdeleted attributuma. Ennek erteke egy szam,
+  aminek a jelentese: Az append ennyi naptari napig nem hasznosit ujra
+  egy torolt rekordot. 
+  keepdeleted=0: a torolt rekord azonnal ujrahasznositodhat.
+  keepdeleted=1: a hetfon torolt rekord kedden ujrahasznositodhat.
+    
+  VALASZTAS A KET TORLESI MOD KOZOTT
+
+  Hogy a torles a regi vagy az uj modon tortenik az attol fugg,
+  hogy a bt fajlban van-e "deleted" index.
+  A bt fajlban NINCS DELETED index: a torles a KORABBI MODON mukodik.
+  A bt fajlban VAN DELETED index: a torles az UJ MODON mukodik.
+  
+  HOGYAN KERUL DELETED INDEX BT FAJLBA?
+  
+  Berakja a deleted indexet: bti.exe -adeleted <btfajl>
+  Kiveszi a deleted indexet: bti.exe -ddeleted <btfajl>
+  
+  Ha egy program az objektumban beallitja a keepdeleted-et, akkor
+  a) nemletezo fajl krealasa deleted indexszel hozza letre a fajlt,
+  b) fajl (nem readonly) megnyitasa beteszi a fajlba a deleted indexet,
+  c) de leginkabb a tdc fajlban fogjuk megadni: !keepdeleted 2
+
+
 2016.12.05 -- 2.1.0
   tabchlog.prg-ben Cs.L. valtozatatasai CCC2-bol athozva.
 

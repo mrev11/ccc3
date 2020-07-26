@@ -24,6 +24,7 @@
 // bti fname -diname              //index torles (+osszes suppindex)
 // bti fname -ainame -sseg1 ...   //uj index hozzaadasa
 
+#include "bttable.ch"
 #include "table.ch"
 
 *****************************************************************************
@@ -49,6 +50,10 @@ local x, v, op:="l"
         elseif( x=="-l" )
             op:="l"
 
+        elseif( x=="-k" )
+            iname:=v
+            op:="k"
+
         elseif( x=="-a" )
             iname:=v
             op:="a"
@@ -67,9 +72,16 @@ local x, v, op:="l"
 
     if( fname==NIL )
         usage("No input file")
+    end
+    if( !"."$fname )
+        fname+=".bt"
+    end
 
-    elseif( op=="l" )
+    if( op=="l" )
         listindex(fname)
+
+    elseif( op=="k" )
+        listkeys(fname,iname)
         
     elseif( op=="a" )
         addindex(fname,iname,seg)
@@ -117,7 +129,21 @@ local x:=tabIndex(t),n,c,i
 static function addindex(fname,iname,seg)
 
 local t:=tabResource(fname)
-local b:=errorblock(),e,order
+local b:=errorblock(),e,order,n
+
+    if( iname=="deleted" )
+        tabOpen(t,OPEN_EXCLUSIVE)
+        _db_creord(t[TAB_BTREE],"deleted")
+        return NIL
+    end
+
+    for n:=1 to len(seg)
+        begin
+            tabColNumber(t,seg[n])
+        recover
+            usage("Column does not exist: "+seg[n])
+        end
+    next
 
     //ha letezett az index, akkor toroljuk,
     //majd az uj adatokkal (ujra) betesszuk
@@ -145,13 +171,53 @@ local b:=errorblock(),e,order
 *****************************************************************************
 static function delindex(fname,iname)
 local t:=tabResource(fname),o
+
     tabOpen(t,OPEN_EXCLUSIVE)
-    o:=tabGetIndex(t,iname)  
+
+    if( iname=="deleted" )
+        _db_delord(t[TAB_BTREE],"deleted")
+        return NIL
+    end
+
+    begin
+        o:=tabGetIndex(t,iname)
+    recover
+        usage("Index does not exist: "+iname)
+    end  
     tabIndex(t)[o][4]:=.t.    //beallitva a suppindex flag
     tabDropindex(t)   //torli az osszes suppindexet is
     return NIL
  
 
 *****************************************************************************
- 
+static function listkeys(fname,iname)
+local table:=tabResource(fname)
+local btree,key
+
+    if(iname=="recno")
+    elseif(iname=="deleted")
+    else
+        iname::=upper
+    end
+
+    tabOpen(table)
+    btree:=table[TAB_BTREE]
+    if( 0>_db_setord(btree,iname))
+        ? "Index does not exist:", iname
+        ?
+        quit 
+    end
+    key:=_db_first(btree)
+    while( key!=NIL  )    
+        ? key::key2str
+        key:=_db_next(btree)
+    end
+    
+
+*****************************************************************************
+    
+    
+    
+    
+    
     

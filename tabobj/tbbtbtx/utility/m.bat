@@ -2,4 +2,4 @@
 call bapp_w320  @parlib.bld
 
 call bapp_w32_ -xbti -xbt2dbf -xbt2txt  @parexe.bld
-call bapp_w32c -xtstru -xtview -bccc3_btbtxui @parexe.bld
+call bapp_w32c -xtstru -xtview -bccc%CCCVER%_btbtxui @parexe.bld

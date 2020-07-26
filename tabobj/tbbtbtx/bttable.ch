@@ -68,8 +68,10 @@
 
 #define TAB_TRANLOCK   35   // az elso tranzakcios lock indexe
 #define TAB_TRANDEL    36   // rollbackben torlendo rekordok listaja
- 
-#define TAB_SIZEOF     37
+
+#define TAB_KEEPDELETED 37  // ennyi napig nem hasznalja ujra a torolteket
+
+#define TAB_SIZEOF     38
 
 
 #define COL_NAME        1   // oszlop-, es egyben mezonev

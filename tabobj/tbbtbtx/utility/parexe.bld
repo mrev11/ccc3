@@ -1,6 +1,7 @@
 -d. 
+-i..
 -b$(BUILD_OBJ)/tutil
--bccc3_btbtx
+-bccc$(CCCVER)_btbtx
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 

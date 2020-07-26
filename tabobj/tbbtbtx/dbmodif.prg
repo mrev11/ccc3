@@ -38,7 +38,10 @@ function tabCommit(table,pup)
  
 local index,idx,n
 local keyold,keynew
-local recno,status,modifkey
+local recno,status
+local modifkey:=.f.
+local modifapp:=.f.
+local modifdel:=.f.
 
     if( table[TAB_MODIF] )
 
@@ -47,7 +50,7 @@ local recno,status,modifkey
         if( tranIsActiveTransaction() ) 
         
             if( pup==NIL ) //rekordallapot mentes
-
+                
                 tranAddToPendingUpdates({;
                     table,;                        //tabla
                     tabPosition(table),;           //pozicio (recno)
@@ -79,51 +82,69 @@ local recno,status,modifkey
             end
         end
  
-        modifkey:=table[TAB_MODIFKEY] //.and. table[TAB_OPEN]<=OPEN_EXCLUSIVE
+        modifkey:=table[TAB_MODIFKEY]
+        modifapp:=table[TAB_MODIFAPP]
+        modifdel:=(42==xvgetbyte(table[TAB_RECBUF],0))
 
         set signal disable
 
         if( table[TAB_LOGGED]!=.f. )
             tabWriteChangeLog(table)
         end
- 
-        if( modifkey )
-        
+
+
+        // 1. REGI KULCSOK TORLESE
+     
+        if( modifdel )
             _db_header_read(table[TAB_BTREE],.t.) //for writing
 
             //ki kell torolni az aktualis rekord kulcsait 
-            //csak a megvaltozott kulcsokat torlom
+            //minden kulcsot torolni kell (a recno-t is)
+            //az aktualis index kulcsat kell utoljara torolni,
+            //maskepp elromlik a tabDelete()-ben levo tabGetNext()
+
+            index:=tabIndex(table)
+            for n:=0 to len(index)
+                //n==0 a recno
+                if( table[TAB_ORDER]!=n )
+                    deletekey(table,n)
+                end
+            next
+            deletekey(table,table[TAB_ORDER]) // ezt utoljara
+
+
+        elseif( modifapp )
+            _db_header_read(table[TAB_BTREE],.t.) //for writing
+            
+
+        elseif( modifkey )
+            _db_header_read(table[TAB_BTREE],.t.) //for writing
+
+            //ki kell torolni a megvaltozott kulcsokat
             
             index:=tabIndex(table)
-            recno:=tabPosition(table)
-
             for n:=1 to len(index)
                 idx:=index[n]
                 keyold:=idx[IND_CURKEY]
                 keynew:=tabKeyCompose(table,n)
-                
                 if( !keyold==keynew )
-                    idx[IND_CURKEY]:=keynew
-
-                    if( !table[TAB_MODIFAPP] )
-
-                        _db_setord(table[TAB_BTREE],idx[IND_NAME])
-                        status:=_db_del(table[TAB_BTREE],keyold)
-                        //? "del", idx[IND_NAME], keyold
-
-                        if( 0!=status )
-                            taberrOperation("tabCommit")
-                            taberrDescription(@"failed deleting key")
-                            taberrArgs({"_db_del",status,keyold})
-                            tabError(table)
-                        end
+                    //? "del", idx[IND_NAME], keyold::key2str
+                    _db_setord(table[TAB_BTREE],idx[IND_NAME])
+                    status:=_db_del(table[TAB_BTREE],keyold)
+                    if( 0!=status )
+                        taberrOperation("tabCommit")
+                        taberrDescription(@"failed deleting key")
+                        taberrArgs({"_db_del",status,idx[IND_NAME],keyold})
+                        tabError(table)
                     end
+                    idx[IND_CURKEY]:=keynew
                 else
                     idx[IND_CURKEY]:=NIL
                 end
             next
         end
         
+        // 2. ADATREKORD KIIRASA
         
         status:=_db_rewrite(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS]) 
         if( status!=0 )
@@ -133,50 +154,73 @@ local recno,status,modifkey
             tabError(table)
         end
 
-        if( modifkey )
-            //be kell tenni az uj kulcsokat 
 
-            if( table[TAB_MODIFAPP] )
-                keynew:=tabKeyCompose(table,0)
+        // 3. UJ KULCSOK KIIRASA
 
-                _db_setord(table[TAB_BTREE],"recno")
+        if( modifdel )
+            _db_header_write(table[TAB_BTREE])
+  
+        elseif( modifapp )
+            //be kell tenni az uj kulcsokat
+
+            keynew:=tabKeyCompose(table,0)
+            //? "put", "recno", keynew::key2str
+            _db_setord(table[TAB_BTREE],"recno")
+            status:=_db_put(table[TAB_BTREE],keynew)
+            if( status!=0 )
+                taberrOperation("tabCommit")
+                taberrDescription(@"failed writing key")
+                taberrArgs({"_db_put",status,"recno",keynew})
+                tabError(table)
+            end
+
+            index:=tabIndex(table)
+            for n:=1 to len(index)
+                idx:=index[n]
+                keynew:=tabKeyCompose(table,n)
+                //? "put", idx[IND_NAME], keynew::key2str
+                _db_setord(table[TAB_BTREE],idx[IND_NAME])
                 status:=_db_put(table[TAB_BTREE],keynew)
-                //? "put", "recno", keynew
- 
                 if( status!=0 )
                     taberrOperation("tabCommit")
                     taberrDescription(@"failed writing key")
-                    taberrArgs({"_db_put",status,keynew})
+                    taberrArgs({"_db_put",status,idx[IND_NAME],keynew})
                     tabError(table)
                 end
-            end
+                idx[IND_CURKEY]:=NIL
+            next
 
+            _db_header_write(table[TAB_BTREE])
+            tabEstablishPosition(table)
+
+
+        elseif( modifkey )
+            //be kell tenni az uj kulcsokat
+
+            index:=tabIndex(table)
             for n:=1 to len(index)
                 idx:=index[n]
                 keynew:=idx[IND_CURKEY]
                 if( keynew!=NIL )
-
+                    //? "put", idx[IND_NAME], keynew::key2str
                     _db_setord(table[TAB_BTREE],idx[IND_NAME])
                     status:=_db_put(table[TAB_BTREE],keynew)
-                    //? "put", idx[IND_NAME], keynew
- 
                     if( status!=0 )
                         taberrOperation("tabCommit")
                         taberrDescription(@"failed writing key")
-                        taberrArgs({"addkey",status})
+                        taberrArgs({"_db_put",status,idx[IND_NAME],keynew})
                         tabError(table)
                     end
-                    
                     idx[IND_CURKEY]:=NIL
                 end
             next
 
-            table[TAB_MODIFKEY]:=.f.
-            table[TAB_MODIFAPP]:=.f.
-
             _db_header_write(table[TAB_BTREE])
             tabEstablishPosition(table)
         end
+
+        table[TAB_MODIFKEY]:=.f.
+        table[TAB_MODIFAPP]:=.f.
 
         //megszunt memok torlese
         tabMemoDel(table)
@@ -184,6 +228,52 @@ local recno,status,modifkey
         set signal enable
     end
     return NIL
+
+
+******************************************************************************
+static function deletekey(table,n) //tabDelete()-ben ez torli a kulcsokat
+local index:=tabIndex(table)
+local idx,keyold,datkey,idxname,status
+
+    if( n==0 )
+        if( 0>_db_setord(table[TAB_BTREE],"deleted") )
+            // nincs deleted index -> nincs recno torles:
+            // ugy is mukodhetne, hogy a recno-t toroljuk,
+            // de nem hasznaljuk ujra a torolt rekodokat,
+            // ehhez csak a return-t kell kikommentezni
+            return NIL
+        else
+            keyold:=tabKeyCompose(table,0)
+            datkey:=date()::dtos::str2bin+keyold  // megjegyzi mikor toroltek
+            idxname:="recno"
+            //? "put", "deleted", datkey::key2str //10 byte
+            status:=_db_put(table[TAB_BTREE],datkey)
+            if( status!=0 )
+                taberrOperation("tabCommit")
+                taberrDescription(@"failed writing key")
+                taberrArgs({"_db_put",status,"recno",datkey})
+                tabError(table)
+            end
+        end
+    else  
+        idx:=index[n]
+        keyold:=idx[IND_CURKEY]
+        if( keyold==NIL )
+            keyold:=tabKeyCompose(table,n)
+        end
+        idx[IND_CURKEY]:=NIL
+        idxname:=idx[IND_NAME]
+    end
+
+    //? "del", idxname, keyold::key2str
+    _db_setord(table[TAB_BTREE],idxname)
+    status:=_db_del(table[TAB_BTREE],keyold)
+    if( 0!=status )
+        taberrOperation("tabCommit")
+        taberrDescription(@"failed deleting key")
+        taberrArgs({"_db_del",status,idxname,keyold})
+        tabError(table)
+    end
 
 
 ******************************************************************************
@@ -201,7 +291,9 @@ local n, tlist:=tabObjectList()
 
 ******************************************************************************
 function tabDelete(table) // delete + skip
+
 local pos:=tabPosition(table)
+local column,n
 
     if( pos<=0 ) //a file nincs pozicionalva
         return NIL
@@ -215,6 +307,19 @@ local pos:=tabPosition(table)
     table[TAB_MODIF]:=.t.
     table[TAB_FOUND]:=.f.
     xvputbyte(table[TAB_RECBUF],0,42) //42==asc("*")
+
+
+    // ha a rekordot tenylegesen toroljuk
+    // (azaz nem csak a torolt mezo alapjan szurjuk
+    // hanem az indexbol kiveve elerhetetlenne tesszuk)
+    // akkor kulon torolni kell a memo mezoket
+
+    column:=tabColumn(table)
+    for n:=1 to len(column)
+        if( tabMemoField(table,column[n]) )
+            tabEvalColumn(table,n,a"")
+        end
+    next
  
     tabUnlock(table,pos)
 
@@ -239,6 +344,11 @@ function tabMAppend(table,userblock) //append blank, meglevo lockokat maradnak
 function tabAppend(table,userblock,flag) //append blank
 local result, recpos, recno
 
+    if( undelete(table,flag) )
+         // uj rekord egy korabban torolt helyen
+        return .t.
+    end
+
     tabGoEof(table)
     xvputbyte(table[TAB_RECBUF],0,42) //42==asc("*") torolt
     recpos:=_db_append(table[TAB_BTREE],table[TAB_RECBUF],@recno)
@@ -257,6 +367,83 @@ local result, recpos, recno
     xvputbyte(table[TAB_RECBUF],0,32) //32==asc(" ") torolt vissza
 
     return result
+
+
+******************************************************************************
+static function undelete(table,flag) // uj rekord egy korabban torolt helyen
+
+local key,primarykey
+local idxcurr,idxname
+local status,recno,recpos
+local result:=.f.
+ 
+    tabCommit(table)
+ 
+    idxcurr:=table[TAB_ORDER]
+    if( idxcurr==0 )
+        idxname:="recno"
+    else
+        idxname:=tabIndex(table)[idxcurr][IND_NAME]
+    end
+
+    if( 0>_db_setord(table[TAB_BTREE],"deleted") )
+        // nincs deleted index
+        _db_setord(table[TAB_BTREE],idxname)
+        return .f.
+    end
+
+    key:=_db_first(table[TAB_BTREE])
+    while( key!=NIL .and. !keepdeleted(table,key) )
+
+        // a toroltek kozott megy
+        // amig sikerul egyet lockolni
+        // vagy amig el nem fogynak
+
+        primarykey:=right(key,10) 
+        table[TAB_POSITION]:=recno:=_db_rdbig32(left(primarykey,4)) 
+        table[TAB_RECPOS]:=recpos:=right(primarykey,6) 
+
+        result:=tabRecLock(table,if(flag!=.f.,NIL,recno),{||.f.})
+        if( result )
+            //? "UNDELETE",key::key2str
+
+            table[TAB_MODIF]:=.t.
+            table[TAB_MODIFKEY]:=.t.
+            table[TAB_MODIFAPP]:=.t.
+            table[TAB_EOF]:=.f.
+            xvputfill(table[TAB_RECBUF],0,table[TAB_RECLEN],32) //space
+
+            // ki kell venni a kulcsot a toroltek kozul
+            // nehogy egy masik append megegyszer megtalalja
+
+            status:=_db_del(table[TAB_BTREE],key)
+            if( 0!=status )
+                taberrOperation("tabCommit")
+                taberrDescription(@"failed undelete record")
+                taberrArgs({"_db_del",status,key})
+                tabError(table)
+            end
+            exit
+        end
+        key:=_db_next(table[TAB_BTREE])
+    end
+
+    _db_setord(table[TAB_BTREE],idxname)
+
+    return result
+
+
+******************************************************************************
+static function keepdeleted(table,key) 
+    return key::left(8)::stod()<date()+tabKeepDeleted(table)
+
+
+******************************************************************************
+function tabKeepDeleted(table,nday)
+    if( nday!=NIL )
+        table[TAB_KEEPDELETED]:=nday
+    end
+    return table[TAB_KEEPDELETED]
 
 
 ******************************************************************************

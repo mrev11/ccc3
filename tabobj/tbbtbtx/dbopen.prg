@@ -175,9 +175,52 @@ local errblk, err
  
     tabAlloc(table) 
     tabSetFieldTable(table)
+
+    if( 0>_db_setord(table[TAB_BTREE],"deleted") )
+        // nincs a fajlban deleted
+        if( mode>OPEN_READONLY .and. NIL!=tabKeepDeleted(table) )
+            // de az objektumban van
+            formatum_konverzio(table)
+        end
+    else
+        // van a fajlban benne deleted
+        if( NIL==tabKeepDeleted(table) )
+            // de az objektumban nincs
+            tabKeepDeleted(table,0)
+        end
+    end
+
+    _db_setord(table[TAB_BTREE],"recno")
     tabGotop(table) 
     table[TAB_OPEN]:=mode
     return .t.
+
+
+******************************************************************************
+static function formatum_konverzio(table)
+local n
+    //? "FORMATUM KONVERZIO", tabPathName(table)
+    _db_header_read(table[TAB_BTREE],.t.) //for writing
+    _db_creord(table[TAB_BTREE],"deleted")
+
+// kerdes, hogy ez kell-e:
+// ha ki van hagyva, akkor a regi toroltek
+// benne maradnak a fajlban (nem zavarnak)
+// 
+//    for n:=1 to tabLastRec(table)
+//        if( tabGoto(table,n) .and. tabDeleted(table) )
+//            move_to_deleted(table,n)
+//        end
+//    next
+
+    _db_header_write(table[TAB_BTREE])
+
+static function move_to_deleted(table,pos)
+local key:=tabKeyCompose(table,0)
+    _db_del(table[TAB_BTREE],key)
+    _db_setord(table[TAB_BTREE],"deleted")
+    _db_put(table[TAB_BTREE],key)
+    _db_setord(table[TAB_BTREE],"recno")
 
 
 ******************************************************************************

@@ -129,6 +129,9 @@ local n,rcol,rind,db
 
 
         _db_creord(db,"recno")
+        if( NIL!=tabKeepDeleted(table) )
+            _db_creord(db,"deleted")
+        end
 
         for n:=1 to len(tabIndex(table))
             _db_creord(db,tabIndex(table)[n][IND_NAME])

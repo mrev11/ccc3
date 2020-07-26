@@ -117,6 +117,7 @@ class oTdc(Object)
    attrib hIndexes
    attrib fields
    attrib hFields
+   attrib keepdeleted
 
    method initialize {|this|;
       this:hIndexes:=simpleHashNew(),;
@@ -202,6 +203,13 @@ local erdln
             perrline(fid,tdcfilename,iLine,"Duplicate !version: "+cLine)
          endif
          o:version:=w
+
+      elseif (nil<>(w:=cLine::sprefix("!keepdeleted")))
+         if (" "$(w::=alltrim)); perrline(fid,tdcfilename,iLine,"Syntax error"); endif
+         if (o:keepdeleted<>nil)
+            perrline(fid,tdcfilename,iLine,"Duplicate !keepdeleted: "+cLine)
+         endif
+         o:keepdeleted:=val(w)
       elseif (nil<>(w:=cLine::sprefix("!index")))
          t:=splitsp(w)
          // DEBUG(outstd("index: ",t,endofline()))
@@ -372,6 +380,9 @@ local w
    sPrg+=tab+tab+"dbf:=tabNew("+'"'+o:table::upper+'"'+")"+eol
    if (!empty(o:path))
       sPrg+=tab+tab+"tabPath(dbf,"+pString(o:path::upper+"\")+")"+eol
+   endif
+   if (o:keepdeleted!=NIL)
+      sPrg+=tab+tab+"tabKeepDeleted(dbf,"+o:keepdeleted::str::alltrim+")"+eol
    endif
 
    // DEBUG(outstd(o:fields,endofline()))

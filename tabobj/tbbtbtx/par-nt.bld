@@ -1,4 +1,4 @@
--lccc3_btbtx 
+-lccc$(CCCVER)_btbtx 
 
 -d.
 -dbtree

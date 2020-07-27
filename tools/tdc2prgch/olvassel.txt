@@ -1,6 +1,11 @@
 tdc2prgch
 ---------
 
+2020-07-26  1.1.0
+  !keepdeleted támogatás
+  X (binary) típus támogatás
+
+
 .ch és -prg fájlok készítése .tdc-ből.
 A tesztje a csiszar.wrk-ban van.
 

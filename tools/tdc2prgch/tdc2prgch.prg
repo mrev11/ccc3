@@ -22,7 +22,7 @@
 // tdc2prgch.prg: tdc -> .prg, .ch
 //*******************************************************************
 
-#define VERSION "v1.0.2"
+#define VERSION "v1.1.0"
 
 //*******************************************************************
 // #define DEBUG(x) x
@@ -241,7 +241,7 @@ local erdln
             perrline(fid,tdcfilename,iLine,"Field name too long (max: "+MAXLEN_FIELDNAME::stra+"): "+of:fname)
          endif
          of:ftype:=t[2]::upper
-         if !(len(of:ftype)==1 .and. of:ftype$"CNDL")
+         if !(len(of:ftype)==1 .and. of:ftype$"XCNDL")
             perrline(fid,tdcfilename,iLine,"Unknown field type("+of:ftype+"): "+cLine)
          endif
          of:flen:=t[3]

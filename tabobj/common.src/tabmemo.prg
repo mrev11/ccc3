@@ -101,7 +101,7 @@ function tabMemoField(table,col) //memo-e a megadott mezo?
     end
 
     return left(col[COL_NAME],3)=="DBM" .and.;
-           col[COL_TYPE]=="C" .and.;
+           col[COL_TYPE]$"CX" .and.;
            col[COL_WIDTH]==10 
 
 

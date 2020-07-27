@@ -1,3 +1,9 @@
+2020-07-27 tbbtbtx fejlesztesek:
+  tdc-ben keepdeleted tamogatas;
+  tdc-ben X tipus tamogatas;
+  kulon DBMEMO-C es DBMEMO-X tamogatas;
+
+
 2020-07-26 tbbtbtx: torolt rekordok szurese az indexek modositasaval:                                                                   ║
   A torolt rekordot kiveszi az indexekbol, a "recno"-bol is.                                                          ║
   A torolt rekordot beteszi az (uj) "deleted" indexbe.                                                                ║

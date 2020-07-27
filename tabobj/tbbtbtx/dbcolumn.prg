@@ -131,13 +131,17 @@ local key   :=column[COL_KEYFLAG]
     if(type=="C")
 
         if( tabMemoField(table,column) )
-            column[COL_BLOCK]:=blkmemo(table,offs,width)
+            column[COL_BLOCK]:=blkmemoc(table,offs,width)
         else
             column[COL_BLOCK]:=if(key,xblkchar(table,offs,width),blkchar(table,offs,width))
         end
 
     elseif(type=="X")
-        column[COL_BLOCK]:=if(key,xblkbin(table,offs,width),blkbin(table,offs,width))
+        if( tabMemoField(table,column) )
+            column[COL_BLOCK]:=blkmemox(table,offs,width)
+        else
+            column[COL_BLOCK]:=if(key,xblkbin(table,offs,width),blkbin(table,offs,width))
+        end
 
     elseif(type=="N")
         column[COL_BLOCK]:=if(key,xblknumber(table,offs,width,dec),blknumber(table,offs,width,dec))
@@ -237,7 +241,12 @@ static function blkflag(table,offs)  //megj: T=84, F=70
                 84==xvgetbyte(table[TAB_RECBUF],offs),;
                 (xvputbyte(table[TAB_RECBUF],offs,if(x,84,70)),x)) }
 
-static function blkmemo(table,offs,width)  
+static function blkmemoc(table,offs,width)  
+    return {|x| if(x==NIL.or.!islocked(table),;
+                bin2str(tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width))),;
+                (xvputchar(table[TAB_RECBUF],offs,width,tabMemoWrite(table,xvgetchar(table[TAB_RECBUF],offs,width),str2bin(x))),x))}
+
+static function blkmemox(table,offs,width)  
     return {|x| if(x==NIL.or.!islocked(table),;
                 tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width)),;
                 (xvputchar(table[TAB_RECBUF],offs,width,tabMemoWrite(table,xvgetchar(table[TAB_RECBUF],offs,width),str2bin(x))),x))}

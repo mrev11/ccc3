@@ -24,6 +24,7 @@
 //rekord lock: (2GB-1MB-recno) pozicion 1 byte
 static OFFSET:=2*(1024*1024*1024)-(1024*1024)
 
+
 ******************************************************************************
 //Public interface
 
@@ -36,6 +37,54 @@ static OFFSET:=2*(1024*1024*1024)-(1024*1024)
 //function tabUnlock(table,record)            //fajl es single/multiple unlock
 //function tabIsLocked(table)                 //kereses locklist-ben
 //function tabLocklist(table)                 //lockolt rekordok listaja  
+
+
+
+
+******************************************************************************
+function tabLockCount(table,inc)
+
+static lkcount:=0
+static semafd:=semafd()
+
+    if( inc==1 )
+        lkcount+=inc
+        //?  "LK",lkcount,tabFile(table),table[TAB_LOCKLST]
+
+        if(semafd!=NIL .and. lkcount==1)
+            //elsot megfogja
+            fwaitlock_w(semafd,1,1)
+            fwaitlock_r(semafd,0,1)
+            funlock(semafd,1,1)
+        end
+
+    elseif( inc==-1 )
+        lkcount+=inc
+        //?  "UN",lkcount,tabFile(table),table[TAB_LOCKLST]
+
+        if(semafd!=NIL .and. lkcount==0)
+            //utolsot elengedi
+            funlock(semafd,0,1)
+        end
+    end
+    return lkcount
+
+
+******************************************************************************
+static function semafd()
+local sema,fd,e 
+    if( !empty(sema:=getenv("CCC_LOCK_SEMAPHOR")) )
+        fd:=fopen(sema,FO_NOLOCK+FO_READWRITE)
+        if( fd<0 )
+            e:=fnferrorNew()
+            e:operation:="tabLockCount"
+            e:description:=@"CCC_LOCK_SEMAPHOR open failed"
+            e:filename:=sema
+            e:oscode:=ferror()
+            break(e)
+        end
+    end
+    return fd // fd vagy NIL
 
 
 ******************************************************************************
@@ -249,25 +298,36 @@ local curr:=tabPosition(table)
 
 *****************************************************************************
 static function dblock(table,pos) //low level lock
+local result
+    tabLockCount(table,1)
     if( pos==NIL )
         pos:=tabPosition(table)
     end
     #ifdef _UNIX_
-      return fsetlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB
+      result:=fsetlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB
     #else
-      return fsetlock(table[TAB_FHANDLE],OFFSET-pos,1)
+      result:=fsetlock(table[TAB_FHANDLE],OFFSET-pos,1)
     #endif
+    if( result!=0 )
+        tabLockCount(table,-1)
+    end
+    return result
 
 *****************************************************************************
 static function dbunlock(table,pos) //low level unlock
+local result
     if( pos==NIL )
         pos:=tabPosition(table)
     end
     #ifdef _UNIX_
-      return funlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB 
+      result:=funlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB 
     #else
-      return funlock(table[TAB_FHANDLE],OFFSET-pos,1)
+      result:=funlock(table[TAB_FHANDLE],OFFSET-pos,1)
     #endif
+    if( result==0 )
+        tabLockCount(table,-1)
+    end
+    return result
  
 
 *****************************************************************************
@@ -312,6 +372,9 @@ local state
 
     if( tranIsActiveTransaction() )
         //megtartjuk a lockokat
+
+    elseif( tabIsOpen(table)>=OPEN_EXCLUSIVE )
+        //ok
  
     elseif( pos==NIL ) // osszes rekordlock vagy fajllock 
 

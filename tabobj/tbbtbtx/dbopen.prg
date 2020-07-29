@@ -121,7 +121,7 @@ local errblk, err
     if( mode>OPEN_EXCLUSIVE ) //OPEN_APPEND implementacioja kesobb
         mode:=OPEN_EXCLUSIVE
     end
- 
+
     while( .t. )
  
         while( 0>=tabSlock(table,{||0}) .or. !tabUse(table,mode) )
@@ -186,7 +186,7 @@ local errblk, err
         // van a fajlban benne deleted
         if( NIL==tabKeepDeleted(table) )
             // de az objektumban nincs
-            tabKeepDeleted(table,0)
+            tabKeepDeleted(table,1)
         end
     end
 
@@ -225,6 +225,21 @@ local key:=tabKeyCompose(table,0)
 
 ******************************************************************************
 static function tabUse(table,mode)  //megnyit egy dbf-et
+local result
+    if( mode<OPEN_EXCLUSIVE )
+        result:=tabUse1(table,mode)
+    else
+        tabLockCount(table,1)
+        result:=tabUse1(table,mode)
+        if( !result )
+            tabLockCount(table,-1)
+        end
+    end
+    return result
+
+
+******************************************************************************
+static function tabUse1(table,mode)  //megnyit egy dbf-et
 
 local fname:=lower(tabPathName(table))
 local fmode:=FO_READWRITE+FO_EXCLUSIVE
@@ -293,6 +308,12 @@ function tabClose(table) //lezarja a fajlt
     tranNotAllowedInTransaction(table,"close",.t.)
  
     tabCommit(table)
+
+    if( tabIsOpen(table)>=OPEN_EXCLUSIVE )
+        tabLockCount(table,-1)
+    else
+        tabUnlock(table)
+    end
     
     tabDeleteFieldTable(table)
 

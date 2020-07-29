@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0e5fe92bd33935fb17e51976a0a973c30f2ab146 2020080715:37:41-UTC ./CHANGELOG_vermes
 cfe57df07c314fdb9bcfd2de8250a0bbd7cd04e5 2020080715:36:53-UTC ./tools/sql2/util/jeed/m.bat
 de00d8cd459444e885fa26c120df6c8667ee2fdd 2020080713:17:38-UTC ./log-install
@@ -16,6 +17,16 @@ aa8b4db3fd276b1a498908fb16896e9375d7e740 2020072609:49:18-UTC ./usr/bin/linux/tv
 =======
 =======
 a2a5533979661e3da7e8f87bbb51319c3fe499ce 2020072713:17:29-UTC ./CHANGELOG_vermes
+=======
+94b68673b451555e33f37c93bad8d870c0ae6723 2020072919:09:27-UTC ./CHANGELOG_vermes
+3ae08c4261bcaf7723461a6ce84ec73c443c3357 2020072918:49:44-UTC ./tabobj/tbbtbtx/utility/tsema.prg
+19047144d7025a48156a64ea7fee92a677f798fd 2020072918:40:32-UTC ./tabobj/tbbtbtx/dblock.prg
+a39fcec85349b10bce3815d76c71b0931d54a5b1 2020072913:15:34-UTC ./tabobj/tbbtbtx/fwaitlock.cpp
+7e8d0320e281752f71e4187debed86e97a58e8f2 2020072912:34:26-UTC ./tabobj/tbbtbtx/utility/m
+d971f604c0c9960a12c2753162f1cba533796d75 2020072909:06:11-UTC ./tabobj/tbbtbtx/dbopen.prg
+42a8229ce66eb70f9b4c82779757fe7c1ca9893d 2020072909:02:01-UTC ./tabobj/log-install
+a91db93364a652f0ecb838109c78f036a7d19222 2020072812:34:48-UTC ./tabobj/common.src/tabupgrd.prg
+>>>>>>> 0f1ba70... 2020-07-29 tbbtbtx fejlesztesek:
 1250ef9cf8ba159eecc29aade5e1694b96f2258f 2020072712:50:13-UTC ./log-install
 a4db293dd275c1539ca01751debec437dc8d17be 2020072712:50:07-UTC ./jt/jterminal/jterminal.jar
 35482368628dfccef7d24b7175448b585fdffea2 2020072712:49:08-UTC ./usr/bin/linux/tdc2prgch
@@ -30,7 +41,6 @@ ae26378148247ae55f431ca27f92f13425b9d222 2020072616:49:56-UTC ./tools/tdc2prgch/
 ffc0fab5d58ceee16668d9fa8c5dbdde9a8d51af 2020072614:19:06-UTC ./tabobj/utility.src/kdirseek.say
 8efd9b406177b353dcd302c2c294eb41ab71485b 2020072614:19:06-UTC ./tabobj/utility.src/recpos.say
 2d69e371f26e7d21cf19742a3df1f8bbdd8eb52a 2020072614:18:35-UTC ./tabobj/tbbtbtx/utility/m.bat
-c3d799bc65d4c1b88ccbd97c1ca221972748c0db 2020072614:18:15-UTC ./tabobj/tbbtbtx/utility/m
 0953ecbe6f54592c0df4809b43181f47959d7b20 2020072614:15:26-UTC ./tabobj/tbbtbtx/utility/parexe.bld
 6be44c3c4276a151fe364e55e997e6aceb7d8e14 2020072614:14:07-UTC ./tabobj/tbbtbtx/par-unixui.bld
 5e660471299d8f1f0e068743ee90f93a896cb8bb 2020072614:14:01-UTC ./tabobj/tbbtbtx/par-unix.bld
@@ -41,7 +51,6 @@ dc38e4190911149c3f75180a6565674b783a1ce4 2020072614:11:38-UTC ./tabobj/tbbtbtx/m
 aa8b4db3fd276b1a498908fb16896e9375d7e740 2020072609:49:18-UTC ./usr/bin/linux/tv
 ca60f6cd40b0c91adccc4859b5f8d3cc81b067b0 2020072523:37:29-UTC ./tabobj/utility.src/ver2/recpos.msk
 d36e58931889005978eab281d8fe1521850a1f1b 2020072514:15:24-UTC ./tabobj/tbbtbtx/dbmodif.prg
-68c9ef1272b0f58f9336ae159c1215791bf49854 2020072514:13:49-UTC ./tabobj/tbbtbtx/dbopen.prg
 d6e2a11b7688d87e6345b122ed166e7b2d6ee398 2020072513:40:11-UTC ./tabobj/tbbtbtx/bttable.ch
 6bb6fea5082f95b30bc9af577985f410a6cb2dfb 2020072513:33:28-UTC ./tabobj/tbbtbtx/dbcreate.prg
 >>>>>>> 43d6d54... 2020-07-26 tbbtbtx: torolt rekordok szurese az indexek modositasaval:                                                                   ║
@@ -148,7 +157,6 @@ ec54d38a69036aa4afebb6d4c3caba1a0c64e720 2020072512:46:49-UTC ./usr/bin/linux/ss
 68d59938b466d0cb6f219a72d2d9d3ce51d3bcb8 2020071418:08:24-UTC ./tabobj/tbbtbtx/dbcopybt.prg
 43fce9e36390ca17091742f97fbd21dd87e97c48 2020071118:33:49-UTC ./tabobj/utility.src/kdirmodi.prg
 f0e63488241b471de7e80b4d6e5b8e9aa69c27ba 2020071118:27:32-UTC ./tabobj/utility.src/view.prg
-d085c701cdbeb5ea9c929107714c6c9965a724d3 2020062214:27:30-UTC ./tabobj/tbbtbtx/dblock.prg
 ace5c429061c7216620f67f5c593328e69feeb1c 2020062214:15:06-UTC ./tabobj/utility.src/recpos.msk
 7ef9598e310e86aaf411451c40f80162dd4ce294 2020062212:12:15-UTC ./tabobj/tbbtbtx/dbmove.prg
 b049384ee6c63420f8b4707ff8f6639d4fe2f49a 2020062109:54:05-UTC ./tabobj/m
@@ -2196,7 +2204,6 @@ a9e9caeca1670f31b0a37ee7a840c09d8c907ff1 2007010316:41:57-UTC ./tabobj/common.sr
 9bf710c293a2c433177d158279bc528e5c2aeddb 2007010218:21:55-UTC ./tabobj/tbbtbtx/dbnames.prg
 203418ee8bc3a6e3e9e706bc47688d0c664415f6 2007010218:12:51-UTC ./tabobj/commonui.src/tabbrows.prg
 fb2e4f206e8d961281ef267a1ae36a497a534f06 2007010218:11:38-UTC ./tabobj/common.src/transact.prg
-bdd59f16e9f6e2f77af556a3092477c4fd457ca2 2007010218:09:44-UTC ./tabobj/common.src/tabupgrd.prg
 7f97476f7662d8acdabacf1903abe936010b27c3 2007010218:07:08-UTC ./tabobj/common.src/tabpack.prg
 0c0078d26d91e2df15efec17fdf04a6bbdb50642 2007010218:04:15-UTC ./tabobj/common.src/taberror.prg
 9218b6870f2bb73ed9b60c72ece560d186667388 2007010218:03:54-UTC ./tabobj/common.src/tabcpyto.prg

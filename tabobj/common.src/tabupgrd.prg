@@ -109,7 +109,7 @@ local logged
     //amivel megnyithato a file (tabVerify atengedi)
 
     tabfil:=tabStructInfo(table)
-
+    
     if( tabfil==NIL )
         return NIL //foglalt
     elseif( empty(tabfil) )
@@ -133,6 +133,10 @@ local logged
 
     logged:=table[TAB_LOGGED]
     table[TAB_LOGGED]:=.f.
+
+    if( NIL!=tabKeepDeleted(tabfil).and.NIL==tabKeepDeleted(table) )
+        tabKeepDeleted(table,tabKeepDeleted(tabfil))
+    end
  
     tabFile(table,TMPCHR+tabFile(table))
     tabDelTable(table) 

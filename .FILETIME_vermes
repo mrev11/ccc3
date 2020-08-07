@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0e5fe92bd33935fb17e51976a0a973c30f2ab146 2020080715:37:41-UTC ./CHANGELOG_vermes
 cfe57df07c314fdb9bcfd2de8250a0bbd7cd04e5 2020080715:36:53-UTC ./tools/sql2/util/jeed/m.bat
 de00d8cd459444e885fa26c120df6c8667ee2fdd 2020080713:17:38-UTC ./log-install
@@ -24,15 +25,24 @@ a2a5533979661e3da7e8f87bbb51319c3fe499ce 2020072713:17:29-UTC ./CHANGELOG_vermes
 22a2db133eb5cff76b6aa403df9599a24f67e16a 2020072919:22:28-UTC ./CHANGELOG_vermes
 >>>>>>> 5cd113b... 2020-07-29 tbbtbtx fejlesztesek: lock szamlalas;
 3ae08c4261bcaf7723461a6ce84ec73c443c3357 2020072918:49:44-UTC ./tabobj/tbbtbtx/utility/tsema.prg
+=======
+adcda3040871d6aa690ede64501f89c252554f01 2020080715:33:12-UTC ./CHANGELOG_vermes
+de00d8cd459444e885fa26c120df6c8667ee2fdd 2020080713:17:38-UTC ./log-install
+571cc3f15b8d5c7ccff25e38b0617687db517958 2020080713:17:30-UTC ./usr/bin/linux/jterminal.jar
+7b44edbb569fba242f89b5016e1b0dbe02afdf76 2020080713:16:04-UTC ./usr/bin/linux/tsema
+4f5c54ce3bb8dfcab67006717a89ea26af4d9e63 2020073019:45:51-UTC ./tabobj/tbbtbtx/utility/tsema.prg
+>>>>>>> 1da98ef... 2020-08-07 tbbtbtx fejlesztesek:
 19047144d7025a48156a64ea7fee92a677f798fd 2020072918:40:32-UTC ./tabobj/tbbtbtx/dblock.prg
 a39fcec85349b10bce3815d76c71b0931d54a5b1 2020072913:15:34-UTC ./tabobj/tbbtbtx/fwaitlock.cpp
 7e8d0320e281752f71e4187debed86e97a58e8f2 2020072912:34:26-UTC ./tabobj/tbbtbtx/utility/m
 d971f604c0c9960a12c2753162f1cba533796d75 2020072909:06:11-UTC ./tabobj/tbbtbtx/dbopen.prg
-42a8229ce66eb70f9b4c82779757fe7c1ca9893d 2020072909:02:01-UTC ./tabobj/log-install
 a91db93364a652f0ecb838109c78f036a7d19222 2020072812:34:48-UTC ./tabobj/common.src/tabupgrd.prg
+<<<<<<< HEAD
 >>>>>>> 0f1ba70... 2020-07-29 tbbtbtx fejlesztesek:
 1250ef9cf8ba159eecc29aade5e1694b96f2258f 2020072712:50:13-UTC ./log-install
 a4db293dd275c1539ca01751debec437dc8d17be 2020072712:50:07-UTC ./jt/jterminal/jterminal.jar
+=======
+>>>>>>> 1da98ef... 2020-08-07 tbbtbtx fejlesztesek:
 35482368628dfccef7d24b7175448b585fdffea2 2020072712:49:08-UTC ./usr/bin/linux/tdc2prgch
 10c313c0c5c28cd1bd9f5b85977f04d86a4abf74 2020072712:42:48-UTC ./tabobj/tbbtbtx/dbcolumn.prg
 91d600b34667c7d3693d0511fed02cdf69c5050b 2020072712:39:03-UTC ./tabobj/common.src/tabmemo.prg

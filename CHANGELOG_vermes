@@ -1,3 +1,6 @@
+2020-08-07 tbbtbtx fejlesztesek: 
+  tsema.exe parameterkent megadott parancsot indit;
+
 2020-07-29 tbbtbtx fejlesztesek: lock szamlalas;
   A tabLockCount() fuggveny szamolja az idoben atfedo lockokat,
     az elso lock elott megfogja (wait-shared) a CCC_LOCK_SEMAPHOR-t,

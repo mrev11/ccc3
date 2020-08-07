@@ -2,7 +2,7 @@
 #include "fileio.ch"
 
 ******************************************************************************
-function main()
+function main(cmd)
 
 local semafd:=semafd()
 local result
@@ -12,8 +12,13 @@ local result
     funlock(semafd,1,1)
 
     if( result==0 )
-        ? "CCC_LOCK_SEMAPHOR locked, hit any key ..."
-        inkey(0)
+        ? "CCC_LOCK_SEMAPHOR locked"
+        if( empty(cmd) )
+            ?? ", hit any key ..."
+            inkey(0)
+        else
+            run(cmd)
+        end
         funlock(semafd,0,1)
         ? "CCC_LOCK_SEMAPHOR unlocked"
     else

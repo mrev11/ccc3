@@ -28,7 +28,7 @@ local s:=socket(), req, rsp
  
     connect(s,host,val(port))
 
-    ? req:=a"GET "+str2bin(fspec)+a" HTTP/1.1"+x"0d0a0d0a"
+    ? req:=a"GET "+str2bin(fspec)+a" HTTP/1.0"+x"0d0a0d0a"
 
     ? "send:", swrite(s,req)
     rsp:=http_readmessage(s,10000)

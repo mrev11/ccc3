@@ -56,7 +56,7 @@ int main(int argc, char* argv[] )
         exit(1);
     }
 
-    serve_client_accept(trmsck); //listenertol orokolte: temsck 
+    serve_client_accept(trmsck); //listenertol orokolte: trmsck 
     return 0;
 }
 

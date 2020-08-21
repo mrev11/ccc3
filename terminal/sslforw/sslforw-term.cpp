@@ -29,11 +29,17 @@ extern void start_child(char* argv[]);
  
 const char* terminal="terminal-xft.exe"; 
 
+// hivasi formak
+// sslforw-term.exe port        [term]
+// sslforw-term.exe host:port   [term]
+// sslforw-term.exe SOCKET:sck  [term]
+
 //----------------------------------------------------------------------------
 int main(int argc, char* argv[] )
 {
     char host[128]; strcpy(host,"127.0.0.1");
     int port=0;
+    int trmsck=-1;
     
     if(argc>1)
     {
@@ -47,11 +53,20 @@ int main(int argc, char* argv[] )
             *p=0;
             strncpy(host,argv[1],sizeof(host));
             host[sizeof(host)-1]=0;
-            sscanf(p+1,"%d",&port);
+            if( strcmp("SOCKET",host)==0 )
+            {
+                //printf("INHERIT\n");
+                sscanf(p+1,"%d",&trmsck);
+            }
+            else
+            {
+                //printf("CONNECT\n");
+                sscanf(p+1,"%d",&port);
+            }
             *p=':';
         }
     }
-    //printf("argc: %d host:%s port:%d\n",argc,host,port);
+    //printf("argc: %d host:%s port:%d trmsck:%d\n",argc,host,port,trmsck);
     
     if(argc>2)
     {
@@ -59,12 +74,15 @@ int main(int argc, char* argv[] )
         //printf("terminal: %s\n",terminal);
     }
 
-    int trmsck=socket_new();
-    int result=socket_connect(trmsck,host,port);
-    if(result!=0)
+    if( trmsck<0 )
     {
-        fprintf(stderr,"connect failed: host=%s, port=%d, errno=%d\n",host,port,errno);
-        exit(1);
+        trmsck=socket_new();
+        int result=socket_connect(trmsck,host,port);
+        if(result!=0)
+        {
+            fprintf(stderr,"connect failed: host=%s, port=%d, errno=%d\n",host,port,errno);
+            exit(1);
+        }
     }
 
     serve_client_connect(trmsck);

@@ -1,3 +1,19 @@
+2020-09-20 FONTOS tbbtbtx JAVITASOK
+  kompatibilitas: tabKeepDelete==NIL eseten valtozatlan mukodes;
+  kezelve azok az esetek, amikor kulcs modositas utan delete jon;
+  kezelve azok az esetek, amikor append utan delete jon;
+  ezeket az eseteket kell vizsgalni:
+  // App Del Key
+  //  0   0   0  kulcsot nem erinto modositas
+  //  0   0   1  kulcsot is erinto modositas
+  //  0   1   0  normal torles
+  //  0   1   1  torles kulcs modositasa utan
+  //  1   0   0  *** nincs ilyen eset
+  //  1   0   1  normal append
+  //  1   1   0  *** nincs ilyen eset
+  //  1   1   1  append utan torles
+  megszuntetve az auto dbf->dat konverzio;
+
 2020-08-21 sslforw-term oroklessel is megkaphatja a socketet; 
 
 2020-08-07 tbbtbtx fejlesztesek: 

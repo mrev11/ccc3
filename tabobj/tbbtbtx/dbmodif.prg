@@ -82,9 +82,31 @@ local modifdel:=.f.
             end
         end
  
+        // App Del Key
+        //  0   0   0  kulcsot nem erinto modositas
+        //  0   0   1  kulcsot is erinto modositas
+        //  0   1   0  normal torles
+        //  0   1   1  torles kulcs modositasa utan
+        //  1   0   0  *** nincs ilyen eset
+        //  1   0   1  normal append
+        //  1   1   0  *** nincs ilyen eset
+        //  1   1   1  append utan torles
+
+
         modifkey:=table[TAB_MODIFKEY]
         modifapp:=table[TAB_MODIFAPP]
-        modifdel:=(42==xvgetbyte(table[TAB_RECBUF],0))
+        modifdel:=(42==xvgetbyte(table[TAB_RECBUF],0)) .and. NIL!=tabKeepDeleted(table)
+        
+        // modifdel==.t. <==> ha uj modszeru torles van
+        // A regi modszeru torles (ami meghagyja a rekordot)
+        // a kozonseges modositasokhoz hasonloan mukodik.
+        // Regi modszeru torlesnel az esetleg megvaltozott
+        // kulcsokat a modositasokhoz hasonloan kell kezelni.
+
+        //modifapp: korabban nem letezo rekord
+        //modifdel: megszuno rekord
+        //modifkey: korabban is letezo, megmarado rekord
+
 
         set signal disable
 
@@ -94,15 +116,19 @@ local modifdel:=.f.
 
 
         // 1. REGI KULCSOK TORLESE
-     
-        if( modifdel )
+
+        if( modifapp )
+            // korabban nem letezo rekord, nincsenek regi kulcsok
+
             _db_header_read(table[TAB_BTREE],.t.) //for writing
+     
+        elseif( modifdel )
+            // megszuno rekord, minden kulcsot torolni kell, a recno-t is
+            // (append nem ide jon -> modifapp)
+            // (hagyomanyos torles nem ide jon -> mofidkey)
 
-            //ki kell torolni az aktualis rekord kulcsait 
-            //minden kulcsot torolni kell (a recno-t is)
-            //az aktualis index kulcsat kell utoljara torolni,
-            //maskepp elromlik a tabDelete()-ben levo tabGetNext()
-
+            _db_header_read(table[TAB_BTREE],.t.) //for writing
+                   
             index:=tabIndex(table)
             for n:=0 to len(index)
                 //n==0 a recno
@@ -112,15 +138,13 @@ local modifdel:=.f.
             next
             deletekey(table,table[TAB_ORDER]) // ezt utoljara
 
-
-        elseif( modifapp )
-            _db_header_read(table[TAB_BTREE],.t.) //for writing
-            
-
         elseif( modifkey )
-            _db_header_read(table[TAB_BTREE],.t.) //for writing
+            // nem ujonnan letrehozott es nem megszunoben levo, tehat
+            // megmarado rekord, torolni kell a megvaltozott (regi) kulcsokat
+            // (kulcsot is erinto modositas)
+            // (modositas + hagyomanyos torles)
 
-            //ki kell torolni a megvaltozott kulcsokat
+            _db_header_read(table[TAB_BTREE],.t.) //for writing
             
             index:=tabIndex(table)
             for n:=1 to len(index)
@@ -128,7 +152,7 @@ local modifdel:=.f.
                 keyold:=idx[IND_CURKEY]
                 keynew:=tabKeyCompose(table,n)
                 if( !keyold==keynew )
-                    //? "del", idx[IND_NAME], keyold::key2str
+                     //? "del", idx[IND_NAME], keyold::key2str
                     _db_setord(table[TAB_BTREE],idx[IND_NAME])
                     status:=_db_del(table[TAB_BTREE],keyold)
                     if( 0!=status )
@@ -137,7 +161,7 @@ local modifdel:=.f.
                         taberrArgs({"_db_del",status,idx[IND_NAME],keyold})
                         tabError(table)
                     end
-                    idx[IND_CURKEY]:=keynew
+                    idx[IND_CURKEY]:=keynew  //ezt kell majd kiirni
                 else
                     idx[IND_CURKEY]:=NIL
                 end
@@ -158,10 +182,15 @@ local modifdel:=.f.
         // 3. UJ KULCSOK KIIRASA
 
         if( modifdel )
+            // megszuno rekord, nincsenek uj kulcsok
+            // (hagyomanyos torles nem ide jon -> modifkey/modifapp)
+
             _db_header_write(table[TAB_BTREE])
   
         elseif( modifapp )
-            //be kell tenni az uj kulcsokat
+            // korabban nem letezo rekord,  ki kell irni az osszes kulcsot
+            // (normal append)
+            // (append + hagyomanyos torles)
 
             keynew:=tabKeyCompose(table,0)
             //? "put", "recno", keynew::key2str
@@ -195,7 +224,9 @@ local modifdel:=.f.
 
 
         elseif( modifkey )
-            //be kell tenni az uj kulcsokat
+            // megmarado rekord, ki kell irni a megvaltozott (uj) kulcsokat
+            // (kulcsot is erinto modositas)
+            // (modositas + hagyomanyos torles)
 
             index:=tabIndex(table)
             for n:=1 to len(index)
@@ -219,13 +250,13 @@ local modifdel:=.f.
             tabEstablishPosition(table)
         end
 
-        table[TAB_MODIFKEY]:=.f.
-        table[TAB_MODIFAPP]:=.f.
-
         //megszunt memok torlese
         tabMemoDel(table)
 
         set signal enable
+
+        table[TAB_MODIFKEY]:=.f.
+        table[TAB_MODIFAPP]:=.f.
     end
     return NIL
 
@@ -237,24 +268,21 @@ local idx,keyold,datkey,idxname,status
 
     if( n==0 )
         if( 0>_db_setord(table[TAB_BTREE],"deleted") )
-            // nincs deleted index -> nincs recno torles:
-            // ugy is mukodhetne, hogy a recno-t toroljuk,
-            // de nem hasznaljuk ujra a torolt rekodokat,
-            // ehhez csak a return-t kell kikommentezni
-            return NIL
-        else
-            keyold:=tabKeyCompose(table,0)
-            datkey:=date()::dtos::str2bin+keyold  // megjegyzi mikor toroltek
-            idxname:="recno"
-            //? "put", "deleted", datkey::key2str //10 byte
-            status:=_db_put(table[TAB_BTREE],datkey)
-            if( status!=0 )
-                taberrOperation("tabCommit")
-                taberrDescription(@"failed writing key")
-                taberrArgs({"_db_put",status,"recno",datkey})
-                tabError(table)
-            end
+            taberrOperation("tabCommit")
+            taberrDescription(@"failed to set deleted index")
+            tabError(table)
         end
+        keyold:=tabKeyCompose(table,0)
+        datkey:=date()::dtos::str2bin+keyold  // megjegyzi mikor toroltek
+        //? "put", "deleted", datkey::key2str //10 byte
+        status:=_db_put(table[TAB_BTREE],datkey)
+        if( status!=0 )
+            taberrOperation("tabCommit")
+            taberrDescription(@"failed writing key")
+            taberrArgs({"_db_put",status,"recno",datkey})
+            tabError(table)
+        end
+        idxname:="recno"
     else  
         idx:=index[n]
         keyold:=idx[IND_CURKEY]
@@ -308,18 +336,19 @@ local column,n
     table[TAB_FOUND]:=.f.
     xvputbyte(table[TAB_RECBUF],0,42) //42==asc("*")
 
+    if( NIL!=tabKeepDeleted(table) )
+        // ha a rekordot tenylegesen toroljuk
+        // (azaz nem csak a torolt mezo alapjan szurjuk
+        // hanem az indexbol kiveve elerhetetlenne tesszuk)
+        // akkor kulon torolni kell a memo mezoket
 
-    // ha a rekordot tenylegesen toroljuk
-    // (azaz nem csak a torolt mezo alapjan szurjuk
-    // hanem az indexbol kiveve elerhetetlenne tesszuk)
-    // akkor kulon torolni kell a memo mezoket
-
-    column:=tabColumn(table)
-    for n:=1 to len(column)
-        if( tabMemoField(table,column[n]) )
-            tabEvalColumn(table,n,a"")
-        end
-    next
+        column:=tabColumn(table)
+        for n:=1 to len(column)
+            if( tabMemoField(table,column[n]) )
+                tabEvalColumn(table,n,a"")
+            end
+        next
+    end
  
     tabUnlock(table,pos)
 
@@ -344,9 +373,11 @@ function tabMAppend(table,userblock) //append blank, meglevo lockokat maradnak
 function tabAppend(table,userblock,flag) //append blank
 local result, recpos, recno
 
-    if( undelete(table,flag) )
-         // uj rekord egy korabban torolt helyen
-        return .t.
+    if( NIL!=tabKeepDeleted(table) )
+        if( undelete(table,flag) )
+            // uj rekord egy korabban torolt helyen
+            return .t.
+        end
     end
 
     tabGoEof(table)

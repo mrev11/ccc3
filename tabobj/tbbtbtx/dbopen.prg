@@ -83,23 +83,13 @@ local errblk, err
     tranNotAllowedInTransaction(table,"open",.t.)
  
     if( !file(fname) )
-
-        //teszteleshez automatikus dbf->dat konverzio
-        dbf:=lower(tabPath(table)+tabFile(table)+".dbf")
-        if( file(dbf)  )
-            tabCreate(table)
-            tabOpen(table,OPEN_EXCLUSIVE)
-            tabLoadDBF(table,dbf)
-
+        n:=alert(fname+@" not found, create?",{@"Create",@"Quit"})
+        if( n==2 )
+            taberrOperation("tabOpen")
+            taberrDescription(@"file not found")
+            tabError(table)
         else
-            n:=alert(fname+@" not found, create?",{@"Create",@"Quit"})
-            if( n==2 )
-                taberrOperation("tabOpen")
-                taberrDescription(@"file not found")
-                tabError(table)
-            else
-                tabCreate(table)
-            end
+            tabCreate(table)
         end
     end
 
@@ -178,12 +168,16 @@ local errblk, err
 
     if( 0>_db_setord(table[TAB_BTREE],"deleted") )
         // nincs a fajlban deleted
-        if( mode>OPEN_READONLY .and. NIL!=tabKeepDeleted(table) )
+        if( NIL!=tabKeepDeleted(table) )
             // de az objektumban van
-            formatum_konverzio(table)
+            if( mode>=OPEN_EXCLUSIVE )
+                formatum_konverzio(table)
+            else
+                table[TAB_KEEPDELETED]:=NIL //fallback
+            end
         end
     else
-        // van a fajlban benne deleted
+        // van a fajlban deleted
         if( NIL==tabKeepDeleted(table) )
             // de az objektumban nincs
             tabKeepDeleted(table,1)
@@ -203,15 +197,15 @@ local n
     _db_header_read(table[TAB_BTREE],.t.) //for writing
     _db_creord(table[TAB_BTREE],"deleted")
 
-// kerdes, hogy ez kell-e:
-// ha ki van hagyva, akkor a regi toroltek
-// benne maradnak a fajlban (nem zavarnak)
-// 
-//    for n:=1 to tabLastRec(table)
-//        if( tabGoto(table,n) .and. tabDeleted(table) )
-//            move_to_deleted(table,n)
-//        end
-//    next
+    // kerdes, hogy ez kell-e:
+    // ha ki van hagyva, akkor a regi toroltek
+    // benne maradnak a fajlban (nem zavarnak)
+    // 
+    // for n:=1 to tabLastRec(table)
+    //     if( tabGoto(table,n) .and. tabDeleted(table) )
+    //         move_to_deleted(table,n)
+    //     end
+    // next
 
     _db_header_write(table[TAB_BTREE])
 

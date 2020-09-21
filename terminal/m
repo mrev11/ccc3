@@ -1,4 +1,6 @@
 
+clear
+
 cd gtk3         && m  && cd ..
 cd gtk          && m  && cd ..
 cd sslforw      && m  && cd ..

@@ -46,7 +46,7 @@ static int dup_noinherit(int fd)
 }
 
 //----------------------------------------------------------------------------
-FILE *startlpr(const char *lpr, const char *dev)
+FILE *startlpr(const char *lpr, const char *dev, const char *locnam)
 {
     int p[2];
     if( _pipe(p,0,O_BINARY) )
@@ -61,7 +61,8 @@ FILE *startlpr(const char *lpr, const char *dev)
     char *argv[3];
     argv[0]=(char*)lpr;
     argv[1]=(char*)dev;
-    argv[2]=0;
+    argv[2]=(char*)locnam;
+    argv[3]=0;
     if( -1==spawnv(P_NOWAIT,argv[0],argv) )
     {
         fprintf(stderr,"\nSTARTLPR script not found (CCCTERM_CAPTURE:%s)",lpr);
@@ -79,7 +80,7 @@ FILE *startlpr(const char *lpr, const char *dev)
 
 #ifdef _UNIX_
 //----------------------------------------------------------------------------
-FILE *startlpr(const char *lpr, const char *dev)
+FILE *startlpr(const char *lpr, const char *dev, const char *locnam)
 {
     int p[2];
     if( pipe(p) )
@@ -99,7 +100,8 @@ FILE *startlpr(const char *lpr, const char *dev)
         char *argv[3];
         argv[0]=strdup(lpr);
         argv[1]=strdup(dev);
-        argv[2]=0;
+        argv[2]=strdup(locnam);
+        argv[3]=0;
 
         execv(argv[0],argv);    // abszolut spec vagy workdir
         //execvp(argv[0],argv);   // path-bol is indit

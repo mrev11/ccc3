@@ -2,8 +2,10 @@
 export LC_COLLATE=C  
 
 PRINTER="$1"
+FILNAME="$2"
 
 echo $PRINTER                >log-"$PRINTER"
+echo $FILNAME               >>log-"$PRINTER"
 echo UNIX                   >>log-"$PRINTER"
 
 printenv | grep CCC | sort  >>log-"$PRINTER"

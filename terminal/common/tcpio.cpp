@@ -59,8 +59,8 @@ static network_uint32_t iobuf32[BUFLEN32];
 static char *iobuffer=(char*)iobuf32;
 static FILE *qout[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
 static char *fnames[SIZEQOUT]={NULL,NULL,NULL,NULL,NULL};
-extern FILE *startlpr(const char *fspec, const char *dev);
-static char *localname(int fp,char *fname, const char **dev);
+extern FILE *startlpr(const char *lpr, const char *dev, const char *locnam);
+static char *localname(int fp, char *fname, const char **lpr, const char **dev);
 static void autostart(char *fname);
 
 extern void setwsize(int x,int y);
@@ -344,7 +344,8 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 if( 0<=fp && fp<SIZEQOUT )
                 {
                     const char *dev=0;
-                    locnam=localname(fp,fname,&dev);
+                    const char *lpr=0;
+                    locnam=localname(fp,fname,&lpr,&dev);
                     if( locnam )
                     {
                         if( fp==FP_CONSOLE )
@@ -362,24 +363,16 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                                 fclose(qout[fp]);
                             }
                             
-                            if( strstr(locnam,"pipe:")==locnam )
+                            if( lpr )
                             {
-                                //fprintf(stderr,"\nSTARTLPR: %s %s",locnam,dev);
-                                qout[fp]=startlpr(locnam+5,dev);
-                            }
-                            else if( strstr(locnam,"file:")==locnam )
-                            {
-                                qout[fp]=fopen(locnam+5,additive?"ab":"wb");
-                                free(fnames[fp]);
-                                fnames[fp]=strdup(locnam+5);
-                                //printf("%d <<< %s\n",fp, fnames[fp]);
+                                fprintf(stderr,"\nSTARTLPR: %s %s %s",lpr,dev,locnam);
+                                qout[fp]=startlpr(lpr,dev,locnam);
                             }
                             else
                             {
                                 qout[fp]=fopen(locnam,additive?"ab":"wb");
                                 free(fnames[fp]);
                                 fnames[fp]=strdup(locnam);
-                                //printf("%d <<< %s\n",fp, fnames[fp]);
                            }
 
                             if(qout[fp])
@@ -530,32 +523,62 @@ static void replace_char(char *p, int c1, int c2)
 }
 
 //-------------------------------------------------------------------------
-static char *localname(int fp, char *fname, const char **dev)
+static char *BASENAME(char *name)
 {
-    char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
-    char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
-    char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
-    char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
-    char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
-    char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
-                                                                      
-    char *env_capture      = getenv("CCCTERM_CAPTURE");        
-    char *env_capture_prn  = getenv("CCCTERM_CAPTURE_PRN");        
-    char *env_capture_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
-    char *env_capture_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
-    char *env_capture_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
+    static char buf[1024];
+    strcpy(buf,name);
+    replace_char(buf,'\\','/');
+    char *dotpos=strrchr(buf,'.');
+    char *perpos=strrchr(buf,'/');
+    char *bname=buf;
 
-    if( env_capture_prn  == 0 ) env_capture_prn  = env_capture;
-    if( env_capture_lpt1 == 0 ) env_capture_lpt1 = env_capture;
-    if( env_capture_lpt2 == 0 ) env_capture_lpt2 = env_capture;
-    if( env_capture_lpt3 == 0 ) env_capture_lpt3 = env_capture;
+    if( dotpos>perpos )
+    {
+        *dotpos=0;
+    }
+    if( perpos )
+    {
+        bname=perpos+1;
+    }
+    for( char *p=bname; *p; p++ )
+    {
+        *p=toupper(*p);
+    }
 
-    if( env_capture_prn  == 0 ) env_capture_prn  = strdup("file:printer");
-    if( env_capture_lpt1 == 0 ) env_capture_lpt1 = strdup("file:printer1");
-    if( env_capture_lpt2 == 0 ) env_capture_lpt2 = strdup("file:printer2");
-    if( env_capture_lpt3 == 0 ) env_capture_lpt3 = strdup("file:printer3");
+    return bname;  
+}
 
-    
+//-------------------------------------------------------------------------
+static const char *lptdev(char *fname)
+{
+    static const char *prn="PRN";
+    static const char *lpt1="LPT1";
+    static const char *lpt2="LPT2";
+    static const char *lpt3="LPT3";
+
+    char *bname=BASENAME(fname);
+
+    if( bname==strstr(bname,prn)  ) return prn;
+    if( bname==strstr(bname,lpt1) ) return lpt1;
+    if( bname==strstr(bname,lpt2) ) return lpt2;
+    if( bname==strstr(bname,lpt3) ) return lpt3;
+
+    return 0;
+}
+
+//-------------------------------------------------------------------------
+static char *localname(int fp, char *fname, const char **lpr, const char **dev)
+{
+    *dev=0;
+    *lpr=0;
+
+    const char *env_console      = getenv("CCCTERM_REDIR_CONSOLE");      
+    const char *env_printer      = getenv("CCCTERM_REDIR_PRINTER");      
+    const char *env_alternate    = getenv("CCCTERM_REDIR_ALTERNATE");    
+    const char *env_extra        = getenv("CCCTERM_REDIR_EXTRA");        
+    const char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
+    const char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
+
     //printf("env_console[%s]\n",env_console);fflush(0);
     //printf("env_printer[%s]\n",env_printer);fflush(0);
     //printf("env_alternate[%s]\n",env_alternate);fflush(0);
@@ -571,37 +594,85 @@ static char *localname(int fp, char *fname, const char **dev)
     {
         return 0; //nincs átirányítás
     }
-    
 
     static char locnam[1024];
-           char basnam[1024];
     strcpy(locnam,fname);
-    strcpy(basnam,fname);
-
     replace_char(locnam,'\\','/');
-    if( strrchr(locnam,'/') ) strcpy(basnam,strrchr(locnam,'/')+1);
-    if( strrchr(basnam,'.') ) *(strrchr(basnam,'.'))=0;
-    if( strrchr(basnam,':') ) *(strrchr(basnam,':'))=0;
-    replace_char(locnam,'/','_');
-    
-         if( !strcasecmp(basnam,"LPT1") ) {*dev="LPT1"; strcpy(locnam, env_capture_lpt1);}
-    else if( !strcasecmp(basnam,"LPT2") ) {*dev="LPT2"; strcpy(locnam, env_capture_lpt2);}
-    else if( !strcasecmp(basnam,"LPT3") ) {*dev="LPT3"; strcpy(locnam, env_capture_lpt3);}
-    else if( !strcasecmp(basnam,"PRN" ) ) {*dev="PRN";  strcpy(locnam, env_capture_prn );}
-
-    // az additive flag hasznalata felvetodott, de megse kell
-    // az LPT neveket nem jo meghagyni, mert a windows  nem tudja megnyitni
-
-    if( strstr(locnam,"pipe:")!=locnam && env_useuid && env_useuid[0]=='y' )
+    if( env_useuid && env_useuid[0]=='y' )
     {
         extern const char* unique_id();    
-        static char uniquename[1024];
-        sprintf(uniquename,"%s-%s",locnam,unique_id());
+        char uniquename[1024];
+        char *slp=strrchr(locnam,'/');
+        char *ext=strrchr(locnam,'.');
+        if( slp<ext)
+        {
+            *ext=0;
+            sprintf(uniquename,"%s-%s.%s",locnam,unique_id(),ext+1);
+        }
+        else
+        {
+            sprintf(uniquename,"%s-%s",locnam,unique_id());
+        }
         strcpy(locnam,uniquename);
     }
+    replace_char(locnam,'/','.');
 
+    const char *lpt=lptdev(fname); // "LPTx" vagy NULL
+    
+    if( lpt )
+    {
+        *dev=lpt;
 
-    //fprintf(stderr,"\nREDIR %d: %s -> %s",fp,fname,locnam);fflush(0);
+        const char *env_capture      = getenv("CCCTERM_CAPTURE");        
+        const char *env_capture_prn  = getenv("CCCTERM_CAPTURE_PRN");        
+        const char *env_capture_lpt1 = getenv("CCCTERM_CAPTURE_LPT1");       
+        const char *env_capture_lpt2 = getenv("CCCTERM_CAPTURE_LPT2");       
+        const char *env_capture_lpt3 = getenv("CCCTERM_CAPTURE_LPT3");       
+
+        if( env_capture_prn  == 0 || *env_capture_prn  == 0 ) env_capture_prn  = env_capture;
+        if( env_capture_lpt1 == 0 || *env_capture_lpt1 == 0 ) env_capture_lpt1 = env_capture;
+        if( env_capture_lpt2 == 0 || *env_capture_lpt2 == 0 ) env_capture_lpt2 = env_capture;
+        if( env_capture_lpt3 == 0 || *env_capture_lpt3 == 0 ) env_capture_lpt3 = env_capture;
+                                               
+        if( env_capture_prn  == 0 || *env_capture_prn  == 0 ) env_capture_prn  = "file:printer";
+        if( env_capture_lpt1 == 0 || *env_capture_lpt1 == 0 ) env_capture_lpt1 = "file:printer1";
+        if( env_capture_lpt2 == 0 || *env_capture_lpt2 == 0 ) env_capture_lpt2 = "file:printer2";
+        if( env_capture_lpt3 == 0 || *env_capture_lpt3 == 0 ) env_capture_lpt3 = "file:printer3";
+
+        const char *capture=0;
+        if( 0==strcasecmp(lpt,"PRN" )) capture=env_capture_prn;
+        if( 0==strcasecmp(lpt,"LPT1")) capture=env_capture_lpt1;
+        if( 0==strcasecmp(lpt,"LPT2")) capture=env_capture_lpt2;
+        if( 0==strcasecmp(lpt,"LPT3")) capture=env_capture_lpt3;
+        
+        if( !capture )
+        {
+            //nincs
+        }
+        else if( capture==strstr(capture,"pipe:") )
+        {
+            *lpr=capture+5;
+        }
+        else if( capture==strstr(capture,"file:") )
+        {
+            capture+=5;
+            char buffer[1024];
+            strcpy(buffer,capture);
+            strcat(buffer,".");
+            strcat(buffer,locnam);
+            strcpy(locnam,buffer);
+        }
+        else
+        {
+            char buffer[1024];
+            strcpy(buffer,capture);
+            strcat(buffer,".");
+            strcat(buffer,locnam);
+            strcpy(locnam,buffer);
+        }
+    }
+
+    fprintf(stderr,"\nREDIR %d: %s -> loc[%s] dev[%s] lpr[%s]",fp,fname,locnam,*dev,*lpr);fflush(0);
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    

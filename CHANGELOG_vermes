@@ -1,3 +1,10 @@
+2020-09-20 terminal javitasok:
+  javitas a localname kepzeseben;
+  javitas az LPT eszkoznevek felismereseben;
+  javitas az uid-val toldalekolt nevek kepzeseben;
+  a capture processz parameterei: 1) eszkoznev 2) fajlnev;
+  hozzaferes a terminal sockethez: termio_socket();
+
 2020-09-20 
   listbox uj attributum: changeblock;
 

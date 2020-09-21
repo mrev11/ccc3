@@ -23,6 +23,7 @@
 #define  SOCKOPT_NODELAY        1
 #define  SOCKOPT_NONBLOCKING    2
 #define  SOCKOPT_REUSEADDR      3
+#define  SOCKOPT_REUSEPORT      4
  
 extern int socket_wsastartup();
 extern int socket_new();

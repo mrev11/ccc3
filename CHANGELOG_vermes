@@ -1,3 +1,5 @@
+2020-09-20 sckutil bovitve: SOCKOPT_REUSEPORT;
+
 2020-09-20 FONTOS tbbtbtx JAVITASOK
   kompatibilitas: tabKeepDelete==NIL eseten valtozatlan mukodes;
   kezelve azok az esetek, amikor kulcs modositas utan delete jon;

@@ -210,6 +210,13 @@ int socket_setoption(int s, int option, int value)
         BOOL reuseaddr=(BOOL)value;
         result=setsockopt(s,SOL_SOCKET,SO_REUSEADDR,(char*)&reuseaddr,sizeof(BOOL)); 
     }
+    else if( option==SOCKOPT_REUSEPORT )
+    {
+      #ifdef SO_REUSEPORT
+        BOOL reuseport=(BOOL)value;
+        result=setsockopt(s,SOL_SOCKET,SO_REUSEPORT,(char*)&reuseport,sizeof(BOOL)); 
+      #endif
+    }
     
     return result;
 }

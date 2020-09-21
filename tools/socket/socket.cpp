@@ -138,6 +138,7 @@ void _clp_setsockopt(int argno)
              if( 0==strcmp(name,"NODELAY") )      opt=SOCKOPT_NODELAY;
         else if( 0==strcmp(name,"NONBLOCKING") )  opt=SOCKOPT_NONBLOCKING;
         else if( 0==strcmp(name,"REUSEADDR") )    opt=SOCKOPT_REUSEADDR;
+        else if( 0==strcmp(name,"REUSEPORT") )    opt=SOCKOPT_REUSEPORT;
     }
     else if( ISNUMBER(2) ) 
     {

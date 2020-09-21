@@ -37,7 +37,7 @@ class listbox(get)
 
     attrib selected
     attrib menu
-
+    attrib changeblock
 
 ****************************************************************************
 static function listbox.initialize(this,r,c,b,v) 
@@ -102,6 +102,7 @@ local color
 local t,l,b,r,s
 local w:=0,n,ch
 local ncho
+local prev:=this:selected
 
     for n:=1 to len(this:menu)
         w:=max(w,len(this:menu[n]))
@@ -118,6 +119,7 @@ local ncho
     next
     if( ncho==NIL )
         ckey:=""
+        ncho:=prev
     end
 
     t:=this:row+1 
@@ -149,11 +151,14 @@ local ncho
     //a listboxhoz tartozo choicebox 
     //a get:colorspec forditottjaval mukodik
     color:=setcolor(this:colorspec::logcolor(2)+","+this:colorspec::logcolor(1))  
-    ch:=chbox(t,l,b,r,this:menu,if(empty(ncho),this:selected,ncho),ckey)
+    ch:=chbox(t,l,b,r,this:menu,ncho,ckey)
     setcolor(color)
     
     if( ch>0 )
         this:select(ch)
+        if( prev!=this:selected .and. this:changeblock!=NIL )
+            eval(this:changeblock,this)
+        end
         this:reset
     end
 

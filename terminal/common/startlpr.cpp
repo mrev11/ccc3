@@ -58,7 +58,7 @@ FILE *startlpr(const char *lpr, const char *dev, const char *locnam)
     close(0); dup(p[0]); close(p[0]); //0 helyere p[0]
     int fd=dup_noinherit(p[1]); close(p[1]); //nem oroklodik
 
-    char *argv[3];
+    char *argv[4];
     argv[0]=(char*)lpr;
     argv[1]=(char*)dev;
     argv[2]=(char*)locnam;
@@ -97,7 +97,7 @@ FILE *startlpr(const char *lpr, const char *dev, const char *locnam)
         int retval=dup(p[0]);
         close(p[0]);
         
-        char *argv[3];
+        char *argv[4];
         argv[0]=strdup(lpr);
         argv[1]=strdup(dev);
         argv[2]=strdup(locnam);

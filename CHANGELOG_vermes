@@ -1,3 +1,7 @@
+2020-10-15
+  shared memory tamogatas (csak unix);
+  filemap a tutorbol atkerult az alapkonyvtarba (unix, windows)
+
 2020-09-23 startlpr.cpp buffer overflow javitas;
 
 2020-09-20 terminal javitasok:

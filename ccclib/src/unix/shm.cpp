@@ -1,0 +1,180 @@
+
+
+#include <errno.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+
+#include <cccapi.h>
+
+DEFINE_METHOD(args);
+DEFINE_METHOD(description);
+DEFINE_METHOD(operation);
+DEFINE_METHOD(oscode);
+
+namespace _nsp_ipc {
+
+//--------------------------------------------------------------------------------------
+void _clp_shmget(int argno)
+{
+    CCC_PROLOG("ipc.shmget",3);
+
+    int key=_parni(1);
+    int size=ISNIL(2)?0:_parni(2);
+    int flag=ISNIL(3)?(IPC_CREAT+0644):_parni(3);
+
+    int result=shmget(key,(size_t)size,flag);
+
+    if( result>=0 )
+    {
+        _retni( result );
+    }
+    else
+    {
+        _clp_ioerrornew(0);
+
+        DUP();
+        string(CHRLIT("ipc.shmget"));
+        _o_method_operation.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("shmget failed"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        number(key);
+        number(size);
+        array(2);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        number(errno);
+        _o_method_oscode.eval(2);
+        POP();
+        
+        _clp_break(1);
+    }
+
+    CCC_EPILOG();
+}
+
+
+//--------------------------------------------------------------------------------------
+void _clp_shmat(int argno)
+{
+    CCC_PROLOG("ipc.shmat",3);
+
+    int id=_parni(1);
+    const void *addr=ISNIL(2)?0:_parb(2);
+    int flag=ISNIL(3)?0:_parni(3);
+
+    void *buffer=shmat(id,addr,flag);
+
+    struct shmid_ds stat; 
+    if( (buffer!=(void*)-1) && (0==shmctl(id,IPC_STAT,&stat)) )
+    {
+        VARTAB_LOCK();
+
+        OREF *o=oref_new(); 
+        o->ptr.binptr=(BYTE*)buffer;
+        o->length=0; //szemétgyűjtés NEM törli 
+        o->next=NEXT_RESERVED;
+ 
+        VALUE *v=PUSHNIL();
+        v->data.binary.oref=o;
+        v->data.binary.len=stat.shm_segsz; //size
+        v->type=TYPE_BINARY;
+ 
+        VARTAB_UNLOCK();
+        _rettop();
+    }
+    else
+    {
+        _clp_ioerrornew(0);
+
+        DUP();
+        string(CHRLIT("ipc.shmat"));
+        _o_method_operation.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("shmat failed"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        number(id);
+        array(1);
+        _o_method_args.eval(2);
+        POP();
+
+        DUP();
+        number(errno);
+        _o_method_oscode.eval(2);
+        POP();
+
+        _clp_break(1);
+    }
+    CCC_EPILOG();
+}
+
+
+//--------------------------------------------------------------------------------------
+void _clp_shmdt(int argno)
+{
+    CCC_PROLOG("ipc.shmdt",1);
+    const void *addr=_parb(1);
+
+    int result=shmdt(addr); // 0:ok vagy -1:errno
+
+    if( result==0 )
+    {
+        base->data.binary.oref->ptr.binptr=0;
+        _ret();
+    }
+    else
+    {
+        _clp_ioerrornew(0);
+
+        DUP();
+        string(CHRLIT("ipc.shmdr"));
+        _o_method_operation.eval(2);
+        POP();
+
+        DUP();
+        string(CHRLIT("shmdt failed"));
+        _o_method_description.eval(2);
+        POP();
+
+        DUP();
+        number(errno);
+        _o_method_oscode.eval(2);
+        POP();
+
+        _clp_break(1);
+    }
+
+    CCC_EPILOG();
+}
+
+
+//--------------------------------------------------------------------------------------
+void _clp_shmctl(int argno)
+{
+    CCC_PROLOG("ipc.shmctl",3);
+    int id=_parni(1);
+    int cmd=_parni(2);
+    void *buf=ISNIL(3)?0:_parp(3);
+
+    int result=shmctl(id,cmd,(shmid_ds*)buf); // 0:ok vagy -1:errno
+
+    _retl( result==0 );
+    CCC_EPILOG();
+}
+
+
+//--------------------------------------------------------------------------------------
+}//namespace _nsp_ipc
+

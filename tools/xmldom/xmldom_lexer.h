@@ -34,6 +34,7 @@
 #endif
 
 #include <cccapi.h>
+#include <utf8conv.h>
 
 #include <xmldom_parser.h>
 

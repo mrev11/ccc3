@@ -18,9 +18,9 @@ local hash
     ? hash==bcrypt_hash(pass,hash)
     
     ? valtype(pass)
-    ? valtype(parm)
-    ? valtype(salt)
-    ? valtype(hash)
+    ? valtype(parm), len(parm)
+    ? valtype(salt), len(salt)
+    ? valtype(hash), len(hash)
 
     ?
 

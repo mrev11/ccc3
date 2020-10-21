@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include <cccapi.h>
+#include <utf8conv.h>
 
 namespace _nsp_sql2 {
 namespace _nsp_mysql {
@@ -85,9 +86,9 @@ void _clp_sqltabalias(int argno)
     int leng=_parblen(1);
     char *alias=_parcb(2);
     sqltabalias_lexer lexer(join,leng,alias);
-    int pos=lexer.yylex(); //UTF-8 kódolásban
+    unsigned pos=lexer.yylex(); //UTF-8 kódolásban
 
-    int i=0,ucs=0,len=0; 
+    unsigned i=0,ucs=0,len=0; 
     while( i<pos )
     {
         len++;

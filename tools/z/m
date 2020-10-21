@@ -1,4 +1,5 @@
 #!/bin/bash
+#export BUILD_DBG=on
 bapp_unixc.b @parfile.bld
 
 #ldd `which z.exe` 

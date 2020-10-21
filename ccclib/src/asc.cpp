@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------
 void _clp_asc(int argno)
 {
-    int c=0;
+    unsigned c=0;
     VALUE *base=stack-argno;
     if( argno<1 )
     {
@@ -34,11 +34,11 @@ void _clp_asc(int argno)
     }
     else if( base->type==TYPE_BINARY )
     {
-        c=(int)*BINPTR(1);
+        c=(unsigned)*BINPTR(1);
     }
     else if( base->type==TYPE_STRING )
     {
-        c=(int)*CHRPTR(1);
+        c=(unsigned)*CHRPTR(1);
     }
     else
     {
@@ -56,7 +56,7 @@ void _clp_chr(int argno)
     {
         error_arg("chr",base,argno);
     }
-    int c=D2INT(base->data.number);
+    int c=D2UINT(base->data.number);
     stack=base;
     *stringl(1)=c;
 }

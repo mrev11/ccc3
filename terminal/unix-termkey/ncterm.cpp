@@ -38,6 +38,7 @@
 #endif
 
 #include <screenbuf.h>
+#include <utf8conv.h>
 #include <inkey.ch>
 
 #define THREAD_ENTRY /*nothing*/
@@ -131,8 +132,8 @@ static void paint(int top, int lef, int bot, int rig)
         for( x=lef; x<=rig; x++ )
         {
             screencell *cell=screen_buffer->cell(x,y);
-            int ch=cell->getchar();
-            int at=cell->getattr();
+            unsigned ch=cell->getchar();
+            unsigned at=cell->getattr();
             if(ch==0x2018) ch=0x60; //`
             if(ch==0x2019) ch=0x27; //'
             
@@ -147,7 +148,6 @@ static void paint(int top, int lef, int bot, int rig)
             attron(coltrans[255&at]);
             //waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
             char buf[10];
-            extern int ucs_to_utf8(int ucs, char*utf8);
             int len=ucs_to_utf8(ch,buf);
             waddnstr(stdscr,buf,len);
             

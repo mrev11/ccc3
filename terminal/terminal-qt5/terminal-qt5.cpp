@@ -46,6 +46,7 @@
 
 
 #include <screenbuf.h>
+#include <utf8conv.h>
 
 #ifdef _UNIX_
   static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
@@ -83,11 +84,6 @@ static int dirty_blink=0;
 struct TerminalWindow;
 static TerminalWindow *qtwindow;
 
-
-//CCC konyvtarbol
-extern int  utf8_to_ucs(const char*string, int*);
-extern int  ucs_to_utf8(int ucs, char*utf8);
-extern char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen);
 
 //kozos forras
 extern void tcpio_ini(const char*,int);
@@ -276,7 +272,7 @@ struct TerminalWindow : public QRasterWindow
         free(txt);
     }
 
-    void drawCell(int row, int col, int ucs, int attr, int inv=0)
+    void drawCell(int row, int col, unsigned ucs, unsigned attr, int inv=0)
     {
         QRectF rect(POSX(col), POSY(row), POSX(col+1)-POSX(col), POSY(1));
 

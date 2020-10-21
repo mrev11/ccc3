@@ -39,6 +39,7 @@
 #include <gtk/gtk.h>
 
 #include <screenbuf.h>
+#include <utf8conv.h>
 
 #ifdef _UNIX_
   static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
@@ -86,7 +87,6 @@ extern void invalidate(int,int,int,int);
 extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
-extern int  utf8_to_ucs(const char*string, int*);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
 
 
@@ -252,7 +252,6 @@ static void paint(int top, int lef, int bot, int rig)
             buf[i++]=c;
         }
         unsigned reslen;
-        extern char* wchar_to_utf8(wchar_t const*, unsigned, unsigned *);
         char *p_utf8=wchar_to_utf8(buf,rig-lef+1,&reslen);
 
         GtkTextIter iter1,iter2;
@@ -522,7 +521,7 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
 
     //printf("%s(%d) %x %x\n", name, (int)strlen(name), keyval, hwkeycode);
 
-    int code=0;
+    unsigned code=0;
 
 //#ifdef WINDOWS
     // Az event->string-nek a karakternek megfelelo  

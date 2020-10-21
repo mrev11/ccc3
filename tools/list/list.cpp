@@ -87,8 +87,7 @@ static  int       shift=0;
 #ifdef _CCC3_
   //eredetileg UTF-8 kodolasu szoveg megjelenitesere irva
 
-  extern int utf8_to_ucs(const char*,int*);
-  extern wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
+  #include <utf8conv.h>
 
 #else  //_CCC2_  (ccc2c!)
   //az eredetileg UTF-8 kodolasu szoveg megjelenitesere irt
@@ -97,10 +96,10 @@ static  int       shift=0;
   #undef  wchar_t
   #define wchar_t  char
 
-  static int utf8_to_ucs(const char*,int*);
+  static unsigned utf8_to_ucs(const char*,unsigned*);
   static wchar_t* utf8_to_wchar(const char*,unsigned,unsigned*);
 
-  static int utf8_to_ucs(const char *utf8, int *ucs)
+  static unsigned utf8_to_ucs(const char *utf8, unsigned*ucs)
   {
     //eredetileg
     // egy UTF-8 sorozattal kodolt karaktert konvertal UCS4-re
@@ -308,12 +307,12 @@ static int setbuf(char *txt, mapsize_t size)
 
         for( j=0; j<=MAXCOL+shift; j++ )
         {
-            int ch=0;
+            unsigned ch=0;
 
             if( (eol==0) && (line[i]!=0) && (line[i]+offs<txt+size) )
             {
                 eop=line[i]+offs;
-                int len=utf8_to_ucs(line[i]+offs,&ch);
+                unsigned len=utf8_to_ucs(line[i]+offs,&ch);
                 offs+=len;
                 if( (ch=='\n') || (ch=='\r') )
                 {

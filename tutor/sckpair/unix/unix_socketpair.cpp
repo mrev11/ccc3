@@ -43,7 +43,7 @@ void _clp_unix_socketpair(int argno)
         _clp_socketerrornew(0);
 
         DUP();
-        stringn(L"unix_socketpair");
+        stringn(CHRLIT("unix_socketpair"));
         _o_method_operation.eval(2);
         POP();
 
@@ -53,7 +53,7 @@ void _clp_unix_socketpair(int argno)
         POP();
 
         DUP();
-        stringn(L"unix_socketpair failed");
+        stringn(CHRLIT("unix_socketpair failed"));
         _o_method_description.eval(2);
         POP();
 

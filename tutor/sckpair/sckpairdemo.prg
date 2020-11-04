@@ -24,7 +24,7 @@ local thr,thw,sp
 
 #ifdef _UNIX_
     //Windowson ez nincs
-    ? sp:=unix_socketpair()
+    ? "unix_socketpair",sp:=unix_socketpair()
 #else
     //Linux vagy Windows
     ? sp:=socketpair()

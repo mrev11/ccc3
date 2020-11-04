@@ -19,18 +19,18 @@
  */
 
 
-// Nem kizárt, hogy
-// a listen és a következő connect között
-// egy idegen processz konnektáljon a portra.
-// Akkor a connect és az accept is sikeres,
-// de nem ugyanannak a kapcsolatnak a két vége.
-// Hogyan lehetne ezt az esetet kiszűrni?
-// Az idegen connect valószínűségét növeli,
-// ha a REUSEADDR opciót a defaultról no-ról
-// yes-re állítják.
+// Nem kizart, hogy
+// a listen es a kovetkezo connect kozott
+// egy idegen processz konnektaljon a portra.
+// Akkor a connect es az accept is sikeres,
+// de nem ugyanannak a kapcsolatnak a ket vege.
+// Hogyan lehetne ezt az esetet kiszurni?
+// Az idegen connect valoszinuseget noveli,
+// ha a REUSEADDR opciot a defaultrol no-rol
+// yes-re allitjak.
 
 *****************************************************************************
-function socketpair() //egyszerű
+function socketpair() //egyszeru
 
 local cnt:=0
 local s:=socket(),p,a,c
@@ -46,16 +46,16 @@ local s:=socket(),p,a,c
     connect(c:=socket(),"127.0.0.1",p)
     a:=accept(s)
     sclose(s)
-    return {a,c}  //ellenőrizni:  sckpair[1]>0
+    return {a,c}  //ellenorizni:  sckpair[1]>0
 
 *****************************************************************************
-function socketpairx() //hibakezelés kivételekkel (socketerror)
+function socketpairx() //hibakezeles kivetelekkel (socketerror)
 
 local cnt:=0,e
 local s:=socket(),p,a,c
 
-    //véletlenszerűen portot választ
-    //a 0xc000-0xffff intervallumból
+    //veletlenszeruen portot valaszt
+    //a 0xc000-0xffff intervallumbol
 
     rand(gettickcount())
     p:=numor(0xc000,random())
@@ -66,7 +66,7 @@ local s:=socket(),p,a,c
             e:description:="bind failed"
             e:canretry:=.t.
             break(e)
-            cnt:=0  //újrakezdi
+            cnt:=0  //ujrakezdi
         end
         p:=numor(0xc000,random())
     end

@@ -1,3 +1,9 @@
+2020.11.05 -- 1.4.11
+  build.prg-ben a lower() fuggveny makroval hatastalanitva,
+  ezzel minden filespecifikacio case sensitive lett,
+  az opciok erteke is case sensitive (mert filespec is lehet bennuk),
+  korabban csak kisbetus projektekben lehetett a build-et hasznalni;
+
 2017.12.05 -- 1.4.10
   A nem talalt libeket -l-lel balrol kiegeszitve irja be az rsplnk 
   valaszfajlba, ezzel megadja az eselyt a linkernek a tovabbi keresesre. 

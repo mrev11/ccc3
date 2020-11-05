@@ -1,3 +1,9 @@
+2020.11.05  build.prg 1.4.11;
+  build.prg-ben a lower() fuggveny makroval hatastalanitva,
+  ezzel minden filespecifikacio case sensitive lett,
+  az opciok erteke is case sensitive (mert filespec is lehet bennuk),
+  korabban csak kisbetus projektekben lehetett a build-et hasznalni;
+
 2020-11-04 tutor/sckpair egysegesitve
 
 2020-10-21 utf8<->ucs konverzio a teljes [0,2**32] tartomanyban

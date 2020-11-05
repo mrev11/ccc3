@@ -65,7 +65,9 @@ static s_rules:={;
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.4.10"
+#define VERSION "1.4.11"
+#define LOWER(x) (x)
+
 
 static mutex_count:=thread_mutex_init()
 static cond_count:=thread_cond_init()
@@ -180,13 +182,13 @@ local opt:=aclone(argv()),n
     next
     
     //compatibility
-    if( "on"$lower(getenv("BUILD_DBG")) )
+    if( "on"$LOWER(getenv("BUILD_DBG")) )
         s_debug:=.t.
     end
-    if( "debug"$lower(getenv("BUILD_DBG")) )
+    if( "debug"$LOWER(getenv("BUILD_DBG")) )
         s_debug:=.t.
     end
-    if( "dry"$lower(getenv("BUILD_DBG")) )
+    if( "dry"$LOWER(getenv("BUILD_DBG")) )
         s_debug:=.t.
         s_dry:=.t.
     end
@@ -336,7 +338,7 @@ local n,p
     par:=strtran(par,"\",dirsep())
     par:=strtran(par,"/",dirsep())
     
-    return if(left(par,1)=="=",lower(par),par)
+    return if(left(par,1)=="=",LOWER(par),par)
 
 
 ****************************************************************************
@@ -464,7 +466,7 @@ local d1,f,o,n,i,txt,dep
 
 
     if( s_main!=NIL )
-        mmd:=xsplit(lower(s_main),",;")
+        mmd:=xsplit(LOWER(s_main),",;")
     end
 
 
@@ -482,7 +484,7 @@ local d1,f,o,n,i,txt,dep
  
         for i:=1 to len(d1)
             
-            f:=lower(d1[i][1])
+            f:=LOWER(d1[i][1])
             
             if( fext(f)+"."$s_primary  )
                 if( omitted_hash[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
@@ -508,7 +510,7 @@ local d1,f,o,n,i,txt,dep
         o:=fname(f)
         txt:=memoread(f)
 
-        if( 0!=ascan(mmd,{|m|m==lower(o)}) )
+        if( 0!=ascan(mmd,{|m|m==LOWER(o)}) )
             //már benn van
         elseif( fext(f)==".prg" .and. "function main("$txt )
             if( s_main==NIL )
@@ -673,7 +675,7 @@ static function makelib(libnam,object)  //lib-et az objectekből
 local target:=getenv("BUILD_OBJ")+dirsep()+libnam+".lib",ttarget 
 local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib.bat"
-local objdir:=lower(getenv("BUILD_OBJ")), n 
+local objdir:=LOWER(getenv("BUILD_OBJ")), n 
 local objlist
 
     if( !file(torun) )
@@ -742,7 +744,7 @@ static function makeexe(exenam,object) //exe-t az objectekből
 local target:=getenv("BUILD_EXE")+dirsep()+exenam+".exe",ttarget 
 local depend,tdepend,update:=.f.
 local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe.bat"
-local objdir:=lower(getenv("BUILD_OBJ")), n 
+local objdir:=LOWER(getenv("BUILD_OBJ")), n 
 local objlist, xobj
 
     if( !file(torun) )
@@ -1041,7 +1043,7 @@ static function search_library()
 
 local dirlist:=split(getenv("BUILD_LPT")," ")
 local liblist:=split(getenv("BUILD_LIB")," ")
-local sharing:=lower(getenv("BUILD_SHR"))  //"shared" or "static" libraries
+local sharing:=LOWER(getenv("BUILD_SHR"))  //"shared" or "static" libraries
 
 local n,i,txt:="" 
 local f0,f1,f2,f3,pf1,pf2,pf3

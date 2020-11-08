@@ -1,3 +1,5 @@
+2020.11.08 tools/websrv: cgi demok felujitva;
+
 2020.11.05  build.prg 1.4.11;
   build.prg-ben a lower() fuggveny makroval hatastalanitva,
   ezzel minden filespecifikacio case sensitive lett,

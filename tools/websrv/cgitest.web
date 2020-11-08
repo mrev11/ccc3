@@ -1,0 +1,9 @@
+
+--listener :8080:4433
+--reuseaddr
+
+--rootdir $(STARTDIR)
+
+--cgipath $(STARTDIR)/cgi-bin
+--cgitime 10
+

@@ -1,0 +1,4 @@
+-bccc3_socket 
+
+BUILD_SHR=static
+#a thttpd-vel csak a static linkelésű CGI-k mennek

@@ -68,7 +68,7 @@ local save:=tabSave(table)
 
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
         taberrOperation("tabPack")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table) 
     end
     
@@ -99,7 +99,7 @@ local logged
 
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
         taberrOperation("tabPack")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table) 
     end
     
@@ -135,7 +135,7 @@ local logged
 
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
         taberrOperation("tabPack")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table) 
     end
     
@@ -193,7 +193,7 @@ local logged
 
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
         taberrOperation("tabPack")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table) 
     end
     
@@ -249,7 +249,7 @@ local logged
  
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
         taberrOperation("tabZap")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table)
     end
     

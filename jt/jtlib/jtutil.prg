@@ -268,7 +268,7 @@ local ax,av,msg
 //    end
 
     if( s1<s0 )  
-        msg:='At least jterminal.jar <font color="red">'+v+'</font> is requiered! '
+        msg:='At least jterminal.jar <font color="red">'+v+'</font> is required! '
         msg+='<p>Current version '+x+' is not supported. '
         msg+='<p>You can download the latest version from here '
         msg+='<p><font color="blue">http://ok.comfirm.hu/jnlp/jterminal.jar<font>.'

@@ -114,7 +114,7 @@ local n,buffer,size,type,err
 
         err:=sqlerrorNew()
         err:operation:="sqlqueryini"
-        err:description:="select statement requiered"
+        err:description:="select statement required"
         err:subsystem:="sql2.oracle"
         err:args:={query}
         break(err)

@@ -60,7 +60,7 @@ local msg, total, n
 
     if( tabIsOpen(table)<OPEN_EXCLUSIVE )
         taberrOperation("tabSuppIndex")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table)
     end
     
@@ -149,7 +149,7 @@ local filno,status
 
     if( tabIsOpen(table)<OPEN_EXCLUSIVE )
         taberrOperation("tabDropIndex")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(table)
     end
 

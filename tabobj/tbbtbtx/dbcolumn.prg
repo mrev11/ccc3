@@ -184,7 +184,7 @@ static function islocked(table)
 
         if( !tabIsLocked(table) )
             taberrOperation("tabEvalColumn")
-            taberrDescription(@"record lock requiered")
+            taberrDescription(@"record lock required")
             tabError(table)
         end
     end

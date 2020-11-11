@@ -328,7 +328,7 @@ local column,n
 
     elseif( !tabIsLocked(table) )
         taberrOperation("tabDelete")
-        taberrDescription(@"record lock requiered")
+        taberrDescription(@"record lock required")
         tabError(table)
     end
 

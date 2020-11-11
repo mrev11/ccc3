@@ -56,7 +56,7 @@ local msg,msgtotal,msgdbnam
 
     if( tabIsopen(tab)<OPEN_EXCLUSIVE )
         taberrOperation("tabLoadDBF")
-        taberrDescription(@"exclusive open requiered")
+        taberrDescription(@"exclusive open required")
         tabError(tab) 
     end
     

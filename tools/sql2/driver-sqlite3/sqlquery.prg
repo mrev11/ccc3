@@ -102,7 +102,7 @@ local err,n
 
         err:=sqlerrorNew()
         err:operation:="sqlquery.initialize"
-        err:description:="select statement requiered"
+        err:description:="select statement required"
         err:args:={this:__querytext__}
         err:subsystem:="sql2.sqlite3"
         break(err)

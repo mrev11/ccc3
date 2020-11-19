@@ -1,3 +1,16 @@
+2020-11-19 forditasi-linkelesi opciok:
+  linkelni kell az stdc++ konyvtarat (korabban nem kellett)
+    megj: a c++ static objektumok inicializalasa valtozott;
+    megj: egy ideje (C++11) a static objektumok inicializalasa threadsafe;
+    megj: emiatt a CCC static valtozok inicializalasa is threadsafe; 
+  kiszedve a -Wno-class-memaccess opcio
+    azok a helyek, ahol ez warningot okozott, ki lettek javitva;
+    megj: ez az opcio sima C-ben ismeretlen => warningot okozott;
+  ezeket kellett ellenorizni (8 variacio)
+    fordito : gcc, clang
+    CCC     : ccc3, ccc2c
+    forras  : c, c++
+
 2020.11.11 helyesiras: required;
 
 2020.11.08 tools/websrv: cgi demok felujitva;

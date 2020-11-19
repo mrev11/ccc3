@@ -121,8 +121,8 @@ static unsigned global_cache_set(const char *xslotname, unsigned clid)
         unsigned oldsize=slotbuffer_rowsize[slotid-1];
         unsigned newsize=clid;  //legalabb
 
-        slotbuffer[slotid-1]=(VALUE*)realloc(slotbuffer[slotid-1],newsize*sizeof(VALUE));
-        memset(slotbuffer[slotid-1]+oldsize,0,(newsize-oldsize)*sizeof(VALUE));
+        slotbuffer[slotid-1]=(VALUE*)realloc((void*)(slotbuffer[slotid-1]),newsize*sizeof(VALUE));
+        memset((void*)(slotbuffer[slotid-1]+oldsize),0,(newsize-oldsize)*sizeof(VALUE));
 
         slotbuffer_rowsize[slotid-1]=newsize;
     } 

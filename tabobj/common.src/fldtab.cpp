@@ -51,7 +51,7 @@ void _clp__field_insert(int argno)
     
     if( !initflag )
     {
-        memset(ftab,0,sizeof(ftab));
+        memset((void*)ftab,0,sizeof(ftab));
         initflag=1;
     }
     

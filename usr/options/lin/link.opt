@@ -1,4 +1,5 @@
 -lstdc++
+-lm
 -lpthread
 -ldl
 -rdynamic

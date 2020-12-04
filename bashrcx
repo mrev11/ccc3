@@ -32,41 +32,46 @@ alias pp='echo $PATH | sed s/:/\\n/g'
 
 delpath()
 {
-    X=$(echo :$PATH: | sed  s^:"$1":^:^)
-    X=$(echo $X | sed  s^::^:^)
-    X=$(echo $X | sed  s^::^:^)
+    X=:${PATH}:
+    X=${X//:${1}:/:} # strtran ":${1}:" => ":"
+    X=${X//::/:}
     export PATH=$X
 }
 
 addpath()
 {
-    X=$(echo :$PATH: | sed  s^:"$1":^:^)
-    X="$1":$X
-    X=$(echo $X | sed  s^::^:^)
-    X=$(echo $X | sed  s^::^:^)
+    X=:${PATH}:
+    X=${X//:${1}:/:}
+    X=${1}${X}
+    X=${X//::/:}
     export PATH=$X
 }
 
 pathadd()
 {
-    X=$(echo :$PATH: | sed  s^:"$1":^:^)
-    X=$X:"$1"
-    X=$(echo $X | sed  s^::^:^)
-    X=$(echo $X | sed  s^::^:^)
+    X=:${PATH}:
+    X=${X//:${1}:/:}
+    X=${X}${1}
+    X=${X//::/:}
     export PATH=$X
 }
 
-
 addldpath()
 {
-    X=$(echo :$LD_LIBRARY_PATH: | sed  s^:"$1":^:^)
-    X="$1":$X
-    X=$(echo $X | sed  s^::^:^)
-    X=$(echo $X | sed  s^::^:^)
+    X=:${LD_LIBRARY_PATH}:
+    X=${X//:${1}:/:}
+    X=${1}${X}
+    X=${X//::/:}
+    export LD_LIBRARY_PATH=$X
+}
 
-    X=$(echo $X | sed  s^:$^^)
-    X=$(echo $X | sed  s!^:!!)
 
+ldpathadd()
+{
+    X=:${LD_LIBRARY_PATH}:
+    X=${X//:${1}:/:}
+    X=${X}${1}
+    X=${X//::/:}
     export LD_LIBRARY_PATH=$X
 }
 

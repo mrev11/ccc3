@@ -1,3 +1,7 @@
+2020-12-04 linkelesi opciok:
+  linkelni kell a libm konyvtarat (korabban nem kellett);
+  oci2.cpp warning javitva;
+
 2020-11-19 forditasi-linkelesi opciok:
   linkelni kell az stdc++ konyvtarat (korabban nem kellett)
     megj: a c++ static objektumok inicializalasa valtozott;

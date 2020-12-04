@@ -236,7 +236,8 @@ static void ocierror(OCIError *errhp, int ociresult)
         {
             if( errbuf[i]=='\n' )
             {
-                strcpy(errbuf,errbuf+i+1);
+                //strcpy(errbuf,errbuf+i+1); overlap
+                memmove(errbuf,errbuf+i+1,sizeof(errbuf)-i-1);
                 strcat(errbuf,"(604)");
                 errcode=atoi(errbuf+4);
                 //printf("\n!!!!%s<<%d\n",errbuf,errcode);

@@ -1,4 +1,4 @@
-//input: class.ppo (5.0.21)
+//input: class.ppo (5.1.1)
 
 #include <cccdef.h>
 
@@ -52,8 +52,8 @@ extern void _clp_valtype(int argno);
 static void _ini__aclass();
 static void _ini__mutex();
 
-class _method3_description: public _method3_{public: _method3_description():_method3_("description"){};}; static _method3_description _o_method_description;
-class _method3_operation: public _method3_{public: _method3_operation():_method3_("operation"){};}; static _method3_operation _o_method_operation;
+class _method6_description: public _method6_{public: _method6_description():_method6_("description"){};}; static _method6_description _o_method_description;
+class _method6_operation: public _method6_{public: _method6_operation():_method6_("operation"){};}; static _method6_operation _o_method_operation;
 
 MUTEX_CREATE(_mutex_aclass);
 static VALUE* _st_aclass_ptr()

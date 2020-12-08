@@ -31,7 +31,7 @@ _method4_::_method4_(const char *sname)
     slothashcode=hashcode(sname);
     slotbuffersize=5;
     slotbuffer=(slotitem*)malloc(sizeof(slotitem)*slotbuffersize);
-    memset(slotbuffer,0,sizeof(slotitem)*slotbuffersize);
+    memset((void*)slotbuffer,0,sizeof(slotitem)*slotbuffersize);
 
     MUTEX_INIT(mutex);
 };

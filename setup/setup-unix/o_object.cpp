@@ -1,4 +1,4 @@
-//input: o_object.ppo (5.0.21)
+//input: o_object.ppo (5.1.1)
 
 #include <cccdef.h>
 
@@ -47,10 +47,10 @@ extern void _clp_qout(int argno);
 extern void _clp_valtype(int argno);
 static void _ini__clid_object();
 
-class _method3_asarray: public _method3_{public: _method3_asarray():_method3_("asarray"){};}; static _method3_asarray _o_method_asarray;
-class _method3_attrnames: public _method3_{public: _method3_attrnames():_method3_("attrnames"){};}; static _method3_attrnames _o_method_attrnames;
-class _method3_attrvals: public _method3_{public: _method3_attrvals():_method3_("attrvals"){};}; static _method3_attrvals _o_method_attrvals;
-class _method3_struct: public _method3_{public: _method3_struct():_method3_("struct"){};}; static _method3_struct _o_method_struct;
+class _method6_asarray: public _method6_{public: _method6_asarray():_method6_("asarray"){};}; static _method6_asarray _o_method_asarray;
+class _method6_attrnames: public _method6_{public: _method6_attrnames():_method6_("attrnames"){};}; static _method6_attrnames _o_method_attrnames;
+class _method6_attrvals: public _method6_{public: _method6_attrvals():_method6_("attrvals"){};}; static _method6_attrvals _o_method_attrvals;
+class _method6_struct: public _method6_{public: _method6_struct():_method6_("struct"){};}; static _method6_struct _o_method_struct;
 
 MUTEX_CREATE(_mutex_clid_object);
 static VALUE* _st_clid_object_ptr()

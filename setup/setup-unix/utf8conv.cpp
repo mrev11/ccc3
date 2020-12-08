@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include <utf8conv.h>
 
 #define H1 0x80  //1000 0000
 #define H2 0xc0  //1100 0000
@@ -53,19 +54,15 @@
 #define LOW5(x)  ((x)&L5)
 #define LOW6(x)  ((x)&L6)
 
-extern int utf8_to_ucs(const char *utf8, int *ucs);
-extern int ucs_to_utf8(int ucs, char*utf8);
-extern char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen);
-extern wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen);
 
 //----------------------------------------------------------------------------
-int utf8_to_ucs(const char *utf8, int *ucs)
+unsigned utf8_to_ucs(const char *utf8, unsigned *ucs)
 {
     // egy UTF-8 sorozattal kodolt karaktert konvertal UCS4-re
     // ha a bytesorozat ervenytelen akkor az eredmeny 0
     // visszaadja a bytesorozatbol elhasznalt byteok szamat
 
-    int code=0;
+    unsigned code=0;
     unsigned c=*utf8;
 
     if( c<128 )
@@ -82,6 +79,8 @@ int utf8_to_ucs(const char *utf8, int *ucs)
         else if( SEQ4(c) ){ seq=4; code=LOW3(c); }
         else if( SEQ5(c) ){ seq=5; code=LOW2(c); }
         else if( SEQ6(c) ){ seq=6; code=LOW1(c); }
+        else if( 0xfe==c ){ seq=6; code=2;       }  //extension
+        else if( 0xff==c ){ seq=6; code=3;       }  //extension
     
         unsigned i;
         for( i=1; i<seq; i++ )
@@ -97,6 +96,7 @@ int utf8_to_ucs(const char *utf8, int *ucs)
             {
                 code|=LOW6(x);
             }
+            //printf(" [%d %x]",i,code);
         }
         *ucs=code;
         return i;
@@ -104,7 +104,7 @@ int utf8_to_ucs(const char *utf8, int *ucs)
 }
 
 //----------------------------------------------------------------------------
-int ucs_to_utf8(int ucs, char*utf8)
+unsigned ucs_to_utf8(unsigned ucs, char*utf8)
 {
     // egy karaktert konvertal UCS4 kodrol UTF-8 bytesorozatra
     // a bytesorozat max 8 hosszu (ennyi helyet kell foglalni)
@@ -124,12 +124,13 @@ int ucs_to_utf8(int ucs, char*utf8)
         unsigned char seq[8];
         #define SEQ seq[7-i]
         SEQ=0;
-        while( code || (i>0 && ((hdr>>1)&SEQ)) )
+        while( code || ((hdr>>1) & H6 & SEQ) )
         {
             i++;
             SEQ=H1|LOW6(code);
             hdr=H1|(hdr>>1);
             code=code>>6;
+            //printf(" [%d %x %x %x] ",i,SEQ,hdr,code);
         }
         SEQ|=hdr;
         memmove(utf8,&SEQ,i+1);
@@ -180,10 +181,10 @@ char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen)
 wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
 {
     //bemenet: utf8 kodolasu blen hosszu bytearray
-    //vissza : wide karaktereket tartalmazo sring (a vegen 0)
+    //vissza : wide karaktereket tartalmazo string (a vegen 0)
     //kimenet: reslen a string hossza
     //felhasznalas utan a pointert fel kell szabaditani (free)
-    
+
     if( blen==0 )
     {
         blen=strlen(utf8);
@@ -198,12 +199,12 @@ wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
     
     while( len<blen )
     {
-        int code;
+        unsigned code;
         unsigned lseq=utf8_to_ucs(utf8+len,&code);
-        len+=lseq;
-        if( code<=0 )
+        if( code<=0  && (0!=utf8[len]) )
         {
             code='?';
+            //printf("[%d %x]",lseq,utf8[len]);
         }
         if( wlen>=size )
         {
@@ -211,6 +212,7 @@ wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
             wstr=(wchar_t*)realloc(wstr,size*sizeof(wchar_t));
         }
         *(wstr+wlen++)=code;
+        len+=lseq;
     }
     *(wstr+wlen)=(char)0;
 

@@ -65,6 +65,19 @@ void _clp_bin2w(int argno)  //unsigned 16-bit
 }
 
 //------------------------------------------------------------------------
+void _clp_bin2u(int argno)  //unsigned 32-bit
+{
+    VALUE *base=stack-argno;
+    if( (argno<1) || (base->type!=TYPE_BINARY) || (BINARYLEN(base)<sizeof(c_uint32_t)) )
+    {
+        error_arg("bin2u",base,argno);
+    }
+    c_uint32_t u=*(c_uint32_t*)BINARYPTR(base);
+    stack=base;
+    number(u);
+}
+
+//------------------------------------------------------------------------
 void _clp_l2bin(int argno) //signed 32-bit
 {
     VALUE *base=stack-argno;

@@ -1,6 +1,23 @@
+5656359b8e86f477a25d1c14550283922e0a37cb 2020120812:07:12-UTC ./log-install
+e3558e08f8350a08dd284120c7cabf163934cfb4 2020120812:07:06-UTC ./jt/jterminal/jterminal.jar
+5cd4404256a78f6c005ea2146be5b3806a131fd7 2020120812:06:47-UTC ./CHANGELOG_vermes
+d2937d6ea3ca813a5db680810a595b1c4892844d 2020120811:57:41-UTC ./usr/include/cccext1.h
+2bb81a94155b0e59394f36feacd2784be2de5905 2020120811:55:41-UTC ./setup/setup-unix/alert.cpp
+499608fb738178cea0f45db4da756433d199b65f 2020120811:55:36-UTC ./setup/setup-unix/like.cpp
+ecc47371d9bb83ea65c4ffe352221d6ab5c8259b 2020120811:55:36-UTC ./setup/setup-unix/memoread.cpp
+7d0462294ee8b0c2672a44a925ba0d3c5ab428c7 2020120811:55:36-UTC ./setup/setup-unix/o_error.cpp
+0460364627a8d4c5700eb1796d02055fdcf786ac 2020120811:55:36-UTC ./setup/setup-unix/o_object.cpp
+5c44586fccfc64918054b65bfae1a6ad4b3b1458 2020120811:55:36-UTC ./setup/setup-unix/set.cpp
+4a9f593f8e28cb20780dbae71aa6de02121ee2b2 2020120811:55:36-UTC ./setup/setup-unix/simplehash.cpp
+c34962a8a7f9c3b72bf3398fba69a50eae9639c5 2020120811:55:36-UTC ./setup/setup-unix/split.cpp
+4c0891543ceab1be77e4f74978969d97986f958b 2020120811:55:36-UTC ./setup/setup-unix/strtran.cpp
+5f1ec90bf16a47b917376e59278bd1a7bff1b3e1 2020120811:55:35-UTC ./setup/setup-unix/arr2bin.cpp
+41fef4da1fe6592ccb9b31b9998b15c5f3f25a8b 2020120811:55:35-UTC ./setup/setup-unix/ascan.cpp
+27ce0890382259ce2e80e5506f72d661295a67c1 2020120811:55:35-UTC ./setup/setup-unix/class.cpp
+5d08f04ea43559ffafaf21b4fff091c9055c72c8 2020120811:55:35-UTC ./setup/setup-unix/day.cpp
+4ba873a92d1c2a678d93c641e2ade73cac187562 2020120811:55:35-UTC ./setup/setup-unix/deferror.cpp
+e61895ba8a3789c6caad368ad3d5d1a5aa537fe6 2020120811:55:35-UTC ./setup/setup-unix/directory.cpp
 90b90a2c6c8119607bbfcc7da48ff4301013a649 2020120410:38:21-UTC ./tools/sql2/driver-oracle/oci2.cpp
-fcdf1f5e2843581614055c83cdd6cfb844321e8e 2020120409:45:32-UTC ./CHANGELOG_vermes
-521725ee3a9bc2cda09f2a921de6b904c5034092 2020120409:35:32-UTC ./log-install
 47174e42fb95e8d8a0cb89d13e6f55742300c0f0 2020120409:35:32-UTC ./usr/bin/linux/gitfollow
 d4be3236fbb3dd06f9c2ce06a48df9cdcbc12b43 2020120409:35:32-UTC ./usr/bin/linux/gitnav
 d35cdf35eee1077f15d94a5e7a09b211dd54ed6c 2020120409:35:32-UTC ./usr/bin/linux/gitref
@@ -9,7 +26,6 @@ a685a9304619cb7f6f750900bd2af9961fa39b2e 2020120409:35:32-UTC ./usr/bin/linux/gi
 9b68d83cdfe51d5645060015a62beefb52ca4951 2020120409:35:29-UTC ./usr/bin/linux/filetime-restore
 dd2933d5ad328ae7622d5116d18f1053c3b908ae 2020120409:35:29-UTC ./usr/bin/linux/filetime-save
 2cbf3f039d514eb94c66e49895e8794e0b70dec6 2020120409:35:29-UTC ./usr/bin/linux/firstpar
-5dd29938d3a6cf4e7f50a2bf74606884d7737321 2020120409:35:27-UTC ./jt/jterminal/jterminal.jar
 3b3800d397427883d5aff055aabd8927cb966c0f 2020120409:35:25-UTC ./usr/bin/linux/terminal-qt5
 e932f25cfa0451a1dd8bdcd82df7b7f3a5196418 2020120409:35:22-UTC ./usr/bin/linux/msk2html
 549dd59ed4a707a5f70f027392e9d4b8cfad4aa4 2020120409:35:21-UTC ./usr/bin/linux/webapp
@@ -350,7 +366,6 @@ d71c869a600b6c1928714482dfc6dfdf29e6218c 2019102011:30:15-UTC ./tutor/sckpair/un
 7169389f5a2fe14f85a8890ffffb895804a8d78a 2019100310:08:20-UTC ./tools/webapp/common/src/javascript/webapp-util.js
 a3a5ed434f07ce1a38ed0e998fe2c803970cc778 2019100307:37:31-UTC ./tools/webapp/common/src/javascript/combo.js
 08b4f11bbeb87de87a2a112b1de7311ee898fb14 2019100208:08:40-UTC ./tools/webapp/common/src/javascript/popup.js
-c4e9325df668eaab0d0e0667a4a8402f9a3fdd0b 2019090211:39:52-UTC ./setup/setup-unix/xmethod6.cpp
 b32ed0c7b6aaff2e9f56689beabfebb41e75cced 2019082606:24:50-UTC ./usr/include/xmethod6.h
 a422f2efbfc68e9a7c568c65d0d26e2166d3331b 2019082603:54:13-UTC ./tutor/nlstext/s.bat
 d10604b6de0774cd33122f04fa78c6f580556afc 2019082603:46:58-UTC ./tutor/nlstext/m.bat
@@ -370,7 +385,6 @@ c64934638335dcbc7c86e5f7241c88a9b4fe01ae 2019082407:01:19-UTC ./ccctools/ppo2cpp
 0c8c0f05fc93acfb867a47bb0b985215128185c4 2019082201:11:09-UTC ./ccctools/ppo2cpp/m3.bat
 9fecc01a3af83b8d5bf0e04aeda5e7b92f7b3a1c 2019082201:10:25-UTC ./ccctools/ppo2cpp/m4.bat
 36b5e094f2afc1904c5ce554766cf2c1745263a8 2019082021:52:08-UTC ./usr/include/xmethod4.h
-8247bc725e23cd1484c45a6a723d14c2a2217bfd 2019082019:26:48-UTC ./setup/setup-unix/xmethod4.cpp
 331be4054590560fb5017ee21c229a3c487465cb 2019082017:56:22-UTC ./setup/setup-unix/clean
 24f9bc84da6befedcb8c52465fba751a8cc9eabf 2019082012:46:46-UTC ./ccctools/ppo2cpp/m3
 5a8e87966de2dae93f05b0594f34557cc53e2d82 2019082012:46:01-UTC ./ccctools/ppo2cpp/m4
@@ -515,8 +529,6 @@ fc77fe918c0ceee247db3edfd0b1626afc215467 2018073106:15:24-UTC ./setup/setup-wind
 1b23f7268e0d6ef06b2a8f8d5d940f59ef1eb7a6 2018072308:46:28-UTC ./tutor/xbrwarr/xbrwarr.prg
 eccc65ac89fded00523e26cced570135e8c6e60a 2018072308:05:58-UTC ./tools/savex/sortname.prg
 ee491bcd025ce17b46d8b250bfc182a47e407181 2018072213:36:48-UTC ./ccclib/src/array.cpp
-327fa390586ff3581616787645212860771242b6 2018072212:30:27-UTC ./usr/include/cccext1.h
-7615d57763dcd6c0c073a5e5c757f7f56c82ff05 2018072212:25:35-UTC ./setup/setup-unix/variable.cpp
 b87289382b32cfc2c8f5725ebfd094eb107c47ad 2018071406:15:54-UTC ./setup/setup-flex/olvass.txt
 9efc6d6f53e93884bce3dd92c3dd28a37d9d0095 2018071315:47:20-UTC ./setup/setup-flex/version.h
 608072eb8242ab60d923c9837bfa64212e586ca6 2018071315:47:05-UTC ./setup/setup-flex/tblcmp.c
@@ -682,7 +694,6 @@ b1b0159cfe3d03ed281f4cfe805013c0b259270f 2018022215:19:01-UTC ./tools/z/zloop.pr
 256a821d2240d8a30b540009b53cc4f5abc99281 2018022213:48:29-UTC ./install.bat
 1621a4d290f9416f8275ccec7f1f7e4c595341bc 2018022112:40:48-UTC ./ccclib/src/qout.cpp
 2aa599ebfec615b252e165035d808650935eac6e 2018021408:57:29-UTC ./terminal/gtk3/parfile.bld
-0bcf60638811a06715d3457b74d01e9d3310fecc 2018021308:04:59-UTC ./ccclib/src/i2bin.cpp
 313f1a6dc4f3a9205ca7850764abcd9a67bc09d6 2018020614:28:31-UTC ./setup/setup-unix/removecr/removecr.cpp
 044c4a377fde44b13ecc02e1107de2847ac9977e 2018020614:28:09-UTC ./setup/setup-unix/prg2ppo/fname.cpp
 ee58fb3625f17909cda20ba2ffb1883e843a3cb1 2018020614:28:09-UTC ./setup/setup-unix/prg2ppo/match.cpp
@@ -702,8 +713,6 @@ c7813ebed2400811b08c8dfc9a033ded3c00201a 2018020614:28:08-UTC ./setup/setup-unix
 aab7b42ff39dd1138b2677d797db9e5085948cdc 2018020614:26:10-UTC ./setup/setup-unix/class.cpp
 a7be2cd286b8eecebc9b2bebcfa5c3ae8774e8e8 2018020614:26:10-UTC ./setup/setup-unix/day.cpp
 de0b467bda3238a8c175917b13f47d49bd48416e 2018020614:26:10-UTC ./setup/setup-unix/deferror.cpp
-dfc051ccf675f57b74493a50164efcdc9cf2df07 2018020614:26:10-UTC ./setup/setup-unix/directory.cpp
-1a7a981a1f27f347ba24d731ca00a23b0f4d9ef3 2018020614:26:10-UTC ./setup/setup-unix/like.cpp
 0fafd585005d1017841d5f9151ddce65f6a36c5a 2018020614:26:10-UTC ./setup/setup-unix/memoread.cpp
 ec2e1166e09c3968afb16634ca22b820b750f4b0 2018020614:26:10-UTC ./setup/setup-unix/o_error.cpp
 73af011992912fd29c9efe03137cc1a897832003 2018020614:26:10-UTC ./setup/setup-unix/o_object.cpp
@@ -711,7 +720,6 @@ d3c7fee722b2082cc6813a67231905af4b40c39d 2018020614:26:10-UTC ./setup/setup-unix
 852498833b42cedffd5fbad3293e66270a2b50b8 2018020614:26:10-UTC ./setup/setup-unix/simplehash.cpp
 115052f29b07707b39bb638cdebfd7fd291140fc 2018020614:26:10-UTC ./setup/setup-unix/split.cpp
 5be8315c77a43c62c56d22922adee76d8e1bbb17 2018020614:26:10-UTC ./setup/setup-unix/strtran.cpp
-ea6e8ee0617418423ba85a05bafd7b2a322d6781 2018020614:26:09-UTC ./setup/setup-unix/arr2bin.cpp
 eda44c778940cf5015c864baea04024d92563584 2018020614:26:09-UTC ./setup/setup-unix/ascan.cpp
 9c6949480e8407a9f34d440d444a81bed22c9fea 2018020613:54:19-UTC ./setup/setup-unix/prg2ppo/xtxlegal.cpp
 3acddd25827a0a99746784484771a52dc64ae373 2018020613:53:27-UTC ./setup/setup-unix/build/s_buildp_ppo.savex
@@ -1493,7 +1501,6 @@ a860da2eb475e1e9d198036ab4f07c6bc77256dc 2013112813:55:19-UTC ./tools/setperm/se
 6e79f17980d8272282e336b5ceab88f92ee40453 2013112316:33:44-UTC ./ccclib/src/deferror.prg
 bb1a935b179fe44ebd03a7902bf9ac6224efb698 2013112315:47:38-UTC ./tools/xmlrpc-framework/rpcstart.sh
 3ff7dc7a982b3dc89c84b4885a7e4417e74b30ff 2013112315:23:38-UTC ./usr/include/cccext2.h
-27c53ea2bc0aea14879a77c554f476a199d8e6cb 2013112315:20:04-UTC ./setup/setup-unix/break.cpp
 914b0064191e3a5f8a618b2da0244dc6ff3960e8 2013112312:27:03-UTC ./tools/xmlrpc-framework/client/c1-ssl
 393cddb75674926e9da2f7a0b3877f2684befb1a 2013112311:48:43-UTC ./tools/xmlrpc-framework/client/test/c-test2.prg
 ab0dd1feb1a0c41ce012d06e2389f30a0da30a5a 2013112310:19:15-UTC ./tools/xmlrpc-framework/monitor.sh
@@ -1501,7 +1508,6 @@ ab0dd1feb1a0c41ce012d06e2389f30a0da30a5a 2013112310:19:15-UTC ./tools/xmlrpc-fra
 e8ee0ba96544969fe9012213d0e41318fe8bbe04 2013112209:15:58-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.ver
 074c57e3a887d1bb4f630a630baa5afde37ada79 2013112209:10:58-UTC ./tools/xmlrpc-framework/server/rpcsession/session_data.prg
 77b552a5e4a4a2d7051b3cda62c48a6091c6fc3f 2013112208:43:17-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.prg
-b0c5cd01442eafe9a46bd9cc6d892c7b864ad367 2013110914:35:50-UTC ./setup/setup-unix/utf8conv.cpp
 9fca8895c7dead7fae25bb632f0f89211b618458 2013101616:32:08-UTC ./tools/ddict2/dd/ddict.bt
 535f9fc61584088677e163da8d407163c577f067 2013101616:32:08-UTC ./tools/ddict2/dd/ddict.btx
 670c75dd54864b7f1b8a7afc0121ac6814a59c6a 2013101616:26:19-UTC ./tools/ddict2/dd/_ddict.prg
@@ -2924,7 +2930,6 @@ c18556ce3e59655b9682357ff59d539dfc4666ff 2006041320:46:52-UTC ./tools/socket/soc
 02219e7d7e2c80987fc9eb94e85df8922a526151 2006041317:58:54-UTC ./tools/mask/pageprn.msk
 0fce00455d7ca32063efb19fc672124b02ccd4c8 2006041317:58:35-UTC ./tools/mask/haz.msk
 cabb16c8d1ed760272f0a567fc2b12c375572fba 2006041317:57:19-UTC ./tools/mask/proba.msk
-90d6d8e34a849939d30296aba68f725a8e68c8e9 2006041316:28:21-UTC ./setup/setup-unix/asc.cpp
 5826689ddb3d41cf9154ead92418a71bbbf9cce3 2006041315:30:09-UTC ./tools/z/ver3/zreplace.msk
 eb2cdbdab0761dd394d6eabe67c0a5bce97cf957 2006041313:31:06-UTC ./tools/z/ver3/zsearch.msk
 479872540767eb0f0890d75c54d47fc17eaffbc7 2006041212:33:34-UTC ./usr/build/solaris/msk2say.bat

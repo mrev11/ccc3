@@ -1,4 +1,4 @@
-//input: simplehash.ppo (5.0.21)
+//input: simplehash.ppo (5.1.1)
 
 #include <cccdef.h>
 
@@ -58,22 +58,22 @@ static void _clp_set(int argno);
 static void _clp_valuecount(int argno);
 }//namespace simplehash
 
-class _method3_first: public _method3_{public: _method3_first():_method3_("first"){};}; static _method3_first _o_method_first;
-class _method3_firstkey: public _method3_{public: _method3_firstkey():_method3_("firstkey"){};}; static _method3_firstkey _o_method_firstkey;
-class _method3_firstvalue: public _method3_{public: _method3_firstvalue():_method3_("firstvalue"){};}; static _method3_firstvalue _o_method_firstvalue;
-class _method3_hasharray: public _method3_{public: _method3_hasharray():_method3_("hasharray"){};}; static _method3_hasharray _o_method_hasharray;
-class _method3_hashitem: public _method3_{public: _method3_hashitem():_method3_("hashitem"){};}; static _method3_hashitem _o_method_hashitem;
-class _method3_initialize: public _method3_{public: _method3_initialize():_method3_("initialize"){};}; static _method3_initialize _o_method_initialize;
-class _method3_initialize_C_object: public _method3c_{public: _method3_initialize_C_object():_method3c_("initialize",_clp_objectclass){};}; static _method3_initialize_C_object _o_method_initialize_C_object;
-class _method3_initsize: public _method3_{public: _method3_initsize():_method3_("initsize"){};}; static _method3_initsize _o_method_initsize;
-class _method3_itemcount: public _method3_{public: _method3_itemcount():_method3_("itemcount"){};}; static _method3_itemcount _o_method_itemcount;
-class _method3_iteridx: public _method3_{public: _method3_iteridx():_method3_("iteridx"){};}; static _method3_iteridx _o_method_iteridx;
-class _method3_next: public _method3_{public: _method3_next():_method3_("next"){};}; static _method3_next _o_method_next;
-class _method3_nextkey: public _method3_{public: _method3_nextkey():_method3_("nextkey"){};}; static _method3_nextkey _o_method_nextkey;
-class _method3_nextvalue: public _method3_{public: _method3_nextvalue():_method3_("nextvalue"){};}; static _method3_nextvalue _o_method_nextvalue;
-class _method3_rehash: public _method3_{public: _method3_rehash():_method3_("rehash"){};}; static _method3_rehash _o_method_rehash;
-class _method3_set: public _method3_{public: _method3_set():_method3_("set"){};}; static _method3_set _o_method_set;
-class _method3_valuecount: public _method3_{public: _method3_valuecount():_method3_("valuecount"){};}; static _method3_valuecount _o_method_valuecount;
+class _method6_first: public _method6_{public: _method6_first():_method6_("first"){};}; static _method6_first _o_method_first;
+class _method6_firstkey: public _method6_{public: _method6_firstkey():_method6_("firstkey"){};}; static _method6_firstkey _o_method_firstkey;
+class _method6_firstvalue: public _method6_{public: _method6_firstvalue():_method6_("firstvalue"){};}; static _method6_firstvalue _o_method_firstvalue;
+class _method6_hasharray: public _method6_{public: _method6_hasharray():_method6_("hasharray"){};}; static _method6_hasharray _o_method_hasharray;
+class _method6_hashitem: public _method6_{public: _method6_hashitem():_method6_("hashitem"){};}; static _method6_hashitem _o_method_hashitem;
+class _method6_initialize: public _method6_{public: _method6_initialize():_method6_("initialize"){};}; static _method6_initialize _o_method_initialize;
+class _method6_initialize_C_object: public _method6c_{public: _method6_initialize_C_object():_method6c_("initialize",_clp_objectclass){};}; static _method6_initialize_C_object _o_method_initialize_C_object;
+class _method6_initsize: public _method6_{public: _method6_initsize():_method6_("initsize"){};}; static _method6_initsize _o_method_initsize;
+class _method6_itemcount: public _method6_{public: _method6_itemcount():_method6_("itemcount"){};}; static _method6_itemcount _o_method_itemcount;
+class _method6_iteridx: public _method6_{public: _method6_iteridx():_method6_("iteridx"){};}; static _method6_iteridx _o_method_iteridx;
+class _method6_next: public _method6_{public: _method6_next():_method6_("next"){};}; static _method6_next _o_method_next;
+class _method6_nextkey: public _method6_{public: _method6_nextkey():_method6_("nextkey"){};}; static _method6_nextkey _o_method_nextkey;
+class _method6_nextvalue: public _method6_{public: _method6_nextvalue():_method6_("nextvalue"){};}; static _method6_nextvalue _o_method_nextvalue;
+class _method6_rehash: public _method6_{public: _method6_rehash():_method6_("rehash"){};}; static _method6_rehash _o_method_rehash;
+class _method6_set: public _method6_{public: _method6_set():_method6_("set"){};}; static _method6_set _o_method_set;
+class _method6_valuecount: public _method6_{public: _method6_valuecount():_method6_("valuecount"){};}; static _method6_valuecount _o_method_valuecount;
 
 //=======================================================================
 

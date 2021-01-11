@@ -1,3 +1,5 @@
+2020-12-29 bti.exe bovitve: -k listazza az indexek kulcsait;
+
 2020-12-08
   linux setup keszlet frissitve;
   utf8conv.h deklaraciok egysegesitve;
@@ -92,16 +94,16 @@
   kulon DBMEMO-C es DBMEMO-X tamogatas;
 
 
-2020-07-26 tbbtbtx: torolt rekordok szurese az indexek modositasaval:                                                                   ║
-  A torolt rekordot kiveszi az indexekbol, a "recno"-bol is.                                                          ║
-  A torolt rekordot beteszi az (uj) "deleted" indexbe.                                                                ║
-  Az append ujra felhasznalja a torolt rekordot (es recno-t),                                                         ║
-  es csak akkor noveli a fajl meretet, ha nincs torolt rekord.                                                        ║
-  tabKeepDeleted(table,days): meddig ne hasznaljon ujra egy rekordot.                                                    ║
-  tabOpen-ben formatum konverzio: ha nincs deleted index, letrehozza.                                                 ║
-  bti.exe-ben uj opcio: -k<indexname>  listazza a kulcsertekeket.         
-  bti.exe -adeleted  beteszi a fajlba a deleted indextet.         
-  bti.exe -ddeleted  kiveszi a fajlbol a deleted indextet.         
+2020-07-26 tbbtbtx: torolt rekordok szurese az indexek modositasaval:
+  A torolt rekordot kiveszi az indexekbol, a "recno"-bol is.
+  A torolt rekordot beteszi az (uj) "deleted" indexbe.
+  Az append ujra felhasznalja a torolt rekordot (es recno-t),
+  es csak akkor noveli a fajl meretet, ha nincs torolt rekord.
+  tabKeepDeleted(table,days): meddig ne hasznaljon ujra egy rekordot.
+  tabOpen-ben formatum konverzio: ha nincs deleted index, letrehozza.
+  bti.exe-ben uj opcio: -k<indexname>  listazza a kulcsertekeket.
+  bti.exe -adeleted  beteszi a fajlba a deleted indextet.
+  bti.exe -ddeleted  kiveszi a fajlbol a deleted indextet.
 
 2020-07-25 tabobj ekezetlenitve;
 

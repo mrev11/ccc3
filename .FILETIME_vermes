@@ -1,6 +1,8 @@
-5656359b8e86f477a25d1c14550283922e0a37cb 2020120812:07:12-UTC ./log-install
-e3558e08f8350a08dd284120c7cabf163934cfb4 2020120812:07:06-UTC ./jt/jterminal/jterminal.jar
-5cd4404256a78f6c005ea2146be5b3806a131fd7 2020120812:06:47-UTC ./CHANGELOG_vermes
+5665ee9c2c625bbdaec51c236ca76fd29b50d03b 2021011110:35:39-UTC ./log-install
+7290666c7a95525c50d1288d51a4af06f4635c9c 2021011110:35:33-UTC ./jt/jterminal/jterminal.jar
+d7e9da700eb2ab4308add198f7a3e59f7a8cb1aa 2021011110:34:22-UTC ./usr/bin/linux/bti
+6af4a612a55ec46e77c448e513a9858f62639057 2020122918:01:55-UTC ./CHANGELOG_vermes
+dfde31eb0035e4ff586a77969be50d995fe9f355 2020122917:54:43-UTC ./tabobj/tbbtbtx/utility/bti.prg
 d2937d6ea3ca813a5db680810a595b1c4892844d 2020120811:57:41-UTC ./usr/include/cccext1.h
 2bb81a94155b0e59394f36feacd2784be2de5905 2020120811:55:41-UTC ./setup/setup-unix/alert.cpp
 499608fb738178cea0f45db4da756433d199b65f 2020120811:55:36-UTC ./setup/setup-unix/like.cpp
@@ -70,7 +72,6 @@ be7f92c180da3d3a242feb80014504df72d95b37 2020120409:34:27-UTC ./usr/bin/linux/db
 828e679d8b516ed5194bc07735a6c56c7e618d84 2020120409:34:25-UTC ./usr/bin/linux/tview
 c08b3b153dbf308fcc94e1d3aada8abbd56934ec 2020120409:34:24-UTC ./usr/bin/linux/bt2dbf
 a63178aab1c9d5c780ccea5a91622b355ebed50d 2020120409:34:24-UTC ./usr/bin/linux/bt2txt
-7c8407fdbd6f484f58a4450241dda41fb955b5d2 2020120409:34:24-UTC ./usr/bin/linux/bti
 c98479d34584570f52d8a50c94b9642fc7b4b090 2020120409:34:24-UTC ./usr/bin/linux/tsema
 0272c575e7b71ecf21eef127e07eff9183d628a7 2020120409:34:17-UTC ./usr/bin/linux/mask
 862b111a40a31447b64a4a979c9ac69ebaaa947d 2020120409:34:17-UTC ./usr/bin/linux/msk2pge
@@ -273,7 +274,6 @@ dc38e4190911149c3f75180a6565674b783a1ce4 2020072523:56:56-UTC ./tabobj/tbbtbtx/m
 ca60f6cd40b0c91adccc4859b5f8d3cc81b067b0 2020072523:37:29-UTC ./tabobj/utility.src/ver2/recpos.msk
 d6e2a11b7688d87e6345b122ed166e7b2d6ee398 2020072513:40:11-UTC ./tabobj/tbbtbtx/bttable.ch
 6bb6fea5082f95b30bc9af577985f410a6cb2dfb 2020072513:33:28-UTC ./tabobj/tbbtbtx/dbcreate.prg
-71e15a124b342b644fbc0eb34af0bc6f8fd1015f 2020072312:10:09-UTC ./tabobj/tbbtbtx/utility/bti.prg
 903bba0e1e5dd96cabd58f72b56ffe2e4879a8bf 2020072209:13:36-UTC ./tabobj/tbbtbtx/key2str.prg
 7fa8efbe5fa60257b352dc9f70254a31e1baae80 2020072208:48:51-UTC ./ccclib/src/bin2hex.cpp
 19f9edcc73929c36d8d5bd443b02c5dd868c23a6 2020071421:46:08-UTC ./tabobj/common.src/tabchlog.prg

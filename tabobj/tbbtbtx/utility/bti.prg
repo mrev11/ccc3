@@ -20,9 +20,13 @@
 
 //Indexelo utility btbtx formatumhoz
 //
-// bti [-f]fname [-l]             //indexek listazasa
-// bti fname -diname              //index torles (+osszes suppindex)
-// bti fname -ainame -sseg1 ...   //uj index hozzaadasa
+// bti [-f]fname [-l]             // indexek listazasa
+// bti fname -diname              // index torles (+osszes suppindex)
+// bti fname -ainame -sseg1 ...   // uj index hozzaadasa
+// bti fname -adeleted            // deleted index hozzaadasa
+// bti fname -kiname              // a megadott index kulcsainak listazasa
+// bti fname -k                   // az osszes index kulcsainak listazasa
+
 
 #include "bttable.ch"
 #include "table.ch"
@@ -65,6 +69,9 @@ local x, v, op:="l"
         elseif( x=="-s" )
             aadd(seg,v)
 
+        elseif( x=="-h" )
+            usage()
+
         else
             usage("Invalid option: "+a[n])
         end
@@ -94,18 +101,30 @@ local x, v, op:="l"
     end
     ?
  
-    return NIL
     
     
 *****************************************************************************
 static function usage(errtxt)
     if( errtxt!=NIL )
         ? errtxt
+        ?
     end
-    ? "Usage:" , "bti -ffile  [-aindex -sseg1 -sseg2 | -dindex | -l]"
-    ?
+    ??<<usage>>    
+  Usage : bti.exe fname [-aindex -sseg1 -sseg2 | -dindex | -k[index] | -l | -h]
+
+  fname : bt file specification 
+  index : index name
+  segN  : index segment (column name in the table)
+
+  -a    : add an index
+  -d    : delete an index
+  -k    : list all keys of an index (or all indices)
+  -l    : list all indices (default operation)
+  -h    : print this help
+
+<<usage>>    
     quit
-    return NIL
+
 
 *****************************************************************************
 static function listindex(fname)
@@ -122,7 +141,6 @@ local x:=tabIndex(t),n,c,i
         ? x[n][1],if(x[n][4],"s","p"),c
     next
     ?
-    return NIL
 
 
 *****************************************************************************
@@ -165,8 +183,6 @@ local b:=errorblock(),e,order,n
     tabOpen(t,OPEN_EXCLUSIVE)
     errorblock(b)
 
-    return NIL
-
 
 *****************************************************************************
 static function delindex(fname,iname)
@@ -186,32 +202,58 @@ local t:=tabResource(fname),o
     end  
     tabIndex(t)[o][4]:=.t.    //beallitva a suppindex flag
     tabDropindex(t)   //torli az osszes suppindexet is
-    return NIL
  
 
 *****************************************************************************
 static function listkeys(fname,iname)
 local table:=tabResource(fname)
-local btree,key
+local index:={},tabind,i
 
     if(iname=="recno")
+        aadd(index,iname)
     elseif(iname=="deleted")
-    else
-        iname::=upper
+        aadd(index,iname)
+    elseif( !iname::empty )
+        aadd(index,iname::upper)
+    end
+    
+    if( index::empty )
+        aadd(index,"recno")
+        aadd(index,"deleted")
+        tabind:=tabIndex(table)
+        for i:=1 to len(tabind)
+            aadd(index,tabind[i][IND_NAME])
+        next
     end
 
     tabOpen(table)
-    btree:=table[TAB_BTREE]
-    if( 0>_db_setord(btree,iname))
-        ? "Index does not exist:", iname
-        ?
-        quit 
+
+    for i:=1 to len(index)
+        print_ord(table,index[i])
+    next
+
+
+*****************************************************************************
+static function print_ord(table,name)
+local btree:=table[TAB_BTREE]
+local ord:=_db_setord(btree,name)
+local key,cnt:=0
+
+    ? "----------------------------------------------------------------"
+    ? "SETORD",name,ord
+
+    if( ord>=0 )
+        key:=_db_first(btree)
+        while( key!=NIL )
+            ++cnt
+            ? key::key2str
+            key:=_db_next(btree)
+        end
+        ? "Number of keys:",cnt::str::alltrim
+    else
+        ? "Index does not exist:", name
     end
-    key:=_db_first(btree)
-    while( key!=NIL  )    
-        ? key::key2str
-        key:=_db_next(btree)
-    end
+    ?
     
 
 *****************************************************************************

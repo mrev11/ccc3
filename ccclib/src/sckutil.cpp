@@ -62,26 +62,27 @@ static unsigned long now(void)
 }
 #endif
 
+
 //----------------------------------------------------------------------------
-static int resolv(const char *addr, char *buf) // "hostname" -> "111.222.333.444"
+static void set_inetaddr(SOCKADDR_IN *addr, const char *host, int port)
 {
-    struct hostent *he;
-    he=gethostbyname(addr);
-    if( he==NULL )
+    memset(addr,0,sizeof(SOCKADDR_IN));
+
+    addr->sin_family       = AF_INET;
+    addr->sin_addr.s_addr  = htonl(INADDR_ANY);
+    addr->sin_port         = htons((unsigned short)port);
+
+    struct hostent *he=0;
+    if( host )
     {
-        //printf("unknown host: %s\n",addr);
-        sprintf(buf,"%d.%d.%d.%d",0,0,0,0);
-        return(0);
+        he=gethostbyname(host);
     }
-    c_uint32_t ip=ntohl(*((c_uint32_t*)he->h_addr_list[0]));
-
-    //printf("host: %s --> %x --> ",addr,(unsigned)ip);
-    //printf("%d.%d.%d.%d\n", 0xff&(ip>>24), 0xff&(ip>>16), 0xff&(ip>>8), 0xff&(ip>>0));
-    //fflush(0);
-
-    sprintf(buf,"%d.%d.%d.%d", 0xff&(ip>>24), 0xff&(ip>>16), 0xff&(ip>>8), 0xff&(ip>>0) );
-    return 0;
+    if( he!=0 )
+    {
+        memcpy((void*)&addr->sin_addr, he->h_addr_list[0], he->h_length);
+    }
 }
+
  
 //----------------------------------------------------------------------------
 int socket_new()
@@ -91,47 +92,36 @@ int socket_new()
     return result;
 } 
 
+
 //----------------------------------------------------------------------------
-static void socket_addr_in(SOCKADDR_IN *saddr, char *ipaddr, int port)
+int socket_tcp() // ugyanaz mint socket_new()
 {
-    memset(saddr,0,sizeof(SOCKADDR_IN));
-    saddr->sin_addr.s_addr=ipaddr?inet_addr(ipaddr):htonl(INADDR_ANY);
-    saddr->sin_port=htons((unsigned short)port);
-    saddr->sin_family=AF_INET;
-}
+    int result=(int)socket(AF_INET,SOCK_STREAM,0);
+    ERRNO(result<0);
+    return result;
+} 
+
+
+//----------------------------------------------------------------------------
+int socket_udp()
+{
+    int result=(int)socket(AF_INET,SOCK_DGRAM,0);
+    ERRNO(result<0);
+    return result;
+} 
+
 
 //---------------------------------------------------------------------------- 
-int socket_bind(int socket, char *ipaddr, int port) //compat
+int socket_bind(int socket, char *iface, int port) //compat
 {
-    return socket_bind(socket, (const char*) ipaddr, port);
+    return socket_bind(socket, (const char*) iface, port);
 }
 
-int socket_bind(int socket, const char *ipaddr, int port)
+int socket_bind(int socket, const char *iface, int port)
 {
-    //Jo-e a default REUSEADDR opcio?
-    //
-    //1. Linuxon nem latszik a hatasa. Mas processz altal fogvatartott
-    //   portra semmikepp sem lehet bindelni. A sajat processz altal
-    //   korabban bindelt portot korlatozas nelkul ujra lehet hasznalni.
-    //
-    //2. Windowson REUSEADDR=1 eseten mas processz altal fogott portot
-    //   is lehet bindelni, ami ronda hiba. REUSEADDR=0 eseten viszont egy
-    //   processz nem tudja tobbszor bindelni ugyanazt a portot. Peldaul
-    //   nem lehet ilyen ciklust hasznalni: socket,bind,listen,accept,close.
-
-    char *host=0;
-    char buf[32];
-    if( ipaddr )
-    {
-        resolv(ipaddr,buf);
-        host=buf;
-    }
-    
-    SOCKADDR_IN saddr;
-    socket_addr_in(&saddr,host,port);
-    //BOOL reuseaddr=1;
-    //setsockopt(socket,SOL_SOCKET,SO_REUSEADDR,(char*)&reuseaddr,sizeof(BOOL)); 
-    int result=bind(socket,(LPSOCKADDR)&saddr,sizeof(saddr)); 
+    SOCKADDR_IN addr;
+    set_inetaddr(&addr,iface,port);
+    int result=bind(socket,(LPSOCKADDR)&addr,sizeof(addr)); 
     ERRNO(result!=0);
     return result;
 } 
@@ -162,23 +152,16 @@ int socket_accept(int srvsocket)
 }    
 
 //----------------------------------------------------------------------------
-int socket_connect(int socket, char *ipaddr, int port) //compat
+int socket_connect(int socket, char *host, int port) //compat
 {
-    return socket_connect(socket, (const char *)ipaddr, port);
+    return socket_connect(socket, (const char *)host, port);
 }
 
-int socket_connect(int socket, const char *ipaddr, int port) 
+int socket_connect(int socket, const char *host, int port) 
 {
-    char *host=0;
-    char buf[32];
-    if( ipaddr )
-    {
-        resolv(ipaddr,buf);
-        host=buf;
-    }
-    SOCKADDR_IN saddr;
-    socket_addr_in(&saddr,host,port);
-    int result=connect(socket,(LPSOCKADDR)&saddr,sizeof(saddr)); 
+    SOCKADDR_IN addr;
+    set_inetaddr(&addr,host,port);
+    int result=connect(socket,(LPSOCKADDR)&addr,sizeof(addr)); 
     ERRNO(result!=0);
     return result;
 } 
@@ -409,4 +392,3 @@ int server_socket_accept(int srvsck)
 }
  
 //---------------------------------------------------------------------------- 
-

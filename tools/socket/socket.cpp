@@ -37,6 +37,25 @@ void _clp_socket(int argno)
     CCC_EPILOG();
 } 
 
+
+//---------------------------------------------------------------------------
+void _clp_socket_tcp(int argno)
+{
+    CCC_PROLOG("socket",0);
+    _retni( socket_tcp() );
+    CCC_EPILOG();
+} 
+
+
+//-----------------------------------------------------------------------------------
+void _clp_socket_udp(int argno)
+{
+    CCC_PROLOG("socket_udp",0);
+    _retni( socket_udp() );
+    CCC_EPILOG();
+} 
+
+
 //---------------------------------------------------------------------------
 void _clp_bind(int argno)
 {
@@ -49,7 +68,13 @@ void _clp_bind(int argno)
     //a kompatibilitas kedveert most minden kombinacioban
     //elfogadjuk az ip, port parametereket a 2-3 pozicion 
 
-    if( ISNIL(2) )
+    if( ISNIL(2) && ISNIL(3) )
+    {
+        // UDP client
+        // any interface
+        // any port
+    }
+    else if( ISNIL(2) )
     {
         p=_parni(3);  //port
     }
@@ -69,7 +94,7 @@ void _clp_bind(int argno)
         a=_parb(3);   //if
         p=_parni(2);  //port
     }
- 
+
     _retni( socket_bind(s,a,p) ); 
 
     CCC_EPILOG();

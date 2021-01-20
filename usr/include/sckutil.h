@@ -27,6 +27,8 @@
  
 extern int socket_wsastartup();
 extern int socket_new();
+extern int socket_tcp();
+extern int socket_udp();
 extern int socket_bind(int socket, char *ipaddr, int port); //compat
 extern int socket_bind(int socket, const char *ipaddr, int port);
 extern int socket_listen(int socket, int queuelength);

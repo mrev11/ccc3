@@ -1,0 +1,2 @@
+#!/bin/bash
+bapp_unix_.b  -bccc${CCCVER}_socket

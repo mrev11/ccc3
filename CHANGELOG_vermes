@@ -1,3 +1,7 @@
+2021-02-04 textview a kis fajlokat memoread-del olvassa be;
+  A filemap elszall a 0 hosszu fajlokon. A memoread/filemap hasznalat 
+  demonstralja, hogy a map es a binary string ekvivalensek.
+
 2020-01-20 udp socket tamogatas;
 
 2020-12-29 bti.exe bovitve: -k listazza az indexek kulcsait;

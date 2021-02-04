@@ -18,12 +18,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "fileio.ch"
 #include "directry.ch"
 
 **********************************************************************************************
 function main(fspec,search)
 
-local tv,fd,map
+local tv,fd,size,map
 local hist:=history_load(fspec)[1] //{fspec,offset,search}
 
     if( !file(fspec:=hist[1]) )
@@ -32,7 +33,16 @@ local hist:=history_load(fspec)[1] //{fspec,offset,search}
     end
 
     fd:=fopen(fspec)
-    map:=filemap.open(fd)
+    size:=fseek(fd,0,FS_END)
+    if( size>1024 )
+        map:=filemap.open(fd)
+        //? "filemap", valtype(map)
+    else
+        // 0 meretu fajlokra a filemap hibazna, ezt elkeruljuk
+        // egyben demonstraljuk, hogy map egyszeru string is lehet
+        map:=memoread(fspec,.t.)
+        //? "memoread", valtype(map)
+    end
     fclose(fd)
 
     //wallpaper()

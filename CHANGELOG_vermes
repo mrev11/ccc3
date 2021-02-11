@@ -1,3 +1,8 @@
+2021-02-11  
+  ccc_config() a config fajl olvasasakor kihagyja a # komment 
+  sorokat, es helyettesiti a ${VARNAME} kornyezeti valtozokat.
+
+
 2021-02-04 textview a kis fajlokat memoread-del olvassa be;
   A filemap elszall a 0 hosszu fajlokon. A memoread/filemap hasznalat 
   demonstralja, hogy a map es a binary string ekvivalensek.

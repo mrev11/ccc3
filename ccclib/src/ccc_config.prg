@@ -31,7 +31,9 @@ local hash,cnf,n,pos,key,value
             if( (pos:=at('=',cnf[n]))>0 )
                 key:=cnf[n][1..pos-1]::alltrim
                 value:=cnf[n][pos+1..]
-                hash[key]:=value
+                if( !key[1]=="#"  )
+                    hash[key]:=env(value)
+                end
             end
         next
     end
@@ -53,5 +55,12 @@ local prev
     end
 
 ***************************************************************************************
-    
+static function env(value)
+local pos1,pos2:=1,var
+    while( 0<(pos1:=at("${",value),pos2) .and. pos1<(pos2:=at("}",value,pos1)) )
+        var:=value[pos1+2..pos2-1]
+        value::=stuff(pos1,pos2-pos1+1,getenv(var))
+    end
+    return value
 
+***************************************************************************************

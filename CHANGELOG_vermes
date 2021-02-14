@@ -1,3 +1,12 @@
+2021-02-13 terminalokban xsigset(SIGCHLD,SIG_IGN);
+  Ha xsigset(SIGCHLD,SIG_IGN) be van allitva, akkor nem keletkeznek zombik.
+  A CCC programokban sajnos nem lehet beallitani, mert kihat waitpid()-re.
+  A signal handlerek oroklodnek, ezert pl a git sem mukodik, ha a parent
+  frontend gitnav beallitja SIG_IGN-t.
+  Megjegyzes: 
+    waitpid() tulajdonkeppen jol mukodne, azaz megfeleloen var, csak a 
+    visszateresi erteke jelez hibat, erre reagal feleslegesen a git.
+
 2021-02-11  
   ccc_config() a config fajl olvasasakor kihagyja a # komment 
   sorokat, es helyettesiti a ${VARNAME} kornyezeti valtozokat.

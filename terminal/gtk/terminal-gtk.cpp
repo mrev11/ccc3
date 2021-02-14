@@ -79,6 +79,7 @@ static GtkTextBuffer *gtkbuffer;
 extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
+extern void xsigset_handlers();
 
 extern void setcursor(int x,int y);
 extern void setcursoroff(void);
@@ -702,6 +703,8 @@ int main(int argc, char *argv[])
     {
         sscanf(argv[2],"%d",&port); 
     }
+
+    xsigset_handlers();
 
     //gtkwindow > vbox > view > gtkbuffer
     gtkwindow=gtk_window_new(GTK_WINDOW_TOPLEVEL); //printf("instance %x\n",(long long)(void*)gtkwindow);

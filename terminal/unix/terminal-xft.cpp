@@ -85,6 +85,7 @@ XftFont *xftfont;
 extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
+extern void xsigset_handlers();
 
 extern void setcursor(int x,int y);
 extern void setcursoroff(void);
@@ -596,6 +597,8 @@ int main(int argc, char *argv[])
     {
         sscanf(getenv("CCCTERM_SIZE"),"%dx%d",&wwidth,&wheight);
     }
+
+    xsigset_handlers();
 
     screen_buffer=new screenbuf(wwidth,wheight);
 

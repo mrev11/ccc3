@@ -205,12 +205,15 @@ void setup_signal_handlers()
     xsigset(SIGINT  ,signal_handler);
     xsigset(SIGQUIT ,signal_handler);
     xsigset(SIGILL  ,signal_handler);
-    //xsigset(SIGABRT ,signal_handler); //kivéve 2008.11.27
     xsigset(SIGFPE  ,signal_handler);
     xsigset(SIGSEGV ,signal_handler);
     xsigset(SIGPIPE ,signal_handler);
     xsigset(SIGTERM ,signal_handler);
 
+
+    //ezek nem valtak be
+    //xsigset(SIGCHLD ,SIG_IGN); //zombik ellen 2021.02.13
+    //xsigset(SIGABRT ,signal_handler); //kiveve 2008.11.27
     //xsigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
     //xsigset(SIGTSTP ,SIG_IGN);
     //xsigset(SIGTSTP ,SIG_DFL);

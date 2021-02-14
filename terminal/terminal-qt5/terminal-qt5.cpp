@@ -89,6 +89,7 @@ static TerminalWindow *qtwindow;
 extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
+extern void xsigset_handlers();
 extern int  color_palette(int);
 extern int  colorext_palette(int);
 extern int  colorext_palette_rev(int);
@@ -657,6 +658,8 @@ int main (int argc, char **argv)
     {
         sscanf(argv[2],"%d",&port); 
     }
+
+    xsigset_handlers();
 
     QGuiApplication app(argc, argv);
     qtwindow=new TerminalWindow();

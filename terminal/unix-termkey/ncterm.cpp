@@ -39,6 +39,7 @@
 
 #include <screenbuf.h>
 #include <utf8conv.h>
+#include <xsigset.h>
 #include <inkey.ch>
 
 #define THREAD_ENTRY /*nothing*/
@@ -204,18 +205,12 @@ void bye(void)
 }
 
 //----------------------------------------------------------------------------
-void sighandler(int signum)
-{
-    //ezek elnyomva
-    signal(SIGINT,sighandler);
-    signal(SIGHUP,sighandler);
-    signal(SIGPIPE,sighandler);
-}
-
-//----------------------------------------------------------------------------
 int main(int argc, char *argv[]) 
 {
-    sighandler(0);
+    xsigset(SIGINT,SIG_IGN);
+    xsigset(SIGHUP,SIG_IGN);
+    xsigset(SIGPIPE,SIG_IGN);
+    xsigset(SIGCHLD,SIG_IGN);
 
     char host[256]; strcpy(host,"127.0.0.1"); 
     int port=55000;

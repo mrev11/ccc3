@@ -18,28 +18,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//készítette : Csiszár Levente
-//javítás    : Vermes 1998.09.09
+//keszitette : Csiszar Levente
+//javitas    : Vermes 1998.09.09
 
 #include "scrstr.ch"
 
-// Olyan rutinok, amikkel úgy írhatunk egy stringbe,
-// mintha egy lap méretű képernyőre írnánk.
-// Először a createScr()-el el kell készíteni a lapot,
-// az scrOutPict()-el lehet írni, az scrPos()-al lehet a lapon
-// mozogni. A lapot leíró stringet az scrStr()-el lehet megkapni.
+// Olyan rutinok, amikkel ugy irhatunk egy stringbe,
+// mintha egy lap meretu kepernyore irnank.
+// Eloszor a createScr()-el el kell kesziteni a lapot,
+// az scrOutPict()-el lehet irni, az scrPos()-al lehet a lapon
+// mozogni. A lapot leiro stringet az scrStr()-el lehet megkapni.
 
-// Megj: Az scrStr csak azokat a sorokat adja, amikbe írtunk.
+// Megj: Az scrStr csak azokat a sorokat adja, amikbe irtunk.
 
 
 *************************************************************************
-// Csak egy lapot tud felírni!
+// Csak egy lapot tud felirni!
 *************************************************************************
-#define SCR_NROW    1   //lap magassága
-#define SCR_NCOL    2   //lap szélessége
-#define SCR_ROW     3   //aktuláis sor
-#define SCR_COL     4   //aktuális oszlop
-#define SCR_STRT    5   //sorok tömbje 1-től az utolsó nemüresig
+#define SCR_NROW    1   //lap magassaga
+#define SCR_NCOL    2   //lap szelessege
+#define SCR_ROW     3   //aktulais sor
+#define SCR_COL     4   //aktualis oszlop
+#define SCR_STRT    5   //sorok tombje 1-tol az utolso nemuresig
 
 *************************************************************************
 function createScr(nrow,ncol)
@@ -48,8 +48,8 @@ function createScr(nrow,ncol)
 *************************************************************************
 function scrStr(scr,mogeNe)
 
-// Azokat a sorokat adja, amikbe és amilyen hosszan írtunk.
-// Ha a mogeNe igaz, akkor az utolsó sor után nem rak CR_LF-et.
+// Azokat a sorokat adja, amikbe es amilyen hosszan irtunk.
+// Ha a mogeNe igaz, akkor az utolso sor utan nem rak CR_LF-et.
 
 local str:="",i,t:=scr[SCR_STRT]
 
@@ -68,16 +68,16 @@ local str:="",i,t:=scr[SCR_STRT]
 *************************************************************************
 function scrStrt(scr)
 
-// Egy tömböt ad, ami azokat a sorokat tartalmazza, amikbe írtunk.
+// Egy tombot ad, ami azokat a sorokat tartalmazza, amikbe irtunk.
 
     return scr[SCR_STRT]
 
 *************************************************************************
 function scrApp(scr1,scr2)
 
-// Az scr2-t az scr1 végéhez fűzi.
-// Az aktuális pozíció nem változik.
-// Ha kilóg valahol, levágja.
+// Az scr2-t az scr1 vegehez fuzi.
+// Az aktualis pozicio nem valtozik.
+// Ha kilog valahol, levagja.
 
 local t1,t2,nRow,nCol,n,i,w
 
@@ -86,7 +86,7 @@ local t1,t2,nRow,nCol,n,i,w
     nRow:=scr1[SCR_NROW]
     nCol:=scr1[SCR_NCOL]
     
-    n:=min(len(t2),nRow-len(t1)) //ennyit adunk hozzá, Vermes 98.09.09
+    n:=min(len(t2),nRow-len(t1)) //ennyit adunk hozza, Vermes 98.09.09
 
     for i:=1 to n
         w:=t2[i]
@@ -101,7 +101,7 @@ local t1,t2,nRow,nCol,n,i,w
 *************************************************************************
 function scrPos(scr,row,col)
 
-// Pozícionál az scr-en.
+// Pozicional az scr-en.
 
     scr[SCR_ROW]:=row
     scr[SCR_COL]:=col
@@ -110,9 +110,9 @@ function scrPos(scr,row,col)
 *************************************************************************
 function scrOutPict(scr,str,pict)
 
-// Az aktuális pozícióra beírja az str-t. 
-// Ha a pict meg van adva, akkor megformáza. 
-// Az aktuális pozíciót mozgatja.
+// Az aktualis poziciora beirja az str-t. 
+// Ha a pict meg van adva, akkor megformaza. 
+// Az aktualis poziciot mozgatja.
 
 local i,l,isCR_LF
 
@@ -152,9 +152,9 @@ local i,l,isCR_LF
 *************************************************************************
 static function xaKieg(tomb,size,def)
 
-// Ha a tomb kisebb, akkor kiegészíti a size-re, 
-// ha nagyobb vagy egyenlő, akkor nem csinál semmit.
-// A kiegészitett elemek a def-et kapják értékül.
+// Ha a tomb kisebb, akkor kiegesziti a size-re, 
+// ha nagyobb vagy egyenlo, akkor nem csinal semmit.
+// A kiegeszitett elemek a def-et kapjak ertekul.
 
 local l
 
@@ -170,9 +170,9 @@ local l
 *************************************************************************
 static function xreplStr(str,pos,mivel,maxlen)
 
-// Az str pos pozíciójára beírja a mivel-t, felülírással.
-// Ha a string hosszabb lenne, mint a maxlen, akkor a végét levágja.
-// A pos számolása 1-től indul.
+// Az str pos poziciojara beirja a mivel-t, felulirassal.
+// Ha a string hosszabb lenne, mint a maxlen, akkor a veget levagja.
+// A pos szamolasa 1-tol indul.
 
     if( pos>maxlen )
         return str
@@ -187,7 +187,7 @@ static function xreplStr(str,pos,mivel,maxlen)
 *************************************************************************
 static function toStr(val)
 
-// A val-t stringgé alakítja
+// A val-t stringge alakitja
 
 local type:=valType(val)
 
@@ -202,7 +202,7 @@ local type:=valType(val)
     elseif (val==NIL)
         return "NIL"
     end
-    alert("toStr: Nem konvertálható típus: '"+type+"'")
+    alert("toStr: Nem konvertalhato tipus: '"+type+"'")
     return ""
 
 *************************************************************************

@@ -213,6 +213,7 @@ local n:=0, a, line
 *************************************************************************
 function usage()
     ? "Usage: mask [[-f]MASKFILE] [-h|-?|?]"
+    ?
     quit
     return NIL
 

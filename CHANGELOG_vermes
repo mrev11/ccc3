@@ -1,3 +1,6 @@
+2021-02-22 mask es tarsai felulvizsgalva:
+  msk2pge-ben implenetalva a -r es -u kapcsolok;
+
 2021-02-13 terminalokban xsigset(SIGCHLD,SIG_IGN);
   Ha xsigset(SIGCHLD,SIG_IGN) be van allitva, akkor nem keletkeznek zombik.
   A CCC programokban sajnos nem lehet beallitani, mert kihat waitpid()-re.

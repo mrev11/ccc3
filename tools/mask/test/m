@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+rm -f  *.out *.say *.pge *.wro
+
+# megszunt a kodgenerelas
+# mask    proba -gT   ; mv proba.say    proba-mask-trad.say
+# mask    proba -gO   ; mv proba.say    proba-mask-obj.say
+
+msk2say proba       ; mv proba.say    proba-msk2say.say
+
+msk2pge proba
+msk2pge -u -rq proba proba-ur.pge
+
+page proba.pge -gO  ; mv proba.out    proba-page.out
+page proba.pge -gS  ; mv proba.say    proba-page.say
+
+pge2wro proba.pge
+
+

@@ -1,3 +1,15 @@
+11f828c84034c352f1441d235fd6488fbfb7fbfe 2021032308:37:26-UTC ./CHANGELOG_vermes
+ebf6df3e2885ac7958d35bcf9f60c6fbdaca7916 2021032120:21:19-UTC ./tools/xmldom/xmlnode.prg
+b92e7df9619d73a47c7b9c5ba9c6bf9a8f82b41c 2021031623:13:10-UTC ./tools/xmldom/xmlpars.prg
+9f0145e7b1f051e427d4e80e52e35c4b7df0cb30 2021031610:31:44-UTC ./tabobj/common.src/tabchlog.prg
+844efed726022e3138ba1d8f8c18d0abc5ea7e5a 2021031520:20:26-UTC ./tools/xmldom/xmldom_lemon.prg
+2d5541c07a4fb4a919eba22f63cbc6a041a0e1ee 2021030513:01:35-UTC ./usr/bin/linux/websrv
+607629ca2d40a57562646cf489a471963bef4365 2021022321:49:16-UTC ./usr/bin/linux/ncterm
+c16e1bdfb0dbbcd454ce6cf9b95cddb169236d60 2021022321:49:16-UTC ./usr/bin/linux/terminal
+f4edb67b6f937e26c9285f624222fb44f121a1d1 2021022321:49:16-UTC ./usr/bin/linux/terminal-xft
+1c3c6982bf13e73927bbc12aeb35f87ed3927f0b 2021022321:49:15-UTC ./usr/bin/linux/terminal-gtk
+cfc8044b45bafa159353f0b8388c12b25bd1f3b8 2021022321:49:15-UTC ./usr/bin/linux/terminal-gtk3
+9786e6c8635e400af13ea722675b94c1587e529d 2021022321:49:11-UTC ./terminal/common/tcpio.cpp
 41723cb3951aac9da24175b9575c409100713279 2021022210:21:08-UTC ./log-install
 28dd838c72788e2e43e86c94eade383fdb741b6c 2021022210:21:08-UTC ./usr/bin/linux/gitfollow
 4dcc514ea128b42c0a06ef6de437daf8352da625 2021022210:21:08-UTC ./usr/bin/linux/gitnav
@@ -12,7 +24,6 @@ cb433612e6fb36bdcf245a575fc8616b5c31bb12 2021022210:20:24-UTC ./tutor/pm/linux/3
 30c981840d2472140cd75950d92d96166a401aca 2021022210:20:15-UTC ./tools/textview/ver3/zsearch.say
 cae8555984e13e4d639321c9be780a942c04cac8 2021022210:20:15-UTC ./tools/z/ver3/zreplace.say
 ff22518f2e0fee0e106b156f2b37a454525f100c 2021022210:20:14-UTC ./usr/bin/linux/xstart
-0b9c08bdb155a2f436ab5003d5a98e419b2aa198 2021022210:20:12-UTC ./usr/bin/linux/websrv
 468fdb1b67a41d8449e8ae2e35320efd16bcc750 2021022210:20:01-UTC ./tools/dbfview/search.say
 ffcc749cdfde7939119a8f0541858bc25cbafe33 2021022210:20:01-UTC ./tools/ddict2/mskmerge.say
 cfb71f0ca9b96a8510c0a17b25dce5f7fc0d0737 2021022210:20:01-UTC ./tools/ddict2/mskowner.say
@@ -26,7 +37,6 @@ dc3edd7629cf629a82e9dacc3b4bc0c5e74bdff8 2021022210:19:48-UTC ./usr/bin/linux/ms
 5aef9aac2309149ce8df3c8c3e89dbc4c01b4961 2021022210:19:42-UTC ./usr/bin/linux/prg2ppo
 328c4be8abebbba25603696e40cb9459441cda8e 2021022210:19:42-UTC ./usr/bin/linux/removecr
 1e246b5209590979f17c9b10d05da0b0bac45d00 2021022210:19:41-UTC ./usr/bin/linux/build
-608171c71749b201b0cc235678cf4a4b2b746d05 2021022210:19:02-UTC ./CHANGELOG_vermes
 06ad1eecc76bec57aee052db79e438274dca4cb3 2021022210:02:44-UTC ./tools/mask/msk2pge.prg
 296f8400cb28cbdfff0254ff4cb02df3a9c44bf6 2021022210:01:43-UTC ./tools/mask/test/m
 a42c2d3153dc16ab9c9245497ae266b92079ef64 2021022209:53:54-UTC ./tools/mask/test/proba.msk
@@ -37,11 +47,6 @@ bce09b0a56d7b5e718187ab35dc2aade459589a5 2021022014:19:52-UTC ./tools/mask/scrst
 22b241f5c03802eec94187e72b6e572a8f2c8af8 2021021408:40:08-UTC ./ccclib/src/unix/signals.cpp
 47b48b922b968a4301c5dc9ef5728af006980f5d 2021021408:39:22-UTC ./tools/xstart/xstart.prg
 a052f7520b2e44be82711680441edf897c7d2e63 2021021322:46:35-UTC ./terminal/common/xsigset.cpp
-d7c035aa9a92d943a7b9b6b16eac4b86c2473fec 2021021322:38:58-UTC ./usr/bin/linux/ncterm
-4d8a24ca0a15107d2d121ba9a56952669075388a 2021021322:38:43-UTC ./usr/bin/linux/terminal
-d777fc26aebb4275f28f61a4e8242b8b7a9da95d 2021021322:38:43-UTC ./usr/bin/linux/terminal-xft
-8c86843d779c5e393ce4d6bfad1eb32355f6cb9b 2021021322:38:42-UTC ./usr/bin/linux/terminal-gtk
-bf16af14dc75f805811374d81336853f2d4aa3b3 2021021322:38:41-UTC ./usr/bin/linux/terminal-gtk3
 d142b5c4b49ba3e924e07b0ef94b503891d22083 2021021322:38:22-UTC ./terminal/unix/terminal.cpp
 2eac5571ffba114268ff9c5df1ec5d3369da18b0 2021021322:38:14-UTC ./terminal/unix/terminal-xft.cpp
 613e9d9c05cd1ea819a59dbeb9ae2c012f1c25c8 2021021322:38:04-UTC ./terminal/terminal-qt5/terminal-qt5.cpp
@@ -196,7 +201,6 @@ ad1b0e7c63e98fbd6299e52066c20e376ff48e47 2020101119:12:27-UTC ./ccclib/src/unix/
 ded31b59dc126d3225d405b5d28dcc8980f5914f 2020101116:09:40-UTC ./tutor/shm/s
 892fafd1a407e01afffc5f3d7ecb36827bb1c671 2020101108:30:45-UTC ./usr/include/shm.ch
 0c91fd3b614677ceec708cf6a9b775c9e432f7e6 2020092313:49:21-UTC ./terminal/common/startlpr.cpp
-b93f1bdad730dd04b4d280d945ceccf9fd9e63f9 2020092114:33:09-UTC ./terminal/common/tcpio.cpp
 649be779d8991dbbd68fb347b73bf8432a85572a 2020091818:33:02-UTC ./tabobj/tbbtbtx/dbopen.prg
 8bb86b706f14c909dd8e30f2a63d8a5a9aa95881 2020091620:33:55-UTC ./terminal/terminal-test/remio/ccclpr
 168d17e7e7eff3394f51d82189c931cc2cc387fa 2020091612:47:29-UTC ./terminal/m
@@ -310,7 +314,6 @@ d6e2a11b7688d87e6345b122ed166e7b2d6ee398 2020072513:40:11-UTC ./tabobj/tbbtbtx/b
 6bb6fea5082f95b30bc9af577985f410a6cb2dfb 2020072513:33:28-UTC ./tabobj/tbbtbtx/dbcreate.prg
 903bba0e1e5dd96cabd58f72b56ffe2e4879a8bf 2020072209:13:36-UTC ./tabobj/tbbtbtx/key2str.prg
 7fa8efbe5fa60257b352dc9f70254a31e1baae80 2020072208:48:51-UTC ./ccclib/src/bin2hex.cpp
-19f9edcc73929c36d8d5bd443b02c5dd868c23a6 2020071421:46:08-UTC ./tabobj/common.src/tabchlog.prg
 68d59938b466d0cb6f219a72d2d9d3ce51d3bcb8 2020071418:08:24-UTC ./tabobj/tbbtbtx/dbcopybt.prg
 43fce9e36390ca17091742f97fbd21dd87e97c48 2020071118:33:49-UTC ./tabobj/utility.src/kdirmodi.prg
 f0e63488241b471de7e80b4d6e5b8e9aa69c27ba 2020071118:27:32-UTC ./tabobj/utility.src/view.prg
@@ -384,7 +387,6 @@ c8683fd6f9d631d63abe1174550a76f5496fdce5 2019120520:59:49-UTC ./usr/build/linux/
 539322ddc84d0be26935f17c653ed996321dc616 2019120520:57:24-UTC ./gtk/code_byhand/gtk.bld
 d9f39fab24e301f960e21a0e3c47055e98a095f0 2019120516:09:05-UTC ./gtk/code_byhand/m
 5575c915ee3c7ff93230617982cae43d322e7e54 2019120514:53:05-UTC ./terminal/gtk/m
-a0ab973b1794caffcfbe74efa3c731d4e8d247a4 2019111914:36:08-UTC ./tools/xmldom/xmldom_lemon.prg
 b4123b6619092bf373821f7b5d4424decf8a9a6b 2019111914:24:41-UTC ./tools/xmldom/xmldom_parser.lem
 21b413e363fa77431c7c0dba6dcaeb458f44c0d7 2019111914:13:59-UTC ./tools/xmldom/xmldom_lexer.lex
 6eda17e49fd230e10b89da83db2cc4cc17560158 2019111309:00:29-UTC ./usr/build/linux/for2obj.bat
@@ -1535,7 +1537,6 @@ e3c37db42984cb2099b2f44b3f04760317dfa4d6 2013101616:15:49-UTC ./tools/ddict2/dd/
 28ebe72caad7f99a00b5546f7f962152aecf8dd0 2013101615:52:15-UTC ./tools/ddict2/ddict2.ver
 810f2feda3524f7bbbe50ccdd313096dd424b923 2013101614:42:41-UTC ./tools/ddict2/dd/ddictx.bt
 22e138463bc95de0f58ffa5cff58a1072bb4267c 2013101614:41:38-UTC ./tools/ddict2/dd/dummy.bt
-938ffac19561eb9e6b10519c1df2d03cdcc2056e 2013100209:56:26-UTC ./tools/xmldom/xmlpars.prg
 ac65fbd08847b51145ab5383fedbf650e6ca51c3 2013081911:04:59-UTC ./tools/z/zhist.prg
 5bdcb006d93fb63a514e373f2af6827346d15b0f 2013081211:21:27-UTC ./usr/bin/linux/z
 df56a0191e84855cfb57fd954796a2ffc733a289 2013070612:52:49-UTC ./tools/z/zdisplin.prg
@@ -1598,7 +1599,6 @@ f6e4fee16d73c83efded293cd20382224ed51a4d 2012092008:28:41-UTC ./tools/sql2/test/
 1acff42a7fd0d87573cb9e27bcd8a89e89e9bce5 2012092008:26:17-UTC ./tools/sql2/test/basicdemo/regression/reg-sqlite3.bat
 d13e0d733b0bab64c3b059673f13e2d9af878495 2012092008:24:43-UTC ./tools/sql2/test/basicdemo/start-scripts/s.bat
 8453e16396dbd325331535db76115a9c16e22280 2012092008:18:56-UTC ./tools/sql2/test/testdata_import/sl.bat
-70fc5e76563f8f278b0e7df2926c914e4054cc6a 2012092007:34:44-UTC ./tools/xmldom/xmlnode.prg
 1a6c33aef41be21cdebd1bf5cae605abb04e53f9 2012092005:48:19-UTC ./tools/sql2/test/basicdemo/m.bat
 9056dcfd1314bc8760ce003836c4bd76077e71ba 2012091918:14:13-UTC ./tools/sql2/driver-postgres/pq.h
 1dc12522e982ec590a5a9740dfe6f0175ff90080 2012091918:01:40-UTC ./tools/sql2/driver-postgres/pqload.cpp

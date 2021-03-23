@@ -233,16 +233,6 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
             error("terminate request");
         }
 
-        if( CMDCODE.get()==3 && DATALEN.get()==8 )
-        {
-            //Ez egy CCC2 terminálnak szóló parancs,
-            //a kontospw az uic könyvtár kikerülésével
-            //ezzel teszteli a terminál kapcsolatot.
-            CMDCODE.set(TERMCMD_GOTOXY);
-            DATALEN.set(16);
-        }
-
-        
         if( DATALEN.get()>MAXBUFLEN ) 
         {
             error("iobuffer overflow"); 

@@ -676,10 +676,12 @@ local atts,n
  
 ******************************************************************************
 static function write(buf)
-local e
-    if( fwrite(fdlog,buf)!=len(buf) )
+local e,n,xbuf:=buf::str2bin
+
+    if( (n:=fwrite(fdlog,xbuf))!=len(xbuf) )
         e:=writeerrorNew()
-        e:operation:="Transaction log"
+        e:operation:="Transaction log: "+n::str::alltrim+","+;
+                     +valtype(buf)+","+len(buf)::str::alltrim
         e:description:=@"write failed"
         e:filename:=logname
         e:oscode:=ferror()

@@ -731,6 +731,12 @@ int main(int argc, char *argv[])
     gtk_widget_modify_font(view,pangofont()); //deprecated
     //gtk_widget_override_font(view,pangofont()); //also deprecated
 
+    char *iconfile;
+    if( (iconfile=getenv("CCCTERM_ICONFILE"))!=0  )
+    {
+        gtk_window_set_icon_from_file(GTK_WINDOW(gtkwindow),iconfile,NULL);
+    }
+
     setwsize_gtk();
 
     tcpio_ini(host,port);

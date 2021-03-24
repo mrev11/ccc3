@@ -1,3 +1,6 @@
+2021-03-24 a gtk/gtk3 terminalokban  CCCTERM_ICONFILE=iconspec 
+  beallitja a panelen megjeleno ikont (teljes fajlspecifikacio kell);
+
 2021-03-23 tabchlog.prg-ben fwrite javitva;
 
 2021-02-22 mask es tarsai felulvizsgalva:

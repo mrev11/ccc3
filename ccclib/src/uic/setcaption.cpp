@@ -29,7 +29,12 @@ void _clp_setcaption(int argno)
     CCC_PROLOG("setcaption",1);
     if( ISSTRING(1) )
     {
-        str2bin(base);
+        #ifdef _CCC3_
+            str2bin(base);
+        #else
+            extern void _clp_lat2utf8(int);
+            _clp_lat2utf8(1);
+        #endif
     }
     setcaption(_parb(1),_parblen(1));
     CCC_EPILOG();

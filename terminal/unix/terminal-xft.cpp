@@ -95,6 +95,8 @@ extern void keypress(XEvent event);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
+extern void set_terminal_iconfile(Display*,Window);
+extern void set_terminal_classhint(Display*,Window);
 
 //---------------------------------------------------------------------------
 static unsigned gettickcount(void)
@@ -379,7 +381,18 @@ void setcaption(char *cap)
 static void setcaption_loop()
 {
     invalidate_lock();
-    XSetStandardProperties(display,window,caption,0,0,0,0,0); 
+
+    //XSetStandardProperties(display,window,caption,0,0,0,0,0); // ascii
+    //Xutf8SetWMProperties(display,window,caption,0,0,0,0,0,0); 
+
+    XTextProperty prop;
+    prop.value=(unsigned char*)caption;
+    prop.encoding=XInternAtom(display,"UTF-8",0);
+    prop.format=8;
+    prop.nitems=strlen((char*)prop.value);
+    Atom wm_name=XInternAtom(display,"WM_NAME",0);
+    XSetTextProperty(display,window,&prop,wm_name);
+
     dirty_caption=0;
     invalidate_unlock();
 }
@@ -679,6 +692,8 @@ int main(int argc, char *argv[])
     XSetStandardProperties(display,window,0,0,0,0,0,&size_hints); 
 
     XSelectInput(display,window,ExposureMask|KeyPressMask|FocusChangeMask);
+    set_terminal_iconfile(display,window);
+    set_terminal_classhint(display,window);
     XMapWindow(display,window);
 
     eventloop();

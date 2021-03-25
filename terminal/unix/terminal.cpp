@@ -86,6 +86,8 @@ extern void invalidate(int,int,int,int);
 extern void keypress(XEvent event);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
+extern void set_terminal_iconfile(Display*,Window);
+extern void set_terminal_classhint(Display*,Window);
 
 //---------------------------------------------------------------------------
 static unsigned gettickcount(void)
@@ -333,7 +335,8 @@ void setcaption(char *cap)
 static void setcaption_loop()
 {
     invalidate_lock();
-    XSetStandardProperties(display,window,caption,0,0,0,0,0); 
+    //XSetStandardProperties(display,window,caption,0,0,0,0,0); //ascii
+    Xutf8SetWMProperties(display,window,caption,0,0,0,0,0,0); 
     dirty_caption=0;
     invalidate_unlock();
 
@@ -624,6 +627,8 @@ int main(int argc, char *argv[])
     XSetStandardProperties(display,window,0,0,0,0,0,&size_hints); 
 
     XSelectInput(display,window,ExposureMask|KeyPressMask|FocusChangeMask);
+    set_terminal_iconfile(display,window);
+    set_terminal_classhint(display,window);
     XMapWindow(display,window);
 
     eventloop();

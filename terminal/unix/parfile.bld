@@ -15,6 +15,7 @@
 -bccc$(CCCVER).lib
 -bX11
 -bXft
+-bXpm
 
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

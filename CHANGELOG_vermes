@@ -1,3 +1,9 @@
+2021-03-25
+  unix/terminal es unix/terminal-xft is hasznalja CCCTERM_ICONFILE-t;
+  setcaption() a nem-ascii szovegeket is jol jeleniti meg, ehhez:
+  1) a (nem-gtk) terminalokban meg kellett oldani az UTF-8 kezeleset
+  2) a CCC2 programban a setcaption() UTF-8-ra konvertalja a szoveget;
+
 2021-03-24 a gtk/gtk3 terminalokban  CCCTERM_ICONFILE=iconspec 
   beallitja a panelen megjeleno ikont (teljes fajlspecifikacio kell);
 

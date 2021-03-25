@@ -15,4 +15,5 @@ else
 fi
 
 bapp_unix0.b @parfile.bld
+cp -p terminal.xpm $CCCDIR/usr/bin/$CCCUNAME
 

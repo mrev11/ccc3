@@ -1,3 +1,7 @@
+2021-04-10
+  Javitva a 0 hosszu bt kiterjesztesu fajok megnyitasa
+  (nem ir bele az ilyen fajlba, hanem hibaval kilep);
+
 2021-03-25
   unix/terminal es unix/terminal-xft is hasznalja CCCTERM_ICONFILE-t;
   setcaption() a nem-ascii szovegeket is jol jeleniti meg, ehhez:

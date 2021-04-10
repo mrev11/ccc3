@@ -35,7 +35,7 @@
 static void  header(BTREE*);
 
 //---------------------------------------------------------------------------
-BTREE *__bt_open(int fd, int psize)
+BTREE *__bt_open(int fd, int psize, int create)
 {
     BTREE *t=0;
     struct stat sb;
@@ -74,7 +74,7 @@ BTREE *__bt_open(int fd, int psize)
         goto err;
     }
  
-    if( sb.st_size ) 
+    if( !create && sb.st_size  ) 
     {
         if( __bt_header_read(t,0)!=RET_SUCCESS )
         {
@@ -114,7 +114,7 @@ BTREE *__bt_open(int fd, int psize)
             goto eftype;
         }
     } 
-    else 
+    else if( create &&  sb.st_size==0 ) 
     {
         // Newly created file.
         // Set the page size to the best value for I/O to this file.
@@ -133,6 +133,10 @@ BTREE *__bt_open(int fd, int psize)
         t->version=BTREEVERSION;
 
         header(t); //create header page
+    }
+    else
+    {
+        goto err;
     }
 
     // Initialize pager. 

@@ -42,7 +42,7 @@ void _clp__db_create(int argno)
         POP();
     }
     
-    BTREE *db=__bt_open(fdesc,psize);
+    BTREE *db=__bt_open(fdesc,psize,1);
     if( db )
     {
         _retp( db );
@@ -74,7 +74,7 @@ void _clp__db_open(int argno)
         POP();
     }
     
-    BTREE *db=__bt_open(fdesc,psize);
+    BTREE *db=__bt_open(fdesc,psize,0);
     if( db )
     {
         _retp( db );

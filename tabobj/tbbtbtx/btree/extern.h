@@ -38,7 +38,7 @@
 
 //public btree interface
 
-  BTREE *__bt_open           (int, int);
+  BTREE *__bt_open           (int, int, int);
   int    __bt_close          (BTREE*);
   int    __bt_delete         (BTREE*, DBT*);
   int    __bt_fd             (BTREE*);

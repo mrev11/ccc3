@@ -1,4 +1,10 @@
-e16dd34e8ec968935e371352e491e8af1c5ee9a9 2021032514:16:48-UTC ./CHANGELOG_vermes
+c31cf77e3ba6e7b41204777dc9d864ccd468ddaf 2021041019:08:23-UTC ./CHANGELOG_vermes
+eece925edc8552ef7b6b327e5ce75161d27b89b3 2021041019:03:59-UTC ./tabobj/log-install
+35ce53fb7e505c7d5ae27dda2c53618c9b937098 2021041018:52:30-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
+1d11a15726dee890bb5f7d2c4e37e2ec9d07f048 2021040807:45:59-UTC ./tabobj/tbbtbtx/btree/db.cpp
+dfdadc72fd74881ec97702cdc49e6c92acb273a9 2021040807:45:39-UTC ./tabobj/tbbtbtx/btree/extern.h
+a839854f98f83945a33ed31045c356c8c367c173 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
+9608801e1423e5ef6563de77465f53a428aa9588 2021040513:08:52-UTC ./tools/xmldom/xmldom_lemon.prg
 bf218d266ffafd994e23092ff9f38a920810e9b6 2021032513:57:18-UTC ./usr/bin/linux/terminal
 49aeadd57d0a2fab62481cd278b4036fbcd8c85c 2021032513:57:18-UTC ./usr/bin/linux/terminal-xft
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
@@ -88,15 +94,12 @@ f154ce5d8b543a2033d141d2eefb1e0632db2325 2021032409:53:29-UTC ./usr/bin/linux/te
 7a5b01bedcb37a6431900c1cabff9fb1fbcc4a8a 2021032409:52:57-UTC ./terminal/gtk3/terminal-gtk3.cpp
 ef9afe377030cb8f9ad2af9e6b6782fe37a072d8 2021032409:46:50-UTC ./terminal/gtk/terminal-gtk.cpp
 ebf6df3e2885ac7958d35bcf9f60c6fbdaca7916 2021032120:21:19-UTC ./tools/xmldom/xmlnode.prg
-b92e7df9619d73a47c7b9c5ba9c6bf9a8f82b41c 2021031623:13:10-UTC ./tools/xmldom/xmlpars.prg
 9f0145e7b1f051e427d4e80e52e35c4b7df0cb30 2021031610:31:44-UTC ./tabobj/common.src/tabchlog.prg
-844efed726022e3138ba1d8f8c18d0abc5ea7e5a 2021031520:20:26-UTC ./tools/xmldom/xmldom_lemon.prg
 2d5541c07a4fb4a919eba22f63cbc6a041a0e1ee 2021030513:01:35-UTC ./usr/bin/linux/websrv
 9786e6c8635e400af13ea722675b94c1587e529d 2021022321:49:11-UTC ./terminal/common/tcpio.cpp
 dde953875acc4fcda8cb6a5954c08cd157f7fa26 2021022210:20:25-UTC ./tutor/rename/rnm.say
 cb433612e6fb36bdcf245a575fc8616b5c31bb12 2021022210:20:24-UTC ./tutor/pm/linux/3/search.say
 30c981840d2472140cd75950d92d96166a401aca 2021022210:20:15-UTC ./tools/textview/ver3/zsearch.say
-cae8555984e13e4d639321c9be780a942c04cac8 2021022210:20:15-UTC ./tools/z/ver3/zreplace.say
 468fdb1b67a41d8449e8ae2e35320efd16bcc750 2021022210:20:01-UTC ./tools/dbfview/search.say
 ffcc749cdfde7939119a8f0541858bc25cbafe33 2021022210:20:01-UTC ./tools/ddict2/mskmerge.say
 cfb71f0ca9b96a8510c0a17b25dce5f7fc0d0737 2021022210:20:01-UTC ./tools/ddict2/mskowner.say
@@ -1773,7 +1776,6 @@ d2f2ef693f05c7b518fe0778039023c019e91b59 2010041417:35:14-UTC ./tutor/fpath/m.ba
 64064fded284635647027bba1ae99588b20bb21d 2010040112:13:17-UTC ./ccctools/prg2ppo/xtlex.lex
 9aad1fc225acc15431932f556d9417651457cfbe 2010040112:13:12-UTC ./ccctools/prg2ppo/trinp.lex
 503791cf8afb39b8b83e22ffd235d12d5e3dddd0 2010040112:13:07-UTC ./ccctools/prg2ppo/trfind.lex
-e164f4118d98191141f326a5222dfd7a282c3801 2010040111:20:06-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
 530d9a9c8c038f754b8d027711d2cbbfdc0bfd5c 2010020608:58:04-UTC ./doc/ccc-belulrol/kivetelek.tex
 89a936cc7ff8bb68674f1dfd82b81a555f0eb580 2010013023:16:35-UTC ./doc/ccc-belulrol/objektumok.tex
 d63cf28eff3f3f3cee8c364b15d401f2c1f826c6 2010012911:09:35-UTC ./tools/websrv/httpdate.prg
@@ -2048,7 +2050,6 @@ c447444fa62bf279a0788c0d73e4dd5f848dccfa 2008012720:14:05-UTC ./tabobj/tbbtbtx/b
 a95f4bec8fa426789d24a2fc2ce1efce3a4b41a4 2008012423:15:41-UTC ./tools/sql2/driver-oracle/ociload.cpp
 2e911092d81d37618bbbada584ed4780ffc67063 2008012420:37:40-UTC ./tools/crypto/crypterr.cpp
 f4b332071fdf4aa30e649a42fff441c533c6014b 2008012420:37:32-UTC ./tools/crypto/ccc_crypto.h
-b423e24962a9f2d281ed19d88701e77b95ff2856 2008012420:35:08-UTC ./tabobj/tbbtbtx/btree/extern.h
 21ceff9ada039d7a890d58d7263f4188bab6a826 2008012418:41:20-UTC ./usr/include/xmethod2.h
 8f1746cbf57e9c8667fc5dcc5a1174a534df0b89 2008012417:07:36-UTC ./ccctools/ppo2cpp/decllist.h
 88a252abdf70bc41b0b575c282442d8882891dc7 2008012416:58:39-UTC ./ccctools/ppo2cpp/parsenode.cpp
@@ -2880,7 +2881,6 @@ bdad7147d82886250a5d647048e8de503a95648b 2006042014:22:23-UTC ./tutor/nlstext/tr
 19aa49c8898c52e84847fd6505a4f1608d5dac90 2006042011:00:48-UTC ./tutor/nlstext/translation/hu/nlstext.hu.tran
 6dd1d061623365503660d66a732f381b3376da28 2006042010:38:09-UTC ./ccctools/readme.hu.txt
 c39736426498bea3befc1f176083c1ebc2903fd4 2006041918:49:31-UTC ./terminal/xtest/proba.prg
-0b3bbf0d75be0740f7ac64d7a4c89e6527d70206 2006041914:44:17-UTC ./tabobj/tbbtbtx/btree/db.cpp
 73e0fb287d9819d9388ef261c1b048603f901e30 2006041913:21:13-UTC ./tabobj/tbbtbtx/dbinfo.prg
 5ab31108e6a3b98796d02e6cf084569ed54fd718 2006041913:19:42-UTC ./ccclib/src/arr2bin.prg
 86e1b6cc919e02a5ff64654108df806c62c2d09e 2006041912:59:30-UTC ./tabobj/tbbtbtx/btree/bt_data.cpp

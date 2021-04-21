@@ -21,6 +21,7 @@
 %x st_incl st_ifdef st_ifndef st_ifeq st_ifneq 
 %x st_waitelse st_waitendif st_comment 
 %x st_raw st_waitraw
+%x st_clang st_waitcend
 
 %{
 
@@ -250,6 +251,18 @@ EOLX           ([ \t]|{COM})*{COMX}
 }
 <st_waitraw>{
 "<<"{SYMBOL}">>"             {raw_end();}
+"\n"
+.
+}
+
+^[ \t]*#clang                {outchar('\n');outstr(yytext);statepush(st_clang);}
+<st_clang>{
+^[ \t]*#cend                 {outstr(yytext);statepop();outtype=9;printbuf();}
+"\n"                         {outchar(*yytext);}
+.                            {outchar(*yytext);}
+}
+<st_waitcend>{
+^[ \t]*#cend                 {statepop();}
 "\n"
 .
 }
@@ -515,6 +528,10 @@ static void printbuf()
         else if( outtype==4 ) //#undef direktíva 
         {
             _clp_undef(1);
+        }
+        else
+        {
+            _clp_qqout(1);
         }
  
         pop();

@@ -260,10 +260,10 @@ prg(P) ::= header(H) lfunction(F).{
     //A parser 4.4.xx óta rekurzív, azért itt nem lehet takarítani.
 }
  
-header(H) ::= lnewline0(N) namespace(S) lusing(U) lstatdefin(D).{
-    H=(new parsenode)->rule(4,N,S,U,D);
-    H->text="header ::= lnewline0 namespace lusing lstatdefin.";
-    H->codegen=codegen_header_lnewline0_namespace_lusing_lstatdefin;
+header(H) ::= lnewline0(N) namespace(S) lusing(U) lstatdefin(D) clang(C).{
+    H=(new parsenode)->rule(5,N,S,U,D,C);
+    H->text="header ::= lnewline0 namespace lusing lstatdefin clang.";
+    H->codegen=codegen_header_lnewline0_namespace_lusing_lstatdefin_clang;
 
     if( headerflag )
     {
@@ -399,6 +399,18 @@ statdef(D) ::= SYMBOL(S) ASSIGN expr(X).{
     //!
     add_static(S);
     S->cargo=headerflag?SYM_GLOBSTAT:SYM_LOCSTAT;
+}
+
+clang(S) ::=. { 
+    S=(new parsenode)->rule(0);
+    S->text="clang ::= .";
+    S->codegen=codegen_clang;
+}
+
+clang(S) ::= CLANG(C) lnewline(N). { 
+    S=(new parsenode)->rule(2,C,N);
+    S->text="clang ::= CLANG.";
+    S->codegen=codegen_clang_CLANG;
 }
 
 lfunction(L) ::= function(F).{
@@ -824,6 +836,13 @@ statement(S) ::= expr(X).{
     S->text="statement ::= expr.";
     S->codegen=codegen_statement_expr; 
 }
+
+statement(S) ::= CLANG(C).{
+    S=(new parsenode)->rule(1,C);
+    S->text="statement ::= CLANG.";
+    S->codegen=codegen_statement_CLANG; 
+}
+
 
 begseq(B) ::= BEGSEQ newline(N) lstatement(L).{
     B=(new parsenode)->rule(2,N,L);

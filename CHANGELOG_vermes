@@ -1,3 +1,7 @@
+2021-04-21 #clang tamogatas:
+  prg2ppo: 1.4.3 -> 1.5.0
+  ppo2cpp: 5.1.1 -> 5.2.0 
+
 2021-04-10
   Javitva a 0 hosszu bt kiterjesztesu fajok megnyitasa
   (nem ir bele az ilyen fajlba, hanem hibaval kilep);

@@ -1,25 +1,6 @@
 
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 extern int codegen_prg_header_lfunction(parsenode *p,void *v);
-extern int codegen_header_lnewline0_namespace_lusing_lstatdefin(parsenode *p,void *v);
+extern int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void *v);
 extern int codegen_namespace(parsenode *p,void *v);
 extern int codegen_namespace_NAMESPACE_dotsymbol_nsalias_ldotsymbol_lnewline(parsenode *p,void *v);
 extern int codegen_lusing(parsenode *p,void *v);
@@ -39,6 +20,8 @@ extern int codegen_statdefin_statdef(parsenode *p,void *v);
 extern int codegen_statdefin_statdefin_COMMA_statdef(parsenode *p,void *v);
 extern int codegen_statdef_SYMBOL(parsenode *p,void *v);
 extern int codegen_statdef_SYMBOL_ASSIGN_expr(parsenode *p,void *v);
+extern int codegen_clang(parsenode *p,void *v);
+extern int codegen_clang_CLANG(parsenode *p,void *v);
 extern int codegen_lfunction_function(parsenode *p,void *v);
 extern int codegen_lfunction_lfunction_function(parsenode *p,void *v);
 extern int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p,void *v);
@@ -95,6 +78,7 @@ extern int codegen_statement_WHILE_expr_newline_lstatement_END(parsenode *p,void
 extern int codegen_statement_FOR_SYMBOL_ASSIGN_expr_TO_expr_forstep_newline_lstatement_END(parsenode *p,void *v);
 extern int codegen_statement_LOOP(parsenode *p,void *v);
 extern int codegen_statement_EXIT(parsenode *p,void *v);
+extern int codegen_statement_CLANG(parsenode *p,void *v);
 extern int codegen_statement_expr(parsenode *p,void *v);
 extern int codegen_begseq_BEGSEQ_newline_lstatement(parsenode *p,void *v);
 extern int codegen_begseq_BEGSEQ_expr_newline_lstatement(parsenode *p,void *v);

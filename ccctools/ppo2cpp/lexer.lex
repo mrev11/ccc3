@@ -29,7 +29,7 @@
 
 %}
 
-%x line raw sym
+%x line raw sym clang
 
 %option c++
 %option yyclass="ppo2cpp_lexer"
@@ -118,6 +118,13 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 "\""                                {raw_cat("\\\"");}
 "\n"                                {raw_cat("\\n\"\nL\"");/*darabol*/}
 .                                   {raw_cat();}
+}
+
+"#clang"                            {yy_push_state(clang);}
+<clang>{
+"#cend"                             {yy_pop_state();return CLANG;}
+"\n"                                {clang_cat();}
+.                                   {clang_cat();}
 }
 
 "."                                 {return DOT;} 

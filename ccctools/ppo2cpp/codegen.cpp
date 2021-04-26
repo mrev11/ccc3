@@ -1673,7 +1673,7 @@ int codegen_function_funcid_LPAR_argument_RPAR_newline_body(parsenode *p,void *v
     if(current_namespace){strcat(ns,current_namespace);strcat(ns,".");}
     if(inner_namespace){strcat(ns,inner_namespace);strcat(ns,".");}
     fprintf(code,"\npush_call(\"%s%s\",base);\n//",ns,funcname);
-
+    
     tabdepth=1; //code
     cgen(p,1); //argument
     cgen(p,3); //body
@@ -2274,8 +2274,25 @@ int codegen_statement_EXIT(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_statement_CLANG(parsenode *p,void *v)//PROTO
 {
+    int i;
+    parsenode *q;
+
     nltab();fprintf(code,"//clang");
+    i=0;
+    while( 0!=(q=(parsenode*)(nodetab_local->get(i))) )
+    {
+        nltab();fprintf(code,"#define LOCAL_%s (base+%d)",q->text,i);
+        ++i;
+    }
+
     nltab();fprintf(code,"{%s}",rtxt(p,0));
+
+    i=0;
+    while( 0!=(q=(parsenode*)(nodetab_local->get(i))) )
+    {
+        nltab();fprintf(code,"#undef LOCAL_%s",q->text);
+        ++i;
+    }
     nltab();fprintf(code,"//cend");
     return 0;
 }

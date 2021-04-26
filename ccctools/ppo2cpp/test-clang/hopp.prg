@@ -1,5 +1,5 @@
 
-//C helyett lehet prg-t irni
+//cpp helyett lehet prg-t irni
 //ha a teljes tartalmat #clang-ba tesszuk
 //plusz irunk bele egy dummy fuggvenyt
 

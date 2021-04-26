@@ -20,30 +20,42 @@ static int print(const char *txt)
 
 ********************************************************************************************
 function proba(txt)
+static forron:=a"VANAKI FORRÓN SZERETI"
 local x:=a"!"
 
     vanaki+x
+    forron+x
     txt+x
 
-    ?? "Hopp-1"+":"
+    ?? "Hopp-1"+": "
 
     // A fuggvenyek belsejeben, az utasitasok helyen
     // lehetnek #clang section-ok (tobb is), ezek kotelezoen
     // valtozatlan allapotban hagyjak maguk utan a stacket.
 
     #clang
-        push_symbol(_st_vanaki_ptr());//vanaki
-        push_symbol(base+1);//x
+        push_symbol(_st_vanaki_ptr());  //vanaki (global static (zarojel))
+        push_symbol(LOCAL_x);//x
         add();
         print( BINARYPTR(TOP()) );
         pop();
     #cend
 
-    ?? "Hopp-2"+":"
+    ?? "Hopp-2"+": "
 
     #clang
-        push_symbol(base+0);//txt
-        push_symbol(base+1);//x
+        push_symbol(_st_forron.ptr);    //forron (local static (nincs zarojel))
+        push_symbol(LOCAL_x);//x
+        add();
+        print( BINARYPTR(TOP()) );
+        pop();
+    #cend
+
+    ?? "Hopp-3"+": "
+
+    #clang
+        push_symbol(LOCAL_txt);         //txt (local auto)
+        push_symbol(LOCAL_x);//x
         add();
         print( BINARYPTR(TOP()) );
         pop();

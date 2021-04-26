@@ -1,3 +1,5 @@
+2021-04-26 clang: makrok a local valtozokhoz;
+
 2021-04-21 #clang tamogatas:
   prg2ppo: 1.4.3 -> 1.5.0
   ppo2cpp: 5.1.1 -> 5.2.0 

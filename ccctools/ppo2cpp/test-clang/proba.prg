@@ -1,15 +1,18 @@
 
 
-namespace proba
+namespace proba.szerencse
 
-static vanaki:=a"vanaki forrón szereti"
+static vanaki:=a"vanaki forron szereti"
+static pi:=valueofpi()
 
 
 ********************************************************************************************
 // A static valtozok es a function/class-ok kozott lehet egy (0 vagy 1 darab) 
 // #clang section, itt lehet elhelyezni az #include-okat es a C fuggvenyeket.
+// A #clang section belsejeben global (ures) namespace van.
 
-#clang
+#clang //global namespace!
+
 #include <cccapi.h>
 
 static int print(const char *txt)
@@ -18,9 +21,16 @@ static int print(const char *txt)
 }
 #cend
 
+
+********************************************************************************************
+function valueofpi()
+local blk:={||3.141592} //legyen benne block is
+    return eval(blk)
+
+
 ********************************************************************************************
 function proba(txt)
-static forron:=a"VANAKI FORRÓN SZERETI"
+static forron:=a"VANAKI FORRON SZERETI"
 local x:=a"!"
 
     vanaki+x
@@ -70,11 +80,11 @@ local x:=a"!"
         printf("\n");
     #cend
 
-    ?? "Ok"
+    ?? "Ok ", pi
+
 
 
 ********************************************************************************************
-
 
 
     

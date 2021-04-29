@@ -472,44 +472,44 @@ void fundecl_locstatini(const char *fun,const char*var)
 
 
 //--------------------------------------------------------------------------
-void namespace_begin(char *ns)
+void namespace_begin(char *ns, FILE *file)
 {
     if( ns )
     {
         char *p=ns;
-        printf( "\nnamespace _nsp_");
+        fprintf(file,"\nnamespace _nsp_");
         while( *p )
         {
             if( *p=='.' )
             {
-                printf("{\nnamespace _nsp_");
+                fprintf(file,"{\nnamespace _nsp_");
             }
             else
             {
-                printf("%c",*p);
+                fprintf(file,"%c",*p);
             }
             p++;
         }
-        printf("{");
+        fprintf(file,"{");
     }
 }
 
 //--------------------------------------------------------------------------
-void namespace_end(char *ns)
+void namespace_end(char *ns, FILE *file)
 {
     if( ns )
     {
-        printf("\n}");
+        fprintf(file,"\n}");
         char *p=ns;
         while( *p )
         {
             if( *p=='.' )
             {
-                printf("}");
+                fprintf(file,"}");
             }
             p++;
         }
-        printf("//namespace %s",ns);
+        fprintf(file,"//namespace %s",ns);
     }
 }
 
@@ -541,7 +541,7 @@ static char *nsprint(char *txt)
     
     if( (nmspac!=0) && ((ns1==0) || (strcmp(nmspac,ns1)!=0)) )
     {
-        namespace_end(nmspac);
+        namespace_end(nmspac,stdout);
         free(nmspac);
         nmspac=0;
     }
@@ -549,7 +549,7 @@ static char *nsprint(char *txt)
     if( (ns1!=0) && ((nmspac==0) || (strcmp(nmspac,ns1)!=0)) )
     {
         printf("\n");
-        namespace_begin(ns1);
+        namespace_begin(ns1,stdout);
         nmspac=ns1;
     }
     

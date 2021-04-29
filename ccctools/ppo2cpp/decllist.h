@@ -27,8 +27,8 @@ extern void  fundecl_codeblock(const char *fun,int cnt);
 extern void  fundecl_statini(const char *fun,const char*var);
 extern void  fundecl_locstatini(const char *fun,const char*var);
 extern void  fundecl_list(void);
-extern void  namespace_begin(char*);
-extern void  namespace_end(char*);
+extern void  namespace_begin(char*,FILE*);
+extern void  namespace_end(char*,FILE*);
 
 extern void flddecl_ini(void);
 extern void flddecl_insert(char *text);

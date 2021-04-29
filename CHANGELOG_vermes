@@ -1,3 +1,7 @@
+2021-04-28 #clang:
+  a headerben levo #clang beallitja a global namespace-t,
+  a #clang section utan visszaallitodik az eredeti namespace;
+
 2021-04-26 clang: makrok a local valtozokhoz;
 
 2021-04-21 #clang tamogatas:

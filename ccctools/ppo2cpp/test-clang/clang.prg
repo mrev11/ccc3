@@ -1,6 +1,9 @@
 
 function main()
-    proba.proba(a"próba szerencse")
-    ? hopp()
+    proba.szerencse.proba(a"proba szerencse")
+    ?? hopp()
+    ? proba.szerencse.demoNew():m
     ?
-    
+
+
+        

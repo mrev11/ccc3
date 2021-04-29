@@ -230,13 +230,13 @@ int main(int argc, char**argv)
     metdecl_list();
 
     code=fopen(ppo2cpp_code,"r");
-    namespace_begin(current_namespace);
+    namespace_begin(current_namespace,stdout);
     int c;
     while( EOF!=(c=fgetc(code)) )
     {
         putchar(c);
     }
-    namespace_end(current_namespace);
+    namespace_end(current_namespace,stdout);
     putchar('\n');
     
     fclose(code);

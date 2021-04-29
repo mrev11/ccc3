@@ -879,8 +879,8 @@ int codegen_prg_header_lfunction(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void *v)//PROTO
 {
-    cgen(p,3);
-    cgen(p,4);
+    cgen(p,3); // lstatdefin
+    cgen(p,4); // clang
 
     int i;
     for(i=0; i<nodetab_inistat->top; i++)
@@ -1162,11 +1162,13 @@ int codegen_clang(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_clang_CLANG(parsenode *p,void *v)//PROTO  
 {
-    fprintf(code,"\n");
+    namespace_end(current_namespace,code); //global ns
+    fprintf(code,"\n\n");
     fprintf(code,"//CLANG");
     fprintf(code,"%s",rtxt(p,0));
     fprintf(code,"//CEND");
     fprintf(code,"\n");
+    namespace_begin(current_namespace,code); //restore ns
     return 0;
 }
 

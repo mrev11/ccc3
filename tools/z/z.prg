@@ -526,7 +526,7 @@ local flen,ftxt
         mode:=x:markmode
     
         hdrtxt:="  Line"+str(x:actrow,6) 
-        hdrtxt+="  Col"+str(x:actcol,5) 
+        hdrtxt+="  Col"+str(x:actcol,6) 
         hdrtxt+="  FSPEC"
         hdrtxt+="  "+mode+" "+percent+" "
         

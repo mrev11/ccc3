@@ -1,3 +1,5 @@
+2021-05-25 iniObjectFromArray javitott valtozat (shallow copy);
+
 2021-04-28 #clang:
   a headerben levo #clang beallitja a global namespace-t,
   a #clang section utan visszaallitodik az eredeti namespace;

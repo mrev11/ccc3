@@ -29,6 +29,7 @@ void _clp_val(int argno)
     VALUE *base=stack-argno;
     if( argno<1 )
     {
+        error_arg("val",base,1);
     }
     else if( base->type==TYPE_STRING )
     {
@@ -37,6 +38,10 @@ void _clp_val(int argno)
     else if( base->type==TYPE_BINARY )
     {
         d=strtod(BINARYPTR(base),0);
+    }
+    else
+    {
+        error_arg("val",base,1);
     }
     stack=base;
     number(d);

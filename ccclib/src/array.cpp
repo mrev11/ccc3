@@ -424,6 +424,10 @@ void _clp_array(int argno)
     
     for( int i=1; i<=argno; i++ )
     {
+        if( (base+argno-i)->type!=TYPE_NUMBER )
+        {
+            error_arg("array",base,argno);
+        }
         int dim=max(D2INT((base+argno-i)->data.number),0);
         
         if( i<=1 )

@@ -717,3 +717,21 @@ pop_call();
 
 
 //------------------------------------------------------------------------
+void _clp_atail(int argno) // atail(arr)
+{
+    CCC_PROLOG("atail",1);
+    VALUE *a=_para(1);
+    unsigned len=_paralen(1);
+    if( len>0 )
+    {
+        _retv(a+len-1);
+    }
+    else
+    {
+        _ret(); //NIL
+    }
+    CCC_EPILOG();
+}
+
+
+//------------------------------------------------------------------------

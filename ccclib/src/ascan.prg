@@ -18,10 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-****************************************************************************
-function atail(arr)
-local x:=len(arr)
-    return if(x<=0,NIL,arr[x])
 
 ****************************************************************************
 function ascan(arr,blk,st,cn)
@@ -51,8 +47,8 @@ local at:=0, i
         for i:=st to st+cn-1
 
             //1999.05.11 
-            //ascan defaultja az '=' operátorral történő összehasonlítás,
-            //CCC-ben azonban '=' operátor nincs, helyette: !(...!=...)
+            //ascan defaultja az '=' operatorral torteno osszehasonlitas,
+            //CCC-ben azonban '=' operator nincs, helyette: !(...!=...)
             //FONTOS: blk van a jobb oldalon
 
             if( !(arr[i]!=blk) )  

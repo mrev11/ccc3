@@ -1,4 +1,4 @@
-//input: deferror.ppo (5.0.21)
+//input: deferror.ppo (5.2.0)
 
 #include <cccdef.h>
 
@@ -39,21 +39,21 @@ static void _ini__mutex();
 static void _ini__quitblk();
 static void _ini__signalblk();
 
-class _method3_args: public _method3_{public: _method3_args():_method3_("args"){};}; static _method3_args _o_method_args;
-class _method3_candefault: public _method3_{public: _method3_candefault():_method3_("candefault"){};}; static _method3_candefault _o_method_candefault;
-class _method3_canretry: public _method3_{public: _method3_canretry():_method3_("canretry"){};}; static _method3_canretry _o_method_canretry;
-class _method3_cansubstitute: public _method3_{public: _method3_cansubstitute():_method3_("cansubstitute"){};}; static _method3_cansubstitute _o_method_cansubstitute;
-class _method3_classname: public _method3_{public: _method3_classname():_method3_("classname"){};}; static _method3_classname _o_method_classname;
-class _method3_description: public _method3_{public: _method3_description():_method3_("description"){};}; static _method3_description _o_method_description;
-class _method3_filename: public _method3_{public: _method3_filename():_method3_("filename"){};}; static _method3_filename _o_method_filename;
-class _method3_gencode: public _method3_{public: _method3_gencode():_method3_("gencode"){};}; static _method3_gencode _o_method_gencode;
-class _method3_isderivedfrom: public _method3_{public: _method3_isderivedfrom():_method3_("isderivedfrom"){};}; static _method3_isderivedfrom _o_method_isderivedfrom;
-class _method3_operation: public _method3_{public: _method3_operation():_method3_("operation"){};}; static _method3_operation _o_method_operation;
-class _method3_oscode: public _method3_{public: _method3_oscode():_method3_("oscode"){};}; static _method3_oscode _o_method_oscode;
-class _method3_severity: public _method3_{public: _method3_severity():_method3_("severity"){};}; static _method3_severity _o_method_severity;
-class _method3_subcode: public _method3_{public: _method3_subcode():_method3_("subcode"){};}; static _method3_subcode _o_method_subcode;
-class _method3_subsystem: public _method3_{public: _method3_subsystem():_method3_("subsystem"){};}; static _method3_subsystem _o_method_subsystem;
-class _method3_tries: public _method3_{public: _method3_tries():_method3_("tries"){};}; static _method3_tries _o_method_tries;
+class _method6_args: public _method6_{public: _method6_args():_method6_("args"){};}; static _method6_args _o_method_args;
+class _method6_candefault: public _method6_{public: _method6_candefault():_method6_("candefault"){};}; static _method6_candefault _o_method_candefault;
+class _method6_canretry: public _method6_{public: _method6_canretry():_method6_("canretry"){};}; static _method6_canretry _o_method_canretry;
+class _method6_cansubstitute: public _method6_{public: _method6_cansubstitute():_method6_("cansubstitute"){};}; static _method6_cansubstitute _o_method_cansubstitute;
+class _method6_classname: public _method6_{public: _method6_classname():_method6_("classname"){};}; static _method6_classname _o_method_classname;
+class _method6_description: public _method6_{public: _method6_description():_method6_("description"){};}; static _method6_description _o_method_description;
+class _method6_filename: public _method6_{public: _method6_filename():_method6_("filename"){};}; static _method6_filename _o_method_filename;
+class _method6_gencode: public _method6_{public: _method6_gencode():_method6_("gencode"){};}; static _method6_gencode _o_method_gencode;
+class _method6_isderivedfrom: public _method6_{public: _method6_isderivedfrom():_method6_("isderivedfrom"){};}; static _method6_isderivedfrom _o_method_isderivedfrom;
+class _method6_operation: public _method6_{public: _method6_operation():_method6_("operation"){};}; static _method6_operation _o_method_operation;
+class _method6_oscode: public _method6_{public: _method6_oscode():_method6_("oscode"){};}; static _method6_oscode _o_method_oscode;
+class _method6_severity: public _method6_{public: _method6_severity():_method6_("severity"){};}; static _method6_severity _o_method_severity;
+class _method6_subcode: public _method6_{public: _method6_subcode():_method6_("subcode"){};}; static _method6_subcode _o_method_subcode;
+class _method6_subsystem: public _method6_{public: _method6_subsystem():_method6_("subsystem"){};}; static _method6_subsystem _o_method_subsystem;
+class _method6_tries: public _method6_{public: _method6_tries():_method6_("tries"){};}; static _method6_tries _o_method_tries;
 
 MUTEX_CREATE(_mutex_mutex);
 static VALUE* _st_mutex_ptr()

@@ -1,4 +1,4 @@
-//input: strtran.ppo (5.0.21)
+//input: strtran.ppo (5.2.0)
 
 #include <cccdef.h>
 

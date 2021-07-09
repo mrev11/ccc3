@@ -325,6 +325,78 @@ static void lvalue(parsenode *p)
         free(cls);
     }
 
+    else if( p->codegen==codegen_expr_LBRACE_lfuncpar_RBRACE )
+    {
+        //lfuncpar ::=.
+        //lfuncpar ::= parexpr.
+        //lfuncpar ::= lfuncpar0 COMMA parexpr0.
+        //lfuncpar0 ::= parexpr0.
+        //lfuncpar0 ::= lfuncpar0 COMMA parexpr0.
+        //parexpr0 ::=.
+        //parexpr0 ::= parexpr.
+        //parexpr ::= expr.
+        //parexpr ::= STAR.
+        //parexpr ::= STAR LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.
+        //parexpr ::= AT SYMBOL.
+
+        //fprintf(code,"\n//LINE %d %d",p->lineno,lexer->getinputlineno());
+
+        parsenode *q=p->right[0]; // lfuncpar
+        while( q->cargo>=1 ) //amig a lista el nem fogy
+        {
+            //fprintf(code,"\n//DBG(len=%d) %-40s",q->cargo,q->text);
+
+            parsenode *x=0;
+
+            if( q->codegen==codegen_lfuncpar_lfuncpar0_COMMA_parexpr0 )
+            {
+                //fprintf(code,"  >>codegen_lfuncpar_lfuncpar0_COMMA_parexpr0 ");
+                x=q->right[1];
+            }                              
+            else if( q->codegen==codegen_lfuncpar0_lfuncpar0_COMMA_parexpr0 )
+            {                              
+                //fprintf(code,"  >>codegen_lfuncpar0_lfuncpar0_COMMA_parexpr0");
+                x=q->right[1];
+            }                              
+            else if( q->codegen==codegen_lfuncpar0_parexpr0 )
+            {                              
+                //fprintf(code,"  >>codegen_lfuncpar0_parexpr0");
+                x=q->right[0];
+            }
+            else if( q->codegen==codegen_lfuncpar_parexpr )
+            {                              
+                //fprintf(code,"  >>codegen_lfuncpar_parexpr");
+                x=q->right[0];
+            }
+            
+            //most x: parexpr vagy parexpr0
+            if( x->codegen==codegen_parexpr0_parexpr )
+            {
+                x=x->right[0];
+            }
+
+            x->lineno=p->lineno;
+
+            //most x: parexpr (vagy hibas parexpr0)
+            if( x->codegen!=codegen_parexpr_expr )
+            {
+                illegal_lvalue(x);
+            }
+            x=x->right[0];
+            //most x: expr (ami lehet lvalue, de nem biztosan az) 
+
+            //fprintf(code," >>> %s ",x->text);
+            
+            
+            nltab();fprintf(code,"dup();");
+            nltab();fprintf(code,"idxr0nil(%d);",q->cargo);
+            lvalue(x);
+            nltab();fprintf(code,"pop();");
+
+            q=q->right[0];
+        }
+    }
+
     else
     {
         illegal_lvalue(p);

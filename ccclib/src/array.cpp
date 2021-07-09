@@ -291,6 +291,65 @@ void idxr0(double i) // indexkifejezes a jobboldalon (konstans index)
 }
 
 //------------------------------------------------------------------------
+void idxr0nil(double i) // mint idxr0, csak tulindexelesre NIL-t ad
+{
+// stack: a --- a[i]
+
+    VALUE *a=TOP();
+    
+    if( a->type==TYPE_ARRAY )
+    {
+        unsigned len=ARRAYLEN(a);
+        unsigned idx=D2UINT(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            *TOP()=*( ARRAYPTR(a)+idx-1 );
+        }
+    }
+
+    else if( a->type==TYPE_STRING )
+    {
+        unsigned long len=STRINGLEN(a);
+        unsigned long idx=D2ULONGX(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            CHAR c=STRINGPTR(a)[idx-1];
+            POP();
+            *stringl(1)=c;
+        }
+    }
+
+    else if( a->type==TYPE_BINARY )
+    {
+        binarysize_t len=BINARYLEN(a);
+        binarysize_t idx=D2ULONGX(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            BYTE c=BINARYPTR(a)[idx-1];
+            POP();
+            *binaryl(1)=c;
+        }
+    }
+
+    else
+    {
+        error_arr("idxr0nil",a,1);
+    }
+}
+
+//------------------------------------------------------------------------
 void array(int len) //stackrol levett elemekkel inicializalt array
 {
 // stack: A1,A2,...,Alen --- A

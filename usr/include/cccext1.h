@@ -153,6 +153,7 @@ extern void array(int);
 extern VALUE* idxl0(double); //obsolete
 extern VALUE* idxxl0(double);
 extern void idxr0(double);
+extern void idxr0nil(double);
 extern VALUE* array0(int);
 
 //slice.obj:

@@ -1,3 +1,6 @@
+2021.07.08 -- 5.3.0
+  array ertekadas
+
 2021.04.21 -- 5.2.0
   #clang tamogatas 
 
@@ -8,7 +11,7 @@
   begin-hez kapcsolt breakblock;
 
 2017.03.24 -- 5.0.21
-  npdetab.h-ban realloc meretezes javitva; 
+  nodetab.h-ban realloc meretezes javitva; 
 
 2015.02.11 -- 5.0.20
   Munkafájlok (ppo2cpp_code, ppo2cpp_diag, ppo2cpp_meth) neve 

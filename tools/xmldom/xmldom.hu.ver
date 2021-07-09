@@ -1,3 +1,7 @@
+2021.04.14 -- 1.7
+  a parser kezeli a namespace-eket;
+  <nodename / > szintaktikai hiba, helyesen: <nodename />;
+
 2013.10.05 -- 1.6.03
   Konvertálja a &#NNNN; &#xHHHH; karakterkódokat.
   xmlparser:entityconv defaultja .t.-re változott.

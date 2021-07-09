@@ -150,7 +150,7 @@ xmldecl ::= LPARQM qsymbol(S) attrlist(A) QMRPAR.{
 }
 
 
-node(N) ::= LPAR symbol(S) attrlist(A) SLASH RPAR.{
+node(N) ::= LPAR symbol(S) attrlist(A) SLRPAR.{
     push(parservp);//parser objektum
     number(S);
     number(A);

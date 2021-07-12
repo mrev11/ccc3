@@ -392,6 +392,12 @@ static void out1(int x, VALUE *v)
             string(CHRLIT("block"));
             print_str(x);
             break;
+
+        case TYPE_REF:
+            push_symbol(v); //deref
+            out1(x,TOP());
+            pop();
+            break;
     }
 
     stack=base;

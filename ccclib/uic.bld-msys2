@@ -1,0 +1,10 @@
+-lccc3_uic
+
+-duic
+-duic/termapi
+-duic/compat
+
+-iuic/screenbuf
+-iinclude
+
+BUILD_SRC=src

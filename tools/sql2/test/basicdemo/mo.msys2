@@ -1,0 +1,6 @@
+#!/bin/bash
+mkdir exe-ora 2>/dev/null
+cp -p start-scripts/*.b exe-ora 2>/dev/null
+
+bapp_winc.msys2  @parfile-o.bld
+

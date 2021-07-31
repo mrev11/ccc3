@@ -1,0 +1,8 @@
+#!/bin/bash
+. ${CCCDIR}/usr/bin/${CCCUNAME}/__msys2.msys2
+export BUILD_LIB=
+
+#printenv | grep CCC
+#printenv | grep BUILD
+
+build.exe "$@"

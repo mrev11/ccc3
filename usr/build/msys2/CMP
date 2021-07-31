@@ -1,0 +1,4 @@
+#!/bin/bash
+export DIFF=/mingw64/bin/diff
+savex.exe -s../linux -md -x.bak.savex.  -lxCMP
+

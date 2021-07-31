@@ -1,4 +1,10 @@
 #!/bin/bash
+#set -x
+
+if [[ $(uname) =~ MSYS ]]; then
+    echo Not usable in $(uname)
+    exit 1
+fi
 
 #cd proto && m && cd ..
 #rm -f objlin/ppo2cpp.obj

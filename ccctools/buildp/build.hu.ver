@@ -1,3 +1,11 @@
+2021.07.26 -- 1.5.0
+  MSYS2 tamogatas: msys2-ben bash scriptekkel vegzi a forditast.
+  MSYS2-ben a scripteket run() helyett spawn(bash.exe)-vel inditja.
+  A scriptek kiterjesztese lehet: ".bat", ".bash", ".sh", ".msys2".
+  A program a prg2obj.XXX kiterjesztesebol talalja ki, hogy melyik 
+  kiterjesztessel kell dolgozni.
+  Az fspec.prg fuggvenyek transzparensen kezelik a "/" es "\" dirsep-et. 
+
 2020.11.05 -- 1.4.11
   build.prg-ben a lower() fuggveny makroval hatastalanitva,
   ezzel minden filespecifikacio case sensitive lett,

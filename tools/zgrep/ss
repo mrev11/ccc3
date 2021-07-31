@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#FIGYELEM, ezekre kell ugyelni:
+#
+#1) Az ncterm-es programok nem futhatnak hatterben.
+#
+#2) Az ncterm-es child programok csak orokolt terminallal mukodnek jol.
+#   Maskepp ket terminal fut egyszerre, es osszekeverednek az uzenetek.
+#
+#3) Amikor a child a parentjetol orokolt terminalban fut,
+#   akkor a parentnek mindenkepp meg kell varnia a child kilepeset, 
+#   maskepp osszekeverednek az uzenetek (es barmi lehet, pl. coredump).
+#   Ezt ncterm-es es X-es programoknal is be kell tartani.
+
+
+export OREF_SIZE=200000
+export CCCTERM_SIZE=120x40
+
+export TEMP=~/.temp
+export GREP='grep --text -i -H -n'
+export FIND='savex.exe . -y -f -i.prg.cpp.c.ch.h.lex.lem.java.tds. -r.ppo. -lrobj*'
+
+if [ "$CCCTERM_INHERIT" == "yes" ]; then
+    #must not run in background
+    zgrep.exe "$1" "$2"         
+else    
+    #may run in bacground
+    zgrep.exe "$1" "$2" &       
+fi    

@@ -1,5 +1,5 @@
 #!/bin/bash
-# FreeBSD-n build.exe nem tudja megat felulirni,
+# FreeBSD-n nem tudja magat felulirni,
 # ezert idehozunk belole egy peldanyt.
 
 EXE=$CCCDIR/usr/bin/$CCCUNAME

@@ -1,0 +1,11 @@
+#!/bin/bash
+# FreeBSD-n build.exe nem tudja magat felulirni,
+# ezert idehozunk belole egy peldanyt.
+
+EXE=$CCCDIR/usr/bin/$CCCUNAME
+cp -p $EXE/build.exe .
+export PATH=.:$PATH
+
+bapp_win_.msys2  "BUILD_EXE=$EXE" 
+
+rm build.exe

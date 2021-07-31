@@ -1,0 +1,11 @@
+#!/bin/bash
+#export MKENTITYLIB_FORCE=on
+
+pushd  driver-sqlite3;   m.msys2;         popd
+pushd  driver-postgres;  m.msys2;         popd
+pushd  driver-oracle;    m.msys2;         popd
+pushd  driver-mysql;     m.msys2;         popd
+pushd  driver-db2;       m.msys2;         popd
+pushd  util;             mkall.msys2;     popd
+pushd  test;             mkall.msys2;     popd
+

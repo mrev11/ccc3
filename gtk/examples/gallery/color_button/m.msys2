@@ -1,0 +1,2 @@
+#!/bin/bash
+bapp_win_.msys2 @gtk-win.bld @parfile.bld

@@ -1,5 +1,12 @@
 #!/bin/bash
-# FreeBSD-n build.exe nem tudja megat felulirni,
+
+if [[ $(uname) =~ MSYS ]];then
+    echo Not usable in $(uname)
+    exit 1
+fi
+
+
+# FreeBSD-n nem tudja magat felulirni,
 # ezert idehozunk belole egy peldanyt.
 
 EXE=$CCCDIR/usr/bin/$CCCUNAME

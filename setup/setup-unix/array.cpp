@@ -291,6 +291,65 @@ void idxr0(double i) // indexkifejezes a jobboldalon (konstans index)
 }
 
 //------------------------------------------------------------------------
+void idxr0nil(double i) // mint idxr0, csak tulindexelesre NIL-t ad
+{
+// stack: a --- a[i]
+
+    VALUE *a=TOP();
+    
+    if( a->type==TYPE_ARRAY )
+    {
+        unsigned len=ARRAYLEN(a);
+        unsigned idx=D2UINT(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            *TOP()=*( ARRAYPTR(a)+idx-1 );
+        }
+    }
+
+    else if( a->type==TYPE_STRING )
+    {
+        unsigned long len=STRINGLEN(a);
+        unsigned long idx=D2ULONGX(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            CHAR c=STRINGPTR(a)[idx-1];
+            POP();
+            *stringl(1)=c;
+        }
+    }
+
+    else if( a->type==TYPE_BINARY )
+    {
+        binarysize_t len=BINARYLEN(a);
+        binarysize_t idx=D2ULONGX(i);
+        if( idx<1 || len<idx )
+        {
+            *TOP()=NIL;
+        }
+        else
+        {
+            BYTE c=BINARYPTR(a)[idx-1];
+            POP();
+            *binaryl(1)=c;
+        }
+    }
+
+    else
+    {
+        error_arr("idxr0nil",a,1);
+    }
+}
+
+//------------------------------------------------------------------------
 void array(int len) //stackrol levett elemekkel inicializalt array
 {
 // stack: A1,A2,...,Alen --- A
@@ -424,6 +483,10 @@ void _clp_array(int argno)
     
     for( int i=1; i<=argno; i++ )
     {
+        if( (base+argno-i)->type!=TYPE_NUMBER )
+        {
+            error_arg("array",base,argno);
+        }
         int dim=max(D2INT((base+argno-i)->data.number),0);
         
         if( i<=1 )
@@ -709,6 +772,24 @@ push_call("aclone",base);
 *base=*an;
 stack=base+1;
 pop_call();
+}
+
+
+//------------------------------------------------------------------------
+void _clp_atail(int argno) // atail(arr)
+{
+    CCC_PROLOG("atail",1);
+    VALUE *a=_para(1);
+    unsigned len=_paralen(1);
+    if( len>0 )
+    {
+        _retv(a+len-1);
+    }
+    else
+    {
+        _ret(); //NIL
+    }
+    CCC_EPILOG();
 }
 
 

@@ -29,7 +29,13 @@ function main(fspec)
 
     if( NIL==fspec )
         usage()
-    elseif( !file(fspec) )
+    end
+
+    //MSYS2 compatibility
+    fspec::=strtran("/",dirsep())
+    fspec::=strtran("\",dirsep())
+    
+    if( !file(fspec) )
         usage(fspec, "not found")
     end
 

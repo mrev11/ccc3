@@ -1,0 +1,160 @@
+#!/bin/bash
+
+export CCCVER=3
+
+#-------------------
+# CCCDIR verification
+#-------------------
+
+touch cccdir
+if [ ! $CCCDIR/cccdir -ef cccdir ]; then
+    rm cccdir
+    echo "install.msys2 must run from \$CCCDIR as working directory"
+    exit 1
+else
+    rm cccdir
+fi
+
+if  ! test -f ./usr/bin/$CCCUNAME/__msys2.msys2; then
+    echo "$CCCDIR/usr/bin/$CCCUNAME/__msys2.msys2 not found"
+    echo "CCCUNAME (=$CCCUNAME) environment variable not properly set"
+    exit 1
+fi
+
+if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
+    echo "$CCCDIR/usr/options/$CCCBIN/compile.opt not found"
+    echo "CCCBIN (=$CCCBIN) environment variable not properly set"
+    exit 1
+fi
+
+
+
+#-------------------
+# initial setup
+#-------------------
+
+pushd setup/setup-flex  >/dev/null; m; popd >/dev/null
+if ! flex.exe -V; then
+    echo "flex.exe not installed"
+    echo "install flex then run install.b again"
+    exit 1
+fi    
+
+pushd setup/setup-lemon >/dev/null; m; popd >/dev/null
+if ! lemon.exe -x; then
+    echo "lemon.exe not installed"
+    echo "install lemon then run install.b again"
+    exit 1
+fi    
+
+
+pushd setup/setup-windows  >/dev/null; m.msys2; popd >/dev/null
+if ! build.exe -v; then
+    echo "build.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! prg2ppo.exe -v; then
+    echo "prg2ppo.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+pushd ccctools/ppo2cpp  >/dev/null; m.msys2; popd >/dev/null
+if ! ppo2cpp.exe -v; then
+    echo "ppo2cpp.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+
+
+#-------------------
+# ccclib
+#-------------------
+
+pushd ccclib; m.msys2; popd
+
+
+#-------------------
+# ccctools
+#-------------------
+
+pushd ccctools/buildp; m.msys2; popd
+pushd ccctools/prg2ppo; m.msys2; popd
+pushd ccctools/removecr; m.msys2; popd
+pushd ccctools/ccomp; m.msys2; popd
+
+
+#-------------------
+# terminal
+#-------------------
+
+pushd terminal/sslforw; m.msys2; popd
+
+pushd terminal/windows; m.msys2; popd
+
+if test -f ${MSYS2DIR}/include/gtk-2.0/gtk/gtk.h; then
+    pushd terminal/gtk; m.msys2; popd
+fi
+
+if test -f ${MSYS2DIR}/include/gtk-3.0/gtk/gtk.h; then
+    pushd terminal/gtk3; m.msys2; popd
+fi
+
+
+#-------------------
+# msk2say
+#-------------------
+
+pushd tools/mask; m.msys2; popd
+
+#-------------------
+# tabobj
+#-------------------
+
+pushd tabobj/tbbtbtx; m.msys2; popd
+
+#-------------------
+# tools
+#-------------------
+
+pushd tools/crypto; m.msys2; popd
+pushd tools/dbaseiii; m.msys2; popd
+pushd tools/dbfview; m.msys2; popd
+pushd tools/ddict2; m.msys2; popd
+pushd tools/list; m.msys2; popd
+pushd tools/regex; m.msys2; popd
+pushd tools/savex; m.msys2; popd
+pushd tools/socket; m.msys2; popd
+pushd tools/tdc2prgch; m.msys2; popd
+pushd tools/tdccmp; m.msys2; popd
+pushd tools/textview; m.msys2; popd
+pushd tools/tran2cpp; m.msys2; popd  #string translation libraries
+pushd tools/websrv; m.msys2; popd
+pushd tools/xmldom; m.msys2; popd
+pushd tools/xmlrpc; m.msys2; popd
+pushd tools/xstart; m.msys2; popd    #listener
+pushd tools/z; m.msys2; popd         #unicode text editor
+pushd tools/zgrep; m.msys2; popd
+
+#-------------------
+# other
+#-------------------
+
+pushd jt/jtlib; m.msys2; popd
+# pushd tutor/oggedit; m.msys2; popd
+
+pushd tutor/dtree; m.msys2; popd
+pushd tutor/readline; m.msys2; popd
+pushd tutor/rename; m.msys2; popd
+pushd tutor/fpath; m.msys2; popd
+
+#-------------------
+# extensions
+#-------------------
+
+# pushd jt; mkall.msys2; popd
+# pushd tools/sql2; mkall.msys2; popd
+# pushd gtk; mkall.msys2; popd
+

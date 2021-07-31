@@ -1,3 +1,11 @@
+2021-07-29 MSYS2 tamogatas.
+  Alternativ (bash) script rendszer, amivel Windowson is
+  a Linux kornyezethez hasonlo kornyezetben lehet fejleszteni.
+  Nincs szukseg windows parancssorra, cmd.exe-re, .bat fajlokra,
+  hanem az msys terminalban (vagy ssh-n keresztul xtrem-ben)
+  lehet dolgozni bash parancsokkal/scriptekkel. Nincs valtozas 
+  a programokban, ugyanazok a programok keszulnek, mint korabban.
+
 2021-07-12 qout() kezeli a ref valtozokat;
 
 2021-07-09 array ertekadas;

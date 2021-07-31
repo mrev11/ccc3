@@ -1,0 +1,6 @@
+#!/bin/bash
+. $CCCDIR/usr/bin/windows/__msys2.msys2
+export BUILD_LIB=ccc3_btbtx,ccc3,ccc3_ui_
+
+build.exe "$@"
+ 

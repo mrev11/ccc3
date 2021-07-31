@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# dbaseiii.so behuzza a fullscreen konyvtarakat
+# ha az nem megfelelo, akkor dbaseiii.lib-et kell linkelni;
+# a memokezeleshez linkelni kell a btbtx tablaobjektumot
+
+bapp_win0.msys2 -lccc"$CCCVER"_dbaseiii
+
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN 
+

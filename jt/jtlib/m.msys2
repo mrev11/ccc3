@@ -1,0 +1,6 @@
+#!/bin/bash
+bapp_win0.msys2  @parfile.bld 
+
+cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+
+ 

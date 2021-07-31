@@ -1,0 +1,4 @@
+#!/bin/bash
+bapp_win0.msys2 -lccc"$CCCVER"_xmldom
+
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mk_ccc.msys2
+mk_uic.msys2
+mk_ui_.msys2
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+pushd  testdata_lib; m.msys2; popd
+pushd  testdata_import; m.msys2; popd
+pushd  basicdemo; m.msys2; popd
+# pushd  entitybrowse; m.msys2; popd

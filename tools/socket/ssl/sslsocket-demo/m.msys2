@@ -1,0 +1,3 @@
+#!/bin/bash
+bapp_win_.msys2 @parfile.bld -bcrypto -bssl
+

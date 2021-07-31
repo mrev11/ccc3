@@ -1,0 +1,3 @@
+-s$(CCCDIR)/ccctools/removecr/ppo
+-i.cpp.
+-m0

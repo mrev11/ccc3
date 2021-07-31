@@ -1,0 +1,44 @@
+#!/bin/bash
+#set -x
+echo OBJ2EXE.BAT $1 $BUILD_EXE
+
+EXENAM=$1
+TARGET=$BUILD_EXE/$EXENAM.exe 
+RSPLNK=$BUILD_OBJ/rsplnk-$1
+OUTLNK=$BUILD_OBJ/outlnk-$1
+ERROR=error--outlnk-$1
+
+rm -f $TARGET
+rm -f $RSPLNK
+rm -f $OUTLNK
+rm -f $ERROR
+
+echo -o $TARGET >$RSPLNK
+for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
+
+echo -Wl,--no-as-needed >>$RSPLNK
+
+echo -Wl,--start-group >>$RSPLNK
+cat $BUILD_OBJ/objects-$1 >>$RSPLNK
+for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
+if test -f "$BUILD_LIBX"; then
+    cat $BUILD_LIBX >>$RSPLNK
+fi
+echo -Wl,--end-group >>$RSPLNK
+
+cat $CCCDIR/usr/options/$CCCBIN/link.opt >>$RSPLNK
+
+if ! c++ $(cat $RSPLNK | tr -d '\r') 2>$OUTLNK;  then
+    touch error
+    cat $OUTLNK
+    mv  $OUTLNK $ERROR;
+    rm -f $TARGET
+else
+    #cat $OUTLNK
+    rm -f $OUTLNK
+fi
+
+
+echo ----------------------------------------------------------------
+
+ 

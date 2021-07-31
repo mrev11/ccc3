@@ -18,47 +18,54 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+****************************************************************************
+static function lastslash(name)
+    return max(rat("/",name),rat("\",name))
+
+
 ****************************************************************************
 function fnameext(name)   // name.ext
-local bslpos:=rat(dirsep(),name)
-    name:=substr(name,bslpos+1)
+local slpos:=lastslash(name)
+    name:=substr(name,slpos+1)
     return alltrim(name)
 
 
 ****************************************************************************
 function fname(name)   // name
 local extpos:=rat(".",name)
-local bslpos:=rat(dirsep(),name)
-    if( extpos>bslpos )
-        name:=substr(name,bslpos+1,extpos-bslpos-1)
+local slpos:=lastslash(name)
+    if( extpos>slpos )
+        name:=substr(name,slpos+1,extpos-slpos-1)
     else
-        name:=substr(name,bslpos+1)
+        name:=substr(name,slpos+1)
     end
     return alltrim(name)
 
 
 ****************************************************************************
 function fpath0(name) // path
-local bslpos:=rat(dirsep(),name)
-    if( 0<bslpos )
-        return left(name,bslpos-1)
+local slpos:=lastslash(name)
+    if( 0<slpos )
+        return left(name,slpos-1)
     end
     return ""
 
 
 ****************************************************************************
-function fpath(name) // path\
-local bslpos:=rat(dirsep(),name)
-    if( 0<bslpos )
-        return left(name,bslpos)
+function fpath(name) // path/
+local slpos:=lastslash(name)
+    if( 0<slpos )
+        return left(name,slpos)
     end
     return ""
+
 
 ****************************************************************************
 function fext(name) // .ext
 local extpos:=rat(".",name)
-local bslpos:=rat(dirsep(),name)
-    if( extpos>bslpos )
+local slpos:=lastslash(name)
+    if( extpos>slpos )
         return alltrim(substr(name,extpos))
     end
     return "."
@@ -67,7 +74,7 @@ local bslpos:=rat(dirsep(),name)
 ****************************************************************************
 function fext0(name) // ext
     return substr(fext(name),2)
-
  
+
 ****************************************************************************
  

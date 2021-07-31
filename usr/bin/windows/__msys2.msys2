@@ -1,0 +1,39 @@
+#!/bin/bash
+
+addlpt() #elejere
+{
+    X=:${BUILD_LPT}:
+    X=${X//:${1}:/:}
+    X=${1}${X}
+    X=${X//::/:}
+    export BUILD_LPT=$X
+}
+
+lptadd() #vegere
+{
+    X=:${BUILD_LPT}:
+    X=${X//:${1}:/:}
+    X=${X}${1}
+    X=${X//::/:}
+    export BUILD_LPT=$X
+}
+
+
+if [ $CCCBIN == "mng" ]; then 
+    export BUILD_BAT=$CCCDIR/usr/build/msys2
+    export BUILD_OPT=compile.opt 
+    export BUILD_INC=$CCCDIR/usr/include
+    
+    lptadd $CCCDIR/usr/lib/$CCCBIN
+    lptadd /mingw64/lib
+
+    export BUILD_OBJ=obj$CCCBIN
+    export BUILD_EXE=.
+    #export BUILD_DBG=off
+    export BUILD_SYS=windows
+else
+    echo CCCBIN environment variable not set!
+    exit 1
+fi
+
+ 

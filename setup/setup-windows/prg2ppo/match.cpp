@@ -1,4 +1,4 @@
-//input: match.ppo (5.0.21)
+//input: match.ppo (5.3.0)
 
 #include <cccdef.h>
 
@@ -50,15 +50,15 @@ static void _ini_match1_match_count(VALUE*);
 static void _ini_match1_match_leftb(VALUE*);
 static void _ini_match1_match_state(VALUE*);
 
-class _method3_add: public _method3_{public: _method3_add():_method3_("add"){};}; static _method3_add _o_method_add;
-class _method3_buffer: public _method3_{public: _method3_buffer():_method3_("buffer"){};}; static _method3_buffer _o_method_buffer;
-class _method3_bufidx: public _method3_{public: _method3_bufidx():_method3_("bufidx"){};}; static _method3_bufidx _o_method_bufidx;
-class _method3_clear: public _method3_{public: _method3_clear():_method3_("clear"){};}; static _method3_clear _o_method_clear;
-class _method3_get: public _method3_{public: _method3_get():_method3_("get"){};}; static _method3_get _o_method_get;
-class _method3_index: public _method3_{public: _method3_index():_method3_("index"){};}; static _method3_index _o_method_index;
-class _method3_len: public _method3_{public: _method3_len():_method3_("len"){};}; static _method3_len _o_method_len;
-class _method3_next: public _method3_{public: _method3_next():_method3_("next"){};}; static _method3_next _o_method_next;
-class _method3_unget: public _method3_{public: _method3_unget():_method3_("unget"){};}; static _method3_unget _o_method_unget;
+class _method6_add: public _method6_{public: _method6_add():_method6_("add"){};}; static _method6_add _o_method_add;
+class _method6_buffer: public _method6_{public: _method6_buffer():_method6_("buffer"){};}; static _method6_buffer _o_method_buffer;
+class _method6_bufidx: public _method6_{public: _method6_bufidx():_method6_("bufidx"){};}; static _method6_bufidx _o_method_bufidx;
+class _method6_clear: public _method6_{public: _method6_clear():_method6_("clear"){};}; static _method6_clear _o_method_clear;
+class _method6_get: public _method6_{public: _method6_get():_method6_("get"){};}; static _method6_get _o_method_get;
+class _method6_index: public _method6_{public: _method6_index():_method6_("index"){};}; static _method6_index _o_method_index;
+class _method6_len: public _method6_{public: _method6_len():_method6_("len"){};}; static _method6_len _o_method_len;
+class _method6_next: public _method6_{public: _method6_next():_method6_("next"){};}; static _method6_next _o_method_next;
+class _method6_unget: public _method6_{public: _method6_unget():_method6_("unget"){};}; static _method6_unget _o_method_unget;
 
 //=======================================================================
 void _clp_match(int argno)

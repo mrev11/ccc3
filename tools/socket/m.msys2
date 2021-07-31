@@ -1,0 +1,7 @@
+#!/bin/bash
+
+bapp_win0.msys2 -d. -lccc"$CCCVER"_socket
+
+cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
+
+pushd ssl; m.msys2; popd 

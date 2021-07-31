@@ -1,0 +1,5 @@
+#!/bin/bash
+bapp_win_.msys2 -lccc3_glade @gtk-win.bld  @parfile.bld 
+
+cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN
+

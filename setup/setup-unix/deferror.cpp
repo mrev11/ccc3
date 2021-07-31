@@ -1,4 +1,4 @@
-//input: deferror.ppo (5.1.1)
+//input: deferror.ppo (5.3.0)
 
 #include <cccdef.h>
 

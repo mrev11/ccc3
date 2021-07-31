@@ -1,0 +1,3 @@
+#!/bin/bash
+rm -f  *.o $(which build.exe)
+make.b exe build  setup.lib

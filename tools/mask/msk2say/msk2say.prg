@@ -89,7 +89,14 @@ local code
     if( empty(mskfile) )
         usage()
     end
-    
+
+    //MSYS2 compatibility    
+    mskfile::=strtran("/",dirsep())
+    mskfile::=strtran("\",dirsep())
+    if( !empty(sayfile) )
+        sayfile::=strtran("/",dirsep())
+        sayfile::=strtran("\",dirsep())
+    end
 
     if( mskfile::fext0::empty )
         mskfile+=".msk"
@@ -119,7 +126,7 @@ local code
     elseif( len(mskstr)==CALCSIZE(size200x60) )
         termsize:=size200x60
     else
-        ? "Incompatible msk file length",len(mskstr)
+        ? "Incompatible msk file '"+mskfile+"' of length "+mskstr::len::str::alltrim
         ?
         quit
     end

@@ -1,4 +1,4 @@
-//input: prg2ppo.ppo (5.0.21)
+//input: prg2ppo.ppo (5.3.0)
 
 #include <cccdef.h>
 
@@ -718,7 +718,7 @@ push_call("logo",base);
 //
     line(202);
     string(nls_text(L"CCC Preprocessor "));
-    string(L"1.4.3");
+    string(L"1.5.0");
     add();
     string(L" Copyright (C) ComFirm Bt.");
     add();

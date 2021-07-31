@@ -1,4 +1,4 @@
-//input: ascan.ppo (5.1.1)
+//input: ascan.ppo (5.3.0)
 
 #include <cccdef.h>
 
@@ -8,43 +8,11 @@ extern void _clp_acopy(int argno);
 extern void _clp_aeval(int argno);
 extern void _clp_afill(int argno);
 extern void _clp_ascan(int argno);
-extern void _clp_atail(int argno);
 extern void _clp_eval(int argno);
 extern void _clp_len(int argno);
 extern void _clp_min(int argno);
 extern void _clp_valtype(int argno);
 
-//=======================================================================
-void _clp_atail(int argno)
-{
-VALUE *base=stack-argno;
-stack=base+min(argno,1);
-while(stack<base+2)PUSHNIL();
-argno=1;
-push_call("atail",base);
-//
-    line(23);
-    push_symbol(base+0);//arr
-    _clp_len(1);
-    assign(base+1);//x
-    pop();
-    line(24);
-    push_symbol(base+1);//x
-    push(&ZERO);
-    lteq();
-    if(flag()){
-    push(&NIL);
-    }else{
-    push_symbol(base+0);//arr
-    push_symbol(base+1);//x
-    idxr();
-    }
-    {*base=*(stack-1);stack=base+1;pop_call();return;}
-//
-stack=base;
-push(&NIL);
-pop_call();
-}
 //=======================================================================
 void _clp_ascan(int argno)
 {
@@ -54,36 +22,36 @@ while(stack<base+6)PUSHNIL();
 argno=4;
 push_call("ascan",base);
 //
-    line(28);
+    line(24);
     push(&ZERO);
     assign(base+4);//at
     pop();
-    line(32);
-    line(30);
+    line(28);
+    line(26);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
     if(!flag()) goto if_1_1;
-        line(31);
+        line(27);
         push(&ONE);
         assign(base+2);//st
         pop();
     if_1_1:
     if_1_0:;
-    line(36);
-    line(34);
+    line(32);
+    line(30);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
     if(!flag()) goto if_2_1;
-        line(35);
+        line(31);
         push_symbol(base+0);//arr
         _clp_len(1);
         assign(base+3);//cn
         pop();
     if_2_1:
     if_2_0:;
-    line(38);
+    line(34);
     push_symbol(base+3);//cn
     push_symbol(base+0);//arr
     _clp_len(1);
@@ -93,16 +61,16 @@ push_call("ascan",base);
     _clp_min(2);
     assign(base+3);//cn
     pop();
-    line(63);
-    line(40);
+    line(59);
+    line(36);
     push_symbol(base+1);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
     if(!flag()) goto if_3_1;
-        line(47);
+        line(43);
         {
-        line(42);
+        line(38);
         push(&ONE);
         int sg=sign();
         push_symbol(base+2);//st
@@ -113,19 +81,19 @@ push_call("ascan",base);
         add();
         addnum(-1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_4_2;
-            line(46);
-            line(43);
+            line(42);
+            line(39);
             push_symbol(base+1);//blk
             push_symbol(base+0);//arr
             push_symbol(base+5);//i
             idxr();
             _clp_eval(2);
             if(!flag()) goto if_5_1;
-                line(44);
+                line(40);
                 push_symbol(base+5);//i
                 assign(base+4);//at
                 pop();
-                line(45);
+                line(41);
                 goto lab_4_2;//exit
             if_5_1:
             if_5_0:;
@@ -141,10 +109,10 @@ push_call("ascan",base);
         }
     goto if_3_0;
     if_3_1:
-    line(49);
-        line(62);
+    line(45);
+        line(58);
         {
-        line(51);
+        line(47);
         push(&ONE);
         int sg=sign();
         push_symbol(base+2);//st
@@ -155,8 +123,8 @@ push_call("ascan",base);
         add();
         addnum(-1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_6_2;
-            line(61);
-            line(58);
+            line(57);
+            line(54);
             push_symbol(base+0);//arr
             push_symbol(base+5);//i
             idxr();
@@ -164,11 +132,11 @@ push_call("ascan",base);
             neeq();
             topnot();
             if(!flag()) goto if_7_1;
-                line(59);
+                line(55);
                 push_symbol(base+5);//i
                 assign(base+4);//at
                 pop();
-                line(60);
+                line(56);
                 goto lab_6_2;//exit
             if_7_1:
             if_7_0:;
@@ -184,7 +152,7 @@ push_call("ascan",base);
         }
     if_3_2:
     if_3_0:;
-    line(65);
+    line(61);
     push_symbol(base+4);//at
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -201,33 +169,33 @@ while(stack<base+5)PUSHNIL();
 argno=4;
 push_call("aeval",base);
 //
+    line(66);
     line(70);
-    line(74);
-    line(72);
+    line(68);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
     if(!flag()) goto if_8_1;
-        line(73);
+        line(69);
         push(&ONE);
         assign(base+2);//st
         pop();
     if_8_1:
     if_8_0:;
-    line(78);
-    line(76);
+    line(74);
+    line(72);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
     if(!flag()) goto if_9_1;
-        line(77);
+        line(73);
         push_symbol(base+0);//arr
         _clp_len(1);
         assign(base+3);//cn
         pop();
     if_9_1:
     if_9_0:;
-    line(80);
+    line(76);
     push_symbol(base+3);//cn
     push_symbol(base+0);//arr
     _clp_len(1);
@@ -237,9 +205,9 @@ push_call("aeval",base);
     _clp_min(2);
     assign(base+3);//cn
     pop();
-    line(84);
+    line(80);
     {
-    line(82);
+    line(78);
     push(&ONE);
     int sg=sign();
     push_symbol(base+2);//st
@@ -250,7 +218,7 @@ push_call("aeval",base);
     add();
     addnum(-1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_10_2;
-        line(83);
+        line(79);
         push_symbol(base+1);//blk
         push_symbol(base+0);//arr
         push_symbol(base+4);//i
@@ -267,7 +235,7 @@ push_call("aeval",base);
     goto lab_10_0;
     lab_10_2:;
     }
-    line(86);
+    line(82);
     push_symbol(base+0);//arr
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -284,33 +252,33 @@ while(stack<base+5)PUSHNIL();
 argno=4;
 push_call("afill",base);
 //
+    line(87);
     line(91);
-    line(95);
-    line(93);
+    line(89);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
     if(!flag()) goto if_11_1;
-        line(94);
+        line(90);
         push(&ONE);
         assign(base+2);//st
         pop();
     if_11_1:
     if_11_0:;
-    line(99);
-    line(97);
+    line(95);
+    line(93);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
     if(!flag()) goto if_12_1;
-        line(98);
+        line(94);
         push_symbol(base+0);//arr
         _clp_len(1);
         assign(base+3);//cn
         pop();
     if_12_1:
     if_12_0:;
-    line(101);
+    line(97);
     push_symbol(base+3);//cn
     push_symbol(base+0);//arr
     _clp_len(1);
@@ -320,9 +288,9 @@ push_call("afill",base);
     _clp_min(2);
     assign(base+3);//cn
     pop();
-    line(105);
+    line(101);
     {
-    line(103);
+    line(99);
     push(&ONE);
     int sg=sign();
     push_symbol(base+2);//st
@@ -333,7 +301,7 @@ push_call("afill",base);
     add();
     addnum(-1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_13_2;
-        line(104);
+        line(100);
         push_symbol(base+1);//x
         push_symbol(base+0);//arr
         push_symbol(base+4);//i
@@ -349,7 +317,7 @@ push_call("afill",base);
     goto lab_13_0;
     lab_13_2:;
     }
-    line(107);
+    line(103);
     push_symbol(base+0);//arr
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -366,45 +334,45 @@ while(stack<base+6)PUSHNIL();
 argno=5;
 push_call("acopy",base);
 //
+    line(108);
     line(112);
-    line(116);
-    line(114);
+    line(110);
     push_symbol(base+2);//stsrc
     push(&NIL);
     eqeq();
     if(!flag()) goto if_14_1;
-        line(115);
+        line(111);
         push(&ONE);
         assign(base+2);//stsrc
         pop();
     if_14_1:
     if_14_0:;
-    line(120);
-    line(118);
+    line(116);
+    line(114);
     push_symbol(base+4);//sttrg
     push(&NIL);
     eqeq();
     if(!flag()) goto if_15_1;
-        line(119);
+        line(115);
         push(&ONE);
         assign(base+4);//sttrg
         pop();
     if_15_1:
     if_15_0:;
-    line(124);
-    line(122);
+    line(120);
+    line(118);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
     if(!flag()) goto if_16_1;
-        line(123);
+        line(119);
         push_symbol(base+0);//asrc
         _clp_len(1);
         assign(base+3);//cn
         pop();
     if_16_1:
     if_16_0:;
-    line(126);
+    line(122);
     push_symbol(base+3);//cn
     push_symbol(base+0);//asrc
     _clp_len(1);
@@ -414,7 +382,7 @@ push_call("acopy",base);
     _clp_min(2);
     assign(base+3);//cn
     pop();
-    line(127);
+    line(123);
     push_symbol(base+3);//cn
     push_symbol(base+1);//atrg
     _clp_len(1);
@@ -424,9 +392,9 @@ push_call("acopy",base);
     _clp_min(2);
     assign(base+3);//cn
     pop();
-    line(131);
+    line(127);
     {
-    line(129);
+    line(125);
     push(&ONE);
     int sg=sign();
     push(&ZERO);
@@ -435,7 +403,7 @@ push_call("acopy",base);
     push_symbol(base+3);//cn
     addnum(-1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_17_2;
-        line(130);
+        line(126);
         push_symbol(base+0);//asrc
         push_symbol(base+2);//stsrc
         push_symbol(base+5);//i
@@ -457,7 +425,7 @@ push_call("acopy",base);
     goto lab_17_0;
     lab_17_2:;
     }
-    line(133);
+    line(129);
     push_symbol(base+1);//atrg
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -474,7 +442,7 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("_asort_ascendblock",base);
 //
-    line(138);
+    line(134);
     block(_blk__asort_ascendblock_0,0);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

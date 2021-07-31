@@ -1,4 +1,4 @@
-//input: cloutput.ppo (5.0.21)
+//input: cloutput.ppo (5.3.0)
 
 #include <cccdef.h>
 
@@ -27,10 +27,10 @@ static void _clp_outputregister(int argno);
 extern void _clp_valtype(int argno);
 static void _ini__clid_output();
 
-class _method3_buffer: public _method3_{public: _method3_buffer():_method3_("buffer"){};}; static _method3_buffer _o_method_buffer;
-class _method3_bufidx: public _method3_{public: _method3_bufidx():_method3_("bufidx"){};}; static _method3_bufidx _o_method_bufidx;
-class _method3_bufinc: public _method3_{public: _method3_bufinc():_method3_("bufinc"){};}; static _method3_bufinc _o_method_bufinc;
-class _method3_initialize: public _method3_{public: _method3_initialize():_method3_("initialize"){};}; static _method3_initialize _o_method_initialize;
+class _method6_buffer: public _method6_{public: _method6_buffer():_method6_("buffer"){};}; static _method6_buffer _o_method_buffer;
+class _method6_bufidx: public _method6_{public: _method6_bufidx():_method6_("bufidx"){};}; static _method6_bufidx _o_method_bufidx;
+class _method6_bufinc: public _method6_{public: _method6_bufinc():_method6_("bufinc"){};}; static _method6_bufinc _o_method_bufinc;
+class _method6_initialize: public _method6_{public: _method6_initialize():_method6_("initialize"){};}; static _method6_initialize _o_method_initialize;
 
 MUTEX_CREATE(_mutex_clid_output);
 static VALUE* _st_clid_output_ptr()

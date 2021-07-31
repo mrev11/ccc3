@@ -1,0 +1,6 @@
+#!/bin/bash
+# cd jterminal; m.msys2; cd ..
+cd jtlib; m.msys2; cd ..
+cd jtstart; m.msys2; cd ..
+cd sslforward; m.msys2; cd ..
+cd msk2dlg; m.msys2; cd ..

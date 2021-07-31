@@ -39,9 +39,9 @@ void _clp_getclassid(int argno)
 //----------------------------------------------------------------------
 void _clp_setclassid(int argno)
 {
-    //az első argumentum (object) subtype-jába
-    //beírja a második argumentumban kapott számot,
-    //a megváltoztatott osztályú objektumot adja vissza
+    //az elso argumentum (object) subtype-jaba
+    //beirja a masodik argumentumban kapott szamot,
+    //a megvaltoztatott osztalyu objektumot adja vissza
 
     VALUE *base=stack-argno;
 
@@ -72,28 +72,31 @@ void _clp_getobjectasarray(int argno)
 //----------------------------------------------------------------------
 void _clp_iniobjectfromarray(int argno)
 {
-    //Ahhoz kell, hogy egy objektum inicializálható legyen
-    //egy olyan arrayből, amit korábban a getobjectasarray 
-    //hívással (vagy :asarray metódussal) kaptunk, enélkül 
-    //getobjectasarray nem is volna értelmesen használható. 
-    //A függvényből metódus is definiálható, 
-    //
-    // classMethod(clid,"fromarray",{|t,a|iniobjectfromarray(t,a)})
-    //
-    //ez azonban nem része az object osztálynak, hanem akinek 
-    //kell, majd definiálja magának.
+    //JAVITOTT_VALTOZAT
+    //1) ellenorzi a hosszakat
+    //2) shallow copy-val masol (nem az oref-et allitja at)
+    //3) az inicializalt objektum es az array kulon oref-en lesz
 
     CCC_PROLOG("iniobjectfromarray",2);
  
     if( !ISOBJECT(1) ) ARGERROR();
     if( !ISARRAY(2 ) ) ARGERROR();
-    
-    base->data.array.oref=(base+1)->data.array.oref;
+    unsigned lenobj=OBJECTLEN(base);
+    unsigned lenarr=ARRAYLEN(base+1);
+    if( lenobj!=lenarr )
+    {
+        error_siz("iniobjectfromarray",base,argno);
+    }
+
+    VALUE *pobj=OBJECTPTR(base);
+    VALUE *parr=ARRAYPTR(base+1);
+    valuemove(pobj,parr,lenarr);  // shallow copy
+
     POP();
 
     CCC_EPILOG();
 }
- 
+
 //----------------------------------------------------------------------
 void _clp_objectnew(int argno)
 {

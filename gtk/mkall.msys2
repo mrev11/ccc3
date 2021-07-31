@@ -1,0 +1,4 @@
+#!/bin/bash
+pushd codegen && m.msys2 && s; popd
+pushd code_byhand && m.msys2; popd
+pushd glade && m.msys2; popd

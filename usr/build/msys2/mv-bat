@@ -1,0 +1,4 @@
+#!/bin/bash
+for bat in *.msys2; do
+    mv $bat ${bat/\.msys2/\.bat}
+done

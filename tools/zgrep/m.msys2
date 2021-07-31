@@ -1,0 +1,3 @@
+#!/bin/bash
+bapp_winc.msys2 @parfile.bld
+

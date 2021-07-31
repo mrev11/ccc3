@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#cd proto && m && cd ..
+#rm -f objlin/ppo2cpp.obj
+#rm -f objlin/*.obj
+#proto-codegen
+#parserinfo
+
+bapp_win0.msys2 -mppo2cpp  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME"

@@ -1,0 +1,5 @@
+#!/bin/bash
+bapp_win_.msys2 @parlib.bld
+
+bapp_win_.msys2 -xbti -xbt2dbf -xbt2txt -xtsema  @parexe.bld
+bapp_winc.msys2 -xtstru -xtview  @parexe.bld  -bccc"$CCCVER"_btbtxui

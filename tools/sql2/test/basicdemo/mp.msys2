@@ -1,0 +1,6 @@
+#!/bin/bash
+mkdir exe-pg 2>/dev/null
+cp -p start-scripts/*.b exe-pg 2>/dev/null
+
+bapp_winc.msys2  @parfile-p.bld
+

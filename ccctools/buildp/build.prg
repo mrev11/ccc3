@@ -62,10 +62,12 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
+static s_batext
+
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.4.11"
+#define VERSION "1.5.0"
 #define LOWER(x) (x)
 
 
@@ -214,10 +216,20 @@ static function s_rules_from_build_bat()
 
 local d,n,rule
 
+    if( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bat") )
+        s_batext:=".bat"
+    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bash") )
+        s_batext:=".bash"
+    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.sh") )
+        s_batext:=".sh"
+    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.msys2") )
+        s_batext:=".msys2"
+    end
+
     asize(s_rules,0)
-    d:=directory(getenv("BUILD_BAT")+dirsep()+"*.bat")
+    d:=directory(getenv("BUILD_BAT")+dirsep()+"*"+s_batext)
     for n:=1 to len(d)
-        rule:=d[n][1]::strtran(".bat","")::split("2")
+        rule:=d[n][1]::strtran(s_batext,"")::split("2")
         if( len(rule)==2 )
             rule[1]:="."+rule[1]
             rule[2]:="."+rule[2]
@@ -629,7 +641,7 @@ static function makeso(libnam,object)  //so-t az objectekből (UNIX)
 
 local target:=getenv("BUILD_OBJ")+dirsep()+"lib"+libnam+".so",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so.bat"
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so"+s_batext
 local objdir:=getenv("BUILD_OBJ"), n 
 
     if( !file(torun) )
@@ -674,7 +686,7 @@ static function makelib(libnam,object)  //lib-et az objectekből
 
 local target:=getenv("BUILD_OBJ")+dirsep()+libnam+".lib",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib.bat"
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib"+s_batext
 local objdir:=LOWER(getenv("BUILD_OBJ")), n 
 local objlist
 
@@ -743,7 +755,7 @@ static function makeexe(exenam,object) //exe-t az objectekből
 
 local target:=getenv("BUILD_EXE")+dirsep()+exenam+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe.bat"
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe"+s_batext
 local objdir:=LOWER(getenv("BUILD_OBJ")), n 
 local objlist, xobj
 
@@ -833,7 +845,7 @@ static function makeexe1(mmod,libnam) //exe-t a main modulból + lib-ből
 
 local target:=getenv("BUILD_EXE")+dirsep()+mmod+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe.bat"
+local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe"+s_batext
 local objdir:=getenv("BUILD_OBJ"), n 
 
     if( !file(torun) )
@@ -922,7 +934,7 @@ local n,p1,p2
         
         torun:=getenv("BUILD_BAT")+dirsep()
         torun+=strtran(fext(deplist[2])+"2"+fext(deplist[1]),".","")
-        torun+=".bat"
+        torun+=s_batext
 
         if( !file(torun) )
             ? "["+torun+"]", @"does not exist"
@@ -959,7 +971,14 @@ local runtmp,out
         runtmp:="log-runtmp"+alltrim(str(++count))
         thread_mutex_unlock(mutex_out)
 
-        run(cmd+" >"+runtmp)
+        if( "msys2"$getenv("BUILD_BAT") )
+            //? "BASH",cmd;?
+            bash(cmd+" >"+runtmp)
+        else
+            //? "RUN",cmd;?
+            run(cmd+" >"+runtmp)
+        end
+
         out:=memoread(runtmp)
         ferase(runtmp)
 
@@ -1297,6 +1316,15 @@ local tdepend:=ftime(depend)
     end
     
     return update
+
+
+****************************************************************************
+static function bash(cmd)
+    cmd::=strtran("\","/")
+    if( at(":/",cmd)==2 )
+        cmd:="/"+cmd[1]+cmd[3..]   // c:/xxx => /c/xxx
+    end
+    spawn(3,"bash.exe","-c",'"'+cmd+'"')  //3=wait+path
 
 
 ****************************************************************************

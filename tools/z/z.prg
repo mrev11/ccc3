@@ -29,7 +29,7 @@
   #define BIN2ARR(x)   _chr2arr(x)
   #define ARR2BIN(x)   _arr2chr(x)
 #else
-  #define HISTORY_NAME "history_uc.z"
+  #define HISTORY_NAME "history.z"
   #define BIN2ARR(x)   bin2arr(x)
   #define ARR2BIN(x)   arr2bin(x)
 #endif
@@ -84,7 +84,9 @@ local ferror:=zhome()+"error.z"
  
     for n:=1 to len(opt)
         if( !left(opt[n],1)=="-" )
-            fspec:=opt[n] 
+            fspec:=opt[n]
+            fspec::=strtran("/",dirsep()) 
+            fspec::=strtran("\",dirsep()) 
 
         elseif( opt[n]=="-r" )
             optrdonly:=.t.

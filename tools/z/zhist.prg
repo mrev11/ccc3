@@ -18,10 +18,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//a historyból választott filére indítja z-t
+//a historybol valasztott filere inditja z-t
 
 #include "box.ch"
 #include "spawn.ch"
+
+#ifdef _CCC2_
+  #define HISTORY_NAME "history.z"
+#else
+  #define HISTORY_NAME "history.z"
+#endif
 
 
 **********************************************************************   
@@ -30,7 +36,7 @@ function main()
 local hist,choice:={},n
 local screen,t:=0,l:=0,b:=maxrow()-0,r:=maxcol()-0
 
-    hist:=zhome()+"history_uc.z"
+    hist:=zhome()+HISTORY_NAME
     hist::=memoread(.t.)
     hist::=bin2arr
 
@@ -44,16 +50,16 @@ local screen,t:=0,l:=0,b:=maxrow()-0,r:=maxcol()-0
     n:=achoice(t+1,l+1,b-1,r-1,choice,,,1)
     while( n>0 )
 
-        sleep(100)  //terminál frissítés (kurzor!)
+        sleep(100)  //terminal frissites (kurzor!)
         
-        //MEGJEGYZÉS:
-        //a program 2 szálon fut
+        //MEGJEGYZES:
+        //a program 2 szalon fut
         // 1) ez az egyik
-        // 2) a terminál frissítés a másik
-        //az első szálban (itt) elindítunk egy childot ugyanabban a terminálban
-        //ilyenkor a másik szál is leáll és vár a child befejeződésére
-        // -> az achoice-ban levő kurzorvisszaállítás is vár -> z-nek nincs kurzora
-        //várni kell egy kicsit, hogy terminálfrissítés megtörténjen
+        // 2) a terminal frissites a masik
+        //az elso szalban (itt) elinditunk egy childot ugyanabban a terminalban
+        //ilyenkor a masik szal is leall es var a child befejezodesere
+        // -> az achoice-ban levo kurzorvisszaallitas is var -> z-nek nincs kurzora
+        //varni kell egy kicsit, hogy terminalfrissites megtortenjen
 
         //run("z.exe "+choice[n] )
         spawn(SPAWN_WAIT+SPAWN_PATH,"z.exe",choice[n])

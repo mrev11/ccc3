@@ -1,3 +1,23 @@
+2021-08-04 
+  A unix-ncterm leforditva msys2/MSYS2 alrendszerben.
+  -
+  Megjegyzes. Az msys2-nek harom alrendszere van:
+    1) MSYS2  2) MINGW32  3) MINGW64
+  MSYS2 egy keretrendszer, mindharom alrendszer karbantartasara. 
+  MINGW32/64 nativ Windows programokat keszito kornyezetek.
+  -
+  Plusz terminal inditasi mod: CCCTERM_CONNECT=LISTEN:termspec
+  A program a localhost-on keres egy szabad portot, ahol figyel,
+  elinditja "termspec localhost port"-ot, a terminal konnektal, 
+  a program lezarja a listenert. Hasonlo a 'CCCTERM_CONNECT=termspec' 
+  esethez, csakhogy ott a terminal orokli a socketpair egyik veget, 
+  itt viszont maga a terminal konnektal.
+  -
+  Ha 'CCCTERM_CONNECT=termspec' beallitassal mukodik egy terminal,
+  akkor 'CCCTERM_CONNECT=LISTEN:${CCCTERM_CONNECT} is mukodik.
+  Utobbi esetben a terminal nem oroklessel jut a sockethez, 
+  hanem konnektalassal.
+
 2021-07-29 MSYS2 tamogatas.
   Alternativ (bash) script rendszer, amivel Windowson is
   a Linux kornyezethez hasonlo kornyezetben lehet fejleszteni.

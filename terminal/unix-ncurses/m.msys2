@@ -1,23 +1,40 @@
 #!/bin/bash
 
+# MSYS2 terminalban (mintty) futo programot keszit
+#
+# MSYS2 alrendszerre fordit (nem keverheto a MINGW-vel),
+# ezert linuxos forditasi opciokat kell hasznalni,
+# de megis az objmng-be kell gyujteni az obj-okat.
 
-if [ "$CCCVER" == "2"  ];then
-    :;#ok
-elif [ "$CCCVER" == "3"  ];then
-    :;#ok
-elif test -f $CCCDIR/usr/lib/$CCCBIN/ccc2.lib; then
-    export CCCVER=2
-elif test -f $CCCDIR/usr/lib/$CCCBIN/ccc3.lib; then
-    export CCCVER=3
-else
-    echo Cannot detect CCC version.
-    exit 1
-fi
+#set -x
 
-bapp_win0.msys2 @parfile.bld
+export CCCBIN=lin # linux options
 
-mkdir -p  ~/.z
-cp -pf  ./learnkey/inkeymap-linux/INKEYMAP-linux  ~/.z
-cp -pf  ./learnkey/inkeymap-xterm/INKEYMAP-xterm  ~/.z
+export BUILD_BAT=$CCCDIR/usr/build/msys2
+export BUILD_OPT=compile.opt 
+export BUILD_INC=$CCCDIR/usr/include
+export BUILD_LIB=
+export BUILD_OBJ=objmng
 
+
+# Az MSYS2-re fordito eszkozoket kell megtalalni,
+# ezert elore kell venni PATH-ban az MSYS2 binarisait.
+
+PATH=/usr/bin:/bin:$PATH
+
+
+build.exe @parfile.bld
+
+
+# MSYS2-ben a 'CCCTERM_CONNECT=termspec' beallitas nem mukodik,
+# mert az MSYS2 terminal nem tud socketet orokolni a MINGW64-es 
+# programtol. Helyette a 'CCCTERM_CONNECT=LISTEN:termspec' tipusu
+# beallitas kell. Ezzel a szerverprogram csinal egy ideiglenes 
+# listenert valamely localhost:port cimen, elinditja a terminalt
+# az 'ncterm.exe localhost port' parameterezessel, es a terminal
+# fog konnektalni. Ezzel kikerulheto a socket orokoltetes.
+
+# MSYS2-ben igy kell megadni a CCCTERM_CONNECT-et:
+# export CCCTERM_CONNECT=${CCCDIR}/usr/bin/${CCCUNAME}/ncterm.exe
+# export CCCTERM_CONNECT=LISTEN:${CCCTERM_CONNECT}
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# test-1
+
+echo ${CCCTERM_CONNECT}
+z.exe ncterm.cpp
+
+
+# test-2
+
+# Ha a fenti beallitassal mukodik egy terminal, 
+# akkor a kovetkezo beallitassal is mukodik.
+# Az MSYS2-es terminal nem tud socketet orokolni
+# a MINGW64-es parent programbol, ezert MSYS2-ben
+# csak a masodik eset mukodik.
+
+CCCTERM_CONNECT=LISTEN:${CCCTERM_CONNECT}
+echo ${CCCTERM_CONNECT}
+z.exe ncterm.cpp
+
+
+

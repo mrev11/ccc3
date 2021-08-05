@@ -53,7 +53,6 @@ local screen
         setpos(this:top+this:winrow,this:left+this:wincol)
         
         key:=inkey(0)
-        //key:=inkeyex(0,1,.f.) //wtime,cursor,translation
         
         if( valtype(this:keymapblk)=="B" )
             key:=eval(this:keymapblk,key)

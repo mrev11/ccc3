@@ -93,6 +93,7 @@ void connect_to_terminal()
     //CCCTERM_CONNECT :port            -> connect 127.0.0.1:port
     //CCCTERM_CONNECT host:port        -> connect host:port
     //CCCTERM_CONNECT SOCKET:sck       -> orokli a socketet
+    //CCCTERM_CONNECT LISTEN:termspec  -> listen + inditja a terminalt, ami konnektal
 
     char *constr=getenv("CCCTERM_CONNECT");
     struct stat buf;
@@ -135,6 +136,59 @@ void connect_to_terminal()
         atexit(atexit_bye);
     }
 #endif
+
+    else if( constr==strstr(constr,"LISTEN") && 0==stat(constr+7,&buf) )
+    {
+        char *termspec=constr+7;
+        // a LISTEN: kettospontja szandekosan ki van hagyva,
+        // mert az MSYS2 az ':'-ot ';'-re transzformal(hat)ja
+        printf("TERMSPEC:%s\n",termspec);
+
+        int s=socket_new();
+        int p, p1=55500, p2=55700;
+        for( p=p1; (p<=p2) && (0!=socket_bind(s,"127.0.0.1",p)); p++ )
+        {
+            //printf("port %d %d\n",p,socket_error());fflush(0);
+        }
+        if( p>p2 )
+        {
+            error("bind failed");
+        }
+        //printf("port %d\n",p);fflush(0);
+        if( 0!=socket_listen(s) )
+        {
+            error("listen failed");
+        }
+
+        char buf[16];
+        const char *argv[4];
+        argv[0]=termspec;
+        argv[1]="127.0.0.1";
+        argv[2]=buf;sprintf(buf,"%d",p);
+        argv[3]=0;
+
+        #ifdef WINDOWS        
+            spawnv(P_NOWAIT,argv[0],(char*const*)argv);
+            //Windowsban nincs jo hely lezarni s-t.
+        #else
+            if( fork()==0 )
+            {
+                socket_close(s);
+                execv(argv[0], (char*const*)argv);
+                //csak ha execv sikertelen
+                fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
+                error("execv failed");
+            }
+        #endif        
+        
+        termsck=socket_accept(s);
+        socket_close(s);
+        if( termsck<0 )
+        {
+            error("accept failed");
+        }
+        atexit(atexit_bye);
+    }
 
     else if( 0==stat(constr,&buf) ) //letezo termspec
     {

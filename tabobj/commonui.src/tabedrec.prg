@@ -247,7 +247,15 @@ local memoflg,memotxt,scrn,curs
                 memotxt:=bin2str(rtrim(arr[pos][MODR_VALUE]))
                 memotxt:=memoedit(memotxt,brw:ntop,brw:nleft,brw:nbottom,brw:nright)
                 if(lastkey()!=K_ESC)
-                    arr[pos][MODR_VALUE]:=str2bin(rtrim(memotxt))
+                    if( "X"$arr[pos][MODR_TYPE] )
+                        memotxt::=str2bin
+                    end
+                    memotxt::=rtrim
+                    while( memotxt::len>0 .and. memotxt::right(1)::asc<32 )
+                        memotxt::=substr(1,len(memotxt)-1)
+                        memotxt::=rtrim
+                    end
+                    arr[pos][MODR_VALUE]:=memotxt
                 end
                 restscreen(brw:ntop,brw:nleft,brw:nbottom,brw:nright,scrn) 
                 setcursor(curs)

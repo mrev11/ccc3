@@ -291,6 +291,10 @@ local key, line, rlen, sftprv
                     asize(atxt,len(atxt)-1)
                     atxt[actrow]:=padr(atxt[actrow],actcol-1)+line
                     display(atxt,top,left,bottom,right,sftrow,sftcol)
+
+                elseif( actrow==len(atxt) .and. actcol==len(atxt[actrow]) )
+                    atxt[actrow]:=stuff(atxt[actrow],actcol,1,"")
+                    displine(atxt,top,left,bottom,right,sftrow,sftcol,actrow)
                 end
 
             elseif( key==K_BS )

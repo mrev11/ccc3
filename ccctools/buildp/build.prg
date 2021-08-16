@@ -346,6 +346,25 @@ local n,p
         p+=substr(par,n+1)
         par:=p
     end
+
+
+    while( 0<(n:=at("$${",par)) )        // ...$${...}...
+        p:=left(par,n-1)
+        par:=substr(par,n+3)
+        n:=at("}",par)
+        p+=left(par,n-1)+"/$(BUILD_OBJ)/"+left(par,n-1)
+        p+=substr(par,n+1)
+        par:=p
+    end
+
+    while( 0<(n:=at("${",par)) )         // ...${...}...
+        p:=left(par,n-1)
+        par:=substr(par,n+2)
+        n:=at("}",par)
+        p+=getenv(left(par,n-1)) 
+        p+=substr(par,n+1)
+        par:=p
+    end
  
     par:=strtran(par,"\",dirsep())
     par:=strtran(par,"/",dirsep())

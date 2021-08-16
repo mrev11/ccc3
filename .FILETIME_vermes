@@ -1,6 +1,9 @@
+3c0ebe6ffd506d98ce5e50fe765da07b382cb353 2021081609:10:16-UTC ./CHANGELOG_vermes
+aa171ae2ba115572e7d86987103b1ccaf07ec947 2021081609:07:47-UTC ./ccctools/buildp/build.hu.ver
+e8b2d690f993df17205d300dbbf2f98c75d7d9d9 2021081607:22:48-UTC ./usr/bin/linux/build
+906c5a8d9c0f3ee411c85f3197dcd42e9ad9dd85 2021081607:22:26-UTC ./ccctools/buildp/build.prg
 2079a459ce588460ef840d6d1e977302db843473 2021081213:47:27-UTC ./tabobj/log-install
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
-846a3503e09abb22114033fddd97c247853fe18d 2021081213:38:57-UTC ./CHANGELOG_vermes
 ce40d05c18f2ffcd651ad3251ca943e25b52f9f7 2021081213:21:00-UTC ./ccclib/src/uic/memoedit.prg
 fe61ce14d9bd48199d5b99c1e69be068747d0aaf 2021081121:16:10-UTC ./log-install
 3b558e01eecc5de3c8583b992f838fea3db49def 2021081121:16:10-UTC ./usr/bin/linux/gitfollow
@@ -156,7 +159,6 @@ ceeba757093760fbe3f13bdab59e59cb7772dd11 2021081121:14:48-UTC ./usr/bin/linux/te
 6d67eb62f9ebc24410c40096f2952cb4430ec7a2 2021081121:14:47-UTC ./usr/bin/linux/mklink
 2af8c08565804c9244161a1808d4e20b3ec63b69 2021081121:14:47-UTC ./usr/bin/linux/removecr
 ea5ea21a8b8fbb977892a27ccb34a4c4ea36acea 2021081121:14:46-UTC ./usr/bin/linux/prg2ppo
-7ec9c3efff8079077b11be2dda2371ba70b613a7 2021081121:14:44-UTC ./usr/bin/linux/build
 399f46b46bdce99458ef1ce60f77ad13b700ac6a 2021081121:14:31-UTC ./usr/bin/linux/ppo2cpp
 63dc79a54f14d7c42011895a2837e4e5c75464f4 2021081121:14:30-UTC ./setup/setup-unix/removecr/rsplink
 a056161e4f09c9c64047f9c71d59994692bd66f5 2021081121:14:29-UTC ./setup/setup-unix/prg2ppo/rsplink
@@ -175,7 +177,6 @@ d0bb213df7bca1a8b6159877e7951b1e4c8dc158 2021081121:14:16-UTC ./usr/bin/linux/le
 9c88426f33728d8270d8465a1294d723eadcdef9 2021080416:49:47-UTC ./terminal/unix-ncurses/parfile.bld
 2e5c177605390eb0a90f58d7d48c0a24b506e6d2 2021080407:32:13-UTC ./tools/z/zloop.prg
 046c4252395c1b30db2e3cf148385b3ebd85dd40 2021073022:28:37-UTC ./setup/setup-windows/m.msys2
-269b45b3135c5ac827ff08fd4b33c6d2f65a4c51 2021073021:59:27-UTC ./ccctools/buildp/build.hu.ver
 bbd04495551fe1bd9abb7b49ce5aa11fc2afe6bc 2021073021:35:32-UTC ./setup/setup-windows/copy_from_ppo.msys2
 5e12ff21cb68c7becfab98908714cd38c9e06173 2021073013:34:55-UTC ./setup/setup-windows/removecr/m.msys2
 d4cf3940ebe67ad2ce5873d658fdc22bb571b991 2021073010:47:02-UTC ./setup/setup-unix/removecr/removecr.cpp
@@ -235,7 +236,6 @@ ecb02612cdd368ac88367b80271ead4a0d7e31f8 2021072918:50:14-UTC ./setup/setup-wind
 aeae09c5fe3dddcda7136d5ed5aea332c986dd4d 2021072913:56:09-UTC ./usr/build/msys2/tds2obj.msys2
 62ff39e31dd87414353b2adf175cc50ee341a0ac 2021072913:38:35-UTC ./tools/sql2/util/tdsutil/tds2prg.prg
 75c5c341553b403e456cf2f5df44e56c24942ff7 2021072913:37:29-UTC ./tools/mask/msk2say/msk2say.prg
-414cc29ec5de1bbd6d7fe17ed74014a05c2f08ed 2021072913:34:43-UTC ./ccctools/buildp/build.prg
 f19c3f016137f121321d7c5690cccc90ccc7d08a 2021072913:17:59-UTC ./tools/sql2/test/basicdemo/m.msys2
 96d86cae97344dfba57971006de8eb72b4f90c25 2021072913:15:28-UTC ./tools/sql2/test/mkall.msys2
 ab1fb899a7586f81773d275d9aeb63a74e34e57a 2021072912:50:21-UTC ./tools/sql2/test/basicdemo/mp.msys2

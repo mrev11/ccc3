@@ -1,3 +1,5 @@
+2021.09.10 xstart 2.0 mindenhol helyettesiti a kornyezeti valtozokat;
+
 2021-08-16 build parameter helyettesites:
   A parfile.bld-kben ${ENV}-et ugyanugy helyettesiti, mint $(ENV)-t.
   Bosszanto volt, hogy a bash az ${ENV} alakot ismeri, a build  viszont 

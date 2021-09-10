@@ -61,6 +61,10 @@ local pos1,pos2
         pos2:=at(")",val,pos1+3)
         val::=stuff(pos1, pos2-pos1+1, getenv( val[pos1+2..pos2-1] ))
     end
+    while( 0<(pos1:=at("${",val)) )
+        pos2:=at("}",val,pos1+3)
+        val::=stuff(pos1, pos2-pos1+1, getenv( val[pos1+2..pos2-1] ))
+    end
     return val
 
 

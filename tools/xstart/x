@@ -1,3 +1,8 @@
 #!/bin/bash
+rm -f xstart.log
+export XSTARTIFAC=localhost
+export XSTARTPORT=55000
+export XSTARTWORK=$(pwd)
+export XSTARTPAR=xstart.par
 xstart.exe xstart.par
  

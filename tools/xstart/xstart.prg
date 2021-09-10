@@ -51,7 +51,9 @@ példa a paraméterfilére:
  
 #include "spawn.ch"
 
-#define FAILED(txt)  (txt)+" failed (error="+alltrim(str(serror()))+")"
+#define VERSION "2.0" // 2021.09.10 mindenhol helyettesiti a kornyezeti valtozokat
+
+#define FAILED(txt) (txt)+" failed (error="+alltrim(str(serror()))+")"
  
 static proctab:={}
 
@@ -62,14 +64,17 @@ local args:={*}
 local parfile:="xstart.par"
 local logfile:="xstart.log"
 local wd:=dirname() //curdir nem jó
-local p,s,n,i,c,arg,env,res,cmd,var,hash
-
+local p,s,n,i,c,result
 
     for n:=1 to len(args)
         if( args[n]=="-p" )
             parfile:=args[++n]
         elseif( args[n]=="-l" )
             logfile:=args[++n]
+        elseif( args[n]=="-v" )
+            ? "xstart "+VERSION
+            ?
+            quit
         else
             parfile:=args[n]
         end
@@ -93,7 +98,6 @@ local p,s,n,i,c,arg,env,res,cmd,var,hash
     
     for n:=1 to len(proctab)
         p:=proctab[n]
-        //p:socket:=hdup(socket(),.f.,.t.) //nem öröklődik (XP-n rossz)
         p:socket:=socket()
         sethandleinheritflag(p:socket,.f.) //nem öröklődik (2009.02.17)
 
@@ -136,40 +140,17 @@ local p,s,n,i,c,arg,env,res,cmd,var,hash
             p:=proctab[i]
             c:=accept(s[n])
 
-            cmd:=cmdline(p,c)
-
-            if( empty(p:env) )
-                env:=NIL
-            else
-                hash:=simplehashNew()
-                hash["SOCKET"]:=alltrim(str(c))
-                env:=environment()
-                for i:=1 to len(p:env)
-                    var:=p:env[i]
-                    //var:=strtran(var,"$(SOCKET)",alltrim(str(c)))
-                    var::=procvar(hash)
-                    addenv(env,var)
-                next
-            end
-
             if( !empty(p:workdir) )
-                dirchange(txtproc(p:workdir,0))
+                dirchange(p:workdir)
             end
 
-
-            //? cmd
-            res:=spawn(SPAWN_NOWAIT+SPAWN_PATH,cmd,env)
+            result:=p:spawn(c)
 
             if( !empty(p:workdir) )
                 dirchange(wd)
             end
-            
-            ? "ACCEPT:", date(), time(), getpeername(c), p:port, p:name, res
+            ? "ACCEPT:", date(), time(), getpeername(c), p:port, p:name, result
 
-            if(res<0)
-                ?? cmd //hibás parancs
-            end
-   
             sclose(c)
         next
         
@@ -184,126 +165,57 @@ local p,s,n,i,c,arg,env,res,cmd,var,hash
 
 
 ******************************************************************************
-static function cmdline(pitem,sck)
-
-// behelyettesíti a $(SOCKET) makrót
-// elvégzi az $(ENVIR) makrók helyettesítését,
-// az elválasztó szóközöket egységesíti,
-// visszatérés: {prog arg1 arg2...}
-
-local cmd,n
-
-    if( pitem:executable!=NIL )
-        cmd:={pitem:executable}
-    else
-        cmd:=split(txtproc(pitem:command,sck)," ")
-    end
-
-    for n:=1 to len(pitem:arg)
-        aadd(cmd,txtproc(pitem:arg[n],sck))
-    next
-    return cmd 
-
-
-static function txtproc(txt,sck)
-local n,p
-    txt:=alltrim(txt)
-    txt:=strtran(txt,"$(SOCKET)",alltrim(str(sck)))
-    while( 0<(n:=at("$(",txt)) )  // ...$(...)...
-        p:=left(txt,n-1)
-        txt:=substr(txt,n+2)
-        n:=at(")",txt)
-        p+=getenv(left(txt,n-1)) 
-        p+=substr(txt,n+1)
-        txt:=p
-    end
- 
-    txt:=strtran(txt,chr(10)," ")
-    txt:=strtran(txt,chr(13)," ")
-    while( "  "$txt )
-        txt:=strtran(txt,"  "," ")
-    end
-    
-    return txt
-
-******************************************************************************
-static function which(x) //megkeresi x-et a pathban
-local p,n,f
-    if( file(x) )
-        //? "file exists:", x
-    else
-        p:=split(getenv("PATH"),pathsep())
-        for n:=1 to len(p)
-            if( file(f:=p[n]+dirsep()+x) )
-                //? "found in path:", f
-                return f
-            end
-        next
-    end
-    return x
-
-
-******************************************************************************
-static function addenv(env,var)  //kivesz, berak, cserél
-local varnam,varpos
-
-    varnam:=left(var,at("=",var))
-    #ifdef _UNIX_
-        varpos:=ascan(env,varnam)
-    #else
-        varpos:=ascan(env,{|x|!upper(x)!=upper(varnam)})
-    #endif
-    
-    if( varnam==var )
-        // <env>varname=</env>  
-        if(varpos>0)
-            // kiveszi
-            adel(env,varpos)
-            asize(env,len(env)-1)
-        end
-
-    elseif( varpos==0 )
-        // berakja
-        aadd(env,var)
-    else
-        // cseréli
-        env[varpos]:=var
-    end
-    return env
-
-
-******************************************************************************
-static function procitem(node)
+static function procitem(node) //XML feldolgozo
 local n,item,attr,txt
+local env,name,value
     
     item:=xstartitemNew()
 
     for n:=1 to len( node:content )
         attr:=node:content[n]:type
         txt:=node:content[n]:gettext
+        txt::=substenv(item:envhash)
 
         if( attr=="name" )
             item:name:=txt
+
         elseif( attr=="env" )
-            aadd(item:env,txt)
+            name:=envname(txt)
+            if( name!=NIL )
+                item:envhash[name]:=txt
+            end
+
         elseif( attr=="arg" )
             aadd(item:arg,txt)
+
         elseif( attr=="interface" )
             item:interface:=txt
+
         elseif( attr=="host" )  //interface
             item:interface:=txt
+
         elseif( attr=="if" )    //interface
             item:interface:=txt
+
         elseif( attr=="port" )
             item:port:=val(txt)
+
         elseif( attr=="workdir" )
             item:workdir:=txt
+
         elseif( attr=="wd" )    //workdir
             item:workdir:=txt 
+
         elseif( attr=="command" )
+            txt::=alltrim
+            while( "  "$txt )
+                txt::=substr("  "," ")
+            end
             item:command:=txt
+
         elseif( attr=="executable" )
             item:executable:=txt
+
         else
             alert("Invalid XML tag: "+attr)
         end
@@ -312,91 +224,137 @@ local n,item,attr,txt
     if( empty(item:interface) )
         item:interface:=NIL
     end
-    
+
+    //  ?   
+    //  env:=item:envhash
+    //  item:envhash:=NIL
+    //  item:list
+    //  item:envhash:=env
+    //  env:list
+    //  ?
+
     aadd(proctab,item)
     
     return .t.  //nem kell tovább építeni a fát
 
+
 ******************************************************************************
 class xstartitem(object) 
-    method initialize
-    attrib socket
-    attrib name
-    attrib env
-    attrib arg
-    attrib interface
-    attrib port
-    attrib workdir
-    attrib command
-    attrib executable
+    method  initialize
+    attrib  socket
+    attrib  name
+    attrib  envhash
+    attrib  arg
+    attrib  interface
+    attrib  port
+    attrib  workdir
+    attrib  command
+    attrib  executable
+
+    method  spawn
 
 ******************************************************************************
 static function xstartitem.initialize(this) 
-    this:(object)initialize
+
+local env,n,name
+
     this:socket:=NIL
     this:name:=""
-    this:env:={}
+    this:envhash:=simplehashNew()
     this:arg:={}
     this:interface:=NIL  //minden interfeszen figyel
     this:port:=NIL
     this:workdir:=NIL
     this:command:=NIL
     this:executable:=NIL
+
+    env:=environment()
+    for n:=1 to len(env)
+        name:=envname(env[n])
+        if( name!=NIL )
+            this:envhash[name]:=env[n]
+        end
+    next
+
+    //envhash elemei: {"name","name=value"}
+    
     return this
 
 
 ******************************************************************************
-static function procvar(var,hash)
-// var:  VARNAME=some$(OTHER)value
+static function xstartitem.spawn(this,sck) 
+local cmd,env,value,n
 
+    this:envhash["SOCKET"]:="SOCKET="+sck::str::alltrim
+
+    if( this:executable!=NIL )
+        cmd:={this:executable::substenv(this:envhash)}
+    else
+        cmd:=this:command::substenv(this:envhash)::split(" ")
+    end
+    for n:=1 to len(this:arg)
+        aadd(cmd,this:arg[n]::substenv(this:envhash))
+    next
+
+    env:={}
+    value:=this:envhash:firstvalue
+    while( value!=NIL )
+        aadd(env,value::substenv(this:envhash))
+        value:=this:envhash:nextvalue
+    end
+
+    //? "command",cmd
+
+    return .spawn(SPAWN_NOWAIT+SPAWN_PATH,cmd,env) // global spawn
+
+
+******************************************************************************
+******************************************************************************
+static function substenv(txt,hash)
+    if( "$"$txt )
+        txt::=substenv1(hash,"$(",")")
+        txt::=substenv1(hash,"${","}")
+    end
+    return txt
+
+
+static function substenv1(txt,hash,dl,dr)
+local pos1:=0,pos2
 local name,value
-local replacenam,replaceval
-local pos1,pos2
-local err
-
-    pos1:=at("=",var)
-    if( pos1<2 )
-        err:=errorNew()
-        err:description:="invalid environment"
-        err:args:={var}
-        break(err)
-    end
-
-    name:=var[..pos1-1]
-    value:=var[pos1+1..]
-    hash[name]:=value
-
-    while( 0<(pos1:=at("$(",value)) )
-        pos2:=at(")",value,pos1)
-
-        if( empty(replacenam:=value[pos1+2..pos2-1]) )
-            value:=value[..pos1-1]+chr(1)+value[pos1+1..]     // $ csere
-
-        elseif( !validname(replacenam) )
-            value:=value[..pos1-1]+chr(1)+value[pos1+1..]     // $ csere
-
-        elseif( !empty(replaceval:=hash[replacenam]) )
-            value:=value[..pos1-1]+replaceval+value[pos2+1..] // helyettesit
-
-        elseif( !empty(replaceval:=getenv(replacenam))  )
-            value:=value[..pos1-1]+replaceval+value[pos2+1..] // helyettesit
-
+    while( 0<(pos1:=at(dl,txt,pos1+1)) )
+        pos2:=at(dr,txt,pos1)
+        name:=txt[pos1+2..pos2-1]
+        value:=hash[name] // value = 'name=xxxx'
+        if( value!=NIL )
+            //? "***",txt
+            txt::=stuff(pos1,pos2-pos1+1,value::envvalue)
+            //?? " =>",txt
         else
-            value:=value[..pos1-1]+value[pos2+1..]            // $(name) kihagyva
-        end
+            //ha nincs definicio NAME-re
+            //akkor valtozatlanul benne marad $(NAME)
+        end 
     end
-    value::=strtran(chr(1),"$")
-
-    //? ">>>", name+"="+value
-    
-    return name+"="+value
-    
-
-******************************************************************************
-static function validname(name)
-    return !("$"$name.or."("$name.or.")"$name)
+    return txt
 
 
 ******************************************************************************
+static function envname(txt)  // "name=value" -> name/NIL
+local pos:=at("=",txt)
+local name
+    if( pos>0 )
+        name:=txt[..pos-1]
+    end
+    return name
 
 
+******************************************************************************
+static function envvalue(txt)  // "name=value" -> value
+local pos:=at("=",txt)
+local value:=txt
+    if( pos>0 )
+        value:=txt[pos+1..]
+    end
+    return value
+
+
+******************************************************************************

@@ -1,11 +1,17 @@
-3c0ebe6ffd506d98ce5e50fe765da07b382cb353 2021081609:10:16-UTC ./CHANGELOG_vermes
+d7a15a6dc2373db059c45f918c04eede82750dbd 2021091013:32:45-UTC ./CHANGELOG_vermes
+c7a9acd41013d2b8fdf13bcb223d1a7c0ec7d540 2021091013:31:26-UTC ./tools/xstart/x
+e759fc795d123e7326d2c383444f5e6d84f259f9 2021091013:28:36-UTC ./usr/bin/linux/xstart
+fefa9ec0f8ea45b06b12e420d4e73fec2ffed470 2021091013:05:18-UTC ./tools/xstart/xstart.prg
+ffa945e75bddbc023256682fc2e50bda69116f2d 2021091011:21:51-UTC ./tools/xstart/xstart.par
+cef2833ae13ecd0a4d12bf0f70402d244ca58227 2021090807:39:45-UTC ./log-install
+eafc78aff6cee40c2f2135e78a3fba16bbf42427 2021090807:39:40-UTC ./jt/jterminal/jterminal.jar
+2f4837b52a2da2fea910bc0e504672bc2494d363 2021090807:39:34-UTC ./usr/bin/linux/webapp
+c00fae07d12a2c6c5a213be7ea8169a66daf5089 2021090713:29:18-UTC ./tools/webapp/program/webapp/loadconfig.prg
 aa171ae2ba115572e7d86987103b1ccaf07ec947 2021081609:07:47-UTC ./ccctools/buildp/build.hu.ver
 e8b2d690f993df17205d300dbbf2f98c75d7d9d9 2021081607:22:48-UTC ./usr/bin/linux/build
 906c5a8d9c0f3ee411c85f3197dcd42e9ad9dd85 2021081607:22:26-UTC ./ccctools/buildp/build.prg
-2079a459ce588460ef840d6d1e977302db843473 2021081213:47:27-UTC ./tabobj/log-install
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
 ce40d05c18f2ffcd651ad3251ca943e25b52f9f7 2021081213:21:00-UTC ./ccclib/src/uic/memoedit.prg
-fe61ce14d9bd48199d5b99c1e69be068747d0aaf 2021081121:16:10-UTC ./log-install
 3b558e01eecc5de3c8583b992f838fea3db49def 2021081121:16:10-UTC ./usr/bin/linux/gitfollow
 7f12954e5b8870a387c36882bc9d9c00bdf76e41 2021081121:16:10-UTC ./usr/bin/linux/gitnav
 6c192183a8ff03e4c8310ae3ad569cfc02546723 2021081121:16:10-UTC ./usr/bin/linux/gitref
@@ -26,7 +32,6 @@ e4829a5d64ad4c611ef3fc33fee8e575123a1113 2021081121:16:05-UTC ./jt/jterminal/get
 4cad5251ff6d73e5ecc71b7febfaa87467682f19 2021081121:16:05-UTC ./jt/jterminal/getutil/sliderfield.class
 ff7a9249632f9e916faa12810f94696f7f538770 2021081121:16:05-UTC ./jt/jterminal/jtchange.class
 d6bb320d152b7078c5097936c564c5f674ea84ec 2021081121:16:05-UTC ./jt/jterminal/jtcheck.class
-ff7c92b4b26eceb46612cfc809062342c32bf84a 2021081121:16:05-UTC ./jt/jterminal/jterminal.jar
 dc9a88ef77152ba8dbc3975441ee009fba43a12a 2021081121:16:05-UTC ./jt/jterminal/jtmenucheck.class
 644e2325758a93b588bd67a8065dcce10508ce6f 2021081121:16:05-UTC ./jt/jterminal/jtmenuradio.class
 d74cc844d967e8e53ab8db38e21b27e1e3942030 2021081121:16:05-UTC ./jt/jterminal/jtpassw.class
@@ -98,7 +103,6 @@ c7a4c70d26de027130db44a02b068f45cf69e4f0 2021081121:16:04-UTC ./jt/jterminal/jtw
 7e2b66f334906a91150ede8e65711f271f1b08e1 2021081121:16:04-UTC ./jt/jterminal/xmlcomponent.class
 98195dc289a398c3a826f3337b161c91eb26f1b2 2021081121:16:03-UTC ./usr/bin/linux/terminal-qt5
 a5151c61dfc1795052e19226d2179677f25f9f94 2021081121:16:00-UTC ./usr/bin/linux/msk2html
-79abda2a399368efb86a933dc172026401be98e9 2021081121:15:59-UTC ./usr/bin/linux/webapp
 2bd88081a83597991627458a0512462eaf6c7370 2021081121:15:56-UTC ./usr/bin/linux/tv
 0c5f5b766419267bc1a7b78430a5e93a8a94d7be 2021081121:15:46-UTC ./usr/bin/linux/jeed
 75edcb52fb30a85b2dc4a3de99c90a81b36d265f 2021081121:15:45-UTC ./usr/bin/linux/tds2prg
@@ -124,7 +128,6 @@ e5965a6535ade3f7de42e9886b69672d836a407d 2021081121:15:26-UTC ./usr/bin/linux/og
 35c636aa3e20fdab13fb8693f9bc802206079fdf 2021081121:15:21-UTC ./usr/bin/linux/zg
 4d6f079f615b75f2374e3b8a8177d95c9e021c3f 2021081121:15:21-UTC ./usr/bin/linux/zgrep
 3f32aef3583ceebbda2a1e09f98784f56665c22c 2021081121:15:20-UTC ./usr/bin/linux/zhist
-7301d631330d95b18a9c5c7e016c1c3012ce30b3 2021081121:15:18-UTC ./usr/bin/linux/xstart
 d263dd341882d60d5dc10c27ca8c4a937c18a9f2 2021081121:15:15-UTC ./usr/bin/linux/websrv
 6d394fb017f3bdcf1e0b517ec5e3996e66e080ba 2021081121:15:13-UTC ./usr/bin/linux/prg2tdc
 0cb0bc3aa91e4f335b286d291dd8c58ef0db2cf8 2021081121:15:13-UTC ./usr/bin/linux/tabsuper
@@ -516,7 +519,6 @@ b17e9969d534499c17f56b7c08b03f154d17360e 2020050712:07:09-UTC ./ccclib/src/uic/t
 9b47ec4ef42f52801cc9e19ba369bc03647e3d5e 2020042113:21:23-UTC ./terminal/terminal-qt5/keycode_qt5.cpp
 65baadc2efbe1eceefaf5d3c6574cab143b1be18 2020042113:20:16-UTC ./terminal/common/inkey3.ch
 dd46bd177aa444b33e486df6b0041a074e3c24c6 2020042113:18:15-UTC ./terminal/common/keycode.h
-47b48b922b968a4301c5dc9ef5728af006980f5d 2020040922:02:15-UTC ./tools/xstart/xstart.prg
 a6ebfd084f3d396ff0438abb02f8dc1be48c82cd 2020032114:50:42-UTC ./ccctools/pack/copyright.prg
 6ea6f6a2452baa8f5f2d0da24e998b302ed30ff2 2020032114:14:49-UTC ./ccc-dependencies-ubuntu
 64540268b7b013ebf8146aebc3ba22bb9e5498bb 2020032109:48:14-UTC ./envccc
@@ -1676,7 +1678,6 @@ e58df8cdf798e9554ce31279c50d0bec73d426de 2013021711:01:24-UTC ./terminal/unix/re
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
 73dd648c0cd17c798ba6f5846b62e40f0bd4e269 2012102712:37:54-UTC ./gtk/defs/gtkwindow.defs
-d9f64eb5a808d41a91199bcabd3c756d3fb75600 2012102117:47:44-UTC ./tools/xstart/xstart.par
 493aa183a916f3f7ce655334eb27fb923f0d99f7 2012102114:39:13-UTC ./terminal/terminal-test/remio/m.bat
 24e75028d7a896d97da0cc0d6127f802dffc5f24 2012102111:26:26-UTC ./terminal/terminal-test/screenwr/m
 415d335fba72447fc8e4f5d8afb9d3373f6248aa 2012102008:17:41-UTC ./doc/valtozasok.tex
@@ -3084,7 +3085,6 @@ e918773d58df0b9a2f02804c0d0bd0d20f368a42 2006040416:09:54-UTC ./terminal/windows
 9ed0573aa5d6565533b2332d29962032557b6a64 2006040211:35:21-UTC ./terminal/unix/keysym2ucs.cpp
 934f6b5acebfcf2b64cf12211f62cafec251ae46 2006040208:09:35-UTC ./ccclib/src/uic/termapi/m
 f1574231ca40f02b0503094c4d73b5387915e8fa 2006040115:18:09-UTC ./terminal/xtest/x
-770328f928fe5d180a2258c9bf0a35ecc5238846 2006040114:13:43-UTC ./tools/xstart/x
 a81490d5ee845bce9bab1f183816406fce741b75 2006033009:02:07-UTC ./terminal/xtest/m.bat
 eac1ea078f6bf21bcb7317367eefb6d153fb74bd 2006033007:25:01-UTC ./terminal/windows/m.bat
 58727db04532d2236f04c6fdc62846360d064b36 2006033006:42:49-UTC ./terminal/xtest/s.bat

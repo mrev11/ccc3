@@ -1,9 +1,23 @@
 <xstart>
 <item>
     <name>Test Program</name>
-    <if>localhost</if>
-    <port>55000</port>
+    <if>$(XSTARTIFAC)</if>
+    <port>${XSTARTPORT}</port>
+    <workdir>$(XSTARTWORK)</workdir>
     <env>CCCTERM_CONNECT=SOCKET:$(SOCKET)</env>
-    <command>z.exe xstart.par</command>
+    <env>PROBA=${CCCDIR}</env>
+    <env>SZERENCSE=$(CCCVER)</env>
+    <env>VANAKI=$(FORRON)</env>
+    <env>HOPP=KOPP</env>
+    <command>z.exe</command>
+    <arg>$(XSTARTPAR)</arg>
 </item>
+
+<!-- 
+    xstart 2.0 mindenhol helyettesiti a kornyezeti valtozokat 
+    a ${VAR} es $(VAR) alakokat egyforman helyettesiti
+    ha VAR nincs definialva, akkor megmarad az eredeti szoveg
+    (amit esetleg kesobb a bash helyettesithet)  
+--> 
+
 </xstart>

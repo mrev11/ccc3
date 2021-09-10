@@ -94,6 +94,7 @@ static function xmlparser.initialize(this,f)
     this:infosize(64)       // előre legyártja fix mérettel
     this:info:type:=""
     this:info:fullpath:=""
+    this:info:nsmap:=simplehashNew(8)
     this:info:buildflag:=.t.
     
     this:nodebeginblock:=NIL
@@ -220,6 +221,7 @@ local info1:=this:infostack[this:infodepth++]
 local info2:=this:infostack[this:infodepth] 
     info2:type:=s
     info2:fullpath:=info1:fullpath+"/"+s    // kumulálja
+    info2:nsmap:=info1:nsmap                // örökli
     info2:buildflag:=info1:buildflag        // örökli
     info2:userdata:=info1:userdata          // örökli
     return info2
@@ -245,14 +247,38 @@ local size0:=len(this:infostack),n
 static class nodeinfo(object)
     attrib  type
     attrib  fullpath
+    attrib  nsmap
     attrib  buildflag
     attrib  userdata
     method  clean
-
+    method  nsprefix
+    method  namespace
+    method  uqname      //unqualified name
+    
 static function nodeinfo.clean(this)
     this:type:=NIL
     this:fullpath:=NIL
+    this:nsmap:=NIL
     this:buildflag:=NIL
     this:userdata:=NIL
+
+
+static function nodeinfo.nsprefix(this)
+local pos:=at(":",this:type)
+    return this:type[1..pos-1]
+
+
+static function nodeinfo.uqname(this)
+local pos:=at(":",this:type)
+    return this:type[pos+1..]
+
+
+static function nodeinfo.namespace(this)
+local ns
+    if( this:nsmap!=NIL )
+        ns:=this:nsmap[this:nsprefix]
+    end
+    return ns
+
 
 ****************************************************************************

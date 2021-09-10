@@ -88,6 +88,7 @@ hex        [0-9a-fA-F]+
 "<?"             {yy_push_state(tag); return LPARQM;}
 <tag>{
 ">"              {yy_pop_state(); return RPAR;} 
+"/>"             {yy_pop_state(); return SLRPAR;} 
 "?>"             {yy_pop_state(); return QMRPAR;} 
 {symbol}         {cat(); return SYMBOL;}  
 {string}         {cat(); return STRING;}  

@@ -220,11 +220,27 @@ function attrlist__(this)
 
 ***************************************************************************************
 function attrlist__attrlist_symbol_eq_string(this,r,n,v)
-    if( this:attribblock!=NIL )
-        eval(this:attribblock,this,n,v)
-    end
-    if( this:info:buildflag )
-        aadd(this:lemon[r],xmlattribNew(n,v))
+    if( "xmlns"==n )
+        if( this:info:nsmap==NIL )
+            this:info:nsmap:=simplehashNew(8)
+        else
+            this:info:nsmap:=this:info:nsmap:clone
+        end
+        this:info:nsmap[""]:=v[2..len(v)-1]  // default ns
+    elseif( at("xmlns:",n)==1 )
+        if( this:info:nsmap==NIL )
+            this:info:nsmap:=simplehashNew(8)
+        else
+            this:info:nsmap:=this:info:nsmap:clone
+        end
+        this:info:nsmap[n[7..]]:=v[2..len(v)-1]
+    else
+        if( this:attribblock!=NIL )
+            eval(this:attribblock,this,n,v)
+        end
+        if( this:info:buildflag )
+            aadd(this:lemon[r],xmlattribNew(n,v))
+        end
     end
     return r
 

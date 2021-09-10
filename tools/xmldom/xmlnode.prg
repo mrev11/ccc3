@@ -30,6 +30,8 @@ class xmlnode(object)
     method  settext
     method  getattrib
     method  gettext
+    method  nsprefix
+    method  uqname
     method  xmlout          //kiírás: minden külön sorba
     method  xmloutpre       //kiírás: semmit nem változtat
     method  xmloutind       //kiírás: indentálva
@@ -51,12 +53,25 @@ static function xmlnode.initialize(this,type)
 
 
 ****************************************************************************
-static function xmlnode.setattrib(this,oattr)
-local x:=ascan(this:attrib,{|a|a:name==oattr:name})
-    if( x>0 )
-        this:attrib[x]:=oattr
+static function xmlnode.setattrib(this,oattr,value)
+local x,name
+    if( valtype(oattr)=="O" )
+        name:=oattr:name
+        x:=ascan(this:attrib,{|a|a:name==name})
+        if( x>0 )
+            this:attrib[x]:=oattr
+        else
+            this:addattrib(oattr)
+        end
     else
-        this:addattrib(oattr)
+        name:=oattr
+        x:=ascan(this:attrib,{|a|a:name==name})
+        if( x>0 )
+            this:attrib[x]:value:=quote(value)
+            //this:attrib[x]:=xmlattribNew(name,quote(value))
+        else
+            this:addattrib(xmlattribNew(name,quote(value)))
+        end
     end
 
 
@@ -116,6 +131,24 @@ local i, c, x:="", n
         next
     end
     return x
+
+
+****************************************************************************
+static function xmlnode.nsprefix(this)
+local pos:=at(":",this:type)
+    if( pos>0 )
+        return left(this:type,pos-1)
+    end
+    return ""
+
+
+****************************************************************************
+static function xmlnode.uqname(this)
+local pos:=at(":",this:type)
+    if( pos>0 )
+        return substr(this:type,pos+1)
+    end
+    return this:type
 
 
 ****************************************************************************
@@ -289,6 +322,17 @@ static function cdataif(x)
         return  cdata(x) 
     end
     return x
+
+
+****************************************************************************
+static function quote(x)
+    if( !'"'$x  )
+        return '"'+x+'"'
+    elseif( !"'"$x  )
+        return "'"+x+"'"
+    end
+    return '"'+x::strtran('"','&quot;')+'"'
+
 
 ****************************************************************************
                        

@@ -2,10 +2,11 @@
 #define LPARQM                          2
 #define QMRPAR                          3
 #define LPAR                            4
-#define SLASH                           5
+#define SLRPAR                          5
 #define RPAR                            6
-#define SYMBOL                          7
-#define TEXT                            8
-#define CDATA                           9
-#define EQ                             10
-#define STRING                         11
+#define SLASH                           7
+#define SYMBOL                          8
+#define TEXT                            9
+#define CDATA                          10
+#define EQ                             11
+#define STRING                         12

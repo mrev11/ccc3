@@ -51,7 +51,8 @@ példa a paraméterfilére:
  
 #include "spawn.ch"
 
-#define VERSION "2.0" // 2021.09.10 mindenhol helyettesiti a kornyezeti valtozokat
+#define VERSION "2.1" // 2021.10.07 eliras javitva: substr helyett strtran
+//#define VERSION "2.0" // 2021.09.10 mindenhol helyettesiti a kornyezeti valtozokat
 
 #define FAILED(txt) (txt)+" failed (error="+alltrim(str(serror()))+")"
  
@@ -209,7 +210,7 @@ local env,name,value
         elseif( attr=="command" )
             txt::=alltrim
             while( "  "$txt )
-                txt::=substr("  "," ")
+                txt::=strtran("  "," ")
             end
             item:command:=txt
 

@@ -1,3 +1,5 @@
+2021.10.07 xstart: eliras javitva, substr() helyett strtran() kell;
+
 2021.09.10 xmldom koveti a nevtereket;
 
 2021.09.10 xstart 2.0 mindenhol helyettesiti a kornyezeti valtozokat;

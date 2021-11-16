@@ -1,0 +1,34 @@
+#!/bin/bash
+#set -x
+
+export OREF_SIZE=600000
+export CCCTERM_SIZE=100x48
+
+# DEFAULT COLORS
+#
+# if [ "$CCCVER" == "3" ]; then
+#   export ZCOLOR_TEXT=w/n,w/211     # text/mark
+#   export ZCOLOR_MASK=n/233,w+/bg   # mask/get,header,alert
+#
+# elif [ "$CCCVER" == "2" ]; then                      
+#   export ZCOLOR_TEXT=w/b,b/w       # text/mark
+#   export ZCOLOR_MASK=n/gb+,w+/gb   # mask/get,header,alert   
+# fi
+
+# export CCCTERM_FONTSPEC=-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
+# export CCCTERM_FONTSPEC=-misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+# export CCCTERM_XFTFONTSPEC=Monospace-12
+# export CCCTERM_GTKFONTSPEC="Monospace 12"
+# export CCCTERM_QTFONTSPEC="Monospace 14"
+
+# export CCCTERM_CONNECT="$CCC3DIR/usr/bin/$CCCUNAME/terminal-gtk.exe"
+# export CCCTERM_CONNECT="$CCC3DIR/usr/bin/$CCCUNAME/terminal-xft.exe"
+# export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
+
+
+if [ "$CCCTERM_INHERIT" == "yes" ]; then
+   z.exe "$@"  2>/dev/null
+else
+   z.exe "$@" 2>/dev/null  &
+fi
+

@@ -1082,6 +1082,17 @@ parexpr(P) ::= AT SYMBOL(S).{  //@symbol
     symbol_search(S);
 }
 
+parexpr(P) ::= LBRACKET SYMBOL(S) RBRACKET.{  //[symbol]
+    P=(new parsenode)->rule(1,S);
+    P->text="parexpr ::= LBRACKET SYMBOL RBRACKET.";
+    P->codegen=codegen_parexpr_LBRACKET_SYMBOL_RBRACKET;
+    P->outsource=outsource_parexpr_LBRACKET_SYMBOL_RBRACKET;
+    P->cargo=0;
+
+    //!
+    symbol_search(S);
+}
+
 lexpr(L) ::= .{
     L=(new parsenode)->rule(0);
     L->text="lexpr ::= .";

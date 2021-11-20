@@ -121,21 +121,21 @@ static void pmulnum(double v)
 }
 
 //---------------------------------------------------------------------------
-static void sym_eval(parsenode *sym, int ref)
+static void sym_eval(parsenode *sym, const char *psr)
 {
-    const char *r=ref?"_ref":"";
+    //psr: "push"|"push_symbol"|"push_symbol_ref"
 
     if( sym->cargo & SYM_GLOBSTAT )
     {    
         nltab();
-        fprintf(code,"push_symbol%s(_st_%s_ptr());",r,sym->text);
+        fprintf(code,"%s(_st_%s_ptr());",psr,sym->text);
         fprintf(code,"//global");
     }
 
     else if( sym->cargo & SYM_LOCSTAT )
     {
         nltab();
-        fprintf(code,"push_symbol%s(_st_%s.ptr);",r,sym->text);
+        fprintf(code,"%s(_st_%s.ptr);",psr,sym->text);
         fprintf(code,"//%s",funcname);
     }
 
@@ -145,11 +145,11 @@ static void sym_eval(parsenode *sym, int ref)
         int idx=0xffff&sym->cargo;
         if( starflag && (idx>=argcount) )
         {
-            fprintf(code,"push_symbol%s(base+argno+%d);",r,idx-argcount);
+            fprintf(code,"%s(base+argno+%d);",psr,idx-argcount);
         }
         else
         {
-            fprintf(code,"push_symbol%s(base+%d);",r,idx);
+            fprintf(code,"%s(base+%d);",psr,idx);
         }
         fprintf(code,"//%s",sym->text);
     }
@@ -157,14 +157,14 @@ static void sym_eval(parsenode *sym, int ref)
     else if( sym->cargo & SYM_BLKARG )
     {
         nltab();
-        fprintf(code,"push_blkarg%s(base+%d);",r,0xffff&sym->cargo);
+        fprintf(code,"%s(base+%d);",psr,0xffff&sym->cargo);
         fprintf(code,"//%s",sym->text);
     }
 
     else if( sym->cargo & (SYM_BLKSTAT|SYM_BLKLOC) )
     {
         nltab();
-        fprintf(code,"push_blkenv%s(env+%d);",r,0xffff&sym->cargo);
+        fprintf(code,"%s(env+%d);",psr,0xffff&sym->cargo);
         fprintf(code,"//%s",sym->text);
     }
 }
@@ -2297,7 +2297,7 @@ int codegen_statement_FOR_SYMBOL_ASSIGN_expr_TO_expr_forstep_newline_lstatement_
     cgen(p,3);  //forstep
     nltab();fprintf(code,"dup();");
     nltab();fprintf(code,"sg=sign();");
-    sym_eval(p->right[0],0); //SYMBOL
+    sym_eval(p->right[0],"push_symbol"); //SYMBOL
     nltab();fprintf(code,"add();");
     sym_assign(p->right[0]);
     nltab();fprintf(code,"goto lab_%d_0;",label(0));
@@ -2705,7 +2705,14 @@ int codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET(parsenode *p
 //---------------------------------------------------------------------------
 int codegen_parexpr_AT_SYMBOL(parsenode *p,void *v)//PROTO
 {
-    sym_eval(p->right[0],1);
+    sym_eval(p->right[0],"push_symbol_ref");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int codegen_parexpr_LBRACKET_SYMBOL_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    sym_eval(p->right[0],"push");
     return 0;
 }
 
@@ -2954,7 +2961,7 @@ int codegen_expr_NIL(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_expr_SYMBOL(parsenode *p,void *v)//PROTO
 {
-    sym_eval(p->right[0],0);
+    sym_eval(p->right[0],"push_symbol");
     return 0;
 }
 
@@ -3971,6 +3978,15 @@ int outsource_parexpr_AT_SYMBOL(parsenode *p,void *v)//PROTO
 {
     fprintf(src,"@");
     fprintf(src,"%s",p->right[0]->text);
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_parexpr_LBRACKET_SYMBOL_RBRACKET(parsenode *p,void *v)//PROTO
+{
+    fprintf(src,"[");
+    fprintf(src,"%s",p->right[0]->text);
+    fprintf(src,"]");
     return 0;
 }
 

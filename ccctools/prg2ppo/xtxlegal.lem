@@ -289,6 +289,7 @@ expr(P) ::= EXCL(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= MINUS(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= PLUS(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= AT(L) expr(R).{P=pstore(L,R);}
+expr(P) ::= LBRACKET(L) expr RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= SLASH(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= BSLASH(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= DOT(L) expr(R).{P=pstore(L,R);}

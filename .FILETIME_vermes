@@ -1,6 +1,14 @@
+164b1799b93bcb190bc885245e2e5600a2be793c 2021112122:02:44-UTC ./usr/bin/linux/ppo2cpp
+f9775f3f13a1eef01e64bc9836e4623fb67f6e90 2021112122:02:39-UTC ./ccctools/ppo2cpp/codegen.cpp
+aa872c173c0745a0c3a551252b49b11e2b26e7df 2021112122:01:19-UTC ./CHANGELOG_vermes
+da1ea98c0755180ccf27d38242e8f373e16cc41d 2021112121:53:52-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
+54230387184fd026c7823a69a4483307c3fb957c 2021112121:39:42-UTC ./log-install
+742551be6feba168799388a7c439dcc884932800 2021112121:39:37-UTC ./jt/jterminal/jterminal.jar
+55a1fc54164793a018569e4b79d04e65a138d717 2021112121:38:21-UTC ./usr/bin/linux/ncterm
+837ab064769e9381bbcdd9a19dd3462a41ba6d29 2021112121:24:34-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
+84875d1000fcba306c42aef0d4df28d7ad0092ec 2021112120:35:27-UTC ./ccctools/ppo2cpp/parser.lem
+504f8cc3e26e682c6f4a9447b11420c3786b7a49 2021112117:13:05-UTC ./ccctools/ppo2cpp/codegen.h
 2a55211863d2da8b0c2789ae8fbed2d35ef83daa 2021112009:36:46-UTC ./ccclib/src/reftype.cpp
-6d9afd5fad8d4c4cf5854d0cfc0350da0dff27fa 2021112009:33:37-UTC ./CHANGELOG_vermes
-9f664bfd18937a093faac85d4ea27237cd01efdc 2021111922:23:28-UTC ./log-install
 1ae54e89b4695a547bac35e6f573f0a7dcd4cd35 2021111922:23:27-UTC ./usr/bin/linux/websrv
 ceb19d2c3a9830a7f076b985972ef11899438fe8 2021111922:23:27-UTC ./usr/bin/linux/xstart
 0d145e76cf393e11f697f36a968fe0e0efbf5979 2021111922:23:24-UTC ./usr/bin/linux/removecr
@@ -11,7 +19,6 @@ ced0044933acf1d27cc023f7ee7d071f8004a780 2021111922:18:19-UTC ./usr/bin/linux/gi
 124ea665b691998d09d888a9d8d4d67a546779cd 2021111922:18:19-UTC ./usr/bin/linux/gitref
 5903f6637ea6b5df2bd4f122fa36d9d7b11bea7f 2021111922:18:19-UTC ./usr/bin/linux/gitstat
 5bc8696cdb3a2aa61ce19cdec6cbbc6d94e9bb7a 2021111922:18:19-UTC ./usr/bin/linux/gitview
-944979500f30efbbe9074ec3d8ca877d69b0e58e 2021111922:18:14-UTC ./jt/jterminal/jterminal.jar
 93fa4aed6e4658d5a044cdb15fb8608e43c0d065 2021111922:18:09-UTC ./usr/bin/linux/msk2html
 75a344ac313f87506b78e4adecc919674e4007db 2021111922:18:08-UTC ./usr/bin/linux/webapp
 1da99ea80f2d102e00f7c2c72958c50a58f962eb 2021111922:18:04-UTC ./usr/bin/linux/tv
@@ -45,12 +52,8 @@ cb6c948400c59307ced207e6fcd6818baabd6707 2021111922:17:02-UTC ./usr/bin/linux/ma
 96b8ca0c1f5a16d0da0b94f410b52ba7a227255e 2021111922:17:02-UTC ./usr/bin/linux/page
 ecab1e7d42958b1cca6eb49c9684726e4924f8d5 2021111922:17:02-UTC ./usr/bin/linux/pge2wro
 5da4c0256597f604261e8c96be3e44328bc15e48 2021111922:17:00-UTC ./usr/bin/linux/msk2say
-7ada718b5e141bc9c89aa147b689bb99dc14b355 2021111922:16:40-UTC ./usr/bin/linux/ppo2cpp
-9c78040e3efc82061acad7d64c762a484191df0f 2021111922:03:44-UTC ./ccctools/ppo2cpp/codegen.cpp
 c289a34612d3a86195f49a701573764d29cefca4 2021111914:45:13-UTC ./ccctools/prg2ppo/xtxlegal.h
 826cb2f693b25f3a5616e654664c9f30e51c4452 2021111914:45:11-UTC ./ccctools/prg2ppo/xtxlegal.lem
-d6e7bf4fbd32e5ee6aaaeb0154414a4f0d0194b9 2021111912:59:26-UTC ./ccctools/ppo2cpp/parser.lem
-ae4b0bfa6951b45724e8df09396c8b553c4870d6 2021111912:58:53-UTC ./ccctools/ppo2cpp/codegen.h
 864658714e825b2681b2b8af0d697b7d079d481f 2021111421:44:08-UTC ./usr/bin/linux/term.b
 51d9aba8e00ada749d87987a2c898881c8684e74 2021111420:37:34-UTC ./ccclib/src/memotran.prg
 cdb0c5b4018c1c2a153a606176c51267ca1a7e12 2021111420:36:12-UTC ./ccclib/src/argerror.prg
@@ -88,7 +91,6 @@ fd3549ed4d5168f2f0074559212f99fca03e8c50 2021081121:14:50-UTC ./usr/bin/linux/te
 eb78dc1e071e8b6d4b2832b262469b8343b1a413 2021081121:14:49-UTC ./usr/bin/linux/sslforw-serv
 7546934fa7c9477a8350cabb4c1d4d2d4d5a66a4 2021081121:14:49-UTC ./usr/bin/linux/sslforw-term
 c7cdf1409d0d87e62ae5061ced8c9adf1d7f54ee 2021081121:14:49-UTC ./usr/bin/linux/sslforward
-8e28a5e455cd6f76b0419ccf9943011cb3a006ed 2021081121:14:48-UTC ./usr/bin/linux/ncterm
 ceeba757093760fbe3f13bdab59e59cb7772dd11 2021081121:14:48-UTC ./usr/bin/linux/terminal
 0cc54c68f2541b406d91461ed93cb53b8ca0d5d9 2021081121:14:48-UTC ./usr/bin/linux/terminal-xft
 6d67eb62f9ebc24410c40096f2952cb4430ec7a2 2021081121:14:47-UTC ./usr/bin/linux/mklink
@@ -254,8 +256,6 @@ f8a56dd33da408ee082596e97d471f0b6c127865 2021072713:32:03-UTC ./usr/bin/windows/
 65fe0db9c7e16b13df4d06e3ed9c084f700c0c27 2021072613:33:34-UTC ./setup/setup-windows/cc.msys2
 ed45c6c673eff08131a24b4c92b687ee26c56347 2021071409:36:56-UTC ./setup/setup-unix/spawn.cpp
 39729aa295e330cae4da0165c7d1a80c66a826f9 2021071119:59:56-UTC ./ccclib/src/qout.cpp
-f7abfbca5395c50dc7a551ac829c7dbed7223ddc 2021070819:18:15-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
-463a61028ce994840518a05e2e7289be23a73111 2021070819:17:59-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 c98c4d1f9e0f28eb4d1944222837b47121169d21 2021070818:41:12-UTC ./ccclib/src/array.cpp
 eb9e5030aeef051501ef8ee509d8f295aa298402 2021070818:34:44-UTC ./usr/include/cccext1.h
 52391170c37e3eaa5281148d971541d205974bb4 2021070212:24:19-UTC ./tutor/bitmap/main.prg

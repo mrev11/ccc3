@@ -1,3 +1,14 @@
+2021-11-21 ppo2cpp 5.4.0;
+  funcall(x,@y,[z])
+    parameter atadas derefelve: x
+    parameter atadas refesitve: @y
+    parameter atadas ahogy van: [z] (uj eset);
+  tamogatva az alabbi postfix fuggvenyhivasi alakok
+    @x::fun(y,z) -> fun(@x,y,z)
+    [x]::fun(y,z) -> fun([x],y,z);
+  uj fuggveny:
+    reftype([x]) -> .t./.f.,  true, ha x ref;
+
 2021-11-20 
   kiserletileg bevezetve az [x] parameter atadas;
   tutor-ba berakva a #clang peldanak keszult bitmap;

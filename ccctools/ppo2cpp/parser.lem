@@ -1055,19 +1055,21 @@ parexpr(P) ::= expr(X).{
     P->cargo=0;
 }
 
-parexpr(P) ::= STAR.{
+parexpr(P) ::= STAR(S).{
     P=(new parsenode)->rule(0);
     P->text="parexpr ::= STAR.";
     P->codegen=codegen_parexpr_STAR;
     P->outsource=outsource_parexpr_STAR;
+    P->lineno=S->lineno;
     P->cargo=(1<<16);
 }
 
-parexpr(P) ::= STAR LBRACKET parexpr0(IDXL) DOTDOT parexpr0(IDXR) RBRACKET.{
+parexpr(P) ::= STAR(S) LBRACKET parexpr0(IDXL) DOTDOT parexpr0(IDXR) RBRACKET.{
     P=(new parsenode)->rule(2,IDXL,IDXR);
     P->text="parexpr ::= STAR LBRACKET parexpr0 DOTDOT parexpr0 RBRACKET.";
     P->codegen=codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
     P->outsource=outsource_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET;
+    P->lineno=S->lineno;
     P->cargo=(1<<16);
 }
 
@@ -1322,12 +1324,12 @@ expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
     X->outsource=outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
 }
 
-expr(X) ::= expr(X1) COLCOL expr(X2).{
+expr(X) ::= parexpr(X1) COLCOL expr(X2).{
     /*postfix fuggvenyhivas*/
     X=(new parsenode)->rule(2,X1,X2);
-    X->text="expr ::= expr COLCOL expr.";
-    X->codegen=codegen_expr_expr_COLCOL_expr;
-    X->outsource=outsource_expr_expr_COLCOL_expr;
+    X->text="expr ::= parexpr COLCOL expr.";
+    X->codegen=codegen_expr_parexpr_COLCOL_expr;
+    X->outsource=outsource_expr_parexpr_COLCOL_expr;
 }
 
 expr(X) ::= expr(X1) COLCOLASS expr(X2).{

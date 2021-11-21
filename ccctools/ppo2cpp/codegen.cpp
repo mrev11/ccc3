@@ -3111,9 +3111,25 @@ int codegen_expr_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
-int codegen_expr_expr_COLCOL_expr(parsenode *p,void *v)//PROTO
-//               0           1
+int codegen_expr_parexpr_COLCOL_expr(parsenode *p,void *v)//PROTO
+//               0              1
 {
+    parsenode *q=p->right[0]; //parexpr
+    if( q->codegen==codegen_parexpr_STAR ||
+        q->codegen==codegen_parexpr_STAR_LBRACKET_parexpr0_DOTDOT_parexpr0_RBRACKET )
+    {
+        fprintf(stderr,"Error: unsupported vararg at #line %d %s (%s)\n",
+            q->lineno,
+            lexer->getinputfspec(),
+            q->text);
+        exit(1);
+        
+        // megvaltozott a lemon szabaly:
+        // expr_expr_COLCOL_expr ->  expr_parexpr_COLCOL_expr
+        // az ujonnan bejovo esetek kozul kizarjuk a varargosakat
+        // noha ezeket is lehetne ertelmesen implementalni
+    }
+
     function_call_expected(p);
 
     cgen(p,0);
@@ -4232,7 +4248,7 @@ int outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
-int outsource_expr_expr_COLCOL_expr(parsenode *p,void *v)//PROTO
+int outsource_expr_parexpr_COLCOL_expr(parsenode *p,void *v)//PROTO
 {
     outsrc(p,0);
     fprintf(src,"::");

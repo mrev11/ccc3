@@ -1,3 +1,23 @@
+2021.11.21 -- 5.4.0
+  funcall(x,@y,[z])
+    parameter atadas derefelve: x
+    parameter atadas refesitve: @y
+    parameter atadas ahogy van: [z] (uj eset)
+  
+  tamogatva az alabbi postfix fuggvenyhivasi alakok
+    @x::fun(y,z) -> fun(@x,y,z)
+    [x]::fun(y,z) -> fun([x],y,z)
+
+  nincsenek tamogatva a nyil bal oldalan allo formak
+    *::fun(y,z) -> fun(*,y,z)
+    *[1..1]::fun(y,z) -> fun(*[1..1],y,z)
+  noha a jobb oldali kifejezesek ertelmesek es legalisak
+  (megj: az elejen '*' karaktert tartalmazo sor comment)
+
+  megjegyzes:
+    @x::=fun(y,z) 
+  nem lehetseges, mert @x:=fun(@x,y,z) hibas lvalue volna
+
 2021.07.08 -- 5.3.0
   array ertekadas
 

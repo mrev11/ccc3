@@ -407,6 +407,7 @@ local n,gl:=a"##",qq:=a'"'+a"'"
             adel(rlist,n)
             adel(rlist,n)
             asize(rlist,len(rlist)-2)
+            --n
         end
     next
 

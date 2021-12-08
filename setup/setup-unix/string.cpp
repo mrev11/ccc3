@@ -19,6 +19,7 @@
  */
 
 #include <wchar.h>
+#include <string.h>
 #include <cccapi.h>
 
 //------------------------------------------------------------------------
@@ -80,7 +81,7 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
 void stringnb(char const *ptr) //új string bytearrayből
 {
     unsigned reslen=0;
-    CHAR *p=utf8_to_wchar(ptr,0,&reslen);
+    CHAR *p=utf8_to_wchar(ptr,strlen(ptr),&reslen);
     strings(p,reslen);
     free(p);
 }

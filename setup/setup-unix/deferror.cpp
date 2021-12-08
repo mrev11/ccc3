@@ -1,4 +1,4 @@
-//input: deferror.ppo (5.3.0)
+//input: deferror.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -147,7 +147,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk__1",base);
 //
-    push_blkarg(base+1);//signum
+    push_symbol(base+1);//signum
     _clp_defsignal(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -161,7 +161,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk__2",base);
 //
-    push_blkarg(base+1);//e
+    push_symbol(base+1);//e
     push(&TRUE);
     _clp_deferror(2);
 //

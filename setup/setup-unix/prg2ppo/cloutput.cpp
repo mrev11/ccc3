@@ -1,4 +1,4 @@
-//input: cloutput.ppo (5.3.0)
+//input: cloutput.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -141,8 +141,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_outputregister_0",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//s
+    push_symbol(base+1);//this
+    push_symbol(base+2);//s
     _clp_outputini(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -156,8 +156,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_outputregister_1",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//t
+    push_symbol(base+1);//this
+    push_symbol(base+2);//t
     _clp_outputadd(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -171,7 +171,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_outputregister_2",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_outputlen(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -185,7 +185,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_outputregister_3",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_outputbuf(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -199,7 +199,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_outputregister_4",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_outputclear(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}

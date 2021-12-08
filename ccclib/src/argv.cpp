@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
 #include <cccapi.h>
 
 //--------------------------------------------------------------------------
@@ -45,7 +46,7 @@ void _clp_argv(int argno)
         else
         {
             unsigned reslen=0;
-            CHAR *p=utf8_to_wchar(ARGV[i],0,&reslen);
+            CHAR *p=utf8_to_wchar(ARGV[i],strlen(ARGV[i]),&reslen);
             _retclen(p,reslen);
             free(p);
         }
@@ -57,7 +58,7 @@ void _clp_argv(int argno)
         for(i=1;i<ARGC;i++)
         {
             unsigned reslen=0;
-            CHAR *p=utf8_to_wchar(ARGV[i],0,&reslen);
+            CHAR *p=utf8_to_wchar(ARGV[i],strlen(ARGV[i]),&reslen);
             strings(p,reslen);
             free(p);
             ARRAYPTR(a)[i-1]=*TOP();

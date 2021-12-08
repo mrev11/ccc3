@@ -1,4 +1,4 @@
-//input: class.ppo (5.3.0)
+//input: class.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -957,9 +957,9 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_classidbyname_0",base);
 //
-    push_blkarg(base+1);//c
+    push_symbol(base+1);//c
     idxr0(1);
-    push_blkenv(env+0);//name
+    push_symbol(env+0);//name
     eqeq();
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -1313,25 +1313,25 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_classinheritstruct_0",base);
 //
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(3);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(3);
     lt();
     if(flag()){
     push(&TRUE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(3);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(3);
     eqeq();
     if(!flag()){
     push(&FALSE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(1);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(1);
     lt();
     }

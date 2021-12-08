@@ -147,10 +147,18 @@ char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen)
     //kimenet: reslen a bytarray hossza 
     //felhasznalas utan a pointert fel kell szabaditani (free)
 
-    if( wlen==0 )
-    {
-        wlen=wcslen(wstr);
-    }
+
+    // 2021-12-08 inkompatibilis javitas
+    // if( wlen==0 )
+    // {
+    //     wlen=wcslen(wstr);
+    // }
+    //
+    // Ez rossz, mert nem kulonbozteti meg
+    // a 0 hosszu stringet az ismeretelen hosszu stringtol.
+    // A wlen<0 jelzes sem mukodik, mert blen unsigned.
+    // A hivo kodban kell kiszamolni a string hosszat.
+
 
     unsigned inc=1024;
     unsigned size=inc+wlen*2;
@@ -185,10 +193,17 @@ wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
     //kimenet: reslen a string hossza
     //felhasznalas utan a pointert fel kell szabaditani (free)
 
-    if( blen==0 )
-    {
-        blen=strlen(utf8);
-    }
+    // 2021-12-08 inkompatibilis javitas
+    // if( blen==0 )
+    // {
+    //     blen=strlen(utf8);
+    // }
+    //
+    // Ez rossz, mert nem kulonbozteti meg
+    // a 0 hosszu stringet az ismeretelen hosszu stringtol.
+    // A blen<0 jelzes sem mukodik, mert blen unsigned.
+    // A hivo kodban kell kiszamolni a string hosszat.
+
 
     unsigned inc=1024;
     unsigned size=blen;

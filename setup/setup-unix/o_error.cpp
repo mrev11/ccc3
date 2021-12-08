@@ -1,4 +1,4 @@
-//input: o_error.ppo (5.3.0)
+//input: o_error.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -169,7 +169,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_errorregister_0",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_errorini(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}

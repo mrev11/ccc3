@@ -86,7 +86,7 @@ local line1
     end
     
     this:hostport:=http_getheader(this:req,"Host")
-    if( NIL==this:hostport )
+    if( empty(this:hostport) )
         this:hostport:=a""
         this:host:=a""
     else

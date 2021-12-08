@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <wchar.h>
 #include <cccapi.h>
 
 //------------------------------------------------------------------------
@@ -148,7 +149,7 @@ long stod(const char *s)  // yyyymmdd --> dátum
 //-------------------------------------------------------------------------
 long stod(const CHAR *s)  // yyyymmdd --> dátum
 {
-    char *p=wchar_to_utf8(s,0,0);
+    char *p=wchar_to_utf8(s,wcslen(s),0);
     long date=stod(p);
     free(p);
     return date;

@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include <utf8conv.h>
 
 #define H1 0x80  //1000 0000
 #define H2 0xc0  //1100 0000
@@ -30,9 +31,7 @@
 #define H5 0xf8  //1111 1000
 #define H6 0xfc  //1111 1100
 #define H7 0xfe  //1111 1110
-#define H8 0xfe  //1111 1111
 
-#define L0 0x00  //0000 0000
 #define L1 0x01  //0000 0001
 #define L2 0x03  //0000 0011
 #define L3 0x07  //0000 0111
@@ -40,7 +39,6 @@
 #define L5 0x1f  //0001 1111
 #define L6 0x3f  //0011 1111
 #define L7 0x7f  //0111 1111
-#define L8 0x7f  //1111 1111
 
 #define CONT(x)  (((x)&H2)==H1) //continuing char
 #define SEQ2(x)  (((x)&H3)==H2) //2 byte sequence
@@ -48,9 +46,7 @@
 #define SEQ4(x)  (((x)&H5)==H4) //4 byte sequence
 #define SEQ5(x)  (((x)&H6)==H5) //5 byte sequence
 #define SEQ6(x)  (((x)&H7)==H6) //6 byte sequence
-#define SEQ7(x)  (((x)&H8)==H7) //7 byte sequence
 
-#define LOW0(x)  ((x)&L0)
 #define LOW1(x)  ((x)&L1)
 #define LOW2(x)  ((x)&L2)
 #define LOW3(x)  ((x)&L3)
@@ -58,19 +54,15 @@
 #define LOW5(x)  ((x)&L5)
 #define LOW6(x)  ((x)&L6)
 
-extern int utf8_to_ucs(const char *utf8, int *ucs);
-extern int ucs_to_utf8(int ucs, char*utf8);
-extern char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen);
-extern wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen);
 
 //----------------------------------------------------------------------------
-int utf8_to_ucs(const char *utf8, int *ucs)
+unsigned utf8_to_ucs(const char *utf8, unsigned *ucs)
 {
     // egy UTF-8 sorozattal kodolt karaktert konvertal UCS4-re
     // ha a bytesorozat ervenytelen akkor az eredmeny 0
     // visszaadja a bytesorozatbol elhasznalt byteok szamat
 
-    int code=0;
+    unsigned code=0;
     unsigned c=*utf8;
 
     if( c<128 )
@@ -87,7 +79,8 @@ int utf8_to_ucs(const char *utf8, int *ucs)
         else if( SEQ4(c) ){ seq=4; code=LOW3(c); }
         else if( SEQ5(c) ){ seq=5; code=LOW2(c); }
         else if( SEQ6(c) ){ seq=6; code=LOW1(c); }
-        else if( SEQ7(c) ){ seq=7; code=LOW0(c); }
+        else if( 0xfe==c ){ seq=6; code=2;       }  //extension
+        else if( 0xff==c ){ seq=6; code=3;       }  //extension
     
         unsigned i;
         for( i=1; i<seq; i++ )
@@ -103,6 +96,7 @@ int utf8_to_ucs(const char *utf8, int *ucs)
             {
                 code|=LOW6(x);
             }
+            //printf(" [%d %x]",i,code);
         }
         *ucs=code;
         return i;
@@ -110,7 +104,7 @@ int utf8_to_ucs(const char *utf8, int *ucs)
 }
 
 //----------------------------------------------------------------------------
-int ucs_to_utf8(int ucs, char*utf8)
+unsigned ucs_to_utf8(unsigned ucs, char*utf8)
 {
     // egy karaktert konvertal UCS4 kodrol UTF-8 bytesorozatra
     // a bytesorozat max 8 hosszu (ennyi helyet kell foglalni)
@@ -130,12 +124,13 @@ int ucs_to_utf8(int ucs, char*utf8)
         unsigned char seq[8];
         #define SEQ seq[7-i]
         SEQ=0;
-        while( code || (i>0 && ((hdr>>1)&SEQ)) )
+        while( code || ((hdr>>1) & H6 & SEQ) )
         {
             i++;
             SEQ=H1|LOW6(code);
             hdr=H1|(hdr>>1);
             code=code>>6;
+            //printf(" [%d %x %x %x] ",i,SEQ,hdr,code);
         }
         SEQ|=hdr;
         memmove(utf8,&SEQ,i+1);
@@ -152,10 +147,18 @@ char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen)
     //kimenet: reslen a bytarray hossza 
     //felhasznalas utan a pointert fel kell szabaditani (free)
 
-    if( wlen==0 )
-    {
-        wlen=wcslen(wstr);
-    }
+
+    // 2021-12-08 inkompatibilis javitas
+    // if( wlen==0 )
+    // {
+    //     wlen=wcslen(wstr);
+    // }
+    //
+    // Ez rossz, mert nem kulonbozteti meg
+    // a 0 hosszu stringet az ismeretelen hosszu stringtol.
+    // A wlen<0 jelzes sem mukodik, mert blen unsigned.
+    // A hivo kodban kell kiszamolni a string hosszat.
+
 
     unsigned inc=1024;
     unsigned size=inc+wlen*2;
@@ -186,14 +189,21 @@ char *wchar_to_utf8(wchar_t const *wstr, unsigned wlen, unsigned *reslen)
 wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
 {
     //bemenet: utf8 kodolasu blen hosszu bytearray
-    //vissza : wide karaktereket tartalmazo sring (a vegen 0)
+    //vissza : wide karaktereket tartalmazo string (a vegen 0)
     //kimenet: reslen a string hossza
     //felhasznalas utan a pointert fel kell szabaditani (free)
-    
-    if( blen==0 )
-    {
-        blen=strlen(utf8);
-    }
+
+    // 2021-12-08 inkompatibilis javitas
+    // if( blen==0 )
+    // {
+    //     blen=strlen(utf8);
+    // }
+    //
+    // Ez rossz, mert nem kulonbozteti meg
+    // a 0 hosszu stringet az ismeretelen hosszu stringtol.
+    // A blen<0 jelzes sem mukodik, mert blen unsigned.
+    // A hivo kodban kell kiszamolni a string hosszat.
+
 
     unsigned inc=1024;
     unsigned size=blen;
@@ -204,12 +214,12 @@ wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
     
     while( len<blen )
     {
-        int code;
+        unsigned code;
         unsigned lseq=utf8_to_ucs(utf8+len,&code);
-        len+=lseq;
-        if( code<=0 )
+        if( code<=0  && (0!=utf8[len]) )
         {
             code='?';
+            //printf("[%d %x]",lseq,utf8[len]);
         }
         if( wlen>=size )
         {
@@ -217,6 +227,7 @@ wchar_t *utf8_to_wchar(char const *utf8, unsigned blen, unsigned *reslen)
             wstr=(wchar_t*)realloc(wstr,size*sizeof(wchar_t));
         }
         *(wstr+wlen++)=code;
+        len+=lseq;
     }
     *(wstr+wlen)=(char)0;
 

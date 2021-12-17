@@ -1,3 +1,5 @@
+2021-12-17 envir/install scriptek korszerusitve;
+
 2021-12-08 A wchar_to_utf8() es utf8_to_wchar() fuggvenyek javitva:
   A bemenet hosszat mindig a hivo kodban kell kiszamitani,  mert a fuggvenyek 
   nem tudjak megkulonboztetni a 0 hosszu  stringet az ismeretlen hosszu stringtol;

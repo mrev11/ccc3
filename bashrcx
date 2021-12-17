@@ -75,25 +75,32 @@ ldpathadd()
     export LD_LIBRARY_PATH=$X
 }
 
-show()
+
+lsenv()
 {
-    for ENV in "$@"; do
-        set | grep "^$ENV="
+    PATTERN=""
+    for pat in "$@"; do
+        PATTERN=${PATTERN}'|^'${pat}=
     done
-    echo 
+    PATTERN=(${PATTERN:1})  # |pat1|pat2... -> (pat1|pat2...)
+    printenv | grep --color=always -E ${PATTERN} | LC_COLLATE=C sort
+}
+
+
+cccenv()
+{
+    printenv | grep --color=always -E "^CCC.*="  | LC_COLLATE=C sort 
 }
 
 #########################################################################
 
-PATH=/bin
-addpath /usr/games
+unset PATH
 addpath /usr/local/bin
 addpath /usr/local/sbin
 addpath /usr/bin
 addpath /usr/sbin
 addpath /bin
 addpath /sbin
-export PATH
 
 #########################################################################
 

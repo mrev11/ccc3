@@ -1,0 +1,13 @@
+
+# MANJARO-XFCE4
+# mindosszesen ennyi kell
+
+sudo pacman -Syu  git gcc pkgconf libtermkey
+
+cd /usr/include && sudo ln -s . ncursesw
+
+
+sudo chmod 777 /opt
+
+cd /opt &&  git clone git://comfirm.hu/ccc3.git
+cd /opt &&  git clone git://comfirm.hu/ccc2c.git

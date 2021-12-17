@@ -1,5 +1,9 @@
-c322f7ba1e154dfc21462645def67dbf5c14082e 2021120814:57:42-UTC ./CHANGELOG_vermes
-7e84a2c45a36d5d7da5d03afe25b695f427e67da 2021120814:50:59-UTC ./log-install
+47a4fcac41df4b86a0aaf0901c6bc70987edf2ca 2021121710:46:45-UTC ./CHANGELOG_vermes
+38ad9f820aea9b7974ebeffa94b7fd192c768e94 2021121519:35:28-UTC ./bashrcx
+f03ba7190c9c7dc9c72dc4dec73f1bc45700bc62 2021121517:44:38-UTC ./log-install
+22d5f97f4656e688da8c02eb30d0f21fdbf77af6 2021121517:44:32-UTC ./jt/jterminal/jterminal.jar
+76ac62956c8e63e355ce4c641be12833b38cf9cd 2021121517:36:22-UTC ./envccc
+4e5e5b24d9337f4d398dc272be6bdd30099762a5 2021121511:12:47-UTC ./ccc-dependencies-manjaro
 8ea5e17642ac156ad7d8aa8d2c72241ea09a1685 2021120814:50:59-UTC ./usr/bin/linux/gitfollow
 7f9f5337b03618ab327ccdbf9e789e7755b4c72b 2021120814:50:59-UTC ./usr/bin/linux/gitnav
 50019dabdfbfa880367151ef50187faa1f16027e 2021120814:50:59-UTC ./usr/bin/linux/gitref
@@ -8,7 +12,6 @@ bc8f0b35bb2cb7c87d19ad51c139f65a639ee9c1 2021120814:50:59-UTC ./usr/bin/linux/gi
 c3b7ce96b7a2e75e5bcb86f32ce744d9210f54aa 2021120814:50:56-UTC ./usr/bin/linux/filetime-restore
 0e68bc7bd0fea41cb9e9d8ccc4c075d905b40e9a 2021120814:50:56-UTC ./usr/bin/linux/filetime-save
 d6efb1b3d4cd1a338953abeee4791a4a7c744088 2021120814:50:56-UTC ./usr/bin/linux/firstpar
-e30d94bcbeb6abb4c6714a09f6e7dd755f721389 2021120814:50:54-UTC ./jt/jterminal/jterminal.jar
 2d09c1649843412ae1b3a5caaeef6cea68b47a1d 2021120814:50:52-UTC ./usr/bin/linux/terminal-qt5
 de138bfe8625b65e6daed92e9964f13c9aa888e9 2021120814:50:49-UTC ./usr/bin/linux/msk2html
 75a344ac313f87506b78e4adecc919674e4007db 2021120814:50:48-UTC ./usr/bin/linux/webapp
@@ -381,7 +384,6 @@ a056161e4f09c9c64047f9c71d59994692bd66f5 2020120409:33:54-UTC ./setup/setup-unix
 63dc79a54f14d7c42011895a2837e4e5c75464f4 2020120409:33:54-UTC ./setup/setup-unix/removecr/rsplink
 6c1c323a1783c68b65a0fb210889948b4f64090b 2020120409:33:51-UTC ./setup/setup-unix/buildp/rsplink
 62b3923ebfbf8d2fa954cbfe97280dbe0e0d53be 2020120409:15:57-UTC ./usr/options/lin/link.opt
-f1d203944f5320de50461ebe1a3b959f64633e06 2020112114:30:07-UTC ./bashrcx
 3897314da5517e27fdb63cff95db5faa541f2411 2020111910:20:27-UTC ./usr/options/lin/compile.opt
 c8c3c8c216be473db8310c770d5c76704e547b58 2020111910:06:20-UTC ./ccclib/src/variable.cpp
 ac529b69b2bbe0e234f52214a710c06ddf9e6d9f 2020111910:02:42-UTC ./ccclib/src/xmethod6.cpp
@@ -571,7 +573,6 @@ b17e9969d534499c17f56b7c08b03f154d17360e 2020050712:07:09-UTC ./ccclib/src/uic/t
 dd46bd177aa444b33e486df6b0041a074e3c24c6 2020042113:18:15-UTC ./terminal/common/keycode.h
 a6ebfd084f3d396ff0438abb02f8dc1be48c82cd 2020032114:50:42-UTC ./ccctools/pack/copyright.prg
 6ea6f6a2452baa8f5f2d0da24e998b302ed30ff2 2020032114:14:49-UTC ./ccc-dependencies-ubuntu
-64540268b7b013ebf8146aebc3ba22bb9e5498bb 2020032109:48:14-UTC ./envccc
 55011ab96c0844db78b4f2d386ed22c4846758c6 2020032016:01:36-UTC ./terminal/unix-termkey/readkey.cpp
 c1788685477d7261a7fbdce5c1486d370792c155 2020032015:59:43-UTC ./terminal/unix-termkey/tktest/tktest.cpp
 71a868c6af2d658a3eab178b7b20819720a937a9 2020030813:05:03-UTC ./terminal/unix-termkey/Xdefaults

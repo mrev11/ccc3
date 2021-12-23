@@ -1,3 +1,7 @@
+2021.12.23 prg2ppo 1.5.2:
+  Nem talalhato include file nevek es sorok pontosabb kiirasa;
+
+
 2021-12-17 envir/install scriptek korszerusitve;
 
 2021-12-08 A wchar_to_utf8() es utf8_to_wchar() fuggvenyek javitva:

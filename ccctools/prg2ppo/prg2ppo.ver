@@ -1,8 +1,11 @@
 
-#define VERSION  "1.5.1"
+#define VERSION  "1.5.2"
 
 
 #ifdef _VERZIO_TORTENET_
+
+2021.12.23 -- 1.5.2
+  Nem talalhato include file nevek es sorok pontosabb kiirasa
 
 2021.11.23 -- 1.5.1
   token ragasztas 2-nel tobb tagra:  x##y##z 

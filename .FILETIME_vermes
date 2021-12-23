@@ -1,8 +1,53 @@
-47a4fcac41df4b86a0aaf0901c6bc70987edf2ca 2021121710:46:45-UTC ./CHANGELOG_vermes
+f54d812628fa9869d48db8fdb25ff8e29427b18d 2021122320:41:56-UTC ./CHANGELOG_vermes
+c01572ef56248d713895f94207a898ec7fea53bd 2021122320:40:38-UTC ./jt/jterminal/jterminal.jar
+57f75817fc395a9aa7b70c5390ff161f77fd0cf1 2021122320:40:38-UTC ./log-install
+10b3d11d2f90ed316841a2a10a91545549bb0556 2021122320:40:30-UTC ./usr/bin/linux/build
+9f872a065622bd8c48c2f6297f44580ffe8b84ed 2021122320:39:34-UTC ./usr/bin/linux/setperm
+d2b4ec31bd6023efd3a9398564f32d3b20995a4f 2021122320:38:57-UTC ./usr/bin/linux/prg2ppo
+88aa7d8f8535623e6c89b4712cef8862868fbc72 2021122320:29:53-UTC ./ccctools/prg2ppo/prg2ppo.ver
+a1f44642bb687b8ea0af03f7c5689076dcfbccb1 2021122320:22:42-UTC ./tools/xmlrpc-framework/m.msys2
+8c7cab44db42c4298ad76cf934e9ff5670cfe226 2021122320:21:24-UTC ./tools/xmlrpc-framework/m
+995095c7fdb4cff21a4733fecac0612e0e8016c9 2021122320:14:39-UTC ./jt/jtdemo/mkall
+6576930f67c874f1741b907903c6c08e8c4848ff 2021122320:11:51-UTC ./tools/webapp/common/m
+a5d028d3e7696a322b035c60c041236f2ebddd7e 2021122319:57:39-UTC ./tools/setperm/setperm.prg
+82f6eaa4cbb3bd9cb8fffeb964b7d2564df6290c 2021122319:55:25-UTC ./gc.bat
+90d33d13ac6929f59f8cd7f7e31faaa9da6c580e 2021122317:10:32-UTC ./tools/socket/m.msys2
+478b86af40d3c048bb5603f65e29c94a1960cfa3 2021122317:05:02-UTC ./tools/sql2/test/entitybrowse/m.msys2
+a640be365345316490c36916a8fc4abe0e4d3acd 2021122317:02:34-UTC ./tools/sql2/test/entitybrowse/mo.msys2
+198c28019062830b6e27f17ca3422dc906046813 2021122317:01:46-UTC ./tools/sql2/test/entitybrowse/mp.msys2
+b905eecb4d11165de85fb3426a12c9c02c09b7f4 2021122316:53:11-UTC ./tools/sql2/test/m.msys2
+d5c9ef9e978a32eaa73d6f82eca113b81cf8c869 2021122316:48:23-UTC ./tools/mask/m.msys2
+b1508363bddd23b4194e6fb7e412c855b58ea1bf 2021122316:39:19-UTC ./tools/sql2/util/jeed/m.msys2
+64cd4984dbbecf8fd031f69d5229681a42f8ba14 2021122316:34:57-UTC ./tools/sql2/util/m.msys2
+8426138b39225e64bd93f25beeb99667a732aef6 2021122316:33:25-UTC ./tools/sql2/m.msys2
+e84db709b6d3cb31d2436f5133277ac376848f11 2021122316:27:56-UTC ./jt/jterminal/m.msys2
+9ba989bcfb0d3a62746616235d109c2d60408040 2021122316:20:53-UTC ./jt/m.msys2
+af4a8d48af3d1355618cd452991d8ff44d1be6a7 2021122315:56:04-UTC ./make_base.msys2
+25bb44332e8f2e2bb144b0e2fb15586f6ad6b4b6 2021122315:50:16-UTC ./m.msys2
+064e6501b4b2bfc84fb00694a4c84ce7796d5dd4 2021122315:47:51-UTC ./make_extn.msys2
+fa64f12c11447e9cb3fa54f3dc83eacd4a1d1330 2021122315:36:23-UTC ./make_base.bat
+73346a4131afb8424d1198333ff0a2fb9f1bb20c 2021122315:14:26-UTC ./setup/setup-windows/m.msys2
+c7097f44bf70caf0d92db963f15318c6ee5b53cf 2021122314:15:01-UTC ./make_extn.bat
+db48a46863d1c24db36e89fdf9a986a9aad1c541 2021122313:32:02-UTC ./gtk/m.bat
+9f9774521fe6e11c68452191f64dc1ed24a8ef55 2021122311:36:25-UTC ./ccctools/prg2ppo/input.lex
+a3b055e56314e0df20bcc53f4887907e0da1f7bd 2021122310:28:05-UTC ./tools/sql2/util/m.bat
+f540983bc9ad0e77b59ddb11e9f43177d69b6750 2021122310:04:18-UTC ./tools/sql2/test/m.bat
+9123805a036309b4ac0d571ecd50b4c7bca52c11 2021122310:01:36-UTC ./m.bat
+25013b77c0715ef74559ac55b7bcc2f305521cea 2021122309:42:20-UTC ./tools/sql2/m.bat
+d951be7b41dd10b0d416bf8d65b2fb5c34d1ca88 2021122309:34:26-UTC ./make_extn
+06cd47a23bddc5d9a5e1535aeabc2e7f4837bd90 2021122309:34:20-UTC ./make_base
+5cde272651b9ba8d0ba1e91adb07e84523878a85 2021122309:11:03-UTC ./terminal/gtk3/m.bat
+67f7b9559c52be74523766c07e3d7a2fc8159a46 2021122309:10:00-UTC ./terminal/gtk/m.bat
+a15025a48580d138acfc1950466f54f621592bf7 2021122222:32:40-UTC ./gtk/m.msys2
+9e3f0eafbf33bd138e67294302458cb538c1a58f 2021122222:01:18-UTC ./gtk/m
+981fcf06ba7f8e82b237271b5779cfffcbfe838c 2021122221:48:48-UTC ./gc
+3e04ed52868865b159b3a231a144a65b27858747 2021122221:44:41-UTC ./envccc
+f97a3b7feb9ceaaa628b285ff2e03ef2d142cddd 2021122221:13:29-UTC ./terminal/m
+dda188b2a7fa5719b9203acc6f168e209c459314 2021122221:09:57-UTC ./tools/sql2/m
+9b94ab452086a1fe19f845908ded12fd7867578a 2021122221:03:22-UTC ./tools/sql2/test/m
+3dd508a9d95efb383572129f8c5f17794fd258e3 2021122221:01:37-UTC ./tools/sql2/util/m
+eb1d015b27397c288938fa8cb29cfd84634d0da0 2021122220:44:09-UTC ./m
 38ad9f820aea9b7974ebeffa94b7fd192c768e94 2021121519:35:28-UTC ./bashrcx
-f03ba7190c9c7dc9c72dc4dec73f1bc45700bc62 2021121517:44:38-UTC ./log-install
-22d5f97f4656e688da8c02eb30d0f21fdbf77af6 2021121517:44:32-UTC ./jt/jterminal/jterminal.jar
-76ac62956c8e63e355ce4c641be12833b38cf9cd 2021121517:36:22-UTC ./envccc
 4e5e5b24d9337f4d398dc272be6bdd30099762a5 2021121511:12:47-UTC ./ccc-dependencies-manjaro
 8ea5e17642ac156ad7d8aa8d2c72241ea09a1685 2021120814:50:59-UTC ./usr/bin/linux/gitfollow
 7f9f5337b03618ab327ccdbf9e789e7755b4c72b 2021120814:50:59-UTC ./usr/bin/linux/gitnav
@@ -12,7 +57,6 @@ bc8f0b35bb2cb7c87d19ad51c139f65a639ee9c1 2021120814:50:59-UTC ./usr/bin/linux/gi
 c3b7ce96b7a2e75e5bcb86f32ce744d9210f54aa 2021120814:50:56-UTC ./usr/bin/linux/filetime-restore
 0e68bc7bd0fea41cb9e9d8ccc4c075d905b40e9a 2021120814:50:56-UTC ./usr/bin/linux/filetime-save
 d6efb1b3d4cd1a338953abeee4791a4a7c744088 2021120814:50:56-UTC ./usr/bin/linux/firstpar
-2d09c1649843412ae1b3a5caaeef6cea68b47a1d 2021120814:50:52-UTC ./usr/bin/linux/terminal-qt5
 de138bfe8625b65e6daed92e9964f13c9aa888e9 2021120814:50:49-UTC ./usr/bin/linux/msk2html
 75a344ac313f87506b78e4adecc919674e4007db 2021120814:50:48-UTC ./usr/bin/linux/webapp
 1da99ea80f2d102e00f7c2c72958c50a58f962eb 2021120814:50:44-UTC ./usr/bin/linux/tv
@@ -47,7 +91,6 @@ b93ddedb4d1e56b7686b93eac45b07990038eb07 2021120814:50:10-UTC ./usr/bin/linux/zg
 72fff19204c49b5982912dfe7130b67d26724faa 2021120814:50:02-UTC ./usr/bin/linux/tdc2prgch
 9a368f7d178d65ac878945d58bcb14c006c393b3 2021120814:50:02-UTC ./usr/bin/linux/tdccmp
 172a9479f8c6feba297587f25f9f83dd539cdf29 2021120814:50:02-UTC ./usr/bin/linux/tran2cpp
-2fab3125d36dd847cc70df68082780552745ee0c 2021120814:49:59-UTC ./usr/bin/linux/setperm
 a3f33951ca02e57bb724443b608a6923c7294d59 2021120814:49:58-UTC ./usr/bin/linux/savex
 1602db5728bc9ca9b80f61e5612e4b7de339fad5 2021120814:49:56-UTC ./usr/bin/linux/dddel
 72cab15cba8ae1e23bb642fb4232b7b6f761a132 2021120814:49:56-UTC ./usr/bin/linux/ddict2
@@ -73,9 +116,7 @@ c7cdf1409d0d87e62ae5061ced8c9adf1d7f54ee 2021120814:49:38-UTC ./usr/bin/linux/ss
 59c4c26be827e66caae18dbcdec2332e0e6b1f9b 2021120814:49:37-UTC ./usr/bin/linux/terminal
 5ffbcf93a1f38495f3d19a076df25d5cfe765ab7 2021120814:49:37-UTC ./usr/bin/linux/terminal-xft
 6d67eb62f9ebc24410c40096f2952cb4430ec7a2 2021120814:49:36-UTC ./usr/bin/linux/mklink
-989b191fba483371978df1721a49fecd229e2601 2021120814:49:36-UTC ./usr/bin/linux/prg2ppo
 d9ac39714242d23b89849b0575182641fe31d455 2021120814:49:36-UTC ./usr/bin/linux/removecr
-17cee79aab666854ec121b79fb1cc5c1d1f4fd3a 2021120814:49:34-UTC ./usr/bin/linux/build
 f9496b645d014ade4aeddafd72504609bd4d2b86 2021120814:49:21-UTC ./usr/bin/linux/ppo2cpp
 53f2430aba916ea1f1ab5684c656998db2c5a647 2021120814:45:39-UTC ./setup/setup-unix/removecr/removecr.cpp
 591ed3de6bf8ed16910cced55d0d6cab3cacc599 2021120814:45:38-UTC ./setup/setup-unix/prg2ppo/dbundef.cpp
@@ -115,7 +156,6 @@ be445c2eda716c8a85cdcd1a8f26114ae901293c 2021120814:45:28-UTC ./setup/setup-unix
 d39ee4700e3941c73036f2b11a82b816aac98377 2021120814:23:29-UTC ./ccctools/ppo2cpp/utf8conv.cpp
 50047238d8b25301f25496b19de57e2c97c621a9 2021112521:44:53-UTC ./tools/websrv/websrv.ver
 2451148b89bb45a2e4c901b6fcc0dfaa58fe8fa9 2021112521:43:55-UTC ./tools/websrv/httpreq.prg
-070e5370c613d973a3b9ae943b0915dd25966dca 2021112311:19:29-UTC ./ccctools/prg2ppo/prg2ppo.ver
 d95e0ed51a808269d021ad2f2ff05fab3e3fb961 2021112311:16:45-UTC ./ccctools/prg2ppo/match.prg
 f9775f3f13a1eef01e64bc9836e4623fb67f6e90 2021112122:02:39-UTC ./ccctools/ppo2cpp/codegen.cpp
 da1ea98c0755180ccf27d38242e8f373e16cc41d 2021112121:53:52-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
@@ -133,6 +173,7 @@ d0994dabc2673a6ac8d4b510b9dac1593ae41827 2021091309:40:50-UTC ./tools/z/z
 c7a9acd41013d2b8fdf13bcb223d1a7c0ec7d540 2021091013:31:26-UTC ./tools/xstart/x
 ffa945e75bddbc023256682fc2e50bda69116f2d 2021091011:21:51-UTC ./tools/xstart/xstart.par
 c00fae07d12a2c6c5a213be7ea8169a66daf5089 2021090713:29:18-UTC ./tools/webapp/program/webapp/loadconfig.prg
+4093766b0ab66b527527e92d93101270dddb7bd2 2021082309:21:23-UTC ./tools/socket/socket-demo/udp/m.msys2
 aa171ae2ba115572e7d86987103b1ccaf07ec947 2021081609:07:47-UTC ./ccctools/buildp/build.hu.ver
 906c5a8d9c0f3ee411c85f3197dcd42e9ad9dd85 2021081607:22:26-UTC ./ccctools/buildp/build.prg
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
@@ -146,13 +187,11 @@ ce40d05c18f2ffcd651ad3251ca943e25b52f9f7 2021081213:21:00-UTC ./ccclib/src/uic/m
 4d4a2deb0bcdf5e7757c92a770e7ea5c6dda0cb1 2021080416:53:24-UTC ./terminal/unix-ncurses/ccclib/OLVASS
 9c88426f33728d8270d8465a1294d723eadcdef9 2021080416:49:47-UTC ./terminal/unix-ncurses/parfile.bld
 2e5c177605390eb0a90f58d7d48c0a24b506e6d2 2021080407:32:13-UTC ./tools/z/zloop.prg
-046c4252395c1b30db2e3cf148385b3ebd85dd40 2021073022:28:37-UTC ./setup/setup-windows/m.msys2
 bbd04495551fe1bd9abb7b49ce5aa11fc2afe6bc 2021073021:35:32-UTC ./setup/setup-windows/copy_from_ppo.msys2
 5e12ff21cb68c7becfab98908714cd38c9e06173 2021073013:34:55-UTC ./setup/setup-windows/removecr/m.msys2
 d4cf3940ebe67ad2ce5873d658fdc22bb571b991 2021073010:47:02-UTC ./setup/setup-unix/removecr/removecr.cpp
 a929e9d13b309900de6436a41a46fce73d748057 2021073008:50:25-UTC ./ccctools/buildp/m
 84af728e0a424ea557a4df1722230539ec0a52b2 2021073008:48:26-UTC ./ccctools/build/m
-90157c80498d9a267f1317557a02db27794b4e22 2021073008:10:24-UTC ./install.msys2
 be99c89feb7f47afeaea522b123df683428a2cf7 2021073007:48:08-UTC ./usr/build/msys2/gtk-win.bld
 edb98efaf78d8a519f7c620bb3e00d649e63485c 2021073007:42:07-UTC ./gtk/examples/base/functionlevel/m.msys2
 dd81843a19628414bca81005b6244bfa334f1eb1 2021073007:40:14-UTC ./gtk/examples/gallery/appwindow/m.msys2
@@ -203,17 +242,12 @@ aeae09c5fe3dddcda7136d5ed5aea332c986dd4d 2021072913:56:09-UTC ./usr/build/msys2/
 62ff39e31dd87414353b2adf175cc50ee341a0ac 2021072913:38:35-UTC ./tools/sql2/util/tdsutil/tds2prg.prg
 75c5c341553b403e456cf2f5df44e56c24942ff7 2021072913:37:29-UTC ./tools/mask/msk2say/msk2say.prg
 f19c3f016137f121321d7c5690cccc90ccc7d08a 2021072913:17:59-UTC ./tools/sql2/test/basicdemo/m.msys2
-96d86cae97344dfba57971006de8eb72b4f90c25 2021072913:15:28-UTC ./tools/sql2/test/mkall.msys2
 ab1fb899a7586f81773d275d9aeb63a74e34e57a 2021072912:50:21-UTC ./tools/sql2/test/basicdemo/mp.msys2
 6e8905dedc59cae98ccd7d484053616a0c6a19c9 2021072912:50:10-UTC ./tools/sql2/test/basicdemo/mo.msys2
 986b3897e8d7b7b8e7122e018f70e902e849133d 2021072912:49:46-UTC ./tools/sql2/test/basicdemo/ml.msys2
 680df3e25f1d4a0cab369446f37a000dd29b4a9f 2021072912:43:25-UTC ./tools/sql2/test/testdata_lib/m.msys2
-7ab22fdf4dc4e768648a76561a173ec3befc0372 2021072912:41:36-UTC ./jt/mkall.msys2
 d7387174fb7b556f4046cd1c94289de145d036b5 2021072912:40:30-UTC ./jt/jtstart/m.msys2
 20c26b51b7dcd002e453492db08b11326bd8d918 2021072912:38:48-UTC ./jt/jtlib/m.msys2
-28367ade837fcf7503b933e09b742c4b1e387b9b 2021072912:35:36-UTC ./tools/sql2/mkall.msys2
-8c936afe00d6344d9259c4a365dd459178590efd 2021072912:35:08-UTC ./tools/sql2/util/mkall.msys2
-4042f155c65e7b46d882901edd742cfe7e4141ff 2021072912:34:04-UTC ./tools/sql2/util/jeed/m.msys2
 1dcd175a702b58d13223ab96d377be2146c8684a 2021072912:33:08-UTC ./tools/sql2/util/tdsutil/m.msys2
 cf2bc40b678accb14cb9b0a500e88cbdbe272ae1 2021072912:31:12-UTC ./tools/sql2/i.msys2
 7c2c3d3659730de71cae5ff822b92c58b42778f8 2021072912:29:35-UTC ./tools/sql2/driver-postgres/m.msys2
@@ -227,7 +261,6 @@ be0cced6b55666471192af8a5d5809fe5ef99db9 2021072912:02:17-UTC ./tools/sql2/test/
 8ea6b8d94e81ea41b0f767db705bb2e68d8196c3 2021072912:01:26-UTC ./tutor/readline/m.msys2
 cfed5740e65005d051840a07163d919840942685 2021072912:01:03-UTC ./tutor/dtree/m.msys2
 fd1153c24efaf3b65b63ab416311ac1262b4f3b3 2021072911:42:55-UTC ./tools/zgrep/m.msys2
-a31b3a7755a06ab3bdccb4365b5a5c1d24b0edea 2021072911:41:09-UTC ./tools/xmlrpc-framework/mkall.msys2
 4ba003b6942f45eef77ddfc51542b758ae36f074 2021072911:39:34-UTC ./tools/xmlrpc-framework/client/test/m.msys2
 686f6f326c25d39a668ffabff581b1dd7005dfdd 2021072911:38:53-UTC ./tools/xmlrpc-framework/client/rpcmonitor/m.msys2
 fbf0348f9d4767e9f70301a8de5363f961d9486f 2021072911:37:59-UTC ./tools/xmlrpc-framework/server/test/m.msys2
@@ -239,7 +272,6 @@ df9bfe204dd61a9eb8a339ab8e3fe560cf1df22c 2021072911:33:51-UTC ./tools/xmlrpc-fra
 aaca486ffd81df34e24544b151e2e92a2d7cda4d 2021072909:58:49-UTC ./tools/z/m.msys2
 cb7987ea9f8fbe5392799c4f4b06eb56d74e0154 2021072909:56:36-UTC ./tools/socket/ssl/sslsocket-demo/m.msys2
 af459618f749a7b8e2d7a47167c3aed396f1c711 2021072909:54:22-UTC ./tools/socket/ssl/m.msys2
-36c8650b6b9084cd0f71ca64fc792bdfbc096acd 2021072909:53:14-UTC ./tools/socket/m.msys2
 fc368372e216b61954b4492f67f5c6659a94eb13 2021072909:51:41-UTC ./tools/regex/regex-demo/m.msys2
 cfae1cc4a8574978bf2160c9f4610f454771c273 2021072909:50:49-UTC ./tools/regex/m.msys2
 a2fc5301ba350861bc114168707f33d317f0fe83 2021072909:48:45-UTC ./tools/pcre/m.msys2
@@ -254,7 +286,6 @@ e583151e60302c26a073609b27fb57ad1bb4bf9a 2021072909:39:50-UTC ./tools/crypto/m.m
 d964370e8400a8616e4e33edd422cc950673c19c 2021072909:28:33-UTC ./tabobj/tbbtbtx/m.msys2
 95ec0e2e3305c1541d77be506107aac9635a4151 2021072909:27:28-UTC ./tabobj/tbbtbtx/utility/m.msys2
 962868ac88567df77d761058234c79e05aaf05a2 2021072909:24:40-UTC ./tabobj/m.msys2
-9a531e787fc345de0b96a871d762ac0eb85b806a 2021072909:08:55-UTC ./tools/mask/m.msys2
 69710ecb6cc4e993ccecaca4fd9f60a9872d1939 2021072908:11:22-UTC ./usr/bin/windows/bapp_winc.msys2
 2fb8d7fc1c7040f48052d4e49975f8e8a701c64b 2021072908:10:00-UTC ./usr/bin/windows/bapp_win_btbtx.msys2
 1d2205e9db27776a80d42c3bd92c494c77c45580 2021072908:09:41-UTC ./usr/bin/windows/bapp_winc_btbtx.msys2
@@ -277,7 +308,6 @@ b239b40f766bf84e415d7bd07679669fbce59f64 2021072819:44:16-UTC ./usr/build/msys2/
 cf99406e8c85ffc0f2cb2a2928643bc32bfd95b8 2021072814:51:26-UTC ./ccctools/buildp/m.msys2
 0cb366ac6e5a76991346efbd25900997b5b5d025 2021072814:50:48-UTC ./ccctools/prg2ppo/m.msys2
 879206af61426ec0276a369ca00d270dc93f6c85 2021072814:48:07-UTC ./ccctools/ppo2cpp/m.msys2
-16e8f7c644c656ccad8103788da1ba390a4ae144 2021072814:44:04-UTC ./i.msys2
 7e3eed50e9a4a7ef48c5c9caaffc7634a7a5ed07 2021072813:53:43-UTC ./setup/setup-windows/make_setup_lib.msys2
 f12e4232139955cd84b8ae9028f248f9388992b7 2021072813:44:59-UTC ./usr/bin/windows/bapp_win_.msys2
 4316d1eb1184edd703b1dfbd82a7228ba4af9fc8 2021072813:44:49-UTC ./usr/bin/windows/bapp_win0.msys2
@@ -312,7 +342,6 @@ a07cdd8401c1a269888a5c9c5f6d7b09948f06b8 2021042820:25:06-UTC ./ccctools/ppo2cpp
 012828ec566588e2956c749e39d11d9b86c40e12 2021042819:53:30-UTC ./ccctools/ppo2cpp/fundecl.cpp
 dca9af9725dcc32b217b465aef93412a7476e02b 2021042819:45:35-UTC ./ccctools/ppo2cpp/decllist.h
 c9af25de142c2521790bc7c97dd777640d0891ab 2021042818:30:58-UTC ./ccctools/ppo2cpp/test-clang/s
-e47c8bd342ec57551a1b68190e06a6a70ad6696c 2021042119:06:30-UTC ./ccctools/prg2ppo/input.lex
 3a54d1d51d4716409077c506b7d0112943f183a6 2021042116:48:23-UTC ./ccctools/ppo2cpp/lexer.lex
 c732a4a260f4d58ddcf6b7ab5e4eefb6c0255035 2021042116:40:42-UTC ./ccctools/ppo2cpp/lexer.h
 a3c9271282f9e5488bc8fd5b994f1f9263af3498 2021042112:58:30-UTC ./ccctools/ppo2cpp/parser.h
@@ -329,7 +358,6 @@ a839854f98f83945a33ed31045c356c8c367c173 2021040721:27:55-UTC ./tools/xmldom/xml
 9608801e1423e5ef6563de77465f53a428aa9588 2021040513:08:52-UTC ./tools/xmldom/xmldom_lemon.prg
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
 9e51d5b27647099fd35ea3f40fe3074a5161e465 2021032513:46:48-UTC ./terminal/unix/s-icon
-57eb8f1caac21e0759aa77f241e61e061c5470a0 2021032512:41:50-UTC ./jt/jterminal/m
 d866348a425f6c401d70bb017895182b45f43cf3 2021032511:12:49-UTC ./ccclib/src/uic/setcaption.cpp
 5fa7b36986b04e00839d8fd74f41af851a828701 2021032510:42:54-UTC ./terminal/unix/terminal.cpp
 330853f994f56473cf0d8a62d47d93dfab91de4a 2021032510:41:45-UTC ./terminal/unix/terminal-xft.cpp
@@ -356,7 +384,6 @@ ff95bfac30ae8d4c83c3b4fafc080798b18fec5c 2021022210:19:56-UTC ./tabobj/utility.s
 06ad1eecc76bec57aee052db79e438274dca4cb3 2021022210:02:44-UTC ./tools/mask/msk2pge.prg
 296f8400cb28cbdfff0254ff4cb02df3a9c44bf6 2021022210:01:43-UTC ./tools/mask/test/m
 a42c2d3153dc16ab9c9245497ae266b92079ef64 2021022209:53:54-UTC ./tools/mask/test/proba.msk
-b2b299a99f34540dd4abd99001e3e718b6da6b6e 2021022208:45:50-UTC ./tools/mask/test/clean
 64ca3a096da73f5de4ce2d9397f089d074d4ee9d 2021022208:37:37-UTC ./tools/mask/mask.prg
 bce09b0a56d7b5e718187ab35dc2aade459589a5 2021022014:19:52-UTC ./tools/mask/scrstr.prg
 22b241f5c03802eec94187e72b6e572a8f2c8af8 2021021408:40:08-UTC ./ccclib/src/unix/signals.cpp
@@ -435,7 +462,6 @@ ded31b59dc126d3225d405b5d28dcc8980f5914f 2020101116:09:40-UTC ./tutor/shm/s
 0c91fd3b614677ceec708cf6a9b775c9e432f7e6 2020092313:49:21-UTC ./terminal/common/startlpr.cpp
 649be779d8991dbbd68fb347b73bf8432a85572a 2020091818:33:02-UTC ./tabobj/tbbtbtx/dbopen.prg
 8bb86b706f14c909dd8e30f2a63d8a5a9aa95881 2020091620:33:55-UTC ./terminal/terminal-test/remio/ccclpr
-168d17e7e7eff3394f51d82189c931cc2cc387fa 2020091612:47:29-UTC ./terminal/m
 6f8169744899cb916d3d6f09a5909c0f6c2d0615 2020091213:54:07-UTC ./ccclib/src/uic/listbox.prg
 0d0a44bdfe999b6a05cbef3f877bc68af7df1fb6 2020082021:22:40-UTC ./terminal/sslforw/sslforw-term.cpp
 27e28576676d7c0262907f5ba9ed6b31afeda573 2020081711:39:13-UTC ./jt/jterminal/base64.class
@@ -576,7 +602,6 @@ a6ebfd084f3d396ff0438abb02f8dc1be48c82cd 2020032114:50:42-UTC ./ccctools/pack/co
 55011ab96c0844db78b4f2d386ed22c4846758c6 2020032016:01:36-UTC ./terminal/unix-termkey/readkey.cpp
 c1788685477d7261a7fbdce5c1486d370792c155 2020032015:59:43-UTC ./terminal/unix-termkey/tktest/tktest.cpp
 71a868c6af2d658a3eab178b7b20819720a937a9 2020030813:05:03-UTC ./terminal/unix-termkey/Xdefaults
-5e65f188245a609e433dbe456a08c355832ac605 2020030709:18:14-UTC ./install.b
 955571b358e229b1a3b78fe1421664775a5dd5aa 2020030709:17:26-UTC ./terminal/unix-termkey/OLVASS
 8f9cb9e4db3ae36b8d293273b0fb906ea05bf21a 2020030708:22:27-UTC ./terminal/unix-termkey/tktest/s
 1b0aacd64e57bd8ec6e3b36ac40a4b6f10d14e57 2020030708:22:11-UTC ./terminal/unix-termkey/parfile.bld
@@ -601,13 +626,11 @@ fc79639a22e70e00392cee7a8481992d2542d52d 2020021912:45:49-UTC ./tools/csvreader/
 3f827ec3d22f7c789dfb517e48ce1fbefe8b82e5 2020020509:09:26-UTC ./tools/webapp/common/src/javascript/webapp-readfile.js
 15e054a71ce5feb2e933dd8e6e70fc7dcc887d6b 2020020509:07:59-UTC ./tools/webapp/common/src/javascript/webapp-formdata.js
 9a33ae5729aa29698b18e965f7858756ae6e33fa 2020020417:51:30-UTC ./tools/webapp/program/webapputil/readfile.prg
-9b2e7829b2ef4b7c6e8d1ac08cce6dd958191e24 2020020316:45:19-UTC ./tools/webapp/common/m
 7b23e5e3e579abde43a00d06aadb5a524bb8a044 2019120708:33:45-UTC ./ccclib/src/windows/nlstext.cpp
 d4d44de3f6d77d62319f36ba73ecd39875f066a1 2019120707:45:18-UTC ./tabobj/tbbtbtx/btsort.cpp
 5f8464a43a5ba5223fbfc631d711d5cb23cad5a4 2019120707:30:06-UTC ./setup/setup-windows/cc.bat
 cacb6ac468a7618c9b5d2c704ca52ec4b0f2cca1 2019120707:24:43-UTC ./usr/options/mng/compile.opt
 231d74e8bef97ee1d6981642b26513d3a4673e8b 2019120623:57:07-UTC ./gtk/code_byhand/m.bat
-3e1b78a8513f6c6201f8c402e66c915868b9e28d 2019120521:03:36-UTC ./gtk/i.bat
 c8683fd6f9d631d63abe1174550a76f5496fdce5 2019120520:59:49-UTC ./usr/build/linux/obj2so.bat
 539322ddc84d0be26935f17c653ed996321dc616 2019120520:57:24-UTC ./gtk/code_byhand/gtk.bld
 d9f39fab24e301f960e21a0e3c47055e98a095f0 2019120516:09:05-UTC ./gtk/code_byhand/m
@@ -639,7 +662,6 @@ c64934638335dcbc7c86e5f7241c88a9b4fe01ae 2019082407:01:19-UTC ./ccctools/ppo2cpp
 0c8c0f05fc93acfb867a47bb0b985215128185c4 2019082201:11:09-UTC ./ccctools/ppo2cpp/m3.bat
 9fecc01a3af83b8d5bf0e04aeda5e7b92f7b3a1c 2019082201:10:25-UTC ./ccctools/ppo2cpp/m4.bat
 36b5e094f2afc1904c5ce554766cf2c1745263a8 2019082021:52:08-UTC ./usr/include/xmethod4.h
-331be4054590560fb5017ee21c229a3c487465cb 2019082017:56:22-UTC ./setup/setup-unix/clean
 24f9bc84da6befedcb8c52465fba751a8cc9eabf 2019082012:46:46-UTC ./ccctools/ppo2cpp/m3
 5a8e87966de2dae93f05b0594f34557cc53e2d82 2019082012:46:01-UTC ./ccctools/ppo2cpp/m4
 a18ab548ff4cf6e23d4e6dd9d95636135e05d574 2019081912:24:45-UTC ./ccctools/ppo2cpp/metdecl.cpp4
@@ -693,7 +715,6 @@ c48d0761755918536265fbc052ee7e91d1f3143d 2019080109:37:59-UTC ./tools/webapp/pro
 cc7cea4fa68b4fe2d289deb8dc611bf3e9ec6e3e 2019080102:27:53-UTC ./tools/webapp/common/src/css/style-mobil/webapp.less
 479dceec0de17186b96019a7f457d9c02159a3dc 2019080102:27:13-UTC ./tools/webapp/common/src/css/style-grad/webapp.less
 624cad2912ccead660e89a4256b30ef59cd3428d 2019080102:25:08-UTC ./tools/webapp/common/inst
-c2d7dbe82dae7ff1604a169bf5af3a5a5f7ec32d 2019080102:15:02-UTC ./tools/webapp/common/i
 7749831bafe56b0d66d361c5b8489bc5b9119d46 2019073104:31:38-UTC ./tools/webapp/common/src/javascript/webapp-inp_regex.js
 96f5ada34d1c58b9a50ab92c4ab7a2451513e55c 2019073013:18:20-UTC ./tools/webapp/common/clean-css
 2127728065fe85cb72dd5e6fabeb7a7b79d26f10 2019073011:00:31-UTC ./tools/webapp/common/src/javascript/webapp-inp_number.js
@@ -844,7 +865,6 @@ d3679c6ec43782dc05e5bdcb1028914514eacd06 2018061014:33:52-UTC ./tutor/pm/netbsd/
 633ab7a645722ed7a6bbe7299d344e4a5e28512e 2018052107:04:54-UTC ./setup/setup-windows/xx.bat
 75881f168ec34219a1975f3ab79c751a1a79468d 2018052106:20:00-UTC ./ccclib/m
 e38c4fe8f5ddb7ab51ab10bd0a98cffbce582618 2018052012:02:21-UTC ./ccclib/m.bat
-ca97f7e0020d6bc508ed133c2f0d9bd09de9d860 2018052008:37:00-UTC ./setup/setup-windows/clean.bat
 e3bac36cda7fbd1cff828d2641970110b8807373 2018052008:35:22-UTC ./setup/setup-windows/copy_from_ppo.bat
 17da18e8529aa8f2d13a55a84150705311407128 2018052007:23:14-UTC ./setup/setup-windows/prg2ppo/s_prg2ppo.savex
 7984783c6ef1f008332969f7fff3e78852db5a91 2018052007:11:05-UTC ./setup/setup-windows/ccomp/s_ccomp_ppo.savex
@@ -913,12 +933,10 @@ e7e4bd0737fa5ba9c9ad802cc644dba1269d894e 2018022508:50:09-UTC ./terminal/termina
 6c58839f903c091c8dca0bf21d824554a809d79f 2018022423:34:23-UTC ./ccclib/src/windows/filecreat.cpp
 76885d1ed43346a445a9cecb10647ada6de44664 2018022420:05:26-UTC ./terminal/terminal-test/remtest.bat
 f6a8280f9c2aff466a80bdce95ca5db9a9119cd6 2018022414:05:38-UTC ./setup/setup-unix/filecreat.cpp
-91a84bb2e7858b63fdfc377bb5488be293b0122c 2018022410:28:32-UTC ./terminal/terminal-test/clean
 6f9af4caf093bd12958f5e80650c59b1a1d2953a 2018022410:27:30-UTC ./terminal/terminal-test/remio/ccclpr.bat
 454a940a0078165d287bfbd9b32098650edc1ec7 2018022410:22:05-UTC ./terminal/terminal-test/m.bat
 e54cbae7e5a6a4a776fa3868c84078cb0b6e61a3 2018022409:56:08-UTC ./terminal/terminal-test/m
 beb3770026c55ee8da049d3c07ee305e52cdfc29 2018022319:58:09-UTC ./tools/zgrep/zgrep_view.prg
-256a821d2240d8a30b540009b53cc4f5abc99281 2018022213:48:29-UTC ./install.bat
 2aa599ebfec615b252e165035d808650935eac6e 2018021408:57:29-UTC ./terminal/gtk3/parfile.bld
 3acddd25827a0a99746784484771a52dc64ae373 2018020613:53:27-UTC ./setup/setup-unix/build/s_buildp_ppo.savex
 18856226f89522f8b4ddcab3c838f6778db4398c 2018012817:13:08-UTC ./usr/options/fre/compile.opt
@@ -932,8 +950,6 @@ c265f05ecf2cbe795786518c4d21479e8a2afa05 2018011913:37:30-UTC ./usr/build/linux/
 7367228e88e5373e645f16a5930e1ae2e4b3a75f 2018011913:29:01-UTC ./tools/sql2/test/basicdemo/mp.bat
 e9f25355630425ca623f45c1a7681baaa7381a55 2018011913:28:55-UTC ./tools/sql2/test/basicdemo/mo.bat
 ac189b940f1d5f197ca6e7e4ae05dc319f953f62 2018011913:28:49-UTC ./tools/sql2/test/basicdemo/ml.bat
-adf3b599452f93a9a0bd984877731dd92a9a7849 2018011822:29:50-UTC ./tools/sql2/i.bat
-2d1337eeb82aebef102baca26827f9de9d8fd997 2018011822:28:47-UTC ./tools/sql2/i.b
 cbbba682fb3725446919aa101a6384549aae8255 2018011822:22:41-UTC ./tools/sql2/test/entitybrowse/parfile-p.bld
 cbc91a0778c64bff7a8e9f4094541439f72aa9ed 2018011822:22:36-UTC ./tools/sql2/test/entitybrowse/parfile-o.bld
 04df58a991dc43b23a0cb291236987300650611e 2018011822:21:37-UTC ./tools/sql2/test/entitybrowse/entitybrowse.prg
@@ -944,7 +960,6 @@ a81c7354a08b7467e187a49557b74ef340266609 2018011822:11:50-UTC ./tools/sql2/test/
 3a895c392c17e50aeac3c288486334fd93974f06 2018011822:11:26-UTC ./tools/sql2/test/tranboundary/m
 0087854677faad2043545107b4d34a57f711d0a5 2018011822:09:50-UTC ./tools/sql2/test/dirtyflags/parfile.bld
 4a6f7d96912c976bfe7cebdd3ae567567ada17a5 2018011822:09:09-UTC ./tools/sql2/test/dirtyflags/m
-81d4893decffa50e0ca019d7ca0b941a9421fefc 2018011822:02:14-UTC ./tools/sql2/mkall.bat
 8db2f6f45a0d8d57b4c32a81369070e0db51fefc 2018011821:58:35-UTC ./tools/sql2/test/isolation/parfile.bld
 097a37fdc02a404c74a83234fc702195b4634bd6 2018011821:56:47-UTC ./tools/sql2/test/isolation/readme.hu.txt
 2f8773b64dcb14edd1ebd872f895575bac2f8be2 2018011821:53:05-UTC ./tools/sql2/test/testdata_import/parfile.bld
@@ -983,9 +998,6 @@ eec217849faeb94c7fa71652d785edcb7314fc50 2018011712:16:14-UTC ./tools/xmlrpc/dem
 f319e6ab829dc5cc54a2d6443ec0155dc050a134 2018011712:04:32-UTC ./tools/xmldom/demo/m
 23328a8f27c3bb627ea896227ad527f9365c88d1 2018011712:03:18-UTC ./tools/xmldom/m.bat
 e62dec701c47d0facfef5f065713215d43d3b78d 2018011610:51:36-UTC ./tools/mask/msk2say/m.bat
-e6997f0bbc2b4a64e297eb05a92fc9d7e8e1c8db 2018011610:28:31-UTC ./k.bat
-c20f985f32d0314c66702c08a2f7193b1d89fc52 2018011610:16:23-UTC ./k.b
-44936a56a2c599f14e22ea1e73f7a90ad678106c 2018011607:59:53-UTC ./tools/setperm/setperm.prg
 d8eccd0a8d2e3cdec064d77143bdea0efbb9faf6 2018011607:50:43-UTC ./tools/dbfview/parfile.bld
 a0e5538665f018cc72e106e8c379e443fd0c31a2 2018011607:32:48-UTC ./tools/dbfview/dbfview.prg
 e397a7c875ab0c21cef20753a88cd6bf4adb4608 2018011607:26:37-UTC ./tools/dbaseiii/dbfbrowse.prg
@@ -1094,8 +1106,6 @@ b15b75715af8d6e77e9851dc5250cf2a012239ff 2017081917:18:43-UTC ./tools/webapp/pro
 8bfa0a99021e5bd50fb4a37eed5d23d9d6dafa02 2017080214:21:11-UTC ./usr/build/windows/lib2exe.bat
 5311b606374e09dfc75c54a2c749275a28e88ef0 2017080214:20:48-UTC ./usr/build/windows/obj2exe.bat
 d8434c066b71fc4b36f1f58bb2f2889a39bba218 2017080212:45:33-UTC ./terminal/gtk3/m
-bc322fffe3b1c527600e8815851d271928bab40c 2017080212:16:29-UTC ./terminal/gtk/m.bat
-05723cc2f5285b1428c6177a9c504b154061b42c 2017080212:12:51-UTC ./terminal/gtk3/m.bat
 34b7320bcfcd6770c45e3444c01796f71f0b0cd0 2017080209:23:15-UTC ./terminal/gtk3/keycode_gtk.cpp
 7d132e459e82157cd8533396aa9000a1886bbe30 2017072511:29:08-UTC ./ccclib/src/uic/inkey.cpp
 0d7859fa56cb17b8e9b844c1c94b07ff43ee9683 2017072510:58:48-UTC ./usr/include/std1.ch
@@ -1314,7 +1324,6 @@ ddade872a3114b11a50564239c7fa4bd193dd989 2016071319:38:58-UTC ./tools/savex/form
 a113abde07959bf8300e26d5ad7f9ec38fc8ec02 2016061508:00:04-UTC ./tutor/kill/kill.prg
 920069bf607b62c4150f0fedcbd343bec71099e9 2016061507:56:48-UTC ./tutor/kill/m
 86f771b1cb844ca694d00552a935d4260424e2cc 2016061507:45:13-UTC ./tutor/xtabobj/tesztdb.bt
-c4e4d7a16effcc88662e0d05fb25e6859e3592be 2016061419:41:13-UTC ./tutor/redir/clean
 b2ab34437280744a29623d8ac54ea60ffe22c29f 2016061419:37:01-UTC ./tutor/redir/unix/OLVASS
 07d0d34f8807d8e6d9d3af6f7a23d0d317294d9c 2016061419:34:34-UTC ./tutor/redir/m
 5931930f75ed853aea1437f2ad1179f2b3058acf 2016061312:29:25-UTC ./tools/list/OLVASS
@@ -1384,7 +1393,6 @@ b52966fc57b6b984a58b1bc9778375424c922660 2016060118:29:51-UTC ./usr/build/window
 34c183f1da6bd61dea14349020c8572f80caf254 2016060118:26:49-UTC ./tools/z/latin2_to_ascii.lex
 f58c6dfb5d74b99b6b27317b5c0b8251e486685f 2016060112:18:33-UTC ./tools/sql2/driver-mysql/mysql2.cpp
 7a5e3c92c846fad5762eac8999435b6fe3256456 2016060109:53:23-UTC ./terminal/windows/font.cpp
-16b78876a5829685d30b69aa26afdd7a60602249 2016060106:56:10-UTC ./jt/mkall.bat
 21148314534318ed6f2050c8b30832e794f466f1 2016053120:17:29-UTC ./jt/sslforward/ssl-test/cert/olvass
 aa681a85a37087a756ef940bc921fec8d72057a6 2016053120:02:36-UTC ./jt/sslforward/ssl-test/xs.bat
 f3871abd24d75e80c844441011715ad23a556479 2016053120:00:51-UTC ./jt/sslforward/ssl-test/t-46009-ssl-caut.bat
@@ -1580,7 +1588,6 @@ e2068d811eef45486e337a16b19d724c9aea97bd 2015012213:13:04-UTC ./tools/sql2/test/
 8ac5b3f6ffd5709d81db5ff527986b27e3cbd035 2015012212:40:01-UTC ./tools/sql2/test/tranboundary/sl
 40f0453680cedd44bf4877eceb6511e18362818a 2015012212:39:34-UTC ./tools/sql2/test/tranboundary/tabtest1.prg
 546d9e4c1e7b5dbbb79bfc18048b71a39689b9e5 2015012212:32:43-UTC ./tools/sql2/test/tranboundary/tabtest5.prg
-b0486a58129c87d2da15e1dc00ca8b472b70be71 2015012208:01:31-UTC ./tools/sql2/test/tranboundary/clean-all.b
 59e7cc6393ad4355887db700b46b9ecde320e6b1 2015012207:59:31-UTC ./tools/sql2/test/tranboundary/sp
 833d3eb592d2f0d7c25fa941ec22c0afe41d62ee 2015012207:59:26-UTC ./tools/sql2/test/tranboundary/so
 f14ba829553bc0779e52ecb54d547d4c2821ef17 2015012207:59:19-UTC ./tools/sql2/test/tranboundary/sm
@@ -1588,12 +1595,9 @@ f14ba829553bc0779e52ecb54d547d4c2821ef17 2015012207:59:19-UTC ./tools/sql2/test/
 f9cd1ae13116869de89094a1edd6b27bb000899a 2015012115:34:14-UTC ./tools/sql2/test/tranboundary/proba.db2
 1e8b78b040f982c245b06b376daf90bb652ad012 2015012111:42:00-UTC ./tools/sql2/driver-sqlite3/sqlsequence.prg
 59f1ab89b9285b2b898165853237e0dc45d4536f 2015012108:52:26-UTC ./tools/sql2/driver-db2/db2.h
-7b0de0e33f789c7c727b5e5680a131ef64596c6f 2015012107:39:36-UTC ./tools/sql2/mkall.b
 0b4ff1aab96eacb9ca29a7c5027ce1d8d44b1a25 2015012007:34:59-UTC ./tools/sql2/driver-db2/proba/proba.db2
-481013e4091cb8cdfdc0f79c20ec7f86fb2a005f 2015012007:33:54-UTC ./tools/sql2/driver-db2/clean-all.b
 677169d035bd3fe2d7ee3c05916daf06e16217a9 2015012007:32:45-UTC ./tools/sql2/driver-db2/proba/tabtest2.prg
 709a66d79341207eb45052a749d074f2b27ddd72 2015012007:31:42-UTC ./tools/sql2/driver-db2/proba/tabtest1.prg
-1f81d23eb656081fcb4e5ace5c85556b3e26423a 2015012006:49:47-UTC ./tools/sql2/test/basicdemo/clean-all.b
 ed7c409bfc1863fd3339fb7faf7c970970c1ae9d 2015012006:34:25-UTC ./tools/sql2/test/basicdemo/regression/reg-db2
 85d4557425ae58e77c822990e858804d08c0f822 2015012006:30:09-UTC ./tools/sql2/test/basicdemo/m
 344b9a7acc7fff54274a6fa17bfe4553f4ac90e7 2015012006:28:55-UTC ./tools/sql2/test/basicdemo/connect-db2/connect-db2.prg
@@ -1617,7 +1621,6 @@ be3866648fab31da19bb79a19199c0869f504272 2015011508:08:56-UTC ./tools/sql2/drive
 c15e467e876946ff75a8da48d9657e45033ddc68 2015011508:05:57-UTC ./tools/sql2/driver-db2/sqlbind.cpp
 91970b9657236a39d7983c3d96d8e143d1816fb1 2015011412:04:53-UTC ./tools/sql2/driver-db2/hello/emp.db2
 9b017ba1878aaba75e4b69f4d2458ab404e839fa 2015011408:12:43-UTC ./tools/sql2/driver-db2/hello/s
-26373e6ee779d9193369a103826dfefe97864a62 2015011407:45:18-UTC ./tools/sql2/driver-db2/hello/clean-all.b
 70efe2bbd982e591c9739ac37d51f013719e8303 2015011407:44:49-UTC ./tools/sql2/driver-db2/hello/parfile.bld
 7eecbb210ef0e19062b8dcb827c99ca1022a9344 2015011407:22:24-UTC ./tutor/fpath/lpath.prg
 df5f0c09212be3ff0cb81c03fcaa2c385a832a76 2015011218:58:06-UTC ./tools/sql2/driver-db2/config/OLVASS
@@ -1672,13 +1675,11 @@ fc5aefda582bf1b6cd68b4049c72f02b1afa94d9 2014012508:14:45-UTC ./gtk/glade/gtksym
 6c89ad6fd983a824c8198cc7e6f04c29789b9e7a 2014012508:14:36-UTC ./gtk/glade/gtksym_lexer.h
 1698ace1e8b9e91fdbf669711ca805650e8b9980 2014012508:14:04-UTC ./ccctools/ppo2cpp/parsenode.h
 e71584eafb421e311aa2c461b667f50d229811a6 2014011608:56:28-UTC ./usr/options/fre/readme.hu.txt
-31356cf3ac74bb8afedcb23b76a78a4c16e13e9d 2014011608:12:52-UTC ./clean-all.b
 1d0cbc2e6b028391b68e3c3c5122a31a626d8fb1 2014011608:00:07-UTC ./usr/options/fre/compile-gcc.opt
 f1d705cb7602ee84691b4cca3a9544298141bb80 2014011607:59:56-UTC ./usr/options/fre/compile-clang.opt
 103b0f408a38699590863d08005e98339fb6d4c2 2014011519:48:17-UTC ./setup/setup-flex/m
 4bacff516efe1b65d24172a06b6c6fde8ded0500 2014011518:01:57-UTC ./ccclib/src/vmm.cpp
 0781bdb27ad595463a2702b0b853b5985f613bb7 2014011517:30:27-UTC ./setup/setup-lemon/m
-2108f44f3930582c36ab953aaab2716999f8d213 2013112911:18:39-UTC ./tools/crypto/clean.b
 a860da2eb475e1e9d198036ab4f07c6bc77256dc 2013112813:55:19-UTC ./tools/setperm/setgid_on_directories
 6e79f17980d8272282e336b5ceab88f92ee40453 2013112316:33:44-UTC ./ccclib/src/deferror.prg
 bb1a935b179fe44ebd03a7902bf9ac6224efb698 2013112315:47:38-UTC ./tools/xmlrpc-framework/rpcstart.sh
@@ -1743,9 +1744,7 @@ d72ba0a99ba83442c37ceb3131d142c0038aeee8 2012100906:13:26-UTC ./usr/include/vari
 b5e42536095051a776412d8387a941128c21b79a 2012100516:42:02-UTC ./tools/websrv/s.bat
 2719ea6b49660122bff0fc91d54f12199a1a956e 2012100209:52:18-UTC ./setup/setup-flex/mf.bat
 37840878ae937b5f87f3c4efdbf3d3aabedfeab7 2012100209:50:31-UTC ./setup/setup-flex/m.bat
-0e38a91094ed10f234febf87e658661812822867 2012100209:35:13-UTC ./clean-exe.bat
 3aa2d7041940ca07140b8acd479090fe69c88ee8 2012100107:44:14-UTC ./ccclib/src/split.prg
-d137b510f47359dda486deb3ca22193334d2601c 2012093019:37:45-UTC ./gtk/mkall.bat
 d43f2a4f1b82b937d582e03c3498d9e9694d5ea4 2012093019:33:07-UTC ./gtk/changes.hu.txt
 d97e0bc2aadf3025d9f8afe1c1e1b5f8d62e67bd 2012093019:28:34-UTC ./gtk/code_byhand/gtk_tree_iter_apix.cpp
 1038dbe5c6e551e32a3e7241dab1191a53eb9f92 2012093019:27:39-UTC ./gtk/code_byhand/gtk_text_iter_apix.cpp
@@ -1861,7 +1860,6 @@ a2c35f45d024089d1015448f751ed2dbf67b9b72 2011042016:33:43-UTC ./tools/sql2/test/
 7b91642c8e90e76e146840631242b6624d9b4544 2011042016:04:58-UTC ./tools/sql2/test/dirtyflags/ax.tds
 425375b1e41fcc0816ea3d8eb948372db295cfdb 2011041920:09:14-UTC ./tools/sql2/driver-postgres/rowentity.prg
 52c40006b96cd9685af2e3754d9a545d3fd51a42 2011041920:00:44-UTC ./tools/sql2/driver-oracle/rowentity.prg
-1ed6500a9cfdab31d9477f91b712e0b1ac257a5e 2011040111:24:24-UTC ./tools/sql2/test/dirtyflags/clean-all
 c8f21cf6d94305ab7f1d3d846c04208b92aa5ac8 2011032421:01:55-UTC ./jt/jtlib/jtcolumn.prg
 7924422b7a3551071924b03d84ef49b9a3047564 2011011820:52:19-UTC ./doc/ccc-belulrol/valtozok.tex
 c9bd7cc78aec7e1250a161106a79c4c1504af052 2011010216:04:46-UTC ./doc/ccc3_unicode_hasznalat.tex
@@ -1873,7 +1871,6 @@ a2ab836ee7366c0716b7654f1e0312eded3d3b4d 2010112222:38:43-UTC ./tutor/filemap/hi
 db351669f5dbcc7b3721468f38ab687d1232a485 2010112217:52:16-UTC ./tutor/filemap/m.bat
 6852355ca2c9c0c4c893a98f03c9ef653ceb0459 2010111812:12:54-UTC ./tutor/filemap/s
 928294b7f4bcfd5c13e2f433c0c792ef11bd5b90 2010110817:55:41-UTC ./tutor/filemap/demo.prg
-dd783114187ddc2674b0ddc7503a651f14140eaa 2010110817:38:54-UTC ./tutor/filemap/clean-all.b
 d770ab85b96fcd3c36f15471878af9caff2c620d 2010110817:26:47-UTC ./tutor/filemap/hiba2.prg
 96c95c69159dc370347f255c9b841c676f6fdd52 2010110817:22:47-UTC ./tutor/filemap/hiba5.prg
 7a5d9700a4674c66c057c40b6ab0df63d56e7f8b 2010110817:15:16-UTC ./tutor/filemap/hiba4.prg
@@ -1967,7 +1964,6 @@ cdf00d5b1248ec6934b4184da9f50fade54166cc 2010010713:43:51-UTC ./tools/xmldom/dem
 9b9962c3fb4ae4a9a302af0f9be9238078d0c0c3 2010010713:25:17-UTC ./tools/xmldom/demo/x-hiba3.xml
 bf9513427642ebe1204fb6d3be061d3b173654dc 2010010713:12:03-UTC ./tools/xmldom/demo/print.prg
 ffa2aa8c221c19312b3c472d93c17cd134cc045d 2010010621:11:54-UTC ./tools/xmldom/xmldom_lexercb.cpp
-ac555290548a66b1849be7cbc4bcad920f733b5f 2009123109:58:29-UTC ./tools/xmldom/demo/clean-all.b
 db93c8df16df70a61dbe3508197a6436afd8d67d 2009123109:48:43-UTC ./tools/xmldom/demo/demo0.prg
 120b1a00e0159061ccc200ff30eda5a86eb10be0 2009122811:16:46-UTC ./tools/xmldom/demo/x.xml
 715832d54a73f60e958b3e0857e6ca9ced224fcc 2009122811:14:48-UTC ./tools/xmldom/demo/z.xml
@@ -1990,7 +1986,6 @@ a8662867c558dc6f14ed90bb5f5fc436b4eb5f6d 2009112917:07:26-UTC ./doc/ccc-belulrol
 615ebfbdca6a54e1db30a5b0cb1b561cba99f17b 2009111120:37:58-UTC ./tools/xmldom/demo/nullabyte.xml
 be7f853c994a5083e8d704486b941588bebeea52 2009110617:37:00-UTC ./tools/xmldom/latin2.h
 b87cabff941b7b914f4b2637dd6d990ca372820d 2009110617:10:39-UTC ./tools/xmldom/8859-2.txt
-2ac9adc4d5b788bfd8b2f4e061452c836e79f4ac 2009110609:30:41-UTC ./tools/xmldom/clean-all.b
 531022ccd24fa985ecc170d778ebd2dea412fcac 2009110609:25:37-UTC ./tools/xmldom/demo/example2.xml
 79a5ec16d7840427d1350606af449f02bfd1c7ce 2009110609:25:31-UTC ./tools/xmldom/demo/example1.xml
 f31e00fbd20c891e66bba989df539d4290197dd1 2009110509:47:44-UTC ./tools/xmldom/xmlattr.prg
@@ -2087,7 +2082,6 @@ c842f4466a4f1106d2c2f4683eb41ef04d5fbb59 2008112708:51:10-UTC ./tutor/pm/solaris
 1aa27821c9301a5995d5195a1da7d2ec48af5fa8 2008111615:08:30-UTC ./usr/build/solaris/obj2exe.bat
 ac7dfdd359dce2b01b150e7332511d1c75ed6591 2008111615:08:18-UTC ./usr/build/solaris/lib2exe.bat
 8c029371f2ee3e94bda3d8f7f8df3386a7deaab7 2008110709:18:34-UTC ./terminal/unix-ncurses/learnkey/s
-efece23ff0b8097e731265eaf525e72df88e0ea1 2008110416:01:02-UTC ./tools/sql2/driver-sqlite3/clean-all.b
 9969d42a83db202ee384283e6a6c9c1cf362ee50 2008100209:58:05-UTC ./gtk/defs/gtkmessagedialog.defs
 6b57a6ecf57b4f1a3940d8e27547c7aab72558bb 2008090814:59:29-UTC ./tabobj/utility.src/tbl2dbf.prg
 179572e95076374bb12a40bdbb9c8627f760c73d 2008090814:48:38-UTC ./tabobj/utility.src/tbl2txt.prg
@@ -2113,9 +2107,7 @@ ea845f69301a492a35a6df58b59703ba60af1f87 2008081908:12:08-UTC ./tools/regex/rege
 0e680eb95b838adb4780bb9bab0d1ec1bcbf0518 2008060208:33:56-UTC ./tabobj/utility.src/ver2/kdirseek.msk
 2f937f2bf260afe023d1ca31235b63ed54f70f1c 2008052320:28:20-UTC ./tutor/oggedit/op
 583ad7f6a6dbbdc77f735ef68e13cfdc885a5f82 2008052320:27:54-UTC ./tutor/oggedit/oe
-1c8fb7444d48503eddad0a593b001e8b151c7479 2008052312:29:14-UTC ./tools/regex/clean-all.b
 28d2c6c5cb9679fe7f8262cbb9a2645e784b02ea 2008052311:14:40-UTC ./setup/setup-unix/fileconv.cpp
-10b391c3384cc104721f8646f8b93dc27fbba5e7 2008052215:33:09-UTC ./jt/clean.b
 9872ec66c7250eb29d4698ac59496340eca57c64 2008052114:19:02-UTC ./tutor/oggedit/olvass.hu.txt
 b56eaba62ef1014e1c6db4da3d8d204fdf86842d 2008052113:58:49-UTC ./jt/jtdemo/s
 4bf579b5c735d7ff23be56cb32a95cf4b7f25615 2008052113:52:39-UTC ./jt/jtdemo/postest2/postest.prg
@@ -2180,7 +2172,6 @@ aa3c797f6ca80b9b352da9ea2adf945aa361f0b6 2008021010:33:24-UTC ./gtk/defs/save/OL
 8d0479e08d200cf98d72dfc2aa5170e5a0d9a174 2008020912:09:25-UTC ./jt/jterminal/m.bat
 416102b774bd6737d596d13e0e4a05413b0814f9 2008020516:15:28-UTC ./usr/options/bor/compile.opt
 b54ede91fe09a2ae005148fc346384af033b8413 2008020510:16:04-UTC ./jt/jterminal/mkjar.bat
-597de56ac29d484cf062d893ae8c69c5d4b61889 2008020419:55:44-UTC ./i1.bat
 5e2895d6b0f6f3611ff6c325a812afc597df9945 2008013109:22:16-UTC ./gtk/examples/base/objectlevel/calendar.prg
 c7cad0a05e5c67c382a4696138ffcf2040fa8238 2008013109:02:45-UTC ./gtk/defs/gtkcalendar.defs
 8dfe822d4cd2829028b5875d569d188e4609a0a0 2008012908:51:05-UTC ./gtk/code_byhand/gtk_calendar_apix.cpp
@@ -2251,8 +2242,6 @@ b271543c566882045ff80a2024876280e58fb25d 2007111810:36:20-UTC ./tools/xmlrpc-fra
 c1b8393354f12ab44935a8159648240fc09a63d9 2007111810:26:27-UTC ./tools/xmlrpc-framework/client/test/m.bat
 c461bb1389ae3caa10fdd4a11452c8174d54296e 2007111810:26:00-UTC ./tools/xmlrpc-framework/client/rpcmonitor/m.bat
 30b4a5d83f7fe037f361e1481c9027121c1acc87 2007111810:24:06-UTC ./tools/xmlrpc-framework/rpcutil/m.bat
-007c8549aafcfbb8f93a9544de81549df4ba18e6 2007111810:22:53-UTC ./tools/xmlrpc-framework/clean.b
-55abde7e1b3c4efdb4c3d0c3787585b0421da58c 2007111810:13:08-UTC ./tools/xmlrpc-framework/mkall.b
 0c509a71123c52e0a65b3bd4ab8d469893a9a93e 2007111715:26:28-UTC ./tools/xmlrpc-framework/rpcbase/rpcuser.bt
 fbc130139cdb95e26fcc913a5de78e2d188b0428 2007111713:23:11-UTC ./tools/xmlrpc-framework/client/rpcmonitor/login.msk
 3f55c31ee7fe3ff0d103c62288646f04fc9ada0b 2007111713:22:21-UTC ./tools/xmlrpc-framework/client/rpcmonitor/m
@@ -2284,10 +2273,8 @@ ba9bd265e355cc4cffbe8fe392b22ce4592dff1e 2007110709:47:18-UTC ./gtk/examples/gal
 77c6913a11da215a7f18f0842fa3e35a5449950c 2007110211:39:35-UTC ./doc/ccc-belulrol/script/thtm.b
 1536c6b604fa4377cb7e51d08ca255ec7109d57e 2007091017:58:16-UTC ./jt/jtlib/m.bat
 7547fc97d937e2d9e23642a7d59d989aaffbb816 2007091017:10:24-UTC ./jt/jtdemo/dlgdemo/parfile.xml
-4875953bdd041db4ec3ec0af0ff4638cc902e27f 2007091016:31:38-UTC ./jt/jtdemo/clean.bat
 4a80e6c79f45718aa978d73f17bb7e0d1b0a2ed5 2007090916:59:18-UTC ./jt/jtdemo/sign/m
 f8223d6b556d35d9596c857e70c3f6ac1aede3a3 2007090916:58:53-UTC ./jt/jtdemo/tabedit/m
-293fb77ba21220fee69218d0024b06767921b387 2007090916:50:00-UTC ./jt/clean.bat
 9c601a8ff186b55939c42dfa218c97c0a397fb55 2007090916:11:18-UTC ./jt/jtdemo/scroll/m
 efbdc75ef34b9c42dbc8975f284a5ec38ab2b7f7 2007090916:09:52-UTC ./jt/jtdemo/mkall.bat
 1b03038596fcab7f7d60a7e67b65b7266662b050 2007090913:55:06-UTC ./jt/jterminal/t.bat
@@ -2358,7 +2345,6 @@ ca444a080c10b79f543188999f0ba7fb84e2f1aa 2007062316:08:10-UTC ./tools/sql2/test/
 e1a087cabac0e0d917f1f83af9ad11c4677df0f1 2007062316:07:32-UTC ./tools/sql2/test/basicdemo/tds/ab.tds
 00359a88d934382b11d4add43a0938e615b817c2 2007062316:06:07-UTC ./tools/sql2/test/basicdemo/tds/abc.tds
 aaf6982e89cd0ae7a774f1616f40d3dc413fc989 2007061916:11:14-UTC ./tools/sql2/util/geed/gtkentityeditor.prg
-2a0d2106b34da32c040219e51be6255057c90ed6 2007060815:37:20-UTC ./tools/sql2/util/mkall.b
 dbb36bb8d5b3ef0d7425f713d71309301611bcac 2007060813:34:25-UTC ./tools/sql2/util/jeed/test/test3.prg
 a64f0f1443891b7dd9bebe28e75ba88ef922597b 2007060813:34:19-UTC ./tools/sql2/util/jeed/test/test2.prg
 b81a7d0b0f6c3ff28df286c26f238877f82ee586 2007060812:49:29-UTC ./tools/sql2/util/jeed/m
@@ -2382,7 +2368,6 @@ c6b44af7bf7834fa25f614b659ff60c8e2c3d30a 2007041210:28:19-UTC ./tutor/multithrea
 eea4e5bb79dd824f0f843a4c17cc8a0a8c7269af 2007041016:32:56-UTC ./jt/jtdemo/tabedit/szladlg.prg
 9eb321c9d0143831fe2ff855b38fe7cbc21bf026 2007041016:20:43-UTC ./jt/jtdemo/tabedit/dlg_szamla.msk
 7eb3b234bc2c1c7e6a1e1f246bcdf9c4058d80dc 2007031811:17:00-UTC ./tools/z/zmark.prg
-443414537492bbcf55f664f970a78aa7f82a98c1 2007030914:48:31-UTC ./tools/crypto/blowfish/clean.bat
 dbb614df74e93ccb35e34e6ee8f44beeca89f9f2 2007030813:49:49-UTC ./tools/crypto/blowfish/ofb64.prg
 16c5aecaf0ab6537d0bf9c7c659f95daa5344a21 2007030813:49:43-UTC ./tools/crypto/blowfish/ecb.prg
 a877ce04ccd227b16cbe35fb9b990dc770152f3b 2007030813:49:37-UTC ./tools/crypto/blowfish/cfb64.prg
@@ -2394,7 +2379,6 @@ eb16d4352d18feb79bb00cdf5547f5786929425f 2007030813:22:33-UTC ./tools/crypto/cas
 b99cfb6faf17e5eb1900876870ad90d8951f4b30 2007030813:10:20-UTC ./tools/crypto/cast/cfb64.prg
 16f20fa4b8b26cb6b925363720bdfd34a1d03d8d 2007030812:51:58-UTC ./tools/crypto/cast/cbc.prg
 75758b4dde5d3b79dffe53cbad3c4776bcb2ae45 2007030812:33:15-UTC ./tools/crypto/cast/ecb.prg
-88a999a02fee980e51ed3f85bcba852d29941c72 2007030512:10:42-UTC ./tools/crypto/blowfish/clean.b
 7a90f17bcd64a7691606623f7ad4b30c1c591894 2007030511:12:35-UTC ./tools/crypto/des/ede2_cbc.prg
 e1a4f86e760bcd64b80e8e7fd60172652d77f1e5 2007030511:12:24-UTC ./tools/crypto/des/ede3_cbc.prg
 140430b511a9085de04cb333929936845a5afa09 2007030510:58:31-UTC ./tools/crypto/des/ede3_ofb64.prg
@@ -2461,7 +2445,6 @@ d67161413f760a4f0c2bf7c0c1e40ad488face24 2006113013:51:41-UTC ./tools/crypto/dem
 20b1c68801bc9f92bdc59b446a8150e3c126a348 2006113013:50:06-UTC ./tools/crypto/demo/cert.pem
 f709240d2f764c14331ebe422a5337ef35c39b99 2006112716:15:11-UTC ./tools/websrv/webcon/parfile-unix.bld
 590fc3c6f0369b25aa04f45bf37adb529ea82fa1 2006112614:00:53-UTC ./tools/websrv/webcon/rehash.b
-f374f59c836e759af52dbd653aecd95fe0c67baf 2006112011:03:51-UTC ./i.b
 624c6053c6445f2b118eda1ccd0f6aeaa40857aa 2006111923:18:31-UTC ./tutor/bignum/modinv.prg
 55a6ad90b23b50a63e27c970b8c4866e094a34a4 2006111923:14:13-UTC ./tutor/bignum/inv.prg
 6153c8dda941e4883a18324de2ad8b096f70f9fe 2006111817:58:20-UTC ./tutor/bignum/calc.prg
@@ -2484,7 +2467,6 @@ d179dceed7c3952a7b3c18c39a82900139098578 2006092617:34:44-UTC ./gtk/glade/m.bat
 ad2e50ffc08614343790cd07a94a372d815586d3 2006092615:54:23-UTC ./tools/sql2/util/jeed/test/test0.prg
 e8ffddbf92d3d9115fa410e02f51ced7864b4ec3 2006092615:54:07-UTC ./tools/sql2/util/jeed/test/connect.prg
 1e38b81866530295d5055b0f521265be5b20b77b 2006092613:02:54-UTC ./tools/sql2/util/tdsutil/m.bat
-193bfe254d539058b3c9b60c5c4e00e97379a857 2006092612:56:50-UTC ./tools/sql2/util/mkall.bat
 3337e0d7be5d33c3e07f5b6e52f6cfff175d920f 2006092512:56:22-UTC ./tools/mask/demo.prg
 4a86334a8b82e19f588c250ac947b2ffa0795cf8 2006091608:41:25-UTC ./tools/sql2/texdoc/osszetett_tran.tex
 453c78c0e324d6e2c400a292a0183c986ea35fa8 2006091515:08:49-UTC ./tools/sql2/driver-postgres/sqlsequence.prg
@@ -2538,7 +2520,6 @@ adcafc490388a79314eacf16bec4e422b119d140 2006090110:35:29-UTC ./jt/jtlib/jtcombo
 92722040e127b5ac6c9fd652e09a142e61f4c699 2006083117:28:53-UTC ./jt/jtdemo/kepnezo/kepnezo1.prg
 ab9b00815455c7bf8a6fdf299fe2c1b73ea4e31c 2006083117:02:41-UTC ./jt/jtdemo/kepnezo/kepnezo.prg
 83b610bf14ea44091766e9c8806e070fb6623676 2006083116:51:05-UTC ./jt/jtdemo/images/morgo.jpeg
-440f12d1757cc5720a74eace33f8b29c6d1cb494 2006083116:33:18-UTC ./jt/jtdemo/clean.b
 7b780eb7e97ca1c6160a6a80080ad521eec58a90 2006083116:12:51-UTC ./jt/jtdemo/sign/sign.dlg
 1c6c02353ae26a0e450776762cb32bf85983bf98 2006083116:12:49-UTC ./jt/jtdemo/scroll/proba.pnl
 3be80248115aa067e2c34b6163803311ba40324e 2006083116:12:46-UTC ./jt/jtdemo/posdemo/demo.dlg
@@ -2550,7 +2531,6 @@ d257fc447dd83ddf046dddc7f823be37c342805c 2006083116:12:18-UTC ./jt/jtdemo/dlgdem
 4cdb4cfe2eaf61ee80e4b3cf45be6a4334bcb065 2006083116:12:18-UTC ./jt/jtdemo/dlgdemo/panel3.pnl
 7cc03e6c2bc3a65e8c81813cc651ab64119277d6 2006083116:12:18-UTC ./jt/jtdemo/dlgdemo/pdialog.dlg
 f2ced0b4e8503b1e42f7e928ccbae2988b7f2119 2006083116:12:18-UTC ./jt/jtdemo/dlgdemo/tabdlg.dlg
-6dd17aec41c8d56ff7445baa316796d1a463b3d2 2006083116:00:55-UTC ./jt/jtdemo/mkall.b
 7886c4e66b712fb6d96849113ad90388c6c8d399 2006083114:17:21-UTC ./jt/jtdemo/dlgdemo/main5.prg
 32ac2a57a39a4a2450c99542ec00a799509da7d1 2006083114:16:43-UTC ./jt/jtdemo/dlgdemo/main1.prg
 0f33e835e110d5cac06f7ea2847798fb76977a22 2006083113:55:54-UTC ./jt/jtlib/jtcheck.prg
@@ -2575,7 +2555,6 @@ f096fcbc9c68eb9d7892dbcf99722540c80ec2fc 2006082510:58:10-UTC ./jt/jtdemo/htmlar
 5793e1a73c5200fe016a982462c0dfd8f5ad1892 2006082509:54:09-UTC ./jt/jtdemo/dlgdemo/panel2.msk
 4259d7e53d4eb0caa98e4c8895ba0472c5ab013b 2006082509:11:43-UTC ./jt/jtdemo/alert/alert1.prg
 37fe0c0c3b5049dc6ff7013fe824ec8b78d15439 2006082509:10:44-UTC ./jt/jtdemo/alert/alert.prg
-86479219f7983976dead4452bd10ad454d99069c 2006082419:17:59-UTC ./jt/jterminal/i.b
 3e92c5c03c88f8008af3681de377699c9a9e3dcb 2006082417:29:59-UTC ./jt/jterminal/getutil/panelfield.java
 bd4a45975d3f75e9a31c7aeb781e4f57aee18abd 2006082417:28:55-UTC ./jt/jterminal/getutil/htmlareafield.java
 8d7565f00b4887337ac79752b424d0acccd4cf42 2006082416:58:36-UTC ./jt/jterminal/getutil/textareafield.java
@@ -2636,7 +2615,6 @@ bef5c810ea5b0e42fe2f3f50e49e315dfe74cd0f 2006072313:17:21-UTC ./tools/sql2/test/
 46d0478e02319f16a30597513f8b2577ed2b9e9f 2006072220:01:44-UTC ./tools/sql2/test/basicdemo/start-scripts/s.b
 2a6978c2d25cdf0248037e36d38d9adc95f6e261 2006072218:04:16-UTC ./tools/sql2/test/basicdemo/list-ps.prg
 c4fc2acd0989d3f21b0236f18badade24a84fde8 2006072218:04:06-UTC ./tools/sql2/test/basicdemo/list-abc.prg
-a41e6942bea3ba53b51d379029275fb025e9aa56 2006071818:06:17-UTC ./gtk/mkall.b
 65519748dddec5db59c67e6aa5e0408647691af3 2006071817:49:35-UTC ./gtk/codegen/gtkapi.prg
 f773e2d484f003607fe5e16f66747292222d7028 2006071816:25:24-UTC ./gtk/texdoc/cccgtk.tex
 7ab0e092a8f82006fae99c89ec2260776d5c1928 2006071815:12:27-UTC ./tools/sql2/test/basicdemo/sequence0.prg
@@ -2776,7 +2754,6 @@ a96072d1119fc88f9d821c6b9c0f9095b65bec20 2006052915:06:53-UTC ./tools/sql2/test/
 aa5b6050c4c0604ff10532618a1d558f3412e95a 2006052915:06:05-UTC ./usr/build/solaris/lem2obj.bat
 ce52e41fcaddb5d3d5968456e03cd36cc49c2b77 2006052915:06:05-UTC ./usr/build/solaris/lex2obj.bat
 e9af8de01a38a36bde4ede41a0e7256366f0fbae 2006052915:06:05-UTC ./usr/build/solaris/y2obj.bat
-50dd1125d011221c61f66369e2e66fec3f70cbc3 2006052909:24:22-UTC ./clean-libexe.b
 1268e441d72c8aade4a17537416583049fd88b34 2006052908:32:40-UTC ./usr/bin/netbsd/make.b
 db144a9f506a987ab65e8aeac38235ea62140edf 2006052907:48:27-UTC ./setup/setup-unix/olvass_txt
 f57561dc7839abcc6234018d28e3e94055c401a5 2006052413:18:53-UTC ./jt/jtdemo/dlgdemo/pdialog.msk
@@ -2786,7 +2763,6 @@ f978d5dbbcce924cf210dc427f5a4de28ebcd1ae 2006052413:05:31-UTC ./jt/jtdemo/posdem
 18e0b8fc9fa89f85211526d3261db0d7d9d282e0 2006052413:04:09-UTC ./jt/jtdemo/pbar/pbar.msk
 4bc0193600e24185b77467329a3199fe8f1c5f3d 2006052413:03:16-UTC ./jt/jtdemo/get/get.msk
 bae2f7f57f2336efdb65f1e6dd60affbaf41476b 2006052413:02:15-UTC ./jt/jtdemo/enable/enable.msk
-9b56fec6200e5bdb56661e3f42b3d9ad9a22a9d1 2006052407:15:03-UTC ./jt/jtdemo/dlgdemo/clean.bat
 623a16d1366e8e0080ee5bb41a328f955ef13e33 2006052407:11:52-UTC ./jt/msk2dlg/m.bat
 a420bcf61f05166559c33da598bc124d29581a83 2006052406:21:59-UTC ./jt/msk2dlg/box2spc.cpp
 74e6238f3260e4ab0fbf8b560c7bb57a384936a1 2006052406:04:32-UTC ./jt/jtdemo/dlgdemo/textarea.msk
@@ -3114,7 +3090,6 @@ d74f4ac3e807f75584f8279464a1c94173cb595c 2006040712:25:12-UTC ./usr/include/box.
 e6bdbb7349ad8a99d622f0e01085d2f6a284040e 2006040610:55:21-UTC ./terminal/xtest/s
 e918773d58df0b9a2f02804c0d0bd0d20f368a42 2006040416:09:54-UTC ./terminal/windows/s.bat
 039dae30975b2ea068e695eabb0c1d8ecdb017af 2006040411:58:26-UTC ./terminal/common/color.cpp
-3043a17bd9f0f6867a4035015c26956483fc71c6 2006040410:20:19-UTC ./clean-obj.bat
 0569c03ea6729d00c67c872a0e2105a24455e9f2 2006040317:25:13-UTC ./terminal/common/color.h
 9ed0573aa5d6565533b2332d29962032557b6a64 2006040211:35:21-UTC ./terminal/unix/keysym2ucs.cpp
 934f6b5acebfcf2b64cf12211f62cafec251ae46 2006040208:09:35-UTC ./ccclib/src/uic/termapi/m
@@ -3147,7 +3122,6 @@ d10b8c5a9024397742dffc34af60bf62d9e98399 2006032012:10:44-UTC ./ccclib/src/memor
 454461b4bd7561889aed0f50abbabbce137b9769 2006031714:45:42-UTC ./ccclib/src/unix/utime.cpp
 bd9dc4298f14f104b2fb8a4302bd2e4e5b4725fc 2006031714:44:23-UTC ./ccclib/src/unix/chown.cpp
 e79f9c3b264b6d9154cc05e4ca1d3e6776e15841 2006031711:58:44-UTC ./setup/setup-unix/dirsep.cpp
-7857b6a5882a237a356a42245cc3d0243d59f7ba 2006031211:11:59-UTC ./jt/pack.b
 cd99aad2bbdde601516df6baab456ed05c64f445 2006031210:07:36-UTC ./jt/jterminal/s1
 1c954829bdceb1ed3311b26d4a94750114c075fa 2006022323:56:51-UTC ./tools/xmlrpc-framework/texdoc/xmlrpckonto.html
 4d4fb30fc8f16823d01c2af1d6092e2c70ab8f49 2006022311:18:53-UTC ./jt/jterminal/jtfiletransfer.java
@@ -3156,10 +3130,6 @@ cfc7feb786f54bf9bb6deba00dc3fab175d8c1d0 2006022311:18:53-UTC ./jt/jterminal/ksu
 5f657f62867f0e075d59003d933aa413be979b3f 2006021619:54:36-UTC ./tutor/nlstext/m
 5939107a5f6028ad97e3f10b0daa1e8fb077f1e4 2006021616:07:41-UTC ./jt/msk2dlg/parfile.bld
 2bf4b785ab76b7f93c9c32faf668c19a3384c23c 2006020713:57:48-UTC ./gtk/examples/base/objectlevel/gnu-orosz.txt
-802ae6e0f472168917be8b3f3f61ec4673a7b58a 2006012720:04:39-UTC ./clean-all.bat
-9509f25869371d75ae346bf407885bbf8c91831f 2006012720:04:39-UTC ./clean-libexe.bat
-f1d2d8871ff7fbd1ede3d45a3cc24df883877e81 2006012614:39:42-UTC ./gtk/pack.b
-ebc8593c720264ffe67728db57df57dbb342ba76 2006012519:51:48-UTC ./gtk/cleanall.bat
 d1966af938c44278ceba403721721d184dbb4696 2006012509:45:21-UTC ./gtk/code_byhand/gtk_style_apix.cpp
 358dc837014f077edb37163cacccdab7b3e3c60e 2006012509:45:00-UTC ./gtk/code_byhand/gtk_menu_apix.cpp
 35142c1934252a04c5dd319f03ca4825c1406bdb 2006012509:44:30-UTC ./gtk/code_byhand/gtk_frame_apix.cpp
@@ -3281,8 +3251,6 @@ bb3d15bf5358e259aa348f0d85e602ac9a9d5bb6 2005122814:14:55-UTC ./ccctools/ppo2cpp
 d4553f32c86f125a51f494e693af87534ad9e5d1 2005121115:02:20-UTC ./doc/t-all
 d1739c4b219eaef50af6f554b6421029dd269508 2005121010:51:30-UTC ./doc/ccc-belulrol/script/dview.b
 120b4935f77c63d754308fa06c7bae4443b09026 2005121010:47:29-UTC ./doc/t
-83b25746bd7997286e8b540ee124a842d5be3319 2005120120:52:01-UTC ./jt/mkall.b
-ffd519124bc093ff46b9118c90353501f5a94270 2005120120:11:23-UTC ./jt/jterminal/clean.b
 d811aefd4158f1de7c032d7e440da8c926161713 2005113000:17:06-UTC ./usr/build/netbsd/htm2ctm.bat
 35a9727a1b37e88a6fe1526357575082ecdbe643 2005112018:46:17-UTC ./gtk/code_byhand/code_util/g_type_check.cpp
 968eecf209556ec5d161e8c530b393f0199b7f70 2005112018:46:10-UTC ./gtk/code_byhand/code_util/g_slist.cpp
@@ -3403,7 +3371,6 @@ c82298917dcc353468bc0cfc5eacec26ff225583 2005062312:55:58-UTC ./setup/setup-unix
 3131a90fa92a6681e8398364dc44b9b402959b50 2005062312:53:01-UTC ./setup/setup-unix/prg2ppo/s_prg2ppo_ppo.savex
 08692b61be820a38978254186ee053205c847c8e 2005062009:00:46-UTC ./tools/ddict2/atoc.prg
 247c0031eb538fbaf8600fc2752aab69882bfe17 2005062008:26:33-UTC ./tools/dbaseiii/error.txt
-779ee77cc01c9c7f0c406955cc4e4b5a0bfec9fd 2005061610:58:55-UTC ./gtk/cleanall.b
 b6b91fc8ce4a684fafa735f2d59c098a7b62f4c7 2005061517:41:41-UTC ./setup/setup-unix/s_src_unix.savex
 7c6876f52798f249c67d944a1f76e00e78ed2014 2005061517:41:12-UTC ./setup/setup-unix/s_src_ui__unix.savex
 58e9ba896f158109730d48c804e545bfa9c65abf 2005061517:38:42-UTC ./setup/setup-unix/s_src_ui_.savex
@@ -3418,7 +3385,6 @@ ccfcb932b24a7e696a13038377bd1ad09c0037b4 2005042617:02:47-UTC ./tabobj/common.sr
 fb13bcdc3835367a434ec737f6c2bee779fa0127 2005042616:42:20-UTC ./tabobj/common.src/cusemaph.prg
 60756aaca0b89ae5bbe250ffef1057cae5cf6956 2005042609:00:06-UTC ./tabobj/tbbtbtx/btree/db.h
 3adbec91226bd9076f599c451d679f1008f474b4 2005042608:49:39-UTC ./tabobj/tbbtbtx/btree/m.bat
-c73990c74ffd4da697a50ab590221f0f2afec0f0 2005041910:13:09-UTC ./clean-obj.b
 c39bc7e72863648ec1b068b5ba48bc578e619bf5 2005041112:32:15-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp
 2c7736f0ae8093c8229cdb6b02e094e81479d59d 2005041112:32:04-UTC ./tabobj/tbbtbtx/btree/bt_close.cpp
 b7348bdf5142ac5882c4868ec129c48d1a6646f7 2005040815:10:07-UTC ./tabobj/tbbtbtx/btree/readme.hu.txt
@@ -3432,7 +3398,6 @@ b021a48011bfda9f9cefbbd67ba7917eca44c240 2005040813:20:27-UTC ./tabobj/tbbtbtx/b
 cd69fefed442f86c8e11ab8d9a863d6a2650e7f0 2005040711:32:19-UTC ./usr/bin/freebsd/bapp_unix0.b
 4c48ee80fe7bf20835d1cb8ba86a21e837b0c093 2005040708:45:59-UTC ./tools/ddict2/dd/d.b
 eb06ea408505723697193d5d739454e7f8fe8e1c 2005040612:38:45-UTC ./usr/bin/linux/bapp_unix0.b
-ef1e00a42a19cfac444c4169f422bacaed8d64c4 2005030201:09:19-UTC ./tools/sql2/test/mkall.b
 7cb0f28c13c1b7ed872bba5a6f2f271ad1218490 2005030123:13:56-UTC ./tools/sql2/test/mkall.bat
 f79f280569ac64460c9d5782cf869cc1ce1d3dde 2005030113:40:53-UTC ./tools/sql2/test/basicdemo/start-scripts/s-tran-manuallock.bat
 277c1e6e7feb94d7c099214272a3283185fc499c 2005030113:40:31-UTC ./tools/sql2/test/basicdemo/start-scripts/s-tran-autolock.bat
@@ -3782,8 +3747,6 @@ f6029ab8370a2064f98471d2b0d03a8b0bb8448a 2002101715:13:38-UTC ./tools/websrv/web
 a924335a0b1e0067252b55bccc6659be08516fb0 2002101408:11:28-UTC ./tabobj/common.src/tabnames.prg
 f7fa71d208699331e2fc5724f6095b987ddc9f82 2002101322:05:52-UTC ./tools/socket/socket-demo/recv0.prg
 a000c745931e27744da9577b955c18538c206f9f 2002100709:07:38-UTC ./jt/jterminal/jtfilefilter.java
-f0a018aa457235a39b206449b7a0027cfde441bf 2002091917:57:46-UTC ./jt/jterminal/clean.bat
-9c0e1bc7ba2a62ac07c8f2889fbf031329962eb2 2002082307:04:52-UTC ./jt/jterminal/getutil/clean
 dd262b23a032312092689e52bf7b4526084dc7af 2002081821:41:00-UTC ./jt/jterminal/base64.java
 30c3d4462c0c711c7c4d7405ea2178057db3311a 2002081708:01:36-UTC ./jt/jtdemo/dlgdemo/template.txt
 a500980b4404ca87bb2627d7177a2ac438ff59c7 2002032814:30:30-UTC ./tutor/settermsize/m

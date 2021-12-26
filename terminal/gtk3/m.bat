@@ -1,5 +1,8 @@
 @echo off
-mkdir obj%CCCBIN%
+
+if not exist obj%CCCBIN% (
+    mkdir obj%CCCBIN%
+)
 
 pkg-config --cflags gtk+-3.0             >obj%CCCBIN%/gtk-cflags
 echo -DGDK_DISABLE_DEPRECATED           >>obj%CCCBIN%/gtk-cflags

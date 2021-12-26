@@ -1,5 +1,5 @@
 #!/bin/bash
 #rm objfre/proba.obj
-bapp_unix_.b -lproba
+bapp_unix_.b
 #z ppo/proba.cpp
 

@@ -1,2 +1,0 @@
-#!/bin/bash
-install.msys2 2>&1 | tee log-install 

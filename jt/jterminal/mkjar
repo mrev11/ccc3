@@ -21,4 +21,3 @@ if [ "$1" == "-s" ]; then
     jarsigner jterminal.jar vermes1
 fi
 
-cp jterminal.jar $CCCDIR/usr/bin/$CCCUNAME  #/jterminal1.jar

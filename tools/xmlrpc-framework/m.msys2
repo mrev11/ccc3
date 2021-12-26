@@ -1,0 +1,9 @@
+#!/bin/bash
+
+( cd rpcutil               && m.msys2 )
+( cd server/rpcwrapper     && m.msys2 )
+( cd server/rpcsession     && m.msys2 )
+( cd server/test           && m.msys2 )
+
+( cd client/rpcmonitor     && m.msys2 )
+( cd client/test           && m.msys2 )

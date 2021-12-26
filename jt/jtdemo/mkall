@@ -1,0 +1,6 @@
+#!/bin/bash
+find . -type d | while read NAME; do
+    if [ -x $NAME/m ]; then
+        ( cd $NAME && ./m )
+    fi
+done

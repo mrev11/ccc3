@@ -1,0 +1,9 @@
+#!/bin/bash
+
+( cd rpcutil               && m )
+( cd server/rpcwrapper     && m )
+( cd server/rpcsession     && m )
+( cd server/test           && m )
+
+( cd client/rpcmonitor     && m )
+( cd client/test           && m )

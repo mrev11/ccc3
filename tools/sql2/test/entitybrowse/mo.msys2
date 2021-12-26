@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir exe-ora 2>/dev/null
+
+bapp_win_.msys2  @parfile-o.bld  -bssl -bcrypto
+

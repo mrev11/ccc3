@@ -1,8 +1,0 @@
-#!/bin/bash
-
-rm -f  objlin/*
-rm -f  ppo/*
-rm -f  *.exe
-
-rmdir   objlin
-rmdir   ppo

@@ -1,3 +1,3 @@
 @echo off
-call bapp_w32_ -lccc3_tds @parfile.bld
-copy obj%CCCBIN%\ccc3_tds.lib %CCCDIR%\usr\lib\%CCCBIN%
+call bapp_w32_  @parfile.bld
+copy obj%CCCBIN%\*.lib %CCCDIR%\usr\lib\%CCCBIN%

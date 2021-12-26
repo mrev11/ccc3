@@ -1,0 +1,111 @@
+#!/bin/bash
+#set -x
+
+source make_verf 3
+
+#-------------------
+# initial setup
+#-------------------
+
+( cd setup/setup-flex && m )
+if ! flex.exe -V; then
+    echo "flex.exe not installed"
+    echo "install flex then run install.b again"
+    exit 1
+fi    
+
+( cd setup/setup-lemon && m )
+if ! lemon.exe -x; then
+    echo "lemon.exe not installed"
+    echo "install lemon then run install.b again"
+    exit 1
+fi    
+
+
+( cd setup/setup-unix && m ) 
+if ! build.exe -v; then
+    echo "build.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! prg2ppo.exe -v; then
+    echo "prg2ppo.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! removecr.exe -x; then
+    echo "removecr.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+( cd ccctools/ppo2cpp && m )
+if ! ppo2cpp.exe -v; then
+    echo "ppo2cpp.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+
+#-------------------
+# ccclib
+#-------------------
+
+( cd ccclib && m )
+
+#-------------------
+# ccctools
+#-------------------
+ 
+( cd ccctools/buildp    && m )
+( cd ccctools/prg2ppo   && m )
+( cd ccctools/removecr  && m )
+( cd ccctools/mklink    && m )
+
+#-------------------
+# terminal
+#-------------------
+ 
+( cd terminal/unix          && m )
+#( cd terminal/unix-ncurses  && m )
+( cd terminal/unix-termkey  && m )
+( cd terminal/sslforw       && m )
+
+if test -f /usr/include/gtk-2.0/gtk/gtk.h; then
+    ( cd terminal/gtk && m )
+fi
+
+if test -f /usr/include/gtk-3.0/gtk/gtk.h; then
+    ( cd terminal/gtk3 && m )
+fi
+
+#( cd terminal/terminal-qt5  && m )
+
+#-------------------
+# msk2say
+#-------------------
+
+( cd tools/mask && m )
+
+#-------------------
+# tabobj
+#-------------------
+
+( cd tabobj/tbbtbtx && m )
+
+#-------------------
+# tools
+#-------------------
+
+( cd tools/crypto           && m )
+( cd tools/pcre2            && m )                               
+( cd tools/regex            && m )
+( cd tools/socket           && m )
+( cd tools/tdc2prgch        && m )
+( cd tools/textview         && m )                            
+( cd tools/xmldom           && m )
+( cd tools/xmlrpc           && m )
+( cd tools/xstart           && m )
+( cd tools/z                && m )
+
+

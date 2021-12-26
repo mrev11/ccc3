@@ -1,12 +1,3 @@
 #!/bin/bash
-# Probléma:
-# A statikus könyvtárak linkelését a 
-#
-# BUILD_SHR=static 
-#
-# beállításssal lehet kiváltani, ekkor azonban 
-# MINDEN könyvtárból a statikus változatot használja.
-# Ha viszont a könyvtárat konkrétan megnevezzük,
-# akkor a build paraméterfilé nem platformfüggetlen.
 
 bapp_unix_.b @parfile.bld

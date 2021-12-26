@@ -1,6 +1,13 @@
+2021.12.25 
+  Build scriptek egysegesitve, mindenhol 'm' inditja a buildet:
+    Linux   - m (pl. a korabbi i.b helyett sima m kell)
+    Windows - m.bat
+    MSYS2   - m.msys2 (alias m='m.msys2')
+  clean scriptek helyett gc (a gittel) torli az ignored fajlokat;
+  Hianyzo copyright-ok potolva;
+
 2021.12.23 prg2ppo 1.5.2:
   Nem talalhato include file nevek es sorok pontosabb kiirasa;
-
 
 2021-12-17 envir/install scriptek korszerusitve;
 

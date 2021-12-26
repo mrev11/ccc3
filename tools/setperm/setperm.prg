@@ -37,7 +37,7 @@ vegrehajthatoak:
 static dirstack:={}
 
 static s_listonly :=.t.
-static s_next     :=".bak.zip.tar.gz.arj.prg.ppo.cpp.obj.o.lib.dbf.ctx.ntx.dat.idx.y.lex.tex.dvi.lj.aux.toc.log.html.gif."
+static s_next     :=".bak.zip.tar.gz.prg.ppo.cpp.obj.o.lib.dbf.y.lex.tex.dvi.aux.toc.log.html.msys2."
 static s_xext     :=".b.bash."    
 static s_exec     :=":m:"    
 

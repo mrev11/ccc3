@@ -1,0 +1,6 @@
+#!/bin/bash
+
+( cd  testdata_lib      && m )
+( cd  testdata_import   && m )
+( cd  basicdemo         && m )
+#( cd  entitybrowse      && m )

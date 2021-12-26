@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# windows (msys2) bash script
+ if [ "${MSYSTEM}" != "MSYS" ]; then
+    echo "script can run only in MSYS2"
+    exit 1
+fi
+
+if [ "${CCCVER}" != "$1" ]; then
+    echo "CCCVER (=${CCCVER}) environment variable not properly set"
+    exit 1
+fi
+
+touch cccdir
+if [ ! $CCCDIR/cccdir -ef cccdir ]; then
+    rm cccdir
+    echo "script must start from CCCDIR as working directory"
+    exit 1
+else
+    rm cccdir
+fi
+
+if  ! test -f ./usr/bin/$CCCUNAME/__msys2.msys2; then
+    echo "CCCDIR/usr/bin/CCCUNAME/__msys2.msys2 not found"
+    echo "CCCUNAME (=${CCCUNAME}) environment variable not properly set"
+    exit 1
+fi
+
+if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
+    echo "CCCDIR/usr/options/CCCBIN/compile.opt not found"
+    echo "CCCBIN (=${CCCBIN}) environment variable not properly set"
+    exit 1
+fi

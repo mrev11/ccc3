@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git clean -fXd  2>&1 >/dev/null
+
+if [ -f .git/local/profile  ];then
+   . .git/local/profile
+fi
+
+

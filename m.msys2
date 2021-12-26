@@ -1,0 +1,8 @@
+#!/bin/bash
+
+make_base.msys2 2>&1 | tee log-install
+
+if [ "$1" == "x" ]; then
+    make_extn.msys2 2>&1 | tee -a log-install
+fi
+

@@ -1,5 +1,4 @@
 #!/bin/bash
-bapp_win_.msys2 -lccc"$CCCVER"_tds @parfile.bld
-
+bapp_win_.msys2  @parfile.bld
 cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
 

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+compile()
+{
+
+
 # DEFAULT_STYLE=src/css/style-push
 # DEFAULT_STYLE=src/css/style-grad
   DEFAULT_STYLE=src/css/style-flat
@@ -75,4 +79,10 @@ cp -p $DEFAULT_STYLE_M/$DEFAULT_COLOR_M  webappm.css  #mobil
 #
 # mv webapp.min.js  webapp.js 
 # mv webapp.min.css webapp.css 
+
+}
+
+compile  2>&1 | tee log-install 
+
+
 

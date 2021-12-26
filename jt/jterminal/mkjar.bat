@@ -1,3 +1,5 @@
+@echo off
+
 echo Main-Class: jterminal>manifest
  
 jar cvfm jterminal.jar  manifest
@@ -13,5 +15,4 @@ jar uvf  jterminal.jar  icons\32
 :jarsigner jterminal.jar vermes1
 del manifest
  
-copy jterminal.jar %CCCDIR%\usr\bin\%CCCUNAME%
  

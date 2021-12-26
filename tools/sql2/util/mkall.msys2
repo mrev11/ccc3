@@ -1,5 +1,0 @@
-#!/bin/bash
-pushd  bt2tds;          m.msys2;  popd
-pushd  mkentitylib;     m.msys2;  popd
-pushd  tdsutil;         m.msys2;  popd
-#pushd  jeed;            m.msys2;  popd

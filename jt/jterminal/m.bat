@@ -1,5 +1,11 @@
 @echo off
-call clean.bat
-javac jterminal.java 2>log-jterminal
-call mkjar.bat
-type log-jterminal
+
+if not exist jterminal.jar (
+    javac -version 
+
+    javac jterminal.java 2>log-jterminal
+    call mkjar.bat
+    type log-jterminal
+)
+
+copy jterminal.jar %CCCDIR%\usr\bin\%CCCUNAME%

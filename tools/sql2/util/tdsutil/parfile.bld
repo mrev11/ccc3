@@ -1,2 +1,3 @@
--bccc$(CCCVER)_xmldom.lib
+-sccc${CCCVER}_tds
+-bccc${CCCVER}_xmldom.lib
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

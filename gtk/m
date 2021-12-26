@@ -1,0 +1,10 @@
+#!/bin/bash
+
+compile()
+{
+    ( cd codegen       && m && s )
+    ( cd code_byhand   && m )
+    ( cd glade         && m )
+}
+
+compile 2>&1 | tee log-install

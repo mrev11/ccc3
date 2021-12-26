@@ -1,0 +1,103 @@
+#!/bin/bash
+
+source make_verf.msys2  3
+
+#-------------------
+# initial setup
+#-------------------
+
+( cd setup/setup-flex && m )
+if ! flex.exe -V; then
+    echo "flex.exe not installed"
+    echo "install flex then run install.b again"
+    exit 1
+fi    
+
+( cd setup/setup-lemon && m )
+if ! lemon.exe -x; then
+    echo "lemon.exe not installed"
+    echo "install lemon then run install.b again"
+    exit 1
+fi    
+
+
+( cd setup/setup-windows && m.msys2 )
+if ! build.exe -v; then
+    echo "build.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+if ! prg2ppo.exe -v; then
+    echo "prg2ppo.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+( cd  ccctools/ppo2cpp &&  m.msys2 )
+if ! ppo2cpp.exe -v; then
+    echo "ppo2cpp.exe not installed"
+    echo "initial setup failed"
+    exit 1
+fi    
+
+#-------------------
+# ccclib
+#-------------------
+
+( cd ccclib && m.msys2 )
+
+
+#-------------------
+# ccctools
+#-------------------
+
+( cd ccctools/removecr  && m.msys2  )
+( cd ccctools/ccomp     && m.msys2 )
+( cd ccctools/buildp    && m.msys2 )
+( cd ccctools/prg2ppo   && m.msys2 )
+
+
+#-------------------
+# terminal
+#-------------------
+
+( cd terminal/windows && m.msys2 )
+( cd terminal/sslforw && m.msys2 )
+
+
+if test -f ${MSYS2DIR}/include/gtk-2.0/gtk/gtk.h; then
+    ( cd terminal/gtk && m.msys2 )
+fi
+if test -f ${MSYS2DIR}/include/gtk-3.0/gtk/gtk.h; then
+    ( cd terminal/gtk3 && m.msys2 )
+fi
+
+
+#-------------------
+# msk2say
+#-------------------
+
+( cd tools/mask && m.msys2 )
+
+#-------------------
+# tabobj
+#-------------------
+
+( cd tabobj/tbbtbtx && m.msys2 )
+
+#-------------------
+# tools
+#-------------------
+
+( cd tools/crypto       && m.msys2 )
+( cd tools/pcre2        && m.msys2 )
+( cd tools/regex        && m.msys2 )
+( cd tools/socket       && m.msys2 )
+( cd tools/tdc2prgch    && m.msys2 )
+( cd tools/textview     && m.msys2 )
+( cd tools/xmldom       && m.msys2 )
+( cd tools/xmlrpc       && m.msys2 )
+( cd tools/xstart       && m.msys2 )
+( cd tools/z            && m.msys2 )
+
+

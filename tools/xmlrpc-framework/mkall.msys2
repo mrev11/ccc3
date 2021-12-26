@@ -1,9 +1,0 @@
-#!/bin/bash
-
-pushd rpcutil                   && m.msys2; popd
-pushd server/rpcwrapper         && m.msys2; popd
-pushd server/rpcsession         && m.msys2; popd
-pushd server/test               && m.msys2; popd
-
-pushd client/rpcmonitor         && m.msys2; popd
-pushd client/test               && m.msys2; popd

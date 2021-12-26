@@ -1,4 +1,4 @@
 #!/bin/bash
-bapp_win_.msys2 @parfile.bld
+bapp_win_.msys2 @parfile.bld  -bcrypto -bssl
 
 cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN

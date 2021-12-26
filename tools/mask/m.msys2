@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pushd msk2say; m.msys2; popd
+( cd msk2say && m.msys2 )
 
-set -x
+#set -x
 bapp_win_.msys2  -xmsk2pge -xpge2wro  @parfile.bld
 bapp_winc.msys2  -xmask -xpage  @parfile.bld
 

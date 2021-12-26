@@ -40,6 +40,7 @@ fi
 export CCCTERM_ICONFILE="$CCCDIR/usr/bin/$CCCUNAME/terminal.xpm"
 
 
+addpath $CCC2DIR/usr/bin/$CCCUNAME
 addpath $CCC3DIR/usr/bin/$CCCUNAME
 addpath $CCCDIR/usr/bin/$CCCUNAME
 addpath ~/bin

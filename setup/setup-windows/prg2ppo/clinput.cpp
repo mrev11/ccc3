@@ -1,4 +1,4 @@
-//input: clinput.ppo (5.3.0)
+//input: clinput.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -163,9 +163,9 @@ while(stack<base+4)PUSHNIL();
 argno=4;
 push_call("_blk_inputregister_0",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//s
-    push_blkarg(base+3);//t
+    push_symbol(base+1);//this
+    push_symbol(base+2);//s
+    push_symbol(base+3);//t
     _clp_inputini(3);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -179,8 +179,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_inputregister_1",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//n
+    push_symbol(base+1);//this
+    push_symbol(base+2);//n
     _clp_inputnext(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -194,7 +194,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_inputregister_2",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_inputget(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -208,9 +208,9 @@ while(stack<base+4)PUSHNIL();
 argno=4;
 push_call("_blk_inputregister_3",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//t
-    push_blkarg(base+3);//s
+    push_symbol(base+1);//this
+    push_symbol(base+2);//t
+    push_symbol(base+3);//s
     _clp_inputunget(3);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -224,7 +224,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_inputregister_4",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_inputlen(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -238,7 +238,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_inputregister_5",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_inputcont(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -252,8 +252,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_inputregister_6",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//i
+    push_symbol(base+1);//this
+    push_symbol(base+2);//i
     _clp_inputindex(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -267,7 +267,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_inputregister_7",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_inputclear(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}

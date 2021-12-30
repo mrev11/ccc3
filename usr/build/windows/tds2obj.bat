@@ -67,7 +67,7 @@ del outpre-%1
 pushd ppo
 del %1.cpp 2>nul
 echo %2\%1.prg >ppo2cpp-%1
-ppo2cpp %1.ppo 2>>ppo2cpp-%1
+ppo2cpp.exe -q %1.ppo 2>>ppo2cpp-%1
 popd
 if not errorlevel 1 goto ppo2cpp_ok
     touch error

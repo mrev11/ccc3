@@ -1,4 +1,11 @@
 #!/bin/bash
+
+if [[ $(uname) =~ MSYS ]];then
+    echo Not usable in $(uname)
+    exit 1
+fi
+
+
 # FreeBSD-n nem tudja magat felulirni,
 # ezert idehozunk belole egy peldanyt.
 
@@ -9,4 +16,4 @@ export PATH=.:$PATH
 bapp_unix_.b  "BUILD_EXE=$EXE" "BUILD_SHR=static"
 
 rm build.exe
-ldd `which build.exe`
+#ldd `which build.exe`

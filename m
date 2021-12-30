@@ -8,4 +8,4 @@ if [ "$1" == "x" ]; then
     make_extn  2>&1 | tee -a log-install 
 fi
 
-( cd $CCCDIR/usr/bin/$CCCUNAME && mklink.exe )
+( cd $CCCDIR/usr/bin/$CCCUNAME && mklink.exe >/dev/null )

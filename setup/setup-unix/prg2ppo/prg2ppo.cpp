@@ -718,7 +718,7 @@ push_call("logo",base);
 //
     line(202);
     string(nls_text(L"CCC Preprocessor "));
-    string(L"1.5.1");
+    string(L"1.5.2");
     add();
     string(L" Copyright (C) ComFirm Bt.");
     add();

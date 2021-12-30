@@ -32,7 +32,7 @@ if $PRG2PPO_EXE $2/$1.prg -oppo/$1.ppo @$CMPOPT >outpre; then
     rm $1.cpp 2>/dev/null
     echo $2/$1.prg >ppo2cpp
  
-    if ppo2cpp.exe $1.ppo 2>>ppo2cpp; then
+    if ppo2cpp.exe -q $1.ppo 2>>ppo2cpp; then
         popd >/dev/null;
 
         #(3) C++ fordítás (cpp-->obj)

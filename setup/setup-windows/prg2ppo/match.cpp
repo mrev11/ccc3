@@ -1,4 +1,4 @@
-//input: match.ppo (5.3.0)
+//input: match.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -1337,7 +1337,7 @@ push_call("glue",base);
     add();
     assign(base+3);//qq
     pop();
-    line(411);
+    line(412);
     {
     line(400);
     push(&ONE);
@@ -1349,7 +1349,7 @@ push_call("glue",base);
     _clp_len(1);
     addnum(-1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_41_2;
-        line(410);
+        line(411);
         line(401);
         push_symbol(base+0);//rlist
         push_symbol(base+1);//n
@@ -1434,6 +1434,12 @@ push_call("glue",base);
             addnum(-2);
             _clp_asize(2);
             pop();
+            line(410);
+            push_symbol(base+1);//n
+            push(&ONE);
+            sub();
+            assign(base+1);//n
+            pop();
         if_42_1:
         if_42_0:;
     lab_41_1:
@@ -1446,7 +1452,7 @@ push_call("glue",base);
     goto lab_41_0;
     lab_41_2:;
     }
-    line(413);
+    line(414);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1463,7 +1469,7 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("match_regular",base);
 //
-    line(427);
+    line(428);
     push_symbol(base+0);//toklist
     push_symbol(base+1);//n
     push_symbol(base+2);//nexttok
@@ -1483,7 +1489,7 @@ while(stack<base+6)PUSHNIL();
 argno=3;
 push_call("match_list",base);
 //
-    line(433);
+    line(434);
     push(&ZERO);
     assign(base+3);//k
     pop();
@@ -1491,25 +1497,25 @@ push_call("match_list",base);
     _clp_len(1);
     assign(base+5);//lentok
     pop();
-    line(485);
-    line(444);
+    line(486);
+    line(445);
     push_symbol(base+2);//nexttok
     _clp_valtype(1);
     string(L"CX");
     ss();
     topnot();
     if(!flag()) goto if_44_1;
-        line(460);
+        line(461);
         lab_45_1:
-        line(446);
+        line(447);
         push_symbol(base+1);//n
         push_symbol(base+3);//k
         add();
         push_symbol(base+5);//lentok
         lteq();
         if(!flag()) goto lab_45_2;
-            line(459);
-            line(447);
+            line(460);
+            line(448);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
             push_symbol(base+3);//k
@@ -1518,7 +1524,7 @@ push_call("match_list",base);
             binary(",");
             eqeq();
             if(!flag()) goto if_46_1;
-                line(449);
+                line(450);
                 push_symbol(base+3);//k
                 push(&ONE);
                 add();
@@ -1526,7 +1532,7 @@ push_call("match_list",base);
                 pop();
             goto if_46_0;
             if_46_1:
-            line(450);
+            line(451);
             push(&ZERO);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
@@ -1537,7 +1543,7 @@ push_call("match_list",base);
             assign(base+4);//i
             lt();
             if(!flag()) goto if_46_2;
-                line(452);
+                line(453);
                 push_symbol(base+3);//k
                 push_symbol(base+4);//i
                 addnum(1);
@@ -1546,7 +1552,7 @@ push_call("match_list",base);
                 pop();
             goto if_46_0;
             if_46_2:
-            line(453);
+            line(454);
             push(&ZERO);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
@@ -1556,38 +1562,38 @@ push_call("match_list",base);
             assign(base+4);//i
             lt();
             if(!flag()) goto if_46_3;
-                line(455);
+                line(456);
                 push_symbol(base+3);//k
                 push_symbol(base+4);//i
                 add();
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             goto if_46_0;
             if_46_3:
-            line(456);
-                line(458);
+            line(457);
+                line(459);
                 push_symbol(base+3);//k
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             if_46_4:
             if_46_0:;
         goto lab_45_1;
         lab_45_2:;
-        line(462);
+        line(463);
         push_symbol(base+3);//k
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_44_0;
     if_44_1:
-    line(464);
-        line(482);
+    line(465);
+        line(483);
         lab_47_1:
-        line(465);
+        line(466);
         push_symbol(base+1);//n
         push_symbol(base+3);//k
         add();
         push_symbol(base+5);//lentok
         lteq();
         if(!flag()) goto lab_47_2;
-            line(481);
-            line(466);
+            line(482);
+            line(467);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
             push_symbol(base+3);//k
@@ -1596,12 +1602,12 @@ push_call("match_list",base);
             push_symbol(base+2);//nexttok
             eqeq();
             if(!flag()) goto if_48_1;
-                line(468);
+                line(469);
                 push_symbol(base+3);//k
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             goto if_48_0;
             if_48_1:
-            line(469);
+            line(470);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
             push_symbol(base+3);//k
@@ -1610,7 +1616,7 @@ push_call("match_list",base);
             binary(",");
             eqeq();
             if(!flag()) goto if_48_2;
-                line(471);
+                line(472);
                 push_symbol(base+3);//k
                 push(&ONE);
                 add();
@@ -1618,7 +1624,7 @@ push_call("match_list",base);
                 pop();
             goto if_48_0;
             if_48_2:
-            line(472);
+            line(473);
             push(&ZERO);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
@@ -1629,14 +1635,14 @@ push_call("match_list",base);
             assign(base+4);//i
             lt();
             if(!flag()) goto if_48_3;
-                line(474);
+                line(475);
                 push_symbol(base+3);//k
                 push_symbol(base+4);//i
                 add();
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             goto if_48_0;
             if_48_3:
-            line(475);
+            line(476);
             push(&ZERO);
             push_symbol(base+0);//toklist
             push_symbol(base+1);//n
@@ -1647,7 +1653,7 @@ push_call("match_list",base);
             assign(base+4);//i
             lt();
             if(!flag()) goto if_48_4;
-                line(477);
+                line(478);
                 push_symbol(base+3);//k
                 push_symbol(base+4);//i
                 addnum(1);
@@ -1656,15 +1662,15 @@ push_call("match_list",base);
                 pop();
             goto if_48_0;
             if_48_4:
-            line(478);
-                line(480);
+            line(479);
+                line(481);
                 push(&ZERO);
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             if_48_5:
             if_48_0:;
         goto lab_47_1;
         lab_47_2:;
-        line(484);
+        line(485);
         push(&ZERO);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_44_2:
@@ -1683,24 +1689,24 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("match_restricted",base);
 //
-    line(490);
+    line(491);
     push(&ZERO);
     assign(base+3);//k
     pop();
-    line(498);
-    line(492);
+    line(499);
+    line(493);
     push_symbol(base+0);//tokinp
     push(&NIL);
     neeq();
     if(!flag()) goto if_49_1;
-        line(494);
+        line(495);
         push_symbol(base+1);//tokrul
         _clp_markerinfo(1);
         _clp_rule_if_get(1);
         assign(base+2);//info
         pop();
-        line(497);
-        line(495);
+        line(498);
+        line(496);
         binary(",");
         push_symbol(base+0);//tokinp
         _clp_upper(1);
@@ -1714,7 +1720,7 @@ push_call("match_restricted",base);
         add();
         ss();
         if(!flag()) goto if_50_1;
-            line(496);
+            line(497);
             push(&ONE);
             assign(base+3);//k
             pop();
@@ -1722,7 +1728,7 @@ push_call("match_restricted",base);
         if_50_0:;
     if_49_1:
     if_49_0:;
-    line(500);
+    line(501);
     push_symbol(base+3);//k
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1739,22 +1745,22 @@ while(stack<base+4)PUSHNIL();
 argno=3;
 push_call("match_extended",base);
 //
-    line(506);
-    line(512);
-    line(508);
+    line(507);
+    line(513);
+    line(509);
     push_symbol(base+0);//toklist
     _clp_len(1);
     push_symbol(base+1);//n
     lt();
     if(!flag()) goto if_51_1;
-        line(509);
+        line(510);
         push(&ZERO);
         assign(base+3);//k
         pop();
     goto if_51_0;
     if_51_1:
-    line(510);
-        line(511);
+    line(511);
+        line(512);
         push_symbol(base+0);//toklist
         push_symbol(base+1);//n
         push_symbol(base+2);//nexttok
@@ -1763,7 +1769,7 @@ push_call("match_extended",base);
         pop();
     if_51_2:
     if_51_0:;
-    line(513);
+    line(514);
     push_symbol(base+3);//k
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1780,7 +1786,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("match_wild",base);
 //
-    line(518);
+    line(519);
     push_symbol(base+0);//toklist
     _clp_len(1);
     push_symbol(base+1);//n
@@ -1803,10 +1809,10 @@ while(stack<base+3)PUSHNIL();
 argno=2;
 push_call("result_regular",base);
 //
-    line(523);
-    line(526);
-    {
     line(524);
+    line(527);
+    {
+    line(525);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1815,7 +1821,7 @@ push_call("result_regular",base);
     push_symbol(base+1);//match
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_52_2;
-        line(525);
+        line(526);
         push_symbol(base+0);//rlist
         push_symbol(base+1);//match
         push_symbol(base+2);//i
@@ -1832,7 +1838,7 @@ push_call("result_regular",base);
     goto lab_52_0;
     lab_52_2:;
     }
-    line(527);
+    line(528);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1849,7 +1855,7 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("result_dumbstr",base);
 //
-    line(532);
+    line(533);
     push_symbol(base+1);//match
     push(&NIL);
     eqeq();
@@ -1861,7 +1867,7 @@ push_call("result_dumbstr",base);
     }
     assign(base+2);//x
     pop();
-    line(533);
+    line(534);
     binary("\"");
     push_symbol(base+2);//x
     ss();
@@ -1872,7 +1878,7 @@ push_call("result_dumbstr",base);
     }
     assign(base+3);//q
     pop();
-    line(534);
+    line(535);
     push_symbol(base+0);//rlist
     push_symbol(base+3);//q
     push_symbol(base+2);//x
@@ -1881,7 +1887,7 @@ push_call("result_dumbstr",base);
     add();
     _clp_aadd(2);
     pop();
-    line(535);
+    line(536);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1898,11 +1904,11 @@ while(stack<base+17)PUSHNIL();
 argno=5;
 push_call("result_stringify",base);
 //
-    line(544);
     line(545);
     line(546);
     line(547);
-    line(549);
+    line(548);
+    line(550);
     binary("(");
     binary("\"");
     add();
@@ -1910,54 +1916,54 @@ push_call("result_stringify",base);
     add();
     assign(base+16);//smartchar
     pop();
-    line(553);
-    line(551);
+    line(554);
+    line(552);
     push_symbol(base+1);//match
     push(&NIL);
     eqeq();
     if(!flag()) goto if_53_1;
-        line(552);
+        line(553);
         push(&NIL);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_53_1:
     if_53_0:;
-    line(555);
+    line(556);
     push_symbol(base+0);//rlist
     _clp_len(1);
     assign(base+5);//lr
     pop();
-    line(556);
+    line(557);
     push_symbol(base+1);//match
     _clp_len(1);
     assign(base+6);//lm
     pop();
-    line(557);
+    line(558);
     push_symbol(base+5);//lr
     addnum(1);
     assign(base+7);//imin
     pop();
-    line(558);
+    line(559);
     push_symbol(base+5);//lr
     push_symbol(base+6);//lm
     add();
     assign(base+8);//imax
     pop();
-    line(559);
+    line(560);
     array(0);
     assign(base+12);//sep
     pop();
-    line(560);
+    line(561);
     push(&ZERO);
     assign(base+11);//par
     pop();
-    line(562);
+    line(563);
     push_symbol(base+0);//rlist
     push_symbol(base+8);//imax
     _clp_asize(2);
     pop();
-    line(585);
+    line(586);
     {
-    line(564);
+    line(565);
     push(&ONE);
     int sg=sign();
     push_symbol(base+7);//imin
@@ -1965,7 +1971,7 @@ push_call("result_stringify",base);
     lab_54_0:
     push_symbol(base+8);//imax
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_54_2;
-        line(565);
+        line(566);
         push_symbol(base+1);//match
         push_symbol(base+10);//i
         push_symbol(base+5);//lr
@@ -1973,19 +1979,19 @@ push_call("result_stringify",base);
         idxr();
         assign(base+9);//token
         pop();
-        line(566);
+        line(567);
         push_symbol(base+9);//token
         push_symbol(base+0);//rlist
         push_symbol(base+10);//i
         assign2(idxxl());
         pop();
-        line(572);
-        line(568);
+        line(573);
+        line(569);
         push_symbol(base+9);//token
         binary("([{");
         ss();
         if(!flag()) goto if_55_1;
-            line(569);
+            line(570);
             push_symbol(base+11);//par
             dup();
             push(&ONE);
@@ -1995,12 +2001,12 @@ push_call("result_stringify",base);
             pop();
         goto if_55_0;
         if_55_1:
-        line(570);
+        line(571);
         push_symbol(base+9);//token
         binary(")]}");
         ss();
         if(!flag()) goto if_55_2;
-            line(571);
+            line(572);
             push_symbol(base+11);//par
             dup();
             push(&ONE);
@@ -2010,8 +2016,8 @@ push_call("result_stringify",base);
             pop();
         if_55_2:
         if_55_0:;
-        line(576);
-        line(574);
+        line(577);
+        line(575);
         push_symbol(base+9);//token
         binary(",");
         eqeq();
@@ -2023,15 +2029,15 @@ push_call("result_stringify",base);
         eqeq();
         }
         if(!flag()) goto if_56_1;
-            line(575);
+            line(576);
             push_symbol(base+12);//sep
             push_symbol(base+10);//i
             _clp_aadd(2);
             pop();
         if_56_1:
         if_56_0:;
-        line(582);
-        line(578);
+        line(583);
+        line(579);
         binary("\"");
         push_symbol(base+9);//token
         ss();
@@ -2043,14 +2049,14 @@ push_call("result_stringify",base);
         eqeq();
         }
         if(!flag()) goto if_57_1;
-            line(579);
+            line(580);
             binary("'");
             assign(base+4);//right
             assign(base+3);//left
             pop();
         goto if_57_0;
         if_57_1:
-        line(580);
+        line(581);
         binary("'");
         push_symbol(base+9);//token
         ss();
@@ -2062,7 +2068,7 @@ push_call("result_stringify",base);
         eqeq();
         }
         if(!flag()) goto if_57_2;
-            line(581);
+            line(582);
             binary("\"");
             assign(base+4);//right
             assign(base+3);//left
@@ -2079,16 +2085,16 @@ push_call("result_stringify",base);
     goto lab_54_0;
     lab_54_2:;
     }
-    line(587);
+    line(588);
     push_symbol(base+12);//sep
     _clp_len(1);
     assign(base+15);//ls
     pop();
-    line(589);
+    line(590);
     push_symbol(base+7);//imin
     assign(base+13);//il
     pop();
-    line(590);
+    line(591);
     push_symbol(base+15);//ls
     push(&ZERO);
     gt();
@@ -2101,8 +2107,8 @@ push_call("result_stringify",base);
     }
     assign(base+14);//ir
     pop();
-    line(595);
-    line(592);
+    line(596);
+    line(593);
     push_symbol(base+13);//il
     push_symbol(base+14);//ir
     lteq();
@@ -2124,7 +2130,7 @@ push_call("result_stringify",base);
     topnot();
     }
     if(!flag()) goto if_58_1;
-        line(593);
+        line(594);
         push_symbol(base+3);//left
         push_symbol(base+0);//rlist
         push_symbol(base+13);//il
@@ -2135,7 +2141,7 @@ push_call("result_stringify",base);
         push_symbol(base+13);//il
         assign2(idxxl());
         pop();
-        line(594);
+        line(595);
         push_symbol(base+0);//rlist
         push_symbol(base+14);//ir
         idxr();
@@ -2148,15 +2154,15 @@ push_call("result_stringify",base);
         pop();
     if_58_1:
     if_58_0:;
-    line(614);
-    line(597);
+    line(615);
+    line(598);
     push_symbol(base+15);//ls
     push(&ZERO);
     gt();
     if(!flag()) goto if_59_1;
-        line(606);
+        line(607);
         {
-        line(599);
+        line(600);
         push(&ONE);
         int sg=sign();
         number(2);
@@ -2164,7 +2170,7 @@ push_call("result_stringify",base);
         lab_60_0:
         push_symbol(base+15);//ls
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_60_2;
-            line(600);
+            line(601);
             push_symbol(base+12);//sep
             push_symbol(base+10);//i
             addnum(-1);
@@ -2172,15 +2178,15 @@ push_call("result_stringify",base);
             addnum(1);
             assign(base+13);//il
             pop();
-            line(601);
+            line(602);
             push_symbol(base+12);//sep
             push_symbol(base+10);//i
             idxr();
             addnum(-1);
             assign(base+14);//ir
             pop();
-            line(605);
-            line(602);
+            line(606);
+            line(603);
             push_symbol(base+13);//il
             push_symbol(base+14);//ir
             lteq();
@@ -2202,7 +2208,7 @@ push_call("result_stringify",base);
             topnot();
             }
             if(!flag()) goto if_61_1;
-                line(603);
+                line(604);
                 push_symbol(base+3);//left
                 push_symbol(base+0);//rlist
                 push_symbol(base+13);//il
@@ -2213,7 +2219,7 @@ push_call("result_stringify",base);
                 push_symbol(base+13);//il
                 assign2(idxxl());
                 pop();
-                line(604);
+                line(605);
                 push_symbol(base+0);//rlist
                 push_symbol(base+14);//ir
                 idxr();
@@ -2236,19 +2242,19 @@ push_call("result_stringify",base);
         goto lab_60_0;
         lab_60_2:;
         }
-        line(608);
+        line(609);
         push_symbol(base+12);//sep
         push_symbol(base+15);//ls
         idxr();
         addnum(1);
         assign(base+13);//il
         pop();
-        line(609);
+        line(610);
         push_symbol(base+8);//imax
         assign(base+14);//ir
         pop();
-        line(613);
-        line(610);
+        line(614);
+        line(611);
         push_symbol(base+13);//il
         push_symbol(base+14);//ir
         lteq();
@@ -2270,7 +2276,7 @@ push_call("result_stringify",base);
         topnot();
         }
         if(!flag()) goto if_62_1;
-            line(611);
+            line(612);
             push_symbol(base+3);//left
             push_symbol(base+0);//rlist
             push_symbol(base+13);//il
@@ -2281,7 +2287,7 @@ push_call("result_stringify",base);
             push_symbol(base+13);//il
             assign2(idxxl());
             pop();
-            line(612);
+            line(613);
             push_symbol(base+0);//rlist
             push_symbol(base+14);//ir
             idxr();
@@ -2296,7 +2302,7 @@ push_call("result_stringify",base);
         if_62_0:;
     if_59_1:
     if_59_0:;
-    line(616);
+    line(617);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2313,7 +2319,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("result_logify",base);
 //
-    line(621);
+    line(622);
     push_symbol(base+0);//rlist
     push_symbol(base+1);//match
     push(&NIL);
@@ -2325,7 +2331,7 @@ push_call("result_logify",base);
     }
     _clp_aadd(2);
     pop();
-    line(622);
+    line(623);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2342,7 +2348,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("markertype",base);
 //
-    line(627);
+    line(628);
     push_symbol(base+0);//n
     number(1000);
     div();
@@ -2362,7 +2368,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("markerinfo",base);
 //
-    line(630);
+    line(631);
     push_symbol(base+0);//n
     number(1000);
     modulo();
@@ -2381,7 +2387,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("markervalue",base);
 //
-    line(633);
+    line(634);
     push_symbol(base+0);//type
     mulnum(1000);
     push_symbol(base+1);//info
@@ -2401,14 +2407,14 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("nexttoken",base);
 //
-    line(638);
+    line(639);
     push_symbol(base+0);//rule
     _clp_len(1);
     assign(base+3);//lr
     pop();
-    line(644);
+    line(645);
     lab_63_1:
-    line(639);
+    line(640);
     push_symbol(base+1);//n
     push(&ONE);
     add();
@@ -2416,14 +2422,14 @@ push_call("nexttoken",base);
     push_symbol(base+3);//lr
     lteq();
     if(!flag()) goto lab_63_2;
-        line(640);
+        line(641);
         push_symbol(base+0);//rule
         push_symbol(base+1);//n
         idxr();
         assign(base+2);//ntok
         pop();
-        line(643);
-        line(641);
+        line(644);
+        line(642);
         push_symbol(base+2);//ntok
         _clp_valtype(1);
         string(L"L");
@@ -2434,13 +2440,13 @@ push_call("nexttoken",base);
         push_symbol(base+2);//ntok
         }
         if(!flag()) goto if_64_1;
-            line(642);
+            line(643);
             goto lab_63_2;//exit
         if_64_1:
         if_64_0:;
     goto lab_63_1;
     lab_63_2:;
-    line(645);
+    line(646);
     push_symbol(base+2);//ntok
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

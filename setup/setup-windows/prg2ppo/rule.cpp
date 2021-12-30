@@ -1,4 +1,4 @@
-//input: rule.ppo (5.3.0)
+//input: rule.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -232,29 +232,29 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_rule_tr_get_0",base);
 //
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(1);
     idxr0(1);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(1);
     idxr0(1);
     lt();
     if(flag()){
     push(&TRUE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(1);
     idxr0(1);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(1);
     idxr0(1);
     eqeq();
     if(!flag()){
     push(&FALSE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(3);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(3);
     gt();
     }
@@ -417,29 +417,29 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_rule_df_get_0",base);
 //
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(1);
     idxr0(1);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(1);
     idxr0(1);
     lt();
     if(flag()){
     push(&TRUE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(1);
     idxr0(1);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(1);
     idxr0(1);
     eqeq();
     if(!flag()){
     push(&FALSE);
     }else{
-    push_blkarg(base+1);//x
+    push_symbol(base+1);//x
     idxr0(3);
-    push_blkarg(base+2);//y
+    push_symbol(base+2);//y
     idxr0(3);
     lt();
     }

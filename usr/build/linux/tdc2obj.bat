@@ -62,7 +62,7 @@ else
     rm -f $1.cpp
     echo $2/$1.prg >ppo2cpp-$1
  
-    if ! ppo2cpp.exe $1.ppo 2>>ppo2cpp-$1; then
+    if ! ppo2cpp.exe -q $1.ppo 2>>ppo2cpp-$1; then
         popd >/dev/null;
         touch error;
         cat ppo/ppo2cpp-$1;

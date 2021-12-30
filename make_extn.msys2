@@ -20,5 +20,7 @@ source make_verf.msys2  3
 ( cd tutor/fpath        && m.msys2 )
 ( cd tutor/rename       && m.msys2 )
 
+if (javac -version 2>/dev/null); then
 ( cd jt/jterminal       && m.msys2 )
+fi
 

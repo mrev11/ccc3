@@ -6,4 +6,4 @@ if [[ $(uname) =~ MSYS ]]; then
 fi
 
 bapp_unix_.b @parfile.bld  "BUILD_SHR=static"
-ldd `which prg2ppo.exe`
+#ldd `which prg2ppo.exe`

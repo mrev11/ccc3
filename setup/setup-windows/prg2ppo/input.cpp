@@ -2702,8 +2702,10 @@ static void procinclude()
         error("Includes nested too deeply");
     }
 
-    int i=1;while( yytext[i]!='"')i++;yytext[i]=0;
-    stringnb(yytext+1);                                     //CCC-STACK++
+    int i=1; while(yytext[i]!='"')i++; yytext[i]=0; ++yytext;   // unquote
+    stringsb(yytext,i-1);                                       // CCC-STACK++
+    //dup();number(yylineno-1);string(L"\n");_clp_outerr(3);pop();
+
     _clp_searchinclude(1);
     _clp_convertfspec2nativeformat(1);
     char *fspec=BINARYPTR(TOP());
@@ -2712,6 +2714,7 @@ static void procinclude()
 
     if( !yyin )
     {
+        --yylineno;
         error("Include file not found");
     }
 
@@ -2725,7 +2728,7 @@ static void procinclude()
     yy_switch_to_buffer(yy_create_buffer(yyin,YY_BUF_SIZE));
 
     statepop();
-    pop();                                                  //CCC-STACK--
+    pop();                                                      // CCC-STACK--
 
     number(1);
     stringnb(getfilename());

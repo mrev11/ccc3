@@ -53,7 +53,7 @@ fi
 
 ( cd ccctools/removecr  && m.msys2  )
 ( cd ccctools/ccomp     && m.msys2 )
-( cd ccctools/buildp    && m.msys2 )
+( cd ccctools/build     && m.msys2 )
 ( cd ccctools/prg2ppo   && m.msys2 )
 
 

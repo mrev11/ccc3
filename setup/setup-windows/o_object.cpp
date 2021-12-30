@@ -1,4 +1,4 @@
-//input: o_object.ppo (5.3.0)
+//input: o_object.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -200,7 +200,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_0",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_objectini(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -214,7 +214,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_1",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classname(1);
 //
@@ -229,7 +229,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_2",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classbaseid(1);
 //
@@ -244,7 +244,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_3",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classattrnames(1);
 //
@@ -259,7 +259,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_4",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classmethnames(1);
 //
@@ -274,7 +274,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_5",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classobjectlength(1);
 //
@@ -289,7 +289,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_6",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getclassid(1);
     _clp_classinheritstruct(1);
 //
@@ -304,7 +304,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_7",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_getobjectasarray(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -318,7 +318,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_8",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_attrvals(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -332,7 +332,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_9",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_list(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -346,7 +346,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_10",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_liststruct(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -360,7 +360,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("_blk_objectregister_11",base);
 //
-    push_blkarg(base+1);//this
+    push_symbol(base+1);//this
     _clp_ancestors(1);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -374,8 +374,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_objectregister_12",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//o
+    push_symbol(base+1);//this
+    push_symbol(base+2);//o
     _clp_isderivedfrom(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
@@ -389,9 +389,9 @@ while(stack<base+4)PUSHNIL();
 argno=4;
 push_call("_blk_objectregister_13",base);
 //
-    push_blkarg(base+1);//this
-    push_blkarg(base+2);//meth
-    push_blkarg(base+3);//args
+    push_symbol(base+1);//this
+    push_symbol(base+2);//meth
+    push_symbol(base+3);//args
     _clp_evalmethod(3);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}

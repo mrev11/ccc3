@@ -1,4 +1,4 @@
-//input: alert.ppo (5.3.0)
+//input: alert.ppo (5.4.0)
 
 #include <cccdef.h>
 
@@ -84,8 +84,8 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("_blk_alertblock_0",base);
 //
-    push_blkarg(base+1);//t
-    push_blkarg(base+2);//a
+    push_symbol(base+1);//t
+    push_symbol(base+2);//a
     _clp_default_alert(2);
 //
 {*base=*(stack-1);stack=base+1;pop_call();}

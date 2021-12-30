@@ -36,7 +36,7 @@ static s_dry:=.f.
 static s_primary   //kiszamitja s_rules-bol //:=".y.lem.lex.prg.cpp.c.asm.tds.tdc."
 static s_resource  //kiszamitja s_rules-bol //:=".msk.mnt.cls.htm.pge.tdc"
 
-static s_libspec   //lib specifikációk
+static s_libabs:=.t. //minden platformon abszolút lib specifikációk
  
 static s_rules:={;
 {".msk",".dlg"},;
@@ -62,19 +62,11 @@ static s_rules:={;
 {".obj",".exe"};
 }
 
-static s_batext
-
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.5.0"
-#define LOWER(x) (x)
-
-
-static mutex_count:=thread_mutex_init()
-static cond_count:=thread_cond_init()
-static thread_count:=0
-static maxthread:=4
+#define VERSION "1.3.9" //-o opcio
+//#define VERSION "1.3.8" // 2017.03.24 hosszabb dependency list
 
 ****************************************************************************
 function main()
@@ -84,15 +76,8 @@ local opt:=aclone(argv()),n
 #define OPTION(x)  x==left(opt[n],2) 
 #define VALUE()    substr(opt[n],3)
 
-    if( !file(getenv("BUILD_BAT")+dirsep()+"multithread_support") )
-        maxthread:=1
-    elseif( 1<=val(getenv("BUILD_THR"))  )
-        maxthread:=val(getenv("BUILD_THR"))
-    end
-
     if( !s_quiet )
         ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
-        ?? " (Thr"+alltrim(str(maxthread))+")"
         ?
     end
 
@@ -184,13 +169,13 @@ local opt:=aclone(argv()),n
     next
     
     //compatibility
-    if( "on"$LOWER(getenv("BUILD_DBG")) )
+    if( "on"$lower(getenv("BUILD_DBG")) )
         s_debug:=.t.
     end
-    if( "debug"$LOWER(getenv("BUILD_DBG")) )
+    if( "debug"$lower(getenv("BUILD_DBG")) )
         s_debug:=.t.
     end
-    if( "dry"$LOWER(getenv("BUILD_DBG")) )
+    if( "dry"$lower(getenv("BUILD_DBG")) )
         s_debug:=.t.
         s_dry:=.t.
     end
@@ -198,7 +183,7 @@ local opt:=aclone(argv()),n
     if( s_version )
         quit
     end
-    
+
     s_rules_from_build_bat()
     extension_types()
 
@@ -208,6 +193,7 @@ local opt:=aclone(argv()),n
     
     ?
 
+
 ****************************************************************************
 static function s_rules_from_build_bat()
 
@@ -216,27 +202,17 @@ static function s_rules_from_build_bat()
 
 local d,n,rule
 
-    if( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bat") )
-        s_batext:=".bat"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bash") )
-        s_batext:=".bash"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.sh") )
-        s_batext:=".sh"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.msys2") )
-        s_batext:=".msys2"
-    end
-
     asize(s_rules,0)
-    d:=directory(getenv("BUILD_BAT")+dirsep()+"*"+s_batext)
+    d:=directory(getenv("BUILD_BAT")+dirsep()+"*.bat")
     for n:=1 to len(d)
-        rule:=d[n][1]::strtran(s_batext,"")::split("2")
+        rule:=d[n][1]::strtran(".bat","")::split("2")
         if( len(rule)==2 )
             rule[1]:="."+rule[1]
             rule[2]:="."+rule[2]
             aadd(s_rules,rule)
         end
     next
-    
+
     asort(s_rules,,,{|x,y|rulesort(x,y)})
     
     //for n:=1 to len(s_rules)
@@ -346,30 +322,11 @@ local n,p
         p+=substr(par,n+1)
         par:=p
     end
-
-
-    while( 0<(n:=at("$${",par)) )        // ...$${...}...
-        p:=left(par,n-1)
-        par:=substr(par,n+3)
-        n:=at("}",par)
-        p+=left(par,n-1)+"/$(BUILD_OBJ)/"+left(par,n-1)
-        p+=substr(par,n+1)
-        par:=p
-    end
-
-    while( 0<(n:=at("${",par)) )         // ...${...}...
-        p:=left(par,n-1)
-        par:=substr(par,n+2)
-        n:=at("}",par)
-        p+=getenv(left(par,n-1)) 
-        p+=substr(par,n+1)
-        par:=p
-    end
  
     par:=strtran(par,"\",dirsep())
     par:=strtran(par,"/",dirsep())
     
-    return if(left(par,1)=="=",LOWER(par),par)
+    return if(left(par,1)=="=",lower(par),par)
 
 
 ****************************************************************************
@@ -477,9 +434,10 @@ local txt,set,lst,n
     txt:=strtran(txt,","," ")  //","->" "
     txt:=strtran(txt,";"," ")  //";"->" "
     putenv("BUILD_LIB="+txt)
-    s_libspec:=search_library()
-    putenv("BUILD_LIB="+s_libspec)
-    s_libspec::=split(" ")
+    if( s_libabs )
+        putenv("BUILD_LIB="+search_library())
+    end
+    //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildb",txt)
     
     return NIL
 
@@ -497,7 +455,7 @@ local d1,f,o,n,i,txt,dep
 
 
     if( s_main!=NIL )
-        mmd:=xsplit(LOWER(s_main),",;")
+        mmd:=xsplit(lower(s_main),",;")
     end
 
 
@@ -515,8 +473,8 @@ local d1,f,o,n,i,txt,dep
  
         for i:=1 to len(d1)
             
-            f:=LOWER(d1[i][1])
-            
+            f:=lower(d1[i][1])
+                
             if( fext(f)+"."$s_primary  )
                 if( omitted_hash[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
                     //kihagy
@@ -541,7 +499,7 @@ local d1,f,o,n,i,txt,dep
         o:=fname(f)
         txt:=memoread(f)
 
-        if( 0!=ascan(mmd,{|m|m==LOWER(o)}) )
+        if( 0!=ascan(mmd,{|m|m==lower(o)}) )
             //már benn van
         elseif( fext(f)==".prg" .and. "function main("$txt )
             if( s_main==NIL )
@@ -583,33 +541,12 @@ local d1,f,o,n,i,txt,dep
         next
         ?
     end
-    
-    ferase("error")
-    for n:=1 to len(todo)
-        thread_mutex_lock(mutex_count)
-        ++thread_count
-        while( thread_count>MAXTHREAD )
-            thread_cond_wait(cond_count,mutex_count)
-        end
-        thread_mutex_unlock(mutex_count)
 
-        thread_create_detach({|i|makeobj(todo[i])},n)
-        
-        if( !fext(todo[n][1])==".obj" .and. n<len(todo) .and. fext(todo[n+1][1])==".obj" )
-            //mindent megvár
-            thread_mutex_lock(mutex_count)
-            while( thread_count>0 )
-                thread_cond_wait(cond_count,mutex_count)
-            end
-            thread_mutex_unlock(mutex_count)
-        end
+    ferase("error")
+ 
+    for n:=1 to len(todo)
+        makeobj(todo[n])
     next
-    //mindent megvár
-    thread_mutex_lock(mutex_count)
-    while( thread_count>0 )
-        thread_cond_wait(cond_count,mutex_count)
-    end
-    thread_mutex_unlock(mutex_count)
 
     //itt már megvan az összes object
     
@@ -620,16 +557,14 @@ local d1,f,o,n,i,txt,dep
             makeso(s_libnam,lib)
         end
         
-        //for n:=1 to len(mmd)
-        //    makeexe1(mmd[n],s_libnam)
-        //next
-        manage_threads({|x|makeexe1(x,s_libnam)},mmd) 
+        for n:=1 to len(mmd)
+            makeexe1(mmd[n],s_libnam)
+        next
 
     else
-        //for n:=1 to len(mmd)
-        //    makeexe(mmd[n],lib)
-        //next
-        manage_threads({|x|makeexe(x,lib)},mmd) 
+        for n:=1 to len(mmd)
+            makeexe(mmd[n],lib)
+        next
     end
  
     return NIL
@@ -637,30 +572,11 @@ local d1,f,o,n,i,txt,dep
 
 
 ****************************************************************************
-static function manage_threads(blk,a)
-local thread:={},th,n
-    for n:=1 to len(a)
-        thread_mutex_lock(mutex_count)
-        ++thread_count
-        while( thread_count>MAXTHREAD )
-            thread_cond_wait(cond_count,mutex_count)
-        end
-        thread_mutex_unlock(mutex_count)
-
-        th:=thread_create({|i|eval(blk,a[i])},n)
-        aadd(thread,th)
-    next
-    for n:=1 to len(thread)
-        thread_join(thread[n] )
-    next 
-
-
-****************************************************************************
 static function makeso(libnam,object)  //so-t az objectekből (UNIX)
 
 local target:=getenv("BUILD_OBJ")+dirsep()+"lib"+libnam+".so",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so"+s_batext
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so.bat"
 local objdir:=getenv("BUILD_OBJ"), n 
 
     if( !file(torun) )
@@ -686,7 +602,25 @@ local objdir:=getenv("BUILD_OBJ"), n
         depend:=object[n]
         torun+=" "+depend
         depend:=objdir+dirsep()+depend+".obj"
-        update:=verifdep(ttarget,depend).or.update
+        tdepend:=ftime(depend)
+
+        if( tdepend==NIL )
+            if( s_dry )
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
+
+        elseif( ttarget<tdepend )
+            update:=.t.
+        end
+
+        if( s_debug )
+            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+        end
     next
 
     if( s_debug )
@@ -705,8 +639,8 @@ static function makelib(libnam,object)  //lib-et az objectekből
 
 local target:=getenv("BUILD_OBJ")+dirsep()+libnam+".lib",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib"+s_batext
-local objdir:=LOWER(getenv("BUILD_OBJ")), n 
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib.bat"
+local objdir:=lower(getenv("BUILD_OBJ")), n 
 local objlist
 
     if( !file(torun) )
@@ -731,7 +665,25 @@ local objlist
     
         depend:=object[n]
         depend:=objdir+dirsep()+depend+".obj"
-        update:=verifdep(ttarget,depend).or.update
+        tdepend:=ftime(depend)
+
+        if( tdepend==NIL )
+            if(s_dry)
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
+
+        elseif( ttarget<tdepend )
+            update:=.t.
+        end
+
+        if( s_debug )
+            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+        end
     next
 
     if( s_debug )
@@ -774,8 +726,8 @@ static function makeexe(exenam,object) //exe-t az objectekből
 
 local target:=getenv("BUILD_EXE")+dirsep()+exenam+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe"+s_batext
-local objdir:=LOWER(getenv("BUILD_OBJ")), n 
+local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe.bat"
+local objdir:=lower(getenv("BUILD_OBJ")), n 
 local objlist, xobj
 
     if( !file(torun) )
@@ -803,15 +755,25 @@ local objlist, xobj
         end
         
         depend:=objdir+dirsep()+depend+".obj"
-        update:=verifdep(ttarget,depend).or.update
+        tdepend:=ftime(depend)
+
+        if( tdepend==NIL )
+            if( s_dry )
+                tdepend:=""
+            else
+                ? depend, @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
+        elseif( ttarget<tdepend )
+            update:=.t.
+        end
+
+        if( s_debug )
+            ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+        end
     next
-    
-    for n:=1 to len(s_libspec)                           /**/
-        if( s_libspec[n]::right(4)==".lib" )             /**/
-            depend:=s_libspec[n]                         /**/
-            update:=verifdep(ttarget,depend).or.update   /**/
-        end                                              /**/
-    next                                                 /**/
 
     if( s_debug )
         ? 
@@ -850,11 +812,6 @@ local objlist, xobj
 
         run1 (torun)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -864,7 +821,7 @@ static function makeexe1(mmod,libnam) //exe-t a main modulból + lib-ből
 
 local target:=getenv("BUILD_EXE")+dirsep()+mmod+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe"+s_batext
+local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe.bat"
 local objdir:=getenv("BUILD_OBJ"), n 
 
     if( !file(torun) )
@@ -887,19 +844,48 @@ local objdir:=getenv("BUILD_OBJ"), n
     depend:=mmod
     torun+=" "+depend
     depend:=objdir+dirsep()+depend+".obj"
-    update:=verifdep(ttarget,depend).or.update
+    tdepend:=ftime(depend)
+
+    if( tdepend==NIL )
+        if( s_dry )
+            tdepend:=""
+        else
+            ? depend, @"does not exist"
+            ?
+            errorlevel(1)
+            quit
+        end
+    elseif( ttarget<tdepend )
+        update:=.t.
+    end
+
+    if( s_debug )
+        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+    end
+ 
  
     depend:=libnam
     torun+=" "+depend
     depend:=objdir+dirsep()+depend+".lib"
-    update:=verifdep(ttarget,depend).or.update
+    tdepend:=ftime(depend)
+    
+    if( tdepend==NIL )
+        if( s_dry )
+            tdepend:=""
+        else
+            ? depend, @"does not exist"
+            ?
+            errorlevel(1)
+            quit
+        end
+    elseif( ttarget<tdepend )
+        update:=.t.
+    end
+
+    if( s_debug )
+        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+    end
  
-    for n:=1 to len(s_libspec)                           /**/
-        if( s_libspec[n]::right(4)==".lib" )             /**/
-            depend:=s_libspec[n]                         /**/
-            update:=verifdep(ttarget,depend).or.update   /**/
-        end                                              /**/
-    next                                                 /**/
 
     if( s_debug )
         ? 
@@ -908,11 +894,6 @@ local objdir:=getenv("BUILD_OBJ"), n
     if( update )
         run1 (torun)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -942,7 +923,25 @@ local n,p1,p2
  
     for n:=2 to len(deplist)
         depend:=deplist[n] 
-        update:=verifdep(ttarget,depend).or.update
+        tdepend:=ftime(depend)
+        
+        if( tdepend==NIL )
+            if( s_dry )
+                tdepend:=""
+            else
+                ? deplist[n], @"does not exist"
+                ?
+                errorlevel(1)
+                quit
+            end
+
+        elseif( ttarget<tdepend )
+            update:=.t.
+        end
+
+        if( s_debug )
+            ? "  ",depend,"["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
+        end
     next
 
     if( s_debug )
@@ -953,7 +952,7 @@ local n,p1,p2
         
         torun:=getenv("BUILD_BAT")+dirsep()
         torun+=strtran(fext(deplist[2])+"2"+fext(deplist[1]),".","")
-        torun+=s_batext
+        torun+=".bat"
 
         if( !file(torun) )
             ? "["+torun+"]", @"does not exist"
@@ -967,11 +966,6 @@ local n,p1,p2
     
         run1(torun+" "+p1+" "+p2)
     end
-
-    thread_mutex_lock(mutex_count)
-    --thread_count
-    thread_cond_signal(cond_count)
-    thread_mutex_unlock(mutex_count)
     
     return NIL
 
@@ -980,30 +974,9 @@ local n,p1,p2
 ****************************************************************************
 static function run1(cmd)
 
-static mutex_out:=thread_mutex_init()
-static count:=0
-local runtmp,out
-
     if( !s_dry )
 
-        thread_mutex_lock(mutex_out)
-        runtmp:="log-runtmp"+alltrim(str(++count))
-        thread_mutex_unlock(mutex_out)
-
-        if( "msys2"$getenv("BUILD_BAT") )
-            //? "BASH",cmd;?
-            bash(cmd+" >"+runtmp)
-        else
-            //? "RUN",cmd;?
-            run(cmd+" >"+runtmp)
-        end
-
-        out:=memoread(runtmp)
-        ferase(runtmp)
-
-        thread_mutex_lock(mutex_out)
-        ?? out
-        thread_mutex_unlock(mutex_out)
+        run(cmd)
 
         if( file("error") )
             #ifdef _UNIX_
@@ -1011,9 +984,8 @@ local runtmp,out
             #else
               run ("type error")
             #endif
-            //?
-            //quit
-            s_dry:=.t.
+            ?
+            quit
         end
     end
  
@@ -1081,7 +1053,7 @@ static function search_library()
 
 local dirlist:=split(getenv("BUILD_LPT")," ")
 local liblist:=split(getenv("BUILD_LIB")," ")
-local sharing:=LOWER(getenv("BUILD_SHR"))  //"shared" or "static" libraries
+local sharing:=lower(getenv("BUILD_SHR"))  //"shared" or "static" libraries
 
 local n,i,txt:="" 
 local f0,f1,f2,f3,pf1,pf2,pf3
@@ -1158,14 +1130,10 @@ local f0,f1,f2,f3,pf1,pf2,pf3
         next
         
         if( i>len(dirlist) )
-            if( f0[1..2]=="-l" )            
-                txt+=f0+" " //eredeti alak
-            else
-                txt+="-l"+f0+" "
-            end 
+            txt+=f0+" " //eredeti alak
         end
     next
-
+ 
     return txt
 
 ****************************************************************************
@@ -1194,8 +1162,7 @@ local f:=fname(fil)     //az előállítandó filé neve
 local e:=fext(fil)      //az előállítandó filé kiterjesztése
 local p                 //az előállítandó filé directoryja
 local r,e0              //resource name/kiterjesztés
-local i,x
-local result:=.f.
+local i
 
     if( e==".ch" .and. !f[1]=="_" )
         //csak olyan ch-kat probal resourcebol 
@@ -1215,21 +1182,14 @@ local result:=.f.
             if( NIL!=(r:=resource_hash[f+e0]) )
                 p:=fpath(r)
                 adddep(dep,p+f+e)
-                if( 0==(x:=ascan(todo,{|x|x[1]==p+f+e})) )
+                if( 0==ascan(todo,{|x|x[1]==p+f+e}) )
                     aadd(todo,{p+f+e,p+f+e0})
-                elseif( 0==ascan(todo[x],{|x|x==p+f+e0}) )
-                    aadd(todo[x],p+f+e0)
-                    // itt gyulnek az olyanok, mint 
-                    //  {demo.say, demo.msk, demo.sor}
-                    // a masodikbol akarja majd letrehozni az elsot
-                    // hogy melyik a masodik/harmadik az az s_rules 
-                    // rendezesetol fugg (abc szerint)
                 end
-                result:=.t.    
+                return .t.    
             end
         end
     next
-    return result
+    return .f.
 
 
 ****************************************************************************
@@ -1308,42 +1268,6 @@ local i,n,x
             todo[n][i]:=x
         next
     next
-
-
-****************************************************************************
-static function verifdep(ttarget,depend)
-
-local update:=.f.
-local tdepend:=ftime(depend)
-
-    if( tdepend==NIL )
-        if( s_dry )
-            tdepend:=""
-        else
-            ? depend, @"does not exist"
-            ?
-            errorlevel(1)
-            quit
-        end
-
-    elseif( ttarget<tdepend )
-        update:=.t.
-    end
-
-    if( s_debug )
-        ? "  ",depend, "["+tdepend+"]", if(ttarget<tdepend,"UPDATE","")
-    end
-    
-    return update
-
-
-****************************************************************************
-static function bash(cmd)
-    cmd::=strtran("\","/")
-    if( at(":/",cmd)==2 )
-        cmd:="/"+cmd[1]+cmd[3..]   // c:/xxx => /c/xxx
-    end
-    spawn(3,"bash.exe","-c",'"'+cmd+'"')  //3=wait+path
 
 
 ****************************************************************************

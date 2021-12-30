@@ -1,3 +1,10 @@
+2021.12.30
+  atnevezes: ccctools/build  -> build1; 
+  atnevezes: ccctools/buildp -> build; 
+  setup keszlet frissitve;
+  kevesebb kiiras;
+
+
 2021.12.25 
   Build scriptek egysegesitve, mindenhol 'm' inditja a buildet:
     Linux   - m (pl. a korabbi i.b helyett sima m kell)

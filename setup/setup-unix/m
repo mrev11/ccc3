@@ -10,8 +10,7 @@ mkexe()
     fi
 }
 
-#mkexe build
-mkexe buildp
+mkexe build
 mkexe prg2ppo
 mkexe removecr
  

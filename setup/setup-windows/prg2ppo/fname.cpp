@@ -1,4 +1,4 @@
-//input: fname.ppo (5.3.0)
+//input: fname.ppo (5.4.0)
 
 #include <cccdef.h>
 

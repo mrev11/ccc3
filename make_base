@@ -57,7 +57,7 @@ fi
 # ccctools
 #-------------------
  
-( cd ccctools/buildp    && m )
+( cd ccctools/build     && m )
 ( cd ccctools/prg2ppo   && m )
 ( cd ccctools/removecr  && m )
 ( cd ccctools/mklink    && m )

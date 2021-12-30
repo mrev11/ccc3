@@ -217,7 +217,7 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
 %parse_accept{
     if(parsing_complete)
     {
-        printf("Parsing complete.\n");
+        //printf("Parsing complete.\n");
     }
 } 
  

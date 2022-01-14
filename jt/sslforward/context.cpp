@@ -31,6 +31,7 @@
 
 #define CAPATH      "SSLFORW_CAPATH"
 #define CAFILE      "SSLFORW_CAFILE"
+#define CADEPTH     "SSLFORW_CADEPTH"
 #define CERTFILE    "SSLFORW_CERTFILE"
 #define PKEYFILE    "SSLFORW_PKEYFILE"
 
@@ -56,6 +57,16 @@ static const char* cafile()
         return p;
     }
     return 0;
+}
+
+static int cadepth()
+{
+    static const char*p=getenv(CADEPTH);
+    if( (p!=0) && (*p!=0) )
+    {
+        return atoi(p);
+    }
+    return 100;
 }
 
 static const char* pkeyfile()
@@ -110,7 +121,6 @@ static int cb_verify(int preverify_ok, X509_STORE_CTX *ctx)
 //-----------------------------------------------------------------------------------
 SSL_CTX *ssl_server_context()
 {
-    int depth=1; //bedrótozva
     int ftype=SSL_FILETYPE_PEM; //bedrótozva
     int mode=SSL_VERIFY_PEER_CERT; //bedrótozva
 
@@ -138,7 +148,7 @@ SSL_CTX *ssl_server_context()
     if( capath() || cafile() )
     {
         SSL_CTX_set_verify(ctx,mode,cb_verify);
-        SSL_CTX_set_verify_depth(ctx,depth);
+        SSL_CTX_set_verify_depth(ctx,cadepth());
         SSL_CTX_load_verify_locations(ctx,cafile(),capath());
     }
     
@@ -150,7 +160,6 @@ SSL_CTX *ssl_server_context()
 //-----------------------------------------------------------------------------------
 SSL_CTX *ssl_client_context()
 {
-    int depth=1; //bedrótozva
     int ftype=SSL_FILETYPE_PEM; //bedrótozva
     int mode=SSL_VERIFY_PEER_CERT; //bedrótozva
 
@@ -182,7 +191,7 @@ SSL_CTX *ssl_client_context()
     if( capath() || cafile() )
     {
         SSL_CTX_set_verify(ctx,mode,cb_verify);
-        SSL_CTX_set_verify_depth(ctx,depth);
+        SSL_CTX_set_verify_depth(ctx,cadepth());
         SSL_CTX_load_verify_locations(ctx,cafile(),capath());
     }
     

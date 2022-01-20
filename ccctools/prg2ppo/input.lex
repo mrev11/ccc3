@@ -297,7 +297,7 @@ EOLX           ([ \t]|{COM})*{COMX}
 <st_comment>{
 [^*]*                   
 "*"+[^/]                
-"*"+"/"                      outstr("/**/");statepop(); 
+"*"+"/"                      statepop(); 
 }
  
  

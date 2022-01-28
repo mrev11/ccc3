@@ -49,8 +49,6 @@
 function tabUpgrade(table,force) //.t.=OK, NIL=foglalt, .f.:=nem konvertalhato
 
 local result
-local savefile:=tabFile(table)
-local saveindex:=tabIndex(table)
 
     tranNotAllowedInTransaction(table,"upgrade")
 
@@ -71,8 +69,6 @@ local saveindex:=tabIndex(table)
 
         result:=_upgrade(table,force)
  
-        tabFile(table,savefile)
-        tabIndex(table,saveindex)
         tabSunlock(table)
     end
 
@@ -89,20 +85,9 @@ local fld,len,typ,kiolvas,beir,value
 local toupgrade,total,pos,msg
 local name1,name2
 local logged
+local origname
+local error
  
-#ifdef _DBFNTX_    
-    tabDelIndex(table) 
-    tabIndex(table,{})
-
-    //DBFNTX-ben az indexeket ki kell venni az objektumnol, 
-    //mert a tmp filenev kepzes miatt (+"$") a transzformalt
-    //indexnevek hosszabbak volnanak 8-nal, es ezen elakad
-
-    //DATIDX-ben es Btrieve-ben nem szabad az objektumbol kivenni, 
-    //mert akkor a file resource-aba sem kerulnenek be az indexek
-    
-    //DBFCTX-ben mindegy
-#endif    
 
     //a filebol kiolvasott adatok alapjan
     //letrehozunk egy (nem statikus) tablat, 
@@ -115,21 +100,47 @@ local logged
     elseif( empty(tabfil) )
         return .f. //nem allapithato meg a struktura, nem konvertalhato
     end
+    tabfil[TAB_ALIAS]:="upgrade" //megkulonboztetes
     
+
     //ne tegyen ra szemafor lockot,
     //az ugyanis osszeakadna a mar meglevo,
     //azonos nevu, de masik objektumban (table)
     //nyilvantartott lockkal:
 
-    tabfil[TAB_SLOCKCNT]:=1 
-    
+    tabfil[TAB_SLOCKCNT]:=1
+  
     if( !tabOpen(tabfil,OPEN_EXCLUSIVE,{||.f.}) )
         return NIL //foglalt
     end
+    
 
-    //ideiglenes neven letrehozzuk az objektummal megegyezo 
-    //strukturaju ures filet, eloszor toroljuk a maradekot
-    //meg kell gondolni az NTX-ek utkozeset
+    // ideiglenes neven letrehozzuk az objektummal 
+    // kompatibilis strukturaju ures filet
+
+    if( force==.t. )
+        // hard konverzio:     
+        // ezen az agon nincs vegrehajtva tabVerify()
+        // a strukturat kicsereljuk a tdc-beli strukturara
+        // mindegy, milyen a bt struktura, csak a tdc szamit
+        // a fajlban levo plusz mezok megszunnek
+        // az eltero tipusok magvaltoznak
+    else
+        // soft konverzio:
+        // a strukturat konvertaljuk
+        // az eredeti fajl struktura es
+        // a tdc-beli struktura uniojara
+        // tabVerify() az egyesitett strukturat
+        // beteszi a table objektumba 
+        // (ami most MEGVALTOZIK a tdc-hez kepest)
+
+        begin
+            tabVerify(table,.t.,{tabColumn(tabfil)::arr2bin,tabIndex(tabfil)::arr2bin})
+        recover error <tabobjerror>
+            // soft modszerrel nem konvertalhato
+            return .f.
+        end
+    end
 
     logged:=table[TAB_LOGGED]
     table[TAB_LOGGED]:=.f.
@@ -137,7 +148,8 @@ local logged
     if( NIL!=tabKeepDeleted(tabfil).and.NIL==tabKeepDeleted(table) )
         tabKeepDeleted(table,tabKeepDeleted(tabfil))
     end
- 
+
+    origname:=tabFile(table) 
     tabFile(table,TMPCHR+tabFile(table))
     tabDelTable(table) 
     tabCreate(table)
@@ -202,8 +214,7 @@ local logged
     
     tabClose(table)
     tabClose(tabfil)
-    
-    
+
     //eloallt a konvertalt file ideiglenes neven, 
     //el kell meg vegezni a backup-ot es az atnevezeseket
     //tabfil : structinfo-bol, name (eredeti file)
@@ -222,6 +233,7 @@ local logged
     sleep(100)
     message(msg)
 
+    tabFile(table,origname)
     table[TAB_LOGGED]:=logged
     tabWriteChangeLogUpgrade(table) 
 

@@ -130,36 +130,20 @@ local errblk, err
         tabSunlock(table)
         
         begin
-            tabVerify(table)  //kiszamitja table[TAB_RECLEN]-t
-            //Az uj begin/recover/finally-bol szabad kiugrani.
+            tabVerify(table)
             exit //OK
 
-            //Ha az objektum es a file inkompatibilisek,
-            //akkor tabVerify tabindexerror/tabstructerror-t dob,
-            //es err:args-ban az inkompatibilis indexek neve van,
-            //amit meg kell jegyezni a konverziohoz.
+        recover err <tabobjerror>
 
-        recover err <tabindexerror>
-
-            err:candefault:=.t.
             break(err)
 
-            //Csak akkor jon vissza, 
-            //ha az interaktiv alertben a "Default"-ot valasztottak.
+            //Csak akkor jon ide (vissza), ha err:candefault==.t.,
+            //es az interaktiv alertben a "Default"-ot valasztottak.
+            //(Ezert terminal nelkuli program alertjebol sosem jön vissza.)
             //Problema, ha a breaket elteriti egy kulso recover.
 
-            //visszazar
             tabClose(table)
-            
-            if( 0<tabSlock(table,{||0}) .and. tabUse(table,OPEN_EXCLUSIVE) )
-                tabSunlock(table)
-                //konverzio (reindex)
-                tabAlloc(table) 
-                tabGotop(table) 
-                build_bt_index(table,err:args,.t.)
-                tabClose(table)
-            end
-            tabSunlock(table)
+            tabUpgrade(table)
         end
     end
  
@@ -275,7 +259,7 @@ local memohnd
     if( 0<tabMemoCount(table) )
         memohnd:=memoOpen(lower(tabMemoName(table)))
         if( memohnd<0 )
-            taberrOperation("tabUse")
+            taberrOperation("tabOpen")
             taberrDescription(@"open failed")
             taberrFilename(lower(tabMemoName(table)))
             tabError(table)

@@ -24,125 +24,266 @@
 ******************************************************************************
 //Public interface
 //
-//function tabVerify(table)               //objektum <--> file (belso)
+//function tabVerify(table,upgrade)  //objektum <--> file (belso)
  
 ******************************************************************************
-function tabVerify(table) //egyezteti az objektum es a file adatait
-    tabVerifyColumn(table)
-    tabVerifyIndex(table) 
-    return NIL
+function tabVerify(table,upgrade:=.f.,resource) 
 
-******************************************************************************
-static function tabVerifyColumn(table) //egyezteti a mezoket
- 
-local fld  //a fileben talalt oszlopok tombje
-local col  //az objektumban levo oszlopok tombje
-local c,n,m
- 
-    fld:=tabReadColumn(table)   
-    col:=tabColumn(table)  
- 
-    //for n:=1 to len(fld)
-    //    ? padr("'"+fld[n][COL_NAME]+"'",12),fld[n][COL_TYPE],fld[n][COL_WIDTH],fld[n][COL_DEC]
-    //next
+// egyezteti a bt fajl es a table objektum adatait
+// a table objektum strukturaja (col/ind) megvaltozhat
+// az eredeti bt file es a tdc-beli struktura uniojara
 
-    for n:=1 to len(col)
+local uniocol,upgcol
+local unioind,upgind
+local err,n
 
-        //nem okoz hibat, ha a fld bovebb
-        
-        c:=col[n]
-        m:=ascan(fld,{|f|f[COL_NAME]==c[COL_NAME]})
+    // ? "tabVerify",upgrade,tabFile(table),tabAlias(table),oref(table)
+    // tabPrintStruct(table)
 
-        //if( m!=0 )
-        //    ? n, padr(c[COL_NAME],10),;
-        //        c[COL_TYPE]  ,fld[m][COL_TYPE],;
-        //        c[COL_WIDTH] ,fld[m][COL_WIDTH],;
-        //        c[COL_DEC]   ,fld[m][COL_DEC]
-        //else
-        //    ? n, padr(c[COL_NAME],10), "hianyzik"
-        //end
+    {uniocol,upgcol}:=tabVerifyColumn(table,resource)
+    {unioind,upgind}:=tabVerifyIndex(table,resource,uniocol) 
 
-        if( m==0.or.;
-            c[COL_TYPE]!=fld[m][COL_TYPE].or.;
-            c[COL_WIDTH]!=fld[m][COL_WIDTH].or.;
-            c[COL_DEC]!=fld[m][COL_DEC] )
-
-            taberrOperation("tabVerify")            
-            taberrDescription(@"different table struct")
-            taberrArgs(c)            
-            tabStructError(table) //break van benne
-        end
-    next 
+    // ide csak akkor jon
+    // ha a strukturakat lehet egyesiteni
+    // egyebkent mar kivetelt dobott
     
-    //az oszlopstrukturat ujraepitjuk
+    // uniocol - az egyesített oszlop struktura 
+    // unioind - az egyesített index struktura 
+    // upgcol  - az upgrade-et kikenyszerito elso oszlop a tdc-ben
+    // upgind  - az upgrade-et kikenyszerito elso index a tdc-ben
     
-    asize(tabColumn(table),0) //kiuriti
-    for n:=1 to len(fld)
-        tabAddColumn(table,fld[n])
-    next
-
-    return NIL
-
-
-******************************************************************************
-static function tabVerifyIndex(table) //egyezteti az indexeket
-
-local aCtxInd:=tabReadIndex(table)      //a fajlban talalt indexek
-local aTabInd:=tabIndex(table,aCtxInd)  //objektum szerinti indexek
-local n, i, indnam, rebuild:={}
-
-    //Jelenleg az objektumban a file-resource-bol kiolvasott 
-    //index definicio van, ezt egyeztetjuk az eredeti objektumnal.
-
-    for n:=1 to len(aTabInd)
-        if( NIL==tabScanIndex(table,aTabInd[n]) )
-
-            //A fileben vagy nincs meg aTabInd[n],
-            //vagy ha megvan, elter a szerkezete.
-
-            aadd(rebuild,indnam:=aTabInd[n][IND_NAME])
-            i:=ascan(tabIndex(table),{|x|x[IND_NAME]==indnam})
-
-            if( i>0 )
-                adel(tabIndex(table),i)
-                asize(tabIndex(table),len(tabIndex(table))-1)
-                //egyezo nevu, eltero szerkezetu index torolve
-            end
-            tabAddIndex(table,aTabInd[n])
-        end
-    next
-    
-    //Most az objektumban, a file es az eredeti objektum indexeinek
-    //unioja van, es azonos nevu, de elteru tartalmu indexek eseten
-    //az objektumbeli definicio van megtartva (kesz a konverziora).
-    //A rebuild array tartalmazza az ujraepitendo indexek nevet.
-    
-    if( !empty(rebuild) )
-        taberrOperation("tabVerifyIndex")
-        taberrDescription(@"incompatible index")
-        taberrArgs(rebuild)
-        tabIndexError(table) //break van benne
+    if( !upgrade .and. upgcol!=NIL )
+        taberrOperation("tabVerify")            
+        taberrDescription(@"different table/column struct (needs upgrade)")
+        taberrArgs(upgcol)            
+        taberrDefault(.t.)
+        tabStructError(table) //break
     end
 
-    //Ezen a ponton teljesul, hogy a fileben levo indexek 
-    //kompatibilisek az objektummal, de lehet, hogy a fileben
-    //tobb index is van, es a sorrendjuk is elterhet.
-    //A programnak minden meglevo indexet karban kell tartania,
-    //a fileben ervenyes index sorrendet kell hasznalnia,
-    //ezert a legegyszerubb, ha az index strukturat lecsereljuk.
-    //Az index strukturat a tabAddindex-szel kell ujraepiteni,
-    //hogy a kulcs oszlopok megfelelo blockot kapjanak.
+    if( !upgrade .and. upgind!=NIL )
+        taberrOperation("tabVerify")            
+        taberrDescription(@"different table/index struct (needs upgrade)")
+        taberrArgs(upgind)            
+        taberrDefault(.t.)
+        tabIndexError(table) //break
+    end
     
-    //? "obj info:", aTabInd
-    //? "res info:", aCtxInd
+    // ide akkor jon
+    // ha a tabla upgrade nelkul megnyithato
+    // vagy tabUpgrade(table,force:=.t.)-ban van
     
-    tabIndex(table,{}) //kiuriti
-    
-    for n:=1 to len(aCtxInd)
-        tabAddIndex(table,aCtxInd[n])
+    // ujraepiti az oszlopokat
+    table[TAB_COLUMN]:={}
+    for n:=1 to len(uniocol)
+        tabAddcolumn(table,uniocol[n])
     next
 
-    return NIL
+    // ujraepiti az indexeket
+    table[TAB_INDEX]:={}
+    for n:=1 to len(unioind)
+        tabAddindex(table,unioind[n])
+    next
+
+    // ? "RESULT(",upgcol!=NIL,upgind!=NIL,")"
+    // tabPrintStruct(table,"ic")
+    // ? "@"
+
+******************************************************************************
+static function tabVerifyColumn(table,resource) //egyezteti a mezoket
+
+local columnsFile,colhashFile
+local columnsProg,colhashProg
+local columnsUnio,colhashUnio
+local upgrade:=NIL
+
+    if( resource==NIL )
+        columnsFile:=tabReadColumn(table)   // beolvassa a bt fajlbol
+    else
+        columnsFile:=resource[1]::bin2arr   // eloveszi a resourcebol (table nincs megnyitva!)
+    end
+
+    columnsProg:=tabColumn(table)           // program objektum (tdc)
+
+    setorder(columnsFile,0)                 // mezoket rendezesehez beszamozza
+    setorder(columnsProg,1000)              // mezoket rendezesehez beszamozza
+
+    colhashFile:=colhash(columnsFile)       // array -> hash
+    colhashProg:=colhash(columnsProg)       // array -> hash
+
+    colhashUnio:=colhashProg:clone
+
+    if( !unio(colhashUnio,colhashFile,@upgrade) )
+        // nem kepezheto az unio
+        taberrOperation("tabVerifyColumn")            
+        taberrDescription(@"different table struct")
+        taberrArgs(upgrade)            
+        tabStructError(table) //break
+    end
+
+    columnsUnio:=hashvalues2array(colhashUnio)
+    columnsUnio::asort({|x,y|x[COL_OFFS]<y[COL_OFFS]})
+
+    // rendezes
+    // elore kerulnek a fajlban meglevo mezok, sorrendjuk ahogy a fajlban vannak
+    // hatulra kerulnek a programbol jovo plusz mezok, sorrendjuk ahogy a tdc-ben vannak
+
+    return {columnsUnio,upgrade}
+
+
+******************************************************************************
+static function unio(hprog,hfile,upgrade)
+local colp,colf
+
+    // ciklus a file oszlopaira
+
+    colf:=hfile:firstvalue
+    while( colf!=NIL )
+        colp:=hprog[colf[COL_NAME]]
+        if( colp==NIL )
+            // a progam nem ismeri, be kell venni 
+            hprog[colf[COL_NAME]]:=colf
+        else
+            // a program is ismeri, tipus egyeztetes
+            if( colf[COL_TYPE]!=colp[COL_TYPE] .or.;
+                colf[COL_WIDTH]!=colp[COL_WIDTH] .or.;
+                colf[COL_DEC]!=colp[COL_DEC] )
+
+                upgrade:=colp  // upgrade(force) szukseges
+                return .f. // nem kepezheto az unio
+            end
+            
+            colp[COL_OFFS]:=colf[COL_OFFS] //rendezeshez
+        end
+        colf:=hfile:nextvalue
+    next
+
+    // ciklus a program oszlopaira
+
+    colp:=hprog:firstvalue
+    while( colp!=NIL )
+        colf:=hfile[colp[COL_NAME]]
+        if( colf==NIL )
+            upgrade:=colp // upgrade szukseges
+            //? "unio>UPGRADE-MISSING",colp
+        end
+        colp:=hprog:nextvalue
+    next
+    
+    return .t.
+
+// ha  hProg<=hFile es a tipusok egyeznek => .t., upg=.f. (minden mezo megvan a fajlban)
+// ha !hProg<=hFile de a tipusok egyeznek => .t., upg=.t. (nincs meg minden mezo, upgrade szukseges) 
+// ha a tipusok elternek                  => .f.          (bovites nem lehetseges)
+
+
+******************************************************************************
+static function setorder(columns,offset) // ideiglenes sorszam a mezok rendezesehez
+local n
+    for n:=1 to len(columns)
+        columns[n]::asize(COL_SIZEOF)
+        columns[n][COL_OFFS]:=offset+n
+    next
+
+
+******************************************************************************
+static function colhash(col)  // oszlop array -> hash 
+local hash:=simplehashNew(),n
+    for n:=1 to len(col)
+        hash[col[n][COL_NAME]]:=col[n]
+    next
+    return hash
+
+
+******************************************************************************
+static function hashvalues2array(hash)
+local array:=array(hash:itemcount),n:=0
+local value:=hash:firstvalue
+    while(value!=NIL)
+        array[++n]:=value
+        value:=hash:nextvalue
+    next
+    return array
+
+
+******************************************************************************
+static function tabVerifyIndex(table,resource,colUnio) //egyezteti az indexeket
+
+local indFile,colFile 
+local indProg,colProg
+local indUnio,upg
+local n,ind,i,j,p,colname,u,x 
+
+    if( resource==NIL )
+        //table megnyitva
+        colFile:=tabReadColumn(table)
+        indFile:=tabReadIndex(table)
+    else
+        //table nem megnyithato
+        colFile:=resource[1]::bin2arr
+        indFile:=resource[2]::bin2arr
+    end
+    
+    colProg:=tabColumn(table)
+    indProg:=tabIndex(table)
+
+
+    // az oszlopok ugy vannak rendezve
+    // hogy a bt-ben levo oszlopok elol legyenek
+    // es megmaradjon az eredeti sorendjuk
+    // ezert indFile egyszeruen atmasolhato
+
+    indUnio:=aclone(indFile)
+
+    for n:=1 to len(indProg)
+        ind:=aclone(indProg[n]) // aclone (egyelore ne valtozzon)
+
+        // megkeressuk a tdc-bol vett index szegmensek
+        // helyet az egyesitett oszlop listaban (nev szerint)
+        
+        for i:=1 to len(ind[IND_COL])
+            p:=ind[IND_COL][i] // oszlopindex colProg-ban
+            colname:=colProg[p][COL_NAME]
+            u:=ascan(colUnio,{|c|c[COL_NAME]==colname}) // oszlopindex colUnio-ban
+            if( u==0 )
+                //hiba (nem lehet ilyen)
+                taberrOperation("tabVerifyIndex")            
+                taberrDescription(@"invalid column index")
+                taberrArgs(ind)            
+                tabIndexError(table) //break
+            else
+                ind[IND_COL][i]:=u // p helyere u
+            end
+        end
+
+        x:=ascan(indUnio,{|i|i[IND_NAME]==ind[IND_NAME]})
+        if( x==0 )
+            // az index nincs benne az unioban -> bevesszuk
+            aadd(indUnio,ind)
+            upg:=ind // upgradelni kell
+        else
+            // ilyen index mar van az unioban -> ellenorizzuk
+            // ha mas a szerkezete -> nem kepezheto az unio
+            
+            if ( len(ind[IND_COL]) != len(indUnio[x][IND_COL]) )
+                taberrOperation("tabVerifyIndex")            
+                taberrDescription(@"incompatible index")
+                taberrArgs(ind)            
+                tabIndexError(table) //break
+            else
+                for i:=1 to len(ind[IND_COL])
+                    if( ind[IND_COL][i] != indUnio[x][IND_COL][i] )
+                        taberrOperation("tabVerifyIndex")            
+                        taberrDescription(@"incompatible index")
+                        taberrArgs(ind)            
+                        tabIndexError(table) //break
+                    end
+                next
+            end
+        end
+    next
+  
+    return {indUnio,upg}
+
 
 ******************************************************************************
 static function tabReadColumn(table)

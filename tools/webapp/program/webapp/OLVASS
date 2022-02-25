@@ -1,10 +1,1 @@
 Speciálisan websocketes klienseket kiszolgáló webszerver.
-
-A paraméterezés bele van drótozva defaults.prg-be
-
-Indítandó program :  wlogin.exe  (ez indítja aztán a továbbiakat)
-Listener port     :  a tesztben 45678
-Használjon-e SSL-t:  use_ssl()
-SSL context       :  localhost.pem, nincs kliens autentikáció
-
-Ha más kell, át kell ezeket írni, és újra kell fordítani a programot.

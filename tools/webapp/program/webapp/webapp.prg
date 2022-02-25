@@ -25,44 +25,18 @@ static appsocket
 
 
 ***************************************************************************************
-static function page_main(wsuri)
-
-local http_header:=<<PAGE>>HTTP/1.1 200 Ok
-Content-Type: text/html;charset=UTF-8
-Content-Length: $CONTLENG
-
-<<PAGE>>::str2bin
-
-local http_body:=<<PAGE>><!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <script type="text/javascript" src="webapp.js"></script>
-  <link rel="stylesheet" type="text/css" href="webapp.css">
-</head>
-<body onload="XCODE.onload('$$WEBSOCKET')"></body>
-</html>
-<<PAGE>>::str2bin
-
-    http_body::=strtran(a"$$WEBSOCKET",wsuri)
-    http_header::=strtran(a"$CONTLENG",http_body::len::str::alltrim::str2bin )
-    http_header::=httpheader_crlf  //x"0a" -> x"0d0a"
-   
-    //? http_header+http_body
-
-    return http_header+http_body
-
-//VALTOZAS
-//kulon osszerakva a header es a body
-//keszit Content-Length headert  
-
-***************************************************************************************
 function main()
 local err,sck
 
+    set alternate to log-webapp additive
+    set alternate on
+
     set date format "yyyy-mm-dd"
     signalblock({|s|sighandler(s)})
+
+    if( param_ssl() )
+        ssl_context()
+    end
 
     sck_listener():listen
     while(.t.)
@@ -90,16 +64,21 @@ local err,sck
 ***************************************************************************************
 static function dofork(sck)
 
-local sel:={},n
+local sel:={},n,err
 
     set alternate to log-webapp additive
     set alternate on
 
-    ? "ACCEPT ",date(),time(),getpeername(sck:fd),sck:fd,getpid(), if(use_ssl(),"SSL","")
+    ? "ACCEPT ",date(),time(),getpeername(sck:fd),sck:fd,getpid(), if(param_ssl(),"SSL","")
     quitblock({||qout("QUIT",getpid())})
 
-    if( use_ssl() )
-        brwsocket:=sslconAccept(ssl_context(),sck) //ssl
+    if( param_ssl() )
+        begin
+            brwsocket:=sslconAccept(ssl_context(),sck) //ssl
+        recover err <sslerror>
+            ? err:operation, err:description
+            quit
+        end
     else
         brwsocket:=sck //plain
     end
@@ -146,7 +125,7 @@ local req,wsuri,page,msg
         ? "REQUEST", brwsocket:fd, requrl(req), http_body(req)::left(32)
 
         if( req::startswith(a"GET /webapp ") )
-            if( use_ssl() )
+            if( param_ssl() )
                 wsuri:=a"wss://" //ssl
             else
                 wsuri:=a"ws://" //plain
@@ -223,23 +202,9 @@ local pid,n
         brwsocket:close
         sclose(sp[2])
 
-
-// itt lehet a child környezetét beállítani
-// át kell venni (és továbbadni) a CCC környezetet
-// másképp a child nem tud elindulni
-//
-//        env0:=environment()
-//        env1:={}
-//        for n:=1 to len(env0)
-//            if( !"GARBAGE="$env0[n] )
-//                env1::aadd(env0[n])
-//            end
-//        next
-//        exec(default_webapp(),sid,sp[1]::str::alltrim,env1)
-
-        exec(default_webapp(),sid,sp[1]::str::alltrim,.t.)
+        exec(param_exec(),sid,sp[1]::str::alltrim,.t.)
         //ide csak akkor jön, ha nem sikerült az exec
-        ? "exec-error",default_webapp()
+        ? "exec-error",param_exec()
         quit
     else
         sclose(sp[1])

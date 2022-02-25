@@ -1,7 +1,27 @@
-683741e963c44124f060b13aa06e46c8423ebdf5 2022012808:39:00-UTC ./CHANGELOG_vermes
+6ffb23acfd855b84655709f58df639e89ba70829 2022022515:23:55-UTC ./CHANGELOG_vermes
+eb4cd976aec90c151230be84bf7a93f4ee30e2c4 2022022514:59:35-UTC ./tools/webapp/webapp_config
+1263db51becc72ab7b66d67bf343a680e7c417d7 2022022514:56:10-UTC ./usr/bin/linux/webapp
+e4df55c878a2893f3b96f0d909d7a66a7b554c97 2022022514:55:37-UTC ./tools/webapp/program/webapp/webapp.prg
+b7e91e3899a05ff77ed3e93d043efa2853c4831e 2022022514:53:11-UTC ./tools/webapp/program/webapp/sslcontext.prg
+8850e04daee826afbbbab4a7ccb48169cc915466 2022022514:45:09-UTC ./usr/bin/linux/msk2html
+8684e4ef3dd4096f148943a575dcfa1c114d86b2 2022022514:15:22-UTC ./tools/webapp/program/webapp/OLVASS
+5d92ca2028d10cf704f054c55f8ed12c38da8b20 2022022514:12:57-UTC ./tools/webapp/program/webapp/loadconfig.prg
+6308c0a5668d9ae31d0b64d87436b6ad317e16fc 2022022513:44:55-UTC ./tools/webapp/program/webapp/httputil.prg
+67334cda43ab3b624c33e34d1f39a0cb3b6e20fc 2022022513:41:51-UTC ./tools/webapp/program/webapp/params.prg
+e70831004975463966ff52f76307c33a29fe7e0e 2022022513:24:15-UTC ./tools/webapp/program/webapp/page_main.prg
+110e258c866ceaca161391b63f304ac452e8e17a 2022021917:41:13-UTC ./tools/webapp/program/webapp/wshandshake.prg
+9f9a07633697c60b57396d60eb2484a0c959a0ae 2022021809:41:40-UTC ./tools/webapp/program/webapp/listener.prg
+7db3f1624c70264229aa929ff67b0607cbb4e9f6 2022021308:30:02-UTC ./log-install
+8ea5e17642ac156ad7d8aa8d2c72241ea09a1685 2022021308:29:32-UTC ./usr/bin/linux/gitfollow
+7f9f5337b03618ab327ccdbf9e789e7755b4c72b 2022021308:29:32-UTC ./usr/bin/linux/gitnav
+50019dabdfbfa880367151ef50187faa1f16027e 2022021308:29:32-UTC ./usr/bin/linux/gitref
+d17b92abb62c1a5b2acd03fed530309a0820706e 2022021308:29:32-UTC ./usr/bin/linux/gitstat
+bc8f0b35bb2cb7c87d19ad51c139f65a639ee9c1 2022021308:29:32-UTC ./usr/bin/linux/gitview
+c3b7ce96b7a2e75e5bcb86f32ce744d9210f54aa 2022021308:29:29-UTC ./usr/bin/linux/filetime-restore
+0e68bc7bd0fea41cb9e9d8ccc4c075d905b40e9a 2022021308:29:29-UTC ./usr/bin/linux/filetime-save
+d6efb1b3d4cd1a338953abeee4791a4a7c744088 2022021308:29:29-UTC ./usr/bin/linux/firstpar
+504d8c05a13088f083be0957d1df20dc8e227619 2022021308:29:27-UTC ./jt/jterminal/jterminal.jar
 d0ae85150de1bc81c55dccee9513b9430bec9f84 2022012521:16:31-UTC ./usr/bin/linux/tstru
-58fcc13a5252eb5bfc7dc1ac5093f784543f8b12 2022012520:46:19-UTC ./jt/jterminal/jterminal.jar
-63b99fb0bf4823bc014ff5edb8f57809d488c620 2022012520:46:19-UTC ./log-install
 134ab95eeeb10fe85201ac45365c2f29b05ef7eb 2022012520:46:06-UTC ./usr/bin/linux/tdccmp
 1b9f42e1f71bf55daaaddc066b052a567cd5d8e8 2022012520:46:05-UTC ./usr/bin/linux/jeed
 4c2e2e2158cbc50c222f7d3ea31ca97e0536264d 2022012520:45:46-UTC ./usr/bin/linux/ddict2
@@ -33,8 +53,6 @@ c279bea5924eef664fbcdb9d47dcea56a38a9b91 2021123022:32:22-UTC ./usr/bin/linux/st
 f2524287160bfe0401b88a0f288610ecf91e547d 2021123022:32:22-UTC ./usr/bin/linux/zg
 b93ddedb4d1e56b7686b93eac45b07990038eb07 2021123022:32:22-UTC ./usr/bin/linux/zgrep
 0fe434fa9f519be252ba7f01c630533b245f5329 2021123022:32:21-UTC ./usr/bin/linux/websrv
-de138bfe8625b65e6daed92e9964f13c9aa888e9 2021123022:32:16-UTC ./usr/bin/linux/msk2html
-75a344ac313f87506b78e4adecc919674e4007db 2021123022:32:14-UTC ./usr/bin/linux/webapp
 172a9479f8c6feba297587f25f9f83dd539cdf29 2021123022:32:07-UTC ./usr/bin/linux/tran2cpp
 885a01523acde6f7d52a131d26e7589489597768 2021123022:32:04-UTC ./usr/bin/linux/tds2prg
 8d10414d8eba1650e7e68afdbb43c4fc509c557e 2021123022:32:04-UTC ./usr/bin/linux/tds2ted
@@ -302,7 +320,6 @@ f09139d8b8d2a42717f74676816a9a31fc369881 2021111420:36:13-UTC ./ccclib/src/arger
 d0994dabc2673a6ac8d4b510b9dac1593ae41827 2021091309:40:50-UTC ./tools/z/z
 c7a9acd41013d2b8fdf13bcb223d1a7c0ec7d540 2021091013:31:26-UTC ./tools/xstart/x
 ffa945e75bddbc023256682fc2e50bda69116f2d 2021091011:21:51-UTC ./tools/xstart/xstart.par
-c00fae07d12a2c6c5a213be7ea8169a66daf5089 2021090713:29:18-UTC ./tools/webapp/program/webapp/loadconfig.prg
 4093766b0ab66b527527e92d93101270dddb7bd2 2021082309:21:23-UTC ./tools/socket/socket-demo/udp/m.msys2
 aa171ae2ba115572e7d86987103b1ccaf07ec947 2021081609:07:47-UTC ./ccctools/buildp/build.hu.ver
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
@@ -628,7 +645,6 @@ c8683fd6f9d631d63abe1174550a76f5496fdce5 2019120520:59:49-UTC ./usr/build/linux/
 d9f39fab24e301f960e21a0e3c47055e98a095f0 2019120516:09:05-UTC ./gtk/code_byhand/m
 5575c915ee3c7ff93230617982cae43d322e7e54 2019120514:53:05-UTC ./terminal/gtk/m
 6eda17e49fd230e10b89da83db2cc4cc17560158 2019111309:00:29-UTC ./usr/build/linux/for2obj.bat
-82536e3a6591d8cdb8427a0e18de663bd00c60d4 2019102011:33:24-UTC ./tools/webapp/program/webapp/webapp.prg
 d71c869a600b6c1928714482dfc6dfdf29e6218c 2019102011:30:15-UTC ./tutor/sckpair/unix/unix_socketpair.cpp
 97920a0f87159152de97b142561e6c940f62dd80 2019102011:11:01-UTC ./tutor/sckpair/s
 7169389f5a2fe14f85a8890ffffb895804a8d78a 2019100308:08:20-UTC ./tools/webapp/common/src/javascript/webapp-util.js
@@ -695,7 +711,6 @@ caa6f14e1177925a39acc3e7122d4f356c0d92e6 2019080807:40:16-UTC ./tools/webapp/com
 61b832b0d187b8557062f32830e7363d4a2faa27 2019080807:39:14-UTC ./tools/webapp/common/src/css/arrow-down-inv.svg
 a043b6b42832dcbba4e20fd8a805179ee86bbb99 2019080701:50:16-UTC ./tools/webapp/common/src/css/combo.less
 c8844a181852bd3f6d7d5c63e5582fe5d0f17d34 2019080701:46:51-UTC ./tools/webapp/common/src/css/datepicker.less
-63519be1a28fcaf13143e76c7ed6bb5288c61e0a 2019080507:42:48-UTC ./tools/webapp/program/webapp/httputil.prg
 b06306952f38a9568451790a17e2fa8a9378d01b 2019080507:33:05-UTC ./tools/websrv/util.prg
 1c370386e1bfa112c02a3bf60eeef04a5f7f3246 2019080416:55:12-UTC ./tools/webapp/common/src/css/arrow-down.svg
 a319ed63c400787fce085880c6633db4392d61f5 2019080414:08:52-UTC ./tools/webapp/program/webapputil/script.prg
@@ -742,7 +757,6 @@ a036c7ed0efa2d135c90e15135edcb50693d66ea 2019062012:06:47-UTC ./tools/pcre2/pcre
 9ac30c207cdef91beaea1508c1d8c998cd822c28 2019062012:06:43-UTC ./tools/pcre2/pcre2demo/pcre2demo-0-32.cpp
 2d51b2cc33b0d573447ba93e0c63b2b62866ad81 2019061823:17:47-UTC ./tools/webapp/common/OLVASS
 fc2b0542d835dcc1d1dd6c07fb0af92abbfdb6b7 2019061012:44:57-UTC ./usr/build/linux/msk2html.bat
-a606e2e2200e5fedaee04b9e3a0e22278c1a88f7 2019060319:02:02-UTC ./tools/webapp/program/webapp/defaults.prg
 28e3d9416129c127ea93eda6146b39e463a62115 2019052307:07:58-UTC ./tools/webapp/common/select.less
 4cf50fb33b7ca495792a622ab3448c58f4fb7cad 2019052221:38:36-UTC ./tools/webapp/common/textarea.less
 563ba05ea809c2d15e21f8f9c063976a8bba06cd 2019052220:03:03-UTC ./tools/pcre2/pcre2.cpp
@@ -1062,7 +1076,6 @@ afa37ea37451a318c2fabd297c78d43ef2162fd0 2017090117:12:41-UTC ./tools/webapp/pro
 bb81a885aebbe4229093f4ac065f0be95ffa03e9 2017082718:35:04-UTC ./tools/webapp/common/alert.less
 fe2ed87d02b71782108d2255b590fba9c860a65b 2017082718:34:51-UTC ./tools/webapp/common/menuicon.less
 7ca6960b8c6beb41888cb4bd956901866a8a1910 2017082718:34:34-UTC ./tools/webapp/common/table.less
-925956eb6d8fe92e593d5c5582509c0d3e2931d0 2017082616:43:20-UTC ./tools/webapp/program/webapp/wshandshake.prg
 1a864cd4336ed1cc5390f34cb0766f64be007861 2017082515:50:37-UTC ./tools/webapp/program/webapputil/frmaux.prg
 7346e6b81e5ad209e89aa1c9d703c193527d0b76 2017082415:31:56-UTC ./tools/webapp/program/webapputil/xlib.prg
 70391e40ed0caf458049e24857916321bebe0524 2017082412:06:56-UTC ./tools/webapp/program/whello/whello.prg
@@ -1073,7 +1086,6 @@ fe2ed87d02b71782108d2255b590fba9c860a65b 2017082718:34:51-UTC ./tools/webapp/com
 02c41f5dd9b3462d0dcfb26db28b5ad66bb4caae 2017082411:43:06-UTC ./tools/webapp/program/webapputil/webspawn.prg
 8a83d658b704e245e6044530f18a19e38003d391 2017082411:38:51-UTC ./tools/webapp/program/whello/wstart.prg
 cb6f04f96b9598151f281a19f107dbfb58426c23 2017082401:02:31-UTC ./tools/webapp/common/webapp-alert.js
-eb0c12be48c9d1a806b74f051b745aaf63233314 2017082108:48:10-UTC ./tools/webapp/config_webapp_defaults
 ecf347436cc60258a260eace822966f4d11614e7 2017082106:31:02-UTC ./tools/webapp/common/image.less
 c5e77b45e1fbfaa72d4c125fe3eb0f9e0c4cba5e 2017082017:57:53-UTC ./tools/webapp/program/webapputil/websocket.prg
 659ec5a3d6d366e783085407b4a89bcc42ec2422 2017082017:31:17-UTC ./tools/webapp/program/webapputil/parfile.bld
@@ -1107,7 +1119,6 @@ a56ee90103e64dc4d6f39bf2792d4a9d74a9dcb4 2017052509:24:08-UTC ./tools/mask/msk2s
 8429d67b5aea5402aa29a4d23eda69bd533a535e 2017052419:32:58-UTC ./ccclib/src/uic/brwmenu.prg
 a2419abcd98271bd8f33930cbe92c40654f1c571 2017052407:22:51-UTC ./terminal/common/colorext.cpp
 53dc488329cb25cb55e2aaedf232bfc73f691ff8 2017052315:13:21-UTC ./tutor/xbrwarr/s.bat
-164f53915dc71d8d14855ddfad210a60f2d47341 2017052206:11:34-UTC ./tools/webapp/config_webapp_start
 b41279f0c1d2550588ead3a1bbb0467bd8e162ff 2017052206:11:18-UTC ./tools/webapp/program/whello/parfile.bld
 adeb0f3f17d92254b2640b1c2c89baf55ced4c19 2017052205:55:25-UTC ./tools/webapp/program/m
 5f425b7d4c5c294a47d5bdf9b3e0bfe146fc9b7d 2017052205:53:06-UTC ./tools/webapp/program/msk2html/parfile.bld
@@ -1635,7 +1646,6 @@ a1f722c194be900f226b6b068f086f88554b32ba 2014123115:31:24-UTC ./tools/sql2/drive
 ef62eb30ae0c058cca82cb232b873571b96d95b2 2014122709:21:59-UTC ./tools/sql2/driver-mysql/bin2hex.cpp
 3fdc8f7786c9d0740efdc3a98f263effab9e96c9 2014120906:40:28-UTC ./tools/crypto/demo/sha256.prg
 bb76fa995bf2cda4a56bd330f813edb95f1e159e 2014120906:35:52-UTC ./tools/crypto/sha256.cpp
-c5bee96febbcc7beeb50b4771c43bc05e55554fb 2014092407:08:48-UTC ./tools/webapp/program/webapp/OLVASS
 d1b6061749f2d3ae157f11191954de512deada72 2014071514:54:20-UTC ./doc/ccc-oref.txt
 af7b9b430d962880e92803677893d563c044f883 2014042718:49:47-UTC ./jt/jterminal/jterminal.hu.ver
 5d850d2ae0806791a4c42ce38f957237c37ca8a4 2014041008:03:08-UTC ./usr/include/fileio.ch
@@ -1693,7 +1703,6 @@ e58df8cdf798e9554ce31279c50d0bec73d426de 2013021711:01:24-UTC ./terminal/unix/re
 5a63e223e9773658d5fa4a4859a7705d6c8b68e2 2013012413:54:06-UTC ./gtk/glade/demo/m
 3f0a3796641800342f3778280d87130d517fa61d 2013011617:55:46-UTC ./terminal/terminal-test/xstart.par
 51725c7df41fde437f6edbe67c9a74971761de33 2012121316:32:06-UTC ./tabobj/tbbtbtx/btindex.prg
-8bba7e83da0dac46139ed0ca6192885575a30764 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.p12
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
 73dd648c0cd17c798ba6f5846b62e40f0bd4e269 2012102712:37:54-UTC ./gtk/defs/gtkwindow.defs

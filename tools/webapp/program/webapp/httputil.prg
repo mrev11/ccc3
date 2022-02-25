@@ -84,7 +84,7 @@ local fspec:=geturl(req)
 local enc,gzip:=.f.
 local ct
 
-    if( use_gzip_encoding() )
+    if( param_gzip() )
         enc:=http_getheader(req,"Accept-Encoding")
         gzip:=a"gzip"$enc
     end
@@ -144,7 +144,7 @@ local content
 local enc,gzip:=.f.
 local ct
 
-    if( use_gzip_encoding() )
+    if( param_gzip() )
         enc:=http_getheader(req,"Accept-Encoding")
         gzip:=a"gzip"$enc
     end

@@ -1,3 +1,8 @@
+2022-02-05 webapp: 
+    parameterezes fejlesztve; 
+    ssl_context mar a parent processben legyartva;
+    modularizalas;
+
 2022.01.28 btbtx: tabVerify,tabUpgrde,tabOpen ujrairva;
 
 2022.01.20  prg2ppo 1.5.3

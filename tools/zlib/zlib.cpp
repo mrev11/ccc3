@@ -376,7 +376,7 @@ void _clp_gzread(int argno)  //mint a Clipper fread
             error_siz("zlib.gzread",base,3);
         }
 
-        //bufból másolatot csinálumk
+        //bufbol masolatot csinalumk
         char *buf1=binaryl(buflen);
         memmove(buf1,buf,buflen);
         (base+1)->data.vref->value=*TOP();

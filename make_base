@@ -107,5 +107,6 @@ fi
 ( cd tools/xmlrpc           && m )
 ( cd tools/xstart           && m )
 ( cd tools/z                && m )
+( cd tools/zlib             && m )
 
 

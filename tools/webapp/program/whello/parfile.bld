@@ -3,6 +3,7 @@
 -bccc3_socket 
 -bccc3_xmldom
 -bccc3_crypto
+-bccc3_zlib
 
 #BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 BUILD_EXE=..

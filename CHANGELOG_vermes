@@ -1,4 +1,7 @@
-2022-02-05 webapp: 
+2022-02-27 zlib tamogatas;
+    webapp atallitva ccc3_zlib.so-ra;
+
+2022-02-25 webapp: 
     parameterezes fejlesztve; 
     ssl_context mar a parent processben legyartva;
     modularizalas;

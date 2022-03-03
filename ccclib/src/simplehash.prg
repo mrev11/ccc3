@@ -60,6 +60,10 @@ class simplehash(object)
     method  listkey
     method  listvalue
 
+    method  toarr
+    method  toarrkey
+    method  toarrvalue
+
 
 ****************************************************************************
 static function simplehash.initialize(this,data) 
@@ -234,6 +238,40 @@ local item:=this:firstvalue
         ? item
         item:=this:nextvalue
     end
+
+****************************************************************************
+static function simplehash.toarr(this)
+local arr,item,cnt:=0
+    arr:=array(this:valuecount)
+    item:=this:first
+    while( item!=NIL )
+        arr[++cnt]:=item
+        item:=this:next
+    end
+    return arr
+
+****************************************************************************
+static function simplehash.toarrkey(this)
+local arr,key,cnt:=0
+    arr:=array(this:valuecount)
+    key:=this:firstkey
+    while( key!=NIL )
+        arr[++cnt]:=key
+        key:=this:nextkey
+    end
+    return arr
+
+****************************************************************************
+static function simplehash.toarrvalue(this)
+local arr,value,cnt:=0
+    arr:=array(this:valuecount)
+    value:=this:firstvalue
+    while( value!=NIL )
+        arr[++cnt]:=value
+        value:=this:nextvalue
+    end
+    return arr
+
 
 ****************************************************************************
 //hash algoritmus

@@ -1,4 +1,7 @@
-be6c2096ba6ad5db21b1c7fd9425385001a60b7c 2022030310:38:59-UTC ./CHANGELOG_vermes
+896da230660e3b3c6db6f3995299ce8c02b94966 2022030611:15:11-UTC ./CHANGELOG_vermes
+ea45ba66b70adc964ddd5d8247dcd37b9e5c3368 2022030611:10:34-UTC ./tools/csvreader/log-demo
+64850745a3ebc95622c05f93bebe2622452cabe2 2022030610:52:43-UTC ./tools/csvreader/csvreader.prg
+7d82b0a343fac945db424193930cc95bc672c8c2 2022030408:59:43-UTC ./tools/websrv/cgi-bin/log-temp
 1e670df1d523ce8cef612bc5e7db4562c61653c5 2022030310:29:44-UTC ./ccclib/src/simplehash.prg
 d28cca6d7112e67caf0b1e789d8681c38c4d3415 2022022823:56:41-UTC ./jt/jterminal/jterminal.jar
 dd7e0949cb13f7ac2dcc49f9f2d8a79b5ac02e25 2022022823:56:41-UTC ./log-install
@@ -621,7 +624,6 @@ cc5358d9a41be58f095d758817581966b836afd1 2020022314:20:22-UTC ./tools/webapp/pro
 630e37cde0cd6091482e3bd29ab046300a0f8ff3 2020022313:18:42-UTC ./tools/csvreader/OLVASS
 16b8d1da925e95aafa771ed9c2ac2d276c73a107 2020022313:14:29-UTC ./tools/csvreader/regex/OLVASS
 482455b60d3a8cb9dbdc4dad908ee414497cb09f 2020022217:22:22-UTC ./tools/csvreader/a.csv
-f4fbf9cb38579f059f7dce6d93e16e49bafea123 2020022217:19:37-UTC ./tools/csvreader/csvreader.prg
 37a5ba7b865ae638c188835682fd79004ce59854 2020022217:14:36-UTC ./tools/csvreader/regex/csvreader.prg
 ad4d89eb35ccd70fbe7acb8ed40d4a7653864875 2020022215:14:17-UTC ./tools/csvreader/demo1.prg
 471ed3f253bd81faf10286104e2a844085d84562 2020022212:13:52-UTC ./tools/csvreader/s

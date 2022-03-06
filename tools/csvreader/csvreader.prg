@@ -169,9 +169,9 @@ local value,err
         value::=left(len(value)-1) //esetleges cr levagva
     end
 
-    if( left(value,1)==a'"' )
-        value::=substr(2,len(value)-2)    // remove " .... "
-        value::=strtran(a'""',a'"')       // unescape  ""
+    if( left(value,1)==this:qq )
+        value::=substr(2,len(value)-2)              // remove " .... "
+        value::=strtran(this:qq+this:qq,this:qq)    // unescape  ""
     end
 
     return value

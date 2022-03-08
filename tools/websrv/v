@@ -1,6 +1,0 @@
-#!/bin/bash
-while true; do
-    clear
-    ps u -C "websrv.exe"
-    sleep 2
-done

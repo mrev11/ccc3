@@ -2,9 +2,7 @@
  
 -d.
 
--p/usr/lib
 -bssl
 -bcrypto
--bccc3.lib
+-bccc${CCCVER}.lib
  
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

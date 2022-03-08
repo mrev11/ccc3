@@ -105,7 +105,7 @@ static int sck_last_accepted=0;
 int main(int argc, char* argv[] )
 {
     char *if_secure=0; //all interfaces
-    char *if_plain="127.0.0.1"; //localhost
+    char *if_plain=strdup("127.0.0.1"); //localhost
 
     int port_secure=0; //-l port
     int port_plain=0; //-p port

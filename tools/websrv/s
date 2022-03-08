@@ -2,6 +2,6 @@
 
 export STARTDIR=`pwd`
 
-websrv.exe  @parfile.web #&
+websrv.exe  @parfile.web  2>&1 | tee log-websrv
 
 

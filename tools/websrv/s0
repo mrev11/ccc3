@@ -9,5 +9,5 @@
 #   nincs PHP
 #   nincs SSL
 
-websrv.exe    --rootdir `pwd`/htdocs  --virtualhost
+websrv.exe    --rootdir `pwd`/htdocs  --virtualhost --phppath /usr/bin/php-cgi
 

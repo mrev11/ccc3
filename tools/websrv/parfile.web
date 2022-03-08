@@ -1,8 +1,8 @@
 
 --listener :8080:4433
 --reuseaddr
---userid 1006
-#--log websrv.log
+#--userid 1006
+#--log log-websrv
 
 --rootdir $(STARTDIR)/htdocs
 --virtualhost

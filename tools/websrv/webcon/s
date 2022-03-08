@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./webcon.exe -l 4433 -p 8080  -k cert/localhost.pem  # -cp cert
+

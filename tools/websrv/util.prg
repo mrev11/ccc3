@@ -36,6 +36,7 @@ static mime:={;
     {".jpg",    a"image/jpeg"},;
     {".svg",    a"image/svg+xml"},;
     {".gif",    a"image/gif"},;
+    {".pdf",    a"application/pdf"},;
     {".jnlp",   a"application/x-java-jnlp-file"};
 }
 local extn:=lower(substr(fspec,rat(".",fspec))) //extension

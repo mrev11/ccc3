@@ -1,10 +1,11 @@
-03f6653add1388e311f8ed25f70a8487f71e3e49 2022030822:33:20-UTC ./CHANGELOG_vermes
+bcfa148c75c603a8bebef4d0fa74a0e74ff81ae4 2022030911:10:16-UTC ./CHANGELOG_vermes
+591c53bbe26f784ee9e9044e9b99fc1414c78f97 2022030910:22:33-UTC ./usr/bin/linux/websrv
+7dcfa2eafde306b855769d04e6d27882b485be7e 2022030910:22:30-UTC ./tools/websrv/util.prg
 e47842d27d72068613967f0aa5d3aef0599f9c77 2022030822:26:12-UTC ./tools/websrv/webcon/OLVASS
 771997a08bb61a9d2f705f637d7fc1ba3925c37f 2022030822:25:08-UTC ./tools/websrv/webcon/webcon.cpp
 4091b2eea1fccb5a579612b9bea194737d658946 2022030822:15:53-UTC ./tools/websrv/s0
 7ebaa09d86ca2bccb611ebd6f58810f42e248e2b 2022030821:49:11-UTC ./tools/websrv/webcon/s
 3b3e7fb682bcaaeafe0cd05b586af4065cf9fbaa 2022030821:44:13-UTC ./tools/websrv/webcon/parfile-unix.bld
-79541268b3c04f84b727447ba99568d095a4b990 2022030821:22:44-UTC ./usr/bin/linux/websrv
 308c681c832883a0f6f0bdc1aeabb0c7b3c58664 2022030821:14:05-UTC ./tools/websrv/s
 f449793bb030c85ac3684d3e65ae0686918ad941 2022030820:37:38-UTC ./tools/websrv/parfile.web
 c57078a432ef598e7f23ccd90ff76dfc0e234087 2022030813:12:38-UTC ./log-install
@@ -716,7 +717,6 @@ caa6f14e1177925a39acc3e7122d4f356c0d92e6 2019080807:40:16-UTC ./tools/webapp/com
 61b832b0d187b8557062f32830e7363d4a2faa27 2019080807:39:14-UTC ./tools/webapp/common/src/css/arrow-down-inv.svg
 a043b6b42832dcbba4e20fd8a805179ee86bbb99 2019080701:50:16-UTC ./tools/webapp/common/src/css/combo.less
 c8844a181852bd3f6d7d5c63e5582fe5d0f17d34 2019080701:46:51-UTC ./tools/webapp/common/src/css/datepicker.less
-b06306952f38a9568451790a17e2fa8a9378d01b 2019080507:33:05-UTC ./tools/websrv/util.prg
 1c370386e1bfa112c02a3bf60eeef04a5f7f3246 2019080416:55:12-UTC ./tools/webapp/common/src/css/arrow-down.svg
 a319ed63c400787fce085880c6633db4392d61f5 2019080414:08:52-UTC ./tools/webapp/program/webapputil/script.prg
 cb23bff1bef6c5c552feec6940c77a9ca8eb1444 2019080409:42:51-UTC ./tools/webapp/program/webapputil/xhtmlnode.prg

@@ -53,8 +53,8 @@ static semafd:=semafd()
 
         if(semafd!=NIL .and. lkcount==1)
             //elsot megfogja
-            fwaitlock_w(semafd,1,1)
-            fwaitlock_r(semafd,0,1)
+            fwaitlock(semafd,1,1,.t.) //exclusive
+            fwaitlock(semafd,0,1,.f.) //shared
             funlock(semafd,1,1)
         end
 

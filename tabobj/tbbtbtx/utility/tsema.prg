@@ -26,8 +26,8 @@ function main(cmd)
 local semafd:=semafd()
 local result
 
-    fwaitlock_w(semafd,1,1)
-    result:=fwaitlock_w(semafd,0,1)
+    fwaitlock(semafd,1,1)
+    result:=fwaitlock(semafd,0,1)
     funlock(semafd,1,1)
 
     if( result==0 )

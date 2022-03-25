@@ -1,3 +1,12 @@
+2022-03-25 lock fuggvenyek fsetlock/fwaitlock
+  varakozas nelkul lockol:
+    fsetlock(fd, offset, length, exclusive/shared)
+    fsetlock(fd, lowoffs, highoffs, exclusive/shared)
+  varakozassal lockol:
+    fwaitlock(fd, offset, length, exclusive/shared)
+    fwaitlock(fd, lowoffs, highoffs, exclusive/shared)
+  ugyanaz a parameterezes, az utolso logikai parameter defaultja .t. (exclusive);
+
 2022-03-25 ppo2cpp 5.4.1:
   A kodgenerator strtoul helyett strtoull-lel konvertalja a hexa szamokat.
   (Windowson a C++ kodba csonkitva irodtak ki a 32 bitnel nagyobb hexa szamok.)

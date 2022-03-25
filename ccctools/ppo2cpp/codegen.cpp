@@ -2872,11 +2872,11 @@ int codegen_expr_NUMBER(parsenode *p,void *v)//PROTO
     const char *num=rtxt(p,0);
     if( (*num=='0') && ((*(num+1)=='b') || (*(num+1)=='B')) )
     {
-        d=(double)strtoul(num+2,0,2);
+        d=(double)strtoull(num+2,0,2);
     }
     else if( (*num=='0') && ((*(num+1)=='x') || (*(num+1)=='X')) )
     {
-        d=(double)strtoul(num+2,0,16);
+        d=(double)strtoull(num+2,0,16);
     }
     else
     {

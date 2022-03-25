@@ -1,4 +1,15 @@
-bcfa148c75c603a8bebef4d0fa74a0e74ff81ae4 2022030911:10:16-UTC ./CHANGELOG_vermes
+876c77a921f6f324c5730ffe5b670a5b7c622f1d 2022032520:50:44-UTC ./CHANGELOG_vermes
+c1b396db23a6adc4c22e0579e74735e347c17545 2022032520:39:36-UTC ./usr/options/mng/compile.opt
+f3f0fe6fcb28df86bcdb9e68e48c5fd0048c07b9 2022032520:37:24-UTC ./ccclib/src/fsetlock.cpp
+6d7aa08a2e58e550115ca3eb649424981f973081 2022032519:58:57-UTC ./ccclib/src/fwaitlock.cpp
+5ec4d20cbcbb33e8b106ab4e6ed50d13c4bfefb8 2022032519:43:52-UTC ./tabobj/tbbtbtx/dblock.prg
+224484f24a4a04c64f47e702aed535f69de1c4f6 2022032519:43:04-UTC ./tabobj/tbbtbtx/utility/tsema.prg
+7454ea99b3786076e1e1da34e84e920d6f0530cc 2022032518:56:10-UTC ./usr/bin/linux/ppo2cpp
+7bbdacfdc280177e5e5832415dec128e992a84ca 2022032518:56:08-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
+8123e0bcac5300a69d74165782efee4aa8d994a4 2022032518:55:55-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
+b85fc6639154bde9773b9e9ce04a3e7b4b5fc62d 2022032518:54:53-UTC ./ccctools/ppo2cpp/codegen.cpp
+55820be8d88b8e282e98dd69196cf5a4c8b5e816 2022032011:19:30-UTC ./jt/jterminal/jterminal.jar
+8a56a16fbbd3d77651103ad71024efe1b5eadcbf 2022032011:19:30-UTC ./log-install
 591c53bbe26f784ee9e9044e9b99fc1414c78f97 2022030910:22:33-UTC ./usr/bin/linux/websrv
 7dcfa2eafde306b855769d04e6d27882b485be7e 2022030910:22:30-UTC ./tools/websrv/util.prg
 e47842d27d72068613967f0aa5d3aef0599f9c77 2022030822:26:12-UTC ./tools/websrv/webcon/OLVASS
@@ -8,8 +19,6 @@ e47842d27d72068613967f0aa5d3aef0599f9c77 2022030822:26:12-UTC ./tools/websrv/web
 3b3e7fb682bcaaeafe0cd05b586af4065cf9fbaa 2022030821:44:13-UTC ./tools/websrv/webcon/parfile-unix.bld
 308c681c832883a0f6f0bdc1aeabb0c7b3c58664 2022030821:14:05-UTC ./tools/websrv/s
 f449793bb030c85ac3684d3e65ae0686918ad941 2022030820:37:38-UTC ./tools/websrv/parfile.web
-c57078a432ef598e7f23ccd90ff76dfc0e234087 2022030813:12:38-UTC ./log-install
-98d11b1d764b561492d4a98075845f394d115433 2022030813:12:25-UTC ./jt/jterminal/jterminal.jar
 e1caee54b4e060d47c271f13864d4475d0a0ec15 2022030813:12:18-UTC ./usr/bin/linux/msk2html
 91464c78f36bd00be2f538f2c1ca6ac80b3fee96 2022030813:11:30-UTC ./usr/bin/linux/xstart
 4dc1951ef8e3c3940db09fd99134142b5e4d6ae8 2022030813:11:05-UTC ./usr/bin/linux/build
@@ -73,7 +82,6 @@ fe076ea7a8d950a15b4d71bcb7cc376cf592379e 2022022715:00:01-UTC ./usr/bin/linux/te
 5f1d2102d6cd116b63f2d16c2f800939f87dbb5f 2022022715:00:00-UTC ./usr/bin/linux/mklink
 59987d85acff2dfcdb4dcdaff38758b1c2434aa3 2022022715:00:00-UTC ./usr/bin/linux/prg2ppo
 0f8e2f7055bd275d744d088ab8445acbe4b195b2 2022022715:00:00-UTC ./usr/bin/linux/removecr
-86e9033514b2a23beff2994b5278126ddada6d8d 2022022714:59:44-UTC ./usr/bin/linux/ppo2cpp
 97a5bdbd408ec4339a33b836bdd391acb368ad3d 2022022714:59:39-UTC ./setup/setup-unix/compopt
 70aecccf99ab1190850eef386d05c6f6f1d6ed05 2022022714:59:30-UTC ./usr/bin/linux/lemon
 5f2a9c34702ff44689473412f9d42c835ff52ce7 2022022714:59:30-UTC ./usr/options/lin/gccver.opt
@@ -313,9 +321,6 @@ d39ee4700e3941c73036f2b11a82b816aac98377 2021120814:23:29-UTC ./ccctools/ppo2cpp
 50047238d8b25301f25496b19de57e2c97c621a9 2021112521:44:53-UTC ./tools/websrv/websrv.ver
 2451148b89bb45a2e4c901b6fcc0dfaa58fe8fa9 2021112521:43:55-UTC ./tools/websrv/httpreq.prg
 d95e0ed51a808269d021ad2f2ff05fab3e3fb961 2021112311:16:45-UTC ./ccctools/prg2ppo/match.prg
-f9775f3f13a1eef01e64bc9836e4623fb67f6e90 2021112122:02:39-UTC ./ccctools/ppo2cpp/codegen.cpp
-da1ea98c0755180ccf27d38242e8f373e16cc41d 2021112121:53:52-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
-837ab064769e9381bbcdd9a19dd3462a41ba6d29 2021112121:24:34-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 9f500162ad9d59300fbdddf7f6f6f343486e7bae 2021112117:13:06-UTC ./ccctools/ppo2cpp/codegen.h
 fdc0468c7fd09e1511bb1fbf31c2565206983cd9 2021112009:36:47-UTC ./ccclib/src/reftype.cpp
 c289a34612d3a86195f49a701573764d29cefca4 2021111914:45:13-UTC ./ccctools/prg2ppo/xtxlegal.h
@@ -565,9 +570,6 @@ ded31b59dc126d3225d405b5d28dcc8980f5914f 2020101116:09:40-UTC ./tutor/shm/s
 0d0a44bdfe999b6a05cbef3f877bc68af7df1fb6 2020082021:22:40-UTC ./terminal/sslforw/sslforw-term.cpp
 f1a506d97d020f9d96384f82a3d0858d9eaf22e7 2020081516:11:16-UTC ./tools/socket/socket-demo/http-client.prg
 cfe57df07c314fdb9bcfd2de8250a0bbd7cd04e5 2020080715:36:53-UTC ./tools/sql2/util/jeed/m.bat
-ef740c3e591146c675e7cd7f86fdf279c3140052 2020073019:45:52-UTC ./tabobj/tbbtbtx/utility/tsema.prg
-19047144d7025a48156a64ea7fee92a677f798fd 2020072918:40:32-UTC ./tabobj/tbbtbtx/dblock.prg
-a39fcec85349b10bce3815d76c71b0931d54a5b1 2020072913:15:34-UTC ./tabobj/tbbtbtx/fwaitlock.cpp
 7e8d0320e281752f71e4187debed86e97a58e8f2 2020072912:34:26-UTC ./tabobj/tbbtbtx/utility/m
 91d600b34667c7d3693d0511fed02cdf69c5050b 2020072712:39:03-UTC ./tabobj/common.src/tabmemo.prg
 ae26378148247ae55f431ca27f92f13425b9d222 2020072616:49:56-UTC ./tools/tdc2prgch/olvassel.txt
@@ -644,7 +646,6 @@ fc79639a22e70e00392cee7a8481992d2542d52d 2020021912:45:49-UTC ./tools/csvreader/
 7b23e5e3e579abde43a00d06aadb5a524bb8a044 2019120708:33:45-UTC ./ccclib/src/windows/nlstext.cpp
 d4d44de3f6d77d62319f36ba73ecd39875f066a1 2019120707:45:18-UTC ./tabobj/tbbtbtx/btsort.cpp
 5f8464a43a5ba5223fbfc631d711d5cb23cad5a4 2019120707:30:06-UTC ./setup/setup-windows/cc.bat
-cacb6ac468a7618c9b5d2c704ca52ec4b0f2cca1 2019120707:24:43-UTC ./usr/options/mng/compile.opt
 231d74e8bef97ee1d6981642b26513d3a4673e8b 2019120623:57:07-UTC ./gtk/code_byhand/m.bat
 c8683fd6f9d631d63abe1174550a76f5496fdce5 2019120520:59:49-UTC ./usr/build/linux/obj2so.bat
 539322ddc84d0be26935f17c653ed996321dc616 2019120520:57:24-UTC ./gtk/code_byhand/gtk.bld
@@ -1711,9 +1712,7 @@ addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/x
 24e75028d7a896d97da0cc0d6127f802dffc5f24 2012102111:26:26-UTC ./terminal/terminal-test/screenwr/m
 415d335fba72447fc8e4f5d8afb9d3373f6248aa 2012102008:17:41-UTC ./doc/valtozasok.tex
 ab58ad253b48e0900ba707bcbfdb3996394a2c3b 2012101507:54:47-UTC ./ccclib/src/direxist.prg
-fa525bc1b3aa9bdcd1f7ab5e16a3fe6092cb94c7 2012101217:04:48-UTC ./ccclib/src/unix/fsetlock.cpp
 a9bf2ac619391b1316317bc7fe0165699a85d9a4 2012101217:03:04-UTC ./ccclib/src/windows/fseek.cpp
-17475f08d0e4335bfce84f621ef47eda9c13cda9 2012101216:59:59-UTC ./ccclib/src/windows/fsetlock.cpp
 613980c149c76884b9df0c9ac91366ee6171a5dc 2012101114:57:50-UTC ./setup/setup-unix/trim.cpp
 df5ac35bee9220c7f133f0a498480223f7146b39 2012101013:32:43-UTC ./ccclib/src/windows/ftruncate.cpp
 3d3bbdfdece9069283ed3010f29c9f7f6f53e383 2012101011:53:01-UTC ./ccclib/src/chsize.prg

@@ -1,3 +1,10 @@
+2022-03-25 ppo2cpp 5.4.1:
+  A kodgenerator strtoul helyett strtoull-lel konvertalja a hexa szamokat.
+  (Windowson a C++ kodba csonkitva irodtak ki a 32 bitnel nagyobb hexa szamok.)
+  Windowson a mingw forditasi opcioiba bekerult a -DFILE_OFFSET_BITS=64.   
+  (Ezzel Windowson is sizeof(off_t)==8, Linuxon ez korabban is igy volt.) 
+
+
 2022-03-09 tools/websrv-ben application/pdf mime type;
 
 2022-03-08 tools/websrv-ben folosleges scriptek torolve;

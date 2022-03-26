@@ -1,3 +1,8 @@
+2022-03-26 CCC3-Windows stat javitas:
+  Win1709-en nem lehet (struct *_stat)-ot (struct *stat)-ra castolni.
+  (Korabban lehetett, ujabb Windowsokon most is lehet.)   Javitva stat(), 
+  stat_st_mode(), stat_st_size(). Csak a CCC3-Windows ag erintett.
+
 2022-03-25 lock fuggvenyek fsetlock/fwaitlock
   varakozas nelkul lockol:
     fsetlock(fd, offset, length, exclusive/shared)

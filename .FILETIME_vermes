@@ -1,4 +1,8 @@
-14ba2e5578c96a35cb4118cc3ecaea9fb7e928be 2022032521:02:46-UTC ./CHANGELOG_vermes
+66d55402cf329e75b939fe9c316c0b4619b1cb75 2022032610:41:10-UTC ./CHANGELOG_vermes
+2bd0d3ee67fb98c21adc240219373f60655b50a2 2022032610:18:56-UTC ./ccclib/src/stat.cpp
+7d07c2cc1dca364986d5a21b3e21e3c43c5474eb 2022032608:11:01-UTC ./jt/jterminal/jterminal.jar
+d13733937043c493ce6de9e8025dfd41ea91cec9 2022032608:11:01-UTC ./log-install
+d63d2356c27316e8edd7bb8e4d181beed7e97a11 2022032608:10:10-UTC ./usr/bin/linux/tsema
 c1b396db23a6adc4c22e0579e74735e347c17545 2022032520:39:36-UTC ./usr/options/mng/compile.opt
 f3f0fe6fcb28df86bcdb9e68e48c5fd0048c07b9 2022032520:37:24-UTC ./ccclib/src/fsetlock.cpp
 6d7aa08a2e58e550115ca3eb649424981f973081 2022032519:58:57-UTC ./ccclib/src/fwaitlock.cpp
@@ -8,8 +12,6 @@ f3f0fe6fcb28df86bcdb9e68e48c5fd0048c07b9 2022032520:37:24-UTC ./ccclib/src/fsetl
 7bbdacfdc280177e5e5832415dec128e992a84ca 2022032518:56:08-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 8123e0bcac5300a69d74165782efee4aa8d994a4 2022032518:55:55-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 b85fc6639154bde9773b9e9ce04a3e7b4b5fc62d 2022032518:54:53-UTC ./ccctools/ppo2cpp/codegen.cpp
-55820be8d88b8e282e98dd69196cf5a4c8b5e816 2022032011:19:30-UTC ./jt/jterminal/jterminal.jar
-8a56a16fbbd3d77651103ad71024efe1b5eadcbf 2022032011:19:30-UTC ./log-install
 591c53bbe26f784ee9e9044e9b99fc1414c78f97 2022030910:22:33-UTC ./usr/bin/linux/websrv
 7dcfa2eafde306b855769d04e6d27882b485be7e 2022030910:22:30-UTC ./tools/websrv/util.prg
 e47842d27d72068613967f0aa5d3aef0599f9c77 2022030822:26:12-UTC ./tools/websrv/webcon/OLVASS
@@ -63,7 +65,6 @@ c05aaf156e6e0511aae20acec5e140833f3caa64 2022022715:00:20-UTC ./usr/bin/linux/pr
 f16296294059f65940d7c751f8ec8ef454107009 2022022715:00:15-UTC ./usr/bin/linux/bt2dbf
 2a6d4b8155615706625d65f19fd66747a5e11aac 2022022715:00:15-UTC ./usr/bin/linux/bt2txt
 57d16460d634af0cf3a9c45e5436fa2c1b044279 2022022715:00:15-UTC ./usr/bin/linux/bti
-e01f875dd576248fc5500a19a9a5b80b44c3bfd5 2022022715:00:15-UTC ./usr/bin/linux/tsema
 6ea86daedaf6f0951cbcb225ce1932686c2c24d2 2022022715:00:15-UTC ./usr/bin/linux/tstru
 af477689e924968808b4134ceecb39986b15293e 2022022715:00:15-UTC ./usr/bin/linux/tview
 9861b26fd93a31ac72d5d9cb3049fe42dc027da2 2022022715:00:07-UTC ./usr/bin/linux/mask

@@ -27,6 +27,7 @@
 #include <sckutil.h>
 #include <screenbuf.h>
 #include <termcmd.h>
+#include <flock.h>
 
 #ifdef WINDOWS
   #ifndef wcscasecmp
@@ -367,8 +368,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
 
                             if(qout[fp])
                             {
-                                extern int fsetlock(int,int,int);
-                                fsetlock(fileno(qout[fp]),0,1);
+                                _ccc_lock(fileno(qout[fp]),0,0,1,0);
                             }
                         }
                         result=qout[fp] ? 1:0;
@@ -392,8 +392,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     else
                     {
                         fclose(qout[fp]);
-                        extern int funlock(int,int,int);
-                        funlock(fileno(qout[fp]),0,1);
+                        _ccc_unlock(fileno(qout[fp]),0,0,1);
                         if(fnames[fp])
                         {
                             autostart(fnames[fp]);

@@ -24,111 +24,35 @@
 #include <unistd.h>
 
 #include <btree.h>
+#include <flock.h>
 
-#ifdef _UNIX_
+
 //----------------------------------------------------------------------------
 void __bt_pagelock(BTREE *t, pgno_t pgno, int type)
 {
     //page lockolasa irasra     __bt_pagelock(t,pgno,1);
     //page lockolasa olvasasra  __bt_pagelock(t,pgno,0);
- 
-    struct flock fl;
 
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = ((off_t)pgno)*t->bt_psize;
-    fl.l_len    = 1;
-    fl.l_type   = F_WRLCK;
-    fcntl(t->bt_fd,F_SETLKW,&fl);  
-
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = ((off_t)pgno)*t->bt_psize+1; 
-    fl.l_len    = 1;
-    fl.l_type   = type?F_WRLCK:F_RDLCK;
-    fcntl(t->bt_fd,F_SETLKW,&fl);  
-
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = ((off_t)pgno)*t->bt_psize; 
-    fl.l_len    = 1;
-    fl.l_type   = F_UNLCK;
-    fcntl(t->bt_fd,F_SETLK,&fl);  
-}
- 
-//----------------------------------------------------------------------------
-void __bt_pageunlock(BTREE *t, pgno_t pgno)
-{
-    struct flock fl;
-
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = ((off_t)pgno)*t->bt_psize+1;
-    fl.l_len    = 1;
-    fl.l_type   = F_UNLCK;
-    fcntl(t->bt_fd,F_SETLK,&fl);  
-}
-
-
-#else
-//-----------------------------------------------------------------------------
-// Szuksegmegoldas Windows-ra.
-// 1) a lockolt terulet nem olvashato
-// 2) hianyzik a shared lock
-
-//pagelock: (2GB-1KB-pgno) pozicion 1 byte
-#define PAGE2POS(pgno) ((unsigned)2*1024*1024*1024-1024-(pgno))
- 
-#include <windows.h>
-#include <io.h>
-#include <sys\locking.h>
-
-#ifdef BORLAND
-#define _locking   locking
-#define _LK_LOCK   LK_LOCK  
-#define _LK_NBLCK  LK_NBLCK  
-#define _LK_UNLCK  LK_UNLCK  
-#endif
-
-//----------------------------------------------------------------------------
-static int __bt_fsetlock(int fd, long pos, int nbyte) 
-{
-    int result=-1;
-    long curpos=_lseek(fd,0L,SEEK_CUR);
-    if( -1L!=_lseek(fd,pos,SEEK_SET) )
-    {
-        while( 0!=(result=_locking(fd,_LK_NBLCK,nbyte)) )
-        {
-            Sleep(100);
-        }
-    }
-    _lseek(fd,curpos,SEEK_SET);
-    return result;  //0,-1
-}
-
-//----------------------------------------------------------------------------
-static int __bt_funlock(int fd, long pos, int nbyte)  
-{
-    int result=-1;
-    long curpos=_lseek(fd,0L,SEEK_CUR);
-    if( -1L!=_lseek(fd,pos,SEEK_SET) )
-    {
-        result=_locking(fd,_LK_UNLCK,nbyte);
-    }
-    _lseek(fd,curpos,SEEK_SET);
+    int fd=t->bt_fd;
+    unsigned low=2*pgno;
+    unsigned high=LK_OFFSET_PAGE;
+    unsigned length=1;
     
-    return result;  //0,-1
+    _ccc_lock  ( fd, low+1 , high, 1, CCCLK_WAIT+CCCLK_WRITE);  
+    _ccc_lock  ( fd, low   , high, 1, CCCLK_WAIT+(type?CCCLK_WRITE:CCCLK_READ));  
+    _ccc_unlock( fd, low+1 , high, 1 );  
 }
-
-//----------------------------------------------------------------------------
-void __bt_pagelock(BTREE *t, pgno_t pgno, int type)
-{
-    __bt_fsetlock(t->bt_fd,PAGE2POS(pgno),1);  
-} 
-
 
 //----------------------------------------------------------------------------
 void __bt_pageunlock(BTREE *t, pgno_t pgno)
 {
-    __bt_funlock(t->bt_fd,PAGE2POS(pgno),1);  
+    int fd=t->bt_fd;
+    unsigned low=2*pgno;
+    unsigned high=LK_OFFSET_PAGE;
+    unsigned length=1;
+    
+    _ccc_unlock( fd, low   , high, 1 );  
 }
- 
-#endif
+
 //----------------------------------------------------------------------------
 

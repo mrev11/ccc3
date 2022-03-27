@@ -1,3 +1,16 @@
+2022-03-27
+  Linux/Windows kozos lock interfesz: flock.cpp-ben _ccc_lock() es _ccc_unlock(); 
+  fsetlock/fwaitlock/funlock atirva _ccc_lock()/_ccc_unlock()-ra;
+  filecreat.cpp-ben a fileshare protokol lock atirva _ccc_lock()-ra;
+  tabobj: _writechangelog_mutex atirva fwaitlock-ra (cpp->prg);
+  tabobj: __bt_pagelock() atirva _ccc_lock()/_ccc_unlock()-ra;
+  protokoll lock offsetek (valtozott a helyuk):
+    filelock : low=0        high=LK_OFFSET_FILE     (253)
+    pagelock : low=2*pgno   high=LK_OFFSET_PAGE     (254)
+    reclock  : low=recpos   high=LK_OFFSET_RECORD   (255)
+  tabobj: mpool.cpp-ben a lapolvasas tobbszor probalva;
+  Windowson is bekapcsolva a 64 bit fileoffset tamogatas;
+
 2022-03-26 CCC3-Windows stat javitas:
   Win1709-en nem lehet (struct *_stat)-ot (struct *stat)-ra castolni.
   (Korabban lehetett, ujabb Windowsokon most is lehet.)   Javitva stat(), 

@@ -78,6 +78,11 @@
 #define FC_SYSTEM       4  // Create system file
 #define FC_NOTRUNC      8  // Létező filé tartalma megmarad
 #define FC_APPEND    1024  // Writes will add to the end of the file
+
+
+#define LK_OFFSET_FILE     253    // csak unix
+#define LK_OFFSET_PAGE     254
+#define LK_OFFSET_RECORD   255
  
 #endif
  

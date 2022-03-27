@@ -518,6 +518,7 @@ extern void _clp_int(int);
 //fsetlock.obj:
 extern void _clp_funlock(int);
 extern void _clp_fsetlock(int);
+extern void _clp_fwaitlock(int);
 
 //exename.obj:
 extern void _clp_exename(int);

@@ -27,15 +27,13 @@
 #include <string.h>
  
 #include <cccapi.h>
+#include <flock.h>
 #include <fileio.ch>  
 #include <fileconv.ch>
 
 #define UNIX_FO_SHARED        0
 #define UNIX_FO_EXCLUSIVE     1
 #define UNIX_FO_NOLOCK        2
-
-#define CCC_FILELOCK_START  ((off_t)(unsigned long)0x80000000)  //2GB
-#define CCC_FILELOCK_LEN    ((off_t)(unsigned long)0x1) 
 
 #define DOSNAME_LEN           4
  
@@ -82,43 +80,17 @@ void _clp_setshare(int argno) //CA-tools fopen es fcreate default nyitasi modja
 static int ulock(int hnd, int unixShareMode) 
 {
     // lock a share modok emulalasara
-    // Vissza: 0=OK, -1=sikertelen
 
     if( unixShareMode==UNIX_FO_NOLOCK )
     {
         return 0;
     }
-
-    struct flock fl;
-       
-    fl.l_whence=SEEK_SET;
-    #ifdef _LFS_
-      fl.l_start=(unsigned)CCC_FILELOCK_START*512-1;  //1024 GB - 1
-    #else
-      fl.l_start=(unsigned)CCC_FILELOCK_START-2;      //   2 GB - 2
-    #endif
-    fl.l_len=CCC_FILELOCK_LEN;
-
-    switch(unixShareMode)
+    else
     {
-        case UNIX_FO_SHARED:
-            fl.l_type=F_RDLCK;
-            break;
-
-        case UNIX_FO_EXCLUSIVE:
-            fl.l_type=F_WRLCK;
-            break;
-
-        default:
-            errno=ENOLCK;
-            return -1;
+        int wait=CCCLK_NOWAIT;
+        int share=(unixShareMode==UNIX_FO_SHARED)?CCCLK_READ:CCCLK_WRITE;
+        return _ccc_lock(hnd,0,LK_OFFSET_FILE,1,wait+share); // 0=OK, -1=error
     }
-
-    if( (-1==fcntl(hnd,F_SETLK,&fl)) && (errno!=ENOLCK) && (errno!=EACCES) )
-    {
-        return -1;
-    }
-    return 0;
 }
 
 //----------------------------------------------------------------------------

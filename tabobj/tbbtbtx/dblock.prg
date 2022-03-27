@@ -21,8 +21,8 @@
 #include "fileio.ch"
 #include "tabobj.ch"
 
-//rekord lock: (2GB-1MB-recno) pozicion 1 byte
-static OFFSET:=2*(1024*1024*1024)-(1024*1024)
+static OFFSET:=0x7ffffff0
+static OFFSETHIGH:=255
 
 
 ******************************************************************************
@@ -303,11 +303,7 @@ local result
     if( pos==NIL )
         pos:=tabPosition(table)
     end
-    #ifdef _UNIX_
-      result:=fsetlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB
-    #else
-      result:=fsetlock(table[TAB_FHANDLE],OFFSET-pos,1)
-    #endif
+    result:=fsetlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
     if( result!=0 )
         tabLockCount(table,-1)
     end
@@ -319,11 +315,7 @@ local result
     if( pos==NIL )
         pos:=tabPosition(table)
     end
-    #ifdef _UNIX_
-      result:=funlock(table[TAB_FHANDLE],OFFSET-pos,256,1) //LFS 1024 GB 
-    #else
-      result:=funlock(table[TAB_FHANDLE],OFFSET-pos,1)
-    #endif
+    result:=funlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
     if( result==0 )
         tabLockCount(table,-1)
     end

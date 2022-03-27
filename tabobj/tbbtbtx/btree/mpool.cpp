@@ -220,39 +220,44 @@ void *mpool_get(MPOOL *mp, pgno_t pgno)
     }
 
     buf=(char*)malloc(mp->pagesize);
-    memset(buf,0,mp->pagesize);
-    lseek(mp->fd,((off_t)pgno)*mp->pagesize,SEEK_SET);
-    rb=read(mp->fd,buf,mp->pagesize);
 
-    if( rb!=mp->pagesize )
+    int attempt=0;
+    while(1)
     {
-        free(buf);
-        return 0;
-    }
-
-    pgno_t code=*(pgno_t*)buf; //uint32
-    if( mp->pgin )
-    {
-        M_32_SWAP(code);
-    }
-
-    if( code==pgno )
-    {
-        //ok, pgno egyezik
-        //fprintf(stderr,"pgno egyezik %x\n",pgno);
-        ;
-    }
-    else if( code==crc32(buf,mp->pagesize) ) //disk byte order!
-    {
-        //ok, CRC egyezik
-        //fprintf(stderr,"code egyezik %x\n",code);
-        ;
-    }
-    else
-    {
-        fprintf(stderr,"corrupt page in fd=%d pgno=%d(%x) at offset %lx\n", mp->fd, pgno, code, ((unsigned long)pgno)*mp->pagesize );
-        //raise(SIGABRT);
-        raise(SIGTERM);
+        memset(buf,0,mp->pagesize);
+        lseek(mp->fd,((off_t)pgno)*mp->pagesize,SEEK_SET);
+        rb=read(mp->fd,buf,mp->pagesize);
+    
+        if( rb!=mp->pagesize )
+        {
+            free(buf);
+            return 0;
+        }
+    
+        pgno_t code=*(pgno_t*)buf; //uint32
+        if( mp->pgin )
+        {
+            M_32_SWAP(code);
+        }
+    
+        if( code==pgno )
+        {
+            //ok, pgno egyezik
+            //fprintf(stderr,"pgno egyezik %x\n",pgno);
+            break;
+        }
+        else if( code==crc32(buf,mp->pagesize) ) //disk byte order!
+        {
+            //ok, CRC egyezik
+            //fprintf(stderr,"code egyezik %x\n",code);
+            break;
+        }
+        else if( ++attempt>10 )
+        {
+            fprintf(stderr,"corrupt page in fd=%d pgno=%d(%x) at offset %lx\n", mp->fd, pgno, code, ((unsigned long)pgno)*mp->pagesize );
+            //raise(SIGABRT);
+            raise(SIGTERM);
+        }
     }
 
     if( mp->pgin )

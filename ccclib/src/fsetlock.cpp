@@ -26,6 +26,7 @@
 #include <sys/types.h>
 
 #include <cccapi.h>
+#include <flock.h>
 
 
 //-----------------------------------------------------------------------------
@@ -40,69 +41,94 @@ void _clp_fsetlock(int argno)
     CCC_PROLOG("fsetlock",5);
 
     int xp=0;
-    int exclusive_lock=1; //default: write lock
+    int flags=CCCLK_NOWAIT;
     if( ISFLAG(argno) )
     {
         xp=1;
-        exclusive_lock=_parl(argno);
+        flags+=_parl(argno)?CCCLK_WRITE:CCCLK_READ;
     }
-
+    
     int fd=0;
-    off_t pos=0,low=0,high=0,nbyte=0;
+    off_t start=0;
+    unsigned low=0,high=0,length=0;
 
     if( (argno-xp)==3 ) 
     {
-        fd    = _parni(1);
-        pos   = _parnuw(2);
-        nbyte = _parnuw(3);
-        low   = pos&0xffffffff;
-        high  = pos>>32;
+        fd     = _parni(1);
+        start  = _parnuw(2);
+        length = _parnuw(3);
+        low    = start&0xffffffff;
+        high   = start>>32;
     }
     else if( (argno-xp)==4 ) //large file support  
     {
-        fd    = _parni(1);
-        low   = _parnuw(2); 
-        high  = _parnuw(3); 
-        nbyte = _parnuw(4);
-        pos   = (high<<32)+low;
+        fd     = _parni(1);
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = _parnuw(4);
+        start  =  high;
+        start  =  (start<<32)+high;
     }
     else
     {
         ARGERROR();
     }
-
-#ifdef UNIX 
-
-    struct flock fl;
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = pos;
-    fl.l_len    = nbyte;
-    fl.l_type   = exclusive_lock?F_WRLCK:F_RDLCK;
-    _retni( fcntl(fd,F_SETLK,&fl) ); //OK 0, error -1
-
-#else
-
-    OVERLAPPED overlapped={0,0,0,0,NULL};
-    overlapped.Offset=low;
-    overlapped.OffsetHigh=high;
-    int flags=LOCKFILE_FAIL_IMMEDIATELY; //(1)
-    if( exclusive_lock  )
-    {
-        flags+=LOCKFILE_EXCLUSIVE_LOCK; //(2)
-    }
-    int result=LockFileEx(  (HANDLE)_get_osfhandle(fd),
-                            flags,
-                            0,
-                            nbyte&0xffffffff,
-                            nbyte>>32,
-                            &overlapped );
-    _retni( result==0?-1:0 ); //OK 0, error -1                       
-
-#endif
+    
+    _retni( _ccc_lock(fd,low,high,length,flags) );
 
     CCC_EPILOG();
 }
 
+
+//-----------------------------------------------------------------------------
+void _clp_fwaitlock(int argno)
+{
+    // lock varakozassal
+
+    // fwaitlock(fd, offset, length [,flag])
+    // fwaitlock(fd, low, high, length [,flag])
+    // flag defaultja: .t. (exclusive)
+
+    CCC_PROLOG("fwaitlock",5);
+
+    int xp=0;
+    int flags=CCCLK_WAIT;
+    if( ISFLAG(argno) )
+    {
+        xp=1;
+        flags+=_parl(argno)?CCCLK_WRITE:CCCLK_READ ;
+    }
+    
+    int fd=0;
+    off_t start=0;
+    unsigned low=0,high=0,length=0;
+
+    if( (argno-xp)==3 ) 
+    {
+        fd     = _parni(1);
+        start  = _parnuw(2);
+        length = _parnuw(3);
+        low    = start&0xffffffff;
+        high   = start>>32;
+    }
+    else if( (argno-xp)==4 ) //large file support  
+    {
+        fd     = _parni(1);
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = _parnuw(4);
+        start  =  high;
+        start  =  (start<<32)+high;
+    }
+    else
+    {
+        ARGERROR();
+    }
+    
+    _retni( _ccc_lock(fd,low,high,length,flags) );
+
+    CCC_EPILOG();
+}
 
 //-----------------------------------------------------------------------------
 void _clp_funlock(int argno)  //UNIX
@@ -110,48 +136,31 @@ void _clp_funlock(int argno)  //UNIX
     CCC_PROLOG("funlock",4);
 
     int fd=0;
-    off_t pos=0,low=0,high=0,nbyte=0;
+    off_t start=0,low=0,high=0,length=0;
  
     if( argno==3 ) 
     {
-        fd    = _parni(1);
-        pos   = _parnuw(2); 
-        nbyte = _parnuw(3); 
-        low   = pos&0xffffffff;
-        high  = pos>>32;
+        fd     = _parni(1);
+        start  = _parnuw(2); 
+        length = _parnuw(3); 
+        low    = start&0xffffffff;
+        high   = start>>32;
     }
     else if( argno==4 ) //large file support 
     {
-        fd    = _parni(1);
-        low   = _parnuw(2); 
-        high  = _parnuw(3); 
-        nbyte = _parnuw(4);
-        pos   = (high<<32)+low;
+        fd     = _parni(1);
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = _parnuw(4);
+        start  = high;
+        start  = (start<<32)+low;
     }
     else
     {
         ARGERROR();
     }
 
-#ifdef UNIX 
-
-    struct flock fl;
-    fl.l_whence = SEEK_SET;
-    fl.l_start  = pos;
-    fl.l_len    = nbyte;
-    fl.l_type   = F_UNLCK;
-    _retni( fcntl(fd,F_SETLK,&fl) );  //OK 0, error -1
-
-#else
-
-    int result=UnlockFile(  (HANDLE)_get_osfhandle(fd),
-                            low,
-                            high,
-                            nbyte&0xffffffff,
-                            nbyte>>32 );
-    _retni( result==0?-1:0 ); //OK 0, error -1                       
-
-#endif
+    _retni( _ccc_unlock(fd,low,high,length) );
 
     CCC_EPILOG();
 }

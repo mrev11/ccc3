@@ -1,3 +1,6 @@
+2022-03-28
+   tabobj: __bt_read()-ben es __bt_read1()-ben shared pagelock;
+
 2022-03-27
   Linux/Windows kozos lock interfesz: flock.cpp-ben _ccc_lock() es _ccc_unlock(); 
   fsetlock/fwaitlock/funlock atirva _ccc_lock()/_ccc_unlock()-ra;

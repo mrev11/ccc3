@@ -27,6 +27,9 @@
 #include <cccapi.h>
 #include <flock.h>
 
+//#define DEBUG
+
+
 #ifdef UNIX
 //------------------------------------------------------------------------------------------
 int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags)
@@ -44,10 +47,10 @@ int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned fla
     int result=fcntl(fd,lock,&fl); //OK 0, error -1
 
 #ifdef DEBUG
-    printf("pid=%d fd=%d start=%lx %s %s %s\n",
+    printf("pid=%d fd=%d  %llx  %-6s  %-9s  %s\n",
                 getpid(),
                 fd,
-                start,
+                (long long)start,
                 lock==F_SETLKW ? "wait":"nowait",
                 type==F_RDLCK ? "shared":"exclusive",
                 result==0 ? "Ok":"Failed");
@@ -90,6 +93,18 @@ int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned fla
                             length,
                             0,
                             &overlapped );
+#ifdef DEBUG
+    off_t start=high;
+    start=(start<<32)+low;
+
+    printf("pid=%d fd=%d  %llx  %-6s  %-9s  %s\n",
+                getpid(),
+                fd,
+                (long long)start,
+                (flags&CCCLK_WAIT) ? "wait":"nowait",
+                (flags&CCCLK_READ) ? "shared":"exclusive",
+                result==0 ? "Ok":"Failed");
+#endif
 
     return (result==0)?-1:0; //OK 0, error -1                       
 }

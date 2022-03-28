@@ -166,6 +166,7 @@ int __bt_read(BTREE *t, DBT*data, RECPOS *recpos)
     int recsiz=0; 
 
     mpool_count(t->bt_mp,"read-0");//ellenorzes 
+    __bt_pagelock(t,recpos->pgno,0);
     
     if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,recpos->pgno))) &&
         (h->flags==P_DATA) && 
@@ -181,6 +182,7 @@ int __bt_read(BTREE *t, DBT*data, RECPOS *recpos)
     {
         mpool_put(t->bt_mp,h,0); 
     }
+    __bt_pageunlock(t,recpos->pgno);
     mpool_count(t->bt_mp,"read-1");//ellenorzes 
     return recsiz;
 }
@@ -192,6 +194,7 @@ int __bt_read1(BTREE *t, DBT*data, pgno_t pgno, indx_t index)
     int recsiz=0; 
     
     mpool_count(t->bt_mp,"read1-0");//ellenorzes 
+    __bt_pagelock(t,pgno,0);
 
     if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,pgno))) &&
         (h->flags==P_DATA) && 
@@ -207,6 +210,7 @@ int __bt_read1(BTREE *t, DBT*data, pgno_t pgno, indx_t index)
     {
         mpool_put(t->bt_mp,h,0); 
     }
+    __bt_pageunlock(t,pgno);
     mpool_count(t->bt_mp,"read1-1");//ellenorzes 
     return recsiz;
 }

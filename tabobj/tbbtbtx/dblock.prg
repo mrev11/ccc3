@@ -21,9 +21,6 @@
 #include "fileio.ch"
 #include "tabobj.ch"
 
-static OFFSET:=0x7ffffff0
-static OFFSETHIGH:=255
-
 
 ******************************************************************************
 //Public interface

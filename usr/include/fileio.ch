@@ -52,8 +52,8 @@
 #define FO_SHARED      64  // Same as FO_DENYNONE
 #define FO_NOLOCK     128  // On UNIX: no lock, on Windows: same as FO_COMPAT
 
-#define FO_CREATE     256  // Nem létező file létrejön
-#define FO_TRUNCATE   512  // Létező file hosszát 0-ra állítja
+#define FO_CREATE     256  // Nem letezo file letrejon
+#define FO_TRUNCATE   512  // Letezo file hosszat 0-ra allitja
 #define FO_APPEND    1024  // Writes will add to the end of the file
 #define FO_NOINHERIT 2048  // Gyerek processz nem orokli az fd-t
 
@@ -76,7 +76,7 @@
 #define FC_READONLY     1  // Create read-only file
 #define FC_HIDDEN       2  // Create hidden file
 #define FC_SYSTEM       4  // Create system file
-#define FC_NOTRUNC      8  // Létező filé tartalma megmarad
+#define FC_NOTRUNC      8  // Letezo file tartalma megmarad
 #define FC_APPEND    1024  // Writes will add to the end of the file
 
 

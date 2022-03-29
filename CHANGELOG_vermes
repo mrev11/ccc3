@@ -1,4 +1,7 @@
 2022-03-28
+   elirasok javitva;
+
+2022-03-28
    tabobj: __bt_read()-ben es __bt_read1()-ben shared pagelock;
 
 2022-03-27

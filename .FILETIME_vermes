@@ -1,4 +1,7 @@
-8c83f043cf90fc1f7ee9b47a0b40fe1a1e1def39 2022032815:48:48-UTC ./CHANGELOG_vermes
+1c2020c156c0a32bc64ea01aec480c34aea722dc 2022032916:08:29-UTC ./CHANGELOG_vermes
+0607027901a4231c642e324e5d63efaaff5ca2bf 2022032914:08:31-UTC ./tabobj/tbbtbtx/dblock.prg
+1632c83de6f69770ddd28b297100c6f3f7152c22 2022032909:43:38-UTC ./ccclib/src/fsetlock.cpp
+9fb9b8f790130f746fe01abdb1e14617889fc22c 2022032908:46:25-UTC ./usr/include/fileio.ch
 9ca15b0966ca99399888764b5abb628d0d20fe0c 2022032812:32:07-UTC ./ccclib/src/flock.cpp
 47b636804bd91ce6580c633921602a605ddfc86e 2022032721:46:18-UTC ./jt/jterminal/jterminal.jar
 caa8a6771a830deeb417bc1253a2fdf363d81240 2022032721:46:18-UTC ./log-install
@@ -16,11 +19,8 @@ ce9cd732e04de277b81a764d6ce745135f136cab 2022032713:53:10-UTC ./usr/bin/linux/te
 874e4a4281c9f36a25d7be3567cb716e4500b307 2022032713:50:13-UTC ./tabobj/tbbtbtx/btree/bt_lock.cpp
 bd11e0804d5dee113919a6c9d7f1cc1141b8c604 2022032713:50:06-UTC ./terminal/common/tcpio.cpp
 bb68608dc58682f1916ca1c5873dd9d70702f374 2022032713:49:55-UTC ./ccclib/src/unix/filecreat.cpp
-445390f12bce900ab2bb1d6ea5153b44414e9ed6 2022032713:49:28-UTC ./ccclib/src/fsetlock.cpp
 e4f63760cf3508773127d6bb62398174e4d1fc75 2022032713:23:29-UTC ./usr/include/cccext2.h
 98f3c3ddc1b8e814d8f93c0621f55ee91e554756 2022032713:20:04-UTC ./usr/include/flock.h
-a011fe2163ac9f34a1ddf9c2a7d645c8b3813fdc 2022032713:06:03-UTC ./usr/include/fileio.ch
-1c8f9bb1b6a01ac7f2448a8af4480b5b0f362928 2022032708:15:00-UTC ./tabobj/tbbtbtx/dblock.prg
 cd8ff439b993cd020b1e240707c4126a68c28799 2022032617:24:23-UTC ./tabobj/common.src/mutex.prg
 6fb2d21190f92eda53cdf03bdf22891803987c44 2022032614:21:18-UTC ./tabobj/tbbtbtx/btree/mpool.cpp
 2bd0d3ee67fb98c21adc240219373f60655b50a2 2022032610:18:56-UTC ./ccclib/src/stat.cpp
@@ -481,7 +481,6 @@ dfdadc72fd74881ec97702cdc49e6c92acb273a9 2021040807:45:39-UTC ./tabobj/tbbtbtx/b
 a839854f98f83945a33ed31045c356c8c367c173 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
 9608801e1423e5ef6563de77465f53a428aa9588 2021040513:08:52-UTC ./tools/xmldom/xmldom_lemon.prg
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
-9e51d5b27647099fd35ea3f40fe3074a5161e465 2021032513:46:48-UTC ./terminal/unix/s-icon
 d866348a425f6c401d70bb017895182b45f43cf3 2021032511:12:49-UTC ./ccclib/src/uic/setcaption.cpp
 5fa7b36986b04e00839d8fd74f41af851a828701 2021032510:42:54-UTC ./terminal/unix/terminal.cpp
 330853f994f56473cf0d8a62d47d93dfab91de4a 2021032510:41:45-UTC ./terminal/unix/terminal-xft.cpp

@@ -67,7 +67,7 @@ void _clp_fsetlock(int argno)
         high   = _parnuw(3); 
         length = _parnuw(4);
         start  =  high;
-        start  =  (start<<32)+high;
+        start  =  (start<<32)+low;
     }
     else
     {
@@ -118,7 +118,7 @@ void _clp_fwaitlock(int argno)
         high   = _parnuw(3); 
         length = _parnuw(4);
         start  =  high;
-        start  =  (start<<32)+high;
+        start  =  (start<<32)+low;
     }
     else
     {
@@ -131,7 +131,7 @@ void _clp_fwaitlock(int argno)
 }
 
 //-----------------------------------------------------------------------------
-void _clp_funlock(int argno)  //UNIX
+void _clp_funlock(int argno)
 {
     CCC_PROLOG("funlock",4);
 

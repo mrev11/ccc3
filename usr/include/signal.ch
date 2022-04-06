@@ -32,6 +32,7 @@
 #define SIG_SEGV      64    // Segmentation violation (ANSI)
 #define SIG_PIPE     128    // Broken pipe (POSIX)
 #define SIG_TERM     256    // Termination (ANSI)
+#define SIG_ALRM     512    // Alarm clock (POSIX)
 
 #define SIG_CONT    1024    // Continue (POSIX)
 #define SIG_STOP    2048    // Stop, unblockable (POSIX)

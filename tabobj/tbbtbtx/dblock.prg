@@ -300,7 +300,8 @@ local result
     if( pos==NIL )
         pos:=tabPosition(table)
     end
-    result:=fsetlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
+    //result:=fsetlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
+    result:=ftimeoutlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
     if( result!=0 )
         tabLockCount(table,-1)
     end

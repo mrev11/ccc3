@@ -1,3 +1,17 @@
+2022-04-06
+  Linuxon lock timeout tamogatas
+    fsetlock: varakozas nelkul lockol
+    fwaitlock: korlatlan varkozassal lockol
+    ftimeoutlock: CCCLK_TIMEOUT ideig varva a lockol
+  Mikor, mivel lockol
+    fopen protokoll lock : ftimeoutlock
+    btbtx page lock      : fwaitlock
+    btbtx record lock    : ftimeoutlock
+  Ha CCCLK_TIMEOUT<=0, akkor ftimeoutlock=fsetlock;
+  Linuxon alarm() fuggveny + SIGALRM kezelese tamogatva;
+  Ha egy programban lockolas van, es CCCLK_TIMEOUT>0,
+  akkor a lock mechanizmus atveszi a SIGALRM kezelest;
+
 2022-03-28
    elirasok javitva;
 

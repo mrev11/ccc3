@@ -87,7 +87,7 @@ static int ulock(int hnd, int unixShareMode)
     }
     else
     {
-        int wait=CCCLK_NOWAIT;
+        int wait=CCCLK_WAIT+CCCLK_TIMEOUT;
         int share=(unixShareMode==UNIX_FO_SHARED)?CCCLK_READ:CCCLK_WRITE;
         return _ccc_lock(hnd,0,LK_OFFSET_FILE,1,wait+share); // 0=OK, -1=error
     }

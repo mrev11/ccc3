@@ -41,6 +41,7 @@ static void setmask()
     if( mask & SIG_SEGV ) {sigaddset(&set,SIGSEGV);}
     if( mask & SIG_PIPE ) {sigaddset(&set,SIGPIPE);}
     if( mask & SIG_TERM ) {sigaddset(&set,SIGTERM);}
+    if( mask & SIG_ALRM ) {sigaddset(&set,SIGALRM);}
     if( mask & SIG_TSTP ) {sigaddset(&set,SIGTSTP);}
     if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
     if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
@@ -77,6 +78,7 @@ static int cccsig2signum(int cccsig)
         case SIG_SEGV: return SIGSEGV;   // Segmentation violation (ANSI)
         case SIG_PIPE: return SIGPIPE;   // Broken pipe (POSIX)
         case SIG_TERM: return SIGTERM;   // Termination (ANSI)
+        case SIG_ALRM: return SIGALRM;   // Alarm clock (POSIX)
         case SIG_TSTP: return SIGTSTP;   // Terminal stop
 
         case SIG_CONT: return SIGCONT;   // Continue (POSIX)
@@ -100,6 +102,7 @@ static int signum2cccsig(int signum)
         case SIGSEGV: return SIG_SEGV;   // Segmentation violation (ANSI)
         case SIGPIPE: return SIG_PIPE;   // Broken pipe (POSIX)
         case SIGTERM: return SIG_TERM;   // Termination (ANSI)
+        case SIGALRM: return SIG_ALRM;   // Alarm clock (POSIX)
         case SIGTSTP: return SIG_TSTP;   // Terminal stop
 
         case SIGCONT: return SIG_CONT;   // Continue (POSIX)
@@ -209,6 +212,7 @@ void setup_signal_handlers()
     xsigset(SIGSEGV ,signal_handler);
     xsigset(SIGPIPE ,signal_handler);
     xsigset(SIGTERM ,signal_handler);
+    xsigset(SIGALRM ,signal_handler);
 
 
     //ezek nem valtak be
@@ -232,6 +236,7 @@ int signal_raise(int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; signal_handler(SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; signal_handler(SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; signal_handler(SIGTERM);}
+    if( cccsig&SIG_ALRM) {++cnt; signal_handler(SIGALRM);}
     if( cccsig&SIG_TSTP) {++cnt; signal_handler(SIGTSTP);}
     return cnt;
 }
@@ -249,6 +254,7 @@ int signal_send(int pid, int cccsig)
     if( cccsig&SIG_SEGV) {++cnt; kill(pid,SIGSEGV);}
     if( cccsig&SIG_PIPE) {++cnt; kill(pid,SIGPIPE);}
     if( cccsig&SIG_TERM) {++cnt; kill(pid,SIGTERM);}
+    if( cccsig&SIG_ALRM) {++cnt; kill(pid,SIGALRM);}
     if( cccsig&SIG_TSTP) {++cnt; kill(pid,SIGTSTP);}
 
     if( cccsig&SIG_CONT) {++cnt; kill(pid,SIGCONT);}
@@ -311,6 +317,7 @@ void _clp_signal_description(int argno) //szignál leírása
         case SIG_SEGV: strcpy(desc,"SIGSEGV (Invalid memory reference)");break;
         case SIG_PIPE: strcpy(desc,"SIGPIPE (Broken pipe)");break;
         case SIG_TERM: strcpy(desc,"SIGTERM (Termination signal)");break;
+        case SIG_ALRM: strcpy(desc,"SIGALRM (Alarm clock)");break;
         case SIG_TSTP: strcpy(desc,"SIGTSTP (Terminal stop)");break;
 
         case SIG_CONT: strcpy(desc,"SIGCONT (Continue signal)");break;

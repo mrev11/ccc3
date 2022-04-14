@@ -62,7 +62,11 @@ local screen,t:=0,l:=0,b:=maxrow()-0,r:=maxcol()-0
         //varni kell egy kicsit, hogy terminalfrissites megtortenjen
 
         //run("z.exe "+choice[n] )
-        spawn(SPAWN_WAIT+SPAWN_PATH,"z.exe",choice[n])
+        if( getenv("CCCTERM_INHERIT")=="no" )
+            spawn(SPAWN_NOWAIT+SPAWN_PATH,"z.exe",choice[n])
+        else
+            spawn(SPAWN_WAIT+SPAWN_PATH,"z.exe",choice[n])
+        end
 
         drawBox(t,l,b,r,B_SINGLE)
         n:=achoice(t+1,l+1,b-1,r-1,choice,,,n)

@@ -106,8 +106,8 @@ DEFINE_METHOD(lexer);
 %type xmldecl {int}
 
 
-//minden szabály meghív egy Clipper függvényt,
-//aminek a neve a szabályból van származtatva,
+//minden szabaly meghiv egy Clipper fuggvenyt,
+//aminek a neve a szabalybol van szarmaztatva,
 //ezek xmldom_lemon.prg-ben vannak
 
 xml ::= xmlv.
@@ -119,9 +119,9 @@ xmlv ::= ROOT xmldecl content(C).{
 
     _nsp_xmldom::_nsp_lemon::_clp_xmlv__root_xmldecl_content(2); 
 
-    // megvan a végeredmény
+    // megvan a vegeredmeny
     // parseinput a mostani TOP-ot adja vissza 
-    // a _rettop() makróval
+    // a _rettop() makroval
 }
 
 
@@ -131,9 +131,9 @@ xmlv ::= xmldecl node(N).{
 
     _nsp_xmldom::_nsp_lemon::_clp_xmlv__xmldecl_node(2); 
 
-    // megvan a végeredmény
+    // megvan a vegeredmeny
     // parseinput a mostani TOP-ot adja vissza 
-    // a _rettop() makróval
+    // a _rettop() makroval
 }
 
 
@@ -188,8 +188,8 @@ tnode(N) ::= TEXT(T).{
 tnode(N) ::= CDATA(T).{
     TBASE;
     push(parservp);//parser objektum
-    //TPUSH(T); //rossz: üres CDATA-ra elszáll <![CDATA[]]>
-    if(T){TPUSH(T);}else{string(CHRLIT(""));}  //2011.11.28 javítás
+    //TPUSH(T); //rossz: ures CDATA-ra elszall <![CDATA[]]>
+    if(T){TPUSH(T);}else{string(CHRLIT(""));}  //2011.11.28 javitas
 
     _nsp_xmldom::_nsp_lemon::_clp_tnode__cdata(2);
     N=D2INT((TOP()->data.number));

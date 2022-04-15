@@ -53,7 +53,7 @@ DEFINE_METHOD(args);
 #define BUFINC  1024
 
 #define ZEROCH  '?'  //ezt rakja be 0 helyett
-//#define ZEROCH   0   //eredeti állapot
+//#define ZEROCH   0   //eredeti allapot
 
 
 class xmldom_lexer : public yyFlexLexer
@@ -64,9 +64,9 @@ class xmldom_lexer : public yyFlexLexer
     {
         if( inputblk && inputsize<16 )
         {
-            //ha ez a kódblokk nem NULL
-            //akkor minden alkalommal kiértékeljük
-            //töltögetve a benemetet az inputbuf-ba
+            //ha ez a kodblokk nem NULL
+            //akkor minden alkalommal kiertekeljuk
+            //toltogetve a benemetet az inputbuf-ba
         
             push(inputblk);
             push(parservp);
@@ -136,7 +136,7 @@ class xmldom_lexer : public yyFlexLexer
     int buffersize;
 
 
-    int yylex(); //Flex definiálja, de nem deklarálja.
+    int yylex(); //Flex definialja, de nem deklaralja.
 
 
     void enqueue(char *buf, int size)
@@ -261,7 +261,7 @@ class xmldom_lexer : public yyFlexLexer
         if( id==0 )
         {
             eofflag=1;
-            return 0; //nincs több bemenet       
+            return 0; //nincs tobb bemenet       
         }
         
         if( debugflag )
@@ -293,20 +293,20 @@ class xmldom_lexer : public yyFlexLexer
                 *(*token+i)=(CHAR)0;
             }
 
-            else //if( encoding==1 ) //Latin-1 (és minden más)
+            else //if( encoding==1 ) //Latin-1 (es minden mas)
             {
                 *token=(CHAR*)malloc((textsize+1)*sizeof(CHAR));
                 int i;
                 for(i=0; i<textsize; i++)
                 {
-                   *(*token+i)=(CHAR)*(text+i); //triviális 8bit -> 32bit
+                   *(*token+i)=(CHAR)*(text+i); //trivialis 8bit -> 32bit
                 }
                 *(*token+i)=(CHAR)0;
             }
 
-            //Csak UTF-8, Latin-1 és Latin-2 támogatás van. 
-            //Minden más kódolás úgy konvertálódik, mint a Latin-1.
-            //Nem foglalkozunk a szabvány szerint érvénytelen kódokkal.
+            //Csak UTF-8, Latin-1 es Latin-2 tamogatas van. 
+            //Minden mas kodolas ugy konvertalodik, mint a Latin-1.
+            //Nem foglalkozunk a szabvany szerint ervenytelen kodokkal.
         #endif
         }
         return id;
@@ -318,7 +318,7 @@ class xmldom_lexer : public yyFlexLexer
         inputblk=0;
         inputbuf=0;  //buffer eleje
         inputptr=0;  //innen kell olvasni
-        inputsize=0; //ennyi van még benn
+        inputsize=0; //ennyi van meg benn
         inputfd=-1;
         inputfspec=0;
         entityconversionflag=0;

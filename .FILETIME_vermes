@@ -1,4 +1,6 @@
-b079aa676f8a455a2613d0b9a4568be400d7e046 2022041409:00:01-UTC ./CHANGELOG_vermes
+6d035b6e532d7b34f161f94106422a8643cc4988 2022041508:21:07-UTC ./CHANGELOG_vermes
+490301f51b7e7041da68140be66c18f64b274ee1 2022041508:19:34-UTC ./tools/xmldom/s.savex
+c5a008aea57fe8187f5b313babee33339fd2ded0 2022041508:18:32-UTC ./tools/xmldom/xmldom.hu.ver
 d91745e8f697cd9e8625955aa78bdc55da4ec0e2 2022041210:08:52-UTC ./jt/jterminal/jterminal.jar
 a5b57a044333ac8c149adbd92592d2b8a0850169 2022041210:08:52-UTC ./log-install
 227edc581c4083f2f24e3edfc2aa64424f4c0a4c 2022041210:08:50-UTC ./usr/bin/linux/rnm
@@ -474,16 +476,15 @@ c9af25de142c2521790bc7c97dd777640d0891ab 2021042818:30:58-UTC ./ccctools/ppo2cpp
 c732a4a260f4d58ddcf6b7ab5e4eefb6c0255035 2021042116:40:42-UTC ./ccctools/ppo2cpp/lexer.h
 a3c9271282f9e5488bc8fd5b994f1f9263af3498 2021042112:58:30-UTC ./ccctools/ppo2cpp/parser.h
 e9c09879ffc76b4c0a4f1f93a24c9af4ff398824 2021042112:49:49-UTC ./ccctools/ppo2cpp/proto-codegen
-13f61344242bc83ff646287ef5d504fc73d49fc1 2021041412:14:47-UTC ./tools/xmldom/xmldom.hu.ver
 239b90504bd8170c929815cf71a28b200428d527 2021041412:08:23-UTC ./tools/xmldom/xmldom_parser.h
-c6f2d77e7af754c5bfb8e97655363a37b5f9d4df 2021041412:08:16-UTC ./tools/xmldom/xmldom_parser.lem
+95895024062152f07ad365846545f0d47594abfc 2021041412:08:16-UTC ./tools/xmldom/xmldom_parser.lem
 3a1b4fa60ab113514f9e9bf0ebc13076a364ece8 2021041412:06:30-UTC ./tools/xmldom/xmldom_lexer.lex
 cae8555984e13e4d639321c9be780a942c04cac8 2021041111:01:46-UTC ./tools/z/ver3/zreplace.say
 35ce53fb7e505c7d5ae27dda2c53618c9b937098 2021041018:52:30-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
 1d11a15726dee890bb5f7d2c4e37e2ec9d07f048 2021040807:45:59-UTC ./tabobj/tbbtbtx/btree/db.cpp
 dfdadc72fd74881ec97702cdc49e6c92acb273a9 2021040807:45:39-UTC ./tabobj/tbbtbtx/btree/extern.h
-a839854f98f83945a33ed31045c356c8c367c173 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
-9608801e1423e5ef6563de77465f53a428aa9588 2021040513:08:52-UTC ./tools/xmldom/xmldom_lemon.prg
+cd14c901a9d6e8e0de4acdc9683e3f2cacb2f696 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
+88854f7241564876d551129deaba2a848edf5e08 2021040513:08:52-UTC ./tools/xmldom/xmldom_lemon.prg
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
 d866348a425f6c401d70bb017895182b45f43cf3 2021032511:12:49-UTC ./ccclib/src/uic/setcaption.cpp
 5fa7b36986b04e00839d8fd74f41af851a828701 2021032510:42:54-UTC ./terminal/unix/terminal.cpp
@@ -495,7 +496,7 @@ b15b2dd9b42da37dea1779c82bbe06a3f20cfd43 2021032510:10:01-UTC ./terminal/unix/te
 df1a6c4d1a18361dd4cef5e46fc61a478fd5e2aa 2021032509:09:24-UTC ./terminal/unix/terminal.ico
 7a5b01bedcb37a6431900c1cabff9fb1fbcc4a8a 2021032409:52:57-UTC ./terminal/gtk3/terminal-gtk3.cpp
 ef9afe377030cb8f9ad2af9e6b6782fe37a072d8 2021032409:46:50-UTC ./terminal/gtk/terminal-gtk.cpp
-ebf6df3e2885ac7958d35bcf9f60c6fbdaca7916 2021032120:21:19-UTC ./tools/xmldom/xmlnode.prg
+261968194ed4a3a6b0aa1ce59b67a2fdafc00e5a 2021032120:21:19-UTC ./tools/xmldom/xmlnode.prg
 9f0145e7b1f051e427d4e80e52e35c4b7df0cb30 2021031610:31:44-UTC ./tabobj/common.src/tabchlog.prg
 30c981840d2472140cd75950d92d96166a401aca 2021022210:20:15-UTC ./tools/textview/ver3/zsearch.say
 62769f3da167f11cbd8b446466ed12377f695204 2021022210:19:56-UTC ./tabobj/utility.src/ver3/kdirseek.say
@@ -566,7 +567,7 @@ b4b2b7949b8d31aee7f470b6f2f53689a5e6778b 2020102011:20:36-UTC ./tools/sql2/drive
 d922d3753a9a0679022073ea340e44435d801ef9 2020102011:20:17-UTC ./tools/sql2/driver-oracle/sqltabalias.lex
 5363fdc32f22d24018a04085e1679c3e692834dc 2020102011:19:58-UTC ./tools/sql2/driver-postgres/sqltabalias.lex
 8e5a9e57b30d093290eda38478f79e1132603bf7 2020102011:19:35-UTC ./tools/sql2/driver-sqlite3/sqltabalias.lex
-28dd5ea6df43fbaef99fc3641ed5ab6dbc878827 2020102007:53:17-UTC ./tools/xmldom/xmldom_lexer.h
+825439ce570315c3ef6a24c2586a2341c2eade06 2020102007:53:17-UTC ./tools/xmldom/xmldom_lexer.h
 7a1bd42112eafcb252d8993eac25cad77061a9de 2020102007:48:44-UTC ./tools/list/list.cpp
 ce57d80f2371010c0ffe14de29bfde30944c5fcd 2020102007:13:30-UTC ./usr/include/utf8conv.h
 496e000cff79ed1e9dfc9599cc00dcf435ad6221 2020101920:09:17-UTC ./ccclib/src/asc.cpp
@@ -1784,7 +1785,7 @@ be4663a01cbed41437545e338870645819db6762 2012062405:28:33-UTC ./tools/sql2/drive
 3fb480a72e8bd7450b7afb9fa5f5e2b32ec6e97c 2012062311:56:01-UTC ./tools/sql2/driver-sqlite3/sqlbind.cpp
 f5e02370a7cd9c27a4e5e06982417d7cec784435 2012061612:57:07-UTC ./tools/socket/socket-demo/sc
 b6aa3653bfdf35a8b72a35c578cec9f912ec36e6 2012053108:30:35-UTC ./tools/z/ztab.prg
-b83ad38258c8931898b31e13c128d245b4afb19f 2012052512:24:01-UTC ./tools/xmldom/parseinput.cpp
+ea2284344a422ef4fd1c4e02d9edf276c249d1a7 2012052512:24:01-UTC ./tools/xmldom/parseinput.cpp
 9fdbaaefd3008b2819848f2d703bffad03b8887c 2012042208:36:54-UTC ./tools/webapp/program/msk2html/proba/fizmod.html
 2af01741c752646acf63100d7eb9a18bae56fd74 2012042208:36:54-UTC ./tools/webapp/program/msk2html/proba/mask100x50.html
 f8f9e170c789e2c73ba9a38838feb88b72600dea 2012042208:36:54-UTC ./tools/webapp/program/msk2html/proba/proba.html
@@ -1956,7 +1957,7 @@ c4e5db60866a7bb695060b574fa2b4a35683960e 2010010713:53:36-UTC ./tools/xmldom/dem
 cdf00d5b1248ec6934b4184da9f50fade54166cc 2010010713:43:51-UTC ./tools/xmldom/demo/x-hiba1.xml
 9b9962c3fb4ae4a9a302af0f9be9238078d0c0c3 2010010713:25:17-UTC ./tools/xmldom/demo/x-hiba3.xml
 bf9513427642ebe1204fb6d3be061d3b173654dc 2010010713:12:03-UTC ./tools/xmldom/demo/print.prg
-ffa2aa8c221c19312b3c472d93c17cd134cc045d 2010010621:11:54-UTC ./tools/xmldom/xmldom_lexercb.cpp
+134214cf0a3eaabc3e1fb586e9b4f51f32e9a83a 2010010621:11:54-UTC ./tools/xmldom/xmldom_lexercb.cpp
 db93c8df16df70a61dbe3508197a6436afd8d67d 2009123109:48:43-UTC ./tools/xmldom/demo/demo0.prg
 120b1a00e0159061ccc200ff30eda5a86eb10be0 2009122811:16:46-UTC ./tools/xmldom/demo/x.xml
 715832d54a73f60e958b3e0857e6ca9ced224fcc 2009122811:14:48-UTC ./tools/xmldom/demo/z.xml

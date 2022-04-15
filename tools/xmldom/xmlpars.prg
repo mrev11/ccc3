@@ -38,21 +38,21 @@ class xmlparser(object)
     method  parsestring
 
     attrib  file            // filename/filedescriptor
-    attrib  inputblock      // input kérő block
+    attrib  inputblock      // input kero block
 
-    attrib  entityconv      // "&amp;" -> "&" és társai
-    attrib  preservespace   // megőrzi-e a szóközöket (default=.f.)
+    attrib  entityconv      // "&amp;" -> "&" es tarsai
+    attrib  preservespace   // megorzi-e a szokozoket (default=.f.)
     attrib  debug           // lexer/parser debug
-    attrib  cargo           // tetszőleges adat
-    attrib  rootflag        // mesterséges #ROOT node (compatibility)
-    attrib  qmxml           // <?xml ... ?> deklaráció, mint node
+    attrib  cargo           // tetszoleges adat
+    attrib  rootflag        // mesterseges #ROOT node (compatibility)
+    attrib  qmxml           // <?xml ... ?> deklaracio, mint node
 
-    attrib  lemon           // lemon stack (belső használatra)
-    attrib  lexer           // pointer a lexerre (belső használatra)
-    attrib  lemparser       // pointer a lemon parserre (belső használatra)
+    attrib  lemon           // lemon stack (belso hasznalatra)
+    attrib  lexer           // pointer a lexerre (belso hasznalatra)
+    attrib  lemparser       // pointer a lemon parserre (belso hasznalatra)
 
     attrib  infodepth       // index, stackpointer
-    attrib  infostack       // array, stack a plusz nodeinfónak
+    attrib  infostack       // array, stack a plusz nodeinfonak
     method  info
     method  infopush
     method  infopop
@@ -67,7 +67,7 @@ class xmlparser(object)
     attrib  processblock
     method  process         {|this,node|eval(this:processblock,node)}
     
-    attrib  createnodeblock // ezzel hozza létre a node-okat
+    attrib  createnodeblock // ezzel hozza letre a node-okat
 
 
 ****************************************************************************
@@ -91,7 +91,7 @@ static function xmlparser.initialize(this,f)
 
     this:infodepth:=1
     this:infostack:={}
-    this:infosize(64)       // előre legyártja fix mérettel
+    this:infosize(64)       // elore legyartja fix merettel
     this:info:type:=""
     this:info:fullpath:=""
     this:info:nsmap:=simplehashNew(8)
@@ -112,7 +112,7 @@ local other:=objectNew(getclassid(this))
 
     acopy(this:asarray,other:asarray)
 
-    // ezeket nem veszi át
+    // ezeket nem veszi at
 
     other:file          :=  NIL
     other:inputblock    :=  NIL
@@ -220,10 +220,10 @@ static function xmlparser.infopush(this,s)
 local info1:=this:infostack[this:infodepth++] 
 local info2:=this:infostack[this:infodepth] 
     info2:type:=s
-    info2:fullpath:=info1:fullpath+"/"+s    // kumulálja
-    info2:nsmap:=info1:nsmap                // örökli
-    info2:buildflag:=info1:buildflag        // örökli
-    info2:userdata:=info1:userdata          // örökli
+    info2:fullpath:=info1:fullpath+"/"+s    // kumulalja
+    info2:nsmap:=info1:nsmap                // orokli
+    info2:buildflag:=info1:buildflag        // orokli
+    info2:userdata:=info1:userdata          // orokli
     return info2
 
 ****************************************************************************

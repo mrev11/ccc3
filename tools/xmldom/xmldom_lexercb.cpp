@@ -19,9 +19,9 @@
  */
 
 
-// callback függvények
-// a lexer funkcióinak eléréséhez
-// a parser objektum lexer attribútuma pointer a lexer-re
+// callback fuggvenyek
+// a lexer funkcioinak eleresehez
+// a parser objektum lexer attributuma pointer a lexer-re
 
 
 #include <xmldom_lexer.h>

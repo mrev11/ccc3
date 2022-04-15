@@ -70,10 +70,10 @@ void _clp__xmldom_parser_parseinput(int argno)
         str2bin(TOP());
         fnm=(TOP()->type==TYPE_BINARY) ? BINARYPTR(TOP()):0; pop();
 
-    lexer->entityconversionflag=ecf; //&amp;, &lt;, stb. konvertálása
-    lexer->preservespace=psp; //space-ek megőrzése
-    lexer->inputfspec=fnm?strdup(fnm):0; //filénév hibaüzenethez
-    lexer->debugflag=dbg; //debugolás beállítása
+    lexer->entityconversionflag=ecf; //&amp;, &lt;, stb. konvertalasa
+    lexer->preservespace=psp; //space-ek megorzese
+    lexer->inputfspec=fnm?strdup(fnm):0; //filenev hibauzenethez
+    lexer->debugflag=dbg; //debugolas beallitasa
 
     void *parser=xmldom_parserAlloc(malloc);
     if( dbg )
@@ -81,12 +81,12 @@ void _clp__xmldom_parser_parseinput(int argno)
         xmldom_parserTrace(stdout,">> ");
     }
 
-    push(parservp); // xmlparser:lexer beállítása
+    push(parservp); // xmlparser:lexer beallitasa
     pointer(lexer);
     _o_method_lexer.eval(2);
     pop();
 
-    push(parservp); // xmlparser:lemparser beállítása
+    push(parservp); // xmlparser:lemparser beallitasa
     pointer(parser);
     _o_method_lemparser.eval(2);
     pop();
@@ -103,12 +103,12 @@ void _clp__xmldom_parser_parseinput(int argno)
     xmldom_parserFree(parser,free);
     delete lexer;
 
-    push(parservp); // xmlparser:lexer törlése
+    push(parservp); // xmlparser:lexer torlese
     PUSHNIL();
     _o_method_lexer.eval(2);
     pop();
 
-    push(parservp); // xmlparser:lemparser törlése
+    push(parservp); // xmlparser:lemparser torlese
     PUSHNIL();
     _o_method_lemparser.eval(2);
     pop();
@@ -119,12 +119,12 @@ void _clp__xmldom_parser_parseinput(int argno)
 }
 
 //---------------------------------------------------------------------------
-// Ha az xml elemzés közben kivétel keletkezik,
-// akkor is törölni kell a lemon parsert és lexert,
-// máskülönben a rossz filék elemzése fogyasztja a memóriát.
-// A CCC parser tárolja a lemon parser és a lexer pointerét,
-// és a finally ágból törli őket. Ha az elemzés végigfutott, 
-// akkor ez a törlés már nem csinál semmit.
+// Ha az xml elemzes kozben kivetel keletkezik,
+// akkor is torolni kell a lemon parsert es lexert,
+// maskulonben a rossz filek elemzese fogyasztja a memoriat.
+// A CCC parser tarolja a lemon parser es a lexer pointeret,
+// es a finally agbol torli oket. Ha az elemzes vegigfutott, 
+// akkor ez a torles mar nem csinal semmit.
 //---------------------------------------------------------------------------
 void _clp__xmldom_parser_clean_lexer(int argno)
 {

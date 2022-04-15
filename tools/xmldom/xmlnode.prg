@@ -32,9 +32,9 @@ class xmlnode(object)
     method  gettext
     method  nsprefix
     method  uqname
-    method  xmlout          //kiírás: minden külön sorba
-    method  xmloutpre       //kiírás: semmit nem változtat
-    method  xmloutind       //kiírás: indentálva
+    method  xmlout          //kiiras: minden kulon sorba
+    method  xmloutpre       //kiiras: semmit nem valtoztat
+    method  xmloutind       //kiiras: indentalva
 
     attrib  type
     attrib  attrib
@@ -90,7 +90,7 @@ local attrval
 local x:=ascan(this:attrib,{|a|a:name==attrname})
     if( x>0 )
         attrval:=this:attrib[x]:value 
-        attrval:=substr(attrval,2,len(attrval)-2) //idézőjelek
+        attrval:=substr(attrval,2,len(attrval)-2) //idezojelek
     end
     return attrval
 
@@ -198,10 +198,10 @@ local n
 ****************************************************************************
 static function xmlnode.xmloutpre(this) 
 
-//Formázás nélkül írja ki az XML-t.
-//Ha a DOM parser:preservespace:=.t.-val készült,
-//akkor a bemenet és a kimenet ugyanaz.
-//Ha szükséges, CDATA-ra tér át a texteknél.
+//Formazas nelkul irja ki az XML-t.
+//Ha a DOM parser:preservespace:=.t.-val keszult,
+//akkor a bemenet es a kimenet ugyanaz.
+//Ha szukseges, CDATA-ra ter at a texteknel.
 
 local n
 
@@ -249,10 +249,10 @@ local n
 ****************************************************************************
 static function xmlnode.xmloutind(this,indent:="") 
 
-//Indentálva írja ki az xml-t.
-//Akkor ad jó eredményt, ha a fa leveleiben text van,
-//és az elemzés parser:preservespace:=.f.-val készült.
-//Ha szükséges, CDATA-ra tér át a texteknél.
+//Indentalva irja ki az xml-t.
+//Akkor ad jo eredmenyt, ha a fa leveleiben text van,
+//es az elemzes parser:preservespace:=.f.-val keszult.
+//Ha szukseges, CDATA-ra ter at a texteknel.
 
 local n,ind
 

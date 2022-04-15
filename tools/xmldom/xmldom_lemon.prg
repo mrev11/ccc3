@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//minden Lemon szabályhoz egy Clipper függvény,
-//aminek a neve a szabályból van származtatva
+//minden Lemon szabalyhoz egy Clipper fuggveny,
+//aminek a neve a szabalybol van szarmaztatva
 
 namespace xmldom.lemon
 
@@ -30,7 +30,7 @@ local node
     node:=xmlnodeNew("#ROOT")
     node:content:=this:lemon[c]
     asize(this:lemon,0)
-    return node //végeredmény
+    return node //vegeredmeny
 
 
 ***************************************************************************************
@@ -41,7 +41,7 @@ local node:=this:lemon[n]
     if( !empty(this:process(node)) )
         node:=NIL
     end
-    return node //végeredmény
+    return node //vegeredmeny
 
 
 ***************************************************************************************

@@ -45,8 +45,8 @@ local node:=this:lemon[n]
 
 
 ***************************************************************************************
-function xmldecl__lparqm_qsymbol_attrlist_qmrpar(this,s,a)
-local info:=this:lemon[s],node,enc
+function xmldecl__qsymbol_attrlist_qmrpar(this,s,a)
+local info:=this:lemon[s],node,enc,nsmap
 
     node:=xmlnodeNew(info:type)
     node:attrib:=this:lemon[a]
@@ -57,7 +57,9 @@ local info:=this:lemon[s],node,enc
     if( empty(this:process(node)) )
         this:qmxml:=node
     end
+    nsmap:=this:info:nsmap
     this:infopop
+    this:info:nsmap:=nsmap
     asize(this:lemon,s-1)
 
 
@@ -194,7 +196,7 @@ local info:=this:infopush(s)
 
 
 ***************************************************************************************
-function qsymbol__symbol(this,s)
+function qsymbol__lparqm(this,s)
 local info,err
     if( !s=="xml" )
         err:=xmlsyntaxerrorNew()
@@ -234,13 +236,12 @@ function attrlist__attrlist_symbol_eq_string(this,r,n,v)
             this:info:nsmap:=this:info:nsmap:clone
         end
         this:info:nsmap[n[7..]]:=v[2..len(v)-1]
-    else
-        if( this:attribblock!=NIL )
-            eval(this:attribblock,this,n,v)
-        end
-        if( this:info:buildflag )
-            aadd(this:lemon[r],xmlattribNew(n,v))
-        end
+    end
+    if( this:attribblock!=NIL )
+        eval(this:attribblock,this,n,v)
+    end
+    if( this:info:buildflag )
+        aadd(this:lemon[r],xmlattribNew(n,v))
     end
     return r
 

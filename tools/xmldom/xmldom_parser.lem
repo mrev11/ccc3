@@ -34,11 +34,11 @@ extern void _clp_content__content_tnode(int argno);
 static void _clp_lemstk(int argno);
 extern void _clp_node__lpar_symbol_attrlist_rpar_content_lpar_slash_symbol_rpar(int argno);
 extern void _clp_node__lpar_symbol_attrlist_slash_rpar(int argno);
-extern void _clp_qsymbol__symbol(int argno);
+extern void _clp_qsymbol__lparqm(int argno);
 extern void _clp_symbol__symbol(int argno);
 extern void _clp_tnode__cdata(int argno);
 extern void _clp_tnode__text(int argno);
-extern void _clp_xmldecl__lparqm_qsymbol_attrlist_qmrpar(int argno);
+extern void _clp_xmldecl__qsymbol_attrlist_qmrpar(int argno);
 extern void _clp_xmlv__root_xmldecl_content(int argno);
 extern void _clp_xmlv__xmldecl_node(int argno);
 }}//namespace xmldom.lemon
@@ -140,12 +140,12 @@ xmlv ::= xmldecl node(N).{
 xmldecl ::=.
 
 
-xmldecl ::= LPARQM qsymbol(S) attrlist(A) QMRPAR.{
+xmldecl ::= qsymbol(S) attrlist(A) QMRPAR.{
     push(parservp);//parser objektum
     number(S);
     number(A);
     
-    _nsp_xmldom::_nsp_lemon::_clp_xmldecl__lparqm_qsymbol_attrlist_qmrpar(3);
+    _nsp_xmldom::_nsp_lemon::_clp_xmldecl__qsymbol_attrlist_qmrpar(3);
     pop();
 }
 
@@ -239,12 +239,12 @@ symbol(S1) ::= SYMBOL(S).{
 }
 
 
-qsymbol(S1) ::= SYMBOL(S).{
+qsymbol(S1) ::= LPARQM(S).{
     TBASE;
     push(parservp);//parser objektum
     TPUSH(S);
 
-    _nsp_xmldom::_nsp_lemon::_clp_qsymbol__symbol(2);
+    _nsp_xmldom::_nsp_lemon::_clp_qsymbol__lparqm(2);
     S1=D2INT((TOP()->data.number));
     pop();
 }

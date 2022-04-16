@@ -1,3 +1,9 @@
+2022.04.16 xmldom 1.8.1
+  <?xml ...?>-t kiveve minden PI-t eldob (nem jelez hibat);
+  A dokumentumot koveto wspace-t eldobja (nem jelzi hibanak);
+  Az xmlns attributumok normal kezelese vissza (a nevter kovetes mellett);
+  Az <?xml ...?>-ben definialt nevterek oroklodese javitva;
+
 2022.04.15 xmldom ekezetlenites;
 
 2022-04-14 zhist-ben SPAWN_NOWAIT; 

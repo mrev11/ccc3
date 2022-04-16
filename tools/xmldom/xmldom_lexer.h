@@ -139,7 +139,7 @@ class xmldom_lexer : public yyFlexLexer
     int yylex(); //Flex definialja, de nem deklaralja.
 
 
-    void enqueue(char *buf, int size)
+    void enqueue(const char *buf, int size)
     {
         if( size )
         {

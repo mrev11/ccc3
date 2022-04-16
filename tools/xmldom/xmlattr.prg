@@ -23,6 +23,8 @@ class xmlattrib(object)
     method  initialize
     attrib  name
     attrib  value
+    method  nsprefix
+    method  uqname
 
 ******************************************************************************
 static function xmlattrib.initialize(this,name,value)
@@ -30,5 +32,21 @@ static function xmlattrib.initialize(this,name,value)
     this:name:=name
     this:value:=value
     return this
+
+******************************************************************************
+static function xmlattrib.nsprefix(this)
+local pos:=at(":",this:name)
+    if( pos>0 )
+        return left(this:name,pos-1)
+    end
+    return ""
+
+******************************************************************************
+static function xmlattrib.uqname(this)
+local pos:=at(":",this:name)
+    if( pos>0 )
+        return substr(this:name,pos+1)
+    end
+    return this:name
 
 ******************************************************************************

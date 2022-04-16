@@ -23,7 +23,7 @@
 #include <xmldom_lexer.h>
 %}
 
-%x comment tag cdata doctype
+%x comment procinst tag cdata doctype
 
 %option c++
 %option yyclass="xmldom_lexer"
@@ -34,9 +34,11 @@
 
 symbol     [_a-zA-Z][\.\-:_a-zA-Z0-9]*
 string     "\""[^\"]*"\""|"\'"[^\']*"\'" 
+ws         [ \t\r\n]
 wspace     [ \t\r\n]*
 dec        [0-9]+ 
 hex        [0-9a-fA-F]+ 
+xml        [Xx][Mm][Ll]
 
 
 %%
@@ -76,6 +78,12 @@ hex        [0-9a-fA-F]+
 .|\n             {} 
 }
 
+"<?"             {yy_push_state(procinst);}
+<procinst>{
+"?>"             {yy_pop_state();}
+.|\n             {/*az <?xml ... ?> deklaracion kivul minden PI-t eldob*/} 
+}
+
 "<!DOCTYPE"      {yy_push_state(doctype);}
 <doctype>{
 {string}         {}  
@@ -85,7 +93,7 @@ hex        [0-9a-fA-F]+
  
 
 "<"              {yy_push_state(tag); initialwspace=0; return LPAR;}
-"<?"             {yy_push_state(tag); return LPARQM;}
+"<?"{xml}{ws}    {yy_push_state(tag); cat("xml"); return LPARQM;}
 <tag>{
 ">"              {yy_pop_state(); return RPAR;} 
 "/>"             {yy_pop_state(); return SLRPAR;} 
@@ -113,7 +121,7 @@ hex        [0-9a-fA-F]+
                 }
 }
 
-<<EOF>>         {return trim()?TEXT:0;}
+<<EOF>>         {initialwspace=1; return trim()?TEXT:0;}
 
 %%
 

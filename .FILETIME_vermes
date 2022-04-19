@@ -1,8 +1,8 @@
-0cdbedf16ef99351c0f52a5d9d35aae2f04edf16 2022041914:50:02-UTC ./CHANGELOG_vermes
+c3c393832a4b55b4c53f5c2d5efd509d830776a0 2022041914:57:36-UTC ./CHANGELOG_vermes
+e326910c0ad8d492375bf159251f291086f17c27 2022041914:53:29-UTC ./tools/xmldom/xmldom.hu.ver
 4d7eb1b4b383c82975a357939536d83ac26e0a11 2022041914:10:36-UTC ./tools/xmldom/s.savex
 cbf947fa0ab26211a4a6e3ed3e6ffaa621241e70 2022041914:08:02-UTC ./log-install
 df36e5c746e2e197de51b365574d29622b3ef82b 2022041914:07:59-UTC ./usr/bin/linux/xstart
-0136dfcd3828b93ed631c349dcf829a77a4086b7 2022041913:53:20-UTC ./tools/xmldom/xmldom.hu.ver
 9fb85d1a9dbb63d891fc7c3b746330b33cb11325 2022041913:05:10-UTC ./tools/xmldom/demo/s.savex
 3f02faab6fe139d0238d1ce67cfcbebf6d29eb35 2022041913:04:14-UTC ./tools/xmldom/demo-odt/s.savex
 3320ed467d490285d26896f9ebd7d524f45e1636 2022041912:53:35-UTC ./tools/xmlrpc-framework/rpckill

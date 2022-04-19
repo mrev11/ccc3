@@ -92,9 +92,9 @@ local p,s,n,i,c,result
         quit
     end
 
-    p:=xmlparserNew(parfile)
+    p:=xmlparser2New(parfile)
     p:entityconv:=.t.
-    p:processblock:={|node|node:type=="item".and.procitem(node)}
+    p:contentblock:={|*|content(*)}
     p:parse
     
     for n:=1 to len(proctab)
@@ -162,13 +162,16 @@ local p,s,n,i,c,result
         #endif
     end
 
-    return NIL
-
 
 ******************************************************************************
-static function procitem(node) //XML feldolgozo
+static function content(parser,node) // XML feldolgozo
 local n,item,attr,txt
 local env,name,value
+
+    if( !node:type=="item" )
+        return .t. //epul a fa
+    end
+
     
     item:=xstartitemNew()
 
@@ -236,7 +239,7 @@ local env,name,value
 
     aadd(proctab,item)
     
-    return .t.  //nem kell tovább építeni a fát
+    return .f.  //nem kell tovabb epiteni a fat
 
 
 ******************************************************************************

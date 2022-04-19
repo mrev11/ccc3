@@ -1,3 +1,6 @@
+2022.04.19  xmldom 1.8.2
+  xnloutind indentalt kiiras fejlesztve;
+
 2022.04.16 xmldom 1.8.1
   <?xml ...?>-t kiveve minden PI-t eldob (nem jelez hibat);
   A dokumentumot koveto wspace-t eldobja (nem jelzi hibanak);

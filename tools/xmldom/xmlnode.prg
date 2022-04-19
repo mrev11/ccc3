@@ -153,6 +153,10 @@ local pos:=at(":",this:type)
 
 ****************************************************************************
 static function xmlnode.xmlout(this) 
+
+//Formazas: minden adat kulon sorba.
+//Ha szukseges, CDATA-ra ter at a texteknel.
+
 local n
 
     if( this:type=="#ROOT" )
@@ -165,11 +169,11 @@ local n
         for n:=1 to len(this:attrib)
             ? "  ",this:attrib[n]:name+"="+this:attrib[n]:value
         next
-        ?? "?"+">" //?? "?>" volt, de azon MSVC internal error-ral elhasal!
- 
+        ?? "?>" // az eltero "?>" lezaras miatt nem mehet a normal agon
+
     elseif( this:type=="#TEXT" )
         for n:=1 to len(this:content)
-            ? this:content[n]
+            ? cdataif(this:content[n])
         next
  
     elseif( this:type=="#CDATA" )
@@ -195,6 +199,7 @@ local n
         end
     end
 
+
 ****************************************************************************
 static function xmlnode.xmloutpre(this) 
 
@@ -215,8 +220,8 @@ local n
         for n:=1 to len(this:attrib)
             ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
         next
-        ?? "?"+">"
- 
+        ?? "?>" // az eltero "?>" lezaras miatt nem mehet a normal agon
+
     elseif( this:type=="#TEXT" )
         for n:=1 to len(this:content)
             ?? cdataif(this:content[n])
@@ -247,18 +252,40 @@ local n
 
 
 ****************************************************************************
-static function xmlnode.xmloutind(this,indent:="") 
+static function xmlnode.xmloutind(this,rflag:=.f.,indent:="") 
 
-//Indentalva irja ki az xml-t.
-//Akkor ad jo eredmenyt, ha a fa leveleiben text van,
-//es az elemzes parser:preservespace:=.f.-val keszult.
-//Ha szukseges, CDATA-ra ter at a texteknel.
+// Indentalva irja ki az xml-t.
+// Akkor ad jo eredmenyt, ha preservespace:=.f. volt beallitva.
+// Ha szukseges, CDATA-t hasznal a textek kiirasakor.
+//
+// Az osszetett node-ok kiirasa mindig indentalt:
+//  <aaa>
+//      <bbb/>
+//  </aaa>
+//
+// A tisztan szoveg tartalmu node-ok kiirasa egysoros: 
+//  <aaa>text</aaa>.
+//
+// A vegyes tartamu node-okban a text-eket is indentalva irja ki:
+//  <aaa>
+//      text
+//      <bbb>text</bbb>
+//  </aaa>
+
 
 local n,ind
 
-    if( this:type=="#ROOT" )
+    if( this:type=="#ROOT" .and. rflag==.f. )
+        // Ha rflag==.f. (default)
+        //  akkor a #ROOT gyermekei sorban kiirodnak,
+        //  a kimeneten nem jelenik meg a <#ROOT> hej.
+        //
+        // Ha rflag==.t. (teszteleshez)
+        //  akkor nem ide jon, hanem a normal agon irodik ki 
+        //  a node, es a <#ROOT> hej is megjelenik a kimeneten.
+    
         for n:=1 to len(this:content)
-            this:content[n]:xmloutind(indent)
+            this:content[n]:xmloutind(rflag,indent)
         next
 
     elseif( left(this:type,1)=="?" )
@@ -266,14 +293,20 @@ local n,ind
         for n:=1 to len(this:attrib)
             ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
         next
-        ?? "?"+">" //?? "?>" volt, de azon MSVC internal error-ral elhasal!
- 
+        ?? "?>" // az eltero "?>" lezaras miatt nem mehet a normal agon
+
     elseif( this:type=="#TEXT" )
+        if( len(indent)>0 )
+            ? indent
+        end
         for n:=1 to len(this:content)
             ?? cdataif(this:content[n])
         next
- 
+
     elseif( this:type=="#CDATA" )
+        if( len(indent)>0 )
+            ? indent
+        end
         for n:=1 to len(this:content)
             ?? "<![CDATA["
             ?? this:content[n]
@@ -289,16 +322,37 @@ local n,ind
             ?? "/>"
         else
             ?? ">"
-            for n:=1 to len(this:content)
-                this:content[n]:xmloutind(indent+"    ")
-            next
-            if( "#" $ this:content[1]:type )
+            if( textcontent(this) )
+                for n:=1 to len(this:content)
+                    this:content[n]:xmloutind(rflag,"")
+                next
                 ?? "</"+this:type+">"
             else
+                for n:=1 to len(this:content)
+                    this:content[n]:xmloutind(rflag,indent+"    ")
+                next
                 ? indent+"</"+this:type+">"
             end
         end
     end
+
+
+****************************************************************************
+static function textcontent(node) 
+
+// => .t.
+//  ha a content ures, vagy
+//  csak #TEXT/#CDATA node-okat tartalmaz
+
+local n
+    for n:=1 to len(node:content)
+        if( node:content[n]:type::asc!=35 ) // asc("#")==35
+            return .f.
+        elseif( node:content[n]:type=="#ROOT" )
+            return .f.
+        end
+    next 
+    return .t.
 
 
 ****************************************************************************

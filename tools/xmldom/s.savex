@@ -1,4 +1,5 @@
--s/home/vermes/ccc2c/tools/xmldom/
+-s/home/vermes/ccc3/tools/xmldom/
+-r:demo:demo-odt:
 -x.bak.savex.
 -md
 

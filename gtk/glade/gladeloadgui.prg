@@ -44,7 +44,7 @@ local gladepath,n,f,err
     end
 
     glade:=memoread(f,.t.)
-    parser:=xmlparserNew()
+    parser:=xmlparser2New()
     parser:entityconv:=.t.
     dom:=parser:parsestring(glade)
 
@@ -54,7 +54,7 @@ local gladepath,n,f,err
 function gladeloadgui_from_string(glade)
 local parser,dom
 
-    parser:=xmlparserNew()
+    parser:=xmlparser2New()
     parser:entityconv:=.t.
     dom:=parser:parsestring(glade)
 

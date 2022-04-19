@@ -1,5 +1,5 @@
 2022.04.19 -- 1.8.2
-  xnloutind indentalt kiiras fejlesztve;
+  xmloutind indentalt kiiras fejlesztve;
 
 2022.04.15 -- 1.8.1
   <?xml ...?>-t kiveve minden PI-t eldob (nem jelez hibat);

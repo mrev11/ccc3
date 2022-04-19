@@ -129,26 +129,14 @@ local n,node, p,prop
 local gwt, childlist:={}
 local acckey
 
-    if( dom:type=="#ROOT" )
-        for n:=1 to len(dom:content)
-            node:=dom:content[n]
-            if( node:type=="glade-interface" )
-                dom:=node
-                dom:type:="child"
-                exit
-            elseif( n==len(dom:content) )
-                err:=errorNew()
-                err:operation:="gladewidgetNew"
-                err:description:='no <glade-interface> tag in glade document'
-                break(err)
-            end
-        next
-    end
-
-    if( !dom:type=="child" )
+    if( dom:type=="child" )
+        //ok
+    elseif( dom:type=="glade-interface" )
+        dom:type:="child"
+    else
         err:=errorNew()
         err:operation:="gladewidgetNew"
-        err:description:='<child> tag expected'
+        err:description:='not a glade document'
         err:args:={dom:type}
         break(err)
     end

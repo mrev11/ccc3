@@ -198,8 +198,8 @@ local entities:=""
 
 ******************************************************************************
 static function readtedname(fspec)
-local dom:=xmlparserNew(fspec):parse
-    return lower(dom:content[1]:content[1]:gettext)
+local dom:=xmlparser2New(fspec):parse
+    return lower(dom:content[1]/*:content[1]*/:gettext) // <#ROOT> megszunt
 
 
 ******************************************************************************

@@ -26,7 +26,6 @@ function tds2dom(fspec)
 
 local s,n,entry
 
-local dom:=xmlnodeNew("#ROOT")
 local entity:=xmlnodeNew("entity")
 local name:=xmlnodeNew("name")
 local tablist:=xmlnodeNew("tablist")
@@ -91,7 +90,6 @@ local err
 
     //összeszerelés
     
-    dom:addcontent(entity)
     entity:addcontent(name)
     entity:addcontent(tablist)
 
@@ -112,8 +110,8 @@ local err
     for n:=1 to len(sellist)
         entity:addcontent(sellist[n])
     next
-    
-    return dom
+
+    return entity
 
 ******************************************************************************
 static function parse_col(entry,types)

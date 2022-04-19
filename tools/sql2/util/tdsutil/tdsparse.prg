@@ -56,7 +56,7 @@ local entity,n
 local tag
 local err
 
-    entity:=dom:content[1] 
+    entity:=dom//:content[1] // <#ROOT> megszunt
     
     if( !entity:type=="entity" )
         err:=tdserrorNew("tdsutil.domparse")

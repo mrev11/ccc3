@@ -34,7 +34,7 @@ function main(fspec)
         usage(fspec, "not found")
     end
 
-    tdsutil.dom2prg(xmlparserNew(fspec):parse,fspec)
+    tdsutil.dom2prg(xmlparser2New(fspec):parse,fspec)
     
 ******************************************************************************
 static function usage(x1,x2,x3,x4)

@@ -1,0 +1,8 @@
+!table rpcauth
+!path  rpcbase
+!index tid      rpcauth1 TID METHOD
+!index method   rpcauth2 METHOD
+
+!field TID          C  16  0
+!field METHOD       C  32  0
+!field PERMISSION   C   1  0

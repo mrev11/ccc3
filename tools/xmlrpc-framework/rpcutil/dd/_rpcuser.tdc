@@ -1,0 +1,11 @@
+!table rpcuser
+!path  rpcbase
+!index user rpcuser1 UID
+
+!field UID          C  16  0
+!field TID          C  16  0
+!field GID          C  64  0
+!field NAME         C  64  0
+!field PASSWORD     C  16  0
+!field STARTDATE    D   8  0
+!field ENDDATE      D   8  0

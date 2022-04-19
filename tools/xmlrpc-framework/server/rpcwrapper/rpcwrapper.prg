@@ -438,8 +438,8 @@ static function connection.server(this)
 local p, m, m0, s
 local r,n,module,host,port,c
 
-    p:=xmlparserNew() 
-    p:processblock:={|node|methodname(node,@m)}
+    p:=xmlparser2New() 
+    p:contentblock:={|p,node|methodname(p,node,@m)}
     p:parsestring(this:request) //részleges elemzés
  
     m0:=left(m,at(".",m)-1)
@@ -505,13 +505,14 @@ local smin,lmin:=999999
     return smin  //legrövidebb sorral rendelkező szerver
 
 *****************************************************************************
-static function methodname(node,m)
+static function methodname(parser,node,m)
     if( node:type=="#TEXT" )
-        return .f. //épít
+        return .t. //épít
     elseif( node:type=="methodName" )
         m:=node:content[1]:content[1]
+        //? "methodname =",m
     end
-    return .t. //eldob
+    return .f. //eldob
  
 *****************************************************************************
 static function addheader(rsp)

@@ -1,6 +1,12 @@
-681adc668abf92eb8fc411c0a47ae2159a8e3cd6 2022041915:03:35-UTC ./CHANGELOG_vermes
+08946aeca3728c30ed33a13c59ff872372755602 2022041915:59:48-UTC ./CHANGELOG_vermes
+18f9324bb9d03e9d2512e32c9272339c991f85ef 2022041915:54:07-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.prg
+cdaaf364666eeca372b393b6eafd9997896b2138 2022041915:42:28-UTC ./tools/xmlrpc-framework/client/rpcmonitor/rpcmonitor.prg
+a08a7f3a207f17b3c4bbd884bf5900825519f812 2022041915:41:03-UTC ./tools/xmlrpc-framework/s.savex
+24cd286d66e63665f043bf21f4ded7a1ebb9296d 2022041915:38:16-UTC ./tools/xmlrpc-framework/server/rpcsession/parfile.bld
+5d6cfc81f9572d41568129c590a0667e8868f038 2022041915:18:45-UTC ./tools/xmlrpc-framework/client/rpcmonitor/login.say
+77b552a5e4a4a2d7051b3cda62c48a6091c6fc3f 2022041915:09:51-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.prg
 8145c6cd8169e4ff2a2f5b2eb5f1a535d74e1418 2022041915:02:47-UTC ./tools/xmldom/s.savex
-e326910c0ad8d492375bf159251f291086f17c27 2022041914:53:29-UTC ./tools/xmldom/xmldom.hu.ver
+e326910c0ad8d492375bf159251f291086f17c27 2022041914:52:55-UTC ./tools/xmldom/xmldom.hu.ver
 cbf947fa0ab26211a4a6e3ed3e6ffaa621241e70 2022041914:08:02-UTC ./log-install
 df36e5c746e2e197de51b365574d29622b3ef82b 2022041914:07:59-UTC ./usr/bin/linux/xstart
 9fb85d1a9dbb63d891fc7c3b746330b33cb11325 2022041913:05:10-UTC ./tools/xmldom/demo/s.savex
@@ -12,12 +18,9 @@ ecc5c510fb9ee504e2b3fa4f240b821f6983e557 2022041912:42:31-UTC ./tools/xmlrpc-fra
 f6bc694b943ec4930908c4a10f4906c8bc1cb510 2022041912:42:20-UTC ./tools/xmlrpc-framework/rpcutil/dd/_session.tdc
 b015e73fd565a4e34689d5a409b7c979d85b4a21 2022041912:41:18-UTC ./tools/xmlrpc-framework/rpcutil/dd/_rpcauth.ch
 c02036c9f6ab395b14baa9af02654098a02a2071 2022041912:41:18-UTC ./tools/xmlrpc-framework/rpcutil/dd/_rpcuser.ch
-b69dc0981ba7f931ef263476f3fa8848fd8bc058 2022041912:41:17-UTC ./tools/xmlrpc-framework/server/rpcsession/parfile.bld
 ab005cbc3f8305f241044992685a24f311d44eb5 2022041912:25:49-UTC ./tools/xmlrpc-framework/rpcutil/dd/_rpcuser.tdc
 7b332aeb523c4a96ff1d719f3afe4b2abd666d7a 2022041912:25:43-UTC ./tools/xmlrpc-framework/rpcutil/dd/_rpcauth.tdc
-4ad70fb955385c0344fad382c0c02f0accb9c2be 2022041910:21:25-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.prg
 19c4a8be013f2a9259fe3f061b440c8606bb3044 2022041909:25:43-UTC ./tools/xmlrpc-framework/rpcstart.sh
-0c906f92942faf061cf5a9e6e507bae790f5271d 2022041909:16:34-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.prg
 a9d8b7a6e0a3a85770f2641c5417c89abe345a25 2022041909:08:27-UTC ./tools/xmlrpc-framework/rpcbase/rpcuser.bt
 d268c2b06df74d8a604735ade27fa4b57a96e12c 2022041908:24:01-UTC ./gtk/glade/gladeloadgui.prg
 08a8a5eb94822c9df4e6fe6bf0fae69bf1195095 2022041908:23:14-UTC ./gtk/glade/gladewidget.prg
@@ -1653,7 +1656,6 @@ e3c37db42984cb2099b2f44b3f04760317dfa4d6 2013101616:15:49-UTC ./tools/ddict2/dd/
 df56a0191e84855cfb57fd954796a2ffc733a289 2013070612:52:49-UTC ./tools/z/zdisplin.prg
 01d259b5d453d7a1c2d3e569112f498d44336929 2013070612:52:41-UTC ./tools/z/zdelline.prg
 eeb67aa1c0b6f5971eb3e7bdc143101d90e4a4cc 2013070209:59:51-UTC ./ccclib/src/ui_/unix/inkey.cpp
-3831181ea36ab89daa22000ef3d201e1fdbab5cd 2013060712:19:00-UTC ./tools/xmlrpc-framework/client/rpcmonitor/rpcmonitor.prg
 201dbb5b076ae7d38e92b881d52338a5914bb447 2013052408:43:42-UTC ./ccclib/src/direct.cpp
 8ae46b5a5f70b070c30e808a4cb031c71022828c 2013050311:31:26-UTC ./tools/xmlrpc-framework/rpclist
 842f687a6ffbbff6b2dbbe3bbc8035a8b26d3329 2013032010:31:37-UTC ./usr/tex/script/foot.html

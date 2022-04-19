@@ -15,7 +15,7 @@ SERVERDIR=`pwd`/server
 export XMLRPC_WRAPPER=$RPCHOST,$PORTPLAIN,PLAIN
 #export XMLRPC_WRAPPER=$RPCHOST,$PORTSSL,SSL
 
-export XMLRPC_TIMEOUT=20
+export XMLRPC_TIMEOUT=300
 
 $SERVERDIR/rpcsession.exe                       2>>err-rpcsession     &
 $SERVERDIR/rpcsession.exe                       2>>err-rpcsession     &

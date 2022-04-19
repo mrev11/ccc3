@@ -122,18 +122,7 @@ local pos:=brwArrayPos(b)
 *****************************************************************************
 static function down(b,w,sid) 
 local service:=brwArray(b)[brwArrayPos(b)][1]
-local errblk:=errorblock({|x|break(x)}), e
-    begin sequence
-        w:call("system.down",{sid,service}) 
-    recover using e
-        if( service=="system" )
-            alert("SYSTEM DOWN")
-            quit
-        else
-            eval(errblk,e)       
-        end
-    end sequence
-    errorblock(errblk)       
+    w:call("system.down",{sid,service}) 
     refresh(b,w,sid)  
     return .t.
  
@@ -142,16 +131,13 @@ local errblk:=errorblock({|x|break(x)}), e
 static function listservices(w,sid)
 local list:=w:call("system.listservices")
 local n, service, version
-local errblk:=errorblock(), e
     for n:=1 to len(list)
         service:=list[n][1]
-        errorblock({|x|break(x)})
-        begin sequence
+        begin
             version:=w:call(service+".getversion",sid) 
-        recover using e
+        recover
             version:="n.a."
-        end sequence
-        errorblock(errblk)
+        end
         aadd(list[n],version)
     next
     asort(list,,,{|x,y|x[1]=="system".or.x[1]<y[1]})
@@ -198,18 +184,17 @@ static function loadlogin(getlist)
 
 *****************************************************************************
 static function storelogin(getlist,w,sid) 
-local e, success:=.f.
+local success:=.f.
 local uid:=g_uid:varget
 local password:=g_password:varget
-local eblk:=errorblock({|e|break(e)})
-    begin sequence
+local e
+    begin
         sid:=w:call("session.login",{uid,password})
         success:=.t.
-    recover using e
+    recover e
         sid:=NIL
         alert("LOGIN FAILED;;"+e:operation+" ("+e:description+")")
-    end sequence
-    errorblock(eblk)
+    end
     return success
 
 *****************************************************************************

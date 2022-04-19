@@ -1,3 +1,9 @@
+2022.04.19 xmlrpc-framework korszerusitve:
+  rpcwrapper atallitva xmlparser2-re;
+  rpcutil/dd-ben atallas tdc-kre;
+  (csak CCC3) SESSION_DBMDATA tipusa C10 helyett X10;
+  idetlen hibakezeles rendbehozva;
+
 2022.04.19 xmlrpc konyvtar atallitva xmlparser2-re
   (a korabbi xmlparser osztaly az 1.4.00 (2010) valtozat ota deprecated);
 

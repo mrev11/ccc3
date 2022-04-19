@@ -1,0 +1,11 @@
+!table session
+!path  rpcbase
+!index sid session1 SID SRVNAME
+
+!field SID          C  24  0
+!field SRVNAME      C  16  0
+!field SECONDS      N   6  0
+!field UID          C  16  0
+!field TID          C  16  0
+!field DATETIME     C  16  0
+!field DBMDATA      X  10  0

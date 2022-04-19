@@ -5,4 +5,6 @@
 # ennek az az értelme, hogy nem kell várni a Jáva betöltődésére,
 # miközben a tesztelt alkalmazást fordítgatjuk
 
-jtstart.exe "cccdown.exe ~/ccc2-zip ziplist.txt" &
+#jtstart.exe "cccdown.exe ~/ccc2-zip ziplist.txt" &
+
+cccdown.exe ~/REPO/zip/ccc2-zip ziplist.txt

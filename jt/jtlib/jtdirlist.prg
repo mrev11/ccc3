@@ -141,8 +141,8 @@ local dlist:={}, n
     jtsocket():send( this:xmlout )
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="dirlist" )
             for n:=1 to len( node:content )
                 if( node:content[n]:type=="file" )

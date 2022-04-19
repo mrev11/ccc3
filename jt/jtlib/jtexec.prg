@@ -31,8 +31,8 @@ local rsp,dom,node,err,value
     //  <execerror>error</execerror>
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
 
         if( node:type=="execerror" )
             err:=apperrorNew()

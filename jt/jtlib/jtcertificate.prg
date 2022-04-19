@@ -36,8 +36,8 @@ local x,rsp,node,cert
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        node:=xmlparserNew():parsestring(rsp)  
-        node:=node:content[1]
+        node:=xmlparser2New():parsestring(rsp)  
+        //node:=node:content[1]
         if( node:type=="certificate" )
             x:=node:gettext+NL 
             cert:="-----BEGIN CERTIFICATE-----"+NL

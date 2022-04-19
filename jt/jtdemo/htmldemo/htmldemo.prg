@@ -25,7 +25,7 @@ local url
     jtencoding("UTF-8")
     
     url:='<html>'+;
-         '<p>HTTP típusú link:<a href="http://ok.comfirm.hu/index.html">ComFirm honlap</a>'+;
+         '<p>HTTP típusú link:<a href="http://comfirm.hu">ComFirm honlap</a>'+;
          '<p>FILE típusú link:<a href="file:/CURDIR/htmldemo.prg">Minimális htmldemo</a>'+;
          '</html>'
 

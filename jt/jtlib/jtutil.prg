@@ -30,8 +30,8 @@ function jtversion(timeout)
 local rsp,dom,node
     jtsocket():send("<jtversion/>")
     while( !empty(rsp:=jtsocket():recv(timeout)) )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="jtversion" )
             rsp:=node:gettext
             exit
@@ -57,8 +57,8 @@ local rsp,dom,node
         jtsocket():send("<jtencoding/>")
     end
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="jtencoding" )
             return node:gettext //previous setting
         else

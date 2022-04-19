@@ -65,8 +65,8 @@ local rsp,dom,node
     fclose(fd)
 
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
 
         if( node:type=="download" )
             if( node:gettext=="OK" )

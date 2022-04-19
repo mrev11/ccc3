@@ -32,9 +32,10 @@ local a:=jtalertNew()
 
     jtsocket():send(a:xmlout)
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="alert" )
+            dom:xmloutind
             return val(node:gettext) 
         end
     end

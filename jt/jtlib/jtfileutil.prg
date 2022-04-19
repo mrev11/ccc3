@@ -32,8 +32,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="makedir" )
             return node:gettext=="true"
         else
@@ -55,8 +55,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="makedirs" )
             return node:gettext=="true"
         else
@@ -78,8 +78,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="delete" )
             return node:gettext=="true"
         else
@@ -101,8 +101,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="exists" )
             return node:gettext=="true"
         else
@@ -124,8 +124,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="isfile" )
             return node:gettext=="true"
         else
@@ -147,8 +147,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="isdirectory" )
             return node:gettext=="true"
         else
@@ -171,8 +171,8 @@ local x,rsp,dom,node
     jtsocket():send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="rename" )
             return node:gettext=="true"
         else

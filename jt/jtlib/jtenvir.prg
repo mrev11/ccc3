@@ -33,8 +33,8 @@ local rsp,dom,node,i,n,v
 
     while( (rsp:=jtsocket():recv)!=NIL )
 
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
 
         if( node:type=="jtenv" )
             for i:=1 to len( node:content )

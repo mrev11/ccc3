@@ -48,8 +48,8 @@ local fd,clen,rlen,wlen,nbyte,r
     //<uploaderror>error</uploaderror>
 
     while( (rsp:=jtsocket():recv)!=NIL )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
 
         if( node:type=="uploaderror" )
             err:=apperrorNew()
@@ -105,8 +105,8 @@ local fd,clen,rlen,wlen,nbyte,r
     end
     
     rsp:=jtsocket():recv
-    dom:=xmlparserNew():parsestring(rsp)  
-    node:=dom:content[1]
+    dom:=xmlparser2New():parsestring(rsp)  
+    node:=dom//:content[1]
 
     if( !node:type=="uploadend" )
         err:=apperrorNew()

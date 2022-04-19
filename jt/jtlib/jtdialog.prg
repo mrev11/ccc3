@@ -72,7 +72,7 @@ static dialogid:=0
     this:pid:=alltrim(str(getpid()))
     this:dialogid:=this:pid+"_"+alltrim(str(++dialogid))
     this:defaultradiogroup:=jtradiogroup()
-    this:parser:=xmlparserNew()  
+    this:parser:=xmlparser2New()  
     this:mustreact:=.f.
     return this
 
@@ -205,7 +205,7 @@ local n,value,name,i,blk
     end
 
     dom:=this:parser:parsestring(msg) 
-    node:=dom:content[1]
+    node:=dom//:content[1]
     type:=node:type
     dlgid:=node:getattrib("dialogid")
     

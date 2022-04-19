@@ -64,8 +64,8 @@ static function jtalert.loop(this)
 local rsp,dom,node
     jtsocket():send(this:xmlout)
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="alert" )
             return val(node:gettext) 
         end

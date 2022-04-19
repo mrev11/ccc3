@@ -122,8 +122,8 @@ local rsp,dom,node,x
     this:send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="password" )
             return node:gettext
         else
@@ -189,8 +189,8 @@ local rsp,dom,node,x
     this:send(x)
 
     while( (rsp:=jtsocket():recv)!=NIL  )
-        dom:=xmlparserNew():parsestring(rsp)  
-        node:=dom:content[1]
+        dom:=xmlparser2New():parsestring(rsp)  
+        node:=dom//:content[1]
         if( node:type=="signature" )
             return node:gettext
         else

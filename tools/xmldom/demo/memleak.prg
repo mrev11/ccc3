@@ -20,18 +20,18 @@
 
 //ez nézi, hogy a hibaágakban szivárog-e a memória
 
-function main(arg)
+function main(arg:="0")
 local p,dom,e,n:=0
 
-    //thread_create({||dogc()})
+    thread_create({||dogc()})
 
     while( inkey()==0 )
     
         begin
             if( ++n%1000==0  )
-                ? n
+                ?? "."
             end
-            p:=xmlparserNew()
+            p:=xmlparser2New()
             p:file:="x-hibaNN.xml"::strtran("NN",arg)
             p:info:buildflag:=.f.
             //p:debug:=.t.
@@ -39,7 +39,7 @@ local p,dom,e,n:=0
 
         recover e <apperror>
             if( n%1000==0  )
-                ?? "",e:description
+                ? e:description
             end
         end
     end

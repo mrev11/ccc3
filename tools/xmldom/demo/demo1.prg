@@ -18,43 +18,38 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//megszámlálja a különféle xml tagok előfordulását
+static remark:=<<REMARK>>
+    megszamlalja a kulonfele xml tagok elofordulasat
+
+<<REMARK>>
 
 static counter:={}
 
-****************************************************************************
-function main(fname)
-local n, msg, p:=xmlparserNew(fname) 
 
-    p:processblock:={|node|feldolgozo(node,msg)}
-    msg:=message(msg,"Feldolgozás indul")
+****************************************************************************
+function main(fname:="example.xml")
+local n,p
+
+    ? remark
+
+    p:=xmlparser2New(fname)
+    p:contentblock:={|*|content(*)}
     p:parse  
-    msg:=message(msg)
-    
+   
     for n:=1 to len(counter)
         ? padr(counter[n][1],20), counter[n][2]
     next
-
-    ? //"maximális stack méret:", yaccmaxidx() 
-    return NIL
+    ? 
 
 ****************************************************************************
-static function feldolgozo(node,msg)
-
-static k:=0
+static function content(parser,node)
 local n
-
-    if( node:type=="kivonat" )
-        message(msg,"Feldolgozva"+str(++k) )
-    end
-    
     if( 0<(n:=ascan(counter,{|c|c[1]==node:type})) )
         counter[n][2]++
     else
         aadd(counter,{node:type,1})
     end
-    
-    return .t. //nem kell az objektumfa
+    return .f. //nem kell az objektumfa
 
 ****************************************************************************
  

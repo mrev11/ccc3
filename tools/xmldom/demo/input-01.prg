@@ -19,7 +19,7 @@
  */
 
 static remark:=<<REMARK>>
-  elemez egy 0-bájtot tartalmazó filét
+    elemez egy 0-bajtot tartalmazo filet
 
 <<REMARK>>
 
@@ -31,10 +31,10 @@ local p,dom
 
     ? remark
 
-    p:=xmlparserNew()
+    p:=xmlparser2New()
     p:file:="nullabyte.xml"
     dom:=p:parse 
-    dom:xmlout
+    dom:xmloutind
     ?
 
 ****************************************************************************

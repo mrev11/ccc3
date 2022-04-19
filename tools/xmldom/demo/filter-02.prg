@@ -19,9 +19,9 @@
  */
 
 static remark:=<<REMARK>>
-  úgy indul, hogy nem készít node-okat
-  x4 típusú node-oknál bekapcsolja a node építést
-  de nem kéri az x6 node-okat (újra kikapcsol)
+    ugy indul, hogy nem keszit node-okat
+    x4 tipusu node-oknal bekapcsolja a node epitest
+    de nem keri az x6 node-okat (ujra kikapcsol)
 
 <<REMARK>>
 
@@ -32,10 +32,8 @@ local p,n
 
     ? remark
 
-    p:=xmlparserNew()
-
+    p:=xmlparser2New()
     p:file:="x.xml"
-
     p:info:buildflag:=.f.   //kikapcsolt node építéssel indul
     p:cargo:={}             //user data
 
@@ -45,8 +43,8 @@ local p,n
     p:parse 
     
     for n:=1 to len(p:cargo)
+        p:cargo[n]:xmloutind
         ?
-        p:cargo[n]:xmlout
     next
 
     ?
@@ -60,14 +58,10 @@ function nodebegin(prs,ni) //parser, nodeinfo
     elseif( ni:fullpath=="/x1/x2/x3/x4/x5/x6"  )
         prs:info:buildflag:=.f.     //ez nem kell
     end
-
-    ? ">>>", ni
     
 
 ****************************************************************************
 function nodeend(prs,ni,node)  //parser, nodeinfo, node/NIL
-
-    ? "<<<", ni, node
 
     if( ni:fullpath=="/x1/x2/x3/x4" )
         aadd(prs:cargo,node)    //gyűjt

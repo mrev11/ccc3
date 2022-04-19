@@ -19,7 +19,7 @@
  */
 
 static remark:=<<REMARK>>
-  elemzi stdin-t
+    elemzi stdin-t
 
 <<REMARK>>
 
@@ -33,7 +33,7 @@ local p,dom
 
     p:=xmlparser2New(0)
     dom:=p:parse
-    dom:xmlout
+    dom:xmloutind
     ?
 
 ****************************************************************************

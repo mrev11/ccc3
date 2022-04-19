@@ -1,0 +1,8 @@
+
+A LibreOffice dokumentumban minden szoveget nagybeture konvertal.
+
+  Bemenet : demo.odt 
+  Eredmeny: upper.odt
+
+A projekt UTF-8 kodolast hasznal => csak CCC3-mal mukodik.
+

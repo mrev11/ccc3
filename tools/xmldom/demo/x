@@ -1,0 +1,36 @@
+#!/bin/bash
+
+run()
+{
+    :
+    
+    # demo0.exe
+    # demo1.exe
+    # demo2.exe
+    # demo3.exe
+    # encoding-01.exe
+    # encoding-02.exe
+    # filter-01.exe
+    # filter-02.exe
+    # filter-03.exe
+    # include-01.exe
+    # include-02.exe
+    # input-00.exe       <x.xml
+    # input-01.exe
+    # input-02.exe
+    # input-03.exe
+    # memleak.exe
+    # nsdemo.exe
+    # nyuzo-1.exe
+     nyuzo-2.exe
+    # syntax-00.exe
+    # syntax-01.exe
+    # syntax-02.exe
+    # syntax-03.exe
+    # syntax-04.exe
+    # syntax-05.exe
+}
+
+
+run | tee log-x
+

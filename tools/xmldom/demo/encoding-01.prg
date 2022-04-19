@@ -19,9 +19,9 @@
  */
 
 static remark:=<<REMARK>>
-  elemez egy Latin-1 kódolású filét
-  a dom (belül) Unicode kódolású
-  az xmlout UTF-8 kódolású
+    elemez egy Latin-1 kodolasu filet
+    a dom (belul) Unicode kodolasu
+    az xmlout UTF-8 kodolasu
   
 <<REMARK>>
 

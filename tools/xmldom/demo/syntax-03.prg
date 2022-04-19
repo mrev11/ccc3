@@ -19,24 +19,32 @@
  */
 
 static remark:=<<REMARK>>
-  csak szintaktikai ellenőrzés
-  p:info:buildflag:=.f. miatt nem készít node-okat
-  az xml-ben szándékos hiba van
-  a lemon által észrevett szintaktikai hiba
+    csak szintaktikai ellenorzes
+    p:info:buildflag:=.f. miatt nem keszit node-okat
+    az xml-ben szandekos hiba van
+    a lemon altal eszrevett szintaktikai hiba
 
 <<REMARK>>
 
 
 ****************************************************************************
 function main()
-local p,dom
+
+local fspec:="x-hiba3.xml"
+local p,dom,err
 
     ? remark
 
-    p:=xmlparserNew()
-    p:file:="x-hiba3.xml"
+    p:=xmlparser2New()
+    p:file:=fspec
     p:info:buildflag:=.f.
-    dom:=p:parse 
+    begin
+        dom:=p:parse 
+    recover err
+        ? "class:",err:classname
+        err:list
+        listxml(fspec)
+    end
     ?
 
 ****************************************************************************

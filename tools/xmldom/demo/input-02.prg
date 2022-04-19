@@ -19,7 +19,7 @@
  */
 
 static remark:=<<REMARK>>
-  elemez egy 0-bájtot tartalmazó stringet
+    elemez egy 0-bajtot tartalmazo stringet
 
 <<REMARK>>
 
@@ -42,7 +42,7 @@ HOPP hopp HOPP
 
     p:=xmlparser2New()
     dom:=p:parse( xml::strtran("hopp",chr(0)) )
-    dom:xmlout
+    dom:xmloutind
     ?
 
 ****************************************************************************

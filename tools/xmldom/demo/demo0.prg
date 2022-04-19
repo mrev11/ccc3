@@ -18,9 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+static remark:=<<REMARK>>
+    felepiti, majd kiirja az egesz dokumentum objektumot
+
+<<REMARK>>
+
+
 ****************************************************************************
-function main(fname)
-    xmlparserNew(fname):parse:xmlout
+function main(fname:="example.xml")
+    ? remark
+    xmlparser2New(fname):parse:xmlout
 
 ****************************************************************************
  

@@ -18,44 +18,46 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//kilistázza a számla objektumokat
-//ez annyival bonyolultabb az ügyfeleknél,
-//hogy a kivonat részfa építése is szükséges,
-//azonban, hogy a fa ne nőjön az égig,
-//minden elkészült kivonat után a fát visszavágjuk
+static remark:=<<REMARK>>
+    kilistazza a szamla es szamlaegyenleg objektumokat
+    ez annyival bonyolultabb az ugyfeleknel,
+    hogy a kivonat reszfa epitese is szukseges,
+    azonban, hogy a fa ne nojon az egig,
+    minden elkeszult kivonat utan a fat visszavagjuk
+
+<<REMARK>>
+
 
 #ifdef MEGJEGYZES
 
-A processblock  akkor hívódik meg, amikor az elemző beolvasott 
+A contentblock  akkor hívódik meg, amikor az elemző beolvasott 
 egy komplett node-ot (xml elemet), vagyis a node záró tagjának 
-beolvasása után. A feldolgozó block visszatérése kétféle lehet:
+beolvasása után. A content block visszatérése kétféle lehet:
 
-1) .f. az aktuális node bekerül a parent content-jébe (épül a fa)
-2) .t. az elemző eldobja a node-ot (nem épül a fa)
+1) .t. az aktuális node bekerül a parent content-jébe (épül a fa)
+2) .f. az elemző eldobja a node-ot (nem épül a fa)
 
 #endif  
 
 ****************************************************************************
-function main(fname)
-local p:=xmlparserNew(fname) 
+function main(fname:="example.xml")
+local p
 
-    p:processblock:={|node|feldolgozo(node)}
+    ? remark
+
+    p:=xmlparser2New(fname) 
+    p:contentblock:={|*|content(*)}
     p:parse
    
-    ? //"maximális stack méret:", yaccmaxidx() 
-    
-    return NIL
+    ?
 
 ****************************************************************************
-static function feldolgozo(node)
-
+static function content(parser,node)
 local type:=node:type 
-
     if( type=="szamla" .or. type=="szlaegyenleg" )
         node:xmlout
     end
-
-    return  type=="kivonat" 
+    return !(type=="kivonat")
 
 ****************************************************************************
 

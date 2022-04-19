@@ -1,2 +1,0 @@
-#!/bin/bash
-memleak1.exe $1

@@ -19,10 +19,9 @@
  */
 
 static remark:=<<REMARK>>
-  úgy indul, hogy nem készít node-okat
-  x4 típusú node-oknál bekapcsolja a node építést
-  a cargo-ban kigyűjti az x4 node-okat
-  mindenhol kiírja a nodeinfo-t
+    ugy indul, hogy nem keszit node-okat
+    x4 tipusu node-oknal bekapcsolja a node epitest
+    a cargo-ban kigyujti az x4 node-okat
 
 <<REMARK>>
 
@@ -43,13 +42,10 @@ local p,n
     p:nodeendblock:={|prs,ni,node|nodeend(prs,ni,node)}
     
     p:parse 
-    p:list
-    ?
     
     for n:=1 to len(p:cargo)
+        p:cargo[n]:xmloutind
         ?
-        printnode(p:cargo[n])
-        p:cargo[n]:xmlout
     next
 
     ?
@@ -61,12 +57,10 @@ function nodebegin(prs,ni) //parser, nodeinfo
         prs:info:buildflag:=.t. //jön az érdekes rész
     end
 
-    ? ">>>", ni
     
 
 ****************************************************************************
 function nodeend(prs,ni,node)   //parser, nodeinfo, node/NIL
-    ? "<<<", ni //, node
 
     if( ni:type=="x4" /*.and. node!=NIL*/ )
         aadd(prs:cargo,node)    //gyűjti az x4-eket

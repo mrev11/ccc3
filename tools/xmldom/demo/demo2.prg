@@ -18,26 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//kilistázza az ügyfél objektumokat
+static remark:=<<REMARK>>
+    kilistazza az ugyfel objektumokat
+
+<<REMARK>>
+
 
 ****************************************************************************
-function main(fname)
-local p:=xmlparserNew(fname) 
+function main(fname:="example.xml")
+local p 
 
-    p:processblock:={|node|feldolgozo(node)}
+    ? remark
+
+    p:=xmlparser2New(fname) 
+    p:contentblock:={|*|content(*)}
     p:parse  
 
-    ? //"maximális stack méret:", yaccmaxidx() 
-    return NIL
+    ?
 
 ****************************************************************************
-static function feldolgozo(node)
-
+static function content(parser,node)
     if( node:type=="ugyfel" )
         node:xmlout
     end
-    
-    return .t. //nem kell az objektumfa
+    return .f. //nem kell az objektumfa
 
 ****************************************************************************
  

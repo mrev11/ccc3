@@ -19,40 +19,22 @@
  */
 
 ****************************************************************************
-function main(build)
+function main()
 local p,dom,n:=0
 
     thread_create({||dogc()})
 
-    p:=xmlparserNew()
-
-    //p:file:="example.xml"
+    p:=xmlparser2New()
     p:file:="z.xml"
-    
-    if(build==NIL)
-        p:info:buildflag:=.f.
-    end
-    
-    ? "buildflag", p:info:buildflag
+    p:contentblock:={|*|content(*)}
 
-    p:nodebeginblock:={|prs,ni|nodebegin(prs,ni)}
-    //p:nodeendblock:={|prs,ni,node|nodeend(prs,ni,node)}
-    p:contentblock:={|prs,node|content(prs,node)}
-
-    while(.t.)
+    while( inkey()==0 )
         dom:=p:parse 
         if( ++n%100==0 )
             ?? "."
         end
     end
 
-
-****************************************************************************
-function nodebegin(prs,ni) //parser, nodeinfo
-
-    if( ni:type=="include" )
-        prs:info:buildflag:=.t.     //hogy működjön az include
-    end
 
 ****************************************************************************
 function content(prs,node)
@@ -81,3 +63,4 @@ function dogc()
     end
 
 ****************************************************************************
+

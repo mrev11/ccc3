@@ -19,24 +19,34 @@
  */
 
 static remark:=<<REMARK>>
-  csak szintaktikai ellenőrzés
-  p:info:buildflag:=.f. miatt nem készít node-okat
-  az xml-ben szándékos hiba van
-  ellenőrzéssel észrevett szintaktikai hiba
+    csak szintaktikai ellenorzes
+    p:info:buildflag:=.f. miatt nem keszit node-okat
+    az xml-ben szandekos hiba van
+    ellenorzessel eszrevett szintaktikai hiba
+
+    Ez a hiba megszunt.
+    Korabban az elemzo kivetelt dobott az ismeretlen PI-kre.
+    Az ujabb valtozat egyszeruen eldobja az ismeretlen PI-ket.
+    Csak az <?xml ...?> processing instruction-t dolgozza fel. 
 
 <<REMARK>>
 
 
 ****************************************************************************
 function main()
+
+local fspec:="x-hiba5.xml"
 local p,dom
 
     ? remark
 
-    p:=xmlparserNew()
-    p:file:="x-hiba5.xml"
+    p:=xmlparser2New()
+    p:file:=fspec
     p:info:buildflag:=.f.
-    dom:=p:parse 
+    dom:=p:parse
+    
+    listxml(fspec)
+     
     ?
 
 ****************************************************************************

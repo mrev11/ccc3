@@ -25,27 +25,7 @@ function xmlrpcserver.rpcdataCall(this,xml,qmxml)  //this:server
 local p, o, name, params, n
 local style
 
-    //xmldom 1.4.00 előtt
-    //
-    //o:=xmlparserNew():parsestring(xml)
-    //if( !lower(o:content[1]:type)=="?xml" )
-    //    invalidformat("Not an XML document") 
-    //end
-    //if( !o:content[2]:type=="methodCall" )
-    //    expected("methodCall",o:content[2]:type) 
-    //end
-    //o:=o:content[2]
-
-    //Megj:
-    //A fentebbi régi megoldás (fix indexekkel) a lehető legrosszabb.
-    //Helyette jobb lett volna egy olyan processblock, ami kiszedi 
-    //a methodCall node-ot, minden mást elereszt. Akkor most nem volna
-    //inkompatibilitás az új xmldom könyvtárral.
-
-
-    //xmldom 1.4.00 után
-    p:=xmlparserNew()
-    p:rootflag:=.f.
+    p:=xmlparser2New()
     p:entityconv:=.t.
     
     if( this!=NIL .and. this:rpcstruct!=NIL )
@@ -86,22 +66,7 @@ function xmlrpcclient.rpcdataResponse(this,xml) //this:client
 local p, o, params, fault, n
 local style
 
-    //xmldom 1.4.00 előtt
-    //
-    //o:=xmlparserNew():parsestring(xml)
-    //if( !lower(o:content[1]:type)=="?xml" )
-    //    invalidformat("Not an XML document") 
-    //end
-    //if( !o:content[2]:type=="methodResponse" )
-    //    expected("methodResponse",o:content[2]:type) 
-    //end
-    //o:=o:content[2]
-
-
-    //xmldom 1.4.00 után
-
-    p:=xmlparserNew()
-    p:rootflag:=.f.
+    p:=xmlparser2New()
     p:entityconv:=.t.
     if( this!=NIL .and. this:rpcstruct!=NIL ) 
         //server objektum nelkul is meghivhato 

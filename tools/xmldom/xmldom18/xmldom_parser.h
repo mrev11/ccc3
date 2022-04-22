@@ -1,0 +1,12 @@
+#define ROOT                            1
+#define QMRPAR                          2
+#define LPAR                            3
+#define SLRPAR                          4
+#define RPAR                            5
+#define SLASH                           6
+#define SYMBOL                          7
+#define TEXT                            8
+#define CDATA                           9
+#define LPARQM                         10
+#define EQ                             11
+#define STRING                         12

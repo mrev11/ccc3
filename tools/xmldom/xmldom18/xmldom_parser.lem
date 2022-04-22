@@ -39,7 +39,8 @@ extern void _clp_symbol__symbol(int argno);
 extern void _clp_tnode__cdata(int argno);
 extern void _clp_tnode__text(int argno);
 extern void _clp_xmldecl__qsymbol_attrlist_qmrpar(int argno);
-extern void _clp_xml__xmldecl_node(int argno);
+extern void _clp_xmlv__root_xmldecl_content(int argno);
+extern void _clp_xmlv__xmldecl_node(int argno);
 }}//namespace xmldom.lemon
 
 DEFINE_METHOD(lexer);
@@ -66,7 +67,7 @@ DEFINE_METHOD(lexer);
     xmldom_lexer *lexer=(xmldom_lexer*)(TOP()->data.pointer);
     pop();
     
-    sprintf(desc,"lemon grammar syntax error near #line %d",lexer->lineno());
+    sprintf(desc,"syntax error near #line %d",lexer->lineno());
 
     _clp_xmlsyntaxerrornew(0);
     dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
@@ -109,12 +110,26 @@ DEFINE_METHOD(lexer);
 //aminek a neve a szabalybol van szarmaztatva,
 //ezek xmldom_lemon.prg-ben vannak
 
+xml ::= xmlv.
 
-xml ::= xmldecl node(N).{
+
+xmlv ::= ROOT xmldecl content(C).{
+    push(parservp);//parser objektum
+    number(C);
+
+    _nsp_xmldom::_nsp_lemon::_clp_xmlv__root_xmldecl_content(2); 
+
+    // megvan a vegeredmeny
+    // parseinput a mostani TOP-ot adja vissza 
+    // a _rettop() makroval
+}
+
+
+xmlv ::= xmldecl node(N).{
     push(parservp);//parser objektum
     number(N);
 
-    _nsp_xmldom::_nsp_lemon::_clp_xml__xmldecl_node(2); 
+    _nsp_xmldom::_nsp_lemon::_clp_xmlv__xmldecl_node(2); 
 
     // megvan a vegeredmeny
     // parseinput a mostani TOP-ot adja vissza 

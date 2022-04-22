@@ -19,11 +19,16 @@
  */
 
 ****************************************************************************
-class xmlparser2(xmlparser) //szinonima
+class xmlparser2(xmlparser)
+    method  initialize
 
+static function xmlparser2.initialize(this,*) 
+    this:(xmlparser)initialize(*[2..]) 
+    this:rootflag:=.f.
+    return this
 
 ****************************************************************************
-class xmlparser(object)   new:  // nem peldanyosithato
+class xmlparser(object)
 
     method  initialize
     method  copy
@@ -39,6 +44,7 @@ class xmlparser(object)   new:  // nem peldanyosithato
     attrib  preservespace   // megorzi-e a szokozoket (default=.f.)
     attrib  debug           // lexer/parser debug
     attrib  cargo           // tetszoleges adat
+    attrib  rootflag        // mesterseges #ROOT node (compatibility)
     attrib  qmxml           // <?xml ... ?> deklaracio, mint node
 
     attrib  lemon           // lemon stack (belso hasznalatra)
@@ -58,6 +64,9 @@ class xmlparser(object)   new:  // nem peldanyosithato
     attrib  contentblock
     attrib  textnodeblock
 
+    attrib  processblock
+    method  process         {|this,node|eval(this:processblock,node)}
+    
     attrib  createnodeblock // ezzel hozza letre a node-okat
 
 
@@ -73,6 +82,7 @@ static function xmlparser.initialize(this,f)
     this:preservespace:=.f.
     this:debug:=.f.
     this:cargo:=NIL
+    this:rootflag:=.t.      // compatibility
     this:qmxml:=NIL
 
     this:lemon:={}
@@ -91,6 +101,7 @@ static function xmlparser.initialize(this,f)
     this:nodeendblock:=NIL
     this:attribblock:=NIL
     this:contentblock:=NIL
+    this:processblock:={||NIL}
 
     return this
 
@@ -171,6 +182,14 @@ local dom
         inpfd:=inpfil // number/NIL
     end
     
+    if(this:rootflag)
+        if( x==NIL )
+            x:=a"<#ROOT#>"
+        else
+            x:=a"<#ROOT#>"+str2bin(x)
+        end
+    end
+
     this:lemon:={}
     begin
         dom:=_xmldom_parser_parseinput(this,x,inpblk,inpfd)
@@ -182,6 +201,12 @@ local dom
         if( needclose )
             fclose(inpfd)
         end
+    end
+
+    if( this:rootflag .and. this:qmxml!=NIL )
+        aadd(dom:content,NIL)
+        ains(dom:content,1)
+        dom:content[1]:=this:qmxml
     end
 
     return dom

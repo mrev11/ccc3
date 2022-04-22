@@ -1,3 +1,5 @@
+2022.04.22 xmldom 2.0 inkompatibilis vatozasok;
+
 2022.04.19 xmlrpc-framework korszerusitve:
   rpcwrapper atallitva xmlparser2-re;
   rpcutil/dd-ben atallas tdc-kre;

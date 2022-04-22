@@ -43,82 +43,81 @@ xml        [Xx][Mm][Ll]
 
 %%
 
-"<#ROOT#>"       {return ROOT;} 
-[^<]             {cat();}
-"&amp;"          {entityconversionflag ? cat("&")  : cat();}
-"&lt;"           {entityconversionflag ? cat("<")  : cat();}
-"&gt;"           {entityconversionflag ? cat(">")  : cat();}
-"&quot;"         {entityconversionflag ? cat("\"") : cat();}
-"&apos;"         {entityconversionflag ? cat("\'") : cat();}
+[^<]                {cat();}
+"&amp;"             {entityconversionflag ? cat("&")  : cat();}
+"&lt;"              {entityconversionflag ? cat("<")  : cat();}
+"&gt;"              {entityconversionflag ? cat(">")  : cat();}
+"&quot;"            {entityconversionflag ? cat("\"") : cat();}
+"&apos;"            {entityconversionflag ? cat("\'") : cat();}
 
-"&#"{dec}";"     {entityconversionflag ? code()    : cat();}
-"&#x"{hex}";"    {entityconversionflag ? code()    : cat();}
+"&#"{dec}";"        {entityconversionflag ? code()    : cat();}
+"&#x"{hex}";"       {entityconversionflag ? code()    : cat();}
 
-[^<]/"<"         {cat(); if(trim()) return TEXT;}
-"&amp;"/"<"      {entityconversionflag ? cat("&")  : cat(); return TEXT;}
-"&lt;"/"<"       {entityconversionflag ? cat("<")  : cat(); return TEXT;}
-"&gt;"/"<"       {entityconversionflag ? cat(">")  : cat(); return TEXT;}
-"&quot;"/"<"     {entityconversionflag ? cat("\"") : cat(); return TEXT;}
-"&apos;"/"<"     {entityconversionflag ? cat("\'") : cat(); return TEXT;}
+[^<]/"<"            {cat(); if(trim()) return TEXT;}
+"&amp;"/"<"         {entityconversionflag ? cat("&")  : cat(); return TEXT;}
+"&lt;"/"<"          {entityconversionflag ? cat("<")  : cat(); return TEXT;}
+"&gt;"/"<"          {entityconversionflag ? cat(">")  : cat(); return TEXT;}
+"&quot;"/"<"        {entityconversionflag ? cat("\"") : cat(); return TEXT;}
+"&apos;"/"<"        {entityconversionflag ? cat("\'") : cat(); return TEXT;}
 
-"&#"{dec}";"/"<" {entityconversionflag ? code()    : cat(); return TEXT;}
-"&#x"{hex}";"/"<" {entityconversionflag ? code()   : cat(); return TEXT;}
+"&#"{dec}";"/"<"    {entityconversionflag ? code()    : cat(); return TEXT;}
+"&#x"{hex}";"/"<"   {entityconversionflag ? code()   : cat(); return TEXT;}
 
 
-"<![CDATA["      {yy_push_state(cdata);}
+"<![CDATA["         {yy_push_state(cdata);}
 <cdata>{
-"]]>"            {yy_pop_state(); return CDATA;}  
-.|\n             {cat();}  
+"]]>"               {yy_pop_state(); return CDATA;}  
+.|\n                {cat();}  
 }
 
 
-"<!--"           {yy_push_state(comment);}
+"<!--"              {yy_push_state(comment);}
 <comment>{
-"-->"            {yy_pop_state();}
-.|\n             {} 
+"-->"               {yy_pop_state();}
+.|\n                {} 
 }
 
-"<?"             {yy_push_state(procinst);}
+"<?"                {yy_push_state(procinst);}
 <procinst>{
-"?>"             {yy_pop_state();}
-.|\n             {/*az <?xml ... ?> deklaracion kivul minden PI-t eldob*/} 
+"?>"                {yy_pop_state();}
+.|\n                {/*az <?xml ... ?> deklaracion kivul minden PI-t eldob*/} 
 }
 
-"<!DOCTYPE"      {yy_push_state(doctype);}
+"<!DOCTYPE"         {yy_push_state(doctype);}
 <doctype>{
-{string}         {}  
-">"              {yy_pop_state();}
-.|\n             {} 
+{string}            {}  
+">"                 {yy_pop_state();}
+.|\n                {} 
 }
  
 
-"<"              {yy_push_state(tag); initialwspace=0; return LPAR;}
-"<?"{xml}{ws}    {yy_push_state(tag); cat("xml"); return LPARQM;}
+"<"                 {yy_push_state(tag); initialwspace=0; return LPAR;}
+"<?"{xml}{ws}       {yy_push_state(tag); cat("xml"); return LPARQM;}
 <tag>{
-">"              {yy_pop_state(); return RPAR;} 
-"/>"             {yy_pop_state(); return SLRPAR;} 
-"?>"             {yy_pop_state(); return QMRPAR;} 
-{symbol}         {cat(); return SYMBOL;}  
-{string}         {cat(); return STRING;}  
-{wspace}         {}
-"/"              {return SLASH;}
-"="              {return EQ;}
+">"                 {yy_pop_state(); return RPAR;} 
+"/>"                {yy_pop_state(); return SLRPAR;} 
+"?>"                {yy_pop_state(); return QMRPAR;} 
+{symbol}            {cat(); return SYMBOL;}  
+{string}            {cat(); return STRING;}  
+{wspace}            {}
+"/"                 {return SLASH;}
+"="                 {return EQ;}
 
-.                {
-                    char desc[256]; 
-                    sprintf(desc,"unexpected char (%s) near #line %d",YYText(),lineno());
-                    _clp_xmlsyntaxerrornew(0);
-                    dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
-                    dup();stringnb("xmldom_lexer");_o_method_operation.eval(2);pop();
-                    dup();stringnb(desc);_o_method_description.eval(2);pop();
-                    dup();number(1);_o_method_subcode.eval(2);pop();
-                    if( inputfspec )
-                    {
-                        dup();stringnb(inputfspec);_o_method_filename.eval(2);pop();
+.                   {
+                        char desc[256]; 
+                        sprintf(desc,"flex unexpected char (%s) near #line %d",YYText(),lineno());
+                        _clp_xmlsyntaxerrornew(0);
+                        dup();stringnb("XMLDOM");_o_method_subsystem.eval(2);pop();
+                        dup();stringnb("xmldom_lexer");_o_method_operation.eval(2);pop();
+                        dup();stringnb(desc);_o_method_description.eval(2);pop();
+                        dup();number(1);_o_method_subcode.eval(2);pop();
+                        if( inputfspec )
+                        {
+                            dup();stringnb(inputfspec);_o_method_filename.eval(2);pop();
+                        }
+                        _clp_break(1);
+                        pop();
                     }
-                    _clp_break(1);
-                    pop();
-                }
 }
 
 <<EOF>>         {initialwspace=1; return trim()?TEXT:0;}

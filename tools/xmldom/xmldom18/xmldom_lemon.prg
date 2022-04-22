@@ -23,12 +23,24 @@
 
 namespace xmldom.lemon
 
+***************************************************************************************
+function xmlv__root_xmldecl_content(this,c)
+local node
+    //? this:lemon
+    node:=xmlnodeNew("#ROOT")
+    node:content:=this:lemon[c]
+    asize(this:lemon,0)
+    return node //vegeredmeny
+
 
 ***************************************************************************************
-function xml__xmldecl_node(this,n)
+function xmlv__xmldecl_node(this,n)
 local node:=this:lemon[n]
     //? this:lemon
     asize(this:lemon,0)
+    if( !empty(this:process(node)) )
+        node:=NIL
+    end
     return node //vegeredmeny
 
 
@@ -42,7 +54,9 @@ local info:=this:lemon[s],node,enc,nsmap
     if( enc!=NIL  )
         xmldom.lexer.setencoding(this:lexer,enc)
     end
-    this:qmxml:=node
+    if( empty(this:process(node)) )
+        this:qmxml:=node
+    end
     nsmap:=this:info:nsmap
     this:infopop
     this:info:nsmap:=nsmap
@@ -141,7 +155,12 @@ function content__(this)
 function content__content_tnode(this,c,n)
 local node
     if( (node:=this:lemon[n])!=NIL )
-        if( this:contentblock==NIL .or. eval(this:contentblock,this,node) )
+
+        if( this:contentblock!=NIL )
+            if( eval(this:contentblock,this,node) )
+                aadd(this:lemon[c],node)
+            end
+        elseif( empty(this:process(node)) )
             aadd(this:lemon[c],node)
         end
     end
@@ -153,7 +172,12 @@ local node
 function content__content_node(this,c,n)
 local node
     if( (node:=this:lemon[n])!=NIL )
-        if( this:contentblock==NIL .or. eval(this:contentblock,this,node) )
+
+        if( this:contentblock!=NIL )
+            if( eval(this:contentblock,this,node) )
+                aadd(this:lemon[c],node)
+            end
+        elseif( empty(this:process(node)) )
             aadd(this:lemon[c],node)
         end
     end

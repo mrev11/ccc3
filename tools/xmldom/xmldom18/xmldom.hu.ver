@@ -1,11 +1,3 @@
-2011.04.19 -- 2.0
-  xmldom 2.0 inkompatibilis valtozasok;
-  megszuntek az regi xmlparser osztaly szabvanyellenes funkcioi:
-  xmlparser es xmlparser2 osztalyok azonosak (szinonimak);
-  megszunt a rootflag attributum, nem keszul <#ROOT> node, nem fogad el multiroot dokumentumot;
-  megszunt a processblock attributum -> contentblock-ot kell hasznalni;
-  az <?xml...?> deklaraciobol nem keletkezik node a dom-ban;
-
 2022.04.19 -- 1.8.2
   xmloutind indentalt kiiras fejlesztve;
 

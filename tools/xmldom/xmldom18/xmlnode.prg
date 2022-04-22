@@ -159,7 +159,12 @@ static function xmlnode.xmlout(this)
 
 local n
 
-    if( left(this:type,1)=="?" )
+    if( this:type=="#ROOT" )
+        for n:=1 to len(this:content)
+            this:content[n]:xmlout
+        next
+
+    elseif( left(this:type,1)=="?" )
         ? "<"+this:type
         for n:=1 to len(this:attrib)
             ? "  ",this:attrib[n]:name+"="+this:attrib[n]:value
@@ -205,7 +210,12 @@ static function xmlnode.xmloutpre(this)
 
 local n
 
-    if( left(this:type,1)=="?" )
+    if( this:type=="#ROOT" )
+        for n:=1 to len(this:content)
+            this:content[n]:xmloutpre
+        next
+
+    elseif( left(this:type,1)=="?" )
         ?? "<"+this:type
         for n:=1 to len(this:attrib)
             ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
@@ -242,7 +252,7 @@ local n
 
 
 ****************************************************************************
-static function xmlnode.xmloutind(this,indent:="") 
+static function xmlnode.xmloutind(this,rflag:=.f.,indent:="") 
 
 // Indentalva irja ki az xml-t.
 // Akkor ad jo eredmenyt, ha preservespace:=.f. volt beallitva.
@@ -265,7 +275,20 @@ static function xmlnode.xmloutind(this,indent:="")
 
 local n,ind
 
-    if( left(this:type,1)=="?" )
+    if( this:type=="#ROOT" .and. rflag==.f. )
+        // Ha rflag==.f. (default)
+        //  akkor a #ROOT gyermekei sorban kiirodnak,
+        //  a kimeneten nem jelenik meg a <#ROOT> hej.
+        //
+        // Ha rflag==.t. (teszteleshez)
+        //  akkor nem ide jon, hanem a normal agon irodik ki 
+        //  a node, es a <#ROOT> hej is megjelenik a kimeneten.
+    
+        for n:=1 to len(this:content)
+            this:content[n]:xmloutind(rflag,indent)
+        next
+
+    elseif( left(this:type,1)=="?" )
         ?? "<"+this:type
         for n:=1 to len(this:attrib)
             ?? " "+this:attrib[n]:name+"="+this:attrib[n]:value
@@ -301,12 +324,12 @@ local n,ind
             ?? ">"
             if( textcontent(this) )
                 for n:=1 to len(this:content)
-                    this:content[n]:xmloutind("")
+                    this:content[n]:xmloutind(rflag,"")
                 next
                 ?? "</"+this:type+">"
             else
                 for n:=1 to len(this:content)
-                    this:content[n]:xmloutind(indent+"    ")
+                    this:content[n]:xmloutind(rflag,indent+"    ")
                 next
                 ? indent+"</"+this:type+">"
             end
@@ -324,6 +347,8 @@ static function textcontent(node)
 local n
     for n:=1 to len(node:content)
         if( node:content[n]:type::asc!=35 ) // asc("#")==35
+            return .f.
+        elseif( node:content[n]:type=="#ROOT" )
             return .f.
         end
     next 

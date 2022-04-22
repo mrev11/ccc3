@@ -1,0 +1,6 @@
+
+Ez az utolso olyan xmldom valtozat, ami meg ismeri az 
+xmlparser osztaly (az xmlparser2 elodjenek) elavult reszeit:
+
+  - processblock
+  - rootflag

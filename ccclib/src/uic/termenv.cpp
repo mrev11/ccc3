@@ -54,4 +54,33 @@ void _clp_termputenv(int argno)  // termputenv("ENVIR=value")
 }
 
 //----------------------------------------------------------------------------
+void _clp_termchdir(int argno)
+{
+    CCC_PROLOG("termchdir",1);
+    str2bin(base);
+    char *dir=_parb(1);
+    extern int termchdir(char *dir);
+    _retl( 0==termchdir(dir) );  
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------
+void _clp_termgetcwd(int argno)
+{
+    CCC_PROLOG("termgetcwd",0);
+    extern char *termgetcwd();
+    char *val=termgetcwd();
+    if(val)
+    {
+        _retcb(val);
+        free(val);
+    }
+    else
+    {
+        _ret();
+    }
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------
 

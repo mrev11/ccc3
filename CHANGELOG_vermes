@@ -1,3 +1,8 @@
+2022.04.29 terminal API bovites:
+  TERMCMD_CHDIR a terminalnak chdir parancsot kuld;
+  TERMCMD_GETCWD lekerdezi a terminal working directory-jat;
+  termchdir es termgetcwd CCC-bol es C++-bol hivhat;
+
 2022.04.29 debugolast segito eszkozok;
 
 2022.04.22 xmldom 2.0 inkompatibilis vatozasok;

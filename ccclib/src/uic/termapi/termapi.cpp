@@ -587,4 +587,65 @@ void termputenv(char *env)
 
 
 //----------------------------------------------------------------------------
+int termchdir(char *dir)
+{
+    int len=strlen(dir);
+    network_uint32_t buf[2];
+    buf[0].set(TERMCMD_CHDIR);
+    buf[1].set(sizeof(buf)+len+1);
+    termio_send2(buf,sizeof(buf),dir,len+1);
+
+    termio_recv(buf,sizeof(buf)); //header
+    while( buf[0].get()!=TERMCMD_CHDIR )
+    {
+        if( buf[0].get()!=TERMCMD_KEYCODE )
+        {
+            //ilyen nem lehet
+            fprintf(stderr,"getwsize: unexpected message\n");
+            signal_raise(SIG_TERM);
+            exit(1);
+        }
+        termio_drop(buf[1].get()-sizeof(buf)); //dropping rest
+        termio_recv(buf,sizeof(buf)); //header
+    }
+
+    network_uint32_t result;
+    termio_recv(&result,sizeof(result));
+    return result.get(); // success==0
+
+}
+
+//----------------------------------------------------------------------------
+char *termgetcwd()
+{
+    network_uint32_t buf[2];
+    buf[0].set(TERMCMD_GETCWD);
+    buf[1].set(sizeof(buf));
+    termio_send(buf,sizeof(buf));
+
+    termio_recv(buf,sizeof(buf)); //header
+    while( buf[0].get()!=TERMCMD_GETCWD )
+    {
+        if( buf[0].get()!=TERMCMD_KEYCODE )
+        {
+            //ilyen nem lehet
+            fprintf(stderr,"getwsize: unexpected message\n");
+            signal_raise(SIG_TERM);
+            exit(1);
+        }
+        termio_drop(buf[1].get()-sizeof(buf)); //dropping rest
+        termio_recv(buf,sizeof(buf)); //header
+    }
+
+    int len=buf[1].get()-sizeof(buf);
+    if( len>0 )
+    {
+        char *val=(char*)malloc(len);
+        termio_recv(val,len);
+        return val;
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------------
 

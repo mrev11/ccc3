@@ -35,6 +35,8 @@
 #define TERMCMD_MESSAGE         0x40c
 #define TERMCMD_GETENV          0x40d
 #define TERMCMD_PUTENV          0x40e
+#define TERMCMD_CHDIR           0x40f
+#define TERMCMD_GETCWD          0x410
 #define TERMCMD_TERMINATE       0x4ff
 
 #endif

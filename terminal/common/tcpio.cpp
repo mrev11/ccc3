@@ -29,6 +29,14 @@
 #include <termcmd.h>
 #include <flock.h>
 
+#include <debug.h>
+#include <msgout.h>
+
+
+#ifdef WINDOWS
+  #include <direct.h>
+#endif
+
 #ifdef WINDOWS
   #ifndef wcscasecmp
     #define wcscasecmp  wcsicmp
@@ -364,7 +372,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                                 qout[fp]=fopen(locnam,additive?"ab":"wb");
                                 free(fnames[fp]);
                                 fnames[fp]=strdup(locnam);
-                           }
+                            }
 
                             if(qout[fp])
                             {
@@ -391,8 +399,8 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     }
                     else
                     {
-                        fclose(qout[fp]);
                         _ccc_unlock(fileno(qout[fp]),0,0,1);
+                        fclose(qout[fp]);
                         if(fnames[fp])
                         {
                             autostart(fnames[fp]);
@@ -490,6 +498,35 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 int len=strlen(env);
                 putenv(strdup(env));
                 //printf("TERMCMD_PUTENV\n");fflush(0);
+                break;
+            }
+
+            case TERMCMD_CHDIR:
+            {   
+                char *dir=(char*)&PARAM(0);
+                int result=chdir(dir);
+                DATALEN.set(header_size+1*param_size);
+                PARAM(0).set(result); // success==0
+                xsend(sck,iobuffer,DATALEN.get());
+                //printf("TERMCMD_CHDIR\n");fflush(0);
+                break;
+            }
+
+            case TERMCMD_GETCWD:
+            {
+                char *dir=getcwd(0,0);
+                if(dir)
+                {
+                    DATALEN.set(header_size+strlen(dir)+1);
+                    strcpy((char*)&PARAM(0),dir);
+                }
+                else
+                {
+                    DATALEN.set(header_size);
+                }
+                xsend(sck,iobuffer,DATALEN.get());
+                free(dir);
+                //printf("TERMCMD_GETCWD\n");fflush(0);
                 break;
             }
         }
@@ -661,7 +698,7 @@ static char *localname(int fp, char *fname, const char **lpr, const char **dev)
         }
     }
 
-    fprintf(stderr,"\nREDIR %d: %s -> loc[%s] dev[%s] lpr[%s]",fp,fname,locnam,*dev,*lpr);fflush(0);
+    msgout("\nREDIR %d: %s -> loc[%s] dev[%s] lpr[%s]",fp,fname,locnam,*dev,*lpr);fflush(0);
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    

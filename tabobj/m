@@ -2,7 +2,7 @@
 
 compile()
 {
-    pushd tbbtbtx && m && popd 
+    (cd tbbtbtx && m)
 }
 
 compile 2>&1 | tee  log-install

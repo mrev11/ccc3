@@ -1,4 +1,0 @@
-#!/bin/bash
-#sajnos ez minden platformon elszállós
-gdb appwindow.exe core
-

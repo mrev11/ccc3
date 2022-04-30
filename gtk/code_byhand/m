@@ -1,7 +1,6 @@
 #!/bin/bash
 
-pushd ../codegen && m && run.exe
-popd
+( cd ../codegen && m && run.exe )
 
 mkdir -p obj$CCCBIN
 pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags

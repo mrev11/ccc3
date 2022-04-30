@@ -1,3 +1,2 @@
 #!/bin/bash
-pushd ../code_byhand && m
-popd
+( cd../code_byhand && m )

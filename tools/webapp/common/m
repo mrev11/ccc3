@@ -55,16 +55,16 @@ cat   src/javascript/popup.js               >>webapp.js
 
 for CSSDIR in src/css/style-*; do
     echo $CSSDIR
-    pushd $CSSDIR >/dev/null
-    for COLORS in ../colors/colors-*.less; do
-        cp $COLORS colors.less
-        COLORS=$(echo $COLORS | sed s^.*colors-^^ )
-        COLORS=$(echo $COLORS | sed s^.less^^ )
-        echo "/*$CSSDIR:$COLORS*/" >webapp-$COLORS.css
-        lessc webapp.less >>webapp-$COLORS.css
-    done
-    rm colors.less
-    popd >/dev/null
+    ( cd $CSSDIR 
+        for COLORS in ../colors/colors-*.less; do
+            cp $COLORS colors.less
+            COLORS=$(echo $COLORS | sed s^.*colors-^^ )
+            COLORS=$(echo $COLORS | sed s^.less^^ )
+            echo "/*$CSSDIR:$COLORS*/" >webapp-$COLORS.css
+            lessc webapp.less >>webapp-$COLORS.css
+        done
+        rm colors.less
+    ) >/dev/null
 done
 
 

@@ -1,5 +1,3 @@
 #!/bin/bash
-pushd ../../..
-mk_uic
-popd
+( cd ../../.. && mk_uic )
 

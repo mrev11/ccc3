@@ -1,7 +1,18 @@
+f52ec4eddcb6fbdabc442f58d07bd3fa00cb9966 2022043015:36:37-UTC ./CHANGELOG_vermes
+45988eaecc9298a860d38822e820d2c1b1b6b2ab 2022043014:21:01-UTC ./jt/jterminal/jterminal.jar
+68503b607dfe60ad383c71a1e3d7842ba2e7ec35 2022043014:21:01-UTC ./log-install
+0f41f6496966aa600a196c4673a092d342878f3f 2022043014:13:40-UTC ./terminal/terminal-test/xstart.par
+22c58e83e39066f9b1819c6127fc4d59130a4713 2022042922:17:47-UTC ./tools/mask/m
+6a915bde4b72ae6e1737136273523d2a00fd3537 2022042922:17:19-UTC ./tools/webapp/common/m
+a6153726990e648567ffc405e883bdcdbc34d425 2022042922:15:16-UTC ./tools/socket/m
+78d4cfab3d4a3d1d5bd16487f8c965e3b0b9ea3e 2022042922:14:45-UTC ./gtk/code_byhand/m
+773ea67b92c8db06288f15f10911ae9d774afcb1 2022042922:14:07-UTC ./gtk/defs/m
+616b1b2f8a07ca0a8460e5604f60c4c3913559cb 2022042922:13:39-UTC ./setup/setup-unix/m
+e7b25b1eb60535d9f2c00ad05c888a13cb015f00 2022042922:12:47-UTC ./ccclib/src/uic/termapi/m
+a8f6cd7762254591289b941b13d45b3226cebd51 2022042922:12:06-UTC ./ccclib/src/uic/m
+1151f61e63735c2a6dfe46f8ca0aac8e6d27a136 2022042921:07:36-UTC ./tabobj/m.msys2
+d7d5342de9acd9969b036395b8951a1a8639ca88 2022042921:07:03-UTC ./tabobj/m
 ab98c4867b5b76e1a2785811db5bc91534dd861d 2022042919:07:27-UTC ./terminal/common/tcpio.cpp
-c23c284fe2d540897a29dffaed76c4d338814f99 2022042918:20:33-UTC ./CHANGELOG_vermes
-99c5756c2c0a7343c70e5723eed3248ef17a614f 2022042813:38:01-UTC ./jt/jterminal/jterminal.jar
-9628666f90c14f33a4a6b618179b98606fb448dd 2022042813:38:01-UTC ./log-install
 db5dd64ddc0b1c740144116a5fd21c869c9b1162 2022042813:37:27-UTC ./usr/bin/linux/list
 ccc529582644ed3c579bf4f8b11c7da0bfd234ee 2022042813:36:56-UTC ./usr/bin/linux/terminal-gtk3
 034f577c17c4886e99e515cdd7cb5966e3f91ce7 2022042813:36:54-UTC ./usr/bin/linux/terminal-gtk
@@ -139,8 +150,6 @@ d4d690b6decb67f4cf34e9906622f4419cf4dd0e 2022042214:37:49-UTC ./tools/xmldom/xml
 18f9324bb9d03e9d2512e32c9272339c991f85ef 2022041915:54:07-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.prg
 cdaaf364666eeca372b393b6eafd9997896b2138 2022041915:42:28-UTC ./tools/xmlrpc-framework/client/rpcmonitor/rpcmonitor.prg
 a08a7f3a207f17b3c4bbd884bf5900825519f812 2022041915:41:03-UTC ./tools/xmlrpc-framework/s.savex
-24cd286d66e63665f043bf21f4ded7a1ebb9296d 2022041915:38:16-UTC ./tools/xmlrpc-framework/server/rpcsession/parfile.bld
-77b552a5e4a4a2d7051b3cda62c48a6091c6fc3f 2022041915:09:51-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.prg
 8145c6cd8169e4ff2a2f5b2eb5f1a535d74e1418 2022041915:02:47-UTC ./tools/xmldom/s.savex
 e326910c0ad8d492375bf159251f291086f17c27 2022041914:52:55-UTC ./tools/xmldom/xmldom.hu.ver
 9fb85d1a9dbb63d891fc7c3b746330b33cb11325 2022041913:05:10-UTC ./tools/xmldom/demo/s.savex
@@ -347,7 +356,6 @@ d2436f84f094941c64427afc6e1221b5e90a429b 2021122915:53:30-UTC ./m
 b5722f71e1e2f85c029df0b06f9abed480998a20 2021122914:24:56-UTC ./ccctools/build/m
 ab45fb1da9502fcbc31b42f5433921bd2924174d 2021122914:24:47-UTC ./ccctools/build1/m
 e989263fe1f92fea9442acf8521d12d108e8b5eb 2021122914:24:24-UTC ./ccctools/prg2ppo/m
-c084c901cf025d6c908eb0923deff47bad9a5a25 2021122914:20:14-UTC ./setup/setup-unix/m
 499566bcd05e27af29278b8a675e364a3173b2e2 2021122613:32:56-UTC ./usr/bin/windows/gc.bat
 decb2eed776529fec0cf9340666e8c2ac30983d8 2021122613:31:19-UTC ./jt/jterminal/m
 a963e701e3fbbd639abd0dd8e09c142f779e1f1b 2021122613:31:19-UTC ./jt/jterminal/m.bat
@@ -378,7 +386,6 @@ f646f63dfba44b92070c621686b778434523fc7e 2021122416:15:30-UTC ./tools/sql2/m.bat
 a1f44642bb687b8ea0af03f7c5689076dcfbccb1 2021122320:22:42-UTC ./tools/xmlrpc-framework/m.msys2
 8c7cab44db42c4298ad76cf934e9ff5670cfe226 2021122320:21:24-UTC ./tools/xmlrpc-framework/m
 995095c7fdb4cff21a4733fecac0612e0e8016c9 2021122320:14:39-UTC ./jt/jtdemo/mkall
-6576930f67c874f1741b907903c6c08e8c4848ff 2021122320:11:51-UTC ./tools/webapp/common/m
 a5d028d3e7696a322b035c60c041236f2ebddd7e 2021122319:57:39-UTC ./tools/setperm/setperm.prg
 90d33d13ac6929f59f8cd7f7e31faaa9da6c580e 2021122317:10:32-UTC ./tools/socket/m.msys2
 478b86af40d3c048bb5603f65e29c94a1960cfa3 2021122317:05:02-UTC ./tools/sql2/test/entitybrowse/m.msys2
@@ -522,7 +529,6 @@ e583151e60302c26a073609b27fb57ad1bb4bf9a 2021072909:39:50-UTC ./tools/crypto/m.m
 3ad78648cb0a79e9fc9c21b6c6cecf614f01c611 2021072909:30:47-UTC ./tools/savex/m.msys2
 d964370e8400a8616e4e33edd422cc950673c19c 2021072909:28:33-UTC ./tabobj/tbbtbtx/m.msys2
 95ec0e2e3305c1541d77be506107aac9635a4151 2021072909:27:28-UTC ./tabobj/tbbtbtx/utility/m.msys2
-962868ac88567df77d761058234c79e05aaf05a2 2021072909:24:40-UTC ./tabobj/m.msys2
 69710ecb6cc4e993ccecaca4fd9f60a9872d1939 2021072908:11:22-UTC ./usr/bin/windows/bapp_winc.msys2
 2fb8d7fc1c7040f48052d4e49975f8e8a701c64b 2021072908:10:00-UTC ./usr/bin/windows/bapp_win_btbtx.msys2
 1d2205e9db27776a80d42c3bd92c494c77c45580 2021072908:09:41-UTC ./usr/bin/windows/bapp_winc_btbtx.msys2
@@ -699,7 +705,6 @@ a903fb2c64c9393e0f3c355de7c535f9dc69b436 2020072209:13:37-UTC ./tabobj/tbbtbtx/k
 f0e63488241b471de7e80b4d6e5b8e9aa69c27ba 2020071118:27:32-UTC ./tabobj/utility.src/view.prg
 ace5c429061c7216620f67f5c593328e69feeb1c 2020062214:15:06-UTC ./tabobj/utility.src/recpos.msk
 7ef9598e310e86aaf411451c40f80162dd4ce294 2020062212:12:15-UTC ./tabobj/tbbtbtx/dbmove.prg
-b049384ee6c63420f8b4707ff8f6639d4fe2f49a 2020062109:54:05-UTC ./tabobj/m
 528bc8f74ecba7c13c2e36b7559e2cbeb375dbe3 2020061415:37:24-UTC ./tools/crypto/bcrypt_hash.cpp
 dbc0d33cc4ccae4effc4ed7fde059fccb6c58fce 2020061318:38:11-UTC ./tools/crypto/demo/bcrypt_test.prg
 02e825ae6ef8c8aff75a5a9ba0802fd795c80567 2020052508:13:18-UTC ./terminal/windows/terminal.cpp
@@ -752,7 +757,6 @@ d4d44de3f6d77d62319f36ba73ecd39875f066a1 2019120707:45:18-UTC ./tabobj/tbbtbtx/b
 231d74e8bef97ee1d6981642b26513d3a4673e8b 2019120623:57:07-UTC ./gtk/code_byhand/m.bat
 c8683fd6f9d631d63abe1174550a76f5496fdce5 2019120520:59:49-UTC ./usr/build/linux/obj2so.bat
 539322ddc84d0be26935f17c653ed996321dc616 2019120520:57:24-UTC ./gtk/code_byhand/gtk.bld
-d9f39fab24e301f960e21a0e3c47055e98a095f0 2019120516:09:05-UTC ./gtk/code_byhand/m
 5575c915ee3c7ff93230617982cae43d322e7e54 2019120514:53:05-UTC ./terminal/gtk/m
 6eda17e49fd230e10b89da83db2cc4cc17560158 2019111309:00:29-UTC ./usr/build/linux/for2obj.bat
 d71c869a600b6c1928714482dfc6dfdf29e6218c 2019102011:30:15-UTC ./tutor/sckpair/unix/unix_socketpair.cpp
@@ -1128,7 +1132,6 @@ c3a3c3dc486f9d0b70650df187f327ed4d01a02b 2018011515:03:35-UTC ./tools/crypto/m
 a8a11ce8dd6cf5c105289d400d4452c4fb71d196 2018011515:02:16-UTC ./tools/xmldom/m
 ebd2be9b69e8c99f2523e8c1af0d2e614a29a2f2 2018011514:59:39-UTC ./tools/regex/m
 da7fac0714e8102550b003925a8bee59092073b8 2018011514:52:33-UTC ./tools/socket/ssl/m
-ae5fc78647f1e0470843e61e5d0caa82cf6fc508 2018011514:49:58-UTC ./tools/socket/m
 39d98daa54f80d12308b1c4a54fac93cd42d1c59 2018011514:42:24-UTC ./jt/jtlib/m
 7057134f2bbc1d16992e4677abe558f00bef865d 2018011421:06:13-UTC ./tools/pcre2/test/s.bat
 e7e240c6947a2fe48f32f9fab4bb7eef6a4cbe00 2018011421:00:34-UTC ./tools/pcre2/test/m.bat
@@ -1233,7 +1236,6 @@ b90c9d968e59ca2e2307bf4a318cc4a085736edb 2017051213:07:38-UTC ./tools/sql2/drive
 1587b67a91c0aae5bc031ca2fa0761510b0638ce 2017050907:36:47-UTC ./ccclib/src/uic/colorutil.prg
 8e8d41a8d790d469c87f5ef57d0990773f26483f 2017050906:40:37-UTC ./usr/build/windows/sor2say.bat
 fd419b03dc150554369d615f922ce8ffbd8b1149 2017050823:32:09-UTC ./usr/build/linux/sor2say.bat
-d7ea36a6f97a1e0c626662f2a4656bedc576dff5 2017050820:14:33-UTC ./tools/mask/m
 6376ca46482402a2e5a0e5071203bdab7ee293db 2017050820:14:15-UTC ./tools/mask/m.bat
 08d8c8bd91a8bb8ca10e03aa1968b7c72148f296 2017050820:12:19-UTC ./tools/mask/msk2say/OLVASS
 1f97987739a7f8a0f1b4650ec5a28ae554140fc6 2017050715:05:26-UTC ./tutor/control/demo.prg
@@ -1389,6 +1391,7 @@ f12f86a28e7959d452f1636ed14d3cdc3767585d 2016082610:02:42-UTC ./terminal/common/
 6f5697cf6447323d32c84aef170bbf24ae274fe2 2016072812:53:19-UTC ./gtk/codegen/s
 7f26e2746333dab5f721a0a7cf8bd23a8b380bf6 2016072812:18:20-UTC ./tools/xmlrpc-framework/server/test/parfile.bld
 816d3040ecdf0fe1df0e84c2a2848b2372d7f807 2016072812:18:09-UTC ./tools/xmlrpc-framework/server/rpcwrapper/parfile.bld
+24cd286d66e63665f043bf21f4ded7a1ebb9296d 2016072812:17:56-UTC ./tools/xmlrpc-framework/server/rpcsession/parfile.bld
 508749920190fb155ac4a3911627f9250d73ae57 2016072812:17:40-UTC ./tools/xmlrpc-framework/client/test/parfile.bld
 d155d38fd482cf7ef302776ecb4c6ec4877cd81b 2016072812:17:27-UTC ./tools/xmlrpc-framework/client/rpcmonitor/parfile.bld
 3ae8ac858c369c824828df08a4f9cf1e5b0add85 2016072812:02:36-UTC ./tools/xstart/parfile.bld
@@ -1770,6 +1773,7 @@ ab0dd1feb1a0c41ce012d06e2389f30a0da30a5a 2013112310:19:15-UTC ./tools/xmlrpc-fra
 580b56d892737662ad06669986d6de73e3df6c4a 2013112309:34:02-UTC ./tools/xmlrpc-framework/rpckill
 e8ee0ba96544969fe9012213d0e41318fe8bbe04 2013112209:15:58-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.ver
 074c57e3a887d1bb4f630a630baa5afde37ada79 2013112209:10:58-UTC ./tools/xmlrpc-framework/server/rpcsession/session_data.prg
+77b552a5e4a4a2d7051b3cda62c48a6091c6fc3f 2013112208:43:17-UTC ./tools/xmlrpc-framework/server/rpcsession/rpcsession.prg
 9fca8895c7dead7fae25bb632f0f89211b618458 2013101616:32:08-UTC ./tools/ddict2/dd/ddict.bt
 535f9fc61584088677e163da8d407163c577f067 2013101616:32:08-UTC ./tools/ddict2/dd/ddict.btx
 670c75dd54864b7f1b8a7afc0121ac6814a59c6a 2013101616:26:19-UTC ./tools/ddict2/dd/_ddict.prg
@@ -1791,7 +1795,6 @@ eeb67aa1c0b6f5971eb3e7bdc143101d90e4a4cc 2013070209:59:51-UTC ./ccclib/src/ui_/u
 842f687a6ffbbff6b2dbbe3bbc8035a8b26d3329 2013032010:31:37-UTC ./usr/tex/script/foot.html
 e58df8cdf798e9554ce31279c50d0bec73d426de 2013021711:01:24-UTC ./terminal/unix/readme.hu.txt
 5a63e223e9773658d5fa4a4859a7705d6c8b68e2 2013012413:54:06-UTC ./gtk/glade/demo/m
-3f0a3796641800342f3778280d87130d517fa61d 2013011617:55:46-UTC ./terminal/terminal-test/xstart.par
 51725c7df41fde437f6edbe67c9a74971761de33 2012121316:32:06-UTC ./tabobj/tbbtbtx/btindex.prg
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
@@ -2047,7 +2050,6 @@ b87cabff941b7b914f4b2637dd6d990ca372820d 2009110617:10:39-UTC ./tools/xmldom/885
 dc91e9b2693b0f94fe778595fd6ae440ff50252c 2009050309:24:15-UTC ./usr/bin/netbsd/bapp_unix_btbtx.b
 737c0c8dd6f48c0f1c9df6c501d4e3cbe101f80a 2009050309:24:07-UTC ./usr/bin/netbsd/bapp_unix_.b
 acc82bb39e3ca5d24ba25a3e14955812a7db671e 2009050309:23:59-UTC ./usr/bin/netbsd/bapp_unix0.b
-5bc543cbf361d76789b39064a630096f5ce40f59 2009050305:52:22-UTC ./ccclib/src/uic/m
 f2250b868fa0c3c48c9ccbc0d79b74efa698b2c9 2009050114:43:32-UTC ./usr/options/fre/link.opt
 a93f66039cf5697a89ecb533f929b6fd34498e8a 2009042813:49:44-UTC ./ccctools/ppo2cpp/test-forward/proba.prg
 5c5f3cc8f3ffd3ccf26614c7aa9bcf83ec9b759a 2009042813:35:27-UTC ./ccctools/ppo2cpp/test-forward/forw1.prg
@@ -2102,7 +2104,6 @@ f7b32194f2fd50636b67e7f70676be022d66496a 2008121108:37:35-UTC ./tools/websrv/ove
 6b53bb762d44870342d6fb382674045ae9d8e765 2008121014:34:08-UTC ./tools/websrv/webcon.prg
 dcb5d4a2a9ce0e1a8d8891c9695893ef27860512 2008113011:47:09-UTC ./ccclib/src/unix/closeonexec.cpp
 66e4fcd615e653e3f724804065a96c8b2055aee3 2008113011:40:55-UTC ./ccclib/src/windows/closeonexec.cpp
-21a6418414ce6cfe069d9a6bc8066baf32fdf89a 2008112712:44:34-UTC ./gtk/examples/gallery/appwindow/b
 a87de3ef48c572ea12ca1907aa6e6ba20640c0e5 2008112712:43:44-UTC ./gtk/examples/gallery/appwindow/appwindow.prg
 1dd87c8b79a28012adf4384778ac0a61d6c60b12 2008112711:50:47-UTC ./gtk/code_byhand/gtk_tree_view_column_apix.cpp
 fc0b418d48d05cbec26bfd3d478b1fca1650a0b6 2008112711:41:57-UTC ./gtk/code_byhand/code_base/gtk_gobject_property.cpp
@@ -3062,7 +3063,6 @@ e918773d58df0b9a2f02804c0d0bd0d20f368a42 2006040416:09:54-UTC ./terminal/windows
 039dae30975b2ea068e695eabb0c1d8ecdb017af 2006040411:58:26-UTC ./terminal/common/color.cpp
 0569c03ea6729d00c67c872a0e2105a24455e9f2 2006040317:25:13-UTC ./terminal/common/color.h
 9ed0573aa5d6565533b2332d29962032557b6a64 2006040211:35:21-UTC ./terminal/unix/keysym2ucs.cpp
-934f6b5acebfcf2b64cf12211f62cafec251ae46 2006040208:09:35-UTC ./ccclib/src/uic/termapi/m
 f1574231ca40f02b0503094c4d73b5387915e8fa 2006040115:18:09-UTC ./terminal/xtest/x
 a81490d5ee845bce9bab1f183816406fce741b75 2006033009:02:07-UTC ./terminal/xtest/m.bat
 eac1ea078f6bf21bcb7317367eefb6d153fb74bd 2006033007:25:01-UTC ./terminal/windows/m.bat
@@ -3228,7 +3228,6 @@ d811aefd4158f1de7c032d7e440da8c926161713 2005113000:17:06-UTC ./usr/build/netbsd
 6f1ad49d6562ddc56d7153faf65aca04c71e8d14 2005110411:45:35-UTC ./gtk/examples/base/objectlevel/textview.prg
 8cd5f28e2c2fb43005fa7c0b17a256be105a7f9f 2005103008:43:42-UTC ./gtk/codegen/s.bat
 2c415677f7a7a91fc516a170f3a29b311568ea53 2005102916:38:40-UTC ./gtk/codegen/codedir.prg
-1253ef04f0233eabda9768eeecdf3708bdc90dce 2005102916:31:18-UTC ./gtk/defs/m
 7d5510448831ad3b7a63dbe83aa545d6039b3232 2005102911:51:19-UTC ./gtk/codegen/debuginfo.prg
 985e230df3cae05bd8213cd9ffa0b8f5a2ea442d 2005102911:35:23-UTC ./gtk/defs/api/gtkaccelerator.defs
 20c710935a863a33904f55a6308906e6011503f3 2005102911:29:50-UTC ./gtk/defs/gtkaccelgroup.defs

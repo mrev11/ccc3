@@ -14,5 +14,4 @@ find obj$CCCBIN/*.so | while read so; do
 done
 
 
-
-pushd ssl; m; popd 
+( cd ssl && m )

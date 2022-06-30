@@ -1,7 +1,10 @@
 
-#define VERSION "3.1.5"
+#define VERSION "3.1.6"
 
 #ifndef VERSION  
+
+2022/06/30 -- 3.1.6
+  K_ALT_N kikapcsolja/visszakapcsolja az indent modot.
 
 2018/04/25 -- 3.1.5
   _zedit_markedstring javitva

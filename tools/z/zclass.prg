@@ -129,6 +129,7 @@ local clid:=classRegister("zedit",objectClass()) //osztalynev,parentID
     classMethod(clid,"diff",{|t|if(t:diffblk!=NIL,eval(t:diffblk,t),.t.)})
 
     classAttrib(clid,"endofline")//mi legyen a sorok vegen
+    classAttrib(clid,"indent")  //ENTER utani indentalas
 
     return clid
 
@@ -194,6 +195,7 @@ local n
     next
 
     this:endofline:=endofline()
+    this:indent:=.t.
     
     return this
 

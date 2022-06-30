@@ -25,7 +25,11 @@ local line, n
 
     line:=substr(this:atxt[this:actrow],this:actcol)  //ez lesz az uj sor
     this:atxt[this:actrow]:=left(this:atxt[this:actrow],this:actcol-1) //ez marad a regi sor
-    n:=len(this:atxt[this:actrow])-len(ltrim(this:atxt[this:actrow])) //indentalashoz
+    if( this:indent )
+        n:=len(this:atxt[this:actrow])-len(ltrim(this:atxt[this:actrow])) //indentalashoz
+    else
+        n:=0
+    end
 
     aadd(this:atxt,NIL)
     ains(this:atxt,this:actrow+1)

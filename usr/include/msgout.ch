@@ -16,6 +16,9 @@ static fd:=fopen(getenv("MSGOUT"),FO_CREATE+FO_READWRITE+FO_APPEND)
 static function msgout(*)
 local args:={*},n
 local fd:=msgout_fd()
+    if( args::empty )
+        args::aadd("")
+    end
     for n:=1 to len(args)
         fwrite(fd,if(n==1,chr(10)," ")+args[n]::any2str)
     next

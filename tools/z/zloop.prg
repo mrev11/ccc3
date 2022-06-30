@@ -257,6 +257,9 @@ local screen
 
             elseif( key==K_CTRL_F4 )    
                 this:replaceagain("p")
+
+            elseif( key==K_ALT_N )    
+                this:indent:=!this:indent
  
             elseif( 32<=key )
                 this:inschar(key)

@@ -526,6 +526,7 @@ local flen,ftxt
         end
 
         mode:=x:markmode
+        mode+=if(x:indent,"-I","-N")
     
         hdrtxt:="  Line"+str(x:actrow,6) 
         hdrtxt+="  Col"+str(x:actcol,6) 

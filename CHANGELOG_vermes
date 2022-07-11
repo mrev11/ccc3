@@ -1,3 +1,11 @@
+2022.07.10 unix-ncurses terminal linkelese javitva:
+  Ez a terminal xterm-ben es Windows MSYS2 terminalban is fut.
+  Windowson nem lehet osszelinkelni az MSYS2 es a MINGW alatt
+  forditott objecteket, ezert a (MINGW-s) ccc3.lib linkelese helyett
+  kulon le kell forditani a szukseges forrasokat MSYS2-ben.
+  Tehat: at kellett hozni az ujabban keletkezett flock.cpp-t is. 
+ 
+
 2022.06.30 z-ben K_ALT_N ki/bekapcsolja az indentalast;
 
 2022.05.06 cccver() -> 2 vagy 3 

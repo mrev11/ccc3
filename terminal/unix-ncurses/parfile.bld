@@ -6,7 +6,7 @@
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
--bccc$(CCCVER).lib
+#-bccc$(CCCVER).lib
 -bncursesw
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

@@ -154,68 +154,80 @@ static function _sleep()
 *****************************************************************************
 function tabRecLock(table,record,userblock)  //rekord lock
 
-local n,s
+local n,s,timeout
    
     tabCommit(table)
 
-    while( .t. )
-
+    if( userblock::valtype=="N" )
+        timeout:=userblock
         if( tabIsOpen(table)==OPEN_EXCLUSIVE )
             return .t.
-
         elseif( record==NIL )
-            for n:=1 to 10
-                if( 0==(s:=lockCurrent(table)) )
-                    return .t.
-                end
-                _sleep()
-            next
-
+            return 0==lockCurrent(table,timeout)
         elseif( valtype(record)=="N" )
-            for n:=1 to 10
-                if( 0==(s:=lockPosition(table,record)) )
-                    return .t.
-                end
-                _sleep()
-            next
-
+            return 0==lockPosition(table,record,timeout)
         elseif( valtype(record)=="A" )
-            for n:=1 to 10
-                if( 0==(s:=lockArray(table,record)) )
-                    return .t.
-                end
-                _sleep()
-            next
+            return 0==lockArray(table,record,timeout)
         end
-       
-        taberrOperation("tabRecLock")
-        taberrDescription(@"record lock failed")
-       
-        if( valtype(userblock)=="B" )
-            taberrUserblock(userblock)
-            return tabError(table)
-        else
-            taberrUserblock("PUK")
-            tabError(table)
-        end
-    end
+    else
+        while( .t. )
     
+            if( tabIsOpen(table)==OPEN_EXCLUSIVE )
+                return .t.
+    
+            elseif( record==NIL )
+                for n:=1 to 10
+                    if( 0==(s:=lockCurrent(table)) )
+                        return .t.
+                    end
+                    _sleep()
+                next
+    
+            elseif( valtype(record)=="N" )
+                for n:=1 to 10
+                    if( 0==(s:=lockPosition(table,record)) )
+                        return .t.
+                    end
+                    _sleep()
+                next
+    
+            elseif( valtype(record)=="A" )
+                for n:=1 to 10
+                    if( 0==(s:=lockArray(table,record)) )
+                        return .t.
+                    end
+                    _sleep()
+                next
+            end
+           
+            taberrOperation("tabRecLock")
+            taberrDescription(@"record lock failed")
+           
+            if( valtype(userblock)=="B" )
+                taberrUserblock(userblock)
+                return tabError(table)
+            else
+                taberrUserblock("PUK")
+                tabError(table)
+            end
+        end
+    end    
     return .f.
 
 
 *****************************************************************************
-static function lockCurrent(table)  //Lock Current Record
+static function lockCurrent(table,timeout)  //Lock Current Record
 local status, pos:=tabPosition(table)
 
     if( pos<=0 )
         status:=-1
 
     elseif( tranIsActiveTransaction() )
-        return lockPosition(table,pos) 
+        return lockPosition(table,pos,timeout) 
     
     else
         dbunlocklist(table)
-        status:=dblock(table,pos)
+        status:=dblock(table,pos,timeout)
 
         if( status==0 )
             tabReRead(table,pos)
@@ -226,7 +238,7 @@ local status, pos:=tabPosition(table)
 
 
 *****************************************************************************
-static function lockPosition(table,pos)  //Lock Record by Position
+static function lockPosition(table,pos,timeout)  //Lock Record by Position
 local status
 
     if( pos<0 )  //pos==0==EOF-ot meg lehet lockolni, de negativot nem
@@ -237,7 +249,7 @@ local status
 
     else  //most lockoljuk       
 
-        if( (status:=dblock(table,pos) )==0 )
+        if( (status:=dblock(table,pos,timeout) )==0 )
             aadd(table[TAB_LOCKLST],pos)
             if( tranIsActiveTransaction() )
                 tranRecordLockedInTransaction(table)
@@ -252,7 +264,7 @@ local status
 
 
 *****************************************************************************
-static function lockArray(table,arr)  //Lock Record Array
+static function lockArray(table,arr,timeout)  //Lock Record Array
 
 local status:=0,n,i
 local pos,larr:=len(arr)
@@ -260,7 +272,7 @@ local curr:=tabPosition(table)
 
     if( tranIsActiveTransaction() )
         for n:=1 to larr
-            status:=lockPosition(table,arr[n])
+            status:=lockPosition(table,arr[n],timeout)
             if( status!=0 )
                 return status
             end
@@ -276,7 +288,7 @@ local curr:=tabPosition(table)
         if( (pos:=arr[n])<=0 )
             status:=-1
         else
-            status:=dblock(table,pos)
+            status:=dblock(table,pos,timeout)
         end
 
         if( status==0 )
@@ -294,14 +306,14 @@ local curr:=tabPosition(table)
 
 
 *****************************************************************************
-static function dblock(table,pos) //low level lock
+static function dblock(table,pos,timeout) //low level lock
 local result
     tabLockCount(table,1)
     if( pos==NIL )
         pos:=tabPosition(table)
     end
     //result:=fsetlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
-    result:=ftimeoutlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
+    result:=ftimeoutlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1,,timeout)
     if( result!=0 )
         tabLockCount(table,-1)
     end

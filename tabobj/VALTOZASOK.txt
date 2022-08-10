@@ -1,0 +1,91 @@
+
+fopen()
+    Egyaltalan nem var.
+
+    Korabban ugy volt, hogy CCCLK_TIMEOUT=seconds ideig vart,
+    de ez sosem volt beallitva, ugyhogy lenyegeben nincs valtozas.
+
+
+tabOpen(table,mode,userblock)
+    Ha userbloc tipusa NIL vagy codeblock, akkor nincs valtozas.
+
+    Ha userblock egy szam (timeout=milliseconds), akkor tabOpen() 
+    egy 10-es ciklusban sleep()-ekkel var, amig elfogy a timeout.  
+    Ha elfogy a timeout, akkor .f. ertekkel visszater.  
+    timeout==0 eseten semennyit sem var.
+
+
+
+tabRLock(table,userblock)
+tabALock(table,recarr,userblock)
+tabMLock(table,rec,userblock)
+tabRecLock(table,record,userblock)
+
+    Ezeknek az utolso parametere az opcionalis userblock.
+    Ha userblock tipusa U,B,C akkor nincs valtozas.
+    
+    Ha userblock tipusa szam (millis), akkor a lock a magadott ideig var.
+    Ha userblock==0, akkor semeddig sem var.
+
+
+    tabRLock es tarsai a timeout-ot lejjebb adjak tabRecLock-nak.
+    tabReclock a timeout-ot lejjebb adja lockCurrent/lockPosition/lockArray-nek.
+    lockCurrent es tarsai a timeout-ot lejjebb adjak dblock()-nak.
+    dblock lejjebb adja ftimeoutlock-nak (aminek lett egy plusz parametere).
+
+    Az eddigiek a btbtx konyvtarban voltak, ftimeoutlock mar az alapkonytarban van.
+    
+    ftimeoutlock tovabb adja a timeout-ot _ccc_lock()-nak.
+    _ccc_lock()-nak lett egy ujabb valtozata, amelyik kezeli a timeout-ot.
+    (ftimeoutlock Linuxon es Windowson ugyanaz, _ccc_lock mar platformfuggo.)
+    _ccc_lock() kozvetlenul hivja az fcntl()-t (azzal lockol).
+    A varakozas a setitimer()-rel tortenik, ami SIGALARM-ot kuld az ido lejartakor.
+    
+    Megjegyzes: Hogyan tud tobb szal egyszerre varakozni? Szerintem shogy,
+    mert nem tudhato, hogy a SIGALARM-ot melyik szal kapja meg.
+    
+
+
+Haromfele lock van:
+    fsetlock (semeddig sem var)
+        fopen() protokoll lockja (kozvetlenul hivja _ccc_lock-ot)
+
+    fwaitlock (korlatlan ideig var)
+        changelog irasakor
+        szemafor fajlok lockolasakor
+        bt fajlok page lockja (kozvetlenul hivja _ccc_lock-ot)
+        
+    ftimeoutlock (megadott ideig var, esetleg 0 ideig)
+        bt fajlok rekord lockja
+
+
+ftimeoutlock() parameterezese
+    (a) ftimeoutlock(fd, offset, length, [flag], [timeout])
+    (b) ftimeoutlock(fd, low, high, length, [flag], [timeout])
+
+    Az (a) esetben a lock offset egyetlen szamban van megadva.
+    A (b) esetben az offset ket szamban (also es folso 32 bit) van megadva.
+    A flag jelzi, hogy read/write lockrol van-e szo, default=.t.=write.
+    
+    Ha timeout==NIL, akkor a lock a CCCLK_TIMEOUT env-ben magadott ideig var.
+    Ha timeout egy szam, akkor a lock a magadott ideig (esetleg semeddig) var.
+
+    A regi programokban altalaban userblock==NIL, es ezert timeout==NIL.
+    Az ilyen programokban a rekordlockok 10-szer probalkoznak, es minden
+    alkalommal (100+CCCLK_TIMEOUT) millisec ideig varnak. Tehat,
+    ha egy lock nem sikerul, akkor minimum 1 masodpercet varakozik, amihez
+    meg hozzaadodhatnak a CCCLK_TIMEOUT ertekek (sosem volt belallitva).
+    Ez eleg szovevenyes, lehetne esetleg valami esszerubbet kitalalni.
+
+
+Varakozas
+    A varakozas Linuxon timer-rel tortenik. A timer a magdott ido 
+    lejartakor SIGALRM-ot kuld a processzenek, amire az felhagy
+    a lockban valo varakozassal.
+    Korabban a timer beallitasa az alarm() fuggvennyel tortent, 
+        aminek masodpercben lehet megadni a varkozasi idot.
+    A mostani valtozatban a timer beallitasa setitimer()-rel tortenik,
+        aminek sec+microsec-ben lehet megadni az idot.
+    A CCCLK_TIMEOUT env megadasa sec-rol millisec-re valtozott.
+
+    

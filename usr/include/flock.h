@@ -8,5 +8,6 @@
 #define CCCLK_TIMEOUT   4
 
 extern int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags);
+extern int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags, unsigned timeout);
 extern int _ccc_unlock(int fd, unsigned low, unsigned high, unsigned length);
 

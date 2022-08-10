@@ -77,6 +77,7 @@ function tabOpen(table,mode,userblock) //megnyitja a db-t
 
 local fname:=lower(tabPathName(table)), n, dbf
 local errblk, err
+local timeout
 
     setquitblock()
 
@@ -113,18 +114,30 @@ local errblk, err
     end
 
     while( .t. )
+
+        if( valtype(userblock)=="N" )
+            timeout:=userblock
+        end
  
         while( 0>=tabSlock(table,{||0}) .or. !tabUse(table,mode) )
             tabSunlock(table)
-
-            taberrOperation("tabOpen")
-            taberrDescription(@"open failed") 
-            taberrUserBlock(userblock,"PUK")
-
-            if( valtype(userblock)=="B" )
-                return tabError(table) 
+            if( timeout!=NIL )
+                if( timeout<=0 )
+                    return .f.
+                else
+                    sleep(userblock/10)
+                    timeout-=userblock/10
+                end
             else
-                tabError(table)
+                taberrOperation("tabOpen")
+                taberrDescription(@"open failed") 
+                taberrUserBlock(userblock,"PUK")
+        
+                if( valtype(userblock)=="B" )
+                    return tabError(table) 
+                else
+                    tabError(table)
+                end
             end
         end
         tabSunlock(table)
@@ -237,7 +250,6 @@ local memohnd
 
     if( 0>(table[TAB_FHANDLE]:=fopen(fname,fmode)) )
         table[TAB_FHANDLE]:=NIL 
-        Sleep(500)
         return .f.
     else
         #ifdef _UNIX_

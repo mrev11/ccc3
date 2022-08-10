@@ -70,6 +70,16 @@ function lockcur(dbfbrw,tab)
 
 
 ************************************************************************
+function locktout(dbfbrw,tab,timeout)
+    if( tabRlock(tab,timeout) )
+        dbfbrw:refreshAll()
+        prnlklist(tab,{@"Unlock"})
+        tabUnlock(tab)
+    end
+    prnlklist(tab)
+
+
+************************************************************************
 function lockpos(dbfbrw,tab)
 local recpos,n,pos
     recpos:=poslist()
@@ -126,10 +136,20 @@ local save:=tabSave(tab)
  
 
 ************************************************************************
-function lockfil(brw,tab)
+function lockfil(brw,tab,timeout)
 local save:=tabSave(tab)
-    if( tabOpen(tab,OPEN_EXCLUSIVE,busyFile()) )
-        alert(@"File locked",{@"Unlock"})
+    if( timeout==NIL )
+        // regi eset
+        if( tabOpen(tab,OPEN_EXCLUSIVE,busyFile()) )
+            alert(@"File locked",{@"Unlock"})
+        end
+    else
+        // uj eset: timeout
+        if( tabOpen(tab,OPEN_EXCLUSIVE,timeout) )
+            alert(@"File locked",{@"Unlock"})
+        else
+            eval(busyFile())
+        end
     end
     tabOpen(tab)
     tabRestore(tab,save)

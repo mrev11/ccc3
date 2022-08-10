@@ -113,13 +113,16 @@ local modos:={},index:={}
     aadd(modos,{@"Delete current record",{||torol(brw,tab)}})
     aadd(modos,{@"Goto record position",{||goto(brw,tab)}})
     aadd(modos,{@"Lock current record",{||lockcur(brw,tab)}})
+    aadd(modos,{@"Lock current 0 sec timeout",{||locktout(brw,tab,0)}})
+    aadd(modos,{@"Lock current 2 sec timeout",{||locktout(brw,tab,2000)}})
     aadd(modos,{@"Lock records by position",{||lockpos(brw,tab)}})
     aadd(modos,{@"Lock multiple records",{||lockmul(brw,tab)}})
     aadd(modos,{@"Unlock records by position",{||unlockpos(brw,tab)}})
     aadd(modos,{@"Unlock all records",{||tabunlock(tab)}})
     aadd(modos,{@"Pack database file",{||pakkol(brw,tab)}})
     aadd(modos,{@"Zap database file",{||zapol(brw,tab)}})
-    aadd(modos,{@"Lock database file",{||lockfil(brw,tab)}})
+    aadd(modos,{@"Lock database file 0 sec timeout",{||lockfil(brw,tab)}})
+    aadd(modos,{@"Lock database file 2 sec timeout",{||lockfil(brw,tab,2000)}})
  
     brwMenu(brw,@"Modify",@"Modify selected record, append, delete, pack",modos,"M")
 

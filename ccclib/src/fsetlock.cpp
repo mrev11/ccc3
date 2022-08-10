@@ -134,6 +134,75 @@ void _clp_fwaitlock(int argno)
 void _clp_ftimeoutlock(int argno)
 {
     // lock varakozassal timeout-tal
+    //               1    2       3       4       5          6
+    // ftimeoutlock( fd, offset, length, [flag], [timeout])             (a)
+    // ftimeoutlock( fd, low,    high,   length, [flag],    [timeout])  (b) large file
+    //
+    // flag defaultja: .t. (exclusive)
+
+    CCC_PROLOG("ftimeoutlock",6);
+
+    int fd=0;
+    off_t start=0;
+    unsigned low=0,high=0,length=0;
+    int flags=CCCLK_WAIT|CCCLK_TIMEOUT;
+    int timeout=-1;
+    
+    if( !ISNUMBER(4) )
+    {
+        // (a) eset
+        fd     = _parni(1);
+        start  = _parnuw(2);
+        length = _parnuw(3);
+        low    = start&0xffffffff;
+        high   = start>>32;
+        if( !ISNIL(4) )
+        {
+            flags+=_parl(4)?CCCLK_WRITE:CCCLK_READ ;
+        }
+        if( !ISNIL(5) )
+        {
+            timeout=_parni(5);
+        }
+    }
+    else
+    {
+        // (b) eset
+        fd     = _parni(1);
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = _parnuw(4);
+        start  =  high;
+        start  =  (start<<32)+low;
+        if( !ISNIL(5) )
+        {
+            flags+=_parl(5)?CCCLK_WRITE:CCCLK_READ ;
+        }
+        if( !ISNIL(6) )
+        {
+            timeout=_parni(6);
+        }
+    }
+
+    if( timeout>=0 )
+    {
+        // timeout a megadott idovel
+        _retni( _ccc_lock(fd,low,high,length,flags,timeout) );
+    }
+    else
+    {
+        // timeout CCCLK_TIMEOUT idovel
+        _retni( _ccc_lock(fd,low,high,length,flags) );
+    }
+
+    CCC_EPILOG();
+}
+
+
+//-----------------------------------------------------------------------------
+void _clp_ftimeoutlock_MEGSZUNT(int argno)
+{
+    // lock varakozassal timeout-tal
 
     // ftimeoutlock(fd, offset, length [,flag])
     // ftimeoutlock(fd, low, high, length [,flag])

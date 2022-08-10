@@ -50,21 +50,32 @@ static int init_timeout()
     {
         timeout=atoi(env);
     }
-    if( timeout>0 )
-    {
-        //SIGALRM handler
-        struct sigaction act;
-        memset(&act,0,sizeof(act));
-        act.sa_handler=sighnd;
-        sigaction(SIGALRM,&act,0);
-    }
     return timeout;
+}
+    
+static int init_alarmhandler()
+{    
+    //SIGALRM handler
+    struct sigaction act;
+    memset(&act,0,sizeof(act));
+    act.sa_handler=sighnd;
+    sigaction(SIGALRM,&act,0);
+    return 1;
 }
 
 //------------------------------------------------------------------------------------------
 int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags)
 {
     static int timeout=init_timeout();
+    return _ccc_lock(fd,low,high,length,flags,timeout);
+}
+
+
+//------------------------------------------------------------------------------------------
+int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags, unsigned timeout)
+{
+    static int alarmhandler=init_alarmhandler();
+    struct itimerval timer;
 
     off_t start=high;
     start=(start<<32)+low;
@@ -85,7 +96,12 @@ int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned fla
 
     if( tout && (timeout>0) )
     {
-        alarm(timeout); //set timeout
+        //set timeout (millis)
+        timer.it_value.tv_sec=timeout/1000;
+        timer.it_value.tv_usec=(timeout%1000)*1000;
+        timer.it_interval.tv_sec=0;
+        timer.it_interval.tv_usec=0;
+        setitimer(ITIMER_REAL,&timer,0);
     }
  
     int result;
@@ -97,7 +113,12 @@ int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned fla
 
     if( tout && (timeout>0) )
     {
-        alarm(0); //clear timeout
+        //clear timeout
+        timer.it_value.tv_sec=0;
+        timer.it_value.tv_usec=0;
+        timer.it_interval.tv_sec=0;
+        timer.it_interval.tv_usec=0;
+        setitimer(ITIMER_REAL,&timer,0);
     }
 
 #ifdef DEBUG
@@ -178,6 +199,12 @@ int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned fla
 #endif
 
     return (result==0)?-1:0; //OK 0, error -1                       
+}
+
+//------------------------------------------------------------------------------------------
+int _ccc_lock(int fd, unsigned low, unsigned high, unsigned length, unsigned flags, unsigned timeout)
+{
+    return _ccc_lock(fd,low,high,length,flags); // WINDOWS compatibility
 }
 
 //------------------------------------------------------------------------------------------

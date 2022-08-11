@@ -1,4 +1,10 @@
-2011.04.19 -- 2.0
+2022.08.10 -- 2.0.1
+  A parser MINDEN node-ot a createnodblock-kal hoz letre.
+  Korabban a #TEXT es #CDATA node-ok xmlnode osztalyuak maradtak.
+  A node:addtext olyan osztalyu #TEXT objektumot gyart, mint maga a node.
+  A javitas eredmenyekent a fa minden node-ja azonos osztalyu.
+
+2022.04.19 -- 2.0
   xmldom 2.0 inkompatibilis valtozasok;
   megszuntek az regi xmlparser osztaly szabvanyellenes funkcioi:
   xmlparser es xmlparser2 osztalyok azonosak (szinonimak);

@@ -1,5 +1,8 @@
+8bec97668c285366dc54fbd44bb64d2d455749ca 2022081114:04:33-UTC ./CHANGELOG_vermes
+a04e69f1f4571b6ae14c75144d3a8e8deb7864ba 2022081017:19:21-UTC ./tools/xmldom/xmldom.hu.ver
+40fd861ec909aae4606bd107c7b5ebfd3ebad39e 2022081017:11:48-UTC ./tools/xmldom/xmlnode.prg
+7989273f6ff3c06ff4c15da8719be5920a9f2fc1 2022081016:51:21-UTC ./tools/xmldom/xmldom_lemon.prg
 7ad272be197396c40a7e341c9ed910868b68991c 2022081012:40:55-UTC ./tabobj/VALTOZASOK.txt
-60e891b5c557c27d527b6d441a5f72f90444acc5 2022081012:32:52-UTC ./CHANGELOG_vermes
 9ac47ac18df51c09500fa063e239142b5f15f977 2022081012:11:13-UTC ./tabobj/log-install
 c547cc83ab3c8d8553a35082070a9c1f624c104a 2022081012:11:13-UTC ./usr/bin/linux/bt2dbf
 ad9c3d7af50a643e45170a58905bc9980a1d6e6a 2022081012:11:13-UTC ./usr/bin/linux/bt2txt
@@ -200,7 +203,6 @@ c29f02ca3c9272891b9a6b6fec57fce748cf388f 2022042811:55:16-UTC ./terminal/common/
 e4acc97d8bc7b6c054e8f4636efe77d5aae6f283 2022042615:42:40-UTC ./ccclib/src/uic/termapi/termcmd.h
 d4d690b6decb67f4cf34e9906622f4419cf4dd0e 2022042214:37:49-UTC ./tools/xmldom/xmldom18/OLVASS
 2661dba3307ac8e0857853291bc0d51cd26e8e57 2022042214:33:32-UTC ./tools/xmldom/xmlpars.prg
-08fbe06191565176967c45ccbdec5ad45d394fe2 2022042214:22:54-UTC ./tools/xmldom/xmldom.hu.ver
 18f9324bb9d03e9d2512e32c9272339c991f85ef 2022041915:54:07-UTC ./tools/xmlrpc-framework/server/rpcwrapper/rpcwrapper.prg
 cdaaf364666eeca372b393b6eafd9997896b2138 2022041915:42:28-UTC ./tools/xmlrpc-framework/client/rpcmonitor/rpcmonitor.prg
 a08a7f3a207f17b3c4bbd884bf5900825519f812 2022041915:41:03-UTC ./tools/xmlrpc-framework/s.savex
@@ -270,11 +272,9 @@ c6c3533f07f48314b7323524830e992f151db432 2022041823:05:00-UTC ./jt/jtdemo/htmlde
 d225f899f489775d408731407e402ebeb2468e0a 2022041820:17:53-UTC ./tools/xmldom/demo/syntax-00.prg
 3fc98875fb42a9358433cf42155d9b7afdb81fc6 2022041820:05:03-UTC ./tools/xmldom/demo/run
 ea7faf316f75c29f5a1b51b664568090947fe5ff 2022041819:55:07-UTC ./tools/xmldom/demo/x
-b0a0652563255798b0003752f794b957e700f6b8 2022041818:14:50-UTC ./tools/xmldom/xmldom_lemon.prg
 d90fdb2a801b86e805daa0fccd3516324103bf76 2022041818:12:55-UTC ./tools/xmldom/xmldom_lexer.lex
 5b6c15f771b396f9d2d26857f1ca42cfee326502 2022041818:01:38-UTC ./tools/xmldom/xmldom_parser.lem
 dad3a563aaf5f91858278d47c44f6731b687cb0e 2022041817:44:12-UTC ./tools/xmldom/xmldom_parser.h
-6fa5e55b18a3610c56b6115d62c604537ea611af 2022041817:37:56-UTC ./tools/xmldom/xmlnode.prg
 c707fd084c37d863c63e3ebc8f8ef0dba2872f8d 2022041812:18:47-UTC ./tools/xmldom/xmlnode.prg
 c89fb4727cca5fd9fd99b6529216862566958145 2022041809:22:57-UTC ./tools/xmldom/demo-odt/OLVASS
 db1341ad78a25be2f860211cb2afd337f753dd2f 2022041716:50:03-UTC ./tools/xmldom/demo/util/unquote.prg
@@ -294,7 +294,6 @@ fca017a5c596738222f43e3211b4ab4025e3385d 2022041420:29:44-UTC ./tools/xmldom/xml
 a73711ac968263b4734f42504b017cac50ea3218 2022041420:16:54-UTC ./tools/xmldom/xmldom_parser.h
 fe1958cfb6d74623d3341ac1f50888baddf12bf4 2022041418:51:06-UTC ./tools/xmldom/xmldom_lexer.h
 94936a215ccc41956ca19806be55b9115a62267b 2022040813:17:34-UTC ./tools/z/zhist.prg
-233b746fca7208d80f576a7b09b4f1b067b3da42 2022040616:05:10-UTC ./ccclib/src/flock.cpp
 285b64261a4d8b17926b594163adfc9d127898c7 2022040516:35:38-UTC ./usr/include/signal.ch
 c80ba1b1129513b177393d304a1f42c3c02bd03e 2022040516:35:13-UTC ./ccclib/src/unix/alarm.cpp
 d43c24ddd2ac72f0ae84c7b783264729fa931f89 2022040515:29:02-UTC ./ccclib/src/unix/signals.cpp

@@ -36,7 +36,8 @@ local node:=this:lemon[n]
 function xmldecl__qsymbol_attrlist_qmrpar(this,s,a)
 local info:=this:lemon[s],node,enc,nsmap
 
-    node:=xmlnodeNew(info:type)
+    //node:=xmlnodeNew(info:type)
+    node:=eval(this:createnodeblock,info:type)
     node:attrib:=this:lemon[a]
     enc:=node:getattrib("encoding")
     if( enc!=NIL  )
@@ -110,7 +111,8 @@ local node
         eval(this:textnodeblock,this,t)
     end
     if( this:info:buildflag )
-        node:=xmlnodeNew("#TEXT")
+        //node:=xmlnodeNew("#TEXT")
+        node:=eval(this:createnodeblock,"#TEXT")
         node:content:={t}
     end
     aadd(this:lemon,node)
@@ -124,7 +126,8 @@ local node
         eval(this:textnodeblock,this,t)
     end
     if( this:info:buildflag )
-        node:=xmlnodeNew("#CDATA")
+        //node:=xmlnodeNew("#CDATA")
+        node:=eval(this:createnodeblock,"#CDATA")
         node:content:={t}
     end
     aadd(this:lemon,node)

@@ -1,3 +1,8 @@
+2022-08-11 
+  Az XML parser MINDEN node-ot createnodblock-kal hoz letre,
+  a javitas eredmenyekent az XML fa minden node-ja azonos osztalyu.
+
+
 2022-08-10 lock timeout:
     tabOpen(table,mode,userblock)
     tabRLock(table,userblock)

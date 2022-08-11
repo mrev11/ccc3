@@ -96,12 +96,9 @@ local x:=ascan(this:attrib,{|a|a:name==attrname})
 
 ****************************************************************************
 static function xmlnode.addtext(this,text)
-local child
-    if( "<"$text .or. "&"$text )
-        child:=xmlnodeNew("#CDATA") 
-    else
-        child:=xmlnodeNew("#TEXT") 
-    end
+local child:=objectNew(getclassid(this))
+local type:=if("<"$text .or. "&"$text, "#CDATA", "#TEXT")
+    child:initialize(type)
     child:addcontent(text)
     this:addcontent(child)
     return child

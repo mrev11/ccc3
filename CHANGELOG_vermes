@@ -1,3 +1,9 @@
+2022-08-13 flock.cpp es fsetlock.cpp ujrairva:
+   Linuxon tamogatott a SIGEV_THREAD_ID modszeren alapulo timeout-os lock.
+   FreeBSD-n tamogatott a SIGEV_THREAD_ID modszeren alapulo timeout-os lock.
+   NetBSD-n nincs SIGEV_THREAD_ID, ezert ftimeoutlock() -> fsetlock().
+   Windowson nincs timeout, ezert ftimeoutlock() -> fsetlock().
+
 2022-08-11 
   Az XML parser MINDEN node-ot createnodblock-kal hoz letre,
   a javitas eredmenyekent az XML fa minden node-ja azonos osztalyu.

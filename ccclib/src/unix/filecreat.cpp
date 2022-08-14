@@ -27,7 +27,7 @@
 #include <string.h>
  
 #include <cccapi.h>
-#include <flock.h>
+#include <flock.h>  
 #include <fileio.ch>  
 #include <fileconv.ch>
 
@@ -87,9 +87,8 @@ static int ulock(int hnd, int unixShareMode)
     }
     else
     {
-        int wait=0;//CCCLK_WAIT+CCCLK_TIMEOUT;
-        int share=(unixShareMode==UNIX_FO_SHARED)?CCCLK_READ:CCCLK_WRITE;
-        return _ccc_lock(hnd,0,LK_OFFSET_FILE,1,wait+share); // 0=OK, -1=error
+        int share=(unixShareMode==UNIX_FO_SHARED);
+        return fsetlock(hnd,0,LK_OFFSET_FILE,1,!share); // 0=OK, -1=error
     }
 }
 

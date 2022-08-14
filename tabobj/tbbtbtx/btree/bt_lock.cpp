@@ -25,6 +25,7 @@
 
 #include <btree.h>
 #include <flock.h>
+#include <fileio.ch>
 
 
 //----------------------------------------------------------------------------
@@ -38,9 +39,9 @@ void __bt_pagelock(BTREE *t, pgno_t pgno, int type)
     unsigned high=LK_OFFSET_PAGE;
     unsigned length=1;
     
-    _ccc_lock  ( fd, low+1 , high, 1, CCCLK_WAIT+CCCLK_WRITE);  
-    _ccc_lock  ( fd, low   , high, 1, CCCLK_WAIT+(type?CCCLK_WRITE:CCCLK_READ));  
-    _ccc_unlock( fd, low+1 , high, 1 );  
+    fwaitlock( fd, low+1 , high, 1, 1);  
+    fwaitlock( fd, low   , high, 1, type);  
+    funlock  ( fd, low+1 , high, 1 );  
 }
 
 //----------------------------------------------------------------------------
@@ -51,7 +52,7 @@ void __bt_pageunlock(BTREE *t, pgno_t pgno)
     unsigned high=LK_OFFSET_PAGE;
     unsigned length=1;
     
-    _ccc_unlock( fd, low   , high, 1 );  
+    funlock( fd, low, high, 1);  
 }
 
 //----------------------------------------------------------------------------

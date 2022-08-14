@@ -18,136 +18,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-// Lock függvények  (fsetlock, funlock)
-
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <sys/types.h>
-
 #include <cccapi.h>
 #include <flock.h>
 
-
-//-----------------------------------------------------------------------------
-void _clp_fsetlock(int argno)
+//----------------------------------------------------------------------------------------
+void _clp_fsetlock(int argno) //lock varakozas nelkul
+//
+// fsetlock( fd,  start, length, rwtype)          (a)
+// fsetlock( fd,  low,   high,   length, rwtype)  (b)
+//           1    2      3       4       5
 {
-    // lock varakozas nelkul
-
-    // fsetlock(fd, offset, length [,flag])
-    // fsetlock(fd, low, high, length [,flag])
-    // flag defaultja: .t. (exclusive)
-
     CCC_PROLOG("fsetlock",5);
 
-    int xp=0;
-    int flags=CCCLK_NOWAIT;
-    if( ISFLAG(argno) )
-    {
-        xp=1;
-        flags+=_parl(argno)?CCCLK_WRITE:CCCLK_READ;
-    }
-    
     int fd=0;
-    off_t start=0;
-    unsigned low=0,high=0,length=0;
+    off_t start=0, low=0, high=0, length=0;
+    int rwtype=1;  // writelock
 
-    if( (argno-xp)==3 ) 
-    {
-        fd     = _parni(1);
-        start  = _parnuw(2);
-        length = _parnuw(3);
-        low    = start&0xffffffff;
-        high   = start>>32;
-    }
-    else if( (argno-xp)==4 ) //large file support  
-    {
-        fd     = _parni(1);
-        low    = _parnuw(2); 
-        high   = _parnuw(3); 
-        length = _parnuw(4);
-        start  =  high;
-        start  =  (start<<32)+low;
-    }
-    else
-    {
-        ARGERROR();
-    }
-    
-    _retni( _ccc_lock(fd,low,high,length,flags) );
-
-    CCC_EPILOG();
-}
-
-
-//-----------------------------------------------------------------------------
-void _clp_fwaitlock(int argno)
-{
-    // lock varakozassal
-
-    // fwaitlock(fd, offset, length [,flag])
-    // fwaitlock(fd, low, high, length [,flag])
-    // flag defaultja: .t. (exclusive)
-
-    CCC_PROLOG("fwaitlock",5);
-
-    int xp=0;
-    int flags=CCCLK_WAIT;
-    if( ISFLAG(argno) )
-    {
-        xp=1;
-        flags+=_parl(argno)?CCCLK_WRITE:CCCLK_READ ;
-    }
-    
-    int fd=0;
-    off_t start=0;
-    unsigned low=0,high=0,length=0;
-
-    if( (argno-xp)==3 ) 
-    {
-        fd     = _parni(1);
-        start  = _parnuw(2);
-        length = _parnuw(3);
-        low    = start&0xffffffff;
-        high   = start>>32;
-    }
-    else if( (argno-xp)==4 ) //large file support  
-    {
-        fd     = _parni(1);
-        low    = _parnuw(2); 
-        high   = _parnuw(3); 
-        length = _parnuw(4);
-        start  =  high;
-        start  =  (start<<32)+low;
-    }
-    else
-    {
-        ARGERROR();
-    }
-    
-    _retni( _ccc_lock(fd,low,high,length,flags) );
-
-    CCC_EPILOG();
-}
-
-//-----------------------------------------------------------------------------
-void _clp_ftimeoutlock(int argno)
-{
-    // lock varakozassal timeout-tal
-    //               1    2       3       4       5          6
-    // ftimeoutlock( fd, offset, length, [flag], [timeout])             (a)
-    // ftimeoutlock( fd, low,    high,   length, [flag],    [timeout])  (b) large file
-    //
-    // flag defaultja: .t. (exclusive)
-
-    CCC_PROLOG("ftimeoutlock",6);
-
-    int fd=0;
-    off_t start=0;
-    unsigned low=0,high=0,length=0;
-    int flags=CCCLK_WAIT|CCCLK_TIMEOUT;
-    int timeout=-1;
-    
     if( !ISNUMBER(4) )
     {
         // (a) eset
@@ -158,11 +44,7 @@ void _clp_ftimeoutlock(int argno)
         high   = start>>32;
         if( !ISNIL(4) )
         {
-            flags+=_parl(4)?CCCLK_WRITE:CCCLK_READ ;
-        }
-        if( !ISNIL(5) )
-        {
-            timeout=_parni(5);
+            rwtype=_parl(4);  // .t.=write, .f.=read, default=.t.
         }
     }
     else
@@ -176,87 +58,124 @@ void _clp_ftimeoutlock(int argno)
         start  =  (start<<32)+low;
         if( !ISNIL(5) )
         {
-            flags+=_parl(5)?CCCLK_WRITE:CCCLK_READ ;
-        }
-        if( !ISNIL(6) )
-        {
-            timeout=_parni(6);
+            rwtype=_parl(5); // .t.=write, .f.=read, default=.t.
         }
     }
 
-    if( timeout>=0 )
-    {
-        // timeout a megadott idovel
-        _retni( _ccc_lock(fd,low,high,length,flags,timeout) );
-    }
-    else
-    {
-        // timeout CCCLK_TIMEOUT idovel
-        _retni( _ccc_lock(fd,low,high,length,flags) );
-    }
+    _retni( fsetlock(fd,low,high,length,rwtype) );
 
     CCC_EPILOG();
 }
 
-
-//-----------------------------------------------------------------------------
-void _clp_ftimeoutlock_MEGSZUNT(int argno)
+//----------------------------------------------------------------------------------------
+void _clp_fwaitlock(int argno) // lock korlatlan varakozassal
+//
+// fwaitlock( fd,  start, length, rwtype)          (a)
+// fwaitlock( fd,  low,   high,   length, rwtype)  (b)
+//            1    2      3       4       5
 {
-    // lock varakozassal timeout-tal
+    CCC_PROLOG("fwaitlock",5);
 
-    // ftimeoutlock(fd, offset, length [,flag])
-    // ftimeoutlock(fd, low, high, length [,flag])
-    // flag defaultja: .t. (exclusive)
-
-    // a timeout merteket igy lehet megadni
-    //
-    //     export CCCLK_TIMEOUT=seconds
-    //
-    // ha ez nincs megadva vagy 0, akkor ftimeoutlock = fsetlock
-    // windowson mindig ftimeoutlock = fsetlock
-    
-    CCC_PROLOG("ftimeoutlock",5);
-
-    int xp=0;
-    int flags=CCCLK_WAIT|CCCLK_TIMEOUT;
-    if( ISFLAG(argno) )
-    {
-        xp=1;
-        flags+=_parl(argno)?CCCLK_WRITE:CCCLK_READ ;
-    }
-    
     int fd=0;
-    off_t start=0;
-    unsigned low=0,high=0,length=0;
+    off_t start=0, low=0, high=0, length=0;
+    int rwtype=1;  // writelock
 
-    if( (argno-xp)==3 ) 
+    if( !ISNUMBER(4) )
     {
+        // (a) eset
         fd     = _parni(1);
         start  = _parnuw(2);
         length = _parnuw(3);
         low    = start&0xffffffff;
         high   = start>>32;
+        if( !ISNIL(4) )
+        {
+            rwtype=_parl(4);  // .t.=write, .f.=read, default=.t.
+        }
     }
-    else if( (argno-xp)==4 ) //large file support  
+    else
     {
+        // (b) eset
         fd     = _parni(1);
         low    = _parnuw(2); 
         high   = _parnuw(3); 
         length = _parnuw(4);
         start  =  high;
         start  =  (start<<32)+low;
+        if( !ISNIL(5) )
+        {
+            rwtype=_parl(5); // .t.=write, .f.=read, default=.t.
+        }
     }
-    else
-    {
-        ARGERROR();
-    }
-    
-    _retni( _ccc_lock(fd,low,high,length,flags) );
+
+    _retni( fwaitlock(fd,low,high,length,rwtype) );
 
     CCC_EPILOG();
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+void _clp_ftimeoutlock(int argno)
+//
+// ftimeoutlock( fd,  start, length, rwtype, timeout)          (a)
+// ftimeoutlock( fd,  low,   high,   length, rwtype, timeout)  (b)
+//               1    2      3       4       5       6
+//
+//  timeout == 0: nem var
+//  timeout >  0: a megadott ideig var
+//  timeout ==-1: korlatlan ideig var
+//
+//  ret ==  0: OK
+//  ret == -1: sikertelen
+{
+    CCC_PROLOG("ftimeoutlock",6);
+    
+    int fd=0;
+    off_t start=0, low=0, high=0, length=0;
+    int rwtype=1;  // writelock
+    int timeout=0; // nowait
+
+    if( !ISNUMBER(4) )
+    {
+        // (a) eset
+        fd     = _parni(1);
+        start  = _parnuw(2);
+        length = _parnuw(3);
+        low    = start&0xffffffff;
+        high   = start>>32;
+        if( !ISNIL(4) )
+        {
+            rwtype=_parl(4);  // .t.=write, .f.=read, default=.t.
+        }
+        if( !ISNIL(5) )
+        {
+            timeout=_parni(5); // default: 0=nowait
+        }
+    }
+    else
+    {
+        // (b) eset
+        fd     = _parni(1);
+        low    = _parnuw(2); 
+        high   = _parnuw(3); 
+        length = _parnuw(4);
+        start  =  high;
+        start  =  (start<<32)+low;
+        if( !ISNIL(5) )
+        {
+            rwtype=_parl(5); // .t.=write, .f.=read, default=.t.
+        }
+        if( !ISNIL(6) )
+        {
+            timeout=_parni(6);  // default: 0=nowait
+        }
+    }
+
+    _retni( ftimeoutlock(fd,low,high,length,rwtype,timeout) );
+    
+    CCC_EPILOG();
+}
+
+//----------------------------------------------------------------------------------------
 void _clp_funlock(int argno)
 {
     CCC_PROLOG("funlock",4);
@@ -286,10 +205,9 @@ void _clp_funlock(int argno)
         ARGERROR();
     }
 
-    _retni( _ccc_unlock(fd,low,high,length) );
+    _retni( funlock(fd,low,high,length) );
 
     CCC_EPILOG();
 }
 
-//-----------------------------------------------------------------------------
-
+//----------------------------------------------------------------------------------------

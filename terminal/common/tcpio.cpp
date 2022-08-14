@@ -376,7 +376,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
 
                             if(qout[fp])
                             {
-                                _ccc_lock(fileno(qout[fp]),0,0,1,0);
+                                fsetlock(fileno(qout[fp]),0,0,1,0);
                             }
                         }
                         result=qout[fp] ? 1:0;
@@ -399,7 +399,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     }
                     else
                     {
-                        _ccc_unlock(fileno(qout[fp]),0,0,1);
+                        funlock(fileno(qout[fp]),0,0,1);
                         fclose(qout[fp]);
                         if(fnames[fp])
                         {

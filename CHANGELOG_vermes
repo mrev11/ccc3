@@ -1,3 +1,5 @@
+2022-08-15 hianyzo gettid() potolva, -lrt potolva;
+
 2022-08-13 flock.cpp es fsetlock.cpp ujrairva:
    Linuxon tamogatott a SIGEV_THREAD_ID modszeren alapulo timeout-os lock.
    FreeBSD-n tamogatott a SIGEV_THREAD_ID modszeren alapulo timeout-os lock.

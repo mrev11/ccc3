@@ -24,6 +24,7 @@
 //pl.  schema.field_1+field_2 -> "schema"."field_1"+"field_2"
 
 
+#include <string.h>
 #include <memory.h>
 #include <cccapi.h>
 

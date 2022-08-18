@@ -29,6 +29,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <errno.h>
+#include <tid2ptr.h>
 #include <cccapi.h>
  
 #ifndef MULTITHREAD
@@ -166,7 +167,7 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
         pthread_mutex_unlock(&mutcre);
         SIGNAL_UNLOCK(); //az aktuális szálra vonatkozik
         stack-=argno;
-        pointer( (void*)t );
+        pointer( tid2ptr(t) );
     }
     else
     {
@@ -182,14 +183,14 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
 void _clp_thread_self(int argno)
 {
     stack-=argno;
-    pointer( (void*)pthread_self() );
+    pointer( tid2ptr(pthread_self()) );
 }
 
 //---------------------------------------------------------------------------
 void _clp_thread_detach(int argno)
 {
     CCC_PROLOG("thread_detach",1);
-    pthread_t t=(pthread_t)_parp(1);
+    pthread_t t=ptr2tid(_parp(1));
     _retni( pthread_detach(t));
     CCC_EPILOG();
 }
@@ -230,7 +231,7 @@ void _clp_thread_exit(int argno)
 void _clp_thread_join(int argno)
 {
     CCC_PROLOG("thread_join",1);
-    pthread_t t=(pthread_t)_parp(1);
+    pthread_t t=ptr2tid(_parp(1));
     _retni( pthread_join(t,0));
     CCC_EPILOG();
 }

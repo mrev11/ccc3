@@ -128,6 +128,12 @@ static int lowlevel_locktime(int fd, struct flock *fl, unsigned timeout_ms)
     return -1; // SIGEV_THREAD_ID not supported
 }
 
+#elif _SOLARIS_
+static int lowlevel_locktime(int fd, struct flock *fl, unsigned timeout_ms)
+{
+    return -1; // SIGEV_THREAD_ID not supported
+}
+
 #else //LINUX,FREEBSD
 //----------------------------------------------------------------------------------------
 static void sighandler(int signum)

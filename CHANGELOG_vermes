@@ -1,3 +1,17 @@
+2022-08-17 Solaris (OmniOS) port felujitva:
+  usr/build/solaris scriptek lecserelve (multithread support)
+  objsol* directoryk .gitignore-ban kihagyva
+  flock.cpp-ben nincs SIGEV_THREAD_ID (mint a NetBSD)
+  kenyes a pthread_t <-> void* cast-ra, cast helyett tid2ptr()
+  lemon.c-ben kihagyni unistd.h (feluldefinilaja B_TRUE-t)
+  konyvtarakat /usr/lib helyett /usr/lib/64-bol kell venni
+  nincs pcre32 es pcre2-32 konyvtar (mint a NetBSD)
+  sok helyen be kell venni string.h-t
+  elnyomva nehany folosleges warning
+  fordul gcc 11.2.0-val
+  fordul clang 14.0.6-tal
+
+
 2022-08-15 hianyzo gettid() potolva, -lrt potolva;
 
 2022-08-13 flock.cpp es fsetlock.cpp ujrairva:

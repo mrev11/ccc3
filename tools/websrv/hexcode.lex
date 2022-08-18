@@ -24,6 +24,7 @@
   A %hh kódolású byteokat becseréli: pl. %20 -> ' '
 #endif
 
+#include <string.h>
 #include <memory.h>
 #include <cccapi.h>
 

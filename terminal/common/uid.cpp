@@ -19,6 +19,7 @@
  */
 
 #include <time.h>
+#include <tid2ptr.h>
 #include <cccapi.h>
 
 static unsigned int crc_table[] = { /* CRC polynomial 0xedb88320 */
@@ -86,7 +87,7 @@ const char *unique_id()
       #ifdef WINDOWS
         data.p=(void*)GetCurrentThreadId();
       #else
-        data.p=(void*)pthread_self();
+        data.p=tid2ptr(pthread_self());
       #endif
     #endif
     data.t=time(0);

@@ -15,6 +15,9 @@
 -fPIC
 -Wall
 -Wno-unused
+-Wno-format
+-Wno-format-overflow
+-Wno-unknown-warning-option
 -g
 -I/usr/X11/include
 -I/usr/sfw/include

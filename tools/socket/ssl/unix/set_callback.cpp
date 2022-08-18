@@ -24,6 +24,8 @@
 #include <pthread.h>
 #include <openssl/crypto.h>
 
+#include <tid2ptr.h>
+
 
 static void locking_function(int mode, int n, const char*file, int line)
 {
@@ -57,7 +59,7 @@ static unsigned long id_function(void)
 
 static void* idptr_function(void)
 {
-    return (void*)pthread_self();
+    return tid2ptr(pthread_self());
 }
 
 void init_locking_callback()

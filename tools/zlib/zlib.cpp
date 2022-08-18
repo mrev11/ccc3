@@ -20,6 +20,7 @@
 
 #include <cccapi.h>
 #include <memory.h>
+#include <string.h>
 #include <errno.h>
 #include <assert.h>
 #include <zlib.h>

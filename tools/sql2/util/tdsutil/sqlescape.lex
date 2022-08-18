@@ -30,6 +30,7 @@
 #endif
 
 
+#include <string.h>
 #include <memory.h>
 #include <cccapi.h>
 

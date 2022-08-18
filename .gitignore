@@ -29,6 +29,13 @@ objnet_uic/
 objnet_uiw/
 objnet_uif/
 
+objsol/
+objsol_ui_/
+objsol_uic/
+objsol_uiw/
+objsol_uif/
+
+
 ppo/
 html/
 dvi/

@@ -19,12 +19,13 @@
  */
 
 
-#include <flock.h>
 
 //----------------------------------------------------------------------------------------
 #ifdef WINDOWS
 
 #include <fcntl.h>
+
+#include <flock.h>
 #include <cccapi.h>
 
 //----------------------------------------------------------------------------------------
@@ -77,11 +78,15 @@ static int lowlevel_unlock(int fd, unsigned low, unsigned high, unsigned length)
 
 #include <errno.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 #include <time.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
 
+#include <flock.h>
 #include <cccapi.h>
 
 #define TIMEOUT_SIGNAL SIGALRM
@@ -95,12 +100,20 @@ static int lowlevel_unlock(int fd, unsigned low, unsigned high, unsigned length)
 // platform specifikus
 
 #ifdef _LINUX_
+#ifdef SYS_gettid
+static long GETTID()
+{
+    return syscall(SYS_gettid);
+}
+#else
+#define GETTID() gettid()
+#endif
 #define sigev_notify_thread_id  _sigev_un._tid
 #endif
 
 #ifdef _FREEBSD_
 #include <sys/thr.h>
-long gettid()
+static long GETTID()
 {
     long id=0;
     thr_self(&id);
@@ -110,6 +123,12 @@ long gettid()
 #endif
 
 #ifdef _NETBSD_
+static int lowlevel_locktime(int fd, struct flock *fl, unsigned timeout_ms)
+{
+    return -1; // SIGEV_THREAD_ID not supported
+}
+
+#elif _SOLARIS_
 static int lowlevel_locktime(int fd, struct flock *fl, unsigned timeout_ms)
 {
     return -1; // SIGEV_THREAD_ID not supported
@@ -140,7 +159,7 @@ static int lowlevel_locktime(int fd, struct flock *fl, unsigned timeout_ms)
     memset(&sev,0,sizeof(struct sigevent));
     sev.sigev_notify=SIGEV_THREAD_ID;
     sev.sigev_signo=TIMEOUT_SIGNAL;
-    sev.sigev_notify_thread_id=gettid(); // platform specifikus makro
+    sev.sigev_notify_thread_id=GETTID(); // platform specifikus makrok
 
     timer_t timerid;
     if( timer_create(CLOCK_REALTIME,&sev,&timerid) )

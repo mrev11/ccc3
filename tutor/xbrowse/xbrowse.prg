@@ -40,7 +40,7 @@ local dir:=directory(getenv("CCCDIR")+"/ccclib/src/*.*","DH")
 local pos:=1
 local b,c,k
 
-    set printer to out
+    set printer to log-xbrowse
     set printer on
 
 

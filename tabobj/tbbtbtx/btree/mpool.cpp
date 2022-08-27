@@ -42,82 +42,9 @@ static void   *pinned[MAXPIN];
 static pgno_t  pageno[MAXPIN];
 
 
-static void pin_ini();
-static int pin_count();
-static void pin_store(void*p,pgno_t x);
-static void pin_drop(void*p,pgno_t x);
 static pgno_t crc32(void*page,int size);
  
  
-//---------------------------------------------------------------------------
-static void pin_ini()
-{
-    int n;
-    for(n=0; n<MAXPIN; n++)
-    {
-        pinned[n]=0;
-        pageno[n]=0;
-    }
-}
-
-static int pin_count()
-{
-    int count=0, n;
-    for(n=0; n<MAXPIN; n++)
-    {
-        if( pinned[n] )
-        {
-            count++;
-        }
-    }
-    return count;
-}
-
-
-static void pin_store(void*p,pgno_t x)
-{
-    int n;
-    for(n=0; n<MAXPIN; n++)
-    {
-        if( pinned[n]==0 )
-        {
-            pinned[n]=p;
-            pageno[n]=x;
-            return;
-        }
-    }
-
-    fprintf(stderr,"pin_store overflow\n");
-    raise(SIGTERM);
-    exit(1);
-}
- 
-static void pin_drop(void*p,pgno_t x)
-{
-    int n;
-    for(n=0; n<MAXPIN; n++)
-    {
-        if( pinned[n]==p )
-        {
-            if( x!=pageno[n] )
-            {
-                fprintf(stderr,"pin_drop pgno diff %d %d\n",x,pageno[n]);
-                //raise(SIGTERM);
-                raise(SIGABRT);
-                exit(1);
-            }
-            pinned[n]=0;
-            pageno[n]=0; 
-            return;
-        }
-    }
-
-    fprintf(stderr,"pin_drop not found\n");
-    raise(SIGTERM);
-    exit(1);
-}
-
-
 //---------------------------------------------------------------------------
 MPOOL *mpool_open(int fd, int pagesize)
 {
@@ -131,8 +58,6 @@ MPOOL *mpool_open(int fd, int pagesize)
     }
 #endif    
     
-    pin_ini();
-
     mp=(MPOOL*)malloc(sizeof(MPOOL));
     memset(mp,0,sizeof(MPOOL));
     mp->fd=fd;
@@ -177,12 +102,6 @@ int mpool_count(MPOOL *mp, const char *msg)
         raise(SIGTERM);
         exit(1);
     }
-    else if( pin_count() ) 
-    {
-        fprintf(stderr,"ERROR: pin_count %d %s\n", pin_count(),msg );
-        raise(SIGTERM);
-        exit(1);
-    }
 
     return mp->count;
 }
@@ -199,7 +118,6 @@ void *mpool_new(MPOOL *mp, pgno_t *pgnoaddr)
 
     int retcode=write(mp->fd,buf,mp->pagesize);
 
-    pin_store(buf,*pgnoaddr);
     mp->count++;
 
     #ifdef DEBUG
@@ -266,7 +184,6 @@ void *mpool_get(MPOOL *mp, pgno_t pgno)
     }
     *(pgno_t*)buf=pgno; //CRC helyett pgno
  
-    pin_store(buf,pgno);
     mp->count++;
 
     #ifdef DEBUG
@@ -305,7 +222,6 @@ int mpool_put(MPOOL *mp, void *page, int dirty)
     }
     free(page);
 
-    pin_drop(page,pgno);
     mp->count--;
 
     #ifdef DEBUG

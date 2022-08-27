@@ -107,6 +107,7 @@ static function tabobjerror.initialize(this,op)
     this:(apperror)initialize(op)
     this:description:=@"table object error"
     this:oscode:=ferror()
+    this:subsystem:="BTBTX database"
     return this
 
 ******************************************************************************
@@ -145,6 +146,25 @@ static function tranlogerror.initialize(this,op)
     this:(tabobjerror)initialize(op)
     this:description:=@"transaction log error"
     this:oscode:=ferror()
+    return this
+
+******************************************************************************
+class tranlockerror(tabobjerror)
+    method initialize
+
+static function tranlockerror.initialize(this,op)
+    this:(tabobjerror)initialize(op)
+    this:description:=@"record lock without active transaction"
+    return this
+
+
+******************************************************************************
+class trantimeouterror(tabobjerror)
+    method initialize
+
+static function trantimeouterror.initialize(this,op)
+    this:(tabobjerror)initialize(op)
+    this:description:=@"transaction timed out"
     return this
 
 ******************************************************************************

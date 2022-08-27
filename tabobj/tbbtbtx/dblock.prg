@@ -37,53 +37,6 @@
 
 
 
-
-******************************************************************************
-function tabLockCount(table,inc)
-
-static lkcount:=0
-static semafd:=semafd()
-
-    if( inc==1 )
-        lkcount+=inc
-        //?  "LK",lkcount,tabFile(table),table[TAB_LOCKLST]
-
-        if(semafd!=NIL .and. lkcount==1)
-            //elsot megfogja
-            fwaitlock(semafd,1,1,.t.) //exclusive
-            fwaitlock(semafd,0,1,.f.) //shared
-            funlock(semafd,1,1)
-        end
-
-    elseif( inc==-1 )
-        lkcount+=inc
-        //?  "UN",lkcount,tabFile(table),table[TAB_LOCKLST]
-
-        if(semafd!=NIL .and. lkcount==0)
-            //utolsot elengedi
-            funlock(semafd,0,1)
-        end
-    end
-    return lkcount
-
-
-******************************************************************************
-static function semafd()
-local sema,fd,e 
-    if( !empty(sema:=getenv("CCC_LOCK_SEMAPHOR")) )
-        fd:=fopen(sema,FO_NOLOCK+FO_READWRITE)
-        if( fd<0 )
-            e:=fnferrorNew()
-            e:operation:="tabLockCount"
-            e:description:=@"CCC_LOCK_SEMAPHOR open failed"
-            e:filename:=sema
-            e:oscode:=ferror()
-            break(e)
-        end
-    end
-    return fd // fd vagy NIL
-
-
 ******************************************************************************
 function tabLock(table,userblock) //fajl lock
 
@@ -307,16 +260,17 @@ local curr:=tabPosition(table)
 
 *****************************************************************************
 static function dblock(table,pos,timeout) //low level lock
-local result
-    tabLockCount(table,1)
+local result,err
+    if( tranEnforced() .and. !tranIsActiveTransaction() )
+        err:=tranlockerrorNew("dblock")
+        err:filename:=tabPathName(table)
+        break(err)
+    end
     if( pos==NIL )
         pos:=tabPosition(table)
     end
     //result:=fsetlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
     result:=ftimeoutlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1,,timeout)
-    if( result!=0 )
-        tabLockCount(table,-1)
-    end
     return result
 
 *****************************************************************************
@@ -326,9 +280,6 @@ local result
         pos:=tabPosition(table)
     end
     result:=funlock(table[TAB_FHANDLE],pos,LK_OFFSET_RECORD,1)
-    if( result==0 )
-        tabLockCount(table,-1)
-    end
     return result
  
 

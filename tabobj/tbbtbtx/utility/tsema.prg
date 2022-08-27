@@ -19,49 +19,31 @@
  */
 
 #include "fileio.ch"
+#include "table.ch"
 
 ******************************************************************************
 function main(cmd)
 
-local semafd:=semafd()
-local result
 
-    fwaitlock(semafd,1,1)
-    result:=fwaitlock(semafd,0,1)
-    funlock(semafd,1,1)
+    tranSemaOn(SEMA_MANUAL,0,.t.)
+    tranSemaOn(SEMA_XOPEN ,0,.t.)
+    tranSemaOn(SEMA_RLOCK ,0,.t.)
 
-    if( result==0 )
-        ? "CCC_LOCK_SEMAPHOR locked"
-        if( empty(cmd) )
-            ?? ", hit any key ..."
-            inkey(0)
-        else
-            run(cmd)
-        end
-        funlock(semafd,0,1)
-        ? "CCC_LOCK_SEMAPHOR unlocked"
+    ? "CCC_LOCK_SEMAPHOR locked"
+
+    if( empty(cmd) )
+        ?? ", hit any key ..."
+        inkey(0)
     else
-        ? "CCC_LOCK_SEMAPHOR failed"
+        run(cmd)
     end
+
+    tranSemaOff(SEMA_MANUAL)
+    tranSemaOff(SEMA_XOPEN)
+    tranSemaOff(SEMA_RLOCK)
+
+    ? "CCC_LOCK_SEMAPHOR unlocked"
     ?
-
-
-******************************************************************************
-static function semafd()
-local sema,fd:=-1
-    sema:=getenv("CCC_LOCK_SEMAPHOR")
-    if( empty(sema) )
-        ? "CCC_LOCK_SEMAPHOR variable is not set"
-    elseif( !file(sema) )
-        ? "CCC_LOCK_SEMAPHOR file does not exist", sema
-    elseif( 0>(fd:=fopen(sema,FO_NOLOCK+FO_READWRITE)) )
-        ? "Cannot open CCC_LOCK_SEMAPHOR file", sema
-    end
-    if( fd<0 )
-        ?
-        quit
-    end
-    return fd
 
 
 ******************************************************************************

@@ -220,10 +220,12 @@ local result
     if( mode<OPEN_EXCLUSIVE )
         result:=tabUse1(table,mode)
     else
-        tabLockCount(table,1)
+        if( tranEnforced() )
+            tranSemaOn(SEMA_XOPEN)
+        end
         result:=tabUse1(table,mode)
-        if( !result )
-            tabLockCount(table,-1)
+        if( !result .and. tranEnforced()  )
+            tranSemaOff(SEMA_XOPEN)
         end
     end
     return result
@@ -299,10 +301,10 @@ function tabClose(table) //lezarja a fajlt
  
     tabCommit(table)
 
-    if( tabIsOpen(table)>=OPEN_EXCLUSIVE )
-        tabLockCount(table,-1)
-    else
+    if( tabIsOpen(table)<OPEN_EXCLUSIVE )
         tabUnlock(table)
+    elseif( tranEnforced() )
+        tranSemaOff(SEMA_XOPEN)
     end
     
     tabDeleteFieldTable(table)

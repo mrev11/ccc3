@@ -89,8 +89,8 @@ static int lowlevel_unlock(int fd, unsigned low, unsigned high, unsigned length)
 #include <flock.h>
 #include <cccapi.h>
 
-#define TIMEOUT_SIGNAL SIGALRM
-// #define TIMEOUT_SIGNAL SIGUSR1
+//#define TIMEOUT_SIGNAL SIGALRM
+ #define TIMEOUT_SIGNAL SIGUSR1
 // #define TIMEOUT_SIGNAL SIGUSR2
 
 // POSIX names to access some of the members.  

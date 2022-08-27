@@ -19,6 +19,7 @@
  */
 
 #include "tabobj.ch"
+#include "table.ch"
 
 
 //#define PUP_TABLE       1  //minden formatumban
@@ -144,11 +145,6 @@ local dlst,llst,x,i
  
  
 ****************************************************************************
-function tranSyncronizeRecord(table) //compatibility
-    return tranSynchronizeRecord(table)
-
-
-****************************************************************************
 function tranSynchronizeRecord(table,lockflag)  
 
 //ujrairva 2001.12.14
@@ -245,8 +241,13 @@ local err
 
 ****************************************************************************
 function tranBegin()
-    tabCommitAll() 
-    activetransaction:=.t. 
+    tabCommitAll()
+    if( !activetransaction )
+        activetransaction:=.t. 
+        if( tranEnforced() )
+            tranSemaOn(SEMA_RLOCK)
+        end
+    end
     aadd(tranindex,len(pendingupdate)+1)
     return len(tranindex)
 
@@ -255,7 +256,7 @@ function tranBegin()
 function tranRollback(tx)
 
 local err, n, t
- 
+
     tabCommitAll() 
  
     if( activetransaction )
@@ -285,6 +286,9 @@ local err, n, t
         if( empty(tranindex) )  
             activetransaction:=.f. 
             tranClearTransactionID(.t.)  
+            if( tranEnforced() )
+                tranSemaOff(SEMA_RLOCK)
+            end
         end
     end
 
@@ -316,6 +320,10 @@ local savepos
         asize(tranindex,tx-1)
      
         if( empty(tranindex) )
+
+            if( tranEnforced() )
+                tranSemaOff(SEMA_RLOCK)
+            end
     
             if( debug )
                 ? replicate("-",79)

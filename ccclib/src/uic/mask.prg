@@ -18,6 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+#include "inkey.ch"
+
 #define MSK_TOP       1
 #define MSK_LEFT      2
 #define MSK_BOTTOM    3
@@ -33,7 +36,17 @@
 #define MSK_SIZE     12
 
 static color:={}
+static mask:={}
 
+*************************************************************************
+static function mskPush(msk)
+    aadd(mask,msk)
+
+static function mskPop(msk)
+    asize(mask,len(mask)-1)
+
+function mskActive()
+    return atail(mask)
 
 *************************************************************************
 function mskColorSay(spec) //push
@@ -158,6 +171,7 @@ local slist:=msk[MSK_SAYLIST],n
 
 *************************************************************************
 function mskLoop(msk)
+    mskPush(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
     readexit(.f.)
     while(.t.)
@@ -166,6 +180,7 @@ function mskLoop(msk)
             exit
         end
     end
+    mskPop()
     return msk
     
 
@@ -208,5 +223,34 @@ local scr
         glist[n]:col+=dx
         glist[n]:row+=dy   
     next
+
+
+*************************************************************************
+function mskMove(msk,key)
+
+local x:=msk[MSK_LEFT]
+local y:=msk[MSK_TOP]
+local b:=msk[MSK_BOTTOM]
+local r:=msk[MSK_RIGHT]
+local getlist:=msk[MSK_GETLIST]
+local row:=row()
+local col:=col()
+
+    if( key==K_SH_UP .and. y>0 )
+        mskReplace(msk,x,y-1)
+        row--
+    elseif( key==K_SH_DOWN .and. b<maxrow())
+        mskReplace(msk,x,y+1)
+        row++
+    elseif( key==K_SH_LEFT .and. x>0 )
+        mskReplace(msk,x-1,y)
+        col--
+    elseif( key==K_SH_RIGHT .and. r<maxcol() )
+        mskReplace(msk,x+1,y)
+        col++
+    end
+    aeval(getlist,{|g|g:display})
+    setpos(row,col)
+    
 
 *************************************************************************

@@ -182,6 +182,15 @@ local cKey
 //    case ( nKey==K_CTRL_BS )
 //        oGet:delWordLeft()
 
+    case (nKey==K_SH_UP )
+        move(oGet,nkey)
+    case (nKey==K_SH_DOWN )
+        move(oGet,nkey)
+    case (nKey==K_SH_LEFT )
+        move(oGet,nkey)
+    case (nKey==K_SH_RIGHT )
+        move(oGet,nkey)
+
     otherwise
         //if( nKey>=32 .and. nKey<=255 )
         if( nKey>=32 ) //unicode
@@ -210,6 +219,15 @@ local cKey
     end
 
     return NIL
+
+
+**********************************************************************
+static function move(oGet,nKey)
+local msk:=mskActive()
+    if( msk!=NIL .and. 0<ascan(msk[5],oGet) )
+        mskMove(msk,nkey)
+    end
+
 
 **********************************************************************
 function GetPreValidate( oGet )

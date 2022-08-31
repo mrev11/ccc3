@@ -1,11 +1,15 @@
+1896e7f82da9a71588fbbe672eddb1ec9e8007ae 2022083108:06:24-UTC ./jt/jterminal/jterminal.jar
+150475d8ef90fb3fef6c860779cffb71ba53c084 2022083108:06:24-UTC ./log-install
+92476269b78aa4cf28b43ec1ffa2b20a82ada1a4 2022083107:56:59-UTC ./CHANGELOG_vermes
+3c93ec8753a8505923941c400d11fdcb2c11bb68 2022083021:10:36-UTC ./tutor/control/OLVASS
+e377c9cf58e1c9de74ad7905da2dab945306e797 2022083020:58:57-UTC ./ccclib/src/uic/getbrw.prg
+2065d86681ca6135598cee0d0309b59a91f36ab8 2022083020:49:30-UTC ./ccclib/src/uic/mask.prg
+aaf0e9178e797e06bc6e9ea361c3607d9d34c1d4 2022083020:43:16-UTC ./tutor/control/control.msk
+ae95dece90d8a4a23aa6168a9d90d547b0ac8484 2022083020:21:40-UTC ./ccclib/src/uic/getsys.prg
+dd9855eed9040578ed7d647c4f8eda5bdbd891c9 2022082815:51:31-UTC ./tabobj/common.src/transema.prg
 26b57368c473242cdfc7623c34dde29a38743fef 2022082708:02:07-UTC ./tabobj/tbbtbtx/dbopen.prg
-b64e367e52cf3d38d2b7d16511b9a81f7ba1047c 2022082707:42:34-UTC ./tutor/control/browse_in_mask.say
-e2ca29ba41fe705e68711d18069ed71c0a9a5c8d 2022082707:42:34-UTC ./tutor/control/control.say
 df845bff319b044b48067f7bde2a47ae26974561 2022082612:25:18-UTC ./usr/bin/linux/tsema
 714291ba99cc18400d9ded0d614cd03de78bde38 2022082612:25:16-UTC ./tabobj/tbbtbtx/utility/tsema.prg
-f04bed4b913596e5bba150e8189eeb53b99f58d3 2022082608:28:00-UTC ./jt/jterminal/jterminal.jar
-b67d773260b7fb2301c5e074ab096aeedf9fa151 2022082608:28:00-UTC ./log-install
-9e0f9b29a0fe9bc7a8788b7a24e1430cfdfd1f46 2022082608:25:21-UTC ./CHANGELOG_vermes
 e4d6807cde8d5fab10af6fa637b45009c2a4c27c 2022082608:21:47-UTC ./usr/bin/linux/websrv
 ec8933325fb10c775558d84335c7524c57172f57 2022082608:21:45-UTC ./usr/bin/linux/msk2html
 9bb5dbde7810ca137ff8439bddcf9023b2aaee79 2022082608:21:08-UTC ./usr/bin/linux/xstart
@@ -18,7 +22,6 @@ bb4e89ca84e04dd257610e6cdad04fa0a38a557c 2022082608:20:49-UTC ./usr/bin/linux/te
 960e04761156a8832fe3c564cccb17cb80d6e779 2022082608:20:44-UTC ./usr/bin/linux/removecr
 26788441e6378b76579bcff4233a3d10abd45ba2 2022082608:20:42-UTC ./usr/bin/linux/build
 e65db81b6dc0dd9b6432fd6ecbd6266295cf2eb3 2022082608:18:24-UTC ./tabobj/tbbtbtx/dblock.prg
-059384d0213763c5b266fb762e814ca9942f878a 2022082608:18:16-UTC ./tabobj/common.src/transema.prg
 5806efe84e300535a3e0c64328938f5829f6d995 2022082608:17:59-UTC ./tabobj/common.src/transact.prg
 af0fd77f85ad2b198cb0b5370ef5d83c4530ced6 2022082512:43:56-UTC ./usr/include/table.ch
 f90417fa11d5ce65a2f7d6783cd3ea04e792ab10 2022082510:04:35-UTC ./ccclib/src/syserror.prg
@@ -1034,10 +1037,8 @@ ec8d145528d11021275524fc98410ad9418d1cb5 2018033112:10:45-UTC ./tools/sql2/util/
 56ee3c2307f1d4ccb1728223266ee32dcd734f93 2018032514:17:01-UTC ./tools/z/zsetpos.prg
 3c05403b4a82f5177a3b153e40f0bd6095ec4403 2018032513:33:03-UTC ./ccclib/src/rat.cpp
 8af9a161f1d6ada03f7cfd361efc15b8de2714a9 2018032512:39:07-UTC ./tutor/filemap/filemap.cpp
-bd4a6ff6bc620ad2c15ae60d7a57a43c7d09592c 2018032413:12:31-UTC ./ccclib/src/uic/mask.prg
 3b4e0275d852e6a59be89104d56a883b15ac1ff1 2018032409:06:24-UTC ./tutor/control/demo3.prg
 8a637f3ad1bcc70a07a15c15bb7d1ce66c5dc939 2018032408:46:29-UTC ./tutor/control/browse_in_mask.msk
-08db544fca20421668f72c7694500126f7ad35a0 2018032317:33:06-UTC ./ccclib/src/uic/getbrw.prg
 51fbcd3f67cfcb7b562e13861f5b32ad82086ff8 2018032313:03:54-UTC ./tutor/control/browse_in_mask.sor
 3704afb599912c9e1698a81a39e87083d779aba3 2018031710:21:50-UTC ./tools/sql2/sql2.hu.ver
 51d2a9d520a08af11ad765a22e0d7e0eceb23069 2018031710:17:28-UTC ./tools/sql2/driver-sqlite3/sqlutil.prg
@@ -1261,8 +1262,6 @@ fd419b03dc150554369d615f922ce8ffbd8b1149 2017050823:32:09-UTC ./usr/build/linux/
 08d8c8bd91a8bb8ca10e03aa1968b7c72148f296 2017050820:12:19-UTC ./tools/mask/msk2say/OLVASS
 1f97987739a7f8a0f1b4650ec5a28ae554140fc6 2017050715:05:26-UTC ./tutor/control/demo.prg
 3cd313f05d755cbd93cd1fd077283891acb789ef 2017050714:46:29-UTC ./tutor/control/orszagkod.prg
-155773efb69210bb36b368506cda607ba30ff522 2017050714:22:29-UTC ./tutor/control/control.msk
-fa1f4fc192e4b93f25636adcef338e445348e354 2017050714:18:31-UTC ./tutor/control/OLVASS
 90803196b4c015e51cad30035adbb2c3cc6e6c0e 2017050713:30:27-UTC ./ccclib/src/uic/altbutton.prg
 0635370aef29570dc56861a06a13979dcf75e0ca 2017050707:25:45-UTC ./tutor/control/control.sor
 f00044b3e99ca0fc5c236226c98cd498eb5a96c0 2017042706:18:12-UTC ./ccclib/src/uic/setcursor.cpp
@@ -3014,7 +3013,6 @@ b7536cfd2371d42feec354359f916ae1543ba7dc 2006041409:00:03-UTC ./ccclib/src/o_err
 f48695761f968bddc8de478402d3dd97ccaee88c 2006041409:00:03-UTC ./ccclib/src/random.prg
 352648f2b01c9ffca6f8312af748a206e98fd60b 2006041409:00:03-UTC ./ccclib/src/set.prg
 f56f24db2ebc42ecbad47b258037e04edfb1d6a7 2006041409:00:03-UTC ./ccclib/src/uic/achoice.prg
-77b4ec8951746f6f171018001831e259f61f8a48 2006041409:00:03-UTC ./ccclib/src/uic/getsys.prg
 e09ac0bad5f48a7b87e4e8de4ac4de93da27e44f 2006041409:00:02-UTC ./ccclib/src/ui_/message.prg
 39738401adf7373c946112872b1abb877f5604a8 2006041408:59:18-UTC ./ccctools/ppo2cpp/flddecl.cpp
 b04f51a6f03b55b2420c7f45143dc0d35aec1993 2006041408:59:16-UTC ./ccclib/src/windows/envir.cpp

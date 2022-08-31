@@ -35,18 +35,21 @@ class getbrw(tbrowse,get)
     method  display
     method  setfocus
     method  killfocus
-    method  reset            {||NIL}    
+    method  reset            {||NIL}
+    method  row
+    method  col
  
 ***********************************************************************************************
 static function getbrw.initialize(this,t,l,b,r,blk,name)
-    this:(get)initialize(t,l,blk,name)
     this:(tbrowse)initialize(t,l,b,r)
+    this:(get)initialize(t,l,blk,name)
     this:reader:={|g|reader_getbrw(g)}
     return this
     
 
 ***********************************************************************************************
 static function getbrw.display(this)
+    this:invalidate
     while !this:stabilize(); end 
     if( this:hasfocus )
         this:hilite
@@ -69,6 +72,28 @@ static function getbrw.killfocus(this)
     this:(get)killfocus
     setcursor(this:savecursor)
     return this
+
+
+***********************************************************************************************
+static function getbrw.row(this,row)
+local shift
+    if( row!=NIL )
+        shift:=row-this:ntop
+        this:ntop+=shift
+        this:nbottom+=shift
+    end
+    return this:ntop
+
+
+***********************************************************************************************
+static function getbrw.col(this,col)
+local shift
+    if( col!=NIL )
+        shift:=col-this:nleft
+        this:nleft+=shift
+        this:nright+=shift
+    end
+    return this:nleft
 
 
 ***********************************************************************************************

@@ -50,7 +50,7 @@ hosszú mezőt rajzoltak neki. Később ez a block kicserélődhet.
 #------------------------------------------------------------------------------
 
 Ha rákerül a fókusz, akkor bármely (nem navigáló) billentyűleütésre
-változik a gom állapota. Vagyis ez egy egyszerű toggle button.
+változik a gomb állapota. Vagyis ez egy egyszerű toggle button.
 
     o:varget        --> .t./.f.
     o:varput(.t.)   bekapcsolja

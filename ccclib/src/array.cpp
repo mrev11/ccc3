@@ -116,7 +116,7 @@ VALUE *idxxl() // indexkifejezes a baloldalon
     VALUE *i=TOP();
     VALUE *a=TOP2();
 
-    if( a->type==TYPE_ARRAY && i->type==TYPE_NUMBER ) 
+    if( (a->type==TYPE_ARRAY || a->type==TYPE_OBJECT) && i->type==TYPE_NUMBER ) 
     {
         unsigned int len=ARRAYLEN(a);
         unsigned int idx=D2INT(i->data.number);
@@ -152,7 +152,7 @@ VALUE *idxxl0(double i) // indexkifejezes a baloldalon (konstans index)
 
     VALUE *a=TOP();
 
-    if( a->type!=TYPE_ARRAY ) 
+    if( (a->type!=TYPE_ARRAY) && (a->type!=TYPE_OBJECT) ) 
     {
         error_arr("idxxl0",a,1);
     }
@@ -181,7 +181,7 @@ void idxr() // indexkifejezes a jobboldalon
     
     if( i->type==TYPE_NUMBER )
     {
-        if( a->type==TYPE_ARRAY )
+        if( a->type==TYPE_ARRAY || a->type==TYPE_OBJECT )
         {
             unsigned len=ARRAYLEN(a);
             unsigned idx=D2UINT(i->data.number);
@@ -244,7 +244,7 @@ void idxr0(double i) // indexkifejezes a jobboldalon (konstans index)
 
     VALUE *a=TOP();
     
-    if( a->type==TYPE_ARRAY )
+    if( a->type==TYPE_ARRAY || a->type==TYPE_OBJECT )
     {
         unsigned len=ARRAYLEN(a);
         unsigned idx=D2UINT(i);

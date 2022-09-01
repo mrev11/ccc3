@@ -149,7 +149,33 @@ local clid
         aid:=clbaseid
     end
 
-    for i:=1 to len(aid) //végigmegy a baseclass-okon
+    if( !empty(aid) )
+        // i=1 első baseclass
+        // az első baseclass átvételekor
+        // megőrizzük az attributumok sorrendjét
+
+        bhash:=getclsdef(aid[1])[CLASS_HASHTAB]
+
+        for s:=1 to len(bhash) //végigmegy a baseclass slotjain
+            if( bhash[s]!=NIL )
+                name:=bhash[s][1]
+                value:=bhash[s][2] 
+                inherit:=bhash[s][3] 
+
+                hashidx:=hash_index(hash,name)
+                hash[hashidx]:={name,value,inherit} // eredeti attributum index
+
+                if( valtype(value)=="N" )
+                    ++olen
+                end
+                if( ++slen>HASHTAB_MAXFILL(hash) )
+                    hash:=hash_rebuild(hash,HASHTAB_INCREMENT(hash) )
+                end
+            end
+        next
+    end
+
+    for i:=2 to len(aid) //végigmegy a további baseclass-okon
     
         bhash:=getclsdef(aid[i])[CLASS_HASHTAB]
         

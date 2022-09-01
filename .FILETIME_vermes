@@ -1,6 +1,10 @@
-1896e7f82da9a71588fbbe672eddb1ec9e8007ae 2022083108:06:24-UTC ./jt/jterminal/jterminal.jar
-150475d8ef90fb3fef6c860779cffb71ba53c084 2022083108:06:24-UTC ./log-install
-92476269b78aa4cf28b43ec1ffa2b20a82ada1a4 2022083107:56:59-UTC ./CHANGELOG_vermes
+2ebbe79c804746c7ff17fb9f41de888017f88bb8 2022090115:06:48-UTC ./CHANGELOG_vermes
+d0c963a575b029352fa590f33ef45ef4d821f675 2022090115:03:24-UTC ./ccclib/src/class.prg
+5e7a9a18708a35e6c4ebbca1040fffe4dfbb312a 2022090109:45:19-UTC ./ccclib/src/array.cpp
+b64e367e52cf3d38d2b7d16511b9a81f7ba1047c 2022083108:32:20-UTC ./tutor/control/browse_in_mask.say
+7569d876d39f2c0882e422bd42510af40fed8106 2022083108:32:20-UTC ./tutor/control/control.say
+d1ad130c3993069708c7e92ecc2fbbf7c4be10d0 2022083108:31:55-UTC ./jt/jterminal/jterminal.jar
+1bbaa9fc1b42fe279d05bac041bb53291f7b5911 2022083108:31:55-UTC ./log-install
 3c93ec8753a8505923941c400d11fdcb2c11bb68 2022083021:10:36-UTC ./tutor/control/OLVASS
 e377c9cf58e1c9de74ad7905da2dab945306e797 2022083020:58:57-UTC ./ccclib/src/uic/getbrw.prg
 2065d86681ca6135598cee0d0309b59a91f36ab8 2022083020:49:30-UTC ./ccclib/src/uic/mask.prg
@@ -2034,7 +2038,6 @@ cc307d5f4568688ee7becd301a5ffbe76e4dc1ca 2009122617:21:08-UTC ./tools/xmldom/dem
 843153f468922ed28349176a34be4a091bc9b63a 2009121800:35:02-UTC ./setup/setup-unix/push.cpp
 c8f401abb2f58b1c27122068b0db7bfc99c6257c 2009121723:27:34-UTC ./doc/ccc-belulrol/script/setdvi.tex
 09e53a0b8f8a552df810682df0c8556e542cab42 2009121611:01:32-UTC ./doc/ccc-belulrol/ccc-belulrol.tex
-7dc31ce24c98730e559f17e881682e1a2cbf7946 2009121113:03:21-UTC ./ccclib/src/class.prg
 bdf04b4accfa91537f626fa35e19a23b98911a0d 2009121109:36:43-UTC ./ccctools/ppo2cpp/metdecl.cpp
 dfcc0924ba8ed331edd0e51424d720b317677412 2009121109:32:05-UTC ./usr/include/xmethod3.h
 2199434fe51bc5b40c21483e3fadd3ac89815c22 2009120716:11:47-UTC ./doc/ccc-belulrol/helloworld.tex

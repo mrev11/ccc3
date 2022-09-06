@@ -47,6 +47,7 @@ symtrailpar     {wspace}"("
 number          [0-9]+("."[0-9]+|"")
 numberb         [0][bB][01]+
 numberx         [0][xX]{hex}+
+numbero         [0][oO][0-7]+
 symbol          [_a-zA-Z][_a-zA-Z0-9]*
 dsym            "."?{w}{symbol}({w}("."|"@"){w}{symbol})*
 string          "\""[^\"]*"\""|"\'"[^\']*"\'"
@@ -235,6 +236,7 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 {number}                            {return NUMBER;} 
 {numberx}                           {return NUMBER;} 
 {numberb}                           {return NUMBER;} 
+{numbero}                           {return NUMBER;} 
 {symbol}                            {return SYMBOL;} 
 
 "."{w}{symbol}                      {return COMPOUND;} 

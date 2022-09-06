@@ -1,3 +1,6 @@
+2022.09.06 -- 5.4.2
+   oktalis szamok: [0][oO][0-7]+
+
 2022.03.25 -- 5.4.1
    strtoul helyett strtoull-lel konvertalja a hex szamokat;
 

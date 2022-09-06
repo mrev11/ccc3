@@ -2874,6 +2874,10 @@ int codegen_expr_NUMBER(parsenode *p,void *v)//PROTO
     {
         d=(double)strtoull(num+2,0,2);
     }
+    else if( (*num=='0') && ((*(num+1)=='o') || (*(num+1)=='O')) )
+    {
+        d=(double)strtoull(num+2,0,8);
+    }
     else if( (*num=='0') && ((*(num+1)=='x') || (*(num+1)=='X')) )
     {
         d=(double)strtoull(num+2,0,16);

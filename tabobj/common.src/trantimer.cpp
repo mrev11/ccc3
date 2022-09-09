@@ -3,6 +3,14 @@
 #include <string.h>
 #include <cccapi.h>
 
+#ifdef WINDOWS
+
+void _clp_trantimer_start(int argno)  { stack-=argno; PUSHNIL(); }
+void _clp_trantimer_delete(int argno) { stack-=argno; PUSHNIL(); }
+
+#else
+
+
 #define TIMEOUT_SIGNAL SIGALRM
 // #define TIMEOUT_SIGNAL SIGUSR1
 // #define TIMEOUT_SIGNAL SIGUSR2
@@ -79,3 +87,5 @@ void _clp_trantimer_delete(int argno)
 
 
 //----------------------------------------------------------------------------------------
+#endif
+

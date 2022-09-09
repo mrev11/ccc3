@@ -1,5 +1,11 @@
-6956b7387355e44f34b592ca06b102d651306a9f 2022090607:22:32-UTC ./jt/jterminal/jterminal.jar
-424def9a1d4062094066aa8ab79ad937b773a432 2022090607:22:32-UTC ./log-install
+d5c9878fc7029dc5e22736e16a5ea51fe450ce33 2022090919:24:39-UTC ./ccclib/src/uic/termapi/termio.cpp
+640bb2e8c1a8da495d8d99dabc82cb57a11543ac 2022090918:24:02-UTC ./usr/bin/linux/ncterm
+d7854bd5c4f063e7d7f90a62f1114dd49b981f81 2022090918:22:02-UTC ./CHANGELOG_vermes
+c5cf42332b83b70f7b72fd13257aaf87e65f59b6 2022090917:54:41-UTC ./jt/jterminal/jterminal.jar
+8f5899ff5185ca1e31dca4739cfef596910a0230 2022090917:54:41-UTC ./log-install
+8753d0b126957a5db5114acaab1ee9b68b9896dc 2022090917:54:07-UTC ./usr/bin/linux/list
+91bb17284adf6e55034d8687ea3a4ab835b50a39 2022090917:52:03-UTC ./terminal/unix-ncurses/ccclib/flock.cpp
+5135724a3087ce8a9480605ffed51e6d452b8390 2022090917:34:42-UTC ./tabobj/common.src/trantimer.cpp
 2bcd4bd8dba138dedd111044cfa606ea8b106202 2022090607:22:26-UTC ./usr/bin/linux/websrv
 479125aaade64511edb21db3e53816cadbd6cadd 2022090607:22:23-UTC ./usr/bin/linux/msk2html
 c27de10fe844bf863ef3a49f7ebbd6d5d79b0d1e 2022090607:21:26-UTC ./usr/bin/linux/xstart
@@ -8,7 +14,6 @@ c27de10fe844bf863ef3a49f7ebbd6d5d79b0d1e 2022090607:21:26-UTC ./usr/bin/linux/xs
 d11eaf60015cd4aba08ecf666aff81d553235689 2022090607:20:40-UTC ./usr/bin/linux/build
 55a1f95d7567c0dd0be2526075c86c8c15eddcf0 2022090607:20:19-UTC ./usr/bin/linux/ppo2cpp
 965f976fa20075d885c07a18d7a9e2a8b0b382b8 2022090607:17:32-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
-298c21e4332f08ae708a981b902d3bff7838ef72 2022090607:09:20-UTC ./CHANGELOG_vermes
 9f9540f88636b5e7461b06301110306f8919a4b3 2022090607:08:21-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 cd55719ea4fe835711228107bb68b4975e7f35c8 2022090607:03:28-UTC ./ccctools/ppo2cpp/codegen.cpp
 d59ecfd26abb5d86bf980c6d496d7d5361737c05 2022090607:00:43-UTC ./ccctools/ppo2cpp/lexer.lex
@@ -25,14 +30,12 @@ df845bff319b044b48067f7bde2a47ae26974561 2022082612:25:18-UTC ./usr/bin/linux/ts
 714291ba99cc18400d9ded0d614cd03de78bde38 2022082612:25:16-UTC ./tabobj/tbbtbtx/utility/tsema.prg
 bb4e89ca84e04dd257610e6cdad04fa0a38a557c 2022082608:20:49-UTC ./usr/bin/linux/terminal-gtk3
 8c057e17978eccf33c70dc09d33ddeb508525432 2022082608:20:47-UTC ./usr/bin/linux/terminal-gtk
-61f7305b25c384ddebdffaad80e9588aa3f12b4a 2022082608:20:46-UTC ./usr/bin/linux/ncterm
 74883aa98cb4d4d3c6e6240bbfed00751f84568b 2022082608:20:45-UTC ./usr/bin/linux/terminal
 60fbca6ad9841ff3ed3dbca1a8823df7469a9287 2022082608:20:45-UTC ./usr/bin/linux/terminal-xft
 e65db81b6dc0dd9b6432fd6ecbd6266295cf2eb3 2022082608:18:24-UTC ./tabobj/tbbtbtx/dblock.prg
 5806efe84e300535a3e0c64328938f5829f6d995 2022082608:17:59-UTC ./tabobj/common.src/transact.prg
 af0fd77f85ad2b198cb0b5370ef5d83c4530ced6 2022082512:43:56-UTC ./usr/include/table.ch
 f90417fa11d5ce65a2f7d6783cd3ea04e792ab10 2022082510:04:35-UTC ./ccclib/src/syserror.prg
-b3ca982d05d4818c5ed2b167a5378565bc486093 2022082508:32:34-UTC ./tabobj/common.src/trantimer.cpp
 053d650c0c62ce292010b63e5bfed55e1e3795a2 2022082413:21:14-UTC ./ccclib/src/flock.cpp
 a9318b2370456cd8a54df10b472521d8971f96eb 2022082411:51:53-UTC ./tabobj/tbbtbtx/btree/mpool.cpp
 27e28576676d7c0262907f5ba9ed6b31afeda573 2022081808:06:14-UTC ./jt/jterminal/base64.class
@@ -143,7 +146,6 @@ fba555d354a5f746860b9619b4400a3ec82208e4 2022081808:05:58-UTC ./usr/bin/linux/bt
 7719a67052ca3ad51366c50e3d0585b54099d4c4 2022081808:05:58-UTC ./usr/bin/linux/bt2ted
 3b9909723e2a7e7ec221011fcc8f80acc38e841c 2022081808:05:45-UTC ./usr/bin/linux/setperm
 9041bf198e0869fa39c8dcf3029aacc7c42fe490 2022081808:05:44-UTC ./usr/bin/linux/savex
-0ac2cf17f129b4fcf8a974b91ff49f3d10554f83 2022081808:05:42-UTC ./usr/bin/linux/list
 0babfd549ac5670b0330e71417000d6d0c727ec1 2022081808:05:41-UTC ./usr/bin/linux/dddel
 c5afdef7506e1c29272f0c90dc2cf7e87c425c23 2022081808:05:41-UTC ./usr/bin/linux/ddict2
 0808c5369a60f1b4f0658e853c96e180e36addda 2022081808:05:39-UTC ./usr/bin/linux/dbfview
@@ -187,7 +189,6 @@ dcea9503714226acdf99b394635362a02ef85c86 2022081717:48:00-UTC ./tools/socket/ssl
 e09223b486364abfe13e2968bd609b498ff1db60 2022081709:35:04-UTC ./tools/websrv/hexcode.lex
 59bc27667b6a9ed53cacad55a88375afb99bd79f 2022081709:08:32-UTC ./.gitignore
 eb3bb6afdcb952e1cd0cd40033b16ff1e2250779 2022081709:06:05-UTC ./tools/zlib/zlib.cpp
-7a3413bd1d7d5cdc7e864927ad7bc572f376b658 2022081708:29:08-UTC ./ccclib/src/flock.cpp
 4216af67cda45c5f291c4cfe0742cb96996e4934 2022081708:24:41-UTC ./setup/setup-lemon/lemon.c
 7142298f013b536c7536e16353d5b71054e5cabc 2022081506:56:57-UTC ./usr/options/lin/link.opt
 9628a31e4408a9c6200cb491c10b5da5f615171c 2022081409:14:31-UTC ./ccclib/src/fsetlock.cpp
@@ -501,7 +502,6 @@ ce40d05c18f2ffcd651ad3251ca943e25b52f9f7 2021081213:21:00-UTC ./ccclib/src/uic/m
 66465ac3d45feb4b0df26fcac3780cf6e1438872 2021080507:42:35-UTC ./tools/z/zcolor.prg
 02b266deb130e6c6c844c7951e48bda30a67702a 2021080506:52:08-UTC ./terminal/unix-ncurses/x
 289026caaa152ee1b24590a131a1c33e0083c59b 2021080506:32:28-UTC ./terminal/unix-ncurses/m.msys2
-9da921ba2e231a2ee938b741a20075d8abf4c2ae 2021080420:09:02-UTC ./ccclib/src/uic/termapi/termio.cpp
 4d4a2deb0bcdf5e7757c92a770e7ea5c6dda0cb1 2021080416:53:24-UTC ./terminal/unix-ncurses/ccclib/OLVASS
 bbd04495551fe1bd9abb7b49ce5aa11fc2afe6bc 2021073021:35:32-UTC ./setup/setup-windows/copy_from_ppo.msys2
 be99c89feb7f47afeaea522b123df683428a2cf7 2021073007:48:08-UTC ./usr/build/msys2/gtk-win.bld

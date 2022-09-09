@@ -1,3 +1,12 @@
+2022.09.09
+  CCCTERM_CONNECT valtozo ertekenek megadasa URI szintaktikaval
+  CCCTERM_CONNECT=term://termspec      -> socketpar + inditja a terminalt
+  CCCTERM_CONNECT=listen://termspec    -> listen + inditja a terminalt
+  CCCTERM_CONNECT=connect://host:port  -> konnektal host:port-ra
+  CCCTERM_CONNECT=socket://sckdesc     -> orokli a socket descriptort
+  A term:// es listen:// formak a PATH-bol is inditjak a terminalt.
+  A regebbi formak is mukodnek.
+
 2022.09.06 
     ppo2cpp 5.4.2 - oktalis szamok: [0][oO][0-7]+
 

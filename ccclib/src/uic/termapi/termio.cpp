@@ -84,218 +84,310 @@ static void atexit_bye()
     //az ncurses terminal ugyanabban az ablakban fut.
 }
 
+
+
+#ifdef UNIX
+//----------------------------------------------------------------------------
+void cccterm_connect_term(char *constr)  // UNIX socket
+{
+    if( strchr(constr+1,'/')==0 )
+    {
+        constr++; // "/term.exe" -> "term.exe" (PATH-ban keresi)
+    }  
+    //printf("cccterm_connect_term [%s]\n",constr);
+
+    int sv[2]={-1,-1}; 
+    int clntsck;
+    if( 0!=socketpair(AF_LOCAL,SOCK_STREAM,0,sv) )
+    {
+        error("socketpair failed");
+    }
+    clntsck=sv[0];
+    termsck=sv[1];
+
+    char buf[16];
+    const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
+    argv[0]=constr;
+    argv[1]="--socket";
+    argv[2]=buf;sprintf(buf,"%d",clntsck);
+    argv[3]=0;
+
+    if( fork()==0 )
+    {
+        socket_close(termsck);
+        execvp(argv[0],(char*const*)argv);
+        //csak ha execv sikertelen
+        fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
+        error("execv failed");
+    }
+    socket_close(clntsck);
+    atexit(atexit_bye);
+}
+
+#else
+//----------------------------------------------------------------------------
+void cccterm_connect_term(char *constr) // TCP socket
+{
+    if( strchr(constr+1,':')!=0  )
+    {
+        if( constr[0]=='/' )
+        {
+            constr++; // "/c:\path\term.exe" -> "c:\path\term.exe"
+        }
+    }
+    else if( strchr(constr+1,'/')!=0 )
+    {
+        // abs path
+    }  
+    else if( strchr(constr+1,'\\')!=0 )
+    {
+        // abs path (windows)
+    }
+    else
+    {
+        constr++; // PATH-ban keresi
+    }  
+    //printf("cccterm_connect_term [[%s]]\n",constr); fflush(0);
+
+    int s=socket_new();
+    int p, p1=55500, p2=55700;
+    //socket_setoption(s,SOCKOPT_REUSEADDR,0);
+    for( p=p1; (p<=p2) && (0!=socket_bind(s,"127.0.0.1",p)); p++ )
+    {
+        //printf("port %d %d\n",p,socket_error());fflush(0);
+    }
+    if( p>p2 )
+    {
+        error("bind failed");
+    }
+    //printf("port %d\n",p);fflush(0);
+    if( 0!=socket_listen(s) )
+    {
+        error("listen failed");
+    }
+    int clntsck=client_socket("127.0.0.1",p);
+    if( clntsck<0 )
+    {
+        error("connect failed");
+    }
+    if( socket_noinherit(s)<0 )
+    {
+        error("noinherit failed");
+    }
+
+    char buf[16];
+    const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
+    argv[0]=constr;
+    argv[1]="--socket";
+    argv[2]=buf;sprintf(buf,"%d",clntsck);
+    argv[3]=0;
+
+    #ifdef WINDOWS        
+        spawnvp(P_NOWAIT,argv[0],(char*const*)argv);
+        //Windowsban nincs jo hely lezarni s-t.
+    #else
+        if( fork()==0 )
+        {
+            socket_close(s);
+            execvp(argv[0],(char*const*)argv);
+            //csak ha execv sikertelen
+            fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
+            error("execv failed");
+        }
+    #endif        
+    
+    termsck=socket_accept(s);
+    socket_close(s);
+    socket_close(clntsck);
+    if( termsck<0 )
+    {
+        error("accept failed");
+    }
+    atexit(atexit_bye);
+    
+    //extern int remoteio_enabled;
+    //remoteio_enabled=0;
+
+    //Amikor a terminal lokalis (raadasul a CCC program gyereke),
+    //akkor jobb, ha nincs remote io. Nincs is ertelme, de foleg azert,
+    //mert nehezitene a hibakezelest. Pl., ha a CCC program SIGINT-et kap,
+    //azt azonnal megkapja a terminal (gyerek) is. Ilyenkor a program
+    //a mar kilepett terminalnak probalja kuldeni a hibauzenetet,
+    //amibol ujabb signal keletkezik (hiba a hibakezelesben).
+}
+#endif
+
+//----------------------------------------------------------------------------
+void cccterm_connect_listen(char *constr)
+{
+    if( strchr(constr+1,':')!=0  )
+    {
+        constr++; // "/c:\path\term.exe" -> "c:\path\term.exe"
+    }
+    else if( strchr(constr+1,'/')!=0 )
+    {
+        // abs path
+    }  
+    else if( strchr(constr+1,'\\')!=0 )
+    {
+        // abs path (windows)
+    }
+    else
+    {
+        constr++; // PATH-ban keresi
+    }  
+    //printf("cccterm_connect_listen [%s]\n",constr); fflush(0);
+
+    char *termspec=constr;
+    int s=socket_new();
+    int p, p1=55500, p2=55700;
+    for( p=p1; (p<=p2) && (0!=socket_bind(s,"127.0.0.1",p)); p++ )
+    {
+        //printf("port %d %d\n",p,socket_error());fflush(0);
+    }
+    if( p>p2 )
+    {
+        error("bind failed");
+    }
+    //printf("port %d\n",p);fflush(0);
+    if( 0!=socket_listen(s) )
+    {
+        error("listen failed");
+    }
+
+    char buf[16];
+    const char *argv[4];
+    argv[0]=termspec;
+    argv[1]="127.0.0.1";
+    argv[2]=buf;sprintf(buf,"%d",p);
+    argv[3]=0;
+
+    #ifdef WINDOWS        
+        spawnvp(P_NOWAIT,argv[0],(char*const*)argv);
+        //Windowsban nincs jo hely lezarni s-t.
+    #else
+        if( fork()==0 )
+        {
+            socket_close(s);
+            execvp(argv[0],(char*const*)argv);
+            //csak ha execv sikertelen
+            fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
+            error("execv failed");
+        }
+    #endif        
+    
+    termsck=socket_accept(s);
+    socket_close(s);
+    if( termsck<0 )
+    {
+        error("accept failed");
+    }
+    atexit(atexit_bye);
+}
+
+
+//----------------------------------------------------------------------------
+void cccterm_connect_connect(char *constr)
+{
+    //printf("cccterm_connect_connect [%s]\n",constr);
+
+    char host[256];
+    int port=0;
+    char *colon=strchr(constr,':');
+
+    if( colon==0 )
+    {
+        strcpy(host,"127.0.0.1");
+        sscanf(constr,"%d",&port);
+    }
+    else if( colon==constr )
+    {
+        strcpy(host,"127.0.0.1");
+        sscanf(constr+1,"%d",&port);
+    }
+    else
+    {
+        *colon=(char)0;
+        strcpy(host,constr);
+        *colon=':';
+        sscanf(colon+1,"%d",&port);
+    }
+    
+    if( strcmp(host,"SOCKET")==0 )
+    {
+        termsck=port;
+        sleep(60); //parent frissitesi ciklusa
+        //printf("inherit:%d\n",termsck);
+    }
+    else
+    {
+        termsck=client_socket(host,port);
+        //printf("connect:%s/%d(%d)\n",host,port,termsck); fflush(0);
+    }
+}
+
+//----------------------------------------------------------------------------
+void cccterm_connect_socket(char *constr)
+{
+    //printf("cccterm_connect_socket [%s]\n",constr);
+
+    termsck=atoi(constr);
+    sleep(60); //parent frissitesi ciklusa
+}
+
 //----------------------------------------------------------------------------
 void connect_to_terminal()
 {
-    //CCCTERM_CONNECT nincs megadva    -> connect 127.0.0.1:55000
-    //CCCTERM_CONNECT letezo termspec  -> automatikusan elinditja
-    //CCCTERM_CONNECT port             -> connect 127.0.0.1:port
-    //CCCTERM_CONNECT :port            -> connect 127.0.0.1:port
-    //CCCTERM_CONNECT host:port        -> connect host:port
-    //CCCTERM_CONNECT SOCKET:sck       -> orokli a socketet
-    //CCCTERM_CONNECT LISTEN:termspec  -> listen + inditja a terminalt, ami konnektal
+    // URI szintaktika
+    // CCCTERM_CONNECT=term://termspec      -> socketpar + inditja a terminalt
+    // CCCTERM_CONNECT=listen://termspec    -> listen + inditja a terminalt
+    // CCCTERM_CONNECT=connect://host:port  -> konnektal host:port-ra
+    // CCCTERM_CONNECT=socket://sckdesc     -> orokli a socket descriptort
+
+    // Regebbi formak (comaptibility)
+    // CCCTERM_CONNECT nincs megadva        -> connect 127.0.0.1:55000
+    // CCCTERM_CONNECT letezo termspec      -> automatikusan elinditja
+    // CCCTERM_CONNECT port                 -> connect 127.0.0.1:port
+    // CCCTERM_CONNECT :port                -> connect 127.0.0.1:port
+    // CCCTERM_CONNECT host:port            -> connect host:port
+    // CCCTERM_CONNECT SOCKET:sck           -> orokli a socketet
 
     char *constr=getenv("CCCTERM_CONNECT");
+    //printf("CCCTERM_CONNECT=%s\n",constr); fflush(0);
     struct stat buf;
 
     if( constr==0 ) //nincs megadva
     {
         termsck=client_socket("127.0.0.1",55000);
-        //printf("default:127.0.0.1/55000\n");
     }
-
-#ifdef UNIX
-    else if( 0==stat(constr,&buf) ) //letezo termspec (UNIX socket)
+    else if( constr==strstr(constr,"term://") )
     {
-        //printf("UNIX socket\n");
-        int sv[2]={-1,-1}; 
-        int clntsck;
-        if( 0!=socketpair(AF_LOCAL,SOCK_STREAM,0,sv) )
-        {
-            error("socketpair failed");
-        }
-        clntsck=sv[0];
-        termsck=sv[1];
-
-        char buf[16];
-        const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
-        argv[0]=constr;
-        argv[1]="--socket";
-        argv[2]=buf;sprintf(buf,"%d",clntsck);
-        argv[3]=0;
-
-        if( fork()==0 )
-        {
-            socket_close(termsck);
-            execv(argv[0], (char*const*)argv); //kurva anyjukat 
-            //csak ha execv sikertelen
-            fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
-            error("execv failed");
-        }
-        socket_close(clntsck);
-        atexit(atexit_bye);
+        cccterm_connect_term(constr+6);
     }
-#endif
-
-    else if( constr==strstr(constr,"LISTEN") && 0==stat(constr+7,&buf) )
+    else if( constr==strstr(constr,"listen://") )
     {
-        char *termspec=constr+7;
-        // a LISTEN: kettospontja szandekosan ki van hagyva,
-        // mert az MSYS2 az ':'-ot ';'-re transzformal(hat)ja
-        printf("TERMSPEC:%s\n",termspec);
-
-        int s=socket_new();
-        int p, p1=55500, p2=55700;
-        for( p=p1; (p<=p2) && (0!=socket_bind(s,"127.0.0.1",p)); p++ )
-        {
-            //printf("port %d %d\n",p,socket_error());fflush(0);
-        }
-        if( p>p2 )
-        {
-            error("bind failed");
-        }
-        //printf("port %d\n",p);fflush(0);
-        if( 0!=socket_listen(s) )
-        {
-            error("listen failed");
-        }
-
-        char buf[16];
-        const char *argv[4];
-        argv[0]=termspec;
-        argv[1]="127.0.0.1";
-        argv[2]=buf;sprintf(buf,"%d",p);
-        argv[3]=0;
-
-        #ifdef WINDOWS        
-            spawnv(P_NOWAIT,argv[0],(char*const*)argv);
-            //Windowsban nincs jo hely lezarni s-t.
-        #else
-            if( fork()==0 )
-            {
-                socket_close(s);
-                execv(argv[0], (char*const*)argv);
-                //csak ha execv sikertelen
-                fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
-                error("execv failed");
-            }
-        #endif        
-        
-        termsck=socket_accept(s);
-        socket_close(s);
-        if( termsck<0 )
-        {
-            error("accept failed");
-        }
-        atexit(atexit_bye);
+        cccterm_connect_listen(constr+8);
     }
+    else if( constr==strstr(constr,"connect://") )
+    {
+        cccterm_connect_connect(constr+10);
+    }
+    else if( constr==strstr(constr,"socket://") )
+    {
+        cccterm_connect_socket(constr+9);
+    }
+
+    // compatibility 
 
     else if( 0==stat(constr,&buf) ) //letezo termspec
     {
-        int s=socket_new();
-        int p, p1=55500, p2=55700;
-        //socket_setoption(s,SOCKOPT_REUSEADDR,0);
-        for( p=p1; (p<=p2) && (0!=socket_bind(s,"127.0.0.1",p)); p++ )
-        {
-            //printf("port %d %d\n",p,socket_error());fflush(0);
-        }
-        if( p>p2 )
-        {
-            error("bind failed");
-        }
-        //printf("port %d\n",p);fflush(0);
-        if( 0!=socket_listen(s) )
-        {
-            error("listen failed");
-        }
-        int clntsck=client_socket("127.0.0.1",p);
-        if( clntsck<0 )
-        {
-            error("connect failed");
-        }
-        if( socket_noinherit(s)<0 )
-        {
-            error("noinherit failed");
-        }
-
-        char buf[16];
-        const char *argv[4]; //hogy lehet elkerulni a cast-ot (exec-nel)?
-        argv[0]=constr;
-        argv[1]="--socket";
-        argv[2]=buf;sprintf(buf,"%d",clntsck);
-        argv[3]=0;
-
-        #ifdef WINDOWS        
-            spawnv(P_NOWAIT,argv[0],(char*const*)argv);
-            //Windowsban nincs jo hely lezarni s-t.
-
-        #else
-            if( fork()==0 )
-            {
-                socket_close(s);
-                execv(argv[0], (char*const*)argv); //kurva anyjukat 
-                //csak ha execv sikertelen
-                fprintf(stderr,"%s %s %s\n",argv[0],argv[1],argv[2]);
-                error("execv failed");
-            }
-        #endif        
-        
-        termsck=socket_accept(s);
-        socket_close(s);
-        socket_close(clntsck);
-        if( termsck<0 )
-        {
-            error("accept failed");
-        }
-        atexit(atexit_bye);
-        
-        //extern int remoteio_enabled;
-        //remoteio_enabled=0;
-
-        //Amikor a terminal lokalis (raadasul a CCC program gyereke),
-        //akkor jobb, ha nincs remote io. Nincs is ertelme, de foleg azert,
-        //mert nehezitene a hibakezelest. Pl., ha a CCC program SIGINT-et kap,
-        //azt azonnal megkapja a terminal (gyerek) is. Ilyenkor a program
-        //a mar kilepett terminalnak probalja kuldeni a hibauzenetet,
-        //amibol ujabb signal keletkezik (hiba a hibakezelesben).
+        cccterm_connect_term(constr);
     }
-
     else
     {
-        char host[256];
-        int port=0;
-        char *colon=strchr(constr,':');
-
-        if( colon==0 )
-        {
-            strcpy(host,"127.0.0.1");
-            sscanf(constr,"%d",&port);
-        }
-        else if( colon==constr )
-        {
-            strcpy(host,"127.0.0.1");
-            sscanf(constr+1,"%d",&port);
-        }
-        else
-        {
-            *colon=(char)0;
-            strcpy(host,constr);
-            *colon=':';
-            sscanf(colon+1,"%d",&port);
-        }
-        
-        if( strcmp(host,"SOCKET")==0 )
-        {
-            termsck=port;
-            sleep(60); //parent frissitesi ciklusa
-            //printf("inherit:%d\n",termsck);
-        }
-        else
-        {
-            termsck=client_socket(host,port);
-            //printf("connect:%s/%d(%d)\n",host,port,termsck);
-        }
+        cccterm_connect_connect(constr);
     }
+
 
     if( termsck<0 )
     {

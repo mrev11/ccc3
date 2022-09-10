@@ -89,6 +89,7 @@ extern int  keycode_gtk(int,int);
 extern int  color_palette(int);
 extern int  colorext_palette(int);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
+extern char *termicon();
 
 
 #ifndef GDK_KEY_Delete
@@ -733,7 +734,7 @@ int main(int argc, char *argv[])
     gtk_widget_modify_font(view,pangofont());
 
     char *iconfile;
-    if( (iconfile=getenv("CCCTERM_ICONFILE"))!=0  )
+    if( (iconfile=termicon())!=0  )
     {
         gtk_window_set_icon_from_file(GTK_WINDOW(gtkwindow),iconfile,NULL);
     }

@@ -26,7 +26,9 @@
 //---------------------------------------------------------------------------------------
 void set_terminal_iconfile(Display *display, Window window)
 {
-    char *iconfile=getenv("CCCTERM_ICONFILE"); //xpm
+    //char *iconfile=getenv("CCCTERM_ICONFILE"); //xpm
+    extern char *termicon();
+    char *iconfile=termicon();
     
     if( iconfile==0 || *iconfile==0  )
     {

@@ -1,0 +1,5 @@
+#!/bin/bash
+tdc2tabobj.exe _cassa.tdc
+
+bapp_unix_.b  -d. -d.. -bccc${CCCVER}_btbtx
+

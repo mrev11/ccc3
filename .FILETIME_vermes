@@ -1,6 +1,9 @@
-0cc0475de1abcf3db4b98338dfde0f186cfa61fd 2022091015:49:04-UTC ./CHANGELOG_vermes
-43a411657896436735dfa48ef51c1478f9232fe1 2022091015:05:17-UTC ./jt/jterminal/jterminal.jar
-628f83db544a3b08bc388cd1d264e1db4e65b475 2022091015:05:17-UTC ./log-install
+09bfd223f45520d0d59e9a2b14e4d80d334906bc 2022091210:50:15-UTC ./CHANGELOG_vermes
+914907f5bf30a91d71db1f61fe440698c5dc6423 2022091210:47:22-UTC ./tabobj/tabobjclass/demo/.gitignore
+49dac792a33ea54376eba0e2f901beaa3b499dff 2022091210:42:18-UTC ./tabobj/tabobjclass/demo/m
+f2a8e939765db4f8d4ecae5c9718abf978cc1618 2022091210:40:17-UTC ./tabobj/tabobjclass/tdc2tabobj/m
+f88bd85bb8c971500ba4df6f4eef82c6c7ac3664 2022091108:21:10-UTC ./jt/jterminal/jterminal.jar
+9b7a58b06ef18a578c86d98c32ca174e8cc20b74 2022091108:21:10-UTC ./log-install
 fa30fcbfb9dfbd5a486831125e00591475066d32 2022091015:04:12-UTC ./usr/bin/linux/terminal-gtk3
 aef63f53e96454577272150223ab2f5297790085 2022091015:04:10-UTC ./usr/bin/linux/terminal-gtk
 c33b2d73741ff76cb627b6cff548440edb0aa9d0 2022091015:04:08-UTC ./usr/bin/linux/ncterm
@@ -25,6 +28,10 @@ d11eaf60015cd4aba08ecf666aff81d553235689 2022090607:20:40-UTC ./usr/bin/linux/bu
 9f9540f88636b5e7461b06301110306f8919a4b3 2022090607:08:21-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 cd55719ea4fe835711228107bb68b4975e7f35c8 2022090607:03:28-UTC ./ccctools/ppo2cpp/codegen.cpp
 d59ecfd26abb5d86bf980c6d496d7d5361737c05 2022090607:00:43-UTC ./ccctools/ppo2cpp/lexer.lex
+0614531287b70734271e39207ecdf161ee66bc78 2022090212:05:04-UTC ./tabobj/tabobjclass/tabobj.prg
+adc07f4cb531955cd37cda6fb82345856bcb3d41 2022090207:27:59-UTC ./tabobj/tabobjclass/demo/demo.prg
+8d6519ef3e58c7570bbe355bbd8e6539f1e68c27 2022090207:20:44-UTC ./tabobj/tabobjclass/demo/_cassa.tdc
+2e7f5fcb4322d06964fdb4064e9c6b72bbe32caa 2022090121:40:39-UTC ./tabobj/tabobjclass/tdc2tabobj/tdc2tabobj.prg
 d0c963a575b029352fa590f33ef45ef4d821f675 2022090115:03:24-UTC ./ccclib/src/class.prg
 5e7a9a18708a35e6c4ebbca1040fffe4dfbb312a 2022090109:45:19-UTC ./ccclib/src/array.cpp
 3c93ec8753a8505923941c400d11fdcb2c11bb68 2022083021:10:36-UTC ./tutor/control/OLVASS

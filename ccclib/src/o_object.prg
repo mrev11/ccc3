@@ -19,9 +19,9 @@
  */
 
 //2004.08.23
-//A külső static változók inicializálása szinkronizált.
-//Ezért clid_object külső definíciója biztosítja, hogy többszálú
-//programokban se inicializálódjon az osztály többszörösen.
+//A kulso static valtozok inicializalasa szinkronizalt.
+//Ezert clid_object kulso definicioja biztositja, hogy tobbszalu
+//programokban se inicializalodjon az osztaly tobbszorosen.
 
 
 static clid_object:=objectRegister()
@@ -32,7 +32,7 @@ function objectClass()
 
 ****************************************************************************
 static function objectRegister() 
-local clid:=classRegister("object",NIL) //osztálynév, {baseid}
+local clid:=classRegister("object",NIL) //osztalynev, {baseid}
 
     classMethod(clid,"initialize"   ,{|this|objectIni(this)})
     classMethod(clid,"classname"    ,{|this|className(getclassid(this))})
@@ -53,7 +53,7 @@ local clid:=classRegister("object",NIL) //osztálynév, {baseid}
 
 
 ****************************************************************************
-//objectNew() primitív
+//objectNew() primitiv
 
 
 ****************************************************************************
@@ -97,32 +97,21 @@ local is:=this:struct,i
 ****************************************************************************
 static function ancestors(this) //:ancestors
 
-local clid:=getclassid(this)
-local is:=classInheritStruct(clid),n
-local a:={},i,van
-    
-    for n:=1 to len(is)
-    
-        van:=.f.
-        
-        for i:=1 to len(a)
-            if( is[n][3]==a[i] )
-                van:=.t.
-                exit
+local a:={getclassid(this)}
+local n:=0,base,i
+
+    while( ++n<=len(a) )
+        base:=classBaseID( a[n] )
+        for i:=1 to len(base)
+            if( 0==ascan(a,base[i])  )
+                aadd(a,base[i])
             end
         next
-        
-        if( !van ) 
-            aadd( a, is[n][3] )
-        end
+    end
+    a::asort
+    for n:=1 to len(a)
+        a[n]:=className(a[n])
     next
-    
-    asort(a)
-    
-    for i:=1 to len(a)
-        a[i]:=className(a[i])
-    next
-
     return a
 
 
@@ -151,7 +140,7 @@ local baseid,n
 ****************************************************************************
 static function evalmethod(this,methname,args)
 
-// név szerinti metódushívás
+// nev szerinti metodushivas
 // o:evalmethod("methname",{a,b,c}) <-> o:methname(a,b,c)
 
 local ret

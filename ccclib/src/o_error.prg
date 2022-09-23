@@ -26,7 +26,7 @@ function errorClass()
 
 ****************************************************************************
 static function errorRegister() 
-local clid:=classRegister("error",objectClass()) //osztálynév,parentID
+local clid:=classRegister("error",objectClass()) //osztalynev,parentID
 
     classMethod(clid,"initialize",{|this|errorIni(this)})
     classAttrib(clid,"args")
@@ -56,11 +56,11 @@ local clid:=errorClass()
 ****************************************************************************
 function errorIni(this) 
 
-    //példa arra, 
-    //hogyan lehet inicializálni a baseclass-okat,
-    //a konkrét esetben erre nincs szükség,
-    //ha azonban később az objectClass-ba valami 
-    //inicializálandó dolog kerül, akkor igen
+    //pelda arra, 
+    //hogyan lehet inicializalni a baseclass-okat,
+    //a konkret esetben erre nincs szukseg,
+    //ha azonban kesobb az objectClass-ba valami 
+    //inicializalando dolog kerul, akkor igen
 
     objectIni(this)
 

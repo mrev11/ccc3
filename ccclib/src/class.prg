@@ -18,10 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//Ebbe a modulba kell tenni azokat a függvényeket,
-//amiknek közvetlenül aclass-on kell dolgozni.
-//Egyik függvénynek sem lehet olyan visszatérési értéke,
-//amin keresztül aclass véletlenül módosítható.
+//Ebbe a modulba kell tenni azokat a fuggvenyeket,
+//amiknek kozvetlenul aclass-on kell dolgozni.
+//Egyik fuggvenynek sem lehet olyan visszateresi erteke,
+//amin keresztul aclass veletlenul modosithato.
 
 static aclass:={}
 
@@ -31,22 +31,22 @@ static mutex:=thread_mutex_init()
 //#define MUTEX_LOCK      thread_mutex_lock(mutex)
 //#define MUTEX_UNLOCK    thread_mutex_unlock(mutex)
 
-//Az aclass array-hez való hozzáférést mutex szinkronizálja.
-//Ha azonban szignál jön a MUTEX_LOCK és MUTEX_UNLOCK között,
-//és a szignál kezelő maga is lockolni akarja a mutexet, akkor 
-//deadlock keletkezhet. Ezt akadályozza meg signal_lock(),
-//ami a kurrens szálat védi a szignáloktól. 
+//Az aclass array-hez valo hozzaferest mutex szinkronizalja.
+//Ha azonban szignal jon a MUTEX_LOCK es MUTEX_UNLOCK kozott,
+//es a szignal kezelo maga is lockolni akarja a mutexet, akkor 
+//deadlock keletkezhet. Ezt akadalyozza meg signal_lock(),
+//ami a kurrens szalat vedi a szignaloktol. 
 
-#define  CLASS_NAME      1    //osztálynév
-#define  CLASS_BASEID    2    //baseclass azonosító array
-#define  CLASS_ATTRCNT   3    //attribútumok száma (objektumok hossza)
-#define  CLASS_SLOTCNT   4    //attribútumok+metódusok száma
-#define  CLASS_HASHTAB   5    //hash tábla
+#define  CLASS_NAME      1    //osztalynev
+#define  CLASS_BASEID    2    //baseclass azonosito array
+#define  CLASS_ATTRCNT   3    //attributumok szama (objektumok hossza)
+#define  CLASS_SLOTCNT   4    //attributumok+metodusok szama
+#define  CLASS_HASHTAB   5    //hash tabla
 
-//Ha a hash tábla MAXFILL-nél jobban megtelik,
-//akkor a méretét INCREMENT szerint növeljük.
-//A 0.66 és 2 szorzókkal az átméretezett táblák 
-//kitöltöttsége 1/3 és 2/3 között lesz.
+//Ha a hash tabla MAXFILL-nel jobban megtelik,
+//akkor a meretet INCREMENT szerint noveljuk.
+//A 0.66 es 2 szorzokkal az atmeretezett tablak 
+//kitoltottsege 1/3 es 2/3 kozott lesz.
 
 #define  HASHTAB_INITSIZE        64
 #define  HASHTAB_INCREMENT(x)    len(x)*2
@@ -64,8 +64,8 @@ local hash1:=array(len),n,x
     next
     return hash1
 
-// A hash tábla egy array: {item1,item2,...},
-// ahol item==NIL, vagy item=={key,...} alakú.
+// A hash tabla egy array: {item1,item2,...},
+// ahol item==NIL, vagy item=={key,...} alaku.
 
 ******************************************************************************
 static function hash_index(hash,key,hcode)
@@ -85,15 +85,15 @@ local hidx:=if(hcode==NIL,hashcode(key),hcode)%hlen
     return NIL
 
 
-// Keresés a hash táblában:
+// Kereses a hash tablaban:
 //    
-// A ciklus véget ér, ui. a tábla hosszabb, 
-// mint ahány nem NIL elem van benne.    
+// A ciklus veget er, ui. a tabla hosszabb, 
+// mint ahany nem NIL elem van benne.    
 //
-// visszatérés: hashidx
+// visszateres: hashidx
 //
-// Ha hash[hasidx]==NIL, akkor a keresett elem nincs a táblában,
-//                       és éppen a hashidx helyre kell/lehet betenni.
+// Ha hash[hasidx]==NIL, akkor a keresett elem nincs a tablaban,
+//                       es eppen a hashidx helyre kell/lehet betenni.
 //
 // Ha hash[hasidx]!=NIL, akkor az a keresett elem.
 
@@ -130,9 +130,9 @@ function classRegister(clname,clbaseid)
 
 // clbaseid lehet
 //
-// NIL   : nincs felmenő osztály (gyökér)
-// szám  : baseclass (egyszeres öröklődés)
-// array : baseclass-ok listája (többszörös örölődés)
+// NIL   : nincs felmeno osztaly (gyoker)
+// szam  : baseclass (egyszeres oroklodes)
+// array : baseclass-ok listaja (tobbszoros orolodes)
 
 local aid,i,s
 local hash:=array(HASHTAB_INITSIZE),bhash
@@ -150,13 +150,13 @@ local clid
     end
 
     if( !empty(aid) )
-        // i=1 első baseclass
-        // az első baseclass átvételekor
-        // megőrizzük az attributumok sorrendjét
+        // i=1 elso baseclass
+        // az elso baseclass atvetelekor
+        // megorizzuk az attributumok sorrendjet
 
         bhash:=getclsdef(aid[1])[CLASS_HASHTAB]
 
-        for s:=1 to len(bhash) //végigmegy a baseclass slotjain
+        for s:=1 to len(bhash) //vegigmegy a baseclass slotjain
             if( bhash[s]!=NIL )
                 name:=bhash[s][1]
                 value:=bhash[s][2] 
@@ -175,11 +175,11 @@ local clid
         next
     end
 
-    for i:=2 to len(aid) //végigmegy a további baseclass-okon
+    for i:=2 to len(aid) //vegigmegy a tovabbi baseclass-okon
     
         bhash:=getclsdef(aid[i])[CLASS_HASHTAB]
         
-        for s:=1 to len(bhash) //végigmegy a baseclass slotjain
+        for s:=1 to len(bhash) //vegigmegy a baseclass slotjain
         
             if( bhash[s]!=NIL )
 
@@ -190,10 +190,10 @@ local clid
                 hashidx:=hash_index(hash,name)
             
                 if( hash[hashidx]==NIL ) 
-                    //nincs még ilyen
+                    //nincs meg ilyen
 
                     if( valtype(value)=="B" )
-                        hash[hashidx]:={name,value,inherit}  //új array!
+                        hash[hashidx]:={name,value,inherit}  //uj array!
                     else
                         hash[hashidx]:={name,++olen,inherit}
                     end
@@ -222,7 +222,7 @@ local lname:=str2bin(lower(name))
 local hash:=clsdef[CLASS_HASHTAB]
 local hashidx:=hash_index(hash,lname)
 
-    if( hash[hashidx]==NIL ) //új attribútum
+    if( hash[hashidx]==NIL ) //uj attributum
 
         hash[hashidx]:={lname,++clsdef[CLASS_ATTRCNT],clid}
 
@@ -230,9 +230,9 @@ local hashidx:=hash_index(hash,lname)
             clsdef[CLASS_HASHTAB]:=hash_rebuild(hash,HASHTAB_INCREMENT(hash))
         end
 
-    else //felüldefiniálás
+    else //feluldefinialas
  
-        //method -> attrib : kódblokk helyére index, ++hossz
+        //method -> attrib : kodblokk helyere index, ++hossz
         //attrib -> attrib : OK
 
         if( valtype(hash[hashidx][2])=="B" )
@@ -253,7 +253,7 @@ local hash:=clsdef[CLASS_HASHTAB]
 local hashidx:=hash_index(hash,lname)
 local reindex,cnt,n
 
-    if( hash[hashidx]==NIL ) //új method
+    if( hash[hashidx]==NIL ) //uj method
 
         hash[hashidx]:={lname,methblk,clid}
 
@@ -261,10 +261,10 @@ local reindex,cnt,n
             clsdef[CLASS_HASHTAB]:=hash_rebuild(hash,HASHTAB_INCREMENT(hash))
         end
 
-    else //felüldefiniálás
+    else //feluldefinialas
  
-        //method -> method : kódblokk csere
-        //attrib -> method : index helyére kódblokk (->reindex)
+        //method -> method : kodblokk csere
+        //attrib -> method : index helyere kodblokk (->reindex)
 
         reindex:=valtype(hash[hashidx][2])=="N"
 
@@ -333,7 +333,7 @@ local meth:=array(classMethodCount(clid)),x:=0
             meth[++x]:=bin2str(hash[n][1])
         end
     next
-    return meth  //hash-beli elhelyezkedés sorrendjében
+    return meth  //hash-beli elhelyezkedes sorrendjeben
 
 
 ******************************************************************************
@@ -344,8 +344,8 @@ local hash:=getclsdef(clid)[CLASS_HASHTAB],n,inherit:={}
             aadd(inherit,{bin2str(hash[n][1]),if(valtype(hash[n][2])=="B","M","A"),hash[n][3]} )
         end
     next
-    //asort(inherit,,,{|x,y|x[1]<y[1]}) //név szerint
-    asort(inherit,,,{|x,y|x[3]<y[3].or.x[3]==y[3].and.x[1]<y[1]}) //clid+név szerint
+    //asort(inherit,,,{|x,y|x[1]<y[1]}) //nev szerint
+    asort(inherit,,,{|x,y|x[3]<y[3].or.x[3]==y[3].and.x[1]<y[1]}) //clid+nev szerint
     return inherit
 
 
@@ -423,7 +423,7 @@ local hash,hashidx,blk,err
     err:operation:=className(clid)+":(super@"+bin2str(classname)+")"+bin2str(slotname)
     break(err)
  
-    return NIL //nem található  
+    return NIL //nem talalhato  
  
 
 ******************************************************************************
@@ -465,12 +465,12 @@ local clid0,clid1,blk,err
  
 
 ******************************************************************************
-function getmethod(clid,name) //nem objektumfüggvény
+function getmethod(clid,name) //nem objektumfuggveny
     return __findslot(clid,str2bin(lower(name)))
 
 
 ******************************************************************************
-// xmethod3 metódusok
+// xmethod3 metodusok
 ******************************************************************************
 static function isderivedfrom(cld,clb)
 local baseid,n

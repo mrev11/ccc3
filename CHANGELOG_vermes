@@ -1,3 +1,7 @@
+2022.09.30 clang 15.0.0 uj warningok elnyomva:
+  Eddig eleg volt '-Wno-unused', most '-Wno-unused-value' kell.
+  VIGYAZZ: MSYS2 rosszul allitja be temp-et es tmp-t, unset kell.
+
 2022.09.23 object:ancestors javitott implementacio;
   class.prg, o_object.prg, o_error.prg ekezetlenitve;
 

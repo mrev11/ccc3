@@ -11,11 +11,13 @@
 -D_LARGEFILE_SOURCE
 -D_REENTRANT
 -DMULTITHREAD
--DGC_NATIVE
 -funsigned-char
 -mms-bitfields
 -Wno-unused
+-Wno-unused-value
 -Wno-trigraphs
 -Wno-empty-body
 -Wno-int-to-pointer-cast
 -Wno-incompatible-ms-struct
+-Wno-unknown-warning-option
+

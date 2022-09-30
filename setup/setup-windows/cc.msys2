@@ -11,10 +11,16 @@ OPT+=" -DWINDOWS"
 OPT+=" -DMULTITHREAD"
 OPT+=" -funsigned-char"
 OPT+=" -mms-bitfields"
+OPT+=" -Wno-unused"
+OPT+=" -Wno-unused-value"
+OPT+=" -Wno-trigraphs"
+OPT+=" -Wno-empty-body"
+OPT+=" -Wno-int-to-pointer-cast"
+OPT+=" -Wno-incompatible-ms-struct"
+OPT+=" -Wno-unknown-warning-option"
 OPT+=" -I ."
 OPT+=" -I ${CCCDIR}/usr/include"
 OPT+=" -I ${CCCDIR}/ccclib/src/include"
-OPT+=" -Wno-incompatible-ms-struct"
 
 
 if [ "$1" == "" ]; then
@@ -26,4 +32,5 @@ else
     echo SETUP: $1
     c++ ${OPT} "$1"
 fi
+
 

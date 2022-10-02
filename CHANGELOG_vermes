@@ -1,3 +1,7 @@
+2022.10.02 
+  mask mozgatas SHIFT-ARROW-val akkor is mukodik,
+  ha push buttonban, alt buttonban vagy get browse-ban van a fokusz;
+
 2022.09.30 clang 15.0.0 uj warningok elnyomva:
   Eddig eleg volt '-Wno-unused', most '-Wno-unused-value' kell.
   VIGYAZZ: MSYS2 rosszul allitja be temp-et es tmp-t, unset kell.

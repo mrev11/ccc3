@@ -238,9 +238,17 @@ local n
     case ( nKey==K_LEFT )
         oGet:curpos:=max(1,oGet:curpos-1)
 
+    case (nKey==K_SH_UP )
+        move(oGet,nkey)
+    case (nKey==K_SH_DOWN )
+        move(oGet,nkey)
+    case (nKey==K_SH_LEFT )
+        move(oGet,nkey)
+    case (nKey==K_SH_RIGHT )
+        move(oGet,nkey)
+
     case ( nKey==32 )
         oGet:choidx:=oGet:curpos
-
 
     otherwise
         for n:=1 to len(oGet:alternatives)
@@ -250,6 +258,14 @@ local n
                 exit
             next
         next 
+    end
+
+
+****************************************************************************************
+static function move(oGet,nKey)
+local msk:=mskActive()
+    if( msk!=NIL .and. 0<ascan(msk[5],oGet) )
+        mskMove(msk,nkey)
     end
 
 

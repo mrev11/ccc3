@@ -94,6 +94,15 @@ local result
                     get:exitState:=GE_WRITE
                     exit
 
+                case (key==K_SH_UP )
+                    move(get,key)
+                case (key==K_SH_DOWN )
+                    move(get,key)
+                case (key==K_SH_LEFT )
+                    move(get,key)
+                case (key==K_SH_RIGHT )
+                    move(get,key)
+
                 elseif(key==K_ENTER)
                     result:=eval(get:execblock,get)
                     if( result::empty  )
@@ -112,5 +121,12 @@ local result
         setcursor(crs)
     end
 
+
+*************************************************************************************
+static function move(oGet,nKey)
+local msk:=mskActive()
+    if( msk!=NIL .and. 0<ascan(msk[5],oGet) )
+        mskMove(msk,nkey)
+    end
 
 *************************************************************************************

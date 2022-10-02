@@ -140,20 +140,23 @@ local b:=oGet
     //elseif( k==K_ENTER )
     //    b:exitState:=GE_ENTER    //esetleg editalas 
 
-    elseif( k==K_SH_UP )
-        b:exitState:=GE_UP
-
     elseif( k==K_CTRL_UP )
         b:exitState:=GE_UP
-
-    elseif( k==K_SH_DOWN )
-        b:exitState:=GE_DOWN
 
     elseif( k==K_CTRL_DOWN )
         b:exitState:=GE_DOWN
 
     elseif( k==K_TAB )
         b:exitState:=GE_DOWN
+
+    case (nKey==K_SH_UP )
+        move(oGet,nkey)
+    case (nKey==K_SH_DOWN )
+        move(oGet,nkey)
+    case (nKey==K_SH_LEFT )
+        move(oGet,nkey)
+    case (nKey==K_SH_RIGHT )
+        move(oGet,nkey)
 
 
     //szokasos navigalas
@@ -190,5 +193,12 @@ local b:=oGet
 
 
 ***********************************************************************************************
+static function move(oGet,nKey)
+local msk:=mskActive()
+    if( msk!=NIL .and. 0<ascan(msk[5],oGet) )
+        mskMove(msk,nkey)
+    end
+
        
+***********************************************************************************************
 

@@ -192,9 +192,11 @@ local cKey
         move(oGet,nkey)
 
     otherwise
-        //if( nKey>=32 .and. nKey<=255 )
+    #ifdef _CCC2_
+        if( nKey>=32 .and. nKey<=255 )
+    #else
         if( nKey>=32 ) //unicode
-          
+    #endif
             cKey:=chr(nKey)
              
             if( oGet:type=="N" .and. (cKey==".".or.cKey==",") )

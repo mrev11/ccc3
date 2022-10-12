@@ -153,6 +153,12 @@ local key,choice,keyexit
         elseif( key==K_RIGHT )
             choice++
 
+        elseif( key==K_SH_LEFT .or.;
+                key==K_SH_RIGHT .or.;
+                key==K_SH_UP .or.;
+                key==K_SH_DOWN )
+            move(key,@savscr,@top,@lef,@bot,@rig)
+
         else
             for n:=1 to len(alt)
             
@@ -220,5 +226,28 @@ local a:={}, x:="", n
     return a
 
 
-*****************************************************************************    
+*****************************************************************************
+static  function  move(key,savscr,top,lef,bot,rig)
+local scr:=savescreen(top,lef,bot,rig)
+    restscreen(top,lef,bot,rig,savscr)
+    if( key==K_SH_LEFT .and. lef>0 )
+        --lef
+        --rig
+    elseif( key==K_SH_RIGHT .and. rig<maxcol() )
+        ++lef
+        ++rig
+    elseif( key==K_SH_UP .and. top>0 )
+        --top
+        --bot
+    elseif( key==K_SH_DOWN .and. bot<maxrow() )
+        ++top
+        ++bot
+    end
+    savscr:=savescreen(top,lef,bot,rig)
+    restscreen(top,lef,bot,rig,scr)
+
+
+*****************************************************************************
+
+
  

@@ -214,6 +214,12 @@ local top,left
        elseif (key==K_SPACE)
           mehet:=.f.
 
+       elseif( key==K_SH_LEFT .or.;
+               key==K_SH_RIGHT .or.;
+               key==K_SH_UP .or.;
+               key==K_SH_DOWN )
+          move(key,@savscr,@top,@left,top+height-1,left+width-1)
+
        elseif( 32<key .and. key<256 )
           if( 0<(n:=at(upper(chr(key)),shortcuts)) )
               choice:=n
@@ -359,5 +365,25 @@ local i,t1,w
       end
    next
 return t
+
+*********************************************************************
+static  function  move(key,savscr,top,lef,bot,rig)
+local scr:=savescreen(top,lef,bot,rig)
+    restscreen(top,lef,bot,rig,savscr)
+    if( key==K_SH_LEFT .and. lef>0 )
+        --lef
+        --rig
+    elseif( key==K_SH_RIGHT .and. rig<maxcol() )
+        ++lef
+        ++rig
+    elseif( key==K_SH_UP .and. top>0 )
+        --top
+        --bot
+    elseif( key==K_SH_DOWN .and. bot<maxrow() )
+        ++top
+        ++bot
+    end
+    savscr:=savescreen(top,lef,bot,rig)
+    restscreen(top,lef,bot,rig,scr)
 
 *********************************************************************

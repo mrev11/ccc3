@@ -1,3 +1,7 @@
+2022.10.17 -- 5.4.3
+   belso static valtozok iniciallizalasa 
+   _ini_ fuggveny helyett egyszer futo if blokkban
+
 2022.09.06 -- 5.4.2
    oktalis szamok: [0][oO][0-7]+
 

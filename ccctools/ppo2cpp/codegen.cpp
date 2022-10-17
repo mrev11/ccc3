@@ -759,6 +759,19 @@ static void statcodeloc(nodetab*t,int x)
     fprintf(code,"\n}");
 }    
 
+
+static void statcodeloc(parsenode *p)
+{
+    nltab();fprintf(code,"static int _ini_%s=1;if(_ini_%s){",rtxt(p,0),rtxt(p,0));
+    tabdepth++;
+    nltab();fprintf(code,"_ini_%s=0;",rtxt(p,0));
+    cgen(p,1);
+    nltab();fprintf(code,"assign(_st_%s.ptr);",rtxt(p,0));
+    nltab();fprintf(code,"pop();");
+    tabdepth--;
+    nltab();fprintf(code,"}");
+}    
+
 //---------------------------------------------------------------------------
 static int labelnext()
 {
@@ -1205,9 +1218,11 @@ int codegen_statdef_SYMBOL_ASSIGN_expr(parsenode *p,void *v)//PROTO
         }
         else
         {
-            fundecl_locstatini(funcname,sym->text);
-            nltab();fprintf(code,"static stvarloc _st_%s(_ini_%s_%s,base);",sym->text,funcname,sym->text);
-            nodetab_inistat->add(p);
+            // fundecl_locstatini(funcname,sym->text);
+            // nltab();fprintf(code,"static stvarloc _st_%s(_ini_%s_%s,base);",sym->text,funcname,sym->text);
+            // nodetab_inistat->add(p);
+            nltab();fprintf(code,"static stvar _st_%s;",sym->text);
+            statcodeloc(p);
         }
     }
 

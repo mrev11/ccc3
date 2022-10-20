@@ -1,3 +1,8 @@
+2022.10.20 ppo2cpp 5.4.4
+   belso static valtozok inicializalasa 
+   _ini_ fuggveny helyett (belso) lambda fuggvennyel
+   (az elozo javitas javitasa);
+
 2022.10.17 ppo2cpp 5.4.3
    belso static valtozok iniciallizalasa 
    _ini_ fuggveny helyett egyszer futo if blokkban

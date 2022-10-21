@@ -3,6 +3,6 @@
 ( cd msk2say && m )
 
 bapp_unixc.b  -xmask -xpage  @parfile.bld
-bapp_unix_.b  -xmsk2pge -xpge2wro  @parfile.bld
+bapp_unix_.b  -xmsk2pge -xpge2wro -xpge2out  @parfile.bld
 
 

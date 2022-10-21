@@ -1,8 +1,12 @@
+6e547e52aaf17a75e3e203fb30b8682fa80386c2 2022102115:37:42-UTC ./CHANGELOG_vermes
+ea591d426736c752197aa4edddb0f68e7872ebe5 2022102113:44:31-UTC ./usr/build/windows/pge2out.bat
+89c3476fcd08b7f643a189e5dc59f9cab593d94a 2022102113:43:20-UTC ./usr/build/netbsd/pge2out.bat
+8f4c424c38914cd7fc119042a985ed7090f7b796 2022102113:39:19-UTC ./tools/mask/pge2out.prg
+783bb1d8d2ffa755aa2d913cffc29427183446b9 2022102113:04:07-UTC ./tools/mask/m
 a258b982ab659d77c01e772a7ffe643eab6d75d6 2022102110:47:33-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 a30892b190403c6f05df7560e806e2613ffc7a12 2022102110:45:10-UTC ./jt/jterminal/jterminal.jar
 6d959f87d64e07813f138449dcf1697d8bb37ba0 2022102110:45:10-UTC ./log-install
 36cfc3df0f3670453bebd64291f8f2e522039491 2022102110:43:42-UTC ./usr/bin/linux/ppo2cpp
-87e697c57d4a227c0e2bdf8264e1d4aba157ddea 2022102110:42:16-UTC ./CHANGELOG_vermes
 c4f4a9b5b933aafe10bdd99b07aa7f67af3afa4c 2022102110:38:41-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 d1831337c75fc9bae3f7997d85375fe168cf18fa 2022102109:39:28-UTC ./usr/bin/linux/oggedit
 2330b5faca5efe6fd03dba031cd3df884458315d 2022102109:39:28-UTC ./usr/bin/linux/oggplay
@@ -243,7 +247,6 @@ ca95e957edd6509b6c3988a3db0c73d8d19f6c5a 2022063008:49:34-UTC ./tools/z/z.ver
 f97e0f32c8d798f4106b26309dec9a9deb6b9dfb 2022060521:45:30-UTC ./usr/include/msgout.ch
 1f3bb56597e4a909343e1883cd4a552940c74fc7 2022050518:31:13-UTC ./ccclib/src/cccver.cpp
 0f41f6496966aa600a196c4673a092d342878f3f 2022043014:13:40-UTC ./terminal/terminal-test/xstart.par
-22c58e83e39066f9b1819c6127fc4d59130a4713 2022042922:17:47-UTC ./tools/mask/m
 6a915bde4b72ae6e1737136273523d2a00fd3537 2022042922:17:19-UTC ./tools/webapp/common/m
 a6153726990e648567ffc405e883bdcdbc34d425 2022042922:15:16-UTC ./tools/socket/m
 78d4cfab3d4a3d1d5bd16487f8c965e3b0b9ea3e 2022042922:14:45-UTC ./gtk/code_byhand/m
@@ -655,7 +658,6 @@ df1a6c4d1a18361dd4cef5e46fc61a478fd5e2aa 2021032509:09:24-UTC ./terminal/unix/te
 30c981840d2472140cd75950d92d96166a401aca 2021022210:20:15-UTC ./tools/textview/ver3/zsearch.say
 62769f3da167f11cbd8b446466ed12377f695204 2021022210:19:56-UTC ./tabobj/utility.src/ver3/kdirseek.say
 ff95bfac30ae8d4c83c3b4fafc080798b18fec5c 2021022210:19:56-UTC ./tabobj/utility.src/ver3/recpos.say
-992c675b6e405e7fecd798b9f1b59cc3bd44ff12 2021022210:19:48-UTC ./tools/mask/maskdemo.say
 06ad1eecc76bec57aee052db79e438274dca4cb3 2021022210:02:44-UTC ./tools/mask/msk2pge.prg
 296f8400cb28cbdfff0254ff4cb02df3a9c44bf6 2021022210:01:43-UTC ./tools/mask/test/m
 a42c2d3153dc16ab9c9245497ae266b92079ef64 2021022209:53:54-UTC ./tools/mask/test/proba.msk
@@ -3746,7 +3748,6 @@ ee15e0f80ec9846ba431f506ec8a4b9cfd35ea29 2001092508:47:26-UTC ./tools/xmlrpc-fra
 3720bf136d2c882fce6583684cc33f7ef1c43510 2001070608:41:30-UTC ./usr/build/netbsd/msk2wro.bat
 f64f8c7137632f8275be7a7ab6a27a8e52ecb20d 2001070304:19:42-UTC ./usr/build/netbsd/pge2wro.bat
 77f35fb2d728d8aa89aa98079514cd4ffa5484e6 2001070217:12:44-UTC ./tools/xmlrpc-framework/rpcutil/xdel.prg
-a2ddf58fd006460371998ba73023994bbb53e6ed 2001070204:40:54-UTC ./usr/build/netbsd/pge2out.bat
 a507e606b8ebd7543546903889969180883841f3 2001061607:35:02-UTC ./tools/xmlrpc/demo-rpc/client.php
 d1a3ab814981842ab12857d7742ae18bb8290573 2001032216:22:24-UTC ./ccctools/prg2ppo/test/prg2ppo.opt
 94ccdd74f2e733e48554734e7e33e053fba597a5 2001032210:36:46-UTC ./ccctools/prg2ppo/dbundef.prg
@@ -3762,7 +3763,6 @@ e652a6399a4d985e44f67ebc345b9be68243c16b 2000042409:06:56-UTC ./tutor/control/ra
 7df366a50461886596242a9fe05baf4594a70fea 2000020802:09:50-UTC ./terminal/terminal-test/screenwr/w.prg
 b1e5d651dfd970d538e3b661c9622b1b522d1a99 2000011320:59:52-UTC ./usr/build/windows/pge2wro.bat
 7208a1139026b744e587093392403d90e922bf06 2000011320:59:44-UTC ./usr/build/windows/msk2wro.bat
-f096ce0cbd06f37dd1cb1e28b6d822b6039bb28a 2000011320:59:36-UTC ./usr/build/windows/pge2out.bat
 4ef0be2bb16016cae9e182249f602e2f09ce77eb 2000011211:38:42-UTC ./usr/include/achoice.ch
 c90a14782475b87aa861a19855ff5b6efb3fe704 2000011211:38:42-UTC ./usr/include/assert.ch
 93022243d5b1b973b947ea6610be89b520384a6b 2000011211:38:42-UTC ./usr/include/color.ch

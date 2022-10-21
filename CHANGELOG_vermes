@@ -1,3 +1,9 @@
+2022.10.21 hianyzo pge2out potolva;
+  A kodgeneralas eddig a page.exe-vel tortent, de a page.exe 
+  tartalmazza az editalasat is, es ezert terminal nelkuli 
+  kornyezetben nem lehetett kodot generalni, azaz nem futott
+  le a build script.
+
 2022.10.21 ppo2cpp 5.5.0
   kulso static valtozok inicializalasa lambda fuggvennyel;
 

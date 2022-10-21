@@ -718,48 +718,6 @@ static void blkcode(nodetab *t,int x)
 }
 
 //---------------------------------------------------------------------------
-static void statcode(nodetab*t,int x)
-{
-    //2004.10.26: push_call() hívás az inicializáló függvényben
-
-    parsenode *p=(parsenode*)t->get(x);
-    fprintf(code,"\n\nstatic void _ini_%s_%s()\n{",funcname,rtxt(p,0));
-
-    //char ns[BUFSIZE]="";
-    //if(current_namespace){strcat(ns,current_namespace);strcat(ns,".");}
-    //if(inner_namespace){strcat(ns,inner_namespace);strcat(ns,".");}
-    //fprintf(code,"\npush_call(\"%s_ini_%s_%s\",stack);\n//",ns,funcname,rtxt(p,0));
-
-    tabdepth=1;
-    cgen(p,1);
-    tabdepth=0;
-
-    //fprintf(code,"\n//\npop_call();");
-    fprintf(code,"\n}");
-}    
-
-//---------------------------------------------------------------------------
-static void statcodeloc(nodetab*t,int x)
-{
-    //2004.10.26: push_call() hívás az inicializáló függvényben
-
-    parsenode *p=(parsenode*)t->get(x);
-    fprintf(code,"\n\nstatic void _ini_%s_%s(VALUE* base)\n{",funcname,rtxt(p,0));
-
-    //char ns[BUFSIZE]="";
-    //if(current_namespace){strcat(ns,current_namespace);strcat(ns,".");}
-    //if(inner_namespace){strcat(ns,inner_namespace);strcat(ns,".");}
-    //fprintf(code,"\npush_call(\"%s_ini_%s_%s\",base);\n//",ns,funcname,rtxt(p,0));
-
-    tabdepth=1;
-    cgen(p,1);
-    tabdepth=0;
-
-    //fprintf(code,"\n//\npop_call();");
-    fprintf(code,"\n}");
-}    
-
-//---------------------------------------------------------------------------
 static int labelnext()
 {
     static int lab=0;
@@ -955,10 +913,6 @@ int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void
     cgen(p,4); // clang
 
     int i;
-    for(i=0; i<nodetab_inistat->top; i++)
-    {
-        statcode(nodetab_inistat,i);
-    }
     for(i=0; i<nodetab_block->top; i++)
     {
         blkcode(nodetab_block,i);
@@ -966,7 +920,6 @@ int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void
 
     fprintf(code,"%s",fsep);
 
-    nodetab_inistat->clean();  //a headerben definiált static változók inicializátorai
     nodetab_block->clean();    //a headerben definiált codeblockok
 
     return 0;
@@ -1154,14 +1107,12 @@ int codegen_statdef_SYMBOL_ASSIGN_expr(parsenode *p,void *v)//PROTO
     parsenode *expr1=expr->right[0];
     
     //a CCC szinten külső változót C szinten belsővé tesszük
+    //(burkoló függvény eleje)
     if( sym->cargo & SYM_GLOBSTAT )
     {
-        nltab();fprintf(code,"MUTEX_CREATE(_mutex_%s);",sym->text);
         nltab();fprintf(code,"static VALUE* _st_%s_ptr()",sym->text);
         nltab();fprintf(code,"{");
         tabdepth++;
-        nltab();fprintf(code,"SIGNAL_LOCK();");
-        nltab();fprintf(code,"MUTEX_LOCK(_mutex_%s);",sym->text);
     }
 
     if( expr->codegen==codegen_expr_NIL )
@@ -1194,39 +1145,23 @@ int codegen_statdef_SYMBOL_ASSIGN_expr(parsenode *p,void *v)//PROTO
     {
         nltab();fprintf(code,"static stvar _st_%s(&FALSE);",sym->text);
     }
-
     else
     {
-        if( sym->cargo & SYM_GLOBSTAT )
-        {
-            fundecl_statini(funcname,sym->text);
-            nltab();fprintf(code,"static stvar _st_%s(_ini_%s_%s);",sym->text,funcname,sym->text);
-            nodetab_inistat->add(p);
-        }
-        else
-        {
-            //fundecl_locstatini(funcname,sym->text);
-            //nltab();fprintf(code,"static stvarloc _st_%s(_ini_%s_%s,base);",sym->text,funcname,sym->text);
-            //nodetab_inistat->add(p);
-
-            nltab();fprintf(code,"static stvar _st_%s;",sym->text);
-            nltab();fprintf(code,"static int _ini_%s=[=](){",sym->text);
-            tabdepth++;
-            cgen(p,1);
-            nltab();fprintf(code,"assign(_st_%s.ptr);",rtxt(p,0));
-            nltab();fprintf(code,"pop();");
-            nltab();fprintf(code,"return 1;");
-            tabdepth--;
-            nltab();fprintf(code,"}();");
-        }
+        nltab();fprintf(code,"static stvar _st_%s;",sym->text);
+        nltab();fprintf(code,"static int _ini_%s=[=](){",sym->text);
+        tabdepth++;
+        cgen(p,1);
+        nltab();fprintf(code,"assign(_st_%s.ptr);",rtxt(p,0));
+        nltab();fprintf(code,"pop();");
+        nltab();fprintf(code,"return 1;");
+        tabdepth--;
+        nltab();fprintf(code,"}();");
     }
 
-
     //a CCC szinten külső változót C szinten belsővé tesszük
+    //(burkoló függvény vége)
     if( sym->cargo & SYM_GLOBSTAT )
     {
-        nltab();fprintf(code,"MUTEX_UNLOCK(_mutex_%s);",sym->text);
-        nltab();fprintf(code,"SIGNAL_UNLOCK();");
         nltab();fprintf(code,"return _st_%s.ptr;",sym->text);
         tabdepth--;
         nltab();fprintf(code,"}");
@@ -1765,10 +1700,6 @@ int codegen_function_funcid_LPAR_argument_RPAR_newline_body(parsenode *p,void *v
     fprintf(code,"\n//\nstack=base;\npush(&NIL);\npop_call();\n}");
 
     int i;
-    for(i=0; i<nodetab_inistat->top; i++)
-    {
-        statcodeloc(nodetab_inistat,i);
-    }
     for(i=0; i<nodetab_block->top; i++)
     {
         blkcode(nodetab_block,i);
@@ -1791,7 +1722,6 @@ int codegen_function_funcid_LPAR_argument_RPAR_newline_body(parsenode *p,void *v
     fprintf(code,"%s",fsep);
 
     nodetab_locstat->clean();  //a függvényben definiált static változók
-    nodetab_inistat->clean();  //a függvényben definiált static változók inicializátorai
     nodetab_local->clean();    //a függvény argumentumai és local változói
     nodetab_block->clean();    //a függvényben definiált codeblockok
 

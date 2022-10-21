@@ -1,3 +1,6 @@
+2022.10.21 ppo2cpp 5.5.0
+  kulso static valtozok inicializalasa lambda fuggvennyel;
+
 2022.10.20 ppo2cpp 5.4.4
    belso static valtozok inicializalasa 
    _ini_ fuggveny helyett (belso) lambda fuggvennyel

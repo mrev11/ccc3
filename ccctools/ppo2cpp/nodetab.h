@@ -111,7 +111,6 @@ extern nodetab *nodetab_local;
 extern nodetab *nodetab_blkarg;
 extern nodetab *nodetab_blkenv;
 extern nodetab *nodetab_block;
-extern nodetab *nodetab_inistat;
 
 #endif
 

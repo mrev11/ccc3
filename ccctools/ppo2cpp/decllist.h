@@ -24,8 +24,6 @@ extern int   fundecl_using(char *fun, char*nsp);
 extern void  fundecl_clpdef(char *fun,int stflag);
 extern char *fundecl_clpcall(const char *fun);
 extern void  fundecl_codeblock(const char *fun,int cnt);
-extern void  fundecl_statini(const char *fun,const char*var);
-extern void  fundecl_locstatini(const char *fun,const char*var);
 extern void  fundecl_list(void);
 extern void  namespace_begin(char*,FILE*);
 extern void  namespace_end(char*,FILE*);

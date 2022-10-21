@@ -33,7 +33,7 @@ extern void  ParseFree(void*,void(*)(void*));
 extern void  ParseTrace(FILE*,const char*); 
 extern void  Parse(void*,int,parsenode*);  //3th arg: %token_type {parsenode*} 
 
-static const char *version_number="5.4.4";
+static const char *version_number="5.5.0";
 
 ppo2cpp_lexer *lexer;
 
@@ -49,7 +49,6 @@ nodetab *nodetab_blkarg=new nodetab();       //kódblokk argumentumok
 nodetab *nodetab_blkenv=new nodetab();       //kódblokk változók
 nodetab *nodetab_block=new nodetab();        //kódblokkok
 
-nodetab *nodetab_inistat=new nodetab();      //static változók ini függvényei
 
 char *current_namespace=0;
 char *inner_namespace=0;

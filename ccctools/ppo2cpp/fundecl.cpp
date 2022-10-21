@@ -437,39 +437,6 @@ void fundecl_codeblock(const char *fun,int cnt)
     fundecl_insert(buf,0,2);
 }
 
-//--------------------------------------------------------------------------
-void fundecl_statini(const char *fun,const char*var)
-{
-    char buf[BUFSIZE];
-    char nsp[BUFSIZE]="";
-    if( current_namespace )
-    {
-        strcat(nsp,current_namespace);
-        strcat(nsp,".");
-    }
-    sprintf(buf,"%s_ini_%s_%s",nsp,fun,var);
-    fundecl_insert(buf,0,3);
-}
-
-//--------------------------------------------------------------------------
-void fundecl_locstatini(const char *fun,const char*var)
-{
-    char buf[BUFSIZE];
-    char nsp[BUFSIZE]="";
-    if( current_namespace )
-    {
-        strcat(nsp,current_namespace);
-        strcat(nsp,".");
-    }
-    if( inner_namespace )
-    {
-        strcat(nsp,inner_namespace);
-        strcat(nsp,".");
-    }
-    sprintf(buf,"%s_ini_%s_%s",nsp,fun,var);
-    fundecl_insert(buf,0,4);
-}
-
 
 //--------------------------------------------------------------------------
 void namespace_begin(char *ns, FILE *file)

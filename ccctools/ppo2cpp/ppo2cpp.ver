@@ -1,3 +1,26 @@
+2022.10.21 -- 5.5.0
+  kulso static valtozok inicializalasa lambda fuggvennyel;
+  *
+  MEGJEGYZESEK:
+  A kulso static CCC valtozokat C++ szinten belsove tesszuk (regota igy van):
+  burkolo fuggvenybe kerulnek, ami a static valtozo pointeret adja vissza.
+  Ezzel kontrollaljuk a kulso staticok inicializalodasanak sorrendjet,
+  olyan sorrendben inicializalodnak, ahogy a program hivatkozik rajuk.
+  A kulso staticok a burkolo fuggvenyukben belsok, a belso staticok eleve belsok.
+  A lambda fuggvenyek hasznalata lehetove teszi a ket eset egysegesiteset.
+  Mindket esetben az inicializalas (belso) lambda fuggvennyel tortenik.
+  Ez tobb helyen egyszerusitest tesz lehetove:
+   - nincsenek inicializalo fuggvenyek,
+   - nincs szukseg az inicializalo fuggvenyek deklaraciojara,
+   - nincs szukseg az utolag generalando inicializatorok nyilvantartasara,
+   - nincs szukseg ketfele kodgeneralasra a kulso es belso esetben.
+  MEGJEGYZESEK:
+  A C++11 szabvanyban jelentek meg a lambda fuggvenyek.
+  Kihasznaljuk, hogy a C++11 szinkronizalja a staticok inicializatorat.
+  Regen (C++11 elott) ez nem volt igy, lehetett peldaprogramot irni 
+  egyszersem, vagy tobbszor is inicializalodo belso static CCC valtozora.
+  C++11 ota a CCC belso staticok inicializalodasa is szinkronizalt.
+
 2022.10.20 -- 5.4.4
    belso static valtozok inicializalasa 
    _ini_ fuggveny helyett (belso) lambda fuggvennyel

@@ -1,3 +1,7 @@
+2022.10.30 tabobjclass integralva:
+  tabobj.prg berakva a btbtx konyvtarba;
+  tdc2tabobj atkerult tdc2prgch-ba;
+
 2022.10.21 hianyzo pge2out potolva;
   A kodgeneralas eddig a page.exe-vel tortent, de a page.exe 
   tartalmazza az editalasat is, es ezert terminal nelkuli 

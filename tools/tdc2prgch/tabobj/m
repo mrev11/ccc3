@@ -1,0 +1,3 @@
+#!/bin/bash
+tdc2tabobj.exe tdc/*.tdc
+bapp_unix_.b @parfile.bld

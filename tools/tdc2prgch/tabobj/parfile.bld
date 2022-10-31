@@ -1,0 +1,11 @@
+
+-d.
+-dtdc
+ 
+-bccc${CCCVER}_btbtx  
+-bccc${CCCVER}_crypto
+
+-bcrypto
+
+
+#BUILD_SHR=static

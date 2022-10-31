@@ -1,0 +1,8 @@
+#!/bin/bash
+export MSGOUT=/dev/pts/3
+#export TRANCOMMIT=debug
+
+time multith.exe | tee log-multith
+time list0.exe  >log-list0
+time list.exe   >log-list
+time demo.exe   >log-demo

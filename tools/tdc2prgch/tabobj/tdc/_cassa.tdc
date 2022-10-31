@@ -1,0 +1,18 @@
+!table cassa
+
+!index soregyeb cassa SOREGYEB
+!index penztaros cassa PENZTAROS
+!index szamlaszam cassa SZAMLASZAM
+
+!field SOREGYEB     N   8  0
+!field PENZTAROS    C   8  0
+!field SZAMLASZAM   C  24  0
+!field PENZTAR      N   3  0
+!field SORBEFBIZ    N   8  0
+!field SORKIFBIZ    N   8  0
+!field SORKIVENG    N   8  0
+!field STATUS       N   1  0
+!field SZLACSEKKV   C  24  0
+!field SZLACSEKKE   C  24  0
+!field FEDVIZSG     L   1  0
+!field UGYFELAZON   L   1  0

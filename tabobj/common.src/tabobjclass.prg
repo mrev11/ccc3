@@ -58,7 +58,7 @@ class tabobj(object)
     method  CONTROL              {|*|tabCONTROLINDEX (*)}
     method  CONTROLINDEX         {|*|tabCONTROLINDEX (*)}
     method  COPYTO               {|*|tabCOPYTO       (*)}    
-    method  CREATE               {|*|tabCREATE       (*)}    
+    method  CREATE             //{|*|tabCREATE       (*)}   szinkronizalt
     method  DELETE               {|*|tabDELETE       (*)}    
     method  DELETED              {|*|tabDELETED      (*)}    
     method  DESTRUCT             {|*|tabDESTRUCT     (*)}    
@@ -83,7 +83,7 @@ class tabobj(object)
     method  LOCKLIST             {|*|tabLOCKLIST     (*)}    
     method  MAPPEND              {|*|tabMAPPEND      (*)}    
     method  MLOCK                {|*|tabMLOCK        (*)}    
-    method  OPEN               //{|*|tabOPEN         (*)}   specialis
+    method  OPEN               //{|*|tabOPEN         (*)}   szinkronizalt+
     method  PACK                 {|*|tabPACK         (*)}    
     method  PATH                 {|*|tabPATH         (*)}    
     method  PATHNAME             {|*|tabPATHNAME     (*)}    
@@ -106,6 +106,10 @@ class tabobj(object)
   //method  TBROWSE              {|*|tabTBROWSE      (*)}    
   //method  SBROWSE              {|*|tabSBROWSE      (*)}    
   //method  EDITRECORD           {|*|tabEDITRECORD   (*)}    
+
+    method  lock                 {|t|thread_mutex_lock(t:__mutex__)}
+    method  unlock               {|t|thread_mutex_unlock(t:__mutex__)}
+
 
 ******************************************************************************************
 static function tabobj.initialize(this,alias)
@@ -136,29 +140,66 @@ static function tabobj.initialize(this,alias)
 
 
 ******************************************************************************************
-static function tabobj.open(this,*)
-local hash,column,clid,metnam,n,x
-    if( tabOPEN(*) )
-        hash:=simplehashNew()
-        column:=tabColumn(this)
-        for n:=1 to len(column)
-            hash[lower(column[n][1])]:=n
-        next
-        clid:=getclassid(this)
-        metnam:=this:methnames
-        for n:=1 to len(metnam)
-            if( (x:=hash[metnam[n]])!=NIL )
-                classMethod(clid,metnam[n],mkblk(x))
-            end
-        next
-        // oszlopsorrend kiigazitva
-        return .t.
+static function tabobj.create(this)
+local success:=.f.
+    thread_mutex_lock(this:__mutex__)
+    if( tabCREATE(*) )
+        success:=.t.
     end
-    return .f.
+    thread_mutex_unlock(this:__mutex__)
+    return success
 
 
+******************************************************************************************
+static function tabobj.open(this,*)
+
+local success:=.f.
+
+    thread_mutex_lock(this:__mutex__)
+
+    if( tabOPEN(*) )
+        if( this:__colblk__ )
+            // this:__colblk__ eloszor .t., utana mindig .f.
+            // az osztalyok statikusan tarolodnak
+            // az osztalyok taroljak a metodus blokkjaikat
+            // a metodus blokkokat a method cache-ek is taroljak
+            // a cache-ben nem tudjuk direkt cserelni a blokkokat
+            // ezert egy mar hivatkozott blokkot nem szabad kicserelni
+            // tehat egyszer cserelhetok a blokkok
+            // open utan de minden mezohivatkozas elott 
+            setcolblk(this)
+        end
+        success:=.t.
+    end
+
+    thread_mutex_unlock(this:__mutex__)
+    return success
+
+
+******************************************************************************************
+static function setcolblk(this)
+
+local hash,column,clid,metnam,n,x
+
+    hash:=simplehashNew()
+    column:=tabColumn(this)
+    for n:=1 to len(column)
+        hash[lower(column[n][1])]:=n
+    next
+    clid:=getclassid(this)
+    metnam:=this:methnames
+
+    for n:=1 to len(metnam)
+        if( (x:=hash[metnam[n]])!=NIL )
+            classMethod(clid,metnam[n],mkblk(x)) // csereli a method blokkot
+        end
+    next
+
+
+******************************************************************************************
 static function mkblk(x)
     return {|t,v|tabEvalColumn(t,x,v)}
 
 
 ******************************************************************************************
+

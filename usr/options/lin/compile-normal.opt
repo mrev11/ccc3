@@ -9,12 +9,14 @@
 -D_LARGEFILE_SOURCE
 -D_REENTRANT
 -DMULTITHREAD
--DxGC_BOEHM
--DGC_NATIVE
 -O1
 -funsigned-char
 -fPIC
 -Wall
 -Wno-unused
+-Wno-unused-value
 -Wno-trigraphs
 -Wno-empty-body
+-Wno-format-overflow
+-Wno-parentheses
+-Wno-unknown-warning-option

@@ -28,33 +28,33 @@ $SERVERDIR/rpcwrapper.exe --reuseaddr \
 
 
 
-# Megjegyzések:
+# Megjegyzesek:
 
-# A wrapper a $PORTPLAIN és $PORTSSL portokon figyel.
-# Az XMLRPC_WRAPPER változó beállításától függően a szerverek 
-# (egymás között) plain vagy ssl socketen kommunikálnak.
-# Az is lehetséges, hogy a különböző szervereknek 
-# különféleképpen adjuk meg az XMLRPC_WRAPPER változót,
-# ez esetben a wrapper a plain és titkos vonalon kommunikáló
-# részvevők között automatikusan fordít.
+# A wrapper a $PORTPLAIN es $PORTSSL portokon figyel.
+# Az XMLRPC_WRAPPER valtozo beallitasatol fuggoen a szerverek 
+# (egymas kozott) plain vagy ssl socketen kommunikalnak.
+# Az is lehetseges, hogy a kulonbozo szervereknek 
+# kulonfelekeppen adjuk meg az XMLRPC_WRAPPER valtozot,
+# ez esetben a wrapper a plain es titkos vonalon kommunikalo
+# reszvevok kozott automatikusan fordit.
 
-# A demóban kliensek is bármelyik portra kapcsolódhatnak,
-# és ettől függően a wrapper<-->kliens forgalom plain vagy 
-# titkosított lesz, a wrapper automatikusan ki/betitkosít.
+# A demoban kliensek is barmelyik portra kapcsolodhatnak,
+# es ettol fuggoen a wrapper<-->kliens forgalom plain vagy 
+# titkositott lesz, a wrapper automatikusan ki/betitkosit.
 
-# Értelmes konfiguráció lehet pl., hogy a wrapper egy belső
-# interfészen plain porton figyeljen, míg egy külső interfészen
+# Ertelmes konfiguracio lehet pl., hogy a wrapper egy belso
+# interfeszen plain porton figyeljen, mig egy kulso interfeszen
 # SSL-t alkalmazzon.
 
-# A jelen demóban sehol nincs hitelesítés.
-# Ha hitelesítésre van szükség, akkor minden részvevőnek
-# létre kell hoznia egy sslctx objektumot, amiben megadja
-# a saját maga igazolására szolgáló kulcsot, és az elfogadott
-# partnerek bizonyítványát.
+# A jelen demoban sehol nincs hitelesites.
+# Ha hitelesitesre van szukseg, akkor minden reszvevonek
+# letre kell hoznia egy sslctx objektumot, amiben megadja
+# a sajat maga igazolasara szolgalo kulcsot, es az elfogadott
+# partnerek bizonyitvanyat.
 #
-# A wrappernek a --keyfile, --cafile, --capath opciókban 
+# A wrappernek a --keyfile, --cafile, --capath opciokban 
 # lehet ezeket megadni.
 #
-# A többi program a warpperhez kapcsolódás előtt az 
-# xmlrpc_sslcontext(ctx) hívással beállíthat egy statikus
+# A tobbi program a warpperhez kapcsolodas elott az 
+# xmlrpc_sslcontext(ctx) hivassal beallithat egy statikus
 # sslctx objektumot.

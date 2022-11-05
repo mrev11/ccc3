@@ -41,20 +41,19 @@ local color:=setcolor("w/b,b/w,,,w/b")
 static function kdgload(getlist,tab)
 local never:={||.f.}
 
+    g_col1:preBlock:=never
     g_col1:varPut("RECNO")
     g_col1:display()
-    g_seg1:varPut(0)
     g_seg1:picture:="@Z 99999999"
+    g_seg1:varPut(0)
     g_seg1:display()
+    
+    g_col2:preBlock:=never; g_seg2:preBlock:=never
+    g_col3:preBlock:=never; g_seg3:preBlock:=never
+    g_col4:preBlock:=never; g_seg4:preBlock:=never
+    g_col5:preBlock:=never; g_seg5:preBlock:=never
+    g_col6:preBlock:=never; g_seg6:preBlock:=never
 
-    g_col1:preBlock:=never
-    g_seg2:preBlock:=never
-    g_col2:preBlock:=never
-    g_seg3:preBlock:=never
-    g_col3:preBlock:=never
-    g_seg4:preBlock:=never
-    g_col4:preBlock:=never
-    return NIL
 
 static function kdgstore(getlist,brw,tab)
 local n:=g_seg1:varGet()
@@ -66,8 +65,8 @@ local n:=g_seg1:varGet()
 
 ************************************************************************
 static function kdload(getlist,tab)
-local gcol:={g_col1,g_col2,g_col3,g_col4}
-local gseg:={g_seg1,g_seg2,g_seg3,g_seg4}
+local gcol:={g_col1,g_col2,g_col3,g_col4,g_col5,g_col6}
+local gseg:={g_seg1,g_seg2,g_seg3,g_seg4,g_seg5,g_seg6}
 local index:=tabIndex(tab)[tabControl(tab)][IND_COL] //index oszlopok sorszama
 local column:=tabColumn(tab), n
 local name,type,width,dec
@@ -97,10 +96,10 @@ local pict,value
 
 
 
-    for n:=len(index)+1 to 4
+    for n:=len(index)+1 to len(gseg)
         gseg[n]:preBlock:={||.f.}
     end
-    for n:=1 to 4
+    for n:=1 to len(gcol)
         gcol[n]:preBlock:={||.f.}
     end
     return NIL

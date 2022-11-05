@@ -1,3 +1,7 @@
+2022.11.05 
+  xmlrpc-framework egysegesitve (DBMDATA X tipus);
+  tview 4 helyett 6 kereso kulcsot vesz be;
+
 2022.10.30 tabobjclass integralva:
   tabobj.prg berakva a btbtx konyvtarba;
   tdc2tabobj atkerult tdc2prgch-ba;

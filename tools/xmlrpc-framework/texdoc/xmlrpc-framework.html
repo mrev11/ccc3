@@ -1,0 +1,255 @@
+<html>
+<head>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META NAME="Keywords" CONTENT="Clipper,compiler,object,oriented,multi,threaded,computer,network,program,develop,script,Java,terminal,database,learn,hungarian,language,school,courses,lessons,Budapest">
+<META NAME="Description" CONTENT="Clipper to C++ Compiler (CCC) for UNIX and Windows, object oriented, multi threaded">
+<META NAME="Author" CONTENT="Matyas Vermes">
+<META NAME="Language" CONTENT="Hungarian">
+
+<STYLE>
+    body {
+        font-family: Arial, Helvetica, sans-serif ;
+        background:white
+        color:black; 
+    }
+    pre {
+        background: #eeeeff;
+    }
+    table {
+        background: #eeeedd;
+    }
+    tt {
+        color: #602000;
+    }
+</STYLE>                     
+
+</head>
+<body>
+
+
+
+ 
+ 
+
+           
+
+
+
+<p>
+<h1>XMLRPC framework</h1>
+<p>
+<i>Dr. Vermes Mátyás</i>
+<p>
+ 2007. november
+<p>
+ 
+<h1> </h1> <a href="#tth_sEc1."
+>1&nbsp; Előzmények</a><br> <a href="#tth_sEc2."
+>2&nbsp; Ez miez?</a><br> <a href="#tth_sEc3."
+>3&nbsp; Session állapot kezelés</a><br> <a href="#tth_sEc4."
+>4&nbsp; Párhuzamos kiszolgálás</a><br> <a href="#tth_sEc5."
+>5&nbsp; Fordítás, a demók kipróbálása</a><br> <a href="#tth_sEc6."
+>6&nbsp; A dokumentációkról</a><br>
+
+<p>
+ <h2><a name="tth_sEc1.">
+1</a>.&nbsp;&nbsp;Előzmények</h2>
+
+<p>
+E szoftver régebbi változata évek óta élesben működik különféle 
+home-banking rendszerek részeként. A jelen csomag annyiban tér el
+az éles változattól, hogy
+az alkalmazásfüggetlen rész külön lett véve a számlavezetéstől,
+ez a leválasztott rész van itt közreadva <tt>xmlrpc-framework</tt> néven.
+Emellett különféle korszerűsítések történtek:
+
+<p>
+
+<ul>
+<li> Belekerült a CCC fejlettebb hibakezelése.
+<p>
+</li>
+
+<li> Az osztálydefiníciók a class szintaktikára vannak átírva.
+<p>
+</li>
+
+<li> A socket descriptorok helyett socket objektumokat használ.
+<p>
+</li>
+
+<li> SSL támogatás került a rendszerbe.
+<p>
+</li>
+
+<li> Portolva lett CCC3-ra.
+<p>
+</li>
+</ul>
+
+<p>
+ <h2><a name="tth_sEc2.">
+2</a>.&nbsp;&nbsp;Ez miez?</h2>
+
+<p>
+XMLRPC szervereket írni nem túl nehéz. 
+Ha belejön az ember, hamar abban a helyzetben találja magát,
+hogy sok XMLRPC szervere van, amik  igénybe akarják venni 
+egymás szolgáltatásait. Kiderül, hogy nem könnyű menedzselni
+egy ilyen elosztott rendszert, ui.&nbsp;minden komponensnek ismernie
+kell a rendszerben levő többi komponens elérhetőségéhez
+szükséges paramétereket. 
+
+<p>
+E problémára ad viszonylag egyszerű megoldást az <tt>rpcwrapper</tt>
+nevű program. Ez egy forgalomirányító, ami a csillag topológia
+központjában van, és közvetíti az XMLRPC lekérdezéseket és válaszokat
+a kliensek és szerverek között, beleértve azt az esetet is, amikor
+az egyik szerver kliense a másiknak. A forgalomirányító révén
+a komponensek könnyen paraméterezhetők, mert mindenkinek csak
+a központtal (vagyis a forgalomirányító wrapperral) kell 
+közvetlen kapcsolatban lennie.
+
+<p>
+A rendszer része az <tt>rpcmonitor</tt> kliens program, 
+amivel figyelni lehet, hogy milyen szerverek/kliensek
+vannak a rendszerben, és le lehet vele állítani egyes szervereket,
+illetve a wrapper leállításával az egész rendszert.
+
+<p>
+A rendszer része az <tt>rpcsession</tt> szerver, 
+ami a kliensek hitelesítését végzi. Ez tipikusan egy olyan
+szerver, aminek a szolgáltatását a többi szerver is igénybe
+fogja venni.
+
+<p>
+ <h2><a name="tth_sEc3.">
+3</a>.&nbsp;&nbsp;Session állapot kezelés</h2>
+
+<p>
+A HTTP-re épülő technikáknál mindig téma a session állapot kezelés.
+Pl. egy elemi tranzakció állhat abból, hogy a vásárló kiválaszt egy árucikket,
+és azt berakja a kosarába. Ilyen elemi tranzakciók sorozatából
+áll össze egy komplett vásárlás. Ámde  a HTTP protokoll olyan, 
+hogy minden alkalommal felépíti majd megszakítja a hálózati kapcsolatot.
+A rendszernek fel kell ismernie, ha az új hálózati kapcsolaton
+egy korábbi kliens jelentkezik, és tudnia kell, hogy mit gyűjtött
+össze korábban a kosarába.
+
+<p>
+Az XMLRPC framework tartalmaz egy egyszerű session állapot kezelést.
+A session adatait adatbázisban tároljuk, az adatokat  kulcs
+(sid) alapján keressük elő. A kliensnél csak az azonosításhoz
+szükséges kulcs van. Az alkalmazás(fejlesztő) feladata 
+összeállítani az adatoknak azt a körét, ami alkalmas a session
+állapot teljes megőrzésére és visszaállítására.
+
+<p>
+ <h2><a name="tth_sEc4.">
+4</a>.&nbsp;&nbsp;Párhuzamos kiszolgálás</h2>
+
+<p>
+A szolgáltatásokat úgy kell megszervezni, 
+hogy lehetőség legyen több kliens egyidejű kiszolgálására.
+Tegyük fel pl., hogy van egy szerverünk, ami számlatörténet adatokat
+ad a kliensnek. Ha az adatokat csak lassan lehet előkaparni
+az archívumból, és amiatt az összes többi kliensnek várni kell,
+az nem volna elfogadható.
+
+<p>
+A párhuzamos kiszolgálást úgy oldja meg az  XMLRPC framework,
+hogy a várhatóan népszerű szolgáltatásokhoz (előre) több szerverpéldányt 
+is elindít. A forgalomirányító (<tt>rpcwrapper</tt>) fog választani az azonos
+szolgáltatást nyújtó szerverek példányai közül. Ha talál olyan
+szervert, aminek éppen nincs egy kliense sem, akkor annak továbbítja
+a lekérdezést. Ha éppen minden szerver foglalt, akkor a lekérdezést
+beleteszi annak a szervernek a sorába, amelyiknek a sora a legrövidebb.
+
+<p>
+Rendben, de mi van, ha egy kliens összetett tranzakciója, 
+hol az egyik, hol a másik szerverhez kerül?
+Erre is a session állapot kezelés ad választ. A session állapotot
+leíró adatokat úgy kell meghatározni, illetve a szervereket úgy kell
+megírni, hogy ne okozzon gondot, ha az összetett tranzakció menet
+közben átkerül egyik szerverről másikra.
+Az <tt>rpcsession</tt> szerver például megfelel az előbbi feltételnek.
+
+<p>
+ <h2><a name="tth_sEc5.">
+5</a>.&nbsp;&nbsp;Fordítás, a demók kipróbálása</h2>
+
+<p>
+A <tt>clean.b</tt> script minden binárist és logfilét letöröl.
+
+<p>
+A <tt>mkall.b</tt> script mindent lefordít.
+
+<p>
+Az <tt>rpcstart.sh</tt> script elindítja a demót. 
+Elindul a wrapper, kettő darab session szerver és egy teszt szerver.
+
+<p>
+A <tt>monitor.sh</tt> script elindítja az <tt>rpcmonitor</tt> kliens programot,
+amivel nézegetni lehet, hogy mik futnak.     
+Az első sorban látszó <tt>system</tt> a wrappert jelenti.
+Ha ezt leállítjuk, akkor az összes többi szerver is kilép 
+(így vannak megírva), azaz az egész rendszer leáll.
+
+<p>
+<em>Figyelmeztetés</em>: 
+    A legtöbb hiba abból adódik, hogy a rendszer különböző 
+    komponensei nem egyszerre indulnak és lépnek ki, ezért: 
+
+<ul>
+<li> Indítás előtt ellenőrizni kell,
+       hogy nincs-e korábbról beragadt szerverprocessz,
+       az ilyeneket ki kell lőni.
+<p>
+</li>
+
+<li> Indítás után ellenőrizni kell, hogy minden szerver elindult-e.
+<p>
+</li>
+
+<li> Leállítás után ellenőrizni kell,  hogy minden szerver leállt-e.
+<p>
+</li>
+</ul>
+
+<p>
+A teszteléshez átfáradunk a <tt>client</tt> directoryba, és próbálgatjuk 
+az ott található programokat.
+
+<p>
+ <h2><a name="tth_sEc6.">
+6</a>.&nbsp;&nbsp;A dokumentációkról</h2>
+
+<p>
+XMLRPC specifikációnak itt volna ez a régi írás:
+<a href="xmlrpc-spec.htm">XML-RPC Specification</a>,
+ami elismerésre méltóan tömör, csak sajnos elavult.
+A fő baj, hogy ezt még azzal a feltételezéssel írták, 
+hogy egy XML dokumentum byte-okból áll. Ezesetben
+az XMLRPC string típus valóban tartalmazhatna tetszőleges
+bináris adatot. Később azonban az okosok kitalálták,
+hogy az XML <em>karakterekből </em> áll, amivel a lehetőségek
+valamelyest csökkentek. Az alkalmazásfejlesztőket ez annyiban
+érinti, hogy a bináris adatokat nem lehet nyersen átküldeni
+XMLRPC lekérdezésben vagy válaszban, hanem base-64 kódba
+kell csomagolni.
+
+<p>
+Változtatás nélkül iderakom a rendszer első, 
+<a href="xmlrpckonto.html">2001-es dokumentációját</a>,
+ami néhány részletében elavult ugyan, 
+de a lényeget illetően még mindig informatív.
+
+<p>
+    
+
+<hr>
+Learn Hungarian in Budapest in <a href="http://ulysses.co.hu">Ulysses language school</a>.
+<hr>
+</body>
+</html>

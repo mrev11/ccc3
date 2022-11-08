@@ -21,8 +21,8 @@
 *****************************************************************************
 #ifdef NOT_DEFINED
   Objektum, 
-  amiben egy XMLRPC szerver tárolhatja egy session alapadatait.
-  Tárolva: sid, szervernév, utolsó request ideje, felhasználó adatai.
+  amiben egy XMLRPC szerver tarolhatja egy session alapadatait.
+  Tarolva: sid, szervernev, utolso request ideje, felhasznalo adatai.
 #endif
 
 *****************************************************************************

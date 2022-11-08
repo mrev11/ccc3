@@ -1,13 +1,9 @@
 #!/bin/bash
 
-if ! [ -d html ]; then
-    ln -s $CCCDIR/doc/html html 2>/dev/null
-fi
-
-
+mkdir -p html
 export SCRIPT=$CCCDIR/usr/tex/script
 #export SCRIPT=$(pwd)/script
- 
+
 $SCRIPT/thtm.b $1
 #$SCRIPT/tdvi.b $1
  

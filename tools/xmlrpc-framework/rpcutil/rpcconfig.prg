@@ -18,12 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//konfigurációs paraméterek
-//környezeti változókból
+//konfiguracios parameterek
+//kornyezeti valtozokbol
 
 #define XMLRPC_TIMEOUT         300   //5 perc 
 #define XMLRPC_MAXSESSION      128
-#define XMLRPC_MAXSAMEUID        0   //0 esetén nincs korlát 
+#define XMLRPC_MAXSAMEUID        0   //0 eseten nincs korlat 
 
 
 ******************************************************************************

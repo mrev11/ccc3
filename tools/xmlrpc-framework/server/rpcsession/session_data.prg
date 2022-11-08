@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//tárolja/előszedi a session adatokat
+//tarolja/eloszedi a session adatokat
 
 #include "table.ch"
 #include "_session.ch"
@@ -26,7 +26,7 @@
 #define TIMEOUT  xmlrpc_timeout()
 
 *****************************************************************************
-function initialize_session_table() //táblát kreál, ha nincs
+function initialize_session_table() //tablat kreal, ha nincs
 
     dirmake("rpcbase")
     //SESSION:path:="rpcbase"
@@ -55,7 +55,7 @@ function initialize_session_table() //táblát kreál, ha nincs
 
 
 *****************************************************************************
-function session_ini(s) //letárol egy session objektumot
+function session_ini(s) //letarol egy session objektumot
 
 
     SESSION:append
@@ -71,7 +71,7 @@ function session_ini(s) //letárol egy session objektumot
     ? getpid(), "app", SESSION_SID, SESSION:position
     
 *****************************************************************************
-function session_out(sid) //érvénytelenít egy sid-et
+function session_out(sid) //ervenytelenit egy sid-et
 
 
     SESSION:seek(sid)
@@ -86,7 +86,7 @@ function session_out(sid) //érvénytelenít egy sid-et
     end
 
 *****************************************************************************
-function  session_get(sid,errflag,prolongflag,loadflag) //ellenőriz/előszed egy sessiont
+function  session_get(sid,errflag,prolongflag,loadflag) //ellenoriz/eloszed egy sessiont
 local valid, sec, result
 
  

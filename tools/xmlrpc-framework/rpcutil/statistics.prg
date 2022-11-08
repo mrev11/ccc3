@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//xmlrpcclient statisztikát számoló változata
+//xmlrpcclient statisztikat szamolo valtozata
 
 *****************************************************************************
 class xmlrpcclientStatistics(xmlrpcclient)
@@ -53,8 +53,8 @@ local result:=this:(xmlrpcclient)call(met,par)
 *****************************************************************************
 static function xmlrpcclientstatistics.printstatistics(this)
 
-local e:=this:x1/this:cnt          //átlag
-local d2:=this:x2/this:cnt-e**2    //szórásnégyzet
+local e:=this:x1/this:cnt          //atlag
+local d2:=this:x2/this:cnt-e**2    //szorasnegyzet
 
     set alternate to client_statistics additive
     set alternate on

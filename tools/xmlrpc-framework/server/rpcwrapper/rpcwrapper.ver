@@ -1,7 +1,10 @@
 
-#define VERSION  "18.08.13"
+#define VERSION  "22.11.08"
 
 #ifdef __HISTORY__
+
+2022.11.08
+  szerverek kulon queue-ja megszunt, helyette kozos queue;
 
 2018.08.13
   Alkalmazkodas az XMLRPC 1.2.0 valtozasahoz.
@@ -11,50 +14,50 @@
 
 
 2013.11.23
-  Hibakezelés javítása:
-  Megszűnt klienseknek nem kell választ küldeni.
-  A destruct-ban nem szabad elszállni (mert kilép a program).
-  A write-ban nem szabad elszállni (ugyan nem lép ki a program),
-  de elmaradhat a forward-ban levő client és queue kezelés.
-  Az error osztályú hibákat az errorhandler logolja.
+  Hibakezeles javitasa:
+  Megszunt klienseknek nem kell valaszt kuldeni.
+  A destruct-ban nem szabad elszallni (mert kilep a program).
+  A write-ban nem szabad elszallni (ugyan nem lep ki a program),
+  de elmaradhat a forward-ban levo client es queue kezeles.
+  Az error osztalyu hibakat az errorhandler logolja.
 
 2007.12.16 -- 1.3.00
-  SSL támogatás.
+  SSL tamogatas.
   
   rpcwrapper [--key <keyfile>] 
              [--cafile <cafile>] 
              [--capath <capath>] 
              --listener [iface]:port[:ssl] ...
              
-  Először kell megadni az SSL context paramétereit.
+  Eloszor kell megadni az SSL context parametereit.
 
   keyfile  
-    a titkosításhoz és a wrapper azonosításához használt kulcs,
-    ha ez nincs megadva, akkor csak plain kapcsolat lehetséges
+    a titkositashoz es a wrapper azonositasahoz hasznalt kulcs,
+    ha ez nincs megadva, akkor csak plain kapcsolat lehetseges
            
   cafile  
-    egy filéspec, amiben az elfogadott kliensek bizonyítványai vannak
+    egy filespec, amiben az elfogadott kliensek bizonyitvanyai vannak
 
   capath  
-    egy dirspec, amiben az elfogadott kliensek bizonyítványai vannak
-    ha cafile, capath egyike sincs megadva, akkor nem lehet hitelesíteni
-    a klienseket, de lehetséges a titkosított kommunikáció
+    egy dirspec, amiben az elfogadott kliensek bizonyitvanyai vannak
+    ha cafile, capath egyike sincs megadva, akkor nem lehet hitelesiteni
+    a klienseket, de lehetseges a titkositott kommunikacio
    
   iface:port:ssl
-    így lehet megadni egy SSL-en figyelő listenert
-    ha iface üres, akkor minden interfészen figyel
-    pl. :45000:SSL minden interfészen figyel
+    igy lehet megadni egy SSL-en figyelo listenert
+    ha iface ures, akkor minden interfeszen figyel
+    pl. :45000:SSL minden interfeszen figyel
 
   iface:port[:plain]
-    így lehet megadni egy plain porton figyelő listenert
-    ha iface üres, akkor minden interfészen figyel
-    a default a plain socket, tehát a :plain rész elhagyható
+    igy lehet megadni egy plain porton figyelo listenert
+    ha iface ures, akkor minden interfeszen figyel
+    a default a plain socket, tehat a :plain resz elhagyhato
   
 
 2007.11.17 -- 1.2.00
-  Korszerűsített hibakezelés.
-  Áttérés socket fd-kről socket objektumokra.
-  Class szintaktika az osztálydefiníciókban.
+  Korszerusitett hibakezeles.
+  Atteres socket fd-krol socket objektumokra.
+  Class szintaktika az osztalydefiniciokban.
   CCC3 port.
   CCC2 backport.
 
@@ -62,15 +65,15 @@
   Multiprocess version
 
 2002.07.23 -- 0.9.03
-  Az read error eseményeket nem kell listázni, 
-  ha csak annyi történik, hogy a távoli fél lezárta a socketet.
-  Az idők mellett a dátumokat is kiírjuk a logba.
-  A con/del eseményeknél a connection-ok számát is kiírjuk a logba.
-  Az indítás dátum/idejét kiírjuk a logba.
+  Az read error esemenyeket nem kell listazni, 
+  ha csak annyi tortenik, hogy a tavoli fel lezarta a socketet.
+  Az idok mellett a datumokat is kiirjuk a logba.
+  A con/del esemenyeknel a connection-ok szamat is kiirjuk a logba.
+  Az inditas datum/idejet kiirjuk a logba.
   set console off
 
 2002.06.23 -- 0.9.02
-  Adminisztratív funkciók.
+  Adminisztrativ funkciok.
 
 2002.06.21 -- 0.9.01
   A Content-Type header nem text/html, hanem text/xml.

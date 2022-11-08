@@ -20,18 +20,18 @@
 
 *****************************************************************************
 #ifdef NOT_DEFINED
-  Tárolja a felhasználó read/modify/delete/append jogosultságait (ugo).
+  Tarolja a felhasznalo read/modify/delete/append jogosultsagait (ugo).
 
-    u: csak saját adathoz
-    g: csak saját csoport adatához
+    u: csak sajat adathoz
+    g: csak sajat csoport adatahoz
     o: minden adathoz
 
-  Az access metódus
-  a jogosultságot összeveti a kívánt hozzáférési móddal,
-  és kivételt dob, ha a jogosultság nem megfelelő.
-  Az o (other) típusú jogosultság vizsgálata egyszerű: van/nincs.
-  A g/u jogosultságokhoz tudni kell, hogy mi a saját/csoport adat,
-  ehhez felül kell definiálni az accessuser/accessgroup metódusokat.
+  Az access metodus
+  a jogosultsagot osszeveti a kivant hozzaferesi moddal,
+  es kivetelt dob, ha a jogosultsag nem megfelelo.
+  Az o (other) tipusu jogosultsag vizsgalata egyszeru: van/nincs.
+  A g/u jogosultsagokhoz tudni kell, hogy mi a sajat/csoport adat,
+  ehhez felul kell definialni az accessuser/accessgroup metodusokat.
 #endif
 
 *****************************************************************************
@@ -42,8 +42,8 @@ class accesssession(basesession) new: //absztrakt
     attrib  permdelete
     attrib  permappend
     method  access
-    method  accessgroup     {||.f.}  //felül kell definiálni
-    method  accessuser      {||.f.}  //felül kell definiálni 
+    method  accessgroup     {||.f.}  //felul kell definialni
+    method  accessuser      {||.f.}  //felul kell definialni 
 
 ****************************************************************************
 static function accesssession.initialize(this,sid,srv) 

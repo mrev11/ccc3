@@ -20,7 +20,7 @@
 
 #include "ssl.ch"
 
-#define VERSION "0.9.02"   //2013.06.07 hitelesítés
+#define VERSION "0.9.02"   //2013.06.07 hitelesites
 //#define VERSION "0.9.02"
 
 *****************************************************************************

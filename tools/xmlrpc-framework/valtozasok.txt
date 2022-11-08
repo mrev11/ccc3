@@ -1,0 +1,5 @@
+
+2022.11.08
+  rpcwrapper: szerverek kulon queue-ja megszunt, helyette kozos queue;
+  regi CCC2 vegyes kodolas tamogatasa megszunt: _charconv() kiszedve;
+  minden komment ekezetlenitve;

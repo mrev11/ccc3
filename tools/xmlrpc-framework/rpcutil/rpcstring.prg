@@ -18,18 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef _CCC2_  //CCC2-ben Latin-1 kódolás van
-#include "charconv.ch"
-//CCC2-ben a vegyes kódolásról
-//tiszta Latin-1 kódolásra váltunk
 
-function rpcstring(s)
-    return _charconv(alltrim(s),CHARTAB_CCC2LAT)
-#endif
-
-
-#ifdef _CCC3_  //CCC3-ban UTF-8 kódolás van
 function rpcstring(s)
     return s //vagy str2bin(s) ??
-#endif
 

@@ -22,14 +22,14 @@
 #include "_session.ch"
 
 
-// A session szerver az xmlrpc_timeout()-nál hosszabb ideig inaktív 
-// session-t érvényteleníti. A közönséges szerverek xmlrpc_timeout()/3
-// ideig saját hatáskörben validálják a sessiont, utána megkérdezik 
-// a session szervert. Így a session biztonságosan életben van tartva, 
-// mégsem piszkáljuk feleslegesen sokat a session szervert.
+// A session szerver az xmlrpc_timeout()-nal hosszabb ideig inaktiv 
+// session-t ervenyteleniti. A kozonseges szerverek xmlrpc_timeout()/3
+// ideig sajat hataskorben validaljak a sessiont, utana megkerdezik 
+// a session szervert. Igy a session biztonsagosan eletben van tartva, 
+// megsem piszkaljuk feleslegesen sokat a session szervert.
 
-// Minden szerver definiálja a session_create_object(sid) függvényt, 
-// ami legyártja az adott szerverre jellemző session objektumot.
+// Minden szerver definialja a session_create_object(sid) fuggvenyt, 
+// ami legyartja az adott szerverre jellemzo session objektumot.
 
 
 static VERIFTIME:=xmlrpc_timeout()/3
@@ -47,18 +47,18 @@ static function initialize()
 function  session_validate_mp(sid,srvname,accessmode)
 
 // sid
-// 24 byte-os session azonosító (base64(md5))
+// 24 byte-os session azonosito (base64(md5))
 
 // srvname
-// a szolgáltatás neve, pl. "arcforg"
+// a szolgaltatas neve, pl. "arcforg"
 
 // accessmode
-// 1) NIL: ellenőrzi sid-et, de nem tölti be a session objektumot 
+// 1) NIL: ellenorzi sid-et, de nem tolti be a session objektumot 
 //
-// 2) .f./0/"": ellenőrzi sid-et, beolvassa a session objektumot  
+// 2) .f./0/"": ellenorzi sid-et, beolvassa a session objektumot  
 //
-// 3) "r"/"m"/"d"/"a": ellenőrzi sid-et, beolvassa a session objektumot,
-//    ellenőrzi a read/modify/delete/append jogosultságot
+// 3) "r"/"m"/"d"/"a": ellenorzi sid-et, beolvassa a session objektumot,
+//    ellenorzi a read/modify/delete/append jogosultsagot
 
 
 static ini:=.f.

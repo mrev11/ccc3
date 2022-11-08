@@ -18,14 +18,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//XMLRPC wrapper (forgalom irányító)
+//XMLRPC wrapper (forgalom iranyito)
 
 #include "ssl.ch"
 #include "rpcwrapper.ver"
 
 static starttime:=time()
-static listener:={} //listener objektumok
-static con:={} //connection objektumok  
+static listener:={}     // listener objektumok
+static con:={}          // connection objektumok  
+static queue:={}        // sorban allo requestek {{client,request,module},...} 
 
 static keyfile
 static cafile
@@ -41,11 +42,11 @@ static function errorhandler(e)
         ? e
 
     elseif( !e:isderivedfrom(errorClass()) ) 
-        //objektum, de nem error leszármazott
+        //objektum, de nem error leszarmazott
         ? e
 
     elseif( getclassid(e)!=errorClass() )
-        //error leszármazott, de nem error
+        //error leszarmazott, de nem error
         ? e:classname, e:operation, e:description
 
     else
@@ -122,7 +123,7 @@ local sck,c,n,i,e
                 recover e <apperror>
                     sck[n]:destruct
                 recover e 
-                    //egyéb hiba
+                    //egyeb hiba
                     //az error-okat errorhandler logolja
                 end
             end
@@ -246,24 +247,23 @@ local sslcontext:=sslctxNew()
         sslcontext:load_verify_locations(cafile,capath)
         if( cafile!=NIL )
             sslcontext:load_client_ca_file(cafile)
-            //kérdés, hogy nem kellene-e külön filé,
-            //így a firefox csak olyan certificate-et küld,
-            //amit a cafile-beli ca írt alá
+            //kerdes, hogy nem kellene-e kulon file,
+            //igy a firefox csak olyan certificate-et kuld,
+            //amit a cafile-beli ca irt ala
         end
     end
     return sslcontext
 
 *****************************************************************************
 class connection(object) 
-    attrib  socket          // a szerver/kliens elérhetősége (objektum)
-    attrib  message         // az utolsó http message (már beolvasott része)
-    attrib  client          // szerver esetén a várakozó kliens
-    attrib  module          // szerver esetén a module neve
-    attrib  request         // az utolsó http message komplett törzse
-    attrib  queue           // a sorban álló requestek {{client,request},...} 
-    attrib  http            // az utolsó message HTTP verziója
-    attrib  timeout         // timeout mérésének kezdete: seconds()
-    attrib  time            // kapcsolat kezdő ideje: time()
+    attrib  socket          // a szerver/kliens elerhetosege (objektum)
+    attrib  message         // az utolso http message (mar beolvasott resze)
+    attrib  client          // szerver eseten a varakozo kliens
+    attrib  module          // szerver eseten a module neve
+    attrib  request         // az utolso http message komplett torzse
+    attrib  http            // az utolso message HTTP verzioja
+    attrib  timeout         // timeout meresenek kezdete: seconds()
+    attrib  time            // kapcsolat kezdo ideje: time()
     attrib  counter
  
     method  initialize
@@ -281,7 +281,6 @@ static function connection.initialize(this,s,m)
     this:socket:=s
     this:message:=a""
     this:module:=m
-    this:queue:={}
     this:time:=time()
     this:counter:=0
     this:timeout:=seconds()
@@ -295,34 +294,43 @@ static function connection.fd(this) //select-hez
 *****************************************************************************
 static function connection.destruct(this,idx) 
 local n
-begin
-    if(this:socket==NIL)
-        return NIL
-    end
+    begin
+        if(this:socket==NIL)
+            return NIL
+        end
+        
+        printevent(this,"del")
     
-    printevent(this,"del")
+        //con array-bol torolni
+        if( idx==NIL )
+            idx:=this:conidx 
+        end
+        xdel(con,idx)
+    
+        //megszunt szerverek varakozo klienseit ertesiteni kell
 
-    //con array-ből törölni
-    if( idx==NIL )
-        idx:=this:conidx 
+        if( this:client!=NIL )
+            this:client:write(noservice(this:module+".*"))
+        end
+        
+        if( findsrv(this:module)==NIL )
+            //nincs masik hasonlo peldany
+            //amelyik atvehetne a szerepet
+            for n:=len(queue) to 1 step -1
+                if( queue[n][3]==this:module  )
+                    queue[n][1]:write(noservice(this:module+".*"))
+                    xdel(queue,n)
+                end
+            next
+        end
+    
+        this:socket:close
+    recover
+        //az errorokat errorhandler logolja
+        ? "destruct failed", this
+    finally    
+        this:socket:=NIL
     end
-    xdel(con,idx)
-
-    //megszűnt szerverek várakozó klienseit értesíteni kelli  
-    if( this:client!=NIL )
-        this:client:write(noservice(this:module+".*"))
-    end
-    for n:=1 to len(this:queue)
-        this:queue[n][1]:write(noservice(this:module+".*"))
-    next
-
-    this:socket:close
-recover
-    //az errorokat errorhandler logolja
-    ? "destruct failed", this
-finally    
-    this:socket:=NIL
-end
 
 *****************************************************************************
 static function connection.conidx(this)
@@ -357,7 +365,7 @@ local clen,body,vpos,e
     clen:=val(http_getheader(this:message,"Content-Length"))
 
     if( 0<clen .and. clen<=len(body:=http_body(this:message)) )
-        //komplett az üzenet
+        //komplett az uzenet
 
         vpos:=at("HTTP/",this:message)
         if( vpos==0 )
@@ -372,7 +380,7 @@ local clen,body,vpos,e
         
         this:forward
     end
-    //tovább olvasunk
+    //tovabb olvasunk
 
 *****************************************************************************
 static function connection.write(this,msg)
@@ -383,25 +391,25 @@ static function connection.write(this,msg)
         ? "response to connection destructed earlier"
     end
     
-    //itt mindenképpen vissza kell térni,
-    //mert ha a főciklus hibaága kapná el a hibát,
-    //akkor elmaradhat a forward client és queue kezelése,
-    //http_writemessage nem kivételt dob,
-    //hanem visszaadja az elküldött bájtok számát
-    //(ezért nem kell itt külön védelem)
+    //itt mindenkeppen vissza kell terni,
+    //mert ha a fociklus hibaaga kapna el a hibat,
+    //akkor elmaradhat a forward client es sor kezelese,
+    //http_writemessage nem kivetelt dob,
+    //hanem visszaadja az elkuldott bajtok szamat
+    //(ezert nem kell itt kulon vedelem)
 
 
 *****************************************************************************
 static function connection.forward(this)
  
-local s
+local s,n
     
     if( this:client==NIL )
-        //kérdést továbbítunk egy szervernek
+        //kerdest tovabbitunk egy szervernek
 
         s:=this:server
 
-        if( valtype(s)=="C" ) //közvetlen válasz 
+        if( valtype(s)=="C" ) //kozvetlen valasz 
             this:write(s) 
 
         elseif( s:client==NIL ) //a szerver szabad
@@ -409,25 +417,30 @@ local s
             s:write(this:message)
 
         else //a szerver foglalt
-            aadd(s:queue,{this,this:message})
+            aadd(queue,{this,this:message,s:module})
         end
  
     else
-        //választ továbbítunk egy kliensnek
+        //valaszt tovabbitunk egy kliensnek
 
         this:client:write(this:message)
-        
         if( this:client:http<a"HTTP/1.1" )
             this:client:destruct
         end
+        this:client:=NIL
+
+        // egy szerver felszabadult
+        // megnezzuk, van-e a sorban olyan request
+        // ami ennek a szervernek kuldendo
         
-        if( empty(this:queue) )
-            this:client:=NIL
-        else
-            this:client:=this:queue[1][1]
-            this:write(this:queue[1][2])
-            xdel(this:queue,1)
-        end
+        for n:=1 to len(queue)
+            if( queue[n][3]==this:module )
+                this:client:=queue[n][1]
+                this:write(queue[n][2])
+                xdel(queue,n)
+                exit
+            end
+        next
     end
 
     this:message:=a""
@@ -440,7 +453,7 @@ local r,n,module,host,port,c
 
     p:=xmlparser2New() 
     p:contentblock:={|p,node|methodname(p,node,@m)}
-    p:parsestring(this:request) //részleges elemzés
+    p:parsestring(this:request) //reszleges elemzes
  
     m0:=left(m,at(".",m)-1)
     
@@ -488,26 +501,22 @@ local r,n,module,host,port,c
 *****************************************************************************
 static function findsrv( module )
 
-local n,s,l
-local smin,lmin:=999999
+local n,srv
 
     for n:=1 to len(con)
-        s:=con[n]
-        if( s:module==module )
-            if( s:client==NIL )
-                return s //szabadon várakozó szerver 
-            elseif( (l:=len(s:queue))<lmin )
-                lmin:=l
-                smin:=s
+        if( con[n]:module==module )
+            srv:=con[n]
+            if( srv:client==NIL )
+                exit
             end
         end
     next
-    return smin  //legrövidebb sorral rendelkező szerver
+    return srv // megfelelo tipusu (esetleg foglalt) szerver vagy NIL
 
 *****************************************************************************
 static function methodname(parser,node,m)
     if( node:type=="#TEXT" )
-        return .t. //épít
+        return .t. //epit
     elseif( node:type=="methodName" )
         m:=node:content[1]:content[1]
         //? "methodname =",m
@@ -571,7 +580,7 @@ static function down(module)
 local n, c
     if( module=="system" )
         ? "<<<", date(), time(), "down"
-        quit //a wrapper (és vele az egész rendszer) kilép
+        quit //a wrapper (es vele az egesz rendszer) kilep
     end
 
     for n:=1 to len(con)
@@ -587,7 +596,7 @@ static function printstate()
 local n, c
 
     ? 
-    ? date(),time(), "system.printstate"
+    ? date(),time(), "system.printstate", len(queue)
     ? "------------------------------------------------------------------"
  
     for n:=1 to len(con)
@@ -596,7 +605,7 @@ local n, c
             ? padr(c:module,16),c:http,;
               c:socket:classname,c:socket:fd,;
               c:time,;
-              if(c:client==NIL," ","C"),len(c:queue)
+              if(c:client==NIL," ","C")
         end
     next
     
@@ -627,12 +636,12 @@ static function check(sid)
 local n,c,tid
 
     //Szabad session szervert keres,
-    //ahhoz csinál egy xmlrpcclient-et,
-    //és ellenőrizteti vele a sid-et.
-    //Csak _szabad_ szervert lehet így használni,
-    //másképp összekeverednének az üzenetek.
-    //Ha éppen nincs szabad session szerver,
-    //akkor az eredmény false.
+    //ahhoz csinal egy xmlrpcclient-et,
+    //es ellenorizteti vele a sid-et.
+    //Csak _szabad_ szervert lehet igy hasznalni,
+    //maskepp osszekeverednenek az uzenetek.
+    //Ha eppen nincs szabad session szerver,
+    //akkor az eredmeny false.
 
     for n:=1 to len(con)
         if( con[n]:module=="session" .and. con[n]:client==NIL )

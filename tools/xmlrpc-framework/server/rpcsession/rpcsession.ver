@@ -3,9 +3,9 @@
 #ifdef __HISTORY__
 
 2013.11.22 -- 1.2.00
-  A SESSION tábla zapolása deadlockot okozott.
-  A SESSION nyitása és zapolása át van téve a program elejére,
-  a zappal összeakadó open close+várakozással próbálkozik.
+  A SESSION tabla zapolasa deadlockot okozott.
+  A SESSION nyitasa es zapolasa at van teve a program elejere,
+  a zappal osszeakado open close+varakozassal probalkozik.
 
 2007.11.18 -- 1.2.00
   CCC3 port
@@ -15,22 +15,22 @@
   Multiprocess version
 
 2003.06.26 -- 1.0.03
-  RPCUSER és RPCAUTH megnyitása a program elején
-  session-ok tárolása párhuzamos array-ben.
+  RPCUSER es RPCAUTH megnyitasa a program elejen
+  session-ok tarolasa parhuzamos array-ben.
 
-  XMLRPC_MAXSAMEUID=0 esetén nincs korlát, új default: 0
-  XMLRPC_MAXSESSION=0 esetén nincs korlát, default: 128
+  XMLRPC_MAXSAMEUID=0 eseten nincs korlat, uj default: 0
+  XMLRPC_MAXSESSION=0 eseten nincs korlat, default: 128
 
 2003.06.17 -- 1.0.02
-  md5 hash kódolás a sid-ekben.
+  md5 hash kodolas a sid-ekben.
 
 2003.02.28 -- 1.0.01
-  session.gettimeout lekérdezi a timeoutot.
+  session.gettimeout lekerdezi a timeoutot.
 
 2002.07.23 -- 1.0.00
-  Összes (egyidejű) sessionok száma limitálva.
-  Egy felhasználó egyidejű bejelentkezéseinek száma limitálva.
-  set console off, a log additív
-  Új funkció: "session.getversion"
+  Osszes (egyideju) sessionok szama limitalva.
+  Egy felhasznalo egyideju bejelentkezeseinek szama limitalva.
+  set console off, a log additiv
+  Uj funkcio: "session.getversion"
  
 #endif  

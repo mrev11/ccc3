@@ -56,8 +56,8 @@ local client,sid,n,e,cnt:=0
             for n:=1 to 20
 
                 if( !file("sema") )
-                    //hogy könnyű legyen egyszerre
-                    //rengeteg processt kiléptetni
+                    //hogy konnyu legyen egyszerre
+                    //rengeteg processt kileptetni
                     quit
                 end
 
@@ -71,9 +71,9 @@ local client,sid,n,e,cnt:=0
                 fflush()
                 sleep( rand1()*4000 ) //4 sec, egyenletes
             
-                //ha az XMLRPC_TIMEOUT 4 sec-re van beállítva,
-                //akkor a programok kellemesen gyakran elszállnak,
-                //itt éppen ez kell a nyúzópróbához
+                //ha az XMLRPC_TIMEOUT 4 sec-re van beallitva,
+                //akkor a programok kellemesen gyakran elszallnak,
+                //itt eppen ez kell a nyuzoprobahoz
             next
 
             client:call("session.logout",sid)

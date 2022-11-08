@@ -1,3 +1,8 @@
+2022.11.08 xmlrpc-framework
+  rpcwrapper: szerverek kulon queue-ja megszunt, helyette kozos queue;
+  regi CCC2 vegyes kodolas tamogatasa megszunt: _charconv() kiszedve;
+  minden komment ekezetlenitve;
+
 2022.11.05 
   xmlrpc-framework egysegesitve (DBMDATA X tipus);
   tview 4 helyett 6 kereso kulcsot vesz be;

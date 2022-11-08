@@ -109,7 +109,7 @@ local server
 
 
 *****************************************************************************
-static function getversion(sid)  //verziószám
+static function getversion(sid)  //verzioszam
     validatex(sid)    
     return VERSION
  
@@ -139,7 +139,7 @@ static function gettimeout(sid)  //mekkora a timeout?
  
 *****************************************************************************
 static function who(sid) 
-//egyszerűsítés: csak saját magát adja
+//egyszerusites: csak sajat magat adja
 local s:=validatex(sid,,.t.)
     return {{alltrim(s:uid),alltrim(s:tid),s:start}}
 

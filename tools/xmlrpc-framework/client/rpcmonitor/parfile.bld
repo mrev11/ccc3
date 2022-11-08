@@ -1,3 +1,5 @@
+-d.
+-dver${CCCVER}
 
 -b../../$$(rpcutil)
  

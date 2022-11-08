@@ -1,11 +1,9 @@
 #!/bin/bash
 #set -x
 
-rm log-*  2>/dev/null 
-rm err-*  2>/dev/null 
+rm -f  log-*
+rm -f  err-*
  
-export CCC_TABLIB=btbtx
-
 RPCHOST=localhost
 PORTPLAIN=45000
 PORTSSL=45001

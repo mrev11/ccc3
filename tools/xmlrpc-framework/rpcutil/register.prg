@@ -30,10 +30,10 @@ static w
 *****************************************************************************
 function xmlrpc_sslcontext(ctx)
 
-// A konnektálás előtt egy program meghívhatja ezt a függvényt,
-// és ekkor beállíthat egy tetszőleges sslcontextet, ami szükséges
-// neki a kliens/szerver hitelesítéshez. Alapesetben hitelesítés
-// nélküli sslctx jön létre, ilyenkor csak titkosítás van.
+// A konnektalas elott egy program meghivhatja ezt a fuggvenyt,
+// es ekkor beallithat egy tetszoleges sslcontextet, ami szukseges
+// neki a kliens/szerver hitelesiteshez. Alapesetben hitelesites
+// nelkuli sslctx jon letre, ilyenkor csak titkositas van.
 
 static sslcontext
 

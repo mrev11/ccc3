@@ -18,14 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static _s_wrapper
  
 *****************************************************************************
 function wrapper()
-    if( _s_wrapper==NIL )
-        _s_wrapper:=xmlrpc_client()
-    end
-    return _s_wrapper
+static wrapper:=xmlrpc_client()
+    return wrapper
+
 
 *****************************************************************************
  

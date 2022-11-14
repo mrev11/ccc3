@@ -1,3 +1,7 @@
+2022-11-14 
+  a crypto konyvtar deprecated lett
+  warningok elnyomva: -Wno-deprecated-declarations
+
 2022.11.08 xmlrpc-framework
   rpcwrapper: szerverek kulon queue-ja megszunt, helyette kozos queue;
   regi CCC2 vegyes kodolas tamogatasa megszunt: _charconv() kiszedve;

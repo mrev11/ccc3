@@ -222,6 +222,10 @@ local screen
                 this:tab()
                 this:changed:=.t.
  
+            elseif( key==K_ALT_T )    
+                this:trailingsp()
+                this:changed:=.t.
+
             elseif( key==K_ALT_V )    
                 this:paste()
                 this:changed:=.t.

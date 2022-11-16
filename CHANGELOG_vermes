@@ -1,3 +1,7 @@
+2022-11-16
+  z editorban K_ALT_T leszedi a sorok vegerol a szokozoket;
+  zclass atirva class szintaktikara;
+
 2022-11-14 
   a crypto konyvtar deprecated lett
   warningok elnyomva: -Wno-deprecated-declarations

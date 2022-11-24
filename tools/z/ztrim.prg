@@ -19,7 +19,7 @@
  */
 
 ***************************************************************************   
-function _zedit_trailingsp(this)
+function _zedit_trim(this)
 local n
     for n:=1 to len(this:atxt)
         this:atxt[n]::=trim

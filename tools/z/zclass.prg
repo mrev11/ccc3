@@ -63,7 +63,7 @@ class zedit(object)
     method  markpgdn        {|t|_zedit_mpagedn(t)}
     method  markpgup        {|t|_zedit_mpageup(t)}
 
-    method  trailingsp      {|t|_zedit_trailingsp(t)}
+    method  trim            {|t|_zedit_trim(t)}
     method  cut             {|t,dsp|_zedit_cut(t,dsp)}
     method  copy            {|t|_zedit_copy(t)}
     method  paste           {|t|_zedit_paste(t)}

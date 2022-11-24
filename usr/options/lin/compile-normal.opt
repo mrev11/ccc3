@@ -15,6 +15,7 @@
 -Wall
 -Wno-unused
 -Wno-unused-value
+-Wno-unused-result
 -Wno-trigraphs
 -Wno-empty-body
 -Wno-format-overflow

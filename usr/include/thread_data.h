@@ -22,25 +22,8 @@
 #define _THREAD_DATA_H_
 
 
-#ifdef GC_BOEHM
-#   define GC_THREADS
-//#   define GC_DEBUG
-#   include <gc/gc.h> 
-#   undef dlopen
-#   undef CreateThread
-#   define CreateThread GC_CreateThread
-
-    //A thread_data-nak a kollektor által ellenőrzött memóriában 
-    //kell lennie, a new operátor emiatt önmagában nem használható.
-    //Linuxon a GC_add_roots/GC_remove_roots működik (new után/delete előtt),
-    //de Windowson sajnos hiányzik a GC_remove_roots.
-
-#   define NEWTHRDATA()  (((thread_data*)GC_MALLOC(sizeof(thread_data)))->init())
-#   define DELTHRDATA(d) (((thread_data*)(d))->cleanup())
-#else
-#   define NEWTHRDATA()  (new thread_data())
-#   define DELTHRDATA(d) (delete (thread_data*)(d))
-#endif
+#define NEWTHRDATA()  (new thread_data())
+#define DELTHRDATA(d) (delete (thread_data*)(d))
  
 class thread_data
 {

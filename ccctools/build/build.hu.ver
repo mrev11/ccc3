@@ -1,3 +1,10 @@
+2022.12.01 -- 1.6.0 
+  exe/lib/so-k installalasa:
+  keletkezo lib/so-k atmasolodnak BUILD_LIBDIR-be;
+  keletkezo exe-k atmasolodnak BUILD_BINDIR-be;
+  getenv/putenv helyett specialis fuggvenyek;
+  BUILD_DBG=on beallitja BUILD_THR=1-et;
+
 2021.08.16 -- 1.5.1
   A parfile.bld-kben ${ENV}-et ugyanugy helyettesiti, mint $(ENV)-t.
   Bosszanto volt, hogy a bash az ${ENV} alakot ismeri, a build  viszont 

@@ -67,7 +67,7 @@ static s_batext
 static resource_hash:=simplehashNew()
 static omitted_hash:=simplehashNew()
 
-#define VERSION "1.5.1"
+#define VERSION "1.6.0"
 #define LOWER(x) (x)
 
 
@@ -84,10 +84,10 @@ local opt:=aclone(argv()),n
 #define OPTION(x)  x==left(opt[n],2) 
 #define VALUE()    substr(opt[n],3)
 
-    if( !file(getenv("BUILD_BAT")+dirsep()+"multithread_support") )
+    if( !file(buildenv_bat()+dirsep()+"multithread_support") )
         maxthread:=1
-    elseif( 1<=val(getenv("BUILD_THR"))  )
-        maxthread:=val(getenv("BUILD_THR"))
+    elseif( 1<=val(buildenv_thr())  )
+        maxthread:=val(buildenv_thr())
     end
 
     if( !s_quiet )
@@ -184,13 +184,13 @@ local opt:=aclone(argv()),n
     next
     
     //compatibility
-    if( "on"$LOWER(getenv("BUILD_DBG")) )
+    if( "on"$LOWER(buildenv_dbg()) )
         s_debug:=.t.
     end
-    if( "debug"$LOWER(getenv("BUILD_DBG")) )
+    if( "debug"$LOWER(buildenv_dbg()) )
         s_debug:=.t.
     end
-    if( "dry"$LOWER(getenv("BUILD_DBG")) )
+    if( "dry"$LOWER(buildenv_dbg()) )
         s_debug:=.t.
         s_dry:=.t.
     end
@@ -204,6 +204,13 @@ local opt:=aclone(argv()),n
 
     root()
     params()
+
+    if( s_debug )
+        maxthread:=1
+        buildenv_thr("1")
+        list_buildenv()
+    end
+
     build()
     
     ?
@@ -216,18 +223,18 @@ static function s_rules_from_build_bat()
 
 local d,n,rule
 
-    if( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bat") )
+    if( file(buildenv_bat()+dirsep()+"prg2obj.bat") )
         s_batext:=".bat"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.bash") )
+    elseif( file(buildenv_bat()+dirsep()+"prg2obj.bash") )
         s_batext:=".bash"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.sh") )
+    elseif( file(buildenv_bat()+dirsep()+"prg2obj.sh") )
         s_batext:=".sh"
-    elseif( file(getenv("BUILD_BAT")+dirsep()+"prg2obj.msys2") )
+    elseif( file(buildenv_bat()+dirsep()+"prg2obj.msys2") )
         s_batext:=".msys2"
     end
 
     asize(s_rules,0)
-    d:=directory(getenv("BUILD_BAT")+dirsep()+"*"+s_batext)
+    d:=directory(buildenv_bat()+dirsep()+"*"+s_batext)
     for n:=1 to len(d)
         rule:=d[n][1]::strtran(s_batext,"")::split("2")
         if( len(rule)==2 )
@@ -294,7 +301,7 @@ local par:=memoread(parfil),n,p,i
         //2006.09.26
         //Először a megadott directoryban keres,
         //ha ott nincs, akkor megnézi a build directoryban.
-        par:=memoread(getenv("BUILD_BAT")+dirsep()+parfil)
+        par:=memoread(buildenv_bat()+dirsep()+parfil)
     end
 
     if(s_debug)
@@ -384,7 +391,7 @@ static function root()
 
 local srcroot,d,n
  
-    if( !empty(srcroot:=getenv("BUILD_SRC")) )
+    if( !empty(srcroot:=buildenv_src()) )
 
         if( !right(srcroot,1)$"/\"  )
             srcroot+=dirsep()
@@ -443,42 +450,42 @@ local txt,set,lst,n
     txt:=""
     txt+=if(s_srcdir==NIL,".",s_srcdir)+";"
     txt+=if(s_incdir==NIL,"",s_incdir)+";"
-    txt+=getenv("BUILD_INC")+";"
+    txt+=buildenv_inc()+";"
     txt+=getenv("include")+";"
     txt:=strtran(txt,","," ")  //","->" "
     txt:=strtran(txt,";"," ")  //";"->" "
     #ifdef _UNIX_
     txt:=strtran(txt,":"," ")  //":"->" "
     #endif
-    putenv("BUILD_INC="+txt)
-    //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildi",txt)
+    buildenv_inc(txt)
+    //memowrit(buildenv_obj()+dirsep()+"buildi",txt)
  
  
     //library directories 
 
     txt:=""
     txt+=if(s_libdir==NIL,"",s_libdir)+";"
-    txt+=getenv("BUILD_LPT")+";"
+    txt+=buildenv_lpt()+";"
     txt+=getenv("lib")+";"
     txt:=strtran(txt,","," ")  //","->" "
     txt:=strtran(txt,";"," ")  //";"->" "
     #ifdef _UNIX_
     txt:=strtran(txt,":"," ")  //":"->" "
     #endif
-    putenv("BUILD_LPT="+txt)
-    //memowrit(getenv("BUILD_OBJ")+dirsep()+"buildp",txt)
+    buildenv_lpt(txt)
+    //memowrit(buildenv_obj()+dirsep()+"buildp",txt)
 
 
     //library files
 
     txt:=""
     txt+=if(s_libfil==NIL,"",s_libfil)+";"
-    txt+=getenv("BUILD_LIB")+";"
+    txt+=buildenv_lib()+";"
     txt:=strtran(txt,","," ")  //","->" "
     txt:=strtran(txt,";"," ")  //";"->" "
-    putenv("BUILD_LIB="+txt)
+    buildenv_lib(txt)
     s_libspec:=search_library()
-    putenv("BUILD_LIB="+s_libspec)
+    buildenv_lib(s_libspec)
     s_libspec::=split(" ")
     
     return NIL
@@ -658,10 +665,11 @@ local thread:={},th,n
 ****************************************************************************
 static function makeso(libnam,object)  //so-t az objectekből (UNIX)
 
-local target:=getenv("BUILD_OBJ")+dirsep()+"lib"+libnam+".so",ttarget 
+local target:=buildenv_obj()+dirsep()+"lib"+libnam+".so",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2so"+s_batext
-local objdir:=getenv("BUILD_OBJ"), n 
+local torun:=buildenv_bat()+dirsep()+"obj2so"+s_batext
+local objdir:=buildenv_obj(), n 
+local libdir:=buildenv_libdir()
 
     if( !file(torun) )
         ? "["+torun+"]", @"does not exist"
@@ -695,6 +703,11 @@ local objdir:=getenv("BUILD_OBJ"), n
     
     if( update )
         run1 (torun)
+
+        if( !empty(libdir) )
+            ferase( libdir+dirsep()+"lib"+libnam+".so" )
+            filecopy(target,libdir+dirsep()+"lib"+libnam+".so")
+        end
     end
     
     return NIL
@@ -703,10 +716,11 @@ local objdir:=getenv("BUILD_OBJ"), n
 ****************************************************************************
 static function makelib(libnam,object)  //lib-et az objectekből
 
-local target:=getenv("BUILD_OBJ")+dirsep()+libnam+".lib",ttarget 
+local target:=buildenv_obj()+dirsep()+libnam+".lib",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2lib"+s_batext
-local objdir:=LOWER(getenv("BUILD_OBJ")), n 
+local torun:=buildenv_bat()+dirsep()+"obj2lib"+s_batext
+local objdir:=LOWER(buildenv_obj()), n 
+local libdir:=buildenv_libdir()
 local objlist
 
     if( !file(torun) )
@@ -764,7 +778,13 @@ local objlist
         #endif
 
         run1 (torun)
+
+        if( !empty(libdir) )
+            ferase( libdir+dirsep()+libnam+".lib" )
+            filecopy(target,libdir+dirsep()+libnam+".lib")
+        end
     end
+
     
     return NIL
  
@@ -772,10 +792,11 @@ local objlist
 ****************************************************************************
 static function makeexe(exenam,object) //exe-t az objectekből
 
-local target:=getenv("BUILD_EXE")+dirsep()+exenam+".exe",ttarget 
+local target:=buildenv_exe()+dirsep()+exenam+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"obj2exe"+s_batext
-local objdir:=LOWER(getenv("BUILD_OBJ")), n 
+local torun:=buildenv_bat()+dirsep()+"obj2exe"+s_batext
+local objdir:=LOWER(buildenv_obj()), n 
+local bindir:=buildenv_bindir()
 local objlist, xobj
 
     if( !file(torun) )
@@ -849,6 +870,11 @@ local objlist, xobj
         #endif
 
         run1 (torun)
+
+        if( !empty(bindir) )
+            ferase( bindir+dirsep()+exenam+".exe")
+            filecopy(target,bindir+dirsep()+exenam+".exe")
+        end
     end
 
     thread_mutex_lock(mutex_count)
@@ -862,10 +888,11 @@ local objlist, xobj
 ****************************************************************************
 static function makeexe1(mmod,libnam) //exe-t a main modulból + lib-ből
 
-local target:=getenv("BUILD_EXE")+dirsep()+mmod+".exe",ttarget 
+local target:=buildenv_exe()+dirsep()+mmod+".exe",ttarget 
 local depend,tdepend,update:=.f.
-local torun:=getenv("BUILD_BAT")+dirsep()+"lib2exe"+s_batext
-local objdir:=getenv("BUILD_OBJ"), n 
+local torun:=buildenv_bat()+dirsep()+"lib2exe"+s_batext
+local objdir:=buildenv_obj(), n 
+local bindir:=buildenv_bindir()
 
     if( !file(torun) )
         ? "["+torun+"]", @"does not exist"
@@ -907,6 +934,11 @@ local objdir:=getenv("BUILD_OBJ"), n
     
     if( update )
         run1 (torun)
+
+        if( !empty(bindir) )
+            ferase( bindir+dirsep()+mmod+".exe")
+            filecopy(target,bindir+dirsep()+mmod+".exe")
+        end
     end
 
     thread_mutex_lock(mutex_count)
@@ -922,7 +954,7 @@ static function makeobj(deplist)  //object előállítása (egyenként)
 
 local target:=deplist[1] 
 local depend:=deplist[2]  
-local objdir:=getenv("BUILD_OBJ") 
+local objdir:=buildenv_obj() 
 local ttarget,tdepend
 local update:=.f.,torun
 local n,p1,p2
@@ -951,7 +983,7 @@ local n,p1,p2
     
     if( update )
         
-        torun:=getenv("BUILD_BAT")+dirsep()
+        torun:=buildenv_bat()+dirsep()
         torun+=strtran(fext(deplist[2])+"2"+fext(deplist[1]),".","")
         torun+=s_batext
 
@@ -990,7 +1022,7 @@ local runtmp,out
         runtmp:="log-runtmp"+alltrim(str(++count))
         thread_mutex_unlock(mutex_out)
 
-        if( "msys2"$getenv("BUILD_BAT") )
+        if( "msys2"$buildenv_bat() )
             //? "BASH",cmd;?
             bash(cmd+" >"+runtmp)
         else
@@ -1079,9 +1111,9 @@ static function search_library()
 //megkeresi a lib-eket libpath-ban,
 //így a linker paraméterezése egyszerűbb
 
-local dirlist:=split(getenv("BUILD_LPT")," ")
-local liblist:=split(getenv("BUILD_LIB")," ")
-local sharing:=LOWER(getenv("BUILD_SHR"))  //"shared" or "static" libraries
+local dirlist:=split(buildenv_lpt()," ")
+local liblist:=split(buildenv_lib()," ")
+local sharing:=LOWER(buildenv_shr())  //"shared" or "static" libraries
 
 local n,i,txt:="" 
 local f0,f1,f2,f3,pf1,pf2,pf3

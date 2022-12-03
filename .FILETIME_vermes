@@ -1,12 +1,20 @@
-df0d9dbc658aebaa2e809e72d398982ba7a0e361 2022112408:44:25-UTC ./CHANGELOG_vermes
+c33e8045763b5b0bc6e50ac18c813cbab1bdbc30 2022120312:55:46-UTC ./CHANGELOG_vermes
+6d467c99d636c8f6093031176f22a46e0eafe40f 2022120312:15:51-UTC ./jt/jterminal/jterminal.jar
+731a5454f4edc6c32e526cfa8b6a2cc739f19e89 2022120312:15:51-UTC ./log-install
+4fcef6d119ade5e0fdec07bfaf7cb614d577d3a4 2022120312:14:37-UTC ./usr/bin/linux/build
+e0118cf348cb557f46586e0accd03242d5da1a18 2022120312:14:16-UTC ./setup/setup-unix/compopt
+342eee244694ce34e2dfe1062b0c2c269faec273 2022120312:11:56-UTC ./ccctools/build/build.hu.ver
+33326045ee2de72b4540f56008a3dbee29e87a9c 2022120312:04:26-UTC ./ccctools/build/build.prg
+72b516ffb8537d02a6514127f718414f621f8851 2022120310:52:30-UTC ./ccctools/build/m
+f2f143e846e451fd5e92b46e873479e3827fab84 2022120310:18:17-UTC ./ccctools/build/buildenv.prg
+e53ec14b0d7b27d85106378e259f21ac8b28e7fa 2022112617:07:52-UTC ./usr/include/variable.h
+cc39b352f407f49eadd5764083d352439165a875 2022112617:04:25-UTC ./usr/include/thread_data.h
 b118a6dc6da3a71e2af4ea8275ea9ce7c9b9c246 2022112408:38:40-UTC ./usr/bin/linux/z
 1ee1bb00d13521abf4424f3b3401d1d5416c0b32 2022112408:38:37-UTC ./tools/z/zloop.prg
 1f2bc064477fdddea51c6c25a6ce34909ba7d9b5 2022112408:38:05-UTC ./tools/z/zclass.prg
 15c3a363a9b2db2c7b42b51863b1ebef81a51cc1 2022112408:32:06-UTC ./tools/z/ztrim.prg
 d3a87879fcbaaa9272449a61f384cb5c2c6a22e1 2022112408:30:42-UTC ./usr/options/lin/compile-debug.opt
 682f9734594b3aec9f5e92e5d2b5909e6212e0d1 2022112408:30:13-UTC ./usr/options/lin/compile-normal.opt
-d021f092a2401922ffb8e6490026c1f579705f67 2022112114:24:19-UTC ./jt/jterminal/jterminal.jar
-d821713b67338e1f6e61690d6d02ab70aa563f38 2022112114:24:19-UTC ./log-install
 869b032157b18b4b22beaf99f63720356d320742 2022112114:24:18-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2022112114:24:18-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2022112114:24:18-UTC ./jt/jterminal/getutil/checkfield.class
@@ -149,9 +157,7 @@ fcb224825f88ebeda88022733d9ceff0622d2463 2022111421:03:43-UTC ./usr/bin/linux/te
 a956bfe08ad2fda4511fefac71124562e7e3f66a 2022111421:03:42-UTC ./usr/bin/linux/mklink
 ff8b44eb8d7753bfc5c0a039368945d8fa08438e 2022111421:03:42-UTC ./usr/bin/linux/removecr
 8327b2e1d22cec4b1805d30f98f62f1ac783cf02 2022111421:03:41-UTC ./usr/bin/linux/prg2ppo
-31009b10cfd5a074e608ccc08960c962d880df4b 2022111421:03:39-UTC ./usr/bin/linux/build
 36cfc3df0f3670453bebd64291f8f2e522039491 2022111421:03:24-UTC ./usr/bin/linux/ppo2cpp
-d167ca94f75a2f6a26abf3d636b0947952ad2b2e 2022111421:03:18-UTC ./setup/setup-unix/compopt
 506f593338a83e32755eedef0f97f6d4d315885b 2022110916:26:04-UTC ./tools/xmlrpc-framework/rpcutil/wrapper.prg
 83b8e319a41b69fd8e3a9ccdcab0dc842b277a31 2022110815:58:21-UTC ./tools/xmlrpc-framework/s.savex
 af8e5a1a5552bbea2f2c6bad8a1faa3a47d443fb 2022110815:57:00-UTC ./tools/xmlrpc-framework/client/rpcmonitor/parfile.bld
@@ -425,7 +431,6 @@ b96a5eed6222cbf100940dea7feced24fc9aedf6 2021123010:44:20-UTC ./make_extn.msys2
 6bbbdfc102772c0f4bbf6793d7e4dc59a2564a49 2021123010:22:46-UTC ./make_extn.bat
 b6233ebdcaa29eccc5c7a1d3750134ee97ee2e82 2021123000:03:30-UTC ./setup/setup-windows/build/build.cpp
 304cb979e4bae1f661d546b71ff91c9b10748aac 2021122923:49:48-UTC ./setup/setup-unix/build/build.cpp
-6bd3e8fe3819b8dfa21e3ec3c89983f22f427d91 2021122923:49:20-UTC ./ccctools/build/build.prg
 6afbe973c291ad5b910f0af73198ef90a1d2b3d2 2021122923:47:04-UTC ./setup/setup-unix/build/s_buildp_ppo.savex
 c4f731ce45845c41869f13217135d57cb2b2c4c7 2021122923:46:23-UTC ./make_base.msys2
 efead03c13c8b6dae4ea37df885c22fb017749fe 2021122923:45:25-UTC ./make_base.bat
@@ -440,7 +445,6 @@ f2346cb3afdcfb40a62063be6b233856069369b1 2021122921:53:55-UTC ./usr/build/freebs
 7f3b87cc62d4e1fc602d163912865520d9b5814a 2021122921:50:30-UTC ./ccctools/ppo2cpp/parser.lem
 20443702b8b44e7ac13acd78ac2b2e9aa9a56d5d 2021122918:11:01-UTC ./usr/build/linux/prg2obj.bat
 d2436f84f094941c64427afc6e1221b5e90a429b 2021122915:53:30-UTC ./m
-b5722f71e1e2f85c029df0b06f9abed480998a20 2021122914:24:56-UTC ./ccctools/build/m
 ab45fb1da9502fcbc31b42f5433921bd2924174d 2021122914:24:47-UTC ./ccctools/build1/m
 e989263fe1f92fea9442acf8521d12d108e8b5eb 2021122914:24:24-UTC ./ccctools/prg2ppo/m
 499566bcd05e27af29278b8a675e364a3173b2e2 2021122613:32:56-UTC ./usr/bin/windows/gc.bat
@@ -543,7 +547,6 @@ d0994dabc2673a6ac8d4b510b9dac1593ae41827 2021091309:40:50-UTC ./tools/z/z
 c7a9acd41013d2b8fdf13bcb223d1a7c0ec7d540 2021091013:31:26-UTC ./tools/xstart/x
 ffa945e75bddbc023256682fc2e50bda69116f2d 2021091011:21:51-UTC ./tools/xstart/xstart.par
 4093766b0ab66b527527e92d93101270dddb7bd2 2021082309:21:23-UTC ./tools/socket/socket-demo/udp/m.msys2
-aa171ae2ba115572e7d86987103b1ccaf07ec947 2021081609:07:47-UTC ./ccctools/buildp/build.hu.ver
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
 ce40d05c18f2ffcd651ad3251ca943e25b52f9f7 2021081213:21:00-UTC ./ccclib/src/uic/memoedit.prg
 66465ac3d45feb4b0df26fcac3780cf6e1438872 2021080507:42:35-UTC ./tools/z/zcolor.prg
@@ -1862,7 +1865,6 @@ be0129718eb0801e41808340ce1594407cd8055b 2012101006:54:33-UTC ./setup/setup-unix
 f4f863d96312cb5101a032140764d28aee0a65f4 2012100908:55:54-UTC ./setup/setup-unix/varprint.cpp
 d05d030cb1d2444297845b4839f80d713af51462 2012100908:26:09-UTC ./setup/setup-unix/substr.cpp
 37b5e65bbf6c24ef554d501c28bd8e8fc0a3ab84 2012100906:29:13-UTC ./usr/include/cccapi.h
-d72ba0a99ba83442c37ceb3131d142c0038aeee8 2012100906:13:26-UTC ./usr/include/variable.h
 77257cd1d4658a79c5fabd251c5de6a9b5af796e 2012100613:34:51-UTC ./tools/socket/socket-demo/s1
 1fa651f4f31875ff56d4f38eadc16e0ec420a446 2012100613:32:55-UTC ./tools/socket/socket-demo/s2
 b5e42536095051a776412d8387a941128c21b79a 2012100516:42:02-UTC ./tools/websrv/s.bat
@@ -2026,7 +2028,6 @@ b7ed9d369b4bcea1f7f1935e5b73d86d665ea5bc 2010080411:34:30-UTC ./doc/ccc-belulrol
 3122881094b12ef80cb34c70892b1676f9c85259 2010071811:09:14-UTC ./usr/bin/freebsd/__unix.b
 dd35366bf618a8edd04c7a178583ab82983842da 2010071112:52:03-UTC ./ccclib/src/uic/termapi/olvass.txt
 eca926ad276651c44b83bc73e97aa9d861a41ac4 2010071112:30:19-UTC ./ccclib/src/uic/termapi/termutil.h
-45a9f532725e56180e271d6933d93763fd6af50f 2010071107:34:11-UTC ./usr/include/thread_data.h
 a7cd8aff55af080dff7278bd0cfbfe16d9e9967b 2010063008:01:55-UTC ./tools/z/zdisplay.prg
 462a89f2ea199b4acf60be9d984415086fe16014 2010062909:56:54-UTC ./ccclib/src/uic/main.cpp
 6c4d25cd8917ff27b9bdd34aec30a0206e7b8607 2010062617:16:51-UTC ./ccclib/src/uic/dispbegin.cpp
@@ -2376,7 +2377,6 @@ b81a7d0b0f6c3ff28df286c26f238877f82ee586 2007060812:49:29-UTC ./tools/sql2/util/
 924929fdf457d1e4ad2cfc10d71482c85ff71a21 2007053120:12:10-UTC ./tools/sql2/test/basicdemo/deadlock2.prg
 038812be9aab1e9a22123ff9f2541b2fa29e3588 2007052211:40:40-UTC ./doc/boehmgc_vs_nativgc.txt
 4d74aff17c43260e551d3c0de7964a283d9f5fbe 2007052115:47:02-UTC ./jt/jtlib/jttoolbar.prg
-7d2ff534e8430cd984847c46bde00bc5ec088c82 2007051410:33:23-UTC ./usr/options/boehm_gc.hu.txt
 3dfe17ef57b12440372270ea024f89d3f742725a 2007050509:19:47-UTC ./tools/xmldom/demo/malloc_dbg/mdbg.b
 0f6bbf6336dfd7a19c83fe9d20a5fc50e2b30aa3 2007042508:02:52-UTC ./usr/include/mutex_dbg.h
 82e9ed6d95587d49f388a3606db5beeae59db033 2007042412:28:08-UTC ./tools/xmldom/demo/malloc_dbg/m

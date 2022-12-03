@@ -103,11 +103,9 @@ struct VALUE
     } data;
 
 #ifdef MULTITHREAD
-#ifndef GC_BOEHM
     VALUE operator=(VALUE v);
     //többszálú esetben speciális értékadás
     //variable.cpp-ben van definiálva
-#endif
 #endif
 
 };

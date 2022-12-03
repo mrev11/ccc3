@@ -1,3 +1,9 @@
+2022-12-03 
+  build.exe 1.6.0 installalja a lib/so/exe-ket:
+  a keletkezo lib/so-k atmasolodnak BUILD_LIBDIR-be;
+  a keletkezo exe-k atmasolodnak BUILD_BINDIR-be;
+  Boehm-gc maradeka kiszedve;
+
 2022-11-24 -Wno-unused-result
 
 2022-11-16

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#export BUILD_DBG=on
+
 if [[ $(uname) =~ MSYS ]];then
     echo Not usable in $(uname)
     exit 1
@@ -15,5 +17,5 @@ export PATH=.:$PATH
 
 bapp_unix_.b  "BUILD_EXE=$EXE" "BUILD_SHR=static"
 
-rm build.exe
+rm build.exe 2>/dev/null
 #ldd `which build.exe`

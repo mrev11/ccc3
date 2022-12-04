@@ -1,0 +1,45 @@
+#!/bin/bash
+OPT=${1}
+
+# b -  *.bak
+# c -  *.class
+# e -  error error-*
+# l -  *.lib
+# L -  *.log
+# o -  objlin
+# p -  ppo
+# s -  *.so
+# t -  semaphor.tmp
+# x -  *.exe
+
+if [ "${OPT}" == "" ];then
+    OPT=bcelLopstx
+fi
+
+set -f  # turn off filename expansion
+unset NAME
+if [[ ${OPT//b/} != ${OPT} ]]; then   NAME="${NAME} -o -name *.bak"         ;fi
+if [[ ${OPT//c/} != ${OPT} ]]; then   NAME="${NAME} -o -name *.class"       ;fi
+if [[ ${OPT//e/} != ${OPT} ]]; then   NAME="${NAME} -o -name error"         ;fi
+if [[ ${OPT//e/} != ${OPT} ]]; then   NAME="${NAME} -o -name error-*"       ;fi
+if [[ ${OPT//l/} != ${OPT} ]]; then   NAME="${NAME} -o -name *.lib"         ;fi
+if [[ ${OPT//L/} != ${OPT} ]]; then   NAME="${NAME} -o -name log-*"         ;fi
+if [[ ${OPT//o/} != ${OPT} ]]; then   NAME="${NAME} -o -name objlin"        ;fi
+if [[ ${OPT//o/} != ${OPT} ]]; then   NAME="${NAME} -o -name objfre"        ;fi
+if [[ ${OPT//o/} != ${OPT} ]]; then   NAME="${NAME} -o -name objnet"        ;fi
+if [[ ${OPT//o/} != ${OPT} ]]; then   NAME="${NAME} -o -name objsol"        ;fi
+if [[ ${OPT//o/} != ${OPT} ]]; then   NAME="${NAME} -o -name objmng"        ;fi
+if [[ ${OPT//p/} != ${OPT} ]]; then   NAME="${NAME} -o -name ppo"           ;fi
+if [[ ${OPT//s/} != ${OPT} ]]; then   NAME="${NAME} -o -name *.so"          ;fi
+if [[ ${OPT//t/} != ${OPT} ]]; then   NAME="${NAME} -o -name semaphor.tmp"  ;fi
+if [[ ${OPT//x/} != ${OPT} ]]; then   NAME="${NAME} -o -name *.exe"         ;fi
+
+if [ "${NAME}" != "" ]; then
+    # VIGYAZNI kell, hogy NAME ne legyen ures
+    # ha NAME ures, akkor minden torlodik 
+    # -name QWERTYUIOP ezzel biztosan nem ures
+    # set -x
+    find . -type f -name QWERTYUIOP ${NAME} | xargs rm -rf
+fi
+set +f # restore filename expansion
+

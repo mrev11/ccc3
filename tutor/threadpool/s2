@@ -1,0 +1,3 @@
+#!/bin/bash
+pool2.exe | tee log-s2 
+grep -v '###' log-s2 | sort -n -k 5 

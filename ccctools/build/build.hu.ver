@@ -1,3 +1,7 @@
+2022.12.06 -- 1.6.1
+  atirva threadpool-ra;
+  felbontva kisebb prg-kre;  
+
 2022.12.01 -- 1.6.0 
   exe/lib/so-k installalasa:
   keletkezo lib/so-k atmasolodnak BUILD_LIBDIR-be;

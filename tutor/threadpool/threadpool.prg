@@ -85,21 +85,23 @@ local act
     return act
 
 ******************************************************************************************
-static function threadpool.wait(this)
+static function threadpool.wait(this,lwm:=0)
 
     //var, mig elfogynak a jobok a sorbol
     this:jobmutx::thread_mutex_lock
-    while( len(this:jobs)>0 )
+    while( len(this:jobs)>lwm )
         this:jobcond::thread_cond_wait(this:jobmutx)
     end
     this:jobmutx::thread_mutex_unlock
-
-    //var, mig befejezodnek a futo jobok
-    this:actmutx::thread_mutex_lock
-    while( this:active>0  )
-        this:actcond::thread_cond_wait(this:actmutx)
+    
+    if( lwm==0 )
+        //var, mig befejezodnek a futo jobok
+        this:actmutx::thread_mutex_lock
+        while( this:active>0  )
+            this:actcond::thread_cond_wait(this:actmutx)
+        end
+        this:actmutx::thread_mutex_unlock
     end
-    this:actmutx::thread_mutex_unlock
 
 ******************************************************************************************
 static function threadpool.exit(this)

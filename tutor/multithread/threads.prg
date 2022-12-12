@@ -18,10 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-// A program sok threadet hoz létre.
-// A threadek átlagosan 1 másodpercig élnek,
-// az egyszerre életben levő threadek száma<=MAXTHREAD.
-// Végül megvárjuk az összes thread kilépését.
+// A program sok threadet hoz letre.
+// A threadek atlagosan 1 masodpercig elnek,
+// az egyszerre eletben levo threadek szama<=MAXTHREAD.
+// Vegul megvarjuk az osszes thread kilepeset.
 
 #include "inkey.ch"
 
@@ -43,13 +43,13 @@ local th
         thread_detach(th)
         
         //A threadeket vagy el kell engedni (detach)
-        //vagy meg kell várni  (join), máskülönben
-        //elfogynak a létrehozható threadek (Linuxon kb. 90).
+        //vagy meg kell varni  (join), maskulonben
+        //elfogynak a letrehozhato threadek (Linuxon kb. 90).
 
         thread_mutex_lock(mutex)
 
-        //A level változót a threadek módosítgatják,
-        //ezért csak mutex védelem alatt biztonságos a kiolvasása.
+        //A level valtozot a threadek modositgatjak,
+        //ezert csak mutex vedelem alatt biztonsagos a kiolvasasa.
 
         ? padl(l2hex(th),8), count, level
         ++level
@@ -73,7 +73,7 @@ local th
 
 *******************************************************************************
 static function t(x,r)
-    sleep(r*2000)  //átlagosan 1 másodpercet vár
+    sleep(r*2000)  //atlagosan 1 masodpercet var
     thread_mutex_lock(mutex)
     --level
     ? "quit",x,r

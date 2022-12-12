@@ -58,7 +58,6 @@ local clid:=outputClass()
 ****************************************************************************
 static function outputIni(this,size) 
 
-    objectIni(this)
 
     //minden adattagot inicializálni kell!
 

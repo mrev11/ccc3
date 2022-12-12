@@ -65,7 +65,6 @@ local clid:=arrayClass()
 
 ****************************************************************************
 function arrayIni(this) 
-    objectIni(this)
     this:array:=array(256)
     this:ecount:=0
     return this

@@ -35,6 +35,7 @@ static function objectRegister()
 local clid:=classRegister("object",NIL) //osztalynev, {baseid}
 
     classMethod(clid,"initialize"   ,{|this|objectIni(this)})
+    classMethod(clid,"clean"        ,{|this|clean(this)})
     classMethod(clid,"classname"    ,{|this|className(getclassid(this))})
     classMethod(clid,"baseid"       ,{|this|classBaseID(getclassid(this))})
     classMethod(clid,"attrnames"    ,{|this|classAttrNames(getclassid(this))})
@@ -58,6 +59,15 @@ local clid:=classRegister("object",NIL) //osztalynev, {baseid}
 
 ****************************************************************************
 function objectIni(this)
+    return this
+
+
+****************************************************************************
+static function clean(this)
+local n
+    for n:=1 to len(this)
+        this[n]:=NIL
+    next
     return this
 
 

@@ -97,7 +97,6 @@ local clid:=dbaseiiiClass(name)
 
 ****************************************************************************
 function dbaseiiiIni(this,name) 
-    objectIni(this)
     clIni(this)
     if( name!=NIL )
         this:structname:=lower(alltrim(name))

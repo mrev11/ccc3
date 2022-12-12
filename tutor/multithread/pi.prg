@@ -53,7 +53,7 @@ function process(iproc)  //iproc==1,2,...
 local localsum:=0
 local width:=1/intervals 
 local i, x
-    //? getpid() 2.4-es kernel
+
     ? thread_self()
 
     for i:=iproc to intervals step thcount

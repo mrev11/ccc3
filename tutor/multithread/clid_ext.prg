@@ -22,44 +22,44 @@
 #define WAIT 1000
 
 #ifdef EMLEKEZTETO
-    Ez a program demonstrálja a CCC-nek azt a tulajdonságát,
-    hogy a külső static változók inicializátorát szinkronizálja.
+    Ez a program demonstralja a CCC-nek azt a tulajdonsagat,
+    hogy a kulso static valtozok inicializatorat szinkronizalja.
 
-    A CLID_EXT definiálásával clid_test KÜLSŐ változó, 
-    a CCC automatikusan szinkronizálja az inicializátort, 
-    ezért WAIT értékétől függetlenül testRegister() csak egyszer 
-    fut, ez a megkívánt működés.
+    A CLID_EXT definialasaval clid_test KULSO valtozo, 
+    a CCC automatikusan szinkronizalja az inicializatort, 
+    ezert WAIT erteketol fuggetlenul testRegister() csak egyszer 
+    fut, ez a megkivant mukodes.
     
-    A CLID_EXT definíció nélkül clid_test BELSŐ változó,
-    amit a CCC (jelenleg) nem szinkronizál automatikusan,
-    ezért WAIT>0 esetén testRegister() hibásan kétszer fut.
+    A CLID_EXT definicio nelkul clid_test BELSO valtozo,
+    amit a CCC (jelenleg) nem szinkronizal automatikusan,
+    ezert WAIT>0 eseten testRegister() hibasan ketszer fut.
     
-    Megjegyzés: A C++ egyáltalán nem foglalkozik a static változók 
-    inicializátorának szinkronizálásával (nem része a nyelvnek),
-    ezért C++-ban a static változók többször inicializálódhatnak
-    (ezt a hibát örökli a CCC).
+    Megjegyzes: A C++ egyaltalan nem foglalkozik a static valtozok 
+    inicializatoranak szinkronizalasaval (nem resze a nyelvnek),
+    ezert C++-ban a static valtozok tobbszor inicializalodhatnak
+    (ezt a hibat orokli a CCC).
     
-    Megjegyzés: Ha mutex-szel szinkronizálunk, annak nyilván
-    static-nak kell lennie, hogy minden szál ugyanazt a mutexet fogja.
-    Ha a CCC mutex belső static változónak van definiálva,
-    akkor előfordulhat, hogy a static mutex hibásan többször is
-    inicializálódik, tehát használhatatlan. Ezért KÜLSŐ static 
-    mutexeket célszerű használni.
+    Megjegyzes: Ha mutex-szel szinkronizalunk, annak nyilvan
+    static-nak kell lennie, hogy minden szal ugyanazt a mutexet fogja.
+    Ha a CCC mutex belso static valtozonak van definialva,
+    akkor elofordulhat, hogy a static mutex hibasan tobbszor is
+    inicializalodik, tehat hasznalhatatlan. Ezert KULSO static 
+    mutexeket celszeru hasznalni.
     
-    Megjegyzés: A belső static-ok azért nincsenek szinkronizálva, 
-    mert a szinkronizálás drága, és viszonylag ritkán van rá szükség 
-    (kevés többszálú program van).  A külsők static-ok szinkronizálva 
-    vannak, másképp minden mutexet előre létre kellene hozni (a program 
-    egyszálú korában), nehogy már maga a mutex is rossz legyen.
+    Megjegyzes: A belso static-ok azert nincsenek szinkronizalva, 
+    mert a szinkronizalas draga, es viszonylag ritkan van ra szukseg 
+    (keves tobbszalu program van).  A kulsok static-ok szinkronizalva 
+    vannak, maskepp minden mutexet elore letre kellene hozni (a program 
+    egyszalu koraban), nehogy mar maga a mutex is rossz legyen.
     
-    Megjegyzés: A CCC static változók inicializátora akkor fut,
-    amikor a program használni kezdi a változót. Korábban ez nem
-    így volt, és problémát okozott, hogy az MSC nem tudta kezelni
-    a rekurzív inicializálást, amikor egy inicializátor hivatkozik
-    egy másik static változóra, amit szintén inicializálni kell...
+    Megjegyzes: A CCC static valtozok inicializatora akkor fut,
+    amikor a program hasznalni kezdi a valtozot. Korabban ez nem
+    igy volt, es problemat okozott, hogy az MSC nem tudta kezelni
+    a rekurziv inicializalast, amikor egy inicializator hivatkozik
+    egy masik static valtozora, amit szinten inicializalni kell...
     
-    Megjegyzés: Mit mond a C/C++ szabvány a static változók
-    inicializálásáról?
+    Megjegyzes: Mit mond a C/C++ szabvany a static valtozok
+    inicializalasarol?
 #endif
 
 

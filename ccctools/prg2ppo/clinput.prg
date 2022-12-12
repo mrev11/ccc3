@@ -51,7 +51,6 @@ local clid:=inputClass()
 ****************************************************************************
 static function inputIni(this,size,toklist) 
 
-    objectIni(this)
 
     //minden adattagot inicializálni kell!
     

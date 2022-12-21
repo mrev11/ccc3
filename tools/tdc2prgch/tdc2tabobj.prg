@@ -1,6 +1,6 @@
 
 
-#define VERSION "tdc2tabobj 1.0"
+#define VERSION "tdc2tabobj 1.1"
 
 
 ******************************************************************************************
@@ -15,10 +15,11 @@ local tdc:={*},n
 static function tdc2prg( tdcspec )
 
 local tdc:=memoread(tdcspec)
-local n,line,key,val
+local n,line,pos,key,val
 local table
 local index:={}
 local field:={}
+local path
 local prg
 local outspec
 
@@ -32,20 +33,23 @@ local outspec
     for n:=1 to len(tdc)
         line:=tdc[n]
         if( line::left(1)=="!" )
-            key:=line[1..6]
-            val:=line[8..]::alltrim
+            pos:=at(" ",line)
+            key:=line[1..pos-1]::alltrim
+            val:=line[pos+1..]::alltrim
         
             if( key=="!field" )
                 field::aadd(val::split(" "))
             elseif( key=="!index" )
                 index::aadd(val::split(" "))
+            elseif( key=="!path" )
+                path:=val
             elseif( key=="!table" )
                 table:=val
             end
         end
     next
     
-    prg:=genprg( table,index,field )
+    prg:=genprg( table,path,index,field )
 
     outspec:="tabobj."+lower(table)+".prg"
     if( !memoread( outspec)==prg )
@@ -54,7 +58,7 @@ local outspec
 
 
 ******************************************************************************************
-static function genprg(table,index,field)
+static function genprg(table,path,index,field)
 
 local lf:=chr(10)
 local n,line
@@ -89,19 +93,24 @@ local prg:="//"+VERSION+lf+lf
         line::=strtran("[SEGMENTS]" ,index[n][3..]::any2str)
         prg+=line+lf
     next
+
+    if( path!=NIL )
+        prg+='    tabPath(this,"[PATH]/")'::strtran("[PATH]",path)+lf
+    end
+   
     prg+="    return this"+lf
 
     prg+=<<PRG>>
-static function tabobj.cassa.__colblk__() 
+static function tabobj.TABLE.__colblk__() 
 static colblk:=.t.
 local result:=colblk
     colblk:=.f.
     return result // eloszor .t., utana mindig .f.
 
-static function tabobj.cassa.__mutex__()
+static function tabobj.TABLE.__mutex__()
 static mutex:=thread_mutex_init()
     return mutex
-<<PRG>>
+<<PRG>>::strtran("TABLE",table)
     
     return prg
 

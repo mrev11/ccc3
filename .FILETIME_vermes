@@ -1,8 +1,10 @@
+365fcf225d819b661fbc79e3c6d33ad9ed964e60 2022122116:28:39-UTC ./CHANGELOG_vermes
+51093e50c7d59630d2919e5aa4926c5df3c50c63 2022122114:16:57-UTC ./usr/bin/linux/tdc2tabobj
+c0b0d57cb3f3d4e248a9bd3c0b8c3de87063054a 2022122114:16:31-UTC ./tools/tdc2prgch/tdc2tabobj.prg
 92dd2d9a641b125603bf61a64dced843fce68fdf 2022121215:59:40-UTC ./tutor/multithread/threads.prg
 b3ea121b0637a68344458218b4991223d01e204c 2022121215:57:21-UTC ./tutor/multithread/clid_ext.prg
 135d9bebfc8f458c6231d7d9b2698b0c4b5edb1f 2022121215:55:51-UTC ./tutor/multithread/pi.prg
 a2558398306b7103fccee1ec5cf4665792664c89 2022121215:42:09-UTC ./tutor/multithread/waitx.prg
-4cc76465b8524dbccd52762821cdef5851529de7 2022121215:40:18-UTC ./CHANGELOG_vermes
 808d04cd4f7b7b2abacf981840fe0f6b082f496b 2022121215:36:37-UTC ./jt/jterminal/jterminal.jar
 45eb679fbfb4ecdfddff3a17c301751b37e9ef9f 2022121215:36:37-UTC ./log-install
 a00b803224a7796e3817993e60cfec7fb2af3c39 2022121215:36:29-UTC ./usr/bin/linux/websrv
@@ -178,7 +180,6 @@ c19c475e2f7a17103a82e107219e40951d184ecc 2022111421:04:04-UTC ./usr/bin/linux/tv
 0379abce1e2a04f9c7e1f4741961b8c34609c6fd 2022111421:04:03-UTC ./usr/bin/linux/prg2tdc
 460e19e558d530039beeff66de650c27ec436391 2022111421:04:03-UTC ./usr/bin/linux/tabsuper
 04af28daa1dea50310deb1f16aea9e0affb22ae7 2022111421:04:03-UTC ./usr/bin/linux/tdc2prgch
-18d12f99b63da3ca9987a518d8364745775a978b 2022111421:04:03-UTC ./usr/bin/linux/tdc2tabobj
 f9dfed99ab2c467105b393db96cf9d611da76a54 2022111421:03:58-UTC ./usr/bin/linux/bt2dbf
 11cf99b365888115ff35f70d9338d07c27c7dafa 2022111421:03:58-UTC ./usr/bin/linux/bt2txt
 f980be71cd164e6fba04960f9d2f776d4d422da2 2022111421:03:58-UTC ./usr/bin/linux/bti
@@ -227,7 +228,6 @@ a1ed05a753d1275bbe6ec08553f3f5847efa78f6 2022103114:01:47-UTC ./tools/tdc2prgch/
 c5e00a68afd86daa06c26b56ee09e5d038f43e15 2022103113:31:28-UTC ./tabobj/common.src/tabobj.prg
 1c9fc4db072fa57670b99faa14445a5412a7f2b1 2022103113:26:49-UTC ./tools/tdc2prgch/tabobj/parfile.bld
 bb4c078be43635e963f57f76747fe5c743d1bbce 2022103112:36:00-UTC ./tools/tdc2prgch/tabobj/tdc/_cassa.ch
-ba18db0d55d41a6063a19a7ab58c0e19eb7d0d6e 2022103111:40:00-UTC ./tools/tdc2prgch/tdc2tabobj.prg
 72750bccca43934523981f9d9b797e75e3c24a75 2022103109:53:39-UTC ./tools/tdc2prgch/tabobj/tdc/_cassa.tdc
 992c675b6e405e7fecd798b9f1b59cc3bd44ff12 2022103013:17:57-UTC ./tools/mask/maskdemo.say
 531bd2ee6d324cdda5725a1cde213348b796b99c 2022102915:53:52-UTC ./tools/tdc2prgch/tabobj/.gitignore

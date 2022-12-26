@@ -51,6 +51,8 @@ void _clp_thread_cond_signal(int argno){stack-=argno;PUSHNIL();}
 void _clp_thread_cond_wait(int argno){stack-=argno;PUSHNIL();} 
 void _clp_thread_cond_destroy(int argno){stack-=argno;PUSHNIL();} 
 void _clp_thread_create_detach(int argno){stack-=argno;PUSHNIL();}
+void _clp_thread_setname(int argno){stack-=argno;PUSHNIL();} 
+void _clp_thread_getname(int argno){stack-=argno;PUSHNIL();} 
 
 #else
 
@@ -346,7 +348,15 @@ void _clp_thread_create_detach(int argno)
 }
 
 //---------------------------------------------------------------------------
+void _clp_thread_setname(int argno){stack-=argno;PUSHNIL();} 
+// windowsban ez csak "debug konvencio" (azaz nem letezik)
 
+//---------------------------------------------------------------------------
+void _clp_thread_getname(int argno){stack-=argno;PUSHNIL();} 
+// windowsban ez csak "debug konvencio" (azaz nem letezik)
+
+
+//---------------------------------------------------------------------------
 #endif
 
 

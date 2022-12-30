@@ -21,8 +21,10 @@ class threadpool(object)
     method  lenjobs             // length of queue of jobs
     method  actjobs             // number of jobs under processing (active)
 
-    method  wait
-    method  exit
+    method  wait                // var, amig minden job lefut
+    method  wait_job            // var, hogy elinduljanak a jobok
+    method  wait_act            // var, hogy befejezodjenek a jobok
+    method  exit                // csokkenti a threadek szamat
 
     method  initialize
 
@@ -49,9 +51,11 @@ local n
 
     return this
 
+
 ******************************************************************************************
 static function threadpool.addthread(this)
     thread_create({|t|thread(t)},this)
+
 
 ******************************************************************************************
 static function threadpool.numthreads(this)
@@ -61,12 +65,14 @@ local num
     this:thrmutx::thread_mutex_unlock
     return num
 
+
 ******************************************************************************************
 static function threadpool.addjob(this,job)
     this:jobmutx::thread_mutex_lock
     this:jobs::aadd(job)
     this:jobmutx::thread_mutex_unlock
     this:jobcond::thread_cond_signal    // jelzi a queue valtozasat
+
 
 ******************************************************************************************
 static function threadpool.lenjobs(this)
@@ -76,6 +82,7 @@ local len
     this:jobmutx::thread_mutex_unlock
     return len
 
+
 ******************************************************************************************
 static function threadpool.actjobs(this)
 local act
@@ -84,33 +91,55 @@ local act
     this:actmutx::thread_mutex_unlock
     return act
 
-******************************************************************************************
-static function threadpool.wait(this,lwm:=0)
 
-    //var, mig elfogynak a jobok a sorbol
+******************************************************************************************
+static function threadpool.wait(this)
+    this:wait_job  // elfogynak a sorbol a job-ok
+    this:wait_act  // a futo job-ok befejezodnek
+
+// VIGYAZAT: ha van orokke futo job, akkor orokre beragad
+
+
+******************************************************************************************
+static function threadpool.wait_job(this,lwm:=0)
+
+// var, mig a jobok soranak hossza lwm-re csokken
+// szabadda valo threadek hijan ez orokre beragadhat
+
     this:jobmutx::thread_mutex_lock
     while( len(this:jobs)>lwm )
         this:jobcond::thread_cond_wait(this:jobmutx)
     end
     this:jobmutx::thread_mutex_unlock
     
-    if( lwm==0 )
-        //var, mig befejezodnek a futo jobok
-        this:actmutx::thread_mutex_lock
-        while( this:active>0  )
-            this:actcond::thread_cond_wait(this:actmutx)
-        end
-        this:actmutx::thread_mutex_unlock
-    end
 
 ******************************************************************************************
-static function threadpool.exit(this)
+static function threadpool.wait_act(this,lwm:=0)
+
+// var, mig az aktiv threadek szama lwm-re csokken
+// ha vannak orokke futo jobok, akkor ez orokre beragadhat
+
+    this:actmutx::thread_mutex_lock
+    while( this:active>0  )
+        this:actcond::thread_cond_wait(this:actmutx)
+    end
+    this:actmutx::thread_mutex_unlock
+
+
+******************************************************************************************
+static function threadpool.exit(this, lwm:=0)
+
+// kileptet annyi inaktiv threadet
+// hogy az osszes threadek szama lwm-re csokkenjen
+// ha vannak orokke futo jobok, akkor ez orokre beragadhat
+
     this:thrmutx::thread_mutex_lock
-    while( len(this:threads)>0 )
+    while( len(this:threads)>lwm )
         this:addjob(NIL)
         this:thrcond::thread_cond_wait(this:thrmutx)
     end
     this:thrmutx::thread_mutex_unlock
+
 
 ******************************************************************************************
 static function thread(this) // ezzel indul minden thread

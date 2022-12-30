@@ -1,4 +1,6 @@
 
+#include "tabobj.ch"
+
 
 ******************************************************************************************
 class tabobj(object)
@@ -109,6 +111,8 @@ class tabobj(object)
 
     method  lock                 {|t|thread_mutex_lock(t:__mutex__)}
     method  unlock               {|t|thread_mutex_unlock(t:__mutex__)}
+    method  freeze
+    method  list
 
 
 ******************************************************************************************
@@ -186,19 +190,239 @@ local hash,column,clid,metnam,n,x
     for n:=1 to len(column)
         hash[lower(column[n][1])]:=n
     next
+    
     clid:=getclassid(this)
     metnam:=this:methnames
-
     for n:=1 to len(metnam)
         if( (x:=hash[metnam[n]])!=NIL )
-            classMethod(clid,metnam[n],mkblk(x)) // csereli a method blokkot
+            classMethod(clid,metnam[n],mkblk(this,x)) // csereli a method blokkot
         end
     next
 
 
 ******************************************************************************************
-static function mkblk(x)
-    return {|t,v|tabEvalColumn(t,x,v)}
+static function mkblk(this,x)
+
+local name  := this:column[x][COL_NAME]
+local type  := this:column[x][COL_TYPE]
+local width := this:column[x][COL_WIDTH]
+local dec   := this:column[x][COL_DEC]
+local offs  := this:column[x][COL_OFFS]
+local key   := this:column[x][COL_KEYFLAG]
+local memo  := tabMemoField(this,this:column[x])
+
+    if( type=="C" )
+        if( memo )
+            return blkmemoc(offs,width)
+        else
+            return if(key,xblkchar(offs,width),blkchar(offs,width))
+        end
+    
+    elseif( type=="X" )
+        if( memo )
+            return blkmemox(offs,width)
+        else
+            return if(key,xblkbin(offs,width),blkbin(offs,width))
+        end
+
+    elseif( type=="N" )
+        return if(key,xblknumber(offs,width,dec),blknumber(offs,width,dec))
+
+    elseif( type=="D" )
+        return if(key,xblkdate(offs),blkdate(offs))
+
+    elseif( type=="L" )
+        return if(key,xblkflag(offs),blkflag(offs))
+    end
+
+    break("IDE NEM JOHET")
+
+
+******************************************************************************************
+// dbcolumn.prg-bol atalakitassal:
+// ezek nem oszlop blokkok, hanem metodus blokkkok
+// (bar nagyon hasonlitanak az oszlop blokkokra)
+
+static function blkmemoc(offs,width)  
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      bin2str(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width))),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
+
+static function blkmemox(offs,width)  
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width)),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
+
+
+******************************************************************************************
+static function blkchar(offs,width)
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      bin2str(xvgetchar(t[TAB_RECBUF],offs,width)),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+
+static function xblkchar(offs,width)
+    return {|t,x| if( x==NIL.or.!xislocked(t),;
+                      bin2str(xvgetchar(t[TAB_RECBUF],offs,width)),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+
+
+******************************************************************************************
+static function blkbin(offs,width)
+//u.a. mint blkchar csak olvasaskor nem konvertal stringre
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      xvgetchar(t[TAB_RECBUF],offs,width),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+
+static function xblkbin(offs,width) 
+//u.a. mint xblkchar csak olvasaskor nem konvertal stringre
+    return {|t,x| if( x==NIL.or.!xislocked(t),;
+                      xvgetchar(t[TAB_RECBUF],offs,width),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+
+
+******************************************************************************************
+static function blknumber(offs,width,dec)
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      val(xvgetchar(t[TAB_RECBUF],offs,width)),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) }
+
+static function xblknumber(offs,width,dec)
+    return {|t,x| if( x==NIL.or.!xislocked(t),;
+                      val(xvgetchar(t[TAB_RECBUF],offs,width)),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) }
+
+
+******************************************************************************************
+static function blkdate(offs)
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
+                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }
+
+static function xblkdate(t,offs)
+    return {|t,x| if( x==NIL.or.!xislocked(t),;
+                      stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
+                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }
+
+
+******************************************************************************************
+static function blkflag(offs)  //megj: T=84, F=70
+    return {|t,x| if( x==NIL.or.!islocked(t),;
+                      84==xvgetbyte(t[TAB_RECBUF],offs),;
+                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) }
+
+static function xblkflag(offs)  //megj: T=84, F=70
+    return {|t,x| if( x==NIL.or.!xislocked(t),;
+                      84==xvgetbyte(t[TAB_RECBUF],offs),;
+                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) }
+
+
+******************************************************************************************
+static function islocked(table)
+
+    if( !table[TAB_MODIF] )
+        table[TAB_MODIF]:=.t.
+
+        //Engedjuk-e az irast EOF-ba?
+        //Ha kulcsmezot irnak at EOF-ban, akkor ronda hibat kapunk:
+        //nem tudjuk torolni az indexbol a kulcs korabbi peldanyat.
+        //Ha viszont itt megallunk, akkor jonak tudott programokrol
+        //derulhet ki varatlanul, hogy EOF-ba irnak.
+
+        //if( tabEof(table) )
+        if( tabPosition(table)==0 ) //2019-10-08
+            taberrOperation("tabEvalColumn")
+            taberrDescription(@"writing EOF")
+            tabError(table)
+        end
+
+        if( !tabIsLocked(table) )
+            taberrOperation("tabEvalColumn")
+            taberrDescription(@"record lock required")
+            tabError(table)
+        end
+    end
+    return .t.
+
+
+******************************************************************************************
+static function xislocked(table) //kulcsszegmenseknel specialis
+
+local index,ord
+
+    if( !table[TAB_MODIFKEY] )
+        table[TAB_MODIFKEY]:=.t.
+        islocked(table)
+
+        //meg kell jegyezni, hogy mi volt a kulcs erteke
+        //a mezo atirasa elott, hogy kesobb (tabCommit)
+        //meg lehessen talalni az eredeti kulcsokat
+        
+        //barmely kulcsot alkoto mezo modositasa kivaltja
+        //az osszes kulcs update-jet
+        
+        index:=tabIndex(table)
+        for ord:=1 to len(index)
+            index[ord][IND_CURKEY]:=tabKeyCompose(table,ord)
+        next
+    end
+    return .t.
+
+
+******************************************************************************************
+static function tabobj.freeze(this)
+
+local t:=objectNew(this::getclassid)
+
+    t:tab_fldnum    := this:tab_fldnum
+    t:tab_recbuf    := this:tab_recbuf[1..] // copy
+    t:tab_reclen    := this:tab_reclen
+    t:tab_position  := this:tab_position
+    t:tab_alias     := this:tab_alias
+    t:tab_file      := this:tab_file
+    t:tab_path      := this:tab_path
+    t:tab_ext       := this:tab_ext
+    t:tab_column    := this:tab_column::aclone
+  //t:tab_memohnd   := this:tab_memohnd     // memok kizarva
+
+    return t
+
+// Egy nyitott allapotu tablabol masolatot keszit.
+// A masolat atveszi a rekord buffert es oszlop blokkokat,
+// tehat a masolatbol kiolvashatok az eredeti mezoertekek.
+// t:tab_modif:=.t. utan modosithatok a mezoertekek.
+// t:tab_modifkey:=.t. utan modosithatok a klucsmezok.
+// (A megvaltozott ertekek nem irodnak ki sehova.)
+// Semmilyen mas muvelet (pl navigalas) nem lehetseges.
+
+// MEMO mezok
+// A memo mezok nincsenek benne a rekordbufferben,
+// ezert fagyasztaskor nem fagynak bele az objektumba.
+// Ehelyett tovabbra is a rekordbufferbe fagyott offsetrol
+// kiolvashato erteket latjuk, ami azonban elromolhat,
+// ha a memo erteket mas programok atirjak (es ezzel a
+// memo ertek masik szektorba, az altalunk ismert szektor
+// pedig szabadlistaba kerul, ahol aztan akarmi lehet).
+// A fagyasztott tabla memo mezejenek atirasa nem ertelmes,
+// mert az uj memoertek azonnal kiirodik a memo fajlba,
+// de az uj memo uj offsete nem irodik ki az alapfajlba,
+// hiszen a fagyasztott tabla rekordbufferet nem irjuk ki.
+// Ezert az uj ertek csak zarvanyt fog kepzni a memo fajlban.
+// Ezert egyelore kizarom a memokat a freeze muveletbol. 
+// Megoldas lehet, hogy fagyasztaskor a memokat elore
+// kulon kiolvassuk es valahol letaroljuk.
+
+
+******************************************************************************************
+static function tabobj.list(this)
+local column,n
+    ? "position",this:position
+    for n:=1 to len(this:column)
+        column:=this:column[n]
+        if( !tabMemoField(this,column) )
+            // memok kihagyva
+            ? n, column[1]::padr(16), this:evalmethod(column[1])
+        end
+    next
 
 
 ******************************************************************************************

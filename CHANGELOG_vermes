@@ -1,3 +1,8 @@
+2022-12-30 
+ tabobjclass.prg atkerult tbbtbtx-be,
+ mivel btbtx formatum fuggo, es ezert ott a halye,
+ bar nincs jeletosege, mert nincs masik formatum;
+
 2022-12-30 tabobj:freeze uj metodus;
 
 2022.12.26 thread_setname()/thread_getname(); 

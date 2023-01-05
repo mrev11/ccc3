@@ -1,3 +1,5 @@
+2023-01-05 build verzioszama novelve;
+
 2022-01-05 btbtx konyvtar
   dbcolumn.prg: a blkchar oszlopblokkokban a karakterkonverzio makrozva;
   dbopen.prg: tabCloseAll() kulon foglalkozik a nemstatic tabla objektumokkal;

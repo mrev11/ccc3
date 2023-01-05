@@ -48,6 +48,11 @@ function tranIsActiveTransaction()
 
 
 ****************************************************************************
+function tranDepth()
+    return len(tranindex)
+
+
+****************************************************************************
 function tranAddToPendingUpdates(pup)
 
 local tab:=pup[PUP_TABLE]     

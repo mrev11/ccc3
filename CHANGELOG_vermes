@@ -1,3 +1,5 @@
+2022-01-05 tranDepth() visszaadja az egymasba agyazott tranzakciok melyseget;
+
 2022-01-05 build.exe: konyvtarak keresese javitva;
 
 2022-01-05 uj fuggveny: blkenv();

@@ -19,6 +19,8 @@
  */
 
 #include "tabobj.ch"
+#include "btcharconv.ch"
+
 
 ******************************************************************************
 //Public interface
@@ -217,8 +219,8 @@ local index,ord
 ******************************************************************************
 static function blkchar(table,offs,width)
     return {|x| if(x==NIL.or.!islocked(table),;
-                bin2str(xvgetchar(table[TAB_RECBUF],offs,width)),;
-                (xvputbin(table[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                bin2str(CHARCONV_LOAD(xvgetchar(table[TAB_RECBUF],offs,width))),;
+                (xvputbin(table[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
 
 static function blkbin(table,offs,width)
 //u.a. mint blkchar csak olvasaskor nem konvertal stringre
@@ -257,8 +259,8 @@ static function blkmemox(table,offs,width)
 
 static function xblkchar(table,offs,width)
     return {|x| if(x==NIL.or.!xislocked(table),;
-                bin2str(xvgetchar(table[TAB_RECBUF],offs,width)),;
-                (xvputbin(table[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                bin2str(CHARCONV_LOAD(xvgetchar(table[TAB_RECBUF],offs,width))),;
+                (xvputbin(table[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
 
 static function xblkbin(table,offs,width) 
 //u.a. mint xblkchar csak olvasaskor nem konvertal stringre

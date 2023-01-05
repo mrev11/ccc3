@@ -1,4 +1,5 @@
 -sccc$(CCCVER)_btbtxui
 -d../commonui.src
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
  

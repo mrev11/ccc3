@@ -3,4 +3,5 @@
 -d.
 -dbtree
 -d../common.src
+-d../common.src/charconv
  

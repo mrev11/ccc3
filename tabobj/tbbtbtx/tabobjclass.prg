@@ -1,6 +1,6 @@
 
 #include "tabobj.ch"
-
+#include "btcharconv.ch"
 
 ******************************************************************************************
 class tabobj(object)
@@ -53,17 +53,17 @@ class tabobj(object)
     method  APPENDRECORD         {|*|tabAPPENDRECORD (*)}
     method  AUTOUPGRADE          {|*|tabAUTOUPGRADE  (*)}
     method  BLOCK                {|*|tabBLOCK        (*)}
-    method  CLOSE                {|*|tabCLOSE        (*)}
+    method  CLOSE              //{|*|tabCLOSE        (*)}  szinkronizalt, tabObjectList-
     method  CLOSEALL             {|*|tabCLOSEALL     (*)}
     method  COLUMN               {|*|tabCOLUMN       (*)}
     method  COMMIT               {|*|tabCOMMIT       (*)}
     method  CONTROL              {|*|tabCONTROLINDEX (*)}
     method  CONTROLINDEX         {|*|tabCONTROLINDEX (*)}
     method  COPYTO               {|*|tabCOPYTO       (*)}    
-    method  CREATE             //{|*|tabCREATE       (*)}   szinkronizalt
+    method  CREATE             //{|*|tabCREATE       (*)}  szinkronizalt
     method  DELETE               {|*|tabDELETE       (*)}    
     method  DELETED              {|*|tabDELETED      (*)}    
-    method  DESTRUCT             {|*|tabDESTRUCT     (*)}    
+    method  DESTRUCT           //{|*|tabDESTRUCT     (*)}  -> close  
     method  DROPINDEX            {|*|tabDROPINDEX    (*)}    
     method  EOF                  {|*|tabEOF          (*)}    
     method  EVALCOLUMN           {|*|tabEVALCOLUMN   (*)}    
@@ -85,7 +85,7 @@ class tabobj(object)
     method  LOCKLIST             {|*|tabLOCKLIST     (*)}    
     method  MAPPEND              {|*|tabMAPPEND      (*)}    
     method  MLOCK                {|*|tabMLOCK        (*)}    
-    method  OPEN               //{|*|tabOPEN         (*)}   szinkronizalt+
+    method  OPEN               //{|*|tabOPEN         (*)}  szinkronizalt, setcolblk, tabObjectList+
     method  PACK                 {|*|tabPACK         (*)}    
     method  PATH                 {|*|tabPATH         (*)}    
     method  PATHNAME             {|*|tabPATHNAME     (*)}    
@@ -173,11 +173,30 @@ local success:=.f.
             // open utan de minden mezohivatkozas elott 
             setcolblk(this)
         end
+        tabObjectList()::aadd(this) // berakja
         success:=.t.
     end
 
     thread_mutex_unlock(this:__mutex__)
     return success
+
+
+******************************************************************************************
+static function tabobj.close(this)
+local tlist,n
+    thread_mutex_lock(this:__mutex__)
+    tabClose(this)
+    tlist:=tabObjectLIst() // kiveszi
+    if( (n:=ascan(tlist,{|t|oref(t)==oref(this)}))>0 )
+        tlist::adel(n)
+        tlist::asize(len(tlist)-1)
+    end
+    thread_mutex_unlock(this:__mutex__)
+
+
+******************************************************************************************
+static function tabobj.destruct(this)
+    this:close
 
 
 ******************************************************************************************
@@ -257,13 +276,13 @@ static function blkmemox(offs,width)
 ******************************************************************************************
 static function blkchar(offs,width)
     return {|t,x| if( x==NIL.or.!islocked(t),;
-                      bin2str(xvgetchar(t[TAB_RECBUF],offs,width)),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                      bin2str(CHARCONV_LOAD(xvgetchar(t[TAB_RECBUF],offs,width))),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
 
 static function xblkchar(offs,width)
     return {|t,x| if( x==NIL.or.!xislocked(t),;
-                      bin2str(xvgetchar(t[TAB_RECBUF],offs,width)),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                      bin2str(CHARCONV_LOAD(xvgetchar(t[TAB_RECBUF],offs,width))),;
+                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
 
 
 ******************************************************************************************
@@ -298,7 +317,7 @@ static function blkdate(offs)
                       stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
                       (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }
 
-static function xblkdate(t,offs)
+static function xblkdate(offs)
     return {|t,x| if( x==NIL.or.!xislocked(t),;
                       stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
                       (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }

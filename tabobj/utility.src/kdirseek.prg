@@ -53,6 +53,8 @@ local never:={||.f.}
     g_col4:preBlock:=never; g_seg4:preBlock:=never
     g_col5:preBlock:=never; g_seg5:preBlock:=never
     g_col6:preBlock:=never; g_seg6:preBlock:=never
+    g_col7:preBlock:=never; g_seg7:preBlock:=never
+    g_col8:preBlock:=never; g_seg8:preBlock:=never
 
 
 static function kdgstore(getlist,brw,tab)
@@ -65,8 +67,8 @@ local n:=g_seg1:varGet()
 
 ************************************************************************
 static function kdload(getlist,tab)
-local gcol:={g_col1,g_col2,g_col3,g_col4,g_col5,g_col6}
-local gseg:={g_seg1,g_seg2,g_seg3,g_seg4,g_seg5,g_seg6}
+local gcol:={g_col1,g_col2,g_col3,g_col4,g_col5,g_col6,g_col7,g_col8}
+local gseg:={g_seg1,g_seg2,g_seg3,g_seg4,g_seg5,g_seg6,g_seg7,g_seg8}
 local index:=tabIndex(tab)[tabControl(tab)][IND_COL] //index oszlopok sorszama
 local column:=tabColumn(tab), n
 local name,type,width,dec

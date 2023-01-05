@@ -342,11 +342,16 @@ function tabClose(table) //lezarja a fajlt
 ******************************************************************************
 function tabCloseAll() //minden tablaobjektumot lezar
 local objectlist:=tabObjectList(), n
-    for n:=1 to len(objectList)
-         tabClose(objectList[n])
+    for n:=len(objectList) to 1 step -1
+        if( valtype(objectList[n])=="O" )
+            objectList[n]:close
+        else
+            tabClose(objectList[n])
+        end
     next
-    return NIL
 
+// visszafele kell jaratni a ciklust, mert a nemstatic
+// objektumok a :close-ban kiszedik magukat a listabol
 
 ******************************************************************************
 function tabIsOpen(table) //visszaadja a megnyitasi modot

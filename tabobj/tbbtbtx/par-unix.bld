@@ -3,4 +3,9 @@
 -d.
 -dbtree
 -d../common.src
+-d../common.src/charconv
 
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+
+
+#BUILD_DBG=on

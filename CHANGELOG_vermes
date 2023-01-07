@@ -1,3 +1,9 @@
+2023-01-07
+  a lokalis tabla objktumok oszlopblokkjai fagyasztaskor kicserelve;
+  a lokalis tabla objktumok alias neve empty;
+  empty alias nevvel nem keszul alias->filed mezokiertekelo osztaly;
+  uj debug fuggveny: tranListPendingUpdates() 
+
 2023-01-05 build verzioszama novelve;
 
 2022-01-05 btbtx konyvtar

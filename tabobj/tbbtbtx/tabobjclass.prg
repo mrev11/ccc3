@@ -12,7 +12,7 @@ class tabobj(object)
     attrib tab_fldnum       //   3    mezok szama a fajlban (nem az objektumban)
     attrib tab_recbuf       //   4    az aktualis rekord handlere
     attrib tab_reclen       //   5    valodi rekord hossz
-    attrib reserved_6                      
+    attrib reserved_6
     attrib tab_keynum       //   7    index sorszam (resource szerinti)
     attrib tab_keybuf       //   8    buffer a kulcskifejezesnek
     attrib tab_position     //   9    aktualis rekord sorszama (recno)
@@ -30,7 +30,7 @@ class tabobj(object)
     attrib tab_modifkey     //  21    modosult-e valamelyik kulcs
     attrib tab_modifapp     //  22    uj rekordot jelzo flag
     attrib tab_locklst      //  23    lockok listaja (recno)
-    attrib reserved_24                      
+    attrib reserved_24
     attrib tab_lockfil      //  25    lockolt-e a file
     attrib tab_eof          //  26    eof-on all-e
     attrib tab_found        //  27    talalt-e a seek
@@ -59,55 +59,55 @@ class tabobj(object)
     method  COMMIT               {|*|tabCOMMIT       (*)}
     method  CONTROL              {|*|tabCONTROLINDEX (*)}
     method  CONTROLINDEX         {|*|tabCONTROLINDEX (*)}
-    method  COPYTO               {|*|tabCOPYTO       (*)}    
+    method  COPYTO               {|*|tabCOPYTO       (*)}
     method  CREATE             //{|*|tabCREATE       (*)}  szinkronizalt
-    method  DELETE               {|*|tabDELETE       (*)}    
-    method  DELETED              {|*|tabDELETED      (*)}    
-    method  DESTRUCT           //{|*|tabDESTRUCT     (*)}  -> close  
-    method  DROPINDEX            {|*|tabDROPINDEX    (*)}    
-    method  EOF                  {|*|tabEOF          (*)}    
-    method  EVALCOLUMN           {|*|tabEVALCOLUMN   (*)}    
-    method  EXT                  {|*|tabEXT          (*)}    
-    method  FCOUNT               {|*|tabFCOUNT       (*)}    
-    method  FILE                 {|*|tabFILE         (*)}    
-    method  FILTER               {|*|tabFILTER       (*)}    
-    method  FOUND                {|*|tabFOUND        (*)}    
-    method  GETCOLUMN            {|*|tabGETCOLUMN    (*)}    
-    method  GOBOTTOM             {|*|tabGOBOTTOM     (*)}    
-    method  GOTO                 {|*|tabGOTO         (*)}    
-    method  GOTOP                {|*|tabGOTOP        (*)}    
-    method  INDEX                {|*|tabINDEX        (*)}    
-    method  INSERT               {|*|tabINSERT       (*)}    
-    method  ISOPEN               {|*|tabISOPEN       (*)}    
-    method  LASTREC              {|*|tabLASTREC      (*)}    
-    method  LOADDBF              {|*|tabLOADDBF      (*)}    
-    method  LOCK                 {|*|tabLOCK         (*)}    
-    method  LOCKLIST             {|*|tabLOCKLIST     (*)}    
-    method  MAPPEND              {|*|tabMAPPEND      (*)}    
-    method  MLOCK                {|*|tabMLOCK        (*)}    
+    method  DELETE               {|*|tabDELETE       (*)}
+    method  DELETED              {|*|tabDELETED      (*)}
+    method  DESTRUCT           //{|*|tabDESTRUCT     (*)}  -> close
+    method  DROPINDEX            {|*|tabDROPINDEX    (*)}
+    method  EOF                  {|*|tabEOF          (*)}
+    method  EVALCOLUMN           {|*|tabEVALCOLUMN   (*)}
+    method  EXT                  {|*|tabEXT          (*)}
+    method  FCOUNT               {|*|tabFCOUNT       (*)}
+    method  FILE                 {|*|tabFILE         (*)}
+    method  FILTER               {|*|tabFILTER       (*)}
+    method  FOUND                {|*|tabFOUND        (*)}
+    method  GETCOLUMN            {|*|tabGETCOLUMN    (*)}
+    method  GOBOTTOM             {|*|tabGOBOTTOM     (*)}
+    method  GOTO                 {|*|tabGOTO         (*)}
+    method  GOTOP                {|*|tabGOTOP        (*)}
+    method  INDEX                {|*|tabINDEX        (*)}
+    method  INSERT               {|*|tabINSERT       (*)}
+    method  ISOPEN               {|*|tabISOPEN       (*)}
+    method  LASTREC              {|*|tabLASTREC      (*)}
+    method  LOADDBF              {|*|tabLOADDBF      (*)}
+    method  LOCK                 {|*|tabLOCK         (*)}
+    method  LOCKLIST             {|*|tabLOCKLIST     (*)}
+    method  MAPPEND              {|*|tabMAPPEND      (*)}
+    method  MLOCK                {|*|tabMLOCK        (*)}
     method  OPEN               //{|*|tabOPEN         (*)}  szinkronizalt, setcolblk, tabObjectList+
-    method  PACK                 {|*|tabPACK         (*)}    
-    method  PATH                 {|*|tabPATH         (*)}    
-    method  PATHNAME             {|*|tabPATHNAME     (*)}    
-    method  PICTURE              {|*|tabPICTURE      (*)}    
-    method  POSITION             {|*|tabPOSITION     (*)}    
-    method  RESTORE              {|*|tabRESTORE      (*)}    
-    method  RLOCK                {|*|tabRLOCK        (*)}    
-    method  SAVE                 {|*|tabSAVE         (*)}    
-    method  SEEK                 {|*|tabSEEK         (*)}    
-    method  SEEKGE               {|*|tabSEEKGE       (*)}    
-    method  SEEKLE               {|*|tabSEEKLE       (*)}    
-    method  SKIP                 {|*|tabSKIP         (*)}    
-    method  SUPPINDEX            {|*|tabSUPPINDEX    (*)}    
-    method  UNLOCK               {|*|tabUNLOCK       (*)}    
-    method  UNLOCKALL            {|*|tabUNLOCKALL    (*)}    
-    method  UPGRADE              {|*|tabUPGRADE      (*)}    
-    method  ZAP                  {|*|tabZAP          (*)}    
+    method  PACK                 {|*|tabPACK         (*)}
+    method  PATH                 {|*|tabPATH         (*)}
+    method  PATHNAME             {|*|tabPATHNAME     (*)}
+    method  PICTURE              {|*|tabPICTURE      (*)}
+    method  POSITION             {|*|tabPOSITION     (*)}
+    method  RESTORE              {|*|tabRESTORE      (*)}
+    method  RLOCK                {|*|tabRLOCK        (*)}
+    method  SAVE                 {|*|tabSAVE         (*)}
+    method  SEEK                 {|*|tabSEEK         (*)}
+    method  SEEKGE               {|*|tabSEEKGE       (*)}
+    method  SEEKLE               {|*|tabSEEKLE       (*)}
+    method  SKIP                 {|*|tabSKIP         (*)}
+    method  SUPPINDEX            {|*|tabSUPPINDEX    (*)}
+    method  UNLOCK               {|*|tabUNLOCK       (*)}
+    method  UNLOCKALL            {|*|tabUNLOCKALL    (*)}
+    method  UPGRADE              {|*|tabUPGRADE      (*)}
+    method  ZAP                  {|*|tabZAP          (*)}
 
   //method  BROWSE               {|*|tabBROWSE       (*)}
-  //method  TBROWSE              {|*|tabTBROWSE      (*)}    
-  //method  SBROWSE              {|*|tabSBROWSE      (*)}    
-  //method  EDITRECORD           {|*|tabEDITRECORD   (*)}    
+  //method  TBROWSE              {|*|tabTBROWSE      (*)}
+  //method  SBROWSE              {|*|tabSBROWSE      (*)}
+  //method  EDITRECORD           {|*|tabEDITRECORD   (*)}
 
     method  lock                 {|t|thread_mutex_lock(t:__mutex__)}
     method  unlock               {|t|thread_mutex_unlock(t:__mutex__)}
@@ -118,7 +118,7 @@ class tabobj(object)
 ******************************************************************************************
 static function tabobj.initialize(this,alias)
 
-    this:tab_alias    := upper(alltrim(alias))
+    this:tab_alias    := "" // alias->field letiltva
     this:tab_file     := upper(alltrim(alias))
     this:tab_path     := ""
     this:tab_ext      := tabDataExt()
@@ -131,7 +131,7 @@ static function tabobj.initialize(this,alias)
     this:tab_locklst  := {}
     this:tab_lockfil  := .f.
     this:tab_position := 0
-                     
+
     this:tab_modif    := .f.
     this:tab_modifkey := .f.
     this:tab_modifapp := .f.
@@ -139,7 +139,7 @@ static function tabobj.initialize(this,alias)
     this:tab_found    := .f.
     this:tab_slockcnt := 0
     this:tab_slockhnd := -1
-    
+
     return this
 
 
@@ -170,7 +170,7 @@ local success:=.f.
             // a cache-ben nem tudjuk direkt cserelni a blokkokat
             // ezert egy mar hivatkozott blokkot nem szabad kicserelni
             // tehat egyszer cserelhetok a blokkok
-            // open utan de minden mezohivatkozas elott 
+            // open utan de minden mezohivatkozas elott
             setcolblk(this)
         end
         tabObjectList()::aadd(this) // berakja
@@ -209,7 +209,7 @@ local hash,column,clid,metnam,n,x
     for n:=1 to len(column)
         hash[lower(column[n][1])]:=n
     next
-    
+
     clid:=getclassid(this)
     metnam:=this:methnames
     for n:=1 to len(metnam)
@@ -236,7 +236,7 @@ local memo  := tabMemoField(this,this:column[x])
         else
             return if(key,xblkchar(offs,width),blkchar(offs,width))
         end
-    
+
     elseif( type=="X" )
         if( memo )
             return blkmemox(offs,width)
@@ -262,12 +262,12 @@ local memo  := tabMemoField(this,this:column[x])
 // ezek nem oszlop blokkok, hanem metodus blokkkok
 // (bar nagyon hasonlitanak az oszlop blokkokra)
 
-static function blkmemoc(offs,width)  
+static function blkmemoc(offs,width)
     return {|t,x| if( x==NIL.or.!islocked(t),;
                       bin2str(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width))),;
                       (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
 
-static function blkmemox(offs,width)  
+static function blkmemox(offs,width)
     return {|t,x| if( x==NIL.or.!islocked(t),;
                       tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width)),;
                       (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
@@ -292,7 +292,7 @@ static function blkbin(offs,width)
                       xvgetchar(t[TAB_RECBUF],offs,width),;
                       (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
 
-static function xblkbin(offs,width) 
+static function xblkbin(offs,width)
 //u.a. mint xblkchar csak olvasaskor nem konvertal stringre
     return {|t,x| if( x==NIL.or.!xislocked(t),;
                       xvgetchar(t[TAB_RECBUF],offs,width),;
@@ -375,10 +375,10 @@ local index,ord
         //meg kell jegyezni, hogy mi volt a kulcs erteke
         //a mezo atirasa elott, hogy kesobb (tabCommit)
         //meg lehessen talalni az eredeti kulcsokat
-        
+
         //barmely kulcsot alkoto mezo modositasa kivaltja
         //az osszes kulcs update-jet
-        
+
         index:=tabIndex(table)
         for ord:=1 to len(index)
             index[ord][IND_CURKEY]:=tabKeyCompose(table,ord)
@@ -391,19 +391,31 @@ local index,ord
 static function tabobj.freeze(this)
 
 local t:=objectNew(this::getclassid)
+local n
 
     t:tab_fldnum    := this:tab_fldnum
-    t:tab_recbuf    := this:tab_recbuf[1..] // copy
+    t:tab_recbuf    := this:tab_recbuf[1..]         // copy
     t:tab_reclen    := this:tab_reclen
     t:tab_position  := this:tab_position
     t:tab_alias     := this:tab_alias
     t:tab_file      := this:tab_file
     t:tab_path      := this:tab_path
     t:tab_ext       := this:tab_ext
-    t:tab_column    := this:tab_column::aclone
-  //t:tab_memohnd   := this:tab_memohnd     // memok kizarva
-
+    t:tab_modif     := .t.                          // nem ellenorzi a lockot
+    t:tab_modifkey  := .t.                          // nem ellenorzi a lockot
+    t:tab_column    := this:tab_column::aclone      // blokk csere
+    
+    for n:=1 to len(t:tab_column)
+        t:tab_column[n][COL_BLOCK]:=blk(t,n)
+    next
     return t
+
+static function blk(t,n)
+local name:=t:tab_column[n][COL_NAME]
+local meth:=getmethod(getclassid(t),name)
+    return {|x|eval(meth,t,x)}
+    //return {|x|t:evalmethod(name,x)} //ez is lehetne
+
 
 // Egy nyitott allapotu tablabol masolatot keszit.
 // A masolat atveszi a rekord buffert es oszlop blokkokat,
@@ -426,7 +438,7 @@ local t:=objectNew(this::getclassid)
 // de az uj memo uj offsete nem irodik ki az alapfajlba,
 // hiszen a fagyasztott tabla rekordbufferet nem irjuk ki.
 // Ezert az uj ertek csak zarvanyt fog kepzni a memo fajlban.
-// Ezert egyelore kizarom a memokat a freeze muveletbol. 
+// Ezert egyelore kizarom a memokat a freeze muveletbol.
 // Megoldas lehet, hogy fagyasztaskor a memokat elore
 // kulon kiolvassuk es valahol letaroljuk.
 
@@ -434,7 +446,7 @@ local t:=objectNew(this::getclassid)
 ******************************************************************************************
 static function tabobj.list(this)
 local column,n
-    ? "position",this:position
+    ? this:pathname,this:position
     for n:=1 to len(this:column)
         column:=this:column[n]
         if( !tabMemoField(this,column) )

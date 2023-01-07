@@ -34,19 +34,27 @@ function tabSetFieldTable(table)
 local aliasname:=tabAlias(table)
 local column:=tabColumn(table),n,col
 
+    if( empty(aliasname) )
+        return NIL
+    end
+
     for n:=1 to len(column)
         col:=column[n]
         _field_insert(aliasname,col[COL_NAME],col[COL_BLOCK])  //C++-ban
         //? "insert", aliasname, col[COL_NAME]
     next
-    return NIL
+
 
 ***************************************************************************
 function tabDeleteFieldTable(table)
 local aliasname:=tabAlias(table)
 
+    if( empty(aliasname) )
+        return NIL
+    end
+
     _field_delete(aliasname)  //C++-ban
     //? "delete", aliasname
-    return NIL
+
 
 ***************************************************************************

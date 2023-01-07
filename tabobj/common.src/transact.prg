@@ -380,6 +380,20 @@ local savepos
 
  
 *****************************************************************************
+function tranListPendingUpdates()
+local n,pup
+    ? replicate("-",79)
+    ? @"Pending updates"
+    ? replicate("-",79)
+    for n:=1 to len(pendingupdate)
+        pup:=pendingupdate[n] 
+        if( pup!=NIL )
+            print_debug_info(pup)
+        end
+    next
+
+
+*****************************************************************************
 static function print_debug_info(pup)
 
 local tab:=pup[PUP_TABLE]

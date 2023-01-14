@@ -1,4 +1,7 @@
 2023-01-07
+  Hagyomanyos (global) tablabol is keszit fagyasztott rekord objektumot;
+
+2023-01-07
   a lokalis tabla objktumok oszlopblokkjai fagyasztaskor kicserelve;
   a lokalis tabla objktumok alias neve empty;
   empty alias nevvel nem keszul alias->filed mezokiertekelo osztaly;

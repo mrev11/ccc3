@@ -388,25 +388,38 @@ local index,ord
 
 
 ******************************************************************************************
-static function tabobj.freeze(this)
+static function tabobj.freeze(this,table:=this)
 
-local t:=objectNew(this::getclassid)
-local n
+local t,n
 
-    t:tab_fldnum    := this:tab_fldnum
-    t:tab_recbuf    := this:tab_recbuf[1..]         // copy
-    t:tab_reclen    := this:tab_reclen
-    t:tab_position  := this:tab_position
-    t:tab_alias     := this:tab_alias
-    t:tab_file      := this:tab_file
-    t:tab_path      := this:tab_path
-    t:tab_ext       := this:tab_ext
+    t:=objectNew(this::getclassid)
+
+    t:tab_fldnum    := table[TAB_FLDNUM] 
+    t:tab_recbuf    := table[TAB_RECBUF][1..]       // copy
+    t:tab_reclen    := table[TAB_RECLEN] 
+    t:tab_position  := table[TAB_POSITION]
+    t:tab_alias     := table[TAB_ALIAS]  
+    t:tab_file      := table[TAB_FILE]   
+    t:tab_path      := table[TAB_PATH]   
+    t:tab_ext       := table[TAB_EXT]    
     t:tab_modif     := .t.                          // nem ellenorzi a lockot
     t:tab_modifkey  := .t.                          // nem ellenorzi a lockot
-    t:tab_column    := this:tab_column::aclone      // blokk csere
+    t:tab_column    := table[TAB_COLUMN]::aclone    // blokk csere
     
+    if( this:__colblk__ )
+        setcolblk(this)
+    end
+
     for n:=1 to len(t:tab_column)
         t:tab_column[n][COL_BLOCK]:=blk(t,n)
+        
+        // Az eredeti blokkok nem jok, mert azokba bele van forditva az
+        // eredeti objektum rekord buffere, es onnan vennek az adatokat.
+        // Eleg volna csak NIL-re alitani az oszlopblokkokat, mert az
+        // adatok elerhetok a metodusokon keresztul is, es az oszlopblokkok
+        // csak a tabEvalcolumn mukodeseben kapnak szerepet.  De mivel
+        // a blokkok elkeszitese csak minimalisan lassitja a programot
+        // nem erdemes kihagyni.
     next
     return t
 
@@ -417,13 +430,23 @@ local meth:=getmethod(getclassid(t),name)
     //return {|x|t:evalmethod(name,x)} //ez is lehetne
 
 
-// Egy nyitott allapotu tablabol masolatot keszit.
-// A masolat atveszi a rekord buffert es oszlop blokkokat,
-// tehat a masolatbol kiolvashatok az eredeti mezoertekek.
-// t:tab_modif:=.t. utan modosithatok a mezoertekek.
+// Nyitott lokalis tablabol rekord objektumot keszit.
+// A rekordba bemasolodik a tabla aktualis rekord buffere,
+// a masolatbol kiolvashatok az eredeti mezoertekek.
+// t:tab_modif:=.t. utan modosithatok is a mezoertekek.
 // t:tab_modifkey:=.t. utan modosithatok a klucsmezok.
-// (A megvaltozott ertekek nem irodnak ki sehova.)
-// Semmilyen mas muvelet (pl navigalas) nem lehetseges.
+// A rekord objektum alatt nincsen lemezfajl,
+// ezert a megvaltozott mezok nem is irodnak ki sehova.
+// es nincs ertelme semmilyen navigalasnak (nem lehetseges).
+// A fagyasztas utan az eredeti tablan vegzett muveletek
+// mar nem hatnak a rekord objektumora, tehat a tablaban 
+// lehet mozogni, vagy akar le is lehet zarni.
+
+// Ha a masodik (table:=this) parameterben kap egy nyitott
+// allapotu hagyomanyos (globalis) tablaobjektumot, akkor 
+// annak az aktualis rekordjabol keszul a rekord objektum.
+// (Persze csak azonos strukturaju tabla johet szoba.)
+
 
 // MEMO mezok
 // A memo mezok nincsenek benne a rekordbufferben,
@@ -441,6 +464,8 @@ local meth:=getmethod(getclassid(t),name)
 // Ezert egyelore kizarom a memokat a freeze muveletbol.
 // Megoldas lehet, hogy fagyasztaskor a memokat elore
 // kulon kiolvassuk es valahol letaroljuk.
+
+
 
 
 ******************************************************************************************

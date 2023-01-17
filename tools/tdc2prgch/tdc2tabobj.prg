@@ -1,6 +1,6 @@
 
 
-#define VERSION "tdc2tabobj 1.1"
+#define VERSION "tdc2tabobj 1.2"
 
 
 ******************************************************************************************
@@ -71,7 +71,7 @@ local prg:="//"+VERSION+lf+lf
         prg+=line+lf
     end
     prg+="    method  initialize"+lf
-    prg+="    method  __colblk__"+lf
+    prg+="    method  __stamp__"+lf
     prg+="    method  __mutex__"+lf
     prg+=lf
     
@@ -101,11 +101,12 @@ local prg:="//"+VERSION+lf+lf
     prg+="    return this"+lf
 
     prg+=<<PRG>>
-static function tabobj.TABLE.__colblk__() 
-static colblk:=.t.
-local result:=colblk
-    colblk:=.f.
-    return result // eloszor .t., utana mindig .f.
+static function tabobj.TABLE.__stamp__(this,x) 
+static stamp
+    if( x!=NIL )
+        stamp:=x
+    end
+    return stamp
 
 static function tabobj.TABLE.__mutex__()
 static mutex:=thread_mutex_init()

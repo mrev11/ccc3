@@ -1,3 +1,9 @@
+2023-01-16
+  tabobjclass blokkok atdolgozva, ellenorzi a strukturakat;
+  blkenv csereli a kodblokk valozok tombjet;
+  class.prg: o:methnames, o:attrnames plusz parameter;
+  tabOpen elkesziti a rekord struktura azonositojat (stamp); 
+
 2023-01-07
   Hagyomanyos (global) tablabol is keszit fagyasztott rekord objektumot;
 

@@ -184,8 +184,21 @@ local timeout
     _db_setord(table[TAB_BTREE],"recno")
     tabGotop(table) 
     table[TAB_OPEN]:=mode
+    table[TAB_STAMP]:=tabStamp(table)
     return .t.
 
+
+******************************************************************************
+function tabStamp(table)
+local stamp:=""
+local column,n,col
+    column:=tabColumn(table)
+    for n:=1 to len(column)
+        col:=column[n]
+        stamp+=col[1]+":"+col[2]+col[3]::str::alltrim+"."+col[4]::str::alltrim+";"
+    next
+    return stamp
+    
 
 ******************************************************************************
 static function formatum_konverzio(table)

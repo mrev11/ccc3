@@ -28,6 +28,7 @@
 
 #define TAB_RECBUF      4   // az aktualis rekord handlere
 #define TAB_RECLEN      5   // valodi rekord hossz
+#define TAB_STAMP       6   // rekord struktura azonosito
 
 #define TAB_KEYNUM      7   // Index sorszam (resource szerinti)
 #define TAB_KEYBUF      8   // Buffer a kulcskifejezesnek

@@ -109,25 +109,25 @@ function tabTBrowse(table) //teszt browse az osszes table objectre
 local objectlist:=tabObjectList()
 local browse
 local crs:=setcursor(0)
-local n,tab:={},alias,ord,index,mode,locks
+local n,tab:={},pname,ord,index,mode,locks
 local sbrwBlock:={|t|t:=objectList[brwArrayPos(browse)],;
                      if(tabIsopen(t)>0,tabSBrowse(t),NIL),.t.}
 
     for n:=1 to len(objectList)
         table:=objectList[n]
-        alias:=tabAlias(table)
+        pname:=tabPathName(table)
         ord:=tabControlIndex(table)
         index:=if(ord>0,table[TAB_INDEX][ord][IND_NAME],"")
         mode:={@"Closed",@"Readonly",@"Shared",@"Exclusive"}[table[TAB_OPEN]+1]
         locks:=len(tabLocklist(table))
-        aadd(tab,{alias,mode,index,locks})
+        aadd(tab,{pname,mode,index,locks})
     next
 
     if( len(tab)>0 )
 
         browse:=brwCreate(8,10,maxrow()-2,maxcol()-10)
         brwArray(browse,tab)
-        brwColumn(browse,@"TableName ",brwABlock(browse,1),10)
+        brwColumn(browse,@"TableName ",brwABlock(browse,1),20)
         brwColumn(browse,@"OpenMode  ",brwABlock(browse,2),10)
         brwColumn(browse,@"ControlInd",brwABlock(browse,3),10)
         brwColumn(browse,@"LockNumber",brwABlock(browse,4),10)

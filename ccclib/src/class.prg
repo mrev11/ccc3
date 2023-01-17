@@ -313,11 +313,11 @@ function classBaseID(clid)
 
 
 ******************************************************************************
-function classAttrNames(clid) 
+function classAttrNames(clid,id) 
 local hash:=getclsdef(clid)[CLASS_HASHTAB],n
 local attr:=array(classObjectLength(clid)),x
     for n:=1 to len(hash)
-        if( hash[n]!=NIL .and. valtype(x:=hash[n][2])=="N" ) 
+        if( hash[n]!=NIL .and. valtype(x:=hash[n][2])=="N" .and. (id==NIL.or.hash[n][3]==id) ) 
             attr[x]:=hash[n][1]
         end
     next
@@ -325,14 +325,15 @@ local attr:=array(classObjectLength(clid)),x
 
 
 ******************************************************************************
-function classMethNames(clid) 
+function classMethNames(clid,id) 
 local hash:=getclsdef(clid)[CLASS_HASHTAB],n
 local meth:=array(classMethodCount(clid)),x:=0
     for n:=1 to len(hash)
-        if( hash[n]!=NIL .and. valtype(hash[n][2])=="B" ) 
+        if( hash[n]!=NIL .and. valtype(hash[n][2])=="B" .and. (id==NIL.or.hash[n][3]==id) ) 
             meth[++x]:=bin2str(hash[n][1])
         end
     next
+    asize(meth,x)
     return meth  //hash-beli elhelyezkedes sorrendjeben
 
 

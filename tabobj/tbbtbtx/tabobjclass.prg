@@ -12,7 +12,7 @@ class tabobj(object)
     attrib tab_fldnum       //   3    mezok szama a fajlban (nem az objektumban)
     attrib tab_recbuf       //   4    az aktualis rekord handlere
     attrib tab_reclen       //   5    valodi rekord hossz
-    attrib reserved_6
+    attrib tab_stamp        //   6    struktura azonosito
     attrib tab_keynum       //   7    index sorszam (resource szerinti)
     attrib tab_keybuf       //   8    buffer a kulcskifejezesnek
     attrib tab_position     //   9    aktualis rekord sorszama (recno)
@@ -85,7 +85,7 @@ class tabobj(object)
     method  LOCKLIST             {|*|tabLOCKLIST     (*)}
     method  MAPPEND              {|*|tabMAPPEND      (*)}
     method  MLOCK                {|*|tabMLOCK        (*)}
-    method  OPEN               //{|*|tabOPEN         (*)}  szinkronizalt, setcolblk, tabObjectList+
+    method  OPEN               //{|*|tabOPEN         (*)}  szinkronizalt, setmetblk, tabObjectList+
     method  PACK                 {|*|tabPACK         (*)}
     method  PATH                 {|*|tabPATH         (*)}
     method  PATHNAME             {|*|tabPATHNAME     (*)}
@@ -158,21 +158,29 @@ local success:=.f.
 static function tabobj.open(this,*)
 
 local success:=.f.
+local stamp,error
 
     thread_mutex_lock(this:__mutex__)
 
     if( tabOPEN(*) )
-        if( this:__colblk__ )
-            // this:__colblk__ eloszor .t., utana mindig .f.
-            // az osztalyok statikusan tarolodnak
-            // az osztalyok taroljak a metodus blokkjaikat
-            // a metodus blokkokat a method cache-ek is taroljak
-            // a cache-ben nem tudjuk direkt cserelni a blokkokat
-            // ezert egy mar hivatkozott blokkot nem szabad kicserelni
-            // tehat egyszer cserelhetok a blokkok
-            // open utan de minden mezohivatkozas elott
-            setcolblk(this)
+
+        if( NIL==(stamp:=this:__stamp__) )
+            this:__stamp__:=this[TAB_STAMP]
+            setmetblk(this,this)
+
+        elseif( this[TAB_STAMP]!=stamp )
+            error:=tabstructerrorNew()
+            error:operation:="tabobj.open"
+            error:description:="different record struct"
+            error:filename:=tabPathName(this)
+            break(error)
+
+            // osztalyvaltozo this:__stamp__ kezdetben NIL,
+            // a kesobbi open-ekben mindig azt az elso strukturat adja,
+            // ami alapjan elkeszultek a mezokiertekelo metodus blokkok,
+            // ez a struktura kesobb nem valtozhat
         end
+
         tabObjectList()::aadd(this) // berakja
         success:=.t.
     end
@@ -186,7 +194,7 @@ static function tabobj.close(this)
 local tlist,n
     thread_mutex_lock(this:__mutex__)
     tabClose(this)
-    tlist:=tabObjectLIst() // kiveszi
+    tlist:=tabObjectList() // kiveszi
     if( (n:=ascan(tlist,{|t|oref(t)==oref(this)}))>0 )
         tlist::adel(n)
         tlist::asize(len(tlist)-1)
@@ -200,27 +208,166 @@ static function tabobj.destruct(this)
 
 
 ******************************************************************************************
-static function setcolblk(this)
+static function tabobj.freeze(this,table:=this)
 
-local hash,column,clid,metnam,n,x
+local rec,clid
+local blk,blk1,i
+local env,env1,j
+local stamp,error
+
+    rec:=objectNew(clid:=this::getclassid)
+
+    rec:tab_fldnum    := table[TAB_FLDNUM]
+    rec:tab_recbuf    := table[TAB_RECBUF][1..]       // copy
+    rec:tab_reclen    := table[TAB_RECLEN]
+    rec:tab_stamp     := table[TAB_STAMP]
+    rec:tab_position  := table[TAB_POSITION]
+    rec:tab_alias     := table[TAB_ALIAS]
+    rec:tab_file      := table[TAB_FILE]
+    rec:tab_path      := table[TAB_PATH]
+    rec:tab_ext       := table[TAB_EXT]
+    rec:tab_modif     := .t.                          // nem ellenorzi a lockot
+    rec:tab_modifkey  := .t.                          // nem ellenorzi a lockot
+    rec:tab_column    := table[TAB_COLUMN]::aclone    // blokk csere
+
+
+    // Az eredeti blokkok nem jok, mert azokba bele van forditva
+    // a tablaobjektum rekord buffere. Az uj blokkoknak a fagyasztott
+    // rekord bufferebol (a masolatbol) kell olvasniuk.
+
+    for i:=1 to len(rec:column)
+        blk:=rec:column[i][COL_BLOCK]
+        env:=blkenv(blk)
+        env1:=array(len(env))
+        env1[1]:=rec
+        for j:=2 to len(env)
+            env1[j]:=deref(env[j])
+        next
+        blk1:=blkenv(blk,env1)
+        rec:column[i][COL_BLOCK]:=blk1
+    next
+
+
+    if( this::oref==table::oref )
+        // this==table
+        // a this nyitott allapotban van
+        // tehat mar vannak ellenorzott metodus blokkjai
+
+    elseif( NIL==(stamp:=this:__stamp__) )
+        // ilyen osztalyu objektum meg nem volt nyitva
+        // el kell kesziteni a metodusokat
+
+        this:__stamp__(table[TAB_STAMP])
+        setmetblk(this,table)
+
+    elseif( table[TAB_STAMP]!=stamp )
+        error:=tabstructerrorNew()
+        error:operation:="tabobj.freeze"
+        error:description:="different record struct"
+        error:filename:=tabPathName(table)
+        break(error)
+    end
+
+    return rec
+
+
+static function deref(x)
+    return x
+
+
+// Nyitott lokalis tablabol rekord objektumot keszit.
+// A rekordba bemasolodik a tabla aktualis rekord buffere,
+// a masolatbol kiolvashatok az eredeti mezoertekek.
+// t:tab_modif:=.t. utan modosithatok is a mezoertekek.
+// t:tab_modifkey:=.t. utan modosithatok a klucsmezok.
+// A rekord objektum alatt nincsen lemezfajl,
+// ezert a megvaltozott mezok nem is irodnak ki sehova.
+// es nincs ertelme semmilyen navigalasnak (nem lehetseges).
+// A fagyasztas utan az eredeti tablan vegzett muveletek
+// mar nem hatnak a rekord objektumora, tehat a tablaban
+// lehet mozogni, vagy akar le is lehet zarni.
+
+// Ha a masodik (table:=this) parameterben kap egy nyitott
+// allapotu hagyomanyos (globalis) tablaobjektumot, akkor
+// annak az aktualis rekordjabol keszul a rekord objektum.
+// (Persze csak azonos strukturaju tabla johet szoba.)
+
+
+// MEMO mezok
+// A memo mezok nincsenek benne a rekordbufferben,
+// ezert fagyasztaskor nem fagynak bele az objektumba.
+// Ehelyett tovabbra is a rekordbufferbe fagyott offsetrol
+// kiolvashato erteket latjuk, ami azonban elromolhat,
+// ha a memo erteket mas programok atirjak (es ezzel a
+// memo ertek masik szektorba, az altalunk ismert szektor
+// pedig szabadlistaba kerul, ahol aztan akarmi lehet).
+// A fagyasztott tabla memo mezejenek atirasa nem ertelmes,
+// mert az uj memoertek azonnal kiirodik a memo fajlba,
+// de az uj memo uj offsete nem irodik ki az alapfajlba,
+// hiszen a fagyasztott tabla rekordbufferet nem irjuk ki.
+// Ezert az uj ertek csak zarvanyt fog kepzni a memo fajlban.
+// Ezert egyelore kizarom a memokat a freeze muveletbol.
+// Megoldas lehet, hogy fagyasztaskor a memokat elore
+// kulon kiolvassuk es valahol letaroljuk.
+
+
+******************************************************************************************
+static function tabobj.list(this)
+local column,n
+    ? this:pathname,this:position
+    for n:=1 to len(this:column)
+        column:=this:column[n]
+        if( !tabMemoField(this,column) )
+            // memok kihagyva
+            ? n, column[1]::padr(16), this:evalcolumn(n)
+        end
+    next
+
+
+
+******************************************************************************************
+// METHOD blocks
+// nem oszlop blokkok, hanem metodus blokkkok
+// a metodus blokkokba nincs beleforditva a table
+// hanem az eval-tol kapjak table-t parameterkent
+******************************************************************************************
+static function setmetblk(this,table)
+
+local hash,column,clid,metnam,n,x,err
 
     hash:=simplehashNew()
-    column:=tabColumn(this)
+    column:=tabColumn(table)
     for n:=1 to len(column)
-        hash[lower(column[n][1])]:=n
+        hash[lower(column[n][COL_NAME])]:=n
     next
 
     clid:=getclassid(this)
-    metnam:=this:methnames
+    metnam:=this:methnames(clid) // clid-ben definialt metodusok
     for n:=1 to len(metnam)
         if( (x:=hash[metnam[n]])!=NIL )
-            classMethod(clid,metnam[n],mkblk(this,x)) // csereli a method blokkot
+            classMethod(clid,metnam[n],metblk(this,x))
+        elseif( metnam[n]=="initialize"  )
+            // kihagy
+        elseif( metnam[n]=="__stamp__"  )
+            // kihagy
+        elseif( metnam[n]=="__mutex__"  )
+            // kihagy
+        else
+            err:=tabstructerrorNew()
+            if( this::oref==table::oref )
+                err:operation:="tabobj.open"
+            else
+                err:operation:="tabobj.freeze"
+            end
+            err:description:="missing field"
+            err:args:={metnam[n]}
+            break(err)
         end
     next
 
 
 ******************************************************************************************
-static function mkblk(this,x)
+static function metblk(this,x)
 
 local name  := this:column[x][COL_NAME]
 local type  := this:column[x][COL_TYPE]
@@ -258,10 +405,6 @@ local memo  := tabMemoField(this,this:column[x])
 
 
 ******************************************************************************************
-// dbcolumn.prg-bol atalakitassal:
-// ezek nem oszlop blokkok, hanem metodus blokkkok
-// (bar nagyon hasonlitanak az oszlop blokkokra)
-
 static function blkmemoc(offs,width)
     return {|t,x| if( x==NIL.or.!islocked(t),;
                       bin2str(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width))),;
@@ -385,100 +528,6 @@ local index,ord
         next
     end
     return .t.
-
-
-******************************************************************************************
-static function tabobj.freeze(this,table:=this)
-
-local t,n
-
-    t:=objectNew(this::getclassid)
-
-    t:tab_fldnum    := table[TAB_FLDNUM] 
-    t:tab_recbuf    := table[TAB_RECBUF][1..]       // copy
-    t:tab_reclen    := table[TAB_RECLEN] 
-    t:tab_position  := table[TAB_POSITION]
-    t:tab_alias     := table[TAB_ALIAS]  
-    t:tab_file      := table[TAB_FILE]   
-    t:tab_path      := table[TAB_PATH]   
-    t:tab_ext       := table[TAB_EXT]    
-    t:tab_modif     := .t.                          // nem ellenorzi a lockot
-    t:tab_modifkey  := .t.                          // nem ellenorzi a lockot
-    t:tab_column    := table[TAB_COLUMN]::aclone    // blokk csere
-    
-    if( this:__colblk__ )
-        setcolblk(this)
-    end
-
-    for n:=1 to len(t:tab_column)
-        t:tab_column[n][COL_BLOCK]:=blk(t,n)
-        
-        // Az eredeti blokkok nem jok, mert azokba bele van forditva az
-        // eredeti objektum rekord buffere, es onnan vennek az adatokat.
-        // Eleg volna csak NIL-re alitani az oszlopblokkokat, mert az
-        // adatok elerhetok a metodusokon keresztul is, es az oszlopblokkok
-        // csak a tabEvalcolumn mukodeseben kapnak szerepet.  De mivel
-        // a blokkok elkeszitese csak minimalisan lassitja a programot
-        // nem erdemes kihagyni.
-    next
-    return t
-
-static function blk(t,n)
-local name:=t:tab_column[n][COL_NAME]
-local meth:=getmethod(getclassid(t),name)
-    return {|x|eval(meth,t,x)}
-    //return {|x|t:evalmethod(name,x)} //ez is lehetne
-
-
-// Nyitott lokalis tablabol rekord objektumot keszit.
-// A rekordba bemasolodik a tabla aktualis rekord buffere,
-// a masolatbol kiolvashatok az eredeti mezoertekek.
-// t:tab_modif:=.t. utan modosithatok is a mezoertekek.
-// t:tab_modifkey:=.t. utan modosithatok a klucsmezok.
-// A rekord objektum alatt nincsen lemezfajl,
-// ezert a megvaltozott mezok nem is irodnak ki sehova.
-// es nincs ertelme semmilyen navigalasnak (nem lehetseges).
-// A fagyasztas utan az eredeti tablan vegzett muveletek
-// mar nem hatnak a rekord objektumora, tehat a tablaban 
-// lehet mozogni, vagy akar le is lehet zarni.
-
-// Ha a masodik (table:=this) parameterben kap egy nyitott
-// allapotu hagyomanyos (globalis) tablaobjektumot, akkor 
-// annak az aktualis rekordjabol keszul a rekord objektum.
-// (Persze csak azonos strukturaju tabla johet szoba.)
-
-
-// MEMO mezok
-// A memo mezok nincsenek benne a rekordbufferben,
-// ezert fagyasztaskor nem fagynak bele az objektumba.
-// Ehelyett tovabbra is a rekordbufferbe fagyott offsetrol
-// kiolvashato erteket latjuk, ami azonban elromolhat,
-// ha a memo erteket mas programok atirjak (es ezzel a
-// memo ertek masik szektorba, az altalunk ismert szektor
-// pedig szabadlistaba kerul, ahol aztan akarmi lehet).
-// A fagyasztott tabla memo mezejenek atirasa nem ertelmes,
-// mert az uj memoertek azonnal kiirodik a memo fajlba,
-// de az uj memo uj offsete nem irodik ki az alapfajlba,
-// hiszen a fagyasztott tabla rekordbufferet nem irjuk ki.
-// Ezert az uj ertek csak zarvanyt fog kepzni a memo fajlban.
-// Ezert egyelore kizarom a memokat a freeze muveletbol.
-// Megoldas lehet, hogy fagyasztaskor a memokat elore
-// kulon kiolvassuk es valahol letaroljuk.
-
-
-
-
-******************************************************************************************
-static function tabobj.list(this)
-local column,n
-    ? this:pathname,this:position
-    for n:=1 to len(this:column)
-        column:=this:column[n]
-        if( !tabMemoField(this,column) )
-            // memok kihagyva
-            ? n, column[1]::padr(16), this:evalmethod(column[1])
-        end
-    next
 
 
 ******************************************************************************************

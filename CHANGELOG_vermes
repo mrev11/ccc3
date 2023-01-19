@@ -1,3 +1,10 @@
+2023.01.19 ppo2cpp 5.5.1
+  A 2021-11-21 e0aedcf commit visszacsinalva r/r conflict-ok miatt,
+  emiatt nem fogadja el az alabbi fuggvenyhivasi formakat:
+    @x::fun(y,z)   hibas, helyette fun(@x,y,z)
+    [x]::fun(y,z)  hibas, helyette fun([x],y,z)
+
+
 2023-01-16
   tabobjclass blokkok atdolgozva, ellenorzi a strukturakat;
   blkenv csereli a kodblokk valozok tombjet;

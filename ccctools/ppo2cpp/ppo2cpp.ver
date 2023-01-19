@@ -1,3 +1,10 @@
+2023.01.19 -- 5.5.1
+  A 2021-11-21 e0aedcf commit visszacsinalva r/r conflict-ok miatt,
+  emiatt nem fogadja el az alabbi fuggvenyhivasi formakat:
+    @x::fun(y,z)   hibas, helyette fun(@x,y,z)
+    [x]::fun(y,z)  hibas, helyette fun([x],y,z)
+
+
 2022.10.21 -- 5.5.0
   kulso static valtozok inicializalasa lambda fuggvennyel;
   *

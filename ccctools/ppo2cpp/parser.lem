@@ -243,7 +243,7 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
 %left       STAR SLASH MODULO.
 %right      DBSTAR.
 %left       DBPLUS DBMINUS.
-%nonassoc   LBRACKET.
+%left       LBRACKET.
 %left       COLON COLCOL.
 %nonassoc   ARROW.
 %nonassoc   HIGHPRECEDENCE.
@@ -1324,12 +1324,12 @@ expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
     X->outsource=outsource_expr_ddotsymbol_LPAR_lfuncpar_RPAR;
 }
 
-expr(X) ::= parexpr(X1) COLCOL expr(X2).{
+expr(X) ::= expr(X1) COLCOL expr(X2).{
     /*postfix fuggvenyhivas*/
     X=(new parsenode)->rule(2,X1,X2);
     X->text="expr ::= parexpr COLCOL expr.";
-    X->codegen=codegen_expr_parexpr_COLCOL_expr;
-    X->outsource=outsource_expr_parexpr_COLCOL_expr;
+    X->codegen=codegen_expr_expr_COLCOL_expr;
+    X->outsource=outsource_expr_expr_COLCOL_expr;
 }
 
 expr(X) ::= expr(X1) COLCOLASS expr(X2).{

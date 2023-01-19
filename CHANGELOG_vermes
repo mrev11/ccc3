@@ -1,3 +1,7 @@
+2023.01.19 -- ppo2cpp 5.6.0
+  kerek zarojeles kodblokk: olyan mint a kapcsos zarojeles, 
+  kiveve, hogy nem refesednek a benne elofordulo valtozok
+
 2023.01.19 ppo2cpp 5.5.1
   A 2021-11-21 e0aedcf commit visszacsinalva r/r conflict-ok miatt,
   emiatt nem fogadja el az alabbi fuggvenyhivasi formakat:

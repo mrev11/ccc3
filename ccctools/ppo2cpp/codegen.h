@@ -1,23 +1,4 @@
 
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 extern int codegen_prg_header_lfunction(parsenode *p,void *v);
 extern int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void *v);
 extern int codegen_namespace(parsenode *p,void *v);
@@ -167,6 +148,7 @@ extern int codegen_expr_expr_COLCOL_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_COLCOLASS_expr(parsenode *p,void *v);
 extern int codegen_expr_LPAR_lexpr_RPAR(parsenode *p,void *v);
 extern int codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,void *v);
+extern int codegen_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR(parsenode *p,void *v);
 extern int codegen_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v);
 extern int codegen_expr_LBRACE_lfuncpar_RBRACE(parsenode *p,void *v);
 extern int codegen_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v);
@@ -246,6 +228,7 @@ extern int outsource_expr_expr_COLCOL_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_COLCOLASS_expr(parsenode *p,void *v);
 extern int outsource_expr_LPAR_lexpr_RPAR(parsenode *p,void *v);
 extern int outsource_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,void *v);
+extern int outsource_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR(parsenode *p,void *v);
 extern int outsource_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v);
 extern int outsource_expr_LBRACE_lfuncpar_RBRACE(parsenode *p,void *v);
 extern int outsource_expr_expr_LBRACKET_expr_RBRACKET(parsenode *p,void *v);

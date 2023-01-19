@@ -1360,6 +1360,18 @@ expr(X) ::= LBRACE(B) PIPE bargument(A) PIPE lexpr(L) RBRACE.{
     nodetab_blkarg->clean();
 }
 
+expr(X) ::= LPAR(B) PIPE bargument(A) PIPE lexpr(L) RPAR.{
+    X=(new parsenode)->rule(3,A,L,B); //sorrend!
+    X->text="expr ::= LPAR PIPE bargument PIPE lexpr RPAR.";
+    X->lineno=B->lineno;
+    X->codegen=codegen_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR;
+    X->outsource=outsource_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR;
+
+    //!
+    blockflag=0;
+    nodetab_blkarg->clean();
+}
+
 expr(X) ::= IF LPAR expr(X1) COMMA expr(X2) COMMA expr(X3) RPAR.{
     X=(new parsenode)->rule(3,X1,X2,X3);
     X->text="expr ::= IF LPAR expr COMMA expr COMMA expr RPAR.";

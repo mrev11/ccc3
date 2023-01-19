@@ -1345,7 +1345,8 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
             }
             if( slot[i]->codegen==codegen_slot_METHOD_SYMBOL_expr )
             {
-                if( slot[i]->right[1]->codegen!=codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE )
+                if( slot[i]->right[1]->codegen!=codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE  &&
+                    slot[i]->right[1]->codegen!=codegen_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR       )
                 {
                     const char *meth=slot[i]->right[0]->text;
                     fprintf(cls,"classMethod(clid,\"%s\",",meth);
@@ -3147,6 +3148,41 @@ int codegen_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,void *v)//
     return 0;
 }
 
+
+//---------------------------------------------------------------------------
+int codegen_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR(parsenode *p,void *v)//PROTO
+{
+    int blkcnt=nodetab_block->add(p)-1; //0-tól indul
+    fundecl_codeblock(funcname,blkcnt);
+    nodetab_blkenv->clean();
+    blkenv(p->right[1]); //összegyűjti lexpr szimbólumait
+    int i;
+    for(i=0; i<nodetab_blkenv->top; i++)
+    {
+        parsenode *s=(parsenode*)nodetab_blkenv->get(i);
+        if( s->cargo&SYM_BLKSTAT )
+        {
+            nltab();fprintf(code,"push_symbol(_st_%s.ptr);//%s",s->text,funcname);
+        }
+        if( s->cargo&SYM_BLKLOC )
+        {       
+            nltab();
+            int idx=s->cargo&0xffff;
+            if( starflag && (idx>=argcount) )
+            {
+                fprintf(code,"push_symbol(base+argno+%d);//%s",idx-argcount,s->text);
+            }
+            else
+            {
+                fprintf(code,"push_symbol(base+%d);//%s",idx,s->text);
+            }
+        }
+    }
+    nltab();fprintf(code,"block(_blk_%s_%d,%d);",funcname,blkcnt,nodetab_blkenv->top);
+    nodetab_blkenv->clean();
+    return 0;
+}
+
 //---------------------------------------------------------------------------
 int codegen_expr_IF_LPAR_expr_COMMA_expr_COMMA_expr_RPAR(parsenode *p,void *v)//PROTO
 {
@@ -4210,6 +4246,18 @@ int outsource_expr_LBRACE_PIPE_bargument_PIPE_lexpr_RBRACE(parsenode *p,void *v)
     fprintf(src,"|");
     outsrc(p,1);
     fprintf(src,"}");
+    return 0;
+}
+
+
+//---------------------------------------------------------------------------
+int outsource_expr_LPAR_PIPE_bargument_PIPE_lexpr_RPAR(parsenode *p,void *v)//PROTO
+{
+    fprintf(src,"(|");
+    outsrc(p,0);
+    fprintf(src,"|");
+    outsrc(p,1);
+    fprintf(src,")");
     return 0;
 }
 

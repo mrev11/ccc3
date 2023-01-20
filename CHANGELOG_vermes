@@ -1,3 +1,9 @@
+2023.01.20 btbtx kodblokkok kerek zarojelesek: {||...} helyett (||...).  
+  peldaul: 
+  static function blknumber(table,offs,width,dec)
+    return (|x| ...table,offs,width,dec... )
+  hatasa: table,offs,width,dec nem valik referenciava;
+
 2023.01.19 -- ppo2cpp 5.6.0
   kerek zarojeles kodblokk: olyan mint a kapcsos zarojeles, 
   kiveve, hogy nem refesednek a benne elofordulo valtozok

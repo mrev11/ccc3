@@ -1327,7 +1327,7 @@ expr(X) ::= ddotsymbol(S) LPAR lfuncpar(L) RPAR.{
 expr(X) ::= expr(X1) COLCOL expr(X2).{
     /*postfix fuggvenyhivas*/
     X=(new parsenode)->rule(2,X1,X2);
-    X->text="expr ::= parexpr COLCOL expr.";
+    X->text="expr ::= expr COLCOL expr.";
     X->codegen=codegen_expr_expr_COLCOL_expr;
     X->outsource=outsource_expr_expr_COLCOL_expr;
 }

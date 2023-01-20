@@ -222,7 +222,7 @@ local stamp,error
     rec:tab_reclen    := table[TAB_RECLEN]
     rec:tab_stamp     := table[TAB_STAMP]
     rec:tab_position  := table[TAB_POSITION]
-    rec:tab_alias     := table[TAB_ALIAS]
+    rec:tab_alias     := "" // alias->field letiltva
     rec:tab_file      := table[TAB_FILE]
     rec:tab_path      := table[TAB_PATH]
     rec:tab_ext       := table[TAB_EXT]
@@ -327,7 +327,7 @@ local column,n
 
 ******************************************************************************************
 // METHOD blocks
-// nem oszlop blokkok, hanem metodus blokkkok
+// nem oszlop blokkok, hanem metodus blokkok
 // a metodus blokkokba nincs beleforditva a table
 // hanem az eval-tol kapjak table-t parameterkent
 ******************************************************************************************
@@ -406,76 +406,76 @@ local memo  := tabMemoField(this,this:column[x])
 
 ******************************************************************************************
 static function blkmemoc(offs,width)
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       bin2str(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width))),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x)))
 
 static function blkmemox(offs,width)
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width)),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x))}
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x)))
 
 
 ******************************************************************************************
 static function blkchar(offs,width)
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       bin2str(CHARCONV_LOAD(xvgetchar(t[TAB_RECBUF],offs,width))),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
+                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) )
 
 static function xblkchar(offs,width)
-    return {|t,x| if( x==NIL.or.!xislocked(t),;
+    return (|t,x| if( x==NIL.or.!xislocked(t),;
                       bin2str(CHARCONV_LOAD(xvgetchar(t[TAB_RECBUF],offs,width))),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) }
+                      (xvputbin(t[TAB_RECBUF],offs,width,CHARCONV_STORE(str2bin(x))),x)) )
 
 
 ******************************************************************************************
 static function blkbin(offs,width)
 //u.a. mint blkchar csak olvasaskor nem konvertal stringre
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       xvgetchar(t[TAB_RECBUF],offs,width),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) )
 
 static function xblkbin(offs,width)
 //u.a. mint xblkchar csak olvasaskor nem konvertal stringre
-    return {|t,x| if( x==NIL.or.!xislocked(t),;
+    return (|t,x| if( x==NIL.or.!xislocked(t),;
                       xvgetchar(t[TAB_RECBUF],offs,width),;
-                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) }
+                      (xvputbin(t[TAB_RECBUF],offs,width,str2bin(x)),x)) )
 
 
 ******************************************************************************************
 static function blknumber(offs,width,dec)
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       val(xvgetchar(t[TAB_RECBUF],offs,width)),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) }
+                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) )
 
 static function xblknumber(offs,width,dec)
-    return {|t,x| if( x==NIL.or.!xislocked(t),;
+    return (|t,x| if( x==NIL.or.!xislocked(t),;
                       val(xvgetchar(t[TAB_RECBUF],offs,width)),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) }
+                      (xvputchar(t[TAB_RECBUF],offs,width,str2bin(str(x,width,dec))),x)) )
 
 
 ******************************************************************************************
 static function blkdate(offs)
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
-                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }
+                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) )
 
 static function xblkdate(offs)
-    return {|t,x| if( x==NIL.or.!xislocked(t),;
+    return (|t,x| if( x==NIL.or.!xislocked(t),;
                       stod(xvgetchar(t[TAB_RECBUF],offs,8)),;
-                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) }
+                      (xvputchar(t[TAB_RECBUF],offs,8,str2bin(dtos(x))),x)) )
 
 
 ******************************************************************************************
 static function blkflag(offs)  //megj: T=84, F=70
-    return {|t,x| if( x==NIL.or.!islocked(t),;
+    return (|t,x| if( x==NIL.or.!islocked(t),;
                       84==xvgetbyte(t[TAB_RECBUF],offs),;
-                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) }
+                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) )
 
 static function xblkflag(offs)  //megj: T=84, F=70
-    return {|t,x| if( x==NIL.or.!xislocked(t),;
+    return (|t,x| if( x==NIL.or.!xislocked(t),;
                       84==xvgetbyte(t[TAB_RECBUF],offs),;
-                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) }
+                      (xvputbyte(t[TAB_RECBUF],offs,if(x,84,70)),x)) )
 
 
 ******************************************************************************************

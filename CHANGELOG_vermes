@@ -1,4 +1,7 @@
 2023.01.24
+  FreeBSD/NetBSD thread_getname/thread_setname inkompatibilitas miatt kihagyva;
+
+2023.01.24
   minden platformon: -Wno-deprecated-declarations
   (mert a crypto konyvtar depraceted lett)
 

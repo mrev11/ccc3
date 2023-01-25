@@ -20,4 +20,5 @@
 -Wno-int-to-pointer-cast
 -Wno-incompatible-ms-struct
 -Wno-unknown-warning-option
+-Wno-deprecated-declarations
 

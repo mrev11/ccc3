@@ -17,4 +17,5 @@
 -Wno-unused
 -Wno-empty-body
 -Wno-constant-logical-operand
+-Wno-deprecated-declarations
 -I/usr/local/include

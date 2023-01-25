@@ -18,6 +18,7 @@
 -Wno-format
 -Wno-format-overflow
 -Wno-unknown-warning-option
+-Wno-deprecated-declarations
 -g
 -I/usr/X11/include
 -I/usr/sfw/include

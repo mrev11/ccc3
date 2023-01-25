@@ -16,5 +16,6 @@
 -Wall
 -Wno-unused
 -Wno-char-subscripts
+-Wno-deprecated-declarations
 -I/usr/local/include
 -I/usr/pkg/include

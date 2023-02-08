@@ -304,14 +304,13 @@ static int determineUnixAccessMode(int fomode)
 {
     int unixmode=O_RDONLY;
 
-    if( fomode & FO_WRITE     ) unixmode =  O_WRONLY;  //1
-    if( fomode & FO_READWRITE ) unixmode =  O_RDWR;    //2
-    if( fomode & FO_CREATE    ) unixmode |= O_CREAT; 
-    if( fomode & FO_TRUNCATE  ) unixmode |= O_TRUNC; 
-    if( fomode & FO_APPEND    ) unixmode |= O_APPEND;
-    #if defined O_CLOEXEC
-    if( fomode & FO_NOINHERIT ) unixmode |= O_CLOEXEC;
-    #endif
+    if( fomode & FO_WRITE       ) unixmode =  O_WRONLY;  //1
+    if( fomode & FO_READWRITE   ) unixmode =  O_RDWR;    //2
+    if( fomode & FO_CREATE      ) unixmode |= O_CREAT; 
+    if( fomode & FO_TRUNCATE    ) unixmode |= O_TRUNC; 
+    if( fomode & FO_APPEND      ) unixmode |= O_APPEND;
+    if( fomode & FO_NOINHERIT   ) unixmode |= O_CLOEXEC;
+    if( fomode & FO_NONEXISTENT ) unixmode |= O_EXCL;
 
     return unixmode;
 }
@@ -394,9 +393,11 @@ void _clp_fcreate(int argno) //Clipper
     if( !ISNIL(2) )
     {
         int fcmode=_parni(2);
-        if( fcmode & FC_READONLY ) unixCreateMode =  0444; 
-        if( fcmode & FC_NOTRUNC  ) unixAccessMode &= ~O_TRUNC; 
-        if( fcmode & FC_APPEND   ) unixAccessMode |= O_APPEND; 
+        if( fcmode & FC_READONLY    ) unixCreateMode =  0444; 
+        if( fcmode & FC_NOTRUNC     ) unixAccessMode &= ~O_TRUNC; 
+        if( fcmode & FC_APPEND      ) unixAccessMode |= O_APPEND; 
+        if( fcmode & FC_NOINHERIT   ) unixAccessMode |= O_CLOEXEC;
+        if( fcmode & FC_NONEXISTENT ) unixAccessMode |= O_EXCL;
     }
  
     int fd=uopen( fspec,

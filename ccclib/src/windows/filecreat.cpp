@@ -276,12 +276,13 @@ void _clp_fopen(int argno) //file nyitas sopen()-nel
         
         //access
 
-        if( fomode & FO_WRITE     ) acc =  O_WRONLY;  //1
-        if( fomode & FO_READWRITE ) acc =  O_RDWR;    //2
-        if( fomode & FO_CREATE    ) acc |= O_CREAT; 
-        if( fomode & FO_TRUNCATE  ) acc |= O_TRUNC; 
-        if( fomode & FO_APPEND    ) acc |= O_APPEND;
-        if( fomode & FO_NOINHERIT ) acc |= O_NOINHERIT;
+        if( fomode & FO_WRITE       ) acc  = O_WRONLY;  //1
+        if( fomode & FO_READWRITE   ) acc  = O_RDWR;    //2
+        if( fomode & FO_CREATE      ) acc |= O_CREAT; 
+        if( fomode & FO_TRUNCATE    ) acc |= O_TRUNC; 
+        if( fomode & FO_APPEND      ) acc |= O_APPEND;
+        if( fomode & FO_NOINHERIT   ) acc |= O_NOINHERIT;
+        if( fomode & FO_NONEXISTENT ) acc |= O_EXCL;
 
         //sharing
 
@@ -314,9 +315,11 @@ void _clp_fcreate(int argno) //Clipper (file krealas sopen()-nel)
     if( !ISNIL(2) )
     {
         int fcmode=_parni(2);
-        if( fcmode & FC_READONLY )  att =  0555;
-        if( fcmode & FC_NOTRUNC  )  acc &= ~O_TRUNC;
-        if( fcmode & FC_APPEND   )  acc |= O_APPEND;
+        if( fcmode & FC_READONLY    ) att  = 0555;
+        if( fcmode & FC_NOTRUNC     ) acc &= ~O_TRUNC;
+        if( fcmode & FC_APPEND      ) acc |= O_APPEND;
+        if( fcmode & FC_NOINHERIT   ) acc |= O_NOINHERIT;
+        if( fcmode & FC_NONEXISTENT ) acc |= O_EXCL;
     }                           
 
     _retni( open(base,acc|O_BINARY,shr,att) );

@@ -1,3 +1,8 @@
+2023.02.08 uj fopen/fcreate mod: 
+    fopen(fname,FO_CREATE+FO_NONEXISTENT)
+    fcreate(fname,FC_NONEXISTENT) 
+  letezo file-ra hibat (-1) adnak;
+
 2023.01.24
   FreeBSD/NetBSD thread_getname/thread_setname inkompatibilitas miatt kihagyva;
 

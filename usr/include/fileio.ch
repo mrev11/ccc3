@@ -44,18 +44,19 @@
 
 // FOPEN() sharing modes (combine with open mode using +)
 
-#define FO_COMPAT       0  // Compatibility mode (default)
-#define FO_EXCLUSIVE   16  // Exclusive use (other processes have no access)
-#define FO_DENYWRITE   32  // Prevent other processes from writing
-#define FO_DENYREAD    48  // Prevent other processes from reading
-#define FO_DENYNONE    64  // Allow other processes to read or write
-#define FO_SHARED      64  // Same as FO_DENYNONE
-#define FO_NOLOCK     128  // On UNIX: no lock, on Windows: same as FO_COMPAT
+#define FO_COMPAT            0  // Compatibility mode (default)
+#define FO_EXCLUSIVE        16  // Exclusive use (other processes have no access)
+#define FO_DENYWRITE        32  // Prevent other processes from writing
+#define FO_DENYREAD         48  // Prevent other processes from reading
+#define FO_DENYNONE         64  // Allow other processes to read or write
+#define FO_SHARED           64  // Same as FO_DENYNONE
+#define FO_NOLOCK          128  // On UNIX: no lock, on Windows: same as FO_COMPAT
 
-#define FO_CREATE     256  // Nem letezo file letrejon
-#define FO_TRUNCATE   512  // Letezo file hosszat 0-ra allitja
-#define FO_APPEND    1024  // Writes will add to the end of the file
-#define FO_NOINHERIT 2048  // Gyerek processz nem orokli az fd-t
+#define FO_CREATE          256  // Nem letezo file letrejon
+#define FO_TRUNCATE        512  // Letezo file hosszat 0-ra allitja
+#define FO_APPEND         1024  // Writes will add to the end of the file
+#define FO_NOINHERIT      2048  // Gyerek processz nem orokli az fd-t
+#define FO_NONEXISTENT    4096  // Letezo fajlra hibat ad (O_EXCL)
 
 //megjegyzes:
 // A Linux 2.6.23 kerneltol kezdve tamogatott az O_CLOEXEC.
@@ -72,15 +73,17 @@
 // FCREATE() file attribute modes
 // NOTE:  FCREATE() always opens with (FO_READWRITE + FO_COMPAT)
 
-#define FC_NORMAL       0  // Create normal read/write file (default)
-#define FC_READONLY     1  // Create read-only file
-#define FC_HIDDEN       2  // Create hidden file
-#define FC_SYSTEM       4  // Create system file
-#define FC_NOTRUNC      8  // Letezo file tartalma megmarad
-#define FC_APPEND    1024  // Writes will add to the end of the file
+#define FC_NORMAL            0  // Create normal read/write file (default)
+#define FC_READONLY          1  // Create read-only file
+#define FC_HIDDEN            2  // Create hidden file
+#define FC_SYSTEM            4  // Create system file
+#define FC_NOTRUNC           8  // Letezo file tartalma megmarad
+#define FC_APPEND         1024  // Writes will add to the end of the file
+#define FC_NOINHERIT      2048  // Gyerek processz nem orokli az fd-t
+#define FC_NONEXISTENT    4096  // Letezo fajlra hibat ad (O_EXCL)
 
 
-#define LK_OFFSET_FILE     253    // csak unix
+#define LK_OFFSET_FILE     253  // csak unix
 #define LK_OFFSET_PAGE     254
 #define LK_OFFSET_RECORD   255
  

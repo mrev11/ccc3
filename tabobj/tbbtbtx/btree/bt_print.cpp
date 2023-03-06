@@ -54,7 +54,7 @@ void __bt_print_header(BTREE *t,char *msg)
     printf("  nrecs         %d\n", t->bt_nrecs); 
     printf("  free          %d\n", t->bt_free);
     printf("  lastdatapage  %d\n", t->bt_lastdatapage); 
-    printf("  reserved      %d\n", t->reserved);
+    printf("  memo          %d\n", t->bt_memo);
     printf("  nords         %d\n", t->bt_nords);
  
     for( n=0; n<t->bt_nords; n++ ) 

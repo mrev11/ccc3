@@ -24,7 +24,7 @@
  
 void __bt_error(const char *txt)
 {
-    perror(txt);
+    fprintf(stderr,txt);
     raise(SIGTERM);
     exit(1);
 }

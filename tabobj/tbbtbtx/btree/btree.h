@@ -51,6 +51,7 @@
 #define  P_BINTERNAL   0x01      // btree internal page 
 #define  P_BLEAF       0x02      // leaf page 
 #define  P_DATA        0x03      // data page
+#define  P_MEMO        0x04      // memo page
 #define  P_TYPE        0x07      // type mask
  
 typedef struct _page 
@@ -180,7 +181,7 @@ typedef struct _btree
 
   pgno_t     bt_free;                  // next free page 
   pgno_t     bt_lastdatapage;          // last data page
-  u_int32_t  reserved;               
+  pgno_t     bt_memo;                  // next memo page
   u_int32_t  bt_nords;                 // number of orders
  
   ORDER      bt_order[BT_MAXORDER];    // array of orders

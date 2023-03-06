@@ -18,10 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <sys/param.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <btree.h>
 #include <swap.h>
 
@@ -45,6 +47,7 @@ static void swap_in(BTREE *t)
 
     P_32_SWAP(&t->bt_free);
     P_32_SWAP(&t->bt_lastdatapage);
+    P_32_SWAP(&t->bt_memo);
     P_32_SWAP(&t->bt_nords);
    
     for( i=0; (i<t->bt_nords) && (i<BT_MAXORDER); i++ ) 
@@ -76,38 +79,64 @@ static void swap_out(BTREE *t)
 
     P_32_SWAP(&t->bt_free);
     P_32_SWAP(&t->bt_lastdatapage);
+    P_32_SWAP(&t->bt_memo);
     P_32_SWAP(&t->bt_nords);
 }
 
 
 //---------------------------------------------------------------------------
-static int hread(int fd, BTREE*t, int nbyte)
+static int hread(BTREE*t)
 {
-    int swap=F_ISSET(t,B_NEEDSWAP);
-    nbyte=read(fd,t,nbyte);
-    if( swap ) 
+    int fd=t->bt_fd;
+    int disksize=(char*)&t->flags-(char*)t; // 544
+    lseek(fd,0,SEEK_SET);
+    int nbyte=read(fd,t,disksize);
+    if( nbyte<256 )
+    {
+        return -1;
+    }
+    if( nbyte<disksize )
+    {
+        memset((char*)t+nbyte,0,disksize-nbyte);
+    }
+    if( F_ISSET(t,B_NEEDSWAP) ) 
     {
         swap_in(t);
     }
-    return nbyte;
+    int pagesize=t->bt_psize;
+    if( pagesize<disksize )
+    {
+        memset((char*)t+pagesize,0,disksize-pagesize);
+    }
+    return 0;
+
+    // megjegyzes
+    // disksize: a btree struct tarolt resze (eleje)
+    // pagesize: 256,512,...,8192 (default: 4096)
+    // pagesize lehet kisebb vagy nagyobb mint disksize
 }
 
 //---------------------------------------------------------------------------
-static int hwrite(int fd, BTREE*t, int nbyte)
+static int hwrite(BTREE*t)
 {
-    int swap=F_ISSET(t,B_NEEDSWAP);
-    if( swap ) 
+    int fd=t->bt_fd;
+    int pagesize=t->bt_psize;
+    int disksize=(char*)&t->flags-(char*)t; // 544
+    int nbyte=MIN(pagesize,disksize);
+
+    if( F_ISSET(t,B_NEEDSWAP) ) 
     {
         swap_out(t);
     }
+    lseek(fd,0,SEEK_SET);
     nbyte=write(fd,t,nbyte);
-    if( swap ) 
+    if( F_ISSET(t,B_NEEDSWAP) ) 
     {
         swap_in(t);
     }
-    return nbyte;
+    return (nbyte==MIN(pagesize,disksize)) ? 0:-1;
 }
- 
+
 //---------------------------------------------------------------------------
 int __bt_header_read(BTREE *t, int lock)
 {
@@ -119,9 +148,7 @@ int __bt_header_read(BTREE *t, int lock)
         {
             __bt_pagelock(t,0,1);
         }
-        lseek(t->bt_fd,0,SEEK_SET);
-        rbyte=(char*)&t->flags-(char*)t; //permanent data size
-        if( rbyte!=hread(t->bt_fd,t,rbyte) )
+        if( 0!=hread(t) )
         {
             __bt_error("__bt_header_read: i/o error");
         }
@@ -147,9 +174,7 @@ int __bt_header_write(BTREE *t)
 
     if( 0==--t->bt_lockcount )
     {
-        lseek(t->bt_fd,0,SEEK_SET);
-        rbyte=(char*)&t->flags-(char*)t; //permanent data size
-        if( rbyte!=hwrite(t->bt_fd,t,rbyte) )
+        if( 0!=hwrite(t) )
         {
             __bt_error("__bt_header_write: i/o error");
         }
@@ -175,9 +200,7 @@ int __bt_header_sync(BTREE *t)
         __bt_error("__bt_header_sync: no lock");
     }
 
-    lseek(t->bt_fd,0,SEEK_SET);
-    rbyte=(char*)&t->flags-(char*)t; //permanent data size
-    if( rbyte!=hwrite(t->bt_fd,t,rbyte) )
+    if( 0!=hwrite(t) )
     {
         __bt_error("__bt_header_sync: i/o error");
     }
@@ -201,9 +224,7 @@ int __bt_header_release(BTREE *t)
     {
         if( t->bt_dirtyflag )
         {
-            lseek(t->bt_fd,0,SEEK_SET);
-            rbyte=(char*)&t->flags-(char*)t; //permanent data size
-            if( rbyte!=hwrite(t->bt_fd,t,rbyte) )
+            if( 0!=hwrite(t) )
             {
                 __bt_error("__bt_header_write: i/o error");
             }

@@ -79,15 +79,20 @@ int mpool_close(MPOOL *mp)
 //---------------------------------------------------------------------------
 void mpool_dump(MPOOL *mp, void *page)
 {
-    int i,n; 
+    int i,n,offs=0; 
     for( i=0; i<mp->pagesize; )
     {
-        printf("\n");
+        printf("\n%02x ",offs);
         for( n=0; n<16; n++,i++ )
         {
+            if( (n%4)==0 )
+            {
+                printf(" ");
+            }
             printf("%02x ", 255&*(((char*)page)+i) );
             fflush(0); 
         }
+        offs+=16;
     }
     printf("\n");
 }

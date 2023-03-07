@@ -132,6 +132,21 @@ local count:=0
 
 ****************************************************************************
 function tabMemoDel(table)
+local n,tmd,ltmd
+    //? "MEMODEL  ",table[TAB_MEMODEL]
+    if( (tmd:=table[TAB_MEMODEL])!=NIL )
+        ltmd:=len(tmd)
+        for n:=1 to ltmd
+            _db_memodel(table[TAB_BTREE],tmd[n])
+            //alert("HOPP "+ tmd[n]::bin2str)
+        next
+        table[TAB_MEMODEL]:=NIL
+    end
+    
+
+
+****************************************************************************
+function _v1_tabMemoDel(table)
 
 local n,tmd,ltmd,mhnd
 
@@ -149,6 +164,17 @@ local n,tmd,ltmd,mhnd
     
 ****************************************************************************
 function tabMemoRead(table,memo)
+local value:=a""
+    //? "MEMOREAD ","memo",memo
+    if( !empty(memo))
+        value:=_db_memoread(table[TAB_BTREE],memo)
+    end
+    //?? " value",value
+    return value
+
+
+****************************************************************************
+function _v1_tabMemoRead(table,memo)
 
 local value:=a""
 local offset:=val(memo)
@@ -161,6 +187,25 @@ local offset:=val(memo)
     
 ****************************************************************************
 function tabMemoWrite(table,memo,value)
+local vlen:=len(value)
+    //? "MEMOWRITE","memo",memo,"value",value
+    if( !empty(memo) )
+        if( table[TAB_MEMODEL]==NIL )
+            table[TAB_MEMODEL]:={memo}
+        else
+            aadd(table[TAB_MEMODEL],memo)
+        end
+    end
+    memo:=a""
+    if( vlen>0 )
+        memo:=_db_memowrite(table[TAB_BTREE],value)
+    end
+    //?? "",memo
+    return memo
+
+
+****************************************************************************
+function _v1_tabMemoWrite(table,memo,value)
 
 local vlen:=len(value)
 local offset

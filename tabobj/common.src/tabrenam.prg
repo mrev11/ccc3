@@ -41,18 +41,6 @@ local fname1,fname2
     fname2:=lower(tabPath(table)+name+tabDataExt(table))
     result:=result.and._rename(fname1,fname2)
 
-#ifdef _DBFNTX_
-    result:=result.and.tabDelIndex(table)
-#else
-    fname1:=lower(tabIndexName(table))
-    fname2:=lower(tabPath(table)+name+tabIndexExt(table))
-    result:=result.and._rename(fname1,fname2)
-#endif    
-    
-    fname1:=lower(tabMemoName(table))
-    fname2:=lower(tabPath(table)+name+tabMemoExt(table))
-    result:=result.and._rename(fname1,fname2)
-    
     return result
 
 
@@ -70,22 +58,14 @@ local fname1,fname2
     fname2:=lower(path+BACKUPDIR+dirsep()+name+tabDataExt(table))
     result:=result.and._rename(fname1,fname2)
     
-    fname1:=lower(tabMemoName(table))
-    fname2:=lower(path+BACKUPDIR+dirsep()+name+tabMemoExt(table))
-    result:=result.and._rename(fname1,fname2)
-    
     return result
     
 
 ****************************************************************************
 function tabDelTable(table)
-local result:=tabDelIndex(table)
+local result:=.t.
     ferase(lower(tabPathName(table)))
     if( file(lower(tabPathName(table))) )
-        result:=.f.
-    end
-    ferase(lower(tabMemoName(table)))
-    if( file(lower(tabMemoName(table))) )
         result:=.f.
     end
     return result
@@ -93,29 +73,7 @@ local result:=tabDelIndex(table)
 
 ****************************************************************************
 function tabDelIndex(table)
-
 local result:=.t.
-
-#ifdef _DBFNTX_  //ha tobb index is lehet
-local path:=tabPath(table)    
-local ext:=tabIndexExt(table)
-local aindex:=tabIndex(table), i, iname
-
-    for i:=1 to len(aindex)
-        iname:=aindex[i][IND_FILE]
-        iname:=strtran(iname,tabAlias(table),tabFile(table))
-        iname:=path+iname+ext
-        ferase(iname)
-        if( file(iname) )
-            result:=.f.
-        end
-    next
-#else
-    ferase(lower(tabIndexName(table)))
-    if( file(lower(tabIndexName(table))) )
-        result:=.f.
-    end
-#endif
     return result
 
     

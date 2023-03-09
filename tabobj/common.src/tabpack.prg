@@ -28,28 +28,7 @@
 #include "tabobj.ch"
 
 
-#ifdef _DBFNTX_
-#define COPYDBF
-#define OPTIMIZED
-#endif
-
-#ifdef _DBFCTX_
-#define COPYDBF
-#define OPTIMIZED
-#endif
-
-#ifdef _DATIDX_
-#define COPYDAT
-#define OPTIMIZED
-#endif
-
-#ifdef _BTBTX_
-#define COPYBT
-#define OPTIMIZED
-#endif
- 
-
-#ifndef OPTIMIZED
+#ifdef NOTDEFINED
 
 //Az itteni pack arra epul, hogy tabUpgrade minden rekordot mezonkent 
 //atir egy uj, ideiglenes filebe, mikozben kihagyja a torolt rekordokat. 
@@ -85,7 +64,6 @@ local save:=tabSave(table)
 #endif
 
 
-#ifdef COPYBT
 ******************************************************************************
 function tabPack(table)
 
@@ -117,126 +95,6 @@ local logged
     end
     return result==.t.
  
-#endif
- 
-
-#ifdef COPYDBF   
-******************************************************************************
-function tabPack(table)
-
-local result
-local save:=tabSave(table)
-local tmp:=tabPath(table)+TMPCHR+tabFile(table)
-local logged
- 
-    tranNotAllowedInTransaction(table,"pack")
- 
-    tabCommit(table)
-
-    if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
-        taberrOperation("tabPack")
-        taberrDescription(@"exclusive open required")
-        tabError(table) 
-    end
-    
-    if( tabSlock(table)>0 )
-        logged:=table[TAB_LOGGED]
-        table[TAB_LOGGED]:=.f.
-        tabClose(table)
-
-        copydbf(lower(tabPathName(table)),lower(tmp+tabDataExt())) //pack dbf
-        if( tabMemoCount(table)>0 )
-            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memo
-        end
-
-        if( !tabBackup(table) )
-            taberrOperation("tabPack")
-            taberrDescription(@"failed saving old file")
-            tabError(table) 
-        end
-
-        if( !tabDelTable(table) )
-            taberrOperation("tabPack")
-            taberrDescription(@"failed deleting old file")
-            tabError(table) 
-        end
-
-        frename(lower(tmp+tabDataExt()),lower(tabPathName(table)))
-        if( tabMemoCount(table)>0 )
-            frename(lower(tmp+tabMemoExt()),lower(tabMemoName(table)))
-        end
-
-        tabOpen(table,OPEN_EXCLUSIVE)  //ujraindexel
-        tabRestore(table,save)
-        tabGotop(table)
-        table[TAB_LOGGED]:=logged
-        tabWriteChangeLogPack(table)         
-        tabSunlock(table)
-    end
-    return result==.t.
-
-#endif
-
-
-#ifdef COPYDAT
-******************************************************************************
-function tabPack(table)
-
-local result
-local save:=tabSave(table)
-local tmp:=tabPath(table)+TMPCHR+tabFile(table)
-local logged
- 
-    tranNotAllowedInTransaction(table,"pack")
- 
-    tabCommit(table)
-
-    if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
-        taberrOperation("tabPack")
-        taberrDescription(@"exclusive open required")
-        tabError(table) 
-    end
-    
-    if( tabSlock(table)>0 )
-
-        logged:=table[TAB_LOGGED]
-        table[TAB_LOGGED]:=.f.
- 
-        tabCopydat(table,TMPCHR+tabFile(table)) //pack dat
-        tabClose(table)
-
-        if( tabMemoCount(table)>0 )
-            copy file (lower(tabMemoName(table))) to (lower(tmp+tabMemoExt())) //memo
-        end
-
-        if( !tabBackup(table) )
-            taberrOperation("tabPack")
-            taberrDescription(@"failed saving old file")
-            tabError(table) 
-        end
-
-        if( !tabDelTable(table) )
-            taberrOperation("tabPack")
-            taberrDescription(@"failed deleting old file")
-            tabError(table) 
-        end
-
-        frename(lower(tmp+tabDataExt()),lower(tabPathName(table)))
-        if( tabMemoCount(table)>0 )
-            frename(lower(tmp+tabMemoExt()),lower(tabMemoName(table)))
-        end
-
-        tabOpen(table,OPEN_EXCLUSIVE)  //ujraindexel
-        tabRestore(table,save)
-        tabGotop(table)
-        table[TAB_LOGGED]:=logged
-        tabWriteChangeLogPack(table)         
-        tabSunlock(table)
-    end
-    return result==.t.
-
-#endif
-
 
 ******************************************************************************
 function tabZap(table)  //fajl kiuritese

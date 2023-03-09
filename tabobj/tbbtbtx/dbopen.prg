@@ -331,10 +331,6 @@ function tabClose(table) //lezarja a fajlt
     table[TAB_MODIF]    := .f.
     table[TAB_MODIFKEY] := .f.
     table[TAB_MODIFAPP] := .f.
-
-    if( tabMemoActive(table) )
-        memoClose(tabMemoHandle(table))
-    end
     table[TAB_MEMOHND]:=NIL
     table[TAB_MEMODEL]:=NIL
 

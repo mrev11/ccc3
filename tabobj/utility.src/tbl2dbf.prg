@@ -172,6 +172,10 @@ local total:="/"+alltrim(str(tabLastrec(table)))
         type   := col[COL_TYPE]
         width  := col[COL_WIDTH]
         dec    := col[COL_DEC]
+        
+        if( type=="X" )
+            type:="C"
+        end
 
         buffer := padr(alltrim(str2bin(name))+bin(0),11)
         buffer += str2bin(type)
@@ -179,7 +183,7 @@ local total:="/"+alltrim(str(tabLastrec(table)))
         
         //? name,type,width,dec
 
-        if( type=="C" )
+        if( type=="C" .or. type=="X" )
             buffer += bin(width%256)
             buffer += bin((width-width%256)/256)
             
@@ -310,7 +314,7 @@ static function blkchar(offs,length)
     return {|r,x|xvputchar(r,offs,length,str2bin(x))}
 
 static function blkmemo(offs,hnd)
-    return {|r,x|xvputchar(r,offs,10,str2bin(if(empty(x),space(10),str(memoAddValue(hnd,x),10,0))))}
+    return {|r,x|xvputchar(r,offs,10,str2bin(if(empty(x),space(10),str(memoAddValue(hnd,str2bin(x)),10,0))))}
  
 static function blknumber(offs,length,dec)
     return {|r,x|xvputchar(r,offs,length,str2bin(str(x,length,dec)))}

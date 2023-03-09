@@ -133,17 +133,14 @@ local count:=0
 ****************************************************************************
 function tabMemoDel(table)
 local n,tmd,ltmd
-    //? "MEMODEL  ",table[TAB_MEMODEL]
     if( (tmd:=table[TAB_MEMODEL])!=NIL )
         ltmd:=len(tmd)
         for n:=1 to ltmd
             _db_memodel(table[TAB_BTREE],tmd[n])
-            //alert("HOPP "+ tmd[n]::bin2str)
         next
         table[TAB_MEMODEL]:=NIL
     end
     
-
 
 ****************************************************************************
 function _v1_tabMemoDel(table)

@@ -1,9 +1,13 @@
-827bd1c74b5cda013c5194912f7378828889da57 2023030911:37:30-UTC ./CHANGELOG_vermes
-6685a8d2d114b034b7404280d33fef0caf8e32a6 2023030911:32:43-UTC ./tabobj/tbbtbtx/dbmodif.prg
+468fdb1b67a41d8449e8ae2e35320efd16bcc750 2023030913:01:50-UTC ./tools/dbfview/search.say
+a9fa7d60784e2748c0fc6e454cc75405817a94c4 2023030912:58:03-UTC ./tabobj/log-install
+954be8691591c074c39760d876ab256e95e0e93e 2023030912:58:03-UTC ./usr/bin/linux/bt2dbf
+9ddfd27a95941c79685381b96dbf8f8e18da84f0 2023030912:57:43-UTC ./CHANGELOG_vermes
+c71d7ed8fd9b037af2b575dc2b995485b0731c19 2023030912:47:43-UTC ./tabobj/utility.src/tbl2dbf.prg
+41225d76e4a682939ffa6aa394676e108acde72e 2023030911:56:00-UTC ./tabobj/common.src/tabmemo.prg
+7e26245c1327f1c00cbdb3e7c1d2c2be78fd8df3 2023030911:55:00-UTC ./tabobj/tbbtbtx/dbmodif.prg
 31ffd05faa717b412ff4f7aa2821a1f1d0328509 2023030911:03:01-UTC ./usr/bin/linux/tdc2tabobj
 6610ba1b8c716e32a4e6337fffc6559e815d8284 2023030911:02:59-UTC ./tools/tdc2prgch/tdc2tabobj.prg
 0cc78d01e4fff954db2f8bb893bb94f0d1bb7dde 2023030910:53:27-UTC ./tabobj/tbbtbtx/tabobjclass.prg
-27d6858bb6b82152ec48687bfc47ce367548541f 2023030910:43:34-UTC ./tabobj/log-install
 5155803b6735e5c934111778edbb4867956a9903 2023030910:13:28-UTC ./tabobj/memo
 2231785cc0380b115d725f35f49bc0907dac3786 2023030910:05:47-UTC ./tabobj/common.src/tabrenam.prg
 f248cf4718bca4f25fd170a65cc1f1838ff8f410 2023030909:51:31-UTC ./log-install
@@ -13,7 +17,6 @@ c5449fe219624d54f5c8c4d4f18b65b79913dcac 2023030909:51:19-UTC ./usr/bin/linux/pg
 d82367da6b3c5eaed021e991b570a8b09a5c561a 2023030909:42:46-UTC ./tabobj/tbbtbtx/dbopen.prg
 6daa2f758200a3932d0d06d350374deaa29080af 2023030909:41:11-UTC ./tabobj/common.src/tabpack.prg
 99f4c6488a83303c286aec89bbd396c54c94ea90 2023030815:51:11-UTC ./tabobj/tbbtbtx/dbcopybt.prg
-76ced2b3313c019cb10a88ad90d013ad22b1296d 2023030815:19:06-UTC ./usr/bin/linux/bt2dbf
 b464157e6ccab4253f1bd6d9a32d89f5555118e8 2023030815:19:06-UTC ./usr/bin/linux/bt2txt
 0a8a403dd8619136b408c0b32b4dd537bc72e3f5 2023030815:19:06-UTC ./usr/bin/linux/bti
 b1cf8b18590c64b4f6f29b80c8168138c05ee3c6 2023030815:19:06-UTC ./usr/bin/linux/tsema
@@ -22,7 +25,6 @@ bc58174ebe07265ef3313c017cc4ccf93102e671 2023030815:19:06-UTC ./usr/bin/linux/tv
 3fad4fc9aa9d6bbe893d45fd98690ec10f78a2a7 2023030815:18:09-UTC ./tabobj/tbbtbtx/utility/pgstat.prg
 458a1f1876dcb7d44780b418f76cd481694a9518 2023030815:14:51-UTC ./tabobj/tbbtbtx/utility/m
 a09495421b1a4e3b2a5f3164b6fb28e2f851036a 2023030812:30:12-UTC ./tabobj/tbbtbtx/dbcreate.prg
-cc1dfbe4f87b0a6565fb8c535b7b244aa33d57fd 2023030812:24:04-UTC ./tabobj/common.src/tabmemo.prg
 7c7876d6fa514a3eede600afa7486d0a78537306 2023030810:48:53-UTC ./tabobj/tbbtbtx/btree/bt_error.cpp
 71b0045027f4473c4fb1cb99818e801edb0090a2 2023030720:02:32-UTC ./tabobj/tbbtbtx/btree/bt_memo.cpp
 57ecfeabd5de607975f8922bfbc2487bd02b4f69 2023030714:49:57-UTC ./tabobj/tbbtbtx/utility/pgview.prg
@@ -2096,7 +2098,6 @@ c842f4466a4f1106d2c2f4683eb41ef04d5fbb59 2008112708:51:10-UTC ./tutor/pm/solaris
 92944f1fc2a1d2fc7a35c6b2a07f52eb1a51377c 2008111616:00:06-UTC ./tools/websrv/m
 8c029371f2ee3e94bda3d8f7f8df3386a7deaab7 2008110709:18:34-UTC ./terminal/unix-ncurses/learnkey/s
 9969d42a83db202ee384283e6a6c9c1cf362ee50 2008100209:58:05-UTC ./gtk/defs/gtkmessagedialog.defs
-6b57a6ecf57b4f1a3940d8e27547c7aab72558bb 2008090814:59:29-UTC ./tabobj/utility.src/tbl2dbf.prg
 179572e95076374bb12a40bdbb9c8627f760c73d 2008090814:48:38-UTC ./tabobj/utility.src/tbl2txt.prg
 a5c09aa080a8c860d3b234903d431eb194fc110a 2008090813:53:36-UTC ./tabobj/tbbtbtx/utility/bt2txt.prg
 ea525621a66491ffd5c466d93db3142e2c3b58b6 2008090813:53:16-UTC ./tabobj/tbbtbtx/utility/bt2dbf.prg

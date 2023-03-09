@@ -1,14 +1,18 @@
-2023--03-09 folosleges kodok kiszedve: tabpack.prg, tabrenam.prg, dbopen.prg;
+2023-03-09 tbl2dbf.prg javitva: kezeli az X tipusokat;
+  A bt2dbf konverzio a memokat v1 verzioju memo fajlokba irja,
+  ezert a v1 verzioju memo kezelest meg kell tartani;
 
-2023--03-09 tabKeepDeleted metodus potolva a tabobj class-ban;
+2023-03-09 folosleges kodok kiszedve: tabpack.prg, tabrenam.prg, dbopen.prg;
 
-2023--03-09 tabCopyTo javitva;
+2023-03-09 tabKeepDeleted metodus potolva a tabobj class-ban;
+    
+2023-03-09 tabCopyTo javitva;
 
-2023--03-09 pgstat, pgview;
+2023-03-09 pgstat, pgview;
 
-2023--03-09 pack;
+2023-03-09 pack;
 
-2023--03-06 bt_memo.cpp: _db_memowrite, _db_memored, _db_memodel;
+2023-03-06 bt_memo.cpp: _db_memowrite, _db_memored, _db_memodel;
 
 2023.02.08 uj fopen/fcreate mod: 
     fopen(fname,FO_CREATE+FO_NONEXISTENT)

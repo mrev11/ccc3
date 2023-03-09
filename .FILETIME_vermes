@@ -1,5 +1,8 @@
-ff903212d2e8c10ef3ee887fae3798f6f2f40139 2023030908:34:43-UTC ./CHANGELOG_vermes
-3701dfab8ff1066e15038e28383f39403aa8c8f7 2023030815:51:13-UTC ./tabobj/log-install
+9adcb20b12328d12b61e8965d79be8bf03371d5f 2023030909:49:40-UTC ./CHANGELOG_vermes
+96975bc10b866178df13697d6d53831458bd2348 2023030909:45:17-UTC ./tabobj/log-install
+5704b4c3bbdea3e96b9c7181473755f712fea2cb 2023030909:45:14-UTC ./tabobj/common.src/tabcpyto.prg
+d82367da6b3c5eaed021e991b570a8b09a5c561a 2023030909:42:46-UTC ./tabobj/tbbtbtx/dbopen.prg
+6daa2f758200a3932d0d06d350374deaa29080af 2023030909:41:11-UTC ./tabobj/common.src/tabpack.prg
 99f4c6488a83303c286aec89bbd396c54c94ea90 2023030815:51:11-UTC ./tabobj/tbbtbtx/dbcopybt.prg
 76ced2b3313c019cb10a88ad90d013ad22b1296d 2023030815:19:06-UTC ./usr/bin/linux/bt2dbf
 b464157e6ccab4253f1bd6d9a32d89f5555118e8 2023030815:19:06-UTC ./usr/bin/linux/bt2txt
@@ -10,7 +13,6 @@ bc58174ebe07265ef3313c017cc4ccf93102e671 2023030815:19:06-UTC ./usr/bin/linux/tv
 3fad4fc9aa9d6bbe893d45fd98690ec10f78a2a7 2023030815:18:09-UTC ./tabobj/tbbtbtx/utility/pgstat.prg
 458a1f1876dcb7d44780b418f76cd481694a9518 2023030815:14:51-UTC ./tabobj/tbbtbtx/utility/m
 a09495421b1a4e3b2a5f3164b6fb28e2f851036a 2023030812:30:12-UTC ./tabobj/tbbtbtx/dbcreate.prg
-0548037df78a68f68a3a3913df7dd648c671b658 2023030812:29:31-UTC ./tabobj/tbbtbtx/dbopen.prg
 cc1dfbe4f87b0a6565fb8c535b7b244aa33d57fd 2023030812:24:04-UTC ./tabobj/common.src/tabmemo.prg
 7c7876d6fa514a3eede600afa7486d0a78537306 2023030810:48:53-UTC ./tabobj/tbbtbtx/btree/bt_error.cpp
 71b0045027f4473c4fb1cb99818e801edb0090a2 2023030720:02:32-UTC ./tabobj/tbbtbtx/btree/bt_memo.cpp
@@ -785,7 +787,6 @@ cb6ce71d3be556c6963fab1541ee5d45247b7e9a 2020111120:48:58-UTC ./tools/sql2/drive
 22001fa7104191e3ea365d7abfe57e51a90279ad 2020111120:48:48-UTC ./tools/sql2/driver-db2/sqlquery.prg
 7e26245c1327f1c00cbdb3e7c1d2c2be78fd8df3 2020111120:48:41-UTC ./tabobj/tbbtbtx/dbmodif.prg
 3df7d95966e9845db39d370888f802a782cee8b0 2020111120:48:36-UTC ./tabobj/tbbtbtx/dbindex.prg
-081d6adbb605f3a2f01dfb89ad27a4fe11169344 2020111120:48:14-UTC ./tabobj/common.src/tabpack.prg
 22ebb096b002b6aed88435b6d6b5c43662f939a1 2020111120:48:04-UTC ./tabobj/common.src/tablddbf.prg
 92f0d3318e2ce0a922e9155aef828d6ede24bea2 2020110810:34:00-UTC ./tools/websrv/cgi-bin/prnenv
 73c93ebe58b1e8ccd57bca0e5253e233171eed0e 2020110810:15:21-UTC ./tools/websrv/cgi-bin/cgi.prg
@@ -2483,7 +2484,6 @@ c0e6aefa334a10ec524a034f7fef4ee833f803b4 2007010401:06:00-UTC ./ccclib/tran/hu/n
 750e39aa57fd18466a212325787f45abf5d8acf3 2007010218:24:29-UTC ./tabobj/utility.src/getutil.prg
 9bf710c293a2c433177d158279bc528e5c2aeddb 2007010218:21:55-UTC ./tabobj/tbbtbtx/dbnames.prg
 0c0078d26d91e2df15efec17fdf04a6bbdb50642 2007010218:04:15-UTC ./tabobj/common.src/taberror.prg
-9218b6870f2bb73ed9b60c72ece560d186667388 2007010218:03:54-UTC ./tabobj/common.src/tabcpyto.prg
 c83c6ecc1bd4d20b7fa48e148cf689d58b504ca9 2007010218:03:35-UTC ./tabobj/common.src/tabcolum.prg
 8a8c9c0b4336b69096b33941b26947cbeaa91b6a 2007010218:01:41-UTC ./tabobj/common.src/tabapprc.prg
 96f513955d51866444b3d74c1f9a8513f4466ee3 2007010218:01:24-UTC ./tabobj/common.src/tabappfr.prg

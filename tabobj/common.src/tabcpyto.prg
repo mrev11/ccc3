@@ -30,7 +30,7 @@
 #define  CRLF   crlf()
 
 ******************************************************************************
-function tabCopyTo(table,fileName,fieldList)
+function tabCopyTo(table,fileName,fieldList)  //lenyegeben CSV-t ir ki
 
 local state:=tabSave(table)
 local hnd:=fcreate(fileName)
@@ -67,14 +67,13 @@ local err, msg
             value:=eval(flist[n][COL_BLOCK]) //adatbazismezo kiolvasasa
             
             if( (type:=flist[n][COL_TYPE])=="C" )
-                if( !tabMemoField(table,flist[n]) )
-                    line+='"'+trim(value)+'"'
-                else
-                    line+='"'+trim(bin2str(value))+'"'
-                end
+                value::=strtran('"','""') // '"' escape-eleve
+                line+='"'+trim(value)+'"'
 
             elseif( (type:=flist[n][COL_TYPE])=="X" )
-                line+='"'+trim(bin2str(value))+'"'
+                value::=bin2str
+                value::=strtran('"','""') // '"' escape-eleve
+                line+='"'+trim(value)+'"'
 
             elseif( type=="N" )
                 line+=alltrim(str(value,flist[n][COL_WIDTH],flist[n][COL_DEC]))
@@ -94,7 +93,7 @@ local err, msg
         fwrite(hnd,line+CRLF)
         tabSkip(table)
     end
-    fwrite(hnd,chr(26)) //EOF
+    //fwrite(hnd,chr(26)) //EOF
     fclose(hnd)
 
     message(msg)

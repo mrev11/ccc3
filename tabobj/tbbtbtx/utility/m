@@ -1,5 +1,5 @@
 #!/bin/bash
 bapp_unix_.b @parlib.bld
 
-bapp_unix_.b -xbti -xbt2dbf -xbt2txt -xtsema  @parexe.bld
+bapp_unix_.b -xbti -xbt2dbf -xbt2txt -xtsema -xpgview -xpgstat @parexe.bld
 bapp_unixc.b -xtstru -xtview  @parexe.bld  -bccc"$CCCVER"_btbtxui

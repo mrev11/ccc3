@@ -26,6 +26,22 @@
 //----------------------------------------------------------------------------
 void __bt_swapin(PAGE *h)
 {
+    u_int32_t flags=h->flags;
+    M_32_SWAP(flags);
+    if( (flags&P_TYPE)==P_MEMO )
+    {
+        u_int32_t *memopg=(u_int32_t*)h;
+        u_int32_t lower=memopg[2];
+        M_32_SWAP(lower);
+
+        for( u_int32_t i=0; i<lower; i++ )
+        {
+            P_32_SWAP(memopg+i);
+        }
+        return;
+    }
+    
+
     indx_t i, top;
 
     M_32_SWAP(h->pgno);
@@ -65,6 +81,20 @@ void __bt_swapin(PAGE *h)
 //----------------------------------------------------------------------------
 void __bt_swapout(PAGE *h)
 {
+    u_int32_t flags=h->flags;
+    if( (flags&P_TYPE)==P_MEMO )
+    {
+        u_int32_t *memopg=(u_int32_t*)h;
+        u_int32_t lower=memopg[2];
+
+        for( u_int32_t i=0; i<lower; i++ )
+        {
+            P_32_SWAP(memopg+i);
+        }
+        return;
+    }
+
+
     indx_t i, top;
     top=NEXTINDEX(h);
 

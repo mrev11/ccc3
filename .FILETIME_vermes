@@ -1,4 +1,8 @@
-550be9f1ef4c5a7fee1c1c85d3b7cff2ae815e70 2023030914:33:06-UTC ./tabobj/log-install
+0cbf485b31c0ad2c3cae06ccf3a0434186e5877d 2023030914:52:36-UTC ./tabobj/log-install
+2f3f47af7bb6a91fa0b6549858fcc4c6d645fdaa 2023030914:52:30-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
+3aedf4e445dcedef3837ea3daba204c83cf8c25d 2023030914:47:58-UTC ./tabobj/tbbtbtx/dbopen.prg
+c721bbe7e7302fad23e886effec0d45ff379a5cc 2023030914:47:00-UTC ./tabobj/tbbtbtx/btree/btree.h
+6f13ca8adf2314203f79d6ea8cbea05a57d5bc56 2023030914:45:40-UTC ./tabobj/tbbtbtx/btree/db.cpp
 1dcd87fc34f4049257ee87801c90e98170ca8786 2023030914:32:50-UTC ./CHANGELOG_vermes
 9fb42e431119a6da77a53daa39be8280ab58f010 2023030914:29:46-UTC ./tabobj/tbbtbtx/btree/bt_swap.cpp
 468fdb1b67a41d8449e8ae2e35320efd16bcc750 2023030913:01:50-UTC ./tools/dbfview/search.say
@@ -15,7 +19,6 @@ f248cf4718bca4f25fd170a65cc1f1838ff8f410 2023030909:51:31-UTC ./log-install
 c5449fe219624d54f5c8c4d4f18b65b79913dcac 2023030909:51:19-UTC ./usr/bin/linux/pgstat
 5c564106f3773724ba7540bb31baf95eb1cf8111 2023030909:51:19-UTC ./usr/bin/linux/pgview
 5704b4c3bbdea3e96b9c7181473755f712fea2cb 2023030909:45:14-UTC ./tabobj/common.src/tabcpyto.prg
-d82367da6b3c5eaed021e991b570a8b09a5c561a 2023030909:42:46-UTC ./tabobj/tbbtbtx/dbopen.prg
 6daa2f758200a3932d0d06d350374deaa29080af 2023030909:41:11-UTC ./tabobj/common.src/tabpack.prg
 99f4c6488a83303c286aec89bbd396c54c94ea90 2023030815:51:11-UTC ./tabobj/tbbtbtx/dbcopybt.prg
 b464157e6ccab4253f1bd6d9a32d89f5555118e8 2023030815:19:06-UTC ./usr/bin/linux/bt2txt
@@ -60,7 +63,6 @@ d22c7365dee85b70010971a878739889697b5f53 2023030522:46:06-UTC ./usr/bin/linux/pp
 c077f204564e684807a04714840b0eb00bd9b324 2023030522:45:50-UTC ./usr/bin/linux/lemon
 4aa9c169797ae0be310f1320ca85e147ce1552ca 2023030320:05:13-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp
 fc2594d74e584a1ee04680fae388c7e3033addc7 2023030116:17:36-UTC ./tabobj/tbbtbtx/btree/bt_print.cpp
-641c7fb56d18552247e2399e7c34ad984a4fbf8d 2023030115:58:34-UTC ./tabobj/tbbtbtx/btree/btree.h
 360c3097c6c1a6a0fa5a8d1a1bdc39bc9afc9b04 2023022819:58:06-UTC ./tabobj/tbbtbtx/utility/crc32.cpp
 0421ccd8654baceee68ad4c57b9bb402ddabfe03 2023020816:01:39-UTC ./ccclib/src/windows/filecreat.cpp
 71b015bd4ce047ba87eee4e87ab5b3ae7ff8dbbf 2023020816:00:26-UTC ./ccclib/src/unix/filecreat.cpp
@@ -625,8 +627,6 @@ c732a4a260f4d58ddcf6b7ab5e4eefb6c0255035 2021042116:40:42-UTC ./ccctools/ppo2cpp
 a3c9271282f9e5488bc8fd5b994f1f9263af3498 2021042112:58:30-UTC ./ccctools/ppo2cpp/parser.h
 e9c09879ffc76b4c0a4f1f93a24c9af4ff398824 2021042112:49:49-UTC ./ccctools/ppo2cpp/proto-codegen
 cae8555984e13e4d639321c9be780a942c04cac8 2021041111:01:46-UTC ./tools/z/ver3/zreplace.say
-35ce53fb7e505c7d5ae27dda2c53618c9b937098 2021041018:52:30-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
-1d11a15726dee890bb5f7d2c4e37e2ec9d07f048 2021040807:45:59-UTC ./tabobj/tbbtbtx/btree/db.cpp
 dfdadc72fd74881ec97702cdc49e6c92acb273a9 2021040807:45:39-UTC ./tabobj/tbbtbtx/btree/extern.h
 cd14c901a9d6e8e0de4acdc9683e3f2cacb2f696 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m

@@ -25,113 +25,24 @@
 #define PRIME          1103
 #define KEYNAME(t,o)   lower(tabPathName(t)+alltrim(str(o)))
 
-******************************************************************************
-#ifdef TABCOPYBT_NOTOPTIMIZED
 
+******************************************************************************
 function tabCopybt(table)
 
 local btname,tfile 
-local fd,db,ps,pn
-local n,i,rb,recbuf
-local msg,total,cnt:=0 
-
-    btname:=lower(tabPathName(table))
-
-    fd:=fopen(btname,FO_READWRITE+FO_EXCLUSIVE)
-    if( fd<0 )
-        taberrOperation("tabCopybt")
-        taberrDescription(@"failed opening file (fd)")
-        tabError(table) 
-    end
-
-    db:=_db_open(fd)
-    if( db==NIL )
-        taberrOperation("tabCopybt")
-        taberrDescription(@"failed opening file (db)")
-        tabError(table) 
-    end
-
-    ps:=_db_pagesize(db)
-    pn:=fseek(fd,0,FS_END)/ps
-    total:="/"+alltrim(str(_db_lastrec(db)))
-
-    tfile:=tabFile(table) 
-    tabFile(table,TMPCHR+tfile)
-    tabCreate(table)
-    tabOpen(table,OPEN_EXCLUSIVE)
-    tabZap(table)
-    
-    //A rekordok sorrendje elterhet a felvitel idorendi sorrendjetol,
-    //ui. a page-ek novekvo sorrendjeben haladunk, ami a szabadlista miatt
-    //nem feltetlenul linearis. Nem akarom azonban, hogy a recovery
-    //sikere fuggjon a recno index epsegetol, es nem akarok a data
-    //page-ek listaba fuzesevel sem veszodni.
-
-    recbuf:=replicate(x"20",ps) //ebbe biztosan belefer
-
-    for n:=2 to pn-1  //header(0) es resource(1) kihagyva
-        i:=0
-        while( .t. )
-            rb:=_db_read1(db,recbuf,n,i++) 
-
-            if( rb==0 )
-                //nincs tobb rekord, vagy nem is datapage 
-                exit 
-
-            elseif( left(recbuf,1)=="*" )
-                //torolt rekord
-
-            elseif( rb==table[TAB_RECLEN] )
-                tabAppend(table)
-                table[TAB_RECBUF]:=left(recbuf,rb)
-                tabCommit(table)
-                if( ++cnt%1103==0 )
-                    msg:=message(msg,@"Pack "+tfile+str(cnt)+total)
-                end
-            end
-        end
-    next
-
-    if( msg!=NIL )
-        message(msg)
-    end
-    
-    _db_close(db)
-    tabClose(table)
-    
-    ferase(btname)
-    frename(lower(tabPathName(table)),btname)
-    tabFile(table,tfile) //visszaallit
- 
-    return .t.
- 
-
-******************************************************************************
-#else //OPTIMIZED aktualis valtozat, a kulcsokat rendezi
-
-#define ORDERBY_RECNO     //megtartja a rekordok eredeti sorrendjet
-//#define ORDERBY_PAGE      //elveszhet a rekordok eredeti sorrendje
- 
-//2002.12.18 memok packolasa (opcionalis)
-#define MEMOPACK  //packolja-e a memokat?
- 
-function tabCopybt(table)
-
-local btname,btxname,tfile 
-local fd,db,db1,mh,mh1,ps,pn
-local n,i,rb,wb,stat
+local fd,db,db1
+local n,rb
 local msg,total,cnt:=0 
 local recno:=0,recbuf,reclen,recpos
 local fdkey:={},kfilnam 
 local ord,key
-local column,memblk,mx,mv
+local memcol:={},mempos,memval
 
     //-----------------------
     //regi adatfile
     //-----------------------
  
     btname:=lower(tabPathName(table))
-    btxname:=lower(tabMemoName(table))
  
     fd:=fopen(btname,FO_READWRITE+FO_EXCLUSIVE)
     if( fd<0 )
@@ -147,17 +58,6 @@ local column,memblk,mx,mv
         tabError(table) 
     end
 
-    #ifdef MEMOPACK
-    if( 0<tabMemoCount(table) )
-        mh:=memoOpen(btxname)
-        if( mh<0 )
-            taberrOperation("tabCopybt")
-            taberrDescription(@"failed opening file (mh)")
-            tabError(table) 
-        end
-    end
-    #endif
- 
     //-----------------------
     //uj adatfile
     //-----------------------
@@ -170,19 +70,6 @@ local column,memblk,mx,mv
     tabZap(table)
     db1:=table[TAB_BTREE]
     
-    #ifdef MEMOPACK
-    if( 0<tabMemoCount(table) )
-        mh1:=tabMemoHandle(table)
-
-        memblk:={}
-        column:=tabColumn(table)
-        for n:=1 to len(column)
-            if( tabMemoField(table,column[n]) )
-                aadd(memblk,column[n][COL_BLOCK])
-            end
-        next
-    end
-    #endif
  
     //-----------------------
     //ideiglenes kulcsfilek
@@ -190,7 +77,6 @@ local column,memblk,mx,mv
  
     for ord:=0 to len(tabIndex(table)) 
         ferase(kfilnam:=KEYNAME(table,ord))
-        //aadd(fdkey,fcreate(kfilnam,FO_READWRITE+FO_SHARED))
         aadd(fdkey,fopen(kfilnam,FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK))
         if( atail(fdkey)<0 )
             taberrOperation("tabCopybt")
@@ -198,95 +84,69 @@ local column,memblk,mx,mv
             tabError(table) 
         end
     next
+
+
+    //-----------------------
+    //memo mezok
+    //-----------------------
+
+    for n:=1 to len(tabColumn(table))
+        if( tabMemoField(table,n) )
+            memcol::aadd(n)
+        end
+    next
  
     total:="/"+alltrim(str(_db_lastrec(db)))
     reclen:=table[TAB_RECLEN] 
     recbuf:=table[TAB_RECBUF]  
 
-#ifdef ORDERBY_PAGE
-    //Ha tabAppend hasznalja a szabadlistat, akkor a pack utani
-    //rekordsorrend elterhet a felvitel idorendi sorrendjetol.
-
-    ps:=_db_pagesize(db)
-    pn:=fseek(fd,0,FS_END)/ps
-
-    for n:=2 to pn-1  //header(0) es resource(1) kihagyva
-        i:=0
-        while( .t. )
-            rb:=_db_read1(db,recbuf,n,i++) 
-
-            if( rb==0 )
-                //nincs tobb rekord, vagy nem datapage 
-                exit 
-
-            elseif( rb!=reclen )
-#endif
-
-#ifdef ORDERBY_RECNO
-
     //Csak akkor mukodik, ha epsegben van a recno index,
     //lassabb is, viszont megtartja a rekordok eredeti sorrendjet.
     //Ez szukseges ahhoz, hogy a tabPack replikalhato legyen.
 
-        _db_setord(db,"recno")
-        key:=_db_first(db) 
+    _db_setord(db,"recno")
+    key:=_db_first(db) 
 
-        while( key!=NIL )
-            //? _db_rdbig32(left(key,4)) //eredeti recno
-            recpos:=right(key,6)  
-            rb:=_db_read(db,recbuf,recpos)
+    while( key!=NIL )
+        recpos:=right(key,6)  
+        rb:=_db_read(db,recbuf,recpos)
 
-            if( rb!=reclen )
-#endif
+        if( rb!=reclen )
 
-                //serult file
-                taberrOperation("tabCopybt")
-                taberrDescription(@"read failed (rb!=reclen)")
-                tabError(table) 
+            //serult file
+            taberrOperation("tabCopybt")
+            taberrDescription(@"read failed (rb!=reclen)")
+            tabError(table) 
 
-            elseif( left(recbuf,1)==a"*" )
-                //torolt rekord
+        elseif( left(recbuf,1)==a"*" )
+            //torolt rekord
  
-            else
+        else
 
-                if( ++cnt%PRIME==0 )
-                    msg:=message(msg,@"COPY "+btname+str(cnt)+total)
-                end
-
-                #ifdef MEMOPACK
-                if( memblk!=NIL )
-                    set signal block
-                    table[TAB_EOF]:=.f.           //EOF torolve
-                    table[TAB_POSITION]:=1        //nem lehet 0 (ideiglenesen)
-                    for mx:=1 to len(memblk)
-                        table[TAB_MEMOHND]:=mh    //regi memo
-                        mv:=eval(memblk[mx])      //olvasas a memobol
-                        table[TAB_MEMOHND]:=mh1   //uj memo
-                        eval(memblk[mx],mv)       //iras a memoba
-                    next
-                    table[TAB_MODIF]:=.f.         //commit torolve
-                    table[TAB_MEMODEL]:=NIL       //memodel torolve
-                    set signal unblock  
-                end
-                #endif                
-
-                table[TAB_RECPOS]    :=  _db_append(db1,recbuf) 
-                table[TAB_POSITION]  :=  ++recno
- 
-                for ord:=0 to len(tabIndex(table))
-                    key:=tabKeyCompose(table,ord)
-                    fwrite(fdkey[1+ord],key)
-                next
+            if( ++cnt%PRIME==0 )
+                msg:=message(msg,@"COPY "+btname+str(cnt)+total)
             end
 
-#ifdef ORDERBY_RECNO
-            key:=_db_next(db)  
-#endif
+            for n:=1 to len(memcol)
+                mempos:=getmempos(table,memcol[n])
+                if(!mempos::empty)
+                    memval:=_db_memoread(db,mempos)
+                    mempos:=_db_memowrite(db1,memval)
+                end
+                setmempos(table,memcol[n],mempos)
+            next
+
+            table[TAB_RECPOS]    :=  _db_append(db1,recbuf) 
+            table[TAB_POSITION]  :=  ++recno
+ 
+            for ord:=0 to len(tabIndex(table))
+                key:=tabKeyCompose(table,ord)
+                fwrite(fdkey[1+ord],key)
+            next
         end
 
-#ifdef ORDERBY_PAGE
-    next
-#endif
+        key:=_db_next(db)  
+    end
 
     for ord:=0 to len(tabIndex(table)) 
         if( recno>0 ) //2002.11.13
@@ -301,18 +161,11 @@ local column,memblk,mx,mv
     end
     
     _db_close(db)
-    if( mh!=NIL .and. mh>=0 )
-        memoClose(mh)
-    end
     tabClose(table)
     
     set signal block
-    ferase(btname);  frename(lower(tabPathName(table)),btname) 
-    #ifdef MEMOPACK
-      ferase(btxname); frename(lower(tabMemoName(table)),btxname)
-    #else
-      ferase(lower(tabMemoName(table))) 
-    #endif
+    ferase(btname)
+    frename(lower(tabPathName(table)),btname) 
     set signal unblock
  
     tabFile(table,tfile)
@@ -320,6 +173,21 @@ local column,memblk,mx,mv
     return .t.
 
  
+******************************************************************************
+static function getmempos(table,n)
+local column:=table[TAB_COLUMN][n]
+local offs:=column[COL_OFFS]
+local width:=column[COL_WIDTH]
+    return xvgetchar(table[TAB_RECBUF],offs,width)
+
+
+static function setmempos(table,n,pos)
+local column:=table[TAB_COLUMN][n]
+local offs:=column[COL_OFFS]
+local width:=column[COL_WIDTH]
+    xvputbin(table[TAB_RECBUF],offs,width,pos)
+
+
 ******************************************************************************
 static function build_index(table,ord,fd,msg,btname)
 
@@ -376,4 +244,3 @@ local n,rb,stat
     return NIL
 
 ******************************************************************************
-#endif 

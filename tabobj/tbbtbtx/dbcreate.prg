@@ -137,16 +137,6 @@ local n,rcol,rind,db
             _db_creord(db,tabIndex(table)[n][IND_NAME])
         next
 
-        if( tabMemoCount(table)>0 )
-            if( !memoCreate(lower(tabMemoName(table))) )
-                taberrOperation("tabCreate")
-                taberrDescription(@"failed creating memo file")
-                taberrFilename(lower(tabMemoName(table)))
-                taberrUserblock(userblock)
-                return tabError(table)
-            end
-        end
- 
         //vissza kell zarni
         _db_close(db)
 

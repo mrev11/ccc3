@@ -283,16 +283,6 @@ local memohnd
     //esetleges beragadt index torlese 
     _db_delord(table[TAB_BTREE],"<#>") 
  
-    if( 0<tabMemoCount(table) )
-        memohnd:=memoOpen(lower(tabMemoName(table)))
-        if( memohnd<0 )
-            taberrOperation("tabOpen")
-            taberrDescription(@"open failed")
-            taberrFilename(lower(tabMemoName(table)))
-            tabError(table)
-        end
-    end
-
     table[TAB_MEMOHND]:=memohnd //memohandler vagy NIL
 
     return .t.

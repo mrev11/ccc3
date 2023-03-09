@@ -20,6 +20,7 @@ local table
 local index:={}
 local field:={}
 local path
+local keep
 local prg
 local outspec
 
@@ -45,11 +46,13 @@ local outspec
                 path:=val
             elseif( key=="!table" )
                 table:=val
+            elseif( key=="!keepdeleted" )
+                keep:=val
             end
         end
     next
     
-    prg:=genprg( table,path,index,field )
+    prg:=genprg( table,path,index,field,keep )
 
     outspec:="tabobj."+lower(table)+".prg"
     if( !memoread( outspec)==prg )
@@ -58,7 +61,7 @@ local outspec
 
 
 ******************************************************************************************
-static function genprg(table,path,index,field)
+static function genprg(table,path,index,field,keep)
 
 local lf:=chr(10)
 local n,line
@@ -96,6 +99,9 @@ local prg:="//"+VERSION+lf+lf
 
     if( path!=NIL )
         prg+='    tabPath(this,"[PATH]/")'::strtran("[PATH]",path)+lf
+    end
+    if( keep!=NIL )
+        prg+='    tabKeepDeleted(this,KEEP)'::strtran("KEEP",keep)+lf
     end
    
     prg+="    return this"+lf

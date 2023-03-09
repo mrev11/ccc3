@@ -79,6 +79,7 @@ class tabobj(object)
     method  INDEX                {|*|tabINDEX        (*)}
     method  INSERT               {|*|tabINSERT       (*)}
     method  ISOPEN               {|*|tabISOPEN       (*)}
+    method  KEEPDELETED          {|*|tabKEEPDELETED  (*)}
     method  LASTREC              {|*|tabLASTREC      (*)}
     method  LOADDBF              {|*|tabLOADDBF      (*)}
     method  LOCK                 {|*|tabLOCK         (*)}

@@ -24,7 +24,7 @@
 #define  _BTREE_H_
 
 #define  BTREEMAGIC    0x053162
-#define  BTREEVERSION  1
+#define  BTREEVERSION  2
  
 #define  F_SET(p,f)     (p)->flags |= (f)
 #define  F_CLR(p,f)     (p)->flags &= ~(f)

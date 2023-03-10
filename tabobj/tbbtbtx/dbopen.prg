@@ -18,13 +18,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fileio.ch" 
-#include "tabobj.ch" 
+#include "fileio.ch"
+#include "tabobj.ch"
 
 ******************************************************************************
 //Public interface
 
-//function tabOpen(table,mode,userblock)  //megnyitja a table-t 
+//function tabOpen(table,mode,userblock)  //megnyitja a table-t
 //function tabGoEOF(table)                //EOF-ra all (belso)
 //function tabClose(table)                //lezarja a table-t
 //function tabCloseAll()                  //minden table-t lezar
@@ -38,7 +38,7 @@ local blk
     if( flag )
         flag:=.f.
         blk:=quitblock()
-        quitblock({||qb(),eval(blk)}) 
+        quitblock({||qb(),eval(blk)})
     end
 
 static function qb()
@@ -46,7 +46,7 @@ static function qb()
         tranRollback(1)
         tabCloseAll()
     end
-    
+
 
 ******************************************************************************
 #ifdef KORABBI_VALTOZAT
@@ -59,8 +59,8 @@ local blk,blk1
         flag:=.t.
 
         blk:=quitblock()
-        //quitblock({||qout("quit: tabCloseAll"),tabCloseAll(),eval(blk)}) 
-        quitblock({||tranRollback(1),tabCloseAll(),eval(blk)}) 
+        //quitblock({||qout("quit: tabCloseAll"),tabCloseAll(),eval(blk)})
+        quitblock({||tranRollback(1),tabCloseAll(),eval(blk)})
 
         if( "TABTBROWSE" $ getenv("QUITBLOCK") )
             blk1:=quitblock()
@@ -73,7 +73,7 @@ local blk,blk1
 
 
 ******************************************************************************
-function tabOpen(table,mode,userblock) //megnyitja a db-t 
+function tabOpen(table,mode,userblock) //megnyitja a db-t
 
 local fname:=lower(tabPathName(table)), n, dbf
 local errblk, err
@@ -82,7 +82,7 @@ local timeout
     setquitblock()
 
     tranNotAllowedInTransaction(table,"open",.t.)
- 
+
     if( !file(fname) )
         n:=alert(fname+@" not found, create?",{@"Create",@"Quit"})
         if( n==2 )
@@ -118,7 +118,7 @@ local timeout
         if( valtype(userblock)=="N" )
             timeout:=userblock
         end
- 
+
         while( 0>=tabSlock(table,{||0}) .or. !tabUse(table,mode) )
             tabSunlock(table)
             if( timeout!=NIL )
@@ -130,18 +130,18 @@ local timeout
                 end
             else
                 taberrOperation("tabOpen")
-                taberrDescription(@"open failed") 
+                taberrDescription(@"open failed")
                 taberrUserBlock(userblock,"PUK")
-        
+
                 if( valtype(userblock)=="B" )
-                    return tabError(table) 
+                    return tabError(table)
                 else
                     tabError(table)
                 end
             end
         end
         tabSunlock(table)
-        
+
         begin
             tabVerify(table)
             exit //OK
@@ -159,8 +159,8 @@ local timeout
             tabUpgrade(table)
         end
     end
- 
-    tabAlloc(table) 
+
+    tabAlloc(table)
     tabSetFieldTable(table)
 
     if( 0>_db_setord(table[TAB_BTREE],"deleted") )
@@ -181,8 +181,12 @@ local timeout
         end
     end
 
+    if( _db_version(table[TAB_BTREE])==1 .and. 0<tabMemoCount(table) )
+        version_upgrade_v1_v2(table)
+    end
+
     _db_setord(table[TAB_BTREE],"recno")
-    tabGotop(table) 
+    tabGotop(table)
     table[TAB_OPEN]:=mode
     table[TAB_STAMP]:=tabStamp(table)
     return .t.
@@ -198,7 +202,7 @@ local column,n,col
         stamp+=col[1]+":"+col[2]+col[3]::str::alltrim+"."+col[4]::str::alltrim+";"
     next
     return stamp
-    
+
 
 ******************************************************************************
 static function formatum_konverzio(table)
@@ -210,7 +214,7 @@ local n
     // kerdes, hogy ez kell-e:
     // ha ki van hagyva, akkor a regi toroltek
     // benne maradnak a fajlban (nem zavarnak)
-    // 
+    //
     // for n:=1 to tabLastRec(table)
     //     if( tabGoto(table,n) .and. tabDeleted(table) )
     //         move_to_deleted(table,n)
@@ -264,7 +268,7 @@ local memohnd
     table[TAB_FMODE]:=fmode
 
     if( 0>(table[TAB_FHANDLE]:=fopen(fname,fmode)) )
-        table[TAB_FHANDLE]:=NIL 
+        table[TAB_FHANDLE]:=NIL
         return .f.
     else
         #ifdef _UNIX_
@@ -274,15 +278,15 @@ local memohnd
           table[TAB_FHANDLE]:=fdup(table[TAB_FHANDLE],.f.,.t.)
         #endif
     end
-    
+
     table[TAB_BTREE]:=_db_open(table[TAB_FHANDLE],btbtx_pagesize())
     if( NIL==table[TAB_BTREE] )
         return .f.
     end
-    
-    //esetleges beragadt index torlese 
-    _db_delord(table[TAB_BTREE],"<#>") 
- 
+
+    //esetleges beragadt index torlese
+    _db_delord(table[TAB_BTREE],"<#>")
+
     table[TAB_MEMOHND]:=memohnd //memohandler vagy NIL
 
     return .t.
@@ -301,7 +305,7 @@ function tabGoEOF(table) // EOF-ra all
 function tabClose(table) //lezarja a fajlt
 
     tranNotAllowedInTransaction(table,"close",.t.)
- 
+
     tabCommit(table)
 
     if( tabIsOpen(table)<OPEN_EXCLUSIVE )
@@ -309,7 +313,7 @@ function tabClose(table) //lezarja a fajlt
     elseif( tranEnforced() )
         tranSemaOff(SEMA_XOPEN)
     end
-    
+
     tabDeleteFieldTable(table)
 
     if( NIL!=table[TAB_FHANDLE] )
@@ -398,4 +402,60 @@ local ps:=getenv("BTBTX_PAGESIZE")
 
 
 ******************************************************************************
- 
+static function version_upgrade_v1_v2(table)
+local memcol:={},mempos,memval
+local column:=tabColumn(table),n
+
+    ? "version_upgrade_v1_v2", tabPathName(table)
+
+    for n:=1 to len(column)
+        if(tabMemoField(table,column[n]))
+            memcol::aadd(n)
+        end
+    next
+    table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table))) //eexclusive
+    if( table[TAB_MEMOHND]<0 )
+        taberrOperation("version_upgrade_v1_v2")
+        taberrDescription(@"memoOpen failed")
+        taberrFilename(lower(tabMemoName(table)))
+        tabError(table)
+    end
+
+    tabGotop(table)
+    while( !tabEof(table) )
+        for n:=1 to len(memcol)
+            mempos:=getmempos(table,memcol[n])
+            memval:=_v1_tabMemoRead(table,mempos)
+            if( !memval::empty )
+                mempos:=_db_memowrite(table[TAB_BTREE],memval::alltrim)
+            else
+                mempos:=a"          "
+            end
+            setmempos(table,memcol[n],mempos)
+        next
+        table[TAB_MODIF]:=.t.
+        tabCommit(table)
+        tabSkip(table)
+    end
+    fseek(table[TAB_FHANDLE],4,FS_SET)
+    fwrite(table[TAB_FHANDLE],bin(2),1)
+    fclose(table[TAB_MEMOHND])
+    table[TAB_MEMOHND]:=NIL
+    ferase(lower(tabMemoName(table)))
+
+    
+static function getmempos(table,n)
+local column:=table[TAB_COLUMN][n]
+local offs:=column[COL_OFFS]
+local width:=column[COL_WIDTH]
+    return xvgetchar(table[TAB_RECBUF],offs,width)
+
+
+static function setmempos(table,n,pos)
+local column:=table[TAB_COLUMN][n]
+local offs:=column[COL_OFFS]
+local width:=column[COL_WIDTH]
+    xvputbin(table[TAB_RECBUF],offs,width,pos)
+    
+
+******************************************************************************

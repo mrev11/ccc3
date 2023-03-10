@@ -102,7 +102,7 @@ BTREE *__bt_open(int fd, int psize, int create)
             }
         }
 
-        if( t->version!=BTREEVERSION )
+        if( (t->version!=1) && (t->version!=2)  )
         {
             fprintf(stderr,"BTREEVERSION\n");fflush(0);
             goto eftype;

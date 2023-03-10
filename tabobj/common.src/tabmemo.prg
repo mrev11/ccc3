@@ -162,11 +162,9 @@ local n,tmd,ltmd,mhnd
 ****************************************************************************
 function tabMemoRead(table,memo)
 local value:=a""
-    //? "MEMOREAD ","memo",memo
     if( !empty(memo))
         value:=_db_memoread(table[TAB_BTREE],memo)
     end
-    //?? " value",value
     return value
 
 

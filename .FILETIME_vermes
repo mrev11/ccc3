@@ -1,14 +1,15 @@
-0cbf485b31c0ad2c3cae06ccf3a0434186e5877d 2023030914:52:36-UTC ./tabobj/log-install
+5512a245fbc00a360479fac7d928026acfac5a0e 2023031008:24:59-UTC ./CHANGELOG_vermes
+9158baeab7a1bcc6ed9994d4f87f535b46b4b604 2023030920:10:32-UTC ./tabobj/log-install
+854f1a7b98df31c8f095c5de4caa5aa037a5d7fe 2023030920:09:32-UTC ./tabobj/tbbtbtx/dbopen.prg
+ef3403142b2151545d7c665a3586bb6a65cd8dca 2023030920:03:58-UTC ./tabobj/common.src/cumemo.prg
+d5725d47aee512e4ce1dc994824e7520925609f9 2023030919:26:38-UTC ./tabobj/common.src/tabmemo.prg
 2f3f47af7bb6a91fa0b6549858fcc4c6d645fdaa 2023030914:52:30-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
-3aedf4e445dcedef3837ea3daba204c83cf8c25d 2023030914:47:58-UTC ./tabobj/tbbtbtx/dbopen.prg
 c721bbe7e7302fad23e886effec0d45ff379a5cc 2023030914:47:00-UTC ./tabobj/tbbtbtx/btree/btree.h
 6f13ca8adf2314203f79d6ea8cbea05a57d5bc56 2023030914:45:40-UTC ./tabobj/tbbtbtx/btree/db.cpp
-1dcd87fc34f4049257ee87801c90e98170ca8786 2023030914:32:50-UTC ./CHANGELOG_vermes
 9fb42e431119a6da77a53daa39be8280ab58f010 2023030914:29:46-UTC ./tabobj/tbbtbtx/btree/bt_swap.cpp
 468fdb1b67a41d8449e8ae2e35320efd16bcc750 2023030913:01:50-UTC ./tools/dbfview/search.say
 954be8691591c074c39760d876ab256e95e0e93e 2023030912:58:03-UTC ./usr/bin/linux/bt2dbf
 c71d7ed8fd9b037af2b575dc2b995485b0731c19 2023030912:47:43-UTC ./tabobj/utility.src/tbl2dbf.prg
-41225d76e4a682939ffa6aa394676e108acde72e 2023030911:56:00-UTC ./tabobj/common.src/tabmemo.prg
 7e26245c1327f1c00cbdb3e7c1d2c2be78fd8df3 2023030911:55:00-UTC ./tabobj/tbbtbtx/dbmodif.prg
 31ffd05faa717b412ff4f7aa2821a1f1d0328509 2023030911:03:01-UTC ./usr/bin/linux/tdc2tabobj
 6610ba1b8c716e32a4e6337fffc6559e815d8284 2023030911:02:59-UTC ./tools/tdc2prgch/tdc2tabobj.prg
@@ -2376,7 +2377,6 @@ c83c6ecc1bd4d20b7fa48e148cf689d58b504ca9 2007010218:03:35-UTC ./tabobj/common.sr
 8a8c9c0b4336b69096b33941b26947cbeaa91b6a 2007010218:01:41-UTC ./tabobj/common.src/tabapprc.prg
 96f513955d51866444b3d74c1f9a8513f4466ee3 2007010218:01:24-UTC ./tabobj/common.src/tabappfr.prg
 4672fbad16e8182b2e97a451e88570d05f0f9056 2007010217:58:40-UTC ./tabobj/common.src/netbusy.prg
-aeec0e847bd7d19fe7612f913085a7e23e2003af 2007010217:58:10-UTC ./tabobj/common.src/cumemo.prg
 140efde3b132a0c819ba99dd9927022ba87895de 2007010217:56:29-UTC ./tabobj/common.src/cucpydbf.prg
 700970f7e75adbecbc6256609f83d708ac4cc1c2 2007010217:51:24-UTC ./ccctools/prg2ppo/dbdefine.prg
 46309cb583cf2be7a7407fe29f7c53f0790cea55 2007010217:28:20-UTC ./ccclib/src/xtoc.prg

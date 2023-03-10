@@ -25,6 +25,15 @@
 #include <btree.h> 
  
 //--------------------------------------------------------------------------- 
+void _clp__db_version(int argno)
+{
+    CCC_PROLOG("_db_version",1);
+    BTREE *db=(BTREE*)_parp(1);
+    _retni(db->version);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------- 
 void _clp__db_create(int argno)
 {
     CCC_PROLOG("_db_create",2);

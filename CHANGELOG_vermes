@@ -1,3 +1,5 @@
+2023-03-10 automatikus memo formatum konverzio;
+
 2023-03-09 memo lapok little/big endian swapolasa;
   (sajnos nem teszteheto, mert nincs big endian rendszerunk) 
 

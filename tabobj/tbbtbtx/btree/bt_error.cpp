@@ -26,8 +26,6 @@ void __bt_error(const char *txt)
 {
     fprintf(stderr,"\n");
     fprintf(stderr,txt);
-    extern void _clp_callstack(int argno);
-    _clp_callstack(0);
     raise(SIGTERM);
     exit(1);
 }

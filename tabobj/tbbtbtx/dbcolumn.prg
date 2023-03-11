@@ -245,8 +245,8 @@ static function blkflag(table,offs)  //megj: T=84, F=70
 
 static function blkmemoc(table,offs,width)  
     return (|x| if(x==NIL.or.!islocked(table),;
-                bin2str(tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width))),;
-                (xvputchar(table[TAB_RECBUF],offs,width,tabMemoWrite(table,xvgetchar(table[TAB_RECBUF],offs,width),str2bin(x))),x)))
+                bin2str(CHARCONV_LOAD(tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width)))),;
+                (xvputchar(table[TAB_RECBUF],offs,width,tabMemoWrite(table,xvgetchar(table[TAB_RECBUF],offs,width),CHARCONV_STORE(str2bin(x)))),x)))
 
 static function blkmemox(table,offs,width)  
     return (|x| if(x==NIL.or.!islocked(table),;

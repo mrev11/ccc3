@@ -408,8 +408,8 @@ local memo  := tabMemoField(this,this:column[x])
 ******************************************************************************************
 static function blkmemoc(offs,width)
     return (|t,x| if( x==NIL.or.!islocked(t),;
-                      bin2str(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width))),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),str2bin(x))),x)))
+                      bin2str(CHARCONV_LOAD(tabMemoRead(t,xvgetchar(t[TAB_RECBUF],offs,width)))),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,xvgetchar(t[TAB_RECBUF],offs,width),CHARCONV_STORE(str2bin(x)))),x)))
 
 static function blkmemox(offs,width)
     return (|t,x| if( x==NIL.or.!islocked(t),;

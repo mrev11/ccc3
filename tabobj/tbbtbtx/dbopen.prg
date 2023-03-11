@@ -427,7 +427,7 @@ local column:=tabColumn(table),n
             mempos:=getmempos(table,memcol[n])
             memval:=_v1_tabMemoRead(table,mempos)
             if( !memval::empty )
-                mempos:=_db_memowrite(table[TAB_BTREE],memval::alltrim)
+                mempos:=_db_memowrite(table[TAB_BTREE],memval::trim)
             else
                 mempos:=a"          "
             end

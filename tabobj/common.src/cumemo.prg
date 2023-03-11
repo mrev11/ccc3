@@ -168,7 +168,7 @@ local header, nb
 function memoOpen(fname)
 
 //local hnd:=fopen(fname,FO_READWRITE+FO_SHARED) 
-local hnd:=fopen(fname,FO_READ+FO_EXCLUSIVE) // csak konverzio
+local hnd:=fopen(fname,FO_READ+FO_EXCLUSIVE) // csak konverziohoz kell
 local buffer:=replicate(x"20",16), nb
 
     if( hnd>=0 )

@@ -37,6 +37,7 @@ function main(btfile)
 local fd:=fopen(btfile)
 local map:=filemap.open(fd)
 local PGSIZE:=map[9..12]::num
+local FREE:=map[17..20]::num,link
 local fsize:=map::len
 local offset,page,pgno,type
 local n,lower,upper,space
@@ -52,18 +53,33 @@ local n,lower,upper,space
     set printer on
 
     ? btfile 
-    ? "size", fsize::transform("999,999,999,999")
-    ? "page", PGSIZE
+    ? "size:", fsize::transform("999,999,999")::alltrim, "byte"
+    ? "page:", PGSIZE::str::alltrim
+    ? "free:", "0x"+free::l2hex
     ?
-    
+
+
+    // vegigmegy a freelisten
+    // a freelistben csakis felszabadulo index lapok lehetnek
+    // a pagetype-ban nem P_FREE van, hanem az eredeti tipus
+    // onnan tudhato csak, hogy free, hogy a listaban van
+    link:=free
+    while( link!=0 )        
+        page:=map::substr(link*PGSIZE+1,PGSIZE)
+        link:=page[5..8]::num
+        stat[1]:count+=1
+        stat[1]:space+=PGSIZE
+    end
+
+
     offset:=PGSIZE
     pgno:=1
     while( offset<fsize )
         page:=substr(map,offset+1,PGSIZE)
         type:=page[17..20]::num+1
 
-
         if( pgtype[type]=="FREE" )
+            // ide nem jon
             lower:=0
             upper:=PGSIZE
         elseif( pgtype[type]=="MEMO" )
@@ -85,7 +101,10 @@ local n,lower,upper,space
     end    
 
     for n:=1 to len(stat)
-        ? stat[n]:type::padr(4), stat[n]:count, " space", stat[n]:space, " used", stat[n]:used::str(5,1),"%"
+        ? stat[n]:type::padr(4),; 
+          stat[n]:count,;
+          " space", (stat[n]:space/1024)::transform("999999,999 K"),;
+          " used", stat[n]:used::str(5,1),"%"
     next
 
 

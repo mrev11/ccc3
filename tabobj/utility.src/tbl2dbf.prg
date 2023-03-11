@@ -183,7 +183,7 @@ local total:="/"+alltrim(str(tabLastrec(table)))
         
         //? name,type,width,dec
 
-        if( type=="C" .or. type=="X" )
+        if( type=="C" )
             buffer += bin(width%256)
             buffer += bin((width-width%256)/256)
             

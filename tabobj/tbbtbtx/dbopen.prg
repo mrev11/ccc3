@@ -403,7 +403,7 @@ local ps:=getenv("BTBTX_PAGESIZE")
 
 ******************************************************************************
 static function version_upgrade_v1_v2(table)
-local memcol:={},mempos,memval
+local memcol:={},memdec:={},mempos,memval
 local column:=tabColumn(table),n
 
     ? "version_upgrade_v1_v2", tabPathName(table)
@@ -411,6 +411,7 @@ local column:=tabColumn(table),n
     for n:=1 to len(column)
         if(tabMemoField(table,column[n]))
             memcol::aadd(n)
+            memdec::aadd(tabColumn(table)[n][COL_DEC])
         end
     next
     table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table))) //eexclusive
@@ -427,7 +428,7 @@ local column:=tabColumn(table),n
             mempos:=getmempos(table,memcol[n])
             memval:=_v1_tabMemoRead(table,mempos)
             if( !memval::empty )
-                mempos:=_db_memowrite(table[TAB_BTREE],memval::trim)
+                mempos:=_db_memowrite(table[TAB_BTREE],memval::trim,tabPosition(table),memdec[n])
             else
                 mempos:=a"          "
             end

@@ -380,14 +380,14 @@ local memo  := tabMemoField(this,this:column[x])
 
     if( type=="C" )
         if( memo )
-            return blkmemoc(offs,width)
+            return blkmemoc(offs,width,dec)
         else
             return if(key,xblkchar(offs,width),blkchar(offs,width))
         end
 
     elseif( type=="X" )
         if( memo )
-            return blkmemox(offs,width)
+            return blkmemox(offs,width,dec)
         else
             return if(key,xblkbin(offs,width),blkbin(offs,width))
         end
@@ -406,15 +406,15 @@ local memo  := tabMemoField(this,this:column[x])
 
 
 ******************************************************************************************
-static function blkmemoc(offs,width)
+static function blkmemoc(offs,width,dec)
     return (|t,x| if( x==NIL.or.!islocked(t),;
-                      bin2str(CHARCONV_LOAD(tabMemoRead(t,offs,width))),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,offs,width,CHARCONV_STORE(str2bin(x)))),x)))
+                      bin2str(CHARCONV_LOAD(tabMemoRead(t,offs,width,dec))),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,offs,width,dec,CHARCONV_STORE(str2bin(x)))),x)))
 
-static function blkmemox(offs,width)
+static function blkmemox(offs,width,dec)
     return (|t,x| if( x==NIL.or.!islocked(t),;
-                      tabMemoRead(t,offs,width),;
-                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,offs,width,str2bin(x))),x)))
+                      tabMemoRead(t,offs,width,dec),;
+                      (xvputchar(t[TAB_RECBUF],offs,width,tabMemoWrite(t,offs,width,dec,str2bin(x))),x)))
 
 
 ******************************************************************************************

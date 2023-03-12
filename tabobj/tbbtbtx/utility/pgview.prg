@@ -20,7 +20,7 @@ local nords,n
 local lower,upper
 local pos,len,rec
 local recpos,npg,ndx,memo
-local idr,ido
+local mid
 
     fclose(fd)
 
@@ -79,21 +79,26 @@ local idr,ido
 
             offset:=20
             while( offset<lower )
-                idr:=page::substr(offset+ 1,4)::num     // id-recno
-                ido:=page::substr(offset+ 5,4)::num     // id-offset
-                pos:=page::substr(offset+ 9,4)::num     // memo ertek pozicioja a memo lapon
-                len:=page::substr(offset+13,4)::num     // memo ertek hossza
-                npg:=page::substr(offset+17,4)::num     // next page number
-                ndx:=page::substr(offset+21,4)::num     // next index (on next page)
+                mid:=page::substr(offset+ 1,4)         // memo-id
+
+                pos:=page::substr(offset+ 5,2)::num     // memo ertek pozicioja a memo lapon
+                len:=page::substr(offset+ 7,2)::num     // memo ertek hossza
+
+                npg:=page::substr(offset+ 9,4)::num     // next page number
+                ndx:=page::substr(offset+13,4)::num     // next index (on next page)
 
                 ? offset::l2hex::padl(3,"0")
 
-                ?? idr::transform("9999999 ")+ido::transform("9999 ")
+                if( mid!=x"0000000000000000" )
+                    ?? mid::bin2hex::transform(" rec[999999-9] ")
+                else
+                    ?? " rec[        ] "
+                end
                 
                 if( npg!=0 )
-                    ?? npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
+                    ?? "->",npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
                 else
-                    ?? space(11)
+                    ?? space(14)
                 end
 
                 ?? len::transform(" 9999")
@@ -104,7 +109,7 @@ local idr,ido
                 end
                 ?? "", a"["+memo+a"]"
 
-                offset+=24
+                offset+=16
             end
 
         else

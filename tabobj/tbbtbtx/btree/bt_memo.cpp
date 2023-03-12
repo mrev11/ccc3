@@ -39,21 +39,25 @@
 #define UPPER(page)             page[3]         // elso nemszabad hely offsete
 #define FLAGS(page)             page[4]         // page tipus
 
-#define MEMO_IDRECNO(page,x)    page[6*x+5]     // memo ID recno
-#define MEMO_IDOFFS(page,x)     page[6*x+6]     // memo ID offset
-#define MEMO_OFFSET(page,x)     page[6*x+7]     // memo szegmens offsete a lapon
-#define MEMO_SIZE(page,x)       page[6*x+8]     // memo szegmens merete
-#define MEMO_PGNEXT(page,x)     page[6*x+9]     // kovetkezo szegmens lapja
-#define MEMO_IXNEXT(page,x)     page[6*x+10]    // kovetkezo szegmens indexe
+#define MEMO_ID(page,x)         page[4*x+5]     // memo ID
+#define MEMO_DESC(page,x)       page[4*x+6]     // memo szegmens offsete es merete
+#define MEMO_PGNEXT(page,x)     page[4*x+7]     // kovetkezo szegmens lapja
+#define MEMO_IXNEXT(page,x)     page[4*x+8]     // kovetkezo szegmens indexe
+
+#define MEMOID(r,x)             ((r)|((x)<<28)) // 28 bit recno + 4 bit memox
+#define MEMODESC(o,s)           ((o)|((s)<<16)) // 16 bit offset + 16 bit size
+
+#define MEMO_OFFS(p,x)          (0xffff&(MEMO_DESC(p,x)    ))   //also 16 bit
+#define MEMO_SIZE(p,x)          (0xffff&(MEMO_DESC(p,x)>>16))   //felso 16 bit
 
 
 #define PAGEHEAD                (5*sizeof(uint))
-#define MEMOHEAD                (6*sizeof(uint))
-#define MINSPACE                (2*PAGEHEAD)
+#define MEMOHEAD                (4*sizeof(uint))
+#define MINSPACE                (3*PAGEHEAD)
 
 #define PLOWER(page)            ((char*)page+LOWER(page))
 #define PUPPER(page)            ((char*)page+UPPER(page))
-#define ADDRESS(page,x)         ((char*)page+MEMO_OFFSET(page,x))
+#define ADDRESS(page,x)         ((char*)page+MEMO_OFFS(page,x))
 #define MEMOCOUNT(page)         ((LOWER(page)-PAGEHEAD)/MEMOHEAD)
 
 
@@ -75,7 +79,7 @@ static MEMOPG* __bt_memopage(BTREE *t)
     {
         __bt_pagelock(t,pgno,1); // wrlk
         memopg=(MEMOPG*)mpool_get(t->bt_mp,pgno);
-        printf(">>>>>__bt_memopage-free %x\n",pgno);
+        //printf(">>>>>__bt_memopage-free %x\n",pgno);
     }
     else
     {
@@ -86,13 +90,13 @@ static MEMOPG* __bt_memopage(BTREE *t)
         LOWER(memopg)   = PAGEHEAD;
         UPPER(memopg)   = t->bt_psize;
         FLAGS(memopg)   = P_MEMO;
-        printf(">>>>>__bt_memopage-new  %x\n", pgno);
+        //printf(">>>>>__bt_memopage-new  %x\n", pgno);
     }
     return memopg;
 }
 
 //----------------------------------------------------------------------------------------
-static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint offs)
+static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
 {
     RECPOS recpos={0,0};
     if( data->size==0 )
@@ -115,7 +119,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint offs)
 
         for( indx=0; indx<MEMOCOUNT(memopg); indx++)
         {
-            if( MEMO_OFFSET(memopg,indx)==0 )
+            if( MEMO_OFFS(memopg,indx)==0 )
             {
                 break;
             }
@@ -151,10 +155,8 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint offs)
         UPPER(memopg)-=towrite;
         memmove(PUPPER(memopg), (char*)data->data+written, towrite);
 
-        MEMO_IDRECNO(memopg,indx)= recno;
-        MEMO_IDOFFS(memopg,indx) = offs;
-        MEMO_OFFSET(memopg,indx) = UPPER(memopg);
-        MEMO_SIZE(memopg,indx)   = towrite;
+        MEMO_ID(memopg,indx)     = MEMOID(recno,memox);
+        MEMO_DESC(memopg,indx)   = MEMODESC(UPPER(memopg),towrite);
         MEMO_PGNEXT(memopg,indx) = 0;
         MEMO_IXNEXT(memopg,indx) = 0;
 
@@ -224,7 +226,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint offs)
 
 
 //----------------------------------------------------------------------------------------
-static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint offs)
+static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint memox)
 {
     mpool_count(t->bt_mp,"memoread-0");//ellenorzes
 
@@ -259,7 +261,7 @@ static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint offs)
             sprintf(error,"__bt_memoread: memo index out of bound (%x,%d)\n",pgno,indx);
             __bt_error(error);
         }
-        else if( MEMO_IDRECNO(memopg,indx)!=recno || MEMO_IDOFFS(memopg,indx)!=offs )
+        else if( MEMO_ID(memopg,indx)!=MEMOID(recno,memox) )
         {
             // A rekordbuffer beolvasasa utan (de a memo beolvasasa elott)
             // egy masik processz atirhatja a memo-t, es azert itt egy masik
@@ -353,7 +355,7 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             sprintf(error,"__bt_memodel: memo index out of bound (%x,%d)\n",pgno,indx);
             __bt_error(error);
         }
-        else if( MEMO_OFFSET(memopg,indx)==0 )
+        else if( MEMO_OFFS(memopg,indx)==0 )
         {
             char error[128];
             sprintf(error,"__bt_memodel: deleted memo (%x,%d)\n",pgno,indx);
@@ -361,21 +363,21 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
         }
 
         uint size=MEMO_SIZE(memopg,indx); // felszabadulo hely merete
-        memmove(PUPPER(memopg)+size,PUPPER(memopg),MEMO_OFFSET(memopg,indx)-UPPER(memopg));
+        memmove(PUPPER(memopg)+size,PUPPER(memopg),MEMO_OFFS(memopg,indx)-UPPER(memopg));
         memset(PUPPER(memopg),0,size);
         UPPER(memopg)+=size;
 
         for(uint i=0; i<MEMOCOUNT(memopg); i++)
         {
-            if( MEMO_OFFSET(memopg,i)==0 )
+            if( MEMO_OFFS(memopg,i)==0 )
             {
                 // a lyukak helyen 0 van
                 // amit nem szabad novelni
             }
-            else if( MEMO_OFFSET(memopg,i)<MEMO_OFFSET(memopg,indx)  )
+            else if( MEMO_OFFS(memopg,i)<MEMO_OFFS(memopg,indx)  )
             {
                 // ezek hatrebb csusztak
-                MEMO_OFFSET(memopg,i)+=size;
+                MEMO_DESC(memopg,i)=MEMODESC(MEMO_OFFS(memopg,i)+size,MEMO_SIZE(memopg,i));
             }
         }
 
@@ -412,10 +414,8 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
         uint next_pgno=MEMO_PGNEXT(memopg,indx);
         uint next_indx=MEMO_IXNEXT(memopg,indx);
 
-        MEMO_IDRECNO(memopg,indx)=0;
-        MEMO_IDOFFS(memopg,indx)=0;
-        MEMO_OFFSET(memopg,indx)=0;
-        MEMO_SIZE(memopg,indx)=0;
+        MEMO_ID(memopg,indx)=0;
+        MEMO_DESC(memopg,indx)=0;
         MEMO_PGNEXT(memopg,indx)=0;
         MEMO_IXNEXT(memopg,indx)=0;
 
@@ -452,8 +452,8 @@ void _clp__db_memowrite(int argno)
     dbt.data=_parb(2);
     dbt.size=_parblen(2);
     uint recno=_parnu(3);
-    uint offset=_parnu(4);
-    RECPOS rp=__bt_memowrite(db,&dbt,recno,offset);
+    uint memox=_parnu(4);
+    RECPOS rp=__bt_memowrite(db,&dbt,recno,memox);
     char recpos[32];
     sprintf(recpos,"%07x%03x",rp.pgno,rp.index);
     _retb(recpos);
@@ -469,7 +469,7 @@ void _clp__db_memoread(int argno)
     str2bin(base+1);
     char *pos=_parb(2);
     uint recno=_parnu(3);
-    uint offset=_parnu(4);
+    uint memox=_parnu(4);
     int pgno,index;
     if( _parblen(2)!=10 || 2!=sscanf(pos,"%07x%03x",&pgno,&index) )
     {
@@ -478,7 +478,7 @@ void _clp__db_memoread(int argno)
     RECPOS recpos;
     recpos.pgno=pgno;
     recpos.index=index;
-    DBT dbt=__bt_memoread(db,recpos,recno,offset);
+    DBT dbt=__bt_memoread(db,recpos,recno,memox);
     if( dbt.data )
     {
         _retblen((char*)dbt.data,dbt.size);

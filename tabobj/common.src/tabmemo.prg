@@ -160,14 +160,14 @@ local n,tmd,ltmd,mhnd
 
     
 ****************************************************************************
-function tabMemoRead(table,offs,width)
+function tabMemoRead(table,offs,width,dec)
 
 local memo,value,cnt:=0
 
     memo:=xvgetchar(table[TAB_RECBUF],offs,width)
 
     while( !empty(memo) .and. value==NIL )
-        value:=_db_memoread(table[TAB_BTREE],memo,tabPosition(table),offs)
+        value:=_db_memoread(table[TAB_BTREE],memo,tabPosition(table),dec)
         if( value==NIL )
             tabReRead(table)
             memo:=xvgetchar(table[TAB_RECBUF],offs,width)
@@ -195,6 +195,9 @@ local memo,value,cnt:=0
         end
     end
     return if(value==NIL,a"",value)
+    
+    // megjegyzes: {tabPosition(table),dec} a memo azonosito 
+    
 
 
 ****************************************************************************
@@ -210,7 +213,7 @@ local offset:=val(memo)
 
     
 ****************************************************************************
-function tabMemoWrite(table,offs,width,value)
+function tabMemoWrite(table,offs,width,dec,value)
 local memo:=xvgetchar(table[TAB_RECBUF],offs,width)
 local vlen:=len(value)
     if( !empty(memo) )
@@ -222,7 +225,7 @@ local vlen:=len(value)
     end
     memo:=a""
     if( vlen>0 )
-        memo:=_db_memowrite(table[TAB_BTREE],value,tabPosition(table),offs)
+        memo:=_db_memowrite(table[TAB_BTREE],value,tabPosition(table),dec)
     end
     return memo
 

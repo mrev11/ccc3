@@ -36,7 +36,7 @@ local msg,total,cnt:=0
 local recno:=0,recbuf,reclen,recpos
 local fdkey:={},kfilnam 
 local ord,key
-local memcol:={},memoff:={},mempos,memval
+local memcol:={},memdec:={},mempos,memval
 
     //-----------------------
     //regi adatfile
@@ -93,7 +93,7 @@ local memcol:={},memoff:={},mempos,memval
     for n:=1 to len(tabColumn(table))
         if( tabMemoField(table,n) )
             memcol::aadd(n)
-            memoff::aadd(tabColumn(table)[n][COL_OFFS])
+            memdec::aadd(tabColumn(table)[n][COL_DEC])
         end
     next
 
@@ -138,8 +138,8 @@ local memcol:={},memoff:={},mempos,memval
             for n:=1 to len(memcol)
                 mempos:=getmempos(table,memcol[n])
                 if(!mempos::empty)
-                    memval:=_db_memoread(db,mempos,xvgetbig32(key,0),memoff[n])
-                    mempos:=_db_memowrite(db1,memval,recno,memoff[n])
+                    memval:=_db_memoread(db,mempos,xvgetbig32(key,0),memdec[n])
+                    mempos:=_db_memowrite(db1,memval,recno,memdec[n])
                 end
                 setmempos(table,memcol[n],mempos)
             next

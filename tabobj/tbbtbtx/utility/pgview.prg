@@ -67,6 +67,9 @@ local mid
 
         if( type=="MEMO" )
             ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
+            ?? "  offset", "0x"+offset::l2hex
+
+
             ? "link",   page[ 5.. 8]::hex
             ? "lower",  page[ 9..12]::hex
             ? "upper",  page[13..16]::hex
@@ -114,6 +117,8 @@ local mid
 
         else
             ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
+            ?? " offset", "0x"+offset::l2hex
+
             ? "link", page[5..8]::hex
             ? "prev", page[9..12]::hex
             ? "next", page[13..16]::hex

@@ -110,8 +110,8 @@ class tabobj(object)
   //method  SBROWSE              {|*|tabSBROWSE      (*)}
   //method  EDITRECORD           {|*|tabEDITRECORD   (*)}
 
-    method  lock                 {|t|thread_mutex_lock(t:__mutex__)}
-    method  unlock               {|t|thread_mutex_unlock(t:__mutex__)}
+    method  mutex_lock           {|t|thread_mutex_lock(t:__mutex__)}
+    method  mutex_unlock         {|t|thread_mutex_unlock(t:__mutex__)}
     method  freeze
     method  list
 

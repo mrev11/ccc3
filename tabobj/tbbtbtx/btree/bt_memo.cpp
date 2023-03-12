@@ -119,7 +119,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
 
         for( indx=0; indx<MEMOCOUNT(memopg); indx++)
         {
-            if( MEMO_OFFS(memopg,indx)==0 )
+            if( MEMO_DESC(memopg,indx)==0 )
             {
                 break;
             }
@@ -257,9 +257,16 @@ static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint memox)
         }
         else if( indx>=MEMOCOUNT(memopg) )
         {
-            char error[128];
-            sprintf(error,"__bt_memoread: memo index out of bound (%x,%d)\n",pgno,indx);
-            __bt_error(error);
+            // hasonlo a helyzet mint a kovetkezo if agban
+            // a takaritas a megvaltozott memo headerjet arrebb teheti
+
+            //char error[128];
+            //sprintf(error,"__bt_memoread: memo index out of bound (%x,%d)\n",pgno,indx);
+
+            data=0;
+            size=0;
+            mpool_put(t->bt_mp,memopg,0);
+            break;
         }
         else if( MEMO_ID(memopg,indx)!=MEMOID(recno,memox) )
         {
@@ -355,7 +362,7 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             sprintf(error,"__bt_memodel: memo index out of bound (%x,%d)\n",pgno,indx);
             __bt_error(error);
         }
-        else if( MEMO_OFFS(memopg,indx)==0 )
+        else if( MEMO_DESC(memopg,indx)==0 )
         {
             char error[128];
             sprintf(error,"__bt_memodel: deleted memo (%x,%d)\n",pgno,indx);
@@ -369,16 +376,33 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
 
         for(uint i=0; i<MEMOCOUNT(memopg); i++)
         {
-            if( MEMO_OFFS(memopg,i)==0 )
+            if( MEMO_DESC(memopg,i)==0 )
             {
                 // a lyukak helyen 0 van
-                // amit nem szabad novelni
             }
             else if( MEMO_OFFS(memopg,i)<MEMO_OFFS(memopg,indx)  )
             {
                 // ezek hatrebb csusztak
                 MEMO_DESC(memopg,i)=MEMODESC(MEMO_OFFS(memopg,i)+size,MEMO_SIZE(memopg,i));
             }
+        }
+
+
+        uint next_pgno=MEMO_PGNEXT(memopg,indx);
+        uint next_indx=MEMO_IXNEXT(memopg,indx);
+
+        MEMO_ID(memopg,indx)=0;
+        MEMO_DESC(memopg,indx)=0;
+        MEMO_PGNEXT(memopg,indx)=0;
+        MEMO_IXNEXT(memopg,indx)=0;
+
+        for(uint i=MEMOCOUNT(memopg)-1; i>=0; i-- )
+        {
+            if( MEMO_DESC(memopg,i)!=0 )
+            {
+                break;
+            }
+            LOWER(memopg)-=MEMOHEAD; //takarit
         }
 
 
@@ -410,14 +434,6 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             }
         }
 
-
-        uint next_pgno=MEMO_PGNEXT(memopg,indx);
-        uint next_indx=MEMO_IXNEXT(memopg,indx);
-
-        MEMO_ID(memopg,indx)=0;
-        MEMO_DESC(memopg,indx)=0;
-        MEMO_PGNEXT(memopg,indx)=0;
-        MEMO_IXNEXT(memopg,indx)=0;
 
         mpool_put(t->bt_mp,memopg,MPOOL_DIRTY);
 

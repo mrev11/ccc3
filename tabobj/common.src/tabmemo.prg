@@ -160,12 +160,41 @@ local n,tmd,ltmd,mhnd
 
     
 ****************************************************************************
-function tabMemoRead(table,memo)
-local value:=a""
-    if( !empty(memo))
-        value:=_db_memoread(table[TAB_BTREE],memo)
+function tabMemoRead(table,offs,width)
+
+local memo,value,cnt:=0
+
+    memo:=xvgetchar(table[TAB_RECBUF],offs,width)
+
+    while( !empty(memo) .and. value==NIL )
+        value:=_db_memoread(table[TAB_BTREE],memo,tabPosition(table),offs)
+        if( value==NIL )
+            tabReRead(table)
+            memo:=xvgetchar(table[TAB_RECBUF],offs,width)
+
+            // ? "REREAD"
+            // A rekordbuffer beolvasasa utan (de a memo beolvasasa elott)
+            // egy masik processz atirhatja a memo-t, es azert itt egy masik
+            // rekord memojat is kaphatnank. Ezt az esetet a _db_memoread
+            // felismeri (a memoval egyutt tarolt recno es offset megvaltozasabol)
+            // Ilyenkor ujra kell olvasni a rekordot, es probalkozni az uj memo-val.
+            // Az ujraolvasas nem rontja-e el a korabbi mezo ertekadasokat?
+            // Nem, mert mezo ertekadas csak rlock alatt lehetseges, 
+            // ilyenkor azonban masik processz nem irhatja at a memot,
+            // es ezert nincs szukseg ujraolvasasra. 
+            
+            if(++cnt>10)
+                // adathiba eseten ne beragadas legyen
+                // hanem adjon valami lathato jelzest
+            
+                taberrOperation("tabMemoRead")
+                taberrDescription(@"corrupt memo field/page")
+                taberrArgs({tabPosition(table),offs,memo})
+                tabError(table) 
+            end
+        end
     end
-    return value
+    return if(value==NIL,a"",value)
 
 
 ****************************************************************************
@@ -181,9 +210,9 @@ local offset:=val(memo)
 
     
 ****************************************************************************
-function tabMemoWrite(table,memo,value)
+function tabMemoWrite(table,offs,width,value)
+local memo:=xvgetchar(table[TAB_RECBUF],offs,width)
 local vlen:=len(value)
-    //? "MEMOWRITE","memo",memo,"value",value
     if( !empty(memo) )
         if( table[TAB_MEMODEL]==NIL )
             table[TAB_MEMODEL]:={memo}
@@ -193,9 +222,8 @@ local vlen:=len(value)
     end
     memo:=a""
     if( vlen>0 )
-        memo:=_db_memowrite(table[TAB_BTREE],value)
+        memo:=_db_memowrite(table[TAB_BTREE],value,tabPosition(table),offs)
     end
-    //?? "",memo
     return memo
 
 

@@ -36,7 +36,7 @@ local msg,total,cnt:=0
 local recno:=0,recbuf,reclen,recpos
 local fdkey:={},kfilnam 
 local ord,key
-local memcol:={},mempos,memval
+local memcol:={},memoff:={},mempos,memval
 
     //-----------------------
     //regi adatfile
@@ -93,8 +93,15 @@ local memcol:={},mempos,memval
     for n:=1 to len(tabColumn(table))
         if( tabMemoField(table,n) )
             memcol::aadd(n)
+            memoff::aadd(tabColumn(table)[n][COL_OFFS])
         end
     next
+
+
+    //-----------------------
+    //rekordok atmasolasa
+    //-----------------------
+
  
     total:="/"+alltrim(str(_db_lastrec(db)))
     reclen:=table[TAB_RECLEN] 
@@ -122,6 +129,7 @@ local memcol:={},mempos,memval
             //torolt rekord
  
         else
+            recno++
 
             if( ++cnt%PRIME==0 )
                 msg:=message(msg,@"COPY "+btname+str(cnt)+total)
@@ -130,14 +138,14 @@ local memcol:={},mempos,memval
             for n:=1 to len(memcol)
                 mempos:=getmempos(table,memcol[n])
                 if(!mempos::empty)
-                    memval:=_db_memoread(db,mempos)
-                    mempos:=_db_memowrite(db1,memval)
+                    memval:=_db_memoread(db,mempos,xvgetbig32(key,0),memoff[n])
+                    mempos:=_db_memowrite(db1,memval,recno,memoff[n])
                 end
                 setmempos(table,memcol[n],mempos)
             next
 
             table[TAB_RECPOS]    :=  _db_append(db1,recbuf) 
-            table[TAB_POSITION]  :=  ++recno
+            table[TAB_POSITION]  :=  recno
  
             for ord:=0 to len(tabIndex(table))
                 key:=tabKeyCompose(table,ord)

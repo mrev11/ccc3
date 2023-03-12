@@ -20,6 +20,7 @@ local nords,n
 local lower,upper
 local pos,len,rec
 local recpos,npg,ndx,memo
+local idr,ido
 
     fclose(fd)
 
@@ -78,13 +79,24 @@ local recpos,npg,ndx,memo
 
             offset:=20
             while( offset<lower )
-                npg:=page::substr(offset+ 1,4)::num 
-                ndx:=page::substr(offset+ 5,4)::num 
-                pos:=page::substr(offset+ 9,4)::num
-                len:=page::substr(offset+13,4)::num
+                idr:=page::substr(offset+ 1,4)::num     // id-recno
+                ido:=page::substr(offset+ 5,4)::num     // id-offset
+                pos:=page::substr(offset+ 9,4)::num     // memo ertek pozicioja a memo lapon
+                len:=page::substr(offset+13,4)::num     // memo ertek hossza
+                npg:=page::substr(offset+17,4)::num     // next page number
+                ndx:=page::substr(offset+21,4)::num     // next index (on next page)
 
-                ? npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
-                ?? "", len::str::alltrim::padl(4)
+                ? offset::l2hex::padl(3,"0")
+
+                ?? idr::transform("9999999 ")+ido::transform("9999 ")
+                
+                if( npg!=0 )
+                    ?? npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
+                else
+                    ?? space(11)
+                end
+
+                ?? len::transform(" 9999")
 
                 memo:=page::substr(pos+1,len)
                 if( len(memo)>64 )
@@ -92,7 +104,7 @@ local recpos,npg,ndx,memo
                 end
                 ?? "", a"["+memo+a"]"
 
-                offset+=16
+                offset+=24
             end
 
         else

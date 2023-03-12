@@ -39,15 +39,17 @@
 #define UPPER(page)             page[3]         // elso nemszabad hely offsete
 #define FLAGS(page)             page[4]         // page tipus
 
-#define MEMO_PGNEXT(page,x)     page[4*x+5]     // kovetkezo memo szegmens lapja
-#define MEMO_IDNEXT(page,x)     page[4*x+6]     // kovetkezo memo szegmens indexe
-#define MEMO_OFFSET(page,x)     page[4*x+7]     // memo szegmens offsete
-#define MEMO_SIZE(page,x)       page[4*x+8]     // memo szegmens merete
+#define MEMO_IDRECNO(page,x)    page[6*x+5]     // memo ID recno
+#define MEMO_IDOFFS(page,x)     page[6*x+6]     // memo ID offset
+#define MEMO_OFFSET(page,x)     page[6*x+7]     // memo szegmens offsete a lapon
+#define MEMO_SIZE(page,x)       page[6*x+8]     // memo szegmens merete
+#define MEMO_PGNEXT(page,x)     page[6*x+9]     // kovetkezo szegmens lapja
+#define MEMO_IXNEXT(page,x)     page[6*x+10]    // kovetkezo szegmens indexe
 
 
-#define MINSPACE                16
 #define PAGEHEAD                (5*sizeof(uint))
-#define MEMOHEAD                (4*sizeof(uint))
+#define MEMOHEAD                (6*sizeof(uint))
+#define MINSPACE                (2*PAGEHEAD)
 
 #define PLOWER(page)            ((char*)page+LOWER(page))
 #define PUPPER(page)            ((char*)page+UPPER(page))
@@ -73,7 +75,7 @@ static MEMOPG* __bt_memopage(BTREE *t)
     {
         __bt_pagelock(t,pgno,1); // wrlk
         memopg=(MEMOPG*)mpool_get(t->bt_mp,pgno);
-        //printf(">>>>>__bt_memopage-free %x\n",pgno);
+        printf(">>>>>__bt_memopage-free %x\n",pgno);
     }
     else
     {
@@ -84,13 +86,13 @@ static MEMOPG* __bt_memopage(BTREE *t)
         LOWER(memopg)   = PAGEHEAD;
         UPPER(memopg)   = t->bt_psize;
         FLAGS(memopg)   = P_MEMO;
-        //printf(">>>>>__bt_memopage-new  %x\n", pgno);
+        printf(">>>>>__bt_memopage-new  %x\n", pgno);
     }
     return memopg;
 }
 
 //----------------------------------------------------------------------------------------
-static RECPOS  __bt_memowrite(BTREE *t, DBT *data)
+static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint offs)
 {
     RECPOS recpos={0,0};
     if( data->size==0 )
@@ -136,7 +138,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data)
         if( prevpage )
         {
             MEMO_PGNEXT(prevpage,previndx) = PGNO(memopg);
-            MEMO_IDNEXT(prevpage,previndx) = indx;
+            MEMO_IXNEXT(prevpage,previndx) = indx;
 
             uint prevpgno=PGNO(prevpage);  // mpool_put atirja CRC-re
             mpool_put(t->bt_mp,prevpage,MPOOL_DIRTY);
@@ -149,10 +151,12 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data)
         UPPER(memopg)-=towrite;
         memmove(PUPPER(memopg), (char*)data->data+written, towrite);
 
-        MEMO_PGNEXT(memopg,indx) = 0;
-        MEMO_IDNEXT(memopg,indx) = 0;
+        MEMO_IDRECNO(memopg,indx)= recno;
+        MEMO_IDOFFS(memopg,indx) = offs;
         MEMO_OFFSET(memopg,indx) = UPPER(memopg);
         MEMO_SIZE(memopg,indx)   = towrite;
+        MEMO_PGNEXT(memopg,indx) = 0;
+        MEMO_IXNEXT(memopg,indx) = 0;
 
         written+=towrite;
 
@@ -220,7 +224,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data)
 
 
 //----------------------------------------------------------------------------------------
-static DBT __bt_memoread(BTREE *t, RECPOS recpos)
+static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint offs)
 {
     mpool_count(t->bt_mp,"memoread-0");//ellenorzes
 
@@ -255,15 +259,21 @@ static DBT __bt_memoread(BTREE *t, RECPOS recpos)
             sprintf(error,"__bt_memoread: memo index out of bound (%x,%d)\n",pgno,indx);
             __bt_error(error);
         }
-        else if( MEMO_OFFSET(memopg,indx)==0 )
+        else if( MEMO_IDRECNO(memopg,indx)!=recno || MEMO_IDOFFS(memopg,indx)!=offs )
         {
-            char error[128];
-            sprintf(error,"__bt_memodel: deleted memo (%x,%d)\n",pgno,indx);
-            __bt_error(error);
+            // A rekordbuffer beolvasasa utan (de a memo beolvasasa elott)
+            // egy masik processz atirhatja a memo-t, es azert itt egy masik
+            // rekord memojat is kaphatjuk. Ilyenkor ures memoerteket adunk.
+            // Ujra kell olvasni a rekordot, es probalkozni az uj memo-val. 
+
+            data=0;
+            size=0;
+            mpool_put(t->bt_mp,memopg,0);
+            break;
         }
 
         uint next_pgno=MEMO_PGNEXT(memopg,indx);
-        uint next_indx=MEMO_IDNEXT(memopg,indx);
+        uint next_indx=MEMO_IXNEXT(memopg,indx);
         size_t segsize=MEMO_SIZE(memopg,indx);
         char * segdata=ADDRESS(memopg,indx);
 
@@ -400,12 +410,14 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
 
 
         uint next_pgno=MEMO_PGNEXT(memopg,indx);
-        uint next_indx=MEMO_IDNEXT(memopg,indx);
+        uint next_indx=MEMO_IXNEXT(memopg,indx);
 
-        MEMO_PGNEXT(memopg,indx)=0;
-        MEMO_IDNEXT(memopg,indx)=0;
+        MEMO_IDRECNO(memopg,indx)=0;
+        MEMO_IDOFFS(memopg,indx)=0;
         MEMO_OFFSET(memopg,indx)=0;
         MEMO_SIZE(memopg,indx)=0;
+        MEMO_PGNEXT(memopg,indx)=0;
+        MEMO_IXNEXT(memopg,indx)=0;
 
         mpool_put(t->bt_mp,memopg,MPOOL_DIRTY);
 
@@ -433,13 +445,15 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
 //----------------------------------------------------------------------------------------
 void _clp__db_memowrite(int argno)
 {
-    CCC_PROLOG("_db_memowrite",2);
+    CCC_PROLOG("_db_memowrite",4);
     BTREE *db=(BTREE*)_parp(1);
     str2bin(base+1);
     DBT dbt;
     dbt.data=_parb(2);
     dbt.size=_parblen(2);
-    RECPOS rp=__bt_memowrite(db,&dbt);
+    uint recno=_parnu(3);
+    uint offset=_parnu(4);
+    RECPOS rp=__bt_memowrite(db,&dbt,recno,offset);
     char recpos[32];
     sprintf(recpos,"%07x%03x",rp.pgno,rp.index);
     _retb(recpos);
@@ -454,6 +468,8 @@ void _clp__db_memoread(int argno)
     BTREE *db=(BTREE*)_parp(1);
     str2bin(base+1);
     char *pos=_parb(2);
+    uint recno=_parnu(3);
+    uint offset=_parnu(4);
     int pgno,index;
     if( _parblen(2)!=10 || 2!=sscanf(pos,"%07x%03x",&pgno,&index) )
     {
@@ -462,9 +478,16 @@ void _clp__db_memoread(int argno)
     RECPOS recpos;
     recpos.pgno=pgno;
     recpos.index=index;
-    DBT dbt=__bt_memoread(db,recpos);
-    _retblen((char*)dbt.data,dbt.size);
-    free(dbt.data);
+    DBT dbt=__bt_memoread(db,recpos,recno,offset);
+    if( dbt.data )
+    {
+        _retblen((char*)dbt.data,dbt.size);
+        free(dbt.data);
+    }
+    else
+    {
+        _ret(); //NIL
+    }
     CCC_EPILOG();
 }
 

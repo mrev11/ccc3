@@ -294,7 +294,7 @@ local apos:=table[TAB_LOCKLST],n
 
 
 *****************************************************************************
-static function tabReRead(table) //rekord ujraolvasas
+function tabReRead(table) //rekord ujraolvasas
 local len:=_db_read(table[TAB_BTREE],table[TAB_RECBUF],table[TAB_RECPOS])
     if( len!=table[TAB_RECLEN] )
         taberrOperation("tabReRead")

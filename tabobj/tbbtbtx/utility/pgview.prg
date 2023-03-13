@@ -1,10 +1,8 @@
 
 
-
-
-
-
 static pgtype:={"FREE","INTERNAL","BLEAF","DATA","MEMO"}
+
+#define ISMEMO(p) (p[5..8]::hex::len==10.and.p[5..8]::hex>="0x8")
 
 
 ******************************************************************************************
@@ -24,11 +22,16 @@ local mid
 
     fclose(fd)
 
-    pgno::=hex2l
     PGSIZE:=map[9..12]::num
+
+    if( pgno::left(1)=="0" )
+        pgno::=hex2l/PGSIZE    
+    else
+        pgno::=hex2l
+    end
+
     offset:=pgno*PGSIZE
     page:=map::substr(offset+1,PGSIZE) // 1-based
-
 
     if( empty(page) )
         ? "out of bound"
@@ -62,94 +65,97 @@ local mid
              "flags="+page[offset+9..offset+12]::hex
         next
 
+    elseif( ISMEMO(page) ) 
+
+        type:="MEMO"
+
+        ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
+        ?? "  offset", "0x"+offset::l2hex
+
+        ? "link",   page[ 5.. 8]::hex
+        ? "lower",  page[ 9..12]::hex
+        ? "upper",  page[13..16]::hex
+
+        lower:=page::substr(9,4)::num    // elso szabad pozicio
+        upper:=page::substr(13,2)::num   // elso nemszabad pozicio
+        ? "space", upper-lower
+
+        ? "type",   type
+
+        offset:=16
+        while( offset<lower )
+            mid:=page::substr(offset+ 1,4)         // memo-id
+
+            pos:=page::substr(offset+ 5,2)::num     // memo ertek pozicioja a memo lapon
+            len:=page::substr(offset+ 7,2)::num     // memo ertek hossza
+
+            npg:=page::substr(offset+ 9,4)::num     // next page number
+            ndx:=page::substr(offset+13,4)::num     // next index (on next page)
+
+            ? offset::l2hex::padl(3,"0")
+
+            if( mid!=x"0000000000000000" )
+                ?? mid::bin2hex::transform(" rec[999999-9] ")
+            else
+                ?? " rec[        ] "
+            end
+            
+            if( npg!=0 )
+                ?? "->",npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
+            else
+                ?? space(14)
+            end
+
+            ?? len::transform(" 9999")
+
+            memo:=page::substr(pos+1,len)
+            if( len(memo)>64 )
+                memo:=memo::left(30)+a'....'+memo::right(30)
+            end
+            ?? "", a"["+memo+a"]"
+
+            offset+=16
+        end
+
     else
+        // INTERNAL
+        // BLEAF
+        // DATA
+
         type:=pgtype[ page[17..20]::num+1 ]
 
-        if( type=="MEMO" )
-            ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
-            ?? "  offset", "0x"+offset::l2hex
+        ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
+        ?? " offset", "0x"+offset::l2hex
 
+        ? "link", page[5..8]::hex
+        ? "prev", page[9..12]::hex
+        ? "next", page[13..16]::hex
+        ? "type", type:=pgtype[ page[17..20]::num+1 ]
+        ? "lower", page[21..22]::hex
+        ? "upper", page[23..24]::hex
 
-            ? "link",   page[ 5.. 8]::hex
-            ? "lower",  page[ 9..12]::hex
-            ? "upper",  page[13..16]::hex
+        lower:=page::substr(21,2)::num              // elso szabad pozicio
+        upper:=page::substr(23,2)::num              // elso nemszabad pozicio
 
-            lower:=page::substr(9,4)::num    // elso szabad pozicio
-            upper:=page::substr(13,2)::num   // elso nemszabad pozicio
-            ? "space", upper-lower
+        ? "space", upper-lower
 
-            ? "type",   type:=pgtype[ page[17..20]::num+1 ]
+        offset:=24
+        while( offset<lower )
+            pos:=page::substr(offset+1,2)::num      // itt kezdodik a rekord
+            ? "0x"+pos::l2hex::padr(4) 
+            
+            len:=page::substr(pos+1,4)::num         // rekordhossz 4 byteon
+            rec:=page::substr(pos+5,len)            // delflg + rekord adatok
+            ?? len::str::alltrim::padl(4)
+            ?? "", a"["+rec+a"]"
 
-            offset:=20
-            while( offset<lower )
-                mid:=page::substr(offset+ 1,4)         // memo-id
-
-                pos:=page::substr(offset+ 5,2)::num     // memo ertek pozicioja a memo lapon
-                len:=page::substr(offset+ 7,2)::num     // memo ertek hossza
-
-                npg:=page::substr(offset+ 9,4)::num     // next page number
-                ndx:=page::substr(offset+13,4)::num     // next index (on next page)
-
-                ? offset::l2hex::padl(3,"0")
-
-                if( mid!=x"0000000000000000" )
-                    ?? mid::bin2hex::transform(" rec[999999-9] ")
-                else
-                    ?? " rec[        ] "
-                end
-                
-                if( npg!=0 )
-                    ?? "->",npg::l2hex::padl(7,"0")+"-"+ndx::l2hex::padl(3,"0") 
-                else
-                    ?? space(14)
-                end
-
-                ?? len::transform(" 9999")
-
-                memo:=page::substr(pos+1,len)
-                if( len(memo)>64 )
-                    memo:=memo::left(30)+a'....'+memo::right(30)
-                end
-                ?? "", a"["+memo+a"]"
-
-                offset+=16
-            end
-
-        else
-            ? "pgno", "0x"+pgno::l2hex, page[1..4]::reverse::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
-            ?? " offset", "0x"+offset::l2hex
-
-            ? "link", page[5..8]::hex
-            ? "prev", page[9..12]::hex
-            ? "next", page[13..16]::hex
-            ? "type", type:=pgtype[ page[17..20]::num+1 ]
-            ? "lower", page[21..22]::hex
-            ? "upper", page[23..24]::hex
-    
-            lower:=page::substr(21,2)::num              // elso szabad pozicio
-            upper:=page::substr(23,2)::num              // elso nemszabad pozicio
-    
-            ? "space", upper-lower
-    
-            offset:=24
-            while( offset<lower )
-                pos:=page::substr(offset+1,2)::num      // itt kezdodik a rekord
-                ? "0x"+pos::l2hex::padr(4) 
-                
-                len:=page::substr(pos+1,4)::num         // rekordhossz 4 byteon
-                rec:=page::substr(pos+5,len)            // delflg + rekord adatok
-                ?? len::str::alltrim::padl(4)
-                ?? "", a"["+rec+a"]"
-    
-                offset+=2
-            end
+            offset+=2
         end
     end
 
     ?
     ?
 
-******************************************************************************************
 ******************************************************************************************
 static function num(x)  // N tipus
     return x::dec::val

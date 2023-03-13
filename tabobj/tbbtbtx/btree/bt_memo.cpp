@@ -34,15 +34,24 @@
 
 
 #define PGNO(page)              page[0]         // page sorszam (diszken CRC)
-#define LINK(page)              page[1]         // kovetkezo szabad memo page
+#define LINK(page)              page[1]         // kovetkezo szabad memo page (28 biten)
 #define LOWER(page)             page[2]         // elso szabad hely offsete
 #define UPPER(page)             page[3]         // elso nemszabad hely offsete
-#define FLAGS(page)             page[4]         // page tipus
 
-#define MEMO_ID(page,x)         page[4*x+5]     // memo ID
-#define MEMO_DESC(page,x)       page[4*x+6]     // memo szegmens offsete es merete
-#define MEMO_PGNEXT(page,x)     page[4*x+7]     // kovetkezo szegmens lapja
-#define MEMO_IXNEXT(page,x)     page[4*x+8]     // kovetkezo szegmens indexe
+#define MASKLINK                0x0fffffff
+#define MASKFLAG                ~MASKLINK
+#define FLAGMEMO                0x8
+
+#define GETLINK(page)           (LINK(page)&MASKLINK)
+#define SETLINK(page,x)         (LINK(page)=((LINK(page)&MASKFLAG)|((x)&MASKLINK)))
+
+#define GETFLAG(page)           ((LINK(page)&MASKFLAG)>>28)
+#define SETFLAG(page,x)         (LINK(page)=((LINK(page)&MASKLINK)|(((x)<<28)&MASKFLAG)))
+
+#define MEMO_ID(page,x)         page[4*x+4]     // memo ID
+#define MEMO_DESC(page,x)       page[4*x+5]     // memo szegmens offsete es merete
+#define MEMO_PGNEXT(page,x)     page[4*x+6]     // kovetkezo szegmens lapja
+#define MEMO_IXNEXT(page,x)     page[4*x+7]     // kovetkezo szegmens indexe
 
 #define MEMOID(r,x)             ((r)|((x)<<28)) // 28 bit recno + 4 bit memox
 #define MEMODESC(o,s)           ((o)|((s)<<16)) // 16 bit offset + 16 bit size
@@ -51,7 +60,7 @@
 #define MEMO_SIZE(p,x)          (0xffff&(MEMO_DESC(p,x)>>16))   //felso 16 bit
 
 
-#define PAGEHEAD                (5*sizeof(uint))
+#define PAGEHEAD                (4*sizeof(uint))
 #define MEMOHEAD                (4*sizeof(uint))
 #define MINSPACE                (3*PAGEHEAD)
 
@@ -85,11 +94,15 @@ static MEMOPG* __bt_memopage(BTREE *t)
     {
         memopg=(MEMOPG*)__bt_new0(t,&pgno,0);
         __bt_pagelock(t,pgno,1); // wrlk
+
         PGNO(memopg)    = pgno;
         LINK(memopg)    = 0;
         LOWER(memopg)   = PAGEHEAD;
         UPPER(memopg)   = t->bt_psize;
-        FLAGS(memopg)   = P_MEMO;
+
+        SETLINK(memopg,0);
+        SETFLAG(memopg,FLAGMEMO);
+
         //printf(">>>>>__bt_memopage-new  %x\n", pgno);
     }
     return memopg;
@@ -167,13 +180,13 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
         if( UPPER(memopg)-LOWER(memopg) < MINSPACE )
         {
             // NEM MARADT HELY A LAPON
-            if( LINK(memopg)!=0 )
+            if( GETLINK(memopg)!=0 )
             {
                 // szabadlistabol vett lap
                 // ki kell vanni a szabadlistabol
                 // KIVESZ
 
-                if( LINK(memopg)==PGNO(memopg) )
+                if( GETLINK(memopg)==PGNO(memopg) )
                 {
                     // utolso elem
                     t->bt_memo=0;
@@ -181,9 +194,9 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
                 else
                 {
                     // folytatodik a lista
-                    t->bt_memo=LINK(memopg);
+                    t->bt_memo=GETLINK(memopg);
                 }
-                LINK(memopg)=0;
+                SETLINK(memopg,0);
             }
             else
             {
@@ -194,7 +207,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
         else
         {
             // MARADT HELY A LAPON
-            if( LINK(memopg)!=0 )
+            if( GETLINK(memopg)!=0 )
             {
                 // szabadlistabol vett lap
                 // nem modosul a szabadlista
@@ -206,8 +219,8 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
                 // (elso es egyben utlso elem)
                 // BERAK
 
-                t->bt_memo=PGNO(memopg);   // elso elem
-                LINK(memopg)=PGNO(memopg); // utolso elem
+                t->bt_memo=PGNO(memopg);        // elso elem
+                SETLINK(memopg,PGNO(memopg));   // utolso elem
             }
         }
 
@@ -249,10 +262,10 @@ static DBT __bt_memoread(BTREE *t, RECPOS recpos, uint recno, uint memox)
             sprintf(error,"__bt_memoread: cannot read page (%x)\n",pgno);
             __bt_error(error);
         }
-        else if( FLAGS(memopg)!=P_MEMO )
+        else if( (GETFLAG(memopg)&FLAGMEMO)==0 )
         {
             char error[128];
-            sprintf(error,"__bt_memoread: invalid page type (%x,%d)\n",pgno,FLAGS(memopg));
+            sprintf(error,"__bt_memoread: invalid page type (%x,%d)\n",pgno,GETFLAG(memopg));
             __bt_error(error);
         }
         else if( indx>=MEMOCOUNT(memopg) )
@@ -350,10 +363,10 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             sprintf(error,"__bt_memodel: cannot read page (%x)\n",pgno);
             __bt_error(error);
         }
-        else if( FLAGS(memopg)!=P_MEMO )
+        else if( (GETFLAG(memopg)&FLAGMEMO)==0 )
         {
             char error[128];
-            sprintf(error,"__bt_memodel: invalid page type (%x,%d)\n",pgno,FLAGS(memopg));
+            sprintf(error,"__bt_memodel: invalid page type (%x,%d)\n",pgno,GETFLAG(memopg));
             __bt_error(error);
         }
         else if( indx>=MEMOCOUNT(memopg) )
@@ -412,7 +425,7 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             // => korabban sem lehetett a szabadlistaban
             // => a szabadlista nem valtozik
         }
-        else if( LINK(memopg)!=0 )
+        else if( GETLINK(memopg)!=0 )
         {
             // korabban is a szabadlistaban volt
             // => a szabadlista nem valtozik
@@ -426,11 +439,11 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
             t->bt_memo=PGNO(memopg);            // uj elso elem
             if( link!=0)
             {
-                LINK(memopg)=link;              // a korabbi elsore mutat
+                SETLINK(memopg,link);           // a korabbi elsore mutat
             }
             else
             {
-                LINK(memopg)=PGNO(memopg);      // utolso elem onmagara mutat
+                SETLINK(memopg,PGNO(memopg));   // utolso elem onmagara mutat
             }
         }
 

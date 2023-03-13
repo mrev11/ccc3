@@ -1,7 +1,8 @@
 
 
-static pgtype:={"FREE","TREE","LEAF","DATA","MEMO"}
+#define ISMEMO(p) (p[5..8]::hex::len==10.and.p[5..8]::hex>="0x8")
 
+static pgtype:={"FREE","TREE","LEAF","DATA","MEMO"}
 
 static stat:={}
 
@@ -76,18 +77,21 @@ local n,lower,upper,space
     pgno:=1
     while( offset<fsize )
         page:=substr(map,offset+1,PGSIZE)
-        type:=page[17..20]::num+1
 
-        if( pgtype[type]=="FREE" )
-            // ide nem jon
-            lower:=0
-            upper:=PGSIZE
-        elseif( pgtype[type]=="MEMO" )
+        if( ISMEMO(page) )
+            type:=5
             lower:=page[ 9..12]::num
             upper:=page[13..16]::num
         else
-            lower:=page[21..22]::num
-            upper:=page[23..24]::num
+            type:=page[17..20]::num+1
+            if( pgtype[type]=="FREE" )
+                // ide nem jon
+                lower:=0
+                upper:=PGSIZE
+            else
+                lower:=page[21..22]::num
+                upper:=page[23..24]::num
+            end
         end
         space:=upper-lower
 
@@ -124,6 +128,14 @@ static function dec(x)  // C tipus decimalisan
         x+=x"0000"
     end
     return x::bin2u::str::alltrim
+
+
+******************************************************************************************
+static function hex(x)  // C tipus hexa
+    if( len(x)==2 )
+        x+=x"0000"
+    end
+    return "0x"+x::bin2u::l2hex
 
 
 ******************************************************************************************

@@ -51,7 +51,6 @@
 #define  P_BINTERNAL   0x01      // btree internal page 
 #define  P_BLEAF       0x02      // leaf page 
 #define  P_DATA        0x03      // data page
-#define  P_MEMO        0x04      // memo page
 #define  P_TYPE        0x07      // type mask
  
 typedef struct _page 

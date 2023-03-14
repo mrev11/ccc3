@@ -1,0 +1,7 @@
+#!/bin/bash
+rm -f *.bt
+export BTBTX_PAGESIZE=256
+create.exe > log-create
+pgstat.exe proba.bt
+
+

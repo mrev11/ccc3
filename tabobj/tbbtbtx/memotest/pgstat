@@ -1,0 +1,4 @@
+#!/bin/bash
+pgstat.exe proba.bt
+
+

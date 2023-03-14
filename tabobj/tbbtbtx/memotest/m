@@ -1,0 +1,5 @@
+#!/bin/bash
+tdc2tabobj.exe *.tdc
+
+bapp_unix_.b  -bccc${CCCVER}_btbtx 
+

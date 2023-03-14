@@ -1,0 +1,7 @@
+!table proba
+!index proba proba proba
+!field proba        C    8  0
+!field length       N    6  0
+!field dbmchr       C   10  1
+!field dbmbin       X   10  2
+!keepdeleted        0

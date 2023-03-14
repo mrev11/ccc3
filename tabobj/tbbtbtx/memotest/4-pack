@@ -1,0 +1,6 @@
+#!/bin/bash
+export BTBTX_PAGESIZE=256
+pack.exe
+pgstat.exe proba.bt
+
+

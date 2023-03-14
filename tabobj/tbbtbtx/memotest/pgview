@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PGNO=$1
+pgview.exe proba.bt $PGNO
+
+

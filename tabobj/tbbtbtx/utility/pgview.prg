@@ -38,7 +38,7 @@ local mid
         ?
         quit
     end
-    memowrit("PAGE",page)
+    memowrit("log-PAGE",page)
     
     set printer on
     set printer to log-pgview
@@ -59,7 +59,7 @@ local mid
         nords:=page[29..32]::num
         for n:=1 to nords
             offset:=32*n
-            ? page[offset+17..offset+32],;
+            ? page[offset+17..offset+32]::strtran(bin(0),bin(32)),;
              "root="+page[offset+1..offset+4]::hex,;
              "last="+page[offset+5..offset+8]::hex,;
              "flags="+page[offset+9..offset+12]::hex

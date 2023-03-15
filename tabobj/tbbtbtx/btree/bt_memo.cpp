@@ -499,7 +499,7 @@ void _clp__db_memoread(int argno)
     char *pos=_parb(2);
     uint recno=_parnu(3);
     uint memox=_parnu(4);
-    int pgno,index;
+    int pgno=0,index=0;
     if( _parblen(2)!=10 || 2!=sscanf(pos,"%07x%03x",&pgno,&index) )
     {
         error_arg("_db_memoread",base,argno);
@@ -528,7 +528,7 @@ void _clp__db_memodel(int argno)
     BTREE *db=(BTREE*)_parp(1);
     str2bin(base+1);
     char *pos=_parb(2);
-    int pgno,index;
+    int pgno=0,index=0;
     if( _parblen(2)!=10 || 2!=sscanf(pos,"%07x%03x",&pgno,&index) )
     {
         error_arg("_db_memodel",base,argno);

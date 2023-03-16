@@ -204,5 +204,9 @@ typedef struct _btree
 
 #define  B_NEEDSWAP    0x00008   // if byte order requires swapping 
 
+#ifndef MIN
+#define MIN(x,y) ((x)<(y)?(x):(y))
+#endif
+
 #include <extern.h>
 

@@ -112,7 +112,7 @@ local key,n,save:={},column,forw:=.t.
             forw:=.t.
  
 
-        elseif( key==K_CTRL_W )
+        elseif( GetComplete(key) )
             exit
 
         elseif( key==K_ENTER )

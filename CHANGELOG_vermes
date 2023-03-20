@@ -1,3 +1,7 @@
+2023-03-20 
+  browse megjelenitesben kiszurve az adatokban levo CR/LF;
+  getek bezarasa K_CTRL_W helyett/mellett K_CTRL_Z;
+
 2023-03-16 Windows-MINGW MIN makro potolva;
 
 2023-03-15 clang warningok javitva;

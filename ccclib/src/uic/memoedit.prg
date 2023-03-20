@@ -158,7 +158,7 @@ local key, line, rlen, sftprv
             return txt
 
 
-        elseif( key==K_CTRL_W )    
+        elseif( GetComplete(key) )
             txt:=""
             if( len(atxt)>1 .or. len(atxt[1])>0 )
                 for n:=1 to len(atxt)

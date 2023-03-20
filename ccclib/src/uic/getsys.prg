@@ -41,6 +41,15 @@ static soActiveGet
 #define GSV_COUNT          6
 
 **********************************************************************
+function GetComplete(key)
+
+// az eredeti K_CTRL_W nem szerencses
+// mert arra becsukodnak az ablakok
+// helyette kiprobaljuk K_CTRL_Z-t
+
+    return key==K_CTRL_W .or. key==K_CTRL_Z
+
+**********************************************************************
 function ReadModal( GetList, nPos )
 
 local oGet
@@ -140,7 +149,7 @@ local cKey
     case ( nKey==K_CTRL_HOME )
         oGet:exitState:=GE_TOP
 
-    case ( nKey==K_CTRL_W )
+    case ( GetComplete(nKey) )
         oGet:exitState:=GE_WRITE
 
     case ( nKey==K_INS )

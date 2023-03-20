@@ -90,7 +90,7 @@ local result
                     get:exitState:=GE_TOP
                     exit
 
-                elseif( key==K_CTRL_W )
+                elseif( GetComplete(key) )
                     get:exitState:=GE_WRITE
                     exit
 

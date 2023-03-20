@@ -220,7 +220,7 @@ local n
     case ( nKey==K_PGDN )
         oGet:exitState:=GE_WRITE
 
-    case ( nKey==K_CTRL_W )
+    case ( GetComplete(nKey) )
         oGet:exitState:=GE_WRITE
 
     case ( nKey==K_CTRL_U )

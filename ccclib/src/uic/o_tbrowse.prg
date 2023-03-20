@@ -966,6 +966,10 @@ local headskip:=1+if(empty(brw:headsep),-1,0)+if(empty(brw:_hasheading_),-1,0)
             else
                 data:=eval(column:block)
                 tdata:=transform(data,column:picture)
+                if( chr(10)$tdata  )
+                    tdata::=strtran(chr(10)," ")
+                    tdata::=strtran(chr(13)," ")
+                end
                 cidx:=column:color(data)[1]
             end
 

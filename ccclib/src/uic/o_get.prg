@@ -173,6 +173,12 @@ local fs,ts,pw,v,color
         v:=pwtrans(v)
     end
 
+    if( chr(10)$v )
+        v::=strtran(chr(10)," ")
+        v::=strtran(chr(13)," ")
+    end
+
+
     devpos(get:row,get:col)
     devout(v,color)
     return get

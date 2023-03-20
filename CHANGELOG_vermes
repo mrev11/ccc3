@@ -1,4 +1,7 @@
 2023-03-20 
+  getek megjelenitesben kiszurve az adatokban levo CR/LF;
+
+2023-03-20 
   browse megjelenitesben kiszurve az adatokban levo CR/LF;
   getek bezarasa K_CTRL_W helyett/mellett K_CTRL_Z;
 

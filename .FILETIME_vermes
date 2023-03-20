@@ -1,6 +1,7 @@
-1a8732bf6ff3d5a43a28ea34f83046eb2132902a 2023032011:19:03-UTC ./log-install
+c1939ffa25d16adb90e0acd38a9a4d4cd5d9431f 2023032011:43:24-UTC ./CHANGELOG_vermes
+92ab06f19d43e618d10caaec0e0502185a6c77f5 2023032011:40:12-UTC ./log-install
+8bb3821663a06b2eef92a0da473e24606c4a8d6c 2023032011:40:05-UTC ./ccclib/src/uic/o_get.prg
 96d4178c48395af39b06f8caff0f48cd79c209e0 2023032011:18:58-UTC ./ccclib/src/uic/memoedit.prg
-91a268c28d5562a6c5c3555a3897d6af9dac3030 2023032011:15:30-UTC ./CHANGELOG_vermes
 d1259ba4195d646bb184b3ff1ea0dde2668e56fc 2023032011:13:45-UTC ./ccclib/src/uic/getsys.prg
 cd487ece571825671003d146da8d0da36f51f3d7 2023032011:09:00-UTC ./ccclib/src/uic/pushbutton.prg
 ecc36ad442a3e89a9517e6f03e40991ba0f1382e 2023032011:08:08-UTC ./ccclib/src/uic/brwedit.prg
@@ -2030,7 +2031,6 @@ eba817faa96cdae9bd89a7cb05a99e6098a95760 2011123109:08:56-UTC ./tools/sql2/drive
 40a73934b449088cc543fbc63e0a15004ea3c911 2011120919:46:53-UTC ./tools/webapp/program/webapp/sighandler.prg
 75342509df37d1723ae13a4c2fe5f68bfdc76f1a 2011112822:06:50-UTC ./tools/webapp/program/webapputil/urlutil.prg
 dfb7a480096b77a1e242df4e321e14fd8244572a 2011111821:51:34-UTC ./tools/webapp/program/webapp/socketpair.prg
-669948b7ed23d31ae3ceb42d336177890f459a4f 2011082818:55:05-UTC ./ccclib/src/uic/o_get.prg
 ea887c120b4fcb6e2a0fa3158542b1ea778bab08 2011082512:07:59-UTC ./tools/mask/box.msk
 64633b04222be4701e923e54a7765b872b103189 2011080614:49:45-UTC ./jt/jterminal/jterminal.java
 b0ec6f0105191376cbce979c2a02ab7e1d45089c 2011080614:37:04-UTC ./jt/jterminal/jtdialog.java

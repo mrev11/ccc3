@@ -1,5 +1,9 @@
-c1939ffa25d16adb90e0acd38a9a4d4cd5d9431f 2023032011:43:24-UTC ./CHANGELOG_vermes
-92ab06f19d43e618d10caaec0e0502185a6c77f5 2023032011:40:12-UTC ./log-install
+9521edb3ecb343d83a292e78b8d9f1cef1794bb5 2023032517:32:52-UTC ./ccclib/src/uic/termapi/termapi.cpp
+a4008c0f5d6c36c2ffde9f70a4d597f6a0e34c7a 2023032514:38:47-UTC ./log-install
+d204e88fb2fe5de01772193351daeeb55b08f68b 2023032514:38:46-UTC ./jt/jterminal/jterminal.jar
+eefd4d88351f729e6714bbee70b8fa65301ee4f5 2023032513:59:33-UTC ./CHANGELOG_vermes
+5b78c05522ef3a4424318bfffc720f6371b05e36 2023032513:54:49-UTC ./usr/bin/linux/ncterm
+9d9e16a83551955f494740b4dc2d82aa78e8b80f 2023032418:50:51-UTC ./terminal/unix-termkey/readkey.cpp
 8bb3821663a06b2eef92a0da473e24606c4a8d6c 2023032011:40:05-UTC ./ccclib/src/uic/o_get.prg
 96d4178c48395af39b06f8caff0f48cd79c209e0 2023032011:18:58-UTC ./ccclib/src/uic/memoedit.prg
 d1259ba4195d646bb184b3ff1ea0dde2668e56fc 2023032011:13:45-UTC ./ccclib/src/uic/getsys.prg
@@ -7,15 +11,6 @@ cd487ece571825671003d146da8d0da36f51f3d7 2023032011:09:00-UTC ./ccclib/src/uic/p
 ecc36ad442a3e89a9517e6f03e40991ba0f1382e 2023032011:08:08-UTC ./ccclib/src/uic/brwedit.prg
 02d188d523e999257d5fda5514a39801e876fefc 2023032011:07:54-UTC ./ccclib/src/uic/altbutton.prg
 cf6e4733b8daa7cc163ab0bde217767ca40a5d55 2023032010:53:32-UTC ./ccclib/src/uic/o_tbrowse.prg
-3548b12dc2016db77773395519268c4ecc33cc11 2023032010:27:48-UTC ./usr/bin/linux/gitfollow
-1c66296b9e08f90ad6d41012724019a1db31a549 2023032010:27:48-UTC ./usr/bin/linux/gitnav
-409ea278a1deb3cdf419614bf0911b98ae84517a 2023032010:27:48-UTC ./usr/bin/linux/gitref
-ef6095e3359e036943d7f5c04f2f1ea89b2fed9f 2023032010:27:48-UTC ./usr/bin/linux/gitstat
-444a283c7bc724e52dc353ac7c9cf5387582f7fd 2023032010:27:48-UTC ./usr/bin/linux/gitview
-c747837b4000515040b7e22b1102ef2a80933d7e 2023032010:27:45-UTC ./usr/bin/linux/filetime-restore
-82b9b80418925b34680325b018e0f41f0092935d 2023032010:27:45-UTC ./usr/bin/linux/filetime-save
-0081a067b4683a72c6f55785937daab4df45429e 2023032010:27:45-UTC ./usr/bin/linux/firstpar
-1526af5c69c904613ca2dcaed1534161d5f23f61 2023032010:27:42-UTC ./jt/jterminal/jterminal.jar
 d3efefe6f0acdd2433b45689c4ec9118efe2b667 2023031608:22:16-UTC ./usr/bin/linux/rnm
 d412eeb68dcb75bb1643fbff18746337f7f7bda0 2023031608:22:15-UTC ./usr/bin/linux/oggedit
 d93b82a6bce89f4920acae12259cf238ac7577af 2023031608:22:15-UTC ./usr/bin/linux/oggplay
@@ -75,7 +70,6 @@ d0945bd710c885120f386b151ce4d2bdbcec3915 2023031608:21:11-UTC ./usr/bin/linux/ms
 cb7e538ecd59a531e2216620b3bd24ba48a87558 2023031608:21:08-UTC ./usr/bin/linux/sslforw-serv
 a6f6abc0d25e3265dc7dc61a7edcbef723d24142 2023031608:21:08-UTC ./usr/bin/linux/sslforw-term
 081719b35653eea36baad3dd1c557f7efbc54f3f 2023031608:21:08-UTC ./usr/bin/linux/sslforward
-b3582893e2eb2be4edbb58f8b27765548af0c75f 2023031608:21:07-UTC ./usr/bin/linux/ncterm
 df58acd56cb0791bab6436b52453a6536c3ba8d1 2023031608:21:06-UTC ./usr/bin/linux/terminal
 a6d1940931f1573dc351528fd317ae84ca1496bd 2023031608:21:06-UTC ./usr/bin/linux/terminal-xft
 8f9659e54c814eb45e260b806b930089fe897357 2023031608:21:05-UTC ./usr/bin/linux/mklink
@@ -398,7 +392,6 @@ d7d5342de9acd9969b036395b8951a1a8639ca88 2022042921:07:03-UTC ./tabobj/m
 c29f02ca3c9272891b9a6b6fec57fce748cf388f 2022042811:55:16-UTC ./terminal/common/debug.h
 127873b0d7c4af172d2d347201fe015fc73c9047 2022042807:31:01-UTC ./usr/include/msgout.h
 69c44d11aa42e7543f20a0c7169100d8ed73b0f8 2022042616:26:17-UTC ./ccclib/src/uic/termenv.cpp
-1d0563b5a81851ce3b27838502e1ee1369b51f8e 2022042616:24:28-UTC ./ccclib/src/uic/termapi/termapi.cpp
 e4acc97d8bc7b6c054e8f4636efe77d5aae6f283 2022042615:42:40-UTC ./ccclib/src/uic/termapi/termcmd.h
 d4d690b6decb67f4cf34e9906622f4419cf4dd0e 2022042214:37:49-UTC ./tools/xmldom/xmldom18/OLVASS
 2661dba3307ac8e0857853291bc0d51cd26e8e57 2022042214:33:32-UTC ./tools/xmldom/xmlpars.prg
@@ -886,7 +879,6 @@ b1d245ad13562da341fb44f595616c4a85cba05d 2020050721:36:14-UTC ./ccclib/src/uic/t
 dd46bd177aa444b33e486df6b0041a074e3c24c6 2020042113:18:15-UTC ./terminal/common/keycode.h
 a6ebfd084f3d396ff0438abb02f8dc1be48c82cd 2020032114:50:42-UTC ./ccctools/pack/copyright.prg
 6ea6f6a2452baa8f5f2d0da24e998b302ed30ff2 2020032114:14:49-UTC ./ccc-dependencies-ubuntu
-55011ab96c0844db78b4f2d386ed22c4846758c6 2020032016:01:36-UTC ./terminal/unix-termkey/readkey.cpp
 c1788685477d7261a7fbdce5c1486d370792c155 2020032015:59:43-UTC ./terminal/unix-termkey/tktest/tktest.cpp
 71a868c6af2d658a3eab178b7b20819720a937a9 2020030813:05:03-UTC ./terminal/unix-termkey/Xdefaults
 955571b358e229b1a3b78fe1421664775a5dd5aa 2020030709:17:26-UTC ./terminal/unix-termkey/OLVASS

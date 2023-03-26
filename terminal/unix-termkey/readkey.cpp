@@ -116,8 +116,8 @@ int readkey()
             else if( sym==TERMKEY_SYM_ENTER )     inkeycode=K_ENTER;
             else if( sym==TERMKEY_SYM_ESCAPE )    inkeycode=K_ESC;
             else if( sym==TERMKEY_SYM_DEL )       inkeycode=K_BS;
-            else if( sym==TERMKEY_SYM_DELETE )    inkeycode=K_DEL;
-            else if( sym==TERMKEY_SYM_INSERT )    inkeycode=K_INS;
+            else if( sym==TERMKEY_SYM_DELETE )    inkeycode=K_NAV_DEL;
+            else if( sym==TERMKEY_SYM_INSERT )    inkeycode=K_NAV_INS;
 
             else if( sym==TERMKEY_SYM_KPPLUS )    inkeycode='+';
             else if( sym==TERMKEY_SYM_KPMINUS )   inkeycode='-';
@@ -130,14 +130,14 @@ int readkey()
             {
                 switch(sym)
                 {
-                    case TERMKEY_SYM_UP       : inkeycode=K_UP; break;
-                    case TERMKEY_SYM_DOWN     : inkeycode=K_DOWN; break;
-                    case TERMKEY_SYM_LEFT     : inkeycode=K_LEFT; break;
-                    case TERMKEY_SYM_RIGHT    : inkeycode=K_RIGHT; break;
-                    case TERMKEY_SYM_PAGEUP   : inkeycode=K_PGUP; break;
-                    case TERMKEY_SYM_PAGEDOWN : inkeycode=K_PGDN; break;
-                    case TERMKEY_SYM_HOME     : inkeycode=K_HOME; break;
-                    case TERMKEY_SYM_END      : inkeycode=K_END; break;
+                    case TERMKEY_SYM_UP       : inkeycode=K_NAV_UP; break;
+                    case TERMKEY_SYM_DOWN     : inkeycode=K_NAV_DOWN; break;
+                    case TERMKEY_SYM_LEFT     : inkeycode=K_NAV_LEFT; break;
+                    case TERMKEY_SYM_RIGHT    : inkeycode=K_NAV_RIGHT; break;
+                    case TERMKEY_SYM_PAGEUP   : inkeycode=K_NAV_PGUP; break;
+                    case TERMKEY_SYM_PAGEDOWN : inkeycode=K_NAV_PGDN; break;
+                    case TERMKEY_SYM_HOME     : inkeycode=K_NAV_HOME; break;
+                    case TERMKEY_SYM_END      : inkeycode=K_NAV_END; break;
                 }
             }
             else if( mod&4 ) // CTRL

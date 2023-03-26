@@ -556,7 +556,7 @@ char *termgetenv(char *env)
         if( buf[0].get()!=TERMCMD_KEYCODE )
         {
             //ilyen nem lehet
-            fprintf(stderr,"getwsize: unexpected message\n");
+            fprintf(stderr,"termgetenv: unexpected message\n");
             signal_raise(SIG_TERM);
             exit(1);
         }
@@ -601,7 +601,7 @@ int termchdir(char *dir)
         if( buf[0].get()!=TERMCMD_KEYCODE )
         {
             //ilyen nem lehet
-            fprintf(stderr,"getwsize: unexpected message\n");
+            fprintf(stderr,"termchdir: unexpected message\n");
             signal_raise(SIG_TERM);
             exit(1);
         }
@@ -629,7 +629,7 @@ char *termgetcwd()
         if( buf[0].get()!=TERMCMD_KEYCODE )
         {
             //ilyen nem lehet
-            fprintf(stderr,"getwsize: unexpected message\n");
+            fprintf(stderr,"termgetcwd: unexpected message\n");
             signal_raise(SIG_TERM);
             exit(1);
         }

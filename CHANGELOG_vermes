@@ -1,3 +1,8 @@
+2023-03-25
+  A libtermkey konyvtarral keszult ncterm-bol ki volt felejtve
+  a "2016.04.02  K_NAV_UP (uj) inkey kodok" commitban leirt javitas.
+  Ez most potolva lett: ez a terminal is K_NAV_UP...  kodokat kuld.
+
 2023-03-20 
   getek megjelenitesben kiszurve az adatokban levo CR/LF;
 

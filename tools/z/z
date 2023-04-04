@@ -7,7 +7,7 @@ export CCCTERM_SIZE=100x48
 # DEFAULT COLORS
 #
 # if [ "$CCCVER" == "3" ]; then
-#   export ZCOLOR_TEXT=w/n,w/211     # text/mark
+#   export ZCOLOR_TEXT=w/n,w/221     # text/mark
 #   export ZCOLOR_MASK=n/233,w+/bg   # mask/get,header,alert
 #
 # elif [ "$CCCVER" == "2" ]; then                      

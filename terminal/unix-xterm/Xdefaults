@@ -1,0 +1,43 @@
+
+! xrdb -query -all   : listazza az aktualis beallitasokat
+! xrdb               : betolti a beallitasokat .Xresource-bol
+! xrdb ~/.Xdefaults  : betolti a beallitasokat .Xdefaults-bol
+! https://wiki.archlinux.org/index.php/X_resources#Xresources_syntax
+
+xterm*metaSendsEscape: true
+xterm*utf8Title: true
+xterm*VT100.geometry: 96x32
+
+!xterm*font: -misc-console-medium-r-normal--16-160-72-72-c-80-iso10646-1
+xterm*faceName: Monospace-12
+
+xterm*background: grey
+xterm*foreground: black
+
+XTerm*cursorColor: maroon
+XTerm*cursorBlink: true
+
+!XTerm*limitResize: 0  xterm ablak merete akarmilyen nagy
+!XTerm*limitResize: 1  xterm ablak merete a kepernyomeretre korlatozva
+XTerm*limitResize: 0
+
+
+
+
+
+!ez van eredetileg
+!xterm*VT100*translations:  #override \n\
+!    Shift <KeyPress> Home : scroll-to(begin) \n\
+!    Shift <KeyPress> End  : scroll-to(end)
+!    Shift <KeyPress> Prior: scroll-back(1,halfpage) \n\
+!    Shift <KeyPress> Next : scroll-forw(1,halfpage) \n\
+
+!ezekkel nem keletkezik bemenet a leutesbol
+!xterm*VT100*translations:  #override \n\
+!    Shift <KeyPress> Prior : keymap(none) \n\
+!    Shift <KeyPress> Next  : keymap(none) \n\
+!    Shift <KeyPress> Home  : keymap(none) \n\
+!    Shift <KeyPress> End   : keymap(none)
+
+!ez letiltja a lapozast
+xterm*omitTranslation: paging

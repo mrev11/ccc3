@@ -35,7 +35,7 @@ void power()
         double da=a->data.number;
         double dx=x->data.number;
 
-        if( da>0 )
+        if( da>=0 )
         {
             a->data.number=pow(da,dx);
             stack=x;

@@ -1,4 +1,11 @@
-ee237914018adbe83a1066da49e2d0f5c6989605 2023040413:25:57-UTC ./CHANGELOG_vermes
+29971e40459e348e6deebf434a5fe7fc10e64e13 2023040413:31:25-UTC ./jt/jterminal/jterminal.jar
+c3f29536ed53d47d04cab1ab45af044aa5b8dd2b 2023040413:31:25-UTC ./log-install
+1570253a94ce2529036e8c9f8f807ba592cc261e 2023040413:30:19-UTC ./usr/bin/linux/terminal-gtk3
+4b2f39bcdaebae67b87ba1aa8d4c55f5fa6d7716 2023040413:30:18-UTC ./usr/bin/linux/terminal-gtk
+aaf45f00d41b2c8ba63e7f550e1481fc6cf28814 2023040413:30:16-UTC ./usr/bin/linux/xterm
+5b78c05522ef3a4424318bfffc720f6371b05e36 2023040413:30:15-UTC ./usr/bin/linux/ncterm
+6e2816eb6509a74044e0984a1aaa00539b4c9991 2023040413:29:23-UTC ./CHANGELOG_vermes
+daeea1cd8bb91ab810b54e9b7465d62e8e057b65 2023040413:28:49-UTC ./make_base
 16e281635ea8f6a7ba940d320baa3bf0d35b76bb 2023040413:24:25-UTC ./terminal/unix-xterm/ansi_colors/colors.prg
 ac2ae07257adb29f0fec73ea3899c4b5d987fce6 2023040413:19:46-UTC ./terminal/unix-xterm/OLVASS
 317ec6cbbaa11e940b0eb503896450978fed79ae 2023040323:34:46-UTC ./terminal/unix-xterm/parfile.bld
@@ -17,17 +24,6 @@ b4e11c50d556308172b685e9f9b08f80e7ba3c33 2023040310:30:56-UTC ./terminal/unix-xt
 f98f34325af079af7c3b737d1f18a4952763dd80 2023040310:29:18-UTC ./terminal/unix-xterm/readkey.cpp
 755691baab453fae06eac8a81d2d015b821a922d 2023040310:20:25-UTC ./terminal/unix-xterm/xcurses.h
 0515ea7c1a3375778c49d2c88b8abbfbfee266c6 2023040308:42:56-UTC ./tools/z/z
-f6bb3ac39bbcadb9832b8bcca197901aa6b9b28b 2023040210:41:44-UTC ./usr/bin/linux/ncterm
-25d01ada65c1d912323ef384ced07ec0ce0ed5a0 2023032610:08:56-UTC ./log-install
-cae10cbc76f348d9d0fa0f621933d9d89c355256 2023032610:08:22-UTC ./usr/bin/linux/gitstat
-8e35be98654c4b7cb243d33be1d9a562d1b0b53e 2023032610:08:21-UTC ./usr/bin/linux/gitfollow
-cc74cff1ade2cc1af38446def67b7e3274e5f231 2023032610:08:21-UTC ./usr/bin/linux/gitnav
-bcd058b326a82aba64ea010e276bd30d098e3f13 2023032610:08:21-UTC ./usr/bin/linux/gitref
-1d75e2e38cdcfe15c4006cceae7fee5b9fd23f1a 2023032610:08:21-UTC ./usr/bin/linux/gitview
-0081a067b4683a72c6f55785937daab4df45429e 2023032610:08:19-UTC ./usr/bin/linux/firstpar
-c747837b4000515040b7e22b1102ef2a80933d7e 2023032610:08:18-UTC ./usr/bin/linux/filetime-restore
-82b9b80418925b34680325b018e0f41f0092935d 2023032610:08:18-UTC ./usr/bin/linux/filetime-save
-5a1162d52dcf61097cbb127aeedc903e0c28a811 2023032610:08:16-UTC ./jt/jterminal/jterminal.jar
 fd08ca18edc739bd8f431b200e471a091fdd8d60 2023032610:07:41-UTC ./usr/bin/linux/list
 9521edb3ecb343d83a292e78b8d9f1cef1794bb5 2023032517:32:52-UTC ./ccclib/src/uic/termapi/termapi.cpp
 9d9e16a83551955f494740b4dc2d82aa78e8b80f 2023032418:50:51-UTC ./terminal/unix-termkey/readkey.cpp
@@ -91,8 +87,6 @@ bc2eaf29f700b3d8671c66cb2a8cd51705b9b603 2023031608:21:22-UTC ./usr/bin/linux/ts
 d8ea6b3e52bbfa8783c226f9b5fd7abc86a996d1 2023031608:21:13-UTC ./usr/bin/linux/pge2out
 645b11693441d8ddfcb0d1ca19f7111ac2389c26 2023031608:21:13-UTC ./usr/bin/linux/pge2wro
 d0945bd710c885120f386b151ce4d2bdbcec3915 2023031608:21:11-UTC ./usr/bin/linux/msk2say
-76b91fd04805b25b48dcc7363720542a2d23765f 2023031608:21:10-UTC ./usr/bin/linux/terminal-gtk3
-70b46e077ab235eab84f73a5db329b1e743c6c47 2023031608:21:09-UTC ./usr/bin/linux/terminal-gtk
 cb7e538ecd59a531e2216620b3bd24ba48a87558 2023031608:21:08-UTC ./usr/bin/linux/sslforw-serv
 a6f6abc0d25e3265dc7dc61a7edcbef723d24142 2023031608:21:08-UTC ./usr/bin/linux/sslforw-term
 081719b35653eea36baad3dd1c557f7efbc54f3f 2023031608:21:08-UTC ./usr/bin/linux/sslforward
@@ -226,8 +220,6 @@ f0e22a6c59e990c116b5a9e3a7465dbf4f5776e2 2023031010:44:38-UTC ./tabobj/common.sr
 458a1f1876dcb7d44780b418f76cd481694a9518 2023030815:14:51-UTC ./tabobj/tbbtbtx/utility/m
 a09495421b1a4e3b2a5f3164b6fb28e2f851036a 2023030812:30:12-UTC ./tabobj/tbbtbtx/dbcreate.prg
 c12e2d790604d2c0c66b51e0bddaa90bd334b316 2023030711:39:06-UTC ./tabobj/tbbtbtx/btree/mpool.cpp
-2cacf9c68d34fc04c8aa13918e661753d3400c0b 2023030522:45:50-UTC ./usr/bin/linux/flex
-c077f204564e684807a04714840b0eb00bd9b324 2023030522:45:50-UTC ./usr/bin/linux/lemon
 fc2594d74e584a1ee04680fae388c7e3033addc7 2023030116:17:36-UTC ./tabobj/tbbtbtx/btree/bt_print.cpp
 360c3097c6c1a6a0fa5a8d1a1bdc39bc9afc9b04 2023022819:58:06-UTC ./tabobj/tbbtbtx/utility/crc32.cpp
 0421ccd8654baceee68ad4c57b9bb402ddabfe03 2023020816:01:39-UTC ./ccclib/src/windows/filecreat.cpp
@@ -375,7 +367,6 @@ f90417fa11d5ce65a2f7d6783cd3ea04e792ab10 2022082510:04:35-UTC ./ccclib/src/syser
 f8a6f5bb03161e3bcaca0fff91bc7661be58646a 2022081808:04:48-UTC ./setup/setup-unix/prg2ppo/rsplink
 ed238f0393821bb837502c9e48e09b78738d3efa 2022081808:04:48-UTC ./setup/setup-unix/removecr/rsplink
 3a35d646a0eceed83f4c248ef00af65eea12bb15 2022081808:04:44-UTC ./setup/setup-unix/build/rsplink
-784e1d42754a86303fe91a7d0264ae7855dbd7e5 2022081808:00:20-UTC ./make_base
 3b320fe5c6b2505f8b416546a7d80615c7a1f4f5 2022081807:47:57-UTC ./usr/include/tid2ptr.h
 dcea9503714226acdf99b394635362a02ef85c86 2022081717:48:00-UTC ./tools/socket/ssl/unix/set_callback.cpp
 4b473c07131d803c48726ff9b886a9511c8e54c1 2022081717:46:33-UTC ./ccclib/src/unix/thread.cpp

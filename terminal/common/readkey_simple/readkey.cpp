@@ -28,12 +28,13 @@
 
 #include <inkey.ch>
 #include <inkeymap.h>
+#include <utf8conv.h>
 
-int readkey__called_from_learnkey=0;
+#define MSGOUT
+#include <msgout.h>
 
 
 #define WAIT_MILLISEC 100
-#define ISESCAPE(k)  ((k)==0x1b || (k)==0xc5 || (k)==0xc3)
 
 
 //---------------------------------------------------------------------------
@@ -42,8 +43,6 @@ static termios t0;
 static void restore_attr()
 {
     tcsetattr(0,TCSANOW,&t0);
-    //0==system("aplay /home/vermes/bin/signal.wav &");
-    //fprintf(stderr,"restore_attr\n");
 }
 
 static void set_attr()
@@ -88,81 +87,112 @@ int __readkey()
         if( 0==read(0,&c,1) )
         {
             //readable but no input
-            //e.g. process in background 
+            //e.g. process in background
             exit(0);
         }
         key=0xff&(int)c;
     }
-    
+
     //printf("<%d>",key);fflush(0);
-    return key; 
+    return key;
 }
- 
+
 
 //---------------------------------------------------------------------------
 int readkey()  //API
 {
-    char sequence[1024];
-    int seqlen=0;
-    int escape=0;    
-    sequence[seqlen]=0;
-    
-    while(1)
-    {
-        int key=__readkey();
-        
-        if( key==0 )
-        {
-            if( readkey__called_from_learnkey!=0 && escape!=0 )
-            {
-                printf("%s",sequence); //tanuló módban printel
-            }
-            return escape; //szóló escape vagy 0
-        }
-        else if(ISESCAPE(key))
-        {   
-            escape=key;
-            seqlen=0;
-            sprintf(sequence+seqlen,"%02x",(unsigned)key);
-            seqlen+=2;
-            sequence[seqlen]=0;
-            continue; 
-        }
-        else if( seqlen>0 )
-        {
-            sprintf(sequence+seqlen,"%02x",(unsigned)key);
-            seqlen+=2;
-            sequence[seqlen]=0;
-        
-            if( readkey__called_from_learnkey!=0 )
-            {
-                continue; //tanuló módban nem keres
-            }
-            
-            escape=0;
+    int code=0;
 
-            int code=inkeymap_find_sequence(sequence,seqlen); //inkey code? 
-            
+    int key=0;
+    unsigned int esclen=0;
+    unsigned int utflen=0;
+    char sequence[32];
+    sequence[0]=0;
+
+    while( (key=__readkey())!=0  )
+    {
+        if( utflen>0 ) // UTF-8 sequence
+        {
+            code=0;
+
+            sequence[utflen++]=key;
+            sequence[utflen]=0;
+            if( utflen==utf8_to_ucs(sequence,(unsigned*)&code) ) // unicode?
+            {
+                if( code )
+                {
+                    break; // ervenyes UTF-8 karakter
+                }
+                else
+                {
+                    continue; // folytatodhat
+                }
+            }
+            else
+            {
+                // clear input
+                code=0;
+                while(__readkey()!=0);
+                break;
+            }
+        }
+
+        else if( esclen>0 ) // escape sequence
+        {
+            code=0;
+
+            sprintf(sequence+esclen,"%02x",(unsigned)key);
+            esclen+=2;
+            sequence[esclen]=0;
+
+            code=inkeymap_find_sequence(sequence,esclen); //inkey code?
+
             if( code==MAYBE_A_SEQUENCE  )
             {
-                continue;
+                continue; // folytatodhat
             }
             else if( code==NOT_A_SEQUENCE )
             {
-                //clear input
+                // clear input
+                code=0;
                 while(__readkey()!=0);
-                return 0; 
+                break;
             }
-            else //found a sequence
+            else // found a sequence
             {
-                return code;
+                break;
             }
         }
+
+        else if( key>0x7f )
+        {
+            // UTF-8 sequence
+
+            code=key;
+            utflen=0;
+            sequence[utflen++]=key;
+            sequence[utflen]=0;
+        }
+
+        else if( key==0x1b  )
+        {
+            // escape sequence
+
+            code=key;
+            esclen=0;
+            sprintf(sequence+esclen,"%02x",(unsigned)key);
+            esclen+=2;
+            sequence[esclen]=0;
+        }
+
         else
         {
-            return key==127 ? K_BS:key;
+            code=(key==127)?K_BS:key;
+            break;
         }
     }
+
+    return code;
 }
 
 //---------------------------------------------------------------------------

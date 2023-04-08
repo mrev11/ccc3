@@ -14,6 +14,6 @@ else
     exit 1
 fi
 
-bapp_unix0.b @parfile.bld
+bapp_unix0.b @parfilex.bld
 
 

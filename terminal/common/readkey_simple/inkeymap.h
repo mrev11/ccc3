@@ -19,7 +19,6 @@
  */
 
 
-extern void inkeymap_init(void);
 extern int inkeymap_find_sequence(char *sequence, int seqlen);
 
 

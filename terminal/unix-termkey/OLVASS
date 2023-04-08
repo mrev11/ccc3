@@ -1,6 +1,0 @@
-Ugyanaz a program, mint unix-ncurses,
-kiveve, hogy a billentyu olvasas a libtermkey konyvtarral megy,
-igy az escape szekvenciak regisztralasa nelkul is hordozhato 
-az eltero terminal fajtak kozott.
-
-Ugyanugy ncterm.exe keletkezik, mint a korabbi valtozatban.

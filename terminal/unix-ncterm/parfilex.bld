@@ -1,13 +1,14 @@
--xxterm
+-mncterm
 -d.
 -d../common
--iansi_colors
+-d../common/readkey_termkey
+-d../ccclib
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
--bccc$(CCCVER).lib
+#-bccc$(CCCVER).lib
+-bncursesw
 -btermkey
-#-bncurses
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
 BUILD_CFG=compopt.ext

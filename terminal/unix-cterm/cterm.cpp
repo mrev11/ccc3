@@ -49,8 +49,6 @@ screenbuf *screen_buffer;
 
 static int wwidth=80;
 static int wheight=25;
-static int cursor_x=0;
-static int cursor_y=0;
 
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
@@ -61,15 +59,26 @@ static void paint(int top, int lef, int bot, int rig)
     int x,y;
     for( y=top; y<=bot; y++ )
     {
+        move(y,lef);
+
         for( x=lef; x<=rig; x++ )
         {
             screencell *cell=screen_buffer->cell(x,y);
             unsigned ch=cell->getchar();
             unsigned at=cell->getattr();
-            if(ch==0x2018) ch=0x60; //`
-            if(ch==0x2019) ch=0x27; //'
-            
-            move(y,x);
+
+            if( ch<32 )
+            {
+                ch='.';
+            }
+            else if(ch==0x2018)
+            { 
+                ch=0x60; //`
+            }
+            else if(ch==0x2019) 
+            {
+                ch=0x27; //'
+            }
 
             if( attr!=at )
             {
@@ -82,7 +91,6 @@ static void paint(int top, int lef, int bot, int rig)
         }
     }
 
-    move(cursor_y,cursor_x);
     refresh();
 }
 
@@ -105,9 +113,7 @@ void setcaption(char *p)
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
-    cursor_x=x;
-    cursor_y=y;
-    move(cursor_y,cursor_x);
+    move(y,x);
     refresh();
 }
 
@@ -136,27 +142,27 @@ void bye(void)
 }
 
 //----------------------------------------------------------------------------
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     xsigset(SIGINT,SIG_IGN);
     xsigset(SIGHUP,SIG_IGN);
     xsigset(SIGPIPE,SIG_IGN);
     xsigset(SIGCHLD,SIG_IGN);
 
-    char host[256]; strcpy(host,"127.0.0.1"); 
+    char host[256]; strcpy(host,"127.0.0.1");
     int port=55000;
 
     if( argc>=2 )
     {
-        strcpy(host,argv[1]); 
+        strcpy(host,argv[1]);
     }
     if( argc>=3 )
     {
-        sscanf(argv[2],"%d",&port); 
+        sscanf(argv[2],"%d",&port);
     }
 
     setlocale(LC_ALL,"");
-    
+
 
     atexit(bye);
 
@@ -170,7 +176,7 @@ int main(int argc, char *argv[])
 
     tcpio_ini(host,port);
     pthread_t t=0;
-    pthread_create(&t,0,tcpio_thread,0); 
+    pthread_create(&t,0,tcpio_thread,0);
 
     while(1)
     {

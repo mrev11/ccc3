@@ -1,0 +1,18 @@
+
+Hasonlo program, mint a unix-ncurses vagy unix-termkey, 
+kiveve, hogy teljesen ki van kerulve az ncurses konyvtar.
+Ncurses hivasok helyett a program kozvetlenul escape 
+szekvenciakat ir a terminalba, ezzel vezerli kepernyot.
+A program kisebb, egyszerubb lett, kevesebb fuggosege van, 
+megis nagyobb a tudasa: 128 szint tud hasznalni,
+es az fg es bg szin egymastol fuggetlenul allithato,
+lasd a demo konytarban levo programot.
+
+m  : kozvetlenul olvassa a keyboard bemenetet.
+mx : a libtermkey konyvtarral olvassa a keyboard bemenetet..
+
+A program neve  : cterm.exe
+Igy hasznalhato : CCCTERM_CONNECT=term://cterm.exe
+
+Mukodik: xterm-mel, Xfce4 terminallal, KDE terminallal.
+

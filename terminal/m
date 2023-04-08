@@ -4,4 +4,5 @@
 ( cd gtk          && m )
 ( cd sslforw      && m )
 ( cd unix         && m )
-( cd unix-termkey && m )
+( cd unix-ncterm  && m )
+( cd unix-cterm   && m )

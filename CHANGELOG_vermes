@@ -1,3 +1,19 @@
+2023-04-07 ncurses/cterm terminalok atrendezve:
+  Az xterm.exe nev zavart okozott, atnevezve cterm.exe-re.
+  A unix-termkey onallo projektkent megszunt, ket valtozat maradt.
+    1) nctrem.exe: ncurses konyvtarral vezerli a kepernyo kimenetet.
+    2) cterm.exe: kozvetlenul escape szekvenciakat ir a terminalba.
+  Mindket esetben ketfele lehetoseg van a keyboard bemenet olvasasara.
+    a) kozvetlen olvasas (read a 0-as file descriptorbol).
+    b) billentyu olvasas a libtermkey, libunibilium konyvtarakkal.
+  Osszesen 4 variacio. 
+  Az ncurses/termkey konyvtarakkal keszult programok hordozhatok
+  (volnanak), a valosagban nincsenek meg minden platformon.
+  Ezen konyvtarak nelkul mukodo programok nem nezik a terminfo
+  adatbazist, ezert elmeletileg nem hordozhatok, a gyakorlatban
+  azonban mukodnek az xterm-ben, konsole-ban, xfce4 terminalban,
+  es nem hoznak be tovabbi fuggosegeket.
+
 2023-04-04 xtrem.exe forditasa beveve az install scriptbe;
 
 2023-04-04 xtrem.exe (ncurses nelkuli) terminal;

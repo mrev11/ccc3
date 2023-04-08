@@ -1,11 +1,12 @@
--xncterm
+-mncterm
 -d.
 -d../common
+-d../common/readkey_simple
+-d../ccclib
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
--bccc$(CCCVER).lib
--btermkey
+#-bccc$(CCCVER).lib
 -bncursesw
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

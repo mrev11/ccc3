@@ -39,7 +39,6 @@
 
 #include <screenbuf.h>
 #include <inkey.ch>
-#include <inkeymap.h>
 #include <utf8conv.h>
 #include <xsigset.h>
 
@@ -227,8 +226,6 @@ int main(int argc, char *argv[])
 
     setlocale(LC_ALL,"");
     
-    inkeymap_init();
-
     initscr();
     atexit(bye);
     cbreak();

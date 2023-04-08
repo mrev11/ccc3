@@ -1,4 +1,5 @@
 
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <xcurses.h>
@@ -21,7 +22,8 @@
 //----------------------------------------------------------------------------------------
 void curs_set(int onoff)
 {
-    printf("%c[?25%c",0x1b,onoff?'h':'l');
+    char buffer[32]; int len;
+    len=sprintf(buffer,"%c[?25%c",0x1b,onoff?'h':'l'); addnstr(buffer,len);
 }
 
 //----------------------------------------------------------------------------------------
@@ -65,36 +67,67 @@ void attron(int attr)
     //msgout( "-> bg=%d fg=%d\n", bg, fg );
 
 
-    printf("%c[38;5;%dm",0x1b,fg);
-    printf("%c[48;5;%dm",0x1b,bg);
-    fflush(0);
+    char buffer[32]; int len;
+    len=sprintf(buffer,"%c[38;5;%dm",0x1b,fg); addnstr(buffer,len);
+    len=sprintf(buffer,"%c[48;5;%dm",0x1b,bg); addnstr(buffer,len);
 }
 
 //----------------------------------------------------------------------------------------
 void attroff(int attr)
 {
-    printf("%c[m",0x1b);
+    char buffer[32]; int len;
+    len=sprintf(buffer,"%c[m",0x1b); addnstr(buffer,len);
 }
 
 //----------------------------------------------------------------------------------------
 void move(int y,int x)
 {
-    printf("%c[%d;%dH",0x1b,y+1,x+1);
+    char buffer[32]; int len;
+    len=sprintf(buffer,"%c[%d;%dH",0x1b,y+1,x+1); addnstr(buffer,len);
 }
+
+//----------------------------------------------------------------------------------------
+static char buffer[1024*32];
+static unsigned int buflen=0;
+static int item=0; // csak debug
 
 //----------------------------------------------------------------------------------------
 void addnstr(const char* text , unsigned length)
 {
-    char buf[1024];
-    unsigned len=min(length,sizeof(buf));
-    memmove(buf,text,len);
-    buf[len]=0;
-    printf("%s",buf);
+    if( sizeof(buffer)-buflen<length+1 )
+    {
+        printf("%s",buffer);
+        buflen=0;
+        item=0;
+    }
+    if( sizeof(buffer)-buflen<length+1 )
+    {
+        printf("%s",text);
+    }
+    else
+    {
+        memmove(buffer+buflen,text,length);
+        buflen+=length;
+        buffer[buflen]=0;
+        item++;
+    }
+}
+
+
+//----------------------------------------------------------------------------------------
+void addch(char ch)
+{
+    addnstr(&ch, 1);
 }
 
 //----------------------------------------------------------------------------------------
 void refresh()
 {
+    //msgout("REFRESH len=%d item=%d\n",buflen, item);
+
+    printf("%s",buffer);
+    buflen=0;
+    item=0;
     fflush(0);
 }
 

@@ -27,8 +27,11 @@ function main()
 local ctx,mode
 local s,x:=a"Ot szep szuzlany orult irot nyuz",n
 
-local cafile:="cert/localhost-cert.pem"
-//local cafile:="demo-cert.pem" //ellenproba: ezzel nem megy
+local cafile
+
+    //cafile:=NIL                         // nem hitelesiti a szervert
+    cafile:="localhost-cert.pem"        // hitelesiti a szervert
+    //cafile:="demo-cert.pem"             // ellenproba: ezzel nem megy
 
     ctx:=sslctxNew() 
     

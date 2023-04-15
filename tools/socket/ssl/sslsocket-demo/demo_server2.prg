@@ -33,7 +33,7 @@ local ctx,ss,s,err,result
     printpid()
     printexe()
 
-    ctx:=sslctxNew("SSLv23_server") 
+    ctx:=sslctxNew() 
     ctx:use_certificate_file("localhost.pem")
     ctx:use_privatekey_file("localhost.pem")
     //ctx:check_private_key()

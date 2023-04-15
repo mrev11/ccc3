@@ -34,7 +34,7 @@ local ctx,ss,s,err,result
     printexe()
 
     if( sslflag!=NIL )
-        ctx:=sslctxNew("SSLv23_server") 
+        ctx:=sslctxNew() 
         ctx:use_certificate_file("localhost.pem")
         ctx:use_privatekey_file("localhost.pem")
         ss:=sslconNew(ctx)

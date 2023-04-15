@@ -83,7 +83,7 @@ void _clp_sslctx_new(int argno)
     const SSL_METHOD *method=0;
     if( ISNIL(1) )
     {
-        method=SSLv23_method(); //kerdeses mi legyen a default
+        method=TLS_method(); //kerdeses mi legyen a default
     }
     else
     {

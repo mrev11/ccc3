@@ -27,7 +27,7 @@ local x:=a"Ot szep szuzlany orult irot nyuz",n
     s:connect("localhost",40000)
 
     if( sslflag!=NIL ) 
-        ctx:=sslctxNew() 
+        ctx:=sslctxNew("TLS_client") 
         s:=sslconConnect(ctx,s) //socket -> sslcon
     end
     

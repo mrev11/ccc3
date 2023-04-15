@@ -52,8 +52,7 @@ local ctx
         ? "ssl_context_capath:",capath
     end
 
-    //ctx:=sslctxNew("TLSv1_server") 
-    ctx:=sslctxNew("SSLv23_server")
+    ctx:=sslctxNew()
 
     ctx:use_certificate_file(keyfile)
     ctx:use_privatekey_file(keyfile)

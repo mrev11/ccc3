@@ -26,7 +26,7 @@ local ctx,ss,s,err
     printpid()
     printexe()
 
-    ctx:=sslctxNew("SSLv23_server") 
+    ctx:=sslctxNew("TLS_server") 
     ctx:use_certificate_file("localhost.pem")
     ctx:use_privatekey_file("localhost.pem")
     //ctx:check_private_key()

@@ -1,3 +1,9 @@
+2023-04-15 az unsecure-nak minositett (SHA1) kulcsok lecserelve;
+  SSL_METHOD: TLS_method, TLS_server_method, TLS_client_method;
+  az elobbieken kivul minden mas deprecated vagy removed;
+  az sslctxNew() defaultja TLS_method (a korabbi SSLv23 helyett); 
+  a demokbol eltavolitasra kerultek az elavult method-ok;
+
 2023-04-07 ncurses/cterm terminalok atrendezve:
   Az xterm.exe nev zavart okozott, atnevezve cterm.exe-re.
   A unix-termkey onallo projektkent megszunt, ket valtozat maradt.

@@ -28,8 +28,8 @@ function main(sslflag)
 local ctx,mode
 local ss,s,err,result
 
-//local cafile,capath:="cert"
-local cafile:="cert/localhost-cert.pem",capath
+local cafile,capath:="cert"
+//local cafile:="cert/localhost-cert.pem",capath
 
 // A cafile/capath-ban a kliens hitelesiteshez
 // hasznalhato certificate-ek vannak megadva.
@@ -47,7 +47,7 @@ local cafile:="cert/localhost-cert.pem",capath
 // 2. Kliens hitelesites.
 // Elesben ehhez kulon kulcsokat ajanlatos hasznalni.
 
-    ctx:=sslctxNew("SSLv23_server") 
+    ctx:=sslctxNew() 
     ctx:use_certificate_file("localhost.pem")
     ctx:use_privatekey_file("localhost.pem")
 

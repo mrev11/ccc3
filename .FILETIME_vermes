@@ -1,5 +1,14 @@
-3e43c452db3fadf210fbdbd839f73baac90a97b7 2023041513:20:05-UTC ./CHANGELOG_vermes
-5aabd59cacdadf4650538d7749025370e35fe28f 2023041513:12:23-UTC ./log-install
+40a764ac9fe3ff11a0915f3738bc2cd1d188d297 2023041911:45:50-UTC ./jt/jterminal/jterminal.jar
+4428b97440c8e5c508bb8d0b6a80bbb2404d418e 2023041911:45:50-UTC ./log-install
+6551f6025aef89eeaffc1594454162d03a641043 2023041911:45:38-UTC ./usr/bin/linux/webapp
+98745121ceb8edbe95e402ec866fb8957f40ef02 2023041911:43:57-UTC ./usr/bin/linux/terminal-gtk2
+9a7ba8c1a975fe32c2011d45b6220556c40005e9 2023041911:42:24-UTC ./CHANGELOG_vermes
+6ff93b31dde9aefa3f2c9cc41a0e0603edcbfe5f 2023041911:35:44-UTC ./terminal/gtk2/parfile.bld
+e72b94a76f60d82f709557274ab00a8a637579ea 2023041911:20:33-UTC ./terminal/m
+0f06a0bd725c078aea7bad66f45e44429aad252f 2023041911:15:34-UTC ./make_base.msys2
+881e1390ca64f474fc1d008febc1afafff4b99f4 2023041911:14:57-UTC ./make_base.bat
+417987e6139ddafecf2b8116473ee46fb2ab46ea 2023041911:10:08-UTC ./envccc
+e647b0c24224c5b3a5abaa1c3a6752b46a1512b2 2023041911:08:34-UTC ./make_base
 b9577c7d78a9df19ffaada9cb36a01b71db20aa4 2023041513:01:40-UTC ./tools/xmlrpc/demo-rpc/demo-server.prg
 85cacf454f16b1f5d02bc230ee64549a6381088f 2023041513:01:17-UTC ./tools/webapp/program/webapp/sslcontext.prg
 4ec5d73d219503a8017d73506bf6c65a281ceb36 2023041410:42:25-UTC ./tools/socket/ssl/sslauth-demo/demo_client1.prg
@@ -12,17 +21,6 @@ a27b04079b48c840d92856d3a54c3b73e483bd56 2023041409:22:21-UTC ./tools/socket/ssl
 bdb611816367f18ed7b4d8930d684f507e6407b9 2023041409:21:08-UTC ./tools/socket/ssl/sslsocket-demo/demo_server3.prg
 02007d8ea74c3450c7711be8e399cfda8b9a8479 2023041409:16:49-UTC ./tools/socket/ssl/sslsocket-demo/demo_server1.prg
 fe3b069cd88f7f80d72cecc6edb71f8203d1ab35 2023041409:16:01-UTC ./tools/socket/ssl/sslctx_funif.cpp
-bb90ac7276f39b6f031f4a44b9f5123815bd94ad 2023041215:52:43-UTC ./jt/jterminal/jterminal.jar
-8e35be98654c4b7cb243d33be1d9a562d1b0b53e 2023040812:35:43-UTC ./usr/bin/linux/gitfollow
-cc74cff1ade2cc1af38446def67b7e3274e5f231 2023040812:35:43-UTC ./usr/bin/linux/gitnav
-bcd058b326a82aba64ea010e276bd30d098e3f13 2023040812:35:43-UTC ./usr/bin/linux/gitref
-cae10cbc76f348d9d0fa0f621933d9d89c355256 2023040812:35:43-UTC ./usr/bin/linux/gitstat
-1d75e2e38cdcfe15c4006cceae7fee5b9fd23f1a 2023040812:35:43-UTC ./usr/bin/linux/gitview
-c747837b4000515040b7e22b1102ef2a80933d7e 2023040812:35:40-UTC ./usr/bin/linux/filetime-restore
-82b9b80418925b34680325b018e0f41f0092935d 2023040812:35:40-UTC ./usr/bin/linux/filetime-save
-0081a067b4683a72c6f55785937daab4df45429e 2023040812:35:40-UTC ./usr/bin/linux/firstpar
-a17523e67ddceaef1d16c75d8fbecab3d1c1088a 2023040812:28:33-UTC ./terminal/m
-4ca7b7c51fd332d9d05062922c7a18856e377685 2023040812:27:59-UTC ./make_base
 cff0c82cfa3a78298febe7bcfe071e0a31b54b4a 2023040721:10:40-UTC ./terminal/unix-cterm/OLVASS
 3175d0cebc9faee2485b94152b01aa8e5a95c236 2023040714:40:17-UTC ./usr/bin/linux/cterm
 4a73beaa7e0f74d6b5b5fb9f55c6be7d0c68d437 2023040714:35:13-UTC ./terminal/common/readkey_simple/test/m
@@ -52,7 +50,6 @@ c06b473fe6ae1c0a8f7fc3f19e34a862931ba309 2023040522:57:36-UTC ./terminal/unix-xt
 c077f204564e684807a04714840b0eb00bd9b324 2023040414:00:57-UTC ./usr/bin/linux/lemon
 2cacf9c68d34fc04c8aa13918e661753d3400c0b 2023040414:00:56-UTC ./usr/bin/linux/flex
 1570253a94ce2529036e8c9f8f807ba592cc261e 2023040413:30:19-UTC ./usr/bin/linux/terminal-gtk3
-4b2f39bcdaebae67b87ba1aa8d4c55f5fa6d7716 2023040413:30:18-UTC ./usr/bin/linux/terminal-gtk
 16e281635ea8f6a7ba940d320baa3bf0d35b76bb 2023040413:24:25-UTC ./terminal/unix-xterm/ansi_colors/colors.prg
 51cd757cdc023a995ab4f9a1630f8479945b2e35 2023040323:07:20-UTC ./terminal/unix-xterm/ansi_colors/ansi_colors.h
 a628c40d07a5f2ea8f10a525c7c3fa0a712f62b3 2023040322:58:56-UTC ./terminal/unix-xterm/ansi_colors/colorext_palette.cpp
@@ -89,7 +86,6 @@ d1058fd706017377b288698dcff1d18c14ce35da 2023031608:22:14-UTC ./usr/bin/linux/lp
 dd1947e7623a2c35b236e2e5de9f76facb4e9c98 2023031608:22:13-UTC ./usr/bin/linux/zg
 467be3dcd62caffdd1a5e5e92b759dfbcd04a00f 2023031608:22:13-UTC ./usr/bin/linux/zgrep
 054da7a2485062d06d3de92591894a184341638a 2023031608:22:10-UTC ./usr/bin/linux/msk2html
-e59b6e9410a29cdbe19d492fa2bd4dba9ee553cc 2023031608:22:09-UTC ./usr/bin/linux/webapp
 bfea621f20ea881f772dd83455ba739615e6be60 2023031608:22:05-UTC ./usr/bin/linux/tdccmp
 37f39b30a9704cb80bd8ed97d8ad3a457edb6467 2023031608:22:05-UTC ./usr/bin/linux/tran2cpp
 9104101d695a24d62bae60a89d89b49a24210fa5 2023031608:22:04-UTC ./usr/bin/linux/jeed
@@ -585,8 +581,6 @@ b96a5eed6222cbf100940dea7feced24fc9aedf6 2021123010:44:20-UTC ./make_extn.msys2
 b6233ebdcaa29eccc5c7a1d3750134ee97ee2e82 2021123000:03:30-UTC ./setup/setup-windows/build/build.cpp
 304cb979e4bae1f661d546b71ff91c9b10748aac 2021122923:49:48-UTC ./setup/setup-unix/build/build.cpp
 6afbe973c291ad5b910f0af73198ef90a1d2b3d2 2021122923:47:04-UTC ./setup/setup-unix/build/s_buildp_ppo.savex
-c4f731ce45845c41869f13217135d57cb2b2c4c7 2021122923:46:23-UTC ./make_base.msys2
-efead03c13c8b6dae4ea37df885c22fb017749fe 2021122923:45:25-UTC ./make_base.bat
 72bd080d57db636af13f94ee685e9c5f1f1fc350 2021122923:01:30-UTC ./usr/build/windows/tds2obj.bat
 bbf064e8795c0cbd5b747772e4788877351653fd 2021122923:01:17-UTC ./usr/build/windows/prg2obj.bat
 a3344775ec9a8e0eb50ce2ab78e4c9b120a29306 2021122921:56:40-UTC ./usr/build/msys2/tds2obj.msys2
@@ -644,7 +638,6 @@ f540983bc9ad0e77b59ddb11e9f43177d69b6750 2021122310:04:18-UTC ./tools/sql2/test/
 67f7b9559c52be74523766c07e3d7a2fc8159a46 2021122309:10:00-UTC ./terminal/gtk/m.bat
 a15025a48580d138acfc1950466f54f621592bf7 2021122222:32:40-UTC ./gtk/m.msys2
 9e3f0eafbf33bd138e67294302458cb538c1a58f 2021122222:01:18-UTC ./gtk/m
-3e04ed52868865b159b3a231a144a65b27858747 2021122221:44:41-UTC ./envccc
 dda188b2a7fa5719b9203acc6f168e209c459314 2021122221:09:57-UTC ./tools/sql2/m
 9b94ab452086a1fe19f845908ded12fd7867578a 2021122221:03:22-UTC ./tools/sql2/test/m
 3dd508a9d95efb383572129f8c5f17794fd258e3 2021122221:01:37-UTC ./tools/sql2/util/m
@@ -1486,7 +1479,6 @@ d202baa472fa45a102f6737e80a8c49b9a7c75c1 2016110522:48:38-UTC ./usr/options/mng/
 0b03cd729f70cd1b5dc1c60d1e045fb6957b05df 2016110506:39:01-UTC ./terminal/windows/keycode_win.cpp
 bddc25dbeb918dfde7be2d56685d615bed63a293 2016110418:30:51-UTC ./terminal/windows/keydown.cpp
 028551e9d49fb1a88900b4e63a7fc3a4c3af3408 2016110418:30:18-UTC ./terminal/unix/keycode_x.cpp
-74cbf46c26515d54ea20367117e2f87d19b56595 2016110317:32:00-UTC ./terminal/gtk/parfile.bld
 4a47eefe9d97bc880901eaa28991a775500b1ef1 2016110306:56:53-UTC ./usr/build/linux/lib2exe.bat
 adcaf08c8a80823dfda0768798491f53896968d5 2016110306:56:09-UTC ./usr/build/linux/obj2exe.bat
 cc4f18f1ba7dd1d1e4dc53da72ece25557da0e3d 2016102919:33:14-UTC ./gtk/code_byhand/gtk_text_buffer_apix.cpp

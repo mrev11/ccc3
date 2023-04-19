@@ -1,4 +1,4 @@
--xterminal-gtk
+-xterminal-gtk2
 -d.
 -d../common
 -d$(CCCDIR)/ccclib/src/uic/screenbuf

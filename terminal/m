@@ -1,8 +1,8 @@
 #!/bin/bash
 
+( cd gtk2         && m )
 ( cd gtk3         && m )
-( cd gtk          && m )
 ( cd sslforw      && m )
 ( cd unix         && m )
-( cd unix-ncterm  && m )
 ( cd unix-cterm   && m )
+( cd unix-ncterm  && m )

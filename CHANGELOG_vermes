@@ -1,3 +1,7 @@
+2023-04-19 atnevezesek:
+  terminal/gtk -> terminal/gtk2;
+  terminal/terminal-qt5 -> terminal/qt5;
+
 2023-04-15 az unsecure-nak minositett (SHA1) kulcsok lecserelve;
   SSL_METHOD: TLS_method, TLS_server_method, TLS_client_method;
   az elobbieken kivul minden mas deprecated vagy removed;

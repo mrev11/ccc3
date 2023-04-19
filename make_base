@@ -72,14 +72,14 @@ fi
 ( cd terminal/sslforw       && m )
 
 if test -f /usr/include/gtk-2.0/gtk/gtk.h; then
-    ( cd terminal/gtk && m )
+    ( cd terminal/gtk2 && m )
 fi
 
 if test -f /usr/include/gtk-3.0/gtk/gtk.h; then
     ( cd terminal/gtk3 && m )
 fi
 
-#( cd terminal/terminal-qt5  && m )
+#( cd terminal/qt5  && m )
 
 #-------------------
 # msk2say

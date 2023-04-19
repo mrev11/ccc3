@@ -41,7 +41,7 @@ pushd terminal\windows & call m.bat & popd
 pushd terminal\sslforw & call m.bat & popd
 
 if exist %CMPDIR%\include\gtk-2.0\gtk\gtk.h (
-    pushd terminal\gtk & call m.bat & popd
+    pushd terminal\gtk2 & call m.bat & popd
 )
 if exist %CMPDIR%\include\gtk-3.0\gtk\gtk.h (
     pushd terminal\gtk3 & call m.bat & popd

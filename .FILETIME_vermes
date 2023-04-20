@@ -1,13 +1,14 @@
+30f3519deb838b4b87d8c7544a675377e53d2c7f 2023042012:02:15-UTC ./jt/jterminal/jterminal.jar
+cb1c47ba99315d86a7be7b56e5be4bd28c65831e 2023042012:02:15-UTC ./log-install
+2606697fbe5cb44465c7550805afe6bbc60cdb47 2023042012:01:16-UTC ./CHANGELOG_vermes
+aca451181d8c367e3f947729b3d88042310adbb3 2023042012:01:04-UTC ./usr/bin/linux/cterm
+5c0968c3d821c9e45c72eb99dc1a3de9d59ab779 2023042011:59:35-UTC ./ccclib/src/power.cpp
 6663e2c334b987f53769d74d6ba3c81fbc8ec454 2023042007:52:28-UTC ./terminal/common/ansi_colors/ansi_colors.h
 52911771caad2a6599110a46495b190c3570556e 2023042007:52:28-UTC ./terminal/common/ansi_colors/log-color
 061883d27e146d410f18df7689af48949d7fbeab 2023042007:52:15-UTC ./terminal/common/ansi_colors/colorext_palette.cpp
-47aa774d917376dfef6f906148fd9b63536534bb 2023042007:43:28-UTC ./usr/bin/linux/cterm
 eebabc810f6e6c9bb19db5d14185156f748f1e91 2023041919:58:36-UTC ./terminal/windows-cterm/OLVASS
 41ce4b2b354dbcb29bc9f5b0c23a871606e39bd4 2023041919:46:03-UTC ./terminal/windows-cterm/s.bat
 9c43e8c676f8a36b69379287b90647c1ca6dbb89 2023041919:35:47-UTC ./terminal/windows-cterm/parfile.bld
-db6ad626976a00ae6a1ba10f74ef41e0a64f886d 2023041913:15:12-UTC ./CHANGELOG_vermes
-894f4ecaa8e115e9d69285144ce3cdb086cf0edd 2023041913:08:20-UTC ./jt/jterminal/jterminal.jar
-2612d71d1c5834beaff915357ef54b6d31f837f5 2023041913:08:20-UTC ./log-install
 6551f6025aef89eeaffc1594454162d03a641043 2023041911:45:38-UTC ./usr/bin/linux/webapp
 98745121ceb8edbe95e402ec866fb8957f40ef02 2023041911:43:57-UTC ./usr/bin/linux/terminal-gtk2
 0f06a0bd725c078aea7bad66f45e44429aad252f 2023041911:15:34-UTC ./make_base.msys2
@@ -72,7 +73,6 @@ c06b473fe6ae1c0a8f7fc3f19e34a862931ba309 2023040522:57:36-UTC ./terminal/unix-xt
 c077f204564e684807a04714840b0eb00bd9b324 2023040414:00:57-UTC ./usr/bin/linux/lemon
 2cacf9c68d34fc04c8aa13918e661753d3400c0b 2023040414:00:56-UTC ./usr/bin/linux/flex
 1570253a94ce2529036e8c9f8f807ba592cc261e 2023040413:30:19-UTC ./usr/bin/linux/terminal-gtk3
-59563850643e3e81638df5c6e7623d465b4cd9cd 2023040313:44:29-UTC ./ccclib/src/power.cpp
 b4e11c50d556308172b685e9f9b08f80e7ba3c33 2023040310:30:56-UTC ./terminal/unix-xterm/screensize.cpp
 0515ea7c1a3375778c49d2c88b8abbfbfee266c6 2023040308:42:56-UTC ./tools/z/z
 fd08ca18edc739bd8f431b200e471a091fdd8d60 2023032610:07:41-UTC ./usr/bin/linux/list

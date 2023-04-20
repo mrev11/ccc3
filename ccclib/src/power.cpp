@@ -23,7 +23,7 @@
 #include <cccapi.h>
 
 //------------------------------------------------------------------------
-void power()
+void power() // erre fordul az a**x kifejezes
 {
 // stack: a,x --- a^x
 
@@ -46,18 +46,38 @@ void power()
 }
 
 //------------------------------------------------------------------------
+void _clp_power(int argno)  // CCC-bol hivhato: power(a,x)
+{
+    CCC_PROLOG("power",2);
+    double a=_parnd(1);
+    double x=_parnd(2);
+    if( a<0 || a==0&&x<=0 )
+    {
+        error_arg("power",base,2);
+    }
+    _retnd(pow(a,x));
+    CCC_EPILOG();
+}
+
+//------------------------------------------------------------------------
 void _clp_exp(int argno)
 {
     CCC_PROLOG("exp",1);
-    base->data.number=exp(_parnd(1));
+    double x=_parnd(1);
+    _retnd(exp(x));
     CCC_EPILOG();
 }
 
 //------------------------------------------------------------------------
 void _clp_log(int argno)
 {
-    CCC_PROLOG("exp",1);
-    base->data.number=log(_parnd(1));
+    CCC_PROLOG("log",1);
+    double x=_parnd(1);
+    if( x<=0 )
+    {
+        error_arg("log",base,1);
+    }
+    _retnd(log(x));
     CCC_EPILOG();
 }
 
@@ -65,7 +85,12 @@ void _clp_log(int argno)
 void _clp_sqrt(int argno)
 {
     CCC_PROLOG("sqrt",1);
-    base->data.number=sqrt(_parnd(1));
+    double x=_parnd(1);
+    if( x<0 )
+    {
+        error_arg("sqrt",base,1);
+    }
+    _retnd(sqrt(x));
     CCC_EPILOG();
 }
 

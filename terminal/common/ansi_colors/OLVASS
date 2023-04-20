@@ -1,0 +1,17 @@
+INNEN CSAK AZ ansi_colors.h FAJLRA VAN SZUKSEG.
+
+Ezekkel tanulmanyozni lehet az ANSI szineket:
+
+    draw_ansi_color.exe
+    draw_ansi_scale.exe
+
+Ezekkel tanulmanyozni lehet, hogyan kepzodnek le 
+a CCC szinek az ANSI szinekre:
+
+    draw_ccc_color.exe
+    draw_ccc_scale.exe
+    draw_demo.exe
+
+Ez generalja az ansi_colors.h fajlt:
+
+    gen_ansi_colors_h.exe

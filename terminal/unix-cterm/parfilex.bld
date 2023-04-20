@@ -1,8 +1,9 @@
 -xcterm
 -d.
--iansi_colors
 -d../common
+-d../common/xcurses
 -d../common/readkey_termkey
+-i../common/ansi_colors
 -d../ccclib
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi

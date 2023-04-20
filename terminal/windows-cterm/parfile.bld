@@ -2,16 +2,14 @@
 -d.
 -d../common
 -d../common/xcurses
--d../common/readkey_simple
+-d../common/readkey_windows
 -i../common/ansi_colors
--d../ccclib
+
+-bccc$(CCCVER).lib
+
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
-#-bccc$(CCCVER).lib
-#-btermkey
-#-bncurses
+
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
-BUILD_CFG=compopt.ext
-

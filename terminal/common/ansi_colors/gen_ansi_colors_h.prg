@@ -9,23 +9,30 @@ local r,g,b
 local ansiidx
 
 
+    set console off
+
     set alternate on
     set alternate to log-color
+
+    for x:=0 to 127
+        ansiidx:=colorext_to_ansi(x)
+        ? x, rgbw(x), colorext_palette(x)::rgb, ansiidx-1, ansi[ansiidx]::rgb
+
+        if( ansi[ansiidx][1]==ansi[ansiidx][2] .and.  ansi[ansiidx][1]==ansi[ansiidx][3] )
+            ?? " GREY"
+        end
+    next
+    ?
 
     for x:=1 to len(ansi)
         ? "ANSI", x-1, ansi[x]::rgb
     next
     ?
 
-    for x:=0 to 127
-        ansiidx:=colorext_to_ansi(x)
-        ? x, colorext_palette(x)::rgb, ansiidx-1, ansi[ansiidx]::rgb
-    next
 
-    set console off
     set alternate to ansi_colors.h
 
-    ? "int ansi_colors[128]={"
+    ? "static int ansi_colors[128]={"
     for x:=0 to 127
         if( x%8==0 )
             ?
@@ -47,6 +54,18 @@ local ansiidx
 
     ?
 
+
+
+******************************************************************************************
+static function rgbw(x) // ccc color idex -> rgbw
+local r,g,b,w
+
+    w:=if(numand(x,1)==0," ","+")
+    b:=x::numand(0b00000110)/2
+    g:=x::numand(0b00011000)/8
+    r:=x::numand(0b01100000)/32
+    
+    return r::str::alltrim+g::str::alltrim+b::str::alltrim+w
 
 
 ******************************************************************************************
@@ -72,16 +91,40 @@ local i,r,g,b
 
     {r,g,b}:=colorext_palette(x)
 
+    if( r==g .and. r==b )
+        // grey scale
+        for i:=1 to ansi::len
+            sum:=0.000001
+            sum+=(r-ansi[i][1])*(r-ansi[i][1])
+            sum+=(g-ansi[i][2])*(g-ansi[i][2])
+            sum+=(b-ansi[i][3])*(b-ansi[i][3])
+            sum::=sqrt
+            if( sumopt>sum)
+                sumopt:=sum
+                idxopt:=i
+            end
+        next
+        return idxopt
+    end
+
     for i:=1 to ansi::len
-        sum:=0.000001
-        sum+=(r-ansi[i][1])*(r-ansi[i][1])
-        sum+=(g-ansi[i][2])*(g-ansi[i][2])
-        sum+=(b-ansi[i][3])*(b-ansi[i][3])
-        sum::=sqrt
-        
-        if( sumopt>sum)
-            sumopt:=sum
-            idxopt:=i
+        if( r==0 .and. ansi[i][1]!=0 )
+            //kihagy
+        elseif( g==0 .and. ansi[i][2]!=0 )
+            //kihagy
+        elseif( b==0 .and. ansi[i][3]!=0 )
+            //kihagy
+        else
+            sum:=0.000001
+            sum+=(r-ansi[i][1])*(r-ansi[i][1])
+            sum+=(g-ansi[i][2])*(g-ansi[i][2])
+            sum+=(b-ansi[i][3])*(b-ansi[i][3])
+            sum::=sqrt
+            
+            if( sumopt>sum)
+                sumopt:=sum
+                idxopt:=i
+            end
         end
     next
     return idxopt

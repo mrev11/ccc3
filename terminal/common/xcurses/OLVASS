@@ -1,0 +1,5 @@
+
+// itt olyan fuggvenyek vannak
+// amik az ncurses konyvtarban is leteznek
+// de az itteni implementaciojuk egyszerubb 
+// kozvetlenul esc szekvenciakat irnak a terminalba

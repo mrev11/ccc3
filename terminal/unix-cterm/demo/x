@@ -1,3 +1,0 @@
-#!/bin/bash
-
-CCCTERM_CONNECT=term://cterm.exe  demo.exe

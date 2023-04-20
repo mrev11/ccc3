@@ -1,0 +1,16 @@
+cterm.exe Windowsra
+
+CCC terminal, ami Windows konzolban esc szekvenciak irasaval mukodik. 
+Az API-t a WriteConsoleOutput helyett ajanljak uj fejlesztesekre, de 
+hasznalhatatlanul lassu.
+
+https://learn.microsoft.com/en-us/windows/console/writeconsoleoutput
+
+Tip
+
+This API has a virtual terminal equivalent in the text formatting and 
+cursor positioning sequences. Move the cursor to the location to insert, 
+apply the formatting desired, and write out the text. Virtual terminal 
+sequences are recommended for all new and ongoing development.
+
+Minden esetre erdekes, hogy egyaltalan letezik ez az API.

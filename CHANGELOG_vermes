@@ -1,3 +1,7 @@
+2023-04-19 
+  cterm: CCC szinek precizebb lekepezese ANSI szinekre;
+  cterm: implementacio Windowson (hasznalhatatlanul lassu);
+
 2023-04-19 atnevezesek:
   terminal/gtk -> terminal/gtk2;
   terminal/terminal-qt5 -> terminal/qt5;

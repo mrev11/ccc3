@@ -21,7 +21,8 @@ local i,color
     bg::=split(",")
     for i:=1 to len(bg)
         color:=fg+"/"+bg[i]+br
-        @ r+i,c say color::padr(10) color (color)
+        @ r+2*i  ,c say color::padr(10) color (color)
+        @ r+2*i+1,c say ""   ::padr(10) color (color)
     next
 
 

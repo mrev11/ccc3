@@ -168,7 +168,7 @@ static int xsend(SOCKET s, void* source, int srclen) //adatküldés
 static void cmd()
 {
     static int cnt=0;
-    printf("\n%4d cmd: %4x %4d ", ++cnt, CMDCODE.get(), DATALEN.get() );
+    msgout("\n%4d cmd: %4x %4d ", ++cnt, CMDCODE.get(), DATALEN.get() );
     fflush(0);
 }
 
@@ -273,7 +273,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 PARAM(0).set(screen->sizex);
                 PARAM(1).set(screen->sizey);
                 xsend(sck,iobuffer,DATALEN.get());
-                //printf("TERMCMD_GETWSIZE\n");fflush(0);
+                //msgout("TERMCMD_GETWSIZE\n");fflush(0);
                 break;
 
             case TERMCMD_SETWSIZE:
@@ -281,7 +281,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 int x = PARAM(0).get();
                 int y = PARAM(1).get();
                 setwsize(x,y);
-                //printf("TERMCMD_SETWSIZE x=%d y=%d\n",x,y);fflush(0);
+                //msgout("TERMCMD_SETWSIZE x=%d y=%d\n",x,y);fflush(0);
                 break;
             }
 
@@ -290,7 +290,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 char *cap=(char*)&PARAM(0);
                 cap[DATALEN.get()]=0;
                 setcaption(cap);
-                //printf("TERMCMD_SETCAPTION\n");fflush(0);
+                //msgout("TERMCMD_SETCAPTION\n");fflush(0);
                 break;
             }
   
@@ -299,21 +299,21 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 int x = PARAM(0).get();
                 int y = PARAM(1).get();
                 setcursor(x,y);
-                //printf("TERMCMD_GOTXY x=%d y=%d\n",x,y);fflush(0);
+                //msgout("TERMCMD_GOTXY x=%d y=%d\n",x,y);fflush(0);
                 break;
             }
 
             case TERMCMD_SETCURSOROFF:
             {
                 setcursoroff();
-                //printf("TERMCMD_SETCURSOROFF\n");fflush(0);
+                //msgout("TERMCMD_SETCURSOROFF\n");fflush(0);
                 break;
             }
 
             case TERMCMD_SETCURSORON:
             {
                 setcursoron();
-                //printf("TERMCMD_SETCURSORON\n");fflush(0);
+                //msgout("TERMCMD_SETCURSORON\n");fflush(0);
                 break;
             }
 
@@ -328,7 +328,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 {
                     invalidate(t,l,b,r);
                 }
-                //printf("TERMCMD_PUTRECT %d %d %d %d\n",l,t,r,b);fflush(0);
+                //msgout("TERMCMD_PUTRECT %d %d %d %d\n",l,t,r,b);fflush(0);
                 break;
             }
 
@@ -385,7 +385,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 DATALEN.set(header_size+1*param_size);
                 PARAM(0).set(result);
                 xsend(sck,iobuffer,DATALEN.get());
-                //printf("TERMCMD_OPEN %d %d %s %s\n",fp,result,fname,locnam);fflush(0);
+                //msgout("TERMCMD_OPEN %d %d %s %s\n",fp,result,fname,locnam);fflush(0);
                 break;
             }
 
@@ -410,7 +410,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     }
                     qout[fp]=NULL;
                 }
-                //printf("TERMCMD_CLOSE %d\n",fp);fflush(0);
+                //msgout("TERMCMD_CLOSE %d\n",fp);fflush(0);
                 break;
             }
 
@@ -424,7 +424,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     int retcode=fwrite(data,1,len,qout[fp]);
                     fflush(qout[fp]);
                 }
-                //printf("\nTERMCMD_WRITE %d %d\n",fp,len);fflush(0);
+                //msgout("\nTERMCMD_WRITE %d %d\n",fp,len);fflush(0);
                 break;
             }
 
@@ -488,7 +488,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                     DATALEN.set(header_size);
                 }
                 xsend(sck,iobuffer,DATALEN.get());
-                //printf("TERMCMD_GETENV\n");fflush(0);
+                //msgout("TERMCMD_GETENV\n");fflush(0);
                 break;
             }
 
@@ -497,7 +497,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 char *env=(char*)&PARAM(0);
                 int len=strlen(env);
                 putenv(strdup(env));
-                //printf("TERMCMD_PUTENV\n");fflush(0);
+                //msgout("TERMCMD_PUTENV\n");fflush(0);
                 break;
             }
 
@@ -508,7 +508,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 DATALEN.set(header_size+1*param_size);
                 PARAM(0).set(result); // success==0
                 xsend(sck,iobuffer,DATALEN.get());
-                //printf("TERMCMD_CHDIR\n");fflush(0);
+                //msgout("TERMCMD_CHDIR\n");fflush(0);
                 break;
             }
 
@@ -526,7 +526,7 @@ THREAD_ENTRY void *tcpio_thread(void*arg)
                 }
                 xsend(sck,iobuffer,DATALEN.get());
                 free(dir);
-                //printf("TERMCMD_GETCWD\n");fflush(0);
+                //msgout("TERMCMD_GETCWD\n");fflush(0);
                 break;
             }
         }
@@ -605,12 +605,12 @@ static char *localname(int fp, char *fname, const char **lpr, const char **dev)
     const char *env_error        = getenv("CCCTERM_REDIR_ERROR");        
     const char *env_useuid       = getenv("CCCTERM_REDIR_USEUID");       
 
-    //printf("env_console[%s]\n",env_console);fflush(0);
-    //printf("env_printer[%s]\n",env_printer);fflush(0);
-    //printf("env_alternate[%s]\n",env_alternate);fflush(0);
-    //printf("env_extra[%s]\n",env_extra);fflush(0);
-    //printf("env_error[%s]\n",env_error);fflush(0);
-    //printf("env_useuid[%s]\n",env_useuid);fflush(0);
+    //msgout("env_console[%s]\n",env_console);fflush(0);
+    //msgout("env_printer[%s]\n",env_printer);fflush(0);
+    //msgout("env_alternate[%s]\n",env_alternate);fflush(0);
+    //msgout("env_extra[%s]\n",env_extra);fflush(0);
+    //msgout("env_error[%s]\n",env_error);fflush(0);
+    //msgout("env_useuid[%s]\n",env_useuid);fflush(0);
 
          if( fp==FP_CONSOLE   && env_console   && env_console[0]   == 'y' );
     else if( fp==FP_PRINTER   && env_printer   && env_printer[0]   == 'y' );
@@ -698,7 +698,7 @@ static char *localname(int fp, char *fname, const char **lpr, const char **dev)
         }
     }
 
-    msgout("\nREDIR %d: %s -> loc[%s] dev[%s] lpr[%s]",fp,fname,locnam,*dev,*lpr);fflush(0);
+    //msgout("\nREDIR %d: %s -> loc[%s] dev[%s] lpr[%s]",fp,fname,locnam,*dev,*lpr);fflush(0);
 
     return locnam; //ezen a neven kell megnyitni, vagy 0, ha nincs atiranyitas
 }    

@@ -41,6 +41,10 @@
 
 #define THREAD_ENTRY /*nothing*/
 
+static pthread_mutex_t mutex_inv=PTHREAD_MUTEX_INITIALIZER;
+static void invalidate_lock(){pthread_mutex_lock(&mutex_inv);}
+static void invalidate_unlock(){pthread_mutex_unlock(&mutex_inv);}
+
 extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
@@ -114,17 +118,30 @@ static void paint(int top, int lef, int bot, int rig)
 //---------------------------------------------------------------------------
 void invalidate(int top, int lef, int bot, int rig)
 {
+    invalidate_lock();
     paint(top,lef,bot,rig);
+    invalidate_unlock();
 }
 
 //----------------------------------------------------------------------------
 void setwsize(int x, int y)
 {
+    invalidate_lock();
+    printf("%c[8;%d;%dt",0x1b,y,x);
+    wwidth=x;
+    wheight=y;
+    if(screen_buffer)
+    {
+        delete screen_buffer;
+    }
+    screen_buffer=new screenbuf(wwidth,wheight);
+    invalidate_unlock();
 }
 
 //----------------------------------------------------------------------------
 void setcaption(char *p)
 {
+    printf("%c]2;%s%c\n",0x1b,p,0x07);
 }
 
 //----------------------------------------------------------------------------
@@ -167,6 +184,28 @@ int main(int argc, char *argv[])
     //printf("input codepage: %d\n", GetConsoleCP());
     //printf("output codepage: %d\n", GetConsoleOutputCP());
 
+
+    HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
+    if( hOut==INVALID_HANDLE_VALUE )
+    {
+        printf("GetStdHandle failed %d\n",GetLastError());
+        exit(1);
+    }
+
+    DWORD dwOriginalOutMode=0;
+    if( !GetConsoleMode(hOut,&dwOriginalOutMode) )
+    {
+        printf("GetConsoleMode failed %d\n",GetLastError());
+        exit(1);
+    }
+
+    DWORD dwRequestedOutModes=ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+    DWORD dwOutMode = dwOriginalOutMode|dwRequestedOutModes;
+    if( !SetConsoleMode(hOut,dwOutMode) )
+    {
+        printf("SetConsoleMode failed\n");
+        exit(1);
+    }
 
     char host[256]; strcpy(host,"127.0.0.1");
     int port=55000;

@@ -5,6 +5,7 @@ Az API-t a WriteConsoleOutput helyett ajanljak uj fejlesztesekre, de
 hasznalhatatlanul lassu.
 
 https://learn.microsoft.com/en-us/windows/console/writeconsoleoutput
+https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
 
 Tip
 

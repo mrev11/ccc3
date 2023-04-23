@@ -1,7 +1,8 @@
-6adea46341154c7098cec415f270deefa9a7b1ff 2023042112:00:01-UTC ./terminal/windows-cterm/cterm.cpp
-b20bacc9e65ff006ca18f856940d79886fcef3d7 2023042111:14:31-UTC ./log-install
-edf01422829a467528b3b3008b9fc1b7b90be221 2023042111:03:31-UTC ./usr/options/mng/gccver.opt
-32b554493856847581f48bc9d9c45aa87a38c5ab 2023042110:09:48-UTC ./CHANGELOG_vermes
+f2f2d51857f21bb01d23ed565f6269d810856c47 2023042316:28:56-UTC ./CHANGELOG_vermes
+47491509c100fd8cdfd70680848095d06dc00a00 2023042316:26:13-UTC ./terminal/windows-cterm/cterm.cpp
+17bf0c23adceb520cce65aad983473c16a66c285 2023042315:40:19-UTC ./usr/options/lin/gccver.opt
+be9de0665b59dd7095be83edacdadb570690cef2 2023042314:42:21-UTC ./log-install
+d337903275f4a628c4855a539295ad92a06d79a6 2023042312:40:28-UTC ./terminal/common/readkey_windows/readkey.cpp
 ce04cc8d7c265af049fe79671016a45d83daf98c 2023042110:02:25-UTC ./terminal/common/tcpio.cpp
 c39df4ce864b51889228beaa90067225a099ce1d 2023042108:46:53-UTC ./terminal/windows-cterm/OLVASS
 c3fa1ec7ba1c0a9b8bee62402ae4f6009c63ab73 2023042022:56:35-UTC ./terminal/unix-cterm/cterm.cpp
@@ -35,7 +36,6 @@ b8ee9ad003748718f0ad3faf05b7451365011335 2023041908:00:18-UTC ./terminal/common/
 9487cbfcc158d25fad2b29f0d38017f9230ad89d 2023041818:35:13-UTC ./terminal/common/ansi_colors/draw_demo.prg
 3b2219c1d3f4b167f0b4bf446756f368e910345a 2023041719:58:08-UTC ./terminal/windows-cterm/screensize.cpp
 c6534daa09c8981c2dacf0ef6a986695d2a66ca8 2023041716:56:01-UTC ./terminal/windows-cterm/m.bat
-812ede0ed0ff75e328c9a594f222530416bd3772 2023041716:53:22-UTC ./terminal/common/readkey_windows/readkey.cpp
 b9577c7d78a9df19ffaada9cb36a01b71db20aa4 2023041513:01:40-UTC ./tools/xmlrpc/demo-rpc/demo-server.prg
 85cacf454f16b1f5d02bc230ee64549a6381088f 2023041513:01:17-UTC ./tools/webapp/program/webapp/sslcontext.prg
 4ec5d73d219503a8017d73506bf6c65a281ceb36 2023041410:42:25-UTC ./tools/socket/ssl/sslauth-demo/demo_client1.prg

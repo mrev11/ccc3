@@ -20,6 +20,8 @@ int readkey()
         exit(1);
     }
 
+    FlushConsoleInputBuffer(hnd);
+
     int inkeycode=0;
     unsigned utflen=0;
     char utfseq[32];
@@ -138,6 +140,7 @@ int readkey()
             }
         }
     }
+    FlushConsoleInputBuffer(hnd);
     return inkeycode;
 }
 

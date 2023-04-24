@@ -53,7 +53,6 @@ extern int  colorext_extidx2legidx(int);
 extern void message(char const *msg, ...);
 
 screenbuf *screen_buffer;
-//screenbuf *shadow_buffer;
 
 static int wwidth=80;
 static int wheight=25;
@@ -66,18 +65,6 @@ static void paint(int top, int lef, int bot, int rig)
     int x,y;
     for( y=top; y<=bot; y++ )
     {
-        //for( x=lef; x<=rig; x++ )
-        //{
-        //    if( shadow_buffer->cell(x,y)!=screen_buffer->cell(x,y) )
-        //    {
-        //        break;
-        //    }
-        //}
-        //if( x>rig )
-        //{
-        //    continue;
-        //}
-
         move(y,lef);
 
         for( x=lef; x<=rig; x++ )
@@ -85,8 +72,6 @@ static void paint(int top, int lef, int bot, int rig)
             screencell *cell=screen_buffer->cell(x,y);
             unsigned ch=cell->getchar();
             unsigned at=cell->getattr();
-            //shadow_buffer->cell(x,y)->setchar(ch);
-            //shadow_buffer->cell(x,y)->setattr(at);
 
             if( ch<32 )
             {
@@ -223,7 +208,6 @@ int main(int argc, char *argv[])
 
     screensize(&wheight,&wwidth);
     screen_buffer=new screenbuf(wwidth,wheight);
-    //shadow_buffer=new screenbuf(wwidth,wheight);
 
     printf("%c[?1049h",0x1b);    // ca mode on
     printf("%c7",0x1b);          // save cursor pos

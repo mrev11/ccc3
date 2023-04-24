@@ -1,3 +1,11 @@
+2023-04-24
+  Meg egy terminal Windowsra: console.exe;
+  Ugyanaz a program, mint a cterm,  kiveve, hogy 
+  a Windowson hasznalhatatlanul lassu virtual terminal API helyett
+  a regebbi (mar nem ajanlott) WriteConsoleOutput-tal irja a kepernyot.
+  A paint() fuggveny implementaciojan kivul minden mas egyezik.
+  Az ncterm-hez hasonloan csak az alapszineket tudja megjeleniteni.
+
 2023-04-23 Windows cterm cursor shape beallitva block-ra; 
 
 2023-04-21 

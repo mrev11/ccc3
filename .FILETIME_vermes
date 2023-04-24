@@ -1,18 +1,15 @@
-f2f2d51857f21bb01d23ed565f6269d810856c47 2023042316:28:56-UTC ./CHANGELOG_vermes
-47491509c100fd8cdfd70680848095d06dc00a00 2023042316:26:13-UTC ./terminal/windows-cterm/cterm.cpp
-17bf0c23adceb520cce65aad983473c16a66c285 2023042315:40:19-UTC ./usr/options/lin/gccver.opt
-be9de0665b59dd7095be83edacdadb570690cef2 2023042314:42:21-UTC ./log-install
+888208ce7a4aba348a54cea751d5c46fab8e0f41 2023042414:42:24-UTC ./CHANGELOG_vermes
+bfbd0bffe1a0de630fc614ff3c80b2623dee8c9c 2023042414:24:11-UTC ./terminal/windows-console/parfile.bld
+c7227b7945fe60da991dea5480b4d518f980286d 2023042411:34:31-UTC ./terminal/windows-console/OLVASS
+1c473ef9e7b108832dfc25be9e86d18521a67bfc 2023042411:22:52-UTC ./terminal/windows-console/console.cpp
+9c40f9a8e522f3dee641dfa0419dd42a27764436 2023042411:14:40-UTC ./terminal/windows-console/cterm.cpp
 d337903275f4a628c4855a539295ad92a06d79a6 2023042312:40:28-UTC ./terminal/common/readkey_windows/readkey.cpp
 ce04cc8d7c265af049fe79671016a45d83daf98c 2023042110:02:25-UTC ./terminal/common/tcpio.cpp
-c39df4ce864b51889228beaa90067225a099ce1d 2023042108:46:53-UTC ./terminal/windows-cterm/OLVASS
 c3fa1ec7ba1c0a9b8bee62402ae4f6009c63ab73 2023042022:56:35-UTC ./terminal/unix-cterm/cterm.cpp
 41d1862a73ea6388134e755e918720b75e9a51ff 2023042014:50:36-UTC ./terminal/common/ansi_colors/m.bat
-e7c77e2db9e2773db3732a2f2ba7fd40084a89aa 2023042012:15:16-UTC ./tools/socket/ssl/sslauth-demo/cert/f30c59b8.0
 5c0968c3d821c9e45c72eb99dc1a3de9d59ab779 2023042011:59:35-UTC ./ccclib/src/power.cpp
 6663e2c334b987f53769d74d6ba3c81fbc8ec454 2023042007:52:28-UTC ./terminal/common/ansi_colors/ansi_colors.h
 061883d27e146d410f18df7689af48949d7fbeab 2023042007:52:15-UTC ./terminal/common/ansi_colors/colorext_palette.cpp
-41ce4b2b354dbcb29bc9f5b0c23a871606e39bd4 2023041919:46:03-UTC ./terminal/windows-cterm/s.bat
-9c43e8c676f8a36b69379287b90647c1ca6dbb89 2023041919:35:47-UTC ./terminal/windows-cterm/parfile.bld
 0f06a0bd725c078aea7bad66f45e44429aad252f 2023041911:15:34-UTC ./make_base.msys2
 881e1390ca64f474fc1d008febc1afafff4b99f4 2023041911:14:57-UTC ./make_base.bat
 417987e6139ddafecf2b8116473ee46fb2ab46ea 2023041911:10:08-UTC ./envccc
@@ -53,7 +50,6 @@ cff0c82cfa3a78298febe7bcfe071e0a31b54b4a 2023040721:10:40-UTC ./terminal/unix-ct
 77079099ffc359e86a4275fef33248c6a1ed3de8 2023040714:32:50-UTC ./terminal/common/readkey_simple/test/test.cpp
 c11052f17341813f21707f0b337fbc228aab4ee1 2023040714:30:34-UTC ./terminal/common/readkey_termkey/test/test.cpp
 44afd38fa697a0b65f8685d47509a9b97805f355 2023040714:29:05-UTC ./terminal/common/readkey_termkey/test/m
-f98f34325af079af7c3b737d1f18a4952763dd80 2023040714:27:21-UTC ./terminal/common/readkey_termkey/readkey.cpp
 f790a57352fb2d63f5cf8f36019bd4d6e055fac9 2023040714:15:40-UTC ./usr/bin/linux/term.b
 271a9355440f8b89167e222fd2c8623aa1671fd8 2023040714:10:13-UTC ./terminal/unix-cterm/s.savex
 e966293060f769516fa659bebaa7aa01ea65b40e 2023040708:57:17-UTC ./terminal/unix-ncurses/parfilex.bld
@@ -69,6 +65,7 @@ e5d1d6ce244e1627ea906d19693d268c03745199 2023040708:53:44-UTC ./terminal/unix-nc
 7b284bf6814fba1a8e53db2e41cf6f28537be92d 2023040612:26:42-UTC ./terminal/common/readkey_simple/inkeymap.cpp
 c06b473fe6ae1c0a8f7fc3f19e34a862931ba309 2023040522:57:36-UTC ./terminal/unix-xterm/mx
 b4e11c50d556308172b685e9f9b08f80e7ba3c33 2023040310:30:56-UTC ./terminal/unix-xterm/screensize.cpp
+f98f34325af079af7c3b737d1f18a4952763dd80 2023040310:29:18-UTC ./terminal/common/readkey_termkey/readkey.cpp
 0515ea7c1a3375778c49d2c88b8abbfbfee266c6 2023040308:42:56-UTC ./tools/z/z
 9521edb3ecb343d83a292e78b8d9f1cef1794bb5 2023032517:32:52-UTC ./ccclib/src/uic/termapi/termapi.cpp
 8bb3821663a06b2eef92a0da473e24606c4a8d6c 2023032011:40:05-UTC ./ccclib/src/uic/o_get.prg
@@ -82,11 +79,6 @@ cf6e4733b8daa7cc163ab0bde217767ca40a5d55 2023032010:53:32-UTC ./ccclib/src/uic/o
 6fe8ef575bae85019ced4e9563dff33a72102ea0 2023031608:14:42-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp
 2861a8a9059d7d14c00dd81aa1cde0b1931a7c88 2023031608:14:15-UTC ./tabobj/tbbtbtx/btree/btree.h
 b2446d71647c88960d51536860cd3ae1a2d19c24 2023031521:14:30-UTC ./tabobj/tbbtbtx/btree/bt_error.cpp
-dde953875acc4fcda8cb6a5954c08cd157f7fa26 2023031513:27:14-UTC ./tutor/rename/rnm.say
-ffcc749cdfde7939119a8f0541858bc25cbafe33 2023031513:26:41-UTC ./tools/ddict2/mskmerge.say
-cfb71f0ca9b96a8510c0a17b25dce5f7fc0d0737 2023031513:26:41-UTC ./tools/ddict2/mskowner.say
-a87310b8e3de60a71fa9d31b3ca5b94cbd12f0b4 2023031513:26:41-UTC ./tools/ddict2/msksor.say
-468fdb1b67a41d8449e8ae2e35320efd16bcc750 2023031513:26:40-UTC ./tools/dbfview/search.say
 f4b5280eef73806bde078b24d2308d6f41194b87 2023031412:37:40-UTC ./tabobj/tbbtbtx/memotest/write.prg
 1512b3e79865cb8e47ee6d5e7805a5fabf3b570b 2023031412:35:29-UTC ./tabobj/tbbtbtx/memotest/pack.prg
 a10bdd50740651137108ac8d6626ae266f7b2831 2023031412:32:31-UTC ./tabobj/tbbtbtx/memotest/.gitignore
@@ -151,7 +143,6 @@ a657586e56a952dbc2457cb708ed8ba27932d3f7 2023010511:22:34-UTC ./ccctools/build/b
 f39905e19a7205b43a0d84a7a24f29af04237564 2023010510:26:28-UTC ./tabobj/tbbtbtx/par-unix.bld
 a42ed497e3614d9ffb53e8eb0b1d1415edf17680 2023010510:16:21-UTC ./tabobj/tbbtbtx/par-nt.bld
 d7c1caed69ad063dd2719e204db93623a426c86a 2023010412:40:03-UTC ./ccctools/build/search_library.prg
-72c3f14360ecf8a2ad524801cf658458bfa85aac 2023010207:39:07-UTC ./tabobj/utility.src/ver3/kdirseek.say
 917e4b58d49d0585301c7798dcd1ca030cd602f2 2022123108:48:32-UTC ./tabobj/utility.src/ver2/kdirseek.msk
 3f6b439f2411101c9f1b383d49d26e33d48ab4fe 2022123108:44:54-UTC ./tabobj/utility.src/ver3/kdirseek.msk
 c706daf4f642438c2eecf09e1b63db6965ff09aa 2022123108:43:53-UTC ./tabobj/utility.src/kdirseek.prg
@@ -229,7 +220,6 @@ a1ed05a753d1275bbe6ec08553f3f5847efa78f6 2022103114:01:47-UTC ./tools/tdc2prgch/
 1c9fc4db072fa57670b99faa14445a5412a7f2b1 2022103113:26:49-UTC ./tools/tdc2prgch/tabobj/parfile.bld
 bb4c078be43635e963f57f76747fe5c743d1bbce 2022103112:36:00-UTC ./tools/tdc2prgch/tabobj/tdc/_cassa.ch
 72750bccca43934523981f9d9b797e75e3c24a75 2022103109:53:39-UTC ./tools/tdc2prgch/tabobj/tdc/_cassa.tdc
-992c675b6e405e7fecd798b9f1b59cc3bd44ff12 2022103013:17:57-UTC ./tools/mask/maskdemo.say
 531bd2ee6d324cdda5725a1cde213348b796b99c 2022102915:53:52-UTC ./tools/tdc2prgch/tabobj/.gitignore
 79e4f785f34f9481e218eef2fffc37ed90c9779d 2022102511:13:06-UTC ./jt/jterminal/m
 ea591d426736c752197aa4edddb0f68e7872ebe5 2022102113:44:31-UTC ./usr/build/windows/pge2out.bat
@@ -430,8 +420,6 @@ de7bb5f596a6533d4e78f4f29ec5d1ba87f4f5ac 2022012520:40:26-UTC ./ccclib/src/oref.
 0bb4d7072c05b66280540206849faf65ccda4610 2022012014:55:07-UTC ./ccctools/prg2ppo/prg2ppo.ver
 5b2d1c8299d86a801fd8f3e001bb15dcdf84361f 2022012011:10:48-UTC ./ccctools/prg2ppo/input.lex
 5547cb049829b6d8d912e63c177575ece1b89f3f 2022011410:21:07-UTC ./jt/sslforward/context.cpp
-48dd0e3b1e037fae9c2db17e1148a88954659f8c 2021123115:58:16-UTC ./ccctools/build/build.md.md
-61535940942bd220576394a131a0b2773b7aa5a0 2021123115:58:16-UTC ./usr/bin/linux/z
 bc099e694600133330120e5095fca667a3703acd 2021123015:21:00-UTC ./setup/setup-windows/prg2ppo/prg2ppo.cpp
 0a25c1110d52ae11a7e8ecd622a4703e19751fde 2021123015:20:35-UTC ./setup/setup-windows/prg2ppo/input.cpp
 f5ba42e0d188d51f55a87cc942e270f67bf2cf45 2021123015:20:35-UTC ./setup/setup-windows/prg2ppo/xtxlegal.cpp
@@ -549,13 +537,6 @@ c289a34612d3a86195f49a701573764d29cefca4 2021111914:45:13-UTC ./ccctools/prg2ppo
 f09139d8b8d2a42717f74676816a9a31fc369881 2021111420:36:13-UTC ./ccclib/src/argerror.prg
 c7a9acd41013d2b8fdf13bcb223d1a7c0ec7d540 2021091013:31:26-UTC ./tools/xstart/x
 ffa945e75bddbc023256682fc2e50bda69116f2d 2021091011:21:51-UTC ./tools/xstart/xstart.par
-2e4d12f072e0f9e1655817c67e8f97aca6397462 2021083015:50:33-UTC ./terminal/sslforw/ssl-test/pem/clncert/21f47c1c.0
-42fc4de9f341025c8a8b97f1686fa3d0b9464a80 2021083015:50:33-UTC ./tools/sql2/sql2.md.md
-8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d 2021083015:50:31-UTC ./Home.md
-ebf51a4a126b9d920152152c757669c03381338b 2021083015:50:31-UTC ./doc/ccc-belulrol.md.md
-df28d199707a1c5df49838063973ac44a9d30f1c 2021083015:50:31-UTC ./doc/install-linux.md.md
-107ca39e8c71216c4a69d56246df0951ad0e9bc7 2021083015:50:31-UTC ./doc/install-windows.md.md
-9dece3a1abad38e89031eaf33f379f3433f1b09b 2021083015:50:31-UTC ./gtk/cccgtk.md.md
 4093766b0ab66b527527e92d93101270dddb7bd2 2021082309:21:23-UTC ./tools/socket/socket-demo/udp/m.msys2
 e4edffddffbc3b86fa6497133a02c335d623ff30 2021081213:47:23-UTC ./tabobj/commonui.src/tabedrec.prg
 66465ac3d45feb4b0df26fcac3780cf6e1438872 2021080507:42:35-UTC ./tools/z/zcolor.prg
@@ -671,7 +652,6 @@ c9af25de142c2521790bc7c97dd777640d0891ab 2021042818:30:58-UTC ./ccctools/ppo2cpp
 c732a4a260f4d58ddcf6b7ab5e4eefb6c0255035 2021042116:40:42-UTC ./ccctools/ppo2cpp/lexer.h
 a3c9271282f9e5488bc8fd5b994f1f9263af3498 2021042112:58:30-UTC ./ccctools/ppo2cpp/parser.h
 e9c09879ffc76b4c0a4f1f93a24c9af4ff398824 2021042112:49:49-UTC ./ccctools/ppo2cpp/proto-codegen
-cae8555984e13e4d639321c9be780a942c04cac8 2021041111:01:46-UTC ./tools/z/ver3/zreplace.say
 dfdadc72fd74881ec97702cdc49e6c92acb273a9 2021040807:45:39-UTC ./tabobj/tbbtbtx/btree/extern.h
 cd14c901a9d6e8e0de4acdc9683e3f2cacb2f696 2021040721:27:55-UTC ./tools/xmldom/xmlpars.prg
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
@@ -683,8 +663,6 @@ b15b2dd9b42da37dea1779c82bbe06a3f20cfd43 2021032510:10:01-UTC ./terminal/unix/te
 8d233b09251e4e5a9799f9459e9e0d3c7d9fad36 2021032509:11:28-UTC ./terminal/unix/parfile.bld
 df1a6c4d1a18361dd4cef5e46fc61a478fd5e2aa 2021032509:09:24-UTC ./terminal/unix/terminal.ico
 9f0145e7b1f051e427d4e80e52e35c4b7df0cb30 2021031610:31:44-UTC ./tabobj/common.src/tabchlog.prg
-30c981840d2472140cd75950d92d96166a401aca 2021022210:20:15-UTC ./tools/textview/ver3/zsearch.say
-ff95bfac30ae8d4c83c3b4fafc080798b18fec5c 2021022210:19:56-UTC ./tabobj/utility.src/ver3/recpos.say
 06ad1eecc76bec57aee052db79e438274dca4cb3 2021022210:02:44-UTC ./tools/mask/msk2pge.prg
 296f8400cb28cbdfff0254ff4cb02df3a9c44bf6 2021022210:01:43-UTC ./tools/mask/test/m
 a42c2d3153dc16ab9c9245497ae266b92079ef64 2021022209:53:54-UTC ./tools/mask/test/proba.msk

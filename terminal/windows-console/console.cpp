@@ -19,7 +19,7 @@
  */
 
 
-// Ugyanaz a program, mint a cterm.cpp,  kiveve, 
+// Ugyanaz a program, mint a cterm.cpp,  kiveve,
 // hogy a Windowson hasznalhatatlanul lassu virtual terminal API helyett
 // a regebbi (mar nem ajanlott) WriteConsoleOutput-tal irja a kepernyot.
 // A paint() fuggveny implementaciojan kivul minden mas egyezik.
@@ -187,28 +187,6 @@ int main(int argc, char *argv[])
     //printf("output codepage: %d\n", GetConsoleOutputCP());
 
 
-    HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
-    if( hOut==INVALID_HANDLE_VALUE )
-    {
-        printf("GetStdHandle failed %d\n",GetLastError());
-        exit(1);
-    }
-
-    DWORD dwOriginalOutMode=0;
-    if( !GetConsoleMode(hOut,&dwOriginalOutMode) )
-    {
-        printf("GetConsoleMode failed %d\n",GetLastError());
-        exit(1);
-    }
-
-    DWORD dwRequestedOutModes=ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-    DWORD dwOutMode = dwOriginalOutMode|dwRequestedOutModes;
-    if( !SetConsoleMode(hOut,dwOutMode) )
-    {
-        printf("SetConsoleMode failed\n");
-        exit(1);
-    }
-
     char host[256]; strcpy(host,"127.0.0.1");
     int port=55000;
 
@@ -223,7 +201,7 @@ int main(int argc, char *argv[])
 
     atexit(bye);
 
-    screensize(&wheight,&wwidth);
+    screensize(&wwidth,&wheight);
     screen_buffer=new screenbuf(wwidth,wheight);
 
     printf("%c[?1049h",0x1b);    // ca mode on

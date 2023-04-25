@@ -2,23 +2,60 @@
 #include <windows.h>
 #include <stdio.h>
 
-void screensize(int *y, int *x)  // lekerdezi a terminal meretet
+//----------------------------------------------------------------------------------------
+void screensize(int *x, int *y)  // lekerdezi a terminal meretet
 {
-    HANDLE hnd=GetStdHandle( STD_OUTPUT_HANDLE );
-    if( hnd==NULL )
+    HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
+    if( hOut==INVALID_HANDLE_VALUE )
     {
-        fprintf(stderr,"OUTPUT CONSOLE NOT FOUND\n");
+        printf("GetStdHandle failed %d\n",GetLastError());
+        getchar();
         exit(1);
     }
 
-    CONSOLE_SCREEN_BUFFER_INFO scrbuf;
-    GetConsoleScreenBufferInfo(hnd,&scrbuf);
-    *x=scrbuf.dwSize.X;
-    *y=scrbuf.dwSize.Y;
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    if( !GetConsoleScreenBufferInfo(hOut,&info) )
+    {
+        printf("GetConsoleScreeBufferInfo failed %d\n",GetLastError());
+        getchar();
+        exit(1);
+    }
+    int width = (info.srWindow.Right-info.srWindow.Left+1);
+    int heigh = (info.srWindow.Bottom-info.srWindow.Top+1);
+    if( !SetConsoleScreenBufferSize(hOut,{(SHORT)width,(SHORT)heigh}) )
+    {
+        printf("SetConsoleScreeBufferSize failed %d\n",GetLastError());
+        getchar();
+        exit(1);
+    }
 
-    //printf("%d\n",scrbuf.dwMaximumWindowSize.X);
-    //printf("%d\n",scrbuf.dwMaximumWindowSize.Y);
+    DWORD mode=0;
+    if( !GetConsoleMode(hOut,&mode) )
+    {
+        printf("GetConsoleMode failed %d\n",GetLastError());
+        getchar();
+        exit(1);
+    }
+    if( !SetConsoleMode(hOut,mode|ENABLE_VIRTUAL_TERMINAL_PROCESSING) )
+    {
+        printf("SetConsoleMode failed *d\n",GetLastError());
+        getchar();
+        exit(1);
+    }
+
+    //printf("lef=%d top=%d rig=%d bot=%d\n",
+    //        info.srWindow.Left,  info.srWindow.Top,
+    //        info.srWindow.Right, info.srWindow.Bottom );
+    //printf("w=%d h=%d\n",width,heigh);    
+    //getchar();
+   
+    *x=width;
+    *y=heigh;
 }
+
+
+//----------------------------------------------------------------------------------------
+
 
 
 

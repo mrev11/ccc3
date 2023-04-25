@@ -35,7 +35,7 @@ void power() // erre fordul az a**x kifejezes
         double da=a->data.number;
         double dx=x->data.number;
 
-        if( da>=0 )
+        if( da>0 || (da==0&&dx>0)  )
         {
             a->data.number=pow(da,dx);
             stack=x;
@@ -51,7 +51,7 @@ void _clp_power(int argno)  // CCC-bol hivhato: power(a,x)
     CCC_PROLOG("power",2);
     double a=_parnd(1);
     double x=_parnd(2);
-    if( a<0 || a==0&&x<=0 )
+    if( a<0 || (a==0&&x<=0) )
     {
         error_arg("power",base,2);
     }

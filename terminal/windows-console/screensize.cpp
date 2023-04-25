@@ -1,6 +1,23 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+//----------------------------------------------------------------------------------------
+static void lock_term_size()
+{
+    HWND hwnd=GetConsoleWindow();
+    LONG wlng=GetWindowLong(hwnd,GWL_STYLE);
+    SetWindowLong(hwnd,GWL_STYLE, wlng & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX );
+}
+
+//----------------------------------------------------------------------------------------
+static void unlock_term_size()
+{
+    HWND hwnd=GetConsoleWindow();
+    LONG wlng=GetWindowLong(hwnd,GWL_STYLE);
+    SetWindowLong(hwnd,GWL_STYLE, wlng | WS_MAXIMIZEBOX | WS_SIZEBOX );
+}
 
 //----------------------------------------------------------------------------------------
 void screensize(int *x, int *y)  // lekerdezi a terminal meretet
@@ -48,10 +65,14 @@ void screensize(int *x, int *y)  // lekerdezi a terminal meretet
     //        info.srWindow.Right, info.srWindow.Bottom );
     //printf("w=%d h=%d\n",width,heigh);    
     //getchar();
-   
+
+    lock_term_size();
+    atexit(unlock_term_size);
+
     *x=width;
     *y=heigh;
 }
+
 
 
 //----------------------------------------------------------------------------------------

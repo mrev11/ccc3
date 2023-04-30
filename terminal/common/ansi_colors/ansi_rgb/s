@@ -1,0 +1,3 @@
+#!/bin/bash
+ansi_rgb.exe $1
+

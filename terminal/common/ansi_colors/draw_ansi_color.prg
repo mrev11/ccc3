@@ -9,6 +9,7 @@ function main(bg:="1",fg:="0")
     ?? ansi_colors(bg::val+1)::rgb
     
     ?
+	inkey(0)	
 
 ******************************************************************************************
 static function rgb(rgb)

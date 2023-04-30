@@ -46,6 +46,7 @@
 
 
 #include <screenbuf.h>
+#include <ansi_rgb.h>
 #include <utf8conv.h>
 
 #ifdef _UNIX_
@@ -90,9 +91,6 @@ extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
 extern void tcpio_sendkey(int);
 extern void xsigset_handlers();
-extern int  color_palette(int);
-extern int  colorext_palette(int);
-extern int  colorext_palette_rev(int);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
 
 //lokalis segedfuggvenyek
@@ -242,27 +240,14 @@ struct TerminalWindow : public QRasterWindow
 
     void drawCells(int row, int col, wchar_t *ucs, int len, int attr)
     {
-        int fg,bg,r,g,b;
+        int fg=255 & (attr>>0);
+        int bg=255 & (attr>>8);
 
-        if( attr&0xff00 )
-        {
-            fg=colorext_palette_rev( 0x7f&(attr>>0) ); // jelzobit leveve
-            bg=colorext_palette_rev( 0x7f&(attr>>8) ); // jelzobit leveve
-        }
-        else
-        {
-            fg=color_palette( 0xf&(attr>>0) );
-            bg=color_palette( 0xf&(attr>>4) );
-        }
-        
-        b = (fg & 0xff0000)>>16;
-        g = (fg & 0x00ff00)>>8;
-        r = (fg & 0x0000ff)>>0;
+        int r,g,b;
+        ansi_rgb(fg,&r,&g,&b);
         QPen pen(QColor(r,g,b)); painter->setPen(pen);
 
-        b = (bg & 0xff0000)>>16;
-        g = (bg & 0x00ff00)>>8;
-        r = (bg & 0x0000ff)>>0;
+        ansi_rgb(bg,&r,&g,&b);
         QBrush brush(QColor(r,g,b)); painter->setBackground(brush);
 
         QRectF rect(POSX(col),POSY(row),POSX(col+len)-POSX(col),POSY(1));
@@ -277,18 +262,9 @@ struct TerminalWindow : public QRasterWindow
     {
         QRectF rect(POSX(col), POSY(row), POSX(col+1)-POSX(col), POSY(1));
 
-        int fg,bg,r,g,b;
 
-        if( attr&0xff00 )
-        {
-            fg=colorext_palette_rev( 0x7f&(attr>>0) ); // jelzobit leveve
-            bg=colorext_palette_rev( 0x7f&(attr>>8) ); // jelzobit leveve
-        }
-        else
-        {
-            fg=color_palette( 0xf&(attr>>0) );
-            bg=color_palette( 0xf&(attr>>4) );
-        }
+        int fg=255 & (attr>>0);
+        int bg=255 & (attr>>8);
         
         if(inv)
         {
@@ -298,14 +274,11 @@ struct TerminalWindow : public QRasterWindow
             bg=fg1;
         }
 
-        b = (fg & 0xff0000)>>16;
-        g = (fg & 0x00ff00)>>8;
-        r = (fg & 0x0000ff)>>0;
+        int r,g,b;
+        ansi_rgb(fg,&r,&g,&b);
         QPen pen(QColor(r,g,b)); painter->setPen(pen);
 
-        b = (bg & 0xff0000)>>16;
-        g = (bg & 0x00ff00)>>8;
-        r = (bg & 0x0000ff)>>0;
+        ansi_rgb(bg,&r,&g,&b);
         QBrush brush(QColor(r,g,b)); painter->setBackground(brush);
 
         char utf8[32];

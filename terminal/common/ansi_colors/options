@@ -1,0 +1,15 @@
+
+
+export CCCTERM_SIZE=132x48
+
+[[ $1 == c ]] && export CCCTERM_CONNECT=term://cterm.exe
+[[ $1 == n ]] && export CCCTERM_CONNECT=term://ncterm.exe
+[[ $1 == t ]] && export CCCTERM_CONNECT=term://terminal.exe
+[[ $1 == x ]] && export CCCTERM_CONNECT=term://terminal-xft.exe
+[[ $1 == 2 ]] && export CCCTERM_CONNECT=term://terminal-gtk2.exe
+[[ $1 == 3 ]] && export CCCTERM_CONNECT=term://terminal-gtk3.exe
+[[ $1 == q ]] && export CCCTERM_CONNECT=term://terminal-qt5.exe
+
+
+echo $CCCTERM_CONNECT
+

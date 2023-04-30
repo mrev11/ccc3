@@ -39,6 +39,7 @@
 #include <gtk/gtk.h>
 
 #include <screenbuf.h>
+#include <ansi_rgb.h>
 #include <utf8conv.h>
 
 #ifdef _UNIX_
@@ -86,8 +87,6 @@ extern void setcursoroff(void);
 extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
 extern int  keycode_gtk(int,int);
-extern int  color_palette(int);
-extern int  colorext_palette(int);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
 extern char *termicon();
 
@@ -147,22 +146,11 @@ static PangoFontDescription *pangofont()
 }
 
 //---------------------------------------------------------------------------------
-static int color_palette_rev(int x)
+static int ANSIRGB(int x)
 {
-    //gtk-nak forditva kell
-    if( (x&0xf0)==0 )
-    {
-        int c=color_palette(x);
-        int rr = c & 0x0000ff;
-        int gg = c & 0x00ff00;
-        int bb = c & 0xff0000;
-        return (rr<<16) | gg | (bb>>16);
-    }
-    else
-    {
-        return colorext_palette(x);
-    }
-    return 0;
+    int r,g,b;
+    ansi_rgb(x,&r,&g,&b);
+    return (r<<16)|(g<<8)|b;
 }
 
 //---------------------------------------------------------------------------------
@@ -178,8 +166,8 @@ static GtkTextTag *lookup_tag(int fg, int bg)
         //printf("found: %s\n",name);
         return t;
     }
-    char rgb_fg[128]; sprintf(rgb_fg,"#%06x",color_palette_rev(fg));
-    char rgb_bg[128]; sprintf(rgb_bg,"#%06x",color_palette_rev(bg));
+    char rgb_fg[128]; sprintf(rgb_fg,"#%06x",ANSIRGB(fg));
+    char rgb_bg[128]; sprintf(rgb_bg,"#%06x",ANSIRGB(bg));
     //printf("fg %d %s bg %d %s \n", fg, rgb_fg, bg, rgb_bg);
     return gtk_text_buffer_create_tag(gtkbuffer,name,"foreground",rgb_fg,"background",rgb_bg,NULL); 
 }
@@ -187,17 +175,8 @@ static GtkTextTag *lookup_tag(int fg, int bg)
 //----------------------------------------------------------------------------
 static void setattr(int y, int x1, int x, int attr)  //[x1,x)-be attr
 {
-    int fg,bg;
-    if(  attr&0xff00 )
-    {
-        fg=0xff&(attr>>0);
-        bg=0xff&(attr>>8);  
-    }
-    else
-    {
-        fg=0xf&(attr>>0);
-        bg=0xf&(attr>>4);  
-    }
+    int fg=255 & (attr>>0);
+    int bg=255 & (attr>>8);  
     GtkTextTag *tag=lookup_tag(fg,bg);
 
     GtkTextIter iter1, iter2;
@@ -283,21 +262,18 @@ static void blink(int flag)  //bg<->fg valtogatos kurzor
             set_attrs_line(prevy);
         }
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
-        int attr=cell->getattr();
-        if( attr&0xff00 )
-        {
-            int fg=0xff&(attr>>0);
-            int bg=0xff&(attr>>8);
-            cell->setattr((fg<<8)+bg);
-        }
-        else
-        {
-            int fg=0xf&(attr>>0);
-            int bg=0xf&(attr>>4);
-            cell->setattr((fg<<4)+bg);
-        }
+        int fg=cell->get_fg();
+        int bg=cell->get_bg();
+
+        //fordit
+        cell->set_fg(bg);
+        cell->set_bg(fg);
+
         set_attrs_line(cursor_y);
-        cell->setattr(attr);  //rogton vissza
+
+        //vissza
+        cell->set_fg(fg);
+        cell->set_bg(bg);
 
         prevx=cursor_x;
         prevy=cursor_y;

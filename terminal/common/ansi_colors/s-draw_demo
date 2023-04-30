@@ -1,3 +1,0 @@
-#!/bin/bash
-export CCCTERM_CONNECT=term://cterm.exe
-draw_demo.exe

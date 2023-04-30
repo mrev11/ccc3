@@ -44,7 +44,8 @@ extern void error_siz(const char*,VALUE*,int);
 extern void error_wcr(const char*,VALUE*,int);
 
 //color.obj:
-extern int gettextattr(void);
+extern int gettext_fg(void);
+extern int gettext_bg(void);
 extern void setcoloridx(int);
 
 //variablex.obj:

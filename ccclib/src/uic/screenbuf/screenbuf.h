@@ -39,6 +39,14 @@
 #endif
 
 
+// extended colorindex -> legacy colorindex
+static char legacy[256]=
+{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,4,4,4,4,12,2,6,8,4,4,12,2,8,6,6,6,14,2,2,6,6,6,14,2,2,6,6,6,14,10,10,14,14,14,14,1,5,8,4,4,12,3,8,8,12,12,12,8,8,8,8,12,12,2,10,8,6,6,14,2,10,10,6,14,14,10,10,10,14,14,14,1,8,5,5,5,13,8,8,8,8,12,12,3,8,8,12,12,12,3,8,10,6,7,14,3,10,10,7,14,14,11,10,10,14,14,14,1,1,5,5,5,13,1,9,8,5,5,13,3,8,9,5,7,13,3,3,3,7,7,12,3,3,7,7,7,15,11,11,11,10,15,14,1,1,5,5,5,13,1,9,9,5,13,13,3,9,9,7,13,13,3,3,7,7,7,15,3,11,11,7,7,15,11,11,11,15,15,15,9,9,13,13,13,13,9,9,9,13,13,13,11,9,9,13,13,13,11,11,11,9,15,13,11,11,11,15,15,15,11,11,11,11,15,15,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,7,7,7,7,7,7,7,7}
+;
+
+#define LEGACY(x) legacy[255&(x)]
+
+
 class screencell4{
   private:
     unsigned char low_char;
@@ -77,6 +85,28 @@ class screencell4{
         low_attr=0xff&a;
         high_attr=0xff&(a>>8);
     }
+
+
+
+    c_uint16_t get_fg()
+    {
+        return 255 & low_attr;
+    }
+    void set_fg(c_uint16_t fg)
+    {
+        low_attr=255 & fg;
+    }
+
+    c_uint16_t get_bg()
+    {
+        return 255 & high_attr;
+    }
+    void set_bg( c_uint16_t bg )
+    {
+        high_attr=255 & bg;
+    }
+
+
 }; //CCC3 (4 byteos) screencell
 
 
@@ -110,6 +140,29 @@ class screencell2{
     {
         low_attr=0xff&a;
     }
+
+
+    c_uint16_t get_fg()
+    {
+        return 0x0f  & low_attr;
+    }
+
+    void set_fg(c_uint16_t fg)
+    {
+        low_attr=(0xf0 & low_attr) | LEGACY(fg);
+    }
+
+    c_uint16_t get_bg()
+    {
+        return (0xf0 & low_attr)>>4;
+    }
+
+    void set_bg( c_uint16_t bg )
+    {
+        low_attr=(0x0f & low_attr) | (LEGACY(bg)<<4);
+    }
+
+
 }; //CCC2 (2 byteos) screencell
 
 

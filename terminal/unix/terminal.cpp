@@ -38,6 +38,7 @@
 
 #include <keysym2ucs.h>
 #include <screenbuf.h>
+#include <ansi_rgb.h>
 #include <inkey.ch>
 
 #define THREAD_ENTRY /*nothing*/
@@ -71,8 +72,7 @@ static int fontwidth,fontheight,fontascent;
 Display *display;
 Window window;
 GC gc;
-unsigned rgb_color[16];
-unsigned rgb_color_ext[128];
+unsigned rgb_color[256];
 
 extern void tcpio_ini(const char*,int);
 extern THREAD_ENTRY void *tcpio_thread(void*);
@@ -84,8 +84,6 @@ extern void setcursoroff(void);
 extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
 extern void keypress(XEvent event);
-extern int  color_palette(int);
-extern int  colorext_palette(int);
 extern void set_terminal_iconfile(Display*,Window);
 extern void set_terminal_classhint(Display*,Window);
 
@@ -182,20 +180,11 @@ static void paintline(int cx, int cy, XChar2b *txt, int txtlen, int attr, int fl
         txtlen-=lef;   //left trim
         txtlen-=rig;   //right trim
 
-        if( attr&0xff00 )
-        {
-            int fg=0x7f&(attr>>0); // jelzobit leveve
-            int bg=0x7f&(attr>>8); // jelzobit leveve
-            XSetForeground(display,gc,rgb_color_ext[fg]);
-            XSetBackground(display,gc,rgb_color_ext[bg]);
-        }
-        else
-        {
-            int fg=0xf&(attr>>0);
-            int bg=0xf&(attr>>4);
-            XSetForeground(display,gc,rgb_color[fg]);
-            XSetBackground(display,gc,rgb_color[bg]);
-        }
+        int fg=255 & (attr>>0);
+        int bg=255 & (attr>>8);
+        XSetForeground(display,gc,rgb_color[fg]);
+        XSetBackground(display,gc,rgb_color[bg]);
+
         int x=cx*fontwidth;
         int y=cy*fontheight+fontascent;
         XDrawImageString16(display,window,gc,x,y,txt,txtlen);
@@ -260,21 +249,18 @@ static void blink(int flag)  //bg<->fg váltogatós kurzor
         }
 
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
-        int attr=cell->getattr();
-        if( attr&0xff00 )
-        {
-            int fg=0xff&(attr>>0);
-            int bg=0xff&(attr>>8);
-            cell->setattr((fg<<8)+bg);
-        }
-        else
-        {
-            int fg=0xf&(attr>>0);
-            int bg=0xf&(attr>>4);
-            cell->setattr((fg<<4)+bg);
-        }
+        int fg=cell->get_fg();
+        int bg=cell->get_bg();
+        
+        //fordit
+        cell->set_fg(bg);
+        cell->set_bg(fg);
+
         paint(cursor_y,cursor_x,cursor_y,cursor_x,1);
-        cell->setattr(attr);  //rogton vissza
+
+        //vissza
+        cell->set_fg(fg);
+        cell->set_bg(bg);
 
         cursor_state=1;
         prevx=cursor_x;
@@ -580,28 +566,17 @@ int main(int argc, char *argv[])
 
     XSetWindowColormap(display,window,colormap);
 
-    for(int x=0; x<16; x++)
+    for(int x=0; x<256; x++)
     {
+        int r,g,b;
+        ansi_rgb(x,&r,&g,&b);
+
         XColor col;
-        int rgb=color_palette(x);
-        col.red   = (0xff&(rgb>> 0))<<8;
-        col.green = (0xff&(rgb>> 8))<<8;
-        col.blue  = (0xff&(rgb>>16))<<8;
-        //col.flags=DoRed|DoGreen|DoBlue;
+        col.red   = r<<8;
+        col.green = g<<8;
+        col.blue  = b<<8;
         int res=XAllocColor(display,colormap,&col);
         rgb_color[x]=col.pixel;
-        //printf("XAllocColor %06x %d %06lx\n",(unsigned)rgb,res,(unsigned long)col.pixel);fflush(0);
-    }
-
-    for(int x=0; x<128; x++)
-    {
-        XColor col;
-        int rgb=colorext_palette(x);
-        col.red   = (0xff&(rgb>>16))<<8;
-        col.green = (0xff&(rgb>> 8))<<8;
-        col.blue  = (0xff&(rgb>> 0))<<8;
-        int res=XAllocColor(display,colormap,&col);
-        rgb_color_ext[x]=col.pixel;
     }
     
     XGCValues values;

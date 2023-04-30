@@ -62,10 +62,15 @@ screenbuf *screen_buffer;
 static int wwidth=80;
 static int wheight=25;
 
+static int rgb[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15}; // ANSI index -> rgb
+
+
+
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
-{
+{              
     static HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
+
     CHAR_INFO *buffer=0;
     int sizeofbuffer=0;
     if( (bot-top+1)*(rig-lef+1)>sizeofbuffer )
@@ -81,29 +86,14 @@ static void paint(int top, int lef, int bot, int rig)
         {
             screencell *cell=screen_buffer->cell(x,y);
             unsigned ch=cell->getchar();
-            unsigned at=cell->getattr();
 
-            if( ch<32 )
-            {
-                ch='.';
+            if( ch<32      ){ ch='.';  }
+            if( ch==0x2018 ){ ch=0x60; }
+            if( ch==0x2019 ){ ch=0x27; }
 
-            }
-            else if(ch==0x2018)
-            {
-                ch=0x60; //`
-            }
-            else if(ch==0x2019)
-            {
-                ch=0x27; //'
-            }
-
-            if( at & 0xff00 )
-            {
-                // extended -> legacy
-                int atl=colorext_extidx2legidx(at&0xff);
-                int ath=colorext_extidx2legidx((at>>8)&0xff);
-                at=(ath<<4)|atl;
-            }
+            int fg=rgb[ LEGACY(cell->get_fg()) ];  // ANSI[0,255] -> ANSI[0,15]
+            int bg=rgb[ LEGACY(cell->get_bg()) ];  // ANSI[0,255] -> ANSI[0,15]
+            int at=bg<<4|fg;
 
             int idx=(y-top)*(rig-lef+1)+(x-lef);
             buffer[idx].Char.UnicodeChar=ch;

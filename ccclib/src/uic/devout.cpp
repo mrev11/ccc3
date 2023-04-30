@@ -81,12 +81,14 @@ void _clp_devout(int argno)
     if( textlen>0 )
     {
         screencell *sc=(screencell*)stringl(sizeof(screencell)*textlen);
-        int attr=gettextattr();
+        int fg=gettext_fg();
+        int bg=gettext_bg();
         int i;
         for( i=0; i<textlen; i++)
         {
             (sc+i)->setchar(*(text+i));
-            (sc+i)->setattr(attr);
+            (sc+i)->set_fg(fg);
+            (sc+i)->set_bg(bg);
         }
         putrect(scol,srow,scol+textlen-1,srow,sc);
         scol=min(maxcol(),scol+textlen);
@@ -135,12 +137,14 @@ void _clp_devoutvertical(int argno) //fuggoleges iras DispBox gyorsitasara
     if( textlen>0 )
     {
         screencell *sc=(screencell*)stringl(sizeof(screencell)*textlen);
-        int attr=gettextattr();
+        int fg=gettext_fg();
+        int bg=gettext_bg();
         int i;
         for( i=0; i<textlen; i++)
         {
             (sc+i)->setchar(*(text+i));
-            (sc+i)->setattr(attr);
+            (sc+i)->set_fg(fg);
+            (sc+i)->set_bg(bg);
         }
         putrect(scol,srow,scol,srow+textlen-1,sc);
         srow=min(maxrow(),srow+textlen);
@@ -191,12 +195,14 @@ void _clp_devoutbuffer(int argno)
     int textlen=STRINGLEN(TOP());
 
     screencell *sc=(screencell*)binaryl(sizeof(screencell)*textlen);
-    int attr=gettextattr();
+    int fg=gettext_fg();
+    int bg=gettext_bg();
     int i;
     for( i=0; i<textlen; i++)
     {
         (sc+i)->setchar(*(text+i));
-        (sc+i)->setattr(attr);
+        (sc+i)->set_fg(fg);
+        (sc+i)->set_bg(bg);
     }
     
     if( ISSTRING(2) )

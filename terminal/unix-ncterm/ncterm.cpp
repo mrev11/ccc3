@@ -62,15 +62,16 @@ static int cursor_y=0;
 
 
 static int rgb[] = {
-   COLOR_BLACK,
-   COLOR_BLUE,
-   COLOR_GREEN,
-   COLOR_CYAN,
-   COLOR_RED,
-   COLOR_MAGENTA,
-   COLOR_YELLOW,
-   COLOR_WHITE
+   COLOR_BLACK,        // 0  
+   COLOR_RED,          // 1
+   COLOR_GREEN,        // 2
+   COLOR_YELLOW,       // 3
+   COLOR_BLUE,         // 4
+   COLOR_MAGENTA,      // 5
+   COLOR_CYAN,         // 6
+   COLOR_WHITE         // 7
 };
+
 
 //----------------------------------------------------------------------------
 static void initcoltrans(void)
@@ -133,25 +134,21 @@ static void paint(int top, int lef, int bot, int rig)
         for( x=lef; x<=rig; x++ )
         {
             screencell *cell=screen_buffer->cell(x,y);
+
             unsigned ch=cell->getchar();
-            unsigned at=cell->getattr();
             if(ch==0x2018) ch=0x60; //`
             if(ch==0x2019) ch=0x27; //'
+
+            int fg=LEGACY(cell->get_fg());
+            int bg=LEGACY(cell->get_bg());
+            int at=bg<<4|fg;
             
             move(y,x);
-            if( at&0xff00 )
-            {
-                //ezeket lehetne tablazatositani
-                int atl=colorext_extidx2legidx(at&0xff);
-                int ath=colorext_extidx2legidx((at>>8)&0xff);
-                at=(ath<<4)|atl;
-            }
+
             attron(coltrans[255&at]);
-            //waddnwstr(stdscr,(wchar_t*)(void*)&ch,1);
             char buf[10];
             int len=ucs_to_utf8(ch,buf);
             waddnstr(stdscr,buf,len);
-            
             attroff(coltrans[255&at]);
         }
     }

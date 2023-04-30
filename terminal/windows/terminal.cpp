@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <screenbuf.h>
+#include <ansi_rgb.h>
 
 #define THREAD_ENTRY __stdcall
 
@@ -34,8 +35,6 @@ extern void keydown(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void keyup(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void tcpio_ini(const char *ip, int port); 
 extern THREAD_ENTRY void *tcpio_thread(void*); 
-extern int  color_palette(int); 
-extern int  colorext_palette_rev(int); 
 extern HFONT font();
 
 static int wwidth=80;
@@ -203,6 +202,19 @@ void invalidate(int t,int l,int b,int r)
 
 
 //---------------------------------------------------------------------------
+static int ANSIRGB(int x)
+{
+    int r,g,b;
+    ansi_rgb(x,&r,&g,&b);
+    return (b<<16)|(g<<8)|r;
+    
+    // VIGYAZZ
+    // egyes helyeken a 'b'
+    // mas helyeken  az 'r'
+    // a legkisebb helyerteku bit
+}
+
+//---------------------------------------------------------------------------
 LRESULT CALLBACK WindowProcMain(
     HWND    hwnd,               // handle of window
     UINT    msg,                // message identifier
@@ -317,22 +329,11 @@ LRESULT CALLBACK WindowProcMain(
                     wchar_t t=(wchar_t)(screen_buffer->cell(j,i)->getchar()); 
                     unsigned c=(unsigned)(screen_buffer->cell(j,i)->getattr()); 
                     
-                    if( 0xff00&c )
-                    {
-                        int fg=0x7f&(c>>0); //jelzobit leveve
-                        int bg=0x7f&(c>>8); //jelzobit leveve
+                    int fg=screen_buffer->cell(j,i)->get_fg();
+                    int bg=screen_buffer->cell(j,i)->get_bg();
  
-                        SetBkColor(hdc,colorext_palette_rev(bg));
-                        SetTextColor(hdc,colorext_palette_rev(fg));
-                    }
-                    else
-                    {
-                        int fg=c&15;
-                        int bg=c>>4;
- 
-                        SetBkColor(hdc,color_palette(bg));
-                        SetTextColor(hdc,color_palette(fg));
-                    }
+                    SetBkColor(hdc,ANSIRGB(bg));
+                    SetTextColor(hdc,ANSIRGB(fg));
                     
                     #ifdef NO_OPTIMIZE
                     

@@ -40,6 +40,7 @@
 
 #include <keysym2ucs.h>
 #include <screenbuf.h>
+#include <ansi_rgb.h>
 #include <inkey.ch>
 
 #define THREAD_ENTRY /*nothing*/
@@ -78,8 +79,7 @@ Colormap colormap;
 int screen;
 XftDraw *draw;
 Visual *visual;
-XftColor xft_color[16];
-XftColor xft_color_ext[128];
+XftColor xft_color[256];
 XftFont *xftfont;
 
 extern void tcpio_ini(const char*,int);
@@ -92,8 +92,6 @@ extern void setcursoroff(void);
 extern void setcursoron(void);
 extern void invalidate(int,int,int,int);
 extern void keypress(XEvent event);
-extern int  color_palette(int);
-extern int  colorext_palette(int);
 extern void fontspec(const char *envname, char **fontface, int *fontsize);
 extern void set_terminal_iconfile(Display*,Window);
 extern void set_terminal_classhint(Display*,Window);
@@ -225,26 +223,12 @@ static void paintline(int cx, int cy, wchar_t *txt, int txtlen, int attr, int fl
         //de nem ez kell, hanem ki-be kell kapcsolgatni a clip-et,
         //ami a kilogo szemeteket levagja
 
-        if( attr&0xff00 )
-        {
-            int fg=0x7f&(attr>>0); //jelzobit leveve
-            int bg=0x7f&(attr>>8); //jelzobit leveve
-            XftDrawRect(draw,&xft_color_ext[bg],x,y,txtlen*fontwidth,fontheight);
-            XftDrawString32(draw,&xft_color_ext[fg],xftfont,x,y+fontascent,(FcChar32*)txt,txtlen);
-        }
-        else
-        {
-            int fg=0xf&(attr>>0);
-            int bg=0xf&(attr>>4);
-            XftDrawRect(draw,&xft_color[bg],x,y,txtlen*fontwidth,fontheight);
-            XftDrawString32(draw,&xft_color[fg],xftfont,x,y+fontascent,(FcChar32*)txt,txtlen);
+        //printf("attr %04x %d %d\n",attr,(attr&0xff00)>>8, (attr&0xff) );
 
-            //MEGOLDAS: XftDrawSetClipRectangles
-            //nem lehet kitalalni, hogy mekkora teglalapot kell torolni,
-            //a kulonbozokeppen skalazott fontok kilognak a teglalapjukbol,
-            //ha tul kicsit torlok, elszemetesedik a kepernyo,
-            //ha tul nagyot torlok, akkor meg hezagos lesz a kepernyo
-        }
+        int fg=255 & (attr>>0);
+        int bg=255 & (attr>>8);
+        XftDrawRect(draw,&xft_color[bg],x,y,txtlen*fontwidth,fontheight);
+        XftDrawString32(draw,&xft_color[fg],xftfont,x,y+fontascent,(FcChar32*)txt,txtlen);
 
         XftDrawSetClip(draw, 0);
         //printf("paintline: %d %d %d\n",cy,cx,txtlen); fflush(0);
@@ -306,21 +290,19 @@ static void blink(int flag) //bg<->fg váltogatós kurzor
         }
 
         screencell *cell=screen_buffer->cell(cursor_x,cursor_y);
-        int attr=cell->getattr();
-        if( attr&0xff00 )
-        {
-            int fg=0xff&(attr>>0);
-            int bg=0xff&(attr>>8);
-            cell->setattr((fg<<8)+bg);
-        }
-        else
-        {
-            int fg=0xf&(attr>>0);
-            int bg=0xf&(attr>>4);
-            cell->setattr((fg<<4)+bg);
-        }
+        int fg=cell->get_fg();
+        int bg=cell->get_bg();
+
+        //fordit
+        cell->set_fg(bg);
+        cell->set_bg(fg);
+
         paint(cursor_y,cursor_x,cursor_y,cursor_x,1);
-        cell->setattr(attr);  //rogton vissza
+
+        //vissza
+        cell->set_fg(fg);
+        cell->set_bg(bg);
+
 
         prevx=cursor_x;
         prevy=cursor_y;
@@ -632,32 +614,20 @@ int main(int argc, char *argv[])
 
     XSetWindowColormap(display,window,colormap);
 
-    for(int x=0; x<16; x++)
+    for(int x=0; x<256; x++)
     {
-        int rgb=color_palette(x);
+        int r,g,b;
+        ansi_rgb(x,&r,&g,&b);
 
         XftColor xftcol;
-        xftcol.color.red   = (0xff&(rgb>> 0))<<8;
-        xftcol.color.green = (0xff&(rgb>> 8))<<8;
-        xftcol.color.blue  = (0xff&(rgb>>16))<<8;
+        xftcol.color.red   = r<<8;
+        xftcol.color.green = g<<8;
+        xftcol.color.blue  = b<<8;
         xftcol.color.alpha = -1;
         int xftres=XftColorAllocValue(display,visual,colormap,&xftcol.color,&xftcol);
         xft_color[x]=xftcol;
-        //printf("XftAllocColor %06x %d %06lx\n",(unsigned)rgb,xftres,(unsigned long)xftcol.pixel);fflush(0);
     }
 
-    for(int x=0; x<128; x++)
-    {
-        int rgb=colorext_palette(x);
-
-        XftColor xftcol;
-        xftcol.color.red   = (0xff&(rgb>>16))<<8;
-        xftcol.color.green = (0xff&(rgb>> 8))<<8;
-        xftcol.color.blue  = (0xff&(rgb>> 0))<<8;
-        xftcol.color.alpha = -1;
-        int xftres=XftColorAllocValue(display,visual,colormap,&xftcol.color,&xftcol);
-        xft_color_ext[x]=xftcol;
-    }
     
     XGCValues values;
     gc=XCreateGC(display,window,0,&values);

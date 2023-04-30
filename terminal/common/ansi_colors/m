@@ -1,4 +1,4 @@
 #!/bin/bash
 bapp_unixc.b
-gen_ansi_colors_h.exe >/dev/null
-bapp_unixc.b
+gen_ansi_rgb_h.exe
+gen_ext_to_leg.exe

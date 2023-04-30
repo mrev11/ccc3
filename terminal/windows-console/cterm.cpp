@@ -88,7 +88,8 @@ static void paint(int top, int lef, int bot, int rig)
 
             if( attr!=at )
             {
-                attron(attr=at);
+                attr=at;
+                attron(cell->get_fg(),cell->get_bg());
             }
 
             char buf[10];

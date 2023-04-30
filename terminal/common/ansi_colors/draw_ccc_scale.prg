@@ -1,68 +1,44 @@
 
 
-
 ******************************************************************************************
 function main()
 
+    setcursor(0)
 
-local r,g,b
+    color( 0, 0,"000,111,222,333,444,555")
 
-local code
-local bg
-local w:=10
+    color( 0,10,"000,100,200,300,400,500")
+    color( 0,20,"000,010,020,030,040,050")
+    color( 0,30,"000,001,002,003,004,005")
 
-    settermsize(50,84)
-
-    for r:=0 to 3 
-        for g:=0 to 3
-            for b:=0 to 3
-                code:=""
-                code+=r::str::alltrim
-                code+=g::str::alltrim
-                code+=b::str::alltrim
-                bg:=ccccolor_to_ansicolor(code)
-                
-
-                @ (r*4+g)*3   , b*w  say padr(code,w) color fg(bg)+"/"+code
-                @ (r*4+g)*3+1 , b*w  say padr(""  ,w) color fg(bg)+"/"+code
-                @ (r*4+g)*3+2 , b*w  say str (bg  ,w) color fg(bg)+"/"+code
-            next
-        next
-    next
+    color( 0,40,"000,110,220,330,440,550")
+    color( 0,50,"000,101,202,303,404,505")
+    color( 0,60,"000,011,022,033,044,055")
 
 
 
-    for r:=0 to 3 
-        for g:=0 to 3
-            for b:=0 to 3
-                code:=""
-                code+=r::str::alltrim
-                code+=g::str::alltrim
-                code+=b::str::alltrim
-                code+="+"
-                bg:=ccccolor_to_ansicolor(code)
+    color( 14, 0,"w,w+")      // 7
+    color( 14,10,"r,r+")      // 1
+    color( 14,20,"g,g+")      // 2
+    color( 14,30,"b,b+")      // 4
+    color( 14,40,"rg,rg+")    // 3
+    color( 14,50,"rb,rb+")    // 5
+    color( 14,60,"gb,gb+")    // 6
+    color( 14,70,"n,n+")      // 0
 
-                @ (r*4+g)*3   , b*w+41  say padr(code,w) color fg(bg)+"/"+code
-                @ (r*4+g)*3+1 , b*w+41  say padr(""  ,w) color fg(bg)+"/"+code
-                @ (r*4+g)*3+2 , b*w+41  say str (bg  ,w) color fg(bg)+"/"+code
-            next
-        next
-    next
 
     inkey(0)
-    
 
 ******************************************************************************************
-static function fg(bg)
-local r,g,b,intensity
-    {r,g,b}:=ansi_colors(bg+1)
-    intensity:=0
-    intensity+=r**2
-    intensity+=g**2
-    intensity+=b**2
-    intensity::=sqrt
-    return if(intensity>220,"n","w")
-    
+static function color(r,c,bg, fg:="n", br:="")
+local i,color
+    bg::=split(",")
+    for i:=1 to len(bg)
+        color:=fg+"/"+bg[i]+br
+        @ r+2*i  ,c say color::padr(10) color (color)
+        @ r+2*i+1,c say ""   ::padr(10) color (color)
+    next
+
 
 ******************************************************************************************
-    
+

@@ -80,18 +80,15 @@ void _clp_screeninv(int argno)
     int i;
     for( i=0; i<clen; i++)
     {
-        int c=scr[i].getchar();
-        int a=scr[i].getattr();
-        inv[i].setchar(c);
-        if( a&0xff00 )
-        {
-            inv[i].setattr(((0xff00&a)>>8)+((0x00ff&a)<<8));
-        }
-        else
-        {
-            inv[i].setattr(((0xf0&a)>>4)+((0x0f&a)<<4));
-        }
+        int ch=scr[i].getchar();
+        int fg=scr[i].get_fg();
+        int bg=scr[i].get_bg();
+
+        inv[i].setchar(ch);
+        inv[i].set_fg(bg);
+        inv[i].set_bg(fg);
     }
+
     _rettop();
     CCC_EPILOG();
 }

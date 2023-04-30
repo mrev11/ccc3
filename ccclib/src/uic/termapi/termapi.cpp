@@ -135,11 +135,13 @@ static void sendrect()
             extern int convtab_lat2ucs(int);
             int j=cells-1-i;
             int c=buf2[j].getchar();
-            int a=buf2[j].getattr();
+            int fg=buf2[j].get_fg();
+            int bg=buf2[j].get_bg();
             c=convtab_cwi2lat(c);
             c=convtab_lat2ucs(c);
             buf3[j].setchar(c);
-            buf3[j].setattr(a);
+            buf3[j].set_fg(fg);
+            buf3[j].set_bg(bg);
         }
 #endif
 

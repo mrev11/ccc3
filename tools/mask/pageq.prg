@@ -90,12 +90,8 @@ local crlf4:=crlf+space(4)
 
     for r:=1 to tot_row
 
-        // szinkodok es karakterek szetvalasztasa
-        color:=array(tot_col)
-        for c:=1 to tot_col
-            color[c]:=page[r][c*4-1..c*4]::bin2i // szinkodok tombje [3..4],[7..8]...
-        next
         line:=screenchar(page[r]) // szinkodok nelkuli sor
+        color:=screen_bg(page[r]) // szinkodok: normal=0(w/n), kiemelt=7(n/w),
 
         if( left(line,1)=="#" )
             if( !empty(section) )
@@ -119,7 +115,7 @@ local crlf4:=crlf+space(4)
         
         // sorhossz meghatarozas
         for llin:=tot_col to 1 step -1        
-            if( color[llin]>=16 .or. !empty(substr(line,llin,1)) )
+            if( asc(color[llin])==7 .or. !empty(substr(line,llin,1)) )
                 exit
             end
         next
@@ -131,7 +127,7 @@ local crlf4:=crlf+space(4)
         while( c<=llin )
 
             // Kiemelt szin: valtozo
-            while( c<=llin .and. color[c]>=16 )
+            while( c<=llin .and. asc(color[c])==7 )
                 token+=substr(line,c,1)
                 c++
             end
@@ -173,7 +169,7 @@ local crlf4:=crlf+space(4)
             end
 
             // Nem kiemelt szin: szovegkonstans
-            while( c<=llin .and. color[c]<16 )
+            while( c<=llin .and. asc(color[c])==0 )
                 token+=substr(line,c,1)
                 c++
             end

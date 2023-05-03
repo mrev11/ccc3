@@ -1,3 +1,11 @@
+2023-05-03 Atteres ANSI szinkodokra (2.lepes)
+  valtozasok kovetese a kodgeneratorokban:
+    ms2ksay, ms2kpge, pge2out, pge2wro, msk2dlg, msk2html;
+  uj fuggvenyek:
+    screen_fg(scr): mint screenattr(), de csak az fg-ket adja;
+    screen_bg(scr): mint screenattr(), de csak az bg-ket adja;
+    screencompose(ch,fg,bg): screen keszitese ch,fg,bg-bol;
+
 2023-04-29 Atteres ANSI szinkodokra;
 
 2023-04-26

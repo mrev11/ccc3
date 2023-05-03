@@ -519,14 +519,6 @@ local filnam
 
 
 *************************************************************************
-function ReadMask(filnam)
-local x:=memoread(filnam,.t.)
-local len:=len(x)
-    len-=len%4 //leszedi az esetleges EOF-ot a régi filékről
-    return left(x,len) 
-
-
-*************************************************************************
 function ExtractName(filename) 
 local bspos
    if( empty(filename) )

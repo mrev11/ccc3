@@ -1,0 +1,52 @@
+
+Karakterkonverziok attekintese
+
+#define  LAT(x) _charconv(x,CHARTAB_CCC2LAT)    CWI ekezet    -> Latin ekezet
+#define  CCC(x) _charconv(x,CHARTAB_CWI2CCC)    CWI doboz     -> Csiszar doboz
+
+#define  CWI(x) _charconv(x,CHARTAB_CCC2CWI)    Latin ekezet  -> CWI ekezet
+                                                Csiszar doboz -> CWI doboz
+
+==========================================================================================
+mask.exe
+    ReadMask    LAT(CCC(memoread(filnam)))
+    SaveMask    memowrit(filnam,CWI(savescreen(0,0,MAXROW,MAXCOL)))
+    PrgOutObj   memowrit(file,LAT(CCC(CWI(defi+newl+decl+newl+prog+newl))))*   -gOBJ
+    PrgOutTrad  memowrit(file,defi+newl+decl+newl+prog+newl)                   -gTRAD
+
+    *mivel a bemenet CWI -> Latin2 konverzion esik at, a program kimenet
+    minden esetben Latin2, fuggetlenul a PrgOutObj odavissza konverziojatol
+
+
+==========================================================================================
+page.exe
+    ReadPage    LAT(CCC(memoread(filnam)))
+    SavePage    memowrit(lower(file),CWI(page)) 
+    PrgOutQ     memowrit(file,defi+crlf+prog+crlf)
+    PrgOutS     memowrit(file,defi+crlf+decl+crlf+prog+crlf)
+
+
+==========================================================================================
+msk2pge.exe
+    ReadMask    screen:=memoread(maskfile)
+    WritePage   memowrit(pgefile,pge)
+
+    nincs benne Latin/CWI charset konverzio
+
+==========================================================================================
+msk2say.exe
+    ReadMask    memoread(mskfile,.t.)
+    PrgOut      memowrit(sayfile,code::_charconv(CHARTAB_CWI2CCC)::_charconv(CHARTAB_CCC2LAT)
+
+    a kimenetet konvertalja Latin2-re
+
+
+==========================================================================================
+pge2wro.exe
+    pgestr      LAT(CCC(memoread(pgefile)))
+    WroOut      memowrit(file,"// pge2wro "+...)
+    Wro2Out     memowrit(file,"// pge2wro "+...)
+
+    a bemenetet konvertalja Latin2-re
+
+==========================================================================================

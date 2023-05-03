@@ -40,17 +40,15 @@ local crlf:=chr(13)+chr(10)
     prog+=crlf+"   set device to print"
 
     for r:=1 to tot_row
-        color:=array(tot_col)
-        for c:=1 to tot_col
-            color[c]:=page[r][c*4-1..c*4]::bin2i // szinkodok tombje [3..4],[7..8]...
-        next
+
         line:=screenchar(page[r]) // szinkodok nelkuli sor
+        color:=screen_bg(page[r]) // szinkodok: normal=0(w/n), kiemelt=7(n/w),
         
         c:=1
         while( c<=tot_col )
 
             c1:=c // Kiemelt szin: valtozo
-            while( c<=tot_col .and. color[c]>=16 )
+            while( c<=tot_col .and. asc(color[c])==7 )
                 token+=substr(line,c,1)
                 c++
             end
@@ -79,7 +77,7 @@ local crlf:=chr(13)+chr(10)
             end
 
             c1:=c // Nem kiemelt szin: szovegkonstans
-            while( c<=tot_col .and. color[c]<16 .and. !empty(substr(line,c,1) )  )
+            while( c<=tot_col .and. asc(color[c])==0 .and. !empty(substr(line,c,1) )  )
                 token+=substr(line,c,1)
                 c++
             end
@@ -89,7 +87,7 @@ local crlf:=chr(13)+chr(10)
             end
 
             c1:=c // Ures resz: atugorja
-            while( c<=tot_col .and. color[c]<16 .and. empty(substr(line,c,1)) )
+            while( c<=tot_col .and. asc(color[c])==0 .and. empty(substr(line,c,1)) )
                 c++            
             end
 

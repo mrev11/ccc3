@@ -1,0 +1,55 @@
+20121-02-19 
+  mask es tarsai felulvizsgalva:
+  (megjegyzes: az msk es pge fajlokban hagyomanyosan CWI kodolas van!)
+  page.exe forrasaban a dobozrajzolok atirva hexa kodokra (mint a mask-ban); 
+  msk2pge.exe forrasaban a dobozrajzolok atirva box szimbolumokra; 
+  (megjegyzes: ezekben hibas volt a B_DS1 rajzolasa);
+  A kodgeneratorok tiszta Latin2-t keszitenek. Ennek erdekeben:
+    1) a prg-kben CWI mindenhol atkonvertalva Latin2-re;
+    2) page.exe beolvaskor CWI-rol Latin2-re konvertal;
+    3) pge2wro.exe beolvaskor CWI-rol Latin2-re konvertal;  
+  wro demo atirva magyarra, hogy az ekezetes betuk latszodjanak;
+  mask -G,-F opcioi visszaallitva -g,-f-re;
+  nem mukodo nyomtatasok kiszedve;
+
+
+2011.08.12 -- 1.07
+  dosconv megszüntetve
+    fájlok nem csak a cwd-ben lehetnek
+    nevükben kis/nagybetû lehet
+    fájlnév bekérõ dialogbox rendbehozva
+    
+  prgout (F9)
+    mindig automatikusan határozza meg a téglalapot
+    (korábban egyes esetekben a marcrect-et használta)
+    a generált programba nem tesz CWI kódokat
+
+  dobozrajzolók megadása hexa kódokkal
+    hogy a forrás CWI <-> Latin konverziója 
+    ne rontsa el a mûködést (már el volt romolva)
+    
+  msk2say
+    a fáljneveket nem konvertálja kisbetûre  
+
+
+2000.04.21 -- 1.04
+  Checkboxok támogatása
+
+
+2000.01.12 -- 1.03
+  Portolva UNIX-ra, egységes kódrendszer
+
+
+1999.05.20 -- 1.02
+  PRG2PPO-val fordítva, inkompatibilitások szûrve
+
+
+1999.02.09 -- 1.01
+
+  ExtractName javítva, hogy ilyen bemenettel is mûködjön:
+
+      mask ..\proba\haz -gO
+  
+  az eredmény haz.out ..\proba\-ban keletkezik.
+   
+  

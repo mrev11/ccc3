@@ -23,14 +23,7 @@
 
 
 //--------------------------------------------------------------------------
-static int trans_ext2leg( int x )
-{
-    static int tab_ext2leg[129]={0,0,1,1,1,9,9,9,2,2,3,3,1,9,9,9,2,10,2,10,3,11,9,9,10,10,10,10,10,10,11,11,4,4,5,5,1,9,9,9,6,6,8,8,1,9,9,9,2,10,2,10,3,11,9,9,10,10,10,10,10,10,11,11,4,12,4,12,5,13,9,9,4,12,4,12,5,13,9,9,6,14,6,14,7,7,9,9,10,10,10,10,10,10,11,11,12,12,12,12,12,12,13,13,12,12,12,12,12,12,13,13,12,12,12,12,12,12,13,13,14,14,14,14,14,14,7,15,0};
-    return tab_ext2leg[x&0x7f];   // jelzobit leveve
-}
-
-//--------------------------------------------------------------------------
-// SCREENCHAR savescreen()-nel kapott karakterváltozoból normál text
+// SCREENCHAR savescreen()-nel kapott karaktervaltozobol normal text
 //--------------------------------------------------------------------------
 void _clp_screenchar(int argno)
 {
@@ -48,75 +41,146 @@ void _clp_screenchar(int argno)
 }
 
 //--------------------------------------------------------------------------
-//SCREENATTR savescreen()-nel kapott karakterváltozóból attribútumok
+//SCREENATTR savescreen()-nel kapott karaktervaltozobol attributumok
 //--------------------------------------------------------------------------
 void _clp_screenattr(int argno)
 {
+    int attrsize=sizeof(screencell)/2; // CCC2:1, CCC3:2
+
     CCC_PROLOG("screenattr",1);
     screencell *cell=(screencell*)_parb(1);
     int len=_parblen(1)/sizeof(screencell);
-    char *attr=binaryl(len);
-    int i;
-    for(i=0; i<len; i++)
+    char *attr=binaryl(len*attrsize);
+
+    for(int i=0; i<len; i++)
     {
-        int a=cell[i].getattr();
-        if( 0xff00&a  )
+        int fg=cell[i].get_fg();
+        int bg=cell[i].get_bg();
+
+        if( attrsize==1 )
         {
-            //extended
-            int fg=trans_ext2leg( 0x7f&(a>>0) );
-            int bg=trans_ext2leg( 0x7f&(a>>8) );
-            attr[i]=(char)(fg+(bg<<4));
+            attr[i]=fg+(bg<<4);
         }
         else
         {
-            //legacy
-            attr[i]=(char)a;
+            attr[(i<<1)+0]=fg;
+            attr[(i<<1)+1]=bg;
         }
     }
     _rettop();
     CCC_EPILOG();
 }
 
-// a 2 bajtos (extended) attributumokat 1 bajtosra kell konvertalni,
-// maskepp tobb program is borul, amik 1 bajtos attributumot varnak,
-// pl: msk2say, msk2html es tarsaik
 
+void _clp_screen_fg(int argno)
+{
+    CCC_PROLOG("screen_fg",1);
+    screencell *cell=(screencell*)_parb(1);
+    int len=_parblen(1)/sizeof(screencell);
+    char *attr=binaryl(len);
+
+    for(int i=0; i<len; i++)
+    {
+        attr[i]=cell[i].get_fg();
+    }
+
+    _rettop();
+    CCC_EPILOG();
+}
+
+void _clp_screen_bg(int argno)
+{
+    CCC_PROLOG("screen_bg",1);
+    screencell *cell=(screencell*)_parb(1);
+    int len=_parblen(1)/sizeof(screencell);
+    char *attr=binaryl(len);
+
+    for(int i=0; i<len; i++)
+    {
+        attr[i]=cell[i].get_bg();
+    }
+
+    _rettop();
+    CCC_EPILOG();
+}
 
 //--------------------------------------------------------------------------
-// SCREENCOMPOSE text+attribs-ból restscreen()-ben használható string
+// SCREENCOMPOSE text+attribs-bol restscreen()-ben hasznalhato string
 //--------------------------------------------------------------------------
 void _clp_screencompose(int argno)
 {
-    CCC_PROLOG("screencompose",2);
+    CCC_PROLOG("screencompose",3);
+
     CHAR *ch=_parc(1);
-    char *at=_parb(2);
     int lc=_parclen(1);
-    int la=_parblen(2);
-    
-    if( (lc<=0) || ((la!=lc) && (la/2!=lc)) )
+    if( lc<=0 )
     {
         ARGERROR();
     }
-    int i;
+
     screencell *cell=(screencell*)binaryl(lc*sizeof(screencell));
-    for(i=0; i<lc; i++)
+
+    char *at=0; int la=0;
+    char *fg=0; int lf=0;
+    char *bg=0; int lb=0;
+
+    if( argno==2 )
     {
-        cell[i].setchar(ch[i]);
-        if( la==lc )
+        at=_parb(2);
+        la=_parblen(2);
+
+        if( (la!=lc) && (la/2!=lc) )
         {
-            cell[i].setattr(at[i]);  //1 bajtos szinpar
+            ARGERROR();
         }
-        else
+
+        int attrsize=sizeof(screencell)/2; // CCC2:1, CCC3:2
+
+        for(int i=0; i<lc; i++)
         {
-            cell[i].setattr( at[i<<1] + (at[(i<<1)+1]<<8) ); //2 bajtos szinpar
+            cell[i].setchar(ch[i]);
+            if( attrsize==1 )
+            {
+                // CCC2: 1 bajtos fg/bg
+                cell[i].setattr(at[i]);
+            }
+            else
+            {
+                // CCC3: 2 bajtos fg/bg
+                cell[i].set_fg( at[(i<<1)+0] );
+                cell[i].set_bg( at[(i<<1)+1] );
+            }
         }
-    } 
+    }
+
+    else if( argno==3 )
+    {
+        fg=_parb(2);
+        lf=_parblen(2);
+
+        bg=_parb(3);
+        lb=_parblen(3);
+
+        if( (lf!=lc) || (lb!=lc) )
+        {
+            ARGERROR();
+        }
+
+        for(int i=0; i<lc; i++)
+        {
+            cell[i].setchar(ch[i]);
+            cell[i].set_fg( fg[i] );
+            cell[i].set_bg( bg[i] );
+        }
+    }
+    else
+    {
+        ARGERROR();
+    }
+
     _rettop();
     CCC_EPILOG();
 }
 
-// az attributumok lehetnek 1 vagy 2 bajtosak
-// az attributumtomb hosszabol kovetkeztet az esetre
-   
 
 //--------------------------------------------------------------------------

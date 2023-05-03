@@ -19,6 +19,7 @@
  */
 
 #include "box.ch"
+#include "page.ch"
 
 static size80x25:={80,25}
 static size100x50:={100,50}
@@ -31,8 +32,8 @@ static termsize:=size80x25
 #define MSK_MAXCOL    termsize[1]
 #define MSK_MAXROW    termsize[2]
 
-#define PGE_MAXCOL    160
-#define PGE_MAXROW    64
+#define PGE_MAXCOL    TOT_COL   // from page.ch 
+#define PGE_MAXROW    TOT_ROW   // from page.ch 
 
 
 static hor_simple:=(B_HS+;
@@ -110,11 +111,7 @@ local opt,opt_r:=.f.,opt_u:=.f.
     end
 
 
-    mskstr:=memoread(mskfile,.t.)
-
-    if( len(mskstr)%4!=0  )
-        mskstr:=left(mskstr,len(mskstr)-(len(mskstr)%4))
-    end
+    mskstr:=readmask(mskfile)
 
     if( len(mskstr)==CALCSIZE(size80x25) )
         termsize:=size80x25
@@ -124,8 +121,8 @@ local opt,opt_r:=.f.,opt_u:=.f.
         termsize:=size120x60
     elseif( len(mskstr)==CALCSIZE(size160x60) )
         termsize:=size160x60
-    elseif( len(mskstr)==CALCSIZE(size200x60) )
-        termsize:=size200x60
+//  elseif( len(mskstr)==CALCSIZE(size200x60) )
+//      termsize:=size200x60 // tul nagy
     else
         ? "Incompatible msk file length",len(mskstr)
         ?
@@ -160,7 +157,7 @@ local opt,opt_r:=.f.,opt_u:=.f.
 
 ***********************************************************************************
 static function usage()
-    ? "Usage: msk2pge.exe [-r] [-u] mskfile"
+    ? "Usage: msk2pge.exe [-r] mskfile"
     ?
     quit
 

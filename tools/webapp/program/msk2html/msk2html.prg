@@ -29,18 +29,19 @@
 //#define VERSION "1.0.1"
 
 
-#define MAXROW         f_maxrow()
-#define MAXCOL         f_maxcol()
-#define SCREENSIZE     f_screensize()
+#define MAXROW      f_maxrow()
+#define MAXCOL      f_maxcol()
+#define SCREENSIZE  f_screensize()
+
+#define CHAR(n)     (substr(linec,n,1))
+#define CHAR2(n)    (substr(linec,n-1,2))
+#define ATTR(n)     (substr(linea,n,1)::asc) // fg
+#define NORMAL      7  // fg=white
+#define INVERS      0  // fg=black
 
 
-#define NORMAL     7
-#define INVERS   112
+#define STR(n)      alltrim(str(n))
 
-#define attr(n)  asc(substr(linea,n,1))
-#define char(n)  substr(linec,n,1)
-#define char2(n) substr(linec,n-1,2)
-#define STR(n)   alltrim(str(n))
 
 // text             (normal  -> label)
 // get              (inverse -> input:text)
@@ -140,7 +141,7 @@ local path, prgcode
     ?? "  out:", output:=path+fname(msk)+extension
 
 
-    screen:=memoread(input,.t.)
+    screen:=readmask(input)
     if( len(screen)==CALCSIZE(size80x25) )
         termsize:=size80x25
     elseif( len(screen)==CALCSIZE(size100x50) )
@@ -189,17 +190,17 @@ local n,cbeg,c
 
         line:=substr(screen,4*i*(MAXCOL+1)+1,4*(MAXCOL+1))
         linec:=screenchar(line)
-        linea:=screenattr(line)
+        linea:=screen_fg(line)
 
         for n:=1 to MAXCOL+2
         
             if( cbeg==NIL )
-                if( char(n)$(B_VS+B_SS1+B_SS7) )
+                if( CHAR(n)$(B_VS+B_SS1+B_SS7) )
                     cbeg:=n // komponens kezdődik
                 end
 
             else
-                if( char(n)$(B_VS+B_SS3+B_SS9) .or. n==MAXCOL+2 )
+                if( CHAR(n)$(B_VS+B_SS3+B_SS9) .or. n==MAXCOL+2 )
                     c:=fieldset(substr(linec,cbeg,n-cbeg),i,cbeg)
 
                     if( !empty(c:type) )
@@ -223,17 +224,17 @@ local n,cbeg,c
 
         line:=substr(screen,4*i*(MAXCOL+1)+1,4*(MAXCOL+1))
         linec:=screenchar(line)
-        linea:=screenattr(line)
+        linea:=screen_fg(line)
 
         for n:=1 to MAXCOL+2
         
             if( cbeg==NIL )
-                if( attr(n)==INVERS )
+                if( ATTR(n)==INVERS )
                     cbeg:=n // komponens kezdődik
                 end
 
             else
-                if( attr(n)==NORMAL .or. n==MAXCOL+2 )
+                if( ATTR(n)==NORMAL .or. n==MAXCOL+2 )
                     c:=component(substr(linec,cbeg,n-cbeg),i,cbeg)
                     //c:list
 
@@ -258,16 +259,16 @@ local n,cbeg,c
 
         line:=substr(screen,4*i*(MAXCOL+1)+1,4*(MAXCOL+1))
         linec:=box2chr(screenchar(line),B_VS)
-        linea:=screenattr(line)
+        linea:=screen_fg(line)
 
         for n:=1 to MAXCOL+2
         
             if( cbeg==NIL )
-                if( attr(n)==NORMAL .and. !empty(char(n)) .and. char(n)!=B_VS )
+                if( ATTR(n)==NORMAL .and. !empty(CHAR(n)) .and. CHAR(n)!=B_VS )
                     cbeg:=n // label kezdődik
                 end
             else
-                if( attr(n)==INVERS .or. empty(char2(n)) .or. char(n)==B_VS .or. n==MAXCOL+2  )
+                if( ATTR(n)==INVERS .or. empty(CHAR2(n)) .or. CHAR(n)==B_VS .or. n==MAXCOL+2  )
                     c:=label(substr(linec,cbeg,n-cbeg),i,cbeg)
                     aadd(list,c)
                     cbeg:=NIL // label vége

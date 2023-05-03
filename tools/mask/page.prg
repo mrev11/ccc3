@@ -23,6 +23,7 @@
 
 #include "inkey.ch"
 #include "box.ch"
+#include "page.ch"
 
 
 *************************************************************************
@@ -58,8 +59,6 @@
 #define RESTSCREEN(t,l,b,r,s) restscreen(t,l,b,r,left(s,(b-(t)+1)*(r-(l)+1)*4))
 
 *************************************************************************
-static tot_row:=64            // összes sorok száma
-static tot_col:=160           // összes oszlopok száma
 
 static top_row:=0             // aktuális fölső sor (absz)
 static left_col:=0            // bal oszlop (absz)
@@ -130,16 +129,8 @@ local n:=0, a
         quit
     end
 
-    empchr() //inicializálni kell
-    emprow() //inicializálni kell
-    
-    page:=array(tot_row)
-    for n:=1 to tot_row
-        page[n]:=emprow()
-    next
-
     if( !empty(batch_pgefile) )
-        readpge(batch_pgefile)
+        page:=readpage(batch_pgefile)
 
         if( left(batch_codegen,1)=="*" )
             screen:=savescreen(0,0,maxrow(),maxcol())
@@ -154,13 +145,20 @@ local n:=0, a
             setpos(currow,curcol)
  
         elseif( left(batch_codegen,1)=="S" )
+            // nem hasznaljuk
             PrgOutS(ExtractName(batch_pgefile),page)
 
         elseif( left(batch_codegen,1)=="O" )
+            // nem hasznaljuk
             PrgOutQ(ExtractName(batch_pgefile),page)
         end
 
     else
+        page:=array(TOT_ROW)
+        for n:=1 to TOT_ROW
+            page[n]:=emprow()
+        next
+
         screen:=savescreen(0,0,maxrow(),maxcol())
         currow:=row() 
         curcol:=col()
@@ -178,22 +176,6 @@ function usage()
     ? "Usage: page [[-f]PGEFILE] [-gOUT|-gSAY] [-h|-?|?]"
     quit
     return NIL
-
-*************************************************************************
-function emprow() // egy üres sor (színkóddal)
-static empty_row
-    if( empty_row==NIL )
-        empty_row:=replicate(empchr(),tot_col)
-    end
-    return empty_row
-
-*************************************************************************
-function empchr() // egy üres karakter (színkóddal)
-static empty_chr
-    if( empty_chr==NIL )
-        empty_chr:=x"20000700"
-    end
-    return empty_chr
 
 *************************************************************************
 function screenedit(pagefile)
@@ -394,7 +376,7 @@ function LoadPage(filnam)
 local aFile:=SelectFile("*.pge",,4,23,18,57)
 
     if(!empty(aFile))
-        readpge(filnam:=aFile[1])
+        readpage(filnam:=aFile[1])
         setpos(0,0)
         top_row:=0
         left_col:=0
@@ -404,30 +386,12 @@ local aFile:=SelectFile("*.pge",,4,23,18,57)
 
 
 *************************************************************************
-static function readpge(filnam)
-
-local totpage:=memoread(filnam,.t.)
-local totlen:=len(totpage)
-local begrow, n
-
-    for n:=1 to tot_row
-        if( (begrow:=(n-1)*tot_col*4+1)<totlen )
-            page[n]:=substr(totpage, begrow, tot_col*4)
-        else
-            page[n]:=emprow()
-        end
-    next
-
-    return page
-
-
-*************************************************************************
 function SavePage(file)
 local totpage:=a"", n
 
     if( getFileName(@file,PAGEEXT) )
-         for n:=1 to tot_row
-             totpage+=padr(page[n], tot_col*4)
+         for n:=1 to TOT_ROW
+             totpage+=padr(page[n], TOT_COL*4)
          next
          memowrit(lower(file),totpage) 
     end
@@ -550,7 +514,7 @@ local screen, key1
                 MoveCursor(-1,0)
                 InverseRect(MOVE_RECT)
 
-            elseif(key1==K_DOWN .and. 1+top_row+row()<tot_row-BOTTOM+TOP)
+            elseif(key1==K_DOWN .and. 1+top_row+row()<TOT_ROW-BOTTOM+TOP)
                 InverseRect(MOVE_RECT)
                 if( row()+BOTTOM-TOP >= maxrow() )
                     ScrollUp(maxrow()+1)
@@ -564,7 +528,7 @@ local screen, key1
                 MoveCursor(0,-1)
                 InverseRect(MOVE_RECT)
 
-            elseif(key1==K_RIGHT .and. 1+left_col+col()<tot_col-RIGHT+LEFT)
+            elseif(key1==K_RIGHT .and. 1+left_col+col()<TOT_COL-RIGHT+LEFT)
                 InverseRect(MOVE_RECT)
                 if( col()+RIGHT-LEFT >= maxcol() )
                     ScrollRight( maxcol()+1 )
@@ -595,7 +559,7 @@ local n, pagerow, lrow:=(RIGHT-LEFT+1)*4
     for n:=TOP to BOTTOM
         pagerow:=left(page[n+1], LEFT*4)+;
                  substr(wnd, (n-TOP)*lrow+1, lrow)+;
-                 right(page[n+1], (tot_col-RIGHT-1)*4 )
+                 right(page[n+1], (TOT_COL-RIGHT-1)*4 )
         page[n+1]:=pagerow
     next
     RESTSCREEN(TOP-top_row,LEFT-left_col,;
@@ -610,7 +574,7 @@ local n, pagerow, lrow:=(RIGHT-LEFT+1)*4
     for n:=TOP to BOTTOM
         pagerow:=left(page[n+1], LEFT*4)+;
                  left(emprow(), lrow)+;
-                 right(page[n+1], (tot_col-RIGHT-1)*4 )
+                 right(page[n+1], (TOT_COL-RIGHT-1)*4 )
         page[n+1]:=pagerow
     next
     if( NIL!=(rect:=Clip(rect)) )
@@ -630,7 +594,7 @@ local n, inv, pagerow
         inv:=screenInv(substr(page[n+1], LEFT*4+1, (RIGHT-LEFT+1)*4))
         pagerow:=left(page[n+1], LEFT*4)+;
                  inv+;
-                 right(page[n+1], (tot_col-RIGHT-1)*4 )
+                 right(page[n+1], (TOT_COL-RIGHT-1)*4 )
         page[n+1]:=pagerow
     next
     return NIL
@@ -729,7 +693,7 @@ function deleteLine(n)
 *************************************************************************
 function insertColumn(n)
 local r
-     for r:=1 to tot_row
+     for r:=1 to TOT_ROW
          page[r]:=left(page[r],(n-1)*4)+empchr()+substr(page[r],(n-1)*4+1,len(page[r])-n*4)
      next
      redrawScreen()
@@ -739,7 +703,7 @@ local r
 *************************************************************************
 function deleteColumn(n)
 local r
-     for r:=1 to tot_row
+     for r:=1 to TOT_ROW
          page[r]:=left(page[r],(n-1)*4)+substr(page[r],n*4+1,len(page[r])-n*4)+empchr()
      next
      redrawScreen()
@@ -750,8 +714,8 @@ function ScrollUp(r)
 local screen, n
 local posr:=row(), posc:=col()
      
-     if(r+top_row>=tot_row)
-         r:=tot_row-top_row-1
+     if(r+top_row>=TOT_ROW)
+         r:=TOT_ROW-top_row-1
      end
 
      while(r>maxrow())
@@ -790,8 +754,8 @@ function ScrollRight(c)
 local screen, n
 local posr:=row(), posc:=col()
      
-     if(c+left_col>=tot_col)
-         c:=tot_col-left_col-1
+     if(c+left_col>=TOT_COL)
+         c:=TOT_COL-left_col-1
      end
 
      while(c>maxcol())
@@ -855,7 +819,7 @@ function InsertChar()  // Az aktualis kepernyokaraktert beszurja page-be
 local posr:=row(), posc:=col()
 local pagerow:=left(page[ROW+1], COL*4)+;
                savescreen(posr,posc,posr,posc)+;
-               substr(page[ROW+1], COL*4+1, (tot_col-COL-1)*4 ) 
+               substr(page[ROW+1], COL*4+1, (TOT_COL-COL-1)*4 ) 
     page[ROW+1]:=pagerow
     return pagerow
 

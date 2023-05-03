@@ -31,23 +31,20 @@
 
 ***************************************************************************
 function ver()
-    return "v3.0.0 "
+    return "3.0.0 "
 
 *************************************************************************
 function main(*)
 
 local p:={*},i,w
-local pge,pgestr,n
+local page,n
 local pgefile,wrofile
-local sima:=.f.
 local kellPict:=.f.
 local srTomb
 
     for i:=1 to len(p)
-        p[i]::=lower
         if( left(p[i],1)=='-' )
             w:=substr(p[i],2)
-            sima:=sima .or. 's'$lower(w)
             kellPict:=kellPict .or. 'p'$lower(w)
             if( w=="r" )
                 w:=memoread(p[i+1])
@@ -67,34 +64,14 @@ local srTomb
     next
 
     if (empty(pgefile))
-        ?? "page->wro konverzios program. PGE2WRO "+ver()+", (c) Csiszar Levente, 1995"
-        ?  "Hasznald: pge2wro [-p] [-r rendFile] -pge-file [wro-file]"
-        ?  "-p: Hozzaadja a picture-okat is."
-        ?  "-r rendFile : A rendezettseget leiro file neve."
-        ?  "              Az itt felsorolt mezonevek a felsorolas"
-        ?  "              sorrendjeben fognak szerepelni a getlist-ben."
-        ?  "              Az elemeket vesszovel kell elvalasztani."
+        ?? "PGE2WRO "+ver()+", (C) L. Csiszár, 1995"
+        ?  "Usage: pge2wro [-p] [-r ord-file] -pge-file [wro-file]"
         ?
         quit
     end
 
     pgefile:=addEKieg(pgefile,".pge")
-    pgestr:=memoread(pgefile,.t.)
-    
-    if( len(pgestr)%4!=0  )
-        pgestr:=left(pgestr,len(pgestr)-(len(pgestr)%4))
-    end
-    
-    if( !len(pgestr)==PGE_MAXROW*PGE_MAXCOL*4 )
-        ? pgefile+": incompatible size"
-        ?
-        quit
-    end
-    
-    pge:=array(PGE_MAXROW)
-    for n:=1 to PGE_MAXROW
-        pge[n]:=substr(pgestr,(n-1)*PGE_MAXCOL*4+1,PGE_MAXCOL*4)
-    next
+    page:=readpage(pgefile)
 
     if (empty(wrofile))
         wrofile:=addKieg(pgefile,".wro")
@@ -102,7 +79,7 @@ local srTomb
         wroFile:=addEKieg(wrofile,".wro")
     end
 
-    wro2Out(pge,wrofile,kellPict,srTomb)
+    wro2Out(page,wrofile,kellPict,srTomb)
 
 
 *************************************************************************
@@ -190,8 +167,6 @@ return CRLF+;
 
 
 *************************************************************************
-//kodgeneralas (mindig a korabbi !sima modban)
-*************************************************************************
 function Wro2Out(page,file,kellPict,srTomb)
 
 #define POS(x,y)  "   @"+str(x-1,3)+","+str(y-1,3)
@@ -211,12 +186,8 @@ local maxhossz
     for r:=1 to PGE_MAXROW
         rSection++
 
-        // szinkodok es karakterek szetvalasztasa
-        color:=array(PGE_MAXCOL)
-        for c:=1 to PGE_MAXCOL
-            color[c]:=page[r][c*4-1..c*4]::bin2i // szinkodok tombje [3..4],[7..8]...
-        next
         line:=screenchar(page[r]) // szinkodok nelkuli sor
+        color:=screen_bg(page[r]) // szinkodok: normal=0(w/n), kiemelt=7(n/w),
 
         if (left(line,1)=="#") // Section
             if (section!=nil)
@@ -248,7 +219,7 @@ local maxhossz
         while( c<=PGE_MAXCOL )
 
             c1:=c // Kiemelt szin: valtozo
-            while( c<=PGE_MAXCOL .and. color[c]>=16 )
+            while( c<=PGE_MAXCOL .and. asc(color[c])==7 )
                 token+=substr(line,c,1)
                 c++
             end
@@ -283,7 +254,7 @@ local maxhossz
             end
 
             c1:=c // Nem kiemelt szin: szovegkonstans
-            while( c<=PGE_MAXCOL .and. color[c]<16 .and. !empty(substr(line,c,1) )  )
+            while( c<=PGE_MAXCOL .and. asc(color[c])==0 .and. !empty(substr(line,c,1) )  )
                 token+=substr(line,c,1)
                 c++
             end
@@ -293,7 +264,7 @@ local maxhossz
             end
 
             c1:=c // Ures resz: atugorja
-            while( c<=PGE_MAXCOL .and. color[c]<16 .and. empty(substr(line,c,1)) )
+            while( c<=PGE_MAXCOL .and. asc(color[c])==0 .and. empty(substr(line,c,1)) )
                 c++
             end
         end

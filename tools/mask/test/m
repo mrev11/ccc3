@@ -1,20 +1,10 @@
 #!/bin/bash
 
+rm -f   *.say *.pge *.wro *.out
 
-rm -f  *.out *.say *.pge *.wro
-
-# megszunt a kodgenerelas
-# mask    proba -gT   ; mv proba.say    proba-mask-trad.say
-# mask    proba -gO   ; mv proba.say    proba-mask-obj.say
-
-msk2say proba       ; mv proba.say    proba-msk2say.say
-
-msk2pge proba
-msk2pge -u -rq proba proba-ur.pge
-
-page proba.pge -gO  ; mv proba.out    proba-page.out
-page proba.pge -gS  ; mv proba.say    proba-page.say
-
-pge2wro proba.pge
-
-
+ msk2say.exe         proba       ; mv proba.say     proba__m.say
+ msk2pge.exe         proba       ; mv proba.pge     proba___.pge
+ msk2pge.exe  -r     proba       ; mv proba.pge     proba__r.pge
+ pge2wro.exe         proba___    #                  proba___.wro
+ pge2out.exe  -gOUT  proba___    #                  proba___.out
+ pge2out.exe  -gSAY  proba___    ; mv proba___.say  proba__p.say

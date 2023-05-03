@@ -45,9 +45,9 @@
 
 #define BR_SLOTS        21
 
-#define FOOT         if(empty(browse:cargo[BR_FOOTING]),0,1) //miért volna 2?
+#define FOOT         if(empty(browse:cargo[BR_FOOTING]),0,1) //miert volna 2?
 #define BROWSERECT   browse:nTop-5,browse:nLeft-1,browse:nBottom+FOOT+1,browse:nRight+1
-#define STEPBYSTEP   while(inkey()!=0);end //a browse lassítására
+#define STEPBYSTEP   while(inkey()!=0);end //a browse lassitasara
 
 static looplevel:=0
 
@@ -86,30 +86,30 @@ local browse, n
     browse:cargo[BR_SCREEN]:=savescreen(BROWSERECT)
 
 
-    browse:cargo[BR_MENU]:={}          // brwMenu() menüstruktúra
+    browse:cargo[BR_MENU]:={}          // brwMenu() menustruktura
     browse:cargo[BR_SHORTCUT]:=""      
-    browse:cargo[BR_CURRENT]:=1        // brwCurrent() aktulis menü
-    browse:cargo[BR_MENUNAME]:=""      // brwMenuName() a menü neve
+    browse:cargo[BR_CURRENT]:=1        // brwCurrent() aktulis menu
+    browse:cargo[BR_MENUNAME]:=""      // brwMenuName() a menu neve
 
-    browse:cargo[BR_ESCAPE]:={||.f.}   // brwEscape() teendők ESC-re
-    browse:cargo[BR_APPLYKEY]:={||NIL} // brwApplyKey() billentyű figyelés
-    browse:cargo[BR_ONSTABLE]:=NIL     // brwOnstable() stabilizáció után
+    browse:cargo[BR_ESCAPE]:={||.f.}   // brwEscape() teendok ESC-re
+    browse:cargo[BR_APPLYKEY]:={||NIL} // brwApplyKey() billentyu figyeles
+    browse:cargo[BR_ONSTABLE]:=NIL     // brwOnstable() stabilizacio utan
 
     browse:cargo[BR_VISIBLE]:=.f.      // brwShow/Hide() flag
     browse:cargo[BR_FRAMETYPE]:=1      // brwSet/KillFocus() szimpla/dupla keret
-    browse:cargo[BR_FRAMECOLOR]:=1     // keret szín index
-    browse:cargo[BR_HIGHLIGHT]:=.t.    // invertálja-e az aktuális sor egészét
-    browse:cargo[BR_CAPTION]:=NIL      // brwCaption() caption szöveg
+    browse:cargo[BR_FRAMECOLOR]:=1     // keret szin index
+    browse:cargo[BR_HIGHLIGHT]:=.t.    // invertalja-e az aktualis sor egeszet
+    browse:cargo[BR_CAPTION]:=NIL      // brwCaption() caption szoveg
     browse:cargo[BR_MINIMIZE]:=NIL     // brwMax/Minimize()
-    browse:cargo[BR_MOVEFLAG]:=.f.     // ScrollLock ablakmozgatás
+    browse:cargo[BR_MOVEFLAG]:=.f.     // ScrollLock ablakmozgatas
 
     browse:cargo[BR_ARRAY]:=NIL        // browse-olt array
-    browse:cargo[BR_ARRAYPOS]:=1       // aktuális tömbindex
+    browse:cargo[BR_ARRAYPOS]:=1       // aktualis tombindex
     
-    browse:cargo[BR_POPUP]:=.f.        // Popup menük automatikus nyitása
-    browse:cargo[BR_MENUROW]:=0        // Popup menük pozíciója
-    browse:cargo[BR_MENUCOL]:=0        // Popup menük pozíciója
-    browse:cargo[BR_FOOTING]:={}       // A left, center és right footing text
+    browse:cargo[BR_POPUP]:=.f.        // Popup menuk automatikus nyitasa
+    browse:cargo[BR_MENUROW]:=0        // Popup menuk pozicioja
+    browse:cargo[BR_MENUCOL]:=0        // Popup menuk pozicioja
+    browse:cargo[BR_FOOTING]:={}       // A left, center es right footing text
 
     browse:configure()
 
@@ -128,9 +128,9 @@ local browse, nKey:=0
         browse:=arg       
 
     elseif( valtype(arg)=="B" )
-        // az argumentum egy kódblokk, ami a browse-t adja,
-        // pl. {|| TopWindow()}, a kódblokk mindig újra 
-        // kiértékelődik, így a browse ablak cserélődhet
+        // az argumentum egy kodblokk, ami a browse-t adja,
+        // pl. {|| TopWindow()}, a kodblokk mindig ujra 
+        // kiertekelodik, igy a browse ablak cserelodhet
 
         browse:=eval(arg) 
     end
@@ -139,9 +139,9 @@ local browse, nKey:=0
 
         if( valtype(arg)=="B" )
             browse:=eval(arg) 
-            // a billentyű előtétben cserélődhet a browse
-            // így lehet, hogy ez már egy másik browse,
-            // és nem az, amelyikre ApplKey() futott !!!
+            // a billentyu elotetben cserelodhet a browse
+            // igy lehet, hogy ez mar egy masik browse,
+            // es nem az, amelyikre ApplKey() futott !!!
         end
 
         nKey:=0
@@ -152,11 +152,11 @@ local browse, nKey:=0
                 if(browse:stable)
                     brwHighlight(browse)
                 end
-                nKey:=inkey()   // nem stabil - várakozás nélkül
+                nKey:=inkey()   // nem stabil - varakozas nelkul
 
             elseif( 0==(nKey:=inkey(5)) )
 
-                //már stabil - 5 sec várakozással
+                //mar stabil - 5 sec varakozassal
             
                 if( valtype(browse:cargo[BR_ONSTABLE])=="B" )
                     eval(browse:cargo[BR_ONSTABLE],browse) 
@@ -244,18 +244,18 @@ function brwFooting(browse, footing)
     elseif( empty(footing) )
 
         if( !empty(browse:cargo[BR_FOOTING]) )
-            // ha korábban nem volt üres, 
-            // akkor most megnöveljük,
-            // hogy a mérete ne változzon
+            // ha korabban nem volt ures, 
+            // akkor most megnoveljuk,
+            // hogy a merete ne valtozzon
             browse:nBottom:=browse:nBottom+1
             browse:footSep:=""
         end
 
     elseif( empty(browse:cargo[BR_FOOTING]) )
 
-        // ha korábban üres volt, 
-        // akkor most összehúzzuk,
-        // hogy a mérete ne változzon
+        // ha korabban ures volt, 
+        // akkor most osszehuzzuk,
+        // hogy a merete ne valtozzon
         browse:nBottom:=browse:nBottom-1
     
         if( empty(browse:footSep) )
@@ -367,34 +367,8 @@ local color3
 
 static function screenchangeattr(scr,color)
 local ch:=scr::screenchar
-local a:=devoutbuffer("@",color)
-    a::=substr(len(a)/2+1) // 1 vagy 2 bajtos attributum
-    return screencompose(ch,replicate(a,len(ch)))
-
-
-//korábban síma textben volt tárolva a browse tartalma
-//most (1998.05.02) viszont savescreen formátumban
-//azért, hogy az oszlopok színe is kezelhető legyen
-
-
-#ifdef KORABBIVALTOZAT
-function brwHighlight(browse)
-local nRow, nLeft, nRight
-local cWindow, cText, cHighLight, cColor
-
-    if( browse:cargo[BR_HIGHLIGHT] .and. browse:cargo[BR_VISIBLE] )
-        nRow:=browse:nTop+browse:rowPos+1
-        nLeft:=browse:nLeft
-        nRight:=browse:nRight
-        cWindow:=savescreen(nRow, nLeft, nRow, nRight)
-        cText:=screenchar(cWindow)
-        cHighLight:=LogColor(browse:colorSpec, 2)
-        cColor:=setcolor(cHighLight)
-        @ nRow, nLeft say cText
-        setcolor(cColor)
-    end
-    return browse
-#endif
+local at:=devoutbuffer("@",color)::screenattr
+    return screencompose(ch,replicate(at,len(ch)))
 
 
 ************************************************************************
@@ -414,8 +388,8 @@ local screen
 
 ************************************************************************
 function brwShow(browse, flag)
-// flag mutatja, hogy elég-e a browse-t visszaállítani restscreen()-nel,
-// vagy teljesen újra kell rajzolni, mert pl. a  mérete megváltozott.
+// flag mutatja, hogy eleg-e a browse-t visszaallitani restscreen()-nel,
+// vagy teljesen ujra kell rajzolni, mert pl. a  merete megvaltozott.
 local screen
 
    if( !browse:cargo[BR_VISIBLE] )
@@ -608,14 +582,14 @@ local n
             browse:pageUp()
             STEPBYSTEP
 
-         // Ha a browse kurzor a top-on áll, akkor a K_UP, K_PGUP billentyűk 
-         // feldolgozása túl sokáig tart (különösen filterezéskor). A K_UP
-         // és K_PGUP-ok billentyű-pufferbeli felgyűlését akadályozza meg a
-         // keyboard("  ") sor, ha a typeahead puffer hossza 4-nél kisebb. 
-         // A clear typeahead utasítás nem volna jó, hiszen utána
-         // azonnal újra megtelhet a puffer, így viszont egyszerűen
-         // nincs a pufferben hely. Feltételezzük, hogy a browse menu
-         // a blank leütésekre érzéketlen.
+         // Ha a browse kurzor a top-on all, akkor a K_UP, K_PGUP billentyuk 
+         // feldolgozasa tul sokaig tart (kulonosen filterezeskor). A K_UP
+         // es K_PGUP-ok billentyu-pufferbeli felgyuleset akadalyozza meg a
+         // keyboard("  ") sor, ha a typeahead puffer hossza 4-nel kisebb. 
+         // A clear typeahead utasitas nem volna jo, hiszen utana
+         // azonnal ujra megtelhet a puffer, igy viszont egyszeruen
+         // nincs a pufferben hely. Feltetelezzuk, hogy a browse menu
+         // a blank leutesekre erzeketlen.
 
         case nKey == K_CTRL_PGUP
             browse:refreshCurrent()
@@ -666,7 +640,7 @@ local n
             browse:refreshCurrent()
             browse:goBottom()
             STEPBYSTEP
-            //browse:end()  // eredetileg: sor vége
+            //browse:end()  // eredetileg: sor vege
 
         case nKey == K_CTRL_LEFT
             browse:panLeft()
@@ -751,9 +725,9 @@ local popblk
 
     for n:=1 to len(ptext)
         if( ptext[n]!=sepchr )
-            //normál item
+            //normal item
         else
-            //elválasztó, méretre vágjuk
+            //elvalaszto, meretre vagjuk
             ptext[n]:=replicate(sepchr,w)
         end
     next
@@ -769,11 +743,11 @@ local popblk
         choice:=achoice(posr+2,posc+1,posr+h+1,posc+w,ptext,,,choice)
 
         // A keyboard bufferbe csak 255 alatti karaktereket
-        // lehet betenni, jelen implementációban K_LEFT-nek és
-        // K_RIGHT-nak kiterjesztett (255 feletti) kódja van.
-        // Az applykey függvény K_LEFT mellett figyeli K_CTRL_S-et
-        // is, és egyformán reagál rá. Az eredeti Clipper-ben
-        // K_LEFT és K_CTRL_S egyforma értékű
+        // lehet betenni, jelen implementacioban K_LEFT-nek es
+        // K_RIGHT-nak kiterjesztett (255 feletti) kodja van.
+        // Az applykey fuggveny K_LEFT mellett figyeli K_CTRL_S-et
+        // is, es egyforman reagal ra. Az eredeti Clipper-ben
+        // K_LEFT es K_CTRL_S egyforma erteku
        
         if( lastkey()==K_LEFT .and. 1<curr )
             //keyboard(chr(K_LEFT)) // 255 felett 
@@ -811,7 +785,7 @@ local popblk
                     choice:=chnxt
                 end
             else
-                //szeparátor
+                //szeparator
             end
          
         else  
@@ -854,9 +828,9 @@ local choblk
 
     for n:=1 to len(ptext)
         if( ptext[n]!=sepchr )
-            //normál item
+            //normal item
         else
-            //elválasztó, méretre vágjuk
+            //elvalaszto, meretre vagjuk
             ptext[n]:=replicate(sepchr,w)
         end
     next
@@ -896,11 +870,11 @@ local choblk
 ************************************************************************
 static function WriteMenu(browse, nMove)
 
-local stColor:=LogColor(browse:colorSpec,1)      // normál szín
-local hiColor:=LogColor(browse:colorSpec,2)      // kiemelt szín
-local aMenu:=browse:cargo[BR_MENU]               // menü array
-local nMenuLen:=len(aMenu)                       // menü hossz
-local nCurr:=browse:cargo[BR_CURRENT]            // menü sorszáma
+local stColor:=LogColor(browse:colorSpec,1)      // normal szin
+local hiColor:=LogColor(browse:colorSpec,2)      // kiemelt szin
+local aMenu:=browse:cargo[BR_MENU]               // menu array
+local nMenuLen:=len(aMenu)                       // menu hossz
+local nCurr:=browse:cargo[BR_CURRENT]            // menu sorszama
 local mtxt:=" "+browse:cargo[BR_MENUNAME]+" "
 local n,hipos,hilen,mhlp
 

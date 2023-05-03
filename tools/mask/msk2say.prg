@@ -27,11 +27,10 @@
 #define MAXROW          f_maxrow()
 #define MAXCOL          f_maxcol()
 
-#define NORMAL          7
-#define INVERS          112
-
-#define attr(n)         asc(substr(linea,n,1))
-#define char(n)         substr(linec,n,1)
+#define CHAR(n)         (substr(linec,n,1))
+#define ATTR(n)         (substr(linea,n,1)::asc)  // fg
+#define NORMAL          7   // white
+#define INVERS          0   // black
 
 static mskname
 
@@ -110,10 +109,7 @@ local code
 
     mskname:=fname(sayfile)
 
-    mskstr:=memoread(mskfile,.t.)
-    if( len(mskstr)%4!=0  )
-        mskstr:=left(mskstr,len(mskstr)-(len(mskstr)%4))
-    end
+    mskstr:=readmask(mskfile)
 
     if( len(mskstr)==CALCSIZE(size80x25) )
         termsize:=size80x25
@@ -153,16 +149,16 @@ local cw:=screencell_width()
 
         line:=substr(screen,cw*rw*MAXCOL+1,cw*MAXCOL)
         linec:=screenchar(line)
-        linea:=screenattr(line)
+        linea:=screen_fg(line)
 
         for cl:=1 to MAXCOL+1
         
             if( cbeg==NIL )
-                if( attr(cl)==INVERS )
+                if( ATTR(cl)==INVERS )
                     cbeg:=cl // komponens kezdodik
                 end
             else
-                if( attr(cl)==NORMAL .or. cl==MAXCOL+1 )
+                if( ATTR(cl)==NORMAL .or. cl==MAXCOL+1 )
                     comp:=invNew(linec[cbeg..cl-1],rw,cbeg-1,rw,cl-2)
                     aadd(inv,comp)
                     cbeg:=NIL // komponenes vege
@@ -179,16 +175,16 @@ local cw:=screencell_width()
 
         line:=substr(screen,cw*rw*MAXCOL+1,cw*MAXCOL)
         linec:=screenchar(line)
-        linea:=screenattr(line)
+        linea:=screen_fg(line)
 
         for cl:=1 to MAXCOL+1
         
             if( cbeg==NIL )
-                if( attr(cl)==NORMAL .and. !empty(char(cl)) )
+                if( ATTR(cl)==NORMAL .and. !empty(CHAR(cl)) )
                     cbeg:=cl // label kezdodik
                 end
             else
-                if( attr(cl)==INVERS .or. cl==MAXCOL+1 )
+                if( ATTR(cl)==INVERS .or. cl==MAXCOL+1 )
                     comp:=sayNew(linec[cbeg..cl-1],rw,cbeg-1)
                     aadd(say,comp)
                     cbeg:=NIL // komponenes vege

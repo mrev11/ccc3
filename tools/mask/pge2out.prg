@@ -19,16 +19,15 @@
  */
 
 
-// VERZIO "2.0" //2016.11.25 átírva CCC3-ra
+// VERZIO "2.0" //2016.11.25 atirva CCC3-ra
+
+#include "page.ch"
 
 #define PAGEEXT    ".pge"
 
 *************************************************************************
 
-static tot_row:=64            // összes sorok száma
-static tot_col:=160           // összes oszlopok száma
-
-static page                   // a teljes képet soronként tároló tömb
+static page                   // a teljes kepet soronkent tarolo tomb
 
 static batch_pgefile:=""
 static batch_codegen:="*"
@@ -84,16 +83,8 @@ local n:=0, a
     end
 
 
-    empchr() //inicializálni kell
-    emprow() //inicializálni kell
-    
-    page:=array(tot_row)
-    for n:=1 to tot_row
-        page[n]:=emprow()
-    next
-
     if( !empty(batch_pgefile) )
-        readpge(batch_pgefile)
+        page:=readpage(batch_pgefile)
  
         if( left(batch_codegen,1)=="S" )
             PrgOutS(ExtractName(batch_pgefile),page)
@@ -108,40 +99,6 @@ local n:=0, a
 function usage()
     ? "Usage: page [[-f]PGEFILE] [-gOUT|-gSAY] [-H|-?|?]"
     quit
-
-
-*************************************************************************
-static function readpge(filnam)
-
-local totpage:=memoread(filnam,.t.)
-local totlen:=len(totpage)
-local begrow, n
-
-    for n:=1 to tot_row
-        if( (begrow:=(n-1)*tot_col*4+1)<totlen )
-            page[n]:=substr(totpage, begrow, tot_col*4)
-        else
-            page[n]:=emprow()
-        end
-    next
-
-    return page
-
-*************************************************************************
-function emprow() // egy üres sor (színkóddal)
-static empty_row
-    if( empty_row==NIL )
-        empty_row:=replicate(empchr(),tot_col)
-    end
-    return empty_row
-
-*************************************************************************
-function empchr() // egy üres karakter (színkóddal)
-static empty_chr
-    if( empty_chr==NIL )
-        empty_chr:=x"20000700"
-    end
-    return empty_chr
 
 
 *************************************************************************

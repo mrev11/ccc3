@@ -1,8 +1,5 @@
 #!/bin/bash
-
-( cd msk2say && m )
-
-bapp_unixc.b  -xmask -xpage  @parfile.bld
-bapp_unix_.b  -xmsk2pge -xpge2wro -xpge2out  @parfile.bld
+bapp_unixc.b    -xmask -xpage  @parfile.bld
+bapp_unix_.b    -xmsk2say -xmsk2pge -xpge2wro -xpge2out  @parfile.bld
 
 

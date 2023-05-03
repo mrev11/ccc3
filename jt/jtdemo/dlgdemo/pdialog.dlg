@@ -1,4 +1,4 @@
-//MSK2DLG 0.9.00
+//MSK2DLG 1.0.00
 
 class pdialog(jtdialog)
     method initialize

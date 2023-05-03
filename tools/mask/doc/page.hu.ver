@@ -1,0 +1,38 @@
+20121-02-19 
+  mask es tarsai felulvizsgalva:
+  (megjegyzes: az msk es pge fajlokban hagyomanyosan CWI kodolas van!)
+  page.exe forrasaban a dobozrajzolok atirva hexa kodokra (mint a mask-ban); 
+  msk2pge.exe forrasaban a dobozrajzolok atirva box szimbolumokra; 
+  (megjegyzes: ezekben hibas volt a B_DS1 rajzolasa);
+  A kodgeneratorok tiszta Latin2-t keszitenek. Ennek erdekeben:
+    1) a prg-kben CWI mindenhol atkonvertalva Latin2-re;
+    2) page.exe beolvaskor CWI-rol Latin2-re konvertal;
+    3) pge2wro.exe beolvaskor CWI-rol Latin2-re konvertal;  
+  wro demo atirva magyarra, hogy az ekezetes betuk latszodjanak;
+  mask -G,-F opcioi visszaallitva -g,-f-re;
+  nem mukodo nyomtatasok kiszedve;
+
+2001.11.10 -- 1.06  
+  emprow tot_col*2 hosszú
+
+2001.05.08 -- 1.05  
+  inicializálás javítva, kis/nagybetû megtartva
+
+2000.01.26 -- 1.04  
+  batch mód nem törli a képernyõt
+
+2000.01.12 -- 1.03
+  Portolva UNIX-ra, egységes kódrendszer
+
+1999.05.20 -- 1.02
+  PRG2PPO-val fordítva, inkompatibilitások szûrve
+
+1999.02.09 -- 1.01
+
+  ExtractName javítva, hogy ilyen bemenettel is mûködjön:
+
+      page ..\penzbizo\printker -gO
+  
+  az eredmény printker.out ..\penzbizo\-ban keletkezik.
+   
+  

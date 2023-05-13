@@ -124,10 +124,13 @@ local cKey
     case ( nKey==K_UP )
         oGet:exitState:=GE_UP
 
-//    case ( nKey==K_SH_TAB )
-//        oGet:exitState:=GE_UP
-
     case ( nKey==K_DOWN )
+        oGet:exitState:=GE_DOWN
+
+    case ( nKey==K_CTRL_UP )
+        oGet:exitState:=GE_UP
+
+    case ( nKey==K_CTRL_DOWN )
         oGet:exitState:=GE_DOWN
 
     case ( nKey==K_TAB )

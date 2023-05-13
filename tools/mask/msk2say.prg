@@ -239,6 +239,11 @@ local code:="//msk2say "+ver()+eol
     code+="    mskColorGet() //push"+eol
     for n:=1 to len(inv)
         c:=inv[n]
+        if( c:text::empty )
+            ? "ERROR inverse area without id"
+            ?
+            quit
+        end
         t:=c:text[1]
         if( t::isalpha );  code+="    mskGet       "+parlist(c)+eol
         elseif( t=='/' );  code+="    mskAltButton "+parlist(c)+eol
@@ -247,6 +252,7 @@ local code:="//msk2say "+ver()+eol
         elseif( t=='(' );  code+="    mskRadio     "+parlist(c)+eol
         elseif( t=='<' );  code+="    mskPushButton"+parlist(c)+eol
         elseif( t=='#' );  code+="    mskBrowse    "+parlistx(c)+eol
+        elseif( t=='+' );  code+="    mskTextArea  "+parlistx(c)+eol
         else            ;  code+="    mskGet       "+parlist(c)+eol  //valami mindenekeppen kell
         end        
     next

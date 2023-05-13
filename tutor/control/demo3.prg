@@ -19,11 +19,11 @@
  */
 
 #include "box.ch"
-#include "browse_in_mask.say"
+#include "browse.say"
 
 *************************************************************************************************
 function main()
-    browse_in_mask({|g|load(g)},{|g|setcursor(1),readmodal(g)},{|g|store(g)})
+    browse({|g|load(g)},{|g|setcursor(1),readmodal(g)},{|g|store(g)})
     ?
 
 

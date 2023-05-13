@@ -54,7 +54,7 @@ local result
             while(.t.)
                 key:=inkey(0)
 
-                if(key==K_UP)
+                if(key==K_UP .or. key==K_CTRL_UP)
                     get:exitState:=GE_UP
                     exit
 
@@ -62,7 +62,7 @@ local result
                     get:exitState:=GE_UP
                     exit
 
-                elseif(key==K_DOWN)
+                elseif(key==K_DOWN .or. key==K_CTRL_DOWN)
                     get:exitState:=GE_DOWN
                     exit
 

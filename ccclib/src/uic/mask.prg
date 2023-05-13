@@ -104,6 +104,7 @@ function mskSay(msk,r,c,s)
 *************************************************************************
 function mskGet(msk,r,c,var,name)
 local get:=getNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
+    get:picture:=replicate("X",len(get:varget))
     aadd(msk[MSK_GETLIST],get)   
     return get
 
@@ -148,6 +149,13 @@ function mskBrowse(msk,t,l,b,r,var,name)
 local brw:=getbrwNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LEFT]+r,{|x|if(x==NIL,var,var:=x)},name)
     aadd(msk[MSK_GETLIST],brw)   
     return brw
+
+
+*************************************************************************
+function mskTextArea(msk,t,l,b,r,var,name)
+local area:=textareaNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LEFT]+r,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],area)   
+    return area
 
 
 *************************************************************************
@@ -252,5 +260,25 @@ local col:=col()
     aeval(getlist,{|g|g:display})
     setpos(row,col)
     
+
+*************************************************************************
+function mskTop(msk)
+    return msk[MSK_TOP]
+
+function mskLeft(msk)
+    return msk[MSK_LEFT]
+
+function mskBottom(msk)
+    return msk[MSK_BOTTOM]
+
+function mskRight(msk)
+    return msk[MSK_RIGHT]
+
+function mskWidth(msk)
+    return msk[MSK_RIGHT]-msk[MSK_LEFT]+1
+
+function mskHeight(msk)
+    return msk[MSK_BOTTOM]-msk[MSK_TOP]+1
+
 
 *************************************************************************

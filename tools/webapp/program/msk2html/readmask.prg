@@ -3,6 +3,11 @@
 ******************************************************************************************
 function ReadMask(filnam)
 local x:=memoread(filnam,.t.)
+    if( empty(x) )
+        ? "ERROR file not found:",filnam
+        ?
+        quit
+    end
     return compat(x)
 
 

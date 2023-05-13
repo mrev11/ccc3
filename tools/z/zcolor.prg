@@ -28,11 +28,7 @@ static c
         elseif( !empty(c:=getenv("ZCOLOR_0")) )
             //OK
         else
-          #ifdef _CCC3_
             c:="w/n"
-          #else
-            c:="w/b"
-          #endif
         end
     end
     return c
@@ -46,11 +42,7 @@ static c
         elseif( !empty(c:=getenv("ZCOLOR_1")) )
             //OK
         else
-          #ifdef _CCC3_
-            c:="n/233,w+/gb"
-          #else
-            c:="n/gb+,w+/gb"
-          #endif
+            c:="n/rg,w+/n+"
         end
     end             
     return c
@@ -64,11 +56,7 @@ static c
         elseif(  !empty(c:=getenv("ZCOLOR_2")) )
             //OK
         else
-          #ifdef _CCC3_
-            c:="n/221"
-          #else
-            c:="b/w"
-          #endif
+            c:="w+/n+"
         end
     end
     return c
@@ -84,11 +72,7 @@ static c
         elseif( !empty(c:=getenv( "ZCOLOR_3")) )
             //OK
         else
-          #ifdef _CCC3_
-            c:="233/n"
-          #else
-            c:="gb+/n"
-          #endif
+            c:="rg/n"
         end
     end
     return c

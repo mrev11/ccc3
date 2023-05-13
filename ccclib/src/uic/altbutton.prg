@@ -197,10 +197,10 @@ static function appkey(oGet,nKey)
 local n
 
     do case
-    case ( nKey==K_UP )
+    case ( nKey==K_UP .or. nKey==K_CTRL_UP )
         oGet:exitState:=GE_UP
 
-    case ( nKey==K_DOWN )
+    case ( nKey==K_DOWN .or. nKey==K_CTRL_DOWN )
         oGet:exitState:=GE_DOWN
 
     case ( nKey==K_TAB )

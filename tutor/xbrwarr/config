@@ -1,7 +1,7 @@
 
-#BRWCOLOR0=r/w
-#BRWCOLOR0=w/n,w/gb,w/gb,n/w
-BRWCOLOR0=w/112,,w+/022,w+/012
+#BRWCOLOR=r/w
+BRWCOLOR=w/n,,n/044,w+/022
+#BRWCOLOR=w/112,,w+/022,w+/012
 
 
 # szinek:

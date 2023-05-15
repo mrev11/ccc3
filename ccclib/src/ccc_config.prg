@@ -30,7 +30,7 @@ local hash,cnf,n,pos,key,value
         for n:=1 to len(cnf)
             if( (pos:=at('=',cnf[n]))>0 )
                 key:=cnf[n][1..pos-1]::alltrim
-                value:=cnf[n][pos+1..]
+                value:=cnf[n][pos+1..]::alltrim
                 if( !key[1]=="#"  )
                     hash[key]:=env(value)
                 end

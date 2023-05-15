@@ -53,13 +53,20 @@ static looplevel:=0
 
 ************************************************************************
 function brwColor()
-local key:="BRWCOLOR"+looplevel::str::alltrim
-local value:=ccc_config(key)
-    if(value==NIL)
-        value:=setcolor()
-    else
-        value::=strtran(" ","")
+local level,value
+    for level:=looplevel to 0 step -1
+        value:=ccc_config("BRWCOLOR"+level::str::alltrim)
+        if( value!=NIL )
+            exit
+        end
     end
+    if( value==NIL )
+        value:=ccc_config("BRWCOLOR")
+    end
+    if( value==NIL )
+        value:=setcolor()
+    end
+    //? "BRWCOLOR",looplevel,level,value
     return value
 
 

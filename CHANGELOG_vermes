@@ -1,3 +1,8 @@
+2023-05-15 brwColor() konfiguracio valtozott:
+  Ha a brwloop()-ok melyebben vannak egymasba agyazva,
+  mint ahany szin konfiguralva van, akkor az utolso konfiguralt 
+  szint valasztja (nem pedig a default szint);
+  
 2023-05-15 
   szinek megadasa kozvetlenul ANSI color indexekkel;
   pelda: w+/#160 (piros alapon feher, ugyanaz mint w+/400);

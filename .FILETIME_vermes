@@ -1,8 +1,12 @@
-fedbe1ef7ab60947fc2dcc430ab8f90e79f3db0a 2023051512:48:01-UTC ./CHANGELOG_vermes
+f1d47d41f1dc1439795a6432bf8364171b4fc11e 2023051513:40:52-UTC ./CHANGELOG_vermes
+d6d80c5296aeb36c1a553525e8907c2fa55ae455 2023051513:30:50-UTC ./ccclib/src/color.cpp
+b29af9fef6c7f0518e9db2ffb7be6af3004d71d6 2023051513:28:30-UTC ./terminal/common/ansi_colors/log-ext_to_leg
+204a2766a765ca1c43714dbe684f6ebae73e3fe1 2023051513:12:39-UTC ./terminal/common/ansi_colors/draw_ansi_color.prg
+b2541a947241b8c56cca7b232cd95cd32d3e19de 2023051512:59:39-UTC ./terminal/common/ansi_colors/m.msys2
+c623c2d5886c520b19aec6bbe059195458a687fd 2023051512:57:17-UTC ./jt/jterminal/jterminal.jar
+5486a5b77806b04db4b1847bc8730ddb5ef51af0 2023051512:57:17-UTC ./log-install
 474a2d9b2421d108334b8563cc81033556c7f0a3 2023051512:41:36-UTC ./usr/bin/linux/jeed
 35415c661d8f5247060abace15b525daf8c8498e 2023051512:41:29-UTC ./tools/sql2/util/jeed/jeed.prg
-0441c3b43bd2859c8d22e53f04ab2bfa20bec3a4 2023051512:29:15-UTC ./jt/jterminal/jterminal.jar
-1600105b58892354faf0c4c8c2ea4e419a0c2f63 2023051512:29:15-UTC ./log-install
 97c6f2fb0f6cfabe6b15d156d363c98919e89d67 2023051512:29:08-UTC ./usr/bin/linux/websrv
 67161498e3f1d8ea0d0a144b130d81f22cf30fc2 2023051512:29:06-UTC ./usr/bin/linux/msk2html
 236bb59b7b0763419382a86ebda90f9affa82e0a 2023051512:28:36-UTC ./usr/bin/linux/xstart
@@ -13,9 +17,7 @@ a93cb873e89e40060dc7469ae8fb7502b1dc7162 2023051512:27:22-UTC ./tools/sql2/util/
 3abccf606c353ceab45ab258c776ff66b60ba639 2023051512:06:38-UTC ./tools/sql2/m.msys2
 3951e0031bca0ab0f72e0dff73ecdfc97146db9f 2023051512:05:46-UTC ./tools/sql2/m.bat
 10874269f5769f6734d159ea0b41388c47b8125e 2023051512:04:00-UTC ./tools/sql2/m
-fd7576e2bf2b4812450c719b8637b5c3016e9c81 2023051511:54:34-UTC ./ccclib/src/color.cpp
 2f18a164800f8d8557c5684353acdde6241b6ab9 2023051510:09:26-UTC ./terminal/common/ansi_colors/draw_ccc_color.prg
-1357587ab05098f5095013df0a69875a0fb74725 2023051510:09:22-UTC ./terminal/common/ansi_colors/draw_ansi_color.prg
 4f7342f328b3a26e60f68e9f3fe1fb532080d2bf 2023051509:21:59-UTC ./terminal/common/ansi_colors/m.bat
 664fb8eb5b4478daa17ead88d30cbec7914a0842 2023051509:21:53-UTC ./terminal/common/ansi_colors/m
 388d2c2dff6f2e0f9a7fabe077833d1f5fc039f0 2023051509:18:17-UTC ./tutor/colors/draw_ccc_cube.prg

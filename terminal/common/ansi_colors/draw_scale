@@ -1,3 +1,0 @@
-#!/bin/bash
-. options
-draw_ccc_scale.exe

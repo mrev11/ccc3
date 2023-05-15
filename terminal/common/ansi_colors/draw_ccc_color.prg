@@ -1,12 +1,14 @@
 
 
+// draw_ccc_color.exe <rgb>  =>  colorindex
+
 
 ******************************************************************************************
-function main(color:="123+")
+function main(color:="123")
 
 local bg
 
-    ? '"'+color+'"', "->", bg:=ccccolor_to_ansicolor(color)::str::alltrim
+    ? '"'+color+'"', "->", bg:=colorstring_to_colorindex(color)::str::alltrim
 
     ? chr(27)+"[48;5;"+bg+"m                        "+chr(27)+"[m"
     ? chr(27)+"[48;5;"+bg+"m                        "+chr(27)+"[m"
@@ -14,7 +16,7 @@ local bg
     ?? ansi_colors( bg::val+1 )::rgb
 
     ?
-    inkey(0)
+
 
 ******************************************************************************************
 static function rgb(rgb)

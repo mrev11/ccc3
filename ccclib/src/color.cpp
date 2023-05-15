@@ -52,94 +52,133 @@ void _clp___setcoloridx(int argno)
     CCC_EPILOG();
 }
 
+
+//----------------------------------------------------------------------------------------
+static int colorstring_to_colorindex(CHAR *colorstring, int *nchar)
+{
+    int colorindex=0;
+    int i=0;
+
+    if( colorstring[0]=='#' ) // extended, e.g. "#217"
+    {
+        for( i=1; colorstring[i]!=0; i++ )
+        {
+            if( isdigit(colorstring[i]) )
+            {
+                colorindex=(colorindex*10)+(colorstring[i]-'0');
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    else if( isdigit(colorstring[0]) ) // extended, e.g. "055"
+    {
+        for( i=0; colorstring[i]!=0; i++ )
+        {
+            if( isdigit(colorstring[i]) )
+            {
+                colorindex=(colorindex*6)+(colorstring[i]-'0');
+            }
+            else if( colorstring[i]=='+' )
+            {
+                // compatibility
+            }
+            else
+            {
+                break;
+            }
+        }
+        colorindex+=16;
+    }
+    else // legacy, e.g. "gb+"
+    {
+        for( i=0; colorstring[i]!=0; i++ )
+        {
+            char c=toupper(colorstring[i]);
+
+                 if( c=='R' ) colorindex|=1;
+            else if( c=='G' ) colorindex|=2;
+            else if( c=='B' ) colorindex|=4;
+            else if( c=='W' ) colorindex|=7;
+            else if( c=='+' ) colorindex|=8;
+            else              break;
+        }
+    }
+
+    *nchar=i; // ennyi elemet hasznalt el a stringbol
+
+    return colorindex & 255; // ANSI color index
+}
+
+
+//----------------------------------------------------------------------------------------
+void _clp_colorstring_to_colorindex(int argno)
+{
+    // be - CCC color string: "#217" vagy "044" vagy "gb+"
+    // ki - ANSI color index: [0,255]
+
+    CCC_PROLOG("colorstring_to_colorindex",1);
+    int nchar=0;
+    _retni( colorstring_to_colorindex(_parc(1),&nchar) );
+    CCC_EPILOG();
+}
+
+
 //----------------------------------------------------------------------------------------
 void _clp___clr2num(int argno) //Clipper color string --> color numbers
 {
     CCC_PROLOG("__clr2num",1);
-    CHAR *p=_parc(1); // colorstring
-
-    int colorindex=0;
+    CHAR *colorstring=_parc(1); // colorstring: "w/n,n/w,...."
 
     int i=0;
-    int c=0;
-    int dlim=',';   // elozo delimeter
-    int mode=0;     // 0, x=extended, l=legacy
-    int ntag=0;
-
     while( i<SIZEOF_COLORS )
     {
-        c=(int)(*p++);
+        int nchar=0;
+        int colorindex=colorstring_to_colorindex(colorstring,&nchar);
+        int delimeter=colorstring[nchar];
 
-        if( mode==0  )
+        if( (i&1)==0 )
         {
-            mode=isdigit(c)?'x':'l'; // extended/legacy
-            ntag=0;                  // szamolas ujrakezdve
-            colorindex=0;            // gyujtes ujrakezdve
-        }
-
-        if( c==0 ) // corostring vege
-        {
-            if( ntag>0 )
+            // foreground
+            if( delimeter=='/' )
             {
-                if( mode=='x' )
-                {
-                    colorindex+=16;
-                }
-                colors[i + ( dlim==','?0:1)]=255 & colorindex; // ',' utan fg, '/' utan bg
+                colors[i++]=colorindex;
+            }
+            else if( delimeter==',' )
+            {
+                colors[i++]=colorindex;
+                i++;
+            }
+            else if( delimeter==0 )
+            {
+                colors[i++]=colorindex;
+                break;
             }
             else
             {
-                // ures szinnel nem modosit
+                //error
             }
-            break;
         }
-        else if( c==',' ) // szinpar vege, uj szinpar kezdodik
+        else
         {
-            if( ntag>0 )
+            // background
+            if( delimeter==',' )
             {
-                if( mode=='x' )
-                {
-                    colorindex+=16;
-                }
-                colors[i + (dlim==','?0:1)]=255 & colorindex; // ',' utan fg, '/' utan bg
+                colors[i++]=colorindex;
             }
-            mode=0;
-            dlim=',';
-            i+=2;
-        }
-        else if( c=='/' ) // foreground vege, background kezdodik
-        {
-            if( ntag>0 )
+            else if( delimeter==0 )
             {
-                if( mode=='x' )
-                {
-                    colorindex+=16;
-                }
-                colors[i]=255 & colorindex; // '/' elott mindig fg
+                colors[i++]=colorindex;
+                break;
             }
-            mode=0;
-            dlim='/';
-        }
-        else if( mode=='x' ) // extended
-        {
-            if( c!='+' )
+            else
             {
-                ntag++;
-                colorindex=colorindex*6+c-'0';
+                //error
             }
         }
-        else if( mode=='l' ) // legacy
-        {
-            ntag++;
-            switch( toupper(c) )
-            {
-                case 'R': colorindex|=1; break;
-                case 'G': colorindex|=2; break;
-                case 'B': colorindex|=4; break;
-                case 'W': colorindex|=7; break;
-                case '+': colorindex|=8; break;
-            }
-        }
+        colorstring+=(nchar+1);
     }
 
     // printf("colors:%3d",colors[0]);

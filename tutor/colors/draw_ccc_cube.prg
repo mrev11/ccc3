@@ -7,8 +7,8 @@ local i,j,k
 
     settermsize(40,130)
 
-    set alternate to log-draw
-    set alternate on
+    //set alternate to log-draw
+    //set alternate on
 
     for i:=0 to 5
         for j:=0 to 5

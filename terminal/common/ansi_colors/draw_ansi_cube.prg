@@ -129,7 +129,7 @@ local r,g,b,intensity
     intensity+=g**2
     intensity+=b**2
     intensity::=sqrt
-    return if(intensity>220,0,7)
+    return if(intensity>255,0,7)
 
 
 ******************************************************************************************

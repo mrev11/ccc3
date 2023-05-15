@@ -1,3 +1,8 @@
+2023-05-15 
+  szinek megadasa kozvetlenul ANSI color indexekkel;
+  pelda: w+/#160 (piros alapon feher, ugyanaz mint w+/400);
+  tutor/colors-ban demo programok a szinek hasznalatara;
+
 2023-05-15
   tools/sql2-ben kihagyva az Oracle/MySQL/DB2 driverek forditasa
   (regen voltak tesztelve, foloslegesek, maradt: Postgres/SQLite3);

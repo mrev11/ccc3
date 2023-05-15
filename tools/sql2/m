@@ -2,11 +2,11 @@
 
 compile()
 {
-    ( cd  driver-sqlite3    && m )
     ( cd  driver-postgres   && m )
-    ( cd  driver-oracle     && m )
-    ( cd  driver-mysql      && m )
-    ( cd  driver-db2        && m )
+    ( cd  driver-sqlite3    && m )
+   #( cd  driver-oracle     && m )
+   #( cd  driver-mysql      && m )
+   #( cd  driver-db2        && m )
     ( cd  util              && m )
    #( cd  test              && m )
 }

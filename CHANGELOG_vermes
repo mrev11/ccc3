@@ -1,3 +1,7 @@
+2023-05-15
+  tools/sql2-ben kihagyva az Oracle/MySQL/DB2 driverek forditasa
+  (regen voltak tesztelve, foloslegesek, maradt: Postgres/SQLite3);
+
 2023-05-11
   minden get default pciture-t kap: replicate("X",len(get:varget));
   uj get leszarmazott widget: textarea;

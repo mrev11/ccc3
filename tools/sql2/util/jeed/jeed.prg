@@ -44,18 +44,18 @@ local n
             ? "File not found:", argv(n)
         end
     next
-    
+
     if( tds==NIL )
         ? "Usage: jeed <tdsspec>"
         ?
         quit
-    end  
+    end
 
     con:=sqlconnect()
     quitblock({||con:sqldisconnect(),eval(qb)})
 
     dom:=tdsutil.tds2dom(tds)
-    table:=tdsutil.dom2tabent(con,dom)    
+    table:=tdsutil.dom2tabent(con,dom)
 
     jtencoding("UTF-8")
     alertblock({|t,a|jtalert(t,a)})
@@ -70,7 +70,7 @@ local n
 function sqlconnect()
 
 local con,arg:=argv(),n,x,ora,pgr,sl3,mys,ser
-    
+
     for n:=1 to len(arg)
         x:=upper(arg[n])
         if( x=="-O" )
@@ -86,21 +86,21 @@ local con,arg:=argv(),n,x,ora,pgr,sl3,mys,ser
         end
     next
 
-    if( ora==.t. )
-        con:=sql2.oracle.sqlconnectionNew()
-    elseif( sl3==.t. )
-#ifdef _CCC3_
-        con:=sql2.sqlite3.sqlconnectionNew()
-#else
-        ? "sqlite3 not supported"
+
+    if( ora==.t. .or. sl3==.t. .or. mys==.t. )
+        // con:=sql2.oracle.sqlconnectionNew()
+        // con:=sql2.sqlite3.sqlconnectionNew()
+        // con:=sql2.mysql.sqlconnectionNew()
+        ? "Only PostgreSQL is supported (see jeed.prg)."
+        ?
         quit
-#endif
-    elseif( mys==.t. )
-        con:=sql2.mysql.sqlconnectionNew()
+
+    elseif( pgr==.t. )
+        con:=sql2.postgres.sqlconnectionNew()
     else
         con:=sql2.postgres.sqlconnectionNew() //default Postgres
     end
-    
+
     if( ser==.t. )
         con:sqlisolationlevel(ISOL_SER,.t.)
     else
@@ -111,4 +111,3 @@ local con,arg:=argv(),n,x,ora,pgr,sl3,mys,ser
 
 
 ******************************************************************************
-    

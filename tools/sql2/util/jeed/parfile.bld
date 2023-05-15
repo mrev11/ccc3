@@ -1,10 +1,12 @@
 -lccc$(CCCVER)_jeed
 
 -bccc$(CCCVER)_tds
--bccc$(CCCVER)_sql2_oracle
+
 -bccc$(CCCVER)_sql2_postgres
--bccc$(CCCVER)_sql2_sqlite3
--bccc$(CCCVER)_sql2_mysql
+#-bccc$(CCCVER)_sql2_sqlite3
+#-bccc$(CCCVER)_sql2_oracle
+#-bccc$(CCCVER)_sql2_mysql
+
 -bccc$(CCCVER)_jt
 -bccc$(CCCVER)_xmldom
 -bccc$(CCCVER)_socket

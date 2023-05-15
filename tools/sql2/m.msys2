@@ -1,11 +1,10 @@
 #!/bin/bash
 
-( cd  driver-sqlite3    &&  m.msys2 )
-( cd  driver-postgres   &&  m.msys2 )
-( cd  driver-oracle     &&  m.msys2 )
-( cd  driver-mysql      &&  m.msys2 )
-( cd  driver-db2        &&  m.msys2 )
-( cd  util              &&  m.msys2 )
-
-#( cd  test              &&  m.msys2 )
+  ( cd  driver-postgres   &&  m.msys2 )
+  ( cd  driver-sqlite3    &&  m.msys2 )
+# ( cd  driver-oracle     &&  m.msys2 )
+# ( cd  driver-mysql      &&  m.msys2 )
+# ( cd  driver-db2        &&  m.msys2 )
+  ( cd  util              &&  m.msys2 )
+# ( cd  test              &&  m.msys2 )
 

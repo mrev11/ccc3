@@ -1,3 +1,5 @@
+2023-05-20 (unix/windows) cterm-ben screen_shadow;
+
 2023-05-19
   windows-console/console.cpp eliras javitva;
   unix-cterm/screensize.cpp alternativ implementacio;

@@ -49,7 +49,8 @@ extern int  readkey();
 extern int  colorext_extidx2legidx(int);
 extern void message(char const *msg, ...);
 
-screenbuf *screen_buffer;
+screenbuf *screen_buffer=0;
+screenbuf *screen_shadow=0;
 
 static int wwidth=80;
 static int wheight=25;
@@ -57,19 +58,31 @@ static int wheight=25;
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
 {
-
-    unsigned attr=-1;
+    unsigned attr=-1;   // aktualis attributum
+    int posflag=1;      // kell-e pozicionalni
 
     int x,y;
     for( y=top; y<=bot; y++ )
     {
-        move(y,lef);
+        posflag=1;
 
         for( x=lef; x<=rig; x++ )
         {
             screencell *cell=screen_buffer->cell(x,y);
+            screencell *shdw=screen_shadow->cell(x,y);
             unsigned ch=cell->getchar();
             unsigned at=cell->getattr();
+            unsigned sch=shdw->getchar();
+            unsigned sat=shdw->getattr();
+            
+            if( ch==sch && at==sat )
+            {
+                posflag=1;
+                continue;
+            }  
+
+            shdw->setchar(ch);
+            shdw->setattr(at);
 
             if( ch<32 )
             {
@@ -89,6 +102,12 @@ static void paint(int top, int lef, int bot, int rig)
                 attr=at;
                 attron(cell->get_fg(),cell->get_bg());
                 //attron(LEGACY(cell->get_fg()),LEGACY(cell->get_bg())); //proba
+            }
+
+            if( posflag )
+            {
+                posflag=0;
+                move(y,x);
             }
 
             char buf[10];
@@ -118,8 +137,10 @@ void setwsize(int x, int y)
     if(screen_buffer)
     {
         delete screen_buffer;
+        delete screen_shadow;
     }
     screen_buffer=new screenbuf(wwidth,wheight);
+    screen_shadow=new screenbuf(wwidth,wheight,-1);
     invalidate_unlock();
 }
 
@@ -187,6 +208,7 @@ int main(int argc, char *argv[])
 
     screensize(&wheight,&wwidth);
     screen_buffer=new screenbuf(wwidth,wheight);
+    screen_shadow=new screenbuf(wwidth,wheight,-1);
 
     printf("%c7",0x1b);          // save cursor pos
     printf("%c[?47h",0x1b);      // save screen

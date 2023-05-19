@@ -42,6 +42,25 @@ screenbuf::screenbuf(int x, int y)
 }
 
 //---------------------------------------------------------------------------
+screenbuf::screenbuf(int x, int y, int defchar)
+{
+    sizex=x;
+    sizey=y;
+    defattr=DEFATTR;
+    buffer=(screencell*)malloc(x*y*sizeof(screencell));
+
+    int i,j;
+    for( j=0; j<sizey; j++ )
+    {
+        for( i=0; i<sizex; i++ )
+        {
+            cell(i,j)->setchar(defchar);
+            cell(i,j)->setattr(DEFATTR);
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
 screenbuf::~screenbuf()
 {
     if( buffer )

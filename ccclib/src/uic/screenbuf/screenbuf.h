@@ -179,6 +179,7 @@ class screenbuf{
     unsigned short defattr;
 
     screenbuf(int x, int y);
+    screenbuf(int x, int y, int defchar);
     ~screenbuf();
     screencell *cell(int x, int y);
     void dump(const char *caption="SCREEN");

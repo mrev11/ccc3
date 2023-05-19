@@ -164,7 +164,7 @@ void bye(void)
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-    SetConsoleCP(6500); // 65001 UTF-8
+    SetConsoleCP(65001); // 65001 UTF-8
     SetConsoleOutputCP(65001); // 65001 UTF-8
 
     //printf("input codepage: %d\n", GetConsoleCP());

@@ -5,6 +5,8 @@ function main()
 
 local i,j,k,x
 
+    ?? chr(27)+"[8;56;130t"  // resize term window to 56x130
+
     for x:=1 to 3
         for i:=0 to 15
             prnx(i,x)

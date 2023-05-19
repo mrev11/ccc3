@@ -65,9 +65,11 @@ fi
 #-------------------
 # terminal
 #-------------------
- 
-( cd terminal/unix          && m )
-( cd terminal/unix-ncterm   && m )
+
+if test -f /usr/include/X11/Xlib.h; then 
+    ( cd terminal/unix          && m )
+fi
+#( cd terminal/unix-ncterm   && m )
 ( cd terminal/unix-cterm    && m )
 ( cd terminal/sslforw       && m )
 

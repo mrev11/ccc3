@@ -4,11 +4,10 @@
 -d../common/xcurses
 -d../common/readkey_simple
 -i../common/ansi_colors
--d../ccclib
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
-#-bccc$(CCCVER).lib
+-bccc$(CCCVER).lib
 #-btermkey
 #-bncurses
 

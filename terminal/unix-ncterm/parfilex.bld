@@ -2,7 +2,7 @@
 -d.
 -d../common
 -d../common/readkey_termkey
--d../ccclib
+-dccclib
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 

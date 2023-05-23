@@ -67,7 +67,7 @@ void addnstr(const char* text , unsigned length)
         while( sizeof(buffer)<length+1 )
         {
             memmove(buffer,text,sizeof(buffer)-1);
-            buffer[sizeof(buffer)]=0;
+            buffer[sizeof(buffer)-1]=0;
             printf("%s",text);
             text+=sizeof(buffer)-1;
             length-=sizeof(buffer)-1;

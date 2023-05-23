@@ -11,10 +11,10 @@ local n,color
 
     for n:=1 to 256
         color:=ansi_colors(n)
-        ? color[1]::hex, color[2]::hex, color[3]::hex, "//"+str(n-1,4)
+        ? "{", color[1]::hex, ",", color[2]::hex, ",", color[3]::hex, "}, //"+str(n-1,4)
     next
 
-    ? "0,0,0};"
+    ? "{0,0,0}};"
     ? <<XXX>>
 
 void ansi_rgb(int x, int *r, int *g, int *b)
@@ -28,7 +28,7 @@ void ansi_rgb(int x, int *r, int *g, int *b)
 ******************************************************************************************
 static function hex(x)
     x::=l2hex::padl(2,"0")
-    return "0x"+x+","
+    return "0x"+x
 
 
 ******************************************************************************************

@@ -1,3 +1,5 @@
+2023-05-23 clang warningok javitva:
+
 2023-05-23 cterm terminal javitva:
   readkey.cpp-ben a terminal flag-ek modositva;
   xcurses.cpp-ben refresh() csak akkor printel, ha van mit;

@@ -25,11 +25,12 @@
 #include <pthread.h>
 #include <signal.h>
 #include <locale.h>
+#include <ctype.h>
 
 #include <xcurses.h>
 
 //#define MSGOUT
-//#include <msgout.h>
+#include <msgout.h>
 
 #include <screenbuf.h>
 #include <utf8conv.h>
@@ -54,6 +55,8 @@ screenbuf *screen_shadow=0;
 
 static int wwidth=80;
 static int wheight=25;
+static int cursor_x=0;
+static int cursor_y=0;
 
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
@@ -61,9 +64,17 @@ static void paint(int top, int lef, int bot, int rig)
     unsigned attr=-1;   // aktualis attributum
     int posflag=1;      // kell-e pozicionalni
 
+
+#ifdef MSGOUT
+    static int cnt=0;
+    msgout("\n%4d>>> %d %d %d %d",++cnt,top,lef,bot,rig);
+#endif
+
     int x,y;
     for( y=top; y<=bot; y++ )
     {
+        msgout("\n%2d:",y);
+
         posflag=1;
 
         for( x=lef; x<=rig; x++ )
@@ -74,12 +85,37 @@ static void paint(int top, int lef, int bot, int rig)
             unsigned at=cell->getattr();
             unsigned sch=shdw->getchar();
             unsigned sat=shdw->getattr();
-            
+
+#ifdef MSGOUT
+            int c=ch;
+            if( c==10 )
+            {
+                c='@';
+            }
+            else if( c<=32 )
+            {
+                c='.';
+            }
+            else if( c>=127 )
+            {
+                c='.';
+            }
+            if( ch==sch && at==sat )
+            {
+                msgout("%c[1;32m%c%c[m",27,c,27);
+            }
+            else
+            {
+                msgout("%c",c);
+            }
+            fflush(0);
+#endif
+
             if( ch==sch && at==sat )
             {
                 posflag=1;
                 continue;
-            }  
+            }
 
             shdw->setchar(ch);
             shdw->setattr(at);
@@ -89,19 +125,18 @@ static void paint(int top, int lef, int bot, int rig)
                 ch='.';
             }
             else if(ch==0x2018)
-            { 
+            {
                 ch=0x60; //`
             }
-            else if(ch==0x2019) 
+            else if(ch==0x2019)
             {
                 ch=0x27; //'
             }
 
             if( attr!=at )
-            { 
+            {
                 attr=at;
                 attron(cell->get_fg(),cell->get_bg());
-                //attron(LEGACY(cell->get_fg()),LEGACY(cell->get_bg())); //proba
             }
 
             if( posflag )
@@ -115,7 +150,6 @@ static void paint(int top, int lef, int bot, int rig)
             addnstr(buf,len);
         }
     }
-
     refresh();
 }
 
@@ -147,12 +181,14 @@ void setwsize(int x, int y)
 //----------------------------------------------------------------------------
 void setcaption(char *p)
 {
-    printf("%c]2;%s%c\n",0x1b,p,0x07);
+    printf("%c]2;%s%c",0x1b,p,0x07);
 }
 
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
+    cursor_x=x;
+    cursor_y=y;
     move(y,x);
     refresh();
 }

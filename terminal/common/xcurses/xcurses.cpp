@@ -5,7 +5,7 @@
 #include <xcurses.h>
 
 //#define MSGOUT
-//#include <msgout.h>
+#include <msgout.h>
 
 
 #define min(x,y) ((x)<(y)?(x):(y))
@@ -48,7 +48,7 @@ void move(int y,int x)
 }
 
 //----------------------------------------------------------------------------------------
-static char buffer[1024*32];
+static char buffer[1024];
 static unsigned int buflen=0;
 static int item=0; // csak debug
 
@@ -57,21 +57,27 @@ void addnstr(const char* text , unsigned length)
 {
     if( sizeof(buffer)-buflen<length+1 )
     {
-        printf("%s",buffer);
-        buflen=0;
-        item=0;
+        if( buflen>0 )
+        {
+            printf("%s",buffer);
+            buflen=0;
+            item=0;
+        }
+
+        while( sizeof(buffer)<length+1 )
+        {
+            memmove(buffer,text,sizeof(buffer)-1);
+            buffer[sizeof(buffer)]=0;
+            printf("%s",text);
+            text+=sizeof(buffer)-1;
+            length-=sizeof(buffer)-1;
+        }
     }
-    if( sizeof(buffer)-buflen<length+1 )
-    {
-        printf("%s",text);
-    }
-    else
-    {
-        memmove(buffer+buflen,text,length);
-        buflen+=length;
-        buffer[buflen]=0;
-        item++;
-    }
+ 
+    memmove(buffer+buflen,text,length);
+    buflen+=length;
+    buffer[buflen]=0;
+    item++;
 }
 
 
@@ -84,12 +90,15 @@ void addch(char ch)
 //----------------------------------------------------------------------------------------
 void refresh()
 {
-    //msgout("REFRESH len=%d item=%d\n",buflen, item);
+    msgout("REFRESH len=%d item=%d\n",buflen, item);
 
-    printf("%s",buffer);
-    buflen=0;
-    item=0;
-    fflush(0);
+    if( buflen>0 )
+    {
+        printf("%s",buffer);
+        buflen=0;
+        item=0;
+        fflush(0);
+    }
 }
 
 //----------------------------------------------------------------------------------------

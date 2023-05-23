@@ -1,7 +1,10 @@
 
 //#define CURSES        // ncurses hivassal
-  #define IOCTL         // ioctl hivassal
+#define IOCTL         // ioctl hivassal
 //#define CTRLSEQ       // escape szekvenciaval
+
+//#define MSGOUT
+#include <msgout.h>
 
 //----------------------------------------------------------------------------------------
 #ifdef CURSES    // probalom kihagyni az ncurses konyvtarat
@@ -31,6 +34,8 @@ void screensize(int *y, int*x)  // lekerdezi a terminal meretet
 
     *y=wheight;
     *x=wwidth;
+
+    msgout("\nCURSES screensize(%d,%d)\n",*y,*x);        
 }
 
 #endif
@@ -66,6 +71,8 @@ void screensize(int *y, int *x)  // lekerdezi a terminal meretet
         *y=ws.ws_row;
         *x=ws.ws_col;
     }
+
+    msgout("\nIOCTL screensize(%d,%d)\n",*y,*x);        
 }
 
 #endif
@@ -88,12 +95,8 @@ static termios set_term(int fd)
     tcgetattr(fd,&t0); 
     tcgetattr(fd,&t1);
 
-    t1.c_lflag &= ~ICANON;
-    t1.c_lflag &= ~ECHO;
-    t1.c_lflag |=  ISIG;
-    t1.c_iflag = 0;
-    t1.c_cc[VMIN] = 1;
-    t1.c_cc[VTIME] = 0;
+    t1.c_iflag &= 0;
+    t1.c_lflag &= ~(ICANON|ECHO);
     tcsetattr(fd,TCSANOW,&t1);
 
     return t0;
@@ -144,6 +147,7 @@ void screensize(int *y, int*x)  // lekerdezi a terminal meretet
         *y=25;
         *x=80;
     }
+    msgout("\nCTRLSEQ screensize(%d,%d)\n",*y,*x);        
 }    
 
 //----------------------------------------------------------------------------------------

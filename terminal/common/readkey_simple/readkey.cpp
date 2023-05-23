@@ -57,12 +57,19 @@ static void set_attr()
 
         termios t1;
         tcgetattr(0,&t1);
-        t1.c_lflag &= ~ICANON;
-        t1.c_lflag &= ~ECHO;
-        t1.c_lflag |=  ISIG;
-        t1.c_iflag = 0;
-        t1.c_cc[VMIN] = 1;
-        t1.c_cc[VTIME] = 0;
+
+        // raw mode
+        // t1.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+        // t1.c_oflag &= ~OPOST;
+        // t1.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+        // t1.c_cflag &= ~(CSIZE | PARENB);
+        // t1.c_cflag |=  CS8;
+        cfmakeraw(&t1);
+
+        // blocking read
+        t1.c_cc[VMIN]  = 1;    // minimum 1 byte
+        t1.c_cc[VTIME] = 0;    // without timeout
+
         tcsetattr(0,TCSANOW,&t1);
     }
 }

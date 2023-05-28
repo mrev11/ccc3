@@ -1,0 +1,117 @@
+
+Hagyományos Clipper lista írása
+===============================
+
+A Clipperből örököltük ezeket a hagyományos csatornákat:
+
+    CONSOLE
+    PRINTER
+    ALTERNATE
+    EXTRA
+
+A '?' parancs (ami a QOUT függvényhívásra preprocesszálódik) ezekbe
+a csatornákba írja a kimenetét, pontosabban a fenti csatornák közül azokba,
+amik ON (aktív) állapotban vannak, egyszerre több csatornába is.
+
+Példa:
+
+    SET PRINTER TO lista_prn    // megnyílik a lista_prn fájl
+    SET ALTERNATE TO lista_alt  // megnyílik a lista_alt fájl
+    SET PRINTER ON              // PRINTER csatorna aktív
+    ? "kimenet"                 // a CONSOLE és PRINTER csatornákon jelenik meg
+    SET PRINTER OFF             // PRINTER csatorna inaktív
+    ? "kimenet"                 // csak a CONSOLE csatornán jelenik meg
+    SET PRINTER TO              // lezárja a PRINTER csatornát (a lista_prn fájlt)
+    SET ALTERNATE TO            // lezárja az ALTERNATE csatornát (a lista_alt fájlt)
+
+
+Komplikált feladat lehet adminisztrálni, hogy a kimenet mikor melyik csatornán
+jelenjen meg. Ha például nem akarnánk, hogy a kimenet a CONSOLE csatornán is
+megjelenjen, akkor külön SET CONSOLE ON/OFF utasításokat kellene kiadnunk.
+
+Súlyosabb probléma, hogy nem tudjuk, hogy a program valamely távoli része 
+(mondjuk egy könyvtári függvény) nem használa-e éppen valamelyik csatornát.
+
+
+Channel API (#xcommand interfész)
+================================
+
+Az előbbi nehézségek felodására szolgál a channel API. Példa a használatra:
+
+
+    local list1,list2
+
+    SET CHANNEL(list1) to fspec1  additive
+    SET CHANNEL(list2) to fspec2
+
+// Hasonló szintaktika, mint mondjuk a "SET ALTERNATE TO fspec",
+// csak most a hagyományos csatornanév helyére azt írjuk: CHANNEL(<x>),
+// ahol az <x> változó azonosítja a csatornát, és egyben tárol egy
+// channel osztályú csatorna objektumot.
+
+// A fenti utasítások hatására keletkezik két channel objektum,
+// amik a list1, list2 változókban tárolódnak, egyúttal megnyílik
+// fspec1 és fspec2.
+
+    SET CHANNEL(list1) ON
+
+// A fenti utasítás aktiválja a list1 csatornát.
+
+    ? "kimenet"
+
+// A kimenet kizárólag a list1 csatornán jelenik meg.
+// Amikor van aktív CHANNEL típusú csatorna, akkor a qout kimenete
+// kizárólag ezen az aktív csatornán jelenik meg, függetlenül attól,
+// hogy a hagyományos (CONSOLE,PRINTER,...) csatornák milyen állapotban
+// vannak.
+
+    SET CHANNEL(list2) ON
+    ? "kimenet"
+
+// Aktiválódik a list2 csatorna, egyúttal automatikusan inaktiválódik
+// a korábban aktív list1. A kimenet most kizárólag list2-ben jelenik meg.
+
+
+    SET CHANNEL(list2) OFF
+    //vagy
+    SET CHANNEL OFF
+
+    ? "kimenet"
+
+// Ha list2 aktív állapotban volt, akkor inaktiválja.
+// Vagy: Ha volt aktív CHANNEL típusú csatorna, akkor az inaktiválódik.
+// Mindkét változat eredménye, hogy nem marad aktív CHANNEL típusú csatorna,
+// ezért újra elérhetővé válnak a hagyományos (CONSOLE,PRINTER,...) csatornák,
+// tehát a kiemenet ezeken fog megjelenni, alapesetben a CONSOLE-on.
+
+
+    SET CHANNEL(list1) TO
+    SET CHANNEL(list2) TO
+
+// Lezárja a csatornákat és a hozzájuk tartozó fájlokat.
+// Ha ezek közül valamelyik éppen aktív volt, akkor inaktiválódik,
+// ami után nam marad aktív CHANNEL típusú csatorna.
+
+
+Channel API (objektum interfész)
+===============================
+
+Az előző pontban bemutatott #xcommand interfész előnye, hogy analóg
+a korábbról ismert, hagyományos interfésszel, Az #xcommand direktívák
+mögött egy objektum interfész áll. Példa:
+
+    local list
+
+    (list:=channelNew(fspec)):open
+
+    list:on
+    ? "kimenet", 1,"2",{3}
+    list:off
+
+    list:write( "kimenet", 4,"5",{6})
+    list:writeln( "kimenet", 7,"8",{8})
+
+    list:close
+
+
+

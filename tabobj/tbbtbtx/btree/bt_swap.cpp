@@ -42,7 +42,7 @@ void __bt_swapin(PAGE *h)
         u_int32_t lower=memopg[2];
         M_32_SWAP(lower);
 
-        for( u_int32_t i=0; i<lower; i++ )
+        for( u_int32_t i=0; i<lower/sizeof(u_int32_t); i++ )
         {
             P_32_SWAP(memopg+i);
         }
@@ -98,7 +98,7 @@ void __bt_swapout(PAGE *h)
         u_int32_t *memopg=(u_int32_t*)h;
         u_int32_t lower=memopg[2];
 
-        for( u_int32_t i=0; i<lower; i++ )
+        for( u_int32_t i=0; i<lower/sizeof(u_int32_t); i++ )
         {
             P_32_SWAP(memopg+i);
         }

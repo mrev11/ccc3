@@ -27,7 +27,7 @@ DEFINE_METHOD(description);
 DEFINE_METHOD(operation);
 
 
-#define MAXFIELD  1024
+#define MAXFIELD  4096
 
 typedef struct
 {

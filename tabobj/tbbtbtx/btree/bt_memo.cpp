@@ -61,7 +61,7 @@
 
 #define PAGEHEAD                (4*sizeof(uint))
 #define MEMOHEAD                (4*sizeof(uint))
-#define MINSPACE                (3*PAGEHEAD)
+#define MINSPACE                (512)
 
 #define PLOWER(page)            ((char*)page+LOWER(page))
 #define PUPPER(page)            ((char*)page+UPPER(page))
@@ -215,7 +215,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
             {
                 // nem szabadlistabol vett lap
                 // be kell rakni a szabadlistaba
-                // (elso es egyben utlso elem)
+                // (elso es egyben utolso elem)
                 // BERAK
 
                 t->bt_memo=PGNO(memopg);        // elso elem
@@ -492,7 +492,7 @@ void _clp__db_memowrite(int argno)
 //----------------------------------------------------------------------------------------
 void _clp__db_memoread(int argno)
 {
-    CCC_PROLOG("_db_memoread",2);
+    CCC_PROLOG("_db_memoread",4);
     BTREE *db=(BTREE*)_parp(1);
     str2bin(base+1);
     char *pos=_parb(2);

@@ -1,3 +1,13 @@
+2023-06-02 btbtx v2 memo formatum tamogatas big endian diszken:
+  (egyelore csak little endian rendszeren big endian diskorder)
+  fejlec irasakor v1->v2 konverzio figyelembe veszi a bytesorrendet;
+  bt_print.cpp-ben tovabbi tesztelesre szolgalo print fuggvenyek;
+  swap.h-ban a makro parameterek bezarojelezve;
+  pgview: utulity bovitve;
+  pgstat: utulity bovitve;
+  pgmemo: uj utility memo szegnemsek listazasara;
+  tarolhato alias->filed objektumok max szama 1024->4096;
+
 2023-05-28 channel API;
 
 2023-05-23 clang warningok javitva:

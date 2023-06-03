@@ -149,7 +149,7 @@ BTREE *__bt_open(int fd, int psize, int create)
     t->bt_mp->pgin=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapin:0;
     t->bt_mp->pgout=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapout:0;
     
-    //__bt_print_header(t,"open");
+    //__bt_print_bthdr(t,"open");
     //__bt_print_free(t);
  
     mpool_count(t->bt_mp, "open");

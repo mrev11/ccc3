@@ -28,7 +28,9 @@
   DBT    __bt_getkey       (BTREE*, EPG*);
   int    __bt_split        (BTREE*, PAGE*, DBT*, size_t, indx_t, EPGNO*);
   int    __bt_cmp          (BTREE*, DBT*, EPG*);
-  void   __bt_print_header (BTREE*, char*);
+  void   __bt_print_bthdr  (BTREE*, const char*);
+  void   __bt_print_pghdr  (PAGE*, const char*);
+  void   __bt_print_pgmemo (u_int32_t*, const char*);
   void   __bt_print_free   (BTREE*);
   int    __bt_defcmp       (DBT*, DBT*);
   void   __bt_error        (const char*);

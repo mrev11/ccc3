@@ -11,32 +11,32 @@ A Clipperből örököltük ezeket a hagyományos csatornákat:
 
 A '?' parancs (ami a QOUT függvényhívásra preprocesszálódik) ezekbe
 a csatornákba írja a kimenetét, pontosabban a fenti csatornák közül azokba,
-amik ON (aktív) állapotban vannak, egyszerre több csatornába is.
+amik ON (aktív) állapotban vannak. Egyszerre több csatornába is.
 
 Példa:
 
-    SET PRINTER TO lista_prn    // megnyílik a lista_prn fájl
-    SET ALTERNATE TO lista_alt  // megnyílik a lista_alt fájl
+    SET PRINTER TO list_prn     // megnyílik a list_prn fájl
+    SET ALTERNATE TO list_alt   // megnyílik a list_alt fájl
     SET PRINTER ON              // PRINTER csatorna aktív
     ? "kimenet"                 // a CONSOLE és PRINTER csatornákon jelenik meg
     SET PRINTER OFF             // PRINTER csatorna inaktív
     ? "kimenet"                 // csak a CONSOLE csatornán jelenik meg
-    SET PRINTER TO              // lezárja a PRINTER csatornát (a lista_prn fájlt)
-    SET ALTERNATE TO            // lezárja az ALTERNATE csatornát (a lista_alt fájlt)
+    SET PRINTER TO              // lezárja a PRINTER csatornát (a list_prn fájlt)
+    SET ALTERNATE TO            // lezárja az ALTERNATE csatornát (a list_alt fájlt)
 
 
-Komplikált feladat lehet adminisztrálni, hogy a kimenet mikor melyik csatornán
+Komplikált feladat adminisztrálni, hogy a kimenet mikor melyik csatornán
 jelenjen meg. Ha például nem akarnánk, hogy a kimenet a CONSOLE csatornán is
 megjelenjen, akkor külön SET CONSOLE ON/OFF utasításokat kellene kiadnunk.
 
 Súlyosabb probléma, hogy nem tudjuk, hogy a program valamely távoli része 
-(mondjuk egy könyvtári függvény) nem használa-e éppen valamelyik csatornát.
+(mondjuk egy könyvtári függvény) nem használja-e éppen valamelyik csatornát.
 
 
 Channel API (#xcommand interfész)
-================================
+=================================
 
-Az előbbi nehézségek felodására szolgál a channel API. Példa a használatra:
+Az előbbi nehézségek feloldására szolgál a channel API. Példa a használatra:
 
 
     local list1,list2
@@ -94,7 +94,7 @@ Az előbbi nehézségek felodására szolgál a channel API. Példa a használat
 
 
 Channel API (objektum interfész)
-===============================
+================================
 
 Az előző pontban bemutatott #xcommand interfész előnye, hogy analóg
 a korábbról ismert, hagyományos interfésszel, Az #xcommand direktívák
@@ -109,7 +109,7 @@ mögött egy objektum interfész áll. Példa:
     list:off
 
     list:write( "kimenet", 4,"5",{6})
-    list:writeln( "kimenet", 7,"8",{8})
+    list:writeln( "kimenet", 7,"8",{9})
 
     list:close
 

@@ -405,6 +405,7 @@ local ps:=getenv("BTBTX_PAGESIZE")
 static function version_upgrade_v1_v2(table)
 local memcol:={},memdec:={},mempos,memval
 local column:=tabColumn(table),n
+local magic:=x"00"::replicate(4)
 
     ? "version_upgrade_v1_v2", tabPathName(table)
 
@@ -438,13 +439,28 @@ local column:=tabColumn(table),n
         tabCommit(table)
         tabSkip(table)
     end
-    fseek(table[TAB_FHANDLE],4,FS_SET)
-    fwrite(table[TAB_FHANDLE],bin(2),1)
+    fseek(table[TAB_FHANDLE],0,FS_SET)
+    fread(table[TAB_FHANDLE],@magic,4)
+
+    if( magic==x"62310500" )
+        fwrite(table[TAB_FHANDLE],x"02000000",4) // little endian
+    elseif( magic==x"00053162" )
+        fwrite(table[TAB_FHANDLE],x"00000002",4) // big endian
+    else
+        //ide nem johet
+        //mert ha rossz a magic
+        //akkor nem lehet nyitva a fajl
+        taberrOperation("version_upgrade_v1_v2")
+        taberrDescription(@"wrong magic number")
+        taberrFilename(lower(tabPathName(table)))
+        tabError(table)
+    end
+
     fclose(table[TAB_MEMOHND])
     table[TAB_MEMOHND]:=NIL
     ferase(lower(tabMemoName(table)))
 
-    
+
 static function getmempos(table,n)
 local column:=table[TAB_COLUMN][n]
 local offs:=column[COL_OFFS]
@@ -457,6 +473,6 @@ local column:=table[TAB_COLUMN][n]
 local offs:=column[COL_OFFS]
 local width:=column[COL_WIDTH]
     xvputbin(table[TAB_RECBUF],offs,width,pos)
-    
+
 
 ******************************************************************************

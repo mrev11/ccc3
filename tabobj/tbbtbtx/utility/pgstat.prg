@@ -1,77 +1,78 @@
 
+// Kiirja, hogy a bt fajlban a kulonbozo tipusu lapokbol 
+// hany darab van ("FREE","INTERNAL","BLEAF","DATA","MEMO"),
+// es azokban mennyi a foglalt es a szabad hely.
+// Igy kell hasznalni: pgstat <btfile>
 
-#define ISMEMO(p) (p[5..8]::hex::len==10.and.p[5..8]::hex>="0x8")
+#define ISMEMO(p) (p[5..8]::num>=0x80000000)
 
 static pgtype:={"FREE","TREE","LEAF","DATA","MEMO"}
-
 static stat:={}
 
-
-******************************************************************************************
-static class page(object)
-    attrib  type
-    attrib  pgsize
-    attrib  count
-    attrib  space
-    
-    method  initialize
-    method  used
-
-static function page.initialize(this,type,pgsize)
-    this:type:=type
-    this:pgsize:=pgsize
-    this:count:=0
-    this:space:=0
-    return this
-
-static function page.used(this)
-local used:=0
-    if( this:count!=0 )
-        used:=(1-this:space/this:count/this:pgsize)*100::round(1)
-    end
-    return used
-
+#clang
+#include <cccapi.h>
+#cend
 
 ******************************************************************************************
 function main(btfile)
 
-local fd:=fopen(btfile)
-local map:=filemap.open(fd)
-local PGSIZE:=map[9..12]::num
-local FREE:=map[17..20]::num,link
-local fsize:=map::len
+local map:=btopen(@btfile)
+
+local fsize
+local MAGIC
+local VERSION
+local PGSIZE
+local NRECS
+local FREE
+local LASTDATA
+local MEMO
+local NORDS
+
+local link
 local offset,page,pgno,type
 local n,lower,upper,space
 
-    fclose(fd)
+    if( map::empty )
+        ? "Usage:", "pgstat", "<btfile>"
+        ?
+        quit
+    end
 
+    set printer to log-pgstat
+    set printer on
+
+    fsize    := map::len
+    MAGIC    := map[ 1.. 4]
+    VERSION  := map[ 5.. 8]::num
+    PGSIZE   := map[ 9..12]::num
+    NRECS    := map[13..16]::num
+    FREE     := map[17..20]::num
+    LASTDATA := map[21..24]::num
+    MEMO     := map[25..28]::num
+    NORDS    := map[29..32]::num
+
+    ? btfile, "dskord="+dskord(), "version="+VERSION::str::alltrim, "pagesize="+PGSIZE::str::alltrim
+    ? "size :", fsize::transform("999,999,999")::alltrim, "byte"
+    ? "nrecs:", NRECS::str::alltrim
+    ? "nords:", NORDS::str::alltrim
+    ? "free :", "0x"+free::l2hex
+    ?
 
     for n:=1 to len(pgtype)
         stat::aadd(pageNew(pgtype[n],PGSIZE))
     next
 
-    set printer to log-pgstat
-    set printer on
-
-    ? btfile 
-    ? "size:", fsize::transform("999,999,999")::alltrim, "byte"
-    ? "page:", PGSIZE::str::alltrim
-    ? "free:", "0x"+free::l2hex
-    ?
-
-
     // vegigmegy a freelisten
     // a freelistben csakis felszabadulo index lapok lehetnek
     // a pagetype-ban nem P_FREE van, hanem az eredeti tipus
     // onnan tudhato csak, hogy free, hogy a listaban van
-    link:=free
+    link:=FREE
     while( link!=0 )        
         page:=map::substr(link*PGSIZE+1,PGSIZE)
         link:=page[5..8]::num
         stat[1]:count+=1
         stat[1]:space+=PGSIZE
     end
-
 
     offset:=PGSIZE
     pgno:=1
@@ -111,31 +112,32 @@ local n,lower,upper,space
           " used", stat[n]:used::str(5,1),"%"
     next
 
-
     ?
 
 
-
-
 ******************************************************************************************
-static function num(x)  // N tipus
-    return x::dec::val
+static class page(object)
+    attrib  type
+    attrib  pgsize
+    attrib  count
+    attrib  space
+    
+    method  initialize
+    method  used
 
+static function page.initialize(this,type,pgsize)
+    this:type:=type
+    this:pgsize:=pgsize
+    this:count:=0
+    this:space:=0
+    return this
 
-******************************************************************************************
-static function dec(x)  // C tipus decimalisan
-    if( len(x)==2 )
-        x+=x"0000"
+static function page.used(this)
+local used:=0
+    if( this:count!=0 )
+        used:=(1-this:space/this:count/this:pgsize)*100::round(1)
     end
-    return x::bin2u::str::alltrim
-
-
-******************************************************************************************
-static function hex(x)  // C tipus hexa
-    if( len(x)==2 )
-        x+=x"0000"
-    end
-    return "0x"+x::bin2u::l2hex
+    return used
 
 
 ******************************************************************************************

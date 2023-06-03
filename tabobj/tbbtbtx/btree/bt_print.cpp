@@ -43,7 +43,7 @@ void __bt_print_free(BTREE *t)
 }
  
 //---------------------------------------------------------------------------
-void __bt_print_header(BTREE *t,char *msg)
+void __bt_print_bthdr(BTREE *t,const char *msg)
 {    
     unsigned int n;
 
@@ -64,5 +64,33 @@ void __bt_print_header(BTREE *t,char *msg)
 
     fflush(0);
 } 
+
+//---------------------------------------------------------------------------
+void __bt_print_pghdr(PAGE *pg,const char *msg)
+{
+    printf("PGHDR %s\n",msg);
+    printf("pgno   = x%x \n",pg->pgno);
+    printf("linkpg = x%x \n",pg->linkpg);
+    printf("prevpg = x%x \n",pg->prevpg);
+    printf("nextpg = x%x \n",pg->nextpg);
+    printf("flags  = x%x \n",pg->flags);
+    printf("lower  = x%x \n",pg->lower);
+    printf("upper  = x%x \n",pg->upper);
+}
+    
+//---------------------------------------------------------------------------
+void __bt_print_pgmemo(u_int32_t *pg, const char *msg)
+{
+    printf("PGMEMO %s\n",msg);
+    printf("pgno   = x%x \n",pg[0]);
+    printf("link   = x%x \n",pg[1]);
+    printf("lower  = x%x \n",pg[2]);
+    printf("upper  = x%x \n",pg[3]);
+    printf("id     = x%x \n",pg[4]); // first item
+    printf("desc   = x%x \n",pg[5]); // first item
+    printf("pgnext = x%x \n",pg[6]); // first item
+    printf("ixnext = x%x \n",pg[7]); // first item
+    //...
+}
 
 //---------------------------------------------------------------------------

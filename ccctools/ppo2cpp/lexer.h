@@ -493,6 +493,10 @@ class ppo2cpp_lexer : public yyFlexLexer
         raw_textsize=0;
         raw_buffersize=0;
 
+        clang_text=0;
+        clang_textsize=0;
+        clang_buffersize=0;
+
         compound=0;
         compound_idx=0;
     }

@@ -1,4 +1,4 @@
-//input: deferror.ppo (5.4.0)
+//input: deferror.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -34,10 +34,6 @@ extern void _clp_thread_mutex_lock(int argno);
 extern void _clp_thread_mutex_unlock(int argno);
 extern void _clp_valtype(int argno);
 extern void _clp_varstack(int argno);
-static void _ini__errorblk();
-static void _ini__mutex();
-static void _ini__quitblk();
-static void _ini__signalblk();
 
 class _method6_args: public _method6_{public: _method6_args():_method6_("args"){};}; static _method6_args _o_method_args;
 class _method6_candefault: public _method6_{public: _method6_candefault():_method6_("candefault"){};}; static _method6_candefault _o_method_candefault;
@@ -55,75 +51,54 @@ class _method6_subcode: public _method6_{public: _method6_subcode():_method6_("s
 class _method6_subsystem: public _method6_{public: _method6_subsystem():_method6_("subsystem"){};}; static _method6_subsystem _o_method_subsystem;
 class _method6_tries: public _method6_{public: _method6_tries():_method6_("tries"){};}; static _method6_tries _o_method_tries;
 
-MUTEX_CREATE(_mutex_mutex);
 static VALUE* _st_mutex_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_mutex);
-    static stvar _st_mutex(_ini__mutex);
-    MUTEX_UNLOCK(_mutex_mutex);
-    SIGNAL_UNLOCK();
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
     return _st_mutex.ptr;
 }
-MUTEX_CREATE(_mutex_quitblk);
 static VALUE* _st_quitblk_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_quitblk);
-    static stvar _st_quitblk(_ini__quitblk);
-    MUTEX_UNLOCK(_mutex_quitblk);
-    SIGNAL_UNLOCK();
+    static stvar _st_quitblk;
+    static int _ini_quitblk=[=](){
+        block(_blk__0,0);
+        assign(_st_quitblk.ptr);
+        pop();
+        return 1;
+    }();
     return _st_quitblk.ptr;
 }
-MUTEX_CREATE(_mutex_signalblk);
 static VALUE* _st_signalblk_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_signalblk);
-    static stvar _st_signalblk(_ini__signalblk);
-    MUTEX_UNLOCK(_mutex_signalblk);
-    SIGNAL_UNLOCK();
+    static stvar _st_signalblk;
+    static int _ini_signalblk=[=](){
+        block(_blk__1,0);
+        assign(_st_signalblk.ptr);
+        pop();
+        return 1;
+    }();
     return _st_signalblk.ptr;
 }
-MUTEX_CREATE(_mutex_errorblk);
 static VALUE* _st_errorblk_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_errorblk);
-    static stvar _st_errorblk(_ini__errorblk);
-    MUTEX_UNLOCK(_mutex_errorblk);
-    SIGNAL_UNLOCK();
+    static stvar _st_errorblk;
+    static int _ini_errorblk=[=](){
+        block(_blk__2,0);
+        assign(_st_errorblk.ptr);
+        pop();
+        return 1;
+    }();
     return _st_errorblk.ptr;
 }
-MUTEX_CREATE(_mutex_breakblk);
 static VALUE* _st_breakblk_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_breakblk);
     static stvar _st_breakblk(&NIL);
-    MUTEX_UNLOCK(_mutex_breakblk);
-    SIGNAL_UNLOCK();
     return _st_breakblk.ptr;
-}
-
-static void _ini__mutex()
-{
-    _clp_thread_mutex_init(0);
-}
-
-static void _ini__quitblk()
-{
-    block(_blk__0,0);
-}
-
-static void _ini__signalblk()
-{
-    block(_blk__1,0);
-}
-
-static void _ini__errorblk()
-{
-    block(_blk__2,0);
 }
 
 static void _blk__0(int argno)

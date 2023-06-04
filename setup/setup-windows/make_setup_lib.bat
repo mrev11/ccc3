@@ -5,6 +5,7 @@ call cc %CCCDIR%\ccclib\src\ui_\remoteio.cpp
 
 call cc %CCCDIR%\ccclib\src\windows\envir.cpp
 call cc %CCCDIR%\ccclib\src\windows\filecreat.cpp
+call cc %CCCDIR%\ccclib\src\windows\filecopy.cpp
 call cc %CCCDIR%\ccclib\src\windows\findnext.cpp
 call cc %CCCDIR%\ccclib\src\windows\fseek.cpp
 call cc %CCCDIR%\ccclib\src\windows\lstat.cpp

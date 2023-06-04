@@ -4,6 +4,7 @@
 ./cc.msys2 ${CCCDIR}/ccclib/src/ui_/remoteio.cpp
 
 ./cc.msys2 ${CCCDIR}/ccclib/src/windows/envir.cpp
+./cc.msys2 ${CCCDIR}/ccclib/src/windows/filecopy.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/windows/filecreat.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/windows/findnext.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/windows/fseek.cpp

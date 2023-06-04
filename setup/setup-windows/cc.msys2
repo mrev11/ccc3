@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 OPT=""
 OPT+=" -c"
 OPT+=" -O0"
@@ -22,15 +23,24 @@ OPT+=" -I ."
 OPT+=" -I ${CCCDIR}/usr/include"
 OPT+=" -I ${CCCDIR}/ccclib/src/include"
 
+#set -x
 
 if [ "$1" == "" ]; then
     #cc-all
     echo SETUP: $(pwd)/\*.cpp
-    c++ ${OPT} *.cpp
+    for FILE in *.cpp; do
+        echo "    $FILE"
+        if ! [ -f ${FILE//.cpp/.o} ];then
+            c++ ${OPT} $FILE
+        fi
+    done
 else
     #cc-one
     echo SETUP: $1
-    c++ ${OPT} "$1"
+    BASE=${1##*/}
+    if ! [ -f ${BASE//.cpp/.o} ];then
+        c++ ${OPT} "$1"
+    fi
 fi
 
 

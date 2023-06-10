@@ -9,6 +9,7 @@
 class channel(object)
     attrib  filespc     // file specifikacio
     attrib  fileptr     // FILE* (fopen return erteke)
+    attrib  localname
 
     method  open        // megnyitja
     method  close       // lezarja
@@ -29,7 +30,15 @@ static function channel.initialize(this,filespc)
 ******************************************************************************************
 static function channel.open(this,additive:=.f.)
 local fspc,fptr
-    fspc:=this:filespc
+
+    // Egyelore a channel-ek sosincsenek remote-olva.
+    // Ha egyszer remote-olhatok lesznek, akkor fel kell 
+    // majd ismerni a remote esetet, es ki kell kerulni
+    // az itteni setlocalname transzformaciot.
+
+    this:localname:=setlocalname(this:filespc)
+    fspc:=this:localname::convertfspec2nativeformat
+
 #clang
     VALUE *stk=stack;
     push_symbol(LOCAL_fspc);

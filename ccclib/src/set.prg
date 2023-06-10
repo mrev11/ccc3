@@ -45,8 +45,8 @@ function _clp_set(spec,newset,mode,xmode)
     elseif( spec==_SET_EXTRAFILE )
         return setextrafile(newset,mode,xmode)
 
-    //elseif( spec==_SET_CURSOR )
-    //    return setcursor(newset)
+    elseif( spec==_SET_CURSOR )
+        return setcursor(newset)
 
     elseif( spec==_SET_COLOR )
         return setcolor(newset)
@@ -76,7 +76,7 @@ static setting
 local oldsetting:=setting
       
     if( p1==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(p1)=="C" )
         setting:=p1
@@ -92,7 +92,7 @@ static setting
 local oldsetting:=setting
       
     if( p1==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(p1)=="C" )
         setting:=p1
@@ -108,7 +108,7 @@ static setting
 local oldsetting:=setting
       
     if( p1==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(p1)=="C" )
         setting:=p1
@@ -124,7 +124,7 @@ static setting:="W/N,N/W,W/N,W/N,W/N,W/N,W/N"
 local oldsetting:=setting
       
     if( newset==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(newset)=="C" )
         setting:=newset
@@ -140,7 +140,7 @@ static setting:=.t.
 local oldsetting:=setting
       
     if( newset==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(newset)=="L" )
         setting:=newset
@@ -155,7 +155,7 @@ static setting:=.t.
 local oldsetting:=setting
       
     if( newset==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(newset)=="L" )
         setting:=newset
@@ -170,7 +170,7 @@ static setting:="yy.mm.dd"  //default
 local oldsetting:=setting
       
     if( newset==NIL )
-        //lekérdezés        
+        //lekerdezes        
 
     elseif( valtype(newset)=="C" )
         setting:=lower(alltrim(newset))
@@ -207,7 +207,7 @@ local prevstate:="yyyy"$dform
 function setdosconv(newset)
 local prevset:=get_dosconv()
     if( newset==NIL )
-        //csak lekérdezés
+        //csak lekerdezes
 
     elseif( valtype(newset)=="N" )
         set_dosconv(newset)
@@ -226,6 +226,21 @@ local prevset:=get_dosconv()
  
     end
     return prevset
+
+
+***********************************************************************
+function setlocalname(x)
+static blklocalname
+local prevblk
+    if( valtype(x)=="B" )
+        prevblk:=blklocalname
+        blklocalname:=x
+        return prevblk
+    elseif( valtype(blklocalname)=="B" )
+        return eval(blklocalname,x)
+    else
+        return x
+    end
 
 
 ***********************************************************************

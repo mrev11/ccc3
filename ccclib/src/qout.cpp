@@ -82,7 +82,7 @@ void _clp_get_file_pointer(int argno)
     pointer(outfile[FP_CHANNEL].fp);
 }
 }//namespace channel
- 
+
 
 //------------------------------------------------------------------------
 // SET FILE/MODE
@@ -169,12 +169,9 @@ VALUE *base=stack-argno;
 stack=base+min(argno,2);
 while(stack<base+2)PUSHNIL();
 //
-    convertfspec2nativeformat(base);
-
-    VALUE *f=base;         //filename
-    VALUE *m=base+1;       //mode (additive)
-    char *fname;
-    int additive;
+    VALUE *vf=base;         //filename
+    VALUE *vm=base+1;       //mode (additive)
+    int additive=0;
 
     if( outfile[x].fp ) //ha lokalisan nyitva
     {
@@ -187,35 +184,54 @@ while(stack<base+2)PUSHNIL();
     }
     outfile[x].remstat=0;
 
-    if( (f->type==TYPE_BINARY) && (STRINGLEN(f)>0) )
+
+    // ha korabban nyitva volt
+    // akkor mostanra lezarodott
+
+    if( (vf->type==TYPE_STRING) && (STRINGLEN(vf)>0) )
     {
-        fname=BINARYPTR(f);
+        // ok;
+    }
+    else if( (vf->type==TYPE_BINARY) && (BINARYLEN(vf)>0) )
+    {
+        // ok
     }
     else
     {
-        fname=NULL;
+        vf=NULL;
     }
 
-    if( m->type==TYPE_FLAG && m->data.flag )
-    {
-        additive=1;
-    }
-    else
-    {
-        additive=0;
-    }
+    // ha a zaras utan nyitni is kell
+    // akkor vf!=NULL egyebkent vf==NULL
 
-    if( fname )
+    if( vf )
     {
+        if( vm->type==TYPE_FLAG && vm->data.flag )
+        {
+            additive=1;
+        }
+
         if( outfile[x].remstat==0 ) // remote nyithato
         {
+            push_symbol(vf);
+            convertfspec2nativeformat(TOP());  // str->bin
+            char *fname=BINARYPTR(TOP());
             int rop=remopen(x,fname,additive);
             outfile[x].remstat=(rop?1:-1);
+            pop();
             //printf("REMOPEN %s %d\n",fname,rop);fflush(0);
         }
 
         if( outfile[x].remstat<=0 ) // nincs nyitva remote
         {
+            extern void _clp_setlocalname(int);
+            bin2str(vf);
+            push_symbol(vf);
+            _clp_setlocalname(1);
+            assign(vf);
+            pop();
+            convertfspec2nativeformat(vf);
+            char *fname=BINARYPTR(vf);
             int lop=locopen(x,fname,additive); //megnyitni lokalisan
             //printf("LOCOPEN %s %d\n",fname,lop);fflush(0);
         }

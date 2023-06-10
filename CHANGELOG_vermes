@@ -1,3 +1,10 @@
+2023-06-10 
+  qout.cpp/setfp-ben a lokalisan megnyilo csatornak fajlnevei
+  transzormalodnak a setlocalname()-ben  beallitott kodblokk
+  kiertekelesevel. Alapesetben nincs semmilyen transzformacio.
+  A terminalban megnyilo csatornak fajlneveire ez nem hat;
+  set.prg-ben uj fuggveny: setlocalname();
+
 2023-06-04 Windows setup frissitve;
   ppo2cpp/lex.h-ban a hianyzo inicializalasok potolva
   (a Linux automatikusan inicializalt, de Windowson elszallt);

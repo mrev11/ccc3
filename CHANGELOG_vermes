@@ -1,3 +1,6 @@
+2023-06-16 
+   setperm atallitva 644/755-re;
+
 2023-06-10 
   qout.cpp/setfp-ben a lokalisan megnyilo csatornak fajlnevei
   transzormalodnak a setlocalname()-ben  beallitott kodblokk

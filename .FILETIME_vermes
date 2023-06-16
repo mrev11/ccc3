@@ -1,6 +1,9 @@
-280caac9af81bbf36e337df4caec44db33384973 2023061012:58:14-UTC ./CHANGELOG_vermes
-cafc589e6f7771ed4818f8897325851040d43ad6 2023061012:45:58-UTC ./jt/jterminal/jterminal.jar
-eaa7d8b71aca49f80cf13ca1e3c5c7184e0b9ef0 2023061012:45:58-UTC ./log-install
+8bb736d222194f3b46ba6111db0ce5f78a266abe 2023061608:10:28-UTC ./CHANGELOG_vermes
+fe67c63881eb274bfe4deb19a7cf10f6948ae51c 2023061608:08:50-UTC ./jt/jterminal/jterminal.jar
+2436d862009c434bdc9c6f534ab8418ac9789a26 2023061608:08:50-UTC ./log-install
+d3c30a71b0de01b6f86a211f4877f35d84f57e7a 2023061608:08:25-UTC ./usr/bin/linux/setperm
+ee5149828175a773dcf1ff73ac780ded4ad05cb1 2023061607:38:08-UTC ./ccclib/src/lat2utf8.lex
+065c91ea0ff017cb3d85db50ad4df6c81dc75040 2023061307:28:31-UTC ./tools/setperm/setperm.prg
 869b032157b18b4b22beaf99f63720356d320742 2023061012:45:57-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2023061012:45:57-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2023061012:45:57-UTC ./jt/jterminal/getutil/checkfield.class
@@ -107,7 +110,6 @@ c24d82fbc3d8f346d55554556d26052c6fe54b66 2023061012:45:42-UTC ./usr/bin/linux/td
 926250c8a06fa79c54bdfc0b0f1659c3f0012834 2023061012:45:40-UTC ./usr/bin/linux/bt2tds
 286a97e3e011d9cdcea835b2b383afe1ec79aa24 2023061012:45:40-UTC ./usr/bin/linux/bt2ted
 d4707c796de9384171780f88910c803333c40372 2023061012:45:40-UTC ./usr/bin/linux/mkentitylib
-7fe25f706501a9c5905f94fbfaf47d5c1d4f0d6e 2023061012:45:34-UTC ./usr/bin/linux/setperm
 5df654fbc02d96ef3f312e298494ade4cbcbe4df 2023061012:45:33-UTC ./usr/bin/linux/savex
 bac7e0fab87c1e1d2b57739df22a6d90f37d1d7d 2023061012:45:31-UTC ./usr/bin/linux/dddel
 ea32511827ccf827f65ce2bc6f5c204c86095f8e 2023061012:45:31-UTC ./usr/bin/linux/ddict2
@@ -756,7 +758,6 @@ ab92ba20056556a3be72f9d8093abfde72baf2f5 2021122422:17:43-UTC ./make_verf
 a1f44642bb687b8ea0af03f7c5689076dcfbccb1 2021122320:22:42-UTC ./tools/xmlrpc-framework/m.msys2
 8c7cab44db42c4298ad76cf934e9ff5670cfe226 2021122320:21:24-UTC ./tools/xmlrpc-framework/m
 995095c7fdb4cff21a4733fecac0612e0e8016c9 2021122320:14:39-UTC ./jt/jtdemo/mkall
-a5d028d3e7696a322b035c60c041236f2ebddd7e 2021122319:57:39-UTC ./tools/setperm/setperm.prg
 90d33d13ac6929f59f8cd7f7e31faaa9da6c580e 2021122317:10:32-UTC ./tools/socket/m.msys2
 478b86af40d3c048bb5603f65e29c94a1960cfa3 2021122317:05:02-UTC ./tools/sql2/test/entitybrowse/m.msys2
 a640be365345316490c36916a8fc4abe0e4d3acd 2021122317:02:34-UTC ./tools/sql2/test/entitybrowse/mo.msys2
@@ -1524,7 +1525,6 @@ be8167b19fe1387b174bb4dd2a7243184cd003ff 2017011808:44:58-UTC ./doc/ccc-belulrol
 b9c5e9d2423f4cca06032b910fb25761b6362ac5 2016122913:19:16-UTC ./ccclib/src/uic/getcmd.prg
 7d8a8f2e23a8138006f0dd667c041495e216dc99 2016122909:55:27-UTC ./tools/mask/demo-wro.prg
 7eb77f0d8a826a87f5a8bd90ee4acfd6ecf957e3 2016121619:34:36-UTC ./ccclib/src/windows/filetime.cpp
-f33436be9a0009e81cca7bda4660c5b47afd134b 2016120705:12:11-UTC ./ccclib/src/lat2utf8.lex
 290c77e6523713d0ec697964f1e7fccff8dfb8f1 2016120513:56:54-UTC ./tabobj/common.src/common.hu.ver
 0a4560d3a1cd0caef189948e9a14e644144bbc87 2016120314:46:46-UTC ./usr/build/linux/tdc2ch.bat
 000adf8852af5ee8ecd1c03f896da505833dc62c 2016120314:23:30-UTC ./tools/tdc2prgch/valt.dok

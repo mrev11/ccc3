@@ -20,8 +20,8 @@
 
 #ifdef MITCSINAL
 
-directories     2775
-regular files   664/775
+directories     755
+regular files   644/755
 symbolic links  skip
 
 vegrehajthatoak:
@@ -113,14 +113,14 @@ local xmode,ymode
     end
  
     if( s_isdir(mode) )
-        nmode:=oct2l("2775")
+        nmode:=oct2l("755")
 
     elseif( s_isreg(mode) )
 
         if( executable(dentry) )
-            nmode:=oct2l("775")
+            nmode:=oct2l("755")
         else
-            nmode:=oct2l("664")
+            nmode:=oct2l("644")
         end
     end
     

@@ -1,3 +1,7 @@
+2023-06-16 lat2utf8 javitva:
+  Az ismeretlen karaktereket '?'-re csereli (enélkül 
+  a latex2pdf konverzio fennakad a hibas karakteren).
+
 2023-06-16 
    setperm atallitva 644/755-re;
 

@@ -67,6 +67,13 @@ struct lat2utf8_lexer : public yyFlexLexer
 
     void cat(char c)
     {
+        if( c>127 )
+        {
+            // ide akkor jon
+            // ha a bemeneti karakterhez
+            // nincs Char -> UTF8 flex szabaly
+            c='?';
+        }
         if( outputsize+1+1>buffersize )
         {
             output=(char*)realloc(output,buffersize+=(1+BUFINC));
@@ -273,8 +280,8 @@ void _clp_lat2utf8(int argno)
 \x9f {cat(0xe2,0x96,0x92);}
 \x9d {cat(0xe2,0x96,0x91);}
  
-\n   {cat();}
-.    {cat();}
+\n   {cat(*YYText());}
+.    {cat(*YYText());}
 
  
 %%

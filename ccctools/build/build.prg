@@ -19,7 +19,7 @@
  */
 
 
-#define VERSION "1.6.2"
+#define VERSION "1.6.3"
 
 #define LOWER(x) (x)
 
@@ -32,7 +32,7 @@ function main()
 
 local opt:=aclone(argv()),n
 
-#define OPTION(x)  x==left(opt[n],2) 
+#define OPTION(x)  x==left(opt[n],2)
 #define VALUE()    substr(opt[n],3)
 
     if( !file(buildenv_bat()+dirsep()+"multithread_support") )
@@ -50,16 +50,16 @@ local opt:=aclone(argv()),n
 
     for n:=1 to len(opt)
         opt[n]:=procpar(opt[n])
-        
+
         if( OPTION("-l") )
             s_libnam(VALUE())
             s_shared(.f.)
- 
+
 
         elseif( OPTION("-s") )
             s_libnam(VALUE())
             s_shared(.t.)
- 
+
 
         elseif( OPTION("-d") )
             if( s_srcdir()==NIL )
@@ -83,7 +83,7 @@ local opt:=aclone(argv()),n
             else
                 s_libdir(s_libdir()+","+VALUE())
             end
- 
+
 
         elseif( OPTION("-b") )
             if( s_libfil()==NIL )
@@ -125,7 +125,7 @@ local opt:=aclone(argv()),n
 
         elseif( "="$opt[n] )
             putenv(opt[n])
- 
+
         else
             ? @"Invalid switch: ", opt[n]
             usage()
@@ -133,7 +133,7 @@ local opt:=aclone(argv()),n
             quit
         end
     next
-    
+
     //compatibility
     if( "on"$LOWER(buildenv_dbg()) )
         s_debug(.t.)
@@ -145,11 +145,11 @@ local opt:=aclone(argv()),n
         s_debug(.t.)
         s_dry(.t.)
     end
-    
+
     if( s_version() )
         quit
     end
-    
+
     rules_from_build_bat()
     extension_types()
 
@@ -163,9 +163,9 @@ local opt:=aclone(argv()),n
     end
 
     pool:=threadpoolNew(maxthread)
-    
+
     build()
-    
+
     ?
 
 
@@ -179,10 +179,11 @@ static function usage()
 
 ****************************************************************************
 static function build()
-    
+
 local dir:={}     //forrásdirektorik listája
+local inc:={}     //includedirektorik listája
 local obj:={}     //elsődleges források (prg,cpp,c,asm)
-local lib:={}     //main-t nem tartalmazó objectek 
+local lib:={}     //main-t nem tartalmazó objectek
 local mmd:={}     //main-t tartalmazó objectek (csak prg-ből)
 local todo:={}    //mit kell csinálni
 
@@ -200,16 +201,27 @@ local d1,f,o,n,i,txt,dep
         dir:={"."} //csak az aktuális directoryból
     end
 
+
+    if( s_incdir()!=NIL  )
+        inc:=xsplit(s_incdir(),",;")
+    else
+        inc:={}
+    end
     for n:=1 to len(dir)
-        
+        inc::aadd(dir[n])
+    next
+
+
+    for n:=1 to len(dir)
+
         ?? "",dir[n]
 
-        d1:=directory(dir[n]+dirsep()+"*.*","H") 
- 
+        d1:=directory(dir[n]+dirsep()+"*.*","H")
+
         for i:=1 to len(d1)
-            
+
             f:=LOWER(d1[i][1])
-            
+
             if( fext(f)+"."$s_primary()  )
                 if( omitted_hash()[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
                     //kihagy
@@ -229,7 +241,7 @@ local d1,f,o,n,i,txt,dep
     //(elsődleges forrás az, amiből object készíthető)
 
     for n:=1 to len(obj)
-    
+
         f:=obj[n]
         o:=fname(f)
         txt:=memoread(f)
@@ -243,8 +255,8 @@ local d1,f,o,n,i,txt,dep
         else
             aadd(lib,o)
         end
- 
-        dep:={o+".obj",f} 
+
+        dep:={o+".obj",f}
         for i:=2 to len(dep)
             if( i==2 )
                 //txt: már beolvasta
@@ -255,17 +267,19 @@ local d1,f,o,n,i,txt,dep
             else
                 txt:=memoread(dep[i])
             end
-            search_include(txt,dep,dir,todo) //hosszabíthatja dep-et
+            search_include(txt,dep,inc,todo) //hosszabíthatja dep-et
         end
-        
+
         aadd(todo,dep)
     next
-    
+
     normalize(todo)
-    
+
     asort(todo,,,{|x,y|psort(x,y)})
     //most megvan, hogy mit kell csinálni
 
+
+    //build_projekt(todo)
 
     if( s_debug() )
         ? "main:", mmd
@@ -276,7 +290,7 @@ local d1,f,o,n,i,txt,dep
         next
         ?
     end
-    
+
     ferase("error")
     for n:=1 to len(todo)
         if( !fext(todo[n][1])==".obj" )
@@ -293,14 +307,14 @@ local d1,f,o,n,i,txt,dep
     pool:wait
 
     //itt már megvan az összes object
-    
+
     if( s_libnam()!=NIL )
         makelib(s_libnam(),lib)
-        
+
         if( s_shared()==.t. .and. dirsep()=="/" )
             makeso(s_libnam(),lib)
         end
-        
+
         for n:=1 to len(mmd)
             pool:addjob( {{|m,l|makeexe1(m,l)}, mmd[n], s_libnam()} )
         next

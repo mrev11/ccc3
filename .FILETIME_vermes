@@ -1,6 +1,12 @@
-b09dda16b434c30ad52e072519d735c3ab4157ab 2023061608:15:13-UTC ./CHANGELOG_vermes
-fe67c63881eb274bfe4deb19a7cf10f6948ae51c 2023061608:08:50-UTC ./jt/jterminal/jterminal.jar
-2436d862009c434bdc9c6f534ab8418ac9789a26 2023061608:08:50-UTC ./log-install
+032e4c2fd04b2a3cedb2ca27832ddaf19ccd516b 2023061809:31:16-UTC ./ccctools/build/build.prg
+0b8694b409ff8981f59970e69760e4f9aae5afc4 2023061714:55:16-UTC ./CHANGELOG_vermes
+783488bfdc686a698fd61716a5ac748ba95c4170 2023061714:52:37-UTC ./jt/jterminal/jterminal.jar
+5e3734adb766b1348263e9a9080d885af3cb87e5 2023061714:52:37-UTC ./log-install
+28b6ba3e0bf3f0ab173da88beefc97e6387d8f0f 2023061714:52:12-UTC ./usr/bin/linux/savex
+c1b88301fb0a6f96c822a8915cdf456420034e0f 2023061714:49:35-UTC ./ccctools/build/build.hu.ver
+fd9f4843c786b4c737d41665298082b7e6854a2c 2023061711:25:49-UTC ./tools/savex/sortname.prg
+4e7fab351a011138d10d3b67cc4e886a979d406b 2023061711:23:47-UTC ./tools/savex/savebrowse.prg
+2f26a1cf0bf7b3bc1afb3451d95bea005008cca3 2023061622:33:43-UTC ./setup/setup-unix/m
 d3c30a71b0de01b6f86a211f4877f35d84f57e7a 2023061608:08:25-UTC ./usr/bin/linux/setperm
 ee5149828175a773dcf1ff73ac780ded4ad05cb1 2023061607:38:08-UTC ./ccclib/src/lat2utf8.lex
 065c91ea0ff017cb3d85db50ad4df6c81dc75040 2023061307:28:31-UTC ./tools/setperm/setperm.prg
@@ -110,7 +116,6 @@ c24d82fbc3d8f346d55554556d26052c6fe54b66 2023061012:45:42-UTC ./usr/bin/linux/td
 926250c8a06fa79c54bdfc0b0f1659c3f0012834 2023061012:45:40-UTC ./usr/bin/linux/bt2tds
 286a97e3e011d9cdcea835b2b383afe1ec79aa24 2023061012:45:40-UTC ./usr/bin/linux/bt2ted
 d4707c796de9384171780f88910c803333c40372 2023061012:45:40-UTC ./usr/bin/linux/mkentitylib
-5df654fbc02d96ef3f312e298494ade4cbcbe4df 2023061012:45:33-UTC ./usr/bin/linux/savex
 bac7e0fab87c1e1d2b57739df22a6d90f37d1d7d 2023061012:45:31-UTC ./usr/bin/linux/dddel
 ea32511827ccf827f65ce2bc6f5c204c86095f8e 2023061012:45:31-UTC ./usr/bin/linux/ddict2
 ecd84ded070767143f0daef99fa0a89f610a7d05 2023061012:45:31-UTC ./usr/bin/linux/list
@@ -149,7 +154,6 @@ d2931b9ddfbc1beecba902bbd744ac70f1f1e352 2023061012:45:00-UTC ./usr/bin/linux/pg
 fdbd8a944a121f2d9b031533d24301ebaa0d56f6 2023061012:44:54-UTC ./usr/bin/linux/mklink
 eba82357c2e08668aed937156de532cb5a8353e2 2023061012:44:53-UTC ./usr/bin/linux/prg2ppo
 f848fcfcd142ee411c9d6da76f1b4f4a5c2c32e2 2023061012:44:53-UTC ./usr/bin/linux/removecr
-ebe75ca3f9786cc56436289021f0050e963e60d0 2023061012:44:51-UTC ./usr/bin/linux/build
 d74c07a52c11495568189198222b0944117fa9ec 2023061012:44:36-UTC ./usr/bin/linux/ppo2cpp
 f8a6f5bb03161e3bcaca0fff91bc7661be58646a 2023061012:44:34-UTC ./setup/setup-unix/prg2ppo/rsplink
 ed238f0393821bb837502c9e48e09b78738d3efa 2023061012:44:34-UTC ./setup/setup-unix/removecr/rsplink
@@ -436,8 +440,6 @@ f83bc74bb36b7508503b67878e48aad82d1c815b 2023011610:27:58-UTC ./tabobj/tbbtbtx/b
 927b8c4f7a34284185d8c95b1f837773932e6bf9 2023011523:36:26-UTC ./ccclib/src/blkenv.cpp
 ae825a886f96e452f5772ad43da24c8dff7263fa 2023010712:43:10-UTC ./tabobj/common.src/transact.prg
 735d8c33c9028cba1f50eb73d3323a9cadc6e5d5 2023010616:12:44-UTC ./tabobj/common.src/tabfldtb.prg
-a657586e56a952dbc2457cb708ed8ba27932d3f7 2023010511:22:34-UTC ./ccctools/build/build.prg
-577848985fb4d6f05129d736ce0646add0cbb61e 2023010511:22:23-UTC ./ccctools/build/build.hu.ver
 9a0d65a62da8425f950142000a1797e8199350bf 2023010510:34:24-UTC ./tabobj/common.src/charconv/btcharconv.ch
 0f2635ba8b6ba8252081c1101f1d99a19ff21aab 2023010510:33:06-UTC ./tabobj/tbbtbtx/m
 05296ece0b448f740344b53760cbe38311af64bf 2023010510:30:23-UTC ./tabobj/tbbtbtx/par-unixui.bld
@@ -579,7 +581,6 @@ f97e0f32c8d798f4106b26309dec9a9deb6b9dfb 2022060521:45:30-UTC ./usr/include/msgo
 a6153726990e648567ffc405e883bdcdbc34d425 2022042922:15:16-UTC ./tools/socket/m
 78d4cfab3d4a3d1d5bd16487f8c965e3b0b9ea3e 2022042922:14:45-UTC ./gtk/code_byhand/m
 773ea67b92c8db06288f15f10911ae9d774afcb1 2022042922:14:07-UTC ./gtk/defs/m
-616b1b2f8a07ca0a8460e5604f60c4c3913559cb 2022042922:13:39-UTC ./setup/setup-unix/m
 e7b25b1eb60535d9f2c00ad05c888a13cb015f00 2022042922:12:47-UTC ./ccclib/src/uic/termapi/m
 a8f6cd7762254591289b941b13d45b3226cebd51 2022042922:12:06-UTC ./ccclib/src/uic/m
 1151f61e63735c2a6dfe46f8ca0aac8e6d27a136 2022042921:07:36-UTC ./tabobj/m.msys2
@@ -1200,7 +1201,6 @@ cfcc4e9408181a3da36d8a54947f298d0d5af409 2018081006:14:18-UTC ./tools/xmlrpc/rpc
 5a7de67911f01bc63ca8684933c2fdb5b79ca28c 2018072308:53:46-UTC ./tutor/qsort/xqsort.prg
 91c4f9421f9093405566bfbe96c342b9db086c56 2018072308:53:12-UTC ./tutor/qsort/qsort.prg
 1b23f7268e0d6ef06b2a8f8d5d940f59ef1eb7a6 2018072308:46:28-UTC ./tutor/xbrwarr/xbrwarr.prg
-eccc65ac89fded00523e26cced570135e8c6e60a 2018072308:05:58-UTC ./tools/savex/sortname.prg
 b87289382b32cfc2c8f5725ebfd094eb107c47ad 2018071406:15:54-UTC ./setup/setup-flex/olvass.txt
 9efc6d6f53e93884bce3dd92c3dd28a37d9d0095 2018071315:47:20-UTC ./setup/setup-flex/version.h
 608072eb8242ab60d923c9837bfa64212e586ca6 2018071315:47:05-UTC ./setup/setup-flex/tblcmp.c
@@ -1586,7 +1586,6 @@ a468563c3e7a62dfad2eab7f0ca09d2df1977a7e 2016101308:42:14-UTC ./ccclib/src/windo
 0d8eab036f87a100948a55328d183082bd14cbe0 2016100820:13:43-UTC ./ccclib/src/windows/filecopy.cpp
 be3af9f37837f4c03986e809d1f1ba1e27688f63 2016100211:49:53-UTC ./tools/savex/findfile.prg
 a381102b0ed48eedbbb28612d80af5bf83cc140b 2016100211:32:20-UTC ./ccclib/src/setfdati.prg
-e2b977657dc0f891385fd6ee115e9e749e3197c4 2016100208:42:52-UTC ./tools/savex/savebrowse.prg
 cf63fe140195bcac0e1a5f57cedf6087a275428f 2016100107:19:14-UTC ./ccclib/src/uic/termapi/termio.h
 38e9313d79fffb44c3da9d559844d88d6dd11699 2016093008:52:28-UTC ./tutor/fpath/parfile.bld
 8fe740ad9876cf295e27ada225bf30dc6d6d02d0 2016093008:51:00-UTC ./tutor/sqrt/m.bat

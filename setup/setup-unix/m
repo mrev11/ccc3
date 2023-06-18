@@ -4,12 +4,12 @@
 mkexe()
 {
     if [ ! -x $CCCDIR/usr/bin/$CCCUNAME/$1.exe ]; then
-        make.b lib setup
         echo "compiling $1 for setup"
         ( cd $1 && m ) >/dev/null
     fi
 }
 
+make.b lib setup
 mkexe build
 mkexe prg2ppo
 mkexe removecr

@@ -33,9 +33,15 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortBaseName(brw)
 local arr:=brwArray(brw)
-  //asort(arr,,,{|x,y|fnameext(x[IDX_FILE])>fnameext(y[IDX_FILE])})  // nem biztonsagos
-  //asort(arr,,,{|x,y|fnameext(y[IDX_FILE])<fnameext(x[IDX_FILE])})  // jobb: > helyett <, argumentumok forditva
-    asortkey(arr,{|x|fnameext(x[IDX_FILE])},.f.) //meg jobb
+    asortkey(arr,{|x|fnameext(x[IDX_FILE])},.t.)
+    brw:refreshAll()
+    return NIL
+
+
+******************************************************************************    
+function sortReverseBaseName(brw)
+local arr:=brwArray(brw)
+    asortkey(arr,{|x|fnameext(x[IDX_FILE])},.f.)
     brw:refreshAll()
     return NIL
 

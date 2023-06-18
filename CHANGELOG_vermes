@@ -1,3 +1,5 @@
+2023-06-17 build 1.6.3 include-ok keresese javitva;
+
 2023-06-16 lat2utf8 javitva:
   Az ismeretlen karaktereket '?'-re csereli (enélkül 
   a latex2pdf konverzio fennakad a hibas karakteren).

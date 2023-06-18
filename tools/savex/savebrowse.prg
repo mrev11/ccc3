@@ -97,6 +97,7 @@ local x,repeat:=.f.
     aadd(rendez,{"By date-time",{||sortTime(brw)}})
     aadd(rendez,{"By name (default)",{||sortName(brw)}})
     aadd(rendez,{"By basename",{||sortBaseName(brw)}})
+    aadd(rendez,{"By reverse basename",{||sortReverseBaseName(brw)}})
     aadd(rendez,{"By size",{||sortSize(brw)}})
     brwMenu(brw,"Sort","Set order by name, time, size",rendez,"S")
 

@@ -24,6 +24,14 @@
 #include <errno.h>
 #include <stat.ch>
 
+#if defined _CCC2_
+  #define STAT stat
+#elif defined _UNIX_    
+  #define STAT stat
+#else // CCC3-WINDOWS
+  #define STAT _stat
+#endif
+
 extern int lstat(const char *fspec, struct stat *buf);
 extern int _wlstat(const wchar_t *fspec, struct stat *buf);
 
@@ -58,12 +66,47 @@ static void createStatEntry(struct stat *buf)
     array(N_STAT);
 }
 
+
+#ifdef _CCC3_
+#ifdef WINDOWS
+static void createStatEntry(struct _stat *buf)
+{
+    number(buf->st_dev);
+    number(buf->st_ino);
+    number(buf->st_mode);
+    number(buf->st_nlink);
+    number(buf->st_uid);
+    number(buf->st_gid);
+    number(buf->st_rdev);
+    number(buf->st_size);
+
+    #ifdef UNIX
+        number(buf->st_blksize);
+    #else
+        number(0); //Windowson nincs 
+    #endif
+
+    #ifdef UNIX
+        number(buf->st_blocks);
+    #else
+        number(0); //Windowson nincs
+    #endif
+
+    number((double)buf->st_atime);
+    number((double)buf->st_mtime);
+    number((double)buf->st_ctime);
+
+    array(N_STAT);
+}
+#endif
+#endif
+
 //----------------------------------------------------------------------
 void _clp_stat(int argno) // stat array (see stat.ch), or NIL
 {
     CCC_PROLOG("stat",1);
     _clp_convertfspec2nativeformat(1); 
-    struct stat buf;
+    struct STAT buf;
 
 #if defined _CCC2_  
     char *fspec=_parc(1);
@@ -76,7 +119,7 @@ void _clp_stat(int argno) // stat array (see stat.ch), or NIL
 #else //CCC3-WINDOWS
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+    if( 0!=_wstat(fspec,&buf) )
 #endif
     {
         _ret();
@@ -96,7 +139,7 @@ void _clp_stat_st_mode(int argno) // leggyakrabban csak ez kell
 {
     CCC_PROLOG("stat_st_mode",1);
     _clp_convertfspec2nativeformat(1); 
-    struct stat buf;
+    struct STAT buf;
 
 #if defined _CCC2_
     char *fspec=_parc(1);
@@ -109,7 +152,7 @@ void _clp_stat_st_mode(int argno) // leggyakrabban csak ez kell
 #else //CCC3-WINDOWS
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+    if( 0!=_wstat(fspec,&buf) )
 #endif
     {
         _ret();
@@ -127,7 +170,7 @@ void _clp_stat_st_size(int argno) // ez is gyakran kell
 {
     CCC_PROLOG("stat_st_size",1);
     _clp_convertfspec2nativeformat(1); 
-    struct stat buf;
+    struct STAT buf;
 
 #if defined _CCC2_
     char *fspec=_parc(1);
@@ -140,7 +183,7 @@ void _clp_stat_st_size(int argno) // ez is gyakran kell
 #else
     bin2str(base);
     CHAR *fspec=_parc(1);
-    if( 0!=_wstat(fspec,(struct _stat*)&buf) )
+    if( 0!=_wstat(fspec,&buf) )
 #endif
     {
         _ret();

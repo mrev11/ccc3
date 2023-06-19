@@ -1,4 +1,4 @@
-//input: prg2ppo.ppo (5.4.0)
+//input: prg2ppo.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -54,64 +54,34 @@ static VALUE* _st_s_output_ptr()
     static stvar _st_s_output;
     return _st_s_output.ptr;
 }
-MUTEX_CREATE(_mutex_s_include);
 static VALUE* _st_s_include_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_include);
     static stvar _st_s_include(L"");
-    MUTEX_UNLOCK(_mutex_s_include);
-    SIGNAL_UNLOCK();
     return _st_s_include.ptr;
 }
-MUTEX_CREATE(_mutex_s_define);
 static VALUE* _st_s_define_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_define);
     static stvar _st_s_define(L"");
-    MUTEX_UNLOCK(_mutex_s_define);
-    SIGNAL_UNLOCK();
     return _st_s_define.ptr;
 }
-MUTEX_CREATE(_mutex_s_files);
 static VALUE* _st_s_files_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_files);
     static stvar _st_s_files(L"");
-    MUTEX_UNLOCK(_mutex_s_files);
-    SIGNAL_UNLOCK();
     return _st_s_files.ptr;
 }
-MUTEX_CREATE(_mutex_s_quiet);
 static VALUE* _st_s_quiet_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_quiet);
     static stvar _st_s_quiet(&FALSE);
-    MUTEX_UNLOCK(_mutex_s_quiet);
-    SIGNAL_UNLOCK();
     return _st_s_quiet.ptr;
 }
-MUTEX_CREATE(_mutex_s_version);
 static VALUE* _st_s_version_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_version);
     static stvar _st_s_version(&FALSE);
-    MUTEX_UNLOCK(_mutex_s_version);
-    SIGNAL_UNLOCK();
     return _st_s_version.ptr;
 }
-MUTEX_CREATE(_mutex_s_line);
 static VALUE* _st_s_line_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_s_line);
     static stvar _st_s_line(&TRUE);
-    MUTEX_UNLOCK(_mutex_s_line);
-    SIGNAL_UNLOCK();
     return _st_s_line.ptr;
 }
 //=======================================================================
@@ -718,7 +688,7 @@ push_call("logo",base);
 //
     line(202);
     string(nls_text(L"CCC Preprocessor "));
-    string(L"1.5.2");
+    string(L"1.5.3");
     add();
     string(L" Copyright (C) ComFirm Bt.");
     add();

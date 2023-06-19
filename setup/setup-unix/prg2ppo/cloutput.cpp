@@ -1,4 +1,4 @@
-//input: cloutput.ppo (5.4.0)
+//input: cloutput.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -14,7 +14,6 @@ extern void _clp_classmethod(int argno);
 extern void _clp_classregister(int argno);
 extern void _clp_len(int argno);
 extern void _clp_objectclass(int argno);
-extern void _clp_objectini(int argno);
 extern void _clp_objectnew(int argno);
 static void _clp_outputadd(int argno);
 static void _clp_outputbuf(int argno);
@@ -25,27 +24,22 @@ static void _clp_outputlen(int argno);
 extern void _clp_outputnew(int argno);
 static void _clp_outputregister(int argno);
 extern void _clp_valtype(int argno);
-static void _ini__clid_output();
 
 class _method6_buffer: public _method6_{public: _method6_buffer():_method6_("buffer"){};}; static _method6_buffer _o_method_buffer;
 class _method6_bufidx: public _method6_{public: _method6_bufidx():_method6_("bufidx"){};}; static _method6_bufidx _o_method_bufidx;
 class _method6_bufinc: public _method6_{public: _method6_bufinc():_method6_("bufinc"){};}; static _method6_bufinc _o_method_bufinc;
 class _method6_initialize: public _method6_{public: _method6_initialize():_method6_("initialize"){};}; static _method6_initialize _o_method_initialize;
 
-MUTEX_CREATE(_mutex_clid_output);
 static VALUE* _st_clid_output_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_clid_output);
-    static stvar _st_clid_output(_ini__clid_output);
-    MUTEX_UNLOCK(_mutex_clid_output);
-    SIGNAL_UNLOCK();
+    static stvar _st_clid_output;
+    static int _ini_clid_output=[=](){
+        _clp_outputregister(0);
+        assign(_st_clid_output.ptr);
+        pop();
+        return 1;
+    }();
     return _st_clid_output.ptr;
-}
-
-static void _ini__clid_output()
-{
-    _clp_outputregister(0);
 }
 //=======================================================================
 void _clp_outputclass(int argno)
@@ -237,11 +231,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("outputini",base);
 //
-    line(61);
-    push_symbol(base+0);//this
-    _clp_objectini(1);
-    pop();
-    line(65);
+    line(64);
     push_symbol(base+0);//this
     push_symbol(base+1);//size
     push(&NIL);
@@ -253,19 +243,19 @@ push_call("outputini",base);
     }
     _o_method_bufinc.eval(2);
     pop();
-    line(66);
+    line(65);
     push_symbol(base+0);//this
     push_symbol(base+0);//this
     _o_method_bufinc.eval(1);
     _clp_array(1);
     _o_method_buffer.eval(2);
     pop();
-    line(67);
+    line(66);
     push_symbol(base+0);//this
     push(&ONE);
     _o_method_bufidx.eval(2);
     pop();
-    line(69);
+    line(68);
     push_symbol(base+0);//this
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -282,41 +272,41 @@ while(stack<base+6)PUSHNIL();
 argno=2;
 push_call("outputadd",base);
 //
-    line(75);
+    line(74);
     push_symbol(base+1);//t
     _clp_valtype(1);
     assign(base+3);//typt
     pop();
-    line(83);
-    line(77);
+    line(82);
+    line(76);
     push_symbol(base+3);//typt
     string(L"A");
     eqeq();
     if(!flag()) goto if_1_1;
-        line(78);
+        line(77);
         push_symbol(base+1);//t
         _clp_len(1);
         assign(base+4);//lent
         pop();
-        line(79);
+        line(78);
         push(&TRUE);
         assign(base+5);//arrflg
         pop();
     goto if_1_0;
     if_1_1:
-    line(80);
-        line(81);
+    line(79);
+        line(80);
         push(&ONE);
         assign(base+4);//lent
         pop();
-        line(82);
+        line(81);
         push(&FALSE);
         assign(base+5);//arrflg
         pop();
     if_1_2:
     if_1_0:;
-    line(87);
-    line(85);
+    line(86);
+    line(84);
     push_symbol(base+0);//this
     _o_method_bufidx.eval(1);
     push_symbol(base+4);//lent
@@ -326,7 +316,7 @@ push_call("outputadd",base);
     _clp_len(1);
     gt();
     if(!flag()) goto if_2_1;
-        line(86);
+        line(85);
         push_symbol(base+0);//this
         _o_method_buffer.eval(1);
         push_symbol(base+0);//this
@@ -340,13 +330,13 @@ push_call("outputadd",base);
         pop();
     if_2_1:
     if_2_0:;
-    line(97);
-    line(89);
+    line(96);
+    line(88);
     push_symbol(base+5);//arrflg
     if(!flag()) goto if_3_1;
-        line(93);
+        line(92);
         {
-        line(90);
+        line(89);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -354,7 +344,7 @@ push_call("outputadd",base);
         lab_4_0:
         push_symbol(base+4);//lent
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_4_2;
-            line(91);
+            line(90);
             push_symbol(base+1);//t
             push_symbol(base+2);//n
             idxr();
@@ -364,7 +354,7 @@ push_call("outputadd",base);
             _o_method_bufidx.eval(1);
             assign2(idxxl());
             pop();
-            line(92);
+            line(91);
             push_symbol(base+0);//this
             _o_method_bufidx.eval(1);
             dup();
@@ -387,8 +377,8 @@ push_call("outputadd",base);
         }
     goto if_3_0;
     if_3_1:
-    line(94);
-        line(95);
+    line(93);
+        line(94);
         push_symbol(base+1);//t
         push_symbol(base+0);//this
         _o_method_buffer.eval(1);
@@ -396,7 +386,7 @@ push_call("outputadd",base);
         _o_method_bufidx.eval(1);
         assign2(idxxl());
         pop();
-        line(96);
+        line(95);
         push_symbol(base+0);//this
         _o_method_bufidx.eval(1);
         dup();
@@ -409,7 +399,7 @@ push_call("outputadd",base);
         pop();
     if_3_2:
     if_3_0:;
-    line(99);
+    line(98);
     push_symbol(base+1);//t
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -426,7 +416,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("outputlen",base);
 //
-    line(104);
+    line(103);
     push_symbol(base+0);//this
     _o_method_bufidx.eval(1);
     addnum(-1);
@@ -445,7 +435,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("outputbuf",base);
 //
-    line(109);
+    line(108);
     push_symbol(base+0);//this
     _o_method_buffer.eval(1);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
@@ -463,19 +453,19 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("outputclear",base);
 //
-    line(114);
+    line(113);
     push_symbol(base+0);//this
     push_symbol(base+0);//this
     _o_method_bufinc.eval(1);
     _clp_array(1);
     _o_method_buffer.eval(2);
     pop();
-    line(115);
+    line(114);
     push_symbol(base+0);//this
     push(&ONE);
     _o_method_bufidx.eval(2);
     pop();
-    line(116);
+    line(115);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

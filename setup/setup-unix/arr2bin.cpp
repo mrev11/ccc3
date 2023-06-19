@@ -1,4 +1,4 @@
-//input: arr2bin.ppo (5.4.0)
+//input: arr2bin.ppo (5.6.0)
 
 #include <cccdef.h>
 

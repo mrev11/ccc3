@@ -35,13 +35,14 @@
 extern int  remopen(int fp, char *fname, int additive);
 extern void remclose(int fp);
 extern void remwrite(int fp, char *data, int datalen);
- 
+
 //------------------------------------------------------------------------
 #define FP_CONSOLE    0
 #define FP_PRINTER    1
-#define FP_ALTERNATE  2 
+#define FP_ALTERNATE  2
 #define FP_EXTRA      3
 #define FP_ERROR      4
+#define FP_CHANNEL    5
 
 static struct
 {
@@ -49,18 +50,39 @@ static struct
     FILE *fp;              //local FILE pointer
     const char *def;       //default file/device nev
     int  remstat;          //0:alapallapot, 1:remote nyitva, -1:nem nyithato
-} outfile[5] = 
+} outfile[6] =
 {
     {1, NULL   , "CON" , 0},
     {0, NULL   , "LPT1", 0},
     {0, NULL   , NULL  , 0},
     {0, NULL   , NULL  , 0},
-    {0, NULL   , "CON" , 0}
+    {0, NULL   , "CON" , 0},
+    {0, NULL   , NULL  ,-1}
 };
 
 
 DEFINE_METHOD(attrvals);
 DEFINE_METHOD(classname);
+
+
+//------------------------------------------------------------------------
+namespace _nsp_channel{
+void _clp_set_file_pointer(int argno)
+{
+    CCC_PROLOG("channel.set_file_pointer",1);
+    FILE *fp=ISNIL(1)?NULL:(FILE*)_parp(1);
+    outfile[FP_CHANNEL].flag=(fp!=NULL);
+    outfile[FP_CHANNEL].fp=fp;
+    CCC_EPILOG();
+}
+
+void _clp_get_file_pointer(int argno)
+{
+    stack-=argno;
+    pointer(outfile[FP_CHANNEL].fp);
+}
+}//namespace channel
+
 
 //------------------------------------------------------------------------
 // SET FILE/MODE
@@ -88,7 +110,7 @@ static int locopen(int x, char *fname, int additive)
             _clp_fopen(2);
             fd=D2INT(TOP()->data.number);
             POP();
-            
+
             if(fd>=0)
             {
                 number(fd);
@@ -147,12 +169,9 @@ VALUE *base=stack-argno;
 stack=base+min(argno,2);
 while(stack<base+2)PUSHNIL();
 //
-    convertfspec2nativeformat(base);
-
-    VALUE *f=base;         //filename
-    VALUE *m=base+1;       //mode (additive)
-    char *fname;
-    int additive;
+    VALUE *vf=base;         //filename
+    VALUE *vm=base+1;       //mode (additive)
+    int additive=0;
 
     if( outfile[x].fp ) //ha lokalisan nyitva
     {
@@ -165,40 +184,59 @@ while(stack<base+2)PUSHNIL();
     }
     outfile[x].remstat=0;
 
-    if( (f->type==TYPE_BINARY) && (STRINGLEN(f)>0) )
+
+    // ha korabban nyitva volt
+    // akkor mostanra lezarodott
+
+    if( (vf->type==TYPE_STRING) && (STRINGLEN(vf)>0) )
     {
-        fname=BINARYPTR(f);
+        // ok;
+    }
+    else if( (vf->type==TYPE_BINARY) && (BINARYLEN(vf)>0) )
+    {
+        // ok
     }
     else
     {
-        fname=NULL;
+        vf=NULL;
     }
 
-    if( m->type==TYPE_FLAG && m->data.flag )
-    {
-        additive=1;
-    }
-    else
-    {
-        additive=0;
-    }
+    // ha a zaras utan nyitni is kell
+    // akkor vf!=NULL egyebkent vf==NULL
 
-    if( fname )
+    if( vf )
     {
+        if( vm->type==TYPE_FLAG && vm->data.flag )
+        {
+            additive=1;
+        }
+
         if( outfile[x].remstat==0 ) // remote nyithato
         {
+            push_symbol(vf);
+            convertfspec2nativeformat(TOP());  // str->bin
+            char *fname=BINARYPTR(TOP());
             int rop=remopen(x,fname,additive);
             outfile[x].remstat=(rop?1:-1);
+            pop();
             //printf("REMOPEN %s %d\n",fname,rop);fflush(0);
         }
 
         if( outfile[x].remstat<=0 ) // nincs nyitva remote
         {
+            extern void _clp_setlocalname(int);
+            bin2str(vf);
+            push_symbol(vf);
+            _clp_setlocalname(1);
+            assign(vf);
+            pop();
+            convertfspec2nativeformat(vf);
+            char *fname=BINARYPTR(vf);
             int lop=locopen(x,fname,additive); //megnyitni lokalisan
             //printf("LOCOPEN %s %d\n",fname,lop);fflush(0);
         }
     }
-//    
+//
 stack=base;
 PUSH(&NIL);
 }
@@ -220,7 +258,7 @@ while(stack<base+1)PUSHNIL();
 //
     VALUE *newset=base;
     int oldset=outfile[x].flag;
-    
+
     if( newset->type==TYPE_FLAG )
     {
         outfile[x].flag=(0!=newset->data.flag);
@@ -234,7 +272,7 @@ while(stack<base+1)PUSHNIL();
     }
 
     logical(oldset);
-//    
+//
 RETURN(base);
 }
 
@@ -276,14 +314,14 @@ static void print_str(int x)
 //------------------------------------------------------------------------
 static int out0(int x)
 {
-    if( (outfile[x].fp==0)  && 
-        (outfile[x].remstat==0)  && 
+    if( (outfile[x].fp==0)  &&
+        (outfile[x].remstat==0)  &&
         (outfile[x].def!=0) )
     {
-        //nincs megnyitva, 
+        //nincs megnyitva,
         //de van default file,
         //ropteben megnyitja
-        
+
         stringnb(outfile[x].def);
         setfp(1,x);
         pop();
@@ -351,7 +389,7 @@ static void out1(int x, VALUE *v)
         {
             string(CHRLIT("{"));
             print_str(x);
-            
+
 
             for(int i=0; i<ARRAYLEN(v); i++)
             {
@@ -379,12 +417,12 @@ static void out1(int x, VALUE *v)
             print_str(x);
             string(CHRLIT(">"));
             print_str(x);
- 
+
             push_symbol(v);
             _o_method_attrvals.eval(1);
             out1(x,TOP());
             pop();
- 
+
             break;
         }
 
@@ -406,6 +444,12 @@ static void out1(int x, VALUE *v)
 //------------------------------------------------------------------------
 static void out(VALUE *v)
 {
+    if( outfile[FP_CHANNEL].flag )
+    {
+        out1(FP_CHANNEL,v);
+        return;
+    }
+
     int i;
     for( i=0; i<4; i++ )
     {
@@ -414,7 +458,7 @@ static void out(VALUE *v)
             out1(i,v);
         }
     }
-}   
+}
 
 //------------------------------------------------------------------------
 void _clp_qqout(int argno)
@@ -441,7 +485,7 @@ void _clp_qout(int argno)
     _clp_qqout(1);
     pop();
     _clp_qqout(argno);
-}    
+}
 
 //------------------------------------------------------------------------
 #ifdef NOTDEFINED

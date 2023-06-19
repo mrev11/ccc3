@@ -1,4 +1,4 @@
-//input: rule.ppo (5.4.0)
+//input: rule.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -26,38 +26,38 @@ extern void _clp_rule_tr_get(int argno);
 extern void _clp_strtran(int argno);
 extern void _clp_upper(int argno);
 extern void _clp_valtype(int argno);
-static void _ini__rule_df();
-static void _ini__rule_info();
-static void _ini__rule_tr();
 
-MUTEX_CREATE(_mutex_rule_tr);
 static VALUE* _st_rule_tr_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_rule_tr);
-    static stvar _st_rule_tr(_ini__rule_tr);
-    MUTEX_UNLOCK(_mutex_rule_tr);
-    SIGNAL_UNLOCK();
+    static stvar _st_rule_tr;
+    static int _ini_rule_tr=[=](){
+        array(0);
+        assign(_st_rule_tr.ptr);
+        pop();
+        return 1;
+    }();
     return _st_rule_tr.ptr;
 }
-MUTEX_CREATE(_mutex_rule_df);
 static VALUE* _st_rule_df_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_rule_df);
-    static stvar _st_rule_df(_ini__rule_df);
-    MUTEX_UNLOCK(_mutex_rule_df);
-    SIGNAL_UNLOCK();
+    static stvar _st_rule_df;
+    static int _ini_rule_df=[=](){
+        array(0);
+        assign(_st_rule_df.ptr);
+        pop();
+        return 1;
+    }();
     return _st_rule_df.ptr;
 }
-MUTEX_CREATE(_mutex_rule_info);
 static VALUE* _st_rule_info_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_rule_info);
-    static stvar _st_rule_info(_ini__rule_info);
-    MUTEX_UNLOCK(_mutex_rule_info);
-    SIGNAL_UNLOCK();
+    static stvar _st_rule_info;
+    static int _ini_rule_info=[=](){
+        array(0);
+        assign(_st_rule_info.ptr);
+        pop();
+        return 1;
+    }();
     return _st_rule_info.ptr;
 }
 static VALUE* _st_cx_tr_ptr()
@@ -70,40 +70,15 @@ static VALUE* _st_cx_df_ptr()
     static stvar _st_cx_df;
     return _st_cx_df.ptr;
 }
-MUTEX_CREATE(_mutex_sort_df);
 static VALUE* _st_sort_df_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_sort_df);
     static stvar _st_sort_df(&TRUE);
-    MUTEX_UNLOCK(_mutex_sort_df);
-    SIGNAL_UNLOCK();
     return _st_sort_df.ptr;
 }
-MUTEX_CREATE(_mutex_sort_tr);
 static VALUE* _st_sort_tr_ptr()
 {
-    SIGNAL_LOCK();
-    MUTEX_LOCK(_mutex_sort_tr);
     static stvar _st_sort_tr(&TRUE);
-    MUTEX_UNLOCK(_mutex_sort_tr);
-    SIGNAL_UNLOCK();
     return _st_sort_tr.ptr;
-}
-
-static void _ini__rule_tr()
-{
-    array(0);
-}
-
-static void _ini__rule_df()
-{
-    array(0);
-}
-
-static void _ini__rule_info()
-{
-    array(0);
 }
 //=======================================================================
 void _clp_rule_tr_add(int argno)

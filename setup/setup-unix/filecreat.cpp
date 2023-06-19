@@ -27,15 +27,13 @@
 #include <string.h>
  
 #include <cccapi.h>
+#include <flock.h>  
 #include <fileio.ch>  
 #include <fileconv.ch>
 
 #define UNIX_FO_SHARED        0
 #define UNIX_FO_EXCLUSIVE     1
 #define UNIX_FO_NOLOCK        2
-
-#define CCC_FILELOCK_START  ((off_t)(unsigned long)0x80000000)  //2GB
-#define CCC_FILELOCK_LEN    ((off_t)(unsigned long)0x1) 
 
 #define DOSNAME_LEN           4
  
@@ -82,43 +80,16 @@ void _clp_setshare(int argno) //CA-tools fopen es fcreate default nyitasi modja
 static int ulock(int hnd, int unixShareMode) 
 {
     // lock a share modok emulalasara
-    // Vissza: 0=OK, -1=sikertelen
 
     if( unixShareMode==UNIX_FO_NOLOCK )
     {
         return 0;
     }
-
-    struct flock fl;
-       
-    fl.l_whence=SEEK_SET;
-    #ifdef _LFS_
-      fl.l_start=(unsigned)CCC_FILELOCK_START*512-1;  //1024 GB - 1
-    #else
-      fl.l_start=(unsigned)CCC_FILELOCK_START-2;      //   2 GB - 2
-    #endif
-    fl.l_len=CCC_FILELOCK_LEN;
-
-    switch(unixShareMode)
+    else
     {
-        case UNIX_FO_SHARED:
-            fl.l_type=F_RDLCK;
-            break;
-
-        case UNIX_FO_EXCLUSIVE:
-            fl.l_type=F_WRLCK;
-            break;
-
-        default:
-            errno=ENOLCK;
-            return -1;
+        int share=(unixShareMode==UNIX_FO_SHARED);
+        return fsetlock(hnd,0,LK_OFFSET_FILE,1,!share); // 0=OK, -1=error
     }
-
-    if( (-1==fcntl(hnd,F_SETLK,&fl)) && (errno!=ENOLCK) && (errno!=EACCES) )
-    {
-        return -1;
-    }
-    return 0;
 }
 
 //----------------------------------------------------------------------------
@@ -333,14 +304,13 @@ static int determineUnixAccessMode(int fomode)
 {
     int unixmode=O_RDONLY;
 
-    if( fomode & FO_WRITE     ) unixmode =  O_WRONLY;  //1
-    if( fomode & FO_READWRITE ) unixmode =  O_RDWR;    //2
-    if( fomode & FO_CREATE    ) unixmode |= O_CREAT; 
-    if( fomode & FO_TRUNCATE  ) unixmode |= O_TRUNC; 
-    if( fomode & FO_APPEND    ) unixmode |= O_APPEND;
-    #if defined O_CLOEXEC
-    if( fomode & FO_NOINHERIT ) unixmode |= O_CLOEXEC;
-    #endif
+    if( fomode & FO_WRITE       ) unixmode =  O_WRONLY;  //1
+    if( fomode & FO_READWRITE   ) unixmode =  O_RDWR;    //2
+    if( fomode & FO_CREATE      ) unixmode |= O_CREAT; 
+    if( fomode & FO_TRUNCATE    ) unixmode |= O_TRUNC; 
+    if( fomode & FO_APPEND      ) unixmode |= O_APPEND;
+    if( fomode & FO_NOINHERIT   ) unixmode |= O_CLOEXEC;
+    if( fomode & FO_NONEXISTENT ) unixmode |= O_EXCL;
 
     return unixmode;
 }
@@ -423,9 +393,11 @@ void _clp_fcreate(int argno) //Clipper
     if( !ISNIL(2) )
     {
         int fcmode=_parni(2);
-        if( fcmode & FC_READONLY ) unixCreateMode =  0444; 
-        if( fcmode & FC_NOTRUNC  ) unixAccessMode &= ~O_TRUNC; 
-        if( fcmode & FC_APPEND   ) unixAccessMode |= O_APPEND; 
+        if( fcmode & FC_READONLY    ) unixCreateMode =  0444; 
+        if( fcmode & FC_NOTRUNC     ) unixAccessMode &= ~O_TRUNC; 
+        if( fcmode & FC_APPEND      ) unixAccessMode |= O_APPEND; 
+        if( fcmode & FC_NOINHERIT   ) unixAccessMode |= O_CLOEXEC;
+        if( fcmode & FC_NONEXISTENT ) unixAccessMode |= O_EXCL;
     }
  
     int fd=uopen( fspec,

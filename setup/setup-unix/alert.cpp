@@ -1,4 +1,4 @@
-//input: alert.ppo (5.4.0)
+//input: alert.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -11,7 +11,6 @@ extern void _clp_len(int argno);
 extern void _clp_qout(int argno);
 extern void _clp_split(int argno);
 extern void _clp_valtype(int argno);
-static void _ini_alertblock_sblk(VALUE*);
 
 //=======================================================================
 void _clp_alert(int argno)
@@ -43,7 +42,13 @@ argno=1;
 push_call("alertblock",base);
 //
     line(28);
-    static stvarloc _st_sblk(_ini_alertblock_sblk,base);
+    static stvar _st_sblk;
+    static int _ini_sblk=[=](){
+        block(_blk_alertblock_0,0);
+        assign(_st_sblk.ptr);
+        pop();
+        return 1;
+    }();
     line(29);
     line(30);
     push_symbol(_st_sblk.ptr);//alertblock
@@ -69,11 +74,6 @@ push_call("alertblock",base);
 stack=base;
 push(&NIL);
 pop_call();
-}
-
-static void _ini_alertblock_sblk(VALUE* base)
-{
-    block(_blk_alertblock_0,0);
 }
 
 static void _blk_alertblock_0(int argno)

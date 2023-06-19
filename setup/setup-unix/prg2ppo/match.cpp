@@ -1,4 +1,4 @@
-//input: match.ppo (5.4.0)
+//input: match.ppo (5.6.0)
 
 #include <cccdef.h>
 
@@ -46,9 +46,6 @@ extern void _clp_rule_tr_get(int argno);
 extern void _clp_upper(int argno);
 extern void _clp_valtype(int argno);
 extern void _clp_xtxlegal(int argno);
-static void _ini_match1_match_count(VALUE*);
-static void _ini_match1_match_leftb(VALUE*);
-static void _ini_match1_match_state(VALUE*);
 
 class _method6_add: public _method6_{public: _method6_add():_method6_("add"){};}; static _method6_add _o_method_add;
 class _method6_buffer: public _method6_{public: _method6_buffer():_method6_("buffer"){};}; static _method6_buffer _o_method_buffer;
@@ -422,11 +419,32 @@ push_call("match1",base);
     assign(base+3);//match_level
     pop();
     line(154);
-    static stvarloc _st_match_count(_ini_match1_match_count,base);
+    static stvar _st_match_count;
+    static int _ini_match_count=[=](){
+        number(32);
+        _clp_array(1);
+        assign(_st_match_count.ptr);
+        pop();
+        return 1;
+    }();
     line(155);
-    static stvarloc _st_match_state(_ini_match1_match_state,base);
+    static stvar _st_match_state;
+    static int _ini_match_state=[=](){
+        number(32);
+        _clp_array(1);
+        assign(_st_match_state.ptr);
+        pop();
+        return 1;
+    }();
     line(156);
-    static stvarloc _st_match_leftb(_ini_match1_match_leftb,base);
+    static stvar _st_match_leftb;
+    static int _ini_match_leftb=[=](){
+        number(32);
+        _clp_array(1);
+        assign(_st_match_leftb.ptr);
+        pop();
+        return 1;
+    }();
     line(158);
     push(&ZERO);
     assign(base+5);//mcount
@@ -1040,24 +1058,6 @@ push_call("match1",base);
 stack=base;
 push(&NIL);
 pop_call();
-}
-
-static void _ini_match1_match_count(VALUE* base)
-{
-    number(32);
-    _clp_array(1);
-}
-
-static void _ini_match1_match_state(VALUE* base)
-{
-    number(32);
-    _clp_array(1);
-}
-
-static void _ini_match1_match_leftb(VALUE* base)
-{
-    number(32);
-    _clp_array(1);
 }
 //=======================================================================
 static void _clp_replacelist(int argno)

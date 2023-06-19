@@ -1359,7 +1359,7 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 300 "./input.lex"
-outstr("/**/");statepop(); 
+statepop(); 
 	YY_BREAK
 
 

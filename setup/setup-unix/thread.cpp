@@ -54,6 +54,8 @@ void _clp_thread_cond_signal(int argno){stack-=argno;PUSHNIL();}
 void _clp_thread_cond_wait(int argno){stack-=argno;PUSHNIL();} 
 void _clp_thread_cond_destroy(int argno){stack-=argno;PUSHNIL();} 
 void _clp_thread_create_detach(int argno){stack-=argno;PUSHNIL();} 
+void _clp_thread_setname(int argno){stack-=argno;PUSHNIL();} 
+void _clp_thread_getname(int argno){stack-=argno;PUSHNIL();} 
 
 #else
 
@@ -341,6 +343,46 @@ void _clp_thread_create_detach(int argno)
     _clp_thread_detach(1);
 }
 
+#ifndef _LINUX_
+//---------------------------------------------------------------------------
+void _clp_thread_setname(int argno) {stack-=argno; number(0);}
+void _clp_thread_getname(int argno) {stack-=argno; PUSHNIL();}
+#else
+//---------------------------------------------------------------------------
+void _clp_thread_setname(int argno)
+{
+    // nonportable
+    // max length of name: 15 bytes
+    // only ascii names are supported 
+
+    CCC_PROLOG("thread_setname",2);
+    str2bin(base+1);
+    number(15);
+    _clp_left(2);
+    pthread_t t=ptr2tid(_parp(1));
+    const char *name=_parb(2);
+    _retni( pthread_setname_np(t,name) ); // 0=ok, !0=failed
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_getname(int argno)
+{
+    CCC_PROLOG("thread_getname",1);
+    pthread_t t=ptr2tid(_parp(1));
+    char name[16];
+    if( 0==pthread_getname_np(t,name,sizeof(name)) )
+    {
+        _retcb(name);
+    }
+    else
+    {
+        _ret();
+    }
+    CCC_EPILOG();
+}
+
+#endif
 //---------------------------------------------------------------------------
 #endif
  

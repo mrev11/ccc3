@@ -1,4 +1,4 @@
-//input: split.ppo (5.4.0)
+//input: split.ppo (5.6.0)
 
 #include <cccdef.h>
 

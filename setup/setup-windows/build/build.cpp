@@ -134,7 +134,7 @@ push_call("main",base);
     if(!flag()) goto if_2_1;
         line(45);
         string(nls_text(L"CCC Program Builder "));
-        string(L"1.6.2");
+        string(L"1.6.3");
         add();
         string(L" Copyright (C) ComFirm Bt.");
         add();
@@ -733,7 +733,7 @@ static void _clp_build(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,0);
-while(stack<base+12)PUSHNIL();
+while(stack<base+13)PUSHNIL();
 argno=0;
 push_call("build",base);
 //
@@ -743,42 +743,46 @@ push_call("build",base);
     pop();
     line(184);
     array(0);
-    assign(base+1);//obj
+    assign(base+1);//inc
     pop();
     line(185);
     array(0);
-    assign(base+2);//lib
+    assign(base+2);//obj
     pop();
     line(186);
     array(0);
-    assign(base+3);//mmd
+    assign(base+3);//lib
     pop();
     line(187);
     array(0);
-    assign(base+4);//todo
+    assign(base+4);//mmd
     pop();
-    line(189);
-    line(194);
-    line(192);
+    line(188);
+    array(0);
+    assign(base+5);//todo
+    pop();
+    line(190);
+    line(195);
+    line(193);
     _clp_s_main(0);
     push(&NIL);
     neeq();
     if(!flag()) goto if_15_1;
-        line(193);
+        line(194);
         _clp_s_main(0);
         string(L",;");
         _clp_xsplit(2);
-        assign(base+3);//mmd
+        assign(base+4);//mmd
         pop();
     if_15_1:
     if_15_0:;
-    line(201);
-    line(197);
+    line(202);
+    line(198);
     _clp_s_srcdir(0);
     push(&NIL);
     neeq();
     if(!flag()) goto if_16_1;
-        line(198);
+        line(199);
         _clp_s_srcdir(0);
         string(L",;");
         _clp_xsplit(2);
@@ -786,35 +790,84 @@ push_call("build",base);
         pop();
     goto if_16_0;
     if_16_1:
-    line(199);
-        line(200);
+    line(200);
+        line(201);
         string(L".");
         array(1);
         assign(base+0);//dir
         pop();
     if_16_2:
     if_16_0:;
-    line(225);
+    line(209);
+    line(205);
+    _clp_s_incdir(0);
+    push(&NIL);
+    neeq();
+    if(!flag()) goto if_17_1;
+        line(206);
+        _clp_s_incdir(0);
+        string(L",;");
+        _clp_xsplit(2);
+        assign(base+1);//inc
+        pop();
+    goto if_17_0;
+    if_17_1:
+    line(207);
+        line(208);
+        array(0);
+        assign(base+1);//inc
+        pop();
+    if_17_2:
+    if_17_0:;
+    line(212);
     {
-    line(203);
+    line(210);
     push(&ONE);
     int sg=sign();
     push(&ONE);
-    assign(base+8);//n
-    lab_17_0:
+    assign(base+9);//n
+    lab_18_0:
     push_symbol(base+0);//dir
     _clp_len(1);
-    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_17_2;
-        line(205);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_18_2;
+        line(211);
+        push_symbol(base+1);//inc
+        push_symbol(base+0);//dir
+        push_symbol(base+9);//n
+        idxr();
+        _clp_aadd(2);
+        pop();
+    lab_18_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+9);//n
+    add();
+    assign(base+9);//n
+    goto lab_18_0;
+    lab_18_2:;
+    }
+    line(237);
+    {
+    line(215);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+9);//n
+    lab_19_0:
+    push_symbol(base+0);//dir
+    _clp_len(1);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_19_2;
+        line(217);
         string(L"");
         push_symbol(base+0);//dir
-        push_symbol(base+8);//n
+        push_symbol(base+9);//n
         idxr();
         _clp_qqout(2);
         pop();
-        line(207);
+        line(219);
         push_symbol(base+0);//dir
-        push_symbol(base+8);//n
+        push_symbol(base+9);//n
         idxr();
         _clp_dirsep(0);
         add();
@@ -822,44 +875,44 @@ push_call("build",base);
         add();
         string(L"H");
         _clp_directory(2);
-        assign(base+5);//d1
+        assign(base+6);//d1
         pop();
-        line(224);
+        line(236);
         {
-        line(209);
+        line(221);
         push(&ONE);
         int sg=sign();
         push(&ONE);
-        assign(base+9);//i
-        lab_18_0:
-        push_symbol(base+5);//d1
+        assign(base+10);//i
+        lab_20_0:
+        push_symbol(base+6);//d1
         _clp_len(1);
-        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_18_2;
-            line(211);
-            push_symbol(base+5);//d1
-            push_symbol(base+9);//i
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_20_2;
+            line(223);
+            push_symbol(base+6);//d1
+            push_symbol(base+10);//i
             idxr();
             idxr0(1);
-            assign(base+6);//f
+            assign(base+7);//f
             pop();
-            line(219);
-            line(213);
-            push_symbol(base+6);//f
+            line(231);
+            line(225);
+            push_symbol(base+7);//f
             _clp_fext(1);
             string(L".");
             add();
             _clp_s_primary(0);
             ss();
-            if(!flag()) goto if_19_1;
-                line(218);
-                line(214);
+            if(!flag()) goto if_21_1;
+                line(230);
+                line(226);
                 _clp_omitted_hash(0);
                 push_symbol(base+0);//dir
-                push_symbol(base+8);//n
+                push_symbol(base+9);//n
                 idxr();
                 _clp_dirsep(0);
                 add();
-                push_symbol(base+6);//f
+                push_symbol(base+7);//f
                 add();
                 string(L"\\");
                 string(L"/");
@@ -867,111 +920,111 @@ push_call("build",base);
                 idxr();
                 push(&NIL);
                 neeq();
-                if(!flag()) goto if_20_1;
-                goto if_20_0;
-                if_20_1:
-                line(216);
-                    line(217);
-                    push_symbol(base+1);//obj
+                if(!flag()) goto if_22_1;
+                goto if_22_0;
+                if_22_1:
+                line(228);
+                    line(229);
+                    push_symbol(base+2);//obj
                     push_symbol(base+0);//dir
-                    push_symbol(base+8);//n
+                    push_symbol(base+9);//n
                     idxr();
                     _clp_dirsep(0);
                     add();
-                    push_symbol(base+6);//f
+                    push_symbol(base+7);//f
                     add();
                     _clp_aadd(2);
                     pop();
-                if_20_2:
-                if_20_0:;
-            if_19_1:
-            if_19_0:;
-            line(223);
-            line(221);
-            push_symbol(base+6);//f
+                if_22_2:
+                if_22_0:;
+            if_21_1:
+            if_21_0:;
+            line(235);
+            line(233);
+            push_symbol(base+7);//f
             _clp_fext(1);
             string(L".");
             add();
             _clp_s_resource(0);
             ss();
-            if(!flag()) goto if_21_1;
-                line(222);
+            if(!flag()) goto if_23_1;
+                line(234);
                 push_symbol(base+0);//dir
-                push_symbol(base+8);//n
+                push_symbol(base+9);//n
                 idxr();
                 _clp_dirsep(0);
                 add();
-                push_symbol(base+6);//f
+                push_symbol(base+7);//f
                 add();
                 _clp_resource_hash(0);
-                push_symbol(base+6);//f
+                push_symbol(base+7);//f
                 assign2(idxxl());
                 pop();
-            if_21_1:
-            if_21_0:;
-        lab_18_1:
+            if_23_1:
+            if_23_0:;
+        lab_20_1:
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+9);//i
+        push_symbol(base+10);//i
         add();
-        assign(base+9);//i
-        goto lab_18_0;
-        lab_18_2:;
+        assign(base+10);//i
+        goto lab_20_0;
+        lab_20_2:;
         }
-    lab_17_1:
+    lab_19_1:
     push(&ONE);
     dup();
     sg=sign();
-    push_symbol(base+8);//n
+    push_symbol(base+9);//n
     add();
-    assign(base+8);//n
-    goto lab_17_0;
-    lab_17_2:;
+    assign(base+9);//n
+    goto lab_19_0;
+    lab_19_2:;
     }
-    line(226);
+    line(238);
     _clp_qout(0);
     pop();
-    line(262);
+    line(274);
     {
-    line(231);
+    line(243);
     push(&ONE);
     int sg=sign();
     push(&ONE);
-    assign(base+8);//n
-    lab_22_0:
-    push_symbol(base+1);//obj
+    assign(base+9);//n
+    lab_24_0:
+    push_symbol(base+2);//obj
     _clp_len(1);
-    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_22_2;
-        line(233);
-        push_symbol(base+1);//obj
-        push_symbol(base+8);//n
-        idxr();
-        assign(base+6);//f
-        pop();
-        line(234);
-        push_symbol(base+6);//f
-        _clp_fname(1);
-        assign(base+7);//o
-        pop();
-        line(235);
-        push_symbol(base+6);//f
-        _clp_memoread(1);
-        assign(base+10);//txt
-        pop();
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_24_2;
         line(245);
-        line(237);
+        push_symbol(base+2);//obj
+        push_symbol(base+9);//n
+        idxr();
+        assign(base+7);//f
+        pop();
+        line(246);
+        push_symbol(base+7);//f
+        _clp_fname(1);
+        assign(base+8);//o
+        pop();
+        line(247);
+        push_symbol(base+7);//f
+        _clp_memoread(1);
+        assign(base+11);//txt
+        pop();
+        line(257);
+        line(249);
         push(&ZERO);
-        push_symbol(base+3);//mmd
-        push_symbol_ref(base+7);//o
+        push_symbol(base+4);//mmd
+        push_symbol_ref(base+8);//o
         block(_blk_build_0,1);
         _clp_ascan(2);
         neeq();
-        if(!flag()) goto if_23_1;
-        goto if_23_0;
-        if_23_1:
-        line(239);
-        push_symbol(base+6);//f
+        if(!flag()) goto if_25_1;
+        goto if_25_0;
+        if_25_1:
+        line(251);
+        push_symbol(base+7);//f
         _clp_fext(1);
         string(L".prg");
         eqeq();
@@ -979,256 +1032,211 @@ push_call("build",base);
         push(&FALSE);
         }else{
         string(L"function main(");
-        push_symbol(base+10);//txt
+        push_symbol(base+11);//txt
         ss();
         }
-        if(!flag()) goto if_23_2;
-            line(242);
-            line(240);
+        if(!flag()) goto if_25_2;
+            line(254);
+            line(252);
             _clp_s_main(0);
             push(&NIL);
             eqeq();
-            if(!flag()) goto if_24_1;
-                line(241);
-                push_symbol(base+3);//mmd
-                push_symbol(base+7);//o
+            if(!flag()) goto if_26_1;
+                line(253);
+                push_symbol(base+4);//mmd
+                push_symbol(base+8);//o
                 _clp_aadd(2);
                 pop();
-            if_24_1:
-            if_24_0:;
-        goto if_23_0;
-        if_23_2:
-        line(243);
-            line(244);
-            push_symbol(base+2);//lib
-            push_symbol(base+7);//o
+            if_26_1:
+            if_26_0:;
+        goto if_25_0;
+        if_25_2:
+        line(255);
+            line(256);
+            push_symbol(base+3);//lib
+            push_symbol(base+8);//o
             _clp_aadd(2);
             pop();
-        if_23_3:
-        if_23_0:;
-        line(247);
-        push_symbol(base+7);//o
+        if_25_3:
+        if_25_0:;
+        line(259);
+        push_symbol(base+8);//o
         string(L".obj");
         add();
-        push_symbol(base+6);//f
+        push_symbol(base+7);//f
         array(2);
-        assign(base+11);//dep
+        assign(base+12);//dep
         pop();
-        line(259);
+        line(271);
         {
-        line(248);
+        line(260);
         push(&ONE);
         int sg=sign();
         number(2);
-        assign(base+9);//i
-        lab_25_0:
-        push_symbol(base+11);//dep
+        assign(base+10);//i
+        lab_27_0:
+        push_symbol(base+12);//dep
         _clp_len(1);
-        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_25_2;
-            line(257);
-            line(249);
-            push_symbol(base+9);//i
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_27_2;
+            line(269);
+            line(261);
+            push_symbol(base+10);//i
             number(2);
             eqeq();
-            if(!flag()) goto if_26_1;
-            goto if_26_0;
-            if_26_1:
-            line(251);
-            push_symbol(base+9);//i
+            if(!flag()) goto if_28_1;
+            goto if_28_0;
+            if_28_1:
+            line(263);
+            push_symbol(base+10);//i
             number(1024);
             gt();
-            if(!flag()) goto if_26_2;
-                line(252);
+            if(!flag()) goto if_28_2;
+                line(264);
                 string(L"recursive dependencies:");
-                push_symbol(base+11);//dep
+                push_symbol(base+12);//dep
                 _clp_qout(2);
                 pop();
-                line(253);
+                line(265);
                 _clp_qout(0);
                 pop();
-                line(254);
+                line(266);
                 _clp___quit(0);
                 pop();
-            goto if_26_0;
-            if_26_2:
-            line(255);
-                line(256);
-                push_symbol(base+11);//dep
-                push_symbol(base+9);//i
+            goto if_28_0;
+            if_28_2:
+            line(267);
+                line(268);
+                push_symbol(base+12);//dep
+                push_symbol(base+10);//i
                 idxr();
                 _clp_memoread(1);
-                assign(base+10);//txt
+                assign(base+11);//txt
                 pop();
-            if_26_3:
-            if_26_0:;
-            line(258);
-            push_symbol(base+10);//txt
-            push_symbol(base+11);//dep
-            push_symbol(base+0);//dir
-            push_symbol(base+4);//todo
+            if_28_3:
+            if_28_0:;
+            line(270);
+            push_symbol(base+11);//txt
+            push_symbol(base+12);//dep
+            push_symbol(base+1);//inc
+            push_symbol(base+5);//todo
             _clp_search_include(4);
             pop();
-        lab_25_1:
+        lab_27_1:
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+9);//i
+        push_symbol(base+10);//i
         add();
-        assign(base+9);//i
-        goto lab_25_0;
-        lab_25_2:;
+        assign(base+10);//i
+        goto lab_27_0;
+        lab_27_2:;
         }
-        line(261);
-        push_symbol(base+4);//todo
-        push_symbol(base+11);//dep
+        line(273);
+        push_symbol(base+5);//todo
+        push_symbol(base+12);//dep
         _clp_aadd(2);
         pop();
-    lab_22_1:
+    lab_24_1:
     push(&ONE);
     dup();
     sg=sign();
-    push_symbol(base+8);//n
+    push_symbol(base+9);//n
     add();
-    assign(base+8);//n
-    goto lab_22_0;
-    lab_22_2:;
+    assign(base+9);//n
+    goto lab_24_0;
+    lab_24_2:;
     }
-    line(264);
-    push_symbol(base+4);//todo
+    line(276);
+    push_symbol(base+5);//todo
     _clp_normalize(1);
     pop();
-    line(266);
-    push_symbol(base+4);//todo
+    line(278);
+    push_symbol(base+5);//todo
     push(&NIL);
     push(&NIL);
     block(_blk_build_1,0);
     _clp_asort(4);
     pop();
-    line(278);
-    line(270);
+    line(292);
+    line(284);
     _clp_s_debug(0);
-    if(!flag()) goto if_27_1;
-        line(271);
+    if(!flag()) goto if_29_1;
+        line(285);
         string(L"main:");
-        push_symbol(base+3);//mmd
+        push_symbol(base+4);//mmd
         _clp_qout(2);
         pop();
-        line(272);
+        line(286);
         string(L"lib :");
-        push_symbol(base+2);//lib
+        push_symbol(base+3);//lib
         _clp_qout(2);
         pop();
-        line(273);
+        line(287);
         _clp_qout(0);
         pop();
-        line(276);
+        line(290);
         {
-        line(274);
+        line(288);
         push(&ONE);
         int sg=sign();
         push(&ONE);
-        assign(base+8);//n
-        lab_28_0:
-        push_symbol(base+4);//todo
+        assign(base+9);//n
+        lab_30_0:
+        push_symbol(base+5);//todo
         _clp_len(1);
-        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_28_2;
-            line(275);
-            push_symbol(base+4);//todo
-            push_symbol(base+8);//n
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_30_2;
+            line(289);
+            push_symbol(base+5);//todo
+            push_symbol(base+9);//n
             idxr();
             _clp_qout(1);
             pop();
-        lab_28_1:
+        lab_30_1:
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+8);//n
+        push_symbol(base+9);//n
         add();
-        assign(base+8);//n
-        goto lab_28_0;
-        lab_28_2:;
+        assign(base+9);//n
+        goto lab_30_0;
+        lab_30_2:;
         }
-        line(277);
+        line(291);
         _clp_qout(0);
         pop();
-    if_27_1:
-    if_27_0:;
-    line(280);
+    if_29_1:
+    if_29_0:;
+    line(294);
     string(L"error");
     _clp_ferase(1);
     pop();
-    line(285);
+    line(299);
     {
-    line(281);
+    line(295);
     push(&ONE);
     int sg=sign();
     push(&ONE);
-    assign(base+8);//n
-    lab_29_0:
-    push_symbol(base+4);//todo
+    assign(base+9);//n
+    lab_31_0:
+    push_symbol(base+5);//todo
     _clp_len(1);
-    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_29_2;
-        line(284);
-        line(282);
-        push_symbol(base+4);//todo
-        push_symbol(base+8);//n
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_31_2;
+        line(298);
+        line(296);
+        push_symbol(base+5);//todo
+        push_symbol(base+9);//n
         idxr();
         idxr0(1);
         _clp_fext(1);
         string(L".obj");
         eqeq();
         topnot();
-        if(!flag()) goto if_30_1;
-            line(283);
-            push_symbol(_st_pool_ptr());//global
-            push_symbol_ref(base+4);//todo
-            block(_blk_build_2,1);
-            push_symbol(base+8);//n
-            array(2);
-            _o_method_addjob.eval(2);
-            pop();
-        if_30_1:
-        if_30_0:;
-    lab_29_1:
-    push(&ONE);
-    dup();
-    sg=sign();
-    push_symbol(base+8);//n
-    add();
-    assign(base+8);//n
-    goto lab_29_0;
-    lab_29_2:;
-    }
-    line(286);
-    push_symbol(_st_pool_ptr());//global
-    _o_method_wait.eval(1);
-    pop();
-    line(292);
-    {
-    line(288);
-    push(&ONE);
-    int sg=sign();
-    push(&ONE);
-    assign(base+8);//n
-    lab_31_0:
-    push_symbol(base+4);//todo
-    _clp_len(1);
-    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_31_2;
-        line(291);
-        line(289);
-        push_symbol(base+4);//todo
-        push_symbol(base+8);//n
-        idxr();
-        idxr0(1);
-        _clp_fext(1);
-        string(L".obj");
-        eqeq();
         if(!flag()) goto if_32_1;
-            line(290);
+            line(297);
             push_symbol(_st_pool_ptr());//global
-            push_symbol_ref(base+4);//todo
-            block(_blk_build_3,1);
-            push_symbol(base+8);//n
+            push_symbol_ref(base+5);//todo
+            block(_blk_build_2,1);
+            push_symbol(base+9);//n
             array(2);
             _o_method_addjob.eval(2);
             pop();
@@ -1238,29 +1246,74 @@ push_call("build",base);
     push(&ONE);
     dup();
     sg=sign();
-    push_symbol(base+8);//n
+    push_symbol(base+9);//n
     add();
-    assign(base+8);//n
+    assign(base+9);//n
     goto lab_31_0;
     lab_31_2:;
     }
-    line(293);
+    line(300);
     push_symbol(_st_pool_ptr());//global
     _o_method_wait.eval(1);
     pop();
+    line(306);
+    {
+    line(302);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+9);//n
+    lab_33_0:
+    push_symbol(base+5);//todo
+    _clp_len(1);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_33_2;
+        line(305);
+        line(303);
+        push_symbol(base+5);//todo
+        push_symbol(base+9);//n
+        idxr();
+        idxr0(1);
+        _clp_fext(1);
+        string(L".obj");
+        eqeq();
+        if(!flag()) goto if_34_1;
+            line(304);
+            push_symbol(_st_pool_ptr());//global
+            push_symbol_ref(base+5);//todo
+            block(_blk_build_3,1);
+            push_symbol(base+9);//n
+            array(2);
+            _o_method_addjob.eval(2);
+            pop();
+        if_34_1:
+        if_34_0:;
+    lab_33_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+9);//n
+    add();
+    assign(base+9);//n
+    goto lab_33_0;
+    lab_33_2:;
+    }
+    line(307);
+    push_symbol(_st_pool_ptr());//global
+    _o_method_wait.eval(1);
+    pop();
+    line(325);
     line(311);
-    line(297);
     _clp_s_libnam(0);
     push(&NIL);
     neeq();
-    if(!flag()) goto if_33_1;
-        line(298);
+    if(!flag()) goto if_35_1;
+        line(312);
         _clp_s_libnam(0);
-        push_symbol(base+2);//lib
+        push_symbol(base+3);//lib
         _clp_makelib(2);
         pop();
-        line(302);
-        line(300);
+        line(316);
+        line(314);
         _clp_s_shared(0);
         push(&TRUE);
         eqeq();
@@ -1271,82 +1324,82 @@ push_call("build",base);
         string(L"/");
         eqeq();
         }
-        if(!flag()) goto if_34_1;
-            line(301);
+        if(!flag()) goto if_36_1;
+            line(315);
             _clp_s_libnam(0);
-            push_symbol(base+2);//lib
+            push_symbol(base+3);//lib
             _clp_makeso(2);
             pop();
-        if_34_1:
-        if_34_0:;
-        line(306);
+        if_36_1:
+        if_36_0:;
+        line(320);
         {
-        line(304);
+        line(318);
         push(&ONE);
         int sg=sign();
         push(&ONE);
-        assign(base+8);//n
-        lab_35_0:
-        push_symbol(base+3);//mmd
+        assign(base+9);//n
+        lab_37_0:
+        push_symbol(base+4);//mmd
         _clp_len(1);
-        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_35_2;
-            line(305);
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_37_2;
+            line(319);
             push_symbol(_st_pool_ptr());//global
             block(_blk_build_4,0);
-            push_symbol(base+3);//mmd
-            push_symbol(base+8);//n
+            push_symbol(base+4);//mmd
+            push_symbol(base+9);//n
             idxr();
             _clp_s_libnam(0);
             array(3);
             _o_method_addjob.eval(2);
             pop();
-        lab_35_1:
+        lab_37_1:
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+8);//n
+        push_symbol(base+9);//n
         add();
-        assign(base+8);//n
-        goto lab_35_0;
-        lab_35_2:;
+        assign(base+9);//n
+        goto lab_37_0;
+        lab_37_2:;
         }
-    goto if_33_0;
-    if_33_1:
-    line(307);
-        line(310);
+    goto if_35_0;
+    if_35_1:
+    line(321);
+        line(324);
         {
-        line(308);
+        line(322);
         push(&ONE);
         int sg=sign();
         push(&ONE);
-        assign(base+8);//n
-        lab_36_0:
-        push_symbol(base+3);//mmd
+        assign(base+9);//n
+        lab_38_0:
+        push_symbol(base+4);//mmd
         _clp_len(1);
-        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_36_2;
-            line(309);
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_38_2;
+            line(323);
             push_symbol(_st_pool_ptr());//global
             block(_blk_build_5,0);
-            push_symbol(base+3);//mmd
-            push_symbol(base+8);//n
+            push_symbol(base+4);//mmd
+            push_symbol(base+9);//n
             idxr();
-            push_symbol(base+2);//lib
+            push_symbol(base+3);//lib
             array(3);
             _o_method_addjob.eval(2);
             pop();
-        lab_36_1:
+        lab_38_1:
         push(&ONE);
         dup();
         sg=sign();
-        push_symbol(base+8);//n
+        push_symbol(base+9);//n
         add();
-        assign(base+8);//n
-        goto lab_36_0;
-        lab_36_2:;
+        assign(base+9);//n
+        goto lab_38_0;
+        lab_38_2:;
         }
-    if_33_2:
-    if_33_0:;
-    line(312);
+    if_35_2:
+    if_35_0:;
+    line(326);
     push_symbol(_st_pool_ptr());//global
     _o_method_wait.eval(1);
     pop();

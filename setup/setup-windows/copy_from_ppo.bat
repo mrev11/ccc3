@@ -10,6 +10,7 @@ copy %CCCDIR%\ccclib\ppo\memoread.cpp
 copy %CCCDIR%\ccclib\ppo\o_error.cpp
 copy %CCCDIR%\ccclib\ppo\o_object.cpp
 copy %CCCDIR%\ccclib\ppo\set.cpp
+copy %CCCDIR%\ccclib\ppo\setcursor.cpp
 copy %CCCDIR%\ccclib\ppo\simplehash.cpp
 copy %CCCDIR%\ccclib\ppo\split.cpp
 copy %CCCDIR%\ccclib\ppo\strtran.cpp

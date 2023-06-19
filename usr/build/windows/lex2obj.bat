@@ -9,7 +9,7 @@ md ppo 2>nul
 
 
 :LEX forditas
-flex.exe %BUILD_LEX% -L -oppo\%1.cpp %2\%1.lex 2>%OUTFLEX%
+flex.exe %BUILD_LEX% -oppo\%1.cpp %2\%1.lex 2>%OUTFLEX%
 if not errorlevel 1 goto flex_ok
     touch error
     del ppo\%1.cpp 2>nul

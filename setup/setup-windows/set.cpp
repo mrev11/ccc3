@@ -8,6 +8,7 @@ extern void _clp___extra(int argno);
 extern void _clp___printer(int argno);
 extern void _clp___setcentury(int argno);
 extern void _clp_alltrim(int argno);
+extern void _clp_eval(int argno);
 extern void _clp_get_dosconv(int argno);
 extern void _clp_lower(int argno);
 extern void _clp_reset_dosconv(int argno);
@@ -18,11 +19,13 @@ extern void _clp_setaltfile(int argno);
 extern void _clp_setcolor(int argno);
 extern void _clp_setconfirm(int argno);
 extern void _clp_setconsole(int argno);
+extern void _clp_setcursor(int argno);
 extern void _clp_setdateformat(int argno);
 extern void _clp_setdosconv(int argno);
 extern void _clp_setextra(int argno);
 extern void _clp_setextrafile(int argno);
 extern void _clp_setinsert(int argno);
+extern void _clp_setlocalname(int argno);
 extern void _clp_setprinter(int argno);
 extern void _clp_setprintfile(int argno);
 extern void _clp_strtran(int argno);
@@ -121,67 +124,78 @@ push_call("_clp_set",base);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_1_0;
     if_1_7:
+    line(48);
+    push_symbol(base+0);//spec
+    number(16);
+    eqeq();
+    if(!flag()) goto if_1_8;
+        line(49);
+        push_symbol(base+1);//newset
+        _clp_setcursor(1);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    goto if_1_0;
+    if_1_8:
     line(51);
     push_symbol(base+0);//spec
     number(15);
     eqeq();
-    if(!flag()) goto if_1_8;
+    if(!flag()) goto if_1_9;
         line(52);
         push_symbol(base+1);//newset
         _clp_setcolor(1);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_1_0;
-    if_1_8:
+    if_1_9:
     line(54);
     push_symbol(base+0);//spec
     number(29);
     eqeq();
-    if(!flag()) goto if_1_9;
+    if(!flag()) goto if_1_10;
         line(55);
         push_symbol(base+1);//newset
         _clp_setinsert(1);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_1_0;
-    if_1_9:
+    if_1_10:
     line(57);
     push_symbol(base+0);//spec
     number(30);
     eqeq();
-    if(!flag()) goto if_1_10;
+    if(!flag()) goto if_1_11;
     goto if_1_0;
-    if_1_10:
+    if_1_11:
     line(60);
     push_symbol(base+0);//spec
     number(27);
     eqeq();
-    if(!flag()) goto if_1_11;
+    if(!flag()) goto if_1_12;
         line(61);
         push_symbol(base+1);//newset
         _clp_setconfirm(1);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_1_0;
-    if_1_11:
+    if_1_12:
     line(63);
     push_symbol(base+0);//spec
     number(4);
     eqeq();
-    if(!flag()) goto if_1_12;
+    if(!flag()) goto if_1_13;
         line(64);
         push_symbol(base+1);//newset
         _clp_setdateformat(1);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_1_0;
-    if_1_12:
+    if_1_13:
     line(66);
     push_symbol(base+0);//spec
     number(39);
     eqeq();
-    if(!flag()) goto if_1_13;
+    if(!flag()) goto if_1_14;
         line(67);
         push_symbol(base+1);//newset
         _clp_setdosconv(1);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
-    if_1_13:
+    if_1_14:
     if_1_0:;
     line(70);
     push(&NIL);
@@ -699,6 +713,62 @@ push_call("setdosconv",base);
     line(228);
     push_symbol(base+1);//prevset
     {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_setlocalname(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+2)PUSHNIL();
+argno=1;
+push_call("setlocalname",base);
+//
+    line(233);
+    static stvar _st_blklocalname;
+    line(234);
+    line(243);
+    line(235);
+    push_symbol(base+0);//x
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    if(!flag()) goto if_12_1;
+        line(236);
+        push_symbol(_st_blklocalname.ptr);//setlocalname
+        assign(base+1);//prevblk
+        pop();
+        line(237);
+        push_symbol(base+0);//x
+        assign(_st_blklocalname.ptr);//setlocalname
+        pop();
+        line(238);
+        push_symbol(base+1);//prevblk
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    goto if_12_0;
+    if_12_1:
+    line(239);
+    push_symbol(_st_blklocalname.ptr);//setlocalname
+    _clp_valtype(1);
+    string(L"B");
+    eqeq();
+    if(!flag()) goto if_12_2;
+        line(240);
+        push_symbol(_st_blklocalname.ptr);//setlocalname
+        push_symbol(base+0);//x
+        _clp_eval(2);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    goto if_12_0;
+    if_12_2:
+    line(241);
+        line(242);
+        push_symbol(base+0);//x
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    if_12_3:
+    if_12_0:;
 //
 stack=base;
 push(&NIL);

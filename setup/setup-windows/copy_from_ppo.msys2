@@ -10,6 +10,7 @@ cp -p ${CCCDIR}/ccclib/ppo/memoread.cpp
 cp -p ${CCCDIR}/ccclib/ppo/o_error.cpp
 cp -p ${CCCDIR}/ccclib/ppo/o_object.cpp
 cp -p ${CCCDIR}/ccclib/ppo/set.cpp
+cp -p ${CCCDIR}/ccclib/ppo/setcursor.cpp
 cp -p ${CCCDIR}/ccclib/ppo/simplehash.cpp
 cp -p ${CCCDIR}/ccclib/ppo/split.cpp
 cp -p ${CCCDIR}/ccclib/ppo/strtran.cpp

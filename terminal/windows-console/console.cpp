@@ -205,6 +205,7 @@ int main(int argc, char *argv[])
   //printf("%c[4 q",0x1b);       // cursor shape  steady underline
   //printf("%c[5 q",0x1b);       // cursor shape  blinking bar
   //printf("%c[6 q",0x1b);       // cursor shape  steady bar
+    printf("\n");
 
     tcpio_ini(host,port);
     pthread_t t=0;

@@ -1,0 +1,234 @@
+
+CCC terminálok
+==============
+
+A CCC2 és CCC3 ugyanazt terminál protokollt használja.
+Ebből adódóan a ccc2/terminal és ccc3/terminal alatt levő
+forrásprogramok megegyeznek, és a belőlük fordított exe-k
+is byte-ra ugyanazok. CCC3 program működik a CCC2 alatt készült
+terminállal, és ugyanez fennáll fordítva is.
+
+
+1) terminal/gtk2  -> terminal-gtk2.exe
+
+A GTK könyvtárra alapozott terminál. A terminál ablakban egy
+GTK text editor widget van (emiatt lehet belőle copy-paste-elni).
+Platform független, vagyis ugyanaz a forráskód Linuxon és Windowson
+is lefordítható. A GTK rendkívül nagy infrastruktúrát használ,
+például az alábbi so-kat tölti be:
+
+    linux-vdso.so.1 (0x00007fffabddd000)
+    libgtk-x11-2.0.so.0 => /usr/lib/libgtk-x11-2.0.so.0 (0x00007f2578eeb000)
+    libgdk-x11-2.0.so.0 => /usr/lib/libgdk-x11-2.0.so.0 (0x00007f2578e30000)
+    libpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007f2578e20000)
+    libatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007f2578df8000)
+    libcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007f2578cc6000)
+    libgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007f2578c7e000)
+    libgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007f2578aa9000)
+    libpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007f2578a91000)
+    libpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007f2578a28000)
+    libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007f25789c7000)
+    libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007f257887c000)
+    libharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007f257877f000)
+    libfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007f2578730000)
+    libfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007f2578653000)
+    libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f257841b000)
+    libm.so.6 => /usr/lib/libm.so.6 (0x00007f2578333000)
+    libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f2578313000)
+    libc.so.6 => /usr/lib/libc.so.6 (0x00007f257812a000)
+    libgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007f2578123000)
+    libX11.so.6 => /usr/lib/libX11.so.6 (0x00007f2577fe0000)
+    libXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007f2577fd8000)
+    libpthread.so.0 => /usr/lib/libpthread.so.0 (0x00007f2577fd3000)
+    libXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007f2577fc6000)
+    libXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007f2577fbf000)
+    libXi.so.6 => /usr/lib/libXi.so.6 (0x00007f2577fab000)
+    libXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007f2577f9e000)
+    libXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007f2577f92000)
+    libXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007f2577f8d000)
+    libXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007f2577f88000)
+    libXext.so.6 => /usr/lib/libXext.so.6 (0x00007f2577f71000)
+    libz.so.1 => /usr/lib/libz.so.1 (0x00007f2577f57000)
+    libpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007f2577f1e000)
+    libxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007f2577ef3000)
+    libxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007f2577ee4000)
+    libxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007f2577edd000)
+    libpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007f2577e30000)
+    libjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007f2577dad000)
+    libtiff.so.6 => /usr/lib/libtiff.so.6 (0x00007f2577d16000)
+    libmount.so.1 => /usr/lib/libmount.so.1 (0x00007f2577cd2000)
+    libfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007f2577cb0000)
+    libthai.so.0 => /usr/lib/libthai.so.0 (0x00007f2577ca5000)
+    libffi.so.8 => /usr/lib/libffi.so.8 (0x00007f2577c9a000)
+    libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007f2577bff000)
+    libgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007f2577bdc000)
+    libexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007f2577bb1000)
+    libbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007f2577b9c000)
+    libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007f2577b8e000)
+    /lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f25793e0000)
+    libXau.so.6 => /usr/lib/libXau.so.6 (0x00007f2577b89000)
+    libXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007f2577b81000)
+    libzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007f2577aaf000)
+    liblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007f2577a7c000)
+    libblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007f2577a44000)
+    libdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007f2577a3b000)
+    libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007f2577a18000)
+
+
+2) terminal/gtk3 -> terminal-gtk3.exe (ajánlott)
+
+Lényegében ugyanaz a program, mint terminal-gtk2.exe. Ott van csak
+eltérés, ahol a GTK3 API változott a a GTK2-höz képest. Ugyanúgy működik
+Linuxon és Windowson. Még több so-ja van, mint az előzőnek.
+
+Van már GTK4 is, de azzal nem foglalkoztam.
+
+
+3) terminal/qt5 -> terminal-qt5.exe
+
+A Qt5 könyvtáron alapuló terminál. Ennek még  a GTK-nál is nagyobb
+infrastruktúrája van. Az implementáció primitívebb, mint a GTK-s
+termináloké, mert nem text widget-re alapoz, hanem egyenként rajzolja
+a karakter cellákat (ezért nem is képes copy-paste-re). Elvileg ez is
+platformfüggetlen volna, de nekem nem sikerült Windowson lefordítani,
+úgyhogy jelenleg csak Linuxon fut.
+
+Létezik már Qt6 is, de azzal nem foglalkoztam.
+
+
+4) terminal/unix
+    -> terminal.exe
+    -> terminal-xft.exe (ajánlott)
+
+Itt két terminál program készül, mindkettő közvetlenül az X11 könyvtárat
+használja (tehát nincs közbeiktatva olyan réteg, mint a GTK vagy Qt).
+Ezeket csak Linux/UNIX alatt lehet lefordítani.
+
+A terminal.exe program pixmap-ekkel rajzol. A pixmap fontokat nem lehet
+skálázni, így ez a program már elavultnak tekinthető. Ez volt az első
+terminál implementáció, és amíg nem volt más, kizárólag ezt használtuk.
+
+Az terminal-xft.exe program az Xft könyvtárral rajzol, ami már
+támogatja a skálázható fontokat. Összevetés céljából idemásolom a
+terminal-xft.exe által betöltött so-k listáját.
+
+    linux-vdso.so.1 (0x00007ffe2d3fb000)
+    libX11.so.6 => /usr/lib/libX11.so.6 (0x00007f6a9f9bf000)
+    libXft.so.2 => /usr/lib/libXft.so.2 (0x00007f6a9f9a5000)
+    libXpm.so.4 => /usr/lib/libXpm.so.4 (0x00007f6a9f992000)
+    libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f6a9f75a000)
+    libm.so.6 => /usr/lib/libm.so.6 (0x00007f6a9f672000)
+    libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f6a9f650000)
+    libc.so.6 => /usr/lib/libc.so.6 (0x00007f6a9f469000)
+    libxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007f6a9f43e000)
+    libfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007f6a9f3ef000)
+    libfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007f6a9f312000)
+    libXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007f6a9f305000)
+    /lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f6a9fb9c000)
+    libXau.so.6 => /usr/lib/libXau.so.6 (0x00007f6a9f2fe000)
+    libXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007f6a9f2f6000)
+    libexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007f6a9f2cb000)
+    libz.so.1 => /usr/lib/libz.so.1 (0x00007f6a9f2b1000)
+    libbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007f6a9f29e000)
+    libpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007f6a9f265000)
+    libharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007f6a9f168000)
+    libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007f6a9f15a000)
+    libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007f6a9f00f000)
+    libgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007f6a9efec000)
+    libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007f6a9efc9000)
+    libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007f6a9ef2c000)
+
+
+5) terminal/unix-ncterm -> ncterm.exe
+
+Xterm-ben, Konsole-ban, Xfce4-terminal-ban, xtermjs-ben, esetleg Linux
+konzolban megjelenő terminál. Rajzoláshoz az ncurses könyvtárat használja.
+Keyboard input olvasásra az ncurses nem ad használható API-t (például nem
+lehet olyan leütéseket kapni, mint ALT-F1), ezért ezt máshogy kellett
+megoldani. Két megoldás van:
+
+  a) 0-ás fájl deszkriptor közvetlen olvasása és elemzése
+  b) libtermkey
+
+Régebben úgy gondoltam, hogy az ncurses és libtermkey könyvtárak használata
+hordozhatóságot biztosít, mert ezek a könyvtárak felderítik a konkrét
+terminál (xterm és társaik) tulajdonságait, képességeit, és alkalmazkodnak
+ezekhez. A gyakorlat ezzel szemben az, hogy a terminál implementációk
+szabványosodtak, és mind úgy működik (ugyanazokat az esc szekvenciákat
+használják), mint az xterm. Nem kivétel ez alól még a Windows konzol sem.
+Ezért a libtermkey használata helyett jobbnak gondolom a közvetlen olvasást
+a 0-ás deszkriptorból. Amúgy az egész ncurses könyvtár elavult és fölösleges.
+
+Elavult, de tökéletesen működik. Működik vele például böngészős Kontó.
+
+
+6) terminal/unix-cterm -> cterm.exe (ajánlott)
+
+(Számomra egyértelmű, hogy a Kontót át kell állítani böngészős üzemmódra.)
+
+Miután kiderült, hogy az ncterm.exe-nek fontos szerepe van a CCC programok
+böngészőbeli megjelenítésében, elkezdtem foglalkozni az ncterm.exe
+tökéletesítésével. Ennek a munkának az eredménye a cterm.exe.
+
+A cterm.exe lényegében ugyanaz a program, mint az ncterm.exe, kivéve hogy
+teljesen ki van hagyva belőle az ncurses könyvtár. A képernyő output, kurzor
+pozicionálás, színek beállítása közvetlenül ANSI szekvenciák kiírásával
+történik. Ez a megoldás a gyakorlatban hordozhatónak bizonyult az alábbi
+terminál fajtáknál:
+
+    xterm
+    Konsole
+    Xfce4-terminal
+    xtermjs
+    Windows Console
+
+Az ncurses-hez képest ez a megoldás támogatja 256 (CCC-ben csak 128)
+szín használatát, egyszerűbb, gyorsabb, és nem hoz be függőségeket.
+Keyboard input olvasásra ugyanaz a két alternatíva van, mint az nctrem-nél,
+azaz közvetlen olvasás a 0-ás fd-ből vagy a libtermkey (default a közvetlen
+olvasás). Összevetés, ezeket az so-kat tölti be:
+
+    linux-vdso.so.1 (0x00007fff15dd9000)
+    libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f5ac444f000)
+    libm.so.6 => /usr/lib/libm.so.6 (0x00007f5ac4367000)
+    libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f5ac4347000)
+    libc.so.6 => /usr/lib/libc.so.6 (0x00007f5ac4160000)
+    /lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f5ac4726000)
+
+Ez van jelenleg a böngészős Kontó demóban. A cterm egy pszeudo terminálban
+fut, annak a kimenetét a websocket szerver átküldi a böngészőnek, a böngészőben
+futó xtremjs (JavaScript terminál) pedig megjeleníti. Korábban cterm
+helyett az ncterm-et használtam. A különbséget csak olyan CCC3 programoknál
+lehet észrevenni, amik az ncurses 16 alapszínén kívül más színárnyalatokat
+is használnak.
+
+
+7) terminal/windows -> terminal.exe (ajánlott)
+
+Közönséges natív grafikus Windows (WinMain-es) program.
+
+
+8) terminal/windows-console
+    -> cterm.exe
+    -> console.exe (ajánlott)
+
+Miután kiderült, hogy a terminálok teljesen egységesen értelmezik az
+ANSI szekvenciákat, kipróbáltam, hogy a cterm.exe működik-e Windowson.
+Működik, csak a keyboard inputot kellett windowsos eszközökkel megírni.
+
+Érdekes, hogy az MS dokumentációkban mindenhol az olvasható, hogy a
+korábbi konzol API (WriteConsoleOutput és társai) elavult, és helyette
+új fejlesztésekhez az  ANSI szekvenciákat ajánlják, amit "Virtual Terminal
+API-nak" neveznek. Ez volna a jövő. Közben az MS dokumentációban említés
+esik xterm-ről és bash-ről, mint referenciákról. Ki gondolt volna ilyesmire.
+
+Tehát a windowsos cterm.exe ugyanaz a program, mint a unixos cterm.exe
+(kivéve a keyboard inputot), azaz ANSI szekvenciák írásával pozicionálja
+a kurzort, állítja a színeket. Működik, de nevetségesen lassú. Látni,
+ahogy egyenként rajzolja a sorokat.
+
+Ezért a cterm-beli paint függvényt kicseréltem egy olyan implementációra,
+ami az elavultnak mondott WriteConsoleOutput-tal rajzol. Ezzel a
+gyakorlatban is tökéletesen használható CCC terminál keletkezett.
+
+

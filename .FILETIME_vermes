@@ -1,6 +1,8 @@
-7dd6332520c4de2311de0a72f89b7d1695a55863 2023071707:33:41-UTC ./CHANGELOG_vermes
-d199d23dcb2db1b760d63468c26fc25468b2182e 2023071618:31:48-UTC ./jt/jterminal/jterminal.jar
-12de47201d1936fc2500be07fefd62b2b67d327a 2023071618:31:48-UTC ./log-install
+df5e02dd82ca99246d67b216b42cded87b3716d8 2023072112:44:00-UTC ./CHANGELOG_vermes
+ad3cc90ed0fcb21210debe134e4b77f4e9de0bb4 2023072112:30:27-UTC ./tabobj/log-install
+610f1a083a935732d5372dc7e4b676e6cceb4f2f 2023072112:30:22-UTC ./tabobj/common.src/tabchlog.prg
+3070e27b5cbb0739d77b1959a3a099f168ea5c84 2023071810:30:17-UTC ./jt/jterminal/jterminal.jar
+0dec601c8d9df267c96a92c7ce4cff4fad152ac6 2023071810:30:17-UTC ./log-install
 869b032157b18b4b22beaf99f63720356d320742 2023071618:31:47-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2023071618:31:47-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2023071618:31:47-UTC ./jt/jterminal/getutil/checkfield.class
@@ -918,7 +920,6 @@ d6b2df18f84998e1f9ef5aaa02cc5aeab7ebae85 2021032510:21:17-UTC ./terminal/unix/te
 b15b2dd9b42da37dea1779c82bbe06a3f20cfd43 2021032510:10:01-UTC ./terminal/unix/terminal.xpm
 8d233b09251e4e5a9799f9459e9e0d3c7d9fad36 2021032509:11:28-UTC ./terminal/unix/parfile.bld
 df1a6c4d1a18361dd4cef5e46fc61a478fd5e2aa 2021032509:09:24-UTC ./terminal/unix/terminal.ico
-9f0145e7b1f051e427d4e80e52e35c4b7df0cb30 2021031610:31:44-UTC ./tabobj/common.src/tabchlog.prg
 05cd9c265f54b5b4de485344d2e551e87ca2bbbc 2021022110:57:10-UTC ./tools/mask/doc/mask.hu.ver
 d9bd0f3829b2a9ccec9f9ca63f1a6fe4f61e7e92 2021022110:57:07-UTC ./tools/mask/doc/page.hu.ver
 9bfab5711336b0686edf1028ff0b135b1f9a60c9 2021022110:15:10-UTC ./tools/mask/doc/charset.txt

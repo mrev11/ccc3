@@ -20,7 +20,7 @@
 
 #include "fileio.ch"
 #include "tabobj.ch"
- 
+
 ******************************************************************************
 //Public interface
 //function tabSetChangeLogInfo()           // programfuggo informacio hozzaadasa
@@ -34,7 +34,7 @@
 //function tabWriteChangeLogCreate(table)  // tabla letrehozas
 //function tabWriteChangeLogDrop(table)    // tabla megszuntetes
 //function tabWriteChangeLogUpgrade(table) // tabla atalakitasa
- 
+
 
 // FILES:
 //
@@ -42,13 +42,13 @@
 //
 // changelog        [changelog123456]   fdlog0      aktualis naplo neve
 // changelog000001  [XML<close/>]                   lezart naplo
-// changelog000002  [XML<close/>]                   lezart naplo 
+// changelog000002  [XML<close/>]                   lezart naplo
 // ...
 // ...
-// changelog123456  [XML]               fdlog       aktualis naplo 
+// changelog123456  [XML]               fdlog       aktualis naplo
 // mutex            []                  fdmutex     mutex (lock) file
 // tabspec          [f1,f2,...]                     naplozando tablak
- 
+
 
 #define LOG_FILE    "CCC_TRANSACTION_LOG_FILE"      //logile neve
 #define LOG_MUTEX   "CCC_TRANSACTION_LOG_MUTEX"     //lockfile neve
@@ -63,8 +63,8 @@
 
 static info
 
-static fdlog0      
-static fdlog       
+static fdlog0
+static fdlog
 static fdmutex
 static tabspec
 static xtabspec
@@ -76,60 +76,17 @@ static logfunctions // {{funName,level},...}
 
 // A programok beallitjak, hogy milyen funkciot milyen szinten
 // csinalnak eppen.
-static prog_logfunction:=nil
+static prog_logfunction:=NIL
 static prog_loglevel:=0
- 
-static logfunction_level:=nil
+
+static logfunction_level:=NIL
 static logfunction_enabled:=.t.
 
 ******************************************************************************
 function tabSetChangeLogInfo(attrvals)
     info:=attrvals
-    return NIL
 
-******************************************************************************
-static function _afn(fileDir,fileName)
-   if (empty(fileDir))
-      return fileName
-   elseif (right(filedir,1)==":" .or.;
-           right(filedir,1)=="\" .or.;
-           right(filedir,1)=="/")
-      return fileDir+fileName
-   endif
-return fileDir+dirsep()+fileName
 
-******************************************************************************
-static function _dirdirmake(path)
-local dir:="",tok,bslash,code:=0
-
-    path:=strtran(path,"/",dirsep())  //2001.11.15
-    path:=strtran(path,"\",dirsep())
- 
-    while( !empty(path) )
-
-        if( (bslash:=at(dirsep(),path))>0 )
-             tok:=left(path,bslash-1)
-             path:=substr(path,bslash+1)
-        else
-             tok:=path
-             path:=""
-        end
-
-        code:=dirmake(dir+=tok)
-
-        dir+=dirsep()
-    end
-
-    return code
-    
-
-//  code lehetseges ertekei:
-//
-//  0 - ok
-// -2 - file not found (?)
-// -3 - path not found 
-// -5 - access denied  (ezt adja akkor is, ha mar letezett)
-   
 ******************************************************************************
 function tabSetLogFunction(functionName,level)
 
@@ -137,41 +94,35 @@ function tabSetLogFunction(functionName,level)
 
     prog_loglevel   :=level
     if (prog_logfunction==functionName)
-       logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+        logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
     else
-       prog_loglevel   :=level
-       prog_logfunction:=functionName
-       tabSetLogFunction_enabled()
-    endif   
+        prog_loglevel:=level
+        prog_logfunction:=functionName
+        tabSetLogFunction_enabled()
+    end
 
-return nil
 
 ******************************************************************************
 function tabGetLogFunction(functionName,level)
 
     functionName:=prog_logfunction
-    level       :=prog_loglevel
+    level:=prog_loglevel
 
-return nil
 
 ******************************************************************************
 function tabSetLogFunctionSave(functionName,level)
 local s:={prog_logfunction,prog_loglevel}
-
     tabSetLogFunction(functionName,level)
-    
-return s
+    return s
 
 ******************************************************************************
 function tabSetLogFunctionRestore(s)
-
     tabSetLogFunction(s[1],s[2])
-    
-return s
+    return s
 
 ******************************************************************************
 function tabIsLogFunction()
-return logfunction_enabled
+    return logfunction_enabled
 
 ******************************************************************************
 function tabSetLogFunction_enabled()
@@ -184,52 +135,51 @@ local i
         for i:=1 to len(logfunctions)
             if( prog_logfunction==logfunctions[i][1] )
                 logfunction_level:=logfunctions[i][2]
-                logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+                logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
                 return logfunction_enabled
-            end 
+            end
         end
     end
 
     // Ha nincsenek funkciok megadva, akkor csak a loglevel jatszik
     logfunction_level:=loglevel
-    logfunction_enabled:=if(logfunction_level==nil,.t.,logfunction_level>=prog_loglevel)
+    logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
 
-return logfunction_enabled
+    return logfunction_enabled
 
 ******************************************************************************
-function tabIsChangeLogEnabled() 
- 
+function tabIsChangeLogEnabled()
+
 static logenabled
 local envlog,envmut,envcre,envtsp,envxtsp,envsiz,envarcdir,envloglevel,envlogfunc
 local ilogfunctions
 local n,e
 
     if( logenabled==NIL )
-        logenabled:=!empty(getenv(LOG_FILE)) 
+        logenabled:=!empty(getenv(LOG_FILE))
 
         if( logenabled )
-        
-            envlog:=getenv(LOG_FILE) 
-            envmut:=getenv(LOG_MUTEX)  
-            envcre:=getenv(LOG_CREATE)  
-            envtsp:=getenv(LOG_TABLES)  
-            envxtsp:=getenv(LOG_XTABLES)  
-            envsiz:=getenv(LOG_SIZE)  
-            envarcdir:=getenv(LOG_ARCDIR)  
+            envlog:=getenv(LOG_FILE)
+            envmut:=getenv(LOG_MUTEX)
+            envcre:=getenv(LOG_CREATE)
+            envtsp:=getenv(LOG_TABLES)
+            envxtsp:=getenv(LOG_XTABLES)
+            envsiz:=getenv(LOG_SIZE)
+            envarcdir:=getenv(LOG_ARCDIR)
             envloglevel:=getenv(LOG_LEVEL)
             envlogfunc:=getenv(LOG_FUNC)
 
             fdlog0:=xopen(envlog,envcre=="auto")
             logname:=loglastname(envlog)
             fdlog:=xopen(logname,.t.)
-            if( empty(envmut) ) 
+            if( empty(envmut) )
                 fdmutex:=fdlog0
             else
                 fdmutex:=xopen(envmut,.t.)
             end
- 
+
             if( !empty(envtsp) )
-                fclose( xopen(envtsp) ) //csak ellenorzes 
+                fclose( xopen(envtsp) ) //csak ellenorzes
 
                 tabspec:=memoread(envtsp)
                 tabspec:=strtran(tabspec," ","")
@@ -243,7 +193,7 @@ local n,e
             end
 
             if( !empty(envxtsp) )
-                fclose( xopen(envxtsp) ) //csak ellenorzes 
+                fclose( xopen(envxtsp) ) //csak ellenorzes
 
                 xtabspec:=memoread(envxtsp)
                 xtabspec:=strtran(xtabspec," ","")
@@ -262,22 +212,21 @@ local n,e
             end
 
             if( !empty(envarcdir) )
-                _dirdirmake(envarcdir)
+                dirdirmake(envarcdir)
                 if( !direxist(envarcdir) )
-                e:=apperrorNew()
+                    e:=apperrorNew()
                     e:operation:="create directory"
                     e:description:="directory does not exist"
                     e:filename:=envarcdir
                     e:oscode:=ferror()
-                    e:canretry:=.f.
-                    break(e)                
+                    break(e)
                 end
                 logarcdir:=envarcdir
             end
 
             if( !empty(envloglevel) )
                 if( envloglevel=='all' )
-                    loglevel:=nil
+                    loglevel:=NIL
                 else
                     loglevel:=val(envloglevel)
                 end
@@ -291,28 +240,28 @@ local n,e
                 for n:=1 to len(logfunctions)
                     ilogfunctions:=split(logfunctions[n])
                     if( len(ilogfunctions)==0 )
-                       logfunctions[n]:={"",nil}
+                       logfunctions[n]:={"",NIL}
                     elseif( len(ilogfunctions)==1 )
-                       logfunctions[n]:={ilogfunctions[1],nil}
+                       logfunctions[n]:={ilogfunctions[1],NIL}
                     else
                        logfunctions[n]:={;
                            ilogfunctions[1],;
                            if(ilogfunctions[2]=='all',;
-                               nil,;
+                               NIL,;
                                val(ilogfunctions[2]);
                            );
                         }
                     end
                 next
-                
+
                 if( envloglevel=='all' )
-                    loglevel:=nil
+                    loglevel:=NIL
                 else
                     loglevel:=val(loglevel)
                 end
             end
         end
-    end 
+    end
 
     return logenabled
 
@@ -326,7 +275,7 @@ local ts
     if( table[TAB_LOGGED]==NIL )
         ts:=tabPath(table)+tabFile(table)
         ts:=upper(strtran(ts,"\","/"))
-    
+
         if( !tabIsChangeLogEnabled() )
             table[TAB_LOGGED]:=.f.
         elseif( xtabspec<>NIL .and. 0<ascan(xtabspec,{|x|x==ts}) )
@@ -337,66 +286,67 @@ local ts
             table[TAB_LOGGED]:=.t.
         end
     end
-    return table[TAB_LOGGED] 
+    return table[TAB_LOGGED]
 
 ******************************************************************************
 function tabChangeLogLock()
 
-local level:=_writechangelog_mutex(fdmutex,.t.) 
+local level:=_writechangelog_mutex(fdmutex,.t.)
 local logpos:=fseek(fdlog,0,FS_END)
-local oldlogname,e
+local oldlogname,newlogname,e
 
     while( logpos>logmaxsize .and. level==1 )
         oldlogname:=logname
         logname:=lognextname(logname)
         fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
         fclose(fdlog)
-        if (!empty(logarcdir))
-           if (fileexist(oldlogname) .and. 0<>frename(oldlogname,_afn(logarcdir,oldlogname)))
-          e:=apperrorNew()
-              e:operation:="Move log file"
-              e:description:="Move failed"
-              e:filename:=logarcdir
-              e:oscode:=ferror()
-              e:canretry:=.f.
-              break(e)                
-           endif
-        endif
+        if( !empty(logarcdir) .and. fileexist(oldlogname) )
+            newlogname:=logarcdir+dirsep()+basename(oldlogname)
+            //alert( oldlogname+" -> "+newlogname )
+            if( 0!=frename(oldlogname,newlogname))
+                e:=apperrorNew()
+                e:operation:="tabChangeLogLock"
+                e:description:="frename failed"
+                e:filename:=newlogname
+                e:args:={oldlogname,newlogname}
+                e:oscode:=ferror()
+                break(e)
+            end
+        end
         fdlog:=xopen(logname,.t.)
-        logpos:=fseek(fdlog,0,FS_END) 
-        //alert( logname+str(getpid()) )
+        logpos:=fseek(fdlog,0,FS_END)
     end
     return logpos
 
 ******************************************************************************
-function tabChangeLogUnlock() 
+function tabChangeLogUnlock()
 local logpos:=fseek(fdlog,0,FS_END)
     writeln("<commit>"+alltrim(str(logpos))+"</commit>")
     _writechangelog_mutex(fdmutex,.f.)
     return NIL
- 
+
 ******************************************************************************
-function tabWriteChangeLog(table) 
- 
+function tabWriteChangeLog(table)
+
 local v0,r0,d0
 local v1,r1,d1
-local cols,fcount,n,col 
+local cols,fcount,n,col
 local offs,width,name,type,dec
 
     if( !tabIsTableLogged(table) )
         return NIL
     end
 
-    cols:=tabColumn(table) 
-    fcount:=len(cols) 
- 
-    r1:=table[TAB_RECBUF] 
-    d1:=tabDeleted(table) 
+    cols:=tabColumn(table)
+    fcount:=len(cols)
 
-    r0:=tabReadOriginalRecordFromDisk(table) 
+    r1:=table[TAB_RECBUF]
+    d1:=tabDeleted(table)
+
+    r0:=tabReadOriginalRecordFromDisk(table)
 
     table[TAB_RECBUF]:=r0
-    d0:=tabDeleted(table) 
+    d0:=tabDeleted(table)
     table[TAB_RECBUF]:=r1
 
     if( xvisequal(r0,0,r1,0,len(r0)) )
@@ -404,41 +354,41 @@ local offs,width,name,type,dec
         //(sok ilyen eset van)
         return NIL
     end
-    
+
     tabChangeLogLock()
-    
+
     if( !d0 .and. d1 )                       //delete
         write("<delete>")
-        write_rechdr(table) 
+        write_rechdr(table)
 
         table[TAB_RECBUF]:=r0
         for n:=1 to fcount
-            v0:=tabEvalColumn(table,n)  
+            v0:=tabEvalColumn(table,n)
             if( !empty(v0) )
                 write_field(cols[n],v0)
             end
         next
         table[TAB_RECBUF]:=r1
         writeln("</delete>")
- 
+
     elseif( d0 .and. !d1 )                   //append
         write("<append>")
-        write_rechdr(table) 
+        write_rechdr(table)
 
         for n:=1 to fcount
-            v1:=tabEvalColumn(table,n)  
+            v1:=tabEvalColumn(table,n)
             if( !empty(v1) )
                 write_field(cols[n],v1)
             end
         next
         writeln("</append>")
- 
+
     else                                     //update
         write("<update>")
-        write_rechdr(table) 
-    
+        write_rechdr(table)
+
         for n:=1 to fcount
-            col:=cols[n] 
+            col:=cols[n]
             offs:=col[COL_OFFS]
 
             #ifdef _BTBTX_
@@ -453,12 +403,12 @@ local offs,width,name,type,dec
             #ifdef _BTRIEVE_
               width:=col[COL_BTRWIDTH]
             #endif
- 
+
             if( !xvisequal(r0,offs,r1,offs,width) )
                 table[TAB_RECBUF]:=r0
-                v0:=tabEvalColumn(table,n) 
+                v0:=tabEvalColumn(table,n)
                 table[TAB_RECBUF]:=r1
-                v1:=tabEvalColumn(table,n)  
+                v1:=tabEvalColumn(table,n)
                 write_fieldupdate(col,v0,v1)
             end
         next
@@ -471,7 +421,7 @@ local offs,width,name,type,dec
 
 
 ******************************************************************************
-function tabWriteChangeLogPack(table) 
+function tabWriteChangeLogPack(table)
 
     if( !tabIsTableLogged(table) )
         return NIL
@@ -479,14 +429,14 @@ function tabWriteChangeLogPack(table)
 
     tabChangeLogLock()
     write("<pack>")
-    write_rechdr(table) 
+    write_rechdr(table)
     writeln("</pack>")
     tabChangeLogUnlock()
     return NIL
- 
+
 
 ******************************************************************************
-function tabWriteChangeLogZap(table) 
+function tabWriteChangeLogZap(table)
 
     if( !tabIsTableLogged(table) )
         return NIL
@@ -494,14 +444,14 @@ function tabWriteChangeLogZap(table)
 
     tabChangeLogLock()
     write("<zap>")
-    write_rechdr(table) 
+    write_rechdr(table)
     writeln("</zap>")
     tabChangeLogUnlock()
     return NIL
 
 
 ******************************************************************************
-function tabWriteChangeLogDrop(table) 
+function tabWriteChangeLogDrop(table)
 
     if( !tabIsTableLogged(table) )
         return NIL
@@ -509,14 +459,14 @@ function tabWriteChangeLogDrop(table)
 
     tabChangeLogLock()
     write("<drop>")
-    write_rechdr(table) 
+    write_rechdr(table)
     writeln("</drop>")
     tabChangeLogUnlock()
     return NIL
 
- 
+
 ******************************************************************************
-function tabWriteChangeLogUpgrade(table) 
+function tabWriteChangeLogUpgrade(table)
 
     if( !tabIsTableLogged(table) )
         return NIL
@@ -532,7 +482,7 @@ function tabWriteChangeLogUpgrade(table)
 
 
 ******************************************************************************
-function tabWriteChangeLogCreate(table) 
+function tabWriteChangeLogCreate(table)
 
     if( !tabIsTableLogged(table) )
         return NIL
@@ -546,17 +496,17 @@ function tabWriteChangeLogCreate(table)
     tabChangeLogUnlock()
     return NIL
 
- 
+
 ******************************************************************************
 static function writestruct(table,tag)
 local c,i,n,m
     c:=tabColumn(table)
     for n:=1 to len(c)
         write("<f>")
-        write("<n>");write(c[n][COL_NAME]);write("</n>") 
-        write("<t>");write(c[n][COL_TYPE]);write("</t>") 
-        write("<w>");write(alltrim(str(c[n][COL_WIDTH])));write("</w>") 
-        write("<d>");write(alltrim(str(c[n][COL_DEC])));write("</d>") 
+        write("<n>");write(c[n][COL_NAME]);write("</n>")
+        write("<t>");write(c[n][COL_TYPE]);write("</t>")
+        write("<w>");write(alltrim(str(c[n][COL_WIDTH])));write("</w>")
+        write("<d>");write(alltrim(str(c[n][COL_DEC])));write("</d>")
         writeln("</f>")
     next
     i:=tabIndex(table)
@@ -564,14 +514,14 @@ local c,i,n,m
         write("<i>")
         write("<n>");write(i[n][IND_NAME]);write("</n>")
         for m:=1 to len(i[n][IND_COL])
-            c:=tabGetColumn(table,i[n][IND_COL][m]) 
+            c:=tabGetColumn(table,i[n][IND_COL][m])
             write("<s>");write(c[COL_NAME]);write("</s>")
         next
         writeln("</i>")
     next
     return NIL
 
- 
+
 ******************************************************************************
 static function write_fieldupdate(col,v0,v1)
 local name, type, w, d
@@ -635,21 +585,21 @@ local name,type,w,d
     write(bin(10))
 
     return NIL
- 
+
 ******************************************************************************
 static function write_rechdr(table)
 
 static hdr
 local atts,n
- 
+
     if( hdr==NIL )
-        hdr:=argv(0) 
+        hdr:=argv(0)
         if( 0<rat(dirsep(),hdr) )
             hdr:=substr(hdr,1+rat(dirsep(),hdr))
         end
-        hdr:="<prg>"+hdr+"</prg>" 
+        hdr:="<prg>"+hdr+"</prg>"
         hdr+="<pid>"+alltrim(str(getpid()))+"</pid>"
-    
+
         if( !empty(info) )
             atts:=""
             for n:=1 to len(info)
@@ -658,14 +608,14 @@ local atts,n
                 atts+=strtran(info[n][2],'"',"'")
                 atts+='" '
             next
-            hdr+="<info "+atts+"/>" 
+            hdr+="<info "+atts+"/>"
         end
 
-        hdr+=endofline() 
+        hdr+=endofline()
     end
 
     writeln(hdr+"<time>"+dtos(date())+time()+"</time>")
- 
+
     write("<table>")
     write("<alias>"+tabAlias(table)+"</alias>")
     write("<path>"+tabPath(table)+tabFile(table)+"</path>")
@@ -673,7 +623,7 @@ local atts,n
     writeln("</table>")
 
     return NIL
- 
+
 ******************************************************************************
 static function write(buf)
 local e,n,xbuf:=buf::str2bin
@@ -692,7 +642,7 @@ local e,n,xbuf:=buf::str2bin
 ******************************************************************************
 static function writeln(buf)
     return write(buf+chr(10))
- 
+
 ******************************************************************************
 static function loglastname(fspec)
 local x0:=fdread(fdlog0),x
@@ -710,12 +660,12 @@ static function lognextname(fspec)
 local x0:=fdread(fdlog0),x
 
     x:=fspec                        //;alert("fspec "+_any2str(x))
-    x:=right(x,6)                   //;alert("right "+_any2str(x)) 
-    x:=val(x)+1                     //;alert("val   "+_any2str(x)) 
-    x:=str(x,6,0)                   //;alert("str   "+_any2str(x)) 
-    x:=strtran(x," ","0")           //;alert("tran  "+_any2str(x)) 
+    x:=right(x,6)                   //;alert("right "+_any2str(x))
+    x:=val(x)+1                     //;alert("val   "+_any2str(x))
+    x:=str(x,6,0)                   //;alert("str   "+_any2str(x))
+    x:=strtran(x," ","0")           //;alert("tran  "+_any2str(x))
     x:=left(fspec,len(fspec)-6)+x
-    
+
     if( x0<x )
         fdwrite(fdlog0,x)
         return x
@@ -751,7 +701,7 @@ local e,fd
     else
         cre:=FO_CREATE
     end
-    
+
     while( 0>(fd:=fopen(fspec,FO_NOLOCK+FO_READWRITE+cre)) )
         e:=fnferrorNew()
         e:operation:="tabchlog_open"
@@ -761,13 +711,13 @@ local e,fd
         e:canretry:=.t.
         break(e)
     end
-    
+
     #ifdef _UNIX_
         setcloexecflag(fd,.t.)
     #else
-        fd:=fdup(fd,.f.,.t.) 
+        fd:=fdup(fd,.f.,.t.)
     #endif
-    
+
     return fd
 
 ******************************************************************************
@@ -779,16 +729,16 @@ local cd:="", n
             cd+="<![CDATA["+x+"]]>"
             exit
         else
-            cd+="<![CDATA["+left(x,n+1)+"]]>" 
+            cd+="<![CDATA["+left(x,n+1)+"]]>"
             x:=substr(x,n+2)
         end
     end
     return  cd
- 
+
 ******************************************************************************
 static function cdataif(x)
     if( "<"$x .or. "&"$x )
-        return  cdata(x) 
+        return  cdata(x)
     end
     return x
 
@@ -802,7 +752,7 @@ local cd:=a"", n
             cd+=a"<![CDATA["+x+a"]]>"
             exit
         else
-            cd+=a"<![CDATA["+left(x,n+1)+a"]]>" 
+            cd+=a"<![CDATA["+left(x,n+1)+a"]]>"
             x:=substr(x,n+2)
         end
     end
@@ -811,8 +761,48 @@ local cd:=a"", n
 ******************************************************************************
 static function cdataifx(x)
     if( a"<"$x .or. a"&"$x )
-        return  cdatax(x) 
+        return  cdatax(x)
     end
     return x
+
+
+******************************************************************************
+static function dirdirmake(path)
+local dir:="",tok,bslash,code:=0
+
+    path:=strtran(path,"/",dirsep())  //2001.11.15
+    path:=strtran(path,"\",dirsep())
+
+    while( !empty(path) )
+
+        if( (bslash:=at(dirsep(),path))>0 )
+             tok:=left(path,bslash-1)
+             path:=substr(path,bslash+1)
+        else
+             tok:=path
+             path:=""
+        end
+
+        code:=dirmake(dir+=tok)
+
+        dir+=dirsep()
+    end
+
+    return code
+
+
+//  code lehetseges ertekei:
+//
+//  0 - ok
+// -2 - file not found (?)
+// -3 - path not found
+// -5 - access denied  (ezt adja akkor is, ha mar letezett)
+
+
+******************************************************************************
+static function basename(fspec)
+local slpos:=max(rat("/",fspec),rat("\",fspec))
+    return fspec::substr(slpos+1)::alltrim
+
 
 ******************************************************************************

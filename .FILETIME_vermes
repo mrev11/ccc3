@@ -1,8 +1,15 @@
-df5e02dd82ca99246d67b216b42cded87b3716d8 2023072112:44:00-UTC ./CHANGELOG_vermes
+354d3b643bf429666d47450a7abb230eebc04e6d 2023072713:40:01-UTC ./CHANGELOG_vermes
+1722a91d71453940eb6a558ed445ef5c704c3090 2023072713:38:48-UTC ./terminal/unix-ncterm/ncterm.cpp
+e561418246f85a11533e97e497d8afd62800b3de 2023072710:52:58-UTC ./tabobj/common.src/tabchlog.prg
+a582e81094148841cbcf73dece7e70d5c5ed9d0f 2023072417:16:19-UTC ./tutor/threadpool/log-s2
+a27a25b140601ada7874eb34974b3f209da12d24 2023072417:16:07-UTC ./tutor/threadpool/log-s1
+e9802fa4e2f7c0204b0852a2ef656e1edbb57f18 2023072407:48:15-UTC ./jt/jterminal/jterminal.jar
+218c59ac2f572bd6ef5ef03035b1e27c8a45798c 2023072407:48:15-UTC ./log-install
+8d6f6aad6691bf987ae1ef1dd7e37b3f56b78bdd 2023072407:47:10-UTC ./usr/bin/linux/cterm
+5d80c70f20e05faed8a97a2116e7b0676077180b 2023072308:14:42-UTC ./terminal/windows-console/cterm.cpp
+a495adbbb092e5460cce6483d95466caa0816dbe 2023072308:14:31-UTC ./terminal/windows-console/console.cpp
+f3332bcf755730e509100a9651019b7764e6c9e2 2023072308:08:28-UTC ./terminal/unix-cterm/cterm.cpp
 ad3cc90ed0fcb21210debe134e4b77f4e9de0bb4 2023072112:30:27-UTC ./tabobj/log-install
-610f1a083a935732d5372dc7e4b676e6cceb4f2f 2023072112:30:22-UTC ./tabobj/common.src/tabchlog.prg
-3070e27b5cbb0739d77b1959a3a099f168ea5c84 2023071810:30:17-UTC ./jt/jterminal/jterminal.jar
-0dec601c8d9df267c96a92c7ce4cff4fad152ac6 2023071810:30:17-UTC ./log-install
 869b032157b18b4b22beaf99f63720356d320742 2023071618:31:47-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2023071618:31:47-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2023071618:31:47-UTC ./jt/jterminal/getutil/checkfield.class
@@ -143,7 +150,6 @@ d5dedd07735def98aefbe91380f5cf77f645fb12 2023071618:30:46-UTC ./usr/bin/linux/te
 93ab2c71196a462b8039bc61e9c212131d028551 2023071618:30:45-UTC ./usr/bin/linux/sslforw-serv
 7b2893400b9cb554b47cf13f6b11a099e4c286a9 2023071618:30:45-UTC ./usr/bin/linux/sslforw-term
 4157731eba2d2736f50092ca8a8e426ce258ee98 2023071618:30:45-UTC ./usr/bin/linux/sslforward
-1a97b3f65b23f143609001862085763090e2bfcd 2023071618:30:44-UTC ./usr/bin/linux/cterm
 980f7cec876315c3c765ad8283f06dea7d936dab 2023071618:30:44-UTC ./usr/bin/linux/terminal
 590cda2cd7bd423dfa14a299d5bb7bcab4abe13e 2023071618:30:44-UTC ./usr/bin/linux/terminal-xft
 fdbd8a944a121f2d9b031533d24301ebaa0d56f6 2023071618:30:43-UTC ./usr/bin/linux/mklink
@@ -159,7 +165,6 @@ f29db8328438a9b598ddbd3bf4d3a5db7e3fce56 2023071618:30:06-UTC ./setup/setup-unix
 fb7207ae5ea5cfe1bff94a45c95c040197c159e4 2023071618:30:06-UTC ./usr/bin/linux/lemon
 498c35f07b212b40157acc35051c15dd4295f640 2023071618:30:06-UTC ./usr/options/lin/gccver.opt
 06e310cd28ef6b29e7aa87f017eaf6219963835d 2023071223:58:18-UTC ./gtk/code_byhand/m.bat
-97a93570a10f617dfd8c2822bcb4da3d616bb249 2023062410:16:26-UTC ./terminal/windows-console/console.cpp
 f01efe3c5611cc5ab0be2cb65a15ebdcb0ec3bbc 2023061920:52:23-UTC ./setup/setup-windows/prg2ppo/trinp.cpp
 312eb40065adeb81ce8ed58df25873e9b9a2ec03 2023061920:52:23-UTC ./setup/setup-windows/prg2ppo/xtlex.cpp
 8c840f1da49266db5d29a7a9da934c25ddb115b8 2023061920:52:18-UTC ./setup/setup-windows/prg2ppo/input.cpp
@@ -280,8 +285,6 @@ ff95bfac30ae8d4c83c3b4fafc080798b18fec5c 2023052319:36:59-UTC ./tabobj/utility.s
 388cb4c22caeec2183d0999213f3144de3fde314 2023052319:35:14-UTC ./terminal/common/ansi_rgb.h
 6065d0203fe2b7de0e4b862db1e86c2d4941a2a0 2023052319:35:12-UTC ./terminal/common/ansi_colors/gen_ansi_rgb_h.prg
 64ac35bf9a2a85f026a11303621ac132dbfc8207 2023052319:22:53-UTC ./terminal/common/xcurses/xcurses.cpp
-1c206151f8d01d0fdca610d0a18d6a5e5a8548a9 2023052312:20:34-UTC ./terminal/unix-cterm/cterm.cpp
-20f871639fa19380d620456c573c8f289fe1611e 2023052311:43:17-UTC ./terminal/windows-console/cterm.cpp
 ae5a80ab96f8a8e057a010a4d0b8df7400e4f5c1 2023052310:22:01-UTC ./terminal/unix-cterm/screensize.cpp
 455f0c0f14608c5bbf9aed3fd28c7c35653e662c 2023052309:32:41-UTC ./terminal/common/readkey_simple/readkey.cpp
 d290919ef1057963dd02f3e38cf8b0ec6c58c437 2023051911:57:02-UTC ./ccclib/src/uic/screenbuf/screenbuf.h
@@ -357,7 +360,6 @@ a54e8dd55abaf7ab07cf852beba1a829e1d660ac 2023043009:59:44-UTC ./terminal/common/
 1aa8beecb437e6704b32b43a0053f838cf2a3e40 2023042817:14:27-UTC ./terminal/common/ansi_colors/gen_ext_to_leg.prg
 504aed9991f35be73fd06254df7a391d707925b4 2023042817:03:59-UTC ./terminal/common/ansi_colors/OLVASS
 05d377d283ebd0104992f2a1214b077c9e147c28 2023042813:10:23-UTC ./ccclib/src/uic/termapi/termapi.cpp
-757381cde1a950407bb1a438a80192ac3119b46c 2023042811:26:35-UTC ./terminal/unix-ncterm/ncterm.cpp
 906e5438f464220b6c35910f946f0b27c8778e27 2023042809:09:28-UTC ./terminal/qt5/terminal-qt5.cpp
 6c3b7dc8accf157d8553b62c0ceee67611ec4b93 2023042807:36:25-UTC ./terminal/unix/terminal-xft.cpp
 67a938fbb1a67b4d8ff126600947297a83837f6c 2023042807:34:27-UTC ./terminal/unix/terminal.cpp

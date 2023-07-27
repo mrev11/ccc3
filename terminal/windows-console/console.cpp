@@ -160,11 +160,8 @@ void setcursoron()
 //----------------------------------------------------------------------------
 void bye(void)
 {
-    printf("%c[m",0x1b);         // clear attrs
-    printf("%c[?47l",0x1b);      // restore screen
-    printf("%c8",0x1b);          // restore cursor pos
+    printf("%c[?1049l",0x1b);    // ca mode off
     printf("%c[?25h",0x1b);      // cursor on
-    printf("%c[?1049h",0x1b);    // ca mode off
 }
 
 //----------------------------------------------------------------------------
@@ -194,9 +191,8 @@ int main(int argc, char *argv[])
     screensize(&wwidth,&wheight);
     screen_buffer=new screenbuf(wwidth,wheight);
 
+    printf("%c[?1036h",0x1b);    // meta send escape
     printf("%c[?1049h",0x1b);    // ca mode on
-    printf("%c7",0x1b);          // save cursor pos
-    printf("%c[?47h",0x1b);      // save screen
     printf("%c[?25h",0x1b);      // cursor on
 
   //printf("%c[1 q",0x1b);       // cursor shape  blinking block (do not blink)

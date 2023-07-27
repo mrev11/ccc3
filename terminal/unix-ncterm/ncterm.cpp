@@ -222,6 +222,8 @@ int main(int argc, char *argv[])
     }
 
     setlocale(LC_ALL,"");
+
+    printf("%c[?1036h",0x1b);
     
     initscr();
     atexit(bye);

@@ -57,8 +57,6 @@
 #define LOG_XTABLES "CCC_TRANSACTION_LOG_XTABLES"   //nem naplozando tablak
 #define LOG_SIZE    "CCC_TRANSACTION_LOG_SIZE"      //logfile max merete
 #define LOG_ARCDIR  "CCC_TRANSACTION_LOG_ARCDIR"    //logfileket ide mozgatja, amikor lezarodnak.
-#define LOG_LEVEL   "CCC_TRANSACTION_LOG_LEVEL"     //logolas szint. 'all' vagy egy szam.
-#define LOG_FUNC    "CCC_TRANSACTION_LOG_FUNC"      //logolas szintek funkcionkent. 'nev:level' felsorolasok.
 
 
 static info
@@ -68,19 +66,11 @@ static fdlog
 static fdmutex
 static tabspec
 static xtabspec
+static envlog
 static logname
 static logmaxsize:=1024*1024*1024 //default 1GB
 static logarcdir
-static loglevel
-static logfunctions // {{funName,level},...}
 
-// A programok beallitjak, hogy milyen funkciot milyen szinten
-// csinalnak eppen.
-static prog_logfunction:=NIL
-static prog_loglevel:=0
-
-static logfunction_level:=NIL
-static logfunction_enabled:=.t.
 
 ******************************************************************************
 function tabSetChangeLogInfo(attrvals)
@@ -88,70 +78,10 @@ function tabSetChangeLogInfo(attrvals)
 
 
 ******************************************************************************
-function tabSetLogFunction(functionName,level)
-
-    tabIsChangeLogEnabled() // Beolvassa a log parametereket.
-
-    prog_loglevel   :=level
-    if (prog_logfunction==functionName)
-        logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
-    else
-        prog_loglevel:=level
-        prog_logfunction:=functionName
-        tabSetLogFunction_enabled()
-    end
-
-
-******************************************************************************
-function tabGetLogFunction(functionName,level)
-
-    functionName:=prog_logfunction
-    level:=prog_loglevel
-
-
-******************************************************************************
-function tabSetLogFunctionSave(functionName,level)
-local s:={prog_logfunction,prog_loglevel}
-    tabSetLogFunction(functionName,level)
-    return s
-
-******************************************************************************
-function tabSetLogFunctionRestore(s)
-    tabSetLogFunction(s[1],s[2])
-    return s
-
-******************************************************************************
-function tabIsLogFunction()
-    return logfunction_enabled
-
-******************************************************************************
-function tabSetLogFunction_enabled()
-// Megallapitja, hogy eppen logolhatunk-e funkcio:level szempontbol.
-// 'all' eseten minden logol,
-// szam eseten, annal tobbet, minel magasabb a szam
-local i
-
-    if ( !empty(logfunctions) )
-        for i:=1 to len(logfunctions)
-            if( prog_logfunction==logfunctions[i][1] )
-                logfunction_level:=logfunctions[i][2]
-                logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
-                return logfunction_enabled
-            end
-        end
-    end
-
-    // Ha nincsenek funkciok megadva, akkor csak a loglevel jatszik
-    logfunction_level:=loglevel
-    logfunction_enabled:=if(logfunction_level==NIL,.t.,logfunction_level>=prog_loglevel)
-
-    return logfunction_enabled
-
-******************************************************************************
 function tabIsChangeLogEnabled()
 
 static logenabled
-local envlog,envmut,envcre,envtsp,envxtsp,envsiz,envarcdir,envloglevel,envlogfunc
+local envmut,envcre,envtsp,envxtsp,envsiz,envarcdir
 local ilogfunctions
 local n,e
 
@@ -166,8 +96,6 @@ local n,e
             envxtsp:=getenv(LOG_XTABLES)
             envsiz:=getenv(LOG_SIZE)
             envarcdir:=getenv(LOG_ARCDIR)
-            envloglevel:=getenv(LOG_LEVEL)
-            envlogfunc:=getenv(LOG_FUNC)
 
             fdlog0:=xopen(envlog,envcre=="auto")
             logname:=loglastname(envlog)
@@ -223,43 +151,6 @@ local n,e
                 end
                 logarcdir:=envarcdir
             end
-
-            if( !empty(envloglevel) )
-                if( envloglevel=='all' )
-                    loglevel:=NIL
-                else
-                    loglevel:=val(envloglevel)
-                end
-            end
-
-            if( !empty(envlogfunc) )
-                envlogfunc:=strtran(envlogfunc," ","")
-                envlogfunc:=strtran(envlogfunc,chr(13),"")
-                envlogfunc:=strtran(envlogfunc,chr(10),",")
-                logfunctions:=split(envlogfunc)
-                for n:=1 to len(logfunctions)
-                    ilogfunctions:=split(logfunctions[n])
-                    if( len(ilogfunctions)==0 )
-                       logfunctions[n]:={"",NIL}
-                    elseif( len(ilogfunctions)==1 )
-                       logfunctions[n]:={ilogfunctions[1],NIL}
-                    else
-                       logfunctions[n]:={;
-                           ilogfunctions[1],;
-                           if(ilogfunctions[2]=='all',;
-                               NIL,;
-                               val(ilogfunctions[2]);
-                           );
-                        }
-                    end
-                next
-
-                if( envloglevel=='all' )
-                    loglevel:=NIL
-                else
-                    loglevel:=val(loglevel)
-                end
-            end
         end
     end
 
@@ -269,18 +160,15 @@ local n,e
 function tabIsTableLogged(table)
 local ts
 
-    if(!logfunction_enabled)
-        return .f.
-    endif
     if( table[TAB_LOGGED]==NIL )
         ts:=tabPath(table)+tabFile(table)
         ts:=upper(strtran(ts,"\","/"))
 
         if( !tabIsChangeLogEnabled() )
             table[TAB_LOGGED]:=.f.
-        elseif( xtabspec<>NIL .and. 0<ascan(xtabspec,{|x|x==ts}) )
+        elseif( xtabspec!=NIL .and. 0<ascan(xtabspec,{|x|x==ts}) )
             table[TAB_LOGGED]:=.f.
-        elseif( tabspec<>NIL .and. 0==ascan(tabspec,{|x|x==ts}) )
+        elseif( tabspec!=NIL .and. 0==ascan(tabspec,{|x|x==ts}) )
             table[TAB_LOGGED]:=.f.
         else
             table[TAB_LOGGED]:=.t.
@@ -291,39 +179,99 @@ local ts
 ******************************************************************************
 function tabChangeLogLock()
 
-local level:=_writechangelog_mutex(fdmutex,.t.)
-local logpos:=fseek(fdlog,0,FS_END)
-local oldlogname,newlogname,e
+local loglast,logoldspec,logarcspec,logsize
 
-    while( logpos>logmaxsize .and. level==1 )
-        oldlogname:=logname
-        logname:=lognextname(logname)
-        fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
-        fclose(fdlog)
-        if( !empty(logarcdir) .and. fileexist(oldlogname) )
-            newlogname:=logarcdir+dirsep()+basename(oldlogname)
-            //alert( oldlogname+" -> "+newlogname )
-            if( 0!=frename(oldlogname,newlogname))
-                e:=apperrorNew()
-                e:operation:="tabChangeLogLock"
-                e:description:="frename failed"
-                e:filename:=newlogname
-                e:args:={oldlogname,newlogname}
-                e:oscode:=ferror()
-                break(e)
+    _writechangelog_mutex(fdmutex,.t.)
+
+    while( logmaxsize<fseek(fdlog,0,FS_END) )
+    
+        logoldspec:=logname             // elozoleg ide irtunk (de betelt)
+        loglast:=loglastname(envlog)    // aktualis log (elorebb vihette egy masik processz)
+        
+        //? "FULL",exename()::basename, logoldspec::extension, loglast::extension //DEBUG
+        
+        if( basename(logoldspec)==basename(loglast) )
+            // nem vittek elorebb
+            // itt es most kell elorebb vinni
+
+            logname:=lognextname(logname)
+            fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
+            logsize:=fseek(fdlog,0,FS_END)
+            fclose(fdlog)
+            if( !empty(logarcdir) .and. fileexist(logoldspec) )
+                logarcspec:=logarcdir+dirsep()+basename(logoldspec)
+                ferase(logarcspec)
+                if( 0==frename(logoldspec,logarcspec) )
+                    //? "    FRENAME",logoldspec,"=>",logarcspec //DEBUG
+                else
+                    // fcopyerase(logoldspec,logarcspec,logsize)
+                    // nagy fajl masolasa NFS-re lassu
+                    // futhat kulon szalban, hogy ne kelljen ra varni,
+                    // de meg kell oldani, hogy a program ne lepjen ki addig,
+                    // amig a masolast vegzo szal be nem fejezodik
+                    thread_create_detach((||fcopyerase(logoldspec,logarcspec,logsize)))
+                    //? "    FILECOPY",logoldspec, "=>", logarcspec,logsize //DEBUG
+                end
             end
+        else
+            // elorebb vittek
+            // a betelt log mar le van zarva
+            // az uj log mar letre van hozva
+            // csak kovetni kell (meg kell nyitni)
+
+            logname:=loglast
+            fclose(fdlog)
+            //? "    SKIP", logoldspec, "->" ,logname  //DEBUG
         end
+
         fdlog:=xopen(logname,.t.)
-        logpos:=fseek(fdlog,0,FS_END)
     end
-    return logpos
+
+
+static function fcopyerase(src,dst,size) // csak ha frename() sikertelen
+static init:=qblock()
+local nbyte
+    waitforcopy(1)
+    if( (nbyte:=filecopy(src,dst))==size )
+        ferase(src)
+        //sleep(10000) //DEBUG
+    else
+        // ha nem sikerul a masolas, 
+        // az eredeti helyen megmarad a log,
+        // nem jo itt kilepni
+        ? "ERROR-fcopyerase",src,dst,size,nbyte,exename(),ferror()
+    end
+    waitforcopy(-1)
+
+
+static function qblock()
+local qb:=quitblock()
+    quitblock( {||waitforcopy(),eval(qb)})
+
+
+static function waitforcopy(dx)
+static mutx:=thread_mutex_init()
+static cond:=thread_cond_init()
+static x:=0
+    mutx::thread_mutex_lock
+    if( dx!=NIL )
+        x+=dx
+        cond::thread_cond_signal
+    else
+        while( x>0 )
+            ? exename()::basename, "waiting for filecopy ..."
+            cond::thread_cond_wait(mutx)
+        end
+    end
+    mutx::thread_mutex_unlock
+
 
 ******************************************************************************
 function tabChangeLogUnlock()
 local logpos:=fseek(fdlog,0,FS_END)
     writeln("<commit>"+alltrim(str(logpos))+"</commit>")
     _writechangelog_mutex(fdmutex,.f.)
-    return NIL
+
 
 ******************************************************************************
 function tabWriteChangeLog(table)
@@ -390,19 +338,7 @@ local offs,width,name,type,dec
         for n:=1 to fcount
             col:=cols[n]
             offs:=col[COL_OFFS]
-
-            #ifdef _BTBTX_
-              width:=col[COL_WIDTH]
-            #endif
-            #ifdef _DBFCTX_
-              width:=col[COL_WIDTH]
-            #endif
-            #ifdef _DATIDX_
-              width:=col[COL_CTRWIDTH]
-            #endif
-            #ifdef _BTRIEVE_
-              width:=col[COL_BTRWIDTH]
-            #endif
+            width:=col[COL_WIDTH]
 
             if( !xvisequal(r0,offs,r1,offs,width) )
                 table[TAB_RECBUF]:=r0
@@ -702,7 +638,7 @@ local e,fd
         cre:=FO_CREATE
     end
 
-    while( 0>(fd:=fopen(fspec,FO_NOLOCK+FO_READWRITE+cre)) )
+    while( 0>(fd:=fopen(fspec,FO_NOLOCK+FO_READWRITE+FO_NOINHERIT+cre)) )
         e:=fnferrorNew()
         e:operation:="tabchlog_open"
         e:description:=@"open failed"
@@ -711,12 +647,6 @@ local e,fd
         e:canretry:=.t.
         break(e)
     end
-
-    #ifdef _UNIX_
-        setcloexecflag(fd,.t.)
-    #else
-        fd:=fdup(fd,.f.,.t.)
-    #endif
 
     return fd
 
@@ -801,8 +731,12 @@ local dir:="",tok,bslash,code:=0
 
 ******************************************************************************
 static function basename(fspec)
-local slpos:=max(rat("/",fspec),rat("\",fspec))
+local slpos:=rat(dirsep(),fspec)
     return fspec::substr(slpos+1)::alltrim
 
+static function extension(fspec)
+local basename:=basename(fspec)
+local dotpos:=rat(".",basename)
+    return if(dotpos<=0,"",basename::substr(dotpos+1))
 
 ******************************************************************************

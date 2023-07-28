@@ -1,3 +1,9 @@
+2013-07-28 tabchlog.prg atdolgozva:
+  A lokalis fs-en keletkezo log fajlokat NFS-re tudja archivalni. 
+  Ha frename nem tudja atmozgatni a logot, akkor atmasolja.
+  A masolas kulon szalon fut. Ha egy program eppen masolas kozben 
+  akarna kilepni, akkor elobb megvarja a masolas befejezodeset.
+
 2023-07-27 ANSI terminalokban beallitva "meta send escape";
 
 2023-07-21 tabchlog.prg-ben a logok arcdir-be mozgatasa javitva;

@@ -1,6 +1,8 @@
-2013-08-02 channel outputban a localname transzformacio letilthato;
+2023-08-02 tabchlog.prg-ben hibakezeles finomitva, logolas logolva;
 
-2013-07-28 tabchlog.prg atdolgozva:
+2023-08-02 channel outputban a localname transzformacio letilthato;
+
+2023-07-28 tabchlog.prg atdolgozva:
   A lokalis fs-en keletkezo log fajlokat NFS-re tudja archivalni. 
   Ha frename nem tudja atmozgatni a logot, akkor atmasolja.
   A masolas kulon szalon fut. Ha egy program eppen masolas kozben 

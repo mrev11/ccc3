@@ -106,6 +106,10 @@ local n,e
                 fdmutex:=xopen(envmut,.t.)
             end
 
+            _writechangelog_mutex(fdmutex,.t.)
+            printmessage("[OPEN]",logname)
+            _writechangelog_mutex(fdmutex,.f.)
+
             if( !empty(envtsp) )
                 fclose( xopen(envtsp) ) //csak ellenorzes
 
@@ -140,16 +144,30 @@ local n,e
             end
 
             if( !empty(envarcdir) )
-                dirdirmake(envarcdir)
+                // dirdirmake(envarcdir)
+                // nem jo automatikusan letrehozni:
+                // ha az arcdir NFS-en volna, de nincs felmountolva,
+                // akkor a dirdirmake letrehozhatja a lokalis fs-en,
+                // ezert manualisan kell letre hozni
+
                 if( !direxist(envarcdir) )
-                    e:=apperrorNew()
-                    e:operation:="create directory"
-                    e:description:="directory does not exist"
-                    e:filename:=envarcdir
-                    e:oscode:=ferror()
-                    break(e)
+                    // e:=apperrorNew()
+                    // e:operation:="create directory"
+                    // e:description:="directory does not exist"
+                    // e:filename:=envarcdir
+                    // e:oscode:=ferror()
+                    // break(e)
+                    //
+                    // nem jo itt kilepni:
+                    // a mount hianya eseten folytathato a program, 
+                    // legfeljebb helyben maradnak a logok,
+                    // kell viszont valamilyen hibauzenet
+                    
+                    printmessage("[ARCHIVE DIRECTORY DOES NOT EXIST]",envarcdir)
+                           
+                else
+                    logarcdir:=envarcdir
                 end
-                logarcdir:=envarcdir
             end
         end
     end
@@ -198,20 +216,35 @@ local loglast,logoldspec,logarcspec,logsize
             fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
             logsize:=fseek(fdlog,0,FS_END)
             fclose(fdlog)
+       
             if( !empty(logarcdir) .and. fileexist(logoldspec) )
-                logarcspec:=logarcdir+dirsep()+basename(logoldspec)
-                ferase(logarcspec)
-                if( 0==frename(logoldspec,logarcspec) )
-                    //? "    FRENAME",logoldspec,"=>",logarcspec //DEBUG
+                if( !direxist(logarcdir) )
+                    // nem mutatja ki az NFS leszakadasat
+                    // egy ideig letezonek mondja a directoryt
+                    // utana beragad es var az NFS feleledesere
+                    printmessage("[ARCHIVE DIRECTORY CEASED TO EXIST]",logarcdir)
                 else
-                    // fcopyerase(logoldspec,logarcspec,logsize)
-                    // nagy fajl masolasa NFS-re lassu
-                    // futhat kulon szalban, hogy ne kelljen ra varni,
-                    // de meg kell oldani, hogy a program ne lepjen ki addig,
-                    // amig a masolast vegzo szal be nem fejezodik
-                    thread_create_detach((||fcopyerase(logoldspec,logarcspec,logsize)))
-                    //? "    FILECOPY",logoldspec, "=>", logarcspec,logsize //DEBUG
-                end
+                    logarcspec:=logarcdir+dirsep()+basename(logoldspec)
+                    ferase(logarcspec)
+                    // ha egy NFS megosztas leszakad,
+                    // ferase-ben var az NFS feleledeseig
+                    if( 0==frename(logoldspec,logarcspec) )
+                        // Windowson ez nem mukodik:
+                        // a szulo processz ugyanebbe a fajlba logol.
+                        // tehat a fajl nyitva van a szulo processzben,
+                        // ezert nem lehet sem atnevezni sem letorolni
+                        //? "    FRENAME",logoldspec,"=>",logarcspec //DEBUG
+                    else
+                        // fcopyerase(logoldspec,logarcspec,logsize)
+                        // nagy fajl masolasa NFS-re lassu
+                        // futhat kulon szalban, hogy ne kelljen ra varni,
+                        // de meg kell oldani, hogy a program ne lepjen ki addig,
+                        // amig a masolast vegzo szal be nem fejezodik
+                        thread_create_detach((||fcopyerase(logoldspec,logarcspec,logsize)))
+                        //? "    FILECOPY",logoldspec, "=>", logarcspec,logsize //DEBUG
+                    end
+                    printmessage("[ARCHIVED]",logoldspec,logarcspec,logsize)
+               end
             end
         else
             // elorebb vittek
@@ -221,10 +254,11 @@ local loglast,logoldspec,logarcspec,logsize
 
             logname:=loglast
             fclose(fdlog)
-            //? "    SKIP", logoldspec, "->" ,logname  //DEBUG
+            printmessage("[next]",logoldspec,"->",logname)
         end
 
         fdlog:=xopen(logname,.t.)
+        printmessage("[OPEN]",logname)
     end
 
 
@@ -236,10 +270,10 @@ local nbyte
         ferase(src)
         //sleep(10000) //DEBUG
     else
+        // nem jo itt kilepni:
         // ha nem sikerul a masolas, 
-        // az eredeti helyen megmarad a log,
-        // nem jo itt kilepni
-        ? "ERROR-fcopyerase",src,dst,size,nbyte,exename(),ferror()
+        // az eredeti helyen megmarad a log
+        printmessage("[ERROR-FILECOPY]",src,dst,size,nbyte,ferror())
     end
     waitforcopy(-1)
 
@@ -259,7 +293,7 @@ static x:=0
         cond::thread_cond_signal
     else
         while( x>0 )
-            ? exename()::basename, "waiting for filecopy ..."
+            printmessage("[waiting for filecopy]")
             cond::thread_cond_wait(mutx)
         end
     end
@@ -739,4 +773,18 @@ local basename:=basename(fspec)
 local dotpos:=rat(".",basename)
     return if(dotpos<=0,"",basename::substr(dotpos+1))
 
+
 ******************************************************************************
+static function printmessage(*)
+static mutx:=thread_mutex_init()
+local ch,additive
+    ch:=channelNew( envlog+"log" )
+    ch:localflag:=.f.
+    ch:open(additive:=.t.)
+    mutx::thread_mutex_lock
+    ch:writeln(date(),time(),exename(),*)
+    mutx::thread_mutex_unlock
+    ch:close
+
+
+***************************************************************************

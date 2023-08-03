@@ -230,17 +230,30 @@ local prevset:=get_dosconv()
 
 ***********************************************************************
 function setlocalname(x)
-static blklocalname
-local prevblk
-    if( valtype(x)=="B" )
-        prevblk:=blklocalname
-        blklocalname:=x
+
+// FIGYELEM
+// ha a csatorna (printer/alternate/extra) remote-olhato,
+// akkkor ez a fuggveny nem hivodik meg, mert a terminalon
+// megnyilo fajl nevet a terminalon kell meghatarozni
+// (nem remote-olhato csatornakra a qout-bol hivodik meg)
+
+static blk
+local prevblk:=blk
+
+    if( x==NIL )
         return prevblk
-    elseif( valtype(blklocalname)=="B" )
-        return eval(blklocalname,x)
-    else
+
+    elseif( valtype(x)=="B" )
+        blk:=x
+        return prevblk
+
+    elseif( blk==NIL )
         return x
+
+    else
+        return eval(blk,x)
     end
+
 
 
 ***********************************************************************

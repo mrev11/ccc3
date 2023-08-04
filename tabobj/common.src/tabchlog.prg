@@ -159,12 +159,12 @@ local n,e
                     // break(e)
                     //
                     // nem jo itt kilepni:
-                    // a mount hianya eseten folytathato a program, 
+                    // a mount hianya eseten folytathato a program,
                     // legfeljebb helyben maradnak a logok,
                     // kell viszont valamilyen hibauzenet
-                    
+
                     printmessage("[ARCHIVE DIRECTORY DOES NOT EXIST]",envarcdir)
-                           
+
                 else
                     logarcdir:=envarcdir
                 end
@@ -197,17 +197,15 @@ local ts
 ******************************************************************************
 function tabChangeLogLock()
 
-local loglast,logoldspec,logarcspec,logsize
+local loglast,logoldspec,logarcspec,logsize,cmd
 
     _writechangelog_mutex(fdmutex,.t.)
 
     while( logmaxsize<fseek(fdlog,0,FS_END) )
-    
+
         logoldspec:=logname             // elozoleg ide irtunk (de betelt)
         loglast:=loglastname(envlog)    // aktualis log (elorebb vihette egy masik processz)
-        
-        //? "FULL",exename()::basename, logoldspec::extension, loglast::extension //DEBUG
-        
+
         if( basename(logoldspec)==basename(loglast) )
             // nem vittek elorebb
             // itt es most kell elorebb vinni
@@ -216,7 +214,7 @@ local loglast,logoldspec,logarcspec,logsize
             fwrite(fdlog,"<continue>"+logname+"</continue>"+endofline())
             logsize:=fseek(fdlog,0,FS_END)
             fclose(fdlog)
-       
+
             if( !empty(logarcdir) .and. fileexist(logoldspec) )
                 if( !direxist(logarcdir) )
                     // nem mutatja ki az NFS leszakadasat
@@ -233,15 +231,12 @@ local loglast,logoldspec,logarcspec,logsize
                         // a szulo processz ugyanebbe a fajlba logol.
                         // tehat a fajl nyitva van a szulo processzben,
                         // ezert nem lehet sem atnevezni sem letorolni
-                        //? "    FRENAME",logoldspec,"=>",logarcspec //DEBUG
                     else
-                        // fcopyerase(logoldspec,logarcspec,logsize)
-                        // nagy fajl masolasa NFS-re lassu
-                        // futhat kulon szalban, hogy ne kelljen ra varni,
-                        // de meg kell oldani, hogy a program ne lepjen ki addig,
-                        // amig a masolast vegzo szal be nem fejezodik
-                        thread_create_detach((||fcopyerase(logoldspec,logarcspec,logsize)))
-                        //? "    FILECOPY",logoldspec, "=>", logarcspec,logsize //DEBUG
+                        // Windowson ez nem mukodik
+                        cmd:="(cp -p $SRC $DST && rm $SRC) &"
+                        cmd::=strtran("$SRC",logoldspec)
+                        cmd::=strtran("$DST",logarcspec)
+                        run( cmd ) // background
                     end
                     printmessage("[ARCHIVED]",logoldspec,logarcspec,logsize)
                end
@@ -260,45 +255,6 @@ local loglast,logoldspec,logarcspec,logsize
         fdlog:=xopen(logname,.t.)
         printmessage("[OPEN]",logname)
     end
-
-
-static function fcopyerase(src,dst,size) // csak ha frename() sikertelen
-static init:=qblock()
-local nbyte
-    waitforcopy(1)
-    if( (nbyte:=filecopy(src,dst))==size )
-        ferase(src)
-        //sleep(10000) //DEBUG
-    else
-        // nem jo itt kilepni:
-        // ha nem sikerul a masolas, 
-        // az eredeti helyen megmarad a log
-        printmessage("[ERROR-FILECOPY]",src,dst,size,nbyte,ferror())
-    end
-    waitforcopy(-1)
-
-
-static function qblock()
-local qb:=quitblock()
-    quitblock( {||waitforcopy(),eval(qb)})
-
-
-static function waitforcopy(dx)
-static mutx:=thread_mutex_init()
-static cond:=thread_cond_init()
-static x:=0
-    mutx::thread_mutex_lock
-    if( dx!=NIL )
-        x+=dx
-        cond::thread_cond_signal
-    else
-        while( x>0 )
-            printmessage("[waiting for filecopy]")
-            cond::thread_cond_wait(mutx)
-        end
-    end
-    mutx::thread_mutex_unlock
-
 
 ******************************************************************************
 function tabChangeLogUnlock()
@@ -782,7 +738,7 @@ local ch,additive
     ch:localflag:=.f.
     ch:open(additive:=.t.)
     mutx::thread_mutex_lock
-    ch:writeln(date(),time(),exename(),*)
+    ch:writeln(date(),time(),getpid(),exename()::basename::padr(20),*)
     mutx::thread_mutex_unlock
     ch:close
 

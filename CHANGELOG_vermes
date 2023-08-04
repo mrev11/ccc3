@@ -1,3 +1,11 @@
+2023-08-04 tabchlog-ban a logok archivalasa cp-vel:
+  thread-ben futo filecopy helyett cp (copy) paranccsal;
+  Bar Windowson is van/lehet cp, nem lehet letorolni
+  a korabbi logot, ha azt a parent processz nyitva tartja. 
+  Ezert Windowson az archivalas semmikepp sem mukodik.
+  A "(cp -p $SRC $DST && rm $SRC) &" akkor is jol mukodik,
+  ha lecsukjak a terminalt es a parent HUP-ot vagy TERM-et kap.
+
 2023-08-03 setlocalname-ben jobb logika;
 
 2023-08-02 tabchlog.prg-ben hibakezeles finomitva, logolas logolva;

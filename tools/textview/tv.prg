@@ -50,8 +50,8 @@ local hist:=history_load(fspec)[1] //{fspec,offset,search}
     tv:=textviewNew(map,1) //egy sor header
 
     tv:headerblk:={|x|header(x,fspec)}
-    //tv:mskcolor:="n/rg,w+/n+"
-    //tv:txtcolor:="n/w"
+    tv:mskcolor:="n/bg+,w+/111"
+    tv:txtcolor:="w/b"
     
     if( !empty(hist[2]) )
         tv:setpos(hist[2])

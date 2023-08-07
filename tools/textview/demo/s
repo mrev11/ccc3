@@ -1,2 +1,2 @@
 #!/bin/bash
-data.exe $1
+demo.exe &

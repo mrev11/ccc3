@@ -39,7 +39,7 @@ local col:=this:left
 local tbeg:=this:sftcol+1
 local twid:=this:width
 local color:=this:txtcolor
-local pos:=0,lss,tss
+local pos:=0,c,lss,tss
 
     text::=substr(tbeg,twid)::padr(twid)
 
@@ -54,15 +54,14 @@ local pos:=0,lss,tss
         lss:=this:searchstring::len
 
         if( pos<tbeg )
-            col:=0
-            tss::=right(lss-tbeg+pos)::left(twid)
+            c:=col
+            tss::=substr(tbeg-pos+1)::left(twid)
         else
-            col:=pos-tbeg
-            tss::=left(twid-col)
+            c:=col+pos-tbeg
+            tss::=left(twid-(c-col) )
         end
-        //? col, "["+tss+"]", color::logcolor(2)
-        @ row,col SAY tss COLOR color::logcolor(2)
+        @ row,c SAY tss COLOR color::logcolor(2)
     end
 
-********************************************************************************************
 
+********************************************************************************************

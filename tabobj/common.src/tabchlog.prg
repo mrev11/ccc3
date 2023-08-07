@@ -738,7 +738,7 @@ local ch,additive
     ch:localflag:=.f.
     ch:open(additive:=.t.)
     mutx::thread_mutex_lock
-    ch:writeln(date(),time(),getpid(),exename()::basename::padr(20),*)
+    ch:writeln(date(),time(),getpid(),exename()::basename,*)
     mutx::thread_mutex_unlock
     ch:close
 

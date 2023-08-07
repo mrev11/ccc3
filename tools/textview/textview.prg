@@ -90,8 +90,8 @@ function textview.initialize(this,x:="",t:=0,l:=0,b:=maxrow(),r:=maxcol())
     this:sftrow :=0
     this:sftcol :=0
 
-    this:txtcolor:="n/w"
-    this:mskcolor:="n/rg,w+/n+"
+    this:txtcolor:="w/n"
+    this:mskcolor:="n/w,w+/n+"
     this:searchstring:=""
 
     this:text(x)

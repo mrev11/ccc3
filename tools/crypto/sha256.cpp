@@ -32,7 +32,7 @@ void _clp_crypto_sha256(int argno)
 {
     CCC_PROLOG("crypto_sha256",1);
     char *text=_parb(1);
-    int length=_parblen(1);
+    size_t length=_parblen(1);
 
     SHA256_CTX *c=new SHA256_CTX();
     SHA256_Init(c);
@@ -63,7 +63,7 @@ void _clp_crypto_sha256_update(int argno)
     CCC_PROLOG("crypto_sha256_update",2);
     SHA256_CTX *c=(SHA256_CTX*)_parp(1);
     char *text=_parb(2);
-    int length=_parblen(2);
+    size_t length=_parblen(2);
     SHA256_Update(c,text,length);
     _ret();
     CCC_EPILOG();

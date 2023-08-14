@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
     printf("%c[?25h",0x1b);      // cursor on
 
   //printf("%c[1 q",0x1b);       // cursor shape  blinking block (do not blink)
-    printf("%c[2 q",0x1b);       // cursor shape  steady block
+  //printf("%c[2 q",0x1b);       // cursor shape  steady block (nem mukodik: kiir egy 'q'-t)
   //printf("%c[3 q",0x1b);       // cursor shape  blinking underline
   //printf("%c[4 q",0x1b);       // cursor shape  steady underline
   //printf("%c[5 q",0x1b);       // cursor shape  blinking bar

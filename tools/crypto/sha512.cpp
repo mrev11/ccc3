@@ -32,7 +32,7 @@ void _clp_crypto_sha512(int argno)
 {
     CCC_PROLOG("crypto_sha512",1);
     char *text=_parb(1);
-    int length=_parblen(1);
+    size_t length=_parblen(1);
 
     SHA512_CTX *c=new SHA512_CTX();
     SHA512_Init(c);
@@ -63,7 +63,7 @@ void _clp_crypto_sha512_update(int argno)
     CCC_PROLOG("crypto_sha512_update",2);
     SHA512_CTX *c=(SHA512_CTX*)_parp(1);
     char *text=_parb(2);
-    int length=_parblen(2);
+    size_t length=_parblen(2);
     SHA512_Update(c,text,length);
     _ret();
     CCC_EPILOG();

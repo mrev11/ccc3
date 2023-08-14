@@ -40,7 +40,7 @@ void _clp_crypto_sign(int argno)  //egy lépésben
     CCC_PROLOG("crypto_sign",2);
 
     char *datbuf=_parb(1);
-    int datlen=_parblen(1);
+    size_t datlen=_parblen(1);
 
     char *privkey=_parb(2);
 
@@ -93,7 +93,7 @@ void _clp_crypto_sign_update(int argno)
     CCC_PROLOG("crypto_sign_update",2);
     EVP_MD_CTX *md_ctx=(EVP_MD_CTX*)_parp(1); 
     char *datbuf=_parb(2);
-    int datlen=_parblen(2);
+    size_t datlen=_parblen(2);
     EVP_SignUpdate(md_ctx,datbuf,datlen);
     _ret();
     CCC_EPILOG();
@@ -148,12 +148,12 @@ void _clp_crypto_verify(int argno)  //egy lépésben
     str2bin(base+2);
 
     char *datbuf=_parb(1);
-    int datlen=_parblen(1);
+    size_t datlen=_parblen(1);
 
     char *bm=_parb(2);
 
     unsigned char *sigbuf=(unsigned char*)_parb(3);
-    unsigned int siglen=(unsigned int)_parblen(3);
+    size_t siglen=_parblen(3);
 
     EVP_PKEY *pkey=0;
     
@@ -214,7 +214,7 @@ void _clp_crypto_verify_update(int argno)
     CCC_PROLOG("crypto_verify_update",2);
     EVP_MD_CTX *md_ctx=(EVP_MD_CTX*)_parp(1); 
     char *datbuf=_parb(2);
-    int datlen=_parblen(2);
+    size_t datlen=_parblen(2);
     EVP_VerifyUpdate(md_ctx,datbuf,datlen);
     _ret();
     CCC_EPILOG();
@@ -229,7 +229,7 @@ void _clp_crypto_verify_final(int argno)
     char *bm=_parb(2);
 
     unsigned char *sigbuf=(unsigned char*)_parb(3);
-    unsigned int siglen=(unsigned int)_parblen(3);
+    size_t siglen=_parblen(3);
 
     EVP_PKEY *pkey=0;
 

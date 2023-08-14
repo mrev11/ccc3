@@ -205,8 +205,8 @@ void _clp_crypto_des_ncbc_encrypt(int argno) //Cypher Block Chaining
     // 4 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
 
     DES_key_schedule *ks=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -244,8 +244,8 @@ void _clp_crypto_des_xcbc_encrypt(int argno) //RSA's DESX
     // 6 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
 
     DES_key_schedule *ks=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -286,8 +286,8 @@ void _clp_crypto_des_ede3_cbc_encrypt(int argno) // Triple-DES, SSL
     // 6 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
 
     DES_key_schedule *ks1=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -338,8 +338,8 @@ void _clp_crypto_des_ede2_cbc_encrypt(int argno) // Triple DES with ks3=ks1
     // 5 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
 
     DES_key_schedule *ks1=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -382,8 +382,8 @@ void _clp_crypto_des_pcbc_encrypt(int argno) //propagating CBC (Kerberos)
     // 4 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
 
     DES_key_schedule *ks=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -419,7 +419,7 @@ void _clp_crypto_des_cfb_encrypt(int argno) //Cypher FeedBack
     // 5 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     int numbit=_parni(2);
 
@@ -457,7 +457,7 @@ void _clp_crypto_des_cfb64_encrypt(int argno) //CFB with 64bit feedback
     // 5 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     DES_key_schedule *ks=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -512,7 +512,7 @@ void _clp_crypto_des_ede3_cfb64_encrypt(int argno) //CFB Triple DES, 64bit feedb
     // 7 - enc      logical
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     DES_key_schedule *ks1=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -574,7 +574,7 @@ void _clp_crypto_des_ofb64_encrypt(int argno) //OFB with 64bit feedback
     // 4 - num      refnumber
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     DES_key_schedule *ks=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )
@@ -637,7 +637,7 @@ void _clp_crypto_des_ede3_ofb64_encrypt(int argno) //OFB Triple DES, 64bit feedb
     // 6 - num      refnumber
     
     const unsigned char *input=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     DES_key_schedule *ks1=(DES_key_schedule *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(DES_key_schedule) )

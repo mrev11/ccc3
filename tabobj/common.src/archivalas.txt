@@ -1,0 +1,57 @@
+
+Changelogok archiválása
+=======================
+
+#define LOG_FILE    "CCC_TRANSACTION_LOG_FILE"      //logile neve
+#define LOG_MUTEX   "CCC_TRANSACTION_LOG_MUTEX"     //lockfile neve
+#define LOG_CREATE  "CCC_TRANSACTION_LOG_CREATE"    //=auto eseten letrehozza
+#define LOG_TABLES  "CCC_TRANSACTION_LOG_TABLES"    //naplozando tablak
+#define LOG_XTABLES "CCC_TRANSACTION_LOG_XTABLES"   //nem naplozando tablak
+#define LOG_SIZE    "CCC_TRANSACTION_LOG_SIZE"      //logfile max merete
+#define LOG_ARCDIR  "CCC_TRANSACTION_LOG_ARCDIR"    //logfileket ide mozgatja, amikor lezarodnak.
+
+A logolás a CCC_TRANSACTION_LOG_FILE fájlba történik.
+A logolást az kapcsolja be, hogy a környezeti változó nem üres.
+Mialatt a programok írják a logot, write lockot tartanak a logfájlon.
+Ha a log olyan fájlrendszeren van, ami nem támogatja a lockolást,
+akkor egy másik fájlrendszeren megadható egy másik fájl, amit
+a programok mutexnek használhatnak. Mindenesetre a lock sorbaállítja
+a módosítások kiírását, azaz egyszerre csak egy program írhat a logba,
+és ezért egyszerre csak egy program tud commitolni.
+
+A logfájlok maximális mérete CCC_TRANSACTION_LOG_SIZE.
+
+Amikor egy program írni akar a logba, először megnézi, hogy a fájl
+elérte-e már a maximális méretet. Ha elérte, akkor meg kell nézni, 
+hogy az adott program volt-e az első, amiben a log betelt, vagy esetleg 
+korábban már egy másik program is beleütközött a méretkorlátba, és az 
+aktuális log lezárása után nyitott egy új logot. Esetleg nem is egy, 
+hanem több log is nyílt, mielőtt a program észlelte volna az általa 
+használt log beteltségét.
+
+1) Ha az aktuális program elsőként vette észre, hogy betelt a log,
+akkor le kell zárnia a logfájlt, nyitnia kell egy új logot, és a régi
+logot (opcionálisan) át kell mozgatnia CCC_TRANSACTION_LOG_ARCDIR-be.
+
+2) Ha az aktuális program előtt már egy másik program elvégezte
+a logok váltását, akkor meg kell keresni, hogy melyik az éppen
+soron levő aktuális logfájl. A régi logfáljt le kell zárni, az újat
+(ami már létezik) meg kell nyitni, és abba folytatni az írást.
+
+Vegyük észre, hogy a logok archiválása közben a logváltást
+végző program átmozgatja (átnevezi vagy átmásolás után törli) azt
+a logfájlt, amit a többi program nyitva tart. Linuxon ez nem probléma, 
+Windowson azonban nem működik sem az átnevezés, sem a törlés.
+
+Mivel Windowson semmiképp sem megy az archiválás, semmit sem vesztünk,
+ha Linux specifikus megoldást választunk. Az archiválás a következő
+Linux paranccsal történik:
+
+       run( "(cp -p $SOURCE $DESTIN && rm $SOURCE) &" )
+
+Vagyis az átmozgatás egy háttérben futó gyerek processzel történik.
+Ez a processz akkor is befejeződik, ha a közben a szülő processz kilép,
+vagy HUP-ot kap.
+
+
+

@@ -33,7 +33,7 @@ void _clp_crypto_md5(int argno)
     CCC_PROLOG("crypto_md5",1);
     str2bin(base);
     char *text=_parb(1);
-    int length=_parblen(1);
+    size_t length=_parblen(1);
 
     MD5_CTX *c=new MD5_CTX();
     MD5_Init(c);
@@ -64,7 +64,7 @@ void _clp_crypto_md5_update(int argno)
     MD5_CTX *c=(MD5_CTX*)_parp(1);
     str2bin(base+1);
     char *text=_parb(2);
-    int length=_parblen(2);
+    size_t length=_parblen(2);
     MD5_Update(c,text,length);
     _ret();
     CCC_EPILOG();

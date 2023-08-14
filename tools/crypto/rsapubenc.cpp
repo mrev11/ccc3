@@ -32,7 +32,7 @@ void _clp_crypto_rsa_public_encrypt(int argno)
     CCC_PROLOG("crypto_rsa_public_encrypt",2);
 
     char *datbuf=_parb(1);
-    int datlen=_parblen(1);
+    size_t datlen=_parblen(1);
 
     char *key=_parb(2); 
 
@@ -70,7 +70,7 @@ void _clp_crypto_rsa_private_decrypt(int argno)
     CCC_PROLOG("crypto_rsa_private_decrypt",2);
 
     char *datbuf=_parb(1);
-    int datlen=_parblen(1);
+    size_t datlen=_parblen(1);
 
     char *key=_parb(2);
 

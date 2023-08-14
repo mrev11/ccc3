@@ -40,7 +40,7 @@ void _clp_crypto_blowfish_set_key(int argno)
 
     CCC_PROLOG("crypto_blowfish_set_key",1);
     const unsigned char *data=(const unsigned char *)_parb(1);
-    int len=_parblen(1);
+    size_t len=_parblen(1);
     BF_KEY *ks=(BF_KEY*)binaryl(sizeof(BF_KEY));
     BF_set_key(ks,len,data);
     _rettop();
@@ -82,8 +82,8 @@ void _clp_crypto_blowfish_cbc_encrypt(int argno)
 
     CCC_PROLOG("crypto_blowfish_cbc_encrypt",4);
     const unsigned char *in=(const unsigned char *)_parb(1);
-    long length_in=(long)_parblen(1);
-    long length_out=LENOUT(length_in);
+    size_t length_in=_parblen(1);
+    size_t length_out=LENOUT(length_in);
     BF_KEY *ks=(BF_KEY *)_parb(2);
     if( _parblen(2)!=sizeof(BF_KEY) )
     {
@@ -116,7 +116,7 @@ void _clp_crypto_blowfish_cfb64_encrypt(int argno)
     CCC_PROLOG("crypto_blowfish_cfb64_encrypt",5);
     
     const unsigned char *in=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     BF_KEY *ks=(BF_KEY *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(BF_KEY) )
@@ -168,7 +168,7 @@ void _clp_crypto_blowfish_ofb64_encrypt(int argno)
     CCC_PROLOG("crypto_blowfish_ofb64_encrypt",4);
     
     const unsigned char *in=(const unsigned char *)_parb(1);
-    long length=(long)_parblen(1);
+    size_t length=_parblen(1);
 
     BF_KEY *ks=(BF_KEY *)_parb(2); //kulcs
     if( _parblen(2)!=sizeof(BF_KEY) )

@@ -9,7 +9,7 @@
 -D_LARGEFILE_SOURCE
 -D_REENTRANT
 -DMULTITHREAD
--O1
+-O0
 -funsigned-char
 -fPIC
 -Wall

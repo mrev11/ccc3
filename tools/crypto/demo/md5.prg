@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+******************************************************************************************
 function main()
 
 local fnm:="md5.prg"
@@ -30,12 +31,35 @@ local fd,nbyte,buf,md5,ctx
     fd:=fopen(fnm)
     buf:=replicate(x"00",8)
     ctx:=crypto_md5_init()
-    while( (nbyte:=fread(fd,@buf,len(buf)))>0 )
-        crypto_md5_update(ctx,left(buf,nbyte))
+
+    //while( (nbyte:=fread(fd,@buf,len(buf)))>0 )
+    //    crypto_md5_update(ctx,left(buf,nbyte))
+    //end
+
+    // csokkentett szemetgyujtes
+    // (nagy fajloknal sokat szamit)
+    while( (buf:=read(fd,buf))!=NIL )
+        crypto_md5_update(ctx,buf)
     end
+
     md5:=crypto_md5_final(ctx)  
     ? crypto_bin2hex(md5)
 
     ?
     run("md5sum "+fnm) //ellenőrzés
     ?
+
+
+******************************************************************************************
+static function read(fd,buf) // olvasas csokkentett szemetgyujtessel
+local nbyte:=xvread(fd,buf,0,len(buf))
+    if( nbyte<=0 )
+        return NIL
+    elseif( nbyte<len(buf) )
+        return left(buf,nbyte)
+    else
+        return buf
+    end
+      
+
+******************************************************************************************

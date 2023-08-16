@@ -324,12 +324,28 @@ void _clp_xvgetflag(int argno)
 //--------------------------------------------------------------------------
 void _clp_xvwrite(int argno)
 {
-    CCC_PROLOG("xvwrite",3);
+    CCC_PROLOG("xvwrite",4);
     int fd=_parni(1);
     char *buffer=_parb(2);
-    binarysize_t nbyte=_parnuw(3);
+    binarysize_t offs=0;
+    binarysize_t nbyte=0;
+    if( argno==2 )                  // xvwrite(fd,buffer)
+    {
+        offs=0;
+        nbyte=_parblen(2);
+    }    
+    else if( argno==3 )             // xvwrite(fd,buffer,nbyte)
+    {
+        offs=0;
+        nbyte=_parnuw(3);
+    }    
+    else                            // xvwrite(fd,buffer,offs,nbyte)
+    {
+        offs=_parnuw(3);
+        nbyte=_parnuw(4);
+    }    
     vmhandle(PARPTR(2),nbyte,"XVWRITE");
-    _retni( write(fd,buffer,nbyte) );
+    _retni( write(fd,buffer+offs,nbyte) );
     CCC_EPILOG();
 }
 
@@ -339,8 +355,23 @@ void _clp_xvread(int argno)
     CCC_PROLOG("xvread",4);
     int fd=_parni(1);
     char *buffer=_parb(2);
-    binarysize_t offs=_parnuw(3);
-    binarysize_t nbyte=_parnuw(4);
+    binarysize_t offs=0;
+    binarysize_t nbyte=0;
+    if( argno==2 )                  // xvread(fd,buffer)
+    {
+        offs=0;
+        nbyte=_parblen(2);
+    }
+    else if( argno==3 )             // xvread(fd,buffer,nbyte)
+    {
+        offs=0;
+        nbyte=_parnuw(3);
+    }
+    else                            // xvread(fd,buffer,offs,nbyte)
+    {
+        offs=_parnuw(3);
+        nbyte=_parnuw(4);
+    }
     vmhandle(PARPTR(2),offs+nbyte,"XVREAD");
     _retni( read(fd,buffer+offs,nbyte) );
     CCC_EPILOG();

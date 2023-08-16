@@ -1,3 +1,13 @@
+2023-08-17
+  uj hivasi formak:
+    xvwrite(fd,buffer)
+    xvwrite(fd,buffer,nbyte)
+    xvwrite(fd,buffer,offset,nbyte)
+  uj hivasi formak:
+    xvread(fd,buffer)
+    xvread(fd,buffer,nbyte)
+    xvread(fd,buffer,offset,nbyte)
+
 2023-08-17 array fuggvenyek: aiins, addel, apush, apop;
 
 2023-08-14 

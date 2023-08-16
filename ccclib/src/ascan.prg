@@ -130,9 +130,39 @@ local i
 
 
 ****************************************************************************
+function aiins(a,x,v)   // increase and insert   
+    asize(a,len(a)+1)
+    ains(a,x)
+    a[x]:=v
+    return a
+
+
+****************************************************************************
+function addel(a,x)     // delete and decrease 
+    adel(a,x)
+    asize(a,len(a)-1)
+    return a
+
+
+****************************************************************************
+function apush(a,v)
+    aadd(a,v)
+    return v
+
+
+****************************************************************************
+function apop(a)
+local len:=len(a),v
+    if( len>=1 )
+        v:=a[len]
+        asize(a,len-1)
+    end
+    return v
+
+
+****************************************************************************
 function _asort_ascendblock() // asort default blockja
     return {|x,y|x<y}
 
 
 ****************************************************************************
-

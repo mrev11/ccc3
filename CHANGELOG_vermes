@@ -1,3 +1,15 @@
+2023-08-17 filemap atdolgozva:
+  unixos es windowsos kod szetvalasztva, jobb hibakezeles;
+  uj hivasi formak:
+    filemap.open(fd)
+    filemap.open(fd,flags)
+    filemap.open(fd,flags,length)
+    filemap.open(fd,flags,offset,length)
+  a map nem terjed tul az alap fajlon;
+  nulla hosszusagu map helyett NIL-t ad;
+  az offset Windowon 64K, Linuxon 4K tobbszorose kell legyen;
+
+
 2023-08-17
   uj hivasi formak:
     xvwrite(fd,buffer)

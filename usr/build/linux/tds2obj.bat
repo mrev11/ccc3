@@ -1,13 +1,13 @@
 #!/bin/bash
-echo TDS2OBJ.BAT $1 $2 
+echo TDS2OBJ.BAT $1 $2
 
-#rm -f error 
+#rm -f error
 rm -f error--tds2prg-$1
 rm -f error--outpre-$1
 rm -f error--ppo2cpp-$1
 rm -f error--outcpp-$1
 mkdir -p ppo
- 
+
 # rm -f ppo/$1.prg
 # cp -f $2/$1.tds ppo/$1.tmp
 # tds2prg.exe   ppo/$1.tmp  >ppo/tds2prg-$1
@@ -41,12 +41,12 @@ rm -f $CMPOPT
 
 echo $BUILD_PRE >>$CMPOPT
 for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
- 
+
 echo -dARROW            >>$CMPOPT
 echo -d_CCC_            >>$CMPOPT
 echo -d_CCC"$CCCVER"_   >>$CMPOPT
-echo -d_UNIX_           >>$CMPOPT 
-echo -d_LINUX_          >>$CMPOPT 
+echo -d_UNIX_           >>$CMPOPT
+echo -d_LINUX_          >>$CMPOPT
 echo -ustd1.ch          >>$CMPOPT
 
 
@@ -69,7 +69,7 @@ else
     pushd ppo >/dev/null
     rm -f $1.cpp
     echo $2/$1.prg >ppo2cpp-$1
- 
+
     if ! ppo2cpp.exe -q $1.ppo 2>>ppo2cpp-$1; then
         popd >/dev/null;
         touch error;
@@ -89,4 +89,3 @@ fi;
 echo ----------------------------------------------------------------
 
 
- 

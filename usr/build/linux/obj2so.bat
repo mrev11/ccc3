@@ -1,7 +1,7 @@
 #!/bin/bash
 echo OBJ2SO.BAT $1
 
-LIBNAM=$1.so 
+LIBNAM=$1.so
 TARGET=$BUILD_OBJ/$LIBNAM
 RSPLNK=$BUILD_OBJ/rsplnk-$1
 OUTLNK=outlnk-$1
@@ -23,16 +23,23 @@ if test -f "$BUILD_LIBX"; then
     cat $BUILD_LIBX >>$RSPLNK
 fi
 
-echo "-Wl,-soname=$LIBNAM" >>$RSPLNK 
- 
-if ! c++ `cat $RSPLNK` 2>$OUTLNK; then
+echo "-Wl,-soname=$LIBNAM" >>$RSPLNK
+
+if [ "${CPP_COMPILER}" == "clang"  ]; then
+    # LLVM linker: lld
+    # GNU linker: ld (default)
+    echo -fuse-ld=lld >>$RSPLNK
+fi
+
+if ! c++ $(cat $RSPLNK) 2>$OUTLNK; then
     touch error
     cat $OUTLNK
     mv  $OUTLNK $ERROR
     rm -f $TARGET
 else
     rm -f $OUTLNK
+    #readelf --string-dump .comment $TARGET
 fi
- 
+
 echo ----------------------------------------------------------------
 

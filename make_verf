@@ -32,3 +32,5 @@ if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
     echo "CCCBIN (=${CCCBIN}) environment variable not properly set"
     exit 1
 fi
+
+. cppver.b

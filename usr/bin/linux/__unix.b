@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. cppver.b
+
 lptadd() #vegere
 {
     X=$(echo :$BUILD_LPT: | sed  s^:"$1":^:^)
@@ -19,11 +21,11 @@ addlpt() #elejere
 }
 
 
-if [ $CCCBIN == "lin" ]; then 
+if [ $CCCBIN == "lin" ]; then
     export BUILD_BAT=$CCCDIR/usr/build/linux
-    export BUILD_OPT=compile.opt 
+    export BUILD_OPT=compile.opt
     export BUILD_INC=$CCCDIR/usr/include
-    
+
     lptadd $CCCDIR/usr/lib/$CCCBIN
     if uname -a | grep armv7l >/dev/null; then
         lptadd /usr/lib/arm-linux-gnueabihf
@@ -39,7 +41,7 @@ if [ $CCCBIN == "lin" ]; then
         lptadd /usr/lib/i386-linux-gnu
         lptadd /lib/i386-linux-gnu
         lptadd /usr/lib32
-    fi    
+    fi
     lptadd $PREFIX/lib #android termux
     lptadd /usr/local/lib
     lptadd /usr/lib
@@ -54,4 +56,3 @@ else
     exit 1
 fi
 
- 

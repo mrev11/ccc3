@@ -1,0 +1,46 @@
+
+delpath()
+{
+    X=:${PATH}:
+    X=${X//:${1}:/:}
+    X=${X//::/:}
+    export PATH=$X
+}
+
+addpath()
+{
+    X=:${PATH}:
+    X=${X//:${1}:/:}
+    X=${1}${X}
+    X=${X//::/:}
+    export PATH=$X
+}
+
+pathadd()
+{
+    X=:${PATH}:
+    X=${X//:${1}:/:}
+    X=${X}${1}
+    X=${X//::/:}
+    export PATH=$X
+}
+
+addldpath()
+{
+    X=:${LD_LIBRARY_PATH}:
+    X=${X//:${1}:/:}
+    X=${1}${X}
+    X=${X//::/:}
+    export LD_LIBRARY_PATH=$X
+}
+
+ldpathadd()
+{
+    X=:${LD_LIBRARY_PATH}:
+    X=${X//:${1}:/:}
+    X=${X}${1}
+    X=${X//::/:}
+    export LD_LIBRARY_PATH=$X
+}
+
+

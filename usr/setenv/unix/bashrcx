@@ -1,0 +1,60 @@
+
+# Az eredeti .bashrc vegen ezt (bashrcx-et) source-oljuk.
+# bashrcx vegen source-oljuk envccc-t,
+
+# bashrcx       : alapveto beallitasok
+# envccc        : CCC beallitasok (CCCVER: 2/3)
+
+#########################################################################
+
+# a CCCVER valtozot vagy orokoljuk
+# vagy be kell allitani 2-re vagy 3-ra
+# export CCCVER=3
+
+echo bashrcx CCCVER=${CCCVER}
+
+alias ls='ls --color=auto --group-directories-first'
+alias ll='ls -l --color=auto --group-directories-first'
+alias sb='sudo -E bash'
+
+pp()
+{
+    echo $PATH | tr : \\n
+}
+
+lsenv()
+{
+    PATTERN=""
+    for pat in "$@"; do
+        PATTERN=${PATTERN}'|^'${pat}=
+    done
+    PATTERN=(${PATTERN:1})  # |pat1|pat2... -> (pat1|pat2...)
+    printenv | grep --color=always -E ${PATTERN} | LC_COLLATE=C sort
+}
+
+export PAGER="less -S"
+export EDITOR=z
+export VISUAL=mcedit
+
+
+
+# echo -e "\e]12;orange\a" # set cursor color
+# echo -e "\e]12;maroon\a" # set cursor color
+
+# export PS1='\[\033[01;31m\][\u@\h\[\033[01;37m\] \W\[\033[01;31m\]]\$ \[\033[00m\]'   #red
+ export PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$ \[\033[00m\]'   #green
+# export PS1='\[\033[01;33m\][\u@\h\[\033[01;37m\] \W\[\033[01;33m\]]\$ \[\033[00m\]'   #yellow
+# export PS1='\[\033[01;34m\][\u@\h\[\033[01;37m\] \W\[\033[01;34m\]]\$ \[\033[00m\]'   #blue
+# export PS1='\[\033[01;35m\][\u@\h\[\033[01;37m\] \W\[\033[01;35m\]]\$ \[\033[00m\]'   #magenta
+# export PS1='\[\033[01;36m\][\u@\h\[\033[01;37m\] \W\[\033[01;36m\]]\$ \[\033[00m\]'   #cyan
+# export PS1='\[\033[01;37m\][\u@\h\[\033[01;37m\] \W\[\033[01;37m\]]\$ \[\033[00m\]'   #white
+
+
+
+#########################################################################
+
+. ~/envccc
+
+ce     # C++/CCC environment 
+pp     # print PATH
+

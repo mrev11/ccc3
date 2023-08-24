@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -x
-echo TDC2OBJ.BAT $1 $2 
+echo TDC2OBJ.BAT $1 $2
 
-#rm -f error 
+#rm -f error
 rm -f error--tdc2prg-$1
 rm -f error--outpre-$1
 rm -f error--ppo2cpp-$1
@@ -15,7 +15,7 @@ tdc2prgch.exe --prg  ppo/$1.tmp-prg 2>ppo/tdc2prg-$1
 
 if ! test -f ppo/$1.prg; then
     touch error
-    mv ppo/tdc2prg-$1 error--tdc2prg-$1 
+    mv ppo/tdc2prg-$1 error--tdc2prg-$1
     cat error--tdc2prg-$1
     echo 'tdc2prg' $1 FAILED
 else
@@ -33,12 +33,12 @@ rm -f $CMPOPT
 
 echo $BUILD_PRE >>$CMPOPT
 for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
- 
+
 echo -dARROW            >>$CMPOPT
 echo -d_CCC_            >>$CMPOPT
 echo -d_CCC"$CCCVER"_   >>$CMPOPT
-echo -d_UNIX_           >>$CMPOPT 
-echo -d_LINUX_          >>$CMPOPT 
+echo -d_UNIX_           >>$CMPOPT
+echo -d_LINUX_          >>$CMPOPT
 echo -ustd1.ch          >>$CMPOPT
 
 
@@ -61,7 +61,7 @@ else
     pushd ppo >/dev/null
     rm -f $1.cpp
     echo $2/$1.prg >ppo2cpp-$1
- 
+
     if ! ppo2cpp.exe -q $1.ppo 2>>ppo2cpp-$1; then
         popd >/dev/null;
         touch error;

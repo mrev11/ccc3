@@ -1,7 +1,7 @@
 #!/bin/bash
 echo OBJ2SO.BAT $1
 
-LIBNAM=$1.so 
+LIBNAM=$1.so
 TARGET=$BUILD_OBJ/$LIBNAM
 RSPLNK=$BUILD_OBJ/rsplnk-$1
 OUTLNK=outlnk-$1
@@ -20,8 +20,8 @@ for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLNK; done
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 
-echo "-Wl,-soname=$LIBNAM" >>$RSPLNK 
- 
+echo "-Wl,-soname=$LIBNAM" >>$RSPLNK
+
 if ! c++ `cat $RSPLNK` 2>$OUTLNK; then
     touch error
     cat $OUTLNK
@@ -30,6 +30,6 @@ if ! c++ `cat $RSPLNK` 2>$OUTLNK; then
 else
     rm -f $OUTLNK
 fi
- 
+
 echo ----------------------------------------------------------------
 

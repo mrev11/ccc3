@@ -1,10 +1,42 @@
 #!/bin/bash
 
 # windows (msys2) bash script
- if [ "${MSYSTEM}" != "MSYS" ]; then
+if [ "${MSYSTEM}" == "MSYS" ]; then
+    : ok
+elif [ "${MSYSTEM}" == "MINGW64" ]; then
+    : ok
+elif [ "${MSYSTEM}" == "UCRT64" ]; then
+    : ok
+elif [ "${MSYSTEM}" == "CLANG64" ]; then
+    : ok
+else
     echo "script can run only in MSYS2"
     exit 1
 fi
+
+
+
+if [ "${MINGW_PREFIX}" == "" ]; then
+    # ha be van allitva MSYSTEM
+    # akkor az msys2 beallitja MINGW_PREFIX-et
+    #   MSYS    -> MINGW_PREFIX=/usr
+    #   MINGW64 -> MINGW_PREFIX=/mingw64
+    #   UCRT64  -> MINGW_PREFIX=/ucrt64
+    echo MSYSTEM=${MSYSTEM}
+    echo MINGW_PREFIX variable not set
+    exit 1
+fi
+
+if ! test -x ${MINGW_PREFIX}/bin/c++; then
+    echo c++ compiler not configured
+    echo MSYSTEM=${MSYSTEM}
+    echo MINGW_PREFIX=${MINGW_PREFIX}
+    which c++
+    exit 1
+fi
+
+
+
 
 if [ "${CCCVER}" != "$1" ]; then
     echo "CCCVER (=${CCCVER}) environment variable not properly set"
@@ -31,3 +63,9 @@ if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
     echo "CCCBIN (=${CCCBIN}) environment variable not properly set"
     exit 1
 fi
+
+
+. cppver.b
+
+
+

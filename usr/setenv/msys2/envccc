@@ -1,0 +1,81 @@
+
+#########################################################################
+# CCC beallitasok
+#########################################################################
+
+export OREF_SIZE=200000
+export BUILD_THR=4
+
+export CCC3DIR=~/ccc3
+export CCC2DIR=~/ccc2c
+export CCCBIN=mng
+export CCCUNAME=windows
+
+if [ "${CCCVER}" == ""  ]; then
+    export CCCVER=3
+    export CCCDIR=${CCC3DIR}
+elif [ "${CCCVER}" == "2"  ]; then
+    export CCCDIR=${CCC2DIR}
+elif [ "${CCCVER}" == "3"  ]; then
+    export CCCDIR=${CCC3DIR}
+else
+    echo invalid value of CCCVER: ${CCCVER}
+    exit 1
+fi
+
+export CCCTERM_SIZE=100x36
+
+# primary terminal
+   export CCCTERM_CONNECT=$CCCDIR/usr/bin/windows/terminal.exe
+   export CCCTERM_FONTFACE="DejaVu Sans Mono"
+   export CCCTERM_FONTSIZE=20
+   export CCCTERM_INHERIT=no
+
+# alternativ (gtk) terminal
+#   export CCCTERM_CONNECT=$CCCDIR/usr/bin/windows/terminal-gtk3.exe
+#   export CCCTERM_GTKFONTSPEC="Monospace 14"
+#   export CCCTERM_INHERIT=no
+
+# console terminal
+#   export CCCTERM_CONNECT=term://console.exe
+#   export CCCTERM_INHERIT=yes
+
+# remote terminal
+#   export CCCTERM_CONNECT=tm:55013
+   export CCCTERM_CONNECT=i3x:55013
+   export CCCTERM_INHERIT=no
+
+
+export CCCTERM_ICONFILE=$CCCDIR/usr/bin/$CCCUNAME/terminal.xpm
+
+# z-editor colors
+export ZCOLOR_TEXT=333/n,w/n+
+export ZCOLOR_MASK=n/rg,w+/n+
+export ZHOME=~/.z
+export ZEOL=LF
+
+
+if [[  "${MSYSTEM}" == ""  ||  "${MSYSTEM}" == "MSYS" ]]; then
+    . ${CCCDIR}/usr/options/${CCCBIN}/cppver.exp
+    if [ "${MSYSTEM}" == "CLANG64" ]; then
+        MINGW_PREFIX=/clang64
+    elif [ "${MSYSTEM}" == "UCRT64" ]; then
+        MINGW_PREFIX=/ucrt64
+    elif [ "${MSYSTEM}" == "MINGW64" ]; then
+        MINGW_PREFIX=/mingw64
+    fi
+    export MSYSTEM
+    export MINGW_PREFIX
+fi
+
+. ${CCCDIR}/usr/setenv/addpath
+
+addpath /usr/bin
+addpath ${MINGW_PREFIX}/bin
+addpath $CCC2DIR/usr/bin/$CCCUNAME
+addpath $CCC3DIR/usr/bin/$CCCUNAME
+addpath $CCCDIR/usr/bin/$CCCUNAME
+addpath ~/bin
+addpath .
+
+#########################################################################

@@ -59,6 +59,8 @@ outtth
 compopt
 rsplink
 gccver.opt
+cppver.opt
+cppver.exp
 
 
 *.tmp

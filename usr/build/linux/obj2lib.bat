@@ -2,7 +2,7 @@
 echo OBJ2LIB.BAT $1
 
 TARGET=$BUILD_OBJ/$1.lib
-SYMDST=$BUILD_OBJ/lib$1.a 
+SYMDST=$BUILD_OBJ/lib$1.a
 SYMSRC=$1.lib
 LSTFIL=$BUILD_OBJ/$1.lst
 RSPLIB=$BUILD_OBJ/rsplib-$1
@@ -16,9 +16,9 @@ rm -f $RSPLIB
 rm -f $SYMDST
 
 shift
-for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLIB; done 
+for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLIB; done
 
-if ! ar q $TARGET `cat $RSPLIB` 2>$OUTLIB; then
+if ! ar -c -q $TARGET $(cat $RSPLIB)  2>$OUTLIB; then
     touch error
     cat $OUTLIB
     mv  $OUTLIB $ERROR

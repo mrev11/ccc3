@@ -44,6 +44,8 @@ static dirnames:={;
 static filnames:={;
     "unzip.b",;
     "gccver.opt",;
+    "cppver.opt",;
+    "cppver.exp",;
     "log-*",;
     "*.hpp",;
     "*.savex",;

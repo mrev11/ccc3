@@ -9,20 +9,17 @@ ERROR=error--$OUTCPP
 
 #rm -f error
 rm -f $ERROR
-rm -f $CMPOPT 
+rm -f $CMPOPT
 mkdir -p $BUILD_OBJ
 
-if ! test -f $CCCDIR/usr/options/$CCCBIN/gccver.opt; then
-   gccver.b >$CCCDIR/usr/options/$CCCBIN/gccver.opt 
-fi
 
-cat $CCCDIR/usr/options/$CCCBIN/gccver.opt >$CMPOPT
+cat $CCCDIR/usr/options/$CCCBIN/cppver.opt >$CMPOPT
 cat $CCCDIR/usr/options/$CCCBIN/$BUILD_OPT >>$CMPOPT
 for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
 if test -f "$BUILD_CFG"; then
-    cat $BUILD_CFG >>$CMPOPT 
+    cat $BUILD_CFG >>$CMPOPT
 fi
- 
+
 if c++ `cat $CMPOPT` -o $TARGET -c $2/$1.cpp 2>$OUTCPP; then
 
     if [ [$BUILD_CPP] != [] ]; then

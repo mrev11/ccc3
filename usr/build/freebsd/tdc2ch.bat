@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -x
-echo TDC2CH.BAT $1 $2 
+echo TDC2CH.BAT $1 $2
 
-#rm -f error 
+#rm -f error
 rm -f error--tdc2ch-$1
 mkdir -p ppo
 
@@ -24,4 +24,4 @@ else
 fi
 
 
-echo ---------------------------------------------------------------- 
+echo ----------------------------------------------------------------

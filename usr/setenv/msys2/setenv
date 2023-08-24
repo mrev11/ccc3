@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cp -p bashrcx  ~/
+cp -p envccc   ~/
+
+mkdir -p ~/.temp
+mkdir -p ~/.z
+
+if ! (grep '. ~/bashrcx' ~/.bashrc); then
+    echo >>~/.bashrc
+    echo '. ~/bashrcx' >> ~/.bashrc
+fi

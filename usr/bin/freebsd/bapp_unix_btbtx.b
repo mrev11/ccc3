@@ -1,6 +1,5 @@
 #!/bin/bash
 . $CCCDIR/usr/bin/freebsd/__unix.b
-export BUILD_LIB=ccc3_btbtx,ccc3,ccc3_ui_
+export BUILD_LIB=ccc${CCCVER}_btbtx,ccc${CCCVER},ccc${CCCVER}_ui_
 
 build.exe "$@"
- 

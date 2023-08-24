@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. cppver.b
+
 addlpt() #elejere
 {
     X=:${BUILD_LPT}:
@@ -19,13 +21,12 @@ lptadd() #vegere
 }
 
 
-if [ $CCCBIN == "mng" ]; then 
+if [ $CCCBIN == "mng" ]; then
     export BUILD_BAT=$CCCDIR/usr/build/msys2
-    export BUILD_OPT=compile.opt 
+    export BUILD_OPT=compile.opt
     export BUILD_INC=$CCCDIR/usr/include
-    
+
     lptadd $CCCDIR/usr/lib/$CCCBIN
-    lptadd /mingw64/lib
 
     export BUILD_OBJ=obj$CCCBIN
     export BUILD_EXE=.
@@ -36,4 +37,3 @@ else
     exit 1
 fi
 
- 

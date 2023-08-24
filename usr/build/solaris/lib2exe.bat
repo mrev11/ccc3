@@ -3,7 +3,7 @@ echo LIB2EXE.BAT $1 $BUILD_EXE
 
 EXENAM=$1
 LIBNAM=$2
-TARGET=$BUILD_EXE/$EXENAM.exe 
+TARGET=$BUILD_EXE/$EXENAM.exe
 RSPLNK=$BUILD_OBJ/rsplnk-$1
 OUTLNK=outlnk-$1
 ERROR=error--outlnk-$1
@@ -20,11 +20,11 @@ for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 #echo -Wl,--no-as-needed >>$RSPLNK
 
 echo -Wl,--start-group >>$RSPLNK
-echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK 
-echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK  
+echo $BUILD_OBJ/$EXENAM.obj >>$RSPLNK
+echo $BUILD_OBJ/$LIBNAM.lib >>$RSPLNK
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 echo -Wl,--end-group >>$RSPLNK
- 
+
 cat $CCCDIR/usr/options/$CCCBIN/link.opt >>$RSPLNK
 echo -R$CCCDIR/usr/lib/$CCCBIN  >>$RSPLNK
 
@@ -41,4 +41,3 @@ fi
 
 echo ----------------------------------------------------------------
 
- 

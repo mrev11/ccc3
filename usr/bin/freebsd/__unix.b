@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ $CCCBIN == "fre" ]; then 
+. cppver.b
+
+if [ $CCCBIN == "fre" ]; then
     export BUILD_BAT=$CCCDIR/usr/build/freebsd
-    export BUILD_OPT=compile.opt 
+    export BUILD_OPT=compile.opt
     export BUILD_INC=$CCCDIR/usr/include
     export BUILD_LPT=$CCCDIR/usr/lib/$CCCBIN
     export BUILD_LPT=$BUILD_LPT:/usr/lib:/usr/local/lib:/usr/X11/lib
@@ -16,4 +18,3 @@ else
 fi
 
 
- 

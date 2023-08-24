@@ -16,7 +16,7 @@ rm -f $ERROR
 echo -o $TARGET >$RSPLNK
 for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
 
-echo -Wl,--no-as-needed >>$RSPLNK
+# echo -Wl,--no-as-needed >>$RSPLNK
 
 echo -Wl,--start-group >>$RSPLNK
 cat $BUILD_OBJ/objects-$1 >>$RSPLNK
@@ -34,8 +34,12 @@ if ! c++ $(cat $RSPLNK | tr -d '\r') 2>$OUTLNK;  then
     mv  $OUTLNK $ERROR;
     rm -f $TARGET
 else
-    #cat $OUTLNK
     rm -f $OUTLNK
+    # if (c++ -v 2>&1 | grep with-gnu-ld >/dev/null); then
+    #     echo with-gnu-ld
+    # else
+    #     echo with-llvm-ld.lld
+    # fi
 fi
 
 

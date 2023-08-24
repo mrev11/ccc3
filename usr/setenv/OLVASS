@@ -1,0 +1,23 @@
+
+Interaktiv shell indulasa elott altalaban lefut ~/.bashrc.
+Meg kell gyozodni rola, hogy ez valoban megtortenik-e, es ha nem,
+akkor (kezi beavatkozassal) igy kell elrendezni a dolgokat.
+A kulonfele (Linux/MSYS2) rendszerek e tekintetben kulonboznek,
+van ahol a ~/.profile source-olja  .bashrc-t, mashol a .profile
+egyaltalan nem jatszik. Alkalmazkodni kell az adottsgokhoz.
+
+
+Az itteni setenv script
+ - (a template) bashrcx-et es envccc-t atmasolja ${HOME}-ba
+ - ~/.bashrc vegere beir egy sort, amivel source-olja bashrcx-et
+
+
+A vegeredmeny, hogy  a shell indulasakor 
+ - vegrehajtodik ~/.bashrc
+ - annak vegen betoltodik ~/bashrcx
+ - es legvegul lefut ~/envccc
+ 
+
+A basrhrc es envccc csak minta, amiket a korulmeneykenek es 
+igenyeknek megfeleloen szabadon modosithatunk.
+    

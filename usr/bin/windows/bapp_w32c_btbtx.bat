@@ -2,8 +2,8 @@
 call %cccdir%\usr\bin\%cccuname%\__common
 call %cccdir%\usr\bin\%cccuname%\__%cccbin% c
 
-set BUILD_LIB=ccc3_btbtx,ccc3_btbtxui,ccc3,ccc3_uic
- 
+set BUILD_LIB=ccc%CCCVER%_btbtx,ccc%CCCVER%_btbtxui,ccc%CCCVER%,ccc%CCCVER%_uic
+
 build %1 %2 %3 %4 %5 %6 %7 %8 %9
 
- 
+

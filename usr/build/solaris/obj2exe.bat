@@ -2,7 +2,7 @@
 echo OBJ2EXE.BAT $1 $BUILD_EXE
 
 EXENAM=$1
-TARGET=$BUILD_EXE/$EXENAM.exe 
+TARGET=$BUILD_EXE/$EXENAM.exe
 RSPLNK=$BUILD_OBJ/rsplnk-$1
 OUTLNK=outlnk-$1
 ERROR=error--outlnk-$1
@@ -38,4 +38,3 @@ fi
 
 echo ----------------------------------------------------------------
 
- 

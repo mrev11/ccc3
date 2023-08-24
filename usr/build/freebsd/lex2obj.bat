@@ -1,5 +1,5 @@
 #!/bin/bash
-echo LEX2OBJ.BAT $1 $2 
+echo LEX2OBJ.BAT $1 $2
 OUTFLEX=outflex-$1
 ERROR=error--outflex-$1
 
@@ -8,7 +8,7 @@ rm -f $ERROR
 mkdir -p ppo
 
 removecr.exe $2/$1.lex
- 
+
 #LEX forditas
 
 if ! flex.exe $BUILD_LEX -oppo/$1.cpp $2/$1.lex 2>$OUTFLEX; then

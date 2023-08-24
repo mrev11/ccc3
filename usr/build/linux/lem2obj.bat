@@ -1,5 +1,5 @@
 #!/bin/bash
-echo LEM2OBJ.BAT $1 $2 
+echo LEM2OBJ.BAT $1 $2
 OUTLEMON=outlemon-$1
 ERROR=error--outlemon-$1
 
@@ -15,7 +15,7 @@ if ! lemon.exe -q $2/$1.lem 1>$OUTLEMON 2>&1; then
     mv $OUTLEMON $ERROR
     rm -f $2/$1.c
     cat $ERROR
-else    
+else
     #cat $OUTLEMON
     rm -f $OUTLEMON
     mv  $2/$1.c  ppo/$1.cpp

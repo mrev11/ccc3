@@ -21,4 +21,5 @@
 -Wno-incompatible-ms-struct
 -Wno-unknown-warning-option
 -Wno-deprecated-declarations
+-Wno-deprecated-non-prototype
 

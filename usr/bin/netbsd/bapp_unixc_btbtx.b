@@ -1,6 +1,5 @@
 #!/bin/bash
 . $CCCDIR/usr/bin/netbsd/__unix.b
-export BUILD_LIB=ccc3_btbtx,ccc3_btbtxui,ccc3,ccc3_uic
+export BUILD_LIB=ccc${CCCVER}_btbtx,ccc${CCCVER}_btbtxui,ccc${CCCVER},ccc${CCCVER}_uic
 
 build.exe "$@"
- 

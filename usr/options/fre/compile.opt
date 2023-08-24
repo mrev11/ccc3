@@ -18,4 +18,5 @@
 -Wno-empty-body
 -Wno-constant-logical-operand
 -Wno-deprecated-declarations
+-Wno-unknown-warning-option
 -I/usr/local/include

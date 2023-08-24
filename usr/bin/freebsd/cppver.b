@@ -1,6 +1,7 @@
 #!/bin/bash
 
 VER=$(c++ -v 2>&1 | grep \ version)
+VER=${VER//FreeBSD/}
 # echo $VER
 
 IFS=' ' read -r -a ver <<< "$VER"  # split to array

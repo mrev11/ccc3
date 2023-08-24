@@ -22,4 +22,5 @@
 -Wno-unknown-warning-option
 -Wno-deprecated-declarations
 -Wno-deprecated-non-prototype
+-Wno-unknown-warning-option
 

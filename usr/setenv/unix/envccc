@@ -29,15 +29,15 @@ if [ "$CCCTERM_CONNECT" == ""  ];then
     export CCCTERM_FONTSPEC=Monospace-12
 
     # curses terminal
-    # export CCCTERM_CONNECT=term://cterm.exe
-    # export CCCTERM_INHERIT=yes
+     export CCCTERM_CONNECT=term://cterm.exe
+     export CCCTERM_INHERIT=yes
 
     # GTK terminal
-     export CCCTERM_CONNECT=term://terminal-gtk3.exe
-     export CCCTERM_INHERIT=no
+    # export CCCTERM_CONNECT=term://terminal-gtk3.exe
+    # export CCCTERM_INHERIT=no
 
     # remote terminal
-    # export CCCTERM_CONNECT=connect://localhost:45678
+    # export CCCTERM_CONNECT=connect://i3x:55013
     # export CCCTERM_INHERIT=no
 fi
 
@@ -56,13 +56,13 @@ export ZEOL=LF
 ## hogy mit vegyunk at a PATH-bol
 ## vagy felepitunk-e egy teljesen uj PATH-t
 
-unset PATH
-addpath /bin
-addpath /sbin
-addpath /usr/bin
-addpath /usr/sbin
-addpath /usr/local/bin
-addpath /usr/local/sbin
+# unset PATH
+# addpath /bin
+# addpath /sbin
+# addpath /usr/bin
+# addpath /usr/sbin
+# addpath /usr/local/bin
+# addpath /usr/local/sbin
 
 addpath $CCC2DIR/usr/bin/$CCCUNAME
 addpath $CCC3DIR/usr/bin/$CCCUNAME

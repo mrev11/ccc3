@@ -3,9 +3,12 @@
 LEMON_PATH=$CCCDIR/usr/bin/$CCCUNAME
 LEMON_EXE=$LEMON_PATH/lemon.exe
 
+CFLAGS=
+CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
+CFLAGS="-Wno-unknown-warning-option $CFLAGS"
 
 if [ ! -x $LEMON_EXE ]; then
-    cc  -Wno-deprecated-non-prototype  -I .  lemon.c  -o $LEMON_EXE
+    cc $CFLAGS  -I .  lemon.c  -o $LEMON_EXE
     cp -p lempar.c  $LEMON_PATH/
 
     if [ -x $LEMON_EXE ]; then

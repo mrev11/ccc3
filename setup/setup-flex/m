@@ -6,8 +6,12 @@
 
 FLEX=$CCCDIR/usr/bin/$CCCUNAME/flex.exe
 
+CFLAGS=
+CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
+CFLAGS="-Wno-unknown-warning-option $CFLAGS"
+
 if [ ! -x $FLEX ]; then
-    cc -Wno-deprecated-non-prototype  -I .  *.c -o $FLEX
+    cc $CFLAGS -I .  *.c -o $FLEX
     cp -p flexlexer.h  $CCCDIR/usr/include
 
     if [ -x $FLEX ]; then

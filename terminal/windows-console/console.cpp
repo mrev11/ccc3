@@ -71,12 +71,13 @@ static void paint(int top, int lef, int bot, int rig)
 {              
     static HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
 
-    CHAR_INFO *buffer=0;
-    int sizeofbuffer=0;
+    static int sizeofbuffer=(wwidth+1)*(wheight+1);
+    static CHAR_INFO *buffer=(CHAR_INFO*)malloc(sizeofbuffer*sizeof(CHAR_INFO));
+
     if( (bot-top+1)*(rig-lef+1)>sizeofbuffer )
     {
-        buffer=(CHAR_INFO*)realloc(buffer,(bot-top+1)*(rig-lef+1)*sizeof(CHAR_INFO));
         sizeofbuffer=(bot-top+1)*(rig-lef+1);
+        buffer=(CHAR_INFO*)realloc(buffer,sizeofbuffer*sizeof(CHAR_INFO));
     }
 
     int x,y;
@@ -111,7 +112,37 @@ static void paint(int top, int lef, int bot, int rig)
 void invalidate(int top, int lef, int bot, int rig)
 {
     invalidate_lock();
-    paint(top,lef,bot,rig);
+
+    static int maxcol=0;
+    if( rig>maxcol )
+    {
+        maxcol=rig;
+    }
+    if( rig==maxcol-1 ) 
+    {
+        if( lef<rig )
+        {
+            paint(top,lef,bot,rig-1);
+        }
+        paint(top,rig,bot,maxcol);
+        
+        // Ez egy hack a terminal hibajanak javitasara:
+        // Ha egy sor utolso karaktere maxcol()-1-re esik,
+        // akkor a terminal elrontja a maxcol() poziciot.
+        // (Emiatt romlott el a browse-ok jobb oldali kerete.)
+        // Ezert a maxcol()-1-re vegzodo teglalapokat ket
+        // reszletben frissitjuk:
+        //  1) lef -> rig-1
+        //  2) rig -> maxcol
+        // Tehat a masodik resz egy oszloppal nagyobb:
+        // hozzavesszuk a maxcol() oszlopot (ami elromlana).
+        // Ezen a helyen nem tudjuk mekkora a terminal ablak,
+        // ezert az addigi legnagyobb rig-et vesszuk.
+    }
+    else
+    {
+        paint(top,lef,bot,rig);
+    }
     invalidate_unlock();
 }
 

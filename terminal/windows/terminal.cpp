@@ -83,7 +83,7 @@ static void setcaret(HWND hwnd)
             int r=CreateCaret(hwnd,NULL,fw,fh/5); 
             if( !r )
             {
-                printf("CREATECARET %d %d\n",r,GetLastError());fflush(0);
+                printf("CREATECARET %d %d\n",r,(int)GetLastError());fflush(0);
             }
             create=1;
         }
@@ -95,7 +95,7 @@ static void setcaret(HWND hwnd)
             int r=ShowCaret(hwnd);
             if( !r )
             {
-                printf("SHOWCARET %d %d\n",r,GetLastError());fflush(0);
+                printf("SHOWCARET %d %d\n",r,(int)GetLastError());fflush(0);
             }
             status=1;
         }
@@ -107,7 +107,7 @@ static void setcaret(HWND hwnd)
             int r=HideCaret(hwnd);
             if( !r )
             {
-                printf("HIDECARET %d %d\n",r,GetLastError());fflush(0);
+                printf("HIDECARET %d %d\n",r,(int)GetLastError());fflush(0);
             }
             status=0;
         }

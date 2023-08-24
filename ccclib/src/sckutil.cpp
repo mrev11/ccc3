@@ -39,7 +39,7 @@ int socket_wsastartup()
             WSADATA Data;
             if( WSAStartup(MAKEWORD(1,1),&Data) ) //0:success
             {
-                fprintf(stderr,"WSAStartup failed (%d)\n",GetLastError());
+                fprintf(stderr,"WSAStartup failed (%d)\n",(int)GetLastError());
             }
         }
     #endif

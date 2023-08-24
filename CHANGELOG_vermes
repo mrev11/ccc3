@@ -1,3 +1,9 @@
+2023-08-24 
+   A windows console terminalban javitva az elromlo szelso oszlop.
+   A terminal hibaja miatt (?) a maxcol()-1-re vegzodo sorok kiirasakor
+   elromik a maxcol() pozicio. Ezert az ilyen sorokat ket reszben irjuk:
+   eloszor maxcol()-2-ig, utana maxcol()-1-tol maxcol()-ig.
+
 2023-08-17 filemap atdolgozva:
   unixos es windowsos kod szetvalasztva, jobb hibakezeles;
   uj hivasi formak:

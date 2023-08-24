@@ -25,7 +25,7 @@ void screensize(int *x, int *y)  // lekerdezi a terminal meretet
     HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
     if( hOut==INVALID_HANDLE_VALUE )
     {
-        printf("GetStdHandle failed %d\n",GetLastError());
+        printf("GetStdHandle failed %d\n",(int)GetLastError());
         getchar();
         exit(1);
     }
@@ -33,7 +33,7 @@ void screensize(int *x, int *y)  // lekerdezi a terminal meretet
     CONSOLE_SCREEN_BUFFER_INFO info;
     if( !GetConsoleScreenBufferInfo(hOut,&info) )
     {
-        printf("GetConsoleScreeBufferInfo failed %d\n",GetLastError());
+        printf("GetConsoleScreeBufferInfo failed %d\n",(int)GetLastError());
         getchar();
         exit(1);
     }
@@ -41,7 +41,7 @@ void screensize(int *x, int *y)  // lekerdezi a terminal meretet
     int heigh = (info.srWindow.Bottom-info.srWindow.Top+1);
     if( !SetConsoleScreenBufferSize(hOut,{(SHORT)width,(SHORT)heigh}) )
     {
-        printf("SetConsoleScreeBufferSize failed %d\n",GetLastError());
+        printf("SetConsoleScreeBufferSize failed %d\n",(int)GetLastError());
         getchar();
         exit(1);
     }
@@ -49,13 +49,13 @@ void screensize(int *x, int *y)  // lekerdezi a terminal meretet
     DWORD mode=0;
     if( !GetConsoleMode(hOut,&mode) )
     {
-        printf("GetConsoleMode failed %d\n",GetLastError());
+        printf("GetConsoleMode failed %d\n",(int)GetLastError());
         getchar();
         exit(1);
     }
     if( !SetConsoleMode(hOut,mode|ENABLE_VIRTUAL_TERMINAL_PROCESSING) )
     {
-        printf("SetConsoleMode failed *d\n",GetLastError());
+        printf("SetConsoleMode failed %d\n",(int)GetLastError());
         getchar();
         exit(1);
     }

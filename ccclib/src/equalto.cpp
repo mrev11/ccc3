@@ -65,14 +65,6 @@ void topnot() //stack: f --- !f
     logical( !flag() );
 }
 
-#if (defined GCC_VERSION) && (GCC_VERSION_MAJOR < 3) && (GCC_VERSION_MINOR < 96) 
-
-void not() // stack: f --- !f
-{
-    logical( !flag() );
-}
-
-#endif 
 
 //------------------------------------------------------------------------
 int flag() 

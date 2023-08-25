@@ -1,7 +1,19 @@
 #!/bin/bash
 
 cp -p bashrcx  ~/
-cp -p envccc   ~/
+
+if   [[ $(uname) == Linux   ]]; then 
+    cp -p envccc   ~/
+elif [[ $(uname) == FreeBSD ]]; then 
+    cat envccc | sed s/CCCBIN=lin/CCCBIN=fre/ | sed s/CCCUNAME=linux/CCCUNAME=freebsd/ >~/envccc
+elif [[ $(uname) == NetBSD  ]]; then 
+    cat envccc | sed s/CCCBIN=lin/CCCBIN=net/ | sed s/CCCUNAME=linux/CCCUNAME=netbsd/  >~/envccc
+elif [[ $(uname) == SunOS   ]]; then 
+    cat envccc | sed s/CCCBIN=lin/CCCBIN=sol/ | sed s/CCCUNAME=linux/CCCUNAME=solaris/ >~/envccc
+else
+    echo unknown OS
+    exit 1
+fi
 
 mkdir -p ~/.temp
 mkdir -p ~/.z

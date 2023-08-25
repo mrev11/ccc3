@@ -37,8 +37,7 @@ for i in $BUILD_INC; do echo -I$i >>$CMPOPT; done
 echo -dARROW            >>$CMPOPT
 echo -d_CCC_            >>$CMPOPT
 echo -d_CCC"$CCCVER"_   >>$CMPOPT
-echo -d_UNIX_           >>$CMPOPT 
-echo -d_LINUX_          >>$CMPOPT 
+echo -dWINDOWS          >>$CMPOPT 
 echo -ustd1.ch          >>$CMPOPT
 
 

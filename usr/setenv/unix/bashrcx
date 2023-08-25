@@ -55,6 +55,6 @@ export VISUAL=mcedit
 
 . ~/envccc
 
-ce     # C++/CCC environment 
+cenv   # C++/CCC environment 
 pp     # print PATH
 

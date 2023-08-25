@@ -35,6 +35,10 @@ lsenv()
 }
 
 
+if [ "$BASHRCX" != "BASHRCX" ]; then
+# exportok oroklodnek
+# aliasok/fuggvenyek nem oroklodnek
+
 export PAGER="less -S"
 export EDITOR=z
 export LANG=en_US.UTF-8
@@ -54,7 +58,11 @@ export LANG=en_US.UTF-8
 
 . ~/envccc
 
-ce     # C++/CCC environment 
+cenv   # C++/CCC environment 
 pp     # print PATH
 cd
 
+
+fi
+
+export BASHRCX=BASHRCX

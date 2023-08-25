@@ -12,7 +12,6 @@ CPPVER=$CCCDIR/usr/options/$CCCBIN/cppver
 
 
 if ! test -f $CPPVER.exp; then
-    echo  MSYSTEM=$MSYSTEM           > $CPPVER.exp
     echo  CPP_COMPILER=${ver[0]}    >> $CPPVER.exp
     echo  CPP_VERSION=${ver[2]}     >> $CPPVER.exp
     . $CPPVER.exp

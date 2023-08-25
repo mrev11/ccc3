@@ -38,7 +38,7 @@ echo -dARROW            >>$CMPOPT
 echo -d_CCC_            >>$CMPOPT
 echo -d_CCC"$CCCVER"_   >>$CMPOPT
 echo -d_UNIX_           >>$CMPOPT 
-echo -d_LINUX_          >>$CMPOPT 
+echo -d_FREEBSD_        >>$CMPOPT 
 echo -ustd1.ch          >>$CMPOPT
 
 

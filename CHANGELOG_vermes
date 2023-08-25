@@ -1,3 +1,5 @@
+2023-08-25 Solaris hianyzo cfmakeraw(struct termios*) potolva;
+
 2023-08-25 cenv script: C++/CCC environment
 
 2023-08-24 -Wno-unknown-warning-option

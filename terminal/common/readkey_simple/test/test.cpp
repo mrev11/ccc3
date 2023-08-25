@@ -12,7 +12,7 @@ int main()
         int ch=readkey();
         if( ch )
         {
-            printf("inkey %d\n", ch);
+            printf("inkey %d\r\n", ch);
         }
         if( ch==27 )
         {

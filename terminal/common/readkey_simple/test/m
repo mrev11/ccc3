@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix0.b -xtest -d. -d..  -d../../../ccclib
+bapp_unix0.b -xtest -d. -d..  -bccc${CCCVER}.lib

@@ -1,3 +1,7 @@
+d1d0c1069faae188333d5a27ca0704d8fa18937c 2023082600:01:11-UTC ./CHANGELOG_vermes
+110a77fdb62f3031f61861a3df5c187806cb61a9 2023082523:46:48-UTC ./terminal/common/readkey_simple/test/test.cpp
+4f06b838913ab5a96b9069cbd1311fdd1afc8875 2023082523:46:26-UTC ./terminal/common/readkey_simple/test/m
+2b31b538863f8a7d4383c64e8bfc5d00e4c359f3 2023082523:42:34-UTC ./terminal/common/readkey_simple/readkey.cpp
 5e612e996b2ffca06db5e10e681b6b9289c0e626 2023082513:59:56-UTC ./usr/setenv/unix/setenv
 2d6093c4c33b2eea536295a44e8cc7f830e1c3db 2023082512:58:56-UTC ./jt/jterminal/jterminal.jar
 c627a0af66ee6f46267e76a07d8e204521023fce 2023082512:58:56-UTC ./log-install
@@ -168,7 +172,6 @@ e33c8823e0a256e03e916d0464bf0e35da9857b1 2023082512:49:57-UTC ./usr/build/solari
 b8693d63edb97819a9e2a1c25e34f3538298edf4 2023082512:49:19-UTC ./usr/build/freebsd/tdc2obj.bat
 56dbbb123be88f1c50a3cda9b69c1c94f616ccd7 2023082511:53:32-UTC ./usr/setenv/msys2/.bashrc
 035e450c58248b8660b22f1ff44cfe9b5a7c3c49 2023082511:53:32-UTC ./usr/setenv/msys2/bashrcx
-e7f4e35d0d308e416dbd4f70eeb574dc621c8fe1 2023082509:21:47-UTC ./CHANGELOG_vermes
 f7be1069e6e93d561c1b2084952fe3c067d9f1a5 2023082508:39:39-UTC ./usr/setenv/unix/bashrcx
 116d1695d7b1bac5f652ca22667c688dbd371883 2023082508:32:47-UTC ./usr/bin/netbsd/cppver.b
 315510127998cf65ce555b972bd0cd63b675dcd0 2023082508:32:40-UTC ./usr/bin/freebsd/cppver.b
@@ -417,7 +420,6 @@ ff95bfac30ae8d4c83c3b4fafc080798b18fec5c 2023052319:36:59-UTC ./tabobj/utility.s
 6065d0203fe2b7de0e4b862db1e86c2d4941a2a0 2023052319:35:12-UTC ./terminal/common/ansi_colors/gen_ansi_rgb_h.prg
 64ac35bf9a2a85f026a11303621ac132dbfc8207 2023052319:22:53-UTC ./terminal/common/xcurses/xcurses.cpp
 ae5a80ab96f8a8e057a010a4d0b8df7400e4f5c1 2023052310:22:01-UTC ./terminal/unix-cterm/screensize.cpp
-455f0c0f14608c5bbf9aed3fd28c7c35653e662c 2023052309:32:41-UTC ./terminal/common/readkey_simple/readkey.cpp
 d290919ef1057963dd02f3e38cf8b0ec6c58c437 2023051911:57:02-UTC ./ccclib/src/uic/screenbuf/screenbuf.h
 6bc48b17ea932d1f629067a19dc534cd2c0c3c8b 2023051911:56:57-UTC ./ccclib/src/uic/screenbuf/screenbuf.cpp
 3931f61a44dd22a7631642c8d69107e7beeae017 2023051911:21:46-UTC ./make_base.msys2
@@ -522,8 +524,6 @@ bdb611816367f18ed7b4d8930d684f507e6407b9 2023041409:21:08-UTC ./tools/socket/ssl
 02007d8ea74c3450c7711be8e399cfda8b9a8479 2023041409:16:49-UTC ./tools/socket/ssl/sslsocket-demo/demo_server1.prg
 fe3b069cd88f7f80d72cecc6edb71f8203d1ab35 2023041409:16:01-UTC ./tools/socket/ssl/sslctx_funif.cpp
 cff0c82cfa3a78298febe7bcfe071e0a31b54b4a 2023040721:10:40-UTC ./terminal/unix-cterm/OLVASS
-4a73beaa7e0f74d6b5b5fb9f55c6be7d0c68d437 2023040714:35:13-UTC ./terminal/common/readkey_simple/test/m
-77079099ffc359e86a4275fef33248c6a1ed3de8 2023040714:32:50-UTC ./terminal/common/readkey_simple/test/test.cpp
 c11052f17341813f21707f0b337fbc228aab4ee1 2023040714:30:34-UTC ./terminal/common/readkey_termkey/test/test.cpp
 44afd38fa697a0b65f8685d47509a9b97805f355 2023040714:29:05-UTC ./terminal/common/readkey_termkey/test/m
 271a9355440f8b89167e222fd2c8623aa1671fd8 2023040714:10:13-UTC ./terminal/unix-cterm/s.savex

@@ -37,6 +37,19 @@
 #define WAIT_MILLISEC 100
 
 
+#ifdef SOLARIS
+static void cfmakeraw(struct termios *t)
+{
+    // raw mode
+    t->c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+    t->c_oflag &= ~OPOST;
+    t->c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+    t->c_cflag &= ~(CSIZE | PARENB);
+    t->c_cflag |=  CS8;
+}
+
+#endif
+
 //---------------------------------------------------------------------------
 static termios t0;
 

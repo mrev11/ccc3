@@ -1,0 +1,29 @@
+
+A proba.prg tesztprogram beolvassa a 'counter' nevu fajlt.
+A fajlban levo szamot eggyel csokkenti, majd visszairja.
+Ha a counter-ben levo szam eleri a nullat, akkor torli a fajlt.
+Igy  minden futas utan eggyel kisebb szam lesz counter-ben,
+vegul a fajl torlodik.
+
+A tesztet futtato scriptek eloszor keszitenek egy counter 
+nevu fajlt, amibe beirjak: 1000. Ezutan ujra meg ujra elinditjak 
+proba.exe-t mindaddig, amig a counter fajl el nem tunik (vagyis 1000-szer). 
+Ez a teszt a programinditas gyorsasagat meri kulonbozo kornyezetekben.
+
+
+EREDMENYEK:
+
+Shell           Futasido    Tesztprogram      
+------------   ---------    --------------------------------------------------
+Windows bash     170 sec    (Windowson clang-gal forditott nativ exe, ugyanaz)
+Windows cmd       17 sec    (Windowson clang-gal forditott nativ exe, ugyanaz)
+Linux   bash       5 sec    (Linuxon clang-gal forditott exe)
+
+Megjegyzés (170/17)
+    Az MSYS2 bash egy UNIX (cygwin) program, fork+exec-kel inditja a 
+    gyerek processzeket. Sajnos a Windowson emulalt fork lassu.
+
+Megjegyzés (17/5)
+    Ennyivel gyorsabb a Linux a Windowsnal. Ez az arany mas programoknal
+    is tapasztalhato.
+

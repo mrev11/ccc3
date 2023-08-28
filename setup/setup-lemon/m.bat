@@ -4,20 +4,11 @@ set LEMON=%CCCDIR%\usr\bin\%CCCUNAME%\lemon.exe
 
 if exist %LEMON% goto inst
 
-:mng --------------------------------------------------------------------------
-if not "%cccbin%"=="mng" goto mng1
-gcc  lemon.c  -o %LEMON%
-:mng1
+set CFLAGS=
+set CFLAGS=-Wno-deprecated-non-prototype %CFLAGS%
+set CFLAGS=-Wno-unknown-warning-option %CFLAGS%
 
-:msc --------------------------------------------------------------------------
-if not "%cccbin%"=="msc" goto msc1
-cl -Fe%LEMON% lemon.c /link bufferoverflowu.lib
-:msc1
-
-:bor --------------------------------------------------------------------------
-if not "%cccbin%"=="bor" goto bor1
-bcc32 -e%LEMON% -w-pro -w-sus -w-rvl lemon.c
-:bor1
+cc %CFLAGS% lemon.c  -o %LEMON%
 
 
 if exist %LEMON% goto ok

@@ -1,0 +1,9 @@
+#!/bin/bash
+# teszt inditas bash-ben
+
+echo 1000 >counter
+
+while test -f counter; do
+    proba.exe
+done
+

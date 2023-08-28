@@ -26,14 +26,14 @@ fi
 export CCCTERM_SIZE=100x36
 
 # primary terminal
-   export CCCTERM_CONNECT=$CCCDIR/usr/bin/windows/terminal.exe
-   export CCCTERM_FONTFACE="DejaVu Sans Mono"
-   export CCCTERM_FONTSIZE=20
+   export CCCTERM_CONNECT=term://terminal.exe
+   export CCCTERM_FONTFACE=DejaVu Sans Mono
+   export CCCTERM_FONTSIZE=12
    export CCCTERM_INHERIT=no
 
 # alternativ (gtk) terminal
-#   export CCCTERM_CONNECT=$CCCDIR/usr/bin/windows/terminal-gtk3.exe
-#   export CCCTERM_GTKFONTSPEC="Monospace 14"
+#   export CCCTERM_CONNECT=term://terminal-gtk3.exe
+#   export CCCTERM_GTKFONTSPEC=Monospace 12
 #   export CCCTERM_INHERIT=no
 
 # console terminal
@@ -41,9 +41,9 @@ export CCCTERM_SIZE=100x36
 #   export CCCTERM_INHERIT=yes
 
 # remote terminal
-#   export CCCTERM_CONNECT=tm:55013
-   export CCCTERM_CONNECT=i3x:55013
-   export CCCTERM_INHERIT=no
+#   export CCCTERM_CONNECT=connect://tm:55013
+#   export CCCTERM_CONNECT=connect://i3x:55013
+#   export CCCTERM_INHERIT=no
 
 
 export CCCTERM_ICONFILE=$CCCDIR/usr/bin/$CCCUNAME/terminal.xpm

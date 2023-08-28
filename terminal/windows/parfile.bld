@@ -4,6 +4,7 @@
 -d$(CCCDIR)/ccclib/src/uic/screenbuf
 -i$(CCCDIR)/ccclib/src/uic/termapi
 
+#-blibcomdlg32.a
 -bccc$(CCCVER).lib
 
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)

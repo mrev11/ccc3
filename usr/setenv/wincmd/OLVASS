@@ -1,0 +1,138 @@
+
+Windowson két build készlet van:
+
+    - MSYS2 rendszer alatt működő bash scriptek
+    - Windows cmd alatt futó batch fájlok
+
+Az MSYS2-t preferáljuk, de egyelőre működnek a batch fájlok is.
+
+Hogyan kell CCC-t installálni a batch scriptekkel?
+(Nagy vonalakban.)
+
+Az MSYS2 tartalmazza a fejlesztő eszközeinket, ezért az MSYS2
+rendszerre akkor is szükség van, ha bat fajlokkal akarunk dolgozni.
+Először tehát installálni kell az MSYS2-t. Meg kell barátkozni vele,
+nincs mese, rá kell szánni az időt. Addig is:
+
+Installálás után a Windows menüből indíthatók az MSYS2 alrendszerei:
+
+1) MSYS
+    Ebben vannak azok a programok, amikkel a rendszer egészét
+    tartjuk karban: a pacman csomagkezelő, ssh, git, stb.
+
+2) MINGW64
+    msvcrt (MS Visual C runtime) könyvtárra fordító,
+    gcc-n alapuló fejlesztő eszközök
+
+3) UCRT64
+    ucrt (Universal C runtime) könyvtárra fordító,
+    gcc-n alapuló fejlesztő eszközök
+
+4) CLANG64
+    A gcc-nél modernebb clang fordítóval működő eszközök
+
+(Vannak további alrendszerek is, 32-bitesek, ARM platformra dolgozók.)
+
+Ha a menüből indítjuk valamelyik alrendszert, akkor egy konzolt (terminált)
+kapunk, amiben az adott alrendszernek megfelelő környezeti változók vannak
+beállítva. Vagyis az alrendszernek megfelelő környzetben dolgozhatunk.
+
+
+Telepítás után legelőször is frissíteni (update-elni) kell az MSYS2-t.
+A frissítés a pacman (Arch Linuxból átvett) csomagkezelővel megy
+
+    pacman -Syyu
+
+
+Az MSYS alrendszerben telepítjük a következőket:
+
+    pacman -Syu\
+        cygrunsrv\
+        diffutils\
+        git\
+        mc\
+        zip\
+        unzip
+
+
+Kiválasztjuk, hogy melyik alrendszerben (RENDSZERRE) akarunk fordítani,
+legyen monduk a CLANG64, és installáljuk a fordításhoz szükséges eszközöket.
+Elindítjuk a menübol a CLANG64 alrendszer terminálját, és végrehajtjuk:
+
+    pacman -Syu \
+        $MINGW_PACKAGE_PREFIX-clang\
+        $MINGW_PACKAGE_PREFIX-gtk3\
+        $MINGW_PACKAGE_PREFIX-openssl\
+        $MINGW_PACKAGE_PREFIX-pcre\
+        $MINGW_PACKAGE_PREFIX-pcre2\
+        $MINGW_PACKAGE_PREFIX-pkgconf
+
+Ha CLANG64 helyett mondjuk UCRT64-at választottunk, akkor clang helyett a
+gcc compilert kell installálni.
+
+Azt kell itt megérteni, hogy az alrendszerekben azonos nevű csomagok vannak
+(volnának), amik prefixszel vannak megkülönböztetve. A MINGW_PACKAGE_PREFIX
+változó be van állítva az elindított alrendszerhez passzoló prefixre.
+
+Az MSYS2 gyorsan változik/fejlődik, érdemes gyakran frissíteni:
+
+    pacman -Syyu
+
+Ilyenkor látni fogjuk a frissített csomagok konkrét prefixét, amit egyébként
+máshogy is megnézhetünk, például a következő paranccsal:
+
+    pacman -Qe
+
+A pacman listázza az explicite telepített csomagokat, azokat amiknek a
+telepítésére direkt utasítást adtunk. Ezeken túl rengeteg egyéb csomag van,
+amik az előzőek működéséhez szükségesek, az ún. függőségek. Ezeket a pacman
+automatikusan telepíti. Az összes telepített csomagot a 'pacman -Q' parancs
+listázza.
+
+
+Az MSYS2 előkészületek után rátérünk a CCC installálására. Elindítjuk
+az egyik MSYS2 alrendszert, és egy alkalmas helyen klónozzuk a CCC-t:
+
+    git clone git://comfirm.hu/ccc3.git
+
+Megkeressük a ccc3\usr\setenv\wincmd directoryt. Az itt található ccc3.bat
+fájlt átmásoljuk a desktopra. Az envccc.bat fájlt átmásoljuk a
+
+    %USERPROFILE%\ccchome\bin
+
+directoryba. E fájl elejére be kell írnunk néhány konkrét értéket:
+
+    - hogy hova installáltuk az MSYS2-t (tipikusan c:\msys64-be)
+    - hogy melyik alrendszert akarjuk használni (pl CLANG64)
+    - hogy hova klónoztuk a CCC-t (pl a ccchome-ba vagy az MSYS2 home-ba)
+
+Most a desktopon van egy ccc3.bat nevű ikonunk. Ezen kattintva kapunk
+egy Windows konzolt, amiben be lesz állítva a CCC fordításhoz szükséges
+környezet. Először bemegyünk a ccc3 directoryba, és lefordítjuk magát a CCC-t,
+ehhez kiadjuk az 'm' vagy  'm x' parancsot. Utóbbi a programok egy bővebb
+körét fordítja le.
+
+A CCC lefordítása bármikor megismételhető. Ehhez le kell futtatnunk
+a gc.bat scriptet, ami minden fájlt letöröl, amit a git ignorál (vagyis
+az eredmény fájlokat). Ha az egész ccc3 directoryt kapitálisan elrontottuk,
+akkor sincs vész, mert klónozással bármikor előlről kezdhetünk mindent.
+
+
+Fordítási idők: A CCC3 repositoryban kb. 4600 fájl van nem számítva
+a ppo-kat, generált cpp-ket, objecteket, git fájlokat. Összesen kb. 900
+object fájl keletkezik. Ezek fordítási ideje
+
+    - Linuxon 50-120 másodperc
+    - Windowson 10-20 perc (!)
+
+rendszerttől, géptől, környezettől függően. A FreeBSD kicsit gyorsabb,
+a NetBSD és Solaris kicsit lassabb a Linuxnál. Windows cmd-ben valamivel
+gyorsabban megy a fordítás, mint MSYS2 terminálban. Nehéz megérteni,
+hogy ugyanaz a program Windowson miért fut nagyságrenddel lassabban.
+Némi magyarázattal szolgál a bench directoryban található tesztprogram.
+Úgyhogy kedves Windows userek: türelem rózsát terem.
+
+
+
+
+

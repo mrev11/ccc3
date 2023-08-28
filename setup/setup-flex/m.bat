@@ -4,16 +4,12 @@ set FLEX=%CCCDIR%\usr\bin\%CCCUNAME%\flex.exe
 
 if exist %FLEX% goto inst
 
-:mng --------------------------------------------------------------------------
-if not "%cccbin%"=="mng" goto mng1
-gcc  -I .  *.c  -o %FLEX%
-:mng1
+set CFLAGS=
+set CFLAGS=-Wno-deprecated-non-prototype %CFLAGS%
+set CFLAGS=-Wno-unknown-warning-option %CFLAGS%
 
-:msc --------------------------------------------------------------------------
-if not "%cccbin%"=="msc" goto msc1
-cl -Fe%FLEX%  -I . *.c   /link bufferoverflowu.lib
-:msc1
 
+cc %CFLAGS%  -I .  *.c  -o %FLEX%
 
 if exist %FLEX% goto ok
     echo flex failed to compile

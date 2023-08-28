@@ -8,7 +8,7 @@ egyaltalan nem jatszik. Alkalmazkodni kell az adottsgokhoz.
 
 
 Az itteni setenv script
- - (a template) bashrcx-et es envccc-t atmasolja ${HOME}-ba
+ - a (template) bashrcx-et es envccc-t atmasolja ${HOME}-ba
  - ~/.bashrc vegere beir egy sort, amivel source-olja bashrcx-et
 
 

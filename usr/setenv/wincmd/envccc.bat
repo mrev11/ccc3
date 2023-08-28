@@ -43,7 +43,6 @@ set PATH=%CCCHOME%\bin;%PATH%
 
 :: terminal
 set CCCTERM_SIZE=90x32
-set CCCTERM_ICONFILE=%CCCDIR%\usr\bin\%CCCUNAME%\terminal.xpm
 set CCCTERM_FONTFACE=DejaVu Sans Mono
 set CCCTERM_FONTSIZE=12
 set CCCTERM_GTKFONTSPEC=Monospace 12

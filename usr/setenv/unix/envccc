@@ -41,7 +41,6 @@ if [ "$CCCTERM_CONNECT" == ""  ];then
     # export CCCTERM_INHERIT=no
 fi
 
-export CCCTERM_ICONFILE=$CCCDIR/usr/bin/$CCCUNAME/terminal.xpm
 
 # z-editor colors
 export ZCOLOR_TEXT=333/n,w/n+

@@ -36,6 +36,7 @@ extern void keyup(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
 extern void tcpio_ini(const char *ip, int port); 
 extern THREAD_ENTRY void *tcpio_thread(void*); 
 extern HFONT font();
+extern char *termicon();
 
 static int wwidth=80;
 static int wheight=25;
@@ -409,7 +410,7 @@ HWND create_main_window(HINSTANCE hInstance)
 {
     DWORD style=WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;
 
-    return  CreateWindow(
+    HWND hwnd=CreateWindow(
     L"terminal_window",   // address of registered class name
     L"",                  // address of window name
     style,                // window style
@@ -421,7 +422,23 @@ HWND create_main_window(HINSTANCE hInstance)
     (HMENU)NULL,          // handle of menu or child-window identifier
     hInstance,            // handle of application instance
     NULL                  // address of window-creation data
-   );
+    );
+
+    HICON hIcon=(HICON)LoadImageA(
+            NULL,
+            termicon(),
+            IMAGE_ICON,
+            0,
+            0,
+            LR_DEFAULTSIZE|LR_LOADFROMFILE);
+    
+    if( hIcon )
+    {
+        SendMessage( hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon );
+        SendMessage( hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon );
+    }
+
+    return hwnd;
 }
 
 //---------------------------------------------------------------------------
@@ -473,7 +490,7 @@ int WINAPI WinMain(
             sscanf(lpszCmdLine+i,"%d",&port);
         }
     }
-   
+
     if( getenv("CCCTERM_SIZE") )
     {
         sscanf(getenv("CCCTERM_SIZE"),"%dx%d",&wwidth,&wheight);

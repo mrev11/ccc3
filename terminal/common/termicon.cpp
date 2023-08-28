@@ -56,7 +56,7 @@ char* termicon()
         char *ds=strrchr(path,'\\');
         if( ds )
         {
-            strcpy(ds+1,"terminal.xpm");
+            strcpy(ds+1,"terminal.ico");
             if( _stat(path,&buf)==0 )
             {
                 return strdup(path);

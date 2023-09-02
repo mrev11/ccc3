@@ -66,10 +66,10 @@ fi
 ( cd terminal/sslforw && m.msys2 )
 
 
-if test -f ${MSYS2DIR}/include/gtk-2.0/gtk/gtk.h; then
+if test -f ${MINGW_PREFIX}/include/gtk-2.0/gtk/gtk.h; then
     ( cd terminal/gtk2 && m.msys2 )
 fi
-if test -f ${MSYS2DIR}/include/gtk-3.0/gtk/gtk.h; then
+if test -f ${MINGW_PREFIX}/include/gtk-3.0/gtk/gtk.h; then
     ( cd terminal/gtk3 && m.msys2 )
 fi
 

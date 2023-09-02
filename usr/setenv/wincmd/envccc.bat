@@ -58,10 +58,8 @@ set ZCOLOR_MASK=n/rg,w+/n+
 set ZHOME=%CCCHOME%\z
 set ZEOL=LF
 
-cd %CCCHOME%
+cd %CCCDIR%
 title %CCCDIR%
-route print -4
-set | grep CCC
+call cenv.bat
 
 start /b
-

@@ -1,15 +1,7 @@
 
-# Az eredeti .bashrc vegen ezt (bashrcx-et) source-oljuk.
-# bashrcx vegen source-oljuk envccc-t,
-
-# bashrcx       : alapveto beallitasok
-# envccc        : CCC beallitasok (CCCVER: 2/3)
-
-#########################################################################
-
 # a CCCVER valtozot vagy orokoljuk
 # vagy be kell allitani 2-re vagy 3-ra
-# export CCCVER=3
+# export CCCVER=2
 
 echo bashrcx CCCVER=${CCCVER}
 
@@ -34,10 +26,13 @@ lsenv()
     printenv | grep --color=always -E ${PATTERN} | LC_COLLATE=C sort
 }
 
+# exportok oroklodnek
+# ezert eleg egyszer beallitani
+# aliasok/fuggvenyek nem oroklodnek
 
 if [ "$BASHRCX" != "BASHRCX" ]; then
-# exportok oroklodnek
-# aliasok/fuggvenyek nem oroklodnek
+#########################################################################
+export BASHRCX=BASHRCX
 
 export PAGER="less -S"
 export EDITOR=z
@@ -54,15 +49,12 @@ export LANG=en_US.UTF-8
  export PS1='\[\033[1;36m\][\u@\h\[\033[1;37m\] \W\[\033[1;36m\]]\$ \[\033[m\]'   #cyan
 # export PS1='\[\033[1;37m\][\u@\h\[\033[1;37m\] \W\[\033[1;37m\]]\$ \[\033[m\]'   #white
 
-#########################################################################
-
 . ~/envccc
 
 cenv   # C++/CCC environment 
 pp     # print PATH
 cd
 
-
+#########################################################################
 fi
 
-export BASHRCX=BASHRCX

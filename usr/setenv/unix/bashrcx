@@ -1,17 +1,12 @@
 
-# Az eredeti .bashrc vegen ezt (bashrcx-et) source-oljuk.
-# bashrcx vegen source-oljuk envccc-t,
-
-# bashrcx       : alapveto beallitasok
-# envccc        : CCC beallitasok (CCCVER: 2/3)
-
-#########################################################################
 
 # a CCCVER valtozot vagy orokoljuk
 # vagy be kell allitani 2-re vagy 3-ra
 # export CCCVER=3
 
 echo bashrcx CCCVER=${CCCVER}
+
+#########################################################################
 
 alias ls='ls --color=auto --group-directories-first'
 alias ll='ls -l --color=auto --group-directories-first'
@@ -48,8 +43,6 @@ export VISUAL=mcedit
 # export PS1='\[\033[01;35m\][\u@\h\[\033[01;37m\] \W\[\033[01;35m\]]\$ \[\033[00m\]'   #magenta
 # export PS1='\[\033[01;36m\][\u@\h\[\033[01;37m\] \W\[\033[01;36m\]]\$ \[\033[00m\]'   #cyan
 # export PS1='\[\033[01;37m\][\u@\h\[\033[01;37m\] \W\[\033[01;37m\]]\$ \[\033[00m\]'   #white
-
-
 
 #########################################################################
 

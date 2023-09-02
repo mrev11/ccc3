@@ -29,11 +29,19 @@ if [ "$CCCTERM_CONNECT" == ""  ];then
     export CCCTERM_FONTSPEC=Monospace-12
 
     # curses terminal
-     export CCCTERM_CONNECT=term://cterm.exe
-     export CCCTERM_INHERIT=yes
+    # export CCCTERM_CONNECT=term://cterm.exe
+    # export CCCTERM_INHERIT=yes
+
+    # XFT terminal
+    # export CCCTERM_CONNECT=term://terminal-xft.exe
+    # export CCCTERM_INHERIT=no
 
     # GTK terminal
-    # export CCCTERM_CONNECT=term://terminal-gtk3.exe
+     export CCCTERM_CONNECT=term://terminal-gtk3.exe
+     export CCCTERM_INHERIT=no
+
+    # Qt terminal
+    # export CCCTERM_CONNECT=term://terminal-qt5.exe
     # export CCCTERM_INHERIT=no
 
     # remote terminal

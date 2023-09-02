@@ -10,7 +10,7 @@ Hogyan kell CCC-t installálni a batch scriptekkel?
 (Nagy vonalakban.)
 
 Az MSYS2 tartalmazza a fejlesztő eszközeinket, ezért az MSYS2
-rendszerre akkor is szükség van, ha bat fajlokkal akarunk dolgozni.
+rendszerre akkor is szükség van, ha batch fájlokkal akarunk dolgozni.
 Először tehát installálni kell az MSYS2-t. Meg kell barátkozni vele,
 nincs mese, rá kell szánni az időt. Addig is:
 
@@ -38,7 +38,7 @@ kapunk, amiben az adott alrendszernek megfelelő környezeti változók vannak
 beállítva. Vagyis az alrendszernek megfelelő környzetben dolgozhatunk.
 
 
-Telepítás után legelőször is frissíteni (update-elni) kell az MSYS2-t.
+Telepítés után legelőször is frissíteni (update-elni) kell az MSYS2-t.
 A frissítés a pacman (Arch Linuxból átvett) csomagkezelővel megy
 
     pacman -Syyu
@@ -57,7 +57,7 @@ Az MSYS alrendszerben telepítjük a következőket:
 
 Kiválasztjuk, hogy melyik alrendszerben (RENDSZERRE) akarunk fordítani,
 legyen monduk a CLANG64, és installáljuk a fordításhoz szükséges eszközöket.
-Elindítjuk a menübol a CLANG64 alrendszer terminálját, és végrehajtjuk:
+Elindítjuk a menüből a CLANG64 alrendszer terminálját, és végrehajtjuk:
 
     pacman -Syu \
         $MINGW_PACKAGE_PREFIX-clang\

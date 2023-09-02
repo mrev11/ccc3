@@ -24,16 +24,16 @@ else
 fi
 
 export CCCTERM_SIZE=100x36
+export CCCTERM_GTKFONTSPEC="Monospace 12"
+export CCCTERM_FONTFACE="DejaVu Sans Mono"
+export CCCTERM_FONTSIZE=12
 
 # primary terminal
    export CCCTERM_CONNECT=term://terminal.exe
-   export CCCTERM_FONTFACE=DejaVu Sans Mono
-   export CCCTERM_FONTSIZE=12
    export CCCTERM_INHERIT=no
 
 # alternativ (gtk) terminal
 #   export CCCTERM_CONNECT=term://terminal-gtk3.exe
-#   export CCCTERM_GTKFONTSPEC=Monospace 12
 #   export CCCTERM_INHERIT=no
 
 # console terminal

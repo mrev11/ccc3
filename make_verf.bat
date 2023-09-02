@@ -32,3 +32,4 @@ if not exist .\usr\options\%CCCBIN%\compile.opt (
     exit 1
 )
 
+cppver.bat

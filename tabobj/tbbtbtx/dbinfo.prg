@@ -51,12 +51,12 @@ function tabStructInfo(table) //megnyithato objektum a file info alapjan
 
 
 ******************************************************************************
-function tabResource(dbfspec)
+function tabResource(dbfspec,alias:="")
 
 local table,n
 local column,index
 local db:=_db_open(fopen(lower(dbfspec),FO_READWRITE+FO_SHARED))
-local path,file,ext,alias
+local path,file,ext
 local poffs:=max(rat(dirsep(),dbfspec),rat(":",dbfspec))
 local eoffs:=rat(".",dbfspec)
 
@@ -64,12 +64,22 @@ local eoffs:=rat(".",dbfspec)
         path:=substr(dbfspec,1,poffs)
         file:=substr(dbfspec,poffs+1,if(eoffs>poffs,eoffs-poffs-1,NIL))
         ext:=if(eoffs>poffs,substr(dbfspec,eoffs),"")
-        alias:=file
         
-        table:=tabNew0(alias)
+        table:=tabNew0(file)
         tabPath(table,path)
         tabFile(table,file)
         tabExt(table,ext)
+
+        // Inkompatibilis valtozas!
+           tabAlias(table,alias) 
+        // Korabban automatikus aliast kapott a tabla.
+        // Az ilyenkor keszulo (alias->field) => fldblk tablazat 
+        // utkozik a statikus TABLE:open altal keszitett tablazattal.
+        // Ezert most csak akkor keszulnek alias->field blockok, 
+        // ha tabResource-ban meg van adva egy nemures alias.
+        // Kovetkezmeny: Nem static tarolasu tablakban csak akkor
+        // lehet alias->field formaval hivatkozni a mezokre, 
+        // ha kulon aliast adunk a tablanak.
         
         column:=readColumn(db)
         for n:=1 to len(column)

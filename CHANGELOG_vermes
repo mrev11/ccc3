@@ -1,3 +1,13 @@
+2023-09-16 tabResource nem keszit alias->field blockokat;
+    Inkompatibilis valtozas:
+  Korabban tabResource-ban automatikus aliast kapott a tabla.
+  Az ilyenkor keszulo (alias->field) => fldblk tablazat utkozik 
+  a statikus TABLE:open-ben keszulo tablazattal. Ezert most csak 
+  akkor keszulnek alias->field blockok, ha tabResource-ban meg van 
+  adva egy nemures alias. Kovetkezmeny: Nem static tablakban csak
+  akkor lehet alias->field formaval hivatkozni a mezokre, ha kulon 
+  aliast adunk a tablanak.
+
 2023-09-02 Linux, Windows, MSYS2 kornyezet beallito scriptek;
 
 2023-08-28 A windowsos alap terminal is megjeleniti a zold T ikont;

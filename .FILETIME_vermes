@@ -1,10 +1,10 @@
-b3a70dec6fd2031170fa6b4114fbf3cc421a62db 2023092018:07:55-UTC ./CHANGELOG_vermes
+67f1c6a94c62eb325fe54b7f150c82d349e848b9 2023092018:10:52-UTC ./tools/zlib/demo/m
+ad41366ac38f8fa4a87b44e18213581abe3ab7b8 2023092018:09:47-UTC ./CHANGELOG_vermes
 54cf58d1a1c97d6dd0fd89b682c4a09f0b9fd1e4 2023092018:02:20-UTC ./tools/zlib/demo/gzread.prg
 fd848531c9e213505cac1feff0b388a2ca1cb44a 2023092017:59:20-UTC ./tools/zlib/demo/gzwrite.prg
 2c8be02889e44ad30e66f1cf1a1a1ae9066f5ac8 2023091917:58:41-UTC ./tools/zlib/demo/deflate.prg
 a2a3394115cf9d281aca76258ed5d9f6c303d537 2023091917:50:54-UTC ./tools/zlib/demo/inflate.prg
 65606803bb88bab4d9ae26a6083d46d59faedde0 2023091916:40:13-UTC ./ccclib/src/memoread.prg
-6c3ced35af15a36298698369bbbda5e8a355b209 2023091910:51:10-UTC ./tools/zlib/demo/m
 46361b25d549e9b2ad2e79c8911eb803db369708 2023091714:39:04-UTC ./tutor/control/browse.say
 7569d876d39f2c0882e422bd42510af40fed8106 2023091714:39:04-UTC ./tutor/control/control.say
 46f9e8e706a919310721a859748872e4e5f644d4 2023091714:39:04-UTC ./tutor/control/textarea.say

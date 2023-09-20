@@ -1,3 +1,5 @@
+2023-09-20 memoread-ben maxstrlen/maxbinlen binopt-nak megfeleloen;
+
 2023-09-16 tabResource nem keszit alias->field blockokat;
     Inkompatibilis valtozas:
   Korabban tabResource-ban automatikus aliast kapott a tabla.

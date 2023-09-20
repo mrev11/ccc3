@@ -21,7 +21,7 @@
 #include "fileio.ch"
 
 ******************************************************************************
-function memoread(fspec,binopt)
+function memoread(fspec,binopt:=.f.)
 
 //Elter a Clippertol, plusz parameter binopt:
 //Ha binopt empty, akkor a beolvasott adatokat "C" string formaban adja.
@@ -32,7 +32,7 @@ local fd,len,buffer:=x""
 
     if( 0<=(fd:=fopen(fspec,FO_SHARED)) .and.;
         0<(len:=fseek(fd,0,FS_END)) .and.;
-        len<__maxstrlen() )
+        len<if(binopt,__maxbinlen(),__maxstrlen()) )
 
         fseek(fd,0)
         buffer:=replicate(x"20",len)
@@ -41,7 +41,7 @@ local fd,len,buffer:=x""
         end
     end
     fclose(fd)
-    if( empty(binopt) )
+    if( !binopt )
         buffer:=bin2str(buffer) //text file
     end
     return buffer

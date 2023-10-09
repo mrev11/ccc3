@@ -1,5 +1,5 @@
 
-// Kiirja, hogy a bt fajlban a kulonbozo tipusu lapokbol 
+// Kiirja, hogy a bt fajlban a kulonbozo tipusu lapokbol
 // hany darab van ("FREE","INTERNAL","BLEAF","DATA","MEMO"),
 // es azokban mennyi a foglalt es a szabad hely.
 // Igy kell hasznalni: pgstat <btfile>
@@ -16,9 +16,11 @@ static stat:={}
 ******************************************************************************************
 function main(btfile)
 
-local map:=btopen(@btfile)
-
+local tab
+local fd
+local btree
 local fsize
+
 local MAGIC
 local VERSION
 local PGSIZE
@@ -29,33 +31,47 @@ local MEMO
 local NORDS
 
 local link
-local offset,page,pgno,type
+local page,pgno,type
 local n,lower,upper,space
 
-    if( map::empty )
-        ? "Usage:", "pgstat", "<btfile>"
-        ?
-        quit
+    begin
+        if( !".bt"$btfile )
+            btfile+=".bt"
+        end
+        if( empty(btopen(btfile)) )
+            break()
+        end
+        tab:=tabResource(btfile)
+        tabOpen(tab)
+        fd:=tab[1]
+        btree:=tab[2]
+    recover
+        usage()
     end
 
     set printer to log-pgstat
     set printer on
 
-    fsize    := map::len
-    MAGIC    := map[ 1.. 4]
-    VERSION  := map[ 5.. 8]::num
-    PGSIZE   := map[ 9..12]::num
-    NRECS    := map[13..16]::num
-    FREE     := map[17..20]::num
-    LASTDATA := map[21..24]::num
-    MEMO     := map[25..28]::num
-    NORDS    := map[29..32]::num
+
+    fsize:=fstat_st_size(fd)
+    page:=_db_rdpage(btree,0)
+    //memowrit("page-0",page)
+
+    MAGIC    := page[ 1.. 4]
+    VERSION  := page[ 5.. 8]::num
+    PGSIZE   := page[ 9..12]::num
+    NRECS    := page[13..16]::num
+    FREE     := page[17..20]::num
+    LASTDATA := page[21..24]::num
+    MEMO     := page[25..28]::num
+    NORDS    := page[29..32]::num
 
     ? btfile, "dskord="+dskord(), "version="+VERSION::str::alltrim, "pagesize="+PGSIZE::str::alltrim
     ? "size :", fsize::transform("999,999,999")::alltrim, "byte"
+    ? "npges:", (fsize/PGSIZE)::str::alltrim
     ? "nrecs:", NRECS::str::alltrim
     ? "nords:", NORDS::str::alltrim
-    ? "free :", "0x"+free::l2hex
+    ? "free :", "0x"+FREE::l2hex
     ?
 
     for n:=1 to len(pgtype)
@@ -67,17 +83,19 @@ local n,lower,upper,space
     // a pagetype-ban nem P_FREE van, hanem az eredeti tipus
     // onnan tudhato csak, hogy free, hogy a listaban van
     link:=FREE
-    while( link!=0 )        
-        page:=map::substr(link*PGSIZE+1,PGSIZE)
+    while( link!=0 )
+        page:=_db_rdpage(btree,link)
         link:=page[5..8]::num
         stat[1]:count+=1
         stat[1]:space+=PGSIZE
     end
 
-    offset:=PGSIZE
     pgno:=1
-    while( offset<fsize )
-        page:=substr(map,offset+1,PGSIZE)
+    while( (page:=_db_rdpage(btree,pgno))!=NIL  )
+
+        //if( pgno<10 )
+        //    memowrit("page-"+pgno::str::alltrim,page)
+        //end
 
         if( ISMEMO(page) )
             type:=5
@@ -100,19 +118,30 @@ local n,lower,upper,space
 
         stat[type]:count+=1
         stat[type]:space+=space
- 
-        offset+=PGSIZE
-        pgno++
-    end    
 
+        pgno++
+    end
+    
     for n:=1 to len(stat)
-        ? stat[n]:type::padr(4),; 
+        ? stat[n]:type::padr(4),;
           stat[n]:count,;
           " space", (stat[n]:space/1024)::transform("999999,999 K"),;
           " used", stat[n]:used::str(5,1),"%"
+          
+        if( n==1 )
+            ? "-------------------------------------------------"
+        end  
     next
 
     ?
+
+
+******************************************************************************************
+static function usage()
+    ? "Usage:  pgstat <btfile>"
+    callstack()
+    ?
+    quit
 
 
 ******************************************************************************************
@@ -121,7 +150,7 @@ static class page(object)
     attrib  pgsize
     attrib  count
     attrib  space
-    
+
     method  initialize
     method  used
 

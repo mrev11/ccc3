@@ -5,4 +5,5 @@ bapp_unix0.b @par-unix.bld
 bapp_unix0.b @par-unixui.bld  
  
 ( cd utility && m )
+( cd utility/btpasswd && m )
  

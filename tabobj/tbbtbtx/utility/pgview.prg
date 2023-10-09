@@ -19,21 +19,35 @@ static pgtype:={"FREE","INTERNAL","BLEAF","DATA","MEMO"}
 ******************************************************************************************
 function main(btfile,pgno:="0")
 
-local map:=btopen(@btfile)
+local tab
+local btree
+local page0,page
 local pgsize
-local offset
-local page
 
-    if( map::empty )
-        ? "Usage:", "pgview", "<btfile>", "[<pgno>]"
-        ?
-        quit
+    begin
+        if( !".bt"$btfile )
+            btfile+=".bt"
+        end
+        if( empty(btopen(btfile)) )
+            break()
+        end
+        tab:=tabResource(btfile)
+        tabOpen(tab)
+        //fd:=tab[1]
+        btree:=tab[2]
+    recover
+        usage()
     end
 
-    pgsize:=map[9..12]::num
-    offset:=pgsize*(pgno::hex2l)
-    page:=map::substr(offset+1,pgsize) // 1-based
 
+    set printer on
+    set printer to log-pgview
+
+    page0:=_db_rdpage(btree,0)
+    pgsize:=page0[9..12]::num
+
+    pgno::=hex2l
+    page:=_db_rdpage(btree,pgno)
     if( empty(page) )
         ? "pgno out of bound"
         ?
@@ -41,12 +55,9 @@ local page
     end
     memowrit("log-PAGE",page)
 
-    set printer on
-    set printer to log-pgview
+    ? btfile, "pgno=0x"+pgno::l2hex, "offset=0x"+(pgsize*pgno)::l2hex
 
-    ? btfile, "pgno=0x"+pgno, "offset=0x"+offset::l2hex
-
-    if( offset==0 )
+    if( pgno==0 )
         page_root(page)
     elseif( ISMEMO(page) )
         page_memo(page)
@@ -56,6 +67,13 @@ local page
 
     ?
     ?
+
+******************************************************************************************
+static function usage()
+    ? "Usage: pgview <btfile> [<pgno>]"
+    callstack()
+    ?
+    quit
 
 
 ******************************************************************************************
@@ -94,7 +112,6 @@ local poslen,pos,len
 local pgnext,ixnext
 local memseg
 
-        ? "CRC32", page[1..4]::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
         ? "type  ",  type
 
         ? "link  ", "0x"+page[ 5.. 8]::hex
@@ -142,7 +159,6 @@ local lower,upper
 local offset
 local pos,len,rec
 
-        ? "CRC32", page[1..4]::bin2hex::padl(8,"0"), crc32(page[5..])::l2hex::padl(8,"0")
         ? "type  ",  type
 
         ? "link  ", "0x"+page[ 5.. 8]::hex

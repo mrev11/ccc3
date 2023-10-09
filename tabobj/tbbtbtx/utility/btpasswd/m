@@ -1,0 +1,3 @@
+#!/bin/bash
+bapp_unix0.b -sbtpasswd
+rsync -v objlin/libbtpasswd.so /opt/ccc3/usr/lib/lin

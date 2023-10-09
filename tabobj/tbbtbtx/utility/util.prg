@@ -61,6 +61,17 @@ static value
 
 ******************************************************************************************
 function num(x)  // N tipus
+    if( len(x)==2 )
+        x::=bin2w
+    elseif( len(x)==4 )
+        x::=bin2u
+    else
+        break("invalid binary length")
+    end
+    return x
+
+******************************************************************************************
+function numswap(x)  // N tipus
     x:=if(swap(),reverse(x),x)
     if( len(x)==2 )
         x::=bin2w

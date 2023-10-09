@@ -17,6 +17,11 @@ echo -shared -o $TARGET >$RSPLNK
 shift
 
 for i in $BUILD_LPT; do echo -L$i >>$RSPLNK; done
+
+if [ "${CPP_COMPILER}" == "gcc"  ]; then
+    echo -Wl,--no-as-needed >>$RSPLNK
+fi
+
 for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLNK; done
 for i in $BUILD_LIB; do echo $i >>$RSPLNK; done
 if test -f "$BUILD_LIBX"; then

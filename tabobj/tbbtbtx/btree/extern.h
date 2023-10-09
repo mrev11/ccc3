@@ -58,6 +58,7 @@
   int    __bt_rewrite        (BTREE*, DBT*, RECPOS*);
   int    __bt_read           (BTREE*, DBT*, RECPOS*);
   int    __bt_read1          (BTREE*, DBT*, pgno_t, indx_t);
+  int    __bt_rdpage         (BTREE*, DBT*, pgno_t, int);
 
   void   __bt_pagelock       (BTREE*, pgno_t, int);
   void   __bt_pageunlock     (BTREE*, pgno_t);

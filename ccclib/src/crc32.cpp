@@ -18,8 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+#include <stdio.h>
 #include <cccapi.h>
 
+
+//---------------------------------------------------------------------------
 static unsigned int crc_table[] = { /* CRC polynomial 0xedb88320 */
 0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
 0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91,
@@ -58,28 +62,25 @@ static unsigned int crc_table[] = { /* CRC polynomial 0xedb88320 */
 #define UPDC32(octet,crc) (crc_table[ ((crc) ^ (octet)) & 0xff ] ^ ((crc) >> 8))
 
 
-static unsigned int crc32(const char *data, int length)
-{ 
-    unsigned int crc = 0xFFFFFFFF;
-    for(int i=0; i<length; ++i)
+unsigned int crc32(void *data, int size)
+{
+    unsigned int crc = 0xffffffff;
+    for(int i=0; i<size; ++i)
     {
-        crc=UPDC32(data[i],crc);
+        crc=UPDC32( ((char*)data)[i], crc );
     }
-    //printf("%8x \n",~crc);
-
     return ~crc;
-} 
+}
 
-
+//---------------------------------------------------------------------------
 void _clp_crc32(int argno)
 {
     CCC_PROLOG("crc32",1);
     char *data=_parb(1);
     int datlen=_parblen(1);
     unsigned int code=crc32(data,datlen);
-    
     _retni(code);
     CCC_EPILOG();
 }
 
-
+//---------------------------------------------------------------------------

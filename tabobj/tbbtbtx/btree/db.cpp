@@ -19,12 +19,12 @@
  */
 
 #include <stdio.h>
- 
+
 #include <fileio.ch>
 #include <cccapi.h>
-#include <btree.h> 
- 
-//--------------------------------------------------------------------------- 
+#include <btree.h>
+
+//---------------------------------------------------------------------------
 void _clp__db_version(int argno)
 {
     CCC_PROLOG("_db_version",1);
@@ -33,16 +33,16 @@ void _clp__db_version(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_create(int argno)
 {
     CCC_PROLOG("_db_create",2);
     str2bin(base);
     char *fname=ISBINARY(1)?_parb(1):0;
-    int  fdesc=ISNUMBER(1)?_parni(1):-1; 
+    int  fdesc=ISNUMBER(1)?_parni(1):-1;
     int  psize=ISNUMBER(2)?_parni(2):0;
 
-    if( fname )    
+    if( fname )
     {
         extern void _clp_fcreate(int);
         stringnb(fname);
@@ -50,7 +50,7 @@ void _clp__db_create(int argno)
         fdesc=D2INT(TOP()->data.number);
         POP();
     }
-    
+
     BTREE *db=__bt_open(fdesc,psize,1);
     if( db )
     {
@@ -63,17 +63,17 @@ void _clp__db_create(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_open(int argno)
 {
     CCC_PROLOG("_db_open",2);
 
     str2bin(base);
     char *fname=ISBINARY(1)?_parb(1):0;
-    int  fdesc=ISNUMBER(1)?_parni(1):-1; 
+    int  fdesc=ISNUMBER(1)?_parni(1):-1;
     int  psize=ISNUMBER(2)?_parni(2):0;
 
-    if( fname )    
+    if( fname )
     {
         extern void _clp_fopen(int);
         stringnb(fname);
@@ -82,7 +82,7 @@ void _clp__db_open(int argno)
         fdesc=D2INT(TOP()->data.number);
         POP();
     }
-    
+
     BTREE *db=__bt_open(fdesc,psize,0);
     if( db )
     {
@@ -94,9 +94,9 @@ void _clp__db_open(int argno)
     }
     CCC_EPILOG();
 }
- 
 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_close(int argno)
 {
     CCC_PROLOG("_db_close",1);
@@ -106,7 +106,7 @@ void _clp__db_close(int argno)
 }
 
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_fd(int argno)
 {
     CCC_PROLOG("_db_fd",1);
@@ -115,7 +115,7 @@ void _clp__db_fd(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_pagesize(int argno)
 {
     CCC_PROLOG("_db_pagesize",1);
@@ -123,8 +123,8 @@ void _clp__db_pagesize(int argno)
     _retni( __bt_pagesize(db));
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_creord(int argno)
 {
     CCC_PROLOG("_db_creord",2);
@@ -135,7 +135,7 @@ void _clp__db_creord(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_setord(int argno)
 {
     CCC_PROLOG("_db_setord",2);
@@ -146,7 +146,7 @@ void _clp__db_setord(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_delord(int argno)
 {
     CCC_PROLOG("_db_delord",2);
@@ -157,7 +157,7 @@ void _clp__db_delord(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_renord(int argno)
 {
     CCC_PROLOG("_db_renord",3);
@@ -169,8 +169,8 @@ void _clp__db_renord(int argno)
     _retni( __bt_renord(db,nameold,namenew) );
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_del(int argno)
 {
     CCC_PROLOG("_db_del",2);
@@ -183,26 +183,26 @@ void _clp__db_del(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_put(int argno)
 {
     CCC_PROLOG("_db_put",3);
     BTREE *db=(BTREE*)_parp(1);
- 
+
     DBT key;
     str2bin(base+1);
     key.data=_parb(2);
     key.size=_parblen(2);
-    
+
     int crs=ISNIL(3)?0:_parl(3);
-    
+
     _retni( __bt_put(db,&key,crs) );
 
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
-void _clp__db_seek(int argno)  
+//---------------------------------------------------------------------------
+void _clp__db_seek(int argno)
 {
     CCC_PROLOG("_db_seek",2);
     BTREE *db=(BTREE*)_parp(1);
@@ -211,7 +211,7 @@ void _clp__db_seek(int argno)
     str2bin(base+1);
     key.data=_parb(2);
     key.size=_parblen(2);
-    
+
     if( 0==__bt_seq(db,&key,R_CURSOR|R_LOCKFILE) )
     {
         _retblen((char*)key.data,key.size);
@@ -223,8 +223,8 @@ void _clp__db_seek(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
-void _clp__db_first(int argno)  
+//---------------------------------------------------------------------------
+void _clp__db_first(int argno)
 {
     CCC_PROLOG("_db_first",1);
     BTREE *db=(BTREE*)_parp(1);
@@ -242,8 +242,8 @@ void _clp__db_first(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
-void _clp__db_last(int argno)  
+//---------------------------------------------------------------------------
+void _clp__db_last(int argno)
 {
     CCC_PROLOG("_db_last",1);
     BTREE *db=(BTREE*)_parp(1);
@@ -259,9 +259,9 @@ void _clp__db_last(int argno)
     }
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
-void _clp__db_next(int argno)  
+
+//---------------------------------------------------------------------------
+void _clp__db_next(int argno)
 {
     CCC_PROLOG("_db_next",1);
     BTREE *db=(BTREE*)_parp(1);
@@ -278,8 +278,8 @@ void _clp__db_next(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
-void _clp__db_prev(int argno)  
+//---------------------------------------------------------------------------
+void _clp__db_prev(int argno)
 {
     CCC_PROLOG("_db_prev",1);
     BTREE *db=(BTREE*)_parp(1);
@@ -296,7 +296,7 @@ void _clp__db_prev(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_addresource(int argno)
 {
     CCC_PROLOG("_db_addresource",3);
@@ -305,19 +305,19 @@ void _clp__db_addresource(int argno)
     data.data=_parb(2);
     data.size=_parblen(2);
     int index=_parni(3);
-    
+
     RECPOS rp=__bt_addresource(db,&data,index);
 
     char buf[6];
     store32(buf,rp.pgno);
     store16(buf+4,rp.index);
- 
+
     _retblen(buf,sizeof(buf));
 
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_append(int argno)
 {
     CCC_PROLOG("_db_append",3);
@@ -327,28 +327,28 @@ void _clp__db_append(int argno)
     data.data=_parb(2);
     data.size=_parblen(2);
     int recno;
-    
+
     RECPOS rp=__bt_append(db,&data,&recno);
-    
+
     number( recno );
     assign(base+2);
- 
+
     char buf[6];
     store32(buf,rp.pgno);
     store16(buf+4,rp.index);
- 
+
     _retblen(buf,sizeof(buf));
 
     CCC_EPILOG();
 }
- 
 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_read(int argno)
 {
     CCC_PROLOG("_db_read",3);
     BTREE *db=(BTREE*)_parp(1);
- 
+
     DBT data;
     data.data=_parb(2);
     data.size=_parblen(2);
@@ -357,36 +357,82 @@ void _clp__db_read(int argno)
     RECPOS rp;
     rp.pgno=load32(buf);
     rp.index=load16(buf+4);
-    
+
     _retni( __bt_read(db,&data,&rp) );
 
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_read1(int argno)
 {
     CCC_PROLOG("_db_read1",4);
     BTREE *db=(BTREE*)_parp(1);
- 
+
     DBT data;
     data.data=_parb(2);
     data.size=_parblen(2);
-    
+
     pgno_t pgno=_parni(3);
     indx_t index=_parni(4);
- 
+
     _retni( __bt_read1(db,&data,pgno,index) );
 
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+
+//---------------------------------------------------------------------------
+void _clp__db_rdpage(int argno)
+{
+    // titkositashoz
+    // statisztikakhoz
+    //
+    // rewrite==0 csak olvas (kititkosit)
+    // rewrite==1 (esetleg titkositva) visszair
+    // rewrite==2 titkositas nelkul visszair
+
+    CCC_PROLOG("_db_rdpage",3);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=_parni(2);
+    int rewrite=ISNIL(3)?0:_parni(3);
+
+    int fd=__bt_fd(db);
+    int pagesize=__bt_pagesize(db);
+    off_t offset=lseek(fd,0,SEEK_CUR);
+    off_t totalsize=lseek(fd,0,SEEK_END);
+    unsigned int maxpgno=totalsize/pagesize-1;
+
+    if( 0<=pgno && pgno<=maxpgno )
+    {
+        DBT data;
+        data.data=binaryl(pagesize);
+        data.size=pagesize;
+
+        if( pagesize==__bt_rdpage(db,&data,pgno,rewrite) )
+        {
+            _rettop();
+        }
+        else
+        {
+            _ret();
+        }
+    }
+    else
+    {
+        _ret();
+    }
+
+    lseek(fd,offset,SEEK_SET);
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
 void _clp__db_rewrite(int argno)
 {
     CCC_PROLOG("_db_rewrite",3);
     BTREE *db=(BTREE*)_parp(1);
- 
+
     DBT data;
     data.data=_parb(2);
     data.size=_parblen(2);
@@ -395,25 +441,25 @@ void _clp__db_rewrite(int argno)
     RECPOS rp;
     rp.pgno=load32(buf);
     rp.index=load16(buf+4);
-    
+
     _retni( __bt_rewrite(db,&data,&rp) );
- 
+
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_pagelock(int argno)
 {
     CCC_PROLOG("_db_pagelock",3);
     BTREE *db=(BTREE*)_parp(1);
     pgno_t pgno=_parnu(2);
-    int mode=_parl(3); 
+    int mode=_parl(3);
     __bt_pagelock(db,pgno,mode);
     _ret();
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_pageunlock(int argno)
 {
     CCC_PROLOG("_db_pageunlock",2);
@@ -424,48 +470,48 @@ void _clp__db_pageunlock(int argno)
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_header_read(int argno)
 {
     CCC_PROLOG("_db_header_read",2);
     BTREE *db=(BTREE*)_parp(1);
-    int mode=_parl(2); 
-    __bt_header_read(db,mode); 
+    int mode=_parl(2);
+    __bt_header_read(db,mode);
     _ret();
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_header_write(int argno)
 {
     CCC_PROLOG("_db_header_write",1);
     BTREE *db=(BTREE*)_parp(1);
-    __bt_header_write(db); 
+    __bt_header_write(db);
     _ret();
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_header_sync(int argno)
 {
     CCC_PROLOG("_db_header_sync",1);
     BTREE *db=(BTREE*)_parp(1);
-    __bt_header_sync(db); 
+    __bt_header_sync(db);
     _ret();
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 void _clp__db_header_release(int argno)
 {
     CCC_PROLOG("_db_header_release",1);
     BTREE *db=(BTREE*)_parp(1);
-    __bt_header_release(db); 
+    __bt_header_release(db);
     _ret();
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_lastrec(int argno)
 {
     CCC_PROLOG("_db_lastrec",1);
@@ -473,8 +519,8 @@ void _clp__db_lastrec(int argno)
     _retni( __bt_lastrec(db) );
     CCC_EPILOG();
 }
- 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------
 void _clp__db_recpos2array(int argno) //diagnostics
 {
     CCC_PROLOG("_db_recpos2array",1);
@@ -488,6 +534,6 @@ void _clp__db_recpos2array(int argno) //diagnostics
     _rettop();
     CCC_EPILOG();
 }
- 
 
-//--------------------------------------------------------------------------- 
+
+//---------------------------------------------------------------------------

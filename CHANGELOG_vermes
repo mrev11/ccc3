@@ -1,3 +1,7 @@
+2023-10-09 
+  bt fajlok titkositasa;
+  crc32 bekerult a CCC konyvtarba;
+
 2023-09-20 zlib demo programok;
 
 2023-09-20 memoread-ben maxstrlen/maxbinlen binopt-nak megfeleloen;

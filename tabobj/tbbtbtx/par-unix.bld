@@ -5,7 +5,7 @@
 -d../common.src
 -d../common.src/charconv
 
--bcrypto
+#-bcrypto
 
 BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 

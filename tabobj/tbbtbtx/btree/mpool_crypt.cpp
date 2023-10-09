@@ -37,7 +37,179 @@ static int mpool_btpasswd(pgno_t pgno, unsigned char *key,unsigned char *iv);
 
 typedef void btpasswd_t(pgno_t, unsigned char*, unsigned char*);
 
-//---------------------------------------------------------------------------
+
+//========================================================================================
+//----------------------------------------------------------------------------------------
+static void error(const char *entryname)
+{
+    if( NULL==entryname )
+    {
+        printf("libcrypto.so not found\n");
+    }
+    else
+    {
+        printf("%s not in library\n",entryname);
+    }
+    fflush(0);
+    exit(1);
+}
+
+//----------------------------------------------------------------------------------------
+static void *load_crypto_so()
+{
+    void *so=dlopen("libcrypto.so",RTLD_NOW|RTLD_GLOBAL);
+    if( so==0 )
+    {
+        error(0);
+    }
+    return so;
+}
+
+//----------------------------------------------------------------------------------------
+static void* getproc(const char *entryname)
+{
+    static void *so=load_crypto_so();
+    void *proc=dlsym(so,entryname);
+    if( proc==0 )
+    {
+        error(entryname);
+    }
+    else
+    {
+        //printf("LOADED crypto[%s]\n",entryname);
+        //fflush(0);
+    }
+    return proc;
+}
+
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+//typedef int                 OPENSSL_init_crypto_t(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings);
+//typedef void                ERR_load_crypto_strings_t(void);
+typedef unsigned long       ERR_get_error_line_data_t(const char **file, int *line, const char **data, int *flags);
+typedef void                ERR_error_string_n_t(unsigned long e, char *buf, size_t len);
+
+typedef EVP_CIPHER_CTX*     EVP_CIPHER_CTX_new_t(void);
+typedef void                EVP_CIPHER_CTX_free_t(EVP_CIPHER_CTX *c);
+typedef int                 EVP_CIPHER_CTX_set_padding_t(EVP_CIPHER_CTX *c, int pad);
+typedef const EVP_CIPHER*   EVP_aes_256_cbc_t(void);
+
+typedef int                 EVP_DecryptInit_t(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher, const unsigned char *key, const unsigned char *iv);
+typedef int                 EVP_DecryptUpdate_t(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl, const unsigned char *in, int inl);
+typedef int                 EVP_DecryptFinal_ex_t(EVP_CIPHER_CTX *ctx, unsigned char *outm, int *outl);
+
+typedef int                 EVP_EncryptInit_t(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher, const unsigned char *key, const unsigned char *iv);
+typedef int                 EVP_EncryptUpdate_t(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl, const unsigned char *in, int inl);
+typedef int                 EVP_EncryptFinal_ex_t(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl);
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+// static int _x_OPENSSL_init_crypto(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings)
+// {
+//     static void *p=getproc("OPENSSL_init_crypto");
+//     return ((OPENSSL_init_crypto_t*)p)(opts,settings);
+// }
+
+//----------------------------------------------------------------------------------------
+// static void _x_ERR_load_crypto_strings()
+// {
+//     static void *p=getproc("ERR_load_crypto_strings");
+//     ((ERR_load_crypto_strings_t*)p)();
+// }
+
+//----------------------------------------------------------------------------------------
+static unsigned long _x_ERR_get_error_line_data(const char **file, int *line, const char **data, int *flags)
+{
+    static void *p=getproc("ERR_get_error_line_data");
+    return ((ERR_get_error_line_data_t*)p)(file,line,data,flags);
+}
+
+//----------------------------------------------------------------------------------------
+static void _x_ERR_error_string_n(unsigned long e, char *buf, size_t len)
+{
+    static void *p=getproc("ERR_error_string_n");
+    return ((ERR_error_string_n_t*)p)(e, buf, len);
+}
+
+
+
+//----------------------------------------------------------------------------------------
+static EVP_CIPHER_CTX *_x_EVP_CIPHER_CTX_new()
+{
+    static void *p=getproc("EVP_CIPHER_CTX_new");
+    return ((EVP_CIPHER_CTX_new_t*)p)();
+}
+
+//----------------------------------------------------------------------------------------
+static void  _x_EVP_CIPHER_CTX_free(EVP_CIPHER_CTX *c)
+{
+    static void *p=getproc("EVP_CIPHER_CTX_free");
+    return ((EVP_CIPHER_CTX_free_t*)p)(c);
+}
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_CIPHER_CTX_set_padding(EVP_CIPHER_CTX *c, int pad)
+{
+    static void *p=getproc("EVP_CIPHER_CTX_set_padding");
+    return ((EVP_CIPHER_CTX_set_padding_t*)p)(c,pad);
+}
+
+//----------------------------------------------------------------------------------------
+static const EVP_CIPHER* _x_EVP_aes_256_cbc(void)
+{
+    static void *p=getproc("EVP_aes_256_cbc");
+    return ((EVP_aes_256_cbc_t*)p)();
+}
+
+
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_DecryptInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher, const unsigned char *key, const unsigned char *iv)
+{
+    static void *p=getproc("EVP_DecryptInit");
+    return ((EVP_DecryptInit_t*)p)(ctx,cipher,key,iv);
+}
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_DecryptUpdate(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl, const unsigned char *in, int inl)
+{
+    static void *p=getproc("EVP_DecryptUpdate");
+    return ((EVP_DecryptUpdate_t*)p)(ctx,out,outl,in,inl);
+}
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *outm, int *outl)
+{
+    static void *p=getproc("EVP_DecryptFinal_ex");
+    return ((EVP_DecryptFinal_ex_t*)p)(ctx, outm, outl);
+}
+
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_EncryptInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher, const unsigned char *key, const unsigned char *iv)
+{
+    static void *p=getproc("EVP_EncryptInit");
+    return ((EVP_EncryptInit_t*)p)(ctx,cipher,key,iv);
+}
+
+//----------------------------------------------------------------------------------------
+static int _x_EVP_EncryptUpdate(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl, const unsigned char *in, int inl)
+{
+    static void *p=getproc("EVP_EncryptUpdate");
+    return ((EVP_EncryptUpdate_t*)p)(ctx,out,outl,in,inl);
+}
+
+//----------------------------------------------------------------------------------------
+static int  _x_EVP_EncryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl)
+{
+    static void *p=getproc("EVP_EncryptFinal_ex");
+    return ((EVP_EncryptFinal_ex_t*)p)(ctx,out,outl);
+}
+
+
+//========================================================================================
+//----------------------------------------------------------------------------------------
 static void *loadproc()
 {
     const char *libname=getenv("CCC_BTPASSWD");
@@ -66,7 +238,7 @@ static void *loadproc()
     return proc;
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 static int mpool_btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
 {
     static void *proc=loadproc();
@@ -78,7 +250,7 @@ static int mpool_btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
     return 0;
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 int mpool_enable_crypt(int mode)
 {
     // mode==0  titkositas letiltva
@@ -99,7 +271,7 @@ int mpool_enable_crypt(int mode)
     return value;
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 int mpool_decrypt(MPOOL *mp, pgno_t pgno, char *buf)
 {
     // akkor jon ide
@@ -131,7 +303,7 @@ int mpool_decrypt(MPOOL *mp, pgno_t pgno, char *buf)
 }
 
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 int mpool_encrypt(MPOOL *mp, pgno_t pgno, char *buf)
 {
     unsigned char key[33];
@@ -171,80 +343,80 @@ int mpool_encrypt(MPOOL *mp, pgno_t pgno, char *buf)
 }
 
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 static void crypto_error()
 {
-    ERR_load_crypto_strings();
+    //_x_ERR_load_crypto_strings(); (nem kell, nem letezik?)
 
     unsigned long len;
     const char *file,*data;
     int line,flags;
 
-    if( 0!=(len=ERR_get_error_line_data(&file,&line,&data,&flags)) )
+    if( 0!=(len=_x_ERR_get_error_line_data(&file,&line,&data,&flags)) )
     {
         char buf[1024];
-        ERR_error_string_n(len,buf,sizeof(buf));
+        _x_ERR_error_string_n(len,buf,sizeof(buf));
         fprintf(stderr,"%s:%s(%d)",buf,file,line);
         raise(SIGTERM);
         exit(1);
     }
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 static void aes_decrypt(unsigned char *buffer, int buflen, unsigned char *key, unsigned char *iv )
 {
-    EVP_CIPHER_CTX *ctx=EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *ctx=_x_EVP_CIPHER_CTX_new();
     if( ctx==0 )
     {
         crypto_error();
     }
-    if( 1!=EVP_DecryptInit(ctx,EVP_aes_256_cbc(),key,iv))
+    if( 1!=_x_EVP_DecryptInit(ctx,_x_EVP_aes_256_cbc(),key,iv))
     {
         crypto_error();
     }
-    EVP_CIPHER_CTX_set_padding(ctx,0);
+    _x_EVP_CIPHER_CTX_set_padding(ctx,0);
 
     int len=0;
-    if( 1!=EVP_DecryptUpdate(ctx,buffer,&len,buffer,buflen) )
+    if( 1!=_x_EVP_DecryptUpdate(ctx,buffer,&len,buffer,buflen) )
     {
         crypto_error();
     }
 
-    if( 1!=EVP_DecryptFinal_ex(ctx,buffer+len,&len) )
+    if( 1!=_x_EVP_DecryptFinal_ex(ctx,buffer+len,&len) )
     {
         crypto_error();
     }
 
-    EVP_CIPHER_CTX_free(ctx);
+    _x_EVP_CIPHER_CTX_free(ctx);
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 static void aes_encrypt(unsigned char *buffer, int buflen, unsigned char *key, unsigned char *iv)
 {
-    EVP_CIPHER_CTX *ctx=EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *ctx=_x_EVP_CIPHER_CTX_new();
     if( ctx==0 )
     {
         crypto_error();
     }
 
-    if( 1!=EVP_EncryptInit(ctx,EVP_aes_256_cbc(),key,iv))
+    if( 1!=_x_EVP_EncryptInit(ctx,_x_EVP_aes_256_cbc(),key,iv))
     {
         crypto_error();
     }
-    EVP_CIPHER_CTX_set_padding(ctx,0);
+    _x_EVP_CIPHER_CTX_set_padding(ctx,0);
 
     int len=0;
-    if( 1!=EVP_EncryptUpdate(ctx,buffer,&len,buffer,buflen) )
+    if( 1!=_x_EVP_EncryptUpdate(ctx,buffer,&len,buffer,buflen) )
     {
         crypto_error();
     }
 
-    if( 1!=EVP_EncryptFinal_ex(ctx,buffer+len,&len) )
+    if( 1!=_x_EVP_EncryptFinal_ex(ctx,buffer+len,&len) )
     {
         crypto_error();
     }
 
-    EVP_CIPHER_CTX_free(ctx);
+    _x_EVP_CIPHER_CTX_free(ctx);
 }
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------

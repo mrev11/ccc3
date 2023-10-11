@@ -4,6 +4,7 @@
 *~
 
 *.exe
+*.dll
 
 objlin/
 objlin_ui_/

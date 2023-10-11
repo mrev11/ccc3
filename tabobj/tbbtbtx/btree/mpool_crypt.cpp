@@ -18,8 +18,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
+#ifdef WINDOWS
+#include <windows.h>
+#else
 #include <dlfcn.h>
+#endif
+
 #include <signal.h>
 
 #include <openssl/err.h>
@@ -37,6 +41,44 @@ static void aes_decrypt(unsigned char*, int, unsigned char*, unsigned char*);
 
 
 //========================================================================================
+#ifdef WINDOWS
+//----------------------------------------------------------------------------------------
+static HINSTANCE load_crypto_dll()
+{
+    HINSTANCE dll=LoadLibraryEx("libcrypto-3-x64.dll",NULL,0); // ELTERES!
+    if( dll==0 )
+    {
+        fprintf(stderr,"\nERROR: cannot load crypto library (errorcode=%lu)\n",GetLastError());
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
+    }
+    return dll;
+}
+
+//----------------------------------------------------------------------------------------
+static void* getproc(const char *entryname)
+{
+    static HINSTANCE dll=load_crypto_dll();
+
+    void *proc=(void*)GetProcAddress(dll,entryname);
+    if( proc==0 )
+    {
+        fprintf(stderr,"\nERROR: cannot get crypto function [%s]\n",entryname);
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
+    }
+    else
+    {
+        //printf("LOADED [%s]\n",entryname);
+        //fflush(0);
+    }
+    return proc;
+}
+
+//----------------------------------------------------------------------------------------
+#else
 //----------------------------------------------------------------------------------------
 static void *load_crypto_so()
 {
@@ -59,7 +101,7 @@ static void* getproc(const char *entryname)
     void *proc=dlsym(so,entryname);
     if( proc==0 )
     {
-        fprintf(stderr,"\nERROR: cannot load [%s]\n",entryname);
+        fprintf(stderr,"\nERROR: cannot get crypto function [%s]\n",entryname);
         fflush(0);
         raise(SIGTERM);
         exit(1);
@@ -72,8 +114,8 @@ static void* getproc(const char *entryname)
     return proc;
 }
 
-
 //----------------------------------------------------------------------------------------
+#endif
 //----------------------------------------------------------------------------------------
 typedef int                 OPENSSL_init_crypto_t(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings);
 typedef void                ERR_load_crypto_strings_t(void);
@@ -199,6 +241,41 @@ static int  _x_EVP_EncryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int 
 
 
 //========================================================================================
+#ifdef WINDOWS
+//----------------------------------------------------------------------------------------
+static HINSTANCE load_btpasswd_dll()
+{
+    const char *libname=getenv("CCC_BTPASSWD");
+    HINSTANCE dll=0;
+    if( libname==0 || *libname==0 || (dll=LoadLibraryEx(libname,NULL,0))==0 )
+    {
+        fprintf(stderr,"\nERROR: cannot load passwd library [%s]\n",libname);
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
+    }
+    return dll;
+}
+
+//----------------------------------------------------------------------------------------
+static void *load_btpasswd_proc()
+{
+    static HINSTANCE dll=load_btpasswd_dll();
+
+    const char *procname="btpasswd"; // ELTERES! 
+    void *proc=(void*)GetProcAddress(dll,procname);
+    if( proc==0 )
+    {
+        fprintf(stderr,"\nERROR: cannot load passwd procedure [%s]\n",procname);
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
+    }
+    return proc;
+}
+
+//----------------------------------------------------------------------------------------
+#else
 //----------------------------------------------------------------------------------------
 static void *load_btpasswd_so()
 {
@@ -231,6 +308,8 @@ static void *load_btpasswd_proc()
     return proc;
 }
 
+//----------------------------------------------------------------------------------------
+#endif
 //----------------------------------------------------------------------------------------
 static void btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
 {

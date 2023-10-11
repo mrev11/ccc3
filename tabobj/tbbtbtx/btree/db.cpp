@@ -20,6 +20,10 @@
 
 #include <stdio.h>
 
+#ifdef WINDOWS
+#include <io.h>
+#endif
+
 #include <fileio.ch>
 #include <cccapi.h>
 #include <btree.h>

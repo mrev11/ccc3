@@ -1,0 +1,4 @@
+#!/bin/bash
+bapp_win_.msys2 -xtest
+c++ -shared -o btpasswd.dll objmng/btpasswd.obj
+mv btpasswd.dll ${CCCDIR}/usr/bin/${CCCUNAME}

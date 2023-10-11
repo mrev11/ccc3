@@ -1,11 +1,11 @@
 #!/bin/bash
 #export CCC_STRING_TAB=STRTAB
+
 bapp_win0.msys2 @par-nt.bld  
 bapp_win0.msys2 @par-ntui.bld  
  
 cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN 
  
-cd utility
-m.msys2
-cd ..
+( cd utility && m.msys2 )
+( cd utility/btpasswd_windll && m.msys2 )
  

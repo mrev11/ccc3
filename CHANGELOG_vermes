@@ -1,8 +1,10 @@
+2023-10-11 Windowson is mukodik a titkositas;
+
 2023-10-11 laponkenti helyett fajlonkenti titkositas;
 
 2023-10-09 libcrypto.so betoltese dlopen-nel;
 
-2023-10-09 
+2023-10-09
   bt fajlok titkositasa;
   crc32 bekerult a CCC konyvtarba;
 
@@ -13,11 +15,11 @@
 2023-09-16 tabResource nem keszit alias->field blockokat;
     Inkompatibilis valtozas:
   Korabban tabResource-ban automatikus aliast kapott a tabla.
-  Az ilyenkor keszulo (alias->field) => fldblk tablazat utkozik 
-  a statikus TABLE:open-ben keszulo tablazattal. Ezert most csak 
-  akkor keszulnek alias->field blockok, ha tabResource-ban meg van 
+  Az ilyenkor keszulo (alias->field) => fldblk tablazat utkozik
+  a statikus TABLE:open-ben keszulo tablazattal. Ezert most csak
+  akkor keszulnek alias->field blockok, ha tabResource-ban meg van
   adva egy nemures alias. Kovetkezmeny: Nem static tablakban csak
-  akkor lehet alias->field formaval hivatkozni a mezokre, ha kulon 
+  akkor lehet alias->field formaval hivatkozni a mezokre, ha kulon
   aliast adunk a tablanak.
 
 2023-09-02 Linux, Windows, MSYS2 kornyezet beallito scriptek;
@@ -36,7 +38,7 @@
   Linuxon gcc/clang tamogatas (clang llvm linkerrel);
   Windows MSYS2-ben MINGW64, UCRT64, CLANG64 tamogatas;
 
-2023-08-24 
+2023-08-24
    A windows console terminalban javitva az elromlo szelso oszlop.
    A terminal hibaja miatt (?) a maxcol()-1-re vegzodo sorok kiirasakor
    elromik a maxcol() pozicio. Ezert az ilyen sorokat ket reszben irjuk:
@@ -66,9 +68,9 @@
 
 2023-08-17 array fuggvenyek: aiins, addel, apush, apop;
 
-2023-08-14 
+2023-08-14
   javitva crypto_md5, crypto_sha1, crypto_sha256, crypto_sha512;
-  hibas tipuskonverzio miatt rosszul mukodtek 2G-nel nagyobb fajlokra; 
+  hibas tipuskonverzio miatt rosszul mukodtek 2G-nel nagyobb fajlokra;
   az atvett binaris adatok hosszanak tipusa int helyett size_t;
   ugyanez a modositas a crypto konyvtarban minden erdekes helyen;
 
@@ -77,7 +79,7 @@
 2023-08-04 tabchlog-ban a logok archivalasa cp-vel:
   thread-ben futo filecopy helyett cp (copy) paranccsal;
   Bar Windowson is van/lehet cp, nem lehet letorolni
-  a korabbi logot, ha azt a parent processz nyitva tartja. 
+  a korabbi logot, ha azt a parent processz nyitva tartja.
   Ezert Windowson az archivalas semmikepp sem mukodik.
   A "(cp -p $SRC $DST && rm $SRC) &" akkor is jol mukodik,
   ha lecsukjak a terminalt es a parent HUP-ot vagy TERM-et kap.
@@ -89,9 +91,9 @@
 2023-08-02 channel outputban a localname transzformacio letilthato;
 
 2023-07-28 tabchlog.prg atdolgozva:
-  A lokalis fs-en keletkezo log fajlokat NFS-re tudja archivalni. 
+  A lokalis fs-en keletkezo log fajlokat NFS-re tudja archivalni.
   Ha frename nem tudja atmozgatni a logot, akkor atmasolja.
-  A masolas kulon szalon fut. Ha egy program eppen masolas kozben 
+  A masolas kulon szalon fut. Ha egy program eppen masolas kozben
   akarna kilepni, akkor elobb megvarja a masolas befejezodeset.
 
 2023-07-27 ANSI terminalokban beallitva "meta send escape";
@@ -107,13 +109,13 @@
 2023-06-17 build 1.6.3 include-ok keresese javitva;
 
 2023-06-16 lat2utf8 javitva:
-  Az ismeretlen karaktereket '?'-re csereli (enélkül 
+  Az ismeretlen karaktereket '?'-re csereli (enélkül
   a latex2pdf konverzio fennakad a hibas karakteren).
 
-2023-06-16 
+2023-06-16
    setperm atallitva 644/755-re;
 
-2023-06-10 
+2023-06-10
   qout.cpp/setfp-ben a lokalisan megnyilo csatornak fajlnevei
   transzormalodnak a setlocalname()-ben  beallitott kodblokk
   kiertekelesevel. Alapesetben nincs semmilyen transzformacio.

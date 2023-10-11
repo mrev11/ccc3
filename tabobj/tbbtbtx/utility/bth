@@ -1,0 +1,5 @@
+#!/bin/bash
+find .  -name '*.bt' | while read BT; do
+    #nem kell neki btpasswd
+    bthead.exe $BT
+done

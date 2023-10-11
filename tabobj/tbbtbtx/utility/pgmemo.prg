@@ -78,7 +78,7 @@ local rec,mix,pos,len,memseg
     ? "memo position :", memopos //, "->", {pgno,indx}
 
     while( pgno>0 )
-        page:=_db_rdpage(btree,pgno)
+        page:=_db_pgread(btree,pgno)
         memohead:=page::substr((1+indx)*16+1,16)
         //? memohead::bin2hex
 
@@ -131,13 +131,13 @@ local pgno,indx
 static function freespace(btree)
 
 local pgno:=0
-local page:=_db_rdpage(btree,pgno)
+local page:=_db_pgread(btree,pgno)
 local pgnext:=page[25..28]::num
 local lower,upper
 
     while( pgno!=pgnext ) // az utolso lap onmagara mutat
         pgno   := pgnext
-        page   := _db_rdpage(btree,pgno)
+        page   := _db_pgread(btree,pgno)
         pgnext := page[ 5.. 8]::num::numand(0x7fffffff)
         lower  := page[ 9..12]::num
         upper  := page[13..16]::num

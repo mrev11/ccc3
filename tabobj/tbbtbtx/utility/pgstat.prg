@@ -23,6 +23,7 @@ local fsize
 
 local MAGIC
 local VERSION
+local ENCRYPT
 local PGSIZE
 local NRECS
 local FREE
@@ -54,11 +55,12 @@ local n,lower,upper,space
 
 
     fsize:=fstat_st_size(fd)
-    page:=_db_rdpage(btree,0)
+    page:=_db_pgread(btree,0)
     //memowrit("page-0",page)
 
     MAGIC    := page[ 1.. 4]
-    VERSION  := page[ 5.. 8]::num
+    VERSION  := page[ 5.. 8]::num::numand(0xf)
+    ENCRYPT  := page[ 5.. 8]::num::numand(0x100)!=0
     PGSIZE   := page[ 9..12]::num
     NRECS    := page[13..16]::num
     FREE     := page[17..20]::num
@@ -66,12 +68,16 @@ local n,lower,upper,space
     MEMO     := page[25..28]::num
     NORDS    := page[29..32]::num
 
-    ? btfile, "dskord="+dskord(), "version="+VERSION::str::alltrim, "pagesize="+PGSIZE::str::alltrim
-    ? "size :", fsize::transform("999,999,999")::alltrim, "byte"
-    ? "npges:", (fsize/PGSIZE)::str::alltrim
-    ? "nrecs:", NRECS::str::alltrim
-    ? "nords:", NORDS::str::alltrim
-    ? "free :", "0x"+FREE::l2hex
+    ? btfile
+    ? "  diskord  :" , dskord()
+    ? "  version  :" , VERSION::str::alltrim
+    ? "  encrypt  :" , if(ENCRYPT,"true","false")
+    ? "  pgsize   :" , PGSIZE::str::alltrim
+    ? "  filesize :" , fsize::transform("999,999,999")::alltrim
+    ? "  numpges  :" , (fsize/PGSIZE)::str::alltrim
+    ? "  numrecs  :" , NRECS::str::alltrim
+    ? "  numords  :" , NORDS::str::alltrim
+    ? "  free     :" , "0x"+FREE::l2hex
     ?
 
     for n:=1 to len(pgtype)
@@ -84,14 +90,14 @@ local n,lower,upper,space
     // onnan tudhato csak, hogy free, hogy a listaban van
     link:=FREE
     while( link!=0 )
-        page:=_db_rdpage(btree,link)
+        page:=_db_pgread(btree,link)
         link:=page[5..8]::num
         stat[1]:count+=1
         stat[1]:space+=PGSIZE
     end
 
     pgno:=1
-    while( (page:=_db_rdpage(btree,pgno))!=NIL  )
+    while( (page:=_db_pgread(btree,pgno))!=NIL  )
 
         //if( pgno<10 )
         //    memowrit("page-"+pgno::str::alltrim,page)

@@ -102,7 +102,7 @@ BTREE *__bt_open(int fd, int psize, int create)
             }
         }
 
-        if( (t->version!=1) && (t->version!=2)  )
+        if( (GETVER(t)!=1) && (GETVER(t)!=2)  )
         {
             fprintf(stderr,"BTREEVERSION\n");fflush(0);
             goto eftype;
@@ -130,7 +130,12 @@ BTREE *__bt_open(int fd, int psize, int create)
 
         t->bt_free=P_INVALID;
         t->magic=BTREEMAGIC;
-        t->version=BTREEVERSION;
+        SETVER(t,BTREEVERSION);
+        char *pwenv=getenv("CCC_BTPASSWD");
+        if(  pwenv!=0 && *pwenv!=0 )
+        {
+            SETENC(t,1); //titkositott
+        }
 
         header(t); //create header page
     }
@@ -140,7 +145,7 @@ BTREE *__bt_open(int fd, int psize, int create)
     }
 
     // Initialize pager. 
-    if( (t->bt_mp= mpool_open(t->bt_fd,t->bt_psize))==NULL )
+    if( (t->bt_mp= mpool_open(t->bt_fd,t->bt_psize,GETENC(t)))==NULL )
     {
         fprintf(stderr,"MPOOL:%d\n",errno);fflush(0);
         goto err;

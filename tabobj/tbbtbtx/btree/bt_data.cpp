@@ -217,21 +217,14 @@ int __bt_read1(BTREE *t, DBT*data, pgno_t pgno, indx_t index)
 
 
 //----------------------------------------------------------------------------
-int __bt_rdpage(BTREE *t, DBT*data, pgno_t pgno, int rewrite)
+int __bt_pgread(BTREE *t, pgno_t pgno, DBT*data)
 {
-    // titkositashoz
     // statisztikakhoz
-    //
-    // beolvassa a pgno-val megadott page-et
-    // ha data!=NULL, akkor a tartalmat atmasolja data-ba
-    // rewrite==0 csak olvas
-    // rewrite==1 (esetleg titkositva) visszair
-    // rewrite==2 titkositas nelkul visszair
 
     PAGE *h=0;
     int length=0;
 
-    mpool_count(t->bt_mp,"rdpage-0");//ellenorzes
+    mpool_count(t->bt_mp,"pgread-0");//ellenorzes
     __bt_pagelock(t,pgno,0);
 
     if( pgno==0 )
@@ -241,33 +234,66 @@ int __bt_rdpage(BTREE *t, DBT*data, pgno_t pgno, int rewrite)
 
         length=(data->size<sizeof(BTREE))?data->size:sizeof(BTREE); // min
         memset(data->data,0,data->size);
-        memmove(data->data,t,length);  
+        memmove(data->data,t,length);
         length=data->size;
     }
-    else if( (0!=(h=(PAGE*)mpool_get(t->bt_mp,pgno))) && (data!=0)  )
+    else
     {
+        h=(PAGE*)mpool_get(t->bt_mp,pgno);
         data->size=(data->size<t->bt_psize)?data->size:t->bt_psize; // min
         memmove(data->data,h,data->size);
         length=data->size;
-  
-        if( rewrite==0 )
-        {
-            mpool_put(t->bt_mp,h,0);
-        }
-        else if( rewrite==1 )
-        {
-            mpool_put(t->bt_mp,h,1);
-        }
-        else if( rewrite==2 )
-        {
-            int crypt=mpool_enable_crypt(0);
-            mpool_put(t->bt_mp,h,1);
-            mpool_enable_crypt(crypt);
-        }
+        mpool_put(t->bt_mp,h,0);
     }
     __bt_pageunlock(t,pgno);
-    mpool_count(t->bt_mp,"rdpage-1");//ellenorzes
+    mpool_count(t->bt_mp,"pgread-1");//ellenorzes
     return length;
+}
+
+
+//----------------------------------------------------------------------------
+void __bt_pgrewrite(BTREE *t, pgno_t pgno, int cryptflg)
+{
+    // ki/be titkositashoz
+
+    PAGE *h=0;
+
+    mpool_count(t->bt_mp,"pgrewrite-0");//ellenorzes
+    __bt_pagelock(t,pgno,0);
+
+    if( pgno==0 )
+    {
+        // header kihagy
+    }
+    else
+    {
+        h=(PAGE*)mpool_get(t->bt_mp,pgno);
+        int cf=t->bt_mp->cryptflg;
+        //printf("__bt_rewrite [%d] %d -> %d\n", pgno, cf, cryptflg!=0 );
+
+        if( (cf==0) == (cryptflg==0) )
+        {
+            // nem kell irni
+            mpool_put(t->bt_mp,h,0);
+        }
+        else if( cryptflg==0 )
+        {
+            // titkositas nelkul
+            t->bt_mp->cryptflg=0;
+            mpool_put(t->bt_mp,h,1);
+        }
+        else if( cryptflg!=0 )
+        {
+            // titkositassal
+            t->bt_mp->cryptflg=1;
+            mpool_put(t->bt_mp,h,1);
+        }
+
+        t->bt_mp->cryptflg=cf;
+    }
+
+    __bt_pageunlock(t,pgno);
+    mpool_count(t->bt_mp,"pgrewrite-1");//ellenorzes
 }
 
 //----------------------------------------------------------------------------

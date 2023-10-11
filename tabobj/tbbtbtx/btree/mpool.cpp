@@ -43,7 +43,7 @@ static pgno_t  pageno[MAXPIN];
 
 
 //---------------------------------------------------------------------------
-MPOOL *mpool_open(int fd, int pagesize)
+MPOOL *mpool_open(int fd, int pagesize, int cryptflg)
 {
     MPOOL *mp;
 
@@ -60,6 +60,7 @@ MPOOL *mpool_open(int fd, int pagesize)
     mp->fd=fd;
     mp->pagesize=pagesize;
     mp->count=0;
+    mp->cryptflg=cryptflg;
 
     return (MPOOL*)mp;
 }
@@ -100,7 +101,8 @@ int mpool_count(MPOOL *mp, const char *msg)
 {
     if( mp->count )
     {
-        fprintf(stderr,"ERROR: mpool_count %d %s\n", mp->count,msg );
+        fprintf(stderr,"\nERROR: mpool_count %d %s\n", mp->count,msg );
+        fflush(0);
         raise(SIGTERM);
         exit(1);
     }
@@ -154,6 +156,11 @@ void *mpool_get(MPOOL *mp, pgno_t pgno)
             return 0;
         }
 
+        if( mp->cryptflg )
+        {
+            mpool_decrypt(mp,pgno,buf);
+        }
+
         pgno_t code=*(pgno_t*)buf; //uint32
         if( mp->pgin )
         {
@@ -171,15 +178,12 @@ void *mpool_get(MPOOL *mp, pgno_t pgno)
             //fprintf(stderr,"page verified: fd=%d pgno=%x crc=%x\n",mp->fd,pgno,code);
             break;
         }
-        else if( mpool_decrypt(mp,pgno,buf) )
-        {
-            break;
-        }
         else if( ++attempt>10 )
         {
-            fprintf(stderr,"page corrupt: fd=%d pgno=%x code=%x crc=%x\n", mp->fd, pgno, code, CRCPG(buf,mp->pagesize) );
-            //raise(SIGABRT);
+            fprintf(stderr,"\npage corrupt: fd=%d pgno=%x code=%x crc=%x\n", mp->fd, pgno, code, CRCPG(buf,mp->pagesize) );
+            fflush(0);
             raise(SIGTERM);
+            exit(1);
         }
     }
 
@@ -217,7 +221,10 @@ int mpool_put(MPOOL *mp, void *page, int dirty)
         }
         *(pgno_t*)page=code;
 
-        mpool_encrypt(mp,pgno,(char*)page);
+        if( mp->cryptflg )
+        {
+            mpool_encrypt(mp,pgno,(char*)page);
+        }
 
         lseek(mp->fd,((off_t)pgno)*mp->pagesize,SEEK_SET);
         int retcode=write(mp->fd,page,mp->pagesize);

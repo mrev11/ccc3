@@ -43,11 +43,11 @@ local pgsize
     set printer on
     set printer to log-pgview
 
-    page0:=_db_rdpage(btree,0)
+    page0:=_db_pgread(btree,0)
     pgsize:=page0[9..12]::num
 
     pgno::=hex2l
-    page:=_db_rdpage(btree,pgno)
+    page:=_db_pgread(btree,pgno)
     if( empty(page) )
         ? "pgno out of bound"
         ?
@@ -83,7 +83,7 @@ local nords
 local offset
 local n
 
-    ? "magic    :", page[ 1.. 4]::bin2hex, "dskord="+dskord(), "swap="+if(swap(),"TRUE","FALSE")
+    ? "magic    :", page[ 1.. 4]::bin2hex, "diskord="+dskord(), "swap="+if(swap(),"TRUE","FALSE")
     ? "version  :", page[ 5.. 8]::hex
     ? "pagesize :", page[ 9..12]::num , page[ 9..12]::hex
     ? "nrecords :", page[13..16]::num , page[13..16]::hex

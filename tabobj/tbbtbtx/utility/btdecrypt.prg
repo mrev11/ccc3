@@ -6,15 +6,27 @@
 ******************************************************************************************
 function main( btfile )
 
-local tab,page,pgno
+local tab,btree,pgno
 
     tab:=tabResource(btfile)
-    tabOpen(tab)
+    tabOpen(tab,OPEN_EXCLUSIVE)
+    btree:=tab[2]
+
+    if( !_db_cryptflg(btree) )
+        //? "nincs titkositva"
+        quit
+    end
 
     pgno:=1
-    while( NIL!=(page:=_db_rdpage(tab[2],pgno,2)) )
+    while( _db_pgrewrite(btree,pgno,.f.) )
+        // kilep, ha nincs btpasswd
         ++pgno
     end
+
+    // cryptflg utolag!
+    _db_cryptflg(btree,.f.)
+
+    tabClose(tab)
 
 ******************************************************************************************
 

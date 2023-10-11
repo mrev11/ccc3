@@ -19,8 +19,8 @@
  */
 
 
-#include <signal.h>
 #include <dlfcn.h>
+#include <signal.h>
 
 #include <openssl/err.h>
 #include <openssl/evp.h>
@@ -28,39 +28,25 @@
 
 #include <db.h>
 #include <mpool.h>
-#include <swap.h>
-
-static void aes_encrypt(unsigned char*, int, unsigned char*, unsigned char*);
-static void aes_decrypt(unsigned char*, int, unsigned char*, unsigned char*);
-static int mpool_btpasswd(pgno_t pgno, unsigned char *key,unsigned char *iv);
-
 
 typedef void btpasswd_t(pgno_t, unsigned char*, unsigned char*);
 
+static void btpasswd(pgno_t pgno, unsigned char *key,unsigned char *iv);
+static void aes_encrypt(unsigned char*, int, unsigned char*, unsigned char*);
+static void aes_decrypt(unsigned char*, int, unsigned char*, unsigned char*);
+
 
 //========================================================================================
-//----------------------------------------------------------------------------------------
-static void error(const char *entryname)
-{
-    if( NULL==entryname )
-    {
-        printf("libcrypto.so not found\n");
-    }
-    else
-    {
-        printf("%s not in library\n",entryname);
-    }
-    fflush(0);
-    exit(1);
-}
-
 //----------------------------------------------------------------------------------------
 static void *load_crypto_so()
 {
     void *so=dlopen("libcrypto.so",RTLD_NOW|RTLD_GLOBAL);
     if( so==0 )
     {
-        error(0);
+        fprintf(stderr,"\nERROR: cannot load libcrypto.so\n");
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
     }
     return so;
 }
@@ -69,14 +55,18 @@ static void *load_crypto_so()
 static void* getproc(const char *entryname)
 {
     static void *so=load_crypto_so();
+
     void *proc=dlsym(so,entryname);
     if( proc==0 )
     {
-        error(entryname);
+        fprintf(stderr,"\nERROR: cannot load [%s]\n",entryname);
+        fflush(0);
+        raise(SIGTERM);
+        exit(1);
     }
     else
     {
-        //printf("LOADED crypto[%s]\n",entryname);
+        //printf("LOADED [%s]\n",entryname);
         //fflush(0);
     }
     return proc;
@@ -85,8 +75,8 @@ static void* getproc(const char *entryname)
 
 //----------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------
-//typedef int                 OPENSSL_init_crypto_t(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings);
-//typedef void                ERR_load_crypto_strings_t(void);
+typedef int                 OPENSSL_init_crypto_t(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings);
+typedef void                ERR_load_crypto_strings_t(void);
 typedef unsigned long       ERR_get_error_line_data_t(const char **file, int *line, const char **data, int *flags);
 typedef void                ERR_error_string_n_t(unsigned long e, char *buf, size_t len);
 
@@ -210,136 +200,61 @@ static int  _x_EVP_EncryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int 
 
 //========================================================================================
 //----------------------------------------------------------------------------------------
-static void *loadproc()
+static void *load_btpasswd_so()
 {
     const char *libname=getenv("CCC_BTPASSWD");
-    const char *procname="_Z8btpasswdjPhS_";
-
-    if( libname==0 || *libname==0 )
+    void *so=0;
+    if( libname==0 || *libname==0 || (so=dlopen(libname,RTLD_NOW|RTLD_GLOBAL))==0 )
     {
-        return 0;
-    }
-
-    void *so=dlopen(libname,RTLD_NOW|RTLD_GLOBAL); 
-    if( so==0 )
-    {
-        fprintf(stderr,"ERROR: dlopen failed [%s]\n",libname);
+        fprintf(stderr,"\nERROR: cannot load passwd library [%s]\n",libname);
+        fflush(0);
         raise(SIGTERM);
-        return 0;
+        exit(1);
     }
-    
+    return so;
+}
+
+//----------------------------------------------------------------------------------------
+static void *load_btpasswd_proc()
+{
+    static void *so=load_btpasswd_so();
+
+    const char *procname="_Z8btpasswdjPhS_";
     void *proc=dlsym(so,procname);
     if( proc==0 )
     {
-        fprintf(stderr,"ERROR: dlsym failed [%s->%s]\n",libname,procname);
+        fprintf(stderr,"\nERROR: cannot load passwd procedure [%s]\n",procname);
+        fflush(0);
         raise(SIGTERM);
-        return 0;
+        exit(1);
     }
     return proc;
 }
 
 //----------------------------------------------------------------------------------------
-static int mpool_btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
+static void btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
 {
-    static void *proc=loadproc();
-    if( proc )
-    {
-        ((btpasswd_t*)proc)(pgno,key,iv);
-        return 1;
-    }
-    return 0;
+    static void *proc=load_btpasswd_proc();
+    ((btpasswd_t*)proc)(pgno,key,iv);
 }
 
 //----------------------------------------------------------------------------------------
-int mpool_enable_crypt(int mode)
-{
-    // mode==0  titkositas letiltva
-    // mode==1  titkositas engedve (ha van btpasswd is)
-    // mode==-1 lekerdezes
-
-    static int enabled=1;
-
-    int value=enabled;
-    if( mode==0 )
-    {
-        enabled=0;
-    }
-    else if( mode==1 )
-    {
-        enabled=1;
-    }
-    return value;
-}
-
-//----------------------------------------------------------------------------------------
-int mpool_decrypt(MPOOL *mp, pgno_t pgno, char *buf)
-{
-    // akkor jon ide
-    // ha a page titkositva van (vagy hibas)
-
-    unsigned char key[33];
-    unsigned char iv[17];
-
-    if(  mpool_btpasswd(pgno,key,iv)  )
-    {
-        aes_decrypt((unsigned char*)buf,mp->pagesize,key,iv);
-
-        pgno_t code=*(pgno_t*)buf; //uint32
-        if( mp->pgin )
-        {
-            M_32_SWAP(code);
-        }
-        if( code==CRCPG(buf,mp->pagesize) ) //disk byte order!
-        {
-            //printf("dec %d\n",pgno);
-            return 1; //OK
-        }
-    }
-
-    // HIBA
-    // - nincs titkosito kulcs
-    // - aes_decrypt utan a CRC hibas
-    return 0;
-}
-
-
-//----------------------------------------------------------------------------------------
-int mpool_encrypt(MPOOL *mp, pgno_t pgno, char *buf)
+void mpool_decrypt(MPOOL *mp, pgno_t pgno, char *buf)
 {
     unsigned char key[33];
     unsigned char iv[17];
+    btpasswd(pgno,key,iv);
+    aes_decrypt((unsigned char*)buf,mp->pagesize,key,iv);
+}
 
-    if( mpool_enable_crypt(-1)==0 )
-    {
-        return 0; // letiltva, nem tortent titkositas
-    }
-    else if( !mpool_btpasswd(pgno,key,iv) )
-    {
-        return 0; // nincs megadva kulcs, nem tortent titkositas
-    }
 
+//----------------------------------------------------------------------------------------
+void mpool_encrypt(MPOOL *mp, pgno_t pgno, char *buf)
+{
+    unsigned char key[33];
+    unsigned char iv[17];
+    btpasswd(pgno,key,iv);
     aes_encrypt((unsigned char*)buf,mp->pagesize,key,iv);
-
-    pgno_t code=*(pgno_t*)buf; //uint32
-    if( mp->pgin )
-    {
-        M_32_SWAP(code);
-    }
-
-    if( code==pgno || code==CRCPG(buf,mp->pagesize) )
-    {
-        // ritka eset
-        // nem szabad titkositani
-        // mert pgno vagy CRC egyezosege miatt
-        // visszaolvasaskor titkositatlannak latszana
-        // ezert a titkositas vissza
-
-        mpool_btpasswd(pgno,key,iv);
-        aes_decrypt((unsigned char*)buf,mp->pagesize,key,iv);
-        return 0; // nem tortent titkosites
-    }
-
-    return 1; // titkositva
 }
 
 
@@ -356,7 +271,8 @@ static void crypto_error()
     {
         char buf[1024];
         _x_ERR_error_string_n(len,buf,sizeof(buf));
-        fprintf(stderr,"%s:%s(%d)",buf,file,line);
+        fprintf(stderr,"\nERROR: %s:%s(%d)",buf,file,line);
+        fflush(0);
         raise(SIGTERM);
         exit(1);
     }

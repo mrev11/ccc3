@@ -29,7 +29,23 @@ void _clp__db_version(int argno)
 {
     CCC_PROLOG("_db_version",1);
     BTREE *db=(BTREE*)_parp(1);
-    _retni(db->version);
+    _retni(GETVER(db));
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp__db_cryptflg(int argno)
+{
+    CCC_PROLOG("_db_cryptflg",2);
+    BTREE *db=(BTREE*)_parp(1);
+    int encflg=GETENC(db);
+    if( !ISNIL(2) )
+    {
+        __bt_header_read(db,1);
+        SETENC(db,_parl(2)?1:0);
+        __bt_header_write(db);
+    }
+    _retl(encflg);
     CCC_EPILOG();
 }
 
@@ -383,24 +399,17 @@ void _clp__db_read1(int argno)
 
 
 //---------------------------------------------------------------------------
-void _clp__db_rdpage(int argno)
+void _clp__db_pgread(int argno)
 {
-    // titkositashoz
     // statisztikakhoz
-    //
-    // rewrite==0 csak olvas (kititkosit)
-    // rewrite==1 (esetleg titkositva) visszair
-    // rewrite==2 titkositas nelkul visszair
 
-    CCC_PROLOG("_db_rdpage",3);
+    CCC_PROLOG("_db_pgread",2);
     BTREE *db=(BTREE*)_parp(1);
     pgno_t pgno=_parni(2);
-    int rewrite=ISNIL(3)?0:_parni(3);
 
     int fd=__bt_fd(db);
-    int pagesize=__bt_pagesize(db);
-    off_t offset=lseek(fd,0,SEEK_CUR);
     off_t totalsize=lseek(fd,0,SEEK_END);
+    int pagesize=__bt_pagesize(db);
     unsigned int maxpgno=totalsize/pagesize-1;
 
     if( 0<=pgno && pgno<=maxpgno )
@@ -409,7 +418,7 @@ void _clp__db_rdpage(int argno)
         data.data=binaryl(pagesize);
         data.size=pagesize;
 
-        if( pagesize==__bt_rdpage(db,&data,pgno,rewrite) )
+        if( pagesize==__bt_pgread(db,pgno,&data) )
         {
             _rettop();
         }
@@ -422,8 +431,34 @@ void _clp__db_rdpage(int argno)
     {
         _ret();
     }
+    CCC_EPILOG();
+}
 
-    lseek(fd,offset,SEEK_SET);
+
+//---------------------------------------------------------------------------
+void _clp__db_pgrewrite(int argno)
+{
+    // titkositashoz
+
+    CCC_PROLOG("_db_pgrewrite",3);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=_parni(2);
+    int cryptflg=_parl(3);
+    
+    int fd=__bt_fd(db);
+    off_t totalsize=lseek(fd,0,SEEK_END);
+    int pagesize=__bt_pagesize(db);
+    unsigned int maxpgno=totalsize/pagesize-1;
+
+    if( 0<=pgno && pgno<=maxpgno )
+    {
+        __bt_pgrewrite(db,pgno,cryptflg);
+        _retl(1);
+    }
+    else
+    {
+        _retl(0);
+    }
     CCC_EPILOG();
 }
 

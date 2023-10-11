@@ -1,0 +1,5 @@
+#!/bin/bash
+find .  -name '*.bt' | while read BT; do
+    echo $BT
+    CCC_BTPASSWD=libbtpasswd.so  btencrypt.exe  $BT
+done

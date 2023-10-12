@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #ifndef _UNIX_
 #include <io.h>
@@ -76,41 +77,21 @@ BTREE *__bt_open(int fd, int psize, int create)
  
     if( !create && sb.st_size  ) 
     {
-        if( __bt_header_read(t,0)!=RET_SUCCESS )
+        if( __bt_header_read(t,1)!=RET_SUCCESS )
         {
             goto err;
         }
-
-        if( t->magic!=BTREEMAGIC )
+        __bt_header_release(t);
+  
+        if( (GETVER(t)!=3) && (GETVER(t)!=4)  )
         {
-            //forditott byte sorrend?
-            
-            if( F_ISSET(t,B_NEEDSWAP) )
-            {
-                F_CLR(t,B_NEEDSWAP); 
-            }
-            else
-            {
-                F_SET(t,B_NEEDSWAP); 
-            }
-            __bt_header_read(t,0); 
-
-            if( t->magic!=BTREEMAGIC )
-            {
-                fprintf(stderr,"BTREEMAGIC\n");fflush(0);
-                goto eftype;
-            }
-        }
-
-        if( (GETVER(t)!=1) && (GETVER(t)!=2)  )
-        {
-            fprintf(stderr,"BTREEVERSION\n");fflush(0);
+            fprintf(stderr,"ERROR: wrong bt version [%d]\n",GETVER(t));fflush(0);
             goto eftype;
         }
  
         if( t->bt_psize<256 || t->bt_psize&(sizeof(indx_t)-1) )
         {
-            fprintf(stderr,"MINPAGESIZE\n");fflush(0);
+            fprintf(stderr,"ERROR: wrong pagesize [%d]\n",t->bt_psize);fflush(0);
             goto eftype;
         }
     } 
@@ -137,6 +118,7 @@ BTREE *__bt_open(int fd, int psize, int create)
         {
             SETENC(t,1); //titkositott
         }
+        t->bt_salt=__bt_gensalt(23456);
 
         header(t); //create header page
     }
@@ -146,7 +128,7 @@ BTREE *__bt_open(int fd, int psize, int create)
     }
 
     // Initialize pager. 
-    if( (t->bt_mp= mpool_open(t->bt_fd,t->bt_psize,GETENC(t)))==NULL )
+    if( (t->bt_mp=mpool_open(t->bt_fd,t->bt_psize))==NULL )
     {
         fprintf(stderr,"MPOOL:%d\n",errno);fflush(0);
         goto err;
@@ -154,10 +136,12 @@ BTREE *__bt_open(int fd, int psize, int create)
     
     t->bt_mp->pgin=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapin:0;
     t->bt_mp->pgout=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapout:0;
+    t->bt_mp->cryptflg=GETENC(t);
+    t->bt_mp->salt=t->bt_salt;
     
     //__bt_print_bthdr(t,"open");
     //__bt_print_free(t);
- 
+
     mpool_count(t->bt_mp, "open");
     return t;
 
@@ -214,7 +198,19 @@ int __bt_pagesize(BTREE *t)
 }
  
 //---------------------------------------------------------------------------
+unsigned int __bt_gensalt(int x)
+{
+    struct {
+        int x;
+        int p;
+        time_t t;
+    } data;
+    
+    data.x=x;
+    data.p=getpid();
+    data.t=time(0);
+    extern unsigned crc32(void*,int);
+    return crc32(&data,sizeof(data));
+}
 
-
-
-
+//---------------------------------------------------------------------------

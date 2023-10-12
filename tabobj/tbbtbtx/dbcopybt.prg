@@ -19,7 +19,7 @@
  */
 
 #include "fileio.ch"
-#include "tabobj.ch" 
+#include "tabobj.ch"
 
 
 #define PRIME          1103
@@ -29,59 +29,73 @@
 ******************************************************************************
 function tabCopybt(table)
 
-local btname,tfile 
+local btname,tfile
 local fd,db,db1
 local n,rb
-local msg,total,cnt:=0 
+local msg,total,cnt:=0
 local recno:=0,recbuf,reclen,recpos
-local fdkey:={},kfilnam 
+local fdkey:={},kfilnam
 local ord,key
 local memcol:={},memdec:={},mempos,memval
+local cryptflg
+local cryptflg1
+local pgno
 
     //-----------------------
     //regi adatfile
     //-----------------------
- 
+
     btname:=lower(tabPathName(table))
- 
+
     fd:=fopen(btname,FO_READWRITE+FO_EXCLUSIVE)
     if( fd<0 )
         taberrOperation("tabCopybt")
         taberrDescription(@"failed opening file (fd)")
-        tabError(table) 
+        tabError(table)
     end
 
     db:=_db_open(fd)
     if( db==NIL )
         taberrOperation("tabCopybt")
         taberrDescription(@"failed opening file (db)")
-        tabError(table) 
+        tabError(table)
     end
 
     //-----------------------
     //uj adatfile
     //-----------------------
- 
-    tfile:=tabFile(table) 
+
+    tfile:=tabFile(table)
     tabFile(table,TMPCHR+tfile)
     ferase(lower(tabPathName(table)))
     tabCreate(table)
     tabOpen(table,OPEN_EXCLUSIVE)
     tabZap(table)
     db1:=table[TAB_BTREE]
-    
- 
+
+    cryptflg  :=_db_cryptflg(db)  // titkositva van-e az eredeti
+    cryptflg1 :=_db_cryptflg(db1) // titkositva van-e az uj fajl
+
+    if( cryptflg!=cryptflg1 )
+        pgno:=1
+        while( _db_pgrewrite(db1,pgno,cryptflg) )
+            pgno++
+        end
+        _db_cryptflg(db1,cryptflg)
+    end
+
+
     //-----------------------
     //ideiglenes kulcsfilek
     //-----------------------
- 
-    for ord:=0 to len(tabIndex(table)) 
+
+    for ord:=0 to len(tabIndex(table))
         ferase(kfilnam:=KEYNAME(table,ord))
         aadd(fdkey,fopen(kfilnam,FO_CREATE+FO_TRUNCATE+FO_READWRITE+FO_NOLOCK))
         if( atail(fdkey)<0 )
             taberrOperation("tabCopybt")
             taberrDescription(@"failed creating file (fdkey)")
-            tabError(table) 
+            tabError(table)
         end
     next
 
@@ -102,20 +116,20 @@ local memcol:={},memdec:={},mempos,memval
     //rekordok atmasolasa
     //-----------------------
 
- 
+
     total:="/"+alltrim(str(_db_lastrec(db)))
-    reclen:=table[TAB_RECLEN] 
-    recbuf:=table[TAB_RECBUF]  
+    reclen:=table[TAB_RECLEN]
+    recbuf:=table[TAB_RECBUF]
 
     //Csak akkor mukodik, ha epsegben van a recno index,
     //lassabb is, viszont megtartja a rekordok eredeti sorrendjet.
     //Ez szukseges ahhoz, hogy a tabPack replikalhato legyen.
 
     _db_setord(db,"recno")
-    key:=_db_first(db) 
+    key:=_db_first(db)
 
     while( key!=NIL )
-        recpos:=right(key,6)  
+        recpos:=right(key,6)
         rb:=_db_read(db,recbuf,recpos)
 
         if( rb!=reclen )
@@ -123,11 +137,11 @@ local memcol:={},memdec:={},mempos,memval
             //serult file
             taberrOperation("tabCopybt")
             taberrDescription(@"read failed (rb!=reclen)")
-            tabError(table) 
+            tabError(table)
 
         elseif( left(recbuf,1)==a"*" )
             //torolt rekord
- 
+
         else
             recno++
 
@@ -144,21 +158,21 @@ local memcol:={},memdec:={},mempos,memval
                 setmempos(table,memcol[n],mempos)
             next
 
-            table[TAB_RECPOS]    :=  _db_append(db1,recbuf) 
+            table[TAB_RECPOS]    :=  _db_append(db1,recbuf)
             table[TAB_POSITION]  :=  recno
- 
+
             for ord:=0 to len(tabIndex(table))
                 key:=tabKeyCompose(table,ord)
                 fwrite(fdkey[1+ord],key)
             next
         end
 
-        key:=_db_next(db)  
+        key:=_db_next(db)
     end
 
-    for ord:=0 to len(tabIndex(table)) 
+    for ord:=0 to len(tabIndex(table))
         if( recno>0 ) //2002.11.13
-            build_index(table,ord,fdkey[1+ord],msg,btname) 
+            build_index(table,ord,fdkey[1+ord],msg,btname)
         end
         fclose(fdkey[1+ord])
         ferase(KEYNAME(table,ord))
@@ -167,20 +181,20 @@ local memcol:={},memdec:={},mempos,memval
     if( msg!=NIL )
         message(msg)
     end
-    
+
     _db_close(db)
     tabClose(table)
-    
+
     set signal block
     ferase(btname)
-    frename(lower(tabPathName(table)),btname) 
+    frename(lower(tabPathName(table)),btname)
     set signal unblock
- 
+
     tabFile(table,tfile)
- 
+
     return .t.
 
- 
+
 ******************************************************************************
 static function getmempos(table,n)
 local column:=table[TAB_COLUMN][n]
@@ -201,32 +215,32 @@ static function build_index(table,ord,fd,msg,btname)
 
 local keyval,keynam,keylen
 local db1:=table[TAB_BTREE]
-local rcount:=table[TAB_POSITION] 
+local rcount:=table[TAB_POSITION]
 local n,rb,stat
 
     if( ord==0 )
         keynam:="recno"
     else
-        keynam:=tabIndex(table)[ord][IND_NAME] 
+        keynam:=tabIndex(table)[ord][IND_NAME]
     end
 
     if( 0>_db_setord(db1,keynam) )
         taberrOperation("tabCopybt")
         taberrDescription(@"no index (_db_setord<0)")
         taberrArgs({keynam})
-        tabError(table) 
+        tabError(table)
     end
-    
-    keylen:=tabKeyLength(table,ord)  
+
+    keylen:=tabKeyLength(table,ord)
     keyval:=replicate(x"00",keylen)
 
     if( ord>0 )
         __bt_sortkey(KEYNAME(table,ord),rcount,keylen)
-    end                   
+    end
 
     fseek(fd,0,FS_SET)
     for n:=1 to rcount
-    
+
         if( n%PRIME==0 .and. msg!=NIL )
             message(msg,@"COPY "+btname+" ("+keynam+")"+str(n))
         end
@@ -237,7 +251,7 @@ local n,rb,stat
             taberrOperation("tabCopybt")
             taberrDescription(@"read failed (rb!=keylen)")
             taberrArgs({keynam,ferror()})
-            tabError(table) 
+            tabError(table)
         end
 
         stat:=_db_put(db1,keyval)
@@ -245,10 +259,10 @@ local n,rb,stat
             taberrOperation("tabCopybt")
             taberrDescription(@"failed building index (_db_put!=0)")
             taberrArgs({keynam,stat})
-            tabError(table) 
+            tabError(table)
         end
     next
-    
+
     return NIL
 
 ******************************************************************************

@@ -24,16 +24,17 @@
 
 typedef struct 
 {
-  int   pagesize;
-  int   fd; 
-  int   count;
-  void  (*pgin)(void*);
-  void  (*pgout)(void*);
-  int   cryptflg;
+  int       pagesize;
+  int       fd; 
+  int       count;
+  void      (*pgin)(void*);
+  void      (*pgout)(void*);
+  int       cryptflg;
+  unsigned  salt;
 } MPOOL;
  
 
-extern MPOOL  * mpool_open(int fd, int pagesize, int cryptflg);
+extern MPOOL  * mpool_open(int fd, int pagesize);
 extern int      mpool_close(MPOOL *mp);
 extern int      mpool_count(MPOOL *mp, const char*msg);
 extern void     mpool_dump(MPOOL *mp, void *page);

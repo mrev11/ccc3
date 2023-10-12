@@ -181,7 +181,7 @@ local timeout
         end
     end
 
-    if( _db_version(table[TAB_BTREE])==1 .and. 0<tabMemoCount(table) )
+    if( _db_version(table[TAB_BTREE])==3 .and. 0<tabMemoCount(table) )
         version_upgrade_v1_v2(table)
     end
 
@@ -443,9 +443,9 @@ local magic:=x"00"::replicate(4)
     fread(table[TAB_FHANDLE],@magic,4)
 
     if( magic==x"62310500" )
-        fwrite(table[TAB_FHANDLE],x"02000000",4) // little endian
+        fwrite(table[TAB_FHANDLE],x"04000000",4) // little endian
     elseif( magic==x"00053162" )
-        fwrite(table[TAB_FHANDLE],x"00000002",4) // big endian
+        fwrite(table[TAB_FHANDLE],x"00000004",4) // big endian
     else
         //ide nem johet
         //mert ha rossz a magic

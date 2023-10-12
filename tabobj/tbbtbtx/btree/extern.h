@@ -69,6 +69,8 @@
   int    __bt_header_sync    (BTREE*);
   int    __bt_header_release (BTREE*);
   int    __bt_lastrec        (BTREE*);
+
+  unsigned  __bt_gensalt(int x);
   
 
 //byte order functions (swap.c)

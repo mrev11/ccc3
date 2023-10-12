@@ -25,6 +25,7 @@
 #include <string.h>
 #include <btree.h>
 #include <swap.h>
+#include <errno.h>
 
 #ifdef WIN32
 #include <io.h>
@@ -33,6 +34,35 @@
 // __bt_header_read(t,1) noveli a lockcount-ot
 // __bt_header_write/release csokkenti a lockcount-ot 
 // ezeknek szigoruan parban kell allniuk
+
+
+static int hread(BTREE*t);
+static int hwrite(BTREE*t);
+
+
+//----------------------------------------------------------------------------
+static void swap_in1(BTREE1 *t)
+{
+    unsigned int i;
+
+    P_32_SWAP(&t->magic);   
+    P_32_SWAP(&t->version);
+    P_32_SWAP(&t->bt_psize);
+    P_32_SWAP(&t->bt_nrecs);
+
+    P_32_SWAP(&t->bt_free);
+    P_32_SWAP(&t->bt_lastdatapage);
+    P_32_SWAP(&t->bt_memo);
+    P_32_SWAP(&t->bt_nords);
+
+    for( i=0; (i<t->bt_nords) && (i<BT_MAXORDER); i++ ) 
+    {
+        ORDER *o=&t->bt_order[i];
+        P_32_SWAP( &o->root );
+        P_32_SWAP( &o->lastpage );
+        P_32_SWAP( &o->flags );
+    }
+}
 
 //----------------------------------------------------------------------------
 static void swap_in(BTREE *t)
@@ -48,6 +78,11 @@ static void swap_in(BTREE *t)
     P_32_SWAP(&t->bt_lastdatapage);
     P_32_SWAP(&t->bt_memo);
     P_32_SWAP(&t->bt_nords);
+
+    P_32_SWAP(&t->bt_salt);
+    P_32_SWAP(&t->bt_reserved1);
+    P_32_SWAP(&t->bt_reserved2);
+    P_32_SWAP(&t->bt_reserved3);
    
     for( i=0; (i<t->bt_nords) && (i<BT_MAXORDER); i++ ) 
     {
@@ -80,6 +115,11 @@ static void swap_out(BTREE *t)
     P_32_SWAP(&t->bt_lastdatapage);
     P_32_SWAP(&t->bt_memo);
     P_32_SWAP(&t->bt_nords);
+
+    P_32_SWAP(&t->bt_salt);
+    P_32_SWAP(&t->bt_reserved1);
+    P_32_SWAP(&t->bt_reserved2);
+    P_32_SWAP(&t->bt_reserved3);
 }
 
 
@@ -87,7 +127,7 @@ static void swap_out(BTREE *t)
 static int hread(BTREE*t)
 {
     int fd=t->bt_fd;
-    int disksize=(char*)&t->flags-(char*)t; // 544
+    int disksize=(char*)&t->flags-(char*)t; // 560
     lseek(fd,0,SEEK_SET);
     int nbyte=read(fd,t,disksize);
     if( nbyte<256 )
@@ -98,15 +138,55 @@ static int hread(BTREE*t)
     {
         memset((char*)t+nbyte,0,disksize-nbyte);
     }
-    if( F_ISSET(t,B_NEEDSWAP) ) 
+
+    if( t->magic==BTREEMAGIC )
+    {
+        F_CLR(t,B_NEEDSWAP); 
+    }
+    else
     {
         swap_in(t);
+        if( t->magic!=BTREEMAGIC )
+        {
+            __bt_error("__bt_header_read: wrong BTREEMAGIC");
+            return -1;
+        }
+        F_SET(t,B_NEEDSWAP); 
     }
+
     int pagesize=t->bt_psize;
     if( pagesize<disksize )
     {
         memset((char*)t+pagesize,0,disksize-pagesize);
     }
+
+    // formatum konverzio
+    int version=GETVER(t);
+    if( version<3 )
+    {
+        if( F_ISSET(t,B_NEEDSWAP) )
+        {
+            // uj formatummal tortent a beforgatas
+            // a forgatast vissza kell csinalni
+            // es a regi formatummal beforgatni
+            swap_out(t);
+            swap_in1((BTREE1*)t);
+        }
+        SETVER(t,version+2);   // 1->3, 2->4
+        memmove( &t->bt_order[0], &t->bt_salt, t->bt_nords*sizeof(ORDER)); //eltolas
+        t->bt_salt=__bt_gensalt(12345);
+        t->bt_reserved1=0;
+        t->bt_reserved2=0;
+        t->bt_reserved3=0;
+
+        hwrite(t);
+        // readonly is lehet a bt 
+        // sikertelen visszairas utan
+        // is tovabb futhat a program
+    }
+
+    t->bt_dirtyflag=0;
+
     return 0;
 
     // megjegyzes
@@ -151,7 +231,6 @@ int __bt_header_read(BTREE *t, int lock)
         {
             __bt_error("__bt_header_read: i/o error");
         }
-        t->bt_dirtyflag=0;
     }
     if( lock )
     {

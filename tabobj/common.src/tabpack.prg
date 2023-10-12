@@ -103,6 +103,11 @@ local result
 local save:=tabSave(table)
 local logged
 
+local cryptflg
+local cryptflg1
+local db,pgno
+
+
     tranNotAllowedInTransaction(table,"zap")
  
     if( tabIsOpen(table)!=OPEN_EXCLUSIVE )
@@ -114,10 +119,22 @@ local logged
     if( tabSlock(table)>0 )
         logged:=table[TAB_LOGGED]
         table[TAB_LOGGED]:=.f.
+        cryptflg:=_db_cryptflg(table[TAB_BTREE])    // titkositva van-e az eredeti
         tabClose(table)
         result:=tabDelTable(table) 
+
         tabCreate(table)
         tabOpen(table,OPEN_EXCLUSIVE)
+        cryptflg1:=_db_cryptflg(table[TAB_BTREE])   // titkositva van-e az uj
+        if( cryptflg!=cryptflg1 )
+            db:=table[TAB_BTREE]
+            pgno:=1
+            while( _db_pgrewrite(db,pgno,cryptflg) )
+                pgno++
+            end
+            _db_cryptflg(db,cryptflg)
+        end
+
         tabRestore(table,save)
         tabGotop(table)
         table[TAB_LOGGED]:=logged

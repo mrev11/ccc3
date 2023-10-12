@@ -43,7 +43,7 @@ static pgno_t  pageno[MAXPIN];
 
 
 //---------------------------------------------------------------------------
-MPOOL *mpool_open(int fd, int pagesize, int cryptflg)
+MPOOL *mpool_open(int fd, int pagesize)
 {
     MPOOL *mp;
 
@@ -60,7 +60,6 @@ MPOOL *mpool_open(int fd, int pagesize, int cryptflg)
     mp->fd=fd;
     mp->pagesize=pagesize;
     mp->count=0;
-    mp->cryptflg=cryptflg;
 
     return (MPOOL*)mp;
 }

@@ -1,5 +1,10 @@
+2023-10-13 bt formatum konverzio: (1,2) -> (3,4);
+  a titkositas bt fajlonkent egyedi saltot hasznal;
+  a bt headerben helyet kellett csinalni a saltnak;
+  pack/zap CCC_BTCRYPT-tol fuggetlenul megtartja a titkositast;
+
 2023-10-12 CCC_BTCRYPT szabalyozza az uj bt fajlok titkositasat;
-  CCC_BTCRYPT=y titkositva
+  CCC_BTCRYPT=y titkositva jonnek letre
   CCC_BTCRYPT=n titkositas nelkul (default)
 
 2023-10-11 Windowson is mukodik a titkositas;

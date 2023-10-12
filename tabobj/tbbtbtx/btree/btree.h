@@ -24,7 +24,7 @@
 #define  _BTREE_H_
 
 #define  BTREEMAGIC    0x053162
-#define  BTREEVERSION  2
+#define  BTREEVERSION  4
 
 #define  F_SET(p,f)     (p)->flags |= (f)
 #define  F_CLR(p,f)     (p)->flags &= ~(f)
@@ -183,6 +183,13 @@ typedef struct _btree
   pgno_t     bt_memo;                  // next memo page
   u_int32_t  bt_nords;                 // number of orders
 
+  // ezek beszurva
+  u_int32_t  bt_salt;                  // titkositashoz
+  u_int32_t  bt_reserved1;             // reserved
+  u_int32_t  bt_reserved2;             // reserved
+  u_int32_t  bt_reserved3;             // reserved
+  // a kesobbiek hatrebb tolodnak
+
   ORDER      bt_order[BT_MAXORDER];    // array of orders
 
   // temporary data
@@ -201,6 +208,25 @@ typedef struct _btree
   int        bt_lockcount;             // lockcount of header page
   int        bt_dirtyflag;             // dirty flag of header page
 } BTREE;
+
+
+typedef struct _btree1
+{
+  // permanent data
+
+  u_int32_t  magic;                    // magic number
+  u_int32_t  version;                  // version
+  u_int32_t  bt_psize;                 // page size
+  u_int32_t  bt_nrecs;                 // number of data records
+
+  pgno_t     bt_free;                  // next free page
+  pgno_t     bt_lastdatapage;          // last data page
+  pgno_t     bt_memo;                  // next memo page
+  u_int32_t  bt_nords;                 // number of orders
+
+  ORDER      bt_order[BT_MAXORDER];    // array of orders
+
+} BTREE1; // v1 es v2 (regebbi) formatum
 
 
 

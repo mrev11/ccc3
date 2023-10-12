@@ -33,9 +33,9 @@
 #include <db.h>
 #include <mpool.h>
 
-typedef void btpasswd_t(pgno_t, unsigned char*, unsigned char*);
+typedef void btpasswd_t(unsigned, pgno_t, unsigned char*, unsigned char*);
 
-static void btpasswd(pgno_t pgno, unsigned char *key,unsigned char *iv);
+static void btpasswd(unsigned salt, pgno_t pgno, unsigned char *key,unsigned char *iv);
 static void aes_encrypt(unsigned char*, int, unsigned char*, unsigned char*);
 static void aes_decrypt(unsigned char*, int, unsigned char*, unsigned char*);
 
@@ -296,7 +296,7 @@ static void *load_btpasswd_proc()
 {
     static void *so=load_btpasswd_so();
 
-    const char *procname="_Z8btpasswdjPhS_";
+    const char *procname="_Z8btpasswdjjPhS_";
     void *proc=dlsym(so,procname);
     if( proc==0 )
     {
@@ -311,10 +311,10 @@ static void *load_btpasswd_proc()
 //----------------------------------------------------------------------------------------
 #endif
 //----------------------------------------------------------------------------------------
-static void btpasswd(pgno_t pgno, unsigned char* key,unsigned char* iv)
+static void btpasswd(unsigned salt, pgno_t pgno, unsigned char* key,unsigned char* iv)
 {
     static void *proc=load_btpasswd_proc();
-    ((btpasswd_t*)proc)(pgno,key,iv);
+    ((btpasswd_t*)proc)(salt,pgno,key,iv);
 }
 
 //----------------------------------------------------------------------------------------
@@ -322,7 +322,7 @@ void mpool_decrypt(MPOOL *mp, pgno_t pgno, char *buf)
 {
     unsigned char key[33];
     unsigned char iv[17];
-    btpasswd(pgno,key,iv);
+    btpasswd(mp->salt,pgno,key,iv);
     aes_decrypt((unsigned char*)buf,mp->pagesize,key,iv);
 }
 
@@ -332,7 +332,7 @@ void mpool_encrypt(MPOOL *mp, pgno_t pgno, char *buf)
 {
     unsigned char key[33];
     unsigned char iv[17];
-    btpasswd(pgno,key,iv);
+    btpasswd(mp->salt,pgno,key,iv);
     aes_encrypt((unsigned char*)buf,mp->pagesize,key,iv);
 }
 

@@ -46,7 +46,8 @@ void _clp__db_cryptflg(int argno)
     if( !ISNIL(2) )
     {
         __bt_header_read(db,1);
-        SETENC(db,_parl(2)?1:0);
+        SETENC(db,_parl(2)?1:0);        // szinkronban kell tartani ezt a kettot
+        db->bt_mp->cryptflg=GETENC(db); // szinkronban kell tartani ezt a kettot
         __bt_header_write(db);
     }
     _retl(encflg);
@@ -448,7 +449,7 @@ void _clp__db_pgrewrite(int argno)
     BTREE *db=(BTREE*)_parp(1);
     pgno_t pgno=_parni(2);
     int cryptflg=_parl(3);
-    
+
     int fd=__bt_fd(db);
     off_t totalsize=lseek(fd,0,SEEK_END);
     int pagesize=__bt_pagesize(db);

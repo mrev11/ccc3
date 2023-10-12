@@ -131,8 +131,9 @@ BTREE *__bt_open(int fd, int psize, int create)
         t->bt_free=P_INVALID;
         t->magic=BTREEMAGIC;
         SETVER(t,BTREEVERSION);
-        char *pwenv=getenv("CCC_BTPASSWD");
-        if(  pwenv!=0 && *pwenv!=0 )
+        static char *pwenv=getenv("CCC_BTPASSWD");
+        static char *btenc=getenv("CCC_BTCRYPT");
+        if( pwenv!=0 && *pwenv!=0 && btenc!=0 && *btenc=='y' )
         {
             SETENC(t,1); //titkositott
         }

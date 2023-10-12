@@ -1,3 +1,7 @@
+2023-10-12 CCC_BTCRYPT szabalyozza az uj bt fajlok titkositasat;
+  CCC_BTCRYPT=y titkositva
+  CCC_BTCRYPT=n titkositas nelkul (default)
+
 2023-10-11 Windowson is mukodik a titkositas;
 
 2023-10-11 laponkenti helyett fajlonkenti titkositas;

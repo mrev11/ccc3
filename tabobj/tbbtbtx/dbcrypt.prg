@@ -18,22 +18,41 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "tabobj.ch"
 
-// helyben KItitkositja btfile-t
+******************************************************************************
+function tabCrypt(table,flag)
 
-#include "table.ch"
+local btree,cryptflg,pgno
 
-******************************************************************************************
-function main( btfile )
+    if( flag!=NIL .and. tabIsOpen(table)!=OPEN_EXCLUSIVE )
+        taberrOperation("tabCrypt")
+        taberrDescription(@"exclusive open required")
+        tabError(table) 
+    end
 
-local tab
+    btree:=table[TAB_BTREE]
+    cryptflg:=_db_cryptflg(btree)
 
-    tab:=tabResource(btfile)
-    tabOpen(tab,OPEN_EXCLUSIVE)
-    tabCrypt(tab,.f.)
-    tabClose(tab)
+    if( flag==NIL )
+        // lekerdezes
+
+    elseif( flag==cryptflg )
+        // valtozatlan
+
+    else
+        // flag==.t. -> encrypt
+        // flag==.f. -> decrypt
+
+        pgno:=1
+        while( _db_pgrewrite(btree,pgno,flag) )
+            pgno++
+        end
+        _db_cryptflg(btree,flag)
+    end
+
+    return cryptflg
 
 
-******************************************************************************************
-
+******************************************************************************
 

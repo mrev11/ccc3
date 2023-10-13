@@ -1,3 +1,11 @@
+2023-10-13  
+  tabCrypt API:
+    tabCrypt(table,.t) titkosit
+    tabCrypt(table,.f) kititkosit
+    tabCrypt(table)    lekerdez
+  tabUpgrade CCC_BTCRYPT-tol fuggetlenul megtartja a titkositast;
+
+
 2023-10-13 bt formatum konverzio: (1,2) -> (3,4);
   a titkositas bt fajlonkent egyedi saltot hasznal;
   a bt headerben helyet kellett csinalni a saltnak;

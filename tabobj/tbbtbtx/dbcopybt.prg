@@ -37,9 +37,6 @@ local recno:=0,recbuf,reclen,recpos
 local fdkey:={},kfilnam
 local ord,key
 local memcol:={},memdec:={},mempos,memval
-local cryptflg
-local cryptflg1
-local pgno
 
     //-----------------------
     //regi adatfile
@@ -72,18 +69,7 @@ local pgno
     tabOpen(table,OPEN_EXCLUSIVE)
     tabZap(table)
     db1:=table[TAB_BTREE]
-
-    cryptflg  :=_db_cryptflg(db)  // titkositva van-e az eredeti
-    cryptflg1 :=_db_cryptflg(db1) // titkositva van-e az uj fajl
-
-    if( cryptflg!=cryptflg1 )
-        pgno:=1
-        while( _db_pgrewrite(db1,pgno,cryptflg) )
-            pgno++
-        end
-        _db_cryptflg(db1,cryptflg)
-    end
-
+    tabCrypt(table,_db_cryptflg(db))  // titkositas oroklodik
 
     //-----------------------
     //ideiglenes kulcsfilek

@@ -181,8 +181,8 @@ local timeout
         end
     end
 
-    if( _db_version(table[TAB_BTREE])==3 .and. 0<tabMemoCount(table) )
-        version_upgrade_v1_v2(table)
+    if( _db_version(table[TAB_BTREE])==3 )
+        version_upgrade_4(table)
     end
 
     _db_setord(table[TAB_BTREE],"recno")
@@ -402,12 +402,11 @@ local ps:=getenv("BTBTX_PAGESIZE")
 
 
 ******************************************************************************
-static function version_upgrade_v1_v2(table)
+static function version_upgrade_4(table)
 local memcol:={},memdec:={},mempos,memval
 local column:=tabColumn(table),n
 local magic:=x"00"::replicate(4)
 
-    ? "version_upgrade_v1_v2", tabPathName(table)
 
     for n:=1 to len(column)
         if(tabMemoField(table,column[n]))
@@ -415,30 +414,41 @@ local magic:=x"00"::replicate(4)
             memdec::aadd(tabColumn(table)[n][COL_DEC])
         end
     next
-    table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table))) //eexclusive
-    if( table[TAB_MEMOHND]<0 )
-        taberrOperation("version_upgrade_v1_v2")
-        taberrDescription(@"memoOpen failed")
-        taberrFilename(lower(tabMemoName(table)))
-        tabError(table)
+    
+    if( len(memcol)>0 )
+
+        ? "version_upgrade_4", tabPathName(table)
+
+        table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table))) //eexclusive
+        if( table[TAB_MEMOHND]<0 )
+            taberrOperation("version_upgrade_4")
+            taberrDescription(@"memoOpen failed")
+            taberrFilename(lower(tabMemoName(table)))
+            tabError(table)
+        end
+        
+        tabGotop(table)
+        while( !tabEof(table) )
+            for n:=1 to len(memcol)
+                mempos:=getmempos(table,memcol[n])
+                memval:=_v1_tabMemoRead(table,mempos)
+                if( !memval::empty )
+                    mempos:=_db_memowrite(table[TAB_BTREE],memval::trim,tabPosition(table),memdec[n])
+                else
+                    mempos:=a"          "
+                end
+                setmempos(table,memcol[n],mempos)
+            next
+            table[TAB_MODIF]:=.t.
+            tabCommit(table)
+            tabSkip(table)
+        end
+
+        fclose(table[TAB_MEMOHND])
+        table[TAB_MEMOHND]:=NIL
+        ferase(lower(tabMemoName(table)))
     end
 
-    tabGotop(table)
-    while( !tabEof(table) )
-        for n:=1 to len(memcol)
-            mempos:=getmempos(table,memcol[n])
-            memval:=_v1_tabMemoRead(table,mempos)
-            if( !memval::empty )
-                mempos:=_db_memowrite(table[TAB_BTREE],memval::trim,tabPosition(table),memdec[n])
-            else
-                mempos:=a"          "
-            end
-            setmempos(table,memcol[n],mempos)
-        next
-        table[TAB_MODIF]:=.t.
-        tabCommit(table)
-        tabSkip(table)
-    end
     fseek(table[TAB_FHANDLE],0,FS_SET)
     fread(table[TAB_FHANDLE],@magic,4)
 
@@ -450,15 +460,11 @@ local magic:=x"00"::replicate(4)
         //ide nem johet
         //mert ha rossz a magic
         //akkor nem lehet nyitva a fajl
-        taberrOperation("version_upgrade_v1_v2")
+        taberrOperation("version_upgrade_4")
         taberrDescription(@"wrong magic number")
         taberrFilename(lower(tabPathName(table)))
         tabError(table)
     end
-
-    fclose(table[TAB_MEMOHND])
-    table[TAB_MEMOHND]:=NIL
-    ferase(lower(tabMemoName(table)))
 
 
 static function getmempos(table,n)

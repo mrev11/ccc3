@@ -1,5 +1,8 @@
-e085c1a0514cb4081a642fd10953c5b2e3dde94f 2023101313:57:08-UTC ./CHANGELOG_vermes
-d0abf7fe2c5dbd25ecf311acd4bb411f07e10f5f 2023101312:55:59-UTC ./tabobj/log-install
+480cae14f29a3d067b970565618cf7a9a73c4e74 2023101416:47:48-UTC ./tabobj/tbbtbtx/utility/btpasswd_windll/btpasswd.cpp
+d0dd608e4ea7afd9605ac85210c30169a83ab7fc 2023101414:36:21-UTC ./CHANGELOG_vermes
+115ff3277cb3e2cf95932c5fefa9962a5ec0453f 2023101412:34:03-UTC ./jt/jterminal/jterminal.jar
+0a053a5d4477b35f582231202913e9477cdde09a 2023101412:34:03-UTC ./log-install
+70be440df01577498c4dfc6b13108fedd2dd7741 2023101411:41:44-UTC ./tabobj/tbbtbtx/dbopen.prg
 abdaf4443e4cfeddd9c8c8245d1e90d9e6844809 2023101312:55:59-UTC ./usr/bin/linux/tstru
 70c81cea6997868801e0bdd9373977889ea0d68b 2023101312:55:59-UTC ./usr/bin/linux/tview
 4e4eb11f1a19e49da519fe07a984748cda862f3a 2023101312:55:58-UTC ./usr/bin/linux/bt2dbf
@@ -24,14 +27,10 @@ ca517c5f5896c996320e239e907ef59842018d28 2023101312:16:45-UTC ./tabobj/tbbtbtx/u
 30dd9c0090d9fe1dff4087af6f44f19a9516161b 2023101312:14:30-UTC ./tabobj/common.src/tabpack.prg
 b5734aebd4889b254d61a92dcbf28a5bcc4fcdf0 2023101311:58:43-UTC ./tabobj/common.src/tabupgrd.prg
 65caa5247b676c5abdd37683121f33be0672c8ea 2023101221:36:15-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp
-42ca8c72c95b20455d77a7f505fba0579ba47669 2023101221:16:43-UTC ./tabobj/tbbtbtx/dbopen.prg
-3c2304343b0c429f9053ed69a48058b901bd9cfc 2023101221:14:07-UTC ./jt/jterminal/jterminal.jar
-e0003386c1dfc72e664928e31b1f834b831cf974 2023101221:14:07-UTC ./log-install
 49cded33984f331e32b546117d1fb38fe8c15430 2023101220:59:47-UTC ./tabobj/tbbtbtx/btree/bt_open.cpp
 e72936adb62df0f207dad32fcb4ac809272ce708 2023101220:55:53-UTC ./tabobj/tbbtbtx/btree/db.cpp
 9d34f4d73fc45fbe96828c5ed7cda8df686f7f7c 2023101219:06:55-UTC ./tabobj/tbbtbtx/btree/mpool.cpp
 7b22d3bc0e5b567ad75d40d6b7c860751c5c9f66 2023101219:06:42-UTC ./tabobj/tbbtbtx/btree/mpool.h
-93106e666ab065f17484553db91b9f9b8975ccbb 2023101216:15:24-UTC ./tabobj/tbbtbtx/utility/btpasswd_windll/btpasswd.cpp
 0fe39f7c8744687cf5f7e3d88b28187fb248a492 2023101216:14:31-UTC ./tabobj/tbbtbtx/btree/mpool_crypt.cpp
 051b080f79fbc3b47d0a202e612ce56b2f15d236 2023101215:35:53-UTC ./tabobj/tbbtbtx/utility/btpasswd/btpasswd.cpp
 45c296e5f45e4a3cd0b9d4386fcf783d94ef50c6 2023101215:29:49-UTC ./tabobj/tbbtbtx/btree/extern.h

@@ -1,3 +1,13 @@
+2023-10-14 bt formatum konverzio v4-re:
+  v1) eredeti formatum, az esetleges memok btx-ben
+  v2) nem tartozik hozza btx, az esetleges memok be vannak konvertalva
+  v3) salt-ot tartalmazo fejlec, tartozhat hozza btx (v1-bol keletkezik)
+  v4) salt-ot tartalmazo fejlec, nem tartozhat hozza btx
+  Megjegyzes: ha egy fajlnak btx memoi vannak, nem nyithato meg RDONLY modban;
+  Megjegyzes: RDWR modban megnyitott fajok v4-be kerulnek;
+  Megjegyzes: a v3 allapot atmeneti, rogton konvertalodik v4-re;
+
+
 2023-10-13  
   tabCrypt API:
     tabCrypt(table,.t) titkosit

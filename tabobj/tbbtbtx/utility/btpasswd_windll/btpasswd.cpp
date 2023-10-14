@@ -3,7 +3,7 @@
 #include <windows.h>
 
 extern "C" __declspec(dllexport)
-void btpasswd(unsigned int salt unsigned int pgno, unsigned char *key, unsigned char *iv)
+void btpasswd(unsigned int salt, unsigned int pgno, unsigned char *key, unsigned char *iv)
 {
     key[ 0] =  64;
     key[ 1] =   2;

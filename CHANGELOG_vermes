@@ -1,3 +1,5 @@
+2023-10-15 btencrypt/btdecrypt programok megorzik a fajlidoket;
+
 2023-10-14 bt formatum konverzio v4-re:
   v1) eredeti formatum, az esetleges memok btx-ben
   v2) nem tartozik hozza btx, az esetleges memok be vannak konvertalva
@@ -8,7 +10,7 @@
   Megjegyzes: a v3 allapot atmeneti, rogton konvertalodik v4-re;
 
 
-2023-10-13  
+2023-10-13
   tabCrypt API:
     tabCrypt(table,.t) titkosit
     tabCrypt(table,.f) kititkosit

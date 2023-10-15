@@ -27,11 +27,14 @@
 function main( btfile )
 
 local tab
+local create_time,access_time,modif_time
 
+    {create_time,access_time,modif_time}:=getfiletime(btfile)
     tab:=tabResource(btfile)
     tabOpen(tab,OPEN_EXCLUSIVE)
     tabCrypt(tab,.f.)
     tabClose(tab)
+    setfiletime(btfile,create_time,access_time,modif_time)
 
 
 ******************************************************************************************

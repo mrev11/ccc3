@@ -1,5 +1,9 @@
+b53365c26812d5b1d07d97ed116857386d814977 2023101517:07:59-UTC ./CHANGELOG_vermes
+97cf07c193c6755b5fd9fd7378f2c1a004f34f66 2023101517:00:52-UTC ./usr/bin/linux/btdecrypt
+e4f02550457194cf7ff54a0cd9aafbd0335f9b2b 2023101517:00:52-UTC ./usr/bin/linux/btencrypt
+0c87eb5ef8d33dc097adabae2b719305d60226aa 2023101517:00:47-UTC ./tabobj/tbbtbtx/utility/btdecrypt.prg
+2d8e0ff540d3ef0e2041405247f9f90c3456a399 2023101517:00:47-UTC ./tabobj/tbbtbtx/utility/btencrypt.prg
 480cae14f29a3d067b970565618cf7a9a73c4e74 2023101416:47:48-UTC ./tabobj/tbbtbtx/utility/btpasswd_windll/btpasswd.cpp
-d0dd608e4ea7afd9605ac85210c30169a83ab7fc 2023101414:36:21-UTC ./CHANGELOG_vermes
 115ff3277cb3e2cf95932c5fefa9962a5ec0453f 2023101412:34:03-UTC ./jt/jterminal/jterminal.jar
 0a053a5d4477b35f582231202913e9477cdde09a 2023101412:34:03-UTC ./log-install
 70be440df01577498c4dfc6b13108fedd2dd7741 2023101411:41:44-UTC ./tabobj/tbbtbtx/dbopen.prg
@@ -7,8 +11,6 @@ abdaf4443e4cfeddd9c8c8245d1e90d9e6844809 2023101312:55:59-UTC ./usr/bin/linux/ts
 70c81cea6997868801e0bdd9373977889ea0d68b 2023101312:55:59-UTC ./usr/bin/linux/tview
 4e4eb11f1a19e49da519fe07a984748cda862f3a 2023101312:55:58-UTC ./usr/bin/linux/bt2dbf
 3149685a86302ce573968c758661c44f90740e4b 2023101312:55:58-UTC ./usr/bin/linux/bt2txt
-7b82136791c612b96947c8089956ca985a36533f 2023101312:55:58-UTC ./usr/bin/linux/btdecrypt
-d0b75246cb803b8f9eb582e219d613dda67a5b09 2023101312:55:58-UTC ./usr/bin/linux/btencrypt
 5d7065244dbe84d10bb27fd40fb1a462e852796c 2023101312:55:58-UTC ./usr/bin/linux/bthead
 82a58d554f66915ed15f050300b0a63f68794452 2023101312:55:58-UTC ./usr/bin/linux/bti
 26e1b8aef5e1a9f7bd925d3bb6c36415cc6b53ec 2023101312:55:58-UTC ./usr/bin/linux/pgmemo
@@ -22,8 +24,6 @@ a008e27c191e0d3f8fda1dcf7d2ef653c228bbc1 2023101312:17:08-UTC ./tabobj/tbbtbtx/u
 6b5de27b96c997e5b8daf855416b61a4f50553ac 2023101312:17:04-UTC ./tabobj/tbbtbtx/utility/pgstat.prg
 14432a7c025dad7de186653a045972cd9dedec1a 2023101312:17:01-UTC ./tabobj/tbbtbtx/utility/pgmemo.prg
 4cc1e40a29fe60a11bd7309d3a42a33db3463130 2023101312:16:54-UTC ./tabobj/tbbtbtx/utility/bthead.prg
-54d1f83fb668623b8dcf6c4339047335da4bbd9f 2023101312:16:50-UTC ./tabobj/tbbtbtx/utility/btencrypt.prg
-ca517c5f5896c996320e239e907ef59842018d28 2023101312:16:45-UTC ./tabobj/tbbtbtx/utility/btdecrypt.prg
 30dd9c0090d9fe1dff4087af6f44f19a9516161b 2023101312:14:30-UTC ./tabobj/common.src/tabpack.prg
 b5734aebd4889b254d61a92dcbf28a5bcc4fcdf0 2023101311:58:43-UTC ./tabobj/common.src/tabupgrd.prg
 65caa5247b676c5abdd37683121f33be0672c8ea 2023101221:36:15-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp

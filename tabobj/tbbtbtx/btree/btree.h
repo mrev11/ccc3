@@ -230,10 +230,10 @@ typedef struct _btree1
 
 
 
-#define GETVER(t)     (                (t)->version&0x000000ff               )
-#define GETENC(t)     (               ((t)->version&0x0000ff00)!=0           )
-#define SETVER(t,x)   ((t)->version = ((t)->version&0xffffff00 | ((x&15)<<0)))
-#define SETENC(t,x)   ((t)->version = ((t)->version&0xffff00ff | ((x&15)<<8)))
+#define GETVER(t)    (                (((t)->version) & 0x000000ff)                   )
+#define GETENC(t)    (                (((t)->version) & 0x0000ff00)  != 0             )
+#define SETVER(t,x)  ( (t)->version = (((t)->version) & 0xffffff00)  |  (((x)&15)<<0) )
+#define SETENC(t,x)  ( (t)->version = (((t)->version) & 0xffff00ff)  |  (((x)&15)<<8) )
 
 #define  B_NEEDSWAP    0x00008   // if byte order requires swapping
 

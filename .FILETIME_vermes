@@ -1,11 +1,13 @@
-b53365c26812d5b1d07d97ed116857386d814977 2023101517:07:59-UTC ./CHANGELOG_vermes
+e105b1d697324b3096cacfd22aebe8927ab559bb 2023101912:52:02-UTC ./CHANGELOG_vermes
+c6b692ab2d934fb03fe0fc9eee91e0a213b0de66 2023101912:44:50-UTC ./tabobj/tbbtbtx/btree/btree.h
+eb5ee21cb16a1e8525c603485611d891bb1856ef 2023101911:15:34-UTC ./tabobj/log-install
+0168898d3a6de1aad1e51e88f3621b41e078d36c 2023101811:47:09-UTC ./jt/jterminal/jterminal.jar
+6fd4766e1b13a5b71d34bdf95c26bccc13a2cb2a 2023101811:47:09-UTC ./log-install
 97cf07c193c6755b5fd9fd7378f2c1a004f34f66 2023101517:00:52-UTC ./usr/bin/linux/btdecrypt
 e4f02550457194cf7ff54a0cd9aafbd0335f9b2b 2023101517:00:52-UTC ./usr/bin/linux/btencrypt
 0c87eb5ef8d33dc097adabae2b719305d60226aa 2023101517:00:47-UTC ./tabobj/tbbtbtx/utility/btdecrypt.prg
 2d8e0ff540d3ef0e2041405247f9f90c3456a399 2023101517:00:47-UTC ./tabobj/tbbtbtx/utility/btencrypt.prg
 480cae14f29a3d067b970565618cf7a9a73c4e74 2023101416:47:48-UTC ./tabobj/tbbtbtx/utility/btpasswd_windll/btpasswd.cpp
-115ff3277cb3e2cf95932c5fefa9962a5ec0453f 2023101412:34:03-UTC ./jt/jterminal/jterminal.jar
-0a053a5d4477b35f582231202913e9477cdde09a 2023101412:34:03-UTC ./log-install
 70be440df01577498c4dfc6b13108fedd2dd7741 2023101411:41:44-UTC ./tabobj/tbbtbtx/dbopen.prg
 abdaf4443e4cfeddd9c8c8245d1e90d9e6844809 2023101312:55:59-UTC ./usr/bin/linux/tstru
 70c81cea6997868801e0bdd9373977889ea0d68b 2023101312:55:59-UTC ./usr/bin/linux/tview
@@ -34,7 +36,6 @@ e72936adb62df0f207dad32fcb4ac809272ce708 2023101220:55:53-UTC ./tabobj/tbbtbtx/b
 0fe39f7c8744687cf5f7e3d88b28187fb248a492 2023101216:14:31-UTC ./tabobj/tbbtbtx/btree/mpool_crypt.cpp
 051b080f79fbc3b47d0a202e612ce56b2f15d236 2023101215:35:53-UTC ./tabobj/tbbtbtx/utility/btpasswd/btpasswd.cpp
 45c296e5f45e4a3cd0b9d4386fcf783d94ef50c6 2023101215:29:49-UTC ./tabobj/tbbtbtx/btree/extern.h
-9e2ddb947511357c2511ffd34c774bfc19c52760 2023101215:24:28-UTC ./tabobj/tbbtbtx/btree/btree.h
 869b032157b18b4b22beaf99f63720356d320742 2023101112:00:48-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2023101112:00:48-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2023101112:00:48-UTC ./jt/jterminal/getutil/checkfield.class

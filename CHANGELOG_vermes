@@ -1,3 +1,8 @@
+2023-10-20
+  varstack() kiirja a codeblockok code pointeret is;
+  codeblock kiirasa qout-tal mutatja a code es oref pointert;
+  prg2ppo felismeri kifejezesnek a kerek zarojeles blockokat; 
+
 2023-10-19 btree.h-ban makro zarojelezes warning javitva;
 
 2023-10-15 btencrypt/btdecrypt programok megorzik a fajlidoket;

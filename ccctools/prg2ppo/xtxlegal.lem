@@ -336,6 +336,7 @@ expr(P) ::= expr(L) LBRACKET DOTDOT expr RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LBRACKET DOTDOT RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= LBRACE(L) xlst RBRACE(R).{P=pstore(L,R);}
 expr(P) ::= LBRACE(L) PIPE xlst PIPE xlst RBRACE(R).{P=pstore(L,R);}
+expr(P) ::= LPAR(L) PIPE xlst PIPE xlst RPAR(R).{P=pstore(L,R);}
 
 expr(P) ::= expr(L) COLON cast expr(R).{P=pstore(L,R);}
 

@@ -427,9 +427,13 @@ static void out1(int x, VALUE *v)
         }
 
         case TYPE_BLOCK:
-            string(CHRLIT("block"));
-            print_str(x);
+        {
+            char buf[64];
+            sprintf(buf,"block[%p,%p]",v->data.block.code,v->data.block.oref);
+            binaryn(buf);
+            print_bin(x);
             break;
+        }
 
         case TYPE_REF:
             push_symbol(v); //deref

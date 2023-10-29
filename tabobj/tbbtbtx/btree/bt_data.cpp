@@ -51,7 +51,7 @@ RECPOS __bt_addresource(BTREE *t, DBT*data, indx_t index)
     if( h==0 )
     {
         pgno_t pgno;
-        h=__bt_new(t,&pgno,0);
+        h=__bt_new(t,&pgno);
 
         if( pgno!=1 )
         {
@@ -121,10 +121,11 @@ RECPOS __bt_append(BTREE *t, DBT*data, int *recno)
             mpool_put(t->bt_mp,h,0);
         }
 
-        #ifdef PREFER_FREELIST
-          h=__bt_new(t,&npg,0);
+        #define PREFER_FREELIST
+        #ifdef  PREFER_FREELIST
+          h=__bt_new(t,&npg);
         #else
-          h=__bt_new0(t,&npg,0); //pack replikalhatosaga erdekeben, 2004.04.18
+          h=__bt_new0(t,&npg); //pack replikalhatosaga erdekeben, 2004.04.18
         #endif
 
         __bt_pageunlock(t,t->bt_lastdatapage);

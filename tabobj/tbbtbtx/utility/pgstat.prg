@@ -60,6 +60,10 @@ local n,lower,upper,space
             btfile+=".bt"
         end
         if( empty(btopen(btfile)) )
+            // btopen nyersen beolvassa a fajlt,
+            // es megjegyez olyan adatokat (pl. dskord),
+            // amit a _db_pgread mar nem lathat,
+            // mert az csak a swapolt adatokat latja
             break()
         end
         tab:=tabResource(btfile)
@@ -97,7 +101,7 @@ local n,lower,upper,space
     ? "  numpges  :" , (fsize/PGSIZE)::str::alltrim
     ? "  numrecs  :" , NRECS::str::alltrim
     ? "  numords  :" , NORDS::str::alltrim
-    ? "  free     :" , "0x"+FREE::l2hex
+    ? "  freelist :" , "0x"+FREE::l2hex
     ?
 
     for n:=1 to len(pgtype)

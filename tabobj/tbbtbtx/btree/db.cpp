@@ -31,11 +31,16 @@
 //---------------------------------------------------------------------------
 void _clp__db_version(int argno)
 {
-    CCC_PROLOG("_db_version",1);
+    CCC_PROLOG("_db_version",2);
     BTREE *db=(BTREE*)_parp(1);
+    if( !ISNIL(2) )
+    {
+        SETVER(db,_parni(2));
+    }
     _retni(GETVER(db));
     CCC_EPILOG();
 }
+
 
 //---------------------------------------------------------------------------
 void _clp__db_cryptflg(int argno)
@@ -130,11 +135,39 @@ void _clp__db_close(int argno)
 //---------------------------------------------------------------------------
 void _clp__db_fd(int argno)
 {
-    CCC_PROLOG("_db_fd",1);
+    CCC_PROLOG("_db_fd",2);
     BTREE *db=(BTREE*)_parp(1);
+    if( !ISNIL(2) )
+    {
+        __bt_fd(db,_parni(2));
+    }
     _retni( __bt_fd(db));
     CCC_EPILOG();
 }
+
+//---------------------------------------------------------------------------
+void _clp__db_getcur(int argno) // cursor info (debug)
+{
+    CCC_PROLOG("_db_getcur",1);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=0;
+    indx_t index=0;
+    DBT key;
+    if( __bt_getcur(db,&pgno,&index,&key) )
+    {
+        number(pgno);
+        number(index);
+        binarys((const char*)key.data,key.size);
+        array(3);
+        _rettop();
+    }
+    else
+    {
+        _ret(); //NIL
+    }
+    CCC_EPILOG();
+}
+
 
 //---------------------------------------------------------------------------
 void _clp__db_pagesize(int argno)

@@ -60,7 +60,7 @@ static void swap_in1(BTREE1 *t)
         ORDER *o=&t->bt_order[i];
         P_32_SWAP( &o->root );
         P_32_SWAP( &o->lastpage );
-        P_32_SWAP( &o->flags );
+        P_32_SWAP( &o->lastfree );
     }
 }
 
@@ -89,7 +89,7 @@ static void swap_in(BTREE *t)
         ORDER *o=&t->bt_order[i];
         P_32_SWAP( &o->root );
         P_32_SWAP( &o->lastpage );
-        P_32_SWAP( &o->flags );
+        P_32_SWAP( &o->lastfree );
     }
 }
 
@@ -103,7 +103,7 @@ static void swap_out(BTREE *t)
         ORDER *o=&t->bt_order[i];
         P_32_SWAP( &o->root );
         P_32_SWAP( &o->lastpage );
-        P_32_SWAP( &o->flags );
+        P_32_SWAP( &o->lastfree );
     }
  
     P_32_SWAP(&t->magic);   

@@ -41,6 +41,7 @@
 #define  P_ROOT(t)      t->bt_order[t->bt_curord].root
 #define  P_NAME(t)      t->bt_order[t->bt_curord].name
 #define  P_LASTPAGE(t)  t->bt_order[t->bt_curord].lastpage
+#define  P_LASTFREE(t)  t->bt_order[t->bt_curord].lastfree
 
 // There are three page layouts in the btree
 // 1) btree internal pages (P_BINTERNAL)
@@ -157,7 +158,7 @@ typedef struct _order
 {
   pgno_t     root;         // number of root page
   pgno_t     lastpage;     // number of last inserted page
-  u_int32_t  flags;        // flags of the order
+  u_int32_t  lastfree;     // number of last freed page
   u_int32_t  reserved;     // reserved
   char       name[16];     // name of the order
 } ORDER;

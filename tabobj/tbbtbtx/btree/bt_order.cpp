@@ -36,7 +36,7 @@ static int nroot(BTREE *t, char *name) //create new root page
     
     __bt_header_read(t,1);
  
-    if( (root=__bt_new(t,&npg,&(P_LASTPAGE(t))))==NULL )
+    if( (root=__bt_new(t,&npg))==NULL )
     {
         return RET_ERROR;
     }
@@ -53,6 +53,7 @@ static int nroot(BTREE *t, char *name) //create new root page
     t->bt_curord = t->bt_nords; 
     P_ROOT(t) = npg;
     P_LASTPAGE(t) = npg;
+    P_LASTFREE(t) = 0;
     strcpy(P_NAME(t),name);
     t->bt_nords++;  
 

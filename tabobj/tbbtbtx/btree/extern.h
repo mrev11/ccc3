@@ -21,10 +21,12 @@
 //belso fuggvenyek
 
   int    __bt_free         (BTREE*, PAGE*);
-  PAGE  *__bt_new0         (BTREE*, pgno_t*, pgno_t*);
-  PAGE  *__bt_new          (BTREE*, pgno_t*, pgno_t*);
+  PAGE  *__bt_new0         (BTREE*, pgno_t*);
+  PAGE  *__bt_new          (BTREE*, pgno_t*);
+  PAGE  *__bt_newx         (BTREE*, pgno_t*);
   EPG   *__bt_search       (BTREE*, DBT*, int*);
-  void   __bt_setcur       (BTREE*, pgno_t, indx_t, DBT*);
+  int    __bt_getcur       (BTREE*, pgno_t*, indx_t*, DBT*);
+  void   __bt_setcur       (BTREE*, pgno_t , indx_t , DBT*);
   DBT    __bt_getkey       (BTREE*, EPG*);
   int    __bt_split        (BTREE*, PAGE*, DBT*, size_t, indx_t, EPGNO*);
   int    __bt_cmp          (BTREE*, DBT*, EPG*);
@@ -44,6 +46,7 @@
   int    __bt_close          (BTREE*);
   int    __bt_delete         (BTREE*, DBT*);
   int    __bt_fd             (BTREE*);
+  int    __bt_fd             (BTREE*,int);
   int    __bt_pagesize       (BTREE*);
   int    __bt_put            (BTREE*, DBT*, int);
   int    __bt_seq            (BTREE*, DBT*, int);

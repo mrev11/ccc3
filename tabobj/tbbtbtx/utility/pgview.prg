@@ -24,16 +24,9 @@
 // A lapszamot (<pgno>) hexaban kell megadni,
 // ha nincs megadva, akkor a pgno=0 lapot mutatja.
 
-
-#define ISMEMO(p) (p[5..8]::num>=0x80000000)
-
-
-static pgtype:={"FREE","INTERNAL","BLEAF","DATA","MEMO"}
-
-#clang
-#include <cccapi.h>
-#cend
-
+// #clang
+// #include <cccapi.h>
+// #cend
 
 
 ******************************************************************************************
@@ -43,12 +36,13 @@ local tab
 local btree
 local page0,page
 local pgsize
+local map,pgraw,crc
 
     begin
         if( !".bt"$btfile )
             btfile+=".bt"
         end
-        if( empty(btopen(btfile)) )
+        if( empty(map:=btopen(btfile)) )
             break()
         end
         tab:=tabResource(btfile)
@@ -78,14 +72,34 @@ local pgsize
     ? btfile, "pgno=0x"+pgno::l2hex, "offset=0x"+(pgsize*pgno)::l2hex
 
     if( pgno==0 )
-        page_root(page)
-    elseif( ISMEMO(page) )
-        page_memo(page)
+        ?? " maxpgn=0x"+(len(map)/pgsize-1)::l2hex, "("+(len(map)/pgsize-1)::str::alltrim+")"
     else
-        page_data(page)
+        pgraw:=map::substr(pgno*pgsize+1,pgsize)
+        crc:=crc32( pgraw[5..]  )::num2crc
+        ?? " crc=["+crc+"]"
     end
 
-    ?
+
+    if( pgno==0 )
+        page_header(page)
+
+    elseif( pgtype(page)=="TREE" )
+        page_tree(page)
+
+    elseif( pgtype(page)=="LEAF" )
+        page_leaf(page)
+
+    elseif( pgtype(page)=="DATA" )
+        page_data(page)
+
+    elseif( pgtype(page)=="MEMO" )
+        page_memo(page)
+
+    elseif( pgtype(page)=="FREE" )
+        page_free(page)
+
+    end
+
     ?
 
 ******************************************************************************************
@@ -97,8 +111,9 @@ static function usage()
 
 
 ******************************************************************************************
-static function page_root(page)
+static function page_header(page)
 
+local version
 local nords
 local offset
 local n
@@ -112,14 +127,151 @@ local n
     ? "freememo :", page[25..28]::num , page[25..28]::hex
     ? "norders  :", page[29..32]::num , page[29..32]::hex
 
+    version:=page[ 5.. 8]::num
     nords:=page[29..32]::num
+
     for n:=1 to nords
-        offset:=32*n
+        if( version<=2 )
+            offset:=32*n
+        else
+            offset:=16+32*n
+        end
         ? page[offset+17..offset+32]::strtran(bin(0),bin(32)),;
          "root="+page[offset+1..offset+4]::hex,;
          "last="+page[offset+5..offset+8]::hex,;
-         "flags="+page[offset+9..offset+12]::hex
+         "free="+page[offset+9..offset+12]::hex
     next
+
+
+******************************************************************************************
+static function page_tree(page)
+
+local type:="TREE"
+local lower,upper
+local idx,offset
+local pos,len,pgn,key,rec
+
+
+    ? "type  ",  type
+
+    ? "link  ", "0x"+page[ 5.. 8]::hex
+    ? "prev  ", "0x"+page[ 9..12]::hex
+    ? "next  ", "0x"+page[13..16]::hex
+    ? "flags ", "0x"+page[17..20]::hex
+    ? "lower ", "0x"+page[21..22]::hex
+    ? "upper ", "0x"+page[23..24]::hex
+
+    lower:=page::substr(21,2)::num                  // elso szabad pozicio
+    upper:=page::substr(23,2)::num                  // elso nemszabad pozicio
+    ? "items", (lower-24)/2                         // ennyi rekord van benne
+    ? "space", upper-lower
+
+    idx:=0
+    offset:=24
+    while( offset<lower )
+        pos:=page::substr(offset+1,2)::num          // record offset on page
+        len:=page::substr(pos+1,4)::num             // key length
+        pgn:=page::substr(pos+5,4)::hex::padl(8)    // page number
+        key:=page::substr(pos+9,len)                // key
+        pos::=l2hex::padr(4)
+        if( len==0  )
+            len::=str::alltrim::padl(4)
+            ? str(idx,3),"0x"+pos, len, pgn
+        else
+            len::=str::alltrim::padl(4)
+            ? str(idx,3),"0x"+pos, len, pgn, key::key2str
+        end
+        idx++
+        offset+=2
+    end
+
+
+******************************************************************************************
+static function page_leaf(page)
+
+local type:="LEAF"
+local lower,upper
+local offset
+local pos,len,rec
+local idx
+
+    ? "type  ",  type
+
+    ? "link  ", "0x"+page[ 5.. 8]::hex
+    ? "prev  ", "0x"+page[ 9..12]::hex
+    ? "next  ", "0x"+page[13..16]::hex
+    ? "flags ", "0x"+page[17..20]::hex
+    ? "lower ", "0x"+page[21..22]::hex
+    ? "upper ", "0x"+page[23..24]::hex
+
+    lower:=page::substr(21,2)::num              // elso szabad pozicio
+    upper:=page::substr(23,2)::num              // elso nemszabad pozicio
+    ? "items", (lower-24)/2                     // ennyi rekord van benne
+    ? "space", upper-lower
+
+    idx:=0
+    offset:=24
+    while( offset<lower )
+        pos:=page::substr(offset+1,2)::num      // rekord offset a lapon
+        len:=page::substr(pos+1,4)::num         // rekordhossz 4 byte
+        rec:=page::substr(pos+5,len)            // delflg + rekord adatok
+
+        pos::=l2hex::padr(4)
+        len::=str::alltrim::padl(4)
+
+        rec::=key2str
+
+        ? str(idx,3),"0x"+pos, len, rec
+
+        idx++
+        offset+=2
+    end
+
+
+******************************************************************************************
+static function page_data(page)
+
+local type:="DATA"
+local lower,upper
+local offset
+local pos,len,rec
+local idx
+
+    ? "type  ",  type
+
+    ? "link  ", "0x"+page[ 5.. 8]::hex
+    ? "prev  ", "0x"+page[ 9..12]::hex
+    ? "next  ", "0x"+page[13..16]::hex
+    ? "flags ", "0x"+page[17..20]::hex
+    ? "lower ", "0x"+page[21..22]::hex
+    ? "upper ", "0x"+page[23..24]::hex
+
+    lower:=page::substr(21,2)::num              // elso szabad pozicio
+    upper:=page::substr(23,2)::num              // elso nemszabad pozicio
+    ? "items", (lower-24)/2                     // ennyi rekord van benne
+    ? "space", upper-lower
+
+    idx:=0
+    offset:=24
+    while( offset<lower )
+        pos:=page::substr(offset+1,2)::num      // rekord offset a lapon
+        len:=page::substr(pos+1,4)::num         // rekordhossz 4 byte
+        rec:=page::substr(pos+5,len)            // delflg + rekord adatok
+
+        pos::=l2hex::padr(4)
+        len::=str::alltrim::padl(4)
+
+        rec::=bin2str
+        if( len(rec)>100 )
+            rec::=left(96)+"... "
+        end
+        rec:="["+rec+"]"
+
+        ? str(idx,3),"0x"+pos, len, rec
+
+        idx++
+        offset+=2
+    end
 
 
 ******************************************************************************************
@@ -132,87 +284,70 @@ local poslen,pos,len
 local pgnext,ixnext
 local memseg
 
-        ? "type  ",  type
+    ? "type  ",  type
 
-        ? "link  ", "0x"+page[ 5.. 8]::hex
-        ? "lower ", "0x"+page[ 9..12]::hex
-        ? "upper ", "0x"+page[13..16]::hex
+    ? "link  ", "0x"+page[ 5.. 8]::hex
+    ? "lower ", "0x"+page[ 9..12]::hex
+    ? "upper ", "0x"+page[13..16]::hex
 
-        lower:=page::substr(9,4)::num    // elso szabad pozicio
-        upper:=page::substr(13,4)::num   // elso nemszabad pozicio
-        ? "items", (lower-16)/16         // ennyi rekord van benne
-        ? "space", upper-lower
+    lower:=page::substr(9,4)::num    // elso szabad pozicio
+    upper:=page::substr(13,4)::num   // elso nemszabad pozicio
+    ? "items", (lower-16)/16         // ennyi rekord van benne
+    ? "space", upper-lower
 
-        offset:=16
-        while( offset<lower )
-            recmix :=page::substr(offset+ 1,4)::num // MEMO_ID
-            poslen :=page::substr(offset+ 5,4)::num // MEMO_DESC
-            pgnext :=page::substr(offset+ 9,4)::num // MEMO_PGNEXT
-            ixnext :=page::substr(offset+13,4)::num // MEMO_IXNEXT
+    offset:=16
+    while( offset<lower )
+        recmix :=page::substr(offset+ 1,4)::num // MEMO_ID
+        poslen :=page::substr(offset+ 5,4)::num // MEMO_DESC
+        pgnext :=page::substr(offset+ 9,4)::num // MEMO_PGNEXT
+        ixnext :=page::substr(offset+13,4)::num // MEMO_IXNEXT
 
-            {recno,memix}:=parse_recmix(recmix)
-            {pos,len}:=parse_poslen(poslen)
-            memseg:=page::substr(pos+1,len)
+        {recno,memix}:=parse_recmix(recmix)
+        {pos,len}:=parse_poslen(poslen)
+        memseg:=page::substr(pos+1,len)
 
-            ? (offset/16-1)::str(3),;
-              form_recmix(recno,memix,15),;
-              len::transform(" 99999"),;
-              form_memseg(memseg,64)
+        ? (offset/16-1)::str(3),;
+          form_recmix(recno,memix,15),;
+          len::transform(" 99999"),;
+          form_memseg(memseg,64)
 
-            if( pgnext!=0 )
-                ?? " -> "+form_mempos(pgnext,ixnext)
-            end
-
-            offset+=16
+        if( pgnext!=0 )
+            ?? " -> "+form_mempos(pgnext,ixnext)
         end
+
+        offset+=16
+    end
 
 
 ******************************************************************************************
-static function page_data(page)
+static function page_free(page)
 
-// INTERNAL
-// BLEAF
-// DATA
+local type:="FREE"
 
-local type:=pgtype[ page[17..20]::num+1 ]
-local lower,upper
-local offset
-local pos,len,rec
+    ? "type  ",  type
+    ? "next  ", "0x"+page[13..16]::hex
 
-        ? "type  ",  type
 
-        ? "link  ", "0x"+page[ 5.. 8]::hex
-        ? "prev  ", "0x"+page[ 9..12]::hex
-        ? "next  ", "0x"+page[13..16]::hex
-        ? "flags ", "0x"+page[17..20]::hex
-        ? "lower ", "0x"+page[21..22]::hex
-        ? "upper ", "0x"+page[23..24]::hex
+******************************************************************************************
+static function pgtype(pg)
 
-        lower:=page::substr(21,2)::num              // elso szabad pozicio
-        upper:=page::substr(23,2)::num              // elso nemszabad pozicio
-        ? "items", (lower-24)/2                     // ennyi rekord van benne
-        ? "space", upper-lower
+local memotype:=pg[5..8]::num
+local datatype:=pg[17..20]::num
 
-        offset:=24
-        while( offset<lower )
-            pos:=page::substr(offset+1,2)::num      // rekord offset a lapon
-            len:=page::substr(pos+1,4)::num         // rekordhossz 4 byte
-            rec:=page::substr(pos+5,len)            // delflg + rekord adatok
-
-            pos::=l2hex::padr(4)
-            len::=str::alltrim::padl(4)
-            if( type=="DATA" )
-                rec::=bin2str
-                if( len(rec)>100 )
-                    rec::=left(96)+"... "
-                end
-            else
-                rec:=""
-            end
-            ? "0x"+pos, len, "["+rec+"]"
-
-            offset+=2
-        end
+    if( memotype>=0x80000000 )
+        return "MEMO"
+    elseif(  datatype==0 )
+        return "FREE"
+    elseif(  datatype==1 )
+        return "TREE"
+    elseif(  datatype==2 )
+        return "LEAF"
+    elseif(  datatype==3 )
+        return "DATA"
+    else
+        ? "UNKNOWN PAGE TYPE"
+        quit
+    end
 
 
 ******************************************************************************************

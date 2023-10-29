@@ -66,7 +66,7 @@ local msg,msgtotal,msgdbnam
         dbm:=left(dbf,len(dbf)-4)+".dbm"
     else
         dbm:=dbf+".dbm"
-        dbf:=dbf+".dbm"
+        dbf:=dbf+".dbf"
     end
     
     //dbf: filename.dbf

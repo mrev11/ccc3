@@ -30,7 +30,7 @@
 #ifndef _UNIX_
 #include <io.h>
 #endif
- 
+
 #include <btree.h>
 
 static void  header(BTREE*);
@@ -54,13 +54,13 @@ BTREE *__bt_open(int fd, int psize, int create)
     t->bt_psize     = psize;          // 0 -> block size.
     t->bt_lockcount = 0;
     t->bt_dirtyflag = 0;
- 
+
     if( t->bt_fd<0 )
     {
         fprintf(stderr,"FDESC:%d\n",errno);fflush(0);
         goto err;
     }
- 
+
 #ifdef _UNIX_
     if( fcntl(t->bt_fd,F_SETFD,1)==-1 ) //close-on-exec
     {
@@ -74,33 +74,33 @@ BTREE *__bt_open(int fd, int psize, int create)
         fprintf(stderr,"FSTAT:%d\n",errno);fflush(0);
         goto err;
     }
- 
-    if( !create && sb.st_size  ) 
+
+    if( !create && sb.st_size  )
     {
         if( __bt_header_read(t,1)!=RET_SUCCESS )
         {
             goto err;
         }
         __bt_header_release(t);
-  
+
         if( (GETVER(t)!=3) && (GETVER(t)!=4)  )
         {
             fprintf(stderr,"ERROR: wrong bt version [%d]\n",GETVER(t));fflush(0);
             goto eftype;
         }
- 
+
         if( t->bt_psize<256 || t->bt_psize&(sizeof(indx_t)-1) )
         {
             fprintf(stderr,"ERROR: wrong pagesize [%d]\n",t->bt_psize);fflush(0);
             goto eftype;
         }
-    } 
-    else if( create &&  sb.st_size==0 ) 
+    }
+    else if( create &&  sb.st_size==0 )
     {
         // Newly created file.
         // Set the page size to the best value for I/O to this file.
 
-        if( t->bt_psize==0 ) 
+        if( t->bt_psize==0 )
         {
             #ifdef _UNIX_
               t->bt_psize=sb.st_blksize;
@@ -127,40 +127,40 @@ BTREE *__bt_open(int fd, int psize, int create)
         goto err;
     }
 
-    // Initialize pager. 
+    // Initialize pager.
     if( (t->bt_mp=mpool_open(t->bt_fd,t->bt_psize))==NULL )
     {
         fprintf(stderr,"MPOOL:%d\n",errno);fflush(0);
         goto err;
     }
-    
+
     t->bt_mp->pgin=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapin:0;
     t->bt_mp->pgout=F_ISSET(t,B_NEEDSWAP)?(void (*)(void*))__bt_swapout:0;
     t->bt_mp->cryptflg=GETENC(t);
     t->bt_mp->salt=t->bt_salt;
-    
+
     //__bt_print_bthdr(t,"open");
     //__bt_print_free(t);
 
     mpool_count(t->bt_mp, "open");
     return t;
 
-einval:    
+einval:
     errno = EINVAL;
     fprintf(stderr,"EINVAL:%d\n",errno);fflush(0);
     goto err;
 
-eftype:     
+eftype:
     errno = EINVAL;
     fprintf(stderr,"EFTYPE:%d\n",errno);fflush(0);
     goto err;
 
-err:    
+err:
     fprintf(stderr,"ERROR:%d\n",errno);fflush(0);
 
     if( t )
     {
-        if(t->bt_fd!=-1) 
+        if(t->bt_fd!=-1)
         {
             close(t->bt_fd);
         }
@@ -174,7 +174,7 @@ err:
 
 //---------------------------------------------------------------------------
 static void header(BTREE *t)  //create header
-{    
+{
     char *p;
     __bt_pagelock(t,0,1);
     t->bt_lockcount=1;
@@ -184,7 +184,7 @@ static void header(BTREE *t)  //create header
     int retcode=write(t->bt_fd,p,t->bt_psize);
     __bt_header_write(t);
 }
- 
+
 //---------------------------------------------------------------------------
 int __bt_fd(BTREE *t) //file descriptor
 {
@@ -192,11 +192,17 @@ int __bt_fd(BTREE *t) //file descriptor
 }
 
 //---------------------------------------------------------------------------
-int __bt_pagesize(BTREE *t) 
+int __bt_fd(BTREE *t, int fd) //file descriptor
+{
+    return  t->bt_fd=fd;
+}
+
+//---------------------------------------------------------------------------
+int __bt_pagesize(BTREE *t)
 {
     return  t->bt_psize;
 }
- 
+
 //---------------------------------------------------------------------------
 unsigned int __bt_gensalt(int x)
 {
@@ -205,7 +211,7 @@ unsigned int __bt_gensalt(int x)
         int p;
         time_t t;
     } data;
-    
+
     data.x=x;
     data.p=getpid();
     data.t=time(0);

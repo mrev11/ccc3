@@ -1,4 +1,80 @@
 
+--------------------------------------------------------------------------------------------
+Mdositasok 2023-10-28
+
+cumemo.prg 
+    memoOpen() megadhato a nyitasi mod, 5 masodpercen keresztul probalkozik
+
+tablddbf.prg
+    tabLoadDBF() nevkepzes javitva
+
+bt_data.cpp
+    __bt_append() a (global) freelistbol is vesz lapokat
+
+bt_head.cpp
+    (a megszunt) order->flags helyett order->lastfree-t swapolja
+
+bt_open.cpp
+    __bt_fd() be is allithato az fd (nem csak lekerdezheto)
+       
+bt_order.cpp
+    nroot()  inicializalja order->lastfree-t
+    
+bt_page.cpp
+    __bt_free() az index freelist-jebol fuzi ki a felszabadult lapot
+    (korabban a globalis freelistbol fuzte ki, ami sulyos hiba)
+    __bt_new0() parameterezese megvaltozott, csak nemindex lapra hasznalhato
+    __bt_new() parameterezese megvaltozott, csak nemindex lapra hasznalhato
+    __bt_newx() uj fuggveny, csak index lapra hasznalhato
+
+bt_seq.cpp
+    __bt_getcur() lekerdezi a cursort (csak debug szerepe van)
+    
+bt_split.cpp
+    az uj __bt_newx() fuggvenyt hasznalja
+
+btree.h
+    order->flags  megszunt (nem volt hasznalva)
+    order->lastfree uj tag, az index freelist kezdo eleme
+
+db.cpp
+    __db_version() be is allithato a verzioszam (nem csak lekerdezheto)
+    __db_fd() be is allithato az fd (nem csak lekerdezheto)
+    __db_getcur() uj fuggveny, lekerdezi az aktualis kurzort (csak debug szerepe van)
+
+dbinfo.prg
+    tabResource() rw helyett ro-ra nyitja a fajlt
+
+dbopen.prg 
+    version_upgrade_4 atdolgozva: 
+    akkor is probalkozik a konverzioval, ha az alkalmazas ro-ra nyit;
+    csak akkor nem konvertal, ha a fajlrendszer vagy a fajl readonly;
+    ha az alkalmazas ro fajlt ro-ra nyit, akkor olvassa a regi dbm-et;          
+
+bti.prg
+    bovebb infot ad, listazza az indexek lapjait es a freelist-et
+
+pgview.prg
+    bovebb infot ad, atdolgozva
+
+util.prg
+    bovitve    
+
+kdirmodi.prg
+    readonly fajlt is meg tud nyitni    
+
+tbl2dbf.prg
+    readonly fajlt is meg tud nyitni    
+
+tbl2txt.prg
+    readonly fajlt is meg tud nyitni    
+
+view.prg
+    readonly fajlt is kezel
+
+--------------------------------------------------------------------------------------------
+
+
 fopen()
     Egyaltalan nem var.
 

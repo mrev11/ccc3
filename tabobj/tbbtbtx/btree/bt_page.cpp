@@ -24,16 +24,24 @@
 
 #include <btree.h>
 
+//#define DEBUG
+#ifdef  DEBUG
+    #define PRINTF printf
+#else
+    #define PRINTF(...)
+#endif
+
 //----------------------------------------------------------------------------
 int __bt_free(BTREE *t, PAGE *h)  //Put a page on the freelist. 
 {
     __bt_header_read(t,1);
 
-    h->flags   = P_FREE;
-    h->prevpg  = P_INVALID;
-    h->nextpg  = P_INVALID; 
-    h->linkpg  = t->bt_free;
-    t->bt_free = h->pgno;
+    h->flags      = P_FREE;
+    h->prevpg     = P_INVALID;
+    h->nextpg     = P_LASTFREE(t); 
+    P_LASTFREE(t) = h->pgno;
+
+    PRINTF("\n>>>> __BT_FREE %4x ->%4x               [%s]", P_LASTFREE(t), h->nextpg, P_NAME(t)); fflush(0);
 
     __bt_header_write(t);
 
@@ -41,7 +49,7 @@ int __bt_free(BTREE *t, PAGE *h)  //Put a page on the freelist.
 }
 
 //----------------------------------------------------------------------------
-PAGE *__bt_new0(BTREE *t, pgno_t *npg, pgno_t *lpg) //New page.
+PAGE *__bt_new0(BTREE *t, pgno_t *npg) //New nonindex page.
 {
     PAGE *h;
 
@@ -51,20 +59,17 @@ PAGE *__bt_new0(BTREE *t, pgno_t *npg, pgno_t *lpg) //New page.
     {
         __bt_error("__bt_new: mpool_new failed");
     }
-
-    if( lpg )
-    {
-        h->linkpg=*lpg; 
-        *lpg=*npg;
-    }
+    PRINTF("\n>>>> __BT_NEW0 brand new page %4x",*npg); fflush(0);
 
     __bt_header_write(t);
     return h;
 }
  
 //----------------------------------------------------------------------------
-PAGE *__bt_new(BTREE *t, pgno_t *npg, pgno_t *lpg) //New page, prefer freelist. 
+PAGE *__bt_new(BTREE *t, pgno_t *npg) //New nonindex page, prefer freelist. 
 {
+    //_clp_callstack(0);pop();
+
     PAGE *h;
 
     __bt_header_read(t,1);
@@ -77,7 +82,7 @@ PAGE *__bt_new(BTREE *t, pgno_t *npg, pgno_t *lpg) //New page, prefer freelist.
         }
         *npg = t->bt_free;
         t->bt_free = h->linkpg;
-        //printf("from free %d\n",*npg);
+        PRINTF("\n>>>> __BT_NEW  from global free %4x",*npg); fflush(0);
     }
     else
     {
@@ -85,13 +90,49 @@ PAGE *__bt_new(BTREE *t, pgno_t *npg, pgno_t *lpg) //New page, prefer freelist.
         {
             __bt_error("__bt_new: mpool_new failed");
         }
-        //printf("brand new %d\n",*npg);
+        PRINTF("\n>>>> __BT_NEW  brand new page %4x",*npg); fflush(0);
     }
 
-    if( lpg )
+    __bt_header_write(t);
+    return h;
+}
+
+//----------------------------------------------------------------------------
+PAGE *__bt_newx(BTREE *t, pgno_t *npg) //New index page, prefer freelist. 
+{
+    PAGE *h;
+
+    __bt_header_read(t,1);
+
+    if( P_LASTFREE(t) )
     {
-        h->linkpg=*lpg; 
-        *lpg=*npg;
+        if( (h=(PAGE*)mpool_get(t->bt_mp,P_LASTFREE(t)))==NULL )
+        {
+            __bt_error("__bt_newx: invalid index-free list");
+        }
+        *npg = P_LASTFREE(t);
+        P_LASTFREE(t) = h->nextpg;
+        PRINTF("\n>>>> __BT_NEWX from index-free %4x      [%s]",*npg, P_NAME(t));  fflush(0);
+    }
+    else if( t->bt_free!=P_INVALID  ) 
+    {
+        if( (h=(PAGE*)mpool_get(t->bt_mp,t->bt_free))==NULL )
+        {
+            __bt_error("__bt_newx: invalid global-free list");
+        }
+        *npg = t->bt_free;
+        t->bt_free = h->linkpg;
+        PRINTF("\n>>>> __BT_NEWX from global-free %4x     [%s]",*npg, P_NAME(t)); fflush(0);
+    }
+    else
+    {
+        if( (h=(PAGE*)mpool_new(t->bt_mp, npg))==NULL )
+        {
+            __bt_error("__bt_new: mpool_new failed");
+        }
+        h->linkpg=P_LASTPAGE(t);
+        P_LASTPAGE(t) = *npg;
+        PRINTF("\n>>>> __BT_NEWX brand new page %4x       [%s]",*npg, P_NAME(t)); fflush(0);
     }
 
     __bt_header_write(t);

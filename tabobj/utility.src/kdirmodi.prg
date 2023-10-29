@@ -157,7 +157,11 @@ local save:=tabSave(tab)
 
 ************************************************************************
 static function modrecord(tab)
-    tabEditRecord(tab,"EMTS")
+    if( tabIsOpen(tab)>OPEN_READONLY )
+        tabEditRecord(tab,"EMTS")
+    else
+        tabEditRecord(tab,"TM")
+    end
 
 
 ************************************************************************

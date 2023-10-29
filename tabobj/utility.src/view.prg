@@ -21,6 +21,7 @@
 #include "box.ch"
 #include "directry.ch"
 #include "inkey.ch"
+#include "table.ch"
 
 #include "utility.ver"
  
@@ -31,13 +32,19 @@ static APPNAME
 *********************************************************************
 function appview(app)
 
-local fname,control,n:=0,v
+local fname,control,mode,n:=0,v
 
     APPNAME:=app
  
     while( NIL!=(v:=argv(++n)) )
         if( v=="-c" )
             control:=argv(++n)
+        elseif( v=="-r" )
+            mode:="r"
+        elseif( v=="-w" )
+            mode:="w"
+        elseif( v=="-x" )
+            mode:="x"
         elseif( v=="-f" )
             fname:=argv(++n)
         else
@@ -80,18 +87,21 @@ local fname,control,n:=0,v
         quit
     end
 
-    kdirViewData(fname,control)
+    kdirViewData(fname,control,mode)
     return NIL
    
 
 *********************************************************************
-function kdirViewData(fname,control)
+function kdirViewData(fname,control,mode)
 local brw, tab, recnum, n
 local modos:={},index:={}
+local opmode
 
-    if( empty(tab:=kdirOpen(fname)) )
+    if( empty(tab:=kdirOpen(fname,mode)) )
         return NIL
     end
+    
+    opmode:=tabIsOpen(tab)
     
     brw:=tabBrowse(tab,0,0,maxrow(),maxcol(),.t.)
     recnum:=TBColumnNew(@" Rec#",{||tabPosition(tab)},"9999999")
@@ -109,20 +119,27 @@ local modos:={},index:={}
     brwMenu(brw,@"Index",@"Set controlling index (order)",index,"I")
 
     aadd(modos,{@"Modify current record",{||modosit(brw,tab)}})
-    aadd(modos,{@"Append empty record",{||ujrekord(brw,tab)}})
-    aadd(modos,{@"Delete current record",{||torol(brw,tab)}})
+
+    if( opmode>OPEN_READONLY )
+        aadd(modos,{@"Append empty record",{||ujrekord(brw,tab)}})
+        aadd(modos,{@"Delete current record",{||torol(brw,tab)}})
+    end
+
     aadd(modos,{@"Goto record position",{||goto(brw,tab)}})
-    aadd(modos,{@"Lock current record",{||lockcur(brw,tab)}})
-    aadd(modos,{@"Lock current 0 sec timeout",{||locktout(brw,tab,0)}})
-    aadd(modos,{@"Lock current 2 sec timeout",{||locktout(brw,tab,2000)}})
-    aadd(modos,{@"Lock records by position",{||lockpos(brw,tab)}})
-    aadd(modos,{@"Lock multiple records",{||lockmul(brw,tab)}})
-    aadd(modos,{@"Unlock records by position",{||unlockpos(brw,tab)}})
-    aadd(modos,{@"Unlock all records",{||tabunlock(tab)}})
-    aadd(modos,{@"Pack database file",{||pakkol(brw,tab)}})
-    aadd(modos,{@"Zap database file",{||zapol(brw,tab)}})
-    aadd(modos,{@"Lock database file 0 sec timeout",{||lockfil(brw,tab)}})
-    aadd(modos,{@"Lock database file 2 sec timeout",{||lockfil(brw,tab,2000)}})
+
+    if( opmode>OPEN_READONLY )
+        aadd(modos,{@"Lock current record",{||lockcur(brw,tab)}})
+        aadd(modos,{@"Lock current 0 sec timeout",{||locktout(brw,tab,0)}})
+        aadd(modos,{@"Lock current 2 sec timeout",{||locktout(brw,tab,2000)}})
+        aadd(modos,{@"Lock records by position",{||lockpos(brw,tab)}})
+        aadd(modos,{@"Lock multiple records",{||lockmul(brw,tab)}})
+        aadd(modos,{@"Unlock records by position",{||unlockpos(brw,tab)}})
+        aadd(modos,{@"Unlock all records",{||tabunlock(tab)}})
+        aadd(modos,{@"Pack database file",{||pakkol(brw,tab)}})
+        aadd(modos,{@"Zap database file",{||zapol(brw,tab)}})
+        aadd(modos,{@"Lock database file 0 sec timeout",{||lockfil(brw,tab)}})
+        aadd(modos,{@"Lock database file 2 sec timeout",{||lockfil(brw,tab,2000)}})
+    end
  
     brwMenu(brw,@"Modify",@"Modify selected record, append, delete, pack",modos,"M")
 
@@ -208,14 +225,26 @@ local indname
 
 
 ************************************************************************
-static function kdirOpen(fname)
+static function kdirOpen(fname,mode)
 local tab:=tabResource(fname)
 
-    if( valtype(tab)!="A" .or.  empty(tab) )
-        alert(fname+" busy!")
+    if( valtype(tab)!="A" .or. empty(tab) )
+        alert("tabResource failed:"+fname)
         tab:=NIL 
+
+    elseif( mode=="w" )
+        tabOpen(tab,OPEN_SHARED)
+    elseif( mode=="r" )
+        tabOpen(tab,OPEN_READONLY)
+    elseif( mode=="x" )
+        tabOpen(tab,OPEN_EXCLUSIVE)
     else
-        tabOpen(tab)
+        // default
+        // ha SHARED modban nem sikerul
+        // megprobalja READONLY modban
+        if( !tabOpen(tab,,{||.f.}) )
+            tabOpen(tab,OPEN_READONLY)
+        end
     end
     return tab
 

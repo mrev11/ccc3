@@ -20,7 +20,7 @@
 
 //Indexelo utility btbtx formatumhoz
 //
-// bti [-f]fname [-l]             // indexek listazasa
+// bti fname [-l]                 // indexek listazasa
 // bti fname -diname              // index torles (+osszes suppindex)
 // bti fname -ainame -sseg1 ...   // uj index hozzaadasa
 // bti fname -adeleted            // deleted index hozzaadasa
@@ -48,11 +48,9 @@ local x, v, op:="l"
         x:=left(a[n],2)
         v:=substr(a[n],3)
 
-        if( x=="-f" )
-            fname:=v
 
-        elseif( x=="-l" )
-            op:="l"
+        if( x=="-l" )
+            op:="l"+v
 
         elseif( x=="-k" )
             iname:=v
@@ -80,25 +78,23 @@ local x, v, op:="l"
     if( fname==NIL )
         usage("No input file")
     end
-    if( !"."$fname )
+    if( fname::right(3)!=".bt" )
         fname+=".bt"
     end
 
-    if( op=="l" )
-        listindex(fname)
+    if( "l"$op )
+        listindex(fname,op)
 
     elseif( op=="k" )
         listkeys(fname,iname)
-        
+
     elseif( op=="a" )
         addindex(fname,iname,seg)
 
     elseif( op=="d" )
         delindex(fname,iname)
- 
-    else
-        usage("No operation")
     end
+
     ?
  
     
@@ -110,7 +106,7 @@ static function usage(errtxt)
         ?
     end
     ??<<usage>>    
-  Usage : bti.exe fname [-aindex -sseg1 -sseg2 | -dindex | -k[index] | -l | -h]
+  Usage : bti.exe fname [-aindex -sseg1 -sseg2 | -dindex | -k[index] | -l[p][f] | -h]
 
   fname : bt file specification 
   index : index name
@@ -119,7 +115,7 @@ static function usage(errtxt)
   -a    : add an index
   -d    : delete an index
   -k    : list all keys of an index (or all indices)
-  -l    : list all indices (default operation)
+  -lpf  : list all indices (pages and freelist)
   -h    : print this help
 
 <<usage>>    
@@ -127,21 +123,100 @@ static function usage(errtxt)
 
 
 *****************************************************************************
-static function listindex(fname)
+static function listindex(fname,op)
 local t:=tabResource(fname)
 local x:=tabIndex(t),n,c,i
+local btree,iname
+
+    if( "f"$op .or. "p"$op ) 
+        tabOpen(t)
+        btree:=t[2]
+    end
+
     ? fname
+
+    if( "f"$op ) 
+        listfree(btree)
+    end
+    if( "p"$op ) 
+        ? "recno {}";listpages(btree,"recno")
+    end
+    if( "p"$op .and. tabKeepDeleted(t)!=NIL )
+        ? "deleted {}";listpages(btree,"deleted")
+    end
+
     for n:=1 to len(x)
+        iname:=x[n][IND_NAME]
         c:=aclone(x[n][IND_COL])
         for i:=1 to len(c)
             if( valtype(c[i])=="N"  )
                 c[i]:=tabColumn(t)[c[i]][COL_NAME]
             end
         next 
-        ? x[n][1],if(x[n][4],"s","p"),c
+        ? iname,if(x[n][4],"s","p"),c
+
+        if( "p"$op ) 
+            listpages(btree,iname)
+        end
     next
+   
     ?
 
+
+*****************************************************************************
+static function listpages(btree,iname)
+local header,nords,n,order
+    header:=_db_pgread(btree,0)
+    nords:=header[29..32]::num
+    iname::=str2bin
+    for n:=1 to nords
+        order:=header::substr(48+(n-1)*32+1,32)
+        if(  iname==order::substr(17,len(iname)) )
+            listpages1(btree,order)
+            exit
+        end
+    next
+
+static function listpages1(btree,order)
+local page,link,type,cnt:=0
+    
+    link:=order::substr(5,4)::num
+
+    while( link!=0  )
+        ++cnt 
+        ?? " "+link::l2hex
+        page:=_db_pgread(btree,link)
+        type:=page::substr(17,4)::num
+        if( type==0 )
+            // free
+            ?? "*"  
+        elseif( type==1 )
+            // tree (internal)
+            ?? "!" 
+        elseif( type==2 )
+            // leaf
+        end
+        
+        link:=page::substr(5,4)::num
+    end
+
+    ?? " NUMBER_OF_PAGES="+cnt::str::alltrim
+
+
+*****************************************************************************
+static function listfree(btree)
+local page,link,cnt:=0
+    ? "free {}"
+    page:=_db_pgread(btree,0)
+    link:=page[17..20]::num
+    while( link!=0 )
+        ++cnt
+        ?? " "+link::l2hex
+        page:=_db_pgread(btree,link)
+        link:=page[5..8]::num
+    end
+
+    ?? " NUMBER_OF_PAGES="+cnt::str::alltrim
 
 *****************************************************************************
 static function addindex(fname,iname,seg)
@@ -200,8 +275,8 @@ local t:=tabResource(fname),o
     recover
         usage("Index does not exist: "+iname)
     end  
-    tabIndex(t)[o][4]:=.t.    //beallitva a suppindex flag
-    tabDropindex(t)   //torli az osszes suppindexet is
+    tabIndex(t)[o][4]:=.t.  //beallitva a suppindex flag
+    tabDropindex(t)         //torli az osszes suppindexet is
  
 
 *****************************************************************************
@@ -237,19 +312,22 @@ local index:={},tabind,i
 static function print_ord(table,name)
 local btree:=table[TAB_BTREE]
 local ord:=_db_setord(btree,name)
-local key,cnt:=0
+local key,crs,cnt:=0
 
     ? "----------------------------------------------------------------"
-    ? "SETORD",name,ord
+    ? "SETORD",name::alltrim,ord::str(3)
 
     if( ord>=0 )
         key:=_db_first(btree)
+        crs:=_db_getcur(btree)
         while( key!=NIL )
             ++cnt
-            ? key::key2str
+            //index neve      kulcs lapja            kulcs indexe   kulcs tartalma
+            ? name::padr(16), crs[1]::l2hex::padl(5),crs[2]::str(4),crs[3]::key2str
             key:=_db_next(btree)
+            crs:=_db_getcur(btree)
         end
-        ? "Number of keys:",cnt::str::alltrim
+        ? "Number of keys in ["+name+"]:",cnt::str::alltrim
     else
         ? "Index does not exist:", name
     end

@@ -55,7 +55,7 @@ function tabResource(dbfspec,alias:="")
 
 local table,n
 local column,index
-local db:=_db_open(fopen(lower(dbfspec),FO_READWRITE+FO_SHARED))
+local db:=_db_open(fopen(lower(dbfspec),FO_READ+FO_SHARED))
 local path,file,ext
 local poffs:=max(rat(dirsep(),dbfspec),rat(":",dbfspec))
 local eoffs:=rat(".",dbfspec)

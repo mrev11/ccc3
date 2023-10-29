@@ -20,6 +20,7 @@
 
 #include "fileio.ch"
 #include "tabobj.ch"
+#include "btcharconv.ch"
 
 ******************************************************************************
 //Public interface
@@ -161,6 +162,24 @@ local timeout
     end
 
     tabAlloc(table)
+    table[TAB_OPEN]:=mode
+
+    //? getpid(), "mode", if(mode>1,"w","r") , "version-bef", read_disk_version(table)
+    while( 1>tabSlock(table,{||0}) )
+        sleep(100)
+    end
+    if( read_disk_version(table)<4 )
+        // version_upgrade_4-ben
+        // - inicializalva kell legyen a record buffer: tabAlloc
+        // - ismert kell legyen a nyitasi mod: table[TAB_OPEN]
+        // - csak egy programban futhat az upgrade: tabSlock
+        // - meg kell eloznie az alias->field tablazat kesziteset: tabSetFieldTable
+        version_upgrade_4(table)
+    end
+    tabSunlock(table)
+    //? getpid(), "mode", if(mode>1,"w","r") , "version-aft", read_disk_version(table)
+
+
     tabSetFieldTable(table)
 
     if( 0>_db_setord(table[TAB_BTREE],"deleted") )
@@ -181,13 +200,8 @@ local timeout
         end
     end
 
-    if( _db_version(table[TAB_BTREE])==3 )
-        version_upgrade_4(table)
-    end
-
     _db_setord(table[TAB_BTREE],"recno")
     tabGotop(table)
-    table[TAB_OPEN]:=mode
     table[TAB_STAMP]:=tabStamp(table)
     return .t.
 
@@ -285,7 +299,9 @@ local memohnd
     end
 
     //esetleges beragadt index torlese
-    _db_delord(table[TAB_BTREE],"<#>")
+    if( mode>OPEN_READONLY   )
+        _db_delord(table[TAB_BTREE],"<#>")
+    end
 
     table[TAB_MEMOHND]:=memohnd //memohandler vagy NIL
 
@@ -402,69 +418,93 @@ local ps:=getenv("BTBTX_PAGESIZE")
 
 
 ******************************************************************************
-static function version_upgrade_4(table)
-local memcol:={},memdec:={},mempos,memval
-local column:=tabColumn(table),n
-local magic:=x"00"::replicate(4)
+static function version_upgrade_4(table_orig)
 
+local memcol:={}
+local memdec:={}
+local mempos,memval
+local table,column,n
 
+    if( tabIsOpen(table_orig)>=OPEN_SHARED )
+        table:=table_orig
+    else
+        table:=tabResource(tabPathName(table_orig))
+        if( table==NIL .or. !tabOpen(table,OPEN_SHARED,{||.f.}) )
+            table:=table_orig
+        else
+            //REKURZIO - KESZ!
+            tabClose(table)
+            return NIL
+        end
+    end
+
+    column:=tabColumn(table)
     for n:=1 to len(column)
         if(tabMemoField(table,column[n]))
             memcol::aadd(n)
             memdec::aadd(tabColumn(table)[n][COL_DEC])
         end
     next
-    
+
     if( len(memcol)>0 )
 
-        ? "version_upgrade_4", tabPathName(table)
+        if( tabIsOpen(table)>=OPEN_SHARED )
+            // READWRITE modban nyitva
+            // elvegezheto a konverzio
+            ? getpid(),"version_upgrade_4", tabPathName(table)
 
-        table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table))) //eexclusive
-        if( table[TAB_MEMOHND]<0 )
-            taberrOperation("version_upgrade_4")
-            taberrDescription(@"memoOpen failed")
-            taberrFilename(lower(tabMemoName(table)))
-            tabError(table)
-        end
-        
-        tabGotop(table)
-        while( !tabEof(table) )
+            table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table)),FO_EXCLUSIVE)
+            if( table[TAB_MEMOHND]<0 )
+                taberrOperation("version_upgrade_4")
+                taberrDescription(@"memoOpen failed")
+                taberrFilename(lower(tabMemoName(table)))
+                tabError(table)
+            end
+
+            tabGotop(table)
+            while( !tabEof(table) )
+                for n:=1 to len(memcol)
+                    mempos:=getmempos(table,memcol[n])
+                    memval:=_v1_tabMemoRead(table,mempos)
+                    if( !memval::empty )
+                        mempos:=_db_memowrite(table[TAB_BTREE],memval::trim,tabPosition(table),memdec[n])
+                    else
+                        mempos:=a"          "
+                    end
+                    setmempos(table,memcol[n],mempos)
+                next
+                table[TAB_MODIF]:=.t.
+                tabCommit(table)
+                tabSkip(table)
+            end
+
+            fclose(table[TAB_MEMOHND])
+            table[TAB_MEMOHND]:=NIL
+            ferase(lower(tabMemoName(table)))
+
+        else
+            // READONLY modban nyitva
+            // nem vegezheto el a konverzio
+            ? getpid(),"version_fallback_4", tabPathName(table)
+
+            table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table)),FO_READ)
+            if( table[TAB_MEMOHND]<0 )
+                taberrOperation("version_upgrade_4")
+                taberrDescription(@"memoOpen failed")
+                taberrFilename(lower(tabMemoName(table)))
+                tabError(table)
+            end
+
             for n:=1 to len(memcol)
-                mempos:=getmempos(table,memcol[n])
-                memval:=_v1_tabMemoRead(table,mempos)
-                if( !memval::empty )
-                    mempos:=_db_memowrite(table[TAB_BTREE],memval::trim,tabPosition(table),memdec[n])
-                else
-                    mempos:=a"          "
-                end
-                setmempos(table,memcol[n],mempos)
+                set_readonly_memoblk(table,column[memcol[n]])
             next
-            table[TAB_MODIF]:=.t.
-            tabCommit(table)
-            tabSkip(table)
         end
-
-        fclose(table[TAB_MEMOHND])
-        table[TAB_MEMOHND]:=NIL
-        ferase(lower(tabMemoName(table)))
     end
 
-    fseek(table[TAB_FHANDLE],0,FS_SET)
-    fread(table[TAB_FHANDLE],@magic,4)
-
-    if( magic==x"62310500" )
-        fwrite(table[TAB_FHANDLE],x"04000000",4) // little endian
-    elseif( magic==x"00053162" )
-        fwrite(table[TAB_FHANDLE],x"00000004",4) // big endian
-    else
-        //ide nem johet
-        //mert ha rossz a magic
-        //akkor nem lehet nyitva a fajl
-        taberrOperation("version_upgrade_4")
-        taberrDescription(@"wrong magic number")
-        taberrFilename(lower(tabPathName(table)))
-        tabError(table)
+    if( tabIsOpen(table)>=OPEN_SHARED )
+        write_disk_version(table,4)
     end
+
 
 
 static function getmempos(table,n)
@@ -479,6 +519,71 @@ local column:=table[TAB_COLUMN][n]
 local offs:=column[COL_OFFS]
 local width:=column[COL_WIDTH]
     xvputbin(table[TAB_RECBUF],offs,width,pos)
+
+
+******************************************************************************
+static function set_readonly_memoblk(table,col)
+local type:=col[COL_TYPE]
+local offs:=col[COL_OFFS]
+local width:=col[COL_WIDTH]
+
+    if( type=="C" )
+        col[COL_BLOCK]:=blkmemoc(table,offs,width)
+    elseif( type=="X" )
+        col[COL_BLOCK]:=blkmemox(table,offs,width)
+    else
+        col[COL_BLOCK]:=(||)
+    end
+
+
+static function blkmemoc(table,offs,width)
+    return (||bin2str(CHARCONV_LOAD(_v1_tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width)))))
+
+
+static function blkmemox(table,offs,width)
+    return (|| _v1_tabMemoRead(table,xvgetchar(table[TAB_RECBUF],offs,width)) )
+
+
+******************************************************************************
+static function read_disk_version(table)
+local head:=replicate(bin(0),8)
+local magic,version
+
+    fseek(table[TAB_FHANDLE],0,FS_SET)
+    fread(table[TAB_FHANDLE],@head,8)
+    magic:=head[1..4]
+
+    if( magic==x"62310500" )
+        version:=asc(head[5])     // little endian
+    elseif( magic==x"00053162" )
+        version:=asc(head[8])     // big endian
+    else
+        //ide nem johet
+        //mert ha rossz a magic
+        //akkor nem lehet nyitva a fajl
+    end
+
+    return version
+
+
+******************************************************************************
+static function write_disk_version(table,version)
+local magic:=replicate(bin(0),4)
+
+    fseek(table[TAB_FHANDLE],0,FS_SET)
+    fread(table[TAB_FHANDLE],@magic,4)
+
+    if( magic==x"62310500" )
+        fseek(table[TAB_FHANDLE],4,FS_SET) // little endian
+    elseif( magic==x"00053162" )
+        fseek(table[TAB_FHANDLE],7,FS_SET) // big endian
+    else
+        //ide nem johet
+        //mert ha rossz a magic
+        //akkor nem lehet nyitva a fajl
+    end
+
+    fwrite(table[TAB_FHANDLE],bin(version),1)
 
 
 ******************************************************************************

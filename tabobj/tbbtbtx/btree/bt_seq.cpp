@@ -443,7 +443,24 @@ DBT __bt_getkey( BTREE *t, EPG *e)
 }
 
 //----------------------------------------------------------------------------
+int __bt_getcur(BTREE *t, pgno_t *pgno, indx_t *index, DBT *key) //debug info
+{
+    if( pgno )
+    {
+        *pgno=t->bt_cursor.pg.pgno;
+    }
+    if( index )
+    {
+        *index=t->bt_cursor.pg.index;
+    }
+    if( key )
+    {
+        *key=t->bt_cursor.key;
+    }
+    return t->bt_cursor.pg.pgno;  // pgno, vagy 0 ha nincs pozicionalva
+}
 
+//----------------------------------------------------------------------------
 void __bt_setcur(BTREE *t, pgno_t pgno, indx_t index, DBT *key)
 {
     if( t->bt_cursor.key.data ) 

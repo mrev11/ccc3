@@ -281,7 +281,7 @@ static PAGE *bt_page(BTREE*t, PAGE*h, PAGE **lp,
     pgno_t npg;
 
     // Put the new right page for the split into place. 
-    if( (r=__bt_new(t, &npg, &(P_LASTPAGE(t))))==NULL )
+    if( (r=__bt_newx(t, &npg))==NULL )
     {
         return (NULL);
     }
@@ -373,8 +373,8 @@ static PAGE *bt_root(BTREE *t, PAGE *h, PAGE**lp,
     pgno_t lnpg, rnpg;
 
     // Put the new left and right pages for the split into place. 
-    if( (l=__bt_new(t,&lnpg,&(P_LASTPAGE(t))))==NULL ||
-        (r=__bt_new(t,&rnpg,&(P_LASTPAGE(t))))==NULL )
+    if( (l=__bt_newx(t,&lnpg))==NULL ||
+        (r=__bt_newx(t,&rnpg))==NULL )
     {
         return (NULL);
     }

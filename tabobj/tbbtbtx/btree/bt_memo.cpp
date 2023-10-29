@@ -91,7 +91,7 @@ static MEMOPG* __bt_memopage(BTREE *t)
     }
     else
     {
-        memopg=(MEMOPG*)__bt_new0(t,&pgno,0);
+        memopg=(MEMOPG*)__bt_new0(t,&pgno);
         __bt_pagelock(t,pgno,1); // wrlk
 
         PGNO(memopg)    = pgno;

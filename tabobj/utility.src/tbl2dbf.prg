@@ -30,10 +30,13 @@ local table
 local dext:=lower(tabDataExt())
 local appname:=substr(dext,2)+"2dbf"
 local args:={*},n,ctrl,fname
+local mode:=OPEN_EXCLUSIVE
 
     for n:=1 to len(args)
         if( args[n]=="-c"  )
             ctrl:=args[++n]
+        elseif( args[n]=="-r" )
+            mode:=OPEN_READONLY
         elseif( args[n]=="-f" )
             fname:=args[++n]
         elseif( n==len(args) )
@@ -60,7 +63,7 @@ local args:={*},n,ctrl,fname
         quit
     end
     
-    table:=open(fname,ctrl)
+    table:=open(fname,ctrl,mode)
     
     if( table==NIL )
         ? fname, @"not available"
@@ -75,16 +78,16 @@ local args:={*},n,ctrl,fname
 
 
 ******************************************************************************
-static function open(fname,ctrl:=0)
+static function open(fname,ctrl:=0,mode)
 local tab:=tabResource(fname)
 
     if( valtype(tab)!="A" .or.  empty(tab) )
         tab:=NIL 
+    elseif( !tabOpen(tab,mode,{||.f.}) )
+        tab:=NIL 
     else
-        tabOpen(tab,OPEN_EXCLUSIVE)
-        //tabOpen(tab)
+        tabControl(tab,ctrl)
     end
-    tabControl(tab,ctrl)
     return tab
 
 
@@ -277,7 +280,7 @@ local total:="/"+alltrim(str(tabLastrec(table)))
 
     msg:=message(msg)
     
-    ? @"written", alltrim(str(lastrec)), @"records to", dbfname
+    ? "Total number of records written to", dbfname+":", alltrim(str(lastrec))
     ?
     return NIL
 

@@ -26,7 +26,12 @@ local val:=key[1..len(key)-10]::bin2str
 local rcn:=recno[1..4]::bin2hex
 local pgn:=recno[5..8]::bin2hex
 local idx:=recno[9..10]::bin2hex
+
+    key:="["+rcn+"-"+pgn+"-"+idx+"]"
+    if( !val::empty )
+        key:="["+val+"] "+key
+    end
     
-    return "["+rcn+"-"+pgn+"-"+idx+"] ["+val+"]"
+    return key
 
 *********************************************************************************************

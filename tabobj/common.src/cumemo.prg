@@ -165,11 +165,16 @@ local header, nb
 
 
 ***************************************************************************    
-function memoOpen(fname)
+function memoOpen(fname,mode:=FO_EXCLUSIVE)
 
-//local hnd:=fopen(fname,FO_READWRITE+FO_SHARED) 
-local hnd:=fopen(fname,FO_READ+FO_EXCLUSIVE) // csak konverziohoz kell
+local hnd:=fopen(fname,mode)
 local buffer:=replicate(x"20",16), nb
+
+    nb:=0
+    while( hnd<0 .and. ++nb<=10 )
+        sleep(500)
+        hnd:=fopen(fname,mode)
+    end
 
     if( hnd>=0 )
         #ifdef _UNIX_

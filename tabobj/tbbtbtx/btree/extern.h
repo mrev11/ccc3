@@ -62,6 +62,7 @@
   int    __bt_read           (BTREE*, DBT*, RECPOS*);
   int    __bt_read1          (BTREE*, DBT*, pgno_t, indx_t);
 
+  void   __bt_pgeval         (BTREE*, pgno_t, VALUE*);
   int    __bt_pgread         (BTREE*, pgno_t, DBT*);
   void   __bt_pgrewrite      (BTREE*, pgno_t, int);
 

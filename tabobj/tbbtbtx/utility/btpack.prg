@@ -18,15 +18,32 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-*********************************************************************************************
-function key2str(key)
 
-local recno:=key::right(10)
-local val:=key[1..len(key)-10]::bin2str
-local rcn:=recno[1..4]::bin2hex
-local pgn:=recno[5..8]::bin2hex
-local idx:=recno[9..10]::bin2hex
+#include "table.ch"
 
-   return "["+val+"] ["+rcn+"-"+pgn+"-"+idx+"]"                
+******************************************************************************************
+static function usage()
+    ? "Usage: btpack <btfile>"
+    ?
+    quit
 
-*********************************************************************************************
+
+******************************************************************************************
+function main(btfile)
+local table
+
+    begin
+        if( btfile::right(3)!=".bt" )
+            btfile+=".bt"
+        end
+        table:=tabResource(btfile)
+        tabOpen(table)
+    recover
+        usage()
+    end
+
+    tabOpen(table,OPEN_EXCLUSIVE)
+    tabPack(table)
+    ?
+
+******************************************************************************************

@@ -161,6 +161,29 @@ local len:=len(a),v
 
 
 ****************************************************************************
+function arev(a)
+local len:=len(a),n,x
+    for n:=1 to len/2
+        x:=a[n]
+        a[n]:=a[len-n+1]
+        a[len-n+1]:=x
+    next
+    return a
+
+
+****************************************************************************
+function acat(a,b)
+local lena,lenb,n
+    lena:=len(a)
+    lenb:=len(b)
+    asize(a,lena+lenb)
+    for n:=1 to lenb
+        a[lena+n]:=b[n]
+    next
+    return a
+
+
+****************************************************************************
 function _asort_ascendblock() // asort default blockja
     return {|x,y|x<y}
 

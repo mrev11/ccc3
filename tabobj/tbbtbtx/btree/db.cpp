@@ -25,7 +25,6 @@
 #endif
 
 #include <fileio.ch>
-#include <cccapi.h>
 #include <btree.h>
 
 //---------------------------------------------------------------------------
@@ -437,70 +436,6 @@ void _clp__db_read1(int argno)
 
 
 //---------------------------------------------------------------------------
-void _clp__db_pgread(int argno)
-{
-    // statisztikakhoz
-
-    CCC_PROLOG("_db_pgread",2);
-    BTREE *db=(BTREE*)_parp(1);
-    pgno_t pgno=_parni(2);
-
-    int fd=__bt_fd(db);
-    off_t totalsize=lseek(fd,0,SEEK_END);
-    int pagesize=__bt_pagesize(db);
-    unsigned int maxpgno=totalsize/pagesize-1;
-
-    if( 0<=pgno && pgno<=maxpgno )
-    {
-        DBT data;
-        data.data=binaryl(pagesize);
-        data.size=pagesize;
-
-        if( pagesize==__bt_pgread(db,pgno,&data) )
-        {
-            _rettop();
-        }
-        else
-        {
-            _ret();
-        }
-    }
-    else
-    {
-        _ret();
-    }
-    CCC_EPILOG();
-}
-
-
-//---------------------------------------------------------------------------
-void _clp__db_pgrewrite(int argno)
-{
-    // titkositashoz
-
-    CCC_PROLOG("_db_pgrewrite",3);
-    BTREE *db=(BTREE*)_parp(1);
-    pgno_t pgno=_parni(2);
-    int cryptflg=_parl(3);
-
-    int fd=__bt_fd(db);
-    off_t totalsize=lseek(fd,0,SEEK_END);
-    int pagesize=__bt_pagesize(db);
-    unsigned int maxpgno=totalsize/pagesize-1;
-
-    if( 0<=pgno && pgno<=maxpgno )
-    {
-        __bt_pgrewrite(db,pgno,cryptflg);
-        _retl(1);
-    }
-    else
-    {
-        _retl(0);
-    }
-    CCC_EPILOG();
-}
-
-//---------------------------------------------------------------------------
 void _clp__db_rewrite(int argno)
 {
     CCC_PROLOG("_db_rewrite",3);
@@ -608,5 +543,81 @@ void _clp__db_recpos2array(int argno) //diagnostics
     CCC_EPILOG();
 }
 
+
+//---------------------------------------------------------------------------
+void _clp__db_pgeval(int argno)
+{
+    CCC_PROLOG("_db_pgeval",3);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=_parni(2);
+    VALUE *block=ISBLOCK(3)?PARPTR(3):0;
+    __bt_pgeval(db,pgno,block);
+    _ret();
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp__db_pgread(int argno)
+{
+    // statisztikakhoz
+
+    CCC_PROLOG("_db_pgread",2);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=_parni(2);
+
+    int fd=__bt_fd(db);
+    off_t totalsize=lseek(fd,0,SEEK_END);
+    int pagesize=__bt_pagesize(db);
+    unsigned int maxpgno=totalsize/pagesize-1;
+
+    if( 0<=pgno && pgno<=maxpgno )
+    {
+        DBT data;
+        data.data=binaryl(pagesize);
+        data.size=pagesize;
+
+        if( pagesize==__bt_pgread(db,pgno,&data) )
+        {
+            _rettop();
+        }
+        else
+        {
+            _ret();
+        }
+    }
+    else
+    {
+        _ret();
+    }
+    CCC_EPILOG();
+}
+
+
+//---------------------------------------------------------------------------
+void _clp__db_pgrewrite(int argno)
+{
+    // titkositashoz
+
+    CCC_PROLOG("_db_pgrewrite",3);
+    BTREE *db=(BTREE*)_parp(1);
+    pgno_t pgno=_parni(2);
+    int cryptflg=_parl(3);
+
+    int fd=__bt_fd(db);
+    off_t totalsize=lseek(fd,0,SEEK_END);
+    int pagesize=__bt_pagesize(db);
+    unsigned int maxpgno=totalsize/pagesize-1;
+
+    if( 0<=pgno && pgno<=maxpgno )
+    {
+        __bt_pgrewrite(db,pgno,cryptflg);
+        _retl(1);
+    }
+    else
+    {
+        _retl(0);
+    }
+    CCC_EPILOG();
+}
 
 //---------------------------------------------------------------------------

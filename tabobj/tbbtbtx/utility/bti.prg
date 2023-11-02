@@ -179,6 +179,7 @@ local header,nords,n,order
 
 static function listpages1(btree,order)
 local page,link,type,cnt:=0
+local tree:=0,leaf:=0,free:=0
     
     link:=order::substr(5,4)::num
 
@@ -188,19 +189,23 @@ local page,link,type,cnt:=0
         page:=_db_pgread(btree,link)
         type:=page::substr(17,4)::num
         if( type==0 )
-            // free
-            ?? "*"  
+            free++  
+            ?? "*"
         elseif( type==1 )
-            // tree (internal)
-            ?? "!" 
+            tree++
+            ?? "!"
         elseif( type==2 )
-            // leaf
+            leaf++
         end
         
         link:=page::substr(5,4)::num
     end
 
-    ?? " NUMBER_OF_PAGES="+cnt::str::alltrim
+    tree:=" tree="+tree::str::alltrim
+    leaf:=" leaf="+leaf::str::alltrim
+    free:=" free="+free::str::alltrim
+
+    ?? " NUMBER_OF_PAGES="+cnt::str::alltrim, tree, leaf, free
 
 
 *****************************************************************************

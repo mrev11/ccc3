@@ -1,5 +1,22 @@
 #!/bin/bash
 bapp_unix_.b @parlib.bld
 
-bapp_unix_.b -xbti -xbt2dbf -xbt2txt -xtsema -xpgview -xpgstat -xpgmemo -xbtencrypt -xbtdecrypt -xbthead  @parexe.bld
+bapp_unix_.b    \
+    -xbt2dbf    \
+    -xbt2txt    \
+    -xbtcheck   \
+    -xbtdecrypt \
+    -xbtencrypt \
+    -xbthead    \
+    -xbti       \
+    -xbtlink    \
+    -xbtmemo    \
+    -xbtpack    \
+    -xbtpage    \
+    -xbtstat    \
+    -xbtwalk    \
+    -xtsema     \
+    @parexe.bld
+
+
 bapp_unixc.b -xtstru -xtview  @parexe.bld  -bccc"$CCCVER"_btbtxui

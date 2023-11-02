@@ -40,6 +40,13 @@
 
 
 ******************************************************************************************
+static function usage()
+    ? "Usage: btmemo <btfile> [<recno>] [<memix>]"
+    ?
+    quit
+
+
+******************************************************************************************
 function main(btfile,recno,memix:="0")
 
 local tab,column,n
@@ -48,7 +55,7 @@ local memohead,recmix,poslen
 local rec,mix,pos,len,memseg
 
     begin
-        if( !".bt"$btfile )
+        if( btfile::right(3)!=".bt" )
             btfile+=".bt"
         end
         if( empty(btopen(btfile)) )
@@ -120,14 +127,6 @@ local rec,mix,pos,len,memseg
     end
     ?
     ?
-
-
-******************************************************************************************
-static function usage()
-    ? "Usage: pgmemo <btfile> [<recno>] [<memix>]"
-    callstack()
-    ?
-    quit
 
 
 ******************************************************************************************

@@ -30,6 +30,13 @@
 
 
 ******************************************************************************************
+static function usage()
+    ? "Usage: btpage <btfile> [<pgno>]"
+    ?
+    quit
+
+
+******************************************************************************************
 function main(btfile,pgno:="0")
 
 local tab
@@ -37,9 +44,10 @@ local btree
 local page0,page
 local pgsize
 local map,pgraw,crc
+local err
 
     begin
-        if( !".bt"$btfile )
+        if( btfile::right(3)!=".bt" )
             btfile+=".bt"
         end
         if( empty(map:=btopen(btfile)) )
@@ -49,13 +57,14 @@ local map,pgraw,crc
         tabOpen(tab)
         //fd:=tab[1]
         btree:=tab[2]
-    recover
+    recover err
+        //? err
         usage()
     end
 
 
-    set printer on
-    set printer to log-pgview
+    //set printer to log-btpage
+    //set printer on
 
     page0:=_db_pgread(btree,0)
     pgsize:=page0[9..12]::num
@@ -83,32 +92,24 @@ local map,pgraw,crc
     if( pgno==0 )
         page_header(page)
 
-    elseif( pgtype(page)=="TREE" )
+    elseif( pagetype(page)=="TREE" )
         page_tree(page)
 
-    elseif( pgtype(page)=="LEAF" )
+    elseif( pagetype(page)=="LEAF" )
         page_leaf(page)
 
-    elseif( pgtype(page)=="DATA" )
+    elseif( pagetype(page)=="DATA" )
         page_data(page)
 
-    elseif( pgtype(page)=="MEMO" )
+    elseif( pagetype(page)=="MEMO" )
         page_memo(page)
 
-    elseif( pgtype(page)=="FREE" )
+    elseif( pagetype(page)=="FREE" )
         page_free(page)
 
     end
 
     ?
-
-******************************************************************************************
-static function usage()
-    ? "Usage: pgview <btfile> [<pgno>]"
-    callstack()
-    ?
-    quit
-
 
 ******************************************************************************************
 static function page_header(page)
@@ -326,28 +327,6 @@ local type:="FREE"
 
     ? "type  ",  type
     ? "next  ", "0x"+page[13..16]::hex
-
-
-******************************************************************************************
-static function pgtype(pg)
-
-local memotype:=pg[5..8]::num
-local datatype:=pg[17..20]::num
-
-    if( memotype>=0x80000000 )
-        return "MEMO"
-    elseif(  datatype==0 )
-        return "FREE"
-    elseif(  datatype==1 )
-        return "TREE"
-    elseif(  datatype==2 )
-        return "LEAF"
-    elseif(  datatype==3 )
-        return "DATA"
-    else
-        ? "UNKNOWN PAGE TYPE"
-        quit
-    end
 
 
 ******************************************************************************************

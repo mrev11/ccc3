@@ -1,0 +1,14 @@
+#!/bin/bash
+
+docheck()
+{
+    find .  -name '*.bt' | while read BT; do
+        echo $BT
+        # btlink.exe $BT
+        btcheck.exe $BT #--writecrc
+    done
+}
+
+docheck 2>&1 | tee log-check
+
+

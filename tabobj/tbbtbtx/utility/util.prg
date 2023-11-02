@@ -219,3 +219,25 @@ local lt,rt
 
 
 ******************************************************************************************
+function pagetype(pg)
+
+local memotype:=pg[5..8]::num
+local datatype:=pg[17..20]::num
+
+    if( memotype>=0x80000000 )
+        return "MEMO"
+    elseif(  datatype==0 )
+        return "FREE"
+    elseif(  datatype==1 )
+        return "TREE"
+    elseif(  datatype==2 )
+        return "LEAF"
+    elseif(  datatype==3 )
+        return "DATA"
+    else
+        ? "UNKNOWN PAGE TYPE"
+        quit
+    end
+
+******************************************************************************************
+

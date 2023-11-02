@@ -26,6 +26,13 @@
 // Peldaul a big endian formatumu, vagy a nem titkositott fajlokat.
 // Sort-tal rendezhetjuk a fajlokat meret, rekordszam, indexek szama szerint.
 
+
+******************************************************************************************
+static function usage()
+    ? "Usage:  bthead <btfile>"
+    ?
+    quit
+
 ******************************************************************************************
 function main(btfile)
 
@@ -40,15 +47,17 @@ local MEMO
 local NORDS
 
 local map
+local err
 
     begin
-        if( !".bt"$btfile )
+        if( btfile::right(3)!=".bt" )
             btfile+=".bt"
         end
         if( empty(map:=btopen(btfile)) )
             break()
         end
-    recover
+    recover err
+        //? err
         usage()
     end
 
@@ -71,13 +80,5 @@ local map
     ??  "pge="  + PGSIZE::str::alltrim::padr(6)
     ??  btfile
     ?
-
-******************************************************************************************
-static function usage()
-    ? "Usage:  bthead <btfile>"
-    callstack()
-    ?
-    quit
-
 
 ******************************************************************************************

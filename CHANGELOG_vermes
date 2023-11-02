@@ -1,3 +1,19 @@
+2023-11-02 
+  * btbtx konyvtar valtozasok
+  atnevezve: pgview -> btpage
+  atnevezve: pgmemo -> btmemo
+  atnevezbe: pgstat -> btstat
+  atnevezve: bt_page.cpp -> bt_new.cpp
+  uj modul bt_pgeval.cpp: __bt_pgeval(), __bt_pgread(), __bt_pgrewrite()
+  bt_memo.cpp: a nagy memo szegmenseket nem aprozza, hanem kulon lapra teszi
+  utility: btcheck minden lapot beolvas es opcionalisan visszair (CRC ellenorzes/kiiras)
+  utility: btwalk fabejarassal vegigmegy az indexlapokon es kiirja a pgno-kat
+  utility: btlink fabejarassal kijavitja az indexlapok hibas kapcsolo elemeitt
+  utility: btpack packol egy bt tablat
+  * uj array fuggvenyek
+  arev(a) megforditja egy array elemeinek sorrendjet
+  acat(a1,a2) az a1 arrayhez konkatenalja a2-t
+
 2023-10-28 valtozasok a btbtx rekordkezeloben:
   cumemo.prg
     memoOpen() megadhato a nyitasi mod, 5 masodpercen keresztul probalkozik

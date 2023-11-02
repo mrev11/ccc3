@@ -451,7 +451,7 @@ local table,column,n
         if( tabIsOpen(table)>=OPEN_SHARED )
             // READWRITE modban nyitva
             // elvegezheto a konverzio
-            ? getpid(),"version_upgrade_4", tabPathName(table)
+            ?? "version_upgrade_4", tabPathName(table); ?
 
             table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table)),FO_EXCLUSIVE)
             if( table[TAB_MEMOHND]<0 )

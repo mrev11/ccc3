@@ -62,8 +62,8 @@ static function load(getlist,this)
 
 local glen:=alltrim(str(len(g_search:varget())))
 local template:=if(this:casesensitive,"X","!")
-local spict:="@S"+glen+"K "+replicate(template,48)
-local rpict:="@S"+glen+"K "+replicate("X",48)
+local spict:="@S"+glen+"K "+replicate(template,2048)
+local rpict:="@S"+glen+"K "+replicate("X",2048)
  
     g_search:picture:=spict
     g_search:varput(this:searchstring)

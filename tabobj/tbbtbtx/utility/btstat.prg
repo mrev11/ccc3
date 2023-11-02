@@ -34,6 +34,13 @@ static stat:={}
 #cend
 
 ******************************************************************************************
+static function usage()
+    ? "Usage:  btstat <btfile>"
+    ?
+    quit
+
+
+******************************************************************************************
 function main(btfile)
 
 local tab
@@ -54,9 +61,12 @@ local NORDS
 local link
 local page,pgno,type
 local n,lower,upper,space
+local freelist:={},flx
+local total
+
 
     begin
-        if( !".bt"$btfile )
+        if( btfile::right(3)!=".bt" )
             btfile+=".bt"
         end
         if( empty(btopen(btfile)) )
@@ -74,13 +84,12 @@ local n,lower,upper,space
         usage()
     end
 
-    set printer to log-pgstat
-    set printer on
+    //set printer to log-btstat
+    //set printer on
 
 
     fsize:=fstat_st_size(fd)
     page:=_db_pgread(btree,0)
-    //memowrit("page-0",page)
 
     MAGIC    := page[ 1.. 4]
     VERSION  := page[ 5.. 8]::num::numand(0xf)
@@ -109,23 +118,31 @@ local n,lower,upper,space
     next
 
     // vegigmegy a freelisten
-    // a freelistben csakis felszabadulo index lapok lehetnek
-    // a pagetype-ban nem P_FREE van, hanem az eredeti tipus
-    // onnan tudhato csak, hogy free, hogy a listaban van
+    // a freelistben csakis eldobott indexek (dropindex) lapjai vannak
+    // a pagetype-ban tobbnyire nem P_FREE van, hanem az eredeti tipus
+    // kulcstorlesek miatt kiurult indexlap tipusa P_FREE==0
     link:=FREE
     while( link!=0 )
         page:=_db_pgread(btree,link)
+        pgno:=page[1..4]::num
         link:=page[5..8]::num
+        freelist::aadd(pgno)
         stat[1]:count+=1
-        stat[1]:space+=PGSIZE
+        stat[1]:space+=PGSIZE-20
     end
+    freelist::asort
 
-    pgno:=1
-    while( (page:=_db_pgread(btree,pgno))!=NIL  )
+    flx:=1
+    pgno:=0
+    while( (page:=_db_pgread(btree,++pgno))!=NIL  )
 
-        //if( pgno<10 )
-        //    memowrit("page-"+pgno::str::alltrim,page)
-        //end
+        while( flx<=len(freelist) .and. freelist[flx]<pgno )
+            flx++
+        end
+        if( flx <= len(freelist) .and. freelist[flx] == pgno )
+            // freelist elemei kihagyva
+            loop
+        end
 
         if( ISMEMO(page) )
             type:=5
@@ -134,8 +151,8 @@ local n,lower,upper,space
         else
             type:=page[17..20]::num+1
             if( pgtype[type]=="FREE" )
-                // ide nem jon
-                lower:=0
+                // kulcstorlesek miatt kiurult indexlap
+                lower:=20
                 upper:=PGSIZE
             else
                 lower:=page[21..22]::num
@@ -144,14 +161,12 @@ local n,lower,upper,space
         end
         space:=upper-lower
 
-        //? pgno, pgtype[type]::padr(4),space
-
         stat[type]:count+=1
         stat[type]:space+=space
-
-        pgno++
     end
-    
+
+
+    total:=0    
     for n:=1 to len(stat)
         ? stat[n]:type::padr(4),;
           stat[n]:count,;
@@ -160,18 +175,14 @@ local n,lower,upper,space
           
         if( n==1 )
             ? "-------------------------------------------------"
-        end  
+        end
+        total+=stat[n]:count  
     next
 
-    ?
+    ? "-------------------------------------------------"
+    ? str(total,15)
 
-
-******************************************************************************************
-static function usage()
-    ? "Usage:  pgstat <btfile>"
-    callstack()
     ?
-    quit
 
 
 ******************************************************************************************

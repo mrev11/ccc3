@@ -61,7 +61,6 @@
 
 #define PAGEHEAD                (4*sizeof(uint))
 #define MEMOHEAD                (4*sizeof(uint))
-#define MINSPACE                (512)
 
 #define PLOWER(page)            ((char*)page+LOWER(page))
 #define PUPPER(page)            ((char*)page+UPPER(page))
@@ -70,20 +69,27 @@
 
 
 // memo szabadlista:
-// egy lap a szabadlistaban van, ha page->linkpg!=0
-// a szabadlista elso elemere mutat header->bt_memo
-// a szabadlista nemutolso elemein page->linkpg a kovetkezo elemre mutat
-// a szabadlista utolso elemen page->linkpg==page->pgno (onmagara mutat)
+// egy lap a szabadlistaban van, ha GETLINK(page)!=0
+// a szabadlista elso elemere mutat BTREE->bt_memo
+// a szabadlista nemutolso elemein GETLINK(page) a kovetkezo elemre mutat
+// a szabadlista utolso elemen GETLINK(page)==pgno (onmagara mutat)
 
 
+
+//---------------------------------------------------------------------------------------
+static size_t minspace(BTREE *t)
+{
+    size_t sp=t->bt_psize/16;
+    return sp>64?sp:64;
+}
 
 //----------------------------------------------------------------------------------------
-static MEMOPG* __bt_memopage(BTREE *t)
+static MEMOPG* __bt_memopage(BTREE *t, size_t size)
 {
     MEMOPG *memopg=0;
     uint pgno=t->bt_memo; // szabadlista eleje
 
-    if( pgno )
+    if( pgno && (size<(t->bt_psize/2)) )
     {
         __bt_pagelock(t,pgno,1); // wrlk
         memopg=(MEMOPG*)mpool_get(t->bt_mp,pgno);
@@ -91,7 +97,7 @@ static MEMOPG* __bt_memopage(BTREE *t)
     }
     else
     {
-        memopg=(MEMOPG*)__bt_new0(t,&pgno);
+        memopg=(MEMOPG*)__bt_new(t,&pgno);
         __bt_pagelock(t,pgno,1); // wrlk
 
         PGNO(memopg)    = pgno;
@@ -127,7 +133,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
     size_t written=0;
     while( written<data->size )
     {
-        memopg=__bt_memopage(t); // behozza, lockolja
+        memopg=__bt_memopage(t,data->size-written ); // behozza, lockolja
 
         for( indx=0; indx<MEMOCOUNT(memopg); indx++)
         {
@@ -176,7 +182,7 @@ static RECPOS  __bt_memowrite(BTREE *t, DBT *data, uint recno, uint memox)
 
         // szabadlista modositas
 
-        if( UPPER(memopg)-LOWER(memopg) < MINSPACE )
+        if( UPPER(memopg)-LOWER(memopg) < minspace(t) )
         {
             // NEM MARADT HELY A LAPON
             if( GETLINK(memopg)!=0 )
@@ -418,7 +424,7 @@ static void __bt_memodel(BTREE *t, RECPOS recpos)
         }
 
 
-        if( UPPER(memopg)-LOWER(memopg) < MINSPACE )
+        if( UPPER(memopg)-LOWER(memopg) < minspace(t) )
         {
             // nem keletkezett eleg szabad hely
             // => korabban sem lehetett a szabadlistaban

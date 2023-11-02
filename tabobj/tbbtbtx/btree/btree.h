@@ -20,6 +20,7 @@
 
 #include <db.h>
 #include <mpool.h>
+#include <cccapi.h>
 
 #define  _BTREE_H_
 

@@ -20,10 +20,14 @@
 
 //Indexelo utility btbtx formatumhoz
 //
-// bti fname [-l]                 // indexek listazasa
+// bti fname [-l]                 // indexek es index szegmensek listazasa (default)
+// bti fname -lxf                 // elozo + kiirja a lapok darabszamat (x=index, f=free)
+// bti fname -lxxff               // elozo + kiirja a lapok sorszamat (*=free, !=tree)
+// bti fname -lxxxff              // elozo + kiirja az indexlapokon levo kulcsok szamat
 // bti fname -diname              // index torles (+osszes suppindex)
 // bti fname -ainame -sseg1 ...   // uj index hozzaadasa
 // bti fname -adeleted            // deleted index hozzaadasa
+// bti fname -ddeleted            // deleted index torlese
 // bti fname -kiname              // a megadott index kulcsainak listazasa
 // bti fname -k                   // az osszes index kulcsainak listazasa
 
@@ -128,7 +132,7 @@ local t:=tabResource(fname)
 local x:=tabIndex(t),n,c,i
 local btree,iname
 
-    if( "f"$op .or. "p"$op ) 
+    if( "f"$op .or. "x"$op ) 
         tabOpen(t)
         btree:=t[2]
     end
@@ -136,13 +140,13 @@ local btree,iname
     ? fname
 
     if( "f"$op ) 
-        listfree(btree)
+        listfree(btree,op)
     end
-    if( "p"$op ) 
-        ? "recno {}";listpages(btree,"recno")
+    if( "x"$op ) 
+        ? "recno {}";listpages(btree,"recno",op)
     end
-    if( "p"$op .and. tabKeepDeleted(t)!=NIL )
-        ? "deleted {}";listpages(btree,"deleted")
+    if( "x"$op .and. tabKeepDeleted(t)!=NIL )
+        ? "deleted {}";listpages(btree,"deleted",op)
     end
 
     for n:=1 to len(x)
@@ -155,8 +159,8 @@ local btree,iname
         next 
         ? iname,if(x[n][4],"s","p"),c
 
-        if( "p"$op ) 
-            listpages(btree,iname)
+        if( "x"$op ) 
+            listpages(btree,iname,op)
         end
     next
    
@@ -164,7 +168,7 @@ local btree,iname
 
 
 *****************************************************************************
-static function listpages(btree,iname)
+static function listpages(btree,iname,op)
 local header,nords,n,order
     header:=_db_pgread(btree,0)
     nords:=header[29..32]::num
@@ -172,51 +176,76 @@ local header,nords,n,order
     for n:=1 to nords
         order:=header::substr(48+(n-1)*32+1,32)
         if(  iname==order::substr(17,len(iname)) )
-            listpages1(btree,order)
+            listpages1(btree,order,op)
             exit
         end
     next
 
-static function listpages1(btree,order)
+static function listpages1(btree,order,op)
 local page,link,type,cnt:=0
 local tree:=0,leaf:=0,free:=0
     
     link:=order::substr(5,4)::num
 
     while( link!=0  )
-        ++cnt 
-        ?? " "+link::l2hex
+        ++cnt
+        if( "xx"$op ) 
+            ?? " "+link::l2hex
+        end
         page:=_db_pgread(btree,link)
         type:=page::substr(17,4)::num
+
         if( type==0 )
             free++  
-            ?? "*"
+            if( "xx"$op ) 
+                ?? "*"
+            end
+
         elseif( type==1 )
             tree++
-            ?? "!"
+            if( "xxx"$op ) 
+                numofkeys(page)
+            end
+            if( "xx"$op ) 
+                ?? "!"
+            end
+
         elseif( type==2 )
             leaf++
+            if( "xxx"$op ) 
+                numofkeys(page)
+            end
         end
         
         link:=page::substr(5,4)::num
     end
 
-    tree:=" tree="+tree::str::alltrim
-    leaf:=" leaf="+leaf::str::alltrim
-    free:=" free="+free::str::alltrim
+    tree:=" TREE="+tree::str::alltrim
+    leaf:=" LEAF="+leaf::str::alltrim
+    free:=" FREE="+free::str::alltrim
 
     ?? " NUMBER_OF_PAGES="+cnt::str::alltrim, tree, leaf, free
 
 
 *****************************************************************************
-static function listfree(btree)
+static function numofkeys(page)
+local lower:=page[21..22]::num
+local upper:=page[23..24]::num
+local items:=(lower-24)/2
+    ?? "("+items::str::alltrim+")"
+
+
+*****************************************************************************
+static function listfree(btree,op)
 local page,link,cnt:=0
     ? "free {}"
     page:=_db_pgread(btree,0)
     link:=page[17..20]::num
     while( link!=0 )
         ++cnt
-        ?? " "+link::l2hex
+        if( "ff"$op )
+            ?? " "+link::l2hex
+        end
         page:=_db_pgread(btree,link)
         link:=page[5..8]::num
     end
@@ -225,43 +254,27 @@ local page,link,cnt:=0
 
 *****************************************************************************
 static function addindex(fname,iname,seg)
+local t:=tabResource(fname),o,n
 
-local t:=tabResource(fname)
-local b:=errorblock(),e,order,n
+    tabOpen(t,OPEN_EXCLUSIVE)
 
     if( iname=="deleted" )
-        tabOpen(t,OPEN_EXCLUSIVE)
         _db_creord(t[TAB_BTREE],"deleted")
         return NIL
     end
 
-    for n:=1 to len(seg)
-        begin
-            tabColNumber(t,seg[n])
-        recover
-            usage("Column does not exist: "+seg[n])
-        end
-    next
-
-    //ha letezett az index, akkor toroljuk,
-    //majd az uj adatokkal (ujra) betesszuk
-
     begin
-        order:=tabGetIndex(t,iname)  
-        adel(tabIndex(t),order)
-        asize(tabIndex(t),len(tabIndex(t))-1)
+        for n:=1 to len(seg)
+           tabColNumber(t,seg[n])
+        next
+    recover
+        usage("Column does not exist: "+seg[n])
     end
-    tabAddIndex(t,{iname,"",seg,.f.})
-    
-    //Az uj index strukturaval megnyitjuk a filet,
-    //ha az index inkompatibilis, akkor tabindexerror hiba keletkezik,
-    //amit csendben tovabbengedunk, es tabOpen ujraepiti az indexet.
-    //Itt kifejezetten az errorblock-os hibakezeles kell,
-    //ui. vissza kell terni tabOpen-be, hogy az folytassa.
 
-    errorblock({|x|if(x:candefault,qout("build: "+iname),eval(b,e))}) 
-    tabOpen(t,OPEN_EXCLUSIVE)
-    errorblock(b)
+    tabSuppIndex(t,{iname,"",seg,.f.})
+    o:=tabGetIndex(t,iname)  
+    tabIndex(t)[o][4]:=.f. // suppindex flag torolve
+    _db_addresource(t[2],arr2bin(tabIndex(t)),1) //frissit
 
 
 *****************************************************************************

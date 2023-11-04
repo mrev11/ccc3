@@ -1,11 +1,12 @@
-8b585ac07babeffbaa18447dfa81b7bec94dc4b2 2023110215:45:12-UTC ./usr/bin/linux/bti
-f527de1092cfcb9f7283a9767d5447b1d72eb09c 2023110215:45:09-UTC ./tabobj/tbbtbtx/utility/bti.prg
+206138adcc1b487f277be498c69bf897e811784d 2023110413:24:25-UTC ./CHANGELOG_vermes
+f4a1d4a856ea8d649e26976d87332b5a5143ea6e 2023110413:16:40-UTC ./tabobj/tbbtbtx/btree/bt_new.cpp
+9748e8f9c7e396b415d4de29a348421e2bcbd6c0 2023110412:49:02-UTC ./jt/jterminal/jterminal.jar
+d2642172187c568f8aeca118488e8df79416f2f1 2023110412:49:02-UTC ./log-install
+3ede06e07c6c3ed6ec718a3d0747e6afec87e1e6 2023110412:48:25-UTC ./usr/bin/linux/bti
+c4ce94b4ec75061b369e8b724fe2d90fac22b82e 2023110412:48:25-UTC ./usr/bin/linux/btstat
+3ab0d959ecae07396e117302da3edabe98a0accc 2023110412:46:29-UTC ./tabobj/tbbtbtx/utility/bti.prg
+0f0662f1a042432729101e6d768e36ca6fa42b3d 2023110310:18:18-UTC ./tabobj/tbbtbtx/utility/btstat.prg
 357c9358de54b65893f02541c1a7ede4b183ef1c 2023110215:23:27-UTC ./tabobj/tbbtbtx/key2str.prg
-08c4216b59c42b46c3b4daa8c489f9bf8fd49093 2023110214:24:12-UTC ./jt/jterminal/jterminal.jar
-bf9d9b8425a3fc86b15385a1d220f45b7da7135d 2023110214:24:12-UTC ./log-install
-d31b85a4fa8e9f54f7114e5a34854b180f3f5273 2023110213:48:31-UTC ./CHANGELOG_vermes
-b416cef8d52dcdf51db3a213fc7c91064626a8a2 2023110213:45:43-UTC ./usr/bin/linux/btstat
-08155a7b1ead34a80d3ffa91c849206a85dc854c 2023110213:37:56-UTC ./tabobj/tbbtbtx/utility/btstat.prg
 0cc2de04e6019dcc162a227213f3a8d0beea6c71 2023110213:20:02-UTC ./tabobj/tbbtbtx/utility/check
 6f198fc3c2a40be70dda96432ec3ee1115ac974f 2023110210:19:46-UTC ./usr/bin/linux/websrv
 968ad238add8177b129c06b5270d0b762d076bb9 2023110210:19:44-UTC ./usr/bin/linux/msk2html
@@ -49,7 +50,6 @@ acdaa5e26395be9575fe26517659396c140aafd4 2023110109:23:50-UTC ./tabobj/tbbtbtx/u
 7344c40056aa28bc53deb68982d565a2310b5d8f 2023103112:53:34-UTC ./tabobj/tbbtbtx/btree/bt_memo.cpp
 10904b2f24fcb8e646b8d11cce69588e5183a26c 2023103018:27:33-UTC ./tabobj/tbbtbtx/btree/m
 02d1cb1df65cda478c7dce2a67615986a65cfa05 2023102723:21:47-UTC ./tabobj/VALTOZASOK.txt
-5fcb960c8ba9c1294050e544749f5441980bf81d 2023102721:22:10-UTC ./tabobj/tbbtbtx/btree/bt_page.cpp
 4a700f4f4e8f911252d1e9d89e38297c319e7420 2023102714:10:36-UTC ./tabobj/tbbtbtx/btree/bt_split.cpp
 190edc7d65502b1a8e5f637eb3b999c7e87491a3 2023102714:07:33-UTC ./tabobj/tbbtbtx/btree/bt_order.cpp
 90dcef7c46e888d525221de420a0cc9ead2e282d 2023102713:30:47-UTC ./tabobj/tbbtbtx/btree/bt_head.cpp

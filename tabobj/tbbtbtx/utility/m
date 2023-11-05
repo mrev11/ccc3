@@ -19,4 +19,4 @@ bapp_unix_.b    \
     @parexe.bld
 
 
-bapp_unixc.b -xtstru -xtview  @parexe.bld  -bccc"$CCCVER"_btbtxui
+bapp_unixc.b -xtstru -xtview -xbtp  @parexe.bld  -bccc${CCCVER}_btbtxui

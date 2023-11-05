@@ -221,10 +221,13 @@ local lt,rt
 ******************************************************************************************
 function pagetype(pg)
 
+local pgno:=pg[1..4]::num
 local memotype:=pg[5..8]::num
 local datatype:=pg[17..20]::num
 
-    if( memotype>=0x80000000 )
+    if( pgno==0x053162 )
+        return "HEADER"
+    elseif( memotype>=0x80000000 )
         return "MEMO"
     elseif(  datatype==0 )
         return "FREE"
@@ -235,7 +238,7 @@ local datatype:=pg[17..20]::num
     elseif(  datatype==3 )
         return "DATA"
     else
-        ? "UNKNOWN PAGE TYPE"
+        ? "UNKNOWN PAGE TYPE", pgno::l2hex
         quit
     end
 

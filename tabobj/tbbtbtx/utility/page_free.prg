@@ -18,16 +18,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-*********************************************************************************************
-function key2str(key)
 
-local recno:=key::right(10)
-local val:=key[1..len(key)-10]::bin2str
-//local rcn:=recno[1..4]::bin2hex // recno hexaban
-local rcn:=recno[1..4]::bin2hex::hex2l::str(9)::strtran(" ","0") //recno decimalisan
-local pgn:=recno[5..8]::bin2hex
-local idx:=recno[9..10]::bin2hex
+******************************************************************************************
+function page_free(page)
 
-   return "["+val+"] ["+rcn+"-"+pgn+"-"+idx+"]"                
+local type:="FREE"
 
-*********************************************************************************************
+    ? "type  ",  type
+    ? "next  ", "0x"+page[13..16]::hex
+
+
+******************************************************************************************

@@ -1,6 +1,8 @@
--ltv
+-lccc${CCCVER}_textview
+-xtv
 -d.
 -dver$(CCCVER)
 
-
 BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+#BUILD_BINDIR=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_LIBDIR=$(CCCDIR)/usr/lib/$(CCCBIN)

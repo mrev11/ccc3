@@ -1,4 +1,13 @@
-34018724bb7696b95910c12588aa07cc172e1c0d 2023110512:49:37-UTC ./CHANGELOG_vermes
+1625016171ea08ffb20668eb8e818460360faa31 2023110613:36:44-UTC ./CHANGELOG_vermes
+7e6d7129df00db7a4f84103230e3e2c4bec6cd37 2023110612:08:14-UTC ./jt/jterminal/jterminal.jar
+390879484464d544a5517d010f5a81167429df94 2023110612:08:14-UTC ./log-install
+b0b7e411dc3daf40c216f9a6db4f469cab1a9909 2023110612:07:26-UTC ./usr/bin/linux/build
+6eba56d2658ec98c2605fcd775c5a16b96757397 2023110611:45:05-UTC ./tools/z/parfile.bld
+a206c8fa4f907a1a676a5d3cfa6a831ab8dc604e 2023110611:40:05-UTC ./tabobj/tbbtbtx/utility/parexe.bld
+2f925c2c68c1fd42b0e5eb8cdb2644e647214bb6 2023110611:37:43-UTC ./tools/textview/parfile.bld
+6a1427febef7cfae53903533985a72846f45a218 2023110611:26:01-UTC ./ccctools/build/build.prg
+2f1606b7760755b3afc7eb1cf63389e6ed35886e 2023110611:23:54-UTC ./ccctools/build/build.hu.ver
+7233f5d2e407404c222db185c61d8b25cbc66e10 2023110518:23:31-UTC ./make_base
 28aef1367cefd5c7a99cf1af5754aff272e56972 2023110512:04:42-UTC ./tabobj/tbbtbtx/key2str.prg
 5e7aef56122367e6b11e620453303ea5e23a7c48 2023110511:58:14-UTC ./usr/bin/linux/btp
 eed132b81c7b59940f06d6fa6779041ce743f9e9 2023110511:58:14-UTC ./usr/bin/linux/tstru
@@ -18,8 +27,6 @@ a48ba4e848e44b0532dc595742bdfd974cc920f0 2023110511:58:13-UTC ./usr/bin/linux/bt
 8abad37ba70e267032f516fe911f8b2efe0bdeef 2023110511:58:13-UTC ./usr/bin/linux/btwalk
 08bb20278c4a22f7365df5d35502c78b5ab2f5fc 2023110511:58:13-UTC ./usr/bin/linux/tsema
 a52f795cb40bdcce130d4ebe521d493bca0f10df 2023110511:58:12-UTC ./tabobj/tbbtbtx/utility/ver3/search.say
-7c5916e48787dd6c8175f812579a1b8713c32c7b 2023110511:52:18-UTC ./log-install
-e729451b4e9ef9ec49085958e891cda2bd5c589f 2023110511:51:46-UTC ./jt/jterminal/jterminal.jar
 ed770ea2f8e76648727386b3e153137e106276c1 2023110511:39:30-UTC ./tabobj/tbbtbtx/utility/btp.prg
 f53f9be6e4496eb8e8dc5d744a13d00a750e14d0 2023110511:03:29-UTC ./tabobj/tbbtbtx/utility/util.prg
 eda267271abf393acd784968fa101879b755d4db 2023110509:52:50-UTC ./tabobj/tbbtbtx/utility/ver2/search.msk
@@ -30,7 +37,6 @@ f02cd6d625cdb7d1b681e0cb8d14057e15eef7b9 2023110509:25:20-UTC ./tabobj/tbbtbtx/u
 7fd8fc2c84d71f007cd55c99691b749e7faa30eb 2023110509:25:15-UTC ./tabobj/tbbtbtx/utility/page_header.prg
 f33fc81e10aaf215ecab62da3bdc2ba5509d0880 2023110509:25:11-UTC ./tabobj/tbbtbtx/utility/page_free.prg
 fd00da180bc28a9ed90557bb6a16b7ab0c95990f 2023110509:25:06-UTC ./tabobj/tbbtbtx/utility/page_data.prg
-bbb3646417a0f84c4e7dd2185eea4b3711e4966f 2023110509:07:25-UTC ./tabobj/tbbtbtx/utility/parexe.bld
 e7dca467e2a8831df5d35ef105c0342bd74204cc 2023110509:06:08-UTC ./tabobj/tbbtbtx/utility/parlib.bld
 48089de242c0a9330d67567275901abf93862bd4 2023110509:03:49-UTC ./tabobj/tbbtbtx/utility/m
 fcc6c5509e33c14272df179ae48daec1801a3e0a 2023110508:56:45-UTC ./tabobj/tbbtbtx/utility/btpage.prg
@@ -43,7 +49,6 @@ f4a1d4a856ea8d649e26976d87332b5a5143ea6e 2023110413:16:40-UTC ./tabobj/tbbtbtx/b
 82dd4384c6601f71e54fb46696caef4d7357ee69 2023110210:19:25-UTC ./usr/bin/linux/xstart
 6f29a1e58ab84adc073de690733a8df4a455c357 2023110210:19:06-UTC ./usr/bin/linux/prg2ppo
 e10342b8c962188b994f49ad5df96a1976305d28 2023110210:19:06-UTC ./usr/bin/linux/removecr
-0f5eae201cd12f40738074c87a04e2805ed59665 2023110210:19:05-UTC ./usr/bin/linux/build
 52f4f4e5ca31b6b69c23fef3f6e50f018979273d 2023110210:14:53-UTC ./ccclib/src/ascan.prg
 4b0ff4c2daa1135a4b9eb1ddd53d8b73790e54a0 2023110123:07:21-UTC ./tabobj/tbbtbtx/utility/btcheck.prg
 02e2d3d067017e179d28e02327a2b18646acd1ea 2023110122:24:47-UTC ./tabobj/tbbtbtx/utility/btwalk.prg
@@ -199,7 +204,6 @@ cf8329631f33e2fa020795a195b61d506b8e9a49 2023101112:00:31-UTC ./usr/bin/linux/li
 fae72ea24ac8dc04801eea74d7ea3b91c0629e35 2023101112:00:30-UTC ./usr/bin/linux/dddel
 3c40feb7e161e67fca6dff370087db48222e7242 2023101112:00:30-UTC ./usr/bin/linux/ddict2
 f966e82cd2c6a59100b598201f20ac43067ace8f 2023101112:00:29-UTC ./usr/bin/linux/dbfview
-57549e9d5486bcebf07a5fa54b2d681e56a4498c 2023101112:00:25-UTC ./usr/bin/linux/zhist
 e9b62bc8a4c0fe1951367fccfa1f7d8ec7c3ecbe 2023101112:00:21-UTC ./usr/bin/linux/tv
 5e30d554ab3be1ec31022e7d700d46f2f7f04f5e 2023101112:00:20-UTC ./usr/bin/linux/prg2tdc
 af964c34732c7cc33488d8cd74ed931c2ed05e90 2023101112:00:20-UTC ./usr/bin/linux/tabsuper
@@ -442,8 +446,6 @@ ced0300cdacd22e85274cf0ea7dcef07923ecf8c 2023061909:54:25-UTC ./setup/setup-unix
 80cf67253d534414156918f85a5bc1e9660875b6 2023061822:51:06-UTC ./setup/setup-unix/setcursor.cpp
 72efecda1ef57347723d382656321c875d44edb1 2023061822:50:36-UTC ./setup/setup-unix/set.cpp
 2f32ae1fa7c834c2475c8cbd1c4faf43d33faa86 2023061822:34:31-UTC ./setup/setup-windows/prg2ppo/xtxlegal.cpp
-032e4c2fd04b2a3cedb2ca27832ddaf19ccd516b 2023061809:31:16-UTC ./ccctools/build/build.prg
-c1b88301fb0a6f96c822a8915cdf456420034e0f 2023061714:49:35-UTC ./ccctools/build/build.hu.ver
 fd9f4843c786b4c737d41665298082b7e6854a2c 2023061711:25:49-UTC ./tools/savex/sortname.prg
 4e7fab351a011138d10d3b67cc4e886a979d406b 2023061711:23:47-UTC ./tools/savex/savebrowse.prg
 2f26a1cf0bf7b3bc1afb3451d95bea005008cca3 2023061622:33:43-UTC ./setup/setup-unix/m
@@ -528,7 +530,6 @@ d290919ef1057963dd02f3e38cf8b0ec6c58c437 2023051911:57:02-UTC ./ccclib/src/uic/s
 738c7fe6b687814160b2a17da544a5db0e34571a 2023051908:39:11-UTC ./terminal/unix-ncterm/parfilex.bld
 17c6c2e35462a1d5eeba937594bb6a7e9d02c68e 2023051908:39:05-UTC ./terminal/unix-ncterm/parfile.bld
 35cd380662be5e8ecbe262ad9912d6fbc4bfa537 2023051908:36:40-UTC ./terminal/unix-cterm/parfile.bld
-bbe962ffebbd96bb0abe68dc95304334c8c71178 2023051822:18:53-UTC ./make_base
 deebeadc524efbaeecb1191bfeb3fcdeeee46e1e 2023051811:26:08-UTC ./terminal/common/ansi_colors/draw_ansi_cube.prg
 09dd67e7ed757df522e23910882dc26a830b9f53 2023051618:30:24-UTC ./tutor/colors/m.msys2
 a668cecc8f145a0239581ce4e20213895a4d94f7 2023051518:25:41-UTC ./tutor/xbrwarr/config
@@ -1427,7 +1428,6 @@ c99fab6e761365ef2cffaf285ae2d9a460af83ed 2018040817:12:43-UTC ./tools/textview/m
 c1d7fbd6ee75809ae534ad5824a6e3d2742cb8bd 2018040708:43:59-UTC ./terminal/common/environment.txt
 eba6e91c36acdc181193a3cbdccbbb061fd6eb96 2018040708:03:54-UTC ./terminal/unix-ncurses/scc
 ec8d145528d11021275524fc98410ad9418d1cb5 2018033112:10:45-UTC ./tools/sql2/util/tdsutil/splitpar.cpp
-0f209f24a7b2c32f89e646f93f3f1f0316344e96 2018033010:06:55-UTC ./tools/textview/parfile.bld
 95d29dd40346ef09d5454b07812209507caf3f66 2018033009:20:51-UTC ./tools/textview/tvmove.prg
 674d44718316ae1e693da4d5cdc65c73daff28e7 2018032922:21:11-UTC ./tools/textview/tvsetpos.prg
 59d18aec8c18f5c2ddd3d1777ba55e267bfdd53d 2018032814:06:31-UTC ./tutor/control/s3
@@ -1815,7 +1815,6 @@ c7b8bf77de888edd51663f00e4a36ee889d60192 2016060914:02:27-UTC ./tools/savex/parf
 b8d4defdcf632577521e0338cae25251cb9d7c9f 2016060911:44:49-UTC ./tools/z/readme.hu.txt
 49612c8784cdc38ac735d88df2c1ce901e4a72e7 2016060911:33:02-UTC ./tools/z/m.bat
 9657e78b8ef3f46eda6821ccca517b7e401bc499 2016060910:45:16-UTC ./tools/z/ver3/ztoascii.prg
-164f9b020917ed41df86a3f99b1c9abd047fa9fd 2016060910:14:31-UTC ./tools/z/parfile.bld
 210128737f3a73ac890c1956effb949387e6aab9 2016060909:52:55-UTC ./tools/z/zchcase.prg
 7f3588fa6ad0ef9377d576d5a1720cbf9eac9ed4 2016060813:39:25-UTC ./tools/savex/m.bat
 d69d6c04271ab29426fd873f4e90a5ddd0023047 2016060812:47:52-UTC ./tools/sql2/test/testdata_lib/testdata.prg

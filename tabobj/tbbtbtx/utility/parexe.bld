@@ -1,13 +1,10 @@
 
--p${CCCDIR}/tools/textview/obj${CCCBIN}
--pobj${CCCBIN}
-
 -d. 
 -i..
 -dver${CCCVER}
 
 -btutil
--btv.lib
+-bccc${CCCVER}_textview
 -bccc${CCCVER}_btbtx
 
 BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}

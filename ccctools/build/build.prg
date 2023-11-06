@@ -19,7 +19,7 @@
  */
 
 
-#define VERSION "1.6.3"
+#define VERSION "1.6.4"
 
 #define LOWER(x) (x)
 
@@ -47,6 +47,7 @@ local opt:=aclone(argv()),n
         ?
     end
 
+    s_libdir(buildenv_obj()) // az object directoryban is keresi a libeket
 
     for n:=1 to len(opt)
         opt[n]:=procpar(opt[n])

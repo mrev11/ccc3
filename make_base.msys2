@@ -81,12 +81,6 @@ fi
 ( cd tools/mask && m.msys2 )
 
 #-------------------
-# tabobj
-#-------------------
-
-( cd tabobj/tbbtbtx && m.msys2 )
-
-#-------------------
 # tools
 #-------------------
 
@@ -100,5 +94,11 @@ fi
 ( cd tools/xmlrpc       && m.msys2 )
 ( cd tools/xstart       && m.msys2 )
 ( cd tools/z            && m.msys2 )
+
+#-------------------
+# tabobj
+#-------------------
+
+( cd tabobj/tbbtbtx && m.msys2 )
 
 

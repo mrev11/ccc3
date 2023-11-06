@@ -1,5 +1,22 @@
 #!/bin/bash
 bapp_win_.msys2 @parlib.bld
 
-bapp_win_.msys2 -xbti -xbt2dbf -xbt2txt -xtsema -xpgview -xpgstat -xpgmemo -xbtencrypt -xbtdecrypt -xbthead  @parexe.bld
-bapp_winc.msys2 -xtstru -xtview  @parexe.bld  -bccc"$CCCVER"_btbtxui
+bapp_win_.msys2 \
+    -xbt2dbf    \
+    -xbt2txt    \
+    -xbtcheck   \
+    -xbtdecrypt \
+    -xbtencrypt \
+    -xbthead    \
+    -xbti       \
+    -xbtlink    \
+    -xbtmemo    \
+    -xbtpack    \
+    -xbtpage    \
+    -xbtstat    \
+    -xbtwalk    \
+    -xtsema     \
+    @parexe.bld
+
+
+bapp_winc.msys2 -xtstru -xtview -xbtp @parexe.bld  -bccc${CCCVER}_btbtxui

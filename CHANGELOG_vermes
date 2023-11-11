@@ -1,3 +1,8 @@
+2023-11-11
+  bt utilityk bovitve;
+  btprint indentalva kiirja a btree kulcsokat;
+  build scriptek atszervezve;
+
 2023-11-06 windowsos build scriptek aktualizalva;
 
 2023-11-06
@@ -8,7 +13,7 @@
 2023-11-05 btp.exe browseolja egy bt fajl lapjait;
 
 2023-11-04
-  freelist-bol vett indexlapok listakapcsolasa javitva; 
+  freelist-bol vett indexlapok listakapcsolasa javitva;
   *
   bti.exe listazza a lapok sorszamat, a lapokon levo kulcsok darabszamat;
   bti.exe uj index hozzaadasa tabUpgrade helyett tabSuppIndex-szel;
@@ -24,7 +29,7 @@
   bti fname -k                 az osszes index kulcsainak listazasa
 
 
-2023-11-02 
+2023-11-02
   * btbtx konyvtar valtozasok
   atnevezve: pgview -> btpage
   atnevezve: pgmemo -> btmemo

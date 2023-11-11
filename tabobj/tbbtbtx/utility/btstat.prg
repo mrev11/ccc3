@@ -166,20 +166,25 @@ local total
     end
 
 
-    total:=0    
+    ? "HEAD",;
+      1,;
+      " space", ((PGSIZE-48-NORDS*32)/1024)::transform("999999,999.9 K"),;
+      " used", ((48+NORDS*32)/(PGSIZE/100))::str(5,1),"%"
+
+    total:=1    
     for n:=1 to len(stat)
         ? stat[n]:type::padr(4),;
           stat[n]:count,;
-          " space", (stat[n]:space/1024)::transform("999999,999 K"),;
+          " space", (stat[n]:space/1024)::transform("999999,999.9 K"),;
           " used", stat[n]:used::str(5,1),"%"
           
         if( n==1 )
-            ? "-------------------------------------------------"
+            ? "---------------------------------------------------"
         end
         total+=stat[n]:count  
     next
 
-    ? "-------------------------------------------------"
+    ? "---------------------------------------------------"
     ? "total"+str(total,10)
 
     ?

@@ -1,5 +1,21 @@
 
--d. 
+-xbt2dbf
+-xbt2txt
+-xbtcheck
+-xbtdecrypt
+-xbtencrypt
+-xbthead
+-xbti
+-xbtlink
+-xbtmemo
+-xbtpack
+-xbtpage
+-xbtprint
+-xbtstat
+-xbtwalk
+-xtsema
+
+-d.
 -i..
 -dver${CCCVER}
 

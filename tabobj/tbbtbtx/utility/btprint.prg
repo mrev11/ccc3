@@ -21,12 +21,12 @@
 
 #include "table.ch"
 
-static pages
+#define INDENT 6
 
 
 ******************************************************************************************
 static function usage()
-    ? "Usage: btwalk <btfile> [<index>]"
+    ? "Usage: btprint <btfile> [<index>]"
     ?
     quit
 
@@ -86,57 +86,70 @@ local page
         rootpgno:=order[1..4]::num
         iname:=order::right(16)::strtran(bin(0),bin(32))::trim
 
-        pages:={}
         if( index==NIL .or. index::upper==iname::bin2str::upper )
-            walk(btree,rootpgno)
-
-            ? iname::padr(16)
-            for n:=1 to len(pages)
-                ?? " "+pages[n]
-            next
-            ?? " NUMBER_OF_PAGES="+len(pages)::str::alltrim
+            ? iname
+            walk(btree,rootpgno,0)
+            ?
         end
-
         
         offset+=32
     next
     
     ?
+    ?
+    
 
 ******************************************************************************************
-static function walk(btree,pgno)
+static function walk(btree,pgno,indent)
 local page:=_db_pgread(btree,pgno)
 local type:=pagetype(page)
-    aadd(pages,pgno::l2hex)
-    if( type=="LEAF" )
-        // rekurzio vege
+
+    if( pgno==0 )
+        //
+    elseif( type=="LEAF" )
+        print_leaf(btree,page,indent)
     elseif( type=="TREE" )
-        pages[len(pages)]+="!"
-        walk1(btree,page)
+        print_tree(btree,page,indent)
     else
         break({"unexpected page type",type})
     end
 
 
-static function walk1(btree,page)
 
+******************************************************************************************
+static function print_tree(btree,page,indent)
+
+local pgno
+local pprev
+local pnext
 local lower
 local upper
 local idx,offset
-local pos,len,pgn,key
+local pos,pgn,len,key
 
+    pgno:=page::substr(1,4)::num
+    pprev:=page::substr(9,4)::num
+    pnext:=page::substr(13,4)::num
     lower:=page::substr(21,2)::num
     upper:=page::substr(23,2)::num
+
+    ?? "  <"+pprev::l2hex+"::"+pnext::l2hex+">"
+
     idx:=0
     offset:=24
-
     while( offset<lower )
-        pos:=page::substr(offset+1,2)::num          // record offset on page
+        pos:=page::substr(offset+1,2)::num          // record offset 
         len:=page::substr(pos+1,4)::num             // key length
-        pgn:=page::substr(pos+5,4)::num             // page number
+        pgn:=page::substr(pos+5,4)::num             // page number 
+        key:=page::substr(pos+9,len)                // key value
 
-        // rekurzio"
-        walk(btree,pgn)
+
+        ? space(indent);
+          +pgno::l2hex::padl(INDENT);
+          +pgn::l2hex::padl(INDENT);
+          +" -> "+key2str(key)
+
+        walk(btree,pgn,indent+INDENT)
 
         idx++
         offset+=2
@@ -144,3 +157,39 @@ local pos,len,pgn,key
 
 
 ******************************************************************************************
+static function print_leaf(btree,page,indent)
+
+local pgno
+local pprev
+local pnext
+
+local lower
+local upper
+local idx,offset
+local pos,len,key
+
+    pgno:=page::substr(1,4)::num
+    pprev:=page::substr(9,4)::num
+    pnext:=page::substr(13,4)::num
+    lower:=page::substr(21,2)::num
+    upper:=page::substr(23,2)::num
+
+    ?? "  <"+pprev::l2hex+"::"+pnext::l2hex+">"
+
+    idx:=0
+    offset:=24
+    while( offset<lower )
+        pos:=page::substr(offset+1,2)::num          // record offset 
+        len:=page::substr(pos+1,4)::num             // key length
+        key:=page::substr(pos+5,len)                // key value
+
+        ? space(indent+INDENT)+"    "+key2str(key)
+
+        idx++
+        offset+=2
+    end
+
+
+******************************************************************************************
+
+

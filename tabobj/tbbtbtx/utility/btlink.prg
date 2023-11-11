@@ -154,11 +154,11 @@ local page:=_db_pgread(btree,pgno)
 local type:=pagetype(page)
     aadd(pages,pgno)
     if( type=="LEAF" )
-        // rekorzio vege
+        // rekurzio vege
     elseif( type=="TREE" )
         walk1(btree,page)
     else
-        ?? "unexpected page type", type
+        break({"unexpected page type",type})
     end
 
 

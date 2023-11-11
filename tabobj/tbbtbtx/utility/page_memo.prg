@@ -54,6 +54,7 @@ local memseg
 
         ? (offset/16-1)::str(3),;
           form_recmix(recno,memix,15),;
+          "0x"+pos::l2hex::padr(3),;
           len::transform(" 99999"),;
           form_memseg(memseg,64)
 

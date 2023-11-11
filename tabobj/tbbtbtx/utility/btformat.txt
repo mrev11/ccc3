@@ -1,0 +1,337 @@
+
+------------------------------------------------------------------------------------------
+PAGE TÍPUSOK
+------------------------------------------------------------------------------------------
+
+1. HEADER   pgno==0
+
+2. LEAF     index btree levél node-jai
+
+3. TREE     index btree nem levél node-jai
+
+4. DATA     adatrekordok fix hosszúságú része (pgno==1 resource)
+
+5. MEMO     adatrekordok változó hosszúságú része
+
+
+------------------------------------------------------------------------------------------
+>>> HEADER lap
+------------------------------------------------------------------------------------------
+
+@[00..03]  BTREE->magic
+    little endian   [62 31 05 00]
+    big endian      [00 05 31 62]
+
+@[04..07]  BTREE->version
+
+    alsó 4 biten a formátum vezriószáma
+        1 eredeti formátum (esetleges memók btx-ben)
+        2 btx nélküli formátum (btx-ek átírva MEMO típusú lapokba)
+        3 átmeneti formátum (hely készült a HEADER-ben a salt-nak)
+        4 btx nélküli, salt-ot tartalmazó formátum (lehet titkosítani)
+
+    5. biten (0x100) a titkosítás
+        0 a tábla nincs titkosítva
+        1 a tábla titkosítva van
+
+@[08..0B]  BTREE->bt_psize  (lapméret)
+    kötelezően 2 hatvány, minimális értéke 256
+    Linuxon tipikusan 4K, Solarison 8K
+
+@[0C..0F]  BTREE->bt_nrecs  (adatrekordok száma)
+    __bt_append növeli
+    __bt_lastrec lekérdezi
+
+
+
+@[10..13]  BTREE->bt_free  (a szabadlista első elemének pgno-ja)
+    bt_free==0, ha a szabadlista üres
+    a szabadlistába csakis törölt indexlapok kerülnek
+    __bt_delord egy index összes lapját befüzi a szabadlista elejére
+
+@[14..17]  BTREE->bt_lastdatapage  (utolsó nem index és nem memó lap)
+    az append a lastdatapage-en próbálja elhelyezni az új rekordot
+    ha a lastdatapage-en nincs elég hely, akkor új adatlapot készit,
+    és az új adatlap pgno-ja kerül bt_lastdatapage-be
+    (egy rekord fix hosszúságú része el kell férjen egyetlen aadatlapon)
+
+@[18..1B]  BTREE->bt_memo  (következő memó lap)
+    a szabad helyet tartalmazó memó lapok listába vannak füzve
+    bt_memo tartalmazza a lista első lapjának pgno-ját
+    amikor memót akar elhelyezni, először a lista lapjaiból vesz helyeket
+    bt_memo==0, ha minden memó lap tele van (ha nincsenek memók)
+
+@[1C..1F]  BTREE->bt_nords (indexek száma, beleértve a recno és deleted indexeket is)
+    __bt_creord növeli
+    __bt_delord csökkenti
+
+
+
+@[20..23]  BTREE->bt_salt  (a lapra egyedi, titkosításhoz használható)
+    a bt fájl kreálásakor kap egyedi értéket, ami később nem változik
+    a lapok titkosításához használt egyedi IV képzése: bt_salt+(pgno)
+
+@[24..27]  BTREE->bt_reserved1
+@[28..2B]  BTREE->bt_reserved2
+@[2c..2F]  BTREE->bt_reserved3
+
+
+
+[30..]  BTREE->bt_order[BT_MAXORDER] (index bekezdések)
+
+@[30..33]  bt_order[1].root (az első index root lapjának pgno-ja)
+    az első index a 'recno', a recno index root lapjának pgno-ja mindig 2
+    (Megj: pgno=0 header, pgno=1 resource, pgno==2 recno root ... )
+
+@[34..37]  bt_order[1].lastpage  (az indexbe rakott utolsó lap pgno-ja)
+    az újonnan készített lapon PAGE->linkpg-be beíródik lastpage
+    lastpage felülíródik az újonnan készített lap pgno-jával
+    ezzel az indexhez tartozó lapok listába lesznek fűzve
+    a listát a __bt_delord művelet egészében befűzi a szabadlista elejére
+
+@[38..3B]  bt_order[1].lastfree  (az index utoljára felszabadult lapja)
+    előfordulhat, hogy egy indexlapból az összes kulcs törlődik
+    ilyenkor __bt_free a lapot befűzi az index privát szabadlistájába
+    a üressé váló lapon PAGE->nextpg-be beíródik a lastfree
+    a lastfree felülíródik az üressé vált lap pgno-jával
+    az indexhez először a privát szabadlistából foglal új lapot
+
+ [3C..3F]  header->order[1].reseved
+
+ [40..4F]  header->order[1].name (az első index neve, max 16 byte)
+
+
+@[50..53]  a második index root lapjának pgno-ja
+@[54..57]  az indexbe rakott utolsó lap pgno-ja
+@[58..5B]  az index utoljára felszabdult lapja
+ [5C..5F]  reseved
+ [50..5F]  a második index neve
+
+    ...
+
+    további indexek
+    annyi index lehet,
+    amennyi ráfér a header lapra,
+    ami függ a page size-tól
+
+A header lap fennmaradó része nullákkal kitöltött.
+
+
+
+------------------------------------------------------------------------------------------
+>>> LEAF, TREE, DATA, MEMO lapok közös jellemzői
+------------------------------------------------------------------------------------------
+
+Minden lapon van egy lower és egy upper mező:
+
+    - lower tartalmazza a lapon belüli első szabad byte offsetét
+    - upper tartalmazza a lapon belüli első nem szabad byte offsetét
+
+Amikor adatot írunk egy lapra, akkor
+
+    - az adatot a lehető legnagyobb offseten helyezzük el
+      az adat elé beírjuk az adat hosszát
+      az upper-t csökkentjük az adat hosszával + sizeof(adathossz)-szal
+
+    - a (hossz+adat) bejegyzés offsetét beírjuk az első szabad helyre
+      a lower-t növeljük sizeof(offset)-tel
+
+Ilyen módon a lapokon rendelkezésre álló szabad hely mindig a lap közepén van,
+és mindig egybefüggő. A lap teteje felől fogy a hely, ahogy új adatrekordot
+írunk bele. A lap alja felől is fogy a hely, ahogy az új adatrekod lapon belüli
+offsetét beírjuk.
+
+               +---------------------------+
+               |       +-------------------|-------+
+               |       |                   V       V
+    |pgno--|-lower-|-upper-|-offs1-|-offs2-|.......|rekord2|rekord1|
+                                |       |          ^        ^
+                                |       +----------+        |
+                                +---------------------------+
+
+A lap elején levő offsetek tömböt alkotnak. E tömb indexével hivatkozhatunk
+egy lapon belüli rekordra. Globálisan a lapsorszám plusz a lapon belüli index
+azonosít egy rekordot (legyen az indexkulcs, adatbázis rekord, vagy memó szegmens).
+
+Megjegyzések:
+
+A lapok ilyen struktúrája lehetővé teszi, hogy jó helykihasználással tároljunk
+változó méretű rekordokat. (A bt táblákban csak a resource és a memó szegmensek
+mérete változó.)
+
+Hogy pontosan milyen struktúra van az offs[x] és rekord[x] helyeken,
+az laptípusonként eltérő. Speciálisan, MEMO lapoknál a rekordhossz nem a rekord
+elején tárolódik, hanem az offset mellett.
+
+A TREE, LEAF, DATA lapoknál a rekord[x] bejegyzések 4 byteos szóhatárra
+vannak igazítva. A szóhatárra igazítás az eredeti BSD szoftverből maradt örökség.
+Feltehetően azért alkalmazták, hogy egyszerűbb legyen kiolvasni a rekordok elején
+tárolt adathosszt. Előnyösebbnek tartom, ha az adathosszt az offsettel együtt tároljuk,
+ekkor a szóhatárra igazításra magától adódik.
+
+
+------------------------------------------------------------------------------------------
+>>> LEAF/TREE lapok,  btree levél és nemlevél node-jai
+------------------------------------------------------------------------------------------
+
+@[00..03] pgno  (a lap sorszáma)
+    lemezre íráskor a pgno helyére a CRC32 kerül
+    beolvasáskor a CRC32 ellenőrzésre kerül, és kicserélődik pgno-ra
+
+
+@[04..07] linkpg  (lista kapcsoló elem)
+    új index lap a split műveletben keletkezik
+    egy index lapjai listába vannak fűzve az alábbi módon:
+    új lap készítésekor PAGE->linkpg-be beíródik HEADER->bt_order[x].lastpage
+    a HEADER->bt_order[x].lastpage felülíródik az új lap pgno-jával
+    az index torlésekor a lista egyetlen listakapcsolásassal befűződik a szabadlistába
+
+    Az index lapok láncolása
+
+       header        |---root---| <- |---page_1---| <- ...  <- |---page_last---|
+         |                                                             ^
+         +-------------------------------------------------------------+
+
+
+@[08..0b] prevpg  (left sibling)
+    a btree algoritmus által használt kapcsoló elem
+
+@[0c..0f] nextpg  (right sibling)
+    a btree algoritmus által használt kapcsoló elem
+
+@[10..13] flags
+    0  FREE - olyan indexlap, amiből minden kulcsot töröltek
+    1  TREE - a btree nem levél node-ja
+    2  LEAF - a btree levél node-ja
+    3  DATA - adatlap
+
+    Megjegyzés:
+        A MEMO lapokat nem innen ismerjük fel, hanem onnan,
+        hogy a @[04..07] szó legfelső bitje 1-re van állítva.
+
+@[14..15] lower (2 byteon, lásd feljebb)
+
+@[16..17] upper (2 byteon, lásd feljebb)
+
+@[18..lower] (2 byteos offsetek sorozata)
+
+Adatszerkezet a LEAF lapokon:  [size][seg1+seg2....][recno][pgno][idx]
+
+    size         : a bejegyzés mérete byteokban (4 byteon)
+    seg1+seg2... : index szegmensek konkatenációja
+    recno        : rekord sorszám
+    pgno         : a rekordot tartalmazó lap sorszáma
+    idx          : a rekord indexe a lapon belül
+
+Értelmezés:
+    Ha a kereső algoritmus megtalálta a [seg1+seg2....][recno] kulcsot
+    (ami egy adatbázisrekordot egyértelműen azonosít), akkor a kérdéses
+    rekordot a [pgno] adatlap [idx] indexénél lehet megtalálni.
+
+
+Adatszerkezet a TREE lapokon: [size][page][seg1+seg2....][recno][pgno][idx]
+
+    size         : a bejegyzés mérete byteokban (4 byteon)
+    page         : lapsorszám, ahol folyatni kell a keresést
+    seg1+seg2... : index szegnesek konkatenációja
+    recno        : rekord sorszám
+    pgno         : a rekordot tartalmazó lap sorszáma
+    idx          : a rekord indexe a lapon belül
+
+Értelmezés:
+    Ha a kereső algoritmus megtalálta a TREE lapon azt a legnagyobb kulcsot,
+    ami még kisebb, mint a keresett kulcs, akkor a keresést a kulcshoz
+    kapcsolt [page] lapon kell folytatni.
+
+
+
+------------------------------------------------------------------------------------------
+>>> DATA lapok,  adatrekordok fix hosszúságú része (pgno==1 resource)
+------------------------------------------------------------------------------------------
+
+@[00..03] pgno   (a lap sorszáma)
+    lemezre íráskor a pgno helyére a CRC32 kerül
+    beolvasáskor a CRC32 ellenőrzésre kerül, és kicserélődik pgno-ra
+
+@[04..07] linkpg  (nincs használatban)
+@[04..07] linkpg  (nincs használatban)
+@[08..0b] prevpg  (nincs használatban)
+@[0c..0f] nextpg  (nincs használatban)
+
+@[10..13] flags   (flags==3 jelzi az adatlapot)
+
+@[14..15] lower   (2 byteon)
+
+@[16..17] upper   (2 byteon)
+
+@[18..lower]  (2 byteos offsetek sorozata)
+
+
+Adatszerkezet a DATA lapokon: [size][del+adatrekord]
+
+    size        : 1 + az adatrekord hossza
+    del         : deleted flag (1 byte)
+    adatrekord  : adatrekord
+
+
+------------------------------------------------------------------------------------------
+>>> MEMO lapok,  adatrekordok változó hosszúságú része (memó mezők)
+------------------------------------------------------------------------------------------
+
+Mejegyzés:
+    A MEMO lapokhoz nem tartozik olyan C struktúra, mint amilyen a BTREE
+    vagy PAGE, hanem egyszerűen u_int32_t elemek tömbjeként van definiálva,
+    aminek a kitüntetett elemeit makrókkal érjük el.
+
+
+@[00..03] PGNO  a lap sorszáma
+    lemezre íráskor a pgno helyére a CRC32 kerül
+    beolvasáskor a CRC32 ellenőrzésre kerül, és kicserélődik pgno-ra
+
+@[04..07] LINK  a szabad helyek listájának kapcsoló eleme
+
+    fölső 1 bit: jelzi a lap MEMO típusát
+    alsó 31 bit: a következő szabad helyet tartalmazó lap pgno-ja
+
+    A szabad helyet tartalmazó memó lapok listába vannak fűzve.
+    Új memó elhelyezésekor a program felhasználja a szabad helyeket.
+    Ha egy lapról elfogy a szabad hely, kifűződik a listából.
+    Ha egy memó szegmens törlődik, akkor a megmaradó szegmensek tömörödnek,
+    miáltal a lapon levő egybefüggő szabad hely nő, és a lap befűződhet a listába.
+    A lista utolsó lapjának LINK-je önmagára mutat.
+
+    Megjegyzés:
+      Amikor egy memó érték megváltozik, a memót nem tudjuk közvetlenül
+      felülírni, hiszen a mérete eltérő lehet. Az új értéket ezért valahova
+      máshová írjuk ki, majd a régi értékhez tartozó memó szegmenseket
+      törőljük. Ez a memók töredezettségét okozhatja.
+
+@[08..0b] LOWER  (4 byte)
+
+@[0c..0f] UPPER  (4 byte)
+
+@[10..lower] 16 byteos memó szegmens leírók tömbje
+
+    összesen (LOWER-16)/16 darab memószegmens van a lapon
+    a 16 byteos tömbelemek 4 byteos egységekre bomlanak:
+
+    0 - MEMO_ID     : alsó 28 bit rekordsorszám, felső 4 bit index
+                      ezek azonosítják, hogy melyik rekord hanyadik memó mezejéhez
+                      tartozik az adott memó szegmens
+
+    1 - MEMO_DESC   : alsó 16 biten a szegmens lapon belüli offsete
+                      felsó 16 biten a szegmens mérete
+
+    2 - MEMO_PGNEXT : ha a memó másik lapon folytatódik, akkor
+                      a következő szegmenst tartalmazó lap pgno-ja
+
+    3 - MEMO_IXNEXT : ha a memó másik lapon folytatódik, akkor
+                      a következő szegmens folytató lapon belüli indexe
+
+Adatszerkezet a MEMO lapokon:
+    A MEMO_DESC-ben található offset és méret egyértelműen meghatározzák a
+    memószegmens lapon belüli helyét. A szegmensek hézag nélkül helyezkednek el
+    a lap upper fölötti részében.
+
+
+

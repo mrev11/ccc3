@@ -28,14 +28,19 @@ local nords
 local offset
 local n
 
-    ? "magic    :", page[ 1.. 4]::bin2hex, "diskord="+dskord(), "swap="+if(swap(),"TRUE","FALSE")
+    ?
+    ? "magic    :", page[ 1.. 4]::bin2hex 
+    ? "diskord  :", dskord()
+    ? "swap     :", if(swap(),"TRUE","FALSE")
     ? "version  :", page[ 5.. 8]::hex
+    ?
     ? "pagesize :", page[ 9..12]::num , page[ 9..12]::hex
     ? "nrecords :", page[13..16]::num , page[13..16]::hex
     ? "freelist :", page[17..20]::num , page[17..20]::hex
     ? "lastdata :", page[21..24]::num , page[21..24]::hex
     ? "freememo :", page[25..28]::num , page[25..28]::hex
     ? "norders  :", page[29..32]::num , page[29..32]::hex
+    ?
 
     version:=page[ 5.. 8]::num
     nords:=page[29..32]::num

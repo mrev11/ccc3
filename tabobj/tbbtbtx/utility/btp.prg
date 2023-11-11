@@ -223,6 +223,8 @@ local log,tv,scr
     set channel(log) on
 
     ? "pgno  ", "0x"+pgno::l2hex
+    ?? "  offset=0x"+(len(page)*pgno)::l2hex
+    ?? "  pgsize="+page::len::str::alltrim
 
     if( pgno==0 )
         page_header(page)

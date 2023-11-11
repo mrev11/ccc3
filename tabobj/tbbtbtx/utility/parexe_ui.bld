@@ -1,0 +1,16 @@
+
+-xtstru 
+-xtview 
+-xbtp
+
+-d. 
+-i..
+-dver${CCCVER}
+
+-btutil
+-bccc${CCCVER}_textview
+-bccc${CCCVER}_btbtx
+-bccc${CCCVER}_btbtxui
+
+BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}
+

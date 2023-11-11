@@ -211,6 +211,7 @@ local lt,rt
         rt:=w-lt-5
         memseg:=memseg::left(lt)+a'...'+memseg::right(rt)
     end
+    memseg::=strtran(bin(10),bin(32))
     memseg:=a"["+memseg+a"]"
     if( w!=NIL )
         memseg::=padr(w)

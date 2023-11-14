@@ -244,4 +244,28 @@ local datatype:=pg[17..20]::num
     end
 
 ******************************************************************************************
+function pagetype_num(pg)
+
+local pgno:=pg[1..4]::num
+local memotype:=pg[5..8]::num
+local datatype:=pg[17..20]::num
+
+    if( pgno==0x053162 )
+        return -1           // HEADER
+    elseif( memotype>=0x80000000 )
+        return 4            // MEMO
+    elseif(  datatype==0 )
+        return 0            // FREE
+    elseif(  datatype==1 )
+        return 1            // TREE
+    elseif(  datatype==2 )
+        return 2            // LEAF
+    elseif(  datatype==3 )
+        return 3            // DATA
+    else
+        ? "UNKNOWN PAGE TYPE", pgno::l2hex
+        quit
+    end
+
+******************************************************************************************
 

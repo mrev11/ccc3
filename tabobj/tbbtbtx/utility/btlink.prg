@@ -19,9 +19,15 @@
  */
 
 
+// fabejarassal bejarja az indexeket (minden index lapot megjelol)
+// az azonos indexhez tartozo lapok listajat ujraepiti
+// a nem-index, nem-data, nem-memo lapokbol ujraepiti a free listet 
+// kiirja a tree, leaf, data, memo, free lapok szamat
+
 #include "table.ch"
 
-static pages
+static indx_page
+static mark_page
 
 #clang
 #include <cccapi.h>
@@ -56,7 +62,6 @@ local NORDS
 
 local ord,offset,order,iname,rootpgno,n
 local create_time,access_time,modif_time
-local page
 
     begin
         if( btfile::right(3)!=".bt" )
@@ -85,6 +90,8 @@ local page
     NORDS    := page0[29..32]::num
     maxpgno  := fsize/PGSIZE-1
 
+    mark_page:=array(maxpgno)
+
     _db_header_read(btree,.t.) //for writing
     offset:=0x31
     for ord:=1 to NORDS
@@ -92,36 +99,116 @@ local page
         rootpgno:=order[1..4]::num
         iname:=order::right(16)::strtran(bin(0),bin(32))::trim
 
-        pages:={}
+        indx_page:={}
         walk(btree,rootpgno)
-        //? iname, pages::tohex::arev
         relink(btree,ord)
 
         offset+=32
     next
+
+    freelist(btree)
+
     _db_header_write(btree)
     setfiletime(btfile,create_time,access_time,modif_time)
 
+    ?? btfile; ?
+
 
 ******************************************************************************************
-static function relink(btree,ord)
-local n,pgno
-local blk:={|p|code(p,n)}
-    for n:=len(pages) to 2 step -1
-        pgno:=pages[n]
-        _db_pgeval(btree,pgno,blk)
-    next
-    setlast(btree,ord,pages[1],pages::atail)
-
-static function code(page,n)
-    //? n, pages[n]::l2hex
-    if( xvgetlong(page,4)==pages[n-1] )
-        //nem kell visszairni
-        return NIL 
-    else
-        xvputlong(page,4,pages[n-1])
+static function code_link(page,pgno)
+    //? page[1..4]::hex, "<-", pgno::l2hex
+    if( xvgetlong(page,4)!=pgno )
+        xvputlong(page,4,pgno)
+        // visszairja
         return page
     end
+    // nem kell visszairni
+
+
+******************************************************************************************
+static function freelist(btree) // a szabad lapokat listaba fuzi
+
+local cnt_tree:=0
+local cnt_leaf:=0
+local cnt_data:=0
+local cnt_memo:=0
+local cnt_free:=0
+
+local free:={},n
+local pgno,page,type
+local blk:={|p|code_link(p,pgno)}
+
+    for pgno:=1 to len(mark_page)
+        if( mark_page[pgno]!=NIL  )
+            //index lap: TREE/LEAF
+            if( mark_page[pgno]==1 )
+                cnt_tree++
+            elseif( mark_page[pgno]==2 )
+                cnt_leaf++
+            else
+                break({"unknown page type",pgno,mark_page[pgno]})
+            end
+        else
+            //nem index: DATA,MEMO,free
+            page:=_db_pgread(btree,pgno)
+            type:=pagetype_num(page)
+            if( type==3 )
+                mark_page[pgno]:=type
+                cnt_data++
+            elseif( type==4 )
+                mark_page[pgno]:=type
+                cnt_memo++
+            else
+                cnt_free++
+                aadd(free,pgno)
+            end
+        end
+    next
+
+    ?? if(cnt_tree==0,"tree","TREE"),cnt_tree,;
+       if(cnt_leaf==0,"leaf","LEAF"),cnt_leaf,;
+       if(cnt_data==0,"data","DATA"),cnt_data,; 
+       if(cnt_memo==0,"memo","MEMO"),cnt_memo,;  
+       if(cnt_free==0,"free","FREE"),cnt_free,;
+       "    "
+
+    if( empty(free) )
+        setfree(btree,0)
+    else
+        // ujraepiti freelistet
+        free::arev
+        for n:=2 to len(free) 
+            pgno:=free[n]
+            _db_pgeval(btree,free[n-1],blk)
+            // beolvassa a page:=free[n-1] lapot
+            // vegrehajtja: code_link(page,pgno)
+            // a lap visszairodik a lemezre
+        next
+        pgno:=0
+        _db_pgeval(btree,free::atail,blk) // az utolsoba NULL-t
+    end
+
+
+function setfree(btree,free)
+#clang
+    unsigned *header=(unsigned*)_parp(1);
+    header[4]=_parni(2);  // bt_free felulirva
+#cend
+
+
+******************************************************************************************
+static function relink(btree,ord) // az ord index lapjait listaba fuzi
+local n,pgno
+local blk:={|p|code_link(p,pgno)}
+    for n:=len(indx_page) to 2 step -1
+        pgno:=indx_page[n-1]
+        _db_pgeval(btree,indx_page[n],blk)
+        // beolvassa a page:=indx_page[n] lapot
+        // vegrehajtja: code_link(page,pgno)
+        // visszairja a lapot a lemezre
+    next
+    setlast(btree,ord,indx_page[1],indx_page::atail)
+
 
 function setlast(btree,ord,root,last)
 #clang
@@ -150,50 +237,45 @@ function setlast(btree,ord,root,last)
 
 ******************************************************************************************
 static function walk(btree,pgno)
+
+// fabejarassal bejarja a pgno-bol gyokerezo reszfat
+// az aktualis index lapjait indx_page-ben gyujti
+// az osszes index lapjait mark_page-ben jeloli
+
 local page:=_db_pgread(btree,pgno)
-local type:=pagetype(page)
-    aadd(pages,pgno)
-    if( type=="LEAF" )
-        // rekurzio vege
-    elseif( type=="TREE" )
+local type:=pagetype_num(page)
+
+    indx_page::aadd(pgno)   // az aktualis index lapjai
+    mark_page[pgno]:=type   // az osszes index lapjai
+
+    if( type==1 )
+        // TREE
         walk1(btree,page)
+    elseif( type==2 )
+        // LEAF
+        // rekurzio vege
     else
-        break({"unexpected page type",type})
+        break({"unexpected page type",pgno,type})
     end
 
 
 static function walk1(btree,page)
-local lower
-local upper
-local idx,offset
-local pos,len,pgn,key
 
-    lower:=page::substr(21,2)::num
-    upper:=page::substr(23,2)::num
-    idx:=0
-    offset:=24
+local lower:=page::substr(21,2)::num
+local upper:=page::substr(23,2)::num
+local offset:=24
+local pos,len,pgn
 
     while( offset<lower )
-        pos:=page::substr(offset+1,2)::num          // record offset on page
-        len:=page::substr(pos+1,4)::num             // key length
-        pgn:=page::substr(pos+5,4)::num             // page number
+        pos:=page::substr(offset+1,2)::num  // record offset on page
+        len:=page::substr(pos+1,4)::num     // key length
+        pgn:=page::substr(pos+5,4)::num     // page number
 
-        // rekurzio"
+        // rekurzio
         walk(btree,pgn)
 
-        idx++
         offset+=2
     end
-
-
-******************************************************************************************
-static function tohex(a)
-local n
-    a::=aclone
-    for n:=1 to len(a)
-        a[n]:=a[n]::l2hex
-    next
-    return a
 
 
 ******************************************************************************************

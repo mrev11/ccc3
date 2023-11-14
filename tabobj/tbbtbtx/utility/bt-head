@@ -1,0 +1,11 @@
+#!/bin/bash
+
+doproc()
+{
+    find .  -name '*.bt' | while read BT; do
+        #nem kell neki btpasswd
+        bthead.exe $BT 
+    done
+}
+
+doproc | tee log-bthead

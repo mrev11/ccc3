@@ -1,0 +1,13 @@
+#!/bin/bash
+
+doproc()
+{
+    find .  -name '*.bt' | while read BT; do
+        echo $BT
+        btcheck.exe $BT --writecrc
+    done
+}
+
+doproc 2>&1 | tee log-btcheck
+
+

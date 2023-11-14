@@ -1,0 +1,12 @@
+#!/bin/bash
+
+doproc()
+{
+    find .  -name '*.bt' | while read BT; do
+        btverif.exe $BT
+    done
+}
+
+doproc 2>&1 | tee log-btverif
+
+

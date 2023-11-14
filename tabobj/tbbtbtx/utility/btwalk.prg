@@ -114,7 +114,7 @@ local type:=pagetype(page)
         pages[len(pages)]+="!"
         walk1(btree,page)
     else
-        break({"unexpected page type",type})
+        break({"unexpected page type",pgno,type})
     end
 
 
@@ -135,7 +135,7 @@ local pos,len,pgn,key
         len:=page::substr(pos+1,4)::num             // key length
         pgn:=page::substr(pos+5,4)::num             // page number
 
-        // rekurzio"
+        // rekurzio
         walk(btree,pgn)
 
         idx++

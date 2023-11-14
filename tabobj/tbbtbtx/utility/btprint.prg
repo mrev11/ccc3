@@ -111,7 +111,7 @@ local type:=pagetype(page)
     elseif( type=="TREE" )
         print_tree(btree,page,indent)
     else
-        break({"unexpected page type",type})
+        break({"unexpected page type",pgno,type})
     end
 
 

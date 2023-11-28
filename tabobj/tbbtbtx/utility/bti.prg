@@ -264,6 +264,13 @@ local t:=tabResource(fname),o,n
     end
 
     begin
+        tabGetIndex(t,iname)
+        usage("Index already existst: "+iname)
+    recover
+        // ok 
+    end
+
+    begin
         for n:=1 to len(seg)
            tabColNumber(t,seg[n])
         next

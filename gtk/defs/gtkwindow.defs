@@ -276,6 +276,16 @@
   (return-type "GList*" ".parray.freelist.")
 )
 
+(define-method set_icon_from_file
+  (of-object "GtkWindow")
+  (c-name "gtk_window_set_icon_from_file")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "iconfile")
+    '("GError**" "error" (null-ok))
+  )
+)
+
 (define-method set_icon
   (of-object "GtkWindow")
   (c-name "gtk_window_set_icon")

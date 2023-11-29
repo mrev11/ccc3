@@ -1,9 +1,12 @@
-51c6b3c1d5cf986cda05c5081ea1d2c230ea030f 2023112812:50:46-UTC ./CHANGELOG_vermes
+8e7352121aa5184088e166b4fb7a0c45d31c0b21 2023112912:10:42-UTC ./CHANGELOG_vermes
+cb6daee237a1e62e664875b5a02b105120e34e44 2023112818:12:59-UTC ./gtk/log-install
+4574cbd7a384d34741f81b0cbeb1d0fac868c5bf 2023112818:12:57-UTC ./gtk/code_generated/gtk_window_reg.prg
+d5925c08c8295eb553f74e9cd18020504d39ce65 2023112818:12:56-UTC ./gtk/code_generated/gtk_window_api.cpp
+52c5ce482f3e96c8652c1c2f4d4b067712ef2fc4 2023112816:33:22-UTC ./gtk/defs/gtkwindow.defs
 7b62a945e09e2183ccb5f031bd53b0d2a1e2c6f3 2023112811:53:03-UTC ./usr/bin/linux/tstru
 eb874ed4ed3b95c24a0195aad07cc9fd24189763 2023112811:53:02-UTC ./usr/bin/linux/bti
 64a6bfdd6db9684e60af287060cf99dab4e1edc7 2023112811:40:43-UTC ./tabobj/tbbtbtx/utility/bti.prg
 9015121d3ca7d8ef9cdfaf5d872c052f608dc13d 2023112116:55:56-UTC ./gtk/examples/base/functionlevel/fileselx.prg
-fa7c19baa939f8266d484ad75a228bb5b50ec185 2023111910:05:03-UTC ./gtk/log-install
 88085d56a0f78619f452bbe6cb9a3285c9bce403 2023111910:04:08-UTC ./gtk/code_generated/gtk_accelerator_api.cpp
 1464c77a950f54b4d9a03f29d6a41fc1f54b11b1 2023111910:04:08-UTC ./gtk/code_generated/gtk_icon_set_api.cpp
 489bb324fa9ae03e4d7bb1d198fadfd4fd8ee281 2023111910:04:08-UTC ./gtk/code_generated/gtk_icon_source_api.cpp
@@ -109,8 +112,6 @@ ae48723aa090706f74fe319ebb902116a813dfa0 2023111910:04:06-UTC ./gtk/code_generat
 8a0cb62c100ceac45eead058c0540aefeac62b28 2023111910:04:06-UTC ./gtk/code_generated/gtk_vbutton_box_reg.prg
 daeaaef8dd876be905195782cbf70677dd49c33e 2023111910:04:06-UTC ./gtk/code_generated/gtk_vpaned_api.cpp
 3a748becfa7ee3bbb2b48864a9140f69340b0cbc 2023111910:04:06-UTC ./gtk/code_generated/gtk_vpaned_reg.prg
-dea19b62d7269a01eacdf1e9c8dd8310b5322907 2023111910:04:06-UTC ./gtk/code_generated/gtk_window_api.cpp
-fa6a9925af53c9ac1a41cce2d5c324b65a2de668 2023111910:04:06-UTC ./gtk/code_generated/gtk_window_reg.prg
 e2e43b586772986e0ce73452f0a8108968472850 2023111910:04:05-UTC ./gtk/code_generated/gtk_accessible_api.cpp
 235ef490f417d75e654ede89a8c45563141475c4 2023111910:04:05-UTC ./gtk/code_generated/gtk_accessible_reg.prg
 713e6265769c3a0c71e070ec353f829b3fa8fe7b 2023111910:04:05-UTC ./gtk/code_generated/gtk_alignment_api.cpp
@@ -2422,7 +2423,6 @@ e58df8cdf798e9554ce31279c50d0bec73d426de 2013021711:01:24-UTC ./terminal/unix/re
 51725c7df41fde437f6edbe67c9a74971761de33 2012121316:32:06-UTC ./tabobj/tbbtbtx/btindex.prg
 94e9bfacc2d4a1f998892ce9a138d49a0ef63267 2012111713:15:24-UTC ./tools/webapp/keys/webappdemo.pem
 addb16cd38a689b08f8d0e6d9fb6fbe5da2c8fce 2012103007:11:38-UTC ./terminal/xtest/xstart.par
-73dd648c0cd17c798ba6f5846b62e40f0bd4e269 2012102712:37:54-UTC ./gtk/defs/gtkwindow.defs
 493aa183a916f3f7ce655334eb27fb923f0d99f7 2012102114:39:13-UTC ./terminal/terminal-test/remio/m.bat
 24e75028d7a896d97da0cc0d6127f802dffc5f24 2012102111:26:26-UTC ./terminal/terminal-test/screenwr/m
 415d335fba72447fc8e4f5d8afb9d3373f6248aa 2012102008:17:41-UTC ./doc/valtozasok.tex

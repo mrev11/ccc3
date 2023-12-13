@@ -1,5 +1,8 @@
-8e7352121aa5184088e166b4fb7a0c45d31c0b21 2023112912:10:42-UTC ./CHANGELOG_vermes
-cb6daee237a1e62e664875b5a02b105120e34e44 2023112818:12:59-UTC ./gtk/log-install
+b63ca8c3ad20063b1cb88f15fa3d96bbf425dbe9 2023121310:29:10-UTC ./CHANGELOG_vermes
+c8a5803f079e918195e025ac7834c6da7b2c740f 2023121110:03:18-UTC ./gtk/log-install
+0583294a0e46028c1e44d406ddba667669993a0a 2023120611:40:56-UTC ./gtk/code_byhand/pango_font_description_apix.cpp
+86a8b8d0f4e58317ffe2db64c597d288056edf28 2023120611:36:10-UTC ./usr/bin/linux/terminal-gtk3
+a8d25c93c1eddf7a2e39289ff5268e76c1121bdf 2023120611:29:48-UTC ./usr/bin/linux/terminal-gtk2
 4574cbd7a384d34741f81b0cbeb1d0fac868c5bf 2023112818:12:57-UTC ./gtk/code_generated/gtk_window_reg.prg
 d5925c08c8295eb553f74e9cd18020504d39ce65 2023112818:12:56-UTC ./gtk/code_generated/gtk_window_api.cpp
 52c5ce482f3e96c8652c1c2f4d4b067712ef2fc4 2023112816:33:22-UTC ./gtk/defs/gtkwindow.defs
@@ -442,8 +445,6 @@ b2bdff44711c14b4e2646b6504799abfcf615d99 2023111109:46:14-UTC ./usr/bin/linux/ms
 7a48885cb5df9c1f6dd0725eb9b14af2f29cfbda 2023111109:46:14-UTC ./usr/bin/linux/pge2wro
 a7622d5f40ca2d57de562d7d89ebe0f1df6c217a 2023111109:46:13-UTC ./usr/bin/linux/mask
 e0b583d9d5853cc6a607b6761037263ea7feacaa 2023111109:46:13-UTC ./usr/bin/linux/page
-e0dd13b3633537843c84e11a28ea678f53160b1c 2023111109:46:12-UTC ./usr/bin/linux/terminal-gtk3
-aea49d3d16412b384ba37642d2fed185cf3c4f7e 2023111109:46:11-UTC ./usr/bin/linux/terminal-gtk2
 b0ce10f2cade0dd066633ec0d3312a6dc3ac2872 2023111109:46:10-UTC ./usr/bin/linux/sslforw-serv
 167456c8c8bc47757520bcfe73cc58387fb263de 2023111109:46:10-UTC ./usr/bin/linux/sslforw-term
 d5d18f69c0c35713b39d530684c7019d5e52e0ae 2023111109:46:10-UTC ./usr/bin/linux/sslforward
@@ -3380,7 +3381,6 @@ dd2dfae903af546d55f111d241828cf31b6c81ea 2006042912:28:32-UTC ./gtk/examples/bas
 addfcfaa2bed513cb47c72ac78a4343ed97a911a 2006042912:27:39-UTC ./gtk/examples/gallery/font_button/parfile.bld
 3094f5a51c641f2f43bc9fdd8e18dcaaf62f3364 2006042912:23:29-UTC ./gtk/code_byhand/code_util/push_string.cpp
 046d28d3fb15a11d040606f6dd0fb3f883ffcd75 2006042912:22:38-UTC ./gtk/code_byhand/code_util/push_list.cpp
-3d87e804bac16185a8262e232c440691dc02f4c6 2006042911:35:40-UTC ./gtk/code_byhand/pango_font_description_apix.cpp
 e11fcb54a6fa41f753d3b02db23d61d5d3aa7f5b 2006042911:33:51-UTC ./gtk/code_byhand/gtk_tree_store_apix.cpp
 cf02adf3e9aa2656000467d70dcd4dd3e9b48c4c 2006042911:32:09-UTC ./gtk/code_byhand/gtk_tree_model_apix.cpp
 3baabaa3cf36f0814b668233a34f57f9acbfae0e 2006042911:28:47-UTC ./gtk/code_byhand/gtk_stock_apix.cpp

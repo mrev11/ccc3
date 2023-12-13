@@ -34,11 +34,11 @@ void _clp_new(int argno)
     gpointer desc=0;
     if(str)
     {
-        pango_font_description_from_string(str);
+        desc=pango_font_description_from_string(str);
     }
     else
     {
-        pango_font_description_new();
+        desc=pango_font_description_new();
     }
     _retp(desc);
     CCC_EPILOG();

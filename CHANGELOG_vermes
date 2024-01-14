@@ -1,3 +1,5 @@
+2024-01-14 webapp favicon.ico helyett favicon.svg-t kuld;
+
 2023-12-13 pango_font_description_from string() javitva;
 
 2023-11-29 gtk_window_set_icon_from_file;

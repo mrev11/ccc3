@@ -1,3 +1,6 @@
+2024-01-15 __msys2.msys2 build script javitva
+  (a build 2023.11.06-os modositasa kihozott egy rejtett hibat);
+
 2024-01-14 webapp favicon.ico helyett favicon.svg-t kuld;
 
 2023-12-13 pango_font_description_from string() javitva;

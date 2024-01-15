@@ -4,20 +4,12 @@
 
 addlpt() #elejere
 {
-    X=:${BUILD_LPT}:
-    X=${X//:${1}:/:}
-    X=${1}${X}
-    X=${X//::/:}
-    export BUILD_LPT=$X
+    export BUILD_LPT="${1};${BUILD_LPT}"
 }
 
 lptadd() #vegere
 {
-    X=:${BUILD_LPT}:
-    X=${X//:${1}:/:}
-    X=${X}${1}
-    X=${X//::/:}
-    export BUILD_LPT=$X
+    export BUILD_LPT="${BUILD_LPT};${1}"
 }
 
 

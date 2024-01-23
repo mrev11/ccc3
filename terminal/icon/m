@@ -1,0 +1,10 @@
+#!/bin/bash
+bapp_unix0.b  @parfile.bld
+terminal-icon.exe
+
+convert terminal.svg terminal.ico
+convert terminal.svg terminal.xpm
+
+cp  terminal.svg ${CCCDIR}/usr/bin/linux
+cp  terminal.xpm ${CCCDIR}/usr/bin/linux
+cp  terminal.ico ${CCCDIR}/usr/bin/windows

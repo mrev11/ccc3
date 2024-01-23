@@ -1,3 +1,9 @@
+2024-01-22 
+  terminal/icon: ikon generalo program
+    Linux   : terminal.svg
+    Linux   : terminal.xpm
+    Windows : terminal.ico 
+
 2024-01-15 __msys2.msys2 build script javitva
   (a build 2023.11.06-os modositasa kihozott egy rejtett hibat);
 

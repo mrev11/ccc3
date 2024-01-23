@@ -1,4 +1,15 @@
-531f8cb2adaadec37fa174bb93bf4b33e4772ed7 2024011511:12:13-UTC ./CHANGELOG_vermes
+eca549fd507e02e348ce94b747456f9d44f15aa2 2024012313:37:56-UTC ./CHANGELOG_vermes
+e72b94a76f60d82f709557274ab00a8a637579ea 2024012313:36:27-UTC ./terminal/m
+6bd663c13b32f2d74b7ad785128bc68b390a589b 2024012313:31:19-UTC ./usr/bin/linux/terminal.xpm
+70d25923dadbd016665ee6ea3cbbeec6c82f6c8a 2024012313:31:15-UTC ./terminal/icon/m
+c553451061fa5f8ff34c0d6d013acbe555bfaa24 2024012215:02:57-UTC ./usr/bin/linux/terminal.svg
+cdc0b07f0d90854c6692ffe1839712bdbac61b80 2024012215:02:57-UTC ./usr/bin/windows/terminal.ico
+2d961ed2051205e178108fd6397819aa8b9ae91d 2024012214:55:26-UTC ./log-install
+7f8241845b9df83385e99e3ea2e661d96f19d492 2024012214:52:35-UTC ./usr/bin/linux/ncterm
+172d6914ad1bab1b22735f3354e3d2b255bb1d9f 2024012214:46:57-UTC ./terminal/icon/.gitignore
+00125a155d13487973d915420fbba2c4526c5cac 2024012214:42:58-UTC ./terminal/icon/parfile.bld
+844151c601f4459a2486c63743acab54828a36d4 2024011800:40:43-UTC ./usr/build/msys2/rc2obj.msys2
+7583614c3e14594a2a5e35c12cf140f53108914e 2024011710:24:55-UTC ./terminal/icon/terminal-icon.cpp
 d9e1d86391bf57536fdb9358e9b04cadcf5b5799 2024011511:07:48-UTC ./usr/bin/windows/__msys2.msys2
 1f44e6b1aeba52e33971994c747d28f6f9643679 2024011410:46:51-UTC ./tools/webapp/log-webapp
 b4a1e50883bd8ba515b41b79f511daee88289350 2024011410:46:49-UTC ./tools/webapp/log-wstart
@@ -7,8 +18,9 @@ b4a1e50883bd8ba515b41b79f511daee88289350 2024011410:46:49-UTC ./tools/webapp/log
 fef853ac932dd7b6a3d664e6aa0b06832d9ba672 2024011410:38:37-UTC ./tools/webapp/log-wecho
 6eabc770aa70727958d08d79d2144aea8e20ae9a 2024011410:38:36-UTC ./tools/webapp/log-snd
 6f553ebd3ecadf912ad6269feaaf8685d8274fa5 2024010408:55:05-UTC ./gtk/log-install
+2601dddc71e73856df0c1fbccaeab63f349687f9 2024010408:55:05-UTC ./usr/bin/linux/glist
+53099a091cc62620b3b036fb817128e7bbda48fc 2024010408:55:05-UTC ./usr/bin/linux/gui
 d9b9fbb9015e4cbfc496a9511242218e4a62342e 2024010408:40:10-UTC ./jt/jterminal/jterminal.jar
-f3246dd696d81db9a2267b5761f6102f5b285a01 2024010408:40:10-UTC ./log-install
 09cb45639b1a2e0b8e8db32005153e6e3501d71b 2024010408:39:45-UTC ./usr/bin/linux/tstru
 e0dd13b3633537843c84e11a28ea678f53160b1c 2024010408:39:27-UTC ./usr/bin/linux/terminal-gtk3
 aea49d3d16412b384ba37642d2fed185cf3c4f7e 2024010408:39:26-UTC ./usr/bin/linux/terminal-gtk2
@@ -564,7 +576,6 @@ e4b176c66b4112615be7ce1674038e3858507cb3 2023083011:16:45-UTC ./usr/setenv/wincm
 9e7a6c217b1f493d625bc921c4fb8d84a5710611 2023082912:51:58-UTC ./usr/setenv/wincmd/OLVASS
 9cf4e7d091a50978c27e3370f1418ebcc9bc7e6b 2023082810:42:07-UTC ./terminal/common/termicon.cpp
 181674466434c8ace8d81ecae695737e39faf346 2023082810:42:07-UTC ./terminal/windows/terminal.cpp
-75883da129fcdd24d6188071d05c044955f921f6 2023082809:44:42-UTC ./usr/bin/windows/terminal.ico
 99eae61dd28228babebed5180c3692a5fc785b0a 2023082721:51:12-UTC ./usr/setenv/OLVASS
 e3fc9db4d000c381e16ce7d5bb46704b8c578a52 2023082721:51:12-UTC ./usr/setenv/wincmd/bench/OLVASS
 c652398452a376095a2dec43d6c12a5c83571b3e 2023082721:51:12-UTC ./usr/setenv/wincmd/bench/x
@@ -715,6 +726,7 @@ afb39ea25ac8afc7fb23fb0ae8c0b3b654dc5ec3 2023080320:59:14-UTC ./ccclib/src/set.p
 1722a91d71453940eb6a558ed445ef5c704c3090 2023072713:38:48-UTC ./terminal/unix-ncterm/ncterm.cpp
 f3332bcf755730e509100a9651019b7764e6c9e2 2023072308:08:28-UTC ./terminal/unix-cterm/cterm.cpp
 06e310cd28ef6b29e7aa87f017eaf6219963835d 2023071223:58:18-UTC ./gtk/code_byhand/m.bat
+83f4a63eab0e559576e192407b9ea48fd6240af5 2023062108:59:02-UTC ./setup/setup-windows/xx.msys2
 f01efe3c5611cc5ab0be2cb65a15ebdcb0ec3bbc 2023061920:52:23-UTC ./setup/setup-windows/prg2ppo/trinp.cpp
 312eb40065adeb81ce8ed58df25873e9b9a2ec03 2023061920:52:23-UTC ./setup/setup-windows/prg2ppo/xtlex.cpp
 8c840f1da49266db5d29a7a9da934c25ddb115b8 2023061920:52:18-UTC ./setup/setup-windows/prg2ppo/input.cpp
@@ -722,7 +734,6 @@ d322851e97a0e84504255fcfad602fe9bacc043f 2023061920:52:18-UTC ./setup/setup-wind
 7b71b4842b2b0db89b331fe1598bc582f49bda1a 2023061920:42:07-UTC ./usr/build/windows/lex2obj.bat
 f3a9ea92f8bad5c599f6aca3aef8c4a6e27edcf6 2023061914:03:26-UTC ./setup/setup-windows/copy_from_ppo.bat
 d449dd125ecc1409e83112b89b37c144dd9585d3 2023061914:03:26-UTC ./setup/setup-windows/copy_from_ppo.msys2
-43caa1802a13315d4bebb865fb64a199d62db4d7 2023061914:03:26-UTC ./setup/setup-windows/xx.msys2
 3388aeae95b0bffaf131b3d5f96fefc5a007a459 2023061909:54:35-UTC ./setup/setup-unix/build/makeexe.cpp
 a1f85bb572a370dd34960a7589485de53fc49ef5 2023061909:54:35-UTC ./setup/setup-unix/build/makelib.cpp
 20fd7bae907e16e819ee72ab9fe79cc1eb23559d 2023061909:54:35-UTC ./setup/setup-unix/build/params.cpp
@@ -896,7 +907,6 @@ cce0b8531e1cac0412932586a4c132aecc3ee7fc 2023042521:22:07-UTC ./ccclib/src/power
 c7227b7945fe60da991dea5480b4d518f980286d 2023042411:34:31-UTC ./terminal/windows-console/OLVASS
 d337903275f4a628c4855a539295ad92a06d79a6 2023042312:40:28-UTC ./terminal/common/readkey_windows/readkey.cpp
 ce04cc8d7c265af049fe79671016a45d83daf98c 2023042110:02:25-UTC ./terminal/common/tcpio.cpp
-e72b94a76f60d82f709557274ab00a8a637579ea 2023041909:13:46-UTC ./terminal/m
 6ff93b31dde9aefa3f2c9cc41a0e0603edcbfe5f 2023041909:12:36-UTC ./terminal/gtk2/parfile.bld
 ea880d92c857a0e334943ee97877637292221902 2023041909:08:00-UTC ./terminal/common/xcurses/OLVASS
 5f03ae937f6ef11b97ca20ffa36f429fef794d40 2023041908:58:17-UTC ./terminal/unix-cterm/parfilex.bld
@@ -1383,9 +1393,7 @@ cd14c901a9d6e8e0de4acdc9683e3f2cacb2f696 2021040721:27:55-UTC ./tools/xmldom/xml
 a78182ddf2d1896e2773f91c92adc5f5ca15aadf 2021032513:57:08-UTC ./terminal/unix/m
 d866348a425f6c401d70bb017895182b45f43cf3 2021032511:12:49-UTC ./ccclib/src/uic/setcaption.cpp
 d6b2df18f84998e1f9ef5aaa02cc5aeab7ebae85 2021032510:21:17-UTC ./terminal/unix/term_classhint.cpp
-b15b2dd9b42da37dea1779c82bbe06a3f20cfd43 2021032510:10:01-UTC ./terminal/unix/terminal.xpm
 8d233b09251e4e5a9799f9459e9e0d3c7d9fad36 2021032509:11:28-UTC ./terminal/unix/parfile.bld
-df1a6c4d1a18361dd4cef5e46fc61a478fd5e2aa 2021032509:09:24-UTC ./terminal/unix/terminal.ico
 05cd9c265f54b5b4de485344d2e551e87ca2bbbc 2021022110:57:10-UTC ./tools/mask/doc/mask.hu.ver
 d9bd0f3829b2a9ccec9f9ca63f1a6fe4f61e7e92 2021022110:57:07-UTC ./tools/mask/doc/page.hu.ver
 9bfab5711336b0686edf1028ff0b135b1f9a60c9 2021022110:15:10-UTC ./tools/mask/doc/charset.txt

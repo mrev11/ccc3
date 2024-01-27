@@ -1,0 +1,6 @@
+
+-bccc${CCCVER}_dbaseiii
+-bccc${CCCVER}_btbtx
+
+BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}
+

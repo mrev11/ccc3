@@ -1,3 +1,8 @@
+2024-01-28 
+   dbf2bt.exe script szinten parhuzamosithato;
+   Sok dbf importalasakor tobb peldanyban futhat,
+   a kulonbozo peldanyok kikerulik egymast.
+
 2024-01-27 dbf2bt.exe import; 
 
 2024-01-22 

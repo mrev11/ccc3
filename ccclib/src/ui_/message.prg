@@ -31,7 +31,9 @@ local t
     thread_mutex_lock(mutex)
     t:=gettickcount() 
     if( t-tck>TIME )
-        ? text
+        if( text!=NIL )
+            ? text
+        end
         tck:=t
     end
     thread_mutex_unlock(mutex)

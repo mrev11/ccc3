@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# ellenorzi, hogy az osszes dbf importja utan
+# egyezik-e rekordszam a bt-kben es a dbf-ekben
+
+rm log-verify
+
+find . | while read FILE; do
+    if [[ ${FILE##*.} ==  dbf ]];then
+        dbf2bt_verify.exe  ${FILE} | tee -a log-verify
+    fi
+done

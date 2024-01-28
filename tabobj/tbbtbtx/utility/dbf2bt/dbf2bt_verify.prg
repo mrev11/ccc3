@@ -1,8 +1,4 @@
 
-//CCC3 program
-//nemcsak az aktualis direktoryban tud konvertalni
-//nem konvertalja a 0 rekorszamot tartalmazo filet
-
 #include "table.ch"
 
 ****************************************************************************
@@ -10,7 +6,7 @@ function main(fspec)
 
 local dbf,tab,n
 
-    set dosconv fileshare
+    //set dosconv fileshare
 
     dbf:=dbaseiiiNew()
     dbf:open(fspec)
@@ -21,17 +17,13 @@ local dbf,tab,n
         tabAddColumn(tab,dbf:dbstruct[n])
     next
     tabCreate(tab)
+    tabOpen(tab)
+        
 
-    if( tabOpen(tab,OPEN_EXCLUSIVE,{||.f.}) )
-        if( tabEOF(tab) )
-            // csak ha a bt ures
-            if( dbf:reccnt>0 )
-                // csak ha a dbf nem ures
-                ? fspec,dbf:reccnt
-                tabLoadDBF(tab,fspec)
-            end
-        end
+    if( dbf:reccnt != tabLastrec(tab) )
+        ? "ERROR"
     end
+    ? "     ", fspec::padr(32), dbf:reccnt, tabLastrec(tab)
 
 
 ****************************************************************************

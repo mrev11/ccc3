@@ -265,7 +265,7 @@ local t:=tabResource(fname),o,n
 
     begin
         tabGetIndex(t,iname)
-        usage("Index already existst: "+iname)
+        usage("Index already exists: "+iname)
     recover
         // ok 
     end

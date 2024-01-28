@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# az osszes dbf importja bt-be
+# csak nem letezo (vagy ures) bt-kbe importal
+# egyszerre tobb script futhat
+# a kulonbozo peldanyok elkerulik egymast
+
+convert()
+{
+    LOGFILE=$1
+    if [ "$LOGFILE" == ""  ]; then
+        LOGFILE=log-$$
+    fi
+    rm -f ${LOGFILE}
+
+    find . | while read FILE; do
+        if [[ ${FILE##*.} ==  dbf ]];then
+            dbf2bt.exe  ${FILE} | tee -a ${LOGFILE}
+        fi
+    done
+}
+
+
+if [ true ];then
+    :
+    convert log-1 &
+    convert log-2 &
+    convert log-3 &
+    convert log-4 &
+    convert log-5 &
+    convert log-6 &
+    convert log-7 &
+    convert log-8 &
+else
+    :
+fi
+
+wait
+echo
+echo OK

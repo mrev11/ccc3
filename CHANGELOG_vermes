@@ -1,3 +1,11 @@
+2024-02-09  lex szabalyok valtoztak
+  Ezek a szabalyok, mint 
+        {static}{wspace}{function} {return STFUNCTION;} 
+  megvaltoztak
+        {static}{w1}{function}/{symdel} {return STFUNCTION;} 
+  A static utani space kotelezo, function utan symbol delimeter kotelezo.
+  Hasonloan modosult: 'static class', 'do while', 'begin sequence', stb.
+
 2024-01-28 
    dbf2bt.exe script szinten parhuzamosithato;
    Sok dbf importalasakor tobb peldanyban futhat,

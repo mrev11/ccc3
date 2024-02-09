@@ -1,13 +1,19 @@
+530449b3d3650a2876a822e4c143e9306654e03f 2024020915:42:18-UTC ./CHANGELOG_vermes
+a6912ea7336e078dabe305d2bbfd38e743025ed5 2024020915:41:30-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
+d4117912a4abaa2cb0a6bea09100ac6748d649af 2024020915:33:51-UTC ./usr/bin/linux/ppo2cpp
+9a85c58361007e60bae68a775a8cde02b29db00c 2024020915:33:50-UTC ./ccctools/ppo2cpp/lexer.lex
+c6e189de22a8576396eb16274ae2e78d8c1ce8cf 2024020915:30:36-UTC ./jt/jterminal/jterminal.jar
+cc5638ea3f8338413554332ef4a62ce1617cc4e3 2024020915:30:36-UTC ./log-install
+cc9b595a68b7fdb3aac1459e37e4386229e26f70 2024020915:30:10-UTC ./usr/bin/linux/dbf2bt
+9f4603bad0d75d914ce213f2a5880cd1487c16ee 2024020915:30:10-UTC ./usr/bin/linux/dbf2bt_verify
+4d9271e76df06a9f3a4936b5fdd64c5acb62dc38 2024020915:30:09-UTC ./usr/bin/linux/bti
+8310ae4b3b6f17aa23a6f6b4e70626442c11b070 2024020913:16:13-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 06cb26b5413841d459064c7be20d91ce6042bee9 2024012812:33:18-UTC ./ccclib/src/ui_/message.prg
-15cd019e5d33b25e965b519b3aab5f7276fb4181 2024012812:31:49-UTC ./CHANGELOG_vermes
 1f372ef24d9a65d594f783e032df2e5c2a7ceb9f 2024012812:27:58-UTC ./tabobj/tbbtbtx/utility/dbf2bt/dbf2bt_verify.prg
 e3c61a099a7ade3de7afa822dfb9318edd43715d 2024012723:36:47-UTC ./tabobj/tbbtbtx/utility/bti.prg
 0e4824d562c532b0983afd9c0ff4a003febe98e7 2024012719:20:13-UTC ./tabobj/tbbtbtx/utility/dbf2bt/all_import
 4a9c15783f960372d475553125ae0a92432836ee 2024012719:14:32-UTC ./tabobj/tbbtbtx/utility/dbf2bt/dbf2bt.prg
 bd196839092a72b519d4d10ce7d89938908b2c45 2024012719:07:51-UTC ./tabobj/tbbtbtx/utility/dbf2bt/all_verify
-64e4e9048095c8fa8387896caa9399d6f2e6737a 2024012714:17:37-UTC ./jt/jterminal/jterminal.jar
-d9cba7dc560af36abee370f57519adedbcb62b71 2024012714:17:37-UTC ./log-install
-1f5228537ba55664a5335fab6d8c3c78bef6e73b 2024012714:17:13-UTC ./usr/bin/linux/dbf2bt
 9b06fa7f41d3b4c390492ad867b1410271604f5c 2024012714:16:01-UTC ./tabobj/tbbtbtx/utility/dbf2bt/m
 a8c2cfa6775a10cf22ead02bdd80e71de65db964 2024012714:10:48-UTC ./tabobj/tbbtbtx/m
 432975e40c7703664342e84e368faf5af6173898 2024012713:58:52-UTC ./tabobj/tbbtbtx/utility/dbf2bt/parfile.bld
@@ -28,7 +34,6 @@ e0dd13b3633537843c84e11a28ea678f53160b1c 2024010408:39:27-UTC ./usr/bin/linux/te
 aea49d3d16412b384ba37642d2fed185cf3c4f7e 2024010408:39:26-UTC ./usr/bin/linux/terminal-gtk2
 0583294a0e46028c1e44d406ddba667669993a0a 2023120611:40:56-UTC ./gtk/code_byhand/pango_font_description_apix.cpp
 52c5ce482f3e96c8652c1c2f4d4b067712ef2fc4 2023112816:33:22-UTC ./gtk/defs/gtkwindow.defs
-eb874ed4ed3b95c24a0195aad07cc9fd24189763 2023112811:53:02-UTC ./usr/bin/linux/bti
 9015121d3ca7d8ef9cdfaf5d872c052f608dc13d 2023112116:55:56-UTC ./gtk/examples/base/functionlevel/fileselx.prg
 869b032157b18b4b22beaf99f63720356d320742 2023111519:00:45-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2023111519:00:45-UTC ./jt/jterminal/getutil/cellcolor.class
@@ -202,7 +207,6 @@ cdbeaaedc7f4fb7617029221b68ef7dd8a4b5d25 2023111109:46:09-UTC ./usr/bin/linux/te
 c6b3e28712bbc3f970e7ad681a9ce15836f4e382 2023111109:46:09-UTC ./usr/bin/linux/terminal-xft
 44adba88d91b06a130c43077b34d711290b17b33 2023111109:46:08-UTC ./usr/bin/linux/mklink
 46b250c2d2cab908591bfb7ad4937d9fa0983cab 2023111109:45:54-UTC ./setup/setup-unix/removecr/rsplink
-55d3031ed9f350247103fc6e5db704cf785f7cc1 2023111109:45:54-UTC ./usr/bin/linux/ppo2cpp
 f6102d4baa9a2141fac3d947ed5de750604acfd6 2023111109:45:53-UTC ./setup/setup-unix/prg2ppo/rsplink
 48e875774bd0d3613f0556227b250f0d26db085b 2023111109:45:52-UTC ./setup/setup-unix/build/rsplink
 ea14d85bfd568488cf10f991d559e9109564629f 2023111109:45:42-UTC ./setup/setup-unix/compopt
@@ -695,9 +699,7 @@ a09495421b1a4e3b2a5f3164b6fb28e2f851036a 2023030812:30:12-UTC ./tabobj/tbbtbtx/d
 71b015bd4ce047ba87eee4e87ab5b3ae7ff8dbbf 2023020816:00:26-UTC ./ccclib/src/unix/filecreat.cpp
 914fbc0f1d3fe14755f3293bb53e7c2f70bb3c94 2023020815:58:43-UTC ./usr/include/fileio.ch
 4ba003de333e6dc5d4cb8ae3385fbe66c9e3b08e 2023012514:00:29-UTC ./ccclib/src/unix/thread.cpp
-3abb17726eb0c151adf0a016d0de547c93933ad2 2023012415:05:57-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
 d383961a7c974d1601c772ddff442c05e57bd040 2023012009:50:20-UTC ./ccctools/ppo2cpp/parser.lem
-f803e108c8d54f22104032e22eb53959935de804 2023011916:42:33-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 e3356cf52d899cb18d0562cc969c4379bb2a8963 2023011915:15:59-UTC ./ccctools/ppo2cpp/codegen.cpp
 9b1302e9ef8c7dc381e8c5e7a79d49379f27e13e 2023011915:09:26-UTC ./ccctools/ppo2cpp/codegen.h
 b0e12964b9c238823250a4175824bf9639fdf32e 2023011612:22:28-UTC ./tabobj/commonui.src/tabbrows.prg
@@ -803,7 +805,6 @@ d5c9878fc7029dc5e22736e16a5ea51fe450ce33 2022090919:24:39-UTC ./ccclib/src/uic/t
 91bb17284adf6e55034d8687ea3a4ab835b50a39 2022090917:52:03-UTC ./terminal/unix-ncurses/ccclib/flock.cpp
 5135724a3087ce8a9480605ffed51e6d452b8390 2022090917:34:42-UTC ./tabobj/common.src/trantimer.cpp
 059384d0213763c5b266fb762e814ca9942f878a 2022090913:49:41-UTC ./tabobj/common.src/transema.prg
-d59ecfd26abb5d86bf980c6d496d7d5361737c05 2022090607:00:43-UTC ./ccctools/ppo2cpp/lexer.lex
 5e7a9a18708a35e6c4ebbca1040fffe4dfbb312a 2022090109:45:19-UTC ./ccclib/src/array.cpp
 3c93ec8753a8505923941c400d11fdcb2c11bb68 2022083021:10:36-UTC ./tutor/control/OLVASS
 aaf0e9178e797e06bc6e9ea361c3607d9d34c1d4 2022083020:43:16-UTC ./tutor/control/control.msk

@@ -38,12 +38,15 @@
 %option yylineno
 
 
-wspace          [ \t\r]*
+wspace          [ \t]*
+wspace1         [ \t]+
 w               {wspace}
-hex             [0-9a-fA-F]
+w1              {wspace1}
+symdel          [^_a-zA-Z0-9]
 symtrail        {wspace}("("|".")
 symtraildot     {wspace}"."
 symtrailpar     {wspace}"("
+hex             [0-9a-fA-F]
 number          [0-9]+("."[0-9]+|"")
 numberb         [0][bB][01]+
 numberx         [0][xX]{hex}+
@@ -173,8 +176,8 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 
 {function}                          {return FUNCTION;} 
 {procedure}                         {return FUNCTION;} 
-{static}{wspace}{function}          {return STFUNCTION;} 
-{static}{wspace}{procedure}         {return STFUNCTION;} 
+{static}{w1}{function}/{symdel}     {return STFUNCTION;} 
+{static}{w1}{procedure}/{symdel}    {return STFUNCTION;} 
 {static}                            {return STATIC;} 
 {local}                             {return LOCAL;} 
 {quit}                              {return QUIT;} 
@@ -182,7 +185,7 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 {return}                            {return RETURN;} 
 
 {class}                             {return CLASS;}
-{static}{wspace}{class}             {return STCLASS;}
+{static}{w1}{class}/{symdel}        {return STCLASS;}
 {new}                               {return NEW;}
 {attrib}                            {yy_push_state(sym); return ATTRIB;}
 {method}                            {yy_push_state(sym); return METHOD;}
@@ -192,7 +195,7 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 .                                   {return UNEXPECTEDCHAR;}
 }
 
-{do}{wspace}{while}                 {return WHILE;}
+{do}{w1}{while}/{symdel}            {return WHILE;}
 {while}                             {return WHILE;}
 {exit}                              {return EXIT;}
 {loop}                              {return LOOP;}
@@ -211,17 +214,17 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 {else}                              {return ELSE;} 
 {endif}                             {return END;} 
 
-{do}{wspace}{case}                  {return DOCASE;} 
+{do}{w1}{case}/{symdel}             {return DOCASE;} 
 {case}                              {return CASE;} 
 {otherwise}                         {return OTHERWISE;} 
 {endcase}                           {return END;} 
 
 {begin}                             {return BEGSEQ;}
-{begin}{wspace}{sequence}           {return BEGSEQ;}
+{begin}{w1}{sequence}/{symdel}      {return BEGSEQ;}
 {recover}                           {return RECOVER;} 
-{recover}{wspace}{using}            {return RECOVER;} 
+{recover}{w1}{using}/{symdel}       {return RECOVER;} 
 {finally}                           {return FINALLY;}
-{end}{wspace}{sequence}             {return END;} 
+{end}{w1}{sequence}/{symdel}        {return END;} 
 {namespace}                         {return NAMESPACE;} 
 {using}                             {return USING;} 
 

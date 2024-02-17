@@ -26,7 +26,7 @@ local clp, n
         clp:=this:clipboard 
         
         for n:=1 to len(clp)
-            clp[n]::=utf8_to_latin2::latin2_to_ascii
+            clp[n]::=codeset_letter_latin2_to_ascii
         next
         
         this:clipboard:=clp
@@ -41,7 +41,7 @@ local clp, n
         clp:=this:clipboard 
         
         for n:=1 to len(clp)
-            clp[n]::=utf8_to_latin2
+            clp[n]::=codeset_letter_and_box_utf8_to_latin2
         next
         
         this:clipboard:=clp

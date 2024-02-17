@@ -1,3 +1,14 @@
+2024-02-17 egysegesitett karakter konverzios fuggvenyek:
+    codeset_letter_and_box_latin2_to_utf8
+    codeset_letter_and_box_utf8_to_latin2
+    codeset_letter_cwi_to_latin2
+    codeset_letter_latin2_to_ascii
+    codeset_letter_utf8_to_ascii
+  MEGJEGYZES:  CCC2-ben modositott Latin-2 kodolast hasznalunk.
+  A szabvanyos karakterek egy reszet dobozrajzolok helyettesitik.
+  A konverzios fuggvenyek a (szabvanyos) magyar ekezetes karaktereket plusz a 
+  (specialis) dobozrajzolokat konvertaljak a (szabvanyos) UTF-8 megfelelojukbe.
+
 2024-02-09  lex szabalyok valtoztak
   Ezek a szabalyok, mint 
         {static}{wspace}{function} {return STFUNCTION;} 

@@ -1,8 +1,4 @@
 
-//CCC3 program
-//nemcsak az aktualis direktoryban tud konvertalni
-//nem konvertalja a 0 rekorszamot tartalmazo filet
-
 #include "table.ch"
 
 ****************************************************************************

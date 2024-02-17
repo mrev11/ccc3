@@ -32,8 +32,8 @@ void _clp_setcaption(int argno)
         #ifdef _CCC3_
             str2bin(base);
         #else
-            extern void _clp_lat2utf8(int);
-            _clp_lat2utf8(1);
+            extern void _clp_codeset_letter_and_box_latin2_to_utf8(int);
+            _clp_codeset_letter_and_box_latin2_to_utf8(1);
         #endif
     }
     setcaption(_parb(1),_parblen(1));

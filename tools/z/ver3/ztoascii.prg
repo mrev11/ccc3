@@ -28,7 +28,7 @@ local clp, n
         clp:=this:clipboard 
         
         for n:=1 to len(clp)
-            clp[n]::=str2bin::utf8_to_ascii::bin2str
+            clp[n]::=str2bin::codeset_letter_utf8_to_ascii::bin2str
         next
         
         this:clipboard:=clp

@@ -1,3 +1,7 @@
+2024-02-22
+  ppo2cpp 5.7.0: lancolt osszehasonlitasok, default operator;
+  prg2ppo 1.6.0: felismeri az 'a|b' format (a default operatort).;
+
 2024-02-17 egysegesitett karakter konverzios fuggvenyek:
     codeset_letter_and_box_latin2_to_utf8
     codeset_letter_and_box_utf8_to_latin2

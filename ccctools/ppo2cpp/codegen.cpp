@@ -894,6 +894,37 @@ static void function_call_expected(parsenode *p)
 
 
 //---------------------------------------------------------------------------
+static void cmp_chain( parsenode *p, const char *op)
+{
+    cgen(p,0);
+    cgen(p,1);
+
+    int cmplabel=p->nodeid;
+
+    // parsenode *r0=p->right[0];
+    // parsenode *r1=p->right[1];
+    // printf("p   nodeid=%2x cargo=%d %s\n",  p->nodeid,  p->cargo,  p->text);
+    // printf("r0  nodeid=%2x cargo=%d %s\n", r0->nodeid, r0->cargo, r0->text);
+    // printf("r1  nodeid=%2x cargo=%d %s\n", r1->nodeid, r1->cargo, r1->text);
+    // printf("\n");
+
+    if( p->cargo )
+    {
+        nltab();fprintf(code,"%s();",op);
+        nltab();fprintf(code,"cmp_%d:;",cmplabel);
+    }
+    else
+    {
+        nltab();fprintf(code,"dup();");
+        nltab();fprintf(code,"*TOP2()=*TOP3();");
+        nltab();fprintf(code,"*TOP3()=*TOP();");
+        nltab();fprintf(code,"%s();",op);
+        nltab();fprintf(code,"if(!TOP()->data.flag){swap();pop();goto cmp_%d;}",cmplabel);
+        nltab();fprintf(code,"pop();");
+    }
+}
+
+//---------------------------------------------------------------------------
 //codegen functions
 //---------------------------------------------------------------------------
 int codegen_prg_header_lfunction(parsenode *p,void *v)//PROTO
@@ -3652,6 +3683,17 @@ int codegen_expr_expr_DBSTAR_expr(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
+int codegen_expr_expr_PIPE_expr(parsenode *p,void *v)//PROTO
+{
+    cgen(p,0);
+    nltab();fprintf(code,"if(TOP()->type==TYPE_NIL){");
+    nltab();fprintf(code,"pop();");
+    cgen(p,1);
+    nltab();fprintf(code,"}");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
 int codegen_expr_MINUS_expr(parsenode *p,void *v)//PROTO
 {
     double x;
@@ -3739,54 +3781,42 @@ int codegen_expr_PLUS_expr(parsenode *p,void *v)//PROTO
 //---------------------------------------------------------------------------
 int codegen_expr_expr_EQEQ_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"eqeq();");
+    cmp_chain(p,"eqeq");
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_expr_expr_EXEQ_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"neeq();");
+    cmp_chain(p,"neeq");
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_expr_expr_GTEQ_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"gteq();");
+    cmp_chain(p,"gteq");
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_expr_expr_LTEQ_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"lteq();");
+    cmp_chain(p,"lteq");
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_expr_expr_GT_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"gt();");
+    cmp_chain(p,"gt");
     return 0;
 }
 
 //---------------------------------------------------------------------------
 int codegen_expr_expr_LT_expr(parsenode *p,void *v)//PROTO
 {
-    cgen(p,0);
-    cgen(p,1);
-    nltab();fprintf(code,"lt();");
+    cmp_chain(p,"lt");
     return 0;
 }
 
@@ -4441,6 +4471,15 @@ int outsource_expr_expr_DBSTAR_expr(parsenode *p,void *v)//PROTO
 {
     outsrc(p,0);
     fprintf(src,"**");
+    outsrc(p,1);
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_expr_expr_PIPE_expr(parsenode *p,void *v)//PROTO
+{
+    outsrc(p,0);
+    fprintf(src,"|");
     outsrc(p,1);
     return 0;
 }

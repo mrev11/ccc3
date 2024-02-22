@@ -1,3 +1,7 @@
+2024.02.22 -- 5.7.0 
+  lancolt osszehasonlitasok: a<b.and.b<=c helyett irhato a<b<=c.
+  uj operator '|': a|b == a, ha a!=NIL, egyebkent v.
+
 2024.02.09 -- 5.6.1 
   lex szabalyok valtoztak
   Ezek a szabalyok, mint 

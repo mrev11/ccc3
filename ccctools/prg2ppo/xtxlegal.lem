@@ -297,6 +297,7 @@ expr(P) ::= DOT(L) expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) MINUS MINUS(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) PLUS PLUS(R).{P=pstore(L,R);}
 
+expr(P) ::= expr(L) PIPE expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) PLUS expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) MINUS expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) STAR expr(R).{P=pstore(L,R);}
@@ -324,10 +325,8 @@ expr(P) ::= expr(L) STAR EQUAL expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) SLASH EQUAL expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) MODULO EQUAL expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) STAR STAR expr(R).{P=pstore(L,R);}
-//expr(P) ::= expr(L) COLON BSLASH expr(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LT GT expr(R).{P=pstore(L,R);}
  
-expr(P) ::= LPAR(L) xlst RPAR(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LPAR xlst RPAR(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LBRACKET expr RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LBRACKET expr DOTDOT expr RBRACKET(R).{P=pstore(L,R);}
@@ -335,10 +334,17 @@ expr(P) ::= expr(L) LBRACKET expr DOTDOT RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LBRACKET DOTDOT expr RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= expr(L) LBRACKET DOTDOT RBRACKET(R).{P=pstore(L,R);}
 expr(P) ::= LBRACE(L) xlst RBRACE(R).{P=pstore(L,R);}
-expr(P) ::= LBRACE(L) PIPE xlst PIPE xlst RBRACE(R).{P=pstore(L,R);}
-expr(P) ::= LPAR(L) PIPE xlst PIPE xlst RPAR(R).{P=pstore(L,R);}
+expr(P) ::= LPAR(L)   xlst RPAR(R).  {P=pstore(L,R);}
+expr(P) ::= LBRACE(L) PIPE barglst PIPE xlst RBRACE(R).{P=pstore(L,R);}
+expr(P) ::= LPAR(L)   PIPE barglst PIPE xlst RPAR(R).  {P=pstore(L,R);}
 
 expr(P) ::= expr(L) COLON cast expr(R).{P=pstore(L,R);}
+
+blkarg ::= EXPR.
+blkarg ::= STAR.
+barglst ::= .
+barglst ::= blkarg.
+barglst ::= barglst COMMA blkarg.
 
 xlst ::= .
 xlst ::= expr.

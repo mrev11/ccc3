@@ -42,6 +42,7 @@ extern void error_neg(const char*,VALUE*,int);
 extern void error_obj(const char*,VALUE*,int);
 extern void error_siz(const char*,VALUE*,int);
 extern void error_wcr(const char*,VALUE*,int);
+extern void error_cnd(const char*,VALUE*,int);
 
 //color.obj:
 extern int gettext_fg(void);
@@ -131,6 +132,7 @@ extern int  greaterthan(void);
 extern int  equalto(void);
 extern int  lessthan(void);
 extern int  notequal(void);
+extern int  stdcmp(VALUE*,VALUE*,int mode=0);
 
 //string.obj:
 extern void string(const wchar_t*);

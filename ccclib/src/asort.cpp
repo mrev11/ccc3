@@ -141,34 +141,40 @@ static int valuecompare_cmp(const void *x, const void *y)
     // a balodal egyezik a jobboldallal a jobboldal hosszaban.
     // Celszeru a compare blokkban a <-t vagy >=-t hasznalni.
 
+    int result=0;
 
-    //egyik irany
-    if( TOP()->type==TYPE_BLOCK )
+    if( TOP()->type==TYPE_NIL )
     {
-        DUP();
+        result=stdcmp((VALUE*)x,(VALUE*)y);
     }
     else
     {
-        _clp__asort_ascendblock(0);
-    }
-    push_symbol((VALUE*)x);
-    push_symbol((VALUE*)y);
-    _clp_eval(3);
-    int f1=flag();
-
-    //masik irany
-    if( TOP()->type==TYPE_BLOCK )
-    {
         DUP();
+        push_symbol((VALUE*)x);
+        push_symbol((VALUE*)y);
+        _clp_eval(3);
+
+        if( TOP()->type==TYPE_FLAG )
+        {
+            int f1=flag() ;//egyik irany
+            DUP();
+            push_symbol((VALUE*)y);
+            push_symbol((VALUE*)x);
+            _clp_eval(3);
+            int f2=flag(); //masik irany
+            result=(f1==f2)?0:(f1?-1:1); 
+        }
+        else if( TOP()->type==TYPE_NUMBER )
+        {
+            result=(int)TOP()->data.number;
+            pop();
+        }
+        else
+        {
+            error_gen(CHRLIT("compare block gives wrong type"),"valuecompare_cmp",TOP(),1);
+            exit(1);
+        }
     }
-    else
-    {
-        _clp__asort_ascendblock(0);
-    }
-    push_symbol((VALUE*)y);
-    push_symbol((VALUE*)x);
-    _clp_eval(3);
-    int f2=flag();
 
     SIGNAL_LOCK();
 
@@ -179,7 +185,7 @@ static int valuecompare_cmp(const void *x, const void *y)
     }
 #endif    
 
-    return (f1==f2)?0:(f1?-1:1);
+    return result;
 }
 
 //------------------------------------------------------------------------

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#include <stdio.h>
 
 #include <math.h>
 #include <string.h>
@@ -140,7 +139,7 @@ void add()
                 }
                 else
                 {
-                    // egyik string üres
+                    // egyik string sem ures
 
                     if( la>MAXSTRLEN || lb>MAXSTRLEN )
                     {
@@ -158,6 +157,7 @@ void add()
             }
             break; 
 
+        #ifdef _CCC3_
         case TYPE_BINARY:
 
             if( b->type==TYPE_BINARY )
@@ -175,7 +175,7 @@ void add()
                 }
                 else
                 {
-                    // egyik sem üres
+                    // egyik sem ures
 
                     if( la>MAXBINLEN || lb>MAXBINLEN )
                     {
@@ -192,7 +192,9 @@ void add()
                 return;
             }
             break; 
+        #endif
     }
+
     error_arg("add",a,2);
 }
 
@@ -246,8 +248,8 @@ void addneg(double v)
         return;
     }
     
-    //más típust, pl. DATE-t
-    //nem lehet negálni
+    //mas tipust, pl. DATE-t
+    //nem lehet negalni
 
     error_arg("addneg",a,1);
 }
@@ -287,6 +289,7 @@ void sub()
             }
             break;
     }
+
     error_arg("sub",a,2);
 }
 
@@ -304,6 +307,7 @@ void mul()
         stack=b;
         return;
     }
+
     error_arg("mul",a,2);
 }
 
@@ -323,8 +327,10 @@ void div()
             stack=b;
             return;
         }
+
         error_div("div",a,2);
     }
+
     error_arg("div",a,2);
 }
 
@@ -339,8 +345,8 @@ void modulo()
     if( a->type==TYPE_NUMBER && b->type==TYPE_NUMBER )
     {
         // double xb=abs(b->data.number);
-        // vigyázni az abs függvénnyel, 
-        // nagy számokra rossz, 1-et ad!
+        // vigyazni az abs fuggvennyel, 
+        // nagy szamokra rossz, 1-et ad!
 
         double xb=b->data.number;
         if( xb<0 )
@@ -363,9 +369,11 @@ void modulo()
             stack=b;
             return;
         }
+
         error_div("modulo",a,2);
     }
-    error_arg("mod",a,2);
+
+    error_arg("modulo",a,2);
 }
 
 //------------------------------------------------------------------------

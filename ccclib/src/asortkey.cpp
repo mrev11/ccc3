@@ -30,8 +30,8 @@ void _clp_asortkey(int argno)
 
 // hasonlo az asort-hoz csak mas tipusu a block:
 // nem osszehasonlito blockot kell megadni,
-// hanem egy olyan blockot, ami a tombelembol eloallitja azt a kulcsot, 
-// amit mar egyszeruen ossze lehet hasonlitani a < operatorral 
+// hanem egy olyan blockot, ami a tombelembol eloallitja azt a kulcsot,
+// amit mar egyszeruen ossze lehet hasonlitani a < operatorral
 
 {
     CCC_PROLOG("asortkey",5);
@@ -49,23 +49,23 @@ void _clp_asortkey(int argno)
 
     if( ISFLAG(2) )
     {
-        ascend=_parl(2); 
+        ascend=_parl(2);
     }
     else if( ISBLOCK(2) )
     {
         blk=PARPTR(2);
         if( !ISNIL(3) )
         {
-            ascend=_parl(3); 
+            ascend=_parl(3);
         }
-    }    
+    }
     else
     {
         start=ISNIL(2)?start:_parnu(2);
         count=ISNIL(3)?count:_parnu(3);
         if( ISNIL(4) )
         {
-            blk=PARPTR(4); 
+            blk=PARPTR(4);
         }
         else if( ISBLOCK(4) )
         {
@@ -92,14 +92,14 @@ void _clp_asortkey(int argno)
         logical(ascend);
         push_symbol(blk);
 
-        // valusort kozben 
+        // valusort kozben
         // a key block van a stack tetejen
         // az ascend/descend flag van alatta
         // a stack nem valtozhat
 
         valuesort_key(arr+start-1,count);
     }
-    
+
     _retv(base); //array
     CCC_EPILOG();
 }
@@ -139,14 +139,14 @@ static int valuecompare_key(const void *x, const void *y)
     //Mikozben qsort meghivja az osszehasonlitast,
     //engedni kell a szemetgyujtest, maskulonben deadlock keletkezik,
     //ha a kulcskeszito bokkban objektumok is mozognak.
-    if( thread_data::tdata_count>1 )    
+    if( thread_data::tdata_count>1 )
     {
         thread_data_ptr->unlock();
     }
-#endif    
+#endif
 
     SIGNAL_UNLOCK();
-    
+
     //TOP2=ascend/descend flag
     //TOP=kulcs eloallito blokk
     //stack valtozatlan marad
@@ -154,80 +154,41 @@ static int valuecompare_key(const void *x, const void *y)
     VALUE *ascend=TOP2();
     VALUE *keyblk=TOP();
 
-    if( keyblk->type==TYPE_NIL  )
-    {
-        push_symbol((VALUE*)x);
-    }
-    else
-    {
-        push_symbol(keyblk); 
-        push_symbol((VALUE*)x);
-        _clp_eval(2);
-    }
-    VALUE *keyx=TOP();
-
-    if( keyblk->type==TYPE_NIL  )
-    {
-        push_symbol((VALUE*)y);
-    }
-    else
-    {
-        push_symbol(keyblk); 
-        push_symbol((VALUE*)y);
-        _clp_eval(2);
-    }
-    VALUE *keyy=TOP();
-
-
     int result=0;
-    
-    while(1)
+
+    if( keyblk->type==TYPE_NIL  )
     {
-        push_symbol(keyx); 
-        push_symbol(keyy);
-        if( lessthan() )
-        {
-            result=-1;
-            break;
-        } 
-
-        push_symbol(keyy); 
-        push_symbol(keyx);
-        if( lessthan() )
-        {
-            result=1;
-            break;
-        } 
-
-        result=0;
-        break;
+        result=stdcmp((VALUE*)x,(VALUE*)y);
     }
-    
+    else
+    {
+        push_symbol(keyblk);
+        push_symbol((VALUE*)x);
+        _clp_eval(2);
+        x=TOP();
+
+        push_symbol(keyblk);
+        push_symbol((VALUE*)y);
+        _clp_eval(2);
+        y=TOP();
+
+        result=stdcmp((VALUE*)x,(VALUE*)y);
+        POP2();
+    }
+
     if( !ascend->data.flag  )
     {
         result=-result;
     }
 
-    //debug
-    //PUSHNIL();    
-    //push_symbol(keyx); 
-    //push_symbol(keyy);
-    //number(result);
-    //_clp_qout(4);
-    //POP();
-    
-
-    POP();
-    POP();
-
     SIGNAL_LOCK();
 
 #ifdef MULTITHREAD
-    if( thread_data::tdata_count>1 )    
+    if( thread_data::tdata_count>1 )
     {
         thread_data_ptr->lock();
     }
-#endif    
+#endif
 
     return result;
 }

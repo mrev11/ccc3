@@ -58,19 +58,19 @@ void error_gen(const CHAR *description, const char *operation, VALUE *base, int 
 //------------------------------------------------------------------------
 void error_arg(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"argument error",operation,base,argno);
+    error_gen(CHRLIT("argument error"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_idx(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"index violation",operation,base,argno);
+    error_gen(CHRLIT("index violation"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_arr(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"bad array indexing",operation,base,argno);
+    error_gen(CHRLIT("bad array indexing"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
@@ -79,61 +79,68 @@ void error_obj(const char *operation, VALUE *base, int argno)
     char buf[128];
     strcpy(buf,"message sending - ");
     strncat(buf,operation,100);
-    error_gen(L"not an object",buf,base,argno);
+    error_gen(CHRLIT("not an object"),buf,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_met(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"no exported method",operation,base,argno);
+    error_gen(CHRLIT("no exported method"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_div(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"zero division",operation,base,argno);
+    error_gen(CHRLIT("zero division"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_neg(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"negative argument",operation,base,argno);
+    error_gen(CHRLIT("negative argument"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_blk(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"not a codeblock",operation,base,argno);
+    error_gen(CHRLIT("not a codeblock"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_cln(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"character variable too long",operation,base,argno);
+    error_gen(CHRLIT("character variable too long"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_bln(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"binary variable too long",operation,base,argno);
+    error_gen(CHRLIT("binary variable too long"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_nul(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"null pointer",operation,base,argno);
+    error_gen(CHRLIT("null pointer"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_wcr(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"invalid window handle",operation,base,argno);
+    error_gen(CHRLIT("invalid window handle"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------
 void error_siz(const char *operation, VALUE *base, int argno)
 {
-    error_gen(L"size error",operation,base,argno);
+    error_gen(CHRLIT("size error"),operation,base,argno);
+}
+
+
+//------------------------------------------------------------------------
+void error_cnd(const char *operation, VALUE *base, int argno)
+{
+    error_gen(CHRLIT("conditional error"),operation,base,argno);
 }
 
 //------------------------------------------------------------------------

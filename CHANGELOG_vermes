@@ -1,3 +1,14 @@
+2024-02-27
+  stdcmp(x,y) univerzalis osszehasonlito fv, visszaterese: -1,0,1;
+  equlto() es tarsai stdcmp()-vel implementalva;
+  asort() mukodik (t/f helyett) -1,0,1-et ado osszehasonlito blokkal is;
+  asortkey() atirva  stdcmp()-re;
+  ss() substring vizsgalat kulon forrasban;
+  add.cpp egysegesitve CCC2 es CCC3 kozott;
+  base64.cpp egysegesitve CCC2 es CCC3 kozott;
+  tutor/qsort-ban jobb demo programok;
+  tutor/threadpool-ban threadpool:wait atirva;
+
 2024-02-22
   ppo2cpp 5.7.0: lancolt osszehasonlitasok, default operator;
   prg2ppo 1.6.0: felismeri az 'a|b' format (a default operatort).;

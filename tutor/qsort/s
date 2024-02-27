@@ -1,3 +1,3 @@
 #!/bin/bash
-time xqsort.exe $1
-#diff sorted sorted1 | tail
+export OREF_SIZE=2000000
+qsort_test.exe

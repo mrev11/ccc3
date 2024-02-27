@@ -915,11 +915,11 @@ static void cmp_chain( parsenode *p, const char *op)
     }
     else
     {
-        nltab();fprintf(code,"dup();");
+        nltab();fprintf(code,"DUP();");
         nltab();fprintf(code,"*TOP2()=*TOP3();");
         nltab();fprintf(code,"*TOP3()=*TOP();");
         nltab();fprintf(code,"%s();",op);
-        nltab();fprintf(code,"if(!TOP()->data.flag){swap();pop();goto cmp_%d;}",cmplabel);
+        nltab();fprintf(code,"if(!TOP()->data.flag){POP2();logical(0);goto cmp_%d;}",cmplabel);
         nltab();fprintf(code,"pop();");
     }
 }

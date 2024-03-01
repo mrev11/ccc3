@@ -123,9 +123,9 @@ void _clp_codeset_letter_and_box_latin2_to_utf8(int argno)
     for( int i=0; i<inputsize; i++ )
     {
         int x=input[i];
-        int c=table[3*x+0] ;   output[outputsize++]=c;
-        if( c=table[3*x+1] ) { output[outputsize++]=c; }
-        if( c=table[3*x+2] ) { output[outputsize++]=c; }
+        int  c=table[3*x+0] ;    output[outputsize++]=c;
+        if( (c=table[3*x+1]) ) { output[outputsize++]=c; }
+        if( (c=table[3*x+2]) ) { output[outputsize++]=c; }
     }
 
     binarys(output,outputsize);

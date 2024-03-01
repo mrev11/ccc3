@@ -51,7 +51,9 @@
 ./cc.msys2 ${CCCDIR}/ccclib/src/round.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/run.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/slice.cpp
+./cc.msys2 ${CCCDIR}/ccclib/src/ss.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/stat.cpp
+./cc.msys2 ${CCCDIR}/ccclib/src/stdcmp.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/str.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/str2bin.cpp
 ./cc.msys2 ${CCCDIR}/ccclib/src/string.cpp

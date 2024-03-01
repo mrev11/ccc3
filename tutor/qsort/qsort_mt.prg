@@ -51,10 +51,10 @@ local maxlen:=0
 ****************************************************************************
 static function qsort(a,p:=1,r:=len(a))
 local q
-    while( 0<=p<r )
+    while( p<r )
         q:=qsplit(a,p,r)
 
-        if( q-p<r-q)
+        if( q-p>r-q)
             pool:addjob( {sort,a,p,q} )
             p:=q+1
         else

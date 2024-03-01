@@ -10,11 +10,9 @@ static maxdepth:=0
 
 ****************************************************************************
 function qsort_3(*)
-    ?? "3"
+    ?? "qsort_3"::padr(16)
     qsort(*)
-    //? "maxdepth",maxdepth
-    //?
-
+    //?? " maxdepth",maxdepth
 
 ****************************************************************************
 static function qsort(a,p:=1,r:=len(a))
@@ -25,17 +23,18 @@ local lt,gt
         maxdepth:=depth
     end
 
-    if( p<r )
+    while( p<r )
         qsplit(a,p,r,@lt,@gt)
+
         if( lt-p<r-gt )
             qsort(a,p,lt)
-            qsort(a,gt,r)
+            p:=gt
         else
             qsort(a,gt,r)
-            qsort(a,p,lt)
+            r:=lt
         end
     end
-
+    
     --depth
 
 
@@ -64,7 +63,7 @@ local cmp
         end
     next
 
-#ifdef  DEBUG
+#ifdef XDEBUG
     ? pivot,;
       "lt="+lt::str::alltrim,;
       "eq="+eq::str::alltrim,;

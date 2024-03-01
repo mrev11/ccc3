@@ -1,3 +1,6 @@
 #!/bin/bash
 export OREF_SIZE=2000000
-qsort_test.exe
+#export GARBAGE=on
+test.exe | tee log-test
+
+echo

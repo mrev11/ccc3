@@ -1,34 +1,57 @@
 
 // Hoare-fele particionalas
-
+// rekurzio atirva stackre
 
 #include "qsort.ch"
 
 
 ****************************************************************************
-function qsort_h(*)
-    ?? "qsort_h"::padr(16)
+function qsort_hs(*)
+    ?? "qsort_hs"::padr(16)
     qsort(*)
 
 
 ****************************************************************************
 static function qsort(a,p:=1,r:=len(a))
-local q
 
-    while( p+ISORT_TRESHOLD<r )
-        q:=qsplit(a,p,r)
-        if( q-p<r-q)
-            qsort(a,p,q)
-            p:=q+1
-        else
-            qsort(a,q+1,r)
-            r:=q
+local q
+local sp:=array(100)
+local sr:=array(100)
+local ss:=0
+
+    ++ss
+    sp[ss]:=p
+    sr[ss]:=r
+    
+    while( ss>0 )
+        
+        p:=sp[ss]
+        r:=sr[ss]
+        --ss
+
+        while( p<r )
+            q:=qsplit(a,p,r)
+
+            if( q-p>r-q)
+                ++ss
+                sp[ss]:=p
+                sr[ss]:=q
+                p:=q+1
+            else
+                ++ss
+                sp[ss]:=q+1
+                sr[ss]:=r
+                r:=q
+            end
         end
     end
-
-    if( p<r )
-        isort(a,p,r)
-    end
+    
+    for p:=1 to len(sp)
+        if( sp[p]==NIL )
+            //?? " maxdepth",p
+            exit
+        end
+    next
 
 
 ****************************************************************************

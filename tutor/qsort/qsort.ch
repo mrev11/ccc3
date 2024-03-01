@@ -1,38 +1,48 @@
 
 //#define DEBUG
 
-#define ARRLEN  100000
-#define STRLEN  4
+#define TEST_ARRLEN         1500000
+#define TEST_STRLEN         8
 
-#define ASORT   asort
-#define QSORT   qsort_mt
+//#define TEST_ASCEND
+//#define TEST_DESCEND
 
-// qsort_2      : legegyszerubb elvi implementacio, 2 reszre oszt 
-// qsort_2x     : rendezeskor hasznalja az eredeti indexet, 2 reszre oszt 
-// qsort_3      : egyenlo elemek elleni vedekezes 3 reszre osztassal (lt,eq,gt)
-// qsort_3t     : qsort_3 plusz tail recursion
-// qsort_h      : Hoare-fele particionalas (valoszinuleg ez van a libc qsort-ban)
-// qsort_mt     : qsort_h tobbszalu valtozata (fut, de baromi lassu)
+#define PIVOT_MEDIAN        median of 3 random elements
+#define PIVOT_RANDOM        1 random element
+#define PIVOT_MIDDLE        fallback
 
-// qsort_3c     : qsort_3t atirva cpp-re
-// qsort_hc     : qsort_h atirva cpp-re  (alkalmas eles programokhoz)
+#define ISORT_TRESHOLD      10
 
-#xtranslate STRING(<x>) => <"x">
 
 
 /*  
     Hogyan hasznald?
 
-    ARRLEN  ekkora array-t general a rendezes tesztelesehez
+    TEST_ARRLEN  ekkora array-t general a rendezes tesztelesehez
 
-    STRLEN  az array-ben ilyen hosszu stringek lesznek,
-            ha ez kis szam, akkor sok egyenlo lesz koztuk
+    TEST_STRLEN  az array-ben ilyen hosszu stringek lesznek,
+                 ha ez kis szam, akkor sok egyenlo lesz koztuk
+                 
+    TEST_ASCEND  ha ez definialva van, akkor a bemeneti array
+                 rendezetlen helyett novekvo sorrendu             
 
-    Ket rendezesi modszert vet ossze:
+    TEST_DESCEND ha ez definialva van, akkor a bemeneti array
+                 rendezetlen helyett csokkeno sorrendu             
 
-    1) ASORT  altalaban a konyvtari asort, ami libc-beli qsort-ot hiv
+    Tobb rendezesi modszert vet ossze:
 
-    2) QSORT  az itt keszult demo programok valamelyike 
+    isort     - insertion sort
+    asort     - konyvtari asort
+    qsort_2   - legegyszerubb elvi implementacio
+    qsort_2x  - legegyszerubb elvi implementacio indexekkel
+    qsort_3   - particionalas 3 reszre
+    qsort_h   - Hoare-fele particionalas
+    qsort_hs  - Hoare-fele particionalas, rekurzio helyett stack
+
+    qsortc_3  - qsort_3  atirva C-be
+    qsortc_h  - qsort_h  atirva C-be
+    qsortc_hs - qsort_hs atirva C-be
+
 
     A #define-okba beirjuk a tesztelni kivant ertekeket, 
     ezutan a  programot ujraforditjuk,  es futtatjuk.
@@ -42,7 +52,7 @@
     
     A tesztek mindig novekvo sorrendbe rendeznek.
     Ha a teszt futasa utan az array rendezettsege nem jo,
-    akkor kiirja, hogy HOPP.
+    akkor kiirja, hogy WRONG.
 
     A demo programok nemelyikeben be van drotozva a novekvo
     sorrendre torteno rendezes, es nem nezi, milyen blokkot kap.
@@ -63,7 +73,7 @@
     a specialis (operator overload) VALUE ertekado  operatort hasznaljak, 
     ami szalbiztosra van megirva.
     
-    A sajat rendezo programnak ket elonye van:
+    A sajat rendezo programoknak ket elonye van:
     
     1) -1,0,1 visszateresi erteku blokkot hasznalnak.
 

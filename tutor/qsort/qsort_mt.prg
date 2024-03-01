@@ -9,8 +9,8 @@ static sort:=(|*|qsort(*))
 
 ****************************************************************************
 function qsort_mt(*)
-    ?? "mt"
-    qsort1(*)
+     ?? "qsort_mt"::padr(16)
+   qsort1(*)
 
 
 static function qsort1(*)

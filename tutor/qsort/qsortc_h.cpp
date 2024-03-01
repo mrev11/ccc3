@@ -1,35 +1,20 @@
 
 
-// Rendezettseg elleni vedelem: veletlen pivot valasztas
-// Egyenlo elemek elleni vedelem: harom reszre osztas (lt,eq,gt)
-// Egy az egyben a CCC qsort3 program atirasa C++-ra.
-
 #include <math.h>
 #include <cccapi.h>
+#include <qsort.ch>
+#include <qsort.h>
 
-
-//#define DEBUG
-#define DMOD(x,y) ((x)-floor((x)/(y))*(y))
-
-//----------------------------------------------------------------------------------------
-static unsigned xrand()
-{
-    static double FACTOR  =  16807.0;
-    static double MODULUS =  2147483647.0;
-    static double seed    =  7657463.0; 
-    seed*=FACTOR;
-    seed=DMOD(seed,MODULUS);
-    return (unsigned)seed;
-}
+#define PERCENT(x) (int)(100.0*(x)/(r-p+1))
 
 //----------------------------------------------------------------------------------------
-static void swap(VALUE *arr, unsigned x, unsigned y)
+void prnstat(int p, int q, int r)
 {
-    push(arr+x);
-    arr[x]=arr[y];
-    arr[y]=*TOP();
-    POP();
+    printf("\n");
+    printf( "%8d:  %8d%% %8d%%",  
+             r-p+1, PERCENT(q-p+1), PERCENT(r-q) );
 }
+
 
 //----------------------------------------------------------------------------------------
 static int qsplit( VALUE *arr, int p, int r, VALUE *blk )
@@ -37,56 +22,30 @@ static int qsplit( VALUE *arr, int p, int r, VALUE *blk )
     int i=p-1; // 1 based
     int j=r+1; // 1 based
 
-    push(arr+p-1+xrand()%(r-p+1));
-    VALUE *pivot=TOP();
-    
+    VALUE *pivot=push_pivot(arr,p,r,blk);
+
     while( 1 )
     {
-        if( blk==0 )
-        {
-            while( 0>stdcmp(arr+(++i-1),pivot) );
-            while( 0<stdcmp(arr+(--j-1),pivot) );
-        }
-        else
-        {
-            int cmp=-1;
-            while( cmp<0 )
-            {
-                push(blk);
-                push(arr+(++i-1));
-                push(pivot);
-                _clp_eval(3);
-                cmp=TOP()->data.number;
-                POP();
-            }
-
-            cmp=+1;
-            while( cmp>0 )
-            {
-                push(blk);
-                push(arr+(--j-1));
-                push(pivot);
-                _clp_eval(3);
-                cmp=TOP()->data.number;
-                POP();
-            }
-        }
+        while( 0>compare(arr+(++i-1),pivot,blk) );
+        while( 0<compare(arr+(--j-1),pivot,blk) );
 
         if( i>=j )
         {
             break;
         }
-        swap(arr,i-1,j-1);
+        swap(arr+i-1,arr+j-1);
     }
 
-    POP();//pivot
+    POP(); //pivot   
+    //prnstat(p,j,r);
     return j;
 }
+
 
 //----------------------------------------------------------------------------------------
 static void qsort(VALUE *arr, int p, int r, VALUE* blk) // tail recursion
 {
-    while( 0<=p && p<r )
+    while( p+ISORT_TRESHOLD<r )
     {
         int q=qsplit(arr,p,r,blk);
 
@@ -104,12 +63,17 @@ static void qsort(VALUE *arr, int p, int r, VALUE* blk) // tail recursion
             r=q;
         }
     }
+
+    if( p<r )
+    {
+        isort(arr,p,r,blk);
+    }
 }
 
 //----------------------------------------------------------------------------------------
-void _clp_qsort_hc(int argno)
+void _clp_qsortc_h(int argno)
 {
-    printf("hc");
+    printf("%-16s","qsortc_h");fflush(0);
 
     CCC_PROLOG("qsort",4);
 

@@ -1,3 +1,6 @@
+2024-03-01
+  tutor/qsort-ban demo programok fejlesztve;
+
 2024-02-27
   stdcmp(x,y) univerzalis osszehasonlito fv, visszaterese: -1,0,1;
   equlto() es tarsai stdcmp()-vel implementalva;

@@ -12,7 +12,12 @@ function qsort_hs(*)
 
 
 ****************************************************************************
-static function qsort(a,p:=1,r:=len(a))
+static function qsort(a,p:=1,r:=len(a),blk)
+
+// a    : array to sort
+// p    : start index
+// r    : final index
+// blk  : compare block
 
 local q
 local sp:=array(100)
@@ -29,8 +34,8 @@ local ss:=0
         r:=sr[ss]
         --ss
 
-        while( p<r )
-            q:=qsplit(a,p,r)
+        while( p+ISORT_TRESHOLD<r )
+            q:=qsplit(a,p,r,blk)
 
             if( q-p>r-q)
                 ++ss
@@ -44,6 +49,10 @@ local ss:=0
                 r:=q
             end
         end
+
+        if( p<r )
+            isort(a,p,r,blk)
+        end
     end
     
     for p:=1 to len(sp)
@@ -55,15 +64,15 @@ local ss:=0
 
 
 ****************************************************************************
-static function qsplit(a,p,r) // Hoare-fele particionalas
+static function qsplit(a,p,r,blk) // Hoare-fele particionalas
 
 local i:=p-1
 local j:=r+1
 local pivot:=pivot(a,p,r)
 
     while( .t. )
-        while( 0>stdcmp(a[++i],pivot) ); end
-        while( 0<stdcmp(a[--j],pivot) ); end
+        while( 0>compare(a[++i],pivot,blk) ); end
+        while( 0<compare(a[--j],pivot,blk) ); end
         if( i>=j )
             return j
         end
@@ -72,18 +81,3 @@ local pivot:=pivot(a,p,r)
 
 
 ****************************************************************************
-static function swap(a,x,y)
-local tmp:=a[x]
-    a[x]:=a[y]
-    a[y]:=tmp
-
-
-****************************************************************************
-static function pivot(a,p,r)
-local q:=crypto_rand_bytes(3)::bin2hex::hex2l
-    q:=p+q%(r-p+1)
-    return a[q]
-
-
-****************************************************************************
-

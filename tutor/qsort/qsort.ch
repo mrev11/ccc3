@@ -1,18 +1,18 @@
 
 //#define DEBUG
 
-#define TEST_ARRLEN         1500000
-#define TEST_STRLEN         8
+
+#define TEST_ARRLEN         100000
+#define TEST_STRLEN         4
 
 //#define TEST_ASCEND
 //#define TEST_DESCEND
 
-#define PIVOT_MEDIAN        median of 3 random elements
+//#define PIVOT_MEDIAN        median of 3 random elements
 #define PIVOT_RANDOM        1 random element
-#define PIVOT_MIDDLE        fallback
+//#define PIVOT_MIDDLE        middle element of the region
 
-#define ISORT_TRESHOLD      10
-
+#define ISORT_TRESHOLD      12
 
 
 /*  
@@ -31,14 +31,17 @@
 
     Tobb rendezesi modszert vet ossze:
 
-    isort     - insertion sort
     asort     - konyvtari asort
-    qsort_2   - legegyszerubb elvi implementacio
-    qsort_2x  - legegyszerubb elvi implementacio indexekkel
-    qsort_3   - particionalas 3 reszre
-    qsort_h   - Hoare-fele particionalas
-    qsort_hs  - Hoare-fele particionalas, rekurzio helyett stack
+    isort     - insertion sort
+    hsort     - heapsort
+    hsort_b   - heapsort with bounce
+    qsort_2   - quicksort, legegyszerubb elvi implementacio
+    qsort_2x  - quicksort, legegyszerubb elvi implementacio indexekkel
+    qsort_3   - quicksort, particionalas 3 reszre
+    qsort_h   - quicksort, Hoare-fele particionalas
+    qsort_hs  - quicksort, Hoare-fele particionalas, rekurzio helyett stack
 
+    hsortc    - hsort    atirva C-be
     qsortc_3  - qsort_3  atirva C-be
     qsortc_h  - qsort_h  atirva C-be
     qsortc_hs - qsort_hs atirva C-be
@@ -49,13 +52,11 @@
 
     A rendezes lefutasa utan kiirja a futas idejet.
     Kiirja, hogy hany egyenlo elem volt az array-ben.
+    Kiirja, hogy hany osszehasonlitast csinalt.
     
     A tesztek mindig novekvo sorrendbe rendeznek.
     Ha a teszt futasa utan az array rendezettsege nem jo,
     akkor kiirja, hogy WRONG.
-
-    A demo programok nemelyikeben be van drotozva a novekvo
-    sorrendre torteno rendezes, es nem nezi, milyen blokkot kap.
 
     Az uj rendezo programoknak olyan osszehasonlito blokkot kell
     megadni, aminek a visszateresi erteke -1,0,1 (tehat nem  .t./.f.).
@@ -79,4 +80,5 @@
 
     2) A swap muvelet magatol szalbiztos.
 */
+
 

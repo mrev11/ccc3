@@ -1,4 +1,7 @@
 
+// Hoare-fele particionalas
+// hasonlo a stackre atirt rekurziohoz
+// de stack helyett a threadpool queue-jaba teszi a jobot
 
 #include "qsort.ch"
 
@@ -15,65 +18,48 @@ function qsort_mt(*)
 
 static function qsort1(*)
     pool:addjob({sort,*})
-    //pool:wait
-    poolwait(pool)  // mint pool:wait,  csak listazza a queue hosszat
+    pool:wait
 
-
-// ez mukodik, aminek orulni kell, de sokkal lassabb, mint az egyszalu
-// a pool:wait alabbi modositasa mutatja, milyen hosszu a sor (tobb 10 ezer)
-
-
-static function poolwait(this)
-local wait:=.t.
-local maxlen:=0
-
-    while(wait)
-        this:actmutx::thread_mutex_lock
-        while( this:active>0 )
-            this:actcond::thread_cond_wait(this:actmutx)
-        end
-        if( this:jobmutx::thread_mutex_trylock==0 )
-            if( this:jobs::len==0 )
-                wait:=.f.
-            end
-            
-            if( maxlen<this:jobs::len )
-                maxlen:=this:jobs::len
-                ? "max number of waiting jobs:",maxlen
-            end    
-                
-            this:jobmutx::thread_mutex_unlock
-        end
-        this:actmutx::thread_mutex_unlock
-    end
+// mukodik, de lassabb, mint egy szalu valtozat
 
 
 ****************************************************************************
-static function qsort(a,p:=1,r:=len(a))
+static function qsort(a,p:=1,r:=len(a),blk)
+
+// a    : array to sort
+// p    : start index
+// r    : final index
+// blk  : compare block
+
+
 local q
-    while( p<r )
-        q:=qsplit(a,p,r)
+
+    while( p+ISORT_TRESHOLD<r )
+        q:=qsplit(a,p,r,blk)
 
         if( q-p>r-q)
-            pool:addjob( {sort,a,p,q} )
+            pool:addjob( {sort,a,p,q,blk} )
             p:=q+1
         else
-            pool:addjob( {sort,a,q+1,r} )
+            pool:addjob( {sort,a,q+1,r,blk} )
             r:=q
         end
     end
 
+    if( p<r )
+        isort(a,p,r,blk)
+    end
 
 ****************************************************************************
-static function qsplit(a,p,r)
+static function qsplit(a,p,r,blk)
 
 local i:=p-1
 local j:=r+1
 local pivot:=pivot(a,p,r) 
 
     while( .t. )
-        while( 0>stdcmp(a[++i],pivot) ); end
-        while( 0<stdcmp(a[--j],pivot) ); end
+        while( 0>compare(a[++i],pivot,blk) ); end
+        while( 0<compare(a[--j],pivot,blk) ); end
         if( i>=j )
             return j
         end
@@ -82,18 +68,3 @@ local pivot:=pivot(a,p,r)
 
 
 ****************************************************************************
-static function swap(a,x,y)
-local tmp:=a[x]
-    a[x]:=a[y]
-    a[y]:=tmp
-
-
-****************************************************************************
-static function pivot(a,p,r)
-local q:=crypto_rand_bytes(3)::bin2hex::hex2l
-    q:=p+q%(r-p+1)
-    return a[q]
-
-
-****************************************************************************
-

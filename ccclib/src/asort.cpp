@@ -171,7 +171,7 @@ static int valuecompare_cmp(const void *x, const void *y)
         }
         else
         {
-            error_gen(CHRLIT("compare block gives wrong type"),"valuecompare_cmp",TOP(),1);
+            error_gen(CHRLIT("wrong return type"),"compare block of sorting",TOP(),1);
             exit(1);
         }
     }

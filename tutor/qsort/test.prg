@@ -7,7 +7,8 @@
 function main()
 
 local x:=array(TEST_ARRLEN),n
-local cmpblk//:={|a,b|stdcmp(a,b)}
+local cmpblk:={|a,b|counter(),stdcmp(a,b)}
+local flgblk:={|a,b|a<b}
 
     for n:=1 to len(x)
         x[n]:=crypto_rand_bytes(10)::bin2hex[1..TEST_STRLEN]
@@ -22,36 +23,31 @@ local cmpblk//:={|a,b|stdcmp(a,b)}
         ?? "  DESCEND "
         asort(x,{|x,y|-stdcmp(x,y)})
     #endif
+
     ?? "  treshold", ISORT_TRESHOLD::str(2)
 
     #ifdef PIVOT_MEDIAN
         ?? "  pivot MEDIAN of 3"
-    #else
-        #ifdef PIVOT_RANDOM
-            ?? "  pivot RANDOM"
-        #else
-            ?? "  pivot MIDDLE"
-        #endif
+    #endif
+    #ifdef PIVOT_RANDOM
+        ?? "  pivot RANDOM"
+    #endif
+    #ifdef PIVOT_MIDDLE
+        ?? "  pivot MIDDLE"
     #endif
 
     ?
 
     test( (|a|  xasort      (a,1,len(a),cmpblk)), x  )
+//  test( (|a|  xisort      (a,1,len(a),cmpblk)), x  )
 
+    test( (|a|  hsortc      (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsortc_3    (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsortc_h    (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsortc_hs   (a,1,len(a),cmpblk)), x  )
 
-
-#ifdef EZEK_VANNAK
-
-    test( (|a|  xasort      (a,1,len(a),cmpblk)), x  )
-    test( (|a|  xisort      (a,1,len(a),cmpblk)), x  )
-
-    test( (|a|  qsortc_3    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsortc_h    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsortc_hs   (a,1,len(a),cmpblk)), x  )
-
+    test( (|a|  hsort       (a,1,len(a),cmpblk)), x  )
+    test( (|a|  hsort_b     (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsort_2     (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsort_2x    (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsort_3     (a,1,len(a),cmpblk)), x  )
@@ -59,19 +55,37 @@ local cmpblk//:={|a,b|stdcmp(a,b)}
     test( (|a|  qsort_hs    (a,1,len(a),cmpblk)), x  )
     test( (|a|  qsort_mt    (a,1,len(a),cmpblk)), x  )
 
+
+#ifdef EZEK_VANNAK
+    test( (|a|  xasort      (a,1,len(a),cmpblk)), x  )
+    test( (|a|  xisort      (a,1,len(a),cmpblk)), x  )
+
+    test( (|a|  hsortc      (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsortc_3    (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsortc_h    (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsortc_hs   (a,1,len(a),cmpblk)), x  )
+
+    test( (|a|  hsort       (a,1,len(a),cmpblk)), x  )
+    test( (|a|  hsort_b     (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_2     (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_2x    (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_3     (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_h     (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_hs    (a,1,len(a),cmpblk)), x  )
+    test( (|a|  qsort_mt    (a,1,len(a),cmpblk)), x  )
 #endif
 
- 
 
-    
 
 ****************************************************************************
 static function test(sort,x)
-local arr:=aclone(x) 
-    tick(".") 
-    eval(sort,arr) 
+local arr:=aclone(x)
+    counter(0)
+    tick(".")
+    eval(sort,arr)
     tick()
     verify(arr)
+    ?? counter()::transform("999,999,999,999")
 
 
 ****************************************************************************
@@ -103,7 +117,7 @@ local eq,n
         if( n>len(a) )
             break(NIL) // ok ascend
         end
-        
+
         eq:=0
         for n:=2 to len(a)
             if( a[n-1]==a[n] )
@@ -131,24 +145,29 @@ local eq,n
     #endif
 
 
+
+****************************************************************************
+static function counter(x)
+static mutex:=thread_mutex_init()
+static cnt:=0
+    thread_mutex_lock(mutex)
+    if( x!=NIL )
+        cnt:=x
+    else
+        ++cnt
+    end
+    thread_mutex_unlock(mutex)
+    return cnt
+
+
 ****************************************************************************
 static function xisort(*)
-    ?? "isort"::padr(16)
+    ?? "ISORT"::padr(16)
     isort(*)
 
 static function xasort(*)
-    ?? "asort"::padr(16)
+    ?? "ASORT"::padr(16)
     asort(*)
 
 
 ****************************************************************************
-
-
-
-
-
-
-
-
-
-

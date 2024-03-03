@@ -4,70 +4,60 @@
 #include <cccapi.h>
 #include <qsort.ch>
 #include <qsort.h>
-#include <region_stack.h>
+
+#define LEFT(x)     (2*(x)+1)
+#define RIGHT(x)    (2*(x)+2)
+#define PARENT(x)   ((x-1)/2)
 
 
 //----------------------------------------------------------------------------------------
-static int qsplit( VALUE *arr, int p, int r, VALUE *blk )
+static void hsort(VALUE *arr, int p, int r, VALUE* blk) 
 {
-    int i=p-1; // 1 based
-    int j=r+1; // 1 based
-
-    VALUE *pivot=push_pivot(arr,p,r,blk);
-
-    while( 1 )
+    int count=r-p+1;
+    int start=count/2;
+    int final=count;
+    int root, child;
+    
+    while( final>1 )
     {
-        while( 0>compare(arr+(++i-1),pivot,blk) );
-        while( 0<compare(arr+(--j-1),pivot,blk) );
-
-        if( i>=j )
+        if( start>0 )
         {
-            break;
+            --start;
         }
-        swap(arr+i-1,arr+j-1);
-    }
-
-    POP(); //pivot
-    return j;
-}
-
-
-//----------------------------------------------------------------------------------------
-static void qsort(VALUE *arr, int p, int r, VALUE* blk) // stack instead of recursion
-{
-    region_stack stk;
-    stk.push(p,r);
-
-    while( stk.pop(&p,&r) )
-    {
-        while( p+ISORT_TRESHOLD<r )
+        else
         {
-            int q=qsplit(arr,p,r,blk);
+            --final;
+            swap(arr+final+p-1,arr+p-1);
+        }
 
-            if( q-p>r-q )
+        root=start;
+        while( LEFT(root)<final )
+        {
+            child=LEFT(root);
+            if( child+1<final && 0>compare(arr+child+p-1,arr+child+p,blk) )
             {
-                stk.push(p,q);
-                p=q+1;
+                ++child;
+            }
+            
+            if( 0>compare(arr+root+p-1,arr+child+p-1,blk) )
+            {
+                swap(arr+root+p-1,arr+child+p-1);
+                root=child;
             }
             else
             {
-                stk.push(q+1,r);
-                r=q;
+                break;
             }
-        }
-        if( p<r )
-        {
-            isort(arr,p,r,blk);
         }
     }
 }
 
 //----------------------------------------------------------------------------------------
-void _clp_qsortc_hs(int argno)
+void _clp_hsortc(int argno)
 {
-    printf("%-16s","qsortc_hs");fflush(0);
+    printf("%-16s","hsortc");fflush(0);
 
-    CCC_PROLOG("qsort",4);
+    CCC_PROLOG("hsort",4);
 
     VALUE *arr=_para(1);        // first element of the array to sort (&a[1])
     unsigned len=_paralen(1);   // length of the array
@@ -82,7 +72,7 @@ void _clp_qsortc_hs(int argno)
     if( ISBLOCK(2) )
     {
         blk=PARPTR(2);
-    }
+    }    
     else
     {
         start=ISNIL(2)?start:_parnu(2);
@@ -103,7 +93,7 @@ void _clp_qsortc_hs(int argno)
 
     if( count>1  )
     {
-        qsort(arr,start,start+count-1,blk);
+        hsort(arr,start,start+count-1,blk);
     }
 
 

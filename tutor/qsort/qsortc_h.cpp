@@ -11,7 +11,7 @@
 void prnstat(int p, int q, int r)
 {
     printf("\n");
-    printf( "%8d:  %8d%% %8d%%",  
+    printf( "%8d:  %8d%% %8d%%",
              r-p+1, PERCENT(q-p+1), PERCENT(r-q) );
 }
 
@@ -36,7 +36,7 @@ static int qsplit( VALUE *arr, int p, int r, VALUE *blk )
         swap(arr+i-1,arr+j-1);
     }
 
-    POP(); //pivot   
+    POP(); //pivot
     //prnstat(p,j,r);
     return j;
 }
@@ -77,48 +77,43 @@ void _clp_qsortc_h(int argno)
 
     CCC_PROLOG("qsort",4);
 
-    VALUE *arr;
-    unsigned len;
-    unsigned p;
-    unsigned r;
-    VALUE *blk=0;
+    VALUE *arr=_para(1);        // first element of the array to sort (&a[1])
+    unsigned len=_paralen(1);   // length of the array
+    unsigned start=1;           // start index
+    unsigned count=len;         // count of elements to sort
+    VALUE *blk=&NIL;            // compare block
 
-    if( !ISARRAY(1) )
-    {
-        error_arg("qsort",base,4);
-    }
-    arr=ARRAYPTR(base);
-    len=ARRAYLEN(base);
+    // hivasi formak:
+    //  asort(a,b)
+    //  asort(a,[s],[c],[b])
 
     if( ISBLOCK(2) )
     {
-        p=1;
-        r=len;
-        blk=base+1;
+        blk=PARPTR(2);
     }
     else
     {
-        p=ISNIL(2)?1:_parnu(2);
-        r=ISNIL(3)?len:_parnu(3);
-        if( p<1 || len<p  || r<1 || len<r )
-        {
-            error_arg("qsort",base,4);
-        }
+        start=ISNIL(2)?start:_parnu(2);
+        count=ISNIL(3)?count:_parnu(3);
         if( ISNIL(4) )
         {
-            blk=0;
+            blk=PARPTR(4);
         }
         else if( ISBLOCK(4) )
         {
-            blk=base+3;
+            blk=PARPTR(4);
         }
         else
         {
-            error_arg("qsort",base,4);
+            error_arg("asort",base,4);
         }
     }
 
-    qsort(arr,p,r,blk);
+    if( count>1  )
+    {
+        qsort(arr,start,start+count-1,blk);
+    }
+
 
     stack=base+1;
     CCC_EPILOG();

@@ -15,7 +15,13 @@ function qsort_3(*)
     //?? " maxdepth",maxdepth
 
 ****************************************************************************
-static function qsort(a,p:=1,r:=len(a))
+static function qsort(a,p:=1,r:=len(a),blk)
+
+// a    : array to sort
+// p    : start index
+// r    : final index
+// blk  : compare block
+
 
 local lt,gt
 
@@ -23,23 +29,27 @@ local lt,gt
         maxdepth:=depth
     end
 
-    while( p<r )
-        qsplit(a,p,r,@lt,@gt)
+    while( p+ISORT_TRESHOLD<r )
+        qsplit(a,p,r,@lt,@gt,blk)
 
         if( lt-p<r-gt )
-            qsort(a,p,lt)
+            qsort(a,p,lt,blk)
             p:=gt
         else
-            qsort(a,gt,r)
+            qsort(a,gt,r,blk)
             r:=lt
         end
+    end
+
+    if( p<r )
+        isort(a,p,r,blk)
     end
     
     --depth
 
 
 ****************************************************************************
-static function qsplit(a,p,r,q1,q2)
+static function qsplit(a,p,r,q1,q2,blk)
 
 local lt:=p
 local eq:=p
@@ -50,7 +60,7 @@ local cmp
     pivot:=pivot(a,p,r)
 
     while( eq<=gt)
-        cmp:=stdcmp(a[eq],pivot)
+        cmp:=compare(a[eq],pivot,blk)
         if( cmp<0 )
             swap(a,eq,lt)
             lt++
@@ -76,18 +86,3 @@ local cmp
 
 
 ****************************************************************************
-static function swap(a,x,y)
-local tmp:=a[x]
-    a[x]:=a[y]
-    a[y]:=tmp
-
-
-****************************************************************************
-static function pivot(a,p,r)
-local q:=crypto_rand_bytes(3)::bin2hex::hex2l
-    q:=p+q%(r-p+1)
-    return a[q]
-
-
-****************************************************************************
-

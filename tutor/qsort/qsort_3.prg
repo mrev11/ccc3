@@ -57,7 +57,7 @@ local gt:=r
 local pivot 
 local cmp
 
-    pivot:=pivot(a,p,r)
+    pivot:=pivot(a,p,r,blk)
 
     while( eq<=gt)
         cmp:=compare(a[eq],pivot,blk)

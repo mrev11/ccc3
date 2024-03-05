@@ -55,7 +55,7 @@ static function qsplit(a,p,r,blk)
 
 local i:=p-1
 local j:=r+1
-local pivot:=pivot(a,p,r) 
+local pivot:=pivot(a,p,r-1,blk) // utolso kihagyva!
 
     while( .t. )
         while( 0>compare(a[++i],pivot,blk) ); end

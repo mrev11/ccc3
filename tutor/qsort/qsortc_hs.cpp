@@ -13,7 +13,7 @@ static int qsplit( VALUE *arr, int p, int r, VALUE *blk )
     int i=p-1; // 1 based
     int j=r+1; // 1 based
 
-    VALUE *pivot=push_pivot(arr,p,r,blk);
+    VALUE *pivot=push_pivot(arr,p,r-1,blk);
 
     while( 1 )
     {
@@ -89,7 +89,7 @@ void _clp_qsortc_hs(int argno)
         count=ISNIL(3)?count:_parnu(3);
         if( ISNIL(4) )
         {
-            blk=PARPTR(4);
+            blk=0;
         }
         else if( ISBLOCK(4) )
         {

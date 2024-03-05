@@ -52,7 +52,7 @@ static function qsplit(a,p,r,blk,index)
 local x,pivot
 local i,q,cmp
 
-    pivot:=a[x:=pivot_index(a,p,r)]
+    pivot:=a[x:=pivot_index(a,p,r,blk)]
     swap(a,x,r,index)
 
     q:=p-1

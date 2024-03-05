@@ -3,6 +3,30 @@
 
 #include "qsort.ch"
 
+
+******************************************************************************************
+function swap(a,x,y)
+local tmp:=a[x]
+    a[x]:=a[y]
+    a[y]:=tmp
+
+
+******************************************************************************************
+function compare(x,y,blk)
+    if( blk!=NIL )
+        return eval(blk,x,y)
+    end
+    return stdcmp(x,y)
+
+
+******************************************************************************************
+static function comparex(a,x,y,blk)
+    if( blk!=NIL )
+        return eval(blk,a[x],a[y])
+    end
+    return stdcmp(a[x],a[y])
+
+
 ******************************************************************************************
 function isort(a,p,r,blk)
 
@@ -27,77 +51,63 @@ local x,i,j
 
 
 ******************************************************************************************
-function compare(x,y,blk)
-    if( blk!=NIL )
-        return eval(blk,x,y)
+static function guess_median(a,p,r,blk,m)
+
+local index:=array(m)
+local x,i,j
+
+    index[1]:=p
+    for i:=2 to m-1
+        index[i]:=index[i-1]+int((r-p+1)/(m-1))
+    next
+    index[m]:=r
+
+    i:=2
+    while( i<=m )
+        x:=index[i]
+        j:=i
+        while( j>1 .and. 0<comparex(a,index[j-1],x,blk) )
+            index[j]:=index[j-1]
+            j--
+        end
+        index[j]:=x
+        i++
     end
-    return stdcmp(x,y)
 
-
-******************************************************************************************
-function swap(a,x,y)
-local tmp:=a[x]
-    a[x]:=a[y]
-    a[y]:=tmp
+    return index[(m+1)/2]
 
 
 ******************************************************************************************
 #ifdef PIVOT_MIDDLE
 function pivot_index(a,p,r)
-    return p+int((r-p)/2)
+    return p+int((r-p+1)/2)
 #endif
 
 #ifdef PIVOT_RANDOM
-function pivot_index(a,p,r) //ugyanaz
+function pivot_index(a,p,r)
 local q:=crypto_rand_bytes(4)::bin2hex::hex2l
     q:=p+q%(r-p+1)
     return q
 #endif
 
 #ifdef PIVOT_MEDIAN
-function pivot_index(a,p,r) //ugyanaz
-local q:=crypto_rand_bytes(4)::bin2hex::hex2l
-    q:=p+q%(r-p+1)
-    return q
+function pivot_index(a,p,r,blk)
+local len:=r-p+1
+    if( blk==NIL )
+        return p+int(len/2)
+    elseif( len<200 )
+        return guess_median(a,p,r,blk,3)
+    elseif( len<1000 )
+        return guess_median(a,p,r,blk,5)
+    else
+        return guess_median(a,p,r,blk,7)
+    end
 #endif
 
 
-function pivot(a,p,r)
-    return a[pivot_index(a,p,r)]
+function pivot(a,p,r,blk)
+local px:=pivot_index(a,p,r,blk)
+    return a[px]
 
 ******************************************************************************************
 
-
-
-#ifdef KIHAGY
-******************************************************************************************
-function isort_swap(a)
-local i,j
-    i:=2
-    while( i<=len(a) )
-        j:=i
-        while( j>1 .and. a[j-1]>a[j] ) 
-            swap(a,j-1,j)
-            j--
-        end         
-        i++
-    end
-
-
-******************************************************************************************
-function isort_recur(a,len)
-local x,j
-    if( len>1 )
-        isort(a,len-1)
-        x:=a[len]
-        j:=len-1
-        while( j>=1 .and. a[j]>x  ) 
-            a[j+1]:=a[j]
-            j--
-        end         
-        a[j+1]:=x
-    end
-
-
-******************************************************************************************
-#endif

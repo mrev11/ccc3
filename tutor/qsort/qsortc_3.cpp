@@ -111,7 +111,7 @@ void _clp_qsortc_3(int argno)
         count=ISNIL(3)?count:_parnu(3);
         if( ISNIL(4) )
         {
-            blk=PARPTR(4);
+            blk=0;
         }
         else if( ISBLOCK(4) )
         {

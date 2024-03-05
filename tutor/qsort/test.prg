@@ -8,11 +8,12 @@ function main()
 
 local x:=array(TEST_ARRLEN),n
 local cmpblk:={|a,b|counter(),stdcmp(a,b)}
-local flgblk:={|a,b|a<b}
+local flgblk:={|a,b|counter(),a<b}
 
     for n:=1 to len(x)
         x[n]:=crypto_rand_bytes(10)::bin2hex[1..TEST_STRLEN]
     next
+    
 
     ? "length",x::len::str(7)
     #ifdef TEST_ASCEND
@@ -27,7 +28,7 @@ local flgblk:={|a,b|a<b}
     ?? "  treshold", ISORT_TRESHOLD::str(2)
 
     #ifdef PIVOT_MEDIAN
-        ?? "  pivot MEDIAN of 3"
+        ?? "  pivot MEDIAN"
     #endif
     #ifdef PIVOT_RANDOM
         ?? "  pivot RANDOM"
@@ -38,40 +39,53 @@ local flgblk:={|a,b|a<b}
 
     ?
 
+
+#ifdef   TEST_ASORT    
     test( (|a|  xasort      (a,1,len(a),cmpblk)), x  )
-//  test( (|a|  xisort      (a,1,len(a),cmpblk)), x  )
-
-    test( (|a|  hsortc      (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsortc_3    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsortc_h    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsortc_hs   (a,1,len(a),cmpblk)), x  )
-
-    test( (|a|  hsort       (a,1,len(a),cmpblk)), x  )
-    test( (|a|  hsort_b     (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_2     (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_2x    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_3     (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_h     (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_hs    (a,1,len(a),cmpblk)), x  )
-    test( (|a|  qsort_mt    (a,1,len(a),cmpblk)), x  )
-
-
-#ifdef EZEK_VANNAK
-    test( (|a|  xasort      (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_ISORT    
     test( (|a|  xisort      (a,1,len(a),cmpblk)), x  )
+#endif
 
+    ?
+
+#ifdef   TEST_HSORTC    
     test( (|a|  hsortc      (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORTC_3  
     test( (|a|  qsortc_3    (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORTC_H  
     test( (|a|  qsortc_h    (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORTC_HS 
     test( (|a|  qsortc_hs   (a,1,len(a),cmpblk)), x  )
+#endif
 
+    ?
+
+#ifdef   TEST_HSORT     
     test( (|a|  hsort       (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_HSORT_B   
     test( (|a|  hsort_b     (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_2   
     test( (|a|  qsort_2     (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_2X  
     test( (|a|  qsort_2x    (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_3   
     test( (|a|  qsort_3     (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_H   
     test( (|a|  qsort_h     (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_HS  
     test( (|a|  qsort_hs    (a,1,len(a),cmpblk)), x  )
+#endif
+#ifdef   TEST_QSORT_MT  
     test( (|a|  qsort_mt    (a,1,len(a),cmpblk)), x  )
 #endif
 

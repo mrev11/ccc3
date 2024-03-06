@@ -1,7 +1,7 @@
 #!/bin/bash
 export OREF_SIZE=2000000
 #export GARBAGE=on
-test.exe | tee log-test
+test.exe $1 | tee log-test
 
 sort -k 5 -n  log-test > log-sorted
 

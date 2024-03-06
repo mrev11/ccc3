@@ -4,11 +4,20 @@
 
 
 ****************************************************************************
-function main()
+function main( cmpblk )
 
 local x:=array(TEST_ARRLEN),n
-local cmpblk:={|a,b|counter(),stdcmp(a,b)}
-local flgblk:={|a,b|counter(),a<b}
+
+    if( cmpblk=="n" ) 
+        cmpblk:=NIL                             // default ascend
+    elseif( cmpblk=="t" ) 
+        cmpblk:=.t.                             // ascend
+    elseif( cmpblk=="f" ) 
+        cmpblk:=.f.                             // descend
+    else
+        cmpblk:={|a,b|counter(),stdcmp(a,b)}    // block ascend
+    end
+
 
     for n:=1 to len(x)
         x[n]:=crypto_rand_bytes(10)::bin2hex[1..TEST_STRLEN]

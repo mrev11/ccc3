@@ -2,8 +2,9 @@
 //#define DEBUG
 
 
-#define TEST_ARRLEN         2000
-#define TEST_STRLEN         5
+#define TEST_ARRLEN         100000
+#define TEST_STRLEN         8
+
 
 //#define TEST_ASCEND
 //#define TEST_DESCEND
@@ -16,6 +17,7 @@
 
 
 #define   TEST_ASORT
+
 
 #define   TEST_HSORTC
 #define   TEST_QSORTC_3

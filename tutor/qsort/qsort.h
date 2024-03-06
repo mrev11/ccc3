@@ -26,7 +26,15 @@ static void swap(VALUE *x, VALUE*y)
 static int compare(VALUE *a, VALUE *b, VALUE *blk)
 {
     int cmp=0;
-    if( blk )
+    if( blk==0 || blk->type==TYPE_NIL )
+    {
+        cmp=stdcmp(a,b); //default ascend
+    }
+    else if( blk->type==TYPE_FLAG )
+    {
+        cmp=blk->data.flag ? stdcmp(a,b):stdcmp(b,a);  //asc/desc
+    }
+    else
     {
         push(blk);
         push(a);
@@ -40,10 +48,6 @@ static int compare(VALUE *a, VALUE *b, VALUE *blk)
         cmp=TOP()->data.number;
         POP();
     }
-    else
-    {
-        cmp=stdcmp(a,b); //default ascend
-    }
     return cmp;
 }
 
@@ -51,7 +55,16 @@ static int compare(VALUE *a, VALUE *b, VALUE *blk)
 static int comparex(VALUE *a, unsigned x, unsigned y, VALUE *blk)
 {
     int cmp=0;
-    if( blk )
+
+    if( blk==0 || blk->type==TYPE_NIL )
+    {
+        cmp=stdcmp(a+x,a+y); //default ascend
+    }
+    else if( blk->type==TYPE_FLAG )
+    {
+        cmp=blk->data.flag ? stdcmp(a+x,a+y):stdcmp(a+y,a+x);  //asc/desc
+    }
+    else
     {
         push(blk);
         push(a+x);
@@ -65,10 +78,7 @@ static int comparex(VALUE *a, unsigned x, unsigned y, VALUE *blk)
         cmp=TOP()->data.number;
         POP();
     }
-    else
-    {
-        cmp=stdcmp(a+x,a+y); //default ascend
-    }
+
     return cmp;
 }
 

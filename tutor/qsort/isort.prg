@@ -13,18 +13,22 @@ local tmp:=a[x]
 
 ******************************************************************************************
 function compare(x,y,blk)
-    if( blk!=NIL )
-        return eval(blk,x,y)
+    if( blk==NIL )
+        return stdcmp(x,y) //asc
+    elseif( valtype(blk)=="L" )
+        return if(blk,stdcmp(x,y),stdcmp(y,x)) //asc/desc
     end
-    return stdcmp(x,y)
+    return eval(blk,x,y)
 
 
 ******************************************************************************************
 static function comparex(a,x,y,blk)
-    if( blk!=NIL )
-        return eval(blk,a[x],a[y])
+    if( blk==NIL )
+        return stdcmp(a[x],a[y]) // asc
+    elseif( valtype(blk)=="L" )
+        return if(blk,stdcmp(a[x],a[y]),stdcmp(a[y],a[x])) //asc/desc
     end
-    return stdcmp(a[x],a[y])
+    return eval(blk,a[x],a[y])
 
 
 ******************************************************************************************

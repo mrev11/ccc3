@@ -69,7 +69,7 @@ void _clp_hsortc(int argno)
     //  asort(a,b)
     //  asort(a,[s],[c],[b])
 
-    if( ISBLOCK(2) )
+    if( ISBLOCK(2) || ISFLAG(2)  )
     {
         blk=PARPTR(2);
     }    
@@ -77,11 +77,7 @@ void _clp_hsortc(int argno)
     {
         start=ISNIL(2)?start:_parnu(2);
         count=ISNIL(3)?count:_parnu(3);
-        if( ISNIL(4) )
-        {
-            blk=0;
-        }
-        else if( ISBLOCK(4) )
+        if( ISNIL(4) || ISFLAG(4) || ISBLOCK(4) )
         {
             blk=PARPTR(4);
         }

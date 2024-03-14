@@ -1,14 +1,14 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 import os
 import string
 
-import dates
-import jtdom
-import jtutil  
+from . import dates
+from . import jtdom
+from . import jtutil  
 
-from jtelem import jtelem
+from .jtelem import jtelem
 
 
 class new(jtelem):
@@ -96,7 +96,7 @@ class new(jtelem):
         if t=="C":
             self.text=x
         elif t=="N":
-            self.text=string.strip("%32.*f" % (self.decimal(),x))
+            self.text=("%32.*f" % (self.decimal(),x)).strip() # format operator
         elif t=="D":
             self.text=dates.dtos(x)
         elif t=="L":

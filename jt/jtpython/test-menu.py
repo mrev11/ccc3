@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 from jtlib import *
 from jtlib.jtalert import jtalert 
@@ -7,17 +7,17 @@ from jtlib.jtalert import jtalert
 def mkdialog(): 
 
     dlg=jtdialog.new(6,20,20,80)
-    dlg.caption('Menü teszt')
+    dlg.caption('MenÃ¼ teszt')
     dlg.layout="vbox"
     dlg.layout="fix"
     
 
-    ### Elsô pulldown (file)
+    ### ElsÅ‘ pulldown (file)
     
     menu=dlg.add(jtmenu.new()) 
     menu.text="File"
     menu.icon="images/middle.gif"
-    menu.tooltip="Egy szokványos fájl menü"
+    menu.tooltip="Egy szokvÃ¡nyos fÃ¡jl menÃ¼"
     menu.mnemonic="F"
 
     mi=menu.additem(jtmenuitem.new())
@@ -40,17 +40,17 @@ def mkdialog():
     mi.icon="images/exit.gif" 
     mi.accelerator="ctrl Q"
     mi.actionblock=lambda dlg:dlg.close()
-    mi.tooltip="Kilép a programból"
+    mi.tooltip="KilÃ©p a programbÃ³l"
     
 
-    ### Második pulldown (radio, többszintû) 
+    ### MÃ¡sodik pulldown (radio, tÃ¶bbszintÅ±) 
  
     menu=dlg.add(menu1()) 
-    menu.text="Összetett menü"
-    menu.tooltip="Egy összetett menü"
+    menu.text="Ã–sszetett menÃ¼"
+    menu.tooltip="Egy Ã¶sszetett menÃ¼"
     menu.mnemonic="M"
     m1=menu.additem(menu1())
-    m1.text="Belsô menü"
+    m1.text="BelsÅ‘ menÃ¼"
     m1.mnemonic="B"
 
     menu.additem(jtmenusep.new()) 
@@ -63,28 +63,28 @@ def mkdialog():
 
     mr=menu.additem(jtmenuradio.new())  
     mr.name="mr1"
-    mr.text="Ez az egyik lehetôség"
+    mr.text="Ez az egyik lehetÅ‘sÃ©g"
  
     mr=menu.additem(jtmenuradio.new())  
-    mr.text="Vagy próbáld ezt"
+    mr.text="Vagy prÃ³bÃ¡ld ezt"
     mr.name="mr2"
 
     mr=menu.additem(jtmenuradio.new())  
-    mr.text="Vagy talán inkább ezt"
+    mr.text="Vagy talÃ¡n inkÃ¡bb ezt"
     mr.name="mr3"
 
     menu.additem(jtmenusep.new()) 
  
     mr=menu.additem(jtmenuradio.new())  
     mr.name="mr4"
-    mr.text="Ez az egyik lehetôség"
+    mr.text="Ez az egyik lehetÅ‘sÃ©g"
  
     mr=menu.additem(jtmenuradio.new())  
-    mr.text="Vagy próbáld ezt"
+    mr.text="Vagy prÃ³bÃ¡ld ezt"
     mr.name="mr5"
 
     mr=menu.additem(jtmenuradio.new())  
-    mr.text="Vagy talán inkább ezt"
+    mr.text="Vagy talÃ¡n inkÃ¡bb ezt"
     mr.name="mr6"
 
     mr=menu.additem(jtmenuradio.new())  
@@ -96,22 +96,22 @@ def mkdialog():
     ### Harmadik pulldown (check)
  
     menu=dlg.add(jtmenu.new()) 
-    menu.text="Checkbox menü"
-    menu.tooltip="Checkbox menü demó"
+    menu.text="Checkbox menÃ¼"
+    menu.tooltip="Checkbox menÃ¼ demÃ³"
     menu.mnemonic="C"
  
     mc=menu.additem(jtmenucheck.new())
-    mc.text="Elsô checkmenü"
+    mc.text="ElsÅ‘ checkmenÃ¼"
     mc.name="mc1"
     mc.varput(1)
  
     mc=menu.additem(jtmenucheck.new())
-    mc.text="Második checkmenü"
+    mc.text="MÃ¡sodik checkmenÃ¼"
     mc.name="mc2"
     mc.varput(1)
  
     mc=menu.additem(jtmenucheck.new())
-    mc.text="Harmadik checkmenü"
+    mc.text="Harmadik checkmenÃ¼"
     mc.name="mc3"
  
     ### Negyedik pulldown (help)
@@ -119,7 +119,7 @@ def mkdialog():
     menu=dlg.add(jtmenusep.new()) 
     menu=dlg.add(jtmenu.new()) 
     menu.text="Help"
-    menu.tooltip="Help menü demó"
+    menu.tooltip="Help menÃ¼ demÃ³"
     menu.icon="icons/16/help.png"
     menu.mnemonic="H"
 
@@ -130,7 +130,7 @@ def mkdialog():
 
     mi=menu.additem(jtmenuitem.new()) 
     mi.text="About"
-    mi.actionblock=lambda dlg:jtalert("Menü demó (C) ComFirm 2003.")
+    mi.actionblock=lambda dlg:jtalert("MenÃ¼ demÃ³ (C) ComFirm 2003.")
    
     dlg.varinst("menu")
 
@@ -141,22 +141,22 @@ def menu1():
 
     menu=jtmenu.new()
     mi=menu.additem(jtmenuitem.new())
-    mi.text="Elsô menüpont"
+    mi.text="ElsÅ‘ menÃ¼pont"
     mi.mnemonic="E"
     mi.actionblock=mkblock(mi.text) 
 
     mi=menu.additem(jtmenuitem.new())
-    mi.text="Második menüpont"
+    mi.text="MÃ¡sodik menÃ¼pont"
     mi.mnemonic="M"
     mi.actionblock=mkblock(mi.text) 
 
     mi=menu.additem(jtmenuitem.new())
-    mi.text="Harmadik menüpont"
+    mi.text="Harmadik menÃ¼pont"
     mi.mnemonic="H"
     mi.actionblock=mkblock(mi.text)
 
     mi=menu.additem(jtmenuitem.new())
-    mi.text="Negyedik menüpont"
+    mi.text="Negyedik menÃ¼pont"
     mi.mnemonic="N"
     mi.actionblock=mkblock(mi.text) 
 

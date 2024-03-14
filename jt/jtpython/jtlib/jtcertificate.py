@@ -1,15 +1,15 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-import jtutil 
-import jtsocket
-import jtdom
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
  
 
 def jtcertificate(alias):
 
-    # ElkÈri a termin·ltÛl a keystore-ban alias-szal
-    # azonosÌtott bejegyzÈs tan˙sÌtv·ny·t (nyilv·nos kulcs·t).
+    # Elk√©ri a termin√°lt√≥l a keystore-ban alias-szal
+    # azonos√≠tott bejegyz√©s tan√∫s√≠tv√°ny√°t (nyilv√°nos kulcs√°t).
 
     NL="\n"
     LW=76

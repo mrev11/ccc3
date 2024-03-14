@@ -1,27 +1,27 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-# Olyan text mezõ,
+# Olyan text mezÅ‘,
 # aminek nincs picture-je,
-# minden karakter "*"-ként jelenik meg,
-# az eredmény pedig: 
-# base64.encode( text ) #ha salt1 és salt2 sincs megadva
+# minden karakter "*"-kÃ©nt jelenik meg,
+# az eredmÃ©ny pedig: 
+# base64.encode( text ) #ha salt1 Ã©s salt2 sincs megadva
 # base64.encode( md5(text+saltX) ) #ha csak saltX van megadva
-# base64.encode( md5( md5(text+salt1)+salt2 ) ) #ha salt1 és salt2 adott
+# base64.encode( md5( md5(text+salt1)+salt2 ) ) #ha salt1 Ã©s salt2 adott
  
-# A jelszó mezõt lehet inicializálni (a valódi jelszóval),
-# ez a terminálban "**...*"-ként látszik, és nem jön vissza,
+# A jelszÃ³ mezÅ‘t lehet inicializÃ¡lni (a valÃ³di jelszÃ³val),
+# ez a terminÃ¡lban "**...*"-kÃ©nt lÃ¡tszik, Ã©s nem jÃ¶n vissza,
 
-# Miért nincs egy ellenõrzõ metódus?
+# MiÃ©rt nincs egy ellenÅ‘rzÅ‘ metÃ³dus?
 #
-# 1. Az ellenõrzés függ attól, hogy a szerver mit tárol.
+# 1. Az ellenÅ‘rzÃ©s fÃ¼gg attÃ³l, hogy a szerver mit tÃ¡rol.
 #
-# 2. Az ellenõrzés az openssl könyvtárat hívná, 
-#    amire csak akkor célszerû hivatkozni, ha tényleg kell,
-#    hogy ne akadályozza feleslegesen a linkelést.
+# 2. Az ellenÅ‘rzÃ©s az openssl kÃ¶nyvtÃ¡rat hÃ­vnÃ¡, 
+#    amire csak akkor cÃ©lszerÅ± hivatkozni, ha tÃ©nyleg kell,
+#    hogy ne akadÃ¡lyozza feleslegesen a linkelÃ©st.
 
-# Így lehet az ellenõrzést elvégezni, feltéve, 
-# hogy ismerjük a jelszót, ami az alábbi példában "hopp":
+# Ãgy lehet az ellenÅ‘rzÃ©st elvÃ©gezni, feltÃ©ve, 
+# hogy ismerjÃ¼k a jelszÃ³t, ami az alÃ¡bbi pÃ©ldÃ¡ban "hopp":
 #
 # local p:="hopp"
 # local x:=pwfield:getpassword(s1,s2)
@@ -30,24 +30,25 @@
 #     ? p:=crypto_md5( p+s2 )
 #     ? p:=base64_encode(p)
 #     ? x
-#     alert( "Jelszó "+ if(p==x,"OK","ELTÉR") )
+#     alert( "JelszÃ³ "+ if(p==x,"OK","ELTÃ‰R") )
 
-# Változott a koncepció:
-# Korábban a kódolt jelszót a terminál akciókor automatikusan küldte
-# a kontroll értékeként, és az a varget metódussal volt lekérdezhetõ.
-# Ez azonban nem adott alkalmat a salt beállítására, ami általában a
-# felhasználó kilététõl függ, ezért most a jelszót a terminál egyáltalán
-# nem küldi akciónál, hanem csak a getpassword üzenetre válaszként,
-# így van alkalom elõzõleg beállítani a salt-okat, és nem küldünk 
-# idejekorán félig rejtett jelszavakat
+# VÃ¡ltozott a koncepciÃ³:
+# KorÃ¡bban a kÃ³dolt jelszÃ³t a terminÃ¡l akciÃ³kor automatikusan kÃ¼ldte
+# a kontroll Ã©rtÃ©kekÃ©nt, Ã©s az a varget metÃ³dussal volt lekÃ©rdezhetÅ‘.
+# Ez azonban nem adott alkalmat a salt beÃ¡llÃ­tÃ¡sÃ¡ra, ami Ã¡ltalÃ¡ban a
+# felhasznÃ¡lÃ³ kilÃ©tÃ©tÅ‘l fÃ¼gg, ezÃ©rt most a jelszÃ³t a terminÃ¡l egyÃ¡ltalÃ¡n
+# nem kÃ¼ldi akciÃ³nÃ¡l, hanem csak a getpassword Ã¼zenetre vÃ¡laszkÃ©nt,
+# Ã­gy van alkalom elÅ‘zÅ‘leg beÃ¡llÃ­tani a salt-okat, Ã©s nem kÃ¼ldÃ¼nk 
+# idejekorÃ¡n fÃ©lig rejtett jelszavakat
 
  
 
 import os
-import jtutil
-import jtsocket
-import jtdom
-from jtelem import jtelem
+
+from . import jtutil
+from . import jtsocket
+from . import jtdom
+from .jtelem import jtelem
  
 class new(jtelem):
 
@@ -98,9 +99,9 @@ class new(jtelem):
 
     def sign(self,alias,data):
 
-        # A terminál a .keystore-ból elõveszi az alias-hoz
-        # tartozó privát RSA kulcsot, és azzal aláírja data-t,
-        # az aláírást visszaküldi base64 kódolt formában.
+        # A terminÃ¡l a .keystore-bÃ³l elÅ‘veszi az alias-hoz
+        # tartozÃ³ privÃ¡t RSA kulcsot, Ã©s azzal alÃ¡Ã­rja data-t,
+        # az alÃ¡Ã­rÃ¡st visszakÃ¼ldi base64 kÃ³dolt formÃ¡ban.
 
 
         x='<jtmessage'
@@ -131,11 +132,11 @@ class new(jtelem):
 """
     def authenticate(this,alias,cert)
 
-        # ha ez be volna fordítva,
-        # maga után húzná az openssl könyvtárat
+        # ha ez be volna fordÃ­tva,
+        # maga utÃ¡n hÃºznÃ¡ az openssl kÃ¶nyvtÃ¡rat
  
-        # alias : a Jáva keystore-ban azonosítja a kulcsot
-        # cert  : pem formátumú CERTIFICATE vagy PUBLIC KEY 
+        # alias : a JÃ¡va keystore-ban azonosÃ­tja a kulcsot
+        # cert  : pem formÃ¡tumÃº CERTIFICATE vagy PUBLIC KEY 
 
         data=crypto_rand_pseudo_bytes(32) 
         repl=self.sign(alias,data) 
@@ -146,15 +147,15 @@ class new(jtelem):
  
 
 """
-Hitelesítés digitális aláírással
+HitelesÃ­tÃ©s digitÃ¡lis alÃ¡Ã­rÃ¡ssal
 
-1. A kuncsaft csinál magának egy RSA kulcspárt a Jáva keytools
-   programjával. Esetleg késõbb ehhez lehet csinálni frontendet.
-   A keystore-ból exportálja a certificate-ot (vagy a public key-t):
+1. A kuncsaft csinÃ¡l magÃ¡nak egy RSA kulcspÃ¡rt a JÃ¡va keytools
+   programjÃ¡val. Esetleg kÃ©sÅ‘bb ehhez lehet csinÃ¡lni frontendet.
+   A keystore-bÃ³l exportÃ¡lja a certificate-ot (vagy a public key-t):
 
    keytool -export -rfc -storepass ???? -alias vermes1 -file vermes1.cer
    
-   Ebbõl egy ilyen filé lesz (vermes1.cer):
+   EbbÅ‘l egy ilyen filÃ© lesz (vermes1.cer):
    
 -----BEGIN CERTIFICATE-----
 MIIDWTCCAkECBD4oB7UwDQYJKoZIhvcNAQEEBQAwcTELMAkGA1UEBhMCSFUxEDAOBgNVBAgTB0h1
@@ -163,17 +164,17 @@ BDaEmYaZykgRbYl4r/5ylixw6UuPr2k77VTJbMHpnPDUwY6pOxXMSvTcmssgc1m+RHo5PU4E4miC
 YXiHOyct
 -----END CERTIFICATE-----
    
-   A certificate filét valahogy beküldi a szervernek, ahol azt tároljuk,
-   pl. egy adatbázis memójában.
+   A certificate filÃ©t valahogy bekÃ¼ldi a szervernek, ahol azt tÃ¡roljuk,
+   pl. egy adatbÃ¡zis memÃ³jÃ¡ban.
    
-2. Egy dialogboxban megadja az alias nevét (aminél fogva a keystore-ban
-   megtalálható a kulcs)  és a jelszót (ami szükséges a privát kulcs
-   elõvételéhez a keystore-ból). A jelszót nem küldi el a szervernek.
+2. Egy dialogboxban megadja az alias nevÃ©t (aminÃ©l fogva a keystore-ban
+   megtalÃ¡lhatÃ³ a kulcs)  Ã©s a jelszÃ³t (ami szÃ¼ksÃ©ges a privÃ¡t kulcs
+   elÅ‘vÃ©telÃ©hez a keystore-bÃ³l). A jelszÃ³t nem kÃ¼ldi el a szervernek.
    
-3. A szerver generál egy véletlen sorozatot, ezt aláíratja a terminállal,
-   az aláírást pedig a certificate (public key) birtokában ellenõrzi.
-   A certificate érvényességét egyáltalán nem ellenõrzi, csak azt nézi,
-   hogy a private és public kulcsok tényleg párt alkossanak.
+3. A szerver generÃ¡l egy vÃ©letlen sorozatot, ezt alÃ¡Ã­ratja a terminÃ¡llal,
+   az alÃ¡Ã­rÃ¡st pedig a certificate (public key) birtokÃ¡ban ellenÅ‘rzi.
+   A certificate Ã©rvÃ©nyessÃ©gÃ©t egyÃ¡ltalÃ¡n nem ellenÅ‘rzi, csak azt nÃ©zi,
+   hogy a private Ã©s public kulcsok tÃ©nyleg pÃ¡rt alkossanak.
 """
 
 

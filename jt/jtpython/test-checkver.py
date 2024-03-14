@@ -1,8 +1,8 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
-from jtlib import *
+from jtlib import jtversion
 
-jtversion.jtcheckversion("0.9.11")
-jtversion.jtcheckversion("0.9.12")
+#jtversion.jtencoding("UTF-8")
+jtversion.jtcheckversion("1.1.16")
  

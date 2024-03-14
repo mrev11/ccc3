@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 from jtlib import *
 
@@ -23,11 +23,11 @@ def mkdialog():
     mm=dlg.add(jtmenu.new())
     mm.text="Panelcsere"
     mi=mm.additem(jtmenuitem.new())
-    mi.text="Elsô panel"
+    mi.text="ElsÅ‘ panel"
     mi.actionblock=lambda d:setpanel(d,panel1(),"x1")
 
     mi=mm.additem(jtmenuitem.new())
-    mi.text="Második panel"
+    mi.text="MÃ¡sodik panel"
     mi.actionblock=lambda d:setpanel(d,panel2(),"x2") 
 
     mi=mm.additem(jtmenuitem.new())
@@ -51,7 +51,7 @@ def panel1():
     pnl=jtpanel.new()
     pnl.layout="hbox"
     pnl.name="proba"
-    pnl.text="Külsô panel (1)"
+    pnl.text="KÃ¼lsÅ‘ panel (1)"
     pnl.additem(jtlabel.new("HOPP-1"))
     return pnl
     
@@ -62,13 +62,13 @@ def panel2():
     pnl=jtpanel.new()
     pnl.layout="vbox"
     pnl.name="proba"
-    pnl.text="Külsô panel (2)"
+    pnl.text="KÃ¼lsÅ‘ panel (2)"
  
     pnl.additem(jtlabel.new("HOPP-2"))
 
     pnl1=pnl.additem(jtpanel.new()) 
     pnl1.layout="vbox"
-    pnl1.text="Belsô panel"
+    pnl1.text="BelsÅ‘ panel"
     pnl2=pnl1.additem(jtpanel.new()) 
     pnl2.hscroll=jtutil.true
     pnl2.vscroll=jtutil.true
@@ -102,7 +102,7 @@ def panel2():
  
 #-----------------------------------------------------------------------------
 def out(x):
-    print x
+    print(x)
  
 
 #-----------------------------------------------------------------------------

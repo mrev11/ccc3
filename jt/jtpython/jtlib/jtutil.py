@@ -1,16 +1,16 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
- 
+# _*_ coding: UTF-8 _*_
+
 import sys
 import string
 import base64
 
- 
+
 true=1
 false=0
 EOL="\n"
 
-controlid=0 
+controlid=0
 
 
 def jtcontrolid():
@@ -23,7 +23,7 @@ def ATTR(a,x):
     if not x:
         return ""
     else:
-        return ' '+a+'='+'"'+string.strip(x)+'"' 
+        return ' '+a+'='+'"'+x.strip()+'"'
 
 
 def ATTRS(a,x):
@@ -31,7 +31,7 @@ def ATTRS(a,x):
         return ""
     else:
         return  ' '+a+'='+'"'+str(x)+'"'
-    
+
 
 def ATTRI(a,x):
     if not x:
@@ -41,65 +41,88 @@ def ATTRI(a,x):
 
 
 def alt(x,y,z):
-    if x: 
-        return y 
-    else: 
+    if x:
+        return y
+    else:
         return z
 
 
 
 def html(x):
-    return  "<html>"+x+"</html>" 
- 
+    return  "<html>"+x+"</html>"
+
 
 def cdata(x):
-    cd="" 
+    cd=""
     while 1:
         n=x.find("]]>")
         if n<0:
             cd=cd+"<![CDATA["+x+"]]>"
             break
         else:
-            cd=cd+"<![CDATA["+x[:n+1]+"]]>" 
+            cd=cd+"<![CDATA["+x[:n+1]+"]]>"
             x=x[n+1:]
     return  cd
- 
+
 
 def cdataif(x):
     if x.find("<")>=0 or x.find("&")>=0:
-        return cdata(x) 
+        return cdata(x)
     return x
- 
+
+
+def str2bin(x):
+    if isinstance(x,str):
+        x=x.encode("UTF-8")
+    return x
+
+
+def bin2str(x):
+    if isinstance(x,bytes):
+        x=x.decode("UTF-8")
+    return x
+
 
 def base64_encode(x):
-    return base64.encodestring(x).replace("\n","")
+    x=str2bin(x)
+    x=base64.b64encode(x)
+    x=x.decode("UTF-8")
+    return x.replace("\n","")
 
 
 def base64_decode(x):
-    return base64.decodestring(x)
- 
+    x=str2bin(x)
+    x=base64.b64decode(x)
+    return x
 
-def memoread(fspec):
+
+def memoread(fspec,binopt=False):
     try:
         f=open(fspec,"rb")
-        x=f.read() 
+        x=f.read()
         f.close()
-        return x
     except:
-        return ""
+        x=b""
+    if not binopt:
+        x=bin2str(x)
+    return x    
 
 
 def memowrit(fspec,x):
+    x=str2bin(x)
     try:
         f=open(fspec,"wb")
-        f.write(x) 
+        f.write(x)
         f.close()
     except:
         raise
 
 
 def array(len=0,fill=None):
-    return map(lambda x:fill,range(len))
+    if len==0:
+        return []
+    else:
+        return [fill]*len
 
 
 def asize(a,size):
@@ -124,18 +147,25 @@ def rat(s,x):
         else:
             break
     return p
-        
 
-def inspect(o):
-    print o, type(o)
+
+def inspect(o,valflg=False):
+    print( o, type(o))
     for a in dir(o):
-        oa=getattr(o,a) 
-        print alt(callable(oa),"M","A"), string.ljust(a,24), type(oa)
+        try:
+            oa=getattr(o,a)
+            print( alt(callable(oa),"M","A"), 
+                   a.ljust(20), 
+                   repr(type(oa)).ljust(48), 
+                   alt(valflg,oa,""))
+        except:
+            pass
 
 
 class applicationerror(Exception):
     def __init__(self,*value):
         self.value=value
     def __str__(self):
-        return `self.value`
- 
+        return repr(self.value)
+
+

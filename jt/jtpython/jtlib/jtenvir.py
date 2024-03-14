@@ -1,9 +1,9 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-import jtutil 
-import jtsocket
-import jtdom
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
  
 def jtgetenv(name):
 

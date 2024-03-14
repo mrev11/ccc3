@@ -1,8 +1,8 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
-import jtutil
+from . import jtutil
  
 class new:
 
@@ -11,13 +11,13 @@ class new:
         # jtcolumn.new(hdr,blk,pic,wid)
         # jtcolumn.new(hdr,blk,wid)
     
-        # KoncepciÛ v·ltoz·s:
-        # az oszlop a picture-bÙl (vagy annak hi·ny·bÛl)
-        # azonnal meghat·rozza a tÌpus·t (C,N,D,L),
-        # Ès azt t·rolja a type attrib˙tumban.
+        # Koncepci√≥ v√°ltoz√°s:
+        # az oszlop a picture-b≈ël (vagy annak hi√°ny√°b√≥l)
+        # azonnal meghat√°rozza a t√≠pus√°t (C,N,D,L),
+        # √©s azt t√°rolja a type attrib√∫tumban.
  
         if type(pic)==type(0):
-            # fordÌtva is elfogadjuk
+            # ford√≠tva is elfogadjuk
             pic,wid=wid,pic
 
         self.heading  = hdr
@@ -71,9 +71,9 @@ class new:
         x+="<width>"+str(self.width)+"</width>"
         x+="<picture>"+self.picture+"</picture>"
         if self.editable:
-            #az oszlop edit·lhatÛ, 
-            #ha a picture function stringjÈben 
-            #be van ·llÌtva az E flag.
+            #az oszlop edit√°lhat√≥, 
+            #ha a picture function stringj√©ben 
+            #be van √°ll√≠tva az E flag.
             x+="<editable>true</editable>"
         x+="</jtcolumn>"
         return x

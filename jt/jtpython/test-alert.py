@@ -1,12 +1,12 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
 from jtlib.jtalert import jtalert
 
 while 1:
-    r=jtalert("Próba szerencse;Van, aki forrón szereti",["Egy","Kettô","Három"]) 
-    print r
+    r=jtalert("PrÃ³ba szerencse;Van, aki forrÃ³n szereti",["Egy","KettÅ‘","HÃ¡rom"]) 
+    print(r)
     if r==0:
         break
 

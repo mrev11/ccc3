@@ -1,12 +1,11 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
 
-jtsocket.jtautostart()
 
-srvfile="jtpython.zip"
-trmfile="result-down.zip"
+srvfile="jtlib.zip"
+trmfile="log-jtlib.zip"
 d=dates.date(1990,10,11)
 t="00:00:00"
 

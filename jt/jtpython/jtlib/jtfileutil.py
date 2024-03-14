@@ -1,12 +1,12 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-# különféle filémûveletek,
-# amik a terminál filérendszerében hajtódnak végre
+# kÃ¼lÃ¶nfÃ©le filÃ©mÅ±veletek,
+# amik a terminÃ¡l filÃ©rendszerÃ©ben hajtÃ³dnak vÃ©gre
 
-import jtutil 
-import jtsocket
-import jtdom
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
  
 
 def jtmakedir(name):

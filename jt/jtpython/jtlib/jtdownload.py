@@ -1,25 +1,25 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
-import jtutil 
-import jtsocket
-import jtdom
-import dates
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
+from . import dates
  
 
 def jtdownload(locfile, remfile, date=None, time=None):
 
-    # filÈ k¸ldÈs a szerverrıl a termin·lra
-    # locfile : filÈspecifik·ciÛ a szerveren
-    # remfile : filÈspecifik·ciÛ a termin·lon
-    # date    : file date (opcion·lis)
-    # time    : file time (opcion·lis)
+    # fil√© k√ºld√©s a szerverr≈ël a termin√°lra
+    # locfile : fil√©specifik√°ci√≥ a szerveren
+    # remfile : fil√©specifik√°ci√≥ a termin√°lon
+    # date    : file date (opcion√°lis)
+    # time    : file time (opcion√°lis)
  
-    f=file(locfile,"rb")
-    f.seek(0,2) #vÈgÈre
+    f=open(locfile,"rb")
+    f.seek(0,2) #v√©g√©re
     flen=f.tell()
-    f.seek(0,0) #elejÈre
+    f.seek(0,0) #elej√©re
     
     x="<jtdownload>" 
     x+="<file>"+remfile+"</file>" 
@@ -50,7 +50,7 @@ def jtdownload(locfile, remfile, date=None, time=None):
             if text=="OK":
                 break
             else:
-                raise jtutil.applicationerror, ("jtdownload","ioerror",text)
+                raise jtutil.applicationerror("jtdownload","ioerror",text)
 
     return flen
 

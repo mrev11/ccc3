@@ -1,8 +1,8 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-import jtutil 
-import jtsocket
+from . import jtutil 
+from . import jtsocket
 
 def jtconnect(host,port,ssl=None):
     x="<jtconnect>"

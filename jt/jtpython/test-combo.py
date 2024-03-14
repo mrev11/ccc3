@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
  
@@ -12,20 +12,20 @@ def mkdialog():
     
     cb=dlg.add(jtcombo.new(2,2,2,30))
     cb.name="cb"
-    cb.additem("ElsÙ v·laszt·s")
-    cb.additem("M·sodik v·laszt·s")
-    cb.additem("Harmadik v·laszt·s")
-    cb.additem("Negyedik v·laszt·s")
-    cb.additem("÷tˆdik v·laszt·s")
-    cb.additem("Hatodik v·laszt·s")
-    cb.additem("Hetedik v·laszt·s")
-    cb.additem("Nyolcadik v·laszt·s")
-    cb.additem("Kilencedik v·laszt·s")
+    cb.additem("Els≈ë v√°laszt√°s")
+    cb.additem("M√°sodik v√°laszt√°s")
+    cb.additem("Harmadik v√°laszt√°s")
+    cb.additem("Negyedik v√°laszt√°s")
+    cb.additem("√ñt√∂dik v√°laszt√°s")
+    cb.additem("Hatodik v√°laszt√°s")
+    cb.additem("Hetedik v√°laszt√°s")
+    cb.additem("Nyolcadik v√°laszt√°s")
+    cb.additem("Kilencedik v√°laszt√°s")
     cb.actionblock=cbaction
 
     #cb.varput(0) 
     #cb.select(3)
-    cb.selectitem("Hatodik v·laszt·s")
+    cb.selectitem("Hatodik v√°laszt√°s")
 
 
     menu=dlg.add(jtmenu.new())
@@ -63,7 +63,7 @@ def mkdialog():
 counter=0
 def itemid():
     import sys
-    m=sys.modules[__name__] # az aktu·lis modul
+    m=sys.modules[__name__] # az aktu√°lis modul
     m.counter+=1
     return str(m.counter)
  
@@ -96,28 +96,28 @@ def teszt_del2(dlg):
 def teszt_csere(dlg):
     cb=dlg.var.cb 
     cb.choicelist=[]
-    cb.additem("ELS‘ V¡LASZT¡S")
-    cb.additem("M¡SODIK V¡LASZT¡S")
-    cb.additem("HARMADIK V¡LASZT¡S")
-    cb.additem("NEGYEDIK V¡LASZT¡S")
-    cb.additem("÷T÷DIK V¡LASZT¡S")
-    cb.additem("HATODIK V¡LASZT¡S")
-    cb.additem("HETEDIK V¡LASZT¡S")
-    cb.additem("NYOLCADIK V¡LASZT¡S")
-    cb.additem("KILENCEDIK V¡LASZT¡S")
+    cb.additem("ELS≈ê V√ÅLASZT√ÅS")
+    cb.additem("M√ÅSODIK V√ÅLASZT√ÅS")
+    cb.additem("HARMADIK V√ÅLASZT√ÅS")
+    cb.additem("NEGYEDIK V√ÅLASZT√ÅS")
+    cb.additem("√ñT√ñDIK V√ÅLASZT√ÅS")
+    cb.additem("HATODIK V√ÅLASZT√ÅS")
+    cb.additem("HETEDIK V√ÅLASZT√ÅS")
+    cb.additem("NYOLCADIK V√ÅLASZT√ÅS")
+    cb.additem("KILENCEDIK V√ÅLASZT√ÅS")
     cb.changelist()
 
 
 def cbaction(dlg):
     cb=dlg.var.cb 
-    print cb.varget()
-    print cb.getitem(cb.varget())
-    print cb.selecteditem()
+    print (cb.varget())
+    print (cb.getitem(cb.varget()))
+    print (cb.selecteditem())
 
     if cb.varget()==5:
         #cb.varput(9)
-        cb.selectitem("Kilencedik v·laszt·s")
-        print "changed to", cb.selectedindex
+        cb.selectitem("Kilencedik v√°laszt√°s")
+        print ("changed to", cb.selectedindex)
 
 
 def main():

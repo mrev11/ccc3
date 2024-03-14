@@ -1,16 +1,19 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
- 
+# _*_ coding: UTF-8 _*_
+
 import os
 import sys
 import select
 import socket
 import string
+import codecs
 
-import jtutil 
 
-jtsocket=sys.modules[__name__] # az aktuális modul objektum
- 
+from . import jtutil
+from . import jtversion
+
+jtsocket=sys.modules[__name__] # az aktuÃ¡lis modul objektum
+
 sck=None
 debug=0
 
@@ -19,11 +22,11 @@ def jttermsck():
     if jtsocket.sck:
         return jtsocket.sck
 
-    prev=None 
+    prev=None
     for a in sys.argv:
-        #print a
+        #print(a)
         if prev=="-jtsocket":
-            jtsocket.sck=socket.fromfd(int(a),socket.AF_INET,socket.SOCK_STREAM) 
+            jtsocket.sck=socket.fromfd(int(a),socket.AF_INET,socket.SOCK_STREAM)
             prev=None
         elif a=="-jtsocket":
             prev=a
@@ -37,23 +40,26 @@ def jttermsck():
 
     if not jtsocket.sck:
         jtautostart()
-       
+
     if "on" == os.getenv("JTDEBUG"):
         jtsocket.debug=1
 
     if not jtsocket.sck:
-        raise jtutil.applicationerror,("jtsocket","-jtsocket option not set")
-    
+        raise jtutil.applicationerror("jtsocket","-jtsocket option not set")
+
+
+    jtversion.jtencoding("UTF-8")
+
     return jtsocket.sck
- 
+
 
 
 def jtautostart(p1=None,p2=None):
 
     jterminal=os.getenv("JTERMINAL")
     if not jterminal:
-        raise jtutil.applicationerror,("jtsocket","JTERMINAL environment variable not set")
-    
+        raise jtutil.applicationerror("jtsocket","JTERMINAL environment variable not set")
+
     if not p1:
         p1=46321
     if not p2:
@@ -68,30 +74,31 @@ def jtautostart(p1=None,p2=None):
         except:
             pass
     else:
-        raise jtutil.applicationerror,("jtsocket","no free port")
-        
+        raise jtutil.applicationerror("jtsocket","no free port")
+
     if os.getenv("wInDiR"):
         #Windows
         os.system( "start /b java -jar "+jterminal+" 127.0.0.1 "+str(p) )
     else:
         #UNIX
         os.system( "java -jar "+jterminal+" 127.0.0.1 "+str(p)+" &" )
-            
+
     jtsocket.sck, (remotehost, remoteport)=srv.accept()
     srv.close()
-    
+
 
 def send(x):
 
     if not jtsocket.sck:
         jtsocket.sck=jttermsck()
- 
-    if jtsocket.debug:
-        print ">>>>>send:",x
 
-    hdr1=("00000000"+str(len(x)))[-8:] 
-    hdr2=("00000000"+str(crc(x)))[-8:]  
-    x=hdr1+hdr2+x
+    if jtsocket.debug:
+        print( ">>>>>send:",x)
+
+    x=jtutil.str2bin(x)
+    hdr1=(("00000000"+str(len(x)))[-8:]).encode("utf-8")
+    hdr2=(("00000000"+str(crc(x)))[-8:]).encode("utf-8")
+    x=(hdr1+hdr2+x)
 
     nbyte=0
     sent=0
@@ -99,7 +106,7 @@ def send(x):
     while sent<len(x):
         nbyte=jtsocket.sck.send(x[sent:])
         if nbyte<0:
-            raise jtutil.applicationerror,("jtsocket","send failed")
+            raise jtutil.applicationerror("jtsocket","send failed")
         sent=sent+nbyte
 
 
@@ -109,25 +116,29 @@ def recv(wtime=None):
 
     if wtime and not select.select([jtsocket.sck],[],[],wtime/float(1000))[0]:
         return ""
- 
+
     hdr1=recv1(jtsocket.sck,8)
     hdr2=recv1(jtsocket.sck,8)
 
-    if not hdr1 or not hdr2: 
+    if not hdr1 or not hdr2:
         return None
-        
-    x=recv1(jtsocket.sck,int(hdr1))
+
+    hdr1=codecs.decode(hdr1,'UTF-8')
+    hdr2=codecs.decode(hdr2,'UTF-8')
+    msglen=int(hdr1)
+
+    x=recv1(jtsocket.sck,msglen)
     if not hdr2==("00000000"+str(crc(x)))[-8:]:
-        raise jtutil.applicationerror,("jtsocket","recv failed")
+        raise jtutil.applicationerror("jtsocket","recv failed")
 
     if jtsocket.debug:
-        print "<<<<<recv:",x
- 
-    return x 
+        print ("<<<<<recv:",x)
+
+    return x
 
 
 def recv1(s,n):
-    x=""
+    x=b""
     lx=0
     while lx<n:
         r=s.recv(n-lx)
@@ -135,15 +146,14 @@ def recv1(s,n):
             return None
         x=x+r
         lx=lx+len(r)
-    return x
+    return x   
 
 
 def crc(x):
     sum=0
     for c in x:
-        sum=sum+ord(c)
+        sum=sum+c
     return sum
 
- 
 
-    
+

@@ -1,22 +1,22 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
-import jtutil 
-import jtsocket
-import jtdom
-import jtfilefilter
-import dates
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
+from . import jtfilefilter
+from . import dates
  
 
 def jtdirectory(mask=None,attr=None):
 
-    # ut·nozza Clipper directory()-t 
+    # ut√°nozza Clipper directory()-t 
     #
-    # jtdirectory("*.java")          java filÈk
-    # jtdirectory("*.bat|*.java")    bat vagy java filÈk 
-    # jtdirectory("getutil/*.java")  java filÈk a getutil directorybÛl
-    # jtdirectory("*.bat","D")       bat filÈk plusz directoryk 
+    # jtdirectory("*.java")          java fil√©k
+    # jtdirectory("*.bat|*.java")    bat vagy java fil√©k 
+    # jtdirectory("getutil/*.java")  java fil√©k a getutil directoryb√≥l
+    # jtdirectory("*.bat","D")       bat fil√©k plusz directoryk 
     # jtdirectory(,"D")              csak directoryk  
 
     if mask==None:
@@ -43,11 +43,11 @@ def jtdirectory(mask=None,attr=None):
 
 def jtdirlist(workdir=None,fmask=None,dmask=None):
 
-    #egy m·sik utility f¸ggvÈny a dirlist objektumhoz
+    #egy m√°sik utility f√ºggv√©ny a dirlist objektumhoz
     #
-    #workdir : ezt a directoryt list·zza (empty==curdir)
-    #fmask   : illeszkedı filÈk maszkja, vagy egy jtfilefilter
-    #dmask   : illeszkedı directoryk maszkja, ha ¸res, nem ad directorykat
+    #workdir : ezt a directoryt list√°zza (empty==curdir)
+    #fmask   : illeszked≈ë fil√©k maszkja, vagy egy jtfilefilter
+    #dmask   : illeszked≈ë directoryk maszkja, ha √ºres, nem ad directorykat
 
     if dmask==None:
         dmask=""
@@ -56,14 +56,14 @@ def jtdirlist(workdir=None,fmask=None,dmask=None):
     dl.workdir=workdir
 
     if type(fmask)==type(""):
-        #fmask: filÈmaszk
+        #fmask: fil√©maszk
         #dmask: directory maszk
 
         dl.filter.addpattern(fmask)
         dl.filter.regexdir=jtfilefilter.jtfilepattern(dmask)
   
     elif type(fmask)==type([]):
-        #fmask: filÈmaszk lista
+        #fmask: fil√©maszk lista
         #dmask: directory maszk
         
         for fm in fmask:
@@ -72,7 +72,7 @@ def jtdirlist(workdir=None,fmask=None,dmask=None):
 
     elif type(fmask)==type(jtfilefilter.new()):
         #fmask: jtfilefilter objektum
-        #dmask: nem haszn·ljuk
+        #dmask: nem haszn√°ljuk
 
         dl.filter=fmask
 

@@ -1,12 +1,12 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 
 import os
 import string
 
-import jtutil
-from jtelem import jtelem
+from . import jtutil
+from .jtelem import jtelem
  
 class new(jtelem):
 
@@ -50,9 +50,9 @@ class new(jtelem):
         x+="<setbar>"
         x+="<value>"+str(self.value%self.maxvalue)+"</value>" 
         if t:
-            x+="<text>"+jtutil.cdataif(string.strip(self.text))+"</text>" 
+            x+="<text>"+jtutil.cdataif(self.text.strip())+"</text>" 
         if c:
-            x+="<caption>"+jtutil.cdataif(string.strip(self.caption))+"</caption>" 
+            x+="<caption>"+jtutil.cdataif(self.caption.strip())+"</caption>" 
         x+="</setbar>"
         x+="</jtmessage>"
 

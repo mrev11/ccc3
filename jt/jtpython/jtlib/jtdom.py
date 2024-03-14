@@ -1,26 +1,32 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
-# Egyszerûsített dom interface, 
-# ami elkerüli az eredeti csomag hibáit.
+# EgyszerÅ±sÃ­tett dom interface, 
+# ami elkerÃ¼li az eredeti csomag hibÃ¡it.
 # /usr/lib/python/site.py-ban
-# encoding-ot át kell írni 'latin-1'-re,
-# máskülönben az ékezetes betûkön elszáll!
+# encoding-ot Ã¡t kell Ã­rni 'UTF-8'-re,
+# mÃ¡skÃ¼lÃ¶nben az Ã©kezetes betÅ±kÃ¶n elszÃ¡ll!
 #
-# Azért is jó saját interfészt használni,
-# mert a Python XML csomagjait gyakran változtatják, 
-# sôt eleve több változat létezik belôe.
+# AzÃ©rt is jÃ³ sajÃ¡t interfÃ©szt hasznÃ¡lni,
+# mert a Python XML csomagjait gyakran vÃ¡ltoztatjÃ¡k, 
+# sÅ‘t eleve tÃ¶bb vÃ¡ltozat lÃ©tezik belÅ‘e.
  
 
 import string
 import xml.dom.minidom
 
+from . import jtutil
+
+
 def encoding():
-    return '<?xml version="1.0" encoding="iso-8859-1"?>' 
+    return ""
+    return '<?xml version="1.0" encoding="UTF-8"?>' 
 
 
 def domparse(txt):
-    # encoding nélkül elszáll az ékezetes betûkön
+    # encoding nÃ©lkÃ¼l elszÃ¡ll az Ã©kezetes betÅ±kÃ¶n
+    # ha UTF-8 a kÃ³dolÃ¡s, akkor nem kell az encoding
+    txt=jtutil.bin2str(txt)
     return xml.dom.minidom.parseString(encoding()+txt)
 
 
@@ -31,24 +37,24 @@ def wspace(x):
     return not x.strip()
 
 
-def domfirst(node):  # kikerüli az üres szövegeket
+def domfirst(node):  # kikerÃ¼li az Ã¼res szÃ¶vegeket
     c=node.firstChild
     while c:
         if c.nodeType!=c.TEXT_NODE:
             return c
-        elif not wspace(c.nodeValue.encode('latin-1')):
+        elif not wspace(c.nodeValue):
             return c
         else:
             c=c.nextSibling
     return None
 
 
-def domnext(node):  # kikerüli az üres szövegeket
+def domnext(node):  # kikerÃ¼li az Ã¼res szÃ¶vegeket
     c=node.nextSibling
     while c:
         if c.nodeType!=c.TEXT_NODE: 
             return c
-        elif not wspace(c.nodeValue.encode('latin-1')):
+        elif not wspace(c.nodeValue):
             return c
         else:
             c=c.nextSibling
@@ -56,7 +62,7 @@ def domnext(node):  # kikerüli az üres szövegeket
  
  
 def domecho(node,n=0):
-    print string.rjust("",4*n),node
+    print( "".rjust(4*n),node)
     c=domfirst(node)
     while c:
         domecho(c,n+1)
@@ -68,23 +74,24 @@ def domname(node):
 
 
 def domattr(node,attr):
-    return node.getAttribute(attr).encode('latin-1')
+    return node.getAttribute(attr)
  
 
 def domtext(node):
-    text=""
-    c=domfirst(node)
-    while c:
-        if c.nodeType == c.TEXT_NODE:
-            text=text+c.nodeValue.encode('latin-1') 
-        c=domnext(c) 
-
-    # az XML elemzô unicode-ot ad,
-    # amit át kell konvertálni 8 bites stringre,
-    # a default konvezió (ascii) elszállna az ékezetes betûkön,
-    # site.py-ban encoding-ot 'ascii'-ról 'latin-1'-re kell átírni,
-    # a biztonság kedvéért itt is explicite konvertálunk
-        
-    return text
-
+    def walk(node,text):
+        if node.nodeValue==None:
+            pass
+        elif not isinstance(node.nodeValue,str):
+            pass
+        elif wspace(node.nodeValue):
+            pass
+        else:
+            text[0]+=node.nodeValue
+        child=node.firstChild
+        while child:
+            walk(child,text)    
+            child=child.nextSibling
+    text=[""]
+    walk(node,text)
+    return text[0]
 

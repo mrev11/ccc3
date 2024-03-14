@@ -1,14 +1,13 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-# hasonlÛ test-brwarr.py-hoz,
-# csak a termin·l jtdirlist szolg·ltat·s·val megy
+# hasonl√≥ test-brwarr.py-hoz,
+# csak a termin√°l jtdirlist szolg√°ltat√°s√°val megy
 
 from jtlib import *
 
 
 def main():
-    jtsocket.jtautostart()
     msgloop( makedlg() )
 
 
@@ -28,23 +27,21 @@ def msgloop(dlg):
 
 def makedlg():
 
-    #dir=jtdirlist.jtdirectory("*","D") 
-    #dir=jtdirlist.jtdirectory("*.py") 
-    dir=jtdirlist.jtdirectory("jtlib/*.pyc") 
+    dir=jtdirlist.jtdirectory("jtlib/*.py") 
  
     for n in range(len(dir)):
         dir[n].append(-1==dir[n][0].find(".py"))
         dir[n].insert( 0, n+1 )
-        #print dir[n]
+        #print(dir[n])
  
     dlg=jtdialog.new(4,16,24,96) 
-    dlg.caption("Array Browse DemÛ")
+    dlg.caption("Array Browse Dem√≥")
     dlg.layout="vbox"
     
     brw=dlg.add(jtbrowsearray.new())
     brw.name="brw"
     brw.array(dir)
-    brw.addcolumn("Sorsz·m",1,"@RN 99999")
+    brw.addcolumn("Sorsz√°m",1,"@RN 99999")
     brw.addcolumn("Name",2,24).editable=1
     brw.addcolumn("Size",3,"@NR 999,999,999").editable=1 
     brw.addcolumn("Date",4,"@RDE").editable=1 

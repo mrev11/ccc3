@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
 from jtlib.jtalert import jtalert
@@ -44,7 +44,7 @@ def msgloop(dlg):
             dlg.close()
 
         elif msg=="tpane":
-            jtalert("kiv·lasztva:"+str(dlg.var.tpane.varget()))
+            jtalert("kiv√°lasztva:"+str(dlg.var.tpane.varget()))
 
         elif msg=="b1":
             dlg.var.tpane.select(1)
@@ -56,7 +56,7 @@ def msgloop(dlg):
 def makedlg():
 
     dlg=jtdialog.new(4,16,24,96) 
-    dlg.caption("TabPane DemÛ")
+    dlg.caption("TabPane Dem√≥")
     dlg.layout="vbox"
     
     tpane=dlg.add(jttabpane.new())
@@ -66,18 +66,18 @@ def makedlg():
  
     p=tpane.additem(jtpanel.new())
     p.name="p1"
-    p.text="Elsı panel"
+    p.text="Els≈ë panel"
     p.mnemonic="E"
     p.bottom=32
-    p.tooltip="Elsı panel tooltipje"
+    p.tooltip="Els≈ë panel tooltipje"
     p.additem(jticon(ICON_STEAM))
     p.additem(pd1())
 
     p=tpane.additem(jtpanel.new())
     p.name="p2"
-    p.text="M·sodik panel"
+    p.text="M√°sodik panel"
     p.mnemonic="M"
-    p.tooltip="M·sodik panel tooltipje"
+    p.tooltip="M√°sodik panel tooltipje"
     p.additem(jticon(ICON_STEAM))
     p.additem(jticon(ICON_STEAM))
     p.additem(pd2())
@@ -87,20 +87,20 @@ def makedlg():
  
     b=tbar.additem(jtpush.new())
     b.name="b1"
-    b.text="Elsı"
-    b.tooltip="Kiv·lasztja az elsı panelt."
+    b.text="Els≈ë"
+    b.tooltip="Kiv√°lasztja az els≈ë panelt."
 
     b=tbar.additem(jtpush.new())
     b.name="b2"
-    b.text="M·sodik"
-    b.tooltip="Kiv·lasztja a m·sodik panelt."
+    b.text="M√°sodik"
+    b.tooltip="Kiv√°lasztja a m√°sodik panelt."
 
     tbar.additem(jthglue.new())
 
     b=tbar.additem(jtpush.new())
     b.name="esc"
-    b.text="KilÈp"
-    b.tooltip="Program vÈge."
+    b.text="Kil√©p"
+    b.tooltip="Program v√©ge."
     b.icon=ICON_EXIT 
        
         
@@ -112,23 +112,23 @@ def makedlg():
 def pd1():
 
     p=jtmenu.new()
-    p.text="PrÛba szerencse"    
+    p.text="Pr√≥ba szerencse"    
     p.name="pd1"
     p.mnemonic="P"
 
     m=p.additem(jtmenuitem.new()) 
-    m.text="PrÛba szerencse 1" 
+    m.text="Pr√≥ba szerencse 1" 
     m.name="pd11"
     
     m=p.additem(jtmenuitem.new()) 
-    m.text="PrÛba szerencse 2" 
+    m.text="Pr√≥ba szerencse 2" 
     m.name="pd12"
 
     m=p.additem(jtmenuitem.new()) 
-    m.text="PrÛba szerencse 3" 
+    m.text="Pr√≥ba szerencse 3" 
     m.name="pd13"
     m.accelerator="ctrl alt A"
-    m.actionblock=lambda dlg:jtalert("PrÛba szerencse 3")
+    m.actionblock=lambda dlg:jtalert("Pr√≥ba szerencse 3")
 
     return p
 
@@ -136,22 +136,22 @@ def pd1():
 def pd2():
 
     p=jtmenu.new()
-    p.text="Van aki forrÛn"    
+    p.text="Van aki forr√≥n"    
     p.name="pd2"
     p.mnemonic="V"
 
     m=p.additem(jtmenuitem.new())
-    m.text="Van aki forrÛn 1"
+    m.text="Van aki forr√≥n 1"
     m.name="pd21"
     m.accelerator="ctrl shift A"
-    m.actionblock=lambda dlg:jtalert("Van aki forrÛn 1")
+    m.actionblock=lambda dlg:jtalert("Van aki forr√≥n 1")
 
     m=p.additem(jtmenuitem.new())
-    m.text="Van aki forrÛn 2"
+    m.text="Van aki forr√≥n 2"
     m.name="pd22"
 
     m=p.additem(jtmenuitem.new())
-    m.text="Van aki forrÛn 3"
+    m.text="Van aki forr√≥n 3"
     m.name="pd23"
 
     return p

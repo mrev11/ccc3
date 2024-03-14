@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 import sys
 
@@ -7,7 +7,7 @@ from jtlib import *
 from jtlib.jtfilefilter import jtfilepattern
 
 
-kepnezo=sys.modules[__name__] # az aktuális modul objektum
+kepnezo=sys.modules[__name__] # az aktuÃ¡lis modul objektum
 
 wd=None
 ch=None
@@ -51,8 +51,8 @@ def forward(dlg):
 
 def makedlg():
 
-    dlg=jtdialog.new(4,16,24,96)
-    dlg.caption("Képnézõ Demó")
+    dlg=jtdialog.new(4,16,48,200)
+    dlg.caption("KÃ©pnÃ©zÅ‘ DemÃ³")
     dlg.layout="vbox"
    
     htm=dlg.add(jthtmlarea.new())  
@@ -69,26 +69,26 @@ def makedlg():
 
     lst=bar.additem(jtcombo.new()) 
     lst.name="speed"
-    lst.tooltip="Beállítja a képváltás sebességét"
+    lst.tooltip="BeÃ¡llÃ­tja a kÃ©pvÃ¡ltÃ¡s sebessÃ©gÃ©t"
     lst.valid=1
-    lst.additem("  4 másodperc")
-    lst.additem("  8 másodperc")
-    lst.additem(" 15 másodperc")
-    lst.additem(" 30 másodperc")
-    lst.additem(" 60 másodperc")
-    lst.additem("600 másodperc")
+    lst.additem("  4 mÃ¡sodperc")
+    lst.additem("  8 mÃ¡sodperc")
+    lst.additem(" 15 mÃ¡sodperc")
+    lst.additem(" 30 mÃ¡sodperc")
+    lst.additem(" 60 mÃ¡sodperc")
+    lst.additem("600 mÃ¡sodperc")
  
     chk=bar.additem(jtcheck.new()) 
     chk.name="stop"
-    chk.text="Várakozik"
-    chk.tooltip="Megállítja/továbbindítja a képek cseréjét"
+    chk.text="VÃ¡rakozik"
+    chk.tooltip="MegÃ¡llÃ­tja/tovÃ¡bbindÃ­tja a kÃ©pek cserÃ©jÃ©t"
     chk.varput(0)
     chk.valid=1
 
     but=bar.additem(jtpush.new()) 
-    but.text="Kép választás"
+    but.text="KÃ©p vÃ¡lasztÃ¡s"
     but.icon="icons/22/fileopen.png"  
-    but.tooltip="Kiválasztja a megjelenítendõ képeket"
+    but.tooltip="KivÃ¡lasztja a megjelenÃ­tendÅ‘ kÃ©peket"
     but.actionblock=lambda dlg:valaszt(dlg)
     
     dlg.varinst("kepnezo")
@@ -104,29 +104,29 @@ def valaszt(dlg):
     if kepnezo.wd:
         fc.workdir=kepnezo.wd
 
-    fc.caption="Képválasztó"
-    fc.text="Megjelenít"
+    fc.caption="KÃ©pvÃ¡lasztÃ³"
+    fc.text="MegjelenÃ­t"
     fc.multiselect=1
-    fc.selectmode="F"  # csak filéket
+    fc.selectmode="F"  # csak filÃ©ket
 
     ff=fc.addfilter(jtfilefilter.new()) 
-    ff.description="JPEG fájlok (*.jpeg *.jpg)"
+    ff.description="JPEG fÃ¡jlok (*.jpeg *.jpg)"
     ff.addpattern("*.jpeg")
     ff.addpattern("*.jpg")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new()) 
-    ff.description="GIF fájlok (*.gif)"
+    ff.description="GIF fÃ¡jlok (*.gif)"
     ff.addpattern("*.gif")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new()) 
-    ff.description="PNG fájlok (*.png)"
+    ff.description="PNG fÃ¡jlok (*.png)"
     ff.addpattern("*.png")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new()) 
-    ff.description="Minden fájl"
+    ff.description="Minden fÃ¡jl"
     ff.addpattern("*")
     ff.regexdir=jtfilepattern("*")
     
@@ -141,7 +141,7 @@ def valaszt(dlg):
         dlg.var.fdesc.varput(kep)
  
 
-def fspec2url(fspec):  # abszolút fspec --> URL
+def fspec2url(fspec):  # abszolÃºt fspec --> URL
     fspec=fspec.replace("\\","/")
     if fspec[0]!="/":
         fspec="/"+fspec

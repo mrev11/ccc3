@@ -2318,12 +2318,34 @@ int codegen_statement_EXIT(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
+int xcodegen_statement_CLANG(parsenode *p,void *v)//PROTO
+{
+    // makrok helyett lehetne lokalis valtozokat definialni
+    // #define LOCAL_x (base+x)  -->  VALUE *LOCAL_x=base+x;
+
+    int i;
+    parsenode *q;
+
+    nltab();fprintf(code,"{//clang");
+    i=0;
+    while( 0!=(q=(parsenode*)(nodetab_local->get(i))) )
+    {
+        nltab();fprintf(code,"VALUE* LOCAL_%s=(base+%d);",q->text,i);
+        ++i;
+    }
+    nltab();fprintf(code,"%s",rtxt(p,0));
+    nltab();fprintf(code,"}//cend");
+    return 0;
+}
+
+
+//---------------------------------------------------------------------------
 int codegen_statement_CLANG(parsenode *p,void *v)//PROTO
 {
     int i;
     parsenode *q;
 
-    nltab();fprintf(code,"//clang");
+    nltab();fprintf(code,"{//clang");
     i=0;
     while( 0!=(q=(parsenode*)(nodetab_local->get(i))) )
     {
@@ -2331,7 +2353,7 @@ int codegen_statement_CLANG(parsenode *p,void *v)//PROTO
         ++i;
     }
 
-    nltab();fprintf(code,"{%s}",rtxt(p,0));
+    nltab();fprintf(code,"%s",rtxt(p,0));
 
     i=0;
     while( 0!=(q=(parsenode*)(nodetab_local->get(i))) )
@@ -2339,7 +2361,7 @@ int codegen_statement_CLANG(parsenode *p,void *v)//PROTO
         nltab();fprintf(code,"#undef LOCAL_%s",q->text);
         ++i;
     }
-    nltab();fprintf(code,"//cend");
+    nltab();fprintf(code,"}//cend");
     return 0;
 }
 

@@ -1,7 +1,7 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
-import jtcheck
+from . import jtcheck
  
 class new(jtcheck.new):
 

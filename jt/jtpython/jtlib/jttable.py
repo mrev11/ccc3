@@ -1,17 +1,18 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 import os
 import string
 
-import dates
-import jtdom
-import jtutil
-import jttoolbar
-import jtpush
-import jtcolumn
+from . import dates
+from . import jtdom
+from . import jtutil
+from . import jttoolbar
+from . import jtpush
+from . import jtcolumn
 
-from jtelem import *
+#from jtelem import *
+from .jtelem import *
  
  
 class new(jtelem):
@@ -25,10 +26,10 @@ class new(jtelem):
         self.gobottomblock   = None 
         self.saveposblock    = None 
         self.restposblock    = None 
-        self.column          = []      # oszlopok list·ja
+        self.column          = []      # oszlopok list√°ja
         self.maxrow          = 16      # max ennyi sor lehet
-        self.row2pos         = []      # a sorok pozÌciÛi az adatforr·sban
-        self.selectedindices = []      # kiv·lasztott sorok indexe
+        self.row2pos         = []      # a sorok poz√≠ci√≥i az adatforr√°sban
+        self.selectedindices = []      # kiv√°lasztott sorok indexe
 
 
     def classname(self):
@@ -262,36 +263,36 @@ class new(jtelem):
         button=panel.additem(jtpush.new()) 
         button.name=name+"top"
         button.actionblock=lambda dlg:self.pagefirst()
-       #button.text="ElejÈre"
+       #button.text="Elej√©re"
         button.icon=ICON_TOP
-        button.tooltip="A t·bla elejÈre pozÌcion·l."
+        button.tooltip="A t√°bla elej√©re poz√≠cion√°l."
         button.mnemonic="home"
         button.border="null"
 
         button=panel.additem(jtpush.new()) 
         button.name=name+"nxt"
         button.actionblock=lambda dlg : self.pagenext()
-       #button.text="Kˆvetkezı"
+       #button.text="K√∂vetkez≈ë"
         button.icon=ICON_DOWN
-        button.tooltip="Elıre lapoz."
+        button.tooltip="El≈ëre lapoz."
         button.mnemonic="page_down"
         button.border="null"
  
         button=panel.additem(jtpush.new()) 
         button.name=name+"prv"
         button.actionblock=lambda dlg : self.pageprev()
-       #button.text="Elızı"
+       #button.text="El≈ëz≈ë"
         button.icon=ICON_UP
-        button.tooltip="H·tra lapoz."
+        button.tooltip="H√°tra lapoz."
         button.mnemonic="page_up"
         button.border="null"
  
         button=panel.additem(jtpush.new())
         button.name=name+"bot"
         button.actionblock=lambda dlg : self.pagelast()
-       #button.text="VÈgÈre"
+       #button.text="V√©g√©re"
         button.icon=ICON_BOTTOM
-        button.tooltip="A t·bla vÈgÈre pozÌcion·l."
+        button.tooltip="A t√°bla v√©g√©re poz√≠cion√°l."
         button.mnemonic="end"
         button.border="null"
         
@@ -299,9 +300,9 @@ class new(jtelem):
         button=panel.additem(jtpush.new()) 
         button.name=name+"rel"
         button.actionblock=lambda dlg : self.pagereload()
-       #button.text="⁄jraolvas"
+       #button.text="√öjraolvas"
         button.icon=ICON_RELOAD
-        button.tooltip="⁄jraolvassa a lapot."
+        button.tooltip="√öjraolvassa a lapot."
         button.border="null"
     
         return panel
@@ -326,11 +327,11 @@ def _jttable_chngcell(self,x):
         node=jtdom.domnext(node)
         
     if not self.restpos(row):
-        raise jtutil.applicationerror,(jttable,"_jttable_chngcell","restpos failed")
+        raise jtutil.applicationerror(jttable,"_jttable_chngcell","restpos failed")
 
-    # Ez a megold·s nem ellenırzi valcur==valold fenn·ll·s·t,
-    # ehelyett tov·bbadja valold-ot az oszlopblocknak, ami azut·n
-    # elvÈgezheti az ellenırzÈst, ha akarja.
+    # Ez a megold√°s nem ellen≈ërzi valcur==valold fenn√°ll√°s√°t,
+    # ehelyett tov√°bbadja valold-ot az oszlopblocknak, ami azut√°n
+    # elv√©gezheti az ellen≈ërz√©st, ha akarja.
 
     column=self.getcolumn(col) 
  
@@ -349,10 +350,10 @@ def _jttable_chngcell(self,x):
 
 def _jttable_row_xmlout(self):
 
-    # koncepciÛ V¡LTOZ¡S:
-    # nem az adat, hanem az oszlop tÌpus·t nÈzz¸k,
-    # ui. egyes nyelvekben nem jÛk tÌpusok, pl. Pythonban 
-    # nem lehet felismerni a d·tum Ès logikai tÌpust
+    # koncepci√≥ V√ÅLTOZ√ÅS:
+    # nem az adat, hanem az oszlop t√≠pus√°t n√©zz√ºk,
+    # ui. egyes nyelvekben nem j√≥k t√≠pusok, pl. Pythonban 
+    # nem lehet felismerni a d√°tum √©s logikai t√≠pust
  
     x="<r>"
     for c in self.column:

@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -f jtpython.zip
+zip -r jtpython jtlib
+mv  jtpython.zip  ~/

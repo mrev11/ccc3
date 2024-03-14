@@ -1,6 +1,6 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_ 
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_ 
+# _*_ coding: UTF-8 _*_
  
 import sys
 
@@ -10,7 +10,7 @@ from jtlib.jtfilefilter import jtfilepattern
 #from jtlib.jtalert import jtalert
 
 
-kepnezo=sys.modules[__name__] # az aktuális modul objektum
+kepnezo=sys.modules[__name__] # az aktuÃ¡lis modul objektum
  
 wd=None
 
@@ -26,9 +26,9 @@ def msgloop(dlg):
 
 
 def makedlg():
-    dlg=jtdialog.new(4,16,24,96)
+    dlg=jtdialog.new(4,16,40,200)
 
-    dlg.caption("Képnézõ Demó")
+    dlg.caption("KÃ©pnÃ©zÅ‘ DemÃ³")
     dlg.layout="vbox"
    
     htm=dlg.add(jthtmlarea.new())
@@ -45,10 +45,10 @@ def makedlg():
     bar.additem( jthglue.new() )
 
     but=bar.additem(jtpush.new()) 
-    but.text="Kép választás"
+    but.text="KÃ©p vÃ¡lasztÃ¡s"
     but.name="kep"
     but.icon="icons/22/fileopen.png"  
-    but.tooltip="Kiválasztja az új megjelenítendõ képet"
+    but.tooltip="KivÃ¡lasztja az Ãºj megjelenÃ­tendÅ‘ kÃ©pet"
     but.actionblock=lambda dlg:valaszt(dlg)
     
     dlg.varinst("kepnezo")
@@ -64,30 +64,30 @@ def valaszt(dlg):
     if kepnezo.wd:
         fc.workdir=kepnezo.wd
 
-    fc.caption="Képválasztó"
-    fc.text="Megjelenít"
+    fc.caption="KÃ©pvÃ¡lasztÃ³"
+    fc.text="MegjelenÃ­t"
     fc.multiselect=1
-    fc.selectmode="F"  # csak filéket
+    fc.selectmode="F"  # csak filÃ©ket
 
 
     ff=fc.addfilter(jtfilefilter.new())
-    ff.description="JPEG fájlok (*.jpeg *.jpg)"
+    ff.description="JPEG fÃ¡jlok (*.jpeg *.jpg)"
     ff.addpattern("*.jpeg")
     ff.addpattern("*.jpg")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new())
-    ff.description="GIF fájlok (*.gif)"
+    ff.description="GIF fÃ¡jlok (*.gif)"
     ff.addpattern("*.gif")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new())
-    ff.description="PNG fájlok (*.png)"
+    ff.description="PNG fÃ¡jlok (*.png)"
     ff.addpattern("*.png")
     ff.regexdir=jtfilepattern("*")
 
     ff=fc.addfilter(jtfilefilter.new())
-    ff.description="Minden fájl"
+    ff.description="Minden fÃ¡jl"
     ff.addpattern("*")
     ff.regexdir=jtfilepattern("*")
 
@@ -101,7 +101,7 @@ def valaszt(dlg):
  
 
 
-def fspec2url(fspec):  # abszolút fspec --> URL
+def fspec2url(fspec):  # abszolÃºt fspec --> URL
     fspec=fspec.replace("\\","/")
     if fspec[0]!="/":
         fspec="/"+fspec

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
  
@@ -16,7 +16,7 @@ def msgloop(dlg):
 def makedlg():
 
     dlg=jtdialog.new(4,16,24,96) 
-    dlg.caption("SplitPane Demó")
+    dlg.caption("SplitPane DemÃ³")
     dlg.layout="vbox"
     
     split=dlg.add(jtsplitpane.new())
@@ -32,7 +32,7 @@ def makedlg():
     pnl1.hscroll=1
     pnl1.vscroll=1
 
-    pnl2=split1.setitem(2,jtpanel.new()) #üresen marad
+    pnl2=split1.setitem(2,jtpanel.new()) #Ã¼resen marad
     pnl2.text="HOPP"
 
     txt=split.setitem(2,jttextarea.new())

@@ -1,9 +1,9 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
-import jtutil
-from jtelem import jtelem
+from . import jtutil
+from .jtelem import jtelem
  
 class new(jtelem):
 
@@ -14,7 +14,7 @@ class new(jtelem):
         self.name          = ""
         self.itemlist      = [None,None]
         self.orientation   = "ver"         # ver/hor 
-        self.divider       = 0             # top/left méret 
+        self.divider       = 0             # top/left mÃ©ret 
  
 
     def classname(self):

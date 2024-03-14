@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 import time
 from jtlib import *
@@ -30,13 +30,13 @@ def main():
     #--------------------------------------------------------------------------
  
     # Az olyan message-ek,
-    # mint amik a táblaobjektum indexelésében, 
-    # vagy a packolásban óhatatlanul elôjönnek, megtalálják  
-    # a felsô dialogboxban levô "progressbar" nevû kontrollt,
-    # vagy ha nincs ilyen, akkor létrehoznak maguknak
+    # mint amik a tÃ¡blaobjektum indexelÃ©sÃ©ben, 
+    # vagy a packolÃ¡sban Ã³hatatlanul elÅ‘jÃ¶nnek, megtalÃ¡ljÃ¡k  
+    # a felsÅ‘ dialogboxban levÅ‘ "progressbar" nevÅ± kontrollt,
+    # vagy ha nincs ilyen, akkor lÃ©trehoznak maguknak
     # agy automatikus ablakot (mint itt).
 
-    pbar1("Türelem rózsát terem")
+    pbar1("TÃ¼relem rÃ³zsÃ¡t terem")
     pbar1("percent")
 
     msg=None
@@ -49,41 +49,41 @@ def main():
     message(msg)
     
     # Ha a time.sleep-eket kiveszem, akkor a messagek
-    # gyorsabban lefutnak, mint ahogy a Jáva meg tudná
-    # jeleníteni az ablakot.
+    # gyorsabban lefutnak, mint ahogy a JÃ¡va meg tudnÃ¡
+    # jelenÃ­teni az ablakot.
  
     #--------------------------------------------------------------------------
-    # jtdialogba ágyazott progress bar
+    # jtdialogba Ã¡gyazott progress bar
     #--------------------------------------------------------------------------
 
-    # Eddig minden a terminál által automatikusan
-    # létrehozott ablakban jelent meg. Most lérehozunk
+    # Eddig minden a terminÃ¡l Ã¡ltal automatikusan
+    # lÃ©trehozott ablakban jelent meg. Most lÃ©rehozunk
     # egy dialogboxot, ameiben van egy "progressbar"
-    # és egy "pbar" nevû kontroll. 
+    # Ã©s egy "pbar" nevÅ± kontroll. 
     
     #"""
 
     dlg=pbar()
-    dlg.caption("Progressbar demó")
+    dlg.caption("Progressbar demÃ³")
     dlg.pbar.minvalue=200
     dlg.pbar.maxvalue=500
 
     dlg.show()
     
-    # Most a default (progressbar nevû) progressbar
-    # kapja meg az üzeneteket, nem jön létre új ablak.
+    # Most a default (progressbar nevÅ±) progressbar
+    # kapja meg az Ã¼zeneteket, nem jÃ¶n lÃ©tre Ãºj ablak.
 
     pbar1("Default progressbar")
     
-    # Végül az általános eset.
-    # a speciálisan felparaméterezett pbar-t használjuk
-    # (a dlg.show elôtt kell megadni a paramétereket)
+    # VÃ©gÃ¼l az Ã¡ltalÃ¡nos eset.
+    # a speciÃ¡lisan felparamÃ©terezett pbar-t hasznÃ¡ljuk
+    # (a dlg.show elÅ‘tt kell megadni a paramÃ©tereket)
     
     for n in range(dlg.pbar.minvalue,dlg.pbar.maxvalue):
-        dlg.pbar.setbar(n,"Próba szerencse "+str(n))
+        dlg.pbar.setbar(n,"PrÃ³ba szerencse "+str(n))
         time.sleep(0.01) 
 
-    dlg.pbar.setbar(dlg.pbar.maxvalue,"KÉSZ")
+    dlg.pbar.setbar(dlg.pbar.maxvalue,"KÃ‰SZ")
     time.sleep(1) 
     dlg.pbar.clearbar()
     time.sleep(1)
@@ -94,12 +94,12 @@ def pbar1(text):
 
     pb=jtprogbar.new()
 
-    # Ha a progressbar-t a jterminal automatikusan hozza létre,
-    # akkor az csak a setbar message hatására fog létrejönni,
-    # azért hiába paraméterezzük itt a pb objektumot,
-    # csak azok az adatok mennek át, amiket a setbar átvisz.
-    # A pb attribútomok csak akkor hatnak, ha pb be van ágyazva 
-    # egy jtdialogba, és a jtdialog üzenet átviszi az adatokat. 
+    # Ha a progressbar-t a jterminal automatikusan hozza lÃ©tre,
+    # akkor az csak a setbar message hatÃ¡sÃ¡ra fog lÃ©trejÃ¶nni,
+    # azÃ©rt hiÃ¡ba paramÃ©terezzÃ¼k itt a pb objektumot,
+    # csak azok az adatok mennek Ã¡t, amiket a setbar Ã¡tvisz.
+    # A pb attribÃºtomok csak akkor hatnak, ha pb be van Ã¡gyazva 
+    # egy jtdialogba, Ã©s a jtdialog Ã¼zenet Ã¡tviszi az adatokat. 
     # Ez sajnos egy csapda. 
 
     pb.setbar(0,text)

@@ -1,3 +1,6 @@
+2024.03.07 -- 5.7.0.1
+   clang szekciok rendezettebb kiirasa; 
+
 2024.02.22 -- 5.7.0 
   lancolt osszehasonlitasok: a<b.and.b<=c helyett irhato a<b<=c.
   uj operator '|': a|b == a, ha a!=NIL, egyebkent v.

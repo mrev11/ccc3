@@ -1,22 +1,22 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 # jtfilefilter
 #
-# Filefilter a jtdirlist és jtfilechooser osztályokhoz.
-# Directorykhoz és normál filékhez külön filtert kell magadni.
+# Filefilter a jtdirlist Ã©s jtfilechooser osztÃ¡lyokhoz.
+# Directorykhoz Ã©s normÃ¡l filÃ©khez kÃ¼lÃ¶n filtert kell magadni.
 #
-# regexdir  : 1 db reguláris kifejezés directorykra
-# regexlist : reguláris kifejezések listája normál filékre 
+# regexdir  : 1 db regulÃ¡ris kifejezÃ©s directorykra
+# regexlist : regulÃ¡ris kifejezÃ©sek listÃ¡ja normÃ¡l filÃ©kre 
 #
-# regexlist az addregex és addpattern metódusokkal bõvíthetõ,
-# utóbbi a filémaszkot megpróbálja reguláris kifejezésre alakítani
+# regexlist az addregex Ã©s addpattern metÃ³dusokkal bÅ‘vÃ­thetÅ‘,
+# utÃ³bbi a filÃ©maszkot megprÃ³bÃ¡lja regulÃ¡ris kifejezÃ©sre alakÃ­tani
 
 
 def jtfilepattern(x):
     
-    # Megjegyzés: a Jáva Pattern osztály ennél sokkal többet 
-    # tud, ez itt csak emlékeztetõ a legegyszerûbb esetekre.
+    # MegjegyzÃ©s: a JÃ¡va Pattern osztÃ¡ly ennÃ©l sokkal tÃ¶bbet 
+    # tud, ez itt csak emlÃ©keztetÅ‘ a legegyszerÅ±bb esetekre.
 
     if x:
         x=x.replace(".","\.")

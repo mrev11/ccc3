@@ -1,10 +1,11 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 import os
-import jtutil
-import jtdom
-from jtelem import jtelem
+
+from . import jtutil
+from . import jtdom
+from .jtelem import jtelem
  
 class new(jtelem):
 
@@ -107,28 +108,28 @@ class new(jtelem):
 
 def _jtcombo_changelist(self,v=None,mode=None,i=None):
 
-# jtcombo:changelist()           elküldi (az egész) choicelistet
-# jtcombo:changelist(v)          kicseréli choicelistet, és küldi 
-# jtcombo:changelist(v,"app")    bõvíti choicelistet, és küldi a bõvítést
-# jtcombo:changelist(v,"ins",i)  beszúr i-nél, és küldi a bõvítést
-# jtcombo:changelist(v,"del",i)  törli v/i-t, és küldi a törölt indexet
+# jtcombo:changelist()           elkÃ¼ldi (az egÃ©sz) choicelistet
+# jtcombo:changelist(v)          kicserÃ©li choicelistet, Ã©s kÃ¼ldi 
+# jtcombo:changelist(v,"app")    bÅ‘vÃ­ti choicelistet, Ã©s kÃ¼ldi a bÅ‘vÃ­tÃ©st
+# jtcombo:changelist(v,"ins",i)  beszÃºr i-nÃ©l, Ã©s kÃ¼ldi a bÅ‘vÃ­tÃ©st
+# jtcombo:changelist(v,"del",i)  tÃ¶rli v/i-t, Ã©s kÃ¼ldi a tÃ¶rÃ¶lt indexet
  
 
-    # elõször végrehajtjuk lokálisan
+    # elÅ‘szÃ¶r vÃ©grehajtjuk lokÃ¡lisan
 
     if not mode:
         if not v:
-            v=self.choicelist       # újraküldi choicelistet
+            v=self.choicelist       # ÃºjrakÃ¼ldi choicelistet
         else:
-            self.choicelist=v       # kicseréli és küldi choicelistet 
+            self.choicelist=v       # kicserÃ©li Ã©s kÃ¼ldi choicelistet 
  
     elif mode=="app":
         if type(v)!=type([]):
             v=[v]
-        self.choicelist+=v          # bõvíti choicelistet, küldi a bõvítést 
+        self.choicelist+=v          # bÅ‘vÃ­ti choicelistet, kÃ¼ldi a bÅ‘vÃ­tÃ©st 
 
     elif mode=="ins":
-        self.insertitem(v,i)        # beszúr, és küldi a bõvítést
+        self.insertitem(v,i)        # beszÃºr, Ã©s kÃ¼ldi a bÅ‘vÃ­tÃ©st
 
     elif mode=="del":
     
@@ -141,18 +142,18 @@ def _jtcombo_changelist(self,v=None,mode=None,i=None):
                 i=0
         else:
             pass
-            # eredeti i paraméter
+            # eredeti i paramÃ©ter
 
         if i<1 or len(self.choicelist)<1:
             return
 
-        self.deleteitem(i)          # törli i-t, és küldi a törölt indexet
+        self.deleteitem(i)          # tÃ¶rli i-t, Ã©s kÃ¼ldi a tÃ¶rÃ¶lt indexet
  
     else:
-        raise jtutil.applicationerror, ("jtcombo","invalid changelist mode", mode)
+        raise jtutil.applicationerror("jtcombo","invalid changelist mode", mode)
     
 
-    # azután elküldjük a terminálnak
+    # azutÃ¡n elkÃ¼ldjÃ¼k a terminÃ¡lnak
 
     x='<jtmessage'
     x+=jtutil.ATTR("pid",str(os.getpid()))

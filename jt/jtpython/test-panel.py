@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
  
@@ -7,7 +7,7 @@ from jtlib import *
 def mkdialog(): 
 
     dlg=jtdialog.new(6,20,24,80)
-    dlg.caption('Próba szerencse')
+    dlg.caption('PrÃ³ba szerencse')
     dlg.layout="vbox"
     dlg.layout="fix"
     

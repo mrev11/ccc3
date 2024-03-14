@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
 import os
 import glob
@@ -30,20 +30,20 @@ def msgloop(dlg):
 
 def makedlg():
 
-    dir=directory("*","D") 
+    dir=directory("jtlib/*","D") 
     for n in range(len(dir)):
         dir[n].append(-1==dir[n][0].find(".py"))
         dir[n].insert( 0, n+1 )
-        #print dir[n]
+        #print(dir[n])
  
     dlg=jtdialog.new(4,16,24,96) 
-    dlg.caption("Array Browse DemÛ")
+    dlg.caption("Array Browse Dem√≥")
     dlg.layout="vbox"
     
     brw=dlg.add(jtbrowsearray.new())
     brw.name="brw"
     brw.array(dir)
-    brw.addcolumn("Sorsz·m",1,"@RN 99999")
+    brw.addcolumn("Sorsz√°m",1,"@RN 99999")
     brw.addcolumn("Name",2,24).editable=1
     brw.addcolumn("Size",3,"@NR 999,999,999").editable=1 
     brw.addcolumn("Date",4,"@RDE").editable=1 
@@ -75,7 +75,7 @@ def directory(dspec,flags=""):
             t=time.localtime(os.path.getmtime(g)) 
             da=dates.date(t[0],t[1],t[2])
             ti="%02d:%02d:%02d"%(t[3],t[4],t[5])
-            print [base,size,da,ti,attr] 
+            #print([base,size,da,ti,attr])
             dlst.append([base,size,da,ti,attr])
     return dlst
  

@@ -1,9 +1,10 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 import os
-import jtutil
-import jtsocket
+
+from . import jtutil
+from . import jtsocket
  
 class jtelem:
 
@@ -103,13 +104,13 @@ class jtelem:
             x+="<valid>true</valid>"
         
             if not self.name:
-                # A komponens akciót akar jelenteni,
-                # ami nem lehetséges név nélkül,
-                # ha itt nem jelentenénk a hibát,
-                # akkor késõbb az XML elemzés akadna meg.
-                raise jtutil.applicationerror, ("jtelem","valid field without name",self.xmlname())
+                # A komponens akciÃ³t akar jelenteni,
+                # ami nem lehetsÃ©ges nÃ©v nÃ©lkÃ¼l,
+                # ha itt nem jelentenÃ©nk a hibÃ¡t,
+                # akkor kÃ©sÅ‘bb az XML elemzÃ©s akadna meg.
+                raise jtutil.applicationerror ("jtelem","valid field without name",self.xmlname())
     
-        x+=self.xmladd() #bõvítmények
+        x+=self.xmladd() #bÅ‘vÃ­tmÃ©nyek
 
         if self.text:
             x+="<text>"+jtutil.cdataif(self.text)+"</text>"
@@ -267,14 +268,17 @@ class jtelem:
     def changeitem(self,ctrl):
 
         if self.classname()!=ctrl.classname():
-            #vakon cseréljük az objektum attribútumait,
-            #ami csak egyezõ struktúrákra engedhetõ meg
-            raise jtutil.applicationerror, ("jtelem","different classes",self.classname(),ctrl.classname())
+            #vakon cserÃ©ljÃ¼k az objektum attribÃºtumait,
+            #ami csak egyezÅ‘ struktÃºrÃ¡kra engedhetÅ‘ meg
+            raise jtutil.applicationerror("jtelem","different classes",self.classname(),ctrl.classname())
     
         for attr in dir(self):
             a=getattr(ctrl,attr)
             if not callable(a):
-                setattr(self,attr,a)
+                try:
+                    setattr(self,attr,a)
+                except:
+                    pass
     
         x='<jtmessage'
         x+=jtutil.ATTR("pid",str(os.getpid())) 

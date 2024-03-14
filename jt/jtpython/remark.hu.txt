@@ -1,4 +1,4 @@
-Egyelőre itt nincs UTF-8 támogatás!
+Átírva Python3-ra, Unicode/UTF-8 kódolásra.
 
 Indítás ugyanúgy, mint a CCC programoknál.
 A JTERMINAL változóban meg kell adni a jterminal.jar teljes 

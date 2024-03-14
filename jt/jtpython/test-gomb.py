@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
  
@@ -7,49 +7,49 @@ from jtlib import *
 def mkdialog(): 
 
     dlg=jtdialog.new(6,20,24,80)
-    dlg.caption('Próba szerencse')
+    dlg.caption('PrÃ³ba szerencse')
     dlg.layout="vbox"
 
     r=jtradio.new()
     r.name="r1"
     r.state=1
-    r.text="Rádió button 1"
+    r.text="RÃ¡diÃ³ button 1"
     dlg.add(r)
 
     r=jtradio.new()
     r.name="r2"
-    r.text="Rádió button 2"
+    r.text="RÃ¡diÃ³ button 2"
     dlg.add(r)
 
     r=jtradio.new()
     r.name="r3"
-    r.text="Rádió button 3"
+    r.text="RÃ¡diÃ³ button 3"
     dlg.add(r)
 
     l=jtlabel.new() 
     l.icon="images/middle.gif"
     l.text="""<html><font face="ariel" color="black" size="-1">
-        A jelszó (jelmondat) legalább 12 karakterbõl áll, és tartalmaznia kell
+        A jelszÃ³ (jelmondat) legalÃ¡bb 12 karakterbÅ‘l Ã¡ll, Ã©s tartalmaznia kell
         <ul>
-        <li>kisbetûket,</li>
-        <li>nagybetûket,</li>
-        <li>nem betû (pl. szám)</li>
+        <li>kisbetÅ±ket,</li>
+        <li>nagybetÅ±ket,</li>
+        <li>nem betÅ± (pl. szÃ¡m)</li>
         </ul>
         karaktereket.
-        Az új jelszót kétszer egyformán kell beírni.
-        A jó jelszóválasztáson alapszik a banki tranzakciók biztonsága.
-        Az Ön jelszavát egyedül Ön ismerheti. </html>
+        Az Ãºj jelszÃ³t kÃ©tszer egyformÃ¡n kell beÃ­rni.
+        A jÃ³ jelszÃ³vÃ¡lasztÃ¡son alapszik a banki tranzakciÃ³k biztonsÃ¡ga.
+        Az Ã–n jelszavÃ¡t egyedÃ¼l Ã–n ismerheti. </html>
         """
     dlg.add(l)
 
-    dlg.add(jtlabel.new("új csoport"))
+    dlg.add(jtlabel.new("Ãºj csoport"))
 
     rg=[]
 
     r=jtradio.new()
     r.name="r4"
     r.state=1
-    r.text="Próba (r4)"
+    r.text="PrÃ³ba (r4)"
     r.setgroup(rg)
     dlg.add(r)
 
@@ -59,7 +59,7 @@ def mkdialog():
     r.setgroup(rg)
     dlg.add(r)
     
-    dlg.add(jtlabel.new("új csoport"))
+    dlg.add(jtlabel.new("Ãºj csoport"))
 
     rg=[]
  
@@ -77,7 +77,7 @@ def mkdialog():
 
     r=jtradio.new()
     r.name="r8"
-    r.text="forrón (r8)"
+    r.text="forrÃ³n (r8)"
     r.setgroup(rg)
     r.actionblock=hopp
     dlg.add(r)
@@ -127,9 +127,9 @@ def mkdialog():
 
 
 def hopp(dlg):
-    print "HOPP"
-    print "dialog objektum", dlg
-    # üzleti logika
+    print("HOPP")
+    print("dialog objektum", dlg)
+    # Ã¼zleti logika
     
     dlg.var.r1.state=1
 
@@ -142,11 +142,11 @@ def main():
         msg=dlg.getmessage(10000)
 
         if msg==None:
-            print "BREAK"
+            print("BREAK")
             break
 
         elif msg=="":
-            print "TIMEOUT"
+            print("TIMEOUT")
  
         elif msg=="r9":
             dlg.list()

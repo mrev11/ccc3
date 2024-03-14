@@ -1,25 +1,25 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
-import jtutil 
-import jtsocket
-import jtdom
+from . import jtutil 
+from . import jtsocket
+from . import jtdom
 
  
 def jtupload(remfile, locfile):
 
-    # remfile: filéspecifikáció a terminálon
-    # locfile: filéspecifikáció a szerveren
+    # remfile: filÃ©specifikÃ¡ciÃ³ a terminÃ¡lon
+    # locfile: filÃ©specifikÃ¡ciÃ³ a szerveren
 
-    # Üzenetet küld a terminálnak, amiben kezdeményezi
-    # a (terminálon található) remfile filé átküldését
-    # a szerverre. A filét a locfile filébe írja.
+    # Ãœzenetet kÃ¼ld a terminÃ¡lnak, amiben kezdemÃ©nyezi
+    # a (terminÃ¡lon talÃ¡lhatÃ³) remfile filÃ© Ã¡tkÃ¼ldÃ©sÃ©t
+    # a szerverre. A filÃ©t a locfile filÃ©be Ã­rja.
 
     jtsocket.send("<jtupload>"+remfile+"</jtupload>")
     
     # <uploadbegin>content_length</uploadbegin>
     #    nyers (nem xml) csomagok, 
-    #    amíg a tartalmak hossza
+    #    amÃ­g a tartalmak hossza
     #    ki nem adja content_length-t
     # <uploadend/>
     #
@@ -38,12 +38,12 @@ def jtupload(remfile, locfile):
         type=jtdom.domname(node) 
         text=jtdom.domtext(node)  
         if type=="uploaderror":
-            raise jtutil.applicationerror, ("jtupload","uploaderror",text)
+            raise jtutil.applicationerror("jtupload","uploaderror",text)
         if type=="uploadbegin":
             clen=int(float(text))
             break
  
-    f=file(locfile,"wb")
+    f=open(locfile,"wb")
 
     nbyte=0
     while nbyte<clen:
@@ -54,7 +54,7 @@ def jtupload(remfile, locfile):
     f.close()
     
     if nbyte!=clen:
-        raise jtutil.applicationerror, ("jtupload","content length differs")
+        raise jtutil.applicationerror("jtupload","content length differs")
     
     rsp=jtsocket.recv()
     dom=jtdom.domparse(rsp)  
@@ -62,7 +62,7 @@ def jtupload(remfile, locfile):
     type=jtdom.domname(node) 
 
     if type!="uploadend":
-        raise jtutil.applicationerror, ("jtupload","<uploadend> tag expected",rsp)
+        raise jtutil.applicationerror("jtupload","<uploadend> tag expected",rsp)
     
     return clen
 

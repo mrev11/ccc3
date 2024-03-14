@@ -1,6 +1,5 @@
 Python interfész Jáva terminálhoz 
 
-http://ok.comfirm.hu/ccc2/download/jtpython.zip
 
 A jtpython csomag célja a Jáva terminál API implementálhatóságának
 demonstrálása. Mindamellett a csomag gyakorlati feladatok megoldására
@@ -27,24 +26,20 @@ Miért érdemes jterminált használni  Tk, Qt, GTK, Wx stb. helyett?
  
 Telepítés:
 
-1) Szükség van a Python XML moduljára.
-2) A site.py modulban encoding='ascii'-t encoding='latin-1'-re cseréljük.
-3) A jtlib directoryt berakjuk a PYTHONPATH-ba.
+1) A program importálja az xml.dom.minidom csomagot.
+2) A jtpython directoryt berakjuk a PYTHONPATH-ba.
+3) Vagy a jtlib directoryt összezipeljük és a zip-et berakjuk a PYTHONPATH-ba.
 
 
 Megjegyzések:
 
-A program nincs felkészítve Unicode/UTF-8 kódolásra,
-hanem bedrótozottan Latin-1-et használ.
+A programok Unicode/UTF-8 kódolással vannak megírva.
+A programok a 3.11.8 Ptythonnal voltak tesztelve.
 
-A program csak felületesen van tesztelve, a mellékágak több helyen
+A programok tesztelése felületes, a mellékágak több helyen
 még egyáltalán nem futottak, így hibák, elírások bárhol előadódhatnak. 
 Ugyanakkor koncepcionális, vagy nehezen kijavítható hiba valószínűleg 
 nincs a programban.
-
-Bizonyos funkciók tesztelése azért maradt el, mert nem találtam
-megfelelő Python eszközt. Pl. nem tudom, hogyan lehet Pythonban 
-digitális aláírást ellenőrizni (nincs OpenSSL interfész?).
 
 Hiányzik a táblaobjektum browse, mert Pythonban nincs táblaobjektum
 könyvtár.

@@ -1,11 +1,11 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 import weakref
 
-import jtutil
-import jtdom
-from jtelem import jtelem
+from . import jtutil
+from . import jtdom
+from .jtelem import jtelem
 
 
 class new(jtelem):

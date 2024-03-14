@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 from jtlib import *
  
@@ -7,7 +7,7 @@ from jtlib import *
 def mkdialog(): 
 
     dlg=jtdialog.new(6,20,24,80)
-    dlg.caption('Próba szerencse')
+    dlg.caption('PrÃ³ba szerencse')
     dlg.layout="fix"
 
 
@@ -108,7 +108,7 @@ def main():
  
         elif msg=="g3":
             pr(dlg)
-            dlg.var.lb3.changetext(`dlg.var.g3.varget()`+' '+dlg.var.g3.varget().cweekday())
+            dlg.var.lb3.changetext(repr(dlg.var.g3.varget())+' '+dlg.var.g3.varget().cweekday())
  
         elif msg=="g4":
             pr(dlg)
@@ -116,10 +116,10 @@ def main():
  
 
 def pr(dlg):
-    print "g1 =", dlg.var.g1.varget()
-    print "g2 =", dlg.var.g2.varget()
-    print "g3 =", dlg.var.g3.varget()
-    print "g4 =", dlg.var.g4.varget()
+    print( "g1 =", dlg.var.g1.varget())
+    print( "g2 =", dlg.var.g2.varget())
+    print( "g3 =", dlg.var.g3.varget())
+    print( "g4 =", dlg.var.g4.varget())
  
  
 main()        

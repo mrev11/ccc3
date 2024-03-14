@@ -1,5 +1,5 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
 _MONTH_NAMES = [ 
@@ -17,7 +17,7 @@ for dim in _DAYS_IN_MONTH:
     dbm = dbm + dim
 del dbm, dim
 
-_INT_TYPES = type(1), type(1L)
+_INT_TYPES = type(1)
 
 
 def _is_leap( year ): # 1 if leap year, else 0
@@ -31,7 +31,7 @@ def _days_in_year( year ): # number of days in year
 
 
 def _days_before_year( year ): # number of days before year
-    return year*365L + (year+3)/4 - (year+99)/100 + (year+399)/400
+    return year*365 + (year+3)/4 - (year+99)/100 + (year+399)/400
 
 
 def _days_in_month( month, year ): # number of days in month of year
@@ -90,17 +90,17 @@ class date:
 
         else:
             if not 1 <= month <= 12:
-                raise ValueError, ('month must be in 1..12',month)
+                raise ValueError('month must be in 1..12',month)
             dim = _days_in_month( month, year )
             if not 1 <= day <= dim:
-                raise ValueError, ('day must be in 1..'+str(dim),day)
+                raise ValueError('day must be in 1..'+str(dim),day)
             self.month, self.day, self.year = month, day, year
             self.ord = _date2num( self )
 
     
     def __setattr__( self, name, value ):
-        if self.__dict__.has_key(name):
-            raise AttributeError, ('read-only attribute ',name)
+        if name in self.__dict__:
+            raise AttributeError('read-only attribute ',name)
         self.__dict__[name] = value
 
 
@@ -120,7 +120,7 @@ class date:
 
     def __add__( self, n ):
         if type(n) not in _INT_TYPES:
-            raise TypeError, ('can\'t add ' + `type(n)` + ' to date')
+            raise TypeError('can\'t add ' + repr(type(n)) + ' to date')
         return _num2date( self.ord + n )
  
     __radd__=__add__ # handle int+date
@@ -134,7 +134,7 @@ class date:
 
     
     def __rsub__( self, other ): # complain about int-date 
-        raise TypeError, ('Can\'t subtract date from integer')
+        raise TypeError('Can\'t subtract date from integer')
 
 
     def weekday( self ):

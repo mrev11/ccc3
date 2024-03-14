@@ -1,11 +1,11 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
-import jtdialog
-import jttoolbar
-import jthglue
-import jtpush
-import jttextarea
+from . import jtdialog
+from . import jttoolbar
+from . import jthglue
+from . import jtpush
+from . import jttextarea
 
 
 def jtmemoedit(t=None,l=None,b=None,r=None,text="",editable=1):

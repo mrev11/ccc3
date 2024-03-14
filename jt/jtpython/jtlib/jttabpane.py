@@ -1,10 +1,10 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
  
 
-import jtdom
-import jtutil
-from jtelem import jtelem
+from . import jtdom
+from . import jtutil
+from .jtelem import jtelem
  
 class new(jtelem):
 

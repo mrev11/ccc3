@@ -1,8 +1,8 @@
 ##! /usr/bin/env python
-# _*_ coding: latin-1 _*_
+# _*_ coding: UTF-8 _*_
 
-#import jtutil
-import jttable
+#from . import jtutil
+from . import jttable
 #from jtelem import jtelem
  
 class new(jttable.new):
@@ -48,7 +48,7 @@ class new(jttable.new):
         
 
     def addcolumn(self,h,b=None,w=None,p=None):
-        if type(b)==type(0): # block helyett oszlop sorsz·m
+        if type(b)==type(0): # block helyett oszlop sorsz√°m
             b=self.ablock(b) 
         return jttable.new.addcolumn(self,h,b,w,p)   
 
@@ -79,8 +79,8 @@ def _jtbrowsearray_skip(self,s=0):
 
 def _jtbrowsearray_eval(self,c,valnew=None,valold=None):
 
-    # mÛdosÌt·skor a termin·l k¸ldi a rÈgi Ès az ˙j ÈrrtÈket is,
-    # itt ellenÙrizni lehetne, hogy a rÈgi ÈrtÈk nem v·ltozott
+    # m√≥dos√≠t√°skor a termin√°l k√ºldi a r√©gi √©s az √∫j √©rrt√©ket is,
+    # itt ellen≈ërizni lehetne, hogy a r√©gi √©rt√©k nem v√°ltozott
 
     if valnew!=None:
         self._array_[self._arraypos_][c-1]=valnew

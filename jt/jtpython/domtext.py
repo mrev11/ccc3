@@ -5,14 +5,16 @@ from jtlib import jtdom
 from jtlib import jtutil
 
 
-xml="""<proba>
+xml="""
+<proba>
     <szerencse>Öt szép szűzlány őrült írót nyúz</szerencse>
     <vanaki>
-        <egyszer><![CDATA[ Forrón szereti! ]]></egyszer>
         <egyszer>Hopp</egyszer>
+        <egyszer><![CDATA[ Forrón szereti! ]]></egyszer>
     </vanaki>
     <maskor>Kopp</maskor>
-</proba>"""
+</proba>
+"""
 
 node=jtdom.domparse(xml)
 

@@ -83,14 +83,14 @@ def bin2str(x):
     return x
 
 
-def base64_encode(x):
+def base64_encode(x):  ### str/bytes -> str
     x=str2bin(x)
     x=base64.b64encode(x)
     x=x.decode("UTF-8")
     return x.replace("\n","")
 
 
-def base64_decode(x):
+def base64_decode(x):  ### str/bytes -> bytes
     x=str2bin(x)
     x=base64.b64decode(x)
     return x

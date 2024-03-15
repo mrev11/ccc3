@@ -1,0 +1,17 @@
+//MSK2DLG 1.0.00
+
+class passw(jtdialog)
+    method initialize
+    attrib  passw
+    attrib  ok
+
+
+static function passw.initialize(this)
+    this:(jtdialog)initialize(6,17,11,58)
+    this:name:='passw'
+    this:layout:='fix'
+    this:passw:=jtpasswNew(1,14,1,38); this:passw:name:='passw'; this:add(this:passw)
+    this:ok:=jtpushNew(3,14,3,21); this:ok:name:='ok'; this:ok:text:='Ok'; this:add(this:ok)
+    this:add(jtlabelNew(1,3,1,12,'Password :'))
+    return this
+

@@ -4,7 +4,7 @@
 from jtlib import *
 
 
-trmfile="jtlib.zip"
-srvfile="log-jtlib.zip"
+trmfile="morgo.jpeg"
+srvfile="log-morgo.jpeg"
 
 jtupload.jtupload(trmfile,srvfile)

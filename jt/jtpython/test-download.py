@@ -4,9 +4,9 @@
 from jtlib import *
 
 
-srvfile="jtlib.zip"
-trmfile="log-jtlib.zip"
+srvfile="morgo.jpeg"
+trmfile="log-morgo.jpeg"
 d=dates.date(1990,10,11)
-t="00:00:00"
+t="10:10:10"
 
 jtdownload.jtdownload(srvfile,trmfile,d,t)

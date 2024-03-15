@@ -36,7 +36,7 @@ def jttermsck():
             jtsocket.debug=1
 
     if not jtsocket.sck and os.getenv("JTSOCKET"):
-        jtsocket.sck=fromfd(int(os.getenv("JTSOCKET")))
+        jtsocket.sck=socket.fromfd(int(os.getenv("JTSOCKET")),socket.AF_INET,socket.SOCK_STREAM)
 
     if not jtsocket.sck:
         jtautostart()

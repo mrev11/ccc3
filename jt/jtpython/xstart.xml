@@ -1,0 +1,21 @@
+
+<xstart>
+
+<item>
+    <name>jtpython</name>
+    <port>46000</port>
+    <env>PYTHONPATH=/opt/ccc3/jt/jtpython</env>
+    <env>JTSOCKET=${SOCKET}</env>
+    <env>JTDEBUG=on</env>
+    <command>kepnezo1.py -jtsocket ${SOCKET} -jtdebug</command>
+</item>
+
+</xstart>
+
+<!--
+    ez is lehetne:
+    PYTHONPATH=${HOME}/jtpython.zip
+    
+    a socket megadható env változóban vagy -jtsocket opcióban
+    a debug  megadható env változóban vagy -jtdebug  opcióban
+-->

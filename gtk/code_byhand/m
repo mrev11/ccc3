@@ -20,6 +20,7 @@ fi
 cp -pf `pwd`/include/gtk.ch     $CCCDIR/usr/include/gtk.ch
 cp -pf `pwd`/include/gdk.ch     $CCCDIR/usr/include/gdk.ch
 cp -pf `pwd`/include/cccgtk.h   $CCCDIR/usr/include/cccgtk.h
+cp -pf `pwd`/include/gdkkey.ch  $CCCDIR/usr/include/gdkkey.ch
 
 cp -pf obj$CCCBIN/*.lib   $CCCDIR/usr/lib/$CCCBIN
 cp -pf obj$CCCBIN/*.so    $CCCDIR/usr/lib/$CCCBIN

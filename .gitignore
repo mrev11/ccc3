@@ -96,6 +96,7 @@ commit-message
 usr/include/cccgtk.h
 usr/include/gdk.ch
 usr/include/gtk.ch
+usr/include/gdkkey.ch
 
 
 err-*

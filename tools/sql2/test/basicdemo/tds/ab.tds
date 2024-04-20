@@ -82,7 +82,7 @@ comment:
 
     x=column_expression
     
-        Ezzen a formával adható meg az oszlopkifejezés. 
+        Ezzel a formával adható meg az oszlopkifejezés. 
         Ha nincs megadva, akkor az oszlopnév lesz a kifejezés:
             column: szamlaszam C24  ;ez a default: x=szamlaszam
 

@@ -1,3 +1,5 @@
+2024-04-20 sql2_sqlite3.sqlconnection() connect string rugalmasabb ertelmezese;
+
 2024-04-19 gtk keypress demo;
 
 2024-04-12 gtk interfesz bovitve: gdk.event_key.get_keyval();

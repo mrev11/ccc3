@@ -1,6 +1,10 @@
-24ec2e275ec7a1c1f5a578af00b14b0116ea5194 2024041911:13:35-UTC ./CHANGELOG_vermes
+2bf8a2bd3f60d0b74d8947fdfeb2e03c08572ffa 2024042015:21:56-UTC ./CHANGELOG_vermes
+4e0d3459058708fc9f047dbf904d167d4b5513f4 2024042009:24:27-UTC ./gtk/log-install
+f7a14f4e90cf0f2a8ce95d4d173a233fba1bb956 2024042008:58:28-UTC ./tools/sql2/driver-sqlite3/sqlconnection.prg
+7db75282c286c26c5473e46a6a799bbac3daa3dc 2024042008:43:03-UTC ./tools/sql2/test/basicdemo/tds/ab.tds
+7df79d67013812d583798052e527fcb1bacdb913 2024041918:40:37-UTC ./jt/jterminal/jterminal.jar
+a1170159073684d647f727c603cbf9257a6896c5 2024041918:40:37-UTC ./log-install
 93ea3cdfccb3946b00cf2486c1434974372f7e4d 2024041911:12:38-UTC ./gtk/examples/gallery/keypress/keypress.prg
-d88bd75906050df83bc97751dc82fdbe8aaef396 2024041616:21:06-UTC ./gtk/log-install
 489bb324fa9ae03e4d7bb1d198fadfd4fd8ee281 2024041616:20:07-UTC ./gtk/code_generated/gtk_icon_source_api.cpp
 88085d56a0f78619f452bbe6cb9a3285c9bce403 2024041616:20:06-UTC ./gtk/code_generated/gtk_accelerator_api.cpp
 a809914bad3a2a21664607f6155cb078c82b815e 2024041616:20:06-UTC ./gtk/code_generated/gtk_binding_set_api.cpp
@@ -271,8 +275,6 @@ f86ac4ba0d647ee2a9a07b1b321ae920442747ba 2024041616:20:01-UTC ./gtk/code_generat
 975d4290e21026b9194b8fdf2124e443fe5c4af9 2024041616:20:01-UTC ./gtk/code_generated/gtk_tree_selection_reg.prg
 73027c0ec582ce71bcca4c2fb97727958c0a50ff 2024041616:20:01-UTC ./gtk/code_generated/gtk_tree_view_column_api.cpp
 154320a22f10abd5e8517c0cdd7c4ff308365b18 2024041616:20:01-UTC ./gtk/code_generated/gtk_tree_view_column_reg.prg
-be2b3473a38a2b9d0f9e24faa9ec2b926be6f4ba 2024041616:19:47-UTC ./jt/jterminal/jterminal.jar
-0d38d13a9ad5c8643b278070001d2ab1a60cae71 2024041616:19:47-UTC ./log-install
 869b032157b18b4b22beaf99f63720356d320742 2024041616:19:46-UTC ./jt/jterminal/base64.class
 30b017f69ae9b3b8cc2789fbbae4672516f0c9c1 2024041616:19:46-UTC ./jt/jterminal/getutil/cellcolor.class
 b5dc01e98374526785744a45811d32ab4e137ff8 2024041616:19:46-UTC ./jt/jterminal/getutil/checkfield.class
@@ -2392,7 +2394,6 @@ afe6f3cf6490024b99b1cf07db875f25c10128e6 2015020313:03:26-UTC ./tools/sql2/drive
 485c2d1f9e4aaa0ea6108930ca8fa4b3faa88fa8 2015020308:19:43-UTC ./tools/sql2/driver-mysql/sqlconnection.prg
 4a23bf69e895a9f493275120ca4b435c8c66db6f 2015020308:19:22-UTC ./tools/sql2/driver-mysql/tableentity.prg
 8a826cc606b92f2325d13d63e922d3df99098b67 2015020308:12:08-UTC ./tools/sql2/driver-postgres/sqlconnection.prg
-6b8beee34468b9a93d744de553d307d1e41b0d5a 2015020308:08:08-UTC ./tools/sql2/driver-sqlite3/sqlconnection.prg
 68435349ed1e9181ee4f28f624bad7cbb24218cf 2015020308:07:03-UTC ./tools/sql2/driver-sqlite3/rowset.prg
 cd8c75d4af89f788edad46544cfe9d0686f67a8c 2015020308:05:35-UTC ./tools/sql2/driver-sqlite3/tableentity.prg
 fa47fe52d13ea13ec4257b2e1315f96d50034d0a 2015020308:04:13-UTC ./tools/sql2/driver-postgres/pgsql2.cpp
@@ -3045,7 +3046,6 @@ ac9c14256db75824d928b2e75d2277ac356e7ae6 2007070419:43:54-UTC ./tools/tdc2prgch/
 8278cc646b5591aa50ac7edaecdf306a53dd32c2 2007062316:09:04-UTC ./tools/sql2/util/geed/entity.konto.szla_kamjut.tds
 5b92bd1b6bcc87f8e45fe4a6e340b03657789224 2007062316:08:31-UTC ./tools/sql2/util/btimport/demo/pgtables.tds
 ca444a080c10b79f543188999f0ba7fb84e2f1aa 2007062316:08:10-UTC ./tools/sql2/test/basicdemo/tds/proba.tds
-e1a087cabac0e0d917f1f83af9ad11c4677df0f1 2007062316:07:32-UTC ./tools/sql2/test/basicdemo/tds/ab.tds
 00359a88d934382b11d4add43a0938e615b817c2 2007062316:06:07-UTC ./tools/sql2/test/basicdemo/tds/abc.tds
 aaf6982e89cd0ae7a774f1616f40d3dc413fc989 2007061916:11:14-UTC ./tools/sql2/util/geed/gtkentityeditor.prg
 dbb36bb8d5b3ef0d7425f713d71309301611bcac 2007060813:34:25-UTC ./tools/sql2/util/jeed/test/test3.prg

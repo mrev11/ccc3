@@ -111,7 +111,7 @@ local flags
     //flags::=numor(SQLITE_OPEN_PRIVATECACHE)
     //flags::=numor(SQLITE_OPEN_SHAREDCACHE)  //nem enged többszörösen attachelni
 
-    this:__conhandle__:=_sqlite3_open2(coninfo[1],flags,@code)
+    this:__conhandle__:=_sqlite3_open2(coninfo[1]::split("=")[1],flags,@code)
 
     if( this:__conhandle__==NIL )
         err:=sqlconnecterrorNew()
@@ -122,15 +122,17 @@ local flags
         err:subsystem:="sql2.sqlite3"
         break(err)
     else
-        outerr("attach to "+coninfo[1]+endofline()) 
+        outerr("open database "+coninfo[1]::split("=")[1]+endofline()) 
     end
 
     this:sqlexec("PRAGMA journal_mode=WAL")  //WAL 
 
-    
-    for n:=2 to len(coninfo)
-        attach1:=attach
+    for n:=1 to len(coninfo)
         dbfali:=coninfo[n]::split("=")
+        if( n==1 .and. dbfali::len<2 )
+            loop
+        end
+        attach1:=attach
         attach1::=strtran("$DBFILE",dbfali[1])
         attach1::=strtran("$ALIAS",dbfali[2])
         set_journal_mode_to_wal(dbfali[1])

@@ -134,6 +134,7 @@ void _clp_l2hex(int argno)
 {
     VALUE *base=stack-argno;
     unsigned long long x=0;
+    char buffer[32];
     if( argno<1 )
     {
         error_arg("l2hex",base,argno);
@@ -141,44 +142,17 @@ void _clp_l2hex(int argno)
     else if( base->type==TYPE_NUMBER )
     {
         x=D2ULONGW(base->data.number);
+        sprintf(buffer,"%llx",x);
     }
     else if( base->type==TYPE_POINTER )
     {
-        x=(unsigned long long)(size_t)base->data.pointer;
+        x=(unsigned long long)base->data.pointer;
+        sprintf(buffer,"%0*llx",(int)sizeof(void*),x);
     }
     else
     {
         error_arg("l2hex",base,argno);
     }
-    char buffer[32];
-    #ifdef NOTDEFINED // WINDOWS msc hiba elkerulese
-    {
-        //mivel az msc mar nincs tamogatva
-        //eleg csak az alapesetet megtartani
-    
-        int i=0;
-        char hex[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
-        while(x)
-        {
-            buffer[i]=hex[x&0xf];
-            i++;
-            x=x>>4;
-        }
-        if(i==0)
-        {
-            buffer[i++]='0';
-        }
-        buffer[i]=0;
-        for(int j=0; j<i/2; j++)
-        {
-            char c=buffer[j];
-            buffer[j]=buffer[i-j-1];
-            buffer[i-j-1]=c;
-        }
-    }
-    #else
-        sprintf(buffer,"%llx",x);
-    #endif
     
     stack=base;
     stringnb(buffer); 

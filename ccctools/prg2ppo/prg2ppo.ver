@@ -1,8 +1,18 @@
-
-#define VERSION  "1.6.0"
-
+#define VERSION  "1.6.1"
 
 #ifdef _VERZIO_TORTENET_
+
+2024.07.11 -- 1.6.1 forditasi direktivak:
+  //  #ifdef
+  //  #ifndef
+  //  #ifeq
+  //  #ifneq
+  //  #else ifdef     (uj)
+  //  #else ifndef    (uj)
+  //  #else ifeq      (uj)
+  //  #else ifneq     (uj)
+  //  #else
+  //  #endif
 
 2024.02.22 -- 1.6.0
   felismeri kifejezeskent az 'a|b' format (a default operatort).

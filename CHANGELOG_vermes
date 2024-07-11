@@ -1,3 +1,6 @@
+2024-07-11 prg2ppo 1.6.1  
+  #else ifdef ... preprocesszor direktivak;
+
 2024-06-17
   P tipus sizeof(void*) szelessegben, balrol 0-val padolva printelodik;
 

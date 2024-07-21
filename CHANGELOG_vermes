@@ -1,3 +1,8 @@
+2024-07-21 
+  harfbuzz/hb-common.h egy ideje hibas (hianyzik belole stdint.h),
+  es ezert a gtk-s dolgok nem fordultak: berakva #include <stdint.h>;
+  clang valtozo meretu tomb miatti warningja elnyomva: -Wno-vla-cxx-extension;
+
 2024-07-11 prg2ppo 1.6.1  
   #else ifdef ... preprocesszor direktivak;
 

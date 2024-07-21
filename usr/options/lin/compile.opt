@@ -23,3 +23,5 @@
 -Wno-unknown-warning-option
 -Wno-deprecated-declarations
 -Wno-unknown-warning-option
+-Wno-vla-cxx-extension
+

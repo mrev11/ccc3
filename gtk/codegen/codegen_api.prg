@@ -42,6 +42,7 @@ function codegen_api(this)
             aadd(modules,this:modname)
             set printer to (sourcefile(this:modname))
             set printer on
+            ? "#include <stdint.h>"
             ? "#include <gdk/gdk.h>"
             ? "#include <gtk/gtk.h>"
             ? "#include <cccapi.h>"

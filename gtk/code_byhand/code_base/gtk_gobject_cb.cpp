@@ -19,6 +19,7 @@
  */
 
 #include <string.h>
+#include <stdint.h>
 #include <gtk/gtk.h>
 #include <cccapi.h>
 #include <cccgtk.h>

@@ -33,7 +33,7 @@
 //----------------------------------------------------------------------------
 static void print1(char *buffer, double x)  //str(x) alak
 {
-    int len=sprintf(buffer,"%40.20le",x); 
+    int len=sprintf(buffer,"%40.15le",x); 
 
     if( len<0 )
     {

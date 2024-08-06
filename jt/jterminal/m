@@ -4,7 +4,7 @@
 if ! test -f jterminal.jar; then
     javac -version 
 
-    if javac -cp . -source 1.8 -nowarn jterminal.java 2>log-jterminal; then
+    if javac -cp . -encoding UTF-8 -nowarn jterminal.java 2>log-jterminal; then
         mkjar
         cat log-jterminal
     else

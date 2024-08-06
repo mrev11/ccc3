@@ -1,3 +1,8 @@
+2024-08-06
+  str(x) tul pontos kiirasa javitva, amikor  x double szamabrazolasa pontatlan.
+  Ebbol allitja ossze a stringet: sprintf(buffer,"%40.15le",x). 
+  A format korabban volt 20.10 (keves), 40.20 (sok), eppen 15 decimalis kell.
+
 2024-07-21 
   harfbuzz/hb-common.h egy ideje hibas (hianyzik belole stdint.h),
   es ezert a gtk-s dolgok nem fordultak: berakva #include <stdint.h>;

@@ -1,4 +1,7 @@
 2024-08-06
+  sql2 regresszios tesztek ellenorizve, bt fajlok konvertalodtak 4-es formatumta;
+
+2024-08-06
   str(x) tul pontos kiirasa javitva, amikor  x double szamabrazolasa pontatlan.
   Ebbol allitja ossze a stringet: sprintf(buffer,"%40.15le",x). 
   A format korabban volt 20.10 (keves), 40.20 (sok), eppen 15 decimalis kell.

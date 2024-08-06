@@ -22,7 +22,7 @@
 
 #ifdef EMLEKEZTETO
 
-A konto schema name jön létre "magától",
+A konto schema nem jön létre magától,
 hanem azt előzőleg létre kell hozni.
 
 Oracle: 

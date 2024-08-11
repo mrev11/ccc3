@@ -76,7 +76,7 @@ local i
     cn:=min(cn,len(arr)-st+1)
     
     for i:=st to st+cn-1
-        eval(blk,arr[i]) 
+        eval(blk,arr[i],i) 
     next
 
     return arr

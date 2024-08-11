@@ -1,3 +1,7 @@
+2024-08-11
+  aeval() az array elem mellett az array indexet is atadja a kodblokknak.
+  Ez igy van a regi Clipperben, a CCC-bol ki volt felejtve.
+
 2024-08-06
   sql2 regresszios tesztek ellenorizve, bt fajlok konvertalodtak 4-es formatumta;
 

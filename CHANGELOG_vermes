@@ -1,4 +1,7 @@
 2024-08-11
+  tools/tdc2prgch/util/ereadline.prg hibakezeleseben a vegtelen ciklus megszuntetve;
+
+2024-08-11
   Windows cmd/batch setup javitva:
   az ss.cpp es stdcmp.cpp (ujabb) modulokat potolni kellett;
 

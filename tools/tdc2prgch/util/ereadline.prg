@@ -64,6 +64,7 @@ local line,eolpos,nbyte
         nbyte:=xvread(this:fd,this:buffer,this:nbyte,len(this:buffer)-this:nbyte)
         if (nbyte==-1)
            this:errno:=ferror()
+           break(readerrorNew()) //enelkul vegtelen ciklus
         elseif( nbyte>0 )
             this:nbyte+=nbyte
         else

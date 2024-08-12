@@ -1,4 +1,8 @@
 2024-08-11
+  Windows cmd/batch setup javitva:
+  az ss.cpp es stdcmp.cpp (ujabb) modulokat potolni kellett;
+
+2024-08-11
   aeval() az array elem mellett az array indexet is atadja a kodblokknak.
   Ez igy van a regi Clipperben, a CCC-bol ki volt felejtve.
 
@@ -7,15 +11,15 @@
 
 2024-08-06
   str(x) tul pontos kiirasa javitva, amikor  x double szamabrazolasa pontatlan.
-  Ebbol allitja ossze a stringet: sprintf(buffer,"%40.15le",x). 
+  Ebbol allitja ossze a stringet: sprintf(buffer,"%40.15le",x).
   A format korabban volt 20.10 (keves), 40.20 (sok), eppen 15 decimalis kell.
 
-2024-07-21 
+2024-07-21
   harfbuzz/hb-common.h egy ideje hibas (hianyzik belole stdint.h),
   es ezert a gtk-s dolgok nem fordultak: berakva #include <stdint.h>;
   clang valtozo meretu tomb miatti warningja elnyomva: -Wno-vla-cxx-extension;
 
-2024-07-11 prg2ppo 1.6.1  
+2024-07-11 prg2ppo 1.6.1
   #else ifdef ... preprocesszor direktivak;
 
 2024-06-17
@@ -76,29 +80,29 @@
     codeset_letter_utf8_to_ascii
   MEGJEGYZES:  CCC2-ben modositott Latin-2 kodolast hasznalunk.
   A szabvanyos karakterek egy reszet dobozrajzolok helyettesitik.
-  A konverzios fuggvenyek a (szabvanyos) magyar ekezetes karaktereket plusz a 
+  A konverzios fuggvenyek a (szabvanyos) magyar ekezetes karaktereket plusz a
   (specialis) dobozrajzolokat konvertaljak a (szabvanyos) UTF-8 megfelelojukbe.
 
 2024-02-09  lex szabalyok valtoztak
-  Ezek a szabalyok, mint 
-        {static}{wspace}{function} {return STFUNCTION;} 
+  Ezek a szabalyok, mint
+        {static}{wspace}{function} {return STFUNCTION;}
   megvaltoztak
-        {static}{w1}{function}/{symdel} {return STFUNCTION;} 
+        {static}{w1}{function}/{symdel} {return STFUNCTION;}
   A static utani space kotelezo, function utan symbol delimeter kotelezo.
   Hasonloan modosult: 'static class', 'do while', 'begin sequence', stb.
 
-2024-01-28 
+2024-01-28
    dbf2bt.exe script szinten parhuzamosithato;
    Sok dbf importalasakor tobb peldanyban futhat,
    a kulonbozo peldanyok kikerulik egymast.
 
-2024-01-27 dbf2bt.exe import; 
+2024-01-27 dbf2bt.exe import;
 
-2024-01-22 
+2024-01-22
   terminal/icon: ikon generalo program
     Linux   : terminal.svg
     Linux   : terminal.xpm
-    Windows : terminal.ico 
+    Windows : terminal.ico
 
 2024-01-15 __msys2.msys2 build script javitva
   (a build 2023.11.06-os modositasa kihozott egy rejtett hibat);

@@ -51,7 +51,9 @@ call cc %CCCDIR%\ccclib\src\replicate.cpp
 call cc %CCCDIR%\ccclib\src\round.cpp
 call cc %CCCDIR%\ccclib\src\run.cpp
 call cc %CCCDIR%\ccclib\src\slice.cpp
+call cc %CCCDIR%\ccclib\src\ss.cpp
 call cc %CCCDIR%\ccclib\src\stat.cpp
+call cc %CCCDIR%\ccclib\src\stdcmp.cpp
 call cc %CCCDIR%\ccclib\src\str.cpp
 call cc %CCCDIR%\ccclib\src\str2bin.cpp
 call cc %CCCDIR%\ccclib\src\string.cpp

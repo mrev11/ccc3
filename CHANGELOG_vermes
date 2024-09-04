@@ -1,3 +1,19 @@
+2024-09-04
+  msk2say fejlesztes:
+  Ha a maszk nem fer el a terminalban, akkor megnoveli a terminalt.
+  *
+  Ezekben a hivasokban: 
+    maszk({|g|load(g)},{|g|readmodal(g)},{|g|store(g)},x,y)
+  megadhato az opcionalis x es y parameter, erteke 0-100.
+  x=0,y=0 eseten a maszk a bal felso sarokba pozicionalodik,
+  x=100,y=100 eseten a maszk a jobb also sarokba pozicionalodik,
+  egyebkent aranyosan helyezkedik el, pl. x=50,y=50 eseten kozepen.
+  *
+  Ha a maszk bal felso sarka kozel esik a terminal bal felso sarkahoz, 
+  akkor beallitja x=30, y=30-at. Hogy a regi 80x25-os terminalra meretezett
+  nagy maszkok ne nezzenek ki idetlenul a mostani nagyobb terminalokban.
+
+
 2024-08-11
   tools/tdc2prgch/util/ereadline.prg hibakezeleseben a vegtelen ciklus megszuntetve;
 

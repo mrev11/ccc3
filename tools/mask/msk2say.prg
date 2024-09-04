@@ -260,8 +260,40 @@ local code:="//msk2say "+ver()+eol
     code+="    return msk"+eol
     code+=eol
 
-    code+="static function $MSKNAME(bLoad,bRead,bStore)"::strtran("$MSKNAME",upper(mskname))+eol
+    code+="static function $MSKNAME(bLoad,bRead,bStore,x,y)"::strtran("$MSKNAME",upper(mskname))+eol
     code+="local msk:=msk$MSKNAMEcreate(bLoad,bRead,bStore)"::strtran("$MSKNAME",upper(mskname))+eol
+
+    code+=<<REPLACE>>
+    if(  msk[3]>maxrow() .or. msk[4]>maxcol() )
+        settermsize(1+max(msk[3],maxrow()),1+max(msk[4],maxcol()))
+    end
+
+    if( msk[1]<3 .and. y==NIL )
+        y:=30
+    end     
+    if( msk[2]<3 .and. x==NIL )
+        x:=30
+    end     
+
+    if( !x==NIL .or. y!=NIL )
+        if( y==NIL )
+            y:=msk[1] // top
+        else
+            y::=max(0)
+            y::=min(100)
+            y:=int((maxrow()-(msk[3]-msk[1]))*y/100)
+        end
+        if( x==NIL )
+            x:=msk[2] // left
+        else
+            x::=max(0)
+            x::=min(100)
+            x:=int((maxcol()-(msk[4]-msk[2]))*x/100)
+        end
+        mskReplace(msk,x,y)
+    end
+<<REPLACE>>
+
     code+="    mskShow(msk)"+eol
     code+="    mskLoop(msk)"+eol
     code+="    mskHide(msk)"+eol

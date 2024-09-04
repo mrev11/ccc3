@@ -1,7 +1,7 @@
 
 iface=127.0.0.1             # interface to listen (default: localhost)
 port=45678                  # port to listen (default: 45678)
-ssl=true                    # use SSL (default: true)
+ssl=false                   # use SSL (default: true)
 keyfile=keys/webapp.pem     # private key (nincs default)
 # capath=keys
 # cafile=keys/webapp.pem

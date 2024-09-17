@@ -8,9 +8,9 @@ class popupmenu(object)
 
     attrib  menu
     attrib  top
-    attrib  lef
-    attrib  bot
-    attrib  rig
+    attrib  left
+    attrib  bottom
+    attrib  right
 
     attrib  upper
     attrib  choice
@@ -23,20 +23,20 @@ class popupmenu(object)
 
 
 ******************************************************************************************
-function popupmenu.initialize(this,menu,top,lef,bot,rig)
+function popupmenu.initialize(this,menu,top,lef,bot:=9999,rig:=9999)
 
 local color:=brwColor()
 
-    this:menu:=menu
-    this:top:=int(top)
-    this:lef:=int(lef)
-    this:bot:=bot|1000
-    this:rig:=rig|1000
+    this:menu   :=menu
+    this:top    :=int(top)
+    this:left   :=int(lef)
+    this:bottom :=int(bot)
+    this:right  :=int(rig)
 
     this:top::=max(0)
     this:top::=min(maxrow()-2)
-    this:lef::=max(0)
-    this:lef::=min(maxcol()-2)
+    this:left::=max(0)
+    this:left::=min(maxcol()-2)
 
     this:upper:=1
     this:choice:=1
@@ -72,15 +72,18 @@ local shift:=.t.
     for n:=1 to len(this:menu)
         width::=max(this:menu[n]::len)
     next
+    width::=min(this:right-this:left-1)
+    this:left::=min(maxcol()-width-1)
+    this:left::=max(0)
 
     dispbegin()
     while( shift )
         shift:=.f.
 
         top:=this:top
-        lef:=this:lef
-        bot:=this:bot
-        rig:=this:rig
+        lef:=this:left
+        bot:=this:bottom
+        rig:=this:left+width+1
 
         // TOP
         top::=max(0)                                // >= 0
@@ -135,7 +138,7 @@ local shift:=.t.
             elseif( key==K_SH_UP )
                 if( top>0 )
                     this:top--
-                    this:bot--
+                    this:bottom--
                     shift:=.t.
                     exit
                 end
@@ -143,23 +146,23 @@ local shift:=.t.
             elseif( key==K_SH_DOWN )
                 if( top<maxrow()-2 )
                     this:top++
-                    this:bot++
+                    this:bottom++
                     shift:=.t.
                     exit
                 end
 
             elseif( key==K_SH_LEFT )
                 if( lef>0 )
-                    this:lef--
-                    this:rig--
+                    this:left--
+                    this:right--
                     shift:=.t.
                     exit
                 end
 
             elseif( key==K_SH_RIGHT )
                 if( lef<maxcol()-2 )
-                    this:lef++
-                    this:rig++
+                    this:left++
+                    this:right++
                     shift:=.t.
                     exit
                 end

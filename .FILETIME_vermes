@@ -1,8 +1,8 @@
-dd70262d29d4db1b8b5fedb95ec4643310508e7b 2024091708:25:52-UTC ./CHANGELOG_vermes
+344f0abca09c6eb852792f31c60e099d45c5008a 2024091717:54:16-UTC ./CHANGELOG_vermes
+6679c03c36bdca94a03c1cb745daf738fd27e1af 2024091717:53:31-UTC ./ccclib/src/uic/popupmenu.prg
 c61d0431fed5a7068e5149902b2b62ef57644511 2024091409:13:58-UTC ./tutor/control/browse.say
 d90faa9ff94434617bff7081b3a19caf5cc3e591 2024091409:13:58-UTC ./tutor/control/control.say
 04db4b8dbfe857d93a0dacb38109c48898c208b2 2024091409:13:58-UTC ./tutor/control/textarea.say
-3eeec40fb667dca82311877bb94b62f634f41330 2024091221:19:01-UTC ./ccclib/src/uic/popupmenu.prg
 f71860167c1a66c94134c6bff87bc42692c07fcc 2024090913:39:10-UTC ./log-install
 0e40ec3c2668acbb2f9d8cc82e36ac0d46f43939 2024090609:04:21-UTC ./jt/jterminal/jterminal.jar
 3a46e0b91ce81cb34c0e02678e6df511164ef0c0 2024090608:58:15-UTC ./ccclib/src/levenshtein_dst.cpp

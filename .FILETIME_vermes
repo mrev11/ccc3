@@ -1,5 +1,9 @@
-344f0abca09c6eb852792f31c60e099d45c5008a 2024091717:54:16-UTC ./CHANGELOG_vermes
-6679c03c36bdca94a03c1cb745daf738fd27e1af 2024091717:53:31-UTC ./ccclib/src/uic/popupmenu.prg
+31e48ef563aa4d92a8aaae002bb9aa66e94c32d8 2024091910:13:58-UTC ./CHANGELOG_vermes
+18d543e5203b20aaa69ad7968ca593b96c130404 2024091907:48:41-UTC ./ccclib/src/uic/popupmenu.prg
+55763a2c8a8c166c2649b77f6c69ff396631b57f 2024091823:17:04-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
+5012697099b9e4a6ebdf3cb3e2b0e78c572f9b4e 2024091822:43:58-UTC ./tutor/popup/popup.prg
+b7f5aa327e29333a3f3aa4c8393f9d0de8161e4d 2024091819:11:14-UTC ./tutor/popup/100x40
+00df7f96bd714ee2e45385e94f0b4b0069e1ed08 2024091817:17:48-UTC ./tutor/popup/scale.prg
 c61d0431fed5a7068e5149902b2b62ef57644511 2024091409:13:58-UTC ./tutor/control/browse.say
 d90faa9ff94434617bff7081b3a19caf5cc3e591 2024091409:13:58-UTC ./tutor/control/control.say
 04db4b8dbfe857d93a0dacb38109c48898c208b2 2024091409:13:58-UTC ./tutor/control/textarea.say
@@ -345,7 +349,6 @@ fb84dcb35ff49f629707a37708cf7b2bf0b510b6 2024031212:55:17-UTC ./jt/jtpython/test
 52aad919f85772420ff31fbfdcb0649ba101c1d2 2024031212:55:17-UTC ./jt/jtpython/test-tabpane.py
 d7264ebfe3e0397d2aa45151921297fec162a649 2024031212:55:16-UTC ./jt/jtpython/test-panel.py
 b92748ba53755c0dddc80c862dc0b979ba6111a2 2024030709:19:20-UTC ./ccctools/ppo2cpp/ppo2cpp.cpp
-a77b4c35b21f2d9d0c3d712ee8ecec686a0c80be 2024030709:18:42-UTC ./ccctools/ppo2cpp/ppo2cpp.ver
 a848e1ddc1edc41f27576085111bf9bcc4ae9041 2024030618:57:02-UTC ./ccctools/ppo2cpp/codegen.cpp
 8ea61cae5635134cc1936fd0769285aeae07051b 2024030614:23:41-UTC ./tutor/qsort/qsort.ch
 b60389b2b668ef1983ac4987e1b61f3fb12f306e 2024030613:45:30-UTC ./tutor/qsort/test.prg

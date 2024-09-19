@@ -2,10 +2,50 @@
 #include "box.ch"
 #include "inkey.ch"
 
+#ifdef NOTDEFINED
+
+  A popupmenu bal felso sarka (this:top,this:left)-nel lesz.
+  Ehhez kepest az egeszet foljebb hozza, ha alul teljesen kilog a terminalbol,
+  es lehetoseg szerint balra tolja, ha a menu jobb szele kilog a terminalbol.
+  A popupmenu mozgathato a SHIFT-arrow billentyukkel.
+
+  A menuitemek lehetnek:
+
+    1) C: egyszeru text            - a text jelenik meg a menuben
+    2) A: array: {text,codeblock}  - a text jelenik meg a menuben
+    3) O: popupmenu                - popupmenu:title jelenik meg a menuben
+
+  Navigacio (popup:loop)
+
+    K_ESC       kilep az osszes menubol
+    K_LEFT      az utolso menubol visszalep
+    K_RIGHT     belep a kivalasztott submenube
+    K_ENTER     megvan a vegso eredmeny (kilep), vagy belep a kivalasztott submenube
+
+    K_DOWN      szokasos navigacio
+    K_UP        szokasos navigacio
+    K_PGDN      szokasos navigacio
+    K_PGUP      szokasos navigacio
+    K_HOME      szokasos navigacio
+    K_END       szokasos navigacio
+
+  Visszateres
+
+    popup:loop == 0    - ha kileptek a  K_ESC vagy K_LEFT billentyukkel
+    popup:loop == ch>0 - a kulso menuben kivalasztott elem, ha K_ENTER-rel leptek ki
+
+    Akarhogy is leptek ki, a menukben megmarad az utolso popup:choice attributum.
+    Ha K_ENTER egy {text,codeblock} tipusu elemen tortenik, vegrehajtja a blockot.
+
+    Kilepes utan popup:text megadja a kivalasztott elem szoveget.
+    Kilepes utan popup:block megadja a kivalasztott elem codeblockjat (ha van).
+
+#endif
 
 ******************************************************************************************
 class popupmenu(object)
 
+    attrib  title
     attrib  menu
     attrib  top
     attrib  left
@@ -14,19 +54,24 @@ class popupmenu(object)
 
     attrib  upper
     attrib  choice
+    attrib  width
+    attrib  depth
 
     attrib  color
     attrib  border
 
     method  initialize
     method  loop
+    method  text
+    method  block
 
 
 ******************************************************************************************
-function popupmenu.initialize(this,menu,top,lef,bot:=9999,rig:=9999)
+function popupmenu.initialize(this,menu:={},top:=0,lef:=0,bot:=9999,rig:=9999)
 
-local color:=brwColor()
+local color:=brwColor(),n
 
+    this:title  :="*MENU*"
     this:menu   :=menu
     this:top    :=int(top)
     this:left   :=int(lef)
@@ -40,6 +85,9 @@ local color:=brwColor()
 
     this:upper:=1
     this:choice:=1
+    this:width:=0
+    this:depth:=0
+
     this:color:=color::logcolor(2)+","+color::logcolor(4)
     this:border:=B_SINGLE
 
@@ -53,6 +101,7 @@ local color:=brwColor()
 //# 4 - a popup menuk kiemelt soranak szine   (default: 1)
 
 
+
 ******************************************************************************************
 function popupmenu.loop(this)
 
@@ -60,30 +109,47 @@ local saved_color:=setcolor()
 local saved_cursor:=setcursor(0)
 local saved_pos:={row(),col()}
 
-local n,width,visible,screen,key
-local top,lef,bot,rig
+local n,visible,screen,key
+local wid,top,lef,bot,rig
+local submenu
 local shift:=.t.
+local result:=0
 
     if( this:menu::empty )
         return 0
     end
 
-    width:=0
+    // foljebb hozza, ha teljesen kilog
+    if( this:top>maxrow()-2 )
+        this:bottom -= (this:top-maxrow()+2)
+        this:top    -= (this:top-maxrow()+2)
+    end
+
+    // balrabb hozza, amennyire kell/lehet
+    this:width:=0
     for n:=1 to len(this:menu)
-        width::=max(this:menu[n]::len)
+        if( this:menu[n]::valtype=="C"  )
+            this:width::=max(this:menu[n]::len)
+        elseif( this:menu[n]::valtype=="A"  )
+            this:width::=max(this:menu[n][1]::len)
+        else
+            this:width::=max(this:menu[n]:title::len)
+        end
     next
-    width::=min(this:right-this:left-1)
-    this:left::=min(maxcol()-width-1)
+    this:width::=min(this:right-this:left-1)
+    this:left::=min(maxcol()-this:width-1)
     this:left::=max(0)
+
 
     dispbegin()
     while( shift )
         shift:=.f.
 
+        wid:=this:width
         top:=this:top
         lef:=this:left
         bot:=this:bottom
-        rig:=this:left+width+1
+        rig:=this:left+wid+1
 
         // TOP
         top::=max(0)                                // >= 0
@@ -101,9 +167,9 @@ local shift:=.t.
         // RIGHT
         rig::=max(lef+2)                            // >= lef+2
         rig::=min(maxcol())                         // <= maxcol()
-        rig::=min(lef+width+1)                      // <= lef+width+1
+        rig::=min(lef+wid+1)                        // <= lef+wid+1
 
-        
+
         visible:=bot-top-1                          // LATHATO ELEMEK MAX SZAMA
 
         this:choice::=max(1)                        // >= 1
@@ -120,20 +186,47 @@ local shift:=.t.
         while(.t.)
             key:=inkey(0)
 
-            if( key==K_ESC  )
-                this:choice:=0
+            if( key==K_ESC )
+                // back
+                result:=0
                 exit
 
             elseif( key==K_LEFT )
-                this:choice:=0
+                // back
+                result:=0
                 exit
 
             elseif( key==K_RIGHT )
-                this:choice:=0
-                exit
+                if( this:menu[this:choice]::valtype$"CA" )
+                    // do nothing
+                else
+                    // enter submenu
+                    submenu:=this:menu[this:choice]
+                    submenu:top:=top+this:choice-this:upper+2
+                    submenu:left:=rig
+                    submenu:bottom:=9999
+                    submenu:right:=9999
+                    submenu:depth:=this:depth+1
+                    if( 0<submenu:loop )
+                        // done
+                        result:=this:choice
+                        exit
+                    elseif( lastkey()==K_ESC )
+                        result:=0
+                        exit
+                    end
+                end
 
             elseif( key==K_ENTER )
-                exit
+                if( this:menu[this:choice]::valtype$"CA" )
+                    // done
+                    result:=this:choice
+                    exit
+                else
+                    keyboard(K_RIGHT)
+                end
+
+
 
             elseif( key==K_SH_UP )
                 if( top>0 )
@@ -166,6 +259,7 @@ local shift:=.t.
                     shift:=.t.
                     exit
                 end
+
 
             elseif( key==K_DOWN )
                 if( this:choice<this:menu::len )
@@ -225,17 +319,52 @@ local shift:=.t.
     setcursor(saved_cursor)
     setpos(saved_pos[1],saved_pos[2])
 
-    return this:choice
+    if( this:depth==0 .and. result>0 )
+        eval(this:block|{||},this:text)
+    end
+
+    return result
+
+
+******************************************************************************************
+static function popupmenu.text(this)
+local menuitem
+    if( this:choice>0 )
+        menuitem:=this:menu[this:choice]
+        if(  menuitem::valtype=="C" )
+            return menuitem
+        elseif(  menuitem::valtype=="A" )
+            return menuitem[1]
+        else
+            return menuitem:text
+        end
+    end
+
+
+******************************************************************************************
+static function popupmenu.block(this)
+local menuitem
+    if( this:choice>0 )
+        menuitem:=this:menu[this:choice]
+        if( menuitem::valtype=="C" )
+            return NIL
+        elseif( menuitem::valtype=="A" )
+            return menuitem[2]
+        else
+            return menuitem:block
+        end
+    end
 
 
 ******************************************************************************************
 static function draw(this,top,lef,bot,rig)
-local row,col,color,item
+local row,col,color,item,menuitem,text
 
-    //?  "  cho="+this:choice::str::alltrim
-    //?? "  upr="+this:upper::str::alltrim 
-    //?? "  top="+top::str::alltrim 
-    //?? "  bot="+bot::str::alltrim
+#ifdef _CCC3_
+local arrow:=chr(0x25b6)
+#else
+local arrow:=">"
+#endif
 
     dispbegin()
     color:=this:color::split
@@ -245,10 +374,19 @@ local row,col,color,item
     col:=lef+1
     for row:=top+1 to bot-1
         item:=this:upper-1+row-top
-        if( item==this:choice  )
-            @ row,col say this:menu[item]::padr(rig-lef-1) color color[2]
+        menuitem:=this:menu[item]
+        if( menuitem::valtype=="C" )
+            text:=menuitem::padr(rig-lef-1)
+        elseif( menuitem::valtype=="A" )
+            text:=menuitem[1]::padr(rig-lef-1)
         else
-            @ row,col say this:menu[item]::padr(rig-lef-1)
+            text:=menuitem:title::padr(rig-lef-1)+arrow  // arrow beleir a keretbe
+        end
+
+        if( item==this:choice  )
+            @ row,col say text color color[2]
+        else
+            @ row,col say text
         end
     next
     dispend()

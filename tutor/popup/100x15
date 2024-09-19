@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SIZE=$(basename $0)
+export CCCTERM_SIZE=${SIZE}
+
+popup.exe

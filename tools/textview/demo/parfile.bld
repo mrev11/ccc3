@@ -1,2 +1,1 @@
--btv.lib
--p../obj${CCCBIN}
+-bccc${CCCVER}_textview

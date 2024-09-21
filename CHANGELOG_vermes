@@ -1,3 +1,7 @@
+2024-09-21
+  bt2tdc elveszett tdc-k ujra generalasahoz;
+  tutor/xtabobj ddict helyett atirva tdc-re, egysegesitve;
+
 2024-09-19 tobbszintu popupmenu;
 
 2024-09-17 popupmenu objektum meg rugalmasabb pozicionalas;

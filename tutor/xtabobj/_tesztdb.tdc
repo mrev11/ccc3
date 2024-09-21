@@ -1,0 +1,11 @@
+!table tesztdb
+!index name tesztdb1 NAME
+!index size tesztdb2 SIZE
+!index time tesztdb3 DATE TIME
+!field NAME         C  13  0
+!field SIZE         N   8  0
+!field DATE         D   8  0
+!field TIME         C  10  0
+!field ATTR         C   1  0
+!field EXTRA        X  32  0
+!field DBMEXTRA     C  10  0

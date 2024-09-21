@@ -15,6 +15,7 @@
 -xbtverif
 -xbtwalk
 -xtsema
+-xbt2tdc
 
 -d.
 -i..

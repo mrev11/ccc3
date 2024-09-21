@@ -1,6 +1,0 @@
-#!/bin/bash
-tview tesztdb.bt >log
-
-if test -s log; then
-    list log &
-fi

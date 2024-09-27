@@ -18,9 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//3.0.0   az egesz ujrairva
-//3.0.1   csiszar-fele checkek tamogatva 
+//3.2     textlabel control
 //3.1     felulvizsgalat 2021-02-20
+//3.0.1   csiszar-fele check tamogatva 
+//3.0.0   az egesz ujrairva
 
 ******************************************************************************
 
@@ -56,7 +57,7 @@ static termsize:=size80x25
 
 ******************************************************************************
 static function ver()
-    return "3.1-"+cccver()
+    return "3.2-"+cccver()
 
 ******************************************************************************
 static function usage()
@@ -251,9 +252,17 @@ local code:="//msk2say "+ver()+eol
         elseif( t=='[' );  code+="    mskCheck     "+parlist(c)+eol
         elseif( t=='(' );  code+="    mskRadio     "+parlist(c)+eol
         elseif( t=='<' );  code+="    mskPushButton"+parlist(c)+eol
+        elseif( t=='?' );  code+="    mskGet       "+parlist(c)+eol    // csiszar-fele check
         elseif( t=='#' );  code+="    mskBrowse    "+parlistx(c)+eol
         elseif( t=='+' );  code+="    mskTextArea  "+parlistx(c)+eol
-        else            ;  code+="    mskGet       "+parlist(c)+eol  //valami mindenekeppen kell
+        elseif( t=='@' )
+                           code+="    mskColorSay() //push"+eol
+                           code+="    mskTextLabel"+parlist(c)+eol
+                           code+="    mskColorRestore() //pop"+eol
+        else
+            ? "ERROR unknown control type:", c:text
+            ?
+            quit
         end        
     next
     code+="    mskColorRestore() //pop"+eol

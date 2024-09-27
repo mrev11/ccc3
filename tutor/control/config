@@ -1,3 +1,17 @@
 
-MSKCOLOR_SAY=n/330
-MSKCOLOR_GET=w+/n+,n/w+,w+/gb
+MSKCOLOR_SAY=n/332,,554/332
+
+MSKCOLOR_GET=333/n,n/#252,555/n
+
+
+# MSKCOLOR_SAY
+# 1. szin : keret, feliratok, label
+# 2. szin : nem hasznalja (mert labelen sosincs fokusz)
+# 3. szin : kiemelt (bright) label
+
+
+# MSKCOLOR_GET
+# 1. szin: fokusz nelkuli get, nem kivalasztott alt
+# 2. szin: get fokusszal
+# 3. szin: fokusz nelkuli kiemelt get, kivalasztott alt
+

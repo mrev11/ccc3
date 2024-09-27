@@ -17,7 +17,6 @@ static function load(getlist)
 
     g_mehet:execblock:={||NIL}  // GE_ESCAPE -> store()
 
-    getlist::aeval({|g|g:colorspec:="w/n,w/n+"})
     getlist::aeval({|g|g:display})
 
 

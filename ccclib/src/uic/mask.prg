@@ -159,6 +159,13 @@ local area:=textareaNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LE
 
 
 *************************************************************************
+function mskTextLabel(msk,t,l,var,name)
+local label:=textlabelNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],label)   
+    return label
+
+
+*************************************************************************
 function mskShow(msk)
 
 local t:=msk[ MSK_TOP    ]

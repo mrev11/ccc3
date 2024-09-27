@@ -109,7 +109,7 @@ local prev:=this:selected
     next
 
     for n:=1 to len(this:menu)
-        if( this:menu[n][1]::lower==ckey )
+        if( this:menu[n][1..1]::lower==ckey )
             ncho:=n
             exit
         end

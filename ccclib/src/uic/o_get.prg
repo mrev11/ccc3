@@ -66,8 +66,12 @@ class get(object)
     method delwordright //not implemented
     method insert
     method overstrike
+
+    method  fgcolor
+    method  brcolor
  
     attrib block
+    attrib bright
     attrib buffer
     attrib cargo
     attrib changed
@@ -90,6 +94,7 @@ class get(object)
     attrib subscript    //not used
     attrib typeout
 
+
 *****************************************************************************
 function getIni(this,row,col,blk,var,pic,clr) //compatibility
     return this:(get)initialize(row,col,blk,var,pic,clr)
@@ -106,6 +111,7 @@ static function get.initialize(this,row,col,blk,var,pic,clr)
     this:picture   := if(valtype(pic)=="C",pic,NIL)
     this:colorspec := if(valtype(clr)=="C",clr,setcolor())
 
+    this:bright    := .f.
     this:changed   := .f.
     this:clear     := .f.
     this:decpos    :=  0
@@ -167,7 +173,11 @@ local fs,ts,pw,v,color
         ts:=pict_tempstr(get)
         pw:="*"$fs
         v:=transform(get:varget,fs+ts)
-        color:=logcolor(get:colorspec,1) //unselected
+        if( !get:bright )
+            color:=logcolor(get:colorspec,1) //unselected
+        else
+            color:=logcolor(get:colorspec,3) //bright
+        end
     end
     if( pw )
         v:=pwtrans(v)
@@ -695,5 +705,27 @@ local len:=0, c
         c:=substr(str,i+len,1)
     end
     return len
+
+
+*****************************************************************************
+static function get.fgcolor(this,fgcolor)
+local pos:=at("/",this:colorspec)
+    this:colorspec:=fgcolor+this:colorspec[pos..]
+
+
+
+*****************************************************************************
+static function get.brcolor(this,brcolor)
+local color,pos
+    color:=this:colorspec::split::asize(3)
+    if( color[2]==NIL ) 
+        color[2]:=""
+    end
+    if( color[3]==NIL ) 
+        color[3]:=color[1]
+    end
+    pos:=at("/",color[3])
+    color[3]:=brcolor+color[3][pos..]
+    this:colorspec:=color[1]+","+color[2]+","+color[3]
 
 *****************************************************************************

@@ -1,3 +1,10 @@
+2024-09-25 
+   uj maszk kontroll: textlabel;
+   msk2say tamogatja a textlabel kontrollokat;
+   get:bright  uj attrib - jelzi, hogy a kontrollt kiemelten kell megjeleniteni;
+   get:fgcolor uj method - get:colorspecben kicsereli a nem kiemelt fg szint;
+   get:brcolor uj method - get:colorspecben kicsereli a kiemelt fg szint;
+
 2024-09-21
   bt2tdc elveszett tdc-k ujra generalasahoz;
   tutor/xtabobj ddict helyett atirva tdc-re, egysegesitve;

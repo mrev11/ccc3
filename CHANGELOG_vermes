@@ -1,3 +1,9 @@
+2024-09-28
+  uj fuggveny viewmodal(getlist):  a readmodal() helyen hasznalhato
+    minden kontrollt readonly-va tesz, mozgatja a maszkot, esc-re lep ki
+  uj fuggveny get.behave_as_label(get): a get label-kent viselkedik, get:preblock:={||.f.}
+  uj fuggveny get.behave_as_get(get): a get getl-kent viselkedik, get:preblock:={||.t.}
+
 2024-09-25 
    uj maszk kontroll: textlabel;
    msk2say tamogatja a textlabel kontrollokat;

@@ -1,11 +1,8 @@
+dabc2b10e5ece86ffe46c750cfaa90eb9b649281 2024092809:42:47-UTC ./CHANGELOG_vermes
+92167febec8c2ffb9d889f114d7bc91ff8aa153a 2024092809:37:13-UTC ./ccclib/src/uic/getsys.prg
+89aff4aa6be92a45bbda6f19f8ddead1ae513325 2024092807:29:10-UTC ./jt/jterminal/jterminal.jar
+e78935f9cfe36a2ed596580806ee18709dffce0e 2024092807:29:10-UTC ./log-install
 e5a2f830e1b91d30693107cdd43ed00cd9047f03 2024092718:08:36-UTC ./tutor/control/demo4.prg
-4338ef3598f8e7e6136a5acd3710fdf5f36a13bf 2024092717:34:06-UTC ./tutor/control/bright.say
-97b962d69e15d4c7075c4bba28101ca8be705ac8 2024092717:34:06-UTC ./tutor/control/browse.say
-b3e51f35aa0a777eb02af110705ddba8c51f6a9f 2024092717:34:06-UTC ./tutor/control/control.say
-78bbbda879f785366629d3de8dd6a7a73e666cbf 2024092717:34:06-UTC ./tutor/control/list.say
-53e6a224f3646321fd99ceb04c924cd0e43f3ce8 2024092717:34:06-UTC ./tutor/control/textarea.say
-105ec843e6dd40424ded7c125a9ab44cb3d6e77f 2024092710:36:48-UTC ./jt/jterminal/jterminal.jar
-0e402e4b9a86e32ad098b3d841cbd08b68656f4f 2024092710:36:48-UTC ./log-install
 c2578baaabf7f8af63c21b380a598b9d3f11bbcc 2024092710:36:45-UTC ./tutor/rename/rnm.say
 ac556b5d374eb545f5583e1eba02bc3833264f81 2024092710:36:44-UTC ./tutor/pm/linux/3/search.say
 c023d7f409d952a41a17167ac5df181b94d606c6 2024092710:36:29-UTC ./tools/dbfview/search.say
@@ -17,7 +14,6 @@ f8e2bd9779f9913b0a47326346d5896f71161937 2024092710:36:23-UTC ./tabobj/tbbtbtx/u
 5b4b756ea311c1ea037dfa2ff130e80a673b6e46 2024092710:36:22-UTC ./tabobj/utility.src/ver3/recpos.say
 f86fe1acc33df511d4400ace1ec9d5ef6ef39bb8 2024092710:36:15-UTC ./tools/z/ver3/zreplace.say
 9762c76288cebc741950291896c1e7c0ef0187b8 2024092710:36:13-UTC ./tools/textview/ver3/zsearch.say
-71fda431db2c9eac71ee866411bd16d7d0f8a510 2024092710:30:17-UTC ./CHANGELOG_vermes
 725e60984f288b8d5a8b4446a45b0132fba4a2e2 2024092710:28:12-UTC ./usr/bin/linux/msk2say
 7d16851b3669779cebc389fb594a1d4f84134d27 2024092710:28:07-UTC ./tools/mask/msk2say.prg
 06a0c2b001e173501a5f066cccb862f67aaf616e 2024092417:30:38-UTC ./ccclib/src/uic/o_get.prg
@@ -816,7 +812,6 @@ e8f0e96b0cb4e296d0aa753145b8fd61b8a9d57e 2023051107:47:22-UTC ./tutor/control/te
 05fef9cbade1a66d65ff4685695cbac039815ce1 2023051107:43:59-UTC ./tutor/control/s4
 b9ec8fc0975c9b33ad616ffb114d7f938dbd6cdc 2023051021:44:20-UTC ./jt/msk2dlg/readmask.prg
 ca262128a677534481607c521e1b6c9b9a1754f5 2023051019:09:06-UTC ./ccclib/src/uic/pushbutton.prg
-4aff8243cfe1c3aed76eb44e0109b8fd7f4f7403 2023051019:00:56-UTC ./ccclib/src/uic/getsys.prg
 13e3cbddff41d6e5e8ad2c525e9b402e5d54fd0f 2023051018:56:55-UTC ./ccclib/src/uic/altbutton.prg
 783d000725bbf172d0ab6de9a6c94b84dee1ceb0 2023051017:19:34-UTC ./tools/z/z
 826cc2c8f876107bdc98328abb686efefe2294f4 2023051017:18:08-UTC ./tools/z/zcolor.prg

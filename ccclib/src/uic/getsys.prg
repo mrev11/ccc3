@@ -50,6 +50,69 @@ function GetComplete(key)
     return key==K_CTRL_W .or. key==K_CTRL_Z
 
 **********************************************************************
+function viewmodal( getlist )
+
+// readmodal helyen hasznalhato
+// minden kontrollt readonly-va tesz
+// mozgatja a maszkot, ESC-re lep ki
+
+local oGet,n,key
+local txtbrw:=0,crs
+
+    for n:=1 to len(getlist)
+        oGet:=getlist[n]
+        if( getclassid(oGet)==getbrwClass() )
+            txtbrw++
+        elseif( getclassid(oGet)==textareaClass() )
+            txtbrw++
+            oGet:modflag:=.f.
+        else
+            oGet::get.behave_as_label()
+        end
+    next
+    getlist::aeval({|g|g:display})
+    
+    if( txtbrw>0 )
+        ReadModal(getlist)
+    else
+        // minden preblock=={||.f.}
+        // csak mozgatjuk a maszkot
+        crs:=setcursor(0)
+        while( (key:=inkey(0))!=K_ESC  )
+            if( key==K_SH_UP )
+                move(oGet,key)
+            elseif( key==K_SH_DOWN )
+                move(oGet,key)
+            elseif( key==K_SH_LEFT )
+                move(oGet,key)
+            elseif( key==K_SH_RIGHT )
+                move(oGet,key)
+            end
+        end
+        setcursor(crs)
+    end
+
+
+**********************************************************************
+function get.behave_as_label(get)
+    get:preblock:={||.f.}
+    mskColorSay()
+    get:colorspec:=setcolor()
+    mskColorRestore()
+
+// beallitja a colorspec es preblock attributumokat
+// hogy a kontroll ugy viselkedjen mint egy textlabel
+// lehetne a get objektum metodusa
+
+function get.behave_as_get(get,preblk)
+    get:preblock:=preblk|{||.t.}
+    mskColorGet()
+    get:colorspec:=setcolor()
+    mskColorRestore()
+
+
+
+**********************************************************************
 function ReadModal( GetList, nPos )
 
 local oGet

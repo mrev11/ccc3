@@ -1,3 +1,4 @@
 -sccc$(CCCVER)_xmlrpc  
 
 BUILD_PRE=-dSSL_SUPPORT
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}

@@ -1,10 +1,5 @@
 #!/bin/bash
+export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+
 bapp_unix0.b -sccc"$CCCVER"_zlib -bz
 
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-cp -pf *.ch  $CCCDIR/usr/include
-
-find obj$CCCBIN/*.so | while read so; do
-    cp -pf $so $so.new
-    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-done

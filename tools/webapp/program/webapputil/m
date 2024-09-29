@@ -1,11 +1,3 @@
 #!/bin/bash
 bapp_unix_.b @parfile.bld
 
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-
-#so közvetlen cp helyett mv-vel kerül a helyére,
-#hogy az éppen futó programok nem szálljanak el
-find obj$CCCBIN/*.so | while read so; do
-    cp -pf $so $so.new
-    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-done

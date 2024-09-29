@@ -1,19 +1,9 @@
 #!/bin/bash
+export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+mkdir -p $CCCDIR/usr/lib/$CCCBIN 
+
 . $CCCDIR/usr/bin/$CCCUNAME/__unix.b
 export BUILD_OBJ="$BUILD_OBJ"_uic
 
 build.exe @uic.bld
-
-mkdir $CCCDIR/usr/lib/$CCCBIN 2>/dev/null
-cp -pf $BUILD_OBJ/*.lib    $CCCDIR/usr/lib/$CCCBIN
-#cp -pf $BUILD_OBJ/*.so     $CCCDIR/usr/lib/$CCCBIN
-
-#so közvetlen cp helyett mv-vel kerül a helyére,
-#hogy az éppen futó programok nem szálljanak el
-find $BUILD_OBJ/*.so | while read so; do
-    cp -pf $so $so.new
-    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-done
- 
-#list.exe error &
 

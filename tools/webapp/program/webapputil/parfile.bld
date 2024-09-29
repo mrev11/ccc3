@@ -4,3 +4,5 @@
 -bz
  
 
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+

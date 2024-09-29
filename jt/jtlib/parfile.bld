@@ -1,4 +1,5 @@
 -sccc$(CCCVER)_jt
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
 # Ha nincs kéznél az openssl könyvtár,
 # akkor is le lehet fordítani a programot SSL támogatás nélkül

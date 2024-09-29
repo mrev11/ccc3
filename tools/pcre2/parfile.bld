@@ -2,3 +2,6 @@
 
 -bpcre2-8
 -bpcre2-32
+
+
+BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}

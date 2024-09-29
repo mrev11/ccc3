@@ -7,20 +7,16 @@ pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
 pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
 echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
 
+export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+
 bapp_unix_.b  @gtk.bld  -sccc3_gtk
 
 if test -s error; then
     list error &
 fi
 
-#ln -s -f `pwd`/include/gtk.ch     $CCCDIR/usr/include/gtk.ch
-#ln -s -f `pwd`/include/gdk.ch     $CCCDIR/usr/include/gdk.ch
-#ln -s -f `pwd`/include/cccgtk.h   $CCCDIR/usr/include/cccgtk.h
-
 cp -pf `pwd`/include/gtk.ch     $CCCDIR/usr/include/gtk.ch
 cp -pf `pwd`/include/gdk.ch     $CCCDIR/usr/include/gdk.ch
 cp -pf `pwd`/include/cccgtk.h   $CCCDIR/usr/include/cccgtk.h
 cp -pf `pwd`/include/gdkkey.ch  $CCCDIR/usr/include/gdkkey.ch
 
-cp -pf obj$CCCBIN/*.lib   $CCCDIR/usr/lib/$CCCBIN
-cp -pf obj$CCCBIN/*.so    $CCCDIR/usr/lib/$CCCBIN

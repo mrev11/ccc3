@@ -1,14 +1,7 @@
 #!/bin/bash
+export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+
 bapp_unix0.b  -sccc"$CCCVER"_sql2_db2
 
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-#cp -pf obj$CCCBIN/*.so   $CCCDIR/usr/lib/$CCCBIN
 cp -pf sql.ch  $CCCDIR/usr/include
-
-#so kozvetlen cp helyett mv-vel kerul a helyere,
-#hogy az eppen futo programok nem szalljanak el
-find obj$CCCBIN/*.so | while read so; do
-    cp -pf $so $so.new
-    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-done
 

@@ -1,17 +1,6 @@
 #!/bin/bash
-#set -x
-#echo `pwd`
+export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
 bapp_unix0.b  -d. -dunix  -sccc"$CCCVER"_sslsocket  -bssl
 
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-#cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
 cp -pf ssl.ch  $CCCDIR/usr/include
-
-
-#so kozvetlen cp helyett mv-vel kerul a helyere,
-#hogy az eppen futo programok nem szalljanak el
-find obj$CCCBIN/*.so | while read so; do
-    cp -pf $so $so.new
-    mv $so.new  $CCCDIR/usr/lib/$CCCBIN/`basename $so`
-done

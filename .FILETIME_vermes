@@ -1,6 +1,9 @@
-42a5680be6b6911f42aa16c87d366ebbfe17d163 2024092923:22:58-UTC ./CHANGELOG_vermes
-10a99aef8bc48f70cfc7dd98792f5ec5abf45327 2024092923:17:08-UTC ./log-install
-f4db4f42d5a256be5af920df6155c16871381b91 2024092923:17:08-UTC ./usr/bin/linux/jterminal.jar
+298167c98bc0f83decbe2813a883328fa4dcf257 2024093012:49:21-UTC ./ccclib/src/buildnumber_ccc.prg
+ffdecef2d8c7f2020117526e1ebcbc7528fec24e 2024093012:48:55-UTC ./CHANGELOG_vermes
+08c19b8e3ed1d814a88bf527347b5a57302118f8 2024093012:44:30-UTC ./ccclib/src/buildnumber_ccc_required.prg
+2ea55bd76b2bd3f1d6300143bfb699465fc72fb3 2024093012:30:32-UTC ./log-install
+cb8bc0e8be42ed4b35872c736d9c1656a5e92362 2024093012:30:32-UTC ./usr/bin/linux/jterminal.jar
+ad00ca4e4446a9ea48b061ba6fd2eea6590f3bdf 2024093011:39:11-UTC ./commit-count
 01c36afa71b7d7dc71979087b97b56a7b70b4814 2024092923:17:03-UTC ./usr/bin/linux/stred
 546d5fcc297eb8afd65423f68b0388562405b644 2024092923:17:03-UTC ./usr/bin/linux/zg
 99d935ef29d763d82826b9a71b13a33e75947fc6 2024092923:17:03-UTC ./usr/bin/linux/zgrep

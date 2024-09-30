@@ -1,3 +1,10 @@
+
+2024-09-30
+   buildnumber_ccc() visszaadja a commit sorszamat;
+   buildnumber_ccc_required() ellenorzi a buildnumbert;
+   a sorszam alapjan ellenorizheto,hogy eleg friss-e a CCC;
+   (megj: gitnav automatikusan generalja a sorszamot);
+
 2024-09-30
   A build scriptekben a konytarak masolgatasa helyett beallitva BUILD_LIBDIR,
   aminek hatasara a build automatikusan installalja a lib es so fajlokat.

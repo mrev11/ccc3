@@ -1,15 +1,7 @@
-c81f2617ec34e6ccecfcc6dc2193701215142200 2024100212:00:48-UTC ./ccclib/src/buildnumber_ccc.prg
-f4b94702be1a984fe612e46abb1230d1e3dae5f9 2024100211:59:41-UTC ./tutor/control/altbutton.say
-4338ef3598f8e7e6136a5acd3710fdf5f36a13bf 2024100211:59:41-UTC ./tutor/control/bright.say
-989f8b12c66ffb1abd864ed8b425d724991bde3b 2024100211:59:41-UTC ./tutor/control/checkbox.say
-b3e51f35aa0a777eb02af110705ddba8c51f6a9f 2024100211:59:41-UTC ./tutor/control/control.say
-2e6b0c9ec784093b1917da51f7451fe1dabc307a 2024100211:59:41-UTC ./tutor/control/getbrowse.say
-79091c9d1e96b0cbe084d8552237d9f145aa8ab0 2024100211:59:41-UTC ./tutor/control/listbox.say
-ef96db68096f80fea56f83c2035be3e81883577a 2024100211:59:41-UTC ./tutor/control/pushbutton.say
-f717f2a2ea88855edcbd9a49c4123faf9c65883a 2024100211:59:41-UTC ./tutor/control/radiobutton.say
-53e6a224f3646321fd99ceb04c924cd0e43f3ce8 2024100211:59:41-UTC ./tutor/control/textarea.say
-5c75329da51a1aabbbfdae7979e55d150157b7c1 2024100211:59:41-UTC ./tutor/control/textlabel.say
-86340293c9e1b2c718d9416a70e025241f53771f 2024100211:58:54-UTC ./CHANGELOG_vermes
+6469364f692bc04387475c0e8ba3bfe6c91bbb68 2024100213:21:37-UTC ./ccclib/src/buildnumber_ccc.prg
+a9ba36d9610c4b119c0ed4dec2f93fd3595d2a3d 2024100213:21:10-UTC ./CHANGELOG_vermes
+6ab35876badb72b7cf9bfa8eadb95ff7a5987610 2024100213:19:07-UTC ./usr/bin/linux/msk2say
+9ff1a45662bac5b552644c390e87c1c4016059bc 2024100213:19:05-UTC ./tools/mask/msk2say.prg
 90f7e4b716853c7f494b555cbca16d9f7c3457c8 2024100211:54:46-UTC ./tutor/control/OLVASS
 36efe3426aa0db49ac13748e26ada627fba5a3c8 2024100211:35:24-UTC ./tutor/control/s-altbutton
 ef74cf7c04b1deac4f8f1b847482408b5c9a993c 2024100211:35:04-UTC ./tutor/control/altbutton.msk
@@ -85,7 +77,6 @@ cde841dd3c4bcc3773fd08b8ae71ed6c2b24f553 2024100211:14:37-UTC ./usr/bin/linux/td
 8f95fa0e72906890e9bfe8af979b49c7496655bc 2024100211:14:37-UTC ./usr/bin/linux/tv
 4d2a26f087042942c3487e3615dc6e0d0b66f352 2024100211:14:33-UTC ./usr/bin/linux/mask
 f8b3d76f9500ec3717ce5045a7e30342590b6c61 2024100211:14:33-UTC ./usr/bin/linux/msk2pge
-52ed48b2e288a91fd7832e79901950496cb1c64f 2024100211:14:33-UTC ./usr/bin/linux/msk2say
 13b9a634c6a784699036ea3cd5923a8f1510c063 2024100211:14:33-UTC ./usr/bin/linux/page
 9fa9a8c43158a57be910d144d21ec82fa80b8cb2 2024100211:14:33-UTC ./usr/bin/linux/pge2out
 ca3b801e6949dae6f586e29bdafdc9c92d46d5bc 2024100211:14:33-UTC ./usr/bin/linux/pge2wro
@@ -161,7 +152,6 @@ f8e2bd9779f9913b0a47326346d5896f71161937 2024092710:36:23-UTC ./tabobj/tbbtbtx/u
 5b4b756ea311c1ea037dfa2ff130e80a673b6e46 2024092710:36:22-UTC ./tabobj/utility.src/ver3/recpos.say
 f86fe1acc33df511d4400ace1ec9d5ef6ef39bb8 2024092710:36:15-UTC ./tools/z/ver3/zreplace.say
 9762c76288cebc741950291896c1e7c0ef0187b8 2024092710:36:13-UTC ./tools/textview/ver3/zsearch.say
-7d16851b3669779cebc389fb594a1d4f84134d27 2024092710:28:07-UTC ./tools/mask/msk2say.prg
 06a0c2b001e173501a5f066cccb862f67aaf616e 2024092417:30:38-UTC ./ccclib/src/uic/o_get.prg
 fd6b8785f905457c1c66941ebdc5b9ff0c16cda0 2024092417:28:12-UTC ./ccclib/src/uic/textlabel.prg
 20e20a5f44ed2f9abc6b10d09e8fbc8e7e609d4f 2024092414:52:23-UTC ./tutor/control/config

@@ -18,6 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define VERSION "3.3"
+
+//3.3     maszkok pozicioja korrigalva
 //3.2     textlabel control
 //3.1     felulvizsgalat 2021-02-20
 //3.0.1   csiszar-fele check tamogatva 
@@ -57,7 +60,7 @@ static termsize:=size80x25
 
 ******************************************************************************
 static function ver()
-    return "3.2-"+cccver()
+    return VERSION+"-"+cccver()
 
 ******************************************************************************
 static function usage()
@@ -277,11 +280,11 @@ local code:="//msk2say "+ver()+eol
         settermsize(1+max(msk[3],maxrow()),1+max(msk[4],maxcol()))
     end
 
-    if( msk[1]<3 .and. y==NIL )
-        y:=30
+    if( y==NIL .and. msk[1]<3 .and. (maxrow()-(msk[3]-msk[1]))>=6 )
+        y:=40
     end     
-    if( msk[2]<3 .and. x==NIL )
-        x:=30
+    if( x==NIL .and. msk[2]<3 .and. (maxcol()-(msk[4]-msk[2]))>=6 )
+        x:=40
     end     
 
     if( !x==NIL .or. y!=NIL )

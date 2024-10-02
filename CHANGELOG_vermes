@@ -1,4 +1,7 @@
 2024-10-02
+    msk2say 3.3 maszkok pozicioja korrigalva;
+
+2024-10-02
    viewmodal()-ban pushbutton beveve a fokuszalhato kontrollok koze;
    radiobutton es checkbox kodja szervalasztva;
    tutor/control-ban minden kontrollra egyszeru pelda;

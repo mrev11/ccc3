@@ -19,11 +19,11 @@
  */
 
 #include "box.ch"
-#include "browse.say"
+#include "getbrowse.say"
 
 *************************************************************************************************
 function main()
-    browse({|g|load(g)},{|g|setcursor(1),readmodal(g)},{|g|store(g)})
+    getbrowse({|g|load(g)},{|g|setcursor(1),readmodal(g)},{|g|store(g)})
     ?
 
 

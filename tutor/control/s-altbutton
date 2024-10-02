@@ -1,0 +1,2 @@
+#!/bin/bash
+CCC_CONFIG=config altbutton.exe

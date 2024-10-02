@@ -1,3 +1,3 @@
 #!/bin/bash
 export CCC_CONFIG=config
-demo3.exe
+textlabel.exe

@@ -1,0 +1,3 @@
+#!/bin/bash
+export CCC_CONFIG=config
+getbrowse.exe

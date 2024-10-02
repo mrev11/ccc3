@@ -2,11 +2,17 @@
 A controlokról
 
 Ezek vannak
- -  get (hagyományos get, ezekről itt nem esik szó)
+
+ -  altbutton   (saját találmány)
  -  checkbox
- -  radio button
+ -  get         (hagyományos get, minden kontroll alaposztálya)
+ -  getbrw      (maszkba helyezett browse)
  -  listbox
- -  alt button (saját találmány)
+ -  pushbutton
+ -  radiobutton
+ -  textarea
+ -  textlabel
+
 
 Mindezek a get osztaly közvetlen leszármazottai.
 Az msk2say generálja a hívásukat a say-ben az msk alapján.
@@ -14,11 +20,15 @@ Az msk2say generálja a hívásukat a say-ben az msk alapján.
 
     class            inverz mező      megjelenés
     -----            -----------      ----------
-    get              name             text mező
-    checkbox         [name            [x]
-    radiobutton      (name            (*)
-    listbox          {name            text mező (+achoice)
     altbutton        /name            alt1/alt2/alt3
+    checkbox         [name            [x]
+    get              name             text mező
+    getbrw           #name            hagyományos (nem menüző) browse
+    listbox          {name            text mező (+achoice)
+    pushbutton       <name            text, K_ENTER-re végrehajtja az execblock-ot
+    radiobutton      (name            (*)
+    textarea         +name            többsoros text mező
+    textlabel        @name            nem editálható text mező a feliratok színével
 
 Ilyen kód kerül a say fájlba (például):
 
@@ -66,7 +76,7 @@ változik a gomb állapota. Vagyis ez egy egyszerű toggle button.
 
 
 #------------------------------------------------------------------------------
-# Radio button
+# Radiobutton
 #------------------------------------------------------------------------------
 
 Ha rákerül a fókusz, akkor (bármely) billentyűleütésre a gomb

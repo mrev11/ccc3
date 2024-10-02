@@ -57,14 +57,16 @@ function viewmodal( getlist )
 // mozgatja a maszkot, ESC-re lep ki
 
 local oGet,n,key
-local txtbrw:=0,crs
+local focusable:=0,saved_cursor
 
     for n:=1 to len(getlist)
         oGet:=getlist[n]
         if( getclassid(oGet)==getbrwClass() )
-            txtbrw++
+            focusable++
+        elseif( getclassid(oGet)==pushbuttonClass() )
+            focusable++
         elseif( getclassid(oGet)==textareaClass() )
-            txtbrw++
+            focusable++
             oGet:modflag:=.f.
         else
             oGet::get.behave_as_label()
@@ -72,12 +74,12 @@ local txtbrw:=0,crs
     next
     getlist::aeval({|g|g:display})
     
-    if( txtbrw>0 )
+    if( focusable>0 )
         ReadModal(getlist)
     else
         // minden preblock=={||.f.}
         // csak mozgatjuk a maszkot
-        crs:=setcursor(0)
+        saved_cursor:=setcursor(0)
         while( (key:=inkey(0))!=K_ESC  )
             if( key==K_SH_UP )
                 move(oGet,key)
@@ -89,7 +91,7 @@ local txtbrw:=0,crs
                 move(oGet,key)
             end
         end
-        setcursor(crs)
+        setcursor(saved_cursor)
     end
 
 
@@ -100,16 +102,15 @@ function get.behave_as_label(get)
     get:colorspec:=setcolor()
     mskColorRestore()
 
-// beallitja a colorspec es preblock attributumokat
-// hogy a kontroll ugy viselkedjen mint egy textlabel
-// lehetne a get objektum metodusa
-
 function get.behave_as_get(get,preblk)
     get:preblock:=preblk|{||.t.}
     mskColorGet()
     get:colorspec:=setcolor()
     mskColorRestore()
 
+// beallitjak a colorspec es preblock attributumokat
+// hogy a kontroll ugy viselkedjen mint egy textlabel/get
+// lehetne a get objektum metodusa
 
 
 **********************************************************************

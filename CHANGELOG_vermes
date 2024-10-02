@@ -1,3 +1,7 @@
+2024-10-02
+   viewmodal()-ban pushbutton beveve a fokuszalhato kontrollok koze;
+   radiobutton es checkbox kodja szervalasztva;
+   tutor/control-ban minden kontrollra egyszeru pelda;
 
 2024-09-30
    buildnumber_ccc() visszaadja a commit sorszamat;

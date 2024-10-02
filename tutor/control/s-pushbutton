@@ -1,6 +1,3 @@
 #!/bin/bash
-
-
 export CCC_CONFIG=config
-
-demo2.exe
+pushbutton.exe

@@ -1,12 +1,12 @@
 
 
-#include "list.say"
+#include "listbox.say"
 
 
 
 function main()
 
-    list({|*|load(*)},{|*|readmodal(*)},{||.t.})
+    listbox({|*|load(*)},{|*|readmodal(*)},{||.t.})
 
 
 function load(getlist)

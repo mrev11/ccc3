@@ -18,9 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-    
 ****************************************************************************
-class checkbox(get)  //compatibility
+class radiobutton(get) 
     method initialize
     method left         {|this|this}
     method right        {|this|this}
@@ -31,14 +30,39 @@ class checkbox(get)  //compatibility
     method overstrike   {|this|toggle(this)}
     method delete       {|this|setfalse(this)}
     method backspace    {|this|setfalse(this)}
-    method display      {|this|display(this,"[X]")}
+    method display      {|this|display(this,"(*)")}
+    method varput
+    method addto
+    attrib group
+
 
 ****************************************************************************
-static function checkbox.initialize(this,r,c,b,v) 
+static function radiobutton.initialize(this,r,c,b,v) 
     this:(get)initialize(r,c,b,v)
-    this:picture:="XXX"
     this:varput(.f.)
+    this:picture:="XXX"
     return this
+
+****************************************************************************
+static function radiobutton.varput(this,x)
+local n,g
+    eval(this:block,x)
+    if( this:hasfocus .and. x .and. this:group!=NIL )
+        for n:=1 to len(this:group)
+            g:=this:group[n]::eval
+            if( !g:hasfocus .and. g:varget )
+                g:toggle
+            end
+        next
+    end
+    return x
+
+****************************************************************************
+static function radiobutton.addto(g,group)
+    aadd(group,{||g})
+    g:group:=group
+    return NIL
+    
 
 ****************************************************************************
 static function display(this,c)

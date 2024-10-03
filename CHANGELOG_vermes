@@ -1,4 +1,7 @@
 2024-10-03
+    ccctools/cccbn.exe kiirja az aktualis build numbert;
+
+2024-10-03
     viewmodal() K_CTRL_W-re es K_CTRL_Z-re is kilep;
     pushbutton:cargo hibas/felesleges NIL-ezese kiveve;
 

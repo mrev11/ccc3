@@ -61,6 +61,7 @@ fi
 ( cd ccctools/prg2ppo   && m )
 ( cd ccctools/removecr  && m )
 ( cd ccctools/mklink    && m )
+( cd ccctools/cccbn     && m )
 
 #-------------------
 # terminal

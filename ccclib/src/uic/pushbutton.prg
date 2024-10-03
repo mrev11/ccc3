@@ -48,7 +48,6 @@ local result
         crs:=setcursor(0)
     
         get:setFocus()
-        get:cargo:=NIL
 
         while(.t.)
             while(.t.)

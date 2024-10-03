@@ -80,7 +80,7 @@ local focusable:=0,saved_cursor
         // minden preblock=={||.f.}
         // csak mozgatjuk a maszkot
         saved_cursor:=setcursor(0)
-        while( (key:=inkey(0))!=K_ESC  )
+        while( (key:=inkey(0))!=K_ESC  .and. !GetComplete(key) )
             if( key==K_SH_UP )
                 move(oGet,key)
             elseif( key==K_SH_DOWN )

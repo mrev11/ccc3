@@ -174,20 +174,27 @@ local b:=msk[ MSK_BOTTOM ]
 local r:=msk[ MSK_RIGHT  ]
 local slist:=msk[MSK_SAYLIST],n
 
-    msk[ MSK_CURSOR ]:=setcursor(1)
-    msk[ MSK_CRSPOS ]:={row(),col()}
-    msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
-
-    @ t,l clear to b,r 
-    for n:=1 to len(slist)
-        @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color slist[n][4]
-    next
+    if( msk[MSK_SCREEN]==NIL )
+        msk[ MSK_CURSOR ]:=setcursor(1)
+        msk[ MSK_CRSPOS ]:={row(),col()}
+        msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
+        
+        @ t,l clear to b,r 
+        for n:=1 to len(slist)
+            @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color slist[n][4]
+        next
+    end
+ 
     return msk
+
 
 *************************************************************************
 function mskLoop(msk)
+    dispbegin()
+    mskShow(msk)
     mskPush(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
+    dispend()
     readexit(.f.)
     while(.t.)
         eval(msk[MSK_BREAD],msk[MSK_GETLIST])
@@ -196,14 +203,18 @@ function mskLoop(msk)
         end
     end
     mskPop()
+    mskHide(msk)
     return msk
     
 
 *************************************************************************
 function mskHide(msk)
-    setcursor(msk[MSK_CURSOR])
-    setpos(msk[MSK_CRSPOS][1],msk[MSK_CRSPOS][2])
-    restscreen(msk[MSK_TOP],msk[MSK_LEFT],msk[MSK_BOTTOM],msk[MSK_RIGHT],msk[MSK_SCREEN])
+    if( msk[MSK_SCREEN]!=NIL )
+        setcursor(msk[MSK_CURSOR])
+        setpos(msk[MSK_CRSPOS][1],msk[MSK_CRSPOS][2])
+        restscreen(msk[MSK_TOP],msk[MSK_LEFT],msk[MSK_BOTTOM],msk[MSK_RIGHT],msk[MSK_SCREEN])
+        msk[MSK_SCREEN]:=NIL
+    end
     return msk
 
 
@@ -286,6 +297,60 @@ function mskWidth(msk)
 
 function mskHeight(msk)
     return msk[MSK_BOTTOM]-msk[MSK_TOP]+1
+
+
+
+*************************************************************************
+function mskAdjustPosition(msk,x,y)
+
+local top:=msk[1]
+local lef:=msk[2]
+local bot:=msk[3]
+local rig:=msk[4]
+
+    if(  bot>maxrow() .or. rig>maxcol() )
+        settermsize(1+max(bot,maxrow()),1+max(rig,maxcol()))
+    end
+
+    if( y==NIL .and. (maxrow()-(bot-top))>=6 ) 
+        if( top<3  )
+            // ha y nincs megadva
+            // es a maszk kicsi a terminalhoz kepest
+            // es a maszk a terminal szelen van
+            // akkor beljebb tolja
+            y:=40
+        end
+        if( maxrow()-bot<3  )
+            y:=60
+        end
+    end     
+    if( x==NIL .and. (maxcol()-(rig-lef))>=6  )
+        if( lef<3 )
+            x:=40
+        end
+        if( maxcol()-rig<3 )
+            x:=60
+        end
+    end     
+
+    if( !x==NIL .or. y!=NIL )
+        if( y==NIL )
+            y:=top // top
+        else
+            y::=max(0)
+            y::=min(100)
+            y:=int((maxrow()-(bot-top))*y/100)
+        end
+        if( x==NIL )
+            x:=lef // left
+        else
+            x::=max(0)
+            x::=min(100)
+            x:=int((maxcol()-(rig-lef))*x/100)
+        end
+        mskReplace(msk,x,y)
+    end
+    return msk
 
 
 *************************************************************************

@@ -1,3 +1,14 @@
+2024-10-06
+  msk2say 3.5:
+    Ha a say #include-ja elott definialva van a GETLIST szimbolum,
+    akkor  a #define g_*  getlist[.] makrokon kivul minden mast kihagy;
+    Maszkok pozicionalasa, terminal atmeretezese mskAdjustPosition()-ban;
+  mask.prg:
+    mskLoop() automatikusan hivja mskShow()-t es mskHide()-ot.
+    (Tehat utobbiakat nem kell beleirni a programba, ha megis benne vannak,
+    akkor mskShow() es mskHide() tobbedszeri hivasra nem csinal semmit.)
+    mskLoop() dispbegin/dispend-del osszetartja a maszk megjeleniteset.
+
 2024-10-03
     ccctools/cccbn.exe kiirja az aktualis build numbert;
 

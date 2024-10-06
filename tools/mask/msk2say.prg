@@ -18,8 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define VERSION "3.3"
+#define VERSION "3.5"
 
+//3.5     GETLIST ha deiniálva van, a #define-okon kívül mindent kihagy
+//3.4     mskAdjustPosition() a generált say-ben
 //3.3     maszkok pozicioja korrigalva
 //3.2     textlabel control
 //3.1     felulvizsgalat 2021-02-20
@@ -217,6 +219,8 @@ local code:="//msk2say "+ver()+eol
     next
     code+=eol
 
+    code+="#ifndef GETLIST"+eol
+
     code+=strtran("static function msk$MSKNAMEcreate(bLoad,bRead,bStore)","$MSKNAME",upper(mskname))+eol
     for n:=1 to len(inv)
         width:=inv[n]:right-inv[n]:left+1
@@ -274,43 +278,12 @@ local code:="//msk2say "+ver()+eol
 
     code+="static function $MSKNAME(bLoad,bRead,bStore,x,y)"::strtran("$MSKNAME",upper(mskname))+eol
     code+="local msk:=msk$MSKNAMEcreate(bLoad,bRead,bStore)"::strtran("$MSKNAME",upper(mskname))+eol
-
-    code+=<<REPLACE>>
-    if(  msk[3]>maxrow() .or. msk[4]>maxcol() )
-        settermsize(1+max(msk[3],maxrow()),1+max(msk[4],maxcol()))
-    end
-
-    if( y==NIL .and. msk[1]<3 .and. (maxrow()-(msk[3]-msk[1]))>=6 )
-        y:=40
-    end     
-    if( x==NIL .and. msk[2]<3 .and. (maxcol()-(msk[4]-msk[2]))>=6 )
-        x:=40
-    end     
-
-    if( !x==NIL .or. y!=NIL )
-        if( y==NIL )
-            y:=msk[1] // top
-        else
-            y::=max(0)
-            y::=min(100)
-            y:=int((maxrow()-(msk[3]-msk[1]))*y/100)
-        end
-        if( x==NIL )
-            x:=msk[2] // left
-        else
-            x::=max(0)
-            x::=min(100)
-            x:=int((maxcol()-(msk[4]-msk[2]))*x/100)
-        end
-        mskReplace(msk,x,y)
-    end
-<<REPLACE>>
-
-    code+="    mskShow(msk)"+eol
+    code+="    mskAdjustPosition(msk,x,y)"+eol
     code+="    mskLoop(msk)"+eol
-    code+="    mskHide(msk)"+eol
     code+="    return lastkey()"+eol
     code+=eol
+
+    code+="#endif //GETLIST"+eol
 
     return code
 

@@ -134,7 +134,10 @@ local sbrwBlock:={|t|t:=objectList[brwArrayPos(browse)],;
    
         brwMenuName(browse,@"[TableObjects of Application]")
         brwMenu(browse,@"Browse",@"Browse current database table",sbrwBlock,"B")
+
         brwShow(browse)
+        while( !empty(dispend()) )
+        end
         brwLoop(browse)
         brwHide(browse)
     else

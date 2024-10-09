@@ -1,9 +1,9 @@
-04100d4f80a3610fe4b850fc3c2ba6e535da69c4 2024100722:15:47-UTC ./ccclib/src/buildnumber_ccc.prg
-a7d8e4ab915c12b00d0ce7fbd479a06501d7ea32 2024100722:14:41-UTC ./CHANGELOG_vermes
-a7ea7c353d5fcc0803541f79908ddfca107a4a57 2024100721:34:24-UTC ./tabobj/log-install
+3d0bc8f8a0205e4d8d9a4645b53c0444dae3b1ff 2024100923:18:20-UTC ./ccclib/src/buildnumber_ccc.prg
+22c05c96ef327c763a732246cf027087ee9e457b 2024100923:17:57-UTC ./CHANGELOG_vermes
+f2a3961dca39337028852a6f0718d41ae27c37cc 2024100921:34:25-UTC ./ccclib/src/uic/listbox.prg
+61f8ed95927f0e6020cea69fbb9cc440ec6f0c38 2024100807:18:37-UTC ./log-install
+6ad98ccf49eab83b7e2930ec10b8381a642f7a33 2024100807:18:37-UTC ./usr/bin/linux/jterminal.jar
 53201b1fa4c31073b805ef04fe0621ee1cd5129d 2024100721:34:18-UTC ./tabobj/commonui.src/tabbrows.prg
-98a15468c865a507049540165c7583206462423e 2024100708:34:49-UTC ./log-install
-d38d99380ad0cbd43ffc46c61a3f2ba1f3c9a388 2024100708:34:48-UTC ./usr/bin/linux/jterminal.jar
 8a21d7ae0275ed9baf8d5ba7f45ed6f8288c4936 2024100708:34:45-UTC ./tutor/pm/linux/3/search.say
 d09c56859928fb89966798750fea4e3c9ada18ca 2024100708:34:45-UTC ./tutor/rename/rnm.say
 f58e4110f4746c2891ba87e77d09fed8a050a062 2024100708:34:45-UTC ./usr/bin/linux/pm
@@ -246,7 +246,6 @@ fd6b8785f905457c1c66941ebdc5b9ff0c16cda0 2024092417:28:12-UTC ./ccclib/src/uic/t
 477708c82cbdec426ea59e51a0f1a7835fd9ebca 2024092414:32:53-UTC ./tutor/control/bright.prg
 2b731e0ec0c198e2ff324336c5d427443814cee2 2024092414:21:41-UTC ./tutor/control/bright.msk
 56bc5bfc6980ecc3317400cd659d75e5ce8756a4 2024092317:23:58-UTC ./tutor/control/list.msk
-d767e50cabc93d9fe7f8090ea3f1d4e4da6d8041 2024092312:57:13-UTC ./ccclib/src/uic/listbox.prg
 cdbfb1294a6f3dc68d89ce139ecee7132a368bdd 2024092110:42:36-UTC ./tools/textview/demo/parfile.bld
 dd3527dd3238a8cca6d43906ceb0b998ea3538b8 2024092110:38:39-UTC ./tutor/xtabobj/.gitignore
 50e7ac96625b21b567ae69c351d87f57a3f964a7 2024092110:08:57-UTC ./tutor/xtabobj/m.bat

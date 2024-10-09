@@ -48,7 +48,7 @@ static function listbox.initialize(this,r,c,b,v)
 
     // Blokk kicserelve:
 
-    this:block:={|x|this:menu[this:select(x)]}
+    this:block:={|x,s|s:=this:select(x),if(s>=1,this:menu[s],"")::padr(len(this:picture))}
 
     // varget/varput a selected ertekevel dolgozik.
     // A belso mukodesben varget/varput-ot nem hasznaljuk,

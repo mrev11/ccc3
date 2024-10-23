@@ -19,7 +19,7 @@
  */
 
 #include "control.say"
- 
+
 
 ******************************************************************************
 function main()
@@ -41,13 +41,13 @@ local g2:={}
     g_f:addto(g2)
     g_g:addto(g2)
     g_h:addto(g2)   ;g_h:varput(.t.)
-    
+
     g_i:varput:=.t.
     g_j:varput:=.t.
 
 
     g_lst1:picture:="@S20 "+replicate("X",64)
-    
+
     g_lst1:item("1 Van, aki forrón szereti!")
     g_lst1:item("2 Próba szerencse")
     g_lst1:item("3 Öt szép szűzlány őrült írót nyúz")
@@ -62,15 +62,15 @@ local g2:={}
     g_lst2:select("HU")
     g_lst2:picture:="XX"
     g_lst2:varput:="  "
-  
+
     g_alt1:alternatives("Kutya/Macska/Nyúl")
 
     g_alt2:alternatives({"Magszem","Vállalk"}); g_alt2:choice("V")
     g_alt2:block:={|x|g_alt2:alternatives[g_alt2:choice(x)][1..1]}
-    
-    
-    //g_a:postblock:={|g|if(g:varget,(alert("WRONG"),.f.),.t.)}
-   
+
+    ? g_g1:picture:="@! "+g_g1:picture
+
+
     aeval(getlist,{|g|g:display})
 
 
@@ -80,7 +80,7 @@ local n
     for n:=1 to len(getlist)
         ? n, getlist[n]:varget::valtype, getlist[n]:name::padr(10), getlist[n]:varget
     next
-    return .f.    
+    return .f.
 
 
 

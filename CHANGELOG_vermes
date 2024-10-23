@@ -1,3 +1,18 @@
+2020-10-23 karakter konverzios fuggvenyek:
+  *
+  codeset_hungarian_accented_to_ascii() - CCC2/CCC3, magyar ekezetes -> ekezet nelkuli
+  codeset_hungarian_unicode_to_latin2() - csak CCC3, magyar unicode (C tipus)-> Latin2 (X tipus)
+  codeset_hungarian_latin2_to_unicode() - csak CCC3, magyar latin2 (X tipus)-> unicode (C tipus)
+  *
+  Csak magyar nyelvre ertelmezett, nem standard konverziok.
+  Az ekezetlenites csak nyelvre vonatkozoan ertelmezheto,
+      mert mas nyelvekben mas kodok jelentenek ekezetes betut.
+  A unicode <-> latin2 konverzio csak CCC3-ben ertelmezheto,
+      mert CCC2-ben nem letezik unicode.
+  Nem minden unicode string konvertalhato latin2-re,
+      peldaul orosz szoveget nem lehet latin2-ben kodolni.
+  A unicode <-> latin2 csak a latin2 magyar reszhalmazat konvertalja.
+
 2020-10-23 android/termux port felelesztve:
    Linux beallitasokkal es build scriptekkel mukodik;
    forditaskor definialva van a _TERMUX_ makro;

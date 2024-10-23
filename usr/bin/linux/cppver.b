@@ -29,6 +29,9 @@ if ! test -f $CPPVER.opt; then
     echo -D_${ver[0]^^}_             > $CPPVER.opt
     echo -DCPP_COMPILER=${ver[0]}   >> $CPPVER.opt
     echo -DCPP_VERSION=${ver[2]}    >> $CPPVER.opt
+    if ! [ "$TERMUX_VERSION" == "" ]; then
+        echo -D_TERMUX_             >> $CPPVER.opt
+    fi
 fi
 
 export MSYSTEM

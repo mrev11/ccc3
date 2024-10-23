@@ -343,7 +343,7 @@ void _clp_thread_create_detach(int argno)
     _clp_thread_detach(1);
 }
 
-#ifndef _LINUX_
+#if (!defined _LINUX_) || (defined _TERMUX_)
 //---------------------------------------------------------------------------
 void _clp_thread_setname(int argno) {stack-=argno; number(0);}
 void _clp_thread_getname(int argno) {stack-=argno; PUSHNIL();}

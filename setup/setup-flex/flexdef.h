@@ -212,6 +212,7 @@
 #define JAM -1  /* to mark a missing DFA transition */
 #define NO_TRANSITION NIL
 #define UNIQUE -1   /* marks a symbol as an e.c. representative */
+#undef  INFINITY
 #define INFINITY -1 /* for x{5,} constructions */
 
 #define INITIAL_MAX_CCLS 100    /* max number of unique character classes */

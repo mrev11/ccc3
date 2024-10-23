@@ -35,7 +35,11 @@ if test -f "$BUILD_LIBX"; then
 fi
 echo -Wl,--end-group >>$RSPLNK
 
+if ! [ "$TERMUX_VERSION" == "" ]; then
+    echo -landroid-shmem >>$RSPLNK
+fi
 cat $CCCDIR/usr/options/$CCCBIN/link.opt >>$RSPLNK
+
 
 if ! c++ $(cat $RSPLNK) 2>$OUTLNK;  then
     touch error

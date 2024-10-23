@@ -1,8 +1,17 @@
-25c32cc357ac3800645f6f4232b89720391cca7c 2024101710:12:29-UTC ./ccclib/src/buildnumber_ccc.prg
-1089356f9e0073d9dae4e91908258279d33acb39 2024101710:12:13-UTC ./CHANGELOG_vermes
+45cb99c7454549746f0cd261b4988d6a8847b6f6 2024102312:13:02-UTC ./ccclib/src/buildnumber_ccc.prg
+d1675b9e1e359969d758c2c392e32d9c4e6f3649 2024102312:11:27-UTC ./log-install
+79d3d95d0f92335eccb9e31f63ed06f48acb0c5a 2024102312:11:27-UTC ./usr/bin/linux/jterminal.jar
+45c43ee9e3f7a7bb2049f220fb54d6864d678042 2024102312:10:19-UTC ./usr/bin/linux/flex
+4a17c23a38cb149b6044a424364b0edc40dc3538 2024102310:56:08-UTC ./CHANGELOG_vermes
+e91876b08a80dab8d7d294b52b0d346ab5d27b7c 2024102310:43:12-UTC ./setup/setup-flex/version.h
+28c013696dff56722e4faba931210e122905f1fc 2024102310:42:15-UTC ./setup/setup-flex/flexdef.h
+b89733f40b200741cf52373f8978c017ded48a32 2024102310:32:24-UTC ./usr/build/linux/lib2exe.bat
+50904dd8e37198bd3d56f5187737cce095e3645c 2024102310:32:08-UTC ./usr/build/linux/obj2exe.bat
+99f09e9b5a78cb8f60bc638c6c71561ff89b79fc 2024102309:23:08-UTC ./setup/setup-unix/thread.cpp
+3f12fc46237924541ffebd2e2ef7614818ce90ef 2024102309:05:51-UTC ./usr/bin/linux/cppver.b
+5e651024501959d1a839326111881ad30d6c9b4c 2024101716:55:53-UTC ./tutor/control/control.prg
+b77e591eaa26f60caff03a3a32316d47597b0a08 2024101715:33:53-UTC ./ccclib/src/codeset_hungarian.cpp
 f2b4fbd6b722e9af39f5252520775012a095e2c2 2024101708:49:56-UTC ./ccclib/src/ccc_config.prg
-187abd10f0bd70b19dba8df86ae56232c1ddebe4 2024101620:43:47-UTC ./log-install
-5d29046f5e6294a169cb261424f18625c5fab5e3 2024101620:43:47-UTC ./usr/bin/linux/jterminal.jar
 ed6dbed135ceeed3e7591c695686d6fbe9c946ff 2024101620:11:48-UTC ./ccclib/src/buildnumber_ccc_required.prg
 6c3334f10ea6ff930862debf2dc542951d8599d5 2024101612:18:26-UTC ./ccclib/src/levenshtein.cpp
 f2a3961dca39337028852a6f0718d41ae27c37cc 2024100921:34:25-UTC ./ccclib/src/uic/listbox.prg
@@ -194,7 +203,6 @@ ac802beff464e578bd0ef6f82d0fd7ca7e399bb9 2024100211:14:29-UTC ./usr/bin/linux/te
 3c1360cd8614aafcc4f4f58bbea0162e18a3548e 2024100211:14:28-UTC ./usr/bin/linux/removecr
 e87115e2ea1846f51b0f17813f50520313db62d7 2024100211:14:27-UTC ./usr/bin/linux/build
 50912d8f34b6647806b67c14f371b78c31dd481d 2024100211:14:16-UTC ./usr/bin/linux/ppo2cpp
-0e7dab98da1181fa1c74c24c786bdf729473fa03 2024100211:14:04-UTC ./usr/bin/linux/flex
 068e27616614fed02f4c117986afcaa409c202f5 2024100211:14:04-UTC ./usr/bin/linux/lemon
 f53e64b6680dac4e56b4b360f73ebeb318c0615a 2024100211:12:30-UTC ./ccclib/src/uic/radiobutton.prg
 2b0e2241e0d630ea57e4f98503193c15560cd089 2024100211:12:07-UTC ./ccclib/src/uic/checkbox.prg
@@ -260,7 +268,6 @@ f35bf4114fe4239859ba17adb97c0522af92adce 2024092110:02:54-UTC ./tutor/xtabobj/_t
 5012697099b9e4a6ebdf3cb3e2b0e78c572f9b4e 2024091822:43:58-UTC ./tutor/popup/popup.prg
 b7f5aa327e29333a3f3aa4c8393f9d0de8161e4d 2024091819:11:14-UTC ./tutor/popup/100x40
 00df7f96bd714ee2e45385e94f0b4b0069e1ed08 2024091817:17:48-UTC ./tutor/popup/scale.prg
-7f90a1ad82a7a3224f74b6dbfc72db59becf6abb 2024090417:28:10-UTC ./tutor/control/demo1.prg
 cbdf5670269404bf38df25e098c424e42aa0e982 2024082616:27:33-UTC ./tools/webapp/webapp_config
 d595b75937dcc19559a61a640241846c432eb4c0 2024081117:18:46-UTC ./tools/tdc2prgch/util/ereadline.prg
 2a46729d0690c189cb21d4c215eb2f2237552182 2024081116:45:48-UTC ./setup/setup-windows/make_setup_lib.bat
@@ -655,8 +662,6 @@ d0857ce253e69ba844424dcf2646a6f28ee44a16 2023082320:43:39-UTC ./usr/bin/linux/__
 db8bca653569d84a7d22474bb8b7a4591f78c6d2 2023082320:43:39-UTC ./usr/bin/netbsd/__unix.b
 912416497c0505a2a418e63ae39aac7856f90342 2023082320:43:39-UTC ./usr/bin/solaris/__unix.b
 6ce069fb7bbeef976f17dd8dcabd39f535f6399b 2023082320:43:39-UTC ./usr/build/freebsd/_compile.b
-6178bc7b2e5bed146af88c59c1d3ee72b7d811f0 2023082320:43:39-UTC ./usr/build/linux/lib2exe.bat
-1b5411fc2b497b925bd9d04c53e159c9a44c61fa 2023082320:43:39-UTC ./usr/build/linux/obj2exe.bat
 53fdb53b522ae1ec1d73366f6c9d90e4f9d8850b 2023082320:43:39-UTC ./usr/build/msys2/_compile.b
 9f9e9a87393ac639cf7697761cae721dd8ebac32 2023082320:43:39-UTC ./usr/build/msys2/c2obj.msys2
 5ebeb5819ed90f824e6ef0df88760cf7758a4fed 2023082320:43:39-UTC ./usr/build/solaris/c2obj.bat
@@ -963,7 +968,6 @@ a09495421b1a4e3b2a5f3164b6fb28e2f851036a 2023030812:30:12-UTC ./tabobj/tbbtbtx/d
 0421ccd8654baceee68ad4c57b9bb402ddabfe03 2023020816:01:39-UTC ./ccclib/src/windows/filecreat.cpp
 71b015bd4ce047ba87eee4e87ab5b3ae7ff8dbbf 2023020816:00:26-UTC ./ccclib/src/unix/filecreat.cpp
 914fbc0f1d3fe14755f3293bb53e7c2f70bb3c94 2023020815:58:43-UTC ./usr/include/fileio.ch
-4ba003de333e6dc5d4cb8ae3385fbe66c9e3b08e 2023012514:00:29-UTC ./ccclib/src/unix/thread.cpp
 823a88e19a6263eb035c0eb2530e14c8e2b7f358 2023011612:01:25-UTC ./ccclib/src/class.prg
 fa56c92808d1e11015936bb9a4a2a83cf461b60a 2023011612:00:46-UTC ./ccclib/src/o_object.prg
 f83bc74bb36b7508503b67878e48aad82d1c815b 2023011610:27:58-UTC ./tabobj/tbbtbtx/bttable.ch
@@ -1619,13 +1623,11 @@ cfcc4e9408181a3da36d8a54947f298d0d5af409 2018081006:14:18-UTC ./tools/xmlrpc/rpc
 3a5c6ee85396a0b2e25202994cca6736779eef2b 2018072310:01:02-UTC ./setup/setup-unix/asort.cpp
 1b23f7268e0d6ef06b2a8f8d5d940f59ef1eb7a6 2018072308:46:28-UTC ./tutor/xbrwarr/xbrwarr.prg
 b87289382b32cfc2c8f5725ebfd094eb107c47ad 2018071406:15:54-UTC ./setup/setup-flex/olvass.txt
-9efc6d6f53e93884bce3dd92c3dd28a37d9d0095 2018071315:47:20-UTC ./setup/setup-flex/version.h
 608072eb8242ab60d923c9837bfa64212e586ca6 2018071315:47:05-UTC ./setup/setup-flex/tblcmp.c
 2f0bc4a594bdb1301693a10806e3d907afa78780 2018071315:46:42-UTC ./setup/setup-flex/sym.c
 43ee41020ab926ed543fc8e1c878860d934c73de 2018071315:46:20-UTC ./setup/setup-flex/parse.c
 d72738b77c0acbd8f4ce3bedb11807612cf20f52 2018071315:45:56-UTC ./setup/setup-flex/nfa.c
 6868189acd199c1d9f123a331a2234158c6bba7e 2018071315:45:01-UTC ./setup/setup-flex/misc.c
-76bce6dcab91a1753722552c94cb2026b85b57ba 2018071315:44:23-UTC ./setup/setup-flex/flexdef.h
 b2f82308f0b5ed7af7963ef8b60e26f025453e7c 2018071315:43:06-UTC ./setup/setup-flex/ecs.c
 82ec820d2de4e24ecc3538e3d8da6eee75e16220 2018071315:42:43-UTC ./setup/setup-flex/dfa.c
 77904fbbbee2746166758369f68b78183d282f83 2018071315:42:21-UTC ./setup/setup-flex/ccl.c
@@ -2175,6 +2177,7 @@ ae6ca88297782a14384752da0b9d4cbb858ca32b 2016052012:06:56-UTC ./terminal/unix-nc
 bfd9ea9b881fa99e147cc307222184b0fc3c82f3 2016052012:04:20-UTC ./terminal/unix-ncurses/learnkey/lk-alt.cpp
 03f71ceac9f164deb7997326bab84bdccfb50657 2016052012:03:24-UTC ./terminal/unix-ncurses/learnkey/parfile.bld
 cb2dff6f7a8583dd2e8f0a8f98bba3d5c84a2968 2016052011:57:13-UTC ./terminal/unix-ncurses/learnkey/learnkey.cpp
+536fc66624ab0f21beed0b0bca72ca4fcf8b3740 2016050122:01:37-UTC ./ccclib/src/include/inthash.h
 f94b4385deabcf7b8e83a7c6dd77bd0a60c019fa 2016041406:20:27-UTC ./ccclib/ccclib.hu.ver
 f93c424c1d0d870416103ba5de7cac3a1e699bfd 2016040312:54:03-UTC ./terminal/unix-ncurses/readme.hu.txt
 ec3e5ead05882b1c66f44ed34d85a2561bd687df 2016031609:37:23-UTC ./terminal/unix-ncurses/learnkey/t

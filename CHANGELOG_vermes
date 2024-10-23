@@ -1,3 +1,11 @@
+2020-10-23 android/termux port felelesztve:
+   Linux beallitasokkal es build scriptekkel mukodik;
+   forditaskor definialva van a _TERMUX_ makro;
+   Linux specifikus, ezert nincs thread_getname() es thread_setname();
+   telepiteni es linkelni kell a libandroid-shmem.so-t;
+   nem letezik a pcre32 konyvtar (nem is kell, deprecated);
+   flex CCC-Build-9: #define IFINITY elott #undef;
+
 2024-10-17  ccc_config() javitva;
 
 2024-10-10

@@ -18,8 +18,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//2024.10.23 undef INIFINITY before define
+#define FLEX_VERSION "2.5.4 CCC-Build-9" 
+
 //2018.07.13 'register' minostites kiszedve
-#define FLEX_VERSION "2.5.4 CCC-Build-8" 
+//#define FLEX_VERSION "2.5.4 CCC-Build-8" 
 
 //2014.03.19 unistd.h inkludálva
 //#define FLEX_VERSION "2.5.4 CCC-Build-7" 

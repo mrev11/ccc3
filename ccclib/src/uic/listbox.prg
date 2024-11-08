@@ -20,6 +20,7 @@
 
 #include "box.ch"
 #include "inkey.ch"
+#include "getexit.ch"
 #include "setcurs.ch"
 
 ****************************************************************************
@@ -156,6 +157,7 @@ local prev:=this:selected
     
     if( ch>0 )
         this:select(ch)
+        this:exitState:=GE_ENTER
         if( prev!=this:selected .and. this:changeblock!=NIL )
             eval(this:changeblock,this)
         end

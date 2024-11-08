@@ -1,3 +1,6 @@
+2020-11-08
+  listbox ENTER-re (kivalaszt es) GE_ENTER allapotba kerul -> fokusz tovabblep;
+
 2020-10-23 karakter konverzios fuggvenyek:
   *
   codeset_hungarian_accented_to_ascii() - CCC2/CCC3, magyar ekezetes -> ekezet nelkuli

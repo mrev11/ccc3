@@ -1,4 +1,13 @@
 2020-11-08
+  A tranzakcio timeout kezeles atirva:
+    Timeout-ra a program nem bocsat ki SIGALRM-ot (kezelese veszelyes),
+    hanem csak megjegyzi, hogy timeout tortent. A tranCommit() megnezi, 
+    hogy tortent-e timeout, es ha igen, akkor commit helyett rollbackel.
+    (Alternativa: timeout-ra azonnal ki lehetne leptetni a programot)
+  Uj error leszarmazott osztaly: trantimouterror;
+  socket_read(): ha a select error-t ad (signal), akkor olvasas helyett visszater;
+
+2020-11-08
   listbox ENTER-re (kivalaszt es) GE_ENTER allapotba kerul -> fokusz tovabblep;
 
 2020-10-23 karakter konverzios fuggvenyek:

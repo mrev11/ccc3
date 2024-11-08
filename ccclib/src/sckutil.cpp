@@ -289,6 +289,11 @@ int socket_read(int s, void*dest, int dlen, int wtime)
             //Linuxon recv nemletezo vonal eseten 0-at ad
             //NT-n recv nemletezo vonal eseten -1-et ad
 
+            if( FD_ISSET(s,&fd_err) )
+            {
+                break;
+            }
+
             result=recv(s,buf+recvlen,dlen-recvlen,0);
             
             if( result>0 )

@@ -1,7 +1,8 @@
-2af2e56ad6c1f4964013b6b10e50adba04dcbc45 2024110817:15:18-UTC ./ccclib/src/buildnumber_ccc.prg
-b94f3dda4fc6f9e9b461643f1f78130c2806081c 2024110817:13:46-UTC ./CHANGELOG_vermes
+3822d2c30b7d344eec9f46984840603662872954 2024110818:04:52-UTC ./ccclib/src/buildnumber_ccc.prg
+19548289eedffe2d0e3ee3d858dfb7844832f2d2 2024110818:04:43-UTC ./CHANGELOG_vermes
+9e7e6048056f6ea37599d848ad4475f42e9b2359 2024110817:46:00-UTC ./tabobj/common.src/trantimer.cpp
+f14c3e5fc29d03e44b4d05338ddbfdf718fd0037 2024110817:38:00-UTC ./ccclib/src/sckutil.cpp
 f8a5ec14c330ef9f9863e2a9dbcf140e737ac7d7 2024110817:06:30-UTC ./ccclib/src/uic/listbox.prg
-755188bc6d1dd2bb25db8f1e4e9b9177102c1e62 2024110515:43:32-UTC ./tabobj/common.src/trantimer.cpp
 9e50b227a1454ff26fb60b1b70a53b159fce7fdc 2024110515:40:43-UTC ./log-install
 b44f1dfdb55332107a96fa633f20cc7e9638c5f5 2024110515:40:43-UTC ./usr/bin/linux/jterminal.jar
 f9b4483d43074f8a3f58ab34f2ea39a4ac7029d4 2024110515:40:38-UTC ./usr/bin/linux/websrv
@@ -16,7 +17,6 @@ f9b4483d43074f8a3f58ab34f2ea39a4ac7029d4 2024110515:40:38-UTC ./usr/bin/linux/we
 4931179fc25d9492de035b137368e03e7c497eb3 2024110515:40:00-UTC ./usr/bin/linux/terminal
 5104f788846966e95f6df58f67362281a2aeb963 2024110515:40:00-UTC ./usr/bin/linux/terminal-xft
 7c50457059e23493034521f22ad81589f25ee96b 2024110515:00:40-UTC ./tabobj/common.src/transact.prg
-63535836153ea2629c7e103ac21922955e15f455 2024110514:42:16-UTC ./ccclib/src/sckutil.cpp
 ec153b4a45ac73ac818164de907bd8d32094a40c 2024110512:46:08-UTC ./ccclib/src/syserror.prg
 a820a4f44d6f8798bd1adc6849bce0b40514428f 2024102312:14:29-UTC ./tutor/control/altbutton.say
 71b0b9eba39a58a5d915c6351eb3255d6f7c309e 2024102312:14:29-UTC ./tutor/control/bright.say
@@ -53,9 +53,6 @@ d23fbb5e5c2371322664352fbc3aed24b7618a1b 2024100708:34:29-UTC ./tools/ddict2/msk
 408e84b81d570dc438d135f9aee0cab7fc7fbcb1 2024100708:34:29-UTC ./usr/bin/linux/dbfview
 72e8349792576bd171a462ce9bcbfe7bc70061a7 2024100613:44:55-UTC ./usr/bin/linux/btp
 81e8c05eb7525bd31fdb6a159d1cf6e5ef5329c9 2024100613:44:55-UTC ./usr/bin/linux/tview
-b086b7e0e035fe208ce30a1fd836cdd6479c1e1e 2024100613:44:53-UTC ./tabobj/tbbtbtx/utility/ver3/search.say
-2f185cfa688c11a6c8ecddd3d3275ac26d25bf3c 2024100613:44:52-UTC ./tabobj/utility.src/ver3/kdirseek.say
-7a17e1e247a6e919f1fff78ed3c618d4ae8d8e93 2024100613:44:52-UTC ./tabobj/utility.src/ver3/recpos.say
 aedfaa234613859ff98d4ab304859bb565c844ba 2024100613:44:47-UTC ./usr/bin/linux/z
 c9de85fcfd26a540f9f96c2f12092850c415bd7b 2024100613:44:45-UTC ./tools/z/ver3/zreplace.say
 2343e873233d86a91a06ac7140291171ebe8a116 2024100613:44:44-UTC ./usr/bin/linux/tv

@@ -33,6 +33,7 @@ error -> apperror -> tabobjerror -> tabindexerror
 error -> apperror -> tabobjerror -> tabstructerror
 error -> apperror -> tabobjerror -> memoerror
 error -> apperror -> tabobjerror -> tranlogerror
+error -> apperror -> tabobjerror -> trantimeouterror
 
 error -> apperror -> ioerror
 error -> apperror -> ioerror -> eoferror

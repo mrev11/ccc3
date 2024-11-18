@@ -245,11 +245,11 @@ local err
 
 
 ****************************************************************************
-function tranTimeout()
+function tranVerifyTimeout()
 local err
     if( trantimer_timeout(.t.) )
         err:=trantimeouterrorNew()
-        err:operation:="tranTimeout"
+        err:operation:="tranVerifyTimeout"
         err:description:=@"transaction timed out"
         break(err)
     end
@@ -318,7 +318,7 @@ local err,n,pup,table,pos
 local savepos
 
 
-    tranTimeout()
+    tranVerifyTimeout()
     tabCommitAll() 
 
     if( activetransaction )

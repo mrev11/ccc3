@@ -1,3 +1,5 @@
+2020-11-18 hianyzo copyright-ok potolva;
+
 2020-11-08
   A tranzakcio timeout kezeles atirva:
     Timeout-ra a program nem bocsat ki SIGALRM-ot (kezelese veszelyes),

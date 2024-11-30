@@ -47,6 +47,14 @@ local arr:=brwArray(brw)
 
 
 ******************************************************************************    
+function sortExtension(brw)
+local arr:=brwArray(brw)
+    asortkey(arr,{|x|fext0(x[IDX_FILE])})
+    brw:refreshAll()
+    return NIL
+
+
+******************************************************************************    
 function sortTime(brw)
 local arr:=brwArray(brw)
     if( "S"$s_compmode )

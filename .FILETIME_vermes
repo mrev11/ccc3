@@ -1,7 +1,10 @@
-e470c45894625822d2aa3b6869aba85c7d5d734b 2024111809:07:23-UTC ./ccclib/src/buildnumber_ccc.prg
-f334aded51cdb26ae315c3b78b2219fc1db52cc4 2024111809:07:15-UTC ./CHANGELOG_vermes
+19461fdc20a90d2d21d15430f0c7383ae7333302 2024113012:10:43-UTC ./ccclib/src/buildnumber_ccc.prg
+e611b37c154e8f79a41b851315cf940fa2646cbe 2024113012:10:18-UTC ./CHANGELOG_vermes
+79de1d00ea38c00100155e729f3090ead89687ba 2024113012:09:29-UTC ./usr/bin/linux/savex
+3d2a7ac8554e02c8bdf244ecbbbd5cc4ea060504 2024113012:09:27-UTC ./tools/savex/sortname.prg
+08efc1b0e767bef3e3b9358f9b67380d0c9ad2f0 2024113012:08:38-UTC ./tools/savex/savebrowse.prg
+f17195a6b82323cd0b9848458c9ada2c729282ac 2024112015:00:25-UTC ./usr/bin/linux/jterminal.jar
 c47d1d645a96ffabdbd2afe5bc3e433bff763297 2024111809:06:22-UTC ./log-install
-d7ac094d941e629f0b9e626099cbca9ea2e3c1f5 2024111809:06:22-UTC ./usr/bin/linux/jterminal.jar
 ba2864c60668a18ed177624e48b4198fde839283 2024111809:06:17-UTC ./usr/bin/linux/websrv
 beb84c63053ff7fcea6f2c4e02e4d3f1ce4a3e35 2024111809:06:15-UTC ./usr/bin/linux/msk2html
 2159521bd58c273f43efa8ae44eb87bdc543d1e6 2024111809:06:15-UTC ./usr/bin/linux/webapp
@@ -169,7 +172,6 @@ cb2b55a5e2827cf22e770ee9957dbb5cf2ffb501 2024100511:56:00-UTC ./usr/bin/linux/te
 b3be8eef236e714941b1f655bd8c3fdaf2e4d6e1 2024100511:55:59-UTC ./usr/bin/linux/mkentitylib
 42b762fbe90c9e65bd3f239af3a97291f880d771 2024100511:55:58-UTC ./usr/bin/linux/bt2tds
 d1ebda42a9332272f3cf4fee197756c1c304529a 2024100511:55:58-UTC ./usr/bin/linux/bt2ted
-8c2d4e22970dd741874364b5d1ab9e0a10fe41a5 2024100511:55:55-UTC ./usr/bin/linux/savex
 e98534b1a46412d12fdea31defdbff55ab7e19cc 2024100511:55:55-UTC ./usr/bin/linux/setperm
 d45fa28490b84a41bb9371fd5ceccf2e4171368d 2024100511:55:53-UTC ./usr/bin/linux/dddel
 d9ff6e81523a593902ebae2b0a8298abaa371538 2024100511:34:06-UTC ./ccclib/src/uic/mask.prg
@@ -776,8 +778,6 @@ ced0300cdacd22e85274cf0ea7dcef07923ecf8c 2023061909:54:25-UTC ./setup/setup-unix
 80cf67253d534414156918f85a5bc1e9660875b6 2023061822:51:06-UTC ./setup/setup-unix/setcursor.cpp
 72efecda1ef57347723d382656321c875d44edb1 2023061822:50:36-UTC ./setup/setup-unix/set.cpp
 2f32ae1fa7c834c2475c8cbd1c4faf43d33faa86 2023061822:34:31-UTC ./setup/setup-windows/prg2ppo/xtxlegal.cpp
-fd9f4843c786b4c737d41665298082b7e6854a2c 2023061711:25:49-UTC ./tools/savex/sortname.prg
-4e7fab351a011138d10d3b67cc4e886a979d406b 2023061711:23:47-UTC ./tools/savex/savebrowse.prg
 2f26a1cf0bf7b3bc1afb3451d95bea005008cca3 2023061622:33:43-UTC ./setup/setup-unix/m
 065c91ea0ff017cb3d85db50ad4df6c81dc75040 2023061307:28:31-UTC ./tools/setperm/setperm.prg
 6b8785736b9e55c11b1ec2744d19367a12702107 2023061012:41:49-UTC ./usr/lib/lin/content

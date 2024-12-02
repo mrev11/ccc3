@@ -20,5 +20,5 @@
 
 function main()
 
-    ? "CCC"+cccver()::str::alltrim, "build number="+buildnumber_ccc()::str::alltrim
+    ? "CCC"+cccver()::str::alltrim, buildnumber_ccc()::str::alltrim
     ?

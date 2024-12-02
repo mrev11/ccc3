@@ -1,17 +1,16 @@
 ##!/bin/bash
 
 # Egy 
-#   Ubuntu Xenial->Eoan Server 
+#   Ubuntu Jammy Server 
 # telepites utan
 # ezeket a csomagokat kell felrakni,
 # hogy a CCC2/CCC3 leforduljon.
 
 sudo apt-get install \
     g++ \
-    libncursesw5-dev \
-    libtermkey-dev \
     libx11-dev \
     libxft-dev \
+    libxpm-dev \
     libssl-dev \
     libpcre2-dev \
     libpcre3-dev \

@@ -44,6 +44,8 @@ if ! c++ $(cat $RSPLNK) 2>$OUTLNK; then
 else
     rm -f $OUTLNK
     #readelf --string-dump .comment $TARGET
+    echo " ["$(git log --pretty=format:"%h %ai" -1 2>/dev/null)"] " >>$TARGET
+    echo "$(cccbn.exe 2>/dev/null)" >>$TARGET
 fi
 
 echo ----------------------------------------------------------------

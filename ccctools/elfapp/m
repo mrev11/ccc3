@@ -1,0 +1,2 @@
+#!/bin/bash
+c++ -o ${CCCDIR}/usr/bin/${CCCUNAME}/elfapp.exe elfapp.cpp

@@ -39,6 +39,8 @@ if ! removecr.exe -x; then
     exit 1
 fi    
 
+( cd ccctools/elfapp && m )
+
 ( cd ccctools/ppo2cpp && m )
 if ! ppo2cpp.exe -v; then
     echo "ppo2cpp.exe not installed"
@@ -57,11 +59,11 @@ fi
 # ccctools
 #-------------------
  
+( cd ccctools/cccbn     && m )
 ( cd ccctools/build     && m )
 ( cd ccctools/prg2ppo   && m )
 ( cd ccctools/removecr  && m )
 ( cd ccctools/mklink    && m )
-( cd ccctools/cccbn     && m )
 
 #-------------------
 # terminal

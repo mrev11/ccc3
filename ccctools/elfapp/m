@@ -1,2 +1,2 @@
 #!/bin/bash
-c++ -o ${CCCDIR}/usr/bin/${CCCUNAME}/elfapp.exe elfapp.cpp
+bapp_unix_.b -icxx  BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}

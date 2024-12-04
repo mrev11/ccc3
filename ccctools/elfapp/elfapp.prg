@@ -18,25 +18,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function main(opt)
+#clang
+#include <elfapp.cpp>
+#cend
 
-    // hivasi formak
-    //
-    // cccbn       -->  CCCx 999\n
-    // cccbn  -n   -->  CCCx 999
-    // cccbn  -nn  -->       999
+function main(*)
+local exe:={*},n
 
-    if( cccver()!=val(getenv("CCCVER")) )
-        // ha eppen nincs cccbn
-        // de a path-bol elindul egy masik verzio
-        // akkor nem irunk ki semmit
-        return NIL
+    if(exe::empty)
+        exe:=directory("*.exe")
+        for n:=1 to len(exe)
+            exe[n]:=exe[n][1]
+        next
     end
 
-    if( opt=="-nn" )
-        ?? buildnumber_ccc()::str::alltrim  // csak a szam
-    elseif( opt=="-n" )
-        ?? "CCC"+cccver()::str::alltrim, buildnumber_ccc()::str::alltrim // EOL nelkul
-    else
-        ?? "CCC"+cccver()::str::alltrim, buildnumber_ccc()::str::alltrim;? // a vegen EOL 
-    end
+    for n:=1 to len(exe)
+        ?? exe[n]::padr(24), elfapp(exe[n])
+        ?
+    next
+
+    

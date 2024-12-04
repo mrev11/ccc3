@@ -39,7 +39,6 @@ if ! removecr.exe -x; then
     exit 1
 fi    
 
-( cd ccctools/elfapp && m )
 
 ( cd ccctools/ppo2cpp && m )
 if ! ppo2cpp.exe -v; then
@@ -64,6 +63,7 @@ fi
 ( cd ccctools/prg2ppo   && m )
 ( cd ccctools/removecr  && m )
 ( cd ccctools/mklink    && m )
+( cd ccctools/elfapp    && m )
 
 #-------------------
 # terminal

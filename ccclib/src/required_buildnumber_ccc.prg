@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function buildnumber_ccc_required(bn_required)
+function required_buildnumber_ccc(bn_required)
 local bn_current:=buildnumber_ccc()
     if( bn_current<bn_required )
         // szandekosan nem break

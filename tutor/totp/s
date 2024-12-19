@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SECRET=$(echo -n VanakiForónSzereti | base32)
+echo $SECRET
+
+nexttoken()
+{
+    totp.exe ${SECRET}
+}
+
+while [ : ]; do
+    if [[ $TOKEN != $(nexttoken) ]]; then
+        TOKEN=$(nexttoken)
+        echo $TOKEN
+    fi
+    sleep 2
+done
+

@@ -1,14 +1,18 @@
-2020-12-11 nev valtozas: required_buildnumber_ccc;
+2024-12-19
+  base32 fugvenyek;
+  tutor/totp (Time based One Time Password);
 
-2020-12-04 elfapp finomitva, cccbn finomitva;
+2024-12-11 nev valtozas: required_buildnumber_ccc;
 
-2020-12-02 elfapp: exe-k, so-k vegere beirodik a commit id es a CCC bn;
+2024-12-04 elfapp finomitva, cccbn finomitva;
 
-2020-11-30 savex extension szerint rendez;
+2024-12-02 elfapp: exe-k, so-k vegere beirodik a commit id es a CCC bn;
 
-2020-11-18 hianyzo copyright-ok potolva;
+2024-11-30 savex extension szerint rendez;
 
-2020-11-08
+2024-11-18 hianyzo copyright-ok potolva;
+
+2024-11-08
   A tranzakcio timeout kezeles atirva:
     Timeout-ra a program nem bocsat ki SIGALRM-ot (kezelese veszelyes),
     hanem csak megjegyzi, hogy timeout tortent. A tranCommit() megnezi, 
@@ -17,10 +21,10 @@
   Uj error leszarmazott osztaly: trantimouterror;
   socket_read(): ha a select error-t ad (signal), akkor olvasas helyett visszater;
 
-2020-11-08
+2024-11-08
   listbox ENTER-re (kivalaszt es) GE_ENTER allapotba kerul -> fokusz tovabblep;
 
-2020-10-23 karakter konverzios fuggvenyek:
+2024-10-23 karakter konverzios fuggvenyek:
   *
   codeset_hungarian_accented_to_ascii() - CCC2/CCC3, magyar ekezetes -> ekezet nelkuli
   codeset_hungarian_unicode_to_latin2() - csak CCC3, magyar unicode (C tipus)-> Latin2 (X tipus)
@@ -35,7 +39,7 @@
       peldaul orosz szoveget nem lehet latin2-ben kodolni.
   A unicode <-> latin2 csak a latin2 magyar reszhalmazat konvertalja.
 
-2020-10-23 android/termux port felelesztve:
+2024-10-23 android/termux port felelesztve:
    Linux beallitasokkal es build scriptekkel mukodik;
    forditaskor definialva van a _TERMUX_ makro;
    Linux specifikus, ezert nincs thread_getname() es thread_setname();

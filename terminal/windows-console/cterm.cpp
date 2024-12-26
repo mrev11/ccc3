@@ -57,6 +57,8 @@ screenbuf *screen_shadow=0;
 
 static int wwidth=80;
 static int wheight=25;
+static int cursor_x=0;
+static int cursor_y=0;
 
 //----------------------------------------------------------------------------
 static void paint(int top, int lef, int bot, int rig)
@@ -118,7 +120,7 @@ static void paint(int top, int lef, int bot, int rig)
             addnstr(buf,len);
         }
     }
-
+    move(cursor_y,cursor_x);
     refresh();
 }
 
@@ -156,6 +158,8 @@ void setcaption(char *p)
 //----------------------------------------------------------------------------
 void setcursor(int x, int y)
 {
+    cursor_x=x;
+    cursor_y=y;
     move(y,x);
     refresh();
 }

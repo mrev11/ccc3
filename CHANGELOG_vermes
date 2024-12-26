@@ -1,4 +1,8 @@
 2024-12-26 
+  windows cterm is megorzi a kurzopoziciot;
+  unix-ncterm megszuntetve;
+
+2024-12-26 
   socketek defaultja TCP_NODELAY;
   cterm kepernyo frissites megorzi a kurzopoziciot (ncterm-ben benne volt);
   Windowson linkelodik onecore;

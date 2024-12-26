@@ -48,6 +48,7 @@ Az MSYS alrendszerben telepítjük a következőket:
 
     pacman -Syu\
         cygrunsrv\
+        openssh\
         diffutils\
         git\
         mc\

@@ -150,6 +150,7 @@ static void paint(int top, int lef, int bot, int rig)
             addnstr(buf,len);
         }
     }
+    move(cursor_y,cursor_x);
     refresh();
 }
 

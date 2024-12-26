@@ -85,31 +85,38 @@ static void set_inetaddr(SOCKADDR_IN *addr, const char *host, int port)
 
  
 //----------------------------------------------------------------------------
-int socket_new()
+int socket_tcp()
 {
-    int result=(int)socket(AF_INET,SOCK_STREAM,0);
-    ERRNO(result<0);
-    return result;
+    int sck=(int)socket(AF_INET,SOCK_STREAM,0);
+    if( sck>=0 )
+    {    
+        int nodelay=1;
+        int result=setsockopt(sck,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(nodelay));
+        ERRNO( result<0 );
+    }
+    ERRNO( sck<0 );
+    return sck;
 } 
-
-
-//----------------------------------------------------------------------------
-int socket_tcp() // ugyanaz mint socket_new()
-{
-    int result=(int)socket(AF_INET,SOCK_STREAM,0);
-    ERRNO(result<0);
-    return result;
-} 
-
 
 //----------------------------------------------------------------------------
 int socket_udp()
 {
-    int result=(int)socket(AF_INET,SOCK_DGRAM,0);
-    ERRNO(result<0);
-    return result;
+    int sck=(int)socket(AF_INET,SOCK_DGRAM,0);
+    if( sck>=0 )
+    {    
+        int nodelay=1;
+        int result=setsockopt(sck,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(nodelay));
+        ERRNO( result<0 );
+    }
+    ERRNO( sck<0 );
+    return sck;
 } 
 
+//----------------------------------------------------------------------------
+int socket_new() 
+{
+    return socket_tcp(); // default: TCP
+}
 
 //---------------------------------------------------------------------------- 
 int socket_bind(int socket, char *iface, int port) //compat
@@ -173,10 +180,8 @@ int socket_setoption(int s, int option, int value)
 
     if( option==SOCKOPT_NODELAY )
     {
-        #ifdef _LINUX_    
-        BOOL nodelay=(BOOL)value;
-        result=setsockopt(s,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(BOOL));
-        #endif    
+        int nodelay=value;
+        result=setsockopt(s,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(nodelay));
     }
 
     else if( option==SOCKOPT_NONBLOCKING )

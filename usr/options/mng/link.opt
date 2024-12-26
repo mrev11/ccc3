@@ -6,4 +6,5 @@
 -luuid 
 -lwinmm
 -lws2_32
+-lonecore
 

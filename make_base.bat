@@ -29,6 +29,7 @@ pushd ccclib & call m.bat & popd
  
 pushd ccctools\removecr &  call m.bat & popd
 pushd ccctools\ccomp    &  call m.bat & popd
+pushd ccctools\cccbn    &  call m.bat & popd
 pushd ccctools\build    &  call m.bat & popd
 pushd ccctools\prg2ppo  &  call m.bat & popd
 

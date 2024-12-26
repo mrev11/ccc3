@@ -48,7 +48,7 @@ void set_terminal_iconfile(Display *display, Window window)
 
     if( result!=XpmSuccess ) 
     {
-        fprintf(stderr,"XpmReadFileToPixmap failed\n");
+        fprintf(stderr,"XpmReadFileToPixmap failed: %s\n",iconfile);
         return;
     }
 

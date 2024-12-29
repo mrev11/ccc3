@@ -26,10 +26,15 @@
 #include <sckutil.h>
 #include <inttypes.h>
 
-static int wsa_status=socket_wsastartup(); 
+#if defined(_FREEBSD_) || defined(_NETBSD_) || defined(_SOLARIS_)
+#define SOL_TCP IPPROTO_TCP
+#endif
+
+
+static int wsa_status=socket_wsastartup();
 
 //----------------------------------------------------------------------------
-int socket_wsastartup() 
+int socket_wsastartup()
 {
     #ifdef WINDOWS //wsastartup
         static int firstrun=1;
@@ -83,42 +88,42 @@ static void set_inetaddr(SOCKADDR_IN *addr, const char *host, int port)
     }
 }
 
- 
+
 //----------------------------------------------------------------------------
 int socket_tcp()
 {
     int sck=(int)socket(AF_INET,SOCK_STREAM,0);
     if( sck>=0 )
-    {    
+    {
         int nodelay=1;
         int result=setsockopt(sck,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(nodelay));
         ERRNO( result<0 );
     }
     ERRNO( sck<0 );
     return sck;
-} 
+}
 
 //----------------------------------------------------------------------------
 int socket_udp()
 {
     int sck=(int)socket(AF_INET,SOCK_DGRAM,0);
     if( sck>=0 )
-    {    
+    {
         int nodelay=1;
         int result=setsockopt(sck,SOL_TCP,TCP_NODELAY,(char*)&nodelay,sizeof(nodelay));
         ERRNO( result<0 );
     }
     ERRNO( sck<0 );
     return sck;
-} 
+}
 
 //----------------------------------------------------------------------------
-int socket_new() 
+int socket_new()
 {
     return socket_tcp(); // default: TCP
 }
 
-//---------------------------------------------------------------------------- 
+//----------------------------------------------------------------------------
 int socket_bind(int socket, char *iface, int port) //compat
 {
     return socket_bind(socket, (const char*) iface, port);
@@ -128,10 +133,10 @@ int socket_bind(int socket, const char *iface, int port)
 {
     SOCKADDR_IN addr;
     set_inetaddr(&addr,iface,port);
-    int result=bind(socket,(LPSOCKADDR)&addr,sizeof(addr)); 
+    int result=bind(socket,(LPSOCKADDR)&addr,sizeof(addr));
     ERRNO(result!=0);
     return result;
-} 
+}
 
 //----------------------------------------------------------------------------
 int socket_listen(int socket, int queuelength)
@@ -139,24 +144,24 @@ int socket_listen(int socket, int queuelength)
     int result=listen(socket,queuelength);
     ERRNO(result!=0);
     return result;
-}    
+}
 
 int socket_listen(int socket)
 {
     int result=listen(socket,2);
     ERRNO(result!=0);
     return result;
-}    
+}
 
 //---------------------------------------------------------------------------
 int socket_accept(int srvsocket)
 {
     SOCKADDR_IN saddr;
-    SOCKLEN_T addrlen=sizeof(saddr); 
-    int result=(int)accept(srvsocket,(LPSOCKADDR)&saddr,&addrlen);  
+    SOCKLEN_T addrlen=sizeof(saddr);
+    int result=(int)accept(srvsocket,(LPSOCKADDR)&saddr,&addrlen);
     ERRNO(result<0);
     return result;
-}    
+}
 
 //----------------------------------------------------------------------------
 int socket_connect(int socket, char *host, int port) //compat
@@ -164,17 +169,17 @@ int socket_connect(int socket, char *host, int port) //compat
     return socket_connect(socket, (const char *)host, port);
 }
 
-int socket_connect(int socket, const char *host, int port) 
+int socket_connect(int socket, const char *host, int port)
 {
     SOCKADDR_IN addr;
     set_inetaddr(&addr,host,port);
-    int result=connect(socket,(LPSOCKADDR)&addr,sizeof(addr)); 
+    int result=connect(socket,(LPSOCKADDR)&addr,sizeof(addr));
     ERRNO(result!=0);
     return result;
-} 
+}
 
 //---------------------------------------------------------------------------
-int socket_setoption(int s, int option, int value) 
+int socket_setoption(int s, int option, int value)
 {
     int result=0;
 
@@ -196,16 +201,16 @@ int socket_setoption(int s, int option, int value)
     else if( option==SOCKOPT_REUSEADDR )
     {
         BOOL reuseaddr=(BOOL)value;
-        result=setsockopt(s,SOL_SOCKET,SO_REUSEADDR,(char*)&reuseaddr,sizeof(BOOL)); 
+        result=setsockopt(s,SOL_SOCKET,SO_REUSEADDR,(char*)&reuseaddr,sizeof(BOOL));
     }
     else if( option==SOCKOPT_REUSEPORT )
     {
       #ifdef SO_REUSEPORT
         BOOL reuseport=(BOOL)value;
-        result=setsockopt(s,SOL_SOCKET,SO_REUSEPORT,(char*)&reuseport,sizeof(BOOL)); 
+        result=setsockopt(s,SOL_SOCKET,SO_REUSEPORT,(char*)&reuseport,sizeof(BOOL));
       #endif
     }
-    
+
     return result;
 }
 
@@ -215,47 +220,47 @@ int socket_noinherit(int s) //close-on-exec
   #ifdef WINDOWS
     return (SetHandleInformation((HANDLE)s,HANDLE_FLAG_INHERIT,0)==0) ? -1 : s;
   #else
-    return (fcntl(s,F_SETFD,FD_CLOEXEC)==-1) ? -1 : s;  
+    return (fcntl(s,F_SETFD,FD_CLOEXEC)==-1) ? -1 : s;
   #endif
 }
 
-//---------------------------------------------------------------------------- 
+//----------------------------------------------------------------------------
 int socket_available(int sck)
 {
     unsigned long readable=0;
     int ok=ioctlsocket(sck,FIONREAD,&readable);
     return (ok==0)?(int)readable:0;
 }
- 
+
 
 //---------------------------------------------------------------------------
 int socket_write(int s, void*buf, int len)
 {
-    // UNIX-on a send SIGPIPE-ot valthat ki, 
+    // UNIX-on a send SIGPIPE-ot valthat ki,
     // ha a masik fel megszakitja a kapcsolatot.
-    // Ha az nincs kezelve, akkor a send csendben kilep. 
+    // Ha az nincs kezelve, akkor a send csendben kilep.
     // Windowson, Solarison, FreeBSD-n MSG_NOSIGNAL=0.
-    
+
     return send(s,(char*)buf,len,MSG_NOSIGNAL);
 }
- 
+
 //---------------------------------------------------------------------------
 int socket_read(int s, void*dest, int dlen, int wtime)
 {
     //s-bol beolvas dest-be dlen darab byteot
 
-    //akkor ter vissza, ha 
+    //akkor ter vissza, ha
     //  megjott a kert mennyisegu adat,
     //  lejart a varakozasi ido (wtime>=0),
     //  hiba keletkezett az olvasasban
-   
+
     //ha wtime<0, akkor orokke var
- 
+
     //visszateres
     //  recvlen>=0 eseten: beolvasott byteok szama
     //  recvlen<0  eseten: hiba
 
-    //olvasasi hiba eseten, 
+    //olvasasi hiba eseten,
     //  ha van beolvasott adat, ezek hosszat adja,
     //  ha nincs beolvasott adat, negativot ad
 
@@ -266,7 +271,7 @@ int socket_read(int s, void*dest, int dlen, int wtime)
     int firstread=1;                      //egyszer mindenkeppen olvasunk
     int wtimerest=wtime<0?1000000:wtime;  //maradek ido
     unsigned long time0=now();            //olvasas kezdetenek ideje (ms)
- 
+
 
     while( firstread || ((recvlen<dlen) && (wtimerest>0)) )
     {
@@ -277,18 +282,18 @@ int socket_read(int s, void*dest, int dlen, int wtime)
         fd_set fd_err;
         FD_ZERO(&fd_err);
         FD_SET(s,&fd_err);
- 
+
         struct timeval tv;
         tv.tv_sec=wtimerest/1000;          //sec
-        tv.tv_usec=(wtimerest%1000)*1000;  //mikrosec 
+        tv.tv_usec=(wtimerest%1000)*1000;  //mikrosec
 
         if( select(s+1,&fd_read,NULL,&fd_err,&tv) )
         {
-            //ide akkor jon, ha 
+            //ide akkor jon, ha
             //1) van olvasnivalo,
             //2) a csatorna lezarodott,
             //3) a select hibakoddal tert vissza
-            
+
             //a hibat recv eredmenyebol detektaljuk
             //CSAK a result>0 eset szamit sikeresnek
             //Linuxon recv nemletezo vonal eseten 0-at ad
@@ -300,7 +305,7 @@ int socket_read(int s, void*dest, int dlen, int wtime)
             }
 
             result=recv(s,buf+recvlen,dlen-recvlen,0);
-            
+
             if( result>0 )
             {
                 recvlen+=result;
@@ -311,7 +316,7 @@ int socket_read(int s, void*dest, int dlen, int wtime)
                 break;
             }
         }
-        
+
         firstread=0;
         if( wtime>=0 )
         {
@@ -332,25 +337,25 @@ int socket_read(int s, void*dest, int dlen, int wtime)
         return 0;
     }
 }
- 
-//---------------------------------------------------------------------------- 
+
+//----------------------------------------------------------------------------
 int socket_close(int sck)
 {
     return closesocket(sck);
 }
- 
-//---------------------------------------------------------------------------- 
+
+//----------------------------------------------------------------------------
 int socket_error()
 {
     return errno;
 
     //return GetLastError();  //UNIX-on errno
-    //Az eredeti koncepcio az volt, 
+    //Az eredeti koncepcio az volt,
     //hogy ez Windowson a GetLastError()-t adja,
     //azonban a CCC stack kezeles torli a kodot,
     //ezert inkabb megorizzuk a kodot errno-ban.
 }
- 
+
 //----------------------------------------------------------------------------
 //osszetett funkciok
 //----------------------------------------------------------------------------
@@ -359,7 +364,7 @@ int client_socket_new(const char *ipaddr, int port)
     SOCKET sck=socket_new();
     if( 0>socket_connect(sck,ipaddr,port) )
     {
-        closesocket(sck); 
+        closesocket(sck);
         return -1;
     }
     return (int)sck;
@@ -371,7 +376,7 @@ int server_socket_new(const char *ipaddr, int port)
     SOCKET sck=socket_new();
     if( (0!=socket_bind(sck,ipaddr,port)) || (0!=socket_listen(sck)) )
     {
-        closesocket(sck); 
+        closesocket(sck);
         return -1;
     }
     return (int)sck;
@@ -383,7 +388,7 @@ int server_socket_new(const char *ipaddr, int port, int qlen)
     SOCKET sck=socket_new();
     if( (0!=socket_bind(sck,ipaddr,port)) || (0!=socket_listen(sck,qlen)) )
     {
-        closesocket(sck); 
+        closesocket(sck);
         return -1;
     }
     return (int)sck;
@@ -394,11 +399,11 @@ int client_socket(char *ipaddr, int port){return client_socket_new((const char*)
 int client_socket(const char *ipaddr, int port){return client_socket_new(ipaddr,port);}
 int server_socket(const char *ipaddr, int port){return server_socket_new(ipaddr,port);}
 int server_socket(const char *ipaddr, int port, int qlen){return server_socket_new(ipaddr,port,qlen);}
- 
+
 //----------------------------------------------------------------------------
 int server_socket_accept(int srvsck)
 {
     return socket_accept(srvsck); //hiba eseten -1
 }
- 
-//---------------------------------------------------------------------------- 
+
+//----------------------------------------------------------------------------

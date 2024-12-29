@@ -1,3 +1,8 @@
+2024-12-29
+  setsockopt TCP_NODELAY FreeBSD-n NetBSD-n es Solarison is;
+  windows cterm cache-eles hibaja javitva;
+  windows direxist() egysegesitve;
+
 2024-12-26 
   windows cterm is megorzi a kurzopoziciot;
   unix-ncterm megszuntetve;

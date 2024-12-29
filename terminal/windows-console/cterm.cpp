@@ -145,7 +145,7 @@ void setwsize(int x, int y)
         delete screen_shadow;
     }
     screen_buffer=new screenbuf(wwidth,wheight);
-    screen_shadow=new screenbuf(wwidth,wheight);
+    screen_shadow=new screenbuf(wwidth,wheight,-1);
     invalidate_unlock();
 }
 
@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 
     screensize(&wwidth,&wheight);
     screen_buffer=new screenbuf(wwidth,wheight);
-    screen_shadow=new screenbuf(wwidth,wheight);
+    screen_shadow=new screenbuf(wwidth,wheight,-1);
 
     printf("%c[?1036h",0x1b);    // meta send escape
     printf("%c[?1049h",0x1b);    // ca mode on

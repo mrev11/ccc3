@@ -2,10 +2,7 @@
 # MANJARO-XFCE4
 # mindosszesen ennyi kell
 
-sudo pacman -Syu  git gcc pkgconf libtermkey
-
-cd /usr/include && sudo ln -s . ncursesw
-
+sudo pacman -Syu  git gcc pkgconf 
 
 sudo chmod 777 /opt
 

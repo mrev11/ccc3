@@ -1,4 +1,7 @@
 2024-12-29
+  atmozgatva: tools/ savex -> tools/dirsync
+
+2024-12-29
   atdolgozva: savex 5.2.3 -> dirsync 1.0 (windowson is dosconv nelkul mukodik)
 
 2024-12-29

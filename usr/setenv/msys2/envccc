@@ -37,7 +37,7 @@ export CCCTERM_FONTSIZE=12
 #   export CCCTERM_INHERIT=no
 
 # console terminal
-#   export CCCTERM_CONNECT=term://console.exe
+#   export CCCTERM_CONNECT=term://cterm.exe
 #   export CCCTERM_INHERIT=yes
 
 # remote terminal

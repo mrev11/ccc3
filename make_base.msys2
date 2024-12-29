@@ -63,7 +63,7 @@ fi
 #-------------------
 
 ( cd terminal/windows && m.msys2 )
-( cd terminal/windows-console && m.msys2 )
+( cd terminal/windows-cterm && m.msys2 )
 ( cd terminal/sslforw && m.msys2 )
 
 

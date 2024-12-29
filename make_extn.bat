@@ -7,9 +7,9 @@ pushd jt\jtlib          & call m.bat & popd
 pushd tools\dbaseiii    & call m.bat & popd
 pushd tools\dbfview     & call m.bat & popd
 pushd tools\ddict2      & call m.bat & popd
+pushd tools\dirsync     & call m.bat & popd
 pushd tools\list        & call m.bat & popd
 pushd tools\pcre        & call m.bat & popd
-pushd tools\savex       & call m.bat & popd
 pushd tools\sql2        & call m.bat & popd
 pushd tools\tdccmp      & call m.bat & popd
 pushd tools\tran2cpp    & call m.bat & popd

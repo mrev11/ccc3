@@ -1,0 +1,5 @@
+-w/home/vermes/ccc3/terminal
+-s/home/vermes/ccc2c/terminal
+-r:objlin:ppo:
+-x.dsync.bak.
+-md

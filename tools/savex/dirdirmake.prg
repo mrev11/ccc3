@@ -18,35 +18,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
-#include "statvar.ch"
-
 
 ******************************************************************************
 function dirdirmake(path)
-local dir:="",tok,bslash
+local dir:="",p,n
 
-    while( !empty(path) )
+    p:=path
+    p::=strtran("/",dirsep())
+    p::=strtran("\",dirsep())
+    p::=split(dirsep())
+    
+    for n:=1 to len(p)
+        dir+=p[n]+dirsep()
+        dirmake(dir) 
+        //? any2str({direxist(dir),dir}) 
+    next
 
-        if( (bslash:=at(dirsep(),path))>0 )
-             tok:=left(path,bslash-1)
-             path:=substr(path,bslash+1)
-        else
-             tok:=path
-             path:=""
-        end
-        
-        if( !empty(dir+=tok) )
-        
-            if( !empty(directory(LOWER(dir),"DH")) )
-                //alert("Letezik:"+LOWER(dir))
-            else
-                dirmake( LOWER(dir) ) 
-            end
-        end
-
-        dir+=dirsep()
-    end
-
+    return direxist(path)
 
 ******************************************************************************

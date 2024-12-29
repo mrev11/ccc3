@@ -18,9 +18,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//eredetileg ezek static változók voltak savex.prg-ben
+//eredetileg ezek static változók voltak dirsync.prg-ben
 //minden static változó egy setget függvényre preprocesszálódik
-//a setget-ek a savex.prg-ben vannak definiálva
+//a setget-ek a dirsync.prg-ben vannak definiálva
 //ahol a változók értéket kapnak, ott az eredeti
 //
 //  s_list:=x

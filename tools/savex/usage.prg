@@ -18,21 +18,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
+#include "dirsync.ch"
 
 
 ****************************************************************************
 function usage()
 local options:=<<OPT>>
-ddsync -- directory synchronization
+dirsync -- directory synchronization
 
-With ddsync you can examine files in a directory structure.
+With dirsync you can examine files in a directory structure.
 Also, you can compare modification time of files in two parallel 
 directory structures, examine the difference of file contents with 
 diff utility, and synchronize files between the structures.
 
 Onedir mode:
-    If no -sSAVE option is given ddsync will run in "onedir" mode.
+    If no -sSAVE option is given dirsync will run in "onedir" mode.
     All files of WORK directory that satisfy name-filter criteria 
     will be showed in a browse. The selection happens as follows:
  
@@ -56,7 +56,7 @@ Onedir mode:
        be included.
 
 Twodir mode:
-    With the -sSAVE option ddsync will run in "twodir" mode.    
+    With the -sSAVE option dirsync will run in "twodir" mode.    
     The program collects all files that satisfy name-filter criteria
     (see above) in both WORK and SAVE directories, then evaluates 
     the compare-filter criteria, and shows the result in a browse.

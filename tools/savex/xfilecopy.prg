@@ -18,20 +18,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
+#include "dirsync.ch"
+
 
 ******************************************************************************
 function xfilecopy(source,destin)
-local subdir,bslash
+    dirdirmake(fpath(destin))
+    filecopy(source,destin+".tmp")
+    #ifdef WINDOWS
+        ferase(destin)
+    #endif
+    frename(destin+".tmp",destin)
 
-    ferase(destin)  //Linux NetWare emulacio hiba elkerulesere
-
-    bslash:=rat(dirsep(),destin)
-    if( bslash>1 )
-        subdir:=left(destin,bslash-1)
-        dirdirmake(subdir)
-    end
-
-    filecopy(source,LOWER(destin))
 
 ******************************************************************************

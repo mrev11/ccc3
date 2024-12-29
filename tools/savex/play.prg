@@ -19,7 +19,7 @@
  */
 
 #include "inkey.ch"
-#include "savex.ch"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 

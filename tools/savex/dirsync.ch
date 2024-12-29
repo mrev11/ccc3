@@ -18,21 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-****************************************************************************
-function strcmp(a,b)
-local result:="?"
-    if( a==b )
-        result:=0       //"="
-    elseif( a<b )
-        result:=-1      //"<"
-    elseif( a>b )
-        result:=1       //">"
-    elseif( b<a )
-        result:=1       //">"
-    elseif( b>a )
-        result:=-1      //"<"
-    end
-    //? "["+a+"]", result, "["+b+"]"
-    return result
+#ifdef _UNIX_
+#define DEFAULT_CMPTXT    "diff"
+#define DEFAULT_CMPBIN    "cmp"
+#define DEFAULT_LIST      'list.exe "%f"'
+#define DEFAULT_EDIT      'list.exe "%f"'
+#define DEFAULT_TEMP      getenv("HOME")+"/.temp"
+ 
+#else
+#define DEFAULT_CMPTXT    "fc"
+#define DEFAULT_CMPBIN    "fc /b"
+#define DEFAULT_LIST      'list "%f"'
+#define DEFAULT_EDIT      'list "%f"'
+#define DEFAULT_TEMP      getenv("USERPROFILE")+"\.temp"
+#endif 
 
-****************************************************************************
+ 
+#define OPT(n,x)          (left(opt[n],len(x))==x)
+
+
+#define IDX_FILE          1
+#define IDX_SAVE          2
+#define IDX_WORK          3
+#define IDX_SIZE          4
+
+#define DTSIZE            if(s_seconds,15,12)
+#define FISIZE            if(s_seconds,40,46)+maxcol()-80
+

@@ -21,8 +21,8 @@
 #include "inkey.ch"
 #include "box.ch"
 
-#include "savex.ver"
-#include "savex.ch"
+#include "dirsync.ver"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 
@@ -104,7 +104,7 @@ local x,repeat:=.f.
 
     brwMenu(brw,"List","List rows to standard output",{||listbrw(brw)},"L")
  
-    brwCaption(brw,"SAVEX "+VERZIO)
+    brwCaption(brw,"DirSYNC "+VERZIO)
     brwSetFocus(brw)    
     brwShow(brw)
 

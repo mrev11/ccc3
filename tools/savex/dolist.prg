@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 ****************************************************************************
@@ -27,8 +27,6 @@ local ext,pos,exe
 local screen:=savescreen()
 
     ext:=fext(fil)[2..]+"=" //   xxx=
-    opt::=LOWER
-    ext::=LOWER
     opt:=split(opt,":")     // { xxx=less %f, *=list %f, ... }
 
     if( 0<(pos:=ascan(opt,{|x|at(ext,x)==1})) )

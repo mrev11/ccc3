@@ -18,22 +18,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
+#include "dirsync.ch"
 
 ****************************************************************************
 function tempdir()
 static temp
     if( temp==NIL )
-        temp:=getenv("TEMP")
-
+        temp:=DEFAULT_TEMP
         if( empty(temp) )
-            temp:=DEFAULT_TEMP
+            temp:=getenv("TEMP")
         end
- 
+        if( empty(temp) )
+            temp:=".temp"
+        end
+        dirdirmake(temp)
         if( !direxist(temp) )
-           alert(temp+" directory not found")
+            alert(temp+" temp directory not found and cannot create")
         end
- 
         if( !right(temp,1)==dirsep() )
             temp+=dirsep()
         end

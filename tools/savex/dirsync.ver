@@ -1,8 +1,13 @@
 
-#define VERZIO  "5.2.3"
+#define VERZIO  "1.0"
 
 
 #ifdef NOT_DEFINED
+
+2024.12.28 -- 1.0
+   Atnevezve: savex -> dirsync;
+   dosconv kiszedve;
+
 
 2016.11.29 -- 5.2.3
    PREDIFF(W/S) alkalmazasa compfile-ben is.
@@ -54,7 +59,7 @@
    at lesz az egesz nevezve ddsync-re
 
 2016.08.14 -- 5.1.1
-   Az elozo javitas elrontotta a  @savex parameterfajlok 
+   Az elozo javitas elrontotta a  @dirsync parameterfajlok 
    ertelmezesenek sorrendjet, vissza kellett allni a korabbi 
    megoldasra.
 
@@ -67,8 +72,8 @@
    Uj opcio: helpet ad -h-ra.
    Opciok elemzese a szokasos if..elseif..elseif..else..end 
    szerkezettel, hibat jelez nem ertelmezett opciora.
-   Hibat jelez nem talalhato @savex parameterfajlra.
-   Korabban a @savex parameterfajlok parametereit forditott
+   Hibat jelez nem talalhato @dirsync parameterfajlra.
+   Korabban a @dirsync parameterfajlok parametereit forditott
    sorrendben ertelmezte (vajon miert), most normalisan.
    Kihagyja a parameterfajlok # komment sorait (korabban ezek 
    ugy mentek at, hogy nem ertelezett opcionak szamitottak, 

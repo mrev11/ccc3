@@ -20,7 +20,7 @@
 
 #include "directry.ch"
 
-#include "savex.ch"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 ******************************************************************************    
@@ -61,7 +61,7 @@ static x:="x"
 
 
 ******************************************************************************    
-static function elore_lep(dir,dirnam,n,file,fd,size)
+static function elore_lep(dir,dirnam,n,file,fd,size,key)
 local date, time
     if( ++n<=len(dir) )
         file:=substr(dir[n][F_NAME],len(dirnam)+1)
@@ -69,14 +69,19 @@ local date, time
         time:=dir[n][F_TIME]
         size:=dir[n][F_SIZE]
         fd:=formDate(date,time)
+        key:=file+chr(0)
+        #ifdef WINDOWS 
+            key:=upper(key)+key
+        #endif
     else
         file:=NIL
         size:=NIL
         fd:=NIL
+        key:=NIL
     end
 
-#define ELORE_W     elore_lep(dirWork,dw,@nw,@filew,@fdw,@sizew)
-#define ELORE_S     elore_lep(dirSave,ds,@ns,@files,@fds,@sizes)
+#define ELORE_W     elore_lep(dirWork,dw,@nw,@filew,@fdw,@sizew,@keyw)
+#define ELORE_S     elore_lep(dirSave,ds,@ns,@files,@fds,@sizes,@keys)
 
 #define BERAK_W(x)  if(mode$x, dbrw:add({filew,fdnull,fdw,sizew}) ,NIL)  //work
 #define BERAK_S(x)  if(mode$x, dbrw:add({files,fds,fdnull,sizes}) ,NIL)  //save
@@ -88,8 +93,8 @@ static function makearr_012wsd(dw,ds)  //osszes mod
 
 local dirWork:=rdir(dw)
 local dirSave:=rdir(ds)
-local nw,filew,fdw,sizew
-local ns,files,fds,sizes
+local nw,filew,fdw,sizew,keyw
+local ns,files,fds,sizes,keys
 local fdnull:=formDate(ctod(""),space(8)) //ures file-date
 local mode:=s_compmode::lower
 local dbrw:=arrayNew()
@@ -98,30 +103,28 @@ local dbrw:=arrayNew()
     ELORE_W    
     ELORE_S  
 
-    while( filew!=NIL .or. files!=NIL )
+    while( keyw!=NIL .or. keys!=NIL )
         if( files==NIL )
             //work hatrebb (save elfogyott)
             BERAK_W("wd")
             ELORE_W
 
-        elseif( filew==NIL )
+        elseif( keyw==NIL )
             //save hatrebb (work elfogyott)
             BERAK_S("sd")
             ELORE_S
 
-        elseif( strcmp(filew,files)<0 ) //egyik sem NIL
+        elseif( keyw<keys ) //egyik sem NIL
             //work hatrebb
             BERAK_W("wd")
             ELORE_W
 
-
-        elseif( strcmp(filew,files)>0 )
+        elseif( keyw>keys )
             //save hatrebb
             BERAK_S("sd")
             ELORE_S
 
-
-        else //filew==files
+        else //keyw==keys
 
             if( fdw>fds )
                 BERAK_B("01wd")

@@ -1,0 +1,17 @@
+#!/bin/bash
+export OREF_SIZE=8000000
+
+export DIFF=diff
+export LIST="*=tv.exe:bt=tview"
+export EDIT="*=z.exe %f:bt=tstru %f"
+
+
+DEFPAR="-r:.git:ppo:mnt:semaphor.tmp: -lrobjlin*"
+
+
+if [ "$CCCTERM_INHERIT" == "yes" ]; then
+    exec dirsync.exe "$@" $DEFPAR
+else    
+    exec dirsync.exe "$@" $DEFPAR  &  
+fi    
+ 

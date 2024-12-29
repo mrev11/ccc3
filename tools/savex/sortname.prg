@@ -18,22 +18,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "savex.ch"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 
 ******************************************************************************    
 function sortName(brw)
 local arr:=brwArray(brw)
-    asort(arr,,,{|x,y|x[IDX_FILE]<y[IDX_FILE]})
+    #ifdef WINDOWS
+        //megj: pontosan az a rendezes kell, mint ami rdir-ben van
+        asortkey(arr,{|x,key|key:=x[IDX_FILE]+chr(0), key:=upper(key)+key },.t.)
+    #else
+        asortkey(arr,{|x,key|key:=x[IDX_FILE]+chr(0), key                 },.t.)
+    #endif
     brw:refreshAll()
-    return NIL
 
 
 ******************************************************************************    
 function sortBaseName(brw)
 local arr:=brwArray(brw)
-    asortkey(arr,{|x|fnameext(x[IDX_FILE])},.t.)
+    #ifdef WINDOWS
+        asortkey(arr,{|x|upper(fnameext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.t.)
+    #else
+        asortkey(arr,{|x|      fnameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
+    #endif
     brw:refreshAll()
     return NIL
 
@@ -41,7 +49,11 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortReverseBaseName(brw)
 local arr:=brwArray(brw)
-    asortkey(arr,{|x|fnameext(x[IDX_FILE])},.f.)
+    #ifdef WINDOWS
+        asortkey(arr,{|x|upper(fnameext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.f.)
+    #else
+        asortkey(arr,{|x|      fnameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.f.)
+    #endif
     brw:refreshAll()
     return NIL
 
@@ -49,7 +61,11 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortExtension(brw)
 local arr:=brwArray(brw)
-    asortkey(arr,{|x|fext0(x[IDX_FILE])})
+    #ifdef WINDOWS
+        asortkey(arr,{|x|upper(fext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.t.)
+    #else
+        asortkey(arr,{|x|      fext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
+    #endif
     brw:refreshAll()
     return NIL
 

@@ -19,8 +19,8 @@
  */
 
 
-#include "savex.ver"
-#include "savex.ch"
+#include "dirsync.ver"
+#include "dirsync.ch"
 
 
 static s_save             // mento/frissito directory
@@ -75,16 +75,13 @@ local c:=col()
 local opt,n,v
 local pfile,ptext,p,q
 
-    #ifndef _UNIX_
-    set dosconv on
-    #endif
-    
-    //set alternate to savex.log
+
+    //set alternate to dirsync.log
     //set alternate on
 
     set date format "yyyy.mm.dd"
     set cursor off
-    set color to  w/b,b/w,,,w/b,rg+/b
+    set color to  w/b,b/w,,,w/b,bg+/b
     
     //kezdoertekek
 
@@ -131,16 +128,16 @@ local pfile,ptext,p,q
 
         elseif( OPT(n,"-lx") )
             if( s_likex==NIL )
-                s_likex:={UPPER(substr(opt[n],4))}
+                s_likex:={substr(opt[n],4)}
             else
-                aadd(s_likex,UPPER(substr(opt[n],4)))
+                aadd(s_likex,substr(opt[n],4))
             end
 
         elseif( OPT(n,"-li") )
             if( s_likei==NIL )
-                s_likei:={UPPER(substr(opt[n],4))}
+                s_likei:={substr(opt[n],4)}
             else
-                aadd(s_likei,UPPER(substr(opt[n],4)))
+                aadd(s_likei,substr(opt[n],4))
             end
 
         elseif( OPT(n,"-plx") )
@@ -156,7 +153,7 @@ local pfile,ptext,p,q
                 loop
             end
 
-            v:=UPPER(substr(opt[n],5))
+            v:=substr(opt[n],5)
             v::=strtran("/",dirsep())
             v::=strtran("\",dirsep())
 
@@ -181,7 +178,7 @@ local pfile,ptext,p,q
                 loop
             end
 
-            v:=UPPER(substr(opt[n],5))
+            v:=substr(opt[n],5)
             v::=strtran("/",dirsep())
             v::=strtran("\",dirsep())
 
@@ -195,9 +192,9 @@ local pfile,ptext,p,q
 
         elseif( OPT(n,"-lr") )
             if( s_liker==NIL )
-                s_liker:={UPPER(substr(opt[n],4))}
+                s_liker:={substr(opt[n],4)}
             else
-                aadd(s_liker,UPPER(substr(opt[n],4)))
+                aadd(s_liker,substr(opt[n],4))
             end
 
         elseif( OPT(n,"-i") )
@@ -206,7 +203,6 @@ local pfile,ptext,p,q
             else
                 s_extinc+=";"+substr(opt[n],3)
             end
-            s_extinc:=UPPER(s_extinc)
 
         elseif( OPT(n,"-x") )
             if( s_extexc==NIL )
@@ -214,7 +210,6 @@ local pfile,ptext,p,q
             else
                 s_extexc+=";"+substr(opt[n],3)
             end
-            s_extexc:=UPPER(s_extexc)
 
         elseif( OPT(n,"-r") )
             if( s_direxc==NIL )
@@ -222,7 +217,6 @@ local pfile,ptext,p,q
             else
                 s_direxc+=";"+substr(opt[n],3)
             end
-            s_direxc:=UPPER(s_direxc)
             s_dirsep:=left(s_direxc,1)
 
         elseif( OPT(n,"-d") )

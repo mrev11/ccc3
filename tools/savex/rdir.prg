@@ -20,20 +20,32 @@
 
 #include "directry.ch"
 
-#include "savex.ch"
+#include "dirsync.ch"
 #include "statvar.ch"
 
 
 ******************************************************************************    
 function rdir(path)
-local dirlist:=arrayNew(),msg
+local dirlist:=arrayNew(),msg,n
     dispbegin()
     msg:=message(msg,path)
     rdir0(path,dirlist,msg,len(path)+1)
     msg:=message(msg)
     dispend()
-    asort(dirlist:resize,,,{|x,y|x[F_NAME]<y[F_NAME]}) //rendezve!
-    return dirlist:array
+    dirlist:resize
+    #ifdef WINDOWS
+        //megj: +chr(0) javitja a string rendezes defektjet
+        //megj: Windowson a rendezes case insensitive 
+        asortkey(dirlist:array,{|x,key|key:=x[F_NAME]+chr(0),upper(key)+key},.t.)
+    #else
+        asortkey(dirlist:array,{|x,key|key:=x[F_NAME]+chr(0),key},.t.)
+    #endif
+
+    //for n:=1 to len(dirlist:array)
+    //    ? n,dirlist:array[n]
+    //next
+
+    return dirlist:array //rendezve!
 
 
 static function rdir0(path,dirlist,msg,begpath)
@@ -149,16 +161,16 @@ local ext
 #ifdef NOTDEFINED
 peldak:
   1) mindent bevesz
-    savex . 
+    dirsync . 
 
-  2) a savex-eket kihagyja (minden mast bevesz)
-    savex . -x.savex. 
+  2) a dirsync-eket kihagyja (minden mast bevesz)
+    dirsync . -x.dirsync. 
 
-  3) a savex-eket altalaban kihagyja, de a '*socket*.savex'-eket beveszi
-    savex . -x.savex. '-pli*socket*.savex'
+  3) a dirsync-eket altalaban kihagyja, de a '*socket*.dirsync'-eket beveszi
+    dirsync . -x.dirsync. '-pli*socket*.dirsync'
 
-  4) csak a '*socket*.savex'-eket veszi be
-    savex . '-pli*socket*.savex'
+  4) csak a '*socket*.dirsync'-eket veszi be
+    dirsync . '-pli*socket*.dirsync'
 #endif
 
 ******************************************************************************    

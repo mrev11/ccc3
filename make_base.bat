@@ -39,7 +39,7 @@ pushd ccctools\prg2ppo  &  call m.bat & popd
 :-------------------
 
 pushd terminal\windows & call m.bat & popd
-pushd terminal\windows-console & call m.bat & popd
+pushd terminal\windows-cterm & call m.bat & popd
 pushd terminal\sslforw & call m.bat & popd
 
 if exist %MSYS%\%MSYSTEM%\include\gtk-2.0\gtk\gtk.h (

@@ -181,6 +181,12 @@ void var_print(VALUE *v)
         case TYPE_OBJECT:
             OUTSTR(L"OBJECT subtype="); 
             OUTNUM(v->data.object.subtype);
+            OUTSTR(L"<"); 
+            number(v->data.object.subtype);
+            _clp_classname(1);
+            OUTSTR(STRINGPTR(TOP()));
+            pop(); 
+            OUTSTR(L">"); 
             OUTOREF(v->data.object.oref);
             break;
 

@@ -15,12 +15,16 @@
 -mms-bitfields
 -Wno-unused
 -Wno-unused-value
+-Wno-unused-result
 -Wno-trigraphs
 -Wno-empty-body
+-Wno-format-overflow
+-Wno-parentheses
 -Wno-int-to-pointer-cast
 -Wno-incompatible-ms-struct
 -Wno-unknown-warning-option
+-Wno-constant-logical-operand
 -Wno-deprecated-declarations
 -Wno-deprecated-non-prototype
 -Wno-unknown-warning-option
-
+-Wno-vla-cxx-extension

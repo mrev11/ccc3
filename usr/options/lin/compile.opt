@@ -21,6 +21,7 @@
 -Wno-format-overflow
 -Wno-parentheses
 -Wno-unknown-warning-option
+-Wno-constant-logical-operand
 -Wno-deprecated-declarations
 -Wno-unknown-warning-option
 -Wno-vla-cxx-extension

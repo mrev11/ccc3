@@ -1,3 +1,8 @@
+2025-01-09
+   Figyelmen kivul hagyott warningok egysegesitve;
+   varprint() kiirja az objektumok osztalyat;
+ 
+
 2025-01-01
    Windows build scriptek javitva;
 

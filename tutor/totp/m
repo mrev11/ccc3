@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc${CCCVER}_crypto
+bapp_unix_.b -bccc${CCCVER}_crypto  -bcrypto BUILD_SHR=static

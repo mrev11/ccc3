@@ -1,6 +1,6 @@
 -sccc$(CCCVER)_pcre
 -bpcre
--bpcre32
+#-bpcre32
 
 BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 

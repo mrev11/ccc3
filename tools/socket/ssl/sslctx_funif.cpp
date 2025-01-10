@@ -20,6 +20,7 @@
 
 //SSL context function interface
 
+#include <stdint.h>
 #include <string.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>

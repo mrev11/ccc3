@@ -17,8 +17,8 @@ export OREF_SIZE=200000
 export CCCTERM_SIZE=120x40
 
 export TEMP=~/.temp
-export GREP='grep --text -i -H -n'
-export FIND='savex.exe . -y -f -i.prg.cpp.c.ch.h.lex.lem.java.tds. -r.ppo. -lrobj*'
+export GREP='grep -i -H -n'
+export FIND='dirsync.exe . -y -f -i.prg.cpp.c.ch.h.lex.lem.java.tds. -r.ppo. -lrobj*'
 
 if [ "$CCCTERM_INHERIT" == "yes" ]; then
     #must not run in background

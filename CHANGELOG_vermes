@@ -1,3 +1,8 @@
+2025-01-10
+   OmniOS: 
+    Sok helyen inkludalva stdint.h;
+    Egyeb  inkompatibilitasok javitva;
+
 2025-01-09
    Figyelmen kivul hagyott warningok egysegesitve;
    varprint() kiirja az objektumok osztalyat;

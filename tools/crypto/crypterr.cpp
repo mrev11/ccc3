@@ -24,6 +24,7 @@
 // cryptoerror osztályú hibát dob
 // beállítja subsystem-et (crypto)
 
+#include <stdint.h>
 #include <stdio.h>
 #include <openssl/err.h>
 #include <cccapi.h>

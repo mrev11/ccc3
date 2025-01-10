@@ -21,6 +21,7 @@
 
 //#include <unistd.h>
 //#include <sys/wait.h>
+#include <stdint.h>
  
 #include <openssl/err.h>
 #include <openssl/ssl.h>

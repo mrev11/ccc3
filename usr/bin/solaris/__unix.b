@@ -7,8 +7,7 @@ if [ $CCCBIN == "sol" ]; then
     export BUILD_OPT=compile.opt
     export BUILD_INC=$CCCDIR/usr/include
     export BUILD_LPT=$CCCDIR/usr/lib/$CCCBIN
-    export BUILD_LPT=$BUILD_LPT:/usr/lib/64:/usr/X11/lib:/usr/local/lib
-    export BUILD_LPT=$BUILD_LPT:/usr/sfw/lib:/opt/sfw/lib
+    export BUILD_LPT=$BUILD_LPT:/usr/lib/64
     export BUILD_OBJ=obj$CCCBIN
     export BUILD_EXE=.
     #export BUILD_DBG=off

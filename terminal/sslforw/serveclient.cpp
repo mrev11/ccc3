@@ -20,6 +20,7 @@
 
 
 #ifdef UNIX
+#include <stdint.h>
 //#include <unistd.h>
 #else
 #include <process.h>

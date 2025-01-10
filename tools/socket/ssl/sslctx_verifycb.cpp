@@ -20,6 +20,7 @@
 
 //kulonveve, hogy konnyebb legyen kicserelni
 
+#include <stdint.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
 #include <openssl/x509.h>

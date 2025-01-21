@@ -43,5 +43,5 @@
 #define IDX_SIZE          4
 
 #define DTSIZE            if(s_seconds,15,12)
-#define FISIZE            if(s_seconds,40,46)+maxcol()-80
+#define FISIZE            if(s_seconds,40,46)+maxcol()-81
 

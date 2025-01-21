@@ -92,8 +92,8 @@ static void paint(int top, int lef, int bot, int rig)
             if( ch==0x2018 ){ ch=0x60; }
             if( ch==0x2019 ){ ch=0x27; }
 
-            int fg=rgb[ LEGACY(cell->get_fg()) ];  // ANSI[0,255] -> ANSI[0,15]
-            int bg=rgb[ LEGACY(cell->get_bg()) ];  // ANSI[0,255] -> ANSI[0,15]
+            int fg=rgb[ (int)LEGACY(cell->get_fg()) ];  // ANSI[0,255] -> ANSI[0,15]
+            int bg=rgb[ (int)LEGACY(cell->get_bg()) ];  // ANSI[0,255] -> ANSI[0,15]
             int at=bg<<4|fg;
 
             int idx=(y-top)*(rig-lef+1)+(x-lef);

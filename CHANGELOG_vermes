@@ -1,3 +1,11 @@
+2025-01-19 
+  OREF_SIZE helyett CCC_OREFSIZE (default=200000);
+  VREF_SIZE helyett CCC_VREFSIZE;
+  GARBAGE helyett CCC_GCDEBUG;
+  szemetgyujtesben CCC_GCDEBUG=histo printeli a buffer meretek hisztogramjat;
+  szemetgyujtesben a kiirasok 100 millios szamokhoz alkalmazkodnak;
+  inkompatibilitasok javitva;
+
 2025-01-10
    OmniOS: 
     Sok helyen inkludalva stdint.h;

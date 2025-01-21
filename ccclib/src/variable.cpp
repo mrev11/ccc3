@@ -23,20 +23,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cccapi.h> 
- 
-//  Javítások
-//
-//  2007.05.12 rekurzió nélkül, typeinfó nélkül, 0-ás oref
-//  2007.05.05 generációs szemétgyűjtés, age hisztogramm
-//  2007.04.11 MUTEX_LOCK/MUTEX_UNLOCK makrók
-//  2006.03.17 unicode támogatás (TYPE_BINARY <--> TYPE_STRING)
-//  2005.07.20 szálkezelés átírva, szignálkezelés
-//  2003.07.30 multithreading támogatás
-//  2002.06.28 oref_size mérete linkeléskor szabályozható    
-//  1999.01.16 oref többé egyáltalán nem látszik ki    
-//  1998.05.03 oref,vref static, szabályozható méretű
-//  1996.06.26 0-ás oref nincs
+#include <cccapi.h>
+
 
 //---------------------------------------------------------------------------
 static int vnext;  // a következő szabad index vref-ben
@@ -46,7 +34,7 @@ static int vfree;  // szabad elemek száma vref-ben szemétgyűjtés után
 static int ofree;  // szabad elemek száma oref-ben szemétgyűjtés után
 
 static int alloc_count=0;  // foglalások száma
-static long alloc_size=0;  // foglalások összmérete 
+static long alloc_size=0;  // foglalások összmérete
 
 static int gc_total=0;     // teljes gyűjtés be (generációs algoritmus ki)
 static int gc_agelimit=0;  // öreg egy objektum, ha age>gc_agelimit
@@ -59,14 +47,16 @@ static int gc_counter=0;   // a szemétgyűjtéseket számolja
 static int age_histo_befor[AGE_HISTO_SIZE+1]; //hisztogramm gc előtt
 static int age_histo_after[AGE_HISTO_SIZE+1]; //hisztogramm gc után
 
-static char *env_garbage=NULL;  // szemétgyűjtés debug infó
+static char *env_orefsize=getenv("CCC_OREFSIZE");
+static char *env_vrefsize=getenv("CCC_VREFSIZE");
+static char *env_gcdebug=getenv("CCC_GCDEBUG");
 
-static int  OREF_SIZE   =   40000;
-static int  VREF_SIZE   =    5000;
+static int  OREF_SIZE   = 200000;
+static int  VREF_SIZE   = 5000;
 
-static int  ALLOC_COUNT =   40000;
-static long ALLOC_SIZE  = 4000000;  //4MB
- 
+static int  ALLOC_COUNT = OREF_SIZE;
+static long ALLOC_SIZE  = OREF_SIZE*100;
+
 static OREF *oref;
 static VREF *vref;
 
@@ -74,20 +64,21 @@ static volatile int garbage_collection_is_running=0;
 
 static void vartab_mark(VALUE*);
 static void vartab_sweep();
+static char *decimal(long x);
 
 
 #if ! defined MULTITHREAD
 //---------------------------------------------------------------------------
 #define VARTAB_STOP()
 #define VARTAB_CONT()
- 
+
 void vartab_lock0(){}
 void vartab_unlock0(){}
 void vartab_lock(){ SIGNAL_LOCK(); }
 void vartab_unlock(){ SIGNAL_UNLOCK(); }
 
 //---------------------------------------------------------------------------
-void valuemove(VALUE *to, VALUE *fr, int n)  //egyszálú 
+void valuemove(VALUE *to, VALUE *fr, int n)  //egyszálú
 {
     SIGNAL_LOCK();
     memmove(to,fr,n*sizeof(VALUE));
@@ -98,13 +89,92 @@ void valuemove(VALUE *to, VALUE *fr, int n)  //egyszálú
 //---------------------------------------------------------------------------
 MUTEX_CREATE(mutex);
 
-#define VARTAB_STOP()    vartab_stop() 
-#define VARTAB_CONT()    vartab_cont() 
+#define VARTAB_STOP()    vartab_stop()
+#define VARTAB_CONT()    vartab_cont()
 
 void vartab_lock0(){ MUTEX_LOCK(mutex); }
 void vartab_unlock0(){ MUTEX_UNLOCK(mutex); }
 void vartab_lock(){ SIGNAL_LOCK(); MUTEX_LOCK(mutex); }
 void vartab_unlock(){ MUTEX_UNLOCK(mutex); SIGNAL_UNLOCK(); }
+
+
+//---------------------------------------------------------------------------
+// buffer size histogram
+//---------------------------------------------------------------------------
+static int histo_siz[]={1<<4,1<<6,1<<8,1<<10,1<<12,1<<14,1<<16,1<<18,1<<20, 0};
+static int histo_cnt[]={   0,   0,   0,    0,    0,    0,    0,    0,    0, 0};
+
+static void histo_init()
+{
+    int i;
+    for( i=0; histo_siz[i]; i++ )
+    {
+        histo_cnt[i]=0;
+    }
+    histo_cnt[i]=0;
+}
+
+static void histo_inc(int size)
+{
+    for(int i=0; histo_siz[i]; i++ )
+    {
+        if( size<=histo_siz[i] || histo_siz[i]==0 )
+        {
+            histo_cnt[i]++;
+            break;
+        }
+    }
+}
+
+static void  histo_print()
+{
+    if( env_gcdebug==0 || strcmp(env_gcdebug,"histo")!=0 )
+    {
+        return;
+    }
+
+    fprintf(stderr,"\n");
+    fprintf(stderr,"===========================\n");
+    int i;
+    for( i=0; histo_siz[i]; i++ )
+    {
+        if( histo_siz[i]<1024 )
+        {
+            fprintf(stderr,"size  <=%5d  %12s\n",histo_siz[i],decimal(histo_cnt[i]));
+        }
+        else if( histo_siz[i]<1024*1024 )
+        {
+            fprintf(stderr,"size  <=%5dK %12s\n",histo_siz[i]/1024,decimal(histo_cnt[i]));
+        }
+        else
+        {
+            fprintf(stderr,"size  <=%5dM %12s\n",histo_siz[i]/1024/1024,decimal(histo_cnt[i]));
+        }
+    }
+            fprintf(stderr,"size   >%5dM %12s\n",histo_siz[i-1]/1024/1024,decimal(histo_cnt[i]));
+    fprintf(stderr,"===========================");
+    fflush(0);
+}
+
+void *histo_memalloc(size_t size)
+{
+    histo_inc(size);
+    return malloc(size);
+
+}
+
+#define MEMALLOC_HISTO
+#if defined WINDOWS
+    #define histo_print()
+
+#elif !defined  MEMALLOC_HISTO
+    #define histo_print()
+
+#else
+    #undef  MEMALLOC
+    #define MEMALLOC(x)  histo_memalloc(x)
+#endif
+
 
 //---------------------------------------------------------------------------
 void valuemove(VALUE *to, VALUE *fr, int n)
@@ -184,7 +254,7 @@ static void vartab_cont() // minden várakozó szálat kienged
         td=td->next;
     }
 }
- 
+
 #endif //MULTITHREAD
 
 
@@ -231,24 +301,22 @@ void vartab_ini(void)
     TlsSetValue(thread_key,new thread_data());
 #endif
     siglocklev=0; //unlock (kezdetben lockolva van)
- 
-    char *orsp=getenv("OREF_SIZE");
-    if( orsp )
+
+    if( env_orefsize )
     {
-        long size=atol(orsp);
+        long size=atol(env_orefsize);
         OREF_SIZE=size;
         ALLOC_COUNT=size;
         ALLOC_SIZE=size*100;
     }
 
-    char *vrsp=getenv("VREF_SIZE");
-    if( vrsp )
+    if( env_vrefsize )
     {
-        long size=atol(vrsp);
+        long size=atol(env_vrefsize);
         VREF_SIZE=size;
     }
-    
-    static struct VARTAB_SETSIZE vss={ &OREF_SIZE, &VREF_SIZE, 
+
+    static struct VARTAB_SETSIZE vss={ &OREF_SIZE, &VREF_SIZE,
                                        &ALLOC_COUNT, &ALLOC_SIZE };
     vartab_setsize(&vss);
 
@@ -273,10 +341,7 @@ void vartab_ini(void)
         exit(1);
     }
 
-    env_garbage=getenv("GARBAGE");
-
     int n;
-
     for(n=0; n<VREF_SIZE; n++)
     {
         vref[n].value.type=TYPE_NIL;
@@ -292,6 +357,7 @@ void vartab_ini(void)
         oref[n].age=0;
     }
     onext=0;
+    histo_init();
 }
 
 //---------------------------------------------------------------------------
@@ -307,7 +373,7 @@ void vartab_rebuild(void)
     }
 
     VARTAB_STOP();
- 
+
     if( gc_counter>0 )
     {
         gc_total=0; //generációs gyűjtés
@@ -319,15 +385,14 @@ void vartab_rebuild(void)
         gc_counter=gc_gener;
     }
 
-    if( env_garbage ) //debug infó
-    { 
-        fprintf
-        (
-            stderr,
-            "\nalloc_count: %d/%d, alloc_size: %ldK/%ldK",
-            alloc_count,ALLOC_COUNT,alloc_size>>10,ALLOC_SIZE>>10 
-        );
+    if( env_gcdebug ) //debug infó
+    {
         fflush(0);
+        fprintf(stderr,"\nalloc_count: %s/%s, alloc_size: %ldM/%ldM",
+                  decimal(alloc_count),decimal(ALLOC_COUNT),alloc_size>>20,ALLOC_SIZE>>20);
+
+        fflush(0);
+        histo_print();
 
         for( int x=0; x<=AGE_HISTO_SIZE; x++ )
         {
@@ -347,7 +412,7 @@ void vartab_rebuild(void)
 
     alloc_count=0;
     alloc_size=0;
-    
+
     mark_stack_init();
     int n;
 
@@ -419,7 +484,7 @@ void vartab_rebuild(void)
 
     vartab_sweep();
 
-    if( env_garbage ) //degub infó
+    if( env_gcdebug ) //degub infó
     {
         for( n=0; n<OREF_SIZE; n++ ) //age hisztogramm
         {
@@ -431,19 +496,23 @@ void vartab_rebuild(void)
             }
         }
 
+        int i;
         fprintf(stderr, "\nbef [%2d]", gc_counter);
-        for( int i=0; i<=AGE_HISTO_SIZE; i++ )
+        for( i=0; i<AGE_HISTO_SIZE; i++ )
         {
-            fprintf(stderr, "%8d",age_histo_befor[i]);       
+            fprintf(stderr, "%9d",age_histo_befor[i]);
         }
-        fprintf(stderr,"\n");       
+        fprintf(stderr, "%12s",decimal(age_histo_befor[i]));
+        fprintf(stderr,"\n");
 
         fprintf(stderr, "aft [%2d]", gc_total);
-        for( int i=0; i<=AGE_HISTO_SIZE; i++ )
+        for(  i=0; i<AGE_HISTO_SIZE; i++ )
         {
-            fprintf(stderr, "%8d",age_histo_after[i]);       
+            fprintf(stderr, "%9d",age_histo_after[i]);
         }
-        fprintf(stderr,"\nofree=%d vfree=%d\n",ofree,vfree);
+        fprintf(stderr, "%12s",decimal(age_histo_after[i]));
+        fprintf(stderr,"\nofree=%s vfree=%s",decimal(ofree),decimal(vfree));
+        fprintf(stderr,"\n");
         fflush(0);
     }
 
@@ -738,5 +807,56 @@ void _clp_gc(int argno)
     VARTAB_UNLOCK();
     push(&NIL);
 }
- 
+
+//---------------------------------------------------------------------------
+static char *decimal(long x)
+{
+    static char store[1024];
+    static int storeidx=0;
+    if( storeidx>1024-64 )
+    {
+        storeidx=0;
+    }
+    int storebeg=storeidx;
+
+    int sign=0;
+    if( x<0 )
+    {
+        sign=1;
+        x=-x;
+    }   
+
+    char buf[64];
+    int i=0;
+    if( x==0 )
+    {
+        buf[i++]='0';
+    }
+    while( x!=0 )
+    {
+        buf[i++]='0'+x%10;
+        x/=10;
+        
+        // 987,654,321
+        //    ^   ^   ^
+        // 0  3   7  (11)
+        
+        if( x && (i-3)%4==0 )
+        {
+            buf[i++]=',';
+        }
+    }
+    if( sign )
+    {
+        store[storeidx++]='-';
+    }
+    while( i>0 )
+    {
+        store[storeidx++]=buf[--i];
+    }    
+    store[storeidx++]=0;
+    return store+storebeg;
+}
+
+
 //---------------------------------------------------------------------------

@@ -1,3 +1,6 @@
+2025-01-21
+  oneletter branch: egybetus stringek kulon kezelve;  
+
 2025-01-19 
   OREF_SIZE helyett CCC_OREFSIZE (default=200000);
   VREF_SIZE helyett CCC_VREFSIZE;

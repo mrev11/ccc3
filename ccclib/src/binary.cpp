@@ -18,8 +18,45 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef _UNIX_
+#include <sys/mman.h>
+#endif
+
+#include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <cccapi.h>
+
+//------------------------------------------------------------------------
+static char *oneletter(int c)
+{
+    static char *buffer=0;
+    if( buffer==0 )
+    {
+        int ps=4096; //getpagesize();
+
+        #ifdef _UNIX_
+            buffer=(char*)aligned_alloc(ps,ps);
+        #else
+            buffer=(char*)VirtualAlloc(0,ps,MEM_COMMIT,PAGE_READWRITE);
+        #endif
+
+        for( int i=0; i<256; i++ )
+        {
+            buffer[(i<<1)]=i;
+            buffer[(i<<1)+1]=0;
+        }
+
+        #ifdef _UNIX_
+            mprotect(buffer,ps,PROT_READ);
+        #else
+            DWORD oldprot=0; VirtualProtect(buffer,ps,PAGE_READONLY,&oldprot);
+        #endif
+    }
+    //static int count=0;
+    //printf("\noneletter %6d %3d [%s]", ++count, c, buffer+((c&255)<<1)); fflush(0);
+    return buffer+((c&255)<<1);
+}
 
 //------------------------------------------------------------------------
 void _clp___maxbinlen(int argno)
@@ -35,16 +72,16 @@ void binary(BYTE const *ptr) //új példány rámutatással (new nélkül)
 
     VARTAB_LOCK();
 
-    OREF *o=oref_new(); 
+    OREF *o=oref_new();
     o->ptr.binptr=(BYTE*)ptr;
-    o->length=0;              //szemétgyűjtés NEM törli 
+    o->length=0;              //szemétgyűjtés NEM törli
     o->next=NEXT_RESERVED;
- 
+
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
     BINARYLEN(v)=strlen((char*)ptr);
     v->type=TYPE_BINARY;
- 
+
     VARTAB_UNLOCK();
 }
 
@@ -62,13 +99,22 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
 
     VARTAB_LOCK();
 
-    OREF *o=oref_new(); 
-    BYTE *p=newBinary(len+1);
-    memcpy(p,ptr,(len+1)*sizeof(BYTE));
-    o->ptr.binptr=p;
-    o->length=-1;              //szemétgyűjtés törli
+    OREF *o=oref_new();
+    if( len<=1 )
+    {
+        o->ptr.binptr=oneletter(*ptr);
+        o->length=0; //szemétgyűjtés NEM törli
+        //printf("<n>");fflush(0);
+    }
+    else
+    {
+        BYTE *p=newBinary(len+1);
+        memcpy(p,ptr,(len+1)*sizeof(BYTE));
+        o->ptr.binptr=p;
+        o->length=-1; //szemétgyűjtés törli
+    }
     o->next=NEXT_RESERVED;
- 
+
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
     BINARYLEN(v)=len;
@@ -90,14 +136,23 @@ void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-va
 
     VARTAB_LOCK();
 
-    OREF *o=oref_new(); 
-    BYTE *p=newBinary(len+1);
-    memcpy(p,ptr,len*sizeof(BYTE));
-    *(p+len)=(BYTE)0x00;
-    o->ptr.binptr=p;
-    o->length=-1;              //szemétgyűjtés törli 
+    OREF *o=oref_new();
+    if( len<=1 )
+    {
+        o->ptr.binptr=oneletter(*ptr);
+        o->length=0; //szemétgyűjtés NEM törli
+        //printf("<s>");fflush(0);
+    }
+    else
+    {
+        BYTE *p=newBinary(len+1);
+        memcpy(p,ptr,len*sizeof(BYTE));
+        *(p+len)=(BYTE)0x00;
+        o->ptr.binptr=p;
+        o->length=-1; //szemétgyűjtés törli
+    }
     o->next=NEXT_RESERVED;
-  
+
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
     BINARYLEN(v)=len;
@@ -122,15 +177,15 @@ BYTE *binaryl(unsigned long len) //inicializálatlan binary new-val
 
     OREF *o=oref_new();
     o->ptr.binptr=newBinary(len+1);
-    *(o->ptr.binptr+len)=(BYTE)0x00; 
-    o->length=-1;              //szemétgyűjtés törli  
+    *(o->ptr.binptr+len)=(BYTE)0x00;
+    o->length=-1;              //szemétgyűjtés törli
     o->next=NEXT_RESERVED;
- 
+
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
     BINARYLEN(v)=len;
     v->type=TYPE_BINARY;
- 
+
     VARTAB_UNLOCK();
     return o->ptr.binptr;
 }

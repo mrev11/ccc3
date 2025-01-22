@@ -18,9 +18,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef _UNIX_
+#include <sys/mman.h>
+#endif
+
+#include <stdlib.h>
+#include <unistd.h>
 #include <wchar.h>
 #include <string.h>
 #include <cccapi.h>
+
+//------------------------------------------------------------------------
+static CHAR *oneletter(int c)
+{
+    static CHAR *buffer=0;
+    if( buffer==0 )
+    {
+        int ps=4096; //getpagesize();
+
+        #ifdef _UNIX_
+            buffer=(CHAR*)aligned_alloc(ps,ps);
+        #else
+            buffer=(CHAR*)VirtualAlloc(0,ps,MEM_COMMIT,PAGE_READWRITE);
+        #endif
+
+        for( int i=0; i<256; i++ )
+        {
+            buffer[(i<<1)]=i;
+            buffer[(i<<1)+1]=0;
+        }
+
+        #ifdef _UNIX_
+            mprotect(buffer,ps,PROT_READ);
+        #else
+            DWORD oldprot=0; VirtualProtect(buffer,ps,PAGE_READONLY,&oldprot);
+        #endif
+    }
+
+    //static int count=0;
+    //printf("\nONELETTER %6d %3d [%s]", ++count, c, (char*)&buffer[c<<1]); fflush(0);
+    return  &buffer[c<<1];
+}
+
 
 //------------------------------------------------------------------------
 void _clp___maxstrlen(int argno)
@@ -64,10 +103,19 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
     VARTAB_LOCK();
 
     OREF *o=oref_new(); 
-    CHAR *p=newChar(len+1);
-    wmemcpy(p,ptr,len+1);
-    o->ptr.chrptr=p;
-    o->length=-1;              //szemétgyűjtés törli
+    if( (len<=1) && (*ptr<256) )
+    {
+        o->ptr.chrptr=oneletter(*ptr);
+        o->length=0; //szemétgyűjtés NEM törli
+        //printf("<N>");fflush(0);
+    }
+    else
+    {
+        CHAR *p=newChar(len+1);
+        wmemcpy(p,ptr,len+1);
+        o->ptr.chrptr=p;
+        o->length=-1; //szemétgyűjtés törli
+    }
     o->next=NEXT_RESERVED;
  
     VALUE *v=PUSHNIL();
@@ -100,11 +148,20 @@ void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-va
     VARTAB_LOCK();
 
     OREF *o=oref_new(); 
-    CHAR *p=newChar(len+1);
-    wmemcpy(p,ptr,len);
-    *(p+len)=(CHAR)0x00;
-    o->ptr.chrptr=p;
-    o->length=-1;              //szemétgyűjtés törli 
+    if( (len<=1) && (*ptr<256) )
+    {
+        o->ptr.chrptr=oneletter(*ptr);
+        o->length=0; //szemétgyűjtés NEM törli
+        //printf("<S>");fflush(0);
+    }
+    else
+    {
+        CHAR *p=newChar(len+1);
+        wmemcpy(p,ptr,len);
+        *(p+len)=(CHAR)0x00;
+        o->ptr.chrptr=p;
+        o->length=-1; //szemétgyűjtés törli 
+    }
     o->next=NEXT_RESERVED;
   
     VALUE *v=PUSHNIL();

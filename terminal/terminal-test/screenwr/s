@@ -2,10 +2,10 @@
 
 export CCCTERM_FONTSPEC=14
 
-#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/ncterm.exe"
-#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal.exe"
-export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-xft.exe"
-#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-gtk3.exe"
-#export CCCTERM_CONNECT="$CCCDIR/usr/bin/$CCCUNAME/terminal-qt5.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/ncterm.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/terminal.exe"
+export CCCTERM_CONNECT="$CCCDIR/usr/bin/terminal-xft.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/terminal-gtk3.exe"
+#export CCCTERM_CONNECT="$CCCDIR/usr/bin/terminal-qt5.exe"
 
 w.exe

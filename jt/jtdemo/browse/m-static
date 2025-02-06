@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b @../parfile.bld  'BUILD_SHR=static' -bssl -bcrypto
+cccapp.sh @../parfile.bld  'BUILD_SHR=static' -bssl -bcrypto

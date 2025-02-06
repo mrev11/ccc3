@@ -1,4 +1,4 @@
-//input: verifdep.ppo (5.6.0)
+//input: ppo/verifdep.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -33,6 +33,7 @@ push_call("verifdep",base);
     push_symbol(base+3);//tdepend
     push(&NIL);
     eqeq();
+    cmp_62:;
     if(!flag()) goto if_1_1;
         line(36);
         line(29);
@@ -68,6 +69,7 @@ push_call("verifdep",base);
     push_symbol(base+0);//ttarget
     push_symbol(base+3);//tdepend
     lt();
+    cmp_167:;
     if(!flag()) goto if_1_2;
         line(39);
         push(&TRUE);
@@ -90,6 +92,7 @@ push_call("verifdep",base);
         push_symbol(base+0);//ttarget
         push_symbol(base+3);//tdepend
         lt();
+        cmp_245:;
         if(flag()){
         string(L"UPDATE");
         }else{

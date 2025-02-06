@@ -1,0 +1,6 @@
+
+CMPOPT=ppo/opt--ppo-$1
+mkdir -p ${CMPOPT%/*}
+rm -f $CMPOPT
+
+#touch $CMPOPT

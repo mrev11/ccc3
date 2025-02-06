@@ -27,14 +27,16 @@ function rules_from_build_bat()
 
 local d,n,rule
 
-    if( file(buildenv_bat()+dirsep()+"prg2obj.bat") )
-        s_batext(".bat")
+    if( file(buildenv_bat()+dirsep()+"prg2obj.bld") )
+        s_batext(".bld")
     elseif( file(buildenv_bat()+dirsep()+"prg2obj.bash") )
         s_batext(".bash")
     elseif( file(buildenv_bat()+dirsep()+"prg2obj.sh") )
         s_batext(".sh")
     elseif( file(buildenv_bat()+dirsep()+"prg2obj.msys2") )
         s_batext(".msys2")
+    elseif( file(buildenv_bat()+dirsep()+"prg2obj.bat") )
+        s_batext(".bat")
     end
 
     asize(s_rules(),0)
@@ -49,7 +51,7 @@ local d,n,rule
     next
     
     asort(s_rules(),,,{|x,y|rulesort(x,y)})
-    
+
     //for n:=1 to len(s_rules())
     //    ? n, s_rules()[n]
     //next

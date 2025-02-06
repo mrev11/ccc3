@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b @../parfile.bld -bccc${CCCVER}_crypto
+cccapp.sh @../parfile.bld -bccc${CCCVER}_crypto

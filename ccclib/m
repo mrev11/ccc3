@@ -4,7 +4,6 @@ mk_ccc
 mk_uic
 mk_ui_
 
-
 # ha mk_ui_ fut utolsonak, akkor egy 
 # rebuild utan rogton setup keszitheto
 

@@ -1,54 +1,66 @@
 
 #########################################################################
-# CCC beallitasok
+# CCC environment
 #########################################################################
 
-export OREF_SIZE=200000
-export BUILD_THR=4
-
+export CCC2DIR=~/ccc2
 export CCC3DIR=~/ccc3
-export CCC2DIR=~/ccc2c
-export CCCBIN=lin
-export CCCUNAME=linux
 
-if [ "$CCCVER" == ""  ]; then
-    export CCCVER=3
-    export CCCDIR=$CCC3DIR
-elif [ "$CCCVER" == "2"  ]; then
-    export CCCDIR=$CCC2DIR
-elif [ "$CCCVER" == "3"  ]; then
-    export CCCDIR=$CCC3DIR
+if [ $CCCVER == 2 ]; then
+    export CCCDIR=${CCC2DIR}
+elif [ $CCCVER == 3 ]; then
+    export CCCDIR=${CCC3DIR}
 else
-    echo invalid value of CCCVER: $CCCVER
-    exit 1
+    echo CCCVER variable undefined
+    read 
 fi
+
+export CCC_OREFSIZE=500000
+
+UNAME=$(uname)
+if [ "$UNAME" == Linux ];then
+    CCCUNAME=linux
+elif [ "$UNAME" == FreeBSD ];then
+    CCCUNAME=freebsd
+elif [ "$UNAME" == NetBSD ];then
+    CCCUNAME=netbsd
+elif [ "$UNAME" == SunOS ];then
+    CCCUNAME=solaris
+else
+    echo unknown OS: $UNAME
+fi
+export CCCUNAME
 
 
 if [ "$CCCTERM_CONNECT" == ""  ];then
-    export CCCTERM_SIZE=100x40
-    export CCCTERM_FONTSPEC=Monospace-12
+    export CCCTERM_SIZE=100x50
+    export CCCTERM_GTKFONTSPEC="Monospace 12"
 
     # curses terminal
-    # export CCCTERM_CONNECT=term://cterm.exe
-    # export CCCTERM_INHERIT=yes
+     export CCCTERM_CONNECT=term://cterm.exe
+     export CCCTERM_INHERIT=yes
 
     # XFT terminal
     # export CCCTERM_CONNECT=term://terminal-xft.exe
     # export CCCTERM_INHERIT=no
 
     # GTK terminal
-     export CCCTERM_CONNECT=term://terminal-gtk3.exe
-     export CCCTERM_INHERIT=no
+    # export CCCTERM_CONNECT=term://terminal-gtk3.exe
+    # export CCCTERM_INHERIT=no
 
     # Qt terminal
     # export CCCTERM_CONNECT=term://terminal-qt5.exe
     # export CCCTERM_INHERIT=no
 
     # remote terminal
+    # export CCCTERM_CONNECT=connect://xp:55013
+    # export CCCTERM_CONNECT=connect://tm:55013
+    # export CCCTERM_CONNECT=connect://uj:55013
     # export CCCTERM_CONNECT=connect://i3x:55013
+    # export CCCTERM_CONNECT=connect://dell6510:55013
     # export CCCTERM_INHERIT=no
 fi
-
+export CCCTERM_ICONFILE=${CCCDIR}/usr/bin/terminal.xpm
 
 # z-editor colors
 export ZCOLOR_TEXT=333/n,w/n+
@@ -59,9 +71,9 @@ export ZEOL=LF
 
 . ${CCCDIR}/usr/setenv/addpath
 
-## itt meg kell gondolni
-## hogy mit vegyunk at a PATH-bol
-## vagy felepitunk-e egy teljesen uj PATH-t
+## meg kell gondolni
+## mit vegyunk at a PATH-bol
+## felepitunk-e egy teljesen uj PATH-t
 
 # unset PATH
 # addpath /bin
@@ -71,11 +83,25 @@ export ZEOL=LF
 # addpath /usr/local/bin
 # addpath /usr/local/sbin
 
-addpath $CCC2DIR/usr/bin/$CCCUNAME
-addpath $CCC3DIR/usr/bin/$CCCUNAME
-addpath $CCCDIR/usr/bin/$CCCUNAME
+addpath $CCC2DIR/usr/bin
+addpath $CCC3DIR/usr/bin
+addpath $CCCDIR/usr/bin
 addpath ~/bin
 addpath .
+
+
+# CCCBIN beallitasa csak path utan
+# mert a path-tol fugg melyik c++ kerul elo
+
+CVERSION=$(c++ -v 2>&1 | grep \ version)
+if [[ $CVERSION =~ .*gcc.*    ]]; then
+    CCCBIN=gcc
+elif [[ $CVERSION =~ .*clang.*  ]]; then
+    CCCBIN=clang
+else
+    echo unknown C compiler: $(c++ -v 2>&1)
+fi
+export CCCBIN
 
 addldpath $CCC2DIR/usr/lib/$CCCBIN
 addldpath $CCC3DIR/usr/lib/$CCCBIN
@@ -83,3 +109,14 @@ addldpath $CCCDIR/usr/lib/$CCCBIN
 
 
 #########################################################################
+
+export BUILD_THR=4
+export BUILD_CACHE=~/.cache/build
+mkdir -p $BUILD_CACHE
+
+#########################################################################
+$CCCDIR/usr/bin/cccenv.sh
+
+
+
+

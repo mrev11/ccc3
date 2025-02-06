@@ -1,4 +1,4 @@
-//input: psort.ppo (5.6.0)
+//input: ppo/psort.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -41,16 +41,19 @@ push_call("psort",base);
     push_symbol(base+2);//ix
     push_symbol(base+3);//iy
     eqeq();
+    cmp_137:;
     if(flag()){
     push_symbol(base+0);//x
     idxr0(1);
     push_symbol(base+1);//y
     idxr0(1);
     lt();
+    cmp_149:;
     }else{
     push_symbol(base+2);//ix
     push_symbol(base+3);//iy
     lt();
+    cmp_161:;
     }
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -87,6 +90,7 @@ push_call("ruleidx",base);
         idxr();
         idxr0(1);
         eqeq();
+        cmp_229:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -96,6 +100,7 @@ push_call("ruleidx",base);
         idxr();
         idxr0(2);
         eqeq();
+        cmp_251:;
         }
         if(!flag()) goto if_2_1;
             line(34);

@@ -1,6 +1,5 @@
 -sccc3_ui_
 -dui_
--dui_/unix
 -iinclude
 
 BUILD_SRC=src

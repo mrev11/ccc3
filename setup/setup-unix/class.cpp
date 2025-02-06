@@ -1,4 +1,4 @@
-//input: class.ppo (5.6.0)
+//input: ppo/class.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -109,6 +109,7 @@ push_call("hash_rebuild",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_113:;
         if(!flag()) goto if_2_1;
             line(61);
             push_symbol(base+2);//hash1
@@ -165,6 +166,7 @@ push_call("hash_index",base);
     push_symbol(base+2);//hcode
     push(&NIL);
     eqeq();
+    cmp_249:;
     if(flag()){
     push_symbol(base+1);//key
     _clp_hashcode(1);
@@ -188,6 +190,7 @@ push_call("hash_index",base);
         addnum(1);
         idxr();
         eqeq();
+        cmp_294:;
         if(!flag()) goto if_4_1;
             line(78);
             push_symbol(base+4);//hidx
@@ -203,6 +206,7 @@ push_call("hash_index",base);
         idxr();
         idxr0(1);
         eqeq();
+        cmp_330:;
         if(!flag()) goto if_4_2;
             line(80);
             push_symbol(base+4);//hidx
@@ -217,6 +221,7 @@ push_call("hash_index",base);
         assign(base+4);//hidx
         push_symbol(base+3);//hlen
         gteq();
+        cmp_373:;
         if(!flag()) goto if_4_3;
             line(82);
             push(&ZERO);
@@ -386,6 +391,7 @@ push_call("classregister",base);
     push_symbol(base+1);//clbaseid
     push(&NIL);
     eqeq();
+    cmp_934:;
     if(!flag()) goto if_6_1;
         line(145);
         array(0);
@@ -398,6 +404,7 @@ push_call("classregister",base);
     _clp_valtype(1);
     string(L"N");
     eqeq();
+    cmp_970:;
     if(!flag()) goto if_6_2;
         line(147);
         push_symbol(base+1);//clbaseid
@@ -444,6 +451,7 @@ push_call("classregister",base);
             idxr();
             push(&NIL);
             neeq();
+            cmp_1095:;
             if(!flag()) goto if_9_1;
                 line(161);
                 push_symbol(base+6);//bhash
@@ -487,6 +495,7 @@ push_call("classregister",base);
                 _clp_valtype(1);
                 string(L"N");
                 eqeq();
+                cmp_1235:;
                 if(!flag()) goto if_10_1;
                     line(169);
                     push_symbol(base+10);//olen
@@ -506,6 +515,7 @@ push_call("classregister",base);
                 _clp_len(1);
                 mulnum(0.66);
                 gt();
+                cmp_1268:;
                 if(!flag()) goto if_11_1;
                     line(172);
                     push_symbol(base+5);//hash
@@ -568,6 +578,7 @@ push_call("classregister",base);
             idxr();
             push(&NIL);
             neeq();
+            cmp_1436:;
             if(!flag()) goto if_14_1;
                 line(186);
                 push_symbol(base+6);//bhash
@@ -603,6 +614,7 @@ push_call("classregister",base);
                 idxr();
                 push(&NIL);
                 eqeq();
+                cmp_1540:;
                 if(!flag()) goto if_15_1;
                     line(199);
                     line(195);
@@ -610,6 +622,7 @@ push_call("classregister",base);
                     _clp_valtype(1);
                     string(L"B");
                     eqeq();
+                    cmp_1562:;
                     if(!flag()) goto if_16_1;
                         line(196);
                         push_symbol(base+7);//name
@@ -647,6 +660,7 @@ push_call("classregister",base);
                     _clp_len(1);
                     mulnum(0.66);
                     gt();
+                    cmp_1659:;
                     if(!flag()) goto if_17_1;
                         line(202);
                         push_symbol(base+5);//hash
@@ -757,6 +771,7 @@ push_call("classattrib",base);
     idxr();
     push(&NIL);
     eqeq();
+    cmp_2023:;
     if(!flag()) goto if_18_1;
         line(227);
         push_symbol(base+3);//lname
@@ -784,6 +799,7 @@ push_call("classattrib",base);
         _clp_len(1);
         mulnum(0.66);
         gt();
+        cmp_2084:;
         if(!flag()) goto if_19_1;
             line(230);
             push_symbol(base+4);//hash
@@ -808,6 +824,7 @@ push_call("classattrib",base);
         _clp_valtype(1);
         string(L"B");
         eqeq();
+        cmp_2185:;
         if(!flag()) goto if_20_1;
             line(239);
             push_symbol(base+2);//clsdef
@@ -879,6 +896,7 @@ push_call("classmethod",base);
     idxr();
     push(&NIL);
     eqeq();
+    cmp_2403:;
     if(!flag()) goto if_21_1;
         line(258);
         push_symbol(base+4);//lname
@@ -901,6 +919,7 @@ push_call("classmethod",base);
         _clp_len(1);
         mulnum(0.66);
         gt();
+        cmp_2457:;
         if(!flag()) goto if_22_1;
             line(261);
             push_symbol(base+5);//hash
@@ -924,6 +943,7 @@ push_call("classmethod",base);
         _clp_valtype(1);
         string(L"N");
         eqeq();
+        cmp_2559:;
         assign(base+7);//reindex
         pop();
         line(271);
@@ -966,6 +986,7 @@ push_call("classmethod",base);
                 idxr();
                 push(&NIL);
                 neeq();
+                cmp_2657:;
                 if(!flag()){
                 push(&FALSE);
                 }else{
@@ -976,6 +997,7 @@ push_call("classmethod",base);
                 _clp_valtype(1);
                 string(L"N");
                 eqeq();
+                cmp_2682:;
                 }
                 if(!flag()) goto if_25_1;
                     line(278);
@@ -1071,6 +1093,7 @@ push_call("_blk_classidbyname_0",base);
     idxr0(1);
     push_symbol(env+0);//name
     eqeq();
+    cmp_2866:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -1195,6 +1218,7 @@ push_call("classattrnames",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_3209:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1206,6 +1230,7 @@ push_call("classattrnames",base);
         _clp_valtype(1);
         string(L"N");
         eqeq();
+        cmp_3238:;
         }
         if(!flag()){
         push(&FALSE);
@@ -1213,6 +1238,7 @@ push_call("classattrnames",base);
         push_symbol(base+1);//id
         push(&NIL);
         eqeq();
+        cmp_3247:;
         if(flag()){
         push(&TRUE);
         }else{
@@ -1222,6 +1248,7 @@ push_call("classattrnames",base);
         idxr0(3);
         push_symbol(base+1);//id
         eqeq();
+        cmp_3264:;
         }
         }
         if(!flag()) goto if_27_1;
@@ -1296,6 +1323,7 @@ push_call("classmethnames",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_3437:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1306,6 +1334,7 @@ push_call("classmethnames",base);
         _clp_valtype(1);
         string(L"B");
         eqeq();
+        cmp_3462:;
         }
         if(!flag()){
         push(&FALSE);
@@ -1313,6 +1342,7 @@ push_call("classmethnames",base);
         push_symbol(base+1);//id
         push(&NIL);
         eqeq();
+        cmp_3471:;
         if(flag()){
         push(&TRUE);
         }else{
@@ -1322,6 +1352,7 @@ push_call("classmethnames",base);
         idxr0(3);
         push_symbol(base+1);//id
         eqeq();
+        cmp_3488:;
         }
         }
         if(!flag()) goto if_29_1;
@@ -1399,6 +1430,7 @@ push_call("classinheritstruct",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_3663:;
         if(!flag()) goto if_31_1;
             line(345);
             push_symbol(base+3);//inherit
@@ -1414,6 +1446,7 @@ push_call("classinheritstruct",base);
             _clp_valtype(1);
             string(L"B");
             eqeq();
+            cmp_3730:;
             if(flag()){
             string(L"M");
             }else{
@@ -1467,6 +1500,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     lt();
+    cmp_3818:;
     if(flag()){
     push(&TRUE);
     }else{
@@ -1475,6 +1509,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     eqeq();
+    cmp_3835:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -1483,6 +1518,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(1);
     lt();
+    cmp_3852:;
     }
     }
 //
@@ -1521,6 +1557,7 @@ push_call("__findslot",base);
     push_symbol(base+5);//item
     push(&NIL);
     eqeq();
+    cmp_3987:;
     if(!flag()) goto if_32_1;
         line(361);
         _clp_errornew(0);
@@ -1574,6 +1611,7 @@ push_call("__findslot_c",base);
     _clp_classidbyname(1);
     assign(base+4);//clid1
     eqeq();
+    cmp_4146:;
     if(!flag()) goto if_33_1;
         line(374);
         _clp_errornew(0);
@@ -1626,6 +1664,7 @@ push_call("__findslot_c",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_4340:;
     topnot();
     if(!flag()) goto if_34_1;
         line(383);
@@ -1685,6 +1724,7 @@ push_call("__findslot_s",base);
     _clp_classidbyname(1);
     assign(base+4);//clid1
     eqeq();
+    cmp_4531:;
     if(!flag()) goto if_35_1;
         line(399);
         _clp_errornew(0);
@@ -1763,6 +1803,7 @@ push_call("__findslot_s",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_4792:;
         if(!flag()) goto if_37_1;
             line(411);
             push_symbol(base+7);//hash
@@ -1777,6 +1818,7 @@ push_call("__findslot_s",base);
             _clp_valtype(1);
             string(L"B");
             eqeq();
+            cmp_4835:;
             topnot();
             if(!flag()) goto if_38_1;
                 line(413);
@@ -1879,6 +1921,7 @@ push_call("__findslot_p",base);
     _clp_classidbyname(1);
     assign(base+5);//clid0
     eqeq();
+    cmp_5130:;
     if(!flag()) goto if_39_1;
         line(436);
         _clp_errornew(0);
@@ -1930,6 +1973,7 @@ push_call("__findslot_p",base);
     _clp_classidbyname(1);
     assign(base+6);//clid1
     eqeq();
+    cmp_5300:;
     if(!flag()) goto if_40_1;
         line(443);
         _clp_errornew(0);
@@ -1983,6 +2027,7 @@ push_call("__findslot_p",base);
     push_symbol(base+6);//clid1
     _clp_ascan(2);
     eqeq();
+    cmp_5470:;
     if(!flag()) goto if_41_1;
         line(450);
         _clp_errornew(0);
@@ -2047,6 +2092,7 @@ push_call("__findslot_p",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_5712:;
     topnot();
     if(!flag()) goto if_42_1;
         line(459);
@@ -2129,6 +2175,7 @@ push_call("isderivedfrom",base);
     push_symbol(base+1);//clb
     push_symbol(base+0);//cld
     eqeq();
+    cmp_5946:;
     if(!flag()) goto if_43_1;
         line(479);
         push(&TRUE);
@@ -2246,6 +2293,7 @@ push_call("__findslot3_c",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_6288:;
     topnot();
     if(!flag()) goto if_47_1;
         line(507);
@@ -2375,6 +2423,7 @@ push_call("__findslot3_s",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_6713:;
         if(!flag()) goto if_50_1;
             line(536);
             push_symbol(base+6);//hash
@@ -2389,6 +2438,7 @@ push_call("__findslot3_s",base);
             _clp_valtype(1);
             string(L"B");
             eqeq();
+            cmp_6756:;
             topnot();
             if(!flag()) goto if_51_1;
                 line(538);
@@ -2533,6 +2583,7 @@ push_call("__findslot3_p",base);
     push_symbol(base+2);//clid1
     _clp_ascan(2);
     eqeq();
+    cmp_7183:;
     if(!flag()) goto if_53_1;
         line(568);
         _clp_errornew(0);
@@ -2597,6 +2648,7 @@ push_call("__findslot3_p",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_7425:;
     topnot();
     if(!flag()) goto if_54_1;
         line(577);

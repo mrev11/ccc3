@@ -1,2 +1,0 @@
-
-set host=localhost

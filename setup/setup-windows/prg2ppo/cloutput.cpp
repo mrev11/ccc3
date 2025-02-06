@@ -1,4 +1,4 @@
-//input: cloutput.ppo (5.6.0)
+//input: ppo/cloutput.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -236,6 +236,7 @@ push_call("outputini",base);
     push_symbol(base+1);//size
     push(&NIL);
     neeq();
+    cmp_487:;
     if(flag()){
     push_symbol(base+1);//size
     }else{
@@ -282,6 +283,7 @@ push_call("outputadd",base);
     push_symbol(base+3);//typt
     string(L"A");
     eqeq();
+    cmp_606:;
     if(!flag()) goto if_1_1;
         line(77);
         push_symbol(base+1);//t
@@ -315,6 +317,7 @@ push_call("outputadd",base);
     _o_method_buffer.eval(1);
     _clp_len(1);
     gt();
+    cmp_689:;
     if(!flag()) goto if_2_1;
         line(85);
         push_symbol(base+0);//this

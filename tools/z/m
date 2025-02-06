@@ -1,6 +1,6 @@
 #!/bin/bash
 #export BUILD_DBG=on
-bapp_unixc.b @parfile.bld
+cccapp_term.sh @parfile.bld
 
 #ldd `which z.exe` 
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+#NetBSD sha256sum
+cksum -a sha256 "$@"

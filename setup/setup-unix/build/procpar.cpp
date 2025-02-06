@@ -1,4 +1,4 @@
-//input: procpar.ppo (5.6.0)
+//input: ppo/procpar.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -29,6 +29,7 @@ push_call("procpar",base);
     _clp_at(2);
     assign(base+1);//n
     lt();
+    cmp_40:;
     if(!flag()) goto lab_1_2;
         line(29);
         push_symbol(base+0);//par
@@ -90,6 +91,7 @@ push_call("procpar",base);
     _clp_at(2);
     assign(base+1);//n
     lt();
+    cmp_260:;
     if(!flag()) goto lab_2_2;
         line(38);
         push_symbol(base+0);//par
@@ -145,6 +147,7 @@ push_call("procpar",base);
     _clp_at(2);
     assign(base+1);//n
     lt();
+    cmp_461:;
     if(!flag()) goto lab_3_2;
         line(48);
         push_symbol(base+0);//par
@@ -206,6 +209,7 @@ push_call("procpar",base);
     _clp_at(2);
     assign(base+1);//n
     lt();
+    cmp_681:;
     if(!flag()) goto lab_4_2;
         line(57);
         push_symbol(base+0);//par
@@ -272,6 +276,7 @@ push_call("procpar",base);
     _clp_left(2);
     string(L"=");
     eqeq();
+    cmp_970:;
     if(flag()){
     push_symbol(base+0);//par
     }else{

@@ -1,4 +1,4 @@
-//input: srchdef.ppo (5.6.0)
+//input: ppo/srchdef.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -38,6 +38,7 @@ push_call("searchdefine",base);
     push_symbol(base+3);//lentok
     push(&ONE);
     gteq();
+    cmp_87:;
     if(flag()){
     push_symbol(base+2);//toklist
     idxr0(1);
@@ -50,6 +51,7 @@ push_call("searchdefine",base);
     push_symbol(base+3);//lentok
     number(3);
     gteq();
+    cmp_117:;
     if(flag()){
     push_symbol(base+2);//toklist
     idxr0(3);
@@ -67,6 +69,7 @@ push_call("searchdefine",base);
     push_symbol(base+4);//symbol
     push(&NIL);
     neeq();
+    cmp_173:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -77,6 +80,7 @@ push_call("searchdefine",base);
     _clp_ascan(2);
     assign(base+9);//n
     lt();
+    cmp_180:;
     }
     if(!flag()) goto if_1_1;
         line(42);
@@ -91,6 +95,7 @@ push_call("searchdefine",base);
         _clp_len(1);
         push(&ONE);
         gteq();
+        cmp_272:;
         if(flag()){
         push_symbol(base+7);//rside
         idxr0(1);
@@ -103,6 +108,7 @@ push_call("searchdefine",base);
         push_symbol(base+8);//rvalue
         push_symbol(base+5);//value
         eqeq();
+        cmp_299:;
         assign(base+1);//result
         pop();
     if_1_1:
@@ -130,6 +136,7 @@ push_call("_blk_searchdefine_0",base);
     idxr0(1);
     push_symbol(env+0);//symbol
     eqeq();
+    cmp_213:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }

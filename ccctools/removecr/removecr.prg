@@ -26,27 +26,40 @@ local ftxt
 local ftxt1
 local fmode
 
+    set dosconv off
+
     for n:=1 to len(opt)
         if( opt[n]=="-x" )
-            quit //csak ellenőrzi, hogy megvan-e a program
+            quit //csak ellenorzi, hogy megvan-e a program
         else
             fspec:=opt[n]
         end
     next
 
-    ftxt:=memoread(fspec,.t.) //binary
-    ftxt1:=strtran(ftxt,x"0d0a",x"0a")
-    //ftxt1:=strtran(ftxt,x"0d",x"")
+    if( fspec==NIL )
+        ?? "Usage: removecr <filespec>"
+        ?
+        quit
+    end
+    if( !file(fspec) )
+        ?? "Usage: removecr <filespec>"
+        ?? " (file not found ["+fspec+"])"
+        ?
+        quit
+    end
+
+
+    ftxt:=memoread(fspec)
+    ftxt1:=strtran(ftxt,chr(13),"")
 
     if( !ftxt==ftxt1 )
-      #ifdef UNIX 
+      #ifdef UNIX
         fmode:=stat_st_mode(fspec)
       #endif
         memowrit(fspec,ftxt1)
-      #ifdef UNIX 
+      #ifdef UNIX
         chmod(fspec,fmode)
       #endif
     end
 
-    return NIL
 

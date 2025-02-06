@@ -1,0 +1,30 @@
+#!/bin/bash
+echo OBJ2LIB.BAT $1.lib # $@ = libname mod1 mod2 ...
+#set -x
+
+TARGET=$BUILD_OBJ/$1.lib
+OUT=out--obj2lib-$1
+RSPLIB=$BUILD_OBJ/rsp--lib-$1
+rm -f $TARGET $OUT $RSPLIB
+
+. ${BUILD_BAT}/def_quit
+
+LIBNAME=$1
+
+if [ -f $BUILD_OBJ/objects-$LIBNAME ]; then
+    # MSYS2
+    for obj in $(cat ${BUILD_OBJ}/objects-$LIBNAME); do
+        echo $BUILD_OBJ/${obj/$'\r'/} >>$RSPLIB
+    done
+else
+    # UNIX
+    shift
+    for i in "$@"; do echo $BUILD_OBJ/$i.obj >>$RSPLIB; done
+fi
+
+if ! ar -c -q $TARGET $(cat $RSPLIB)  2>$OUT; then
+    quit 1
+fi
+rm -f $OUT
+
+quit 0

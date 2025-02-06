@@ -3,5 +3,8 @@
 -bccc3_sslsocket 
 -bccc3_xmldom
 -bccc3_btbtx
+-bssl
+-bcrypto
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+
+BUILD_EXE=$(CCCDIR)/usr/bin

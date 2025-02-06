@@ -2,5 +2,5 @@
 mkdir exe-ora 2>/dev/null
 cp -p start-scripts/*.b exe-ora 2>/dev/null
 
-bapp_unixc.b  @parfile-o.bld
+cccapp_term.sh  @parfile-o.bld
 

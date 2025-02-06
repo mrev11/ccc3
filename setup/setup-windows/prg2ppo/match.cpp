@@ -1,4 +1,4 @@
-//input: match.ppo (5.6.0)
+//input: ppo/match.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -124,6 +124,7 @@ push_call("match",base);
         assign(base+11);//token
         push(&NIL);
         neeq();
+        cmp_238:;
         if(!flag()) goto lab_2_2;
             line(57);
             push(&FALSE);
@@ -138,6 +139,7 @@ push_call("match",base);
             _clp_rule_search(3);
             assign(base+12);//n
             lt();
+            cmp_262:;
             if(!flag()) goto if_3_1;
                 line(68);
                 lab_4_1:
@@ -145,6 +147,7 @@ push_call("match",base);
                 push_symbol(base+12);//n
                 push_symbol(base+7);//lendef
                 lteq();
+                cmp_305:;
                 if(!flag()){
                 push(&FALSE);
                 }else{
@@ -155,6 +158,7 @@ push_call("match",base);
                 idxr0(1);
                 idxr0(1);
                 eqeq();
+                cmp_312:;
                 }
                 if(!flag()) goto lab_4_2;
                     line(66);
@@ -241,6 +245,7 @@ push_call("match",base);
         assign(base+11);//token
         push(&NIL);
         neeq();
+        cmp_574:;
         if(!flag()) goto lab_8_2;
             line(97);
             push_symbol(base+11);//token
@@ -260,6 +265,7 @@ push_call("match",base);
             _clp_rule_search(3);
             assign(base+12);//n
             lt();
+            cmp_616:;
             if(!flag()) goto if_9_1;
                 line(110);
                 lab_10_1:
@@ -267,6 +273,7 @@ push_call("match",base);
                 push_symbol(base+12);//n
                 push_symbol(base+9);//lentrn
                 lteq();
+                cmp_659:;
                 if(!flag()){
                 push(&FALSE);
                 }else{
@@ -277,6 +284,7 @@ push_call("match",base);
                 idxr0(1);
                 idxr0(1);
                 eqeq();
+                cmp_666:;
                 }
                 if(!flag()) goto lab_10_2;
                     line(108);
@@ -292,6 +300,7 @@ push_call("match",base);
                     _clp_atail(1);
                     push(&NIL);
                     neeq();
+                    cmp_718:;
                     }
                     if(!flag()){
                     push(&FALSE);
@@ -354,6 +363,7 @@ push_call("match",base);
                 push_symbol(base+11);//token
                 binary(";");
                 eqeq();
+                cmp_881:;
                 if(!flag()) goto if_13_2;
                     line(124);
                     push(&TRUE);
@@ -522,6 +532,7 @@ push_call("match1",base);
         push_symbol(base+9);//token_input
         binary(" ");
         eqeq();
+        cmp_1363:;
         if(!flag()) goto lab_16_2;
             line(175);
             push_symbol(base+5);//mcount
@@ -550,6 +561,7 @@ push_call("match1",base);
         push_symbol(base+11);//type
         string(L"L");
         eqeq();
+        cmp_1432:;
         if(!flag()) goto if_17_1;
             line(206);
             line(185);
@@ -638,6 +650,7 @@ push_call("match1",base);
                 assign(base+3);//match_level
                 push(&ONE);
                 lt();
+                cmp_1610:;
                 if(!flag()) goto if_21_1;
                     line(203);
                     push_symbol(base+6);//leftside
@@ -677,6 +690,7 @@ push_call("match1",base);
             push_symbol(base+9);//token_input
             push(&NIL);
             eqeq();
+            cmp_1727:;
             if(!flag()) goto if_24_1;
                 line(223);
                 push_symbol(_st_match_count.ptr);//match1
@@ -699,6 +713,7 @@ push_call("match1",base);
             push_symbol(base+9);//token_input
             push_symbol(base+10);//token_rule
             eqeq();
+            cmp_1777:;
             topnot();
             }
             if(!flag()) goto if_24_2;
@@ -725,6 +740,7 @@ push_call("match1",base);
             _clp_upper(1);
             push_symbol(base+10);//token_rule
             eqeq();
+            cmp_1839:;
             topnot();
             }
             if(!flag()) goto if_24_3;
@@ -758,6 +774,7 @@ push_call("match1",base);
         push_symbol(base+11);//type
         string(L"N");
         eqeq();
+        cmp_1908:;
         if(!flag()) goto if_23_2;
             line(238);
             push_symbol(base+10);//token_rule
@@ -780,6 +797,7 @@ push_call("match1",base);
             push_symbol(base+11);//type
             push(&ONE);
             eqeq();
+            cmp_1983:;
             if(!flag()) goto if_25_1;
                 line(244);
                 push_symbol(base+1);//inp
@@ -798,6 +816,7 @@ push_call("match1",base);
             push_symbol(base+11);//type
             number(2);
             eqeq();
+            cmp_2048:;
             if(!flag()) goto if_25_2;
                 line(247);
                 push_symbol(base+1);//inp
@@ -816,6 +835,7 @@ push_call("match1",base);
             push_symbol(base+11);//type
             number(3);
             eqeq();
+            cmp_2113:;
             if(!flag()) goto if_25_3;
                 line(250);
                 push_symbol(base+9);//token_input
@@ -829,6 +849,7 @@ push_call("match1",base);
             push_symbol(base+11);//type
             number(4);
             eqeq();
+            cmp_2154:;
             if(!flag()) goto if_25_4;
                 line(253);
                 push_symbol(base+1);//inp
@@ -847,6 +868,7 @@ push_call("match1",base);
             push_symbol(base+11);//type
             number(5);
             eqeq();
+            cmp_2219:;
             if(!flag()) goto if_25_5;
                 line(256);
                 push_symbol(base+1);//inp
@@ -872,6 +894,7 @@ push_call("match1",base);
             push_symbol(base+13);//k
             push(&ZERO);
             lteq();
+            cmp_2299:;
             if(!flag()) goto if_26_1;
                 line(264);
                 push_symbol(_st_match_count.ptr);//match1
@@ -942,12 +965,14 @@ push_call("match1",base);
         push_symbol(base+11);//type
         string(L"U");
         eqeq();
+        cmp_2447:;
         if(!flag()) goto if_23_3;
             line(281);
             line(275);
             push_symbol(base+9);//token_input
             push(&NIL);
             eqeq();
+            cmp_2461:;
             if(!flag()) goto if_28_1;
             goto if_28_0;
             if_28_1:
@@ -955,6 +980,7 @@ push_call("match1",base);
             push_symbol(base+9);//token_input
             binary(";");
             eqeq();
+            cmp_2477:;
             if(!flag()) goto if_28_2;
             goto if_28_0;
             if_28_2:
@@ -979,6 +1005,7 @@ push_call("match1",base);
         push_symbol(base+3);//match_level
         push(&ONE);
         eqeq();
+        cmp_2543:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1007,6 +1034,7 @@ push_call("match1",base);
     push_symbol(base+3);//match_level
     push(&ONE);
     neeq();
+    cmp_2587:;
     if(!flag()) goto if_30_1;
         line(290);
         push_symbol(base+6);//leftside
@@ -1023,6 +1051,7 @@ push_call("match1",base);
     push_symbol(base+6);//leftside
     _clp_len(1);
     gt();
+    cmp_2639:;
     assign(base+17);//result
     pop();
     line(305);
@@ -1104,6 +1133,7 @@ push_call("replacelist",base);
         _clp_valtype(1);
         string(L"L");
         eqeq();
+        cmp_2876:;
         if(!flag()) goto if_33_1;
             line(342);
             line(329);
@@ -1164,6 +1194,7 @@ push_call("replacelist",base);
             push_symbol(base+3);//x
             binary("##");
             eqeq();
+            cmp_3060:;
             if(!flag()) goto if_37_1;
                 line(350);
                 push(&TRUE);
@@ -1178,6 +1209,7 @@ push_call("replacelist",base);
         _clp_valtype(1);
         string(L"N");
         eqeq();
+        cmp_3103:;
         if(!flag()) goto if_36_2;
             line(355);
             push_symbol(base+3);//x
@@ -1200,6 +1232,7 @@ push_call("replacelist",base);
             push_symbol(base+8);//match
             push(&NIL);
             neeq();
+            cmp_3168:;
             if(!flag()) goto if_38_1;
                 line(360);
                 push(&TRUE);
@@ -1212,6 +1245,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             push(&ONE);
             eqeq();
+            cmp_3201:;
             if(!flag()) goto if_39_1;
                 line(364);
                 push_symbol(base+2);//rlist
@@ -1224,6 +1258,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             number(2);
             eqeq();
+            cmp_3238:;
             if(!flag()) goto if_39_2;
                 line(367);
                 push_symbol(base+2);//rlist
@@ -1236,6 +1271,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             number(3);
             eqeq();
+            cmp_3275:;
             if(!flag()) goto if_39_3;
                 line(370);
                 push_symbol(base+2);//rlist
@@ -1251,6 +1287,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             number(4);
             eqeq();
+            cmp_3330:;
             if(!flag()) goto if_39_4;
                 line(373);
                 push_symbol(base+2);//rlist
@@ -1266,6 +1303,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             number(5);
             eqeq();
+            cmp_3385:;
             if(!flag()) goto if_39_5;
                 line(376);
                 push_symbol(base+2);//rlist
@@ -1281,6 +1319,7 @@ push_call("replacelist",base);
             push_symbol(base+6);//type
             number(6);
             eqeq();
+            cmp_3440:;
             if(!flag()) goto if_39_6;
                 line(379);
                 push_symbol(base+2);//rlist
@@ -1356,6 +1395,7 @@ push_call("glue",base);
         idxr();
         push_symbol(base+2);//gl
         eqeq();
+        cmp_3610:;
         if(!flag()) goto if_42_1;
             line(406);
             line(402);
@@ -1513,6 +1553,7 @@ push_call("match_list",base);
         add();
         push_symbol(base+5);//lentok
         lteq();
+        cmp_4007:;
         if(!flag()) goto lab_45_2;
             line(460);
             line(448);
@@ -1523,6 +1564,7 @@ push_call("match_list",base);
             idxr();
             binary(",");
             eqeq();
+            cmp_4030:;
             if(!flag()) goto if_46_1;
                 line(450);
                 push_symbol(base+3);//k
@@ -1542,6 +1584,7 @@ push_call("match_list",base);
             _clp_xtxlegal(3);
             assign(base+4);//i
             lt();
+            cmp_4056:;
             if(!flag()) goto if_46_2;
                 line(453);
                 push_symbol(base+3);//k
@@ -1561,6 +1604,7 @@ push_call("match_list",base);
             _clp_xtxlegal(2);
             assign(base+4);//i
             lt();
+            cmp_4119:;
             if(!flag()) goto if_46_3;
                 line(456);
                 push_symbol(base+3);//k
@@ -1591,6 +1635,7 @@ push_call("match_list",base);
         add();
         push_symbol(base+5);//lentok
         lteq();
+        cmp_4213:;
         if(!flag()) goto lab_47_2;
             line(482);
             line(467);
@@ -1601,6 +1646,7 @@ push_call("match_list",base);
             idxr();
             push_symbol(base+2);//nexttok
             eqeq();
+            cmp_4236:;
             if(!flag()) goto if_48_1;
                 line(469);
                 push_symbol(base+3);//k
@@ -1615,6 +1661,7 @@ push_call("match_list",base);
             idxr();
             binary(",");
             eqeq();
+            cmp_4268:;
             if(!flag()) goto if_48_2;
                 line(472);
                 push_symbol(base+3);//k
@@ -1634,6 +1681,7 @@ push_call("match_list",base);
             _clp_xtxlegal(3);
             assign(base+4);//i
             lt();
+            cmp_4294:;
             if(!flag()) goto if_48_3;
                 line(475);
                 push_symbol(base+3);//k
@@ -1652,6 +1700,7 @@ push_call("match_list",base);
             _clp_xtxlegal(3);
             assign(base+4);//i
             lt();
+            cmp_4354:;
             if(!flag()) goto if_48_4;
                 line(478);
                 push_symbol(base+3);//k
@@ -1698,6 +1747,7 @@ push_call("match_restricted",base);
     push_symbol(base+0);//tokinp
     push(&NIL);
     neeq();
+    cmp_4490:;
     if(!flag()) goto if_49_1;
         line(495);
         push_symbol(base+1);//tokrul
@@ -1752,6 +1802,7 @@ push_call("match_extended",base);
     _clp_len(1);
     push_symbol(base+1);//n
     lt();
+    cmp_4644:;
     if(!flag()) goto if_51_1;
         line(510);
         push(&ZERO);
@@ -1859,6 +1910,7 @@ push_call("result_dumbstr",base);
     push_symbol(base+1);//match
     push(&NIL);
     eqeq();
+    cmp_4888:;
     if(flag()){
     binary("");
     }else{
@@ -1921,6 +1973,7 @@ push_call("result_stringify",base);
     push_symbol(base+1);//match
     push(&NIL);
     eqeq();
+    cmp_5092:;
     if(!flag()) goto if_53_1;
         line(553);
         push(&NIL);
@@ -2021,12 +2074,14 @@ push_call("result_stringify",base);
         push_symbol(base+9);//token
         binary(",");
         eqeq();
+        cmp_5330:;
         if(!flag()){
         push(&FALSE);
         }else{
         push_symbol(base+11);//par
         push(&ZERO);
         eqeq();
+        cmp_5337:;
         }
         if(!flag()) goto if_56_1;
             line(576);
@@ -2047,6 +2102,7 @@ push_call("result_stringify",base);
         binary("\"");
         push_symbol(base+3);//left
         eqeq();
+        cmp_5389:;
         }
         if(!flag()) goto if_57_1;
             line(580);
@@ -2066,6 +2122,7 @@ push_call("result_stringify",base);
         binary("'");
         push_symbol(base+3);//left
         eqeq();
+        cmp_5427:;
         }
         if(!flag()) goto if_57_2;
             line(582);
@@ -2098,6 +2155,7 @@ push_call("result_stringify",base);
     push_symbol(base+15);//ls
     push(&ZERO);
     gt();
+    cmp_5501:;
     if(flag()){
     push_symbol(base+12);//sep
     idxr0(1);
@@ -2112,6 +2170,7 @@ push_call("result_stringify",base);
     push_symbol(base+13);//il
     push_symbol(base+14);//ir
     lteq();
+    cmp_5531:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -2159,6 +2218,7 @@ push_call("result_stringify",base);
     push_symbol(base+15);//ls
     push(&ZERO);
     gt();
+    cmp_5656:;
     if(!flag()) goto if_59_1;
         line(607);
         {
@@ -2190,6 +2250,7 @@ push_call("result_stringify",base);
             push_symbol(base+13);//il
             push_symbol(base+14);//ir
             lteq();
+            cmp_5724:;
             if(!flag()){
             push(&FALSE);
             }else{
@@ -2258,6 +2319,7 @@ push_call("result_stringify",base);
         push_symbol(base+13);//il
         push_symbol(base+14);//ir
         lteq();
+        cmp_5883:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -2324,6 +2386,7 @@ push_call("result_logify",base);
     push_symbol(base+1);//match
     push(&NIL);
     eqeq();
+    cmp_6055:;
     if(flag()){
     binary(".F.");
     }else{
@@ -2421,6 +2484,7 @@ push_call("nexttoken",base);
     assign(base+1);//n
     push_symbol(base+3);//lr
     lteq();
+    cmp_6233:;
     if(!flag()) goto lab_63_2;
         line(641);
         push_symbol(base+0);//rule
@@ -2434,6 +2498,7 @@ push_call("nexttoken",base);
         _clp_valtype(1);
         string(L"L");
         neeq();
+        cmp_6270:;
         if(flag()){
         push(&TRUE);
         }else{

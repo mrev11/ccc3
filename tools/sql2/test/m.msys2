@@ -1,5 +1,0 @@
-#!/bin/bash
-( cd  testdata_lib      && m.msys2 )
-( cd  testdata_import   && m.msys2 )
-( cd  basicdemo         && m.msys2 )
-( cd  entitybrowse      && m.msys2 )

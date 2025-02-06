@@ -1,0 +1,18 @@
+
+OUT=out--c2obj-$1
+rm -f $TARGET $OUT
+mkdir -p $BUILD_OBJ
+
+if ! cc $(cat $CMPOPT) -o $TARGET -c $SOURCE 2>$OUT; then
+    quit 1
+fi
+rm -f $OUT
+
+if [ -n "$BUILD_CPP" ]; then
+    mkdir -p $BUILD_CPP
+    cp -pf $SOURCE $BUILD_CPP
+fi
+
+
+
+

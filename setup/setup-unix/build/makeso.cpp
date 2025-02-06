@@ -1,4 +1,4 @@
-//input: makeso.ppo (5.6.0)
+//input: ppo/makeso.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -109,6 +109,7 @@ push_call("makeso",base);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
+    cmp_286:;
     if(!flag()) goto if_2_1;
         line(42);
         string(L"");

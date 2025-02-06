@@ -2,29 +2,46 @@
 
 source make_verf 3
 
-( cd jt/jtlib               && m )
+#-------------------
+# tabobj
+#-------------------
+
+( cd tabobj/tbbtbtx && m )
+
+
+#-------------------
+# tools
+#-------------------
+
+( cd jt/jtlib               &&  m)
 
 ( cd tools/dbaseiii         && m )
 ( cd tools/dbfview          && m )
-( cd tools/ddict2           && m )
-( cd tools/dirsync          && m )
-( cd tools/list             && m )
 ( cd tools/pcre             && m )                                
 ( cd tools/setperm          && m )
 ( cd tools/sql2             && m )
+( cd tools/tdc2prgch        && m )
 ( cd tools/tdccmp           && m )
 ( cd tools/tran2cpp         && m )
-( cd tools/webapp           && m )                              
 ( cd tools/websrv           && m )
+( cd tools/xmlrpc           && m )
 ( cd tools/zgrep            && m )
 
 ( cd tutor/dtree            && m )
 ( cd tutor/fpath            && m )
 ( cd tutor/oggedit          && m )
-( cd tutor/pm/$CCCUNAME     && m )
 ( cd tutor/rename           && m )
 
-if (javac -version 2>/dev/null); then
-( cd jt/jterminal           && m )
+
+if ! [ "$CCCUNAME" == msys2 ]; then
+    ( cd tools/webapp           && m )                              
 fi
 
+if fpath.exe jterminal.jar >/dev/null; then
+    : echo have jterminal
+elif which javac 1>/dev/null 2>/dev/null; then
+    : echo compile jterminal
+    (cd jt/jterminal && m)
+else
+    : echo do not have java
+fi

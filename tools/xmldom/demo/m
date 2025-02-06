@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b  -d. -dutil  -bccc"$CCCVER"_xmldom
+cccapp.sh  -d. -dutil  -bccc"$CCCVER"_xmldom

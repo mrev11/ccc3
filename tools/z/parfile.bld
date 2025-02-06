@@ -5,7 +5,7 @@
 -xz 
 -xzhist 
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME) 
+BUILD_EXE=$(CCCDIR)/usr/bin
 BUILD_LIBDIR=$(CCCDIR)/usr/lib/$(CCCBIN)
 
 #'BUILD_SHR=static'

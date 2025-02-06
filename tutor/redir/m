@@ -1,3 +1,3 @@
 #!/bin/bash
-bapp_unix_.b -d. -dunix
+cccapp.sh -d. -dunix
 

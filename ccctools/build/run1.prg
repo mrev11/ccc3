@@ -33,13 +33,12 @@ local runtmp,out
         runtmp:="log-runtmp"+alltrim(str(++count))
         thread_mutex_unlock(mutex_out)
 
-        if( "msys2"$buildenv_bat() )
-            //? "BASH",cmd;?
-            bash(cmd+" >"+runtmp)
-        else
-            //? "RUN",cmd;?
+        #ifdef _UNIX_
             run(cmd+" >"+runtmp)
-        end
+        #else
+            // windowson is bash
+            bash(cmd+" >"+runtmp)
+        #endif
 
         out:=memoread(runtmp)
         ferase(runtmp)

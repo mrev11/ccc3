@@ -1,0 +1,13 @@
+#!/bin/bash
+echo -n C2OBJ.BAT $1 $2 # $1=basename, $2=path, $3="dep1 dep2 dep3..."
+#set -x
+
+SOURCE=$2/$1.c
+DEPEND=${3}
+TARGET=$BUILD_OBJ/$1.obj
+
+. ${BUILD_BAT}/def_quit
+. ${BUILD_BAT}/opt_c
+. ${BUILD_BAT}/cache_search
+. ${BUILD_BAT}/compile_c
+. ${BUILD_BAT}/cache_store

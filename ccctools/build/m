@@ -1,21 +1,4 @@
 #!/bin/bash
+cccapp.sh "BUILD_SHR=static"
+mv build.exe $CCCDIR/usr/bin
 
-#export BUILD_DBG=on
-
-if [[ $(uname) =~ MSYS ]];then
-    echo Not usable in $(uname)
-    exit 1
-fi
-
-
-# FreeBSD-n nem tudja magat felulirni,
-# ezert idehozunk belole egy peldanyt.
-
-EXE=$CCCDIR/usr/bin/$CCCUNAME
-cp -p $EXE/build.exe .
-export PATH=.:$PATH
-
-bapp_unix_.b  "BUILD_EXE=$EXE" "BUILD_SHR=static"
-
-rm build.exe 2>/dev/null
-#ldd `which build.exe`

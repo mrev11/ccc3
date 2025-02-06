@@ -22,7 +22,12 @@ if ! lemon.exe -x; then
 fi    
 
 
-( cd setup/setup-unix && m ) 
+if [[ $CCCUNAME == msys2 ]];then
+  ( cd setup/setup-windows && m ) 
+else
+  ( cd setup/setup-unix && m ) 
+fi
+
 if ! build.exe -v; then
     echo "build.exe not installed"
     echo "initial setup failed"
@@ -62,18 +67,26 @@ fi
 ( cd ccctools/build     && m )
 ( cd ccctools/prg2ppo   && m )
 ( cd ccctools/removecr  && m )
-( cd ccctools/mklink    && m )
-( cd ccctools/elfapp    && m )
+
+if [ "$CCCUNAME" == msys2 ]; then
+    :
+else
+    ( cd ccctools/elfapp    && m )
+    ( cd ccctools/mklink    && m )
+fi
 
 #-------------------
 # terminal
 #-------------------
 
-if test -f /usr/include/X11/Xlib.h; then 
-    ( cd terminal/unix          && m )
+if [ "$CCCUNAME" == msys2 ]; then
+    ( cd terminal/windows && m )
+    ( cd terminal/windows-cterm && m )
+else
+    ( cd terminal/unix && m )
+    ( cd terminal/unix-cterm && m )
 fi
-#( cd terminal/unix-ncterm   && m )
-( cd terminal/unix-cterm    && m )
+
 ( cd terminal/sslforw       && m )
 
 if test -f /usr/include/gtk-2.0/gtk/gtk.h; then
@@ -84,7 +97,6 @@ if test -f /usr/include/gtk-3.0/gtk/gtk.h; then
     ( cd terminal/gtk3 && m )
 fi
 
-#( cd terminal/qt5  && m )
 
 #-------------------
 # msk2say
@@ -98,21 +110,15 @@ fi
 #-------------------
 
 ( cd tools/crypto           && m )
+( cd tools/dirsync          && m )
+( cd tools/list             && m )
 ( cd tools/pcre2            && m )                               
 ( cd tools/regex            && m )
 ( cd tools/socket           && m )
-( cd tools/tdc2prgch        && m )
 ( cd tools/textview         && m )                            
 ( cd tools/xmldom           && m )
-( cd tools/xmlrpc           && m )
 ( cd tools/xstart           && m )
 ( cd tools/z                && m )
 ( cd tools/zlib             && m )
 
-
-#-------------------
-# tabobj
-#-------------------
-
-( cd tabobj/tbbtbtx && m )
 

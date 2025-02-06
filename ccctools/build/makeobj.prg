@@ -27,7 +27,7 @@ local depend:=deplist[2]
 local objdir:=buildenv_obj() 
 local ttarget,tdepend
 local update:=.f.,torun
-local n,p1,p2
+local n,p1,p2,p3
 
     if( fext(target)==".obj" )
         target:=objdir+dirsep()+fname(target)+fext(target)
@@ -63,11 +63,15 @@ local n,p1,p2
             errorlevel(1)
             quit 
         end
-    
+
         p1:=fname(deplist[1])
         p2:=fpath0(deplist[2]); p2:=if(empty(p2),".",p2)
+        p3:=deplist[2]
+        for n:=3 to len(deplist)
+            p3+=" "+deplist[n]
+        next
     
-        run1(torun+" "+p1+" "+p2)
+        run1(torun+" "+p1+" "+p2+" '"+p3+"'" )  // p3 egyben
     end
 
  

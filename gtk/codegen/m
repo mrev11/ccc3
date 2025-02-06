@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -d. -ddd -bccc3_btbtx
+cccapp.sh -d. -ddd -bccc3_btbtx

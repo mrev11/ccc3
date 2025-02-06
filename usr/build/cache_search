@@ -1,0 +1,21 @@
+
+
+if [ -z "$BUILD_CACHE" ]; then
+    BUILD_CACHE=~/.cache/build
+    mkdir -p $BUILD_CACHE
+fi
+
+
+if [ -d "$BUILD_CACHE" ] && [ -n "$DEPEND" ]; then
+
+    sum=$(cat $CMPOPT $DEPEND | sha256sum)
+    sum=${sum:0:64}
+    if [ -f $BUILD_CACHE/$sum ]; then
+        #object exists in cache
+        mkdir -p ${TARGET%/*}
+        cp $BUILD_CACHE/$sum $TARGET
+        echo " (cached)"
+        quit 0
+    fi
+fi
+

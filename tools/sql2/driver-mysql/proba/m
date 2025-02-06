@@ -1,5 +1,5 @@
 #!/bin/bash
 #mkentitylib.exe --prgdir code_generated 
 
-bapp_unix_.b -d.  -bccc"$CCCVER"_sql2_mysql
+cccapp.sh -d.  -bccc"$CCCVER"_sql2_mysql
 

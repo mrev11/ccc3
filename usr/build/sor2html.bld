@@ -1,0 +1,7 @@
+#!/bin/bash
+echo MSK2HTML.BAT $1
+#set -x
+
+msk2html.exe $1
+
+quit 0

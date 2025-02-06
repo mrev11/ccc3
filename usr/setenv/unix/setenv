@@ -1,24 +1,26 @@
 #!/bin/bash
 
 cp -p bashrcx  ~/
+cp -p envccc   ~/
 
-if   [[ $(uname) == Linux   ]]; then 
-    cp -p envccc   ~/
-elif [[ $(uname) == FreeBSD ]]; then 
-    cat envccc | sed s/CCCBIN=lin/CCCBIN=fre/ | sed s/CCCUNAME=linux/CCCUNAME=freebsd/ >~/envccc
-elif [[ $(uname) == NetBSD  ]]; then 
-    cat envccc | sed s/CCCBIN=lin/CCCBIN=net/ | sed s/CCCUNAME=linux/CCCUNAME=netbsd/  >~/envccc
-elif [[ $(uname) == SunOS   ]]; then 
-    cat envccc | sed s/CCCBIN=lin/CCCBIN=sol/ | sed s/CCCUNAME=linux/CCCUNAME=solaris/ >~/envccc
+if   [[ $(uname) == Linux   ]]; then
+    :
+elif [[ $(uname) == FreeBSD ]]; then
+    :
+elif [[ $(uname) == NetBSD  ]]; then
+    mkdir -p ~/bin
+    cp -p sha256sum ~/bin
+elif [[ $(uname) == SunOS   ]]; then
+    :
 else
-    echo unknown OS
+    echo unknown OS: $(uname)
     exit 1
 fi
 
 mkdir -p ~/.temp
 mkdir -p ~/.z
 
-if ! (grep '. ~/bashrcx' ~/.bashrc); then
+if ! (grep '. ~/bashrcx' ~/.bashrc 1>/dev/null 2>/dev/null); then
     echo >>~/.bashrc
     echo '. ~/bashrcx' >> ~/.bashrc
 fi

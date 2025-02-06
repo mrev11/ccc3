@@ -4,4 +4,4 @@
 -bccc$(CCCVER)_xmldom
 -bccc$(CCCVER)_btbtx.lib
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin

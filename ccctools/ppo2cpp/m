@@ -1,15 +1,3 @@
 #!/bin/bash
-#set -x
 
-if [[ $(uname) =~ MSYS ]]; then
-    echo Not usable in $(uname)
-    exit 1
-fi
-
-#cd proto && m && cd ..
-#rm -f objlin/ppo2cpp.obj
-#rm -f objlin/*.obj
-#proto-codegen
-#parserinfo
-
-bapp_unix0.b -mppo2cpp  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME"
+c++app.sh -mppo2cpp  BUILD_EXE=$CCCDIR/usr/bin

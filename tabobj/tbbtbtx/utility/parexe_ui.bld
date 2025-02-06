@@ -12,5 +12,5 @@
 -bccc${CCCVER}_btbtx
 -bccc${CCCVER}_btbtxui
 
-BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}
+BUILD_EXE=${CCCDIR}/usr/bin
 

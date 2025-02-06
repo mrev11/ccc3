@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -icxx  BUILD_EXE=${CCCDIR}/usr/bin/${CCCUNAME}
+cccapp.sh -icxx  BUILD_EXE=${CCCDIR}/usr/bin

@@ -6,5 +6,5 @@
 -bccc$(CCCVER).lib
 -bccc$(CCCVER)_uic.lib
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin
 

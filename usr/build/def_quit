@@ -1,0 +1,29 @@
+
+
+quit()
+{
+    if [ "$1" == "1" ]; then
+        touch error
+        ERROR="$(cat $OUT)"
+        echo "$ERROR" >${OUT//out--/error--}
+
+        CHBEG=$(printf "%x" "'${ERROR:0:1}")
+        CHEND=$(printf "%x" "'${ERROR: -1}")
+
+        if [ "$CHBEG" != "a" ]; then
+            echo
+        fi
+
+        echo -n "$ERROR" 
+
+        if [ "$CHEND" != "a" ]; then
+            echo
+        fi
+    fi
+
+    echo ----------------------------------------------------------------
+
+    rm -f $OUT
+    exit $1
+}
+

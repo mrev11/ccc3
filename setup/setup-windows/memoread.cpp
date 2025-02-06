@@ -1,10 +1,10 @@
-//input: memoread.ppo (5.6.0)
+//input: ppo/memoread.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
+extern void _clp___maxbinlen(int argno);
 extern void _clp___maxstrlen(int argno);
 extern void _clp_bin2str(int argno);
-extern void _clp_empty(int argno);
 extern void _clp_fclose(int argno);
 extern void _clp_fcreate(int argno);
 extern void _clp_fopen(int argno);
@@ -27,6 +27,14 @@ while(stack<base+5)PUSHNIL();
 argno=2;
 push_call("memoread",base);
 //
+    if( ((base+1)->type==TYPE_NIL)||
+       (((base+1)->type==TYPE_REF)&&
+        ((base+1)->data.vref->value.type==TYPE_NIL))){
+    line(24);
+    push(&FALSE);
+    assign(base+1);//binopt
+    pop();
+    }
     line(31);
     binaryx("");
     assign(base+4);//buffer
@@ -39,6 +47,7 @@ push_call("memoread",base);
     _clp_fopen(2);
     assign(base+2);//fd
     lteq();
+    cmp_54:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -49,13 +58,20 @@ push_call("memoread",base);
     _clp_fseek(3);
     assign(base+3);//len
     lt();
+    cmp_84:;
     }
     if(!flag()){
     push(&FALSE);
     }else{
     push_symbol(base+3);//len
+    push_symbol(base+1);//binopt
+    if(flag()){
+    _clp___maxbinlen(0);
+    }else{
     _clp___maxstrlen(0);
+    }
     lt();
+    cmp_121:;
     }
     if(!flag()) goto if_1_1;
         line(37);
@@ -77,6 +93,7 @@ push_call("memoread",base);
         push_symbol(base+3);//len
         _clp_fread(3);
         gt();
+        cmp_202:;
         if(!flag()) goto if_2_1;
             line(40);
             binaryx("");
@@ -93,7 +110,7 @@ push_call("memoread",base);
     line(46);
     line(44);
     push_symbol(base+1);//binopt
-    _clp_empty(1);
+    topnot();
     if(!flag()) goto if_3_1;
         line(45);
         push_symbol(base+4);//buffer
@@ -130,6 +147,7 @@ push_call("memowrit",base);
     _clp_fcreate(1);
     assign(base+3);//fd
     lteq();
+    cmp_365:;
     if(!flag()) goto if_4_1;
         line(55);
         line(53);
@@ -137,6 +155,7 @@ push_call("memowrit",base);
         _clp_valtype(1);
         string(L"C");
         eqeq();
+        cmp_403:;
         if(!flag()) goto if_5_1;
             line(54);
             push_symbol(base+1);//data
@@ -161,6 +180,7 @@ push_call("memowrit",base);
         push_symbol(base+1);//data
         _clp_len(1);
         eqeq();
+        cmp_483:;
         if(!flag()) goto if_6_1;
             line(59);
             push(&TRUE);

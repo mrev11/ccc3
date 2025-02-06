@@ -1,4 +1,4 @@
 #!/bin/bash
-bapp_unix0.b -smalloc_dbg
+c++app.sh -smalloc_dbg
 cp  -pf obj"$CCCBIN"/*.so   $CCCDIR/usr/lib/$CCCBIN
 

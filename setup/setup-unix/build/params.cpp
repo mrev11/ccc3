@@ -1,4 +1,4 @@
-//input: params.ppo (5.6.0)
+//input: ppo/params.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -35,6 +35,7 @@ push_call("params",base);
     _clp_s_srcdir(0);
     push(&NIL);
     eqeq();
+    cmp_63:;
     if(flag()){
     string(L".");
     }else{
@@ -50,6 +51,7 @@ push_call("params",base);
     _clp_s_incdir(0);
     push(&NIL);
     eqeq();
+    cmp_101:;
     if(flag()){
     string(L"");
     }else{
@@ -111,6 +113,7 @@ push_call("params",base);
     _clp_s_libdir(0);
     push(&NIL);
     eqeq();
+    cmp_297:;
     if(flag()){
     string(L"");
     }else{
@@ -172,6 +175,7 @@ push_call("params",base);
     _clp_s_libfil(0);
     push(&NIL);
     eqeq();
+    cmp_493:;
     if(flag()){
     string(L"");
     }else{

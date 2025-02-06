@@ -1,4 +1,4 @@
-//input: directory.ppo (5.6.0)
+//input: ppo/directory.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -76,6 +76,7 @@ push_call("directory",base);
     push_symbol(base+1);//attr
     push(&NIL);
     neeq();
+    cmp_192:;
     if(!flag()) goto if_2_1;
         line(46);
         push_symbol(base+1);//attr
@@ -153,6 +154,7 @@ push_call("directory",base);
     push(&NIL);
     push_symbol(base+6);//fitem
     neeq();
+    cmp_372:;
     if(!flag()) goto lab_3_2;
         line(65);
         push_symbol(base+6);//fitem
@@ -228,6 +230,7 @@ push_call("directory",base);
             push_symbol(base+3);//dlist
             _clp_len(1);
             gteq();
+            cmp_523:;
             if(!flag()) goto if_5_1;
                 line(81);
                 push_symbol(base+3);//dlist

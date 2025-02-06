@@ -1,0 +1,27 @@
+#!/bin/bash
+echo MSK2WRO.BAT $1 $2
+#set -x
+
+SOURCE=$2/${1//.msk/}.msk
+TARGET=$2/${1//.msk/}.wro
+OUT=out--msk2wro-$1
+PGE=$2/${1//.msk/}.temp
+
+rm -f $TARGET $OUT $PGE
+
+. ${BUILD_BAT}/def_quit
+
+
+msk2pge -ur $SOURCE $PGE            2>&1 >>$OUT
+if [ -e  $2/$1.sor ]; then
+   pge2wro.exe -r $2/$1.sor $PGE    2>&1 >>$OUT
+else
+   pge2wro.exe              $PGE    2>&1 >>$OUT
+fi
+ERR=$(cat $OUT)
+if [ -n "$ERR" ]; then
+    quit 1
+fi
+rm -f $OUT $PGE
+
+quit 0

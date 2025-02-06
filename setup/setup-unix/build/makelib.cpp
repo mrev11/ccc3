@@ -1,4 +1,4 @@
-//input: makelib.ppo (5.6.0)
+//input: ppo/makelib.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -108,6 +108,7 @@ push_call("makelib",base);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
+    cmp_294:;
     if(!flag()) goto if_2_1;
         line(45);
         string(L"");
@@ -187,7 +188,7 @@ push_call("makelib",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(94);
+    line(87);
     line(63);
     push_symbol(base+6);//update
     if(!flag()) goto if_6_1;
@@ -222,17 +223,17 @@ push_call("makelib",base);
         goto lab_7_0;
         lab_7_2:;
         }
-        line(88);
+        line(81);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
-        line(93);
-        line(90);
+        line(86);
+        line(83);
         push_symbol(base+10);//libdir
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_8_1;
-            line(91);
+            line(84);
             push_symbol(base+10);//libdir
             _clp_dirsep(0);
             add();
@@ -242,7 +243,7 @@ push_call("makelib",base);
             add();
             _clp_ferase(1);
             pop();
-            line(92);
+            line(85);
             push_symbol(base+2);//target
             push_symbol(base+10);//libdir
             _clp_dirsep(0);
@@ -257,7 +258,7 @@ push_call("makelib",base);
         if_8_0:;
     if_6_1:
     if_6_0:;
-    line(97);
+    line(90);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

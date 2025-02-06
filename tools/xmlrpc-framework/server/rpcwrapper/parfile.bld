@@ -6,6 +6,6 @@
 -bccc$(CCCVER)_socket
 -bccc$(CCCVER)_sslsocket
 
-#BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+#BUILD_EXE=$(CCCDIR)/usr/bin
 BUILD_EXE=..
 

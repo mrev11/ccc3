@@ -1,7 +1,7 @@
 #!/bin/bash
 # set -x
 
-bapp_unix_.b   @parfile.bld
+cccapp.sh   @parfile.bld
 
 cp -pf *.ch  $CCCDIR/usr/include
 

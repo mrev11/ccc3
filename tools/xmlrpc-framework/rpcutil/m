@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix0.b -lrpcutil  -d. -ddd 
+c++app.sh -lrpcutil  -d. -ddd 

@@ -1,10 +1,11 @@
 #!/bin/bash
 #export CCC_STRING_TAB=STRTAB
 
-bapp_unix0.b @par-unix.bld  
-bapp_unix0.b @par-unixui.bld  
+c++app.sh @par-unix.bld  
+c++app.sh @par-unixui.bld  
  
 ( cd utility && m )
-( cd utility/btpasswd && m )
+#( cd utility/btpasswd && m )
+#( cd utility/btpasswd_windll && m )
 ( cd utility/dbf2bt && m )
  

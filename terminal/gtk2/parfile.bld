@@ -7,4 +7,4 @@
 
 BUILD_CFG=obj$(CCCBIN)/gtk-cflags
 BUILD_LIBX=obj$(CCCBIN)/gtk-libs
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin

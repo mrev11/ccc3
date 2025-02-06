@@ -1,2 +1,0 @@
-#!/bin/bash
-bapp_win_.msys2 @gtk-win.bld -bccc3_gtk

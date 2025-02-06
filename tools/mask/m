@@ -1,5 +1,5 @@
 #!/bin/bash
-bapp_unixc.b    -xmask -xpage  @parfile.bld
-bapp_unix_.b    -xmsk2say -xmsk2pge -xpge2wro -xpge2out  @parfile.bld
+cccapp_term.sh    -xmask -xpage  @parfile.bld
+cccapp.sh    -xmsk2say -xmsk2pge -xpge2wro -xpge2out  @parfile.bld
 
 

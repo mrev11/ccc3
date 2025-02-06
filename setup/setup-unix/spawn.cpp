@@ -1,4 +1,4 @@
-//input: spawn.ppo (5.6.0)
+//input: ppo/spawn.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -56,6 +56,7 @@ push_call("spawn",base);
     _clp_len(1);
     number(2);
     lt();
+    cmp_140:;
     if(!flag()) goto if_1_1;
         line(53);
         _clp_errornew(0);
@@ -89,6 +90,7 @@ push_call("spawn",base);
     _clp_valtype(1);
     string(L"L");
     eqeq();
+    cmp_244:;
     if(!flag()) goto if_2_1;
         line(61);
         push(&FALSE);
@@ -107,6 +109,7 @@ push_call("spawn",base);
     _clp_valtype(1);
     string(L"N");
     eqeq();
+    cmp_298:;
     if(!flag()) goto if_2_2;
         line(64);
         push(&ZERO);
@@ -115,6 +118,7 @@ push_call("spawn",base);
         number(2);
         _clp_numand(2);
         neeq();
+        cmp_314:;
         assign(base+argno+5);//path_flag
         pop();
         line(65);
@@ -124,6 +128,7 @@ push_call("spawn",base);
         push(&ONE);
         _clp_numand(2);
         neeq();
+        cmp_352:;
         assign(base+argno+6);//wait_flag
         pop();
     goto if_2_0;
@@ -185,6 +190,7 @@ push_call("spawn",base);
         _clp_valtype(1);
         string(L"C");
         eqeq();
+        cmp_546:;
         if(!flag()) goto if_4_1;
             line(79);
             push_symbol(base+argno+0);//arg
@@ -204,6 +210,7 @@ push_call("spawn",base);
         _clp_valtype(1);
         string(L"A");
         eqeq();
+        cmp_603:;
         if(!flag()) goto if_4_2;
             line(81);
             push_symbol(base+argno+0);//arg
@@ -242,6 +249,7 @@ push_call("spawn",base);
                 _clp_valtype(1);
                 string(L"C");
                 eqeq();
+                cmp_706:;
                 if(!flag()) goto if_6_1;
                     line(85);
                     push_symbol(base+argno+2);//x
@@ -291,6 +299,7 @@ push_call("spawn",base);
     push_symbol(base+argno+7);//pid
     push(&ZERO);
     eqeq();
+    cmp_806:;
     if(!flag()) goto if_7_1;
         line(97);
         push_symbol(base+argno+8);//execblk

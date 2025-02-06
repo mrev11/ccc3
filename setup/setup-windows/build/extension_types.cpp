@@ -1,4 +1,4 @@
-//input: extension_types.ppo (5.6.0)
+//input: ppo/extension_types.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -56,6 +56,7 @@ push_call("extension_types",base);
         push_symbol(base+1);//r2
         string(L".obj");
         eqeq();
+        cmp_144:;
         if(!flag()) goto if_2_1;
             line(36);
             _clp_s_primary(0);

@@ -1,4 +1,4 @@
-//input: like.ppo (5.6.0)
+//input: ppo/like.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -26,6 +26,7 @@ push_call("like",base);
     push_symbol(base+5);//type
     string(L"X");
     eqeq();
+    cmp_69:;
     if(flag()){
     binary("?");
     }else{
@@ -37,6 +38,7 @@ push_call("like",base);
     push_symbol(base+5);//type
     string(L"X");
     eqeq();
+    cmp_94:;
     if(flag()){
     binary("*");
     }else{
@@ -63,6 +65,7 @@ push_call("like",base);
         _clp_substr(3);
         push_symbol(base+6);//qm
         eqeq();
+        cmp_158:;
         if(!flag()) goto if_2_1;
         goto if_2_0;
         if_2_1:
@@ -73,6 +76,7 @@ push_call("like",base);
         _clp_substr(3);
         push_symbol(base+7);//st
         eqeq();
+        cmp_195:;
         if(!flag()) goto if_2_2;
             line(36);
             push_symbol(base+0);//minta
@@ -87,6 +91,7 @@ push_call("like",base);
             _clp_len(1);
             push(&ZERO);
             eqeq();
+            cmp_246:;
             if(!flag()) goto if_3_1;
                 line(39);
                 push(&TRUE);
@@ -142,6 +147,7 @@ push_call("like",base);
         push(&ONE);
         _clp_substr(3);
         eqeq();
+        cmp_387:;
         if(!flag()) goto if_2_3;
         goto if_2_0;
         if_2_3:
@@ -168,6 +174,7 @@ push_call("like",base);
     push_symbol(base+0);//minta
     _clp_len(1);
     gt();
+    cmp_455:;
     if(!flag()) goto if_6_1;
         line(58);
         push(&FALSE);
@@ -180,6 +187,7 @@ push_call("like",base);
     push_symbol(base+0);//minta
     _clp_len(1);
     eqeq();
+    cmp_494:;
     if(!flag()) goto if_6_2;
         line(60);
         push(&TRUE);
@@ -207,6 +215,7 @@ push_call("like",base);
         _clp_substr(3);
         push_symbol(base+7);//st
         eqeq();
+        cmp_586:;
         topnot();
         if(!flag()) goto if_8_1;
             line(68);

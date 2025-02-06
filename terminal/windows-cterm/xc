@@ -1,0 +1,2 @@
+#!/bin/bash
+CCCTERM_CONNECT=term://console.exe z.exe console.cpp

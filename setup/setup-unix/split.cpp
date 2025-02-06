@@ -1,4 +1,4 @@
-//input: split.ppo (5.6.0)
+//input: ppo/split.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -33,6 +33,7 @@ push_call("split",base);
     _clp_valtype(1);
     string(L"X");
     eqeq();
+    cmp_36:;
     if(flag()){
     binary(",");
     }else{
@@ -58,6 +59,7 @@ push_call("split",base);
     _clp_at(3);
     assign(base+4);//i
     lt();
+    cmp_84:;
     if(!flag()) goto lab_1_2;
         line(26);
         push_symbol(base+2);//wlist
@@ -81,6 +83,7 @@ push_call("split",base);
     _clp_len(1);
     push_symbol(base+3);//n
     gteq();
+    cmp_191:;
     if(!flag()) goto if_2_1;
         line(34);
         push_symbol(base+2);//wlist

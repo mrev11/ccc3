@@ -73,15 +73,8 @@ local objlist
 
             objlist:=""
             for n:=1 to len(object)
-                if( "objmng"$objdir )
-                    objlist+=object[n]+".obj"+endofline()
-                elseif( "objmsc"$objdir )
-                    objlist+=object[n]+".obj"+endofline()
-                elseif( "objbor"$objdir )
-                    objlist+="+"+object[n]+".obj &"+endofline()
-                end
+                objlist+=object[n]+".obj"+endofline()
             next
-            memowrit(objdir+dirsep()+"objects",objlist)
             memowrit(objdir+dirsep()+"objects-"+libnam,objlist)
         #endif
 

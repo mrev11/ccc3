@@ -1,0 +1,5 @@
+#!/bin/bash
+#hol van beallitva set -x
+
+grep -E '^set' * 2>/dev/null
+sleep 1

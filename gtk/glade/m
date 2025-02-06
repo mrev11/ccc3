@@ -1,6 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -sccc3_glade @parfile.bld 
-
-cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN
-cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
-
+cccapp.sh   @parfile.bld 

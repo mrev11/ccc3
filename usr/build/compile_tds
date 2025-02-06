@@ -1,0 +1,12 @@
+
+OUT=out--tds2prg-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+if ! tds2prg.exe  $SOURCE  >$OUT; then
+    quit 1
+fi
+rm -f $OUT
+
+mv $2/$1.prg  ppo/$1.prg
+SOURCE=ppo/$1.prg

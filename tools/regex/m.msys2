@@ -1,6 +1,0 @@
-#!/bin/bash
-bapp_win_.msys2 -lccc"$CCCVER"_regex -bpcreposix
-
-cp -pf obj$CCCBIN/*.lib $CCCDIR/usr/lib/$CCCBIN
-cp -pf *.ch  $CCCDIR/usr/include
-

@@ -1,4 +1,4 @@
-//input: alert.ppo (5.6.0)
+//input: ppo/alert.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -60,6 +60,7 @@ push_call("alertblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_146:;
     if(!flag()) goto if_1_1;
         line(32);
         push_symbol(base+0);//blk
@@ -110,6 +111,7 @@ push_call("default_alert",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_233:;
     if(!flag()) goto if_2_1;
         line(42);
         push_symbol(base+0);//txt

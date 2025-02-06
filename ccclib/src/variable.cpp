@@ -40,6 +40,7 @@ static int gc_total=0;     // teljes gyűjtés be (generációs algoritmus ki)
 static int gc_agelimit=0;  // öreg egy objektum, ha age>gc_agelimit
 static int gc_gener=0;     // ennyi generációs gyűjtést csinál gc_total nélkül
 static int gc_counter=0;   // a szemétgyűjtéseket számolja
+static int gc_maxoref=0;
 
 #define OLD_OREF(x) ((gc_total==0) && (oref[x].age>gc_agelimit))
 
@@ -510,8 +511,9 @@ void vartab_rebuild(void)
         {
             fprintf(stderr, "%9d",age_histo_after[i]);
         }
+        gc_maxoref=max(gc_maxoref,OREF_SIZE-ofree);
         fprintf(stderr, "%12s",decimal(age_histo_after[i]));
-        fprintf(stderr,"\nofree=%s vfree=%s",decimal(ofree),decimal(vfree));
+        fprintf(stderr,"\nofree=%s vfree=%s maxoref=%s",decimal(ofree),decimal(vfree),decimal(gc_maxoref));
         fprintf(stderr,"\n");
         fflush(0);
     }

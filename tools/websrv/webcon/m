@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix0.b @parfile-unix.bld
+c++app.sh @parfile-unix.bld

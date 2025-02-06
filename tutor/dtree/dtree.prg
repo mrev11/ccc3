@@ -31,6 +31,8 @@ function main()
 
 local arg:=argv(), n
 
+    set dosconv off
+
     aadd(dirstack,dirsep()+curdir())
     
     for n:=1 to len(arg)

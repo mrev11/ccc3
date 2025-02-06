@@ -1,6 +1,0 @@
-#!/bin/bash
-
-bapp_win_.msys2 @parlib.bld
-bapp_win_.msys2 @parexe.bld
-bapp_winc.msys2 @parexe_ui.bld
-

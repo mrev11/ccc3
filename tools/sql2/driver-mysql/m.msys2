@@ -1,7 +1,0 @@
-#!/bin/bash
-bapp_win0.msys2  -lccc"$CCCVER"_sql2_mysql
-
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-cp -pf sql.ch  $CCCDIR/usr/include
-
- 

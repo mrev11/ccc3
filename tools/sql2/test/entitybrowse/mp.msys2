@@ -1,5 +1,0 @@
-#!/bin/bash
-mkdir exe-pg 2>/dev/null
-
-bapp_win_.msys2  @parfile-p.bld -bssl -bcrypto
-

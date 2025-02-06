@@ -1,4 +1,4 @@
-//input: deferror.ppo (5.6.0)
+//input: ppo/deferror.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -168,6 +168,7 @@ push_call("quitblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_196:;
     if(!flag()) goto if_1_1;
         line(37);
         push_symbol(base+0);//blk
@@ -261,6 +262,7 @@ push_call("signalblock",base);
     push_symbol(base+0);//blk
     push(&NIL);
     neeq();
+    cmp_476:;
     if(!flag()) goto if_2_1;
         line(60);
         push_symbol(base+0);//blk
@@ -349,6 +351,7 @@ push_call("errorblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_718:;
     if(!flag()) goto if_3_1;
         line(82);
         push_symbol(base+0);//blk
@@ -395,6 +398,7 @@ push_call("deferror",base);
     _clp_valtype(1);
     string(L"O");
     eqeq();
+    cmp_856:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -408,6 +412,7 @@ push_call("deferror",base);
     push_symbol(base+1);//alert
     push(&TRUE);
     eqeq();
+    cmp_882:;
     }
     if(!flag()) goto if_4_1;
         line(100);
@@ -557,6 +562,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Quit"));
         eqeq();
+        cmp_1364:;
         if(!flag()) goto if_13_1;
         goto if_13_0;
         if_13_1:
@@ -566,6 +572,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Retry"));
         eqeq();
+        cmp_1385:;
         if(!flag()) goto if_13_2;
             line(136);
             push(&TRUE);
@@ -578,6 +585,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Default"));
         eqeq();
+        cmp_1413:;
         if(!flag()) goto if_13_3;
             line(139);
             push(&FALSE);
@@ -596,6 +604,7 @@ push_call("deferror",base);
     _clp_valtype(1);
     string(L"O");
     eqeq();
+    cmp_1474:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -647,6 +656,7 @@ push_call("deferror",base);
         _clp_valtype(1);
         string(L"A");
         eqeq();
+        cmp_1660:;
         if(!flag()) goto if_17_1;
             line(159);
             string(nls_text(L"args:{"));
@@ -669,6 +679,7 @@ push_call("deferror",base);
                 push_symbol(base+2);//i
                 push(&ONE);
                 gt();
+                cmp_1712:;
                 if(!flag()) goto if_19_1;
                     line(162);
                     string(L", ");
@@ -906,6 +917,7 @@ push_call("breakblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_2544:;
     if(!flag()) goto if_30_1;
         line(228);
         push_symbol(base+0);//blk

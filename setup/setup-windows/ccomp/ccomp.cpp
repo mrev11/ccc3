@@ -1,4 +1,4 @@
-//input: ccomp.ppo (5.6.0)
+//input: ppo/ccomp.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -51,6 +51,7 @@ push_call("main",base);
         _clp_left(2);
         string(L"@");
         eqeq();
+        cmp_102:;
         if(!flag()) goto if_2_1;
             line(51);
             push_symbol(base+2);//arg

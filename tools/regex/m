@@ -1,7 +1,7 @@
 #!/bin/bash
 export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
-bapp_unix_.b -sccc"$CCCVER"_regex -bpcreposix
+cccapp.sh -sccc"$CCCVER"_regex -bpcreposix
 
 cp -pf *.ch  $CCCDIR/usr/include
 

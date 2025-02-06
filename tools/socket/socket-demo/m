@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc"$CCCVER"_socket
+cccapp.sh -bccc"$CCCVER"_socket

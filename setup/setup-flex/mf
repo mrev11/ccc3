@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -f `which flex.exe`
-. m
-
-flex.exe --version

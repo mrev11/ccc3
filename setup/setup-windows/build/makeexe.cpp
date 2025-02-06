@@ -1,4 +1,4 @@
-//input: makeexe.ppo (5.6.0)
+//input: ppo/makeexe.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -105,6 +105,7 @@ push_call("makeexe",base);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
+    cmp_284:;
     if(!flag()) goto if_2_1;
         line(44);
         string(L"");
@@ -143,6 +144,7 @@ push_call("makeexe",base);
         push_symbol(base+9);//n
         push(&ZERO);
         eqeq();
+        cmp_390:;
         if(!flag()) goto if_5_1;
             line(54);
             push_symbol(base+0);//exenam
@@ -210,6 +212,7 @@ push_call("makeexe",base);
         _clp_right(2);
         string(L".lib");
         eqeq();
+        cmp_550:;
         if(!flag()) goto if_7_1;
             line(65);
             _clp_s_libspec(0);
@@ -249,7 +252,7 @@ push_call("makeexe",base);
         pop();
     if_8_1:
     if_8_0:;
-    line(111);
+    line(103);
     line(74);
     push_symbol(base+6);//update
     if(!flag()) goto if_9_1;
@@ -265,7 +268,7 @@ push_call("makeexe",base);
         string(L"");
         assign(base+11);//objlist
         pop();
-        line(100);
+        line(93);
         {
         line(87);
         push(&ONE);
@@ -287,6 +290,7 @@ push_call("makeexe",base);
             push_symbol(base+9);//n
             push(&ZERO);
             eqeq();
+            cmp_738:;
             if(flag()){
             push_symbol(base+0);//exenam
             }else{
@@ -303,62 +307,14 @@ push_call("makeexe",base);
             add();
             assign(base+12);//xobj
             pop();
-            line(99);
-            line(93);
-            string(L"objmng");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_11_1;
-                line(94);
-                push_symbol(base+11);//objlist
-                push_symbol(base+12);//xobj
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            goto if_11_0;
-            if_11_1:
-            line(95);
-            string(L"objmsc");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_11_2;
-                line(96);
-                push_symbol(base+11);//objlist
-                push_symbol(base+12);//xobj
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            goto if_11_0;
-            if_11_2:
-            line(97);
-            string(L"objbor");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_11_3;
-                line(98);
-                push_symbol(base+11);//objlist
-                push_symbol(base+12);//xobj
-                push_symbol(base+9);//n
-                push_symbol(base+1);//object
-                _clp_len(1);
-                lt();
-                if(flag()){
-                string(L" + ");
-                }else{
-                string(L"");
-                }
-                add();
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            if_11_3:
-            if_11_0:;
+            line(92);
+            push_symbol(base+11);//objlist
+            push_symbol(base+12);//xobj
+            _clp_endofline(0);
+            add();
+            add();
+            assign(base+11);//objlist
+            pop();
         lab_10_1:
         push(&ONE);
         dup();
@@ -369,16 +325,7 @@ push_call("makeexe",base);
         goto lab_10_0;
         lab_10_2:;
         }
-        line(101);
-        push_symbol(base+8);//objdir
-        _clp_dirsep(0);
-        add();
-        string(L"objects");
-        add();
-        push_symbol(base+11);//objlist
-        _clp_memowrit(2);
-        pop();
-        line(102);
+        line(94);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -389,17 +336,17 @@ push_call("makeexe",base);
         push_symbol(base+11);//objlist
         _clp_memowrit(2);
         pop();
-        line(105);
+        line(97);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
-        line(110);
-        line(107);
+        line(102);
+        line(99);
         push_symbol(base+10);//bindir
         _clp_empty(1);
         topnot();
-        if(!flag()) goto if_12_1;
-            line(108);
+        if(!flag()) goto if_11_1;
+            line(100);
             push_symbol(base+10);//bindir
             _clp_dirsep(0);
             add();
@@ -409,7 +356,7 @@ push_call("makeexe",base);
             add();
             _clp_ferase(1);
             pop();
-            line(109);
+            line(101);
             push_symbol(base+2);//target
             push_symbol(base+10);//bindir
             _clp_dirsep(0);
@@ -420,8 +367,8 @@ push_call("makeexe",base);
             add();
             _clp_filecopy(2);
             pop();
-        if_12_1:
-        if_12_0:;
+        if_11_1:
+        if_11_0:;
     if_9_1:
     if_9_0:;
 //

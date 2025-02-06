@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -bccc3_regex -bpcreposix
+cccapp.sh -bccc3_regex -bpcreposix

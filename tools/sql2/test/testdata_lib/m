@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b -ltestdata_lib
+cccapp.sh -ltestdata_lib

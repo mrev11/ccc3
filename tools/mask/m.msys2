@@ -1,5 +1,0 @@
-#!/bin/bash
-bapp_winc.msys2 -xmask -xpage  @parfile.bld
-bapp_win_.msys2 -xmsk2say -xmsk2pge -xpge2wro  @parfile.bld
-
-

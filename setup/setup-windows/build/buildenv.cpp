@@ -1,4 +1,4 @@
-//input: buildenv.ppo (5.6.0)
+//input: ppo/buildenv.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -36,6 +36,7 @@ push_call("buildenv_bat",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_40:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -70,6 +71,7 @@ push_call("buildenv_bindir",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_113:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -104,6 +106,7 @@ push_call("buildenv_dbg",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_186:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -138,6 +141,7 @@ push_call("buildenv_exe",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_259:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -172,6 +176,7 @@ push_call("buildenv_inc",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_332:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -206,6 +211,7 @@ push_call("buildenv_lib",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_405:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -240,6 +246,7 @@ push_call("buildenv_libdir",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_478:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -274,6 +281,7 @@ push_call("buildenv_lpt",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_551:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -308,6 +316,7 @@ push_call("buildenv_obj",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_624:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -342,6 +351,7 @@ push_call("buildenv_shr",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_697:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -376,6 +386,7 @@ push_call("buildenv_src",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_770:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -410,6 +421,7 @@ push_call("buildenv_thr",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_843:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);

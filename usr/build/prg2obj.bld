@@ -1,0 +1,18 @@
+#!/bin/bash
+echo -n PRG2OBJ.BAT $1 $2 # $3="dep1 dep2 dep3..."
+#set -x
+
+SOURCE=$2/$1.prg
+DEPEND=${3}
+TARGET=$BUILD_OBJ/$1.obj
+
+. ${BUILD_BAT}/def_quit
+. ${BUILD_BAT}/opt_prg
+. ${BUILD_BAT}/cache_search
+. ${BUILD_BAT}/compile_prg
+. ${BUILD_BAT}/opt_ppo
+. ${BUILD_BAT}/compile_ppo
+. ${BUILD_BAT}/opt_cpp
+. ${BUILD_BAT}/compile_cpp
+. ${BUILD_BAT}/cache_store
+

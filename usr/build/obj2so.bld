@@ -1,0 +1,10 @@
+#!/bin/bash
+echo OBJ2SO.BAT $1.so # $@ = libname mod1 mod2 ...
+#set -x
+
+TARGET=$BUILD_OBJ/$1.so
+OUT=out--obj2so-$1
+rm -f $TARGET $OUT
+
+. ${BUILD_BAT}/def_quit
+. ${BUILD_BAT}/link_so

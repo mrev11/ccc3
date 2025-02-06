@@ -34,7 +34,7 @@ local sharing:=LOWER(buildenv_shr())  //"shared" or "static" libraries
 
 local n,i,txt:=""
 local f0,f1,f2,f3,pf1,pf2,pf3
-
+static msys64:=getenv("MSYS64")
 
     for n:=1 to len(liblist)
 
@@ -106,6 +106,23 @@ local f0,f1,f2,f3,pf1,pf2,pf3
                 end
             end
         next
+
+
+        if(  i>len(dirlist) .and. !empty(msys64) )
+            // msys2
+            // static lib only
+            // absolute path only
+            for i:=1 to len(dirlist)
+                if( empty(dirlist[i]) .or. !dirlist[i][1]$"/\" )
+                    loop
+                end
+                pf1:=msys64+dirlist[i]+dirsep()+f1
+                if( file(pf1) )
+                    txt+=pf1+" "
+                    exit
+                end
+            next
+        end
 
         if( i>len(dirlist) )
             if( f0[1..2]=="-l" )

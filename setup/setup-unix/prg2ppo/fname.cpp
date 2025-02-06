@@ -1,4 +1,4 @@
-//input: fname.ppo (5.6.0)
+//input: ppo/fname.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -118,6 +118,7 @@ push_call("fbase",base);
     push_symbol(base+3);//ppos
     push_symbol(base+1);//spos
     gt();
+    cmp_368:;
     if(flag()){
     push_symbol(base+3);//ppos
     push_symbol(base+1);//spos
@@ -158,6 +159,7 @@ push_call("fext",base);
     push_symbol(base+2);//ppos
     push_symbol(base+1);//spos
     gt();
+    cmp_471:;
     if(flag()){
     push_symbol(base+0);//fspec
     push_symbol(base+2);//ppos

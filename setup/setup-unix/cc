@@ -1,0 +1,53 @@
+#!/bin/bash
+#set -x
+
+if ! [ -f compopt ]; then
+    if ! test -f $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/cppver.opt; then
+       _cpp_version.sh
+    fi
+    echo -c >compopt
+    cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/cppver.opt >>compopt
+    cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/compile.opt >>compopt
+    if [  -n "$TERMUX_VERSION" ]; then
+        cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/android.opt >>compopt
+    fi 
+    echo -I$CCCDIR/usr/include >>compopt
+    echo -I$CCCDIR/ccclib/src/include >>compopt
+    echo -I. >>compopt
+fi
+
+compile()
+{
+    name="${1##*/}                   "
+    echo -n SETUP: "${name:0:24}"
+    sum=$(cat compopt $1 | sha256sum)
+    sum=setup-${sum:0:64}
+    if [ -f $BUILD_CACHE/$sum ]; then
+        cp  $BUILD_CACHE/$sum ${name//.cpp/.o}
+        echo " cached"
+    elif c++ $(cat compopt) $1; then
+        if [ -d "$BUILD_CACHE" ]; then
+            cp ${name//.cpp/.o} $BUILD_CACHE/$sum
+        fi
+        echo " ok"
+    else
+        echo " FAILED"
+    fi
+}
+
+if [ "$1" == "" ]; then
+    #cc-all
+    for FILE in *.cpp; do
+        if ! [ -f ${FILE//.cpp/.o} ];then
+            compile $FILE
+        fi
+    done
+else
+    #cc-one
+    BASE=${1##*/}
+    if ! [ -f ${BASE//.cpp/.o} ];then
+        compile "$1"
+    fi
+fi
+
+

@@ -1,5 +1,5 @@
 #!/bin/bash
 export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
-bapp_unix0.b -sccc"$CCCVER"_zlib -bz
+c++app.sh -sccc"$CCCVER"_zlib -bz
 

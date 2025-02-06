@@ -1,9 +1,0 @@
-#!/bin/bash
-#export BUILD_DBG=on
-bapp_winc.msys2 @parfile.bld
-
-mkdir -p ~/.z
-cp -pf ./keymap.z  ~/.z
-cp -pf ./keymap_uc.z  ~/.z
-
-

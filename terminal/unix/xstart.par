@@ -13,7 +13,7 @@
     <env>CCCTERM_SIZE=80x43</env>
     
     <!--
-    <command>$(CCCDIR)/usr/bin/$(CCCUNAME)/terminal.exe --socket $(SOCKET)</command>
+    <command>$(CCCDIR)/usr/bin/terminal.exe --socket $(SOCKET)</command>
     -->
 
     <command> terminal.exe

@@ -1,4 +1,4 @@
-//input: makeexe.ppo (5.6.0)
+//input: ppo/makeexe.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -103,6 +103,7 @@ push_call("makeexe",base);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
+    cmp_284:;
     if(!flag()) goto if_2_1;
         line(44);
         string(L"");
@@ -141,6 +142,7 @@ push_call("makeexe",base);
         push_symbol(base+9);//n
         push(&ZERO);
         eqeq();
+        cmp_390:;
         if(!flag()) goto if_5_1;
             line(54);
             push_symbol(base+0);//exenam
@@ -208,6 +210,7 @@ push_call("makeexe",base);
         _clp_right(2);
         string(L".lib");
         eqeq();
+        cmp_550:;
         if(!flag()) goto if_7_1;
             line(65);
             _clp_s_libspec(0);
@@ -247,7 +250,7 @@ push_call("makeexe",base);
         pop();
     if_8_1:
     if_8_0:;
-    line(111);
+    line(103);
     line(74);
     push_symbol(base+6);//update
     if(!flag()) goto if_9_1;
@@ -290,17 +293,17 @@ push_call("makeexe",base);
         goto lab_10_0;
         lab_10_2:;
         }
-        line(105);
+        line(97);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
-        line(110);
-        line(107);
+        line(102);
+        line(99);
         push_symbol(base+10);//bindir
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_11_1;
-            line(108);
+            line(100);
             push_symbol(base+10);//bindir
             _clp_dirsep(0);
             add();
@@ -310,7 +313,7 @@ push_call("makeexe",base);
             add();
             _clp_ferase(1);
             pop();
-            line(109);
+            line(101);
             push_symbol(base+2);//target
             push_symbol(base+10);//bindir
             _clp_dirsep(0);

@@ -1,0 +1,16 @@
+#!/bin/bash
+echo  PGE2OUT.BAT $1 $2
+#set -x
+
+TARGET=$2/$1.out
+OUT=out--pge2out-$1
+rm -f $TARGET $OUT
+
+. ${BUILD_BAT}/def_quit
+
+pge2out.exe -f$2/$1 -gOUT  2>&1 >>$OUT
+ERR=$(cat $OUT)
+if [ -n "$ERR" ]; then
+    quit 1
+fi
+quit 0

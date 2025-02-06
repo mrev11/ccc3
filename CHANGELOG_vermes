@@ -1,3 +1,7 @@
+2025-02-06 
+  egyseges build rendszer minden platformra;
+  a build rendszer cache-eli az objecteket;
+
 2025-01-21
   oneletter branch: egybetus stringek kulon kezelve;  
 

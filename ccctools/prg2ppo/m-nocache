@@ -1,0 +1,6 @@
+#!/bin/bash
+# cache nelkul fordit
+# hogy letrejojjenek a cpp-k
+
+gc
+BUILD_CACHE=NOCACHE ./m

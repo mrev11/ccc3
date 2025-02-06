@@ -1,0 +1,88 @@
+
+export MSYS64=c:/msys64                 # install directory
+
+# compilert kell valasztani
+
+export MSYSTEM=CLANG64                  # -> CCCBIN=clang
+# export MSYSTEM=MINGW64                # -> CCCBIN=gcc
+# export MSYSTEM=UCRT64                 # -> CCCBIN=?
+
+export MSYSTEM_PREFIX=/${MSYSTEM,,}     # lower case
+export MINGW_PREFIX=/${MSYSTEM,,}       # lower case
+
+
+#########################################################################
+# CCC environment
+#########################################################################
+
+export CCC2DIR=~/ccc2
+export CCC3DIR=~/ccc3
+
+if [ $CCCVER == 2 ]; then
+    export CCCDIR=${CCC2DIR}
+elif [ $CCCVER == 3 ]; then
+    export CCCDIR=${CCC3DIR}
+else
+    echo CCCVER variable undefined
+    read 
+fi
+export OREF_SIZE=500000
+
+export CCCUNAME=msys2
+export CCCBIN=clang
+
+if [ "$CCCTERM_CONNECT" == ""  ];then
+    export CCCTERM_SIZE=100x50
+    export CCCTERM_GTKFONTSPEC="Monospace 12"
+
+    # curses terminal
+     export CCCTERM_CONNECT=term://cterm.exe
+     export CCCTERM_INHERIT=yes
+
+    # primary terminal
+    # export CCCTERM_CONNECT=term://terminal.exe
+    # export CCCTERM_INHERIT=no
+
+    # GTK terminal
+    # export CCCTERM_CONNECT=term://terminal-gtk3.exe
+    # export CCCTERM_INHERIT=no
+
+    # remote terminal
+    # export CCCTERM_CONNECT=connect://xp:55013
+    # export CCCTERM_CONNECT=connect://tm:55013
+    # export CCCTERM_CONNECT=connect://uj:55013
+    # export CCCTERM_CONNECT=connect://i3x:55013
+    # export CCCTERM_CONNECT=connect://dell6510:55013
+    # export CCCTERM_INHERIT=no
+fi
+export CCCTERM_ICONFILE=${CCCDIR}/usr/bin/terminal.xpm
+
+
+# z-editor colors
+export ZCOLOR_TEXT=333/n,w/n+
+export ZCOLOR_MASK=n/rg,w+/n+
+export ZHOME=~/.z
+export ZEOL=LF
+
+
+
+. ${CCCDIR}/usr/setenv/addpath
+
+addpath /usr/bin
+addpath ${MSYSTEM_PREFIX}/bin
+addpath $CCC2DIR/usr/bin
+addpath $CCC3DIR/usr/bin
+addpath $CCCDIR/usr/bin
+addpath ~/bin
+addpath .
+
+
+
+#########################################################################
+
+export BUILD_THR=4
+export BUILD_CACHE=~/.cache/build
+mkdir -p $BUILD_CACHE
+
+#########################################################################
+$CCCDIR/usr/bin/cccenv.sh

@@ -1,0 +1,2 @@
+#!/bin/bash
+cccapp.sh @gtk-win.bld  -bccc3_glade -bccc3_gtk -bccc3_xmldom

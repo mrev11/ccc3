@@ -1,0 +1,15 @@
+#!/bin/bash
+echo -n LEX2OBJ.BAT $1 $2
+#set -x
+
+SOURCE=$2/$1.lex
+DEPEND=${3}
+TARGET=$BUILD_OBJ/$1.obj
+
+. ${BUILD_BAT}/def_quit
+. ${BUILD_BAT}/opt_cpp
+. ${BUILD_BAT}/cache_search
+. ${BUILD_BAT}/compile_lex
+. ${BUILD_BAT}/compile_cpp
+. ${BUILD_BAT}/cache_store
+

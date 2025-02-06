@@ -1,4 +1,4 @@
-//input: prepro.ppo (5.6.0)
+//input: ppo/prepro.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -101,12 +101,14 @@ push_call("prepro",base);
     push(&ZERO);
     push_symbol(base+5);//trnpos
     lt();
+    cmp_259:;
     if(!flag()) goto if_2_1;
         line(43);
         line(40);
         push(&ONE);
         push_symbol(base+5);//trnpos
         lt();
+        cmp_273:;
         if(!flag()) goto if_3_1;
             line(41);
             _clp_endofline(0);

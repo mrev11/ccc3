@@ -19,7 +19,7 @@
  */
 
 
-#define VERSION "1.6.4"
+#define VERSION "1.7.0"
 
 #define LOWER(x) (x)
 
@@ -34,18 +34,6 @@ local opt:=aclone(argv()),n
 
 #define OPTION(x)  x==left(opt[n],2)
 #define VALUE()    substr(opt[n],3)
-
-    if( !file(buildenv_bat()+dirsep()+"multithread_support") )
-        maxthread:=1
-    elseif( 1<=val(buildenv_thr())  )
-        maxthread:=val(buildenv_thr())
-    end
-
-    if( !s_quiet() )
-        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
-        ?? " (Thr"+alltrim(str(maxthread))+")"
-        ?
-    end
 
     s_libdir(buildenv_obj()) // az object directoryban is keresi a libeket
 
@@ -135,6 +123,37 @@ local opt:=aclone(argv()),n
         end
     next
 
+
+    if( s_version() )
+        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt.";?
+        quit
+    end
+    if( empty(buildenv_bat()) )
+        ?? "BUILD_BAT environment not set";?
+        quit
+    end
+    if( !direxist(buildenv_bat()) )
+        ?? "BUILD_BAT directory does not exist ["+buildenv_bat()+"]";?
+        quit
+    end
+    if( empty(directory(buildenv_bat()+dirsep()+"prg2obj.*")) )
+        ?? "BUILD_BAT directory does not contain script for prg2ppo ["+buildenv_bat()+"]";?
+        quit
+    end
+
+    maxthread:=1
+    if( 1<=val(buildenv_thr())  )
+        maxthread:=val(buildenv_thr())
+    end
+
+
+    if( !s_quiet() )
+        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
+        ?? " (Thr"+alltrim(str(maxthread))+")"
+        ?
+    end
+
+
     //compatibility
     if( "on"$LOWER(buildenv_dbg()) )
         s_debug(.t.)
@@ -147,9 +166,6 @@ local opt:=aclone(argv()),n
         s_dry(.t.)
     end
 
-    if( s_version() )
-        quit
-    end
 
     rules_from_build_bat()
     extension_types()

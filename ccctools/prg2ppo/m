@@ -1,9 +1,4 @@
 #!/bin/bash
 
-if [[ $(uname) =~ MSYS ]]; then
-    echo Not usable in $(uname)
-    exit 1
-fi
-
-bapp_unix_.b @parfile.bld  "BUILD_SHR=static"
+cccapp.sh @parfile.bld  "BUILD_SHR=static"
 #ldd `which prg2ppo.exe`

@@ -1,2 +1,4 @@
 #!/bin/bash
-bapp_unix_.b  "BUILD_EXE=$CCCDIR/usr/bin/$CCCUNAME" "BUILD_SHR=static"
+# export BUILD_DBG=on
+# export BUILD_THR=1
+cccapp.sh  BUILD_EXE=${CCCDIR}/usr/bin

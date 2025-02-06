@@ -1,6 +1,6 @@
 #!/bin/bash
 export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
-bapp_unix0.b -d. -sccc"$CCCVER"_socket
+c++app.sh -d. -sccc"$CCCVER"_socket
 
 ( cd ssl && m )

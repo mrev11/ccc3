@@ -1,0 +1,18 @@
+#!/bin/bash
+echo -n TDC2CH.BAT $1 $2
+#set -x
+
+SOURCE=$2/$1.tdc
+TARGET=$BUILD_OBJ/$1.obj
+
+OUT=out--tdc2ch-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+. ${BUILD_BAT}/def_quit
+
+if ! tdc2prgch.exe --ch $SOURCE 2>$OUT; then
+    quit 1
+fi
+rm -f $OUT ppo/$1.tdc
+quit 0

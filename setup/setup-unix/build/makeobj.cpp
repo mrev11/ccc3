@@ -1,4 +1,4 @@
-//input: makeobj.ppo (5.6.0)
+//input: ppo/makeobj.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -27,7 +27,7 @@ void _clp_makeobj(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+11)PUSHNIL();
+while(stack<base+12)PUSHNIL();
 argno=1;
 push_call("makeobj",base);
 //
@@ -57,6 +57,7 @@ push_call("makeobj",base);
     _clp_fext(1);
     string(L".obj");
     eqeq();
+    cmp_131:;
     if(!flag()) goto if_1_1;
         line(33);
         push_symbol(base+3);//objdir
@@ -82,6 +83,7 @@ push_call("makeobj",base);
     push_symbol(base+4);//ttarget
     push(&NIL);
     eqeq();
+    cmp_215:;
     if(!flag()) goto if_2_1;
         line(38);
         string(L"");
@@ -151,7 +153,7 @@ push_call("makeobj",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(71);
+    line(75);
     line(54);
     push_symbol(base+6);//update
     if(!flag()) goto if_6_1;
@@ -232,7 +234,43 @@ push_call("makeobj",base);
         }
         assign(base+10);//p2
         pop();
+        line(69);
+        push_symbol(base+0);//deplist
+        idxr0(2);
+        assign(base+11);//p3
+        pop();
+        line(72);
+        {
         line(70);
+        push(&ONE);
+        int sg=sign();
+        number(3);
+        assign(base+8);//n
+        lab_8_0:
+        push_symbol(base+0);//deplist
+        _clp_len(1);
+        if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_8_2;
+            line(71);
+            push_symbol(base+11);//p3
+            string(L" ");
+            push_symbol(base+0);//deplist
+            push_symbol(base+8);//n
+            idxr();
+            add();
+            add();
+            assign(base+11);//p3
+            pop();
+        lab_8_1:
+        push(&ONE);
+        dup();
+        sg=sign();
+        push_symbol(base+8);//n
+        add();
+        assign(base+8);//n
+        goto lab_8_0;
+        lab_8_2:;
+        }
+        line(74);
         push_symbol(base+7);//torun
         string(L" ");
         add();
@@ -241,6 +279,12 @@ push_call("makeobj",base);
         string(L" ");
         add();
         push_symbol(base+10);//p2
+        add();
+        string(L" '");
+        add();
+        push_symbol(base+11);//p3
+        add();
+        string(L"'");
         add();
         _clp_run1(1);
         pop();

@@ -1,2 +1,2 @@
 #BUILD_EXE=$(HOME)/bin
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin

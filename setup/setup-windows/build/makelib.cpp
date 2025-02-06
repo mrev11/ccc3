@@ -1,4 +1,4 @@
-//input: makelib.ppo (5.6.0)
+//input: ppo/makelib.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -110,6 +110,7 @@ push_call("makelib",base);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
+    cmp_294:;
     if(!flag()) goto if_2_1;
         line(45);
         string(L"");
@@ -189,7 +190,7 @@ push_call("makelib",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(94);
+    line(87);
     line(63);
     push_symbol(base+6);//update
     if(!flag()) goto if_6_1;
@@ -197,7 +198,7 @@ push_call("makelib",base);
         string(L"");
         assign(base+11);//objlist
         pop();
-        line(83);
+        line(77);
         {
         line(75);
         push(&ONE);
@@ -208,66 +209,18 @@ push_call("makelib",base);
         push_symbol(base+1);//object
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_7_2;
-            line(82);
             line(76);
-            string(L"objmng");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_8_1;
-                line(77);
-                push_symbol(base+11);//objlist
-                push_symbol(base+1);//object
-                push_symbol(base+9);//n
-                idxr();
-                string(L".obj");
-                add();
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            goto if_8_0;
-            if_8_1:
-            line(78);
-            string(L"objmsc");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_8_2;
-                line(79);
-                push_symbol(base+11);//objlist
-                push_symbol(base+1);//object
-                push_symbol(base+9);//n
-                idxr();
-                string(L".obj");
-                add();
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            goto if_8_0;
-            if_8_2:
-            line(80);
-            string(L"objbor");
-            push_symbol(base+8);//objdir
-            ss();
-            if(!flag()) goto if_8_3;
-                line(81);
-                push_symbol(base+11);//objlist
-                string(L"+");
-                push_symbol(base+1);//object
-                push_symbol(base+9);//n
-                idxr();
-                add();
-                string(L".obj &");
-                add();
-                _clp_endofline(0);
-                add();
-                add();
-                assign(base+11);//objlist
-                pop();
-            if_8_3:
-            if_8_0:;
+            push_symbol(base+11);//objlist
+            push_symbol(base+1);//object
+            push_symbol(base+9);//n
+            idxr();
+            string(L".obj");
+            add();
+            _clp_endofline(0);
+            add();
+            add();
+            assign(base+11);//objlist
+            pop();
         lab_7_1:
         push(&ONE);
         dup();
@@ -278,16 +231,7 @@ push_call("makelib",base);
         goto lab_7_0;
         lab_7_2:;
         }
-        line(84);
-        push_symbol(base+8);//objdir
-        _clp_dirsep(0);
-        add();
-        string(L"objects");
-        add();
-        push_symbol(base+11);//objlist
-        _clp_memowrit(2);
-        pop();
-        line(85);
+        line(78);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -298,17 +242,17 @@ push_call("makelib",base);
         push_symbol(base+11);//objlist
         _clp_memowrit(2);
         pop();
-        line(88);
+        line(81);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
-        line(93);
-        line(90);
+        line(86);
+        line(83);
         push_symbol(base+10);//libdir
         _clp_empty(1);
         topnot();
-        if(!flag()) goto if_9_1;
-            line(91);
+        if(!flag()) goto if_8_1;
+            line(84);
             push_symbol(base+10);//libdir
             _clp_dirsep(0);
             add();
@@ -318,7 +262,7 @@ push_call("makelib",base);
             add();
             _clp_ferase(1);
             pop();
-            line(92);
+            line(85);
             push_symbol(base+2);//target
             push_symbol(base+10);//libdir
             _clp_dirsep(0);
@@ -329,11 +273,11 @@ push_call("makelib",base);
             add();
             _clp_filecopy(2);
             pop();
-        if_9_1:
-        if_9_0:;
+        if_8_1:
+        if_8_0:;
     if_6_1:
     if_6_0:;
-    line(97);
+    line(90);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

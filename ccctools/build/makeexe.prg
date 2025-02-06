@@ -89,16 +89,8 @@ local objlist, xobj
                 xobj:=objdir+dirsep()
                 xobj+=if(n==0,exenam,object[n])
                 xobj+=".obj"
-
-                if( "objmng"$objdir )
-                    objlist+=xobj+endofline()
-                elseif( "objmsc"$objdir )
-                    objlist+=xobj+endofline()
-                elseif( "objbor"$objdir)
-                    objlist+=xobj+if(n<len(object)," + ","")+endofline()
-                end
+                objlist+=xobj+endofline()
             next
-            memowrit(objdir+dirsep()+"objects",objlist)
             memowrit(objdir+dirsep()+"objects-"+exenam,objlist)
         #endif
 

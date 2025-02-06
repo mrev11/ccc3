@@ -1,4 +1,4 @@
-//input: rules_from_build_bat.ppo (5.6.0)
+//input: ppo/rules_from_build_bat.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -29,17 +29,17 @@ argno=0;
 push_call("rules_from_build_bat",base);
 //
     line(28);
-    line(38);
+    line(40);
     line(30);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.bat");
+    string(L"prg2obj.bld");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_1;
         line(31);
-        string(L".bat");
+        string(L".bld");
         _clp_s_batext(1);
         pop();
     goto if_1_0;
@@ -84,14 +84,28 @@ push_call("rules_from_build_bat",base);
         string(L".msys2");
         _clp_s_batext(1);
         pop();
+    goto if_1_0;
     if_1_4:
+    line(38);
+    _clp_buildenv_bat(0);
+    _clp_dirsep(0);
+    add();
+    string(L"prg2obj.bat");
+    add();
+    _clp_file(1);
+    if(!flag()) goto if_1_5;
+        line(39);
+        string(L".bat");
+        _clp_s_batext(1);
+        pop();
+    if_1_5:
     if_1_0:;
-    line(40);
+    line(42);
     _clp_s_rules(0);
     push(&ZERO);
     _clp_asize(2);
     pop();
-    line(41);
+    line(43);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
@@ -102,9 +116,9 @@ push_call("rules_from_build_bat",base);
     _clp_directory(1);
     assign(base+0);//d
     pop();
-    line(49);
+    line(51);
     {
-    line(42);
+    line(44);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -113,7 +127,7 @@ push_call("rules_from_build_bat",base);
     push_symbol(base+0);//d
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_2_2;
-        line(43);
+        line(45);
         push_symbol(base+0);//d
         push_symbol(base+1);//n
         idxr();
@@ -125,14 +139,15 @@ push_call("rules_from_build_bat",base);
         _clp_split(2);
         assign(base+2);//rule
         pop();
-        line(48);
-        line(44);
+        line(50);
+        line(46);
         push_symbol(base+2);//rule
         _clp_len(1);
         number(2);
         eqeq();
+        cmp_463:;
         if(!flag()) goto if_3_1;
-            line(45);
+            line(47);
             string(L".");
             push_symbol(base+2);//rule
             idxr0(1);
@@ -140,7 +155,7 @@ push_call("rules_from_build_bat",base);
             push_symbol(base+2);//rule
             assign2(idxxl0(1));
             pop();
-            line(46);
+            line(48);
             string(L".");
             push_symbol(base+2);//rule
             idxr0(2);
@@ -148,7 +163,7 @@ push_call("rules_from_build_bat",base);
             push_symbol(base+2);//rule
             assign2(idxxl0(2));
             pop();
-            line(47);
+            line(49);
             _clp_s_rules(0);
             push_symbol(base+2);//rule
             _clp_aadd(2);
@@ -165,7 +180,7 @@ push_call("rules_from_build_bat",base);
     goto lab_2_0;
     lab_2_2:;
     }
-    line(51);
+    line(53);
     _clp_s_rules(0);
     push(&NIL);
     push(&NIL);
@@ -201,11 +216,12 @@ while(stack<base+3)PUSHNIL();
 argno=2;
 push_call("rulesort",base);
 //
-    line(58);
-    line(59);
+    line(60);
+    line(61);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
+    cmp_653:;
     if(!flag()) goto if_4_1;
         string(L".exe");
         push_symbol(base+0);//x
@@ -215,10 +231,11 @@ push_call("rulesort",base);
         pop();
     if_4_1:
     if_4_0:;
-    line(60);
+    line(62);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
+    cmp_707:;
     if(!flag()) goto if_5_1;
         string(L".so");
         push_symbol(base+0);//x
@@ -228,10 +245,11 @@ push_call("rulesort",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(61);
+    line(63);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
+    cmp_761:;
     if(!flag()) goto if_6_1;
         string(L".lib");
         push_symbol(base+0);//x
@@ -241,10 +259,11 @@ push_call("rulesort",base);
         pop();
     if_6_1:
     if_6_0:;
-    line(62);
+    line(64);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
+    cmp_815:;
     if(!flag()) goto if_7_1;
         string(L".obj");
         push_symbol(base+0);//x
@@ -254,21 +273,23 @@ push_call("rulesort",base);
         pop();
     if_7_1:
     if_7_0:;
-    line(63);
+    line(65);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
+    cmp_869:;
     if(!flag()) goto if_8_1;
         push_symbol(base+0);//x
         idxr0(1);
         push_symbol(base+1);//y
         idxr0(1);
         lt();
+        cmp_889:;
         assign(base+2);//result
         pop();
     if_8_1:
     if_8_0:;
-    line(64);
+    line(66);
     push_symbol(base+2);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -285,54 +306,60 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("cmp",base);
 //
-    line(71);
-    line(67);
+    line(73);
+    line(69);
     push_symbol(base+1);//x
     idxr0(2);
     push_symbol(base+0);//ext
     eqeq();
+    cmp_953:;
     if(!flag()) goto if_9_1;
-        line(68);
+        line(70);
         push_symbol(base+2);//y
         idxr0(2);
         push_symbol(base+0);//ext
         eqeq();
+        cmp_973:;
         if(flag()){
         push_symbol(base+1);//x
         idxr0(1);
         push_symbol(base+2);//y
         idxr0(1);
         lt();
+        cmp_985:;
         }else{
         push(&FALSE);
         }
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_9_0;
     if_9_1:
-    line(69);
+    line(71);
     push_symbol(base+2);//y
     idxr0(2);
     push_symbol(base+0);//ext
     eqeq();
+    cmp_1014:;
     if(!flag()) goto if_9_2;
-        line(70);
+        line(72);
         push_symbol(base+1);//x
         idxr0(2);
         push_symbol(base+0);//ext
         eqeq();
+        cmp_1034:;
         if(flag()){
         push_symbol(base+1);//x
         idxr0(1);
         push_symbol(base+2);//y
         idxr0(1);
         lt();
+        cmp_1046:;
         }else{
         push(&TRUE);
         }
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_9_2:
     if_9_0:;
-    line(72);
+    line(74);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

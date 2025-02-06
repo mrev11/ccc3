@@ -1,6 +1,0 @@
-#!/bin/bash
-mkdir exe-sqlite3 2>/dev/null
-cp -p start-scripts/*.b exe-sqlite3 2>/dev/null
-
-bapp_winc.msys2  @parfile-l.bld
-

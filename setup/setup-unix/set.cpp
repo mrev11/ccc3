@@ -1,4 +1,4 @@
-//input: set.ppo (5.6.0)
+//input: ppo/set.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -45,6 +45,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(17);
     eqeq();
+    cmp_40:;
     if(!flag()) goto if_1_1;
         line(28);
         push_symbol(base+1);//newset
@@ -56,6 +57,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(23);
     eqeq();
+    cmp_71:;
     if(!flag()) goto if_1_2;
         line(31);
         push_symbol(base+1);//newset
@@ -67,6 +69,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(24);
     eqeq();
+    cmp_102:;
     if(!flag()) goto if_1_3;
         line(34);
         push_symbol(base+1);//newset
@@ -80,6 +83,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(18);
     eqeq();
+    cmp_146:;
     if(!flag()) goto if_1_4;
         line(37);
         push_symbol(base+1);//newset
@@ -91,6 +95,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(19);
     eqeq();
+    cmp_177:;
     if(!flag()) goto if_1_5;
         line(40);
         push_symbol(base+1);//newset
@@ -104,6 +109,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(21);
     eqeq();
+    cmp_221:;
     if(!flag()) goto if_1_6;
         line(43);
         push_symbol(base+1);//newset
@@ -115,6 +121,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(22);
     eqeq();
+    cmp_252:;
     if(!flag()) goto if_1_7;
         line(46);
         push_symbol(base+1);//newset
@@ -128,6 +135,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(16);
     eqeq();
+    cmp_296:;
     if(!flag()) goto if_1_8;
         line(49);
         push_symbol(base+1);//newset
@@ -139,6 +147,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(15);
     eqeq();
+    cmp_327:;
     if(!flag()) goto if_1_9;
         line(52);
         push_symbol(base+1);//newset
@@ -150,6 +159,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(29);
     eqeq();
+    cmp_358:;
     if(!flag()) goto if_1_10;
         line(55);
         push_symbol(base+1);//newset
@@ -161,6 +171,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(30);
     eqeq();
+    cmp_389:;
     if(!flag()) goto if_1_11;
     goto if_1_0;
     if_1_11:
@@ -168,6 +179,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(27);
     eqeq();
+    cmp_405:;
     if(!flag()) goto if_1_12;
         line(61);
         push_symbol(base+1);//newset
@@ -179,6 +191,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(4);
     eqeq();
+    cmp_436:;
     if(!flag()) goto if_1_13;
         line(64);
         push_symbol(base+1);//newset
@@ -190,6 +203,7 @@ push_call("_clp_set",base);
     push_symbol(base+0);//spec
     number(39);
     eqeq();
+    cmp_467:;
     if(!flag()) goto if_1_14;
         line(67);
         push_symbol(base+1);//newset
@@ -225,6 +239,7 @@ push_call("setprintfile",base);
     push_symbol(base+0);//p1
     push(&NIL);
     eqeq();
+    cmp_556:;
     if(!flag()) goto if_2_1;
     goto if_2_0;
     if_2_1:
@@ -233,6 +248,7 @@ push_call("setprintfile",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_580:;
     if(!flag()) goto if_2_2;
         line(82);
         push_symbol(base+0);//p1
@@ -274,6 +290,7 @@ push_call("setaltfile",base);
     push_symbol(base+0);//p1
     push(&NIL);
     eqeq();
+    cmp_691:;
     if(!flag()) goto if_3_1;
     goto if_3_0;
     if_3_1:
@@ -282,6 +299,7 @@ push_call("setaltfile",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_715:;
     if(!flag()) goto if_3_2;
         line(98);
         push_symbol(base+0);//p1
@@ -323,6 +341,7 @@ push_call("setextrafile",base);
     push_symbol(base+0);//p1
     push(&NIL);
     eqeq();
+    cmp_826:;
     if(!flag()) goto if_4_1;
     goto if_4_0;
     if_4_1:
@@ -331,6 +350,7 @@ push_call("setextrafile",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_850:;
     if(!flag()) goto if_4_2;
         line(114);
         push_symbol(base+0);//p1
@@ -372,6 +392,7 @@ push_call("setcolor",base);
     push_symbol(base+0);//newset
     push(&NIL);
     eqeq();
+    cmp_956:;
     if(!flag()) goto if_5_1;
     goto if_5_0;
     if_5_1:
@@ -380,6 +401,7 @@ push_call("setcolor",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_980:;
     if(!flag()) goto if_5_2;
         line(130);
         push_symbol(base+0);//newset
@@ -419,6 +441,7 @@ push_call("setinsert",base);
     push_symbol(base+0);//newset
     push(&NIL);
     eqeq();
+    cmp_1073:;
     if(!flag()) goto if_6_1;
     goto if_6_0;
     if_6_1:
@@ -427,6 +450,7 @@ push_call("setinsert",base);
     _clp_valtype(1);
     string(L"L");
     eqeq();
+    cmp_1097:;
     if(!flag()) goto if_6_2;
         line(146);
         push_symbol(base+0);//newset
@@ -462,6 +486,7 @@ push_call("setconfirm",base);
     push_symbol(base+0);//newset
     push(&NIL);
     eqeq();
+    cmp_1176:;
     if(!flag()) goto if_7_1;
     goto if_7_0;
     if_7_1:
@@ -470,6 +495,7 @@ push_call("setconfirm",base);
     _clp_valtype(1);
     string(L"L");
     eqeq();
+    cmp_1200:;
     if(!flag()) goto if_7_2;
         line(161);
         push_symbol(base+0);//newset
@@ -505,6 +531,7 @@ push_call("setdateformat",base);
     push_symbol(base+0);//newset
     push(&NIL);
     eqeq();
+    cmp_1283:;
     if(!flag()) goto if_8_1;
     goto if_8_0;
     if_8_1:
@@ -513,6 +540,7 @@ push_call("setdateformat",base);
     _clp_valtype(1);
     string(L"C");
     eqeq();
+    cmp_1307:;
     if(!flag()) goto if_8_2;
         line(176);
         push_symbol(base+0);//newset
@@ -554,6 +582,7 @@ push_call("__setcentury",base);
     push_symbol(base+0);//arg
     push(&NIL);
     neeq();
+    cmp_1411:;
     if(!flag()) goto if_9_1;
         line(190);
         push_symbol(base+1);//dform
@@ -575,6 +604,7 @@ push_call("__setcentury",base);
         _clp_valtype(1);
         string(L"L");
         eqeq();
+        cmp_1496:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -587,6 +617,7 @@ push_call("__setcentury",base);
         _clp_valtype(1);
         string(L"C");
         eqeq();
+        cmp_1519:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -595,6 +626,7 @@ push_call("__setcentury",base);
         _clp_alltrim(1);
         _clp_lower(1);
         eqeq();
+        cmp_1526:;
         }
         }
         if(!flag()) goto if_10_1;
@@ -649,6 +681,7 @@ push_call("setdosconv",base);
     push_symbol(base+0);//newset
     push(&NIL);
     eqeq();
+    cmp_1699:;
     if(!flag()) goto if_11_1;
     goto if_11_0;
     if_11_1:
@@ -657,6 +690,7 @@ push_call("setdosconv",base);
     _clp_valtype(1);
     string(L"N");
     eqeq();
+    cmp_1723:;
     if(!flag()) goto if_11_2;
         line(213);
         push_symbol(base+0);//newset
@@ -669,6 +703,7 @@ push_call("setdosconv",base);
     _clp_lower(1);
     string(L"fileshare");
     eqeq();
+    cmp_1761:;
     if(!flag()) goto if_11_3;
         line(216);
         number(4096);
@@ -681,6 +716,7 @@ push_call("setdosconv",base);
     _clp_lower(1);
     string(L"off");
     eqeq();
+    cmp_1799:;
     if(!flag()) goto if_11_4;
         line(219);
         push(&ZERO);
@@ -693,6 +729,7 @@ push_call("setdosconv",base);
     _clp_lower(1);
     string(L"on");
     eqeq();
+    cmp_1837:;
     if(!flag()) goto if_11_5;
         line(222);
         _clp_reset_dosconv(0);
@@ -704,6 +741,7 @@ push_call("setdosconv",base);
     _clp_lower(1);
     string(L"default");
     eqeq();
+    cmp_1872:;
     if(!flag()) goto if_11_6;
         line(225);
         _clp_reset_dosconv(0);
@@ -727,47 +765,58 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("setlocalname",base);
 //
-    line(233);
-    static stvar _st_blklocalname;
-    line(234);
+    line(240);
+    static stvar _st_blk;
+    line(241);
+    push_symbol(_st_blk.ptr);//setlocalname
+    assign(base+1);//prevblk
+    pop();
+    line(255);
     line(243);
-    line(235);
     push_symbol(base+0);//x
-    _clp_valtype(1);
-    string(L"B");
+    push(&NIL);
     eqeq();
+    cmp_1949:;
     if(!flag()) goto if_12_1;
-        line(236);
-        push_symbol(_st_blklocalname.ptr);//setlocalname
-        assign(base+1);//prevblk
-        pop();
-        line(237);
-        push_symbol(base+0);//x
-        assign(_st_blklocalname.ptr);//setlocalname
-        pop();
-        line(238);
+        line(244);
         push_symbol(base+1);//prevblk
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_12_0;
     if_12_1:
-    line(239);
-    push_symbol(_st_blklocalname.ptr);//setlocalname
+    line(246);
+    push_symbol(base+0);//x
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_1980:;
     if(!flag()) goto if_12_2;
-        line(240);
-        push_symbol(_st_blklocalname.ptr);//setlocalname
+        line(247);
         push_symbol(base+0);//x
-        _clp_eval(2);
+        assign(_st_blk.ptr);//setlocalname
+        pop();
+        line(248);
+        push_symbol(base+1);//prevblk
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_12_0;
     if_12_2:
-    line(241);
-        line(242);
+    line(250);
+    push_symbol(_st_blk.ptr);//setlocalname
+    push(&NIL);
+    eqeq();
+    cmp_2013:;
+    if(!flag()) goto if_12_3;
+        line(251);
         push_symbol(base+0);//x
         {*base=*(stack-1);stack=base+1;pop_call();return;}
+    goto if_12_0;
     if_12_3:
+    line(253);
+        line(254);
+        push_symbol(_st_blk.ptr);//setlocalname
+        push_symbol(base+0);//x
+        _clp_eval(2);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    if_12_4:
     if_12_0:;
 //
 stack=base;

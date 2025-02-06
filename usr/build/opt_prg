@@ -1,0 +1,45 @@
+
+#set -x
+
+CMPOPT=ppo/opt--prg-$1
+mkdir -p ${CMPOPT%/*}
+rm -f $CMPOPT
+
+echo $BUILD_PRE                     >>$CMPOPT
+for i in $BUILD_INC; do 
+    echo -I$i | tr '@' ':'          >>$CMPOPT 
+done
+echo -dARROW                        >>$CMPOPT
+echo -d_CCC_                        >>$CMPOPT
+echo -d_CCC"$CCCVER"_               >>$CMPOPT
+
+if [[ $CCCUNAME == linux ]]; then
+    echo -dUNIX                     >>$CMPOPT
+    echo -d_UNIX_                   >>$CMPOPT
+    echo -d_LINUX_                  >>$CMPOPT
+
+elif [[ $CCCUNAME == freebsd ]]; then
+    echo -dUNIX                     >>$CMPOPT
+    echo -d_UNIX_                   >>$CMPOPT
+    echo -d_FREEEBSD_               >>$CMPOPT
+
+elif [[ $CCCUNAME == netbsd ]]; then
+    echo -dUNIX                     >>$CMPOPT
+    echo -d_UNIX_                   >>$CMPOPT
+    echo -d_NETBSDS_                >>$CMPOPT
+
+elif [[ $CCCUNAME == solaris ]]; then
+    echo -dUNIX                     >>$CMPOPT
+    echo -d_UNIX_                   >>$CMPOPT
+    echo -d_SOLARIS_                >>$CMPOPT
+
+elif [[ $CCCUNAME == msys2 ]]; then
+    echo -dWINDOWS                  >>$CMPOPT
+    echo -d_WINDOWS_                >>$CMPOPT
+    echo -dWIN32                    >>$CMPOPT
+    echo -dMSYS2                    >>$CMPOPT
+
+else
+    echo -d_LINUX_                  >>$CMPOPT
+fi
+echo -ustd1.ch                      >>$CMPOPT

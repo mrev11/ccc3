@@ -2,5 +2,5 @@
 mkdir exe-pg 2>/dev/null
 #cd tds; mkentitylib.exe; cd ..
 
-bapp_unix_.b  @parfile-p.bld
+cccapp.sh  @parfile-p.bld
 

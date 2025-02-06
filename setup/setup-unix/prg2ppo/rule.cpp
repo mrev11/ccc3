@@ -1,4 +1,4 @@
-//input: rule.ppo (5.6.0)
+//input: ppo/rule.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -214,6 +214,7 @@ push_call("_blk_rule_tr_get_0",base);
     idxr0(1);
     idxr0(1);
     lt();
+    cmp_366:;
     if(flag()){
     push(&TRUE);
     }else{
@@ -224,6 +225,7 @@ push_call("_blk_rule_tr_get_0",base);
     idxr0(1);
     idxr0(1);
     eqeq();
+    cmp_393:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -232,6 +234,7 @@ push_call("_blk_rule_tr_get_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     gt();
+    cmp_415:;
     }
     }
 //
@@ -294,6 +297,7 @@ push_call("rule_df_del",base);
     push_symbol(_st_rule_df_ptr());//global
     _clp_len(1);
     lteq();
+    cmp_578:;
     if(!flag()) goto lab_4_2;
         line(88);
         line(83);
@@ -304,6 +308,7 @@ push_call("rule_df_del",base);
         idxr0(1);
         push_symbol(base+0);//symbol
         eqeq();
+        cmp_615:;
         if(!flag()) goto if_5_1;
             line(84);
             push_symbol(_st_rule_df_ptr());//global
@@ -399,6 +404,7 @@ push_call("_blk_rule_df_get_0",base);
     idxr0(1);
     idxr0(1);
     lt();
+    cmp_805:;
     if(flag()){
     push(&TRUE);
     }else{
@@ -409,6 +415,7 @@ push_call("_blk_rule_df_get_0",base);
     idxr0(1);
     idxr0(1);
     eqeq();
+    cmp_832:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -417,6 +424,7 @@ push_call("_blk_rule_df_get_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     lt();
+    cmp_854:;
     }
     }
 //
@@ -445,6 +453,7 @@ push_call("rule_search",base);
     push_symbol(base+2);//cx
     push(&NIL);
     eqeq();
+    cmp_968:;
     if(!flag()) goto if_7_1;
         line(125);
         push(&ONE);
@@ -486,6 +495,7 @@ push_call("rule_search",base);
     push_symbol(base+3);//nlow
     push_symbol(base+4);//nhigh
     lteq();
+    cmp_1083:;
     if(!flag()) goto lab_8_2;
         line(139);
         push_symbol(base+3);//nlow
@@ -509,6 +519,7 @@ push_call("rule_search",base);
         push_symbol(base+6);//val1
         push_symbol(base+5);//val0
         gteq();
+        cmp_1152:;
         if(!flag()) goto if_9_1;
             line(143);
             push_symbol(base+8);//i
@@ -612,6 +623,7 @@ push_call("cx_tr_get",base);
     push_symbol(_st_cx_tr_ptr());//global
     push(&NIL);
     eqeq();
+    cmp_1383:;
     if(!flag()) goto if_11_1;
         line(183);
         number(257);
@@ -647,6 +659,7 @@ push_call("cx_df_get",base);
     push_symbol(_st_cx_df_ptr());//global
     push(&NIL);
     eqeq();
+    cmp_1466:;
     if(!flag()) goto if_12_1;
         line(192);
         number(257);
@@ -710,6 +723,7 @@ push_call("cx_set",base);
         idxr();
         push(&NIL);
         eqeq();
+        cmp_1648:;
         if(!flag()) goto if_14_1;
             line(212);
             push_symbol(base+4);//n
@@ -751,6 +765,7 @@ push_call("cx_set",base);
         idxr();
         push(&NIL);
         eqeq();
+        cmp_1727:;
         if(!flag()) goto if_16_1;
             line(219);
             push_symbol(base+5);//p

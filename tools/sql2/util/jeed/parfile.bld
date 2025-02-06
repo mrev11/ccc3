@@ -12,5 +12,7 @@
 -bccc$(CCCVER)_socket
 -bccc$(CCCVER)_sslsocket
 -bccc$(CCCVER)_btbtx
+-bssl
+-bcrypto
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin

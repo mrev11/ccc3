@@ -1,4 +1,4 @@
-//input: clinput.ppo (5.6.0)
+//input: ppo/clinput.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -316,6 +316,7 @@ push_call("inputini",base);
     push_symbol(base+2);//toklist
     push(&NIL);
     neeq();
+    cmp_680:;
     if(!flag()) goto if_1_1;
         line(61);
         push_symbol(base+0);//this
@@ -347,6 +348,7 @@ push_call("inputnext",base);
     push_symbol(base+1);//n
     push(&NIL);
     eqeq();
+    cmp_755:;
     if(!flag()) goto if_2_1;
         line(73);
         push_symbol(base+0);//this
@@ -371,6 +373,7 @@ push_call("inputnext",base);
     push(&ONE);
     push_symbol(base+2);//x
     lteq();
+    cmp_818:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -379,6 +382,7 @@ push_call("inputnext",base);
     _o_method_buffer.eval(1);
     _clp_len(1);
     lteq();
+    cmp_825:;
     }
     if(!flag()) goto if_3_1;
         line(79);
@@ -417,6 +421,7 @@ push_call("inputget",base);
     push(&ONE);
     push_symbol(base+1);//x
     lteq();
+    cmp_920:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -425,6 +430,7 @@ push_call("inputget",base);
     _o_method_buffer.eval(1);
     _clp_len(1);
     lteq();
+    cmp_927:;
     }
     if(!flag()) goto if_4_1;
         line(88);
@@ -473,12 +479,14 @@ push_call("inputunget",base);
     push_symbol(base+4);//typt
     string(L"A");
     eqeq();
+    cmp_1050:;
     if(!flag()) goto if_5_1;
         line(102);
         line(100);
         push_symbol(base+2);//lent
         push(&NIL);
         eqeq();
+        cmp_1064:;
         if(!flag()) goto if_6_1;
             line(101);
             push_symbol(base+1);//t
@@ -510,6 +518,7 @@ push_call("inputunget",base);
     _o_method_bufidx.eval(1);
     push_symbol(base+2);//lent
     lt();
+    cmp_1152:;
     if(!flag()) goto if_7_1;
         line(111);
         push_symbol(base+0);//this

@@ -1,4 +1,4 @@
-//input: filecopy.ppo (5.6.0)
+//input: ppo/filecopy.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -47,6 +47,7 @@ push_call("filecopy",base);
     push_symbol(base+3);//fd1
     push(&ZERO);
     lt();
+    cmp_118:;
     if(!flag()) goto if_1_1;
         line(34);
         push(&ZERO);
@@ -67,6 +68,7 @@ push_call("filecopy",base);
     push_symbol(base+4);//fd2
     push(&ZERO);
     lt();
+    cmp_180:;
     if(!flag()) goto if_2_1;
         line(40);
         push_symbol(base+3);//fd1
@@ -97,6 +99,7 @@ push_call("filecopy",base);
     push_symbol(base+6);//nr
     push(&ZERO);
     gt();
+    cmp_288:;
     if(!flag()) goto lab_3_2;
         line(47);
         push_symbol(base+8);//nbyte
@@ -113,6 +116,7 @@ push_call("filecopy",base);
         push_symbol(base+7);//nw
         push_symbol(base+6);//nr
         neeq();
+        cmp_341:;
         if(!flag()) goto if_4_1;
             line(49);
             goto lab_3_2;//exit
@@ -141,6 +145,7 @@ push_call("filecopy",base);
     push_symbol(base+2);//st1
     push(&NIL);
     neeq();
+    cmp_441:;
     if(!flag()) goto if_5_1;
         line(58);
         push_symbol(base+1);//ftarget

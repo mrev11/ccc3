@@ -13,6 +13,6 @@ echo -Wno-deprecated-declarations       >>obj$CCCBIN/gtk-cflags
 
 pkg-config --libs   gtk+-3.0            >obj$CCCBIN/gtk-libs
 
-bapp_unix0.b  @parfile.bld
+c++app.sh  @parfile.bld
 
 

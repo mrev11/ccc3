@@ -1,4 +1,4 @@
-//input: dbdefine.ppo (5.6.0)
+//input: ppo/dbdefine.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -45,6 +45,7 @@ push_call("define",base);
     push_symbol(base+2);//lentok
     push(&ONE);
     lt();
+    cmp_125:;
     if(!flag()) goto if_1_1;
         line(33);
         string(nls_text(L"Invalid #define"));
@@ -56,6 +57,7 @@ push_call("define",base);
     push_symbol(base+2);//lentok
     push(&ONE);
     eqeq();
+    cmp_155:;
     if(!flag()) goto if_1_2;
         line(36);
         push_symbol(base+1);//toklist
@@ -74,6 +76,7 @@ push_call("define",base);
     idxr0(2);
     binary("(");
     eqeq();
+    cmp_208:;
     if(!flag()) goto if_1_3;
         line(42);
         push_symbol(base+1);//toklist
@@ -99,6 +102,7 @@ push_call("define",base);
             idxr();
             binary(" ");
             eqeq();
+            cmp_266:;
             if(!flag()) goto if_3_1;
             goto if_3_0;
             if_3_1:
@@ -108,6 +112,7 @@ push_call("define",base);
             idxr();
             binary(")");
             eqeq();
+            cmp_287:;
             if(!flag()) goto if_3_2;
                 line(47);
                 push_symbol(base+5);//left
@@ -143,6 +148,7 @@ push_call("define",base);
         push_symbol(base+3);//n
         push_symbol(base+2);//lentok
         gt();
+        cmp_371:;
         if(!flag()) goto if_4_1;
             line(56);
             string(nls_text(L"Invalid #define"));
@@ -155,6 +161,7 @@ push_call("define",base);
         push_symbol(base+3);//n
         push_symbol(base+2);//lentok
         lt();
+        cmp_408:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -164,6 +171,7 @@ push_call("define",base);
         idxr();
         binary(" ");
         eqeq();
+        cmp_424:;
         }
         if(!flag()) goto if_5_1;
             line(61);
@@ -256,6 +264,7 @@ push_call("define",base);
             push_symbol(base+9);//tt
             binary("_");
             eqeq();
+            cmp_622:;
             }
             if(!flag()) goto if_8_1;
                 line(89);
@@ -275,6 +284,7 @@ push_call("define",base);
                     push_symbol(base+4);//i
                     idxr();
                     eqeq();
+                    cmp_652:;
                     if(!flag()) goto if_10_1;
                         line(86);
                         line(81);
@@ -328,6 +338,7 @@ push_call("define",base);
             push_symbol(base+10);//token
             binary("#");
             eqeq();
+            cmp_802:;
             assign(base+11);//strflag
             pop();
         lab_7_1:
@@ -383,6 +394,7 @@ push_call("define",base);
         idxr0(2);
         binary(" ");
         eqeq();
+        cmp_909:;
         topnot();
         if(flag()){
         number(2);

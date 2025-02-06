@@ -1,0 +1,12 @@
+
+if [ -z "$BUILD_CACHE" ]; then
+    BUILD_CACHE=~/.cache/build
+    mkdir -p $BUILD_CACHE
+fi
+
+if [ -n "$sum" ] &&  [ -f $TARGET ] && [ -d "$BUILD_CACHE" ];then
+    #store object in cache
+    cp $TARGET $BUILD_CACHE/$sum
+fi
+echo
+quit 0

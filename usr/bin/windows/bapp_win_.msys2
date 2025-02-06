@@ -1,5 +1,0 @@
-#!/bin/bash
-. $CCCDIR/usr/bin/windows/__msys2.msys2
-export BUILD_LIB=ccc${CCCVER},ccc${CCCVER}_ui_
-build.exe "$@"
-

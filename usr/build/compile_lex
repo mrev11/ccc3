@@ -1,0 +1,12 @@
+
+OUT=out--lex2cpp-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+if ! flex.exe $BUILD_LEX -oppo/$1.cpp  $SOURCE 1>$OUT 2>&1; then
+    quit 1
+fi
+rm -f $OUT
+
+SOURCE=ppo/$1.cpp
+

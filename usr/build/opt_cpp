@@ -1,0 +1,19 @@
+
+#set -x
+
+CMPOPT=$BUILD_OBJ/opt--cpp-$1
+mkdir -p ${CMPOPT%/*}
+rm -f $CMPOPT
+
+cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/cppver.opt    >>$CMPOPT
+cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/$BUILD_OPT    >>$CMPOPT
+if [ -n "$TERMUX_VERSION" ]; then
+  cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/android.opt >>$CMPOPT
+fi
+for i in $BUILD_INC; do 
+    echo -I$i | tr '\\' '/' | tr -d '\r'                >>$CMPOPT
+done
+if [ -f "$BUILD_CFG" ]; then
+    cat $BUILD_CFG                                      >>$CMPOPT
+fi
+

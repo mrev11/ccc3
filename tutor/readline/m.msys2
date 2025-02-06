@@ -1,2 +1,0 @@
-#!/bin/bash
-bapp_win_.msys2  'BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)' 

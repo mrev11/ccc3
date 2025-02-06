@@ -2,5 +2,5 @@
 mkdir exe-db2  2>/dev/null
 cp -p start-scripts/*.b exe-db2 2>/dev/null
 
-bapp_unixc.b  @parfile-d.bld
+cccapp_term.sh  @parfile-d.bld
 

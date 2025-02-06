@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix0.b   -xhello  -xsizes  @parfile.bld
+c++app.sh   -xhello  -xsizes  @parfile.bld

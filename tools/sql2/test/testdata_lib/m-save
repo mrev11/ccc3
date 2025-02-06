@@ -10,5 +10,5 @@ $GENSCRIPT ../testdata/c.bt  -n testdata.c  -t konto.c  -p name
 
 mkentitylib.exe --prgdir code_generated  testdata
 
-bapp_unix_.b  -dcode_generated  -ltestdata_lib
+cccapp.sh  -dcode_generated  -ltestdata_lib
 

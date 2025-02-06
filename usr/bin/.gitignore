@@ -1,0 +1,10 @@
+
+# itt sok symlink keletkezik
+# a felsoroltakon kivul mindent ignoral
+
+*
+
+!*.sh
+!*.ico
+!*.svg
+!*.xpm

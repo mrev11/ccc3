@@ -1,13 +1,23 @@
-//input: ascan.ppo (5.6.0)
+//input: ppo/ascan.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
 static void _blk__asort_ascendblock_0(int argno);
 extern void _clp__asort_ascendblock(int argno);
+extern void _clp_aadd(int argno);
+extern void _clp_acat(int argno);
 extern void _clp_acopy(int argno);
+extern void _clp_addel(int argno);
+extern void _clp_adel(int argno);
 extern void _clp_aeval(int argno);
 extern void _clp_afill(int argno);
+extern void _clp_aiins(int argno);
+extern void _clp_ains(int argno);
+extern void _clp_apop(int argno);
+extern void _clp_apush(int argno);
+extern void _clp_arev(int argno);
 extern void _clp_ascan(int argno);
+extern void _clp_asize(int argno);
 extern void _clp_eval(int argno);
 extern void _clp_len(int argno);
 extern void _clp_min(int argno);
@@ -31,6 +41,7 @@ push_call("ascan",base);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
+    cmp_55:;
     if(!flag()) goto if_1_1;
         line(27);
         push(&ONE);
@@ -43,6 +54,7 @@ push_call("ascan",base);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
+    cmp_88:;
     if(!flag()) goto if_2_1;
         line(31);
         push_symbol(base+0);//arr
@@ -67,6 +79,7 @@ push_call("ascan",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
+    cmp_178:;
     if(!flag()) goto if_3_1;
         line(43);
         {
@@ -130,6 +143,7 @@ push_call("ascan",base);
             idxr();
             push_symbol(base+1);//blk
             neeq();
+            cmp_304:;
             topnot();
             if(!flag()) goto if_7_1;
                 line(55);
@@ -175,6 +189,7 @@ push_call("aeval",base);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
+    cmp_402:;
     if(!flag()) goto if_8_1;
         line(69);
         push(&ONE);
@@ -187,6 +202,7 @@ push_call("aeval",base);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
+    cmp_435:;
     if(!flag()) goto if_9_1;
         line(73);
         push_symbol(base+0);//arr
@@ -223,7 +239,8 @@ push_call("aeval",base);
         push_symbol(base+0);//arr
         push_symbol(base+4);//i
         idxr();
-        _clp_eval(2);
+        push_symbol(base+4);//i
+        _clp_eval(3);
         pop();
     lab_10_1:
     push(&ONE);
@@ -258,6 +275,7 @@ push_call("afill",base);
     push_symbol(base+2);//st
     push(&NIL);
     eqeq();
+    cmp_618:;
     if(!flag()) goto if_11_1;
         line(90);
         push(&ONE);
@@ -270,6 +288,7 @@ push_call("afill",base);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
+    cmp_651:;
     if(!flag()) goto if_12_1;
         line(94);
         push_symbol(base+0);//arr
@@ -340,6 +359,7 @@ push_call("acopy",base);
     push_symbol(base+2);//stsrc
     push(&NIL);
     eqeq();
+    cmp_821:;
     if(!flag()) goto if_14_1;
         line(111);
         push(&ONE);
@@ -352,6 +372,7 @@ push_call("acopy",base);
     push_symbol(base+4);//sttrg
     push(&NIL);
     eqeq();
+    cmp_854:;
     if(!flag()) goto if_15_1;
         line(115);
         push(&ONE);
@@ -364,6 +385,7 @@ push_call("acopy",base);
     push_symbol(base+3);//cn
     push(&NIL);
     eqeq();
+    cmp_887:;
     if(!flag()) goto if_16_1;
         line(119);
         push_symbol(base+0);//asrc
@@ -434,6 +456,270 @@ push(&NIL);
 pop_call();
 }
 //=======================================================================
+void _clp_aiins(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,3);
+while(stack<base+3)PUSHNIL();
+argno=3;
+push_call("aiins",base);
+//
+    line(134);
+    push_symbol(base+0);//a
+    push_symbol(base+0);//a
+    _clp_len(1);
+    addnum(1);
+    _clp_asize(2);
+    pop();
+    line(135);
+    push_symbol(base+0);//a
+    push_symbol(base+1);//x
+    _clp_ains(2);
+    pop();
+    line(136);
+    push_symbol(base+2);//v
+    push_symbol(base+0);//a
+    push_symbol(base+1);//x
+    assign2(idxxl());
+    pop();
+    line(137);
+    push_symbol(base+0);//a
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_addel(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+2)PUSHNIL();
+argno=2;
+push_call("addel",base);
+//
+    line(142);
+    push_symbol(base+0);//a
+    push_symbol(base+1);//x
+    _clp_adel(2);
+    pop();
+    line(143);
+    push_symbol(base+0);//a
+    push_symbol(base+0);//a
+    _clp_len(1);
+    addnum(-1);
+    _clp_asize(2);
+    pop();
+    line(144);
+    push_symbol(base+0);//a
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_apush(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+2)PUSHNIL();
+argno=2;
+push_call("apush",base);
+//
+    line(149);
+    push_symbol(base+0);//a
+    push_symbol(base+1);//v
+    _clp_aadd(2);
+    pop();
+    line(150);
+    push_symbol(base+1);//v
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_apop(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+3)PUSHNIL();
+argno=1;
+push_call("apop",base);
+//
+    line(155);
+    push_symbol(base+0);//a
+    _clp_len(1);
+    assign(base+1);//len
+    pop();
+    line(159);
+    line(156);
+    push_symbol(base+1);//len
+    push(&ONE);
+    gteq();
+    cmp_1338:;
+    if(!flag()) goto if_18_1;
+        line(157);
+        push_symbol(base+0);//a
+        push_symbol(base+1);//len
+        idxr();
+        assign(base+2);//v
+        pop();
+        line(158);
+        push_symbol(base+0);//a
+        push_symbol(base+1);//len
+        addnum(-1);
+        _clp_asize(2);
+        pop();
+    if_18_1:
+    if_18_0:;
+    line(160);
+    push_symbol(base+2);//v
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_arev(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+4)PUSHNIL();
+argno=1;
+push_call("arev",base);
+//
+    line(165);
+    push_symbol(base+0);//a
+    _clp_len(1);
+    assign(base+1);//len
+    pop();
+    line(170);
+    {
+    line(166);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+2);//n
+    lab_19_0:
+    push_symbol(base+1);//len
+    number(2);
+    div();
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_19_2;
+        line(167);
+        push_symbol(base+0);//a
+        push_symbol(base+2);//n
+        idxr();
+        assign(base+3);//x
+        pop();
+        line(168);
+        push_symbol(base+0);//a
+        push_symbol(base+1);//len
+        push_symbol(base+2);//n
+        sub();
+        addnum(1);
+        idxr();
+        push_symbol(base+0);//a
+        push_symbol(base+2);//n
+        assign2(idxxl());
+        pop();
+        line(169);
+        push_symbol(base+3);//x
+        push_symbol(base+0);//a
+        push_symbol(base+1);//len
+        push_symbol(base+2);//n
+        sub();
+        addnum(1);
+        assign2(idxxl());
+        pop();
+    lab_19_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+2);//n
+    add();
+    assign(base+2);//n
+    goto lab_19_0;
+    lab_19_2:;
+    }
+    line(171);
+    push_symbol(base+0);//a
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_acat(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+5)PUSHNIL();
+argno=2;
+push_call("acat",base);
+//
+    line(176);
+    line(177);
+    push_symbol(base+0);//a
+    _clp_len(1);
+    assign(base+2);//lena
+    pop();
+    line(178);
+    push_symbol(base+1);//b
+    _clp_len(1);
+    assign(base+3);//lenb
+    pop();
+    line(179);
+    push_symbol(base+0);//a
+    push_symbol(base+2);//lena
+    push_symbol(base+3);//lenb
+    add();
+    _clp_asize(2);
+    pop();
+    line(182);
+    {
+    line(180);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+4);//n
+    lab_20_0:
+    push_symbol(base+3);//lenb
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_20_2;
+        line(181);
+        push_symbol(base+1);//b
+        push_symbol(base+4);//n
+        idxr();
+        push_symbol(base+0);//a
+        push_symbol(base+2);//lena
+        push_symbol(base+4);//n
+        add();
+        assign2(idxxl());
+        pop();
+    lab_20_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+4);//n
+    add();
+    assign(base+4);//n
+    goto lab_20_0;
+    lab_20_2:;
+    }
+    line(183);
+    push_symbol(base+0);//a
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
 void _clp__asort_ascendblock(int argno)
 {
 VALUE *base=stack-argno;
@@ -442,7 +728,7 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("_asort_ascendblock",base);
 //
-    line(134);
+    line(188);
     block(_blk__asort_ascendblock_0,0);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -462,6 +748,7 @@ push_call("_blk__asort_ascendblock_0",base);
     push_symbol(base+1);//x
     push_symbol(base+2);//y
     lt();
+    cmp_1714:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }

@@ -6,7 +6,7 @@ for MSK in *.msk; do
 done
 
 
-bapp_unix_.b @parfile.bld
+cccapp.sh @parfile.bld
 
 
 proba.exe

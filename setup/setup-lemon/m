@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LEMON_PATH=$CCCDIR/usr/bin/$CCCUNAME
+LEMON_PATH=$CCCDIR/usr/bin
 LEMON_EXE=$LEMON_PATH/lemon.exe
 
 CFLAGS=

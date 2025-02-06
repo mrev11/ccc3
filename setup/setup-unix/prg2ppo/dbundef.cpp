@@ -1,4 +1,4 @@
-//input: dbundef.ppo (5.6.0)
+//input: ppo/dbundef.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -28,6 +28,7 @@ push_call("undef",base);
     _clp_len(1);
     push(&ZERO);
     gt();
+    cmp_65:;
     if(flag()){
     push_symbol(base+1);//toklist
     idxr0(1);

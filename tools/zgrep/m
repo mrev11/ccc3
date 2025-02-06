@@ -1,4 +1,4 @@
 #!/bin/bash
-bapp_unixc.b @parfile.bld
+cccapp_term.sh @parfile.bld
 
 #ldd `which zgrep.exe`

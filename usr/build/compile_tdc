@@ -1,0 +1,12 @@
+
+OUT=out--tdc2prg-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+cp -f $SOURCE ppo/$1.tdc
+if ! tdc2prgch.exe --prg  ppo/$1.tdc  2>$OUT; then
+    quit 1
+fi
+rm -f $OUT ppo/$1.tdc
+
+SOURCE=ppo/$1.prg

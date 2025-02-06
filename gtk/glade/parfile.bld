@@ -1,5 +1,10 @@
+-sccc3_glade 
+
 -bccc3_xmldom 
 -bccc3_gtk
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+
+
+BUILD_BINDIR=$(CCCDIR)/usr/bin
+BUILD_LIBDIR=$(CCCDIR)/usr/lib/$(CCCBIN)
 

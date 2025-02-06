@@ -1,5 +1,5 @@
 -sccc${CCCVER}_tds
 -bccc${CCCVER}_xmldom.lib
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin
 BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}

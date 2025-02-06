@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cp -p ${CCCDIR}/ccclib/ppo/alert.cpp
+cp -p ${CCCDIR}/ccclib/ppo/ascan.cpp
+cp -p ${CCCDIR}/ccclib/ppo/class.cpp
+cp -p ${CCCDIR}/ccclib/ppo/day.cpp
+cp -p ${CCCDIR}/ccclib/ppo/deferror.cpp
+cp -p ${CCCDIR}/ccclib/ppo/directory.cpp
+cp -p ${CCCDIR}/ccclib/ppo/direxist.cpp
+cp -p ${CCCDIR}/ccclib/ppo/memoread.cpp
+cp -p ${CCCDIR}/ccclib/ppo/o_error.cpp
+cp -p ${CCCDIR}/ccclib/ppo/o_object.cpp
+cp -p ${CCCDIR}/ccclib/ppo/set.cpp
+cp -p ${CCCDIR}/ccclib/ppo/setcursor.cpp
+cp -p ${CCCDIR}/ccclib/ppo/simplehash.cpp
+cp -p ${CCCDIR}/ccclib/ppo/split.cpp
+cp -p ${CCCDIR}/ccclib/ppo/strtran.cpp

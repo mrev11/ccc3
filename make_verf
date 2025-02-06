@@ -1,10 +1,39 @@
 #!/bin/bash
+#set -x
 
-# linux bash script
-if [ "${MSYSTEM}" == "MSYS" ]; then
-    echo "script cannot run in MSYS2"
-    exit 1
+
+if [ -n "$MSYSTEM"  ];then
+    if [ "${MSYSTEM}" == "MINGW64" ]; then
+        : ok
+    elif [ "${MSYSTEM}" == "UCRT64" ]; then
+        : ok
+    elif [ "${MSYSTEM}" == "CLANG64" ]; then
+        : ok
+    else
+        echo "required msys2 subsystem: MINGW64/CLANG64/UCRT64"
+        exit 1
+    fi
+    
+    if [ "${MINGW_PREFIX}" == "" ]; then
+        # ha be van allitva MSYSTEM
+        # akkor az msys2 beallitja MINGW_PREFIX-et
+        #   MSYS    -> MINGW_PREFIX=/usr
+        #   MINGW64 -> MINGW_PREFIX=/mingw64
+        #   UCRT64  -> MINGW_PREFIX=/ucrt64
+        echo MSYSTEM=${MSYSTEM}
+        echo MINGW_PREFIX variable not set
+        exit 1
+    fi
+    
+    if ! test -x ${MINGW_PREFIX}/bin/c++; then
+        echo c++ compiler not configured
+        echo MSYSTEM=${MSYSTEM}
+        echo MINGW_PREFIX=${MINGW_PREFIX}
+        which c++
+        exit 1
+    fi
 fi
+
 
 
 if [ "${CCCVER}" != "$1" ]; then
@@ -14,23 +43,23 @@ fi
 
 touch cccdir
 if [ ! $CCCDIR/cccdir -ef cccdir ]; then
-    rm cccdir
+    rm  cccdir
     echo "script must start from CCCDIR as working directory"
     exit 1
 else
     rm cccdir
 fi
 
-if  ! test -f ./usr/bin/$CCCUNAME/__unix.b; then
-    echo "CCCDIR/usr/bin/CCCUNAME/__unix.b not found"
-    echo "CCCUNAME (=${CCCUNAME}) environment variable not properly set"
+if  ! test -f ./usr/build/prg2obj.bld; then
+    echo "CCCDIR/usr/build/prg2obj.bld not found"
+    echo "CCCDIR (=${CCCDIR}) environment variable not properly set"
     exit 1
 fi
 
-if  ! test -f ./usr/options/$CCCBIN/compile.opt; then
-    echo "CCCDIR/usr/options/CCCBIN/compile.opt not found"
-    echo "CCCBIN (=${CCCBIN}) environment variable not properly set"
+if  ! test -f ./usr/options/$CCCUNAME/$CCCBIN/compile.opt; then
+    echo "CCCDIR/usr/options/CCCUNAME/CCCBIN/compile.opt not found"
+    echo "CCCBIN(=${CCCBIN}) environment variable not properly set"
     exit 1
 fi
 
-. cppver.b
+. _cpp_version.sh

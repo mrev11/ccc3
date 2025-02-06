@@ -1,4 +1,4 @@
-//input: setcursor.ppo (5.6.0)
+//input: ppo/setcursor.ppo (5.7.0.1)
 
 #include <cccdef.h>
 

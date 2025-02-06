@@ -18,6 +18,6 @@
 -bXpm
 
 
-BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+BUILD_EXE=$(CCCDIR)/usr/bin
 BUILD_CFG=compopt.ext
 

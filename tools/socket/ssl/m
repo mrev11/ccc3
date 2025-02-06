@@ -1,6 +1,6 @@
 #!/bin/bash
 export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
-bapp_unix0.b  -d. -dunix  -sccc"$CCCVER"_sslsocket  -bssl
+c++app.sh  -d. -dunix  -sccc"$CCCVER"_sslsocket  -bssl
 
 cp -pf ssl.ch  $CCCDIR/usr/include

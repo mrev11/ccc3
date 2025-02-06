@@ -1,6 +1,8 @@
 #!/bin/bash
 
-
+if ! [ -f /usr/include/X11/Xlib.h ]; then
+    exit 0
+fi
 if [ "$CCCVER" == "2"  ];then
     :;#ok
 elif [ "$CCCVER" == "3"  ];then
@@ -14,5 +16,5 @@ else
     exit 1
 fi
 
-bapp_unix0.b @parfile.bld
+c++app.sh @parfile.bld
 

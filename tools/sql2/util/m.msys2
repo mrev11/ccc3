@@ -1,7 +1,0 @@
-#!/bin/bash
-
-( cd  bt2tds        &&  m.msys2 )
-( cd  mkentitylib   &&  m.msys2 )
-( cd  tdsutil       &&  m.msys2 )
-( cd  jeed          &&  m.msys2 )
-

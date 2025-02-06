@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix0.b -xtest -d. -d.. -btermkey
+c++app.sh -xtest -d. -d.. -btermkey

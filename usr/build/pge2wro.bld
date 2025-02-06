@@ -1,0 +1,20 @@
+#!/bin/bash
+echo PGE2WRO.BAT $1 $2
+#set -x
+
+TARGET=$2/$1.wro
+OUT=out--pge2wro-$1
+rm -f $TARGET $OUT
+
+if [ -e $2/$1.sor ]; then
+   pge2wro.exe -r $2/$1.sor $2/$1   2>&1 $OUT
+else
+   pge2wro.exe              $2/$1   2>&1 $OUT
+fi
+
+ERR=$(cat $OUT)
+if [ -n "$ERR" ]; then
+    quit 1
+fi
+
+quit 0

@@ -1,3 +1,3 @@
 #!/bin/bash
-bapp_unixc_btbtx.b
+cccapp_term.sh -bccc${CCCVER}_btbtx -bccc${CCCVER}_btbtxui
 

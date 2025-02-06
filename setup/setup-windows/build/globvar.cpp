@@ -1,4 +1,4 @@
-//input: globvar.ppo (5.6.0)
+//input: ppo/globvar.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -37,6 +37,7 @@ push_call("s_main",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_37:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_main
     }else{
@@ -64,6 +65,7 @@ push_call("s_libnam",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_87:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libnam
     }else{
@@ -91,6 +93,7 @@ push_call("s_shared",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_137:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_shared
     }else{
@@ -118,6 +121,7 @@ push_call("s_srcdir",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_187:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_srcdir
     }else{
@@ -145,6 +149,7 @@ push_call("s_incdir",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_237:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_incdir
     }else{
@@ -172,6 +177,7 @@ push_call("s_libdir",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_287:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libdir
     }else{
@@ -199,6 +205,7 @@ push_call("s_libfil",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_337:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libfil
     }else{
@@ -226,6 +233,7 @@ push_call("s_quiet",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_390:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_quiet
     }else{
@@ -253,6 +261,7 @@ push_call("s_version",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_443:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_version
     }else{
@@ -280,6 +289,7 @@ push_call("s_debug",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_496:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_debug
     }else{
@@ -307,6 +317,7 @@ push_call("s_dry",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_549:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_dry
     }else{
@@ -334,6 +345,7 @@ push_call("s_primary",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_599:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_primary
     }else{
@@ -361,6 +373,7 @@ push_call("s_resource",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_649:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_resource
     }else{
@@ -388,6 +401,7 @@ push_call("s_libspec",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_699:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libspec
     }else{
@@ -484,6 +498,7 @@ push_call("s_rules",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_1130:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_rules
     }else{
@@ -511,6 +526,7 @@ push_call("s_batext",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_1180:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_batext
     }else{
@@ -544,6 +560,7 @@ push_call("resource_hash",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_1238:;
     if(flag()){
     push_symbol(_st_xx.ptr);//resource_hash
     }else{
@@ -577,6 +594,7 @@ push_call("omitted_hash",base);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
+    cmp_1296:;
     if(flag()){
     push_symbol(_st_xx.ptr);//omitted_hash
     }else{

@@ -1,6 +1,6 @@
 #!/bin/bash
 tran2cpp.exe nlstext.ru.tran  nlstext.ru.cpp
-bapp_unix_.b -snlstext.ru
+cccapp.sh -snlstext.ru
 
 #az LD_LIBRARY_PATH-ba kell tenni
 cp -pf obj$CCCBIN/*.so  ..

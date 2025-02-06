@@ -1,4 +1,4 @@
-//input: fspec.ppo (5.6.0)
+//input: ppo/fspec.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -93,6 +93,7 @@ push_call("fname",base);
     push_symbol(base+1);//extpos
     push_symbol(base+2);//slpos
     gt();
+    cmp_222:;
     if(!flag()) goto if_1_1;
         line(39);
         push_symbol(base+0);//name
@@ -145,6 +146,7 @@ push_call("fpath0",base);
     push(&ZERO);
     push_symbol(base+1);//slpos
     lt();
+    cmp_372:;
     if(!flag()) goto if_2_1;
         line(50);
         push_symbol(base+0);//name
@@ -181,6 +183,7 @@ push_call("fpath",base);
     push(&ZERO);
     push_symbol(base+1);//slpos
     lt();
+    cmp_464:;
     if(!flag()) goto if_3_1;
         line(59);
         push_symbol(base+0);//name
@@ -222,6 +225,7 @@ push_call("fext",base);
     push_symbol(base+1);//extpos
     push_symbol(base+2);//slpos
     gt();
+    cmp_578:;
     if(!flag()) goto if_4_1;
         line(69);
         push_symbol(base+0);//name

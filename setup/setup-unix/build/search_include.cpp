@@ -1,4 +1,4 @@
-//input: search_include.ppo (5.6.0)
+//input: ppo/search_include.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -65,6 +65,7 @@ push_call("search_include",base);
     assign(base+7);//n1
     push(&ZERO);
     gt();
+    cmp_153:;
     if(!flag()) goto lab_1_2;
         line(34);
         line(32);
@@ -77,6 +78,7 @@ push_call("search_include",base);
         _clp_at(3);
         assign(base+8);//n2
         eqeq();
+        cmp_167:;
         if(!flag()) goto if_2_1;
             line(33);
             push_symbol(base+0);//txt
@@ -119,6 +121,7 @@ push_call("search_include",base);
         _clp_left(2);
         string(L"\"");
         eqeq();
+        cmp_360:;
         if(!flag()) goto if_3_1;
             line(41);
             string(L"\"");
@@ -132,6 +135,7 @@ push_call("search_include",base);
         _clp_left(2);
         string(L"<");
         eqeq();
+        cmp_401:;
         if(!flag()) goto if_3_2;
             line(43);
             string(L">");
@@ -153,6 +157,7 @@ push_call("search_include",base);
         _clp_at(3);
         assign(base+11);//dpos
         eqeq();
+        cmp_443:;
         if(!flag()) goto if_4_1;
             line(49);
             goto lab_1_1;//loop
@@ -229,6 +234,7 @@ push_call("byhand",base);
     push_symbol(base+4);//pn
     push(&NIL);
     neeq();
+    cmp_756:;
     if(!flag()) goto if_6_1;
         line(79);
         push_symbol(base+1);//dep
@@ -279,6 +285,7 @@ push_call("byrules",base);
     push_symbol(base+5);//e
     string(L".ch");
     eqeq();
+    cmp_924:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -286,6 +293,7 @@ push_call("byrules",base);
     idxr0(1);
     string(L"_");
     eqeq();
+    cmp_937:;
     topnot();
     }
     if(!flag()) goto if_7_1;
@@ -313,6 +321,7 @@ push_call("byrules",base);
         idxr0(2);
         push_symbol(base+5);//e
         eqeq();
+        cmp_1009:;
         if(!flag()) goto if_9_1;
             line(109);
             _clp_s_rules(0);
@@ -331,6 +340,7 @@ push_call("byrules",base);
             idxr();
             assign(base+7);//r
             neeq();
+            cmp_1048:;
             if(!flag()) goto if_10_1;
                 line(115);
                 push_symbol(base+7);//r
@@ -357,6 +367,7 @@ push_call("byrules",base);
                 _clp_ascan(2);
                 assign(base+10);//x
                 eqeq();
+                cmp_1131:;
                 if(!flag()) goto if_11_1;
                     line(118);
                     push_symbol(base+3);//todo
@@ -386,6 +397,7 @@ push_call("byrules",base);
                 block(_blk_byrules_1,3);
                 _clp_ascan(2);
                 eqeq();
+                cmp_1245:;
                 if(!flag()) goto if_11_2;
                     line(120);
                     push_symbol(base+3);//todo
@@ -444,6 +456,7 @@ push_call("_blk_byrules_0",base);
     push_symbol(env+2);//e
     add();
     eqeq();
+    cmp_1159:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -464,6 +477,7 @@ push_call("_blk_byrules_1",base);
     push_symbol(env+2);//e0
     add();
     eqeq();
+    cmp_1269:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -543,6 +557,7 @@ push_call("adddep",base);
     block(_blk_adddep_0,1);
     _clp_ascan(2);
     eqeq();
+    cmp_1531:;
     if(!flag()) goto if_14_1;
         line(150);
         push_symbol(base+0);//dep
@@ -569,6 +584,7 @@ push_call("_blk_adddep_0",base);
     push_symbol(base+1);//d
     push_symbol(env+0);//x
     eqeq();
+    cmp_1550:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }

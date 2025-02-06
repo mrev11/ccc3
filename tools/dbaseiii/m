@@ -5,5 +5,5 @@ export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 # ha az nem megfelelo, akkor dbaseiii.lib-et kell linkelni;
 # a memokezeleshez linkelni kell a btbtx tablaobjektumot
 
-bapp_unix0.b -sccc${CCCVER}_dbaseiii
+c++app.sh -sccc${CCCVER}_dbaseiii
 

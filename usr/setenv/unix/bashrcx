@@ -1,20 +1,21 @@
 
-
 # a CCCVER valtozot vagy orokoljuk
 # vagy be kell allitani 2-re vagy 3-ra
 # export CCCVER=3
 
 echo bashrcx CCCVER=${CCCVER}
 
-#########################################################################
-
 alias ls='ls --color=auto --group-directories-first'
 alias ll='ls -l --color=auto --group-directories-first'
 alias sb='sudo -E bash'
+alias nf='neofetch'
+alias me='mcedit -d'
 
 pp()
 {
     echo $PATH | tr : \\n
+    echo
+    echo $LD_LIBRARY_PATH | tr : \\n
 }
 
 lsenv()
@@ -32,7 +33,6 @@ export EDITOR=z
 export VISUAL=mcedit
 
 
-
 # echo -e "\e]12;orange\a" # set cursor color
 # echo -e "\e]12;maroon\a" # set cursor color
 
@@ -44,10 +44,9 @@ export VISUAL=mcedit
 # export PS1='\[\033[01;36m\][\u@\h\[\033[01;37m\] \W\[\033[01;36m\]]\$ \[\033[00m\]'   #cyan
 # export PS1='\[\033[01;37m\][\u@\h\[\033[01;37m\] \W\[\033[01;37m\]]\$ \[\033[00m\]'   #white
 
-#########################################################################
-
 . ~/envccc
 
-cenv   # C++/CCC environment 
-pp     # print PATH
+pp # print PATH
+
+
 

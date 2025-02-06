@@ -9,7 +9,7 @@ echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
 
 export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
 
-bapp_unix_.b  @gtk.bld  -sccc3_gtk
+cccapp.sh  @gtk.bld  -sccc3_gtk
 
 if test -s error; then
     list error &

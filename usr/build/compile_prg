@@ -1,0 +1,11 @@
+
+OUT=out--prg2ppo-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+if ! prg2ppo.exe $SOURCE -oppo/$1.ppo @$CMPOPT >$OUT; then
+    quit 1
+fi
+rm -f $OUT
+
+SOURCE=ppo/$1.ppo

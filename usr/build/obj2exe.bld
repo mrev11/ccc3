@@ -1,0 +1,14 @@
+#!/bin/bash
+echo OBJ2EXE.BAT $1 $BUILD_EXE
+#set -x
+
+TARGET=$BUILD_EXE/$1.exe
+OUT=out--obj2exe-$1
+
+rm -f $TARGET $OUT
+
+EXENAME=$1
+
+. ${BUILD_BAT}/def_quit
+. ${BUILD_BAT}/link_exe
+

@@ -1,4 +1,4 @@
-//input: o_object.ppo (5.6.0)
+//input: ppo/o_object.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -697,6 +697,7 @@ push_call("ancestors",base);
     push_symbol(base+1);//a
     _clp_len(1);
     lteq();
+    cmp_1456:;
     if(!flag()) goto lab_5_2;
         line(114);
         push_symbol(base+1);//a
@@ -725,6 +726,7 @@ push_call("ancestors",base);
             idxr();
             _clp_ascan(2);
             eqeq();
+            cmp_1521:;
             if(!flag()) goto if_7_1;
                 line(117);
                 push_symbol(base+1);//a
@@ -808,6 +810,7 @@ push_call("isderivedfrom",base);
     _clp_valtype(1);
     string(L"N");
     neeq();
+    cmp_1725:;
     if(flag()){
     push_symbol(base+1);//o
     _clp_getclassid(1);
@@ -841,6 +844,7 @@ push_call("isderivedfrom1",base);
     push_symbol(base+1);//clb
     push_symbol(base+0);//cld
     eqeq();
+    cmp_1811:;
     if(!flag()) goto if_9_1;
         line(138);
         push(&TRUE);
@@ -921,6 +925,7 @@ push_call("evalmethod",base);
     _clp_valtype(1);
     string(L"N");
     eqeq();
+    cmp_2028:;
     if(!flag()) goto if_12_1;
         line(165);
         line(161);
@@ -928,6 +933,7 @@ push_call("evalmethod",base);
         _clp_len(1);
         push(&ONE);
         lt();
+        cmp_2050:;
         if(!flag()) goto if_13_1;
             line(162);
             push_symbol(base+0);//this

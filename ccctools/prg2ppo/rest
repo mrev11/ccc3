@@ -1,2 +1,0 @@
-#!/bin/bash
-cp $CCCDIR/usr/bin/linux/prg2ppo0.exe $CCCDIR/usr/bin/linux/prg2ppo.exe

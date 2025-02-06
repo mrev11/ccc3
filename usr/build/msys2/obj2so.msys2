@@ -1,5 +1,0 @@
-#!/bin/bash
-echo OBJ2SO.BAT $1
-echo shared libraries not supported 
-echo ----------------------------------------------------------------
-

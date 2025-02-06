@@ -1,0 +1,12 @@
+
+OUT=out--lem2cpp-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+if ! lemon.exe -q $SOURCE 1>$OUT 2>&1; then
+    quit 1
+fi
+rm -f $OUT
+
+mv  $2/$1.c ppo/$1.cpp
+SOURCE=ppo/$1.cpp

@@ -27,6 +27,13 @@
 #include <string.h>
 #include <cccapi.h>
 
+#ifdef _TERMUX_                                                                                                         
+#define  aligned_alloc  memalign                                                                                        
+// termuxon nincs  aligned_alloc()                                                                                      
+// netbsd-n nincs  memalign()                                                                                           
+// ugyanazt csinaljak                                                                                                   
+#endif      
+
 //------------------------------------------------------------------------
 static char *oneletter(int c)
 {
@@ -37,7 +44,7 @@ static char *oneletter(int c)
 
         #ifdef _UNIX_
             buffer=(char*)aligned_alloc(ps,ps);
-        #else
+         #else
             buffer=(char*)VirtualAlloc(0,ps,MEM_COMMIT,PAGE_READWRITE);
         #endif
 

@@ -1,2 +1,0 @@
-#!/bin/bash
-bapp_win_.msys2 -bccc"$CCCVER"_regex -bpcreposix -bpcre

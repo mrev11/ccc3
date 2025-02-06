@@ -1,4 +1,4 @@
-//input: outline.ppo (5.6.0)
+//input: ppo/outline.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -38,6 +38,7 @@ push_call("outline",base);
         idxr();
         assign(base+2);//token
         eqeq();
+        cmp_67:;
         if(!flag()) goto if_2_1;
             line(30);
             goto lab_1_2;//exit

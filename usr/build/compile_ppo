@@ -1,0 +1,10 @@
+
+OUT=out--ppo2cpp-$1
+rm -f $TARGET $OUT
+
+if ! ppo2cpp.exe -q $SOURCE  2>>$OUT; then
+    quit 1
+fi
+rm -f $OUT
+
+SOURCE=ppo/$1.cpp

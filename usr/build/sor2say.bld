@@ -1,0 +1,21 @@
+#!/bin/bash
+echo SOR2SAY.BAT $1 $2
+#set -x
+
+SOURCE=$2/$1.msk
+TARGET=$2/$1.say
+OUT=out--sor2say-$1
+rm -f $TARGET $OUT
+
+. ${BUILD_BAT}/def_quit
+
+msk2say.exe -r $2/$1.sor $2/$1 $2/$1.say >$OUT
+ERR=$(cat $OUT)
+
+if [ -n "$ERR" ]; then
+    quit 1
+fi
+rm -f $OUT
+
+echo
+quit 0

@@ -1,4 +1,4 @@
-//input: simplehash.ppo (5.6.0)
+//input: ppo/simplehash.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -489,6 +489,7 @@ push_call("simplehash.initialize",base);
     _clp_valtype(1);
     string(L"U");
     eqeq();
+    cmp_1409:;
     if(!flag()) goto if_1_1;
         line(77);
         push_symbol(base+0);//this
@@ -509,6 +510,7 @@ push_call("simplehash.initialize",base);
     _clp_valtype(1);
     string(L"N");
     eqeq();
+    cmp_1471:;
     if(!flag()) goto if_1_2;
         line(81);
         push_symbol(base+0);//this
@@ -551,6 +553,7 @@ push_call("simplehash.initialize",base);
         push(&NIL);
         push_symbol(base+2);//item
         neeq();
+        cmp_1600:;
         if(!flag()) goto lab_2_2;
             line(90);
             push_symbol(base+0);//this
@@ -603,6 +606,7 @@ push_call("simplehash.hashitem",base);
     idxr();
     push(&NIL);
     eqeq();
+    cmp_1743:;
     if(!flag()) goto if_3_1;
         line(103);
         line(100);
@@ -613,6 +617,7 @@ push_call("simplehash.hashitem",base);
         _clp_len(1);
         mulnum(0.66666);
         gteq();
+        cmp_1761:;
         if(!flag()) goto if_4_1;
             line(101);
             push_symbol(base+0);//this
@@ -694,6 +699,7 @@ push_call("simplehash.rehash",base);
     push_symbol(base+6);//vc
     mulnum(2);
     lt();
+    cmp_1991:;
     if(!flag()) goto if_5_1;
         line(116);
         push_symbol(base+5);//len1
@@ -713,6 +719,7 @@ push_call("simplehash.rehash",base);
         push_symbol(base+0);//this
         _o_method_initsize.eval(1);
         gteq();
+        cmp_2029:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -722,6 +729,7 @@ push_call("simplehash.rehash",base);
         push_symbol(base+6);//vc
         mulnum(2);
         gteq();
+        cmp_2044:;
         }
         if(!flag()) goto lab_6_2;
             line(120);
@@ -756,6 +764,7 @@ push_call("simplehash.rehash",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_2120:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -765,6 +774,7 @@ push_call("simplehash.rehash",base);
         idxr0(2);
         push(&NIL);
         neeq();
+        cmp_2137:;
         }
         if(!flag()) goto if_8_1;
             line(127);
@@ -856,6 +866,7 @@ push_call("simplehash.valuecount",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_2338:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -865,6 +876,7 @@ push_call("simplehash.valuecount",base);
         idxr0(2);
         push(&NIL);
         neeq();
+        cmp_2355:;
         }
         if(!flag()) goto if_10_1;
             line(144);
@@ -1002,6 +1014,7 @@ push_call("simplehash.get",base);
     idxr();
     push(&NIL);
     neeq();
+    cmp_2641:;
     if(!flag()) goto if_11_1;
         line(169);
         push_symbol(base+0);//this
@@ -1048,6 +1061,7 @@ push_call("simplehash.remove",base);
     idxr();
     push(&NIL);
     neeq();
+    cmp_2766:;
     if(!flag()) goto if_12_1;
         line(178);
         push_symbol(base+0);//this
@@ -1177,6 +1191,7 @@ push_call("simplehash.next",base);
     _o_method_hasharray.eval(1);
     _clp_len(1);
     lteq();
+    cmp_3018:;
     if(!flag()) goto lab_13_2;
         line(204);
         line(202);
@@ -1186,6 +1201,7 @@ push_call("simplehash.next",base);
         idxr();
         push(&NIL);
         neeq();
+        cmp_3053:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1196,6 +1212,7 @@ push_call("simplehash.next",base);
         idxr0(2);
         push(&NIL);
         neeq();
+        cmp_3074:;
         }
         if(!flag()) goto if_14_1;
             line(203);
@@ -1233,6 +1250,7 @@ push_call("simplehash.nextkey",base);
     push_symbol(base+1);//x
     push(&NIL);
     eqeq();
+    cmp_3155:;
     if(flag()){
     push(&NIL);
     }else{
@@ -1265,6 +1283,7 @@ push_call("simplehash.nextvalue",base);
     push_symbol(base+1);//x
     push(&NIL);
     eqeq();
+    cmp_3216:;
     if(flag()){
     push(&NIL);
     }else{
@@ -1299,6 +1318,7 @@ push_call("simplehash.list",base);
     push_symbol(base+1);//item
     push(&NIL);
     neeq();
+    cmp_3276:;
     if(!flag()) goto lab_15_2;
         line(222);
         push_symbol(base+1);//item
@@ -1338,6 +1358,7 @@ push_call("simplehash.listkey",base);
     push_symbol(base+1);//item
     push(&NIL);
     neeq();
+    cmp_3358:;
     if(!flag()) goto lab_16_2;
         line(230);
         push_symbol(base+1);//item
@@ -1377,6 +1398,7 @@ push_call("simplehash.listvalue",base);
     push_symbol(base+1);//item
     push(&NIL);
     neeq();
+    cmp_3440:;
     if(!flag()) goto lab_17_2;
         line(238);
         push_symbol(base+1);//item
@@ -1426,6 +1448,7 @@ push_call("simplehash.toarr",base);
     push_symbol(base+2);//item
     push(&NIL);
     neeq();
+    cmp_3562:;
     if(!flag()) goto lab_18_2;
         line(248);
         push_symbol(base+2);//item
@@ -1483,6 +1506,7 @@ push_call("simplehash.toarrkey",base);
     push_symbol(base+2);//key
     push(&NIL);
     neeq();
+    cmp_3694:;
     if(!flag()) goto lab_19_2;
         line(259);
         push_symbol(base+2);//key
@@ -1540,6 +1564,7 @@ push_call("simplehash.toarrvalue",base);
     push_symbol(base+2);//value
     push(&NIL);
     neeq();
+    cmp_3826:;
     if(!flag()) goto lab_20_2;
         line(270);
         push_symbol(base+2);//value
@@ -1604,6 +1629,7 @@ push_call("hash_index",base);
         addnum(1);
         idxr();
         eqeq();
+        cmp_3967:;
         if(!flag()) goto if_22_1;
             line(287);
             push_symbol(base+4);//hidx
@@ -1619,6 +1645,7 @@ push_call("hash_index",base);
         idxr();
         idxr0(1);
         eqeq();
+        cmp_4003:;
         if(!flag()) goto if_22_2;
             line(289);
             push_symbol(base+4);//hidx
@@ -1633,6 +1660,7 @@ push_call("hash_index",base);
         assign(base+4);//hidx
         push_symbol(base+2);//hlen
         gteq();
+        cmp_4046:;
         if(!flag()) goto if_22_3;
             line(291);
             push(&ZERO);

@@ -2,5 +2,5 @@
 mkdir exe-pg 2>/dev/null
 cp -p start-scripts/*.b exe-pg 2>/dev/null
 
-bapp_unixc.b  @parfile-p.bld
+cccapp_term.sh  @parfile-p.bld
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bapp_unix_.b    @parlib.bld
-bapp_unix_.b    @parexe.bld
-bapp_unixc.b    @parexe_ui.bld
+cccapp.sh    @parlib.bld
+cccapp.sh    @parexe.bld
+cccapp_term.sh    @parexe_ui.bld
 

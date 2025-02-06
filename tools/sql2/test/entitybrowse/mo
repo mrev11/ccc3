@@ -2,5 +2,5 @@
 mkdir exe-ora 2>/dev/null
 #cd tds; mkentitylib.exe; cd ..
 
-bapp_unix_.b  @parfile-o.bld
+cccapp.sh  @parfile-o.bld
 

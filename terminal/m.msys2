@@ -1,7 +1,0 @@
-#!/bin/bash
-
-( cd gtk2               && m.msys2 )
-( cd gtk3               && m.msys2 )
-( cd sslforw            && m.msys2 )
-( cd windows            && m.msys2 )
-( cd windows-cterm      && m.msys2 )

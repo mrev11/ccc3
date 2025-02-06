@@ -5,5 +5,5 @@
 -bccc3_crypto
 -bccc3_zlib
 
-#BUILD_EXE=$(CCCDIR)/usr/bin/$(CCCUNAME)
+#BUILD_EXE=$(CCCDIR)/usr/bin
 BUILD_EXE=..

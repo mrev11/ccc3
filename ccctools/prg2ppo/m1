@@ -1,4 +1,0 @@
-#!/bin/bash
-. $CCCDIR/usr/bin/linux/__unix.b
-export BUILD_LIB=ccc3.lib,ccc3_ui_.lib
-build.exe @parfile.bld

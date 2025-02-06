@@ -1,4 +1,4 @@
-//input: directory.ppo (5.6.0)
+//input: ppo/directory.ppo (5.7.0.1)
 
 #include <cccdef.h>
 
@@ -48,6 +48,7 @@ push_call("directory",base);
     _clp_numand(2);
     push(&ZERO);
     neeq();
+    cmp_82:;
     assign(base+5);//fname_upper
     pop();
     line(55);
@@ -56,6 +57,7 @@ push_call("directory",base);
     _clp_numand(2);
     push(&ZERO);
     neeq();
+    cmp_117:;
     assign(base+6);//fspec_asterix
     pop();
     line(56);
@@ -106,6 +108,7 @@ push_call("directory",base);
     _clp_rat(2);
     assign(base+15);//i
     eqeq();
+    cmp_308:;
     if(!flag()) goto if_2_1;
         line(72);
         binary(".");
@@ -121,6 +124,7 @@ push_call("directory",base);
     push_symbol(base+15);//i
     push(&ONE);
     eqeq();
+    cmp_367:;
     if(!flag()) goto if_2_2;
         line(75);
         binary("/");
@@ -161,6 +165,7 @@ push_call("directory",base);
     push_symbol(base+8);//fmask
     binary("*.*");
     eqeq();
+    cmp_496:;
     }
     if(!flag()) goto if_3_1;
         line(83);
@@ -174,6 +179,7 @@ push_call("directory",base);
     push_symbol(base+1);//type
     push(&NIL);
     neeq();
+    cmp_530:;
     if(!flag()) goto if_4_1;
         line(87);
         push_symbol(base+1);//type
@@ -257,6 +263,7 @@ push_call("directory",base);
     push(&NIL);
     push_symbol(base+9);//fname
     neeq();
+    cmp_730:;
     if(!flag()) goto lab_6_2;
         line(149);
         line(103);
@@ -287,12 +294,14 @@ push_call("directory",base);
             push(&NIL);
             push_symbol(base+12);//st
             eqeq();
+            cmp_823:;
             if(flag()){
             push(&TRUE);
             }else{
             push(&NIL);
             push_symbol(base+13);//lsm
             eqeq();
+            cmp_830:;
             }
             if(!flag()) goto if_8_1;
             goto if_8_0;
@@ -365,6 +374,7 @@ push_call("directory",base);
                 push_symbol(base+3);//dlist
                 _clp_len(1);
                 gteq();
+                cmp_1015:;
                 if(!flag()) goto if_11_1;
                     line(131);
                     push_symbol(base+3);//dlist
@@ -426,6 +436,7 @@ push_call("directory",base);
                 assign(base+22);//linktarget
                 push(&NIL);
                 neeq();
+                cmp_1217:;
                 }
                 if(!flag()) goto if_13_1;
                     line(146);

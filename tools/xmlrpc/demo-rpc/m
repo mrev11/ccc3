@@ -1,2 +1,2 @@
 #!/bin/bash
-bapp_unix_.b  @parfile.bld 
+cccapp.sh  @parfile.bld 

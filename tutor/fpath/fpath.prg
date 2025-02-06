@@ -18,12 +18,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-// megkeres egy filét a PATH-ban
-// vagy csak kiírja a PATH-t
+// megkeres egy filet a PATH-ban
+// vagy csak kiirja a PATH-t
 
 function main(fname)
 
 local path:=getenv("PATH")::split(pathsep()),n
+
+    if( fname!=NIL )
+        errorlevel(1)
+    end
 
     for n:=1 to len(path)
     
@@ -42,6 +46,7 @@ local path:=getenv("PATH")::split(pathsep()),n
                 path[n]+=dirsep()
             end
             if( file(path[n]+fname) )
+                errorlevel(0)
                 ? path[n]+fname
             end
         end

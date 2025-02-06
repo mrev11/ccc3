@@ -65,6 +65,7 @@ local wrch:=.t.
             writetdc(oTdc,wrprg,wrch)
          recover e <tdcerror>
             // Nem kell csinálni semmit.
+            errorlevel(1)
          end
       end
    end for

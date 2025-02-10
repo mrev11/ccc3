@@ -7,7 +7,7 @@
 
 #-bcrypto
 
-BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+BUILD_LIBDIR=${CCCDIR}/usr/lib
 
 
 #BUILD_DBG=on

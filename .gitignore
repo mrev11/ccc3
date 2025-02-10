@@ -1,13 +1,11 @@
 
-objclang/
-objclang_ui_/
-objclang_uic/
-objclang_uif/
+object/
+object_ui_/
+object_uic/
 
-objgcc/
-objgcc_ui_/
-objgcc_uic/
-objgcc_uif/
+objlin/
+objlin_ui_/
+objlin_uic/
 
 ppo/
 html/

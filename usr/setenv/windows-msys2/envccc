@@ -1,8 +1,12 @@
 
+
+#########################################################################
+# MSYS2 environment
+#########################################################################
+
 export MSYS64=c:/msys64                 # install directory
 
 # compilert kell valasztani
-
 export MSYSTEM=CLANG64                  # -> CCCBIN=clang
 # export MSYSTEM=MINGW64                # -> CCCBIN=gcc
 # export MSYSTEM=UCRT64                 # -> CCCBIN=?
@@ -12,28 +16,60 @@ export MINGW_PREFIX=/${MSYSTEM,,}       # lower case
 
 
 #########################################################################
-# CCC environment
+# CCC run time environment
 #########################################################################
 
 export CCC2DIR=~/ccc2
 export CCC3DIR=~/ccc3
 
-if [ $CCCVER == 2 ]; then
-    export CCCDIR=${CCC2DIR}
-elif [ $CCCVER == 3 ]; then
-    export CCCDIR=${CCC3DIR}
-else
-    echo CCCVER variable undefined
-    read 
-fi
+# a CCCVER valtozot
+#   - orokoljuk
+#   - vagy beallitjuk 2/3-ra
+
+[ -z "$CCCVER" ]    && export CCCVER=3
+[ "$CCCVER" == 2 ]  && export CCCDIR=${CCC2DIR}
+[ "$CCCVER" == 3 ]  && export CCCDIR=${CCC3DIR}
+
 export OREF_SIZE=500000
 
+. ${CCCDIR}/usr/setenv/addpath
+
+addpath /usr/bin
+addpath ${MSYSTEM_PREFIX}/bin
+addpath $CCC2DIR/usr/bin
+addpath $CCC3DIR/usr/bin
+addpath $CCCDIR/usr/bin
+addpath ~/bin
+addpath .
+
+
+#########################################################################
+# CCC compile time environment
+#########################################################################
+
 export CCCUNAME=msys2
-export CCCBIN=clang
+
+CVERSION=$(c++ -v 2>&1 | grep \ version)
+if [[ $CVERSION =~ gcc ]]; then
+    CCCBIN=gcc
+elif [[ $CVERSION =~ clang ]]; then
+    CCCBIN=clang
+else
+    echo unknown C compiler: $CVERSION
+    read
+fi
+export CCCBIN
+
+
+#########################################################################
+# terminal environment
+#########################################################################
 
 if [ "$CCCTERM_CONNECT" == ""  ];then
     export CCCTERM_SIZE=100x50
     export CCCTERM_GTKFONTSPEC="Monospace 12"
+    export CCCTERM_FONTFACE="DejaVu Sans Mono"
+    export CCCTERM_FONTSIZE=12
 
     # curses terminal
      export CCCTERM_CONNECT=term://cterm.exe
@@ -55,7 +91,7 @@ if [ "$CCCTERM_CONNECT" == ""  ];then
     # export CCCTERM_CONNECT=connect://dell6510:55013
     # export CCCTERM_INHERIT=no
 fi
-export CCCTERM_ICONFILE=${CCCDIR}/usr/bin/terminal.xpm
+export CCCTERM_ICONFILE=${CCCDIR}/usr/bin/terminal.ico
 
 
 # z-editor colors
@@ -65,24 +101,18 @@ export ZHOME=~/.z
 export ZEOL=LF
 
 
-
-. ${CCCDIR}/usr/setenv/addpath
-
-addpath /usr/bin
-addpath ${MSYSTEM_PREFIX}/bin
-addpath $CCC2DIR/usr/bin
-addpath $CCC3DIR/usr/bin
-addpath $CCCDIR/usr/bin
-addpath ~/bin
-addpath .
-
-
-
+#########################################################################
+# build environment
 #########################################################################
 
 export BUILD_THR=4
+export BUILD_OBJ=object
+export BUILD_EXE=.
+
 export BUILD_CACHE=~/.cache/build
 mkdir -p $BUILD_CACHE
 
+
 #########################################################################
-$CCCDIR/usr/bin/cccenv.sh
+
+. $CCCDIR/usr/bin/cccenv.sh

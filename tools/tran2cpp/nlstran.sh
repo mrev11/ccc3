@@ -7,5 +7,5 @@ cd $LANG
 tran2cpp.exe nlstext.$LANG.tran  $NAME.$LANG.cpp
 bapp_unix_.b -s$NAME.$LANG
 rm -R *.$LANG.cpp
-cp -pf obj"$CCCBIN"/*.so   $CCCDIR/usr/lib/$CCCBIN
+cp -pf ${BUILD_OBJ}/*.so   $CCCDIR/usr/lib
 

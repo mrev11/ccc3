@@ -2,12 +2,12 @@
 
 ( cd ../codegen && m && run.exe )
 
-mkdir -p obj$CCCBIN
-pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
-pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
-echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
+mkdir -p ${BUILD_OBJ}
+pkg-config --cflags gtk+-2.0  >${BUILD_OBJ}/gtk-cflags
+pkg-config --libs   gtk+-2.0  >${BUILD_OBJ}/gtk-libs
+echo -Wno-deprecated-declarations >>${BUILD_OBJ}/gtk-cflags
 
-export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+export BUILD_LIBDIR=${CCCDIR}/usr/lib
 
 cccapp.sh  @gtk.bld  -sccc3_gtk
 

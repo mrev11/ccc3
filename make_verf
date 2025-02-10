@@ -56,7 +56,7 @@ if  ! test -f ./usr/build/prg2obj.bld; then
     exit 1
 fi
 
-if  ! test -f ./usr/options/$CCCUNAME/$CCCBIN/compile.opt; then
+if  ! test -f ./usr/options/${CCCUNAME}/${CCCBIN}/compile.opt; then
     echo "CCCDIR/usr/options/CCCUNAME/CCCBIN/compile.opt not found"
     echo "CCCBIN(=${CCCBIN}) environment variable not properly set"
     exit 1

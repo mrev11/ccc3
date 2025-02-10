@@ -1,5 +1,5 @@
 #!/bin/bash
-export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+export BUILD_LIBDIR=${CCCDIR}/usr/lib
 
 c++app.sh  -sccc"$CCCVER"_sql2_postgres
 

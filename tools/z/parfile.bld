@@ -6,6 +6,6 @@
 -xzhist 
 
 BUILD_EXE=$(CCCDIR)/usr/bin
-BUILD_LIBDIR=$(CCCDIR)/usr/lib/$(CCCBIN)
+BUILD_LIBDIR=$(CCCDIR)/usr/lib
 
 #'BUILD_SHR=static'

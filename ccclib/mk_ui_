@@ -1,6 +1,6 @@
 #!/bin/bash
-export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
-mkdir -p $CCCDIR/usr/lib/$CCCBIN 
+export BUILD_LIBDIR=${CCCDIR}/usr/lib
+mkdir -p $CCCDIR/usr/lib 
 
 . $CCCDIR/usr/bin/_init_build_env.sh
 export BUILD_OBJ="$BUILD_OBJ"_ui_

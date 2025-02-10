@@ -1,34 +1,50 @@
 #!/bin/bash
-
 #set -x
+
+UPDATE=$1
 
 update()
 {
-    :
     echo $1 $2 $3
-    
-    cat $1 | sed "s/$2/$3/g"  >tmp
-    mv tmp  $1
-    chmod +x $1
+
+    if [[  $UPDATE == u  ]]; then
+        TMP=$(mktemp)    
+        cat "$1" | sed "s/$2/$3/g"  >$TMP
+        cat $TMP  >"$1"
+    fi
 }
 
 
 
 find . | while read fspec; do
-    base=${fspec##*/}
+    base="${fspec##*/}"
 
-    if [ ${base:0:1} == m  ]; then
+    if [ "${base:0:1}" == m  ] && [ -f "$fspec" ]  ; then
 
-        if grep bapp_unix0.b $fspec >/dev/null; then
-           update    $fspec  bapp_unix0.b c++app.sh
+        if grep bapp_unix0.b "$fspec" >/dev/null; then
+           update    "$fspec"  bapp_unix0.b c++app.sh
         fi
 
-        if grep bapp_unix_.b $fspec >/dev/null; then
-           update    $fspec   bapp_unix_.b cccapp.sh
+        if grep bapp_unix_.b "$fspec" >/dev/null; then
+           update    "$fspec"   bapp_unix_.b cccapp.sh
         fi
 
-        if grep bapp_unixc.b $fspec >/dev/null; then
-           update    $fspec   bapp_unixc.b cccapp_term.sh
+        if grep bapp_unix_btbtx.b "$fspec" >/dev/null; then
+           update    "$fspec"   bapp_unix_btbtx.b cccapp.sh
+        fi
+
+        if grep bapp_unixc.b "$fspec" >/dev/null; then
+           update    "$fspec"   bapp_unixc.b cccapp_term.sh
+        fi
+
+        if grep bapp_unixc_btbtx.b "$fspec" >/dev/null; then
+           update    "$fspec"   bapp_unixc_btbtx.b cccapp_term.sh
         fi
     fi
 done
+
+
+
+
+
+

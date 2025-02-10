@@ -1,7 +1,5 @@
 #!/bin/bash
 echo MSK2HTML.BAT $1
-#set -x
-
+. ${BUILD_BAT}/def_quit
 msk2html.exe $1
-
 quit 0

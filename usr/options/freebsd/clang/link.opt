@@ -1,3 +1,4 @@
 -lpthread
 -lrt
 -rdynamic
+-fuse-ld=lld

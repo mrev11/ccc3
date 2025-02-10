@@ -3,6 +3,6 @@
 -lpthread
 -ldl
 -lrt
+-landroid-shmem
 -rdynamic
 -fuse-ld=lld
-

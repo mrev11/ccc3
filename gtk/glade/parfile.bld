@@ -6,5 +6,5 @@
 
 
 BUILD_BINDIR=$(CCCDIR)/usr/bin
-BUILD_LIBDIR=$(CCCDIR)/usr/lib/$(CCCBIN)
+BUILD_LIBDIR=$(CCCDIR)/usr/lib
 

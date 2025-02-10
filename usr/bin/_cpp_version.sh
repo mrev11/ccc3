@@ -8,7 +8,7 @@ IFS=' ' read -r -a ver <<< "$VER"  # split to array
 # echo ${ver[1]}  # version
 # echo ${ver[2]}  # x.y.z
 
-CPPVER=$CCCDIR/usr/options/$CCCUNAME/$CCCBIN/cppver
+CPPVER=$CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver
 
 
 if ! test -f $CPPVER.exp; then

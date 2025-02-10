@@ -1,35 +1,89 @@
 
+
 #########################################################################
-# CCC environment
+# CCC run time environment
 #########################################################################
 
 export CCC2DIR=~/ccc2
 export CCC3DIR=~/ccc3
 
-if [ $CCCVER == 2 ]; then
-    export CCCDIR=${CCC2DIR}
-elif [ $CCCVER == 3 ]; then
-    export CCCDIR=${CCC3DIR}
-else
-    echo CCCVER variable undefined
-    read 
-fi
+# a CCCVER valtozot
+#   - orokoljuk
+#   - vagy beallitjuk 2/3-ra
+
+[ -z "$CCCVER" ]    && export CCCVER=3
+[ "$CCCVER" == 2 ]  && export CCCDIR=${CCC2DIR}
+[ "$CCCVER" == 3 ]  && export CCCDIR=${CCC3DIR}
 
 export CCC_OREFSIZE=500000
 
-UNAME=$(uname)
-if [ "$UNAME" == Linux ];then
-    CCCUNAME=linux
-elif [ "$UNAME" == FreeBSD ];then
+. ${CCCDIR}/usr/setenv/addpath
+
+## meg kell gondolni
+## mit vegyunk at a PATH-bol
+## felepitunk-e egy teljesen uj PATH-t
+
+# unset PATH
+# addpath /bin
+# addpath /sbin
+# addpath /usr/bin
+# addpath /usr/sbin
+# addpath /usr/local/bin
+# addpath /usr/local/sbin
+
+addpath $CCC2DIR/usr/bin
+addpath $CCC3DIR/usr/bin
+addpath $CCCDIR/usr/bin
+addpath ~/bin
+addpath .
+
+addldpath $CCC2DIR/usr/lib
+addldpath $CCC3DIR/usr/lib
+addldpath $CCCDIR/usr/lib
+
+
+#########################################################################
+# CCC compile time environment
+#########################################################################
+
+
+UNAME=$(uname -a)
+if [[ "$UNAME" == *Linux* ]];then
+    if [[ "$UNAME" == *Android* ]]; then
+        CCCUNAME=termux
+    elif [[ "$UNAME" == *armv7l* ]]; then
+        CCCUNAME=raspi
+    else
+        CCCUNAME=linux
+    fi
+elif [[ "$UNAME" == *FreeBSD* ]];then
     CCCUNAME=freebsd
-elif [ "$UNAME" == NetBSD ];then
+elif [[ "$UNAME" == *NetBSD* ]];then
     CCCUNAME=netbsd
-elif [ "$UNAME" == SunOS ];then
+elif [[ "$UNAME" == *SunOS* ]];then
     CCCUNAME=solaris
 else
     echo unknown OS: $UNAME
+    read
 fi
 export CCCUNAME
+
+
+CVERSION=$(c++ -v 2>&1 | grep \ version)
+if [[ $CVERSION =~ gcc ]]; then
+    CCCBIN=gcc
+elif [[ $CVERSION =~ clang ]]; then
+    CCCBIN=clang
+else
+    echo unknown C compiler: $CVERSION
+    read
+fi
+export CCCBIN
+
+
+#########################################################################
+# terminal environment
+#########################################################################
 
 
 if [ "$CCCTERM_CONNECT" == ""  ];then
@@ -69,54 +123,19 @@ export ZHOME=~/.z
 export ZEOL=LF
 
 
-. ${CCCDIR}/usr/setenv/addpath
-
-## meg kell gondolni
-## mit vegyunk at a PATH-bol
-## felepitunk-e egy teljesen uj PATH-t
-
-# unset PATH
-# addpath /bin
-# addpath /sbin
-# addpath /usr/bin
-# addpath /usr/sbin
-# addpath /usr/local/bin
-# addpath /usr/local/sbin
-
-addpath $CCC2DIR/usr/bin
-addpath $CCC3DIR/usr/bin
-addpath $CCCDIR/usr/bin
-addpath ~/bin
-addpath .
-
-
-# CCCBIN beallitasa csak path utan
-# mert a path-tol fugg melyik c++ kerul elo
-
-CVERSION=$(c++ -v 2>&1 | grep \ version)
-if [[ $CVERSION =~ .*gcc.*    ]]; then
-    CCCBIN=gcc
-elif [[ $CVERSION =~ .*clang.*  ]]; then
-    CCCBIN=clang
-else
-    echo unknown C compiler: $(c++ -v 2>&1)
-fi
-export CCCBIN
-
-addldpath $CCC2DIR/usr/lib/$CCCBIN
-addldpath $CCC3DIR/usr/lib/$CCCBIN
-addldpath $CCCDIR/usr/lib/$CCCBIN
-
-
+#########################################################################
+# build environment
 #########################################################################
 
-export BUILD_THR=4
+export BUILD_THR=6
+export BUILD_OBJ=object
+export BUILD_EXE=.
+
 export BUILD_CACHE=~/.cache/build
 mkdir -p $BUILD_CACHE
 
 #########################################################################
-$CCCDIR/usr/bin/cccenv.sh
 
-
+. $CCCDIR/usr/bin/cccenv.sh
 
 

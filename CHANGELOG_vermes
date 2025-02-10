@@ -1,11 +1,15 @@
-2025-02-06 
+2025-02-10
+  tovabbi modularizalas: termux, raspi;
+  CCCUNAME es CCCBIN nevu directoryk csak az options alatt vannak;
+
+2025-02-06
   egyseges build rendszer minden platformra;
   a build rendszer cache-eli az objecteket;
 
 2025-01-21
-  oneletter branch: egybetus stringek kulon kezelve;  
+  oneletter branch: egybetus stringek kulon kezelve;
 
-2025-01-19 
+2025-01-19
   OREF_SIZE helyett CCC_OREFSIZE (default=200000);
   VREF_SIZE helyett CCC_VREFSIZE;
   GARBAGE helyett CCC_GCDEBUG;
@@ -14,14 +18,14 @@
   inkompatibilitasok javitva;
 
 2025-01-10
-   OmniOS: 
+   OmniOS:
     Sok helyen inkludalva stdint.h;
     Egyeb  inkompatibilitasok javitva;
 
 2025-01-09
    Figyelmen kivul hagyott warningok egysegesitve;
    varprint() kiirja az objektumok osztalyat;
- 
+
 
 2025-01-01
    Windows build scriptek javitva;
@@ -40,11 +44,11 @@
   windows cterm cache-eles hibaja javitva;
   windows direxist() egysegesitve;
 
-2024-12-26 
+2024-12-26
   windows cterm is megorzi a kurzopoziciot;
   unix-ncterm megszuntetve;
 
-2024-12-26 
+2024-12-26
   socketek defaultja TCP_NODELAY;
   cterm kepernyo frissites megorzi a kurzopoziciot (ncterm-ben benne volt);
   Windowson linkelodik onecore;
@@ -66,7 +70,7 @@
 2024-11-08
   A tranzakcio timeout kezeles atirva:
     Timeout-ra a program nem bocsat ki SIGALRM-ot (kezelese veszelyes),
-    hanem csak megjegyzi, hogy timeout tortent. A tranCommit() megnezi, 
+    hanem csak megjegyzi, hogy timeout tortent. A tranCommit() megnezi,
     hogy tortent-e timeout, es ha igen, akkor commit helyett rollbackel.
     (Alternativa: timeout-ra azonnal ki lehetne leptetni a programot)
   Uj error leszarmazott osztaly: trantimouterror;
@@ -2013,9 +2017,9 @@
 
 2018.01.16 make (m, mb.bat, parfile.bld) scriptek korszerusitese:
   Az m scriptekben
-    for so in obj$CCCBIN/*.so; do
+    for so in ${BUILD_OBJ}/*.so; do
   helyett
-    find obj$CCCBIN/*.so | while read so; do
+    find ${BUILD_OBJ}/*.so | while read so; do
   elobbi ciklus (zavart okozva) egyszer akkor is fut,
   ha valami hiba miatt nem keszult el az so;
   Egyforma scriptek CCC2-re es CCC3-ra;

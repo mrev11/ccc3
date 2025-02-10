@@ -1,12 +1,9 @@
 #!/bin/bash
 echo MSK2HTML.BAT $@
-#set -x
-
+. ${BUILD_BAT}/def_quit
 if [ "$2" == "" ]; then
     msk2html.exe $1
 else
     msk2html.exe $2/$1
 fi
-
-
 quit 0

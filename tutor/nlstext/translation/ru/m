@@ -3,5 +3,5 @@ tran2cpp.exe nlstext.ru.tran  nlstext.ru.cpp
 cccapp.sh -snlstext.ru
 
 #az LD_LIBRARY_PATH-ba kell tenni
-cp -pf obj$CCCBIN/*.so  ..
+cp -pf ${BUILD_OBJ}/*.so  ..
 

@@ -5,9 +5,9 @@ if [ "$CCCVER" == "2"  ];then
     :;#ok
 elif [ "$CCCVER" == "3"  ];then
     :;#ok
-elif test -f $CCCDIR/usr/lib/$CCCBIN/ccc2.lib; then
+elif test -f $CCCDIR/usr/lib/ccc2.lib; then
     export CCCVER=2
-elif test -f $CCCDIR/usr/lib/$CCCBIN/ccc3.lib; then
+elif test -f $CCCDIR/usr/lib/ccc3.lib; then
     export CCCVER=3
 else
     echo Cannot detect CCC version.

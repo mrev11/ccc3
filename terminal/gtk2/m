@@ -1,10 +1,10 @@
 #!/bin/bash
 
-mkdir -p obj$CCCBIN
-pkg-config --cflags gtk+-2.0  >obj$CCCBIN/gtk-cflags
-pkg-config --libs   gtk+-2.0  >obj$CCCBIN/gtk-libs
-echo -DCOMPILE_TERMINAL  >>obj$CCCBIN/gtk-cflags
-echo -Wno-deprecated-declarations >>obj$CCCBIN/gtk-cflags
+mkdir -p ${BUILD_OBJ}
+pkg-config --cflags gtk+-2.0  >${BUILD_OBJ}/gtk-cflags
+pkg-config --libs   gtk+-2.0  >${BUILD_OBJ}/gtk-libs
+echo -DCOMPILE_TERMINAL  >>${BUILD_OBJ}/gtk-cflags
+echo -Wno-deprecated-declarations >>${BUILD_OBJ}/gtk-cflags
 
 c++app.sh  @parfile.bld
 

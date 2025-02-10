@@ -1,5 +1,5 @@
 #!/bin/bash
 cccapp.sh @parfile.bld
 
-cp -pf obj$CCCBIN/*.lib  $CCCDIR/usr/lib/$CCCBIN
-#cp -pf obj$CCCBIN/*.so  $CCCDIR/usr/lib/$CCCBIN
+cp -pf ${BUILD_OBJ}/*.lib  $CCCDIR/usr/lib
+#cp -pf ${BUILD_OBJ}/*.so  $CCCDIR/usr/lib

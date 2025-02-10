@@ -1,35 +1,23 @@
 
-# a CCCVER valtozot vagy orokoljuk
-# vagy be kell allitani 2-re vagy 3-ra
-# export CCCVER=2
-
-echo bashrcx CCCVER=${CCCVER}
-
+alias ll='ls -l --color=always --group-directories-first'
+alias ls='ls --color=always'
 alias mc='mc -d' #letiltja az egeret
 alias me='mcedit -d' #letiltja az egeret
-alias ls='ls --color=always'
-alias ll='ls -l --color=always --group-directories-first'
 
-pp()
+pp() # print path
 {
     echo $PATH | tr : \\n
 }
 
-lsenv()
+le() # list env
 {
-    PATTERN=""
-    for pat in "$@"; do
-        PATTERN=${PATTERN}'|^'${pat}=
-    done
-    PATTERN=(${PATTERN:1})  # |pat1|pat2... -> (pat1|pat2...)
-    printenv | grep --color=always -E ${PATTERN} | LC_COLLATE=C sort
+    env | grep "$1" | sort
 }
-
 
 if [ -z "$BASHRCX" ]; then
 #########################################################################
 export BASHRCX=BASHRCX
-# ennek csak egyszer szabad futnia
+# ennek a szekcionak csak egyszer szabad futnia
 
 export PAGER="less -S"
 export EDITOR=z
@@ -48,7 +36,7 @@ export LANG=en_US.UTF-8
 
 . ~/envccc
  
-pp     # print PATH
+pp # print path
 cd
 
 #########################################################################

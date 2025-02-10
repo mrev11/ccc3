@@ -1,4 +1,4 @@
 #!/bin/bash
 c++app.sh -xtest
-c++ -shared -o btpasswd.dll obj$CCCBIN/btpasswd.obj
+c++ -shared -o btpasswd.dll ${BUILD_OBJ}/btpasswd.obj
 #mv btpasswd.dll ${CCCDIR}/usr/bin

@@ -10,10 +10,6 @@ rm -f $RSPLNK
 echo -o $TARGET                                     >>$RSPLNK
 for i in $BUILD_LPT; do echo -L$i                   >>$RSPLNK; done
 
-if [ "${CPP_COMPILER}" == "gcc"  ]; then
-    echo -Wl,--no-as-needed                         >>$RSPLNK
-fi
-
 echo -Wl,--start-group                              >>$RSPLNK
 if [ -z "$LIBNAME" ]; then
     # all objects
@@ -34,17 +30,14 @@ if [ -e "$BUILD_LIBX" ]; then
 fi
 echo -Wl,--end-group                                >>$RSPLNK
 
-if [ -n "$TERMUX_VERSION" ]; then
-    echo -landroid-shmem                            >>$RSPLNK
-fi
-cat $CCCDIR/usr/options/$CCCUNAME/$CCCBIN/link.opt  >>$RSPLNK
-echo                                                >>$RSPLNK
 
-if [ "${CPP_COMPILER}" == "clang"  ]; then
-    # LLVM linker: lld
-    # GNU linker: ld (default)
-    echo -fuse-ld=lld                               >>$RSPLNK
+OPT=$CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/link.opt
+if [ "$BUILD_SHR" == "fullstatic" ]; then
+    cat $OPT | sed 's/-rdynamic/-static/'           >>$RSPLNK
+else
+    cat $OPT                                        >>$RSPLNK
 fi
+echo                                                >>$RSPLNK
 
 if ! c++  $(cat $RSPLNK) 2>$OUT; then
     quit 1

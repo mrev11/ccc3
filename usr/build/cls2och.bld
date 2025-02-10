@@ -1,8 +1,4 @@
 #!/bin/bash
 echo CLS2OCH.BAT $1 $2
-#set -x
-
 objccc.exe $BUILD_CLS $2/$1
-
-quit 0
 

@@ -13,5 +13,5 @@ if ! test -f jterminal.jar; then
     fi
 fi
 
-cp jterminal.jar $CCCDIR/usr/bin
+cp jterminal.jar ~/bin
 

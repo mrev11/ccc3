@@ -5,8 +5,8 @@
 
 -iinclude
 
-BUILD_CFG=obj$(CCCBIN)/gtk-cflags
-BUILD_LIBX=obj$(CCCBIN)/gtk-libs
+BUILD_CFG=${BUILD_OBJ}/gtk-cflags
+BUILD_LIBX=${BUILD_OBJ}/gtk-libs
 
 
 #-bgtk-x11-2.0 

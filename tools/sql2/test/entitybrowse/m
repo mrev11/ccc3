@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LIB=$CCCDIR/usr/lib/$CCCBIN/libccc"$CCCVER"_jt.so
+LIB=$CCCDIR/usr/lib/libccc"$CCCVER"_jt.so
 
 if [ -f $LIB ]; then
     ./mo

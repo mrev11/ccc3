@@ -1,5 +1,5 @@
 #!/bin/bash
-export BUILD_LIBDIR=${CCCDIR}/usr/lib/${CCCBIN}
+export BUILD_LIBDIR=${CCCDIR}/usr/lib
 
 # dbaseiii.so behuzza a fullscreen konyvtarakat
 # ha az nem megfelelo, akkor dbaseiii.lib-et kell linkelni;

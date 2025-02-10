@@ -29,11 +29,11 @@ Linkelés FreeBSD-n
 
   FreeBSD-ben a linkernek meg kell adni az
 
-  -rpath $CCCDIR/usr/lib/$CCCBIN  
+  -rpath $CCCDIR/usr/lib  
     
   opciót. A környezeti változók helyettesítését az envsubst
   programmal lehet elvégezni, pl:
     
-  cat $CCCDIR/usr/options/$CCCBIN/link.opt | envsubst >>$RSPLNK
+  cat $CCCDIR/usr/options/${CCCBIN}/link.opt | envsubst >>$RSPLNK
     
 ----------------------------------------------------------------------------

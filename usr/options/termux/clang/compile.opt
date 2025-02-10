@@ -1,5 +1,5 @@
--DFREEBSD
--D_FREEBSD_
+-DLINUX
+-D_LINUX_
 -DUNIX
 -D_UNIX_
 -D_CCC_
@@ -20,10 +20,9 @@
 -Wno-empty-body
 -Wno-format-overflow
 -Wno-parentheses
--Wno-constant-logical-operand
 -Wno-deprecated-declarations
--Wno-unknown-warning-option
+-Wno-constant-logical-operand
 -Wno-vla-cxx-extension
-
--I/usr/local/include
+-Wno-unknown-warning-option
+--target=aarch64-linux-android33
 

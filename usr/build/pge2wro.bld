@@ -6,10 +6,12 @@ TARGET=$2/$1.wro
 OUT=out--pge2wro-$1
 rm -f $TARGET $OUT
 
+. ${BUILD_BAT}/def_quit
+
 if [ -e $2/$1.sor ]; then
-   pge2wro.exe -r $2/$1.sor $2/$1   2>&1 $OUT
+   pge2wro.exe -r $2/$1.sor $2/$1   2>$OUT
 else
-   pge2wro.exe              $2/$1   2>&1 $OUT
+   pge2wro.exe              $2/$1   2>$OUT
 fi
 
 ERR=$(cat $OUT)

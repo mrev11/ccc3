@@ -1,4 +1,4 @@
 #!/bin/bash
 c++app.sh -smalloc_dbg
-cp  -pf obj"$CCCBIN"/*.so   $CCCDIR/usr/lib/$CCCBIN
+cp  -pf ${BUILD_OBJ}/*.so   $CCCDIR/usr/lib
 

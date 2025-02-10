@@ -5,6 +5,6 @@
 -i$(CCCDIR)/ccclib/src/uic/termapi
 -bccc$(CCCVER).lib
 
-BUILD_CFG=obj$(CCCBIN)/gtk-cflags
-BUILD_LIBX=obj$(CCCBIN)/gtk-libs
+BUILD_CFG=${BUILD_OBJ}/gtk-cflags
+BUILD_LIBX=${BUILD_OBJ}/gtk-libs
 BUILD_EXE=$(CCCDIR)/usr/bin

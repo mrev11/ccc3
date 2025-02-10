@@ -1,2 +1,3 @@
+-Wl,--no-as-needed
 -lpthread
 -rdynamic

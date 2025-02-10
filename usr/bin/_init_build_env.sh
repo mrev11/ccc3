@@ -26,45 +26,43 @@ addlpt() #elejere
 export BUILD_BAT=$CCCDIR/usr/build
 export BUILD_OPT=compile.opt
 export BUILD_INC=$CCCDIR/usr/include
-export BUILD_OBJ=obj$CCCBIN
-export BUILD_EXE=.
 
-lptadd $CCCDIR/usr/lib/$CCCBIN
+lptadd $CCCDIR/usr/lib
 
-if [ $CCCUNAME == "linux" ]; then
-
-    if uname -a | grep armv7l >/dev/null; then
-        # Raspberry Pi
-        lptadd /usr/lib/arm-linux-gnueabihf
-        lptadd /lib/arm-linux-gnueabihf
-    fi
-
-    if uname -a | grep Android >/dev/null; then
-        # Android Termux
-        lptadd $PREFIX/lib
-    fi
+if [ ${CCCUNAME} == "linux" ]; then
 
     lptadd /usr/local/lib
     lptadd /usr/lib
     lptadd /lib
 
+elif [ ${CCCUNAME} == "termux" ]; then
+    # Android Termux
+    lptadd $PREFIX/lib
 
-elif [ $CCCUNAME == "freebsd" ]; then
+elif [ ${CCCUNAME} == "raspi" ]; then
+    # Raspberry Pi
+    lptadd /usr/lib/arm-linux-gnueabihf
     lptadd /usr/local/lib
     lptadd /usr/lib
     lptadd /lib
 
-elif [ $CCCUNAME == "netbsd" ]; then
+elif [ ${CCCUNAME} == "freebsd" ]; then
+    lptadd /usr/local/lib
+    lptadd /usr/lib
+    lptadd /lib
+
+elif [ ${CCCUNAME} == "netbsd" ]; then
     lptadd /usr/pkg/lib
     lptadd /usr/lib
     lptadd /lib
 
-elif [ $CCCUNAME == "solaris" ]; then
+elif [ ${CCCUNAME} == "solaris" ]; then
     lptadd /usr/lib/amd64
     lptadd /usr/lib
     lptadd /lib
 
-elif [ $CCCUNAME == "msys2" ]; then
+elif [ ${CCCUNAME} == "msys2" ]; then
+    # Windows
     lptadd ${MSYS64}${MSYSTEM_PREFIX}/lib
 
 else

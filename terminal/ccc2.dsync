@@ -1,5 +1,5 @@
 -w/home/vermes/ccc3/terminal
--s/home/vermes/ccc2c/terminal
--r:objlin:ppo:
+-s/home/vermes/ccc2/terminal
+-r:object:ppo:
 -x.dsync.bak.
 -md

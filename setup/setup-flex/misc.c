@@ -713,7 +713,7 @@ const char str[];
 char *readable_form( c )
  int c;
     {
-    static char rform[10];
+    static char rform[32];
 
     if ( (c >= 0 && c < 32) || c >= 127 )
         {

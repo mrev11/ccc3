@@ -79,12 +79,12 @@ static void paint(int top, int lef, int bot, int rig)
             unsigned at=cell->getattr();
             unsigned sch=shdw->getchar();
             unsigned sat=shdw->getattr();
-            
+
             if( ch==sch && at==sat )
             {
                 posflag=1;
                 continue;
-            }  
+            }
 
             shdw->setchar(ch);
             shdw->setattr(at);
@@ -100,6 +100,10 @@ static void paint(int top, int lef, int bot, int rig)
             else if(ch==0x2019)
             {
                 ch=0x27; //'
+            }
+            else if(ch==' ')
+            {
+                ch=160; // non-breaking space
             }
 
 

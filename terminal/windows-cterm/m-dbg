@@ -1,6 +1,0 @@
-#!/bin/bash
-gc
-export BUILD_CACHE=NOCACHE
-export BUILD_THR=1
-cccapp.sh @parfile.bld 2>&1 |  tee log-m
-

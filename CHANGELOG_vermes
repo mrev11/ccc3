@@ -1,3 +1,7 @@
+2025-02-14
+   setup-flex/misc.c-ben nagyobb buffer;
+   terminal/windows-cterm-ben non-breaking space;
+
 2025-02-10
   tovabbi modularizalas: termux, raspi;
   CCCUNAME es CCCBIN nevu directoryk csak az options alatt vannak;

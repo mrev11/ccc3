@@ -1,3 +1,6 @@
+2025-02-19
+   -soname felveve a linker parameterlistajaba;
+
 2025-02-14
    setup-flex/misc.c-ben nagyobb buffer;
    terminal/windows-cterm-ben non-breaking space;

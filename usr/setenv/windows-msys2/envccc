@@ -16,7 +16,7 @@ export MINGW_PREFIX=/${MSYSTEM,,}       # lower case
 
 
 #########################################################################
-# CCC run time environment
+# CCC runtime environment
 #########################################################################
 
 export CCC2DIR=~/ccc2

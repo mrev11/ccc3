@@ -18,6 +18,7 @@ if [ -e "$BUILD_LIBX" ]; then
      cat $BUILD_LIBX                                >>$RSPLNK
      echo                                           >>$RSPLNK
 fi
+echo -Wl,-soname=$(basename $TARGET)                >>$RSPLNK
 
 cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/link.opt  >>$RSPLNK
 

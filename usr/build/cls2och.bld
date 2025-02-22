@@ -1,4 +1,16 @@
 #!/bin/bash
 echo CLS2OCH.BAT $1 $2
-objccc.exe $BUILD_CLS $2/$1
+
+INC=$BUILD_CLS
+for i in $BUILD_INC; do 
+    INC="${INC} -i${i}" 
+done
+
+CLS=$2/${1//.cls/}.cls
+OCH=$2/${1//.cls/}.och
+
+objccc.exe  ${INC}  ${CLS}
+
+
+touch -r ${CLS} ${OCH} # ne legyem uj ideje
 

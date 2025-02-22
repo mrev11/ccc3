@@ -8,7 +8,7 @@ export PRG2PPO=${CCCDIR}/usr/bin/prg2ppo.exe
 export CCOMP=${CCCDIR}/usr/bin/ccomp.exe
 export REMOVECR=${CCCDIR}/usr/bin/removecr.exe
 
-flag="!"
+flag=""
 
 if  ! test -x ${BUILD}; then
     #echo compile: ${BUILD}
@@ -20,10 +20,10 @@ if  ! test -x ${PRG2PPO}; then
     flag+="P"
 fi
 
-if  ! test -x ${CCOMP}; then
-    #echo compile: ${CCOMP}
-    flag+="C"
-fi
+#if  ! test -x ${CCOMP}; then
+#    #echo compile: ${CCOMP}
+#    flag+="C"
+#fi
 
 if  ! test -x ${REMOVECR}; then
     #echo compile: ${REMOVECR}

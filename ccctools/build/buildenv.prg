@@ -93,6 +93,12 @@ local env:="BUILD_THR"
 
 
 ******************************************************************************************
+function buildenv_root(x) // project root directory
+local env:="BUILD_ROOT"
+    return if(x==NIL,getenv(env),putenv(env+"="+x))
+
+
+******************************************************************************************
 function list_buildenv()
 
 ? "BUILD_BAT    =",  buildenv_bat()     // innen veszi a forditó scripteket

@@ -26,6 +26,7 @@
 ./cc ${CCCDIR}/ccclib/src/break.cpp
 ./cc ${CCCDIR}/ccclib/src/chmod.cpp
 ./cc ${CCCDIR}/ccclib/src/color.cpp
+./cc ${CCCDIR}/ccclib/src/direct.cpp
 ./cc ${CCCDIR}/ccclib/src/dirsep.cpp
 ./cc ${CCCDIR}/ccclib/src/dtos.cpp
 ./cc ${CCCDIR}/ccclib/src/empty.cpp

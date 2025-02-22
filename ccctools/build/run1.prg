@@ -26,6 +26,9 @@ function run1(cmd)
 static mutex_out:=thread_mutex_init()
 static count:=0
 local runtmp,out
+local runcnt:=s_runcnt()
+
+    s_runcnt(runcnt+1)
 
     if( !s_dry() )
 

@@ -1,4 +1,3 @@
 #!/bin/bash
-cccapp.sh "BUILD_SHR=static"
-mv build.exe $CCCDIR/usr/bin
+cccapp.sh  "BUILD_SHR=static"  "BUILD_BINDIR=$CCCDIR/usr/bin"
 

@@ -44,14 +44,13 @@ if ! removecr.exe -x; then
     exit 1
 fi    
 
-
-( cd ccctools/ppo2cpp && m )
+! [ -e $CCCDIR/usr/bin/ppo2cpp.exe ] && (cd ccctools/ppo2cpp && m)
 if ! ppo2cpp.exe -v; then
     echo "ppo2cpp.exe not installed"
     echo "initial setup failed"
     exit 1
-fi    
-
+fi
+echo    
 
 #-------------------
 # ccclib

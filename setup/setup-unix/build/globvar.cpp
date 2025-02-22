@@ -17,6 +17,7 @@ extern void _clp_s_primary(int argno);
 extern void _clp_s_quiet(int argno);
 extern void _clp_s_resource(int argno);
 extern void _clp_s_rules(int argno);
+extern void _clp_s_runcnt(int argno);
 extern void _clp_s_shared(int argno);
 extern void _clp_s_srcdir(int argno);
 extern void _clp_s_version(int argno);
@@ -331,6 +332,34 @@ push(&NIL);
 pop_call();
 }
 //=======================================================================
+void _clp_s_runcnt(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+1)PUSHNIL();
+argno=1;
+push_call("s_runcnt",base);
+//
+    line(132);
+    static stvar _st_xx((double)0);
+    line(133);
+    push_symbol(base+0);//x
+    push(&NIL);
+    eqeq();
+    cmp_602:;
+    if(flag()){
+    push_symbol(_st_xx.ptr);//s_runcnt
+    }else{
+    push_symbol(base+0);//x
+    assign(_st_xx.ptr);//s_runcnt
+    }
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
 void _clp_s_primary(int argno)
 {
 VALUE *base=stack-argno;
@@ -339,13 +368,13 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("s_primary",base);
 //
-    line(132);
+    line(137);
     static stvar _st_xx;
-    line(133);
+    line(138);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_599:;
+    cmp_652:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_primary
     }else{
@@ -367,13 +396,13 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("s_resource",base);
 //
-    line(137);
+    line(142);
     static stvar _st_xx;
-    line(138);
+    line(143);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_649:;
+    cmp_702:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_resource
     }else{
@@ -395,13 +424,13 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("s_libspec",base);
 //
-    line(142);
+    line(147);
     static stvar _st_xx;
-    line(143);
+    line(148);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_699:;
+    cmp_752:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libspec
     }else{
@@ -423,7 +452,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("s_rules",base);
 //
-    line(147);
+    line(152);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         string(L".msk");
@@ -494,11 +523,11 @@ push_call("s_rules",base);
         pop();
         return 1;
     }();
-    line(170);
+    line(175);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1130:;
+    cmp_1183:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_rules
     }else{
@@ -520,13 +549,13 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("s_batext",base);
 //
-    line(174);
+    line(179);
     static stvar _st_xx;
-    line(175);
+    line(180);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1180:;
+    cmp_1233:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_batext
     }else{
@@ -548,7 +577,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("resource_hash",base);
 //
-    line(179);
+    line(184);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         _clp_simplehashnew(0);
@@ -556,11 +585,11 @@ push_call("resource_hash",base);
         pop();
         return 1;
     }();
-    line(180);
+    line(185);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1238:;
+    cmp_1291:;
     if(flag()){
     push_symbol(_st_xx.ptr);//resource_hash
     }else{
@@ -582,7 +611,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("omitted_hash",base);
 //
-    line(184);
+    line(189);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         _clp_simplehashnew(0);
@@ -590,11 +619,11 @@ push_call("omitted_hash",base);
         pop();
         return 1;
     }();
-    line(185);
+    line(190);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1296:;
+    cmp_1349:;
     if(flag()){
     push_symbol(_st_xx.ptr);//omitted_hash
     }else{

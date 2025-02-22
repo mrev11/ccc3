@@ -128,6 +128,11 @@ static xx:=.f.
     return if(x==NIL,xx,xx:=x )
 
 ******************************************************************************************
+function s_runcnt(x)
+static xx:=0
+    return if(x==NIL,xx,xx:=x )
+
+******************************************************************************************
 function s_primary(x)
 static xx
     return if(x==NIL,xx,xx:=x )

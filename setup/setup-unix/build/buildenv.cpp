@@ -11,6 +11,7 @@ extern void _clp_buildenv_lib(int argno);
 extern void _clp_buildenv_libdir(int argno);
 extern void _clp_buildenv_lpt(int argno);
 extern void _clp_buildenv_obj(int argno);
+extern void _clp_buildenv_root(int argno);
 extern void _clp_buildenv_shr(int argno);
 extern void _clp_buildenv_src(int argno);
 extern void _clp_buildenv_thr(int argno);
@@ -440,6 +441,41 @@ push(&NIL);
 pop_call();
 }
 //=======================================================================
+void _clp_buildenv_root(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+2)PUSHNIL();
+argno=1;
+push_call("buildenv_root",base);
+//
+    line(97);
+    string(L"BUILD_ROOT");
+    assign(base+1);//env
+    pop();
+    line(98);
+    push_symbol(base+0);//x
+    push(&NIL);
+    eqeq();
+    cmp_916:;
+    if(flag()){
+    push_symbol(base+1);//env
+    _clp_getenv(1);
+    }else{
+    push_symbol(base+1);//env
+    string(L"=");
+    add();
+    push_symbol(base+0);//x
+    add();
+    _clp_putenv(1);
+    }
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
 void _clp_list_buildenv(int argno)
 {
 VALUE *base=stack-argno;
@@ -448,67 +484,67 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("list_buildenv",base);
 //
-    line(98);
+    line(104);
     string(L"BUILD_BAT    =");
     _clp_buildenv_bat(0);
     _clp_qout(2);
     pop();
-    line(99);
+    line(105);
     string(L"BUILD_BINDIR =");
     _clp_buildenv_bindir(0);
     _clp_qout(2);
     pop();
-    line(100);
+    line(106);
     string(L"BUILD_DBG    =");
     _clp_buildenv_dbg(0);
     _clp_qout(2);
     pop();
-    line(101);
+    line(107);
     string(L"BUILD_EXE    =");
     _clp_buildenv_exe(0);
     _clp_qout(2);
     pop();
-    line(102);
+    line(108);
     string(L"BUILD_INC    =");
     _clp_buildenv_inc(0);
     _clp_qout(2);
     pop();
-    line(103);
+    line(109);
     string(L"BUILD_LIB    =");
     _clp_buildenv_lib(0);
     _clp_qout(2);
     pop();
-    line(104);
+    line(110);
     string(L"BUILD_LIBDIR =");
     _clp_buildenv_libdir(0);
     _clp_qout(2);
     pop();
-    line(105);
+    line(111);
     string(L"BUILD_LPT    =");
     _clp_buildenv_lpt(0);
     _clp_qout(2);
     pop();
-    line(106);
+    line(112);
     string(L"BUILD_OBJ    =");
     _clp_buildenv_obj(0);
     _clp_qout(2);
     pop();
-    line(107);
+    line(113);
     string(L"BUILD_SHR    =");
     _clp_buildenv_shr(0);
     _clp_qout(2);
     pop();
-    line(108);
+    line(114);
     string(L"BUILD_SRC    =");
     _clp_buildenv_src(0);
     _clp_qout(2);
     pop();
-    line(109);
+    line(115);
     string(L"BUILD_THR    =");
     _clp_buildenv_thr(0);
     _clp_qout(2);
     pop();
-    line(110);
+    line(116);
     _clp_qout(0);
     pop();
 //

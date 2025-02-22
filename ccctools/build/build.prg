@@ -19,7 +19,7 @@
  */
 
 
-#define VERSION "1.7.0"
+#define VERSION "1.7.1"
 
 #define LOWER(x) (x)
 
@@ -31,6 +31,7 @@ static pool
 function main()
 
 local opt:=aclone(argv()),n
+local project:=dirsep()+curdir()
 
 #define OPTION(x)  x==left(opt[n],2)
 #define VALUE()    substr(opt[n],3)
@@ -148,9 +149,25 @@ local opt:=aclone(argv()),n
 
 
     if( !s_quiet() )
-        ?? @"CCC Program Builder "+VERSION+" Copyright (C) ComFirm Bt."
-        ?? " (Thr"+alltrim(str(maxthread))+")"
-        ?
+        if( empty(buildenv_root()) )
+            // BUILD_ROOT nincs beallitva
+            // project := curdir utolso eleme
+
+            project::=fnameext()
+        else
+            // BUILD_ROOT be van allitva
+            // project := curdir elejerol lehagyva a root
+            // igy osszetett projekteknel
+            // amikor ide is, oda is cd-zunk, forditunk
+            // kovetni lehet, hogy merre jar a forditas
+            // pelda: BUILD_ROOT=$(pwd -P)
+
+            project::=strtran(buildenv_root(),"")
+            if( project::left(1)==dirsep() )
+                project::=substr(2)
+            end
+        end
+        ?? "BUILD => ["+project+"]"
     end
 
 
@@ -183,7 +200,9 @@ local opt:=aclone(argv()),n
 
     build()
 
-    ?
+    if( s_runcnt()>0 )
+        ?
+    end
 
 
 ****************************************************************************

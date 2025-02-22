@@ -23,6 +23,7 @@ addlpt() #elejere
     export BUILD_LPT="$X"
 }
 
+export BUILD_OBJ=object
 export BUILD_BAT=$CCCDIR/usr/build
 export BUILD_OPT=compile.opt
 export BUILD_INC=$CCCDIR/usr/include

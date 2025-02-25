@@ -12,6 +12,7 @@ extern void _clp_qqout(int argno);
 extern void _clp_run(int argno);
 extern void _clp_run1(int argno);
 extern void _clp_s_dry(int argno);
+extern void _clp_s_runcnt(int argno);
 extern void _clp_spawn(int argno);
 extern void _clp_str(int argno);
 extern void _clp_strtran(int argno);
@@ -24,7 +25,7 @@ void _clp_run1(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+3)PUSHNIL();
+while(stack<base+4)PUSHNIL();
 argno=1;
 push_call("run1",base);
 //
@@ -39,16 +40,25 @@ push_call("run1",base);
     line(27);
     static stvar _st_count((double)0);
     line(28);
-    line(60);
-    line(30);
+    line(29);
+    _clp_s_runcnt(0);
+    assign(base+3);//runcnt
+    pop();
+    line(31);
+    push_symbol(base+3);//runcnt
+    addnum(1);
+    _clp_s_runcnt(1);
+    pop();
+    line(63);
+    line(33);
     _clp_s_dry(0);
     topnot();
     if(!flag()) goto if_1_1;
-        line(32);
+        line(35);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_lock(1);
         pop();
-        line(33);
+        line(36);
         string(L"log-runtmp");
         push_symbol(_st_count.ptr);//run1
         push(&ONE);
@@ -59,11 +69,11 @@ push_call("run1",base);
         add();
         assign(base+1);//runtmp
         pop();
-        line(34);
+        line(37);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(40);
+        line(43);
         push_symbol(base+0);//cmd
         string(L" >");
         add();
@@ -71,37 +81,37 @@ push_call("run1",base);
         add();
         _clp_bash(1);
         pop();
-        line(43);
+        line(46);
         push_symbol(base+1);//runtmp
         _clp_memoread(1);
         assign(base+2);//out
         pop();
-        line(44);
+        line(47);
         push_symbol(base+1);//runtmp
         _clp_ferase(1);
         pop();
-        line(46);
+        line(49);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_lock(1);
         pop();
-        line(47);
+        line(50);
         push_symbol(base+2);//out
         _clp_qqout(1);
         pop();
-        line(48);
+        line(51);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(59);
-        line(50);
+        line(62);
+        line(53);
         string(L"error");
         _clp_file(1);
         if(!flag()) goto if_2_1;
-            line(54);
+            line(57);
             string(L"type error");
             _clp_run(1);
             pop();
-            line(58);
+            line(61);
             push(&TRUE);
             _clp_s_dry(1);
             pop();
@@ -123,23 +133,23 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("bash",base);
 //
-    line(65);
+    line(68);
     push_symbol(base+0);//cmd
     string(L"\\");
     string(L"/");
     _clp_strtran(3);
     assign(base+0);//cmd
     pop();
-    line(68);
-    line(66);
+    line(71);
+    line(69);
     string(L":/");
     push_symbol(base+0);//cmd
     _clp_at(2);
     number(2);
     eqeq();
-    cmp_361:;
+    cmp_395:;
     if(!flag()) goto if_3_1;
-        line(67);
+        line(70);
         string(L"/");
         push_symbol(base+0);//cmd
         idxr0(1);
@@ -153,7 +163,7 @@ push_call("bash",base);
         pop();
     if_3_1:
     if_3_0:;
-    line(69);
+    line(72);
     number(3);
     string(L"bash.exe");
     string(L"-c");

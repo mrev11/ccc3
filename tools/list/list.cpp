@@ -19,38 +19,23 @@
  */
 
 
-
-
-#define VERSION   "3.0.00-unicode"
+#define VERSION "3.1-unicode"
 
 #ifdef UNIX 
-#define COMPILER "gcc"
- 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <string.h>
- 
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <errno.h>
+  #include <unistd.h>
+  #include <sys/mman.h>
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <sys/time.h>
+  #include <fcntl.h>
+  #include <ctype.h>
+  #include <string.h>
 #else //WIN32
-
-
-#ifdef MSVC
-#define COMPILER "msc"
-#endif
-#ifdef MINGW
-#define COMPILER "mng"
-#endif
- 
-#include <windows.h>
-#include <stdio.h>
-
+  #include <windows.h>
+  #include <stdio.h>
 #endif //UNIX/WIN32
 
 #include <termapi.h>
@@ -88,6 +73,7 @@ static  int       shift=0;
   //eredetileg UTF-8 kodolasu szoveg megjelenitesere irva
 
   #include <utf8conv.h>
+  #define HEADER_ATTR 0x0300
 
 #else  //_CCC2_  (ccc2c!)
   //az eredetileg UTF-8 kodolasu szoveg megjelenitesere irt
@@ -124,6 +110,8 @@ static  int       shift=0;
     *reslen=blen;
     return wt;
   }
+
+  #define HEADER_ATTR 0x30
 #endif
 
 
@@ -132,7 +120,7 @@ int main(int argc, char *argv[])
 {
     if( argc<2 )
     {
-        fprintf(stderr,"List Text Viewer %s (%s)\n",VERSION,COMPILER);
+        fprintf(stderr,"List Text Viewer %s\n",VERSION);
         fprintf(stderr,"Usage: list <filename>\n");
         exit(1);
     }
@@ -278,9 +266,7 @@ static void header(int percent)
 {
     char header[256];
     sprintf(header," %s  %d%%",filename,percent);
-    //writetext(0,0,MAXCOL,header,0x37);
-    //writetext(0,0,MAXCOL,header,0xe0);
-    writetext(0,0,MAXCOL,header,0x70);
+    writetext(0,0,MAXCOL,header,HEADER_ATTR);
     //setcaption(header,strlen(header)); //ez is mukodik
 }
 

@@ -1,3 +1,5 @@
+2025-02-25 build 1.7.1 minden platformon;
+
 2025-02-20 
    build.exe kiirja a projekt directoryt;
    cls2och.bld osszegyujti az include-okat;

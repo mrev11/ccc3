@@ -27,7 +27,7 @@ function main()
     else
         child()
     end
-    return NIL
+    ?
 
 
 ******************************************************************************
@@ -36,21 +36,17 @@ static function parent() //olvas a pipe-ból
 local pp:=pipe()
 local pr:=pp[1]
 local pw:=pp[2]
-local nbyte,buf:=replicate(a" ",32)
+local nbyte,buf:=replicate(a" ",256)
 
     spawn(.f., "test0.exe", str(pw) )
     
     fclose(pw)
 
     while( 0<(nbyte:=fread(pr,@buf,len(buf))) )
-        ?? a"'"+left(buf,nbyte)+a"'", nbyte, crlf()
+        ? nbyte, left(buf,nbyte)
     end
 
-    ? nbyte
-    
     fclose(pr)
-
-    return NIL
  
  
 ******************************************************************************
@@ -60,10 +56,9 @@ local pw:=val(argv(1))
 local d:=directory("*.*","H"),n
  
     for n:=1 to len(d)
-        fwrite( pw,d[n][1] )
+        fwrite( pw,any2str(d[n]) )
         sleep(1000)
     end
-    return NIL
  
 
 ******************************************************************************

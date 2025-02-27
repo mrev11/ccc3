@@ -1,3 +1,4 @@
 -bccc$(CCCVER)_sslsocket
 -bccc$(CCCVER)_socket
-#-bssl
+-bssl
+-bcrypto

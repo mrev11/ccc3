@@ -27,9 +27,7 @@ function main(sslflag)
 
 local ctx,mode
 local ss,s,err,result
-
-local cafile,capath:="cert"
-//local cafile:="cert/localhost-cert.pem",capath
+local cafile,capath
 
 // A cafile/capath-ban a kliens hitelesiteshez
 // hasznalhato certificate-ek vannak megadva.
@@ -47,7 +45,11 @@ local cafile,capath:="cert"
 // 2. Kliens hitelesites.
 // Elesben ehhez kulon kulcsokat ajanlatos hasznalni.
 
-    ctx:=sslctxNew() 
+    //capath:="cert"
+    cafile:="demo-cert.pem"
+    //cafile:="localhost-cert.pem"
+
+    ctx:=sslctxNew()
     ctx:use_certificate_file("localhost.pem")
     ctx:use_privatekey_file("localhost.pem")
 
@@ -62,19 +64,19 @@ local cafile,capath:="cert"
     ss:reuseaddress(.t.)
     ss:bind("127.0.0.1",40000)
     ss:listen
-    
+
     while( .t. )
         begin
             s:=ss:accept()
-            if( sslflag!=NIL )        
+            if( sslflag!=NIL )
                 s:=sslconAccept(ctx,s) //socket -> sslcon
             end
-            
+
             ?
             while( s:waitforrecv )
                 ?? result:=s:recv(128,0) //socket VAGY sslcon (nem var)
 
-                if( result==NIL )            
+                if( result==NIL )
                     exit
                 end
             end

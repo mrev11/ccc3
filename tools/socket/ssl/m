@@ -1,6 +1,10 @@
 #!/bin/bash
 export BUILD_LIBDIR=${CCCDIR}/usr/lib
 
-c++app.sh  -d. -dunix  -sccc"$CCCVER"_sslsocket  -bssl
+if [ -z "$MSYSTEM" ];then
+    c++app.sh  -d. -dunix     -sccc"$CCCVER"_sslsocket  -bssl
+else
+    c++app.sh  -d. -dwindows  -sccc"$CCCVER"_sslsocket  -bssl
+fi
 
 cp -pf ssl.ch  $CCCDIR/usr/include

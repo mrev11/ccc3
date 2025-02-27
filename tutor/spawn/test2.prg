@@ -31,7 +31,6 @@ function main()
         child()
     end
     ?
-    return NIL
 
 
 ******************************************************************************
@@ -60,15 +59,14 @@ local env:={},c
     
     fclose(pr)
 
-    while( ++n<=3 )
+    while( ++n<=26 )
         c:=chr(asc("a")+n-1) 
-        ? "parent:",c, fwrite(pw,c)  
-        sleep(1000)
+        ? "parent:",c
+        fwrite(pw,c)  
+        sleep(200)
     end
 
     fclose(pw)
-
-    return NIL
  
  
 ******************************************************************************
@@ -77,20 +75,16 @@ static function child() //olvas a pipe-ból
 local pr:=val(argv(1))
 local buf:=replicate(a" ",32),nbyte
 
-    ?
-    run("set")
-
-    ? "child :", getenv("proba")
-    ? "child :", getenv("vanaki")
-    ? "child :", getenv("PATH")
-
     while( 0<(nbyte:=fread(pr,@buf,len(buf)))     )
-        ? "child :", upper(left(buf,nbyte))
+        ?? " child:", upper(left(buf,nbyte))
     end
+
+    ? "CHILD proba :", getenv("proba")
+    ? "CHILD vanaki:", getenv("vanaki")
+    ? "CHILD PATH  :", getenv("PATH")
     
     fclose(pr)
-
-    return NIL
+    ?
  
 
 ******************************************************************************

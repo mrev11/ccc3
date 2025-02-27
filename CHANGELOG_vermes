@@ -1,6 +1,10 @@
+2025-02-27
+   msys2: gcc teszt, ucrt teszt;
+   msys2: javitas az m scriptekben;
+
 2025-02-25 build 1.7.1 minden platformon;
 
-2025-02-20 
+2025-02-20
    build.exe kiirja a projekt directoryt;
    cls2och.bld osszegyujti az include-okat;
    cls2och.bld och idejet a cls idejere allitja;

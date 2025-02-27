@@ -1,0 +1,10 @@
+-lgdi32
+-lwsock32
+-limm32 
+-lshell32
+-lole32
+-luuid 
+-lwinmm
+-lws2_32
+-lonecore
+

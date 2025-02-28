@@ -5,7 +5,13 @@ if ! [ -f compopt ]; then
     if ! test -f $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver.opt; then
        _cpp_version.sh
     fi
-    echo -c >compopt
+
+    echo -Dsetup_$CCCVER    >compopt
+    echo -Dsetup_$CCCUNAME >>compopt
+    echo -Dsetup_$CCCBIN   >>compopt
+    echo -Dsetup_$MSYSTEM  >>compopt
+
+    echo -c >>compopt
     cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver.opt >>compopt
     cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/compile.opt >>compopt
     echo -I$CCCDIR/usr/include >>compopt
@@ -13,11 +19,12 @@ if ! [ -f compopt ]; then
     echo -I. >>compopt
 fi
 
+
 compile()
 {
     name="${1##*/}                   "
     echo -n SETUP: "${name:0:24}"
-    sum=$(cat compopt $1 | sha256sum)
+    sum=$(cat compopt $1 | sha256sum) # opt+source -> sha256sum
     sum=setup-${sum:0:64}
     if [ -f $BUILD_CACHE/$sum ]; then
         cp  $BUILD_CACHE/$sum ${name//.cpp/.o}

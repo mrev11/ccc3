@@ -5,14 +5,19 @@ CMPOPT=$BUILD_OBJ/opt--cpp-$1
 mkdir -p ${CMPOPT%/*}
 rm -f $CMPOPT
 
+echo -Dcompile_${CCCVER}                                    >>$CMPOPT
+echo -Dcompile_${CCCUNAME}                                  >>$CMPOPT
+echo -Dcompile_${CCCBIN}                                    >>$CMPOPT
+echo -Dcompile_${MSYSTEM}                                   >>$CMPOPT
+
+
 cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver.opt    >>$CMPOPT
 cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/$BUILD_OPT    >>$CMPOPT
 
 for i in $BUILD_INC; do 
-    echo -I$i | tr '\\' '/' | tr -d '\r'                >>$CMPOPT
+    echo -I$i | tr '\\' '/' | tr -d '\r'                    >>$CMPOPT
 done
-
 if [ -f "$BUILD_CFG" ]; then
-    cat $BUILD_CFG                                      >>$CMPOPT
+    cat $BUILD_CFG                                          >>$CMPOPT
 fi
 

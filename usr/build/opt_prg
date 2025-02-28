@@ -5,6 +5,12 @@ CMPOPT=ppo/opt--prg-$1
 mkdir -p ${CMPOPT%/*}
 rm -f $CMPOPT
 
+echo -Dcompile_${CCCVER}            >>$CMPOPT
+echo -Dcompile_${CCCUNAME}          >>$CMPOPT
+echo -Dcompile_${CCCBIN}            >>$CMPOPT
+echo -Dcompile_${MSYSTEM}           >>$CMPOPT
+
+
 echo $BUILD_PRE                     >>$CMPOPT
 for i in $BUILD_INC; do 
     echo -I$i | tr '@' ':'          >>$CMPOPT 

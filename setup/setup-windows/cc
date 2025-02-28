@@ -1,41 +1,35 @@
 #!/bin/bash
-
-
-OPT=""
-OPT+=" -c"
-OPT+=" -O0"
-OPT+=" -DMINGW" 
-OPT+=" -D_CCC_"
-OPT+=" -D_CCC3_"
-OPT+=" -DWIN32"
-OPT+=" -DWINDOWS"
-OPT+=" -DMULTITHREAD"
-OPT+=" -funsigned-char"
-OPT+=" -mms-bitfields"
-OPT+=" -Wno-unused"
-OPT+=" -Wno-unused-value"
-OPT+=" -Wno-trigraphs"
-OPT+=" -Wno-empty-body"
-OPT+=" -Wno-int-to-pointer-cast"
-OPT+=" -Wno-incompatible-ms-struct"
-OPT+=" -Wno-unknown-warning-option"
-OPT+=" -I ."
-OPT+=" -I ${CCCDIR}/usr/include"
-OPT+=" -I ${CCCDIR}/ccclib/src/include"
-
 #set -x
+
+if ! [ -f compopt ]; then
+    if ! test -f $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver.opt; then
+       _cpp_version.sh
+    fi
+
+    echo -Dsetup_$CCCVER    >compopt
+    echo -Dsetup_$CCCUNAME >>compopt
+    echo -Dsetup_$CCCBIN   >>compopt
+    echo -Dsetup_$MSYSTEM  >>compopt
+
+    echo -c >>compopt
+    cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver.opt >>compopt
+    cat $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/compile.opt >>compopt
+    echo -I$CCCDIR/usr/include >>compopt
+    echo -I$CCCDIR/ccclib/src/include >>compopt
+    echo -I. >>compopt
+fi
 
 
 compile()
 {
     name="${1##*/}                   "
     echo -n SETUP: "${name:0:24}"
-    sum=$(cat $0 $1 | sha256sum) # sscript+source -> sha256sum
+    sum=$(cat compopt $1 | sha256sum) # opt+source -> sha256sum
     sum=setup-${sum:0:64}
     if [ -f $BUILD_CACHE/$sum ]; then
         cp  $BUILD_CACHE/$sum ${name//.cpp/.o}
         echo " cached"
-    elif c++ ${OPT} $1; then
+    elif c++ $(cat compopt) $1; then
         if [ -d "$BUILD_CACHE" ]; then
             cp ${name//.cpp/.o} $BUILD_CACHE/$sum
         fi

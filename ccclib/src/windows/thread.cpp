@@ -74,10 +74,10 @@ struct thread_block
 
 int WCODE(int x)
 {
-         if( x==WAIT_FAILED )       return GetLastError();
-    else if( x==WAIT_TIMEOUT )      return x;
-  //else if( x==WAIT_ABANDONED )    return x;
-    else                            return 0;
+         if( x==(int)WAIT_FAILED )       return GetLastError();
+    else if( x==(int)WAIT_TIMEOUT )      return x;
+  //else if( x==(int)WAIT_ABANDONED )    return x;
+    else                                 return 0;
 }
 
 //---------------------------------------------------------------------------

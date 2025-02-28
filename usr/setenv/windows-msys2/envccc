@@ -30,7 +30,7 @@ export CCC3DIR=~/ccc3
 [ "$CCCVER" == 2 ]  && export CCCDIR=${CCC2DIR}
 [ "$CCCVER" == 3 ]  && export CCCDIR=${CCC3DIR}
 
-export OREF_SIZE=500000
+export CCC_OREFSIZE=500000
 
 . ${CCCDIR}/usr/setenv/addpath
 

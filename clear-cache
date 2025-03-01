@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CACHE=~/.cache/build
+
+rm -r $CACHE
+mkdir -p $CACHE

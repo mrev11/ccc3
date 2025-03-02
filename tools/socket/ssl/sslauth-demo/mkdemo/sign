@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SUBJECT=$1
+ISSUER=$2
+
+openssl x509\
+    -req\
+    -days 9999\
+    -in     ${SUBJECT}-req.pem\
+    -out    ${SUBJECT}-cert.pem\
+    -CA     ${ISSUER}.pem\
+    -CAkey  ${ISSUER}.pem
+
+

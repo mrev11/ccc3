@@ -18,40 +18,62 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//a klienst hitelesito, onmagat igazolo zerver
+//a klienst hitelesítő, önmagát igazoló zerver
 
 #include "ssl.ch"
 
-******************************************************************************
-function main(sslflag)
+#include "case.ch"
 
+
+******************************************************************************************
+function main()
+
+local ip:="127.0.0.1"
+local port:=40000
+local sslflag:=.t.
 local ctx,mode
 local ss,s,err,result
-local cafile,capath
 
-// A cafile/capath-ban a kliens hitelesiteshez
-// hasznalhato certificate-ek vannak megadva.
+local capath
+local cafile
+
+// A cafile/capath-ban a kliens hitelesítéshez
+// használható certificate-ek vannak megadva.
 // Az 1 db cafile-ban sok certificate section lehet.
-// A capath directory fileiben egy-egy certificate lehet.
+// A capath directory filéiben egy-egy certificate lehet.
 // Egy kliens akkor lesz elfogadva, ha olyan certificate-je van,
-// amit alairtak egy cafile/capath-ban levo certificate-hez
-// tartozo kulccsal. A ket legegyszerubb eset:
-// 1. Berakjuk capath-ba a kliensek onalairt certificate-jeit.
-// 2. Egy kozos kulccsal alairjuk a kliensek certificate-jeit.
-// A demoban hasznalt demo-cert ala van irva loclahost.pem-mel.
+// amit aláírtak egy cafile/capath-ban levő certificate-hez
+// tartozó kulccsal. A két legegyszerűbb eset:
+// 1. Berakjuk capath-ba a kliensek önaláírt certificate-jeit.
+// 2. Egy közös kulccsal aláírjuk a kliensek certificate-jeit.
 //
-// A demoban localhost.pem ket szerepet is jatszik.
-// 1. Szerver azonositas es titkositas.
-// 2. Kliens hitelesites.
-// Elesben ehhez kulon kulcsokat ajanlatos hasznalni.
+// server1.pem-mel van alairva a kliens cert-je
+// server2.pem-mal igazolja magat a szerver a kliens fele
 
-    //capath:="cert"
-    cafile:="demo-cert.pem"
-    //cafile:="localhost-cert.pem"
+    set printer on 
+    set printer to log-server1
 
-    ctx:=sslctxNew()
-    ctx:use_certificate_file("localhost.pem")
-    ctx:use_privatekey_file("localhost.pem")
+    ? CERTS
+
+    if( CERTS=="SERVER_SIGNED"  )
+        // hitelesites (1)
+        // a server1.pem-mel alairt 
+        // kliens cert-eket elfogadjuk
+        cafile:="pem_server/server1.pem"
+    end
+
+    if( CERTS=="SELF_SIGNED"  )
+        // hitelesites (2)
+        // a cafile-ban levo onalairt 
+        // kliens cert-eket elfogadjuk
+        cafile:="pem_server/clientss-cert.pem"
+    end
+
+    ctx:=sslctxNew("TLS_server") 
+    // a szerver server2.pem-mel igazolja magat
+    // ugyanez a kulcs kell a titkositashoz 
+    ctx:use_certificate_file("pem_server/server2.pem")
+    ctx:use_privatekey_file("pem_server/server2.pem")
 
     if( capath!=NIL .or. cafile!=NIL )
         mode := SSL_VERIFY_PEER_CERT
@@ -62,21 +84,24 @@ local cafile,capath
 
     ss:=socketNew()
     ss:reuseaddress(.t.)
-    ss:bind("127.0.0.1",40000)
+    ss:bind(ip,port)
     ss:listen
 
+    ? "listen at: ",ip,port
+    
     while( .t. )
         begin
             s:=ss:accept()
-            if( sslflag!=NIL )
+            if( sslflag!=NIL )        
                 s:=sslconAccept(ctx,s) //socket -> sslcon
             end
-
+            
             ?
             while( s:waitforrecv )
-                ?? result:=s:recv(128,0) //socket VAGY sslcon (nem var)
-
-                if( result==NIL )
+                result:=s:recv(128,0) //socket VAGY sslcon (nem vár)
+                if( result!=NIL )            
+                    ?? result
+                else
                     exit
                 end
             end
@@ -92,6 +117,7 @@ local cafile,capath
             ? "closed"
         end
     end
+    
 
-******************************************************************************
+******************************************************************************************
 

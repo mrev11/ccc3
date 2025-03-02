@@ -1,0 +1,64 @@
+#!/bin/bash
+#set -x
+
+export MSYS2_ARG_CONV_EXCL=\*
+
+NAME=$1
+CA=$2
+
+SUBJECT=/ST=Hungary/L=Budapest/O=ComFirm/CN=${NAME}
+
+#------------------------------------------------------------------------
+# generate private key
+#------------------------------------------------------------------------
+
+    #openssl ecparam -list_curves
+
+    openssl ecparam\
+        -name prime256v1\
+        -genkey\
+        -noout\
+        -out ${NAME}-key.pem
+
+#------------------------------------------------------------------------
+# generate cert request
+#------------------------------------------------------------------------
+
+    openssl req\
+        -new\
+        -subj $SUBJECT\
+        -key ${NAME}-key.pem\
+        -out ${NAME}-req.pem\
+
+
+#------------------------------------------------------------------------
+# sign cert request
+#------------------------------------------------------------------------
+
+if [ "$CA" == ca ]; then
+    # jogosult cert-ek alairasara
+
+    openssl x509\
+        -req\
+        -days 9999\
+        -in  ${NAME}-req.pem\
+        -out ${NAME}-cert.pem\
+        -signkey ${NAME}-key.pem\
+        -extfile site.cnf\
+        -extensions v3_ca
+else
+    # nem jogosult cert-ek alairasara
+
+    openssl x509\
+        -req\
+        -days 9999\
+        -in  ${NAME}-req.pem\
+        -out ${NAME}-cert.pem\
+        -signkey ${NAME}-key.pem
+fi
+
+#------------------------------------------------------------------------
+# concatenate results
+#------------------------------------------------------------------------
+
+cat ${NAME}-cert.pem ${NAME}-key.pem >${NAME}.pem

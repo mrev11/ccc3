@@ -1,0 +1,4 @@
+#!/bin/bash
+# masik terminalban el van inditva ssl-accept
+
+echo Van, aki forron szereti! | ssl-connect

@@ -1,0 +1,14 @@
+#!/bin/bash
+openssl s_client \
+    -cert client-cert.pem  \
+    -key client-key.pem \
+    -CAfile server2-cert.pem \
+    -verify 1 \
+    -connect localhost:40000
+
+
+exit 0
+
+
+# '-verify depth' kapcsolja be a peer hitelesitest
+

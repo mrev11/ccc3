@@ -1,0 +1,4 @@
+#!/bin/bash
+#xterm -e demo_server1.exe &
+
+demo_server1.exe

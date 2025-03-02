@@ -1,0 +1,12 @@
+#!/bin/bash
+openssl s_server \
+    -cert server2.pem  \
+    -key server2.pem \
+    -CAfile server1-cert.pem \
+    -Verify 1 \
+    -accept 40000
+
+exit 0
+
+# '-Verify depth' kapcsolja be a peer hitelesitest
+

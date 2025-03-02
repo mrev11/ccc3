@@ -1,0 +1,6 @@
+
+
+[ v3_ca ]
+# extensions for a CA
+
+basicConstraints = CA:true, pathlen:2

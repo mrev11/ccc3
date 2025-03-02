@@ -11,6 +11,8 @@ A két legegyszerűbb eset:
    kliensek certificate-jeit, és iderakjuk a közös
    klucshoz tartozó certificate-et.
    
+A demóban a 2-es eset van, a demo.p12 kulcs
+alá van írva a localhost.pem-mel.   
 
 A certificate-ek módosítása után le kell futtatni
 a rehash.b scriptet, hogy a változások érvényre jussanak,

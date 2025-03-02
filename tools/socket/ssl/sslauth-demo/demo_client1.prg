@@ -18,41 +18,50 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//a szervert hitelesito, onmagat igazolo kliens
+//a szervert hitelesítő, önmagát igazoló kliens
 
 #include "ssl.ch"
 
+#include "case.ch"
+
+******************************************************************************************
 function main()
 
 local ctx,mode
-local s,x:=a"Ot szep szuzlany orult irot nyuz",n
+local s,x:=a"Öt szép szűzlány őrült írót nyúz",n
 
 local cafile
 
-    //cafile:=NIL                         // nem hitelesiti a szervert
-    cafile:="localhost-cert.pem"        // hitelesiti a szervert
-    //cafile:="demo-cert.pem"             // ellenproba: ezzel nem megy
+    cafile:="pem_client/server2-cert.pem" // server hitelesitesehez
 
-    ctx:=sslctxNew() 
-    
-    //ez ala van irva localhost.pem-mel
-    ctx:use_certificate_file("demo-cert.pem")  
-    ctx:use_privatekey_file("demo-key.pem")
-    
+    ctx:=sslctxNew()
+
+    ? CERTS
+    if( CERTS=="SERVER_SIGNED"  )
+        // server1-cert-tel alairt cert
+        ctx:use_certificate_file("pem_client/client-cert.pem")
+        ctx:use_privatekey_file("pem_client/client.pem")
+    end
+    if( CERTS=="SELF_SIGNED"  )
+        // onalairt cert
+        ctx:use_certificate_file("pem_client/clientss-cert.pem")
+        ctx:use_privatekey_file("pem_client/clientss.pem")
+    end
+
     if( cafile!=NIL )
         mode := SSL_VERIFY_PEER_CERT
         ctx:set_verify(mode)
         ctx:set_verify_depth(1)
         ctx:load_verify_locations(cafile)
-        
-        //szerver/kliens hitelesitese egyforman
+
+        //szerver/kliens hitelesítése egyformán
     end
 
     s:=sslconNew(ctx)
     s:connect("localhost",40000)
-    
+
     for n:=1 to len(x)
-        ? n
+        ? n, substr(x,n,1)
         s:send( substr(x,n,1)  )
         sleep(30)
     next
@@ -61,3 +70,4 @@ local cafile
 
     ?
 
+******************************************************************************************

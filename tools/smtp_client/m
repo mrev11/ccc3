@@ -1,0 +1,3 @@
+#!/bin/bash
+cccapp.sh @parfile.bld
+cp -p smtp.ch ${CCCDIR}/usr/include

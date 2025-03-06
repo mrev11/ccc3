@@ -165,6 +165,7 @@ static function smtp.mail(this,body)
 
 local rsp
 local n,h,a
+local domain
 local bnd:=gen_mime_boundary()
 
     smtp.mail_envelope_header_from(this)
@@ -173,6 +174,14 @@ local bnd:=gen_mime_boundary()
     smtp.write(this,"DATA")
     rsp:=smtp.read(this,SMTP_BEGIN_MAIL)
 
+    if( 0==ascan(this:header_list,{|x|x:key=="Message-ID"}) )
+        if( 0<(n:=ascan(this:address_list,{|x|x:type==SMTP_ADDRESS_FROM})) )
+            if( 0<(domain:=at("@",this:address_list[n]:email)) )
+                domain:=this:address_list[n]:email::substr(domain+1)
+                this:header_add("Message-ID",gen_message_id(domain))
+            end
+        end
+    end
     if( 0==ascan(this:header_list,{|x|x:key=="Date"}) )
         this:header_add("Date",smtp.time())
     end
@@ -260,6 +269,22 @@ local bnd:=a"mime",n
 
 
 ******************************************************************************************
+static function gen_message_id(domain)
+static seed:=rand(seconds())
+local id,n
+    id:=date()::dtos
+    id+=time()::strtran(":","")
+    id+="."
+    for n:=1 to 10
+        id+=chr(asc("a")+random()%26)
+    next
+    id+="@"+domain
+    id:="<"+id+">"
+    
+    return id
+
+
+******************************************************************************************
 static function smtp.append_address_to_header(this, type, key)
 local n,a,value
     for n:=1 to len(this:address_list)
@@ -307,6 +332,8 @@ local n,header,rsp
 
 ******************************************************************************************
 static function smtp.close(this)
+    smtp.write(this,"QUIT")
+    smtp.read(this) // SMTP_CLOSE  (221 Bye)
     this:sock:close
 
 

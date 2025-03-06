@@ -239,8 +239,7 @@ local head:=strtran(a"HTTP/1.1 xxx"+CRLF,"xxx",code)
     if( valtype(dirent)=="A" )
         head+=a"Content-Type: "+contenttype(dirent[F_NAME])+CRLF
         head+=a"Content-Length: "+str2bin(alltrim(str(dirent[F_SIZE])))+CRLF 
-        //head+=a"Last-Modified: "+str2bin(ctime(dati2ostime(dirent[F_DATE],dirent[F_TIME])))
-        head+=a"Last-Modified: "+str2bin(gmtime2httpdate(dati2ostime(dirent[F_DATE],dirent[F_TIME])))
+        head+=a"Last-Modified: "+str2bin(http.time(dati2ostime(dirent[F_DATE],dirent[F_TIME])))+CRLF 
         head+=a"Connection: Keep-Alive"+CRLF
     else
         head+=a"Content-Type: text/html"+CRLF
@@ -267,6 +266,6 @@ local since:=http_getheader(request:req,"if-modified-since"),da,ti
     end
     da:=dirent[F_DATE]
     ti:=dirent[F_TIME]
-    return httpdate_value(since) < dati2ostime(da,ti)::gmtime2httpdate::httpdate_value
+    return httpdate_value(since) < dati2ostime(da,ti)::http.time::httpdate_value
 
 *****************************************************************************

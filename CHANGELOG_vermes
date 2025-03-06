@@ -1,3 +1,9 @@
+2025-03-06 time.cpp:
+  mutex helyett atirva reentrans fuggvenyekre (localtime_r/gmtime_r);
+  ctime() es  gmtime2httpdate() megszuntek;
+  websrv: gmtime2httpdate() helyett http.time();
+
+
 2025-03-05 smtp_client konyvtar automatikus Message-ID header;;
 
 2025-03-04 smtp_client konyvtar;

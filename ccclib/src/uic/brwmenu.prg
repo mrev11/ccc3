@@ -486,8 +486,8 @@ function brwArray(browse, array)
     end
     browse:cargo[BR_ARRAY]:=array
     browse:goTopBlock:={||browse:cargo[BR_ARRAYPOS]:=1,len(browse:cargo[BR_ARRAY])>0 }
-    browse:goBottomBlock:={||browse:cargo[BR_ARRAYPOS]:=len(array),len(browse:cargo[BR_ARRAY])>0}
-    browse:skipBlock:={|s|ArraySkip(browse, s)}
+    browse:goBottomBlock:={||browse:cargo[BR_ARRAYPOS]:=max(1,len(array)),len(browse:cargo[BR_ARRAY])>0}
+    browse:skipBlock:={|s|if(empty(browse:cargo[BR_ARRAY]),0,ArraySkip(browse,s))}
     return array
 
 
@@ -512,11 +512,20 @@ function brwArrayPos(browse, pos)
     return browse:cargo[BR_ARRAYPOS]:=pos
 
 ************************************************************************
-function brwABlock(browse, n)
-    return {|x|if(x==NIL,;
-                browse:cargo[BR_ARRAY][browse:cargo[BR_ARRAYPOS]][n],;
-                browse:cargo[BR_ARRAY][browse:cargo[BR_ARRAYPOS]][n]:=x)}
+function brwABlock(browse,n,default)
+    return {|x|ablock(browse,n,x,default)}
 
+static function ablock(browse,n,x,default)
+local arr:=browse:cargo[BR_ARRAY]
+local pos:=browse:cargo[BR_ARRAYPOS]
+    if( arr::empty )
+        return default
+    elseif( x==NIL )
+        return arr[pos][n]
+    else
+        return arr[pos][n]:=x
+    end
+    
 
 ************************************************************************
 function brwDoApplyKey(browse, nKey)

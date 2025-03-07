@@ -1,3 +1,5 @@
+2025-03-07 ures array borwse tamogatas;
+
 2025-03-06 time.cpp:
   mutex helyett atirva reentrans fuggvenyekre (localtime_r/gmtime_r);
   ctime() es  gmtime2httpdate() megszuntek;

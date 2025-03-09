@@ -21,9 +21,9 @@
 
 
 #ifdef WINDOWS
-  #define __STDC_WANT_LIB_EXT1__  1
-  #define localtime_r(x,y)  localtime_s(y,x)
-  #define gmtime_r(x,y)     gmtime_s(y,x)
+  #define _POSIX_THREAD_SAFE_FUNCTIONS
+  // localtime_r()
+  // gmtime_r()
 #endif
 
 #include <string.h>

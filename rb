@@ -7,7 +7,7 @@ export BUILD_ROOT=$(pwd -P)
 
 if [ "$1" == -nc ]; then
     # do not use cache
-    export BUILD_CACHE=DO_NOT_USE_CACHE
+    export BUILD_USECACHE=no
 fi
 
 time m x

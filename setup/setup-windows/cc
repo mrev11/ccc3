@@ -26,11 +26,11 @@ compile()
     echo -n SETUP: "${name:0:24}"
     sum=$(cat compopt $1 | sha256sum) # opt+source -> sha256sum
     sum=${sum:0:64}
-    if [ -f $BUILD_CACHE/setup/$sum ]; then
+    if [ "$BUILD_USECACHE" != no ] && [ -f $BUILD_CACHE/setup/$sum ]; then
         cp  $BUILD_CACHE/setup/$sum ${name//.cpp/.o}
         echo " cached"
     elif c++ $(cat compopt) $1; then
-        if [ -d "$BUILD_CACHE" ]; then
+        if [ -d "$BUILD_CACHE" ] && ! [ -f $BUILD_CACHE/setup/$sum ]; then
             mkdir -p $BUILD_CACHE/setup
             cp ${name//.cpp/.o} $BUILD_CACHE/setup/$sum
         fi

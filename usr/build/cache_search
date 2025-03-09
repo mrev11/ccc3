@@ -11,7 +11,7 @@ if [ -d "$BUILD_CACHE" ] && [ -n "$DEPEND" ]; then
     sum=$(cat $CMPOPT $DEPEND | sha256sum)
     sum=${sum:0:64}
     dir=${sum:0:2}
-    if [ -f $BUILD_CACHE/$dir/$sum ]; then
+    if [ "$BUILD_USECACHE" != no ] &&  [ -f $BUILD_CACHE/$dir/$sum ]; then
         #object exists in cache
         mkdir -p ${TARGET%/*}
         cp $BUILD_CACHE/$dir/$sum $TARGET

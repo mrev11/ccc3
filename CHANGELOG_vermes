@@ -1,3 +1,8 @@
+2025-03-09 BUILD_USECACHE (default undefined)
+  ha BUILD_CACHE egy letezo dierctory, akkor ott tarolja az objecteket;
+  BUILD_USECACHE!=no (default) eseten forditas helyett a tarolt objectet veszi;
+  BUILD_USECACHE=no eseten a cache-t nem nezi (de az uj objectet tarolja);
+
 2025-03-09 time fuggvenyekben _POSIX_THREAD_SAFE_FUNCTIONS;
 
 2025-03-07 ures array borwse tamogatas;

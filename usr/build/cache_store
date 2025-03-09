@@ -5,10 +5,12 @@ if [ -z "$BUILD_CACHE" ]; then
 fi
 
 if [ -n "$sum" ] &&  [ -f $TARGET ] && [ -d "$BUILD_CACHE" ];then
-    #store object in cache
-    dir=${sum:0:2}
-    mkdir -p $BUILD_CACHE/$dir
-    cp $TARGET $BUILD_CACHE/$dir/$sum
+    if ! [ -f $BUILD_CACHE/$dir/$sum ]; then
+        #store object in cache
+        dir=${sum:0:2}
+        mkdir -p $BUILD_CACHE/$dir
+        cp $TARGET $BUILD_CACHE/$dir/$sum
+    fi
 fi
 echo
 quit 0

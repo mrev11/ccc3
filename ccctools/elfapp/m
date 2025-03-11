@@ -1,2 +1,3 @@
 #!/bin/bash
-cccapp.sh -icxx  BUILD_EXE=${CCCDIR}/usr/bin
+export BUILD_BINDIR=${CCCDIR}/usr/bin
+cccapp.sh

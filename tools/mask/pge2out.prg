@@ -103,21 +103,7 @@ function usage()
 
 *************************************************************************
 function ExtractName(filename)  // file.ext --> file
-local ppos,epos
-
-   if( empty(filename) )
-       filename:=""
-   end
-
-   ppos:=rat("\",filename)
-   epos:=rat(".",filename)
-
-   if( epos>ppos )
-       filename:=left(filename,epos-1)
-   end
-   
-   return filename
-
+    return fname(filename)
 
 *************************************************************************
 function ModuleName(filename)  // \path\file.ext --> file

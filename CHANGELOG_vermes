@@ -1,3 +1,8 @@
+2025-03-10
+  pge2out: ExtractName() javitva;
+  shm API reszleges implementacioja Windowsra;
+  elfapp implementacio Windowsra (nem hasznal ELF header-t);
+
 2025-03-09 BUILD_USECACHE (default undefined)
   ha BUILD_CACHE egy letezo dierctory, akkor ott tarolja az objecteket;
   BUILD_USECACHE!=no (default) eseten forditas helyett a tarolt objectet veszi;

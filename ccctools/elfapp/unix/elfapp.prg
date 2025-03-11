@@ -18,13 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#clang
+#include <elfapp.h>
+#cend
 
-// nevenek ellentmondva
-// nem hasznalja az ELF headert-t
-// -> mukodik Windowson is    
-
-
-******************************************************************************************
 function main(*)
 local exe:={*},n
 
@@ -40,20 +37,4 @@ local exe:={*},n
         ?
     next
 
-
-******************************************************************************************
-function elfapp(exe)
-local fd:=fopen(exe)
-local map:=filemap.open(fd)
-local pos:=rat(a"[",map)
-local app:=a""
-    if( 0<pos .and. pos>len(map)-48 )
-        app:=map[pos..]
-    end
-    filemap.close(map)
-    fclose(fd)
-    return app
-
-
-******************************************************************************************
-
+    

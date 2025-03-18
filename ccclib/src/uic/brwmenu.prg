@@ -775,7 +775,7 @@ local popblk
             keyboard(chr(K_CTRL_D))
             exit
 
-        elseif( lastkey()==K_ESC )
+        elseif( choice==0 )
             browse:cargo[BR_POPUP]:=.f.
             exit
 

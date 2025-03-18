@@ -22,7 +22,7 @@
 function main(fspec)
 
 local prg:=memoread(fspec),n
-local tab,path,fld:={},idx:={}
+local tab,path,fld:={},idx:={},keep
 local line,f,t,w,d,xn,xf,xs,i
 local tdc
 
@@ -39,9 +39,16 @@ local tdc
         line:=prg[n]
 
         if( "tabNew"$line )
-            tab:="!table "+line::rcut('("','")')::lower
+            tab:="!table "+line::rcut('("','")')
+            loop
         elseif( "tabPath"$line )
-            path:="!path  "+line::rcut('"','"')::lower::strtran("/","")::strtran("\","")
+            path:="!path  "+line::rcut('"','"')
+            loop
+        elseif( "tabKeepDeleted"$line )
+            line::=rcut("(",")")
+            line::=split
+            keep:="!keepdeleted "+line[2]
+            loop
         end
         
         line::=strtran('"','')
@@ -52,8 +59,8 @@ local tdc
             line::=strtran("}","")
             line::=split
 
-            xn:=line[1]::lower
-            xf:=line[2]::lower
+            xn:=line[1]::upper
+            xf:=line[2]
             xs:=""
             for i:=3 to len(line)
                 xs+=" "+line[i]
@@ -87,16 +94,15 @@ local tdc
     for n:=1 to len(fld)
         tdc+=fld[n]+endofline()
     next
+
+    if( keep!=NIL )
+        tdc+=keep
+    end
     
     memowrit(fspec::strtran(".prg","")+".tdc", tdc)
 
 
 *********************************************************************************
-//static function cut(str,deliml, delimr)
-//local posl:=at(deliml,str)
-//local posr:=at(delimr,str)
-//    return str[posl+len(deliml) .. posr-1]
-
 static function rcut(str,deliml, delimr)
 local posl:=at(deliml,str)
 local posr:=rat(delimr,str)

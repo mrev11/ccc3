@@ -1,13 +1,8 @@
-5a95b5b959880da4dde7c88f76c0eb370902c13b 2025031818:14:37-UTC ./ccclib/src/buildnumber_ccc.prg
-fd2833a93e27aa62fef27b46f6c8d0388ff9209a 2025031818:13:40-UTC ./CHANGELOG_vermes
+2dcffd70ea438ed58077c4bc0fda8602cd13bc9e 2025031818:22:09-UTC ./ccclib/src/buildnumber_ccc.prg
+1195dcd3eae82070baa8c368dfe91274c7d40274 2025031818:16:47-UTC ./CHANGELOG_vermes
 ef1639a478574de31334017f0fdf75a3d84f11a4 2025031818:10:59-UTC ./tabobj/ccc2.dsync
 02170e7982ad3ede043df7888bef277a5367337b 2025031817:59:25-UTC ./tutor/xbrwarr/object/rsp--exe-xbrwarr
 cee31f52ea10d348c85ed6d5222ef64c9f182a55 2025031817:59:04-UTC ./ccclib/src/uic/brwmenu.prg
-9a65bc5243f818f5ac64f2de4963fe9ec9112669 2025031817:03:22-UTC ./tools/tdc2prg/object/rsp--exe-prg2tdc
-63f0c5cec346f549654714300ddebd12b4fbbf3f 2025031817:03:22-UTC ./tools/tdc2prg/object/rsp--exe-tabsuper
-4abbbdb833b0e3f3adbf6c72693fbdb3a43b4b9d 2025031817:03:22-UTC ./tools/tdc2prg/object/rsp--exe-tdc2ch
-771eeab55c836edee90c9be004fe9fad87f9bad4 2025031817:03:22-UTC ./tools/tdc2prg/object/rsp--exe-tdc2prg
-752e97450fc55d9a04e42c193d59ba69a8b8003b 2025031817:03:22-UTC ./tools/tdc2prg/object/rsp--exe-tdc2tabobj
 8f329d72a03de20e8c2caa7646a92bb658593b3c 2025031817:03:22-UTC ./usr/bin/prg2tdc
 7d883d862d68f57ba650bb54849911af006aa086 2025031817:03:22-UTC ./usr/bin/tabsuper
 884068e41b4e59dd0057ac2d563a2d79527319b8 2025031817:03:22-UTC ./usr/bin/tdc2ch

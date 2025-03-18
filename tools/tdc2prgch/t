@@ -1,6 +1,0 @@
-
-#(cd test
-# ../tdc2prgch.exe mbox.tdc
-#)
-
-tdc2prgch.exe test/bankgir.tdc

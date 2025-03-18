@@ -23,7 +23,7 @@
 
 
 #define PRIME          1103
-#define KEYNAME(t,o)   lower(tabPathName(t)+alltrim(str(o)))
+#define KEYNAME(t,o)   tabPathName(t)+alltrim(str(o))
 
 
 ******************************************************************************
@@ -42,7 +42,7 @@ local memcol:={},memdec:={},mempos,memval
     //regi adatfile
     //-----------------------
 
-    btname:=lower(tabPathName(table))
+    btname:=tabPathName(table)
 
     fd:=fopen(btname,FO_READWRITE+FO_EXCLUSIVE)
     if( fd<0 )
@@ -64,7 +64,7 @@ local memcol:={},memdec:={},mempos,memval
 
     tfile:=tabFile(table)
     tabFile(table,TMPCHR+tfile)
-    ferase(lower(tabPathName(table)))
+    ferase(tabPathName(table))
     tabCreate(table)
     tabOpen(table,OPEN_EXCLUSIVE)
     tabZap(table)
@@ -173,7 +173,7 @@ local memcol:={},memdec:={},mempos,memval
 
     set signal block
     ferase(btname)
-    frename(lower(tabPathName(table)),btname)
+    frename(tabPathName(table),btname)
     set signal unblock
 
     tabFile(table,tfile)

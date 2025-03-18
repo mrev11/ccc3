@@ -64,7 +64,7 @@ static int nroot(BTREE *t, char *name) //create new root page
 
 
 //---------------------------------------------------------------------------
-static int __bt_srcord(BTREE *t, char *name)
+int __bt_srcord(BTREE *t, char *name)
 {
     unsigned int n;
     mpool_count(t->bt_mp, "srcord");

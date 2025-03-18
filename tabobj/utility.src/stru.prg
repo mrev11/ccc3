@@ -46,25 +46,12 @@ local err
         quit
     end
 
-    //a tabobj konyvtar (UNIX-on) csak lower case path-okkal mukodik
-    //az ujabb mc binding fullpath-t hasznal programinditaskor
-    //ettol elromlik a program, ha a path /-tol kezdve nem vegig lower case
-    //ezert az esetleges fullpath-t atalakitjuk relativ path-ra
-    //egyebkent is zavaroak a menuben megjeleno kilometer hosszu nevek
-
     fname:=relpath(fname)
     
-    #ifdef _UNIX_
-        if( !fname::lower==fname )
-            alert( @"Nonlowercase path;;"+fname,{@"Quit"} )
-            quit
-        end
-    #endif
-
     fnamex:=fname
 
-    if( !lower(tabDataExt())$lower(fnamex)  )
-        fnamex+=lower(tabDataExt())
+    if( !tabDataExt()$fnamex )
+        fnamex+=tabDataExt()
     else
         fname:=left(fnamex,rat(".",fnamex)-1)
     end
@@ -108,9 +95,8 @@ local err
 
     while( NIL!=(upg:=struktura(tab)) ) //struktura editalas
         
-        //tab:=tabNew0(fname)
-        tab:=tabNew0(tabFile(sav)) //2011.07.08
-        tabPath(tab,tabPath(sav))  //lower case path!
+        tab:=tabNew0(tabFile(sav))
+        tabPath(tab,tabPath(sav))
 
         for n:=1 to len(tabColumn(upg))
             if( !empty(tabColumn(upg)[n][1]) )

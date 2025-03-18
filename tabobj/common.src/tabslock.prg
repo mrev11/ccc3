@@ -105,9 +105,9 @@ local f:=tabFile(table)
 local sdir:=p+SEMDIR
 local sfil:=sdir+dirsep()+f
 
-    if( !file(lower(sfil)) )
+    if( !file(sfil) )
 
-        dirmake(lower(sdir))
+        dirmake(sdir)
         
         //itt szerencsere eleg a dirmake(),
         //mert tabCreate nem hozza letre automatikusan
@@ -121,21 +121,21 @@ local sfil:=sdir+dirsep()+f
         //nem "Szemfor lock sikertelen"-t kell jelenteni,
         //hanem normal runtime errort generalni
         
-        if( empty(directory(lower(sdir),"HD")) )
+        if( empty(directory(sdir,"HD")) )
             taberrOperation("tabSlock")
             taberrDescription(@"failed creating semaphor directory")
             taberrFilename(sdir)
             tabError(table)
         end
         
-        fclose(fcreate(lower(sfil)))
+        fclose(fcreate(sfil))
     end
     
     if( mode==NIL )
         mode:=FO_EXCLUSIVE
     end
     
-    return fopen(lower(sfil),mode) 
+    return fopen(sfil,mode) 
 
 
 

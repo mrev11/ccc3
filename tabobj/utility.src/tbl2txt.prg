@@ -28,7 +28,7 @@
 function table2txt(*)
 
 local table
-local dext:=lower(tabDataExt())
+local dext:=tabDataExt()
 local appname:=substr(dext,2)+"2txt"
 local args:={*},n,ctrl,fname
 local mode:=OPEN_EXCLUSIVE

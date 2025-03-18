@@ -35,6 +35,7 @@
 
 
 #define UAT(x) upper(alltrim(x))
+#define TRM(x) alltrim(x)
 
 ******************************************************************************
 function tabAlias(table,par) //alias nev 
@@ -43,13 +44,13 @@ function tabAlias(table,par) //alias nev
 
 ******************************************************************************
 function tabFile(table,par) //fajl neve path kiterjesztes nelkul
-    return if(par==NIL, table[TAB_FILE], table[TAB_FILE]:=UAT(par))
+    return if(par==NIL, table[TAB_FILE], table[TAB_FILE]:=TRM(par))
 
 
 ******************************************************************************
 function tabPath(table,par) //.-bol a fajlhoz vezeto relativ ut (a vegen dirsep)
     if( par!=NIL )
-        par:=UAT(par)
+        par:=TRM(par)
         par:=strtran(par,"/",dirsep()) //2000.09.29
         par:=strtran(par,"\",dirsep()) //2000.09.29 
         if( !empty(par) .and. !right(par,1)$":"+dirsep() )
@@ -62,7 +63,7 @@ function tabPath(table,par) //.-bol a fajlhoz vezeto relativ ut (a vegen dirsep)
 
 ******************************************************************************
 function tabExt(table,par) //az adatfile aktualis kiterjesztese
-    return if(par==NIL, table[TAB_EXT], table[TAB_EXT]:=UAT(par))
+    return if(par==NIL, table[TAB_EXT], table[TAB_EXT]:=TRM(par))
 
 
 ******************************************************************************

@@ -120,7 +120,7 @@ local n,e
                 tabspec:=strtran(tabspec,"\","/")
                 tabspec:=split(tabspec)
                 for n:=1 to len(tabspec)
-                    tabspec[n]:=upper(tabspec[n])
+                    tabspec[n]:=tabspec[n]
                 next
             end
 
@@ -134,7 +134,7 @@ local n,e
                 xtabspec:=strtran(xtabspec,"\","/")
                 xtabspec:=split(xtabspec)
                 for n:=1 to len(xtabspec)
-                    xtabspec[n]:=upper(xtabspec[n])
+                    xtabspec[n]:=xtabspec[n]
                 next
             end
 
@@ -180,7 +180,7 @@ local ts
 
     if( table[TAB_LOGGED]==NIL )
         ts:=tabPath(table)+tabFile(table)
-        ts:=upper(strtran(ts,"\","/"))
+        ts:=strtran(ts,"\","/")
 
         if( !tabIsChangeLogEnabled() )
             table[TAB_LOGGED]:=.f.

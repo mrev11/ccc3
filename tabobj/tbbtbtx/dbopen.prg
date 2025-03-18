@@ -76,7 +76,7 @@ local blk,blk1
 ******************************************************************************
 function tabOpen(table,mode,userblock) //megnyitja a db-t
 
-local fname:=lower(tabPathName(table)), n, dbf
+local fname:=tabPathName(table), n, dbf
 local errblk, err
 local timeout
 
@@ -265,7 +265,7 @@ local result
 ******************************************************************************
 static function tabUse1(table,mode)  //megnyit egy dbf-et
 
-local fname:=lower(tabPathName(table))
+local fname:=tabPathName(table)
 local fmode:=FO_READWRITE+FO_EXCLUSIVE
 local memohnd
 
@@ -453,11 +453,11 @@ local table,column,n
             // elvegezheto a konverzio
             ?? "version_upgrade_4", tabPathName(table); ?
 
-            table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table)),FO_EXCLUSIVE)
+            table[TAB_MEMOHND]:=memoOpen(tabMemoName(table),FO_EXCLUSIVE)
             if( table[TAB_MEMOHND]<0 )
                 taberrOperation("version_upgrade_4")
                 taberrDescription(@"memoOpen failed")
-                taberrFilename(lower(tabMemoName(table)))
+                taberrFilename(tabMemoName(table))
                 tabError(table)
             end
 
@@ -480,18 +480,18 @@ local table,column,n
 
             fclose(table[TAB_MEMOHND])
             table[TAB_MEMOHND]:=NIL
-            ferase(lower(tabMemoName(table)))
+            ferase(tabMemoName(table))
 
         else
             // READONLY modban nyitva
             // nem vegezheto el a konverzio
             ? getpid(),"version_fallback_4", tabPathName(table)
 
-            table[TAB_MEMOHND]:=memoOpen(lower(tabMemoName(table)),FO_READ)
+            table[TAB_MEMOHND]:=memoOpen(tabMemoName(table),FO_READ)
             if( table[TAB_MEMOHND]<0 )
                 taberrOperation("version_upgrade_4")
                 taberrDescription(@"memoOpen failed")
-                taberrFilename(lower(tabMemoName(table)))
+                taberrFilename(tabMemoName(table))
                 tabError(table)
             end
 

@@ -60,7 +60,7 @@ local msg,msgtotal,msgdbnam
         tabError(tab) 
     end
     
-    dbf:=lower(alltrim(dbf))
+    dbf:=alltrim(dbf)
     
     if( right(dbf,4)==".dbf" )
         dbm:=left(dbf,len(dbf)-4)+".dbm"

@@ -136,10 +136,10 @@ class tabobj(object)
 
 
 ******************************************************************************************
-static function tabobj.initialize(this,alias)
+static function tabobj.initialize(this,file)
 
     this:tab_alias    := "" // alias->field letiltva
-    this:tab_file     := upper(alltrim(alias))
+    this:tab_file     := alltrim(file)
     this:tab_path     := ""
     this:tab_ext      := tabDataExt()
     this:tab_column   := {}

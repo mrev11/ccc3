@@ -30,7 +30,7 @@ local dbf,tab,n
     dbf:=dbaseiiiNew()
     dbf:open(fspec)
 
-    tab:=tabNew( fspec::fname::upper  )
+    tab:=tabNew( fspec::fname  )
     tabPath(tab,fpath(fspec))
     for n:=1 to len(dbf:dbstruct)
         tabAddColumn(tab,dbf:dbstruct[n])

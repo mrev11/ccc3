@@ -22,11 +22,11 @@ function tabSubsystemName()
     return @"BT(BTX) interface"
  
 function tabDataExt() //adatfilek default kiterjesztese
-    return ".BT"
+    return ".bt"
 
 function tabIndexExt() //indexfilek default kiterjesztese
     return ".XXX" //nincs index
 
 function tabMemoExt() //memofilek kiterjesztese
-    return ".BTX"
+    return ".btx"
  

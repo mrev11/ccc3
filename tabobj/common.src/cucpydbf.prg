@@ -130,7 +130,7 @@ local msg,msgtotal,msgdbnam
 
     n:=0
     msgtotal:="/"+alltrim(str(reccnt))
-    msgdbnam:="Pack  "+upper(db1)
+    msgdbnam:="Pack  "+db1
     msg:=message(msg,msgdbnam+str(n)+msgtotal)
     buffer:=replicate(x"20",reclen)
     reccnt:=0

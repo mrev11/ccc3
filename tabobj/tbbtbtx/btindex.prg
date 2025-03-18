@@ -22,7 +22,7 @@
 #include "tabobj.ch" 
 
 #define PRIME          1103
-#define KEYFILE(t,o)   lower(tabPathName(t)+alltrim(str(o)))
+#define KEYFILE(t,o)   tabPathName(t)+alltrim(str(o))
 #define OPERATION      "build_bt_index"
 
 //Felepiti (vagy ujraepiti) az {order} sorszamu index(ek)et.

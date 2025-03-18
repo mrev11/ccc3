@@ -48,7 +48,7 @@ function tabNew0(alias) //letrehoz egy uj table objectet (nem teszi listaba)
 local table:=array(TAB_SIZEOF)
 
     table[TAB_ALIAS   ] := upper(alltrim(alias))
-    table[TAB_FILE    ] := upper(alltrim(alias))
+    table[TAB_FILE    ] := alltrim(alias)
     table[TAB_PATH    ] := ""
     table[TAB_EXT     ] := tabDataExt()
     table[TAB_COLUMN  ] := {}
@@ -102,9 +102,9 @@ static function create(table,userblock) //krealja a nemletezo fajlt
 
 local n,rcol,rind,db
 
-    if( !file(lower(tabPathName(table))) ) 
+    if( !file(tabPathName(table)) ) 
 
-        db:=_db_create( lower(tabPathName(table)), btbtx_pagesize() )  
+        db:=_db_create( tabPathName(table), btbtx_pagesize() )  
         
         if( db==NIL  )
             taberrOperation("tabCreate")

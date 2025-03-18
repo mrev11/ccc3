@@ -61,15 +61,8 @@ local fname,control,mode,n:=0,v
 
     fname:=relpath(fname)
 
-    #ifdef _UNIX_
-        if( !fname::lower==fname )
-            alert( @"Nonlowercase path;;"+fname,{@"Quit"} )
-            quit
-        end
-    #endif
-
-    if( !lower(tabDataExt())$lower(fname)  )
-        fname+=lower(tabDataExt())
+    if( !tabDataExt()$fname )
+        fname+=tabDataExt()
     end
 
 

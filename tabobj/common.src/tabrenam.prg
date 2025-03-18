@@ -37,8 +37,8 @@ function tabRename(table,name)
 local result:=.t.
 local fname1,fname2
     
-    fname1:=lower(tabPathName(table))
-    fname2:=lower(tabPath(table)+name+tabDataExt(table))
+    fname1:=tabPathName(table)
+    fname2:=tabPath(table)+name+tabDataExt(table)
     result:=result.and._rename(fname1,fname2)
 
     return result
@@ -52,10 +52,10 @@ local path:=tabPath(table)
 local name:=tabFile(table)
 local fname1,fname2
 
-    dirmake(lower(path+BACKUPDIR))
+    dirmake(path+BACKUPDIR)
     
-    fname1:=lower(tabPathName(table))
-    fname2:=lower(path+BACKUPDIR+dirsep()+name+tabDataExt(table))
+    fname1:=tabPathName(table)
+    fname2:=path+BACKUPDIR+dirsep()+name+tabDataExt(table)
     result:=result.and._rename(fname1,fname2)
     
     return result
@@ -64,8 +64,8 @@ local fname1,fname2
 ****************************************************************************
 function tabDelTable(table)
 local result:=.t.
-    ferase(lower(tabPathName(table)))
-    if( file(lower(tabPathName(table))) )
+    ferase(tabPathName(table))
+    if( file(tabPathName(table)) )
         result:=.f.
     end
     return result

@@ -52,6 +52,7 @@
   int    __bt_seq            (BTREE*, DBT*, int);
 
   int    __bt_creord         (BTREE*, char*);
+  int    __bt_srcord         (BTREE*, char*);
   int    __bt_setord         (BTREE*, char*);
   int    __bt_delord         (BTREE*, char*);
   int    __bt_renord         (BTREE*, char*, char*);

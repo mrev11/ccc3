@@ -189,6 +189,17 @@ void _clp__db_creord(int argno)
 }
 
 //---------------------------------------------------------------------------
+void _clp__db_srcord(int argno)
+{
+    CCC_PROLOG("_db_srcord",2);
+    BTREE *db=(BTREE*)_parp(1);
+    str2bin(base+1);
+    char *name=_parb(2);
+    _retni( __bt_srcord(db,name) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
 void _clp__db_setord(int argno)
 {
     CCC_PROLOG("_db_setord",2);

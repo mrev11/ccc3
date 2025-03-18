@@ -48,7 +48,7 @@ local n, column:=index[IND_COL], cix, col
     asize(index,IND_SIZEOF)
 
     index[IND_NAME]:=upper(alltrim(index[IND_NAME]))
-    index[IND_FILE]:=upper(alltrim(index[IND_FILE]))
+    index[IND_FILE]:=alltrim(index[IND_FILE])
     index[IND_TYPE]:=!empty(index[IND_TYPE])
     
     for n:=1 to len(column)

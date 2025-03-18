@@ -27,7 +27,7 @@
 function table2dbf(*)
 
 local table
-local dext:=lower(tabDataExt())
+local dext:=tabDataExt()
 local appname:=substr(dext,2)+"2dbf"
 local args:={*},n,ctrl,fname
 local mode:=OPEN_EXCLUSIVE
@@ -94,11 +94,11 @@ local tab:=tabResource(fname)
 ******************************************************************************
 static function createdbf(table) 
 
-local ext:=lower(tabDataExt())
-local mem:=lower(tabMemoExt())
+local ext:=tabDataExt()
+local mem:=tabMemoExt()
  
-local datname:=lower(tabPathName(table))    //adatfile
-local dbdname:=lower(tabMemoName(table))    //memofile  
+local datname:=tabPathName(table)           //adatfile
+local dbdname:=tabMemoName(table)           //memofile  
 local dbfname:=strtran(datname,ext,".dbf")  //DBF adatfile 
 local dbmname:=strtran(datname,ext,".dbm")  //DBM memofile   
  

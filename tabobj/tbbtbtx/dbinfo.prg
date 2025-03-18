@@ -47,7 +47,7 @@ function tabStructInfo(table) //megnyithato objektum a file info alapjan
 //igy a struktura elteresenek vizsgalatara (tabVerify, KVERIF), 
 //es a struktura konverziojara (tabUpgrade)
 
-    return tabResource( lower(tabPathName(table)) )
+    return tabResource( tabPathName(table) )
 
 
 ******************************************************************************
@@ -55,7 +55,7 @@ function tabResource(dbfspec,alias:="")
 
 local table,n
 local column,index
-local db:=_db_open(fopen(lower(dbfspec),FO_READ+FO_SHARED))
+local db:=_db_open(fopen(dbfspec,FO_READ+FO_SHARED))
 local path,file,ext
 local poffs:=max(rat(dirsep(),dbfspec),rat(":",dbfspec))
 local eoffs:=rat(".",dbfspec)
@@ -69,7 +69,7 @@ local eoffs:=rat(".",dbfspec)
         tabPath(table,path)
         tabFile(table,file)
         tabExt(table,ext)
-
+        
         // Inkompatibilis valtozas!
            tabAlias(table,alias) 
         // Korabban automatikus aliast kapott a tabla.
@@ -90,6 +90,13 @@ local eoffs:=rat(".",dbfspec)
         for n:=1 to len(index)
             tabAddIndex(table,index[n])
         next
+
+        if( _db_srcord(db,"deleted")>=0 )
+            // letezik a delete index
+            // de nem tudjuk a keep erteket
+            // beallitjuk a default 1 napot
+            tabKeepDeleted(table,1)
+        end
         
         _db_close(db)
     end

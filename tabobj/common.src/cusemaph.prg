@@ -44,7 +44,7 @@
 
 
 #define SEMDIR     "semaphor.tmp"
-#define SEMFIL(x)  lower(SEMDIR+dirsep()+x)
+#define SEMFIL(x)  (SEMDIR+dirsep()+x)
 
 
 ****************************************************************************

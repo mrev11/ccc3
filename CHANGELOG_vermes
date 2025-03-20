@@ -1,3 +1,6 @@
+2025-03-20
+  pge2out: ExtractName() hibas javitas javitva;
+
 2025-03-18 btbtx konyvtar case sensitive fajlnevekkel:
   table path      : case sensitive
   table basename  : case sensitive (upper case in macro definitions)

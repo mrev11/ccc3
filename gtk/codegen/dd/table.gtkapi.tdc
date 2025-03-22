@@ -1,0 +1,17 @@
+!table GTKAPI
+!index CAPI GTKAPI1 CAPI
+!field CAPI         C  48  0
+!field CCCAPI       C  48  0
+!field KIHAGY       C   2  0
+!field ISFUNCTION   L   1  0
+!field ISMETHOD     L   1  0
+!field ISCONSTRUC   L   1  0
+!field CLNAME       C  24  0
+!field MODNAME      C  24  0
+!field STATE        C   4  0
+!field RETTYPE      C  24  0
+!field RETOPTION    L   1  0
+!field VARARGS      L   1  0
+!field CCC          C 128  0
+!field CODEBLOCK    C 256  0
+!field PARAMETERS   C 512  0

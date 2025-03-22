@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_tesztdb.ch"
+#include "table.tesztdb.tdh"
 
 function main()
 

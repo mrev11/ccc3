@@ -88,6 +88,7 @@ local eoffs:=rat(".",dbfspec)
 
         index:=readIndex(db)
         for n:=1 to len(index)
+            index[n][2]:=file
             tabAddIndex(table,index[n])
         next
 

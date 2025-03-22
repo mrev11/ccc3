@@ -1,7 +1,0 @@
--lddict2  
--d. 
--ddd
-
-BUILD_EXE=$(CCCDIR)/usr/bin
-
-

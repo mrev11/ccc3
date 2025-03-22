@@ -59,8 +59,8 @@
 
 
 #include "table.ch"
-#include "_rpcauth.ch"
-#include "_rpcuser.ch"
+#include "table.rpcauth.tdh"
+#include "table.rpcuser.tdh"
 
 #include "rpcsession.ver"
 

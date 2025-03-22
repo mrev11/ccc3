@@ -1,3 +1,7 @@
 -d. 
 
+-bccc${CCCVER}_pcre2
+-bpcre2-8
+-bpcre2-32
+
 BUILD_EXE=$(CCCDIR)/usr/bin

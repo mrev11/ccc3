@@ -26,9 +26,8 @@ local tab,path,fld:={},idx:={},keep
 local line,f,t,w,d,xn,xf,xs,i
 local tdc
 
-
-    if( !prg[1..8]=="function" )
-        ? "Usage: prg2tdc.exe <_tabnam.prg>"
+    if( 0==at("function",prg) .or. 10<at("function",prg)  )
+        ? "Usage: prg2tdc.exe <table.name.prg>"
         ?
         quit
     end 

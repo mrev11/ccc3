@@ -1,0 +1,23 @@
+#!/bin/bash
+echo -n  TDC2TDH.BAT $1 $2
+#set -x
+
+SOURCE=$2/$1.tdc
+TARGET=$BUILD_OBJ/$1.obj
+
+OUT=out--tdc2ch-$1
+rm -f $TARGET $OUT
+mkdir -p ppo
+
+. ${BUILD_BAT}/def_quit
+
+tdc2tdh.exe $SOURCE >$OUT
+err=$(cat $OUT)
+if [ -n "$err" ]; then
+    quit 1
+else
+    rm -f $OUT
+    echo
+fi
+
+quit 0

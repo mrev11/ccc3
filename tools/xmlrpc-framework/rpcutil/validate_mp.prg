@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_session.ch"
+#include "table.session.tdh"
 
 
 // A session szerver az xmlrpc_timeout()-nal hosszabb ideig inaktiv 

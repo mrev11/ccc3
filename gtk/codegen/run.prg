@@ -22,7 +22,7 @@
 #include "fileconv.ch"
 
 #include "table.ch"
-#include "_gtkapi.ch"
+#include "table.gtkapi.tdh"
 
 *******************************************************************************
 function main()

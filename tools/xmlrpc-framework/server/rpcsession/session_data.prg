@@ -21,7 +21,7 @@
 //tarolja/eloszedi a session adatokat
 
 #include "table.ch"
-#include "_session.ch"
+#include "table.session.tdh"
 
 #define TIMEOUT  xmlrpc_timeout()
 

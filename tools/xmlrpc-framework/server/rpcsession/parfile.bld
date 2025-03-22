@@ -2,7 +2,7 @@
 #mert bt-ben van a user nyilvántartás
  
 -d.
--i../../rpcutil/dd
+-d../../rpcutil/dd
 -b../../$$(rpcutil)
 
 -bccc$(CCCVER)_btbtx

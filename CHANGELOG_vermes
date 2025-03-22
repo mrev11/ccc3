@@ -1,3 +1,10 @@
+2025-03-22
+  tabobj nevkepzes valtozott: _<tabname>.tdc helyett table.<tabname>.tdc;
+  tabobj uj metodus: tabDirmake() elkesziti tabPath()-t (tobbszoros melysegben is);
+  tabResource() javitva: index fajl neve "" (ures) helyett egyezik a bt nevevel;
+  ddict2 megszunt;
+  a demokban mindenhol vegrehajtva a upgrade;
+
 2025-03-20
   pge2out: ExtractName() hibas javitas javitva;
 

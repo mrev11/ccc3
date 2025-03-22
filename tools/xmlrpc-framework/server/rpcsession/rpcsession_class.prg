@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_rpcuser.ch"
+#include "table.rpcuser.tdh"
 
 static session_number:=0
 

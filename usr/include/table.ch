@@ -19,16 +19,11 @@
  */
 
 *****************************************************************************
-#ifndef _TABLE_METHODS_
-#define _TABLE_METHODS_
+#ifndef _TABLE_CH_
+#define _TABLE_CH_
 
-#xtranslate (OBJ:<t>:<m>)[:=<x>] => <m>(<t>()[,<x>])
-#xtranslate (OBJ:<t>:<m>)([<p,...>])[:=<x>] => <m>(<t>()[,<p>][,<x>])
-
-#xtranslate (FIELD:<t>:<c>)[:=<x>] => tabEvalColumn(<t>(),<c>[,<x>])
-//#xtranslate (FIELD:<t>:<c>)[:=<x>] => <t>(<c>[,<x>]) // egyenerteku
-
-#xtranslate (MEMO:<m>)[:=<x>] => <m>([<x>])
+#xtranslate (OBJ:table.<t>:<m>)[:=<x>]              => <m>(table.<t>()[,<x>])
+#xtranslate (OBJ:table.<t>:<m>)([<p,...>])[:=<x>]   => <m>(table.<t>()[,<p>][,<x>])
 
 *****************************************************************************
 
@@ -53,6 +48,7 @@
 #xtranslate (TABLE:<tab>):DELETE       => (OBJ:<tab>:tabDELETE)
 #xtranslate (TABLE:<tab>):DELETED      => (OBJ:<tab>:tabDELETED)
 #xtranslate (TABLE:<tab>):DESTRUCT     => (OBJ:<tab>:tabDESTRUCT)
+#xtranslate (TABLE:<tab>):DIRMAKE      => (OBJ:<tab>:tabDIRMAKE)
 #xtranslate (TABLE:<tab>):DROPINDEX    => (OBJ:<tab>:tabDROPINDEX)
 #xtranslate (TABLE:<tab>):EOF          => (OBJ:<tab>:tabEOF)
 #xtranslate (TABLE:<tab>):EVALCOLUMN   => (OBJ:<tab>:tabEVALCOLUMN)

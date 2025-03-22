@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_szamla.ch"
+#include "table.szamla.tdh"
 #include "icons.ch"
  
 ****************************************************************************

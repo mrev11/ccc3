@@ -20,71 +20,81 @@
 
 function main( nspace )
 
-local d:=directory("*.tdc"),n,f
+local d:=directory("*.tdc"),n
 local eol:=endofline()
 
-local tabincld
 local tabnames
 local tabsuper
+
 local tabbynam:=<<XX>>
 function !NSPACE!tabByName(t)
 local n:=ascan(!NSPACE!tabNameList(),{|s|s==upper(alltrim(t))})
     return if(n>0,eval(!NSPACE!tabSuperList()[n]),NIL)
 <<XX>>
-local sup:="_super00.prg"
-local out
 
+local sup:="tabsuperlist.prg"
+local tab
+local out
 
     asort(d,,,{|x,y|x[1]<y[1]}) 
 
-    tabincld:=""
-    for n:=1 to len(d)
-        f:=d[n][1]
-        f:=f[1..len(f)-4]::lower+".ch"
-        tabincld+='#include "'+f+'"'+eol
-    next
-
 
     tabnames:="function "
+    tabsuper:="function "
     if( nspace!=NIL )
         tabnames+=nspace+"."
+        tabsuper+=nspace+"."
+        tabbynam::=strtran("!NSPACE!",nspace+".")
+    else
+        tabbynam::=strtran("!NSPACE!","")
     end
 
     tabnames+="tabNameList()"+eol
     tabnames+="local nameList:={}"+eol
-    for n:=1 to len(d)
-        f:=d[n][1]
-        f:=f[2..len(f)-4]::upper
-        tabnames+='    aadd(nameList,"'+f+'")'+eol
-    next
-    tabnames+="    return nameList"+eol
-    
-
-
-    tabsuper:="function "
-    if( nspace!=NIL )
-        tabsuper+=nspace+"."
-    end
 
     tabsuper+="tabSuperList()"+eol
     tabsuper+="local supList:={}"+eol
+
     for n:=1 to len(d)
-        f:=d[n][1]
-        f:=f[1..len(f)-4]::upper
-        tabsuper+='    aadd(supList,{||'+f+'()})'+eol
+        tab:=tabname(d[n][1])
+        tabnames+='    aadd(nameList,"'+tab::upper+'")'+eol
+        tabsuper+='    aadd(supList,{||table.'+tab::lower+'()})'+eol
     next
+
+    tabnames+="    return nameList"+eol
     tabsuper+="    return supList"+eol
 
-    if( nspace==NIL )
-        tabbynam::=strtran("!NSPACE!","")
-    else
-        tabbynam::=strtran("!NSPACE!",nspace+".")
-    end
-    
-    out:=tabsuper+eol+eol+tabnames+eol+eol+tabbynam+eol+eol+tabincld+eol
+    out:=eol+tabsuper+eol+eol+tabnames+eol+eol+tabbynam+eol
     if( !out==memoread(sup) )
         memowrit(sup,out )
     end
+
+
+************************************************************************************
+static function tabname(fspec)
+
+static rx:=pcre2.compile(a"!table[ \t]+[_0-9a-zA-Z]+")
+
+local fd:=fopen(fspec)
+local map:=filemap.open(fd)
+local match,tabname
+
+    fclose(fd)
+
+    if( (match:=pcre2.match(rx,map))==NIL )
+        ? "invalid tdc file (does not have !table line):", fspec
+        ?
+        quit
+    end
+
+    tabname:=map[match[1]..match[2]-1]
+    tabname::=bin2str
+    tabname::=strtran("!table","")
+    tabname::=strtran(chr(9),"")
+    tabname::=alltrim
+
+    filemap.close(map)
+    return tabname
 
 
 ************************************************************************************

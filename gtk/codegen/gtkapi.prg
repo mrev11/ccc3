@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_gtkapi.ch"
+#include "table.gtkapi.tdh"
 
 
 function gtkapi_append(o,kihagy)

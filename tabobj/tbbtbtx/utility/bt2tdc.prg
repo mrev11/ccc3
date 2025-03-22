@@ -39,7 +39,7 @@ local keep
     column:=tabColumn(tab)
     keep:=tabKeepDeleted(tab)
 
-    set printer to "_"+name::lower+".tdc"
+    set printer to "table."+name::lower+".tdc"
     set printer on
     set console off
 

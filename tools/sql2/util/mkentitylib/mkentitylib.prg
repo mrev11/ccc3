@@ -171,7 +171,7 @@ local entities:=""
     
     for n:=1 to len(src)
 
-        srcname:=fname(src[n][F_NAME])
+        srcname:=filespec.name(src[n][F_NAME])
         
         if( file(srcname+".ted") )
             entname:=readtedname(srcname+".ted")

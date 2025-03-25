@@ -1,2 +1,2 @@
 #!/bin/bash
-cccapp.sh  BUILD_EXE=$(CCCDIR)/usr/bin
+cccapp.sh  BUILD_EXE=~/bin

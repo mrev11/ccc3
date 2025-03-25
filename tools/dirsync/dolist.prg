@@ -26,7 +26,7 @@ function dolist(fil,opt,def)
 local ext,pos,exe
 local screen:=savescreen()
 
-    ext:=fext(fil)[2..]+"=" //   xxx=
+    ext:=filespec.extension(fil)[2..]+"=" //   xxx=
     opt:=split(opt,":")     // { xxx=less %f, *=list %f, ... }
 
     if( 0<(pos:=ascan(opt,{|x|at(ext,x)==1})) )

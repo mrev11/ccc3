@@ -18,8 +18,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-namespace tdsutil 
- 
+namespace tdsutil
+
 
 ******************************************************************************
 function tds2dom(fspec)
@@ -34,7 +34,7 @@ local primkey:=xmlnodeNew("primarykey")
 local collist:={} //column node-ok
 local idxlist:={} //index node-ok
 local sellist:={} //select node-ok
-local types:=tdsutil.hashtableNew() 
+local types:=tdsutil.hashtableNew()
 local x,t
 local err
 
@@ -42,7 +42,7 @@ local err
 
     for n:=1 to len(s)
         entry:=s[n]
-  
+
         if( left(entry,5)=="name:"  )
             addtext(name,substr(entry,6))
 
@@ -89,7 +89,7 @@ local err
     next
 
     //összeszerelés
-    
+
     entity:addcontent(name)
     entity:addcontent(tablist)
 
@@ -100,7 +100,7 @@ local err
     for n:=1 to len(collist)
         entity:addcontent(collist[n])
     next
-    
+
     entity:addcontent(primkey)
 
     for n:=1 to len(idxlist)
@@ -129,11 +129,11 @@ local err
     addtext(name,entry[1])
 
     realtype:=upper(entry[2])
-    if( NIL!=(typdef:=types:get(realtype)) )  
+    if( NIL!=(typdef:=types:get(realtype)) )
         realtype:=typdef[2]
     end
     addtext(type,realtype)
-    
+
     for n:=3 to len(entry)
         if( left(entry[n],2)=="x=" )
             expr:=xmlnodeNew("expr")
@@ -245,7 +245,7 @@ local pos1,pos2
     if( "unique"$substr(entry,pos2+1) )
         unique:=xmlnodeNew("unique")
     end
-    
+
     //összeszerelés
 
     index:addcontent(name)
@@ -253,7 +253,7 @@ local pos1,pos2
     if( unique!=NIL )
         index:addcontent(unique)
     end
-    
+
     return index
 
 
@@ -267,7 +267,7 @@ local order //:=xmlnodeNew("order")
 local poswhr,posgrp,poshav,posord,posdst,txt
 
     entry:=alltrim(substr(entry,8))  //"select:" levágva
-    
+
     poswhr:=tdsutil.atsymbol("where",entry)
     posgrp:=tdsutil.atsymbol("group",entry)
     poshav:=tdsutil.atsymbol("having",entry)
@@ -291,8 +291,8 @@ local poswhr,posgrp,poshav,posord,posdst,txt
         where:=xmlnodeNew("where")
         addtext(where,txt)
     end
-   
-    if( posord>0 )  
+
+    if( posord>0 )
         txt:=subtext(entry,posord,{posdst})
         txt:=alltrim(substr(txt,6)) //order levágva
         if( left(txt,3)=="by " )
@@ -311,7 +311,7 @@ local poswhr,posgrp,poshav,posord,posdst,txt
     if(where!=NIL)
         sel:addcontent(where)
     end
-    
+
     if(order!=NIL)
         sel:addcontent(order)
     end
@@ -319,9 +319,9 @@ local poswhr,posgrp,poshav,posord,posdst,txt
     return sel
 
 #ifdef EMLEKEZTETO //distinct 2007.06.19
-  Az Oracle csak az egyszerű 'distinct'-et támogatja, 
+  Az Oracle csak az egyszerű 'distinct'-et támogatja,
   azt is csak korlátozásokkal (nem lehet a mezők között blob).
-  Az egyszerű distinct pótolható  a 'group by' klózzal, 
+  Az egyszerű distinct pótolható  a 'group by' klózzal,
   ha a 'group by' után felsoroljuk az egész select listet.
 #endif
 
@@ -330,7 +330,7 @@ local poswhr,posgrp,poshav,posord,posdst,txt
   A selectlist meghatározza az eredménytábla oszlopait.
   A where meghatározza az eredménytábla sorait.
   Az order meghatározza az eredménytábla sorainak rendezettségét.
-  
+
   Ezért a distinct klóz logikus helye nem a selectlist,
   hanem a where környékén van. Az SQL utasításgenerátor fogja
   átrakni a distinct-et a selectlist elé. A where név itt kissé
@@ -338,18 +338,18 @@ local poswhr,posgrp,poshav,posord,posdst,txt
 #endif
 
 #ifdef EMLEKEZTETO //where kiegészítés 2007.06.19
-  Korábban vagy volt "where" klóz, vagy egyáltalán nem lehetett 
+  Korábban vagy volt "where" klóz, vagy egyáltalán nem lehetett
   filterezni, pl. nem kezdődhetett a filter egy "group by" klózzal.
-  A tds elemző a where kulcsszót levágta, az SQL kódgenerátor 
-  pedig újra berakta. Most meghagyjuk a filter klózokat úgy, 
-  ahogy beírták. 
+  A tds elemző a where kulcsszót levágta, az SQL kódgenerátor
+  pedig újra berakta. Most meghagyjuk a filter klózokat úgy,
+  ahogy beírták.
 #endif
 
 #ifdef EMLEKEZTETO //order by 2007.06.19
   Korábban az order-t így kellett beírni a tds-be: order(col1,col2,...)
   Ehelyett jobb a szokásos: order by col1,col2
   Elfogadjuk azért a korábbi szintaktikát is.
-  
+
   Az "order by" kulcsszót a tds elemző levágja,
   az SQL utasítás generátor visszarakja.
 #endif
@@ -374,7 +374,8 @@ local fspec,tdspath,n,f,s,entry
     tdspath:=getenv("TDSPATH")
     tdspath:=strtran(tdspath,":",";")
     if( parent!=NIL )
-        parent:=tdsutil.fpath0(parent)+";"
+        parent:=filespec.path(parent)
+        parent::=left(len(parent-1))+";"
     else
         parent:=""
     end
@@ -420,7 +421,7 @@ local fspec,tdspath,n,f,s,entry
             quit
         end
     next
-    
+
     return NIL
 
 

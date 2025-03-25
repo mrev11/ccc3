@@ -26,8 +26,13 @@ function isbinfile(fname,fsize)
 static txt:=".prg.cpp.ch.h.ppo.c.java.tex.txt.lst.bat.aux.toc.log."
 static bin:=".exe.obj.lib.dll.so.a.jar.zip.class.gz.tar.msk.pge.dat.idx.dbm.dbf.ctx.ntx.bt.btx.dvi.lj.pdf.ps.xls.ogg.mp3.jpg.jpeg.flac.png."
 
-local ext:=fname::fext::lower()+"."
+local ext:=fname::filespec.extension
 local x,n,binflag:=.f.
+
+    if( (ext+=".")=="." )
+        ext:=".."
+    end
+
 
     if( fsize>256*1024 )
         binflag:=.t.

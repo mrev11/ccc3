@@ -29,8 +29,8 @@ local ttarget,tdepend
 local update:=.f.,torun
 local n,p1,p2,p3
 
-    if( fext(target)==".obj" )
-        target:=objdir+dirsep()+fname(target)+fext(target)
+    if( filespec.extension(target)==".obj" )
+        target:=objdir+dirsep()+filespec.name(target)+filespec.extension(target)
     end
 
     ttarget:=ftime(target) 
@@ -54,7 +54,7 @@ local n,p1,p2,p3
     if( update )
         
         torun:=buildenv_bat()+dirsep()
-        torun+=strtran(fext(deplist[2])+"2"+fext(deplist[1]),".","")
+        torun+=strtran(filespec.extension(deplist[2])+"2"+filespec.extension(deplist[1]),".","")
         torun+=s_batext()
 
         if( !file(torun) )
@@ -64,8 +64,8 @@ local n,p1,p2,p3
             quit 
         end
 
-        p1:=fname(deplist[1])
-        p2:=fpath0(deplist[2]); p2:=if(empty(p2),".",p2)
+        p1:=filespec.name(deplist[1])
+        p2:=filespec.path(deplist[2]); p2:=if(empty(p2),".",p2)
         p3:=deplist[2]
         for n:=3 to len(deplist)
             p3+=" "+deplist[n]

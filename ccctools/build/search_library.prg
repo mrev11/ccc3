@@ -47,11 +47,9 @@ static msys64:=getenv("MSYS64")
             f2:=f0
             f3:=f0
         else
-            f1:=f0+".lib"                           //DOS name
-            //f2:=fpath(f0)+"lib"+fname(f0)+".a"    //UNIX name (static lib)
-            //f3:=fpath(f0)+"lib"+fname(f0)+".so"   //UNIX name (shared lib)
-            f2:=fpath(f0)+"lib"+fnameext(f0)+".a"   //UNIX name (static lib)
-            f3:=fpath(f0)+"lib"+fnameext(f0)+".so"  //UNIX name (shared lib)
+            f1:=f0+".lib"       // DOS name
+            f2:="lib"+f0+".a"   // UNIX name (static lib)
+            f3:="lib"+f0+".so"  // UNIX name (shared lib)
         end
 
 

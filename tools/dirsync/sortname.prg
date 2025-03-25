@@ -37,11 +37,7 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortBaseName(brw)
 local arr:=brwArray(brw)
-    #ifdef WINDOWS
-        asortkey(arr,{|x|upper(fnameext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.t.)
-    #else
-        asortkey(arr,{|x|      fnameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
-    #endif
+    asortkey(arr,{|x|filespec.nameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
     brw:refreshAll()
     return NIL
 
@@ -49,11 +45,7 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortReverseBaseName(brw)
 local arr:=brwArray(brw)
-    #ifdef WINDOWS
-        asortkey(arr,{|x|upper(fnameext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.f.)
-    #else
-        asortkey(arr,{|x|      fnameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.f.)
-    #endif
+    asortkey(arr,{|x|filespec.nameext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.f.)
     brw:refreshAll()
     return NIL
 
@@ -61,11 +53,7 @@ local arr:=brwArray(brw)
 ******************************************************************************    
 function sortExtension(brw)
 local arr:=brwArray(brw)
-    #ifdef WINDOWS
-        asortkey(arr,{|x|upper(fext(x[IDX_FILE]))+chr(0)+x[IDX_FILE]},.t.)
-    #else
-        asortkey(arr,{|x|      fext(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
-    #endif
+    asortkey(arr,{|x|filespec.extension(x[IDX_FILE]) +chr(0)+x[IDX_FILE]},.t.)
     brw:refreshAll()
     return NIL
 

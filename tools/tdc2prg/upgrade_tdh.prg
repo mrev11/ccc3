@@ -37,7 +37,7 @@ local name,n,d,d1:={}
                 aadd(d1,name)
             end
 
-        elseif( fext(name)==".prg" )
+        elseif( filespec.extension(name)==".prg" )
             proc_prg(dirspec+dirsep()+name)
 
         elseif( like("_*.tdc",name) )
@@ -68,11 +68,11 @@ local ft:=getfiletime(fspec)
 local x:=memoread(fspec)
 local match,start,inc
 
-    if( fspec::fnameext=="upgrade_tdh.prg" )
+    if( fspec::filespec.nameext=="upgrade_tdh.prg" )
         return NIL
     end
 
-    if( NIL!=pcre2.match(rx_sup,fspec::fnameext) )
+    if( NIL!=pcre2.match(rx_sup,fspec::filespec.nameext) )
         // _super99.prg torolve
         ferase(fspec)
         ? "SUP", fspec
@@ -100,7 +100,7 @@ local match,start,inc
         return NIL
     end
 
-    if( fspec::fnameext[1]=='_' .and. NIL!=pcre2.match(rx_tab,x) )
+    if( fspec::filespec.nameext[1]=='_' .and. NIL!=pcre2.match(rx_tab,x) )
         // prg -> tdc
         // prg torolve
         // tdc atnevezve
@@ -113,10 +113,10 @@ local match,start,inc
 
 *****************************************************************************
 static function proc_tdc(fspec)
-local path:=fpath(fspec)
-local name:=fname(fspec)
+local path:=filespec.path(fspec)
+local name:=filespec.name(fspec)
     ? "TDC", fspec
-    frename( fspec,path+dirsep()+ns+name::substr(2)+".tdc" )
+    frename( fspec,path+ns+name::substr(2)+".tdc" )
 
 
 *****************************************************************************

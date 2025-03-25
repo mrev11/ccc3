@@ -89,10 +89,10 @@ static function byrules(fil,dep,dir,todo)
 //valamelyikének alkalmazásával előállítható
 //(nincs többszörös szabály alkalmazás)
 
-local f:=fname(fil)     //az előállítandó filé neve
-local e:=fext(fil)      //az előállítandó filé kiterjesztése
-local p                 //az előállítandó filé directoryja
-local r,e0              //resource name/kiterjesztés
+local f:=filespec.name(fil)         //az előállítandó filé neve
+local e:=filespec.extension(fil)    //az előállítandó filé kiterjesztése
+local p                             //az előállítandó filé directoryja
+local r,e0                          //resource name/kiterjesztés
 local i,x
 local result:=.f.
 
@@ -112,7 +112,7 @@ local result:=.f.
 
             //if( NIL!=(r:=search_file(dir,f+e0))  )
             if( NIL!=(r:=resource_hash()[f+e0]) )
-                p:=fpath(r)
+                p:=filespec.path(r)
                 adddep(dep,p+f+e)
                 if( 0==(x:=ascan(todo,{|x|x[1]==p+f+e})) )
                     aadd(todo,{p+f+e,p+f+e0})

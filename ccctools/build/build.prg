@@ -153,7 +153,7 @@ local project:=dirsep()+curdir()
             // BUILD_ROOT nincs beallitva
             // project := curdir utolso eleme
 
-            project::=fnameext()
+            project::=filespec.name()
         else
             // BUILD_ROOT be van allitva
             // project := curdir elejerol lehagyva a root
@@ -223,7 +223,7 @@ local lib:={}     //main-t nem tartalmazó objectek
 local mmd:={}     //main-t tartalmazó objectek (csak prg-ből)
 local todo:={}    //mit kell csinálni
 
-local d1,f,o,n,i,txt,dep
+local d1,f,o,n,i,txt,dep,ext
 
 
     if( s_main()!=NIL )
@@ -257,8 +257,9 @@ local d1,f,o,n,i,txt,dep
         for i:=1 to len(d1)
 
             f:=LOWER(d1[i][1])
+            ext:=filespec.extension(f)
 
-            if( fext(f)+"."$s_primary()  )
+            if( !empty(ext) .and. ext+"."$s_primary()  )
                 if( omitted_hash()[strtran(dir[n]+dirsep()+f,"\","/")]!=NIL )
                     //kihagy
                 else
@@ -266,7 +267,7 @@ local d1,f,o,n,i,txt,dep
                 end
             end
             //vigyazat: tdc$primary and tdc$resource!
-            if( fext(f)+"."$s_resource() )
+            if( !empty(ext) .and. ext+"."$s_resource() )
                 resource_hash()[f]:=dir[n]+dirsep()+f
             end
         next
@@ -279,12 +280,12 @@ local d1,f,o,n,i,txt,dep
     for n:=1 to len(obj)
 
         f:=obj[n]
-        o:=fname(f)
+        o:=filespec.name(f)
         txt:=memoread(f)
 
         if( 0!=ascan(mmd,{|m|m==LOWER(o)}) )
             //már benn van
-        elseif( fext(f)==".prg" .and. "function main("$txt )
+        elseif( filespec.extension(f)==".prg" .and. "function main("$txt )
             if( s_main()==NIL )
                 aadd(mmd,o)
             end
@@ -329,14 +330,14 @@ local d1,f,o,n,i,txt,dep
 
     ferase("error")
     for n:=1 to len(todo)
-        if( !fext(todo[n][1])==".obj" )
+        if( !filespec.extension(todo[n][1])==".obj" )
             pool:addjob( {{|i|makeobj(todo[i])},n}  )
         end
     next
     pool:wait
 
     for n:=1 to len(todo)
-        if( fext(todo[n][1])==".obj" )
+        if( filespec.extension(todo[n][1])==".obj" )
             pool:addjob( {{|i|makeobj(todo[i])},n}  )
         end
     next

@@ -23,7 +23,7 @@
 
 ******************************************************************************
 function xfilecopy(source,destin)
-    dirdirmake(fpath(destin))
+    dirdirmake(filespec.path(destin))
     filecopy(source,destin+".tmp")
     #ifdef WINDOWS
         ferase(destin)

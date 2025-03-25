@@ -1,3 +1,12 @@
+2025-03-24
+  fspec.prg mindenhol torolve, helyette filespec.prg;
+  basename  : man 1 basename
+  path      : az utolso dirsep-ig tarto resz, a vegen dirsep (Windowson ':' is dirsep)
+  nameext   : fspec-bol elhagyva a path (esetleg ures)
+  name      : nameext-bol elhagyva az extension
+  extension : nameext-bol elhagyva a name ('.' resze az extension-nek)
+  
+
 2025-03-22
   tabobj nevkepzes valtozott: _<tabname>.tdc helyett table.<tabname>.tdc;
   tabobj uj metodus: tabDirmake() elkesziti tabPath()-t (tobbszoros melysegben is);

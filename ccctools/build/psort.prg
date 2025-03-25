@@ -21,8 +21,8 @@
 
 ****************************************************************************
 function psort(x,y)
-local ix:=ruleidx(fext(x[2]),fext(x[1]))
-local iy:=ruleidx(fext(y[2]),fext(y[1]))
+local ix:=ruleidx(filespec.extension(x[2]),filespec.extension(x[1]))
+local iy:=ruleidx(filespec.extension(y[2]),filespec.extension(y[1]))
     return if(ix==iy,x[1]<y[1],ix<iy)
 
 

@@ -122,13 +122,10 @@ local path, prgcode
         quit
     end
 
-    if( fext(msk)=="." )
+    if( empty(filespec.extension(msk)) )
         msk+=".msk"
     end
-
-    if( empty(path:=fpath(msk)) )
-        path:=""
-    end
+    path:=filespec.path(msk)
 
     if( !file(msk) )
         ? "File not found:", msk
@@ -138,7 +135,7 @@ local path, prgcode
     init_tabindex(msk)
 
     ?  "  in:", input:=msk
-    ?? "  out:", output:=path+fname(msk)+extension
+    ?? "  out:", output:=path+filespec.name(msk)+extension
 
 
     screen:=readmask(input)
@@ -160,11 +157,10 @@ local path, prgcode
     termsetup()
 
 
-    prgcode:=prgoutput(fname(msk), screen)
+    prgcode:=prgoutput(filespec.name(msk), screen)
     prgcode:="//msk2html "+VERSION+chr(10)+chr(10)+prgcode
 
     if( prgcode==memoread(output) )
-        memowrit(output,prgcode)
         ?? " not changed"
     else
         memowrit(output,prgcode)

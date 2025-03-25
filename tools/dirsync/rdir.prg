@@ -142,12 +142,18 @@ local ext
     if( s_extexc!=NIL )
         //ha van kizaro szabaly, az dont, 
         //akar van illeszkedes akar nincs
-        ext:=fext(name)+"."
+        ext:=filespec.extension(name)+"."
+        if( ext=="." )
+            ext:=".."
+        end
         return !ext$s_extexc
     elseif( s_extinc!=NIL ) 
         //ha van bevevo szabaly, az dont, 
         //akar van illeszkedes akar nincs
-        ext:=fext(name)+"."
+        ext:=filespec.extension(name)+"."
+        if( ext=="." )
+            ext:=".."
+        end
         return ext$s_extinc
     end
 

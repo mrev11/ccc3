@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-namespace tdsutil   fpath fname
+namespace tdsutil
 
 #define PROGRAM "dom2prg 1.3.03"
 //2016.02.19:1.3.03: egyedi tmp fájl a párhuzamosíthatóság érdekében
@@ -122,7 +122,7 @@ local err
         break(err)
     end
     
-    outfile:=fpath(fspec)+fname(fspec)+".prg"
+    outfile:=filespec.path(fspec)+filespec.name(fspec)+".prg"
     ferase(outfile)
     
     set printer to (outfile+".tmp") 

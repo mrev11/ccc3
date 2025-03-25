@@ -14,10 +14,7 @@ static void _clp_byhand(int argno);
 static void _clp_byrules(int argno);
 extern void _clp_chr(int argno);
 extern void _clp_dirsep(int argno);
-extern void _clp_fext(int argno);
 extern void _clp_file(int argno);
-extern void _clp_fname(int argno);
-extern void _clp_fpath(int argno);
 extern void _clp_left(int argno);
 extern void _clp_len(int argno);
 extern void _clp_resource_hash(int argno);
@@ -26,6 +23,12 @@ static void _clp_search_file(int argno);
 extern void _clp_search_include(int argno);
 extern void _clp_strtran(int argno);
 extern void _clp_substr(int argno);
+
+namespace _nsp_filespec{
+extern void _clp_extension(int argno);
+extern void _clp_name(int argno);
+extern void _clp_path(int argno);
+}//namespace filespec
 
 //=======================================================================
 void _clp_search_include(int argno)
@@ -265,12 +268,12 @@ push_call("byrules",base);
 //
     line(92);
     push_symbol(base+0);//fil
-    _clp_fname(1);
+    _nsp_filespec::_clp_name(1);
     assign(base+4);//f
     pop();
     line(93);
     push_symbol(base+0);//fil
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     assign(base+5);//e
     pop();
     line(94);
@@ -285,7 +288,7 @@ push_call("byrules",base);
     push_symbol(base+5);//e
     string(L".ch");
     eqeq();
-    cmp_924:;
+    cmp_930:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -293,7 +296,7 @@ push_call("byrules",base);
     idxr0(1);
     string(L"_");
     eqeq();
-    cmp_937:;
+    cmp_943:;
     topnot();
     }
     if(!flag()) goto if_7_1;
@@ -321,7 +324,7 @@ push_call("byrules",base);
         idxr0(2);
         push_symbol(base+5);//e
         eqeq();
-        cmp_1009:;
+        cmp_1015:;
         if(!flag()) goto if_9_1;
             line(109);
             _clp_s_rules(0);
@@ -340,11 +343,11 @@ push_call("byrules",base);
             idxr();
             assign(base+7);//r
             neeq();
-            cmp_1048:;
+            cmp_1054:;
             if(!flag()) goto if_10_1;
                 line(115);
                 push_symbol(base+7);//r
-                _clp_fpath(1);
+                _nsp_filespec::_clp_path(1);
                 assign(base+6);//p
                 pop();
                 line(116);
@@ -367,7 +370,7 @@ push_call("byrules",base);
                 _clp_ascan(2);
                 assign(base+10);//x
                 eqeq();
-                cmp_1131:;
+                cmp_1140:;
                 if(!flag()) goto if_11_1;
                     line(118);
                     push_symbol(base+3);//todo
@@ -397,7 +400,7 @@ push_call("byrules",base);
                 block(_blk_byrules_1,3);
                 _clp_ascan(2);
                 eqeq();
-                cmp_1245:;
+                cmp_1254:;
                 if(!flag()) goto if_11_2;
                     line(120);
                     push_symbol(base+3);//todo
@@ -456,7 +459,7 @@ push_call("_blk_byrules_0",base);
     push_symbol(env+2);//e
     add();
     eqeq();
-    cmp_1159:;
+    cmp_1168:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -477,7 +480,7 @@ push_call("_blk_byrules_1",base);
     push_symbol(env+2);//e0
     add();
     eqeq();
-    cmp_1269:;
+    cmp_1278:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -557,7 +560,7 @@ push_call("adddep",base);
     block(_blk_adddep_0,1);
     _clp_ascan(2);
     eqeq();
-    cmp_1531:;
+    cmp_1540:;
     if(!flag()) goto if_14_1;
         line(150);
         push_symbol(base+0);//dep
@@ -584,7 +587,7 @@ push_call("_blk_adddep_0",base);
     push_symbol(base+1);//d
     push_symbol(env+0);//x
     eqeq();
-    cmp_1550:;
+    cmp_1559:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }

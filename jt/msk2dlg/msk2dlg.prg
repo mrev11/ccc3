@@ -104,15 +104,10 @@ local path, prgcode
         quit
     end
 
-    if( fext(msk)=="." )
+    if( empty(filespec.extension(msk)) )
         msk+=".msk"
     end
-
-    if( empty(path:=fpath(msk)) )
-        path:=""
-    else
-        path+=dirsep()
-    end
+    path:=filespec.path(msk)
 
     if( !file(msk) )
         ? "File not found:", msk
@@ -120,12 +115,11 @@ local path, prgcode
     end
 
     if( verbose )
-
         ? "  Input file  :", input:=msk
-        ? "  Output file :", output:=path+fname(msk)+extension
+        ? "  Output file :", output:=path+filespec.name(msk)+extension
 
         screen:=readmask(input)
-        prgcode:=prgoutput(fname(msk), screen)
+        prgcode:=prgoutput(filespec.name(msk),screen)
         prgcode:="//MSK2DLG "+VERSION+chr(10)+chr(10)+prgcode
 
         if( prgcode==memoread(output) )
@@ -137,10 +131,10 @@ local path, prgcode
 
     else
         input:=msk
-        output:=path+fname(msk)+extension
+        output:=path+filespec.name(msk)+extension
 
         screen:=readmask(input)
-        prgcode:=prgoutput(fname(msk), screen)
+        prgcode:=prgoutput(filespec.name(msk), screen)
         prgcode:="//MSK2DLG "+VERSION+chr(10)+chr(10)+prgcode
         memowrit(output,prgcode)
     end

@@ -2,11 +2,14 @@
 
 #include <cccdef.h>
 
-extern void _clp_fext(int argno);
 extern void _clp_len(int argno);
 extern void _clp_psort(int argno);
 static void _clp_ruleidx(int argno);
 extern void _clp_s_rules(int argno);
+
+namespace _nsp_filespec{
+extern void _clp_extension(int argno);
+}//namespace filespec
 
 //=======================================================================
 void _clp_psort(int argno)
@@ -20,20 +23,20 @@ push_call("psort",base);
     line(24);
     push_symbol(base+0);//x
     idxr0(2);
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     push_symbol(base+0);//x
     idxr0(1);
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     _clp_ruleidx(2);
     assign(base+2);//ix
     pop();
     line(25);
     push_symbol(base+1);//y
     idxr0(2);
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     push_symbol(base+1);//y
     idxr0(1);
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     _clp_ruleidx(2);
     assign(base+3);//iy
     pop();
@@ -41,19 +44,19 @@ push_call("psort",base);
     push_symbol(base+2);//ix
     push_symbol(base+3);//iy
     eqeq();
-    cmp_137:;
+    cmp_149:;
     if(flag()){
     push_symbol(base+0);//x
     idxr0(1);
     push_symbol(base+1);//y
     idxr0(1);
     lt();
-    cmp_149:;
+    cmp_161:;
     }else{
     push_symbol(base+2);//ix
     push_symbol(base+3);//iy
     lt();
-    cmp_161:;
+    cmp_173:;
     }
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -90,7 +93,7 @@ push_call("ruleidx",base);
         idxr();
         idxr0(1);
         eqeq();
-        cmp_229:;
+        cmp_241:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -100,7 +103,7 @@ push_call("ruleidx",base);
         idxr();
         idxr0(2);
         eqeq();
-        cmp_251:;
+        cmp_263:;
         }
         if(!flag()) goto if_2_1;
             line(34);

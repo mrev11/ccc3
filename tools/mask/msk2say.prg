@@ -103,17 +103,17 @@ local code
         sayfile::=strtran("\",dirsep())
     end
 
-    if( mskfile::fext0::empty )
+    if( mskfile::filespec.extension::empty )
         mskfile+=".msk"
     end
 
     if( sayfile::empty )
-        sayfile:=mskfile::fpath+mskfile::fname+".say"
-    elseif( sayfile::fext0::empty )
+        sayfile:=mskfile::filespec.path+mskfile::filespec.name+".say"
+    elseif( sayfile::filespec.extension::empty )
         sayfile+=".say"
     end
 
-    mskname:=fname(sayfile)
+    mskname:=filespec.name(sayfile)
 
     mskstr:=readmask(mskfile)
 

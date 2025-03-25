@@ -149,15 +149,17 @@ local n
 *****************************************************************************
 static function executable(name)
 
-local fd,buf,res:=.f.
+local fd,buf,ext,res:=.f.
+
+    ext:=filespec.extension(name)  // '' (empty) or '.ext'
 
     if( ":"+name+":"$s_exec )
         res:=.t.
 
-    elseif( fext(name)+"."$s_next )
+    elseif( !empty(ext) .and. ext+"."$s_next )
         res:=.f.
 
-    elseif( fext(name)+"."$s_xext )
+    elseif( !empty(ext) .and. ext+"."$s_xext )
         res:=.t.
 
     elseif( 0<=(fd:=fopen(name)) )

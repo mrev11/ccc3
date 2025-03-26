@@ -1,3 +1,5 @@
+2025-03-26 super rebuild;
+
 2025-03-24
   fspec.prg mindenhol torolve, helyette filespec.prg;
   basename  : man 1 basename

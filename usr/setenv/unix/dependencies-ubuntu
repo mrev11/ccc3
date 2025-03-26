@@ -14,7 +14,7 @@ sudo apt-get install \
     libssl-dev \
     libpcre2-dev \
     libpcre3-dev \
-    libreadline-dev \
+    libz-dev \
     git
 
 exit 0

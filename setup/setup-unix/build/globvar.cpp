@@ -22,29 +22,53 @@ extern void _clp_s_shared(int argno);
 extern void _clp_s_srcdir(int argno);
 extern void _clp_s_version(int argno);
 extern void _clp_simplehashnew(int argno);
+extern void _clp_thread_mutex_init(int argno);
+extern void _clp_thread_mutex_lock(int argno);
+extern void _clp_thread_mutex_unlock(int argno);
 
 //=======================================================================
 void _clp_s_main(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_main",base);
 //
-    line(77);
+    line(25);
     static stvar _st_xx;
-    line(78);
+    line(26);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(27);
+    line(28);
+    push_symbol(_st_mutex.ptr);//s_main
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(29);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_37:;
+    cmp_78:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_main
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_main
     }
+    assign(base+1);//result
+    pop();
+    line(30);
+    push_symbol(_st_mutex.ptr);//s_main
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(31);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -56,23 +80,44 @@ void _clp_s_libnam(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_libnam",base);
 //
-    line(82);
+    line(35);
     static stvar _st_xx;
-    line(83);
+    line(36);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(37);
+    line(38);
+    push_symbol(_st_mutex.ptr);//s_libnam
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(39);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_87:;
+    cmp_192:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libnam
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_libnam
     }
+    assign(base+1);//result
+    pop();
+    line(40);
+    push_symbol(_st_mutex.ptr);//s_libnam
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(41);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -84,23 +129,44 @@ void _clp_s_shared(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_shared",base);
 //
-    line(87);
+    line(45);
     static stvar _st_xx;
-    line(88);
+    line(46);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(47);
+    line(48);
+    push_symbol(_st_mutex.ptr);//s_shared
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(49);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_137:;
+    cmp_306:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_shared
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_shared
     }
+    assign(base+1);//result
+    pop();
+    line(50);
+    push_symbol(_st_mutex.ptr);//s_shared
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(51);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -112,23 +178,44 @@ void _clp_s_srcdir(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_srcdir",base);
 //
-    line(92);
+    line(55);
     static stvar _st_xx;
-    line(93);
+    line(56);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(57);
+    line(58);
+    push_symbol(_st_mutex.ptr);//s_srcdir
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(59);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_187:;
+    cmp_420:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_srcdir
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_srcdir
     }
+    assign(base+1);//result
+    pop();
+    line(60);
+    push_symbol(_st_mutex.ptr);//s_srcdir
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(61);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -140,23 +227,44 @@ void _clp_s_incdir(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_incdir",base);
 //
-    line(97);
+    line(65);
     static stvar _st_xx;
-    line(98);
+    line(66);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(67);
+    line(68);
+    push_symbol(_st_mutex.ptr);//s_incdir
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(69);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_237:;
+    cmp_534:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_incdir
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_incdir
     }
+    assign(base+1);//result
+    pop();
+    line(70);
+    push_symbol(_st_mutex.ptr);//s_incdir
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(71);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -168,23 +276,44 @@ void _clp_s_libdir(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_libdir",base);
 //
-    line(102);
+    line(75);
     static stvar _st_xx;
-    line(103);
+    line(76);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(77);
+    line(78);
+    push_symbol(_st_mutex.ptr);//s_libdir
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(79);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_287:;
+    cmp_648:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libdir
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_libdir
     }
+    assign(base+1);//result
+    pop();
+    line(80);
+    push_symbol(_st_mutex.ptr);//s_libdir
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(81);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -196,23 +325,44 @@ void _clp_s_libfil(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_libfil",base);
 //
-    line(107);
+    line(85);
     static stvar _st_xx;
-    line(108);
+    line(86);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(87);
+    line(88);
+    push_symbol(_st_mutex.ptr);//s_libfil
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(89);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_337:;
+    cmp_762:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libfil
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_libfil
     }
+    assign(base+1);//result
+    pop();
+    line(90);
+    push_symbol(_st_mutex.ptr);//s_libfil
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(91);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -224,23 +374,44 @@ void _clp_s_quiet(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_quiet",base);
 //
-    line(112);
+    line(95);
     static stvar _st_xx(&FALSE);
-    line(113);
+    line(96);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(97);
+    line(98);
+    push_symbol(_st_mutex.ptr);//s_quiet
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(99);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_390:;
+    cmp_879:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_quiet
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_quiet
     }
+    assign(base+1);//result
+    pop();
+    line(100);
+    push_symbol(_st_mutex.ptr);//s_quiet
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(101);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -252,23 +423,44 @@ void _clp_s_version(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_version",base);
 //
-    line(117);
+    line(105);
     static stvar _st_xx(&FALSE);
-    line(118);
+    line(106);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(107);
+    line(108);
+    push_symbol(_st_mutex.ptr);//s_version
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(109);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_443:;
+    cmp_996:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_version
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_version
     }
+    assign(base+1);//result
+    pop();
+    line(110);
+    push_symbol(_st_mutex.ptr);//s_version
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(111);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -280,23 +472,44 @@ void _clp_s_debug(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_debug",base);
 //
-    line(122);
+    line(115);
     static stvar _st_xx(&FALSE);
-    line(123);
+    line(116);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(117);
+    line(118);
+    push_symbol(_st_mutex.ptr);//s_debug
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(119);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_496:;
+    cmp_1113:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_debug
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_debug
     }
+    assign(base+1);//result
+    pop();
+    line(120);
+    push_symbol(_st_mutex.ptr);//s_debug
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(121);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -308,23 +521,44 @@ void _clp_s_dry(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_dry",base);
 //
-    line(127);
+    line(125);
     static stvar _st_xx(&FALSE);
+    line(126);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(127);
     line(128);
+    push_symbol(_st_mutex.ptr);//s_dry
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(129);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_549:;
+    cmp_1230:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_dry
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_dry
     }
+    assign(base+1);//result
+    pop();
+    line(130);
+    push_symbol(_st_mutex.ptr);//s_dry
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(131);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -336,23 +570,44 @@ void _clp_s_runcnt(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_runcnt",base);
 //
-    line(132);
+    line(135);
     static stvar _st_xx((double)0);
-    line(133);
+    line(136);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(137);
+    line(138);
+    push_symbol(_st_mutex.ptr);//s_runcnt
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(139);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_602:;
+    cmp_1347:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_runcnt
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_runcnt
     }
+    assign(base+1);//result
+    pop();
+    line(140);
+    push_symbol(_st_mutex.ptr);//s_runcnt
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(141);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -364,23 +619,44 @@ void _clp_s_primary(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_primary",base);
 //
-    line(137);
+    line(145);
     static stvar _st_xx;
-    line(138);
+    line(146);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(147);
+    line(148);
+    push_symbol(_st_mutex.ptr);//s_primary
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(149);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_652:;
+    cmp_1461:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_primary
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_primary
     }
+    assign(base+1);//result
+    pop();
+    line(150);
+    push_symbol(_st_mutex.ptr);//s_primary
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(151);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -392,23 +668,44 @@ void _clp_s_resource(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_resource",base);
 //
-    line(142);
+    line(155);
     static stvar _st_xx;
-    line(143);
+    line(156);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(157);
+    line(158);
+    push_symbol(_st_mutex.ptr);//s_resource
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(159);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_702:;
+    cmp_1575:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_resource
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_resource
     }
+    assign(base+1);//result
+    pop();
+    line(160);
+    push_symbol(_st_mutex.ptr);//s_resource
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(161);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -420,23 +717,44 @@ void _clp_s_libspec(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_libspec",base);
 //
-    line(147);
+    line(165);
     static stvar _st_xx;
-    line(148);
+    line(166);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(167);
+    line(168);
+    push_symbol(_st_mutex.ptr);//s_libspec
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(169);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_752:;
+    cmp_1689:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_libspec
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_libspec
     }
+    assign(base+1);//result
+    pop();
+    line(170);
+    push_symbol(_st_mutex.ptr);//s_libspec
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(171);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -448,11 +766,11 @@ void _clp_s_rules(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_rules",base);
 //
-    line(152);
+    line(175);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         string(L".msk");
@@ -523,17 +841,38 @@ push_call("s_rules",base);
         pop();
         return 1;
     }();
-    line(175);
+    line(198);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(199);
+    line(200);
+    push_symbol(_st_mutex.ptr);//s_rules
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(201);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1183:;
+    cmp_2184:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_rules
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_rules
     }
+    assign(base+1);//result
+    pop();
+    line(202);
+    push_symbol(_st_mutex.ptr);//s_rules
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(203);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -545,23 +884,44 @@ void _clp_s_batext(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("s_batext",base);
 //
-    line(179);
+    line(207);
     static stvar _st_xx;
-    line(180);
+    line(208);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(209);
+    line(210);
+    push_symbol(_st_mutex.ptr);//s_batext
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(211);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1233:;
+    cmp_2298:;
     if(flag()){
     push_symbol(_st_xx.ptr);//s_batext
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//s_batext
     }
+    assign(base+1);//result
+    pop();
+    line(212);
+    push_symbol(_st_mutex.ptr);//s_batext
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(213);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -573,11 +933,11 @@ void _clp_resource_hash(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("resource_hash",base);
 //
-    line(184);
+    line(217);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         _clp_simplehashnew(0);
@@ -585,17 +945,38 @@ push_call("resource_hash",base);
         pop();
         return 1;
     }();
-    line(185);
+    line(218);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(219);
+    line(220);
+    push_symbol(_st_mutex.ptr);//resource_hash
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(221);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1291:;
+    cmp_2420:;
     if(flag()){
     push_symbol(_st_xx.ptr);//resource_hash
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//resource_hash
     }
+    assign(base+1);//result
+    pop();
+    line(222);
+    push_symbol(_st_mutex.ptr);//resource_hash
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(223);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
@@ -607,11 +988,11 @@ void _clp_omitted_hash(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,1);
-while(stack<base+1)PUSHNIL();
+while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("omitted_hash",base);
 //
-    line(189);
+    line(227);
     static stvar _st_xx;
     static int _ini_xx=[=](){
         _clp_simplehashnew(0);
@@ -619,17 +1000,38 @@ push_call("omitted_hash",base);
         pop();
         return 1;
     }();
-    line(190);
+    line(228);
+    static stvar _st_mutex;
+    static int _ini_mutex=[=](){
+        _clp_thread_mutex_init(0);
+        assign(_st_mutex.ptr);
+        pop();
+        return 1;
+    }();
+    line(229);
+    line(230);
+    push_symbol(_st_mutex.ptr);//omitted_hash
+    _clp_thread_mutex_lock(1);
+    pop();
+    line(231);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_1349:;
+    cmp_2542:;
     if(flag()){
     push_symbol(_st_xx.ptr);//omitted_hash
     }else{
     push_symbol(base+0);//x
     assign(_st_xx.ptr);//omitted_hash
     }
+    assign(base+1);//result
+    pop();
+    line(232);
+    push_symbol(_st_mutex.ptr);//omitted_hash
+    _clp_thread_mutex_unlock(1);
+    pop();
+    line(233);
+    push_symbol(base+1);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;

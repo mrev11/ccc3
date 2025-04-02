@@ -31,7 +31,10 @@ local lf:=chr(10)
 local n,line,prg:=lf
     
     prg+="function table."+table::lower+"(col,exp)"+lf
-    prg+="static tbl:=table.init."+table::lower+"()"+lf
+    prg+="static tbl"+lf
+    prg+="    if(empty(tbl))"+lf
+    prg+="        tbl:=table.init."+table::lower+"()"+lf
+    prg+="    end"+lf
     prg+="    if(col==NIL)"+lf
     prg+="        return tbl"+lf
     prg+="    end"+lf

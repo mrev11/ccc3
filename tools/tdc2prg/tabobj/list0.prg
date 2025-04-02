@@ -19,7 +19,7 @@
  */
 
 #include "table.ch"
-#include "_cassa.ch"
+#include "table.cassa.tdh"
 
 ******************************************************************************************
 function main()

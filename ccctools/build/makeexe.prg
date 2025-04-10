@@ -31,6 +31,7 @@ local torun:=buildenv_bat()+dirsep()+"obj2exe"+s_batext()
 local objdir:=LOWER(buildenv_obj()), n 
 local bindir:=buildenv_bindir()
 local objlist, xobj
+local trginst
 
     if( !file(torun) )
         ? "["+torun+"]", @"does not exist"
@@ -97,8 +98,10 @@ local objlist, xobj
         run1 (torun)
 
         if( !empty(bindir) )
-            ferase( bindir+dirsep()+exenam+".exe")
-            filecopy(target,bindir+dirsep()+exenam+".exe")
+            trginst:=bindir+dirsep()+exenam+".exe"
+            ferase( trginst )
+            filecopy(target,trginst+".tmp")
+            filemove(trginst+".tmp",trginst)
         end
     end
 

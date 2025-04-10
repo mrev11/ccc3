@@ -27,6 +27,7 @@ local depend,tdepend,update:=.f.
 local torun:=buildenv_bat()+dirsep()+"lib2exe"+s_batext()
 local objdir:=buildenv_obj(), n 
 local bindir:=buildenv_bindir()
+local trginst
 
     if( !file(torun) )
         ? "["+torun+"]", @"does not exist"
@@ -70,8 +71,10 @@ local bindir:=buildenv_bindir()
         run1 (torun)
 
         if( !empty(bindir) )
-            ferase( bindir+dirsep()+mmod+".exe")
-            filecopy(target,bindir+dirsep()+mmod+".exe")
+            trginst:=bindir+dirsep()+mmod+".exe"
+            ferase( trginst )
+            filecopy(target,trginst+".tmp")
+            filemove(trginst+".tmp",trginst)
         end
     end
 

@@ -13,6 +13,7 @@ extern void _clp_errorlevel(int argno);
 extern void _clp_ferase(int argno);
 extern void _clp_file(int argno);
 extern void _clp_filecopy(int argno);
+extern void _clp_filemove(int argno);
 extern void _clp_ftime(int argno);
 extern void _clp_len(int argno);
 extern void _clp_makeexe(int argno);
@@ -29,7 +30,7 @@ void _clp_makeexe(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,2);
-while(stack<base+13)PUSHNIL();
+while(stack<base+14)PUSHNIL();
 argno=2;
 push_call("makeexe",base);
 //
@@ -66,13 +67,14 @@ push_call("makeexe",base);
     assign(base+10);//bindir
     pop();
     line(33);
-    line(40);
-    line(35);
+    line(34);
+    line(41);
+    line(36);
     push_symbol(base+7);//torun
     _clp_file(1);
     topnot();
     if(!flag()) goto if_1_1;
-        line(36);
+        line(37);
         string(L"[");
         push_symbol(base+7);//torun
         add();
@@ -81,41 +83,41 @@ push_call("makeexe",base);
         string(nls_text(L"does not exist"));
         _clp_qout(2);
         pop();
-        line(37);
+        line(38);
         _clp_qout(0);
         pop();
-        line(38);
+        line(39);
         push(&ONE);
         _clp_errorlevel(1);
         pop();
-        line(39);
+        line(40);
         _clp___quit(0);
         pop();
     if_1_1:
     if_1_0:;
-    line(42);
+    line(43);
     push_symbol(base+2);//target
     _clp_ftime(1);
     assign(base+3);//ttarget
     pop();
-    line(45);
-    line(43);
+    line(46);
+    line(44);
     push_symbol(base+3);//ttarget
     push(&NIL);
     eqeq();
-    cmp_284:;
+    cmp_292:;
     if(!flag()) goto if_2_1;
-        line(44);
+        line(45);
         string(L"");
         assign(base+3);//ttarget
         pop();
     if_2_1:
     if_2_0:;
-    line(49);
-    line(47);
+    line(50);
+    line(48);
     _clp_s_debug(0);
     if(!flag()) goto if_3_1;
-        line(48);
+        line(49);
         push_symbol(base+2);//target
         string(L"[");
         push_symbol(base+3);//ttarget
@@ -126,9 +128,9 @@ push_call("makeexe",base);
         pop();
     if_3_1:
     if_3_0:;
-    line(61);
+    line(62);
     {
-    line(51);
+    line(52);
     push(&ONE);
     int sg=sign();
     push(&ZERO);
@@ -137,21 +139,21 @@ push_call("makeexe",base);
     push_symbol(base+1);//object
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_4_2;
-        line(57);
-        line(53);
+        line(58);
+        line(54);
         push_symbol(base+9);//n
         push(&ZERO);
         eqeq();
-        cmp_390:;
+        cmp_398:;
         if(!flag()) goto if_5_1;
-            line(54);
+            line(55);
             push_symbol(base+0);//exenam
             assign(base+4);//depend
             pop();
         goto if_5_0;
         if_5_1:
-        line(55);
-            line(56);
+        line(56);
+            line(57);
             push_symbol(base+1);//object
             push_symbol(base+9);//n
             idxr();
@@ -159,7 +161,7 @@ push_call("makeexe",base);
             pop();
         if_5_2:
         if_5_0:;
-        line(59);
+        line(60);
         push_symbol(base+8);//objdir
         _clp_dirsep(0);
         add();
@@ -169,7 +171,7 @@ push_call("makeexe",base);
         add();
         assign(base+4);//depend
         pop();
-        line(60);
+        line(61);
         push_symbol(base+3);//ttarget
         push_symbol(base+4);//depend
         _clp_verifdep(2);
@@ -190,9 +192,9 @@ push_call("makeexe",base);
     goto lab_4_0;
     lab_4_2:;
     }
-    line(68);
+    line(69);
     {
-    line(63);
+    line(64);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -201,8 +203,8 @@ push_call("makeexe",base);
     _clp_s_libspec(0);
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_6_2;
-        line(67);
-        line(64);
+        line(68);
+        line(65);
         _clp_s_libspec(0);
         push_symbol(base+9);//n
         idxr();
@@ -210,15 +212,15 @@ push_call("makeexe",base);
         _clp_right(2);
         string(L".lib");
         eqeq();
-        cmp_550:;
+        cmp_558:;
         if(!flag()) goto if_7_1;
-            line(65);
+            line(66);
             _clp_s_libspec(0);
             push_symbol(base+9);//n
             idxr();
             assign(base+4);//depend
             pop();
-            line(66);
+            line(67);
             push_symbol(base+3);//ttarget
             push_symbol(base+4);//depend
             _clp_verifdep(2);
@@ -241,20 +243,20 @@ push_call("makeexe",base);
     goto lab_6_0;
     lab_6_2:;
     }
-    line(72);
-    line(70);
+    line(73);
+    line(71);
     _clp_s_debug(0);
     if(!flag()) goto if_8_1;
-        line(71);
+        line(72);
         _clp_qout(0);
         pop();
     if_8_1:
     if_8_0:;
-    line(103);
-    line(74);
+    line(106);
+    line(75);
     push_symbol(base+6);//update
     if(!flag()) goto if_9_1;
-        line(75);
+        line(76);
         push_symbol(base+7);//torun
         string(L" ");
         push_symbol(base+0);//exenam
@@ -262,9 +264,9 @@ push_call("makeexe",base);
         add();
         assign(base+7);//torun
         pop();
-        line(80);
+        line(81);
         {
-        line(78);
+        line(79);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -273,7 +275,7 @@ push_call("makeexe",base);
         push_symbol(base+1);//object
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_10_2;
-            line(79);
+            line(80);
             push_symbol(base+7);//torun
             string(L" ");
             push_symbol(base+1);//object
@@ -293,17 +295,17 @@ push_call("makeexe",base);
         goto lab_10_0;
         lab_10_2:;
         }
-        line(97);
+        line(98);
         push_symbol(base+7);//torun
         _clp_run1(1);
         pop();
-        line(102);
-        line(99);
+        line(105);
+        line(100);
         push_symbol(base+10);//bindir
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_11_1;
-            line(100);
+            line(101);
             push_symbol(base+10);//bindir
             _clp_dirsep(0);
             add();
@@ -311,18 +313,25 @@ push_call("makeexe",base);
             add();
             string(L".exe");
             add();
+            assign(base+13);//trginst
+            pop();
+            line(102);
+            push_symbol(base+13);//trginst
             _clp_ferase(1);
             pop();
-            line(101);
+            line(103);
             push_symbol(base+2);//target
-            push_symbol(base+10);//bindir
-            _clp_dirsep(0);
-            add();
-            push_symbol(base+0);//exenam
-            add();
-            string(L".exe");
+            push_symbol(base+13);//trginst
+            string(L".tmp");
             add();
             _clp_filecopy(2);
+            pop();
+            line(104);
+            push_symbol(base+13);//trginst
+            string(L".tmp");
+            add();
+            push_symbol(base+13);//trginst
+            _clp_filemove(2);
             pop();
         if_11_1:
         if_11_0:;

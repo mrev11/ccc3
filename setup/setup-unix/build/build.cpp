@@ -595,7 +595,7 @@ push_call("main",base);
     if(!flag()) goto if_8_1;
         line(129);
         string(nls_text(L"CCC Program Builder "));
-        string(L"1.7.2");
+        string(L"1.7.3");
         add();
         string(L" Copyright (C) ComFirm Bt.");
         add();

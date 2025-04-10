@@ -30,6 +30,7 @@ local torun:=buildenv_bat()+dirsep()+"obj2lib"+s_batext()
 local objdir:=LOWER(buildenv_obj()), n 
 local libdir:=buildenv_libdir()
 local objlist
+local trginst
 
     if( !file(torun) )
         ? "["+torun+"]", @"does not exist"
@@ -81,12 +82,12 @@ local objlist
         run1 (torun)
 
         if( !empty(libdir) )
-            ferase( libdir+dirsep()+libnam+".lib" )
-            filecopy(target,libdir+dirsep()+libnam+".lib")
+            trginst:=libdir+dirsep()+libnam+".lib"
+            ferase( trginst )
+            filecopy(target,trginst+".tmp")
+            filemove(trginst+".tmp",trginst)
         end
     end
 
-    
-    return NIL
  
 ****************************************************************************

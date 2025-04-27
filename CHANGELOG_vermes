@@ -1,3 +1,8 @@
+2025-04-25 
+  A CCC_LOCK_SEMAPHOR environment variable hasznalata megszunt,
+  a fixen bedrotozott '.lock_transema' nevu fajlt hasznalja szemafornak,
+  a fajl automatikusan letrejon, nem kell foglalkozni vele a konfiguracioban;
+
 2025-04-10 build install filemove-val;
 
 2025-04-02 tdc2prg javitva;

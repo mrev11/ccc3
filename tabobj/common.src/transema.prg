@@ -93,14 +93,12 @@ function tranSemaOff(level)
 ******************************************************************************************
 static function semafd()
 local sema,fd,e 
-    if( empty(sema:=getenv("CCC_LOCK_SEMAPHOR")) )
-        sema:="ccc_lock_semaphor"
-    end
-    fd:=fopen(sema,FO_NOLOCK+FO_READWRITE)
+    sema:=".lock_transema"
+    fd:=fopen(sema,FO_CREATE+FO_NOLOCK+FO_READWRITE)
     if( fd<0 )
         e:=fnferrorNew()
         e:operation:="tabLockCount"
-        e:description:=@"CCC_LOCK_SEMAPHOR open failed"
+        e:description:=@".lock_transema open failed"
         e:filename:=sema
         e:oscode:=ferror()
         break(e)

@@ -29,7 +29,7 @@ function main(cmd)
     tranSemaOn(SEMA_XOPEN ,0,.t.)
     tranSemaOn(SEMA_RLOCK ,0,.t.)
 
-    ? "CCC_LOCK_SEMAPHOR locked"
+    ? "transaction semaphor locked"
 
     if( empty(cmd) )
         ?? ", hit any key ..."
@@ -42,7 +42,7 @@ function main(cmd)
     tranSemaOff(SEMA_XOPEN)
     tranSemaOff(SEMA_RLOCK)
 
-    ? "CCC_LOCK_SEMAPHOR unlocked"
+    ? "transaction semaphor unlocked"
     ?
 
 

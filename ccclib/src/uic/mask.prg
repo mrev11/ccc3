@@ -33,7 +33,8 @@
 #define MSK_CURSOR   10
 #define MSK_CRSPOS   11
 #define MSK_SAYLIST  12
-#define MSK_SIZE     12
+#define MSK_COLOR    13
+#define MSK_SIZE     13
 
 static color:={}
 static mask:={}
@@ -49,27 +50,17 @@ function mskActive()
     return atail(mask)
 
 *************************************************************************
-function mskColorSay(spec) //push
-    if( empty(spec) )
-        spec:=ccc_config("MSKCOLOR_SAY")
-    end
-    if( empty(spec) )
-        spec:=NIL
-    else
-        spec::=strtran(" ","")
+function mskColorSay() //push
+local spec
+    if( !empty(mask) )
+        spec:=mask::atail[MSK_COLOR]
     end
     aadd(color,setcolor(spec))
 
-function mskColorGet(spec) //push
-    if( empty(spec) )
-        spec:=ccc_config("MSKCOLOR_GET")
-    end
-    if( empty(spec) )
-        spec:=NIL
-    else
-        spec::=strtran(" ","")
-    end
-    aadd(color,setcolor(spec))
+
+function mskColorGet() //push
+    aadd(color,setcolor(ccc_config("MSKCOLOR_GET")))
+
 
 function mskColorRestore()  //pop
     setcolor(color::atail)
@@ -92,6 +83,7 @@ local msk:=array(MSK_SIZE)
     msk[ MSK_CURSOR ]:=NIL
     msk[ MSK_CRSPOS ]:=NIL
     msk[ MSK_SAYLIST]:={}
+    msk[ MSK_COLOR  ]:=NIL
 
     return msk
 
@@ -105,63 +97,63 @@ function mskSay(msk,r,c,s)
 function mskGet(msk,r,c,var,name)
 local get:=getNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
     get:picture:=replicate("X",len(get:varget))
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
 
 
 *************************************************************************
 function mskCheck(msk,r,c,var,name)
 local get:=checkboxNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
- 
+
 
 *************************************************************************
 function mskRadio(msk,r,c,var,name)
 local get:=radiobuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
 
 
 *************************************************************************
 function mskList(msk,r,c,var,name)
 local get:=listboxNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
- 
+
 
 *************************************************************************
 function mskAltButton(msk,r,c,var,name)
 local get:=altbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
 
 
 *************************************************************************
 function mskPushButton(msk,r,c,var,name)
 local get:=pushbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],get)   
+    aadd(msk[MSK_GETLIST],get)
     return get
 
 
 *************************************************************************
 function mskBrowse(msk,t,l,b,r,var,name)
 local brw:=getbrwNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LEFT]+r,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],brw)   
+    aadd(msk[MSK_GETLIST],brw)
     return brw
 
 
 *************************************************************************
 function mskTextArea(msk,t,l,b,r,var,name)
 local area:=textareaNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,msk[MSK_TOP]+b,msk[MSK_LEFT]+r,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],area)   
+    aadd(msk[MSK_GETLIST],area)
     return area
 
 
 *************************************************************************
 function mskTextLabel(msk,t,l,var,name)
 local label:=textlabelNew(msk[MSK_TOP]+t,msk[MSK_LEFT]+l,{|x|if(x==NIL,var,var:=x)},name)
-    aadd(msk[MSK_GETLIST],label)   
+    aadd(msk[MSK_GETLIST],label)
     return label
 
 
@@ -173,26 +165,39 @@ local l:=msk[ MSK_LEFT   ]
 local b:=msk[ MSK_BOTTOM ]
 local r:=msk[ MSK_RIGHT  ]
 local slist:=msk[MSK_SAYLIST],n
+local mskcolor:=msk[MSK_COLOR]
 
     if( msk[MSK_SCREEN]==NIL )
         msk[ MSK_CURSOR ]:=setcursor(1)
         msk[ MSK_CRSPOS ]:={row(),col()}
         msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)
-        
-        @ t,l clear to b,r 
+
+        if( mskcolor!=NIL )
+            for n:=1 to len(msk[MSK_GETLIST])
+                if( msk[MSK_GETLIST][n]::getclassid==textlabelClass() )
+                    msk[MSK_GETLIST][n]:colorspec:=mskcolor
+                end
+            next
+        end
+
+        @ t,l clear to b,r
         for n:=1 to len(slist)
-            @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color slist[n][4]
+            @ t+slist[n][1],l+slist[n][2] say slist[n][3]  color mskcolor|slist[n][4]
         next
     end
- 
+
     return msk
 
 
 *************************************************************************
 function mskLoop(msk)
     dispbegin()
-    mskShow(msk)
     mskPush(msk)
+    msk[MSK_COLOR]:=ccc_config("MSKCOLOR_SAY"+(len(mask)-1)::str::alltrim)
+    if( msk[MSK_COLOR]==NIL  )
+        msk[MSK_COLOR]:=ccc_config("MSKCOLOR_SAY")
+    end
+    mskShow(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
     dispend()
     readexit(.f.)
@@ -202,10 +207,10 @@ function mskLoop(msk)
             exit
         end
     end
-    mskPop()
     mskHide(msk)
+    mskPop()
     return msk
-    
+
 
 *************************************************************************
 function mskHide(msk)
@@ -219,7 +224,7 @@ function mskHide(msk)
 
 
 *************************************************************************
-function mskReplace(msk,x,y) //athelyezi a maszkot 
+function mskReplace(msk,x,y) //athelyezi a maszkot
 
 local t:=msk[MSK_TOP]
 local l:=msk[MSK_LEFT]
@@ -244,10 +249,10 @@ local scr
         msk[MSK_SCREEN]:=savescreen(t,l,b,r)    // mentve a kepernyo az uj helyen
         restscreen(t,l,b,r,scr)                 // kirajzolt maszk az uj helyen
     end
-        
+
     for n:=1 to len(glist)
         glist[n]:col+=dx
-        glist[n]:row+=dy   
+        glist[n]:row+=dy
     next
 
 
@@ -277,7 +282,7 @@ local col:=col()
     end
     aeval(getlist,{|g|g:display})
     setpos(row,col)
-    
+
 
 *************************************************************************
 function mskTop(msk)
@@ -312,7 +317,7 @@ local rig:=msk[4]
         settermsize(1+max(bot,maxrow()),1+max(rig,maxcol()))
     end
 
-    if( y==NIL .and. (maxrow()-(bot-top))>=6 ) 
+    if( y==NIL .and. (maxrow()-(bot-top))>=6 )
         if( top<3  )
             // ha y nincs megadva
             // es a maszk kicsi a terminalhoz kepest
@@ -323,7 +328,7 @@ local rig:=msk[4]
         if( maxrow()-bot<3  )
             y:=60
         end
-    end     
+    end
     if( x==NIL .and. (maxcol()-(rig-lef))>=6  )
         if( lef<3 )
             x:=40
@@ -331,7 +336,7 @@ local rig:=msk[4]
         if( maxcol()-rig<3 )
             x:=60
         end
-    end     
+    end
 
     if( !x==NIL .or. y!=NIL )
         if( y==NIL )

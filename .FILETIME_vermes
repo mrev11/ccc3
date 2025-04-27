@@ -1,4 +1,5 @@
-d59f078a312a15483885a81b992a2e3222593d79 2025042708:16:08-UTC ./ccclib/src/buildnumber_ccc.prg
+9bc4471043713ef59bf1c1aaadb638d1469efe76 2025042708:22:36-UTC ./ccclib/src/buildnumber_ccc.prg
+2828e4a197d7b0dafb0c4221116043db02933b32 2025042708:22:01-UTC ./CHANGELOG_vermes
 abcdd4a1be0fc0f6d9151490f23ab11dd0b12dbd 2025042622:01:52-UTC ./ccclib/src/uic/mask.prg
 1379271b843fe5ec2d8105c6f2acc7abf1948bf8 2025042617:58:43-UTC ./ccclib/error--ppo2cpp-mask
 25eb4eff3a6b0425c7f7246d15405b371fd29e0f 2025042615:53:42-UTC ./log-install
@@ -86,7 +87,6 @@ e721f4e342537a4de5cea668c0c51ebdad9199c8 2025042615:53:31-UTC ./usr/bin/cccbn
 9497f306a2b13450e783c8a929e22a9c19cfdb93 2025042615:53:31-UTC ./usr/bin/prg2ppo
 1a86445c6d8f40cc2ff92b877feb46fffb1273bc 2025042615:53:29-UTC ./usr/bin/ppo2cpp
 b225ddcec046800333c80e51efed1a402d16c608 2025042611:42:59-UTC ./ccclib/src/ccc_config.prg
-82f7a616dedc6932299a4413ae61e13f46dcbda4 2025042516:59:02-UTC ./CHANGELOG_vermes
 955f013393131874372a54bf67a4e22bc3704552 2025042516:53:52-UTC ./tabobj/tbbtbtx/utility/tsema.prg
 ffe7abd7383104f6b05e8e7a48c0abaf51418176 2025042516:52:41-UTC ./tabobj/common.src/transema.prg
 a16bd3201b53301cb6e623254c08387c17799e00 2025041009:20:53-UTC ./setup/setup-unix/build/build.cpp

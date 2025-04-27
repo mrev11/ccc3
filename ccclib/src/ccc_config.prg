@@ -37,7 +37,17 @@ local hash,cnf,n,pos,key,value
             end
         next
     end
-    //hash:list
+
+#ifdef DEBUG
+    ? "CCC_CONFIG"
+    cnf:=hash:toarr
+    cnf::asortkey({|x|x[1]})
+    for pos:=1 to len(cnf)
+        ? cnf[pos]
+    next
+    //callstack()
+#endif
+
     return hash
 
 

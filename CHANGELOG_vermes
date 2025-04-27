@@ -1,3 +1,6 @@
+2025-04-27
+  A maszkok (say feliratok es textlabelek) szine retegenkent  konfiguralhato;
+
 2025-04-25 
   A CCC_LOCK_SEMAPHOR environment variable hasznalata megszunt,
   a fixen bedrotozott '.lock_transema' nevu fajlt hasznalja szemafornak,

@@ -1,8 +1,17 @@
 
-MSKCOLOR_SAY=n/332,,554/332
+#####################################################################################
 
-MSKCOLOR_GET=333/n,n/#252,555/n
+# BRWCOLOR szinek:
+# 1 - a browse alapszine
+# 2 - a popup menuk alapszine               (default: 1 inverze)
+# 3 - a browse kiemelt soranak szine        (default: 1 inverze)
+# 4 - a popup menuk kiemelt soranak szine   (default: 1)
 
+BRWCOLOR0=w/002,,n/355,w+/022
+BRWCOLOR1=w/003,,n/355,w+/022
+
+
+#####################################################################################
 
 # MSKCOLOR_SAY
 # 1. szin : keret, feliratok, label
@@ -10,8 +19,19 @@ MSKCOLOR_GET=333/n,n/#252,555/n
 # 3. szin : kiemelt (bright) label
 
 
+MSKCOLOR_SAY0=n/332,,555/332
+MSKCOLOR_SAY1=n/333,,555/333
+MSKCOLOR_SAY=n/333,,555/333
+
+
+#####################################################################################
+
 # MSKCOLOR_GET
 # 1. szin: fokusz nelkuli get, nem kivalasztott alt
 # 2. szin: get fokusszal
 # 3. szin: fokusz nelkuli kiemelt get, kivalasztott alt
 
+
+MSKCOLOR_GET=n/#246,n/555,555/#246
+
+#####################################################################################

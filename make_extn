@@ -19,6 +19,7 @@ source make_verf 3
 ( cd tools/dbfview          && m )
 ( cd tools/pcre             && m )                                
 ( cd tools/setperm          && m )
+( cd tools/smtp_client      && m )
 ( cd tools/sql2             && m )
 ( cd tools/tdc2prg          && m )
 ( cd tools/tdccmp           && m )

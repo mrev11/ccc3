@@ -105,6 +105,7 @@ local page
 
 ******************************************************************************************
 static function walk(btree,pgno)
+static pgstack:={}
 local page:=_db_pgread(btree,pgno)
 local type:=pagetype(page)
     aadd(pages,pgno::l2hex)
@@ -112,9 +113,11 @@ local type:=pagetype(page)
         // rekurzio vege
     elseif( type=="TREE" )
         pages[len(pages)]+="!"
+        pgstack::apush(l2hex(pgno))
         walk1(btree,page)
+        pgstack::apop
     else
-        break({"unexpected page type",pgno,type})
+        break({"unexpected page type",l2hex(pgno),type,pgstack})
     end
 
 

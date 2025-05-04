@@ -242,6 +242,7 @@ static function walk(btree,pgno)
 // az aktualis index lapjait indx_page-ben gyujti
 // az osszes index lapjait mark_page-ben jeloli
 
+static pgstack:={}
 local page:=_db_pgread(btree,pgno)
 local type:=pagetype_num(page)
 
@@ -250,12 +251,15 @@ local type:=pagetype_num(page)
 
     if( type==1 )
         // TREE
+        pgstack::apush(l2hex(pgno))
         walk1(btree,page)
+        pgstack::apop
+
     elseif( type==2 )
         // LEAF
         // rekurzio vege
     else
-        break({"unexpected page type",pgno,type})
+        break({"unexpected page type",l2hex(pgno),type,pgstack})
     end
 
 

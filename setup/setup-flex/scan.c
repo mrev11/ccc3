@@ -1491,7 +1491,7 @@ YY_DECL
 
         int doing_codeblock = false;
         int i;
-        Char nmdef[MAXLINE], myesc();
+        Char nmdef[MAXLINE], myesc( Char*);
 
 
 #line 1498 "scan.c"
@@ -2291,7 +2291,7 @@ YY_RULE_SETUP
 #line 435 "scan.l"
 {
                          Char *nmdefptr;
-                        Char *ndlookup();
+                        Char *ndlookup( char* );
 
                         strcpy( nmstr, yytext + 1 );
                         nmstr[yyleng - 2] = '\0';  /* chop trailing brace */

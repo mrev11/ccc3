@@ -1,3 +1,5 @@
+2025-05-08 lemon es flex hozzaigazitva gcc 15.1.1-hoz
+
 2025-05-04
   btlink, btwalk bovebb debug info;
   make_extn forditja smtp_client-et;

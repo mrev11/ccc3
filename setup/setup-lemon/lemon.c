@@ -40,7 +40,7 @@ extern void Configlist_closure(struct lemon *lem);
 extern int State_insert(struct state *, struct config *);
 extern void buildshifts(struct lemon *, struct state *);
 static int resolve_conflict(struct action *apx,struct action *apy,struct symbol *errsym,struct lemon *lemp);
-extern void Configtable_clear( int(*)(/*struct config * */));
+extern void Configtable_clear( int(*)(struct config * ));
 extern struct config *Configtable_find(struct config *);
 extern int Configtable_insert(struct config *);
 extern void  SetFree(char*);
@@ -87,12 +87,12 @@ static char *basename(char *p)
 typedef int COMPARE_T(const void*,const void*);
 
 
-extern void qsort();
-extern double strtod();
-extern long strtol();
-extern void free();
-extern int access();
-extern int atoi();
+//extern void qsort();
+//extern double strtod();
+//extern long strtol();
+//extern void free();
+extern int access(char *,int);
+//extern int atoi();
 
 #ifndef __WIN32__
 #   if defined(_WIN32) || defined(WIN32)
@@ -109,16 +109,16 @@ extern int atoi();
 #define MAXRHS 1000
 #endif
 
-char *msort();
-extern void *malloc();
+//char *msort();
+//extern void *malloc();
 
 /******** From the file "action.h" *************************************/
 struct action *Action_new();
-struct action *Action_sort();
-void Action_add();
+//struct action *Action_sort();
+//void Action_add();
 
 /********* From the file "assert.h" ************************************/
-void myassert();
+//void myassert();
 #ifndef NDEBUG
 #  define assert(X) if(!(X))myassert(__FILE__,__LINE__)
 #else
@@ -126,23 +126,23 @@ void myassert();
 #endif
 
 /********** From the file "build.h" ************************************/
-void FindRulePrecedences();
-void FindFirstSets();
-void FindStates();
-void FindLinks();
-void FindFollowSets();
-void FindActions();
+//void FindRulePrecedences();
+//void FindFirstSets();
+//void FindStates();
+//void FindLinks();
+//void FindFollowSets();
+//void FindActions();
 
 /********* From the file "configlist.h" *********************************/
 void Configlist_init(/* void */);
-struct config *Configlist_add(/* struct rule *, int */);
-struct config *Configlist_addbasis(/* struct rule *, int */);
-void Configlist_closure(/* void */);
+//struct config *Configlist_add(/* struct rule *, int */);
+//struct config *Configlist_addbasis(/* struct rule *, int */);
+//void Configlist_closure(/* void */);
 void Configlist_sort(/* void */);
 void Configlist_sortbasis(/* void */);
 struct config *Configlist_return(/* void */);
 struct config *Configlist_basis(/* void */);
-void Configlist_eat(/* struct config * */);
+//void Configlist_eat(/* struct config * */);
 void Configlist_reset(/* void */);
 
 /********* From the file "error.h" ***************************************/
@@ -156,35 +156,35 @@ struct s_options {
   char *arg;
   char *message;
 };
-int    OptInit(/* char**,struct s_options*,FILE* */);
-int    OptNArgs(/* void */);
-char  *OptArg(/* int */);
-void   OptErr(/* int */);
-void   OptPrint(/* void */);
+int    OptInit( char**,struct s_options*,FILE* );
+int    OptNArgs( void );
+char  *OptArg( int );
+void   OptErr( int );
+void   OptPrint( void );
 
 /******** From the file "parse.h" *****************************************/
-void Parse(/* struct lemon *lemp */);
+//void Parse(/* struct lemon *lemp */);
 
 /********* From the file "plink.h" ***************************************/
-struct plink *Plink_new(/* void */);
-void Plink_add(/* struct plink **, struct config * */);
-void Plink_copy(/* struct plink **, struct plink * */);
-void Plink_delete(/* struct plink * */);
+//struct plink *Plink_new(/* void */);
+//void Plink_add(/* struct plink **, struct config * */);
+//void Plink_copy(/* struct plink **, struct plink * */);
+//void Plink_delete(/* struct plink * */);
 
 /********** From the file "report.h" *************************************/
-void Reprint(/* struct lemon * */);
-void ReportOutput(/* struct lemon * */);
-void ReportTable(/* struct lemon * */);
-void ReportHeader(/* struct lemon * */);
-void CompressTables(/* struct lemon * */);
+//void Reprint(/* struct lemon * */);
+//void ReportOutput(/* struct lemon * */);
+//void ReportTable(/* struct lemon * */);
+//void ReportHeader(/* struct lemon * */);
+//void CompressTables(/* struct lemon * */);
 
 /********** From the file "set.h" ****************************************/
-void  SetSize(/* int N */);             /* All sets will be of size N */
+//void  SetSize(/* int N */);             /* All sets will be of size N */
 char *SetNew(/* void */);               /* A new set for element 0..N */
-void  SetFree(/* char* */);             /* Deallocate a set */
+//void  SetFree(/* char* */);             /* Deallocate a set */
 
-int SetAdd(/* char*,int */);            /* Add element to a set */
-int SetUnion(/* char *A,char *B */);    /* A <- A U B, thru element N */
+//int SetAdd(/* char*,int */);            /* Add element to a set */
+//int SetUnion(/* char *A,char *B */);    /* A <- A U B, thru element N */
 
 #define SetFind(X,Y) (X[Y])       /* True if Y is in set X */
 
@@ -373,38 +373,38 @@ struct lemon {
 
 /* Routines for handling a strings */
 
-char *Strsafe();
+//char *Strsafe();
 
 void Strsafe_init(/* void */);
-int Strsafe_insert(/* char * */);
-char *Strsafe_find(/* char * */);
+//int Strsafe_insert(/* char * */);
+//char *Strsafe_find(/* char * */);
 
 /* Routines for handling symbols of the grammar */
 
-struct symbol *Symbol_new();
-int Symbolcmpp(/* struct symbol **, struct symbol ** */);
+//struct symbol *Symbol_new();
+int Symbolcmpp( struct symbol **, struct symbol ** );
 void Symbol_init(/* void */);
-int Symbol_insert(/* struct symbol *, char * */);
-struct symbol *Symbol_find(/* char * */);
-struct symbol *Symbol_Nth(/* int */);
+//int Symbol_insert(/* struct symbol *, char * */);
+//struct symbol *Symbol_find(/* char * */);
+//struct symbol *Symbol_Nth(/* int */);
 int Symbol_count(/*  */);
 struct symbol **Symbol_arrayof(/*  */);
 
 /* Routines to manage the state table */
 
-int Configcmp(/* struct config *, struct config * */);
+int Configcmp(struct config*, struct config*);
 struct state *State_new();
 void State_init(/* void */);
-int State_insert(/* struct state *, struct config * */);
-struct state *State_find(/* struct config * */);
+//int State_insert(/* struct state *, struct config * */);
+//struct state *State_find(/* struct config * */);
 struct state **State_arrayof(/*  */);
 
 /* Routines used for efficiency in Configlist_add */
 
 void Configtable_init(/* void */);
-int Configtable_insert(/* struct config * */);
-struct config *Configtable_find(/* struct config * */);
-void Configtable_clear(/* int(*)(struct config *) */);
+//int Configtable_insert(/* struct config * */);
+//struct config *Configtable_find(/* struct config * */);
+//void Configtable_clear(/* int(*)(struct config *) */);
 /****************** From the file "action.c" *******************************/
 /*
 ** Routines processing parser actions in the LEMON parser generator.
@@ -451,7 +451,7 @@ struct action *ap2;
 struct action *Action_sort(ap)
 struct action *ap;
 {
-  ap = (struct action *)msort((void*)ap,(void*)&ap->next,actioncmp);
+  ap = (struct action *)msort((void*)ap,(void*)&ap->next,(void*)actioncmp);
   return ap;
 }
 
@@ -742,7 +742,7 @@ struct lemon *lemp;
 ** are added to between some states so that the LR(1) follow sets
 ** can be computed later.
 */
-PRIVATE struct state *getstate(/* struct lemon * */);  /* forward reference */
+//PRIVATE struct state *getstate(/* struct lemon * */);  /* forward reference */
 void FindStates(lemp)
 struct lemon *lemp;
 {
@@ -801,7 +801,7 @@ does not work properly.",sp->name);
 /* Return a pointer to a state which is described by the configuration
 ** list which has been built from calls to Configlist_add.
 */
-PRIVATE void buildshifts(/* struct lemon *, struct state * */); /* Forwd ref */
+//PRIVATE void buildshifts(/* struct lemon *, struct state * */); /* Forwd ref */
 PRIVATE struct state *getstate(lemp)
 struct lemon *lemp;
 {
@@ -964,7 +964,7 @@ struct lemon *lemp;
   }while( progress );
 }
 
-static int resolve_conflict();
+//static int resolve_conflict();
 
 /* Compute the reduce actions, and resolve conflicts.
 */
@@ -1266,14 +1266,14 @@ struct lemon *lemp;
 
 /* Sort the configuration list */
 void Configlist_sort(){
-  current = (struct config *)msort((void*)current,(void*)&(current->next),Configcmp);
+  current = (struct config *)msort((void*)current,(void*)&(current->next),(void*)Configcmp);
   currentend = 0;
   return;
 }
 
 /* Sort the basis configuration list */
 void Configlist_sortbasis(){
-  basis = (struct config *)msort((void*)current,(void*)&(current->bp),Configcmp);
+  basis = (struct config *)msort((void*)current,(void*)&(current->bp),(void*)Configcmp);
   basisend = 0;
   return;
 }
@@ -1576,7 +1576,7 @@ char **argv;
 static char *merge(a,b,cmp,offset)
 char *a;
 char *b;
-int (*cmp)();
+int (*cmp)(char*,char*);
 int offset;
 {
   char *ptr, *head;
@@ -1729,7 +1729,7 @@ FILE *err;
   }else if( op[j].type==OPT_FLAG ){
     *((int*)op[j].arg) = v;
   }else if( op[j].type==OPT_FFLAG ){
-    (*(void(*)())(op[j].arg))(v);
+    (*(void(*)(int))(op[j].arg))(v);
   }else{
     if( err ){
       fprintf(err,"%smissing argument on switch.\n",emsg);
@@ -1811,19 +1811,19 @@ FILE *err;
         *(double*)(op[j].arg) = dv;
         break;
       case OPT_FDBL:
-        (*(void(*)())(op[j].arg))(dv);
+        (*(void(*)(double))(op[j].arg))(dv);
         break;
       case OPT_INT:
         *(int*)(op[j].arg) = lv;
         break;
       case OPT_FINT:
-        (*(void(*)())(op[j].arg))((int)lv);
+        (*(void(*)(int))(op[j].arg))((int)lv);
         break;
       case OPT_STR:
         *(char**)(op[j].arg) = sv;
         break;
       case OPT_FSTR:
-        (*(void(*)())(op[j].arg))(sv);
+        (*(void(*)(char*))(op[j].arg))(sv);
         break;
     }
   }
@@ -2798,7 +2798,7 @@ int modemask;
   char *pathlist;
   char *path,*cp;
   char c;
-  extern int access();
+  //extern int access();
 
 #ifdef __WIN32__
   cp = strrchr(argv0,'\\');
@@ -2812,7 +2812,7 @@ int modemask;
     if( path ) sprintf(path,"%s/%s",argv0,name);
     *cp = c;
   }else{
-    extern char *getenv();
+    //extern char *getenv();
     pathlist = getenv("PATH");
     if( pathlist==0 ) pathlist = ".:/bin:/usr/bin";
     path = (char *)malloc( strlen(pathlist)+strlen(name)+2 );
@@ -4467,11 +4467,11 @@ struct config *key;
 /* Remove all data from the table.  Pass each data to the function "f"
 ** as it is removed.  ("f" may be null to avoid this step.) */
 void Configtable_clear(f)
-int(*f)(/* struct config * */);
+int(*f)( struct config * );
 {
   int i;
   if( x4a==0 || x4a->count==0 ) return;
-  if( f ) for(i=0; i<x4a->count; i++) (*f)(x4a->tbl[i].data);
+  if( f ) for(i=0; i<x4a->count; i++) (*f)( (void*)(x4a->tbl[i].data) );
   for(i=0; i<x4a->size; i++) x4a->ht[i] = 0;
   x4a->count = 0;
   return;

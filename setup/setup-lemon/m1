@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+CFLAGS=
+CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
+CFLAGS="-Wno-unknown-warning-option $CFLAGS"
+#CFLAGS="-Wno-old-style-definition $CFLAGS"
+
+cc -v 2>&1 | grep version
+cc $CFLAGS  -I .  lemon.c  -o lemon.exe   2>&1   | tee log-lemon
+
+
+# killall tv.exe >/dev/null
+# tv log-lemon

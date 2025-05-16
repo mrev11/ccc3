@@ -6,7 +6,7 @@ LEMON_EXE=$LEMON_PATH/lemon.exe
 CFLAGS=
 CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
 CFLAGS="-Wno-unknown-warning-option $CFLAGS"
-CFLAGS="-Wno-old-style-definition $CFLAGS"
+#CFLAGS="-Wno-old-style-definition $CFLAGS"
 
 if [ ! -x $LEMON_EXE ]; then
     cc $CFLAGS  -I .  lemon.c  -o $LEMON_EXE   2>&1   | tee log-lemon

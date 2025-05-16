@@ -332,7 +332,8 @@ local n
 ******************************************************************************
 static function sort_inv(sorfile)
 
-local sor,n,i
+local sor,n
+local ord:={},fld:={},x
 
     for n:=1 to len(inv) 
         inv[n]:order:=n //default
@@ -349,16 +350,22 @@ local sor,n,i
         end
         sor::=alltrim
         sor::=split(" ")
-
-        for n:=1 to len(inv) 
-            i:=ascan(sor,{|s|s==inv[n]:name})
-            if( i<1 )
-                ? "WARNING", inv[n]:name, "not in", sor 
+       
+        for n:=1 to len(sor)
+            x:=ascan(inv,{|f|f:name==sor[n]})
+            if( x==0 )
+                ? "WARNING unknown field:",sor[n]
             else
-                inv[n]:order:=i
+                aadd(ord,x)
+                aadd(fld,inv[x])
             end
         next
-        asort(inv,,,{|x,y|x:order<y:order})    
+
+        asort(ord)
+        
+        for n:=1 to len(ord)
+            inv[ord[n]]:=fld[n]
+        next
     end
 
 

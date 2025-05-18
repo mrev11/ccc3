@@ -10,10 +10,7 @@ local data,src,out
 
         // kimenet nevkepzese a tdc-bol
         out:=tdc[n]::strtran(".tdc",".ch")
-
-        if( !memoread(out)==src )
-            memowrit(out,src)
-        end
+        memowrit(out,src)
     next
 
 

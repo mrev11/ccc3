@@ -14,10 +14,7 @@ local data,src,out
         // a kimenet neve nem a tdc-bol
         // hanem az osztalynevbol kepzodik
         out:="tabobj."+data[1]::lower+".prg"
-
-        if( !memoread(out)==src )
-            memowrit(out,src)
-        end
+        memowrit(out,src)
     next
 
 

@@ -1,11 +1,11 @@
 
-
-#define VERSION "tdc2tabobj 2.0"
+#include "tdcutil.ch"
 
 ******************************************************************************************
 function main(*)  // args: tdcspec1, tdcspec2, ...
 local tdc:={*},n
 local data,src,out
+local tcre,tacc,tmod
 
     for n:=1 to len(tdc)
         data:=tdc[n]::parsetdc // {table,path,index,field,keep}
@@ -15,6 +15,8 @@ local data,src,out
         // hanem az osztalynevbol kepzodik
         out:="tabobj."+data[1]::lower+".prg"
         memowrit(out,src)
+        {tcre,tacc,tmod}:=getfiletime(tdc[n])
+        setfiletime(out,tcre,tacc,tmod)
     next
 
 
@@ -29,7 +31,7 @@ local keep:=data[5]
 
 local lf:=chr(10)
 local n,line
-local prg:="//"+VERSION+lf+lf
+local prg:="//"+TDCUTIL_BUILD+lf+lf
 
     prg+="class tabobj."+table::lower+"(tabobj)"+lf
     for n:=1 to len(field)

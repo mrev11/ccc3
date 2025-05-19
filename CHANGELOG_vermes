@@ -1,4 +1,8 @@
 2025-05-18
+  tdc kodgeneratorok a generalt kodnak a forras idejet adjak;
+  tdc kodgeneratorok a generalt kodba beleirjak a TDCUTIL_BUILD datumot;
+
+2025-05-18
    tdc kodgeneratorok akkor is kiirjak a kimenetet, ha az valtozatlan.
 
 2025-05-17 

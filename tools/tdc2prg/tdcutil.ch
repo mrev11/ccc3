@@ -1,0 +1,1 @@
+#define TDCUTIL_BUILD  "tdcutil-build(2025-05-19)"

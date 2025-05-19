@@ -1,8 +1,11 @@
 
+#include "tdcutil.ch"
+
 ******************************************************************************************
 function main(*)  // args: tdcspec1, tdcspec2, ...
 local tdc:={*},n
 local data,src,out
+local tcre,tacc,tmod
 
     for n:=1 to len(tdc)
         data:=tdc[n]::parsetdc
@@ -11,6 +14,8 @@ local data,src,out
         // kimenet nevkepzese a tdc-bol
         out:=tdc[n]::strtran(".tdc",".prg")
         memowrit(out,src)
+        {tcre,tacc,tmod}:=getfiletime(tdc[n])
+        setfiletime(out,tcre,tacc,tmod)
     next
 
 
@@ -25,7 +30,7 @@ local field:=data[4]
 local keep:=data[5]
 
 local lf:=chr(10)
-local n,line,prg:=lf
+local n,line,prg:="//"+TDCUTIL_BUILD+lf+lf
     
     prg+="function table."+table::lower+"(col,exp)"+lf
     prg+="static tbl"+lf

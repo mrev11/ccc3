@@ -1,3 +1,8 @@
+2025-06-16
+   elfapp atnevezve commitid-re + hibakezeles;
+   (visszaveve) bt* parancssoros karbantarto utilityk fullstaticra linkelve;
+   bt-* scriptek javitva;
+
 2025-05-18
   tdc kodgeneratorok a generalt kodnak a forras idejet adjak;
   tdc kodgeneratorok a generalt kodba beleirjak a TDCUTIL_BUILD datumot;

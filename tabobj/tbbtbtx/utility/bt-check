@@ -4,7 +4,7 @@ doproc()
 {
     find .  -name '*.bt' | while read BT; do
         echo $BT
-        btcheck.exe $BT --writecrc
+        btcheck.exe "$BT" --writecrc
     done
 }
 

@@ -4,7 +4,7 @@ doproc()
 {
     find .  -name '*.bt' | while read BT; do
         #nem kell neki btpasswd
-        bthead.exe $BT 
+        bthead.exe "$BT"
     done
 }
 

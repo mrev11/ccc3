@@ -45,7 +45,7 @@ fi
 rm -f $OUT
 
 #readelf --string-dump .comment $TARGET
-echo -n "["$(git log --pretty=format:"%h %ai" -1 2>/dev/null)"] " >>$TARGET
+echo -n "COMMITID["$(git log --pretty=format:"%h %ai" -1 2>/dev/null)"] " >>$TARGET
 echo -n "$(cccbn.exe -n 2>/dev/null)" >>$TARGET
 
 quit 0

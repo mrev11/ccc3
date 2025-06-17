@@ -36,23 +36,30 @@ local exe:={*},n
     end
 
     for n:=1 to len(exe)
-        ?? exe[n]::padr(24), elfapp(exe[n])
+        ?? exe[n]::padr(24), commitid(exe[n])
         ?
     next
 
 
 ******************************************************************************************
-function elfapp(exe)
-local fd:=fopen(exe)
-local map:=filemap.open(fd)
-local pos:=rat(a"[",map)
-local app:=a""
-    if( 0<pos .and. pos>len(map)-48 )
-        app:=map[pos..]
+function commitid(exe)
+
+local fd,map,pos,id:=""
+
+    begin
+        fd:=fopen(exe)
+        map:=filemap.open(fd)
+        pos:=rat(a"COMMITID[",map)
+        if( 4096<len(map) .and. len(map)-56<pos )
+            id:=map[pos+8..]
+        end
+    recover
+    finally
+        if(map!=NIL); filemap.close(map); end
+        if(fd>=0); fclose(fd); end
     end
-    filemap.close(map)
-    fclose(fd)
-    return app
+
+    return bin2str(id)
 
 
 ******************************************************************************************

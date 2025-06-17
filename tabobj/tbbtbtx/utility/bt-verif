@@ -3,7 +3,7 @@
 doproc()
 {
     find .  -name '*.bt' | while read BT; do
-        btverif.exe $BT
+        btverif.exe "$BT"
     done
 }
 

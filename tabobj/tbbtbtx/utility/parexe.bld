@@ -27,3 +27,7 @@
 
 BUILD_EXE=${CCCDIR}/usr/bin
 
+# RHEL-ben nem mukodik
+# nincsnenek meg a static konyvtarak
+# BUILD_SHR=fullstatic
+

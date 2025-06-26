@@ -21,6 +21,7 @@
 //Indexelo utility btbtx formatumhoz
 //
 // bti fname [-l]                 // indexek es index szegmensek listazasa (default)
+// bti fname -lc                  // elozo + kiirja az index kulcsok szamat
 // bti fname -lxf                 // elozo + kiirja a lapok darabszamat (x=index, f=free)
 // bti fname -lxxff               // elozo + kiirja a lapok sorszamat (*=free, !=tree)
 // bti fname -lxxxff              // elozo + kiirja az indexlapokon levo kulcsok szamat
@@ -85,6 +86,11 @@ local x, v, op:="l"
     if( fname::right(3)!=".bt" )
         fname+=".bt"
     end
+    
+    if( NIL==tabResource(fname) )
+        usage("File does not exist or not a valid data file: ["+fname+"]")
+    end
+   
 
     if( "l"$op )
         listindex(fname,op)
@@ -110,7 +116,7 @@ static function usage(errtxt)
         ?
     end
     ??<<usage>>    
-  Usage : bti.exe fname [-aindex -sseg1 -sseg2 | -dindex | -k[index] | -l[p][f] | -h]
+  Usage : bti.exe fname [-aindex -sseg1 -sseg2 | -dindex | -k[index] | -l[c][x][f] | -h]
 
   fname : bt file specification 
   index : index name
@@ -119,7 +125,8 @@ static function usage(errtxt)
   -a    : add an index
   -d    : delete an index
   -k    : list all keys of an index (or all indices)
-  -lpf  : list all indices (pages and freelist)
+  -lc   : list number of keys
+  -lxf  : list pages (x=index, f=free)
   -h    : print this help
 
 <<usage>>    
@@ -132,12 +139,17 @@ local t:=tabResource(fname)
 local x:=tabIndex(t),n,c,i
 local btree,iname
 
-    if( "f"$op .or. "x"$op ) 
+    if( "f"$op .or. "x"$op .or. "c"$op ) 
         tabOpen(t)
         btree:=t[2]
     end
 
     ? fname
+
+    if( "c"$op  )
+        op::=strtran("x","")
+        op::=strtran("f","")
+    end
 
     if( "f"$op ) 
         listfree(btree,op)
@@ -147,6 +159,12 @@ local btree,iname
     end
     if( "x"$op .and. tabKeepDeleted(t)!=NIL )
         ? "deleted {}";listpages(btree,"deleted",op)
+    end
+    if( "c"$op ) 
+        ? "recno {} number of keys: ", keycount(btree,"recno")::str::alltrim
+        if( tabKeepDeleted(t)!=NIL )
+            ? "deleted {} number of keys: ", keycount(btree,"deleted")::str::alltrim
+        end
     end
 
     for n:=1 to len(x)
@@ -161,10 +179,52 @@ local btree,iname
 
         if( "x"$op ) 
             listpages(btree,iname,op)
+        elseif( "c"$op ) 
+            ?? " number of keys: ",keycount(btree,iname)::str::alltrim
         end
     next
    
     ?
+
+
+*****************************************************************************
+static function keycount(btree,iname)
+local header,nords,n,order
+local kcount:=0
+    header:=_db_pgread(btree,0)
+    nords:=header[29..32]::num
+    iname::=str2bin
+    for n:=1 to nords
+        order:=header::substr(48+(n-1)*32+1,32)
+        if(  iname==order::substr(17,len(iname)) )
+            kcount:=keycount1(btree,order)
+            exit
+        end
+    next
+    return kcount
+
+
+static function keycount1(btree,order)
+local page,link,type,cnt:=0
+    
+    link:=order::substr(5,4)::num
+
+    while( link!=0  )
+        page:=_db_pgread(btree,link)
+        type:=page::substr(17,4)::num
+
+        if( type==0 )
+            // free
+        elseif( type==1 )
+            // tree
+        elseif( type==2 )
+            // leaf
+            cnt+=numofkeys_as_number(page)
+        end
+        link:=page::substr(5,4)::num
+    end
+
+    return cnt
 
 
 *****************************************************************************
@@ -234,6 +294,11 @@ local upper:=page[23..24]::num
 local items:=(lower-24)/2
     ?? "("+items::str::alltrim+")"
 
+static function numofkeys_as_number(page)
+local lower:=page[21..22]::num
+local upper:=page[23..24]::num
+local items:=(lower-24)/2
+    return items
 
 *****************************************************************************
 static function listfree(btree,op)

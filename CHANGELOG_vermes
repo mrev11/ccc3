@@ -1,3 +1,6 @@
+2025-06-26
+   bti.exe a '-lc' opcioval kiirja a kulcsok szamat;
+
 2025-06-16
    elfapp atnevezve commitid-re + hibakezeles;
    (visszaveve) bt* parancssoros karbantarto utilityk fullstaticra linkelve;

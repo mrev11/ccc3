@@ -104,27 +104,27 @@ UTF8_CAPITAL_A_DIAERESIS            \xc3\x84
 
 %%
 
-{UTF8_SMALL_A_ACUTE}                {return('a');}
-{UTF8_SMALL_E_ACUTE}                {return('e');}
-{UTF8_SMALL_I_ACUTE}                {return('i');}
-{UTF8_SMALL_O_ACUTE}                {return('o');}
-{UTF8_SMALL_O_DIAERESIS}            {return('o');}
-{UTF8_SMALL_O_DOUBLE_ACUTE}         {return('o');}
-{UTF8_SMALL_U_ACUTE}                {return('u');}
-{UTF8_SMALL_U_DIAERESIS}            {return('u');}
-{UTF8_SMALL_U_DOUBLE_ACUTE}         {return('u');}
-{UTF8_SMALL_A_DIAERESIS}            {return('a');}
+{UTF8_SMALL_A_ACUTE}                {return(u8'a');}
+{UTF8_SMALL_E_ACUTE}                {return(u8'e');}
+{UTF8_SMALL_I_ACUTE}                {return(u8'i');}
+{UTF8_SMALL_O_ACUTE}                {return(u8'o');}
+{UTF8_SMALL_O_DIAERESIS}            {return(u8'o');}
+{UTF8_SMALL_O_DOUBLE_ACUTE}         {return(u8'o');}
+{UTF8_SMALL_U_ACUTE}                {return(u8'u');}
+{UTF8_SMALL_U_DIAERESIS}            {return(u8'u');}
+{UTF8_SMALL_U_DOUBLE_ACUTE}         {return(u8'u');}
+{UTF8_SMALL_A_DIAERESIS}            {return(u8'a');}
                                     
-{UTF8_CAPITAL_A_ACUTE}              {return('A');}
-{UTF8_CAPITAL_E_ACUTE}              {return('E');}
-{UTF8_CAPITAL_I_ACUTE}              {return('I');}
-{UTF8_CAPITAL_O_ACUTE}              {return('O');}
-{UTF8_CAPITAL_O_DIAERESIS}          {return('O');}
-{UTF8_CAPITAL_O_DOUBLE_ACUTE}       {return('O');}
-{UTF8_CAPITAL_U_ACUTE}              {return('U');}
-{UTF8_CAPITAL_U_DIAERESIS}          {return('U');}
-{UTF8_CAPITAL_U_DOUBLE_ACUTE}       {return('U');}
-{UTF8_CAPITAL_A_DIAERESIS}          {return('A');}
+{UTF8_CAPITAL_A_ACUTE}              {return(u8'A');}
+{UTF8_CAPITAL_E_ACUTE}              {return(u8'E');}
+{UTF8_CAPITAL_I_ACUTE}              {return(u8'I');}
+{UTF8_CAPITAL_O_ACUTE}              {return(u8'O');}
+{UTF8_CAPITAL_O_DIAERESIS}          {return(u8'O');}
+{UTF8_CAPITAL_O_DOUBLE_ACUTE}       {return(u8'O');}
+{UTF8_CAPITAL_U_ACUTE}              {return(u8'U');}
+{UTF8_CAPITAL_U_DIAERESIS}          {return(u8'U');}
+{UTF8_CAPITAL_U_DOUBLE_ACUTE}       {return(u8'U');}
+{UTF8_CAPITAL_A_DIAERESIS}          {return(u8'A');}
 
 \n                                  {return *YYText();}
 .                                   {return *YYText();}

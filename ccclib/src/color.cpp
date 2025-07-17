@@ -98,11 +98,11 @@ static int colorstring_to_colorindex(CHAR *colorstring, int *nchar)
         {
             char c=toupper(colorstring[i]);
 
-                 if( c=='R' ) colorindex|=1;
-            else if( c=='G' ) colorindex|=2;
-            else if( c=='B' ) colorindex|=4;
-            else if( c=='W' ) colorindex|=7;
-            else if( c=='+' ) colorindex|=8;
+                 if( c==u8'R' ) colorindex|=1;
+            else if( c==u8'G' ) colorindex|=2;
+            else if( c==u8'B' ) colorindex|=4;
+            else if( c==u8'W' ) colorindex|=7;
+            else if( c==u8'+' ) colorindex|=8;
             else              break;
         }
     }

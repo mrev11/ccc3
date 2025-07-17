@@ -116,13 +116,13 @@ static CHAR *ParsePicture(VALUE*vp, int*tf)
         {
             switch(f)
             {
-                case 'B': tf[TRANSFORM_B]=1; break;
-                case 'Z': tf[TRANSFORM_Z]=1; break;
-                case '!': tf[TRANSFORM_U]=1; break;
-                case 'A': tf[TRANSFORM_A]=1; break;
-                case 'K': tf[TRANSFORM_K]=1; break;
-                case '*': tf[TRANSFORM_P]=1; break;
-                case 'S':
+                case u8'B': tf[TRANSFORM_B]=1; break;
+                case u8'Z': tf[TRANSFORM_Z]=1; break;
+                case u8'!': tf[TRANSFORM_U]=1; break;
+                case u8'A': tf[TRANSFORM_A]=1; break;
+                case u8'K': tf[TRANSFORM_K]=1; break;
+                case u8'*': tf[TRANSFORM_P]=1; break;
+                case u8'S':
                 {
                     char buf[8];
                     int width=0;

@@ -92,8 +92,9 @@ function tranSemaOff(level)
 
 ******************************************************************************************
 static function semafd()
-local sema,fd,e 
-    sema:=".lock_transema"
+local sema,fd,e
+    dirmake("semaphor.tmp") 
+    sema:="semaphor.tmp/.lock_transema"
     fd:=fopen(sema,FO_CREATE+FO_NOLOCK+FO_READWRITE)
     if( fd<0 )
         e:=fnferrorNew()

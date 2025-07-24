@@ -1,3 +1,7 @@
+2025-07-24 nullstring:
+   binarys(ptr,len) len==0 eseten ures stinget tesz a stackre;
+   strings(ptr,len) len==0 eseten ures stinget tesz a stackre;
+
 2025-07-14
    .lock_transema athelyezve semaphor.tmp-be;
 

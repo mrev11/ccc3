@@ -45,6 +45,12 @@ int main(int argc, char **argv)
         //fprintf(stderr,"setlocale failed\n");
     }
 
+    if( getenv("CPPSTANDARD") )
+    {
+        fprintf(stderr, "%s (c++%ld) %s\n",__VERSION__,__cplusplus, argv[0]);
+        exit(0);
+    }
+
     ARGC=argc;
     ARGV=argv;
 

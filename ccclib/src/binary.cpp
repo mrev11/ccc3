@@ -135,6 +135,11 @@ void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-va
 {
 //stack:   --- s
 
+    if( len==0 )
+    {
+        ptr="";
+    }
+
     if( len>MAXBINLEN )
     {
         number(len);

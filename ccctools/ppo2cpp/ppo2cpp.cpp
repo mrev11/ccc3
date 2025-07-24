@@ -56,6 +56,11 @@ char *inner_namespace=0;
 //----------------------------------------------------------------------------
 int main(int argc, char**argv)
 {
+    if( getenv("CPPSTANDARD") )
+    {
+        fprintf(stderr, "%s (c++%ld) %s\n",__VERSION__,__cplusplus, argv[0]);
+        exit(0);
+    }
 
     int fd=0;
     char input[256]="";

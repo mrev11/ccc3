@@ -146,6 +146,11 @@ void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-va
 {
 //stack:   --- s
 
+    if( len==0 )
+    {
+        ptr=L"";
+    } 
+
     if(len>MAXSTRLEN)
     {
         number(len);

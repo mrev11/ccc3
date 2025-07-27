@@ -93,8 +93,8 @@ extern char *termicon();
 
 #ifndef GDK_KEY_Delete
 //compatibility
-#define GDK_KEY_Delete         GDK_Delete        
-#define GDK_KEY_KP_Delete      GDK_KP_Delete     
+#define GDK_KEY_Delete         GDK_Delete
+#define GDK_KEY_KP_Delete      GDK_KP_Delete
 #endif
 
 
@@ -169,14 +169,14 @@ static GtkTextTag *lookup_tag(int fg, int bg)
     char rgb_fg[128]; sprintf(rgb_fg,"#%06x",ANSIRGB(fg));
     char rgb_bg[128]; sprintf(rgb_bg,"#%06x",ANSIRGB(bg));
     //printf("fg %d %s bg %d %s \n", fg, rgb_fg, bg, rgb_bg);
-    return gtk_text_buffer_create_tag(gtkbuffer,name,"foreground",rgb_fg,"background",rgb_bg,NULL); 
+    return gtk_text_buffer_create_tag(gtkbuffer,name,"foreground",rgb_fg,"background",rgb_bg,NULL);
 }
 
 //----------------------------------------------------------------------------
 static void setattr(int y, int x1, int x, int attr)  //[x1,x)-be attr
 {
     int fg=255 & (attr>>0);
-    int bg=255 & (attr>>8);  
+    int bg=255 & (attr>>8);
     GtkTextTag *tag=lookup_tag(fg,bg);
 
     GtkTextIter iter1, iter2;
@@ -254,7 +254,7 @@ static void blink(int flag)  //bg<->fg valtogatos kurzor
     static int prevx=0;
     static int prevy=0;
 
-    if( flag ) 
+    if( flag )
     {
         if( cursor_state && prevy!=cursor_y )
         {
@@ -283,7 +283,7 @@ static void blink(int flag)  //bg<->fg valtogatos kurzor
         set_attrs_line(prevy);
         cursor_state=0;
     }
-    
+
     cursor_tick=gettickcount();
 }
 
@@ -392,7 +392,7 @@ static void setwsize_gtk()
         }
         screen_buffer=new screenbuf(wwidth,wheight);
     }
-    
+
     //ablakmeret:
     //a meretet az hatarozza meg, hogy mennyi text van benne
     //elore feltoltjuk annyi szoveggel, amekkoranak lennie kell,
@@ -405,7 +405,7 @@ static void setwsize_gtk()
     gtk_text_buffer_get_iter_at_offset(gtkbuffer,&iter1,0);
     gtk_text_buffer_get_iter_at_offset(gtkbuffer,&iter2,-1);
     gtk_text_buffer_delete(gtkbuffer,&iter1,&iter2);
-    
+
     int i;
     char *buf=(char*)malloc(wwidth);
     for(i=0;i<wwidth;i++)buf[i]=' ';
@@ -502,12 +502,12 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
     unsigned code=0;
 
 //#ifdef WINDOWS
-    // Az event->string-nek a karakternek megfelelo  
+    // Az event->string-nek a karakternek megfelelo
     // UTF-8 stringet kellene tartalmaznia.
     // Linuxon ez igy is van, Windowson azonban az
     // event->string-ben a Latin2 kodolasu karakter van
     // (raadasul a kulonbozo windowsokon nem egyforman).
-    // Azt hiszem, valami kornyezeti valtozo alapjan dont 
+    // Azt hiszem, valami kornyezeti valtozo alapjan dont
     // a GTK, hogy milyen kodolasu legyen a string,
     // pl. Linuxon is el lehet rontani, ha a LANG-ot
     // valami UTF-8-tol kulonbozore allitom.
@@ -545,8 +545,8 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
         //mar megvan
     }
     else
-//#endif  
-    
+//#endif
+
     if( keyval==GDK_KEY_Delete )
     {
         //ez jon a normal delete-re is
@@ -590,7 +590,34 @@ static int cb_key_press_event(GtkWidget *widget, GdkEventKey*event, gpointer dat
 
     //printf("code=%d state=%d keyval=%x length=%d string=[%s] asc=%d\n", code,state,keyval,length,string,asc);
 
-    if( code )
+
+    if( code==22 && state==2 )
+    {
+        //ctrl-v (paste)
+
+        GtkClipboard *clipboard=gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+        char *txt=gtk_clipboard_wait_for_text(clipboard);
+        if( txt )
+        {
+            int len=strlen(txt);
+            for( int i=0; i<len; )
+            {
+                unsigned ucs=0;
+                i+=utf8_to_ucs(txt+i,&ucs);
+                if( ucs )
+                {
+                    if( ucs==10 )
+                    {
+                        ucs=13;
+                    }
+                    tcpio_sendkey(ucs);
+                }
+            }
+            free(txt);
+        }
+    }
+
+    else if( code )
     {
         tcpio_sendkey(code);
     }
@@ -665,19 +692,19 @@ static int cb_timeout(void*data)
 }
 
 //----------------------------------------------------------------------------
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
 
-    char host[256]; strcpy(host,"127.0.0.1"); 
+    char host[256]; strcpy(host,"127.0.0.1");
     int port=55000;
     if( argc>=2 )
     {
-        strcpy(host,argv[1]); 
+        strcpy(host,argv[1]);
     }
     if( argc>=3 )
     {
-        sscanf(argv[2],"%d",&port); 
+        sscanf(argv[2],"%d",&port);
     }
 
     xsigset_handlers();
@@ -719,7 +746,7 @@ int main(int argc, char *argv[])
     tcpio_ini(host,port);
     #ifdef _UNIX_
       pthread_t t=0;
-      pthread_create(&t,0,tcpio_thread,0); 
+      pthread_create(&t,0,tcpio_thread,0);
     #else
       DWORD threadid=0;
       CreateThread(0,0,(LPTHREAD_START_ROUTINE)tcpio_thread,0,0,&threadid);

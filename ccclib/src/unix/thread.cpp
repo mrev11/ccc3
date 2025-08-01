@@ -32,34 +32,6 @@
 #include <tid2ptr.h>
 #include <cccapi.h>
  
-#ifndef MULTITHREAD
-
-const int MULTITHREAD_SUPPORT=0;
-
-void _clp_thread_create(int argno){stack-=argno;PUSHNIL();}
-void _clp_thread_self(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_detach(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_exit(int argno){stack-=argno;PUSHNIL();} 
-//void _clp_thread_cancel(int argno){stack-=argno;PUSHNIL();} 
-//void _clp_thread_testcancel(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_join(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_mutex_init(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_mutex_lock(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_mutex_trylock(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_mutex_unlock(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_mutex_destroy(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_cond_init(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_cond_signal(int argno){stack-=argno;PUSHNIL();} 
-//void _clp_thread_cond_broadcast(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_cond_wait(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_cond_destroy(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_create_detach(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_setname(int argno){stack-=argno;PUSHNIL();} 
-void _clp_thread_getname(int argno){stack-=argno;PUSHNIL();} 
-
-#else
-
-const int MULTITHREAD_SUPPORT=1;
 
 static pthread_mutex_t mutcre=PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
@@ -384,6 +356,6 @@ void _clp_thread_getname(int argno)
 
 #endif
 //---------------------------------------------------------------------------
-#endif
+
  
 

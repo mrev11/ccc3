@@ -1,3 +1,7 @@
+2025-08-01
+   #ifndef MULTITHREAD agak eltavolitva a forrasbol;
+   vartab_rebuild() deklaracioja variable.cpp-ben static;
+
 2025-07-27 terminal-gtk3 paste:
 
 2025-07-24 nullstring:

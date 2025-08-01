@@ -90,12 +90,10 @@ static void signal_handler(int signum)
         return;
     }
 
-#ifdef MULTITHREAD
     if( 0==thread_data_ptr )
     {
         return;  //új szál, nincs még thread_data-ja
     }
-#endif    
 
     if( (cccsig&~sigcccmask)==0 ) 
     {
@@ -144,7 +142,6 @@ THREAD_ENTRY static BOOL ctrlc_handler(DWORD event)
     //nincs külön vermük, azaz a stack, siglocklev, stb. globálisak.
     //Egyszálú CCC-ben ezért a CTRL_C-t elnyomjuk.
     
-#ifdef MULTITHREAD
     //extern void vartab_lock0();
     //extern void vartab_unlock0();
 
@@ -165,7 +162,7 @@ THREAD_ENTRY static BOOL ctrlc_handler(DWORD event)
     vartab_lock();
     DELTHRDATA(TlsGetValue(thread_key));
     vartab_unlock0();
-#endif
+
     return 1; 
 }
  

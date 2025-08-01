@@ -46,11 +46,8 @@ static void setmask()
     if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
     if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
     if( mask & SIG_KILL ) {sigaddset(&set,SIGKILL);}
-#ifdef MULTITHREAD
+
     pthread_sigmask(SIG_SETMASK, &set,0);
-#else
-    sigprocmask(SIG_SETMASK, &set,0);
-#endif
 }
 
 //2016.04.14
@@ -152,12 +149,10 @@ static void signal_handler(int signum)
     {
         return;
     }
-#ifdef MULTITHREAD
     else if( 0==thread_data_ptr )
     {
         return; //új szál, nincs még thread_data-ja
     }
-#endif    
     else if( (cccsig&~sigcccmask)==0 ) 
     {
         return;

@@ -102,12 +102,9 @@ struct VALUE
 
     } data;
 
-#ifdef MULTITHREAD
     VALUE operator=(VALUE v);
     //többszálú esetben speciális értékadás
     //variable.cpp-ben van definiálva
-#endif
-
 };
 
 
@@ -146,7 +143,6 @@ extern OREF* oref_new(void);
 extern void  vartab_ini(void);
 
 extern void  vartab_setsize( struct VARTAB_SETSIZE *vss );
-extern void  vartab_rebuild(void);
 extern VALUE *newValue(unsigned int len);
 extern CHAR  *newChar(unsigned int len);
 extern BYTE  *newBinary(unsigned int len);

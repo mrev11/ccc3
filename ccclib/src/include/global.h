@@ -22,30 +22,13 @@
 //itt definiáljuk a globális CCC változókat
 
 //---------------------------------------------------------------------------
-#ifdef MULTITHREAD
-  pthread_key_t thread_key;
 
-  int thread_data::tdata_count=0;
-  thread_data *thread_data::tdata_first=0;
-  thread_data *thread_data::tdata_last=0;
+pthread_key_t thread_key;
+
+int thread_data::tdata_count=0;
+thread_data *thread_data::tdata_first=0;
+thread_data *thread_data::tdata_last=0;
  
-#else
-  TRACE tracebuf[TRACE_SIZE];     // stack a trace infónak
-  TRACE *trace=tracebuf;
-
-  VALUE stackbuf[STACK_SIZE];     // stack a local változóknak
-  VALUE *stack=stackbuf;
-
-  SEQJMP seqjmpbuf[SEQJMP_SIZE];  // stack a longjump-oknak
-  SEQJMP *seqjmp=seqjmpbuf;
-
-  VALUE usingstkbuf[USINGSTK_SIZE]; // stack a using typeinfo-nak
-  VALUE *usingstk=usingstkbuf;
-
-  int siglocklev=0;
-  int signumpend=0;
-  int sigcccmask=0;
-#endif
 
 VALUE ststackbuf[STSTACK_SIZE]; // stack a static változóknak
 VALUE *ststack=ststackbuf;

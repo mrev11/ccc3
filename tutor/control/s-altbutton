@@ -1,2 +1,3 @@
 #!/bin/bash
-CCC_CONFIG=config altbutton.exe
+export CCC_COLORCONF=config
+altbutton.exe

@@ -1,3 +1,6 @@
+2025-08-07 custom colors:
+   A 0-15 sorszamu szinek konfiguralhatok a CCC_COLORCONF-ban megadott fajlban;
+
 2025-08-01
    #ifndef MULTITHREAD agak eltavolitva a forrasbol;
    vartab_rebuild() deklaracioja variable.cpp-ben static;

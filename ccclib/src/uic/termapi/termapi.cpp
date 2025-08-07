@@ -79,6 +79,7 @@ static char*term_message=0;
 
 MUTEX_CREATE(mutex_display);
 
+extern int get_custom_color(int);
 
 //----------------------------------------------------------------------------
 static void sleep(int ms)
@@ -140,6 +141,21 @@ static void sendrect()
             c=convtab_cwi2lat(c);
             c=convtab_lat2ucs(c);
             buf3[j].setchar(c);
+            fg=get_custom_color(fg);
+            bg=get_custom_color(bg);
+            buf3[j].set_fg(fg);
+            buf3[j].set_bg(bg);
+        }
+#endif
+
+#ifdef _CCC3_
+        for(int i=0;i<cells;i++)
+        {
+            int j=cells-1-i;
+            int fg=buf2[j].get_fg();
+            int bg=buf2[j].get_bg();
+            fg=get_custom_color(fg);
+            bg=get_custom_color(bg);
             buf3[j].set_fg(fg);
             buf3[j].set_bg(bg);
         }

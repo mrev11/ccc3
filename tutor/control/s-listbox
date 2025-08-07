@@ -1,2 +1,3 @@
 #!/bin/bash
-CCC_CONFIG=config listbox.exe
+export CCC_COLORCONF=config
+listbox.exe

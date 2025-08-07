@@ -1,0 +1,20 @@
+
+#FIGYELEM
+#ez nem a CCC2-vel, hanem a CCC3-mal hasonlít össze,
+#ugyanis ez egy olyan (alternativ) ccc2_uic konyvtar, 
+#amivel a CCC2 programok CCC3 terminalban jelennek meg,
+#vagyis s CCC3 uic-ból lett átalakítva.
+
+
+-s/opt/ccc2/ccclib/src/uic
+-x.ds.bak.
+
+
+
+#nem listazott elteresek
+
+-lxOLVASS
+-r:compat:
+
+
+-md

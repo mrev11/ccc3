@@ -1,6 +1,3 @@
 #!/bin/bash
-
-
-export CCC_CONFIG=config
-
+export CCC_COLORCONF=config
 replace.exe

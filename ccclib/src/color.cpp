@@ -98,7 +98,8 @@ static int colorstring_to_colorindex(CHAR *colorstring, int *nchar)
         {
             char c=toupper(colorstring[i]);
 
-                 if( c==u8'R' ) colorindex|=1;
+                 if( c==u8'N' ) colorindex|=0;
+            else if( c==u8'R' ) colorindex|=1;
             else if( c==u8'G' ) colorindex|=2;
             else if( c==u8'B' ) colorindex|=4;
             else if( c==u8'W' ) colorindex|=7;

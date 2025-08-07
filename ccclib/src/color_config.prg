@@ -18,13 +18,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-static config:=initconfig() 
+
+static config:=initconfig()
+
+#clang
+#include <cccapi.h>
+#cend
+
+
 
 ***************************************************************************************
 static function initconfig()
 local hash,cnf,n,pos,key,value
     hash:=simplehashNew()
-    if( !empty(getenv("CCC_CONFIG")) .and. !empty(cnf:=getenv("CCC_CONFIG")::memoread)  )
+    if( !empty(getenv("CCC_COLORCONF")) .and. !empty(cnf:=getenv("CCC_COLORCONF")::memoread)  )
         cnf::=strtran(chr(13),"")
         cnf::=split(chr(10))
         for n:=1 to len(cnf)
@@ -38,8 +45,10 @@ local hash,cnf,n,pos,key,value
         next
     end
 
+    make_custom_color_table(hash)
+
 #ifdef DEBUG
-    ? "CCC_CONFIG"
+    ? "CCC_COLORCONF"
     cnf:=hash:toarr
     cnf::asortkey({|x|x[1]})
     for pos:=1 to len(cnf)
@@ -52,11 +61,34 @@ local hash,cnf,n,pos,key,value
 
 
 ***************************************************************************************
+static function make_custom_color_table(config)
+local item,color1,color2
+
+    item:=config:first
+    while( NIL!=item )
+        if( "COLOR:"==left(item[1],6) )
+            color1:=item[1]::substr(7)::alltrim::colorstring_to_colorindex
+            color2:=item[2]::alltrim::colorstring_to_colorindex
+            if( color1<16 )
+                #clang
+                  extern void set_custom_color(int,int);
+                  int c1=D2INT(LOCAL_color1->data.number);
+                  int c2=D2INT(LOCAL_color2->data.number);
+                  set_custom_color(c1,c2);
+                  //printf("COLOR: #%d -> %d\n",c1,c2);
+                #cend
+            end
+        end
+        item:=config:next
+    end
+
+
+***************************************************************************************
 function ccc_config(key,value)
 local prev
     if( key==NIL )
-        return config 
-    elseif( value==NIL ) 
+        return config
+    elseif( value==NIL )
         return config[key]
     else
         prev:=config[key]

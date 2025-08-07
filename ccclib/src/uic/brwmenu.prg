@@ -55,13 +55,13 @@ static looplevel:=0
 function brwColor()
 local level,value
     for level:=looplevel to 0 step -1
-        value:=ccc_config("BRWCOLOR"+level::str::alltrim)
+        value:=ccc_colortheme("BRWCOLOR"+level::str::alltrim)
         if( value!=NIL )
             exit
         end
     end
     if( value==NIL )
-        value:=ccc_config("BRWCOLOR")
+        value:=ccc_colortheme("BRWCOLOR")
     end
     if( value==NIL )
         value:=setcolor()

@@ -68,6 +68,7 @@ local popup3:={}
     
     brwMenu(brw,"Sort","Sort by name/time/size",smenu)
     brwMenu(brw,"Browse","Start an other browse",{||brw(top+5,lef+4,bot-1,rig-4),.t.})
+    brwMenu(brw,"Dialog","Start dialog box",{||editmask(),.t.})
     brwMenu(brw,"Alert","Make an alert",;
                  {||2!=alert("Are you sure?",{"Continue","Quit"})})
     

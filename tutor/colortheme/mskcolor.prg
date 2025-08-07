@@ -1,23 +1,16 @@
 
-static x:=0
-static y:=0
 
 #include "color.say"
 
 
 
 ********************************************************************************
-function main()
-    editmask()
-
-
-********************************************************************************
-static function editmask()
+function editmask()
 local bload:={|*|load(*)}
 local bread:={|*|readmodal(*)}
 local bstore:={||.t.}
 local msk:=mskCOLORcreate(bLoad,bRead,bStore)
-    mskReplace(msk,x+=2,y+=2)
+    mskReplace(msk,col()+1,row()+1)
     mskLoop(msk)
     return lastkey()
 

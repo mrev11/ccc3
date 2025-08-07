@@ -1,0 +1,57 @@
+
+PRINT=yes
+
+CUSTOM COLORS
+
+# COLOR:#0    = n      (n  )                                ! black             
+# COLOR:#1    = r      (r  )                                ! red               
+# COLOR:#2    = g      (g  )                                                 
+# COLOR:#3    = rg     (rg )                                ! yellow            
+  COLOR:#4    = 001    (b  )    browse0:bg                                    
+  COLOR:#5    = 002    (rb )    browse1:bg                                    
+  COLOR:#6    = 003    (gb )    browse2:bg                                    
+# COLOR:#7    = w      (w  )                                ! white             
+  COLOR:#8    = 332    (n+ )    mask0:bg  alt-0                               
+  COLOR:#9    = 223    (r+ )    mask0:bg  alt-1                               
+  COLOR:#10   = 233    (g+ )    mask0:bg  alt-2                               
+  COLOR:#11   = 333    (rg+)    mask1:bg                                      
+# COLOR:#12   = b+     (b+ )                                                 
+  COLOR:#13   = 345    (rb+)    browse:row:highlight:bg                       
+  COLOR:#14   = 012    (gb+)    browse:popup:highlight:bg                     
+# COLOR:#15   = w+     (w+ )                                ! white+            
+
+#####################################################################################
+
+# BROWSE
+# 1 - a browse alapszine
+# 2 - a popup menuk alapszine               (default: 1 inverze)
+# 3 - a browse kiemelt soranak szine        (default: 1 inverze)
+# 4 - a popup menuk kiemelt soranak szine   (default: 1)
+
+BRWCOLOR0=w/#4,,n/#13,w+/#14
+BRWCOLOR1=w/#5,,n/#13,w+/#14
+BRWCOLOR2=w/#6,,n/#13,w+/#14
+
+#####################################################################################
+
+# MSKCOLOR_SAY
+# 1. szin : keret, feliratok, label
+# 2. szin : nem hasznalja (mert labelen sosincs fokusz)
+# 3. szin : kiemelt (bright) label
+
+MSKCOLOR_SAY0=n/#9,,555/#9
+MSKCOLOR_SAY1=n/#11,555/#11
+
+#MSKCOLOR_SAY=n/#8,555/#8
+
+#####################################################################################
+
+# MSKCOLOR_GET
+# 1. szin: fokusz nelkuli get, nem kivalasztott alt
+# 2. szin: get fokusszal
+# 3. szin: fokusz nelkuli kiemelt get, kivalasztott alt
+
+MSKCOLOR_GET=n/w,n/w+,n/w
+
+#####################################################################################
+

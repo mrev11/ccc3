@@ -59,7 +59,7 @@ local spec
 
 
 function mskColorGet() //push
-    aadd(color,setcolor(ccc_config("MSKCOLOR_GET")))
+    aadd(color,setcolor(ccc_colortheme("MSKCOLOR_GET")))
 
 
 function mskColorRestore()  //pop
@@ -191,12 +191,18 @@ local mskcolor:=msk[MSK_COLOR]
 
 *************************************************************************
 function mskLoop(msk)
+local level
+    for level:=len(mask) to 0 step -1
+        msk[MSK_COLOR]:=ccc_colortheme("MSKCOLOR_SAY"+level::str::alltrim)
+        if( msk[MSK_COLOR]!=NIL )
+            exit
+        end
+    next
+    if( msk[MSK_COLOR]==NIL  )
+        msk[MSK_COLOR]:=ccc_colortheme("MSKCOLOR_SAY")
+    end
     dispbegin()
     mskPush(msk)
-    msk[MSK_COLOR]:=ccc_config("MSKCOLOR_SAY"+(len(mask)-1)::str::alltrim)
-    if( msk[MSK_COLOR]==NIL  )
-        msk[MSK_COLOR]:=ccc_config("MSKCOLOR_SAY")
-    end
     mskShow(msk)
     eval(msk[MSK_BLOAD],msk[MSK_GETLIST])
     dispend()

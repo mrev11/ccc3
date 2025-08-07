@@ -1,5 +1,7 @@
+2025-08-07 ccc_colortheme;
+
 2025-08-07 custom colors:
-   A 0-15 sorszamu szinek konfiguralhatok a CCC_COLORCONF-ban megadott fajlban;
+   A 0-15 sorszamu szinek konfiguralhatok a CCC_COLORTHEME-ban megadott fajlban;
 
 2025-08-01
    #ifndef MULTITHREAD agak eltavolitva a forrasbol;

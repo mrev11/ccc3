@@ -31,7 +31,21 @@ static config:=initconfig()
 static function initconfig()
 local hash,cnf,n,pos,key,value
     hash:=simplehashNew()
-    if( !empty(getenv("CCC_COLORCONF")) .and. !empty(cnf:=getenv("CCC_COLORCONF")::memoread)  )
+
+    //1
+    cnf:=memoread("ccc_colortheme")
+
+    //2
+    if( empty(cnf) .and. !empty(getenv("CCC_COLORTHEME")) )
+        cnf:=memoread(getenv("CCC_COLORTHEME"))
+    end
+
+    //3
+    if( empty(cnf) )
+        cnf:=memoread( getenv("HOME")+"/.config/ccc/colortheme"  )
+    end
+
+    if( !empty(cnf) )
         cnf::=strtran(chr(13),"")
         cnf::=split(chr(10))
         for n:=1 to len(cnf)
@@ -47,15 +61,14 @@ local hash,cnf,n,pos,key,value
 
     make_custom_color_table(hash)
 
-#ifdef DEBUG
-    ? "CCC_COLORCONF"
-    cnf:=hash:toarr
-    cnf::asortkey({|x|x[1]})
-    for pos:=1 to len(cnf)
-        ? cnf[pos]
-    next
-    //callstack()
-#endif
+    if( hash["PRINT"]=="yes"  )
+        ? "CCC_COLORTHEME"
+        cnf:=hash:toarr
+        cnf::asortkey({|x|x[1]})
+        for pos:=1 to len(cnf)
+            ? cnf[pos]
+        next
+    end
 
     return hash
 
@@ -84,7 +97,7 @@ local item,color1,color2
 
 
 ***************************************************************************************
-function ccc_config(key,value)
+function ccc_colortheme(key,value)
 local prev
     if( key==NIL )
         return config

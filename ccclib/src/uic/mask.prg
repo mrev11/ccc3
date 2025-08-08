@@ -130,6 +130,13 @@ local get:=altbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)
 
 
 *************************************************************************
+function mskToggle(msk,r,c,var,name)
+local get:=togglebuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
+    aadd(msk[MSK_GETLIST],get)
+    return get
+
+
+*************************************************************************
 function mskPushButton(msk,r,c,var,name)
 local get:=pushbuttonNew(msk[MSK_TOP]+r,msk[MSK_LEFT]+c,{|x|if(x==NIL,var,var:=x)},name)
     aadd(msk[MSK_GETLIST],get)

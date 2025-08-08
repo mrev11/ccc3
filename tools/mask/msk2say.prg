@@ -210,7 +210,7 @@ local cw:=screencell_width()
 static function codegen()
 
 local eol:=endofline()
-local n,width,c,t
+local n,width,c,t,tt
 local code:="//msk2say "+ver()+eol
 
     code+=eol
@@ -252,8 +252,10 @@ local code:="//msk2say "+ver()+eol
             ?
             quit
         end
-        t:=c:text[1]
+        t:=c:text[1..1]
+        tt:=c:text[1..2]
         if( t::isalpha );  code+="    mskGet       "+parlist(c)+eol
+        elseif( tt=='//'); code+="    mskToggle    "+parlist(c)+eol
         elseif( t=='/' );  code+="    mskAltButton "+parlist(c)+eol
         elseif( t=='{' );  code+="    mskList      "+parlist(c)+eol
         elseif( t=='[' );  code+="    mskCheck     "+parlist(c)+eol
@@ -462,6 +464,9 @@ static function inv.initialize(this,x,t,l,b,r)
     this:right:=r
 
     this:name:=this:text
+    if( !this:name::left(1)::isalpha )
+        this:name::=substr(2)
+    end
     if( !this:name::left(1)::isalpha )
         this:name::=substr(2)
     end

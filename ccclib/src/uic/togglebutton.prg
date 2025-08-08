@@ -23,19 +23,20 @@
 
 
 ****************************************************************************************
-class altbutton(get)
+class togglebutton(get)
     method  initialize
+    method  alternatives
 
-    attrib  alternatives
+    attrib  __alt__
+    attrib  width
     attrib  choidx          //a kivalasztott elem indexe
-    attrib  curpos          //pozicio, amikor a geten van a fokusz
 
     method  choice
     method  display
 
 
 ****************************************************************************************
-static function altbutton.initialize(this,row,col,blk,var,pic,clr) 
+static function togglebutton.initialize(this,row,col,blk,var,pic,clr) 
 
     this:(get)initialize(row,col,blk,var,pic,clr) 
     
@@ -43,7 +44,7 @@ static function altbutton.initialize(this,row,col,blk,var,pic,clr)
 
     // Blokk kicserelve:
 
-    this:block:={|x|this:alternatives[this:choice(x)]}
+    this:block:={|x|this:__alt__[this:choice(x)]}
 
     // Default allapotban
     // varget/varput a choidx ertekevel dolgozik.
@@ -52,13 +53,12 @@ static function altbutton.initialize(this,row,col,blk,var,pic,clr)
     // choidx <--> value lekepezest alkalmazhat. 
     // Peldaul ez a blokk
     // 
-    //   block:={|x|this:alternatives[this:choice(x)][1]}
+    //   block:={|x|this:__alt__[this:choice(x)][1]}
     //
     // a beallitott szoveg elso betujet adja varget-ben.
    
-    this:alternatives:={"n.a."}
+    this:__alt__:={"n.a."}
     this:choidx:=1
-    this:curpos:=0
 
     this:reader:={|g|reader(g)}
     return this
@@ -66,12 +66,27 @@ static function altbutton.initialize(this,row,col,blk,var,pic,clr)
 
 
 ****************************************************************************************
-static function altbutton.choice(this,key)
-local n,x
-
-    if(this:alternatives::valtype!="A")
-        this:alternatives::=split("/")
+static function togglebutton.alternatives(this,alt)
+local n
+    if( alt==NIL )
+        return this:__alt__
+    elseif( valtype(alt)=="C" )
+        this:__alt__:=split(alt,"/")
+    else
+        this:__alt__:=alt //array
     end
+   
+    this:width:=0
+    for n:=1 to len(this:__alt__)
+        this:width::=max(len(this:__alt__[n]))
+    next
+
+    return this:__alt__
+
+
+****************************************************************************************
+static function togglebutton.choice(this,key)
+local n,x
 
     if( key==NIL )
 
@@ -104,7 +119,7 @@ local n,x
 
 
 ****************************************************************************************
-static function altbutton.display(this)
+static function togglebutton.display(this)
 
 local r:=this:row
 local c:=this:col
@@ -112,47 +127,11 @@ local focus:=this:hasfocus
 local value:=this:choidx
 local color_normal:=this:colorspec::logcolor(1)
 local color_invers:=this:colorspec::logcolor(2)
-local color_enhanc:=this:colorspec::logcolor(3)
-local alt,n   
+local wid,n   
 
-    if(this:alternatives::valtype!="A")
-        this:alternatives::=split("/")
-    end
 
     devpos(r,c)
-
-    if( !focus )
-        for n:=1 to len(this:alternatives)
-            if( n>1 )
-                devout("/",color_normal)  // magától is viszi a poziciot
-                c+=1
-            end
-            alt:=this:alternatives[n]
-            if( n==value )
-                alt:="<"+alt::upper+">"
-            end
-            devout(alt,if(n==value,color_enhanc,color_normal))
-            c+=len(alt)
-        next
-
-    else
-        for n:=1 to len(this:alternatives)
-            if( n>1 )
-                devout("/",color_normal)  // magától is viszi a poziciot
-                c+=1
-            end
-            alt:=this:alternatives[n]
-            if( n==value )
-                alt:="<"+alt::upper+">"
-            end
-            devout(alt,if(n==this:curpos,color_invers,if(n==value,color_enhanc,color_normal)))
-            if( n==this:curpos )
-                setpos(r,c)
-            end
-            c+=len(alt)
-            devpos(r,c)
-        next
-    end
+    devout("["+this:alternatives[value]::padc(this:width)+"]",if(!focus,color_normal,color_invers))
 
     return this
 
@@ -164,7 +143,6 @@ static function reader(oGet)
 
         //Activate the GET
         oGet:setFocus()
-        oGet:curpos:=oGet:choidx
         oGet:display
 
         while( oGet:exitState==GE_NOEXIT )
@@ -188,7 +166,6 @@ static function reader(oGet)
 
         //De-activate the GET
         oGet:killFocus()
-        oGet:curpos:=0
     end
  
 
@@ -206,9 +183,10 @@ local n
     case ( nKey==K_TAB )
         oGet:exitState:=GE_DOWN
 
-    case ( nKey==K_ENTER )
-        oGet:choidx:=oGet:curpos
-        oGet:exitState:=GE_ENTER
+    case ( nKey==K_ENTER .or. nKey==32 )
+        if( ++oGet:choidx > oGet:alternatives::len )
+            oGet:choidx:=1
+        end
 
     case ( nKey==K_ESC )
         oGet:undo()
@@ -226,18 +204,6 @@ local n
     case ( nKey==K_CTRL_U )
         oGet:undo()
 
-    case ( nKey==K_HOME )
-        oGet:curpos:=1
-
-    case ( nKey==K_END )
-        oGet:curpos:=oGet:alternatives::len
-
-    case ( nKey==K_RIGHT )
-        oGet:curpos:=min(oGet:alternatives::len,oGet:curpos+1)
-
-    case ( nKey==K_LEFT )
-        oGet:curpos:=max(1,oGet:curpos-1)
-
     case (nKey==K_SH_UP )
         move(oGet,nkey)
     case (nKey==K_SH_DOWN )
@@ -247,14 +213,10 @@ local n
     case (nKey==K_SH_RIGHT )
         move(oGet,nkey)
 
-    case ( nKey==32 )
-        oGet:choidx:=oGet:curpos
-
     otherwise
         for n:=1 to len(oGet:alternatives)
             if( oGet:alternatives[n][1]::lower::asc==nKey )
                 oGet:choidx:=n
-                oGet:curpos:=n
                 exit
             next
         next 

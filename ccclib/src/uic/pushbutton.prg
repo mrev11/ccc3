@@ -45,7 +45,7 @@ local key
 local result
 
     if( GetPreValidate(get) )
-        crs:=setcursor(0)
+        //crs:=setcursor(0)
     
         get:setFocus()
 
@@ -102,7 +102,7 @@ local result
                 case (key==K_SH_RIGHT )
                     move(get,key)
 
-                elseif(key==K_ENTER)
+                elseif( key==K_SPACE .or. key==K_ENTER )
                     result:=eval(get:execblock,get)
                     if( result::empty  )
                         get:exitState:=GE_ESCAPE
@@ -117,7 +117,7 @@ local result
         end
 
         get:killFocus()
-        setcursor(crs)
+        //setcursor(crs)
     end
 
 

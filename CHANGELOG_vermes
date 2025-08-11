@@ -1,3 +1,10 @@
+2025-08-11 kontroll egysegesites:
+  K_SPACE aktivizalja a buttonokat (list,check,radio,push,toggle);
+  K_ENTER altalaban viszi a fokuszt, kivetelek: push (aktivizal), textarea (edital);
+  konkret valtozasok:
+  pusbutton - K_SPACE aktivizalja, nem kacpsolja le a kurzort;
+  togglebutton - K_SPACE aktivizalja, K_ENTER viszi a fokuszt, [] keret elhagyva, attrib align;
+
 2025-08-08 togglebutton;
 
 2025-08-07 ccc_colortheme;

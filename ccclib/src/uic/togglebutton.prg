@@ -29,6 +29,7 @@ class togglebutton(get)
 
     attrib  __alt__
     attrib  width
+    attrib  align
     attrib  choidx          //a kivalasztott elem indexe
 
     method  choice
@@ -39,28 +40,14 @@ class togglebutton(get)
 static function togglebutton.initialize(this,row,col,blk,var,pic,clr) 
 
     this:(get)initialize(row,col,blk,var,pic,clr) 
-    
-    this:picture:=replicate("X",len(this:varget)) //eredeti blokk
+    this:picture:=replicate("X",len(this:varget))  // eredeti blokk
+    this:block:={|x|this:__alt__[this:choice(x)]}  // block cserelve
 
-    // Blokk kicserelve:
-
-    this:block:={|x|this:__alt__[this:choice(x)]}
-
-    // Default allapotban
-    // varget/varput a choidx ertekevel dolgozik.
-    // A belso mukodesben varget/varput-ot nem hasznaljuk,
-    // igy a kliens program a block atirasaval tetszoleges
-    // choidx <--> value lekepezest alkalmazhat. 
-    // Peldaul ez a blokk
-    // 
-    //   block:={|x|this:__alt__[this:choice(x)][1]}
-    //
-    // a beallitott szoveg elso betujet adja varget-ben.
-   
     this:__alt__:={"n.a."}
     this:choidx:=1
-
+    this:align:="c"
     this:reader:={|g|reader(g)}
+
     return this
 
 
@@ -124,14 +111,21 @@ static function togglebutton.display(this)
 local r:=this:row
 local c:=this:col
 local focus:=this:hasfocus
-local value:=this:choidx
 local color_normal:=this:colorspec::logcolor(1)
 local color_invers:=this:colorspec::logcolor(2)
-local wid,n   
+local value:=this:alternatives[this:choidx]
 
+    if( this:align=="c" )
+        value::=padc(this:width)
+    elseif( this:align=="l" )
+        value::=padr(this:width)
+    elseif( this:align=="r" )
+        value::=padl(this:width)
+    end
+    value:="["+value+"]" // legyen-e [] kerete? 
 
     devpos(r,c)
-    devout("["+this:alternatives[value]::padc(this:width)+"]",if(!focus,color_normal,color_invers))
+    devout(value,if(!focus,color_normal,color_invers))
 
     return this
 
@@ -180,10 +174,13 @@ local n
     case ( nKey==K_DOWN .or. nKey==K_CTRL_DOWN )
         oGet:exitState:=GE_DOWN
 
+    elseif( nKey==K_ENTER )
+        oGet:exitState:=GE_DOWN
+
     case ( nKey==K_TAB )
         oGet:exitState:=GE_DOWN
 
-    case ( nKey==K_ENTER .or. nKey==32 )
+    case ( nKey==K_SPACE )
         if( ++oGet:choidx > oGet:alternatives::len )
             oGet:choidx:=1
         end

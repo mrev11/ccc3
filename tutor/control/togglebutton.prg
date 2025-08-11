@@ -28,6 +28,8 @@ function main()
 function load(getlist)
     g_toggle:alternatives:="Próba/Szerencse"    
     g_toggle:varput("S")
+    //g_toggle:align:="l"
+
     g_mehet:execblock:={||alert(g_toggle:varget),.t.}
     getlist::aeval({|g|g:display})
 

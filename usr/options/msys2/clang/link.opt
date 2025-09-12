@@ -7,5 +7,6 @@
 -lwinmm
 -lws2_32
 -lonecore
+-lpthread
 -fuse-ld=lld
 

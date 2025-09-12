@@ -49,21 +49,12 @@
 #include <unistd.h>
 #endif
 
-#include <signal.h>
 #include <setjmp.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 
-#ifdef UNIX
-  #include <pthread.h>
-#else
-  #define pthread_t            DWORD
-  #define pthread_key_t        DWORD
-  #define pthread_getspecific  TlsGetValue
-  #define pthread_setspecific  TlsSetValue
-  #define pthread_self         GetCurrentThreadId
-#endif  
+#include <pthread.h>
 
 extern pthread_key_t thread_key;
 class thread_data;
@@ -159,9 +150,6 @@ typedef struct
 #define seqjmpbuf   (thread_data_ptr->_seqjmpbuf)
 #define usingstk    (thread_data_ptr->_usingstk)
 #define usingstkbuf (thread_data_ptr->_usingstkbuf)
-#define siglocklev  (thread_data_ptr->_siglocklev)
-#define signumpend  (thread_data_ptr->_signumpend)
-#define sigcccmask  (thread_data_ptr->_sigcccmask)
 
 //----------------------------------------------------------------------------
 
@@ -287,7 +275,6 @@ typedef USHORT FLAG;
 
 //----------------------------------------------------------------------------
 
-#if defined UNIX
 
 #define MUTEX_CREATE(x)     static pthread_mutex_t x=PTHREAD_MUTEX_INITIALIZER
 #define MUTEX_DESTROY(x)    pthread_mutex_destroy(&x)
@@ -301,34 +288,16 @@ typedef USHORT FLAG;
 #define MUTEX_LOCK_PTR(x)   pthread_mutex_lock(x)
 #define MUTEX_UNLOCK_PTR(x) pthread_mutex_unlock(x)
 
-#else //WINDOWS
-#define MUTEX_CREATE(x)     static HANDLE x=CreateMutex(0,0,0)
-#define MUTEX_DESTROY(x)    CloseHandle(x)
-#define MUTEX_DECLARE(x)    HANDLE x
-#define MUTEX_INIT(x)       x=CreateMutex(0,0,0)
-#define MUTEX_LOCK(x)       WaitForSingleObject(x,INFINITE)
-#define MUTEX_UNLOCK(x)     ReleaseMutex(x)
-
-#define MUTEX_POINTER       HANDLE
-#define MUTEX_ADDRESS(x)    (x)
-#define MUTEX_LOCK_PTR(x)   WaitForSingleObject(x,INFINITE)
-#define MUTEX_UNLOCK_PTR(x) ReleaseMutex(x)
-#endif
 
 #include <thread_data.h>
 
 #define VARTAB_LOCK()     vartab_lock()  
 #define VARTAB_UNLOCK()   vartab_unlock()  
 
-#define SIGNAL_LOCK()     (++siglocklev)
-#define SIGNAL_UNLOCK()   ((--siglocklev==0)&&(signumpend!=0)?signal_raise(signumpend):0)
-
 #define CHRLIT(x)         L##x  // "literal" -> L"literal"
 
 //----------------------------------------------------------------------------
-#include <xmethod2.h>
 #include <xmethod3.h>
-#include <xmethod4.h>
 #include <xmethod6.h>
 #include <cccext1.h>
 #include <cccext2.h>

@@ -84,38 +84,12 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 //------------------------------------------------------------------------
 static void valuesort_cmp(VALUE *v, int n)
 {
-    if( thread_data::tdata_count==1 )
-    {
-        SIGNAL_LOCK();
-        qsort(v,n,sizeof(VALUE),valuecompare_cmp);
-        SIGNAL_UNLOCK();
-    }
-    else
-    {
-        SIGNAL_LOCK();
-        thread_data_ptr->lock();
-        qsort(v,n,sizeof(VALUE),valuecompare_cmp);
-        thread_data_ptr->unlock();
-        SIGNAL_UNLOCK();
-    }
+    qsort(v,n,sizeof(VALUE),valuecompare_cmp);
 }
 
 //------------------------------------------------------------------------
 static int valuecompare_cmp(const void *x, const void *y)
 {
-    //Mikozben qsort meghivja az osszehasonlitast,
-    //engedni kell a szemetgyujtest, maskulonben deadlock keletkezik,
-    //ha az osszehasonlito bokkban objektumok is keszulnek.
-    if( thread_data::tdata_count>1 )    
-    {
-        thread_data_ptr->unlock();
-    }
-
-    SIGNAL_UNLOCK();
-    
-    //TOP=osszehasonlito block
-    //stack valtozatlan marad
-
     // Az osszehasonlitast ket iranyban is el kell vegezni,
     // hogy detektalhato legyen az egyenlo eset. A Clipper
     // osszehasonlito operatorok stringeken ugy mukodnek, 
@@ -163,13 +137,6 @@ static int valuecompare_cmp(const void *x, const void *y)
             error_gen(CHRLIT("wrong return type"),"compare block of sorting",TOP(),1);
             exit(1);
         }
-    }
-
-    SIGNAL_LOCK();
-
-    if( thread_data::tdata_count>1 )    
-    {
-        thread_data_ptr->lock();
     }
 
     return result;

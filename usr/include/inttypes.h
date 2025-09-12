@@ -23,11 +23,11 @@
 #ifndef _INTTYPES_H_
 #define _INTTYPES_H_
 
-//A típusokat a rendszernek megfelelően kell beállítani úgy, 
-//hogy a bit számok egyezzenek, és változatlanok maradjanak. 
-//A C fordítók némelyike tartalmaz hasonló tartalmú header fájlt, 
-//de ezek nem szabványosak, és gyakorlatilag nem lehet két egyforma 
-//megvalósítást találni.
+//A tipusokat a rendszernek megfeleloen kell beallitani ugy, 
+//hogy a bit szamok egyezzenek, es valtozatlanok maradjanak. 
+//A C forditok nemelyike tartalmaz hasonlo tartalmu header fajlt, 
+//de ezek nem szabvanyosak, es gyakorlatilag nem lehet ket egyforma 
+//megvalositast talalni.
 
 typedef short           c_int16_t;
 typedef unsigned short  c_uint16_t;

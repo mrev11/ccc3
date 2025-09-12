@@ -26,6 +26,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <pthread.h>
 
 #ifdef _UNIX_
   #include <sys/time.h>
@@ -289,22 +290,19 @@ void initialize_terminal()
 
     atexit(bye);
 
-#ifdef WINDOWS
-    CreateThread(0,0,(LPTHREAD_START_ROUTINE)thread_display,0,0,NULL);
-    CreateThread(0,0,(LPTHREAD_START_ROUTINE)thread_message,0,0,NULL);
-#else    
     pthread_t t=0;
     if( 0!=pthread_create(&t,0,thread_display,0) )
     {
         fprintf(stderr,"display thread cannot start\n");
         exit(1);
     }
+    pthread_setname_np(t,"display");
     if( 0!=pthread_create(&t,0,thread_message,0) )
     {
         fprintf(stderr,"message thread cannot start\n");
         exit(1);
     }
-#endif
+    pthread_setname_np(t,"message");
 }
 
 //----------------------------------------------------------------------------

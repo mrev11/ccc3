@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <cccapi.h>
@@ -74,7 +73,6 @@ static void bye()
 //----------------------------------------------------------------------
 static unsigned global_cache_set(const char *xslotname, unsigned clid)
 {
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
 
   #ifdef DEBUG
@@ -130,7 +128,6 @@ static unsigned global_cache_set(const char *xslotname, unsigned clid)
     slotbuffer[slotid-1][clid-1]=*TOP(); //beteszi a cache-be
 
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     return slotid;
 }
 
@@ -138,7 +135,6 @@ static unsigned global_cache_set(const char *xslotname, unsigned clid)
 static int global_cache_get(unsigned slotid, unsigned clid)
 {
     int success=0;
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     if( slotbuffer_size>=slotid && slotbuffer_rowsize[slotid-1]>=clid )
     {
@@ -151,7 +147,6 @@ static int global_cache_get(unsigned slotid, unsigned clid)
         }
     }
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     return success;   
 }
 
@@ -206,7 +201,7 @@ void _method6_::findslot(int clid)
     number(clid);
     binary(slotname);
     number(hashcode(slotname));
-    _clp___findslot(3);  //ua. mint xmethod2-ben
+    _clp___findslot(3);
     
     //Clipper szinten keresünk.
     //Ha nem talált, akkor ide már nem jön,

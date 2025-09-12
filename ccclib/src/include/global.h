@@ -28,7 +28,8 @@ pthread_key_t thread_key;
 int thread_data::tdata_count=0;
 thread_data *thread_data::tdata_first=0;
 thread_data *thread_data::tdata_last=0;
- 
+pthread_mutex_t thread_data::mutex=PTHREAD_MUTEX_INITIALIZER; 
+
 
 VALUE ststackbuf[STSTACK_SIZE]; // stack a static változóknak
 VALUE *ststack=ststackbuf;

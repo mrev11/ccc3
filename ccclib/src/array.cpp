@@ -372,7 +372,7 @@ void array(int len) //stackrol levett elemekkel inicializalt array
     {
         o->ptr.valptr=NULL;
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     stack=base;
     PUSHNIL();
@@ -404,7 +404,7 @@ VALUE *array0(int len) //NIL-ekkel inicializalt 1-dimenzios array
     {
         o->ptr.valptr=NULL;
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
  
     VALUE *v=PUSHNIL();
     v->data.array.oref=o;
@@ -458,7 +458,7 @@ VALUE *array0x(int len) //mint array0, de EXTSIZ hozzaadasaval
     {
         o->ptr.valptr=NULL;
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
  
     VALUE *v=PUSHNIL();
     v->data.array.oref=o;

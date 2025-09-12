@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <signal.h>
 #include <math.h>
 #include <cccapi.h>
  
@@ -29,16 +28,14 @@
 #define DMOD(x,y)     ((x)-floor((x)/(y))*(y))
 
 
-
 //---------------------------------------------------------------------------
 void _clp_rand(int argno) 
 {
     CCC_PROLOG("rand",1);
+    static MUTEX_CREATE(mutex);
     static double seed=SEED;
-    MUTEX_CREATE(mutex);
-    SIGNAL_LOCK();
-    MUTEX_LOCK(mutex);
 
+    MUTEX_LOCK(mutex);
     if( ISNUMBER(1) )
     {
         seed=_parnd(1);
@@ -48,13 +45,11 @@ void _clp_rand(int argno)
     {
         seed=SEED;
     }
-
     seed=seed*FACTOR;
     seed=DMOD(seed,MODULUS); 
     _retnd( seed/MODULUS );
-
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
+
     CCC_EPILOG();
 }
 

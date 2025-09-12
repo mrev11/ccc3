@@ -26,15 +26,13 @@
 static aclass:={}
 
 static mutex:=thread_mutex_init()
-#define MUTEX_LOCK    (signal_lock(),thread_mutex_lock(mutex))
-#define MUTEX_UNLOCK  (thread_mutex_unlock(mutex),signal_unlock())
-//#define MUTEX_LOCK      thread_mutex_lock(mutex)
-//#define MUTEX_UNLOCK    thread_mutex_unlock(mutex)
+#define MUTEX_LOCK    (thread_mutex_lock(mutex))
+#define MUTEX_UNLOCK  (thread_mutex_unlock(mutex))
 
 //Az aclass array-hez valo hozzaferest mutex szinkronizalja.
 //Ha azonban szignal jon a MUTEX_LOCK es MUTEX_UNLOCK kozott,
 //es a szignal kezelo maga is lockolni akarja a mutexet, akkor 
-//deadlock keletkezhet. Ezt akadalyozza meg signal_lock(),
+//deadlock keletkezhet. Ezt akadalyozza meg s ignal_lock(),
 //ami a kurrens szalat vedi a szignaloktol. 
 
 #define  CLASS_NAME      1    //osztalynev

@@ -1,4 +1,0 @@
-#!/bin/bash
-c++app.sh -smalloc_dbg
-cp  -pf ${BUILD_OBJ}/*.so   $CCCDIR/usr/lib
-

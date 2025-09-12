@@ -32,6 +32,7 @@ class thread_data
     static int tdata_count;
     static thread_data *tdata_first;
     static thread_data *tdata_last;
+    static pthread_mutex_t mutex;
  
     thread_data *prev; 
     thread_data *next; 
@@ -45,13 +46,9 @@ class thread_data
     VALUE  *_stack;
     SEQJMP *_seqjmp;
     VALUE  *_usingstk;
-    int     _siglocklev;
-    int     _signumpend;
-    int     _sigcccmask;
  
-    MUTEX_DECLARE(mutex);
-    void lock(){ MUTEX_LOCK(mutex); }
-    void unlock(){ MUTEX_UNLOCK(mutex); }
+    static void lock(){ MUTEX_LOCK(mutex); }
+    static void unlock(){ MUTEX_UNLOCK(mutex); }
     
     thread_data *init()
     {
@@ -76,23 +73,20 @@ class thread_data
         _stack=_stackbuf;
         _seqjmp=_seqjmpbuf;
         _usingstk=_usingstkbuf;
-        _siglocklev=1;  //kezdetben lockolva
-        _signumpend=0;
-        _sigcccmask=0;
         
-        MUTEX_INIT(mutex);
         return this;
     }
 
     thread_data()
     {
+        pthread_mutex_lock(&mutex);
         init();
+        pthread_mutex_unlock(&mutex);
     }
     
     thread_data *cleanup()
     {
         --tdata_count;
-        
         if( prev!=0 )
         {
             prev->next=next;
@@ -110,14 +104,14 @@ class thread_data
         {
             tdata_last=prev;
         }
-
-        MUTEX_DESTROY(mutex);
         return this;
     }
 
     ~thread_data()
     {
+        pthread_mutex_lock(&mutex);
         cleanup();
+        pthread_mutex_unlock(&mutex);
     }
 };
 

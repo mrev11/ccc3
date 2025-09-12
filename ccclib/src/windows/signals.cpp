@@ -22,19 +22,132 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <signal.h>
+#include <pthread.h>
 #include <signal.ch>
-
 #include <cccapi.h>
 
-#ifdef WINDOWS
-  #define THREAD_ENTRY  __stdcall
-#else
-  #define THREAD_ENTRY  /*nothing*/
-#endif
+__stdcall static BOOL ctrlc_handler(DWORD event);
+
+extern void setup_signal_handlers();
+static void signal_handler(int);
+extern int  signal_send(int pid, int sig);
+extern int  signal_raise(int signum);
+extern int  signal_lock();
+extern int  signal_unlock();
+extern int  cccsig2signum(int cccsig);
+extern int  signum2cccsig(int signum);
+
+//--------------------------------------------------------------------------
+
+static int siglocklev=0;
+
+static unsigned sigmask=0;  // bits for CCC signal numbers
+static unsigned sigsave=0;  // bits for CCC signal numbers
+static unsigned sigpend=0;  // bits for CCC signal numbers
+
+
+//-------------------------------------------------------------------------
+void setup_signal_handlers()
+{
+    signal(SIGFPE,signal_handler);
+    signal(SIGSEGV,signal_handler);
+    signal(SIGINT,signal_handler);
+    signal(SIGTERM,signal_handler);
+    signal(SIGABRT,signal_handler);
+    signal(SIGILL,signal_handler);
+    
+    SetConsoleCtrlHandler(0,0); 
+
+    //If the HandlerRoutine parameter is NULL, 
+    //a TRUE value causes the calling process to ignore CTRL+C input, 
+    //and a FALSE value restores normal processing of CTRL+C input. 
+    //This attribute of ignoring or processing CTRL+C is inherited 
+    //by child processes. (Visszaállítjuk a _normál_ állapotot.)
+
+    SetConsoleCtrlHandler((PHANDLER_ROUTINE)ctrlc_handler,1); 
+}
+
+//--------------------------------------------------------------------------
+static void signal_handler(int signum)
+{
+    signal(signum,signal_handler);
+    int cccsig=signum2cccsig(signum);
+
+    if( (cccsig&sigmask)!=0 )
+    {
+        //ignored
+        sigpend|=cccsig;
+        return;
+    }
+
+    // return;
+    // vagy inkabb lepjunk ki?
+
+    fprintf(stderr,"Signal (%d) received: %s now quits\n",signum,*ARGV);
+    exit(1);
+}
+
+//-------------------------------------------------------------------------
+__stdcall static BOOL ctrlc_handler(DWORD event) 
+{
+    if( (SIG_INT&sigmask)==0 )
+    {
+        // SIG_INT nincs maszkolva
+        // fprintf(stderr,"CTRL_C received\n");fflush(0);
+
+        pthread_setspecific(thread_key,NEWTHRDATA());
+        _clp_signalblock(0);
+        number(SIG_INT);
+        _clp_eval(2);
+        pop();
+        DELTHRDATA(pthread_getspecific(thread_key));
+    }
+    return 1; 
+}
+ 
+//--------------------------------------------------------------------------
+int signal_send(int pid, int cccsig)
+{
+    return 0;
+}
+
+//--------------------------------------------------------------------------
+int signal_raise(int signum)
+{
+    return raise(signum);
+}
+
+//--------------------------------------------------------------------------
+int signal_lock()
+{
+    if( siglocklev==0 )
+    {
+        sigsave=sigmask;
+        sigmask=-1;
+        sigpend=0;
+
+    }
+    return ++siglocklev;
+}
+
+//--------------------------------------------------------------------------
+int signal_unlock()
+{
+    if( siglocklev<=0 )
+    {
+        return 0;
+    }
+    else if( siglocklev==1 )
+    {
+        sigmask=sigsave;
+        sigsave=0;
+    }
+    return --siglocklev;
+}
 
 
 //--------------------------------------------------------------------------
-static int cccsig2signum(int cccsig)
+int cccsig2signum(int cccsig)
 {
     switch( cccsig )
     {
@@ -56,7 +169,7 @@ static int cccsig2signum(int cccsig)
 }
 
 //--------------------------------------------------------------------------
-static int signum2cccsig(int signum)
+int signum2cccsig(int signum)
 {
     switch( signum )
     {
@@ -78,217 +191,7 @@ static int signum2cccsig(int signum)
 }
 
 //--------------------------------------------------------------------------
-static void signal_handler(int signum)
-{
-    signal(signum,signal_handler);
-
-    int cccsig=signum2cccsig(signum);
-    //printf("\nSignal received: cccsig=%d pid=%d\n",cccsig,getpid());fflush(0);
-
-    if( cccsig==0 )
-    {
-        return;
-    }
-
-    if( 0==thread_data_ptr )
-    {
-        return;  //új szál, nincs még thread_data-ja
-    }
-
-    if( (cccsig&~sigcccmask)==0 ) 
-    {
-        return;
-    }
-
-    if( siglocklev>0 ) //egy szálra vonatkozó szemafor kapcsoló
-    {
-        signumpend|=cccsig;
-        return;
-    }
-
-    siglocklev=1;           //jobb, ha nem rekurzív
-    signumpend=0;           //tiszta lap
-
-    VALUE save=*stack;      //félkész VALUE a stack fölött
-    _clp_signalblock(0);
-    number(cccsig);
-    _clp_eval(2);
-    pop();
-    *stack=save;            //félkész VALUE a stack fölött
-
-    siglocklev=0;           //újra engedélyezve
-    signumpend=0;           //tiszta lap
-}
-
-//-------------------------------------------------------------------------
-THREAD_ENTRY static BOOL ctrlc_handler(DWORD event) 
-{
-    //fprintf(stderr,"CTRL_C received\n");fflush(0);
-
-    //A CTRL_C kezelés más, mint a többi, mert új szál keletkezik. 
-    //Hogy a stack makrónak és társainak értelme legyen, csinálni kell 
-    //egy külön thread_data objektumot. A "new thread_data()"-t minimum 
-    //vartab_lock0() védi, és a szál befejeződésekor törölni kell.
-    
-    //Mivel a CTRL_C külön szálat indít, nem lehet ellene siglocklev-vel 
-    //védekezni (mint UNIX-on), hiszen a szálnak még nincs thread_data-ja.
-    //Ugyanezért viszont nincs is szükség a védelemre.
-
-    //A SIGINT kezelőben meghívott callstack()/varstack() sajnos nem 
-    //informatív, mert az új szál vermeit mutatja. Ugyanezért a síma
-    //CTRL_C kilépés sem mutat(hat)ja, honnan lépett ki a program.
-    
-    //Egyszálúra fordított CCC-ben ez nem működhet, ui. a szálaknak
-    //nincs külön vermük, azaz a stack, siglocklev, stb. globálisak.
-    //Egyszálú CCC-ben ezért a CTRL_C-t elnyomjuk.
-    
-    //extern void vartab_lock0();
-    //extern void vartab_unlock0();
-
-    vartab_lock0();
-    TlsSetValue(thread_key,NEWTHRDATA());
-    vartab_unlock();
-
-    siglocklev=1;           //jobb, ha nem rekurzív
-    signumpend=0;           //tiszta lap
-
-    VALUE save=*stack;
-    _clp_signalblock(0);
-    number(SIG_INT);
-    _clp_eval(2);
-    pop();
-    *stack=save;
-
-    vartab_lock();
-    DELTHRDATA(TlsGetValue(thread_key));
-    vartab_unlock0();
-
-    return 1; 
-}
- 
-//-------------------------------------------------------------------------
-void setup_signal_handlers()
-{
-    // WATCOM-C-ben az stdin/stdout/stderr streamekben lévő
-    // filédescriptor tag értéke mindig 0/1/1, akkor is, ha ezekhez 
-    // nem tartozik valódi nyitott filé. Ha ezután egy később
-    // megnyíló filé megkapja a 0 vagy 1 számokat descriptornak,
-    // akkor az stdout-ba szánt írás tévesen belemegy a filébe
-    // (pl. a ? operátor beleír a SZAMLA.DBF-be). 
-    //
-    // Hogy ez ne lehessen így, az alábbi while elhasználja
-    // a szabad alacsony filé descriptorokat, tehát azokat NEM
-    // kaphatja meg egy később megnyíló dbf vagy bt filé.
-    // Ez egyúttal az érvénytelen descriptorú standard streamek
-    // NUL-ba irányítását jelenti.
-
-#if defined MSVC
-    while( _open("NUL",_O_RDWR)<3 ); //stdout NUL-ba irányítása
-#elif defined MINGW
-    while( _open("NUL",_O_RDWR)<3 ); //stdout NUL-ba irányítása
-#elif defined WATCOM
-    while( open("NUL",O_RDWR)<3 );   //stdout NUL-ba irányítása
-#elif defined BORLAND
-    while( open("NUL",O_RDWR)<3 );   //stdout NUL-ba irányítása
-#endif
-
-    signal(SIGFPE,signal_handler);
-    signal(SIGSEGV,signal_handler);
-    signal(SIGINT,signal_handler);
-    signal(SIGTERM,signal_handler);
-    signal(SIGABRT,signal_handler);
-    signal(SIGILL,signal_handler);
-    
-    //A CTRL_C kezelés más, mint a többi, mert külön szál
-    //keletkezik. Ahhoz, hogy a stack makrónak értelme legyen
-    //csinálni kell egy külön thread_data objektumot.
-    
-    //2009.11.13
-    SetConsoleCtrlHandler(0,0); 
-    //If the HandlerRoutine parameter is NULL, 
-    //a TRUE value causes the calling process to ignore CTRL+C input, 
-    //and a FALSE value restores normal processing of CTRL+C input. 
-    //This attribute of ignoring or processing CTRL+C is inherited 
-    //by child processes. (Visszaállítjuk a _normál_ állapotot.)
-
-    SetConsoleCtrlHandler((PHANDLER_ROUTINE)ctrlc_handler,1); 
-}
- 
-//--------------------------------------------------------------------------
-int signal_raise(int cccsig)
-{
-    int cnt=0;
-  //if( cccsig&SIG_HUP ) {++cnt; signal_handler(SIGHUP);}
-    if( cccsig&SIG_INT ) {++cnt; signal_handler(SIGINT);}
-  //if( cccsig&SIG_QUIT) {++cnt; signal_handler(SIGQUIT);}
-    if( cccsig&SIG_ILL ) {++cnt; signal_handler(SIGILL);}
-    if( cccsig&SIG_ABRT) {++cnt; signal_handler(SIGABRT);}
-    if( cccsig&SIG_FPE ) {++cnt; signal_handler(SIGFPE);}
-    if( cccsig&SIG_SEGV) {++cnt; signal_handler(SIGSEGV);}
-  //if( cccsig&SIG_PIPE) {++cnt; signal_handler(SIGPIPE);}
-    if( cccsig&SIG_TERM) {++cnt; signal_handler(SIGTERM);}
-    return cnt;
-}
-
-//--------------------------------------------------------------------------
-int signal_send(int pid, int cccsig)
-{
-    int cnt=0;
-    #ifdef WINDOWSON_NINCS_KILL
-  //if( cccsig&SIG_HUP ) {++cnt; kill(pid,SIGHUP);}
-    if( cccsig&SIG_INT ) {++cnt; kill(pid,SIGINT);}
-  //if( cccsig&SIG_QUIT) {++cnt; kill(pid,SIGQUIT);}
-    if( cccsig&SIG_ILL ) {++cnt; kill(pid,SIGILL);}
-    if( cccsig&SIG_ABRT) {++cnt; kill(pid,SIGABRT);}
-    if( cccsig&SIG_FPE ) {++cnt; kill(pid,SIGFPE);}
-    if( cccsig&SIG_SEGV) {++cnt; kill(pid,SIGSEGV);}
-  //if( cccsig&SIG_PIPE) {++cnt; kill(pid,SIGPIPE);}
-    if( cccsig&SIG_TERM) {++cnt; kill(pid,SIGTERM);}
-
-  //if( cccsig&SIG_CONT) {++cnt; kill(pid,SIGCONT);}
-  //if( cccsig&SIG_STOP) {++cnt; kill(pid,SIGSTOP);}
-  //if( cccsig&SIG_KILL) {++cnt; kill(pid,SIGKILL);}
-    #endif
-    return cnt;
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_pending(int argno) //feldolgozásra váró szignálok
-{
-    CCC_PROLOG("signal_pending",1);
-    _retni(signumpend);
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_clear(int argno) //töröl a feldolgozásra váró szignálok közül
-{
-    CCC_PROLOG("signal_clear",1);
-    int mask=ISNIL(1)?-1:_parni(1);
-    signumpend &= ~mask;
-    _retni(signumpend);
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_raise(int argno) //feldolgozza a szignálokat
-{
-    CCC_PROLOG("signal_raise",1);
-    int cccsig=_parni(1);
-    _retni(signal_raise(cccsig));
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_send(int argno) //szignálokat küld egy processznek
-{
-    CCC_PROLOG("signal_send",2);
-    int pid=_parni(1);
-    int cccsig=_parni(2);
-    _retni(signal_send(pid,cccsig));
-    CCC_EPILOG();
-}
-
+// CCC interface
 //--------------------------------------------------------------------------
 void _clp_signal_description(int argno) //szignál leírása
 {
@@ -318,59 +221,98 @@ void _clp_signal_description(int argno) //szignál leírása
 }
 
 //--------------------------------------------------------------------------
+void _clp_signal_raise(int argno)
+{
+    CCC_PROLOG("signal_raise",1);
+    int cccsig=_parni(1);
+    
+  //if( cccsig&SIG_HUP ) {signal_raise(SIGHUP);}
+    if( cccsig&SIG_INT ) {signal_raise(SIGINT);}
+  //if( cccsig&SIG_QUIT) {signal_raise(SIGQUIT);}
+    if( cccsig&SIG_ILL ) {signal_raise(SIGILL);}
+    if( cccsig&SIG_ABRT) {signal_raise(SIGABRT);}
+    if( cccsig&SIG_FPE ) {signal_raise(SIGFPE);}
+    if( cccsig&SIG_SEGV) {signal_raise(SIGSEGV);}
+  //if( cccsig&SIG_PIPE) {signal_raise(SIGPIPE);}
+    if( cccsig&SIG_TERM) {signal_raise(SIGTERM);}
+  //if( cccsig&SIG_ALRM) {signal_raise(SIGALRM);}
+  //if( cccsig&SIG_TSTP) {signal_raise(SIGTSTP);}
+
+    _ret();
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_send(int argno)
+{
+    CCC_PROLOG("signal_send",2);
+    int pid=_parni(1);
+    int signum=cccsig2signum(_parni(2));
+    _retni(signal_send(pid,signum));
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_lock(int argno)
+{
+    CCC_PROLOG("signal_lock",0);
+    _retni(signal_lock());
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_signal_unlock(int argno)
+{
+    CCC_PROLOG("signal_unlock",0);
+    _retni(signal_unlock());
+    CCC_EPILOG();
+}
+
+
+//--------------------------------------------------------------------------
+void _clp_signal_getpend(int argno)
+{
+    CCC_PROLOG("signal_getpend",0);
+    _retni(sigpend);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_getmask(int argno)
+{
+    CCC_PROLOG("signal_getmask",0);
+    _retni(sigmask);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
 void _clp_signal_setmask(int argno) //szignálok letiltása
 { 
     CCC_PROLOG("signal_setmask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask = _parni(1);
-    }
-    _retni(mask);
+    sigmask=_parni(1);
+    _ret();
     CCC_EPILOG();
 }
+
 
 //--------------------------------------------------------------------------
 void _clp_signal_mask(int argno) //szignálok letiltása
 { 
     CCC_PROLOG("signal_mask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask |= _parni(1);
-    }
-    _retni(mask);
+    sigmask |= _parni(1);
+    _ret();
     CCC_EPILOG();
 }
 
 //--------------------------------------------------------------------------
-void _clp_signal_unmask(int argno) //szignálok letiltása
+void _clp_signal_unmask(int argno) 
 { 
     CCC_PROLOG("signal_unmask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask &= ~_parni(1);
-    }
-    _retni(mask);
+    sigmask &= ~_parni(1);
+    _ret();
     CCC_EPILOG();
 }
 
-//--------------------------------------------------------------------------
-void _clp_signal_lock(int argno) //blokkolja a szignálokat (kurrens szál)
-{ 
-    SIGNAL_LOCK();//(++siglocklev)
-    stack-=argno;
-    PUSH(&NIL);
-}
-
 //---------------------------------------------------------------------------
-void _clp_signal_unlock(int argno) //engedélyezi és feldolgozza a függő szignálokat
-{ 
-    SIGNAL_UNLOCK();//((--siglocklev==0)&&(signumpend!=0)?signal_raise(signumpend):0)
-    stack-=argno;
-    PUSH(&NIL);
-}
 
-//---------------------------------------------------------------------------
 

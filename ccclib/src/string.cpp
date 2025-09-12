@@ -85,7 +85,7 @@ void string(CHAR const *ptr) //új példány rámutatással (new nélkül)
     OREF *o=oref_new(); 
     o->ptr.chrptr=(CHAR*)ptr;
     o->length=0;              //szemétgyűjtés NEM törli 
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
@@ -123,7 +123,7 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
         o->ptr.chrptr=p;
         o->length=-1; //szemétgyűjtés törli
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
@@ -174,7 +174,7 @@ void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-va
         o->ptr.chrptr=p;
         o->length=-1; //szemétgyűjtés törli 
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
   
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;
@@ -210,7 +210,7 @@ CHAR *stringl(unsigned long len) //inicializálatlan string new-val
     o->ptr.chrptr=newChar(len+1);
     *(o->ptr.chrptr+len)=(CHAR)0x00; 
     o->length=-1;              //szemétgyűjtés törli  
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
  
     VALUE *v=PUSHNIL();
     v->data.string.oref=o;

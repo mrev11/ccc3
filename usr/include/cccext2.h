@@ -377,8 +377,6 @@ extern void _clp_classinheritstruct(int);
 //variable.obj:
 extern void _clp_gc(int);
 
-//xmethod2.obj:
-
 //pad.obj:
 extern void _clp_pad(int);
 extern void _clp_padc(int);
@@ -564,12 +562,12 @@ extern void _clp_getshare(int);
 extern void _clp_setshare(int);
 
 //signals.obj:
-extern void _clp_signal_lock(int);
+// extern void _clp_signal_lock(int);
 extern void _clp_signal_mask(int);
 extern void _clp_signal_send(int);
 extern void _clp_signal_clear(int);
 extern void _clp_signal_raise(int);
-extern void _clp_signal_unlock(int);
+// extern void _clp_signal_unlock(int);
 extern void _clp_signal_unmask(int);
 extern void _clp_signal_pending(int);
 extern void _clp_signal_setmask(int);

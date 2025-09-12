@@ -238,7 +238,7 @@ void _clp_open(int argno)
     OREF *o=oref_new();
     o->ptr.binptr=(BYTE*)mapView;
     o->length=0; //szemetgyujtes NEM torli
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;

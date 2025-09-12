@@ -107,34 +107,12 @@ void _clp_asortkey(int argno)
 //------------------------------------------------------------------------
 static void valuesort_key(VALUE *v, int n)
 {
-    if( thread_data::tdata_count==1 )
-    {
-        SIGNAL_LOCK();
-        qsort(v,n,sizeof(VALUE),valuecompare_key);
-        SIGNAL_UNLOCK();
-    }
-    else
-    {
-        SIGNAL_LOCK();
-        thread_data_ptr->lock();
-        qsort(v,n,sizeof(VALUE),valuecompare_key);
-        thread_data_ptr->unlock();
-        SIGNAL_UNLOCK();
-    }
+    qsort(v,n,sizeof(VALUE),valuecompare_key);
 }
 
 //------------------------------------------------------------------------
 static int valuecompare_key(const void *x, const void *y)
 {
-    //Mikozben qsort meghivja az osszehasonlitast,
-    //engedni kell a szemetgyujtest, maskulonben deadlock keletkezik,
-    //ha a kulcskeszito bokkban objektumok is mozognak.
-    if( thread_data::tdata_count>1 )
-    {
-        thread_data_ptr->unlock();
-    }
-
-    SIGNAL_UNLOCK();
 
     //TOP2=ascend/descend flag
     //TOP=kulcs eloallito blokk
@@ -168,13 +146,6 @@ static int valuecompare_key(const void *x, const void *y)
     if( !ascend->data.flag  )
     {
         result=-result;
-    }
-
-    SIGNAL_LOCK();
-
-    if( thread_data::tdata_count>1 )
-    {
-        thread_data_ptr->lock();
     }
 
     return result;

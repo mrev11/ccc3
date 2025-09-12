@@ -46,12 +46,10 @@ stvar::stvar()
 {
     verify_overflow();
 
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(&NIL);
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     //printf("\n%lx stvar::stvar()",(long unsigned)ptr);fflush(0);
 }
 
@@ -60,12 +58,10 @@ stvar::stvar(BYTE const *bin)
     verify_overflow();
 
     binary(bin);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar(BYTE const *bin)",(long unsigned)ptr);fflush(0);
 }
@@ -75,12 +71,10 @@ stvar::stvar(BYTE const *bin, unsigned len)
     verify_overflow();
 
     binarys(bin,len);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar(BYTE const *bin, unsigned len)",(long unsigned)ptr);fflush(0);
 }
@@ -90,12 +84,10 @@ stvar::stvar(CHAR const *str)
     verify_overflow();
 
     string(str);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar(CHAR const *str)",(long unsigned)ptr);fflush(0);
 }
@@ -105,12 +97,10 @@ stvar::stvar(CHAR const *str, unsigned len)
     verify_overflow();
 
     strings(str,len);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar(CHAR const *str, unsigned len)",(long unsigned)ptr);fflush(0);
 }
@@ -120,12 +110,10 @@ stvar::stvar(double d)
     verify_overflow();
 
     number(d);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar(double d)",(long unsigned)ptr);fflush(0);
 }
@@ -135,12 +123,10 @@ stvar::stvar( void (*inicode)() )
     verify_overflow();
 
     inicode();
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar( void (*inicode)() )",(long unsigned)ptr);fflush(0);
 }
@@ -150,12 +136,10 @@ stvar::stvar( VALUE *v )
     verify_overflow();
 
     push_symbol(v);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     ptr=ststack;
     STPUSH(TOP());
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
     //printf("\n%lx stvar::stvar( VALUE *v )",(long unsigned)ptr);fflush(0);
 }
@@ -163,7 +147,6 @@ stvar::stvar( VALUE *v )
 stvarloc::stvarloc( void (*inicode)(VALUE*),VALUE*base )
 {
     inicode(base);
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
 
     //ptr=ststack;
@@ -176,7 +159,6 @@ stvarloc::stvarloc( void (*inicode)(VALUE*),VALUE*base )
     *ptr=*TOP();
 
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     POP();
 
     //printf("\n%lx stvarloc::stvarloc( void (*inicode)(VALUE*),VALUE*base ) ",(long unsigned)ptr);fflush(0);

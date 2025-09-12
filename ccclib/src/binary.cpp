@@ -82,7 +82,7 @@ void binary(BYTE const *ptr) //új példány rámutatással (new nélkül)
     OREF *o=oref_new();
     o->ptr.binptr=(BYTE*)ptr;
     o->length=0;              //szemétgyűjtés NEM törli
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
@@ -120,7 +120,7 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
         o->ptr.binptr=p;
         o->length=-1; //szemétgyűjtés törli
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
@@ -163,7 +163,7 @@ void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-va
         o->ptr.binptr=p;
         o->length=-1; //szemétgyűjtés törli
     }
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;
@@ -191,7 +191,7 @@ BYTE *binaryl(unsigned long len) //inicializálatlan binary new-val
     o->ptr.binptr=newBinary(len+1);
     *(o->ptr.binptr+len)=(BYTE)0x00;
     o->length=-1;              //szemétgyűjtés törli
-    o->next=NEXT_RESERVED;
+    o->color=COLOR_RESERVED;
 
     VALUE *v=PUSHNIL();
     v->data.binary.oref=o;

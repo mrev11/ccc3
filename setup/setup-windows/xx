@@ -2,5 +2,5 @@
 BNM=$(basename $(pwd))
 echo SETUP: link ${BNM}
 export EXEDIR=${CCCDIR}/usr/bin
-c++ -o ${EXEDIR}/${BNM}.exe *.o  ../*.o  2>log-link
+c++ -o ${EXEDIR}/${BNM}.exe *.o  ../*.o -lpthread  2>log-link
 cat log-link

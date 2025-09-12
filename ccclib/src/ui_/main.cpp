@@ -28,10 +28,15 @@
 #include <io.h>
 #include <fcntl.h>
 #endif
- 
+
+
+int vartab_is_ready=0;
+
 //----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
+    setup_signal_handlers();
+
     #ifdef WINDOWS
     _fmode=O_BINARY;
     _setmode(0,O_BINARY);
@@ -43,7 +48,7 @@ int main(int argc, char **argv)
     {
         //fprintf(stderr,"setlocale failed\n");
     }
-    
+
     if( getenv("CPPSTANDARD") )
     {
         fprintf(stderr, "%s (c++%ld) %s\n",__VERSION__,__cplusplus, argv[0]);
@@ -54,8 +59,10 @@ int main(int argc, char **argv)
     ARGV=argv;
 
     vartab_ini();
- 
-    setup_signal_handlers();
+    pthread_key_create(&thread_key,0);
+    pthread_setspecific(thread_key,new thread_data());
+
+    vartab_is_ready=1;
 
     for(int i=1; i<argc; i++)
     {

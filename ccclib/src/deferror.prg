@@ -19,8 +19,8 @@
  */
 
 static mutex:=thread_mutex_init()
-#define MUTEX_LOCK    (signal_lock(),thread_mutex_lock(mutex))
-#define MUTEX_UNLOCK  (thread_mutex_unlock(mutex),signal_unlock())
+#define MUTEX_LOCK    (thread_mutex_lock(mutex))
+#define MUTEX_UNLOCK  (thread_mutex_unlock(mutex))
 
 static quitblk:={||DefQuit()}
 static signalblk:={|signum|DefSignal(signum)}

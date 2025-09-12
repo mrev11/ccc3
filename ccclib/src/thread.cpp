@@ -18,54 +18,43 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//WINDOWS thread API
 
-#ifdef WINDOWS
-  #define THREAD_ENTRY  __stdcall
-#else
-  #define THREAD_ENTRY  /*nothing*/
-#endif
+//POSIX thread API
 
-
+#include <pthread.h>
+#include <errno.h>
+#include <tid2ptr.h>
 #include <cccapi.h>
  
 
-//extern void vartab_lock0();
-//extern void vartab_unlock0();
- 
-static HANDLE mutex=CreateMutex(0,0,0);
-static HANDLE event=CreateEvent(0,0,0,0); 
+static pthread_mutex_t mutcre=PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t  cond=PTHREAD_COND_INITIALIZER; 
 
 struct thread_block
 {
     VALUE *blk; 
     int argno;
-    int sigllev;
-    int sigmask;
 };
 
-int WCODE(int x)
-{
-         if( x==(int)WAIT_FAILED )       return GetLastError();
-    else if( x==(int)WAIT_TIMEOUT )      return x;
-  //else if( x==(int)WAIT_ABANDONED )    return x;
-    else                                 return 0;
-}
+
+#ifdef MUTEX_DBG //deadlockok kereséséhez
+#include <mutex_dbg.h>
+#endif
 
 //---------------------------------------------------------------------------
-THREAD_ENTRY static void *thread(void *ptr)
+static void *thread(void *ptr)
 {
-    //sajat lokalis stack letrehozasa,
-    //thread_data konstruktoraban es destruktoraban
-    //listakezeles van, aminek egyedul kell futnia,
-    //a listat a szemetgyujtes is hasznalja:
+    //saját lokális stack létrehozása,
+    //thread_data konstruktorában és destruktorában
+    //listakezelés van, aminek egyedül kell futnia,
+    //a listát a szemétgyűjtés is használja:
 
-    vartab_lock0(); //nincs meg siglocklev
-    TlsSetValue(thread_key,NEWTHRDATA());
-    vartab_unlock0(); //nem bantjuk siglocklev-et (1)
 
-    //block plusz parameterek atmasolasa a sajat stackre,
-    //a hivo szalnak varnia kell, erre szolgal mutex es cond:
+    pthread_setspecific(thread_key, NEWTHRDATA());
+
+    //block plusz paraméterek átmásolása a saját stackre,
+    //a hívó szálnak várnia kell, erre szolgál mutex és cond:
 
     thread_block *b=(thread_block*)ptr;
     int n;
@@ -73,24 +62,19 @@ THREAD_ENTRY static void *thread(void *ptr)
     {
         PUSH((b->blk)+n);
     }
-    sigcccmask=b->sigmask; //oroklodik
-    siglocklev=b->sigllev; //oroklodik (eddig 1 volt)
 
-    SetEvent(event);
+    pthread_mutex_lock(&mutex);
+    b->argno=-1;
+    pthread_cond_broadcast(&cond);
+    pthread_mutex_unlock(&mutex);
 
-    //a hivo szal tovabbengedve,
-    //az uj szal kodblokkja elinditva:
-    
+    //a hívó szál továbbengedve,
+    //az új szál kódblokkja elindítva:
+
     _clp_eval(n);
     POP();
 
-    //a szal futasa befejezodott,
-    //az eredmenyt eldobjuk (nem tudjuk visszaadni),
-    //a sajat lokalis stacket megszuntetjuk:
-
-    vartab_lock();
-    DELTHRDATA(TlsGetValue(thread_key));
-    vartab_unlock0(); //nincs mar siglocklev
+    DELTHRDATA(pthread_getspecific(thread_key));
 
     return 0;
 }
@@ -107,78 +91,58 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
     thread_block b;
     b.blk=blk;
     b.argno=argno;
-    b.sigllev=siglocklev; //oroklodik
-    b.sigmask=sigcccmask; //oroklodik
 
-    SIGNAL_LOCK();  //az aktualis szalra voatkozik
+    pthread_mutex_lock(&mutcre);
+    pthread_mutex_lock(&mutex);
+    pthread_t t=0;
 
-    WaitForSingleObject(mutex,INFINITE);
-    ResetEvent(event);
-    DWORD threadid=0;
-    HANDLE thandle=CreateThread(0,0,(LPTHREAD_START_ROUTINE)thread,&b,0,&threadid);
-    if( thandle )
+    if( 0==pthread_create(&t,0,thread,&b) )
     {
-        WaitForSingleObject(event,INFINITE);
-        ReleaseMutex(mutex);
-        SIGNAL_UNLOCK(); //az aktualis szalra voatkozik
+        //várunk, amíg az új szál átveszi a paramétereket
+        while( b.argno>=0 )
+        {
+            pthread_cond_wait(&cond,&mutex);
+        }
+        pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutcre);
         stack-=argno;
-        pointer( (void*)thandle );
+        pointer( tid2ptr(t) );
     }
     else
     {
-        //printf("GetLastError %d %x\n",GetLastError(),GetLastError());
-        //fflush(0);
-        ReleaseMutex(mutex);
-        SIGNAL_UNLOCK(); //az aktualis szalra voatkozik
+        pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutcre);
         stack-=argno;
         PUSHNIL();
     }
 }
 
-
 //---------------------------------------------------------------------------
 void _clp_thread_self(int argno)
 {
     stack-=argno;
-
-    //DWORD threadid=GetCurrentThreadId();
-    //pointer( (void*)threadid );
-    //(warningot ad cast-ra, helyette union)
-
-
-    union{ void *ptr; DWORD dwd;} threadid;
-    threadid.ptr=0; 
-    threadid.dwd=GetCurrentThreadId(); 
-    pointer( threadid.ptr );
-
-    
-    //Ad egy szalra egyedi azonositot.
-    //Nem egyezik thread_create ertekevel!
+    pointer( tid2ptr(pthread_self()) );
 }
- 
+
 //---------------------------------------------------------------------------
 void _clp_thread_detach(int argno)
 {
     CCC_PROLOG("thread_detach",1);
-    _retni( CloseHandle((HANDLE)_parp(1))?0:GetLastError() );
+    pthread_t t=ptr2tid(_parp(1));
+    _retni( pthread_detach(t));
     CCC_EPILOG();
 }
- 
+
 //---------------------------------------------------------------------------
 void _clp_thread_exit(int argno)
 {
     CCC_PROLOG("thread_exit",0);
-    vartab_lock();
-    //delete (thread_data*)TlsGetValue(thread_key); //Boehm-gc
-    DELTHRDATA(TlsGetValue(thread_key));
-    vartab_unlock0();
-    ExitThread(0);
+    DELTHRDATA(pthread_getspecific(thread_key));
+    pthread_exit(0);
     _ret();
     CCC_EPILOG();
 }
 
-
- 
 //---------------------------------------------------------------------------
 //void _clp_thread_cancel(int argno)
 //{
@@ -195,78 +159,65 @@ void _clp_thread_exit(int argno)
 //    stack-=argno;
 //    PUSH(&NIL);
 //}
-
  
 //---------------------------------------------------------------------------
 void _clp_thread_join(int argno)
 {
     CCC_PROLOG("thread_join",1);
-    HANDLE t=(HANDLE)_parp(1);
-    int result=WaitForSingleObject(t,INFINITE);
-    _retni( WCODE(result) );
-    CloseHandle(t);
+    pthread_t t=ptr2tid(_parp(1));
+    _retni( pthread_join(t,0));
     CCC_EPILOG();
 }
-
  
 //---------------------------------------------------------------------------
 void _clp_thread_mutex_init(int argno)
 {
     CCC_PROLOG("thread_mutex_init",0);
-    HANDLE mutex=CreateMutex(0,0,0);
-    _retp( (void*)mutex );
+    pthread_mutex_t mut;
+    pthread_mutex_init(&mut,0);
+    _retblen((char*)&mut,sizeof(mut));
     CCC_EPILOG();
 }
 
- 
 //---------------------------------------------------------------------------
 void _clp_thread_mutex_lock(int argno)
 {
     CCC_PROLOG("thread_mutex_lock",1);
-    HANDLE mutex=(HANDLE)_parp(1);
-    int result=WaitForSingleObject(mutex,INFINITE);
-    _retni( WCODE(result) );
+    _retni( pthread_mutex_lock((pthread_mutex_t*)_parb(1)) );
     CCC_EPILOG();
 }
 
- 
 //---------------------------------------------------------------------------
 void _clp_thread_mutex_trylock(int argno)
 {
     CCC_PROLOG("thread_mutex_trylock",1);
-    HANDLE mutex=(HANDLE)_parp(1);
-    int result=WaitForSingleObject(mutex,0);
-    _retni( WCODE(result) );
+    _retni( pthread_mutex_trylock((pthread_mutex_t*)_parb(1)) );
     CCC_EPILOG();
 }
-
  
 //---------------------------------------------------------------------------
 void _clp_thread_mutex_unlock(int argno)
 {
     CCC_PROLOG("thread_mutex_unlock",1);
-    HANDLE mutex=(HANDLE)_parp(1);
-    _retni( ReleaseMutex(mutex)?0:GetLastError() );
+    _retni( pthread_mutex_unlock((pthread_mutex_t*)_parb(1)) );
     CCC_EPILOG();
 }
-         
- 
+
 //---------------------------------------------------------------------------
 void _clp_thread_mutex_destroy(int argno)
 {
     CCC_PROLOG("thread_mutex_destroy",1);
-    HANDLE mutex=(HANDLE)_parp(1);
-    _retni( CloseHandle(mutex)?0:GetLastError() );
+    _retni( pthread_mutex_destroy((pthread_mutex_t*)_parb(1)) );
     CCC_EPILOG();
 }
 
- 
 //---------------------------------------------------------------------------
 void _clp_thread_cond_init(int argno)
 {
     CCC_PROLOG("thread_cond_init",0);
-    HANDLE cond=CreateEvent(0,1,0,0); 
-    _retp( (void*)cond );
+    pthread_cond_t cond;
+    pthread_cond_init(&cond,0);
+    _retblen((char*)&cond,sizeof(cond));
     CCC_EPILOG();
 }
 
@@ -274,32 +225,37 @@ void _clp_thread_cond_init(int argno)
 void _clp_thread_cond_signal(int argno)
 {
     CCC_PROLOG("thread_cond_signal",1);
-    HANDLE cond=(HANDLE)_parp(1);
-    _retni( SetEvent(cond)?0:GetLastError() );
+    _retni( pthread_cond_broadcast((pthread_cond_t*)_parb(1)) );
+    //_retni( pthread_cond_signal((pthread_cond_t*)_parb(1)) );
     CCC_EPILOG();
 }
 
 //---------------------------------------------------------------------------
-//void _clp_thread_cond_broadcast(int argno)
-//{
-//    CCC_PROLOG("thread_cond_broadcast",1);
-//    HANDLE cond=(HANDLE)_parp(1);
-//    _retni( PulseEvent(cond)?0:GetLastError() );
-//    CCC_EPILOG();
-//}
+void _clp_thread_cond_broadcast(int argno)
+{
+    CCC_PROLOG("thread_cond_broadcast",1);
+    _retni( pthread_cond_broadcast((pthread_cond_t*)_parb(1)) );
+    CCC_EPILOG();
+}
  
 //---------------------------------------------------------------------------
 void _clp_thread_cond_wait(int argno)
 {
     CCC_PROLOG("thread_cond_wait",3);
-    HANDLE cond=(HANDLE)_parp(1);
-    HANDLE mutex=(HANDLE)_parp(2);
-    DWORD wtime=ISNUMBER(3)?_parnu(3):INFINITE;
-    ResetEvent(cond);
-    ReleaseMutex(mutex);
-    int result=WaitForSingleObject(cond,wtime);
-    _retni( WCODE(result) );
-    WaitForSingleObject(mutex,INFINITE);
+    pthread_cond_t *c=(pthread_cond_t*)_parb(1);
+    pthread_mutex_t *m=(pthread_mutex_t*)_parb(2);
+    if( ISNUMBER(3) )
+    {
+        unsigned millis=_parnu(3);
+        struct timespec ts;
+        ts.tv_sec=millis/1000;
+        ts.tv_nsec=(millis%1000)*1000*1000; //nanosecundum
+        _retni( pthread_cond_timedwait(c,m,&ts) );
+    }
+    else
+    {
+        _retni( pthread_cond_wait(c,m) );
+    }
     CCC_EPILOG();
 }
 
@@ -307,8 +263,7 @@ void _clp_thread_cond_wait(int argno)
 void _clp_thread_cond_destroy(int argno)
 {
     CCC_PROLOG("thread_cond_destroy",1);
-    HANDLE cond=(HANDLE)_parp(1);
-    _retni( CloseHandle(cond)?0:GetLastError() );
+    _retni( pthread_cond_destroy((pthread_cond_t*)_parb(1)) );
     CCC_EPILOG();
 }
 
@@ -319,15 +274,47 @@ void _clp_thread_create_detach(int argno)
     _clp_thread_detach(1);
 }
 
+#if (!defined _LINUX_) || (defined _TERMUX_)
 //---------------------------------------------------------------------------
-void _clp_thread_setname(int argno){stack-=argno;PUSHNIL();} 
-// windowsban ez csak "debug konvencio" (azaz nem letezik)
+void _clp_thread_setname(int argno) {stack-=argno; number(0);}
+void _clp_thread_getname(int argno) {stack-=argno; PUSHNIL();}
+#else
+//---------------------------------------------------------------------------
+void _clp_thread_setname(int argno)
+{
+    // nonportable
+    // max length of name: 15 bytes
+    // only ascii names are supported 
+
+    CCC_PROLOG("thread_setname",2);
+    str2bin(base+1);
+    number(15);
+    _clp_left(2);
+    pthread_t t=ptr2tid(_parp(1));
+    const char *name=_parb(2);
+    _retni( pthread_setname_np(t,name) ); // 0=ok, !0=failed
+    CCC_EPILOG();
+}
 
 //---------------------------------------------------------------------------
-void _clp_thread_getname(int argno){stack-=argno;PUSHNIL();} 
-// windowsban ez csak "debug konvencio" (azaz nem letezik)
+void _clp_thread_getname(int argno)
+{
+    CCC_PROLOG("thread_getname",1);
+    pthread_t t=ptr2tid(_parp(1));
+    char name[16];
+    if( 0==pthread_getname_np(t,name,sizeof(name)) )
+    {
+        _retcb(name);
+    }
+    else
+    {
+        _ret();
+    }
+    CCC_EPILOG();
+}
 
-
+#endif
 //---------------------------------------------------------------------------
 
+ 
 

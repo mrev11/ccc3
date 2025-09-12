@@ -1,3 +1,25 @@
+2025-09-12 
+  variable.cpp: felcserelt sorrend, optimalizalasok;
+  thread_data-ban kulon mutex a szalak listajanak vedelmere;
+  Windows multithread API helyettesitve pthread API-val (MSYS).
+  Windows szignal kezeles hozzaigazitva a valtozasokhoz;
+  setsignal atallitva az uj rendszerre;
+  szemetgyujtes javitasok;
+  szignalkezeles javitasok;
+  ott van csak signal.h, ahol szukseges, igy keresni lehet a hasznalatara;
+  regi szignal kezelo kod torolve;
+  minden struktura tag es szin konstans a sajat neven;
+  OREF es VREF tagok cserelve: next helyett color, age helyett link;  
+  ->next=NEXT_RESERVED helyett mindenhol ->color=COLOR_RESERVED
+  signal_lock es signal_unlock fuggvenyek kiszedve;  
+  SIGNAL_LOCK es SIGNAL_UNLOCK makro kiszedve;  
+  xmethod2 torolve;
+  xmethod4 torolve;
+  szemetgyujtes atirva;
+  szignalkezeles atirva;
+  csak a minimalis valtoztatasok tortentek meg (egy rakas folosleges resz bennehagyva);
+  TLS inicializalas atkerult vartab_ini-bol a main-be;
+
 2025-08-11 kontroll egysegesites:
   K_SPACE aktivizalja a buttonokat (list,check,radio,push,toggle);
   K_ENTER altalaban viszi a fokuszt, kivetelek: push (aktivizal), textarea (edital);

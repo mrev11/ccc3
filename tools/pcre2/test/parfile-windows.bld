@@ -1,0 +1,5 @@
+-dtest_ccc$(CCCVER)
+-bccc$(CCCVER)_pcre2
+-bpcre2-8.dll
+-bpcre2-16.dll
+-bpcre2-32.dll

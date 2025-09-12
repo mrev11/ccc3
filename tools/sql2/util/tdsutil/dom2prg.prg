@@ -34,14 +34,12 @@ local parentclid:=connection:__tableentityclass__
 local parentname:=classname(parentclid)
 local classname:=parentname+".XxXXxX"
 local clid
-    signal_lock()
     thread_mutex_lock(mutex)
     clid:=classidbyname(classname)
     if( clid==0 )
         clid:=XxXXxX.tableEntityRegister(connection)
     end
     thread_mutex_unlock(mutex)
-    signal_unlock()
     return objectNew(clid):initialize(connection,tablist)
 <<TEMPLATE_NEW>>
 

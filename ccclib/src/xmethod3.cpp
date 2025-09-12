@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <cccapi.h>
@@ -58,11 +57,10 @@ _method3p_::_method3p_(const char *sname, CLASSID *pid, CLASSID *bid) : _method3
 void _method3_::findslot(int clid)
 {
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     number(clid);
     binary(slotname);
     number(slothashcode);
-    _clp___findslot(3);  //ua. mint xmethod2-ben
+    _clp___findslot(3);
     
     //Clipper szinten keresünk.
     //Ha nem talált, akkor ide már nem jön,
@@ -77,7 +75,6 @@ void _method3_::findslot(int clid)
     //mert ugyanerre az objektumra a static aclass
     //tömbből is van hivatkozás.
     
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     classid=clid;
     slot=*TOP();
@@ -86,14 +83,12 @@ void _method3_::findslot(int clid)
 void _method3s_::findslot(int clid)
 {
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     number(clid);
     binary(slotname);
     baseid(0);              //fv.hívás: clid a stackre
     number(slothashcode);
     extern void _clp___findslot3_s(int);
     _clp___findslot3_s(4);  
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     classid=clid;
     slot=*TOP();
@@ -102,14 +97,12 @@ void _method3s_::findslot(int clid)
 void _method3c_::findslot(int clid)
 {
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     number(clid);
     binary(slotname);
     baseid(0);              //fv.hívás: clid a stackre
     number(slothashcode);
     extern void _clp___findslot3_c(int);
     _clp___findslot3_c(4);  
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     classid=clid;
     slot=*TOP();
@@ -118,7 +111,6 @@ void _method3c_::findslot(int clid)
 void _method3p_::findslot(int clid)
 {
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
     number(clid);
     binary(slotname);
     prntid(0);              //fv.hívás: clid a stackre
@@ -126,7 +118,6 @@ void _method3p_::findslot(int clid)
     number(slothashcode);
     extern void _clp___findslot3_p(int);
     _clp___findslot3_p(5);  
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     classid=clid;
     slot=*TOP();
@@ -145,7 +136,6 @@ void _method3_::eval(int argno)
         error_obj(slotname,base,argno);
     }
 
-    SIGNAL_LOCK();
     MUTEX_LOCK(mutex);
     if( base->data.object.subtype!=classid )
     {
@@ -160,7 +150,6 @@ void _method3_::eval(int argno)
         push(&slot);
     }
     MUTEX_UNLOCK(mutex);
-    SIGNAL_UNLOCK();
 
     
     //Ha a TOP-ban szám van, akkor az egy attribútum indexe.

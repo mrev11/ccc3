@@ -30,6 +30,7 @@ void _clp_trantimer_timeout(int argno)  { stack-=argno; logical(0);}
 
 #else
 
+#include <signal.h>
 
 #define TIMEOUT_SIGNAL SIGALRM
 // #define TIMEOUT_SIGNAL SIGUSR1

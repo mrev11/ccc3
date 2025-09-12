@@ -1,2 +1,6 @@
 #!/bin/bash
-cccapp.sh  @parfile.bld
+if [ -z "$SYSTEMDRIVE" ]; then
+    cccapp.sh @parfile-unix.bld
+else
+    cccapp.sh @parfile-windows.bld
+fi

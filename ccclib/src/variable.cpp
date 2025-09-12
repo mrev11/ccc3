@@ -1,690 +1,562 @@
 
-/*
- *  CCC - The Clipper to C++ Compiler
- *  Copyright (C) 2005 ComFirm BT.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
 
-#include <unistd.h>
 #include <signal.h>
+#include <sys/time.h>
+#include <errno.h>
+#include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include <cccapi.h>
 
 
 //---------------------------------------------------------------------------
-static int vnext;  // a következő szabad index vref-ben
-static int onext;  // a következő szabad index oref-ben
 
-static int vfree;  // szabad elemek száma vref-ben szemétgyűjtés után
-static int ofree;  // szabad elemek száma oref-ben szemétgyűjtés után
+static OREF *oref;          // oref tomb
+static VREF *vref;          // vref tomb
 
-static int alloc_count=0;  // foglalások száma
-static long alloc_size=0;  // foglalások összmérete
+static unsigned int onext;  // a kovetkezo szabad index orefben
+static unsigned int vnext;  // a kovetkezo szabad index vrefben
 
-static int gc_total=0;     // teljes gyűjtés be (generációs algoritmus ki)
-static int gc_agelimit=0;  // öreg egy objektum, ha age>gc_agelimit
-static int gc_gener=0;     // ennyi generációs gyűjtést csinál gc_total nélkül
-static int gc_counter=0;   // a szemétgyűjtéseket számolja
-static int gc_maxoref=0;
+static unsigned int ofree;  // szabad orefek szama
+static unsigned int vfree;  // szabad vrefek szama
 
-#define OLD_OREF(x) ((gc_total==0) && (oref[x].age>gc_agelimit))
-
-#define AGE_HISTO_SIZE 8
-static int age_histo_befor[AGE_HISTO_SIZE+1]; //hisztogramm gc előtt
-static int age_histo_after[AGE_HISTO_SIZE+1]; //hisztogramm gc után
+static char *env_gcdebug=getenv("CCC_GCDEBUG");
 
 static char *env_orefsize=getenv("CCC_OREFSIZE");
 static char *env_vrefsize=getenv("CCC_VREFSIZE");
-static char *env_gcdebug=getenv("CCC_GCDEBUG");
+static char *env_oreflevel=getenv("CCC_OREFLEVEL");
+static char *env_vreflevel=getenv("CCC_VREFLEVEL");
 
 static int  OREF_SIZE   = 200000;
 static int  VREF_SIZE   = 5000;
 
+static int  OREF_LEVEL  = 0;
+static int  VREF_LEVEL  = 0;
+
 static int  ALLOC_COUNT = OREF_SIZE;
-static long ALLOC_SIZE  = OREF_SIZE*100;
+static unsigned long ALLOC_SIZE = OREF_SIZE*128;
 
-static OREF *oref;
-static VREF *vref;
+static int alloc_count=0;   // foglalasok szama
+static unsigned long alloc_size=0;   // foglalasok osszmerete
 
-static volatile int garbage_collection_is_running=0;
-
-static void vartab_mark(VALUE*);
-static void vartab_sweep();
-static char *decimal(long x);
-
-
-//---------------------------------------------------------------------------
-
-MUTEX_CREATE(mutex);
-
-#define VARTAB_STOP()    vartab_stop()
-#define VARTAB_CONT()    vartab_cont()
-
-void vartab_lock0(){ MUTEX_LOCK(mutex); }
-void vartab_unlock0(){ MUTEX_UNLOCK(mutex); }
-void vartab_lock(){ SIGNAL_LOCK(); MUTEX_LOCK(mutex); }
-void vartab_unlock(){ MUTEX_UNLOCK(mutex); SIGNAL_UNLOCK(); }
-
-
-//---------------------------------------------------------------------------
-// buffer size histogram
-//---------------------------------------------------------------------------
-static int histo_siz[]={1<<4,1<<6,1<<8,1<<10,1<<12,1<<14,1<<16,1<<18,1<<20, 0};
-static int histo_cnt[]={   0,   0,   0,    0,    0,    0,    0,    0,    0, 0};
-
-static void histo_init()
-{
-    int i;
-    for( i=0; histo_siz[i]; i++ )
-    {
-        histo_cnt[i]=0;
-    }
-    histo_cnt[i]=0;
-}
-
-static void histo_inc(int size)
-{
-    for(int i=0; histo_siz[i]; i++ )
-    {
-        if( size<=histo_siz[i] || histo_siz[i]==0 )
-        {
-            histo_cnt[i]++;
-            break;
-        }
-    }
-}
-
-static void  histo_print()
-{
-    if( env_gcdebug==0 || strcmp(env_gcdebug,"histo")!=0 )
-    {
-        return;
-    }
-
-    fprintf(stderr,"\n");
-    fprintf(stderr,"===========================\n");
-    int i;
-    for( i=0; histo_siz[i]; i++ )
-    {
-        if( histo_siz[i]<1024 )
-        {
-            fprintf(stderr,"size  <=%5d  %12s\n",histo_siz[i],decimal(histo_cnt[i]));
-        }
-        else if( histo_siz[i]<1024*1024 )
-        {
-            fprintf(stderr,"size  <=%5dK %12s\n",histo_siz[i]/1024,decimal(histo_cnt[i]));
-        }
-        else
-        {
-            fprintf(stderr,"size  <=%5dM %12s\n",histo_siz[i]/1024/1024,decimal(histo_cnt[i]));
-        }
-    }
-            fprintf(stderr,"size   >%5dM %12s\n",histo_siz[i-1]/1024/1024,decimal(histo_cnt[i]));
-    fprintf(stderr,"===========================");
-    fflush(0);
-}
-
-static void *histo_memalloc(size_t size)
-{
-    histo_inc(size);
-    return malloc(size);
-
-}
-
-#define MEMALLOC_HISTO
-#if defined WINDOWS
-    #define histo_print()
-
-#elif !defined  MEMALLOC_HISTO
-    #define histo_print()
-
-#else
-    #undef  MEMALLOC
-    #define MEMALLOC(x)  histo_memalloc(x)
-#endif
-
-
-//---------------------------------------------------------------------------
-void valuemove(VALUE *to, VALUE *fr, int n)
-{
-    if( n==0 )
-    {
-    }
-    else if( thread_data::tdata_count==1 )
-    {
-        SIGNAL_LOCK();
-        memmove((void*)to,(void*)fr,n*sizeof(VALUE));
-        SIGNAL_UNLOCK();
-    }
-    else
-    {
-        SIGNAL_LOCK();
-        thread_data_ptr->lock();
-        memmove((void*)to,(void*)fr,n*sizeof(VALUE));
-        thread_data_ptr->unlock();
-        SIGNAL_UNLOCK();
-    }
-}
-
-//---------------------------------------------------------------------------
-VALUE VALUE::operator=(VALUE v)
-{
-    if( this==&v )
-    {
-        //OK
-    }
-    //else if( (thread_data::tdata_count==1) || (v.type<TYPE_SCALAR) ) //rossz
-    else if( (thread_data::tdata_count==1) || (v.type<TYPE_GARBAGE) ) //2008.12.10
-    {
-        //fontos optimalizálás;
-        //másik szálon futó szemétgyűjtés alatt is megengedett
-        //a skalár<--skalár és array<--skalár típusú értékadás;
-        //lényeges, hogy amíg type és data nem összetartozó
-        //értékeket tartalmaz, addig type-ban ne legyen array típus,
-        //mert akkor a szemétgyűjtés elromolhat;
-        //ugyanez a védelem kell egyszálú esetben is,
-        //ui. a szignálkezelőből is indulhat szemétgyűjtés;
-
-        ((volatile VALUE*)this)->type=TYPE_NIL; //atomi
-        data=v.data;
-        type=v.type; //atomi
-    }
-    else
-    {
-        SIGNAL_LOCK();
-        thread_data_ptr->lock();
-        type=v.type;
-        data=v.data;
-        thread_data_ptr->unlock();
-        SIGNAL_UNLOCK();
-    }
-    return *this;
-}
-
-//---------------------------------------------------------------------------
-static void vartab_stop()  //a többi szálat elzárja az értékadástól
-{
-    thread_data *td=thread_data::tdata_first;
-    while( td!=0 )
-    {
-        td->lock();
-        td=td->next;
-    }
-}
-
-//---------------------------------------------------------------------------
-static void vartab_cont() // minden várakozó szálat kienged
-{
-    thread_data *td=thread_data::tdata_first;
-    while( td!=0 )
-    {
-        td->unlock();
-        td=td->next;
-    }
-}
-
-//---------------------------------------------------------------------------
 static int *mark_stack=0;
 static int *mark_stack_ptr=0;
 
-static void mark_stack_init()
+
+void vartab_ini(void);
+static void *collector(void*);
+static void vartab_mark(void);
+static void vartab_sweep(void);
+static void oref_sweep();
+static void vref_sweep();
+static void vartab_shade(VALUE*);
+static void mark_push(OREF*o);
+static OREF *mark_pop();
+
+//debug
+static char *decimal(long x);
+static void sleep(int ms);
+static void sleepmicro(int micro);
+static void valid_oref(OREF *o);
+static void valid_value(VALUE *v);
+
+//#define DEBUG_VALID // ellenorzi a VALUE-kat
+
+//---------------------------------------------------------------------------
+
+static pthread_mutex_t          mutex_gc=PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t           cond_gc=PTHREAD_COND_INITIALIZER;
+
+static void gc_lock()           {pthread_mutex_lock(&mutex_gc);}
+static void gc_unlock()         {pthread_mutex_unlock(&mutex_gc);}
+static void gc_wait()           {pthread_cond_wait(&cond_gc,&mutex_gc);}
+static void gc_signal()         {pthread_cond_signal(&cond_gc);}
+static int  gc_trylock()        {return pthread_mutex_trylock(&mutex_gc);}
+
+static int  gc_timedwait(int millis)
 {
-    mark_stack_ptr=mark_stack;
+    struct timeval now;
+    struct timespec timeout;
+    gettimeofday(&now,0);
+    timeout.tv_sec=now.tv_sec+millis/1000;
+    timeout.tv_nsec=now.tv_usec*1000;
+    return pthread_cond_timedwait(&cond_gc,&mutex_gc,&timeout);
 }
 
-static void mark_push(OREF*o)
+//---------------------------------------------------------------------------
+
+static pthread_mutex_t          mutex_vartab=PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t           cond_vartab=PTHREAD_COND_INITIALIZER;
+
+void vartab_lock()              {pthread_mutex_lock(&mutex_vartab);} // mutator
+void vartab_unlock()            {pthread_mutex_unlock(&mutex_vartab);} // mutator
+static void vartab_wait()       {pthread_cond_wait(&cond_vartab,&mutex_vartab);}
+static void vartab_signal()     {pthread_cond_signal(&cond_vartab);}
+
+static int  vartab_timedwait(int millis)
 {
-    *mark_stack_ptr++=(o-oref); //indexet tárol
+    struct timeval now;
+    struct timespec timeout;
+    gettimeofday(&now,0);
+    timeout.tv_sec=now.tv_sec+millis/1000;
+    timeout.tv_nsec=now.tv_usec*1000;
+    return pthread_cond_timedwait(&cond_vartab,&mutex_vartab,&timeout);
 }
 
-static OREF *mark_pop()
-{
-    if( mark_stack_ptr>mark_stack )
-    {
-        return oref+(*--mark_stack_ptr);
-    }
-    return 0;
-}
+//---------------------------------------------------------------------------
+
+static pthread_mutex_t          mutex_assign=PTHREAD_MUTEX_INITIALIZER;
+
+static void assign_lock()       {pthread_mutex_lock(&mutex_assign);}
+static void assign_unlock()     {pthread_mutex_unlock(&mutex_assign);}
+
 
 //---------------------------------------------------------------------------
 void vartab_ini(void)
 {
-    static int initialized=0;
-    if( initialized )
-    {
-        return;
-    }
-    initialized=1;
-
-#if defined UNIX
-    pthread_key_create(&thread_key,0);
-    pthread_setspecific(thread_key,new thread_data());
-#else
-    thread_key=TlsAlloc();
-    TlsSetValue(thread_key,new thread_data());
-#endif
-    siglocklev=0; //unlock (kezdetben lockolva van)
-
     if( env_orefsize )
     {
         long size=atol(env_orefsize);
         OREF_SIZE=size;
         ALLOC_COUNT=size;
-        ALLOC_SIZE=size*100;
+        ALLOC_SIZE=size*200;
     }
-
     if( env_vrefsize )
     {
         long size=atol(env_vrefsize);
         VREF_SIZE=size;
+    }
+    if( env_oreflevel )
+    {
+        long level=atol(env_oreflevel);
+        OREF_LEVEL=level;
+    }
+    if( env_vreflevel )
+    {
+        long level=atol(env_vreflevel);
+        VREF_LEVEL=level;
     }
 
     static struct VARTAB_SETSIZE vss={ &OREF_SIZE, &VREF_SIZE,
                                        &ALLOC_COUNT, &ALLOC_SIZE };
     vartab_setsize(&vss);
 
+    if( env_gcdebug )
+    {
+        printf("\n");
+        printf("OREF_SIZE: %s/%s\n",decimal(OREF_SIZE),decimal(OREF_LEVEL));
+        printf("VREF_SIZE: %s/%s\n",decimal(VREF_SIZE),decimal(VREF_LEVEL));
+        printf("VARTAB: %sM\n",decimal((int)(sizeof(OREF)*OREF_SIZE+sizeof(VREF)*VREF_SIZE)/(1024*1024))  );
+        printf("ALLOC: %sM\n",decimal( (int)(ALLOC_SIZE/1024/1024) ) );
+        printf("VALUE struct size: %d\n",(int)sizeof(VALUE));
+        printf("OREF struct size: %d\n",(int)sizeof(OREF));
+        printf("VREF struct size: %d\n",(int)sizeof(VREF));
+        printf("mutex struct size: %d\n",(int)sizeof(pthread_mutex_t));
+        fflush(0);
+    }
+
     oref=(OREF*)MEMALLOC(OREF_SIZE*sizeof(OREF));
-    if(oref==NULL)
-    {
-        fprintf(stderr,"\nNo memory for oref!");
-        exit(1);
-    }
-
-    vref=(VREF*)MEMALLOC(VREF_SIZE*sizeof(VREF));
-    if(vref==NULL)
-    {
-        fprintf(stderr,"\nNo memory for vref!");
-        exit(1);
-    }
-
-    mark_stack=(int*)MEMALLOC(OREF_SIZE*sizeof(int));
-    if(mark_stack==NULL)
-    {
-        fprintf(stderr,"\nNo memory for mark_stack!");
-        exit(1);
-    }
-
-    int n;
-    for(n=0; n<VREF_SIZE; n++)
-    {
-        vref[n].value.type=TYPE_NIL;
-        vref[n].next=n+1;
-    }
-    vnext=0;
-
-    for(n=0; n<OREF_SIZE; n++)
+    for(int n=0; n<OREF_SIZE; n++)
     {
         oref[n].ptr.valptr=NULL;
         oref[n].length=0;
-        oref[n].next=n+1;
-        oref[n].age=0;
+        oref[n].link=n+1;
+        oref[n].color=COLOR_WHITE;
     }
     onext=0;
-    histo_init();
+    ofree=OREF_SIZE;
+
+    vref=(VREF*)MEMALLOC(VREF_SIZE*sizeof(VREF));
+    for(int n=0; n<VREF_SIZE; n++)
+    {
+        vref[n].value.type=TYPE_NIL;
+        vref[n].link=n+1;
+        vref[n].color=COLOR_WHITE;
+    }
+    vnext=0;
+    vfree=VREF_SIZE;
+
+
+    mark_stack=(int*)MEMALLOC(OREF_SIZE*sizeof(int));
+    mark_stack_ptr=mark_stack; // init
+
+    pthread_t t=0;
+    pthread_create(&t,0,collector,0);
+    pthread_setname_np(t,"collector");
+    pthread_detach(t);
+}
+
+
+//---------------------------------------------------------------------------
+static void *collector(void *ptr)
+{
+    gc_lock();
+    while(1)
+    {
+        if( gc_timedwait(20000)==0 )
+        {
+            //printf(" signal");fflush(0);
+            vartab_lock();
+            vartab_mark();
+            vartab_sweep();
+            vartab_unlock();
+        }
+        else if( alloc_count>ALLOC_COUNT/10 || alloc_size>ALLOC_SIZE/10 )
+        {
+            //printf(" timeout");fflush(0);
+            vartab_lock();
+            vartab_mark();
+            vartab_sweep();
+            vartab_unlock();
+        }
+        else
+        {
+            //printf(".");fflush(0);
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
-static void vartab_rebuild(void)
+static void vartab_mark(void)
 {
-    if( garbage_collection_is_running )
+    if(env_gcdebug)
     {
-        return;
-    }
-    else
-    {
-        garbage_collection_is_running=1;
-    }
-
-    VARTAB_STOP();
-
-    if( gc_counter>0 )
-    {
-        gc_total=0; //generációs gyűjtés
-        gc_counter--;
-    }
-    else
-    {
-        gc_total=1; //teljes gyűjtés
-        gc_counter=gc_gener;
-    }
-
-    if( env_gcdebug ) //debug infó
-    {
+        static int count=0;
+        printf(" GC(%d)  MARK: ",++count);
+        printf("%sofree=%s ", (ofree<=OREF_LEVEL?"*":"")     , decimal(ofree));
+        printf("%svfree=%s ", (vfree<=VREF_LEVEL?"*":"")     , decimal(vfree));
+        printf("%salloc=%s ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024/1024));
         fflush(0);
-        fprintf(stderr,"\nalloc_count: %s/%s, alloc_size: %ldM/%ldM",
-                  decimal(alloc_count),decimal(ALLOC_COUNT),alloc_size>>20,ALLOC_SIZE>>20);
-
-        fflush(0);
-        histo_print();
-
-        for( int x=0; x<=AGE_HISTO_SIZE; x++ )
-        {
-            age_histo_befor[x]=0;
-            age_histo_after[x]=0;
-        }
-        for( int n=0; n<OREF_SIZE; n++ ) //age hisztogramm
-        {
-            if( oref[n].next==NEXT_RESERVED )
-            {
-                int x=(oref[n].age<AGE_HISTO_SIZE)?oref[n].age:AGE_HISTO_SIZE-1;
-                age_histo_befor[x]++;
-                age_histo_befor[AGE_HISTO_SIZE]++; //összes
-            }
-        }
     }
+
+    assign_lock();
 
     alloc_count=0;
     alloc_size=0;
+    mark_stack_ptr=mark_stack; // init
 
-    mark_stack_init();
-    int n;
+    //-------------------------------------
+    // minden BLACK oref -> WHITE
+    //-------------------------------------
 
-    for( n=0; n<VREF_SIZE; n++ )
+    for( int n=0; n<OREF_SIZE; n++ )
     {
-        if( vref[n].next!=NEXT_LOCKED )
+        if( oref[n].color==COLOR_BLACK )
         {
-            vref[n].next=NEXT_UNKNOWN;
+            oref[n].color=COLOR_WHITE;
         }
     }
 
-    for( n=0; n<OREF_SIZE; n++ )
+    for( int n=0; n<VREF_SIZE; n++ )
     {
-        if( oref[n].next!=NEXT_LOCKED )
+        if( vref[n].color==COLOR_BLACK )
         {
-            oref[n].next=NEXT_UNKNOWN;
-            if( OLD_OREF(n) )
-            {
-                OREF *o=oref+n;
-                o->next=NEXT_RESERVED;
-                o->age++;
-                if( o->length>0 )
-                {
-                    mark_push(o);
-                }
-            }
+            vref[n].color=COLOR_WHITE;
         }
     }
 
-    //static változók stack-je
-    VALUE *sp;
+    //-------------------------------------
+    // minden stackrol elerheto oref -> GRAY
+    //-------------------------------------
 
-    for( sp=ststackbuf; sp<ststack; sp++)
+    for( VALUE *sp=ststackbuf; sp<ststack; sp++)
     {
-        vartab_mark(sp);
+        vartab_shade(sp);
     }
 
-    //local változók stack-je
-    //az összes szál local stackjét be kell járni
 
+    int thrcnt=0;
+    thread_data::lock();
     thread_data *td=thread_data::tdata_first;
-
     while( td!=0 )
     {
-        for( sp=td->_stackbuf; sp<td->_stack; sp++)
+        ++thrcnt;
+        for( VALUE *sp=td->_stackbuf; sp<td->_stack; sp++)
         {
-            vartab_mark(sp);
+            vartab_shade(sp);
         }
         td=td->next;
     }
+    thread_data::unlock();
 
-    OREF *marked_oref;
-    while( 0!=(marked_oref=mark_pop()) ) //pop
+    if(env_gcdebug)
     {
-        VALUE *v=marked_oref->ptr.valptr;
-        for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
-        {
-            vartab_mark(v); //push
-        }
-    }
-
-    vartab_sweep();
-
-    if( env_gcdebug ) //degub infó
-    {
-        for( n=0; n<OREF_SIZE; n++ ) //age hisztogramm
-        {
-            if( oref[n].next==NEXT_RESERVED )
-            {
-                int x=(oref[n].age<AGE_HISTO_SIZE)?oref[n].age:AGE_HISTO_SIZE-1;
-                age_histo_after[x]++;
-                age_histo_after[AGE_HISTO_SIZE]++; //összes
-            }
-        }
-
-        int i;
-        fprintf(stderr, "\nbef [%2d]", gc_counter);
-        for( i=0; i<AGE_HISTO_SIZE; i++ )
-        {
-            fprintf(stderr, "%9d",age_histo_befor[i]);
-        }
-        fprintf(stderr, "%12s",decimal(age_histo_befor[i]));
-        fprintf(stderr,"\n");
-
-        fprintf(stderr, "aft [%2d]", gc_total);
-        for(  i=0; i<AGE_HISTO_SIZE; i++ )
-        {
-            fprintf(stderr, "%9d",age_histo_after[i]);
-        }
-        gc_maxoref=max(gc_maxoref,OREF_SIZE-ofree);
-        fprintf(stderr, "%12s",decimal(age_histo_after[i]));
-        fprintf(stderr,"\nofree=%s vfree=%s maxoref=%s",decimal(ofree),decimal(vfree),decimal(gc_maxoref));
-        fprintf(stderr,"\n");
+        printf("thread=%d ",thrcnt);
         fflush(0);
     }
 
-    garbage_collection_is_running=0;
-    VARTAB_CONT();
-    return;
+    //-------------------------------------
+    // GRAY -> BLACK
+    // BLACK-re allitott oref gyerekei -> GRAY
+    // amig el nem tunik minden GRAY oref
+    //-------------------------------------
+
+    OREF *o;
+    while( 0!=(o=mark_pop()) ) //pop
+    {
+        //printf(".");fflush(0);
+        if( VALUE *v=o->ptr.valptr )
+        {
+            for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
+            {
+                vartab_shade(v); //push
+            }
+        }
+        o->color=COLOR_BLACK;
+    }
+
+    assign_unlock();
 }
 
-//---------------------------------------------------------------------------
-static void vartab_mark(VALUE *valueptr)
-{
-    int type=valueptr->type;
-    void *ptr=valueptr->data.pointer;
 
-#ifdef USE_TYPE_INFO //not defined
-    if( type<TYPE_GARBAGE )
+//---------------------------------------------------------------------------
+static void vartab_shade(VALUE *v)
+{
+    #ifdef DEBUG_VALID
+        valid_value(v);
+    #endif
+
+    if( v->type<TYPE_GARBAGE  )
     {
-        //kihagy
+        // NIL
+        // NUMBER
+        // DATE
+        // FLAG
+        // POINTER
+        // nincs oref
     }
-    else if( type<TYPE_REF )
+    else if( v->type>=TYPE_REF )
     {
-        unsigned int oidx=(OREF*)ptr-oref;
-        if( oidx<(unsigned)OREF_SIZE ) //valid oref
+        // REF
+        VREF *r=v->data.vref;
+        r->color=COLOR_BLACK;
+        vartab_shade( &(r->value) );
+    }
+    else if( v->type<=TYPE_SCALAR  )
+    {
+        // BINARY
+        // STRING
+        if( OREF *o=v->data.array.oref )
         {
-            OREF *o=oref+oidx;
-            if( o->next==NEXT_UNKNOWN )
-            {
-                o->next=NEXT_RESERVED;
-                o->age++;
-                if( o->length>0 )
-                {
-                    mark_push(o);
-                }
-            }
+            o->color=COLOR_BLACK;
         }
     }
     else
     {
-        unsigned int vidx=(VREF*)ptr-vref;
-        if( vidx<(unsigned)VREF_SIZE ) //valid vref
+        // ARRAY  mindig van oref-je (len==0 eseten lehet ptr==NULL)
+        // OBJECT megegyezik az array esetevel
+        // BLOCK  lehet, hogy nincs oref-je, de ha van, akkor ptr!=NULL
+        // a prototype objectekben nincs oref!
+
+        OREF *o=v->data.array.oref;
+        if( o==NULL )
         {
-            VREF *r=vref+vidx;
-            if( r->next==NEXT_UNKNOWN )
-            {
-                r->next=NEXT_RESERVED;
-                vartab_mark(&(r->value));
-            }
+            // nincs oref
+        }
+        else if( o->color!=COLOR_WHITE )
+        {
+            // nem WHITE
+        }
+        //else if( o->length<=0 )
+        //{
+        //    o->color=COLOR_BLACK;
+        //}
+        else
+        {
+            mark_push(v->data.array.oref); // -> GRAY
         }
     }
-#else
-        // Szalbiztonsag:
-        // Ez a stabilabbnak gondolt valtozat.
-        // A szemetgyujtes igy nem fugg attol,
-        // hogy milyen sorrendben allitjak be
-        // v->type-ot es v->data.pointer-t.
-        // Amig egy pointer beallitasa atomi,
-        // a tipus es a pointer beallitasa nem atomi.
-        // A NIL-ekben levo inicializalatlan pointer
-        // feleslegesen megorzott objektumokat okoz,
-        // ezert celszeru a NIL-eket nullazni.
+}
 
-        unsigned int oidx=(OREF*)ptr-oref;
-        if( oidx<(unsigned)OREF_SIZE ) //valid oref
-        {
-            OREF *o=oref+oidx;
-            if( o->next==NEXT_UNKNOWN )
-            {
-                o->next=NEXT_RESERVED;
-                o->age++;
-                if( o->length>0 )
-                {
-                    mark_push(o);
-                }
-            }
-            return;
-        }
-        unsigned int vidx=(VREF*)ptr-vref;
-        if( vidx<(unsigned)VREF_SIZE ) //valid vref
-        {
-            VREF *r=vref+vidx;
-            if( r->next==NEXT_UNKNOWN )
-            {
-                r->next=NEXT_RESERVED;
-                vartab_mark(&(r->value));
-            }
-            return;
-        }
-#endif
+//---------------------------------------------------------------------------
+static void mark_push(OREF*o)
+{
+    o->color=COLOR_GRAY;
+    *mark_stack_ptr++=(o-oref); //indexet tarol
+}
+
+//---------------------------------------------------------------------------
+static OREF *mark_pop()
+{
+    if( mark_stack_ptr>mark_stack )
+    {
+        int idx=(*--mark_stack_ptr);
+        return oref+idx;
+    }
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 static void vartab_sweep()
 {
-    // vref-ek takarítása
-
-    vfree=0;
-    int vprev=vnext=-1;
-    int n;
-
-    for( n=0; n<VREF_SIZE; n++ )
+    if( env_gcdebug )
     {
-        if( vref[n].next==NEXT_UNKNOWN )
-        {
-            vref[n].value.type=TYPE_NIL;
+        printf("  SWEEP: "); fflush(0);
+        printf("ofree=%s vfree=%s --> ",
+            decimal(ofree),
+            decimal(vfree));
+        fflush(0);
+    }
 
-            if( vfree++==0 )
+    vref_sweep();
+    oref_sweep();
+
+    if( env_gcdebug )
+    {
+        printf("ofree=%s vfree=%s\n",
+            decimal(ofree),
+            decimal(vfree));
+        fflush(0);
+    }
+}
+
+//---------------------------------------------------------------------------
+static void oref_sweep()
+{
+    unsigned int free_inc=0;
+    unsigned int free_beg=ofree;
+    for( int n=0; n<OREF_SIZE; n++ )
+    {
+        if( oref[n].color==COLOR_WHITE ) // nincs ra hivatkozas
+        {
+            if( oref[n].link==-1 ) // VOLT ra hivatkozas
             {
-                vprev=vnext=n;
-            }
-            else
-            {
-                vref[vprev].next=n;
-                vprev=n;
+                if( oref[n].length )
+                {
+                    MEMFREE(oref[n].ptr.valptr);
+                }
+                oref[n].ptr.valptr=NULL;
+                oref[n].length=0;
+                oref[n].link=onext;
+                onext=n;
+                ofree++;
+                free_inc++;
+                //if( (free_inc%10)==0 )
+                {
+                    vartab_unlock();
+                    vartab_signal();
+                    vartab_lock();
+                }
             }
         }
     }
-
-    if( vfree>0 )
+    if( env_gcdebug )
     {
-        vref[vprev].next=VREF_SIZE;
+        // mutatja
+        // hogy a felszabadulo oref-ek kozul
+        // hanyat hasznalt el a program a sweep kozben
+        printf("[%d] ",(int)(free_beg+free_inc-ofree) );fflush(0);
     }
-    else
+    vartab_signal();
+
+    if( ofree<=32 && free_inc==0 )
     {
-        fprintf(stderr,"\nVREF overflow");
+        fprintf(stderr,"\nOREF overflow!\n");
+        fflush(0);
+        exit(1);
+    }
+}
+
+//---------------------------------------------------------------------------
+static void vref_sweep()
+{
+    unsigned int free_inc=0;
+    for( int n=0; n<VREF_SIZE; n++ )
+    {
+        if( vref[n].color==COLOR_WHITE ) // nincs ra hivarkozas
+        {
+            if( vref[n].link==-1 ) // VOLT ra hivatkozas
+            {
+                vref[n].value.type=TYPE_NIL;
+                vref[n].link=vnext;
+                vnext=n;
+                vfree++;
+                free_inc++;
+                //if( (free_inc%10)==0 )
+                {
+                    vartab_unlock();
+                    vartab_signal();
+                    vartab_lock();
+                }
+            }
+        }
+    }
+    vartab_signal();
+
+    if( vfree<=32 && free_inc==0 )
+    {
+        fprintf(stderr,"\nVREF overflow!\n");
         fflush(0);
         exit(1);
     }
 
-    // oref-ek takarítása
+}
 
-    ofree=0;
-    int oprev=onext=-1;
 
-    for( n=0; n<OREF_SIZE; n++ )
+//---------------------------------------------------------------------------
+// az alabbiakat csak a mutatorok hivjak
+//---------------------------------------------------------------------------
+OREF *oref_new(void)
+{
+    // kizarolag a mutator hivja
+    // VARTAB_LOCK vedelem alatt
+    // max egy mutator thread van itt
+
+    while( onext>=OREF_SIZE )
     {
-        if( oref[n].next==NEXT_UNKNOWN )
+        if( 0==gc_trylock() )
         {
-            if( oref[n].length )
-            {
-                //*oref[n].ptr.binptr='@'; // szándékos rongálás
-                MEMFREE(oref[n].ptr.valptr);
-            }
-            oref[n].ptr.valptr=NULL;
-            oref[n].length=0;
-            oref[n].age=0;
-
-            if( ofree++==0 )
-            {
-                oprev=onext=n;
-            }
-            else
-            {
-                oref[oprev].next=n;
-                oprev=n;
-            }
+            gc_signal();
+            gc_unlock();
         }
+        vartab_timedwait(100);
+    }
+    OREF *o=oref+onext;
+    onext=o->link;
+    o->link=-1;
+    o->color=COLOR_LOCKED;
+
+    --ofree;
+    if( ofree<OREF_LEVEL && 0==gc_trylock() )
+    {
+        gc_signal();
+        gc_unlock();
     }
 
-    if( ofree>0 )
-    {
-        oref[oprev].next=OREF_SIZE;
-    }
-    else
-    {
-        fprintf(stderr,"\nOREF overflow");
-        fflush(0);
-        exit(1);
-    }
+    return o;
 }
 
 //---------------------------------------------------------------------------
 VREF *vref_new(void)
 {
-    if( ++alloc_count>ALLOC_COUNT || vnext>=VREF_SIZE )
+    // kizarolag a mutator hivja
+    // VARTAB_LOCK vedelem alatt
+    // max egy mutator thread van itt
+
+    while( vnext>=VREF_SIZE )
     {
-        vartab_rebuild();
+        if( 0==gc_trylock() )
+        {
+            gc_signal();
+            gc_unlock();
+        }
+        vartab_timedwait(100);
     }
     VREF *v=vref+vnext;
-    vnext=v->next;
-    v->next=NEXT_LOCKED;
-    return v;
-}
+    vnext=v->link;
+    v->link=-1;
+    v->color=COLOR_LOCKED;
 
-//---------------------------------------------------------------------------
-OREF *oref_new(void)
-{
-    if( ++alloc_count>ALLOC_COUNT || onext>=OREF_SIZE )
+    --vfree;
+    if( vfree<VREF_LEVEL && 0==gc_trylock() )
     {
-        vartab_rebuild();
+        gc_signal();
+        gc_unlock();
     }
-    OREF *o=oref+onext;
-    onext=o->next;
-    o->next=NEXT_LOCKED;
-    o->age=0;
-    return o;
-}
 
-//---------------------------------------------------------------------------
-void deleteValue(VALUE *v)
-{
-    MEMFREE(v);
+    return v;
 }
 
 //---------------------------------------------------------------------------
@@ -692,25 +564,12 @@ VALUE *newValue(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(VALUE)*len;
-    if( alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
     {
-        vartab_rebuild();
+        gc_signal();
+        gc_unlock();
     }
-
     VALUE *p=(VALUE*)MEMALLOC( len*sizeof(VALUE) );
-
-    if( p==NULL )
-    {
-        gc_counter=0; //teljes gyűjtés kikényszerítve
-        vartab_rebuild();
-        p=(VALUE*)MEMALLOC(len*sizeof(VALUE));
-        if( p==NULL )
-        {
-            fprintf(stderr,"\nmemory overbooked: %d",len);
-            fflush(0);
-            exit(1);
-        }
-    }
     memset((void*)p,0,len*sizeof(VALUE));
     return p;
 }
@@ -720,25 +579,12 @@ CHAR *newChar(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(CHAR)*len;
-    if( alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
     {
-        vartab_rebuild();
+        gc_signal();
+        gc_unlock();
     }
-
     CHAR *p=(CHAR*)MEMALLOC(len*sizeof(CHAR));
-
-    if( p==NULL )
-    {
-        gc_counter=0; //teljes gyűjtés kikényszerítve
-        vartab_rebuild();
-        p=(CHAR*)MEMALLOC(len*sizeof(CHAR));
-        if( p==NULL )
-        {
-            fprintf(stderr,"\nmemory overbooked: %d",len);
-            fflush(0);
-            exit(1);
-        }
-    }
     return p;
 }
 
@@ -747,40 +593,83 @@ BYTE *newBinary(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(BYTE)*len;
-    if( alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
     {
-        vartab_rebuild();
+        gc_signal();
+        gc_unlock();
     }
-
     BYTE *p=(BYTE*)MEMALLOC(len*sizeof(BYTE));
-
-    if( p==NULL )
-    {
-        gc_counter=0; //teljes gyűjtés kikényszerítve
-        vartab_rebuild();
-        p=(BYTE*)MEMALLOC(len*sizeof(BYTE));
-        if( p==NULL )
-        {
-            fprintf(stderr,"\nmemory overbooked: %d",len);
-            fflush(0);
-            exit(1);
-        }
-    }
     return p;
 }
 
 //---------------------------------------------------------------------------
-void _clp_gc(int argno)
+void deleteValue(VALUE *v)
 {
-    stack-=argno;
-    VARTAB_LOCK();
-    vartab_rebuild();
-    VARTAB_UNLOCK();
-    push(&NIL);
+    MEMFREE(v);
 }
 
 //---------------------------------------------------------------------------
-static char *decimal(long x)
+VALUE VALUE::operator=(VALUE v)
+{
+    if( v.type<TYPE_GARBAGE )
+    {
+        type=v.type;
+        data=v.data;
+    }
+    else
+    {
+        assign_lock();
+        // vartab shade?
+        type=TYPE_NIL;
+        data=v.data;
+        type=v.type;
+        assign_unlock();
+    }
+    #ifdef DEBUG_VALID
+        valid_value(this);
+    #endif
+    return *this;
+}
+
+//---------------------------------------------------------------------------
+void valuemove(VALUE *to, VALUE *fr, int n)
+{
+    if( to<fr )
+    {
+        for( int i=0; i<n; i++ )
+        {
+            to[i]=fr[i];
+        }
+    }
+    else
+    {
+        while( --n>=0 )
+        {
+            to[n]=fr[n];
+        }
+    }
+}
+
+
+//---------------------------------------------------------------------------
+void _clp_gc(int argno)
+{
+    vartab_lock();
+    if( 0==gc_trylock() )
+    {
+        gc_signal();
+        gc_unlock();
+    }
+    vartab_unlock();
+    stack-=argno;
+    PUSHNIL();
+}
+
+
+//---------------------------------------------------------------------------
+// debug utils
+//---------------------------------------------------------------------------
+static char *decimal(long x) // nagy szamok olvashato kiirasahoz
 {
     static char store[1024];
     static int storeidx=0;
@@ -795,7 +684,7 @@ static char *decimal(long x)
     {
         sign=1;
         x=-x;
-    }   
+    }
 
     char buf[64];
     int i=0;
@@ -807,11 +696,11 @@ static char *decimal(long x)
     {
         buf[i++]='0'+x%10;
         x/=10;
-        
+
         // 987,654,321
         //    ^   ^   ^
         // 0  3   7  (11)
-        
+
         if( x && (i-3)%4==0 )
         {
             buf[i++]=',';
@@ -824,10 +713,88 @@ static char *decimal(long x)
     while( i>0 )
     {
         store[storeidx++]=buf[--i];
-    }    
+    }
     store[storeidx++]=0;
     return store+storebeg;
 }
 
+//---------------------------------------------------------------------------
+static void sleep(int ms)
+{
+    struct timeval t;
+    t.tv_sec=ms/1000;
+    t.tv_usec=(ms%1000)*1000;
+    select(0,NULL,NULL,NULL,&t);
+}
+
+static void sleepmicro(int micro)
+{
+    struct timeval t;
+    t.tv_sec=micro/1000000;
+    t.tv_usec=(micro%1000000);
+    select(0,NULL,NULL,NULL,&t);
+}
 
 //---------------------------------------------------------------------------
+static void valid_oref(OREF *o) // hibas adatok felderitesehez
+{
+    unsigned x=((unsigned)(o-oref))/sizeof(OREF);
+    if( x>=OREF_SIZE )
+    {
+        printf("\ninvalid oref 0x%2x\n",x);
+        fflush(0);
+        raise(SIGABRT);
+    }
+}
+
+static void valid_value(VALUE *v) // hibas adatok felderitesehez
+{
+         if( v->type==TYPE_END     );
+    else if( v->type==TYPE_NIL     );
+    else if( v->type==TYPE_NUMBER  );
+    else if( v->type==TYPE_DATE    );
+    else if( v->type==TYPE_FLAG    );
+    else if( v->type==TYPE_POINTER );
+    else if( v->type==TYPE_BINARY  );
+    else if( v->type==TYPE_STRING  );
+    else if( v->type==TYPE_ARRAY   );
+    else if( v->type==TYPE_BLOCK   );
+    else if( v->type==TYPE_OBJECT  );
+    else if( v->type==TYPE_REF     );
+    else
+    {
+        printf("\ninvalid type 0x%2x\n",v->type);
+        fflush(0);
+        raise(SIGABRT);
+    }
+
+    if( v->type<TYPE_GARBAGE )
+    {
+        // nincs memoria objektuma
+    }
+    else if( v->type==TYPE_REF )
+    {
+        // itt nem vizsgaljuk
+    }
+    else if( OREF *o=v->data.binary.oref )
+    {
+        //BINARY
+        //STRING
+        //ARRAY
+        //BLOCK
+        //OBJECT
+
+        valid_oref(o);
+    }
+    else
+    {
+        // a prototype objectekben nincs oref
+        // ezert nem vizsgalhato az oref letezese
+        // egyebkent normalisan csak a BLOCK-okban
+        // lehetne oref==NULL
+    }
+}
+
+//---------------------------------------------------------------------------
+
+

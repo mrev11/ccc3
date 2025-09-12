@@ -98,7 +98,7 @@ void _clp_shmat(int argno)
         OREF *o=oref_new(); 
         o->ptr.binptr=(BYTE*)buffer;
         o->length=0; //szemétgyűjtés NEM törli 
-        o->next=NEXT_RESERVED;
+        o->color=COLOR_RESERVED;
  
         VALUE *v=PUSHNIL();
         v->data.binary.oref=o;

@@ -26,43 +26,156 @@
 
 typedef void (*sighandler_t)(int);  //BSD-kbol hianyzik
 
-//--------------------------------------------------------------------------
-static void setmask()
-{
-    sigset_t set;
-    sigemptyset(&set);
-    int mask=sigcccmask;
-    if( mask & SIG_HUP  ) {sigaddset(&set,SIGHUP);}
-    if( mask & SIG_INT  ) {sigaddset(&set,SIGINT);}
-    if( mask & SIG_QUIT ) {sigaddset(&set,SIGQUIT);}
-    if( mask & SIG_ILL  ) {sigaddset(&set,SIGILL);}
-    if( mask & SIG_ABRT ) {sigaddset(&set,SIGABRT);}
-    if( mask & SIG_FPE  ) {sigaddset(&set,SIGFPE);}
-    if( mask & SIG_SEGV ) {sigaddset(&set,SIGSEGV);}
-    if( mask & SIG_PIPE ) {sigaddset(&set,SIGPIPE);}
-    if( mask & SIG_TERM ) {sigaddset(&set,SIGTERM);}
-    if( mask & SIG_ALRM ) {sigaddset(&set,SIGALRM);}
-    if( mask & SIG_TSTP ) {sigaddset(&set,SIGTSTP);}
-    if( mask & SIG_CONT ) {sigaddset(&set,SIGCONT);}
-    if( mask & SIG_STOP ) {sigaddset(&set,SIGSTOP);}
-    if( mask & SIG_KILL ) {sigaddset(&set,SIGKILL);}
+extern void setup_signal_handlers();
+static void *signal_handler(void *arg);
+static void *signal_thread(void *arg);
+extern int  signal_send(int pid, int sig);
+extern int  signal_raise(int signum);
+extern int  signal_lock();
+extern int  signal_unlock();
+extern int  cccsig2signum(int cccsig);
+extern int  signum2cccsig(int signum);
 
-    pthread_sigmask(SIG_SETMASK, &set,0);
+//--------------------------------------------------------------------------
+
+static int siglocklev=0;
+
+static unsigned sigmask=0;  // bits for CCC signal numbers
+static unsigned sigsave=0;  // bits for CCC signal numbers
+static unsigned sigpend=0;  // bits for CCC signal numbers
+
+
+//----------------------------------------------------------------------------
+void setup_signal_handlers() // elkészíti a szignál kezelő szálat
+{
+    static sigset_t set; // static (meg kell maradjon return után)
+
+    sigemptyset(&set);
+    sigaddset(&set, SIGHUP);
+    sigaddset(&set, SIGINT);
+    sigaddset(&set, SIGQUIT);
+  //sigaddset(&set, SIGUSR1);
+    sigaddset(&set, SIGSEGV);
+  //sigaddset(&set, SIGUSR2);
+    sigaddset(&set, SIGPIPE);
+  //sigaddset(&set, SIGALRM);
+    sigaddset(&set, SIGTERM);
+  //sigaddset(&set, SIGCHLD);
+    pthread_sigmask(SIG_SETMASK,&set,NULL); // örökli minden thread
+
+    pthread_t thread;
+    pthread_create(&thread, NULL, &signal_handler, &set);
+    pthread_setname_np(thread,"sigwait");
+    pthread_detach(thread);
+
+    // megjegyzés
+    // ha SIGINT és SIGPIPE is kezelve van
+    // akkor pipe-ba irányított kimenet esetén CTRL-C-re
+    // a program elveszti a kapcsolatot a terminállal
 }
 
-//2016.04.14
-//Korábban csak  CCC szintű "maszkolás" volt.
-//A sigcccmask-ban beállított szignálokat a CCC handler 
-//egyszerűen ignorálta. Ilyenkor a rendszer úgy veszi, 
-//hogy a szignál kézbesítve volt (ügy elintézve). Ezzel 
-//szemben, ha a maszkot a rendszer szintjén is beállítjuk,
-//akkor a rendszer olyan szálat keres, ami nem maszkolja
-//az adott szignált, és ha talál ilyet, akkor ez a szál
-//kapja meg a szignált. Tehát kaphatunk olyan szignálokat,
-//amik korábban elvesztek.
+//----------------------------------------------------------------------------
+static void *signal_handler(void *arg)
+{
+    // akármelyik szálnak is küldik a szignált,
+    // az itteni sigwait utáni részen köt ki a vezérlés ,
+    // ott elindítunk egy CCC szálat, ami végrehajtja a CCC signalblock-ot
+
+    extern int vartab_is_ready;
+
+    sigset_t *set=(sigset_t *)arg;
+    while(1)
+    {
+        int signum,cccsig;
+        sigwait(set,&signum);
+        cccsig=signum2cccsig(signum);
+        if( !vartab_is_ready )
+        {
+            // not ready
+        }
+        else if( (cccsig&sigmask)!=0  )
+        {
+            // ignored
+            sigpend|=cccsig;
+        }
+        else
+        {
+            pthread_t thread;
+            pthread_create(&thread, NULL, &signal_thread, (void*)(long)cccsig);
+            pthread_setname_np(thread,"sighandler");
+            pthread_join(thread,0);
+
+            // pthread_detach() valasztassal egyszerre tobb szignal kezelo futhatna
+            // (veszelyes volna, mert korlatlan mennyisegu thread keletkezhet)
+            // pthread_join() valasztassal egyszerre maximum egy szignal kezelo fut
+            // sigwait() sorban veszi elo a szignalokat: miutan vegrehajtott egy
+            // signablock-ot, eloveszi a kozben beerkezett kovetkezo szignalt ...
+        }
+    }
+}
+
+//----------------------------------------------------------------------------
+static void *signal_thread(void *arg)
+{
+    // saját lokális stack létrehozása,
+    // thread_data konstruktorában és destruktorában
+    // listakezelés van, aminek egyedül kell futnia,
+    // a listát a szemétgyűjtés is használja:
+
+    long sig=(long)arg;
+
+    pthread_setspecific(thread_key, NEWTHRDATA());
+    _clp_signalblock(0);
+    number(sig);
+    _clp_eval(2);
+    pop();
+    DELTHRDATA(pthread_getspecific(thread_key));
+    return 0;
+}
+
 
 //--------------------------------------------------------------------------
-static int cccsig2signum(int cccsig)
+int signal_send(int pid, int signum)
+{
+    return kill(pid,signum);
+}
+
+//--------------------------------------------------------------------------
+int signal_raise(int signum)
+{
+    return kill(getpid(),signum);
+}
+
+//--------------------------------------------------------------------------
+int signal_lock()
+{
+    if( siglocklev==0 )
+    {
+        sigsave=sigmask;
+        sigmask=-1;
+        sigpend=0;
+
+    }
+    return ++siglocklev;
+}
+
+//--------------------------------------------------------------------------
+int signal_unlock()
+{
+    if( siglocklev<=0 )
+    {
+        return 0;
+    }
+    else if( siglocklev==1 )
+    {
+        sigmask=sigsave;
+        sigsave=0;
+    }
+    return --siglocklev;
+}
+
+//----------------------------------------------------------------------------
+int cccsig2signum(int cccsig)
 {
     switch( cccsig )
     {
@@ -86,7 +199,7 @@ static int cccsig2signum(int cccsig)
 }
 
 //--------------------------------------------------------------------------
-static int signum2cccsig(int signum)
+int signum2cccsig(int signum)
 {
     switch( signum )
     {
@@ -111,190 +224,7 @@ static int signum2cccsig(int signum)
 
 
 //--------------------------------------------------------------------------
-static void signal_handler(int signum)
-{   
-    #ifdef EMLEKEZTETO
-    //signal(signum,signal_handler);
-    Nincs szükség a signal handler újbóli beállítására, ui.
-    a BSD és a linuxos glibc2 nem csinálja a default visszaállítását,
-    Solarison pedig signal() helyett sigset()-et használunk ugyanezért.
-    A signal_handler futása alatt ugyanolyan signal nem jön,
-    mert a rendszer azt automatikusan blokkolja.
-    #endif
-
-    int cccsig=signum2cccsig(signum);
-
-    //printf("\nSignal received: cccsig=%d pid=%d\n",cccsig,getpid());fflush(0);
-    //printf("\nSignal received: signal=%d pid=%d\n",signum,getpid());fflush(0);
-    //abort();
-
-    #ifdef EMLEKEZTETO //2008.11.27
-
-        Korábban SIGSTOP-pal megállítottam az elszálló programot,
-        és a "gdb exename pid" paranccsal debugoltam. 
-        Ehelyett egyszerűbb abortálni, amiből keletkezik egy core filé,
-        és a "gdb exename corefile" adja ugyanazt az infót. 
-        
-        Linuxon az "ulimit -c 100000" paranccsal előzőleg 0-ról
-        fel kell emelni a minimális core filé méretet, másképp
-        nem keletkezik core filé.
-        
-        FreeBSD-n és Solarison defaultból készül core.
-        
-        A SIGABRT szignált nem célszerű elkapni. Ha itt abort-ot
-        hívok, és a SIGABRT-ot elkapom, az végtelen rekurzió.
-    #endif
-
-    if( cccsig==0 )
-    {
-        return;
-    }
-    else if( 0==thread_data_ptr )
-    {
-        return; //új szál, nincs még thread_data-ja
-    }
-    else if( (cccsig&~sigcccmask)==0 ) 
-    {
-        return;
-        
-        //2016.04.14
-        //A setmask-os módosítás után erre az ágra nem jön,
-        //ui. ha a maszk a rendszer szinten is be van állítva,
-        //akkor nem kaphatunk olyan szignált, amit sigcccmask maszkol. 
-    }
-    else if( siglocklev>0 ) //egy szálra vonatkozó szemafor kapcsoló
-    {
-        signumpend|=cccsig;
-        return;
-    }
-
-    siglocklev=1;           //jobb, ha nem rekurzív
-    signumpend=0;           //tiszta lap
-
-    VALUE save=*stack;      //félkész VALUE a stack fölött
-    _clp_signalblock(0);
-    number(cccsig);
-    _clp_eval(2);
-    pop();
-    *stack=save;            //félkész VALUE a stack fölött
-
-    siglocklev=0;           //újra engedélyezve
-    signumpend=0;           //tiszta lap
-}
-
-//--------------------------------------------------------------------------
-static void xsigset(int signum, sighandler_t sighnd)
-{
-    //obsolete
-    //sigset(signum,sighnd); 
-    //return;
-
-    struct sigaction act;
-    memset(&act,0,sizeof(act));
-    act.sa_handler=sighnd;
-    sigaction(signum,&act,0);
-}
-
-void setup_signal_handlers()
-{
-    //sigset helyett sigaction
-
-    xsigset(SIGHUP  ,signal_handler);
-    xsigset(SIGINT  ,signal_handler);
-    xsigset(SIGQUIT ,signal_handler);
-    xsigset(SIGILL  ,signal_handler);
-    xsigset(SIGFPE  ,signal_handler);
-    xsigset(SIGSEGV ,signal_handler);
-    xsigset(SIGPIPE ,signal_handler);
-    xsigset(SIGTERM ,signal_handler);
-    xsigset(SIGALRM ,signal_handler);
-
-
-    //ezek nem valtak be
-    //xsigset(SIGCHLD ,SIG_IGN); //zombik ellen 2021.02.13
-    //xsigset(SIGABRT ,signal_handler); //kiveve 2008.11.27
-    //xsigset(SIGTSTP ,signal_handler); //jobb ezt hagyni 2016.09.15
-    //xsigset(SIGTSTP ,SIG_IGN);
-    //xsigset(SIGTSTP ,SIG_DFL);
-}
-
-//--------------------------------------------------------------------------
-int signal_raise(int cccsig)
-{
-    int cnt=0;
-    if( cccsig&SIG_HUP ) {++cnt; signal_handler(SIGHUP);}
-    if( cccsig&SIG_INT ) {++cnt; signal_handler(SIGINT);}
-    if( cccsig&SIG_QUIT) {++cnt; signal_handler(SIGQUIT);}
-    if( cccsig&SIG_ILL ) {++cnt; signal_handler(SIGILL);}
-    if( cccsig&SIG_ABRT) {++cnt; signal_handler(SIGABRT);}
-    if( cccsig&SIG_FPE ) {++cnt; signal_handler(SIGFPE);}
-    if( cccsig&SIG_SEGV) {++cnt; signal_handler(SIGSEGV);}
-    if( cccsig&SIG_PIPE) {++cnt; signal_handler(SIGPIPE);}
-    if( cccsig&SIG_TERM) {++cnt; signal_handler(SIGTERM);}
-    if( cccsig&SIG_ALRM) {++cnt; signal_handler(SIGALRM);}
-    if( cccsig&SIG_TSTP) {++cnt; signal_handler(SIGTSTP);}
-    return cnt;
-}
-
-//--------------------------------------------------------------------------
-int signal_send(int pid, int cccsig)
-{
-    int cnt=0;
-    if( cccsig&SIG_HUP ) {++cnt; kill(pid,SIGHUP);}
-    if( cccsig&SIG_INT ) {++cnt; kill(pid,SIGINT);}
-    if( cccsig&SIG_QUIT) {++cnt; kill(pid,SIGQUIT);}
-    if( cccsig&SIG_ILL ) {++cnt; kill(pid,SIGILL);}
-    if( cccsig&SIG_ABRT) {++cnt; kill(pid,SIGABRT);}
-    if( cccsig&SIG_FPE ) {++cnt; kill(pid,SIGFPE);}
-    if( cccsig&SIG_SEGV) {++cnt; kill(pid,SIGSEGV);}
-    if( cccsig&SIG_PIPE) {++cnt; kill(pid,SIGPIPE);}
-    if( cccsig&SIG_TERM) {++cnt; kill(pid,SIGTERM);}
-    if( cccsig&SIG_ALRM) {++cnt; kill(pid,SIGALRM);}
-    if( cccsig&SIG_TSTP) {++cnt; kill(pid,SIGTSTP);}
-
-    if( cccsig&SIG_CONT) {++cnt; kill(pid,SIGCONT);}
-    if( cccsig&SIG_STOP) {++cnt; kill(pid,SIGSTOP);}
-    if( cccsig&SIG_KILL) {++cnt; kill(pid,SIGKILL);}
-    return cnt;
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_pending(int argno) //feldolgozásra váró szignálok
-{
-    CCC_PROLOG("signal_pending",1);
-    _retni(signumpend);
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_clear(int argno) //töröl a feldolgozásra váró szignálok közül
-{
-    CCC_PROLOG("signal_clear",1);
-    int mask=ISNIL(1)?-1:_parni(1);
-    signumpend &= ~mask;
-    _retni(signumpend);
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_raise(int argno) //feldolgozza a szignálokat
-{
-    CCC_PROLOG("signal_raise",1);
-    int cccsig=_parni(1);
-    _retni(signal_raise(cccsig));
-    CCC_EPILOG();
-}
-
-//--------------------------------------------------------------------------
-void _clp_signal_send(int argno) //szignálokat küld egy processznek
-{
-    CCC_PROLOG("signal_send",2);
-    int pid=_parni(1);
-    int cccsig=_parni(2);
-    _retni(signal_send(pid,cccsig));
-    CCC_EPILOG();
-}
-
+// CCC interface
 //--------------------------------------------------------------------------
 void _clp_signal_description(int argno) //szignál leírása
 {
@@ -325,63 +255,100 @@ void _clp_signal_description(int argno) //szignál leírása
     CCC_EPILOG();
 }
 
+//--------------------------------------------------------------------------
+void _clp_signal_raise(int argno)
+{
+    CCC_PROLOG("signal_raise",1);
+    int cccsig=_parni(1);
+    
+    //printf("\ncccsig %x",cccsig);fflush(0);
+    
+    if( cccsig&SIG_HUP ) {signal_raise(SIGHUP);}
+    if( cccsig&SIG_INT ) {signal_raise(SIGINT);}
+    if( cccsig&SIG_QUIT) {signal_raise(SIGQUIT);}
+    if( cccsig&SIG_ILL ) {signal_raise(SIGILL);}
+    if( cccsig&SIG_ABRT) {signal_raise(SIGABRT);}
+    if( cccsig&SIG_FPE ) {signal_raise(SIGFPE);}
+    if( cccsig&SIG_SEGV) {signal_raise(SIGSEGV);}
+    if( cccsig&SIG_PIPE) {signal_raise(SIGPIPE);}
+    if( cccsig&SIG_TERM) {signal_raise(SIGTERM);}
+    if( cccsig&SIG_ALRM) {signal_raise(SIGALRM);}
+    if( cccsig&SIG_TSTP) {signal_raise(SIGTSTP);}
+    _ret();
+    CCC_EPILOG();
+}
 
 //--------------------------------------------------------------------------
-void _clp_signal_setmask(int argno) //szignálok letiltása
-{ 
+void _clp_signal_send(int argno)
+{
+    CCC_PROLOG("signal_send",2);
+    int pid=_parni(1);
+    int signum=cccsig2signum(_parni(2));
+    _retni(signal_send(pid,signum));
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_lock(int argno)
+{
+    CCC_PROLOG("signal_lock",0);
+    _retni(signal_lock());
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_signal_unlock(int argno)
+{
+    CCC_PROLOG("signal_unlock",0);
+    _retni(signal_unlock());
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_getpend(int argno)
+{
+    CCC_PROLOG("signal_getpend",0);
+    _retni(sigpend);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_getmask(int argno)
+{
+    CCC_PROLOG("signal_getmask",0);
+    _retni(sigmask);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_signal_setmask(int argno)
+{
     CCC_PROLOG("signal_setmask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask = _parni(1);
-    }
-    setmask();
-    _retni(mask);
+    sigmask=_parni(1);
+    _ret();
     CCC_EPILOG();
 }
 
 //--------------------------------------------------------------------------
-void _clp_signal_mask(int argno) //szignálok letiltása
-{ 
+void _clp_signal_mask(int argno)
+{
     CCC_PROLOG("signal_mask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask |= _parni(1);
-    }
-    setmask();
-    _retni(mask);
+    sigmask |= _parni(1);
+    _ret();
     CCC_EPILOG();
 }
 
 //--------------------------------------------------------------------------
-void _clp_signal_unmask(int argno) //szignálok letiltása
-{ 
+void _clp_signal_unmask(int argno)
+{
     CCC_PROLOG("signal_unmask",1);
-    int mask=sigcccmask;
-    if( !ISNIL(1) )
-    {
-        sigcccmask &= ~_parni(1);
-    }
-    setmask();
-    _retni(mask);
+    sigmask &= ~_parni(1);
+    _ret();
     CCC_EPILOG();
 }
 
+
 //--------------------------------------------------------------------------
-void _clp_signal_lock(int argno) //blokkolja a szignálokat (kurrens szál)
-{ 
-    SIGNAL_LOCK();//(++siglocklev)
-    stack-=argno;
-    PUSH(&NIL);
-}
 
-//---------------------------------------------------------------------------
-void _clp_signal_unlock(int argno) //engedélyezi és feldolgozza a függő szignálokat
-{ 
-    SIGNAL_UNLOCK();//((--siglocklev==0)&&(signumpend!=0)?signal_raise(signumpend):0)
-    stack-=argno;
-    PUSH(&NIL);
-}
 
-//---------------------------------------------------------------------------
+

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cccapp.sh @gtk-win.bld  -bccc3_gtk

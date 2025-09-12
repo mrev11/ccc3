@@ -187,9 +187,7 @@ extern void str2bin(VALUE*);
 //variable.obj:
 extern void vartab_ini(void);
 extern void vartab_lock(void);
-extern void vartab_lock0(void);
 extern void vartab_unlock(void);
-extern void vartab_unlock0(void);
 extern char *newBinary(unsigned);
 extern wchar_t *newChar(unsigned);
 extern VALUE* newValue(unsigned);

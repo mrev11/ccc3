@@ -19,7 +19,7 @@
  */
 
 //hashcode metódusnevek kikereséséhez
-//használja: xmethod2.cpp, class.prg
+//használja: class.prg
 
 #include <cccapi.h>
 

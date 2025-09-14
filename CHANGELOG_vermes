@@ -1,3 +1,5 @@
+2025-09-14 gcc 15.2.1 warningok javitva;
+
 2025-09-14
   DELTHRDATA makro megszunt,
   a pthread_key_create()-ban megadott fuggveny torli a thread_data-t;

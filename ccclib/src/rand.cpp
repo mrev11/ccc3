@@ -32,7 +32,7 @@
 void _clp_rand(int argno) 
 {
     CCC_PROLOG("rand",1);
-    static MUTEX_CREATE(mutex);
+    MUTEX_CREATE(mutex);
     static double seed=SEED;
 
     MUTEX_LOCK(mutex);

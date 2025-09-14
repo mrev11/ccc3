@@ -29,18 +29,18 @@ static char *env_vrefsize=getenv("CCC_VREFSIZE");
 static char *env_oreflevel=getenv("CCC_OREFLEVEL");
 static char *env_vreflevel=getenv("CCC_VREFLEVEL");
 
-static int  OREF_SIZE   = 200000;
-static int  VREF_SIZE   = 5000;
-static size_t tabsize   = 0;
+static unsigned int  OREF_SIZE  = 200000;
+static unsigned int  VREF_SIZE  = 5000;
+static size_t tabsize = 0;
 
 
-static int  OREF_LEVEL  = 0;
-static int  VREF_LEVEL  = 0;
+static unsigned int  OREF_LEVEL = 0;
+static unsigned int  VREF_LEVEL = 0;
 
-static int  ALLOC_COUNT = OREF_SIZE;
-static unsigned long ALLOC_SIZE = OREF_SIZE*256;
+static unsigned int  ALLOC_COUNT = OREF_SIZE;
+static unsigned long ALLOC_SIZE  = OREF_SIZE*256;
 
-static int alloc_count=0;   // foglalasok szama
+static unsigned int  alloc_count=0;  // foglalasok szama
 static unsigned long alloc_size=0;   // foglalasok osszmerete
 
 static int *mark_stack=0;
@@ -172,7 +172,7 @@ void vartab_ini(void)
     }
 
     oref=(OREF*)MEMALLOC(OREF_SIZE*sizeof(OREF));
-    for(int n=0; n<OREF_SIZE; n++)
+    for(unsigned int n=0; n<OREF_SIZE; n++)
     {
         oref[n].ptr.valptr=NULL;
         oref[n].length=0;
@@ -183,7 +183,7 @@ void vartab_ini(void)
     ofree=OREF_SIZE;
 
     vref=(VREF*)MEMALLOC(VREF_SIZE*sizeof(VREF));
-    for(int n=0; n<VREF_SIZE; n++)
+    for(unsigned int n=0; n<VREF_SIZE; n++)
     {
         vref[n].value.type=TYPE_NIL;
         vref[n].link=n+1;
@@ -262,7 +262,7 @@ static void vartab_mark(void)
     // minden BLACK oref -> WHITE
     //-------------------------------------
 
-    for( int n=0; n<OREF_SIZE; n++ )
+    for( unsigned int n=0; n<OREF_SIZE; n++ )
     {
         if( oref[n].color==COLOR_BLACK )
         {
@@ -270,7 +270,7 @@ static void vartab_mark(void)
         }
     }
 
-    for( int n=0; n<VREF_SIZE; n++ )
+    for( unsigned int n=0; n<VREF_SIZE; n++ )
     {
         if( vref[n].color==COLOR_BLACK )
         {
@@ -435,7 +435,7 @@ static void oref_sweep()
 {
     unsigned int free_inc=0;
     unsigned int free_beg=ofree;
-    for( int n=0; n<OREF_SIZE; n++ )
+    for( unsigned int n=0; n<OREF_SIZE; n++ )
     {
         if( oref[n].color==COLOR_WHITE ) // nincs ra hivatkozas
         {
@@ -481,7 +481,7 @@ static void oref_sweep()
 static void vref_sweep()
 {
     unsigned int free_inc=0;
-    for( int n=0; n<VREF_SIZE; n++ )
+    for( unsigned int n=0; n<VREF_SIZE; n++ )
     {
         if( vref[n].color==COLOR_WHITE ) // nincs ra hivarkozas
         {

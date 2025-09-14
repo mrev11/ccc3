@@ -134,9 +134,9 @@ struct VREF
 
 struct VARTAB_SETSIZE 
 {
-    int *oref_size;
-    int *vref_size;
-    int *alloc_count;
+    unsigned int *oref_size;
+    unsigned int *vref_size;
+    unsigned int *alloc_count;
     unsigned long *alloc_size;
 };
 

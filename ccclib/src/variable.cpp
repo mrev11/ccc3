@@ -31,12 +31,14 @@ static char *env_vreflevel=getenv("CCC_VREFLEVEL");
 
 static int  OREF_SIZE   = 200000;
 static int  VREF_SIZE   = 5000;
+static size_t tabsize   = 0;
+
 
 static int  OREF_LEVEL  = 0;
 static int  VREF_LEVEL  = 0;
 
 static int  ALLOC_COUNT = OREF_SIZE;
-static unsigned long ALLOC_SIZE = OREF_SIZE*128;
+static unsigned long ALLOC_SIZE = OREF_SIZE*256;
 
 static int alloc_count=0;   // foglalasok szama
 static unsigned long alloc_size=0;   // foglalasok osszmerete
@@ -121,7 +123,7 @@ void vartab_ini(void)
         long size=atol(env_orefsize);
         OREF_SIZE=size;
         ALLOC_COUNT=size;
-        ALLOC_SIZE=size*200;
+        ALLOC_SIZE=size*256;
     }
     if( env_vrefsize )
     {
@@ -143,17 +145,29 @@ void vartab_ini(void)
                                        &ALLOC_COUNT, &ALLOC_SIZE };
     vartab_setsize(&vss);
 
+    tabsize=sizeof(OREF)*OREF_SIZE+sizeof(VREF)*VREF_SIZE; // osszmeret
+
     if( env_gcdebug )
     {
         printf("\n");
-        printf("OREF_SIZE: %s/%s\n",decimal(OREF_SIZE),decimal(OREF_LEVEL));
-        printf("VREF_SIZE: %s/%s\n",decimal(VREF_SIZE),decimal(VREF_LEVEL));
-        printf("VARTAB: %sM\n",decimal((int)(sizeof(OREF)*OREF_SIZE+sizeof(VREF)*VREF_SIZE)/(1024*1024))  );
-        printf("ALLOC: %sM\n",decimal( (int)(ALLOC_SIZE/1024/1024) ) );
-        printf("VALUE struct size: %d\n",(int)sizeof(VALUE));
-        printf("OREF struct size: %d\n",(int)sizeof(OREF));
-        printf("VREF struct size: %d\n",(int)sizeof(VREF));
-        printf("mutex struct size: %d\n",(int)sizeof(pthread_mutex_t));
+        printf("GC_OREFSIZE: %s/%s\n",decimal(OREF_SIZE),decimal(OREF_LEVEL));
+        printf("GC_VREFSIZE: %s/%s\n",decimal(VREF_SIZE),decimal(VREF_LEVEL));
+        
+        if( tabsize>1024*1024*16 )
+        {
+            printf("GC_VARTAB: %sM\n",decimal((int)(tabsize/1024/1024)) );
+            printf("GC_MALLOC: %sM\n", decimal((int)(ALLOC_SIZE/1024/1024)) );
+        }            
+        else
+        {
+            printf("GC_VARTAB: %sK\n",decimal((int)(tabsize/1024)) );
+            printf("GC_MALLOC: %sK\n", decimal((int)(ALLOC_SIZE/1024)) );
+        }
+
+        // printf("VALUE struct size: %d\n",(int)sizeof(VALUE));
+        // printf("OREF struct size: %d\n",(int)sizeof(OREF));
+        // printf("VREF struct size: %d\n",(int)sizeof(VREF));
+        // printf("mutex struct size: %d\n",(int)sizeof(pthread_mutex_t));
         fflush(0);
     }
 
@@ -195,7 +209,7 @@ static void *collector(void *ptr)
     gc_lock();
     while(1)
     {
-        if( gc_timedwait(20000)==0 )
+        if( gc_timedwait(60000)==0 )
         {
             //printf(" signal");fflush(0);
             vartab_lock();
@@ -227,7 +241,14 @@ static void vartab_mark(void)
         printf(" GC(%d)  MARK: ",++count);
         printf("%sofree=%s ", (ofree<=OREF_LEVEL?"*":"")     , decimal(ofree));
         printf("%svfree=%s ", (vfree<=VREF_LEVEL?"*":"")     , decimal(vfree));
-        printf("%salloc=%s ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024/1024));
+        if( tabsize>1024*1024*8 )
+        {
+            printf("%smalloc=%sM ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024/1024));
+        }
+        else
+        {
+            printf("%smalloc=%sK ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024));
+        }
         fflush(0);
     }
 
@@ -393,10 +414,7 @@ static void vartab_sweep()
 {
     if( env_gcdebug )
     {
-        printf("  SWEEP: "); fflush(0);
-        printf("ofree=%s vfree=%s --> ",
-            decimal(ofree),
-            decimal(vfree));
+        printf("  SWEEP: ");
         fflush(0);
     }
 

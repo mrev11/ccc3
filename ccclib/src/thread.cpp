@@ -38,23 +38,23 @@ struct thread_block
 };
 
 
-#ifdef MUTEX_DBG //deadlockok kereséséhez
+#ifdef MUTEX_DBG //deadlockok keresesehez
 #include <mutex_dbg.h>
 #endif
 
 //---------------------------------------------------------------------------
 static void *thread(void *ptr)
 {
-    //saját lokális stack létrehozása,
-    //thread_data konstruktorában és destruktorában
-    //listakezelés van, aminek egyedül kell futnia,
-    //a listát a szemétgyűjtés is használja:
+    //sajat lokalis stack letrehozasa,
+    //thread_data konstruktoraban es destruktoraban
+    //listakezeles van, aminek egyedul kell futnia,
+    //a listat a szemetgyujtes is hasznalja:
 
 
     pthread_setspecific(thread_key, NEWTHRDATA());
 
-    //block plusz paraméterek átmásolása a saját stackre,
-    //a hívó szálnak várnia kell, erre szolgál mutex és cond:
+    //block plusz parameterek atmasolasa a sajat stackre,
+    //a hivo szalnak varnia kell, erre szolgal mutex es cond:
 
     thread_block *b=(thread_block*)ptr;
     int n;
@@ -68,8 +68,8 @@ static void *thread(void *ptr)
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&mutex);
 
-    //a hívó szál továbbengedve,
-    //az új szál kódblokkja elindítva:
+    //a hivo szal tovabbengedve,
+    //az uj szal kodblokkja elinditva:
 
     _clp_eval(n);
     POP();
@@ -98,7 +98,7 @@ void _clp_thread_create(int argno)  // thread_create(blk,arg1,arg2,...)
 
     if( 0==pthread_create(&t,0,thread,&b) )
     {
-        //várunk, amíg az új szál átveszi a paramétereket
+        //varunk, amig az uj szal atveszi a parametereket
         while( b.argno>=0 )
         {
             pthread_cond_wait(&cond,&mutex);

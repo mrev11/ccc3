@@ -1,3 +1,7 @@
+2025-09-14
+  DELTHRDATA makro megszunt,
+  a pthread_key_create()-ban megadott fuggveny torli a thread_data-t;
+
 2025-09-12 
   variable.cpp: felcserelt sorrend, optimalizalasok;
   thread_data-ban kulon mutex a szalak listajanak vedelmere;

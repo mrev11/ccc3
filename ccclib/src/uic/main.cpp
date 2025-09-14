@@ -35,6 +35,12 @@ int vartab_is_ready=0;
 
 
 //----------------------------------------------------------------------------
+static void delete_thread_data(void *p)
+{
+    delete (thread_data*)p;
+}
+
+//----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
     setup_signal_handlers();
@@ -64,7 +70,7 @@ int main(int argc, char **argv)
     setcaption(ARGV[0],strlen(ARGV[0]));
 
     vartab_ini();
-    pthread_key_create(&thread_key,0);
+    pthread_key_create(&thread_key,&delete_thread_data);
     pthread_setspecific(thread_key,new thread_data());
 
     vartab_is_ready=1;

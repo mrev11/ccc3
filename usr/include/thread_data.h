@@ -23,7 +23,7 @@
 
 
 #define NEWTHRDATA()  (new thread_data())
-#define DELTHRDATA(d) (delete (thread_data*)(d))
+#define DELTHRDATA(d) //(delete (thread_data*)(d))
  
 class thread_data
 {

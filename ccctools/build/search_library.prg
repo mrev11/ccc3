@@ -33,7 +33,7 @@ local liblist:=split(buildenv_lib()," ")
 local sharing:=LOWER(buildenv_shr())  //"shared" or "static" libraries
 
 local n,i,txt:=""
-local f0,f1,f2,f3,pf1,pf2,pf3
+local f0,f1,f2,f3,f4,pf1,pf2,pf3,pf4
 static msys64:=getenv("MSYS64")
 
     for n:=1 to len(liblist)
@@ -46,10 +46,12 @@ static msys64:=getenv("MSYS64")
             f1:=f0
             f2:=f0
             f3:=f0
+            f4:=f0
         else
-            f1:=f0+".lib"       // DOS name
-            f2:="lib"+f0+".a"   // UNIX name (static lib)
-            f3:="lib"+f0+".so"  // UNIX name (shared lib)
+            f1:=f0+".lib"           // DOS name
+            f2:="lib"+f0+".a"       // UNIX name (static lib)
+            f3:="lib"+f0+".so"      // UNIX name (shared lib)
+            f4:="lib"+f0+".dll.a"   // MSYS2 import lib
         end
 
 
@@ -59,6 +61,7 @@ static msys64:=getenv("MSYS64")
                 pf1:=f1
                 pf2:=f2
                 pf3:=f3
+                pf4:=f4
             else
                 if( empty(dirlist[i]) )
                     loop
@@ -67,6 +70,7 @@ static msys64:=getenv("MSYS64")
                 pf1:=dirlist[i]+dirsep()+f1
                 pf2:=dirlist[i]+dirsep()+f2
                 pf3:=dirlist[i]+dirsep()+f3
+                pf4:=dirlist[i]+dirsep()+f4
             end
 
             //? file(pf1),"["+pf1+"]"
@@ -86,6 +90,9 @@ static msys64:=getenv("MSYS64")
                 elseif( file(pf3) )
                     txt+=pf3+" "
                     exit
+                elseif( file(pf4) )
+                    txt+=pf4+" "
+                    exit
                 end
 
             else
@@ -94,6 +101,9 @@ static msys64:=getenv("MSYS64")
 
                 if( file(pf3) )
                     txt+=pf3+" "
+                    exit
+                elseif( file(pf4) )
+                    txt+=pf4+" "
                     exit
                 elseif( file(pf1) )
                     txt+=pf1+" "

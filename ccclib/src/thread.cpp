@@ -21,6 +21,7 @@
 
 //POSIX thread API
 
+#include <sys/time.h>
 #include <pthread.h>
 #include <errno.h>
 #include <tid2ptr.h>
@@ -247,15 +248,34 @@ void _clp_thread_cond_wait(int argno)
     if( ISNUMBER(3) )
     {
         unsigned millis=_parnu(3);
-        struct timespec ts;
-        ts.tv_sec=millis/1000;
-        ts.tv_nsec=(millis%1000)*1000*1000; //nanosecundum
-        _retni( pthread_cond_timedwait(c,m,&ts) );
+        struct timeval now;
+        struct timespec timeout;
+        gettimeofday(&now,0);
+        timeout.tv_sec=now.tv_sec;
+        timeout.tv_nsec=now.tv_usec*1000;
+        timeout.tv_sec+=millis/1000;
+        timeout.tv_nsec+=(millis%1000)*1000000;
+        if( timeout.tv_nsec>999999999 )
+        {
+            timeout.tv_sec++;
+            timeout.tv_nsec-=1000000000;
+        }
+        // FIGYELEM:  timeout abszolut ido
+        _retni( pthread_cond_timedwait(c,m,&timeout) );
     }
     else
     {
         _retni( pthread_cond_wait(c,m) );
     }
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_yield(int argno)
+{
+    CCC_PROLOG("thread_yield",0);
+    pthread_yield();
+    _ret();
     CCC_EPILOG();
 }
 

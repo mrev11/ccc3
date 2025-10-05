@@ -28,7 +28,7 @@ void push(VALUE *v)
 }
 
 //------------------------------------------------------------------------
-void push_symbol(VALUE *v)  // feltételes deref 
+void push_symbol(VALUE *v)  // felteteles deref 
 {
     PUSH( (v->type!=TYPE_REF) ? v : &(v->data.vref->value) );
 }
@@ -40,7 +40,7 @@ void push_blkenv(VALUE *v) // mindig deref
 }
 
 //------------------------------------------------------------------------
-void push_symbol_ref(VALUE *v) // @ par, blokk környezet
+void push_symbol_ref(VALUE *v) // @ par, blokk kornyezet
 {
     if( v->type!=TYPE_REF )
     {
@@ -50,9 +50,13 @@ void push_symbol_ref(VALUE *v) // @ par, blokk környezet
         vr->color=COLOR_RESERVED;
         v->data.vref=vr;
         v->type=TYPE_REF;
+        PUSH(v);
         VARTAB_UNLOCK();
     }
-    PUSH(v);
+    else
+    {
+        PUSH(v);
+    }
 }
 
 //------------------------------------------------------------------------
@@ -90,7 +94,7 @@ void assign(VALUE *lside)
 }
 
 //------------------------------------------------------------------------
-void assign2(VALUE *lside) //tömbindexeléshez
+void assign2(VALUE *lside) //tombindexeleshez
 {
     if( lside->type!=TYPE_REF )
     {
@@ -139,10 +143,10 @@ void block(void (*code)(int), int len)
 //------------------------------------------------------------------------
 VALUE *blkenv(VALUE *blk)
 {
-    // ezt az oref-et csak a blokkok használják,
-    // nemlétező oref-re csak akkor lehet hivatkozás,
-    // ha rossz a fordító, ezért nem kell vizsgálni
-    // (esetleg run time errort lehet generálni)
+    // ezt az oref-et csak a blokkok hasznaljak,
+    // nemletezo oref-re csak akkor lehet hivatkozas,
+    // ha rossz a fordito, ezert nem kell vizsgalni
+    // (esetleg run time errort lehet generalni)
     
     return BLOCKPTR(blk);
 }

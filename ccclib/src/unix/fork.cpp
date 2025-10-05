@@ -26,7 +26,21 @@
 void _clp_fork(int argno) 
 {
     CCC_PROLOG("fork",0);
-    _retni( fork() );
+
+    pid_t pid=fork();
+    
+    if( pid==0 )
+    {
+        extern void *vartab_collector(void *ptr);
+
+        setup_signal_handlers();
+        pthread_t t=0;
+        pthread_create(&t,0,vartab_collector,0);
+        pthread_setname_np(t,"collector");
+        pthread_detach(t);
+    }
+    
+    _retni(pid);
     CCC_EPILOG();
 }
 

@@ -1,3 +1,10 @@
+2025-10-05
+  fork() hozzaigazitva a kulon szalon futo szemetgyujteshez;
+  thread_yield();
+  javitas: pthread_cond_timedwait()-ben abszolut idot kell megadni;
+  javitas: push_symbol_ref() VARTAB_LOCK-on belul stackre teszi az eredmenyt;
+  gc sweep fazisa parhuzamositva; 
+
 2025-09-14 gcc 15.2.1 warningok javitva;
 
 2025-09-14

@@ -99,36 +99,36 @@ unsigned const int STSTACK_SIZE=2048;
 extern VALUE *ststack;
 extern VALUE ststackbuf[];
  
-#define PUSHNIL()  (stack->type=TYPE_NIL,stack->data.pointer=0,stack++)
+#define PUSHNIL()  (stack->type=TYPE_NIL,stack++)
 #define PUSHFLG()  (stack->type=TYPE_FLAG,stack++)
 #define PUSHDAT()  (stack->type=TYPE_DATE,stack++)
 #define PUSHPTR()  (stack->type=TYPE_POINTER,stack++)
 #define PUSHNUM()  (stack->type=TYPE_NUMBER,stack++)
-#define PUSH(v)    (*stack=*(v),stack++)
+#define PUSH(v)    (stack->type=(v)->type,stack->data=(v)->data,stack++) // nem operator=
 
 //Több szál esetén a pop()-> felhasználása tilos,
 //ezért pop() visszatérése VALUE*-ról void-ra változott.
 //Hogy a compiler kiszűrhesse a rossz POP()-> használatot,
 //ideiglenesen POP-ot pop-ra preprocesszáljuk.
 
-#define POP()      (pop())
-//#define POP()      (--stack)
+#define POP()      (stack-=1)
 #define POP2()     (stack-=2)
 #define POP3()     (stack-=3)
 
 #define TOP0()     (stack)      // a stack tetején az első szabad hely
 #define TOP()      (stack-1)    // a stack tetején lévő érték
+#define TOP1()     (stack-1)    // a stack tetején lévő érték
 #define TOP2()     (stack-2)    // a stack tetején a második érték
 #define TOP3()     (stack-3)    // a stack tetején a harmadik érték
 #define TOP4()     (stack-4)
 
-#define DUP()      (PUSHNIL(),(*TOP()=*TOP2()))
-#define DUP2()     (PUSHNIL(),(*TOP()=*TOP3()))
-#define DUP3()     (PUSHNIL(),(*TOP()=*TOP4()))
+#define DUP()      (PUSH(TOP1()))  // nem operator=
+#define DUP2()     (PUSH(TOP2()))  // nem operator=
+#define DUP3()     (PUSH(TOP3()))  // nem operator=
 
 #define RETURN(bs) {*bs=*TOP();stack=bs+1;return;}
 
-#define STPUSH(v)  (*ststack=*(v),ststack++)
+#define STPUSH(v)  (ststack->type=(v)->type,ststack->data=(v)->data,ststack++) // nem operator=
 
 #define push_blkarg(v)      push_symbol(v)
 #define push_blkarg_ref(v)  push_symbol_ref(v)

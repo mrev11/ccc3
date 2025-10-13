@@ -139,7 +139,7 @@
 #define _retl(x)       (logical((x)!=0),*base=*TOP(),stack=base+1)
 #define _rettop()      (*base=*TOP(),stack=base+1)
 #define _retv(v)       (*base=*(v),stack=base+1)
-#define _ret()         (stack=base,PUSH(&NIL))
+#define _ret()         (stack=base,PUSHNIL())
 
 #define _storc(c,i)    (stringn(c),assign(base+(i)-1),pop())
 

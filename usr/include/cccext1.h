@@ -194,6 +194,8 @@ extern VALUE* newValue(unsigned);
 extern void deleteValue(VALUE*);
 extern OREF* oref_new(void);
 extern VREF* vref_new(void);
+extern OREF* oref_new(VALUE*,void*,int);
+extern VREF* vref_new(VALUE*);
 extern void valuemove(VALUE*,VALUE*,int);
 
 //dtos.obj:

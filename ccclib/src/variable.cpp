@@ -522,9 +522,10 @@ static void vartab_sweep()
 
     if( env_gcdebug )
     {
-        printf("ofree=%s vfree=%s  MAX: %s",
+        printf("ofree=%s vfree=%s  %sMAX:%s %s",
             decimal(ofree_read()),
             decimal(vfree_read()),
+            BOLD,RESET, 
             decimal(ormax));
 
         printf("\n");

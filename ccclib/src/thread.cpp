@@ -274,7 +274,9 @@ void _clp_thread_cond_wait(int argno)
 void _clp_thread_yield(int argno)
 {
     CCC_PROLOG("thread_yield",0);
-    pthread_yield();
+    #ifndef WINDOWS
+        pthread_yield();
+    #endif
     _ret();
     CCC_EPILOG();
 }

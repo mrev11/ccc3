@@ -1,3 +1,7 @@
+2025-10-15
+  pthread_atfork() a collector mutexeinek unlockolasara;  
+  varsync valtozok bevezetve;
+
 2025-10-13  PUSH elkeruli operator=-t;
 
 2025-10-05

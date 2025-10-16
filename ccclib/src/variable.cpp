@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <varsync.h>
 #include <cccapi.h>
 
 //---------------------------------------------------------------------------
@@ -47,13 +48,17 @@ static VREF *vref;          // vref tomb
 
 static unsigned int onext;  // kovetkezo szabad index orefben
 static unsigned int vnext;  // kovetkezo szabad index vrefben
+
 static unsigned int olast;  // utolso szabad index orefben
 static unsigned int vlast;  // utolso szabad index vrefben
 
 static unsigned int ofree;  // szabad orefek szama
 static unsigned int vfree;  // szabad vrefek szama
+
 static unsigned int oresv;  // foglalt orefek a mark vegen
 static unsigned int ormax;  // foglalt orefek maximuma 
+
+static unsigned int gc_count=0;
 
 static char *env_gcdebug=getenv("CCC_GCDEBUG");
 static char *env_orefsize=getenv("CCC_OREFSIZE");
@@ -75,8 +80,12 @@ static unsigned long ALLOC_SIZE  = OREF_SIZE*256;
 static unsigned int  alloc_count=0;  // foglalasok szama
 static unsigned long alloc_size=0;   // foglalasok osszmerete
 
+static unsigned int  mark_phase=0;
+
 static int *mark_stack=0;
 static int *mark_stack_ptr=0;
+
+static int  collector_tid=0;
 
 
 void vartab_ini(void);
@@ -99,90 +108,35 @@ static void inventory();
 
 //---------------------------------------------------------------------------
 
-static pthread_mutex_t          mutex_gc=PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t           cond_gc=PTHREAD_COND_INITIALIZER;
+static varsync sync_gc;                   // szemetgyujtes vezerlese
+static varsync sync_vartab(&gc_count);    // rogziti a csucsokat
+static varsync sync_assign(&mark_phase);  // rogziti az eleket
+static varsync sync_sweep;                // sweep vezerlese
 
-static void gc_lock()           {pthread_mutex_lock(&mutex_gc);}
-static void gc_unlock()         {pthread_mutex_unlock(&mutex_gc);}
-static void gc_wait()           {pthread_cond_wait(&cond_gc,&mutex_gc);}
-static void gc_signal()         {pthread_cond_signal(&cond_gc);}
-static int  gc_trylock()        {return pthread_mutex_trylock(&mutex_gc);}
+static varsync sync_olast(&olast);
+static varsync sync_vlast(&vlast);
+static varsync sync_ofree(&ofree);
+static varsync sync_vfree(&vfree);
+static varsync sync_oresv(&oresv);
 
-static int  gc_timedwait(int millis)
+void vartab_lock()   {sync_vartab.lock();} // mutator
+void vartab_unlock() {sync_vartab.lock_free();} // mutator
+
+
+//---------------------------------------------------------------------------
+static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
 {
-    struct timeval now;
-    struct timespec timeout;
-    gettimeofday(&now,0);
-    timeout.tv_sec=now.tv_sec;
-    timeout.tv_nsec=now.tv_usec*1000;
-    timeout.tv_sec+=millis/1000;
-    timeout.tv_nsec+=(millis%1000)*1000000;
-    if( timeout.tv_nsec>999999999 )
-    {
-        timeout.tv_sec++;
-        timeout.tv_nsec-=1000000000;
-    }
-    return pthread_cond_timedwait(&cond_gc,&mutex_gc,&timeout);
+    sync_gc.lock_free();
+    sync_vartab.lock_free();
+    sync_assign.lock_free();
+    sync_sweep.lock_free();
+
+    sync_olast.lock_free();
+    sync_vlast.lock_free();
+    sync_ofree.lock_free();
+    sync_vfree.lock_free();
+    sync_oresv.lock_free();
 }
-
-//---------------------------------------------------------------------------
-
-static pthread_mutex_t          mutex_vartab=PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t           cond_vartab=PTHREAD_COND_INITIALIZER;
-
-void vartab_lock()              {pthread_mutex_lock(&mutex_vartab);} // mutator
-void vartab_unlock()            {pthread_mutex_unlock(&mutex_vartab);} // mutator
-static void vartab_wait()       {pthread_cond_wait(&cond_vartab,&mutex_vartab);}
-static void vartab_signal()     {pthread_cond_signal(&cond_vartab);}
-
-static int  vartab_timedwait(int millis)
-{
-    struct timeval now;
-    struct timespec timeout;
-    gettimeofday(&now,0);
-    timeout.tv_sec=now.tv_sec;
-    timeout.tv_nsec=now.tv_usec*1000;
-    timeout.tv_sec+=millis/1000;
-    timeout.tv_nsec+=(millis%1000)*1000000;
-    if( timeout.tv_nsec>999999999 )
-    {
-        timeout.tv_sec++;
-        timeout.tv_nsec-=1000000000;
-    }
-    return pthread_cond_timedwait(&cond_vartab,&mutex_vartab,&timeout);
-}
-
-//---------------------------------------------------------------------------
-
-static pthread_mutex_t          mutex_assign=PTHREAD_MUTEX_INITIALIZER;
-static void assign_lock()       {pthread_mutex_lock(&mutex_assign);}
-static void assign_unlock()     {pthread_mutex_unlock(&mutex_assign);}
-
-static pthread_mutex_t          mutex_sweep=PTHREAD_MUTEX_INITIALIZER;
-static void sweep_lock()        {pthread_mutex_lock(&mutex_sweep);}
-static void sweep_unlock()      {pthread_mutex_unlock(&mutex_sweep);}
-
-//---------------------------------------------------------------------------
-
-static pthread_mutex_t  mutex_olast=PTHREAD_MUTEX_INITIALIZER;
-static unsigned olast_read(){pthread_mutex_lock(&mutex_olast); unsigned x=olast; pthread_mutex_unlock(&mutex_olast); return x;}
-static void olast_write(unsigned x){pthread_mutex_lock(&mutex_olast); olast=x; pthread_mutex_unlock(&mutex_olast);}
-
-static pthread_mutex_t  mutex_vlast=PTHREAD_MUTEX_INITIALIZER;
-static unsigned vlast_read(){pthread_mutex_lock(&mutex_vlast); unsigned x=vlast; pthread_mutex_unlock(&mutex_vlast); return x;}
-static void vlast_write(unsigned x){pthread_mutex_lock(&mutex_vlast); vlast=x; pthread_mutex_unlock(&mutex_vlast);}
-
-
-static pthread_mutex_t  mutex_ofree=PTHREAD_MUTEX_INITIALIZER;
-static void ofree_inc(){pthread_mutex_lock(&mutex_ofree); ++ofree; pthread_mutex_unlock(&mutex_ofree);}
-static void ofree_dec(){pthread_mutex_lock(&mutex_ofree); --ofree; pthread_mutex_unlock(&mutex_ofree);}
-static unsigned ofree_read(){pthread_mutex_lock(&mutex_ofree); unsigned x=ofree; pthread_mutex_unlock(&mutex_ofree); return x;}
-
-static pthread_mutex_t  mutex_vfree=PTHREAD_MUTEX_INITIALIZER;
-static void vfree_inc(){pthread_mutex_lock(&mutex_vfree); ++vfree; pthread_mutex_unlock(&mutex_vfree);}
-static void vfree_dec(){pthread_mutex_lock(&mutex_vfree); --vfree; pthread_mutex_unlock(&mutex_vfree);}
-static unsigned vfree_read(){pthread_mutex_lock(&mutex_vfree); unsigned x=vfree; pthread_mutex_unlock(&mutex_vfree); return x;}
-
 
 //---------------------------------------------------------------------------
 void vartab_ini(void)
@@ -292,16 +246,30 @@ void vartab_ini(void)
     pthread_create(&t,0,vartab_collector,0);
     pthread_setname_np(t,"collector");
     pthread_detach(t);
+
+#ifndef WINDOWS
+    // windowson nincs fork
+    pthread_atfork(0,0,mutex_state_init);
+#endif
 }
 
 
 //---------------------------------------------------------------------------
 void *vartab_collector(void *ptr)
 {
-    gc_lock();
+    #ifndef WINDOWS // nincs gettid()
+    collector_tid=gettid();
+    if( env_gcdebug )
+    {
+        printf("GC_COLLECTOR: %d\n",collector_tid);
+        fflush(0);
+    }
+    #endif
+
+    sync_gc.lock();
     while(1)
     {
-        if( gc_timedwait(20000)==0 )
+        if( sync_gc.wait(20000)==0 )
         {
             if( env_gcdebug )
             {
@@ -328,9 +296,9 @@ static void vartab_mark(void)
     if(env_gcdebug)
     {
         static int count=0;
-        printf(" ^GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
-        printf("%sofree=%s ", (ofree_read()<=OREF_LEVEL?"*":"")     , decimal(ofree_read()));
-        printf("%svfree=%s ", (vfree_read()<=VREF_LEVEL?"*":"")     , decimal(vfree_read()));
+        printf(" 'GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
+        printf("%sofree=%s ", (sync_ofree.read()<=OREF_LEVEL?"*":"")     , decimal(sync_ofree.read()));
+        printf("%svfree=%s ", (sync_vfree.read()<=VREF_LEVEL?"*":"")     , decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
         {
             printf("%smalloc=%sM ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024/1024));
@@ -342,8 +310,9 @@ static void vartab_mark(void)
         fflush(0);
     }
 
-    vartab_lock();
-    assign_lock();
+    sync_vartab.lock();
+    sync_assign.lock();
+    mark_phase=1;
 
     alloc_count=0;
     alloc_size=0;
@@ -382,7 +351,7 @@ static void vartab_mark(void)
     // stackrol kozvetlenul elerheto oref-ek -> GRAY
     //-------------------------------------
 
-    for( VALUE *sp=ststackbuf; sp<ststack; sp++)
+    for( VALUE *sp=ststackbuf; sp<ststack; sp++) // static stack
     {
         vartab_shade(sp);
     }
@@ -393,7 +362,7 @@ static void vartab_mark(void)
     while( td!=0 )
     {
         ++thrcnt;
-        for( VALUE *sp=td->_stackbuf; sp<td->_stack; sp++)
+        for( VALUE *sp=td->_stackbuf; sp<td->_stack; sp++) // local stack
         {
             vartab_shade(sp);
         }
@@ -410,8 +379,8 @@ static void vartab_mark(void)
 
     mark();
 
-    assign_unlock();
-    vartab_unlock();
+    sync_assign.lock_free();
+    sync_vartab.lock_free();
 
     if(env_gcdebug)
     {
@@ -420,6 +389,7 @@ static void vartab_mark(void)
         fflush(0);
     }
 }
+
 
 
 //---------------------------------------------------------------------------
@@ -435,10 +405,8 @@ static void mark()
                 vartab_shade(v); //push
             }
         }
-
-        // ez biztosan GRAY
         o->color=COLOR_BLACK;
-        ++oresv;
+        sync_oresv.inc();
         ormax=max(ormax,oresv);
     }
 }
@@ -455,13 +423,6 @@ static void vartab_shade(VALUE *v)
         // POINTER
         // nincs oref
     }
-    else if( v->type>=TYPE_REF )
-    {
-        // REF
-        VREF *r=v->data.vref;
-        r->color=COLOR_BLACK;
-        vartab_shade( &(r->value) );
-    }
     else if( v->type<=TYPE_SCALAR  )
     {
         // BINARY
@@ -476,7 +437,7 @@ static void vartab_shade(VALUE *v)
             }
         }
     }
-    else
+    else if( v->type<TYPE_REF )
     {
         // ARRAY  mindig van oref-je (len==0 eseten lehet ptr==NULL)
         // OBJECT megegyezik az array esetevel
@@ -489,6 +450,13 @@ static void vartab_shade(VALUE *v)
             o->color=COLOR_GRAY;
             mark_push(v->data.array.oref);
         }
+    }
+    else //if( v->type>=TYPE_REF )
+    {
+        // REF
+        VREF *r=v->data.vref;
+        vartab_shade( &(r->value) );
+        r->color=COLOR_BLACK;
     }
 }
 
@@ -523,8 +491,8 @@ static void vartab_sweep()
     if( env_gcdebug )
     {
         printf("ofree=%s vfree=%s  %sMAX:%s %s",
-            decimal(ofree_read()),
-            decimal(vfree_read()),
+            decimal(sync_ofree.read()),
+            decimal(sync_vfree.read()),
             BOLD,RESET, 
             decimal(ormax));
 
@@ -538,6 +506,9 @@ static void sweep()
 {
     for( unsigned int n=0; n<OREF_SIZE; n++ )
     {
+        // kozos ciklus oref-re es vref-re
+        // hamar legyen szabad oref is ES vref is
+
         if( n<VREF_SIZE )
         {
             // n: 0 -> VREF_SIZE-1
@@ -551,16 +522,16 @@ static void sweep()
             }
             else
             {
-                sweep_lock();
+                sync_sweep.lock();
                 if( vref[n].color==COLOR_WHITE )
                 {
                     vref[n].value.type=TYPE_NIL;
                     vref[vlast].link=n;
-                    vlast_write(n);
-                    vfree_inc();
+                    sync_vlast.write(n);
+                    sync_vfree.inc();
                 }
-                sweep_unlock();
-                vartab_signal();
+                sync_sweep.lock_free();
+                sync_vartab.signal();
             }
         }
 
@@ -575,7 +546,7 @@ static void sweep()
         }
         else
         {
-            sweep_lock();
+            sync_sweep.lock();
             if( oref[n].color==COLOR_WHITE )
             {
                 if( oref[n].length )
@@ -585,25 +556,25 @@ static void sweep()
                 oref[n].ptr.valptr=NULL;
                 oref[n].length=0;
                 oref[olast].link=n;
-                olast_write(n);
-                ofree_inc();
+                sync_olast.write(n);
+                sync_ofree.inc();
             }
-            sweep_unlock();
-            vartab_signal();
+            sync_sweep.lock_free();
+            sync_vartab.signal();
         }
     }
 
-    vartab_signal();
+    sync_vartab.signal();
 
 
-    if( ofree_read()<=32 )
+    if( sync_ofree.read()<=32 )
     {
         fprintf(stderr,"\nOREF overflow!\n");
         fflush(0);
         exit(1);
     }
 
-    if( vfree_read()<=32 )
+    if( sync_vfree.read()<=32 )
     {
         fprintf(stderr,"\nVREF overflow!\n");
         fflush(0);
@@ -621,35 +592,35 @@ OREF *oref_new(void)
     // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
 
-    while( onext==olast_read() )
+    while( onext==sync_olast.read() )
     {
         if( env_gcdebug )
         {
             printf("%s%s$%s",YELLOW,BOLD,RESET);fflush(0);
         }
-        if( 0==gc_trylock() )
+        if( 0==sync_gc.lock_try() )
         {
             if( env_gcdebug )
             {
                 printf("%s%s!%s",RED,BOLD,RESET);fflush(0);
             }
-            gc_signal();
-            gc_unlock();
+            sync_gc.signal();
+            sync_gc.lock_free();
         }
-        vartab_timedwait(100);
+        sync_vartab.wait(100);
     }
-    sweep_lock();
+    sync_sweep.lock();
     OREF *o=oref+onext;
     o->color=COLOR_LOCKED;
     onext=o->link;
     o->link=-1;
-    ofree_dec();
-    sweep_unlock();
+    sync_ofree.dec();
+    sync_sweep.lock_free();
 
-    if( ofree_read()<OREF_LEVEL && 0==gc_trylock() )
+    if( sync_ofree.read()<OREF_LEVEL && 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
 
     return o;
@@ -662,35 +633,35 @@ VREF *vref_new(void)
     // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
 
-    while( vnext==vlast_read() )
+    while( vnext==sync_vlast.read() )
     {
         if( env_gcdebug )
         {
             printf("%s%s@%s",YELLOW,BOLD,RESET);fflush(0);
         }
-        if( 0==gc_trylock() )
+        if( 0==sync_gc.lock_try() )
         {
             if( env_gcdebug )
             {
                 printf("%s%s!%s",RED,BOLD,RESET);fflush(0);
             }
-            gc_signal();
-            gc_unlock();
+            sync_gc.signal();
+            sync_gc.lock_free();
         }
-        vartab_timedwait(100);
+        sync_vartab.wait(100);
     }
-    sweep_lock();
+    sync_sweep.lock();
     VREF *v=vref+vnext;
     v->color=COLOR_LOCKED;
     vnext=v->link;
     v->link=-1;
-    vfree_dec();
-    sweep_unlock();
+    sync_vfree.dec();
+    sync_sweep.lock_free();
 
-    if( vfree_read()<VREF_LEVEL && 0==gc_trylock() )
+    if( sync_vfree.read()<VREF_LEVEL && 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
 
     return v;
@@ -701,10 +672,10 @@ VALUE *newValue(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(VALUE)*len;
-    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
     VALUE *p=(VALUE*)MEMALLOC( len*sizeof(VALUE) );
     memset((void*)p,0,len*sizeof(VALUE));
@@ -716,10 +687,10 @@ CHAR *newChar(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(CHAR)*len;
-    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
     CHAR *p=(CHAR*)MEMALLOC(len*sizeof(CHAR));
     return p;
@@ -730,10 +701,10 @@ BYTE *newBinary(unsigned int len)
 {
     alloc_count++;
     alloc_size+=sizeof(BYTE)*len;
-    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==gc_trylock() )
+    if( (alloc_count>ALLOC_COUNT || alloc_size>ALLOC_SIZE) && 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
     BYTE *p=(BYTE*)MEMALLOC(len*sizeof(BYTE));
     return p;
@@ -748,10 +719,10 @@ void deleteValue(VALUE *v)
 //---------------------------------------------------------------------------
 VALUE VALUE::operator=(VALUE v)
 {
-    assign_lock();
+    sync_assign.lock();
     type=v.type;
     data=v.data;
-    assign_unlock();
+    sync_assign.lock_free();
     return *this;
 }
 
@@ -778,13 +749,13 @@ void valuemove(VALUE *to, VALUE *fr, int n)
 //---------------------------------------------------------------------------
 void _clp_gc(int argno)
 {
-    vartab_lock();
-    if( 0==gc_trylock() )
+    sync_vartab.lock();
+    if( 0==sync_gc.lock_try() )
     {
-        gc_signal();
-        gc_unlock();
+        sync_gc.signal();
+        sync_gc.lock_free();
     }
-    vartab_unlock();
+    sync_vartab.lock_free();
     stack-=argno;
     PUSHNIL();
 }

@@ -9,17 +9,21 @@ struct varsync
     
     unsigned *var;
 
-    varsync()
+    void init()
     {
         mutex=PTHREAD_MUTEX_INITIALIZER;
         cond=PTHREAD_COND_INITIALIZER; 
+    };
+
+    varsync()
+    {
+        init();
         var=0;
     };
 
     varsync(unsigned *p)
     {
-        mutex=PTHREAD_MUTEX_INITIALIZER;
-        cond=PTHREAD_COND_INITIALIZER; 
+        init();
         var=p;
     };
 
@@ -34,34 +38,32 @@ struct varsync
     void lock()
     {
         pthread_mutex_lock(&mutex);
-        //printf("LOCK:%d\n",gettid());
-        //fflush(0);
-    }
+    };
 
     void lock_free()
     {
         pthread_mutex_unlock(&mutex);
-    }
+    };
 
     int lock_try()
     {
        return  pthread_mutex_trylock(&mutex); // -> 0, ha sikerult lockolni
-    }
+    };
 
     void signal()
     {
        pthread_cond_signal(&cond);
-    }
+    };
 
     void broadcast()
     {
        pthread_cond_broadcast(&cond);
-    }
+    };
 
     int wait()
     {
        return pthread_cond_wait(&cond,&mutex);
-    }
+    };
 
     int wait(unsigned millis)
     {
@@ -78,7 +80,7 @@ struct varsync
             timeout.tv_nsec-=1000000000;
         }
         return pthread_cond_timedwait(&cond,&mutex,&timeout);  // -> 0 vagy ETIMEOUT
-    }
+    };
 
     unsigned read()
     {
@@ -86,7 +88,7 @@ struct varsync
         unsigned x=*var; 
         pthread_mutex_unlock(&mutex); 
         return x;
-    }
+    };
 
     unsigned write(unsigned x)
     {
@@ -94,7 +96,7 @@ struct varsync
         *var=x; 
         pthread_mutex_unlock(&mutex); 
         return x;
-    }
+    };
 
     unsigned inc()
     {
@@ -102,7 +104,7 @@ struct varsync
         unsigned x=++(*var); 
         pthread_mutex_unlock(&mutex); 
         return x;
-    }
+    };
 
     unsigned dec()
     {
@@ -110,7 +112,7 @@ struct varsync
         unsigned x=--(*var); 
         pthread_mutex_unlock(&mutex); 
         return x;
-    }
+    };
 };
 
 //----------------------------------------------------------------------------------------

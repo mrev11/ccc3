@@ -1,3 +1,6 @@
+2025-10-18
+  pthread_atfork() collector mutexei inicializalva (unlock helyett);  
+
 2025-10-15
   pthread_atfork() a collector mutexeinek unlockolasara;  
   varsync valtozok bevezetve;

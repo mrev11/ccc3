@@ -126,16 +126,16 @@ void vartab_unlock() {sync_vartab.lock_free();} // mutator
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
 {
-    sync_gc.lock_free();
-    sync_vartab.lock_free();
-    sync_assign.lock_free();
-    sync_sweep.lock_free();
+    sync_gc.init();
+    sync_vartab.init();
+    sync_assign.init();
+    sync_sweep.init();
 
-    sync_olast.lock_free();
-    sync_vlast.lock_free();
-    sync_ofree.lock_free();
-    sync_vfree.lock_free();
-    sync_oresv.lock_free();
+    sync_olast.init();
+    sync_vlast.init();
+    sync_ofree.init();
+    sync_vfree.init();
+    sync_oresv.init();
 }
 
 //---------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+2025-10-16 gc sweep fazisban szelektivebb lockolas a varlock-kal;
+
 2025-10-18
   pthread_atfork() collector mutexei inicializalva (unlock helyett);  
 

@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <varsync.h>
+#include <varlock.h>
 #include <cccapi.h>
 
 //---------------------------------------------------------------------------
@@ -100,6 +101,7 @@ static OREF *mark_pop();
 
 //debug
 static char *decimal(long x);
+static char *star(int);
 static void sleep_milli(int ms);
 static void sleep_micro(int micro);
 static void valid_oref(OREF *o);
@@ -111,7 +113,7 @@ static void inventory();
 static varsync sync_gc;                   // szemetgyujtes vezerlese
 static varsync sync_vartab(&gc_count);    // rogziti a csucsokat
 static varsync sync_assign(&mark_phase);  // rogziti az eleket
-static varsync sync_sweep;                // sweep vezerlese
+static varlock mutx_sweep(31);            // sweep vezerlese
 
 static varsync sync_olast(&olast);
 static varsync sync_vlast(&vlast);
@@ -129,7 +131,7 @@ static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
     sync_gc.init();
     sync_vartab.init();
     sync_assign.init();
-    sync_sweep.init();
+    mutx_sweep.init();
 
     sync_olast.init();
     sync_vlast.init();
@@ -296,16 +298,16 @@ static void vartab_mark(void)
     if(env_gcdebug)
     {
         static int count=0;
-        printf(" 'GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
-        printf("%sofree=%s ", (sync_ofree.read()<=OREF_LEVEL?"*":"")     , decimal(sync_ofree.read()));
-        printf("%svfree=%s ", (sync_vfree.read()<=VREF_LEVEL?"*":"")     , decimal(sync_vfree.read()));
+        printf(" *GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
+        printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
+        printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
         {
-            printf("%smalloc=%sM ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024/1024));
+            printf("%smalloc=%sM ", star(alloc_size>ALLOC_SIZE), decimal(alloc_size/1024/1024));
         }
         else
         {
-            printf("%smalloc=%sK ", (alloc_size>ALLOC_SIZE?"*":"") , decimal(alloc_size/1024));
+            printf("%smalloc=%sK ", star(alloc_size>ALLOC_SIZE), decimal(alloc_size/1024));
         }
         fflush(0);
     }
@@ -522,7 +524,7 @@ static void sweep()
             }
             else
             {
-                sync_sweep.lock();
+                int lkx=mutx_sweep.lock(&vref[n]);
                 if( vref[n].color==COLOR_WHITE )
                 {
                     vref[n].value.type=TYPE_NIL;
@@ -530,7 +532,7 @@ static void sweep()
                     sync_vlast.write(n);
                     sync_vfree.inc();
                 }
-                sync_sweep.lock_free();
+                mutx_sweep.lock_free(lkx);
                 sync_vartab.signal();
             }
         }
@@ -546,7 +548,7 @@ static void sweep()
         }
         else
         {
-            sync_sweep.lock();
+            int lkx=mutx_sweep.lock(&oref[n]);
             if( oref[n].color==COLOR_WHITE )
             {
                 if( oref[n].length )
@@ -559,7 +561,7 @@ static void sweep()
                 sync_olast.write(n);
                 sync_ofree.inc();
             }
-            sync_sweep.lock_free();
+            mutx_sweep.lock_free(lkx);
             sync_vartab.signal();
         }
     }
@@ -609,13 +611,13 @@ OREF *oref_new(void)
         }
         sync_vartab.wait(100);
     }
-    sync_sweep.lock();
+    int lkx=mutx_sweep.lock(oref+onext);
     OREF *o=oref+onext;
     o->color=COLOR_LOCKED;
     onext=o->link;
     o->link=-1;
     sync_ofree.dec();
-    sync_sweep.lock_free();
+    mutx_sweep.lock_free(lkx);
 
     if( sync_ofree.read()<OREF_LEVEL && 0==sync_gc.lock_try() )
     {
@@ -650,13 +652,13 @@ VREF *vref_new(void)
         }
         sync_vartab.wait(100);
     }
-    sync_sweep.lock();
+    int lkx=mutx_sweep.lock(vref+vnext);
     VREF *v=vref+vnext;
     v->color=COLOR_LOCKED;
     vnext=v->link;
     v->link=-1;
     sync_vfree.dec();
-    sync_sweep.lock_free();
+    mutx_sweep.lock_free(lkx);
 
     if( sync_vfree.read()<VREF_LEVEL && 0==sync_gc.lock_try() )
     {
@@ -811,6 +813,14 @@ static char *decimal(long x) // nagy szamok olvashato kiirasahoz
     }
     store[storeidx++]=0;
     return store+storebeg;
+}
+
+//---------------------------------------------------------------------------
+static char *star(int flag)
+{
+    static char buf[32];
+    sprintf(buf,"%s%s%s%s",RED,BOLD,(flag?"*":""),RESET);
+    return buf;
 }
 
 //---------------------------------------------------------------------------

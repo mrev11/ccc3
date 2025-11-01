@@ -188,6 +188,8 @@ extern void str2bin(VALUE*);
 extern void vartab_ini(void);
 extern void vartab_lock(void);
 extern void vartab_unlock(void);
+extern void assign_lock(void);
+extern void assign_unlock(void);
 extern char *newBinary(unsigned);
 extern wchar_t *newChar(unsigned);
 extern VALUE* newValue(unsigned);
@@ -197,6 +199,7 @@ extern VREF* vref_new(void);
 extern OREF* oref_new(VALUE*,void*,int);
 extern VREF* vref_new(VALUE*);
 extern void valuemove(VALUE*,VALUE*,int);
+extern void valuemove0(VALUE*,VALUE*,int);
 
 //dtos.obj:
 extern long stod(const char*);

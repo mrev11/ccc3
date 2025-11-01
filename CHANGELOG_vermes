@@ -1,3 +1,8 @@
+2025-11-01
+  tul korai OREF overflow jelentes javitva;
+  asort es asortkey kifelejtett lockjai potolva;
+  felesleges kodok torolve;
+
 2025-10-16 gc sweep fazisban szelektivebb lockolas a varlock-kal;
 
 2025-10-18

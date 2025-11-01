@@ -30,6 +30,12 @@ struct varlock
         return x;
     };
 
+    int lock(int x)
+    {
+        pthread_mutex_lock( &mutex[x] );
+        return x;
+    };
+
     int lock_try(void *p)
     {
         int x=((unsigned long)p)%prime;

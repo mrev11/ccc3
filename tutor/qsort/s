@@ -1,6 +1,6 @@
 #!/bin/bash
-export OREF_SIZE=2000000
-#export GARBAGE=on
+export CCC_OREFSIZE=2000000
+#export CCC_GCDEBUG=on
 test.exe $1 | tee log-test
 
 sort -k 5 -n  log-test > log-sorted

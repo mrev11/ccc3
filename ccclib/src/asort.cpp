@@ -84,7 +84,9 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 //------------------------------------------------------------------------
 static void valuesort_cmp(VALUE *v, int n)
 {
+    assign_lock();
     qsort(v,n,sizeof(VALUE),valuecompare_cmp);
+    assign_unlock();
 }
 
 //------------------------------------------------------------------------
@@ -112,6 +114,7 @@ static int valuecompare_cmp(const void *x, const void *y)
     }
     else
     {
+        assign_unlock();
         DUP();
         push_symbol((VALUE*)x);
         push_symbol((VALUE*)y);
@@ -137,6 +140,7 @@ static int valuecompare_cmp(const void *x, const void *y)
             error_gen(CHRLIT("wrong return type"),"compare block of sorting",TOP(),1);
             exit(1);
         }
+        assign_lock();
     }
 
     return result;

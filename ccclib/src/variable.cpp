@@ -59,8 +59,6 @@ static unsigned int vfree;  // szabad vrefek szama
 static unsigned int oresv;  // foglalt orefek a mark vegen
 static unsigned int ormax;  // foglalt orefek maximuma 
 
-static unsigned int gc_count=0;
-
 static char *env_gcdebug=getenv("CCC_GCDEBUG");
 static char *env_orefsize=getenv("CCC_OREFSIZE");
 static char *env_vrefsize=getenv("CCC_VREFSIZE");
@@ -110,10 +108,10 @@ static void inventory();
 
 //---------------------------------------------------------------------------
 
-static varsync sync_gc;                   // szemetgyujtes vezerlese
-static varsync sync_vartab(&gc_count);    // rogziti a csucsokat
-static varsync sync_assign(&mark_phase);  // rogziti az eleket
-static varlock mutx_sweep(31);            // sweep vezerlese
+static varsync sync_gc;                 // szemetgyujtes vezerlese
+static varsync sync_vartab;             // rogziti a csucsokat
+static varsync sync_assign;             // rogziti az eleket
+static varlock mutx_sweep(31);          // sweep vezerlese
 
 static varsync sync_olast(&olast);
 static varsync sync_vlast(&vlast);
@@ -124,6 +122,8 @@ static varsync sync_oresv(&oresv);
 void vartab_lock()   {sync_vartab.lock();} // mutator
 void vartab_unlock() {sync_vartab.lock_free();} // mutator
 
+void assign_lock()   {sync_assign.lock();} // mutator
+void assign_unlock() {sync_assign.lock_free();} // mutator
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
@@ -271,7 +271,7 @@ void *vartab_collector(void *ptr)
     sync_gc.lock();
     while(1)
     {
-        if( sync_gc.wait(20000)==0 )
+        if( sync_gc.wait(30000)==0 )
         {
             if( env_gcdebug )
             {
@@ -298,7 +298,7 @@ static void vartab_mark(void)
     if(env_gcdebug)
     {
         static int count=0;
-        printf(" *GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
+        printf(" /GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -327,26 +327,12 @@ static void vartab_mark(void)
 
     for( unsigned int n=0; n<OREF_SIZE; n++ )
     {
-        if( oref[n].color==COLOR_BLACK )
-        {
-            oref[n].color=COLOR_WHITE;
-        }
-        else
-        {
-            assert( oref[n].color==COLOR_WHITE );
-        }
+        oref[n].color=COLOR_WHITE;
     }
 
     for( unsigned int n=0; n<VREF_SIZE; n++ )
     {
-        if( vref[n].color==COLOR_BLACK )
-        {
-            vref[n].color=COLOR_WHITE;
-        }
-        else
-        {
-            assert( vref[n].color==COLOR_WHITE );
-        }
+        vref[n].color=COLOR_WHITE;
     }
 
     //-------------------------------------
@@ -381,6 +367,7 @@ static void vartab_mark(void)
 
     mark();
 
+    mark_phase=0;
     sync_assign.lock_free();
     sync_vartab.lock_free();
 
@@ -506,6 +493,9 @@ static void vartab_sweep()
 //---------------------------------------------------------------------------
 static void sweep()
 {
+    int oinc=0;
+    int vinc=0;
+
     for( unsigned int n=0; n<OREF_SIZE; n++ )
     {
         // kozos ciklus oref-re es vref-re
@@ -531,9 +521,10 @@ static void sweep()
                     vref[vlast].link=n;
                     sync_vlast.write(n);
                     sync_vfree.inc();
+                    sync_vartab.signal();
+                    vinc++;
                 }
                 mutx_sweep.lock_free(lkx);
-                sync_vartab.signal();
             }
         }
 
@@ -560,26 +551,29 @@ static void sweep()
                 oref[olast].link=n;
                 sync_olast.write(n);
                 sync_ofree.inc();
+                sync_vartab.signal();
+                oinc++;
             }
             mutx_sweep.lock_free(lkx);
-            sync_vartab.signal();
         }
     }
 
     sync_vartab.signal();
 
 
-    if( sync_ofree.read()<=32 )
+    if( sync_ofree.read()==0 && oinc==0 )
     {
-        fprintf(stderr,"\nOREF overflow!\n");
+        printf("\nOREF overflow!\n");
         fflush(0);
+        abort();
         exit(1);
     }
 
-    if( sync_vfree.read()<=32 )
+    if( sync_vfree.read()==0 && vinc==0 )
     {
-        fprintf(stderr,"\nVREF overflow!\n");
+        printf("\nVREF overflow!\n");
         fflush(0);
+        abort();
         exit(1);
     }
 }
@@ -594,10 +588,12 @@ OREF *oref_new(void)
     // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
 
+    int counter=0;
     while( onext==sync_olast.read() )
     {
-        if( env_gcdebug )
+        if( env_gcdebug && ++counter==1 )
         {
+            counter=0;
             printf("%s%s$%s",YELLOW,BOLD,RESET);fflush(0);
         }
         if( 0==sync_gc.lock_try() )
@@ -635,10 +631,12 @@ VREF *vref_new(void)
     // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
 
+    int counter=0;
     while( vnext==sync_vlast.read() )
     {
-        if( env_gcdebug )
+        if( env_gcdebug && ++counter==1 )
         {
+            counter=0;
             printf("%s%s@%s",YELLOW,BOLD,RESET);fflush(0);
         }
         if( 0==sync_gc.lock_try() )

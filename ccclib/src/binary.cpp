@@ -77,19 +77,11 @@ void binary(BYTE const *ptr) //új példány rámutatással (new nélkül)
 {
 //stack:   --- s
 
-    VARTAB_LOCK();
+    VALUE v;
+    v.type=TYPE_BINARY;
+    v.data.binary.len=strlen((char*)ptr);
 
-    OREF *o=oref_new();
-    o->ptr.binptr=(BYTE*)ptr;
-    o->length=0;              //szemétgyűjtés NEM törli
-    o->color=COLOR_RESERVED;
-
-    VALUE *v=PUSHNIL();
-    v->data.binary.oref=o;
-    BINARYLEN(v)=strlen((char*)ptr);
-    v->type=TYPE_BINARY;
-
-    VARTAB_UNLOCK();
+    oref_new(&v,(void*)ptr,0); // PUSH (szemétgyűjtés nem törli)
 }
 
 //------------------------------------------------------------------------
@@ -104,30 +96,26 @@ void binaryn(BYTE const *ptr) //új példány másolással (new)
         error_bln("binaryn",stack-1,1);
     }
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new();
+    BYTE *binptr=0;
+    int length=0;
     if( len<=1 )
     {
-        o->ptr.binptr=oneletter(*ptr);
-        o->length=0; //szemétgyűjtés NEM törli
+        binptr=oneletter(*ptr);
+        length=0; //szemétgyűjtés NEM törli
         //printf("<n>");fflush(0);
     }
     else
     {
-        BYTE *p=newBinary(len+1);
-        memcpy(p,ptr,(len+1)*sizeof(BYTE));
-        o->ptr.binptr=p;
-        o->length=-1; //szemétgyűjtés törli
+        binptr=newBinary(len+1);
+        memcpy(binptr,ptr,(len+1)*sizeof(BYTE));
+        length=-1; //szemétgyűjtés törli
     }
-    o->color=COLOR_RESERVED;
 
-    VALUE *v=PUSHNIL();
-    v->data.binary.oref=o;
-    BINARYLEN(v)=len;
-    v->type=TYPE_BINARY;
+    VALUE v;
+    v.type=TYPE_BINARY;
+    v.data.binary.len=len;
 
-    VARTAB_UNLOCK();
+    oref_new(&v,binptr,length); // PUSH
 }
 
 //------------------------------------------------------------------------
@@ -146,31 +134,27 @@ void binarys(BYTE const *ptr, unsigned long len) //substring kimásolása new-va
         error_bln("binarys",stack-1,1);
     }
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new();
+    BYTE *binptr=0;
+    int length=0;
     if( len<=1 )
     {
-        o->ptr.binptr=oneletter(*ptr);
-        o->length=0; //szemétgyűjtés NEM törli
+        binptr=oneletter(*ptr);
+        length=0; //szemétgyűjtés NEM törli
         //printf("<s>");fflush(0);
     }
     else
     {
-        BYTE *p=newBinary(len+1);
-        memcpy(p,ptr,len*sizeof(BYTE));
-        *(p+len)=(BYTE)0x00;
-        o->ptr.binptr=p;
-        o->length=-1; //szemétgyűjtés törli
+        binptr=newBinary(len+1);
+        memcpy(binptr,ptr,len*sizeof(BYTE));
+        *(binptr+len)=(BYTE)0x00;
+        length=-1; //szemétgyűjtés törli
     }
-    o->color=COLOR_RESERVED;
 
-    VALUE *v=PUSHNIL();
-    v->data.binary.oref=o;
-    BINARYLEN(v)=len;
-    v->type=TYPE_BINARY;
+    VALUE v;
+    v.type=TYPE_BINARY;
+    v.data.binary.len=len;
 
-    VARTAB_UNLOCK();
+    oref_new(&v,binptr,length); // PUSH
 }
 
 //------------------------------------------------------------------------
@@ -185,21 +169,16 @@ BYTE *binaryl(unsigned long len) //inicializálatlan binary new-val
         error_bln("binaryl",stack-1,1);
     }
 
-    VARTAB_LOCK();
+    BYTE *binptr=newBinary(len+1);
+    *(binptr+len)=(BYTE)0x00;
 
-    OREF *o=oref_new();
-    o->ptr.binptr=newBinary(len+1);
-    *(o->ptr.binptr+len)=(BYTE)0x00;
-    o->length=-1;              //szemétgyűjtés törli
-    o->color=COLOR_RESERVED;
+    VALUE v;
+    v.type=TYPE_BINARY;
+    v.data.binary.len=len;
 
-    VALUE *v=PUSHNIL();
-    v->data.binary.oref=o;
-    BINARYLEN(v)=len;
-    v->type=TYPE_BINARY;
+    oref_new(&v,binptr,-1); // PUSH (szemétgyűjtés törli)
 
-    VARTAB_UNLOCK();
-    return o->ptr.binptr;
+    return binptr;
 }
 
 //------------------------------------------------------------------------

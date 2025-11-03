@@ -233,21 +233,13 @@ void _clp_open(int argno)
         _clp_break(1);
     }
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new();
-    o->ptr.binptr=(BYTE*)mapView;
-    o->length=0; //szemetgyujtes NEM torli
-    o->color=COLOR_RESERVED;
-
-    VALUE *v=PUSHNIL();
-    v->data.binary.oref=o;
-    v->data.binary.len=maplen;
-    v->type=TYPE_BINARY;
-
-    VARTAB_UNLOCK();
+    VALUE v;
+    v.type=TYPE_BINARY;
+    v.data.binary.len=maplen; //size
+    oref_new(&v,(void*)mapView,0); // PUSH (szemétgyűjtés nem törli)
 
     _rettop();
+
     CCC_EPILOG();
 }
 

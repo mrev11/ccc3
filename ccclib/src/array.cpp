@@ -114,7 +114,8 @@ void idxr() // indexkifejezes a jobboldalon
                 error_idx("idxr",a,2);
             }
             POP();
-            *TOP()=*(ARRAYPTR(a)+idx-1);
+            //*TOP()=*(ARRAYPTR(a)+idx-1);
+            valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
         }
 
         else if( a->type==TYPE_STRING )
@@ -177,7 +178,8 @@ void idxr0(double i) // indexkifejezes a jobboldalon (konstans index)
             number(idx);
             error_idx("idxr0",a,2);
         }
-        *TOP()=*( ARRAYPTR(a)+idx-1 );
+        //*TOP()=*( ARRAYPTR(a)+idx-1 );
+        valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
     }
 
     else if( a->type==TYPE_STRING )
@@ -231,7 +233,8 @@ void idxr0nil(double i) // mint idxr0, csak tulindexelesre NIL-t ad
         }
         else
         {
-            *TOP()=*( ARRAYPTR(a)+idx-1 );
+            //*TOP()=*( ARRAYPTR(a)+idx-1 );
+            valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
         }
     }
 
@@ -280,30 +283,19 @@ void array(int len) //stackrol levett elemekkel inicializalt array
 
     VALUE *base=stack-len;
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new();
-    o->length=len;
+    VALUE *valptr=0;
     if( len>0 )
     {
-        VALUE *p=newValue(len+1+EXTSIZ);
-        o->ptr.valptr=p;
-        (p+len)->type=TYPE_END;
-        (p+len)->data.size=len+EXTSIZ;
-        while(--len>=0) *(p+len)=*(base+len);
+        valptr=newValue(len+1+EXTSIZ);
+        valuecopy_lk(valptr,base,len);
+        (valptr+len)->type=TYPE_END;
+        (valptr+len)->data.size=len+EXTSIZ;
     }
-    else
-    {
-        o->ptr.valptr=NULL;
-    }
-    o->color=COLOR_RESERVED;
-
-    stack=base;
-    PUSHNIL();
-    base->data.array.oref=o;
-    base->type=TYPE_ARRAY;
-
-    VARTAB_UNLOCK();
+    VALUE v;
+    v.type=TYPE_ARRAY;
+    oref_new(&v,valptr,len); //PUSH
+    *base=*TOP();
+    stack=base+1;
 }
 
 
@@ -312,30 +304,19 @@ VALUE *array0(int len) //NIL-ekkel inicializalt 1-dimenzios array
 {
 // stack: --- A
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new();
-    o->length=len;
+    VALUE *valptr=0;
+    int length=len;
     if( len>0 )
     {
-        VALUE *p=newValue(len+1);
-        o->ptr.valptr=p;
-        (p+len)->type=TYPE_END;
-        (p+len)->data.size=len;
-        while(--len>=0) (p+len)->type=TYPE_NIL;
+        valptr=newValue(len+1);
+        (valptr+len)->type=TYPE_END;
+        (valptr+len)->data.size=len;
+        while(--len>=0) (valptr+len)->type=TYPE_NIL;
     }
-    else
-    {
-        o->ptr.valptr=NULL;
-    }
-    o->color=COLOR_RESERVED;
-
-    VALUE *v=PUSHNIL();
-    v->data.array.oref=o;
-    v->type=TYPE_ARRAY;
-
-    VARTAB_UNLOCK();
-    return o->ptr.valptr;
+    VALUE v;
+    v.type=TYPE_ARRAY;
+    oref_new(&v,valptr,length); //PUSH
+    return valptr;
 }
 
 //------------------------------------------------------------------------
@@ -392,6 +373,8 @@ push_call("aadd",base);
         error_arg("aadd",base,2);
     }
 
+    assign_lock();
+
     VALUE *p_old=ARRAYPTR(a);
     int len_old=ARRAYLEN(a);
     int len_ext=p_old?(p_old+len_old)->data.size:0;
@@ -400,34 +383,28 @@ push_call("aadd",base);
     if( len_new<=len_ext )
     {
         //helyben marad
-
-        *(p_old+len_new)=*(p_old+len_old); //TYPE_END elem
-        *(p_old+len_old)=*v;
+        valuecopy(p_old+len_new,p_old+len_old); // TYPE_END first!
+        valuecopy(p_old+len_old,v);
         ARRAYLEN(a)=len_new;
     }
     else
     {
         //uj buffer
-
-        VARTAB_LOCK();
-
         VALUE *p_new=newValue(len_new+1+EXTSIZ);
-
+        valuecopy(p_new,p_old,len_old);
+        valuecopy(p_new+len_old,v,1);
         (p_new+len_new)->type=TYPE_END;
         (p_new+len_new)->data.size=len_new+EXTSIZ;
-        *(p_new+len_old)=*v;
-        //while(--len_old>=0) *(p_new+len_old)=*(p_old+len_old);
-        valuemove(p_new,p_old,len_old);
+        ARRAYPTR(a)=p_new;
+        ARRAYLEN(a)=len_new;
 
         if( p_old )
         {
             deleteValue(p_old);
         }
-        ARRAYPTR(a)=p_new;
-        ARRAYLEN(a)=len_new;
-
-        VARTAB_UNLOCK();
     }
+
+    assign_unlock();
 //
 *base=*v;
 stack=base+1;
@@ -443,18 +420,21 @@ stack=base+min(argno,2);
 while(stack<base+2)PUSHNIL();
 push_call("asize",base);
 //
-    VALUE *a=base;
-    VALUE *l=base+1;
+    VALUE *arr=base;
+    VALUE *len=base+1;
 
-    if( a->type!=TYPE_ARRAY || l->type!=TYPE_NUMBER )
+    if( arr->type!=TYPE_ARRAY || len->type!=TYPE_NUMBER )
     {
         error_arg("asize",base,2);
     }
 
+    assign_lock();
+
+    VALUE *p_old=ARRAYPTR(arr);
+    int len_old=ARRAYLEN(arr);
+
     VALUE *p_new;
-    VALUE *p_old=ARRAYPTR(a);
-    int len_old=ARRAYLEN(a);
-    int len_new=D2INT(l->data.number);
+    int len_new=D2INT(len->data.number);
     int len_ext=p_old?((p_old+len_old)->data.size):0;
 
     if( p_old && len_new && (len_new<=len_ext) && ((len_ext-len_new)<(EXTSIZ<<2)) )
@@ -468,31 +448,21 @@ push_call("asize",base);
         {
             (p_old+i)->type=TYPE_NIL; //atomi
         }
-        ARRAYLEN(a)=len_new;
+        ARRAYLEN(arr)=len_new;
     }
     else
     {
         //uj buffer
-
-        VARTAB_LOCK();
+        //nem kell uj oref
 
         if( len_new>0 )
         {
-            int i;
-
             p_new=newValue(len_new+1+EXTSIZ);
-
-            //for(i=0; i<len_old && i<len_new; i++ )
-            //{
-            //    *(p_new+i)=*(p_old+i);
-            //}
-            valuemove(p_new,p_old,i=min(len_old,len_new));
-
-            for( ; i<len_new; i++ )
+            valuecopy(p_new,p_old,min(len_old,len_new));
+            for(int i=len_old; i<len_new; i++ )
             {
                 (p_new+i)->type=TYPE_NIL;
             }
-
             (p_new+len_new)->type=TYPE_END;
             (p_new+len_new)->data.size=len_new+EXTSIZ;
         }
@@ -501,17 +471,16 @@ push_call("asize",base);
             p_new=NULL;
             len_new=0;
         }
+        ARRAYPTR(arr)=p_new;
+        ARRAYLEN(arr)=len_new;
 
         if( p_old )
         {
             deleteValue(p_old);
         }
-
-        ARRAYPTR(a)=p_new;
-        ARRAYLEN(a)=len_new;
-
-        VARTAB_UNLOCK();
     }
+
+    assign_unlock();
 //
 stack=base+1;
 pop_call();
@@ -543,7 +512,7 @@ push_call("ains",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    valuemove(ptr+pos,ptr+pos-1,len-pos); //operator=
+    valuecopy_lk(ptr+pos,ptr+pos-1,len-pos);
     *(ptr+pos-1)=NIL;
 //
 *base=*a;
@@ -578,7 +547,7 @@ push_call("adel",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    valuemove(ptr+pos-1,ptr+pos,len-pos); //operator=
+    valuecopy_lk(ptr+pos-1,ptr+pos,len-pos);
     *(ptr+len-1)=NIL;
 //
 *base=*a;

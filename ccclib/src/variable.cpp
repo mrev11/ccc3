@@ -91,6 +91,7 @@ void vartab_ini(void);
 void *vartab_collector(void*);
 static void vartab_mark(void);
 static void mark(void);
+static void mark_sync(void);
 static void vartab_sweep(void);
 static void sweep();
 static void vartab_shade(VALUE*);
@@ -111,7 +112,7 @@ static void inventory();
 static varsync sync_gc;                 // szemetgyujtes vezerlese
 static varsync sync_vartab;             // rogziti a csucsokat
 static varsync sync_assign;             // rogziti az eleket
-static varlock mutx_sweep(31);          // sweep vezerlese
+static varsync sync_stack;
 
 static varsync sync_olast(&olast);
 static varsync sync_vlast(&vlast);
@@ -119,11 +120,21 @@ static varsync sync_ofree(&ofree);
 static varsync sync_vfree(&vfree);
 static varsync sync_oresv(&oresv);
 
+
+static varlock mutx_mark(31);           // mark vezerlese
+static varlock mutx_sweep(31);          // sweep vezerlese
+
+
 void vartab_lock()   {sync_vartab.lock();} // mutator
 void vartab_unlock() {sync_vartab.lock_free();} // mutator
 
 void assign_lock()   {sync_assign.lock();} // mutator
 void assign_unlock() {sync_assign.lock_free();} // mutator
+
+int  oref_lock(void *p) {return mutx_mark.lock(p);} // mutator
+int  oref_lock(int lkx) {return mutx_mark.lock(lkx);} // mutator
+void oref_unlock(int x) {mutx_mark.lock_free(x);} // mutator
+
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
@@ -131,13 +142,16 @@ static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
     sync_gc.init();
     sync_vartab.init();
     sync_assign.init();
-    mutx_sweep.init();
+    sync_stack.init();
 
     sync_olast.init();
     sync_vlast.init();
     sync_ofree.init();
     sync_vfree.init();
     sync_oresv.init();
+
+    mutx_mark.init();
+    mutx_sweep.init();
 }
 
 //---------------------------------------------------------------------------
@@ -298,7 +312,7 @@ static void vartab_mark(void)
     if(env_gcdebug)
     {
         static int count=0;
-        printf(" /GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
+        printf(" GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -314,15 +328,14 @@ static void vartab_mark(void)
 
     sync_vartab.lock();
     sync_assign.lock();
-    mark_phase=1;
-
+    mark_stack_ptr=mark_stack; // stack init
     alloc_count=0;
     alloc_size=0;
     oresv=0;
-    mark_stack_ptr=mark_stack; // stack init
+    mark_phase=1;
 
     //-------------------------------------
-    // minden BLACK oref -> WHITE
+    // minden oref -> WHITE
     //-------------------------------------
 
     for( unsigned int n=0; n<OREF_SIZE; n++ )
@@ -380,13 +393,13 @@ static void vartab_mark(void)
 }
 
 
-
 //---------------------------------------------------------------------------
 static void mark()
 {
     OREF *o;
     while( 0!=(o=mark_pop()) ) //pop
     {
+        int lkx=mutx_mark.lock(o);
         if( VALUE *v=o->ptr.valptr )
         {
             for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
@@ -395,6 +408,31 @@ static void mark()
             }
         }
         o->color=COLOR_BLACK;
+        mutx_mark.lock_free(lkx);
+        sync_oresv.inc();
+        ormax=max(ormax,oresv);
+    }
+}
+
+static void mark_sync() // with sync
+{
+    OREF *o;
+    while( 0!=(o=mark_pop()) ) //pop
+    {
+        sync_assign.lock();
+        int lkx=mutx_mark.lock(o);
+
+        if( VALUE *v=o->ptr.valptr )
+        {
+            for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
+            {
+                vartab_shade(v); //push
+            }
+        }
+        o->color=COLOR_BLACK;
+
+        mutx_mark.lock_free(lkx);
+        sync_assign.lock_free();
         sync_oresv.inc();
         ormax=max(ormax,oresv);
     }
@@ -452,18 +490,22 @@ static void vartab_shade(VALUE *v)
 //---------------------------------------------------------------------------
 static void mark_push(OREF*o)
 {
+    sync_stack.lock();
     *mark_stack_ptr++=(o-oref); //indexet tarol
+    sync_stack.lock_free();
 }
 
 //---------------------------------------------------------------------------
 static OREF *mark_pop()
 {
+    OREF *ox=0;
+    sync_stack.lock();
     if( mark_stack_ptr>mark_stack )
     {
-        int idx=(*--mark_stack_ptr);
-        return oref+idx;
+        ox=oref+(*--mark_stack_ptr);
     }
-    return 0;
+    sync_stack.lock_free();
+    return ox;
 }
 
 //---------------------------------------------------------------------------
@@ -561,7 +603,7 @@ static void sweep()
     sync_vartab.signal();
 
 
-    if( sync_ofree.read()==0 && oinc==0 )
+    if( sync_ofree.read()==0  && oinc==0 )
     {
         printf("\nOREF overflow!\n");
         fflush(0);
@@ -582,16 +624,17 @@ static void sweep()
 //---------------------------------------------------------------------------
 // az alabbiakat csak a mutatorok hivjak
 //---------------------------------------------------------------------------
-OREF *oref_new(void)
+OREF *oref_new(VALUE *v, void* ptr, int length)
 {
     // kizarolag a mutator hivja
-    // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
+
+    sync_vartab.lock();
 
     int counter=0;
     while( onext==sync_olast.read() )
     {
-        if( env_gcdebug && ++counter==1 )
+        if( env_gcdebug && ++counter==1  )
         {
             counter=0;
             printf("%s%s$%s",YELLOW,BOLD,RESET);fflush(0);
@@ -607,13 +650,20 @@ OREF *oref_new(void)
         }
         sync_vartab.wait(100);
     }
-    int lkx=mutx_sweep.lock(oref+onext);
+
     OREF *o=oref+onext;
-    o->color=COLOR_LOCKED;
-    onext=o->link;
-    o->link=-1;
-    sync_ofree.dec();
+    int lkx=mutx_sweep.lock(o);
+      o->color=COLOR_BLACK;
+      onext=o->link;
+      o->link=-1;
+      o->ptr.valptr=(VALUE*)ptr;
+      o->length=length;
     mutx_sweep.lock_free(lkx);
+    v->data.array.oref=o;
+    PUSH(v);
+    sync_ofree.dec();
+
+    sync_vartab.lock_free();
 
     if( sync_ofree.read()<OREF_LEVEL && 0==sync_gc.lock_try() )
     {
@@ -624,17 +674,19 @@ OREF *oref_new(void)
     return o;
 }
 
+
 //---------------------------------------------------------------------------
-VREF *vref_new(void)
+VREF *vref_new(VALUE *v)
 {
     // kizarolag a mutator hivja
-    // VARTAB_LOCK vedelem alatt
     // max egy mutator thread van itt
+
+    sync_vartab.lock();
 
     int counter=0;
     while( vnext==sync_vlast.read() )
     {
-        if( env_gcdebug && ++counter==1 )
+        if( env_gcdebug &&  ++counter==1  )
         {
             counter=0;
             printf("%s%s@%s",YELLOW,BOLD,RESET);fflush(0);
@@ -650,13 +702,20 @@ VREF *vref_new(void)
         }
         sync_vartab.wait(100);
     }
-    int lkx=mutx_sweep.lock(vref+vnext);
-    VREF *v=vref+vnext;
-    v->color=COLOR_LOCKED;
-    vnext=v->link;
-    v->link=-1;
-    sync_vfree.dec();
+
+    VREF *vr=vref+vnext;
+    unsigned lkx=mutx_sweep.lock(v);
+      vr->color=COLOR_BLACK;
+      vnext=vr->link;
+      vr->link=-1;
+      vr->value=*v;
+      v->type=TYPE_REF;
+      v->data.vref=vr;
     mutx_sweep.lock_free(lkx);
+    PUSH(v);
+    sync_vfree.dec();
+
+    sync_vartab.lock_free();
 
     if( sync_vfree.read()<VREF_LEVEL && 0==sync_gc.lock_try() )
     {
@@ -664,8 +723,9 @@ VREF *vref_new(void)
         sync_gc.lock_free();
     }
 
-    return v;
+    return vr;
 }
+
 
 //---------------------------------------------------------------------------
 VALUE *newValue(unsigned int len)
@@ -717,7 +777,7 @@ void deleteValue(VALUE *v)
 }
 
 //---------------------------------------------------------------------------
-VALUE VALUE::operator=(VALUE v)
+VALUE VALUE::operator=(VALUE v) // compat -> valuecopy_lk
 {
     sync_assign.lock();
     type=v.type;
@@ -727,22 +787,37 @@ VALUE VALUE::operator=(VALUE v)
 }
 
 //---------------------------------------------------------------------------
-void valuemove(VALUE *to, VALUE *fr, int n)
+void valuemove(VALUE *to, VALUE *fr, int n) // compat -> valuecopy_lk
 {
-    if( to<fr )
-    {
-        for( int i=0; i<n; i++ )
-        {
-            to[i]=fr[i];
-        }
-    }
-    else
-    {
-        while( --n>=0 )
-        {
-            to[n]=fr[n];
-        }
-    }
+    assign_lock();
+    memmove( (void*)to,(void*)fr,n*sizeof(VALUE) );
+    assign_unlock();
+}
+
+//---------------------------------------------------------------------------
+void valuecopy(VALUE *to, VALUE *fr)
+{
+    memmove( (void*)to, (void*)fr, sizeof(VALUE) );
+}
+
+void valuecopy(VALUE *to, VALUE *fr, int n)
+{
+    memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
+}
+
+//---------------------------------------------------------------------------
+void valuecopy_lk(VALUE *to, VALUE *fr)
+{
+    assign_lock();
+    memmove( (void*)to, (void*)fr, sizeof(VALUE) );
+    assign_unlock();
+}
+
+void valuecopy_lk(VALUE *to, VALUE *fr, int n)
+{
+    assign_lock();
+    memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
+    assign_unlock();
 }
 
 
@@ -839,99 +914,4 @@ static void sleep_micro(int micro)
 }
 
 //---------------------------------------------------------------------------
-static void valid_oref(OREF *o) // hibas adatok felderitesehez
-{
-    unsigned x=((unsigned)(o-oref))/sizeof(OREF);
-    if( x>=OREF_SIZE )
-    {
-        printf("\ninvalid oref 0x%2x\n",x);
-        fflush(0);
-        raise(SIGABRT);
-    }
-}
-
-static void valid_value(VALUE *v) // hibas adatok felderitesehez
-{
-         if( v->type==TYPE_END     );
-    else if( v->type==TYPE_NIL     );
-    else if( v->type==TYPE_NUMBER  );
-    else if( v->type==TYPE_DATE    );
-    else if( v->type==TYPE_FLAG    );
-    else if( v->type==TYPE_POINTER );
-    else if( v->type==TYPE_BINARY  );
-    else if( v->type==TYPE_STRING  );
-    else if( v->type==TYPE_ARRAY   );
-    else if( v->type==TYPE_BLOCK   );
-    else if( v->type==TYPE_OBJECT  );
-    else if( v->type==TYPE_REF     );
-    else
-    {
-        printf("\ninvalid type 0x%2x\n",v->type);
-        fflush(0);
-        raise(SIGABRT);
-    }
-
-    if( v->type<TYPE_GARBAGE )
-    {
-        // nincs memoria objektuma
-    }
-    else if( v->type==TYPE_REF )
-    {
-        // itt nem vizsgaljuk
-    }
-    else if( OREF *o=v->data.binary.oref )
-    {
-        //BINARY
-        //STRING
-        //ARRAY
-        //BLOCK
-        //OBJECT
-
-        valid_oref(o);
-    }
-    else
-    {
-        // a prototype objectekben nincs oref
-        // ezert nem vizsgalhato az oref letezese
-        // egyebkent normalisan csak a BLOCK-okban
-        // lehetne oref==NULL
-    }
-}
-
-//---------------------------------------------------------------------------
-static void inventory()
-{
-    int white = 0;
-    int gray  = 0;
-    int black = 0;
-    int locked= 0;
-
-    for ( unsigned int n=0; n<OREF_SIZE; n++ )
-    {
-        if( oref[n].color==COLOR_WHITE )
-        {
-            white++;
-        }
-        else if( oref[n].color==COLOR_GRAY )
-        {
-            gray++;
-        }
-        else if( oref[n].color==COLOR_BLACK )
-        {
-            black++;
-        }
-        else if( oref[n].color==COLOR_LOCKED )
-        {
-            locked++;
-        }
-    }
-    printf("inventory: white=%s black=%s locked=%d (%d) ",
-                       decimal(white),decimal(black),locked, white+gray+black+locked);
-    fflush(0);
-
-}
-
-//---------------------------------------------------------------------------
-
-
 

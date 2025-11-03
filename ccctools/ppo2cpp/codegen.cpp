@@ -1273,12 +1273,7 @@ int codegen_function_classid_LPAR_ldsym_RPAR_newspec_lnewline_lslot(parsenode *p
     }
 
     char class_file[256];
-    #ifdef WINDOWS
-        int pid=(int)GetCurrentProcessId();
-    #else
-        int pid=getpid();
-    #endif
-    sprintf(class_file,"class_%s%s%d.tmp",curnsp,classid,pid);
+    sprintf(class_file,"class_%s%s%d.tmp",curnsp,classid,getpid());
     FILE *cls=fopen(class_file,"w");
 
 #ifdef   CLID_EXTERNAL

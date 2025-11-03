@@ -1,4 +1,11 @@
-2025.11.02  ppo2cpp 5.7.1  hibajavitas: 
+2025-11-03
+  vartab_lock() athelyezve oref_new/vref_new-ba;
+  PUSH assign_lock vedelem alatt;
+  operator= helyett valuecopy_lk;
+  valuemove() helyett valuecopy_lk;
+  assign()-ban valuecopy_lk;
+
+2025.11.02  ppo2cpp 5.7.1  hibajavitas:
    Ha tobb prg modulban is definialva volt ugyanolyan nevu class,
    akkor a classnameNew generalaskor hasznalt ideiglenes fajlok neve utkozott;
 
@@ -10,10 +17,10 @@
 2025-10-16 gc sweep fazisban szelektivebb lockolas a varlock-kal;
 
 2025-10-18
-  pthread_atfork() collector mutexei inicializalva (unlock helyett);  
+  pthread_atfork() collector mutexei inicializalva (unlock helyett);
 
 2025-10-15
-  pthread_atfork() a collector mutexeinek unlockolasara;  
+  pthread_atfork() a collector mutexeinek unlockolasara;
   varsync valtozok bevezetve;
 
 2025-10-13  PUSH elkeruli operator=-t;
@@ -23,7 +30,7 @@
   thread_yield();
   javitas: pthread_cond_timedwait()-ben abszolut idot kell megadni;
   javitas: push_symbol_ref() VARTAB_LOCK-on belul stackre teszi az eredmenyt;
-  gc sweep fazisa parhuzamositva; 
+  gc sweep fazisa parhuzamositva;
 
 2025-09-14 gcc 15.2.1 warningok javitva;
 
@@ -31,7 +38,7 @@
   DELTHRDATA makro megszunt,
   a pthread_key_create()-ban megadott fuggveny torli a thread_data-t;
 
-2025-09-12 
+2025-09-12
   variable.cpp: felcserelt sorrend, optimalizalasok;
   thread_data-ban kulon mutex a szalak listajanak vedelmere;
   Windows multithread API helyettesitve pthread API-val (MSYS).
@@ -42,10 +49,10 @@
   ott van csak signal.h, ahol szukseges, igy keresni lehet a hasznalatara;
   regi szignal kezelo kod torolve;
   minden struktura tag es szin konstans a sajat neven;
-  OREF es VREF tagok cserelve: next helyett color, age helyett link;  
+  OREF es VREF tagok cserelve: next helyett color, age helyett link;
   ->next=NEXT_RESERVED helyett mindenhol ->color=COLOR_RESERVED
-  signal_lock es signal_unlock fuggvenyek kiszedve;  
-  SIGNAL_LOCK es SIGNAL_UNLOCK makro kiszedve;  
+  signal_lock es signal_unlock fuggvenyek kiszedve;
+  SIGNAL_LOCK es SIGNAL_UNLOCK makro kiszedve;
   xmethod2 torolve;
   xmethod4 torolve;
   szemetgyujtes atirva;
@@ -95,7 +102,7 @@
 2025-05-18
    tdc kodgeneratorok akkor is kiirjak a kimenetet, ha az valtozatlan.
 
-2025-05-17 
+2025-05-17
    msk2say-ben javitva a getek sorbarendezese;
 
 2025-05-16 lemon.c-ben atirva az -Wold-style-definition-t okozo definiciok;
@@ -112,7 +119,7 @@
 2025-04-27
   A maszkok (say feliratok es textlabelek) szine retegenkent  konfiguralhato;
 
-2025-04-25 
+2025-04-25
   A CCC_LOCK_SEMAPHOR environment variable hasznalata megszunt,
   a fixen bedrotozott '.lock_transema' nevu fajlt hasznalja szemafornak,
   a fajl automatikusan letrejon, nem kell foglalkozni vele a konfiguracioban;
@@ -132,7 +139,7 @@
   nameext   : fspec-bol elhagyva a path (esetleg ures)
   name      : nameext-bol elhagyva az extension
   extension : nameext-bol elhagyva a name ('.' resze az extension-nek)
-  
+
 
 2025-03-22
   tabobj nevkepzes valtozott: _<tabname>.tdc helyett table.<tabname>.tdc;

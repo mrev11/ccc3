@@ -28,12 +28,12 @@
 #include <string.h>
 #include <cccapi.h>
 
-#ifdef _TERMUX_                                                                                                         
-#define  aligned_alloc  memalign                                                                                        
-// termuxon nincs  aligned_alloc()                                                                                      
-// netbsd-n nincs  memalign()                                                                                           
-// ugyanazt csinaljak                                                                                                   
-#endif      
+#ifdef _TERMUX_
+#define  aligned_alloc  memalign
+// termuxon nincs  aligned_alloc()
+// netbsd-n nincs  memalign()
+// ugyanazt csinaljak
+#endif
 
 //------------------------------------------------------------------------
 static CHAR *oneletter(int c)
@@ -76,27 +76,18 @@ void _clp___maxstrlen(int argno)
 }
 
 //------------------------------------------------------------------------
-void string(CHAR const *ptr) //új példány rámutatással (new nélkül)
+void string(CHAR const *ptr) //uj peldany ramutatassal (new nelkul)
 {
 //stack:   --- s
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new(); 
-    o->ptr.chrptr=(CHAR*)ptr;
-    o->length=0;              //szemétgyűjtés NEM törli 
-    o->color=COLOR_RESERVED;
- 
-    VALUE *v=PUSHNIL();
-    v->data.string.oref=o;
-    STRINGLEN(v)=wcslen(ptr);
-    v->type=TYPE_STRING;
- 
-    VARTAB_UNLOCK();
+    VALUE v;
+    v.type=TYPE_STRING;
+    v.data.string.len=wcslen(ptr);
+    oref_new(&v,(void*)ptr,0); // PUSH (szemetgyujtes nem torli)
 }
 
 //------------------------------------------------------------------------
-void stringn(CHAR const *ptr) //új példány másolással (new)
+void stringn(CHAR const *ptr) //uj peldany masolassal (new)
 {
 //stack:   --- s
 
@@ -107,33 +98,28 @@ void stringn(CHAR const *ptr) //új példány másolással (new)
         error_cln("stringn",stack-1,1);
     }
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new(); 
+    CHAR *chrptr=0;
+    int length=0;
     if( (len<=1) && (*ptr<256) )
     {
-        o->ptr.chrptr=oneletter(*ptr);
-        o->length=0; //szemétgyűjtés NEM törli
-        //printf("<N>");fflush(0);
+        chrptr=oneletter(*ptr);
+        length=0; //szemetgyujtes NEM torli
+        //printf("<n>");fflush(0);
     }
     else
     {
-        CHAR *p=newChar(len+1);
-        wmemcpy(p,ptr,len+1);
-        o->ptr.chrptr=p;
-        o->length=-1; //szemétgyűjtés törli
+        chrptr=newChar(len+1);
+        wmemcpy(chrptr,ptr,len+1);
+        length=-1; //szemetgyujtes torli
     }
-    o->color=COLOR_RESERVED;
- 
-    VALUE *v=PUSHNIL();
-    v->data.string.oref=o;
-    STRINGLEN(v)=len;
-    v->type=TYPE_STRING;
 
-    VARTAB_UNLOCK();
+    VALUE v;
+    v.type=TYPE_STRING;
+    v.data.string.len=len;
+    oref_new(&v,chrptr,length); // PUSH
 }
 
-void stringnb(char const *ptr) //új string bytearrayből
+void stringnb(char const *ptr) //uj string bytearraybol
 {
     unsigned reslen=0;
     CHAR *p=utf8_to_wchar(ptr,strlen(ptr),&reslen);
@@ -142,14 +128,14 @@ void stringnb(char const *ptr) //új string bytearrayből
 }
 
 //------------------------------------------------------------------------
-void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-val
+void strings(CHAR const *ptr, unsigned long len) //substring kimasolasa new-val
 {
 //stack:   --- s
 
     if( len==0 )
     {
         ptr=L"";
-    } 
+    }
 
     if(len>MAXSTRLEN)
     {
@@ -157,34 +143,30 @@ void strings(CHAR const *ptr, unsigned long len) //substring kimásolása new-va
         error_cln("strings",stack-1,1);
     }
 
-    VARTAB_LOCK();
-
-    OREF *o=oref_new(); 
+    CHAR *chrptr=0;
+    int length=0;
     if( (len<=1) && (*ptr<256) )
     {
-        o->ptr.chrptr=oneletter(*ptr);
-        o->length=0; //szemétgyűjtés NEM törli
+        chrptr=oneletter(*ptr);
+        length=0; //szemetgyujtes NEM torli
         //printf("<S>");fflush(0);
     }
     else
     {
-        CHAR *p=newChar(len+1);
-        wmemcpy(p,ptr,len);
-        *(p+len)=(CHAR)0x00;
-        o->ptr.chrptr=p;
-        o->length=-1; //szemétgyűjtés törli 
+        chrptr=newChar(len+1);
+        wmemcpy(chrptr,ptr,len);
+        *(chrptr+len)=(CHAR)0x00;
+        length=-1; //szemetgyujtes torli
     }
-    o->color=COLOR_RESERVED;
-  
-    VALUE *v=PUSHNIL();
-    v->data.string.oref=o;
-    STRINGLEN(v)=len;
-    v->type=TYPE_STRING;
 
-    VARTAB_UNLOCK();
+    VALUE v;
+    v.type=TYPE_STRING;
+    v.data.string.len=len;
+
+    oref_new(&v,chrptr,length); // PUSH
 }
 
-void stringsb(char const *ptr, unsigned long len) //új string bytearrayből
+void stringsb(char const *ptr, unsigned long len) //uj string bytearraybol
 {
     unsigned reslen=0;
     CHAR *p=utf8_to_wchar(ptr,len,&reslen);
@@ -193,7 +175,7 @@ void stringsb(char const *ptr, unsigned long len) //új string bytearrayből
 }
 
 //------------------------------------------------------------------------
-CHAR *stringl(unsigned long len) //inicializálatlan string new-val
+CHAR *stringl(unsigned long len) //inicializalatlan string new-val
 {
 //stack:   --- s
 //return: string pointer
@@ -204,21 +186,15 @@ CHAR *stringl(unsigned long len) //inicializálatlan string new-val
         error_cln("stringl",stack-1,1);
     }
 
-    VARTAB_LOCK();
+    CHAR *chrptr=newChar(len+1);
+    *(chrptr+len)=(CHAR)0x00;
 
-    OREF *o=oref_new();
-    o->ptr.chrptr=newChar(len+1);
-    *(o->ptr.chrptr+len)=(CHAR)0x00; 
-    o->length=-1;              //szemétgyűjtés törli  
-    o->color=COLOR_RESERVED;
- 
-    VALUE *v=PUSHNIL();
-    v->data.string.oref=o;
-    STRINGLEN(v)=len;
-    v->type=TYPE_STRING;
- 
-    VARTAB_UNLOCK();
-    return o->ptr.chrptr;
+    VALUE v;
+    v.type=TYPE_STRING;
+    v.data.string.len=len;
+
+    oref_new(&v,chrptr,-1); // PUSH (szemetgyujtes torli)
+    return chrptr;
 }
 
 //------------------------------------------------------------------------

@@ -297,10 +297,12 @@ void _method6_::eval(int argno)
 
         if( argno>1 ) //beírás
         {
-            *v=*(base+1);
+            //*v=*(base+1);
+            valuecopy_lk(v,base+1);
         }
 
-        *base=*v;
+        //*base=*v;
+        valuecopy_lk(base,v);
         stack=base+1;
     }
     

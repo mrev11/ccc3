@@ -44,14 +44,7 @@ void push_symbol_ref(VALUE *v) // @ par, blokk kornyezet
 {
     if( v->type!=TYPE_REF )
     {
-        VARTAB_LOCK();
-        VREF *vr=vref_new();
-        vr->value=*v;
-        vr->color=COLOR_RESERVED;
-        v->data.vref=vr;
-        v->type=TYPE_REF;
-        PUSH(v);
-        VARTAB_UNLOCK();
+        vref_new(v); // PUSH
     }
     else
     {
@@ -85,11 +78,13 @@ void assign(VALUE *lside)
 {
     if( lside->type!=TYPE_REF )
     {
-        *lside=*TOP();
+        //*lside=*TOP();
+        valuecopy_lk(lside,TOP());
     }
     else
     {
-        lside->data.vref->value=*TOP();
+        //lside->data.vref->value=*TOP();
+        valuecopy_lk(&lside->data.vref->value,TOP());
     }
 }
 
@@ -98,11 +93,13 @@ void assign2(VALUE *lside) //tombindexeleshez
 {
     if( lside->type!=TYPE_REF )
     {
-        *lside=*TOP2();
+        //*lside=*TOP2();
+        valuecopy_lk(lside,TOP2());
     }
     else
     {
-        lside->data.vref->value=*TOP2();
+        //lside->data.vref->value=*TOP2();
+        valuecopy_lk(&lside->data.vref->value,TOP2());
     }
     POP();
 }
@@ -113,30 +110,23 @@ void block(void (*code)(int), int len)
     if( 0<len )
     {
         VALUE *base=stack-len;
-
-        VARTAB_LOCK();
-        OREF *orp=oref_new();
-        VALUE *p=newValue(len+1);
-        orp->length=len;
-        orp->ptr.valptr=p;
-        (p+len)->type=TYPE_END;
-        (p+len)->data.size=len;
-        while(--len>=0) *(p+len)=*(base+len);
-        orp->color=COLOR_RESERVED;
- 
-        stack=base;
-        PUSHNIL();
-        base->data.block.oref=orp;
-        base->data.block.code=code;
-        base->type=TYPE_BLOCK;
-        VARTAB_UNLOCK();
+        VALUE *valptr=newValue(len+1);
+        (valptr+len)->type=TYPE_END;
+        (valptr+len)->data.size=len;
+        valuecopy_lk(valptr,base,len);
+        VALUE v;
+        v.type=TYPE_BLOCK;
+        v.data.block.code=code;
+        oref_new(&v,valptr,len); // PUSH
+        *base=*TOP();
+        stack=base+1;
     }
     else
     {
-        VALUE *base=PUSHNIL();
-        base->data.block.code=code;
-        base->data.block.oref=NULL;
-        base->type=TYPE_BLOCK;
+        stack->type=TYPE_BLOCK;
+        stack->data.block.code=code;
+        stack->data.block.oref=0;
+        stack++;
     }
 }
 

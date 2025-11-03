@@ -93,19 +93,10 @@ void _clp_shmat(int argno)
     struct shmid_ds stat; 
     if( (buffer!=(void*)-1) && (0==shmctl(id,IPC_STAT,&stat)) )
     {
-        VARTAB_LOCK();
-
-        OREF *o=oref_new(); 
-        o->ptr.binptr=(BYTE*)buffer;
-        o->length=0; //szemétgyűjtés NEM törli 
-        o->color=COLOR_RESERVED;
- 
-        VALUE *v=PUSHNIL();
-        v->data.binary.oref=o;
-        v->data.binary.len=stat.shm_segsz; //size
-        v->type=TYPE_BINARY;
- 
-        VARTAB_UNLOCK();
+        VALUE v;
+        v.type=TYPE_BINARY;
+        v.data.binary.len=stat.shm_segsz; //size
+        oref_new(&v,(void*)buffer,0); // PUSH (szemétgyűjtés nem törli)
         _rettop();
     }
     else

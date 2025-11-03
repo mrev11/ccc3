@@ -104,7 +104,7 @@ extern VALUE ststackbuf[];
 #define PUSHDAT()  (stack->type=TYPE_DATE,stack++)
 #define PUSHPTR()  (stack->type=TYPE_POINTER,stack++)
 #define PUSHNUM()  (stack->type=TYPE_NUMBER,stack++)
-#define PUSH(v)    (stack->type=(v)->type,stack->data=(v)->data,stack++) // nem operator=
+#define PUSH(v)    (assign_lock(),stack->type=(v)->type,stack->data=(v)->data,stack++,assign_unlock())
 
 //Több szál esetén a pop()-> felhasználása tilos,
 //ezért pop() visszatérése VALUE*-ról void-ra változott.

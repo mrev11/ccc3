@@ -198,8 +198,11 @@ extern OREF* oref_new(void);
 extern VREF* vref_new(void);
 extern OREF* oref_new(VALUE*,void*,int);
 extern VREF* vref_new(VALUE*);
-extern void valuemove(VALUE*,VALUE*,int);
-extern void valuemove0(VALUE*,VALUE*,int);
+extern void valuemove(VALUE*,VALUE*,int); //compat -> valuecopy_lk
+extern void valuecopy(VALUE*,VALUE*);
+extern void valuecopy(VALUE*,VALUE*,int);
+extern void valuecopy_lk(VALUE*,VALUE*);
+extern void valuecopy_lk(VALUE*,VALUE*,int);
 
 //dtos.obj:
 extern long stod(const char*);

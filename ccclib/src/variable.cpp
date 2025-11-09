@@ -44,6 +44,7 @@ static const char *DEFAULT="";
 
 //---------------------------------------------------------------------------
 
+
 static OREF *oref;          // oref tomb
 static VREF *vref;          // vref tomb
 
@@ -57,9 +58,10 @@ static unsigned int ofree;  // szabad orefek szama
 static unsigned int vfree;  // szabad vrefek szama
 
 static unsigned int oresv;  // foglalt orefek a mark vegen
-static unsigned int ormax;  // foglalt orefek maximuma 
+static unsigned int ormax;  // foglalt orefek maximuma
 
 static char *env_gcdebug=getenv("CCC_GCDEBUG");
+static char *env_marksync=getenv("CCC_MARKSYNC");
 static char *env_orefsize=getenv("CCC_OREFSIZE");
 static char *env_vrefsize=getenv("CCC_VREFSIZE");
 static char *env_oreflevel=getenv("CCC_OREFLEVEL");
@@ -79,13 +81,14 @@ static unsigned long ALLOC_SIZE  = OREF_SIZE*256;
 static unsigned int  alloc_count=0;  // foglalasok szama
 static unsigned long alloc_size=0;   // foglalasok osszmerete
 
-static unsigned int  mark_phase=0;
+static unsigned int mark_phase=0;
 
 static int *mark_stack=0;
 static int *mark_stack_ptr=0;
 
 static int  collector_tid=0;
 
+static int gc_count=0;
 
 void vartab_ini(void);
 void *vartab_collector(void*);
@@ -189,7 +192,7 @@ void vartab_ini(void)
         OREF_LEVEL=OREF_SIZE/10;
     }
     OREF_LEVEL=min(OREF_LEVEL,OREF_SIZE/2);
-    
+
     if( env_vreflevel )
     {
         VREF_LEVEL=atol(env_vreflevel);
@@ -311,8 +314,7 @@ static void vartab_mark(void)
 {
     if(env_gcdebug)
     {
-        static int count=0;
-        printf(" GC(%d)  %sMARK:%s ",++count,BOLD,RESET);
+        printf(" tGC(%d)  %sMARK:%s ",++gc_count,BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -332,7 +334,6 @@ static void vartab_mark(void)
     alloc_count=0;
     alloc_size=0;
     oresv=0;
-    mark_phase=1;
 
     //-------------------------------------
     // minden oref -> WHITE
@@ -378,11 +379,28 @@ static void vartab_mark(void)
     // amig el nem tunik minden GRAY oref
     //-------------------------------------
 
-    mark();
+    if( env_marksync && 0==strcmp(env_marksync,"enabled") )
+    {
+        // dolgozo szalak futasa engedelyezve
+        // a szemetgyujtes mark fazisa kozben
 
-    mark_phase=0;
+        mark_phase=1;
+        if( env_gcdebug ){ printf("%s%s!%s",BOLD,YELLOW,RESET);fflush(0); }
+        sync_assign.lock_free();
+        sync_vartab.lock_free();
+
+        mark_sync();
+
+        sync_vartab.lock();
+        sync_assign.lock();
+        mark_phase=0;
+        if( env_gcdebug ){ printf("%s%s!%s ",BOLD,YELLOW,RESET);fflush(0); }
+    }
+
+    mark();
     sync_assign.lock_free();
     sync_vartab.lock_free();
+
 
     if(env_gcdebug)
     {
@@ -396,10 +414,9 @@ static void vartab_mark(void)
 //---------------------------------------------------------------------------
 static void mark()
 {
-    OREF *o;
-    while( 0!=(o=mark_pop()) ) //pop
+    while( OREF *o=mark_pop() ) //pop
     {
-        int lkx=mutx_mark.lock(o);
+        o->color=COLOR_BLACK;
         if( VALUE *v=o->ptr.valptr )
         {
             for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
@@ -407,21 +424,17 @@ static void mark()
                 vartab_shade(v); //push
             }
         }
-        o->color=COLOR_BLACK;
-        mutx_mark.lock_free(lkx);
         sync_oresv.inc();
         ormax=max(ormax,oresv);
     }
 }
 
-static void mark_sync() // with sync
+static void mark_sync()
 {
-    OREF *o;
-    while( 0!=(o=mark_pop()) ) //pop
+    while( OREF *o=mark_pop() ) //pop
     {
         sync_assign.lock();
-        int lkx=mutx_mark.lock(o);
-
+        o->color=COLOR_BLACK;
         if( VALUE *v=o->ptr.valptr )
         {
             for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
@@ -429,9 +442,6 @@ static void mark_sync() // with sync
                 vartab_shade(v); //push
             }
         }
-        o->color=COLOR_BLACK;
-
-        mutx_mark.lock_free(lkx);
         sync_assign.lock_free();
         sync_oresv.inc();
         ormax=max(ormax,oresv);
@@ -475,7 +485,7 @@ static void vartab_shade(VALUE *v)
         if( o!=NULL && o->color==COLOR_WHITE )
         {
             o->color=COLOR_GRAY;
-            mark_push(v->data.array.oref);
+            mark_push(o);
         }
     }
     else //if( v->type>=TYPE_REF )
@@ -484,6 +494,16 @@ static void vartab_shade(VALUE *v)
         VREF *r=v->data.vref;
         vartab_shade( &(r->value) );
         r->color=COLOR_BLACK;
+    }
+}
+
+//---------------------------------------------------------------------------
+void oref_gray(OREF *o) // mutator
+{
+    if( mark_phase && o->color!=COLOR_GRAY  )
+    {
+        o->color=COLOR_GRAY;
+        mark_push(o);
     }
 }
 
@@ -524,7 +544,7 @@ static void vartab_sweep()
         printf("ofree=%s vfree=%s  %sMAX:%s %s",
             decimal(sync_ofree.read()),
             decimal(sync_vfree.read()),
-            BOLD,RESET, 
+            BOLD,RESET,
             decimal(ormax));
 
         printf("\n");
@@ -726,7 +746,6 @@ VREF *vref_new(VALUE *v)
     return vr;
 }
 
-
 //---------------------------------------------------------------------------
 VALUE *newValue(unsigned int len)
 {
@@ -777,27 +796,27 @@ void deleteValue(VALUE *v)
 }
 
 //---------------------------------------------------------------------------
-VALUE VALUE::operator=(VALUE v) // compat -> valuecopy_lk
+VALUE &VALUE::operator=(VALUE &v)
 {
     sync_assign.lock();
     type=v.type;
     data=v.data;
+    if( mark_phase && this->type>TYPE_GARBAGE )
+    {
+        vartab_shade(this);
+    }
     sync_assign.lock_free();
     return *this;
-}
-
-//---------------------------------------------------------------------------
-void valuemove(VALUE *to, VALUE *fr, int n) // compat -> valuecopy_lk
-{
-    assign_lock();
-    memmove( (void*)to,(void*)fr,n*sizeof(VALUE) );
-    assign_unlock();
 }
 
 //---------------------------------------------------------------------------
 void valuecopy(VALUE *to, VALUE *fr)
 {
     memmove( (void*)to, (void*)fr, sizeof(VALUE) );
+    if( mark_phase && to->type>TYPE_GARBAGE )
+    {
+        vartab_shade(to);
+    }
 }
 
 void valuecopy(VALUE *to, VALUE *fr, int n)
@@ -808,16 +827,20 @@ void valuecopy(VALUE *to, VALUE *fr, int n)
 //---------------------------------------------------------------------------
 void valuecopy_lk(VALUE *to, VALUE *fr)
 {
-    assign_lock();
+    sync_assign.lock();
     memmove( (void*)to, (void*)fr, sizeof(VALUE) );
-    assign_unlock();
+    if( mark_phase && to->type>TYPE_GARBAGE )
+    {
+        vartab_shade(to);
+    }
+    sync_assign.lock_free();
 }
 
 void valuecopy_lk(VALUE *to, VALUE *fr, int n)
 {
-    assign_lock();
+    sync_assign.lock();
     memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
-    assign_unlock();
+    sync_assign.lock_free();
 }
 
 

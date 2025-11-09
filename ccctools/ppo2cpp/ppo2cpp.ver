@@ -1,3 +1,5 @@
+2025.11.09 -- 5.7.2  operator=(VALUE &v)-vel is mukodo kodot keszit;
+
 2025.11.02 -- 5.7.1  hibajavitas: 
    Ha tobb prg modulban is definialva volt ugyanolyan nevu class,
    akkor a classnameNew generalaskor hasznalt ideiglenes fajlok neve utkozott;

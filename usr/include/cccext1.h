@@ -77,12 +77,20 @@ extern void binaryx(const char*);
 
 //push.obj:
 extern void push(VALUE*);
+extern void PUSH(VALUE*);
 extern void push_blkenv(VALUE*);
 extern void push_symbol(VALUE*);
 extern void push_symbol_ref(VALUE*);
 extern void dup(void);
+extern void DUP(void);
+extern void DUP2(void);
+extern void DUP3(void);
 extern void swap(void);
+extern void SWAP(void);
 extern void pop(void);
+extern void POP(void);
+extern void POP2(void);
+extern void POP3(void);
 extern void block(void(*)(int),int);
 extern VALUE *blkenv(VALUE*);
 extern void assign(VALUE*);
@@ -194,11 +202,9 @@ extern char *newBinary(unsigned);
 extern wchar_t *newChar(unsigned);
 extern VALUE* newValue(unsigned);
 extern void deleteValue(VALUE*);
-extern OREF* oref_new(void);
-extern VREF* vref_new(void);
 extern OREF* oref_new(VALUE*,void*,int);
 extern VREF* vref_new(VALUE*);
-extern void valuemove(VALUE*,VALUE*,int); //compat -> valuecopy_lk
+extern void oref_gray(OREF*);
 extern void valuecopy(VALUE*,VALUE*);
 extern void valuecopy(VALUE*,VALUE*,int);
 extern void valuecopy_lk(VALUE*,VALUE*);

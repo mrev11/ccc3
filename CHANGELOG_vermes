@@ -1,3 +1,13 @@
+
+2025-11-09
+  PUSH, POP, DUP, SWAP makrok helyett fuggvenyek;
+  operator= VALUE ertek helyett &VAlUE referenciaval;
+  codegen alkalmazkodik az uj operator=-hoz;
+  xmethod6-ban assign_lock;
+  CCC_MARKSYNC=enabled engedelyezi a dolgozo szalak futasat a 
+  szemetgyujtes mark fazisa kozben (default: nincs engedelyezve).
+
+
 2025-11-03
   vartab_lock() athelyezve oref_new/vref_new-ba;
   PUSH assign_lock vedelem alatt;

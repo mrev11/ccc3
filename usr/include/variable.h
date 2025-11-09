@@ -104,9 +104,7 @@ struct VALUE
 
     } data;
 
-    VALUE operator=(VALUE v);
-    //tobbszalu esetben specialis ertekadas
-    //variable.cpp-ben van definialva
+    VALUE &operator=(VALUE &v); // defined in variable.cpp
 };
 
 
@@ -141,10 +139,7 @@ struct VARTAB_SETSIZE
 };
 
 
-extern VREF* vref_new(void);
-extern OREF* oref_new(void);
 extern void  vartab_ini(void);
-
 extern void  vartab_setsize( struct VARTAB_SETSIZE *vss );
 extern VALUE *newValue(unsigned int len);
 extern CHAR  *newChar(unsigned int len);

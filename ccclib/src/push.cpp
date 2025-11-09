@@ -27,6 +27,15 @@ void push(VALUE *v)
     PUSH(v);
 }
 
+void PUSH(VALUE *v)
+{
+    assign_lock();
+    stack->type=(v)->type;
+    stack->data=(v)->data;
+    stack++;
+    assign_unlock();
+}
+
 //------------------------------------------------------------------------
 void push_symbol(VALUE *v)  // felteteles deref 
 {
@@ -58,10 +67,40 @@ void pop()
     --stack;
 }
 
+void POP()
+{
+    --stack;
+}
+
+void POP2()
+{
+    (stack-=2);
+}
+
+void POP3()
+{
+    (stack-=3);
+}
+
 //------------------------------------------------------------------------
 void dup()
 {
     DUP();
+}
+
+void DUP()
+{
+    PUSH(TOP1());
+}
+
+void DUP2()
+{
+    PUSH(TOP2());
+}
+
+void DUP3()
+{
+    PUSH(TOP3());
 }
 
 //------------------------------------------------------------------------
@@ -73,35 +112,36 @@ void swap()
     POP();
 }
 
-//------------------------------------------------------------------------
-void assign(VALUE *lside)
+void SWAP()
 {
-    if( lside->type!=TYPE_REF )
-    {
-        //*lside=*TOP();
-        valuecopy_lk(lside,TOP());
-    }
-    else
-    {
-        //lside->data.vref->value=*TOP();
-        valuecopy_lk(&lside->data.vref->value,TOP());
-    }
+    DUP();
+    *TOP2()=*TOP3();
+    *TOP3()=*TOP();
+    POP();
 }
 
 //------------------------------------------------------------------------
-void assign2(VALUE *lside) //tombindexeleshez
+void assign(VALUE *lside)
 {
+    assign_lock();
     if( lside->type!=TYPE_REF )
     {
-        //*lside=*TOP2();
-        valuecopy_lk(lside,TOP2());
+        valuecopy(lside,TOP());
     }
     else
     {
-        //lside->data.vref->value=*TOP2();
-        valuecopy_lk(&lside->data.vref->value,TOP2());
+        valuecopy(&(lside->data.vref->value),TOP());
     }
+    assign_unlock();
+}
+
+//------------------------------------------------------------------------
+void assign2(VALUE *lside) // ertekadas tombelemnek (tombelem sosem ref)
+{
+    assign_lock();
+    valuecopy(lside,TOP2());
     POP();
+    assign_unlock();
 }
 
 //------------------------------------------------------------------------

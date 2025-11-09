@@ -24,6 +24,7 @@
 
 #include <hashtable_simple.h>
 
+
 MUTEX_CREATE(mutex);
 
 static VALUE **slotbuffer=0;
@@ -294,15 +295,13 @@ void _method6_::eval(int argno)
         }
     
         VALUE *v=OBJECTPTR(base)+idx-1;
-
-        if( argno>1 ) //beírás
+        assign_lock();
+        if( argno>1 ) // ertekadas attributumnak
         {
-            //*v=*(base+1);
-            valuecopy_lk(v,base+1);
+            valuecopy(v,base+1);
         }
-
-        //*base=*v;
-        valuecopy_lk(base,v);
+        valuecopy(base,v);
+        assign_unlock();
         stack=base+1;
     }
     

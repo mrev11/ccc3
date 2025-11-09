@@ -79,19 +79,21 @@ void _clp_iniobjectfromarray(int argno)
 
     CCC_PROLOG("iniobjectfromarray",2);
  
+    assign_lock();
     if( !ISOBJECT(1) ) ARGERROR();
     if( !ISARRAY(2 ) ) ARGERROR();
     unsigned lenobj=OBJECTLEN(base);
     unsigned lenarr=ARRAYLEN(base+1);
     if( lenobj!=lenarr )
     {
+        assign_unlock();
         error_siz("iniobjectfromarray",base,argno);
     }
-
     VALUE *pobj=OBJECTPTR(base);
     VALUE *parr=ARRAYPTR(base+1);
-    valuecopy_lk(pobj,parr,lenarr);  // shallow copy
-
+    valuecopy(pobj,parr,lenarr);  // shallow copy
+    oref_gray(base->data.object.oref);
+    assign_unlock();
     POP();
 
     CCC_EPILOG();

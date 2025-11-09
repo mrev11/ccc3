@@ -2104,7 +2104,7 @@ int codegen_statement_begseq_lrecov_finally_END(parsenode *p,void *v)//PROTO
                 sprintf(buf,".%sclass",type);
                 char *fcall=fundecl_clpcall(buf);
                 nltab();fprintf(code,"%s(0);",fcall);
-                nltab();fprintf(code,"*(usingstk+%d)=prototype_object();",recov++);
+                nltab();fprintf(code,"{VALUE po=prototype_object();*(usingstk+%d)=*&po;}",recov++);
                 free(fcall);
             }
             free(type);

@@ -287,7 +287,7 @@ void array(int len) //stackrol levett elemekkel inicializalt array
     if( len>0 )
     {
         valptr=newValue(len+1+EXTSIZ);
-        valuecopy_lk(valptr,base,len);
+        arraycopy_lk(valptr,base,len);
         (valptr+len)->type=TYPE_END;
         (valptr+len)->data.size=len+EXTSIZ;
     }
@@ -391,8 +391,8 @@ push_call("aadd",base);
     {
         //uj buffer
         VALUE *p_new=newValue(len_new+1+EXTSIZ);
-        valuecopy(p_new,p_old,len_old);
-        valuecopy(p_new+len_old,v,1);
+        arraycopy(p_new,p_old,len_old);
+        valuecopy(p_new+len_old,v);
         (p_new+len_new)->type=TYPE_END;
         (p_new+len_new)->data.size=len_new+EXTSIZ;
         ARRAYPTR(a)=p_new;
@@ -458,7 +458,7 @@ push_call("asize",base);
         if( len_new>0 )
         {
             p_new=newValue(len_new+1+EXTSIZ);
-            valuecopy(p_new,p_old,min(len_old,len_new));
+            arraycopy(p_new,p_old,min(len_old,len_new));
             for(int i=len_old; i<len_new; i++ )
             {
                 (p_new+i)->type=TYPE_NIL;
@@ -512,7 +512,7 @@ push_call("ains",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    valuecopy_lk(ptr+pos,ptr+pos-1,len-pos);
+    arraycopy_lk(ptr+pos,ptr+pos-1,len-pos);
     *(ptr+pos-1)=NIL;
 //
 *base=*a;
@@ -547,7 +547,7 @@ push_call("adel",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    valuecopy_lk(ptr+pos-1,ptr+pos,len-pos);
+    arraycopy_lk(ptr+pos-1,ptr+pos,len-pos);
     *(ptr+len-1)=NIL;
 //
 *base=*a;

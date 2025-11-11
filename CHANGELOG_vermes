@@ -1,4 +1,9 @@
 
+2025-11-11 atnevezesek:
+  valuecopy(VALUE*,VALUE*,int) -> arraycopy(VALUE*,VALUE*,int)
+  valuecopy_lk(VALUE*,VALUE*,int) -> arraycopy_lk(VALUE*,VALUE*,int)
+  (az egyetlen elemet masolo valtozatok neve maradt valuecopy);
+
 2025-11-09
   PUSH, POP, DUP, SWAP makrok helyett fuggvenyek;
   operator= VALUE ertek helyett &VAlUE referenciaval;

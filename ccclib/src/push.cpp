@@ -153,7 +153,7 @@ void block(void (*code)(int), int len)
         VALUE *valptr=newValue(len+1);
         (valptr+len)->type=TYPE_END;
         (valptr+len)->data.size=len;
-        valuecopy_lk(valptr,base,len);
+        arraycopy_lk(valptr,base,len);
         VALUE v;
         v.type=TYPE_BLOCK;
         v.data.block.code=code;

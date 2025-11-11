@@ -819,7 +819,7 @@ void valuecopy(VALUE *to, VALUE *fr)
     }
 }
 
-void valuecopy(VALUE *to, VALUE *fr, int n)
+void arraycopy(VALUE *to, VALUE *fr, int n)
 {
     memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
 }
@@ -836,7 +836,7 @@ void valuecopy_lk(VALUE *to, VALUE *fr)
     sync_assign.lock_free();
 }
 
-void valuecopy_lk(VALUE *to, VALUE *fr, int n)
+void arraycopy_lk(VALUE *to, VALUE *fr, int n)
 {
     sync_assign.lock();
     memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );

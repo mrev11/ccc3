@@ -108,7 +108,7 @@ void slice()
             int slen=jdx-idx+1; //>=1
             VALUE *v=array0(slen);
             assign_lock();
-            valuecopy(v,ARRAYPTR(a)+idx-1,slen);
+            arraycopy(v,ARRAYPTR(a)+idx-1,slen);
             oref_gray(v->data.array.oref);
             assign_unlock();
         }

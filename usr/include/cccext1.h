@@ -206,9 +206,9 @@ extern OREF* oref_new(VALUE*,void*,int);
 extern VREF* vref_new(VALUE*);
 extern void oref_gray(OREF*);
 extern void valuecopy(VALUE*,VALUE*);
-extern void valuecopy(VALUE*,VALUE*,int);
+extern void arraycopy(VALUE*,VALUE*,int);
 extern void valuecopy_lk(VALUE*,VALUE*);
-extern void valuecopy_lk(VALUE*,VALUE*,int);
+extern void arraycopy_lk(VALUE*,VALUE*,int);
 
 //dtos.obj:
 extern long stod(const char*);

@@ -91,7 +91,7 @@ void _clp_iniobjectfromarray(int argno)
     }
     VALUE *pobj=OBJECTPTR(base);
     VALUE *parr=ARRAYPTR(base+1);
-    valuecopy(pobj,parr,lenarr);  // shallow copy
+    arraycopy(pobj,parr,lenarr);  // shallow copy
     oref_gray(base->data.object.oref);
     assign_unlock();
     POP();

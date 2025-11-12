@@ -197,6 +197,7 @@ extern void vartab_ini(void);
 extern void vartab_lock(void);
 extern void vartab_unlock(void);
 extern int assign_lock(void);
+extern int assign_lock(int);
 extern int assign_lock(VALUE*);
 extern int assign_lock(VALUE*,VALUE*);
 extern void assign_unlock(void);

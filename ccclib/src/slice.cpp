@@ -107,10 +107,10 @@ void slice()
         {
             int slen=jdx-idx+1; //>=1
             VALUE *v=array0(slen);
-            assign_lock();
+            assign_lock(0);
             arraycopy(v,ARRAYPTR(a)+idx-1,slen);
             oref_gray(v->data.array.oref);
-            assign_unlock();
+            assign_unlock(0);
         }
         *a=*TOP();
         stack=a+1;

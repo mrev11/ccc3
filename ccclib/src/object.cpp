@@ -79,7 +79,7 @@ void _clp_iniobjectfromarray(int argno)
 
     CCC_PROLOG("iniobjectfromarray",2);
  
-    assign_lock();
+    assign_lock(0);
     if( !ISOBJECT(1) ) ARGERROR();
     if( !ISARRAY(2 ) ) ARGERROR();
     unsigned lenobj=OBJECTLEN(base);
@@ -93,7 +93,7 @@ void _clp_iniobjectfromarray(int argno)
     VALUE *parr=ARRAYPTR(base+1);
     arraycopy(pobj,parr,lenarr);  // shallow copy
     oref_gray(base->data.object.oref);
-    assign_unlock();
+    assign_unlock(0);
     POP();
 
     CCC_EPILOG();

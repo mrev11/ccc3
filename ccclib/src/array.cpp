@@ -373,7 +373,7 @@ push_call("aadd",base);
         error_arg("aadd",base,2);
     }
 
-    assign_lock();
+    assign_lock(0);
 
     VALUE *p_old=ARRAYPTR(a);
     int len_old=ARRAYLEN(a);
@@ -404,7 +404,7 @@ push_call("aadd",base);
         }
     }
 
-    assign_unlock();
+    assign_unlock(0);
 //
 *base=*v;
 stack=base+1;
@@ -428,7 +428,7 @@ push_call("asize",base);
         error_arg("asize",base,2);
     }
 
-    assign_lock();
+    assign_lock(0);
 
     VALUE *p_old=ARRAYPTR(arr);
     int len_old=ARRAYLEN(arr);
@@ -480,7 +480,7 @@ push_call("asize",base);
         }
     }
 
-    assign_unlock();
+    assign_unlock(0);
 //
 stack=base+1;
 pop_call();

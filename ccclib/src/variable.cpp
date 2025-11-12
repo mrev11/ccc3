@@ -125,39 +125,18 @@ static varsync sync_oresv(&oresv);
 
 static varlock mutx_mark(31);           // mark vezerlese
 static varlock mutx_sweep(31);          // sweep vezerlese
-static varlock mutx_value(31);          // assign vezerlese
+static varlock mutx_value(13);          // assign vezerlese
 
 
 void vartab_lock()   {sync_vartab.lock();} // mutator
 void vartab_unlock() {sync_vartab.lock_free();} // mutator
 
-//---------------------------------------------------------------------------
-static pthread_rwlock_t assign_rwlock = PTHREAD_RWLOCK_INITIALIZER;
-
-int assign_lock()
-{ 
-    return pthread_rwlock_wrlock(&assign_rwlock);
-} 
-void assign_unlock()
-{ 
-    pthread_rwlock_unlock(&assign_rwlock);
-} 
-
-int assign_lock(VALUE*v)  // egy VALUE mutexet megfog
-{ 
-    pthread_rwlock_rdlock(&assign_rwlock);
-    return mutx_value.lock(v); 
-}
-int assign_lock(VALUE*v1, VALUE*v2) // ket VALUE mutexet megfog
-{ 
-    pthread_rwlock_rdlock(&assign_rwlock);
-    return mutx_value.lock(v1,v2); 
-}
-void assign_unlock(int x) // egy vagy ket VALUE mutexet elenged
-{ 
-    mutx_value.lock_free(x); 
-    pthread_rwlock_unlock(&assign_rwlock);
-} 
+int assign_lock(){ return mutx_value.lock(); } // minden VALUE mutexet megfog
+int assign_lock(int x){ return mutx_value.lock(x); } // egy VALUE mutexet megfog
+int assign_lock(VALUE*v){ return mutx_value.lock(v); } // egy VALUE mutexet megfog
+int assign_lock(VALUE*v1, VALUE*v2){ return mutx_value.lock(v1,v2); } // ket VALUE mutexet megfog
+void assign_unlock(){ mutx_value.lock_free();   } // minden VALUE mutexet elenged
+void assign_unlock(int x){ mutx_value.lock_free(x); } // egy vagy ket VALUE mutexet elenged
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
@@ -175,8 +154,6 @@ static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
     mutx_mark.init();
     mutx_sweep.init();
     mutx_value.init();
-
-    pthread_rwlock_init(&assign_rwlock,0);
 }
 
 //---------------------------------------------------------------------------
@@ -336,7 +313,7 @@ static void vartab_mark(void)
 {
     if(env_gcdebug)
     {
-        printf(" tGC(%d)  %sMARK:%s ",++gc_count,BOLD,RESET);
+        printf(" vGC(%d)  %sMARK:%s ",++gc_count,BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -860,9 +837,9 @@ void valuecopy_lk(VALUE *to, VALUE *fr)
 
 void arraycopy_lk(VALUE *to, VALUE *fr, int n)
 {
-    assign_lock();
+    assign_lock(0);
     memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
-    assign_unlock();
+    assign_unlock(0);
 }
 
 

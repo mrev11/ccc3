@@ -10,7 +10,7 @@ struct varlock
 
     void init()
     {
-        for( int i=0; i<prime; i++  )
+        for( int i=0; i<prime+1; i++  )
         {
             mutex[i]=PTHREAD_MUTEX_INITIALIZER;
         }
@@ -19,68 +19,75 @@ struct varlock
     varlock(int len)
     {
         prime=len;
-        mutex=(pthread_mutex_t*)malloc(prime*sizeof(pthread_mutex_t));
+        mutex=(pthread_mutex_t*)malloc((prime+1)*sizeof(pthread_mutex_t));
         init();
     };
 
 
-    int lock(int idx) // egy mutexet megfog (1 based index alapjan)
+    int lock(int idx) // egy mutexet megfog  idx=[0,prime], 0 specialis
     {
-        pthread_mutex_lock( &mutex[idx-1] );
+        pthread_mutex_lock( &mutex[idx] );
         return idx;
     };
 
 
     int lock(void *p) // egy mutexet megfog
     {
-        int x=((unsigned long long)p)%prime;
+        int x=1+((unsigned long long)p)%prime; // x=[1,prime]
         pthread_mutex_lock( &mutex[x] );
-        return x+1; // 1 based
+        return x;
     };
 
     int lock(void *p1, void *p2) // ket mutexet megfog
     {
-        int x1=((unsigned long long)p1)%prime;
-        int x2=((unsigned long long)p2)%prime;
-
+        int x1=1+((unsigned long long)p1)%prime; // x1=[1,prime]
+        int x2=1+((unsigned long long)p2)%prime; // x2=[1,prime]
+                                                     
         if( x1<x2 )
         {
             pthread_mutex_lock( &mutex[x1] );
             pthread_mutex_lock( &mutex[x2] );
-            return ((x1+1)<<16)|(x2+1); // 1 based
+            return ((x1)<<16)|(x2);
         }
         else if( x1>x2 )
         {
             pthread_mutex_lock( &mutex[x2] );
             pthread_mutex_lock( &mutex[x1] );
-            return ((x2+1)<<16)|(x1+1); // 1 based
+            return ((x2)<<16)|(x1);
         }
         else
         {
             pthread_mutex_lock( &mutex[x1] );
-            return x1+1; // 1 based
+            return x1;
         }
     };
 
 
     void lock_free(int x) // egy vagy ket mutexet elenged
     {
-        int idx=(0x0fff&x); // 1 based
-        if( idx )
+        if( x )
         {
-            pthread_mutex_unlock(&mutex[idx-1]);
+            int idx=(0x0fff&x); // 1 based
+            if( idx )
+            {
+                pthread_mutex_unlock(&mutex[idx]);  // idx=[1,prime]
+            }
+            idx=(0x0fff&(x>>16)); // 1 based
+            if( idx )
+            {
+                pthread_mutex_unlock(&mutex[idx]);  // idx=[1,prime]
+            }
         }
-        idx=(0x0fff&(x>>16)); // 1 based
-        if( idx )
+        else
         {
-            pthread_mutex_unlock(&mutex[idx-1]);
+            pthread_mutex_unlock( &mutex[0] ); //specialis
         }
     };
 
 
     int lock() // az osszes mutexet lockolja
     {
-        for( int x=0; x<prime; x++ )
+        for( int x=0; x<=prime; x++ )
         {
             pthread_mutex_lock( &mutex[x] );
         }
@@ -89,7 +96,7 @@ struct varlock
 
     void lock_free() // az osszes mutexet elengedi
     {
-        for(int i=0; i<prime; i++)
+        for(int i=0; i<=prime; i++)
         {
             pthread_mutex_unlock(&mutex[i]);
         }

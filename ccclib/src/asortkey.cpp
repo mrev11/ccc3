@@ -107,9 +107,9 @@ void _clp_asortkey(int argno)
 //------------------------------------------------------------------------
 static void valuesort_key(VALUE *v, int n)
 {
-    assign_lock();
+    assign_lock(0);
     qsort(v,n,sizeof(VALUE),valuecompare_key);
-    assign_unlock();
+    assign_unlock(0);
 }
 
 //------------------------------------------------------------------------
@@ -131,7 +131,7 @@ static int valuecompare_key(const void *x, const void *y)
     }
     else
     {
-        assign_unlock();
+        assign_unlock(0);
 
         push_symbol(keyblk);
         push_symbol((VALUE*)x);
@@ -146,7 +146,7 @@ static int valuecompare_key(const void *x, const void *y)
         result=stdcmp((VALUE*)x,(VALUE*)y);
         POP2();
 
-        assign_lock();
+        assign_lock(0);
     }
 
     if( !ascend->data.flag  )

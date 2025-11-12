@@ -1,3 +1,5 @@
+2025-11-12 assign_lock-ban pthread_rwlock;
+
 2025-11-12 pthread_rwlock interface;
 
 2025-11-12 szelektivebb lockolas az ertekadasokban;

@@ -125,17 +125,39 @@ static varsync sync_oresv(&oresv);
 
 static varlock mutx_mark(31);           // mark vezerlese
 static varlock mutx_sweep(31);          // sweep vezerlese
-static varlock mutx_value(17);          // assign vezerlese
+static varlock mutx_value(31);          // assign vezerlese
 
 
 void vartab_lock()   {sync_vartab.lock();} // mutator
 void vartab_unlock() {sync_vartab.lock_free();} // mutator
 
-int assign_lock(){ return mutx_value.lock(); } // minden VALUE mutexet megfog
-int assign_lock(VALUE*v){ return mutx_value.lock(v); } // egy VALUE mutexet megfog
-int assign_lock(VALUE*v1, VALUE*v2){ return mutx_value.lock(v1,v2); } // ket VALUE mutexet megfog
-void assign_unlock(){ mutx_value.lock_free();   } // minden VALUE mutexet elenged
-void assign_unlock(int x){ mutx_value.lock_free(x); } // egy vagy ket VALUE mutexet elenged
+//---------------------------------------------------------------------------
+static pthread_rwlock_t assign_rwlock = PTHREAD_RWLOCK_INITIALIZER;
+
+int assign_lock()
+{ 
+    return pthread_rwlock_wrlock(&assign_rwlock);
+} 
+void assign_unlock()
+{ 
+    pthread_rwlock_unlock(&assign_rwlock);
+} 
+
+int assign_lock(VALUE*v)  // egy VALUE mutexet megfog
+{ 
+    pthread_rwlock_rdlock(&assign_rwlock);
+    return mutx_value.lock(v); 
+}
+int assign_lock(VALUE*v1, VALUE*v2) // ket VALUE mutexet megfog
+{ 
+    pthread_rwlock_rdlock(&assign_rwlock);
+    return mutx_value.lock(v1,v2); 
+}
+void assign_unlock(int x) // egy vagy ket VALUE mutexet elenged
+{ 
+    mutx_value.lock_free(x); 
+    pthread_rwlock_unlock(&assign_rwlock);
+} 
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
@@ -153,6 +175,8 @@ static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
     mutx_mark.init();
     mutx_sweep.init();
     mutx_value.init();
+
+    pthread_rwlock_init(&assign_rwlock,0);
 }
 
 //---------------------------------------------------------------------------

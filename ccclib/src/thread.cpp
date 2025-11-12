@@ -336,7 +336,71 @@ void _clp_thread_getname(int argno)
 }
 
 #endif
+
+
 //---------------------------------------------------------------------------
+void _clp_thread_rwlock_init(int argno)
+{
+    CCC_PROLOG("thread_rwlock_init",0);
+    pthread_rwlock_t rwlk;
+    pthread_rwlock_init(&rwlk,0);
+    _retblen((char*)&rwlk,sizeof(rwlk));
+    CCC_EPILOG();
+}
+
+// static initializer
+// pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_destroy(int argno)
+{
+    CCC_PROLOG("thread_rwlock_destroy",0);
+    _retni( pthread_rwlock_destroy((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_rdlock(int argno)
+{
+    CCC_PROLOG("thread_rwlock_rdlock",1);
+    _retni( pthread_rwlock_rdlock((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_tyrrdlock(int argno)
+{
+    CCC_PROLOG("thread_rwlock_tryrdlock",1);
+    _retni( pthread_rwlock_tryrdlock((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_wrlock(int argno)
+{
+    CCC_PROLOG("thread_rwlock_wrlock",1);
+    _retni( pthread_rwlock_wrlock((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_trywrlock(int argno)
+{
+    CCC_PROLOG("thread_rwlock_trywrlock",1);
+    _retni( pthread_rwlock_trywrlock((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+void _clp_thread_rwlock_unlock(int argno)
+{
+    CCC_PROLOG("thread_rwlock_unlock",1);
+    _retni( pthread_rwlock_unlock((pthread_rwlock_t*)_parb(1)) );
+    CCC_EPILOG();
+}
+
+//---------------------------------------------------------------------------
+
 
  
 

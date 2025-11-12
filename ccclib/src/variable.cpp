@@ -114,7 +114,6 @@ static void inventory();
 
 static varsync sync_gc;                 // szemetgyujtes vezerlese
 static varsync sync_vartab;             // rogziti a csucsokat
-static varsync sync_assign;             // rogziti az eleket
 static varsync sync_stack;
 
 static varsync sync_olast(&olast);
@@ -126,25 +125,23 @@ static varsync sync_oresv(&oresv);
 
 static varlock mutx_mark(31);           // mark vezerlese
 static varlock mutx_sweep(31);          // sweep vezerlese
+static varlock mutx_value(17);          // assign vezerlese
 
 
 void vartab_lock()   {sync_vartab.lock();} // mutator
 void vartab_unlock() {sync_vartab.lock_free();} // mutator
 
-void assign_lock()   {sync_assign.lock();} // mutator
-void assign_unlock() {sync_assign.lock_free();} // mutator
-
-int  oref_lock(void *p) {return mutx_mark.lock(p);} // mutator
-int  oref_lock(int lkx) {return mutx_mark.lock(lkx);} // mutator
-void oref_unlock(int x) {mutx_mark.lock_free(x);} // mutator
-
+int assign_lock(){ return mutx_value.lock(); } // minden VALUE mutexet megfog
+int assign_lock(VALUE*v){ return mutx_value.lock(v); } // egy VALUE mutexet megfog
+int assign_lock(VALUE*v1, VALUE*v2){ return mutx_value.lock(v1,v2); } // ket VALUE mutexet megfog
+void assign_unlock(){ mutx_value.lock_free();   } // minden VALUE mutexet elenged
+void assign_unlock(int x){ mutx_value.lock_free(x); } // egy vagy ket VALUE mutexet elenged
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
 {
     sync_gc.init();
     sync_vartab.init();
-    sync_assign.init();
     sync_stack.init();
 
     sync_olast.init();
@@ -155,6 +152,7 @@ static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
 
     mutx_mark.init();
     mutx_sweep.init();
+    mutx_value.init();
 }
 
 //---------------------------------------------------------------------------
@@ -329,7 +327,7 @@ static void vartab_mark(void)
     }
 
     sync_vartab.lock();
-    sync_assign.lock();
+    assign_lock();
     mark_stack_ptr=mark_stack; // stack init
     alloc_count=0;
     alloc_size=0;
@@ -386,19 +384,19 @@ static void vartab_mark(void)
 
         mark_phase=1;
         if( env_gcdebug ){ printf("%s%s!%s",BOLD,YELLOW,RESET);fflush(0); }
-        sync_assign.lock_free();
+        assign_unlock();
         sync_vartab.lock_free();
 
         mark_sync();
 
         sync_vartab.lock();
-        sync_assign.lock();
+        assign_lock();
         mark_phase=0;
         if( env_gcdebug ){ printf("%s%s!%s ",BOLD,YELLOW,RESET);fflush(0); }
     }
 
     mark();
-    sync_assign.lock_free();
+    assign_unlock();
     sync_vartab.lock_free();
 
 
@@ -433,7 +431,7 @@ static void mark_sync()
 {
     while( OREF *o=mark_pop() ) //pop
     {
-        sync_assign.lock();
+        assign_lock();
         o->color=COLOR_BLACK;
         if( VALUE *v=o->ptr.valptr )
         {
@@ -442,7 +440,7 @@ static void mark_sync()
                 vartab_shade(v); //push
             }
         }
-        sync_assign.lock_free();
+        assign_unlock();
         sync_oresv.inc();
         ormax=max(ormax,oresv);
     }
@@ -798,14 +796,14 @@ void deleteValue(VALUE *v)
 //---------------------------------------------------------------------------
 VALUE &VALUE::operator=(VALUE &v)
 {
-    sync_assign.lock();
+    int lkx=assign_lock(this,&v);
     type=v.type;
     data=v.data;
     if( mark_phase && this->type>TYPE_GARBAGE )
     {
         vartab_shade(this);
     }
-    sync_assign.lock_free();
+    assign_unlock(lkx);
     return *this;
 }
 
@@ -827,20 +825,20 @@ void arraycopy(VALUE *to, VALUE *fr, int n)
 //---------------------------------------------------------------------------
 void valuecopy_lk(VALUE *to, VALUE *fr)
 {
-    sync_assign.lock();
+    int lkx=assign_lock(to,fr);
     memmove( (void*)to, (void*)fr, sizeof(VALUE) );
     if( mark_phase && to->type>TYPE_GARBAGE )
     {
         vartab_shade(to);
     }
-    sync_assign.lock_free();
+    assign_unlock(lkx);
 }
 
 void arraycopy_lk(VALUE *to, VALUE *fr, int n)
 {
-    sync_assign.lock();
+    assign_lock();
     memmove( (void*)to, (void*)fr, n*sizeof(VALUE) );
-    sync_assign.lock_free();
+    assign_unlock();
 }
 
 

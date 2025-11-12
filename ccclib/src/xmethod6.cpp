@@ -295,13 +295,13 @@ void _method6_::eval(int argno)
         }
     
         VALUE *v=OBJECTPTR(base)+idx-1;
-        assign_lock();
+        int lkx=assign_lock(v);
         if( argno>1 ) // ertekadas attributumnak
         {
             valuecopy(v,base+1);
         }
         valuecopy(base,v);
-        assign_unlock();
+        assign_unlock(lkx);
         stack=base+1;
     }
     

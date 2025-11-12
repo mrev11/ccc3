@@ -29,11 +29,11 @@ void push(VALUE *v)
 
 void PUSH(VALUE *v)
 {
-    assign_lock();
+    int lkx=assign_lock(v);
     stack->type=(v)->type;
     stack->data=(v)->data;
     stack++;
-    assign_unlock();
+    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------
@@ -123,7 +123,7 @@ void SWAP()
 //------------------------------------------------------------------------
 void assign(VALUE *lside)
 {
-    assign_lock();
+    int lkx=assign_lock(lside);
     if( lside->type!=TYPE_REF )
     {
         valuecopy(lside,TOP());
@@ -132,16 +132,16 @@ void assign(VALUE *lside)
     {
         valuecopy(&(lside->data.vref->value),TOP());
     }
-    assign_unlock();
+    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------
 void assign2(VALUE *lside) // ertekadas tombelemnek (tombelem sosem ref)
 {
-    assign_lock();
+    int lkx=assign_lock(lside);
     valuecopy(lside,TOP2());
     POP();
-    assign_unlock();
+    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------

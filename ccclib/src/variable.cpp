@@ -85,6 +85,7 @@ static unsigned int mark_phase=0;
 
 static int *mark_stack=0;
 static int *mark_stack_ptr=0;
+static int mark_stack_depth=0;
 
 static int  collector_tid=0;
 
@@ -313,7 +314,7 @@ static void vartab_mark(void)
 {
     if(env_gcdebug)
     {
-        printf(" vGC(%d)  %sMARK:%s ",++gc_count,BOLD,RESET);
+        printf(" ~GC(%d)  %sMARK:%s ",++gc_count,BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -330,6 +331,7 @@ static void vartab_mark(void)
     sync_vartab.lock();
     assign_lock();
     mark_stack_ptr=mark_stack; // stack init
+    mark_stack_depth=0;
     alloc_count=0;
     alloc_size=0;
     oresv=0;
@@ -384,7 +386,7 @@ static void vartab_mark(void)
         // a szemetgyujtes mark fazisa kozben
 
         mark_phase=1;
-        if( env_gcdebug ){ printf("%s%s!%s",BOLD,YELLOW,RESET);fflush(0); }
+        if( env_gcdebug ){ printf("%s%s#%s ",BOLD,YELLOW,RESET);fflush(0); }
         assign_unlock();
         sync_vartab.lock_free();
 
@@ -393,7 +395,7 @@ static void vartab_mark(void)
         sync_vartab.lock();
         assign_lock();
         mark_phase=0;
-        if( env_gcdebug ){ printf("%s%s!%s ",BOLD,YELLOW,RESET);fflush(0); }
+        if( env_gcdebug ){ printf(" %s%s#%s ",BOLD,YELLOW,RESET);fflush(0); }
     }
 
     mark();
@@ -404,6 +406,7 @@ static void vartab_mark(void)
     if(env_gcdebug)
     {
         printf("thread=%d ",thrcnt);
+        printf("depth=%s ",decimal(mark_stack_depth));
         printf("oresv=%s ",decimal(oresv));
         fflush(0);
     }
@@ -432,16 +435,18 @@ static void mark_sync()
 {
     while( OREF *o=mark_pop() ) //pop
     {
-        assign_lock();
+        assign_lock(0);
         o->color=COLOR_BLACK;
         if( VALUE *v=o->ptr.valptr )
         {
             for( int t=v->type; t>=TYPE_NIL; t=(++v)->type )
             {
+                int lkx=assign_lock(v);
                 vartab_shade(v); //push
+                assign_unlock(lkx);
             }
         }
-        assign_unlock();
+        assign_unlock(0);
         sync_oresv.inc();
         ormax=max(ormax,oresv);
     }
@@ -511,6 +516,11 @@ static void mark_push(OREF*o)
 {
     sync_stack.lock();
     *mark_stack_ptr++=(o-oref); //indexet tarol
+    int depth=mark_stack_ptr-mark_stack;
+    if( depth>mark_stack_depth)
+    {
+        mark_stack_depth=depth;
+    }
     sync_stack.lock_free();
 }
 

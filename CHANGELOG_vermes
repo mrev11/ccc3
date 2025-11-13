@@ -1,3 +1,6 @@
+2025-11-13 
+  mark_sync-ben assign_lock() helyett assign_lock(0);
+
 2025-11-12 
   assign_lock-ban pthread_rwlock tul lassu -> visszaveve, helyette:
   assign_lock(VALUE*v) v-re specifikus lock, dolgozo szalak parhuzamosan futhatnak;

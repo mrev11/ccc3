@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <cccapi.h>
 
-static void valuesort_key(VALUE *v, int n, int lkx);
-static int valuecompare_key(const void *x, const void *y, void*lkx);
+static void valuesort_key(VALUE *v, int n);
+static int valuecompare_key(const void *x, const void *y);
 
 
 //------------------------------------------------------------------------
@@ -90,16 +90,17 @@ void _clp_asortkey(int argno)
 
     if( count>1  )
     {
-        logical(ascend);
-        push_symbol(blk);
-
         // valusort kozben
-        // a key block van a stack tetejen
-        // az ascend/descend flag van alatta
+        // a key block van a stack tetejen    TOP()
+        // az ascend/descend flag van alatta  TOP2()
+        // az lkx (lock index) van alatta     TOP3()
         // a stack nem valtozhat
 
         int lkx=mark_lock(base);
-        valuesort_key(arr+start-1,count,lkx);
+        number(lkx);
+        logical(ascend);
+        push_symbol(blk);
+        valuesort_key(arr+start-1,count);
         mark_unlock(lkx);
     }
 
@@ -108,23 +109,23 @@ void _clp_asortkey(int argno)
 }
 
 //------------------------------------------------------------------------
-static void valuesort_key(VALUE *v, int n, int lkx)
+static void valuesort_key(VALUE *v, int n)
 {
-    qsort_r(v,n,sizeof(VALUE),valuecompare_key,(void*)(long long)lkx);
+    qsort(v,n,sizeof(VALUE),valuecompare_key);
 }
 
 //------------------------------------------------------------------------
-static int valuecompare_key(const void *x, const void *y, void *arg)
+static int valuecompare_key(const void *x, const void *y)
 {
+    //TOP3=lkx(lock index)
     //TOP2=ascend/descend flag
     //TOP=kulcs eloallito blokk
     //stack valtozatlan marad
 
-    int lkx=(int)(long long)arg;
-    mark_unlock(lkx);
-
+    int lkx=D2INT(TOP3()->data.number);
     VALUE *ascend=TOP2();
     VALUE *keyblk=TOP();
+    mark_unlock(lkx);
 
     int result=0;
 

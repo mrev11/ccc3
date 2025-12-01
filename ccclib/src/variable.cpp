@@ -43,7 +43,6 @@ static const char *DEFAULT="";
 
 //---------------------------------------------------------------------------
 
-
 static OREF *oref;          // oref tomb
 static VREF *vref;          // vref tomb
 
@@ -129,15 +128,35 @@ static varsync sync_ofree(&ofree);
 static varsync sync_vfree(&vfree);
 static varsync sync_oresv(&oresv);
 
+static varlock mutx_mark(7);            // mark vezerlese
+static varlock mutx_sweep(11);          // sweep vezerlese
+static varlock mutx_value(13);          // assign vezerlese
+
+//---------------------------------------------------------------------------
+static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
+{
+    sync_gc.init();
+    sync_gc_force.init();
+    sync_oreftab.init();
+    sync_vreftab.init();
+    sync_stack.init();
+
+    sync_olast.init();
+    sync_vlast.init();
+    sync_ofree.init();
+    sync_vfree.init();
+    sync_oresv.init();
+
+    mutx_mark.init();
+    mutx_sweep.init();
+    mutx_value.init();
+}
+
+//---------------------------------------------------------------------------
 static void oreftab_lock()   {sync_oreftab.lock();} // mutator
 static void vreftab_lock()   {sync_vreftab.lock();} // mutator
 static void oreftab_unlock() {sync_oreftab.lock_free();} // mutator
 static void vreftab_unlock() {sync_vreftab.lock_free();} // mutator
-
-
-static varlock mutx_mark(7);            // mark vezerlese
-static varlock mutx_sweep(11);          // sweep vezerlese
-static varlock mutx_value(13);          // assign vezerlese
 
 
 #ifdef FINE_GRAINED_LOCK
@@ -177,26 +196,6 @@ static varlock mutx_value(13);          // assign vezerlese
   void mark_unlock(int x){ mutx_mark.lock_free(0); }
 #endif
 
-
-//---------------------------------------------------------------------------
-static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
-{
-    sync_gc.init();
-    sync_gc_force.init();
-    sync_oreftab.init();
-    sync_vreftab.init();
-    sync_stack.init();
-
-    sync_olast.init();
-    sync_vlast.init();
-    sync_ofree.init();
-    sync_vfree.init();
-    sync_oresv.init();
-
-    mutx_mark.init();
-    mutx_sweep.init();
-    mutx_value.init();
-}
 
 //---------------------------------------------------------------------------
 void vartab_ini(void)

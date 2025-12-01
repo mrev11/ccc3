@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <cccapi.h>
 
-static void valuesort_cmp(VALUE *v, int n, int lkx);
-static int valuecompare_cmp(const void *x, const void *y, void*lkx);
+static void valuesort_cmp(VALUE *v, int n);
+static int valuecompare_cmp(const void *x, const void *y);
 
 //------------------------------------------------------------------------
 void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
@@ -68,14 +68,15 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 
     if( count>1  )
     {
-        push_symbol(blk);
-
         // valusort kozben 
-        // a compare block van a stack tetejen
+        // a compare block van a stack tetejen TOP()
+        // az lkx(lock index) van alatta       TOP2()
         // a stack nem valtozhat
 
         int lkx=mark_lock(base);
-        valuesort_cmp(arr+start-1,count,lkx);
+        number(lkx);
+        push_symbol(blk);
+        valuesort_cmp(arr+start-1,count);
         mark_unlock(lkx);
     }
 
@@ -84,13 +85,13 @@ void _clp_asort(int argno) // asort(arr,[st],[cn],[blk])
 }
 
 //------------------------------------------------------------------------
-static void valuesort_cmp(VALUE *v, int n, int lkx)
+static void valuesort_cmp(VALUE *v, int n)
 {
-    qsort_r(v,n,sizeof(VALUE),valuecompare_cmp,(void*)(long long)lkx);
+    qsort(v,n,sizeof(VALUE),valuecompare_cmp);
 }
 
 //------------------------------------------------------------------------
-static int valuecompare_cmp(const void *x, const void *y, void *arg)
+static int valuecompare_cmp(const void *x, const void *y)
 {
     // Az osszehasonlitast ket iranyban is el kell vegezni,
     // hogy detektalhato legyen az egyenlo eset. A Clipper
@@ -102,7 +103,7 @@ static int valuecompare_cmp(const void *x, const void *y, void *arg)
     // a balodal egyezik a jobboldallal a jobboldal hosszaban.
     // Celszeru a compare blokkban a <-t vagy >=-t hasznalni.
 
-    int lkx=(int)(long long)arg;
+    int lkx=D2INT(TOP2()->data.number);
     mark_unlock(lkx);
 
     int result=0;

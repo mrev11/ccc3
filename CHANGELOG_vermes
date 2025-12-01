@@ -1,4 +1,7 @@
 2025-12-01
+  MSYS2-ben nincs qsort_r: lkx a C helyett a CCC stacken atadva;
+
+2025-12-01
   fine grained lock: globalis lock helyett egyedi lock;
   coarse grained lock: beallithato variable.h-ban;
   szinezes helyett a gc_count alapjan osztalyozza a graf csucsait:

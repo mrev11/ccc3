@@ -1,0 +1,133 @@
+
+
+CCC változások (2025-08-11 kontroll egysegesites... commit óta)
+===============================================================
+
+A 2025-08-11 "kontroll egysegesites:..." commit volt az utolsó változat,
+amit nem érintettek a most leírt változások.
+
+
+A régi (2025-08-11 előtti) CCC-ben nem volt külön szemétgyűjtő szál.
+Ha a program (valamelyik szála) kifogyott a memória objektumokból, akkor 
+az adott szál elvégezte a szemétgyűjtést, majd folytatta a félbehagyott
+munkát. Egy szálú program esetében (a display szálat nem számítjuk be) 
+nem volt gond a dolgozó szál és a szemétgyűjtés szinkronizálásával, 
+mert vagy az egyik futott, vagy a másik.  
+
+A szemétgyűjtés (korábban is, most is) az ún. mark & sweep algoritmussal történik.
+Ennek lényege: A szemétgyűjtés bejelöli azokat a memória objektumokat, amik
+a programból elérhetők (mark fázis). Ezután a szemétgyűjtés megszünteti
+azokat a memória objektumokat, amiket a mark fázis nem jelölt be (sweep fázis).
+
+A szemétgyűjtés új implementációja dedikált szálban, a dolgozó szálakkal 
+párhuzamosan fut. Meg kellett oldani a gc (garbage collector) és a dolgozó
+szálak (mutator) közötti szinkronizációt.
+
+> Ez a probléma a régebbi CCC-ben is fellépett, ha abban több dolgozó szál volt.
+> A szinkronizáció megoldása az volt, hogy a gc ideje alatt minden dolgozó szál
+> le volt állítva.
+
+Az új CCC-ben arra törekedtem, hogy a dedikált gc szál a dolgozó szálak
+leállítása nélkül működjön.
+
+A sweep fázis párhuzamosítása viszonylag egyszerű és biztonságos.
+A gc (sweep) a dolgozó szálaktól függetlenül végigmegy a memória objektumokon.
+Amelyik nincs élőként bejelölve, azt megszünteti, és az oref-jét befűzi a 
+szabad oref-ek listájába. A gc mindig hosszabbítja a lista végét.  A dolgozó 
+szálak ebből a listából igényelnek új oref-et, nevezetesen, a dolgozók lecsípnek 
+egy-egy elemet a lista elejéről. A feladat csupán annyi, hogy a gc és a dolgozó 
+szálak között szinkronizálni kell a listakezelést.
+
+Komplikáltabb a mark fázis párhuzamosítása. A mark fázis lényege egy
+gráfbejárás: A programváltozókban levő hivátkozások követésével el kell jutnunk
+az összes élő memória objektumhoz. Eközben azonban a gráf változik: A dolgozó
+szálak új változókat hoznak létre, ezzel a gráfban új csúcsok keletkeznek.
+A dolgozók értékadásokat végeznek, amivel a gráfban új élek keletkeznek,
+korábbi élek megszűnnek. Még ilyen körülmények között is megoldható a gráfbejárás.
+A mark fázis párhuzamosítása azonban jelenleg nincs defaultból bekapcsolva,
+hanem egy környezeti változó beállításával lehet engedélyezni. 
+(Megjegyzés: nálam mindig engedélyezve van.)
+
+
+Környezeti változók
+-------------------
+
+CCC_OREFSIZE=maxoref/level
+
+    A programnak maximum maxoref darab memória objektuma lehet.
+
+    A 'level' rész opcionális. Ha meg van adva, és a szabad oref-ek száma
+    level alá csökken, akkor feléled a gc szál, vagyis nem várja meg, hogy
+    az oref-ek teljesen elfogyjanak.
+    
+    level=0 esetén a gc csak akkor indul be, miután minden oref elfogyott.
+    level=maxoref esetén a gc folyamatosan fut.
+    Ha level nincs megadva, akkor a program meghatároz egy alkalmas értéket.
+
+
+CCC_VREFSIZE=maxvref/level
+
+    Az OREFSIZE-hoz hasonló értelmezésű adatok a vref-ekre vonatkozóan.
+
+
+CCC_GCDEBUG=akarmi
+
+    Ennek a változónak bármilyen nemüres értéke bekapcsolja a debug infó írását. 
+    Ebből lehet megállapítani, hogy egy programnak mekkora oref igénye van.
+
+CCC_MARKSYNC=enabled
+
+    A változó 'enabled' értéke bekapcsolja a gc mark fázis párhuzamosítását.
+
+COARSE_GRAINED_LOCK/FINE_GRAINED_LOCK
+
+    Ez nem környezeti változó, hanem a variable.h-ban kell definiálni egyiket
+    vagy másikat. A beállítástól függően a szinkronizációhoz egyetlen közös
+    mutexet használ (coarse), illetve a lockokat az objektumtól függően szétosztja
+    több mutex között (fine). 
+    
+    A default: CCC_MARKSYNC=disabled, FINE_GRAINED LOCK.
+    
+
+Tapasztalatok
+-------------
+
+Az új szemétgyűjtéssel a CCC valamivel (de nem sokkal) lassabb.
+A lassulás a Kontó programoknál nem észrevehető.
+A lassulást a szinkronizációhoz szükséges lockok okozzák.
+
+Ha összevetünk egy régi többszálú programot egy új szemétgyűjtéssel működő 
+programmal, akkor a mostani program biztonságosabb. A különbséget demonstrálja
+a concur.zip csomag. Ha az ebben található programokat a régi CCC-vel
+futtatjuk, azok azonnal elszállnak. A mostani CCC képes a programokat futtatni.
+
+A jelenség oka, hogy a régi CCC szinkronizálás nélkül olvas be olyan változókat, 
+amik egy másik szálban éppen átírás alatt állnak. Az átírás közben a változó nincs 
+konzisztens állapotban, az így kapott memória tartalom nem értelmezhető legális 
+értékként, ezért az olvasást végző szál SIGSEGV-zik.
+
+Az új CCC a változók lockolásával eléri, a változó kiolvasás mindig (technikai
+értelemben) legális eredményt adjon.
+
+Kivételt képeznek ez alól a tömeges mozgatásokat tartalmazó array műveletek.
+Ilyenek az asort, asortkey, ains, adel, aadd, asize (és még talán egyebek).
+Ezekben a CCC változók mozgatását a memmove() függvény végzi. A memmove bájtonként
+másol, ezért az előbbi függvények működése közben a tömbelemek kiolvasása 
+SIGSEGV-hez vezethet (és egyébként sincs értelme).
+
+A VALUE::operator=  member függvény deklarciója magváltozott.
+A korábbi deklaráció:  VALUE  VALUE::operator=(VALUE  v);
+A mostani deklaráció:  VALUE &VALUE::operator=(VALUE &v);
+Ez elkerülhetetlen, ugyanis a régi változatban nincs mód lockolni.
+Az inkompatibilitás miatt a CCC programokat újra kell fordítani.
+
+
+Signal kezelés
+--------------
+
+Az új CCC-ben dedikált szignál kezelő szál van. Ez egyszerűsíti és biztonságosabbá
+teszi a programokat, így például az adatbázis tranzakciók lemezre írását. 
+Az írást végző szál (mint ahogy egyetlen dolgozó szál sem) soha nem kap szignált, 
+mivel a szignálokat mindig egy külön erre a célra létrehozott szál kapja.
+
+

@@ -19,7 +19,7 @@
  */
 
 #include <cccapi.h>
- 
+
 //----------------------------------------------------------------------
 void _clp_getclassid(int argno)
 {
@@ -29,9 +29,9 @@ void _clp_getclassid(int argno)
     {
         error_arg("getclassid",base,argno);
     }
-    
+
     int clid=base->data.object.subtype;
-    
+
     stack=base;
     number(clid);
 }
@@ -45,13 +45,13 @@ void _clp_setclassid(int argno)
 
     VALUE *base=stack-argno;
 
-    if( (argno<2) || 
-        (base->type!=TYPE_OBJECT) || 
+    if( (argno<2) ||
+        (base->type!=TYPE_OBJECT) ||
         ((base+1)->type!=TYPE_NUMBER) )
     {
         error_arg("setclassid",base,argno);
     }
-    
+
     base->data.object.subtype=(int)((base+1)->data.number);
     stack=base+1;
 }
@@ -78,24 +78,21 @@ void _clp_iniobjectfromarray(int argno)
     //3) az inicializalt objektum es az array kulon oref-en lesz
 
     CCC_PROLOG("iniobjectfromarray",2);
- 
-    assign_lock(0);
     if( !ISOBJECT(1) ) ARGERROR();
     if( !ISARRAY(2 ) ) ARGERROR();
     unsigned lenobj=OBJECTLEN(base);
     unsigned lenarr=ARRAYLEN(base+1);
     if( lenobj!=lenarr )
     {
-        assign_unlock();
         error_siz("iniobjectfromarray",base,argno);
     }
     VALUE *pobj=OBJECTPTR(base);
     VALUE *parr=ARRAYPTR(base+1);
-    arraycopy(pobj,parr,lenarr);  // shallow copy
-    oref_gray(base->data.object.oref);
-    assign_unlock(0);
+    for( unsigned n=0; n<lenarr; n++ )
+    {
+        *(pobj+n)=*(parr+n);
+    }
     POP();
-
     CCC_EPILOG();
 }
 
@@ -103,15 +100,15 @@ void _clp_iniobjectfromarray(int argno)
 void _clp_objectnew(int argno)
 {
     CCC_PROLOG("objectnew",1);
-    
-    int clid=_parni(1);
-    
-    number(clid);
-    _clp_classobjectlength(1);               
-    _clp_array(1);         
 
-    TOP()->type=TYPE_OBJECT;            
-    TOP()->data.object.subtype=clid;  
+    int clid=_parni(1);
+
+    number(clid);
+    _clp_classobjectlength(1);
+    _clp_array(1);
+
+    TOP()->type=TYPE_OBJECT;
+    TOP()->data.object.subtype=clid;
 
     _rettop();
 
@@ -120,4 +117,4 @@ void _clp_objectnew(int argno)
 
 //----------------------------------------------------------------------
 
- 
+

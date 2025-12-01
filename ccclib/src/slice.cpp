@@ -106,11 +106,12 @@ void slice()
         else
         {
             int slen=jdx-idx+1; //>=1
-            VALUE *v=array0(slen);
-            assign_lock(0);
-            arraycopy(v,ARRAYPTR(a)+idx-1,slen);
-            oref_gray(v->data.array.oref);
-            assign_unlock(0);
+            VALUE *v=ARRAYPTR(a)+idx-1; // source
+            VALUE *s=array0(slen);      // target
+            for(int n=0; n<slen; n++)
+            {
+                *(s+n)=*(v+n);
+            }
         }
         *a=*TOP();
         stack=a+1;

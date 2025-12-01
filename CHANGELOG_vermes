@@ -1,3 +1,11 @@
+2025-12-01
+  fine grained lock: globalis lock helyett egyedi lock;
+  coarse grained lock: beallithato variable.h-ban;
+  szinezes helyett a gc_count alapjan osztalyozza a graf csucsait:
+    color <  gc_count  <=>  WHITE
+    color == gc_count  <=>  BLACK
+    color >  gc_count  <=>  GRAY
+
 2025-11-13 
   mark_sync-ben assign_lock() helyett assign_lock(0);
 

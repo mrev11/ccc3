@@ -10,6 +10,7 @@ struct varlock
 
     void init()
     {
+        mutex=(pthread_mutex_t*)malloc((prime+1)*sizeof(pthread_mutex_t));
         for( int i=0; i<prime+1; i++  )
         {
             mutex[i]=PTHREAD_MUTEX_INITIALIZER;
@@ -19,7 +20,6 @@ struct varlock
     varlock(int len)
     {
         prime=len;
-        mutex=(pthread_mutex_t*)malloc((prime+1)*sizeof(pthread_mutex_t));
         init();
     };
 
@@ -38,6 +38,25 @@ struct varlock
         return x;
     };
 
+    int lock(void *p, int x1) // lockol egy plusz mutexet (fogni kell mutex[0]-t)
+    {
+        int x2=1+((unsigned long long)p)%prime; // x2=[1,prime]
+        if( x1<x2 )
+        {
+            pthread_mutex_lock( &mutex[x2] );
+            return ((x1)<<16)|(x2);
+        }
+        else if( x1>x2 )
+        {
+            pthread_mutex_lock( &mutex[x2] );
+            return ((x2)<<16)|(x1);
+        }
+        else
+        {
+            return x1;
+        }
+    };
+
     int lock(void *p1, void *p2) // ket mutexet megfog
     {
         int x1=1+((unsigned long long)p1)%prime; // x1=[1,prime]
@@ -45,14 +64,18 @@ struct varlock
                                                      
         if( x1<x2 )
         {
+            pthread_mutex_lock(&mutex[0]);
             pthread_mutex_lock( &mutex[x1] );
             pthread_mutex_lock( &mutex[x2] );
+            pthread_mutex_unlock(&mutex[0]);
             return ((x1)<<16)|(x2);
         }
         else if( x1>x2 )
         {
+            pthread_mutex_lock(&mutex[0]);
             pthread_mutex_lock( &mutex[x2] );
             pthread_mutex_lock( &mutex[x1] );
+            pthread_mutex_unlock(&mutex[0]);
             return ((x2)<<16)|(x1);
         }
         else
@@ -87,9 +110,12 @@ struct varlock
 
     int lock() // az osszes mutexet lockolja
     {
+        //printf(".");fflush(0);
         for( int x=0; x<=prime; x++ )
         {
+            //printf("%d",x);fflush(0);
             pthread_mutex_lock( &mutex[x] );
+            //printf(".");fflush(0);
         }
         return 0;
     };
@@ -101,6 +127,38 @@ struct varlock
             pthread_mutex_unlock(&mutex[i]);
         }
     };
+
+
+    void deadlock(int id) // ellenorzi, nincs-e deadlock
+    {
+        unsigned millis=2000;
+    
+        struct timeval now;
+        struct timespec timeout;
+        gettimeofday(&now,0);
+        timeout.tv_sec=now.tv_sec;
+        timeout.tv_nsec=now.tv_usec*1000;
+        timeout.tv_sec+=millis/1000;
+        timeout.tv_nsec+=(millis%1000)*1000000;
+        if( timeout.tv_nsec>999999999 )
+        {
+            timeout.tv_sec++;
+            timeout.tv_nsec-=1000000000;
+        }
+
+        for( int x=0; x<=prime; x++ )
+        {
+            if( pthread_mutex_timedlock( &mutex[x], &timeout ) )
+            {
+                printf("\nDEADLOCK place=%d index=%d\n",id,x);
+                fflush(0);
+                abort();
+            }
+        }
+        lock_free();
+    }
+
+
 };
 
 //----------------------------------------------------------------------------------------

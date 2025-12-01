@@ -114,8 +114,7 @@ void idxr() // indexkifejezes a jobboldalon
                 error_idx("idxr",a,2);
             }
             POP();
-            //*TOP()=*(ARRAYPTR(a)+idx-1);
-            valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
+            *TOP()=*(ARRAYPTR(a)+idx-1);
         }
 
         else if( a->type==TYPE_STRING )
@@ -178,8 +177,7 @@ void idxr0(double i) // indexkifejezes a jobboldalon (konstans index)
             number(idx);
             error_idx("idxr0",a,2);
         }
-        //*TOP()=*( ARRAYPTR(a)+idx-1 );
-        valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
+        *TOP()=*( ARRAYPTR(a)+idx-1 );
     }
 
     else if( a->type==TYPE_STRING )
@@ -233,8 +231,7 @@ void idxr0nil(double i) // mint idxr0, csak tulindexelesre NIL-t ad
         }
         else
         {
-            //*TOP()=*( ARRAYPTR(a)+idx-1 );
-            valuecopy_lk(TOP(),ARRAYPTR(a)+idx-1);
+            *TOP()=*( ARRAYPTR(a)+idx-1 );
         }
     }
 
@@ -287,7 +284,7 @@ void array(int len) //stackrol levett elemekkel inicializalt array
     if( len>0 )
     {
         valptr=newValue(len+1+EXTSIZ);
-        arraycopy_lk(valptr,base,len);
+        arraycopy(valptr,base,len);
         (valptr+len)->type=TYPE_END;
         (valptr+len)->data.size=len+EXTSIZ;
     }
@@ -373,7 +370,7 @@ push_call("aadd",base);
         error_arg("aadd",base,2);
     }
 
-    assign_lock(0);
+    int lkx=mark_lock(a);
 
     VALUE *p_old=ARRAYPTR(a);
     int len_old=ARRAYLEN(a);
@@ -404,7 +401,7 @@ push_call("aadd",base);
         }
     }
 
-    assign_unlock(0);
+    mark_unlock(lkx);
 //
 *base=*v;
 stack=base+1;
@@ -428,7 +425,7 @@ push_call("asize",base);
         error_arg("asize",base,2);
     }
 
-    assign_lock(0);
+    int lkx=mark_lock(arr);
 
     VALUE *p_old=ARRAYPTR(arr);
     int len_old=ARRAYLEN(arr);
@@ -480,7 +477,7 @@ push_call("asize",base);
         }
     }
 
-    assign_unlock(0);
+    mark_unlock(lkx);
 //
 stack=base+1;
 pop_call();
@@ -512,8 +509,10 @@ push_call("ains",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    arraycopy_lk(ptr+pos,ptr+pos-1,len-pos);
-    *(ptr+pos-1)=NIL;
+    int lkx=mark_lock(a);
+    arraycopy(ptr+pos,ptr+pos-1,len-pos);
+    (ptr+pos-1)->type=TYPE_NIL;
+    mark_unlock(lkx);
 //
 *base=*a;
 stack=base+1;
@@ -547,8 +546,10 @@ push_call("adel",base);
 
     VALUE *ptr=ARRAYPTR(a);
     unsigned int i;
-    arraycopy_lk(ptr+pos-1,ptr+pos,len-pos);
-    *(ptr+len-1)=NIL;
+    int lkx=mark_lock(a);
+    arraycopy(ptr+pos-1,ptr+pos,len-pos);
+    (ptr+len-1)->type=TYPE_NIL;
+    mark_unlock(lkx);
 //
 *base=*a;
 stack=base+1;

@@ -192,29 +192,6 @@ extern void convertfspec2nativeformat(VALUE*);
 extern void bin2str(VALUE*);
 extern void str2bin(VALUE*);
 
-//variable.obj:
-extern void vartab_ini(void);
-extern void vartab_lock(void);
-extern void vartab_unlock(void);
-extern int assign_lock(void);
-extern int assign_lock(int);
-extern int assign_lock(VALUE*);
-extern int assign_lock(VALUE*,VALUE*);
-extern void assign_unlock(void);
-extern void assign_unlock(int);
-
-extern char *newBinary(unsigned);
-extern wchar_t *newChar(unsigned);
-extern VALUE* newValue(unsigned);
-extern void deleteValue(VALUE*);
-extern OREF* oref_new(VALUE*,void*,int);
-extern VREF* vref_new(VALUE*);
-extern void oref_gray(OREF*);
-extern void valuecopy(VALUE*,VALUE*);
-extern void arraycopy(VALUE*,VALUE*,int);
-extern void valuecopy_lk(VALUE*,VALUE*);
-extern void arraycopy_lk(VALUE*,VALUE*,int);
-
 //dtos.obj:
 extern long stod(const char*);
 extern long stod(const wchar_t*);

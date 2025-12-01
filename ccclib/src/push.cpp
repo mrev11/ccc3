@@ -39,7 +39,25 @@ void PUSH(VALUE *v)
 //------------------------------------------------------------------------
 void push_symbol(VALUE *v)  // felteteles deref 
 {
-    PUSH( (v->type!=TYPE_REF) ? v : &(v->data.vref->value) );
+    assign_lock0();
+    int lkx=assign_lock(v);
+    if( v->type!=TYPE_REF )
+    {
+        assign_unlock0();
+        stack->type=(v)->type;
+        stack->data=(v)->data;
+    }
+    else
+    {
+        #ifdef FINE_GRAINED_LOCK
+            lkx=assign_lock(&(v->data.vref->value),lkx);
+        #endif
+        assign_unlock0();
+        stack->type=v->data.vref->value.type;
+        stack->data=v->data.vref->value.data;
+    }
+    stack++;
+    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------
@@ -49,16 +67,20 @@ void push_blkenv(VALUE *v) // mindig deref
 }
 
 //------------------------------------------------------------------------
-void push_symbol_ref(VALUE *v) // @ par, blokk kornyezet
+void push_symbol_ref(VALUE *v) // @par, blokk kornyezet
 {
+    int lkx=assign_lock(v);
     if( v->type!=TYPE_REF )
     {
-        vref_new(v); // PUSH
+        vref_new(v);
     }
     else
     {
-        PUSH(v);
+        stack->type=(v)->type;
+        stack->data=(v)->data;
+        stack++;
     }
+    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------
@@ -123,15 +145,21 @@ void SWAP()
 //------------------------------------------------------------------------
 void assign(VALUE *lside)
 {
+    assign_lock0();
     int lkx=assign_lock(lside);
     if( lside->type!=TYPE_REF )
     {
+        assign_unlock0();
         valuecopy(lside,TOP());
     }
     else
     {
-        valuecopy(&(lside->data.vref->value),TOP());
-    }
+        #ifdef FINE_GRAINED_LOCK
+            lkx=assign_lock(&(lside->data.vref->value),lkx);
+        #endif
+        assign_unlock0();
+        valuecopy(&lside->data.vref->value,TOP());
+    }    
     assign_unlock(lkx);
 }
 
@@ -153,7 +181,7 @@ void block(void (*code)(int), int len)
         VALUE *valptr=newValue(len+1);
         (valptr+len)->type=TYPE_END;
         (valptr+len)->data.size=len;
-        arraycopy_lk(valptr,base,len);
+        arraycopy(valptr,base,len);
         VALUE v;
         v.type=TYPE_BLOCK;
         v.data.block.code=code;

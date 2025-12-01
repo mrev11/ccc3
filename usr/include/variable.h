@@ -45,13 +45,6 @@ const int TYPE_REF        = 0x31;    // 'R'
 
 //Lenyeges a tipus konstansok nagysag szerinti sorrendje!
 
-static const int COLOR_WHITE        = 0;
-static const int COLOR_GRAY         = 1;
-static const int COLOR_BLACK        = 2;
-
-static const int COLOR_LOCKED       = 3;
-static const int COLOR_RESERVED     = COLOR_BLACK;
-
 
 struct OREF;
 struct VREF;
@@ -139,11 +132,40 @@ struct VARTAB_SETSIZE
 };
 
 
-extern void  vartab_ini(void);
-extern void  vartab_setsize( struct VARTAB_SETSIZE *vss );
-extern VALUE *newValue(unsigned int len);
+extern void   vartab_setsize( struct VARTAB_SETSIZE *vss );
+
+extern int    assign_lock0();
+extern void   assign_unlock0();
+extern int    assign_lock(void);
+extern int    assign_lock(int);
+extern int    assign_lock(VALUE*);
+extern int    assign_lock(VALUE*,int);
+extern int    assign_lock(VALUE*,VALUE*);
+extern void   assign_unlock(void);
+extern void   assign_unlock(int);
+extern void   assign_deadlock(int);
+
+extern int    mark_lock(OREF*);
+extern int    mark_lock(VALUE*);
+extern int    mark_lock(int);
+extern void   mark_unlock(int);
+
+extern void   vartab_ini(void);
+extern void  *vartab_collector(void*);
+extern void   oref_gray(OREF*);
+extern OREF  *oref_new(VALUE*,void*,int);
+extern VREF  *vref_new(VALUE*);
+extern VALUE *newValue(unsigned);
 extern CHAR  *newChar(unsigned int len);
 extern BYTE  *newBinary(unsigned int len);
+extern void   deleteValue(VALUE*);
+extern void   valuecopy(VALUE*,VALUE*);
+extern void   arraycopy(VALUE*,VALUE*,int);
+
+
+// egyik vagy masik
+#define FINE_GRAINED_LOCK
+//#define COARSE_GRAINED_LOCK
 
 //---------------------------------------------------------------------------
 

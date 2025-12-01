@@ -41,7 +41,7 @@ void _clp_create_items(int argno) //eltérő paraméterezés!
 
     for(guint i=0; i<n_entries; i++)
     {
-        #define IDX(x) push(idxl0(x)) // a --- a[x]
+        #define IDX(x) push(idxxl0(x)) // a --- a[x]
 
         char *p=0;
         push(_par(2));IDX(i+1);IDX(1);str2bin(TOP());

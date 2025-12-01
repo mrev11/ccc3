@@ -73,6 +73,9 @@ void stack_print(void)
 //---------------------------------------------------------------------------
 void var_print(VALUE *v)
 {
+    VALUE x=*v; // lock vedelem alatt atrakja a C stackre
+    v=&x;
+
     switch( v->type )
     {
         case TYPE_NIL:

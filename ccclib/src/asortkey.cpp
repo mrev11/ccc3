@@ -22,8 +22,9 @@
 #include <stdlib.h>
 #include <cccapi.h>
 
-static void valuesort_key(VALUE *v, int n);
-static int valuecompare_key(const void *x, const void *y);
+static void valuesort_key(VALUE *v, int n, int lkx);
+static int valuecompare_key(const void *x, const void *y, void*lkx);
+
 
 //------------------------------------------------------------------------
 void _clp_asortkey(int argno)
@@ -97,7 +98,9 @@ void _clp_asortkey(int argno)
         // az ascend/descend flag van alatta
         // a stack nem valtozhat
 
-        valuesort_key(arr+start-1,count);
+        int lkx=mark_lock(base);
+        valuesort_key(arr+start-1,count,lkx);
+        mark_unlock(lkx);
     }
 
     _retv(base); //array
@@ -105,20 +108,20 @@ void _clp_asortkey(int argno)
 }
 
 //------------------------------------------------------------------------
-static void valuesort_key(VALUE *v, int n)
+static void valuesort_key(VALUE *v, int n, int lkx)
 {
-    assign_lock(0);
-    qsort(v,n,sizeof(VALUE),valuecompare_key);
-    assign_unlock(0);
+    qsort_r(v,n,sizeof(VALUE),valuecompare_key,(void*)(long long)lkx);
 }
 
 //------------------------------------------------------------------------
-static int valuecompare_key(const void *x, const void *y)
+static int valuecompare_key(const void *x, const void *y, void *arg)
 {
-
     //TOP2=ascend/descend flag
     //TOP=kulcs eloallito blokk
     //stack valtozatlan marad
+
+    int lkx=(int)(long long)arg;
+    mark_unlock(lkx);
 
     VALUE *ascend=TOP2();
     VALUE *keyblk=TOP();
@@ -131,8 +134,6 @@ static int valuecompare_key(const void *x, const void *y)
     }
     else
     {
-        assign_unlock(0);
-
         push_symbol(keyblk);
         push_symbol((VALUE*)x);
         _clp_eval(2);
@@ -145,8 +146,6 @@ static int valuecompare_key(const void *x, const void *y)
 
         result=stdcmp((VALUE*)x,(VALUE*)y);
         POP2();
-
-        assign_lock(0);
     }
 
     if( !ascend->data.flag  )
@@ -154,6 +153,7 @@ static int valuecompare_key(const void *x, const void *y)
         result=-result;
     }
 
+    mark_lock(lkx);
     return result;
 }
 

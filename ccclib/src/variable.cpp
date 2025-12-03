@@ -41,6 +41,12 @@ static const char *WHITE="";
 static const char *DEFAULT="";
 #endif
 
+
+//---------------------------------------------------------------------------
+// egyik vagy masik
+#define FINE_GRAINED_LOCK
+//#define COARSE_GRAINED_LOCK
+
 //---------------------------------------------------------------------------
 
 static OREF *oref;          // oref tomb
@@ -843,7 +849,7 @@ OREF *oref_new(VALUE *v, void* ptr, int length)
 
 
 //---------------------------------------------------------------------------
-VREF *vref_new(VALUE *v)
+VREF *vref_new()  // TOP-ot refesiti
 {
     // kizarolag a mutator hivja
     // max egy mutator thread van itt
@@ -875,14 +881,10 @@ VREF *vref_new(VALUE *v)
       vr->color=gc_count; //=BLACK
       vnext=vr->link;
       vr->link=-1;
-      vr->value.type=v->type;
-      vr->value.data=v->data;
-      v->type=TYPE_REF;
-      v->data.vref=vr;
     mutx_sweep.lock_free(lkx);
-    stack->type=v->type; // push_symbol_ref-ben lockolva
-    stack->data=v->data;
-    stack++;
+    vr->value=*TOP();
+    TOP()->type=TYPE_REF;
+    TOP()->data.vref=vr;
     sync_vfree.dec();
     vreftab_unlock();
 

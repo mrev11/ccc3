@@ -69,18 +69,12 @@ void push_blkenv(VALUE *v) // mindig deref
 //------------------------------------------------------------------------
 void push_symbol_ref(VALUE *v) // @par, blokk kornyezet
 {
-    int lkx=assign_lock(v);
-    if( v->type!=TYPE_REF )
+    PUSH(v);
+    if( TOP()->type!=TYPE_REF )
     {
-        vref_new(v);
+        vref_new(); // TOP-ot refesiti
+        *v=*TOP();
     }
-    else
-    {
-        stack->type=(v)->type;
-        stack->data=(v)->data;
-        stack++;
-    }
-    assign_unlock(lkx);
 }
 
 //------------------------------------------------------------------------

@@ -21,6 +21,20 @@
 #ifndef _VARIABLE_H_
 #define _VARIABLE_H_
 
+#ifdef _CCC2_
+#undef  BYTE
+#define BYTE char
+#undef  CHAR
+#define CHAR char
+#endif
+
+#ifdef _CCC3_
+#undef  BYTE
+#define BYTE char
+#undef  CHAR
+#define CHAR wchar_t
+#endif
+
 //---------------------------------------------------------------------------
 
 
@@ -123,7 +137,7 @@ struct VREF
 };
 
 
-struct VARTAB_SETSIZE 
+struct VARTAB_SETSIZE
 {
     unsigned int *oref_size;
     unsigned int *vref_size;
@@ -154,7 +168,7 @@ extern void   vartab_ini(void);
 extern void  *vartab_collector(void*);
 extern void   oref_gray(OREF*);
 extern OREF  *oref_new(VALUE*,void*,int);
-extern VREF  *vref_new(VALUE*);
+extern VREF  *vref_new();
 extern VALUE *newValue(unsigned);
 extern CHAR  *newChar(unsigned int len);
 extern BYTE  *newBinary(unsigned int len);
@@ -163,9 +177,6 @@ extern void   valuecopy(VALUE*,VALUE*);
 extern void   arraycopy(VALUE*,VALUE*,int);
 
 
-// egyik vagy masik
-#define FINE_GRAINED_LOCK
-//#define COARSE_GRAINED_LOCK
 
 //---------------------------------------------------------------------------
 

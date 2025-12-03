@@ -98,7 +98,7 @@ static int valuecompare_cmp(const void *x, const void *y)
     // osszehasonlito operatorok stringeken ugy mukodnek, 
     // hogy eloszor a baloldalt csonkitjak a jobboldal hosszara,
     // es az igy csonkitott baloldalt vetik ossze a jobboldallal.
-    // Emiatt csak a < es >= operatotok mukodnek a vart modon.
+    // Emiatt csak a < es >= operatorok mukodnek a vart modon.
     // A >, <=, != operatorok furcsa eredmenyt adnak, amikor
     // a balodal egyezik a jobboldallal a jobboldal hosszaban.
     // Celszeru a compare blokkban a <-t vagy >=-t hasznalni.

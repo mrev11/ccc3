@@ -44,8 +44,8 @@ static const char *DEFAULT="";
 
 //---------------------------------------------------------------------------
 // egyik vagy masik
-#define FINE_GRAINED_LOCK
-//#define COARSE_GRAINED_LOCK
+ #define FINE_GRAINED_LOCK
+// #define COARSE_GRAINED_LOCK
 
 //---------------------------------------------------------------------------
 
@@ -855,7 +855,6 @@ VREF *vref_new()  // TOP-ot refesiti
     // max egy mutator thread van itt
 
     vreftab_lock();
-
     int counter=0;
     while( vnext==sync_vlast.read() )
     {
@@ -882,11 +881,12 @@ VREF *vref_new()  // TOP-ot refesiti
       vnext=vr->link;
       vr->link=-1;
     mutx_sweep.lock_free(lkx);
+    vreftab_unlock();
+
     vr->value=*TOP();
     TOP()->type=TYPE_REF;
     TOP()->data.vref=vr;
     sync_vfree.dec();
-    vreftab_unlock();
 
     if( sync_vfree.read()<VREF_LEVEL && 0==sync_gc.lock_try() )
     {

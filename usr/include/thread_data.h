@@ -23,7 +23,7 @@
 
 
 #define NEWTHRDATA()  (new thread_data())
-#define DELTHRDATA(d) //(delete (thread_data*)(d))
+#define DELTHRDATA(d) (delete (thread_data*)(d))
  
 class thread_data
 {
@@ -52,6 +52,10 @@ class thread_data
     
     thread_data *init()
     {
+        //if( getenv("CCC_THRDEBUG") )
+        //{
+        //    printf("THREAD_DATA::init(%d:%d)\n",getpid(),tdata_count); fflush(0);
+        //}
         ++tdata_count;
 
         if( 1==tdata_count )
@@ -87,6 +91,11 @@ class thread_data
     thread_data *cleanup()
     {
         --tdata_count;
+        //if( getenv("CCC_THRDEBUG") )
+        //{
+        //    printf("THREAD_DATA::cleanup(%d:%d)\n",getpid(),tdata_count); fflush(0);
+        //}
+   
         if( prev!=0 )
         {
             prev->next=next;

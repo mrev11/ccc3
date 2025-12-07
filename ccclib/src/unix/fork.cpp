@@ -29,8 +29,35 @@ void _clp_fork(int argno)
 
     pid_t pid=fork();
     
-    if( pid==0 )
+    if( pid==0 ) // CHILD
     {
+        thread_data::mutex=PTHREAD_MUTEX_INITIALIZER; // lockolt allapotban lehet
+
+        if( thread_data::tdata_count<=1 )
+        {
+            // egyszalu program forkolt
+            // az orokolt thread_data lista megfelel
+            // nincs tennivalo
+        }
+        else
+        {
+            // tobbszalu program egyik szala forkolt
+            // most a child egyetlen szalaban vagyunk
+            // csak a sajat thread_data-t kell megtartani
+            // ki kell tisztitani thread_data listat
+
+            thread_data *td=thread_data::tdata_first;
+            while( td!=0 )
+            {
+                thread_data *td1=td;
+                td=td->next;
+                if( td1!=thread_data_ptr )
+                {
+                    DELTHRDATA(td1);
+                }
+            }
+        }
+
         extern void *vartab_collector(void *ptr);
 
         setup_signal_handlers();

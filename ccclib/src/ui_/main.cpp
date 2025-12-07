@@ -32,13 +32,6 @@
 
 int vartab_is_ready=0;
 
-
-//----------------------------------------------------------------------------
-static void delete_thread_data(void *p)
-{
-    delete (thread_data*)p;
-}
-
 //----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
@@ -66,8 +59,8 @@ int main(int argc, char **argv)
     ARGV=argv;
 
     vartab_ini();
-    pthread_key_create(&thread_key,&delete_thread_data);
-    pthread_setspecific(thread_key,new thread_data());
+    pthread_key_create(&thread_key,0);
+    pthread_setspecific(thread_key,NEWTHRDATA());
 
     vartab_is_ready=1;
 

@@ -251,7 +251,7 @@ void vartab_ini(void)
     {
         VREF_LEVEL=VREF_SIZE/5;
     }
-    VREF_LEVEL=min(VREF_LEVEL,VREF_SIZE/2);
+    VREF_LEVEL=min(VREF_LEVEL,VREF_SIZE);
 
 
     if( env_gcdebug )
@@ -322,7 +322,7 @@ void vartab_ini(void)
 //---------------------------------------------------------------------------
 void *vartab_collector(void *ptr)
 {
-    #ifndef WINDOWS // nincs gettid()
+    #ifdef _LINUX_ // mashol nincs gettid()
     collector_tid=gettid();
     if( env_gcdebug )
     {

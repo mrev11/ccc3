@@ -134,9 +134,9 @@ static varsync sync_ofree(&ofree);
 static varsync sync_vfree(&vfree);
 static varsync sync_oresv(&oresv);
 
-static varlock mutx_mark(7);            // mark vezerlese
 static varlock mutx_sweep(11);          // sweep vezerlese
-static varlock mutx_value(13);          // assign vezerlese
+static varlock mutx_mark(41);           // mark vezerlese
+static varlock mutx_value(41);          // assign vezerlese
 
 //---------------------------------------------------------------------------
 static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit

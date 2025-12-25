@@ -1,12 +1,17 @@
+2025-12-25 BSD compatibility:
+  thread_yield (deprecated) megszunt;
+  pthread_setname_np es pthread_getname_np csak Linuxon;
+
+
 2025-12-23 variable.cpp: mutx_mark es mutx_value 41-re novelve;
 
-2025-12-12 variable.cpp:  
+2025-12-12 variable.cpp:
   gettid() csak Linuxon, VREF_LEVEL a teljes [0,VREF_SIZE] intervallumon;
-      
 
-2025-12-07 
+
+2025-12-07
   Tobbszalu program fork-ja utan az egyszalu child az eredeti (tobbelemu)
-  thread_data listat orokli. Ebbol a listabol ki kell szedni a megszunt szalakhoz 
+  thread_data listat orokli. Ebbol a listabol ki kell szedni a megszunt szalakhoz
   tartozo elemeket (es csak az egyetlen sajat elemet kell megtartani).
   DELTHRDATA makro vissza, megis jobb explicite torolni a thread_data-kat.
 
@@ -28,15 +33,15 @@
     color == gc_count  <=>  BLACK
     color >  gc_count  <=>  GRAY
 
-2025-11-13 
+2025-11-13
   mark_sync-ben assign_lock() helyett assign_lock(0);
 
-2025-11-12 
+2025-11-12
   assign_lock-ban pthread_rwlock tul lassu -> visszaveve, helyette:
   assign_lock(VALUE*v) v-re specifikus lock, dolgozo szalak parhuzamosan futhatnak;
   assign_lock(0) asort,asize,... lockja, kizarja a gc-t es asort,asize...-t, de mas dolgozo szalak futhatnak;
   assign_lock() a gc altal alkalmazott lock, minden VALUE masolast letilt;
- 
+
 2025-11-12 assign_lock-ban pthread_rwlock;
 
 2025-11-12 pthread_rwlock interface;
@@ -53,7 +58,7 @@
   operator= VALUE ertek helyett &VAlUE referenciaval;
   codegen alkalmazkodik az uj operator=-hoz;
   xmethod6-ban assign_lock;
-  CCC_MARKSYNC=enabled engedelyezi a dolgozo szalak futasat a 
+  CCC_MARKSYNC=enabled engedelyezi a dolgozo szalak futasat a
   szemetgyujtes mark fazisa kozben (default: nincs engedelyezve).
 
 

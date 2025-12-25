@@ -63,7 +63,9 @@ void _clp_fork(int argno)
         setup_signal_handlers();
         pthread_t t=0;
         pthread_create(&t,0,vartab_collector,0);
+#ifdef _LINUX_
         pthread_setname_np(t,"collector");
+#endif
         pthread_detach(t);
     }
     

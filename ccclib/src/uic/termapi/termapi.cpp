@@ -296,13 +296,17 @@ void initialize_terminal()
         fprintf(stderr,"display thread cannot start\n");
         exit(1);
     }
+#ifdef _LINUX_
     pthread_setname_np(t,"display");
+#endif
     if( 0!=pthread_create(&t,0,thread_message,0) )
     {
         fprintf(stderr,"message thread cannot start\n");
         exit(1);
     }
+#ifdef _LINUX_
     pthread_setname_np(t,"message");
+#endif
 }
 
 //----------------------------------------------------------------------------

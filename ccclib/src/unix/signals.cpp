@@ -65,7 +65,9 @@ void setup_signal_handlers() // elkészíti a szignál kezelő szálat
 
     pthread_t thread;
     pthread_create(&thread, NULL, &signal_handler, &set);
+#ifdef _LINUX_
     pthread_setname_np(thread,"sigwait");
+#endif
     pthread_detach(thread);
 
     // megjegyzés
@@ -102,7 +104,9 @@ static void *signal_handler(void *arg)
         {
             pthread_t thread;
             pthread_create(&thread, NULL, &signal_thread, (void*)(long)cccsig);
+#ifdef _LINUX_
             pthread_setname_np(thread,"sighandler");
+#endif
             pthread_join(thread,0);
 
             // pthread_detach() valasztassal egyszerre tobb szignal kezelo futhatna

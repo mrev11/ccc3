@@ -271,17 +271,6 @@ void _clp_thread_cond_wait(int argno)
 }
 
 //---------------------------------------------------------------------------
-void _clp_thread_yield(int argno)
-{
-    CCC_PROLOG("thread_yield",0);
-    #ifndef WINDOWS
-        pthread_yield();
-    #endif
-    _ret();
-    CCC_EPILOG();
-}
-
-//---------------------------------------------------------------------------
 void _clp_thread_cond_destroy(int argno)
 {
     CCC_PROLOG("thread_cond_destroy",1);
@@ -296,11 +285,7 @@ void _clp_thread_create_detach(int argno)
     _clp_thread_detach(1);
 }
 
-#if (!defined _LINUX_) || (defined _TERMUX_)
-//---------------------------------------------------------------------------
-void _clp_thread_setname(int argno) {stack-=argno; number(0);}
-void _clp_thread_getname(int argno) {stack-=argno; PUSHNIL();}
-#else
+
 //---------------------------------------------------------------------------
 void _clp_thread_setname(int argno)
 {
@@ -309,12 +294,16 @@ void _clp_thread_setname(int argno)
     // only ascii names are supported 
 
     CCC_PROLOG("thread_setname",2);
+#ifdef _LINUX_
     str2bin(base+1);
     number(15);
     _clp_left(2);
     pthread_t t=ptr2tid(_parp(1));
     const char *name=_parb(2);
     _retni( pthread_setname_np(t,name) ); // 0=ok, !0=failed
+#else
+    _retni(0);
+#endif
     CCC_EPILOG();
 }
 
@@ -322,21 +311,19 @@ void _clp_thread_setname(int argno)
 void _clp_thread_getname(int argno)
 {
     CCC_PROLOG("thread_getname",1);
+    char name[32];
+#ifdef _LINUX_
     pthread_t t=ptr2tid(_parp(1));
-    char name[16];
-    if( 0==pthread_getname_np(t,name,sizeof(name)) )
+    if( 0!=pthread_getname_np(t,name,sizeof(name)) )
     {
-        _retcb(name);
+        name[0]=0;
     }
-    else
-    {
-        _ret();
-    }
+#else
+    name[0]=0;
+#endif
+    _retcb(name);
     CCC_EPILOG();
 }
-
-#endif
-
 
 //---------------------------------------------------------------------------
 void _clp_thread_rwlock_init(int argno)

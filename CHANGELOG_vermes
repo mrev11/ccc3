@@ -1,3 +1,11 @@
+2026-02-09 textview fuggetlenitve colortheme-tol;
+  Ha specialis colortheme lehet definialva,
+  akkor ajanlatos azt a program elejen betolteni/torolni,
+  maskepp a maszkok kesobb automatikusan betolthetik,
+  aminek hatasara megvaltozhatnak a 0-15 indexu szinek.
+  A bizonytalansag elkerulheto, ha 16<=szineket hasznalunk.
+  (Megj: CCC2-ben nincsenek 16<=szinek.)
+
 2025-12-25 BSD compatibility:
   thread_yield (deprecated) megszunt;
   pthread_setname_np es pthread_getname_np csak Linuxon;

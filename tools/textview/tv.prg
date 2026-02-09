@@ -27,6 +27,8 @@ function main(fspec,search)
 local tv,fd,size,map
 local hist:=history_load(fspec)[1] //{fspec,offset,search}
 
+    ccc_colortheme():clear
+
     if( !file(fspec:=hist[1]) )
         alert("'"+fspec+"' not found!",{"Quit"}) 
         quit
@@ -50,8 +52,8 @@ local hist:=history_load(fspec)[1] //{fspec,offset,search}
     tv:=textviewNew(map,1) //egy sor header
 
     tv:headerblk:={|x|header(x,fspec)}
-    tv:mskcolor:="n/bg+,w+/111"
-    tv:txtcolor:="w/b"
+    tv:mskcolor:="n/444,n/555"
+    tv:txtcolor:="w/003"
     
     if( !empty(hist[2]) )
         tv:setpos(hist[2])

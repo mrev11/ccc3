@@ -34,6 +34,8 @@ elif [[ "$UNAME" == *NetBSD* ]];then
     CCCUNAME=netbsd
 elif [[ "$UNAME" == *SunOS* ]];then
     CCCUNAME=solaris
+elif [[ "$UNAME" == *MINGW64* ]];then
+    CCCUNAME=msys2
 else
     echo unknown OS: $UNAME
     read

@@ -1,4 +1,6 @@
 
+PRINT=yes
+
 #####################################################################################
 
 # BROWSE
@@ -24,9 +26,13 @@ BRWCOLOR1=w/#5,,w+/#2,w+/#1
 # 3. szin : kiemelt (bright) label
 
 
-MSKCOLOR_SAY0=n/#11,,555/#11
-MSKCOLOR_SAY1=n/#8,,555/#8
-MSKCOLOR_SAY=n/#8,555/#8
+MSKCOLOR_SAY  = n/222,,554/222
+MSKCOLOR_SAY1 = n/223,,554/223
+MSKCOLOR_SAY2 = n/232,,554/232
+MSKCOLOR_SAY3 = n/322,,554/322
+MSKCOLOR_SAY4 = n/233,,554/233
+MSKCOLOR_SAY5 = n/323,,554/323
+MSKCOLOR_SAY6 = n/332,,554/332
 
 
 #####################################################################################
@@ -36,7 +42,7 @@ MSKCOLOR_SAY=n/#8,555/#8
 # 2. szin: get fokusszal
 # 3. szin: fokusz nelkuli kiemelt get, kivalasztott alt
 
-MSKCOLOR_GET=n/w,n/w+,n/w
+MSKCOLOR_GET=000/333,000/555,000/444
 
 
 #####################################################################################

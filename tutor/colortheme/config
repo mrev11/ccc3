@@ -40,9 +40,9 @@ BRWCOLOR2=w/#6,,n/#13,w+/#14
 # 3. szin : kiemelt (bright) label
 
 MSKCOLOR_SAY0=n/#9,,555/#9
-MSKCOLOR_SAY1=n/#11,555/#11
+MSKCOLOR_SAY1=n/#11,,555/#11
 
-#MSKCOLOR_SAY=n/#8,555/#8
+#MSKCOLOR_SAY=n/#8,,555/#8
 
 #####################################################################################
 

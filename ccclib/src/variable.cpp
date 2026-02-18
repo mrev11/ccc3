@@ -883,11 +883,14 @@ VREF *vref_new()  // TOP-ot refesiti
       vnext=vr->link;
       vr->link=-1;
     mutx_sweep.lock_free(lkx);
-    vreftab_unlock();
 
-    vr->value=*TOP();
+    vr->value.data=TOP()->data;
+    vr->value.type=TOP()->type;
     TOP()->type=TYPE_REF;
     TOP()->data.vref=vr;
+
+    vreftab_unlock();
+
     sync_vfree.dec();
 
     if( sync_vfree.read()<VREF_LEVEL && 0==sync_gc.lock_try() )

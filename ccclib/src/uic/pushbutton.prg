@@ -103,7 +103,11 @@ local result
                     move(get,key)
 
                 elseif( key==K_SPACE .or. key==K_ENTER )
+                    push_visual(get)
+                    keyboard("")
                     result:=eval(get:execblock,get)
+                    sleep(100)
+                    keyboard("")
                     if( result::empty  )
                         get:exitState:=GE_ESCAPE
                         exit
@@ -127,5 +131,30 @@ local msk:=mskActive()
     if( msk!=NIL .and. 0<ascan(msk[5],oGet) )
         mskMove(msk,nkey)
     end
+
+
+*************************************************************************************
+static  function push_visual(get)
+
+local name1,name2
+local name:=get:varget
+local len2:=int(len(name)/2)
+local cursor:=setcursor(0)
+
+    if( name::left(1)=="<" .and. len2>1 )
+        name1:=(" "+name)::left(len2)
+        name2:=(name+" ")::right(len(name)-len2)
+        get:varput(name1+name2)
+        get:killfocus
+        get:setfocus
+        sleep(300)
+        get:varput(name)
+        get:killfocus
+        get:setfocus
+    end
+    setcursor(cursor)
+
+
+
 
 *************************************************************************************

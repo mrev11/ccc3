@@ -173,8 +173,26 @@ local b:=msk[ MSK_BOTTOM ]
 local r:=msk[ MSK_RIGHT  ]
 local slist:=msk[MSK_SAYLIST],n
 local mskcolor:=msk[MSK_COLOR]
+local screen,mx,my,dx,dy
 
     if( msk[MSK_SCREEN]==NIL )
+        if( (b-t)>maxrow() .or. (r-l)>maxcol() )
+            mx:=maxcol()
+            my:=maxrow()
+            screen:=savescreen(0,0,my,mx)
+            settermsize(1+max(b-t,maxrow()),1+max(r-l,maxcol()))
+            restscreen(0,0,my,mx,screen)
+        end
+        dy:=max(0,b-maxrow())
+        dx:=max(0,r-maxcol())
+        if( dx+dy>0 )
+            mskReplace(msk,l-dx,t-dy)
+            t:=msk[ MSK_TOP    ]
+            l:=msk[ MSK_LEFT   ]
+            b:=msk[ MSK_BOTTOM ]
+            r:=msk[ MSK_RIGHT  ]
+        end
+
         msk[ MSK_CURSOR ]:=setcursor(1)
         msk[ MSK_CRSPOS ]:={row(),col()}
         msk[ MSK_SCREEN ]:=savescreen(t,l,b,r)

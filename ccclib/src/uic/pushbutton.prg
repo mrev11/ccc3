@@ -147,7 +147,7 @@ local cursor:=setcursor(0)
         get:varput(name1+name2)
         get:killfocus
         get:setfocus
-        sleep(300)
+        sleep(150)
         get:varput(name)
         get:killfocus
         get:setfocus

@@ -73,28 +73,48 @@ local level,value
 ************************************************************************
 function brwCreate(nTop, nLeft, nBottom, nRight, default)
 local browse, n
+local screen,mx,my,dx,dy
 
     if( nTop==NIL );    nTop:=0; end
     if( nLeft==NIL );   nLeft:=0; end
     if( nBottom==NIL ); nBottom:=maxrow(); end
     if( nRight==NIL );  nRight:=maxcol(); end
- 
+
     nTop:=round(nTop,0)
     nLeft:=round(nLeft,0)
     nBottom:=round(nBottom,0)
     nRight:=round(nRight,0)
 
+    nBottom:=max(nBottom,nTop+8)
+    nRight:=max(nRight,nLeft+8)
+
+    if( nBottom-nTop>maxrow() .or. nRight-nLeft>maxcol() )
+        mx:=maxcol()
+        my:=maxrow()
+        screen:=savescreen(0,0,my,mx)
+        settermsize(1+max(nBottom-nTop,maxrow()),1+max(nRight-nLeft,maxcol()))
+        restscreen(0,0,my,mx,screen)
+    end
+    dy:=max(0,nBottom-maxrow())
+    dx:=max(0,nRight-maxcol())
+    if( dx+dy>0 )
+        nTop-=dy
+        nLeft-=dx
+        nBottom-=dy
+        nRight-=dx
+    end
+
     browse:=TBrowseNew(nTop+5, nLeft+1, nBottom-1, nRight-1)
     browse:autoLite:=.f.
     browse:headSep:=B_HD+B_DS8+B_HD
-    browse:colSep:=" "+B_VS+" " 
+    browse:colSep:=" "+B_VS+" "
     browse:colorSpec:=brwColor()
     browse:cargo:=array(BR_SLOTS)
     browse:cargo[BR_SCREEN]:=savescreen(BROWSERECT)
 
 
     browse:cargo[BR_MENU]:={}          // brwMenu() menustruktura
-    browse:cargo[BR_SHORTCUT]:=""      
+    browse:cargo[BR_SHORTCUT]:=""
     browse:cargo[BR_CURRENT]:=1        // brwCurrent() aktulis menu
     browse:cargo[BR_MENUNAME]:=""      // brwMenuName() a menu neve
 
@@ -112,7 +132,7 @@ local browse, n
 
     browse:cargo[BR_ARRAY]:=NIL        // browse-olt array
     browse:cargo[BR_ARRAYPOS]:=1       // aktualis tombindex
-    
+
     browse:cargo[BR_POPUP]:=.f.        // Popup menuk automatikus nyitasa
     browse:cargo[BR_MENUROW]:=0        // Popup menuk pozicioja
     browse:cargo[BR_MENUCOL]:=0        // Popup menuk pozicioja
@@ -126,26 +146,26 @@ local browse, n
 ************************************************************************
 function brwLoop(arg)
 local browse, nKey:=0
-    
+
     looplevel++
 
     if( valtype(arg)=="O" )
         // az argumentum maga a browse object
 
-        browse:=arg       
+        browse:=arg
 
     elseif( valtype(arg)=="B" )
         // az argumentum egy kodblokk, ami a browse-t adja,
-        // pl. {|| TopWindow()}, a kodblokk mindig ujra 
+        // pl. {|| TopWindow()}, a kodblokk mindig ujra
         // kiertekelodik, igy a browse ablak cserelodhet
 
-        browse:=eval(arg) 
+        browse:=eval(arg)
     end
-    
+
     while( ApplyKey(browse, nKey) )
 
         if( valtype(arg)=="B" )
-            browse:=eval(arg) 
+            browse:=eval(arg)
             // a billentyu elotetben cserelodhet a browse
             // igy lehet, hogy ez mar egy masik browse,
             // es nem az, amelyikre ApplKey() futott !!!
@@ -164,9 +184,9 @@ local browse, nKey:=0
             elseif( 0==(nKey:=inkey(5)) )
 
                 //mar stabil - 5 sec varakozassal
-            
+
                 if( valtype(browse:cargo[BR_ONSTABLE])=="B" )
-                    eval(browse:cargo[BR_ONSTABLE],browse) 
+                    eval(browse:cargo[BR_ONSTABLE],browse)
                 end
             end
         end
@@ -178,7 +198,7 @@ local browse, nKey:=0
 
 ************************************************************************
 function brwStabilize(browse)
-    browse:forceStable() 
+    browse:forceStable()
     return browse
 
 
@@ -245,13 +265,20 @@ function brwRowEdit(browse)
 ************************************************************************
 function brwFooting(browse, footing)
 
+    if( browse:nBottom-browse:nTop<4 )
+        // ha nincs hely a footingnak
+        // de megis ki akarna rajzolni 
+        // akkor elszallna
+        footing:=NIL
+    end
+
     if(footing==NIL)
         return browse:cargo[BR_FOOTING]
 
     elseif( empty(footing) )
 
         if( !empty(browse:cargo[BR_FOOTING]) )
-            // ha korabban nem volt ures, 
+            // ha korabban nem volt ures,
             // akkor most megnoveljuk,
             // hogy a merete ne valtozzon
             browse:nBottom:=browse:nBottom+1
@@ -260,20 +287,20 @@ function brwFooting(browse, footing)
 
     elseif( empty(browse:cargo[BR_FOOTING]) )
 
-        // ha korabban ures volt, 
+        // ha korabban ures volt,
         // akkor most osszehuzzuk,
         // hogy a merete ne valtozzon
         browse:nBottom:=browse:nBottom-1
-    
+
         if( empty(browse:footSep) )
             browse:footSep:=B_HS+B_SS2+B_HS
         end
     end
 
     browse:cargo[BR_FOOTING]:=footing
-    browse:invalidate()    
-    browse:configure()    
-    browse:refreshAll()    
+    browse:invalidate()
+    browse:configure()
+    browse:refreshAll()
     if( browse:cargo[BR_VISIBLE] )
         WriteFooting(browse,footing)
     end
@@ -318,7 +345,7 @@ local state:=array(7)
     state[7]:=browse:cargo[BR_ONSTABLE]
     return state
 
-    
+
 ************************************************************************
 function brwRestore(browse, state)
     browse:cargo[BR_MENU]:=state[1]
@@ -348,16 +375,16 @@ function brwClear(browse)
 ************************************************************************
 function brwHighlight(browse)
 local scr
-local headskip:=1+if(empty(browse:headsep),-1,0)+if(empty(browse:_hasheading_),-1,0) 
+local headskip:=1+if(empty(browse:headsep),-1,0)+if(empty(browse:_hasheading_),-1,0)
 local color1
 local color3
- 
+
     if( browse:cargo[BR_HIGHLIGHT] .and. browse:cargo[BR_VISIBLE] )
         color1:=browse:colorspec::logcolor(1)
         color3:=browse:colorspec::logcolor(3)
 
         if( empty(color3) .or. color1==color3  )
-            //compatible default 
+            //compatible default
             scr:=screeninv(browse:_buffer_[browse:rowPos])
         else
             scr:=screenchangeattr(browse:_buffer_[browse:rowPos],color3)
@@ -525,7 +552,7 @@ local pos:=browse:cargo[BR_ARRAYPOS]
     else
         return arr[pos][n]:=x
     end
-    
+
 
 ************************************************************************
 function brwDoApplyKey(browse, nKey)
@@ -598,10 +625,10 @@ local n
             browse:pageUp()
             STEPBYSTEP
 
-         // Ha a browse kurzor a top-on all, akkor a K_UP, K_PGUP billentyuk 
+         // Ha a browse kurzor a top-on all, akkor a K_UP, K_PGUP billentyuk
          // feldolgozasa tul sokaig tart (kulonosen filterezeskor). A K_UP
          // es K_PGUP-ok billentyu-pufferbeli felgyuleset akadalyozza meg a
-         // keyboard("  ") sor, ha a typeahead puffer hossza 4-nel kisebb. 
+         // keyboard("  ") sor, ha a typeahead puffer hossza 4-nel kisebb.
          // A clear typeahead utasitas nem volna jo, hiszen utana
          // azonnal ujra megtelhet a puffer, igy viszont egyszeruen
          // nincs a pufferben hely. Feltetelezzuk, hogy a browse menu
@@ -609,7 +636,7 @@ local n
 
         case nKey == K_CTRL_PGUP
             browse:refreshCurrent()
-            browse:goTop()   
+            browse:goTop()
             STEPBYSTEP
 
         case nKey==K_RIGHT
@@ -628,7 +655,7 @@ local n
                 brwShow(browse, .f.)
                 dispend()
             end
-        
+
         case nKey==K_LEFT
             //browse:left()
             WriteMenu(browse, -1)
@@ -669,7 +696,7 @@ local n
 
         case nKey == K_CTRL_END
             browse:panEnd()
-   
+
         case nKey == K_F12
             browse:cargo[BR_MOVEFLAG]:=!browse:cargo[BR_MOVEFLAG]
             STEPBYSTEP
@@ -718,7 +745,7 @@ local popblk
     if( type!="A" )
         return .f.
     end
-   
+
     browse:cargo[BR_POPUP]:=.t.
 
     if(posr==0.and.posc==0)
@@ -764,14 +791,14 @@ local popblk
         // Az applykey fuggveny K_LEFT mellett figyeli K_CTRL_S-et
         // is, es egyforman reagal ra. Az eredeti Clipper-ben
         // K_LEFT es K_CTRL_S egyforma erteku
-       
+
         if( lastkey()==K_LEFT .and. 1<curr )
-            //keyboard(chr(K_LEFT)) // 255 felett 
+            //keyboard(chr(K_LEFT)) // 255 felett
             keyboard(chr(K_CTRL_S))
             exit
 
         elseif( lastkey()==K_RIGHT .and. curr<len(browse:cargo[BR_MENU]) )
-            //keyboard(chr(K_RIGHT)) // 255 felett 
+            //keyboard(chr(K_RIGHT)) // 255 felett
             keyboard(chr(K_CTRL_D))
             exit
 
@@ -780,9 +807,9 @@ local popblk
             exit
 
         elseif( choice>0 )
-            
+
             if( ptext[choice]!=sepchr )
-            
+
                 popblk:=brwPopup2(menu[choice][2])
                 if( valtype(popblk)!="B" )
                     loop
@@ -803,17 +830,17 @@ local popblk
             else
                 //szeparator
             end
-         
-        else  
+
+        else
             choice:=row()-posr
         end
 
     end
-    
+
     setcolor(color)
     restscreen(posr+1,posc,posr+h+2,posc+w+1,screen)
     return .t.
-   
+
 
 ************************************************************************
 static function brwPopup2(menu)
@@ -869,7 +896,7 @@ local choblk
             exit
 
         elseif( choice>0 )
-            
+
             if( !(ptext[choice]!=sepchr) )
                 //separator
             else
@@ -937,6 +964,10 @@ static function WriteCaption(browse, caption)
 local cColor, nPos
 local cHor, cLeft, cRight
 
+    if( len(caption)>browse:nRight-browse:nLeft-3 )
+        caption::=left(browse:nRight-browse:nLeft-3)
+    end
+
    cColor:=setcolor(LogColor(browse:colorSpec,browse:cargo[BR_FRAMECOLOR]))
 
    if( browse:cargo[BR_FRAMETYPE]==1 )
@@ -952,7 +983,7 @@ local cHor, cLeft, cRight
    if( empty(caption) )
        @ browse:nTop-5, browse:nLeft;
                 say replicate(cHor, browse:nRight-browse:nLeft+1)
-   else 
+   else
        caption:=cLeft+caption+cRight
        nPos:=browse:nLeft+(browse:nRight-browse:nLeft-len(caption))/2
        @ browse:nTop-5, nPos say caption
@@ -984,12 +1015,17 @@ local ftext
         ftext:=" "+footing[1]+;
               padc(footing[2],r-l-1-len(footing[1])-len(footing[3]))+;
               footing[3]+" "
+        
+        if( len(ftext)> browse:nRight-browse:nLeft )
+            ftext::=left(browse:nRight-browse:nLeft )
+        end      
+              
         @ b+1,l say ftext
     end
 
     setcolor(color)
     return NIL
- 
+
 
 ************************************************************************
 static function DrawFrame(browse)

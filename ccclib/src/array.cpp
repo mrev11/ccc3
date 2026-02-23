@@ -420,7 +420,7 @@ push_call("asize",base);
     VALUE *arr=base;
     VALUE *len=base+1;
 
-    if( arr->type!=TYPE_ARRAY || len->type!=TYPE_NUMBER )
+    if( arr->type!=TYPE_ARRAY || len->type!=TYPE_NUMBER || D2INT(len->data.number)<0 )
     {
         error_arg("asize",base,2);
     }

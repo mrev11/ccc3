@@ -1,0 +1,263 @@
+
+%include{ 
+
+#include <stdio.h>
+#include <malloc.h>
+#include <json_lexer.h>
+#include <cccapi.h>
+
+extern void* json_parserAlloc(void*(*)(size_t)); 
+extern void  json_parserFree(void*,void(*)(void*)); 
+extern void  json_parserTrace(FILE*,char*); 
+extern void  json_parser(void*,int,char*,VALUE*);
+
+namespace _nsp_json{
+namespace _nsp_lemon{
+extern void _clp_json__object(int argno);
+extern void _clp_json__array(int argno);
+extern void _clp_object__memberlist(int argno);
+extern void _clp_memberlist__(int argno);
+extern void _clp_memberlist__member(int argno);
+extern void _clp_memberlist__memberlist_member(int argno);
+extern void _clp_member__string_value(int argno);
+extern void _clp_array__valuelist(int argno);
+extern void _clp_valuelist__(int argno);
+extern void _clp_valuelist__value(int argno);
+extern void _clp_valuelist__valuelist_value(int argno);
+extern void _clp_value__object(int argno);
+extern void _clp_value__array(int argno);
+extern void _clp_value__number(int argno);
+extern void _clp_value__string(int argno);
+extern void _clp_value__true(int argno);
+extern void _clp_value__false(int argno);
+extern void _clp_value__null(int argno);
+}}
+
+
+DEFINE_METHOD(subsystem);
+DEFINE_METHOD(operation);
+
+//---------------------------------------------------------------------------
+void _clp_json_parser(int argno)
+{
+    CCC_PROLOG("json_parser",1);
+    str2bin(base);
+    char *buffer=_parb(1);
+    int size=_parblen(1);
+
+    array0(0);
+    VALUE *parservp=base+1;
+    
+    json_lexer* lexer=new json_lexer(buffer,size);
+
+    void *parser=json_parserAlloc(malloc);
+    //json_parserTrace(stdout,">> ");
+    int id=0;
+    char *token=0;
+    while( 0!=(id=lexer->getnext(&token)) )
+    {
+        json_parser(parser,id,token,parservp);
+    }
+    json_parser(parser,0,0,parservp);
+    json_parserFree(parser,free);
+    delete lexer;
+
+    //_retv(base+1);
+
+    push(base+1);
+    number(1);
+    idxr();
+    _rettop();
+
+
+    CCC_EPILOG();
+}
+
+#define BASE        push(parservp)
+#define XPUSH(x)    number((double)x)                     // index a stackre
+#define TPUSH(x)    binaryn(x);free(x);x=0                // token a stackre
+#define SET(x)      x=D2INT((TOP()->data.number));pop();  // baloldal <- index
+
+
+//---------------------------------------------------------------------------
+}//%include
+
+
+%name json_parser
+
+
+%syntax_error{
+    //printf("Syntax error.\n");
+    _clp_invalidformaterrornew(0);
+    dup();stringnb("Json");_o_method_subsystem.eval(2);pop();
+    dup();stringnb("json_parser");_o_method_operation.eval(2);pop();
+    _clp_break(1);
+    pop();
+}
+
+%parse_accept{
+    //printf("Parsing complete.\n");
+}
+
+%stack_size 1000
+
+%stack_overflow{
+    fprintf(stderr,"Parser stack overflow\n");
+}
+
+%extra_argument{ VALUE *parservp }
+
+%token_type{ char* }
+%token_destructor{ free($$); }
+
+%type json       {int}
+%type object     {int}
+%type memberlist {int}
+%type member     {int}
+%type array      {int}
+%type valuelist  {int}
+%type value      {int}
+
+
+start           ::= json.
+
+json(J)         ::= object(O).{
+    BASE;
+    XPUSH(O);
+    _nsp_json::_nsp_lemon::_clp_json__object(2);
+    SET(J);
+}
+
+
+json(J)         ::= array(A).{
+    BASE;
+    XPUSH(A);
+    _nsp_json::_nsp_lemon::_clp_json__array(2);
+    SET(J);
+}
+
+
+object(O)       ::= LBRACE memberlist(L) RBRACE.{
+    BASE;
+    XPUSH(L);
+    _nsp_json::_nsp_lemon::_clp_object__memberlist(2);
+    SET(O);
+}
+
+
+memberlist(L)   ::=.{
+    BASE;
+    _nsp_json::_nsp_lemon::_clp_memberlist__(1);
+    SET(L);
+}
+
+
+memberlist(L)   ::= member(M).{
+    BASE;
+    XPUSH(M);
+    _nsp_json::_nsp_lemon::_clp_memberlist__member(2);
+    SET(L);
+}
+
+
+memberlist(L)   ::= memberlist(L1) COMMA member(M).{
+    BASE;
+    XPUSH(L1);
+    XPUSH(M);
+    _nsp_json::_nsp_lemon::_clp_memberlist__memberlist_member(3);
+    SET(L);
+}
+
+
+member(M)       ::= STRING(S) COLON value(V).{
+    BASE;
+    TPUSH(S);
+    XPUSH(V);
+    _nsp_json::_nsp_lemon::_clp_member__string_value(3);
+    SET(M);
+}
+
+array(A)        ::= LBRACKET valuelist(L)  RBRACKET.{
+    BASE;
+    XPUSH(L);
+    _nsp_json::_nsp_lemon::_clp_array__valuelist(2);
+    SET(A);
+}
+
+valuelist(L)    ::=.{
+    BASE;
+    _nsp_json::_nsp_lemon::_clp_valuelist__(1);
+    SET(L);
+}
+
+valuelist(L)    ::= value(V).{
+    BASE;
+    XPUSH(V);
+    _nsp_json::_nsp_lemon::_clp_valuelist__value(2);
+    SET(L);
+}
+
+
+valuelist(L)    ::= valuelist(L1) COMMA value(V).{
+    BASE;
+    XPUSH(L1);
+    XPUSH(V);
+    _nsp_json::_nsp_lemon::_clp_valuelist__valuelist_value(3);
+    SET(L);
+}
+
+
+value(V)        ::= object(O).{
+    BASE;
+    XPUSH(O);
+    _nsp_json::_nsp_lemon::_clp_value__object(2);
+    SET(V);
+}
+
+value(V)        ::= array(A).{
+    BASE;
+    XPUSH(A);
+    _nsp_json::_nsp_lemon::_clp_value__array(2);
+    SET(V);
+}
+
+
+
+value(V)        ::= STRING(T).{
+    BASE;
+    TPUSH(T);
+    _nsp_json::_nsp_lemon::_clp_value__string(2);
+    SET(V);
+}
+
+value(V)        ::= NUMBER(T).{
+    BASE;
+    TPUSH(T);
+    _nsp_json::_nsp_lemon::_clp_value__number(2);
+    SET(V);
+}
+
+
+value(V)        ::= TRUE(T).{
+    BASE;
+    TPUSH(T);
+    _nsp_json::_nsp_lemon::_clp_value__true(2);
+    SET(V);
+}
+
+value(V)        ::= FALSE(T).{
+    BASE;
+    TPUSH(T);
+    _nsp_json::_nsp_lemon::_clp_value__false(2);
+    SET(V);
+}
+
+
+value(V)        ::= NuLL(T).{
+    BASE;
+    TPUSH(T);
+    _nsp_json::_nsp_lemon::_clp_value__null(2);
+    SET(V);
+}
+
+

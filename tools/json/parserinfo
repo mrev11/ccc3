@@ -1,0 +1,8 @@
+#!/bin/bash
+lemon.exe  -g json_parser.lem  >parser.rul
+lemon.exe  -s json_parser.lem
+
+
+
+
+rm -f json_parser.c

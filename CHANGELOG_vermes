@@ -1,4 +1,7 @@
-
+2026-04-08
+  stomp;
+  json;
+  
 2026-02-23 
   asize() argerror-t dob, ha az uj meret kisebb 0-nal;
   javitasok az uic konyvtarban:

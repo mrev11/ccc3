@@ -1,0 +1,4 @@
+#!/bin/bash
+m
+rm -f log-*
+test-consumer.exe | tee log-consumer

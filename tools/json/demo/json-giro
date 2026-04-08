@@ -1,0 +1,45 @@
+
+{
+  "grpHdr" : {
+    "creDtTm" : 1775385296000,
+    "sttlmInf" : {
+      "instgRmbrsmntAgt" : {
+        "finInstnId" : {
+          "pstlAdr" : {
+            "adrLine" : [ "egyszer HOPP", "máskor KOPP" ]
+          }
+        },
+        "brnchId" : {
+          "pstlAdr" : {
+            "adrTp" : "HOME" 
+          }
+        }
+      }
+    }
+  },
+  "cdtTrfTxInf" : [ {
+    "chrgsInf" : [ {
+      "amt" : {
+        "value" : 1234,
+        "ccy" : "EUR"
+      },
+      "pty" : {
+        "finInstnId" : {
+          "bic" : "bibic"
+        }
+      }
+    } ]
+  }, {
+    "chrgsInf" : [ {
+      "amt" : {
+        "value" : 5678.9,
+        "ccy" : "CHF"
+      },
+      "pty" : {
+        "finInstnId" : {
+          "bic" : "szárcsa"
+        }
+      }
+    } ]
+  } ]
+}

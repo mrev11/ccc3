@@ -1,0 +1,11 @@
+#define LBRACE                          1
+#define RBRACE                          2
+#define COMMA                           3
+#define STRING                          4
+#define COLON                           5
+#define LBRACKET                        6
+#define RBRACKET                        7
+#define NUMBER                          8
+#define TRUE                            9
+#define FALSE                          10
+#define NuLL                           11

@@ -1,0 +1,5 @@
+#!/bin/bash
+export BUILD_USECACHE=no
+
+cccapp.sh -bccc3_stomp -bccc3_socket -bccc3_crypto -bccc3_xmldom
+

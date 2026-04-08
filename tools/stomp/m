@@ -1,0 +1,5 @@
+#!/bin/bash
+export BUILD_LIBDIR=${CCCDIR}/usr/lib
+
+cccapp.sh -sccc3_stomp
+

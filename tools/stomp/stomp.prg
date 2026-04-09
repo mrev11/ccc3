@@ -401,7 +401,7 @@ static sec:=seconds()
 
 ******************************************************************************************
 static function debug(txt)
-    //? txt
+//  ? txt
     ? deleol(txt)
 
 
@@ -425,8 +425,8 @@ local x,n
 
 ******************************************************************************************
 static function memo(counter,name,txt)
-local logname:="log-"+counter::str::alltrim::padl(3,"0")+"-"+name
-    memowrit(logname,txt)
+//local logname:="log-"+counter::str::alltrim::padl(3,"0")+"-"+name
+//  memowrit(logname,txt)
 
 
 ******************************************************************************************

@@ -1,7 +1,9 @@
-5353e23bd4953868a02845ef4d791d73313f4ce4 2026040910:25:31-UTC ./ccclib/src/buildnumber_ccc.prg
+abd1b28eb6739a036078ed82b51413e9797868b4 2026040910:37:53-UTC ./ccclib/src/buildnumber_ccc.prg
+efa68abae2bc1bbcb24e6f13d29b67dd0b3aca67 2026040910:37:37-UTC ./CHANGELOG_vermes
+09179181d14c2ba84e82ee5f389523c26185b2e0 2026040910:33:35-UTC ./tools/json/demo/json-array
+279cb5253bc9b51782f204f21e9bdfb7e008101d 2026040910:28:50-UTC ./tools/json/demo/s
 053df7c67f0f443dde4d60eca70c735831168f64 2026040910:24:52-UTC ./tools/stomp/stomp.prg
 47b9f9ac80552c4fd493ea53f71021805d20d97d 2026040910:22:34-UTC ./tools/stomp/demo/m
-ddc1be9dc6a33417db69a575ebb688edf96d22e0 2026040910:22:23-UTC ./CHANGELOG_vermes
 f15f51ba96a2221308ba4bf2c47ca0fd32d0396f 2026040910:13:00-UTC ./tools/stomp/demo/test-consumer.prg
 e4bb988cdd5a981808f3731efb3c8fa5e8ed0b03 2026040816:00:32-UTC ./tools/stomp/m
 282df983353030880e6b635e2ae49ee2f15ecf82 2026040815:52:50-UTC ./tools/json/.gitignore
@@ -9,7 +11,6 @@ a30f9179caaafaf7c0e65bcc77208b76cc13a255 2026040815:48:18-UTC ./tools/json/m
 0640fc5a9885fd2d109bf6e39a560174f9594872 2026040815:47:05-UTC ./tools/json/demo/m
 773e6ce871e66ae6356f2ccb942cea2ea1080a78 2026040815:42:34-UTC ./tools/json/demo/main.prg
 08a1c707f51dd061faa18c10f27ed0a2933516ef 2026040815:29:47-UTC ./tools/json/json_print.prg
-0fbe2c56218be3c8cfad6ac4b3f30d7c005dd1ed 2026040814:54:47-UTC ./tools/json/demo/json-array
 af4a24391eb4fa3d729bd0cb954bc125a5ed665a 2026040814:51:07-UTC ./tools/json/json_lexer.h
 89e5f06721d57fff63e69d478ed177702f572950 2026040813:26:38-UTC ./tools/json/json_member.prg
 1fc5132968c713fa7470ea01e347e2f52ec87ab7 2026040813:26:37-UTC ./tools/json/json_object.prg

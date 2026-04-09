@@ -1,2 +1,2 @@
 
-[ 123, "hopp", null, true, [], [false], {"hopp":"K\\OP\"\"P"}   ]
+[ 123, "hopp", null, true, [], [false], {"\"hopp":"HOPP\"", "esc\"ape": "\\KOPP" }   ]

@@ -1,4 +1,8 @@
 2026-04-17
+  egyeszerű demók: json_walk, pson_file, pson_line;
+  json_walk() a json objektum bejárása közben kiolvassa az adatokat;
+
+2026-04-17
   json fájlok indentált kírása;
   XMLGregorianCalendar formátumú dátumidők kiírása számként (epoch);
 

@@ -1,3 +1,2 @@
 #!/bin/bash
-# export BUILD_USECACHE=no
 cccapp.sh -bccc3_json -bccc3_pcre2

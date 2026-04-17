@@ -1,0 +1,4 @@
+#!/bin/bash
+clear
+m
+pson_file.exe credit_transfer_pson | tee credit_transfer__log

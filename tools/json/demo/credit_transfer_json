@@ -1,0 +1,105 @@
+{
+    "grpHdr": 
+    {
+        "msgId": "MSGID-001",
+        "creDtTm": "2026-04-05T12:34:56",
+        "nbOfTxs": "1",
+        "sttlmInf": 
+        {
+            "sttlmMtd": "INDA",
+            "instgRmbrsmntAgt": 
+            {
+                "finInstnId": 
+                {
+                    "pstlAdr": 
+                    {
+                        "adrLine": 
+                        [
+                            "egyszer HOPP",
+                            "máskor KOPP"
+                        ]
+                    }
+                },
+                "brnchId": 
+                {
+                    "pstlAdr": 
+                    {
+                        "adrTp": "HOME"
+                    }
+                }
+            }
+        }
+    },
+    "cdtTrfTxInf": 
+    [
+        {
+            "pmtId": 
+            {
+                "instrId": "PMTID",
+                "endToEndId": "E2E-1000",
+                "txId": "TXID"
+            },
+            "intrBkSttlmAmt":
+            {
+                "value": 45678,
+                "ccy": "HUF"
+            },
+
+            "chrgBr": "SLEV",
+            "dbtr": 
+            {
+                "nm": "DBTR-NAME"
+            },
+            "dbtrAgt": 
+            {
+                "finInstnId": 
+                {
+                    "bic": "ABCDEF99"
+                }
+            },
+            "dbtrAgtAcct": 
+            {
+                "id": 
+                {
+                    "iban": "AB990123456789"
+                }
+            },
+            "cdtrAgt": 
+            {
+                "finInstnId": 
+                {
+                    "bic": "ABCDEF88"
+                }
+            },
+            "cdtrAgtAcct": 
+            {
+                "id": 
+                {
+                    "iban": "AB880123456789"
+                }
+            },
+            "cdtr": 
+            {
+                "id": 
+                {
+                    "orgId": 
+                    {
+                        "bicorBEI": "ABCDEF22"
+                    }
+                }
+            },
+            "rmtInf": 
+            {
+                "strd": 
+                [
+                    {
+                        "addtlRmtInf": 
+                        [
+                            "HOPP"
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

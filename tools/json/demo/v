@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# validál egy json fájlt
+# a vaidáláshoz a giro-request-json.jar programot használja
+# ami egy másik projektben készül (nincs itt)
+
+
+# erre az URL-re küld
+# export GIRO_REQUEST_BINDING=http://192.168.1.3:8080/giro-mock/RealTimeService
+
+# a wsdl-be kódolt URL-re küld
+# export GIRO_REQUEST_BINDING=wsdl
+
+# sehova sem küld
+ unset GIRO_REQUEST_BINDING
+
+
+ export GIRO_REQUEST_FORMAT=json
+# export GIRO_REQUEST_DEBUG=true
+
+export GIRO_REQUEST_VALIDATE=true
+
+
+
+java -jar giro-request-json.jar sendCreditTransferRequest $1
+

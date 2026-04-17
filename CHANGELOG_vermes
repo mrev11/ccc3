@@ -1,3 +1,7 @@
+2026-04-17
+  json fájlok indentált kírása;
+  XMLGregorianCalendar formátumú dátumidők kiírása számként (epoch);
+
 2026-04-09 json: demók tisztítva;
 
 2026-04-09 stomp: debug kiírások kivéve, demók megtisztítva;

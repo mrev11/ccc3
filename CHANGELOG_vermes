@@ -1,3 +1,10 @@
+2026-04-20
+  stomp kiegészült a 'login' és 'passcode' attribútumokkal;
+  json_walk(jsobj,root,blkleaf...) kiegészült a blkelem és blkmemb paraméterekkel:
+      blkleaf végrehajtódik, amikor a bejárás egy levélhez ér.
+      blkelem végrehajtódik, amikor a bejárás egy array új eleméhez ér.
+      blkmemb végrehajtódik, amikor a bejárás egy jsonobject új memberéhez ér.
+
 2026-04-17
   egyeszerű demók: json_walk, pson_file, pson_line;
   json_walk() a json objektum bejárása közben kiolvassa az adatokat;

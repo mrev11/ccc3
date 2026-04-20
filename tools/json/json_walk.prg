@@ -10,12 +10,12 @@
 
 
 ******************************************************************************************
-function json_walk(jsonobject,root:="",codeblk)
-    walk_object(jsonobject,root,codeblk)
+function json_walk(jsonobject,root:="",blkleaf,blkelem,blkmemb)
+    walk_object(jsonobject,root,blkleaf,blkelem,blkmemb)
 
 
 ******************************************************************************************
-static function walk_object(jsobj,path,codeblk)
+static function walk_object(jsobj,path,blkleaf,blkelem,blkmemb)
 
 local m
 local member,value,type
@@ -26,19 +26,23 @@ local pathx
         value:=member:value
         type:=value::valtype
         pathx:=path+"."+member:name
-        
+
+        if( blkmemb!=NIL )
+            eval(blkmemb,path,member)
+        end
+
         if( type$"UCNL" )
-            eval(codeblk,pathx,value)
+            if(blkleaf==NIL,NIL,eval(blkleaf,pathx,value))
         elseif( type=="A" )
-            walk_array(value,pathx,codeblk)
+            walk_array(value,pathx,blkleaf,blkelem,blkmemb)
         elseif( type=="O" )
-            walk_object(value,pathx,codeblk)
+            walk_object(value,pathx,blkleaf,blkelem,blkmemb)
         end
     next
 
 
 ******************************************************************************************
-static function walk_array(arr,path,codeblk)
+static function walk_array(arr,path,blkleaf,blkelem,blkmemb)
 
 local v
 local value,type
@@ -47,12 +51,16 @@ local value,type
         value:=arr[v]
         type:=value::valtype
 
+        if( blkelem!=NIL )
+            eval(blkelem,path,value)
+        end
+
         if( type$"UCNL" )
-            eval(codeblk,path,value)
+            if(blkleaf==NIL,NIL,eval(blkleaf,path,value))
         elseif( type=="A" )
-            walk_array(value,path,codeblk)
+            walk_array(value,path,blkleaf,blkelem,blkmemb)
         elseif( type=="O" )
-            walk_object(value,path,codeblk)
+            walk_object(value,path,blkleaf,blkelem,blkmemb)
         end
     next
 

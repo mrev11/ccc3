@@ -9,6 +9,8 @@ static class stomp(object) new:
 
     attrib  host
     attrib  port
+    attrib  login
+    attrib  passcode
     attrib  socket
     attrib  version
     attrib  session
@@ -48,6 +50,10 @@ local err
     frame:=a"CONNECT"+eol
     frame+=a"accept-version:1.2"+eol
     frame+=a"heart-beat:30000,30000"+eol
+    if( this:login!=NIL )
+        frame+=a"login:"+str2bin(this:login)+eol
+        frame+=a"passcode:"+str2bin(this:passcode)+eol
+    end
     frame+=eol
     frame+=x"00"
 

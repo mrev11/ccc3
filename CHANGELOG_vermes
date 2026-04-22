@@ -1,3 +1,6 @@
+2026-04-22
+  json demók átalakítva: {jsonobject} -> ["method_name",{jsonobject}]
+
 2026-04-20
   stomp kiegészült a 'login' és 'passcode' attribútumokkal;
   json_walk(jsobj,root,blkleaf...) kiegészült a blkelem és blkmemb paraméterekkel:

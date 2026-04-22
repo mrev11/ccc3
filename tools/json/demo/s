@@ -1,0 +1,8 @@
+#!/bin/bash
+# futtatja a demókat
+
+json_print.exe  credit_transfer_json indent     | tee credit_transfer___indent
+json_print.exe  credit_transfer_json            | tee credit_transfer___packed
+pson_file.exe   credit_transfer_pson            | tee credit_transfer___pson
+json_walk.exe
+

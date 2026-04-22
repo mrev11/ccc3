@@ -10,9 +10,14 @@
 
 
 ******************************************************************************************
-function json_walk(jsonobject,root:="",blkleaf,blkelem,blkmemb)
-    walk_object(jsonobject,root,blkleaf,blkelem,blkmemb)
-
+function json_walk(json,root:="",blkleaf,blkelem,blkmemb)
+    if( valtype(json)=="O" )
+        walk_object(json,root,blkleaf,blkelem,blkmemb)
+    elseif( valtype(json)=="A" )
+        walk_array(json,root,blkleaf,blkelem,blkmemb)
+    else
+        break( "invalid json type")
+    end
 
 ******************************************************************************************
 static function walk_object(jsobj,path,blkleaf,blkelem,blkmemb)

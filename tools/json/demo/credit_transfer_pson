@@ -1,4 +1,4 @@
-
+sendCreditTransferRequest
 
 FIToFICstmrCdtTrf.GrpHdr.MsgId --> MSGID-001
 FIToFICstmrCdtTrf.GrpHdr.CreDtTm --> 2026-04-05T12:34:56
@@ -9,7 +9,7 @@ FIToFICstmrCdtTrf.GrpHdr.SttlmInf.InstgRmbrsmntAgt.FinInstnId.PstlAdr.{AdrLine}.
 FIToFICstmrCdtTrf.GrpHdr.SttlmInf.InstgRmbrsmntAgt.FinInstnId.PstlAdr.{AdrLine} --> máskor KOPP
 FIToFICstmrCdtTrf.GrpHdr.SttlmInf.InstgRmbrsmntAgt.BrnchId.PstlAdr.AdrTp --> HOME
 
-FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.InstrId --> PMTID
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.InstrId --> PMTID1
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.EndToEndId --> E2E-1000
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.TxId -->    TXID
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.IntrBkSttlmAmt.ATTRIB(Ccy=HUF) --> 45678
@@ -20,9 +20,20 @@ FIToFICstmrCdtTrf.{CdtTrfTxInf}.DbtrAgtAcct.Id.IBAN --> AB990123456789
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.CdtrAgt.FinInstnId.BIC --> ABCDEF88
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.CdtrAgtAcct.Id.IBAN --> AB880123456789
 FIToFICstmrCdtTrf.{CdtTrfTxInf}.Cdtr.Id.OrgId.BICOrBEI --> ABCDEF22
-//FIToFICstmrCdtTrf.{CdtTrfTxInf}.ChrgBr -->  SLEV 
 
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.NEW
 
-FIToFICstmrCdtTrf.{CdtTrfTxInf}.RmtInf.{Strd}.{AddtlRmtInf} --> HOPP
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.InstrId --> PMTID2
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.EndToEndId --> E2E-1000
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.PmtId.TxId -->    TXID
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.IntrBkSttlmAmt.ATTRIB(Ccy=HUF) --> 45678
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.ChrgBr -->  SLEV 
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.Dbtr.Nm --> DBTR-NAME
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.DbtrAgt.FinInstnId.BIC --> ABCDEF99
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.DbtrAgtAcct.Id.IBAN --> AB990123456789
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.CdtrAgt.FinInstnId.BIC --> ABCDEF88
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.CdtrAgtAcct.Id.IBAN --> AB880123456789
+FIToFICstmrCdtTrf.{CdtTrfTxInf}.Cdtr.Id.OrgId.BICOrBEI --> ABCDEF22
+
 
 

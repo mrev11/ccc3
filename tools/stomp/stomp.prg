@@ -115,6 +115,11 @@ local err
 
     DEBUG( rsp:=this:socket:recvall(2000) )
 
+    if( rsp==NIL )
+        // wf embedded artemis nem válaszol
+        return NIL
+    end
+
     arsp:=split(rsp|a"",bin(10))
     if( empty(arsp) .or. arsp[1]!=a"RECEIPT"  )
         err:=stomperrorNew("stomp.disconnect")

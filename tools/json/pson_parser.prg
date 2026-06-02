@@ -221,7 +221,6 @@ static function value_from_string(x)
 
     elseif( isdate(x) )
         return x
-        return epoch(x)
 
         // tapasztalat:
         // bemenetként a java elfogadja a dátumidőt
@@ -256,13 +255,6 @@ local rx:=pcre2.compile("(20|19)[0-9]{2}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][
 local match:=pcre2.match(rx,text)
     return match::len>=2 .and. match[1]==1 .and. match[2]>len(text)
 
-
-******************************************************************************************
-static function epoch(x)
-// yyyy-mm-ddThh:mm:ss
-// 1234567890123456789
-    return date2epoch( val(x[ 1.. 4]), val(x[ 6.. 7]), val(x[ 9..10]),;
-                       val(x[12..13]), val(x[15..16]), val(x[18..19]) ) *1000 // millis
 
 ******************************************************************************************
 static function search_tag_among_members(arr,nm) // -> jsonmember

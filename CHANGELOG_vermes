@@ -1,3 +1,6 @@
+2026-06-02
+  json-ban xmltimestamp(), xmldate2epoch(), epoch2xmldate();
+
 2026-04-22
   json demók átalakítva: {jsonobject} -> ["method_name",{jsonobject}]
 

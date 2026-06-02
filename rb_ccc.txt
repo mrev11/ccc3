@@ -1,0 +1,90 @@
+
+
+rb (rebuild) script a CCCDIR-ben
+================================
+
+A rb script CCC2-ben és CCC3-ban ugyanaz.
+
+A CCC környezeti változók beállításától függetlenül (BÁRMILYEN KÖRNYEZETBEN)
+számos *nix rendszeren (Linux, Termux, Raspi, FreeBDS, NetBSD, Solaris)
+lefordítja a CCC-t.
+
+A sikeres fordítás feltétele: legyen futásképes c++ fordító (gcc vagy clang).
+
+Az rb script működése:
+
+    A CCC directoryból kell indítani: ./rb
+    A cccver fájlból felszedi, hogy ccc2-ben vagy ccc3-ban van-e.
+    Beállítja az adott rendszernek megfelelő CCCUNAME-et (linux, termux, ...).
+    Beállítja a c++ fordítónak megfelelő CCCBIN-t (gcc, clang).
+    Beállítja a BUILD környezeti változókat.
+    Beállítja a PATH-t és LD_LIBRARY_PATH-t.
+    Törli a .gitignored fájlokat.
+    Elindítja az 'm' scriptet.
+
+Ha az rb-t paraméter nélkül indítjuk, akkor használja az object-cache-t.
+A -nc paraméterrel indítva előlről elvégez minden forítást (cache nélkül).
+
+Az rb script kizárólag a CCC fordítására való, azaz nem állít be
+fejlesztéshez alkalmas környezetet.
+
+Nem foglalkozom olyan típusú kifogásokkal, hogy "Nálam elakad a fordítás,
+azt írja ki, hogy...". Aki ilyesmibe ütközik, járjon utána a hiba okának.
+Ha az rb scriptben hibát talál, küldjön patch-et a javításra.
+
+
+
+
+CCC fordítási környezet kialakítása Linuxon
+===========================================
+
+CCC klónozás (új/üres Linuxon)
+
+    git clone git://comfirm.hu/ccc3.git
+    git clone git://comfirm.hu/ccc2c.git ccc2
+
+A fenti parancsokat kiadva kapjuk a ccc2 és ccc3 directoryt.
+
+Végrehajtjuk valamelyik CCC directoryban a
+
+    ~/ccc*/usr/setenv/unix/setenv
+
+scriptet. Ez bemásolja a home-unkba a 'bashrcx' és 'envccc' scripteket.
+A (korábbról meglevő) '.bashrc' script végére beírja a bashrcx source-olását.
+
+A következő láncolatot hozzuk létre:
+
+    Az újonnan indított xterm-ben automatikusan elindul a bash.
+    A bash (valamilyen sorrendben) felszedi ~/.profile-t és ~/.bashrc-t.
+    A .bashrc végén source-olódik bashrcx.
+    A bashrcx végén source-olódik envccc.
+
+A bashrcx-ben állítjuk be az általánosan használt környezetet, pl:
+
+    alias-ok
+    PAGER
+    EDITOR
+    VISUAL
+    PS1 (prompt)
+    CLASSPATH
+    stb.
+
+A bashrcx végén inkludáljuk a speciális fejlesztő környezeteket beállító
+scripteket, pl:
+
+    . envccc
+    . envkonto (csak példának, ha éppen Kontóban dolgozunk)
+    . ~/wf/wfconfig (csak példának, ha éppen wf-fel dolgozunk)
+    stb (ami éppen kell az adott munkához)
+
+Tehát modulárisan betöltjük azokat a beállításokat, amik az egyik
+vagy másik fejlesztéshez szükségesek.
+
+Megjegyzés: Ha csak a CCC lefordítására van szükség, ahhoz nem kell
+fejlesztő környezet, mert az rb script BÁRMILYEN környezetből is indítva 
+(feltéve, hogy működik a c++ parancs) elvégzi a CCC fordítását.
+
+
+
+
+

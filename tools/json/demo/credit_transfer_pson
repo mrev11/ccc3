@@ -1,7 +1,7 @@
 sendCreditTransferRequest
 
 FIToFICstmrCdtTrf.GrpHdr.MsgId --> MSGID-001
-FIToFICstmrCdtTrf.GrpHdr.CreDtTm --> 2026-04-05T12:34:56
+FIToFICstmrCdtTrf.GrpHdr.CreDtTm --> 2026-04-05T12:34:56.123Z
 FIToFICstmrCdtTrf.GrpHdr.NbOfTxs -->  1
 FIToFICstmrCdtTrf.GrpHdr.SttlmInf.SttlmMtd --> INDA 
 FIToFICstmrCdtTrf.GrpHdr.SttlmInf.InstgRmbrsmntAgt.FinInstnId.PstlAdr.{AdrLine} --> egyszer HOPP

@@ -27,36 +27,65 @@ DEFINE_METHOD(args);
 DEFINE_METHOD(description);
 DEFINE_METHOD(operation);
 
+static pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
 
 //--------------------------------------------------------------------------
-void _clp_datetime2epoch(int argno)   // UTC datetime -> epoch (millis)
+static int timeoffset() // local timeoffset in seconds
 {
-    CCC_PROLOG("datetime2epoch",2);
+    time_t rawtime;
+    time(&rawtime);  //  current time
+
+    pthread_mutex_lock(&mutex);
+    struct tm *timeinfo = localtime(&rawtime); // convert to local time
+    tzset();
+    int offset=-timezone; // timezone is a variable in <time.h>
+    if( timeinfo->tm_isdst > 0 )
+    {
+        offset+=3600;
+    }
+    pthread_mutex_unlock(&mutex);
+    return offset;
+}
+
+//--------------------------------------------------------------------------
+void _clp_datetime2epoch(int argno)   // date,time,zone  -> epoch (millis)
+{
+    CCC_PROLOG("datetime2epoch",3);
     str2bin(base+1);
     long date=_pard(1);
     char *time=_parb(2);
+    int  offset=0;
+
+    if( ISNIL(3) )
+    {
+        offset=timeoffset(); // local default
+    }
+    else
+    {
+        offset=_parni(3);   // time offset in seconds
+    }
 
     push(base); _clp_year(1);  int y=D2INT(TOP()->data.number); pop();
     push(base); _clp_month(1); int m=D2INT(TOP()->data.number); pop();
     push(base); _clp_day(1);   int d=D2INT(TOP()->data.number); pop();
 
-    char *p=time;               
+    char *p=time;
     int hours=0;
     sscanf(p,"%02d",&hours);
-    p=strchr(p+1,':');          
+    p=strchr(p+1,':');
 
     int minutes=0;
     if( p )
     {
         sscanf(p+1,"%02d",&minutes);
-        p=strchr(p+1,':');      
+        p=strchr(p+1,':');
     }
 
     int seconds=0;
     if( p )
     {
         sscanf(p+1,"%02d",&seconds);
-        p=strchr(p+1,'.');      
+        p=strchr(p+1,'.');
     }
 
     int millis=0;
@@ -73,8 +102,10 @@ void _clp_datetime2epoch(int argno)   // UTC datetime -> epoch (millis)
     t.tm_min    = minutes;
     t.tm_sec    = seconds;
     t.tm_isdst  = 0;
+
     time_t epoch=timegm(&t);
-    _retni(epoch*1000+millis);
+
+    _retni( (epoch-offset)*1000+millis);
 
     CCC_EPILOG();
 }
@@ -108,7 +139,8 @@ void _clp_xmldate2epoch(int argno) // -> epoch (millis)
     char format[]="%Y-%m-%dT%H:%M:%S%Z";
     struct tm t;
     char *result=strptime(xmldate,format,&t);
-    if( !result || (int)(result-xmldate)<strlen(xmldate) )
+
+    if( !result || *result )
     {
         _clp_invalidformaterrornew(0);
         DUP();
@@ -126,45 +158,121 @@ void _clp_xmldate2epoch(int argno) // -> epoch (millis)
         POP();
         _clp_break(1);
     }
+
+    // csak akkor folyatja itt
+    // ha az xmldate string vegig ertelmezheto volt
+    // es result a stringet lezaro 0 bajtra mutat
+
+
     time_t epoch=timegm(&t);
-    char *p=strchr(xmldate,'.');
+
     int millis=0;
-    if( p )
+    int offset=0;
+    char *p=0;
+    if( (p=strchr(xmldate,'.'))!=0 )
     {
         sscanf(p+1,"%03d",&millis);
     }
-    _retni(epoch*1000+millis);
+
+    //printf( "millis=%d ",millis );fflush(0);
+
+
+    if( (p=strchr(xmldate,'Z'))!=0 )
+    {
+        // UTC
+    }
+    else if( (p=strchr(xmldate,'+'))!=0 )
+    {
+        int offhr=0;
+        int offmn=0;
+        sscanf(p+1,"%02d:%02d",&offhr,&offmn);
+        offset=offhr*3600+offmn*60;
+
+        //printf( "+offhr=%d ",offhr );fflush(0);
+        //printf( "+offmn=%d ",offmn );fflush(0);
+        //printf( "+offset=%d ",offset );fflush(0);
+    }
+    else if( (p=strrchr(xmldate,'-')) > strrchr(xmldate,'T') )
+    {
+        int offhr=0;
+        int offmn=0;
+        sscanf(p+1,"%02d:%02d",&offhr,&offmn);
+        offset=-(offhr*3600+offmn*60);
+
+        //printf( "-offhr=%d ",offhr );fflush(0);
+        //printf( "-offmn=%d ",offmn );fflush(0);
+        //printf( "-offset=%d ",offset );fflush(0);
+    }
+    else
+    {
+        offset=timeoffset(); // local offset
+    }
+    _retni( (epoch-offset)*1000+millis);
+
     CCC_EPILOG();
 }
 
 
 //--------------------------------------------------------------------------
-void _clp_epoch2xmldate(int argno)
+void _clp_epoch2xmldate(int argno) // -> XML date with timezone
 {
-    CCC_PROLOG("epoch2xmldate",1);
-    time_t epoch=_parnu(1);
+    CCC_PROLOG("epoch2xmldate",2);
+    time_t epoch=_parnu(1); // UTC time in millis (or seconds)
     time_t seconds;
     time_t millis;
+    int  offset=ISNUMBER(2)?_parni(2):0;  // timezone offset in seconds
 
     if( epoch>(unsigned long)1.0e10 )
     {
         //epoch in millis
         seconds=epoch/1000;
         millis=epoch-seconds*1000;
+        seconds+=offset;
     }
     else
     {
         //epoch in seconds
         seconds=epoch;
         millis=0;
+        seconds+=offset;
     }
+
     struct tm ts;
     gmtime_r(&seconds,&ts);
     char buf[64];
     strftime(buf,sizeof(buf),"%Y-%m-%dT%H:%M:%S",&ts);
     char buf2[64];
-    snprintf(buf2,sizeof(buf2),"%s.%03ldZ",buf,millis);
+
+    if( offset>0  )
+    {
+        int offhr=(int)( offset/3600 );
+        int offmn=(int)( (offset-offhr*3600)/60 );
+        snprintf(buf2,sizeof(buf2),
+                "%s.%03ld+%02d:%02d",
+                            buf,millis,offhr,offmn);
+    }
+    else if( offset<0 )
+    {
+        offset=-offset;
+        int offhr=(int)( offset/3600 );
+        int offmn=(int)( (offset-offhr*3600)/60 );
+        snprintf(buf2,sizeof(buf2),
+                "%s.%03ld-%02d:%02d",
+                        buf,millis,offhr,offmn);
+    }
+    else
+    {
+        snprintf(buf2,sizeof(buf2),"%s.%03ldZ",buf,millis);
+    }
     _retcb(buf2);
+    CCC_EPILOG();
+}
+
+//--------------------------------------------------------------------------
+void _clp_timeoffset(int argno) // -> local time offset in millis
+{
+    CCC_PROLOG("timeoffset",0);
+    _retni(timeoffset());
     CCC_EPILOG();
 }
 

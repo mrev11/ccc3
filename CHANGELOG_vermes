@@ -1,4 +1,7 @@
 2026-06-02
+  tools/json/epoch.cpp-ben idozona tamogatas;
+
+2026-06-02
   json-ban xmltimestamp(), xmldate2epoch(), epoch2xmldate();
 
 2026-04-22

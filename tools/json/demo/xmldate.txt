@@ -1,0 +1,31 @@
+AI-alapú áttekintés
+
+XML uses the international ISO 8601 format for timestamps,
+specifically expressed as xs:dateTime in XML Schema.
+The exact standard format is:
+
+    YYYY-MM-DDTHH:mm:ss.sssZ
+
+YYYY            : Year
+MM              : Month
+DD              : Day
+T               : Separator between date and time
+HH:mm:ss.sss    : Hours, minutes, seconds, millis
+Z               : UTC timezone
+
+(or it can be replaced with an offset like +01:00)
+
+Example:
+
+    <timestamp>2026-06-02T12:00:00.000Z</timestamp>
+
+
+Time zone designators
+
+    <time>Z
+    <time>±hh:mm
+    <time>±hhmm
+    <time>±hh 
+
+If no UTC relation information is given with a time representation, 
+the time is assumed to be in local time.    

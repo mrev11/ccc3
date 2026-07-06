@@ -1,6 +1,0 @@
-
-
-function queuename()
-    return "COMFIRM"
-
-    

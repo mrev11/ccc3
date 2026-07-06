@@ -7,8 +7,9 @@ local message
 
     ? "CONSUMER"
 
-    mq:=stomp.consumerNew(queuename())
+    mq:=stomp.consumerNew(queue())
     mq:host:=host()
+    mq:port:=port()
     mq:ack:="client"
 
     mq:connect

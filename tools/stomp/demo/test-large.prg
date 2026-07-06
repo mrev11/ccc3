@@ -5,8 +5,9 @@ local mq
 
     ? "PRODUCER"
 
-    mq:=stomp.producerNew(queuename())
+    mq:=stomp.producerNew(queue())
     mq:host:=host()
+    mq:port:=port()
     mq:connect
     
     

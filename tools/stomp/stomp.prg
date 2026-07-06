@@ -26,7 +26,6 @@ static function stomp.initialize(this,dest)
     this:host:="localhost"
     this:port:=61616
     this:destination:=dest
-    this:socket:=socketNew()
     return this
 
 
@@ -39,6 +38,7 @@ local rsp,arsp,n,header
 local err
 
     begin
+        this:socket:=socketNew()
         this:socket:connect(this:host,this:port)
     recover err <socketError>
         err:=stomperrorNew("stomp.connect")
@@ -145,6 +145,7 @@ local err
         break(err)
     end
 
+    this:socket:close    
 
 
 

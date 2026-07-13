@@ -1,3 +1,9 @@
+2026-06-13 stomp fejlesztesek:
+  receipt header kuldese/ellenorzese opcionalis (default: producer:sendreceipt:=.t.);
+  producer:sendmessage(this,msg,{hdr1,...})-ben megadhatok kiegeszito hederek,
+    ahol hdr1,hdr2... C vagy X tipusu, a vegen NINCS eol (a program teszi oda);
+  consumer:getmessage(this,@header) a header-t is visszaadja;
+
 2026-06-06
   stomp.disconnect-ben a hianyzo close potolva;
   socketNew atkerult mq:initalize-bol  mq:connect-ba (igy tobbszor hasznalhato az objektum);

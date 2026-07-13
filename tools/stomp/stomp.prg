@@ -145,7 +145,7 @@ local err
         break(err)
     end
 
-    this:socket:close    
+    this:socket:close
 
 
 
@@ -155,6 +155,7 @@ local err
 class stomp.producer(stomp)
     attrib  persistent
     attrib  contenttype
+    attrib  sendreceipt
 
     method  initialize
     method  sendmessage
@@ -165,16 +166,17 @@ static function stomp.producer.initialize(this,dest)
     this:(stomp)initialize(dest)
     this:persistent:=.t.
     this:contenttype:="text/plain"
+    this:sendreceipt:=.t.
     return this
 
 
 ******************************************************************************************
-static function stomp.producer.sendmessage(this,msg)
+static function stomp.producer.sendmessage(this,msg,header)
 
 local frame
 local eol:=x"0a"
 local receipt:=randbytes()::str2bin
-local rsp,arsp,n,header,hdrlen
+local n,hdrlen
 local err
 
     msg::=str2bin
@@ -183,8 +185,17 @@ local err
     frame+=a"destination:"+this:destination::str2bin+eol
     frame+=a"content-type:"+this:contenttype::str2bin+eol
     frame+=a"content-length:"+(msg::len+0)::str::alltrim::str2bin+eol
-    frame+=a"receipt:"+receipt+eol
     frame+=if(this:persistent,a"persistent:true",a"persistent:false")+eol
+
+    if( this:sendreceipt )
+        // opcionalis
+        frame+=a"receipt:"+receipt+eol
+    end
+    for n:=1 to len(header)
+        // opcionalis
+        frame+=header[n]::str2bin+eol
+    next
+
     frame+=eol
     hdrlen:=len(frame)
     frame+=msg
@@ -198,6 +209,15 @@ local err
         err:args:={this:socket,deleol(frame)}
         break(err)
     end
+    
+    if( this:sendreceipt )
+        verify_receipt(this,receipt)
+    end
+
+
+******************************************************************************************
+static function verify_receipt(this,receipt)
+local rsp,arsp,n,header,err
 
     DEBUG( rsp:=this:socket:recvall(2000) )
 
@@ -277,7 +297,7 @@ local err
 
 
 ******************************************************************************************
-static function stomp.consumer.getmessage(this)
+static function stomp.consumer.getmessage(this,header)
 
 local chunk,msg,body,err
 local pos,hdrpos,conlen
@@ -363,6 +383,7 @@ local  logname
     end
 
     msg:=this:buffer[bompos..eompos]           // command headers body NULL
+    header:=this:buffer[bompos..hdrpos]
     body:=this:buffer[hdrpos+2..eompos-1]
     this:buffer:=this:buffer[eompos+1..]
 
@@ -376,7 +397,7 @@ local  logname
             frame+=a"id:"+msg[ackpos+4..pos] // eol
             frame+=eol
             frame+=x"00"
-            this:socket:send(frame)    
+            this:socket:send(frame)
             DEBUG(frame)
         end
     end
@@ -404,7 +425,7 @@ static sec:=seconds()
     if( seconds()-sec>=9 )
         sec:=seconds()
         this:socket:send(x"0a")
-        ? "heartbeat",sec
+        DEBUG("heartbeat"+str(sec))
     end
 
 
@@ -413,8 +434,8 @@ static sec:=seconds()
 
 ******************************************************************************************
 static function debug(txt)
-//  ? txt
-//  ? deleol(txt)
+  //? txt
+  //? deleol(txt)
 
 
 ******************************************************************************************

@@ -10,6 +10,7 @@ class stomp.producer(stomp)
 
     method  initialize
     method  sendmessage
+    method  cleanup
 
 
 ******************************************************************************************
@@ -57,6 +58,7 @@ local err
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.producer.sendmessage")
         err:description:="send failed"
+        err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}
         break(err)
     end
@@ -64,6 +66,11 @@ local err
     if( this:sendreceipt )
         verify_receipt(this,receipt)
     end
+
+
+******************************************************************************************
+static function stomp.producer.cleanup(this)
+    // nothing
 
 
 ******************************************************************************************

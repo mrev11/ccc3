@@ -6,56 +6,140 @@
 class stomp.consumer(stomp)
 
     attrib  buffer
-    attrib  ack
-    attrib  id
-    attrib  lastheader    // utolso uzenet teljes header-je egyben (X típus)
+    attrib  ack             // kozos ack mod minden subscriptionban
+    attrib  header          // utolso uzenet teljes header-je egyben (X típus)
+    attrib  subscriptions   // {dest1,dest2,...}   parhuzamos array
+    attrib  subscrids       // {id1  ,id2  ,...}   parhuzamos array
 
     method  initialize
     method  subscribe
+    method  unsubscribe
     method  getmessage
-    method  getheader     // header ertekek egyenkent, kulcs alapjan (X tipus)
-    method  sendack       // ack-ot kuld a lastheaderbol kilvasott id-vel
+    method  getheader       // header ertekek egyenkent, kulcs alapjan (X tipus)
+    method  sendack         // ack-ot kuld a lastheaderbol kilvasott id-vel
+    method  cleanup
+
+    // megjegyzes:
+    // nem szabad hasznalni az mq:unsubscribe-ot,
+    // mert (tevesen) megis kuld uzenetet a sorbol,
+    // majd a tevesen kuldott uzenet ack-ja utan ERROR-t kuld  
 
 
 ******************************************************************************************
 static function stomp.consumer.initialize(this,dest)
     this:(stomp)initialize(dest)
 
-    this:id:=randbytes()
-
     this:ack:="client-individual"  // az objektum automatikus ack-ot kuld minden message-re
     //this:ack:="client"           // az alkalmazas kuldi az ack-ot (kumulativ)
     //this:ack:="auto"             // nincs ack, az uzenet elveszhet
 
+    this:subscriptions:={}
+    this:subscrids:={}
     this:buffer:=a""
 
     return this
 
 
 ******************************************************************************************
-static function stomp.consumer.subscribe(this)
+static function stomp.consumer.subscribe(this,dest)
 
+static subscrid:=0 // minden subscription egyedi id-t kap
+
+local id
 local frame
 local eol:=x"0a"
-local rsp,arsp,n,header
 local err
 
+    if( dest==NIL )
+        dest:=this:destination
+    end
+    id:=this:subscriptions::ascan(dest)
+    if( id>0 )
+        err:=stomperrorNew("stomp.consumer.subscribe")
+        err:description:="subscription is already used"
+        err:args:={this:subscriptions[id]}
+        break(err)
+    end
+    id:=this:subscriptions::ascan(NIL)
+    if( id<1 )
+        this:subscriptions::aadd(NIL)
+        this:subscrids::aadd(NIL)
+        id:=this:subscriptions::len
+    end
+    subscrid++
+
     frame:=a"SUBSCRIBE"+eol
-    frame+=a"destination:"+this:destination::str2bin+eol
-    frame+=a"id:"+this:id::str2bin+eol
-    frame+=a"ack:"+this:ack::str2bin+eol
+    frame+=a"destination:"+dest::str2bin+eol
+    frame+=a"id:"+subscrid::str::alltrim::str2bin+eol
+    frame+=a"ack:"+this:ack::str2bin+eol // kozos
     frame+=eol
     frame+=x"00"
-
     DEBUG(frame)
-
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.consumer.subscribe")
         err:description:="send failed"
+        err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}
         break(err)
     end
 
+    this:subscriptions[id]:=dest
+    this:subscrids[id]:=subscrid
+    return id
+
+******************************************************************************************
+static function stomp.consumer.unsubscribe(this,destorid)
+
+local id
+local frame
+local eol:=x"0a"
+local subid
+local err
+
+    if( destorid::valtype=="N" )
+        id:=destorid
+    else
+        id:=ascan(this:subscriptions,destorid)
+    end
+
+    if( id<1 )
+        // kihagy
+    elseif( id>len(this:subscriptions) )
+        // kihagy
+    elseif( this:subscriptions[id]==NIL )
+        // kihagy
+    else
+        subid:=this:subscrids[id]
+        frame:=a"UNSUBSCRIBE"+eol
+        frame+=a"id:"+subid::str::alltrim::str2bin+eol
+        frame+=eol
+        frame+=x"00"
+        DEBUG(frame)
+        if( this:socket:send(frame)!=len(frame) )
+            err:=stomperrorNew("stomp.consumer.unsubscribe")
+            err:description:="send failed"
+            err:oscode:=ferror()
+            err:args:={id,this:socket,deleol(frame)}
+            break(err)
+        end
+        this:subscriptions[id]:=NIL
+        this:subscrids[id]:=NIL
+        return id
+    end
+    return NIL
+
+******************************************************************************************
+static function stomp.consumer.cleanup(this)
+local id,err
+    //? "BEFORE-cleanup, press any key";inkey(0)
+    for id:=1 to len(this:subscriptions)
+        if( this:subscriptions[id]!=NIL )
+            //? "before CLEANUP", id, "press any key";inkey(0)
+            this:unsubscribe(id)
+            //?? " OK"
+        end
+    next
+    //? "AFTER-cleanup, press any key";inkey(0)
 
 
 ******************************************************************************************
@@ -90,7 +174,7 @@ local  logname
             end
         end
 
-        memo(++counter,"chunk",chunk)
+        //memo(++counter,"chunk",chunk)
         this:buffer+=chunk
         skip_heartbeat(this,@bompos)
         send_heartbeat(this)
@@ -137,12 +221,12 @@ local  logname
             end
         end
 
-        memo(++counter,"chunkx",chunk)
+        //memo(++counter,"chunkx",chunk)
         this:buffer+=chunk
     end
 
     msg:=this:buffer[bompos..eompos]  // command headers body NULL
-    header:=this:lastheader:=this:buffer[bompos..hdrpos]
+    header:=this:header:=this:buffer[bompos..hdrpos]
     body:=this:buffer[hdrpos+2..eompos-1]
     this:buffer:=this:buffer[eompos+1..]
 
@@ -157,8 +241,7 @@ local  logname
         // az alkalmazas kuldi az ack-ot (kumulativ)
     end
 
-    memo(counter,"message",msg)          // debug only
-    memo(counter,"xbuffer",this:buffer)  // debug only
+    this:destination:=this:getheader("destination")::bin2str
 
     return body
 
@@ -167,10 +250,10 @@ local  logname
 static function stomp.consumer.getheader(this,hdr)
 local hdrpos,eolpos,hdrval
     hdr::=str2bin+a":"
-    hdrpos:=at(hdr,this:lastheader)
+    hdrpos:=at(hdr,this:header)
     if( hdrpos>0  )
-        eolpos:=at(x"0a",this:lastheader,hdrpos) 
-        hdrval:=this:lastheader[hdrpos+len(hdr)..eolpos-1] // eol leszedve
+        eolpos:=at(x"0a",this:header,hdrpos)
+        hdrval:=this:header[hdrpos+len(hdr)..eolpos-1] // eol leszedve
     end
     if( hdrval::empty )
         return NIL
@@ -186,7 +269,7 @@ local err
     ackid:=this:getheader("ack")
     if( empty(ackid) )
         err:=stomperrorNew("stomp.consumer.sendack")
-        err:description:="No ACK header in the last message: "+this:lastheader::bin2str::deleol::left(32)
+        err:description:="No ACK header in the last message: "+this:header::bin2str::deleol::left(32)
         break(err)
     end
 
@@ -200,6 +283,7 @@ local err
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.sendack")
         err:description:="send failed"
+        err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}
         break(err)
     end
@@ -251,14 +335,14 @@ static function randbytes(n:=2)
 
 
 ******************************************************************************************
-static function memo(counter,name,txt)
+//static function memo(counter,name,txt)
 //local logname:="log-"+counter::str::alltrim::padl(3,"0")+"-"+name
-//  memowrit(logname,txt)
+//    memowrit(logname,txt)
 
 
 ******************************************************************************************
 static function debug(txt)
-//  ? txt
+//    ? txt
 
 
 ******************************************************************************************

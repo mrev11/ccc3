@@ -63,6 +63,7 @@ local err
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.connect")
         err:description:="send failed"
+        err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}
         break(err)
     end
@@ -100,6 +101,8 @@ local receipt:=randbytes()::str2bin
 local rsp,arsp,n,header
 local err
 
+    this:cleanup
+
     frame:=a"DISCONNECT"+eol
     frame+=a"receipt:"+receipt+eol
     frame+=eol
@@ -110,6 +113,7 @@ local err
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.disconnect")
         err:description:="send failed"
+        err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}
         break(err)
     end

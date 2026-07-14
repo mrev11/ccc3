@@ -1,4 +1,10 @@
 2026-06-14 stomp fejlesztesek:
+   mq:subscribe() tobb sorba is be lehet jelentkezni;
+   mq:getmessage() tobb sorbol kaphatja az uzeneteket;
+   md:destination megadja, melyik sorbol jott az aktualis uzenet;
+   mq:unsubscribe() kijelentkezik egy sorbol (hibasan mukodik, nem szabad hasznalni)
+
+2026-06-14 stomp fejlesztesek:
   ack kuldese reszletesebben kidolgozva:
     mq:ack="client-individual" eseten az objektum kuldi az ack uzenetet (default)
     mq:ack="client" eseten az app kuldi az ack uzenetet (ez kumulativ)
@@ -48,8 +54,8 @@
 2026-04-08
   stomp;
   json;
-  
-2026-02-23 
+
+2026-02-23
   asize() argerror-t dob, ha az uj meret kisebb 0-nal;
   javitasok az uic konyvtarban:
   ha a browse tul lapos, megnoveli, hogy legyen legalabb 1 sora;
@@ -57,8 +63,8 @@
   ha a browse jobbra/alul kilog a terminalbol, balrabb/feljebb tolja;
   ha a browse nem fer el a terminalban, megnoveli a terminalt;
   ha a browseban nincs hely a footingnak, akkor kihagyja a footingot;
-  ha a caption kilogna a keskeny browsebol, akkor csonkitja; 
-  ha a footing kilogna a keskeny browsebol, akkor csonkitja; 
+  ha a caption kilogna a keskeny browsebol, akkor csonkitja;
+  ha a footing kilogna a keskeny browsebol, akkor csonkitja;
   ha a mask jobbra/alul kilog a terminalbol, balrabb/feljebb tolja;
   ha a mask nem fer el a terminalban, akkor megnoveli a terminalt;
 

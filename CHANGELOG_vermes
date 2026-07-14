@@ -1,3 +1,11 @@
+2026-06-14 stomp fejlesztesek:
+  ack kuldese reszletesebben kidolgozva:
+    mq:ack="client-individual" eseten az objektum kuldi az ack uzenetet (default)
+    mq:ack="client" eseten az app kuldi az ack uzenetet (ez kumulativ)
+    mq:ack="auto" eseten nincs ack kuldes, az uzenet elveszhet
+    mq:sendack() metodussal lehet ack-ot kuldeni
+  mq:getheader(hdr) visszaadja a hdr kulccsal megadott header erteket;
+
 2026-06-13 stomp fejlesztesek:
   receipt header kuldese/ellenorzese opcionalis (default: producer:sendreceipt:=.t.);
   producer:sendmessage(this,msg,{hdr1,...})-ben megadhatok kiegeszito hederek,

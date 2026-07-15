@@ -1,5 +1,5 @@
 #!/bin/bash
-test-producer.exe   AAAAA  BB CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC xx
+test-producer.exe   ABC | tee log-producer 
 
 
 

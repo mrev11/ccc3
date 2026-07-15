@@ -17,6 +17,7 @@ class stomp.consumer(stomp)
     method  getmessage
     method  getheader       // header ertekek egyenkent, kulcs alapjan (X tipus)
     method  sendack         // ack-ot kuld a lastheaderbol kilvasott id-vel
+    method  sendnack        // nack-ot kuld a lastheaderbol kilvasott id-vel
     method  cleanup
 
     // megjegyzes:
@@ -269,12 +270,15 @@ local err
     ackid:=this:getheader("ack")
     if( empty(ackid) )
         err:=stomperrorNew("stomp.consumer.sendack")
-        err:description:="No ACK header in the last message: "+this:header::bin2str::deleol::left(32)
+        err:description:="no ACK header in the last message: "+this:header::bin2str::deleol::left(32)
         break(err)
     end
 
     frame:=a"ACK"+eol
     frame+=a"id:"+ackid+eol
+    if( this:transaction!=NIL )
+        frame+=a"transaction:"+this:transaction::str2bin+eol
+    end
     frame+=eol
     frame+=x"00"
 
@@ -282,6 +286,37 @@ local err
 
     if( this:socket:send(frame)!=len(frame) )
         err:=stomperrorNew("stomp.sendack")
+        err:description:="send failed"
+        err:oscode:=ferror()
+        err:args:={this:socket,deleol(frame)}
+        break(err)
+    end
+
+
+******************************************************************************************
+static function stomp.consumer.sendnack(this)
+local ackid,frame,eol:=x"0a"
+local err
+
+    ackid:=this:getheader("ack")
+    if( empty(ackid) )
+        err:=stomperrorNew("stomp.consumer.sendnack")
+        err:description:="no ACK header in the last message: "+this:header::bin2str::deleol::left(32)
+        break(err)
+    end
+
+    frame:=a"NACK"+eol
+    frame+=a"id:"+ackid+eol
+    if( this:transaction!=NIL )
+        frame+=a"transaction:"+this:transaction::str2bin+eol
+    end
+    frame+=eol
+    frame+=x"00"
+
+    DEBUG(frame)
+
+    if( this:socket:send(frame)!=len(frame) )
+        err:=stomperrorNew("stomp.sendnack")
         err:description:="send failed"
         err:oscode:=ferror()
         err:args:={this:socket,deleol(frame)}

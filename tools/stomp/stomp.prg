@@ -16,10 +16,14 @@ class stomp(object) new:
     attrib  version
     attrib  session
     attrib  destination
+    attrib  transaction
 
     method  connect
     method  disconnect
     method  initialize
+    method  begin
+    method  commit
+    method  abort
 
 
 ******************************************************************************************
@@ -155,6 +159,98 @@ local err
     this:socket:close
 
 
+
+******************************************************************************************
+static function stomp.begin(this)
+local frame
+local eol:=x"0a"
+local err
+
+    if( this:transaction!=NIL )
+        err:=stomperrorNew("stomp.begin")
+        err:description:="transaction active"
+        err:args:={this:transaction}
+        break(err)
+    end
+
+    this:transaction:=randbytes()
+    frame:=a"BEGIN"+eol
+    frame+=a"transaction:"+this:transaction::str2bin+eol
+    frame+=eol
+    frame+=x"00"
+
+    DEBUG(frame)
+
+    if( this:socket:send(frame)!=len(frame) )
+        err:=stomperrorNew("stomp.begin")
+        err:description:="send failed"
+        err:oscode:=ferror()
+        err:args:={this:socket,deleol(frame)}
+        break(err)
+    end
+
+
+    return this:transaction
+
+
+******************************************************************************************
+static function stomp.commit(this)
+local frame
+local eol:=x"0a"
+local err
+
+    if( this:transaction==NIL )
+        err:=stomperrorNew("stomp.commit")
+        err:description:="no active transaction"
+        break(err)
+    end
+
+    frame:=a"COMMIT"+eol
+    frame+=a"transaction:"+this:transaction::str2bin+eol
+    frame+=eol
+    frame+=x"00"
+    this:transaction:=NIL
+
+    DEBUG(frame)
+
+    if( this:socket:send(frame)!=len(frame) )
+        err:=stomperrorNew("stomp.commit")
+        err:description:="send failed"
+        err:oscode:=ferror()
+        err:args:={this:socket,deleol(frame)}
+        break(err)
+    end
+
+
+******************************************************************************************
+static function stomp.abort(this)
+local frame
+local eol:=x"0a"
+local err
+
+    if( this:transaction==NIL )
+        err:=stomperrorNew("stomp.abort")
+        err:description:="no active transaction"
+        break(err)
+    end
+
+    frame:=a"ABORT"+eol
+    frame+=a"transaction:"+this:transaction::str2bin+eol
+    frame+=eol
+    frame+=x"00"
+    this:transaction:=NIL
+
+    DEBUG(frame)
+
+    if( this:socket:send(frame)!=len(frame) )
+        err:=stomperrorNew("stomp.abort")
+        err:description:="send failed"
+        err:oscode:=ferror()
+        err:args:={this:socket,deleol(frame)}
+        break(err)
+    end
+
+
 ******************************************************************************************
 static function deleol(txt)
     return txt::split(bin(10))::join
@@ -181,7 +277,7 @@ static function randbytes(n:=2)
 
 ******************************************************************************************
 static function debug(txt)
-  //? txt
+//    ? txt
 
 
 ******************************************************************************************

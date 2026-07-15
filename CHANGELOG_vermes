@@ -1,4 +1,8 @@
 2026-06-14 stomp fejlesztesek:
+   mq:begin, mq:commit, mq:abort implementalva;
+   mq:sendnack implementalva;
+
+2026-06-14 stomp fejlesztesek:
    mq:subscribe() tobb sorba is be lehet jelentkezni;
    mq:getmessage() tobb sorbol kaphatja az uzeneteket;
    md:destination megadja, melyik sorbol jott az aktualis uzenet;

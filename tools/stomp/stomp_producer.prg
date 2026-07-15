@@ -47,6 +47,9 @@ local err
         // opcionalis
         frame+=header[n]::str2bin+eol
     next
+    if( this:transaction!=NIL )
+        frame+=a"transaction:"+this:transaction::str2bin+eol
+    end
 
     frame+=eol
     hdrlen:=len(frame)
@@ -138,7 +141,7 @@ static function memo(counter,name,txt)
 
 ******************************************************************************************
 static function debug(txt)
-  //? txt
+//    ? txt
 
 
 ******************************************************************************************

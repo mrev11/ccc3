@@ -27,9 +27,12 @@ local args:={*},n
 #ifdef MULTIPLE_QUEUE
     // teszt tobb message queue-val
     for n:=1 to len(args)
-        mq:destination:=queue()+"x";  mq:sendmessage( args[n]+"x" )
-        mq:destination:=queue()+"y";  mq:sendmessage( args[n]+"y" )
-        mq:destination:=queue()+"z";  mq:sendmessage( args[n]+"z" )
+        mq:begin
+        mq:destination:=queue()+"x";  mq:sendmessage( args[n]+"-xxx" )
+        mq:destination:=queue()+"y";  mq:sendmessage( args[n]+"-yyy" )
+        mq:destination:=queue()+"z";  mq:sendmessage( args[n]+"-zzz" )
+        //mq:abort
+        mq:commit
     next
 #endif
 

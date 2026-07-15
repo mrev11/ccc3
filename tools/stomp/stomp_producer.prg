@@ -1,4 +1,22 @@
 
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 ******************************************************************************************
 // PRODUCER
@@ -23,12 +41,17 @@ static function stomp.producer.initialize(this,dest)
 
 
 ******************************************************************************************
+static function stomp.producer.cleanup(this)
+    // nothing
+
+
+******************************************************************************************
 static function stomp.producer.sendmessage(this,msg,header)
 
 local frame
 local eol:=x"0a"
 local receipt:=randbytes()::str2bin
-local n,hdrlen
+local n
 local err
 
     msg::=str2bin
@@ -52,7 +75,6 @@ local err
     end
 
     frame+=eol
-    hdrlen:=len(frame)
     frame+=msg
     frame+=x"00"
 
@@ -69,11 +91,6 @@ local err
     if( this:sendreceipt )
         verify_receipt(this,receipt)
     end
-
-
-******************************************************************************************
-static function stomp.producer.cleanup(this)
-    // nothing
 
 
 ******************************************************************************************
@@ -132,11 +149,6 @@ local x,n
 static function randbytes(n:=2)
     return crypto_rand_bytes(n)::bin2hex  // C type
 
-
-******************************************************************************************
-static function memo(counter,name,txt)
-//local logname:="log-"+counter::str::alltrim::padl(3,"0")+"-"+name
-//  memowrit(logname,txt)
 
 
 ******************************************************************************************

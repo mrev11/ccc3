@@ -1,4 +1,22 @@
 
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 ******************************************************************************************
 // CONSUMER
@@ -16,8 +34,8 @@ class stomp.consumer(stomp)
     method  unsubscribe
     method  getmessage
     method  getheader       // header ertekek egyenkent, kulcs alapjan (X tipus)
-    method  sendack         // ack-ot kuld a lastheaderbol kilvasott id-vel
-    method  sendnack        // nack-ot kuld a lastheaderbol kilvasott id-vel
+    method  sendack         // ack-ot kuld a this:header-bol kiplvasott id-vel
+    method  sendnack        // nack-ot kuld a this:header-bol kiolvasott id-vel
     method  cleanup
 
     // megjegyzes:
@@ -39,6 +57,20 @@ static function stomp.consumer.initialize(this,dest)
     this:buffer:=a""
 
     return this
+
+
+******************************************************************************************
+static function stomp.consumer.cleanup(this)
+local id,err
+    //? "BEFORE-cleanup, press any key";inkey(0)
+    for id:=1 to len(this:subscriptions)
+        if( this:subscriptions[id]!=NIL )
+            //? "before CLEANUP", id, "press any key";inkey(0)
+            this:unsubscribe(id)
+            //?? " OK"
+        end
+    next
+    //? "AFTER-cleanup, press any key";inkey(0)
 
 
 ******************************************************************************************
@@ -88,6 +120,7 @@ local err
     this:subscrids[id]:=subscrid
     return id
 
+
 ******************************************************************************************
 static function stomp.consumer.unsubscribe(this,destorid)
 
@@ -128,19 +161,6 @@ local err
         return id
     end
     return NIL
-
-******************************************************************************************
-static function stomp.consumer.cleanup(this)
-local id,err
-    //? "BEFORE-cleanup, press any key";inkey(0)
-    for id:=1 to len(this:subscriptions)
-        if( this:subscriptions[id]!=NIL )
-            //? "before CLEANUP", id, "press any key";inkey(0)
-            this:unsubscribe(id)
-            //?? " OK"
-        end
-    next
-    //? "AFTER-cleanup, press any key";inkey(0)
 
 
 ******************************************************************************************

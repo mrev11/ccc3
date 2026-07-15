@@ -1,3 +1,5 @@
+2026-06-15 hianyzo copyright fejlecek potolva;
+
 2026-06-14 stomp fejlesztesek:
    mq:begin, mq:commit, mq:abort implementalva;
    mq:sendnack implementalva;

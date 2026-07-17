@@ -1,3 +1,7 @@
+2026-06-17  epoch.cpp tools/json-bol atkerult tutor/xmldate-be;
+    kovetkezmeny: ccc3_json linkelesevel nem lehet timestamp fuggvenyekhez jutni,
+    helyette az epoch.cpp forrast kell elvinni tutor/xmldate-bol;
+
 2026-06-15 hianyzo copyright fejlecek potolva;
 
 2026-06-14 stomp fejlesztesek:

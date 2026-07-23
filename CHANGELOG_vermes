@@ -1,3 +1,5 @@
+2026-07-23 lemon.exe elfogadja az o=<output_file> opciot;
+
 2026-06-17  epoch.cpp tools/json-bol atkerult tutor/xmldate-be;
     kovetkezmeny: ccc3_json linkelesevel nem lehet timestamp fuggvenyekhez jutni,
     helyette az epoch.cpp forrast kell elvinni tutor/xmldate-bol;

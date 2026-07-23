@@ -1,4 +1,19 @@
 -----------------------------------------------------------------------------
+CCC-Build-7 - 2026.07.23
+-----------------------------------------------------------------------------
+
+    o=output_file
+
+Plusz opcioval kozvetlenul megadhato az eredmeny fajl.
+
+Eredetileg determinisztikusan ./$(basename input_file .lem).c volt a kimenet.
+Azert valtoztattam, mert  Windowson (az MSYS2 hibaja miatt) elakado
+forditas utan elofordult, hogy a wd-ben maradt egy 'parse.c' szemet fajl,
+amin a kesobbi forditasi kiserletek elakadtak.
+
+A build most kozvetlenul ppo/$(basename input_file .lem).cpp fajlt keszit.
+
+-----------------------------------------------------------------------------
 CCC-Build-6 - 2025.05.16
 -----------------------------------------------------------------------------
 

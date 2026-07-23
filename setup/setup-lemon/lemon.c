@@ -84,6 +84,8 @@ static char *basename(char *p)
     return bname;
 }
 
+static char *output_file=0;
+
 typedef int COMPARE_T(const void*,const void*);
 
 
@@ -1399,6 +1401,7 @@ char **argv)
     {OPT_FLAG, "q", (char*)&quiet, "(Quiet) Don't print the report file."},
     {OPT_FLAG, "s", (char*)&statistics, "Print parser stats to standard output."},
     {OPT_FLAG, "x", (char*)&version, "Print the version number."},
+    {OPT_STR,  "o", (char*)&output_file, "Output file."},
     {OPT_FLAG,0,0,0}
   };
   int i;
@@ -1406,7 +1409,7 @@ char **argv)
 
   OptInit(argv,options,stderr);
   if( version ){
-     printf("Lemon 1.0 CCC-Build-6\n");
+     printf("Lemon 1.0 CCC-Build-7\n");
      exit(0); 
   }
   if( OptNArgs()!=1 ){
@@ -3246,7 +3249,20 @@ int mhflag)     /* Output in makeheaders format if true */
 
   in = tplt_open(lemp);
   if( in==0 ) return;
-  out = file_open(lemp,".c","w");
+  if( output_file )
+  {
+    lemp->outname=strdup(output_file);
+    out=fopen(lemp->outname,"w");
+    if( out==0 )
+    {
+      fprintf(stderr,"Can't open file \"%s\".\n",lemp->outname);
+      lemp->errorcnt++;
+    }
+  }
+  else
+  {
+    out = file_open(lemp,".c","w");
+  }
   if( out==0 ){
     fclose(in);
     return;

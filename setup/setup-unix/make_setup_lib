@@ -20,6 +20,7 @@
 ./cc ${CCCDIR}/ccclib/src/asc.cpp
 ./cc ${CCCDIR}/ccclib/src/asort.cpp
 ./cc ${CCCDIR}/ccclib/src/at.cpp
+./cc ${CCCDIR}/ccclib/src/bin2hex.cpp
 ./cc ${CCCDIR}/ccclib/src/binary.cpp
 ./cc ${CCCDIR}/ccclib/src/bit.cpp
 ./cc ${CCCDIR}/ccclib/src/break.cpp
@@ -84,3 +85,7 @@
 ## (ez egyszerre mindent lefordit)
 
 ./cc 
+
+rm -f setup.lib
+ar -c -q setup.lib *.o
+

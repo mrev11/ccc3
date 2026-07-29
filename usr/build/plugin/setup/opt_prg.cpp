@@ -1,0 +1,461 @@
+//input: ppo/opt_prg.ppo (5.7.2)
+
+#include <cccdef.h>
+
+extern void _clp_channelnew(int argno);
+extern void _clp_chr(int argno);
+extern void _clp_dirmake(int argno);
+extern void _clp_empty(int argno);
+extern void _clp_ferase(int argno);
+extern void _clp_len(int argno);
+extern void _clp_memoread(int argno);
+extern void _clp_opt_prg(int argno);
+extern void _clp_pluginenv(int argno);
+extern void _clp_qqout(int argno);
+extern void _clp_split(int argno);
+extern void _clp_strtran(int argno);
+
+class _method6_close: public _method6_{public: _method6_close():_method6_("close"){};}; static _method6_close _o_method_close;
+class _method6_off: public _method6_{public: _method6_off():_method6_("off"){};}; static _method6_off _o_method_off;
+class _method6_on: public _method6_{public: _method6_on():_method6_("on"){};}; static _method6_on _o_method_on;
+class _method6_open: public _method6_{public: _method6_open():_method6_("open"){};}; static _method6_open _o_method_open;
+
+//=======================================================================
+void _clp_opt_prg(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+6)PUSHNIL();
+argno=2;
+push_call("opt_prg",base);
+//
+    line(8);
+    line(9);
+    number(10);
+    _clp_chr(1);
+    assign(base+3);//eol
+    pop();
+    line(10);
+    line(12);
+    string(L"ppo");
+    _clp_dirmake(1);
+    pop();
+    line(13);
+    push_symbol(base+1);//env
+    string(L"CMPOPT");
+    string(L"ppo/opt--prg-");
+    push_symbol(base+0);//arg
+    idxr0(1);
+    add();
+    _clp_pluginenv(3);
+    pop();
+    line(14);
+    push_symbol(base+1);//env
+    string(L"CMPOPT");
+    _clp_pluginenv(2);
+    _clp_ferase(1);
+    pop();
+    line(16);
+    push_symbol(base+1);//env
+    string(L"CMPOPT");
+    _clp_pluginenv(2);
+    _clp_channelnew(1);
+    assign(base+2);//ch
+    push(&FALSE);
+    _o_method_open.eval(2);
+    pop();
+    line(17);
+    push_symbol(base+2);//ch
+    _o_method_on.eval(1);
+    pop();
+    line(20);
+    string(L"-Dcompile_");
+    push_symbol(base+1);//env
+    string(L"CCCVER");
+    _clp_pluginenv(2);
+    add();
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(21);
+    string(L"-Dcompile_");
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    add();
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(22);
+    string(L"-Dcompile_");
+    push_symbol(base+1);//env
+    string(L"CCCBIN");
+    _clp_pluginenv(2);
+    add();
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(23);
+    string(L"-Dcompile_");
+    push_symbol(base+1);//env
+    string(L"MSYSTEM");
+    _clp_pluginenv(2);
+    add();
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(25);
+    push_symbol(base+1);//env
+    string(L"BUILD_PRE");
+    _clp_pluginenv(2);
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(27);
+    push_symbol(base+1);//env
+    string(L"BUILD_INC");
+    _clp_pluginenv(2);
+    string(L" ");
+    _clp_split(2);
+    assign(base+4);//inc
+    pop();
+    line(32);
+    {
+    line(28);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+5);//n
+    lab_1_0:
+    push_symbol(base+4);//inc
+    _clp_len(1);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_1_2;
+        line(31);
+        line(29);
+        push_symbol(base+4);//inc
+        push_symbol(base+5);//n
+        idxr();
+        _clp_empty(1);
+        topnot();
+        if(!flag()) goto if_2_1;
+            line(30);
+            string(L"-I");
+            push_symbol(base+4);//inc
+            push_symbol(base+5);//n
+            idxr();
+            string(L"@");
+            string(L":");
+            _clp_strtran(3);
+            add();
+            push_symbol(base+3);//eol
+            add();
+            _clp_qqout(1);
+            pop();
+        if_2_1:
+        if_2_0:;
+    lab_1_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+5);//n
+    add();
+    assign(base+5);//n
+    goto lab_1_0;
+    lab_1_2:;
+    }
+    line(34);
+    string(L"-dARROW");
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(35);
+    string(L"-d_CCC_");
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(36);
+    string(L"-d_CCC");
+    push_symbol(base+1);//env
+    string(L"CCCVER");
+    _clp_pluginenv(2);
+    add();
+    string(L"_");
+    add();
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(78);
+    line(38);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"linux");
+    eqeq();
+    cmp_626:;
+    if(!flag()) goto if_3_1;
+        line(39);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(40);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(41);
+        string(L"-d_LINUX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_1:
+    line(43);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"raspi");
+    eqeq();
+    cmp_711:;
+    if(!flag()) goto if_3_2;
+        line(44);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(45);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(46);
+        string(L"-d_LINUX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(47);
+        string(L"-d_RASPI_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_2:
+    line(49);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"termux");
+    eqeq();
+    cmp_814:;
+    if(!flag()) goto if_3_3;
+        line(50);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(51);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(52);
+        string(L"-d_LINUX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(53);
+        string(L"-d_TERMUX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_3:
+    line(55);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"freebsd");
+    eqeq();
+    cmp_917:;
+    if(!flag()) goto if_3_4;
+        line(56);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(57);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(58);
+        string(L"-d_FREEEBSD_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_4:
+    line(60);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"netbsd");
+    eqeq();
+    cmp_1002:;
+    if(!flag()) goto if_3_5;
+        line(61);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(62);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(63);
+        string(L"-d_NETBSD_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_5:
+    line(65);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"solaris");
+    eqeq();
+    cmp_1087:;
+    if(!flag()) goto if_3_6;
+        line(66);
+        string(L"-dUNIX");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(67);
+        string(L"-d_UNIX_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(68);
+        string(L"-d_SOLARIS_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_6:
+    line(70);
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    string(L"msys2");
+    eqeq();
+    cmp_1172:;
+    if(!flag()) goto if_3_7;
+        line(71);
+        string(L"-dWINDOWS");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(72);
+        string(L"-d_WINDOWS_");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(73);
+        string(L"-dWIN32");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+        line(74);
+        string(L"-dMSYS2");
+        push_symbol(base+3);//eol
+        add();
+        _clp_qqout(1);
+        pop();
+    goto if_3_0;
+    if_3_7:
+    line(76);
+        line(77);
+        string(L" unknown OS:");
+        push_symbol(base+1);//env
+        string(L"CCCUNAME");
+        _clp_pluginenv(2);
+        _clp_qqout(2);
+        pop();
+    if_3_8:
+    if_3_0:;
+    line(80);
+    push_symbol(base+1);//env
+    string(L"CCCDIR");
+    _clp_pluginenv(2);
+    string(L"/usr/options/");
+    add();
+    push_symbol(base+1);//env
+    string(L"CCCUNAME");
+    _clp_pluginenv(2);
+    add();
+    string(L"/");
+    add();
+    push_symbol(base+1);//env
+    string(L"CCCBIN");
+    _clp_pluginenv(2);
+    add();
+    string(L"/cppver.opt");
+    add();
+    _clp_memoread(1);
+    _clp_qqout(1);
+    pop();
+    line(82);
+    string(L"-ustd1.ch");
+    push_symbol(base+3);//eol
+    add();
+    _clp_qqout(1);
+    pop();
+    line(84);
+    push_symbol(base+2);//ch
+    _o_method_close.eval(1);
+    pop();
+    line(85);
+    push_symbol(base+2);//ch
+    _o_method_off.eval(1);
+    pop();
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+

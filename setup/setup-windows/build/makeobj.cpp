@@ -1,4 +1,4 @@
-//input: ppo/makeobj.ppo (5.7.0.1)
+//input: ppo/makeobj.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -8,10 +8,7 @@ extern void _clp_buildenv_obj(int argno);
 extern void _clp_dirsep(int argno);
 extern void _clp_empty(int argno);
 extern void _clp_errorlevel(int argno);
-extern void _clp_fext(int argno);
 extern void _clp_file(int argno);
-extern void _clp_fname(int argno);
-extern void _clp_fpath0(int argno);
 extern void _clp_ftime(int argno);
 extern void _clp_len(int argno);
 extern void _clp_makeobj(int argno);
@@ -21,6 +18,12 @@ extern void _clp_s_batext(int argno);
 extern void _clp_s_debug(int argno);
 extern void _clp_strtran(int argno);
 extern void _clp_verifdep(int argno);
+
+namespace _nsp_filespec{
+extern void _clp_extension(int argno);
+extern void _clp_name(int argno);
+extern void _clp_path(int argno);
+}//namespace filespec
 
 //=======================================================================
 void _clp_makeobj(int argno)
@@ -54,20 +57,20 @@ push_call("makeobj",base);
     line(34);
     line(32);
     push_symbol(base+1);//target
-    _clp_fext(1);
+    _nsp_filespec::_clp_extension(1);
     string(L".obj");
     eqeq();
-    cmp_131:;
+    cmp_134:;
     if(!flag()) goto if_1_1;
         line(33);
         push_symbol(base+3);//objdir
         _clp_dirsep(0);
         add();
         push_symbol(base+1);//target
-        _clp_fname(1);
+        _nsp_filespec::_clp_name(1);
         add();
         push_symbol(base+1);//target
-        _clp_fext(1);
+        _nsp_filespec::_clp_extension(1);
         add();
         assign(base+1);//target
         pop();
@@ -83,7 +86,7 @@ push_call("makeobj",base);
     push_symbol(base+4);//ttarget
     push(&NIL);
     eqeq();
-    cmp_215:;
+    cmp_224:;
     if(!flag()) goto if_2_1;
         line(38);
         string(L"");
@@ -153,7 +156,7 @@ push_call("makeobj",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(75);
+    line(78);
     line(54);
     push_symbol(base+6);//update
     if(!flag()) goto if_6_1;
@@ -167,12 +170,12 @@ push_call("makeobj",base);
         push_symbol(base+7);//torun
         push_symbol(base+0);//deplist
         idxr0(2);
-        _clp_fext(1);
+        _nsp_filespec::_clp_extension(1);
         string(L"2");
         add();
         push_symbol(base+0);//deplist
         idxr0(1);
-        _clp_fext(1);
+        _nsp_filespec::_clp_extension(1);
         add();
         string(L".");
         string(L"");
@@ -216,13 +219,13 @@ push_call("makeobj",base);
         line(67);
         push_symbol(base+0);//deplist
         idxr0(1);
-        _clp_fname(1);
+        _nsp_filespec::_clp_name(1);
         assign(base+9);//p1
         pop();
         line(68);
         push_symbol(base+0);//deplist
         idxr0(2);
-        _clp_fpath0(1);
+        _nsp_filespec::_clp_path(1);
         assign(base+10);//p2
         pop();
         push_symbol(base+10);//p2
@@ -270,7 +273,24 @@ push_call("makeobj",base);
         goto lab_8_0;
         lab_8_2:;
         }
+        line(76);
         line(74);
+        _clp_s_batext(0);
+        string(L".bld");
+        eqeq();
+        cmp_766:;
+        if(!flag()) goto if_9_1;
+            line(75);
+            string(L"'");
+            push_symbol(base+11);//p3
+            add();
+            string(L"'");
+            add();
+            assign(base+11);//p3
+            pop();
+        if_9_1:
+        if_9_0:;
+        line(77);
         push_symbol(base+7);//torun
         string(L" ");
         add();
@@ -280,11 +300,9 @@ push_call("makeobj",base);
         add();
         push_symbol(base+10);//p2
         add();
-        string(L" '");
+        string(L" ");
         add();
         push_symbol(base+11);//p3
-        add();
-        string(L"'");
         add();
         _clp_run1(1);
         pop();

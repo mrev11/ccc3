@@ -1,4 +1,4 @@
-//input: ppo/class.ppo (5.7.0.1)
+//input: ppo/class.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -43,8 +43,6 @@ extern void _clp_len(int argno);
 extern void _clp_lower(int argno);
 extern void _clp_padr(int argno);
 extern void _clp_qout(int argno);
-extern void _clp_signal_lock(int argno);
-extern void _clp_signal_unlock(int argno);
 extern void _clp_str(int argno);
 extern void _clp_str2bin(int argno);
 extern void _clp_thread_mutex_init(int argno);
@@ -86,14 +84,14 @@ while(stack<base+5)PUSHNIL();
 argno=2;
 push_call("hash_rebuild",base);
 //
-    line(58);
+    line(56);
     push_symbol(base+1);//len
     _clp_array(1);
     assign(base+2);//hash1
     pop();
-    line(64);
+    line(62);
     {
-    line(59);
+    line(57);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -102,8 +100,8 @@ push_call("hash_rebuild",base);
     push_symbol(base+0);//hash
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_1_2;
-        line(63);
-        line(60);
+        line(61);
+        line(58);
         push_symbol(base+0);//hash
         push_symbol(base+3);//n
         idxr();
@@ -111,7 +109,7 @@ push_call("hash_rebuild",base);
         neeq();
         cmp_113:;
         if(!flag()) goto if_2_1;
-            line(61);
+            line(59);
             push_symbol(base+2);//hash1
             push_symbol(base+0);//hash
             push_symbol(base+3);//n
@@ -120,7 +118,7 @@ push_call("hash_rebuild",base);
             _clp_hash_index(2);
             assign(base+4);//x
             pop();
-            line(62);
+            line(60);
             push_symbol(base+0);//hash
             push_symbol(base+3);//n
             idxr();
@@ -140,7 +138,7 @@ push_call("hash_rebuild",base);
     goto lab_1_0;
     lab_1_2:;
     }
-    line(65);
+    line(63);
     push_symbol(base+2);//hash1
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -157,12 +155,12 @@ while(stack<base+5)PUSHNIL();
 argno=3;
 push_call("hash_index",base);
 //
-    line(73);
+    line(71);
     push_symbol(base+0);//hash
     _clp_len(1);
     assign(base+3);//hlen
     pop();
-    line(74);
+    line(72);
     push_symbol(base+2);//hcode
     push(&NIL);
     eqeq();
@@ -177,13 +175,13 @@ push_call("hash_index",base);
     modulo();
     assign(base+4);//hidx
     pop();
-    line(84);
+    line(82);
     lab_3_1:
-    line(76);
+    line(74);
     push(&TRUE);
     if(!flag()) goto lab_3_2;
-        line(83);
-        line(77);
+        line(81);
+        line(75);
         push(&NIL);
         push_symbol(base+0);//hash
         push_symbol(base+4);//hidx
@@ -192,13 +190,13 @@ push_call("hash_index",base);
         eqeq();
         cmp_294:;
         if(!flag()) goto if_4_1;
-            line(78);
+            line(76);
             push_symbol(base+4);//hidx
             addnum(1);
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         goto if_4_0;
         if_4_1:
-        line(79);
+        line(77);
         push_symbol(base+1);//key
         push_symbol(base+0);//hash
         push_symbol(base+4);//hidx
@@ -208,13 +206,13 @@ push_call("hash_index",base);
         eqeq();
         cmp_330:;
         if(!flag()) goto if_4_2;
-            line(80);
+            line(78);
             push_symbol(base+4);//hidx
             addnum(1);
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         goto if_4_0;
         if_4_2:
-        line(81);
+        line(79);
         push_symbol(base+4);//hidx
         push(&ONE);
         add();
@@ -223,7 +221,7 @@ push_call("hash_index",base);
         gteq();
         cmp_373:;
         if(!flag()) goto if_4_3;
-            line(82);
+            line(80);
             push(&ZERO);
             assign(base+4);//hidx
             pop();
@@ -231,7 +229,7 @@ push_call("hash_index",base);
         if_4_0:;
     goto lab_3_1;
     lab_3_2:;
-    line(85);
+    line(83);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -248,26 +246,22 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("getclsdef",base);
 //
-    line(103);
-    line(104);
-    _clp_signal_lock(0);
-    pop();
+    line(101);
+    line(102);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(105);
+    line(103);
     push_symbol(_st_aclass_ptr());//global
     push_symbol(base+0);//clid
     idxr();
     assign(base+1);//clsdef
     pop();
-    line(106);
+    line(104);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
-    _clp_signal_unlock(0);
-    pop();
-    line(107);
+    line(105);
     push_symbol(base+1);//clsdef
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -284,27 +278,23 @@ while(stack<base+3)PUSHNIL();
 argno=0;
 push_call("classlistall",base);
 //
+    line(109);
     line(111);
-    line(113);
-    _clp_signal_lock(0);
-    pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(114);
+    line(112);
     push_symbol(_st_aclass_ptr());//global
     _clp_len(1);
     assign(base+2);//clscount
     pop();
-    line(115);
+    line(113);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
-    _clp_signal_unlock(0);
-    pop();
-    line(124);
+    line(122);
     {
-    line(117);
+    line(115);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -312,12 +302,12 @@ push_call("classlistall",base);
     lab_5_0:
     push_symbol(base+2);//clscount
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_5_2;
-        line(118);
+        line(116);
         push_symbol(base+0);//n
         _clp_getclsdef(1);
         assign(base+1);//clsdef
         pop();
-        line(119);
+        line(117);
         push_symbol(base+0);//n
         number(4);
         _clp_str(2);
@@ -350,10 +340,10 @@ push_call("classlistall",base);
     goto lab_5_0;
     lab_5_2:;
     }
-    line(125);
+    line(123);
     _clp_qout(0);
     pop();
-    line(126);
+    line(124);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -370,72 +360,72 @@ while(stack<base+14)PUSHNIL();
 argno=2;
 push_call("classregister",base);
 //
-    line(137);
-    line(138);
+    line(135);
+    line(136);
     number(64);
     _clp_array(1);
     assign(base+5);//hash
     pop();
-    line(139);
-    line(140);
+    line(137);
+    line(138);
     push(&ZERO);
     assign(base+10);//olen
     pop();
     push(&ZERO);
     assign(base+11);//slen
     pop();
-    line(141);
+    line(139);
+    line(140);
+    line(148);
     line(142);
-    line(150);
-    line(144);
     push_symbol(base+1);//clbaseid
     push(&NIL);
     eqeq();
-    cmp_934:;
+    cmp_890:;
     if(!flag()) goto if_6_1;
-        line(145);
+        line(143);
         array(0);
         assign(base+2);//aid
         pop();
     goto if_6_0;
     if_6_1:
-    line(146);
+    line(144);
     push_symbol(base+1);//clbaseid
     _clp_valtype(1);
     string(L"N");
     eqeq();
-    cmp_970:;
+    cmp_926:;
     if(!flag()) goto if_6_2;
-        line(147);
+        line(145);
         push_symbol(base+1);//clbaseid
         array(1);
         assign(base+2);//aid
         pop();
     goto if_6_0;
     if_6_2:
-    line(148);
-        line(149);
+    line(146);
+        line(147);
         push_symbol(base+1);//clbaseid
         assign(base+2);//aid
         pop();
     if_6_3:
     if_6_0:;
-    line(176);
-    line(152);
+    line(174);
+    line(150);
     push_symbol(base+2);//aid
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_7_1;
-        line(157);
+        line(155);
         push_symbol(base+2);//aid
         idxr0(1);
         _clp_getclsdef(1);
         idxr0(5);
         assign(base+6);//bhash
         pop();
-        line(175);
+        line(173);
         {
-        line(159);
+        line(157);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -444,43 +434,43 @@ push_call("classregister",base);
         push_symbol(base+6);//bhash
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_8_2;
-            line(174);
-            line(160);
+            line(172);
+            line(158);
             push_symbol(base+6);//bhash
             push_symbol(base+4);//s
             idxr();
             push(&NIL);
             neeq();
-            cmp_1095:;
+            cmp_1051:;
             if(!flag()) goto if_9_1;
-                line(161);
+                line(159);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(1);
                 assign(base+7);//name
                 pop();
-                line(162);
+                line(160);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(2);
                 assign(base+8);//value
                 pop();
-                line(163);
+                line(161);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(3);
                 assign(base+9);//inherit
                 pop();
-                line(165);
+                line(163);
                 push_symbol(base+5);//hash
                 push_symbol(base+7);//name
                 _clp_hash_index(2);
                 assign(base+12);//hashidx
                 pop();
-                line(166);
+                line(164);
                 push_symbol(base+7);//name
                 push_symbol(base+8);//value
                 push_symbol(base+9);//inherit
@@ -489,15 +479,15 @@ push_call("classregister",base);
                 push_symbol(base+12);//hashidx
                 assign2(idxxl());
                 pop();
-                line(170);
                 line(168);
+                line(166);
                 push_symbol(base+8);//value
                 _clp_valtype(1);
                 string(L"N");
                 eqeq();
-                cmp_1235:;
+                cmp_1191:;
                 if(!flag()) goto if_10_1;
-                    line(169);
+                    line(167);
                     push_symbol(base+10);//olen
                     push(&ONE);
                     add();
@@ -505,8 +495,8 @@ push_call("classregister",base);
                     pop();
                 if_10_1:
                 if_10_0:;
-                line(173);
                 line(171);
+                line(169);
                 push_symbol(base+11);//slen
                 push(&ONE);
                 add();
@@ -515,9 +505,9 @@ push_call("classregister",base);
                 _clp_len(1);
                 mulnum(0.66);
                 gt();
-                cmp_1268:;
+                cmp_1224:;
                 if(!flag()) goto if_11_1;
-                    line(172);
+                    line(170);
                     push_symbol(base+5);//hash
                     push_symbol(base+5);//hash
                     _clp_len(1);
@@ -541,9 +531,9 @@ push_call("classregister",base);
         }
     if_7_1:
     if_7_0:;
-    line(207);
+    line(205);
     {
-    line(178);
+    line(176);
     push(&ONE);
     int sg=sign();
     number(2);
@@ -552,7 +542,7 @@ push_call("classregister",base);
     push_symbol(base+2);//aid
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_12_2;
-        line(180);
+        line(178);
         push_symbol(base+2);//aid
         push_symbol(base+3);//i
         idxr();
@@ -560,9 +550,9 @@ push_call("classregister",base);
         idxr0(5);
         assign(base+6);//bhash
         pop();
-        line(206);
+        line(204);
         {
-        line(182);
+        line(180);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -571,60 +561,60 @@ push_call("classregister",base);
         push_symbol(base+6);//bhash
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_13_2;
-            line(205);
-            line(184);
+            line(203);
+            line(182);
             push_symbol(base+6);//bhash
             push_symbol(base+4);//s
             idxr();
             push(&NIL);
             neeq();
-            cmp_1436:;
+            cmp_1392:;
             if(!flag()) goto if_14_1;
-                line(186);
+                line(184);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(1);
                 assign(base+7);//name
                 pop();
-                line(187);
+                line(185);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(2);
                 assign(base+8);//value
                 pop();
-                line(188);
+                line(186);
                 push_symbol(base+6);//bhash
                 push_symbol(base+4);//s
                 idxr();
                 idxr0(3);
                 assign(base+9);//inherit
                 pop();
-                line(190);
+                line(188);
                 push_symbol(base+5);//hash
                 push_symbol(base+7);//name
                 _clp_hash_index(2);
                 assign(base+12);//hashidx
                 pop();
-                line(204);
-                line(192);
+                line(202);
+                line(190);
                 push_symbol(base+5);//hash
                 push_symbol(base+12);//hashidx
                 idxr();
                 push(&NIL);
                 eqeq();
-                cmp_1540:;
+                cmp_1496:;
                 if(!flag()) goto if_15_1;
-                    line(199);
-                    line(195);
+                    line(197);
+                    line(193);
                     push_symbol(base+8);//value
                     _clp_valtype(1);
                     string(L"B");
                     eqeq();
-                    cmp_1562:;
+                    cmp_1518:;
                     if(!flag()) goto if_16_1;
-                        line(196);
+                        line(194);
                         push_symbol(base+7);//name
                         push_symbol(base+8);//value
                         push_symbol(base+9);//inherit
@@ -635,8 +625,8 @@ push_call("classregister",base);
                         pop();
                     goto if_16_0;
                     if_16_1:
-                    line(197);
-                        line(198);
+                    line(195);
+                        line(196);
                         push_symbol(base+7);//name
                         push_symbol(base+10);//olen
                         push(&ONE);
@@ -650,8 +640,8 @@ push_call("classregister",base);
                         pop();
                     if_16_2:
                     if_16_0:;
-                    line(203);
                     line(201);
+                    line(199);
                     push_symbol(base+11);//slen
                     push(&ONE);
                     add();
@@ -660,9 +650,9 @@ push_call("classregister",base);
                     _clp_len(1);
                     mulnum(0.66);
                     gt();
-                    cmp_1659:;
+                    cmp_1615:;
                     if(!flag()) goto if_17_1;
-                        line(202);
+                        line(200);
                         push_symbol(base+5);//hash
                         push_symbol(base+5);//hash
                         _clp_len(1);
@@ -696,13 +686,11 @@ push_call("classregister",base);
     goto lab_12_0;
     lab_12_2:;
     }
-    line(209);
-    _clp_signal_lock(0);
-    pop();
+    line(207);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(210);
+    line(208);
     push_symbol(_st_aclass_ptr());//global
     push_symbol(base+0);//clname
     _clp_lower(1);
@@ -714,18 +702,16 @@ push_call("classregister",base);
     array(5);
     _clp_aadd(2);
     pop();
-    line(211);
+    line(209);
     push_symbol(_st_aclass_ptr());//global
     _clp_len(1);
     assign(base+13);//clid
     pop();
-    line(212);
+    line(210);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
-    _clp_signal_unlock(0);
-    pop();
-    line(214);
+    line(212);
     push_symbol(base+13);//clid
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -742,38 +728,38 @@ while(stack<base+6)PUSHNIL();
 argno=2;
 push_call("classattrib",base);
 //
-    line(220);
+    line(218);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     assign(base+2);//clsdef
     pop();
-    line(221);
+    line(219);
     push_symbol(base+1);//name
     _clp_lower(1);
     _clp_str2bin(1);
     assign(base+3);//lname
     pop();
-    line(222);
+    line(220);
     push_symbol(base+2);//clsdef
     idxr0(5);
     assign(base+4);//hash
     pop();
-    line(223);
+    line(221);
     push_symbol(base+4);//hash
     push_symbol(base+3);//lname
     _clp_hash_index(2);
     assign(base+5);//hashidx
     pop();
-    line(242);
-    line(225);
+    line(240);
+    line(223);
     push_symbol(base+4);//hash
     push_symbol(base+5);//hashidx
     idxr();
     push(&NIL);
     eqeq();
-    cmp_2023:;
+    cmp_1957:;
     if(!flag()) goto if_18_1;
-        line(227);
+        line(225);
         push_symbol(base+3);//lname
         push_symbol(base+2);//clsdef
         idxr0(3);
@@ -787,8 +773,8 @@ push_call("classattrib",base);
         push_symbol(base+5);//hashidx
         assign2(idxxl());
         pop();
-        line(231);
         line(229);
+        line(227);
         push_symbol(base+2);//clsdef
         idxr0(4);
         push(&ONE);
@@ -799,9 +785,9 @@ push_call("classattrib",base);
         _clp_len(1);
         mulnum(0.66);
         gt();
-        cmp_2084:;
+        cmp_2018:;
         if(!flag()) goto if_19_1;
-            line(230);
+            line(228);
             push_symbol(base+4);//hash
             push_symbol(base+4);//hash
             _clp_len(1);
@@ -814,9 +800,9 @@ push_call("classattrib",base);
         if_19_0:;
     goto if_18_0;
     if_18_1:
-    line(233);
-        line(241);
-        line(238);
+    line(231);
+        line(239);
+        line(236);
         push_symbol(base+4);//hash
         push_symbol(base+5);//hashidx
         idxr();
@@ -824,9 +810,9 @@ push_call("classattrib",base);
         _clp_valtype(1);
         string(L"B");
         eqeq();
-        cmp_2185:;
+        cmp_2119:;
         if(!flag()) goto if_20_1;
-            line(239);
+            line(237);
             push_symbol(base+2);//clsdef
             idxr0(3);
             push(&ONE);
@@ -838,7 +824,7 @@ push_call("classattrib",base);
             idxr();
             assign2(idxxl0(2));
             pop();
-            line(240);
+            line(238);
             push_symbol(base+0);//clid
             push_symbol(base+4);//hash
             push_symbol(base+5);//hashidx
@@ -849,7 +835,7 @@ push_call("classattrib",base);
         if_20_0:;
     if_18_2:
     if_18_0:;
-    line(244);
+    line(242);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -866,39 +852,39 @@ while(stack<base+10)PUSHNIL();
 argno=3;
 push_call("classmethod",base);
 //
-    line(250);
+    line(248);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     assign(base+3);//clsdef
     pop();
-    line(251);
+    line(249);
     push_symbol(base+1);//name
     _clp_lower(1);
     _clp_str2bin(1);
     assign(base+4);//lname
     pop();
-    line(252);
+    line(250);
     push_symbol(base+3);//clsdef
     idxr0(5);
     assign(base+5);//hash
     pop();
-    line(253);
+    line(251);
     push_symbol(base+5);//hash
     push_symbol(base+4);//lname
     _clp_hash_index(2);
     assign(base+6);//hashidx
     pop();
+    line(252);
+    line(281);
     line(254);
-    line(283);
-    line(256);
     push_symbol(base+5);//hash
     push_symbol(base+6);//hashidx
     idxr();
     push(&NIL);
     eqeq();
-    cmp_2403:;
+    cmp_2337:;
     if(!flag()) goto if_21_1;
-        line(258);
+        line(256);
         push_symbol(base+4);//lname
         push_symbol(base+2);//methblk
         push_symbol(base+0);//clid
@@ -907,8 +893,8 @@ push_call("classmethod",base);
         push_symbol(base+6);//hashidx
         assign2(idxxl());
         pop();
-        line(262);
         line(260);
+        line(258);
         push_symbol(base+3);//clsdef
         idxr0(4);
         push(&ONE);
@@ -919,9 +905,9 @@ push_call("classmethod",base);
         _clp_len(1);
         mulnum(0.66);
         gt();
-        cmp_2457:;
+        cmp_2391:;
         if(!flag()) goto if_22_1;
-            line(261);
+            line(259);
             push_symbol(base+5);//hash
             push_symbol(base+5);//hash
             _clp_len(1);
@@ -934,8 +920,8 @@ push_call("classmethod",base);
         if_22_0:;
     goto if_21_0;
     if_21_1:
-    line(264);
-        line(269);
+    line(262);
+        line(267);
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
         idxr();
@@ -943,34 +929,34 @@ push_call("classmethod",base);
         _clp_valtype(1);
         string(L"N");
         eqeq();
-        cmp_2559:;
+        cmp_2493:;
         assign(base+7);//reindex
         pop();
-        line(271);
+        line(269);
         push_symbol(base+2);//methblk
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
         idxr();
         assign2(idxxl0(2));
         pop();
-        line(272);
+        line(270);
         push_symbol(base+0);//clid
         push_symbol(base+5);//hash
         push_symbol(base+6);//hashidx
         idxr();
         assign2(idxxl0(3));
         pop();
-        line(282);
-        line(274);
+        line(280);
+        line(272);
         push_symbol(base+7);//reindex
         if(!flag()) goto if_23_1;
-            line(275);
+            line(273);
             push(&ZERO);
             assign(base+8);//cnt
             pop();
-            line(280);
+            line(278);
             {
-            line(276);
+            line(274);
             push(&ONE);
             int sg=sign();
             push(&ONE);
@@ -979,14 +965,14 @@ push_call("classmethod",base);
             push_symbol(base+5);//hash
             _clp_len(1);
             if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_24_2;
-                line(279);
                 line(277);
+                line(275);
                 push_symbol(base+5);//hash
                 push_symbol(base+9);//n
                 idxr();
                 push(&NIL);
                 neeq();
-                cmp_2657:;
+                cmp_2591:;
                 if(!flag()){
                 push(&FALSE);
                 }else{
@@ -997,10 +983,10 @@ push_call("classmethod",base);
                 _clp_valtype(1);
                 string(L"N");
                 eqeq();
-                cmp_2682:;
+                cmp_2616:;
                 }
                 if(!flag()) goto if_25_1;
-                    line(278);
+                    line(276);
                     push_symbol(base+8);//cnt
                     push(&ONE);
                     add();
@@ -1022,7 +1008,7 @@ push_call("classmethod",base);
             goto lab_24_0;
             lab_24_2:;
             }
-            line(281);
+            line(279);
             push_symbol(base+8);//cnt
             push_symbol(base+3);//clsdef
             assign2(idxxl0(3));
@@ -1045,33 +1031,29 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("classidbyname",base);
 //
-    line(287);
-    line(288);
+    line(285);
+    line(286);
     push_symbol(base+0);//name
     _clp_lower(1);
     _clp_str2bin(1);
     assign(base+0);//name
     pop();
-    line(289);
-    _clp_signal_lock(0);
-    pop();
+    line(287);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
-    line(290);
+    line(288);
     push_symbol(_st_aclass_ptr());//global
     push_symbol_ref(base+0);//name
     block(_blk_classidbyname_0,1);
     _clp_ascan(2);
     assign(base+1);//clid
     pop();
-    line(291);
+    line(289);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
     pop();
-    _clp_signal_unlock(0);
-    pop();
-    line(292);
+    line(290);
     push_symbol(base+1);//clid
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1093,7 +1075,7 @@ push_call("_blk_classidbyname_0",base);
     idxr0(1);
     push_symbol(env+0);//name
     eqeq();
-    cmp_2866:;
+    cmp_2789:;
 //
 {*base=*(stack-1);stack=base+1;pop_call();}
 }
@@ -1106,7 +1088,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("classobjectlength",base);
 //
-    line(297);
+    line(295);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(3);
@@ -1125,7 +1107,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("classmethodcount",base);
 //
-    line(302);
+    line(300);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(4);
@@ -1148,7 +1130,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("classname",base);
 //
-    line(307);
+    line(305);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(1);
@@ -1168,7 +1150,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("classbaseid",base);
 //
-    line(312);
+    line(310);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(2);
@@ -1188,21 +1170,21 @@ while(stack<base+6)PUSHNIL();
 argno=2;
 push_call("classattrnames",base);
 //
-    line(317);
+    line(315);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(5);
     assign(base+2);//hash
     pop();
-    line(318);
+    line(316);
     push_symbol(base+0);//clid
     _clp_classobjectlength(1);
     _clp_array(1);
     assign(base+4);//attr
     pop();
-    line(323);
+    line(321);
     {
-    line(319);
+    line(317);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1211,14 +1193,14 @@ push_call("classattrnames",base);
     push_symbol(base+2);//hash
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_26_2;
-        line(322);
         line(320);
+        line(318);
         push_symbol(base+2);//hash
         push_symbol(base+3);//n
         idxr();
         push(&NIL);
         neeq();
-        cmp_3209:;
+        cmp_3121:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1230,7 +1212,7 @@ push_call("classattrnames",base);
         _clp_valtype(1);
         string(L"N");
         eqeq();
-        cmp_3238:;
+        cmp_3150:;
         }
         if(!flag()){
         push(&FALSE);
@@ -1238,7 +1220,7 @@ push_call("classattrnames",base);
         push_symbol(base+1);//id
         push(&NIL);
         eqeq();
-        cmp_3247:;
+        cmp_3159:;
         if(flag()){
         push(&TRUE);
         }else{
@@ -1248,11 +1230,11 @@ push_call("classattrnames",base);
         idxr0(3);
         push_symbol(base+1);//id
         eqeq();
-        cmp_3264:;
+        cmp_3176:;
         }
         }
         if(!flag()) goto if_27_1;
-            line(321);
+            line(319);
             push_symbol(base+2);//hash
             push_symbol(base+3);//n
             idxr();
@@ -1273,7 +1255,7 @@ push_call("classattrnames",base);
     goto lab_26_0;
     lab_26_2:;
     }
-    line(324);
+    line(322);
     push_symbol(base+4);//attr
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1290,13 +1272,13 @@ while(stack<base+6)PUSHNIL();
 argno=2;
 push_call("classmethnames",base);
 //
-    line(329);
+    line(327);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(5);
     assign(base+2);//hash
     pop();
-    line(330);
+    line(328);
     push_symbol(base+0);//clid
     _clp_classmethodcount(1);
     _clp_array(1);
@@ -1305,9 +1287,9 @@ push_call("classmethnames",base);
     push(&ZERO);
     assign(base+5);//x
     pop();
-    line(335);
+    line(333);
     {
-    line(331);
+    line(329);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1316,14 +1298,14 @@ push_call("classmethnames",base);
     push_symbol(base+2);//hash
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_28_2;
-        line(334);
         line(332);
+        line(330);
         push_symbol(base+2);//hash
         push_symbol(base+3);//n
         idxr();
         push(&NIL);
         neeq();
-        cmp_3437:;
+        cmp_3349:;
         if(!flag()){
         push(&FALSE);
         }else{
@@ -1334,7 +1316,7 @@ push_call("classmethnames",base);
         _clp_valtype(1);
         string(L"B");
         eqeq();
-        cmp_3462:;
+        cmp_3374:;
         }
         if(!flag()){
         push(&FALSE);
@@ -1342,7 +1324,7 @@ push_call("classmethnames",base);
         push_symbol(base+1);//id
         push(&NIL);
         eqeq();
-        cmp_3471:;
+        cmp_3383:;
         if(flag()){
         push(&TRUE);
         }else{
@@ -1352,11 +1334,11 @@ push_call("classmethnames",base);
         idxr0(3);
         push_symbol(base+1);//id
         eqeq();
-        cmp_3488:;
+        cmp_3400:;
         }
         }
         if(!flag()) goto if_29_1;
-            line(333);
+            line(331);
             push_symbol(base+2);//hash
             push_symbol(base+3);//n
             idxr();
@@ -1381,12 +1363,12 @@ push_call("classmethnames",base);
     goto lab_28_0;
     lab_28_2:;
     }
-    line(336);
+    line(334);
     push_symbol(base+4);//meth
     push_symbol(base+5);//x
     _clp_asize(2);
     pop();
-    line(337);
+    line(335);
     push_symbol(base+4);//meth
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1403,7 +1385,7 @@ while(stack<base+4)PUSHNIL();
 argno=1;
 push_call("classinheritstruct",base);
 //
-    line(342);
+    line(340);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(5);
@@ -1412,9 +1394,9 @@ push_call("classinheritstruct",base);
     array(0);
     assign(base+3);//inherit
     pop();
-    line(347);
+    line(345);
     {
-    line(343);
+    line(341);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1423,16 +1405,16 @@ push_call("classinheritstruct",base);
     push_symbol(base+1);//hash
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_30_2;
-        line(346);
         line(344);
+        line(342);
         push_symbol(base+1);//hash
         push_symbol(base+2);//n
         idxr();
         push(&NIL);
         neeq();
-        cmp_3663:;
+        cmp_3575:;
         if(!flag()) goto if_31_1;
-            line(345);
+            line(343);
             push_symbol(base+3);//inherit
             push_symbol(base+1);//hash
             push_symbol(base+2);//n
@@ -1446,7 +1428,7 @@ push_call("classinheritstruct",base);
             _clp_valtype(1);
             string(L"B");
             eqeq();
-            cmp_3730:;
+            cmp_3642:;
             if(flag()){
             string(L"M");
             }else{
@@ -1471,14 +1453,14 @@ push_call("classinheritstruct",base);
     goto lab_30_0;
     lab_30_2:;
     }
-    line(349);
+    line(347);
     push_symbol(base+3);//inherit
     push(&NIL);
     push(&NIL);
     block(_blk_classinheritstruct_0,0);
     _clp_asort(4);
     pop();
-    line(350);
+    line(348);
     push_symbol(base+3);//inherit
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1500,7 +1482,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     lt();
-    cmp_3818:;
+    cmp_3730:;
     if(flag()){
     push(&TRUE);
     }else{
@@ -1509,7 +1491,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(3);
     eqeq();
-    cmp_3835:;
+    cmp_3747:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -1518,7 +1500,7 @@ push_call("_blk_classinheritstruct_0",base);
     push_symbol(base+2);//y
     idxr0(1);
     lt();
-    cmp_3852:;
+    cmp_3764:;
     }
     }
 //
@@ -1533,42 +1515,42 @@ while(stack<base+7)PUSHNIL();
 argno=3;
 push_call("__findslot",base);
 //
-    line(356);
+    line(354);
     push_symbol(base+0);//clid
     _clp_getclsdef(1);
     idxr0(5);
     assign(base+3);//hash
     pop();
-    line(357);
+    line(355);
     push_symbol(base+3);//hash
     push_symbol(base+1);//slotname
     push_symbol(base+2);//hashcode
     _clp_hash_index(3);
     assign(base+4);//hashidx
     pop();
-    line(358);
+    line(356);
     push_symbol(base+3);//hash
     push_symbol(base+4);//hashidx
     idxr();
     assign(base+5);//item
     pop();
-    line(365);
-    line(360);
+    line(363);
+    line(358);
     push_symbol(base+5);//item
     push(&NIL);
     eqeq();
-    cmp_3987:;
+    cmp_3899:;
     if(!flag()) goto if_32_1;
-        line(361);
+        line(359);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(362);
+        line(360);
         push_symbol(base+6);//err
         string(nls_text(L"no exported method"));
         _o_method_description.eval(2);
         pop();
-        line(363);
+        line(361);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -1579,13 +1561,13 @@ push_call("__findslot",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(364);
+        line(362);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_32_1:
     if_32_0:;
-    line(367);
+    line(365);
     push_symbol(base+5);//item
     idxr0(2);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
@@ -1603,21 +1585,21 @@ while(stack<base+7)PUSHNIL();
 argno=4;
 push_call("__findslot_c",base);
 //
-    line(372);
-    line(378);
-    line(373);
+    line(370);
+    line(376);
+    line(371);
     push(&ZERO);
     push_symbol(base+2);//classname
     _clp_classidbyname(1);
     assign(base+4);//clid1
     eqeq();
-    cmp_4146:;
+    cmp_4058:;
     if(!flag()) goto if_33_1;
-        line(374);
+        line(372);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(375);
+        line(373);
         push_symbol(base+6);//err
         string(L"'");
         push_symbol(base+2);//classname
@@ -1629,7 +1611,7 @@ push_call("__findslot_c",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(376);
+        line(374);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -1645,38 +1627,38 @@ push_call("__findslot_c",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(377);
+        line(375);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_33_1:
     if_33_0:;
-    line(380);
+    line(378);
     push_symbol(base+4);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+3);//hashcode
     _clp___findslot(3);
     assign(base+5);//blk
     pop();
-    line(387);
-    line(382);
+    line(385);
+    line(380);
     push_symbol(base+5);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_4340:;
+    cmp_4252:;
     topnot();
     if(!flag()) goto if_34_1;
-        line(383);
+        line(381);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(384);
+        line(382);
         push_symbol(base+6);//err
         string(nls_text(L"no exported method"));
         _o_method_description.eval(2);
         pop();
-        line(385);
+        line(383);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -1692,13 +1674,13 @@ push_call("__findslot_c",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(386);
+        line(384);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_34_1:
     if_34_0:;
-    line(389);
+    line(387);
     push_symbol(base+5);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1715,22 +1697,22 @@ while(stack<base+11)PUSHNIL();
 argno=4;
 push_call("__findslot_s",base);
 //
-    line(395);
+    line(393);
+    line(394);
+    line(401);
     line(396);
-    line(403);
-    line(398);
     push(&ZERO);
     push_symbol(base+2);//classname
     _clp_classidbyname(1);
     assign(base+4);//clid1
     eqeq();
-    cmp_4531:;
+    cmp_4443:;
     if(!flag()) goto if_35_1;
-        line(399);
+        line(397);
         _clp_errornew(0);
         assign(base+10);//err
         pop();
-        line(400);
+        line(398);
         push_symbol(base+10);//err
         string(L"'");
         push_symbol(base+2);//classname
@@ -1742,7 +1724,7 @@ push_call("__findslot_s",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(401);
+        line(399);
         push_symbol(base+10);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -1758,21 +1740,21 @@ push_call("__findslot_s",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(402);
+        line(400);
         push_symbol(base+10);//err
         _clp_break(1);
         pop();
     if_35_1:
     if_35_0:;
-    line(405);
+    line(403);
     push_symbol(base+4);//clid1
     _clp_getclsdef(1);
     idxr0(2);
     assign(base+5);//baseid
     pop();
-    line(420);
+    line(418);
     {
-    line(407);
+    line(405);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -1781,7 +1763,7 @@ push_call("__findslot_s",base);
     push_symbol(base+5);//baseid
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_36_2;
-        line(408);
+        line(406);
         push_symbol(base+5);//baseid
         push_symbol(base+6);//i
         idxr();
@@ -1789,48 +1771,48 @@ push_call("__findslot_s",base);
         idxr0(5);
         assign(base+7);//hash
         pop();
-        line(409);
+        line(407);
         push_symbol(base+7);//hash
         push_symbol(base+1);//slotname
         push_symbol(base+3);//hashcode
         _clp_hash_index(3);
         assign(base+8);//hashidx
         pop();
-        line(419);
-        line(410);
+        line(417);
+        line(408);
         push_symbol(base+7);//hash
         push_symbol(base+8);//hashidx
         idxr();
         push(&NIL);
         neeq();
-        cmp_4792:;
+        cmp_4704:;
         if(!flag()) goto if_37_1;
-            line(411);
+            line(409);
             push_symbol(base+7);//hash
             push_symbol(base+8);//hashidx
             idxr();
             idxr0(2);
             assign(base+9);//blk
             pop();
-            line(417);
-            line(412);
+            line(415);
+            line(410);
             push_symbol(base+9);//blk
             _clp_valtype(1);
             string(L"B");
             eqeq();
-            cmp_4835:;
+            cmp_4747:;
             topnot();
             if(!flag()) goto if_38_1;
-                line(413);
+                line(411);
                 _clp_errornew(0);
                 assign(base+10);//err
                 pop();
-                line(414);
+                line(412);
                 push_symbol(base+10);//err
                 string(nls_text(L"no exported method"));
                 _o_method_description.eval(2);
                 pop();
-                line(415);
+                line(413);
                 push_symbol(base+10);//err
                 push_symbol(base+0);//clid
                 _clp_classname(1);
@@ -1846,13 +1828,13 @@ push_call("__findslot_s",base);
                 add();
                 _o_method_operation.eval(2);
                 pop();
-                line(416);
+                line(414);
                 push_symbol(base+10);//err
                 _clp_break(1);
                 pop();
             if_38_1:
             if_38_0:;
-            line(418);
+            line(416);
             push_symbol(base+9);//blk
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         if_37_1:
@@ -1867,16 +1849,16 @@ push_call("__findslot_s",base);
     goto lab_36_0;
     lab_36_2:;
     }
-    line(422);
+    line(420);
     _clp_errornew(0);
     assign(base+10);//err
     pop();
-    line(423);
+    line(421);
     push_symbol(base+10);//err
     string(nls_text(L"no exported method"));
     _o_method_description.eval(2);
     pop();
-    line(424);
+    line(422);
     push_symbol(base+10);//err
     push_symbol(base+0);//clid
     _clp_classname(1);
@@ -1892,11 +1874,11 @@ push_call("__findslot_s",base);
     add();
     _o_method_operation.eval(2);
     pop();
-    line(425);
+    line(423);
     push_symbol(base+10);//err
     _clp_break(1);
     pop();
-    line(427);
+    line(425);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -1913,21 +1895,21 @@ while(stack<base+9)PUSHNIL();
 argno=5;
 push_call("__findslot_p",base);
 //
+    line(431);
+    line(438);
     line(433);
-    line(440);
-    line(435);
     push(&ZERO);
     push_symbol(base+3);//classname
     _clp_classidbyname(1);
     assign(base+5);//clid0
     eqeq();
-    cmp_5130:;
+    cmp_5042:;
     if(!flag()) goto if_39_1;
-        line(436);
+        line(434);
         _clp_errornew(0);
         assign(base+8);//err
         pop();
-        line(437);
+        line(435);
         push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+3);//classname
@@ -1939,7 +1921,7 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(438);
+        line(436);
         push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -1960,26 +1942,26 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(439);
+        line(437);
         push_symbol(base+8);//err
         _clp_break(1);
         pop();
     if_39_1:
     if_39_0:;
-    line(447);
-    line(442);
+    line(445);
+    line(440);
     push(&ZERO);
     push_symbol(base+2);//prntname
     _clp_classidbyname(1);
     assign(base+6);//clid1
     eqeq();
-    cmp_5300:;
+    cmp_5212:;
     if(!flag()) goto if_40_1;
-        line(443);
+        line(441);
         _clp_errornew(0);
         assign(base+8);//err
         pop();
-        line(444);
+        line(442);
         push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+2);//prntname
@@ -1991,7 +1973,7 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(445);
+        line(443);
         push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2012,14 +1994,14 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(446);
+        line(444);
         push_symbol(base+8);//err
         _clp_break(1);
         pop();
     if_40_1:
     if_40_0:;
-    line(454);
-    line(449);
+    line(452);
+    line(447);
     push(&ZERO);
     push_symbol(base+5);//clid0
     _clp_getclsdef(1);
@@ -2027,13 +2009,13 @@ push_call("__findslot_p",base);
     push_symbol(base+6);//clid1
     _clp_ascan(2);
     eqeq();
-    cmp_5470:;
+    cmp_5382:;
     if(!flag()) goto if_41_1;
-        line(450);
+        line(448);
         _clp_errornew(0);
         assign(base+8);//err
         pop();
-        line(451);
+        line(449);
         push_symbol(base+8);//err
         string(L"'");
         push_symbol(base+2);//prntname
@@ -2052,7 +2034,7 @@ push_call("__findslot_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(452);
+        line(450);
         push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2073,38 +2055,38 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(453);
+        line(451);
         push_symbol(base+8);//err
         _clp_break(1);
         pop();
     if_41_1:
     if_41_0:;
-    line(456);
+    line(454);
     push_symbol(base+6);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+4);//hashcode
     _clp___findslot(3);
     assign(base+7);//blk
     pop();
-    line(463);
-    line(458);
+    line(461);
+    line(456);
     push_symbol(base+7);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_5712:;
+    cmp_5624:;
     topnot();
     if(!flag()) goto if_42_1;
-        line(459);
+        line(457);
         _clp_errornew(0);
         assign(base+8);//err
         pop();
-        line(460);
+        line(458);
         push_symbol(base+8);//err
         string(nls_text(L"no exported method"));
         _o_method_description.eval(2);
         pop();
-        line(461);
+        line(459);
         push_symbol(base+8);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2125,13 +2107,13 @@ push_call("__findslot_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(462);
+        line(460);
         push_symbol(base+8);//err
         _clp_break(1);
         pop();
     if_42_1:
     if_42_0:;
-    line(465);
+    line(463);
     push_symbol(base+7);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2148,7 +2130,7 @@ while(stack<base+2)PUSHNIL();
 argno=2;
 push_call("getmethod",base);
 //
-    line(470);
+    line(468);
     push_symbol(base+0);//clid
     push_symbol(base+1);//name
     _clp_lower(1);
@@ -2169,28 +2151,28 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("isderivedfrom",base);
 //
-    line(477);
-    line(487);
-    line(478);
+    line(475);
+    line(485);
+    line(476);
     push_symbol(base+1);//clb
     push_symbol(base+0);//cld
     eqeq();
-    cmp_5946:;
+    cmp_5858:;
     if(!flag()) goto if_43_1;
-        line(479);
+        line(477);
         push(&TRUE);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_43_0;
     if_43_1:
-    line(480);
-        line(481);
+    line(478);
+        line(479);
         push_symbol(base+0);//cld
         _clp_classbaseid(1);
         assign(base+2);//baseid
         pop();
-        line(486);
+        line(484);
         {
-        line(482);
+        line(480);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -2199,15 +2181,15 @@ push_call("isderivedfrom",base);
         push_symbol(base+2);//baseid
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_44_2;
-            line(485);
             line(483);
+            line(481);
             push_symbol(base+2);//baseid
             push_symbol(base+3);//n
             idxr();
             push_symbol(base+1);//clb
             _clp_isderivedfrom(2);
             if(!flag()) goto if_45_1;
-                line(484);
+                line(482);
                 push(&TRUE);
                 {*base=*(stack-1);stack=base+1;pop_call();return;}
             if_45_1:
@@ -2224,7 +2206,7 @@ push_call("isderivedfrom",base);
         }
     if_43_2:
     if_43_0:;
-    line(488);
+    line(486);
     push(&FALSE);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2241,24 +2223,24 @@ while(stack<base+6)PUSHNIL();
 argno=4;
 push_call("__findslot3_c",base);
 //
-    line(493);
-    line(502);
-    line(497);
+    line(491);
+    line(500);
+    line(495);
     push_symbol(base+0);//clid
     push_symbol(base+2);//clid1
     _clp_isderivedfrom(2);
     topnot();
     if(!flag()) goto if_46_1;
-        line(498);
+        line(496);
         _clp_errornew(0);
         assign(base+5);//err
         pop();
-        line(499);
+        line(497);
         push_symbol(base+5);//err
         string(nls_text(L"prohibited method cast"));
         _o_method_description.eval(2);
         pop();
-        line(500);
+        line(498);
         push_symbol(base+5);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2274,38 +2256,38 @@ push_call("__findslot3_c",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(501);
+        line(499);
         push_symbol(base+5);//err
         _clp_break(1);
         pop();
     if_46_1:
     if_46_0:;
-    line(504);
+    line(502);
     push_symbol(base+2);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+3);//hashcode
     _clp___findslot(3);
     assign(base+4);//blk
     pop();
-    line(511);
-    line(506);
+    line(509);
+    line(504);
     push_symbol(base+4);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_6288:;
+    cmp_6200:;
     topnot();
     if(!flag()) goto if_47_1;
-        line(507);
+        line(505);
         _clp_errornew(0);
         assign(base+5);//err
         pop();
-        line(508);
+        line(506);
         push_symbol(base+5);//err
         string(nls_text(L"prohibited attribute cast"));
         _o_method_description.eval(2);
         pop();
-        line(509);
+        line(507);
         push_symbol(base+5);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2321,13 +2303,13 @@ push_call("__findslot3_c",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(510);
+        line(508);
         push_symbol(base+5);//err
         _clp_break(1);
         pop();
     if_47_1:
     if_47_0:;
-    line(513);
+    line(511);
     push_symbol(base+4);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -2344,25 +2326,25 @@ while(stack<base+10)PUSHNIL();
 argno=4;
 push_call("__findslot3_s",base);
 //
-    line(518);
-    line(519);
-    line(528);
-    line(523);
+    line(516);
+    line(517);
+    line(526);
+    line(521);
     push_symbol(base+0);//clid
     push_symbol(base+2);//clid1
     _clp_isderivedfrom(2);
     topnot();
     if(!flag()) goto if_48_1;
-        line(524);
+        line(522);
         _clp_errornew(0);
         assign(base+9);//err
         pop();
-        line(525);
+        line(523);
         push_symbol(base+9);//err
         string(nls_text(L"prohibited method cast"));
         _o_method_description.eval(2);
         pop();
-        line(526);
+        line(524);
         push_symbol(base+9);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2378,21 +2360,21 @@ push_call("__findslot3_s",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(527);
+        line(525);
         push_symbol(base+9);//err
         _clp_break(1);
         pop();
     if_48_1:
     if_48_0:;
-    line(530);
+    line(528);
     push_symbol(base+2);//clid1
     _clp_getclsdef(1);
     idxr0(2);
     assign(base+4);//baseid
     pop();
-    line(545);
+    line(543);
     {
-    line(532);
+    line(530);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -2401,7 +2383,7 @@ push_call("__findslot3_s",base);
     push_symbol(base+4);//baseid
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_49_2;
-        line(533);
+        line(531);
         push_symbol(base+4);//baseid
         push_symbol(base+5);//i
         idxr();
@@ -2409,48 +2391,48 @@ push_call("__findslot3_s",base);
         idxr0(5);
         assign(base+6);//hash
         pop();
-        line(534);
+        line(532);
         push_symbol(base+6);//hash
         push_symbol(base+1);//slotname
         push_symbol(base+3);//hashcode
         _clp_hash_index(3);
         assign(base+7);//hashidx
         pop();
-        line(544);
-        line(535);
+        line(542);
+        line(533);
         push_symbol(base+6);//hash
         push_symbol(base+7);//hashidx
         idxr();
         push(&NIL);
         neeq();
-        cmp_6713:;
+        cmp_6625:;
         if(!flag()) goto if_50_1;
-            line(536);
+            line(534);
             push_symbol(base+6);//hash
             push_symbol(base+7);//hashidx
             idxr();
             idxr0(2);
             assign(base+8);//blk
             pop();
-            line(542);
-            line(537);
+            line(540);
+            line(535);
             push_symbol(base+8);//blk
             _clp_valtype(1);
             string(L"B");
             eqeq();
-            cmp_6756:;
+            cmp_6668:;
             topnot();
             if(!flag()) goto if_51_1;
-                line(538);
+                line(536);
                 _clp_errornew(0);
                 assign(base+9);//err
                 pop();
-                line(539);
+                line(537);
                 push_symbol(base+9);//err
                 string(nls_text(L"prohibited attribute cast"));
                 _o_method_description.eval(2);
                 pop();
-                line(540);
+                line(538);
                 push_symbol(base+9);//err
                 push_symbol(base+0);//clid
                 _clp_classname(1);
@@ -2466,13 +2448,13 @@ push_call("__findslot3_s",base);
                 add();
                 _o_method_operation.eval(2);
                 pop();
-                line(541);
+                line(539);
                 push_symbol(base+9);//err
                 _clp_break(1);
                 pop();
             if_51_1:
             if_51_0:;
-            line(543);
+            line(541);
             push_symbol(base+8);//blk
             {*base=*(stack-1);stack=base+1;pop_call();return;}
         if_50_1:
@@ -2487,16 +2469,16 @@ push_call("__findslot3_s",base);
     goto lab_49_0;
     lab_49_2:;
     }
-    line(547);
+    line(545);
     _clp_errornew(0);
     assign(base+9);//err
     pop();
-    line(548);
+    line(546);
     push_symbol(base+9);//err
     string(nls_text(L"no exported method"));
     _o_method_description.eval(2);
     pop();
-    line(549);
+    line(547);
     push_symbol(base+9);//err
     push_symbol(base+0);//clid
     _clp_classname(1);
@@ -2512,7 +2494,7 @@ push_call("__findslot3_s",base);
     add();
     _o_method_operation.eval(2);
     pop();
-    line(550);
+    line(548);
     push_symbol(base+9);//err
     _clp_break(1);
     pop();
@@ -2530,24 +2512,24 @@ while(stack<base+7)PUSHNIL();
 argno=5;
 push_call("__findslot3_p",base);
 //
-    line(556);
-    line(565);
-    line(560);
+    line(554);
+    line(563);
+    line(558);
     push_symbol(base+0);//clid
     push_symbol(base+3);//clid0
     _clp_isderivedfrom(2);
     topnot();
     if(!flag()) goto if_52_1;
-        line(561);
+        line(559);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(562);
+        line(560);
         push_symbol(base+6);//err
         string(nls_text(L"prohibited method cast"));
         _o_method_description.eval(2);
         pop();
-        line(563);
+        line(561);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2568,14 +2550,14 @@ push_call("__findslot3_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(564);
+        line(562);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_52_1:
     if_52_0:;
-    line(572);
-    line(567);
+    line(570);
+    line(565);
     push(&ZERO);
     push_symbol(base+3);//clid0
     _clp_getclsdef(1);
@@ -2583,13 +2565,13 @@ push_call("__findslot3_p",base);
     push_symbol(base+2);//clid1
     _clp_ascan(2);
     eqeq();
-    cmp_7183:;
+    cmp_7095:;
     if(!flag()) goto if_53_1;
-        line(568);
+        line(566);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(569);
+        line(567);
         push_symbol(base+6);//err
         string(L"'");
         push_symbol(base+2);//clid1
@@ -2608,7 +2590,7 @@ push_call("__findslot3_p",base);
         add();
         _o_method_description.eval(2);
         pop();
-        line(570);
+        line(568);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2629,38 +2611,38 @@ push_call("__findslot3_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(571);
+        line(569);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_53_1:
     if_53_0:;
-    line(574);
+    line(572);
     push_symbol(base+2);//clid1
     push_symbol(base+1);//slotname
     push_symbol(base+4);//hashcode
     _clp___findslot(3);
     assign(base+5);//blk
     pop();
-    line(581);
-    line(576);
+    line(579);
+    line(574);
     push_symbol(base+5);//blk
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_7425:;
+    cmp_7337:;
     topnot();
     if(!flag()) goto if_54_1;
-        line(577);
+        line(575);
         _clp_errornew(0);
         assign(base+6);//err
         pop();
-        line(578);
+        line(576);
         push_symbol(base+6);//err
         string(nls_text(L"prohibited attribute cast"));
         _o_method_description.eval(2);
         pop();
-        line(579);
+        line(577);
         push_symbol(base+6);//err
         push_symbol(base+0);//clid
         _clp_classname(1);
@@ -2681,13 +2663,13 @@ push_call("__findslot3_p",base);
         add();
         _o_method_operation.eval(2);
         pop();
-        line(580);
+        line(578);
         push_symbol(base+6);//err
         _clp_break(1);
         pop();
     if_54_1:
     if_54_0:;
-    line(583);
+    line(581);
     push_symbol(base+5);//blk
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

@@ -1,0 +1,338 @@
+//input: ppo/pluginenv.ppo (5.7.2)
+
+#include <cccdef.h>
+
+static void _blk_pluginenv_list_0(int argno);
+extern void _clp_asort(int argno);
+extern void _clp_getenv(int argno);
+extern void _clp_len(int argno);
+extern void _clp_pluginenv(int argno);
+extern void _clp_pluginenv_init(int argno);
+extern void _clp_pluginenv_list(int argno);
+extern void _clp_qout(int argno);
+extern void _clp_simplehashnew(int argno);
+
+class _method6_toarr: public _method6_{public: _method6_toarr():_method6_("toarr"){};}; static _method6_toarr _o_method_toarr;
+
+//=======================================================================
+void _clp_pluginenv_init(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,0);
+while(stack<base+1)PUSHNIL();
+argno=0;
+push_call("pluginenv_init",base);
+//
+    line(8);
+    _clp_simplehashnew(0);
+    assign(base+0);//env
+    pop();
+    line(11);
+    push_symbol(base+0);//env
+    string(L"CCCVER");
+    string(L"CCCVER");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(12);
+    push_symbol(base+0);//env
+    string(L"CCCDIR");
+    string(L"CCCDIR");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(13);
+    push_symbol(base+0);//env
+    string(L"CCCUNAME");
+    string(L"CCCUNAME");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(14);
+    push_symbol(base+0);//env
+    string(L"CCCBIN");
+    string(L"CCCBIN");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(15);
+    push_symbol(base+0);//env
+    string(L"HOME");
+    string(L"HOME");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(16);
+    push_symbol(base+0);//env
+    string(L"MSYSTEM");
+    string(L"MSYSTEM");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(19);
+    push_symbol(base+0);//env
+    string(L"BUILD_BAT");
+    string(L"BUILD_BAT");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(20);
+    push_symbol(base+0);//env
+    string(L"BUILD_BINDIR");
+    string(L"BUILD_BINDIR");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(21);
+    push_symbol(base+0);//env
+    string(L"BUILD_CACHE");
+    string(L"BUILD_CACHE");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(22);
+    push_symbol(base+0);//env
+    string(L"BUILD_CFG");
+    string(L"BUILD_CFG");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(23);
+    push_symbol(base+0);//env
+    string(L"BUILD_CPP");
+    string(L"BUILD_CPP");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(24);
+    push_symbol(base+0);//env
+    string(L"BUILD_DBG");
+    string(L"BUILD_DBG");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(25);
+    push_symbol(base+0);//env
+    string(L"BUILD_EXE");
+    string(L"BUILD_EXE");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(26);
+    push_symbol(base+0);//env
+    string(L"BUILD_INC");
+    string(L"BUILD_INC");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(27);
+    push_symbol(base+0);//env
+    string(L"BUILD_LEX");
+    string(L"BUILD_LEX");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(28);
+    push_symbol(base+0);//env
+    string(L"BUILD_LIB");
+    string(L"BUILD_LIB");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(29);
+    push_symbol(base+0);//env
+    string(L"BUILD_LIBDIR");
+    string(L"BUILD_LIBDIR");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(30);
+    push_symbol(base+0);//env
+    string(L"BUILD_LIBX");
+    string(L"BUILD_LIBX");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(31);
+    push_symbol(base+0);//env
+    string(L"BUILD_LPT");
+    string(L"BUILD_LPT");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(32);
+    push_symbol(base+0);//env
+    string(L"BUILD_OBJ");
+    string(L"BUILD_OBJ");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(33);
+    push_symbol(base+0);//env
+    string(L"BUILD_OPT");
+    string(L"BUILD_OPT");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(34);
+    push_symbol(base+0);//env
+    string(L"BUILD_PRE");
+    string(L"BUILD_PRE");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(35);
+    push_symbol(base+0);//env
+    string(L"BUILD_SHR");
+    string(L"BUILD_SHR");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(36);
+    push_symbol(base+0);//env
+    string(L"BUILD_SRC");
+    string(L"BUILD_SRC");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(37);
+    push_symbol(base+0);//env
+    string(L"BUILD_THR");
+    string(L"BUILD_THR");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(38);
+    push_symbol(base+0);//env
+    string(L"BUILD_USECACHE");
+    string(L"BUILD_USECACHE");
+    _clp_getenv(1);
+    _clp_pluginenv(3);
+    pop();
+    line(42);
+    push_symbol(base+0);//env
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+void _clp_pluginenv_list(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,1);
+while(stack<base+3)PUSHNIL();
+argno=1;
+push_call("pluginenv_list",base);
+//
+    line(48);
+    push_symbol(base+0);//env
+    _o_method_toarr.eval(1);
+    assign(base+1);//a
+    pop();
+    line(50);
+    push_symbol(base+1);//a
+    block(_blk_pluginenv_list_0,0);
+    _clp_asort(2);
+    pop();
+    line(55);
+    {
+    line(53);
+    push(&ONE);
+    int sg=sign();
+    push(&ONE);
+    assign(base+2);//n
+    lab_1_0:
+    push_symbol(base+1);//a
+    _clp_len(1);
+    if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_1_2;
+        line(54);
+        push_symbol(base+1);//a
+        push_symbol(base+2);//n
+        idxr();
+        _clp_qout(1);
+        pop();
+    lab_1_1:
+    push(&ONE);
+    dup();
+    sg=sign();
+    push_symbol(base+2);//n
+    add();
+    assign(base+2);//n
+    goto lab_1_0;
+    lab_1_2:;
+    }
+    line(56);
+    _clp_qout(0);
+    pop();
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+
+static void _blk_pluginenv_list_0(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,3);
+while(stack<base+3)PUSHNIL();
+argno=3;
+push_call("_blk_pluginenv_list_0",base);
+//
+    push_symbol(base+1);//x
+    idxr0(1);
+    push_symbol(base+2);//y
+    idxr0(1);
+    lt();
+    cmp_1013:;
+//
+{*base=*(stack-1);stack=base+1;pop_call();}
+}
+//=======================================================================
+void _clp_pluginenv(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,3);
+while(stack<base+3)PUSHNIL();
+argno=3;
+push_call("pluginenv",base);
+//
+    line(65);
+    line(61);
+    push_symbol(base+2);//value
+    push(&NIL);
+    eqeq();
+    cmp_1118:;
+    if(!flag()) goto if_2_1;
+        line(62);
+        push_symbol(base+0);//env
+        push_symbol(base+1);//key
+        idxr();
+        assign(base+2);//value
+        pop();
+    goto if_2_0;
+    if_2_1:
+    line(63);
+        line(64);
+        push_symbol(base+2);//value
+        push_symbol(base+0);//env
+        push_symbol(base+1);//key
+        assign2(idxxl());
+        pop();
+    if_2_2:
+    if_2_0:;
+    line(66);
+    push_symbol(base+2);//value
+    if(TOP()->type==TYPE_NIL){
+    pop();
+    string(L"");
+    }
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+

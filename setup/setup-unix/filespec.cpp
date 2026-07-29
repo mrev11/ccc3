@@ -1,4 +1,4 @@
-//input: ppo/filespec.ppo (5.7.0.1)
+//input: ppo/filespec.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -31,11 +31,11 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("filespec.lastsep",base);
 //
-    line(18);
+    line(37);
     push(&ZERO);
     assign(base+1);//sep
     pop();
-    line(19);
+    line(38);
     push_symbol(base+1);//sep
     string(L"/");
     push_symbol(base+0);//fspec
@@ -43,7 +43,7 @@ push_call("filespec.lastsep",base);
     _clp_max(2);
     assign(base+1);//sep
     pop();
-    line(20);
+    line(39);
     push_symbol(base+1);//sep
     string(L"\\");
     push_symbol(base+0);//fspec
@@ -51,7 +51,7 @@ push_call("filespec.lastsep",base);
     _clp_max(2);
     assign(base+1);//sep
     pop();
-    line(24);
+    line(43);
     push_symbol(base+1);//sep
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -68,8 +68,8 @@ while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("filespec.basename",base);
 //
-    line(29);
-    line(30);
+    line(48);
+    line(49);
     push_symbol(base+0);//fspec
     push_symbol(base+0);//fspec
     _clp_lastsep(1);
@@ -77,21 +77,21 @@ push_call("filespec.basename",base);
     _clp_substr(2);
     assign(base+2);//bn
     pop();
-    line(36);
-    line(31);
+    line(55);
+    line(50);
     push_symbol(base+1);//ext
     push(&NIL);
     neeq();
     cmp_187:;
     if(!flag()) goto if_1_1;
-        line(32);
+        line(51);
         push_symbol(base+1);//ext
         push_symbol(base+2);//bn
         _clp_rat(2);
         assign(base+3);//xp
         pop();
-        line(35);
-        line(33);
+        line(54);
+        line(52);
         push_symbol(base+3);//xp
         push_symbol(base+1);//ext
         _clp_len(1);
@@ -102,7 +102,7 @@ push_call("filespec.basename",base);
         eqeq();
         cmp_242:;
         if(!flag()) goto if_2_1;
-            line(34);
+            line(53);
             push_symbol(base+2);//bn
             push_symbol(base+3);//xp
             addnum(-1);
@@ -113,7 +113,7 @@ push_call("filespec.basename",base);
         if_2_0:;
     if_1_1:
     if_1_0:;
-    line(37);
+    line(56);
     push_symbol(base+2);//bn
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -130,7 +130,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("filespec.path",base);
 //
-    line(42);
+    line(61);
     push_symbol(base+0);//fspec
     push(&ONE);
     push_symbol(base+0);//fspec
@@ -151,7 +151,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("filespec.nameext",base);
 //
-    line(47);
+    line(66);
     push_symbol(base+0);//fspec
     push_symbol(base+0);//fspec
     _clp_lastsep(1);
@@ -172,18 +172,18 @@ while(stack<base+3)PUSHNIL();
 argno=1;
 push_call("filespec.name",base);
 //
-    line(52);
+    line(71);
     push_symbol(base+0);//fspec
     _clp_lastsep(1);
     assign(base+1);//sep
     pop();
-    line(53);
+    line(72);
     string(L".");
     push_symbol(base+0);//fspec
     _clp_rat(2);
     assign(base+2);//dot
     pop();
-    line(54);
+    line(73);
     push_symbol(base+0);//fspec
     push_symbol(base+1);//sep
     addnum(1);
@@ -215,18 +215,18 @@ while(stack<base+3)PUSHNIL();
 argno=1;
 push_call("filespec.extension",base);
 //
-    line(59);
+    line(78);
     push_symbol(base+0);//fspec
     _clp_lastsep(1);
     assign(base+1);//sep
     pop();
-    line(60);
+    line(79);
     string(L".");
     push_symbol(base+0);//fspec
     _clp_rat(2);
     assign(base+2);//dot
     pop();
-    line(61);
+    line(80);
     push_symbol(base+2);//dot
     push_symbol(base+1);//sep
     gt();
@@ -253,28 +253,28 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("filespec.absolute",base);
 //
-    line(74);
-    line(66);
+    line(93);
+    line(85);
     push_symbol(base+0);//fspec
     _clp_empty(1);
     if(!flag()) goto if_3_1;
-        line(67);
+        line(86);
         push(&FALSE);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_3_0;
     if_3_1:
-    line(68);
+    line(87);
     push_symbol(base+0);//fspec
     idxr0(1);
     string(L"/\\");
     ss();
     if(!flag()) goto if_3_2;
-        line(69);
+        line(88);
         push(&TRUE);
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_3_2:
     if_3_0:;
-    line(75);
+    line(94);
     push(&FALSE);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -291,7 +291,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("filespec.relative",base);
 //
-    line(80);
+    line(99);
     push_symbol(base+0);//fspec
     _clp_absolute(1);
     topnot();
@@ -310,7 +310,7 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("filespec.drive",base);
 //
-    line(90);
+    line(109);
     string(L"");
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

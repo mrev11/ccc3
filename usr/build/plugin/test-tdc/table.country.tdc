@@ -1,0 +1,9 @@
+!table country
+!index kod country KOD
+!field KOD          C   3  0
+!field ORSZAG       C  25  0
+!field HFSZINT      N   2  0
+!field LEKSZINT     N   2  0
+!field USER         C   8  0
+!field CSOPORT      C   8  0
+!field KONYVKELT    D   8  0

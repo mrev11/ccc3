@@ -1,0 +1,18 @@
+#!/bin/bash
+gc
+
+ export BUILD_USECACHE=no
+# export BUILD_THR=1
+
+
+# letorli az uj pluginokat
+# hogy a forditas a regiekkel menjen
+# (cd .. && rm -f *.exe)
+
+
+cccapp.sh -d. -dlib -bcrypto BUILD_CPP=$(pwd)/setup
+
+
+# helyukre tesz az uj pluginokat
+mv *.exe ..
+

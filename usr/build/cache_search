@@ -8,7 +8,9 @@ fi
 
 if [ -d "$BUILD_CACHE" ] && [ -n "$DEPEND" ]; then
 
-    sum=$(cat $CMPOPT $DEPEND | sha256sum)
+    # echo -n " depends on: ($CMPOPT ${DEPEND[@]})"
+
+    sum=$(cat $CMPOPT ${DEPEND[@]} | sha256sum)
     sum=${sum:0:64}
     dir=${sum:0:2}
     if [ "$BUILD_USECACHE" != no ] &&  [ -f $BUILD_CACHE/$dir/$sum ]; then

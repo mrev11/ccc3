@@ -1,16 +1,18 @@
-//input: ppo/run1.ppo (5.7.0.1)
+//input: ppo/run1.ppo (5.7.2)
 
 #include <cccdef.h>
 
 extern void _clp_alltrim(int argno);
 extern void _clp_at(int argno);
 static void _clp_bash(int argno);
+extern void _clp_dirsep(int argno);
 extern void _clp_ferase(int argno);
 extern void _clp_file(int argno);
 extern void _clp_memoread(int argno);
 extern void _clp_qqout(int argno);
 extern void _clp_run(int argno);
 extern void _clp_run1(int argno);
+extern void _clp_s_batext(int argno);
 extern void _clp_s_dry(int argno);
 extern void _clp_s_runcnt(int argno);
 extern void _clp_spawn(int argno);
@@ -49,7 +51,7 @@ push_call("run1",base);
     addnum(1);
     _clp_s_runcnt(1);
     pop();
-    line(63);
+    line(68);
     line(33);
     _clp_s_dry(0);
     topnot();
@@ -73,50 +75,93 @@ push_call("run1",base);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(43);
-        push_symbol(base+0);//cmd
-        string(L" >");
-        add();
-        push_symbol(base+1);//runtmp
-        add();
-        _clp_bash(1);
-        pop();
-        line(46);
+        line(49);
+        line(39);
+        _clp_dirsep(0);
+        string(L"/");
+        eqeq();
+        cmp_183:;
+        if(!flag()) goto if_2_1;
+            line(41);
+            push_symbol(base+0);//cmd
+            string(L" >");
+            add();
+            push_symbol(base+1);//runtmp
+            add();
+            _clp_run(1);
+            pop();
+        goto if_2_0;
+        if_2_1:
+        line(42);
+        _clp_s_batext(0);
+        string(L".bld");
+        eqeq();
+        cmp_226:;
+        if(!flag()) goto if_2_2;
+            line(44);
+            push_symbol(base+0);//cmd
+            string(L" >");
+            add();
+            push_symbol(base+1);//runtmp
+            add();
+            _clp_bash(1);
+            pop();
+        goto if_2_0;
+        if_2_2:
+        line(45);
+            line(47);
+            push_symbol(base+0);//cmd
+            string(L"/");
+            string(L"\\");
+            _clp_strtran(3);
+            assign(base+0);//cmd
+            pop();
+            line(48);
+            push_symbol(base+0);//cmd
+            string(L" >");
+            add();
+            push_symbol(base+1);//runtmp
+            add();
+            _clp_run(1);
+            pop();
+        if_2_3:
+        if_2_0:;
+        line(51);
         push_symbol(base+1);//runtmp
         _clp_memoread(1);
         assign(base+2);//out
         pop();
-        line(47);
+        line(52);
         push_symbol(base+1);//runtmp
         _clp_ferase(1);
         pop();
-        line(49);
+        line(54);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_lock(1);
         pop();
-        line(50);
+        line(55);
         push_symbol(base+2);//out
         _clp_qqout(1);
         pop();
-        line(51);
+        line(56);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(62);
-        line(53);
+        line(67);
+        line(58);
         string(L"error");
         _clp_file(1);
-        if(!flag()) goto if_2_1;
-            line(57);
+        if(!flag()) goto if_3_1;
+            line(62);
             string(L"type error");
             _clp_run(1);
             pop();
-            line(61);
+            line(66);
             push(&TRUE);
             _clp_s_dry(1);
             pop();
-        if_2_1:
-        if_2_0:;
+        if_3_1:
+        if_3_0:;
     if_1_1:
     if_1_0:;
 //
@@ -133,23 +178,23 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("bash",base);
 //
-    line(68);
+    line(73);
     push_symbol(base+0);//cmd
     string(L"\\");
     string(L"/");
     _clp_strtran(3);
     assign(base+0);//cmd
     pop();
-    line(71);
-    line(69);
+    line(76);
+    line(74);
     string(L":/");
     push_symbol(base+0);//cmd
     _clp_at(2);
     number(2);
     eqeq();
-    cmp_395:;
-    if(!flag()) goto if_3_1;
-        line(70);
+    cmp_517:;
+    if(!flag()) goto if_4_1;
+        line(75);
         string(L"/");
         push_symbol(base+0);//cmd
         idxr0(1);
@@ -161,9 +206,9 @@ push_call("bash",base);
         add();
         assign(base+0);//cmd
         pop();
-    if_3_1:
-    if_3_0:;
-    line(72);
+    if_4_1:
+    if_4_0:;
+    line(77);
     number(3);
     string(L"bash.exe");
     string(L"-c");

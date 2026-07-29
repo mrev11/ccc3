@@ -1,4 +1,4 @@
-//input: ppo/buildenv.ppo (5.7.0.1)
+//input: ppo/buildenv.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -15,10 +15,12 @@ extern void _clp_buildenv_root(int argno);
 extern void _clp_buildenv_shr(int argno);
 extern void _clp_buildenv_src(int argno);
 extern void _clp_buildenv_thr(int argno);
+extern void _clp_dirsep(int argno);
 extern void _clp_getenv(int argno);
 extern void _clp_list_buildenv(int argno);
 extern void _clp_putenv(int argno);
 extern void _clp_qout(int argno);
+extern void _clp_strtran(int argno);
 
 //=======================================================================
 void _clp_buildenv_bat(int argno)
@@ -33,11 +35,34 @@ push_call("buildenv_bat",base);
     string(L"BUILD_BAT");
     assign(base+1);//env
     pop();
+    line(33);
     line(26);
     push_symbol(base+0);//x
     push(&NIL);
+    neeq();
+    cmp_39:;
+    if(!flag()) goto if_1_1;
+        line(31);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(32);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_1_1:
+    if_1_0:;
+    line(34);
+    push_symbol(base+0);//x
+    push(&NIL);
     eqeq();
-    cmp_40:;
+    cmp_123:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -64,15 +89,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_bindir",base);
 //
-    line(31);
+    line(39);
     string(L"BUILD_BINDIR");
     assign(base+1);//env
     pop();
-    line(32);
+    line(43);
+    line(40);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_195:;
+    if(!flag()) goto if_2_1;
+        line(41);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(42);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_2_1:
+    if_2_0:;
+    line(44);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_113:;
+    cmp_279:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -99,15 +147,15 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_dbg",base);
 //
-    line(37);
+    line(49);
     string(L"BUILD_DBG");
     assign(base+1);//env
     pop();
-    line(38);
+    line(50);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_186:;
+    cmp_352:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -134,15 +182,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_exe",base);
 //
-    line(43);
+    line(55);
     string(L"BUILD_EXE");
     assign(base+1);//env
     pop();
-    line(44);
+    line(59);
+    line(56);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_424:;
+    if(!flag()) goto if_3_1;
+        line(57);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(58);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_3_1:
+    if_3_0:;
+    line(60);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_259:;
+    cmp_508:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -169,15 +240,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_inc",base);
 //
-    line(49);
+    line(65);
     string(L"BUILD_INC");
     assign(base+1);//env
     pop();
-    line(50);
+    line(69);
+    line(66);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_580:;
+    if(!flag()) goto if_4_1;
+        line(67);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(68);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_4_1:
+    if_4_0:;
+    line(70);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_332:;
+    cmp_664:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -204,15 +298,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_lib",base);
 //
-    line(55);
+    line(75);
     string(L"BUILD_LIB");
     assign(base+1);//env
     pop();
-    line(56);
+    line(79);
+    line(76);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_736:;
+    if(!flag()) goto if_5_1;
+        line(77);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(78);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_5_1:
+    if_5_0:;
+    line(80);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_405:;
+    cmp_820:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -239,15 +356,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_libdir",base);
 //
-    line(61);
+    line(85);
     string(L"BUILD_LIBDIR");
     assign(base+1);//env
     pop();
-    line(62);
+    line(89);
+    line(86);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_892:;
+    if(!flag()) goto if_6_1;
+        line(87);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(88);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_6_1:
+    if_6_0:;
+    line(90);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_478:;
+    cmp_976:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -274,15 +414,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_lpt",base);
 //
-    line(67);
+    line(95);
     string(L"BUILD_LPT");
     assign(base+1);//env
     pop();
-    line(68);
+    line(99);
+    line(96);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_1048:;
+    if(!flag()) goto if_7_1;
+        line(97);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(98);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_7_1:
+    if_7_0:;
+    line(100);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_551:;
+    cmp_1132:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -309,15 +472,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_obj",base);
 //
-    line(73);
+    line(105);
     string(L"BUILD_OBJ");
     assign(base+1);//env
     pop();
-    line(74);
+    line(109);
+    line(106);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_1204:;
+    if(!flag()) goto if_8_1;
+        line(107);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(108);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_8_1:
+    if_8_0:;
+    line(110);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_624:;
+    cmp_1288:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -344,15 +530,15 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_shr",base);
 //
-    line(79);
+    line(115);
     string(L"BUILD_SHR");
     assign(base+1);//env
     pop();
-    line(80);
+    line(116);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_697:;
+    cmp_1361:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -379,15 +565,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_src",base);
 //
-    line(85);
+    line(121);
     string(L"BUILD_SRC");
     assign(base+1);//env
     pop();
-    line(86);
+    line(125);
+    line(122);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_1433:;
+    if(!flag()) goto if_9_1;
+        line(123);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(124);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_9_1:
+    if_9_0:;
+    line(126);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_770:;
+    cmp_1517:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -414,15 +623,15 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_thr",base);
 //
-    line(91);
+    line(131);
     string(L"BUILD_THR");
     assign(base+1);//env
     pop();
-    line(92);
+    line(132);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_843:;
+    cmp_1590:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -449,15 +658,38 @@ while(stack<base+2)PUSHNIL();
 argno=1;
 push_call("buildenv_root",base);
 //
-    line(97);
+    line(137);
     string(L"BUILD_ROOT");
     assign(base+1);//env
     pop();
-    line(98);
+    line(141);
+    line(138);
+    push_symbol(base+0);//x
+    push(&NIL);
+    neeq();
+    cmp_1662:;
+    if(!flag()) goto if_10_1;
+        line(139);
+        push_symbol(base+0);//x
+        string(L"/");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+        line(140);
+        push_symbol(base+0);//x
+        string(L"\\");
+        _clp_dirsep(0);
+        _clp_strtran(3);
+        assign(base+0);//x
+        pop();
+    if_10_1:
+    if_10_0:;
+    line(142);
     push_symbol(base+0);//x
     push(&NIL);
     eqeq();
-    cmp_916:;
+    cmp_1746:;
     if(flag()){
     push_symbol(base+1);//env
     _clp_getenv(1);
@@ -484,67 +716,67 @@ while(stack<base+0)PUSHNIL();
 argno=0;
 push_call("list_buildenv",base);
 //
-    line(104);
+    line(148);
     string(L"BUILD_BAT    =");
     _clp_buildenv_bat(0);
     _clp_qout(2);
     pop();
-    line(105);
+    line(149);
     string(L"BUILD_BINDIR =");
     _clp_buildenv_bindir(0);
     _clp_qout(2);
     pop();
-    line(106);
+    line(150);
     string(L"BUILD_DBG    =");
     _clp_buildenv_dbg(0);
     _clp_qout(2);
     pop();
-    line(107);
+    line(151);
     string(L"BUILD_EXE    =");
     _clp_buildenv_exe(0);
     _clp_qout(2);
     pop();
-    line(108);
+    line(152);
     string(L"BUILD_INC    =");
     _clp_buildenv_inc(0);
     _clp_qout(2);
     pop();
-    line(109);
+    line(153);
     string(L"BUILD_LIB    =");
     _clp_buildenv_lib(0);
     _clp_qout(2);
     pop();
-    line(110);
+    line(154);
     string(L"BUILD_LIBDIR =");
     _clp_buildenv_libdir(0);
     _clp_qout(2);
     pop();
-    line(111);
+    line(155);
     string(L"BUILD_LPT    =");
     _clp_buildenv_lpt(0);
     _clp_qout(2);
     pop();
-    line(112);
+    line(156);
     string(L"BUILD_OBJ    =");
     _clp_buildenv_obj(0);
     _clp_qout(2);
     pop();
-    line(113);
+    line(157);
     string(L"BUILD_SHR    =");
     _clp_buildenv_shr(0);
     _clp_qout(2);
     pop();
-    line(114);
+    line(158);
     string(L"BUILD_SRC    =");
     _clp_buildenv_src(0);
     _clp_qout(2);
     pop();
-    line(115);
+    line(159);
     string(L"BUILD_THR    =");
     _clp_buildenv_thr(0);
     _clp_qout(2);
     pop();
-    line(116);
+    line(160);
     _clp_qout(0);
     pop();
 //

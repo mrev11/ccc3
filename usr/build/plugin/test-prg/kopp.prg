@@ -1,0 +1,4 @@
+
+
+function kopp()
+    ? "Máskor kopp."

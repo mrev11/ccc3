@@ -1,4 +1,4 @@
-//input: ppo/deferror.ppo (5.7.0.1)
+//input: ppo/deferror.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -26,8 +26,6 @@ extern void _clp_qqout(int argno);
 extern void _clp_quitblock(int argno);
 extern void _clp_set(int argno);
 extern void _clp_signal_description(int argno);
-extern void _clp_signal_lock(int argno);
-extern void _clp_signal_unlock(int argno);
 extern void _clp_signalblock(int argno);
 extern void _clp_thread_mutex_init(int argno);
 extern void _clp_thread_mutex_lock(int argno);
@@ -153,8 +151,6 @@ push_call("quitblock",base);
 //
     line(33);
     line(34);
-    _clp_signal_lock(0);
-    pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
@@ -168,7 +164,7 @@ push_call("quitblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_196:;
+    cmp_185:;
     if(!flag()) goto if_1_1;
         line(37);
         push_symbol(base+0);//blk
@@ -179,8 +175,6 @@ push_call("quitblock",base);
     line(39);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
-    pop();
-    _clp_signal_unlock(0);
     pop();
     line(40);
     push_symbol(base+1);//oldblk
@@ -248,8 +242,6 @@ push_call("signalblock",base);
 //
     line(56);
     line(57);
-    _clp_signal_lock(0);
-    pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
@@ -262,7 +254,7 @@ push_call("signalblock",base);
     push_symbol(base+0);//blk
     push(&NIL);
     neeq();
-    cmp_476:;
+    cmp_443:;
     if(!flag()) goto if_2_1;
         line(60);
         push_symbol(base+0);//blk
@@ -273,8 +265,6 @@ push_call("signalblock",base);
     line(62);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
-    pop();
-    _clp_signal_unlock(0);
     pop();
     line(63);
     push_symbol(base+1);//oldblk
@@ -336,8 +326,6 @@ push_call("errorblock",base);
 //
     line(78);
     line(79);
-    _clp_signal_lock(0);
-    pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
@@ -351,7 +339,7 @@ push_call("errorblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_718:;
+    cmp_663:;
     if(!flag()) goto if_3_1;
         line(82);
         push_symbol(base+0);//blk
@@ -362,8 +350,6 @@ push_call("errorblock",base);
     line(84);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
-    pop();
-    _clp_signal_unlock(0);
     pop();
     line(85);
     push_symbol(base+1);//oldblk
@@ -398,7 +384,7 @@ push_call("deferror",base);
     _clp_valtype(1);
     string(L"O");
     eqeq();
-    cmp_856:;
+    cmp_790:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -412,7 +398,7 @@ push_call("deferror",base);
     push_symbol(base+1);//alert
     push(&TRUE);
     eqeq();
-    cmp_882:;
+    cmp_816:;
     }
     if(!flag()) goto if_4_1;
         line(100);
@@ -562,7 +548,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Quit"));
         eqeq();
-        cmp_1364:;
+        cmp_1298:;
         if(!flag()) goto if_13_1;
         goto if_13_0;
         if_13_1:
@@ -572,7 +558,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Retry"));
         eqeq();
-        cmp_1385:;
+        cmp_1319:;
         if(!flag()) goto if_13_2;
             line(136);
             push(&TRUE);
@@ -585,7 +571,7 @@ push_call("deferror",base);
         idxr();
         string(nls_text(L"Default"));
         eqeq();
-        cmp_1413:;
+        cmp_1347:;
         if(!flag()) goto if_13_3;
             line(139);
             push(&FALSE);
@@ -604,7 +590,7 @@ push_call("deferror",base);
     _clp_valtype(1);
     string(L"O");
     eqeq();
-    cmp_1474:;
+    cmp_1408:;
     if(!flag()){
     push(&FALSE);
     }else{
@@ -656,7 +642,7 @@ push_call("deferror",base);
         _clp_valtype(1);
         string(L"A");
         eqeq();
-        cmp_1660:;
+        cmp_1594:;
         if(!flag()) goto if_17_1;
             line(159);
             string(nls_text(L"args:{"));
@@ -679,7 +665,7 @@ push_call("deferror",base);
                 push_symbol(base+2);//i
                 push(&ONE);
                 gt();
-                cmp_1712:;
+                cmp_1646:;
                 if(!flag()) goto if_19_1;
                     line(162);
                     string(L", ");
@@ -902,8 +888,6 @@ push_call("breakblock",base);
 //
     line(224);
     line(225);
-    _clp_signal_lock(0);
-    pop();
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_lock(1);
     pop();
@@ -917,7 +901,7 @@ push_call("breakblock",base);
     _clp_valtype(1);
     string(L"B");
     eqeq();
-    cmp_2544:;
+    cmp_2467:;
     if(!flag()) goto if_30_1;
         line(228);
         push_symbol(base+0);//blk
@@ -928,8 +912,6 @@ push_call("breakblock",base);
     line(230);
     push_symbol(_st_mutex_ptr());//global
     _clp_thread_mutex_unlock(1);
-    pop();
-    _clp_signal_unlock(0);
     pop();
     line(231);
     push_symbol(base+1);//oldblk

@@ -2,6 +2,7 @@
 
 cp -p ${CCCDIR}/ccclib/ppo/alert.cpp        .
 cp -p ${CCCDIR}/ccclib/ppo/ascan.cpp        .
+cp -p ${CCCDIR}/ccclib/ppo/channel.cpp      .
 cp -p ${CCCDIR}/ccclib/ppo/class.cpp        .
 cp -p ${CCCDIR}/ccclib/ppo/day.cpp          .
 cp -p ${CCCDIR}/ccclib/ppo/deferror.cpp     .

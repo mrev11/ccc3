@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+### minden main module kulon directoryba
+
+grep "extern void _clp_main" *.cpp | while read MAIN; do
+    module=${MAIN%%\.*}
+    mkdir -p $module
+    mv $module.cpp $module
+done
+
+
+### minden itthagyott cpp-t egyben lefordit
+
+./cc
+
+### kulon forditja/linkeli a  main modulokat
+
+for  dir in */; do
+    #echo $dir
+    (cd $dir && ../cc && ../xx)
+done
+
+git clean -fXd  2>&1 >/dev/null

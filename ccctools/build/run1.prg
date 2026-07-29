@@ -36,12 +36,17 @@ local runcnt:=s_runcnt()
         runtmp:="log-runtmp"+alltrim(str(++count))
         thread_mutex_unlock(mutex_out)
 
-        #ifdef _UNIX_
+        if( dirsep()=="/" )
+            // UNIX
             run(cmd+" >"+runtmp)
-        #else
-            // windowson is bash
+        elseif( s_batext()==".bld" )
+            // Windows -> bash
             bash(cmd+" >"+runtmp)
-        #endif
+        else
+            // Windows -> cmd
+            cmd::=strtran("/","\")
+            run(cmd+" >"+runtmp)
+        end
 
         out:=memoread(runtmp)
         ferase(runtmp)
@@ -61,7 +66,7 @@ local runcnt:=s_runcnt()
             s_dry(.t.)
         end
     end
- 
+
 
 ****************************************************************************
 static function bash(cmd)

@@ -22,9 +22,9 @@
 ****************************************************************************
 function makeobj(deplist)  //object előállítása (egyenként)
 
-local target:=deplist[1] 
-local depend:=deplist[2]  
-local objdir:=buildenv_obj() 
+local target:=deplist[1]
+local depend:=deplist[2]
+local objdir:=buildenv_obj()
 local ttarget,tdepend
 local update:=.f.,torun
 local n,p1,p2,p3
@@ -33,7 +33,7 @@ local n,p1,p2,p3
         target:=objdir+dirsep()+filespec.name(target)+filespec.extension(target)
     end
 
-    ttarget:=ftime(target) 
+    ttarget:=ftime(target)
     if( ttarget==NIL )
         ttarget:=""
     end
@@ -41,18 +41,18 @@ local n,p1,p2,p3
     if( s_debug() )
         ? target, "["+ttarget+"]"
     end
- 
+
     for n:=2 to len(deplist)
-        depend:=deplist[n] 
+        depend:=deplist[n]
         update:=verifdep(ttarget,depend).or.update
     next
 
     if( s_debug() )
-        ? 
+        ?
     end
-    
+
     if( update )
-        
+
         torun:=buildenv_bat()+dirsep()
         torun+=strtran(filespec.extension(deplist[2])+"2"+filespec.extension(deplist[1]),".","")
         torun+=s_batext()
@@ -61,7 +61,7 @@ local n,p1,p2,p3
             ? "["+torun+"]", @"does not exist"
             ?
             errorlevel(1)
-            quit 
+            quit
         end
 
         p1:=filespec.name(deplist[1])
@@ -70,10 +70,10 @@ local n,p1,p2,p3
         for n:=3 to len(deplist)
             p3+=" "+deplist[n]
         next
-    
-        run1(torun+" "+p1+" "+p2+" '"+p3+"'" )  // p3 egyben
+
+        run1(torun+" "+p1+" "+p2+" "+p3 )
     end
 
- 
+
 ****************************************************************************
 

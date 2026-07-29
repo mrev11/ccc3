@@ -1,4 +1,4 @@
-//input: ppo/makeobj.ppo (5.7.0.1)
+//input: ppo/makeobj.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -283,11 +283,9 @@ push_call("makeobj",base);
         add();
         push_symbol(base+10);//p2
         add();
-        string(L" '");
+        string(L" ");
         add();
         push_symbol(base+11);//p3
-        add();
-        string(L"'");
         add();
         _clp_run1(1);
         pop();

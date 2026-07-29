@@ -27,7 +27,9 @@ function rules_from_build_bat()
 
 local d,n,rule
 
-    if( file(buildenv_bat()+dirsep()+"prg2obj.bld") )
+    if( file(buildenv_bat()+dirsep()+"prg2obj.exe") )
+        s_batext(".exe")
+    elseif( file(buildenv_bat()+dirsep()+"prg2obj.bld") )
         s_batext(".bld")
     elseif( file(buildenv_bat()+dirsep()+"prg2obj.bash") )
         s_batext(".bash")

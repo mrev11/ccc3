@@ -23,12 +23,24 @@
 ******************************************************************************************
 function buildenv_bat(x) // innen veszi a forditó scripteket
 local env:="BUILD_BAT"
+    if( x!=NIL )
+        // elejet kell venni
+        // az MSYS2 automatikus
+        // path transzformaciojanak
+
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_bindir(x) // ide másolja a keletkező exe-ket (install)
 local env:="BUILD_BINDIR"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
@@ -41,36 +53,60 @@ local env:="BUILD_DBG"
 ******************************************************************************************
 function buildenv_exe(x) // itt keletkeznek az exe-k
 local env:="BUILD_EXE"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_inc(x) // ezekben keresi az include-okat
 local env:="BUILD_INC"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_lib(x) // ezeket a könyvtarakat linkeli
 local env:="BUILD_LIB"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_libdir(x) // ide másolja a keletkező lib/so-kat (install)
 local env:="BUILD_LIBDIR"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_lpt(x) // ezekben keresi a libeket
 local env:="BUILD_LPT"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
 ******************************************************************************************
 function buildenv_obj(x) // itt keletkeznek az objectek
 local env:="BUILD_OBJ"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
@@ -83,6 +119,10 @@ local env:="BUILD_SHR"
 ******************************************************************************************
 function buildenv_src(x) // a forrásfa gyökere
 local env:="BUILD_SRC"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 
@@ -95,6 +135,10 @@ local env:="BUILD_THR"
 ******************************************************************************************
 function buildenv_root(x) // project root directory
 local env:="BUILD_ROOT"
+    if( x!=NIL )
+        x::=strtran("/",dirsep())
+        x::=strtran("\",dirsep())
+    end
     return if(x==NIL,getenv(env),putenv(env+"="+x))
 
 

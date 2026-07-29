@@ -43,6 +43,10 @@ if [[ ${flag} != "" ]]; then
     #cat build/log-link           >log-install
     #cat prg2ppo/log-link        >>log-install
     #less log-install
+
+    if test -e $CCCDIR/usr/build/plugin/setup/m; then
+        ( cd $CCCDIR/usr/build/plugin/setup && m )
+    fi
 fi
 
 

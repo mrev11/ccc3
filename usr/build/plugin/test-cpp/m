@@ -1,0 +1,16 @@
+#!/bin/bash
+clean
+
+
+# export BUILD_SHR=static
+# export BUILD_USECACHE=no
+
+
+# (cd ${CCCDIR}/usr/build && rm *.exe)
+# c++app.sh  -xhello -bcrypto
+# c++app.sh -lhello -xhello -bcrypto
+
+ c++app.sh   -xhello  -bcrypto
+
+
+

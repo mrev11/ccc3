@@ -1,0 +1,7 @@
+#!/bin/bash
+# export BUILD_SHR=static
+ export BUILD_USECACHE=no
+
+clean
+
+cccapp.sh -llibhello  -iinclude

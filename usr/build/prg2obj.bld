@@ -1,9 +1,11 @@
 #!/bin/bash
-echo -n PRG2OBJ.BAT $1 $2 # $3="dep1 dep2 dep3..."
+echo -n PRG2OBJ.BAT $1 $2 # $3=dep[0] $4=dep[1] ...
 #set -x
 
+arg=("$@")  # array: ($1 $2 ... )
+
 SOURCE=$2/$1.prg
-DEPEND=${3}
+DEPEND=${arg[@]:2} # array: ($3 $4 ... )
 TARGET=$BUILD_OBJ/$1.obj
 
 . ${BUILD_BAT}/def_quit

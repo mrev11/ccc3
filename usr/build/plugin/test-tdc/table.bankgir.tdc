@@ -1,0 +1,17 @@
+!table bankgir
+
+!index bankfiok bankgir bankfiok
+!index rendszla bankgir2 rendszla
+!index teljszla bankgir3 teljszla
+
+!field BANKFIOK     C 24  0
+!field BNEV         C 20  0
+!field BBETU        C  1  0
+!field RENDSZLA     C 24  0
+!field TELJSZLA     C 24  0
+!field USER         C  8  0
+!field CSOPORT      C  8  0
+!field HFSZINT      N  2  0
+!field LEKSZINT     N  2  0
+!field KONYVKELT    D  8  0
+!field STATUS       C  1  0

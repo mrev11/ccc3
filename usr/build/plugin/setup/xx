@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BNM=$(basename $(pwd))
+echo SETUP: link ${BNM}
+export EXEDIR=${CCCDIR}/usr/build
+
+echo  -Wl,--start-group                                    >linkopt
+cat   $CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/link.opt  >>linkopt
+echo  -lcrypto                                            >>linkopt
+echo  -o ${EXEDIR}/${BNM}.exe                             >>linkopt
+echo  *.o  ../*.o                                         >>linkopt
+if [ $CCCUNAME == msys2 ];then
+    echo  $CCCDIR/setup/setup-windows/setup.lib           >>linkopt
+else
+    echo  $CCCDIR/setup/setup-unix/setup.lib              >>linkopt
+fi
+echo  -Wl,--end-group                                     >>linkopt
+
+c++  $(cat linkopt)

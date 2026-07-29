@@ -1,4 +1,4 @@
-//input: ppo/rules_from_build_bat.ppo (5.7.0.1)
+//input: ppo/rules_from_build_bat.ppo (5.7.2)
 
 #include <cccdef.h>
 
@@ -29,17 +29,17 @@ argno=0;
 push_call("rules_from_build_bat",base);
 //
     line(28);
-    line(40);
+    line(42);
     line(30);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.bld");
+    string(L"prg2obj.exe");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_1;
         line(31);
-        string(L".bld");
+        string(L".exe");
         _clp_s_batext(1);
         pop();
     goto if_1_0;
@@ -48,12 +48,12 @@ push_call("rules_from_build_bat",base);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.bash");
+    string(L"prg2obj.bld");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_2;
         line(33);
-        string(L".bash");
+        string(L".bld");
         _clp_s_batext(1);
         pop();
     goto if_1_0;
@@ -62,12 +62,12 @@ push_call("rules_from_build_bat",base);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.sh");
+    string(L"prg2obj.bash");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_3;
         line(35);
-        string(L".sh");
+        string(L".bash");
         _clp_s_batext(1);
         pop();
     goto if_1_0;
@@ -76,12 +76,12 @@ push_call("rules_from_build_bat",base);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.msys2");
+    string(L"prg2obj.sh");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_4;
         line(37);
-        string(L".msys2");
+        string(L".sh");
         _clp_s_batext(1);
         pop();
     goto if_1_0;
@@ -90,22 +90,36 @@ push_call("rules_from_build_bat",base);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
-    string(L"prg2obj.bat");
+    string(L"prg2obj.msys2");
     add();
     _clp_file(1);
     if(!flag()) goto if_1_5;
         line(39);
+        string(L".msys2");
+        _clp_s_batext(1);
+        pop();
+    goto if_1_0;
+    if_1_5:
+    line(40);
+    _clp_buildenv_bat(0);
+    _clp_dirsep(0);
+    add();
+    string(L"prg2obj.bat");
+    add();
+    _clp_file(1);
+    if(!flag()) goto if_1_6;
+        line(41);
         string(L".bat");
         _clp_s_batext(1);
         pop();
-    if_1_5:
+    if_1_6:
     if_1_0:;
-    line(42);
+    line(44);
     _clp_s_rules(0);
     push(&ZERO);
     _clp_asize(2);
     pop();
-    line(43);
+    line(45);
     _clp_buildenv_bat(0);
     _clp_dirsep(0);
     add();
@@ -116,9 +130,9 @@ push_call("rules_from_build_bat",base);
     _clp_directory(1);
     assign(base+0);//d
     pop();
-    line(51);
+    line(53);
     {
-    line(44);
+    line(46);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -127,7 +141,7 @@ push_call("rules_from_build_bat",base);
     push_symbol(base+0);//d
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_2_2;
-        line(45);
+        line(47);
         push_symbol(base+0);//d
         push_symbol(base+1);//n
         idxr();
@@ -139,15 +153,15 @@ push_call("rules_from_build_bat",base);
         _clp_split(2);
         assign(base+2);//rule
         pop();
-        line(50);
-        line(46);
+        line(52);
+        line(48);
         push_symbol(base+2);//rule
         _clp_len(1);
         number(2);
         eqeq();
-        cmp_463:;
+        cmp_515:;
         if(!flag()) goto if_3_1;
-            line(47);
+            line(49);
             string(L".");
             push_symbol(base+2);//rule
             idxr0(1);
@@ -155,7 +169,7 @@ push_call("rules_from_build_bat",base);
             push_symbol(base+2);//rule
             assign2(idxxl0(1));
             pop();
-            line(48);
+            line(50);
             string(L".");
             push_symbol(base+2);//rule
             idxr0(2);
@@ -163,7 +177,7 @@ push_call("rules_from_build_bat",base);
             push_symbol(base+2);//rule
             assign2(idxxl0(2));
             pop();
-            line(49);
+            line(51);
             _clp_s_rules(0);
             push_symbol(base+2);//rule
             _clp_aadd(2);
@@ -180,7 +194,7 @@ push_call("rules_from_build_bat",base);
     goto lab_2_0;
     lab_2_2:;
     }
-    line(53);
+    line(55);
     _clp_s_rules(0);
     push(&NIL);
     push(&NIL);
@@ -216,12 +230,12 @@ while(stack<base+3)PUSHNIL();
 argno=2;
 push_call("rulesort",base);
 //
-    line(60);
-    line(61);
+    line(62);
+    line(63);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
-    cmp_653:;
+    cmp_705:;
     if(!flag()) goto if_4_1;
         string(L".exe");
         push_symbol(base+0);//x
@@ -231,11 +245,11 @@ push_call("rulesort",base);
         pop();
     if_4_1:
     if_4_0:;
-    line(62);
+    line(64);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
-    cmp_707:;
+    cmp_759:;
     if(!flag()) goto if_5_1;
         string(L".so");
         push_symbol(base+0);//x
@@ -245,11 +259,11 @@ push_call("rulesort",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(63);
+    line(65);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
-    cmp_761:;
+    cmp_813:;
     if(!flag()) goto if_6_1;
         string(L".lib");
         push_symbol(base+0);//x
@@ -259,11 +273,11 @@ push_call("rulesort",base);
         pop();
     if_6_1:
     if_6_0:;
-    line(64);
+    line(66);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
-    cmp_815:;
+    cmp_867:;
     if(!flag()) goto if_7_1;
         string(L".obj");
         push_symbol(base+0);//x
@@ -273,23 +287,23 @@ push_call("rulesort",base);
         pop();
     if_7_1:
     if_7_0:;
-    line(65);
+    line(67);
     push_symbol(base+2);//result
     push(&NIL);
     eqeq();
-    cmp_869:;
+    cmp_921:;
     if(!flag()) goto if_8_1;
         push_symbol(base+0);//x
         idxr0(1);
         push_symbol(base+1);//y
         idxr0(1);
         lt();
-        cmp_889:;
+        cmp_941:;
         assign(base+2);//result
         pop();
     if_8_1:
     if_8_0:;
-    line(66);
+    line(68);
     push_symbol(base+2);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
@@ -306,60 +320,60 @@ while(stack<base+3)PUSHNIL();
 argno=3;
 push_call("cmp",base);
 //
-    line(73);
-    line(69);
+    line(75);
+    line(71);
     push_symbol(base+1);//x
     idxr0(2);
     push_symbol(base+0);//ext
     eqeq();
-    cmp_953:;
+    cmp_1005:;
     if(!flag()) goto if_9_1;
-        line(70);
+        line(72);
         push_symbol(base+2);//y
         idxr0(2);
         push_symbol(base+0);//ext
         eqeq();
-        cmp_973:;
+        cmp_1025:;
         if(flag()){
         push_symbol(base+1);//x
         idxr0(1);
         push_symbol(base+2);//y
         idxr0(1);
         lt();
-        cmp_985:;
+        cmp_1037:;
         }else{
         push(&FALSE);
         }
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     goto if_9_0;
     if_9_1:
-    line(71);
+    line(73);
     push_symbol(base+2);//y
     idxr0(2);
     push_symbol(base+0);//ext
     eqeq();
-    cmp_1014:;
+    cmp_1066:;
     if(!flag()) goto if_9_2;
-        line(72);
+        line(74);
         push_symbol(base+1);//x
         idxr0(2);
         push_symbol(base+0);//ext
         eqeq();
-        cmp_1034:;
+        cmp_1086:;
         if(flag()){
         push_symbol(base+1);//x
         idxr0(1);
         push_symbol(base+2);//y
         idxr0(1);
         lt();
-        cmp_1046:;
+        cmp_1098:;
         }else{
         push(&TRUE);
         }
         {*base=*(stack-1);stack=base+1;pop_call();return;}
     if_9_2:
     if_9_0:;
-    line(74);
+    line(76);
     push(&NIL);
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

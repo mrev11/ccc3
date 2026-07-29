@@ -1,0 +1,3 @@
+#!/bin/bash
+commitid.exe hello.exe
+hello.exe

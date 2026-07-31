@@ -156,7 +156,7 @@ push_call("makeobj",base);
         pop();
     if_5_1:
     if_5_0:;
-    line(78);
+    line(75);
     line(54);
     push_symbol(base+6);//update
     if(!flag()) goto if_6_1;
@@ -273,24 +273,7 @@ push_call("makeobj",base);
         goto lab_8_0;
         lab_8_2:;
         }
-        line(76);
         line(74);
-        _clp_s_batext(0);
-        string(L".bld");
-        eqeq();
-        cmp_766:;
-        if(!flag()) goto if_9_1;
-            line(75);
-            string(L"'");
-            push_symbol(base+11);//p3
-            add();
-            string(L"'");
-            add();
-            assign(base+11);//p3
-            pop();
-        if_9_1:
-        if_9_0:;
-        line(77);
         push_symbol(base+7);//torun
         string(L" ");
         add();

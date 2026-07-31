@@ -1,0 +1,17 @@
+name: bank.forgnaplo
+version: "1"
+
+table: bank.forgnaplo
+
+
+column:  value_date     D           nn      -- értéknap
+column:  trans_desc     C40         nn      -- pl. 'Beérkezett giro átutalás'
+column:  cust_name      C60         nn      -- partner neve
+column:  cust_acc       C40                 -- partner számlaszáma (többféle formátum)
+column:  trx_id         C200        nn      -- tranzakció azonosító (többféle formátum)
+column:  amount         N20.2       nn      -- összeg
+column:  ccy            C3          nn      -- devnem 
+column:  trx_descr      C120                -- megjegyzés (descr1..descr4)
+
+
+primkey: trx_id

@@ -27,6 +27,8 @@
 ******************************************************************************
 function main(fspec)
 
+local err
+
     if( NIL==fspec )
         usage()
     end
@@ -39,7 +41,16 @@ function main(fspec)
         usage(fspec, "not found")
     end
 
-    tdsutil.dom2prg(tdsutil.tds2dom(fspec),fspec)
+    begin
+        tdsutil.dom2prg(tdsutil.tds2dom(fspec),fspec)
+    recover err <tdserror>
+        ?? "ERROR"
+        ? "  class:", err:classname
+        ? "  operation:",err:operation
+        ? "  description:",err:description
+        ? "  args:",err:args
+        ?
+    end
 
 
 ******************************************************************************

@@ -1,0 +1,4 @@
+#!/bin/bash
+gc
+cccapp.sh -d. -dtds   BUILD_USECACHE=no
+

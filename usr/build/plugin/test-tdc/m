@@ -1,3 +1,2 @@
 #!/bin/bash
-clean
-cccapp.sh
+cccapp.sh -d. -dtdc

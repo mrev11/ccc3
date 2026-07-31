@@ -1,0 +1,19 @@
+
+name: szamla
+
+
+table: giro.szamla
+
+column: szamlaszam      C24             nn
+column: devnem          C3              nn
+column: nev             C30
+column: egyenleg        N20.2
+column: datetime        C19             nn
+column: status          C1              nn
+
+primkey: szamlaszam
+
+select: select_ord
+    order(szamlaszam)
+
+    

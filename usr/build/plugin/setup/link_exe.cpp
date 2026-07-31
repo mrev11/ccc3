@@ -414,7 +414,7 @@ push_call("link_exe",base);
         _clp_pluginenv(2);
         _clp_memoread(1);
         string(L"-rdynamic");
-        string(L"_static");
+        string(L"-static");
         _clp_strtran(3);
         push_symbol(base+6);//eol
         add();

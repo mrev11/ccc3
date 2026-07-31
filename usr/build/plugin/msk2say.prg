@@ -28,7 +28,7 @@ local cmd,params
     cmd:="msk2say.exe "+params+" >"+OUT
     run( cmd)
 
-    if( !empty(memoread(out)) )
+    if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)
     end
 

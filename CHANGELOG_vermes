@@ -1,3 +1,10 @@
+
+2026-07-31 build plugins for resources: 
+    msk2dlg,msk2html,msk2pnl,msk2say,msk2wro,sor2say
+    pge2out,pge2wro
+    tdc2obj,tdc2tdh
+    tds2obj
+
 2026-07-29 CCC-ben megirt build modulok;
 
 2026-07-26 plugins

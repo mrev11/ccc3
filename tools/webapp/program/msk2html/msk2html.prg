@@ -115,7 +115,7 @@ local n
 local screen, input, output
 local path, prgcode
 
-    ?? "msk2html",VERSION,"(C) ComFirm 2012"
+    //?? "msk2html",VERSION,"(C) ComFirm 2012"
 
     if( msk==NIL )
         ? "Usage: msk2html <mskfile>"
@@ -134,9 +134,11 @@ local path, prgcode
     
     init_tabindex(msk)
 
-    ?  "  in:", input:=msk
-    ?? "  out:", output:=path+filespec.name(msk)+extension
+    input:=msk
+    output:=path+filespec.name(msk)+extension
 
+    //?  "  in:", input
+    //?? "  out:", output
 
     screen:=readmask(input)
     if( len(screen)==CALCSIZE(size80x25) )
@@ -161,13 +163,13 @@ local path, prgcode
     prgcode:="//msk2html "+VERSION+chr(10)+chr(10)+prgcode
 
     if( prgcode==memoread(output) )
-        ?? " not changed"
+        //?? " not changed"
     else
         memowrit(output,prgcode)
-        ?? " written"
+        //?? " written"
     end
 
-    ?
+    //?
 
 
 *****************************************************************************
@@ -554,7 +556,7 @@ local table
     comp:right   :=maxrect()[4]-maxrect()[2]+1
     
     if( !empty(getenv("MINWIDTH")) )
-        ?? " (width:"+comp:right::str::alltrim+")"
+        //?? " (width:"+comp:right::str::alltrim+")"
         comp:right::=max( getenv("MINWIDTH")::val  )
     end
 

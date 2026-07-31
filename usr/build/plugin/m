@@ -1,5 +1,5 @@
 #!/bin/bash
-gc
+#gc
 
  export BUILD_USECACHE=no
 # export BUILD_THR=1

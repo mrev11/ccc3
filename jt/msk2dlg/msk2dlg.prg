@@ -97,7 +97,7 @@ local path, prgcode
 
     set dosconv off
 
-    ?? "MSK2DLG",VERSION,"(C) ComFirm 2006"
+    //?? "MSK2DLG",VERSION,"(C) ComFirm 2006"
 
     if( msk==NIL )
         ? "Usage: msk2dlg <mskfile>"
@@ -138,8 +138,7 @@ local path, prgcode
         prgcode:="//MSK2DLG "+VERSION+chr(10)+chr(10)+prgcode
         memowrit(output,prgcode)
     end
-    ?
-    return NIL
+
 
 *****************************************************************************
 static function parsescreen(screen)

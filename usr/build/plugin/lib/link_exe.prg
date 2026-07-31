@@ -63,7 +63,7 @@ local null:=if(dirsep()=="/","/dev/null","NUL")
 
     OPT:=CCCDIR+"/usr/options/"+CCCUNAME+"/"+CCCBIN+"/link.opt"
     if( BUILD_SHR=="fullstatic" )
-        ?? memoread(OPT)::strtran("-rdynamic","_static")+eol
+        ?? memoread(OPT)::strtran("-rdynamic","-static")+eol
     else
         ?? memoread(OPT)+eol
     end

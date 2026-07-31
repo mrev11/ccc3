@@ -1,3 +1,7 @@
+2026.07.31 build 1.8.0
+  CCC-ben irt (exe) build pluginok tamogatasa;
+  build a depend fajlokat kulon parameterben adja (korabban: 'idezojelek kozott adta');
+  setup keszlet frissitve;
 
 2026-07-31 build plugins for resources: 
     msk2dlg,msk2html,msk2pnl,msk2say,msk2wro,sor2say

@@ -1,4 +1,5 @@
-b047d2dd65746ade33d36f187c91dbd5d39d24ed 2026073112:43:08-UTC ./ccclib/src/buildnumber_ccc.prg
+707023064599849d87e1a7c9db74b38df60366cb 2026073112:44:16-UTC ./ccclib/src/buildnumber_ccc.prg
+dd9b822716b8b22bf893c9ffab93e268760aae90 2026073112:44:06-UTC ./CHANGELOG_vermes
 373ee26399b46e3bbf1edb5d310d8892fb7d3774 2026073112:42:46-UTC ./log-install
 7395fec69c08a33b0ce0e42dc22c3e1c2f70439f 2026073112:42:45-UTC ./usr/bin/msk2html
 328a71c2032c2066280aca3b69e389f430d2bfe1 2026073112:42:45-UTC ./usr/bin/webapp
@@ -86,7 +87,6 @@ e479de3d8ba79ae2fa6404823a245e5aa04b6779 2026073112:42:03-UTC ./usr/bin/build
 d7807fc8e2919f02eefaf6227bd2fa29642d7aaa 2026073112:35:00-UTC ./setup/setup-unix/build/build.cpp
 14fc22bceba3876b061ce5df7dc0c21d429d2567 2026073112:05:03-UTC ./ccctools/build/build.prg
 af067b9543542e2e9a1af35a0aa0d7344b7e5313 2026073110:46:11-UTC ./ccctools/build/build.hu.ver
-0ccb5503eb9da224f4798251f0e72e7ea8a91782 2026073107:58:47-UTC ./CHANGELOG_vermes
 f3b78f18655e7b7c6963487724687681edcc80b1 2026073107:47:11-UTC ./usr/build/plugin/setup/link_exe.cpp
 657b00915435cd6f1bc21bcbf3d59eb9180d678b 2026073107:46:46-UTC ./usr/build/plugin/lib/link_exe.prg
 5d32280a7f58ae905e2697cd1092447e0b3399ae 2026073012:26:23-UTC ./usr/build/plugin/test-tdc/m

@@ -49,9 +49,7 @@ local runcnt:=s_runcnt()
         else
             // Windows -> cmd
             cmd::=strtran("/","\")
-            run(cmd+" >"+runtmp)
-            out:=memoread(runtmp)
-            ferase(runtmp)
+            out:=runch(cmd)
         end
 
         thread_mutex_lock(mutex_out)

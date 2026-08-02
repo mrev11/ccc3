@@ -4,12 +4,14 @@
 ./cc ${CCCDIR}/ccclib/src/ui_/remoteio.cpp
 
 ./cc ${CCCDIR}/ccclib/src/windows/envir.cpp
+./cc ${CCCDIR}/ccclib/src/windows/fdup.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/filecopy.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/filecreat.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/findnext.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/fseek.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/lstat.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/nlstext.cpp
+./cc ${CCCDIR}/ccclib/src/windows/pipe.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/signals.cpp
 ./cc ${CCCDIR}/ccclib/src/windows/spawn.cpp
 
@@ -73,6 +75,7 @@
 ./cc ${CCCDIR}/ccclib/src/variable.cpp
 ./cc ${CCCDIR}/ccclib/src/variablex.cpp
 ./cc ${CCCDIR}/ccclib/src/varprint.cpp
+./cc ${CCCDIR}/ccclib/src/vmm.cpp
 ./cc ${CCCDIR}/ccclib/src/xmethod3.cpp
 ./cc ${CCCDIR}/ccclib/src/xmethod6.cpp
 

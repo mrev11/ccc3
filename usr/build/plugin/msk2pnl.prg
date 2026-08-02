@@ -1,12 +1,14 @@
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
 
 local arg:={*}
 local env:=pluginenv_init()
-local cmd,params
+local cmd
+local fdout
 
     ?? "!MSK2PNL.BAT",arg[1],arg[2];?
 
@@ -20,9 +22,11 @@ local cmd,params
     ferase(OUT)
     ferase(ERR)
 
-
-    run( "msk2dlg.exe --jtpanel "+SOURCE+" >"+OUT)
-
+    cmd:="msk2dlg.exe --jtpanel "+SOURCE
+    //run(cmd+" >"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

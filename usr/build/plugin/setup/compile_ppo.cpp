@@ -5,22 +5,25 @@
 extern void _clp_compile_ppo(int argno);
 extern void _clp_def_quit(int argno);
 extern void _clp_empty(int argno);
+extern void _clp_fclose(int argno);
 extern void _clp_ferase(int argno);
+extern void _clp_fopen(int argno);
 extern void _clp_memoread(int argno);
 extern void _clp_pluginenv(int argno);
-extern void _clp_run(int argno);
+extern void _clp_runredir(int argno);
 
 //=======================================================================
 void _clp_compile_ppo(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,2);
-while(stack<base+3)PUSHNIL();
+while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("compile_ppo",base);
 //
     line(7);
-    line(9);
+    line(8);
+    line(10);
     push_symbol(base+1);//env
     string(L"SOURCE");
     string(L"ppo/");
@@ -31,7 +34,7 @@ push_call("compile_ppo",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(10);
+    line(11);
     push_symbol(base+1);//env
     string(L"TARGET");
     string(L"ppo/");
@@ -42,7 +45,7 @@ push_call("compile_ppo",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(11);
+    line(12);
     push_symbol(base+1);//env
     string(L"OUT");
     string(L"out--ppo2cpp-");
@@ -51,7 +54,7 @@ push_call("compile_ppo",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(12);
+    line(13);
     push_symbol(base+1);//env
     string(L"ERR");
     string(L"error--ppo2cpp-");
@@ -60,44 +63,52 @@ push_call("compile_ppo",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(14);
+    line(15);
     push_symbol(base+1);//env
     string(L"TARGET");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(15);
+    line(16);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(16);
+    line(17);
     push_symbol(base+1);//env
     string(L"ERR");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(18);
+    line(19);
     string(L"ppo2cpp.exe -q ");
     push_symbol(base+1);//env
     string(L"SOURCE");
     _clp_pluginenv(2);
     add();
-    string(L" 2>");
-    add();
+    assign(base+2);//cmd
+    pop();
+    line(21);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
-    add();
-    assign(base+2);//cmd
+    number(770);
+    _clp_fopen(2);
+    assign(base+3);//fdout
     pop();
-    line(19);
+    line(22);
     push_symbol(base+2);//cmd
-    _clp_run(1);
+    push_symbol(base+3);//fdout
+    push_symbol(base+3);//fdout
+    _clp_runredir(3);
     pop();
     line(23);
-    line(21);
+    push_symbol(base+3);//fdout
+    _clp_fclose(1);
+    pop();
+    line(27);
+    line(25);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
@@ -105,7 +116,7 @@ push_call("compile_ppo",base);
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_1_1;
-        line(22);
+        line(26);
         push_symbol(base+0);//arg
         push_symbol(base+1);//env
         push(&ONE);
@@ -113,7 +124,7 @@ push_call("compile_ppo",base);
         pop();
     if_1_1:
     if_1_0:;
-    line(25);
+    line(29);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);

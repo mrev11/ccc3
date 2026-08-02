@@ -1,5 +1,6 @@
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
@@ -7,6 +8,8 @@ function main(*)
 local arg:={*}
 local env:=pluginenv_init()
 local base,pge,sor
+local cmd
+local fdout
 
     ?? "!MSK2WRO.BAT",arg[1],arg[2];?
 
@@ -25,14 +28,22 @@ local base,pge,sor
     ferase(ERR)
     ferase(pge)
   
-
-    run( "msk2pge.exe -ur "+SOURCE+" "+pge+" 2>&1 >>"+OUT )
+    cmd:="msk2pge.exe -ur "+SOURCE+" "+pge
+    //run(cmd+" 2>&1 >>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_APPEND+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
     
     if( file(sor) )
-        run( "pge2wro.exe -r "+sor+" "+pge+" 2>&1 >>"+OUT )
+        cmd:="pge2wro.exe -r "+sor+" "+pge
     else
-        run( "pge2wro.exe            "+pge+" 2>&1 >>"+OUT )
+        cmd:="pge2wro.exe            "+pge
     end
+    //run(cmd+" 2>&1 >>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_APPEND+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
+
     ferase(pge)
 
     if( !empty(memoread(OUT)) )

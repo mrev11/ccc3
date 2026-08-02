@@ -1,4 +1,5 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
@@ -10,6 +11,7 @@ local rsp
 local eol:=chr(10)
 local obj,n
 local cmd
+local fdout
 
     ?? "!OBJ2LIB.BAT",arg[1]+".lib",BUILD_EXE;?
 
@@ -45,8 +47,11 @@ local cmd
     set CHANNEL(rsp) to
     set CHANNEL(rsp) off
 
-    cmd:="ar -c -q "+TARGET+" "+memoread(RSPLIB)::strtran(eol," ")+" 2>"+OUT
-    run(cmd)
+    cmd:="ar -c -q "+TARGET+" "+memoread(RSPLIB)::strtran(eol," ")
+    //run(cmd+" 2>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
     
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

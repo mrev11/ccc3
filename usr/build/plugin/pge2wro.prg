@@ -1,6 +1,7 @@
 
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
@@ -8,6 +9,8 @@ function main(*)
 local arg:={*}
 local env:=pluginenv_init()
 local base,pge,wro,sor
+local cmd
+local fdout
 
     ?? "!PGE2WRO.BAT",arg[1],arg[2];?
 
@@ -26,10 +29,14 @@ local base,pge,wro,sor
     ferase(ERR)
 
     if( file(sor) )
-        run( "pge2wro.exe -r "+sor+" "+pge+" 2>&1 >>"+OUT )
+        cmd:="pge2wro.exe -r "+sor+" "+pge
     else
-        run( "pge2wro.exe "+pge+" 2>&1 >>"+OUT )
+        cmd:="pge2wro.exe "+pge
     end
+    //run(cmd+" 2>&1 >>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_APPEND+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

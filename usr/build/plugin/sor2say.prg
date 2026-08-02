@@ -1,5 +1,6 @@
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
@@ -7,6 +8,7 @@ function main(*)
 local arg:={*}
 local env:=pluginenv_init()
 local cmd,params
+local fdout
 
     ?? "!SOR2SAY.BAT",arg[1],arg[2];?
 
@@ -25,8 +27,11 @@ local cmd,params
     params+=arg[2]+"/"+arg[1]+" "
     params+=arg[2]+"/"+arg[1]+".say"
 
-    cmd:="msk2say.exe "+params+" >"+OUT
-    run( cmd)
+    cmd:="msk2say.exe "+params
+    //run(cmd+" >"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(out)) )
         def_quit(arg,env,1)

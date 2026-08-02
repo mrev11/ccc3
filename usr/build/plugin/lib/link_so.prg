@@ -1,4 +1,5 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
@@ -8,6 +9,7 @@ local rsp
 local lpt,lib,n
 local eol:=chr(10)
 local cmd,tmp,x
+local fdout
 
     RSPLNK:=BUILD_OBJ+"/rsp--so-"+arg[1]
 
@@ -51,8 +53,11 @@ local cmd,tmp,x
     set channel(rsp) to
     set channel(rsp) off
 
-    cmd:="c++ "+memoread(RSPLNK)::strtran(eol," ")+" 2>"+OUT
-    run(cmd)
+    cmd:="c++ "+memoread(RSPLNK)::strtran(eol," ")
+    //run(cmd+" 2>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

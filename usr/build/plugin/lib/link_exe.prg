@@ -1,5 +1,6 @@
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
@@ -9,6 +10,7 @@ local rsp
 local lpt,lib,n
 local eol:=chr(10)
 local cmd,tmp,x
+local fdout
 local null:=if(dirsep()=="/","/dev/null","NUL")
 
     TARGET:=BUILD_EXE+"/"+arg[1]+".exe"
@@ -71,8 +73,11 @@ local null:=if(dirsep()=="/","/dev/null","NUL")
     set CHANNEL(rsp) to
 
     rsp:=memoread(RSPLNK)
-    cmd:="c++ "+rsp::strtran(eol," ")+" 2>"+OUT
-    run(cmd)
+    cmd:="c++ "+rsp::strtran(eol," ")
+    //run(cmd+" 2>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

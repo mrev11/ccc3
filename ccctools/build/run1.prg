@@ -38,18 +38,21 @@ local runcnt:=s_runcnt()
 
         if( dirsep()=="/" )
             // UNIX
-            run(cmd+" >"+runtmp)
+            out:=runch(cmd)
+
         elseif( s_batext()==".bld" )
             // Windows -> bash
             bash(cmd+" >"+runtmp)
+            out:=memoread(runtmp)
+            ferase(runtmp)
+
         else
             // Windows -> cmd
             cmd::=strtran("/","\")
             run(cmd+" >"+runtmp)
+            out:=memoread(runtmp)
+            ferase(runtmp)
         end
-
-        out:=memoread(runtmp)
-        ferase(runtmp)
 
         thread_mutex_lock(mutex_out)
         ?? out
@@ -76,6 +79,27 @@ static function bash(cmd)
     end
     spawn(3,"bash.exe","-c",'"'+cmd+'"')  //3=wait+path
 
+
+
+****************************************************************************
+static function runch(cmd)
+local pw,pr,rl
+local line,result:=a""
+
+    {pr,pw}:=runchild(cmd)
+    fclose(pw)
+
+    rl:=readlineNew(pr)
+    while( (line:=rl:readline)!=NIL )
+        result+=line
+    end
+    fclose(pr)
+
+    #ifdef UNIX
+    while( 0<waitpid(,,1) );end
+    #endif
+
+    return result
 
 
 ****************************************************************************

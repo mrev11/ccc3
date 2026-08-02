@@ -1,13 +1,15 @@
 
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 function main(*)
 
 local arg:={*}
 local env:=pluginenv_init()
-local cmd,params
+local cmd
+local fdout
 
     ?? "!MSK2HTML.BAT",arg;?
     
@@ -27,7 +29,11 @@ local cmd,params
     ferase(ERR)
 
 
-    run( "msk2html.exe "+SOURCE+" >"+OUT)
+    cmd:="msk2html.exe "+SOURCE
+    //run(cmd+" >"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
 
     if( !empty(memoread(OUT)) )

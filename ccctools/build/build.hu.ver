@@ -1,3 +1,6 @@
+2026.08.02 -- 1.9.0 
+  A build pluginokat run helyett spawn inditja.
+
 2026.07.31 -- 1.8.0 
   CCC-ben irt (exe) build pluginok tamogatasa;
   build a depend fajlokat kulon parameterben adja (korabban: 'idezojelek kozott adta');

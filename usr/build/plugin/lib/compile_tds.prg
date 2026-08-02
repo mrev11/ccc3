@@ -1,4 +1,5 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
@@ -6,6 +7,7 @@
 function compile_tds(arg,env)
 
 local cmd
+local fdout
 
 
     SOURCE:=arg[2]+"/"+arg[1]+".tds"
@@ -19,8 +21,11 @@ local cmd
 
     dirmake("ppo")
 
-    cmd:="tds2prg.exe "+SOURCE+" >"+OUT
-    run(cmd)
+    cmd:="tds2prg.exe "+SOURCE
+    //run(cmd+" >"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
     frename(arg[2]+"/"+arg[1]+".prg","ppo/"+arg[1]+".prg")
     
     if( !empty(memoread(OUT)) )

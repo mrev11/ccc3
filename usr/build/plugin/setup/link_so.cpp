@@ -6,14 +6,16 @@ extern void _clp_channelnew(int argno);
 extern void _clp_chr(int argno);
 extern void _clp_def_quit(int argno);
 extern void _clp_empty(int argno);
+extern void _clp_fclose(int argno);
 extern void _clp_ferase(int argno);
 extern void _clp_file(int argno);
+extern void _clp_fopen(int argno);
 extern void _clp_len(int argno);
 extern void _clp_link_so(int argno);
 extern void _clp_memoread(int argno);
 extern void _clp_pluginenv(int argno);
 extern void _clp_qqout(int argno);
-extern void _clp_run(int argno);
+extern void _clp_runredir(int argno);
 extern void _clp_split(int argno);
 extern void _clp_strtran(int argno);
 
@@ -27,19 +29,20 @@ void _clp_link_so(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,2);
-while(stack<base+10)PUSHNIL();
+while(stack<base+11)PUSHNIL();
 argno=2;
 push_call("link_so",base);
 //
-    line(7);
     line(8);
     line(9);
+    line(10);
     number(10);
     _clp_chr(1);
     assign(base+6);//eol
     pop();
-    line(10);
+    line(11);
     line(12);
+    line(14);
     push_symbol(base+1);//env
     string(L"RSPLNK");
     push_symbol(base+1);//env
@@ -52,31 +55,31 @@ push_call("link_so",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(14);
+    line(16);
     push_symbol(base+1);//env
     string(L"TARGET");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(15);
+    line(17);
     push_symbol(base+1);//env
     string(L"RSPLNK");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(16);
+    line(18);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(17);
+    line(19);
     push_symbol(base+1);//env
     string(L"ERR");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(19);
+    line(21);
     push_symbol(base+1);//env
     string(L"RSPLNK");
     _clp_pluginenv(2);
@@ -85,17 +88,17 @@ push_call("link_so",base);
     push(&FALSE);
     _o_method_open.eval(2);
     pop();
-    line(20);
+    line(22);
     push_symbol(base+2);//rsp
     _o_method_on.eval(1);
     pop();
-    line(22);
+    line(24);
     string(L"-shared");
     push_symbol(base+6);//eol
     add();
     _clp_qqout(1);
     pop();
-    line(23);
+    line(25);
     string(L"-o ");
     push_symbol(base+1);//env
     string(L"TARGET");
@@ -105,7 +108,7 @@ push_call("link_so",base);
     add();
     _clp_qqout(1);
     pop();
-    line(25);
+    line(27);
     push_symbol(base+1);//env
     string(L"BUILD_LPT");
     _clp_pluginenv(2);
@@ -113,9 +116,9 @@ push_call("link_so",base);
     _clp_split(2);
     assign(base+3);//lpt
     pop();
-    line(30);
+    line(32);
     {
-    line(26);
+    line(28);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -124,15 +127,15 @@ push_call("link_so",base);
     push_symbol(base+3);//lpt
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_1_2;
+        line(31);
         line(29);
-        line(27);
         push_symbol(base+3);//lpt
         push_symbol(base+5);//n
         idxr();
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_2_1;
-            line(28);
+            line(30);
             string(L"-L");
             push_symbol(base+3);//lpt
             push_symbol(base+5);//n
@@ -154,9 +157,9 @@ push_call("link_so",base);
     goto lab_1_0;
     lab_1_2:;
     }
-    line(34);
+    line(36);
     {
-    line(32);
+    line(34);
     push(&ONE);
     int sg=sign();
     number(2);
@@ -165,7 +168,7 @@ push_call("link_so",base);
     push_symbol(base+0);//arg
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_3_2;
-        line(33);
+        line(35);
         push_symbol(base+1);//env
         string(L"BUILD_OBJ");
         _clp_pluginenv(2);
@@ -191,7 +194,7 @@ push_call("link_so",base);
     goto lab_3_0;
     lab_3_2:;
     }
-    line(36);
+    line(38);
     push_symbol(base+1);//env
     string(L"BUILD_LIB");
     _clp_pluginenv(2);
@@ -199,9 +202,9 @@ push_call("link_so",base);
     _clp_split(2);
     assign(base+4);//lib
     pop();
-    line(41);
+    line(43);
     {
-    line(37);
+    line(39);
     push(&ONE);
     int sg=sign();
     push(&ONE);
@@ -210,15 +213,15 @@ push_call("link_so",base);
     push_symbol(base+4);//lib
     _clp_len(1);
     if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_4_2;
+        line(42);
         line(40);
-        line(38);
         push_symbol(base+4);//lib
         push_symbol(base+5);//n
         idxr();
         _clp_empty(1);
         topnot();
         if(!flag()) goto if_5_1;
-            line(39);
+            line(41);
             push_symbol(base+4);//lib
             push_symbol(base+5);//n
             idxr();
@@ -238,8 +241,8 @@ push_call("link_so",base);
     goto lab_4_0;
     lab_4_2:;
     }
+    line(47);
     line(45);
-    line(43);
     push_symbol(base+1);//env
     string(L"BUILD_LIBX");
     _clp_pluginenv(2);
@@ -254,7 +257,7 @@ push_call("link_so",base);
     _clp_file(1);
     }
     if(!flag()) goto if_6_1;
-        line(44);
+        line(46);
         push_symbol(base+1);//env
         string(L"BUILD_LIBX");
         _clp_pluginenv(2);
@@ -265,7 +268,7 @@ push_call("link_so",base);
         pop();
     if_6_1:
     if_6_0:;
-    line(47);
+    line(49);
     string(L"-Wl,-soname=");
     push_symbol(base+0);//arg
     idxr0(1);
@@ -276,7 +279,7 @@ push_call("link_so",base);
     add();
     _clp_qqout(1);
     pop();
-    line(49);
+    line(51);
     push_symbol(base+1);//env
     string(L"CCCDIR");
     _clp_pluginenv(2);
@@ -299,15 +302,15 @@ push_call("link_so",base);
     add();
     _clp_qqout(1);
     pop();
-    line(51);
+    line(53);
     push_symbol(base+2);//rsp
     _o_method_close.eval(1);
     pop();
-    line(52);
+    line(54);
     push_symbol(base+2);//rsp
     _o_method_off.eval(1);
     pop();
-    line(54);
+    line(56);
     string(L"c++ ");
     push_symbol(base+1);//env
     string(L"RSPLNK");
@@ -317,20 +320,28 @@ push_call("link_so",base);
     string(L" ");
     _clp_strtran(3);
     add();
-    string(L" 2>");
-    add();
+    assign(base+7);//cmd
+    pop();
+    line(58);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
-    add();
-    assign(base+7);//cmd
-    pop();
-    line(55);
-    push_symbol(base+7);//cmd
-    _clp_run(1);
+    number(770);
+    _clp_fopen(2);
+    assign(base+10);//fdout
     pop();
     line(59);
-    line(57);
+    push_symbol(base+7);//cmd
+    push_symbol(base+10);//fdout
+    push_symbol(base+10);//fdout
+    _clp_runredir(3);
+    pop();
+    line(60);
+    push_symbol(base+10);//fdout
+    _clp_fclose(1);
+    pop();
+    line(64);
+    line(62);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
@@ -338,7 +349,7 @@ push_call("link_so",base);
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_7_1;
-        line(58);
+        line(63);
         push_symbol(base+0);//arg
         push_symbol(base+1);//env
         push(&ONE);
@@ -346,13 +357,13 @@ push_call("link_so",base);
         pop();
     if_7_1:
     if_7_0:;
-    line(61);
+    line(66);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(62);
+    line(67);
     push_symbol(base+0);//arg
     push_symbol(base+1);//env
     push(&ZERO);

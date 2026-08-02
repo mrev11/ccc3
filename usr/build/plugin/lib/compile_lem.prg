@@ -1,10 +1,12 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
 
 function compile_lem(arg,env)
 local cmd
+local fdout
 
     SOURCE:=arg[2]+"/"+arg[1]+".lem"
     TARGET:="ppo/"+arg[1]+".cpp"
@@ -17,8 +19,12 @@ local cmd
 
     dirmake("ppo")
 
-    cmd:="lemon.exe -q o=ppo/"+arg[1]+".cpp "+SOURCE+" >"+OUT+" 2>&1"
-    run(cmd)
+    cmd:="lemon.exe -q o=ppo/"+arg[1]+".cpp "+SOURCE
+    //run(cmd+" >"+OUT+" 2>&1")
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
+
 
     if( ! ("pathsearch" $ memoread(OUT)) )
         // kerdes, hogyan lehet kitalalni

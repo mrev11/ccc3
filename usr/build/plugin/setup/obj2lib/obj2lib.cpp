@@ -6,8 +6,10 @@ extern void _clp_channelnew(int argno);
 extern void _clp_chr(int argno);
 extern void _clp_def_quit(int argno);
 extern void _clp_empty(int argno);
+extern void _clp_fclose(int argno);
 extern void _clp_ferase(int argno);
 extern void _clp_file(int argno);
+extern void _clp_fopen(int argno);
 extern void _clp_len(int argno);
 extern void _clp_main(int argno);
 extern void _clp_memoread(int argno);
@@ -15,7 +17,7 @@ extern void _clp_pluginenv(int argno);
 extern void _clp_pluginenv_init(int argno);
 extern void _clp_qout(int argno);
 extern void _clp_qqout(int argno);
-extern void _clp_run(int argno);
+extern void _clp_runredir(int argno);
 extern void _clp_split(int argno);
 extern void _clp_strtran(int argno);
 
@@ -28,29 +30,30 @@ class _method6_open: public _method6_{public: _method6_open():_method6_("open"){
 void _clp_main(int argno)
 {
 VALUE *base=stack-argno;
-while(stack<base+argno+7)PUSHNIL();
+while(stack<base+argno+8)PUSHNIL();
 push_call("main",base);
 //
-    line(6);
+    line(7);
     {int argc=1-1;
     {int i;for(i=0;i<argno;i++){argc++;push_symbol(base+i);}}
     array(argc);
     };
     assign(base+argno+0);//arg
     pop();
-    line(7);
+    line(8);
     _clp_pluginenv_init(0);
     assign(base+argno+1);//env
     pop();
-    line(9);
     line(10);
+    line(11);
     number(10);
     _clp_chr(1);
     assign(base+argno+3);//eol
     pop();
-    line(11);
     line(12);
+    line(13);
     line(14);
+    line(16);
     string(L"!OBJ2LIB.BAT");
     push_symbol(base+argno+0);//arg
     idxr0(1);
@@ -63,7 +66,7 @@ push_call("main",base);
     pop();
     _clp_qout(0);
     pop();
-    line(16);
+    line(18);
     push_symbol(base+argno+1);//env
     string(L"TARGET");
     push_symbol(base+argno+1);//env
@@ -78,7 +81,7 @@ push_call("main",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(17);
+    line(19);
     push_symbol(base+argno+1);//env
     string(L"RSPLIB");
     push_symbol(base+argno+1);//env
@@ -91,18 +94,9 @@ push_call("main",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(18);
+    line(20);
     push_symbol(base+argno+1);//env
     string(L"OUT");
-    string(L"out--obj2lib-");
-    push_symbol(base+argno+0);//arg
-    idxr0(1);
-    add();
-    _clp_pluginenv(3);
-    pop();
-    line(19);
-    push_symbol(base+argno+1);//env
-    string(L"ERR");
     string(L"out--obj2lib-");
     push_symbol(base+argno+0);//arg
     idxr0(1);
@@ -111,36 +105,45 @@ push_call("main",base);
     pop();
     line(21);
     push_symbol(base+argno+1);//env
-    string(L"TARGET");
-    _clp_pluginenv(2);
-    _clp_ferase(1);
-    pop();
-    line(22);
-    push_symbol(base+argno+1);//env
-    string(L"RSPLIB");
-    _clp_pluginenv(2);
-    _clp_ferase(1);
+    string(L"ERR");
+    string(L"out--obj2lib-");
+    push_symbol(base+argno+0);//arg
+    idxr0(1);
+    add();
+    _clp_pluginenv(3);
     pop();
     line(23);
     push_symbol(base+argno+1);//env
-    string(L"OUT");
+    string(L"TARGET");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
     line(24);
     push_symbol(base+argno+1);//env
-    string(L"ERR");
+    string(L"RSPLIB");
+    _clp_pluginenv(2);
+    _clp_ferase(1);
+    pop();
+    line(25);
+    push_symbol(base+argno+1);//env
+    string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
     line(26);
+    push_symbol(base+argno+1);//env
+    string(L"ERR");
+    _clp_pluginenv(2);
+    _clp_ferase(1);
+    pop();
+    line(28);
     push_symbol(base+argno+1);//env
     string(L"LIBNAME");
     push_symbol(base+argno+0);//arg
     idxr0(1);
     _clp_pluginenv(3);
     pop();
-    line(28);
+    line(30);
     push_symbol(base+argno+1);//env
     string(L"RSPLIB");
     _clp_pluginenv(2);
@@ -149,12 +152,12 @@ push_call("main",base);
     push(&FALSE);
     _o_method_open.eval(2);
     pop();
-    line(29);
+    line(31);
     push_symbol(base+argno+2);//rsp
     _o_method_on.eval(1);
     pop();
-    line(43);
-    line(32);
+    line(45);
+    line(34);
     push_symbol(base+argno+1);//env
     string(L"BUILD_OBJ");
     _clp_pluginenv(2);
@@ -166,7 +169,7 @@ push_call("main",base);
     add();
     _clp_file(1);
     if(!flag()) goto if_1_1;
-        line(34);
+        line(36);
         push_symbol(base+argno+1);//env
         string(L"BUILD_OBJ");
         _clp_pluginenv(2);
@@ -181,9 +184,9 @@ push_call("main",base);
         _clp_split(2);
         assign(base+argno+4);//obj
         pop();
-        line(37);
+        line(39);
         {
-        line(35);
+        line(37);
         push(&ONE);
         int sg=sign();
         push(&ONE);
@@ -192,7 +195,7 @@ push_call("main",base);
         push_symbol(base+argno+4);//obj
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_2_2;
-            line(36);
+            line(38);
             push_symbol(base+argno+1);//env
             string(L"BUILD_OBJ");
             _clp_pluginenv(2);
@@ -222,10 +225,10 @@ push_call("main",base);
         }
     goto if_1_0;
     if_1_1:
-    line(38);
-        line(42);
+    line(40);
+        line(44);
         {
-        line(40);
+        line(42);
         push(&ONE);
         int sg=sign();
         number(2);
@@ -234,7 +237,7 @@ push_call("main",base);
         push_symbol(base+argno+0);//arg
         _clp_len(1);
         if( ((sg>=0)&&greaterthan()) || ((sg<0)&&lessthan())) goto lab_3_2;
-            line(41);
+            line(43);
             push_symbol(base+argno+1);//env
             string(L"BUILD_OBJ");
             _clp_pluginenv(2);
@@ -262,15 +265,15 @@ push_call("main",base);
         }
     if_1_2:
     if_1_0:;
-    line(45);
+    line(47);
     push_symbol(base+argno+2);//rsp
     _o_method_close.eval(1);
     pop();
-    line(46);
+    line(48);
     push_symbol(base+argno+2);//rsp
     _o_method_off.eval(1);
     pop();
-    line(48);
+    line(50);
     string(L"ar -c -q ");
     push_symbol(base+argno+1);//env
     string(L"TARGET");
@@ -286,20 +289,28 @@ push_call("main",base);
     string(L" ");
     _clp_strtran(3);
     add();
-    string(L" 2>");
-    add();
+    assign(base+argno+6);//cmd
+    pop();
+    line(52);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
-    add();
-    assign(base+argno+6);//cmd
-    pop();
-    line(49);
-    push_symbol(base+argno+6);//cmd
-    _clp_run(1);
+    number(770);
+    _clp_fopen(2);
+    assign(base+argno+7);//fdout
     pop();
     line(53);
-    line(51);
+    push_symbol(base+argno+6);//cmd
+    push_symbol(base+argno+7);//fdout
+    push_symbol(base+argno+7);//fdout
+    _clp_runredir(3);
+    pop();
+    line(54);
+    push_symbol(base+argno+7);//fdout
+    _clp_fclose(1);
+    pop();
+    line(58);
+    line(56);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
@@ -307,7 +318,7 @@ push_call("main",base);
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_4_1;
-        line(52);
+        line(57);
         push_symbol(base+argno+0);//arg
         push_symbol(base+argno+1);//env
         push(&ONE);
@@ -315,13 +326,13 @@ push_call("main",base);
         pop();
     if_4_1:
     if_4_0:;
-    line(55);
+    line(60);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(56);
+    line(61);
     push_symbol(base+argno+0);//arg
     push_symbol(base+argno+1);//env
     push(&ZERO);

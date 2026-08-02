@@ -1,11 +1,12 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
-
 
 
 function compile_prg(arg,env)
 
 local cmd
+local fdout
 
     //SOURCE (valtozhat)
     TARGET:="ppo/"+arg[1]+".ppo"
@@ -18,8 +19,11 @@ local cmd
 
     dirmake("ppo")
 
-    cmd:="prg2ppo.exe "+SOURCE+" -o"+TARGET+" @"+CMPOPT+" >"+OUT
-    run(cmd)
+    cmd:="prg2ppo.exe "+SOURCE+" -o"+TARGET+" @"+CMPOPT
+    //run(cmd+" >"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
     
     if( !"Number of translate rules"$memoread(OUT) )
         def_quit(arg,env,1)

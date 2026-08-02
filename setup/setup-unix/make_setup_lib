@@ -5,10 +5,12 @@
 
 ./cc ${CCCDIR}/ccclib/src/unix/envir.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/chown.cpp
+./cc ${CCCDIR}/ccclib/src/unix/fdup.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/filecreat.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/fork.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/fseek.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/nlstext.cpp
+./cc ${CCCDIR}/ccclib/src/unix/pipe.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/readdir.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/signals.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/utime.cpp
@@ -77,6 +79,7 @@
 ./cc ${CCCDIR}/ccclib/src/variable.cpp
 ./cc ${CCCDIR}/ccclib/src/variablex.cpp
 ./cc ${CCCDIR}/ccclib/src/varprint.cpp
+./cc ${CCCDIR}/ccclib/src/vmm.cpp
 ./cc ${CCCDIR}/ccclib/src/xmethod3.cpp
 ./cc ${CCCDIR}/ccclib/src/xmethod6.cpp
 

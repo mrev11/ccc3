@@ -1,10 +1,12 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
 
 function compile_tdc(arg,env)
 local cmd
+local fdout
 
     SOURCE:=arg[2]+"/"+arg[1]+".tdc"
     TARGET:="ppo/"+arg[1]+".prg"
@@ -18,8 +20,11 @@ local cmd
     dirmake("ppo")
         filecopy( SOURCE, "ppo/"+arg[1]+".tdc" )
         dirchange("ppo")
-        cmd:="tdc2prg.exe "+arg[1]+".tdc >../"+OUT
-        run(cmd)
+        cmd:="tdc2prg.exe "+arg[1]+".tdc"
+        //run(cmd+" >../"+OUT)
+        fdout:=fopen("../"+OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+        runredir(cmd,fdout,fdout)
+        fclose(fdout)
     dirchange("..")
 
     if( !empty(memoread(OUT)) )

@@ -19,7 +19,7 @@
  */
 
 
-#define VERSION "1.8.0"
+#define VERSION "1.9.0"
 
 #define LOWER(x) (x)
 

@@ -5,22 +5,25 @@
 extern void _clp_compile_lem(int argno);
 extern void _clp_def_quit(int argno);
 extern void _clp_dirmake(int argno);
+extern void _clp_fclose(int argno);
 extern void _clp_ferase(int argno);
+extern void _clp_fopen(int argno);
 extern void _clp_memoread(int argno);
 extern void _clp_pluginenv(int argno);
-extern void _clp_run(int argno);
+extern void _clp_runredir(int argno);
 
 //=======================================================================
 void _clp_compile_lem(int argno)
 {
 VALUE *base=stack-argno;
 stack=base+min(argno,2);
-while(stack<base+3)PUSHNIL();
+while(stack<base+4)PUSHNIL();
 argno=2;
 push_call("compile_lem",base);
 //
-    line(7);
+    line(8);
     line(9);
+    line(11);
     push_symbol(base+1);//env
     string(L"SOURCE");
     push_symbol(base+0);//arg
@@ -34,7 +37,7 @@ push_call("compile_lem",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(10);
+    line(12);
     push_symbol(base+1);//env
     string(L"TARGET");
     string(L"ppo/");
@@ -45,7 +48,7 @@ push_call("compile_lem",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(11);
+    line(13);
     push_symbol(base+1);//env
     string(L"OUT");
     string(L"out--lem2cpp-");
@@ -54,7 +57,7 @@ push_call("compile_lem",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(12);
+    line(14);
     push_symbol(base+1);//env
     string(L"ERR");
     string(L"error--lem2cpp-");
@@ -63,29 +66,29 @@ push_call("compile_lem",base);
     add();
     _clp_pluginenv(3);
     pop();
-    line(14);
+    line(16);
     push_symbol(base+1);//env
     string(L"TARGET");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(15);
+    line(17);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(16);
+    line(18);
     push_symbol(base+1);//env
     string(L"ERR");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(18);
+    line(20);
     string(L"ppo");
     _clp_dirmake(1);
     pop();
-    line(20);
+    line(22);
     string(L"lemon.exe -q o=ppo/");
     push_symbol(base+0);//arg
     idxr0(1);
@@ -96,22 +99,28 @@ push_call("compile_lem",base);
     string(L"SOURCE");
     _clp_pluginenv(2);
     add();
-    string(L" >");
-    add();
+    assign(base+2);//cmd
+    pop();
+    line(24);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
-    add();
-    string(L" 2>&1");
-    add();
-    assign(base+2);//cmd
+    number(770);
+    _clp_fopen(2);
+    assign(base+3);//fdout
     pop();
-    line(21);
+    line(25);
     push_symbol(base+2);//cmd
-    _clp_run(1);
+    push_symbol(base+3);//fdout
+    push_symbol(base+3);//fdout
+    _clp_runredir(3);
     pop();
-    line(28);
-    line(23);
+    line(26);
+    push_symbol(base+3);//fdout
+    _clp_fclose(1);
+    pop();
+    line(34);
+    line(29);
     string(L"pathsearch");
     push_symbol(base+1);//env
     string(L"OUT");
@@ -120,7 +129,7 @@ push_call("compile_lem",base);
     ss();
     topnot();
     if(!flag()) goto if_1_1;
-        line(27);
+        line(33);
         push_symbol(base+0);//arg
         push_symbol(base+1);//env
         push(&ONE);
@@ -128,7 +137,7 @@ push_call("compile_lem",base);
         pop();
     if_1_1:
     if_1_0:;
-    line(30);
+    line(36);
     push_symbol(base+1);//env
     string(L"OUT");
     _clp_pluginenv(2);

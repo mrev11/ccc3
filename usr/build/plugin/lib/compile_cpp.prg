@@ -1,4 +1,5 @@
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
 
@@ -6,6 +7,7 @@
 function compile_cpp(arg,env)
 
 local cmd
+local fdout
 local eol:=chr(10)
 
     dirmake("object")
@@ -19,8 +21,11 @@ local eol:=chr(10)
     ferase(OUT)
     ferase(ERR)
 
-    cmd:="c++ "+memoread(CMPOPT)::strtran(eol," ")+" -o "+TARGET+" -c "+SOURCE+" 2>"+OUT
-    run(cmd)
+    cmd:="c++ "+memoread(CMPOPT)::strtran(eol," ")+" -o "+TARGET+" -c "+SOURCE
+    //run(cmd+" 2>"+OUT)
+    fdout:=fopen(OUT,FO_CREATE+FO_TRUNCATE+FO_READWRITE)
+    runredir(cmd,fdout,fdout)
+    fclose(fdout)
 
     if( !empty(memoread(OUT)) )
         def_quit(arg,env,1)

@@ -1,0 +1,6 @@
+-lstdc++
+-lm
+-lpthread
+-lsocket
+-lnsl
+-rdynamic

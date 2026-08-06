@@ -18,15 +18,13 @@
 -Wno-unused-result
 -Wno-trigraphs
 -Wno-empty-body
--Wno-format
 -Wno-format-overflow
 -Wno-parentheses
--Wno-unknown-warning-option
 -Wno-constant-logical-operand
 -Wno-deprecated-declarations
+-Wno-char-subscripts
 -Wno-unknown-warning-option
 -Wno-vla-cxx-extension
--Wno-c99-extensions
 
--I/usr/X11/include
--I/usr/sfw/include
+-I/usr/local/include
+-I/usr/pkg/include

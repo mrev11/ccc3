@@ -3,8 +3,14 @@
 
 . ${CCCDIR}/usr/setenv/colors
 
-CPPVER=$(c++ -v 2>&1 | grep \ version)
-CPPVER=${CPPVER//\(*/}
+VER=$(c++ -v 2>&1 | grep \ version)
+unset CPPVER
+for tag in $VER; do
+    CPPVER="${CPPVER} ${tag}"
+    if [[ $tag =~ [0-9]\.[0-9]\.[0-9] ]]; then
+        break
+    fi
+done
 
 echo -e $BOLD
 echo -e $RED

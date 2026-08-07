@@ -1,41 +1,48 @@
 #!/bin/bash
 
-VER=$(c++ -v 2>&1 | grep \ version)
-VER=${VER//FreeBSD /}
-# echo $VER
+unset COMPILER_NAME
 
-IFS=' ' read -r -a ver <<< "$VER"  # split to array
-# echo ${ver[0]}  # gcc
-# echo ${ver[1]}  # version
-# echo ${ver[2]}  # x.y.z
+VER=$(c++ -v 2>&1 | grep \ version)
+for tag in $VER; do
+    if [[ $tag =~ (clang|gcc) ]]; then
+        COMPILER_NAME=$tag
+    elif [[ $tag =~ [0-9]*\.[0-9]*\.[0-9]* ]]; then
+        COMPILER_VERSION=$tag
+    fi
+done
+
+if [ -z $COMPILER_NAME ] ;then
+    echo ERROR: unknown c++ compiler
+    c++ -v
+    read
+    exit 1
+fi
 
 CPPVER=$CCCDIR/usr/options/${CCCUNAME}/${CCCBIN}/cppver
 
 
 if ! test -f $CPPVER.exp; then
-    echo  CPP_COMPILER=${ver[0]}    >> $CPPVER.exp
-    echo  CPP_VERSION=${ver[2]}     >> $CPPVER.exp
-    . $CPPVER.exp
-else
-    OBJECT_TYPE=${ver[0]}$MSYSTEM
-    . $CPPVER.exp
-
-    if [[ $OBJECT_TYPE != $CPP_COMPILER$MSYSTEM  ]]; then
-        echo ERROR: incompatible object types: $OBJECT_TYPE '<->' $CPP_COMPILER$MSYSTEM
-        exit 1
-    fi
+    echo  CPP_COMPILER=${COMPILER_NAME}     >> $CPPVER.exp
+    echo  CPP_VERSION=${COMPILER_VERSION}   >> $CPPVER.exp
 fi
+. $CPPVER.exp
+
+if [[ $COMPILER_NAME != $CPP_COMPILER ]]; then
+    echo ERROR: incompatible object types: $COMPILER_NAME  '<->' $CPP_COMPILER
+    read
+    exit 1
+fi
+
 
 if ! test -f $CPPVER.opt; then
-    echo -D_${ver[0]^^}_             > $CPPVER.opt
-    echo -DCPP_COMPILER=${ver[0]}   >> $CPPVER.opt
-    echo -DCPP_VERSION=${ver[2]}    >> $CPPVER.opt
+    echo -D_${COMPILER_NAME^^}_                  > $CPPVER.opt
+    echo -DCPP_COMPILER=${COMPILER_NAME}        >> $CPPVER.opt
+    echo -DCPP_VERSION=${COMPILER_VERSION}      >> $CPPVER.opt
     if ! [ "$TERMUX_VERSION" == "" ]; then
-        echo -D_TERMUX_             >> $CPPVER.opt
+        echo -D_TERMUX_                         >> $CPPVER.opt
     fi
 fi
 
-export MSYSTEM
 export CPP_COMPILER
 export CPP_VERSION
 

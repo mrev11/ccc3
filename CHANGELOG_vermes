@@ -1,4 +1,8 @@
 2026.08.07 
+  jobb cccenv.sh implementacio;
+  jobb _cpp_version.sh implementacio;
+
+2026.08.07 
   forditas FreeBSD 15.1 rendszeren;
   forditas NetBSD 11.0 rendszeren;
 

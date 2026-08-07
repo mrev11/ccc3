@@ -3,7 +3,7 @@
 
 FLEX=$CCCDIR/usr/bin/flex.exe
 
-CFLAGS=
+CFLAGS=-funsigned-char
 CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
 CFLAGS="-Wno-unknown-warning-option $CFLAGS"
 CFLAGS="-Wno-old-style-definition $CFLAGS"

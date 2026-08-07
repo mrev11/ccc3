@@ -4,6 +4,7 @@
 . ${CCCDIR}/usr/setenv/colors
 
 CPPVER=$(c++ -v 2>&1 | grep \ version)
+CPPVER=${CPPVER//\(*/}
 
 echo -e $BOLD
 echo -e $RED

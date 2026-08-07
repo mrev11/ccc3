@@ -3,7 +3,7 @@
 LEMON_PATH=$CCCDIR/usr/bin
 LEMON_EXE=$LEMON_PATH/lemon.exe
 
-CFLAGS=
+CFLAGS=-funsigned-char
 CFLAGS="-Wno-deprecated-non-prototype $CFLAGS"
 CFLAGS="-Wno-unknown-warning-option $CFLAGS"
 #CFLAGS="-Wno-old-style-definition $CFLAGS"

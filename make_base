@@ -112,7 +112,7 @@ fi
 ( cd tools/dirsync          && m )
 ( cd tools/list             && m )
 ( cd tools/pcre2            && m )                               
-( cd tools/regex            && m )
+#( cd tools/regex            && m )
 ( cd tools/socket           && m )
 ( cd tools/textview         && m )                            
 ( cd tools/xmldom           && m )

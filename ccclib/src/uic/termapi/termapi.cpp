@@ -233,7 +233,7 @@ static void sendall()
 }
 
 //----------------------------------------------------------------------------
-THREAD_ENTRY static void *thread_display(void *ptr)
+THREAD_ENTRY  void *thread_display(void *ptr)
 {
     while(display_loop)
     {
@@ -250,7 +250,7 @@ THREAD_ENTRY static void *thread_display(void *ptr)
 }
 
 //----------------------------------------------------------------------------
-THREAD_ENTRY static void *thread_message(void *ptr)
+THREAD_ENTRY  void *thread_message(void *ptr)
 {
     char *env=getenv("CCCTERM_MAILSLOT");
     if( !env )

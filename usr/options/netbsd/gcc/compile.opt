@@ -1,3 +1,4 @@
+-std=c++17
 -DNETBSD
 -D_NETBSD_
 -DUNIX
@@ -10,6 +11,7 @@
 -D_REENTRANT
 -DMULTITHREAD
 -O0
+-g
 -funsigned-char
 -fPIC
 -Wall

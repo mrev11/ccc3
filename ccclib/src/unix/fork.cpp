@@ -21,11 +21,23 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <cccapi.h>
+#include <fork.ch>
+
+extern  int termio_socket();
+extern  void *vartab_collector(void *ptr);
+extern  void *thread_display(void *ptr);
+extern  void *thread_message(void *ptr);
+
 
 //--------------------------------------------------------------------------
 void _clp_fork(int argno) 
 {
-    CCC_PROLOG("fork",0);
+    CCC_PROLOG("fork",1);
+    int forkflag=ISNIL(1)?0:_parni(1);
+
+    logical(0);
+    _clp_setsignal(1); // disable (level)
+    pop();
 
     pid_t pid=fork();
     
@@ -57,17 +69,55 @@ void _clp_fork(int argno)
                 }
             }
         }
+        
+        if( forkflag & FORK_GC )
+        {
+            // gc thread
+            pthread_t t=0;
+            pthread_create(&t,0,vartab_collector,0);
+            #ifdef _LINUX_
+                pthread_setname_np(t,"collector");
+            #endif
+            pthread_detach(t);
+        }
+        
+        if( forkflag & FORK_SIG )
+        {
+            // sigwait thread
+            setup_signal_handlers();
+        }
 
-        extern void *vartab_collector(void *ptr);
+        if( (forkflag & FORK_TERM)!=0 && 0<=termio_socket() )
+        {
+            // terminal thread
 
-        setup_signal_handlers();
-        pthread_t t=0;
-        pthread_create(&t,0,vartab_collector,0);
-#ifdef _LINUX_
-        pthread_setname_np(t,"collector");
-#endif
-        pthread_detach(t);
+            pthread_t t=0;
+
+            if( 0!=pthread_create(&t,0,thread_display,0) )
+            {
+                fprintf(stderr,"display thread cannot start\n");
+                exit(1);
+            }
+            #ifdef _LINUX_
+                pthread_setname_np(t,"display");
+            #endif
+            pthread_detach(t);
+
+            if( 0!=pthread_create(&t,0,thread_message,0) )
+            {
+                fprintf(stderr,"message thread cannot start\n");
+                exit(1);
+            }
+            #ifdef _LINUX_
+                pthread_setname_np(t,"message");
+            #endif
+            pthread_detach(t);
+        }
     }
+
+    logical(1);
+    _clp_setsignal(1); // enable (level)
+    pop();
     
     _retni(pid);
     CCC_EPILOG();

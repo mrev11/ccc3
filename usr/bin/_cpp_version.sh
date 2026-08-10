@@ -3,6 +3,9 @@
 unset COMPILER_NAME
 
 VER=$(c++ -v 2>&1 | grep \ version)
+VER=${VER%(*}
+# echo $VER
+
 for tag in $VER; do
     if [[ $tag =~ (clang|gcc) ]]; then
         COMPILER_NAME=$tag

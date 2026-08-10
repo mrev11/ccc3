@@ -1,3 +1,11 @@
+2026.08.10 
+  fork( forkflag ):
+    (forkflag & FORK_GC)!=0 eseten eseten a child collector szalat indit,
+    (forkflag & FORK_SIG)!=0 eseten eseten a child sigwait szalat indit,
+    (forkflag & FORK_TERM)!=0 eseten eseten a child terminal szalat indit,
+  altalaben ezekre nincs szukseg, mert a forkot tipikusan exec koveti;
+  fork es gc idoben elkulonitve: atfork lockolja a gc-t, fork utan feloldja lockot;
+
 2026.08.07 
   jobb cccenv.sh implementacio;
   jobb _cpp_version.sh implementacio;

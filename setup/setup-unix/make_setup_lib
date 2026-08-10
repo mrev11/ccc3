@@ -2,6 +2,7 @@
 
 ./cc ${CCCDIR}/ccclib/src/ui_/main.cpp
 ./cc ${CCCDIR}/ccclib/src/ui_/remoteio.cpp
+./cc ${CCCDIR}/ccclib/src/ui_/sckterm.cpp
 
 ./cc ${CCCDIR}/ccclib/src/unix/envir.cpp
 ./cc ${CCCDIR}/ccclib/src/unix/chown.cpp

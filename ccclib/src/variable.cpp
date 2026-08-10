@@ -156,32 +156,8 @@ static varlock mutx_sweep(11);          // sweep vezerlese
 static varlock mutx_mark(41);           // mark vezerlese
 static varlock mutx_value(41);          // assign vezerlese
 
-//---------------------------------------------------------------------------
-static void mutex_state_init() // fork utan a childban elengedi a gc mutexeit
-{
-    sync_gc.init();
-    sync_gc_force.init();
-    sync_oreftab.init();
-    sync_vreftab.init();
-    sync_stack.init();
-
-    sync_olast.init();
-    sync_vlast.init();
-    sync_ofree.init();
-    sync_vfree.init();
-    sync_oresv.init();
-
-    mutx_mark.init();
-    mutx_sweep.init();
-    mutx_value.init();
-}
 
 //---------------------------------------------------------------------------
-static void oreftab_lock()   {sync_oreftab.lock();} // mutator
-static void vreftab_lock()   {sync_vreftab.lock();} // mutator
-static void oreftab_unlock() {sync_oreftab.lock_free();} // mutator
-static void vreftab_unlock() {sync_vreftab.lock_free();} // mutator
-
 
 #ifdef FINE_GRAINED_LOCK
   int  assign_lock0(){ return mutx_value.lock(0); } // megfogja mutx[0]-t (specialis)
@@ -199,6 +175,9 @@ static void vreftab_unlock() {sync_vreftab.lock_free();} // mutator
   int  mark_lock(VALUE *v){ return mutx_mark.lock(v->data.array.oref); }
   int  mark_lock(int x){ return mutx_mark.lock(x); }
   void mark_unlock(int x){ mutx_mark.lock_free(x); }
+  int  mark_lock(){ return mutx_mark.lock(); } // minden MARK mutexet megfog
+  void mark_unlock(){ mutx_mark.lock_free(); } // minden MARK mutexet elenged
+
 #endif
 
 #ifdef COARSE_GRAINED_LOCK
@@ -218,8 +197,37 @@ static void vreftab_unlock() {sync_vreftab.lock_free();} // mutator
   int  mark_lock(VALUE *v){ return mutx_mark.lock(0); }
   int  mark_lock(int x){ return mutx_mark.lock(0); }
   void mark_unlock(int x){ mutx_mark.lock_free(0); }
+  int  mark_lock(){ return mutx_mark.lock(); } // minden MARK mutexet megfog
+  void mark_unlock(){ mutx_mark.lock_free(); } // minden MARK mutexet elenged
 #endif
 
+
+
+//---------------------------------------------------------------------------
+static void oreftab_lock()   {sync_oreftab.lock();} // mutator
+static void vreftab_lock()   {sync_vreftab.lock();} // mutator
+static void oreftab_unlock() {sync_oreftab.lock_free();} // mutator
+static void vreftab_unlock() {sync_vreftab.lock_free();} // mutator
+
+
+//---------------------------------------------------------------------------
+static void fork_lock()  // atfork
+{
+    sync_gc.lock();
+    assign_lock();
+    oreftab_lock();
+    vreftab_lock();
+    mark_lock();
+}
+
+static void fork_lock_free() // atfork
+{
+    mark_unlock();
+    vreftab_unlock();
+    oreftab_unlock();
+    assign_unlock();
+    sync_gc.lock_free();
+}
 
 //---------------------------------------------------------------------------
 void vartab_ini(void)
@@ -334,7 +342,7 @@ void vartab_ini(void)
 
 #ifndef WINDOWS
     // windowson nincs fork
-    pthread_atfork(0,0,mutex_state_init);
+    pthread_atfork(fork_lock, fork_lock_free, fork_lock_free);
 #endif
 }
 

@@ -58,7 +58,7 @@ push_call("run1",base);
     addnum(1);
     _clp_s_runcnt(1);
     pop();
-    line(71);
+    line(69);
     line(33);
     _clp_s_dry(0);
     topnot();
@@ -82,7 +82,7 @@ push_call("run1",base);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(55);
+        line(53);
         line(39);
         _clp_dirsep(0);
         string(L"/");
@@ -131,45 +131,33 @@ push_call("run1",base);
             pop();
             line(52);
             push_symbol(base+0);//cmd
-            string(L" >");
-            add();
-            push_symbol(base+1);//runtmp
-            add();
-            _clp_run(1);
-            pop();
-            line(53);
-            push_symbol(base+1);//runtmp
-            _clp_memoread(1);
+            _clp_runch(1);
             assign(base+2);//out
-            pop();
-            line(54);
-            push_symbol(base+1);//runtmp
-            _clp_ferase(1);
             pop();
         if_2_3:
         if_2_0:;
-        line(57);
+        line(55);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_lock(1);
         pop();
-        line(58);
+        line(56);
         push_symbol(base+2);//out
         _clp_qqout(1);
         pop();
-        line(59);
+        line(57);
         push_symbol(_st_mutex_out.ptr);//run1
         _clp_thread_mutex_unlock(1);
         pop();
-        line(70);
-        line(61);
+        line(68);
+        line(59);
         string(L"error");
         _clp_file(1);
         if(!flag()) goto if_3_1;
-            line(63);
+            line(61);
             string(L"cat error");
             _clp_run(1);
             pop();
-            line(69);
+            line(67);
             push(&TRUE);
             _clp_s_dry(1);
             pop();
@@ -191,23 +179,23 @@ while(stack<base+1)PUSHNIL();
 argno=1;
 push_call("bash",base);
 //
-    line(76);
+    line(74);
     push_symbol(base+0);//cmd
     string(L"\\");
     string(L"/");
     _clp_strtran(3);
     assign(base+0);//cmd
     pop();
-    line(79);
     line(77);
+    line(75);
     string(L":/");
     push_symbol(base+0);//cmd
     _clp_at(2);
     number(2);
     eqeq();
-    cmp_545:;
+    cmp_509:;
     if(!flag()) goto if_4_1;
-        line(78);
+        line(76);
         string(L"/");
         push_symbol(base+0);//cmd
         idxr0(1);
@@ -221,7 +209,7 @@ push_call("bash",base);
         pop();
     if_4_1:
     if_4_0:;
-    line(80);
+    line(78);
     number(3);
     string(L"bash.exe");
     string(L"-c");
@@ -246,12 +234,12 @@ while(stack<base+6)PUSHNIL();
 argno=1;
 push_call("runch",base);
 //
-    line(86);
-    line(87);
+    line(84);
+    line(85);
     binary("");
     assign(base+5);//result
     pop();
-    line(89);
+    line(87);
     push_symbol(base+0);//cmd
     _clp_runchild(1);
     dup();
@@ -263,26 +251,26 @@ push_call("runch",base);
     assign(base+2);//pr
     pop();
     pop();
-    line(90);
+    line(88);
     push_symbol(base+1);//pw
     _clp_fclose(1);
     pop();
-    line(92);
+    line(90);
     push_symbol(base+2);//pr
     _clp_readlinenew(1);
     assign(base+3);//rl
     pop();
-    line(95);
-    lab_5_1:
     line(93);
+    lab_5_1:
+    line(91);
     push_symbol(base+3);//rl
     _o_method_readline.eval(1);
     assign(base+4);//line
     push(&NIL);
     neeq();
-    cmp_763:;
+    cmp_727:;
     if(!flag()) goto lab_5_2;
-        line(94);
+        line(92);
         push_symbol(base+5);//result
         push_symbol(base+4);//line
         add();
@@ -290,11 +278,11 @@ push_call("runch",base);
         pop();
     goto lab_5_1;
     lab_5_2:;
-    line(96);
+    line(94);
     push_symbol(base+2);//pr
     _clp_fclose(1);
     pop();
-    line(99);
+    line(97);
     lab_6_1:
     push(&ZERO);
     push(&NIL);
@@ -302,11 +290,11 @@ push_call("runch",base);
     push(&ONE);
     _clp_waitpid(3);
     lt();
-    cmp_806:;
+    cmp_770:;
     if(!flag()) goto lab_6_2;
     goto lab_6_1;
     lab_6_2:;
-    line(102);
+    line(100);
     push_symbol(base+5);//result
     {*base=*(stack-1);stack=base+1;pop_call();return;}
 //

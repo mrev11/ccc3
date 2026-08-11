@@ -1,6 +1,9 @@
-#define VERSION  "1.6.1"
+#define VERSION  "1.7.0"
 
 #ifdef _VERZIO_TORTENET_
+
+2026.08.11 -- 1.7.0  ampersend (&) operator
+
 
 2024.07.11 -- 1.6.1 forditasi direktivak:
   //  #ifdef

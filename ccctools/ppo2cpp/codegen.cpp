@@ -3716,6 +3716,17 @@ int codegen_expr_expr_PIPE_expr(parsenode *p,void *v)//PROTO
 }
 
 //---------------------------------------------------------------------------
+int codegen_expr_expr_AMP_expr(parsenode *p,void *v)//PROTO
+{
+    cgen(p,0);
+    nltab();fprintf(code,"if(TOP()->type!=TYPE_NIL){");
+    nltab();fprintf(code,"pop();");
+    cgen(p,1);
+    nltab();fprintf(code,"}");
+    return 0;
+}
+
+//---------------------------------------------------------------------------
 int codegen_expr_MINUS_expr(parsenode *p,void *v)//PROTO
 {
     double x;
@@ -4502,6 +4513,15 @@ int outsource_expr_expr_PIPE_expr(parsenode *p,void *v)//PROTO
 {
     outsrc(p,0);
     fprintf(src,"|");
+    outsrc(p,1);
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int outsource_expr_expr_AMP_expr(parsenode *p,void *v)//PROTO
+{
+    outsrc(p,0);
+    fprintf(src,"&");
     outsrc(p,1);
     return 0;
 }

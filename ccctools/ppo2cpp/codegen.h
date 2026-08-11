@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 extern int codegen_prg_header_lfunction(parsenode *p,void *v);
 extern int codegen_header_lnewline0_namespace_lusing_lstatdefin_clang(parsenode *p,void *v);
 extern int codegen_namespace(parsenode *p,void *v);
@@ -97,6 +98,7 @@ extern int codegen_statement_WHILE_expr_newline_lstatement_END(parsenode *p,void
 extern int codegen_statement_FOR_SYMBOL_ASSIGN_expr_TO_expr_forstep_newline_lstatement_END(parsenode *p,void *v);
 extern int codegen_statement_LOOP(parsenode *p,void *v);
 extern int codegen_statement_EXIT(parsenode *p,void *v);
+extern int xcodegen_statement_CLANG(parsenode *p,void *v);
 extern int codegen_statement_CLANG(parsenode *p,void *v);
 extern int codegen_statement_expr(parsenode *p,void *v);
 extern int codegen_begseq_BEGSEQ_newline_lstatement(parsenode *p,void *v);
@@ -189,6 +191,7 @@ extern int codegen_expr_expr_SLASH_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_MODULO_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_DBSTAR_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_PIPE_expr(parsenode *p,void *v);
+extern int codegen_expr_expr_AMP_expr(parsenode *p,void *v);
 extern int codegen_expr_MINUS_expr(parsenode *p,void *v);
 extern int codegen_expr_PLUS_expr(parsenode *p,void *v);
 extern int codegen_expr_expr_EQEQ_expr(parsenode *p,void *v);
@@ -270,6 +273,7 @@ extern int outsource_expr_expr_SLASH_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_MODULO_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_DBSTAR_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_PIPE_expr(parsenode *p,void *v);
+extern int outsource_expr_expr_AMP_expr(parsenode *p,void *v);
 extern int outsource_expr_MINUS_expr(parsenode *p,void *v);
 extern int outsource_expr_PLUS_expr(parsenode *p,void *v);
 extern int outsource_expr_expr_EQEQ_expr(parsenode *p,void *v);

@@ -166,6 +166,7 @@ namespace       [nN][aA][mM][eE][sS][pP][aA][cC][eE]
 "@"                                 {return AT;} 
 "{"                                 {return LBRACE;} 
 "|"                                 {return PIPE;} 
+"&"                                 {return AMP;} 
 "}"                                 {return RBRACE;} 
 "]"                                 {return RBRACKET;} 
 "."[tT]"."                          {return TRUE;} 

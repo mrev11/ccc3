@@ -243,6 +243,7 @@ static void write_strtab(FILE *strtab, parsenode *pnode)
 %left       STAR SLASH MODULO.
 %right      DBSTAR.
 %right      PIPE.
+%right      AMP.
 %left       DBPLUS DBMINUS.
 %left       LBRACKET.
 %left       COLON COLCOL.
@@ -1520,6 +1521,13 @@ expr(X) ::= expr(X1) PIPE expr(X2).{
     X->text="expr ::= expr PIPE expr.";
     X->codegen=codegen_expr_expr_PIPE_expr;
     X->outsource=outsource_expr_expr_PIPE_expr;
+}
+
+expr(X) ::= expr(X1) AMP expr(X2).{
+    X=(new parsenode)->rule(2,X1,X2);
+    X->text="expr ::= expr AMP expr.";
+    X->codegen=codegen_expr_expr_AMP_expr;
+    X->outsource=outsource_expr_expr_AMP_expr;
 }
 
 expr(X) ::= MINUS expr(X1). [DBMINUS]{

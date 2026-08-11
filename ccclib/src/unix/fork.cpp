@@ -23,6 +23,7 @@
 #include <cccapi.h>
 #include <fork.ch>
 
+extern  void _clp_setsignal(int);
 extern  int termio_socket();
 extern  void *vartab_collector(void *ptr);
 extern  void *thread_display(void *ptr);

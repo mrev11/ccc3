@@ -1,3 +1,5 @@
+2026-08-11 -- 5.8.0 ampersend (&) operator: a & b == NIL, ha a==NIL, egyebkent b.
+
 2025.11.09 -- 5.7.2  operator=(VALUE &v)-vel is mukodo kodot keszit;
 
 2025.11.02 -- 5.7.1  hibajavitas: 

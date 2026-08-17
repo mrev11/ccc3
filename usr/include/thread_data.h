@@ -52,6 +52,10 @@ class thread_data
     
     thread_data *init()
     {
+        #ifndef WINDOWS
+        static int fork_handler=pthread_atfork(lock,unlock,unlock); //zero on success
+        #endif
+
         //if( getenv("CCC_THRDEBUG") )
         //{
         //    printf("THREAD_DATA::init(%d:%d)\n",getpid(),tdata_count); fflush(0);

@@ -31,20 +31,23 @@ extern  void *thread_message(void *ptr);
 
 
 //--------------------------------------------------------------------------
-void _clp_fork(int argno) 
+void _clp_fork(int argno)
 {
     CCC_PROLOG("fork",1);
     int forkflag=ISNIL(1)?0:_parni(1);
 
-    logical(0);
-    _clp_setsignal(1); // disable (level)
-    pop();
-
     pid_t pid=fork();
-    
-    if( pid==0 ) // CHILD
+
+    if( (pid==0) && (forkflag!=0) )
     {
-        thread_data::mutex=PTHREAD_MUTEX_INITIALIZER; // lockolt allapotban lehet
+        // OTTHON NE PROBALD KI!
+        // ami itt tortenik, azt a POSIX tiltja
+        // fork es exec kozott csak ASYNC-SIGNAL-SAFE muveleteket szabad vegezni
+        // a CCC dolgok (bar latszolag mukodnek) vastagon nem ASYNC-SIGNAL-SAFE-ek
+        // ez csak egy kiserlet, nem lehet kijavitani, es nincs is sok haszna
+        // eles alkalmazasban nem szabad hasznalni
+
+        // thread_data::mutex nincs lockolva, pthread_atfork vedi
 
         if( thread_data::tdata_count<=1 )
         {
@@ -70,7 +73,7 @@ void _clp_fork(int argno)
                 }
             }
         }
-        
+
         if( forkflag & FORK_GC )
         {
             // gc thread
@@ -81,7 +84,7 @@ void _clp_fork(int argno)
             #endif
             pthread_detach(t);
         }
-        
+
         if( forkflag & FORK_SIG )
         {
             // sigwait thread
@@ -116,10 +119,6 @@ void _clp_fork(int argno)
         }
     }
 
-    logical(1);
-    _clp_setsignal(1); // enable (level)
-    pop();
-    
     _retni(pid);
     CCC_EPILOG();
 }

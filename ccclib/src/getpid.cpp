@@ -31,5 +31,13 @@ void _clp_getpid(int argno)
     #endif    
 }
 
+#ifdef _UNIX_    
 //---------------------------------------------------------------------------
+void _clp_getppid(int argno)
+{
+    stack=stack-argno;
+    number( getppid() );
+}
 
+//---------------------------------------------------------------------------
+#endif    

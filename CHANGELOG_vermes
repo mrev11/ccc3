@@ -1,3 +1,12 @@
+2026.08.17 
+  getppid beveve az alapkonyvtarba;
+  fork es thread inditas osszehangolva;
+  Megjegyzes: 
+    fork utan hivatalosan kizarolag az exec tamogatott,
+    a fork utan tovabb futo child csak kiserletezgetes,
+    amit eles alkalmazasban nem szabad hasznalni.
+ 
+   
 2026.08.11 display szalban kifelejtett pthread_detach potolva;
 
 2026.08.11 & operator;

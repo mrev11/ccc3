@@ -1,4 +1,36 @@
 
+/*
+ *  CCC - The Clipper to C++ Compiler
+ *  Copyright (C) 2005 ComFirm BT.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+
+
+// OTTHON NE PROBALD KI!
+// ami itt tortenik, azt a POSIX tiltja
+// fork es exec kozott csak ASYNC-SIGNAL-SAFE muveleteket szabad vegezni
+// a CCC dolgok (bar latszolag mukodnek) vastagon nem ASYNC-SIGNAL-SAFE-ek
+// ez csak egy kiserlet, nem lehet kijavitani, es nincs is sok haszna
+// eles alkalmazasban nem szabad hasznalni
+
+// ez a program hibas
+// csak azert mukodik (latszolag), mert a fork() hivasok idoben ritkak
+// es ezert csak kis valoszinuseggel hagynak inkonzistens allapotot a childban
+
 
 #include "fileio.ch"
 #include "fork.ch"

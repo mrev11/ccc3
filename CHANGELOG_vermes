@@ -1,3 +1,14 @@
+2026.08.25
+  make_extn ezeket is leforditja:
+    json
+    stomp
+    pcre (deprecated)
+    regex (deprecated)
+  uj demo: tutor/marshal;
+  uj demo: tutor/srchash;
+  megszunt: tutor/dtree;
+  variable.cpp-ben tobb debug info;
+
 2026.08.17 
   getppid beveve az alapkonyvtarba;
   fork es thread inditas osszehangolva;

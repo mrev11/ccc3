@@ -137,6 +137,7 @@ static void sleep_micro(int micro);
 static void valid_oref(OREF *o);
 static void valid_value(VALUE *v);
 static void inventory();
+static char *bname(char*);
 
 //---------------------------------------------------------------------------
 
@@ -398,11 +399,8 @@ static void vartab_mark(void)
 
     if(env_gcdebug)
     {
-        #ifdef FINE_GRAINED_LOCK
-          printf(" fGC(%d)  %sMARK:%s ",gc_count,BOLD,RESET);
-        #else
-          printf(" cGC(%d)  %sMARK:%s ",gc_count,BOLD,RESET);
-        #endif
+      //printf(" GC(%d) pid=%d %-16s %sMARK:%s ",gc_count,getpid(),bname(ARGV[0]),BOLD,RESET);
+        printf(" GC(%d) pid=%d %sMARK:%s ",gc_count,getpid(),BOLD,RESET);
         printf("%sofree=%s ", star(sync_ofree.read()<=OREF_LEVEL), decimal(sync_ofree.read()));
         printf("%svfree=%s ", star(sync_vfree.read()<=VREF_LEVEL), decimal(sync_vfree.read()));
         if( tabsize>1024*1024*8 )
@@ -1128,4 +1126,20 @@ static void sleep_micro(int micro)
 }
 
 //---------------------------------------------------------------------------
+static char *bname( char*fsp )
+{
+    char *p=fsp;
+    int i=0;
+    while( fsp[i]!=0 )
+    {
+        if( fsp[i]=='/' )
+        {
+            p=fsp+i+1;
+        }
+        i++;
+    }
+    return p;
+}
 
+
+//---------------------------------------------------------------------------

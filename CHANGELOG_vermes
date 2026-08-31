@@ -1,4 +1,8 @@
 2026.08.25
+  brwFooting jobb sarka uresen maradt, javitva;
+  terminal-test-ben szinvalto kukac;
+
+2026.08.25
   make_extn ezeket is leforditja:
     json
     stomp

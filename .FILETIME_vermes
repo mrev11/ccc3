@@ -1,7 +1,11 @@
-8a3a2f7b34e7a99f8942b4b7347fb77a927ad40f 2026082713:41:36-UTC ./ccclib/src/buildnumber_ccc.prg
+28c1ed1674b2ee800cc0c1a051e2d27781c2a6be 2026083114:27:17-UTC ./ccclib/src/buildnumber_ccc.prg
+dcce016c787b4dd85b50f258cb368237cddbc0cc 2026083114:26:14-UTC ./CHANGELOG_vermes
+27f26caffa5553cd54c69d816985d01b9166d989 2026083114:21:28-UTC ./ccclib/src/uic/brwmenu.prg
+28639c231d824f49a842bda68439bcaaae7ad10c 2026083019:49:46-UTC ./terminal/terminal-test/screenwr/w.prg
+799fcf860bb74b90ee0a7e8875c2b28df2b74bef 2026083019:43:33-UTC ./terminal/terminal-test/screenwr/screenwr.prg
+4db5a0979cc3329c06a8a8bbed42364281b5a10f 2026083018:06:47-UTC ./tutor/colortheme/color.say
 4757668d2c55b5e3473cca95ef13fad5800a6dce 2026082713:41:21-UTC ./make_extn
 69fa895498631216d174d51aaff84a3ab49892a5 2026082712:53:49-UTC ./tutor/srchash/srchash.prg
-18c1109a659c64905ee733155f77dc747d82ce77 2026082711:47:03-UTC ./CHANGELOG_vermes
 a0c4e2cb82189a06d112da621d6199b04b21bcc0 2026082711:41:56-UTC ./log-srchash
 6c90ff52f2cdc45fad9c1c3e9adf7f21b15b6b6d 2026082711:13:57-UTC ./log-install
 d93084dcb488d33c31475f45709b055da52af6ba 2026082711:13:57-UTC ./usr/bin/msk2html
@@ -369,7 +373,6 @@ cc660549cfbdbb580f83e51c1031e5bc67ae43fb 2026040808:54:33-UTC ./tools/json/demo/
 468fb7233363e638752ae70ce1811061ea3749cf 2026040715:59:37-UTC ./tools/json/parserinfo
 a4a98384454cee8749c310ded36726b3f11d09cf 2026030223:10:58-UTC ./tools/stomp/demo/r
 2097817a1646499781cb3620ea78392a1754f64c 2026030221:26:47-UTC ./tools/stomp/demo/q
-03a0b3577843319db2c2d5b867ffc8e230357542 2026022322:02:06-UTC ./ccclib/src/uic/brwmenu.prg
 f3d0830e43c0648bae33b19ffe1c38cc7b811f22 2026022321:51:05-UTC ./ccclib/src/array.cpp
 9d44665d3ea64781680993856f09cfce4765f814 2026022315:03:57-UTC ./ccclib/src/uic/mask.prg
 3ac6d7d69ddb146ce57edf262bff69e088c15835 2026022314:49:14-UTC ./ccclib/src/uic/pushbutton.prg
@@ -2043,7 +2046,6 @@ af3433a7e43cec88a266de82c0fa57416985bb35 2016053112:38:25-UTC ./jt/sslforward/ss
 b428ea1236d8ae5f93c2031c1f33cbd024e2a345 2016053112:35:19-UTC ./jt/sslforward/ssl-test/t-46001-ssl
 06840c7ee6a179ac9a8de78515f2426102d2bbb5 2016053112:35:03-UTC ./jt/sslforward/ssl-test/t-46000-plain
 58782932cd44ad2f5fdd5bc8239bdd6cb610a9e1 2016052809:02:09-UTC ./terminal/sslforw/ssl-test/x
-7270d0c5a5e671153d5dd8fe93c9d84d0b363400 2016052706:15:07-UTC ./terminal/terminal-test/screenwr/screenwr.prg
 8fb75ee8333017af818a35393e7db0064a52fc94 2016052510:29:48-UTC ./terminal/unix/compopt.ext
 461d2e570bf0b111ca43018cca7e0857c275df56 2016052212:11:54-UTC ./terminal/sslforw/ssl-test/pem/rehash
 a6649f575721b839bd323d98c4feb8bad4f20203 2016052212:11:08-UTC ./terminal/sslforw/ssl-test/pem/OLVASS
@@ -3634,7 +3636,6 @@ fdeb196b87202005f0c9ee4044f6a7da68a43801 2001020608:14:20-UTC ./COPYING
 45b96226d2f9828c43b73096665326cdac43aef9 2000053017:28:00-UTC ./jt/jtdemo/images/middle.gif
 e652a6399a4d985e44f67ebc345b9be68243c16b 2000042409:06:56-UTC ./tutor/control/radio.sor
 4e8ac890df17dd30d6a3c2d51aeee436022f5e52 2000032409:29:00-UTC ./jt/jterminal/images/exit.gif
-7df366a50461886596242a9fe05baf4594a70fea 2000020802:09:50-UTC ./terminal/terminal-test/screenwr/w.prg
 4ef0be2bb16016cae9e182249f602e2f09ce77eb 2000011211:38:42-UTC ./usr/include/achoice.ch
 c90a14782475b87aa861a19855ff5b6efb3fe704 2000011211:38:42-UTC ./usr/include/assert.ch
 93022243d5b1b973b947ea6610be89b520384a6b 2000011211:38:42-UTC ./usr/include/color.ch

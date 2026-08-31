@@ -20,5 +20,5 @@
 
 function main()
     //setcolor("w/b")
-    screen_worm(1,"KONTO")
+    screen_worm(1,"CHAMELEON")
     return NIL

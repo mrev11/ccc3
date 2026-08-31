@@ -38,10 +38,10 @@ local x:={{s,o}},n,key
 
     cls
 
-    while( (key:=inkey(0.2))==0 )
+    while( (key:=inkey(0.3))==0 )
 
         for n:=len(x) to 1 step -1
-            @ x[n][1],x[n][2] say substr(logo,n,1)
+            @ x[n][1],x[n][2] say substr(logo,n,1)   color color()
         next
 
         while(.t.)
@@ -110,5 +110,39 @@ static function tail(n)
             replicate(chr(157),n)
 #endif
  
+
+*****************************************************************************
+static function color()
+
+static x:=rand(seconds())
+static rgb:={1,1,1}
+static fg:="333"
+local r,n,c
+
+    r:=0
+    for n:=1 to 10
+        r+=rand()
+    next
+
+    if( r>7 )
+        n:=1+random()%3
+        c:=rgb[n]
+        if( c<1 )
+            c:=1                // 0 -> 1
+        elseif(c<3)
+            c+=(random()%3-1)   // 1,2 +(-1|0|1)
+        else
+            c:=2                // 3 -> 2
+        end
+        rgb[n]:=c
+
+        fg:=""
+        for n:=1 to len(rgb)
+            fg+=(rgb[n]+2)::str::ltrim
+        next
+    end
+
+    return fg+"/000"
+
 
 *****************************************************************************

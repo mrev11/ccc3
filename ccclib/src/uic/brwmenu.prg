@@ -1016,8 +1016,8 @@ local ftext
               padc(footing[2],r-l-1-len(footing[1])-len(footing[3]))+;
               footing[3]+" "
         
-        if( len(ftext)> browse:nRight-browse:nLeft )
-            ftext::=left(browse:nRight-browse:nLeft )
+        if( len(ftext) > browse:nRight-browse:nLeft+1 )
+            ftext::=left(browse:nRight-browse:nLeft+1 )
         end      
               
         @ b+1,l say ftext

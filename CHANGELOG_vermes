@@ -1,3 +1,8 @@
+2026.09.22
+  build-plugin -> cache_search -> filecopy_time() uj idot tesz a target fajlra;
+  webapp forditasa kihagyva (ki lesz veve a repobol);
+  textview-ban help, uj shortcutok: /,n,p;
+
 2026.08.25
   brwFooting jobb sarka uresen maradt, javitva;
   terminal-test-ben szinvalto kukac;

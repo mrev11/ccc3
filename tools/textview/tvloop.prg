@@ -41,13 +41,16 @@ local key
         if( key==K_ESC )
             return K_ESC
  
-        elseif( key==K_F3 )    
+        elseif( key==K_F1 )
+            help()    
+
+        elseif( key==K_F3 .or. key==asc("/") )    
             this:search()
 
-        elseif( key==K_SH_F3 )    
+        elseif( key==K_SH_F3 .or. key==asc("n") )    
             this:searchagain()
 
-        elseif( key==K_CTRL_F3 )    
+        elseif( key==K_CTRL_F3 .or. key==asc("p")  )    
             this:searchagain("p")
 
        
@@ -82,6 +85,15 @@ local key
             this:end()  
         end
     end
+
+
+****************************************************************************   
+static function help()
+
+    alert("[ F1           - Help        ];;"+;
+          "[ F3 (/)       - Search      ];"+; 
+          "[ Shift-F3 (n) - Search next ];"+; 
+          "[ Ctrl-F3 (p)  - Search prev ];" )
 
 
 ****************************************************************************   

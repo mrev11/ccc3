@@ -1,9 +1,9 @@
 
 
+#include "fileio.ch"
 #include "pluginenv.ch"
 
-
-
+******************************************************************************************
 function cache_search(arg,env)
 
 local ctx
@@ -44,8 +44,45 @@ local memo
         if( BUILD_USECACHE!="no" .and. file(trg) )
             // object exists in cache
             dirmake("object")
-            filecopy(trg,TARGET)
+            filecopy_time(trg,TARGET)
             ?? " (from cache)";?
             def_quit(arg,env,0)
         end
     end
+
+
+******************************************************************************************
+static function filecopy_time(fsource,ftarget) // specialis: nem orzi meg a fajl idot
+
+local fd1, fd2
+local buf, nr, nw
+local nbyte:=0
+
+    fd1:=fopen(fsource,FO_READ)
+    if( fd1<0 )
+        return 0
+    end
+
+    ferase(ftarget)
+    fd2:=fcreate(ftarget)
+    if( fd2<0 )
+        fclose(fd1)
+        return 0
+    end
+
+    buf:=replicate(x"00",4096)
+    nr:=fread(fd1,@buf,len(buf))
+    while( nr>0 )
+        nbyte+=(nw:=fwrite(fd2,buf,nr))
+        if( nw!=nr )
+            exit
+        end
+        nr:=fread(fd1,@buf,len(buf))
+    end
+
+    fclose(fd1)
+    fclose(fd2)
+
+    return nbyte
+
+******************************************************************************************

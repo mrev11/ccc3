@@ -36,9 +36,6 @@ source make_verf 3
 ( cd tutor/rename           && m )
 
 
-if ! [ "$CCCUNAME" == msys2 ]; then
-    ( cd tools/webapp           && m )                              
-fi
 
 if fpath.exe jterminal.jar >/dev/null; then
     : echo have jterminal

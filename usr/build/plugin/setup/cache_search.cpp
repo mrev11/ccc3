@@ -1,4 +1,4 @@
-//input: ppo/cache_search.ppo (5.7.2)
+//input: ppo/cache_search.ppo (5.8.0)
 
 #include <cccdef.h>
 
@@ -12,13 +12,20 @@ extern void _clp_def_quit(int argno);
 extern void _clp_direxist(int argno);
 extern void _clp_dirmake(int argno);
 extern void _clp_empty(int argno);
+extern void _clp_fclose(int argno);
+extern void _clp_fcreate(int argno);
+extern void _clp_ferase(int argno);
 extern void _clp_file(int argno);
-extern void _clp_filecopy(int argno);
+static void _clp_filecopy_time(int argno);
+extern void _clp_fopen(int argno);
+extern void _clp_fread(int argno);
+extern void _clp_fwrite(int argno);
 extern void _clp_len(int argno);
 extern void _clp_memoread(int argno);
 extern void _clp_pluginenv(int argno);
 extern void _clp_qout(int argno);
 extern void _clp_qqout(int argno);
+extern void _clp_replicate(int argno);
 extern void _clp_str(int argno);
 
 //=======================================================================
@@ -239,7 +246,7 @@ push_call("cache_search",base);
             push_symbol(base+1);//env
             string(L"TARGET");
             _clp_pluginenv(2);
-            _clp_filecopy(2);
+            _clp_filecopy_time(2);
             pop();
             line(48);
             string(L" (from cache)");
@@ -257,6 +264,133 @@ push_call("cache_search",base);
         if_7_0:;
     if_2_1:
     if_2_0:;
+//
+stack=base;
+push(&NIL);
+pop_call();
+}
+//=======================================================================
+static void _clp_filecopy_time(int argno)
+{
+VALUE *base=stack-argno;
+stack=base+min(argno,2);
+while(stack<base+8)PUSHNIL();
+argno=2;
+push_call("filecopy_time",base);
+//
+    line(57);
+    line(58);
+    line(59);
+    push(&ZERO);
+    assign(base+7);//nbyte
+    pop();
+    line(61);
+    push_symbol(base+0);//fsource
+    push(&ZERO);
+    _clp_fopen(2);
+    assign(base+2);//fd1
+    pop();
+    line(64);
+    line(62);
+    push_symbol(base+2);//fd1
+    push(&ZERO);
+    lt();
+    cmp_999:;
+    if(!flag()) goto if_8_1;
+        line(63);
+        push(&ZERO);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    if_8_1:
+    if_8_0:;
+    line(66);
+    push_symbol(base+1);//ftarget
+    _clp_ferase(1);
+    pop();
+    line(67);
+    push_symbol(base+1);//ftarget
+    _clp_fcreate(1);
+    assign(base+3);//fd2
+    pop();
+    line(71);
+    line(68);
+    push_symbol(base+3);//fd2
+    push(&ZERO);
+    lt();
+    cmp_1061:;
+    if(!flag()) goto if_9_1;
+        line(69);
+        push_symbol(base+2);//fd1
+        _clp_fclose(1);
+        pop();
+        line(70);
+        push(&ZERO);
+        {*base=*(stack-1);stack=base+1;pop_call();return;}
+    if_9_1:
+    if_9_0:;
+    line(73);
+    binaryx("00");
+    number(4096);
+    _clp_replicate(2);
+    assign(base+4);//buf
+    pop();
+    line(74);
+    push_symbol(base+2);//fd1
+    push_symbol_ref(base+4);//buf
+    push_symbol(base+4);//buf
+    _clp_len(1);
+    _clp_fread(3);
+    assign(base+5);//nr
+    pop();
+    line(81);
+    lab_10_1:
+    line(75);
+    push_symbol(base+5);//nr
+    push(&ZERO);
+    gt();
+    cmp_1169:;
+    if(!flag()) goto lab_10_2;
+        line(76);
+        push_symbol(base+7);//nbyte
+        push_symbol(base+3);//fd2
+        push_symbol(base+4);//buf
+        push_symbol(base+5);//nr
+        _clp_fwrite(3);
+        assign(base+6);//nw
+        add();
+        assign(base+7);//nbyte
+        pop();
+        line(79);
+        line(77);
+        push_symbol(base+6);//nw
+        push_symbol(base+5);//nr
+        neeq();
+        cmp_1222:;
+        if(!flag()) goto if_11_1;
+            line(78);
+            goto lab_10_2;//exit
+        if_11_1:
+        if_11_0:;
+        line(80);
+        push_symbol(base+2);//fd1
+        push_symbol_ref(base+4);//buf
+        push_symbol(base+4);//buf
+        _clp_len(1);
+        _clp_fread(3);
+        assign(base+5);//nr
+        pop();
+    goto lab_10_1;
+    lab_10_2:;
+    line(83);
+    push_symbol(base+2);//fd1
+    _clp_fclose(1);
+    pop();
+    line(84);
+    push_symbol(base+3);//fd2
+    _clp_fclose(1);
+    pop();
+    line(86);
+    push_symbol(base+7);//nbyte
+    {*base=*(stack-1);stack=base+1;pop_call();return;}
 //
 stack=base;
 push(&NIL);

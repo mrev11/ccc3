@@ -1,3 +1,0 @@
-#!/bin/bash
-#( cd common   && m )
-( cd program  && m )

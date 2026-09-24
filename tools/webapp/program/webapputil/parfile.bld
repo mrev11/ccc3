@@ -1,8 +1,0 @@
--swebapputil
--d.
--d../zlib
--bz
- 
-
-BUILD_LIBDIR=${CCCDIR}/usr/lib
-

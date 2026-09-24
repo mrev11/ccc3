@@ -1,6 +1,0 @@
-#!/bin/bash
-
-( cd webapputil   && m )
-( cd webapp       && m )
-( cd msk2html     && m )
-( cd whello       && m )

@@ -3,4 +3,3 @@
 ( cd  bt2tds        && m )
 ( cd  mkentitylib   && m )
 ( cd  tdsutil       && m )
-( cd  jeed          && m )

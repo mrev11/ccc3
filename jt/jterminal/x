@@ -1,3 +1,0 @@
-#!/bin/bash
-java -jar jterminal.jar #mkl 8080 cgi=/cgi-bin/cgienv/kepnezo.exe
- 

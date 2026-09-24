@@ -1,7 +1,0 @@
--bccc$(CCCVER)_jt
--bccc$(CCCVER)_socket 
--bccc$(CCCVER)_sslsocket 
--bccc$(CCCVER)_xmldom
--bccc$(CCCVER)_btbtx.lib
-
-BUILD_EXE=$(CCCDIR)/usr/bin

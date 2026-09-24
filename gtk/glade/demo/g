@@ -1,4 +1,0 @@
-#!/bin/bash
-grep GDK_ $1 >log
-grep GTK_ $1 >>log
-list.exe log

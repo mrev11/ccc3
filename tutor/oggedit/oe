@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-export PATH=$CCCDIR/usr/bin:$PATH
-export LD_LIBRARY_PATH=$CCCDIR/usr/lib:$LD_LIBRARY_PATH
-export JTERMINAL=$CCCDIR/usr/bin/jterminal.jar
-export JTRESOL=low
-
-nohup oggedit.exe "$@" 2>&1 >/dev/null &

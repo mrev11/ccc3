@@ -1,5 +1,0 @@
-
-BUILD_CFG=${BUILD_OBJ}/gtk-cflags
-BUILD_LIBX=${BUILD_OBJ}/gtk-libs
-
--bccc3_gtk

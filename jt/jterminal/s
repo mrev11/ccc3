@@ -1,4 +1,0 @@
-#!/bin/bash
-#java -jar jterminal.jar localhost 46000
-java jterminal localhost 46000
- 

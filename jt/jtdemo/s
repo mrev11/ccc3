@@ -1,4 +1,0 @@
-#!/bin/bash
-export JTRESOL=low
-#export JTRESOL=high
-superdemo.exe

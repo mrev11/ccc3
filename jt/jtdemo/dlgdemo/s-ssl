@@ -1,9 +1,0 @@
-#!/bin/bash
-
-PORT=46004
-APPL=main6.exe
-
-echo $PORT
-
-# beépített SSL támogatással
-jtlisten.exe $PORT $APPL  -jtdebug  -jtssl

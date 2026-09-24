@@ -1,9 +1,0 @@
-
-
-(define-function gtk_scrollbar_get_type
-  (c-name "gtk_scrollbar_get_type")
-  (return-type "GtkType")
-)
-
-
-

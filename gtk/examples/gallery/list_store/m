@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ -z "$SYSTEMDRIVE" ]; then
-    cccapp.sh -bccc3_gtk
-else
-    cccapp.sh @gtk-win.bld  -bccc3_gtk
-fi

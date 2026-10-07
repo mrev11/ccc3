@@ -13,7 +13,6 @@ source make_verf 3
 # tools
 #-------------------
 
-( cd jt/jtlib               &&  m)
 
 ( cd tools/dbaseiii         && m )
 ( cd tools/dbfview          && m )

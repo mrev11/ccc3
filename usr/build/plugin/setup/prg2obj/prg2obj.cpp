@@ -1,4 +1,4 @@
-//input: ppo/prg2obj.ppo (5.7.2)
+//input: ppo/prg2obj.ppo (5.8.0)
 
 #include <cccdef.h>
 

@@ -1,4 +1,4 @@
-//input: ppo/msk2say.ppo (5.7.2)
+//input: ppo/msk2say.ppo (5.8.0)
 
 #include <cccdef.h>
 

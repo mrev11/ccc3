@@ -1,4 +1,4 @@
-//input: ppo/tdc2tdh.ppo (5.8.0)
+//input: ppo/tab2html.ppo (5.8.0)
 
 #include <cccdef.h>
 
@@ -19,7 +19,7 @@ extern void _clp_runredir(int argno);
 void _clp_main(int argno)
 {
 VALUE *base=stack-argno;
-while(stack<base+argno+4)PUSHNIL();
+while(stack<base+argno+5)PUSHNIL();
 push_call("main",base);
 //
     line(8);
@@ -36,7 +36,7 @@ push_call("main",base);
     line(10);
     line(11);
     line(13);
-    string(L"!TDC2TDH.BAT");
+    string(L"!TAB2HTML.BAT");
     push_symbol(base+argno+0);//arg
     idxr0(1);
     push_symbol(base+argno+0);//arg
@@ -55,7 +55,7 @@ push_call("main",base);
     push_symbol(base+argno+0);//arg
     idxr0(1);
     add();
-    string(L".tdc");
+    string(L".msk");
     add();
     _clp_pluginenv(3);
     pop();
@@ -71,18 +71,21 @@ push_call("main",base);
     line(17);
     push_symbol(base+argno+1);//env
     string(L"TARGET");
-    string(L"table.");
+    push_symbol(base+argno+0);//arg
+    idxr0(2);
+    string(L"/");
+    add();
     push_symbol(base+argno+0);//arg
     idxr0(1);
     add();
-    string(L".tdh");
+    string(L".html");
     add();
     _clp_pluginenv(3);
     pop();
     line(18);
     push_symbol(base+argno+1);//env
     string(L"OUT");
-    string(L"out--tdc2tdh-");
+    string(L"out--tab2html-");
     push_symbol(base+argno+0);//arg
     idxr0(1);
     add();
@@ -91,7 +94,7 @@ push_call("main",base);
     line(19);
     push_symbol(base+argno+1);//env
     string(L"ERR");
-    string(L"error--tdc2tdh    -");
+    string(L"error--tab2html-");
     push_symbol(base+argno+0);//arg
     idxr0(1);
     add();
@@ -116,33 +119,77 @@ push_call("main",base);
     _clp_ferase(1);
     pop();
     line(25);
-    string(L"tdc2tdh.exe ");
-    push_symbol(base+argno+1);//env
-    string(L"SOURCE");
-    _clp_pluginenv(2);
+    string(L"-r ");
+    assign(base+argno+3);//params
+    pop();
+    line(26);
+    push_symbol(base+argno+3);//params
+    push_symbol(base+argno+0);//arg
+    idxr0(2);
+    string(L"/");
+    add();
+    push_symbol(base+argno+0);//arg
+    idxr0(1);
+    add();
+    string(L".tab ");
+    add();
+    add();
+    assign(base+argno+3);//params
+    pop();
+    line(27);
+    push_symbol(base+argno+3);//params
+    push_symbol(base+argno+0);//arg
+    idxr0(2);
+    string(L"/");
+    add();
+    push_symbol(base+argno+0);//arg
+    idxr0(1);
+    add();
+    string(L" ");
+    add();
+    add();
+    assign(base+argno+3);//params
+    pop();
+    line(28);
+    push_symbol(base+argno+3);//params
+    push_symbol(base+argno+0);//arg
+    idxr0(2);
+    string(L"/");
+    add();
+    push_symbol(base+argno+0);//arg
+    idxr0(1);
+    add();
+    string(L".html");
+    add();
+    add();
+    assign(base+argno+3);//params
+    pop();
+    line(30);
+    string(L"msk2html.exe ");
+    push_symbol(base+argno+3);//params
     add();
     assign(base+argno+2);//cmd
     pop();
-    line(27);
+    line(32);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     number(770);
     _clp_fopen(2);
-    assign(base+argno+3);//fdout
-    pop();
-    line(28);
-    push_symbol(base+argno+2);//cmd
-    push_symbol(base+argno+3);//fdout
-    push_symbol(base+argno+3);//fdout
-    _clp_runredir(3);
-    pop();
-    line(29);
-    push_symbol(base+argno+3);//fdout
-    _clp_fclose(1);
+    assign(base+argno+4);//fdout
     pop();
     line(33);
-    line(31);
+    push_symbol(base+argno+2);//cmd
+    push_symbol(base+argno+4);//fdout
+    push_symbol(base+argno+4);//fdout
+    _clp_runredir(3);
+    pop();
+    line(34);
+    push_symbol(base+argno+4);//fdout
+    _clp_fclose(1);
+    pop();
+    line(38);
+    line(36);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
@@ -150,7 +197,7 @@ push_call("main",base);
     _clp_empty(1);
     topnot();
     if(!flag()) goto if_1_1;
-        line(32);
+        line(37);
         push_symbol(base+argno+0);//arg
         push_symbol(base+argno+1);//env
         push(&ONE);
@@ -158,13 +205,13 @@ push_call("main",base);
         pop();
     if_1_1:
     if_1_0:;
-    line(35);
+    line(40);
     push_symbol(base+argno+1);//env
     string(L"OUT");
     _clp_pluginenv(2);
     _clp_ferase(1);
     pop();
-    line(36);
+    line(41);
     push_symbol(base+argno+0);//arg
     push_symbol(base+argno+1);//env
     push(&ZERO);

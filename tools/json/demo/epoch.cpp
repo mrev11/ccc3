@@ -222,7 +222,7 @@ void _clp_epoch2xmldate(int argno) // -> XML date with timezone
     time_t millis;
     int  offset=ISNUMBER(2)?_parni(2):0;  // timezone offset in seconds
 
-    if( epoch>(unsigned long)1.0e10 )
+    if( (unsigned long)epoch>(unsigned long)1.0e10 )
     {
         //epoch in millis
         seconds=epoch/1000;
@@ -241,7 +241,7 @@ void _clp_epoch2xmldate(int argno) // -> XML date with timezone
     gmtime_r(&seconds,&ts);
     char buf[64];
     strftime(buf,sizeof(buf),"%Y-%m-%dT%H:%M:%S",&ts);
-    char buf2[64];
+    char buf2[128];
 
     if( offset>0  )
     {

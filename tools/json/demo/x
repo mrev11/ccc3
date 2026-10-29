@@ -1,0 +1,5 @@
+#!/bin/bash
+# futtatja a demókat
+
+json_print.exe  credit_transfer_json indent >log-xp
+json_tostr.exe  credit_transfer_json indent >log-xs

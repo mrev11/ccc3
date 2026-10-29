@@ -1,4 +1,6 @@
 
+2028.10.29 percent-encoding;
+
 2028.10.29
   tools/json/strbuffer: buffer-be író ? és ?? operátorok;
   tools/json/json_tostr: json-t ír strbuffer-be (temp fájl nélkül);

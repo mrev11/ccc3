@@ -1,5 +1,5 @@
-d6d891b675b3fdf584cb5470c3e0f6a6175c9f24 2026102917:21:57-UTC ./ccclib/src/buildnumber_ccc.prg
-23d4ddcba53b6520bc699bc1ce9de11f60b4c5a2 2026102917:20:56-UTC ./CHANGELOG_vermes
+524f9347696a71838b59fb308936f2afb55fc1d3 2026102917:23:02-UTC ./ccclib/src/buildnumber_ccc.prg
+ab1c010698e9ed09f77c3a17ef339a0d7e89b344 2026102917:22:32-UTC ./CHANGELOG_vermes
 b27b6317903a192b688f57a3637fcdf7a8adaa5d 2026102917:20:08-UTC ./log-install
 5b4dc57dc47b734e43b8fe1ceb1122f9df109bd0 2026102917:20:08-UTC ./usr/bin/fpath
 fd188fbc58d1a93a6488c160656c6c6bb844bce9 2026102917:20:08-UTC ./usr/bin/lpath
@@ -79,6 +79,7 @@ c8d453b5b99e28f785ac99c1662d2a6b1ba7ffa7 2026102917:19:08-UTC ./usr/bin/lemon
 be56aae271baec55a5e1b7836b37bbe8503a50fd 2026102917:19:07-UTC ./usr/bin/flex
 1580cc1bfe0196232d24ee0bb9b0af2cba7902c7 2026102917:19:07-UTC ./usr/options/linux/clang/cppver.exp
 e1c490848b3230b2674464ca408b047f0712df1c 2026102917:19:07-UTC ./usr/options/linux/clang/cppver.opt
+cc56cc9e891f1558776814506b1a580122ced43c 2026102917:12:38-UTC ./ccclib/src/percent_encoding.prg
 f647a03d52905087c881bd7f339ba0f7c6306340 2026102719:31:30-UTC ./tools/json/demo/epoch.cpp
 ae847e3a962c6935eab766ed8402020b92a2f871 2026102609:16:18-UTC ./tools/json/strbuffer.prg
 dc92d40e9dce1ac98a8dcb3a361c8354f3b9f75c 2026102609:10:37-UTC ./tools/json/json_tostr.prg
